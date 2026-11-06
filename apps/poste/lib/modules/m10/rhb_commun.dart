@@ -11,10 +11,17 @@ import '../../shell/contexte_ecran.dart';
 /// Briques communes aux huit écrans de M10 (B). Les règles chiffrées sont dans `packages/domaine/lib/src/rh/rhb_regles.dart` ; ce fichier ne porte que
 /// de la mise en page et la lecture du magasin du poste.
 
-const rhbSignSurveillant = Signature('Le Surveillant Général', nom: 'GARBA Yahouza');
-const rhbSignDaf = Signature('La Directrice Administrative', nom: 'TAKI Alimatou');
-const rhbSignDm = Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko');
-const rhbSignDirecteurAdmin = Signature('La Directrice de l’Administration et des Finances', nom: 'TAKI Alimatou');
+/// Les signataires des pièces RH : la QUALITÉ seule, aucun nom d'agent écrit dans le code (ceux de l'établissement d'origine du logiciel ne signent pas
+/// pour la clinique). Une pièce qui peut lire le personnel y ajoute le titulaire par [rhbNomme] ; sinon elle imprime une ligne sans nom.
+const rhbSignSurveillant = Signature('Le Surveillant Général');
+const rhbSignDaf = Signature('La Directrice Administrative');
+const rhbSignDm = Signature('Le Directeur Médical');
+const rhbSignDirecteurAdmin = Signature('La Directrice de l’Administration et des Finances');
+
+/// La signature [s] complétée du nom de l'agent qui porte la qualité [q] au dossier du personnel (`paiSignataire`) ; sans titulaire, la ligne reste
+/// sans nom.
+Signature rhbNomme(ContexteEcran c, Signature s, PaiQualite q) =>
+    Signature(s.role, nom: paiSignataire(c.magasin.collection('personnel').actives, q) ?? s.nom, mention: s.mention);
 
 /// Reconstruit la vue quand l'une des collections [collections] change (insertion, mise à jour, archivage, annulation).
 class RhbEcoute extends StatefulWidget {

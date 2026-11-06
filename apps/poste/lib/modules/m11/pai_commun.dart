@@ -12,38 +12,68 @@ import '../m9/commun.dart' show ecoute;
 
 export '../m6/points_commun.dart' show champUnique, commande;
 export '../m8/commun.dart' show n, m;
-export '../m9/commun.dart' show pieceM9, signDaf, monoTexte, tiret, ecoute, deuxCartes, ClassementSigh;
+export '../m9/commun.dart' show pieceM9, monoTexte, tiret, ecoute, deuxCartes, ClassementSigh;
 
-/// Briques communes aux neuf écrans de M11 (paie & primes). Les règles chiffrées vivent dans `packages/domaine/lib/src/paie/pai_moteur.dart` — ce
+/// Briques communes aux neuf écrans de M11 (paie & primes). Les règles chiffrées vivent dans `packages/domaine/lib/src/paie/pai_moteur.dart` ; ce
 /// fichier ne porte que de la mise en page et le branchement du moteur sur le magasin.
 
-/// L'exercice des écrans de calcul : « 2026 » est ÉCRIT EN DUR dans la maquette (`calculerTous(2026, mois)`, libellés « Octobre 2026 ») ; porté tel quel,
-/// signalé (écart E686).
-const int paiAnnee = 2026;
+/// L'exercice des écrans de calcul : l'exercice OUVERT de la collection `exercices` qui contient la date du poste, à défaut l'année de l'horloge. La
+/// maquette écrivait « 2026 » en dur (écart E686) : un poste mis en service en 2027 aurait calculé la paie de 2026.
+int paiAnnee(ContexteEcran c) => paiExercice(c.magasin.collection('exercices').actives, c.aujourdhui);
 
-const signComptable = Signature('Le Comptable', nom: 'KASSA Augustin');
+/// Les signataires des pièces de paie, LUS AU PERSONNEL (poste et fonction) : aucun nom d'agent n'est écrit dans le code. Personne ne porte la
+/// qualité : la pièce imprime une ligne de signature sans nom, que l'on signe à la main.
+Signature signataire(Magasin m, String role, PaiQualite q, {String mention = 'Signature'}) =>
+    Signature(role, nom: paiSignataire(m.collection('personnel').actives, q), mention: mention);
+
+Signature signComptable(Magasin m) => signataire(m, 'Le Comptable', PaiQualite.comptable);
+
+Signature signDaf(Magasin m) => signataire(m, 'La Directrice Administrative', PaiQualite.daf);
 
 /// La Direction signe la paie : son nom figure sur les journaux (« Validation » / « Bon à payer »).
-const String paiNomDirection = 'BASSONGUI Chabi Séko';
+Signature signDirection(Magasin m, String mention) => signataire(m, 'La Direction', PaiQualite.direction, mention: mention);
+
+/// Les deux activités de Paramètres système (PRD P0-5) lues dans `modulesActifs`, et non dans un drapeau à part : fermées, le calcul n'ajoute aucune
+/// prime NS 132 et ne retranche aucune sanction NS 131. Un bulletin déjà ENREGISTRÉ n'est jamais recalculé : il garde ses montants.
+({bool primesNs132, bool sanctionsNs131}) activitesPaie(Magasin mag) => paiActivites(mag.collection('modulesActifs').toutes);
 
 /// Ce que le moteur lit au magasin (la maquette interroge les collections à chaque calcul).
-PaiEntrees entreesPaie(Magasin mag) => PaiEntrees(
-      planning: mag.collection('planning').actives,
-      evaluations: mag.collection('evaluations').actives,
-      avances: mag.collection('avances').actives,
-      participations: mag.collection('participations').actives,
-      grille: mag.collection('grillePrimes').actives,
-      historique: mag.collection('historiquePrimes').actives,
-      heuresSup: mag.collection('heuresSup').actives,
-      prets: mag.collection('pretsEtudes').actives,
-    );
+PaiEntrees entreesPaie(Magasin mag) {
+  final a = activitesPaie(mag);
+  return PaiEntrees(
+    planning: mag.collection('planning').actives,
+    evaluations: mag.collection('evaluations').actives,
+    avances: mag.collection('avances').actives,
+    participations: mag.collection('participations').actives,
+    grille: mag.collection('grillePrimes').actives,
+    historique: mag.collection('historiquePrimes').actives,
+    heuresSup: mag.collection('heuresSup').actives,
+    prets: mag.collection('pretsEtudes').actives,
+    primesNs132: a.primesNs132,
+    sanctionsNs131: a.sanctionsNs131,
+  );
+}
 
 /// Les collections que le calcul de la paie lit : un écran se redessine quand l'une d'elles bouge.
-const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes'];
+const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes', 'modulesActifs', 'exercices'];
 
 Listenable ecoutePaie(ContexteEcran c, [List<String> enPlus = const []]) => ecoute(c, [...collectionsPaie, ...enPlus]);
 
-List<PaiCalcul> calculerTousPaie(ContexteEcran c, int mois) => paiCalculerTous(c.magasin.collection('personnel').actives, paiAnnee, mois, entreesPaie(c.magasin), c.aujourdhui);
+List<PaiCalcul> calculerTousPaie(ContexteEcran c, int mois) => paiCalculerTous(c.magasin.collection('personnel').actives, paiAnnee(c), mois, entreesPaie(c.magasin), c.aujourdhui);
+
+/// Le bandeau qui DIT qu'une activité de la paie est fermée (Paramètres système) : un brut sans primes ou une sanction nulle doivent s'expliquer.
+List<Widget> avisActivitesPaie(ContexteEcran c) {
+  final a = activitesPaie(c.magasin);
+  final fermees = [if (!a.primesNs132) paiBasculeNs132, if (!a.sanctionsNs131) paiBasculeNs131];
+  if (fermees.isEmpty) return const [];
+  return [
+    NoteSigh(
+        'Activité fermée dans Paramètres système : ${fermees.map((b) => '${b.libelle}. ${b.effet}').join(' ')} Les bulletins déjà enregistrés gardent leurs montants.',
+        ton: TonSigh.attention,
+        icone: LucideIcons.toggleLeft),
+    const SizedBox(height: 16),
+  ];
+}
 
 /// `avisSansSalaire()` : le bandeau (suivi d'un espace) qui nomme les agents exclus du calcul faute de salaire de base ; vide s'ils sont tous calculables.
 List<Widget> avisPaie(ContexteEcran c) {
@@ -55,7 +85,7 @@ List<Widget> avisPaie(ContexteEcran c) {
 String paiNum(num v) => v == v.truncate() ? '${v.truncate()}' : '$v';
 
 /// « octobre 2026 » : les cartouches de période de la maquette n'ont PAS de majuscule (`C.MOIS[m]` brut).
-String periodeBrute(int mois) => '${paiMois[mois]} $paiAnnee';
+String periodeBrute(ContexteEcran c, int mois) => '${paiMois[mois]} ${paiAnnee(c)}';
 
 /// « Octobre 2026 » : les options des sélecteurs de période (`C.MOIS` capitalisé + année).
 List<OptionChamp> optionsMoisCap(int annee) => [

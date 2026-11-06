@@ -40,7 +40,7 @@ class _EtatOrtb extends State<EcranOrtb> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_mois != null) return;
-    _mois = selecteurMois(ContexteEcran.of(context), 'Mois de paie', optionsMoisBrut(paiAnnee));
+    _mois = selecteurMois(ContexteEcran.of(context), 'Mois de paie', optionsMoisBrut(paiAnnee(ContexteEcran.of(context))));
     _mois!.addListener(_maj);
   }
 
@@ -58,7 +58,7 @@ class _EtatOrtb extends State<EcranOrtb> {
   int get _m => moisChoisi(_mois!);
 
   List<PaiLigneOrtbAgent> _lignes(ContexteEcran c) =>
-      paiLignesOrtbAgents(c.magasin.collection('personnel').actives, paiAnnee, _m, entreesPaie(c.magasin), c.aujourdhui);
+      paiLignesOrtbAgents(c.magasin.collection('personnel').actives, paiAnnee(c), _m, entreesPaie(c.magasin), c.aujourdhui);
 
   static Map<String, Object?> _ligne(PaiLigneOrtbAgent r) => {
         'id': r.id,
@@ -86,9 +86,9 @@ class _EtatOrtb extends State<EcranOrtb> {
         ctx,
         pieceM9(c,
             titre: 'État des redevances ORTB',
-            sousTitre: '${paiMois[_m]} $paiAnnee',
+            sousTitre: '${paiMois[_m]} ${paiAnnee(c)}',
             cartouche: [
-              ('Période', '${paiMois[_m]} $paiAnnee'),
+              ('Période', '${paiMois[_m]} ${paiAnnee(c)}'),
               ('Agents redevables', nombre(rows.length)),
               ('ORTB Radio', '${nombre(rows.where((r) => r.radio > 0).length)} agents — ${_mf(_radio.montant)} en ${_radio.moisLabel}'),
               ('ORTB Télé', '${nombre(rows.where((r) => r.tele > 0).length)} agents — ${_mf(_tele.montant)} en ${_tele.moisLabel}'),
@@ -109,7 +109,7 @@ class _EtatOrtb extends State<EcranOrtb> {
                 for (final r in rows) _ligne(r)
               ], libelleTotal: 'TOTAL')
             ],
-            signatures: const [signComptable, signDaf]));
+            signatures: [signComptable(c.magasin), signDaf(c.magasin)]));
   }
 
   @override
@@ -163,14 +163,14 @@ class _EtatOrtb extends State<EcranOrtb> {
           const SizedBox(height: 16),
           NoteSigh(
               'La radio et la télé sont deux redevances distinctes qui se cumulent : un salaire supérieur à ${_mf(paiSeuilTele)} n’est pas dispensé de la radio, il acquitte les deux. '
-              'Total dû sur l’exercice $paiAnnee : ${money(totalExercice)} — ${money(rows.length * _radio.montant)} en ${_radio.moisLabel} (radio) et '
+              'Total dû sur l’exercice ${paiAnnee(c)} : ${money(totalExercice)} — ${money(rows.length * _radio.montant)} en ${_radio.moisLabel} (radio) et '
               '${money(avecTele.length * _tele.montant)} en ${_tele.moisLabel} (télé).',
               ton: TonSigh.info,
               icone: LucideIcons.landmark),
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('ortb:$_m'),
-            titre: 'Redevances par agent — ${paiMois[_m]} $paiAnnee',
+            titre: 'Redevances par agent — ${paiMois[_m]} ${paiAnnee(c)}',
             lignes: lignes,
             nomExport: 'redevance-ortb',
             taillePage: 20,

@@ -322,9 +322,12 @@ class RhaLignePrime {
 ///
 /// Les primes sont celles du barème d'origine PLUS les primes créées à l'écran (E651), une prime retirée n'étant plus lue après sa date de fin, et un
 /// forfait désigné ne revenant qu'à ses bénéficiaires (E654) : [historique] (`historiquePrimes`), [designations] (`beneficiairesPrimes`), [agentId] et [date].
+///
+/// [primesNs132] (lu dans `modulesActifs` par `paiActivites`, PRD P0-5) : fermée, aucune prime de la note, comme au bulletin.
 List<RhaLignePrime> rhaPrimesAgent(Iterable<RhaFiche> grille, Object? fonction, int gardes, int permanences,
-    {Iterable<RhaFiche> historique = const [], Iterable<RhaFiche> designations = const [], Object? agentId, String? date}) {
+    {Iterable<RhaFiche> historique = const [], Iterable<RhaFiche> designations = const [], Object? agentId, String? date, bool primesNs132 = true}) {
   final l = <RhaLignePrime>[];
+  if (!primesNs132) return l;
   final g = grille.toList(), h = historique.toList(), d = designations.toList();
   for (final p in rhbPrimesALaDate(g, h)) {
     final montant = rhbMontantAgent(g, h, d, p.id, agentId, '$fonction', date);

@@ -128,7 +128,7 @@ class EcranBulletins extends StatelessWidget with EcranMaquette {
             }),
       ],
       filtres: [
-        FiltreTableau(nom: 'periode', libelle: 'Période', options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee, i))]),
+        FiltreTableau(nom: 'periode', libelle: 'Période', options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee(c), i))]),
         FiltreTableau(nom: 'service', libelle: 'Service', options: [for (final s in paiServices) OptionChamp(s)]),
         const FiltreTableau(nom: 'statutBulletin', libelle: 'Statut', options: [
           OptionChamp('a_valider', 'À valider'),

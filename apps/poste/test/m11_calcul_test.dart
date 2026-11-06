@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
+import 'package:sigh_poste/modules/m11/pai_commun.dart' show entreesPaie, activitesPaie;
 
 import 'aide_polices.dart';
 import 'm11_aide.dart';
@@ -373,6 +374,66 @@ void main() {
         }
       }
       expect(tt, contains('PRT-S1-A 2/3 ; PRT-S1-B 1/2'));
+    });
+  });
+
+  group('PRD P0-5 : les activités de Paramètres système pilotent le calcul', () {
+    M fermeture(PaiBascule b) => {'statut': 'actif', 'code': b.code, 'libelle': b.libelle, 'module': b.module, 'ecrans': b.ecrans, 'actif': false, 'motif': 'Essai'};
+    List<PaiCalcul> calculer(Magasin m, int mois) => paiCalculerTous(m.collection('personnel').actives, 2026, mois, entreesPaie(m), aujourdhui);
+
+    test('bascules ouvertes (jeu livré) : le calcul est celui d’avant, primes et sanctions comprises', () {
+      final m = magasin();
+      expect(activitesPaie(m), (primesNs132: true, sanctionsNs131: true));
+      final ouvert = calculer(m, 7);
+      final reference = paiCalculerTous(
+          m.collection('personnel').actives,
+          2026,
+          7,
+          PaiEntrees(
+              planning: m.collection('planning').actives,
+              evaluations: m.collection('evaluations').actives,
+              avances: m.collection('avances').actives,
+              participations: m.collection('participations').actives,
+              grille: m.collection('grillePrimes').actives,
+              historique: m.collection('historiquePrimes').actives,
+              heuresSup: m.collection('heuresSup').actives,
+              prets: m.collection('pretsEtudes').actives),
+          aujourdhui);
+      expect([for (final c in ouvert) c.net], [for (final c in reference) c.net]);
+      expect(paiSomme(ouvert, (c) => c.totalPrimes), greaterThan(0), reason: 'août porte des gardes et des forfaits');
+    });
+
+    test('primes NS 132 fermées : chaque brut = base + ancienneté + heures sup, aucune ligne de prime ; un bulletin enregistré ne bouge pas', () {
+      final m = magasin();
+      final avant = {for (final b in m.collection('bulletins').actives) '${b['id']}': '${b['brut']}|${b['totalPrimes']}|${b['net']}'};
+      m.collection('modulesActifs').inserer(fermeture(paiBasculeNs132), prefixe: 'MOD');
+      expect(activitesPaie(m).primesNs132, false);
+      final calc = calculer(m, 7);
+      expect(calc, isNotEmpty);
+      for (final c in calc) {
+        expect(c.totalPrimes, 0, reason: c.nomComplet);
+        expect(c.lignesPrimes, isEmpty);
+        expect(c.brut, c.salaireBase + c.primeAnciennete + c.heuresSupMontant, reason: c.nomComplet);
+      }
+      expect({for (final b in m.collection('bulletins').actives) '${b['id']}': '${b['brut']}|${b['totalPrimes']}|${b['net']}'}, avant,
+          reason: 'les bulletins enregistrés gardent leurs montants : ils ne sont jamais recalculés');
+    });
+
+    test('évaluations NS 131 fermées : aucune sanction, sur tous les mois', () {
+      final m = magasin();
+      final avecSanction = [for (var mo = 0; mo < 12; mo++) paiSomme(calculer(m, mo), (c) => c.sanction)];
+      expect(avecSanction.any((x) => x > 0), true, reason: 'le jeu porte des évaluations sanctionnées');
+      m.collection('modulesActifs').inserer(fermeture(paiBasculeNs131), prefixe: 'MOD');
+      for (var mo = 0; mo < 12; mo++) {
+        expect(calculer(m, mo).every((c) => c.sanction == 0 && c.brutApresSanction == c.brut), true, reason: 'mois $mo');
+      }
+    });
+
+    cas('l’écran de calcul DIT qu’une activité est fermée', (t) async {
+      final m = magasin();
+      m.collection('modulesActifs').inserer(fermeture(paiBasculeNs132), prefixe: 'MOD');
+      await ouvrir(t, m, 'm11-calcul');
+      expect(find.textContaining('Activité fermée dans Paramètres système : Primes (NS 132).'), findsOneWidget);
     });
   });
 }

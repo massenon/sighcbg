@@ -114,7 +114,11 @@ void main() {
       expect(find.text('PRIME D’ANCIENNETÉ'), findsOneWidget);
       expect(find.text(money(72000, avecDevise: false)), findsOneWidget);
       expect(find.text('L’Évaluateur'), findsOneWidget);
-      expect(find.text('TAKI Alimatou épse BASSONGUI'), findsOneWidget);
+      // La signataire est LUE au personnel (le poste de la direction administrative), jamais écrite dans le code.
+      expect(find.text('La Directrice Administrative'), findsOneWidget);
+      final daf = paiSignataire(magasinRhb().collection('personnel').actives, PaiQualite.daf);
+      expect(daf, isNotNull);
+      expect(find.text(daf!), findsWidgets);
     });
 
     casM14('consulter une évaluation : le tiroir donne le détail par critère', (t) async {

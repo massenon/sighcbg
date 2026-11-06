@@ -35,7 +35,7 @@ class _EtatCotisations extends State<EcranCotisations> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_mois != null) return;
-    _mois = selecteurMois(ContexteEcran.of(context), 'Période', optionsMoisCap(paiAnnee));
+    _mois = selecteurMois(ContexteEcran.of(context), 'Période', optionsMoisCap(paiAnnee(ContexteEcran.of(context))));
     _mois!.addListener(_maj);
   }
 
@@ -111,9 +111,9 @@ class _EtatCotisations extends State<EcranCotisations> {
         ctx,
         pieceM9(c,
             titre: titre,
-            sousTitre: periodeBrute(_m),
+            sousTitre: periodeBrute(c, _m),
             cartouche: [
-              ('Période', periodeBrute(_m)),
+              ('Période', periodeBrute(c, _m)),
               ('Effectif', nombre(calc.length)),
               ('Masse salariale', paiMontant(calc, (x) => x.brut)),
               ('Montant à verser', money(total)),
@@ -121,7 +121,7 @@ class _EtatCotisations extends State<EcranCotisations> {
               ('Date d’édition', dateFR(c.aujourdhui)),
             ],
             tableaux: [TableauEtat(colonnes: colonnes, lignes: [for (final x in calc) ligneCalcul(x)])],
-            signatures: const [signComptable, signDaf]));
+            signatures: [signComptable(c.magasin), signDaf(c.magasin)]));
   }
 
   @override
@@ -164,7 +164,7 @@ class _EtatCotisations extends State<EcranCotisations> {
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('cotisations:$_m'),
-            titre: 'Détail des cotisations — ${paiMois[_m]} $paiAnnee',
+            titre: 'Détail des cotisations — ${paiMois[_m]} ${paiAnnee(c)}',
             lignes: lignes,
             nomExport: 'cotisations',
             taillePage: 20,

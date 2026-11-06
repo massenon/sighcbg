@@ -692,13 +692,19 @@ RhbSolde rhbSolde(
     required num montantGarde,
     required num montantPermanence,
     required num montantAccueil,
-    required int ans}) {
-  final pg = montantGarde * gardes;
-  final pp = montantPermanence * permanences;
+    required int ans,
+    bool primesNs132 = true,
+    bool sanctionsNs131 = true}) {
+  // Les deux activités de Paramètres système (PRD P0-5), comme au bulletin : primes NS 132 fermées, garde, permanence et accueil valent zéro ;
+  // évaluations NS 131 fermées, le prélèvement vaut zéro.
+  final pg = primesNs132 ? montantGarde * gardes : 0;
+  final pp = primesNs132 ? montantPermanence * permanences : 0;
+  final pa = primesNs132 ? montantAccueil : 0;
   final sb = nombreOuZero(salaireBrut);
-  final brut = sb + pg + pp + montantAccueil;
+  final brut = sb + pg + pp + pa;
   final anc = ans >= 2 ? arrondiJs(sb * 0.02 * ans).toInt() : 0;
-  return RhbSolde(pg, pp, montantAccueil, anc, brut, arrondiJs(brut * nombreOuZero(prelevementPct) / 100).toInt());
+  final pct = sanctionsNs131 ? nombreOuZero(prelevementPct) : 0;
+  return RhbSolde(pg, pp, pa, anc, brut, arrondiJs(brut * pct / 100).toInt());
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

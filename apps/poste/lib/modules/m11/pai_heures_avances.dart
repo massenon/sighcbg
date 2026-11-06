@@ -87,12 +87,12 @@ class EcranHeuresSup extends StatelessWidget with EcranMaquette {
             rendu: (_, h) => h['valide'] == true ? const BadgeSigh('Validée', ton: TonSigh.succes) : const BadgeSigh('En attente', ton: TonSigh.attention)),
       ],
       filtres: [
-        FiltreTableau(nom: 'periode', libelle: 'Période', options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee, i))]),
+        FiltreTableau(nom: 'periode', libelle: 'Période', options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee(c), i))]),
         FiltreTableau(nom: 'service', libelle: 'Service', options: [for (final s in paiServices) OptionChamp(s)]),
       ],
       champs: (mag) => [
         ChampDef(nom: 'employeId', libelle: 'Agent', type: TypeChamp.select, requis: true, col: ColChamp.plein, options: _optionsAgents(mag)),
-        ChampDef(nom: 'periode', libelle: 'Période', type: TypeChamp.select, requis: true, options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee, i))]),
+        ChampDef(nom: 'periode', libelle: 'Période', type: TypeChamp.select, requis: true, options: [for (var i = 0; i < 12; i++) OptionChamp(paiPeriodeLibelle(paiAnnee(c), i))]),
         const ChampDef(nom: 'heures', libelle: 'Nombre d’heures', type: TypeChamp.nombre, requis: true),
         const ChampDef(nom: 'majoration', libelle: 'Majoration (%)', type: TypeChamp.nombre),
         ChampDef(nom: 'motif', libelle: 'Motif', type: TypeChamp.select, requis: true, options: [for (final x in _motifsHs) OptionChamp(x)]),
@@ -154,7 +154,7 @@ class EcranAvances extends StatelessWidget with EcranMaquette {
               ])),
               BlocTexte('Le remboursement s’effectue par retenue automatique sur le bulletin de paie, à raison de ${money(a['mensualite'])} par mois, jusqu’à apurement complet.', italique: true),
             ],
-            signatures: [Signature('L’Agent', nom: '${a['employe']}', mention: 'Lu et approuvé'), signComptable, signDaf]));
+            signatures: [Signature('L’Agent', nom: '${a['employe']}', mention: 'Lu et approuvé'), signComptable(c.magasin), signDaf(c.magasin)]));
   }
 
   @override

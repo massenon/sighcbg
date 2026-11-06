@@ -430,8 +430,8 @@ class _Grille extends StatelessWidget {
               ('Statut', rhbNs132Statut),
             ],
             blocs: [
-              const BlocTexte(
-                  'Le Directeur Médical de la Clinique NASSIERA TOO informe le personnel que les diverses primes attribuées se présentent comme ci-après. Cette note de service, qui abroge toute disposition antérieure contraire, sera appliquée à compter de sa date de signature.'),
+              BlocTexte(
+                  'Le Directeur Médical de la ${IdentiteClinique.nomCourt} informe le personnel que les diverses primes attribuées se présentent comme ci-après. Cette note de service, qui abroge toute disposition antérieure contraire, sera appliquée à compter de sa date de signature.'),
               BlocTableau(TableauEtat(colonnes: [
                 ColonneEtat(libelle: 'PRIMES DIVERSES', valeur: (p) => p['label']),
                 for (final f in rhbColonnesPrimes)
@@ -546,6 +546,6 @@ class _Acquises extends StatelessWidget {
                   }
               ])
             ],
-            signatures: const [Signature('Le Responsable RH'), rhbSignDaf, rhbSignDm]));
+            signatures: [const Signature('Le Responsable RH'), rhbNomme(c, rhbSignDaf, PaiQualite.daf), rhbNomme(c, rhbSignDm, PaiQualite.direction)]));
   }
 }
