@@ -125,7 +125,7 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
       BlocTexte(fn.codeDgi, gras: true),
       BlocTexte('MECeF NIM : ${fn.nim}'),
       BlocTexte('MECeF Compteurs : ${fn.compteurs}'),
-      const BlocTexte(
+      BlocTexte(
           'IFU émetteur : ${IdentiteClinique.ifu} — RCCM : ${IdentiteClinique.rccm}'),
       const BlocTexte(
           'Facture normalisée émise conformément au dispositif de facturation électronique en vigueur en République du Bénin. Toute facture non revêtue du code MECeF/DGI et du code à barres de vérification est réputée non conforme.',

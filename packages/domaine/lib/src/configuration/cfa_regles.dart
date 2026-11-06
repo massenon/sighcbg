@@ -53,12 +53,16 @@ class CfaNs145 {
   static const source = 'DOC — Note de service NS 145/08/DA/CNT/2026';
 }
 
-/// `C.BRAND` — ce que l'écran d'identité affiche en plus de `IdentiteClinique` (arbitrage du 31/08/2026 : UNE identité légale).
+/// `C.BRAND` : ce que l'écran d'identité affiche en plus de `IdentiteClinique` (UNE identité légale). Forme juridique et adresse VIVENT dans
+/// `IdentiteClinique` (surchargeables depuis cfg-branding) : les relire ici évite une seconde vérité.
 class CfaIdentite {
   const CfaIdentite._();
-  static const forme = 'Société à Responsabilité Limitée';
-  static const adresse = 'Quartier Tchirimina, Natitingou';
-  static const telephoneRdv = '60 33 92 92';
+  static String get forme => IdentiteClinique.forme;
+  static String get adresse => IdentiteClinique.adresse;
+
+  /// La ligne des rendez-vous citée par les messages de rappel : aucune ligne dédiée n'est connue pour la clinique, c'est donc le premier téléphone
+  /// de l'en-tête (vide si aucun).
+  static String get telephoneRdv => IdentiteClinique.telephones.isEmpty ? '' : IdentiteClinique.telephones.first;
   static const autorisationExerciceMotif =
       'Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.';
   static const logo = 'assets/img/logo.jpeg';
@@ -362,8 +366,8 @@ String cfaCouverture(CfaFiche r) {
 // cfg-entetes, cfg-types-piece
 // =============================================================================================================================================
 
-/// Numérotation d'une pièce certifiante : « <SIGLE> n°/n°/CNT/<direction>/<année> ».
-String cfaNumerotationPiece(CfaFiche t, int annee) => '${t['sigle']} n°/n°/CNT/${t['direction']}/$annee';
+/// Numérotation d'une pièce certifiante : « <SIGLE> n°/n°/CBG/<direction>/<année> » (le sigle de la clinique, lu de l'identité).
+String cfaNumerotationPiece(CfaFiche t, int annee) => '${t['sigle']} n°/n°/${IdentiteClinique.sigle}/${t['direction']}/$annee';
 
 List<CfaKpi> cfaKpisTypesPiece({required int types, required int tarifes, required int collisions, required int delivrees}) => [
       CfaKpi('Types de pièces', nombre(types), 'stamp', 'navy'),
@@ -397,7 +401,7 @@ const cfaVariablesMessage = <(String, String)>[
 
 /// Les modèles proposés à l'amorçage, à valider par la Direction : (occasion, intitulé, texte).
 const cfaModelesProposes = <(String, String, String)>[
-  ('anniversaire', 'Anniversaire', 'Bonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre santé, notre raison de vivre.'),
+  ('anniversaire', 'Anniversaire', 'Bonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être.'),
   ('nouvel_an', 'Vœux de nouvel an', 'Bonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille.'),
   ('fete', 'Vœux de fête', 'Bonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.'),
   ('rdv', 'Rappel de rendez-vous', 'Bonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.'),
@@ -629,52 +633,66 @@ List<CfaKpi> cfaKpisImagerie({required int examens, required int variables, requ
 // cfg-entetes, cfg-branding : l'identité légale UNIQUE (arbitrage du 31/08/2026)
 // =============================================================================================================================================
 
-/// Les quatre indicateurs de l'écran des en-têtes : UN IFU, UN RCCM, UNE autorisation imprimés, sur tous les états.
+/// Ce que l'écran affiche à la place d'une mention que la Direction n'a pas encore renseignée (l'écran le DIT ; la pièce imprimée, elle, n'imprime rien).
+const cfaMentionARenseigner = 'À renseigner par la Direction (non imprimée tant qu’elle est vide)';
+
+String _ouARenseigner(String v) => v.isEmpty ? cfaMentionARenseigner : v;
+
+/// Les quatre indicateurs de l'écran des en-têtes : UN IFU, UN RCCM, UNE autorisation imprimés, sur tous les états. Une mention vide se compte 0.
 List<CfaKpi> cfaKpisEntetes() => [
-      CfaKpi('IFU imprimé', '1', 'hash', 'success', IdentiteClinique.ifu),
-      CfaKpi('RCCM imprimé', '1', 'scale', 'success', IdentiteClinique.rccm),
-      const CfaKpi('Autorisation d’ouverture', '1', 'stamp', 'success'),
+      CfaKpi('IFU imprimé', IdentiteClinique.ifu.isEmpty ? '0' : '1', 'hash', IdentiteClinique.ifu.isEmpty ? 'warning' : 'success',
+          IdentiteClinique.ifu.isEmpty ? null : IdentiteClinique.ifu),
+      CfaKpi('RCCM imprimé', IdentiteClinique.rccm.isEmpty ? '0' : '1', 'scale', IdentiteClinique.rccm.isEmpty ? 'warning' : 'success',
+          IdentiteClinique.rccm.isEmpty ? null : IdentiteClinique.rccm),
+      IdentiteClinique.autorisation.isEmpty
+          ? const CfaKpi('Autorisation d’ouverture', '0', 'stamp', 'warning', 'À renseigner')
+          : const CfaKpi('Autorisation d’ouverture', '1', 'stamp', 'success'),
       const CfaKpi('États alimentés', 'Tous', 'printer', 'navy'),
     ];
 
-/// La grille « Identité légale imprimée sur chaque état ».
+/// La grille « Identité légale imprimée sur chaque état ». Une mention vide le dit plutôt que de laisser une case muette.
 List<(String, String)> cfaGrilleIdentite() => [
-      ('Dénomination', '${IdentiteClinique.nom} — ${CfaIdentite.forme}'),
+      ('Dénomination', [IdentiteClinique.nom, if (CfaIdentite.forme.isNotEmpty) CfaIdentite.forme].join(' — ')),
+      ('Forme juridique', _ouARenseigner(CfaIdentite.forme)),
       ('Devise de l’établissement', IdentiteClinique.slogan),
-      ('Adresse', '${CfaIdentite.adresse} · ${IdentiteClinique.bp}'),
+      ('Adresse', [CfaIdentite.adresse, IdentiteClinique.bp].where((x) => x.isNotEmpty).join(' · ')),
       ('Téléphones', IdentiteClinique.telephones.join(' / ')),
       ('Ligne rendez-vous', CfaIdentite.telephoneRdv),
       ('Courriel', IdentiteClinique.email),
       ('IFU', IdentiteClinique.ifu),
       ('RCCM', IdentiteClinique.rccm),
-      ('Autorisation d’ouverture', IdentiteClinique.autorisation),
+      ('Autorisation d’ouverture', _ouARenseigner(IdentiteClinique.autorisation)),
+      ('Formule de politesse des factures', _ouARenseigner(IdentiteClinique.formulePolitesse)),
       ('Autorisation d’exercice', 'Non imprimée — ${CfaIdentite.autorisationExerciceMotif}'),
     ];
 
 const cfaNoteAnciennesPieces =
     'Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux.';
 
-/// Les valeurs initiales du formulaire d'identité : ce que la maquette lit dans `C.BRAND`.
-Map<String, Object?> cfaValeursIdentite() => {
+/// Les valeurs du formulaire d'identité : l'identité EN VIGUEUR (initiale, ou celle que la Direction a enregistrée). Les mentions inconnues restent
+/// VIDES (forme juridique, autorisation d'ouverture, formule de politesse) : la Direction les remplit, et la pièce les reprend.
+Map<String, Object?> cfaValeursIdentite({Map<String, Object?>? options}) => {
       'nom': IdentiteClinique.nom,
+      'nomCourt': IdentiteClinique.nomCourt,
       'sigle': IdentiteClinique.sigle,
-      'forme': CfaIdentite.forme,
+      'forme': IdentiteClinique.forme,
       'slogan': IdentiteClinique.slogan,
-      'adresse': CfaIdentite.adresse,
+      'adresse': IdentiteClinique.adresse,
       'bp': IdentiteClinique.bp,
       'telephones': IdentiteClinique.telephones.join(' / '),
       'email': IdentiteClinique.email,
       'ifu': IdentiteClinique.ifu,
       'rccm': IdentiteClinique.rccm,
       'autorisation': IdentiteClinique.autorisation,
-      'doubleLogo': true,
-      'piedPage': true,
-      'filigrane': '',
+      'formulePolitesse': IdentiteClinique.formulePolitesse,
+      'doubleLogo': options?['doubleLogo'] ?? true,
+      'piedPage': options?['piedPage'] ?? true,
+      'filigrane': options?['filigrane'] ?? '',
     };
 
 /// Le pied du papier à en-tête, tel que l'aperçu le montre.
 String cfaPiedApercu(String utilisateur, DateTime quand) =>
-    '${IdentiteClinique.nom} — ${IdentiteClinique.rccm} — IFU ${IdentiteClinique.ifu} · Document généré par $utilisateur le ${dateHeure(quand)} · Réf. CNT-XXXXXXXX-0001';
+    '${IdentiteClinique.piedLegal} · Document généré par $utilisateur le ${dateHeure(quand)} · Réf. ${IdentiteClinique.sigle}-XXXXXXXX-0001';
 
 /// Le message de la bascule d'une variable : l'état se lit AVANT l'écriture (écart E845, corrigé dans la maquette).
 ({String message, String? detail}) cfaMessageBascule({required bool etaitFermee}) => etaitFermee

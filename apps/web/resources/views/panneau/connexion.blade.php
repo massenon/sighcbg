@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>Connexion — Relais SIGH-CNT</title>
+    <title>Connexion — Relais SIGH-CBG</title>
     <link rel="stylesheet" href="{{ asset('css/panneau.css') }}">
 </head>
 <body>
 <form class="formulaire carte" method="post" action="{{ route('panneau.connexion.envoi') }}">
     @csrf
-    <h1>Relais SIGH-CNT</h1>
+    <h1>Relais SIGH-CBG</h1>
     <p class="sous-titre">Accès réservé à l'administrateur système.</p>
     <label for="courriel">Courriel</label>
     <input id="courriel" name="courriel" type="email" value="{{ old('courriel') }}" autocomplete="username" required autofocus>

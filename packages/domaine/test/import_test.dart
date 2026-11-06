@@ -74,6 +74,7 @@ Map<String, Object?> _net(Map<String, Object?> f, Map<Object?, String> idVersCod
 }
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final V = lireVecteurs('import');
   final magasinInitial = (V['magasin'] as Map).cast<String, Object?>();
 

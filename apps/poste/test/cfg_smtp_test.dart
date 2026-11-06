@@ -97,14 +97,14 @@ void main() {
     await ouvrirM14(t, magasinM14(), 'cfg-smtp');
     String v(String champ) => t.widget<TextField>(find.descendant(of: find.byKey(Key('kit:champ:$champ')), matching: find.byType(TextField))).controller!.text;
     expect({for (final k in ['serveur', 'port', 'delai', 'identifiant', 'expediteur', 'nom', 'repondreA', 'repondreNom', 'motDePasse']) k: v(k)}, {
-      'serveur': 'mail.sigh.nassieratoo.com',
+      'serveur': '',
       'port': '587',
       'delai': '20',
-      'identifiant': 'contact@sigh.nassieratoo.com',
-      'expediteur': 'contact@sigh.nassieratoo.com',
-      'nom': 'Clinique Nassièra Too',
-      'repondreA': 'cliniquenassiera@gmail.com',
-      'repondreNom': 'Clinique Nassièra Too',
+      'identifiant': '',
+      'expediteur': '',
+      'nom': 'Clinique Baguidi',
+      'repondreA': 'cliniquebaguidi@yahoo.fr',
+      'repondreNom': 'Clinique Baguidi',
       'motDePasse': '',
     });
     expect(find.text('Non configurée'), findsOneWidget);
@@ -136,7 +136,7 @@ void main() {
     expect(m['a'], ['dg@clinique.bj']);
     expect((m['entetes']! as Map)['subject'], 'SIGH-CNT : test de la messagerie');
     expect(m['corps'], contains('é è à ç ô, symbole €'));
-    expect((m['entetes']! as Map)['reply-to'], 'Clinique Nassièra Too <cliniquenassiera@gmail.com>', reason: 'En-tête Reply-To proposé par défaut, reçu par le puits');
+    expect((m['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>', reason: 'En-tête Reply-To proposé par défaut, reçu par le puits');
     final c = (m['commandes']! as List).cast<String>();
     expect(c.indexOf('AUTH PLAIN ok'), greaterThan(c.indexOf('STARTTLS')));
     expect(ConfigSmtpPoste.lireBrut(d.path)['testeOk'], true, reason: 'le dernier test réussi est retenu');
@@ -215,7 +215,7 @@ void main() {
     // avec une messagerie configurée ET testée
     final p = (await t.runAsync(demarrer))!;
     addTearDown(p.fermer);
-    ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Nassiera Too', repondreA: 'cliniquenassiera@gmail.com', repondreNom: 'Clinique Nassièra Too', verifierCertificat: false);
+    ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Baguidi', repondreA: 'cliniquebaguidi@yahoo.fr', repondreNom: 'Clinique Baguidi', verifierCertificat: false);
     ConfigSmtpPoste.noterTest(d.path, ok: true);
     ToastsSigh.viderPourTests();
     await ouvrirM14(t, m, 'contact-editeur');
@@ -233,7 +233,7 @@ void main() {
     expect((msg['entetes']! as Map)['subject'], '[SIGH-CNT] Question sur la comptabilité');
     expect(msg['corps'], contains('où règle-t-on le plan ? Merci é à ç.'));
     expect(msg['corps'], contains('Référence : SUP-'));
-    expect((msg['entetes']! as Map)['reply-to'], 'Clinique Nassièra Too <cliniquenassiera@gmail.com>');
+    expect((msg['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>');
     await attendre(t, () => courrielDe(m, 'Question sur la comptabilité') == 'envoye');
     await t.pump(const Duration(milliseconds: 300));
     expect(courrielDe(m, 'Question sur la comptabilité'), 'envoye');

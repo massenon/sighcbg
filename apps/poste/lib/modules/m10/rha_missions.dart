@@ -129,7 +129,7 @@ class EcranMissions extends StatelessWidget with EcranMaquette {
                             'statutMission': 'a_valider',
                             'dateDepart': iso(c.aujourdhui),
                             'dateRetour': iso(c.aujourdhui.add(const Duration(days: 2))),
-                            'structurePrise': 'CLINIQUE NASSIERA TOO SARL',
+                            'structurePrise': IdentiteClinique.nom,
                           },
                           fiche: (v, ex) => matSansNuls(ex == null ? rhaMissionEnregistrable({...v}, rhaAgentPar(c.magasin, v['agentId']), toutes: col.toutes) : {...v}),
                           detailToast: (f) => '${f['libelle'] ?? ''}')),
@@ -206,7 +206,7 @@ class EcranMissions extends StatelessWidget with EcranMaquette {
         ],
         blocs: [
           BlocTexte(
-              'La Directrice Administrative de la Clinique NASSIERA TOO donne ordre à ${m['agent']}, $fonction, de se rendre à ${m['destination']} du ${rhaDateFR(m['dateDepart'])} au ${rhaDateFR(m['dateRetour'])}, à l’effet de : ${m['objet']}.'),
+              'La Directrice Administrative de la ${IdentiteClinique.nomCourt} donne ordre à ${m['agent']}, $fonction, de se rendre à ${m['destination']} du ${rhaDateFR(m['dateDepart'])} au ${rhaDateFR(m['dateRetour'])}, à l’effet de : ${m['objet']}.'),
           BlocTexte('Les frais afférents à cette mission sont pris en charge par ${m['structurePrise']}.'),
           if (rhaVrai(m['observation'])) BlocTexte('Observation : ${m['observation']}'),
           BlocTableau(TableauEtat(colonnes: [

@@ -52,7 +52,7 @@ void main() {
       await ouvrirM14(t, m, 'cfg-types-piece');
       await chercher(t, 'Certificat médical d’aptitude');
       await toucherM14(t, find.byTooltip('Consulter').first);
-      expect(find.text('CMA n°/n°/CNT/DG/DE/2026'), findsOneWidget);
+      expect(find.text('CMA n°/n°/CBG/DG/DE/2026'), findsOneWidget);
       expect(find.text('SOS seule'), findsOneWidget);
       expect(find.textContaining('Le sigle est conservé tel quel'), findsOneWidget);
     });

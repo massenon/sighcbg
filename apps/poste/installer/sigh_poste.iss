@@ -1,20 +1,20 @@
 ; =============================================================================
-;  SIGH-CNT Poste : installateur Windows (Inno Setup 6)
+;  SIGH-CBG Poste : installateur Windows (Inno Setup 6), Clinique Baguidi
 ;
 ;  Compile par build_windows.bat, qui passe la version lue dans pubspec.yaml :
 ;      ISCC.exe /DAppVersion=0.1.0 installer\sigh_poste.iss
 ;  Produit : build\installer\SIGH_Poste_Setup_<version>.exe
 ;
 ;  Installe TOUT le dossier de sortie de `flutter build windows --release`
-;  (build\windows\x64\runner\Release\) dans {autopf}\SIGH-CNT. Droits
+;  (build\windows\x64\runner\Release\) dans {autopf}\SIGH-CBG. Droits
 ;  administrateur (decision de la Direction, 05/11/2026, Q3).
 ;
 ;  Les DONNEES ne sont JAMAIS dans le dossier d'installation :
-;    %LOCALAPPDATA%\SIGHCNT\donnees  (base, magasin, cle de chiffrement, sauvegardes de la mere)
+;    %LOCALAPPDATA%\SIGHCBG\donnees  (base, magasin, cle de chiffrement, sauvegardes de la mere)
 ;  (lib/core/dossier_donnees.dart). Une MISE A JOUR (meme AppId) n'y touche jamais.
 ;
 ;  DESINSTALLATION (decision de la Direction, 05/11/2026, Q1) :
-;    1. une sauvegarde est proposee d'abord (Documents\SIGH-CNT-Sauvegarde-AAAA-MM-JJ_HHMM,
+;    1. une sauvegarde est proposee d'abord (Documents\SIGH-CBG-Sauvegarde-AAAA-MM-JJ_HHMM,
 ;       jamais supprimee par le desinstallateur) ;
 ;    2. un avertissement Oui / Non, « Non » par defaut ; Non ANNULE la desinstallation ;
 ;    3. les donnees ne sont supprimees que sur « Oui » ;
@@ -26,8 +26,8 @@
   #define AppVersion "0.1.0"
 #endif
 
-#define AppName "SIGH-CNT Poste"
-#define AppPublisher "Clinique Nassiera Too"
+#define AppName "SIGH-CBG Poste"
+#define AppPublisher "Clinique Baguidi L'As de Coeur"
 #define AppExeName "sigh_poste.exe"
 #define SetupBaseName "SIGH_Poste_Setup"
 #define SourceDir AddBackslash(SourcePath) + "..\build\windows\x64\runner\Release"
@@ -40,7 +40,9 @@
 [Setup]
 ; Identifiant FIXE de l'application : NE JAMAIS LE CHANGER. C'est lui qui fait
 ; qu'une nouvelle version REMPLACE l'ancienne au lieu de s'installer a cote.
-AppId={{9765A5AC-1B97-4E82-A6EA-207654C34C64}
+; Celui de SIGH-CBG est PROPRE a la Clinique Baguidi (06/11/2026, PRD P0-7) et
+; differe de celui de SIGH-CNT : les deux logiciels cohabitent sur une machine.
+AppId={{8DE5823E-F0D2-40FD-A337-280D6E5BF4D5}
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
@@ -48,8 +50,8 @@ AppPublisher={#AppPublisher}
 VersionInfoVersion={#AppVersion}
 VersionInfoCompany={#AppPublisher}
 VersionInfoProductName={#AppName}
-DefaultDirName={autopf}\SIGH-CNT
-DefaultGroupName=SIGH-CNT
+DefaultDirName={autopf}\SIGH-CBG
+DefaultGroupName=SIGH-CBG
 DisableProgramGroupPage=yes
 OutputDir=..\build\installer
 OutputBaseFilename={#SetupBaseName}_{#AppVersion}
@@ -88,7 +90,7 @@ Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#AppName}}"; F
 
 [UninstallDelete]
 ; Seulement si l'utilisateur a repondu Oui a l'avertissement (SupprimerLesDonnees, pose par InitializeUninstall).
-Type: filesandordirs; Name: "{localappdata}\SIGHCNT"; Check: SupprimerLesDonnees
+Type: filesandordirs; Name: "{localappdata}\SIGHCBG"; Check: SupprimerLesDonnees
 
 [Code]
 var
@@ -120,9 +122,9 @@ var
   Code: Integer;
 begin
   Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM {#AppExeName}', '', SW_HIDE, ewWaitUntilTerminated, Code);
-  Dossier := ExpandConstant('{userdocs}\SIGH-CNT-Sauvegarde-') + GetDateTimeString('yyyy/mm/dd_hhnn', '-', #0);
+  Dossier := ExpandConstant('{userdocs}\SIGH-CBG-Sauvegarde-') + GetDateTimeString('yyyy/mm/dd_hhnn', '-', #0);
   Result := ForceDirectories(Dossier)
-    and CopierDossier(ExpandConstant('{localappdata}\SIGHCNT'), Dossier + '\donnees-du-poste');
+    and CopierDossier(ExpandConstant('{localappdata}\SIGHCBG'), Dossier + '\donnees-du-poste');
 end;
 
 // Sauvegarde proposee (Oui par defaut), puis avertissement Oui / Non (Non par defaut). Non ANNULE la desinstallation.
@@ -138,7 +140,7 @@ begin
 
   if MsgBox(
     'Voulez-vous faire une SAUVEGARDE de ce poste avant de continuer ?' + #13#10 + #13#10 +
-    'Elle sera enregistree dans votre dossier Documents (SIGH-CNT-Sauvegarde-...) et ne sera pas supprimee.',
+    'Elle sera enregistree dans votre dossier Documents (SIGH-CBG-Sauvegarde-...) et ne sera pas supprimee.',
     mbConfirmation, MB_YESNO or MB_DEFBUTTON1) = IDYES then
   begin
     if SauvegarderAvantSuppression(Dossier) then

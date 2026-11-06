@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 
 import '../moteur/moteur_mobile.dart';
 
@@ -45,7 +46,7 @@ class _EcranAppairageState extends State<EcranAppairage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('SIGH-CNT, appairage')),
+      appBar: AppBar(title: Text('${IdentiteClinique.logiciel}, appairage')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
         const Text('Demandez un code à la mère (DAF / administrateur) : il ne sert qu’une fois. Le profil du téléphone et la fonction du soignant sont fixés par ce code : ils ne se choisissent pas ici.'),
         const SizedBox(height: 12),

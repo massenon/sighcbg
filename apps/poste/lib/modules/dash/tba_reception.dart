@@ -42,7 +42,7 @@ class EcranDashReception extends StatelessWidget with EcranMaquette {
               ('m2-file-attente', 'list-ordered', 'File d’attente', null),
               ('m2-affichage', 'monitor', 'Écran d’appel des patients', null),
             ]),
-            tbaCarte('Ce que vous faites ici — les parcours de l’accueil', const ParcoursSigh(_parcours)),
+            tbaCarte('Ce que vous faites ici — les parcours de l’accueil', ParcoursSigh(_parcours)),
           ],
           kpis: d.kpis,
           sections: [
@@ -67,10 +67,11 @@ class EcranDashReception extends StatelessWidget with EcranMaquette {
   }
 }
 
-const _parcours = [
+/// Les parcours de l'accueil. Une liste CALCULÉE : l'étape de création du dossier cite le sigle de la clinique en vigueur.
+List<ParcoursTba> get _parcours => [
   ParcoursTba('Nouveau patient', 'user-plus', 'Ouvrir un dossier', 'Le patient n’a jamais été reçu à la clinique.', [
     EtapeTba('Créer le dossier patient',
-        ecran: 'm1-patients', detail: 'Code CNT/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite.'),
+        ecran: 'm1-patients', detail: 'Code ${IdentiteClinique.sigle}/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite.'),
     EtapeTba('Relever les constantes',
         ecran: 'm1-constantes', detail: 'Température, TA, pouls, SpO₂, poids, taille. Elles alimentent la feuille de surveillance.'),
     EtapeTba('Inscrire à la file d’attente', ecran: 'm2-file-attente'),

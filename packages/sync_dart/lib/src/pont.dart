@@ -320,7 +320,7 @@ class Pont {
               }
             }
             final nums = (await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'"))
-                .map((r) => int.tryParse(RegExp(r'^CNT/(\d+)/26$').firstMatch('${r['c'] ?? ''}')?.group(1) ?? '') ?? 0)
+                .map((r) => int.tryParse(RegExp(r'^[A-Z]{2,6}/(\d+)/26$').firstMatch('${r['c'] ?? ''}')?.group(1) ?? '') ?? 0)
                 .toList();
             final plusGrand = nums.fold<int>(1000, (a, b) => a > b ? a : b);
             await base.poserMeta('next_patient', plusGrand + 1);

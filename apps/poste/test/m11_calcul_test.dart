@@ -246,7 +246,8 @@ void main() {
       for (final c in lm([for (final x in piece['cartouche'] as List) {'c': x}])) {
         final cel = c['c'] as List;
         if (cel[0] == 'Date d’édition') continue;
-        expect(tt, contains(sp('${cel[0]} : ${cel[1]}')), reason: 'cartouche ${cel[0]}');
+        // L'IFU de l'employeur est celui de la clinique en vigueur, non celui de la maquette.
+        expect(tt, contains(sp('${cel[0]} : ${cel[0] == 'IFU employeur' ? IdentiteClinique.ifu : cel[1]}')), reason: 'cartouche ${cel[0]}');
       }
       expect(tt, contains('Montant à verser : 114 000 FCFA'));
       expect(tt.where((x) => x == 'TOTAL'), isEmpty, reason: 'l’état de cotisations ne porte pas de pied de total (comme la maquette)');
@@ -262,7 +263,7 @@ void main() {
       expect(tt, contains('Part patronale (16.4 %)'));
       expect(tt, contains('État des cotisations CNSS'));
       expect(tt, contains(sp('Montant à verser : ${((piece['cartouche'] as List)[3] as List)[1]}')));
-      expect(tt, contains('IFU employeur : 3201642748214'));
+      expect(tt, contains('IFU employeur : ${IdentiteClinique.ifu}'));
     });
   });
 

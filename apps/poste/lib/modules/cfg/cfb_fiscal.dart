@@ -44,10 +44,10 @@ class EcranFiscalite extends StatelessWidget with EcranMaquette {
           actions: [cfbLien(c, cfbEcranMecefConfig, 'Configuration MECeF')],
           child: DescListeSigh([
             ('Dénomination sociale', IdentiteClinique.nom),
-            ('Forme juridique', CfaIdentite.forme),
+            ('Forme juridique', CfaIdentite.forme.isEmpty ? cfaMentionARenseigner : CfaIdentite.forme),
             ('IFU', Text(IdentiteClinique.ifu, style: const TextStyle(fontFamily: _mono, fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w600, color: JetonsShell.navy900))),
             ('RCCM', Text(IdentiteClinique.rccm, style: const TextStyle(fontFamily: _mono, fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w600, color: JetonsShell.navy900))),
-            ('Autorisation d’ouverture', IdentiteClinique.autorisation),
+            ('Autorisation d’ouverture', IdentiteClinique.autorisation.isEmpty ? cfaMentionARenseigner : IdentiteClinique.autorisation),
             ('Adresse fiscale', IdentiteClinique.bp),
             ('Devise', 'FCFA (XOF)'),
             ('Régime de TVA', 'Taux normal 18 %'),

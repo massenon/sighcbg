@@ -27,4 +27,4 @@ Le relais tourne sur PostgreSQL, comme en production : un essai local sur SQLite
 
 Les tests (`php artisan test`) utilisent SQLite en mémoire : ils n'ont besoin d'aucune base installée.
 
-Dans le poste, « Activer la mère » demande trois choses : l'adresse du relais (par exemple `sighcnt.nassieratoo.com`), le secret de la mère (le même texte que `RELAIS_SECRET_MERE` du `.env` du relais) et la clé de clinique (16 caractères au moins, à ranger sur papier : sans elle, rien de ce qui quitte le serveur ne peut être restauré).
+Dans le poste, « Activer la mère » demande trois choses : l'adresse du relais (par exemple `sighcbg.exemple.bj`), le secret de la mère (le même texte que `RELAIS_SECRET_MERE` du `.env` du relais) et la clé de clinique (16 caractères au moins, à ranger sur papier : sans elle, rien de ce qui quitte le serveur ne peut être restauré).

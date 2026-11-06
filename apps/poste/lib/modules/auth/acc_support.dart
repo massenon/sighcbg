@@ -65,9 +65,9 @@ class EcranAide extends StatelessWidget with EcranMaquette {
     return LayoutBuilder(builder: (context, k) {
       final large = k.maxWidth >= 1024;
       final texte = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        const Text(
-            'Le SIGH-CNT est le Système Intégré de Gestion Hospitalière de la ${IdentiteClinique.nom}. Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.',
-            style: TextStyle(color: JetonsShell.slate600, fontSize: 14, height: 22.75 / 14)),
+        Text(
+            'Le ${IdentiteClinique.logiciel} est le Système Intégré de Gestion Hospitalière de la ${IdentiteClinique.nom}. Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.',
+            style: const TextStyle(color: JetonsShell.slate600, fontSize: 14, height: 22.75 / 14)),
         const SizedBox(height: 12),
         const Text(
             'Une donnée saisie une fois circule ensuite d’un module à l’autre : une prescription alimente la facturation, une dispensation décrémente le stock, un planning validé nourrit le calcul des primes.',
@@ -320,7 +320,7 @@ class _EtatContact extends State<EcranContactEditeur> {
     ResultatSmtp? res;
     try {
       res = await ServiceSmtp.ecrireALEditeur(_dossierSmtp!,
-          destinataire: '${(accEditeur['emails'] as List).first}', sujet: '[SIGH-CNT] ${donnees['objet']}', corps: texte);
+          destinataire: '${(accEditeur['emails'] as List).first}', sujet: '[${IdentiteClinique.logiciel}] ${donnees['objet']}', corps: texte);
     } on FormatException catch (e) {
       res = ResultatSmtp([EtapeSmtp('connexion', false, e.message)], 'connexion');
     }
@@ -493,7 +493,7 @@ class _EtatContact extends State<EcranContactEditeur> {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text('${accEditeur['auteur']}',
                     style: const TextStyle(color: JetonsShell.slate900, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
-                const Text('Éditeur du logiciel SIGH-CNT', style: TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+                Text('Éditeur du logiciel ${IdentiteClinique.logiciel}', style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
               ])),
             ]),
             const SizedBox(height: 12),

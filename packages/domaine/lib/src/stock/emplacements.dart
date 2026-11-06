@@ -11,6 +11,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart';
+import '../impression/identite.dart';
 
 const zonesEmplacement = [
   'Rayonnage sec',
@@ -69,13 +70,13 @@ Map<String, Object?>? prochainLot(Object? produitId, Iterable<Map<String, Object
   return trierPar(siens, (l) => l['datePeremption']).first;
 }
 
-/// Les lignes d'une étiquette produit, dans l'ordre d'impression. [sigle] : le sigle de la clinique (`C.BRAND.sigle`).
+/// Les lignes d'une étiquette produit, dans l'ordre d'impression. [sigle] : le sigle de la clinique (`C.BRAND.sigle`) ; absent, celui de l'identité en vigueur.
 List<String> ligneEtiquette(Map<String, Object?> p, Iterable<Map<String, Object?>> lots,
-    {String sigle = 'CNT'}) {
+    {String? sigle}) {
   final prochain = prochainLot(p['id'], lots);
   final emp = p['emplacement'];
   return [
-    sigle,
+    sigle ?? IdentiteClinique.sigle,
     '${p['designation']}',
     'Code : ${p['code']}',
     'Emplacement : ${emp == null || emp == '' ? '—' : emp}',

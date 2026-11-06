@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show cfbEssentielles, droitsDepuisMatrice;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice;
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -12,6 +12,7 @@ import 'donnees/persistance.dart';
 import 'modules/cfg/cfb_systeme.dart' show CfbPersistance;
 import 'core/config_poste.dart';
 import 'core/dossier_donnees.dart';
+import 'core/identite_poste.dart';
 import 'core/controleur_poste.dart';
 import 'core/donnees_navigation.dart';
 import 'core/identifiants.dart';
@@ -79,7 +80,7 @@ const String assistantInstallation =
 const String chiffrementActif =
     String.fromEnvironment('SIGH_CHIFFREMENT', defaultValue: 'oui');
 
-/// `SIGH_DONNEES` : DÉVELOPPEMENT et tests. Fixe le dossier des données tel quel. Absent, le dossier est celui du système (`%LOCALAPPDATA%\SIGHCNT\donnees`).
+/// `SIGH_DONNEES` : DÉVELOPPEMENT et tests. Fixe le dossier des données tel quel. Absent, le dossier est celui du système (`%LOCALAPPDATA%\SIGHCBG\donnees`).
 const String donneesSurcharge = String.fromEnvironment('SIGH_DONNEES');
 
 /// Dossier des données du poste, résolu AU DÉMARRAGE par [preparerDossierDonnees] (jamais dans le dossier d'installation).
@@ -99,7 +100,7 @@ Future<void> main() async {
     // Un refus NOMMÉ à l'écran : le poste ne démarre pas sur une base qu'il ne saura pas ouvrir.
     runApp(MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('SIGH-CNT ne peut pas démarrer.\n\n${e.motif}'))))));
+        home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('${IdentiteClinique.logiciel} ne peut pas démarrer.\n\n${e.motif}'))))));
     return;
   }
   // La fenêtre pilotable : un poste sans fenêtre native n'empêche pas le démarrage. Le poste se lance MAXIMISÉ (Direction, 02/11/2026 ; le plein écran du 01/11 reste à la demande) ; si la
@@ -111,7 +112,7 @@ Future<void> main() async {
     if (pleinEcranAuDemarrage != 'non') {
       await fenetre.demarrerPleinEcran();
     } else {
-      await windowManager.waitUntilReadyToShow(const WindowOptions(title: 'SIGH-CNT'), () async {
+      await windowManager.waitUntilReadyToShow(WindowOptions(title: IdentiteClinique.logiciel), () async {
         await windowManager.maximize();
         await windowManager.show();
         await windowManager.focus();
@@ -168,6 +169,8 @@ Future<void> main() async {
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
   await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
+  // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
+  brancherIdentite(magasin);
   for (final probleme in persistance.problemes) {
     debugPrint(probleme);
   }
@@ -351,7 +354,7 @@ class SighPoste extends StatelessWidget {
   Widget build(BuildContext context) {
     final ecoute = controleur;
     return MaterialApp(
-      title: 'SIGH-CNT',
+      title: IdentiteClinique.logiciel,
       debugShowCheckedModeBanner: false,
       theme: ThemeSigh.clair(),
       home: ecoute == null

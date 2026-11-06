@@ -106,8 +106,8 @@ class EcranSortieAvisMedical extends StatelessWidget with EcranMaquette {
               },
               {'k': 'Décharge signée', 'v': r['decharge'] == true ? 'Oui' : 'Non'},
             ])),
-            const BlocTexte(
-                'Je soussigné(e), patient(e) ou représentant légal, déclare quitter la CLINIQUE NASSIERA TOO SARL contre l’avis du médecin traitant. J’ai été pleinement informé(e) des risques encourus pour ma santé et je décharge l’établissement ainsi que son personnel de toute responsabilité quant aux conséquences de cette décision.'),
+            BlocTexte(
+                'Je soussigné(e), patient(e) ou représentant légal, déclare quitter la ${IdentiteClinique.nom} contre l’avis du médecin traitant. J’ai été pleinement informé(e) des risques encourus pour ma santé et je décharge l’établissement ainsi que son personnel de toute responsabilité quant aux conséquences de cette décision.'),
           ],
           signatures: const [
             Signature('Le Patient ou son représentant', mention: 'Signature précédée de la mention « lu et approuvé »'),

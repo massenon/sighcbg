@@ -7,6 +7,10 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_autonome.dart';
 import '../../shell/logo_clinique.dart';
 
+/// La présentation du logiciel sur l'écran de connexion (PRD Baguidi P1-2) : ce que la clinique gère avec lui.
+const presentationLogiciel =
+    'Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord.';
+
 /// Le gabarit commun des écrans d'accès (`shell()` de `auth.js`) : une grande carte arrondie posée sur un fond clair — panneau institutionnel en dégradé
 /// à gauche (au-delà de 1024 px), carte de saisie blanche détachée à droite. Il sert SIX écrans (connexion, verrou, mot de passe oublié, réinitialisation,
 /// double facteur) : la porte d'entrée du logiciel a un seul visage.
@@ -38,11 +42,17 @@ class SceneAcces extends StatelessWidget {
         Row(children: [
           _logo(48, Colors.white, 36),
           const SizedBox(width: 12),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-            Text('CLINIQUE NASSIERA TOO',
-                style: TextStyle(color: Colors.white, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
-            Text('Natitingou — République du Bénin', style: TextStyle(color: JetonsShell.navy200, fontSize: 12, height: 16 / 12)),
-          ]),
+          // Les textes d'identité de la connexion (PRD Baguidi P1-2) : dénomination, activité, ville, lus de l'identité en vigueur. La refonte
+          // graphique de l'écran viendra ensuite ; seuls les TEXTES changent ici.
+          Flexible(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(IdentiteClinique.nom,
+                key: const Key('acces:nom-clinique'),
+                style: const TextStyle(color: Colors.white, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
+            if (IdentiteClinique.activite.isNotEmpty)
+              Text(IdentiteClinique.activite, style: const TextStyle(color: JetonsShell.navy200, fontSize: 11, height: 16 / 11, letterSpacing: 0.4)),
+            Text(IdentiteClinique.localisation, style: const TextStyle(color: JetonsShell.navy200, fontSize: 12, height: 16 / 12)),
+          ])),
         ]),
         ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 512),
@@ -50,9 +60,7 @@ class SceneAcces extends StatelessWidget {
               const Text('Système Intégré de Gestion Hospitalière',
                   style: TextStyle(color: Colors.white, fontSize: 30, height: 36 / 30, fontWeight: FontWeight.w600, letterSpacing: -0.75)),
               const SizedBox(height: 12),
-              const Text(
-                  'Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.',
-                  style: TextStyle(color: JetonsShell.navy100, fontSize: 14, height: 22.75 / 14)),
+              const Text(presentationLogiciel, style: TextStyle(color: JetonsShell.navy100, fontSize: 14, height: 22.75 / 14)),
               const SizedBox(height: 28),
               for (final p in _puces)
                 Padding(
@@ -67,15 +75,16 @@ class SceneAcces extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(child: Text(p.$2, style: const TextStyle(color: JetonsShell.navy100, fontSize: 14, height: 20 / 14))),
                     ])),
+              if (IdentiteClinique.slogan.isNotEmpty) ...[
               const SizedBox(height: 16),
               Container(
                   padding: const EdgeInsets.only(left: 16),
                   decoration: const BoxDecoration(border: Border(left: BorderSide(color: Color(0x66FFFFFF), width: 2))),
-                  child: const Text('« ${IdentiteClinique.slogan} »',
-                      style: TextStyle(color: Colors.white, fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic))),
+                  child: Text('« ${IdentiteClinique.slogan} »',
+                      style: const TextStyle(color: Colors.white, fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic))),
+              ],
             ])),
-        const Text('${IdentiteClinique.nom} — IFU ${IdentiteClinique.ifu} — RCCM ${IdentiteClinique.rccm}',
-            style: TextStyle(color: JetonsShell.navy300, fontSize: 12, height: 16 / 12)),
+        Text(IdentiteClinique.mentionLegale, style: const TextStyle(color: JetonsShell.navy300, fontSize: 12, height: 16 / 12)),
       ]));
 
   Widget _carte(bool large) => Padding(
@@ -96,11 +105,11 @@ class SceneAcces extends StatelessWidget {
                               _logo(44, JetonsShell.navy950, 32),
                               const SizedBox(width: 12),
                               Expanded(
-                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-                                Text('CLINIQUE NASSIERA TOO',
-                                    style: TextStyle(color: JetonsShell.slate900, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                Text(IdentiteClinique.nom,
+                                    style: const TextStyle(color: JetonsShell.slate900, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
                                 Text(IdentiteClinique.slogan,
-                                    style: TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic)),
+                                    style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic)),
                               ])),
                             ])),
                       if (icone != null)
@@ -124,10 +133,10 @@ class SceneAcces extends StatelessWidget {
                       if (pied != null) Padding(padding: const EdgeInsets.only(top: 24), child: Center(child: pied)),
                     ])),
                 if (!large)
-                  const Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Text('${IdentiteClinique.nom} — IFU ${IdentiteClinique.ifu}',
-                          textAlign: TextAlign.center, style: TextStyle(color: JetonsShell.navy200, fontSize: 12, height: 16 / 12))),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(IdentiteClinique.mentionLegale,
+                          textAlign: TextAlign.center, style: const TextStyle(color: JetonsShell.navy200, fontSize: 12, height: 16 / 12))),
               ]))));
 
   Widget _halo(double d, Color c) => Container(

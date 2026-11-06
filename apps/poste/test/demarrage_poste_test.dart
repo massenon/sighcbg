@@ -14,7 +14,9 @@ import 'package:sigh_poste/shell/fenetre_poste.dart';
 
 import 'aide_polices.dart';
 
-const _mention = 'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268.';
+/// La mention légale de la Clinique Baguidi (PRD §4), dérivée de la dénomination, de l'IFU et du RCCM. Le pied ne porte rien d'autre : ni « prototype »,
+/// ni « jeu de données de démonstration ».
+const _mention = 'CLINIQUE BAGUIDI «\u00a0L’AS DE CŒUR\u00a0» — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.';
 
 void main() {
   setUpAll(chargerPolices);
@@ -146,7 +148,8 @@ void main() {
         if (f.path.endsWith('cfa_identite.dart')) continue;
         final lignes = f.readAsLinesSync();
         for (var i = 0; i < lignes.length; i++) {
-          if (lignes[i].contains('3201642748214') && !lignes[i].trimLeft().startsWith('//')) fautes.add('${f.path}:${i + 1}');
+          final l = lignes[i];
+          if ((l.contains('3201001996110') || l.contains('3201642748214')) && !l.trimLeft().startsWith('//')) fautes.add('${f.path}:${i + 1}');
         }
       }
       expect(fautes, isEmpty, reason: 'l\'IFU se lit de IdentiteClinique : $fautes');
@@ -158,6 +161,7 @@ void main() {
         expect(find.byKey(const Key('pied-legal')), findsOneWidget, reason: '${ecran ?? 'accueil'} : pied absent');
         expect(find.byKey(const Key('pied-legal:texte')), findsOneWidget);
         expect((t.widget(find.byKey(const Key('pied-legal:texte'))) as Text).data, _mention);
+        expect(find.descendant(of: find.byKey(const Key('pied-legal')), matching: find.textContaining(RegExp('prototype|démonstration', caseSensitive: false))), findsNothing, reason: 'le pied porte la seule mention légale');
         await fin(t);
       }
     });

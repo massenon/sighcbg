@@ -34,11 +34,11 @@
     "rendu": 1700
    },
    "lignes": [
-    "CLINIQUE NASSIERA TOO",
-    "BP : 507 NATITINGOU (Rép. du Bénin)",
-    "TÉL. 01 95 44 51 51 / 01 66 43 28 20",
-    "IFU 3201642748214",
-    "RCCM RB/NAT/2016-B-268",
+    "CLINIQUE BAGUIDI",
+    "02 BP : 105 PARAKOU (Rép. du Bénin)",
+    "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
+    "IFU 3201001996110",
+    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
     "--------------------------------",
     "OPÉRATEUR|DIEYABIDI Aïssatou",
     "TYPE VENTE|COMPTANT",
@@ -58,9 +58,7 @@
     "TOTAL DÛ|0",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "trois mille trois cents francs CFA",
-    "--------------------------------",
-    "QUE DIEU VOUS GUÉRISSE ! AMINE !"
+    "trois mille trois cents francs CFA"
    ]
   },
   {
@@ -102,11 +100,11 @@
     "baseMecef": 4200
    },
    "lignes": [
-    "CLINIQUE NASSIERA TOO",
-    "BP : 507 NATITINGOU (Rép. du Bénin)",
-    "TÉL. 01 95 44 51 51 / 01 66 43 28 20",
-    "IFU 3201642748214",
-    "RCCM RB/NAT/2016-B-268",
+    "CLINIQUE BAGUIDI",
+    "02 BP : 105 PARAKOU (Rép. du Bénin)",
+    "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
+    "IFU 3201001996110",
+    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
     "--------------------------------",
     "OPÉRATEUR|DIEYABIDI Aïssatou",
     "TYPE VENTE|CRÉDIT",
@@ -131,9 +129,7 @@
     "BASE MECeF|4 200",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "quatre mille deux cents francs CFA",
-    "--------------------------------",
-    "QUE DIEU VOUS GUÉRISSE ! AMINE !"
+    "quatre mille deux cents francs CFA"
    ]
   },
   {
@@ -166,11 +162,11 @@
     "partPatient": 1500
    },
    "lignes": [
-    "CLINIQUE NASSIERA TOO",
-    "BP : 507 NATITINGOU (Rép. du Bénin)",
-    "TÉL. 01 95 44 51 51 / 01 66 43 28 20",
-    "IFU 3201642748214",
-    "RCCM RB/NAT/2016-B-268",
+    "CLINIQUE BAGUIDI",
+    "02 BP : 105 PARAKOU (Rép. du Bénin)",
+    "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
+    "IFU 3201001996110",
+    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
     "--------------------------------",
     "NIM : ET01234567",
     "CODE DGI : ABCD-1234-EFGH-5678",
@@ -190,9 +186,7 @@
     "NET À PAYER|1 500",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "mille cinq cents francs CFA",
-    "--------------------------------",
-    "QUE DIEU VOUS GUÉRISSE ! AMINE !"
+    "mille cinq cents francs CFA"
    ]
   }
  ]

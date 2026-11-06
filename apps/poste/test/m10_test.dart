@@ -497,7 +497,8 @@ void main() {
       await cliquer(t, find.widgetWithText(BoutonSigh, 'Nouveau').first);
       final defauts = obj(obj(o['creation'])['defauts']);
       for (final k in ['nature', 'agentId', 'structurePrise', 'dateDepart', 'dateRetour', 'statutMission']) {
-        expect('${formulaire(t)[k]}', '${defauts[k]}', reason: 'défaut $k');
+        // La structure de prise en charge par défaut est la clinique : sa dénomination en vigueur, non celle de la maquette.
+        expect('${formulaire(t)[k]}', k == 'structurePrise' ? IdentiteClinique.nom : '${defauts[k]}', reason: 'défaut $k');
       }
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 300));
@@ -507,7 +508,8 @@ void main() {
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
-      fichesEgales(col.toutes.first, obj(obj(o['creation'])['creee'])['fiche'] as M);
+      // La structure de prise en charge est la clinique en vigueur (la maquette écrit celle de Nassiera Too).
+      fichesEgales(col.toutes.first, {...obj(obj(obj(o['creation'])['creee'])['fiche']), 'structurePrise': IdentiteClinique.nom});
       expect(col.toutes.first['reference'], 'OM-2026-0015');
       kpisIdentiques(t, obj(obj(o['creation'])['apres'])['kpis']);
       await chercher(t, 'OM-2026-0015');
@@ -515,7 +517,7 @@ void main() {
       poser(t, {'destination': 'Djougou', 'statutMission': 'projet'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
-      fichesEgales(col.toutes.firstWhere((x) => x['reference'] == 'OM-2026-0015'), obj(obj(obj(o['modification'])['enregistre'])['fiche']));
+      fichesEgales(col.toutes.firstWhere((x) => x['reference'] == 'OM-2026-0015'), {...obj(obj(obj(o['modification'])['enregistre'])['fiche']), 'structurePrise': IdentiteClinique.nom});
       await archiverLigne(t, 'Doublon');
       expect(col.toutes.firstWhere((x) => x['reference'] == 'OM-2026-0015')['statut'], 'archive');
       await t.pump(const Duration(seconds: 10));

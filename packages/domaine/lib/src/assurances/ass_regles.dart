@@ -7,6 +7,7 @@ library;
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
+import '../impression/identite.dart';
 import '../referentiels/regles.dart' show joursEntre;
 
 typedef AssFiche = Map<String, Object?>;
@@ -571,9 +572,9 @@ List<AssGroupeSouscripteur> assEcartsReleve(List<AssGroupeSouscripteur> groupes)
           g
     ];
 
-/// `FA 141/08/CNT/2026` : le numéro de la facture mensuelle (nombre de souscripteurs + 140, mois sur deux chiffres).
+/// `FA 141/08/CBG/2026` (sigle de la clinique) : le numéro de la facture mensuelle (nombre de souscripteurs + 140, mois sur deux chiffres).
 String assNumeroFactureMensuelle(int nbGroupes, int mois, int annee) =>
-    'FA ${(nbGroupes + 140).toString().padLeft(3, '0')}/${(mois + 1).toString().padLeft(2, '0')}/CNT/$annee';
+    'FA ${(nbGroupes + 140).toString().padLeft(3, '0')}/${(mois + 1).toString().padLeft(2, '0')}/${IdentiteClinique.sigle}/$annee';
 
 // --- historique par assureur -----------------------------------------------------------------------------------------------------
 /// Les prestations assurées de la plage [du, au] (bornes incluses, comparées en instants comme `getTime()`), pour une compagnie ou toutes.

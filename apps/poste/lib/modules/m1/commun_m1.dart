@@ -384,7 +384,7 @@ Widget enMono(String t) => Text(t,
         fontSize: 12,
         height: 16 / 12));
 
-/// Le dossier choisi dans la liste du répertoire (`optionsPatientsM1`) : « CNT/1/26 — NOM Prénom », triés par code.
+/// Le dossier choisi dans la liste du répertoire (`optionsPatientsM1`) : « CBG/1/26 — NOM Prénom », triés par code.
 List<OptionChamp> optionsPatientsM1(Magasin m) {
   final l = trierPar([...m.collection('patients').actives], (p) => p['code']);
   return [for (final p in l) OptionChamp('${p['code']}', '${p['code']} — ${p['nom']} ${p['prenom']}')];

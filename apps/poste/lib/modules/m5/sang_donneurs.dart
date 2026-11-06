@@ -48,9 +48,9 @@ class EcranDonneurs extends StatelessWidget with EcranMaquette {
               ('Dons réalisés', '${r['nbDons'] ?? ''}'),
               ('Dernier don', dateFiche(r['dernierDon'])),
             ],
-            blocs: const [
+            blocs: [
               BlocTexte(
-                  'La CLINIQUE NASSIERA TOO SARL remercie chaleureusement ce donneur pour son engagement au service de la collectivité.'),
+                  'La ${IdentiteClinique.nom} remercie chaleureusement ce donneur pour son engagement au service de la collectivité.'),
             ],
             signatures: const [
               Signature('Le Laborantin', nom: 'KINNOU Addoul Ganiou'),

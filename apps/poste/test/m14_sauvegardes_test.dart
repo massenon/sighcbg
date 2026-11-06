@@ -54,8 +54,8 @@ void main() {
     final m = Magasin({...{for (final n in Magasin.collectionsDuJeu) n: <Fiche>[]}}, 'POSTE', const {});
     await ouvrirM14(t, m, 'm14-sauvegardes');
     expect(m.collection('fichiersSauvegarde').actives.length, 6);
-    expect(m.collection('fichiersSauvegarde').actives.first['fichier'], 'sigh-cnt-20261030.json');
-    expect(m.collection('fichiersSauvegarde').actives.last['fichier'], 'sigh-cnt-20260925.json');
+    expect(m.collection('fichiersSauvegarde').actives.first['fichier'], 'sigh-cbg-20261030.json');
+    expect(m.collection('fichiersSauvegarde').actives.last['fichier'], 'sigh-cbg-20260925.json');
   });
 
   casM14('« Générer une sauvegarde » : une fiche de fichier (nom, tables, poids), annulable par archivage — RG-14', (t) async {
@@ -63,13 +63,13 @@ void main() {
     await ouvrirM14(t, m, 'm14-sauvegardes');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Générer une sauvegarde'));
     final f = m.collection('fichiersSauvegarde').actives.first;
-    expect(f['fichier'], 'sigh-cnt-20261030-07.json');
+    expect(f['fichier'], 'sigh-cbg-20261030-07.json');
     expect(f['date'], '2026-10-30');
     expect(f['portee'], 'Base complète');
     expect(f['tables'], Magasin.collectionsDuJeu.length);
     expect(f['taille'], greaterThan(1000));
     expect(f['genereePar'], 'Administrateur système');
-    expect(find.text('Sauvegarde sigh-cnt-20261030-07.json générée.'), findsOneWidget);
+    expect(find.text('Sauvegarde sigh-cbg-20261030-07.json générée.'), findsOneWidget);
     expect(m.collection('fichiersSauvegarde').actives.length, 7);
     await toucherM14(t, find.text('Annuler').last);
     expect(m.collection('fichiersSauvegarde').actives.length, 6);

@@ -93,15 +93,20 @@ bool _vrai(num? v) => v != null && v != 0;
 /// Suite des lignes du rouleau de caisse, dans l'ordre exact de `P.ticket` (print.js) — vérifiée contre les vecteurs de la maquette.
 List<LigneTicket> lignesTicket(EntreeTicket o) {
   const sep = LigneTicket.texte(_sep, style: StyleLigne.separateur);
+  // L'en-tête lit l'identité EN VIGUEUR (surchargeable depuis cfg-branding) ; un champ vide n'imprime ni sa ligne ni son libellé.
   final l = <LigneTicket>[
-    const LigneTicket.texte(IdentiteClinique.nomCourt, style: StyleLigne.titre),
-    const LigneTicket.texte(IdentiteClinique.bp, style: StyleLigne.centre),
-    LigneTicket.texte('TÉL. ${IdentiteClinique.telephones.join(' / ')}',
-        style: StyleLigne.centre),
-    const LigneTicket.texte('IFU ${IdentiteClinique.ifu}',
-        style: StyleLigne.centre),
-    const LigneTicket.texte('RCCM ${IdentiteClinique.rccm}',
-        style: StyleLigne.centre),
+    LigneTicket.texte(IdentiteClinique.nomCourt, style: StyleLigne.titre),
+    if (IdentiteClinique.bp.isNotEmpty)
+      LigneTicket.texte(IdentiteClinique.bp, style: StyleLigne.centre),
+    if (IdentiteClinique.telephones.isNotEmpty)
+      LigneTicket.texte('TÉL. ${IdentiteClinique.telephones.join(' / ')}',
+          style: StyleLigne.centre),
+    if (IdentiteClinique.ifu.isNotEmpty)
+      LigneTicket.texte('IFU ${IdentiteClinique.ifu}',
+          style: StyleLigne.centre),
+    if (IdentiteClinique.rccm.isNotEmpty)
+      LigneTicket.texte('RCCM ${IdentiteClinique.rccm}',
+          style: StyleLigne.centre),
     sep,
   ];
   final m = o.mecef;
@@ -163,11 +168,14 @@ List<LigneTicket> lignesTicket(EntreeTicket o) {
     l.add(
         LigneTicket.paire('BASE MECeF', money(o.baseMecef, avecDevise: false)));
   l.add(sep);
-  l.add(const LigneTicket.texte('${IdentiteClinique.formuleArrete} :'));
+  l.add(LigneTicket.texte('${IdentiteClinique.formuleArrete} :'));
   l.add(LigneTicket.texte(montantEnLettres(o.partPatient),
       style: StyleLigne.lettres));
-  l.add(sep);
-  l.add(const LigneTicket.texte(IdentiteClinique.formulePolitesse,
-      style: StyleLigne.centreGras));
+  // La formule de politesse n'est imprimée que si la Direction en a choisi une : vide, ni ligne ni séparateur orphelin.
+  if (IdentiteClinique.formulePolitesse.isNotEmpty) {
+    l.add(sep);
+    l.add(LigneTicket.texte(IdentiteClinique.formulePolitesse,
+        style: StyleLigne.centreGras));
+  }
   return l;
 }

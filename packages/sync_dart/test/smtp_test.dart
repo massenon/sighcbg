@@ -61,10 +61,10 @@ void main() {
   test('« Répondre à » : l\'en-tête Reply-To est reçu (adresse et nom décodés) ; invalide ou vide, il est omis', () async {
     final p = await demarrer('starttls');
     addTearDown(p.fermer);
-    var r = await envoyerSmtp(cfg(p.port, 'starttls', repondreA: 'cliniquenassiera@gmail.com', repondreNom: 'Clinique Nassièra Too'), ['dg@clinique.bj'], 's', 'c');
+    var r = await envoyerSmtp(cfg(p.port, 'starttls', repondreA: 'cliniquebaguidi@yahoo.fr', repondreNom: 'Clinique Baguidi'), ['dg@clinique.bj'], 's', 'c');
     expect(r.ok, isTrue);
     final m = await p.attendreMessage(1);
-    expect((m['entetes']! as Map)['reply-to'], 'Clinique Nassièra Too <cliniquenassiera@gmail.com>');
+    expect((m['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>');
     r = await envoyerSmtp(cfg(p.port, 'starttls', repondreA: 'pas-une-adresse', repondreNom: 'X'), ['dg@clinique.bj'], 's', 'c');
     expect(r.ok, isTrue);
     final m2 = await p.attendreMessage(2);

@@ -20,7 +20,7 @@ final entree = EntreeTicket(
   operateur: 'A',
   numero: 'F-1',
   date: date,
-  dossier: 'CNT/12/26',
+  dossier: 'CBG/12/26',
   lignes: const [
     LigneArticle(
         designation: 'Consultation',
@@ -35,7 +35,7 @@ final entree = EntreeTicket(
 
 final piece = PieceA4(
   titre: 'État de test',
-  reference: 'CNT-20261030-0001',
+  reference: 'CBG-20261030-0001',
   utilisateur: 'ADJAHO Rose',
   edite: date,
   tableaux: [
@@ -77,7 +77,10 @@ void main() {
   testWidgets(
       'ticket : 80 mm de large, hauteur proche de la maquette, lignes du domaine',
       (t) async {
-    await monter(t, FeuilleTicket(entree: entree, reference: 'CNT-1'));
+    // La géométrie se compare à la maquette, qui imprime une formule de politesse : on en pose une le temps de la mesure.
+    IdentiteClinique.appliquer({'formulePolitesse': 'MERCI DE VOTRE CONFIANCE'});
+    addTearDown(IdentiteClinique.reinitialiser);
+    await monter(t, FeuilleTicket(entree: entree, reference: 'CBG-1'));
     final r = t.getRect(find.byKey(const Key('impression:ticket')));
     expect(r.width, closeTo((ref['ticket']['l'] as num).toDouble(), 0.5));
     final h = (ref['ticket']['h'] as num).toDouble();
@@ -85,12 +88,23 @@ void main() {
         reason: 'ticket ${r.height} vs ${ref['ticket']['h']}');
     expect(find.text('MONTANT TOTAL'), findsOneWidget);
     expect(find.text('trois mille francs CFA'), findsOneWidget);
-    expect(find.text(IdentiteClinique.formulePolitesse), findsOneWidget);
+    expect(find.text('MERCI DE VOTRE CONFIANCE'), findsOneWidget);
+    expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
+  });
+
+  testWidgets('ticket sans formule de politesse (identité initiale) : aucune ligne de formule, aucune trace de Nassiera Too', (t) async {
+    await monter(t, FeuilleTicket(entree: entree, reference: 'CBG-1'));
+    expect(find.textContaining('DIEU'), findsNothing);
+    expect(find.textContaining('NASSIERA'), findsNothing);
+    expect(find.text('IFU ${IdentiteClinique.ifu}'), findsOneWidget);
   });
 
   testWidgets(
       'A4 : 210 × 297 mm, en-tête légal unique, titre, tableau avec total refait, pied normalisé',
       (t) async {
+    // La géométrie se compare à la maquette, dont l'en-tête porte une autorisation d'ouverture : on en pose une le temps de la mesure.
+    IdentiteClinique.appliquer({'autorisation': 'N° 012/MS/DNSP/2009'});
+    addTearDown(IdentiteClinique.reinitialiser);
     await monter(t, FeuilleA4(piece: piece));
     final a4 = t.getRect(find.byKey(const Key('impression:a4')));
     expect(a4.width, closeTo((ref['a4']['l'] as num).toDouble(), 0.5));
@@ -115,17 +129,35 @@ void main() {
         find.textContaining(
             'Document généré par ADJAHO Rose le 30/10/2026 à 14h05'),
         findsOneWidget);
-    expect(find.text('Réf. document : CNT-20261030-0001'), findsOneWidget);
+    expect(find.text('Réf. document : CBG-20261030-0001'), findsOneWidget);
+    expect(find.text('AUTORISATION D’OUVERTURE N° 012/MS/DNSP/2009'), findsOneWidget);
+    expect(find.text('Édité depuis le SIGH-CBG'), findsOneWidget);
+    expect(find.textContaining('Fait à Parakou, le '), findsOneWidget, reason: 'la ville de l’adresse de la clinique, jamais Natitingou');
   });
 
-  test('référence de pièce CNT-AAAAMMJJ-NNNN', () {
-    expect(PieceA4.reference_(date, 7), 'CNT-20261030-0007');
+  testWidgets('A4, identité initiale : l’autorisation d’ouverture VIDE n’imprime ni sa ligne ni son libellé ; l’en-tête raccourcit d’autant', (t) async {
+    await monter(t, FeuilleA4(piece: piece));
+    expect(find.textContaining('AUTORISATION'), findsNothing);
+    expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
+    expect(find.text(IdentiteClinique.ligneCoordonnees), findsOneWidget);
+    expect(find.text(IdentiteClinique.slogan), findsOneWidget);
+    expect(find.textContaining('NASSIERA'), findsNothing);
+    expect(find.textContaining('Natitingou'), findsNothing);
+    final he = (ref['entete']['h'] as num).toDouble();
+    expect(t.getRect(find.byKey(const Key('impression:entete'))).height, lessThan(he - 8), reason: 'une ligne de moins que la maquette');
+  });
+
+  test('référence de pièce <SIGLE>-AAAAMMJJ-NNNN : le sigle de la clinique (CBG), jamais écrit en dur', () {
+    expect(PieceA4.reference_(date, 7), 'CBG-20261030-0007');
+    IdentiteClinique.appliquer({'sigle': 'XYZ'});
+    addTearDown(IdentiteClinique.reinitialiser);
+    expect(PieceA4.reference_(date, 7), 'XYZ-20261030-0007');
   });
 
   testWidgets('PDF : ticket 80 mm et A4 structurellement valides', (t) async {
     final p = await t.runAsync(PolicesPdf.charger);
     final tk = (await t
-        .runAsync(() => pdfTicket(entree, 'CNT-1', p!, compresser: false)))!;
+        .runAsync(() => pdfTicket(entree, 'CBG-1', p!, compresser: false)))!;
     final a4 = (await t.runAsync(() => pdfA4(piece, p!, compresser: false)))!;
     String txt(List<int> b) => latin1.decode(b);
     expect(txt(tk.sublist(0, 5)), '%PDF-');

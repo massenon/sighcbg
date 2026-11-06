@@ -133,7 +133,7 @@ class FeuilleA4 extends StatelessWidget {
             if (piece.lieuDate)
               Padding(
                   padding: const EdgeInsets.only(top: 24),
-                  child: Text('Fait à Natitingou, le ${dateLong(piece.edite)}',
+                  child: Text(IdentiteClinique.faitA(dateLong(piece.edite)),
                       textAlign: TextAlign.right,
                       style: const TextStyle(
                           fontStyle: FontStyle.italic,
@@ -155,40 +155,43 @@ class FeuilleA4 extends StatelessWidget {
           const SizedBox(width: 16),
           Flexible(
             child: Column(children: [
-              const Text(IdentiteClinique.nomCourt,
-                  style: TextStyle(
+              // L'identité EN VIGUEUR (surchargeable depuis cfg-branding) ; une mention vide n'imprime ni sa ligne ni son libellé.
+              Text(IdentiteClinique.nomCourt,
+                  style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                       height: 1.25,
                       letterSpacing: -0.5,
                       color: JetonsShell.navy950)),
-              Text(
-                  '${IdentiteClinique.bp}   TÉL. : ${IdentiteClinique.telephones.join('  /  ')}',
-                  style: const TextStyle(
-                      fontSize: 10,
-                      height: 1.375,
-                      color: JetonsShell.slate700)),
-              const Text(
-                  'AUTORISATION D’OUVERTURE ${IdentiteClinique.autorisation}',
-                  style: TextStyle(
-                      fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              const Text(
-                  'IFU : ${IdentiteClinique.ifu}   RCCM : ${IdentiteClinique.rccm}',
-                  style: TextStyle(
-                      fontSize: 9,
-                      height: 1.375,
-                      fontWeight: FontWeight.w600,
-                      color: JetonsShell.slate800)),
-              const Text('E-mail : ${IdentiteClinique.email}',
-                  style: TextStyle(
-                      fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              const Text(IdentiteClinique.slogan,
-                  style: TextStyle(
-                      fontSize: 9,
-                      height: 1.375,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                      color: JetonsShell.navy800)),
+              if (IdentiteClinique.ligneCoordonnees.isNotEmpty)
+                Text(IdentiteClinique.ligneCoordonnees,
+                    style: const TextStyle(
+                        fontSize: 10,
+                        height: 1.375,
+                        color: JetonsShell.slate700)),
+              if (IdentiteClinique.ligneAutorisation.isNotEmpty)
+                Text(IdentiteClinique.ligneAutorisation,
+                    style: const TextStyle(
+                        fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
+              if (IdentiteClinique.ligneFiscale.isNotEmpty)
+                Text(IdentiteClinique.ligneFiscale,
+                    style: const TextStyle(
+                        fontSize: 9,
+                        height: 1.375,
+                        fontWeight: FontWeight.w600,
+                        color: JetonsShell.slate800)),
+              if (IdentiteClinique.ligneEmail.isNotEmpty)
+                Text(IdentiteClinique.ligneEmail,
+                    style: const TextStyle(
+                        fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
+              if (IdentiteClinique.slogan.isNotEmpty)
+                Text(IdentiteClinique.slogan,
+                    style: const TextStyle(
+                        fontSize: 9,
+                        height: 1.375,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        color: JetonsShell.navy800)),
             ]),
           ),
           const SizedBox(width: 16),
@@ -360,15 +363,14 @@ class FeuilleA4 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text(
-                      '${IdentiteClinique.nom} — ${IdentiteClinique.rccm} — IFU ${IdentiteClinique.ifu}'),
+                  Text(IdentiteClinique.piedLegal),
                   Text(
                       'Document généré par ${piece.utilisateur} le ${dateHeure(piece.edite)}'),
                 ]),
                 Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Text('Réf. document : ${piece.reference}',
                       style: const TextStyle(fontFamily: _mono)),
-                  const Text('Édité depuis le SIGH-CNT'),
+                  Text(IdentiteClinique.editeDepuis),
                 ]),
               ]),
         ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/identite_poste.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
@@ -12,8 +13,8 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'cfa_commun.dart';
 
-/// `cfg-entetes` — « Papier à en-tête officiel » : l'UNIQUE identité légale imprimée sur tous les états (arbitrage de la Direction du 31/08/2026 :
-/// IFU 3201642748214, RCCM RB/NAT/2016-B-268). Lecture : l'identité se corrige à un seul endroit, l'écran « Identité & papier à en-tête ».
+/// `cfg-entetes` : « Papier à en-tête officiel », l'UNIQUE identité légale imprimée sur tous les états. Lecture : l'identité se corrige à un seul
+/// endroit, l'écran « Identité & papier à en-tête » ; la règle affichée LIT l'identité en vigueur au lieu de recopier des valeurs.
 class EcranEntetes extends StatelessWidget with EcranMaquette {
   const EcranEntetes({super.key});
   @override
@@ -21,8 +22,10 @@ class EcranEntetes extends StatelessWidget with EcranMaquette {
   @override
   String get description => 'L’unique identité légale imprimée sur tous les états de la clinique.';
   @override
-  String get regle =>
-      'Depuis l’arbitrage de la Direction du 31/08/2026, tous les états portent le même en-tête : IFU 3201642748214, RCCM RB/NAT/2016-B-268. L’identité se corrige en un seul endroit — le Brand Configuration Center — et chaque pièce imprimée la reprend.';
+  String get regle {
+    final mentions = [if (IdentiteClinique.ifu.isNotEmpty) 'IFU ${IdentiteClinique.ifu}', if (IdentiteClinique.rccm.isNotEmpty) 'RCCM ${IdentiteClinique.rccm}'];
+    return 'Tous les états portent le même en-tête${mentions.isEmpty ? '' : ' : ${mentions.join(', ')}'}. L’identité se corrige en un seul endroit, l’écran « Identité & papier à en-tête », et chaque pièce imprimée la reprend. Une mention laissée vide n’est pas imprimée.';
+  }
 
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -35,10 +38,12 @@ class EcranEntetes extends StatelessWidget with EcranMaquette {
 }
 
 /// `cfg-branding` — « Identité & papier à en-tête » : dénomination, coordonnées, mentions légales, options d'impression, aperçu de l'en-tête et ressources
-/// graphiques déposées (logo, cachet, signature — conservées dans le poste, aucune requête réseau).
+/// graphiques déposées (logo, cachet, signature : conservées dans le poste, aucune requête réseau).
 ///
-/// ÉCART E841 (porté fidèlement, signalé) : « Enregistrer » journalise la modification (RG-12) et annonce que les états la reprendront, mais l'identité
-/// imprimée reste celle de la maquette — l'en-tête est UNIQUE et constant dans le logiciel (`IdentiteClinique`).
+/// ÉCART E841 LEVÉ (décision de la Direction du 06/11/2026) : « Enregistrer » écrit l'identité dans le magasin (fiche `IDENTITE` de `ressources`,
+/// journalisée, RG-12) et l'APPLIQUE à `IdentiteClinique` (`core/identite_poste.dart`) : toutes les pièces imprimées la reprennent aussitôt. Les mentions
+/// inconnues (forme juridique, autorisation d'ouverture, formule de politesse) restent VIDES tant que la Direction ne les a pas saisies, et une
+/// mention vide n'est pas imprimée.
 class EcranBranding extends StatelessWidget with EcranMaquette {
   const EcranBranding({super.key});
   @override
@@ -60,7 +65,8 @@ class EcranBranding extends StatelessWidget with EcranMaquette {
         final droite = cfaPile([
           const _CarteApercu(),
           const _CarteRessources(),
-          const NoteSigh('Les états produits par le prototype reprennent déjà fidèlement l’entête réelle relevée sur les documents de la clinique.', ton: TonSigh.succes, icone: LucideIcons.circleCheck)
+          const NoteSigh('Les états imprimés reprennent l’identité enregistrée ici : une mention laissée vide (forme juridique, autorisation d’ouverture, formule de politesse) n’y figure pas.',
+              ton: TonSigh.succes, icone: LucideIcons.circleCheck)
         ]);
         if (!deux) return cfaPile([gauche, droite]);
         return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [const Expanded(child: gauche), const SizedBox(width: 16), Expanded(child: droite)]);
@@ -79,8 +85,9 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
   late final ControleurFormulaire _ctl = ControleurFormulaire([
     const ChampDef.section('Dénomination'),
     const ChampDef(nom: 'nom', libelle: 'Dénomination sociale', requis: true, col: ColChamp.plein),
-    const ChampDef(nom: 'sigle', libelle: 'Sigle'),
-    const ChampDef(nom: 'forme', libelle: 'Forme juridique'),
+    const ChampDef(nom: 'nomCourt', libelle: 'Nom court (en-tête des pièces)', requis: true),
+    const ChampDef(nom: 'sigle', libelle: 'Sigle', requis: true, aide: 'Préfixe des codes et des numéros de pièces (CBG/12/26). Les codes déjà attribués ne changent pas (RG-01).'),
+    const ChampDef(nom: 'forme', libelle: 'Forme juridique', aide: 'SARL, SA… Vide : non imprimée.'),
     const ChampDef(nom: 'slogan', libelle: 'Devise ou slogan', col: ColChamp.plein),
     const ChampDef.section('Coordonnées'),
     const ChampDef(nom: 'adresse', libelle: 'Adresse géographique', col: ColChamp.plein),
@@ -90,12 +97,21 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
     const ChampDef.section('Mentions légales'),
     const ChampDef(nom: 'ifu', libelle: 'IFU', requis: true),
     const ChampDef(nom: 'rccm', libelle: 'RCCM', requis: true),
-    const ChampDef(nom: 'autorisation', libelle: 'N° d’autorisation d’ouverture', col: ColChamp.plein),
+    const ChampDef(nom: 'autorisation', libelle: 'N° d’autorisation d’ouverture', col: ColChamp.plein, aide: 'Vide : la ligne n’est pas imprimée.'),
+    const ChampDef(nom: 'formulePolitesse', libelle: 'Formule de politesse (bas des factures)', col: ColChamp.plein, aide: 'Vide : aucune formule n’est imprimée.'),
     const ChampDef.section('Options d’impression'),
     const ChampDef(nom: 'doubleLogo', libelle: 'Logo de part et d’autre de la dénomination', type: TypeChamp.case_, col: ColChamp.plein),
     const ChampDef(nom: 'piedPage', libelle: 'Pied de page normalisé (utilisateur, date, identifiant)', type: TypeChamp.case_, col: ColChamp.plein),
     const ChampDef(nom: 'filigrane', libelle: 'Filigrane par défaut', type: TypeChamp.select, options: [OptionChamp('', ''), OptionChamp('Document officiel'), OptionChamp('Confidentiel')]),
-  ], cfaValeursIdentite());
+  ], _valeursInitiales());
+
+  /// L'identité EN VIGUEUR du magasin (appliquée d'abord : l'écran peut s'ouvrir avant que la coque ne l'ait fait) et ses options d'impression.
+  /// Les mentions inconnues arrivent VIDES : la Direction les remplit.
+  Map<String, Object?> _valeursInitiales() {
+    final m = ContexteEcran.of(context).magasin;
+    appliquerIdentite(m);
+    return cfaValeursIdentite(options: optionsIdentite(m));
+  }
 
   @override
   void dispose() {
@@ -109,8 +125,10 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
       ToastsSigh.afficher(context, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
       return;
     }
-    ContexteEcran.of(context).magasin.journaliser('Modification', 'CFG', 'BrandConfiguration', 'BRAND', null, v);
-    ToastsSigh.afficher(context, 'Identité enregistrée.', type: TypeToast.succes, detail: 'Tous les états édités reprendront désormais ces mentions.');
+    final c = ContexteEcran.of(context);
+    // L'enregistrement MET À JOUR LA BASE (fiche journalisée, RG-12) et l'identité imprimée : toutes les pièces la reprennent.
+    enregistrerIdentite(c.magasin, v, auteur: acteur(c).nom, quand: c.aujourdhui);
+    ToastsSigh.afficher(context, 'Identité enregistrée.', type: TypeToast.succes, detail: 'Tous les états édités reprennent désormais ces mentions.');
   }
 
   void _previsualiser(BuildContext context) => cfaImprimer(context,
@@ -123,13 +141,19 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
           ColonneEtat(libelle: 'Mention', valeur: (l) => l['k']),
           ColonneEtat(libelle: 'Valeur', valeur: (l) => l['v']),
         ], lignes: [
-          {'k': 'Dénomination', 'v': IdentiteClinique.nom},
-          {'k': 'Adresse postale', 'v': IdentiteClinique.bp},
-          {'k': 'Téléphones', 'v': IdentiteClinique.telephones.join(' / ')},
-          {'k': 'Adresse électronique', 'v': IdentiteClinique.email},
-          {'k': 'Autorisation d’ouverture', 'v': IdentiteClinique.autorisation},
-          {'k': 'IFU', 'v': IdentiteClinique.ifu},
-          {'k': 'RCCM', 'v': IdentiteClinique.rccm},
+          // Une mention vide n'a pas de ligne : l'aperçu montre ce que la pièce imprimera, rien de plus.
+          for (final l in [
+            {'k': 'Dénomination', 'v': IdentiteClinique.nom},
+            {'k': 'Forme juridique', 'v': IdentiteClinique.forme},
+            {'k': 'Adresse géographique', 'v': IdentiteClinique.adresse},
+            {'k': 'Adresse postale', 'v': IdentiteClinique.bp},
+            {'k': 'Téléphones', 'v': IdentiteClinique.telephones.join(' / ')},
+            {'k': 'Adresse électronique', 'v': IdentiteClinique.email},
+            {'k': 'Autorisation d’ouverture', 'v': IdentiteClinique.autorisation},
+            {'k': 'IFU', 'v': IdentiteClinique.ifu},
+            {'k': 'RCCM', 'v': IdentiteClinique.rccm},
+          ])
+            if ('${l['v']}'.isNotEmpty) l,
         ])),
       ],
       signatures: const [Signature('La Directrice Administrative', nom: 'TAKI Alimatou')]);
@@ -157,7 +181,9 @@ class _CarteApercu extends StatelessWidget {
   Widget _logo() => Image.asset(CfaIdentite.logo, width: 48, height: 48, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const SizedBox(width: 48, height: 48));
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ValueListenableBuilder<int>(valueListenable: versionIdentite, builder: (ctx, _, __) => _construire(ctx));
+
+  Widget _construire(BuildContext context) {
     final c = ContexteEcran.of(context);
     const t = TextStyle(color: JetonsShell.slate700);
     return CarteSigh(
@@ -171,11 +197,17 @@ class _CarteApercu extends StatelessWidget {
                 const SizedBox(width: 16),
                 Flexible(
                     child: Column(children: [
-                  const Text('CLINIQUE NASSIERA TOO', style: TextStyle(fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w700, color: JetonsShell.navy950)),
-                  Text('${IdentiteClinique.bp} TÉL. : ${IdentiteClinique.telephones.join(' / ')}', textAlign: TextAlign.center, style: t.copyWith(fontSize: 9)),
-                  Text('AUTORISATION D’OUVERTURE ${IdentiteClinique.autorisation}', textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
-                  Text('IFU : ${IdentiteClinique.ifu}   RCCM : ${IdentiteClinique.rccm}', textAlign: TextAlign.center, style: t.copyWith(fontSize: 8, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
-                  Text('E-mail : ${IdentiteClinique.email}', textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
+                  // Les mêmes lignes que la pièce imprimée (feuilles.dart, pdf.dart) : une mention vide n'a ni ligne ni libellé.
+                  Text(IdentiteClinique.nomCourt,
+                      key: const Key('cfa:apercu:nom'), style: const TextStyle(fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w700, color: JetonsShell.navy950)),
+                  if (IdentiteClinique.ligneCoordonnees.isNotEmpty)
+                    Text(IdentiteClinique.ligneCoordonnees, textAlign: TextAlign.center, style: t.copyWith(fontSize: 9)),
+                  if (IdentiteClinique.ligneAutorisation.isNotEmpty)
+                    Text(IdentiteClinique.ligneAutorisation, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
+                  if (IdentiteClinique.ligneFiscale.isNotEmpty)
+                    Text(IdentiteClinique.ligneFiscale, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
+                  if (IdentiteClinique.ligneEmail.isNotEmpty)
+                    Text(IdentiteClinique.ligneEmail, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
                 ])),
                 const SizedBox(width: 16),
                 _logo(),
@@ -219,7 +251,8 @@ class _CarteRessources extends StatelessWidget {
     return ListenableBuilder(
         listenable: col,
         builder: (ctx, _) {
-          final deposees = col.actives;
+          // La fiche de l'identité enregistrée vit dans la même collection (diffusée par la mère) : ce n'est pas une ressource graphique.
+          final deposees = [for (final x in col.actives) if (x['type'] != 'identite') x];
           final attendues = {for (final r in cfaRessourcesAttendues) r.$1};
           final lignes = <Widget>[];
           for (final r in cfaRessourcesAttendues) {

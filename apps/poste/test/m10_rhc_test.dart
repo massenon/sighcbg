@@ -291,7 +291,7 @@ void main() {
       await cliquer(t, find.byTooltip('Consulter').first);
       expect(find.byKey(const Key('rhc:carte:recto')), findsOneWidget);
       expect(find.byKey(const Key('rhc:carte:verso')), findsOneWidget);
-      for (final mot in ['Aperçu à l’échelle', 'SPÉCIMEN — APERÇU', 'BDG-00000-2026', 'Valable jusqu’au', '30/10/2028', 'Mentions du verso', '5 ligne(s)', 'CLINIQUE NASSIERA TOO']) {
+      for (final mot in ['Aperçu à l’échelle', 'SPÉCIMEN — APERÇU', 'BDG-00000-2026', 'Valable jusqu’au', '30/10/2028', 'Mentions du verso', '5 ligne(s)', IdentiteClinique.nomCourt]) {
         expect(find.textContaining(mot), findsWidgets, reason: mot);
       }
       // Le badge n'est PAS une pièce fiscale : ni IFU ni RCCM SUR LA CARTE (la règle de l'écran, elle, les nomme pour dire qu'ils n'y figurent pas).

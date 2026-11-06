@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "bj.nassieratoo" "\0"
+            VALUE "CompanyName", "bj.baguidi" "\0"
             VALUE "FileDescription", "sigh_poste" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "sigh_poste" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 bj.nassieratoo. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 bj.baguidi. All rights reserved." "\0"
             VALUE "OriginalFilename", "sigh_poste.exe" "\0"
             VALUE "ProductName", "sigh_poste" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

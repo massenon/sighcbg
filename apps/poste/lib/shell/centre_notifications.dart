@@ -233,7 +233,7 @@ final List<_Source> _sources = [
         ];
     String ou(Object? a, Object? b) => '${a ?? b ?? ''}';
     return [
-      ...par('patients', 'codeEnDoublon', 'dbl-pat', 'Dossier en doublon', 'Deux dossiers portent le même code CNT. Le code n’est jamais renuméroté (RG-01) : la Direction décide du dossier à conserver ou à fusionner.', 'm1-patients', (f) => ou(f['code'], f['id'])),
+      ...par('patients', 'codeEnDoublon', 'dbl-pat', 'Dossier en doublon', 'Deux dossiers portent le même code patient. Le code n’est jamais renuméroté (RG-01) : la Direction décide du dossier à conserver ou à fusionner.', 'm1-patients', (f) => ou(f['code'], f['id'])),
       ...par('factures', 'numeroEnDoublon', 'dbl-fac', 'Facture au numéro en double', 'Une pièce émise ne se réécrit pas : régler par avoir et réémission, ou justifier par écrit.', 'm8-factures', (f) => ou(f['numero'], f['id'])),
       ...par('factures', 'encaissementEnDoublon', 'dbl-enc', 'Encaissement en double', 'La même ligne a été encaissée par deux guichets : vérifier la caisse et rembourser par avoir si besoin.', 'm8-factures', (f) => ou(f['numero'], f['id']), 'critique'),
       ...par('avoirs', 'numeroEnDoublon', 'dbl-avo', 'Avoir au numéro en double', 'Une pièce émise ne se réécrit pas : la Direction tranche.', 'm8-facture-avoir', (f) => ou(f['numero'], f['id'])),

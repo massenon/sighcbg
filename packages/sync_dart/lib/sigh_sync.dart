@@ -1,4 +1,4 @@
-/// Moteur de synchronisation SIGH-CNT : poste mère, poste fileul, mobile.
+/// Moteur de synchronisation SIGH-CBG (repris de SIGH-CNT) : poste mère, poste fileul, mobile.
 library;
 
 export 'src/commun.dart' show arg, uuid7, Err;

@@ -22,7 +22,7 @@ class CoffreCleMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: 'SIGH-CNT : coffre de la clé de la clinique');
+        return new Envelope(subject: 'SIGH-CBG : coffre de la clé de la clinique');
     }
 
     public function content(): Content

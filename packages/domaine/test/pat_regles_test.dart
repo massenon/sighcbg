@@ -7,6 +7,7 @@ import 'aide_vecteurs.dart';
 String nn(Object? x) => '$x'.replaceAll(RegExp('[\u00A0\u202F]'), ' ');
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final maintenant = DateTime(2026, 10, 30, 12);
 
   group('RG-01 — prochain code patient', () {

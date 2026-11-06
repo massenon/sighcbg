@@ -124,10 +124,10 @@ Widget enteteCode(String code) => Padding(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: JetonsShell.slate300)),
           child: Text(code, key: const Key('m1:code'), style: monoM1.copyWith(fontSize: 14, color: JetonsShell.slate900))),
-      const Padding(
-          padding: EdgeInsets.only(top: 4),
-          child: Text('RG-01 — attribué automatiquement au format CNT/[n° d’ordre]/[année] ; non modifiable après création.',
-              style: TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12))),
+      Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text('RG-01 — attribué automatiquement au format ${IdentiteClinique.sigle}/[n° d’ordre]/[année] ; non modifiable après création.',
+              style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12))),
     ]));
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'RG-01 — Chaque patient est identifié par un code unique au format CNT/[n° d’ordre]/[année], généré automatiquement et non modifiable après création.';
+      'RG-01 — Chaque patient est identifié par un code unique au format ${IdentiteClinique.sigle}/[n° d’ordre]/[année], généré automatiquement et non modifiable après création.';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {
@@ -331,7 +331,7 @@ class EcranPatientNouveau extends StatefulWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'RG-01 — le code CNT/[n° d’ordre]/[année] est attribué d’office et ne se modifie plus. Il est réservé à l’ouverture de l’écran : deux guichets qui saisissent en même temps n’obtiennent pas le même numéro.';
+      'RG-01 — le code ${IdentiteClinique.sigle}/[n° d’ordre]/[année] est attribué d’office et ne se modifie plus. Il est réservé à l’ouverture de l’écran : deux guichets qui saisissent en même temps n’obtiennent pas le même numéro.';
 
   @override
   State<EcranPatientNouveau> createState() => _EtatPatientNouveau();

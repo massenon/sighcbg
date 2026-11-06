@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show qualGenererJeton;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, qualGenererJeton;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
@@ -372,7 +372,7 @@ void main() {
         expect(find.byKey(const Key('qual:lien-invalide')), fermee ? findsOneWidget : findsNothing);
         if (fermee) {
           expect(find.text('Ce lien n’est plus valable.'), findsOneWidget);
-          expect(find.textContaining('Tél. 01 95 44 51 51 / 01 66 43 28 20'), findsOneWidget);
+          expect(find.textContaining('Tél. ${IdentiteClinique.telephones.join(' / ')}'), findsOneWidget);
           // Ni le titre de l'enquête, ni rien qui la nomme.
           expect(find.textContaining('Satisfaction des patients'), findsNothing);
           expect(find.byType(FormulaireSigh), findsNothing);

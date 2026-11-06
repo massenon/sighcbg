@@ -8,6 +8,7 @@ library;
 import '../caisse/prise_en_charge.dart' show carteValide;
 import '../format/format_fr.dart';
 import '../format/js.dart' show arrondiJs, nombreOuZero;
+import '../impression/identite.dart';
 import 'pat_patients.dart';
 
 /// Un type de pièce certifiante (collection `typesPiece` de la maquette, semée au socle).
@@ -47,13 +48,13 @@ const patTypesPiece = <PatTypePiece>[
 String _pad(int n, int l) => n.toString().padLeft(l, '0');
 
 /// `numeroter(t)` : le numéro d'ordre est propre au sigle ET à l'année (la série repart à 1 chaque 1er janvier, comme le registre papier) ; il
-/// compte les pièces de la série, archivées comprises. Référence : `<SIGLE> 007/007/CNT/<direction>/<année>`.
+/// compte les pièces de la série, archivées comprises. Référence : `<SIGLE> 007/007/CBG/<direction>/<année>` (le sigle de la clinique, lu de l’identité).
 ({int numero, int annee, String reference}) patNumeroter(PatTypePiece t, Iterable<FichePat> pieces, int annee) {
   final n = pieces.where((x) => x['sigle'] == t.sigle && x['annee'] == annee).length + 1;
   return (
     numero: n,
     annee: annee,
-    reference: '${t.sigle} ${_pad(n, 3)}/${_pad(n, 3)}/CNT/${t.direction}/$annee'
+    reference: '${t.sigle} ${_pad(n, 3)}/${_pad(n, 3)}/${IdentiteClinique.sigle}/${t.direction}/$annee'
   );
 }
 

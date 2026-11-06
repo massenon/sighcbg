@@ -6,6 +6,8 @@
 library;
 
 import '../format/recherche.dart' show normaliser;
+import '../impression/identite.dart';
+import '../referentiels/regles.dart' show codePatient, reCodePatient;
 import 'donnees_import.dart';
 import 'moteur_import.dart';
 
@@ -319,7 +321,7 @@ final JeuImport jeuPersonnel = JeuImport(
 
 // --- 3. PATIENTS -------------------------------------------------------------------------------------------------------------------
 
-final _reCodePatient = RegExp(r'^CNT/?\d+/\d{2}$');
+final _reCodePatient = reCodePatient;
 
 final JeuImport jeuPatients = JeuImport(
   id: 'patients',
@@ -336,7 +338,7 @@ final JeuImport jeuPatients = JeuImport(
   colonnes: [
     _col('code', 'Code dossier', 'texte',
         motif: _reCodePatient,
-        motifTexte: 'code de la forme CNT/n/AA',
+        motifTexte: 'code de la forme ${IdentiteClinique.sigle}/n/AA',
         exemple: '',
         aide: 'RG-01 : un code existant du registre papier est conservé tel quel et ne se modifie jamais. Vide : le prochain code est attribué automatiquement.'),
     _oblig('nom', 'Nom', 'texte', longueurMax: 60, exemple: 'ADJOVI'),
@@ -404,7 +406,7 @@ final JeuImport jeuPatients = JeuImport(
   ecrire: (lignes, ecrireFiche, lot, ctx, port) {
     final rangs = <String, int>{};
     void noter(String? code) {
-      final m = code == null ? null : RegExp(r'^CNT/?(\d+)/(\d{2})$').firstMatch(code);
+      final m = code == null ? null : reCodePatient.firstMatch(code);
       if (m != null) {
         final k = int.parse(m[1]!);
         if (k > (rangs[m[2]!] ?? 0)) rangs[m[2]!] = k;
@@ -425,7 +427,7 @@ final JeuImport jeuPatients = JeuImport(
       if (code == null) {
         final an = creation.substring(2, 4);
         rangs[an] = (rangs[an] ?? 0) + 1;
-        code = 'CNT/${rangs[an]}/$an';
+        code = codePatient(rangs[an]!, an);
       }
       final fiche = <String, Object?>{
         'code': code,

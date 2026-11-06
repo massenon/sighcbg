@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:sigh_domaine/sigh_domaine.dart' show codePatient;
+
 import 'commun.dart';
 
 class ConfigFileul {
@@ -155,7 +157,7 @@ class Fileul {
     if (p.isNotEmpty && (p.first['prochain'] as int) <= (p.first['fin'] as int)) {
       final n = p.first['prochain'] as int;
       base.exec("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'");
-      return 'CNT/$n/26';
+      return codePatient(n, 2026);
     }
     return 'PROV-${hexAlea(4)}';
   }

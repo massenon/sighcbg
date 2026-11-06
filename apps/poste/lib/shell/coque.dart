@@ -6,6 +6,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/config_poste.dart';
 import '../core/donnees_navigation.dart';
+import '../core/identite_poste.dart';
 import '../modules/registre.dart';
 import '../sync/etat_sync.dart';
 import 'barre_superieure.dart';
@@ -166,6 +167,9 @@ class _CoquePosteState extends State<CoquePoste> {
     ChoixExercice.reinitialiser();
     ChoixExercice.valeur.addListener(_surChoixExercice);
     _brancherDroits();
+    // L'identité enregistrée du magasin (cfg-branding) : appliquée à l'ouverture de la coque, puis suivie (idempotent avec le démarrage du poste).
+    final magasinIdentite = widget.magasin;
+    if (magasinIdentite != null) brancherIdentite(magasinIdentite);
     _suivreInstallation();
     final demande = widget.ecranInitial;
     if (demande != null && _estAutonome(demande)) _autonome = demande;

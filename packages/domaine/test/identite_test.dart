@@ -110,7 +110,7 @@ void main() {
       expect(accRegleManquantes('court'), hasLength(3));
       expect(accRegleManquantes('motdepasseassezlong'), ['Au moins une majuscule et une minuscule', 'Au moins un chiffre et un caractère spécial']);
       expect(accRegleManquantes('Motdepasseassezlong1'), ['Au moins un chiffre et un caractère spécial']);
-      expect(accRegleManquantes('Clinique#Natitingou26'), isEmpty);
+      expect(accRegleManquantes('Clinique#Parakou26'), isEmpty);
     });
 
     test('huit caractères au minimum (Direction, 02/11/2026) : sept refusés, huit acceptés', () {
@@ -125,15 +125,15 @@ void main() {
 
     test('le refus est une phrase qui nomme les règles ; null si conforme', () {
       expect(accRefusPolitique('a'), startsWith('Mot de passe non conforme à la politique : 8 caractères minimum'));
-      expect(accRefusPolitique('Clinique#Natitingou26'), isNull);
+      expect(accRefusPolitique('Clinique#Parakou26'), isNull);
     });
 
     test('le contrôle complet : concordance, politique, différent de l\'ancien', () {
-      expect(accControlerNouveauMotDePasse('Clinique#Natitingou26', 'autre'), 'Les deux mots de passe ne correspondent pas.');
+      expect(accControlerNouveauMotDePasse('Clinique#Parakou26', 'autre'), 'Les deux mots de passe ne correspondent pas.');
       expect(accControlerNouveauMotDePasse('a', 'a'), isNotNull, reason: 'la maquette acceptait « a » / « a »');
-      expect(accControlerNouveauMotDePasse('Clinique#Natitingou26', 'Clinique#Natitingou26', ancien: 'Clinique#Natitingou26'),
+      expect(accControlerNouveauMotDePasse('Clinique#Parakou26', 'Clinique#Parakou26', ancien: 'Clinique#Parakou26'),
           'Le nouveau mot de passe doit être différent de l’actuel.');
-      expect(accControlerNouveauMotDePasse('Clinique#Natitingou26', 'Clinique#Natitingou26', ancien: 'Ancien#Natitingou25'), isNull);
+      expect(accControlerNouveauMotDePasse('Clinique#Parakou26', 'Clinique#Parakou26', ancien: 'Ancien#Parakou25'), isNull);
     });
 
     test('les règles manquantes sont celles que la liste affichée à l\'écran contient', () {

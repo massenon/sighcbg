@@ -54,7 +54,7 @@ function liste(c) {
 }
 function prochainNumero() {
   const d = +meta('plage_prochain', 0); const f = +meta('plage_fin', -1);
-  if (d && d <= f) { setMeta('plage_prochain', d + 1); return `CNT/${d}/26`; }
+  if (d && d <= f) { setMeta('plage_prochain', d + 1); return `CBG/${d}/26`; }
   return 'PROV-' + crypto.randomBytes(4).toString('hex');
 }
 function ecrire(cmd) {

@@ -11,6 +11,7 @@ import 'package:sigh_poste/core/identifiants.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
+import 'package:sigh_poste/modules/auth/acc_gabarit.dart' show presentationLogiciel;
 import 'package:sigh_poste/modules/auth/acc_session.dart';
 import 'package:sigh_poste/shell/barre_superieure.dart';
 import 'package:sigh_poste/shell/contexte_autonome.dart';
@@ -31,6 +32,28 @@ List<M> fl(Object? v) => [for (final x in (v as List)) obj(x)];
 final donnees = DonneesNavigation.depuisDossier();
 final v = obj(jsonDecode(File('../../packages/domaine/test/vecteurs/acces.json').readAsStringSync()));
 final auj = DateTime(2026, 10, 30, 10);
+
+/// Les textes d'IDENTITÉ des écrans d'accès, tels que la maquette de Nassiera Too les affiche, et ce que l'écran de la Clinique Baguidi affiche à leur
+/// place (PRD P1-2 : dénomination complète, activité, ville, présentation du logiciel, devise, mention légale, toutes lues de l'identité en vigueur).
+/// Tout autre texte de la maquette est attendu tel quel.
+String baguidi(String texte) {
+  final mention = IdentiteClinique.mentionLegale.replaceFirst(RegExp(r'\.$'), '');
+  return switch (texte) {
+    'CLINIQUE NASSIERA TOO' => IdentiteClinique.nom,
+    'Natitingou — République du Bénin' => IdentiteClinique.localisation,
+    'Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.' =>
+      presentationLogiciel,
+    '« Votre santé, notre raison de vivre »' => '« ${IdentiteClinique.slogan} »',
+    'Votre santé, notre raison de vivre' => IdentiteClinique.slogan,
+    'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268' => mention,
+    'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214' => mention,
+    'CLINIQUE NASSIERA TOO SARL — SIGH-CNT' => '${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}',
+    'CLINIQUE NASSIERA TOO SARL' => IdentiteClinique.nom,
+    '3201642748214' => IdentiteClinique.ifu,
+    'RB/NAT/2016-B-268' => IdentiteClinique.rccm,
+    _ => texte,
+  };
+}
 
 List<M> jeu(String nom) => fl(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
 String sp(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
@@ -228,7 +251,7 @@ void main() {
       expect(s.etat, EtatSession.deconnectee);
       expect(sansChrome(t), isTrue);
       final vus = ex.textesVisibles(t);
-      for (final texte in (obj(v['connexion'])['textes'] as List).cast<String>()) {
+      for (final texte in (obj(v['connexion'])['textes'] as List).cast<String>().map(baguidi)) {
         if (texte == 'Identifiant ou mot de passe incorrect.') continue; // le message d'un refus, absent d'une page neuve
         final n = ex.normaliser(texte);
         expect(vus.any((x) => x.contains(n)), isTrue, reason: texte);
@@ -446,7 +469,7 @@ void main() {
       final m = poste();
       await monter(t, m, ecran: 'auth-forgot');
       final o = obj(v['oubli']);
-      for (final texte in (o['textes'] as List).cast<String>().skip(10)) {
+      for (final texte in (o['textes'] as List).cast<String>().skip(10).map(baguidi)) {
         expect(ex.textesVisibles(t).any((x) => x.contains(ex.normaliser(texte))), isTrue, reason: texte);
       }
       await bouton(t, 'Envoyer les instructions');
@@ -634,7 +657,7 @@ void main() {
         final m = poste();
         await monter(t, m, ecran: id, role: 'reception');
         final e = obj(obj(v['erreurs'])[id]);
-        for (final texte in (e['textes'] as List).cast<String>()) {
+        for (final texte in (e['textes'] as List).cast<String>().map(baguidi)) {
           expect(ex.textesVisibles(t).any((x) => x.contains(ex.normaliser(texte))), isTrue, reason: texte);
         }
         expect(find.text(code), findsOneWidget);
@@ -721,7 +744,7 @@ void main() {
         expect(find.text('${q['q']}'), findsOneWidget);
       }
       for (final l in a['apropos'] as List) {
-        expect(find.text('${(l as List)[1]}'), findsWidgets);
+        expect(find.text(baguidi('${(l as List)[1]}')), findsWidgets);
       }
       expect(find.text('Vous ne trouvez pas de réponse ?'), findsOneWidget);
       await fin(t);

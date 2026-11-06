@@ -333,14 +333,14 @@ void main() {
       await choisir(t, 'analyseCode', 'L01 — AKOP');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final p = m.collection('patients').actives.first;
-      expect(p['code'], 'CNT/901/26');
+      expect(p['code'], 'CBG/901/26');
       expect(p['nom'], 'KASSA');
       expect(p['externe'], true);
       expect(p['age'], 41);
       expect(p['ageReferenceLe'], '2026-10-30');
       expect(p['origineDossier'], 'Patient externe — laboratoire');
       final d = m.collection('demandesAnalyses').actives.first;
-      expect(d['patientCode'], 'CNT/901/26');
+      expect(d['patientCode'], 'CBG/901/26');
       expect(d['patientId'], p['id']);
       expect(d['patient'], 'KASSA Imorou');
       expect(d['origineDemande'], 'externe');

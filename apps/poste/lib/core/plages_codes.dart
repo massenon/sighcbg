@@ -43,14 +43,11 @@ class PlagesCodes {
 
   int _plusGrandRang(Iterable<Fiche> patients, int annee) {
     final suffixe = '$annee'.substring('$annee'.length - 2);
-    final re = RegExp(r'^CNT/?(\d+)/(\d{2})$');
+    // Tous les sigles se relisent (`lireCodePatient`) : un code attribué sous un sigle antérieur garde son rang (RG-01, jamais réutilisé).
     var max = 0;
     for (final p in patients) {
-      final m = re.firstMatch('${p['code'] ?? ''}');
-      if (m != null && m.group(2) == suffixe) {
-        final n = int.parse(m.group(1)!);
-        if (n > max) max = n;
-      }
+      final c = lireCodePatient(p['code']);
+      if (c != null && c.annee == suffixe && c.rang > max) max = c.rang;
     }
     return max;
   }

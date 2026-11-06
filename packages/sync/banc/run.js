@@ -233,7 +233,7 @@ const scenarios = {
     await attendre(async () => (await f1.liste('patients')).length === 2 && (await f2.liste('patients')).length === 2, 10000);
     const a = await f1.liste('patients'); const b = await f2.liste('patients');
     verifier('chaque poste voit les DEUX dossiers', a.length === 2 && b.length === 2, [a.length, b.length]);
-    verifier('deux codes distincts, aucun doublon (RG-01)', new Set(codes(a)).size === 2 && codes(a).every((c) => /^CNT\/\d+\/26$/.test(c)), codes(a));
+    verifier('deux codes distincts, aucun doublon (RG-01)', new Set(codes(a)).size === 2 && codes(a).every((c) => /^CBG\/\d+\/26$/.test(c)), codes(a));
     verifier('les deux postes tiennent les mêmes codes', JSON.stringify(codes(a)) === JSON.stringify(codes(b)));
     verifier('la mère n\'en a que deux', (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 2);
     if (process.env.SIGH_MERE === 'dart') {
@@ -250,9 +250,9 @@ const scenarios = {
     const second = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Second' } });
     verifier('le second dossier reçoit un numéro PROVISOIRE', (await f1.vue('patients', second.fiche)).data.code.startsWith('PROV-'));
     await m.mere.demarrer();
-    await attendre(async () => (await f1.vide()) && (await f1.liste('patients')).length === 2 && codes(await f1.liste('patients')).every((c) => c.startsWith('CNT/')), 15000);
+    await attendre(async () => (await f1.vide()) && (await f1.liste('patients')).length === 2 && codes(await f1.liste('patients')).every((c) => c.startsWith('CBG/')), 15000);
     const l = await f1.liste('patients');
-    verifier('plus aucun numéro provisoire après réconciliation', l.length === 2 && l.every((p) => /^CNT\/\d+\/26$/.test(p.data.code)), codes(l));
+    verifier('plus aucun numéro provisoire après réconciliation', l.length === 2 && l.every((p) => /^CBG\/\d+\/26$/.test(p.data.code)), codes(l));
     verifier('les deux numéros sont distincts', new Set(codes(l)).size === 2);
     await m.fermer();
   },
@@ -366,16 +366,16 @@ const scenarios = {
     const brut = '00000000-0000-7000-8000-000000000001';
     const { json: cb } = await m.mere.admin('POST', '/admin/code', { etiquette: 'brut' });
     const jb = (await m.mere.direct('POST', '/appairage', { code: cb.code, uuid: brut })).json;
-    const ferme = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'NASSIERA TOO', second: 'daf' });
+    const ferme = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });
     verifier('fenêtre fermée : réinitialisation refusée, nommée', ferme.status === 403 && ferme.json.code === 'reinit_fermee', ferme);
     await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
-    const sans2 = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'NASSIERA TOO' });
+    const sans2 = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI' });
     verifier('sans second profil : refusée', sans2.status === 422 && sans2.json.code === 'second_profil_requis', sans2);
     const mauvaise = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'autre', second: 'daf' });
     verifier('mauvaise confirmation : refusée', mauvaise.status === 422, mauvaise);
     m.reseau.regler('ferme');
     await f2.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Non envoyé' } });
-    const ok = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'NASSIERA TOO', second: 'daf' });
+    const ok = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });
     verifier('réinitialisation acceptée, époque + 1', ok.status === 200 && ok.json.epoch === 2, ok);
     verifier('une SAUVEGARDE préalable existe', ok.json.sauvegarde && fs.existsSync(ok.json.sauvegarde), ok.json.sauvegarde);
     const perime = await m.mere.direct('POST', '/sync/push', { epoch: 1, horloge: Date.now(), ops: [{ id: 'ancien-1', appareil: brut, epoch: 1, collection: 'patients', fiche: 'zombie', type: 'creer', champs: { nom: 'Zombie', code: 'PROV-x' } }] },
@@ -400,7 +400,7 @@ const scenarios = {
     let min = 99; const t0 = Date.now();
     while (Date.now() - t0 < 2500) { min = Math.min(min, (await f1.liste('patients')).length); await dormir(15); }
     verifier('le dossier reste visible en continu (2,5 s d\'échantillonnage, tirage ralenti)', min === 1, min);
-    verifier('et finit confirmé avec son numéro réel', await attendre(async () => { const l = await f1.liste('patients'); return l.length === 1 && /^CNT\/\d+\/26$/.test(l[0].data.code) && (await f1.vide()); }, 10000));
+    verifier('et finit confirmé avec son numéro réel', await attendre(async () => { const l = await f1.liste('patients'); return l.length === 1 && /^CBG\/\d+\/26$/.test(l[0].data.code) && (await f1.vide()); }, 10000));
     await m.fermer();
   },
   /* ===================== LE RELAIS CHIFFRÉ ET LE MOBILE (spec §11-§12) ===================== */
@@ -574,7 +574,7 @@ const scenarios = {
     const fact = await mob.ecrire({ type: 'creer', collection: 'factures', champs: { total: 1 } });
     verifier('la réception de secours enregistre hors fileuls : les 4 saisies partent par le relais', await attendre(async () => mob.vide(), 15000));
     const l = await mob.liste('patients');
-    verifier('trois dossiers, trois codes distincts DANS la plage du mobile', l.length === 3 && new Set(codes(l)).size === 3 && codes(l).every((c) => /^CNT\/\d+\/26$/.test(c)), codes(l));
+    verifier('trois dossiers, trois codes distincts DANS la plage du mobile', l.length === 3 && new Set(codes(l)).size === 3 && codes(l).every((c) => /^CBG\/\d+\/26$/.test(c)), codes(l));
     const e = await mob.etat();
     verifier('le profil « réception » ne couvre pas la caisse : refus nommé côté serveur', e.a_traiter.some((r) => r.code === 'droit_refuse' && /r[ée]ception/i.test(r.motif)), e.a_traiter);
     verifier('l\'homonyme est accepté ET signalé « doublon possible » (code jamais modifié)', e.resultats.some((r) => r.doublon_possible), e.resultats);
@@ -725,7 +725,7 @@ const scenarios = {
     verifier('une prescription pour un patient HORS LOT est refusée en le disant', await attendre(async () => (await med.etat()).resultats.some((x) => x.id === hors.id && x.code === 'patient_hors_lot' && /lot de ce téléphone/.test(x.motif) && /lot du jour/.test(x.geste)), 15000));
     verifier('et rien n\'entre à la mère', (await m.mere.admin('GET', '/admin/compte?collection=prescriptions')).json.n === 0);
     // une prescription du médecin, avec le médicament choisi dans le catalogue du lot
-    const ordo = await med.ecrire({ type: 'creer', collection: 'prescriptions', champs: { nature: 'medicament', patientId: a.fiche, patientCode: 'CNT/1/26', lignes: [{ produitId: 'PRD0001', medicament: 'PARACETAMOL 500 MG', quantite: 2, posologie: '1 cp x 3/j', dureeJours: 5 }], prescripteur: 'Dr YENI', emise: true, origine: 'mobile' } });
+    const ordo = await med.ecrire({ type: 'creer', collection: 'prescriptions', champs: { nature: 'medicament', patientId: a.fiche, patientCode: 'CBG/1/26', lignes: [{ produitId: 'PRD0001', medicament: 'PARACETAMOL 500 MG', quantite: 2, posologie: '1 cp x 3/j', dureeJours: 5 }], prescripteur: 'Dr YENI', emise: true, origine: 'mobile' } });
     verifier('la prescription est acceptée', await attendre(async () => (await med.etat()).resultats.some((x) => x.id === ordo.id && x.etat === 'acceptee'), 15000));
     verifier('le poste de la clinique reçoit la pièce (de quoi la transcrire)', await attendre(async () => (await f1.liste('prescriptions')).length === 1, 15000));
     // le poste écrit le compte rendu de transcription (journal) ; un mobile ne peut pas
@@ -736,7 +736,7 @@ const scenarios = {
     await attendre(async () => (await m.mere.admin('GET', '/admin/etat')).json.rep_seq > 0);
     verifier('et à lui seul : ni l\'infirmier ni la sage-femme ne le reçoivent', (await inf.liste('transcriptions')).length === 0 && (await sf.liste('transcriptions')).length === 0);
     // la pièce refusée au poste revient avec code, motif et geste
-    const ordo2 = await med.ecrire({ type: 'creer', collection: 'prescriptions', champs: { nature: 'medicament', patientId: a.fiche, patientCode: 'CNT/1/26', lignes: [{ produitId: 'PRD0002', medicament: 'AMOXICILLINE 500 MG', quantite: 5, posologie: '1', dureeJours: 3 }], prescripteur: 'Dr YENI', emise: true, origine: 'mobile' } });
+    const ordo2 = await med.ecrire({ type: 'creer', collection: 'prescriptions', champs: { nature: 'medicament', patientId: a.fiche, patientCode: 'CBG/1/26', lignes: [{ produitId: 'PRD0002', medicament: 'AMOXICILLINE 500 MG', quantite: 5, posologie: '1', dureeJours: 3 }], prescripteur: 'Dr YENI', emise: true, origine: 'mobile' } });
     await attendre(async () => (await f1.liste('prescriptions')).length === 2, 15000);
     await f1.ecrire({ type: 'creer', collection: 'transcriptions', champs: { prescriptionId: ordo2.fiche, patientId: a.fiche, etat: 'refusee', code: 'STOCK_INSUFFISANT', motif: 'Stock insuffisant (RG-03).', geste: 'Corriger la quantité' } });
     verifier('un refus de transcription revient avec son code, son motif et son geste', await attendre(async () => (await med.liste('transcriptions')).some((x) => x.data.prescriptionId === ordo2.fiche && x.data.etat === 'refusee' && x.data.code === 'STOCK_INSUFFISANT' && x.data.geste), 15000));
@@ -783,7 +783,7 @@ const scenarios = {
     await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Avant reinit' } });
     await attendre(async () => { const e = (await m.mere.admin('GET', '/admin/etat')).json; return (await f1.vide()) && e.rep_seq === e.seq_max; }, 15000);
     await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
-    verifier('réinitialisation acceptée', (await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'NASSIERA TOO', second: 'daf' })).status === 200);
+    verifier('réinitialisation acceptée', (await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' })).status === 200);
     await attendre(async () => (await f1.liste('patients')).length === 0, 10000);
     await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Apres reinit' } });
     await attendre(async () => { const e = (await m.mere.admin('GET', '/admin/etat')).json; return (await f1.vide()) && e.rep_seq === e.seq_max && e.seq_max > 0; }, 15000);

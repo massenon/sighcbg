@@ -71,7 +71,7 @@ class EcranCompagnies extends StatelessWidget with EcranMaquette {
           triInitial: 'n',
           taillePage: 15,
           provenance:
-              'Liste et contacts des assurances partenaires de la Clinique NASSIERA TOO.',
+              'Liste et contacts des assurances partenaires de la ${IdentiteClinique.nomCourt}.',
           champs: champsCompagnie,
           valeursCreation: const {'convention': 'Signée'},
           versFiche: _versFiche,

@@ -55,7 +55,7 @@ void main() {
             role: 'admin',
             nomPoste: 'BASSONGUI Chabi Séko'));
     expect(find.byKey(const Key('barre-superieure')), findsOneWidget);
-    expect(find.text('NASSIERA TOO'), findsOneWidget);
+    expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
     expect(find.byKey(const Key('recherche-globale')), findsOneWidget);
     expect(find.text('Ctrl K'), findsOneWidget);
     expect(find.byKey(const Key('role-courant')), findsOneWidget);

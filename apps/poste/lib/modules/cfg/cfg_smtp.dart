@@ -35,17 +35,18 @@ const _libellesEtapes = {
   'envoi': 'Envoi du message',
 };
 
-/// La configuration fournie par la clinique (valeurs NON secrètes), proposée tant que rien n'est enregistré. Le mot de passe n'y figure pas : il se saisit.
+/// La configuration proposée tant que rien n'est enregistré (valeurs NON secrètes). La Clinique Baguidi n'a pas encore fourni de serveur de courriel :
+/// serveur, identifiant et expéditeur restent VIDES (à renseigner) ; la réponse va à l'adresse de l'en-tête. Le mot de passe n'y figure pas : il se saisit.
 const Map<String, Object?> smtpDefauts = {
-  'serveur': 'mail.sigh.nassieratoo.com',
+  'serveur': '',
   'port': 587,
   'chiffrement': 'starttls',
   'delai': 20,
-  'identifiant': 'contact@sigh.nassieratoo.com',
-  'expediteur': 'contact@sigh.nassieratoo.com',
-  'nom': 'Clinique Nassièra Too',
-  'repondreA': 'cliniquenassiera@gmail.com',
-  'repondreNom': 'Clinique Nassièra Too',
+  'identifiant': '',
+  'expediteur': '',
+  'nom': 'Clinique Baguidi',
+  'repondreA': 'cliniquebaguidi@yahoo.fr',
+  'repondreNom': 'Clinique Baguidi',
 };
 
 class _EtatSmtp extends State<EcranSmtp> {

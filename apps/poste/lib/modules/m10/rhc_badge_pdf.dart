@@ -115,7 +115,7 @@ pw.Widget _carte(Fiche badge, RhcModele modele, Fiche? agent, PolicesPdf p, pw.M
                   pw.SizedBox(width: 4),
                   pw.Expanded(
                       child: pw.Column(mainAxisAlignment: pw.MainAxisAlignment.center, crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                    pw.Text('CLINIQUE NASSIERA TOO', style: s(6, f: p.gras, c: PdfColors.white)),
+                    pw.Text(IdentiteClinique.nomCourt, style: s(6, f: p.gras, c: PdfColors.white)),
                     pw.Text(IdentiteClinique.slogan, style: s(4.5, f: p.italique, c: _navy100)),
                   ])),
                 ])),
@@ -225,7 +225,7 @@ Future<Uint8List> pdfPlanche(
                     ]),
                     pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
                       pw.Text('Réf. document : $reference', style: s(6, f: polices.mono, c: _slate)),
-                      pw.Text('Édité depuis le SIGH-CNT', style: s(6, c: _slate)),
+                      pw.Text(IdentiteClinique.editeDepuis, style: s(6, c: _slate)),
                     ]),
                   ])),
             ])));

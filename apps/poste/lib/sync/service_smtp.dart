@@ -1,3 +1,4 @@
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:sigh_sync/sigh_sync.dart';
 
 import 'config_smtp.dart';
@@ -32,8 +33,8 @@ class ServiceSmtp {
       delai: int.tryParse('${f['delai']}') ?? 15,
       verifierCertificat: f['verifierCertificat'] != false,
     );
-    final r = await envoyerSmtp(cfg, [destinataire.trim()], 'SIGH-CNT : test de la messagerie',
-        'Ceci est un message de test envoyé depuis SIGH-CNT.\nSi vous le lisez, la messagerie de la clinique est correctement configurée : accents é è à ç ô, symbole €.');
+    final r = await envoyerSmtp(cfg, [destinataire.trim()], '${IdentiteClinique.logiciel} : test de la messagerie',
+        'Ceci est un message de test envoyé depuis ${IdentiteClinique.logiciel}.\nSi vous le lisez, la messagerie de la clinique est correctement configurée : accents é è à ç ô, symbole €.');
     final meme = stocke['serveur'] == cfg.serveur &&
         stocke['port'] == cfg.port &&
         stocke['identifiant'] == cfg.identifiant &&

@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 
 import '../core/config_poste.dart';
+import '../core/identite_poste.dart';
 import '../core/jetons_shell.dart';
 import '../sync/etat_sync.dart';
 import 'centre_notifications.dart';
@@ -85,9 +87,13 @@ class BarreSuperieure extends StatelessWidget {
                 const SizedBox(width: 10),
                 Flexible(
                   child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('NASSIERA TOO',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, height: 1.2)),
+                    // Le nom court de la clinique, lu de l'identité en vigueur (jamais écrit en dur).
+                    ValueListenableBuilder<int>(
+                        valueListenable: versionIdentite,
+                        builder: (_, __, ___) => Text(IdentiteClinique.nomCourt,
+                            key: const Key('barre-nom-clinique'),
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, height: 1.2))),
                     Text(config.estMere ? 'SIGH — poste mère' : 'SIGH — Gestion hospitalière',
                         overflow: TextOverflow.ellipsis, style: const TextStyle(color: JetonsShell.navy300, fontSize: 11, height: 1.2)),
                   ]),

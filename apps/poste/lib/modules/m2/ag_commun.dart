@@ -460,7 +460,7 @@ Future<void> imprimerConsultationAg(BuildContext ecran, Fiche r) {
 
 // --- le passage sans rendez-vous -----------------------------------------------------------------------------------------------------------
 
-/// `nouvelleVisite()` : un patient du répertoire, OU une personne non enregistrée (nom, prénom, quartier, téléphone) — jamais de dossier ni de code CNT.
+/// `nouvelleVisite()` : un patient du répertoire, OU une personne non enregistrée (nom, prénom, quartier, téléphone) — jamais de dossier ni de code patient.
 Future<void> passageSansRendezVousAg(BuildContext ecran) {
   final c = ContexteEcran.of(ecran);
   final m = c.magasin;
@@ -518,7 +518,7 @@ Future<void> passageSansRendezVousAg(BuildContext ecran) {
             'L’heure d’arrivée est tracée : c’est elle qui mesure l’attente à l’accueil. L’orientation dirige le patient vers le service compétent et prépare sa prise en charge.'),
         const SizedBox(height: 12),
         const NoteSigh(
-            'Deux voies, et une seule à la fois : sélectionner un patient du répertoire, ou renseigner nom, prénom, quartier et téléphone d’une personne non enregistrée. Cette seconde voie n’ouvre aucun dossier médical et ne consomme aucun code CNT (RG-01).',
+            'Deux voies, et une seule à la fois : sélectionner un patient du répertoire, ou renseigner nom, prénom, quartier et téléphone d’une personne non enregistrée. Cette seconde voie n’ouvre aucun dossier médical et ne consomme aucun code patient (RG-01).',
             icone: LucideIcons.userPlus),
         const SizedBox(height: 12),
         FormulaireSigh(controleur: ctl),

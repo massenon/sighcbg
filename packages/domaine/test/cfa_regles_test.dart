@@ -6,12 +6,19 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
+import 'aide_vecteurs.dart' show identiteBaguidi, sousLeSigleDeLaMaquette;
+
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 M lire(String nom) => obj(jsonDecode(File('test/vecteurs/$nom.json').readAsStringSync()));
 List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
 List<M> actives(String nom) => [for (final f in jeu(nom)) if (f['statut'] != 'archive') f];
+
+/// Le jeu livré est encore celui de Nassiera Too (un autre lot le remplace) : ses textes passent par la substitution d'identité avant comparaison.
+List<M> jeuIdentite(String nom) => [
+      for (final f in jeu(nom)) {for (final e in f.entries) e.key: e.value is String ? identiteBaguidi(e.value as String) : e.value}
+    ];
 
 /// Les espaces (ordinaires, fines, insécables) ne comptent pas dans une comparaison de libellés.
 String s(Object? v) => '$v'.replaceAll(RegExp(r'[\s  ]'), '');
@@ -44,6 +51,7 @@ void fiche(M obtenue, M attendue, [String ctx = '']) {
 CfaFiche sansStatut(CfaFiche f) => {...f}..remove('statut');
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lire('cfg');
   final constantes = obj(v['constantes']);
   final jour = '${constantes['jour']}';
@@ -64,11 +72,15 @@ void main() {
       final t = liste(constantes['imagerieTypes']);
       expect(cfaTypesVariableImagerie.map((x) => (x.$1, x.$2)).toList(), [for (final x in t) ('${x['code']}', '${x['label']}')]);
     });
-    test('identité : une seule, celle de la maquette', () {
+    test('identité : une seule, celle de la Clinique Baguidi (forme juridique VIDE tant que la Direction ne l’a pas saisie)', () {
       final b = obj(constantes['brand']);
-      expect(CfaIdentite.forme, b['forme']);
-      expect(CfaIdentite.adresse, b['adresse']);
+      // Forme juridique et adresse VIVENT dans IdentiteClinique (surchargeables) : CfaIdentite les relit, jamais une seconde vérité.
+      expect(CfaIdentite.forme, '');
+      expect(CfaIdentite.forme, IdentiteClinique.forme);
+      expect(CfaIdentite.adresse, b['adresse'], reason: 'vecteur passé par tools/baguidi/substitution-identite.mjs');
+      expect(CfaIdentite.adresse, IdentiteClinique.adresse);
       expect(CfaIdentite.telephoneRdv, b['telephoneRdv']);
+      expect(CfaIdentite.telephoneRdv, IdentiteClinique.telephones.first);
       expect(CfaIdentite.autorisationExerciceMotif, b['autorisationExerciceMotif']);
       expect(CfaIdentite.logo, b['logo']);
     });
@@ -227,7 +239,7 @@ void main() {
     test('aperçu : les variables sont remplacées, un jeton inconnu reste tel quel', () {
       for (final a in liste(r['apercus'])) {
         final ligne = (a['ligne'] as List).cast<String>();
-        final modele = jeu('modelesMessage').firstWhere((m) => m['libelle'] == ligne[0]);
+        final modele = jeuIdentite('modelesMessage').firstWhere((m) => m['libelle'] == ligne[0]);
         final ap = cfaApercuMessage('${modele['texte']}', clinique: IdentiteClinique.nom, telephone: CfaIdentite.telephoneRdv, jour: jour);
         expect(s(a['tiroir']).endsWith(s('Aperçu, variables remplacées$ap')), isTrue, reason: ligne[0]);
         expect(s(cfaCoupeTexte('${modele['texte']}')), s(ligne[2]));
@@ -236,7 +248,7 @@ void main() {
       expect(cfaApercuMessage('{{nom}} {{inconnu}}', clinique: 'C', telephone: 'T', jour: jour), '$cfaNomExemple {{inconnu}}');
     });
     test('modèles proposés = ceux que la maquette amorce', () {
-      final m = jeu('modelesMessage');
+      final m = jeuIdentite('modelesMessage');
       expect(m.length, cfaModelesProposes.length);
       for (final p in cfaModelesProposes) {
         final x = m.firstWhere((f) => f['occasion'] == p.$1);
@@ -256,7 +268,7 @@ void main() {
       final patients = [
         for (var i = 0; i < 2; i++) {...pj.firstWhere((p) => p['id'] == ids[i]), 'dateNaissance': obj(liste(a['patients'])[i])['dateNaissance']}
       ];
-      final modeles = jeu('modelesMessage');
+      final modeles = jeuIdentite('modelesMessage');
       var n = 0;
       final p1 = cfaPreparerAnniversaires(modeles: modeles, patients: patients, rappelsExistants: [], jour: '${a['jour']}', clinique: IdentiteClinique.nom, telephone: CfaIdentite.telephoneRdv, prochaineRef: () => 'RPL-${(++n).toString().padLeft(5, '0')}');
       final attendus = {for (final x in liste(obj(a['premier'])['rappels'])) '${x['reference']}': x};
@@ -312,26 +324,48 @@ void main() {
   group('cfg-entetes et cfg-branding : UNE identité légale', () {
     final e = obj(v['entetes']);
     final b = obj(v['branding']);
-    test('indicateurs : un IFU, un RCCM, une autorisation, tous les états', () {
-      kpis(cfaKpisEntetes(), e['kpis']);
+    test('indicateurs : un IFU, un RCCM imprimés ; l’autorisation d’ouverture, VIDE, se compte 0 et le dit', () {
+      final attendus = (e['kpis'] as List).cast<List>();
+      final k = cfaKpisEntetes();
+      // IFU, RCCM et « États alimentés » : ceux de la maquette (vecteur passé par la substitution d'identité).
+      for (final i in [0, 1, 3]) {
+        expect([k[i].libelle, k[i].valeur, k[i].indice], [attendus[i][0], attendus[i][1], attendus[i][2]], reason: k[i].libelle);
+      }
+      expect([k[2].libelle, k[2].valeur, k[2].ton], ['Autorisation d’ouverture', '0', 'warning']);
+      IdentiteClinique.appliquer({'autorisation': 'N° 001/MS/2026'});
+      expect([cfaKpisEntetes()[2].valeur, cfaKpisEntetes()[2].ton], ['1', 'success']);
     });
-    test('la grille de l’identité est celle que l’écran affiche, ligne à ligne', () {
+    test('la grille de l’identité : les mentions de la maquette, dans son ordre ; une mention vide le DIT', () {
       final texte = s(e['texte']);
+      final g = {for (final p in cfaGrilleIdentite()) p.$1: p.$2};
       var pos = 0;
-      for (final p in cfaGrilleIdentite()) {
-        final i = texte.indexOf(s('${p.$1}${p.$2}'), pos);
-        expect(i, greaterThanOrEqualTo(0), reason: '${p.$1} : ${p.$2}');
+      for (final l in ['Devise de l’établissement', 'Adresse', 'Téléphones', 'Ligne rendez-vous', 'Courriel', 'IFU', 'RCCM']) {
+        final i = texte.indexOf(s('$l${g[l]}'), pos);
+        expect(i, greaterThanOrEqualTo(0), reason: '$l : ${g[l]}');
         pos = i;
       }
+      expect(g['Dénomination'], IdentiteClinique.nom, reason: 'forme juridique vide : rien n’est accolé à la dénomination');
+      for (final l in ['Forme juridique', 'Autorisation d’ouverture', 'Formule de politesse des factures']) {
+        expect(g[l], cfaMentionARenseigner, reason: l);
+      }
+      IdentiteClinique.appliquer({'forme': 'SARL', 'autorisation': 'N° 001/MS/2026'});
+      final g2 = {for (final p in cfaGrilleIdentite()) p.$1: p.$2};
+      expect(g2['Dénomination'], '${IdentiteClinique.nom} — SARL');
+      expect(g2['Autorisation d’ouverture'], 'N° 001/MS/2026');
       expect(s(e['texte']).contains(s(cfaNoteAnciennesPieces)), isTrue);
     });
-    test('les valeurs du formulaire d’identité sont celles de C.BRAND de la maquette', () {
+    test('les valeurs du formulaire d’identité : l’identité en vigueur ; les mentions inconnues arrivent VIDES', () {
       final champs = obj(b['champs']);
       final v0 = cfaValeursIdentite();
-      expect(v0.keys.toSet(), champs.keys.toSet());
+      // Le formulaire porte deux champs de plus que la maquette : le nom court de l'en-tête et la formule de politesse des factures.
+      expect(v0.keys.toSet(), {...champs.keys, 'nomCourt', 'formulePolitesse'});
       for (final k in champs.keys) {
+        if (k == 'forme' || k == 'autorisation') continue;
         expect(v0[k], champs[k], reason: k);
       }
+      expect([v0['forme'], v0['autorisation'], v0['formulePolitesse']], ['', '', '']);
+      expect(v0['nomCourt'], 'CLINIQUE BAGUIDI');
+      expect(cfaValeursIdentite(options: {'doubleLogo': false, 'filigrane': 'Confidentiel'})['doubleLogo'], false);
     });
     test('le pied du papier à en-tête', () {
       final ap = '${b['apercu']}';

@@ -22,7 +22,7 @@ const DB = arg('db', ':memory:');
 const ADMIN = arg('admin', 'admin-banc');
 const CODE_TTL = +arg('code-ttl', 15 * 60 * 1000);
 const JETON_TTL = +arg('jeton-ttl', 24 * 3600 * 1000);
-const CLINIQUE = 'NASSIERA TOO';
+const CLINIQUE = 'BAGUIDI'; // la même phrase que IdentiteClinique.confirmationReinit (Dart)
 const DERIVE_MAX_MS = 2 * 60 * 1000;
 const RELAIS = arg('relais', ''); const SECRET_RELAIS = arg('secret-relais', 'secret-mere');
 const RESTAURER = arg('restaurer', '0') === '1'; const CLE_ARG = arg('cle', '');
@@ -147,10 +147,10 @@ function traiter(op, app) {
     const champs = Object.assign({}, op.champs);
     let numero;
     if (op.collection === 'patients') {
-      const m = /^CNT\/(\d+)\/26$/.exec(String(champs.code || ''));
+      const m = /^[A-Z]{2,6}\/(\d+)\/26$/.exec(String(champs.code || '')); // tout sigle se relit (CNT, CBG…)
       if (!champs.code || String(champs.code).startsWith('PROV-')) {
         const n = +meta('next_patient'); setMeta('next_patient', n + 1);
-        champs.code = `CNT/${n}/26`; numero = champs.code;
+        champs.code = `CBG/${n}/26`; numero = champs.code; // le sigle de la Clinique Baguidi
       } else if (!m) {
         return refus('numero_invalide', 'Code patient mal formé : ' + champs.code, 'Laisser le poste attribuer le code');
       } else {
@@ -605,7 +605,7 @@ async function restaurer() {
           maxSeq = Math.max(maxSeq, op.seq); maxEpoch = Math.max(maxEpoch, op.epoch);
         }
       }
-      const nums = db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all().map((r) => +((/^CNT\/(\d+)\/26$/.exec(r.c || '') || [])[1] || 0));
+      const nums = db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all().map((r) => +((/^[A-Z]{2,6}\/(\d+)\/26$/.exec(r.c || '') || [])[1] || 0));
       setMeta('next_patient', Math.max(1000, ...nums) + 1);
       setMeta('rep_seq', maxSeq); setMeta('rep_n', n); setMeta('epoch', maxEpoch + 1);
       db.exec(`INSERT OR REPLACE INTO sqlite_sequence(name,seq) VALUES('operations',${maxSeq})`);

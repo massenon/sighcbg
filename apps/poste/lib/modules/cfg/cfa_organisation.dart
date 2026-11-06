@@ -209,7 +209,7 @@ class _OngletOrganigramme extends StatelessWidget {
           final racines = cfaArbre(plats);
           String nomDe(Object? id) => plats.where((p) => p['id'] == id).map((p) => '${p['poste']}').firstOrNull ?? '—';
           void imprimer() => cfaImprimer(context,
-              titre: 'Organigramme de la Clinique NASSIERA TOO',
+              titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',
               sousTitre: 'Structure organisationnelle et correspondance des rôles',
               cartouche: [
                 ('Effectif total', '${nombre(cfaEffectifTotal(racines))} agents'),
@@ -229,7 +229,7 @@ class _OngletOrganigramme extends StatelessWidget {
               signatures: const [Signature('La Directrice Administrative', nom: 'TAKI Alimatou'), cfaSignDm]);
           return cfaPile([
             CarteSigh(
-                titre: 'Organigramme de la Clinique NASSIERA TOO',
+                titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',
                 actions: [BoutonSigh(libelle: 'Imprimer l’organigramme', icone: LucideIcons.printer, variante: VarianteBouton.secondaire, taille: TailleBouton.sm, onPressed: imprimer)],
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [for (final r in racines) _noeud(c.magasin, r, 0)])),
             CfaTableau(
@@ -278,7 +278,7 @@ class _OngletOrganigramme extends StatelessWidget {
               valeursInitiales: () => {'effectif': '1', 'role': 'agentadmin'},
               fiche: (s, e) => cfaFichePoste(s),
             ),
-            cfaSource('Organigramme de la Clinique NASSIERA TOO — document de cadrage, désormais administrable.'),
+            cfaSource('Organigramme de la ${IdentiteClinique.nomCourt} : document de cadrage, désormais administrable.'),
           ], espace: 12);
         });
   }

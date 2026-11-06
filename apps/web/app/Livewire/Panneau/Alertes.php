@@ -18,8 +18,8 @@ class Alertes extends Component
     {
         $dest = (string) optional(auth()->user())->email;
         try {
-            Mail::raw('Courriel de test du relais SIGH-CNT, envoyé à '.Format::date(Format::maintenant()).'. Il ne contient aucune donnée de patient.', function ($m) use ($dest) {
-                $m->to($dest)->subject('Relais SIGH-CNT : courriel de test');
+            Mail::raw('Courriel de test du relais SIGH-CBG, envoyé à '.Format::date(Format::maintenant()).'. Il ne contient aucune donnée de patient.', function ($m) use ($dest) {
+                $m->to($dest)->subject('Relais SIGH-CBG : courriel de test');
             });
             $this->message = 'Courriel de test envoyé à '.$dest.'.';
             $detail = 'envoyé';

@@ -3,6 +3,7 @@
 /// code de la maquette, mot pour mot : ce sont des textes qu'un agent lit, pas des données qu'on invente.
 library;
 
+import '../impression/identite.dart';
 import '../navigation/manifeste.dart';
 
 /// Coordonnées de l'éditeur (`EDITEUR` de la maquette).
@@ -48,9 +49,10 @@ class AccQuestion {
   final String r;
 }
 
-const List<AccQuestion> accFaq = [
+/// Les questions fréquentes. Une liste CALCULÉE et non constante : la réponse sur le numéro de dossier cite le sigle de la clinique en vigueur.
+List<AccQuestion> get accFaq => [
   AccQuestion('Comment est attribué le numéro de dossier d’un patient ?',
-      'Automatiquement, au format <code>CNT/[n° d’ordre]/[année]</code> — par exemple <code>CNT/530/25</code>. Le champ est verrouillé à la saisie : il ne peut être ni choisi ni modifié après création (règle RG-01). C’est cette unicité qui permet de retrouver un dossier partout dans l’application.'),
+      'Automatiquement, au format <code>${IdentiteClinique.sigle}/[n° d’ordre]/[année]</code> — par exemple <code>${IdentiteClinique.sigle}/530/25</code>. Le champ est verrouillé à la saisie : il ne peut être ni choisi ni modifié après création (règle RG-01). C’est cette unicité qui permet de retrouver un dossier partout dans l’application.'),
   AccQuestion('Pourquoi le prix de vente d’un médicament est-il égal à son prix d’achat ?',
       'C’est la règle RG-02 arrêtée par la clinique : les médicaments sont facturés au prix d’achat, sans marge. Toute exception doit être validée par la Direction et reste tracée. Le référentiel tarifaire signale immédiatement une ligne dont le prix de vente s’écarterait du prix d’achat.'),
   AccQuestion('Un patient présente une carte d’assurance expirée : que fait le système ?',

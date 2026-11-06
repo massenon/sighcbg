@@ -108,7 +108,7 @@ void main() {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-organisation');
     await toucherM14(t, find.text('Organigramme').first);
-    expect(find.text('Organigramme de la Clinique NASSIERA TOO'), findsOneWidget);
+    expect(find.text('Organigramme de la CLINIQUE BAGUIDI'), findsOneWidget);
     expect(find.text('Postes — création, réaffectation et archivage'), findsOneWidget);
     expect(find.text('(01)'), findsWidgets);
     expect(find.widgetWithText(BoutonSigh, 'Imprimer l’organigramme'), findsOneWidget);

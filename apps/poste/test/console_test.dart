@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:sigh_poste/kit/kit.dart';
@@ -294,7 +295,7 @@ void main() {
     await t.enterText(
         find.widgetWithText(
             TextField, 'Tapez le nom de la clinique pour confirmer'),
-        'NASSIERA TOO');
+        IdentiteClinique.confirmationReinit);
     await t.enterText(
         find.widgetWithText(
             TextField, 'Second profil confirmant (DAF ou Direction)'),
@@ -304,7 +305,7 @@ void main() {
     expect(
         f.appels.any((a) =>
             a.startsWith('POST /admin/reinitialiser') &&
-            a.contains('NASSIERA TOO') &&
+            a.contains(IdentiteClinique.confirmationReinit) &&
             a.contains('DAF')),
         isTrue);
   });

@@ -62,7 +62,7 @@ trait AvecPuitsSmtp
     {
         ReglagesSmtp::enregistrer($v + [
             'hote' => '127.0.0.1', 'port' => $this->puitsPort, 'chiffrement' => 'aucun', 'utilisateur' => '',
-            'expediteur' => 'relais@clinique.bj', 'expediteur_nom' => 'Relais SIGH-CNT', 'verifier_certificat' => false,
+            'expediteur' => 'relais@clinique.bj', 'expediteur_nom' => 'Relais SIGH-CBG', 'verifier_certificat' => false,
         ], $mdp);
     }
 

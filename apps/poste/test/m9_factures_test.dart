@@ -72,8 +72,8 @@ void main() {
       await regler(t, 'OLEA ASSURANCE', 3);
       await toucher(t, find.text('Éditer la facture mensuelle'));
       await t.pumpAndSettle();
-      expect(find.text('FA 141/04/CNT/2026 — OLEA ASSURANCE'), findsOneWidget);
-      expect(find.textContaining('RB/NAT/2016-B-268'), findsWidgets);
+      expect(find.text('FA 141/04/CBG/2026 — OLEA ASSURANCE'), findsOneWidget);
+      expect(find.textContaining(IdentiteClinique.rccm), findsWidgets);
       expect(find.textContaining('soixante-dix-sept mille francs CFA'), findsOneWidget);
     });
 
