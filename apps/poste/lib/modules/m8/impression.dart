@@ -18,6 +18,8 @@ Future<void> imprimerFacture(BuildContext ctx, Fiche f,
       ctx,
       pieceFacture(f,
           proforma: proforma,
+          // MECeF fermé (bascule P0-5) : la pièce imprimée ne porte pas le bloc fiscal ; l'en-tête légal (IFU, RCCM) reste.
+          mecefActif: mecefEnService(c.magasin),
           jumelle: jumelle,
           utilisateur: acteur(c).nom,
           edite: c.aujourdhui,

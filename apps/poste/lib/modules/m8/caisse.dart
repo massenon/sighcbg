@@ -345,12 +345,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
             ('Part patient', money(f['partPatient'])),
             ('Encaissé', money(f['montantPaye'])),
             ('Reste dû', money(f['reliquat'])),
-            (
-              'Base MECeF',
-              f['baseMecef'] != null
-                  ? money(f['baseMecef'])
-                  : money(f['montantPaye'])
-            ),
+            // La rubrique fiscale ne se montre que sur une pièce qui en porte : une pièce émise MECeF fermé n'a ni baseMecef ni statutMecef (P0-5).
+            if (f['baseMecef'] != null || f['statutMecef'] != null)
+              (
+                'Base MECeF',
+                f['baseMecef'] != null
+                    ? money(f['baseMecef'])
+                    : money(f['montantPaye'])
+              ),
           ]),
           const SizedBox(height: 16),
           const Text('Prestations réglées',

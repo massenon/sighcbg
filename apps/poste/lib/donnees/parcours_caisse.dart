@@ -56,6 +56,11 @@ ResultatCaisse encaisserFacture(
   if (fac == null)
     throw const RefusCaisse('FACTURE_INTROUVABLE', 'Facture introuvable.');
   final aujourdhui = d.iso(maintenant);
+  // L'état du module MECEF, lu dans les fermetures en vigueur et PASSÉ au moteur (P0-5) : fermé, le versement ne pose ni statutMecef ni baseMecef,
+  // et une pièce émise pendant que MECeF était ouvert garde les siens.
+  final mecefActif = d
+      .fermeturesEnVigueur(m.collection('modulesActifs').toutes)
+      .mecefEnService;
   final r = d.encaisser(
     fac,
     lignes: lignes,
@@ -64,6 +69,7 @@ ResultatCaisse encaisserFacture(
     aujourdhui: aujourdhui,
     maintenant: maintenant.toIso8601String(),
     utilisateur: m.utilisateur,
+    mecefActif: mecefActif,
     ecritures: m.collection('ecritures').actives,
   );
   // E2 (corrigé le 31/10/2026) : un versement au-delà du dû d'une pièce sans lignes est REFUSÉ en nommant le défaut ; rien n'est écrit.
@@ -93,7 +99,9 @@ ResultatCaisse encaisserFacture(
       'baseMecef',
       'dernierReglement'
     ])
-      k: f[k],
+      // MECeF fermé, le moteur ne pose pas statutMecef / baseMecef : une clé absente ne s'écrit pas (un null effacerait le champ d'une pièce
+      // émise pendant que MECeF était ouvert).
+      if (f.containsKey(k)) k: f[k],
   }));
 
   final liberees = <String>[];

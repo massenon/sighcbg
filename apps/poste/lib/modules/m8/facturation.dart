@@ -391,6 +391,8 @@ class _EtatFacturation extends State<EcranFacturation> {
       reglement: nombreOuZero(_reglement['regle']),
       proforma: proforma,
       dissocier: _reglement['dissocier'] == true,
+      // L'état du module MECEF, lu dans les fermetures en vigueur et PASSÉ au moteur (P0-5) : fermé, la pièce ne porte aucun champ fiscal.
+      mecefActif: mecefEnService(c.magasin),
       couvertures: _liste('couverturesAssurance'),
       souscripteurs: _liste('souscripteurs'),
       garanties: _liste('garanties'),
@@ -488,6 +490,8 @@ class _EtatFacturation extends State<EcranFacturation> {
     final p = _patientCourant!;
     final nbFactures = _liste('factures').length;
     final assure = t.partAssureur > 0;
+    // MECeF fermé (bascule P0-5) : le ticket ne porte ni bloc de certification ni base normalisée.
+    final mecefActif = mecefEnService(c.magasin);
     final detail = t.repartition.lignes;
     final nonAssuree = detail.fold<num>(
         0,
@@ -503,10 +507,12 @@ class _EtatFacturation extends State<EcranFacturation> {
           assure: assure ? '${p['nom']} ${p['prenom']}' : null,
           dossier: _reglement['dissocier'] == true ? null : '${p['code']}',
           date: c.aujourdhui,
-          mecef: BlocMecef(
-              nim: 'NIM${IdentiteClinique.ifu.substring(IdentiteClinique.ifu.length - 8)}',
-              code: 'CODE-DGI-EN-ATTENTE',
-              compteurs: '${nbFactures + 1}/$nbFactures FN'),
+          mecef: mecefActif
+              ? BlocMecef(
+                  nim: 'NIM${IdentiteClinique.ifu.substring(IdentiteClinique.ifu.length - 8)}',
+                  code: 'CODE-DGI-EN-ATTENTE',
+                  compteurs: '${nbFactures + 1}/$nbFactures FN')
+              : null,
           lignes: [
             for (final l in _lignes)
               LigneArticle(
@@ -521,7 +527,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           partPatient: t.partPatient,
           partNonAssuree: nonAssuree,
           regle: nombreOuZero(_reglement['regle']),
-          baseMecef: t.partPatient,
+          baseMecef: mecefActif ? t.partPatient : null,
         ),
         'T-${(nbFactures + 1).toString().padLeft(5, '0')}');
   }

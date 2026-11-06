@@ -294,7 +294,9 @@ class EcranRemboursements extends StatelessWidget with EcranMaquette {
                           facturesMere: m.collection('facturesMere').actives,
                           idAvoir: idAvoirSuivant(m),
                           jour: iso(c.aujourdhui),
-                          utilisateur: acteur(c).nom);
+                          utilisateur: acteur(c).nom,
+                          // MECeF fermé (bascule P0-5) : ni statut fiscal sur l'avoir, ni passage en « rejeté » à l'annulation.
+                          mecefActif: mecefEnService(m));
                     } on RefusOperation catch (e) {
                       ToastsSigh.afficher(ctx, e.motif, type: TypeToast.erreur);
                       return;

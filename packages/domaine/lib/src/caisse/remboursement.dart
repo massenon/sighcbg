@@ -74,6 +74,9 @@ String _ref(Iterable<Map<String, Object?>> fiches) {
 /// `Enregistrer`. [saisie] : `factureId, nature, motifAvoir, refacturation, date, montant, motif, autorisePar` (valeurs du formulaire).
 /// Pour la nature « Facture avoir », [avoirs] / [facturesMere] / [idAvoir] / [jour] / [utilisateur] alimentent le moteur unique `emettreAvoir`.
 /// Lève [RefusOperation] : champ manquant, montant non strictement positif, ou refus NOMMÉ du moteur d'avoir (plafond cumulé, mère consolidée).
+///
+/// [mecefActif] : l'état du module MECEF, lu par l'appelant dans les fermetures en vigueur et passé en paramètre (PRD Baguidi, P0-5). Module fermé,
+/// l'avoir né ici ne pose pas `statutMecef` et l'annulation ne passe plus la facture en MECeF « rejeté » : aucune notification de rejet ne naît.
 OperationEnregistree enregistrerOperation({
   required Map<String, Object?> saisie,
   required Map<String, Object?>? facture,
@@ -84,6 +87,7 @@ OperationEnregistree enregistrerOperation({
   String jour = '',
   String utilisateur = '',
   String? horodatage,
+  bool mecefActif = true,
 }) {
   bool vide(String k) => '${saisie[k] ?? ''}'.trim().isEmpty;
   if (['factureId', 'nature', 'date', 'montant', 'motif', 'autorisePar']
@@ -137,6 +141,7 @@ OperationEnregistree enregistrerOperation({
         horodatage: horodatage,
         jour: jour.isEmpty ? '${saisie['date']}' : jour,
         utilisateur: utilisateur,
+        mecefActif: mecefActif,
         facturesMere: facturesMere,
         avoirs: avoirs,
       );
@@ -148,7 +153,8 @@ OperationEnregistree enregistrerOperation({
   } else if (nature == 'Annulation' && facture != null) {
     patch = {
       'statutPaiement': 'impayee',
-      'statutMecef': 'rejete',
+      // MECeF fermé, le statut fiscal n'est pas touché : aucune notification de rejet ne doit naître (PRD Baguidi, P0-5).
+      if (mecefActif) 'statutMecef': 'rejete',
       'annulee': true
     };
   }

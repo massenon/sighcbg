@@ -429,6 +429,8 @@ class _EtatModaleAvoir extends State<_ModaleAvoir> {
         observations: '${v['observations'] ?? ''}',
         jour: iso(c.aujourdhui),
         utilisateur: acteur(c).nom,
+        // MECeF fermé (bascule P0-5) : l'avoir ne pose pas de statut fiscal.
+        mecefActif: mecefEnService(m),
         facturesMere: m.collection('facturesMere').actives,
         avoirs: avoirs.actives,
       );

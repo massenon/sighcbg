@@ -215,7 +215,8 @@ void main() {
         m.collection('factures').actives.where((f) => f['engagement'] != null);
     expect(avecEngagement.length, 1);
     expect((avecEngagement.first['engagement'] as Map)['tranches'], 1);
-    expect(find.textContaining('reconnais devoir à la Clinique NASSIERA TOO'),
+    // L'identité se lit sur IdentiteClinique (P0-2) : la sonde se DÉRIVE de la source, elle ne recopie pas un nom de clinique.
+    expect(find.textContaining('reconnais devoir à la ${IdentiteClinique.nom}'),
         findsOneWidget);
     await t.pump(const Duration(seconds: 10));
   });
