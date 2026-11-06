@@ -94,6 +94,41 @@ Palette déduite du logo, **à confirmer** par les valeurs hexadécimales mesur�
 
 Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) : `draft/logo.png`, `draft/Cliniqur BAGUIDI LAS DU COEUR.png`, `draft/design/login_exemple*.png|jpg`.
 
+## 4 bis. Identification fiscale, numérotation et obligations (fournies le 06/11/2026)
+
+**Identification fiscale.** Dénomination, IFU, RCCM : voir §4. Adresse fiscale : 02 BP : 105 PARAKOU (Rép. du Bénin). Devise : **FCFA (XOF)**. Forme juridique et autorisation d'ouverture : « à compléter par la Direction ».
+
+**Régime de TVA : taux normal 18 %.** C'est une **différence de fond avec Nassiera Too**, qui est en régime **exonéré** (produits et actes de santé, TVA à 0 et net à payer = HT + AIB 1 %, facture certifiée MECeF à l'appui). Le moteur sait déjà faire les deux : `packages/domaine/lib/src/caisse/mecef.dart` porte les régimes `exonere` et `normal` (18 %), et le régime est un **paramètre** de `mecef-config`. Le passer à `normal` est donc une **configuration**, pas un développement. Mais une erreur de régime fausse chaque facture normalisée et chaque déclaration : **Q21** demande confirmation écrite, et si certaines natures restent exonérées (médicaments, actes de soins) alors que d'autres sont taxables (prestations de médecine du travail facturées aux entreprises), le régime doit être porté **par nature d'article**, pas par établissement.
+
+**Numérotation des documents.**
+
+| Document | Format Baguidi | Séquence | Remarque |
+|---|---|---|---|
+| Facture normalisée | `FN-AAAA-NNNNN` | strictement séquentielle | |
+| Facture pro-forma | `PRO-AAAA-NNNNN` | indépendante | l'écran `m8-proforma` est fermé par P0-4 : à rouvrir si Baguidi émet des pro-forma (Q22) |
+| Avoir | `AV-AAAA-NNNN` | strictement séquentielle | 4 chiffres, pas 5 |
+| Dossier patient | `CBG/[n°]/[AA]` | par année civile (RG-01) | M1 est fermé : le format est **paramétré pour la réouverture**, il ne sert pas en version 1 |
+| Bon de commande | `BC-AAAA-NNNN` | par exercice | |
+| Bon d'expression de besoins | `BEB-AAAA-NNNN` | par exercice | |
+| Bulletin de paie | `BP-NNNNN` | par période de paie | ⚠ « par période » avec un numéro sans année : la numérotation repart-elle à 1 chaque mois ? Deux bulletins `BP-00001` coexisteraient alors (Q23) |
+| Écriture comptable | `JJJ-AAAA-NNNNN` | par journal | `JJJ` = code du journal (VTE, ACH, BQE, CAI, SAL, OD, AN…) |
+
+**Exigence P0-10 (numérotation)** : chaque format ci-dessus est appliqué par la fabrique de numéros existante du document concerné, à la place du format de Nassiera Too. Ce qui est « strictement séquentiel » ne présente **aucun trou** : un numéro attribué ne se réattribue jamais, une pièce annulée garde le sien (avoir, RG-14). La reprise des séquences sur plusieurs postes suit le mécanisme existant des plages allouées par la mère.
+- *Critères* : 100 factures normalisées émises sur deux postes fileuls et la mère donnent `FN-2026-00001` à `FN-2026-00100` sans trou ni doublon ; changement d'année = reprise à 1 ; un bulletin et une écriture portent le format attendu.
+- À vérifier dans le code : la base construit-elle ces préfixes en dur dans chaque fabrique, ou depuis un paramètre ? S'ils sont en dur, la bonne correction est de les **paramétrer** (une table de formats), pas de les réécrire un par un : c'est ce qui permettra la troisième clinique.
+
+**Obligations déclaratives.**
+
+| Déclaration | Périodicité | Échéance Baguidi | Base Nassiera Too | Écran producteur dans le logiciel |
+|---|---|---|---|---|
+| Cotisations CNSS | mensuelle | **15** du mois suivant | **10** du mois suivant (`D.CALENDRIER_FISCAL`) | `m11` état des cotisations CNSS ; suivi `m12-echeances` |
+| ITS | mensuelle | 10 du mois suivant | 10 | `m11` état ITS ; `m12-echeances` |
+| VPS | mensuelle | 10 du mois suivant | 10 | `m11` état VPS ; `m12-echeances` |
+| Transmission des factures normalisées | continue | à l'émission | à l'émission | `MECEF` (centre de supervision) |
+| États financiers de synthèse | annuelle | clôture de l'exercice | 30 avril (liquidation du solde puis dépôt) | `m12-etats-financiers`, `m12-cloture` |
+
+Le calendrier fiscal est un **référentiel** (`D.CALENDRIER_FISCAL`, semé au socle, source unique de `cfg-comptabilite` et `m12-echeances`) : y porter l'échéance CNSS au 15 alimente les deux écrans. La base porte aussi des obligations que la liste de Baguidi ne cite pas : **AIB**, quatre acomptes d'**impôt sur les sociétés**, **patente**, **CCIB**, **TVM**, redevances **ORTB** Radio/Télé (qui se cumulent), **TVA** (déclaration mensuelle, désormais due puisque le régime est au taux normal). **Q24** : sont-elles à retirer, ou la liste reçue ne cite-t-elle que les principales ? Une obligation retirée à tort ferait disparaître une échéance de l'alarme de `m12-echeances`.
+
 ## 5. Ce que l'analyse de la base a établi
 
 - **L'identité vit en un seul endroit dans le code** : `packages/domaine/lib/src/impression/identite.dart` (`IdentiteClinique`, environ 140 usages). La reprendre change toutes les pièces imprimées. Quelques fichiers la recopient en dur et doivent être alignés : `cfa_identite.dart`, `page_standard.dart` (pied de page), `cpb_liasse.dart`, `cpc_liasse.dart`, `cfa_regles.dart`.
@@ -297,7 +332,7 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q3 | Les rôles cliniques (médecin, sage-femme, biologiste, caissier…) : à archiver ou à garder ? | Direction Baguidi | Non |
 | Q4 | Registres vides à l'installation, ou jeu de démonstration **fictif** aux couleurs de Baguidi pour la formation ? | Direction Baguidi | **Oui** (P0-3) |
 | ~~Q5~~ | ~~Justificatif des sorties de pharmacie ?~~ **Tranché le 06/11/2026 : les deux** — bon de sortie interne ET caisse minimale pour les ventes de pharmacie ; le comptable reporte les ventes du logiciel de caisse patient (P0-8, P0-9) | | |
-| Q6 | ~~Sigle, BP, téléphones, e-mail~~ **fournis le 06/11/2026** (§4). Restent : **forme juridique**, **n° d'autorisation d'ouverture**, **formule de politesse** des factures, nom court | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
+| Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **forme juridique** et **n° d’autorisation d’ouverture** (« à compléter par la Direction »), **formule de politesse** des factures, nom court | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
 | Q7 | Fichier source du logo (vectoriel de préférence) et charte graphique (couleurs en hexadécimal, police) | Direction Baguidi | Oui pour P1-1/P1-2, non pour P0 |
 | Q8 | Historique git : importer avec l'historique de SIGH-CNT (report de correctifs facilité, mais l'historique contient des données de Nassiera Too et un mot de passe commis le 17/10/2026) ou en **instantané** (recommandé) ? | Ingénierie + Direction CNT | **Oui** (P0-1) |
 | Q9 | La Direction de Nassiera Too a-t-elle autorisé la réutilisation du code pour une autre clinique ? | Direction CNT, juridique | **Oui** (avant tout import) |
@@ -311,6 +346,10 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q18 | La maquette de connexion fixe la marque en **bleu** et le bouton de connexion en **rouge**. Les boutons principaux de l'application suivent-ils ce rouge, ou restent-ils bleus (recommandé) ? Voir P1-2 | Direction Baguidi + design | Non pour P0, oui pour P1-1 |
 | Q19 | Noms des trois polices de la maquette de connexion (titres, corps, devise manuscrite) et licence d'embarquement | concepteur de la maquette | Non |
 | Q20 | L'identifiant en forme d'adresse (`m-001@baguidi-clinique.bj`) est-il une règle de nommage des comptes ou un exemple ? Le domaine `baguidi-clinique.bj` existe-t-il ? | Direction Baguidi | Non |
+| Q21 | **TVA au taux normal 18 % sur TOUT ?** Nassiera Too est exonérée (produits et actes de santé). Confirmation écrite du régime de Baguidi, et liste des natures éventuellement exonérées (médicaments, soins) si le régime est mixte | Direction Baguidi + conseil fiscal | **Oui** (P0-10 et MECeF) |
+| Q22 | Baguidi émet-elle des factures pro-forma ? Si oui, `m8-proforma` reste ouvert | Direction Baguidi | Non |
+| Q23 | Bulletin `BP-NNNNN` « par période de paie » : la séquence repart-elle à 1 chaque mois (et comment distinguer deux `BP-00001`), ou est-elle continue ? | DAF Baguidi | Non |
+| Q24 | Les obligations de la base absentes de la liste reçue (AIB, acomptes IS, patente, CCIB, TVM, ORTB, déclaration de TVA) : à retirer ou à garder ? | Comptable Baguidi | Non |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
