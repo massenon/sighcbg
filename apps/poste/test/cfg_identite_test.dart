@@ -121,10 +121,10 @@ void main() {
     await t.pump();
     expect(IdentiteClinique.autorisation, '');
     expect(find.textContaining('AUTORISATION D’OUVERTURE'), findsNothing);
-    // Archiver la fiche (corbeille, RG-14) rend l'identité initiale.
+    // Archiver la fiche (corbeille, RG-14) rend l'identité initiale : la formule de politesse redevient le slogan (décision du 06/11/2026).
     m.collection('ressources').archiver(idFicheIdentite);
     appliquerIdentite(m);
-    expect(IdentiteClinique.formulePolitesse, '');
+    expect(IdentiteClinique.formulePolitesse, 'Votre bien-être est notre raison d’être.');
   });
 
   casM14('« Prévisualiser un état » ouvre le papier à en-tête avec les sept mentions', (t) async {
