@@ -488,6 +488,12 @@ class _CoquePosteState extends State<CoquePoste> {
       if (_estAutonome('error-404')) _ouvrir('error-404');
       return;
     }
+    // La page d'accueil du rôle peut être FERMÉE (activité hors périmètre : le tableau de bord du médecin à la Clinique Baguidi) : la connexion retombe
+    // alors sur l'accueil de repli du profil (premier écran de son ruban), jamais sur un refus d'accès.
+    if (id == _nav.matrice.accueil(_role) && !_nav.matrice.peutVoir(_role, id) && _fermeturePour(id) != null) {
+      _ouvrir(_accueilDuRole());
+      return;
+    }
     if (!id.startsWith('hub-') && !_nav.matrice.peutVoir(_role, id)) {
       widget.magasin?.journaliser('Accès refusé', 'M14', 'Ecran', id, null, {'role': _role});
       if (_estAutonome('error-403')) _ouvrir('error-403');

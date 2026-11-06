@@ -14,7 +14,22 @@ import 'aide_polices.dart';
 /// et les adresses AUSSITÔT, sans redémarrage.
 final donnees = DonneesNavigation.depuisDossier();
 
-Magasin jeu() => Magasin.depuisDossier(['rbac', 'modulesActifs', 'audit', 'poches', 'donneurs', 'produits', 'lots', 'demandesAnalyses', 'examensLabo']);
+/// Les deux fiches de la configuration d'extraction de `rbac.json` (banque de sang, transfusion), RÉFÉRENCE de la superposition.
+const ficheExtraction = {'MOD01', 'MOD02'};
+
+/// Le jeu livré, ramené à la configuration d'extraction : les fermetures du périmètre de la Clinique Baguidi (M1 à M5, statistiques et tableaux de bord
+/// cliniques, voir `fermetures_baguidi_test.dart`) sont rouvertes par archivage (RG-14), pour éprouver ici le MÉCANISME sur le laboratoire ouvert.
+Magasin jeu() {
+  final m = Magasin.depuisDossier(['rbac', 'modulesActifs', 'audit', 'poches', 'donneurs', 'produits', 'lots', 'demandesAnalyses', 'examensLabo']);
+  rouvrirPerimetreBaguidi(m);
+  return m;
+}
+
+void rouvrirPerimetreBaguidi(Magasin m) {
+  for (final f in m.collection('modulesActifs').actives.toList()) {
+    if (!ficheExtraction.contains(f['id'])) m.collection('modulesActifs').archiver(f['id']);
+  }
+}
 
 Future<void> monter(WidgetTester t, Magasin m, {String role = 'admin', String? ecran}) async {
   t.view.physicalSize = const Size(1600, 1000);
@@ -52,8 +67,13 @@ void main() {
   setUpAll(chargerPolices);
 
   testWidgets('ACTIVITÉ FERMÉE : la banque de sang est absente du ruban de l\'administrateur, ses adresses disent « Activité fermée » avec le motif de la fiche', (t) async {
+    // La RÉFÉRENCE de la superposition porte les deux fiches de l'extraction ; le jeu livré les garde et y ajoute le périmètre Baguidi.
+    expect(donnees.referenceModules!.map((f) => f['id']), ficheExtraction, reason: 'rbac.json a été engendré banque de sang et transfusion fermées');
+    final livre = Magasin.depuisDossier(['modulesActifs']).collection('modulesActifs').actives.map((f) => f['id']).toList();
+    expect(livre.take(2), ficheExtraction);
+    expect(livre, hasLength(9), reason: 'les deux fiches de l\'extraction et les sept fermetures du périmètre Baguidi');
     final m = jeu();
-    expect(m.collection('modulesActifs').actives, hasLength(2), reason: 'le jeu ferme la banque de sang et la transfusion');
+    expect(m.collection('modulesActifs').actives, hasLength(2), reason: 'ramené à l\'extraction : banque de sang et transfusion fermées');
     await monter(t, m, ecran: 'm5-banque-sang');
     expect(find.byKey(const Key('activite-fermee')), findsOneWidget);
     expect(find.text('Activité fermée'), findsWidgets);
@@ -154,6 +174,7 @@ void main() {
 
   testWidgets('LES DROITS DE L\'ÉCRAN suivent la fiche : lecture seule posée à chaud, la note de lecture seule paraît et la commande de création disparaît', (t) async {
     final m = Magasin.depuisDossier(['rbac', 'modulesActifs', 'audit', 'factures', 'patients', 'naturesFacture', 'avoirs', 'taches', 'actes']);
+    rouvrirPerimetreBaguidi(m);
     await monter(t, m, ecran: 'm8-factures');
     expect(find.textContaining('Lecture seule : le profil'), findsNothing);
     final avant = find.widgetWithIcon(BoutonSigh, LucideIcons.plus).evaluate().length;

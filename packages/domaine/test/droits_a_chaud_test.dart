@@ -14,7 +14,10 @@ void main() {
   final base = MatriceDroits.depuisJson(brut);
   final manifeste = Manifeste.depuisJson((jsonDecode(File('../referentiels/data/manifeste.json').readAsStringSync()) as Map).cast<String, Object?>());
   final jeuRbac = _lire('../../apps/poste/assets/donnees/jeu/rbac.json');
-  final jeuModules = _lire('../../apps/poste/assets/donnees/jeu/modulesActifs.json');
+  // La configuration des activités avec laquelle `rbac.json` a été engendré (banque de sang et donneurs fermés), RÉFÉRENCE de la superposition. Le jeu
+  // livré, lui, porte en plus les fermetures de la Clinique Baguidi (voir le dernier groupe).
+  final jeuModules = _lire('../../apps/poste/assets/donnees/modulesActifs.reference.json');
+  final jeuLivre = _lire('../../apps/poste/assets/donnees/jeu/modulesActifs.json');
 
   MatriceDroits calc({List<Fiche>? rbac, List<Fiche>? modules}) =>
       superposerDroits(base, manifeste, rbac: rbac ?? jeuRbac, modulesActifs: modules ?? jeuModules);
@@ -410,6 +413,65 @@ void main() {
       expect(m.libelle('auditeur'), 'Auditeur');
       expect(d(m, 'auditeur', 'm12-journaux'), '100');
       expect(m.peutVoir('auditeur', 'm8-caisse'), isFalse);
+    });
+  });
+
+  group('JEU LIVRÉ (Clinique Baguidi) : les fermetures du périmètre prennent effet contre la configuration de l\'extraction', () {
+    MatriceDroits livre({List<Fiche>? modules}) => superposerDroits(base, manifeste,
+        rbac: jeuRbac, modulesActifs: modules ?? jeuLivre, referenceRbac: jeuRbac, referenceModules: jeuModules);
+    const clinique = {'M1', 'M2', 'M3', 'M4', 'M5'};
+    final nommes = <String>{
+      for (final f in jeuLivre)
+        if (f['actif'] == false && f['ecrans'] is List) ...(f['ecrans'] as List).map((e) => '$e')
+    };
+    bool ferme(EcranNav e) => clinique.contains(e.module) || nommes.contains(e.id);
+    final roles = [for (final r in base.rolesBruts) '${r['id']}'];
+
+    test('le jeu livré garde les deux fiches de l\'extraction et y ajoute les fermetures Baguidi', () {
+      expect(jeuLivre.take(2).map((f) => f['id']), ['MOD01', 'MOD02']);
+      expect(jeuModules.map((f) => f['id']), ['MOD01', 'MOD02']);
+      final modules = {for (final f in jeuLivre) if (f['ecrans'] == null) '${f['module']}'};
+      expect(modules, clinique);
+      expect(nommes, containsAll(['m4-stats-maternite', 'm3-stats-hospitalisations', 'dash-medecin', 'dash-patient']));
+      for (final f in jeuLivre.skip(2)) {
+        expect(f['motif'], 'Hors périmètre Clinique Baguidi (médecine du travail)');
+        expect(f['fermeLe'], '2026-11-06');
+        expect(f['fermePar'], 'Direction');
+      }
+    });
+
+    test('aucun rôle ne voit un écran fermé ; les écrans ouverts gardent exactement leurs droits engendrés', () {
+      final m = livre();
+      for (final role in roles) {
+        for (final e in manifeste.tousLesEcrans.where((e) => !e.hub)) {
+          if (ferme(e)) {
+            expect(m.peutVoir(role, e.id), isFalse, reason: '$role voit ${e.id}');
+          } else {
+            expect(d(m, role, e.id), d(base, role, e.id), reason: '$role / ${e.id}');
+            expect(m.peutVoir(role, e.id), base.peutVoir(role, e.id), reason: '$role / ${e.id}');
+          }
+        }
+      }
+    });
+
+    test('M8, MECeF et le reste du pilotage restent ouverts ; les fermetures se nomment', () {
+      final m = livre();
+      expect(m.peutVoir('admin', 'm8-operations'), isTrue);
+      expect(m.peutVoir('admin', 'mecef-factures') || manifeste.ecran('mecef-factures') == null, isTrue);
+      expect(m.peutVoir('admin', 'm12-tableau-decisionnel'), isTrue);
+      expect(m.peutVoir('admin', 'dash-admin'), isTrue);
+      expect(m.fermetures!.modules.keys.toSet(), clinique);
+      expect(m.fermetures!.fermeturePour('m1-patients', 'M1')?['id'], 'MOD03');
+      expect(m.fermetures!.fermeturePour('dash-medecin', 'DASH')?['code'], 'DASH-POSTESCL');
+    });
+
+    test('rouvrir les fiches Baguidi (archivage, RG-14) rend la matrice engendrée, case pour case', () {
+      final m = livre(modules: [for (final f in jeuLivre) f['id'] == 'MOD01' || f['id'] == 'MOD02' ? f : {...f, 'statut': 'archive'}]);
+      for (final role in roles) {
+        for (final e in manifeste.tousLesEcrans.where((e) => !e.hub)) {
+          expect(d(m, role, e.id), d(base, role, e.id), reason: '$role / ${e.id}');
+        }
+      }
     });
   });
 }

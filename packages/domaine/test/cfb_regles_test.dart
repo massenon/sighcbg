@@ -271,7 +271,9 @@ void main() {
   group('cfg-modules', () {
     final md = obj(v['modules']);
     final rangees = jeu('modulesManifeste');
-    final fiches = jeu('modulesActifs');
+    // Les vecteurs de la maquette ont été relevés sur la configuration d'extraction (banque de sang et donneurs fermés), et non sur le jeu livré, qui porte
+    // depuis le 06/11/2026 les fermetures de la Clinique Baguidi.
+    final fiches = liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync()));
     test('écrans au périmètre et modules du logiciel = ceux du manifeste de la maquette', () {
       expect(cfbTousEcrans(rangees).length, md['tousEcrans']);
       final att = (md['modulesListe'] as List).cast<List>();
@@ -344,7 +346,11 @@ void main() {
     ].where((n) => !techniques.contains(n)).toList();
     // Le vecteur date du moment où le jeu comptait ses collections d'alors : les collections ajoutées depuis (support, appels…) ne font pas partie du bilan mesuré.
     final connues = {for (final x in (sy['collections'] as List).cast<List>()) x[0] as String};
-    final fiches = {for (final n in noms.where(connues.contains)) n: jeu(n)};
+    // `modulesActifs` est mesuré sur la configuration d'extraction : le jeu livré y ajoute les sept fermetures de la Clinique Baguidi (06/11/2026).
+    final fiches = {
+      for (final n in noms.where(connues.contains))
+        n: n == 'modulesActifs' ? liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync())) : jeu(n)
+    };
     test('contenu du jeu : collections, enregistrements, actifs, archivés', () {
       final stats = [for (final n in fiches.keys) cfbStatCollection(n, fiches[n]!)];
       final att = {for (final x in (sy['collections'] as List).cast<List>()) x[0] as String: x};

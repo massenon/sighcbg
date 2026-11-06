@@ -14,8 +14,11 @@ import 'cfb_commun.dart';
 /// la réouverture rend les écrans et leurs données en l'état. Chaque module M1…M14/MECEF/GED/RAP/PIL se pilote d'une bascule dérivée du manifeste ; le
 /// NOYAU (CFG, DASH) ne se ferme pas — refus nommé, et bascule absente de sa carte. Une fiche ARCHIVÉE ne ferme plus rien (RG-14).
 ///
-/// Ce que la fermeture retire AU POSTE : voir `cfbFermetures` — la coque lit `rbac.json` (engendré) et ne relit pas la collection `modulesActifs` ;
-/// c'est une proposition du rapport, pas encore câblée (E203, E886).
+/// Ce que la fermeture retire AU POSTE : la coque ÉCOUTE la collection `modulesActifs` et recalcule sa matrice à chaud à chaque écriture
+/// (`DonneesNavigation.aChaud`, `superposerDroits` du domaine). La matrice engendrée `rbac.json` reste la base ; tout ce qui diffère de la configuration
+/// de son extraction (`modulesActifs.reference.json`) la corrige : un écran fermé quitte le ruban, la recherche globale, les pages d'accueil de module et
+/// les accès rapides, et son adresse mène à la page « Activité fermée », qui nomme le motif. Le jeu livré porte ainsi les fermetures de la Clinique
+/// Baguidi (M1 à M5, statistiques cliniques, tableaux de bord des postes cliniques), réouvrables ici d'une bascule.
 class EcranModules extends StatelessWidget with EcranMaquette {
   const EcranModules({super.key});
   @override
