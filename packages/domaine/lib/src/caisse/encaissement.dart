@@ -48,6 +48,10 @@ bool _vrai(Object? v) => v != null && v != '' && v != 0 && v != false;
 double _n(Object? v) => nombreOuZero(v);
 
 /// `PR.encaisser(factureId, {lignes | montant, mode})`. `aujourdhui` : `YYYY-MM-DD` de l'écriture ; `maintenant` : ISO.
+///
+/// [mecefActif] : l'état du module MECEF, lu par l'appelant dans les fermetures en vigueur et passé en paramètre (PRD Baguidi, P0-5). Module fermé,
+/// le versement ne pose NI `statutMecef` NI `baseMecef` : une pièce émise pendant que MECeF était ouvert GARDE les champs qu'elle porte (ils ne sont
+/// ni réécrits ni retirés), une pièce émise module fermé n'en reçoit aucun.
 ResultatEncaissement encaisser(
   Map<String, Object?> facture, {
   List<String>? lignes,
@@ -56,6 +60,7 @@ ResultatEncaissement encaisser(
   required String aujourdhui,
   required String maintenant,
   String utilisateur = '',
+  bool mecefActif = true,
   List<Map<String, Object?>> ecritures = const [],
 }) {
   if (facture['statutPaiement'] == 'soldee') {
@@ -146,9 +151,9 @@ ResultatEncaissement encaisser(
     'modePaiement': modeRetenu,
     'statutPaiement':
         solde ? 'soldee' : (totalPaye > 0 ? 'partielle' : 'impayee'),
-    'statutMecef': solde ? 'valide' : 'en_attente',
+    if (mecefActif) 'statutMecef': solde ? 'valide' : 'en_attente',
     // Le point fiscal : seule la part réglée par le patient est normalisée (ni la part assureur, ni les remises).
-    'baseMecef': totalPaye,
+    if (mecefActif) 'baseMecef': totalPaye,
     'dernierReglement': {
       'date': maintenant,
       'montant': paye,

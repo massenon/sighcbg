@@ -347,6 +347,13 @@ class CfbFermetures {
 
   /// `fermeturePour(id, code)` : la fiche qui ferme l'écran, pour pouvoir le DIRE.
   CfaFiche? fermeturePour(String id, String code) => ecrans[id] ?? modules[code];
+
+  /// MECeF est-il en service ? Le module MECEF porte sa bascule dans « Activité des modules » (fiche module entier, PRD Baguidi P0-5) ; ouvert par
+  /// défaut, tant qu'aucune fiche ne le ferme. Fermé, l'émission, l'encaissement, l'avoir et l'annulation ne posent aucun champ fiscal (`mecef`,
+  /// `statutMecef`, `baseMecef`, identifiant) et les pièces imprimées n'affichent pas le bloc MECeF ; l'en-tête légal (IFU, RCCM) reste. Une pièce
+  /// émise pendant que MECeF était ouvert garde ses champs : elle n'est jamais réécrite. L'état se LIT ici, jamais dans un drapeau à part : la
+  /// doctrine des bascules de la paie.
+  bool get mecefEnService => ecranActif('', 'MECEF');
 }
 
 /// La fiche MODULE-niveau (sans liste d'écrans) d'un code.

@@ -24,6 +24,12 @@ String modeLabel(Object? id) =>
     modesPaiement.where((x) => x.$1 == id).map((x) => x.$2).firstOrNull ??
     '${id ?? ''}';
 
+/// MECeF est-il en service sur ce poste ? Lu dans les fermetures en vigueur (fiche `modulesActifs` du module MECEF, bascule de « Activité des
+/// modules », PRD Baguidi P0-5), jamais dans un drapeau à part. Le résultat se PASSE aux moteurs du domaine (`emettreFacture`, `encaisser`,
+/// `emettreAvoir`, `enregistrerOperation`) et aux pièces imprimées : le domaine reste pur, sans dépendance au magasin.
+bool mecefEnService(Magasin m) =>
+    fermeturesEnVigueur(m.collection('modulesActifs').toutes).mecefEnService;
+
 num partNonAssuree(Iterable<Fiche> lignes) => lignes.fold<num>(0, (a, l) {
       if (n(l['partAssureur']) > 0) return a;
       final montant = l['montant'] != null
@@ -47,8 +53,12 @@ List<Fiche> lignesDe(Fiche f) {
 }
 
 /// `etatFacture(f, {proforma})` : la facture normalisée (ou pro-forma, non fiscale) imprimable. Le total des colonnes est REFAIT depuis les lignes.
+///
+/// [mecefActif] : MECeF fermé (bascule P0-5), la pièce imprimée ne porte NI la rubrique « Base normalisée MECeF », NI l'identifiant fiscal, NI le bloc
+/// de normalisation : elle s'intitule « Facture » et garde l'IFU et le RCCM de l'en-tête légal, qui ne relèvent pas du dispositif.
 PieceA4 pieceFacture(Fiche f,
     {bool proforma = false,
+    bool mecefActif = true,
     Fiche? jumelle,
     required String utilisateur,
     required DateTime edite,
@@ -117,12 +127,16 @@ PieceA4 pieceFacture(Fiche f,
     {'k': 'TOTAL DÛ', 'v': m(f['reliquat'] ?? f['partPatient'])},
     {'k': 'Montant réglé', 'v': m(f['montantPaye'])},
     {'k': 'Reste à payer', 'v': m(f['reliquat'])},
-    {'k': 'Base normalisée MECeF', 'v': m(f['baseMecef'] ?? f['montantPaye'])},
+    // MECeF fermé, la pièce ne porte pas de rubrique fiscale (P0-5).
+    if (mecefActif)
+      {'k': 'Base normalisée MECeF', 'v': m(f['baseMecef'] ?? f['montantPaye'])},
   ]);
   return PieceA4(
-    titre: proforma ? 'Facture pro-forma' : 'Facture normalisée',
+    titre: proforma
+        ? 'Facture pro-forma'
+        : (mecefActif ? 'Facture normalisée' : 'Facture'),
     sousTitre:
-        '${f['numero']}${f['numeroMecef'] != null && !proforma ? ' — ${f['numeroMecef']}' : ''}',
+        '${f['numero']}${mecefActif && f['numeroMecef'] != null && !proforma ? ' — ${f['numeroMecef']}' : ''}',
     filigrane: proforma ? 'Pro-forma' : null,
     reference: reference,
     utilisateur: utilisateur,
@@ -160,9 +174,11 @@ PieceA4 pieceFacture(Fiche f,
       BlocTexte(
           proforma
               ? 'Facture pro-forma — document non fiscal, établi à titre d’estimation. Elle ne vaut pas facture normalisée et ne peut servir de justificatif comptable.'
-              : 'Facture normalisée conforme au dispositif de facturation électronique en vigueur en République du Bénin. Mode de règlement : ${modeLabel(f['modePaiement'])}.',
+              : (mecefActif
+                  ? 'Facture normalisée conforme au dispositif de facturation électronique en vigueur en République du Bénin. Mode de règlement : ${modeLabel(f['modePaiement'])}.'
+                  : 'Mode de règlement : ${modeLabel(f['modePaiement'])}.'),
           italique: true),
-      if (!proforma && f['numeroMecef'] != null)
+      if (mecefActif && !proforma && f['numeroMecef'] != null)
         BlocTexte(
             'Identifiant fiscal MECeF : ${f['numeroMecef']} — IFU : ${IdentiteClinique.ifu} — RCCM : ${IdentiteClinique.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : f['statutMecef']}'),
       if (IdentiteClinique.formulePolitesse.isNotEmpty) BlocTexte(IdentiteClinique.formulePolitesse, gras: true),
@@ -270,8 +286,10 @@ PieceA4 pieceRecu(Fiche f,
       ])),
       BlocTexte(
           '${IdentiteClinique.formuleArrete} : ${montantEnLettres(f['montantPaye'] ?? 0)}.'),
-      const BlocTexte(
-          'Reçu délivré par la caisse de la CLINIQUE NASSIERA TOO SARL. À conserver et à présenter au laboratoire et à la pharmacie.',
+      // L'identité se LIT sur IdentiteClinique, jamais recopiée (PRD Baguidi, P0-2) : la forme juridique, vide tant que la Direction ne l'a pas
+      // renseignée, n'imprime rien.
+      BlocTexte(
+          'Reçu délivré par la caisse de la ${[IdentiteClinique.nom, IdentiteClinique.forme].where((x) => x.isNotEmpty).join(' ')}. À conserver et à présenter à la pharmacie.',
           italique: true),
     ],
     // La signature du patient n'a pas lieu d'être : un encaissement est attesté par celui qui encaisse, pas par celui qui paie.
@@ -318,7 +336,7 @@ PieceA4 pieceEngagement(Fiche f,
     ],
     blocs: [
       BlocTexte(
-          'Je soussigné(e) ${f['patient']}, reconnais devoir à la Clinique NASSIERA TOO la somme de ${montantEnLettres(montant)}, au titre de la facture ${f['numero']}, et m’engage à en effectuer le règlement selon l’échéancier ci-dessous.'),
+          'Je soussigné(e) ${f['patient']}, reconnais devoir à la ${IdentiteClinique.nom} la somme de ${montantEnLettres(montant)}, au titre de la facture ${f['numero']}, et m’engage à en effectuer le règlement selon l’échéancier ci-dessous.'),
       BlocTableau(TableauEtat(colonnes: [
         ColonneEtat(libelle: 'Échéance', valeur: (r) => r['tranche']),
         ColonneEtat(libelle: 'Date promise', valeur: (r) => r['echeance']),

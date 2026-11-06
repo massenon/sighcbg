@@ -70,6 +70,10 @@ String referenceAvoir(String date, Iterable<Map<String, Object?>> avoirs) {
 
 /// `emettreAvoir(factureId, params)`. [idAvoir] : l'identifiant que l'appelant donnera à la fiche (les écritures le portent comme `pieceId`).
 /// [jour] : `YYYY-MM-DD` de l'avoir si [date] est omise. Lève [RefusAvoir].
+///
+/// [mecefActif] : l'état du module MECEF, lu par l'appelant dans les fermetures en vigueur et passé en paramètre (PRD Baguidi, P0-5). Module fermé,
+/// l'avoir ne pose pas `statutMecef` : la pièce naît pendant la fermeture, elle ne relève pas du registre fiscal. La contre-passation et le plafond
+/// cumulé ne changent pas.
 AvoirEmis emettreAvoir({
   required Map<String, Object?>? facture,
   required String idAvoir,
@@ -82,6 +86,7 @@ AvoirEmis emettreAvoir({
   String? date,
   String? origine,
   String? horodatage,
+  bool mecefActif = true,
   List<Map<String, Object?>> facturesMere = const [],
   List<Map<String, Object?>> avoirs = const [],
 }) {
@@ -139,7 +144,9 @@ AvoirEmis emettreAvoir({
     'remboursement': suite,
     'origine': origine == null || origine.isEmpty ? 'caisse' : origine,
     // Le registre fiscal : une facture normalisée validée exige la régularisation MECeF ; une pièce non transmise n'en relève pas.
-    'statutMecef': facture['statutMecef'] == 'valide' ? 'en_attente' : 'sans_objet',
+    // MECeF fermé, l'avoir ne pose aucun champ fiscal.
+    if (mecefActif)
+      'statutMecef': facture['statutMecef'] == 'valide' ? 'en_attente' : 'sans_objet',
     'emisPar': utilisateur,
   };
 

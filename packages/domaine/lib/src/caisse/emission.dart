@@ -205,6 +205,11 @@ int rangSerieFactures(String prefixe, Iterable<Map<String, Object?>> factures) {
 /// [lignes] : lignes de [ligneSaisie] ; [reglement] : montant saisi (`null` = la part patient proposée par l'écran) ;
 /// [rangDebut] : le plus grand rang DÉJÀ porté par la série de l'année (`rangSerieFactures(...) - 1`, E6) ; [produits] : `{id, stockDetail, stock}`
 /// des médicaments.
+///
+/// [mecefActif] : l'état du module MECEF, lu par l'APPELANT dans les fermetures en vigueur (`CfbFermetures.mecefEnService`) et passé en paramètre :
+/// le moteur reste pur, sans dépendance au magasin (PRD Baguidi, P0-5). Module fermé, la pièce ne porte NI `mecef`, NI `statutMecef`, NI `baseMecef` :
+/// l'appelant, qui ne voit pas `mecef: true`, ne tire alors aucun identifiant fiscal. Rouvrir le module rend les pièces suivantes normalisées ;
+/// une pièce déjà émise garde ses champs, elle n'est jamais réécrite.
 ResultatEmission emettreFacture({
   required Map<String, Object?> patient,
   required List<Map<String, Object?>> lignes,
@@ -216,6 +221,7 @@ ResultatEmission emettreFacture({
   num? reglement,
   bool proforma = false,
   bool dissocier = false,
+  bool mecefActif = true,
   List<Map<String, Object?>> couvertures = const [],
   List<Map<String, Object?>> souscripteurs = const [],
   List<Map<String, Object?>> garanties = const [],
@@ -296,8 +302,9 @@ ResultatEmission emettreFacture({
     pieces.add({
       'numero':
           '${prefixeSerieFacture(proforma: proforma, dateFacture: dateFacture)}${(rangDebut + 1 + rang).toString().padLeft(5, '0')}$suffixe',
-      'mecef': normalisee,
-      'baseMecef': proforma ? 0.0 : reglePiece,
+      // MECeF fermé (bascule P0-5) : aucun champ fiscal n'est posé, ni ici, ni `statutMecef` plus bas.
+      if (mecefActif) 'mecef': normalisee,
+      if (mecefActif) 'baseMecef': proforma ? 0.0 : reglePiece,
       'patientId': patient['id'],
       'patient': '${patient['nom']} ${patient['prenom']}',
       'patientCode': dissocier ? null : patient['code'],
@@ -326,7 +333,7 @@ ResultatEmission emettreFacture({
       'statutPaiement': proforma
           ? 'impayee'
           : (reglePiece >= patPiece ? 'soldee' : (reglePiece > 0 ? 'partielle' : 'impayee')),
-      'statutMecef': normalisee ? 'valide' : 'en_attente',
+      if (mecefActif) 'statutMecef': normalisee ? 'valide' : 'en_attente',
       'proforma': proforma,
     });
   }
