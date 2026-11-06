@@ -10,7 +10,7 @@
     "taille": 14,
     "poids": 500,
     "rayon": 8,
-    "fond": "rgb(18, 49, 94)",
+    "fond": "rgb(211, 47, 47)",
     "couleur": "rgb(255, 255, 255)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Enregistrer"
@@ -36,7 +36,7 @@
     "taille": 12,
     "poids": 500,
     "rayon": 8,
-    "fond": "rgb(18, 49, 94)",
+    "fond": "rgb(211, 47, 47)",
     "couleur": "rgb(255, 255, 255)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Filtrer"
@@ -49,7 +49,7 @@
     "taille": 16,
     "poids": 500,
     "rayon": 8,
-    "fond": "rgb(18, 49, 94)",
+    "fond": "rgb(211, 47, 47)",
     "couleur": "rgb(255, 255, 255)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Valider"
@@ -90,8 +90,8 @@
     "taille": 12,
     "poids": 500,
     "rayon": 9999,
-    "fond": "rgb(241, 245, 251)",
-    "couleur": "rgb(42, 70, 112)",
+    "fond": "rgb(238, 244, 252)",
+    "couleur": "rgb(18, 70, 132)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Statut 4"
    },
@@ -178,7 +178,7 @@
    "titre": {
     "x": 37,
     "y": 31,
-    "l": 157.47,
+    "l": 172.11,
     "h": 20,
     "taille": 14,
     "poids": 600,
@@ -250,8 +250,8 @@
     "taille": 16,
     "poids": 400,
     "rayon": 8,
-    "fond": "rgb(241, 245, 251)",
-    "couleur": "rgb(46, 81, 135)",
+    "fond": "rgb(238, 244, 252)",
+    "couleur": "rgb(18, 83, 160)",
     "bordure": "rgb(229, 231, 235)",
     "texte": ""
    }
@@ -279,8 +279,8 @@
     "poids": 500,
     "rayon": 0,
     "fond": "rgba(0, 0, 0, 0)",
-    "couleur": "rgb(18, 49, 94)",
-    "bordure": "rgb(18, 49, 94)",
+    "couleur": "rgb(18, 58, 107)",
+    "bordure": "rgb(18, 58, 107)",
     "texte": "Général"
    },
    "inactif": {
@@ -468,7 +468,7 @@
     "taille": 16,
     "poids": 400,
     "rayon": 0,
-    "fond": "rgba(11, 30, 61, 0.4)",
+    "fond": "rgba(33, 33, 33, 0.4)",
     "couleur": "rgb(30, 41, 59)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Nouveau patientOuverture de dossierConte"
@@ -502,7 +502,7 @@
    "titre": {
     "x": 184,
     "y": 64,
-    "l": 127.48,
+    "l": 137.61,
     "h": 24,
     "taille": 16,
     "poids": 600,
@@ -548,7 +548,7 @@
     "taille": 16,
     "poids": 400,
     "rayon": 0,
-    "fond": "rgba(11, 30, 61, 0.4)",
+    "fond": "rgba(33, 33, 33, 0.4)",
     "couleur": "rgb(30, 41, 59)",
     "bordure": "rgb(229, 231, 235)",
     "texte": "Fiche patientCNT/12/26DétailFermer"
@@ -582,7 +582,7 @@
    "titre": {
     "x": 444,
     "y": 16,
-    "l": 100.27,
+    "l": 109.06,
     "h": 24,
     "taille": 16,
     "poids": 600,

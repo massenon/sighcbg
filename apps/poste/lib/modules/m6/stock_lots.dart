@@ -202,7 +202,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
               texte: (l) => _libellesStatutLot[statutDuLot(l, auj)]!,
               rendu: (_, l) {
                 final s = statutDuLot(l, auj);
-                return statutBadge(s == 'actif' ? 'normal' : s);
+                return badgeEtat(s == 'actif' ? 'normal' : s);
               }),
         ],
         filtres: [

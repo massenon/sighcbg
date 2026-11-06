@@ -58,6 +58,17 @@ flutter:
           weight: 700
         - asset: assets/polices/Inter-Italic.otf
           style: italic
+    # Montserrat, la police des TITRES de la charte Baguidi (font-heading : titres, en-têtes d'écran, AppBar). Statiques, latin + latin étendu fusionnés. Licence SIL OFL 1.1.
+    - family: Montserrat
+      fonts:
+        - asset: assets/polices/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: assets/polices/Montserrat-Bold.ttf
+          weight: 700
+    # Dancing Script, EXCLUSIVEMENT la devise (font-slogan de la charte Baguidi). Licence SIL OFL 1.1.
+    - family: Dancing Script
+      fonts:
+        - asset: assets/polices/DancingScript-Regular.ttf
 
 # Les bases SQLite de la mère et du journal du poste sont CHIFFRÉES au repos : SQLite3 Multiple Ciphers remplace SQLite dans le binaire (docs/architecture/ECARTS-MAQUETTE.md, E2147).
 hooks:

@@ -105,6 +105,10 @@ class Ruban extends StatelessWidget {
                 tooltip: panneauOuvert ? 'Replier le menu' : 'Déplier le menu'),
           ]),
         ),
+        // Charte Baguidi : la DOUBLE LIGNE FINE rouge puis bleue de l'en-tête officiel (les deux traits du cœur du logo)
+        // sépare la barre sombre du panneau du ruban ; toujours visible, panneau ouvert ou replié.
+        Container(key: const Key('ruban-filet-coeur'), height: 2, color: JetonsShell.coeur500),
+        Container(key: const Key('ruban-filet-sante'), height: 2, color: JetonsShell.sante600),
         // --- panneau : une rangée par module ----------------------------------------------------------------------
         if (panneauOuvert && ouvert != null)
           Container(
@@ -154,10 +158,11 @@ class _Onglet extends StatelessWidget {
           decoration: BoxDecoration(
             color: fond,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-            // « ribbon-tab-current » : l'onglet du domaine de la page reste marqué même panneau replié.
+            // « ribbon-tab-current » : l'onglet du domaine de la page reste marqué même panneau replié,
+            // souligné de ROUGE CŒUR (charte Baguidi, PRD P1-1).
             border: !actif && courant
                 ? const Border(
-                    bottom: BorderSide(color: Colors.white, width: 2))
+                    bottom: BorderSide(color: JetonsShell.coeur500, width: 3))
                 : null,
           ),
           child: Row(mainAxisSize: MainAxisSize.min, children: [

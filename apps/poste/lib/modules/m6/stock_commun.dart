@@ -34,7 +34,23 @@ String dateFiche(Object? v) {
 /// Libellé du badge d'un état du stock (`U.statut`) : rupture, critique, normal.
 String libelleEtat(String etat) => statutsMetier[etat]?.$1 ?? etat;
 
-Widget badgeEtat(String etat) => statutBadge(etat);
+/// L'icône qui accompagne TOUJOURS un état d'alerte du stock : depuis que le rouge est aussi la couleur d'action
+/// (charte Baguidi), rupture, seuil et péremption portent icône + libellé, jamais la couleur seule (PRD P1-1).
+IconData? iconeEtatStock(String etat) => switch (etat) {
+      'rupture' => LucideIcons.circleX,
+      'critique' => LucideIcons.trendingDown,
+      'perime' => LucideIcons.calendarX,
+      'alerte' => LucideIcons.clock,
+      'normal' => LucideIcons.circleCheck,
+      _ => null,
+    };
+
+Widget badgeEtat(String etat) {
+  final s = statutsMetier[etat];
+  return s == null
+      ? statutBadge(etat)
+      : BadgeSigh(s.$1, ton: s.$2, icone: iconeEtatStock(etat));
+}
 
 /// Cellule de quantité : rouge à zéro, orange sous le seuil (`colStock`). Sans seuil fixé, seul zéro est signalé.
 Widget cellule(String texte,
@@ -160,8 +176,10 @@ Widget badgeEcheance(int? jours, String texte) {
   if (teinte == 'neutre') {
     return cellule(texte, couleur: JetonsShell.slate600, droite: true);
   }
+  // Icône + libellé, jamais la couleur seule (charte Baguidi : le rouge est aussi la couleur d'action).
   return BadgeSigh(texte,
-      ton: teinte == 'danger' ? TonSigh.danger : TonSigh.attention);
+      ton: teinte == 'danger' ? TonSigh.danger : TonSigh.attention,
+      icone: teinte == 'danger' ? LucideIcons.calendarX : LucideIcons.clock);
 }
 
 /// Bandeau des articles dont le seuil n'a pas été fixé : sans seuil, aucune alerte n'est possible (hors rupture), et un seuil absent n'est PAS un
@@ -351,7 +369,12 @@ Widget detailProduit(BuildContext ctx, Fiche p) {
                             ? TonSigh.danger
                             : (j != null && j <= delaiPreavisPeremption
                                 ? TonSigh.attention
-                                : TonSigh.succes));
+                                : TonSigh.succes),
+                        icone: j != null && j < 0
+                            ? LucideIcons.calendarX
+                            : (j != null && j <= delaiPreavisPeremption
+                                ? LucideIcons.clock
+                                : LucideIcons.circleCheck));
                   }),
                   ColonneMini(
                       'Emplacement', (l) => '${l['emplacement'] ?? ''}'),

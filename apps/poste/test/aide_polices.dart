@@ -11,6 +11,18 @@ Future<void> chargerPolices() async {
         File('assets/polices/Inter-$f.otf').readAsBytesSync().buffer)));
   }
   await inter.load();
+  final montserrat = FontLoader('Montserrat');
+  for (final f in ['SemiBold', 'Bold']) {
+    montserrat.addFont(Future.value(ByteData.view(
+        File('assets/polices/Montserrat-$f.ttf').readAsBytesSync().buffer)));
+  }
+  await montserrat.load();
+  final manuscrite = FontLoader('Dancing Script');
+  manuscrite.addFont(Future.value(ByteData.view(
+      File('assets/polices/DancingScript-Regular.ttf')
+          .readAsBytesSync()
+          .buffer)));
+  await manuscrite.load();
   final mono = FontLoader('LiberationMono');
   for (final f in ['Regular', 'Bold']) {
     mono.addFont(Future.value(ByteData.view(

@@ -3,8 +3,10 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import 'jetons_shell.dart';
 
-/// Thème SIGH-CBG (repris de SIGH-CNT) : bleu institutionnel (navy), fonds blanc/gris clair, sémantique vert/orange/rouge. Toutes les valeurs
-/// viennent des jetons de la maquette (`JetonsSigh`, engendrés) — aucune couleur en dur ailleurs (PRD Flutter, P0-3).
+/// Thème SIGH-CBG : charte Baguidi : barres sombres anthracite (navy-950 réaffecté), bleu Santé pour les titres et badges,
+/// rouge Cœur pour l'action principale, sémantique vert/orange/rouge conservée. Toutes les valeurs viennent des jetons de la
+/// maquette (`JetonsSigh`, `JetonsShell`), aucune couleur en dur ailleurs (PRD Flutter, P0-3 ; PRD Baguidi, P1-1).
+/// Typographie : corps en Inter (inchangé), titres et AppBar en Montserrat, devise en Dancing Script (posée par la coquille).
 class ThemeSigh {
   ThemeSigh._();
 
@@ -19,6 +21,13 @@ class ThemeSigh {
   static Color get danger => _c(JetonsSigh.danger, 700);
   static Color get dangerFond => _c(JetonsSigh.danger, 100);
 
+  /// Style d'un titre de la charte : Montserrat semi-gras (replis : Inter puis les polices système).
+  static TextStyle _titre(double taille) => TextStyle(
+      fontSize: taille,
+      fontWeight: FontWeight.w600,
+      fontFamily: JetonsSigh.policeTitres.first,
+      fontFamilyFallback: JetonsSigh.policeTitres.skip(1).toList());
+
   static final RoundedRectangleBorder _forme12 = RoundedRectangleBorder(borderRadius: BorderRadius.circular(12));
   static final RoundedRectangleBorder _forme12Bord =
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: JetonsShell.slate200));
@@ -32,8 +41,16 @@ class ThemeSigh {
       fontFamily: JetonsSigh.policeSans.first,
       fontFamilyFallback: JetonsSigh.policeSans.skip(1).toList(),
       scaffoldBackgroundColor: _c(JetonsSigh.navy, 50),
-      appBarTheme:
-          AppBarTheme(backgroundColor: navy, foregroundColor: Colors.white),
+      // La barre sombre de la charte Baguidi : fond anthracite (navy-950 réaffecté), titre en Montserrat.
+      appBarTheme: AppBarTheme(
+          backgroundColor: JetonsShell.navy950,
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              fontFamily: JetonsSigh.policeTitres.first,
+              fontFamilyFallback: JetonsSigh.policeTitres.skip(1).toList())),
       cardTheme: CardThemeData(
           color: Colors.white,
           elevation: 1,
@@ -86,10 +103,17 @@ class ThemeSigh {
       tooltipTheme: TooltipThemeData(
           decoration: BoxDecoration(color: JetonsShell.navy950, borderRadius: BorderRadius.circular(8)),
           textStyle: const TextStyle(color: Colors.white, fontSize: 12)),
-      // Texte jamais sous 11 pt (CDCT) : le corps de texte garde 14.
-      textTheme: const TextTheme(
-          bodyMedium: TextStyle(fontSize: 14),
-          bodySmall: TextStyle(fontSize: 12)),
+      // Texte jamais sous 11 pt (CDCT) : le corps de texte garde 14 (Inter).
+      // Les TITRES portent Montserrat (`font-heading` de la charte Baguidi : h1, h2, h3), le corps reste en Inter.
+      textTheme: TextTheme(
+          headlineLarge: _titre(32),
+          headlineMedium: _titre(28),
+          headlineSmall: _titre(24),
+          titleLarge: _titre(20),
+          titleMedium: _titre(16),
+          titleSmall: _titre(14),
+          bodyMedium: const TextStyle(fontSize: 14),
+          bodySmall: const TextStyle(fontSize: 12)),
     );
   }
 }

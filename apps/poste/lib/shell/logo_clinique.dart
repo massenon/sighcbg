@@ -3,7 +3,8 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/jetons_shell.dart';
 
-/// Le LOGO de la clinique (`assets/img/logo.png`, converti du JPEG le 02/11/2026 ; déclaré par `assets/img/` dans `pubspec.yaml`). UN seul endroit le charge pour la barre, la connexion,
+/// Le LOGO de la clinique (`assets/img/logo.png`, logo BAGUIDI 315 × 324 posé le 06/11/2026, presque carré, toujours rendu en `BoxFit.contain`,
+/// jamais étiré ; déclaré par `assets/img/` dans `pubspec.yaml`). UN seul endroit le charge pour la barre, la connexion,
 /// le verrou et la feuille A4 : un logo qui manque ne doit JAMAIS disparaître en silence (retour de terrain du 01/11/2026, poste Windows : l'ancien
 /// `errorBuilder` rendait une boîte vide, et rien ne disait que le fichier n'avait pas été lu). En cas d'échec, le monogramme du sigle de la clinique prend la place et
 /// la cause est écrite dans la console.

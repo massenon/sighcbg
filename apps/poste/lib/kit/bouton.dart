@@ -28,8 +28,10 @@ class BoutonSigh extends StatelessWidget {
   final TailleBouton taille;
   final IconData? icone;
 
+  // Charte Baguidi : l'action principale est ROUGE CŒUR (`.btn-primary` : bg-coeur-500, survol coeur-600) ; le bouton
+  // DANGER passe en CONTOUR rouge vif sur blanc (`.btn-danger` de la maquette) pour ne pas se confondre avec le primaire.
   static (Color, Color, Color?) couleurs(VarianteBouton v) => switch (v) {
-        VarianteBouton.primaire => (JetonsShell.navy900, Colors.white, null),
+        VarianteBouton.primaire => (JetonsShell.coeur500, Colors.white, null),
         VarianteBouton.secondaire => (
             Colors.white,
             JetonsShell.slate700,
@@ -46,16 +48,20 @@ class BoutonSigh extends StatelessWidget {
             Colors.white,
             null
           ),
-        VarianteBouton.danger => (JetonsShell.danger600, Colors.white, null),
+        VarianteBouton.danger => (
+            Colors.white,
+            JetonsShell.danger700,
+            JetonsShell.danger500
+          ),
       };
 
   static Color survol(VarianteBouton v) => switch (v) {
-        VarianteBouton.primaire => JetonsShell.navy800,
+        VarianteBouton.primaire => JetonsShell.coeur600,
         VarianteBouton.secondaire => JetonsShell.slate50,
         VarianteBouton.fantome => JetonsShell.slate100,
         VarianteBouton.succes => JetonsShell.success700,
         VarianteBouton.attention => JetonsShell.warning600,
-        VarianteBouton.danger => JetonsShell.danger700,
+        VarianteBouton.danger => JetonsShell.danger50,
       };
 
   @override

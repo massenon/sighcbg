@@ -193,10 +193,14 @@ class EcranAlertesStock extends StatelessWidget with EcranMaquette {
                                 rendu: (_, l) {
                                   final j = joursAvantPeremption(
                                       auj, l['datePeremption']);
+                                  // Icône + libellé, jamais la couleur seule (charte Baguidi).
                                   return BadgeSigh(texteEcheanceAlerte(j),
                                       ton: j != null && (j < 0 || j <= 30)
                                           ? TonSigh.danger
-                                          : TonSigh.attention);
+                                          : TonSigh.attention,
+                                      icone: j != null && j < 0
+                                          ? LucideIcons.calendarX
+                                          : LucideIcons.clock);
                                 }),
                             ColonneTableau(
                                 cle: 'quantiteRestante',

@@ -76,6 +76,8 @@ class BarreSuperieure extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: Row(children: [
+                // Pastille blanche du logo. Le logo Baguidi, presque carré (315 × 324), se loge en `contain` sans étirement ;
+                // la pastille garde sa largeur pour que le logo reste LISIBLE (décision du dépôt : plus grand que le h-9 de la maquette).
                 Container(
                   key: const Key('barre-logo'),
                   width: 52,
@@ -220,7 +222,7 @@ class _Cloche extends StatelessWidget {
                     key: const Key('cloche-badge'),
                     constraints: const BoxConstraints(minWidth: 16),
                     padding: const EdgeInsets.symmetric(horizontal: 4),
-                    decoration: BoxDecoration(color: const Color(0xFFEF4444), borderRadius: BorderRadius.circular(8)),
+                    decoration: BoxDecoration(color: JetonsShell.danger500, borderRadius: BorderRadius.circular(8)),
                     child: Text(n > 99 ? '99+' : '$n',
                         textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700))),
               ),

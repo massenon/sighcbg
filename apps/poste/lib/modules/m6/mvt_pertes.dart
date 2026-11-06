@@ -76,7 +76,10 @@ class EcranPertes extends StatelessWidget with EcranMaquette {
                   cle: 'type',
                   libelle: 'Nature',
                   texte: (r) => _nature(r),
-                  rendu: (_, r) => BadgeSigh(_nature(r), ton: tonDe(typeMouvement(r['type'])?.ton ?? 'danger'))),
+                  // Icône + libellé sur la nature de la perte, jamais la couleur seule (charte Baguidi).
+                  rendu: (_, r) => BadgeSigh(_nature(r),
+                      ton: tonDe(typeMouvement(r['type'])?.ton ?? 'danger'),
+                      icone: r['type'] == 'peremption' ? LucideIcons.calendarX : LucideIcons.packageX)),
               ColonneTableau(cle: 'quantite', libelle: 'Quantité', droite: true, texte: (r) => '${r['quantite']}'),
               ColonneTableau(
                   cle: 'valeur',

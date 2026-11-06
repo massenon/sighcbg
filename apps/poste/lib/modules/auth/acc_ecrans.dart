@@ -708,6 +708,8 @@ class _EtatVerrou extends State<EcranVerrou> {
     final cible = retour == null ? null : x.donnees?.manifeste.ecran(retour.ecran);
     final message = accMessageRetour(cible?.label);
     return SceneAcces(
+      // L'écran verrouillé suit le DÉCOR ANTHRACITE de la maquette (auth.js : from-anthracite-950 via-anthracite-900 to-sante-950).
+      decorSombre: true,
       icone: LucideIcons.lock,
       titre: 'Session verrouillée',
       sousTitre: accSousTitreVerrou(x.session?.verrou.delai ?? accDelaiVerrou),

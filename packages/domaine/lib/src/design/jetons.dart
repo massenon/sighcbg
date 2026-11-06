@@ -1,22 +1,67 @@
-// ENGENDRÉ par prototype_html/build/extraire.js — NE PAS ÉDITER.
-// Jetons de design de la maquette (tailwind.config.js). Aucune couleur en dur ailleurs.
+// DÉRIVÉ DE LA MAQUETTE BAGUIDI (prototype_html/tailwind.config.js), ÉDITÉ À LA MAIN le 06/11/2026 :
+// la chaîne d'engendrement d'origine (build/extraire.js) reste chez l'éditeur (dépôt SIGH-CNT) et n'est pas dans ce dépôt.
+// Jetons de design de la maquette. Aucune couleur en dur ailleurs.
 // ignore_for_file: constant_identifier_names
 
 /// Palettes (nuance -> ARGB). Utilisation : `Color(JetonsSigh.navy[900]!)`.
+///
+/// Charte BAGUIDI : Rouge Cœur (actions), Bleu Santé (titres, badges), Noir Anthracite (texte, barres sombres).
+/// Le rouge d'ACTION (`coeur`, base 500) n'est PAS le rouge d'ERREUR (`danger`, inchangé) : une alerte ne doit
+/// jamais se confondre avec un bouton. `navy` est RÉAFFECTÉ comme dans la maquette (50 à 900 = Bleu Santé,
+/// 950 = Noir Anthracite) pour que la coquille change de couleur sans changer de classes.
 class JetonsSigh {
   JetonsSigh._();
+
+  /// Rouge Cœur : couleur principale / actions (base 500).
+  static const Map<int, int> coeur = {
+    50: 0xFFFDECEC,
+    100: 0xFFFBD8D8,
+    200: 0xFFF6B1B1,
+    300: 0xFFEE8383,
+    400: 0xFFE35555,
+    500: 0xFFD32F2F,
+    600: 0xFFB62222,
+    700: 0xFF971C1C,
+    800: 0xFF7D1A1A,
+    900: 0xFF671717,
+    950: 0xFF3F0D0D,
+  };
+
+  /// Bleu Santé : secondaire / titres, badges (base 600).
+  static const Map<int, int> sante = {
+    50: 0xFFEEF4FC,
+    100: 0xFFD9E7F8,
+    200: 0xFFB6D0F1,
+    300: 0xFF8AB3E8,
+    400: 0xFF5590DA,
+    500: 0xFF2F74CC,
+    600: 0xFF1565C0,
+    700: 0xFF1253A0,
+    800: 0xFF124684,
+    900: 0xFF123A6B,
+    950: 0xFF0C2647,
+  };
+
+  /// Noir Anthracite : textes et barres sombres (DEFAULT = 900).
+  static const Map<int, int> anthracite = {
+    800: 0xFF2B2B2B,
+    900: 0xFF212121,
+    950: 0xFF1A1A1A,
+  };
+
+  /// RÉAFFECTÉ (maquette Baguidi) : 50 à 900 = Bleu Santé à l'identique, 950 = Noir Anthracite.
   static const Map<int, int> navy = {
-    50: 0xFFF1F5FB,
-    100: 0xFFE0EAF6,
-    200: 0xFFC7DAF0,
-    300: 0xFF9DC0E4,
-    400: 0xFF6C9ED4,
-    500: 0xFF4A7FC1,
-    600: 0xFF3765A6,
-    700: 0xFF2E5187,
-    800: 0xFF2A4670,
-    900: 0xFF12315E,
-    950: 0xFF0B1E3D,
+    50: 0xFFEEF4FC,
+    100: 0xFFD9E7F8,
+    200: 0xFFB6D0F1,
+    300: 0xFF8AB3E8,
+    400: 0xFF5590DA,
+    500: 0xFF2F74CC,
+    600: 0xFF1565C0,
+    700: 0xFF1253A0,
+    800: 0xFF124684,
+    900: 0xFF123A6B,
+    950: 0xFF212121,
   };
   static const Map<int, int> success = {
     50: 0xFFEEFBF4,
@@ -71,6 +116,22 @@ class JetonsSigh {
     'Segoe UI',
     'system-ui',
     'sans-serif'
+  ];
+
+  /// `font-heading` de la maquette : titres, en-têtes d'écran, dénomination imprimée.
+  static const List<String> policeTitres = [
+    'Montserrat',
+    'Inter',
+    'Segoe UI',
+    'system-ui',
+    'sans-serif'
+  ];
+
+  /// `font-slogan` de la maquette : EXCLUSIVEMENT la devise.
+  static const List<String> policeSlogan = [
+    'Dancing Script',
+    'Segoe Script',
+    'cursive'
   ];
   static const List<String> policeMono = [
     'Consolas',

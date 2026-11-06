@@ -1,11 +1,23 @@
 {
- "_doc": "ENGENDRÉ par prototype_html/build/extraire.js depuis tailwind.config.js et src/input.css — ne pas éditer. Aucune couleur en dur hors de ce fichier (PRD Flutter P0-3).",
+ "_doc": "DÉRIVÉ DE LA MAQUETTE BAGUIDI (tailwind.config.js et src/input.css), ÉDITÉ À LA MAIN le 06/11/2026 ; la chaîne d'engendrement d'origine (prototype_html/build/extraire.js) reste chez l'éditeur (dépôt SIGH-CNT). Aucune couleur en dur hors de ce fichier (PRD Flutter P0-3).",
  "police": {
   "sans": [
    "Inter",
    "Segoe UI",
    "system-ui",
    "sans-serif"
+  ],
+  "heading": [
+   "Montserrat",
+   "Inter",
+   "Segoe UI",
+   "system-ui",
+   "sans-serif"
+  ],
+  "slogan": [
+   "Dancing Script",
+   "Segoe Script",
+   "cursive"
   ],
   "mono": [
    "Consolas",
@@ -14,18 +26,50 @@
   ]
  },
  "couleurs": {
+  "coeur": {
+   "50": "#fdecec",
+   "100": "#fbd8d8",
+   "200": "#f6b1b1",
+   "300": "#ee8383",
+   "400": "#e35555",
+   "500": "#D32F2F",
+   "600": "#b62222",
+   "700": "#971c1c",
+   "800": "#7d1a1a",
+   "900": "#671717",
+   "950": "#3f0d0d"
+  },
+  "sante": {
+   "50": "#eef4fc",
+   "100": "#d9e7f8",
+   "200": "#b6d0f1",
+   "300": "#8ab3e8",
+   "400": "#5590da",
+   "500": "#2f74cc",
+   "600": "#1565C0",
+   "700": "#1253a0",
+   "800": "#124684",
+   "900": "#123a6b",
+   "950": "#0c2647"
+  },
+  "anthracite": {
+   "800": "#2b2b2b",
+   "900": "#212121",
+   "950": "#1a1a1a",
+   "DEFAULT": "#212121"
+  },
   "navy": {
-   "50": "#f1f5fb",
-   "100": "#e0eaf6",
-   "200": "#c7daf0",
-   "300": "#9dc0e4",
-   "400": "#6c9ed4",
-   "500": "#4a7fc1",
-   "600": "#3765a6",
-   "700": "#2e5187",
-   "800": "#2a4670",
-   "900": "#12315e",
-   "950": "#0b1e3d"
+   "50": "#eef4fc",
+   "100": "#d9e7f8",
+   "200": "#b6d0f1",
+   "300": "#8ab3e8",
+   "400": "#5590da",
+   "500": "#2f74cc",
+   "600": "#1565C0",
+   "700": "#1253a0",
+   "800": "#124684",
+   "900": "#123a6b",
+   "950": "#212121"
   },
   "success": {
    "50": "#eefbf4",
@@ -89,12 +133,12 @@
  "tailleMinimalePt": 11,
  "composants": {
   "btn": "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
-  "btn-primary": "bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-950",
+  "btn-primary": "bg-coeur-500 text-white hover:bg-coeur-600 active:bg-coeur-700",
   "btn-secondary": "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100",
   "btn-ghost": "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
   "btn-success": "bg-success-600 text-white hover:bg-success-700",
   "btn-warning": "bg-warning-500 text-white hover:bg-warning-600",
-  "btn-danger": "bg-danger-600 text-white hover:bg-danger-700",
+  "btn-danger": "border border-danger-500 bg-white text-danger-700 hover:bg-danger-50 active:bg-danger-100",
   "btn-sm": "px-2.5 py-1.5 text-xs",
   "btn-lg": "px-5 py-2.5 text-base",
   "btn-icon": "h-9 w-9 p-0",

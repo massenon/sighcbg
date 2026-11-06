@@ -1,22 +1,57 @@
-// ENGENDRÉ par prototype_html/build/gen-poste-assets.js depuis docs/design/design-tokens.json — NE PAS ÉDITER.
+// DÉRIVÉ DE LA MAQUETTE BAGUIDI (tailwind.config.js), ÉDITÉ À LA MAIN le 06/11/2026 : la chaîne d'engendrement d'origine
+// (build/gen-poste-assets.js depuis docs/design/design-tokens.json) reste chez l'éditeur (dépôt SIGH-CNT) et n'est pas dans ce dépôt.
 // Constantes de couleur de la coque. Les « slate » sont la palette neutre par défaut de Tailwind, utilisée par la maquette.
+// Charte BAGUIDI : `navy` est RÉAFFECTÉ comme dans la maquette (50 à 900 = Bleu Santé, 950 = Noir Anthracite) ;
+// les palettes coeur/sante/anthracite sont NOUVELLES ; success/warning/danger/info et les OMBRES (teinte rgb(11 30 61),
+// l'ancien navy-950, volontairement non remappée) ne changent pas.
 import 'package:flutter/painting.dart';
 
 class JetonsShell {
   JetonsShell._();
-  static const Color navy50 = Color(0xFFF1F5FB);
-  static const Color navy100 = Color(0xFFE0EAF6);
-  static const Color navy200 = Color(0xFFC7DAF0);
-  static const Color navy300 = Color(0xFF9DC0E4);
-  static const Color navy400 = Color(0xFF6C9ED4);
-  static const Color navy500 = Color(0xFF4A7FC1);
-  static const Color navy600 = Color(0xFF3765A6);
-  static const Color navy700 = Color(0xFF2E5187);
-  static const Color navy800 = Color(0xFF2A4670);
-  static const Color navy900 = Color(0xFF12315E);
-  static const Color navy950 = Color(0xFF0B1E3D);
+  static const Color navy50 = Color(0xFFEEF4FC);
+  static const Color navy100 = Color(0xFFD9E7F8);
+  static const Color navy200 = Color(0xFFB6D0F1);
+  static const Color navy300 = Color(0xFF8AB3E8);
+  static const Color navy400 = Color(0xFF5590DA);
+  static const Color navy500 = Color(0xFF2F74CC);
+  static const Color navy600 = Color(0xFF1565C0);
+  static const Color navy700 = Color(0xFF1253A0);
+  static const Color navy800 = Color(0xFF124684);
+  static const Color navy900 = Color(0xFF123A6B);
+  static const Color navy950 = Color(0xFF212121);
 
-  /// Le VOILE derrière une modale ou un tiroir : navy-950 à 40 % (`bg-navy-950/40` de la maquette). Le seul voile du poste.
+  /// Rouge Cœur : couleur principale / actions (base 500). N'est PAS le rouge d'erreur (`danger`).
+  static const Color coeur50 = Color(0xFFFDECEC);
+  static const Color coeur100 = Color(0xFFFBD8D8);
+  static const Color coeur200 = Color(0xFFF6B1B1);
+  static const Color coeur300 = Color(0xFFEE8383);
+  static const Color coeur400 = Color(0xFFE35555);
+  static const Color coeur500 = Color(0xFFD32F2F);
+  static const Color coeur600 = Color(0xFFB62222);
+  static const Color coeur700 = Color(0xFF971C1C);
+  static const Color coeur800 = Color(0xFF7D1A1A);
+  static const Color coeur900 = Color(0xFF671717);
+  static const Color coeur950 = Color(0xFF3F0D0D);
+
+  /// Bleu Santé : secondaire / titres, badges (base 600).
+  static const Color sante50 = Color(0xFFEEF4FC);
+  static const Color sante100 = Color(0xFFD9E7F8);
+  static const Color sante200 = Color(0xFFB6D0F1);
+  static const Color sante300 = Color(0xFF8AB3E8);
+  static const Color sante400 = Color(0xFF5590DA);
+  static const Color sante500 = Color(0xFF2F74CC);
+  static const Color sante600 = Color(0xFF1565C0);
+  static const Color sante700 = Color(0xFF1253A0);
+  static const Color sante800 = Color(0xFF124684);
+  static const Color sante900 = Color(0xFF123A6B);
+  static const Color sante950 = Color(0xFF0C2647);
+
+  /// Noir Anthracite : textes et barres sombres.
+  static const Color anthracite800 = Color(0xFF2B2B2B);
+  static const Color anthracite900 = Color(0xFF212121);
+  static const Color anthracite950 = Color(0xFF1A1A1A);
+
+  /// Le VOILE derrière une modale ou un tiroir : l'ancien navy-950 à 40 % (`bg-navy-950/40` de la maquette), volontairement non remappé. Le seul voile du poste.
   static const Color scrim = Color(0x660B1E3D);
   static const Color success50 = Color(0xFFEEFBF4);
   static const Color success100 = Color(0xFFD6F5E3);
@@ -68,7 +103,7 @@ class JetonsShell {
   static const Color slate700 = Color(0xFF334155);
   static const Color slate800 = Color(0xFF1E293B);
   static const Color slate900 = Color(0xFF0F172A);
-  /// Ombres de tailwind.config.js (boxShadow card / raise / pop), couleur rgb(11 30 61).
+  /// Ombres de tailwind.config.js (boxShadow card / raise / pop), couleur rgb(11 30 61), conservée telle quelle par la maquette Baguidi.
   static const Color _ombre = Color(0xFF0B1E3D);
   static const List<BoxShadow> ombreCarte = [
     BoxShadow(color: Color.fromRGBO(11, 30, 61, 0.05), offset: Offset(0, 1), blurRadius: 2),

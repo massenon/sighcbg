@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, JetonsSigh;
 
 import '../core/jetons_shell.dart';
 import '../kit/carte.dart';
@@ -66,10 +66,13 @@ class PageStandard extends StatelessWidget {
               Flexible(
                   child: Text(titre,
                       key: const Key('titre-page'),
-                      style: const TextStyle(
+                      // L'en-tête d'écran porte la police des TITRES de la charte (Montserrat, `font-heading`).
+                      style: TextStyle(
                           color: JetonsShell.slate900,
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
+                          fontFamily: JetonsSigh.policeTitres.first,
+                          fontFamilyFallback: JetonsSigh.policeTitres.skip(1).toList(),
                           height: 1.4))),
               if (module != null) ...[
                 const SizedBox(width: 8),
@@ -94,14 +97,16 @@ class PageStandard extends StatelessWidget {
                       style: const TextStyle(
                           color: JetonsShell.slate500, fontSize: 14))),
             // La devise de la clinique, lue de l'identité EN VIGUEUR (jamais recopiée ici) ; vide, rien ne s'affiche.
+            // Charte Baguidi : en police MANUSCRITE rouge Cœur (`font-slogan` + text-coeur-500), sous la description.
             if (IdentiteClinique.slogan.isNotEmpty)
               Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(IdentiteClinique.slogan,
-                      style: const TextStyle(
-                          color: JetonsShell.slate400,
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic))),
+                      style: TextStyle(
+                          color: JetonsShell.coeur500,
+                          fontSize: 14,
+                          fontFamily: JetonsSigh.policeSlogan.first,
+                          fontFamilyFallback: JetonsSigh.policeSlogan.skip(1).toList()))),
           ]),
         ),
         if (actions.isNotEmpty) Wrap(spacing: 8, children: actions),
