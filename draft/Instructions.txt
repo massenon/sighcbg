@@ -1,0 +1,239 @@
+je veux dupliquer le  prototype de nassieratoo sans reprendre un autre developpement de prototype pour une autre clinique
+  BAGUIDI (qui ne fait que pour le moment d'Analyse des Besoins, Gestion des Stocks, des Achats, inventaire de la
+  Pharmacie, demande expressions des besoins de Laboratoire et des Ressources Humaines, fiche, paie, comptabilite,
+  administration, pilotage, tableau de bord dynamique croise, cfg clinique) redige moi un prompt pour nettoyer les
+  seeders de nassiera too pour y mettre les seeder de baguidi (les entetes a chager, modules a deactivee, desactiver
+  le barem devaluation, nouveau design a la charte graphique de la clinique, etc....)
+
+"C:\Projects\clinique_baguidi\logo.png"
+
+creer un fichier claude.md dans"C:\Projects\clinique_baguidi\
+
+faire Validations métier a valideer (marquages `aValider` — à ne retirer que sur décision écrite
+
+Jai creer le dossier "C:\Projects\clinique_baguidi"
+tu fais une copie du dossier de prototype_html de nassieratoo
+VOICI LES COMPTE USERS TEST SEEDERS
+GBAGUIDI Rafiou	m-001@baguidi-clinique.bj	Direction (Directeur Generale)	Actif	
+SANOUSSI Adamon	m-002@baguidi-clinique.bj	Comptable	Actif	
+MABOUDOU Nawal	m-003@baguidi-clinique.bj	RH	Actif
+IDOHOU Abraham	m-004@baguidi-clinique.bj	Médecin	Actif	
+AKONDE Octave	m-005@baguidi-clinique.bj	Infirmier	Actif	
+SOKOU Peace	m-006@baguidi-clinique.bj	Direction	Actif
+ZIME Nadège	m-007@baguidi-clinique.bj	Comptable	Actif
+TOUNGOUH A. Zoulkifouli	m-008@baguidi-clinique.bj	RH
+
+INFOS
+Dénomination
+Clinique BAGUIDI « L'As du Cœur »
+IFU
+3201001996110
+Adresse
+Quartier Zongo II, 02 BP 105, Parakou
+Téléphone
+95 95 99 14 / 97 09 34 99
+
+CLINIQUE BAGUIDI “L’AS DE CŒUR”
+CENTRE DE MEDECINE DU TRAVAIL - MEDECINE GENERALE
+02BP: 105 | Téléphones: 95 74 69 56 / 95 95 99 14 / 97 09 34 99
+IFU : 3201001996110 du 26 Novembre 2010
+e-mail : cliniquebaguidi@yahoo.fr | PARAKOU République du Bénin
+
+NOS SPECIALITES
+Médecine du travail
+Santé Publique
+Gynécologie
+Chirurgie
+Urologie
+Rhumatologie
+Ophtalmologie
+Orthophonie
+Endocrinologie
+Pédiatrie
+Neurologie
+Cardiologie
+Kinésithérapie
+Imagerie (Radiologie- Echographie)
+
+
+**Vague 53 committée (`cc830da`) — le grand resserrage RBAC est fait, tous verrous au vert** : 54/54 scénarios (888 vérifications), 282 pages / 0 erreur, audit **1 047 sondages, 0 promesse, 0 écran en lecture qui ne le dit pas**.
+
+**Le cœur de votre demande — l'expertise RBAC.** Le trou était systémique : un rôle sans fiche avait *tous* les droits sur ce que le manifeste lui ouvrait — l'inventaire montrait le comptable en édition/annulation sur le dossier médical. Les **cinq fiches manquantes** sont écrites : Directeur Médical (écrit le clinique, lit stock et caisse), Direction (lit tout, décide l'institutionnel, **valide la paie** — signer n'est pas saisir), Comptable (M12/avoirs/créances/MECeF/paie en écriture ; achats-stock en lecture *sauf la facture fournisseur, qui est sa pièce* ; aucun clinique), Agent administratif (secrétariat), Ambulancier (ses interventions et le répertoire d'urgence, rien d'autre). Seul l'admin système reste sans fiche — son poste *est* l'accès complet. Et le point clé mesuré : **le kit gatait déjà chaque bouton** (créer/modifier/archiver/modales) — dès les fiches posées, les commandes disparaissent d'elles-mêmes pour qui n'a pas le droit, dans les tableaux comme dans les modales : 0 promesse au premier audit.
+
+**Vos points nommés, tous appliqués** : la Caissière-Dispensatrice perd le stock gros (lecture comprise), le tableau de bord stock et les dépenses journalières ; le magasinier perd M1 et n'a jamais eu Soins ; le biologiste ne peut plus ni créer, ni modifier, ni imprimer un bon de livraison (écran fermé) ; **plus aucune dispensation manuelle** — ordonnance du médecin puis caisse, seule voie ; le bouton « Établir un bon de commande » a quitté les alertes (l'alerte signale, le circuit M7 commande, RG-04).
+
+**Les filtres** : plages de dates sur les quatre écrans de pilotage nommés et `dash-da` (analyse libre), « mouvements de la période » sur les deux états de stock (l'état reste à une date — c'est le flux qui prend la plage), et recherche sur les tableaux des dashboards et **toutes** les files d'attente. Les accès rapides étaient déjà garantis en haut, après le hero, par le gabarit.
+
+Périmètres finaux mesurés par rôle : réception 59 écrans, médecin 93, biologiste 30, caissier 46, magasinier 41, comptable 95, agent administratif 21, ambulancier 10 — l'inventaire `newdocs/INVENTAIRE-RBAC.md` en fait foi, régénéré.
+
+Le plan en 10 phases est soldé — tout ce qui y figurait est livré, vérifié et committé (dernier commit `8994884`, `_version` 48 : 281 pages / 0 erreur, 52/52 scénarios, audit RBAC 1 094 sondages / 0 promesse). Ce qui reste est **hors plan**, noté dans l'artifact et la mémoire :
+
+**1. La passe « colonnes de montants sans `somme` »** (reliquat de la dette D6)
+Inventorier les tableaux imprimés (`P.tableau`) dont les colonnes de montants n'ont pas de total automatique, et décider pièce par pièce. C'est un travail de jugement, pas mécanique : la doctrine est « on ne totalise que ce qui a un sens » — additionner des prix unitaires ne produit rien, et un total faux est pire qu'un total absent.
+
+**2. Les validations en attente de la clinique** (marquages `aValider` / propositions, à ne pas retirer sans décision écrite)
+- les bornes de laboratoire suppléées (celles hors fiche du 21/08/2026) — validation du biologiste ;
+- les échelles ASA/Mallampati, techniques d'anesthésie et check-listes du bloc — validation de l'anesthésiste/du bloc ;
+- les 64 tarifs d'actes encore provisoires et les 3 tarifs `null` (dont le VIH, qui bloque la facturation) ;
+- le questionnaire de satisfaction (proposition), le rapprochement groupe ↔ centre de coûts de `m12-rentabilite-groupes`, les 4 groupes d'articles, la liste des pathologies, le parc technique `aCompleter` ;
+- les seuils d'alerte des références sans seuil (à fixer référence par référence).
+
+
+
+
+État au moment présent (la vague 48 — arbitrage « plus aucun montant nul » + bloc SOINS dans ACCUEIL — est codée et verte aux tests, mais **pas encore committée** : le commit attend le verdict de l'audit RBAC qui tourne en arrière-plan).
+
+## TODO immédiat (travail en cours)
+- **Committer la vague 48** dès le retour de l'audit RBAC (tests 52/52 et check 281 pages déjà verts), puis mettre à jour l'artifact et la mémoire de session.
+
+## Dettes techniques restantes (mesurées, hors plan)
+- **Passe « colonnes de montants sans `somme` »** (reliquat D6) : inventorier les `P.tableau` imprimés dont les colonnes de montants n'ont pas de total automatique — travail de jugement pièce par pièce (« on ne totalise que ce qui a un sens »), jamais mécanique.
+- **Reliquat D5, documenté comme non-dette** : sur 103 `K.btn` à verbe d'écriture, les 4 vraies écritures nues ont été converties en `K.commande` ; le reste (pieds de modale derrière une porte, boutons d'impression) est volontairement laissé — l'audit RBAC (0 promesse) reste le garde-fou.
+- **Règle de maintenance nouvelle** : toute modification de `SCRIPTS` dans `gen-pages.js` doit être répercutée à la main sur `index.html` (page écrite à la main — le bug latent du semis à froid vient d'être corrigé).
+
+## Validations métier en attente (marquages `aValider` — à ne retirer que sur décision écrite)
+- **41 tarifs d'actes provisoires** (dont désormais GY-SAA aligné AMIU) et **34 valorisations SAGE** à la médiane de catégorie — à confirmer par la Direction / factures fournisseur ;
+- **61 variables labo** (bornes suppléées hors fiche du 21/08) — validation du biologiste ;
+- **55 pathologies**, **1 modèle d'enquête de satisfaction**, échelles **ASA/Mallampati/techniques d'anesthésie** et **check-listes du bloc**, **4 groupes d'articles**, rapprochement **groupe ↔ centre de coûts**, parc technique `aCompleter`, **seuils d'alerte** des références sans seuil.
+
+## Files opérationnelles (données de démonstration, pas des TODO de dev)
+220 écritures en brouillon, 25 validations biologiques, 25 CR d'imagerie à rendre, 19 bons en validation DA, 15 factures MECeF, 4 échéances fiscales dépassées.
+
+## Le grand chantier
+La **cible CDCT §8.5** : application desktop .NET (WPF/WinUI 3) + PostgreSQL en LAN — le prototype est sa spécification exécutable ; la réalisation reste entièrement à faire.
+
+État actuel : la vague 49 est committée (`fcfede7`, `_version` 50) — 282 pages / 0 erreur, 53/53 scénarios (881 vérifications), audit RBAC 1 137 sondages / 0 promesse. Aucun travail de code n'est en suspens.
+
+## Dettes techniques restantes (mesurées, assumées)
+
+- **Passe « somme »** : sur 87 `P.tableau` imprimant des montants, **55 ne déclarent pas de total automatique** (inventaire par fichier fait : m12 en compte 11, m8 en compte 9, m6 en compte 7…). À juger **à la pièce** au fil des retouches — beaucoup sont des barèmes ou prix unitaires où un total serait un mensonge (« un total faux est pire qu'un total absent »). Ne pas convertir en masse.
+- **Reliquat D5, volontairement laissé** : les `K.btn` restants sont des pieds de modale (déjà derrière une porte) ou des impressions. Les 4 vraies écritures nues ont été converties ; l'audit RBAC à 0 promesse reste le garde-fou.
+- **Couplage `index.html` ↔ `SCRIPTS`** : désormais verrouillé par une garde de build (`gen-pages` échoue en cas de divergence) — plus une dette, mais une règle de maintenance à connaître.
+- **`prototype_html/index.zip`** : fichier d'origine inconnue (pas créé par moi) entré au commit `544eb59` — à confirmer s'il faut le retirer du suivi git.
+
+## Validations en attente d'un PROFESSIONNEL nommé (marquages gardés — la Direction a validé son ressort le 01/09, le reste attend)
+
+- **61 variables labo** (bornes suppléées hors fiche du 21/08) → biologiste médical ;
+- **55 pathologies** → médecins (tableau de morbidité) ;
+- **check-listes du bloc, échelles ASA/Mallampati, techniques d'anesthésie** → praticiens du bloc ;
+- **plages par lot de réactif** → biologiste (au fil des lots) ;
+- seuils d'alerte des références sans seuil, parc technique `aCompleter`, rapprochement groupe ↔ centre de coûts de `m12-rentabilite-groupes`.
+
+## Files opérationnelles (données de démonstration — gestes de poste, pas des TODO de dev)
+
+220 écritures en brouillon, 25 validations biologiques, 25 CR d'imagerie à rendre, ~27 bons/commandes en validation DA, 15 factures MECeF, 4 échéances fiscales dépassées — toutes visibles et orientées depuis l'écran `adm-validations`.
+
+## Le grand chantier restant
+
+La **cible CDCT §8.5** : l'application desktop .NET (WPF/WinUI 3) + PostgreSQL en client-serveur LAN. Le prototype (282 pages, 53 parcours sondés, 16 rôles) en est la spécification exécutable ; la réalisation finale reste entièrement à faire.
+
+**Actions restantes, dans l'ordre :**
+
+**1. Immédiat (en cours dans la session)**
+- Le verdict de l'**audit RBAC de la vague 50** est tombé au vert (1 137 sondages / 0 promesse) et le commit `10fcf01` est posé — la vague 50 (activation par module) est close. **Aucune action de code n'est en suspens.**
+
+**2. Dettes techniques mesurées, à traiter au fil de l'eau**
+- **Passe « somme »** : 55 tableaux imprimés (`P.tableau`) portent des montants sans total automatique — à juger **à la pièce** (beaucoup sont des barèmes/prix unitaires où un total serait faux), jamais en masse.
+- **`prototype_html/index.zip`** : fichier d'origine inconnue entré au commit `544eb59` — à confirmer avec vous s'il faut le retirer du suivi git.
+
+**3. Validations en attente d'un professionnel nommé** (marquages `aValider` gardés — la Direction a validé son ressort le 01/09, le reste attend une décision écrite)
+- 61 variables labo (bornes suppléées) → **biologiste médical** ;
+- 55 pathologies → **médecins** (tableau de morbidité) ;
+- check-listes du bloc, échelles ASA/Mallampati, techniques d'anesthésie → **praticiens du bloc** ;
+- plages par lot de réactif, seuils d'alerte sans valeur, parc technique `aCompleter`, rapprochement groupe ↔ centre de coûts.
+
+**4. Gestes de poste** (données de démonstration, orientés par l'écran `adm-validations`)
+- 220 écritures en brouillon, 25 validations biologiques, 25 CR d'imagerie à rendre, ~27 bons/commandes en validation DA, 15 factures MECeF, 4 échéances fiscales dépassées.
+
+**5. Le grand chantier**
+- La **cible CDCT §8.5** : application desktop **.NET (WPF/WinUI 3) + PostgreSQL** en client-serveur LAN. Le prototype (282 pages, 54 parcours sondés, 16 rôles, 0 promesse RBAC) en est la spécification exécutable — la réalisation finale reste entièrement à faire.
+
+Voici un prompt prêt à coller dans une nouvelle session Claude Code, à lancer **sur une copie du dépôt** (dupliquer d'abord le dossier `clinique_nassieratoo` → `clinique_baguidi`, ne jamais travailler dans l'original). Complétez les zones `[À FOURNIR]` avant de le lancer — le prototype a pour règle absolue de ne jamais inventer une donnée officielle (IFU, RCCM, numéros, tarifs).
+
+La palette repose sur la trinité du logo (Rouge, Bleu, Noir/Blanc) qui symbolise le cœur, la santé, la rigueur et la confiance.
+Rouge Cœur (Couleur Principale / Action) : #D32F2F ou #E50914
+Usage : Boutons d'action principaux (Boutons d'urgence, "Prendre RDV"), éléments importants, icônes d'accentuation.
+Bleu Santé (Couleur Secondaire / Confiance) : #1565C0 ou #1E50BC
+Usage : Titres de sections, badges, liens secondaires, éléments liés à la médecine du travail.
+Noir Anthracite (Texte & Structure) : #1A1A1A ou #212121
+Usage : Textes principaux, pied de page (Footer), barres de navigation sombres.
+Blanc Pur & Gris Médical (Arrière-plans) : #FFFFFF et #F8F9FA
+Usage : Fond du site, cartes de contenu, espacement pour donner une impression de propreté et de clarté.
+
+
+
+Contenu et Structure de l'En-tête de la Clinique
+L'en-tête doit comporter 3 zones distinctes réparties horizontalement (structure en tableau 3 colonnes) :
+Zone Gauche (Logo & Slogan) :
+Logo circulaire de la Clinique Baguidi.
+Hauteur recommandée du logo : environ 2 à 2,5 cm.
+Slogan juste en dessous : "Votre bien-être est notre raison d'être." (en rouge, écriture cursive).
+Zone Centrale (Identité & Titre) :
+Nom principal : CLINIQUE BAGUIDI "L'AS DE CŒUR" (Texte rouge / noir, très lisible).
+Sous-titre : CENTRE DE MÉDECINE DU TRAVAIL - MÉDECINE GÉNÉRALE.
+Zone Droite (Coordonnées & Légal) :
+Adresse (Parakou, République du Bénin).
+Téléphones (95 74 69 56 / 95 95 99 14 / 97 09 34 99).
+Numéro IFU (3201001996110).
+Email professionnel.
+Ligne de Séparation (Séparateur Visuel) :
+Une double ligne fine (Rouge et Bleue ou Noir) sous l'en-tête pour séparer nettement l'en-tête du corps de la fiche/facture.
+
+
+Typographie (Font System)
+Sur le web, la lisibilité est prioritaire. Il convient d'associer des polices modernes (Sans-Serif) pour la structure et une police manuscrite uniquement pour le slogan.
+Titres (Headings) : Montserrat ou Poppins (Gras / Semi-Bold)
+Style : Modeme, structuré, inspire le sérieux et la modernité.
+Texte Courant (Body Text) : Inter ou Open Sans (Regular)
+Style : Très lisible sur tous les écrans (smartphones et ordinateurs).
+Slogan & Citations : Dancing Script ou Great Vibes (Cursive)
+Usage : Exclusivement pour le slogan "Votre bien-être est notre raison d'être."
+
+
+## PROMPT — Dérivation du prototype SIGH pour la CLINIQUE BAGUIDI las du coeur
+
+Tu travailles dans `prototype_html/`, copie du prototype SIGH-CNT (CLINIQUE NASSIERA TOO). Objectif : en faire le prototype de la **CLINIQUE BAGUIDI** (PROPOSE UN SIGLE pour BAGUIDI comme on a fait pour SIGH-CNT), sans redévelopper — en nettoyant les seeders, en désactivant les modules non exploités, et en appliquant sa charte graphique. Lis d'abord `CLAUDE.md` : ses mécanismes (modulesActifs, RBAC, safelist, _version) sont la clé de tout ce travail.
+
+### 1. Identité et en-têtes (source unique : `core.js` / `C.BRAND`)
+Remplace l'en-tête légal NASSIERA TOO partout où `C.BRAND` le porte (états imprimés, pièces, écrans, `cfg-entetes`) par :
+- Dénomination : CLINIQUE BAGUIDI [forme juridique À FOURNIR]
+- Adresse / BP / ville : [À FOURNIR] · Téléphones : [À FOURNIR] · E-mail : [À FOURNIR]
+- IFU : [À FOURNIR] · RCCM : [À FOURNIR] · N° d'autorisation d'ouverture : [À FOURNIR]
+- Devise : [À FOURNIR] · Logo : [fichier À FOURNIR, vendoré localement]
+
+**Règle : aucune de ces valeurs ne s'invente.** Toute valeur manquante reste vide et l'écran le dit (`aValider` / « à compléter par la Direction »), comme le prototype le fait déjà pour les tarifs non documentés. Vérifie qu'aucune chaîne « NASSIERA », « CNT », « Natitingou » ne survit dans l'UI ni les états (grep global) — y compris le préfixe du code patient `CNT/...` (paramètre à renommer, même si M1 est désactivé) et les numérotations de pièces `<SIGLE> n°/n°/CNT/...`.
+
+### 2. Modules : activer/désactiver par `modulesActifs` (mécanisme de la vague 50) — JAMAIS en retirant des entrées du manifeste
+BAGUIDI n'exploite pour l'instant que : expression/analyse des besoins et achats (M7), gestion des stocks et inventaire pharmacie (M6), demandes d'expression de besoins du laboratoire (écrans M7 côté besoins, pas le labo clinique), RH — fiches du personnel (M10), Paie & primes (M11), Comptabilité SYSCOHADA (M12), Administration (M13), Pilotage (PIL), tableaux de bord dont le croisé (DASH), configuration (CFG).
+
+Donc **désactiver via `modulesActifs`** : M1, M2, M3, M4, M5 (le labo clinique — les besoins du labo passent par M7), M8, M9. Rappels de doctrine du dépôt :
+- une désactivation retire du méga-menu, de la recherche et des adresses, **pour tous les rôles admin compris**, sans rien supprimer — la réactivation rend tout en l'état ;
+- **la désactivation ne doit JAMAIS empêcher un autre module de fonctionner** : sonde explicitement que stocks, achats, paie, RH, compta, tableaux de bord marchent avec M1–M5/M8/M9 fermés (files d'attente, premiers regards, KPI qui lisent des collections cliniques doivent afficher un zéro honnête ou se masquer, pas casser) ;
+- CFG+DASH sont le NOYAU non désactivable ;
+- ajuste les tableaux de bord par poste : un dash dont le poste n'existe pas chez BAGUIDI l'annonce (comme dash pharmacie/RH archivés chez CNT).
+
+### 3. Nettoyage des seeders (fichiers `data*.js` + `store.seed()` / `data-seed.js`)
+GARDER les données propres à NASSIERA TOO et les RENOMMER au nom de BAGUIDI
+- organigramme/44 agents, 14 comptes utilisateurs, NS 131, NS 132, plannings, régimes de garde → remplacer par le personnel BAGUIDI [FOURNIR] ;
+- inventaire SAGE (184 articles), catalogue médicaments, actes, grilles tarifaires, analyses labo, assureurs, calendrier des échéances propres à CNT → ON GARDE] ; conserve les référentiels **génériques** (plan SYSCOHADA, périodicités, familles de pièces, calendrier fiscal béninois s'il s'applique) ;
+- compte de résultat 2025 / baseline compta CNT → GARDER  ;
+- jeux de démonstration (`genFactures`, gestes de poste…) → régénérer sur les seuls modules actifs, aucun patient/facture de soins ;
+- **incrémente `_version`** dans `store.js` (sinon les postes gardent l'ancien jeu en localStorage) et mets à jour `LIBELLES` de la corbeille.
+
+### 4. Barème d'évaluation : DÉSACTIVÉ
+Le moteur d'évaluation/sanctions (barème NS 131) est propre à CNT : ferme les écrans d'évaluation via le canal des écrans de `modulesActifs` (pas de retrait du manifeste), garde la bascule `baremeModifiable` fermée, et vide le barème seedé. La paie M11 doit continuer à calculer **sans** rubrique de sanction (les lignes conditionnelles à `null` sont déjà filtrées — vérifie-le).
+
+### 5. RBAC
+Réduis les rôles aux postes réellement servis (magasinier/gestionnaire de stock, comptable, RH/DA, direction, admin) : les rôles cliniques (médecin, infirmier, biologiste, sage-femme, caissier…) sont **archivés** (RG-14), jamais supprimés. Chaque rôle conservé garde ou reçoit sa **fiche `rbac`** (un rôle sans fiche a tous les droits — le trou déjà corrigé chez CNT). Refais `npm run audit-rbac` et `npm run inventaire-rbac` : attendu 0 promesse, 0 lecture non dite.
+
+### 6. Charte graphique BAGUIDI
+Applique la charte [couleurs primaire/secondaire, typo, logo À FOURNIR] : variables de couleur du design system (navy institutionnel → couleur BAGUIDI), logo sur topbar/connexion/états imprimés, favicon. **Régénère la safelist avant de compiler la CSS** (`gen-safelist` puis build Tailwind), piège n°1 du dépôt. La sémantique vert/orange/rouge ne change pas.
+
+### 7. Verrous de vérification (aucune livraison sans eux)
+`npm run lint` → `npm run build` → `npm run check` (0 erreur JS, 0 lien cassé sur les pages restantes) → `npm run test` (adapte les scénarios : ceux qui traversent des modules désactivés sont remplacés par des sondes « module fermé proprement, modules actifs intacts ») → `npm run audit-rbac`. Mets à jour `CLAUDE.md` du dépôt dérivé (identité, périmètre, modules actifs) pour qu'il décrive BAGUIDI et non CNT.
+
+---
+
+**Ce que vous devez fournir avec ce prompt** : IFU/RCCM/autorisation/coordonnées BAGUIDI, logo + couleurs, liste du personnel avec postes, et les documents sources (inventaire, plan des comptes s'il diverge, fournisseurs) — tout ce qui manque restera vide et marqué « à compléter », conformément à la doctrine du prototype.
+
+

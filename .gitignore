@@ -1,0 +1,5 @@
+node_modules/
+prototype_html/build/pdf-pages/
+prototype_html/build/rapport-controle.json
+prototype_html/prototype_html.zip
+*.log

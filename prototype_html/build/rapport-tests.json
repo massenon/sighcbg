@@ -1,0 +1,743 @@
+[
+  {
+    "nom": "Identité BAGUIDI — connexion, en-tête imprimé, plus aucune trace CNT",
+    "etapes": [
+      {
+        "libelle": "La connexion porte la dénomination, le sous-titre, le slogan et l’IFU BAGUIDI",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le RCCM fourni le 07/09/2026 figure en toutes lettres — RB/PKO/17 A 4240 du 19/03/2009",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Neuf profils de connexion — les huit comptes d’Instructions.txt plus l’admin système",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Plus aucune chaîne CNT (dénomination, ville, slogan, IFU, RCCM) sur la connexion",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "cfg-entetes montre l’identité BAGUIDI et annonce les mentions non fournies",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’en-tête imprimé porte les TROIS zones : nom + sous-titre, slogan, IFU daté",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La double ligne fine ROUGE et BLEUE sépare l’en-tête du corps",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le RCCM BAGUIDI est imprimé sur la pièce, l’autorisation reste vide — aucune chaîne CNT",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Charte BAGUIDI — action rouge cœur, barre anthracite, cursive du seul slogan",
+    "etapes": [
+      {
+        "libelle": "Le bouton d’action principale est ROUGE CŒUR (#D32F2F)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La barre sombre est NOIR ANTHRACITE (#212121)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La double ligne rouge et bleue court sous la barre",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le slogan seul est en cursive (Dancing Script vendorée, chargée localement)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les titres composent en Montserrat (vendorée, chargée localement)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Périmètre — M1–M5, M8, M9 et MECEF fermés : ruban, adresses, recherche",
+    "etapes": [
+      {
+        "libelle": "Le ruban de l’ADMIN ne porte plus aucun module clinique — la fermeture vaut pour tous",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les modules BAGUIDI sont tous au ruban (M6, M7, M10–M14, CFG, GED, RAP, PIL, DASH)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "can() refuse les écrans cliniques, admin compris",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les écrans d’évaluation NS 131 et les statistiques cliniques sont fermés AUX ÉCRANS",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Officines (interne, externe) ET registre des délivrances fermés, hors du méga-menu Logistique",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Fermer une officine NE FERME PAS le magasin — produits, stock gros, mouvements, lots et inventaires restent",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La fermeture porte son motif, lisible à l’écran",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’adresse d’une officine fermée renvoie au refus",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’adresse d’un écran fermé renvoie au 403 (M1, M8, évaluations NS 131)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript sur les refus",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Indépendance — stocks, achats, RH, paie, compta et dashboards travaillent",
+    "etapes": [
+      {
+        "libelle": "Le plan SYSCOHADA révisé est au magasin — 1 332 comptes, 9 classes, 1 049 imputables",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les comptes officiels y sont, avec leur libellé : 4011, 5711, 4492 (AIB subi), 7061",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Plus aucun compte hérité à six chiffres — l’ancien plan a été retiré",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les comptes des schémas d’écriture (D.COMPTES_SIGH) existent tous au plan",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Chaque écriture porte un compte IMPUTABLE du plan — jamais un compte qui totalise",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le stock monte et liste ses produits",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les expressions de besoins montent et la file s’amorce",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le personnel BAGUIDI est au registre RH",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les écritures comptables montent",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les tableaux de bord comptable, RH et médecin montent avec le clinique fermé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les six secteurs sont les groupes de prestation, dans l’ordre de la Direction",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les centres de coûts portent LES MÊMES secteurs, plus la Direction",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "« Recettes par groupe » et « Bénéfice brut par groupe » les listent tous les six",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le rapprochement porte les sept centres — même sans charge sur la période",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "« Suivi des ventes » au hero, au fil d’Ariane et au méga-menu Logistique",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "« Statistiques de l’imagerie médicale » au manifeste",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Réactivation — rouvrir M2 rend les écrans en l’état, refermer les retire",
+    "etapes": [
+      {
+        "libelle": "La fiche de fermeture M2 existe et se rouvre depuis le magasin",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La refermeture retire de nouveau les écrans — rien n’a été supprimé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’aide DÉCRIT le module fermé — présent, marqué « Fermé », motif lu, non cliquable",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Un module ouvert (M6) y est cliquable, et les compteurs disent ouverts/total",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Chaque module ne figure qu’UNE fois — les rangées alias ne font pas doublon",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "RÉOUVERTURE : le module reparaît OUVERT et cliquable dans l’écran d’aide",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "REFERMETURE : l’aide le remarque « Fermé » d’elle-même — rien n’est écrit en dur",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Comptes & personnel — les huit agents exacts, matricule = m-00N",
+    "etapes": [
+      {
+        "libelle": "Le personnel est EXACTEMENT les huit agents d’Instructions.txt",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Chaque salaire est une valeur d’attente MARQUÉE (grille non fournie)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Chaque compte porte l’adresse m-00N@baguidi-clinique.bj",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "m-001 = GBAGUIDI Rafiou (Direction), m-008 = TOUNGOUH A. Zoulkifouli (RH)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Neuf comptes en tout — les huit plus l’administrateur système",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "RBAC — rh désarchivé travaille, médecin exprime ses besoins, caissier archivé refusé",
+    "etapes": [
+      {
+        "libelle": "Le rôle RH (désarchivé, deux titulaires) ouvre le personnel EN ÉCRITURE",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le médecin garde son tableau de bord et l’EXPRESSION DE BESOINS (surcharge d’écran)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le médecin n’entre pas en comptabilité (RG-13)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La Direction accède à la validation de la paie et aux commandes (RG-04)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le rôle caissier est ARCHIVÉ et sa session ne travaille plus",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le sélecteur de profil ne propose QUE les six rôles servis plus l’admin — aucun archivé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Chaque profil y porte le nom de son titulaire réel (comptes d’Instructions.txt)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Un tableau de bord dont le poste n’existe pas chez BAGUIDI l’ANNONCE",
+    "etapes": [
+      {
+        "libelle": "Caisse, laboratoire, stock et accueil annoncent le poste sans titulaire",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le tableau de la Direction (rôle ACTIF) ne porte PAS l’annonce",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "NS 131 désactivé — barème vidé, bascule fermée, la paie calcule SANS sanction",
+    "etapes": [
+      {
+        "libelle": "Le barème seedé est VIDE et la bascule de modification reste fermée",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune évaluation n’est semée — la paie n’a aucune sanction à retenir",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’onglet Barème de cfg-systeme ANNONCE la désactivation",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Chaîne 1 — expression de besoin → validation Direction → commande → réception/CUMP → facture fournisseur → écriture",
+    "etapes": [
+      {
+        "libelle": "Le besoin (service Laboratoire) est au circuit, étape « soumis »",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La Direction ACCORDE (15 sur 20 — quantité accordée ≠ demandée, tracée à son nom)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le bon de commande est émis et VALIDÉ par la Direction (RG-04)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La réception ENTRE en stock (mouvement justifié RG-03) et le CUMP est recalculé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La facture fournisseur est rapprochée et l’écriture naît ÉQUILIBRÉE en brouillon (RG-10)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le besoin, le mouvement et l’écriture apparaissent sur leurs écrans",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript sur toute la chaîne",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Chaîne 2 — fiche RH → planning → primes → bulletin SANS sanction → validation Direction",
+    "etapes": [
+      {
+        "libelle": "La fiche d’AKONDE Octave existe et son planning est semé (régime infirmier)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le planning porte des gardes — la matière première des primes NS 132",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les bulletins des huit agents sont générés, soumis à la validation de la Direction",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "AUCUN bulletin ne porte de sanction — le NS 131 est bien hors de la paie",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "AUCUN bulletin ne porte de prime — le dispositif est désactivé, grille vide et écran fermé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Une grille VIDE vaut zéro : le moteur ne retombe pas sur la note de la clinique d’origine",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La Direction valide les bulletins à son nom — la chaîne est bouclée",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript sur toute la chaîne",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "AIB — généralisation du taux de 5 %, retenue tracée et écriture équilibrée",
+    "etapes": [
+      {
+        "libelle": "L’écran énonce la généralisation du 5 %, sa source, et affiche le barème avec ses règles en attente",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "IFU désactivé ou absent, à partir du 07/09/2026 → 5 % appliqué et motivé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Avant la date d’effet, la généralisation ne s’applique pas — et le taux se refuse",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Statut non vérifié ou IFU actif : AUCUN taux par défaut — le refus est nommé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le barème porte les trois taux, et SEULE la règle des 5 % est arrêtée d’emblée",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Une règle ARRÊTÉE s’applique d’elle-même — sans toucher au code",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Deux règles pour un même tiers : le logiciel NOMME les règles au lieu de choisir",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La règle désignée par le poste tranche, et le retrait rétablit le refus",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les deux faces de l’AIB portent des comptes distincts : dette 4478, créance 4492",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La retenue applique 5 % du montant de la facture et garde son motif",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’écriture est ÉQUILIBRÉE (RG-10), en brouillon, sur 4011 et 4478",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "IFU sur chaque fiche — l’AIB frappe les honoraires, jamais un salaire",
+    "etapes": [
+      {
+        "libelle": "Chaque fiche d’agent porte IFU, statut au fichier de la DGI et régime de rémunération",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "AUCUN IFU n’est inventé pour les huit agents — le statut reste à vérifier",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les huit agents sont au régime salaire : deux régimes existent, salaire et honoraires",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le bulletin d’un salarié porte une AIB NULLE, motivée « sans objet »",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’écran de calcul nomme l’AIB — elle ne se découvre pas à l’impression",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Régime honoraires + IFU désactivé → 5 % retenus sur l’assiette, motif à l’appui",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Régime honoraires + IFU actif → le barème n’a rien arrêté : ZÉRO retenu, refus nommé",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le retour au régime salaire rend l’AIB sans objet — la bascule est réversible",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "L’écran des bulletins offre l’impression de la pièce",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le bulletin IMPRIMÉ porte la ligne d’AIB dans le tableau des retenues",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La pièce porte l’IFU, le régime, et la phrase qui justifie la retenue (ou son absence)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Historique des prix — auteur unique, prix figé sur le mouvement, refus nommé",
+    "etapes": [
+      {
+        "libelle": "Le changement de prix écrit UNE ligne d’historique, sans qu’aucun écran ne l’écrive",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "La ligne porte l’ancien prix, le nouveau, l’écart en %, le motif et son auteur",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le libellé de l’article est FIGÉ sur la ligne — renommer l’article ne la réécrit pas",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Une modification sans changement de prix n’écrit AUCUNE ligne",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "LE MOUVEMENT DÉJÀ ENREGISTRÉ GARDE SA VALEUR — le passé ne se réécrit pas",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Un article sans prix ne sort pas : le refus NOMME la fiche à compléter",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Trois méthodes de valorisation, dont le PRIX DU LOT, et le coefficient de vente à 1,00",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Valorisation au lot : la sortie prend le prix du lot, et l’estimation se DIT",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Un lot sans prix propre retombe sur le CUMP — et l’annonce plutôt que de se taire",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "adm-validations — files actives et « à compléter par la Direction »",
+    "etapes": [
+      {
+        "libelle": "Les données NON FOURNIES restent listées (forme juridique, salaires), le RCCM en sort, et les primes figurent en DÉCISION",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le jeu de démonstration hérité est DIT à remplacer : SAGE, fournisseurs, baseline 2025",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Les décisions de la Direction du 02/09/2026 sont tracées (sigle, périmètre, comptes)",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Plus aucune file clinique sur le centre des validations",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  },
+  {
+    "nom": "Grep final — aucune chaîne CNT sur les écrans actifs ni les états",
+    "etapes": [
+      {
+        "libelle": "Aucune chaîne CNT (nom, ville, slogan, IFU, RCCM, code CNT/…) sur les écrans actifs",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Le code dossier est CBG/530/25 — la règle vit sur BRAND.sigle",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Plus aucune clé localStorage sigh-cnt:",
+        "ok": true,
+        "detail": null
+      },
+      {
+        "libelle": "Aucune erreur JavaScript",
+        "ok": true,
+        "detail": null
+      }
+    ],
+    "ok": true
+  }
+]
