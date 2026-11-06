@@ -261,6 +261,9 @@ L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles,
 
 **P0-8. Report des recettes journalières (nouvel écran M12, `m12-report-recettes`)**
 
+> **SUPPLANTÉ le 06/11/2026 (nuit), Q35 = OUI** : SIGH-CBG REMPLACE le logiciel de caisse patient de la clinique. Le report des recettes n'est plus développé ; la facturation et la caisse complètes de M8 sont actives (client libre pour le comptoir, écriture à l'encaissement). Restent valables de P0-8 : le suivi par nature d'activité (déjà fourni par `m8-recettes` et le groupement de prestations) et les statistiques. Q14 à Q16 et Q17 deviennent sans objet.
+
+
 Le seul vrai développement du chantier. Il réutilise des mécanismes existants : l'éditeur de lignes en modale des dépenses multi-lignes (`m12-depenses`), l'écriture plate par ligne, le contrôle RG-10 avant écriture, la naissance en brouillon, la plage de dates du kit.
 
 - Un **report** = une journée × une caisse source (le logiciel de caisse, ou chaque caisse s'il y en a plusieurs : Q14). Il porte des **lignes par nature d'activité** : consultations, actes, certificats, hospitalisations, analyses, imagerie, pharmacie, visites de médecine du travail, autres (liste administrable, rattachée aux six secteurs et aux groupes de prestation existants).
@@ -383,6 +386,26 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 Même rendu à l'écran (aperçu de `cfg-branding`) et sur la pièce (A4 et PDF) : deux rendus finiraient par montrer deux formulaires. Le rouleau 80 mm et le badge CR80 gardent leurs gabarits (pas d'en-tête fiscal complet).
 - *Critères* : comparaison côte à côte avec la maquette à 1 200 px ; champ vide = ligne absente ; contrastes AA ; test de présence des trois zones et du double filet sur le PDF engendré.
 
+### Audit des quatorze spécialités dans le poste hérité (06/11/2026, avant toute construction)
+
+Recherche dans `apps/poste`, `packages/domaine`, le jeu livré et le manifeste du poste cloné de Nassiera Too :
+
+| Spécialité | Présent dans le poste | Verdict |
+|---|---|---|
+| Gynécologie | **M4 complet** : dossier obstétrical, CPN, accouchements, partogramme, planification familiale, soins curatifs, SONU, PTME, `dash-maternite` | existe, à rattacher |
+| Chirurgie | **Bloc M3** : CPA, compte rendu opératoire et d'anesthésie, check-listes, statistiques, rôles chirurgien et anesthésiste, `dash-chirurgien` | existe, à rattacher |
+| Imagerie | **M2 complet** : cinq modalités (écho, radio, mammo, scanner, IRM), demandes, galerie, catalogue, statistiques | existe, à rattacher |
+| Pédiatrie | **partielle** : dossier du nouveau-né, naissances, CPoN, vaccins J0 (M4) ; aucune consultation pédiatrique | partiel |
+| Médecine du travail | **absente** : seule une pièce « certificat d'aptitude » (sigle CMA, en collision avec l'accouchement) ; ni visite d'embauche ou périodique, ni entreprise cliente | à créer |
+| Santé publique | absente (une catégorie de courrier du même nom) | à créer |
+| Urologie, Rhumatologie, Ophtalmologie, Orthophonie, Endocrinologie, Neurologie, Cardiologie, Kinésithérapie | **absentes** : leurs noms n'apparaissent que dans les pastilles de l'écran de connexion ajoutées par le lot charte | à créer |
+
+Il n'existe **aucun modèle de spécialité** (ni champ « spécialité » sur la consultation, ni catalogue d'actes par spécialité) ; seul le prestataire externe de M10 porte une spécialité en texte libre. Le dossier de consultation générique (examen IPPOA par appareil, antécédents, prescriptions) est la base commune réutilisable. Le cahier des charges Baguidi V2 ne décrit aucune spécialité et la Direction indique que les contenus sont **déjà validés** : ils sont donc livrés sans le marquage « à valider par le praticien », et tout contenu précis déjà arrêté par la clinique est à porter dans les fiches (Q36).
+
+### Point contractuel relevé le 06/11/2026 : le CDC Baguidi V2 dit le contraire
+
+Le cahier des charges fonctionnel et technique Baguidi V2 (`draft/`) décrit **16 modules propres à Baguidi** (M1 Achats à M16 Facturation et comptabilité, sa numérotation diffère de celle de Nassiera Too) et **exclut expressément** le dossier patient informatisé, la consultation médicale et l'hospitalisation (§4.2), tout en prévoyant « M12 Intégration avec le logiciel de caisse existant ». Les décisions de la Direction du 06/11/2026 (M1 à M10 actifs avec tout, SIGH-CBG remplace le logiciel de caisse patient, banque de sang activée, quatorze spécialités) **élargissent** ce périmètre. Elles font foi, mais l'écart avec le document contractuel doit être acté : **Q38** (avenant au CDC V2, ou périmètre signé par la Direction). Non bloquant pour le développement.
+
 ## 8. Indicateurs de réussite
 
 | Indicateur | Cible | Mesure |
@@ -434,10 +457,11 @@ Même rendu à l'écran (aperçu de `cfg-branding`) et sur la pièce (A4 et PDF)
 | Q31 | Les secteurs NS 145, les directions des types de pièces et la matrice des sources citent encore les documents de Nassiera Too. Baguidi fournit-elle son organigramme de directions et ses notes de service, ou marque-t-on « hérité, à confirmer » ? | Direction Baguidi | Non |
 | ~~Q28~~ | ~~Nom commercial ?~~ **Tranché le 06/11/2026 : alignement sur le RCCM.** La dénomination imprimée devient « CLINIQUE BAGUIDI « L'AS **DU** CŒUR » » (ligature Œ conservée à l'impression ; le RCCM écrit « COEUR » en capitales simples). Le logo, qui porte « L'AS DE COEUR », reste tel quel tant que la Direction ne fournit pas de version corrigée | | |
 | ~~Q29~~ | ~~Régime d'imposition de l'EI ?~~ **Tranché le 06/11/2026 : on suit le calendrier fiscal hérité pour le moment** (acomptes d'IS compris). Le comptable de Baguidi le corrigera dans `cfg-comptabilite` / `m12-echeances` quand le régime réel (BIC) sera arrêté | | |
-| Q34 | **Banque de sang et donneurs** : la Direction a écrit « M1 à M10 avec tout ». Ces deux écrans de M5 étaient nommés hors périmètre le 06/11 ; faut-il les rouvrir aussi ? (défaut appliqué : restent fermés, réouverture par une bascule de `cfg-modules`) | Direction Baguidi | Non |
-| Q35 | **M1 à M10 actifs change le rôle de SIGH-CBG** : il devient un logiciel patient complet (dossier, consultation, facturation), alors que Baguidi a déjà un logiciel de caisse rattaché aux patients. Le report des recettes (P0-8) reste-t-il nécessaire, ou SIGH-CBG REMPLACE-t-il ce logiciel (migration, double saisie évitée) ? (défaut : le report reste, utilisable en parallèle) | Direction Baguidi | **Oui** pour P0-8 et le jeu de démonstration |
-| Q36 | Contenu attendu de chaque spécialité (P0-12) : champs de consultation, actes, praticien titulaire. Aucun document remis ; sinon modèles génériques marqués à valider | praticiens de Baguidi | Non |
-| Q37 | Médecine du travail : fiche d'aptitude, périodicité des visites, convention avec les entreprises : un modèle de fiche existe-t-il (formulaire papier à joindre) ? | Direction Baguidi | Non |
+| ~~Q34~~ | ~~Banque de sang et donneurs ?~~ **Tranché le 06/11/2026 (nuit) : activés ET complétés dans SIGH-CBG** (retrait des fiches de fermeture MOD01 et MOD02 ; audit de complétude du module, CRUD, droits, jeu de démonstration) | | |
+| ~~Q35~~ | ~~SIGH-CBG remplace-t-il le logiciel de caisse patient ?~~ **OUI (06/11/2026, nuit)** : P0-8 supplanté, M8 complet actif | | |
+| ~~Q36~~ | ~~Contenu clinique des spécialités ?~~ **Déjà validé par la Direction (06/11/2026)** ; l'audit n'a trouvé aucun document qui le détaille : le poste livre les modèles construits sur le dossier de consultation générique, et le contenu précis arrêté par les praticiens se porte dans les fiches de spécialité | | |
+| ~~Q37~~ | ~~Fiche d'aptitude ?~~ **Déjà validée par la Direction (06/11/2026)** | | |
+| Q38 | Le CDC Baguidi V2 (§4.2) exclut DPI, consultation et hospitalisation et prévoit l'intégration avec le logiciel de caisse existant (M12 du CDC) : les décisions du 06/11/2026 s'y substituent-elles par avenant, ou par un périmètre signé de la Direction ? | Direction Baguidi | Non |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
