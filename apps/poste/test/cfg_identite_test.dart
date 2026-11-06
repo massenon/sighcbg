@@ -95,10 +95,12 @@ void main() {
   casM14('enregistrer met à jour la BASE et TOUTES les pièces : la valeur saisie est imprimée, une mention vide ne l’est pas', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
-    // État initial : autorisation, forme et formule VIDES ; l'aperçu n'a aucune ligne « AUTORISATION D'OUVERTURE ».
+    // État initial : autorisation et forme VIDES ; la formule de politesse vaut le slogan (décision du 06/11/2026) ;
+    // l'aperçu n'a aucune ligne « AUTORISATION D'OUVERTURE ».
     String champ(String c) =>
         t.widget<TextField>(find.descendant(of: find.byKey(Key('kit:champ:$c')), matching: find.byType(TextField))).controller!.text;
-    expect([champ('forme'), champ('autorisation'), champ('formulePolitesse')], ['', '', '']);
+    expect([champ('forme'), champ('autorisation')], ['', '']);
+    expect(champ('formulePolitesse'), 'Votre bien-être est notre raison d’être.');
     expect(find.textContaining('AUTORISATION D’OUVERTURE'), findsNothing);
     await saisir(t, 'autorisation', 'N° 012/MS/DNSP/2009');
     await saisir(t, 'formulePolitesse', 'MERCI DE VOTRE CONFIANCE');
