@@ -1,5 +1,7 @@
 # Jeu de démonstration SIGH-CBG : proposition (06/11/2026)
 
+> **RÉVISION requise (06/11/2026, nuit)** : M1 à M10 sont ACTIFS (PRD P0-11). Les principes 6 et le §3 « un module fermé a ses collections vides » ne tiennent plus : le jeu doit aussi peupler patients, consultations, hospitalisations, analyses et maternité, et chaque spécialité d'un praticien rattaché. Volumes à rehausser après réponse à Q35.
+>
 > **Statut : PROPOSITION à valider par la Direction de la Clinique Baguidi.** Décision déjà rendue : un jeu créé pour Baguidi, pas de registres vides (Q4). Tout ce qui suit est fictif sauf ce qui est marqué « réel » ; rien n'y est présenté comme une donnée officielle de la clinique. Le dépôt étant public, aucune donnée de patient réel, aucune donnée personnelle hors les noms des huit agents (déjà publics dans `baguidi-sources`, demandés par la Direction).
 
 ## 1. Principes

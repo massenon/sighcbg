@@ -222,6 +222,9 @@ L'extraction du 06/11/2026 (limitée à l'identité, aux utilisateurs et rôles,
 - *Critères* : un poste mère installé à neuf affiche des registres vides (ou de démonstration explicitement fictifs, selon la décision Q4) ; aucun nom d'agent de Nassiera Too n'apparaît ; tous les tests passent.
 
 **P0-4. Fermeture des modules hors périmètre**
+
+> **SUPPLANTÉ le 06/11/2026 (nuit)** : la Direction active **M1 à M10 avec tous leurs écrans** (voir P0-11). Les fermetures MOD03 à MOD09 posées par le lot 1 sont à RETIRER du jeu livré. Le mécanisme de fermeture, les bascules NS 131/132 et MECeF restent. Banque de sang et donneurs : Q34.
+
 - Ajouter au jeu livré `modulesActifs.json` des fiches `actif: false` (motif « Hors périmètre Clinique Baguidi », date, auteur Direction) pour :
 
 | Module | Code | Fermeture |
@@ -357,6 +360,29 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 - **Report des correctifs de SIGH-CNT** : garder la liste des fichiers « propres à Baguidi » (`docs/DIFFERENCES-CNT.md`) à jour pour que le report reste mécanique.
 - **Dérivation vers une troisième clinique** : si l'opération se répète, extraire l'identité, le thème et le périmètre dans un seul fichier de configuration d'établissement.
 
+### P0-11 à P0-13 : décisions du 06/11/2026 (nuit)
+
+**P0-11. M1 à M10 actifs, avec tout.** Retirer du jeu livré les fiches `modulesActifs` MOD03 à MOD09 (modules M1 à M5, six statistiques cliniques de PIL, neuf tableaux de bord cliniques de DASH) et leur référence de test ; M6 à M14, MECeF, GED, RAP, PIL et DASH inchangés. Conséquences à traiter dans le même lot :
+- les **17 rôles archivés** dont les modules rouvrent sont **désarchivés** (règle posée le 06/11 : un rôle archivé le reste tant que son module n'est pas réactivé, il ne l'est plus) ; les comptes restent les 9 réels, tous actifs ;
+- `fermetures_baguidi_test` devient un test de **non-régression de l'ouverture** (tous les écrans M1 à M10 visibles aux rôles qui les ont dans la matrice d'origine) ;
+- le jeu de démonstration ne peut plus laisser vides les collections de M1 à M5 : patients, consultations, hospitalisations, analyses, maternité sont peuplés (voir `JEU-DEMONSTRATION-BAGUIDI.md`, révisé en conséquence) ;
+- l'application mobile (profils soignant et réception, écrans cliniques) redevient pertinente.
+- *Critères* : `inventaire-rbac` donne, pour chaque rôle, les mêmes écrans qu'à l'import de la base (hors NS 131/132 et MECeF selon leurs bascules) ; aucun écran de M1 à M10 en « Activité fermée » ; suite complète verte.
+
+**P0-12. Les quatorze spécialités.** La clinique affiche 14 spécialités (Médecine du travail, Santé publique, Gynécologie, Chirurgie, Urologie, Rhumatologie, Ophtalmologie, Orthophonie, Endocrinologie, Pédiatrie, Neurologie, Cardiologie, Kinésithérapie, Imagerie). **Quatre existent déjà en partie** : Gynécologie (M4), Chirurgie (bloc M3, rôle chirurgien), Imagerie (M2, cinq modalités), Médecine du travail (aucune pièce spécifique à ce jour). **Choix d'architecture : une SEULE mécanique pilotée par des données**, et non quatorze modules écrits à la main.
+- Collection `specialites` (14 fiches administrables : code, libellé, praticiens rattachés, actes du catalogue, modèle de consultation) ; **quatre écrans génériques** filtrés par spécialité : hub de la spécialité, dossier / consultation spécialisée (formulaire engendré du modèle de la fiche, comme le questionnaire d'enquête naît de son modèle), agenda et file, statistiques calculées. Le manifeste en dérive 14 entrées de ruban (rangée « Spécialités ») sans écrire 14 fois le même écran.
+- Les spécialités qui ont déjà leurs écrans (Gynécologie, Chirurgie, Imagerie) **les réutilisent** : leur fiche pointe vers eux, rien n'est dupliqué.
+- **Médecine du travail** (cœur de métier) : visite d'embauche, périodique, de reprise, fiche d'aptitude (certificat tarifé via la caisse, `PR.facturerPiece`), entreprises clientes et leurs salariés, convention de visites ; c'est la seule spécialité qui ajoute des écrans propres.
+- Les modèles de consultation des autres spécialités sont des **propositions marquées « à valider par le praticien »** (doctrine du bloc et du laboratoire) : aucun n'est donné comme arrêté.
+- *Critères* : ajouter une quinzième spécialité = une fiche, sans code ; chaque spécialité a son hub au ruban, filtré par RBAC ; une consultation spécialisée enregistrée apparaît au dossier du patient ; les statistiques d'une spécialité se recomptent depuis les registres.
+
+**P0-13. Papier à en-tête Baguidi : la mise en page, pas seulement les textes.** État vérifié le 06/11/2026 : le poste (`impression/pdf.dart`, `feuilles.dart`, aperçu de `cfa_identite.dart`) garde la composition de Nassiera Too (titre centré, logo de part et d'autre) ; la maquette Baguidi (`print.js`, `cfg-branding`) définit **trois zones** :
+- **gauche** : logo circulaire (≈ 2,4 cm) et, dessous, la devise en cursive rouge (Dancing Script) ; **centre** : dénomination en Montserrat gras rouge (`coeur-500`), sous-titre « CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE » en petites capitales anthracite ; **droite** : BP, téléphones, **IFU avec sa date** (« du 26 novembre 2010 », donnée à ajouter à `IdentiteClinique`), e-mail, adresse et pays, RCCM (n° d'enregistrement ONMB sous le RCCM, décision du 06/11) ;
+- sous l'en-tête, **double filet fin rouge puis bleu** (2 px, 2 px d'écart) ; autorisation d'ouverture non imprimée tant qu'elle est vide ; l'option « logo de part et d'autre » (`doubleLogo`) disparaît de `cfg-branding` ;
+- pied : « dénomination, IFU, RCCM » ; référence `CBG-AAAAMMJJ-NNNN` ; « Édité depuis le SIGH-CBG ».
+Même rendu à l'écran (aperçu de `cfg-branding`) et sur la pièce (A4 et PDF) : deux rendus finiraient par montrer deux formulaires. Le rouleau 80 mm et le badge CR80 gardent leurs gabarits (pas d'en-tête fiscal complet).
+- *Critères* : comparaison côte à côte avec la maquette à 1 200 px ; champ vide = ligne absente ; contrastes AA ; test de présence des trois zones et du double filet sur le PDF engendré.
+
 ## 8. Indicateurs de réussite
 
 | Indicateur | Cible | Mesure |
@@ -408,6 +434,10 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q31 | Les secteurs NS 145, les directions des types de pièces et la matrice des sources citent encore les documents de Nassiera Too. Baguidi fournit-elle son organigramme de directions et ses notes de service, ou marque-t-on « hérité, à confirmer » ? | Direction Baguidi | Non |
 | ~~Q28~~ | ~~Nom commercial ?~~ **Tranché le 06/11/2026 : alignement sur le RCCM.** La dénomination imprimée devient « CLINIQUE BAGUIDI « L'AS **DU** CŒUR » » (ligature Œ conservée à l'impression ; le RCCM écrit « COEUR » en capitales simples). Le logo, qui porte « L'AS DE COEUR », reste tel quel tant que la Direction ne fournit pas de version corrigée | | |
 | ~~Q29~~ | ~~Régime d'imposition de l'EI ?~~ **Tranché le 06/11/2026 : on suit le calendrier fiscal hérité pour le moment** (acomptes d'IS compris). Le comptable de Baguidi le corrigera dans `cfg-comptabilite` / `m12-echeances` quand le régime réel (BIC) sera arrêté | | |
+| Q34 | **Banque de sang et donneurs** : la Direction a écrit « M1 à M10 avec tout ». Ces deux écrans de M5 étaient nommés hors périmètre le 06/11 ; faut-il les rouvrir aussi ? (défaut appliqué : restent fermés, réouverture par une bascule de `cfg-modules`) | Direction Baguidi | Non |
+| Q35 | **M1 à M10 actifs change le rôle de SIGH-CBG** : il devient un logiciel patient complet (dossier, consultation, facturation), alors que Baguidi a déjà un logiciel de caisse rattaché aux patients. Le report des recettes (P0-8) reste-t-il nécessaire, ou SIGH-CBG REMPLACE-t-il ce logiciel (migration, double saisie évitée) ? (défaut : le report reste, utilisable en parallèle) | Direction Baguidi | **Oui** pour P0-8 et le jeu de démonstration |
+| Q36 | Contenu attendu de chaque spécialité (P0-12) : champs de consultation, actes, praticien titulaire. Aucun document remis ; sinon modèles génériques marqués à valider | praticiens de Baguidi | Non |
+| Q37 | Médecine du travail : fiche d'aptitude, périodicité des visites, convention avec les entreprises : un modèle de fiche existe-t-il (formulaire papier à joindre) ? | Direction Baguidi | Non |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
@@ -425,3 +455,27 @@ Aucune échéance n'a été communiquée. Phasage proposé, chaque phase se term
 | **5. Recette** | pièces imprimées validées, installation à blanc sur un poste Baguidi, P1-4 | phases 1 à 4 |
 
 Règle de conduite : **une phase par lot de commits**, jamais l'identité et le périmètre dans le même commit. Un défaut se rattache ainsi à sa cause, et le report d'un correctif de SIGH-CNT reste lisible.
+
+## 11. Stratégie d'exécution jusqu'à 100 % (sobriété en jetons)
+
+**Mesure** : les trois grandes lectures du code et de la maquette ont coûté de l'ordre de 3 millions de jetons chacune, les quatre agents du lot 1 environ 1,7 million ; le travail le plus coûteux a été le travail REFAIT (fermeture de M1 à M5 construite puis renversée par P0-11). Règles pour la suite :
+1. **La spec fait loi, on ne relit plus le dépôt.** Un agent reçoit la liste exacte des fichiers, l'extrait JSON de la maquette et ses critères ; plus d'agents « lecteurs » de toute la base.
+2. **Un agent par lot, sur Sonnet.** Modèle supérieur réservé aux arbitrages d'architecture (aucun en attente). Contre-vérification par agent seulement pour ce qui touche argent, droits ou règles RG (report des recettes, écritures) ; ailleurs, **sondes scriptées** (`controle-identite`, équilibre des pièces, contrastes WCAG, parité des fiches).
+3. **Tests en gradins** : fichiers touchés pendant le lot, suite complète UNE fois à la fusion, en arrière-plan, lecture de la seule queue et des échecs.
+4. **Données engendrées, pas écrites** : le jeu de démonstration vient d'UN générateur déterministe (graine fixe) rejouable ; les spécialités sont des fiches, pas du code ; les polices et logo sont déjà prêts.
+5. **Décider avant de construire** : les questions bloquantes se posent d'un seul bloc (Q35 avant P0-8 et le jeu), car un lot renversé coûte deux fois.
+6. **Sorties compactes** : rapports d'agents bornés par schéma (résumé court, chiffres, échecs), pas de journal de bord.
+
+**Ordre vers 100 %** (chaque étape finit sur une suite verte) :
+| # | Lot | Taille | Dépend de |
+|---|---|---|---|
+| A | Charte et connexion (en cours) | moyen | rien |
+| B | **Papier à en-tête (P0-13)** + date d'IFU | petit | A |
+| C | Réouverture M1 à M10 (P0-11) : retrait des fermetures, rôles, test de non-régression | petit | rien |
+| D | Corrections de caisse (écriture à l'encaissement, `partAssurance`), client libre | moyen | C |
+| E | Générateur du jeu de démonstration (Baguidi, patients compris) | gros | C, Q35 |
+| F | Plan comptable révisé, AIB, calendrier (CNSS le 15) | moyen | rien |
+| G | Report des recettes (P0-8) et bons de sortie (P0-9) | gros | Q35, Q14 à Q16 |
+| H | Spécialités (P0-12), Médecine du travail d'abord | gros | C, Q36, Q37 |
+| I | Relais web et mobile aux couleurs Baguidi (P1-3) | petit | A |
+| J | Recette : pièces imprimées, installation à blanc, `controle-identite` à 0 | moyen | tout |
