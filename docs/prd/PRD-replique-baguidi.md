@@ -233,9 +233,33 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 - Remplacer les valeurs de `JetonsSigh` / `JetonsShell` par la palette Baguidi (primaire, secondaire, fonds). Garder la sémantique vert / orange / rouge, que les écrans utilisent pour l'état des stocks.
 - *Critères* : contraste WCAG AA sur texte principal et boutons ; aucune couleur écrite en dur hors jetons (contrôle par recherche).
 
-**P1-2. Écran de connexion Baguidi**
-- Refaire `acc_gabarit.dart` / `acc_ecrans.dart` : logo, nom, centre de médecine du travail, ville, texte de présentation, liste des spécialités, devise, mention légale en pied.
-- *Critère* : capture validée par la Direction de Baguidi.
+**P1-2. Écran de connexion Baguidi (maquette de référence reçue le 06/11/2026)**
+
+Refaire `acc_gabarit.dart` / `acc_ecrans.dart` sur la maquette fournie. Une carte centrée aux coins arrondis, posée sur un fond bleu très pâle et flou, coupée en deux :
+
+| Zone | Contenu de la maquette |
+|---|---|
+| **Liseré supérieur** | fin filet de toute la largeur de la carte, **rouge puis bleu** (les deux traits du cœur du logo) |
+| **Panneau gauche (≈ 55 %)** | fond en **dégradé bleu** (≈ `#1E63C0` en haut à gauche vers ≈ `#123E7C` en bas), deux grands disques translucides en décor, et un **cœur avec tracé d'électrocardiogramme** en filigrane en bas à droite |
+| ‣ en-tête | logo dans une pastille blanche ronde ; « CLINIQUE BAGUIDI « L'AS DE CŒUR » » en capitales grasses blanches ; « CENTRE DE MÉDECINE DU TRAVAIL – MÉDECINE GÉNÉRALE » en petites capitales bleu clair ; « Parakou — République du Bénin » en blanc atténué |
+| ‣ titre | « Système Intégré de Gestion Hospitalière », grand, blanc, police géométrique grasse |
+| ‣ présentation | « Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord. » |
+| ‣ spécialités | sept pastilles à contour blanc translucide (Médecine du travail, Santé publique, Gynécologie, Chirurgie, Urologie, Rhumatologie, Ophtalmologie) puis une pastille **pleine blanche** « + 7 spécialités » |
+| ‣ pied | la devise « Votre bien-être est notre raison d'être. » en **police manuscrite**, puis la mention légale en petit texte atténué |
+| **Panneau droit (≈ 45 %)** | fond blanc |
+| ‣ titre | « Connexion » en bleu foncé, sous-titre « Authentification individuelle obligatoire » en gris |
+| ‣ champs | « Identifiant » (exemple saisi : `m-001@baguidi-clinique.bj`) ; « Mot de passe » avec lien **« Mot de passe oublié ? »** aligné à droite et œil d'affichage dans le champ |
+| ‣ option | case « Se souvenir de ce poste » |
+| ‣ action | bouton pleine largeur **rouge** (≈ `#D32F2F`) « Se connecter » avec icône d'entrée |
+
+Ce que la maquette tranche, et ce qu'elle laisse ouvert :
+- **Q18 en partie tranchée** : la marque est **bleue** (panneau, titres) et le **bouton d'action principal de la connexion est rouge**. Reste à décider si les boutons principaux des 300 écrans suivent ce rouge (et les erreurs passent alors sur un rouge plus sombre avec icône obligatoire), ou si le rouge reste propre à la connexion et à la marque. Recommandation inchangée : boutons de l'application en bleu, rouge réservé à la connexion, au logo et aux alertes.
+- **Polices** : trois familles (titres géométriques, corps de texte, devise manuscrite). Elles doivent être **embarquées dans le poste** (`apps/poste/assets/polices/`), aucune requête réseau : le poste fonctionne hors ligne. Noms exacts des polices à obtenir du concepteur de la maquette (Q19) ; à défaut, équivalents libres de licence.
+- **L'identifiant a la forme d'une adresse** (`m-001@baguidi-clinique.bj`) : le poste actuel connecte par identifiant de compte. Q20 : est-ce un exemple décoratif ou une règle de nommage des comptes ? Le domaine `baguidi-clinique.bj` diffère de l'e-mail officiel (`cliniquebaguidi@yahoo.fr`).
+- **« Mot de passe oublié ? »** se branche sur le mécanisme existant (code de secours et coffre de récupération du poste) ; il ne doit pas promettre un envoi par courriel si le relais SMTP n'est pas configuré.
+- **« Se souvenir de ce poste »** existe-t-il dans le poste de base ? À vérifier ; sinon, il ne retient que l'identifiant, jamais le mot de passe.
+- **Responsive** : sous la largeur d'une tablette, le panneau bleu passe au-dessus et se réduit à l'en-tête et au titre.
+- *Critères* : rendu comparé côte à côte avec la maquette à 1920 px et 1366 px ; contraste AA du texte blanc sur le dégradé et du libellé du bouton rouge ; aucun texte de Nassiera Too ; fonctionne hors ligne (polices et logo locaux) ; capture validée par la Direction de Baguidi.
 
 **P1-3. Relais web et mobile aux couleurs Baguidi**
 - Panneau superadmin du relais et application mobile alignés sur les jetons.
@@ -284,7 +308,9 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 | Q14 | Combien de caisses alimentent le logiciel de caisse patient (une seule, ou une par point de vente) ? Le report se fait par journée **et par caisse** | Comptable Baguidi | **Oui** (P0-8) |
 | Q15 | La pharmacie vend-elle **aussi** dans le logiciel de caisse patient ? Si oui, quelle vente fait foi pour le stock, pour ne pas sortir deux fois le même produit ? | Direction Baguidi + gestionnaire de stock | **Oui** (P0-9) |
 | Q16 | Liste des natures d'activité du report et comptes de produit 70x de chacune (le plan de Baguidi peut différer de celui de Nassiera Too). Un export du logiciel de caisse (même une capture de son état journalier) permettrait d'aligner les natures sur ce qu'il imprime | Comptable Baguidi | **Oui** (P0-8) |
-| Q18 | Couleur primaire du logiciel : bleu du logo (recommandé, le rouge reste la couleur des erreurs et de la marque), rouge, ou noir ? Voir §4 | Direction Baguidi + design | Non pour P0, oui pour P1-1 |
+| Q18 | La maquette de connexion fixe la marque en **bleu** et le bouton de connexion en **rouge**. Les boutons principaux de l'application suivent-ils ce rouge, ou restent-ils bleus (recommandé) ? Voir P1-2 | Direction Baguidi + design | Non pour P0, oui pour P1-1 |
+| Q19 | Noms des trois polices de la maquette de connexion (titres, corps, devise manuscrite) et licence d'embarquement | concepteur de la maquette | Non |
+| Q20 | L'identifiant en forme d'adresse (`m-001@baguidi-clinique.bj`) est-il une règle de nommage des comptes ou un exemple ? Le domaine `baguidi-clinique.bj` existe-t-il ? | Direction Baguidi | Non |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
