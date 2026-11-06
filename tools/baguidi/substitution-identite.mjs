@@ -6,8 +6,9 @@
 // vecteur la MÊME substitution que le code : l'identité de Nassiera Too devient celle de la Clinique Baguidi.
 //
 // CE QU'IL TOUCHE, et rien d'autre : les chaînes d'identité légale (dénomination, nom court, devise, adresse postale, téléphones, courriel, IFU,
-// RCCM, nom du logiciel, adresse géographique de l'en-tête, « Fait à … ») et la formule de politesse des factures, RETIRÉE (Baguidi n'en a pas
-// encore choisi : une formule vide n'est pas imprimée, sa ligne et le séparateur qui la précède disparaissent du rouleau de caisse).
+// RCCM, nom du logiciel, adresse géographique de l'en-tête, « Fait à … ») et la formule de politesse des factures, qui devient le slogan
+// (décision de la Direction du 06/11/2026 au soir). Les fiches de parité des écrans autonomes (docs/architecture/ecrans) reçoivent en plus
+// la présentation, la localisation et la dénomination composées par l'écran de connexion Baguidi.
 //
 // CE QU'IL NE TOUCHE JAMAIS : les noms d'agents, de patients, les montants, les codes patient (`CNT/n/AA` : les tests les rejouent sous le sigle de
 // la maquette, voir `sousLeSigleDeLaMaquette`), les références de notes de service, les noms de documents (« Tarifs des consultations NASSIERA
@@ -29,7 +30,10 @@ const TELS = ['95 74 69 56', '95 95 99 14', '97 09 34 99'];
 // L'ordre compte : la forme la plus longue d'abord (la dénomination avec « SARL » avant le nom court, la devise suivie d'un point avant la devise nue).
 export const SUBSTITUTIONS = [
   ['CLINIQUE NASSIERA TOO SARL', NOM],
-  ['CLINIQUE NASSIERA TOO', 'CLINIQUE BAGUIDI'],
+  ['CLINIQUE NASSIERA TOO', NOM],
+  ['Natitingou — République du Bénin', 'Parakou, République du Bénin'],
+  ['Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.',
+   'Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord.'],
   ['Votre santé, notre raison de vivre.', SLOGAN],
   ['Votre santé, notre raison de vivre', SLOGAN],
   ['BP : 507 NATITINGOU (Rép. du Bénin)', '02 BP : 105 PARAKOU (Rép. du Bénin)'],
@@ -56,6 +60,16 @@ const PAR_DEFAUT = [
   'packages/domaine/test/vecteurs/administration.json',
   'apps/poste/test/fixtures/jeu_sobre/planAnnuel.json',
   'apps/poste/test/fixtures/jeu_sobre/modelesMessage.json',
+  // Les fiches de parité des neuf écrans autonomes (parite_autonomes_test) : extraites de la maquette Nassiera Too, elles portent son identité.
+  'docs/architecture/ecrans/index.json',
+  'docs/architecture/ecrans/auth-forgot.json',
+  'docs/architecture/ecrans/auth-reset.json',
+  'docs/architecture/ecrans/auth-2fa.json',
+  'docs/architecture/ecrans/auth-lock.json',
+  'docs/architecture/ecrans/error-403.json',
+  'docs/architecture/ecrans/error-404.json',
+  'docs/architecture/ecrans/plan-du-site.json',
+  'docs/architecture/ecrans/enquete-publique.json',
 ];
 
 function fichiers(chemins) {
