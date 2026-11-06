@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
-/// Thème SIGH-CNT : bleu institutionnel (navy), fonds blanc/gris clair, sémantique vert/orange/rouge. Toutes les valeurs
+/// Thème SIGH-CBG (repris de SIGH-CNT) : bleu institutionnel (navy), fonds blanc/gris clair, sémantique vert/orange/rouge. Toutes les valeurs
 /// viennent des jetons de la maquette (`JetonsSigh`, engendrés) — aucune couleur en dur ailleurs (PRD Flutter, P0-3).
 class ThemeSigh {
   ThemeSigh._();

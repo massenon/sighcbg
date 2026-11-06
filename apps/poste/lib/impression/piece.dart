@@ -62,7 +62,7 @@ class PieceA4 {
   final String utilisateur;
   final DateTime edite;
 
-  /// Référence `CNT-AAAAMMJJ-NNNN` (`compteur` s'incrémente à chaque édition, comme la maquette).
+  /// Référence `CBG-AAAAMMJJ-NNNN`, préfixée du sigle de la clinique (`compteur` s'incrémente à chaque édition, comme la maquette).
   static String reference_(DateTime d, int compteur) =>
-      'CNT-${iso(d).replaceAll('-', '')}-${compteur.toString().padLeft(4, '0')}';
+      '${IdentiteClinique.sigle}-${iso(d).replaceAll('-', '')}-${compteur.toString().padLeft(4, '0')}';
 }

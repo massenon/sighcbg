@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title>{{ $titre ?? 'Panneau du relais' }} · SIGH-CNT</title>
+    <title>{{ $titre ?? 'Panneau du relais' }} · SIGH-CBG</title>
     <link rel="stylesheet" href="{{ asset('css/panneau.css') }}">
     @livewireStyles
 </head>
@@ -27,7 +27,7 @@
     ];
 @endphp
 <header class="entete">
-    <strong>SIGH-CNT · Relais en ligne (apps/web)</strong>
+    <strong>SIGH-CBG · Relais en ligne (apps/web)</strong>
     <nav aria-label="Navigation du panneau">
         @foreach($menu as $route => $libelle)
             <a href="{{ route($route) }}" @if(request()->routeIs($route)) aria-current="page" @endif>{{ $libelle }}</a>

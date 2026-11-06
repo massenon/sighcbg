@@ -19,12 +19,12 @@ void main() {
     m.collection('patients').inserer({'code': 'CNT/7/26', 'nom': 'A'}, prefixe: 'PAT');
     final s = PlagesCodes.de(m);
     expect(s.actif, isFalse);
-    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CNT/8/26');
+    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CBG/8/26');
     s.obtenir = (taille, minimum) async => (minimum, minimum + taille - 1);
     await s.recharger(maintenant: auj);
     expect(s.plages.single['debut'], 8, reason: 'la plage commence au-dessus des dossiers que le poste connaît');
-    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CNT/8/26');
-    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CNT/9/26', reason: 'un second guichet ne reçoit pas le même numéro');
+    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CBG/8/26');
+    expect(s.prochainCode(m.collection('patients').toutes, auj), 'CBG/9/26', reason: 'un second guichet ne reçoit pas le même numéro');
     expect(s.restants, 48);
   });
 
@@ -40,13 +40,13 @@ void main() {
       return r;
     };
     await s.recharger(maintenant: auj);
-    expect(s.prochainCode(const [], auj), 'CNT/100/26');
-    expect(s.prochainCode(const [], auj), 'CNT/101/26');
+    expect(s.prochainCode(const [], auj), 'CBG/100/26');
+    expect(s.prochainCode(const [], auj), 'CBG/101/26');
     await Future<void>.delayed(const Duration(milliseconds: 10));
     // La recharge en ligne a donné une seconde plage (102-103) ; on la consomme, puis la mère devient injoignable.
     enligne = false;
-    expect(s.prochainCode(const [], auj), 'CNT/102/26');
-    expect(s.prochainCode(const [], auj), 'CNT/103/26');
+    expect(s.prochainCode(const [], auj), 'CBG/102/26');
+    expect(s.prochainCode(const [], auj), 'CBG/103/26');
     final c = s.prochainCode(const [], auj);
     expect(c, startsWith('PROV-'));
     expect(m.collection(PlagesCodes.collection).toutes, isNotEmpty);

@@ -93,15 +93,15 @@ class _EtatPublique extends State<EcranEnquetePublique> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
           decoration: _carte(),
-          child: Column(children: const [
-            Text('Merci !',
+          child: Column(children: [
+            const Text('Merci !',
                 style: TextStyle(color: JetonsShell.success700, fontSize: 18, fontWeight: FontWeight.w600)),
-            SizedBox(height: 8),
-            Text('Votre réponse a bien été enregistrée.',
+            const SizedBox(height: 8),
+            const Text('Votre réponse a bien été enregistrée.',
                 style: TextStyle(color: JetonsShell.slate600, fontSize: 14, height: 20 / 14)),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(IdentiteClinique.slogan,
-                style: TextStyle(color: JetonsShell.navy700, fontSize: 12, fontStyle: FontStyle.italic)),
+                style: const TextStyle(color: JetonsShell.navy700, fontSize: 12, fontStyle: FontStyle.italic)),
           ]));
     } else if (p == null) {
       // UNE seule réponse pour « inconnu », « expiré » et « révoqué » : les distinguer renseignerait sur ce qui existe.

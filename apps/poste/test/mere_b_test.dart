@@ -618,7 +618,7 @@ void main() {
       expect(find.textContaining('Saisir le nom de la clinique'), findsOneWidget, reason: 'le nom se saisit à l’identique');
       await t.pump(const Duration(seconds: 10));
 
-      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'NASSIERA TOO');
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
       expect(find.textContaining('Un second profil (DAF ou Direction) doit confirmer'), findsOneWidget);
@@ -637,7 +637,7 @@ void main() {
       final f = Faux();
       final m = await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
-      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'NASSIERA TOO');
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
@@ -646,7 +646,7 @@ void main() {
       await t.tap(bouton('Réinitialiser').last);
       await pomper(t);
       await pomper(t);
-      expect(f.appels, contains('reinit NASSIERA TOO|Mme TAKI Alimatou'));
+      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TAKI Alimatou'));
       expect(find.textContaining('Sauvegarde préalable : /srv/avant-reinit.db'), findsWidgets);
       expect(find.textContaining('Le geste est inscrit au journal technique de la mère'), findsOneWidget);
       expect(find.textContaining('Nouvelle époque : 4'), findsOneWidget);
@@ -662,7 +662,7 @@ void main() {
       final f = _FauxSansTrace();
       await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
-      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'NASSIERA TOO');
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
@@ -679,7 +679,7 @@ void main() {
       final f = _FauxRefus();
       await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
-      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'NASSIERA TOO');
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
@@ -850,7 +850,7 @@ void main() {
       final mobile = await s.codeMobile('Dr Yeni', profil: 'soignant', fonction: 'medecin');
       expect(mobile.code, 'MOBI9999');
       expect(mobile.payloadQr, contains(cleBase64));
-      final r = await s.reinitialiser(confirmation: 'NASSIERA TOO', second: 'X');
+      final r = await s.reinitialiser(confirmation: IdentiteClinique.confirmationReinit, second: 'X');
       expect((r.sauvegarde, r.epoch), ('/s/avant.db', 4));
       // Ce que le service n'expose pas : non disponible, sans appel réseau.
       appels.clear();

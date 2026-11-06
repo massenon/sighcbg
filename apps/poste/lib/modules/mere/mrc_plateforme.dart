@@ -361,7 +361,7 @@ class _EtatMereReseau extends MrcEtatEcran<EcranMereReseau> {
             Text('Autoriser en entrée le port TCP $p sur le profil réseau privé du serveur, pour les seuls postes de la clinique.',
                 style: const TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14)),
             const SizedBox(height: 8),
-            SelectableText('netsh advfirewall firewall add rule name="SIGH-CNT mere" dir=in action=allow protocol=TCP localport=$p profile=private',
+            SelectableText('netsh advfirewall firewall add rule name="SIGH-CBG mere" dir=in action=allow protocol=TCP localport=$p profile=private',
                 style: const TextStyle(fontFamily: 'Consolas', fontSize: 12, color: JetonsShell.slate700)),
             const SizedBox(height: 8),
             const MrcMotif(

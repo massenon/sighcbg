@@ -63,7 +63,7 @@ class CarteBadgeSigh extends StatelessWidget {
   Widget _verso() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          const Text(IdentiteClinique.nom, style: TextStyle(fontSize: 7, fontWeight: FontWeight.w700, letterSpacing: 0.5, color: JetonsShell.navy900)),
+          Text(IdentiteClinique.nom, style: const TextStyle(fontSize: 7, fontWeight: FontWeight.w700, letterSpacing: 0.5, color: JetonsShell.navy900)),
           Container(margin: const EdgeInsets.only(top: 4), height: 1, color: JetonsShell.slate200),
           Expanded(
               child: Padding(
@@ -83,9 +83,9 @@ class CarteBadgeSigh extends StatelessWidget {
                   style: const TextStyle(fontSize: 7, fontWeight: FontWeight.w700, color: JetonsShell.slate800)),
             ]),
           ]),
-          const Padding(
-              padding: EdgeInsets.only(top: 4),
-              child: Text(IdentiteClinique.slogan, textAlign: TextAlign.center, style: TextStyle(fontSize: 6, fontStyle: FontStyle.italic, color: JetonsShell.navy800))),
+          Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(IdentiteClinique.slogan, textAlign: TextAlign.center, style: const TextStyle(fontSize: 6, fontStyle: FontStyle.italic, color: JetonsShell.navy800))),
         ]),
       );
 
@@ -110,11 +110,11 @@ class CarteBadgeSigh extends StatelessWidget {
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
               child: Image.asset('assets/img/logo.jpeg', fit: BoxFit.contain, errorBuilder: (_, __, ___) => const SizedBox.shrink())),
           const SizedBox(width: 6),
-          const Expanded(
+          Expanded(
               child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('CLINIQUE NASSIERA TOO',
-                overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 8, height: 1.25, fontWeight: FontWeight.w700, color: Colors.white)),
-            Text(IdentiteClinique.slogan, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 6, height: 1.25, fontStyle: FontStyle.italic, color: JetonsShell.navy100)),
+            Text(IdentiteClinique.nomCourt,
+                overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 8, height: 1.25, fontWeight: FontWeight.w700, color: Colors.white)),
+            Text(IdentiteClinique.slogan, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 6, height: 1.25, fontStyle: FontStyle.italic, color: JetonsShell.navy100)),
           ])),
         ]),
       ),
@@ -278,12 +278,12 @@ Future<void> afficherApercuPlanche(BuildContext ctx, ContexteEcran c, {required 
                 style: const TextStyle(fontSize: 8, height: 1.4, color: JetonsShell.slate500),
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('${IdentiteClinique.nom} — ${IdentiteClinique.rccm} — IFU ${IdentiteClinique.ifu}'),
+                    Text(IdentiteClinique.piedLegal),
                     Text('Document généré par ${acteur(c).nom} le ${dateHeure(c.aujourdhui)}'),
                   ]),
                   Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                     Text('Réf. document : $ref', style: const TextStyle(fontFamily: 'LiberationMono')),
-                    const Text('Édité depuis le SIGH-CNT'),
+                    Text(IdentiteClinique.editeDepuis),
                   ]),
                 ]))),
       ]),

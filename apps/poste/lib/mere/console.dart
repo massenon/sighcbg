@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show mobFonctions, mobLibelleFonction;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, mobFonctions, mobLibelleFonction;
 
 import '../core/jetons_shell.dart';
 import '../core/theme.dart';
@@ -98,7 +98,7 @@ class _ConsoleMereState extends State<ConsoleMere> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('SIGH-CNT — Poste mère'),
+          title: Text('${IdentiteClinique.logiciel} — Poste mère'),
           bottom: const TabBar(isScrollable: true, tabs: [
             Tab(text: 'Supervision'),
             Tab(text: 'Appareils'),

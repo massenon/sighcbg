@@ -38,7 +38,7 @@ class SmtpTest extends TestCase
     {
         return $plus + [
             'hote' => '127.0.0.1', 'port' => $this->puitsPort, 'chiffrement' => 'aucun', 'utilisateur' => '', 'mdp' => '',
-            'expediteur' => 'relais@clinique.bj', 'expediteur_nom' => 'Relais SIGH-CNT', 'verifier_certificat' => false,
+            'expediteur' => 'relais@clinique.bj', 'expediteur_nom' => 'Relais SIGH-CBG', 'verifier_certificat' => false,
         ];
     }
 
@@ -52,18 +52,18 @@ class SmtpTest extends TestCase
         $this->assertSame(['RCPT TO:<direction@clinique.bj>'], $messages[0]['a']);
         $this->assertStringContainsString('relais@clinique.bj', $messages[0]['de']);
         $lu = $this->lire($messages[0]);
-        $this->assertSame('SIGH-CNT : message de test de la messagerie du relais', $lu['sujet']);
-        $this->assertStringContainsString('Natitingou (Bénin)', $lu['corps']);
+        $this->assertSame('SIGH-CBG : message de test de la messagerie du relais', $lu['sujet']);
+        $this->assertStringContainsString('Parakou (Bénin)', $lu['corps']);
         $this->assertStringContainsString('œ et €', $lu['corps']);
-        $this->assertStringContainsString('Relais SIGH-CNT', $lu['entetes']);
+        $this->assertStringContainsString('Relais SIGH-CBG', $lu['entetes']);
     }
 
     public function test_repondre_a_est_un_en_tete_du_message_recu_et_reste_absent_quand_il_n_est_pas_regle(): void
     {
         $this->demarrerPuits();
-        $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => 'cliniquenassiera@gmail.com', 'repondre_nom' => 'Clinique Nassièra Too']))->assertOk()->assertJsonPath('repondre', 'cliniquenassiera@gmail.com');
+        $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => 'cliniquebaguidi@yahoo.fr', 'repondre_nom' => 'Clinique Baguidi']))->assertOk()->assertJsonPath('repondre', 'cliniquebaguidi@yahoo.fr');
         $this->postJson('/panneau/smtp/test', ['destinataire' => 'direction@clinique.bj'])->assertOk();
-        $this->assertMatchesRegularExpression('/^Reply-To:[^\\r\\n]*(\\r?\\n[ \\t][^\\r\\n]*)*cliniquenassiera@gmail\.com/mi', $this->lire($this->messagesRecus()[0])['entetes']);
+        $this->assertMatchesRegularExpression('/^Reply-To:[^\\r\\n]*(\\r?\\n[ \\t][^\\r\\n]*)*cliniquebaguidi@yahoo\.fr/mi', $this->lire($this->messagesRecus()[0])['entetes']);
         $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => '', 'repondre_nom' => '']))->assertOk();
         $this->postJson('/panneau/smtp/test', ['destinataire' => 'direction@clinique.bj'])->assertOk();
         $this->assertDoesNotMatchRegularExpression('/^Reply-To:/mi', $this->lire($this->messagesRecus()[1])['entetes']);

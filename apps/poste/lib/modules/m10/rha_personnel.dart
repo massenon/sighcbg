@@ -32,7 +32,7 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
       triInitial: 'matricule',
       taillePage: 15,
       largeurTiroir: 768,
-      source: 'Organigramme de la Clinique NASSIERA TOO.',
+      source: 'Organigramme de la ${IdentiteClinique.nomCourt}.',
       colonnes: [
         ColonneTableau(cle: 'matricule', libelle: 'Mat.', droite: true, sansCoupure: true, rendu: (_, r) => matRef('${r['matricule']}')),
         ColonneTableau(

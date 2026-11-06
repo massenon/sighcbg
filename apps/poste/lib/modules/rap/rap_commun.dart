@@ -23,7 +23,7 @@ void rapOuvrir(BuildContext ctx, String id, {String? libelle}) {
   c.aller(id);
 }
 
-/// Référence suivante `CNT-AAAAMMJJ-NNNN` de la pièce imprimée.
+/// Référence suivante `CBG-AAAAMMJJ-NNNN` (sigle de la clinique) de la pièce imprimée.
 String rapReference(ContexteEcran c) =>
     PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero());
 

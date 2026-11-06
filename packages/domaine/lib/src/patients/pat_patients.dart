@@ -7,7 +7,7 @@ library;
 
 import '../caisse/prise_en_charge.dart' show carteValide;
 import '../format/format_fr.dart';
-import '../referentiels/regles.dart' show codePatient;
+import '../referentiels/regles.dart' show codePatient, lireCodePatient;
 import '../labo/res_saisie.dart' show agePatient;
 
 typedef FichePat = Map<String, Object?>;
@@ -90,18 +90,14 @@ int? patAge(FichePat p, DateTime maintenant) => agePatient(p, maintenant);
 // RG-01 — le prochain code
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// `prochainCode()` : le plus grand rang de l'année lu sur les DEUX formes (`CNT/n/AA` et l'ancien `CNTn/AA`), archivés compris — un code attribué
+/// `prochainCode()` : le plus grand rang de l'année lu sur les DEUX formes (`CBG/n/AA` et l’ancien `CNTn/AA`, quel que soit le sigle), archivés compris — un code attribué
 /// ne se réutilise pas (RG-01) — puis la fabrique unique. Écart E300 : l'ancienne expression ne reconnaissait que l'ancien format.
 String patProchainCode(Iterable<FichePat> patients, DateTime maintenant) {
   final suffixe = '${maintenant.year}'.substring('${maintenant.year}'.length - 2);
-  final re = RegExp(r'^CNT/?(\d+)/(\d{2})$');
   var max = 0;
   for (final p in patients) {
-    final m = re.firstMatch('${p['code'] ?? ''}');
-    if (m != null && m.group(2) == suffixe) {
-      final n = int.parse(m.group(1)!);
-      if (n > max) max = n;
-    }
+    final c = lireCodePatient(p['code']);
+    if (c != null && c.annee == suffixe && c.rang > max) max = c.rang;
   }
   return codePatient(max + 1, maintenant.year);
 }

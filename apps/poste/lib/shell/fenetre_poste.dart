@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:window_manager/window_manager.dart';
 
 /// La fenêtre du poste, vue par la barre supérieure : passer en plein écran et en sortir. Une INTERFACE, parce que la plateforme n'est pas pilotable dans un
@@ -44,7 +45,7 @@ class FenetreSysteme with WindowListener implements FenetrePoste {
   @override
   Future<void> demarrerPleinEcran() async {
     try {
-      const options = WindowOptions(fullScreen: true, title: 'SIGH-CNT');
+      final options = WindowOptions(fullScreen: true, title: IdentiteClinique.logiciel);
       await windowManager.waitUntilReadyToShow(options, () async {
         await windowManager.show();
         await windowManager.focus();

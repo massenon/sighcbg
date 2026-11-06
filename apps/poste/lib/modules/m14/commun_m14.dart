@@ -74,7 +74,7 @@ String dateFrOuVide(Object? v) {
 const styleMono = TextStyle(
     fontFamily: 'LiberationMono', fontSize: 12, height: 16 / 12, color: JetonsShell.slate700);
 
-/// La référence d'un état imprimé (`CNT-AAAAMMJJ-NNNN`), comme les écrans de M8.
+/// La référence d'un état imprimé (`CBG-AAAAMMJJ-NNNN`, sigle de la clinique), comme les écrans de M8.
 String referenceImpression(ContexteEcran c) =>
     PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero());
 

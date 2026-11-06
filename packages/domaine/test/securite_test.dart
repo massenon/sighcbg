@@ -15,6 +15,7 @@ F net(F x) => {
     };
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lireVecteurs('securite');
 
   group('comptes (m14-utilisateurs)', () {

@@ -215,7 +215,7 @@ class _EtatCorps extends State<_Corps> {
           libelle: 'Adresse du relais web',
           requis: true,
           col: ColChamp.plein,
-          indicatif: 'sighcnt.nassieratoo.com',
+          indicatif: 'sighcbg.exemple.bj',
           aide: 'L’adresse du site où le relais est installé, sans « https:// » ni rien après le nom (le poste ajoute https://).'),
       ChampDef(
           nom: 'secret',

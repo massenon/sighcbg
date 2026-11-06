@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfaMentionARenseigner;
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
@@ -44,7 +45,7 @@ void main() {
   casM14('identification fiscale UNIQUE (arbitrage du 31/08/2026), numérotation, obligations déclaratives : aucune saisie, aucune commande d’écriture', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-fiscalite');
-    for (final k in ['3201642748214', 'RB/NAT/2016-B-268', 'CLINIQUE NASSIERA TOO SARL', 'FN-AAAA-NNNNN', 'CNT/[n°]/[AA]', 'Cotisations CNSS']) {
+    for (final k in [IdentiteClinique.ifu, IdentiteClinique.rccm, IdentiteClinique.nom, cfaMentionARenseigner, 'FN-AAAA-NNNNN', 'CNT/[n°]/[AA]', 'Cotisations CNSS']) {
       expect(find.text(k), findsWidgets, reason: k);
     }
     expect(find.widgetWithText(BoutonSigh, 'Éditer'), findsNWidgets(5));

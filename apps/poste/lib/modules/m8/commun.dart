@@ -165,7 +165,7 @@ PieceA4 pieceFacture(Fiche f,
       if (!proforma && f['numeroMecef'] != null)
         BlocTexte(
             'Identifiant fiscal MECeF : ${f['numeroMecef']} — IFU : ${IdentiteClinique.ifu} — RCCM : ${IdentiteClinique.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : f['statutMecef']}'),
-      const BlocTexte(IdentiteClinique.formulePolitesse, gras: true),
+      if (IdentiteClinique.formulePolitesse.isNotEmpty) BlocTexte(IdentiteClinique.formulePolitesse, gras: true),
     ],
     // Pas de signature patient sur une pièce de caisse : c'est la caisse qui atteste l'encaissement.
     signatures: const [

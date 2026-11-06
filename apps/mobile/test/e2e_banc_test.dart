@@ -169,7 +169,7 @@ void main() {
     expect(dossier.resume.couverture, MobCouverture.carteValide);
     expect(dossier.resume.allergies, ['Pénicilline']);
     expect(dossier.resume.horsBornes, ['température']);
-    expect(dossier.resume.code, startsWith('CNT/'));
+    expect(dossier.resume.code, startsWith('${IdentiteClinique.sigle}/'));
 
     // --- écriture : un geste, une opération, nommée à l'agent ------------------------------------------------------------------------------------
     await medecin.enregistrerConstantes(a, {'temperature': '38,2', 'sys': '130', 'dia': '85'});

@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 import 'aide_vecteurs.dart';
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lireVecteurs('img_demandes');
   final examens = liste(v['examens']);
   final catalogue = [

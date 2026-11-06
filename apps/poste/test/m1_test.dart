@@ -157,14 +157,14 @@ void main() {
       expect(find.textContaining('36 ans'), findsWidgets);
     });
 
-    cas('« Nouveau » conduit à la page d\'ouverture, qui réserve le code et l\'écrit au format CNT/n/AA', (t) async {
+    cas('« Nouveau » conduit à la page d\'ouverture, qui réserve le code et l\'écrit au format CBG/n/AA (sigle de la clinique)', (t) async {
       final m = petit({
         'patients': [p('1', 'CNT/1109/26'), p('2', 'CNT530/26')],
         'audit': []
       });
       await ouvrir(t, m, 'm1-patient-nouveau');
       expect(find.byKey(const Key('m1:code')), findsOneWidget);
-      expect((t.widget<Text>(find.byKey(const Key('m1:code')))).data, 'CNT/1110/26');
+      expect((t.widget<Text>(find.byKey(const Key('m1:code')))).data, 'CBG/1110/26');
       await saisir(t, 'nom', 'Bio');
       await saisir(t, 'prenom', 'Zakari');
       await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
@@ -172,7 +172,7 @@ void main() {
       await saisir(t, 'telephone', '97000001');
       await toucher(t, find.text('Ouvrir le dossier').last);
       final cree = m.collection('patients').toutes.first;
-      expect(cree['code'], 'CNT/1110/26');
+      expect(cree['code'], 'CBG/1110/26');
       expect(cree['nom'], 'Bio');
       expect(cree['age'], 41);
       expect(cree['ageReferenceLe'], '2026-10-30');
@@ -415,7 +415,7 @@ void main() {
       await toucher(t, find.text('Créer').last);
       final piece = m.collection('pieces').toutes.first;
       expect(piece['numero'], 7);
-      expect(piece['reference'], 'CMVC 007/007/CNT/DG/DE/2026');
+      expect(piece['reference'], 'CMVC 007/007/CBG/DG/DE/2026');
       expect(piece['montant'], 8000);
       final f = m.collection('factures').toutes.first;
       expect(f['partAssurance'], 6400);
@@ -496,7 +496,7 @@ void main() {
       expect(f['montantTTC'], 2000);
       expect(f['statutPaiement'], 'impayee');
       final pat = m.collection('patients').toutes.first;
-      expect(pat['code'], 'CNT/903/26');
+      expect(pat['code'], 'CBG/903/26');
       expect(pat['externe'], true);
       expect(pat['age'], 41);
       expect(pat['ageReferenceLe'], '2026-10-30');

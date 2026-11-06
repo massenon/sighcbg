@@ -81,7 +81,7 @@ class EcranContrats extends StatelessWidget with EcranMaquette {
             ('Date de début', rhaDateFR(r['dateDebut'])),
           ],
           blocs: [
-            const BlocTexte('Entre la CLINIQUE NASSIERA TOO SARL, représentée par sa Directrice Administrative, ci-après dénommée « l’Employeur », d’une part,'),
+            BlocTexte('Entre la ${IdentiteClinique.nom}, représentée par sa Directrice Administrative, ci-après dénommée « l’Employeur », d’une part,'),
             BlocTexte('Et ${r['employe']}, matricule ${r['matricule']}, ci-après dénommé(e) « l’Employé(e) », d’autre part,'),
             const BlocTexte('Il a été convenu ce qui suit :', gras: true),
             BlocTableau(TableauEtat(colonnes: [

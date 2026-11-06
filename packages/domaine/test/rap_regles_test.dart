@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
+import 'aide_vecteurs.dart' show sousLeSigleDeLaMaquette;
+
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
@@ -21,6 +23,7 @@ List<M> actives(Iterable<M> l) => [for (final f in l) if (f['statut'] != 'archiv
 final maintenant = DateTime(2026, 10, 30, 10);
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lire('rap');
   final factures = actives(jeuDossier('factures'));
   final produits = actives(jeuDossier('produits'));

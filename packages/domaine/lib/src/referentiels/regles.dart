@@ -2,13 +2,26 @@
 library;
 
 import '../format/js.dart';
+import '../impression/identite.dart';
 
-/// RG-01 — `C.codePatient(ordre, annee)` : `CNT/[n° d'ordre]/[année sur 2 chiffres]`. Le code attribué ne se
-/// modifie jamais : cette fonction est appelée à la création, jamais à l'affichage.
+/// RG-01 — `C.codePatient(ordre, annee)` : `<SIGLE>/[n° d'ordre]/[année sur 2 chiffres]` (`CBG/12/26`). Le préfixe est le SIGLE de la clinique
+/// ([IdentiteClinique.sigle]), jamais écrit en dur. Le code attribué ne se modifie jamais : cette fonction est appelée à la création, jamais à
+/// l'affichage.
 String codePatient(Object ordre, Object annee) {
   final a = annee.toString();
   final yy = a.length > 2 ? a.substring(a.length - 2) : a;
-  return 'CNT/${_texte(ordre)}/$yy';
+  return '${IdentiteClinique.sigle}/${_texte(ordre)}/$yy';
+}
+
+/// La forme d'un code patient : un sigle en capitales (celui de la clinique, ou un sigle antérieur comme `CNT`), la barre facultative de l'ancien
+/// format (`CNT530/25`), le rang, l'année sur deux chiffres. Groupe 1 : le rang ; groupe 2 : l'année. Le sigle n'est PAS imposé à la lecture : un code
+/// déjà attribué reste compté (RG-01, jamais réutilisé), même si le sigle a changé depuis.
+final RegExp reCodePatient = RegExp(r'^[A-Z]{2,6}/?(\d+)/(\d{2})$');
+
+/// Lit un code patient : (rang, année sur deux chiffres), ou `null` s'il n'a pas la forme d'un code.
+({int rang, String annee})? lireCodePatient(Object? code) {
+  final m = reCodePatient.firstMatch('${code ?? ''}');
+  return m == null ? null : (rang: int.parse(m.group(1)!), annee: m.group(2)!);
 }
 
 String _texte(Object v) => v is double && v == v.truncateToDouble()

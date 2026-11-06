@@ -283,7 +283,7 @@ List<AdmKpi> admKpisPlan(List<AdmFiche> rows) => [
 /// Amorçage du plan (collection vide) : douze actions de l'exercice.
 List<AdmFiche> admAmorcerPlan() {
   const actions = [
-    ('Déploiement du SIGH-CNT', 'Digitalisation', 1, 4, 'En cours'),
+    ('Déploiement du SIGH-CBG', 'Digitalisation', 1, 4, 'En cours'),
     ('Numérisation des dossiers patients actifs', 'Digitalisation', 2, 4, 'En cours'),
     ('Formation du personnel au nouveau logiciel', 'Formation', 3, 4, 'Planifiée'),
     ('Inventaire général des stocks', 'Logistique', 1, 1, 'Réalisée'),

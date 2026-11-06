@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
@@ -74,7 +75,7 @@ void main() {
     expect(find.text('Modèle créé.'), findsOneWidget);
     await t.pump(const Duration(seconds: 10));
     await toucherM14(t, find.byTooltip('Consulter').first);
-    expect(find.textContaining('OROU YO Marguerite — {{inconnu}} à CLINIQUE NASSIERA TOO SARL'), findsOneWidget);
+    expect(find.textContaining('OROU YO Marguerite — {{inconnu}} à ${IdentiteClinique.nom}'), findsOneWidget);
   });
 
   casM14('anniversaires du jour : un rappel EN FILE par patient (références RPL-…), jamais deux fois le même ; le logiciel ne les envoie pas', (t) async {

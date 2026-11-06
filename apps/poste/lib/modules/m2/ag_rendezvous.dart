@@ -354,7 +354,7 @@ class EcranRendezVous extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Écran UNIQUE (Bug 3 des Instructions, fusion achevée le 06/09/2026) : rendez-vous de consultation, de contrôle, passages sans rendez-vous et affaires privées s’enregistrent ici, pour un patient du répertoire ou une personne non enregistrée — dont on relève nom, prénom, quartier et téléphone sans lui ouvrir de dossier ni consommer de code CNT (RG-01). Deux filtres les distinguent — « Venue » et « Venu » — parce qu’une même population lue selon deux axes vaut mieux que deux registres qui divergent. La plage de dates FILTRE la liste : « les rendez-vous du 21 août » ne se répond pas en triant.';
+      'Écran UNIQUE (Bug 3 des Instructions, fusion achevée le 06/09/2026) : rendez-vous de consultation, de contrôle, passages sans rendez-vous et affaires privées s’enregistrent ici, pour un patient du répertoire ou une personne non enregistrée — dont on relève nom, prénom, quartier et téléphone sans lui ouvrir de dossier ni consommer de code patient (RG-01). Deux filtres les distinguent — « Venue » et « Venu » — parce qu’une même population lue selon deux axes vaut mieux que deux registres qui divergent. La plage de dates FILTRE la liste : « les rendez-vous du 21 août » ne se répond pas en triant.';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {

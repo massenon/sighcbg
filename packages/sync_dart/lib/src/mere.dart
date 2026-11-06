@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show RefusMobile, cfbEssentielles, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece;
+    show IdentiteClinique, RefusMobile, cfbEssentielles, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, reCodePatient;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -56,7 +56,7 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
 final Set<String> collectionsPosteSeulement = {'identifiants'};
-const _clinique = 'NASSIERA TOO';
+const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
   'reception': {'patients', 'rendezvous', 'constantes', 'orientations'},
@@ -323,11 +323,11 @@ class Mere {
       String? numero;
       if (collection == 'patients') {
         final code = '${champs['code'] ?? ''}';
-        final m = RegExp(r'^CNT/(\d+)/\d{2}$').firstMatch(code);
+        final m = reCodePatient.firstMatch(code);
         if (code.isEmpty || code.startsWith('PROV-')) {
           final n = await base.metaInt('next_patient');
           await base.poserMeta('next_patient', n + 1);
-          champs['code'] = 'CNT/$n/26';
+          champs['code'] = codePatient(n, 2026);
           numero = '${champs['code']}';
         } else if (m == null) {
           return refus('numero_invalide', 'Code patient mal formé : $code', 'Laisser le poste attribuer le code');

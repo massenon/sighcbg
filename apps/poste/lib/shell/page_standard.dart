@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 
 import '../core/jetons_shell.dart';
 import '../kit/carte.dart';
@@ -92,13 +93,15 @@ class PageStandard extends StatelessWidget {
                   child: Text(description!,
                       style: const TextStyle(
                           color: JetonsShell.slate500, fontSize: 14))),
-            const Padding(
-                padding: EdgeInsets.only(top: 4),
-                child: Text('Votre santé, notre raison de vivre',
-                    style: TextStyle(
-                        color: JetonsShell.slate400,
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic))),
+            // La devise de la clinique, lue de l'identité EN VIGUEUR (jamais recopiée ici) ; vide, rien ne s'affiche.
+            if (IdentiteClinique.slogan.isNotEmpty)
+              Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(IdentiteClinique.slogan,
+                      style: const TextStyle(
+                          color: JetonsShell.slate400,
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic))),
           ]),
         ),
         if (actions.isNotEmpty) Wrap(spacing: 8, children: actions),

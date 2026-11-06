@@ -191,7 +191,7 @@ Future<ResultatSmtp> envoyerSmtp(ConfigSmtp cfg, List<String> destinataires, Str
   ajouter('connexion', true, 'Connecté à ${cfg.serveur}:${cfg.port}.');
 
   final nomLocal = (Platform.localHostname).replaceAll(RegExp(r'[^A-Za-z0-9.-]'), '');
-  final nom = nomLocal.isEmpty ? 'sigh-cnt' : nomLocal;
+  final nom = nomLocal.isEmpty ? 'sigh-cbg' : nomLocal;
 
   // --- 2. salutation
   (code, rep) = await flux.cmd('EHLO $nom');
@@ -285,7 +285,7 @@ Future<ResultatSmtp> envoyerSmtp(ConfigSmtp cfg, List<String> destinataires, Str
     return fin('envoi');
   }
   final nomAffiche = _nettoyer(cfg.nom);
-  final domaine = expediteur.contains('@') ? expediteur.split('@').last : 'sigh-cnt.local';
+  final domaine = expediteur.contains('@') ? expediteur.split('@').last : 'sigh-cbg.local';
   final alea = Random.secure();
   final id = [for (var i = 0; i < 12; i++) alea.nextInt(256).toRadixString(16).padLeft(2, '0')].join();
   final b64 = base64.encode(utf8.encode(corps));

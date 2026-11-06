@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/identite_poste.dart';
 import '../core/jetons_shell.dart';
 
 /// Le pied de page LÉGAL de la coque et des pages autonomes (Direction, 01/11/2026) : dénomination, IFU, RCCM, lus de l'identité unique de la clinique
@@ -22,8 +23,12 @@ class PiedLegal extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
           decoration: BoxDecoration(color: fond, border: const Border(top: BorderSide(color: JetonsShell.slate200))),
-          child: const Text(IdentiteClinique.mentionLegale,
-              key: Key('pied-legal:texte'),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)))));
+          // La mention suit l'identité ENREGISTRÉE : un enregistrement de cfg-branding la met à jour sans relancer le poste. Aucune autre mention
+          // (ni « prototype », ni « jeu de démonstration ») : le pied porte la seule mention légale (PRD Baguidi §4).
+          child: ValueListenableBuilder<int>(
+              valueListenable: versionIdentite,
+              builder: (_, __, ___) => Text(IdentiteClinique.mentionLegale,
+                  key: const Key('pied-legal:texte'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12))))));
 }

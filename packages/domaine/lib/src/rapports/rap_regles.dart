@@ -11,6 +11,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart';
 import '../impression/etat.dart';
+import '../impression/identite.dart';
 import '../stock/points.dart' show familleDe;
 
 typedef RapFiche = Map<String, Object?>;
@@ -87,7 +88,7 @@ const rapMentionsPied = [
   'Nom de l’utilisateur ayant généré le document',
   'Date et heure d’impression',
   'Identifiant unique du document (traçabilité)',
-  'Mention « Édité depuis le SIGH-CNT »',
+  'Mention « Édité depuis le SIGH-CBG »',
 ];
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -398,7 +399,7 @@ List<RapFiche> rapEditions(Iterable<RapFiche> audit, List<String> noms, DateTime
   for (final a in audit.where((a) => a['action'] == 'Impression')) {
     rows.add({
       'id': a['id'],
-      'reference': rapVrai(a['reference']) ? a['reference'] : 'CNT-${_p(i + 1, 5)}',
+      'reference': rapVrai(a['reference']) ? a['reference'] : '${IdentiteClinique.sigle}-${_p(i + 1, 5)}',
       'dateHeure': a['dateHeure'],
       'utilisateur': a['utilisateur'],
       'etat': pick(etats),
@@ -415,7 +416,7 @@ List<RapFiche> rapEditions(Iterable<RapFiche> audit, List<String> noms, DateTime
     d = DateTime(d.year, d.month, d.day, h, mn, d.second, d.millisecond);
     rows.add({
       'id': 'ED$k',
-      'reference': 'CNT-${iso(d).replaceAll('-', '')}-${_p(k, 4)}',
+      'reference': '${IdentiteClinique.sigle}-${iso(d).replaceAll('-', '')}-${_p(k, 4)}',
       'dateHeure': d.toUtc().toIso8601String(),
       'utilisateur': pick(noms),
       'etat': pick(etats),

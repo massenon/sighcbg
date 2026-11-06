@@ -146,7 +146,7 @@ abstract class MrbSource {
   Future<MrbCodeMobile> codeMobile(String etiquette, {required String profil, String? fonction});
 
   /// Le nom de la clinique que le moteur exige en confirmation (`_clinique` dans `mere.dart`).
-  String get nomClinique => 'NASSIERA TOO';
+  String get nomClinique => IdentiteClinique.confirmationReinit;
 
   // --- ce que le moteur n'expose pas encore : « non disponible » par défaut -----------------------------------------------------------------
   /// Le catalogue des fichiers de sauvegarde. `null` : le moteur ne les liste pas.

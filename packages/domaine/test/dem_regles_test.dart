@@ -12,6 +12,7 @@ num _nombreApres(String texte, String libelle) {
 }
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final maintenant = DateTime(2026, 10, 30, 12);
 
   group('code d\'analyse NNNNN-AAAA (PR.codeAnalyse)', () {

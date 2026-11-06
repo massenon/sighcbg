@@ -96,7 +96,7 @@ function liste(c) {
 /* --- numéros : plage réservée, sinon provisoire ---------------------------- */
 function prochainNumero() {
   const p = db.prepare("SELECT * FROM plage WHERE nom='patients'").get();
-  if (p && p.prochain <= p.fin) { db.prepare("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'").run(); return `CNT/${p.prochain}/26`; }
+  if (p && p.prochain <= p.fin) { db.prepare("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'").run(); return `CBG/${p.prochain}/26`; }
   return 'PROV-' + crypto.randomBytes(4).toString('hex');
 }
 

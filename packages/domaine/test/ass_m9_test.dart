@@ -26,6 +26,7 @@ List<String> cellules(Object? ligne) =>
     [for (final c in (m(ligne)['cellules'] as List)) '$c'];
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lireVecteurs('ass_m9');
   final ecrans = m(v['ecrans']);
   final auj = DateTime.parse('${v['aujInstant']}');

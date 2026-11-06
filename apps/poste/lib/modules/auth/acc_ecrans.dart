@@ -819,7 +819,7 @@ class PageErreur extends StatelessWidget with EcranAutonome {
                         onPressed: () => x.aller('plan-du-site')),
                   ]),
                   const SizedBox(height: 40),
-                  const Text('${IdentiteClinique.nom} — SIGH-CNT', style: TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
+                  Text('${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}', style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
                 ]))));
   }
 }

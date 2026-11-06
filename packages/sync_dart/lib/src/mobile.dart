@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:sigh_domaine/sigh_domaine.dart' show codePatient;
+
 import 'commun.dart';
 import 'pont.dart' show Enveloppes;
 
@@ -142,7 +144,7 @@ class Mobile {
     final f = base.metaInt('plage_fin', -1);
     if (d != 0 && d <= f) {
       base.poserMeta('plage_prochain', d + 1);
-      return 'CNT/$d/26';
+      return codePatient(d, 2026);
     }
     return 'PROV-${hexAlea(4)}';
   }

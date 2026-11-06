@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show CoffrePin, mobLibelleProfil, mobProfilDe;
+import 'package:sigh_domaine/sigh_domaine.dart' show CoffrePin, IdentiteClinique, mobLibelleProfil, mobProfilDe;
 
 import 'core/coffre_pin_securise.dart';
 import 'core/theme.dart';
@@ -59,7 +59,7 @@ class _DemarrageState extends State<Demarrage> {
     final m = _moteur;
     if (m != null) return SighMobile(moteur: m, coffre: CoffrePinSecurise(widget.stockage, iterations: widget.iterationsPin), horlogeVerrou: widget.horlogeVerrou);
     return MaterialApp(
-      title: 'SIGH-CNT',
+      title: IdentiteClinique.logiciel,
       debugShowCheckedModeBanner: false,
       theme: ThemeSigh.clair(),
       home: _cause == null
@@ -82,7 +82,7 @@ class EcranStockageIndisponible extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('SIGH-CNT')),
+        appBar: AppBar(title: Text(IdentiteClinique.logiciel)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -128,7 +128,7 @@ class _SighMobileState extends State<SighMobile> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SIGH-CNT',
+      title: IdentiteClinique.logiciel,
       debugShowCheckedModeBanner: false,
       theme: ThemeSigh.clair(),
       // Le verrou suit l'état du moteur : il ne couvre qu'un téléphone appairé, et l'écran de verrou nomme l'agent et son profil, lus du code (E1820, E1821).

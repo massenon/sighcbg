@@ -11,7 +11,7 @@ class TestSmtpMail extends Mailable
 {
     public function envelope(): Envelope
     {
-        return new Envelope(subject: 'SIGH-CNT : message de test de la messagerie du relais');
+        return new Envelope(subject: 'SIGH-CBG : message de test de la messagerie du relais');
     }
 
     public function content(): Content

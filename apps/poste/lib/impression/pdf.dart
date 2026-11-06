@@ -99,17 +99,18 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
           pw.Image(logo, width: 48, height: 48),
           pw.SizedBox(width: 12),
           pw.Column(children: [
+            // L'identité EN VIGUEUR ; une mention vide n'imprime ni sa ligne ni son libellé (aucun « AUTORISATION D'OUVERTURE » orphelin).
             pw.Text(IdentiteClinique.nomCourt, style: s(18, f: p.gras)),
-            pw.Text(
-                '${IdentiteClinique.bp}   TÉL. : ${IdentiteClinique.telephones.join('  /  ')}',
-                style: s(7.5)),
-            pw.Text('AUTORISATION D’OUVERTURE ${IdentiteClinique.autorisation}',
-                style: s(7)),
-            pw.Text(
-                'IFU : ${IdentiteClinique.ifu}   RCCM : ${IdentiteClinique.rccm}',
-                style: s(7, f: p.gras)),
-            pw.Text('E-mail : ${IdentiteClinique.email}', style: s(7)),
-            pw.Text(IdentiteClinique.slogan, style: s(7, f: p.italique)),
+            if (IdentiteClinique.ligneCoordonnees.isNotEmpty)
+              pw.Text(IdentiteClinique.ligneCoordonnees, style: s(7.5)),
+            if (IdentiteClinique.ligneAutorisation.isNotEmpty)
+              pw.Text(IdentiteClinique.ligneAutorisation, style: s(7)),
+            if (IdentiteClinique.ligneFiscale.isNotEmpty)
+              pw.Text(IdentiteClinique.ligneFiscale, style: s(7, f: p.gras)),
+            if (IdentiteClinique.ligneEmail.isNotEmpty)
+              pw.Text(IdentiteClinique.ligneEmail, style: s(7)),
+            if (IdentiteClinique.slogan.isNotEmpty)
+              pw.Text(IdentiteClinique.slogan, style: s(7, f: p.italique)),
           ]),
           pw.SizedBox(width: 12),
           pw.SizedBox(width: 48, height: 48),
@@ -128,9 +129,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
               pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text(
-                        '${IdentiteClinique.nom} — ${IdentiteClinique.rccm} — IFU ${IdentiteClinique.ifu}',
-                        style: s(6)),
+                    pw.Text(IdentiteClinique.piedLegal, style: s(6)),
                     pw.Text(
                         'Document généré par ${x.utilisateur} le ${dateHeure(x.edite)}',
                         style: s(6)),
@@ -141,7 +140,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
                     pw.Text('Réf. document : ${x.reference}',
                         style: s(6, f: p.mono)),
                     pw.Text(
-                        'Page ${c.pageNumber} / ${c.pagesCount} — Édité depuis le SIGH-CNT',
+                        'Page ${c.pageNumber} / ${c.pagesCount} — ${IdentiteClinique.editeDepuis}',
                         style: s(6)),
                   ]),
             ]),
@@ -233,7 +232,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
       if (x.lieuDate)
         pw.Align(
             alignment: pw.Alignment.centerRight,
-            child: pw.Text('Fait à Natitingou, le ${dateLong(x.edite)}',
+            child: pw.Text(IdentiteClinique.faitA(dateLong(x.edite)),
                 style: s(8, f: p.italique))),
       if (x.signatures.isNotEmpty)
         pw.Padding(

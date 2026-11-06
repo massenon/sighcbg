@@ -19,6 +19,7 @@ bool alias(String domaine, String code) => manifeste.rangees.any((r) => r.domain
 String sp(Object? s) => '$s'.replaceAll(RegExp(r'\s+'), ' ').trim();
 
 void main() {
+  sousLeSigleDeLaMaquette();
   group('connexion', () {
     test('trois tentatives vides : les messages de la maquette, le troisième annonce le verrouillage', () {
       final essais = fl(obj(v['connexion'])['essaisVides']);

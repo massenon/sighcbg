@@ -2919,7 +2919,7 @@
     "id": "PAT001",
     "statut": "actif",
     "reference": "PA-2026-001",
-    "action": "Déploiement du SIGH-CNT",
+    "action": "Déploiement du SIGH-CBG",
     "axe": "Digitalisation",
     "trimestreDebut": 1,
     "trimestreFin": 4,
@@ -3034,7 +3034,7 @@
      ],
      "lignes": [
       [
-       "Déploiement du SIGH-CNT",
+       "Déploiement du SIGH-CBG",
        "Digitalisation",
        "",
        "",
@@ -3111,7 +3111,7 @@
      "lignes": [
       [
        "PA-2026-001",
-       "Déploiement du SIGH-CNT",
+       "Déploiement du SIGH-CBG",
        "Digitalisation",
        "T1 – T4",
        "TAKI Alimatou",
@@ -3195,7 +3195,7 @@
   },
   "gantt": [
    [
-    "Déploiement du SIGH-CNT",
+    "Déploiement du SIGH-CBG",
     "Digitalisation",
     "bg-info-400",
     "bg-info-400",
@@ -3353,11 +3353,11 @@
      "nom": "BASSONGUI Chabi Séko"
     }
    ],
-   "texte": "N°ActionAxePériodeResponsableAvancementPA-2026-001Déploiement du SIGH-CNTDigitalisationT1 à T4TAKI AlimatouEn coursPA-2026-002Inventaire général des stocksLogistiqueT1 à T1MAMAN ZoukanériRéaliséePA-2026-005Renouvellement des conventionsPartenariatsT1 à T2TAKI AlimatouRéaliséePA-2026-006Campagne de dépistageSanté publiqueT2 à T3TAKI AlimatouEn coursPA-2026-003Formation du personnelFormationT3 à T4TAKI AlimatouPlanifiéePA-2026-004Clôture comptable de l’exerciceFinanceT4 à T4KASSA AugustinPlanifiéePA-2026-007Audit qualitéQualitéT4 à T4TAKI AlimatouPlanifiée",
+   "texte": "N°ActionAxePériodeResponsableAvancementPA-2026-001Déploiement du SIGH-CBGDigitalisationT1 à T4TAKI AlimatouEn coursPA-2026-002Inventaire général des stocksLogistiqueT1 à T1MAMAN ZoukanériRéaliséePA-2026-005Renouvellement des conventionsPartenariatsT1 à T2TAKI AlimatouRéaliséePA-2026-006Campagne de dépistageSanté publiqueT2 à T3TAKI AlimatouEn coursPA-2026-003Formation du personnelFormationT3 à T4TAKI AlimatouPlanifiéePA-2026-004Clôture comptable de l’exerciceFinanceT4 à T4KASSA AugustinPlanifiéePA-2026-007Audit qualitéQualitéT4 à T4TAKI AlimatouPlanifiée",
    "tableaux": []
   },
   "detail": {
-   "texte": "Connexion perdue avec le serveur de base de données L’enregistrement a été refusé et la saisie n’a pas été conservée. Rien n’est écrit dans ce navigateur : les données de la clinique vivent sur le serveur, et lui seul en répond. Vérifier que le serveur est démarré, puis recharger la page. Le travail déjà enregistré est intact. Écriture refusée (archiver / courriers) — Aucune fiche « COU9 » dans « courriers ». Recharger la page Modifications enregistrées. Annuler Actions programmées 7 Réalisées 2 En cours 2 Planifiées 3 Plan annuel de travail 2026 Imprimer le plan ACTION AXE T1 T2 T3 T4 AVANCEMENT Déploiement du SIGH-CNT Digitalisation En cours Inventaire général des stocks Logistique Réalisée Renouvellement des conventions Partenariats Réalisée Campagne de dépistage Santé publique En cours Formation du personnel Formation Planifiée Clôture comptable de l’exercice Finance Planifiée Audit qualité Qualité Planifiée Détail des actions Axe Digitalisation Finance Formation Logistique Partenariats Qualité Santé publique Avancement Réalisée En cours Planifiée Colonnes Exporter N° ACTION AXE PÉRIODE RESPONSABLE AVANCEMENT ACTIONS PA-2026-001 Déploiement du SIGH-CNT Digitalisation T1 – T4 TAKI Alimatou En cours PA-2026-002 Inventaire général des stocks Logistique T1 – T1 MAMAN Zoukanéri Réalisée PA-2026-003 Formation du personnel Formation T3 – T4 TAKI Alimatou Planifiée PA-2026-004 Clôture comptable de l’exercice Finance T4 – T4 KASSA Augustin Planifiée PA-2026-005 Renouvellement des conventions Partenariats T1 – T2 TAKI Alimatou Réalisée PA-2026-006 Campagne de dépistage Santé publique T2 – T3 TAKI Alimatou En cours PA-2026-007 Audit qualité Qualité T4 – T4 TAKI Alimatou Planifiée Affichage de 1 à 7 sur 7 enregistrements",
+   "texte": "Connexion perdue avec le serveur de base de données L’enregistrement a été refusé et la saisie n’a pas été conservée. Rien n’est écrit dans ce navigateur : les données de la clinique vivent sur le serveur, et lui seul en répond. Vérifier que le serveur est démarré, puis recharger la page. Le travail déjà enregistré est intact. Écriture refusée (archiver / courriers) — Aucune fiche « COU9 » dans « courriers ». Recharger la page Modifications enregistrées. Annuler Actions programmées 7 Réalisées 2 En cours 2 Planifiées 3 Plan annuel de travail 2026 Imprimer le plan ACTION AXE T1 T2 T3 T4 AVANCEMENT Déploiement du SIGH-CBG Digitalisation En cours Inventaire général des stocks Logistique Réalisée Renouvellement des conventions Partenariats Réalisée Campagne de dépistage Santé publique En cours Formation du personnel Formation Planifiée Clôture comptable de l’exercice Finance Planifiée Audit qualité Qualité Planifiée Détail des actions Axe Digitalisation Finance Formation Logistique Partenariats Qualité Santé publique Avancement Réalisée En cours Planifiée Colonnes Exporter N° ACTION AXE PÉRIODE RESPONSABLE AVANCEMENT ACTIONS PA-2026-001 Déploiement du SIGH-CBG Digitalisation T1 – T4 TAKI Alimatou En cours PA-2026-002 Inventaire général des stocks Logistique T1 – T1 MAMAN Zoukanéri Réalisée PA-2026-003 Formation du personnel Formation T3 – T4 TAKI Alimatou Planifiée PA-2026-004 Clôture comptable de l’exercice Finance T4 – T4 KASSA Augustin Planifiée PA-2026-005 Renouvellement des conventions Partenariats T1 – T2 TAKI Alimatou Réalisée PA-2026-006 Campagne de dépistage Santé publique T2 – T3 TAKI Alimatou En cours PA-2026-007 Audit qualité Qualité T4 – T4 TAKI Alimatou Planifiée Affichage de 1 à 7 sur 7 enregistrements",
    "boutons": [
     "Recharger la page",
     "Annuler",

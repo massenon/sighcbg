@@ -102,8 +102,8 @@ class Surveillance
             if ($adresses === []) {
                 return;
             }
-            Mail::raw('Alerte du relais SIGH-CNT : '.self::libelle($type).' ('.$detail.') à '.Format::date(Format::maintenant()).'.', function ($m) use ($adresses, $type) {
-                $m->to($adresses)->subject('Relais SIGH-CNT : '.self::libelle($type));
+            Mail::raw('Alerte du relais SIGH-CBG : '.self::libelle($type).' ('.$detail.') à '.Format::date(Format::maintenant()).'.', function ($m) use ($adresses, $type) {
+                $m->to($adresses)->subject('Relais SIGH-CBG : '.self::libelle($type));
             });
         } catch (\Throwable $e) {
             DB::table('relais_audit')->insert(['quand' => Format::maintenant(), 'acteur' => 'système', 'action' => 'courriel_echec', 'detail' => mb_substr(class_basename($e), 0, 120)]);

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="sigh_mobile"
+        android:label="SIGH-CBG"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

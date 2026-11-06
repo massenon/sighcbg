@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:sigh_poste/kit/kit.dart' show BoutonSigh;
 import 'package:sigh_poste/main.dart';
 
@@ -117,7 +118,8 @@ void comparer(WidgetTester t, M v, {bool parcours = true}) {
         for (final e in liste(g['etapes'])) {
           expect(a('${e['libelle']}'), isTrue, reason: 'étape « ${e['libelle']} »');
           if (e['poste'] != null) expect(a('${e['poste']}'), isTrue, reason: 'poste « ${e['poste']} »');
-          if (e['detail'] != null) expect(a('${e['detail']}'), isTrue, reason: 'détail de « ${e['libelle']} »');
+          // La maquette numérote sous le sigle CNT ; le poste cite le sigle de la clinique en vigueur.
+          if (e['detail'] != null) expect(a('${e['detail']}'.replaceAll('Code CNT/', 'Code ${IdentiteClinique.sigle}/')), isTrue, reason: 'détail de « ${e['libelle']} »');
         }
         // L'étape qui ouvre un écran est cliquable SSI l'écran est ouvert au profil : le relevé dit lesquelles sont fermées.
         final fermees = liste(g['etapes']).where((e) => e['ferme'] == true).length;

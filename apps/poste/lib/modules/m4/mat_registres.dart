@@ -511,7 +511,7 @@ class EcranNaissances extends StatelessWidget with EcranMaquette {
               ('État', matVrai(r['vivant']) ? 'Né vivant' : 'Mort-né'),
             ],
             blocs: [
-              const BlocTexte('La direction de la CLINIQUE NASSIERA TOO SARL atteste que l’enfant désigné ci-après est né dans ses services :'),
+              BlocTexte('La direction de la ${IdentiteClinique.nom} atteste que l’enfant désigné ci-après est né dans ses services :'),
               matBlocRubriques([
                 ('Date et heure de naissance', matDateHeure(r['dateHeure'])),
                 ('Sexe', r['sexe'] == 'M' ? 'Masculin' : 'Féminin'),

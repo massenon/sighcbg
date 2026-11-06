@@ -68,8 +68,8 @@ void main() {
         expect(find.text(x), findsOneWidget, reason: x);
       }
       // L'identité imprimée est UNIQUE (arbitrage du 31/08/2026) : un IFU, un RCCM.
-      expect(find.text('3201642748214'), findsOneWidget);
-      expect(find.text('RB/NAT/2016-B-268'), findsOneWidget);
+      expect(find.text(IdentiteClinique.ifu), findsOneWidget);
+      expect(find.text(IdentiteClinique.rccm), findsOneWidget);
       for (final x in rapMentionsPied) {
         expect(find.text(x), findsOneWidget, reason: x);
       }
@@ -285,7 +285,7 @@ void main() {
       final a = m.collection('audit').toutes.first;
       expect([a['action'], a['module'], a['entite']],
           ['Impression', 'RAP', 'Document']);
-      expect('${a['reference']}', startsWith('CNT-20260816-'));
+      expect('${a['reference']}', startsWith('${IdentiteClinique.sigle}-20260816-'));
       expect(m.collection('audit').toutes.length, avant < 400 ? avant + 1 : 400,
           reason: 'le journal est plafonné à 400 entrées');
       expect(a['utilisateur'], isNotEmpty, reason: 'aucune action anonyme');
@@ -446,7 +446,8 @@ void main() {
           findsOneWidget);
       // La première ligne est la plus récente du vecteur.
       expect(
-          find.text('${_l(att['lignes']).first['reference']}'), findsOneWidget);
+          find.text('${_l(att['lignes']).first['reference']}'.replaceFirst(RegExp(r'^CNT-'), '${IdentiteClinique.sigle}-')), findsOneWidget,
+          reason: 'la maquette numérote sous le sigle CNT, le poste sous le sigle de la clinique');
     });
 
     casM14(

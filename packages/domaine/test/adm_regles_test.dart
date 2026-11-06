@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
+import 'aide_vecteurs.dart' show identiteBaguidi;
+
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
@@ -196,7 +198,9 @@ void main() {
       expect(a.length, jeu.length);
       for (var i = 0; i < a.length; i++) {
         for (final k in ['id', 'reference', 'action', 'axe', 'trimestreDebut', 'trimestreFin', 'avancement', 'responsable']) {
-          expect(a[i][k], jeu[i][k], reason: '${jeu[i]['reference']} $k');
+          // Le jeu livré est encore celui de Nassiera Too : le nom du logiciel (« Déploiement du SIGH-… ») passe par la substitution d'identité.
+          final attendu = jeu[i][k] is String ? identiteBaguidi(jeu[i][k] as String) : jeu[i][k];
+          expect(a[i][k], attendu, reason: '${jeu[i]['reference']} $k');
         }
       }
     });

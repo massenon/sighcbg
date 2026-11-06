@@ -3,6 +3,7 @@
 //   dart run tool/verif_service.dart http://127.0.0.1:9000 admin-banc
 import 'dart:io';
 
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:sigh_poste/mere/client_mere.dart';
 
 Future<void> main(List<String> args) async {
@@ -19,7 +20,7 @@ Future<void> main(List<String> args) async {
   verifier('code d\'appairage reçu (8 caractères) : $code', code.length == 8);
   verifier('aucun conflit ouvert sur une mère neuve', (await c.conflits()).isEmpty);
   try {
-    await c.reinitialiser(confirmation: 'NASSIERA TOO', second: 'DAF');
+    await c.reinitialiser(confirmation: IdentiteClinique.confirmationReinit, second: 'DAF');
     verifier('réinitialisation fenêtre fermée : doit être refusée', false);
   } on ErreurMere catch (e) {
     verifier('réinitialisation refusée avec la cause nommée : ${e.code}', e.code == 'reinit_fermee');

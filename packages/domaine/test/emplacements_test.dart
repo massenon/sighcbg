@@ -6,6 +6,7 @@ import 'package:test/test.dart';
 import 'aide_vecteurs.dart';
 
 void main() {
+  sousLeSigleDeLaMaquette();
   final v = lireVecteurs('etiquetage');
   final e = (v['entree']! as Map).cast<String, Object?>();
   final emplacements = liste(e['emplacements']);

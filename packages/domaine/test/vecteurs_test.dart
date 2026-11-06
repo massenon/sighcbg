@@ -6,6 +6,8 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
+import 'aide_vecteurs.dart' show sousLeSigleDeLaMaquette;
+
 List<Map<String, Object?>> cas(String famille) {
   final f = File('test/vecteurs/$famille.json');
   if (!f.existsSync())
@@ -33,6 +35,7 @@ String iso16(DateTime d) =>
     '${d.year}-${p2(d.month)}-${p2(d.day)}T${p2(d.hour)}:${p2(d.minute)}';
 
 void main() {
+  sousLeSigleDeLaMaquette();
   group('formats français', () {
     test('money — U+202F entre les milliers, U+00A0 avant la devise', () {
       for (final c in cas('money')) {
