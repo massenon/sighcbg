@@ -345,7 +345,7 @@ void main() {
         pos = i;
       }
       expect(g['Dénomination'], IdentiteClinique.nom, reason: 'forme juridique vide : rien n’est accolé à la dénomination');
-      for (final l in ['Forme juridique', 'Autorisation d’ouverture', 'Formule de politesse des factures']) {
+      for (final l in ['Forme juridique', 'Autorisation d’ouverture']) {
         expect(g[l], cfaMentionARenseigner, reason: l);
       }
       IdentiteClinique.appliquer({'forme': 'SARL', 'autorisation': 'N° 001/MS/2026'});
@@ -363,7 +363,8 @@ void main() {
         if (k == 'forme' || k == 'autorisation') continue;
         expect(v0[k], champs[k], reason: k);
       }
-      expect([v0['forme'], v0['autorisation'], v0['formulePolitesse']], ['', '', '']);
+      expect([v0['forme'], v0['autorisation']], ['', '']);
+      expect(v0['formulePolitesse'], 'Votre bien-être est notre raison d’être.');
       expect(v0['nomCourt'], 'CLINIQUE BAGUIDI');
       expect(cfaValeursIdentite(options: {'doubleLogo': false, 'filigrane': 'Confidentiel'})['doubleLogo'], false);
     });

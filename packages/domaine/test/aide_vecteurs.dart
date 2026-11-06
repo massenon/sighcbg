@@ -21,7 +21,7 @@ void sousLeSigleDeLaMaquette() {
 String identiteBaguidi(String texte) {
   const nbsp = ' ';
   const substitutions = [
-    ('CLINIQUE NASSIERA TOO SARL', 'CLINIQUE BAGUIDI «$nbsp' 'L’AS DE CŒUR$nbsp»'),
+    ('CLINIQUE NASSIERA TOO SARL', 'CLINIQUE BAGUIDI «$nbsp' 'L’AS DU CŒUR$nbsp»'),
     ('CLINIQUE NASSIERA TOO', 'CLINIQUE BAGUIDI'),
     ('Votre santé, notre raison de vivre.', 'Votre bien-être est notre raison d’être.'),
     ('Votre santé, notre raison de vivre', 'Votre bien-être est notre raison d’être.'),
@@ -30,7 +30,7 @@ String identiteBaguidi(String texte) {
     ('01 95 44 51 51 / 01 66 43 28 20', '95 74 69 56 / 95 95 99 14 / 97 09 34 99'),
     ('cliniquenassiera@gmail.com', 'cliniquebaguidi@yahoo.fr'),
     ('3201642748214', '3201001996110'),
-    ('RB/NAT/2016-B-268', 'RB/PKO/17 A 4240 du 19/03/2009'),
+    ('RB/NAT/2016-B-268', 'RB/PKO/17 A 4240'),
     ('SIGH-CNT', 'SIGH-CBG'),
     ('Quartier Tchirimina, Natitingou', 'Quartier Zongo II, Parakou'),
     ('Fait à Natitingou', 'Fait à Parakou'),

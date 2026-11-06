@@ -8,7 +8,7 @@ void main() {
   group('valeurs initiales : la fiche d’identité de la Clinique Baguidi (06/11/2026)', () {
     test('dénomination, sigle, devise, coordonnées, IFU, RCCM', () {
       expect(IdentiteClinique.sigle, 'CBG');
-      expect(IdentiteClinique.nom, 'CLINIQUE BAGUIDI « L’AS DE CŒUR »');
+      expect(IdentiteClinique.nom, 'CLINIQUE BAGUIDI « L’AS DU CŒUR »');
       expect(IdentiteClinique.nomCourt, 'CLINIQUE BAGUIDI');
       expect(IdentiteClinique.slogan, 'Votre bien-être est notre raison d’être.');
       expect(IdentiteClinique.adresse, 'Quartier Zongo II, Parakou');
@@ -19,7 +19,7 @@ void main() {
       expect(IdentiteClinique.telephones, ['95 74 69 56', '95 95 99 14', '97 09 34 99']);
       expect(IdentiteClinique.email, 'cliniquebaguidi@yahoo.fr');
       expect(IdentiteClinique.ifu, '3201001996110');
-      expect(IdentiteClinique.rccm, 'RB/PKO/17 A 4240 du 19/03/2009');
+      expect(IdentiteClinique.rccm, 'RB/PKO/17 A 4240');
       expect(IdentiteClinique.formuleArrete, 'Arrêtée la présente facture à la somme de');
       expect(IdentiteClinique.logiciel, 'SIGH-CBG');
       expect(IdentiteClinique.editeDepuis, 'Édité depuis le SIGH-CBG');
@@ -29,12 +29,15 @@ void main() {
     test('forme juridique, autorisation d’ouverture et formule de politesse : VIDES (non renseignées par la Direction)', () {
       expect(IdentiteClinique.forme, '');
       expect(IdentiteClinique.autorisation, '');
-      expect(IdentiteClinique.formulePolitesse, '');
+      expect(IdentiteClinique.formulePolitesse, 'Votre bien-être est notre raison d’être.');
+      expect(IdentiteClinique.rccmDate, '19/03/2009');
+      expect(IdentiteClinique.enregistrement, '0416/ONMB/ATL/2002');
+      expect(IdentiteClinique.ligneEnregistrement, 'N° D’ENREGISTREMENT 0416/ONMB/ATL/2002');
     });
 
     test('la mention légale est DÉRIVÉE de la dénomination, de l’IFU et du RCCM', () {
       expect(IdentiteClinique.mentionLegale,
-          'CLINIQUE BAGUIDI « L’AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.');
+          'CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.');
     });
 
     test('aucune trace de l’identité de Nassiera Too', () {
@@ -93,7 +96,7 @@ void main() {
     });
 
     test('IFU, RCCM, courriel, BP et téléphones vidés : ni « IFU : », ni « RCCM », ni « E-mail : », ni « TÉL. : »', () {
-      IdentiteClinique.appliquer({'ifu': '', 'rccm': '', 'email': '', 'bp': '', 'telephones': ''});
+      IdentiteClinique.appliquer({'ifu': '', 'rccm': '', 'email': '', 'bp': '', 'telephones': '', 'enregistrement': ''});
       expect(IdentiteClinique.ligneFiscale, '');
       expect(IdentiteClinique.ligneEmail, '');
       expect(IdentiteClinique.ligneCoordonnees, '');

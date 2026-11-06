@@ -16,7 +16,7 @@ import 'aide_polices.dart';
 
 /// La mention légale de la Clinique Baguidi (PRD §4), dérivée de la dénomination, de l'IFU et du RCCM. Le pied ne porte rien d'autre : ni « prototype »,
 /// ni « jeu de données de démonstration ».
-const _mention = 'CLINIQUE BAGUIDI «\u00a0L’AS DE CŒUR\u00a0» — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.';
+const _mention = 'CLINIQUE BAGUIDI «\u00a0L’AS DU CŒUR\u00a0» — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.';
 
 void main() {
   setUpAll(chargerPolices);

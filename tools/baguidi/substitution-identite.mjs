@@ -22,7 +22,7 @@ import { readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const NBSP = ' ';
-const NOM = `CLINIQUE BAGUIDI «${NBSP}L’AS DE CŒUR${NBSP}»`;
+const NOM = `CLINIQUE BAGUIDI «${NBSP}L’AS DU CŒUR${NBSP}»`;
 const SLOGAN = 'Votre bien-être est notre raison d’être.';
 const TELS = ['95 74 69 56', '95 95 99 14', '97 09 34 99'];
 
@@ -37,7 +37,7 @@ export const SUBSTITUTIONS = [
   ['01 95 44 51 51 / 01 66 43 28 20', TELS.join(' / ')],
   ['cliniquenassiera@gmail.com', 'cliniquebaguidi@yahoo.fr'],
   ['3201642748214', '3201001996110'],
-  ['RB/NAT/2016-B-268', 'RB/PKO/17 A 4240 du 19/03/2009'],
+  ['RB/NAT/2016-B-268', 'RB/PKO/17 A 4240'],
   ['SIGH-CNT', 'SIGH-CBG'],
   ['Quartier Tchirimina, Natitingou', 'Quartier Zongo II, Parakou'],
   ['Fait à Natitingou', 'Fait à Parakou'],

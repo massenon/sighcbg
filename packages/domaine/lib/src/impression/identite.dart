@@ -15,7 +15,7 @@ class IdentiteClinique {
   /// et formule de politesse ne sont pas encore connues : elles restent VIDES jusqu'à ce que la Direction les saisisse.
   static const Map<String, Object> defauts = {
     'sigle': 'CBG',
-    'nom': 'CLINIQUE BAGUIDI « L’AS DE CŒUR »',
+    'nom': 'CLINIQUE BAGUIDI « L’AS DU CŒUR »',
     'nomCourt': 'CLINIQUE BAGUIDI',
     'activite': 'CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE',
     'forme': '',
@@ -25,15 +25,17 @@ class IdentiteClinique {
     'telephones': ['95 74 69 56', '95 95 99 14', '97 09 34 99'],
     'email': 'cliniquebaguidi@yahoo.fr',
     'ifu': '3201001996110',
-    'rccm': 'RB/PKO/17 A 4240 du 19/03/2009',
+    'rccm': 'RB/PKO/17 A 4240',
+    'rccmDate': '19/03/2009',
+    'enregistrement': '0416/ONMB/ATL/2002',
     'autorisation': '',
     'formuleArrete': 'Arrêtée la présente facture à la somme de',
-    'formulePolitesse': '',
+    'formulePolitesse': 'Votre bien-être est notre raison d’être.',
   };
 
   /// Les champs qu'une surcharge peut porter (les autres clés d'une fiche enregistrée, options d'impression comprises, sont ignorées ici).
   static const champs = [
-    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'rccm', 'autorisation', 'formuleArrete', 'formulePolitesse'
+    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'rccm', 'rccmDate', 'enregistrement', 'autorisation', 'formuleArrete', 'formulePolitesse'
   ];
 
   /// Le nom de la clinique que la mère exige en confirmation d'une réinitialisation de production (`_clinique` de `mere.dart`, `nomClinique` du
@@ -110,6 +112,12 @@ class IdentiteClinique {
   static String get ifu => _texte('ifu');
   static String get rccm => _texte('rccm');
 
+  /// Date d'immatriculation au RCCM (19/03/2009) : conservée À PART, jamais concaténée au numéro (décision du 06/11/2026).
+  static String get rccmDate => _texte('rccmDate');
+
+  /// N° d'enregistrement / d'inscription (0416/ONMB/ATL/2002, Ordre national des médecins du Bénin, 06/11/2026) : imprimé à l'en-tête.
+  static String get enregistrement => _texte('enregistrement');
+
   /// N° d'autorisation d'ouverture : vide tant que la Direction ne l'a pas renseigné.
   static String get autorisation => _texte('autorisation');
   static String get formuleArrete => _texte('formuleArrete');
@@ -140,6 +148,9 @@ class IdentiteClinique {
     return [if (bp.isNotEmpty) bp, if (t.isNotEmpty) 'TÉL. : ${t.join('  /  ')}'].join('   ');
   }
 
+  /// En-tête, ligne du n° d'enregistrement (ONMB). Vide si le numéro n'est pas renseigné.
+  static String get ligneEnregistrement => enregistrement.isEmpty ? '' : 'N° D’ENREGISTREMENT $enregistrement';
+
   /// En-tête, ligne de l'autorisation d'ouverture. Vide si le numéro n'est pas renseigné (aucun libellé orphelin).
   static String get ligneAutorisation => autorisation.isEmpty ? '' : 'AUTORISATION D’OUVERTURE $autorisation';
 
@@ -150,7 +161,7 @@ class IdentiteClinique {
   static String get ligneEmail => email.isEmpty ? '' : 'E-mail : $email';
 
   /// Les lignes de l'en-tête légal sous la dénomination, dans l'ordre de la maquette, SANS les lignes vides.
-  static List<String> get lignesEnTete => [ligneCoordonnees, ligneAutorisation, ligneFiscale, ligneEmail, slogan].where((l) => l.isNotEmpty).toList();
+  static List<String> get lignesEnTete => [ligneCoordonnees, ligneEnregistrement, ligneAutorisation, ligneFiscale, ligneEmail, slogan].where((l) => l.isNotEmpty).toList();
 
   /// Pied des pièces imprimées : « Dénomination — RCCM — IFU … », sans mention vide.
   static String get piedLegal => [nom, rccm, if (ifu.isNotEmpty) 'IFU $ifu'].where((p) => p.isNotEmpty).join(' — ');

@@ -224,7 +224,7 @@
   ],
   "brand": {
    "sigle": "CNT",
-   "nom": "CLINIQUE BAGUIDI « L’AS DE CŒUR »",
+   "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
    "slogan": "Votre bien-être est notre raison d’être.",
    "forme": "Société à Responsabilité Limitée",
    "adresse": "Quartier Zongo II, Parakou",
@@ -237,7 +237,7 @@
    "telephoneRdv": "95 74 69 56",
    "email": "cliniquebaguidi@yahoo.fr",
    "ifu": "3201001996110",
-   "rccm": "RB/PKO/17 A 4240 du 19/03/2009",
+   "rccm": "RB/PKO/17 A 4240",
    "autorisationExercice": null,
    "autorisationExerciceMotif": "Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.",
    "devise": "FCFA",
@@ -1042,7 +1042,7 @@
  },
  "branding": {
   "champs": {
-   "nom": "CLINIQUE BAGUIDI « L’AS DE CŒUR »",
+   "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
    "sigle": "CNT",
    "forme": "Société à Responsabilité Limitée",
    "slogan": "Votre bien-être est notre raison d’être.",
@@ -1051,7 +1051,7 @@
    "telephones": "95 74 69 56 / 95 95 99 14 / 97 09 34 99",
    "email": "cliniquebaguidi@yahoo.fr",
    "ifu": "3201001996110",
-   "rccm": "RB/PKO/17 A 4240 du 19/03/2009",
+   "rccm": "RB/PKO/17 A 4240",
    "autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020",
    "doubleLogo": true,
    "piedPage": true,
@@ -1073,7 +1073,7 @@
   "notes": [
    "Les états produits par le prototype reprennent déjà fidèlement l’entête réelle relevée sur les documents de la clinique."
   ],
-  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240 du 19/03/2009E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DE CŒUR » — RB/PKO/17 A 4240 du 19/03/2009 — IFU 3201001996110 · Document généré par BASSONGUI Chabi Séko le 01/11/2026 à 18h32 · Réf. CNT-XXXXXXXX-0001",
+  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — RB/PKO/17 A 4240 — IFU 3201001996110 · Document généré par BASSONGUI Chabi Séko le 01/11/2026 à 18h32 · Réf. CNT-XXXXXXXX-0001",
   "ressources": [
    "Logo principalUtilisé sur tous les états et dans l’applicationÀ fournir",
    "Logo monochromePour les impressions en noir et blancÀ fournir",
@@ -1091,7 +1091,7 @@
      "nom": "TAKI Alimatou"
     }
    ],
-   "texte": "Ce document illustre le gabarit officiel appliqué automatiquement à l’ensemble des états produits par le système : factures normalisées, ordonnances, bulletins de paie, bons de commande et de sortie, résultats de laboratoire, états comptables et rapports de direction.MentionValeurDénominationCLINIQUE BAGUIDI « L’AS DE CŒUR »Adresse postale02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Adresse électroniquecliniquebaguidi@yahoo.frAutorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU3201001996110RCCMRB/PKO/17 A 4240 du 19/03/2009"
+   "texte": "Ce document illustre le gabarit officiel appliqué automatiquement à l’ensemble des états produits par le système : factures normalisées, ordonnances, bulletins de paie, bons de commande et de sortie, résultats de laboratoire, états comptables et rapports de direction.MentionValeurDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR »Adresse postale02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Adresse électroniquecliniquebaguidi@yahoo.frAutorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU3201001996110RCCMRB/PKO/17 A 4240"
   },
   "enregistrement": {
    "toasts": [
@@ -1110,7 +1110,7 @@
     "entite": "BrandConfiguration",
     "reference": "BRAND",
     "ancienneValeur": null,
-    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DE CŒUR »\",\"sigle\":\"CNT\",\"forme\":\"Société à Responsabilité Limitée\",\"slogan",
+    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DU CŒUR »\",\"sigle\":\"CNT\",\"forme\":\"Société à Responsabilité Limitée\",\"slogan",
     "poste": "POSTE-LOCAL",
     "succes": true
    },
@@ -2867,7 +2867,7 @@
    [
     "RCCM imprimé",
     "1",
-    "RB/PKO/17 A 4240 du 19/03/2009"
+    "RB/PKO/17 A 4240"
    ],
    [
     "Autorisation d’ouverture",
@@ -2884,10 +2884,10 @@
    "Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux."
   ],
   "grille": [
-   "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240 du 19/03/2009Autorisation d’ouverture1États alimentésTous",
+   "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240Autorisation d’ouverture1États alimentésTous",
    ""
   ],
-  "texte": "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240 du 19/03/2009Autorisation d’ouverture1États alimentésTousIdentité légale imprimée sur chaque étatDénominationCLINIQUE BAGUIDI « L’AS DE CŒUR » — Société à Responsabilité LimitéeDevise de l’établissementVotre bien-être est notre raison d’être.AdresseQuartier Zongo II, Parakou · 02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Ligne rendez-vous95 74 69 56Courrielcliniquebaguidi@yahoo.frIFU3201001996110RCCMRB/PKO/17 A 4240 du 19/03/2009Autorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020Autorisation d’exerciceNon imprimée — Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux."
+  "texte": "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240Autorisation d’ouverture1États alimentésTousIdentité légale imprimée sur chaque étatDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR » — Société à Responsabilité LimitéeDevise de l’établissementVotre bien-être est notre raison d’être.AdresseQuartier Zongo II, Parakou · 02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Ligne rendez-vous95 74 69 56Courrielcliniquebaguidi@yahoo.frIFU3201001996110RCCMRB/PKO/17 A 4240Autorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020Autorisation d’exerciceNon imprimée — Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux."
  },
  "typesPiece": {
   "kpis": [
@@ -3247,7 +3247,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Rappel de règlementIntituléRappel de règlementOccasionÉchéance de règlementActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, un reliquat reste dû sur votre dossier à {{clinique}}. Nous vous remercions de bien vouloir passer à la caisse.Aperçu, variables remplacéesBonjour OROU YO Marguerite, un reliquat reste dû sur votre dossier à CLINIQUE BAGUIDI « L’AS DE CŒUR ». Nous vous remercions de bien vouloir passer à la caisse."
+    "tiroir": "Rappel de règlementIntituléRappel de règlementOccasionÉchéance de règlementActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, un reliquat reste dû sur votre dossier à {{clinique}}. Nous vous remercions de bien vouloir passer à la caisse.Aperçu, variables remplacéesBonjour OROU YO Marguerite, un reliquat reste dû sur votre dossier à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Nous vous remercions de bien vouloir passer à la caisse."
    },
    {
     "ligne": [
@@ -3257,7 +3257,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Résultat disponibleIntituléRésultat disponibleOccasionRésultat disponibleActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, votre résultat est disponible à {{clinique}}. Vous pouvez le retirer aux heures d’ouverture.Aperçu, variables remplacéesBonjour OROU YO Marguerite, votre résultat est disponible à CLINIQUE BAGUIDI « L’AS DE CŒUR ». Vous pouvez le retirer aux heures d’ouverture."
+    "tiroir": "Résultat disponibleIntituléRésultat disponibleOccasionRésultat disponibleActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, votre résultat est disponible à {{clinique}}. Vous pouvez le retirer aux heures d’ouverture.Aperçu, variables remplacéesBonjour OROU YO Marguerite, votre résultat est disponible à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Vous pouvez le retirer aux heures d’ouverture."
    },
    {
     "ligne": [
@@ -3267,7 +3267,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Rappel de rendez-vousIntituléRappel de rendez-vousOccasionRappel de rendez-vousActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.Aperçu, variables remplacéesBonjour OROU YO Marguerite, nous vous rappelons votre rendez-vous à CLINIQUE BAGUIDI « L’AS DE CŒUR » le 01/11/2026 à 09h00. Pour toute modification, appelez le 95 74 69 56."
+    "tiroir": "Rappel de rendez-vousIntituléRappel de rendez-vousOccasionRappel de rendez-vousActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.Aperçu, variables remplacéesBonjour OROU YO Marguerite, nous vous rappelons votre rendez-vous à CLINIQUE BAGUIDI « L’AS DU CŒUR » le 01/11/2026 à 09h00. Pour toute modification, appelez le 95 74 69 56."
    },
    {
     "ligne": [
@@ -3277,7 +3277,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Vœux de fêteIntituléVœux de fêteOccasionFête ou jour fériéActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DE CŒUR » vous souhaite une excellente fête, entouré des vôtres."
+    "tiroir": "Vœux de fêteIntituléVœux de fêteOccasionFête ou jour fériéActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite une excellente fête, entouré des vôtres."
    },
    {
     "ligne": [
@@ -3287,7 +3287,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Vœux de nouvel anIntituléVœux de nouvel anOccasionNouvel anActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DE CŒUR » vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille."
+    "tiroir": "Vœux de nouvel anIntituléVœux de nouvel anOccasionNouvel anActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille."
    },
    {
     "ligne": [
@@ -3297,7 +3297,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "AnniversaireIntituléAnniversaireOccasionAnniversaire du patientActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être.Aperçu, variables remplacéesBonjour OROU YO Marguerite, toute l’équipe de CLINIQUE BAGUIDI « L’AS DE CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+    "tiroir": "AnniversaireIntituléAnniversaireOccasionAnniversaire du patientActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être.Aperçu, variables remplacéesBonjour OROU YO Marguerite, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
    }
   ],
   "rappelsVide": null,
@@ -3368,7 +3368,7 @@
      "telephone": "0395837962",
      "dateEcheance": "2026-11-01",
      "etat": "en_file",
-     "message": "Bonjour BAKO Boukari, toute l’équipe de CLINIQUE BAGUIDI « L’AS DE CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+     "message": "Bonjour BAKO Boukari, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
     },
     {
      "reference": "RPL-00001",
@@ -3378,7 +3378,7 @@
      "telephone": "0372398919",
      "dateEcheance": "2026-11-01",
      "etat": "en_file",
-     "message": "Bonjour TCHANE Bertine, toute l’équipe de CLINIQUE BAGUIDI « L’AS DE CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+     "message": "Bonjour TCHANE Bertine, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
     }
    ],
    "onglets": [

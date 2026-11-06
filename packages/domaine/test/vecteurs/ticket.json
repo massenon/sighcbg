@@ -38,7 +38,7 @@
     "02 BP : 105 PARAKOU (Rép. du Bénin)",
     "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
     "IFU 3201001996110",
-    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
+    "RCCM RB/PKO/17 A 4240",
     "--------------------------------",
     "OPÉRATEUR|DIEYABIDI Aïssatou",
     "TYPE VENTE|COMPTANT",
@@ -58,7 +58,9 @@
     "TOTAL DÛ|0",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "trois mille trois cents francs CFA"
+    "trois mille trois cents francs CFA",
+    "--------------------------------",
+    "Votre bien-être est notre raison d’être."
    ]
   },
   {
@@ -104,7 +106,7 @@
     "02 BP : 105 PARAKOU (Rép. du Bénin)",
     "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
     "IFU 3201001996110",
-    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
+    "RCCM RB/PKO/17 A 4240",
     "--------------------------------",
     "OPÉRATEUR|DIEYABIDI Aïssatou",
     "TYPE VENTE|CRÉDIT",
@@ -129,7 +131,9 @@
     "BASE MECeF|4 200",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "quatre mille deux cents francs CFA"
+    "quatre mille deux cents francs CFA",
+    "--------------------------------",
+    "Votre bien-être est notre raison d’être."
    ]
   },
   {
@@ -166,7 +170,7 @@
     "02 BP : 105 PARAKOU (Rép. du Bénin)",
     "TÉL. 95 74 69 56 / 95 95 99 14 / 97 09 34 99",
     "IFU 3201001996110",
-    "RCCM RB/PKO/17 A 4240 du 19/03/2009",
+    "RCCM RB/PKO/17 A 4240",
     "--------------------------------",
     "NIM : ET01234567",
     "CODE DGI : ABCD-1234-EFGH-5678",
@@ -186,7 +190,9 @@
     "NET À PAYER|1 500",
     "--------------------------------",
     "Arrêtée la présente facture à la somme de :",
-    "mille cinq cents francs CFA"
+    "mille cinq cents francs CFA",
+    "--------------------------------",
+    "Votre bien-être est notre raison d’être."
    ]
   }
  ]
