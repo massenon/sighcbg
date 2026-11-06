@@ -57,7 +57,42 @@ Devise : « Votre bien-être est notre raison d'être. »
 Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009
 ```
 
-Champs de `IdentiteClinique` **encore inconnus** (voir §9) : sigle, nom court, BP, téléphones, e-mail, n° d'autorisation d'ouverture, formule de politesse des factures, logo, couleurs.
+**Fiche d'identité fournie par la Direction le 06/11/2026**, correspondance avec `IdentiteClinique` :
+
+| Champ de `IdentiteClinique` | Valeur Baguidi |
+|---|---|
+| `nom` (dénomination sociale) | CLINIQUE BAGUIDI « L'AS DE CŒUR » |
+| `sigle` (remplace « CNT ») | **CBG** |
+| `nomCourt` | à confirmer (proposition : CLINIQUE BAGUIDI) |
+| `slogan` | Votre bien-être est notre raison d'être. |
+| adresse géographique (champ nouveau, absent de `IdentiteClinique`) | Quartier Zongo II, Parakou |
+| `bp` | 02 BP : 105 PARAKOU (Rép. du Bénin) |
+| `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
+| `email` | cliniquebaguidi@yahoo.fr |
+| `ifu` | 3201001996110 |
+| `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
+| `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |
+| forme juridique | **non renseignée** (SARL, SA, EI… ? Elle figure habituellement sur l'en-tête légal) |
+| `autorisation` (n° d'autorisation d'ouverture) | **non renseigné** |
+| `formuleArrete` | générique, reprise telle quelle : « Arrêtée la présente facture à la somme de » |
+| `formulePolitesse` (pied de facture) | **non renseignée** (celle de Nassiera Too, « QUE DIEU VOUS GUÉRISSE ! AMINE ! », ne se reprend pas) |
+
+Le **sigle CBG** remplace « CNT » partout où il est visible : numérotation des pièces certifiantes (`<SIGLE> n°/n°/CBG/<direction>/<année>`), préfixe des codes, titre « SIGH-CBG ». Les identifiants techniques (`sigh_poste`, noms de collections) ne changent pas.
+
+**Le logo (reçu le 06/11/2026)** : un badge circulaire. Une double bague **rouge et noire** porte « CLINIQUE BAGUIDI » en haut et « L'AS DE CŒUR » en bas, en capitales blanches sur bandeaux rouges cernés de noir. Au centre, un **cœur** dessiné par deux traits dégradés, **bleu** à gauche et **rouge** à droite, entoure une **roue dentée noire** frappée du **caducée** : la médecine du travail, littéralement. Le fond est blanc.
+
+Palette déduite du logo, **à confirmer** par les valeurs hexadécimales mesurées sur le fichier source :
+
+| Rôle dans le design system | Couleur du logo | Valeur estimée à l'œil |
+|---|---|---|
+| Primaire (en-têtes, actions principales, ruban) | rouge des bandeaux | ≈ `#E01F26` |
+| Secondaire (accents, liens, graphiques) | bleu du cœur | ≈ `#2F6FD6` |
+| Texte et contours | noir de la roue | ≈ `#111111` |
+| Fonds | blanc / gris clair | `#FFFFFF` |
+
+**Conséquence pour P1-1** : chez Nassiera Too, le bleu marine est la couleur institutionnelle et le rouge est réservé au sens « rupture, péremption, erreur ». Si le **rouge** devient la primaire de Baguidi, un bouton principal et une alerte de rupture auront la même couleur. Trois solutions : (a) primaire **bleue**, rouge réservé à la marque (logo, bandeau de connexion) et aux erreurs ; (b) primaire rouge, et les erreurs passent sur un rouge plus sombre avec une icône obligatoire ; (c) primaire noire ou anthracite, rouge et bleu en accents. **Recommandation : (a)**, qui ne change pas la sémantique des 300 écrans. À trancher par la Direction (Q18).
+
+Le logo et la charte sont dans la branche `baguidi-sources` (en cours d'envoi) : `draft/logo.png`, `draft/Cliniqur BAGUIDI LAS DU COEUR.png`, `draft/design/login_exemple*.png|jpg`.
 
 ## 5. Ce que l'analyse de la base a établi
 
@@ -238,7 +273,7 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 | Q3 | Les rôles cliniques (médecin, sage-femme, biologiste, caissier…) : à archiver ou à garder ? | Direction Baguidi | Non |
 | Q4 | Registres vides à l'installation, ou jeu de démonstration **fictif** aux couleurs de Baguidi pour la formation ? | Direction Baguidi | **Oui** (P0-3) |
 | ~~Q5~~ | ~~Justificatif des sorties de pharmacie ?~~ **Tranché le 06/11/2026 : les deux** — bon de sortie interne ET caisse minimale pour les ventes de pharmacie ; le comptable reporte les ventes du logiciel de caisse patient (P0-8, P0-9) | | |
-| Q6 | Champs d'identité manquants : sigle (remplace « CNT »), nom court, BP, téléphones, e-mail, n° d'autorisation d'ouverture, formule de politesse des factures | Direction Baguidi | **Oui** (P0-2) |
+| Q6 | ~~Sigle, BP, téléphones, e-mail~~ **fournis le 06/11/2026** (§4). Restent : **forme juridique**, **n° d'autorisation d'ouverture**, **formule de politesse** des factures, nom court | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
 | Q7 | Fichier source du logo (vectoriel de préférence) et charte graphique (couleurs en hexadécimal, police) | Direction Baguidi | Oui pour P1-1/P1-2, non pour P0 |
 | Q8 | Historique git : importer avec l'historique de SIGH-CNT (report de correctifs facilité, mais l'historique contient des données de Nassiera Too et un mot de passe commis le 17/10/2026) ou en **instantané** (recommandé) ? | Ingénierie + Direction CNT | **Oui** (P0-1) |
 | Q9 | La Direction de Nassiera Too a-t-elle autorisé la réutilisation du code pour une autre clinique ? | Direction CNT, juridique | **Oui** (avant tout import) |
@@ -249,6 +284,7 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 | Q14 | Combien de caisses alimentent le logiciel de caisse patient (une seule, ou une par point de vente) ? Le report se fait par journée **et par caisse** | Comptable Baguidi | **Oui** (P0-8) |
 | Q15 | La pharmacie vend-elle **aussi** dans le logiciel de caisse patient ? Si oui, quelle vente fait foi pour le stock, pour ne pas sortir deux fois le même produit ? | Direction Baguidi + gestionnaire de stock | **Oui** (P0-9) |
 | Q16 | Liste des natures d'activité du report et comptes de produit 70x de chacune (le plan de Baguidi peut différer de celui de Nassiera Too). Un export du logiciel de caisse (même une capture de son état journalier) permettrait d'aligner les natures sur ce qu'il imprime | Comptable Baguidi | **Oui** (P0-8) |
+| Q18 | Couleur primaire du logiciel : bleu du logo (recommandé, le rouge reste la couleur des erreurs et de la marque), rouge, ou noir ? Voir §4 | Direction Baguidi + design | Non pour P0, oui pour P1-1 |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
