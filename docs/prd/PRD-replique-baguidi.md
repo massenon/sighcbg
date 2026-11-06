@@ -61,7 +61,7 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 
 | Champ de `IdentiteClinique` | Valeur Baguidi |
 |---|---|
-| `nom` (dénomination sociale) | CLINIQUE BAGUIDI « L'AS DE CŒUR » |
+| `nom` (dénomination sociale) | CLINIQUE BAGUIDI « L'AS **DU** CŒUR » (alignée sur le RCCM le 06/11/2026 ; le logo garde « DE » en attendant une version corrigée) |
 | `sigle` (remplace « CNT ») | **CBG** |
 | `nomCourt` | à confirmer (proposition : CLINIQUE BAGUIDI) |
 | `slogan` | Votre bien-être est notre raison d'être. |
@@ -72,9 +72,11 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 | `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
 | `email` | cliniquebaguidi@yahoo.fr |
 | `ifu` | 3201001996110 |
-| `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
-| `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |
-| forme juridique | **Entreprise individuelle** (personne physique), immatriculation principale au RCCM du 19/03/2009 (extrait du RCCM communiqué le 06/11/2026) |
+| `rccm` | **RB/PKO/17 A 4240** (décision du 06/11/2026 : le numéro seul ; la date d'immatriculation, 19/03/2009, vit dans un champ distinct `rccmDate` et ne se concatène pas) |
+| `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.` |
+| forme juridique | **Entreprise individuelle** (personne physique), immatriculation principale au RCCM du 19/03/2009 (extrait du RCCM communiqué le 06/11/2026) 
+| n° d'enregistrement / d'inscription (champ nouveau) | **0416/ONMB/ATL/2002** (communiqué le 06/11/2026 ; ONMB = Ordre national des médecins du Bénin). Imprimé à l'en-tête à la place du « n° d'autorisation d'ouverture » de Nassiera Too, sous le libellé « N° d'enregistrement », sauf avis contraire (voir Q32) |
+| exploitant | **BAGUIDI Rafiou** (orthographe de l'extrait RCCM ; la maquette écrivait « GBAGUIDI », corrigé). Date et lieu de naissance, domicile personnel : champs laissés VIDES, à remplir en production (dépôt public) |
 | `autorisation` (n° d'autorisation d'ouverture) | **non renseigné** |
 | `formuleArrete` | générique, reprise telle quelle : « Arrêtée la présente facture à la somme de » |
 | `formulePolitesse` (pied de facture) | **Votre bien-être est notre raison d’être.** (décision du 06/11/2026 : même texte que le slogan ; celle de Nassiera Too, « QUE DIEU VOUS GUÉRISSE ! AMINE ! », ne se reprend pas) |
@@ -275,6 +277,8 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 - **Vente de pharmacie au comptant sans dossier patient**, depuis `m8-operations` : l'opération porte ses lignes d'articles, sort le stock du rayon de détail (RG-03 : justificatif = n° de l'opération ; refus nommé si une ligne n'est pas couverte) et produit l'écriture d'encaissement. RG-02 s'applique (prix d'achat, sans marge). À vérifier dans le code : `m8-operations` enregistre aujourd'hui une opération sans dossier, mais il faut confirmer qu'elle sait sortir du stock.
 - **Bon de sortie interne** : la consommation d'un service (bloc, salle de soins, visites d'entreprise) sort du stock sur un **bon de besoins servi** (`m7-besoins`, déjà ouvert à tout agent, avec quantité demandée ≠ quantité accordée). Le n° du bon est le justificatif RG-03. Aucune caisse, aucun patient.
 - **Ce qui se recoupe** : les ventes de pharmacie enregistrées dans SIGH-CB **ne se reportent pas une seconde fois** dans le report journalier (P0-8). La nature « pharmacie » du report ne sert qu'aux ventes de pharmacie faites dans le logiciel de caisse patient, si la clinique en fait (Q15).
+- **Client libre** (décision du 06/11/2026) : une vente au comptoir s'enregistre sans fiche patient, avec un nom de client saisi librement ; le moteur d'émission cesse d'exiger une fiche du répertoire pour une opération dissociée. Le CRUD Patients (`m1-patients`) reste ouvert pour les clients et assurés récurrents.
+- **Deux défauts de la base à corriger dans ce lot** (confirmés par la Direction le 06/11/2026) : « Enregistrer et encaisser » et l'écran Paiements doivent passer l'écriture comptable d'encaissement (aujourd'hui seule la voie `encaisserFacture` la pose) ; et l'écriture lit `partAssureur` quand les pièces portent `partAssurance`, si bien que le débit 411 de la part assureur n'est jamais passé.
 - `m8-caisse` (état de caisse journalier) agrège les opérations de caisse, les ventes de pharmacie et les dépenses (`m12-depenses`) de la journée.
 - *Critères* :
   - [ ] Vente de 3 articles : stock du détail diminué de chaque quantité, mouvement rattaché au n° d'opération, écriture équilibrée en brouillon.
@@ -396,10 +400,11 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q22 | Baguidi émet-elle des factures pro-forma ? Si oui, `m8-proforma` reste ouvert | Direction Baguidi | Non |
 | Q23 | Bulletin `BP-NNNNN` « par période de paie » : la séquence repart-elle à 1 chaque mois (et comment distinguer deux `BP-00001`), ou est-elle continue ? | DAF Baguidi | Non |
 | Q24 | Les obligations de la base absentes de la liste reçue (AIB, acomptes IS, patente, CCIB, TVM, ORTB, déclaration de TVA) : à retirer ou à garder ? | Comptable Baguidi | Non |
+| Q32 | Le n° **0416/ONMB/ATL/2002** est-il bien la mention à imprimer à l'en-tête (ligne « N° d'enregistrement »), et remplace-t-il le « n° d'autorisation d'ouverture », ou les deux mentions coexistent-elles ? | Direction Baguidi | Non |
 | Q30 | Les tarifs (131 lignes, actes, analyses, chambres, certificats) restent ceux de Nassiera Too dans la maquette Baguidi. Les garder comme **valeurs d'attente marquées provisoires** (recommandé), ou attendre une grille Baguidi avant livraison ? | Direction Baguidi | Non (oui pour la recette) |
 | Q31 | Les secteurs NS 145, les directions des types de pièces et la matrice des sources citent encore les documents de Nassiera Too. Baguidi fournit-elle son organigramme de directions et ses notes de service, ou marque-t-on « hérité, à confirmer » ? | Direction Baguidi | Non |
-| Q28 | **Nom commercial** : l'extrait du RCCM porte « CLINIQUE BAGUIDI "L'AS **DU** COEUR" », le logo et l'identité fournie « L'AS **DE** CŒUR ». Le logiciel imprime « L'AS DE CŒUR » (identité fournie par la Direction) ; faut-il aligner sur le RCCM, ou le RCCM est-il à rectifier ? | Direction Baguidi | Non |
-| Q29 | **Entreprise individuelle** : l'exploitant est une personne physique. L'impôt sur les sociétés (quatre acomptes) ne s'applique pas à une EI, dont les bénéfices relèvent de l'impôt sur le revenu (BIC/BNC selon le régime). Quel régime d'imposition retenir dans le calendrier fiscal (voir Q24) ? | Comptable Baguidi + conseil fiscal | Non (oui pour `m12-echeances`) |
+| ~~Q28~~ | ~~Nom commercial ?~~ **Tranché le 06/11/2026 : alignement sur le RCCM.** La dénomination imprimée devient « CLINIQUE BAGUIDI « L'AS **DU** CŒUR » » (ligature Œ conservée à l'impression ; le RCCM écrit « COEUR » en capitales simples). Le logo, qui porte « L'AS DE COEUR », reste tel quel tant que la Direction ne fournit pas de version corrigée | | |
+| ~~Q29~~ | ~~Régime d'imposition de l'EI ?~~ **Tranché le 06/11/2026 : on suit le calendrier fiscal hérité pour le moment** (acomptes d'IS compris). Le comptable de Baguidi le corrigera dans `cfg-comptabilite` / `m12-echeances` quand le régime réel (BIC) sera arrêté | | |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
