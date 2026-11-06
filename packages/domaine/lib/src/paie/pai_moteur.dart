@@ -11,6 +11,8 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
 import '../referentiels/regles.dart' show joursEntre;
+import '../configuration/cfb_regles.dart' show CfbFermetures;
+import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference;
 
 typedef PaiFiche = Map<String, Object?>;
 
@@ -352,8 +354,114 @@ class PaiEntrees {
       this.grille = const [],
       this.historique = const [],
       this.heuresSup = const [],
-      this.prets = const []});
+      this.prets = const [],
+      this.primesNs132 = true,
+      this.sanctionsNs131 = true});
   final List<PaiFiche> planning, evaluations, avances, participations, grille, historique, heuresSup, prets;
+
+  /// Les deux activités pilotées depuis Paramètres système (PRD P0-5), lues dans `modulesActifs` par [paiActivites] : OUVERTES par défaut (décision de
+  /// la Direction du 06/11/2026). [primesNs132] fermée : aucune prime de la note NS 132 n'entre au brut (garde et permanence comprises, ce sont deux
+  /// lignes de la note). [sanctionsNs131] fermée : la retenue de l'évaluation NS 131 vaut zéro. La prime d'ancienneté et les heures supplémentaires ne
+  /// relèvent d'aucune des deux notes : elles restent.
+  final bool primesNs132, sanctionsNs131;
+}
+
+// --- les deux activités de la paie pilotées depuis Paramètres système (PRD P0-5) ------------------------------------------------------------
+/// Une bascule d'activité : la fiche `modulesActifs` qu'elle écrit (code, libellé, module, écrans fermés). L'état ne se stocke NULLE PART ailleurs :
+/// il se lit dans les fermetures en vigueur, sur l'écran [ecranPilote] (celui où l'activité se SAISIT). Une fermeture posée depuis « Activité des
+/// modules » sur le même écran, ou la fermeture du module entier, ferme donc aussi la bascule : une seule source de vérité.
+class PaiBascule {
+  const PaiBascule({required this.code, required this.libelle, required this.module, required this.ecrans, required this.source, required this.effet});
+  final String code, libelle, module;
+  final List<String> ecrans;
+
+  /// La note de service d'où vient le barème : l'écran la NOMME, parce qu'un barème dont on ignore l'origine ne se contrôle pas.
+  final String source;
+
+  /// Ce que la fermeture retire au bulletin, en une phrase (affichée sur la bascule et dans la confirmation).
+  final String effet;
+
+  String get ecranPilote => ecrans.first;
+}
+
+/// Primes NS 132 : l'écran des primes (grille par fonction). L'onglet « Primes (NS 132) » de la fiche employé suit la bascule.
+const paiBasculeNs132 = PaiBascule(
+    code: 'PAIE-NS132',
+    libelle: 'Primes (NS 132)',
+    module: 'M10',
+    ecrans: ['m10-primes'],
+    source: rhbNs132Reference,
+    effet: 'Aucune prime de la note NS 132 n’entre au bulletin : garde, permanence, aide bloc, bloc fixe, caisse, accueil, incinération et les autres.');
+
+/// Évaluations et sanctions NS 131 : l'écran des évaluations (où la retenue se décide) et celui des sanctions (qui en découle).
+const paiBasculeNs131 = PaiBascule(
+    code: 'PAIE-NS131',
+    libelle: 'Évaluations & sanctions (barème NS 131)',
+    module: 'M10',
+    ecrans: ['m10-evaluations', 'm10-sanctions'],
+    source: rhbNs131Reference,
+    effet: 'Aucune retenue d’évaluation ne remonte à la paie : la sanction du bulletin vaut zéro.');
+
+const paiBascules = [paiBasculeNs132, paiBasculeNs131];
+
+/// La bascule est-elle ouverte ? Lue dans les fermetures en vigueur, jamais dans un drapeau à part.
+bool paiBasculeOuverte(CfbFermetures fermetures, PaiBascule b) => fermetures.ecranActif(b.ecranPilote, b.module);
+
+/// Les deux drapeaux du moteur, lus dans la collection `modulesActifs` (une fiche archivée ne ferme rien, RG-14).
+({bool primesNs132, bool sanctionsNs131}) paiActivites(Iterable<PaiFiche> modulesActifs) {
+  final f = CfbFermetures.depuis(modulesActifs);
+  return (primesNs132: paiBasculeOuverte(f, paiBasculeNs132), sanctionsNs131: paiBasculeOuverte(f, paiBasculeNs131));
+}
+
+/// La fiche `modulesActifs` propre à une bascule (non archivée), `null` tant qu'elle n'a jamais été actionnée.
+PaiFiche? paiFicheBascule(Iterable<PaiFiche> modulesActifs, PaiBascule b) =>
+    modulesActifs.where(_actif).where((f) => f['code'] == b.code).firstOrNull;
+
+// --- les signataires de la paie, lus au personnel ------------------------------------------------------------------------------------------
+/// Qui signe une pièce de paie : la qualité se reconnaît au POSTE du dossier du personnel (et à la fonction), jamais à un nom écrit dans le code. Un
+/// établissement qui change de comptable n'a rien à reprogrammer.
+enum PaiQualite { comptable, daf, direction, surveillant }
+
+String _min(Object? v) => '${v ?? ''}'.toLowerCase();
+
+/// Le nom complet de l'agent qui porte la qualité [q], `null` si personne ne la porte (la pièce imprime alors une ligne de signature sans nom).
+///
+/// * comptable : fonction « comptable » dont le poste dit « comptable » (l'assistant de direction, rangé dans la même fonction, ne signe pas) ;
+/// * DAF : le poste « administrati(f/on) » de la direction ;
+/// * direction : le poste de directeur général, puis de directeur médical, puis tout poste de direction qui n'est ni administratif ni assistant ;
+/// * surveillant : le poste « surveillant ».
+String? paiSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
+  final actifs = personnel.where(_actif).where((p) => '${p['statut'] ?? 'actif'}' != 'inactif').toList();
+  bool poste(PaiFiche p, String m) => _min(p['poste']).contains(m);
+  PaiFiche? premier(bool Function(PaiFiche) t) => actifs.where(t).firstOrNull;
+  final PaiFiche? f = switch (q) {
+    PaiQualite.comptable => premier((p) => _min(p['fonction']) == 'comptable' && poste(p, 'comptable') && !poste(p, 'assistant')) ??
+        premier((p) => poste(p, 'comptable') && !poste(p, 'assistant') && !poste(p, 'aide')),
+    PaiQualite.daf => premier((p) => poste(p, 'direct') && poste(p, 'administrati')),
+    PaiQualite.direction => premier((p) => poste(p, 'direct') && poste(p, 'génér')) ??
+        premier((p) => poste(p, 'direct') && poste(p, 'médical')) ??
+        premier((p) => poste(p, 'direct') && !poste(p, 'administrati') && !poste(p, 'assistant')),
+    PaiQualite.surveillant => premier((p) => poste(p, 'surveillant')),
+  };
+  if (f == null) return null;
+  final nom = '${f['nomComplet'] ?? [f['nom'], f['prenom']].where((x) => x != null && '$x'.isNotEmpty).join(' ')}'.trim();
+  return nom.isEmpty ? null : nom;
+}
+
+/// L'exercice de la paie : celui de la collection `exercices` qui contient [aujourdhui] et n'est pas clos ; à défaut, l'année de l'horloge du poste.
+int paiExercice(Iterable<PaiFiche> exercices, DateTime aujourdhui) {
+  final jour = '${aujourdhui.year.toString().padLeft(4, '0')}-${_p2(aujourdhui.month)}-${_p2(aujourdhui.day)}';
+  for (final x in exercices.where(_actif)) {
+    final debut = '${x['debut'] ?? ''}', fin = '${x['fin'] ?? ''}';
+    if (debut.isEmpty || fin.isEmpty || x['etat'] == 'clos') continue;
+    if (jour.compareTo(debut) >= 0 && jour.compareTo(fin) <= 0) {
+      final a = x['annee'];
+      if (a is num) return a.toInt();
+      final lu = int.tryParse('$a');
+      if (lu != null) return lu;
+    }
+  }
+  return aujourdhui.year;
 }
 
 class PaiLignePrime {
@@ -439,7 +547,8 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
 
   final dateBulletin = '${annee.toString().padLeft(4, '0')}-${_p2(mois + 1)}-28';
   final lignesPrimes = <PaiLignePrime>[];
-  for (final pr in paiPrimesNs132) {
+  // Primes NS 132 fermées (Paramètres système) : aucune ligne de la note, garde et permanence comprises. Les compteurs restent (le planning existe).
+  for (final pr in e.primesNs132 ? paiPrimesNs132 : const <PaiPrime>[]) {
     final montant = paiMontantPrime(pr.id, fonction, dateBulletin, e.grille, e.historique);
     if (montant == 0) continue;
     final nb = pr.mode == 'fixe' ? 1 : (pr.id == 'garde' ? gardes : (pr.id == 'permanence' ? permanences : 0));
@@ -459,7 +568,8 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
   final brut = salaireBase + primeAnciennete + totalPrimes + heuresSupMontant;
 
   final evaluation = e.evaluations.where(_actif).where((x) => x['employeId'] == id && x['periode'] == periode).firstOrNull;
-  final pctSanction = evaluation == null ? 0 : _n(evaluation['prelevementPct']);
+  // Évaluations NS 131 fermées : la retenue ne remonte pas, quelle que soit l'évaluation enregistrée.
+  final pctSanction = (evaluation == null || !e.sanctionsNs131) ? 0 : _n(evaluation['prelevementPct']);
   final sanction = arrondiJs(brut * pctSanction / 100);
   final brutApresSanction = brut - sanction;
 

@@ -317,6 +317,7 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
   final a = emp != null ? rhbAnciennete(emp['dateEmbauche'], c.aujourdhui) : (ans: 0, mois: 0);
   final grille = rhbActives(c, 'grillePrimes'), hist = rhbActives(c, 'historiquePrimes'), pl = rhbActives(c, 'planning');
   final f = emp != null ? '${emp['fonction']}' : '';
+  final activites = paiActivites(rhbActives(c, 'modulesActifs'));
   final s = rhbSolde(
       salaireBrut: e['salaireBrut'],
       prelevementPct: e['prelevementPct'],
@@ -325,7 +326,10 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
       montantGarde: emp != null ? rhbMontantPrime(grille, hist, 'garde', f) : 0,
       montantPermanence: emp != null ? rhbMontantPrime(grille, hist, 'permanence', f) : 0,
       montantAccueil: emp != null ? rhbMontantPrime(grille, hist, 'accueil', f) : 0,
-      ans: a.ans);
+      ans: a.ans,
+      // Les deux activités de Paramètres système (PRD P0-5) : la fiche de solde recompose le brut comme le bulletin.
+      primesNs132: activites.primesNs132,
+      sanctionsNs131: activites.sanctionsNs131);
   String m(num x) => money(x, avecDevise: false);
   final cr = (e['criteres'] as Map?) ?? const {};
   String lib(Object? n) => switch (n) { 'bonne' => 'Bonne', 'moyenne' => 'Moyenne', 'faible' => 'Faible à mauvaise', _ => '' };
@@ -377,7 +381,7 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
           signatures: [
             Signature('L’Évaluateur', nom: '${e['evaluateur']}'),
             Signature('L’Agent', nom: '${e['employe']}'),
-            const Signature('La Directrice Administrative', nom: 'TAKI Alimatou épse BASSONGUI'),
+            rhbNomme(c, rhbSignDaf, PaiQualite.daf),
           ]));
 }
 
@@ -396,8 +400,8 @@ void imprimerNoteNs131(BuildContext ctx, ContexteEcran c) {
             ('Statut', rhbNs131Statut),
           ],
           blocs: [
-            const BlocTexte(
-                'Le Directeur Médical de la Clinique NASSIERA TOO informe tous ses Agents qu’il est procédé à la modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale. La nouvelle formule d’évaluation est présentée dans le tableau ci-dessous.'),
+            BlocTexte(
+                'Le Directeur Médical de la ${IdentiteClinique.nomCourt} informe tous ses Agents qu’il est procédé à la modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale. La nouvelle formule d’évaluation est présentée dans le tableau ci-dessous.'),
             BlocTableau(TableauEtat(colonnes: [
               ColonneEtat(libelle: 'N°', valeur: (r) => r['num']),
               ColonneEtat(libelle: 'Éléments d’évaluation', valeur: (r) => r['label']),

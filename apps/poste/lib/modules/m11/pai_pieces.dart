@@ -215,7 +215,7 @@ PieceA4 pieceBulletin(ContexteEcran c, PaiBulletinVue b) {
         BlocTexte(
             'Charges patronales (non déduites du net) : CNSS ${paiNum(paiCnssPatronale)} % — ${money(b.cnssPatronale)} ; VPS ${paiNum(paiVpsTaux)} % — ${money(b.vps)}.'),
       ],
-      signatures: [Signature('L’Employé(e)', nom: b.employe, mention: 'Signature'), signDaf]);
+      signatures: [Signature('L’Employé(e)', nom: b.employe, mention: 'Signature'), signDaf(c.magasin)]);
 }
 
 void imprimerBulletin(BuildContext ctx, PaiBulletinVue b) => afficherApercu(ctx, pieceBulletin(ContexteEcran.of(ctx), b));
@@ -229,9 +229,9 @@ void imprimerJournalCalcul(BuildContext ctx, int mois, List<PaiCalcul> calc) {
       ctx,
       pieceM9(c,
           titre: 'Journal de paie',
-          sousTitre: periodeBrute(mois),
+          sousTitre: periodeBrute(c, mois),
           cartouche: [
-            ('Période', periodeBrute(mois)),
+            ('Période', periodeBrute(c, mois)),
             ('Effectif', nombre(calc.length)),
             ('Masse salariale brute', paiMontant(calc, (x) => x.brut)),
             ('Net à payer', paiMontant(calc, (x) => x.net)),
@@ -251,9 +251,9 @@ void imprimerJournalCalcul(BuildContext ctx, int mois, List<PaiCalcul> calc) {
               ColonneEtat(libelle: 'Net à payer', droite: true, valeur: (r) => _mf(f(r, 'net')), somme: (r) => f(r, 'net')),
             ], lignes: lignes, libelleTotal: 'TOTAL GÉNÉRAL')
           ],
-          signatures: const [
-            Signature('Le Responsable RH'),
-            signComptable,
-            Signature('La Direction', nom: paiNomDirection, mention: 'Validation'),
+          signatures: [
+            const Signature('Le Responsable RH'),
+            signComptable(c.magasin),
+            signDirection(c.magasin, 'Validation'),
           ]));
 }

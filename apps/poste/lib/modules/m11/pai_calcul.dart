@@ -39,7 +39,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_mois != null) return;
-    _mois = selecteurMois(ContexteEcran.of(context), 'Période de paie', optionsMoisCap(paiAnnee));
+    _mois = selecteurMois(ContexteEcran.of(context), 'Période de paie', optionsMoisCap(paiAnnee(ContexteEcran.of(context))));
     _mois!.addListener(_maj);
   }
 
@@ -59,7 +59,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
   Future<void> _generer(BuildContext ctx, ContexteEcran c, List<PaiCalcul> calc) async {
     final ok = await confirmerSigh(ctx,
         titre: 'Générer ${calc.length} bulletin(s) de paie ?',
-        message: 'Les bulletins seront enregistrés pour la période ${periodeBrute(_m)} et soumis à la validation de la Direction avant diffusion.',
+        message: 'Les bulletins seront enregistrés pour la période ${periodeBrute(c, _m)} et soumis à la validation de la Direction avant diffusion.',
         libelleOk: 'Générer');
     if (!ok || !ctx.mounted) return;
     final col = c.magasin.collection('bulletins');
@@ -95,6 +95,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
           ]),
           const SizedBox(height: 16),
           ...avisPaie(c),
+          ...avisActivitesPaie(c),
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Agents concernés', valeur: nombre(calc.length), icone: LucideIcons.usersRound),
             KpiSigh(libelle: 'Masse salariale brute', valeur: paiMontant(calc, (x) => x.brut), icone: LucideIcons.banknote, ton: TonSigh.info),
@@ -104,7 +105,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('calcul:$_m:$_relances'),
-            titre: 'Détail du calcul — ${paiMois[_m]} $paiAnnee',
+            titre: 'Détail du calcul — ${paiMois[_m]} ${paiAnnee(c)}',
             lignes: lignes,
             nomExport: 'calcul-paie',
             taillePage: 20,

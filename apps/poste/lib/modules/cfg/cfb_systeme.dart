@@ -158,7 +158,8 @@ List<CfbLigneCorbeille> cfbCorbeille(Magasin m) {
 }
 
 /// `cfg-systeme` — « Paramètres système » : l'installation et le contenu des données, la CORBEILLE (RG-14 : rien n'est jamais supprimé, tout ce qui a été
-/// archivé dans n'importe quel module se retrouve et se restaure ici), la porte du barème NS 131 et les jeux de test.
+/// archivé dans n'importe quel module se retrouve et se restaure ici), les deux ACTIVITÉS DE LA PAIE (primes NS 132, évaluations et sanctions NS 131 :
+/// PRD P0-5), la porte du barème NS 131 et les jeux de test.
 class EcranSysteme extends StatefulWidget with EcranMaquette {
   const EcranSysteme({super.key, this.estMere = false});
   final bool estMere;
@@ -202,10 +203,11 @@ class _EtatSysteme extends State<EcranSysteme> {
     final noms = cfbNomsCollections();
     // Toute écriture d'une collection (archivage, restauration, vidage) recompose l'écran : le compteur de la corbeille doit suivre.
     return ListenableBuilder(
-        listenable: Listenable.merge([for (final n in noms) c.magasin.collection(n), c.magasin.collection('reglages')]),
+        listenable: Listenable.merge([for (final n in noms) c.magasin.collection(n), c.magasin.collection('reglages'), c.magasin.collection('modulesActifs')]),
         builder: (ctx, _) => OngletsSigh(onglets: [
               OngletDef(id: 'installation', libelle: 'Installation et données', construire: (_) => _Installation(c: c, rafraichir: () => setState(() {}))),
               OngletDef(id: 'corbeille', libelle: 'Corbeille', compte: cfbCorbeille(c.magasin).length, construire: (_) => _Corbeille(c: c)),
+              OngletDef(id: 'activites', libelle: 'Primes et évaluations', construire: (_) => _ActivitesPaie(c: c)),
               OngletDef(id: 'bareme', libelle: 'Barème NS 131', construire: (_) => _Bareme(c: c)),
               OngletDef(id: 'reinitialisation', libelle: 'Jeux de test', construire: (_) => _JeuxDeTest(c: c, rafraichir: () => setState(() {}))),
               OngletDef(id: 'relais', libelle: 'Relais en ligne', construire: (_) => _Relais(c: c, estMere: widget.estMere)),
@@ -285,7 +287,7 @@ class _Installation extends StatelessWidget {
   Future<void> _exporter(BuildContext ctx) async {
     try {
       final contenu = const JsonEncoder.withIndent('  ').convert({for (final n in cfbNomsCollections()) n: c.magasin.collection(n).toutes});
-      final chemin = await CfbExport.ecrire('sigh-cnt-donnees-${cfbIso(c.aujourdhui)}.json', contenu);
+      final chemin = await CfbExport.ecrire('sigh-cbg-donnees-${cfbIso(c.aujourdhui)}.json', contenu);
       if (ctx.mounted) ToastsSigh.afficher(ctx, 'Export JSON généré.', type: TypeToast.succes, detail: chemin);
     } catch (e) {
       if (ctx.mounted) ToastsSigh.afficher(ctx, 'Export impossible : $e', type: TypeToast.erreur);
@@ -470,7 +472,11 @@ class _Bareme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ouverte = cfbReglage(c.magasin, _idBareme, false) == true;
+    final ns131Ouvert = paiActivites(c.magasin.collection('modulesActifs').toutes).sanctionsNs131;
     return cfaPile([
+      if (!ns131Ouvert)
+        cfbNote('L’activité « ${paiBasculeNs131.libelle} » est fermée (onglet « Primes et évaluations ») : le barème reste consultable ici, mais aucune retenue ne remonte à la paie et l’écran des évaluations est retiré du menu.',
+            ton: 'warning', icone: LucideIcons.toggleLeft),
       cfbNote(
           'Le barème d’évaluation ${cfbNs131.reference} fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises.',
           ton: ouverte ? 'warning' : 'info',
@@ -495,6 +501,116 @@ class _Bareme extends StatelessWidget {
                       variante: ouverte ? VarianteBouton.secondaire : VarianteBouton.danger,
                       onPressed: () => _basculer(context, ouverte))),
           ], espace: 12)),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// Onglet « Primes et évaluations » : les deux activités de la paie (PRD P0-5), OUVERTES par défaut (décision de la Direction du 06/11/2026)
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Chaque bascule écrit UNE fiche de la collection `modulesActifs` (la même que « Activité des modules » lit et pilote) : fermer retire ses écrans du
+/// menu et de leurs adresses, et le calcul de la paie lit son état dans ces mêmes fermetures. Aucun second drapeau n'est stocké. La fiche n'est jamais
+/// supprimée : rouvrir la passe à `actif: true`, datée et signée, et chaque geste est journalisé (RG-12, RG-14).
+class _ActivitesPaie extends StatelessWidget {
+  const _ActivitesPaie({required this.c});
+  final ContexteEcran c;
+
+  CollectionMagasin get _col => c.magasin.collection('modulesActifs');
+
+  Future<void> _fermer(BuildContext ctx, PaiBascule b) async {
+    final motif = await confirmerAvecMotif(ctx,
+        titre: 'Fermer l’activité « ${b.libelle} » ?',
+        message:
+            '${b.effet}\n\nLes écrans concernés quittent le menu pour tous les rôles ; leurs données restent intactes et la réouverture les rend en l’état. Les bulletins déjà enregistrés gardent leurs montants.',
+        libelleOk: 'Fermer l’activité',
+        dangereux: true);
+    if (motif == null || !ctx.mounted) return;
+    final jour = cfbIso(c.aujourdhui);
+    final nom = acteur(c).nom;
+    final existante = paiFicheBascule(_col.toutes, b);
+    final champs = {'actif': false, 'motif': motif, 'fermeLe': jour, 'fermePar': nom, 'rouvertLe': null, 'rouvertPar': null};
+    if (existante == null) {
+      _col.inserer({'statut': 'actif', 'code': b.code, 'libelle': b.libelle, 'module': b.module, 'ecrans': b.ecrans, 'source': b.source, ...champs}, prefixe: 'MOD');
+    } else {
+      _col.mettreAJour(existante['id'], champs);
+    }
+    c.magasin.journaliser('Fermeture d’une activité de la paie', 'CFG', 'Activité', b.code, {'actif': true}, {'actif': false, 'motif': motif});
+    ToastsSigh.afficher(ctx, 'Activité « ${b.libelle} » fermée.', type: TypeToast.succes, detail: b.effet);
+  }
+
+  Future<void> _rouvrir(BuildContext ctx, PaiBascule b, CfbFermetures fermetures) async {
+    final fiche = fermetures.fermeturePour(b.ecranPilote, b.module);
+    if (fiche == null) return;
+    // Une fermeture posée AILLEURS (une activité déclarée sur le même écran, ou le module entier) se rouvre là où elle a été posée : la rouvrir d'ici
+    // rouvrirait peut-être tout le module, sans que celui qui l'a fermé le sache.
+    if (fiche['code'] != b.code) {
+      ToastsSigh.afficher(ctx, 'Réouverture impossible ici.',
+          type: TypeToast.erreur,
+          detail: 'L’activité est fermée par « ${fiche['libelle'] ?? fiche['code']} » : la rouvrir depuis Activité des modules.');
+      return;
+    }
+    final ok = await confirmerSigh(ctx,
+        titre: 'Rouvrir l’activité « ${b.libelle} » ?',
+        message: 'Les écrans concernés reviennent au menu avec leurs données, et le calcul de la paie reprend la note ${b.source}.',
+        libelleOk: 'Rouvrir l’activité');
+    if (!ok || !ctx.mounted) return;
+    _col.mettreAJour(fiche['id'], {'actif': true, 'rouvertLe': cfbIso(c.aujourdhui), 'rouvertPar': acteur(c).nom});
+    c.magasin.journaliser('Réouverture d’une activité de la paie', 'CFG', 'Activité', b.code, {'actif': false}, {'actif': true});
+    ToastsSigh.afficher(ctx, 'Activité « ${b.libelle} » rouverte.', type: TypeToast.succes, detail: 'Les écrans réapparaissent au menu avec leurs données.');
+  }
+
+  String _date(Object? iso) {
+    final d = DateTime.tryParse('${iso ?? ''}');
+    return d == null ? '—' : dateFR(d);
+  }
+
+  Widget _carte(BuildContext ctx, PaiBascule b, CfbFermetures fermetures) {
+    final ouverte = paiBasculeOuverte(fermetures, b);
+    final fermante = fermetures.fermeturePour(b.ecranPilote, b.module);
+    final propre = paiFicheBascule(_col.toutes, b);
+    final lignes = <(String, Object)>[
+      ('État', ouverte ? const BadgeSigh('Ouverte', ton: TonSigh.succes) : const BadgeSigh('Fermée', ton: TonSigh.attention)),
+      ('Écrans concernés', b.ecrans.join(', ')),
+      ('Barème', 'Note de service ${b.source}, reprise du logiciel d’origine et non encore remplacée par une note de la clinique.'),
+      if (!ouverte && fermante != null) ...[
+        ('Fermée le', _date(fermante['fermeLe'])),
+        ('Par', '${fermante['fermePar'] ?? '—'}'),
+        ('Motif', '${fermante['motif'] ?? '—'}'),
+        if (fermante['code'] != b.code) ('Fermée par', '${fermante['libelle'] ?? fermante['code']} (Activité des modules)'),
+      ],
+      if (ouverte && propre != null && propre['rouvertLe'] != null) ...[
+        ('Rouverte le', _date(propre['rouvertLe'])),
+        ('Par', '${propre['rouvertPar'] ?? '—'}'),
+      ],
+    ];
+    return CarteSigh(
+        titre: b.libelle,
+        child: cfaPile([
+          cfbNote(ouverte ? 'Ouverte : ${b.libelle} entre au calcul de la paie. Fermée : ${b.effet}' : b.effet,
+              ton: ouverte ? 'info' : 'warning', icone: ouverte ? LucideIcons.toggleRight : LucideIcons.toggleLeft),
+          DescListeSigh(lignes),
+          // Une décision de l'institution : sans le droit d'écrire sur Paramètres système, la commande est ABSENTE.
+          if (c.droit.editer)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: BoutonSigh(
+                    key: Key('cfg:bascule:${b.code}'),
+                    libelle: ouverte ? 'Fermer l’activité' : 'Rouvrir l’activité',
+                    icone: ouverte ? LucideIcons.toggleLeft : LucideIcons.toggleRight,
+                    variante: ouverte ? VarianteBouton.danger : VarianteBouton.secondaire,
+                    onPressed: () => ouverte ? _fermer(ctx, b) : _rouvrir(ctx, b, fermetures))),
+        ], espace: 12));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fermetures = CfbFermetures.depuis(_col.toutes);
+    return cfaPile([
+      cfbNote(
+          'Deux activités de la paie s’ouvrent et se ferment ici. Elles arrivent OUVERTES à l’installation. Fermer l’une retire ses écrans du menu pour tous les rôles, et le calcul de la paie cesse de l’appliquer : plus aucune prime de la note NS 132, ou plus aucune retenue d’évaluation NS 131. Les bulletins déjà enregistrés ne sont jamais recalculés. Chaque geste est daté, signé et journalisé.',
+          icone: LucideIcons.slidersHorizontal),
+      for (final b in paiBascules) _carte(context, b, fermetures),
     ]);
   }
 }

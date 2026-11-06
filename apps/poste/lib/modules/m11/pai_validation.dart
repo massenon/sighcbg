@@ -147,10 +147,10 @@ class EcranValidationPaie extends StatelessWidget with EcranMaquette {
                 ColonneEtat(libelle: 'Émargement', valeur: (r) => ''),
               ], lignes: b)
             ],
-            signatures: const [
-              Signature('Le Responsable RH'),
-              signComptable,
-              Signature('La Direction', nom: paiNomDirection, mention: 'Bon à payer'),
+            signatures: [
+              const Signature('Le Responsable RH'),
+              signComptable(c.magasin),
+              signDirection(c.magasin, 'Bon à payer'),
             ]));
   }
 

@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show cfbChampsDeTestConserves, cfbEssentielles, cfbPlanVidage;
+import 'package:sigh_domaine/sigh_domaine.dart'
+    show cfbChampsDeTestConserves, cfbEssentielles, cfbPlanVidage, paiActivites, paiBasculeNs131, paiBasculeNs132, paiFicheBascule;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/modules/cfg/cfb_systeme.dart';
@@ -244,7 +245,7 @@ void main() {
     await ouvrirM14(t, m, 'cfg-systeme');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Exporter les données'));
     await t.pump(const Duration(milliseconds: 300));
-    expect(nom, 'sigh-cnt-donnees-2026-10-30.json');
+    expect(nom, 'sigh-cbg-donnees-2026-10-30.json');
     final j = jsonDecode(contenu!) as Map;
     expect(j.keys.toSet(), cfbNomsCollections().toSet());
     expect((j['centresCouts'] as List).length, 7);
@@ -266,5 +267,94 @@ void main() {
     await onglet(t, 'bareme');
     expect(find.widgetWithText(BoutonSigh, 'Autoriser la modification'), findsNothing);
     expect(find.text('Fermée'), findsOneWidget);
+  });
+
+  group('PRD P0-5 : les activités de la paie (primes NS 132, évaluations et sanctions NS 131)', () {
+    Future<void> confirmer(WidgetTester t, String libelle) async {
+      await t.tap(find.widgetWithText(BoutonSigh, libelle).last);
+      await t.pump(const Duration(milliseconds: 400));
+    }
+
+    casM14('ouvertes par défaut ; fermer exige un motif, écrit UNE fiche modulesActifs datée et signée, journalise ; rouvrir rend l’état', (t) async {
+      final m = magasinM14();
+      final reglagesAvant = m.collection('reglages').toutes.length;
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      expect(find.text('Primes (NS 132)'), findsWidgets);
+      expect(find.text('Évaluations & sanctions (barème NS 131)'), findsWidgets);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+      expect(find.textContaining('Note de service NS n° 132/07/DM/DA/CNT/2026'), findsOneWidget, reason: 'l’écran dit d’où vient le barème');
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: true, sanctionsNs131: true));
+
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      expect(find.text('Fermer l’activité « Primes (NS 132) » ?'), findsOneWidget);
+      await confirmer(t, 'Fermer l’activité');
+      expect(paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132), isNull, reason: 'sans motif, rien n’est écrit');
+      await t.enterText(find.byType(TextField).last, 'Pas de primes à la clinique');
+      await t.pump();
+      await confirmer(t, 'Fermer l’activité');
+      final f = paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132)!;
+      expect([f['actif'], f['module'], f['ecrans'], f['fermeLe'], f['motif']], [false, 'M10', ['m10-primes'], '2026-10-30', 'Pas de primes à la clinique']);
+      expect('${f['fermePar']}', isNotEmpty);
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: false, sanctionsNs131: true));
+      expect(m.collection('reglages').toutes.length, reglagesAvant, reason: 'aucun second drapeau : la fiche modulesActifs est la seule source');
+      final j = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Fermeture d’une activité de la paie');
+      expect([j['module'], j['reference']], ['CFG', 'PAIE-NS132']);
+      expect(find.text('Fermée'), findsOneWidget);
+
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      await confirmer(t, 'Rouvrir l’activité');
+      final r = paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132)!;
+      expect([r['id'], r['actif'], r['rouvertLe']], [f['id'], true, '2026-10-30'], reason: 'la même fiche, jamais supprimée (RG-14)');
+      expect(paiActivites(m.collection('modulesActifs').toutes).primesNs132, true);
+      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Réouverture d’une activité de la paie' && a['reference'] == 'PAIE-NS132'), isTrue);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+    });
+
+    casM14('fermer la NS 131 ferme les évaluations ET les sanctions ; l’onglet du barème le dit', (t) async {
+      final m = magasinM14();
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS131')));
+      await t.enterText(find.byType(TextField).last, 'Pas d’évaluation chiffrée');
+      await t.pump();
+      await confirmer(t, 'Fermer l’activité');
+      expect(paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs131)!['ecrans'], ['m10-evaluations', 'm10-sanctions']);
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: true, sanctionsNs131: false));
+      await onglet(t, 'bareme');
+      expect(find.textContaining('aucune retenue ne remonte à la paie'), findsOneWidget);
+    });
+
+    casM14('une fermeture posée AILLEURS (module M10 entier) se lit ici, mais ne se rouvre pas d’ici : refus nommé', (t) async {
+      final m = magasinM14();
+      m.collection('modulesActifs').inserer({'statut': 'actif', 'code': 'MODULE-M10', 'module': 'M10', 'libelle': 'Module RH', 'actif': false, 'motif': 'Essai'}, prefixe: 'MOD');
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      expect(find.text('Fermée'), findsNWidgets(2));
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      expect(find.text('Réouverture impossible ici.'), findsOneWidget);
+      expect(paiActivites(m.collection('modulesActifs').toutes).primesNs132, false);
+    });
+
+    casM14('la fiche écrite par la bascule FERME les écrans : m10-primes (NS 132), m10-evaluations et m10-sanctions (NS 131)', (t) async {
+      for (final (b, ecran) in [(paiBasculeNs132, 'm10-primes'), (paiBasculeNs131, 'm10-evaluations'), (paiBasculeNs131, 'm10-sanctions')]) {
+        final m = magasinM14();
+        m.collection('modulesActifs')
+            .inserer({'statut': 'actif', 'code': b.code, 'libelle': b.libelle, 'module': b.module, 'ecrans': b.ecrans, 'actif': false, 'motif': 'Essai $ecran'}, prefixe: 'MOD');
+        await ouvrirM14(t, m, ecran);
+        expect(find.byKey(const Key('activite-fermee')), findsOneWidget, reason: ecran);
+        expect(find.textContaining('Essai $ecran'), findsOneWidget, reason: 'le motif de la fiche est nommé');
+      }
+      await t.pump(const Duration(seconds: 10));
+    });
+
+    casM14('droits : sans le droit d’écrire sur Paramètres système, les bascules sont ABSENTES (l’état reste lisible)', (t) async {
+      final m = magasinM14();
+      await ouvrirM14(t, m, 'cfg-systeme', role: 'admin', donnees: donneesLectureSeule('admin', 'cfg-systeme'));
+      await onglet(t, 'activites');
+      expect(find.byKey(const Key('cfg:bascule:PAIE-NS132')), findsNothing);
+      expect(find.byKey(const Key('cfg:bascule:PAIE-NS131')), findsNothing);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+    });
   });
 }

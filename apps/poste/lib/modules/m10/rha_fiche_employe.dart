@@ -102,7 +102,13 @@ class FicheEmploye extends StatelessWidget {
         ]));
   }
 
+  /// L'avis d'une activité fermée dans Paramètres système (PRD P0-5) : l'onglet reste, et DIT pourquoi il ne montre rien.
+  Widget _activiteFermee(PaiBascule b, IconData icone) => Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: VideSigh('Activité « ${b.libelle} » fermée dans Paramètres système. ${b.effet}', icone: icone));
+
   Widget _primes(Fiche e, int gardes, int permanences) {
+    if (!paiActivites(c.magasin.collection('modulesActifs').toutes).primesNs132) return _activiteFermee(paiBasculeNs132, LucideIcons.gift);
     final lignes = rhaPrimesAgent(c.magasin.collection('grillePrimes').actives, e['fonction'], gardes, permanences,
         historique: c.magasin.collection('historiquePrimes').actives,
         designations: c.magasin.collection('beneficiairesPrimes').actives,
@@ -162,6 +168,7 @@ class FicheEmploye extends StatelessWidget {
   }
 
   Widget _evaluations(Fiche e) {
+    if (!paiActivites(c.magasin.collection('modulesActifs').toutes).sanctionsNs131) return _activiteFermee(paiBasculeNs131, LucideIcons.clipboardCheck);
     final evs = [for (final x in c.magasin.collection('evaluations').actives) if (x['employeId'] == e['id']) x];
     if (evs.isEmpty) return const Padding(padding: EdgeInsets.only(top: 16), child: VideSigh('Aucune évaluation NS 131 enregistrée.', icone: LucideIcons.clipboardCheck));
     final sanctions = evs.where((x) => rhaNum(x['prelevementPct']) > 0).length;
