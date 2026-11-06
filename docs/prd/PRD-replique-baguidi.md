@@ -264,9 +264,28 @@ Le seul vrai développement du chantier. Il réutilise des mécanismes existants
 
 ### P1 : à livrer rapidement ensuite
 
-**P1-1. Design system Baguidi**
-- Remplacer les valeurs de `JetonsSigh` / `JetonsShell` par la palette Baguidi (primaire, secondaire, fonds). Garder la sémantique vert / orange / rouge, que les écrans utilisent pour l'état des stocks.
-- *Critères* : contraste WCAG AA sur texte principal et boutons ; aucune couleur écrite en dur hors jetons (contrôle par recherche).
+**P1-1. Design system Baguidi (maquette de l'écran Utilisateurs reçue le 06/11/2026)**
+
+La maquette locale `prototype_html` de Baguidi applique déjà la charte à la coquille. Elle fait foi :
+
+| Élément | Nassiera Too (base) | Baguidi (maquette) |
+|---|---|---|
+| Barre supérieure | bleu marine | **noir anthracite** (≈ `#1C1C1E`) : logo en pastille, « CLINIQUE BAGUIDI », sous-titre « SIGH — Gestion hospitalière » en **bleu**, recherche globale `Ctrl K`, Actions, plein écran, cloche, profil |
+| Ruban des domaines | onglets sur fond marine | même fond anthracite ; **onglet actif souligné de rouge** ; un **filet rouge** court sous tout le ruban ; raccourcis permanents à droite (Stocks, Achats, RH, Comptabilité) |
+| Domaines visibles | Accueil, Soins, … | **Accueil, Logistique, Financier, RH, Administration, Système, Pilotage** : plus de Soins (M1 à M5 fermés) |
+| Bouton d'action principal | marine | **rouge plein** (« + Nouveau ») |
+| Boutons secondaires | contour gris | inchangés : contour gris clair, icône + libellé |
+| Badges de rôle, « Activé » | | fond **bleu pâle**, texte bleu |
+| État « Actif » | vert | vert (inchangé) |
+| Devise | à l'en-tête des modules | sous la description de chaque écran, en **police manuscrite rouge** |
+| Bandeau d'information | bleu | bleu pâle, icône ⓘ (inchangé) |
+| Pied de page | mention légale CNT | mention légale Baguidi + « Prototype SIGH-CBG, jeu de données de démonstration » |
+| Cartes KPI, tableaux, onglets | | géométrie inchangée (fond blanc, icône teintée à droite) |
+
+- **Le rouge devient la couleur d'action.** Il était jusqu'ici réservé à la rupture, la péremption et l'erreur. Pour qu'une alerte ne se confonde pas avec un bouton : toute erreur, rupture ou péremption porte une **icône** et un **libellé** (« Rupture », « Périmé », « il y a 44 j » en retard), jamais la couleur seule ; le rouge d'erreur se décale vers un rouge plus sombre (jeton distinct de la primaire). La maquette le fait déjà sur « Dernier accès » (date en retard en rouge avec « il y a 44 j »).
+- Remplacer les valeurs de `JetonsSigh` / `JetonsShell` par ces valeurs : la géométrie des 300 écrans ne bouge pas. Les valeurs hexadécimales sont relevées dans la feuille de style de la maquette Baguidi dès réception de la branche `baguidi-sources`.
+- **Ce que la maquette montre et qu'il faut retirer** : le bouton « Prescripteurs & exécutants de soins » en tête de l'écran Utilisateurs relève de M2/M3, fermés. Il doit disparaître avec eux (accès rapide déduit du manifeste, donc filtré par la fermeture).
+- *Critères* : contraste WCAG AA sur le texte blanc de la barre anthracite, le libellé blanc du bouton rouge et le texte bleu des badges ; aucune couleur écrite en dur hors jetons (contrôle par recherche) ; aucune alerte signalée par la couleur seule (revue des écrans M6 Alertes, Lots, Inventaire).
 
 **P1-2. Écran de connexion Baguidi (maquette de référence reçue le 06/11/2026)**
 
@@ -330,12 +349,12 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | ~~Q1~~ | ~~M9 à garder ou à fermer ?~~ **Tranché le 06/11/2026 : gardé** (P0-6) | | |
 | ~~Q2~~ | ~~État par défaut de MECeF, NS 132, NS 131 ?~~ **Tranché le 06/11/2026 : ouverts** (P0-5) | | |
 | Q3 | Les rôles cliniques (médecin, sage-femme, biologiste, caissier…) : à archiver ou à garder ? | Direction Baguidi | Non |
-| Q4 | Registres vides à l'installation, ou jeu de démonstration **fictif** aux couleurs de Baguidi pour la formation ? | Direction Baguidi | **Oui** (P0-3) |
+| ~~Q4~~ | ~~Registres vides ou jeu de démonstration ?~~ **Tranché le 06/11/2026 : un jeu de données créé pour Baguidi** (P0-3). La maquette locale l'affiche déjà (« Prototype SIGH-CBG, jeu de données de démonstration », 9 comptes) | | |
 | ~~Q5~~ | ~~Justificatif des sorties de pharmacie ?~~ **Tranché le 06/11/2026 : les deux** — bon de sortie interne ET caisse minimale pour les ventes de pharmacie ; le comptable reporte les ventes du logiciel de caisse patient (P0-8, P0-9) | | |
 | Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **forme juridique** et **n° d’autorisation d’ouverture** (« à compléter par la Direction »), **formule de politesse** des factures, nom court | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
 | Q7 | Fichier source du logo (vectoriel de préférence) et charte graphique (couleurs en hexadécimal, police) | Direction Baguidi | Oui pour P1-1/P1-2, non pour P0 |
-| Q8 | Historique git : importer avec l'historique de SIGH-CNT (report de correctifs facilité, mais l'historique contient des données de Nassiera Too et un mot de passe commis le 17/10/2026) ou en **instantané** (recommandé) ? | Ingénierie + Direction CNT | **Oui** (P0-1) |
-| Q9 | La Direction de Nassiera Too a-t-elle autorisé la réutilisation du code pour une autre clinique ? | Direction CNT, juridique | **Oui** (avant tout import) |
+| ~~Q8~~ | ~~Historique git ?~~ **Tranché le 06/11/2026 : instantané, sans l'historique de SIGH-CNT.** Les deux dépôts étant **publics**, aucune donnée de Nassiera Too n'entre dans `sighcbg`, pas même dans un commit intermédiaire | | |
+| ~~Q9~~ | ~~Autorisation de réutiliser le code ?~~ **Tranché le 06/11/2026 : oui, même éditeur et concepteur** | | |
 | Q10 | Les 7 spécialités non nommées (« + 7 spécialités ») : liste complète pour l'écran de connexion ? | Direction Baguidi | Non |
 | Q11 | Le relais web (cPanel) : nouvel hébergement et nouveau domaine pour Baguidi, ou relais partagé ? Un relais partagé mêlerait les journaux de deux cliniques | Ingénierie + Direction Baguidi | Oui avant mise en service, non pour le développement |
 | Q12 | Une vente de pharmacie erronée se corrige-t-elle par **facture d'avoir** (`m8-facture-avoir`, à garder ouvert) ou par une opération de remboursement ? | Direction Baguidi + comptable | Non |
@@ -343,9 +362,12 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q14 | Combien de caisses alimentent le logiciel de caisse patient (une seule, ou une par point de vente) ? Le report se fait par journée **et par caisse** | Comptable Baguidi | **Oui** (P0-8) |
 | Q15 | La pharmacie vend-elle **aussi** dans le logiciel de caisse patient ? Si oui, quelle vente fait foi pour le stock, pour ne pas sortir deux fois le même produit ? | Direction Baguidi + gestionnaire de stock | **Oui** (P0-9) |
 | Q16 | Liste des natures d'activité du report et comptes de produit 70x de chacune (le plan de Baguidi peut différer de celui de Nassiera Too). Un export du logiciel de caisse (même une capture de son état journalier) permettrait d'aligner les natures sur ce qu'il imprime | Comptable Baguidi | **Oui** (P0-8) |
-| Q18 | La maquette de connexion fixe la marque en **bleu** et le bouton de connexion en **rouge**. Les boutons principaux de l'application suivent-ils ce rouge, ou restent-ils bleus (recommandé) ? Voir P1-2 | Direction Baguidi + design | Non pour P0, oui pour P1-1 |
+| ~~Q18~~ | ~~Couleur des boutons principaux ?~~ **Tranché par la maquette de l'écran Utilisateurs (06/11/2026) : rouge** (« Nouveau », onglet actif, filet du ruban). Conséquence traitée en P1-1 : une erreur ne se signale plus par la couleur seule | | |
 | Q19 | Noms des trois polices de la maquette de connexion (titres, corps, devise manuscrite) et licence d'embarquement | concepteur de la maquette | Non |
-| Q20 | L'identifiant en forme d'adresse (`m-001@baguidi-clinique.bj`) est-il une règle de nommage des comptes ou un exemple ? Le domaine `baguidi-clinique.bj` existe-t-il ? | Direction Baguidi | Non |
+| Q20 | L'identifiant suit une **règle de nommage** (`m-NNN@baguidi-clinique.bj`, `admin@…` : maquette Utilisateurs). Reste : le domaine `baguidi-clinique.bj` existe-t-il, ou l'identifiant n'est-il qu'une forme d'écriture, sans boîte aux lettres derrière ? (« Mot de passe oublié » ne peut pas écrire à une adresse qui n'existe pas) | Direction Baguidi | Non |
+| Q25 | **Les rôles de Baguidi** : la maquette montre six intitulés (Administrateur système, Direction / Gérance, Médecin, Infirmier / Sage-femme, Responsable RH, Comptable) pour neuf comptes, quand la base en porte 16. Correspondance attendue avec les identifiants techniques de la base (`admin`, `direction`, `medecin`, `infirmier`, `rh` (archivé dans la base), `comptable`…) ; rôles de la base à archiver ; le gestionnaire de stock et la caissière-dispensatrice n'apparaissent pas alors que la pharmacie et la caisse minimale sont dans le périmètre | Direction Baguidi | **Oui** (P0-3, P0-4) |
+| Q26 | **Double facteur** exigé pour Administrateur et Direction (bandeau de la maquette). Le poste de base authentifie par mot de passe Argon2id et code de secours ; le double facteur hors ligne (application TOTP sur téléphone, sans réseau) est-il attendu en version 1 ? | Direction Baguidi + ingénierie | Non pour P0 |
+| Q27 | Les noms des neuf comptes de la maquette (GBAGUIDI Rafiou, SOKOU Peace…) sont-ils **réels** ou fictifs ? Le dépôt étant public, des noms réels d'agents n'y vont pas | Direction Baguidi | **Oui** (P0-3) |
 | Q21 | **TVA au taux normal 18 % sur TOUT ?** Nassiera Too est exonérée (produits et actes de santé). Confirmation écrite du régime de Baguidi, et liste des natures éventuellement exonérées (médicaments, soins) si le régime est mixte | Direction Baguidi + conseil fiscal | **Oui** (P0-10 et MECeF) |
 | Q22 | Baguidi émet-elle des factures pro-forma ? Si oui, `m8-proforma` reste ouvert | Direction Baguidi | Non |
 | Q23 | Bulletin `BP-NNNNN` « par période de paie » : la séquence repart-elle à 1 chaque mois (et comment distinguer deux `BP-00001`), ou est-elle continue ? | DAF Baguidi | Non |
@@ -358,8 +380,8 @@ Aucune échéance n'a été communiquée. Phasage proposé, chaque phase se term
 
 | Phase | Contenu | Dépend de |
 |---|---|---|
-| **0. Décisions** | Q4, Q6, Q8, Q9 (Q1, Q2, Q5 tranchées) | Direction Baguidi, Direction CNT |
-| **1. Import** | P0-1 : base importée, CI verte **sans aucun changement** | Q8, Q9 |
+| **0. Décisions** | Q21, Q25, Q27 (Q1, Q2, Q4, Q5, Q8, Q9, Q18 tranchées) | Direction Baguidi |
+| **1. Import** | P0-1 : code de base importé en instantané, CI verte. Le jeu de données de Nassiera Too est **remplacé dans le même lot** que l'import (dépôt public : il ne transite par aucun commit) | aucune |
 | **2. Identité et données** | P0-2, P0-3, P0-7, script `controle-identite` | Q4, Q6 |
 | **3. Périmètre** | P0-4, P0-5, P0-6 | aucune |
 | **3 bis. Caisse et report** | P0-9 (caisse minimale, bons de sortie), puis P0-8 (report des recettes, statistiques) | Q14, Q15, Q16 |
