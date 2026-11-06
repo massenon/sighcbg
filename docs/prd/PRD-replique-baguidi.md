@@ -67,12 +67,14 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 | `slogan` | Votre bien-être est notre raison d'être. |
 | adresse géographique (champ nouveau, absent de `IdentiteClinique`) | Quartier Zongo II, Parakou |
 | `bp` | 02 BP : 105 PARAKOU (Rép. du Bénin) |
+| adresse du principal établissement (RCCM) | Îlot 575, quartier Zongo, Parakou |
+| activité déclarée (RCCM) | cabinet médical, exploitation d'une clinique chirurgico-médicale, d'une officine, formation, commerce général |
 | `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
 | `email` | cliniquebaguidi@yahoo.fr |
 | `ifu` | 3201001996110 |
 | `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
 | `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |
-| forme juridique | **non renseignée** (SARL, SA, EI… ? Elle figure habituellement sur l'en-tête légal) |
+| forme juridique | **Entreprise individuelle** (personne physique), immatriculation principale au RCCM du 19/03/2009 (extrait du RCCM communiqué le 06/11/2026) |
 | `autorisation` (n° d'autorisation d'ouverture) | **non renseigné** |
 | `formuleArrete` | générique, reprise telle quelle : « Arrêtée la présente facture à la somme de » |
 | `formulePolitesse` (pied de facture) | **Votre bien-être est notre raison d’être.** (décision du 06/11/2026 : même texte que le slogan ; celle de Nassiera Too, « QUE DIEU VOUS GUÉRISSE ! AMINE ! », ne se reprend pas) |
@@ -353,7 +355,7 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q3 | Les rôles cliniques (médecin, sage-femme, biologiste, caissier…) : à archiver ou à garder ? | Direction Baguidi | Non |
 | ~~Q4~~ | ~~Registres vides ou jeu de démonstration ?~~ **Tranché le 06/11/2026 : un jeu de données créé pour Baguidi** (P0-3). La maquette locale l'affiche déjà (« Prototype SIGH-CBG, jeu de données de démonstration », 9 comptes) | | |
 | ~~Q5~~ | ~~Justificatif des sorties de pharmacie ?~~ **Tranché le 06/11/2026 : les deux** — bon de sortie interne ET caisse minimale pour les ventes de pharmacie ; le comptable reporte les ventes du logiciel de caisse patient (P0-8, P0-9) | | |
-| Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **forme juridique** et **n° d’autorisation d’ouverture** (« à compléter par la Direction »), nom court (formule de politesse fournie : identique au slogan) | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
+| Q6 | ~~Sigle, BP, téléphones, e-mail, adresse fiscale, devise~~ **fournis le 06/11/2026** (§4, §4 bis). Restent : **n° d’autorisation d’ouverture** (« à compléter par la Direction »), nom court (forme juridique fournie : entreprise individuelle) (formule de politesse fournie : identique au slogan) | Direction Baguidi | Non (des valeurs vides n'empêchent pas le développement ; elles bloquent la recette des pièces imprimées) |
 | Q7 | Fichier source du logo (vectoriel de préférence) et charte graphique (couleurs en hexadécimal, police) | Direction Baguidi | Oui pour P1-1/P1-2, non pour P0 |
 | ~~Q8~~ | ~~Historique git ?~~ **Tranché le 06/11/2026 : instantané, sans l'historique de SIGH-CNT.** Les deux dépôts étant **publics**, aucune donnée de Nassiera Too n'entre dans `sighcbg`, pas même dans un commit intermédiaire | | |
 | ~~Q9~~ | ~~Autorisation de réutiliser le code ?~~ **Tranché le 06/11/2026 : oui, même éditeur et concepteur** | | |
@@ -374,6 +376,8 @@ Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 | Q22 | Baguidi émet-elle des factures pro-forma ? Si oui, `m8-proforma` reste ouvert | Direction Baguidi | Non |
 | Q23 | Bulletin `BP-NNNNN` « par période de paie » : la séquence repart-elle à 1 chaque mois (et comment distinguer deux `BP-00001`), ou est-elle continue ? | DAF Baguidi | Non |
 | Q24 | Les obligations de la base absentes de la liste reçue (AIB, acomptes IS, patente, CCIB, TVM, ORTB, déclaration de TVA) : à retirer ou à garder ? | Comptable Baguidi | Non |
+| Q28 | **Nom commercial** : l'extrait du RCCM porte « CLINIQUE BAGUIDI "L'AS **DU** COEUR" », le logo et l'identité fournie « L'AS **DE** CŒUR ». Le logiciel imprime « L'AS DE CŒUR » (identité fournie par la Direction) ; faut-il aligner sur le RCCM, ou le RCCM est-il à rectifier ? | Direction Baguidi | Non |
+| Q29 | **Entreprise individuelle** : l'exploitant est une personne physique. L'impôt sur les sociétés (quatre acomptes) ne s'applique pas à une EI, dont les bénéfices relèvent de l'impôt sur le revenu (BIC/BNC selon le régime). Quel régime d'imposition retenir dans le calendrier fiscal (voir Q24) ? | Comptable Baguidi + conseil fiscal | Non (oui pour `m12-echeances`) |
 | Q17 | Qui fait le report : le comptable seul, ou l'assistant comptable avec validation par le comptable (séparation des tâches) ? | Direction Baguidi | Non |
 
 ## 10. Calendrier et phasage
