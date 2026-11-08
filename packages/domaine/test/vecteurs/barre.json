@@ -1990,7 +1990,7 @@
      ]
     }
    ],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -2317,7 +2317,7 @@
    ],
    "actes": [],
    "bilan": [],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -2508,7 +2508,7 @@
     }
    ],
    "bilan": [],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -2695,7 +2695,7 @@
    ],
    "actes": [],
    "bilan": [],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -2900,7 +2900,7 @@
      ]
     }
    ],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -3033,7 +3033,7 @@
    ],
    "actes": [],
    "bilan": [],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -3371,7 +3371,7 @@
      ]
     }
    ],
-   "cnt": [
+   "cbg": [
     {
      "groupe": "Patients",
      "resultats": [
@@ -3618,7 +3618,7 @@
    ],
    "actes": [],
    "bilan": [],
-   "cnt": [],
+   "cbg": [],
    "amox": [
     {
      "groupe": "Produits",
@@ -3672,7 +3672,7 @@
    ],
    "actes": [],
    "bilan": [],
-   "cnt": [],
+   "cbg": [],
    "amox": [],
    "sage": [],
    "accou": [],
