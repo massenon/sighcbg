@@ -1577,7 +1577,7 @@ void _imprimerMatrice(BuildContext ctx, _Ctx x) {
         signatures: const [
           Signature('L’Administrateur système'),
           Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
-          Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko'),
+          Signature('Le Directeur Médical'),
         ],
       ));
 }

@@ -114,7 +114,6 @@ void main() {
     expect(find.text('Actions journalisées'), findsWidgets);
     expect(find.text('L’Administrateur système'), findsOneWidget);
     expect(find.text('La Direction'), findsOneWidget);
-    expect(find.text('BASSONGUI Chabi Séko'), findsWidgets);
   });
 
   casM14('le journal est en lecture seule par nature : aucune commande d\'écriture, même pour l\'administrateur', (t) async {

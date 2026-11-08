@@ -163,7 +163,7 @@ class _Corps extends StatelessWidget {
                 italique: true),
           ],
           signatures: const [
-            Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko'),
+            Signature('Le Directeur Médical'),
             Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
           ],
         ));

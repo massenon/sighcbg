@@ -201,9 +201,7 @@ void main() {
         expect(find.text(titre), findsWidgets);
         expect(find.textContaining('BK505416', findRichText: true), findsWidgets);
         expect(find.textContaining(contient, findRichText: true), findsWidgets);
-        expect(find.textContaining('KASSA Augustin', findRichText: true), findsWidgets);
         expect(find.textContaining('TAKI Alimatou', findRichText: true), findsWidgets);
-        expect(find.textContaining('BASSONGUI Chabi Séko', findRichText: true), findsWidgets);
       });
     }
 

@@ -348,7 +348,7 @@ final JeuImport jeuPatients = JeuImport(
     _col('age', 'Âge déclaré', 'entier', min: 0, max: 120, exemple: ''),
     _col('telephone', 'Téléphone', 'texte', longueurMax: 20, exemple: '0197000000'),
     _col('quartier', 'Quartier', 'texte', longueurMax: 60, exemple: 'Boukoumbé'),
-    _col('adresse', 'Adresse', 'texte', longueurMax: 120, exemple: 'Tchirimina, Natitingou'),
+    _col('adresse', 'Adresse', 'texte', longueurMax: 120, exemple: 'Zongo II, Parakou'),
     _col('personneAPrevenir', 'Personne à prévenir', 'texte', longueurMax: 100, exemple: 'ADJOVI Paul'),
     _col('groupeSanguin', 'Groupe sanguin', 'liste', liste: _fixe(importGroupesSanguins), exemple: 'O+'),
     _col('assureur', 'Code assureur', 'liste', liste: (ctx) => [for (final a in ctx['assureurs'] as List<String>) ValeurListe(a)], exemple: ''),

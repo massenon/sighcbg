@@ -386,7 +386,7 @@ void main() {
       expect(find.text('Rapport d’activité — Direction'), findsOneWidget);
       expect(find.text('Période : octobre 2026'), findsWidgets);
       expect(find.text('Masse salariale mensuelle'), findsOneWidget);
-      expect(find.text('BASSONGUI Chabi Séko'), findsWidgets);
+      expect(find.text('Le Directeur Médical'), findsWidgets);
     });
     casM14('les liens du BFR mènent aux écrans de la Direction', (t) async {
       await ouvrirM14(t, magasinComplet(), 'dash-direction');
