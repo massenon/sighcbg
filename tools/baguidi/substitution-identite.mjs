@@ -49,6 +49,29 @@ export const SUBSTITUTIONS = [
   ['60 33 92 92', TELS[0]],
 ];
 
+// Substitutions PROPRES à un fichier : la fiche de la semence de l'identité légale (vecteur fiscal-date) porte des champs que le reste des vecteurs
+// ne cite pas comme identité (sigle, forme juridique, autorisation, régime de TVA) ; Baguidi n'a ni forme, ni autorisation, ni régime renseignés.
+const PROPRES = {
+  'fiscal-date.json': [
+    ['"sigle": "CNT"', '"sigle": "CBG"'],
+    ['"telephones": [\n    "01 95 44 51 51",\n    "01 66 43 28 20"\n   ],', '"telephones": [\n    "95 74 69 56",\n    "95 95 99 14",\n    "97 09 34 99"\n   ],'],
+    ['"forme": "Société à Responsabilité Limitée"', '"forme": ""'],
+    ['"autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation": ""'],
+    ['"regimeTva": "Taux normal 18 %"', '"regimeTva": ""'],
+    ['"formulePolitesse": "QUE DIEU VOUS GUÉRISSE ! AMINE !"', '"formulePolitesse": "Votre bien-être est notre raison d’être."'],
+  ],
+  // La version 1 de l'identité légale du jeu livré (collection `identiteLegale`, JSON compact) : la graine devient celle de Baguidi, avec les champs
+  // que la maquette ne porte pas (nom court, activité, date du RCCM, n° d'enregistrement ONMB) ; forme, autorisation et régime de TVA restent VIDES.
+  'identiteLegale.json': [
+    ['"sigle":"CNT"', '"sigle":"CBG","nomCourt":"CLINIQUE BAGUIDI","activite":"CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE"'],
+    ['"forme":"Société à Responsabilité Limitée"', '"forme":""'],
+    ['"telephones":["01 95 44 51 51","01 66 43 28 20"]', '"telephones":["95 74 69 56","95 95 99 14","97 09 34 99"]'],
+    ['"autorisation":"N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation":"","rccmDate":"19/03/2009","enregistrement":"0416/ONMB/ATL/2002"'],
+    ['"regimeTva":"Taux normal 18 %"', '"regimeTva":""'],
+    ['"formulePolitesse":"QUE DIEU VOUS GUÉRISSE ! AMINE !"', '"formulePolitesse":"Votre bien-être est notre raison d’être."'],
+  ],
+};
+
 const FORMULE = 'QUE DIEU VOUS GUÉRISSE ! AMINE !';
 // Dans un tableau de lignes (rouleau de caisse) : la formule ET le séparateur qui la précède.
 const FORMULE_EN_LIGNE = /,(\s*)"-{32}",\s*"QUE DIEU VOUS GUÉRISSE ! AMINE !"/g;
@@ -58,6 +81,9 @@ const PAR_DEFAUT = [
   'packages/domaine/test/vecteurs/ticket.json',
   'packages/domaine/test/vecteurs/cfg.json',
   'packages/domaine/test/vecteurs/administration.json',
+  'packages/domaine/test/vecteurs/fiscal-date.json',
+  'apps/poste/assets/donnees/jeu/identiteLegale.json',
+  'apps/poste/test/fixtures/jeu_sobre/identiteLegale.json',
   'apps/poste/test/fixtures/jeu_sobre/planAnnuel.json',
   'apps/poste/test/fixtures/jeu_sobre/modelesMessage.json',
   // Les fiches de parité des neuf écrans autonomes (parite_autonomes_test) : extraites de la maquette Nassiera Too, elles portent son identité.
@@ -82,9 +108,16 @@ function fichiers(chemins) {
   return out;
 }
 
-export function substituer(texte) {
+export function substituer(texte, fichier = '') {
   let t = texte;
   const compte = {};
+  for (const [nom, liste] of Object.entries(PROPRES)) {
+    if (!fichier.endsWith(nom)) continue;
+    for (const [a, b] of liste) {
+      const n = t.split(a).length - 1;
+      if (n) { t = t.split(a).join(b); compte[a.slice(0, 40)] = (compte[a.slice(0, 40)] || 0) + n; }
+    }
+  }
   const noter = (cle, n) => { if (n) compte[cle] = (compte[cle] || 0) + n; };
   for (const [a, b] of SUBSTITUTIONS) {
     const n = t.split(a).length - 1;
@@ -106,7 +139,7 @@ const cibles = args.filter((a) => a !== '--verifier');
 let total = 0;
 for (const f of fichiers(cibles.length ? cibles : PAR_DEFAUT)) {
   const avant = readFileSync(f, 'utf8');
-  const { texte, compte } = substituer(avant);
+  const { texte, compte } = substituer(avant, f);
   const n = Object.values(compte).reduce((a, b) => a + b, 0);
   if (!n) continue;
   total += n;

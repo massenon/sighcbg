@@ -57,15 +57,12 @@ class CfaNs145 {
 /// `IdentiteClinique` (surchargeables depuis cfg-branding) : les relire ici évite une seconde vérité.
 class CfaIdentite {
   const CfaIdentite._();
+  // Ces champs vivent sur l'identité courante ([IdentiteClinique], surchargeable depuis cfg-branding) : lus là, jamais recopiés ici.
   static String get forme => IdentiteClinique.forme;
   static String get adresse => IdentiteClinique.adresse;
-
-  /// La ligne des rendez-vous citée par les messages de rappel : aucune ligne dédiée n'est connue pour la clinique, c'est donc le premier téléphone
-  /// de l'en-tête (vide si aucun).
-  static String get telephoneRdv => IdentiteClinique.telephones.isEmpty ? '' : IdentiteClinique.telephones.first;
-  static const autorisationExerciceMotif =
-      'Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.';
-  static const logo = 'assets/img/logo.jpeg';
+  static String get telephoneRdv => IdentiteClinique.telephoneRdv;
+  static const autorisationExerciceMotif = IdentiteClinique.autorisationExerciceMotif;
+  static String get logo => IdentiteClinique.logo;
 }
 
 /// `D.FAMILLES_TARIF` : (code, libellé, icône).

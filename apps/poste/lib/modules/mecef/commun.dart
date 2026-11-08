@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
+import '../../impression/identite_poste.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -92,9 +93,12 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
     {Fiche? patient,
     required String utilisateur,
     required DateTime edite,
-    required String reference}) {
+    required String reference,
+    IdentiteImprimee? identite}) {
   final fn = factureNormalisee(f, p);
+  final i = identite ?? IdentiteImprimee.semence;
   return PieceA4(
+    identite: identite,
     titre: 'Facture de vente — normalisée',
     sousTitre: '${f['numero']}${f['numeroMecef'] != null ? ' — ${f['numeroMecef']}' : ''}',
     reference: reference,
@@ -126,7 +130,7 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
       BlocTexte('MECeF NIM : ${fn.nim}'),
       BlocTexte('MECeF Compteurs : ${fn.compteurs}'),
       BlocTexte(
-          'IFU émetteur : ${IdentiteClinique.ifu} — RCCM : ${IdentiteClinique.rccm}'),
+          'IFU émetteur : ${i.ifu} — RCCM : ${i.rccm}'),
       const BlocTexte(
           'Facture normalisée émise conformément au dispositif de facturation électronique en vigueur en République du Bénin. Toute facture non revêtue du code MECeF/DGI et du code à barres de vérification est réputée non conforme.',
           italique: true),
@@ -147,5 +151,7 @@ Future<void> imprimerFactureNormalisee(BuildContext ctx, Fiche f) {
           utilisateur: acteur(c).nom,
           edite: c.aujourdhui,
           reference: PieceA4.reference_(
-              c.aujourdhui, ImpressionPoste.prochainNumero())));
+              c.aujourdhui, ImpressionPoste.prochainNumero()),
+          // La facture normalisée imprime l'identité en force À SA DATE (Direction, 06/11/2026).
+          identite: identiteImprimeeDe(c.magasin, datePiece(f, c.aujourdhui))));
 }

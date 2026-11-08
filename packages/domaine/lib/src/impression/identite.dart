@@ -31,11 +31,17 @@ class IdentiteClinique {
     'autorisation': '',
     'formuleArrete': 'Arrêtée la présente facture à la somme de',
     'formulePolitesse': 'Votre bien-être est notre raison d’être.',
+    'pays': 'République du Bénin',
+    'devise': 'FCFA',
+    'codeDevise': 'XOF',
+    'logo': 'assets/img/logo.jpeg',
+    'regimeTva': '',
   };
 
   /// Les champs qu'une surcharge peut porter (les autres clés d'une fiche enregistrée, options d'impression comprises, sont ignorées ici).
   static const champs = [
-    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'rccm', 'rccmDate', 'enregistrement', 'autorisation', 'formuleArrete', 'formulePolitesse'
+    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'rccm', 'rccmDate', 'enregistrement', 'autorisation', 'formuleArrete', 'formulePolitesse',
+    'pays', 'telephoneRdv', 'devise', 'codeDevise', 'logo', 'regimeTva'
   ];
 
   /// Le nom de la clinique que la mère exige en confirmation d'une réinitialisation de production (`_clinique` de `mere.dart`, `nomClinique` du
@@ -77,6 +83,23 @@ class IdentiteClinique {
   }
 
   static String _texte(String k) => '${_surcharge[k] ?? defauts[k] ?? ''}';
+
+  /// Pays de l'adresse (en-tête de la fiche d'identité).
+  static String get pays => _texte('pays');
+
+  /// La ligne des rendez-vous citée par les messages de rappel : sauf saisie contraire, le premier téléphone de l'en-tête (vide si aucun).
+  static String get telephoneRdv => _surcharge.containsKey('telephoneRdv') ? '${_surcharge['telephoneRdv']}' : (telephones.isEmpty ? '' : telephones.first);
+
+  /// `autorisationExercice` est nulle : l'inscription à l'ordre suffit (loi 2025-1), elle n'est plus imprimée. Le motif est celui de la maquette.
+  static const String? autorisationExercice = null;
+  static const autorisationExerciceMotif =
+      'Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.';
+  static String get devise => _texte('devise');
+  static String get codeDevise => _texte('codeDevise');
+  static String get logo => _texte('logo');
+
+  /// Le régime de TVA tel que `cfg-fiscalite` l'affiche : vide tant que la Direction ne l'a pas renseigné.
+  static String get regimeTva => _texte('regimeTva');
 
   static String get sigle => _texte('sigle');
   static String get nom => _texte('nom');
@@ -168,4 +191,215 @@ class IdentiteClinique {
 
   /// « Fait à <ville>, le <date> » ; « Fait le <date> » si la ville n'est pas connue.
   static String faitA(String date) => ville.isEmpty ? 'Fait le $date' : 'Fait à $ville, le $date';
+}
+
+/// Les champs d'identité d'une fiche de `identiteLegale` (`C.CHAMPS_IDENTITE`), dans l'ordre : ni id, ni version, ni dates.
+const List<String> champsIdentiteLegale = [
+  'sigle',
+  'nom',
+  'nomCourt',
+  'activite',
+  'slogan',
+  'forme',
+  'adresse',
+  'bp',
+  'pays',
+  'telephones',
+  'telephoneRdv',
+  'email',
+  'ifu',
+  'rccm',
+  'rccmDate',
+  'enregistrement',
+  'autorisation',
+  'autorisationExercice',
+  'autorisationExerciceMotif',
+  'devise',
+  'codeDevise',
+  'logo',
+  'formuleArrete',
+  'formulePolitesse',
+  'regimeTva',
+];
+
+/// L'identité qu'une PIÈCE imprime : la version en force à sa date, ou la semence.
+///
+/// Configuration fiscale DATÉE (Nassiera Too, 06/11/2026) : la collection `identiteLegale` porte une fiche par version (`debut` null = depuis
+/// l'ouverture, `fin` null = en force). [IdentiteClinique] reste la PORTE D'ENTRÉE des écrans et des états courants, et la SEMENCE de ces versions :
+/// ses valeurs initiales sont celles de la Clinique Baguidi, surchargeables depuis `cfg-branding`. Une pièce s'imprime avec l'identité en force À
+/// SA DATE (`cfbIdentiteImprimee`) : une facture d'hier garde le RCCM d'hier, même si une version prend effet demain. Chaque champ qu'une version
+/// ne porte pas retombe sur [IdentiteClinique]. Les lignes composées ([lignesEnTete], [piedLegal]…) sont les MÊMES que celles de la classe
+/// courante : un champ vide n'imprime ni sa ligne ni son libellé.
+class IdentiteImprimee {
+  const IdentiteImprimee({
+    required this.sigle,
+    required this.nom,
+    this.nomCourtFiche = '',
+    this.activite = '',
+    required this.slogan,
+    required this.forme,
+    required this.adresse,
+    required this.bp,
+    required this.pays,
+    required this.telephones,
+    required this.telephoneRdv,
+    required this.email,
+    required this.ifu,
+    required this.rccm,
+    this.rccmDate = '',
+    this.enregistrement = '',
+    required this.autorisation,
+    this.autorisationExercice,
+    required this.autorisationExerciceMotif,
+    required this.devise,
+    required this.codeDevise,
+    required this.logo,
+    required this.formuleArrete,
+    required this.formulePolitesse,
+    required this.regimeTva,
+    this.version,
+    this.debut,
+    this.fin,
+  });
+
+  /// La semence : l'identité COURANTE ([IdentiteClinique], surcharge comprise), la version 1 « depuis l'ouverture du dossier ». Un accesseur et non une
+  /// constante : la surcharge de `cfg-branding` la fait varier.
+  static IdentiteImprimee get semence => IdentiteImprimee(
+        sigle: IdentiteClinique.sigle,
+        nom: IdentiteClinique.nom,
+        nomCourtFiche: IdentiteClinique.nomCourt,
+        activite: IdentiteClinique.activite,
+        slogan: IdentiteClinique.slogan,
+        forme: IdentiteClinique.forme,
+        adresse: IdentiteClinique.adresse,
+        bp: IdentiteClinique.bp,
+        pays: IdentiteClinique.pays,
+        telephones: IdentiteClinique.telephones,
+        telephoneRdv: IdentiteClinique.telephoneRdv,
+        email: IdentiteClinique.email,
+        ifu: IdentiteClinique.ifu,
+        rccm: IdentiteClinique.rccm,
+        rccmDate: IdentiteClinique.rccmDate,
+        enregistrement: IdentiteClinique.enregistrement,
+        autorisation: IdentiteClinique.autorisation,
+        autorisationExercice: IdentiteClinique.autorisationExercice,
+        autorisationExerciceMotif: IdentiteClinique.autorisationExerciceMotif,
+        devise: IdentiteClinique.devise,
+        codeDevise: IdentiteClinique.codeDevise,
+        logo: IdentiteClinique.logo,
+        formuleArrete: IdentiteClinique.formuleArrete,
+        formulePolitesse: IdentiteClinique.formulePolitesse,
+        regimeTva: IdentiteClinique.regimeTva,
+        version: 1,
+      );
+
+  /// Une fiche du magasin (une version de `identiteLegale`) relue ; chaque champ absent retombe sur la semence. `null` : la semence.
+  factory IdentiteImprimee.depuisFiche(Map<String, Object?>? f) {
+    final semence = IdentiteImprimee.semence;
+    if (f == null) return semence;
+    String t(String k, String defaut) => f.containsKey(k) && f[k] != null ? '${f[k]}' : defaut;
+    final tel = f['telephones'];
+    return IdentiteImprimee(
+      sigle: t('sigle', semence.sigle),
+      nom: t('nom', semence.nom),
+      // Une fiche qui change la dénomination sans porter de nom court le dérive de la dénomination : elle n'hérite pas du nom court d'une autre.
+      nomCourtFiche: f.containsKey('nomCourt') ? t('nomCourt', '') : (f.containsKey('nom') ? '' : semence.nomCourtFiche),
+      activite: t('activite', semence.activite),
+      slogan: t('slogan', semence.slogan),
+      forme: t('forme', semence.forme),
+      adresse: t('adresse', semence.adresse),
+      bp: t('bp', semence.bp),
+      pays: t('pays', semence.pays),
+      telephones: tel is List ? [for (final x in tel) '$x'] : (tel is String && tel.trim().isNotEmpty ? IdentiteClinique.lireTelephones(tel) : semence.telephones),
+      telephoneRdv: t('telephoneRdv', semence.telephoneRdv),
+      email: t('email', semence.email),
+      ifu: t('ifu', semence.ifu),
+      rccm: t('rccm', semence.rccm),
+      rccmDate: t('rccmDate', semence.rccmDate),
+      enregistrement: t('enregistrement', semence.enregistrement),
+      autorisation: t('autorisation', semence.autorisation),
+      autorisationExercice: f['autorisationExercice'] == null ? null : '${f['autorisationExercice']}',
+      autorisationExerciceMotif: t('autorisationExerciceMotif', semence.autorisationExerciceMotif),
+      devise: t('devise', semence.devise),
+      codeDevise: t('codeDevise', semence.codeDevise),
+      logo: t('logo', semence.logo),
+      formuleArrete: t('formuleArrete', semence.formuleArrete),
+      formulePolitesse: t('formulePolitesse', semence.formulePolitesse),
+      regimeTva: t('regimeTva', semence.regimeTva),
+      version: f['version'] is num ? (f['version'] as num).toInt() : null,
+      debut: f['debut'] == null ? null : '${f['debut']}',
+      fin: f['fin'] == null ? null : '${f['fin']}',
+    );
+  }
+
+  final String sigle, nom, nomCourtFiche, activite, slogan, forme, adresse, bp, pays, telephoneRdv, email, ifu, rccm, rccmDate, enregistrement, autorisation;
+  final String autorisationExerciceMotif, devise, codeDevise, logo, formuleArrete, formulePolitesse, regimeTva;
+  final String? autorisationExercice;
+  final List<String> telephones;
+
+  /// Le numéro de la version relue (1 pour la semence), et ses bornes ISO (`null` : depuis l'ouverture / en force).
+  final int? version;
+  final String? debut, fin;
+
+  /// Le nom court tel que le rouleau 80 mm et l'en-tête A4 l'impriment : celui que la fiche porte, sinon le nom sans sa forme juridique.
+  String get nomCourt {
+    if (nomCourtFiche.trim().isNotEmpty) return nomCourtFiche.trim();
+    final m = RegExp(r'^(.*?)\s+(SARL|SA|SAS|SUARL|SARLU)\.?$', caseSensitive: false).firstMatch(nom.trim());
+    return m == null ? nom.trim() : m.group(1)!;
+  }
+
+  /// Le pied légal de la version (même forme que [IdentiteClinique.mentionLegale]) : un IFU ou un RCCM vide n'imprime pas son libellé.
+  String get mentionLegale {
+    final parts = [nom, if (ifu.isNotEmpty) 'IFU $ifu', if (rccm.isNotEmpty) 'RCCM $rccm'].where((p) => p.isNotEmpty).toList();
+    return parts.isEmpty ? '' : '${parts.join(' — ')}.';
+  }
+
+  /// La ville de l'adresse géographique (dernier segment après la virgule).
+  String get ville {
+    final i = adresse.lastIndexOf(',');
+    return (i < 0 ? adresse : adresse.substring(i + 1)).trim();
+  }
+
+  String get ligneCoordonnees => [if (bp.isNotEmpty) bp, if (telephones.isNotEmpty) 'TÉL. : ${telephones.join('  /  ')}'].join('   ');
+  String get ligneEnregistrement => enregistrement.isEmpty ? '' : 'N° D’ENREGISTREMENT $enregistrement';
+  String get ligneAutorisation => autorisation.isEmpty ? '' : 'AUTORISATION D’OUVERTURE $autorisation';
+  String get ligneFiscale => [if (ifu.isNotEmpty) 'IFU : $ifu', if (rccm.isNotEmpty) 'RCCM : $rccm'].join('   ');
+  String get ligneEmail => email.isEmpty ? '' : 'E-mail : $email';
+
+  /// Les lignes de l'en-tête légal sous la dénomination, SANS les lignes vides.
+  List<String> get lignesEnTete => [ligneCoordonnees, ligneEnregistrement, ligneAutorisation, ligneFiscale, ligneEmail, slogan].where((l) => l.isNotEmpty).toList();
+
+  /// Pied des pièces imprimées : « Dénomination — RCCM — IFU … », sans mention vide.
+  String get piedLegal => [nom, rccm, if (ifu.isNotEmpty) 'IFU $ifu'].where((p) => p.isNotEmpty).join(' — ');
+
+  String faitA(String date) => ville.isEmpty ? 'Fait le $date' : 'Fait à $ville, le $date';
+
+  /// Les champs d'identité, sur la forme d'une fiche : ce que le semis écrit et ce qu'une version copie.
+  Map<String, Object?> get fiche => {
+        'sigle': sigle,
+        'nom': nom,
+        'nomCourt': nomCourt,
+        'activite': activite,
+        'slogan': slogan,
+        'forme': forme,
+        'adresse': adresse,
+        'bp': bp,
+        'pays': pays,
+        'telephones': [...telephones],
+        'telephoneRdv': telephoneRdv,
+        'email': email,
+        'ifu': ifu,
+        'rccm': rccm,
+        'rccmDate': rccmDate,
+        'enregistrement': enregistrement,
+        'autorisation': autorisation,
+        'autorisationExercice': autorisationExercice,
+        'autorisationExerciceMotif': autorisationExerciceMotif,
+        'devise': devise,
+        'codeDevise': codeDevise,
+        'logo': logo,
+        'formuleArrete': formuleArrete,
+        'formulePolitesse': formulePolitesse,
+        'regimeTva': regimeTva,
+      };
 }

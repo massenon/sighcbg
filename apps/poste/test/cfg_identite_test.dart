@@ -36,7 +36,7 @@ void main() {
     expect(find.text(IdentiteClinique.rccm), findsWidgets);
     // Les mentions que la Direction n'a pas encore saisies le DISENT à l'écran (la pièce, elle, ne les imprime pas).
     expect(find.text(cfaMentionARenseigner), findsWidgets);
-    expect(find.textContaining('Non imprimée — Non applicable'), findsOneWidget);
+    expect(find.textContaining('Non imprimée : Non applicable'), findsOneWidget);
     expect(find.textContaining('Un document ancien qui diverge du présent en-tête n’est donc pas un faux.'), findsOneWidget);
     // Lecture pure : aucune commande d'écriture.
     expect(find.widgetWithText(BoutonSigh, 'Enregistrer'), findsNothing);
@@ -46,10 +46,15 @@ void main() {
   casM14('cfg-branding : les 14 champs de la maquette, plus le nom court et la formule de politesse, préremplis de l’identité en vigueur ; trois cartes', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
-    for (final c in [...(b['champs'] as Map).keys, 'nomCourt', 'formulePolitesse']) {
-      expect(find.byKey(Key('kit:champ:$c')), findsOneWidget, reason: '$c');
+    // Les champs de la part VISIBLE (plus le nom court et la formule de politesse) ; la part fiscale (forme, IFU, RCCM, autorisation, adresse fiscale,
+    // devise, TVA) se saisit à cfg-fiscalite (même fiche).
+    for (final c in ['nom', 'nomCourt', 'sigle', 'logo', 'slogan', 'formulePolitesse', 'adresse', 'pays', 'email', 'telephones', 'telephoneRdv', 'doubleLogo', 'filigrane']) {
+      expect(find.byKey(Key('kit:champ:$c')), findsOneWidget, reason: c);
     }
-    for (final c in ['Paramètres de l’identité', 'Aperçu du papier à en-tête', 'Ressources graphiques']) {
+    for (final c in ['forme', 'ifu', 'rccm', 'autorisation', 'regimeTva']) {
+      expect(find.byKey(Key('kit:champ:$c')), findsNothing, reason: '$c vit à cfg-fiscalite');
+    }
+    for (final c in ['Paramètres de l’identité (part visible)', 'Ressources graphiques']) {
       expect(find.text(c), findsOneWidget, reason: c);
     }
     expect(find.widgetWithText(BoutonSigh, 'Enregistrer'), findsOneWidget);
@@ -61,70 +66,58 @@ void main() {
     final champs = obj(b['champs']);
     final nom = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:nom')), matching: find.byType(TextField)));
     expect(nom.controller!.text, champs['nom']);
-    final ifu = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:ifu')), matching: find.byType(TextField)));
-    expect(ifu.controller!.text, champs['ifu']);
+    final tel = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:telephones')), matching: find.byType(TextField)));
+    expect(tel.controller!.text, IdentiteClinique.telephones.join(' / '));
   });
 
-  casM14('« Enregistrer » journalise la modification (RG-12) et le dit ; un nom ou un IFU vide est REFUSÉ, rien n’est journalisé', (t) async {
+  casM14('« Enregistrer » journalise la modification (RG-12) et le dit ; un nom vide est REFUSÉ, rien n’est journalisé', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
     final avant = m.collection('audit').toutes.length;
-    await saisir(t, 'ifu', '');
+    await saisir(t, 'nom', '');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
     expect(m.collection('audit').toutes.length, avant);
     await t.pump(const Duration(seconds: 10));
-    await saisir(t, 'ifu', '3201001996110');
+    await saisir(t, 'nom', 'Clinique Baguidi Test');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
-    expect(find.text('Identité enregistrée.'), findsOneWidget);
-    // L'identité est écrite dans le magasin (fiche IDENTITE de `ressources`) : la collection journalise la création.
-    expect(m.collection('audit').toutes.length, avant + 1);
-    final j = m.collection('audit').toutes.first;
-    expect([j['action'], j['module'], j['entite'], j['reference']], ['Création', 'CFG', 'ressources', idFicheIdentite]);
+    expect(find.textContaining('Identité enregistrée'), findsOneWidget);
+    final nouvelles = m.collection('audit').toutes.take(m.collection('audit').toutes.length - avant).where((e) => e['entite'] == 'identiteLegale').toList();
+    expect(nouvelles.length, 1, reason: 'une seule ligne de journal pour l’identité (RG-12) ; les réglages d’impression semés à l’ouverture sont à part');
+    final j = nouvelles.first;
+    expect([j['action'], j['module'], j['entite']], ['Modification', 'CFG', 'identiteLegale']);
     expect(j['utilisateur'], isNotEmpty);
-    // Un second enregistrement MODIFIE la fiche, avec les valeurs avant et après (RG-12).
-    await t.pump(const Duration(seconds: 10));
-    await saisir(t, 'forme', 'SARL');
-    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
-    final j2 = m.collection('audit').toutes.first;
-    expect([j2['action'], j2['entite'], j2['reference']], ['Modification', 'ressources', idFicheIdentite]);
-    expect('${j2['apres']}', contains('SARL'));
-    expect(m.collection('ressources').actives.where((f) => f['id'] == idFicheIdentite).length, 1, reason: 'une seule fiche d’identité');
   });
 
   casM14('enregistrer met à jour la BASE et TOUTES les pièces : la valeur saisie est imprimée, une mention vide ne l’est pas', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
-    // État initial : autorisation et forme VIDES ; la formule de politesse vaut le slogan (décision du 06/11/2026) ;
-    // l'aperçu n'a aucune ligne « AUTORISATION D'OUVERTURE ».
+    // État initial : la formule de politesse vaut le slogan (décision du 06/11/2026) ; l'aperçu n'a aucune ligne « AUTORISATION D'OUVERTURE »
+    // (la Direction ne l'a pas saisie, et la mention vide n'est pas imprimée).
     String champ(String c) =>
         t.widget<TextField>(find.descendant(of: find.byKey(Key('kit:champ:$c')), matching: find.byType(TextField))).controller!.text;
-    expect([champ('forme'), champ('autorisation')], ['', '']);
     expect(champ('formulePolitesse'), 'Votre bien-être est notre raison d’être.');
     expect(find.textContaining('AUTORISATION D’OUVERTURE'), findsNothing);
-    await saisir(t, 'autorisation', 'N° 012/MS/DNSP/2009');
+    await saisir(t, 'nomCourt', 'CBG TEST');
     await saisir(t, 'formulePolitesse', 'MERCI DE VOTRE CONFIANCE');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
-    // La base : la fiche porte les valeurs saisies.
-    final f = m.collection('ressources').parId(idFicheIdentite)!;
-    expect((f['identite'] as Map)['autorisation'], 'N° 012/MS/DNSP/2009');
-    expect((f['identite'] as Map)['formulePolitesse'], 'MERCI DE VOTRE CONFIANCE');
-    // L'identité imprimée : toutes les pièces lisent IdentiteClinique.
-    expect(IdentiteClinique.autorisation, 'N° 012/MS/DNSP/2009');
-    expect(IdentiteClinique.lignesEnTete, contains('AUTORISATION D’OUVERTURE N° 012/MS/DNSP/2009'));
-    await t.pump();
-    expect(find.text('AUTORISATION D’OUVERTURE N° 012/MS/DNSP/2009'), findsOneWidget, reason: 'l’aperçu suit l’enregistrement');
-    // Vider la mention : elle cesse d'être imprimée.
+    // La base : la version de l'identité en force porte les valeurs saisies, et l'identité courante les reprend.
+    final f = m.collection('identiteLegale').actives.single;
+    expect(f['nomCourt'], 'CBG TEST');
+    expect(f['formulePolitesse'], 'MERCI DE VOTRE CONFIANCE');
+    expect(IdentiteClinique.nomCourt, 'CBG TEST');
+    expect(IdentiteClinique.formulePolitesse, 'MERCI DE VOTRE CONFIANCE');
+    final ticket = lignesTicket(EntreeTicket(operateur: 'CAISSE', numero: 'FN-1', date: DateTime(2026, 8, 16, 9), partPatient: 1000, total: 1000)).map((l) => l.brut).toList();
+    expect(ticket.first, 'CBG TEST');
+    expect(ticket, contains('MERCI DE VOTRE CONFIANCE'));
+    // Vider la formule : elle cesse d'être imprimée, sans séparateur orphelin.
     await t.pump(const Duration(seconds: 10));
-    await saisir(t, 'autorisation', '');
+    await saisir(t, 'formulePolitesse', '');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     await t.pump();
-    expect(IdentiteClinique.autorisation, '');
-    expect(find.textContaining('AUTORISATION D’OUVERTURE'), findsNothing);
-    // Archiver la fiche (corbeille, RG-14) rend l'identité initiale : la formule de politesse redevient le slogan (décision du 06/11/2026).
-    m.collection('ressources').archiver(idFicheIdentite);
-    appliquerIdentite(m);
-    expect(IdentiteClinique.formulePolitesse, 'Votre bien-être est notre raison d’être.');
+    expect(IdentiteClinique.formulePolitesse, '');
+    final sans = lignesTicket(EntreeTicket(operateur: 'CAISSE', numero: 'FN-1', date: DateTime(2026, 8, 16, 9), partPatient: 1000, total: 1000)).map((l) => l.brut).toList();
+    expect(sans.last, isNot(startsWith('---')), reason: 'ni formule ni séparateur orphelin');
   });
 
   casM14('« Prévisualiser un état » ouvre le papier à en-tête avec les sept mentions', (t) async {

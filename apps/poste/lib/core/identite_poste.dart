@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
@@ -26,11 +27,37 @@ Map<String, Object?>? identiteEnregistree(Magasin m) {
   return v is Map ? v.cast<String, Object?>() : null;
 }
 
-/// Applique l'identité enregistrée du magasin à [IdentiteClinique].
-void appliquerIdentite(Magasin m) {
+/// Applique l'identité du magasin à [IdentiteClinique], la PORTE D'ENTRÉE des écrans et des états courants.
+///
+/// Deux sources, la plus précise l'emporte champ par champ : la fiche `IDENTITE` de `ressources` (enregistrement historique de `cfg-branding`), puis
+/// la version de `identiteLegale` EN FORCE À LA DATE DU JOUR (configuration fiscale validée et datée, Direction 06/11/2026). Une version à effet futur
+/// ne change donc pas ce que la caisse imprime ce matin ; les pièces, elles, s'impriment avec la version en force à LEUR date (`identiteImprimeeDe`).
+void appliquerIdentite(Magasin m, {DateTime? date}) {
   final avant = IdentiteClinique.surcharge;
-  IdentiteClinique.appliquer(identiteEnregistree(m));
-  if ('$avant' != '${IdentiteClinique.surcharge}') versionIdentite.value++;
+  final enregistree = identiteEnregistree(m);
+  final version = cfbIdentiteALaDate(m.collection('identiteLegale').actives, date ?? DateTime.now());
+  Map<String, Object?>? fusion;
+  if (enregistree != null || version != null) {
+    fusion = {
+      ...?enregistree,
+      if (version != null)
+        for (final k in IdentiteClinique.champs)
+          if (version.containsKey(k) && version[k] != null) k: version[k],
+    };
+  }
+  IdentiteClinique.appliquer(fusion);
+  if ('$avant' != '${IdentiteClinique.surcharge}') _signaler();
+}
+
+/// Annonce le changement d'identité. Appliquée depuis la coque PENDANT une construction, l'annonce attend la fin de l'image : notifier un
+/// `ValueListenableBuilder` en pleine construction est refusé par le cadre.
+void _signaler() {
+  final liant = SchedulerBinding.instance;
+  if (liant.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+    liant.addPostFrameCallback((_) => versionIdentite.value++);
+  } else {
+    versionIdentite.value++;
+  }
 }
 
 final Expando<VoidCallback> _branches = Expando<VoidCallback>('identite');
@@ -41,6 +68,7 @@ void brancherIdentite(Magasin m) {
   if (_branches[m] != null) return;
   void ecoute() => appliquerIdentite(m);
   m.collection('ressources').addListener(ecoute);
+  m.collection('identiteLegale').addListener(ecoute);
   _branches[m] = ecoute;
 }
 

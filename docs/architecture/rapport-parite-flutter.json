@@ -58,8 +58,8 @@
   {
    "id": "cfg-branding",
    "mesure": true,
-   "attendus": 22,
-   "presents": 22,
+   "attendus": 20,
+   "presents": 20,
    "taux": 1.0,
    "manquants": []
   },
@@ -90,8 +90,8 @@
   {
    "id": "cfg-comptabilite",
    "mesure": true,
-   "attendus": 23,
-   "presents": 23,
+   "attendus": 29,
+   "presents": 29,
    "taux": 1.0,
    "manquants": []
   },
@@ -106,16 +106,16 @@
   {
    "id": "cfg-entetes",
    "mesure": true,
-   "attendus": 7,
-   "presents": 7,
+   "attendus": 9,
+   "presents": 9,
    "taux": 1.0,
    "manquants": []
   },
   {
    "id": "cfg-fiscalite",
    "mesure": true,
-   "attendus": 27,
-   "presents": 27,
+   "attendus": 46,
+   "presents": 46,
    "taux": 1.0,
    "manquants": []
   },
@@ -1638,8 +1638,8 @@
   {
    "id": "m2-stats-consultations",
    "mesure": true,
-   "attendus": 12,
-   "presents": 12,
+   "attendus": 13,
+   "presents": 13,
    "taux": 1.0,
    "manquants": []
   },
@@ -2126,8 +2126,8 @@
   {
    "id": "m6-import-grand-stock",
    "mesure": true,
-   "attendus": 19,
-   "presents": 19,
+   "attendus": 38,
+   "presents": 38,
    "taux": 1.0,
    "manquants": []
   },

@@ -80,14 +80,18 @@ class CollectionMagasin extends ChangeNotifier {
 
   /// Ajoute une fiche À LA FIN, sans journal : l'amorçage de démonstration d'un écran (`db[nom].push` de la maquette, sans `log`). Jamais pour une écriture
   /// de l'agent : celle-là passe par [inserer] et se journalise (RG-12).
-  void ajouterSansJournal(Fiche f, {bool enTete = false}) {
+  void ajouterSansJournal(Fiche f, {bool enTete = false, bool notifier = true}) {
     if (enTete) {
       _fiches.insert(0, {...f});
     } else {
       _fiches.add({...f});
     }
-    notifyListeners();
+    if (notifier) notifyListeners();
   }
+
+  /// Annonce aux écouteurs un changement fait SANS notification ([ajouterSansJournal] avec `notifier: false`) : l'amorçage d'un écran, posé pendant sa
+  /// construction, ne peut pas réveiller les écouteurs d'autres widgets en pleine construction ; il les prévient à la fin de l'image.
+  void signaler() => notifyListeners();
 
   /// Applique une fiche REÇUE d'un autre poste (la mère) : insérée si elle manque, remplacée sinon. Sans journal local (la mère l'a déjà écrit), sans garde
   /// (la garde protège contre l'écriture de l'agent, pas contre la mère) et sans prendre la tête de la collection. Rend vrai si quelque chose a changé.
@@ -139,15 +143,16 @@ class CollectionMagasin extends ChangeNotifier {
 
   /// Met à jour des champs de la fiche (`col.update`) et rend la fonction qui RESTITUE l'état d'avant. Rien n'est supprimé : un champ ajouté
   /// par la mise à jour est retiré à l'annulation.
-  VoidCallback mettreAJour(Object? id, Fiche patch) {
+  VoidCallback mettreAJour(Object? id, Fiche patch, {bool journaliser = true}) {
     final f = parId(id);
     if (f == null) return () {};
     if (_gardes.isNotEmpty) _controler('modifier', {...f, ...patch});
     final avant = <String, Object?>{for (final k in patch.keys) k: f[k]};
     final existait = {for (final k in patch.keys) k: f.containsKey(k)};
     f.addAll(patch);
-    journal?.call('Modification', module, entite ?? nom, _ref(f), avant,
-        {for (final k in patch.keys) k: patch[k]});
+    if (journaliser) {
+      journal?.call('Modification', module, entite ?? nom, _ref(f), avant, {for (final k in patch.keys) k: patch[k]});
+    }
     notifyListeners();
     return () {
       for (final k in patch.keys) {
@@ -498,6 +503,9 @@ class Magasin {
     'objectifsPilotage': 'M12',
     'modulesActifs': 'CFG',
     'reglages': 'CFG',
+    'identiteLegale': 'CFG',
+    'obligationsFiscales': 'CFG',
+    'historiqueObligations': 'CFG',
     'support': 'SUP',
   };
 
@@ -738,6 +746,9 @@ class Magasin {
     'exercices',
     'objectifsPilotage',
     'modulesActifs',
+    'identiteLegale',
+    'obligationsFiscales',
+    'historiqueObligations',
     'support'
   ];
 }

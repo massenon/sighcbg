@@ -14,13 +14,16 @@ const _mono = 'LiberationMono';
 /// Rouleau de caisse 80 mm (`P.ticket`) : largeur 80 mm, marge 4 mm, police chasse fixe, tailles 7–11 px de la maquette.
 class FeuilleTicket extends StatelessWidget {
   const FeuilleTicket(
-      {super.key, required this.entree, required this.reference});
+      {super.key, required this.entree, required this.reference, this.identite});
   final EntreeTicket entree;
   final String reference;
 
+  /// L'identité en force à la date du ticket (`P.ticket({date})`).
+  final IdentiteImprimee? identite;
+
   @override
   Widget build(BuildContext context) {
-    final lignes = lignesTicket(entree);
+    final lignes = lignesTicket(entree, identite: identite ?? IdentiteImprimee.semence);
     return Container(
       key: const Key('impression:ticket'),
       width: mm(80),
@@ -144,7 +147,9 @@ class FeuilleA4 extends StatelessWidget {
         ),
       );
 
-  Widget _entete() => Container(
+  Widget _entete() {
+    final i = piece.identiteImprimee;
+    return Container(
         key: const Key('impression:entete'),
         padding: const EdgeInsets.only(bottom: 8),
         decoration: const BoxDecoration(
@@ -156,36 +161,38 @@ class FeuilleA4 extends StatelessWidget {
           Flexible(
             child: Column(children: [
               // L'identité EN VIGUEUR (surchargeable depuis cfg-branding) ; une mention vide n'imprime ni sa ligne ni son libellé.
-              Text(IdentiteClinique.nomCourt,
+              Text(i.nomCourt,
+                  key: const Key('impression:entete:nom'),
                   style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                       height: 1.25,
                       letterSpacing: -0.5,
                       color: JetonsShell.navy950)),
-              if (IdentiteClinique.ligneCoordonnees.isNotEmpty)
-                Text(IdentiteClinique.ligneCoordonnees,
+              if (i.ligneCoordonnees.isNotEmpty)
+                Text(i.ligneCoordonnees,
                     style: const TextStyle(
                         fontSize: 10,
                         height: 1.375,
                         color: JetonsShell.slate700)),
-              if (IdentiteClinique.ligneAutorisation.isNotEmpty)
-                Text(IdentiteClinique.ligneAutorisation,
+              if (i.ligneAutorisation.isNotEmpty)
+                Text(i.ligneAutorisation,
                     style: const TextStyle(
                         fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              if (IdentiteClinique.ligneFiscale.isNotEmpty)
-                Text(IdentiteClinique.ligneFiscale,
+              if (i.ligneFiscale.isNotEmpty)
+                Text(i.ligneFiscale,
+                    key: const Key('impression:entete:ifu-rccm'),
                     style: const TextStyle(
                         fontSize: 9,
                         height: 1.375,
                         fontWeight: FontWeight.w600,
                         color: JetonsShell.slate800)),
-              if (IdentiteClinique.ligneEmail.isNotEmpty)
-                Text(IdentiteClinique.ligneEmail,
+              if (i.ligneEmail.isNotEmpty)
+                Text(i.ligneEmail,
                     style: const TextStyle(
                         fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              if (IdentiteClinique.slogan.isNotEmpty)
-                Text(IdentiteClinique.slogan,
+              if (i.slogan.isNotEmpty)
+                Text(i.slogan,
                     style: const TextStyle(
                         fontSize: 9,
                         height: 1.375,
@@ -198,6 +205,7 @@ class FeuilleA4 extends StatelessWidget {
           const SizedBox(width: 64, height: 64),
         ]),
       );
+  }
 
   Widget _filtres() => Container(
         key: const Key('impression:filtres'),
@@ -363,7 +371,7 @@ class FeuilleA4 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(IdentiteClinique.piedLegal),
+                  Text(piece.identiteImprimee.piedLegal),
                   Text(
                       'Document généré par ${piece.utilisateur} le ${dateHeure(piece.edite)}'),
                 ]),

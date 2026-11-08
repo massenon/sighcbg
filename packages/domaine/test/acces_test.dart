@@ -37,7 +37,7 @@ void main() {
       final c = obj(v['connexion']);
       expect(c['nbSelect'], 0);
       final champs = fl(c['champs']);
-      expect(champs.map((x) => x['type']), ['text', 'password', 'checkbox']);
+      expect(champs.map((x) => x['type']), ['text', 'password'], reason: 'la case « Se souvenir de ce poste » est retirée (elle ne retenait rien : fausse sauvegarde)');
     });
 
     final utilisateurs = <M>[
@@ -194,7 +194,7 @@ void main() {
       final msg = fiches.firstWhere((f) => f['type'] == 'message');
       final ano = fiches.firstWhere((f) => f['type'] == 'anomalie');
       for (final f in [msg, ano]) {
-        f.removeWhere((k, _) => ['statut', 'reference', 'date', 'auteur', 'etat'].contains(k));
+        f.removeWhere((k, _) => ['statut', 'reference', 'date', 'auteur', 'etat', 'captureDonnees'].contains(k));
       }
       expect(accDemandeMessage('Question sur la comptabilité', 'Comment lire la balance ?'), {...msg, 'module': null, 'etapes': null, 'capture': null});
       expect(accDemandeAnomalie('M8', 'Le reçu ne se détaille pas', '1. Encaisser 2. Imprimer', null), {...ano, 'capture': null});
