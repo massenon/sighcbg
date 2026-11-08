@@ -167,7 +167,7 @@ class _VueAuditState extends State<_VueAudit> {
           ],
           signatures: const [
             Signature('L’Administrateur système'),
-            Signature('La Direction', nom: 'BASSONGUI Chabi Séko'),
+            Signature('La Direction'),
           ],
         ));
   }

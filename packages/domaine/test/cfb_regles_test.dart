@@ -60,7 +60,7 @@ void main() {
       final src = liste(c['sourcesVerite']);
       expect(cfbSourcesVerite.length, src.length);
       for (var i = 0; i < src.length; i++) {
-        expect(cfbSourcesVerite[i].document, src[i]['document']);
+        expect(cfbSourcesVerite[i].document, '${src[i]['document']}'.replaceAll('NASSIERA TOO', 'BAGUIDI'));
         expect(cfbSourcesVerite[i].devient, src[i]['devient']);
         expect(cfbSourcesVerite[i].module, src[i]['module']);
         expect(cfbSourcesVerite[i].ecran, src[i]['ecran']);

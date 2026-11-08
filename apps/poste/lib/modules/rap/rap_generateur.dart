@@ -185,8 +185,7 @@ class _VueGenerateurState extends State<_VueGenerateur> {
             Signature('Le Rédacteur', nom: acteur(c).nom),
             const Signature('La Directrice Administrative',
                 nom: 'TAKI Alimatou'),
-            const Signature('Le Directeur Médical',
-                nom: 'BASSONGUI Chabi Séko'),
+            const Signature('Le Directeur Médical'),
           ],
         ));
   }

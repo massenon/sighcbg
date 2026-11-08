@@ -15,7 +15,7 @@ import '../../shell/contexte_ecran.dart';
 const laborantinChef = 'KINNOU Addoul Ganiou';
 const directriceAdministrativeLabo = 'TAKI Alimatou';
 const gestionnaireStockLabo = 'MAMAN Zoukanéri';
-const directeurMedicalLabo = 'BASSONGUI Chabi Séko';
+const String? directeurMedicalLabo = null;
 
 /// Source du paramétrage (`L.source`), citée au pied des écrans qui en tirent leurs valeurs.
 const sourceParametrageLabo =

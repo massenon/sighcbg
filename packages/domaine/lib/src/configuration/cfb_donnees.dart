@@ -10,7 +10,7 @@ class CfbSource {
 }
 
 const cfbSourcesVerite = <CfbSource>[
-  CfbSource('Organigramme de la Clinique NASSIERA TOO', 'Structure organisationnelle + RBAC', 'M14 / CFG', 'cfg-organisation', 'Intégré'),
+  CfbSource('Organigramme de la Clinique BAGUIDI', 'Structure organisationnelle + RBAC', 'M14 / CFG', 'cfg-organisation', 'Intégré'),
   CfbSource('NS 131/07/DM/DA/CBG/2026', 'Moteur d’évaluation et de sanctions', 'M10', 'm10-evaluations', 'Intégré'),
   CfbSource('NS 132/07/DM/DA/CBG/2026', 'Moteur des primes', 'M10 / M11', 'm10-primes', 'Intégré'),
   CfbSource('Fiche d’évaluation et de solde (juillet 2026)', 'Modèle d’état imprimable', 'M10 / RAP', 'm10-evaluations', 'Intégré'),

@@ -403,5 +403,5 @@ void imprimerDossierComplet(BuildContext ctx, Fiche p) {
         ('Groupe sanguin', patVrai(p['groupeSanguin']) ? '${p['groupeSanguin']}' : '—'),
       ],
       blocs: blocsDossierComplet(c, p),
-      signatures: const [Signature('Le Secrétaire Médical'), Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko')]);
+      signatures: const [Signature('Le Secrétaire Médical'), Signature('Le Directeur Médical')]);
 }

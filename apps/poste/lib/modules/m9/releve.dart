@@ -288,7 +288,7 @@ class _EtatReleve extends State<EcranReleveAssureur> {
             ],
             signatures: const [
               signDaf,
-              Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko')
+              Signature('Le Directeur Médical')
             ]));
   }
 

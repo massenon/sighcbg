@@ -407,7 +407,7 @@ void main() {
       await cliquer(t, find.byTooltip('Imprimer la carte seule').first);
       expect(find.byKey(const Key('rhc:carte:recto')), findsOneWidget);
       expect(find.byKey(const Key('rhc:carte:verso')), findsOneWidget);
-      for (final mot in ['YENI M’PO FLORENT', 'Matricule 5', 'Médecin Généraliste', 'Ce badge est la propriété de la Clinique NASSIERA TOO SARL.', 'À restituer au départ de l’agent.', 'Contrôle SIGH']) {
+      for (final mot in ['YENI M’PO FLORENT', 'Matricule 5', 'Médecin Généraliste', 'Ce badge est la propriété de la Clinique BAGUIDI.', 'À restituer au départ de l’agent.', 'Contrôle SIGH']) {
         expect(find.textContaining(mot), findsWidgets, reason: mot);
       }
       // Le pied légal de la coque (bande fixe de la Direction, 01/11/2026) porte l'IFU de la clinique : la carte, elle, n'en porte pas.

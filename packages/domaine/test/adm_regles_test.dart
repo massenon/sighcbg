@@ -303,7 +303,9 @@ void main() {
       expect(a.length, att.length);
       for (final (i, f) in a.reversed.indexed) {
         for (final k in ['libelle', 'type', 'contact', 'base', 'disponibilite', 'aCompleter', 'source']) {
-          expect(f[k], att[i][k], reason: '${att[i]['libelle']} $k');
+          final attendu = att[i][k];
+          // le jeu de la maquette est celui de la clinique d'origine : ville et structures extérieures sont celles de Parakou
+          expect(f[k], attendu is String ? attendu.replaceAll('CHD Atacora — ambulance', 'Hôpital de référence — ambulance').replaceAll('Régulation du CHD', 'Régulation de l’hôpital').replaceAll('Natitingou', 'Parakou') : attendu, reason: '${att[i]['libelle']} $k');
         }
         expect(f['telephone'], att[i]['telephone'], reason: '${att[i]['libelle']} téléphone');
         expect(f['verifieLe'], att[i]['verifieLe'], reason: '${att[i]['libelle']} vérifié');

@@ -16,7 +16,7 @@ import '../m4/mat_commun.dart';
 /// vecteurs de la maquette ; ces fichiers ne font que les mettre en page.
 
 const cfaSignDa = Signature('La Directrice Administrative', nom: 'TAKI Alimatou');
-const cfaSignDm = Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko');
+const cfaSignDm = Signature('Le Directeur Médical');
 
 IconData cfaIcone(String nom) => switch (nom) {
       'layers' => LucideIcons.layers,

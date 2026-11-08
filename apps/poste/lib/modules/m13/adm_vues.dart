@@ -236,7 +236,7 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
           ColonneEtat(libelle: 'Avancement', valeur: (r) => r['avancement']),
         ], lignes: admTrierPlan(rows))),
       ],
-      signatures: const [_signDa, Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko')]);
+      signatures: const [_signDa, Signature('Le Directeur Médical')]);
 
   Widget _gantt(List<Fiche> rows) {
     const entete = TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12, fontWeight: FontWeight.w600);

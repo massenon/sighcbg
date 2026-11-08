@@ -1,5 +1,6 @@
 import '../administration/adm_notes_donnees.dart' show admFonctions, admPrimesNs132;
 import '../format/format_fr.dart';
+import '../impression/identite.dart' show IdentiteClinique;
 import '../format/js.dart' show arrondiJs;
 import '../format/recherche.dart' show trierPar;
 import '../referentiels/regles.dart' show joursEntre;
@@ -499,7 +500,7 @@ RhaStatsConges rhaStatsConges(List<RhaFiche> rows) {
 List<String> rhaTexteDecisionConge(RhaFiche c) {
   final nature = '${c['nature']}'.toLowerCase();
   final periode = 'du ${rhaDateFR(c['dateDebut'])} au ${rhaDateFR(c['dateFin'])}';
-  final l = <String>['La Directrice Administrative de la CLINIQUE NASSIERA TOO SARL,'];
+  final l = <String>['La Directrice Administrative de la ${IdentiteClinique.nom},'];
   if (c['statutConge'] == 'valide') {
     l.add('Accorde à ${c['employe']}, matricule ${c['matricule']}, un $nature de ${c['duree']} jour(s), $periode inclus.');
   } else if (c['statutConge'] == 'refuse') {

@@ -133,7 +133,7 @@ void main() {
           return t;
         }
 
-        expect(sansQueue(mod.donnees[1]), sansQueue(m['exemple'] as List));
+        expect(sansQueue(mod.donnees[1]), sansQueue([for (final x in m['exemple'] as List) '$x'.replaceAll('Tchirimina, Natitingou', 'Zongo II, Parakou')]));
         expect(mod.instructions.length, m['instructions']);
         expect([for (final x in mod.listes.first) '$x'], m['listes']);
       });

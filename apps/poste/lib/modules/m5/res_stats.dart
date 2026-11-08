@@ -352,7 +352,7 @@ class _EtatStatsLabo extends State<EcranStatsLabo> {
           ],
           signatures: const [
             Signature('Le Biologiste médical'),
-            Signature('Le Directeur Médical', nom: 'BASSONGUI Chabi Séko'),
+            Signature('Le Directeur Médical'),
           ],
         ));
   }

@@ -141,7 +141,7 @@ class EcranPertes extends StatelessWidget with EcranMaquette {
       ],
       signatures: const [
         Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri'),
-        Signature('Le Comptable', nom: 'KASSA Augustin'),
+        Signature('Le Comptable'),
         Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
       ],
     );

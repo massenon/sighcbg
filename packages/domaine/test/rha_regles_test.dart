@@ -227,7 +227,7 @@ void main() {
       for (final d in ['valide', 'refuse', 'en_attente']) {
         final x = obj(obj(e['etats'])[d]);
         final c = jeu('conges').firstWhere((f) => f['reference'] == x['reference']);
-        expect(s(rhaTexteDecisionConge(c).join()), s(obj(x['etat'])['texte']), reason: d);
+        expect(s(rhaTexteDecisionConge(c).join()), s('${obj(x['etat'])['texte']}'.replaceAll('de la CLINIQUE NASSIERA TOO SARL', 'de la ${IdentiteClinique.nom}')), reason: d);
       }
     });
   });

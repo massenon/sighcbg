@@ -304,7 +304,7 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la balance analytique'));
       expect(find.text('Balance analytique'), findsWidgets);
       expect(find.text('TOTAL'), findsWidgets);
-      expect(find.textContaining('BASSONGUI Chabi Séko'), findsWidgets);
+      expect(find.text('La Direction'), findsWidgets);
     });
 
     casM14('un exercice sans écriture ne casse pas l\'écran : sept centres à zéro', (t) async {

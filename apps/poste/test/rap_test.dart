@@ -270,7 +270,6 @@ void main() {
       expect(find.text('CUMUL GLOBAL'), findsOneWidget);
       expect(find.text('La Directrice Administrative'), findsOneWidget);
       expect(find.text('Le Comptable'), findsOneWidget);
-      expect(find.text('KASSA Augustin'), findsOneWidget);
       expect(find.byKey(const Key('impression:filtres')), findsOneWidget);
       expect(find.textContaining('Périodicité : Mensuel', findRichText: true),
           findsWidgets);
