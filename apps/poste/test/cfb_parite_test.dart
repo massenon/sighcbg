@@ -15,6 +15,7 @@ import 'package:sigh_poste/mere/activation.dart';
 import 'package:sigh_poste/mere/client_mere.dart';
 
 import 'activation_test.dart' show FauxService;
+import 'aide_etat_maquette.dart';
 import 'aide_polices.dart';
 import 'parite/extracteur.dart';
 
@@ -53,7 +54,7 @@ void main() {
           client: client,
           ecranInitial: id,
           horloge: () => DateTime(2026, 10, 30, 10),
-          magasin: Magasin.depuisDossier(Magasin.collectionsDuJeu)));
+          magasin: avecEtatMaquette(Magasin.depuisDossier(Magasin.collectionsDuJeu))));
       for (var i = 0; i < 4; i++) {
         await t.pump(const Duration(milliseconds: 100));
       }

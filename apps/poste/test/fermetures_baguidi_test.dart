@@ -13,47 +13,25 @@ import 'package:sigh_poste/shell/recherche_globale.dart';
 
 import 'aide_polices.dart';
 
-/// FERMETURE DES MODULES HORS PÉRIMÈTRE (PRD Baguidi, P0-4). La Clinique Baguidi est un centre de médecine du travail : le jeu livré
-/// (`jeu/modulesActifs.json`) ferme M1 à M5 en entier, les statistiques cliniques du pilotage et les tableaux de bord des postes cliniques. La matrice
-/// engendrée `rbac.json` n'en sait rien (elle a été extraite banque de sang et transfusion seules fermées) : c'est la superposition à chaud, comparée à
-/// la configuration de l'extraction (`modulesActifs.reference.json`), qui rend ces fermetures effectives. Vérifié ici pour CHAQUE rôle : ruban, recherche
-/// globale, pages d'accueil de module, accès rapides, adresses directes, page d'accueil fermée, écran cfg-modules et réouverture.
+/// NON-RÉGRESSION DE L'OUVERTURE (Direction, 06/11/2026, nuit). Le jeu livré (`jeu/modulesActifs.json`) ne ferme plus rien : M1 à M10 sont ouverts avec tout, banque de
+/// sang et donneurs comprises, et les rôles pharmacien et RH sont rouverts. La matrice engendrée `rbac.json` a été extraite banque de sang et donneurs FERMÉS et
+/// pharmacien et RH ARCHIVÉS ; la superposition à chaud compare le jeu à deux RÉFÉRENCES figées (`modulesActifs.reference.json`, `rbac.reference.json`), si bien
+/// que ce qui diffère (l'ouverture) devient effectif. Ce banc mesure, pour CHAQUE rôle : aucun « Activité fermée » sur M1 à M10, l'inventaire des écrans est
+/// celui de la matrice d'origine ; puis la mécanique (fermer, rouvrir) par la fiche et par cfg-modules.
 final donnees = DonneesNavigation.depuisDossier();
 
-const motifBaguidi = 'Hors périmètre Clinique Baguidi (médecine du travail)';
-const modulesFermes = {'M1', 'M2', 'M3', 'M4', 'M5'};
-const statsCliniques = {
-  'm4-stats-maternite',
-  'm2-stats-echographie',
-  'm5-stats-examens',
-  'm2-stats-consultations',
-  'm3-stats-bloc',
-  'm3-stats-hospitalisations',
-};
-const tableauxCliniques = {
-  'dash-medecin',
-  'dash-infirmier',
-  'dash-laborantin',
-  'dash-aide-soignant',
-  'dash-echographiste',
-  'dash-chirurgien',
-  'dash-anesthesiste',
-  'dash-maternite',
-  'dash-patient',
-};
+/// Les deux écrans que `rbac.json` a extraits fermés et que le jeu rouvre.
+const ecransRouverts = ['m5-banque-sang', 'm5-donneurs'];
 
-Magasin jeu() => Magasin.depuisDossier(['rbac', 'modulesActifs', 'modulesManifeste', 'audit', 'patients', 'produits', 'personnel', 'actes', 'assureurs', 'comptes']);
+/// Les deux rôles que `rbac.json` a extraits archivés et que le jeu rouvre.
+const rolesRouverts = {'pharmacien', 'rh'};
 
-bool estFerme(EcranNav e) => modulesFermes.contains(e.module) || statsCliniques.contains(e.id) || tableauxCliniques.contains(e.id);
-
-/// Un identifiant qui mène à un écran fermé (un hub d'un module fermé l'est aussi).
-bool cibleFermee(Manifeste m, String id) {
-  final e = m.ecran(id);
-  if (e == null) return false;
-  return estFerme(e) || (e.hub && modulesFermes.contains(e.module));
-}
+Magasin jeu() => Magasin.depuisDossier(['rbac', 'modulesActifs', 'modulesManifeste', 'audit', 'patients', 'produits', 'personnel', 'actes', 'assureurs', 'comptes', 'poches', 'donneurs']);
 
 List<String> get roles => [for (final r in donnees.matrice.rolesBruts) '${r['id']}'];
+
+/// La matrice D'ORIGINE : celle que `N.can()` de la maquette calcule du manifeste et des fiches du jeu, sans aucune fermeture (recalcul complet, sans référence).
+MatriceDroits origine(Magasin m) => superposerDroits(donnees.matrice, donnees.manifeste, rbac: m.collection('rbac').toutes);
 
 Future<void> monter(WidgetTester t, Magasin m, {String role = 'admin', String? ecran, double hauteur = 1000}) async {
   t.view.physicalSize = Size(1600, hauteur);
@@ -65,7 +43,7 @@ Future<void> monter(WidgetTester t, Magasin m, {String role = 'admin', String? e
       config: ConfigPoste(mode: ModePoste.fileul, role: role, nomPoste: 'Test'),
       magasin: m,
       ecranInitial: ecran,
-      horloge: () => DateTime(2026, 11, 6, 10)));
+      horloge: () => DateTime(2026, 11, 8, 10)));
   for (var i = 0; i < 3; i++) {
     await t.pump(const Duration(milliseconds: 100));
   }
@@ -79,37 +57,24 @@ void main() {
   tearDown(ToastsSigh.viderPourTests);
 
   final manifeste = donnees.manifeste;
-  final fermes = [for (final e in manifeste.tousLesEcrans) if (!e.hub && estFerme(e)) e];
+  final modulesOuverts = {'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10'};
 
   group('le jeu livré', () {
-    test('garde les deux fiches de l\'extraction et y ajoute sept fermetures datées, signées et motivées', () {
-      final fiches = Magasin.depuisDossier(['modulesActifs']).collection('modulesActifs').actives.toList();
-      expect(fiches.map((f) => f['id']), ['MOD01', 'MOD02', 'MOD03', 'MOD04', 'MOD05', 'MOD06', 'MOD07', 'MOD08', 'MOD09']);
+    test('ne porte AUCUNE fiche de fermeture ; la référence de l\'extraction garde banque de sang et donneurs ; aucun périmètre livré', () {
+      final fiches = Magasin.depuisDossier(['modulesActifs']).collection('modulesActifs').toutes;
+      expect(fiches, isEmpty, reason: 'M1 à M10 ouverts avec tout (Direction, 06/11/2026)');
       expect(donnees.referenceModules!.map((f) => f['id']), ['MOD01', 'MOD02'], reason: 'la référence est la configuration de l\'extraction de rbac.json');
-      expect(donnees.perimetreLivre, {'MOD03', 'MOD04', 'MOD05', 'MOD06', 'MOD07', 'MOD08', 'MOD09'});
-      expect(DonneesNavigation.appliquerPerimetreLivre, isTrue, reason: 'au poste, le périmètre livré s\'applique toujours');
-      for (final f in fiches.skip(2)) {
-        expect(f['actif'], false, reason: '${f['id']}');
-        expect(f['motif'], motifBaguidi);
-        expect(f['fermeLe'], '2026-11-06');
-        expect(f['fermePar'], 'Direction');
-      }
-      expect({for (final f in fiches.skip(2)) if (f['ecrans'] == null) f['module']}, modulesFermes);
-      final nommes = {for (final f in fiches.skip(2)) ...((f['ecrans'] as List?) ?? const []).map((e) => '$e')};
-      expect(nommes, {...statsCliniques, ...tableauxCliniques});
-      for (final id in nommes) {
-        expect(manifeste.ecran(id), isNotNull, reason: 'identifiant inconnu du manifeste : $id');
-      }
+      expect(donnees.perimetreLivre, isEmpty);
     });
 
-    test('les statistiques fermées sont TOUTES celles du pilotage qui ne lisent que la clinique ; M8, MECeF et le reste restent ouverts', () {
-      final nav = donnees.aChaud(jeu());
-      for (final e in manifeste.tousLesEcrans.where((e) => !e.hub && const {'M8', 'MECEF', 'M6', 'M7', 'M9', 'M10', 'M11', 'M12', 'M13', 'M14', 'GED', 'RAP'}.contains(e.module))) {
-        expect(nav.matrice.peutVoir('admin', e.id), donnees.matrice.peutVoir('admin', e.id), reason: '${e.id} ne doit pas changer');
+    test('les fiches RBAC du jeu rouvrent pharmacien et RH ; la référence les garde archivés', () {
+      final jeuRbac = jeu().collection('rbac').toutes;
+      for (final r in rolesRouverts) {
+        expect(jeuRbac.firstWhere((f) => f['role'] == r)['statut'], 'actif', reason: r);
+        expect(donnees.referenceRbac!.firstWhere((f) => f['role'] == r)['statut'], 'archive', reason: 'référence : $r');
+        expect(donnees.matrice.estArchive(r), isTrue, reason: 'rbac.json (engendré) les a extraits archivés');
       }
-      for (final id in ['dash-direction', 'dash-da', 'dash-admin', 'dash-croise', 'm10-cout-agent', 'm12-rentabilite-groupes', 'm12-tableau-decisionnel', 'dash-caissier', 'dash-comptable']) {
-        expect(nav.matrice.peutVoir('admin', id) || !donnees.matrice.peutVoir('admin', id), isTrue, reason: '$id reste ouvert');
-      }
+      expect({for (final f in jeuRbac) if (f['statut'] == 'archive') f['role']}, isEmpty, reason: 'plus aucun rôle archivé au jeu livré');
     });
   });
 
@@ -121,164 +86,137 @@ void main() {
       nav = donnees.aChaud(m);
     });
 
-    test('aucun écran fermé n\'est visible (matrice), au ruban ni dans les raccourcis permanents', () {
+    test('l\'inventaire des écrans visibles est celui de la matrice d\'origine : aucune fermeture sur M1 à M10, aucun rôle archivé', () {
+      final o = origine(m);
       expect(roles.length, greaterThanOrEqualTo(16));
       for (final role in roles) {
-        for (final e in fermes) {
-          expect(nav.matrice.peutVoir(role, e.id), isFalse, reason: '$role voit ${e.id}');
+        expect(nav.matrice.estArchive(role), isFalse, reason: '$role n\'est plus archivé');
+        for (final e in manifeste.tousLesEcrans.where((e) => !e.hub)) {
+          expect(nav.matrice.droit(role, e.id), o.droit(role, e.id), reason: '$role / ${e.id} : inventaire différent de la matrice d\'origine');
+          if (rolesRouverts.contains(role) || ecransRouverts.contains(e.id)) continue;
+          expect(nav.matrice.droit(role, e.id), donnees.matrice.droit(role, e.id), reason: '$role / ${e.id} : l\'ouverture ne change aucune autre case');
         }
-        final ruban = manifeste.ruban(nav.matrice, role, estMere: true);
-        for (final d in ruban) {
-          expect(d.nom, isNot('Soins'), reason: '$role : le domaine Soins disparaît, toutes ses rangées sont fermées');
-          for (final r in d.rangees) {
-            for (final e in r.ecrans) {
-              expect(estFerme(e), isFalse, reason: '$role : pastille ${e.id} au ruban');
-            }
-          }
+        for (final e in manifeste.tousLesEcrans.where((e) => modulesOuverts.contains(e.module))) {
+          expect(nav.matrice.fermetures?.ecranActif(e.id, e.module) ?? true, isTrue, reason: '$role : ${e.id} porte une fermeture');
         }
-        for (final r in manifeste.raccourcis(ruban)) {
-          expect(cibleFermee(manifeste, r.hub), isFalse, reason: '$role : raccourci ${r.hub}');
+      }
+      expect(roles.where((r) => nav.matrice.peutVoir(r, 'm10-personnel')), contains('rh'));
+      expect(nav.matrice.peutVoir('pharmacien', 'm6-stock-detail') || nav.matrice.peutVoir('pharmacien', 'm6-dashboard'), isTrue);
+    });
+
+    test('la banque de sang et les donneurs : un rôle autorisé par la matrice d\'origine les voit au ruban, dans la recherche, et ouvre leur adresse', () {
+      final o = origine(m);
+      for (final id in ecransRouverts) {
+        final e = manifeste.ecran(id)!;
+        final autorises = [for (final r in roles) if (o.peutVoir(r, id)) r];
+        expect(autorises, containsAll(['laborantin', 'medecin', 'dm', 'admin', 'direction']), reason: id);
+        for (final role in roles) {
+          final attendu = o.peutVoir(role, id);
+          expect(donnees.matrice.peutVoir(role, id), isFalse, reason: 'rbac.json les a extraits fermés : $role / $id');
+          expect(nav.matrice.peutVoir(role, id), attendu, reason: '$role / $id');
+          expect(ecranOuvertAuRole(nav, role, id), attendu, reason: 'adresse directe : $role / $id');
+          final ruban = manifeste.ruban(nav.matrice, role, estMere: true);
+          final auRuban = [for (final d in ruban) for (final r in d.rangees) for (final x in r.ecrans) x.id].contains(id);
+          expect(auRuban, attendu, reason: 'ruban : $role / $id');
+          final trouve = [
+            for (final g in rechercheGlobale(requete: e.label, role: role, nav: nav, magasin: m)) for (final r in g.resultats) r.ecran
+          ].contains(id);
+          expect(trouve, attendu, reason: 'recherche « ${e.label} » : $role / $id');
         }
       }
     });
 
-    test('la recherche globale ne propose aucun écran, aucune rubrique, aucun patient d\'un module fermé', () {
-      final requetes = <String>{
-        for (final e in fermes) e.label,
-        for (final r in nav.barre.rubriques)
-          if (cibleFermee(manifeste, r.ecran)) r.label,
-        for (final p in m.collection('patients').actives.take(5)) '${p['nom']}',
-        'patient', 'consultation', 'hospitalisation', 'maternité', 'laboratoire', 'statistiques', 'tableau de bord',
-      }..removeWhere((q) => q.trim().length < 2);
+    test('les pages d\'accueil M1 à M10 et les actions rapides ne mènent à aucune activité fermée', () {
+      final o = origine(m);
+      expect(ecranOuvertAuRole(nav, 'pharmacien', 'hub-m6'), isTrue, reason: 'pharmacien rouvert : sa page d\'accueil M6');
+      expect(ecranOuvertAuRole(nav, 'rh', 'hub-m10'), isTrue, reason: 'RH rouvert : sa page d\'accueil M10');
       for (final role in roles) {
-        for (final q in requetes) {
-          for (final g in rechercheGlobale(requete: q, role: role, nav: nav, magasin: m)) {
-            for (final r in g.resultats) {
-              expect(cibleFermee(manifeste, r.ecran), isFalse, reason: '$role, « $q » : ${g.groupe} → ${r.ecran}');
-            }
-          }
+        for (final code in modulesOuverts) {
+          final hub = manifeste.ecran('hub-${code.toLowerCase()}');
+          if (hub == null) continue;
+          final attendu = manifeste.tousLesEcrans.any((e) => !e.hub && e.module == code && o.peutVoir(role, e.id));
+          // Une page d'accueil de module ne s'ouvre jamais hors de la matrice d'origine (celle d'un module décidé à chaud n'est pas relue : choix existant).
+          if (ecranOuvertAuRole(nav, role, hub.id)) expect(attendu, isTrue, reason: '$role : hub-$code ouvert sans écran visible');
         }
-      }
-    });
-
-    test('les pages d\'accueil de module des modules fermés sont fermées, et aucun hub ne montre de carte fermée', () {
-      for (final role in roles) {
-        for (final code in modulesFermes) {
-          expect(ecranOuvertAuRole(nav, role, 'hub-${code.toLowerCase()}'), isFalse, reason: '$role : hub-$code');
-        }
-        for (final hub in hubsDuManifeste) {
-          final entree = manifeste.ecran(hub);
-          if (entree == null) continue;
-          final mod = ModuleHub.depuis(manifeste, entree.module);
-          if (mod == null) continue;
-          for (final c in cartesDuHub(mod, nav, (id) => nav.matrice.peutVoir(role, id))) {
-            expect(cibleFermee(manifeste, c.id), isFalse, reason: '$role : carte ${c.id} du hub $hub');
-          }
-        }
-      }
-    });
-
-    test('ni les actions rapides de la barre, ni les accès rapides en tête de page ne mènent à un écran fermé', () {
-      for (final role in roles) {
         for (final a in actionsRapidesDuRole(nav, role)) {
-          expect(cibleFermee(manifeste, a.ecran), isFalse, reason: '$role : action rapide ${a.ecran}');
-        }
-        final ruban = manifeste.ruban(nav.matrice, role, estMere: true);
-        for (final d in ruban) {
-          for (final r in d.rangees) {
-            for (final e in r.ecrans) {
-              final cibles = <String>[];
-              for (final b in accesRapides(ecran: e, ruban: ruban, declarees: const [], aller: cibles.add).whereType<BoutonSigh>()) {
-                b.onPressed?.call();
-              }
-              for (final c in cibles) {
-                expect(cibleFermee(manifeste, c), isFalse, reason: '$role, sur ${e.id} : accès rapide $c');
-              }
-            }
-          }
-        }
-      }
-    });
-
-    test('les écrans ouverts gardent EXACTEMENT les droits de la matrice engendrée', () {
-      for (final role in roles) {
-        for (final e in manifeste.tousLesEcrans.where((e) => !e.hub && !estFerme(e))) {
-          expect(nav.matrice.droit(role, e.id), donnees.matrice.droit(role, e.id), reason: '$role / ${e.id}');
+          expect(ecranOuvertAuRole(nav, role, a.ecran), isTrue, reason: '$role : action rapide ${a.ecran}');
         }
       }
     });
   });
 
-  testWidgets('ADRESSE DIRECTE : un écran fermé (module entier, statistique, tableau de bord, hub) mène à « Activité fermée » avec le motif, administrateur compris', (t) async {
-    for (final id in ['m1-patients', 'm3-admissions', 'm5-demandes', 'hub-m2', 'm4-stats-maternite', 'dash-medecin']) {
+  testWidgets('ADRESSE DIRECTE : les écrans de M1 à M5 et la banque de sang s\'ouvrent, sans « Activité fermée »', (t) async {
+    for (final id in ['m1-patients', 'm3-admissions', 'm5-demandes', 'hub-m2', 'm4-stats-maternite', 'dash-medecin', 'm5-banque-sang', 'm5-donneurs']) {
       await monter(t, jeu(), ecran: id);
-      expect(find.byKey(const Key('activite-fermee')), findsOneWidget, reason: id);
-      expect(find.textContaining(motifBaguidi), findsWidgets, reason: id);
+      expect(find.byKey(const Key('activite-fermee')), findsNothing, reason: id);
       expect(t.takeException(), isNull, reason: id);
     }
     await t.pump(const Duration(seconds: 10));
   });
 
-  testWidgets('RUBAN : l\'administrateur n\'a plus de domaine Soins ; Financier (caisse), Logistique et Pilotage demeurent', (t) async {
+  testWidgets('RUBAN : l\'administrateur retrouve le domaine Soins avec la banque de sang et les donneurs', (t) async {
     await monter(t, jeu());
-    expect(find.byKey(const Key('domaine-Soins')), findsNothing);
-    for (final d in ['Accueil', 'Logistique', 'Financier', 'RH', 'Administration', 'Système', 'Pilotage']) {
+    for (final d in ['Accueil', 'Soins', 'Logistique', 'Financier', 'RH', 'Administration', 'Système', 'Pilotage']) {
       expect(find.byKey(Key('domaine-$d')), findsOneWidget, reason: d);
     }
-    await t.pump(const Duration(seconds: 10));
-  });
-
-  testWidgets('PAGE D\'ACCUEIL FERMÉE : chaque rôle dont l\'accueil est fermé retombe sur le premier écran de son ruban, sans écran vide ni exception', (t) async {
-    final nav = donnees.aChaud(jeu());
-    final concernes = [
-      for (final role in roles)
-        if (!nav.matrice.estArchive(role) && nav.matrice.accueil(role) != null && !nav.matrice.peutVoir(role, nav.matrice.accueil(role)!)) role
-    ];
-    expect(concernes, containsAll(['medecin', 'infirmier', 'laborantin']));
-    for (final role in concernes) {
-      await monter(t, jeu(), role: role);
-      expect(t.takeException(), isNull, reason: role);
-      expect(find.byKey(const Key('activite-fermee')), findsNothing, reason: '$role : l\'accueil de repli n\'est pas une activité fermée');
-      final ruban = manifeste.ruban(nav.matrice, role, estMere: false);
-      if (ruban.isEmpty) {
-        expect(find.text('Aucun module n’est ouvert à votre profil.'), findsOneWidget, reason: role);
-      } else {
-        expect(find.byKey(const Key('titre-page')), findsOneWidget, reason: '$role : une page est servie');
-      }
+    await t.tap(find.byKey(const Key('domaine-Soins')));
+    await t.pump();
+    if (find.byKey(const Key('panneau-ruban')).evaluate().isEmpty) {
+      await t.tap(find.byKey(const Key('domaine-Soins')));
+      await t.pump();
     }
+    expect(find.byKey(const Key('pastille-m5-banque-sang')), findsOneWidget);
+    expect(find.byKey(const Key('pastille-m5-donneurs')), findsOneWidget);
     await t.pump(const Duration(seconds: 10));
   });
 
-  testWidgets('cfg-modules AFFICHE les fermetures Baguidi ; rouvrir M1 d\'une bascule rend ses écrans au ruban, à chaud', (t) async {
+  testWidgets('LE MÉCANISME DEMEURE : cfg-modules ferme M1 (motif exigé) puis le rouvre ; fermé, le ruban et l\'adresse le disent, rouvert tout revient, à chaud', (t) async {
     final m = jeu();
     await monter(t, m, ecran: 'cfg-modules', hauteur: 4000);
-    expect(find.text(motifBaguidi), findsWidgets);
-    expect(find.text('Patients & Dossier médical'), findsWidgets);
-    expect(find.text('Statistiques cliniques'), findsWidgets);
-    expect(find.text('Tableaux de bord des postes cliniques'), findsWidgets);
-    expect(find.text('06/11/2026'), findsWidgets);
-    expect(find.byTooltip('Rouvrir le module M1'), findsOneWidget);
-    expect(find.byTooltip('Fermer le module M8'), findsOneWidget, reason: 'la caisse reste ouverte');
-    expect(donnees.aChaud(m).matrice.peutVoir('admin', 'm1-patients'), isFalse);
+    expect(find.byTooltip('Fermer le module M1'), findsOneWidget);
+    expect(find.byTooltip('Fermer le module M8'), findsOneWidget);
+    expect(donnees.aChaud(m).matrice.peutVoir('admin', 'm1-patients'), isTrue);
 
-    final bascule = find.byTooltip('Rouvrir le module M1');
-    await t.ensureVisible(bascule);
+    final fermer = find.byTooltip('Fermer le module M1');
+    await t.ensureVisible(fermer);
     await t.pump();
-    await t.tap(bascule);
+    await t.tap(fermer);
+    await t.pump(const Duration(milliseconds: 300));
+    await t.enterText(find.byType(TextField).last, 'Essai de la mécanique de fermeture');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Fermer l’activité').last);
+    await t.pump(const Duration(milliseconds: 400));
+    final f = m.collection('modulesActifs').toutes.firstWhere((x) => x['module'] == 'M1');
+    expect(f['actif'], false);
+    expect(donnees.aChaud(m).matrice.peutVoir('admin', 'm1-patients'), isFalse, reason: 'fermé : l\'écran quitte la matrice à chaud');
+    expect(donnees.aChaud(m).matrice.peutVoir('admin', 'm2-agenda'), isTrue, reason: 'fermer M1 ne ferme que M1');
+
+    final rouvrir = find.byTooltip('Rouvrir le module M1');
+    await t.ensureVisible(rouvrir);
+    await t.pump();
+    await t.tap(rouvrir);
     await t.pump(const Duration(milliseconds: 300));
     await t.tap(find.widgetWithText(BoutonSigh, 'Rouvrir l’activité').last);
     await t.pump(const Duration(milliseconds: 400));
-
-    final f = m.collection('modulesActifs').toutes.firstWhere((x) => x['id'] == 'MOD03');
-    expect(f['actif'], true, reason: 'rouverte, la fiche reste (RG-14)');
+    expect(m.collection('modulesActifs').toutes.firstWhere((x) => x['module'] == 'M1')['actif'], true, reason: 'rouverte, la fiche reste (RG-14)');
     expect(m.collection('audit').toutes.any((a) => '${a['action']}'.contains('Réouverture')), isTrue, reason: 'RG-12');
     final nav = donnees.aChaud(m);
     expect(nav.matrice.peutVoir('admin', 'm1-patients'), isTrue);
     expect(nav.matrice.droit('admin', 'm1-patients'), donnees.matrice.droit('admin', 'm1-patients'));
-    expect(nav.matrice.peutVoir('admin', 'm2-agenda'), isFalse, reason: 'M2 reste fermé');
-    await t.pump();
-    await t.pump(const Duration(milliseconds: 200));
-    expect(find.byKey(const Key('domaine-Soins')), findsOneWidget, reason: 'la coque écoute modulesActifs : le domaine revient sans redémarrage');
     await t.pump(const Duration(seconds: 10));
+  });
+
+  test('LE MÉCANISME, au moteur : une fiche fermant la banque de sang la ferme pour tous, la fiche archivée ne ferme plus rien (RG-14)', () {
+    final m = jeu();
+    final col = m.collection('modulesActifs');
+    col.inserer({'id': 'MODT', 'module': 'M5', 'ecrans': ['m5-banque-sang'], 'libelle': 'Banque de sang', 'actif': false});
+    var nav = donnees.aChaud(m);
+    for (final r in roles) {
+      expect(nav.matrice.peutVoir(r, 'm5-banque-sang'), isFalse, reason: r);
+    }
+    expect(nav.matrice.peutVoir('admin', 'm5-donneurs'), isTrue);
+    col.archiver('MODT');
+    nav = donnees.aChaud(m);
+    expect(nav.matrice.peutVoir('admin', 'm5-banque-sang'), isTrue);
   });
 }

@@ -17,8 +17,8 @@ final donnees = DonneesNavigation.depuisDossier();
 /// Les deux fiches de la configuration d'extraction de `rbac.json` (banque de sang, transfusion), RÉFÉRENCE de la superposition.
 const ficheExtraction = {'MOD01', 'MOD02'};
 
-/// Le jeu livré, ramené à la configuration d'extraction : les fermetures du périmètre de la Clinique Baguidi (M1 à M5, statistiques et tableaux de bord
-/// cliniques, voir `fermetures_baguidi_test.dart`) sont rouvertes par archivage (RG-14), pour éprouver ici le MÉCANISME sur le laboratoire ouvert.
+/// Le jeu livré, ramené à la configuration d'extraction : depuis le 06/11/2026 le jeu livré ne ferme plus rien (M1 à M10 rouverts, banque de sang et donneurs
+/// comprises) ; on y REPOSE ici les deux fiches de l'extraction (banque de sang, donneurs) pour éprouver le MÉCANISME de fermeture et de réouverture.
 Magasin jeu() {
   final m = Magasin.depuisDossier(['rbac', 'modulesActifs', 'audit', 'poches', 'donneurs', 'produits', 'lots', 'demandesAnalyses', 'examensLabo']);
   rouvrirPerimetreBaguidi(m);
@@ -26,8 +26,9 @@ Magasin jeu() {
 }
 
 void rouvrirPerimetreBaguidi(Magasin m) {
-  for (final f in m.collection('modulesActifs').actives.toList()) {
-    if (!ficheExtraction.contains(f['id'])) m.collection('modulesActifs').archiver(f['id']);
+  final col = m.collection('modulesActifs');
+  for (final f in donnees.referenceModules!) {
+    if (col.toutes.every((x) => x['id'] != f['id'])) col.inserer({...f});
   }
 }
 
@@ -70,8 +71,7 @@ void main() {
     // La RÉFÉRENCE de la superposition porte les deux fiches de l'extraction ; le jeu livré les garde et y ajoute le périmètre Baguidi.
     expect(donnees.referenceModules!.map((f) => f['id']), ficheExtraction, reason: 'rbac.json a été engendré banque de sang et transfusion fermées');
     final livre = Magasin.depuisDossier(['modulesActifs']).collection('modulesActifs').actives.map((f) => f['id']).toList();
-    expect(livre.take(2), ficheExtraction);
-    expect(livre, hasLength(9), reason: 'les deux fiches de l\'extraction et les sept fermetures du périmètre Baguidi');
+    expect(livre, isEmpty, reason: 'le jeu livré ne ferme plus rien : M1 à M10, banque de sang et donneurs ouverts (Direction, 06/11/2026)');
     final m = jeu();
     expect(m.collection('modulesActifs').actives, hasLength(2), reason: 'ramené à l\'extraction : banque de sang et transfusion fermées');
     await monter(t, m, ecran: 'm5-banque-sang');

@@ -15,6 +15,7 @@ import 'package:sigh_poste/mere/activation.dart';
 import 'package:sigh_poste/mere/client_mere.dart';
 import 'package:sigh_poste/modules/registre.dart';
 
+import 'aide_etat_maquette.dart';
 import 'aide_polices.dart';
 import 'activation_test.dart' show FauxService;
 import 'parite/extracteur.dart';
@@ -43,7 +44,7 @@ void main() {
         : null;
   }
 
-  final magasin = Magasin.depuisDossier(Magasin.collectionsDuJeu);
+  final magasin = avecEtatMaquette(Magasin.depuisDossier(Magasin.collectionsDuJeu));
   // Le jeu de la maquette n'a aucune prescription en file (elles naissent d'une consultation) : on en pose deux pour que la file se DESSINE
   // et que sa parité soit mesurée sur une file réelle, pas sur son état vide.
   final f0 = magasin.collection('factures').actives.first;
