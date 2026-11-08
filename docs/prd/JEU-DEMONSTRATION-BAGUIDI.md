@@ -1,6 +1,8 @@
 # Jeu de démonstration SIGH-CBG : proposition (06/11/2026)
 
-> **RÉVISION requise (06/11/2026, nuit)** : M1 à M10 sont ACTIFS (PRD P0-11). Les principes 6 et le §3 « un module fermé a ses collections vides » ne tiennent plus : le jeu doit aussi peupler patients, consultations, hospitalisations, analyses et maternité, et chaque spécialité d'un praticien rattaché. Volumes à rehausser après réponse à Q35.
+> **SUPPLANTÉ PAR LA VERSION 2 (08/11/2026), en fin de fichier.** Les sections 1 à 13 ci-dessus sont conservées pour mémoire.
+>
+> **Ancienne mention (06/11/2026, nuit)** : M1 à M10 sont ACTIFS (PRD P0-11). Les principes 6 et le §3 « un module fermé a ses collections vides » ne tiennent plus : le jeu doit aussi peupler patients, consultations, hospitalisations, analyses et maternité, et chaque spécialité d'un praticien rattaché. Volumes à rehausser après réponse à Q35.
 >
 > **Statut : PROPOSITION à valider par la Direction de la Clinique Baguidi.** Décision déjà rendue : un jeu créé pour Baguidi, pas de registres vides (Q4). Tout ce qui suit est fictif sauf ce qui est marqué « réel » ; rien n'y est présenté comme une donnée officielle de la clinique. Le dépôt étant public, aucune donnée de patient réel, aucune donnée personnelle hors les noms des huit agents (déjà publics dans `baguidi-sources`, demandés par la Direction).
 
@@ -112,3 +114,48 @@ Garde-fous : le contrôle d'identité (0 occurrence Nassiera Too, patronymes des
 | Q33 | titulaire du rôle stock | rôle prêt, sans compte |
 | | noms des 6 entreprises fictives | ceux du §4, remplaçables |
 | | grille des salaires | valeurs d'attente du §3 |
+
+---
+
+# Version 2 (08/11/2026) : jeu de démonstration corrigé
+
+Corrige la version 1 selon les décisions rendues depuis : M1 à M10 actifs avec tout, SIGH-CBG remplace le logiciel de caisse patient (plus de report des recettes), banque de sang activée, quatorze spécialités, sigle CBG, exploitant BAGUIDI Rafiou.
+
+## Décisions à prendre (ma proposition en gras)
+
+| # | Décision | Proposition | Alternative |
+|---|---|---|---|
+| J1 | Étendue du jeu | **Tous les modules actifs sont peuplés et cohérents entre eux** (un patient traverse accueil, consultation, analyse, facture, encaissement, écriture) | seulement stock, achats, RH, paie, compta |
+| J2 | Fenêtre de temps | **01/08/2026 au 07/11/2026** | trois mois glissants |
+| J3 | Personnes réelles | **Les 9 comptes de la maquette, « BAGUIDI Rafiou » (orthographe du RCCM)**, fiches personnel complètes sauf champs personnels vides (CNSS, naissance) | ajouter d'autres agents quand la Direction les fournit |
+| J4 | Mots de passe | **Aucun mot de passe dans le dépôt** : les 9 comptes arrivent en état « mot de passe à définir », l'administrateur les active à l'installation (changement imposé à la première connexion) | mot de passe provisoire commun documenté (déconseillé : dépôt public) |
+| J5 | Praticiens des spécialités | **Dix à douze vacataires FICTIFS** (cardiologue, endocrinologue, neurologue, pédiatre, ophtalmologue, urologue, rhumatologue, orthophoniste, kinésithérapeute, gynécologue, chirurgien, échographiste) rangés dans les prestataires de M10, marqués « fictif de démonstration », sans compte | rattacher les spécialités aux seuls agents réels (faux : un seul médecin) |
+| J6 | Entreprises clientes (médecine du travail) | **6 entreprises fictives** avec convention de visites (noms du v1, remplaçables) | attendre vos vraies conventions |
+| J7 | Tarifs | **Valeurs d'attente héritées, toutes re-marquées provisoires** ; pour les actes propres à la médecine du travail (visite d'embauche, périodique, de reprise, fiche d'aptitude) des tarifs d'attente marqués provisoires aussi (valeurs à corriger par vous) | laisser ces actes sans prix (bloque la facturation) |
+| J8 | Assureurs | **Les 13 compagnies du marché conservées** comme référentiel ; conventions et souscripteurs fictifs | liste Baguidi à fournir |
+| J9 | Plan comptable | **SYSCOHADA révisé complet (1 332 comptes)** pris du classeur Baguidi (`plan-comptable-syscohada-revise.csv`), AIB 5 %, calendrier fiscal hérité avec CNSS au 15 | plan réduit de 112 comptes |
+| J10 | Comptabilité | **Exercice 2026 sans bilan d'ouverture ni liasse** (dits à l'écran) ; écritures produites par les moteurs, équilibrées par construction ; une échéance dépassée ; une journée de caisse non arrêtée | inventer une ouverture (refusé : rien d'officiel ne s'invente) |
+| J11 | Fixtures de test | **Pseudonymisation** : les fixtures et vecteurs issus de Nassiera Too (noms d'agents) reçoivent la MÊME table de pseudonymes des deux côtés, donc la parité des tests tient, et plus aucun nom réel de l'autre clinique n'y figure ; le jeu LIVRÉ est entièrement Baguidi | conserver les noms d'origine dans les tests (visibles dans un dépôt public) |
+| J12 | Générateur | **Un générateur en Dart** (`apps/poste/tool`), graine fixe, qui appelle les moteurs de `packages/domaine` (facture, encaissement, avoir, écriture) : les invariants (RG-03, RG-10) tiennent par construction | générateur Node écrit à part (recopie des règles, divergera) |
+| J13 | Découpage du travail | **Quatre sous-lots, un agent chacun** : (1) référentiels et personnes, (2) RH et paie, (3) stock, achats, facturation, caisse, comptabilité, (4) clinique M1 à M5 | un seul lot (trop gros pour un agent) |
+| J14 | Dépôt | **Passer `sighcbg` en privé avant de pousser le code** : il contient le code de l'éditeur, les noms des 9 agents réels et le périmètre contractuel | rester public |
+
+## Volumes proposés
+
+| Domaine | Volume |
+|---|---|
+| Patients | 120 (80 salariés des 6 entreprises, 15 assurés, 25 de passage) ; 2 cartes d'assurance expirées |
+| Consultations | 200 : 110 visites de médecine du travail (45 embauche, 55 périodiques, 10 reprise), 60 médecine générale, 30 de spécialité ; 40 dossiers de consultation complets |
+| Analyses et imagerie | 80 demandes (60 rendues), 25 demandes d'imagerie (cinq modalités) |
+| Hospitalisation et bloc | 8 admissions (6 mises en observation, 2 hospitalisations), 5 interventions avec compte rendu |
+| Maternité | 6 CPN, 3 accouchements, 3 naissances |
+| Banque de sang | 15 donneurs, 20 poches, 4 transfusions |
+| Facturation et caisse | ~350 factures encaissées par les moteurs, 3 avoirs, un arrêté de caisse par jour ouvré sauf un |
+| Assurances et créances | 18 créances (6 entreprises, 3 compagnies), 4 en retard de plus de 60 jours |
+| Stock et achats | 120 produits, 30 réactifs et consommables, 180 lots FEFO, ~900 mouvements, 12 besoins, 8 commandes, 6 livraisons, 6 factures fournisseurs (2 impayées) |
+| RH et paie | 9 agents, 24 bulletins (août et septembre validés, octobre en brouillon), aucune évaluation NS 131 saisie |
+| Comptabilité | ~450 lignes d'écritures équilibrées, 30 dépenses multi-lignes |
+
+## Garde-fous
+
+`controle-identite` à zéro sur le jeu livré ; chaque pièce comptable équilibrée ; aucune collection de module actif vide sans que l'écran le dise ; aucun numéro de téléphone ou d'urgence inventé ; aucun mot de passe ni donnée personnelle sensible dans le dépôt.
