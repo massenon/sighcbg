@@ -52,7 +52,6 @@ export const SUBSTITUTIONS = [
 // ne cite pas comme identité (sigle, forme juridique, autorisation, régime de TVA) ; Baguidi n'a ni forme, ni autorisation, ni régime renseignés.
 const PROPRES = {
   'fiscal-date.json': [
-    ['"sigle": "CBG"', '"sigle": "CBG"'],
     ['"telephones": [\n    "01 95 44 51 51",\n    "01 66 43 28 20"\n   ],', '"telephones": [\n    "95 74 69 56",\n    "95 95 99 14",\n    "97 09 34 99"\n   ],'],
     ['"forme": "Société à Responsabilité Limitée"', '"forme": ""'],
     ['"autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation": ""'],
@@ -62,7 +61,6 @@ const PROPRES = {
   // La version 1 de l'identité légale du jeu livré (collection `identiteLegale`, JSON compact) : la graine devient celle de Baguidi, avec les champs
   // que la maquette ne porte pas (nom court, activité, date du RCCM, n° d'enregistrement ONMB) ; forme, autorisation et régime de TVA restent VIDES.
   'identiteLegale.json': [
-    ['"sigle":"CBG"', '"sigle":"CBG","nomCourt":"CLINIQUE BAGUIDI","activite":"CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE"'],
     ['"forme":"Société à Responsabilité Limitée"', '"forme":""'],
     ['"telephones":["01 95 44 51 51","01 66 43 28 20"]', '"telephones":["95 74 69 56","95 95 99 14","97 09 34 99"]'],
     ['"autorisation":"N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation":"","rccmDate":"19/03/2009","enregistrement":"0416/ONMB/ATL/2002"'],
