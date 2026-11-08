@@ -13,11 +13,35 @@ void main() {
   final brut = (jsonDecode(File('../rbac/data/rbac.json').readAsStringSync()) as Map).cast<String, Object?>();
   final base = MatriceDroits.depuisJson(brut);
   final manifeste = Manifeste.depuisJson((jsonDecode(File('../referentiels/data/manifeste.json').readAsStringSync()) as Map).cast<String, Object?>());
-  final jeuRbac = _lire('../../apps/poste/assets/donnees/jeu/rbac.json');
+  // Les fiches `rbac` de l'EXTRACTION (copie figée de l'ancien jeu : pharmacien et RH archivés). Le jeu livré les rouvre (06/11/2026) : voir `jeuRbacLivre`.
+  final jeuRbac = _lire('../../apps/poste/assets/donnees/rbac.reference.json');
+  final jeuRbacLivre = _lire('../../apps/poste/assets/donnees/jeu/rbac.json');
   // La configuration des activités avec laquelle `rbac.json` a été engendré (banque de sang et donneurs fermés), RÉFÉRENCE de la superposition. Le jeu
   // livré, lui, porte en plus les fermetures de la Clinique Baguidi (voir le dernier groupe).
   final jeuModules = _lire('../../apps/poste/assets/donnees/modulesActifs.reference.json');
-  final jeuLivre = _lire('../../apps/poste/assets/donnees/jeu/modulesActifs.json');
+  // Le jeu livré ne ferme plus rien depuis le 06/11/2026 (nuit) ; les fermetures du périmètre de l'ancien jeu (M1 à M5, statistiques et tableaux de bord
+  // cliniques) sont REPOSÉES ici, pour éprouver que le mécanisme de fermeture contre la configuration de l'extraction fonctionne toujours.
+  final livreReel = _lire('../../apps/poste/assets/donnees/jeu/modulesActifs.json');
+  Fiche ferm(String id, String module, {List<String>? ecrans, String code = ''}) => {
+        'id': id,
+        'code': code.isEmpty ? 'MODULE-$module' : code,
+        'module': module,
+        if (ecrans != null) 'ecrans': ecrans,
+        'actif': false,
+        'motif': 'Hors périmètre Clinique Baguidi (médecine du travail)',
+        'fermeLe': '2026-11-06',
+        'fermePar': 'Direction',
+      };
+  final jeuLivre = <Fiche>[
+    ...jeuModules,
+    ferm('MOD03', 'M1'),
+    ferm('MOD04', 'M2'),
+    ferm('MOD05', 'M3'),
+    ferm('MOD06', 'M4'),
+    ferm('MOD07', 'M5'),
+    ferm('MOD08', 'PIL', code: 'PIL-STATSCLI', ecrans: ['m4-stats-maternite', 'm2-stats-echographie', 'm5-stats-examens', 'm2-stats-consultations', 'm3-stats-bloc', 'm3-stats-hospitalisations']),
+    ferm('MOD09', 'DASH', code: 'DASH-POSTESCL', ecrans: ['dash-medecin', 'dash-infirmier', 'dash-laborantin', 'dash-aide-soignant', 'dash-echographiste', 'dash-chirurgien', 'dash-anesthesiste', 'dash-maternite', 'dash-patient']),
+  ];
 
   MatriceDroits calc({List<Fiche>? rbac, List<Fiche>? modules}) =>
       superposerDroits(base, manifeste, rbac: rbac ?? jeuRbac, modulesActifs: modules ?? jeuModules);
@@ -416,6 +440,37 @@ void main() {
     });
   });
 
+  group('JEU LIVRÉ du 06/11/2026 : tout est rouvert', () {
+    test('pharmacien et RH, archivés à l\'extraction, sont rouverts par le jeu : leurs écrans reparaissent, le reste de la matrice ne bouge pas', () {
+      final m = superposerDroits(base, manifeste,
+          rbac: jeuRbacLivre, modulesActifs: const [], referenceRbac: jeuRbac, referenceModules: jeuModules);
+      expect(base.estArchive('pharmacien') && base.estArchive('rh'), isTrue);
+      expect(m.estArchive('pharmacien') || m.estArchive('rh'), isFalse);
+      expect(m.peutVoir('pharmacien', 'm6-stock-detail'), isTrue);
+      expect(m.peutVoir('rh', 'm10-personnel'), isTrue);
+      final nouveaux = {'pharmacien', 'rh'};
+      for (final role in [for (final r in base.rolesBruts) '${r['id']}']) {
+        if (nouveaux.contains(role)) continue;
+        for (final e in manifeste.tousLesEcrans.where((e) => !e.hub && !const {'m5-banque-sang', 'm5-donneurs'}.contains(e.id))) {
+          expect(d(m, role, e.id), d(base, role, e.id), reason: '$role / ${e.id}');
+        }
+      }
+    });
+
+    test('la banque de sang et les donneurs, fermés dans la matrice engendrée, s\'ouvrent aux rôles que le manifeste y admet quand le jeu ne ferme plus rien', () {
+      final m = superposerDroits(base, manifeste,
+          rbac: jeuRbacLivre, modulesActifs: const [], referenceRbac: jeuRbac, referenceModules: jeuModules);
+      for (final id in ['m5-banque-sang', 'm5-donneurs']) {
+        expect(base.peutVoir('admin', id), isFalse, reason: 'engendrée fermée');
+        for (final role in ['admin', 'laborantin', 'medecin', 'dm', 'direction']) {
+          expect(m.peutVoir(role, id), isTrue, reason: '$role / $id');
+        }
+        expect(m.peutVoir('caissier', id), isFalse, reason: 'le manifeste ne l\'admet pas');
+      }
+      expect(m.fermetures!.fermeturePour('m5-banque-sang', 'M5'), isNull);
+    });
+  });
+
   group('JEU LIVRÉ (Clinique Baguidi) : les fermetures du périmètre prennent effet contre la configuration de l\'extraction', () {
     MatriceDroits livre({List<Fiche>? modules}) => superposerDroits(base, manifeste,
         rbac: jeuRbac, modulesActifs: modules ?? jeuLivre, referenceRbac: jeuRbac, referenceModules: jeuModules);
@@ -427,7 +482,8 @@ void main() {
     bool ferme(EcranNav e) => clinique.contains(e.module) || nommes.contains(e.id);
     final roles = [for (final r in base.rolesBruts) '${r['id']}'];
 
-    test('le jeu livré garde les deux fiches de l\'extraction et y ajoute les fermetures Baguidi', () {
+    test('le jeu livré est VIDE (M1 à M10 ouverts) ; une configuration de périmètre posée par-dessus la référence garde les deux fiches et ajoute les fermetures', () {
+      expect(livreReel, isEmpty, reason: 'Direction, 06/11/2026 : tout est ouvert, banque de sang et donneurs comprises');
       expect(jeuLivre.take(2).map((f) => f['id']), ['MOD01', 'MOD02']);
       expect(jeuModules.map((f) => f['id']), ['MOD01', 'MOD02']);
       final modules = {for (final f in jeuLivre) if (f['ecrans'] == null) '${f['module']}'};

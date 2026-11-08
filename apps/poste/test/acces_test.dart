@@ -416,8 +416,11 @@ void main() {
     });
 
     cas('rôle archivé : refus NOMMÉ en modale, tentative et journal écrits, aucune session', (t) async {
+      // Le pharmacien est ROUVERT au jeu livré (06/11/2026) : l'archivage est posé ici, comme le ferait m14-roles.
       final m = poste(utilisateurs: [
         {'id': 'U1', 'statut': 'actif', 'identifiant': 'p.pharma', 'nomComplet': 'Ancien Pharmacien', 'role': 'pharmacien'}
+      ], rbac: [
+        for (final r in jeu('rbac')) r['role'] == 'pharmacien' ? {...r, 'statut': 'archive'} : r
       ]);
       final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
       await mdp(t, m, 'U1', secret);

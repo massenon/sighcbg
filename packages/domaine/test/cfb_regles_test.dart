@@ -375,7 +375,9 @@ void main() {
     // `modulesActifs` est mesuré sur la configuration d'extraction : le jeu livré y ajoute les sept fermetures de la Clinique Baguidi (06/11/2026).
     final fiches = {
       for (final n in noms.where(connues.contains))
-        n: n == 'modulesActifs' ? liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync())) : jeu(n)
+        n: n == 'modulesActifs'
+            ? liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync()))
+            : n == 'rbac' ? liste(jsonDecode(File('$jeuDir/../rbac.reference.json').readAsStringSync())) : jeu(n)
     };
     test('contenu du jeu : collections, enregistrements, actifs, archivés', () {
       final stats = [for (final n in fiches.keys) cfbStatCollection(n, fiches[n]!)];

@@ -16,6 +16,7 @@ import 'package:sigh_poste/mere/client_mere.dart';
 import 'package:sigh_poste/shell/ecran_hub.dart';
 
 import 'activation_test.dart' show FauxService;
+import 'aide_etat_maquette.dart';
 import 'aide_polices.dart';
 import 'parite/extracteur.dart';
 
@@ -42,7 +43,7 @@ void main() {
           if ((m as Map)['alias'] != true && m['code'] == code) ...[for (final e in (m['ecrans'] as List)) '$e']
       ];
 
-  final magasin = Magasin.depuisDossier(Magasin.collectionsDuJeu);
+  final magasin = avecEtatMaquette(Magasin.depuisDossier(Magasin.collectionsDuJeu));
 
   Future<void> monter(WidgetTester t, String hub, String role) async {
     t.view.physicalSize = const Size(1440, 900);

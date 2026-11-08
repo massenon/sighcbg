@@ -30,7 +30,17 @@ class DonneesNavigation {
   final Map<String, Map<String, bool>> _modulesVoir;
 
   /// Le module est-il ouvert au rôle ? Inconnu (matrice sans modules) : réputé ouvert, ce sont alors les écrans qui décident.
-  bool moduleVisible(String role, String code) => _modulesVoir.isEmpty ? true : (_modulesVoir[role]?[code] ?? false);
+  ///
+  /// Un rôle que `rbac.json` a extrait ARCHIVÉ (pharmacien, RH) n'a que des refus dans `matriceModules` ; rouvert depuis (jeu livré du 06/11/2026), il est jugé sur ce que la matrice EN FORCE lui ouvre : le module est visible dès qu'un de ses écrans l'est. Tout autre rôle suit `matriceModules`.
+  bool moduleVisible(String role, String code) {
+    if (_modulesVoir.isEmpty) return true;
+    if (_modulesVoir[role]?[code] ?? false) return true;
+    if (matrice.estArchive(role)) return false;
+    // Seul un rôle extrait ARCHIVÉ (drapeau `archive` de `rbac.json`) est jugé sur ses écrans : pour les autres, le module décide (matrice engendrée).
+    final extraitArchive = matrice.rolesBruts.any((r) => '${r['id']}' == role && r['archive'] == true);
+    if (!extraitArchive) return false;
+    return manifeste.tousLesEcrans.any((e) => !e.hub && e.module == code && matrice.peutVoir(role, e.id));
+  }
 
   /// Rubriques de la recherche globale et actions rapides de la barre supérieure (engendrées depuis `nav.js`).
   final ReferentielBarre barre;
@@ -66,7 +76,8 @@ class DonneesNavigation {
   final List<Map<String, Object?>>? referenceRbac, referenceModules;
 
   /// Les identifiants des fiches d'activité que le JEU LIVRÉ ajoute à la configuration de l'extraction : le périmètre de l'établissement (Clinique
-  /// Baguidi : M1 à M5, statistiques et tableaux de bord cliniques, MOD03 à MOD09). Rouvrir l'une d'elles depuis cfg-modules la rouvre comme toute autre.
+  /// Baguidi : M1 à M5, statistiques et tableaux de bord cliniques, MOD03 à MOD09). Vide depuis le 06/11/2026 (nuit) : la Direction a rouvert M1 à M10 avec
+  /// tout, banque de sang et donneurs comprises ; le mécanisme demeure pour une fermeture de périmètre future. Rouvrir l'une d'elles depuis cfg-modules la rouvre comme toute autre.
   final Set<String> perimetreLivre;
 
   /// Le périmètre livré s'applique-t-il ? Toujours au poste. Les bancs d'essai des écrans de modules fermés (M1 à M5, écrits avant le 06/11/2026) le
@@ -99,6 +110,10 @@ class DonneesNavigation {
   String statut(String id) => '${_parite[id]?['statut'] ?? 'non commencé'}';
 
   /// La configuration des activités avec laquelle `rbac.json` a été engendré, RÉFÉRENCE de la superposition (relative au dossier des données).
+  /// Les fiches de la collection `rbac` avec lesquelles `rbac.json` a été engendré (copie figée de `jeu/rbac.json` à l'extraction : pharmacien et RH archivés).
+  /// Distincte du jeu livré : réactiver un rôle dans `jeu/rbac.json` doit être une DIFFÉRENCE avec l'extraction, donc effective.
+  static const fichierReferenceRbac = 'rbac.reference.json';
+
   static const fichierReferenceModules = 'modulesActifs.reference.json';
 
   /// Les fiches du jeu livré absentes de la référence de l'extraction.
@@ -150,7 +165,7 @@ class DonneesNavigation {
         manifeste: await rootBundle.loadString('assets/donnees/manifeste.json'),
         rbac: await rootBundle.loadString('assets/donnees/rbac.json'),
         parite: await rootBundle.loadString('assets/donnees/parite.json'),
-        fichesRbac: await rootBundle.loadString('assets/donnees/jeu/rbac.json'),
+        fichesRbac: await rootBundle.loadString('assets/donnees/$fichierReferenceRbac'),
         fichesModules: await rootBundle.loadString('assets/donnees/$fichierReferenceModules'),
         fichesJeuModules: await rootBundle.loadString('assets/donnees/jeu/modulesActifs.json'),
         rubriques: await rootBundle.loadString('assets/donnees/rubriques.json'),
@@ -163,7 +178,7 @@ class DonneesNavigation {
         manifeste: File('$dossier/manifeste.json').readAsStringSync(),
         rbac: File('$dossier/rbac.json').readAsStringSync(),
         parite: File('$dossier/parite.json').readAsStringSync(),
-        fichesRbac: _lireSiPresent('$dossier/jeu/rbac.json'),
+        fichesRbac: _lireSiPresent('$dossier/$fichierReferenceRbac'),
         fichesModules: _lireSiPresent('$dossier/$fichierReferenceModules'),
         fichesJeuModules: _lireSiPresent('$dossier/jeu/modulesActifs.json'),
         rubriques: _lireSiPresent('$dossier/rubriques.json'),
