@@ -119,6 +119,8 @@ Garde-fous : le contrôle d'identité (0 occurrence Nassiera Too, patronymes des
 
 # Version 2 (08/11/2026) : jeu de démonstration corrigé
 
+> **VALIDÉE par la Direction le 08/11/2026** : décisions J1 à J14 telles que proposées (propositions en gras), volumes inclus. J14 (passage de `sighcbg` en privé) reste une action de la Direction sur GitHub.
+
 Corrige la version 1 selon les décisions rendues depuis : M1 à M10 actifs avec tout, SIGH-CBG remplace le logiciel de caisse patient (plus de report des recettes), banque de sang activée, quatorze spécialités, sigle CBG, exploitant BAGUIDI Rafiou.
 
 ## Décisions à prendre (ma proposition en gras)
