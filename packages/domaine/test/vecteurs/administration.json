@@ -2,7 +2,7 @@
  "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-administration.js — ne pas éditer. Horloge : 30/10/2026 10 h.",
  "notes": {
   "ns131": {
-   "reference": "NS 131/07/DM/DA/CNT/2026",
+   "reference": "NS 131/07/DM/DA/CBG/2026",
    "objet": "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale",
    "version": 1,
    "dateSignature": "2026-07-13",
@@ -10,7 +10,7 @@
    "statut": "ACTIVE",
    "signataire": "BASSONGUI C. Séko Y., Directeur Médical",
    "ampliation": "Intéressés 41 — Archive 01",
-   "source": "DOC — Note de service NS 131/07/DM/DA/CNT/2026",
+   "source": "DOC — Note de service NS 131/07/DM/DA/CBG/2026",
    "mention": "Abroge toute disposition antérieure contraire.",
    "niveaux": [
     {
@@ -96,7 +96,7 @@
    ]
   },
   "ns132": {
-   "reference": "NS n° 132/07/DM/DA/CNT/2026",
+   "reference": "NS n° 132/07/DM/DA/CBG/2026",
    "objet": "Primes diverses",
    "version": 1,
    "dateSignature": "2026-07-13",
@@ -104,7 +104,7 @@
    "statut": "ACTIVE",
    "signataire": "BASSONGUI Chabi Séko, Directeur Médical",
    "recuPar": "KASSA A. B. Augustin — reçu le 13/07/2026",
-   "source": "DOC — Note de service NS 132/07/DM/DA/CNT/2026",
+   "source": "DOC — Note de service NS 132/07/DM/DA/CBG/2026",
    "mention": "Abroge toute disposition antérieure contraire.",
    "primes": [
     {
@@ -300,8 +300,8 @@
    ],
    "onglets": [],
    "cartes": [
-    "NS 131/07/DM/DA/CNT/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Version 1 ACTIVE Ouvrir le moteur",
-    "NS n° 132/07/DM/DA/CNT/2026 Primes diverses Version 1 ACTIVE Ouvrir le moteur"
+    "NS 131/07/DM/DA/CBG/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Version 1 ACTIVE Ouvrir le moteur",
+    "NS n° 132/07/DM/DA/CBG/2026 Primes diverses Version 1 ACTIVE Ouvrir le moteur"
    ],
    "tableaux": [
     {
@@ -409,8 +409,8 @@
    "boutons": []
   },
   "titresCartes": [
-   "NS 131/07/DM/DA/CNT/2026",
-   "NS n° 132/07/DM/DA/CNT/2026"
+   "NS 131/07/DM/DA/CBG/2026",
+   "NS n° 132/07/DM/DA/CBG/2026"
   ],
   "badges": [
    [
@@ -425,8 +425,8 @@
    ]
   ],
   "descListes": [
-   "Référence NS 131/07/DM/DA/CNT/2026 Objet Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI C. Séko Y., Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 131/07/DM/DA/CNT/2026",
-   "Référence NS n° 132/07/DM/DA/CNT/2026 Objet Primes diverses Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI Chabi Séko, Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 132/07/DM/DA/CNT/2026"
+   "Référence NS 131/07/DM/DA/CBG/2026 Objet Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI C. Séko Y., Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 131/07/DM/DA/CBG/2026",
+   "Référence NS n° 132/07/DM/DA/CBG/2026 Objet Primes diverses Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI Chabi Séko, Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 132/07/DM/DA/CBG/2026"
   ],
   "badgesFonctions": [
    [
@@ -3513,7 +3513,7 @@
     "facture": true,
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25"
+    "patientCode": "CBG/1/25"
    },
    {
     "id": "AMB2",
@@ -3530,7 +3530,7 @@
     "facture": true,
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26"
+    "patientCode": "CBG/2/26"
    },
    {
     "id": "AMB3",
@@ -3547,7 +3547,7 @@
     "facture": false,
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26"
+    "patientCode": "CBG/3/26"
    },
    {
     "id": "AMB4",
@@ -3564,7 +3564,7 @@
     "facture": true,
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26"
+    "patientCode": "CBG/4/26"
    },
    {
     "id": "AMB5",
@@ -3581,7 +3581,7 @@
     "facture": false,
     "patientId": "PAT0005",
     "patient": "TAKI Ganiou",
-    "patientCode": "CNT/5/26"
+    "patientCode": "CBG/5/26"
    },
    {
     "id": "AMB6",
@@ -3598,7 +3598,7 @@
     "facture": false,
     "patientId": "PAT0006",
     "patient": "DIEYABIDI Bibata",
-    "patientCode": "CNT/6/25"
+    "patientCode": "CBG/6/25"
    },
    {
     "id": "AMB7",
@@ -3615,26 +3615,26 @@
     "facture": true,
     "patientId": "PAT0007",
     "patient": "OROU YO Adissa",
-    "patientCode": "CNT/7/25"
+    "patientCode": "CBG/7/25"
    }
   ],
   "chauffeur": "TCHANE Nourou",
   "accompagnant": "TAKI Alimatou",
   "patients": [
    {
-    "code": "CNT/1/25",
+    "code": "CBG/1/25",
     "nom": "TCHANE",
     "prenom": "Bertine",
     "id": "PAT0001"
    },
    {
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "BAKO",
     "prenom": "Boukari",
     "id": "PAT0002"
    },
    {
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "N’TCHA",
     "prenom": "Yacoubou",
     "id": "PAT0003"
@@ -3688,7 +3688,7 @@
       [
        "AM-2026-0006",
        "30/10/2026 à 09h15",
-       "DIEYABIDI Bibata CNT/6/25",
+       "DIEYABIDI Bibata CBG/6/25",
        "Accident de la voie publique",
        "Clinique",
        "4",
@@ -3702,7 +3702,7 @@
       [
        "AM-2026-0005",
        "30/10/2026 à 07h15",
-       "TAKI Ganiou CNT/5/26",
+       "TAKI Ganiou CBG/5/26",
        "Évacuation sanitaire",
        "CHD Atacora",
        "15",
@@ -3716,7 +3716,7 @@
       [
        "AM-2026-0004",
        "27/10/2026 à 03h15",
-       "PARAISO Sabi CNT/4/26",
+       "PARAISO Sabi CBG/4/26",
        "Urgence obstétricale",
        "Hôpital de zone de Tanguiéta",
        "52",
@@ -3730,7 +3730,7 @@
       [
        "AM-2026-0007",
        "25/10/2026 à 18h15",
-       "OROU YO Adissa CNT/7/25",
+       "OROU YO Adissa CBG/7/25",
        "Urgence médicale",
        "CHD Atacora",
        "10",
@@ -3744,7 +3744,7 @@
       [
        "AM-2026-0002",
        "10/10/2026 à 22h15",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "Transfert inter-hospitalier",
        "CNHU-HKM Cotonou",
        "480",
@@ -3758,7 +3758,7 @@
       [
        "AM-2026-0003",
        "01/10/2026 à 14h15",
-       "N’TCHA Yacoubou CNT/3/26",
+       "N’TCHA Yacoubou CBG/3/26",
        "Retour à domicile",
        "Domicile — Tchirimina",
        "7",
@@ -3772,7 +3772,7 @@
       [
        "AM-2026-0001",
        "10/09/2026 à 08h15",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "Urgence médicale",
        "CHD Atacora",
        "12",
@@ -3990,7 +3990,7 @@
     ],
     [
      "Dossier",
-     "CNT/2/26"
+     "CBG/2/26"
     ],
     [
      "Motif",
@@ -4019,7 +4019,7 @@
    "tableaux": []
   },
   "detail": {
-   "texte": "BAKO Boukari AM-2026-0002 N° AM-2026-0002 Date et heure 10/10/2026 à 22h15 Patient BAKO Boukari CNT/2/26 Motif Transfert inter-hospitalier Destination CNHU-HKM Cotonou Km 480 Chauffeur TCHANE Nourou Accompagnant TAKI Alimatou Montant 245 000 État Terminée Facturation Facturée Patient CNT/2/26 — BAKO Boukari Imprimer Modifier Archiver",
+   "texte": "BAKO Boukari AM-2026-0002 N° AM-2026-0002 Date et heure 10/10/2026 à 22h15 Patient BAKO Boukari CBG/2/26 Motif Transfert inter-hospitalier Destination CNHU-HKM Cotonou Km 480 Chauffeur TCHANE Nourou Accompagnant TAKI Alimatou Montant 245 000 État Terminée Facturation Facturée Patient CBG/2/26 — BAKO Boukari Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -4028,7 +4028,7 @@
    ]
   },
   "creation": {
-   "modale": "Nouveau intervention Les champs marqués d’un astérisque sont obligatoires. Patient * CNT/1/25 — TCHANE Bertine Date et heure * Motif * Urgence médicale Transfer",
+   "modale": "Nouveau intervention Les champs marqués d’un astérisque sont obligatoires. Patient * CBG/1/25 — TCHANE Bertine Date et heure * Motif * Urgence médicale Transfer",
    "champs": [
     "Patient *",
     "Date et heure *",
@@ -4042,7 +4042,7 @@
     "Intervention facturée"
    ],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "",
     "motif": "Urgence médicale",
     "destination": "",
@@ -4110,16 +4110,16 @@
     ],
     "patientCode": [
      [
-      "CNT/1/25",
-      "CNT/1/25 — TCHANE Bertine"
+      "CBG/1/25",
+      "CBG/1/25 — TCHANE Bertine"
      ],
      [
-      "CNT/2/26",
-      "CNT/2/26 — BAKO Boukari"
+      "CBG/2/26",
+      "CBG/2/26 — BAKO Boukari"
      ],
      [
-      "CNT/3/26",
-      "CNT/3/26 — N’TCHA Yacoubou"
+      "CBG/3/26",
+      "CBG/3/26 — N’TCHA Yacoubou"
      ]
     ],
     "nbPatients": 198,
@@ -4143,7 +4143,7 @@
     "fiche": {
      "id": "AMBxmvuswn40cvmhl",
      "statut": "actif",
-     "patientCode": "CNT/8/25",
+     "patientCode": "CBG/8/25",
      "dateHeure": "2026-10-30T09:30",
      "motif": "Urgence médicale",
      "destination": "Centre de santé de Perma",
@@ -4185,7 +4185,7 @@
     "fiche": {
      "id": "AMBxmvuswn40xk0j8",
      "statut": "actif",
-     "patientCode": "CNT/9/26",
+     "patientCode": "CBG/9/26",
      "dateHeure": "2026-11-02T16:00",
      "motif": "Urgence médicale",
      "destination": "CHD Atacora",
@@ -4225,7 +4225,7 @@
   },
   "modification": {
    "valeurs": {
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "dateHeure": "2026-10-01T14:15",
     "motif": "Retour à domicile",
     "destination": "Domicile — Tchirimina",
@@ -4252,10 +4252,10 @@
      "facture": true,
      "patientId": "PAT0010",
      "patient": "SEIDOU Rachida",
-     "patientCode": "CNT/10/25"
+     "patientCode": "CBG/10/25"
     },
     "patient": {
-     "code": "CNT/10/25",
+     "code": "CBG/10/25",
      "id": "PAT0010",
      "nom": "SEIDOU Rachida"
     }
@@ -4311,7 +4311,7 @@
     {
      "id": "AMBxmvuswn40whd0a",
      "statut": "actif",
-     "libelle": "Ambulance CNT 02",
+     "libelle": "Ambulance CBG 02",
      "type": "clinique",
      "telephone": "01 66 43 28 20",
      "contact": "Chauffeur de garde",
@@ -4324,7 +4324,7 @@
     {
      "id": "AMBxmvuswn400pzkb",
      "statut": "actif",
-     "libelle": "Ambulance CNT 01",
+     "libelle": "Ambulance CBG 01",
      "type": "clinique",
      "telephone": "01 95 44 51 51",
      "contact": "TCHANE Nourou",
@@ -4376,7 +4376,7 @@
       ],
       "lignes": [
        [
-        "Ambulance CNT 01",
+        "Ambulance CBG 01",
         "Ambulance de la clinique",
         "01 95 44 51 51",
         "TCHANE Nourou",
@@ -4386,7 +4386,7 @@
         ""
        ],
        [
-        "Ambulance CNT 02",
+        "Ambulance CBG 02",
         "Ambulance de la clinique",
         "01 66 43 28 20",
         "Chauffeur de garde",
@@ -4454,7 +4454,7 @@
    {
     "id": "AMBR1",
     "statut": "actif",
-    "libelle": "Ambulance CNT 01",
+    "libelle": "Ambulance CBG 01",
     "type": "clinique",
     "telephone": "+229 01 23 45 67",
     "contact": "Chauffeur de garde",
@@ -4466,7 +4466,7 @@
    {
     "id": "AMBR2",
     "statut": "actif",
-    "libelle": "Ambulance CNT 02",
+    "libelle": "Ambulance CBG 02",
     "type": "clinique",
     "telephone": "+229 01 23 45 68",
     "telephone2": "+229 97 00 00 02",
@@ -4619,7 +4619,7 @@
        ""
       ],
       [
-       "Ambulance CNT 01",
+       "Ambulance CBG 01",
        "Ambulance de la clinique",
        "+229 01 23 45 67",
        "Chauffeur de garde",
@@ -4629,7 +4629,7 @@
        ""
       ],
       [
-       "Ambulance CNT 02",
+       "Ambulance CBG 02",
        "Ambulance de la clinique",
        "+229 01 23 45 68",
        "Chauffeur de garde",
@@ -4694,7 +4694,7 @@
   },
   "cartes": [
    {
-    "texte": "Ambulance CNT 02 Disponible Ambulance de la clinique — Natitingou — clinique +229 01 23 45 68 +229 97 00 00 02 Demander : Chauffeur de garde",
+    "texte": "Ambulance CBG 02 Disponible Ambulance de la clinique — Natitingou — clinique +229 01 23 45 68 +229 97 00 00 02 Demander : Chauffeur de garde",
     "classe": "vert",
     "liens": [
      [
@@ -4754,7 +4754,7 @@
     ]
    },
    {
-    "texte": "Ambulance CNT 01 En course Ambulance de la clinique — Natitingou — clinique +229 01 23 45 67 Demander : Chauffeur de garde",
+    "texte": "Ambulance CBG 01 En course Ambulance de la clinique — Natitingou — clinique +229 01 23 45 67 Demander : Chauffeur de garde",
     "classe": "blanc",
     "liens": [
      [
@@ -4818,17 +4818,7 @@
      ""
     ],
     [
-     "Ambulance Charlie",
-     "Transporteur privé",
-     "+229 96 00 00 07",
-     "—",
-     "Natitingou",
-     "Disponible",
-     "31/07/2026 (91 j)",
-     ""
-    ],
-    [
-     "Ambulance CNT 01",
+     "Ambulance CBG 01",
      "Ambulance de la clinique",
      "+229 01 23 45 67",
      "Chauffeur de garde",
@@ -4838,13 +4828,23 @@
      ""
     ],
     [
-     "Ambulance CNT 02",
+     "Ambulance CBG 02",
      "Ambulance de la clinique",
      "+229 01 23 45 68",
      "Chauffeur de garde",
      "Natitingou — clinique",
      "Disponible",
      "30/10/2026 (0 j)",
+     ""
+    ],
+    [
+     "Ambulance Charlie",
+     "Transporteur privé",
+     "+229 96 00 00 07",
+     "—",
+     "Natitingou",
+     "Disponible",
+     "31/07/2026 (91 j)",
      ""
     ],
     [
@@ -4950,7 +4950,7 @@
    ]
   },
   "bascule": {
-   "modale": "Disponibilité — Ambulance CNT 02 Disponibilité * Disponible En course Indisponible Précision Annuler Appliquer",
+   "modale": "Disponibilité — Ambulance CBG 02 Disponibilité * Disponible En course Indisponible Précision Annuler Appliquer",
    "options": [
     [
      "disponible",
@@ -4970,7 +4970,7 @@
     "fiche": {
      "id": "AMBR2",
      "statut": "actif",
-     "libelle": "Ambulance CNT 02",
+     "libelle": "Ambulance CBG 02",
      "type": "clinique",
      "telephone": "+229 01 23 45 68",
      "telephone2": "+229 97 00 00 02",
@@ -4984,7 +4984,7 @@
     "toasts": [
      [
       "Disponibilité mise à jour.",
-      "Ambulance CNT 02 — En course"
+      "Ambulance CBG 02 — En course"
      ]
     ],
     "kpis": [
@@ -5014,8 +5014,8 @@
      "Ambulance Bravo",
      "Ambulance Charlie",
      "Hôpital partenaire",
-     "Ambulance CNT 01",
-     "Ambulance CNT 02",
+     "Ambulance CBG 01",
+     "Ambulance CBG 02",
      "Ambulance Delta",
      "CHD Atacora — ambulance"
     ]
@@ -7076,7 +7076,7 @@
     {
      "id": "AMBR1",
      "statut": "actif",
-     "libelle": "Ambulance CNT 01",
+     "libelle": "Ambulance CBG 01",
      "type": "clinique",
      "telephone": "+229 01 23 45 67",
      "contact": "Chauffeur de garde",
@@ -7088,7 +7088,7 @@
     {
      "id": "AMBR2",
      "statut": "actif",
-     "libelle": "Ambulance CNT 02",
+     "libelle": "Ambulance CBG 02",
      "type": "clinique",
      "telephone": "+229 01 23 45 68",
      "telephone2": "+229 97 00 00 02",
@@ -7239,7 +7239,7 @@
       ""
      ],
      [
-      "Ambulance CNT 01",
+      "Ambulance CBG 01",
       "Ambulance de la clinique",
       "+229 01 23 45 67",
       "Chauffeur de garde",
@@ -7249,7 +7249,7 @@
       ""
      ],
      [
-      "Ambulance CNT 02",
+      "Ambulance CBG 02",
       "Ambulance de la clinique",
       "+229 01 23 45 68",
       "Chauffeur de garde",

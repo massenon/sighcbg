@@ -145,7 +145,7 @@ class _EtatStatsGardes extends State<EcranStatsGardes> {
             ],
             blocs: const [
               BlocTexte(
-                  'Comptage des vacations travaillées : gardes, permanences, soirées, entretien général et incinération. Les repos et congés en sont exclus. Ce décompte est celui qui multiplie les primes de garde et de permanence de la note de service NS n° 132/07/DM/DA/CNT/2026.',
+                  'Comptage des vacations travaillées : gardes, permanences, soirées, entretien général et incinération. Les repos et congés en sont exclus. Ce décompte est celui qui multiplie les primes de garde et de permanence de la note de service NS n° 132/07/DM/DA/CBG/2026.',
                   italique: true)
             ],
             signatures: [rhbSignSurveillant, rhbSignDaf]));

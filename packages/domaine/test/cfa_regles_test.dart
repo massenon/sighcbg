@@ -220,7 +220,7 @@ void main() {
               delivrees: 0 /* la base du pilote n'a pas été peuplée de pièces délivrées : le jeu du poste en porte 90 */),
           tp['kpis']);
     });
-    test('numérotation : <SIGLE> n°/n°/CNT/<direction>/<année>', () {
+    test('numérotation : <SIGLE> n°/n°/CBG/<direction>/<année>', () {
       final an = int.parse(jour.substring(0, 4));
       for (final d in liste(tp['details'])) {
         final t = types.firstWhere((x) => '${x['libelle']}' == '${(d['ligne'] as List)[1]}');

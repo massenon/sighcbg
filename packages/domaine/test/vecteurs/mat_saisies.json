@@ -1,17 +1,17 @@
 {
  "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-maternite.js — ne pas éditer.",
  "contexte": {
-  "femme": "CNT/1/25",
-  "femme2": "CNT/6/25",
+  "femme": "CBG/1/25",
+  "femme2": "CBG/6/25",
   "sageFemme": "BASSONGUI Chabi Séko",
-  "femmeSansNaissance": "CNT/6/25"
+  "femmeSansNaissance": "CBG/6/25"
  },
  "saisies": [
   {
    "nom": "suivi : admission complète",
    "ecran": "m4-maternite",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "termeSA": 30,
     "poids": 62.5,
     "dpa": "2026-10-05",
@@ -24,7 +24,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "termeSA",
@@ -63,7 +63,7 @@
     {
      "id": "SUIxmvvhms4bm7ht8",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "termeSA": 30,
      "poids": 62.5,
      "dpa": "2026-10-05",
@@ -89,7 +89,7 @@
    "nom": "suivi : dossier sans date de naissance (verrou nommant où corriger)",
    "ecran": "m4-maternite",
    "saisie": {
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "termeSA": 20,
     "poids": 55,
     "dpa": "2026-12-01"
@@ -98,7 +98,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "termeSA",
@@ -138,7 +138,7 @@
    "nbApres": 33,
    "toasts": [
     [
-     "La date de naissance manque au dossier CNT/6/25 : l’admission maternité exige l’âge (rapport du 27/08/2026). Compléter le dossier patient avant d’admettre."
+     "La date de naissance manque au dossier CBG/6/25 : l’admission maternité exige l’âge (rapport du 27/08/2026). Compléter le dossier patient avant d’admettre."
     ]
    ],
    "modaleOuverte": true
@@ -147,7 +147,7 @@
    "nom": "accouchement : césarienne avec actes",
    "ecran": "m4-accouchements",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "2026-08-15T22:10",
     "type": "Césarienne",
     "actes": [
@@ -163,7 +163,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -202,7 +202,7 @@
     {
      "id": "ACCxmvvhmsupqxye9",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "dateHeure": "2026-08-15T22:10",
      "type": "Césarienne",
      "actes": [
@@ -234,7 +234,7 @@
    "nom": "accouchement : eutocique (voie basse)",
    "ecran": "m4-accouchements",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "2026-08-14T03:00",
     "type": "Eutocique",
     "sageFemme": "BASSONGUI Chabi Séko",
@@ -245,7 +245,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -284,7 +284,7 @@
     {
      "id": "ACCxmvvhmt8lo3v4o",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "dateHeure": "2026-08-14T03:00",
      "type": "Eutocique",
      "actes": [],
@@ -313,14 +313,14 @@
    "nom": "accouchement : date manquante (refus)",
    "ecran": "m4-accouchements",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "sageFemme": "BASSONGUI Chabi Séko"
    },
    "titre": "Nouveau accouchement",
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -369,7 +369,7 @@
    "nom": "naissance : complète (alerte Apgar 5 min < 7)",
    "ecran": "m4-naissances",
    "saisie": {
-    "mereCode": "CNT/1/25",
+    "mereCode": "CBG/1/25",
     "dateHeure": "2026-08-15T22:30",
     "sexe": "F",
     "vivant": true,
@@ -389,7 +389,7 @@
    "initial": [
     [
      "mereCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -464,7 +464,7 @@
     {
      "id": "NAIxmvvhmtzgvgd6r",
      "statut": "actif",
-     "mereCode": "CNT/1/25",
+     "mereCode": "CBG/1/25",
      "dateHeure": "2026-08-15T22:30",
      "sexe": "F",
      "vivant": true,
@@ -504,7 +504,7 @@
    "nom": "naissance : PC manquant (refus, obligatoire)",
    "ecran": "m4-naissances",
    "saisie": {
-    "mereCode": "CNT/1/25",
+    "mereCode": "CBG/1/25",
     "dateHeure": "2026-08-15T22:30",
     "sexe": "M",
     "poids": 3.2,
@@ -516,7 +516,7 @@
    "initial": [
     [
      "mereCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -601,7 +601,7 @@
    "nom": "dossier bébé : même formulaire, même fiche",
    "ecran": "m4-dossier-bebe",
    "saisie": {
-    "mereCode": "CNT/6/25",
+    "mereCode": "CBG/6/25",
     "dateHeure": "2026-08-13T10:00",
     "sexe": "M",
     "poids": 3.4,
@@ -616,7 +616,7 @@
    "initial": [
     [
      "mereCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -691,7 +691,7 @@
     {
      "id": "NAIxmvvhmupi35ab2",
      "statut": "actif",
-     "mereCode": "CNT/6/25",
+     "mereCode": "CBG/6/25",
      "dateHeure": "2026-08-13T10:00",
      "sexe": "M",
      "vivant": true,
@@ -728,7 +728,7 @@
    "nom": "décès",
    "ecran": "m4-deces",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "2026-08-12T05:45",
     "cause": "Choc hémorragique",
     "lieu": "Maternité",
@@ -739,7 +739,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -770,7 +770,7 @@
     {
      "id": "DECxmvvhmv2p8kpkf",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "dateHeure": "2026-08-12T05:45",
      "cause": "Choc hémorragique",
      "lieu": "Maternité",
@@ -796,7 +796,7 @@
    "nom": "CPN : grossesse suivie (alerte âge hors fenêtre si le dossier le porte)",
    "ecran": "m4-cpn",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "ddr": "2026-02-01",
     "dpa": "2026-11-08",
     "termeSA": 28,
@@ -818,7 +818,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "ddr",
@@ -873,7 +873,7 @@
     {
      "id": "GROxmvvhmvg2mmvt8",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "ddr": "2026-02-01",
      "dpa": "2026-11-08",
      "termeSA": 28,
@@ -912,7 +912,7 @@
    "nom": "CPoN : hémorragie ante-partum SANS étiologie (refus)",
    "ecran": "m4-cpon",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-10",
     "type": "cpon1",
     "hemorragieAntePartum": true,
@@ -922,7 +922,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -979,7 +979,7 @@
    "nom": "CPoN : hémorragie ante-partum avec étiologie",
    "ecran": "m4-cpon",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-10",
     "type": "cpon2",
     "hemorragieAntePartum": true,
@@ -993,7 +993,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1040,7 +1040,7 @@
     {
      "id": "CPOxmvvhmw6a4yncv",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "date": "2026-08-10",
      "type": "cpon2",
      "hemorragieAntePartum": true,
@@ -1070,7 +1070,7 @@
    "nom": "CPoN : étiologie sans hémorragie (effacée)",
    "ecran": "m4-cpon",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-10",
     "type": "cpon3",
     "hemorragieAntePartum": false,
@@ -1081,7 +1081,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1128,7 +1128,7 @@
     {
      "id": "CPOxmvvhmwjkrlag6",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "date": "2026-08-10",
      "type": "cpon3",
      "hemorragieAntePartum": false,
@@ -1158,7 +1158,7 @@
    "nom": "PF : nouvelle acceptante, implant",
    "ecran": "m4-planification",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-12",
     "acceptante": "A",
     "methode": "jadelle",
@@ -1169,7 +1169,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1208,7 +1208,7 @@
     {
      "id": "PLAxmvvhmwx0zhyr2",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "date": "2026-08-12",
      "acceptante": "A",
      "methode": "jadelle",
@@ -1237,7 +1237,7 @@
    "nom": "SONU : fonctions triées, numériques",
    "ecran": "m4-sonu",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "2026-08-15T01:20",
     "gestite": 3,
     "parite": 2,
@@ -1255,7 +1255,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -1310,7 +1310,7 @@
     {
      "id": "REGxmvvhmxa98qspr",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "dateHeure": "2026-08-15T01:20",
      "gestite": 3,
      "parite": 2,
@@ -1346,7 +1346,7 @@
    "nom": "SONU : aucune fonction (refus)",
    "ecran": "m4-sonu",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateHeure": "2026-08-15T01:20",
     "evolution": "Favorable",
     "agent": "BASSONGUI Chabi Séko"
@@ -1355,7 +1355,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "dateHeure",
@@ -1420,7 +1420,7 @@
    "nom": "PTME",
    "ecran": "m4-ptme",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "vihTrimestre": "2",
     "vihType": "VIH-1",
     "agHbs": "Négatif",
@@ -1434,7 +1434,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "vihTrimestre",
@@ -1501,7 +1501,7 @@
     {
      "id": "PTMxmvvhmy0czdfp9",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "vihTrimestre": "2",
      "vihType": "VIH-1",
      "agHbs": "Négatif",
@@ -1536,7 +1536,7 @@
    "nom": "Case 27 : hospitalisée sans jours (refus)",
    "ecran": "m4-soins-curatifs",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-12",
     "diagnostic": "Paludisme",
     "femmeHospitalisee": true,
@@ -1546,7 +1546,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1607,7 +1607,7 @@
    "nom": "Case 27 : jours sans hospitalisation (refus)",
    "ecran": "m4-soins-curatifs",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-12",
     "diagnostic": "Paludisme",
     "femmeHospitalisee": false,
@@ -1618,7 +1618,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1679,7 +1679,7 @@
    "nom": "Case 27 : hospitalisée 3 jours",
    "ecran": "m4-soins-curatifs",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-12",
     "diagnostic": "Paludisme",
     "femmeObservee": true,
@@ -1693,7 +1693,7 @@
    "initial": [
     [
      "patientCode",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "date",
@@ -1744,7 +1744,7 @@
     {
      "id": "SOIxmvvhmz3fzc0v7",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "date": "2026-08-12",
      "trancheAge": "",
      "symptomes": "",
@@ -1782,7 +1782,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/177/25"
+     "CBG/177/25"
     ],
     [
      "dateHeure",
@@ -1823,7 +1823,7 @@
     "reference": "ACC-0002",
     "patientId": "PAT0177",
     "patient": "PARAISO Rabiatou",
-    "patientCode": "CNT/177/25",
+    "patientCode": "CBG/177/25",
     "dateHeure": "2026-01-09T02:21:00.000Z",
     "type": "Césarienne",
     "voie": "Césarienne",
@@ -1882,7 +1882,7 @@
    "prerempli": [
     [
      "mereCode",
-     "CNT/177/25"
+     "CBG/177/25"
     ],
     [
      "dateHeure",
@@ -1960,7 +1960,7 @@
     "accouchementId": "ACC0002",
     "dateHeure": "2026-01-09T02:21:00.000Z",
     "mere": "PARAISO Rabiatou",
-    "mereCode": "CNT/177/25",
+    "mereCode": "CBG/177/25",
     "mereId": "PAT0177",
     "sexe": "M",
     "poids": "3.09",
@@ -2034,7 +2034,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/143/26"
+     "CBG/143/26"
     ],
     [
      "dateHeure",
@@ -2067,7 +2067,7 @@
     "reference": "DEC-0002",
     "patientId": "PAT0143",
     "patient": "SOULE Adissa",
-    "patientCode": "CNT/143/26",
+    "patientCode": "CBG/143/26",
     "dateHeure": "2026-08-16T05:46:00.000Z",
     "cause": "Cause naturelle — grand âge",
     "lieu": "Hospitalisation",
@@ -2097,7 +2097,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/141/25"
+     "CBG/141/25"
     ],
     [
      "ddr",
@@ -2158,7 +2158,7 @@
     "reference": "CPN-0002",
     "patientId": "PAT0141",
     "patient": "KORA Marguerite",
-    "patientCode": "CNT/141/25",
+    "patientCode": "CBG/141/25",
     "ddr": "2026-03-11",
     "dpa": "2026-12-16",
     "termeSA": 24,
@@ -2336,7 +2336,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/163/25"
+     "CBG/163/25"
     ],
     [
      "date",
@@ -2385,7 +2385,7 @@
     "reference": "CPO-0002",
     "patientId": "PAT0163",
     "patient": "ZIME Ramatou",
-    "patientCode": "CNT/163/25",
+    "patientCode": "CBG/163/25",
     "accouchementRef": "ACC-0018",
     "date": "2026-09-14",
     "type": "cpon3",
@@ -2418,7 +2418,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/146/26"
+     "CBG/146/26"
     ],
     [
      "date",
@@ -2460,7 +2460,7 @@
     "date": "2025-12-15",
     "patientId": "PAT0146",
     "patient": "BOUKARI Ramatou",
-    "patientCode": "CNT/146/26",
+    "patientCode": "CBG/146/26",
     "acceptante": "A",
     "methode": "ligature",
     "methodeLabel": "Ligature des trompes",
@@ -2494,7 +2494,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/98/26"
+     "CBG/98/26"
     ],
     [
      "dateHeure",
@@ -2556,7 +2556,7 @@
     "dateHeure": "2026-01-19T03:50:00.000Z",
     "patientId": "PAT0098",
     "patient": "YENI Chantal",
-    "patientCode": "CNT/98/26",
+    "patientCode": "CBG/98/26",
     "gestite": 5,
     "parite": 3,
     "evacuation": false,
@@ -2597,7 +2597,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/70/26"
+     "CBG/70/26"
     ],
     [
      "vihTrimestre",
@@ -2666,7 +2666,7 @@
     "reference": "PTME-0002",
     "patientId": "PAT0070",
     "patient": "YARO Zoukanéri",
-    "patientCode": "CNT/70/26",
+    "patientCode": "CBG/70/26",
     "vihTrimestre": 3,
     "vihType": "VIH-2",
     "agHbs": "Négatif",
@@ -2719,7 +2719,7 @@
    "prerempli": [
     [
      "patientCode",
-     "CNT/172/26"
+     "CBG/172/26"
     ],
     [
      "date",
@@ -2773,7 +2773,7 @@
     "date": "2026-03-24",
     "patientId": "PAT0172",
     "patient": "BOUKARI Rachida",
-    "patientCode": "CNT/172/26",
+    "patientCode": "CBG/172/26",
     "trancheAge": "15–19 ans",
     "symptomes": "Fièvre et céphalées",
     "diagnostic": "Infection urinaire",
@@ -2800,7 +2800,7 @@
  "cpnVisite": {
   "ref": "CPN-0007",
   "avant": {
-   "texte": "RÉFÉRENCE CPN-0007 PATIENTE N’TCHA Alimatou — CNT/23/26 DDR 10/12/2025 DPA 16/09/2026 TERME 37 SA GROUPE SANGUIN O- DOSES SP SP1, SP2, SP3, SP4, SP5 MILDA Remise MÉBENDAZOLE Administré VAT VAT3 FER / FOLATES Fer / folates SAGE-FEMME TAKI Orou Visites CPN — la grille du formulaire national CPN DATE TA POIDS (KG) HU (CM) BDCF ALBUMINE SUCRE CPN 1 04/02/2026 12/7 70 18 153 — — CPN 2 01/04/2026 12/6 59 22 136 — — CPN 3 27/05/2026 9/9 72 29 158 — — CPN 4 22/07/2026 9/6 79 34 143 — — Ajouter une visite CPN",
+   "texte": "RÉFÉRENCE CPN-0007 PATIENTE N’TCHA Alimatou — CBG/23/26 DDR 10/12/2025 DPA 16/09/2026 TERME 37 SA GROUPE SANGUIN O- DOSES SP SP1, SP2, SP3, SP4, SP5 MILDA Remise MÉBENDAZOLE Administré VAT VAT3 FER / FOLATES Fer / folates SAGE-FEMME TAKI Orou Visites CPN — la grille du formulaire national CPN DATE TA POIDS (KG) HU (CM) BDCF ALBUMINE SUCRE CPN 1 04/02/2026 12/7 70 18 153 — — CPN 2 01/04/2026 12/6 59 22 136 — — CPN 3 27/05/2026 9/9 72 29 158 — — CPN 4 22/07/2026 9/6 79 34 143 — — Ajouter une visite CPN",
    "nbVisites": 4,
    "gar": false
   },

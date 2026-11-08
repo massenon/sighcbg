@@ -26,7 +26,7 @@
  "patients": [
   {
    "id": "PAT0001",
-   "code": "CNT/1/25",
+   "code": "CBG/1/25",
    "nom": "TCHANE",
    "prenom": "Bertine",
    "assureur": false,
@@ -35,7 +35,7 @@
   },
   {
    "id": "PAT0002",
-   "code": "CNT/2/26",
+   "code": "CBG/2/26",
    "nom": "BAKO",
    "prenom": "Boukari",
    "assureur": true,
@@ -44,7 +44,7 @@
   },
   {
    "id": "PAT0003",
-   "code": "CNT/3/26",
+   "code": "CBG/3/26",
    "nom": "N’TCHA",
    "prenom": "Yacoubou",
    "assureur": false,
@@ -53,7 +53,7 @@
   },
   {
    "id": "PAT0004",
-   "code": "CNT/4/26",
+   "code": "CBG/4/26",
    "nom": "PARAISO",
    "prenom": "Sabi",
    "assureur": false,
@@ -62,7 +62,7 @@
   },
   {
    "id": "PAT0005",
-   "code": "CNT/5/26",
+   "code": "CBG/5/26",
    "nom": "TAKI",
    "prenom": "Ganiou",
    "assureur": false,
@@ -71,7 +71,7 @@
   },
   {
    "id": "PAT0006",
-   "code": "CNT/6/25",
+   "code": "CBG/6/25",
    "nom": "DIEYABIDI",
    "prenom": "Bibata",
    "assureur": false,
@@ -80,7 +80,7 @@
   },
   {
    "id": "PAT0007",
-   "code": "CNT/7/25",
+   "code": "CBG/7/25",
    "nom": "OROU YO",
    "prenom": "Adissa",
    "assureur": false,
@@ -89,7 +89,7 @@
   },
   {
    "id": "PAT0008",
-   "code": "CNT/8/25",
+   "code": "CBG/8/25",
    "nom": "DOSSOU",
    "prenom": "Salifou",
    "assureur": true,
@@ -1330,7 +1330,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0001",
-   "patientCode": "CNT/1/25",
+   "patientCode": "CBG/1/25",
    "patient": "TCHANE Bertine"
   },
   {
@@ -1345,7 +1345,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0002",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patient": "BAKO Boukari"
   },
   {
@@ -1360,7 +1360,7 @@
    "diagnostic": "Diagnostic 3",
    "tarif": 3000,
    "patientId": "PAT0003",
-   "patientCode": "CNT/3/26",
+   "patientCode": "CBG/3/26",
    "patient": "N’TCHA Yacoubou"
   },
   {
@@ -1375,7 +1375,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0004",
-   "patientCode": "CNT/4/26",
+   "patientCode": "CBG/4/26",
    "patient": "PARAISO Sabi"
   },
   {
@@ -1390,7 +1390,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0005",
-   "patientCode": "CNT/5/26",
+   "patientCode": "CBG/5/26",
    "patient": "TAKI Ganiou"
   },
   {
@@ -1405,7 +1405,7 @@
    "diagnostic": "Diagnostic 6",
    "tarif": 3000,
    "patientId": "PAT0006",
-   "patientCode": "CNT/6/25",
+   "patientCode": "CBG/6/25",
    "patient": "DIEYABIDI Bibata"
   },
   {
@@ -1420,7 +1420,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0007",
-   "patientCode": "CNT/7/25",
+   "patientCode": "CBG/7/25",
    "patient": "OROU YO Adissa"
   },
   {
@@ -1435,7 +1435,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0001",
-   "patientCode": "CNT/1/25",
+   "patientCode": "CBG/1/25",
    "patient": "TCHANE Bertine"
   },
   {
@@ -1450,7 +1450,7 @@
    "diagnostic": "Diagnostic 9",
    "tarif": 3000,
    "patientId": "PAT0002",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patient": "BAKO Boukari",
    "dateInitiale": "2026-08-14T15:00:00.000Z",
    "motifReport": "Demande du patient"
@@ -1467,7 +1467,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0003",
-   "patientCode": "CNT/3/26",
+   "patientCode": "CBG/3/26",
    "patient": "N’TCHA Yacoubou",
    "motifNonHonore": "Ne s’est pas présenté",
    "constateLe": "2026-08-16T11:00:00.000Z"
@@ -1484,7 +1484,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0004",
-   "patientCode": "CNT/4/26",
+   "patientCode": "CBG/4/26",
    "patient": "PARAISO Sabi"
   },
   {
@@ -1499,7 +1499,7 @@
    "diagnostic": "Diagnostic 12",
    "tarif": 3000,
    "patientId": "PAT0005",
-   "patientCode": "CNT/5/26",
+   "patientCode": "CBG/5/26",
    "patient": "TAKI Ganiou"
   },
   {
@@ -1514,7 +1514,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0006",
-   "patientCode": "CNT/6/25",
+   "patientCode": "CBG/6/25",
    "patient": "DIEYABIDI Bibata"
   },
   {
@@ -1529,7 +1529,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0007",
-   "patientCode": "CNT/7/25",
+   "patientCode": "CBG/7/25",
    "patient": "OROU YO Adissa"
   },
   {
@@ -1544,7 +1544,7 @@
    "diagnostic": "Diagnostic 15",
    "tarif": 3000,
    "patientId": "PAT0008",
-   "patientCode": "CNT/8/25",
+   "patientCode": "CBG/8/25",
    "patient": "DOSSOU Salifou",
    "fraisDeplacement": 5000,
    "adresseIntervention": "Quartier Boriyouré"
@@ -1561,7 +1561,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0001",
-   "patientCode": "CNT/1/25",
+   "patientCode": "CBG/1/25",
    "patient": "TCHANE Bertine"
   },
   {
@@ -1576,7 +1576,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0002",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patient": "BAKO Boukari"
   },
   {
@@ -1591,7 +1591,7 @@
    "diagnostic": "Diagnostic 18",
    "tarif": 3000,
    "patientId": "PAT0003",
-   "patientCode": "CNT/3/26",
+   "patientCode": "CBG/3/26",
    "patient": "N’TCHA Yacoubou"
   },
   {
@@ -1606,7 +1606,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0004",
-   "patientCode": "CNT/4/26",
+   "patientCode": "CBG/4/26",
    "patient": "PARAISO Sabi",
    "_archivePar": "BASSONGUI Chabi Séko",
    "_archiveLe": "2026-08-16T12:00:00.000Z",
@@ -1624,7 +1624,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0005",
-   "patientCode": "CNT/5/26",
+   "patientCode": "CBG/5/26",
    "patient": "TAKI Ganiou"
   },
   {
@@ -1639,7 +1639,7 @@
    "diagnostic": "Diagnostic 21",
    "tarif": 3000,
    "patientId": "PAT0006",
-   "patientCode": "CNT/6/25",
+   "patientCode": "CBG/6/25",
    "patient": "DIEYABIDI Bibata"
   },
   {
@@ -1654,7 +1654,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0007",
-   "patientCode": "CNT/7/25",
+   "patientCode": "CBG/7/25",
    "patient": "OROU YO Adissa",
    "fraisDeplacement": 5000
   },
@@ -1670,7 +1670,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0008",
-   "patientCode": "CNT/8/25",
+   "patientCode": "CBG/8/25",
    "patient": "DOSSOU Salifou"
   },
   {
@@ -1685,7 +1685,7 @@
    "diagnostic": "Diagnostic 24",
    "tarif": 3000,
    "patientId": "PAT0001",
-   "patientCode": "CNT/1/25",
+   "patientCode": "CBG/1/25",
    "patient": "TCHANE Bertine"
   },
   {
@@ -1700,7 +1700,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0002",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patient": "BAKO Boukari",
    "dateInitiale": "2026-08-16T10:00:00.000Z",
    "motifReport": "Indisponibilité du praticien"
@@ -1717,7 +1717,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0003",
-   "patientCode": "CNT/3/26",
+   "patientCode": "CBG/3/26",
    "patient": "N’TCHA Yacoubou"
   },
   {
@@ -1732,7 +1732,7 @@
    "diagnostic": "Diagnostic 27",
    "tarif": 3000,
    "patientId": "PAT0004",
-   "patientCode": "CNT/4/26",
+   "patientCode": "CBG/4/26",
    "patient": "PARAISO Sabi",
    "fraisDeplacement": 5000
   },
@@ -1748,7 +1748,7 @@
    "diagnostic": "",
    "tarif": 5000,
    "patientId": "PAT0005",
-   "patientCode": "CNT/5/26",
+   "patientCode": "CBG/5/26",
    "patient": "TAKI Ganiou"
   },
   {
@@ -1763,7 +1763,7 @@
    "diagnostic": "",
    "tarif": 10000,
    "patientId": "PAT0006",
-   "patientCode": "CNT/6/25",
+   "patientCode": "CBG/6/25",
    "patient": "DIEYABIDI Bibata"
   },
   {
@@ -1837,7 +1837,7 @@
    "diagnostic": "Diagnostic 33",
    "tarif": 3000,
    "patientId": "PAT0001",
-   "patientCode": "CNT/1/25",
+   "patientCode": "CBG/1/25",
    "patient": "TCHANE Bertine",
    "sansRendezVous": true,
    "orientation": "Médecine générale"
@@ -2102,7 +2102,7 @@
   {
    "nom": "dans la fenêtre",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "medecin": "BASSONGUI Chabi Séko",
     "type": "Consultation",
     "date": "2026-08-17T09:00",
@@ -2118,7 +2118,7 @@
     {
      "id": "CONxmsvr62o0iehcx",
      "statut": "planifiee",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "medecin": "BASSONGUI Chabi Séko",
      "type": "Consultation",
      "date": "2026-08-17T09:00:00.000Z",
@@ -2367,7 +2367,7 @@
   {
    "nom": "avant la fenêtre : le début recule",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "medecin": "YENI M’PO Florent",
     "type": "Contrôle",
     "date": "2026-08-10T09:30",
@@ -2383,7 +2383,7 @@
     {
      "id": "CONxmsvr62o0mhgx5",
      "statut": "planifiee",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "medecin": "YENI M’PO Florent",
      "type": "Contrôle",
      "date": "2026-08-10T09:30:00.000Z",
@@ -2680,7 +2680,7 @@
   {
    "nom": "après la fenêtre : la fin avance",
    "saisie": {
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "medecin": "TAKI Orou",
     "type": "Urgence",
     "date": "2026-08-25T14:00",
@@ -2696,7 +2696,7 @@
     {
      "id": "CONxmsvr62o0r8kxw",
      "statut": "planifiee",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "medecin": "TAKI Orou",
      "type": "Urgence",
      "date": "2026-08-25T14:00:00.000Z",
@@ -3001,7 +3001,7 @@
   {
    "nom": "plus de trente et un jours : la fenêtre se recentre",
    "saisie": {
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "medecin": "BASSONGUI Chabi Séko",
     "type": "Consultation",
     "date": "2026-10-30T08:15",
@@ -3017,7 +3017,7 @@
     {
      "id": "CONxmsvr62o0mo17n",
      "statut": "planifiee",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "medecin": "BASSONGUI Chabi Séko",
      "type": "Consultation",
      "date": "2026-10-30T08:15:00.000Z",
@@ -3176,7 +3176,7 @@
   {
    "nom": "sans motif : formulaire en erreur, rien n’est écrit",
    "saisie": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "medecin": "BASSONGUI Chabi Séko",
     "type": "Consultation",
     "date": "2026-08-18T09:00",
@@ -3417,8 +3417,8 @@
    "saisie": null,
    "tiroir": {
     "titre": "BAKO Boukari",
-    "sous": "CNT/2/26 — 16/08/2026",
-    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+    "sous": "CBG/2/26 — 16/08/2026",
+    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
     "pied": [
      "Imprimer",
      "Éditer le rendez-vous",
@@ -3440,7 +3440,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "apres": {
@@ -3455,7 +3455,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "honoreLe": "2026-08-16T12:00:00.000Z"
    },
@@ -3694,8 +3694,8 @@
    },
    "tiroir": {
     "titre": "BAKO Boukari",
-    "sous": "CNT/2/26 — 16/08/2026",
-    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+    "sous": "CBG/2/26 — 16/08/2026",
+    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
     "pied": [
      "Imprimer",
      "Éditer le rendez-vous",
@@ -3717,7 +3717,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "apres": {
@@ -3732,7 +3732,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "dateInitiale": "2026-08-16T09:00:00.000Z",
     "motifReport": "Demande du patient",
@@ -3973,8 +3973,8 @@
    },
    "tiroir": {
     "titre": "BAKO Boukari",
-    "sous": "CNT/2/26 — 16/08/2026",
-    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+    "sous": "CBG/2/26 — 16/08/2026",
+    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
     "pied": [
      "Imprimer",
      "Éditer le rendez-vous",
@@ -3996,7 +3996,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "apres": {
@@ -4011,7 +4011,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "messages": [
@@ -4248,8 +4248,8 @@
    },
    "tiroir": {
     "titre": "BAKO Boukari",
-    "sous": "CNT/2/26 — 16/08/2026",
-    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+    "sous": "CBG/2/26 — 16/08/2026",
+    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
     "pied": [
      "Imprimer",
      "Éditer le rendez-vous",
@@ -4271,7 +4271,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "apres": {
@@ -4286,7 +4286,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "motifNonHonore": "Patient absent, injoignable",
     "constateLe": "2026-08-16T12:00:00.000Z"
@@ -4525,8 +4525,8 @@
    },
    "tiroir": {
     "titre": "BAKO Boukari",
-    "sous": "CNT/2/26 — 16/08/2026",
-    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+    "sous": "CBG/2/26 — 16/08/2026",
+    "texte": "Référence C00002 Date 16/08/2026 à 09h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien BASSONGUI Chabi Séko Type Consultation Statut Planifiée Tarif 10 000 FCFA Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Non renseigné Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
     "pied": [
      "Imprimer",
      "Éditer le rendez-vous",
@@ -4548,7 +4548,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    "apres": {
@@ -4563,7 +4563,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "_archivePar": "BASSONGUI Chabi Séko",
     "_archiveLe": "2026-08-16T12:00:00.000Z",
@@ -4814,7 +4814,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -4829,7 +4829,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    {
@@ -4844,7 +4844,7 @@
     "diagnostic": "Diagnostic 3",
     "tarif": 3000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -4859,7 +4859,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi"
    },
    {
@@ -4874,7 +4874,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -4889,7 +4889,7 @@
     "diagnostic": "Diagnostic 6",
     "tarif": 3000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -4904,7 +4904,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa"
    },
    {
@@ -4919,7 +4919,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -4934,7 +4934,7 @@
     "diagnostic": "Diagnostic 9",
     "tarif": 3000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "dateInitiale": "2026-08-14T15:00:00.000Z",
     "motifReport": "Demande du patient"
@@ -4951,7 +4951,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou",
     "motifNonHonore": "Ne s’est pas présenté",
     "constateLe": "2026-08-16T11:00:00.000Z"
@@ -4968,7 +4968,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi"
    },
    {
@@ -4983,7 +4983,7 @@
     "diagnostic": "Diagnostic 12",
     "tarif": 3000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -4998,7 +4998,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -5013,7 +5013,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa"
    },
    {
@@ -5028,7 +5028,7 @@
     "diagnostic": "Diagnostic 15",
     "tarif": 3000,
     "patientId": "PAT0008",
-    "patientCode": "CNT/8/25",
+    "patientCode": "CBG/8/25",
     "patient": "DOSSOU Salifou",
     "fraisDeplacement": 5000,
     "adresseIntervention": "Quartier Boriyouré"
@@ -5045,7 +5045,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -5060,7 +5060,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    {
@@ -5075,7 +5075,7 @@
     "diagnostic": "Diagnostic 18",
     "tarif": 3000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -5090,7 +5090,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi",
     "_archivePar": "BASSONGUI Chabi Séko",
     "_archiveLe": "2026-08-16T12:00:00.000Z",
@@ -5108,7 +5108,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -5123,7 +5123,7 @@
     "diagnostic": "Diagnostic 21",
     "tarif": 3000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata",
     "_archivePar": "BASSONGUI Chabi Séko",
     "_archiveLe": "2026-08-16T12:00:00.000Z",
@@ -5141,7 +5141,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa",
     "fraisDeplacement": 5000
    },
@@ -5157,7 +5157,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0008",
-    "patientCode": "CNT/8/25",
+    "patientCode": "CBG/8/25",
     "patient": "DOSSOU Salifou"
    },
    {
@@ -5172,7 +5172,7 @@
     "diagnostic": "Diagnostic 24",
     "tarif": 3000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -5187,7 +5187,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "dateInitiale": "2026-08-16T10:00:00.000Z",
     "motifReport": "Indisponibilité du praticien"
@@ -5204,7 +5204,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -5219,7 +5219,7 @@
     "diagnostic": "Diagnostic 27",
     "tarif": 3000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi",
     "fraisDeplacement": 5000
    },
@@ -5235,7 +5235,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -5250,7 +5250,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -5324,7 +5324,7 @@
     "diagnostic": "Diagnostic 33",
     "tarif": 3000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "sansRendezVous": true,
     "orientation": "Médecine générale"
@@ -5376,7 +5376,7 @@
        "cellules": [
         "C00029",
         "25/09/2026 09h00",
-        "DIEYABIDI Bibata CNT/6/25",
+        "DIEYABIDI Bibata CBG/6/25",
         "TAKI Orou",
         "Suivi de grossesse",
         "Consultation",
@@ -5394,7 +5394,7 @@
        "cellules": [
         "C00028",
         "25/08/2026 09h00",
-        "TAKI Ganiou CNT/5/26",
+        "TAKI Ganiou CBG/5/26",
         "YENI M’PO Florent",
         "Fièvre persistante",
         "Consultation",
@@ -5430,7 +5430,7 @@
        "cellules": [
         "C00027",
         "20/08/2026 14h00",
-        "PARAISO Sabi CNT/4/26",
+        "PARAISO Sabi CBG/4/26",
         "BASSONGUI Chabi Séko",
         "Plaie infectée",
         "Domicile",
@@ -5448,7 +5448,7 @@
        "cellules": [
         "C00026",
         "19/08/2026 08h30",
-        "N’TCHA Yacoubou CNT/3/26",
+        "N’TCHA Yacoubou CBG/3/26",
         "TAKI Orou",
         "Contrôle diabète",
         "Urgence",
@@ -5466,7 +5466,7 @@
        "cellules": [
         "C00025",
         "18/08/2026 10h00",
-        "BAKO Boukari CNT/2/26",
+        "BAKO Boukari CBG/2/26",
         "YENI M’PO Florent",
         "Paludisme suspecté",
         "Contrôle",
@@ -5484,7 +5484,7 @@
        "cellules": [
         "C00024",
         "17/08/2026 09h00",
-        "TCHANE Bertine CNT/1/25",
+        "TCHANE Bertine CBG/1/25",
         "BASSONGUI Chabi Séko",
         "Suivi de grossesse",
         "Consultation",
@@ -5502,7 +5502,7 @@
        "cellules": [
         "C00010",
         "16/08/2026 16h00",
-        "N’TCHA Yacoubou CNT/3/26",
+        "N’TCHA Yacoubou CBG/3/26",
         "TAKI Orou",
         "Paludisme suspecté",
         "Consultation",
@@ -5520,7 +5520,7 @@
        "cellules": [
         "C00009",
         "16/08/2026 15h00",
-        "BAKO Boukari CNT/2/26",
+        "BAKO Boukari CBG/2/26",
         "YENI M’PO Florent",
         "Suivi de grossesse",
         "Contrôle",
@@ -5538,7 +5538,7 @@
        "cellules": [
         "C00008",
         "16/08/2026 13h30",
-        "TCHANE Bertine CNT/1/25",
+        "TCHANE Bertine CBG/1/25",
         "BASSONGUI Chabi Séko",
         "Fièvre persistante",
         "Consultation",
@@ -5574,7 +5574,7 @@
        "cellules": [
         "C00007",
         "16/08/2026 11h30",
-        "OROU YO Adissa CNT/7/25",
+        "OROU YO Adissa CBG/7/25",
         "TAKI Orou",
         "Plaie infectée",
         "Consultation",
@@ -6268,7 +6268,7 @@
        "cellules": [
         "C00019",
         "18/07/2026 09h00",
-        "PARAISO Sabi CNT/4/26",
+        "PARAISO Sabi CBG/4/26",
         "TAKI Orou",
         "Suivi de grossesse",
         "Consultation",
@@ -6283,7 +6283,7 @@
        "cellules": [
         "C00021",
         "16/07/2026 09h00",
-        "DIEYABIDI Bibata CNT/6/25",
+        "DIEYABIDI Bibata CBG/6/25",
         "BASSONGUI Chabi Séko",
         "Contrôle diabète",
         "Consultation",
@@ -6321,7 +6321,7 @@
     "fiche": {
      "titre": "BAKO Boukari",
      "sous": "C00009",
-     "texte": "Référence C00009 Date 16/08/2026 à 15h00 Patient BAKO Boukari Dossier CNT/2/26 Praticien YENI M’PO Florent Type Contrôle Statut Reporté Tarif 3 000 FCFA Rendez-vous reporté — date initiale : 14/08/2026 à 15h00. Motif : Demande du patient. Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Suivi de grossesse Diagnostic Diagnostic 9 Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+     "texte": "Référence C00009 Date 16/08/2026 à 15h00 Patient BAKO Boukari Dossier CBG/2/26 Praticien YENI M’PO Florent Type Contrôle Statut Reporté Tarif 3 000 FCFA Rendez-vous reporté — date initiale : 14/08/2026 à 15h00. Motif : Demande du patient. Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Suivi de grossesse Diagnostic Diagnostic 9 Patient couvert par SUNU ASSURANCE à hauteur de 70 %. La facturation appliquera la répartition patient / assureur (RG-09).",
      "pied": [
       "Imprimer",
       "Modifier",
@@ -6340,7 +6340,7 @@
     "fiche": {
      "titre": "N’TCHA Yacoubou",
      "sous": "C00010",
-     "texte": "Référence C00010 Date 16/08/2026 à 16h00 Patient N’TCHA Yacoubou Dossier CNT/3/26 Praticien TAKI Orou Type Consultation Statut Non honoré Tarif 5 000 FCFA Non honoré — Ne s’est pas présenté. Le rendez-vous reste dans l’agenda : c’est là qu’on retrouve les patients à rappeler. Suite du rendez-vous Marquer honoré Reporter Motif et diagnostic Motif de consultation Paludisme suspecté Diagnostic Non renseigné",
+     "texte": "Référence C00010 Date 16/08/2026 à 16h00 Patient N’TCHA Yacoubou Dossier CBG/3/26 Praticien TAKI Orou Type Consultation Statut Non honoré Tarif 5 000 FCFA Non honoré — Ne s’est pas présenté. Le rendez-vous reste dans l’agenda : c’est là qu’on retrouve les patients à rappeler. Suite du rendez-vous Marquer honoré Reporter Motif et diagnostic Motif de consultation Paludisme suspecté Diagnostic Non renseigné",
      "pied": [
       "Imprimer",
       "Modifier",
@@ -6358,7 +6358,7 @@
     "fiche": {
      "titre": "PARAISO Sabi",
      "sous": "C00011",
-     "texte": "Référence C00011 Date 15/08/2026 à 15h00 Patient PARAISO Sabi Dossier CNT/4/26 Praticien YENI M’PO Florent Type Consultation Statut Planifiée Tarif 10 000 FCFA La date de ce rendez-vous est passée et rien n’a été constaté. Le logiciel le signale ; c’est à l’accueil de dire s’il a été honoré, reporté ou non honoré — le décider tout seul inventerait une absence. Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Contrôle diabète Diagnostic Non renseigné",
+     "texte": "Référence C00011 Date 15/08/2026 à 15h00 Patient PARAISO Sabi Dossier CBG/4/26 Praticien YENI M’PO Florent Type Consultation Statut Planifiée Tarif 10 000 FCFA La date de ce rendez-vous est passée et rien n’a été constaté. Le logiciel le signale ; c’est à l’accueil de dire s’il a été honoré, reporté ou non honoré — le décider tout seul inventerait une absence. Suite du rendez-vous Marquer honoré Reporter Marquer non honoré Motif et diagnostic Motif de consultation Contrôle diabète Diagnostic Non renseigné",
      "pied": [
       "Imprimer",
       "Modifier",
@@ -6395,8 +6395,8 @@
     "reference": "C00012",
     "fiche": {
      "titre": "TAKI Ganiou",
-     "sous": "CNT/5/26 — 14/08/2026",
-     "texte": "Référence C00012 Date 14/08/2026 à 10h00 Patient TAKI Ganiou Dossier CNT/5/26 Praticien BASSONGUI Chabi Séko Type Contrôle Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Diagnostic 12",
+     "sous": "CBG/5/26 — 14/08/2026",
+     "texte": "Référence C00012 Date 14/08/2026 à 10h00 Patient TAKI Ganiou Dossier CBG/5/26 Praticien BASSONGUI Chabi Séko Type Contrôle Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Plaie infectée Diagnostic Diagnostic 12",
      "pied": [
       "Imprimer"
      ],
@@ -6408,8 +6408,8 @@
     "reference": "C00015",
     "fiche": {
      "titre": "DOSSOU Salifou",
-     "sous": "CNT/8/25 — 06/08/2026",
-     "texte": "Référence C00015 Date 06/08/2026 à 10h00 Patient DOSSOU Salifou Dossier CNT/8/25 Praticien YENI M’PO Florent Type Domicile Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Paludisme suspecté Diagnostic Diagnostic 15 Patient couvert par OLEA ASSURANCE à hauteur de 80 %. La facturation appliquera la répartition patient / assureur (RG-09).",
+     "sous": "CBG/8/25 — 06/08/2026",
+     "texte": "Référence C00015 Date 06/08/2026 à 10h00 Patient DOSSOU Salifou Dossier CBG/8/25 Praticien YENI M’PO Florent Type Domicile Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Paludisme suspecté Diagnostic Diagnostic 15 Patient couvert par OLEA ASSURANCE à hauteur de 80 %. La facturation appliquera la répartition patient / assureur (RG-09).",
      "pied": [
       "Imprimer"
      ],
@@ -6421,8 +6421,8 @@
     "reference": "C00033",
     "fiche": {
      "titre": "TCHANE Bertine",
-     "sous": "CNT/1/25 — 12/08/2026",
-     "texte": "Référence C00033 Date 12/08/2026 à 10h00 Patient TCHANE Bertine Dossier CNT/1/25 Praticien YENI M’PO Florent Type Consultation Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Fièvre persistante Diagnostic Diagnostic 33",
+     "sous": "CBG/1/25 — 12/08/2026",
+     "texte": "Référence C00033 Date 12/08/2026 à 10h00 Patient TCHANE Bertine Dossier CBG/1/25 Praticien YENI M’PO Florent Type Consultation Statut Terminée Tarif 3 000 FCFA Motif et diagnostic Motif de consultation Fièvre persistante Diagnostic Diagnostic 33",
      "pied": [
       "Imprimer"
      ],
@@ -6439,7 +6439,7 @@
      "tarif": "4500"
     },
     "valeursAvant": {
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "visiteurNom": "",
      "visiteurQuartier": "",
      "medecin": "BASSONGUI Chabi Séko",
@@ -6460,7 +6460,7 @@
      "diagnostic": "",
      "tarif": 10000,
      "patientId": "PAT0002",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "patient": "BAKO Boukari"
     },
     "apres": {
@@ -6475,7 +6475,7 @@
      "diagnostic": "",
      "tarif": 4500,
      "patientId": "PAT0002",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "patient": "BAKO Boukari",
      "visiteurNom": "",
      "visiteurPrenom": "",
@@ -6566,7 +6566,7 @@
      "motif": "Motif corrigé"
     },
     "valeursAvant": {
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "visiteurNom": "",
      "visiteurQuartier": "",
      "medecin": "YENI M’PO Florent",
@@ -6587,7 +6587,7 @@
      "diagnostic": "Diagnostic 9",
      "tarif": 3000,
      "patientId": "PAT0002",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "patient": "BAKO Boukari",
      "dateInitiale": "2026-08-14T15:00:00.000Z",
      "motifReport": "Demande du patient"
@@ -6604,7 +6604,7 @@
      "diagnostic": "Diagnostic 9",
      "tarif": 3000,
      "patientId": "PAT0002",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "patient": "BAKO Boukari",
      "dateInitiale": "2026-08-14T15:00:00.000Z",
      "motifReport": "Demande du patient",
@@ -6630,7 +6630,7 @@
      "motif": "Motif corrigé"
     },
     "valeursAvant": {
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "visiteurNom": "",
      "visiteurQuartier": "",
      "medecin": "TAKI Orou",
@@ -6651,7 +6651,7 @@
      "diagnostic": "",
      "tarif": 5000,
      "patientId": "PAT0003",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "patient": "N’TCHA Yacoubou",
      "motifNonHonore": "Ne s’est pas présenté",
      "constateLe": "2026-08-16T11:00:00.000Z"
@@ -6668,7 +6668,7 @@
      "diagnostic": "",
      "tarif": 5000,
      "patientId": "PAT0003",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "patient": "N’TCHA Yacoubou",
      "motifNonHonore": "Ne s’est pas présenté",
      "constateLe": "2026-08-16T11:00:00.000Z",
@@ -6692,7 +6692,7 @@
    {
     "nom": "patient du répertoire",
     "saisie": {
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "medecin": "YENI M’PO Florent",
      "type": "Consultation",
      "date": "2026-08-20T10:00",
@@ -6708,7 +6708,7 @@
      {
       "id": "CONxmsvr62o06la7s",
       "statut": "planifiee",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "visiteurNom": "",
       "visiteurPrenom": "",
       "visiteurQuartier": "",
@@ -6762,7 +6762,7 @@
     ]
    },
    {
-    "nom": "personne non enregistrée : quatre champs, aucun dossier, aucun code CNT",
+    "nom": "personne non enregistrée : quatre champs, aucun dossier, aucun code CBG",
     "saisie": {
      "visiteurNom": "dossou",
      "visiteurPrenom": "Alice",
@@ -6965,7 +6965,7 @@
    {
     "nom": "dossier ET nom saisi : le dossier l’emporte",
     "saisie": {
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "visiteurNom": "ignoré",
      "medecin": "BASSONGUI Chabi Séko",
      "type": "Contrôle",
@@ -6982,7 +6982,7 @@
      {
       "id": "CONxmsvr62o0jfyzb",
       "statut": "en_cours",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "visiteurNom": "ignoré",
       "visiteurPrenom": "",
       "visiteurQuartier": "",
@@ -7041,7 +7041,7 @@
   {
    "nom": "patient du répertoire, prioritaire",
    "saisie": {
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "date": "2026-08-16T11:50",
     "motif": "Douleur thoracique",
     "type": "Urgence",
@@ -7058,7 +7058,7 @@
     {
      "id": "CONxmsvr62o0o4krq",
      "statut": "en_cours",
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "visiteurNom": "",
      "visiteurPrenom": "",
      "visiteurQuartier": "",
@@ -7158,7 +7158,7 @@
   {
    "nom": "sans praticien pressenti, retour à domicile",
    "saisie": {
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "date": "2026-08-16T08:05",
     "motif": "Pansement",
     "type": "Contrôle",
@@ -7172,7 +7172,7 @@
     {
      "id": "CONxmsvr62o09h134",
      "statut": "en_cours",
-     "patientCode": "CNT/6/25",
+     "patientCode": "CBG/6/25",
      "visiteurNom": "",
      "visiteurPrenom": "",
      "visiteurQuartier": "",
@@ -7220,7 +7220,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -7235,7 +7235,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    {
@@ -7250,7 +7250,7 @@
     "diagnostic": "Diagnostic 3",
     "tarif": 3000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -7265,7 +7265,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi"
    },
    {
@@ -7280,7 +7280,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -7295,7 +7295,7 @@
     "diagnostic": "Diagnostic 6",
     "tarif": 3000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -7310,7 +7310,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa"
    },
    {
@@ -7325,7 +7325,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -7340,7 +7340,7 @@
     "diagnostic": "Diagnostic 9",
     "tarif": 3000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "dateInitiale": "2026-08-14T15:00:00.000Z",
     "motifReport": "Demande du patient"
@@ -7357,7 +7357,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou",
     "motifNonHonore": "Ne s’est pas présenté",
     "constateLe": "2026-08-16T11:00:00.000Z"
@@ -7374,7 +7374,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi"
    },
    {
@@ -7389,7 +7389,7 @@
     "diagnostic": "Diagnostic 12",
     "tarif": 3000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -7404,7 +7404,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -7419,7 +7419,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa"
    },
    {
@@ -7434,7 +7434,7 @@
     "diagnostic": "Diagnostic 15",
     "tarif": 3000,
     "patientId": "PAT0008",
-    "patientCode": "CNT/8/25",
+    "patientCode": "CBG/8/25",
     "patient": "DOSSOU Salifou",
     "fraisDeplacement": 5000,
     "adresseIntervention": "Quartier Boriyouré",
@@ -7454,7 +7454,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -7469,7 +7469,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari"
    },
    {
@@ -7484,7 +7484,7 @@
     "diagnostic": "Diagnostic 18",
     "tarif": 3000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -7499,7 +7499,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi"
    },
    {
@@ -7514,7 +7514,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -7529,7 +7529,7 @@
     "diagnostic": "Diagnostic 21",
     "tarif": 3000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -7544,7 +7544,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0007",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patient": "OROU YO Adissa",
     "fraisDeplacement": 5000
    },
@@ -7560,7 +7560,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0008",
-    "patientCode": "CNT/8/25",
+    "patientCode": "CBG/8/25",
     "patient": "DOSSOU Salifou"
    },
    {
@@ -7575,7 +7575,7 @@
     "diagnostic": "Diagnostic 24",
     "tarif": 3000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine"
    },
    {
@@ -7590,7 +7590,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "dateInitiale": "2026-08-16T10:00:00.000Z",
     "motifReport": "Indisponibilité du praticien"
@@ -7607,7 +7607,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou"
    },
    {
@@ -7622,7 +7622,7 @@
     "diagnostic": "Diagnostic 27",
     "tarif": 3000,
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi",
     "fraisDeplacement": 5000
    },
@@ -7638,7 +7638,7 @@
     "diagnostic": "",
     "tarif": 5000,
     "patientId": "PAT0005",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patient": "TAKI Ganiou"
    },
    {
@@ -7653,7 +7653,7 @@
     "diagnostic": "",
     "tarif": 10000,
     "patientId": "PAT0006",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patient": "DIEYABIDI Bibata"
    },
    {
@@ -7727,7 +7727,7 @@
     "diagnostic": "Diagnostic 33",
     "tarif": 3000,
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "sansRendezVous": true,
     "orientation": "Médecine générale"
@@ -7776,7 +7776,7 @@
       {
        "cellules": [
         "20/08/2026 14h00",
-        "PARAISO Sabi CNT/4/26",
+        "PARAISO Sabi CBG/4/26",
         "Plaie infectée",
         "BASSONGUI Chabi Séko",
         "3 000",
@@ -7793,7 +7793,7 @@
       {
        "cellules": [
         "02/07/2026 09h00",
-        "OROU YO Adissa CNT/7/25",
+        "OROU YO Adissa CBG/7/25",
         "Plaie infectée",
         "YENI M’PO Florent",
         "5 000",
@@ -7877,7 +7877,7 @@
       {
        "cellules": [
         "06/08/2026 10h00",
-        "DOSSOU Salifou CNT/8/25",
+        "DOSSOU Salifou CBG/8/25",
         "Paludisme suspecté",
         "YENI M’PO Florent",
         "3 000",
@@ -7907,7 +7907,7 @@
   },
   "creation": {
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "medecin": "BASSONGUI Chabi Séko",
     "date": "2026-08-19T09:00",
     "motif": "Soins de plaie à domicile",
@@ -7926,7 +7926,7 @@
     {
      "id": "CONxmsvr62o02bjun",
      "statut": "planifiee",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "medecin": "BASSONGUI Chabi Séko",
      "type": "Domicile",
      "date": "2026-08-19T09:00",
@@ -8949,7 +8949,7 @@
     "posteLabel": "accueil",
     "numero": "A001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
     "priorite": "ordre_arrivee",
     "motif": "Renseignement",
@@ -8963,7 +8963,7 @@
     "posteLabel": "accueil",
     "numero": "A002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patientId": "PAT0002",
     "priorite": "urgence",
     "motif": "Malaise",
@@ -8977,7 +8977,7 @@
     "posteLabel": "consultation",
     "numero": "C001",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patientId": "PAT0003",
     "priorite": "ordre_arrivee",
     "motif": "Fièvre",
@@ -8991,7 +8991,7 @@
     "posteLabel": "consultation",
     "numero": "C002",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patientId": "PAT0004",
     "priorite": "rdv",
     "motif": "Contrôle",
@@ -9006,7 +9006,7 @@
     "posteLabel": "consultation",
     "numero": "C003",
     "patient": "TAKI Ganiou",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patientId": "PAT0005",
     "priorite": "urgence_vitale",
     "motif": "Détresse",
@@ -9021,7 +9021,7 @@
     "posteLabel": "consultation",
     "numero": "C004",
     "patient": "DIEYABIDI Bibata",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patientId": "PAT0006",
     "priorite": "ordre_arrivee",
     "motif": "Toux",
@@ -9036,7 +9036,7 @@
     "posteLabel": "consultation",
     "numero": "C005",
     "patient": "OROU YO Adissa",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patientId": "PAT0007",
     "priorite": "urgence",
     "motif": "Plaie",
@@ -9050,7 +9050,7 @@
     "posteLabel": "consultation",
     "numero": "C006",
     "patient": "DOSSOU Salifou",
-    "patientCode": "CNT/8/25",
+    "patientCode": "CBG/8/25",
     "patientId": "PAT0008",
     "priorite": "rdv",
     "motif": "Résultats",
@@ -9064,7 +9064,7 @@
     "posteLabel": "consultation",
     "numero": "C000",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
     "priorite": "ordre_arrivee",
     "motif": "Déjà reçu",
@@ -9080,7 +9080,7 @@
     "posteLabel": "caisse",
     "numero": "C101",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patientId": "PAT0002",
     "priorite": "ordre_arrivee",
     "motif": "Règlement",
@@ -9094,7 +9094,7 @@
     "posteLabel": "caisse",
     "numero": "C102",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patientId": "PAT0003",
     "priorite": "ordre_arrivee",
     "motif": "Règlement",
@@ -9108,7 +9108,7 @@
     "posteLabel": "caisse",
     "numero": "C100",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patientId": "PAT0004",
     "priorite": "ordre_arrivee",
     "motif": "Règlement",
@@ -9124,7 +9124,7 @@
     "posteLabel": "prelevement",
     "numero": "S001",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patientId": "PAT0004",
     "priorite": "rdv",
     "motif": "Prélèvement",
@@ -9138,7 +9138,7 @@
     "posteLabel": "pharmacie",
     "numero": "P001",
     "patient": "TAKI Ganiou",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "patientId": "PAT0005",
     "priorite": "ordre_arrivee",
     "motif": "Ordonnance",
@@ -9152,7 +9152,7 @@
     "posteLabel": "pharmacie",
     "numero": "P000",
     "patient": "DIEYABIDI Bibata",
-    "patientCode": "CNT/6/25",
+    "patientCode": "CBG/6/25",
     "patientId": "PAT0006",
     "priorite": "ordre_arrivee",
     "motif": "Ordonnance",
@@ -9168,7 +9168,7 @@
     "posteLabel": "pharmacie",
     "numero": "P002",
     "patient": "OROU YO Adissa",
-    "patientCode": "CNT/7/25",
+    "patientCode": "CBG/7/25",
     "patientId": "PAT0007",
     "priorite": "ordre_arrivee",
     "motif": "Clos",
@@ -10219,7 +10219,7 @@
     "nom": "inscrire à l’accueil, ordre d’arrivée",
     "poste": "Accueil",
     "saisie": {
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "priorite": "ordre_arrivee",
      "motif": "Renseignement"
     },
@@ -10236,7 +10236,7 @@
       "posteLabel": "Accueil",
       "patientId": "PAT0003",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "priorite": "ordre_arrivee",
       "motif": "Renseignement",
       "praticien": null,
@@ -10288,7 +10288,7 @@
     "nom": "inscrire en consultation, praticien désigné, urgence",
     "poste": "Consultation",
     "saisie": {
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "priorite": "urgence",
      "motif": "Plaie",
      "praticien": "TAKI Orou"
@@ -10306,7 +10306,7 @@
       "posteLabel": "Consultation",
       "patientId": "PAT0004",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "priorite": "urgence",
       "motif": "Plaie",
       "praticien": "TAKI Orou",
@@ -10358,7 +10358,7 @@
     "nom": "inscrire en consultation, file commune",
     "poste": "Consultation",
     "saisie": {
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "priorite": "rdv",
      "motif": "Contrôle",
      "praticien": ""
@@ -10376,7 +10376,7 @@
       "posteLabel": "Consultation",
       "patientId": "PAT0005",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "priorite": "rdv",
       "motif": "Contrôle",
       "praticien": null,
@@ -10428,7 +10428,7 @@
     "nom": "inscrire à la salle de prélèvement",
     "poste": "Salle de prélèvement",
     "saisie": {
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "priorite": "ordre_arrivee",
      "motif": "Prélèvement"
     },
@@ -10445,7 +10445,7 @@
       "posteLabel": "Salle de prélèvement",
       "patientId": "PAT0002",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "priorite": "ordre_arrivee",
       "motif": "Prélèvement",
       "praticien": null,
@@ -10497,7 +10497,7 @@
     "nom": "inscrire sans motif : refusé",
     "poste": "Caisse",
     "saisie": {
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "priorite": "ordre_arrivee",
      "motif": ""
     },
@@ -10557,7 +10557,7 @@
       "posteLabel": "accueil",
       "numero": "A001",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Renseignement",
@@ -10571,7 +10571,7 @@
       "posteLabel": "accueil",
       "numero": "A002",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "urgence",
       "motif": "Malaise",
@@ -10585,7 +10585,7 @@
       "posteLabel": "consultation",
       "numero": "C001",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "ordre_arrivee",
       "motif": "Fièvre",
@@ -10599,7 +10599,7 @@
       "posteLabel": "consultation",
       "numero": "C002",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Contrôle",
@@ -10614,7 +10614,7 @@
       "posteLabel": "consultation",
       "numero": "C003",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "urgence_vitale",
       "motif": "Détresse",
@@ -10631,7 +10631,7 @@
       "posteLabel": "consultation",
       "numero": "C004",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Toux",
@@ -10646,7 +10646,7 @@
       "posteLabel": "consultation",
       "numero": "C005",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "urgence",
       "motif": "Plaie",
@@ -10660,7 +10660,7 @@
       "posteLabel": "consultation",
       "numero": "C006",
       "patient": "DOSSOU Salifou",
-      "patientCode": "CNT/8/25",
+      "patientCode": "CBG/8/25",
       "patientId": "PAT0008",
       "priorite": "rdv",
       "motif": "Résultats",
@@ -10674,7 +10674,7 @@
       "posteLabel": "consultation",
       "numero": "C000",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Déjà reçu",
@@ -10690,7 +10690,7 @@
       "posteLabel": "caisse",
       "numero": "C101",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -10704,7 +10704,7 @@
       "posteLabel": "caisse",
       "numero": "C102",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -10718,7 +10718,7 @@
       "posteLabel": "caisse",
       "numero": "C100",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -10734,7 +10734,7 @@
       "posteLabel": "prelevement",
       "numero": "S001",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Prélèvement",
@@ -10748,7 +10748,7 @@
       "posteLabel": "pharmacie",
       "numero": "P001",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -10762,7 +10762,7 @@
       "posteLabel": "pharmacie",
       "numero": "P000",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -10778,7 +10778,7 @@
       "posteLabel": "pharmacie",
       "numero": "P002",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "ordre_arrivee",
       "motif": "Clos",
@@ -11012,7 +11012,7 @@
       "posteLabel": "accueil",
       "numero": "A001",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Renseignement",
@@ -11026,7 +11026,7 @@
       "posteLabel": "accueil",
       "numero": "A002",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "urgence",
       "motif": "Malaise",
@@ -11040,7 +11040,7 @@
       "posteLabel": "consultation",
       "numero": "C001",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "urgence",
       "motif": "Fièvre",
@@ -11055,7 +11055,7 @@
       "posteLabel": "consultation",
       "numero": "C002",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Contrôle",
@@ -11070,7 +11070,7 @@
       "posteLabel": "consultation",
       "numero": "C003",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "urgence_vitale",
       "motif": "Détresse",
@@ -11085,7 +11085,7 @@
       "posteLabel": "consultation",
       "numero": "C004",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Toux",
@@ -11100,7 +11100,7 @@
       "posteLabel": "consultation",
       "numero": "C005",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "urgence",
       "motif": "Plaie",
@@ -11114,7 +11114,7 @@
       "posteLabel": "consultation",
       "numero": "C006",
       "patient": "DOSSOU Salifou",
-      "patientCode": "CNT/8/25",
+      "patientCode": "CBG/8/25",
       "patientId": "PAT0008",
       "priorite": "rdv",
       "motif": "Résultats",
@@ -11128,7 +11128,7 @@
       "posteLabel": "consultation",
       "numero": "C000",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Déjà reçu",
@@ -11144,7 +11144,7 @@
       "posteLabel": "caisse",
       "numero": "C101",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11158,7 +11158,7 @@
       "posteLabel": "caisse",
       "numero": "C102",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11172,7 +11172,7 @@
       "posteLabel": "caisse",
       "numero": "C100",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11188,7 +11188,7 @@
       "posteLabel": "prelevement",
       "numero": "S001",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Prélèvement",
@@ -11202,7 +11202,7 @@
       "posteLabel": "pharmacie",
       "numero": "P001",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -11216,7 +11216,7 @@
       "posteLabel": "pharmacie",
       "numero": "P000",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -11232,7 +11232,7 @@
       "posteLabel": "pharmacie",
       "numero": "P002",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "ordre_arrivee",
       "motif": "Clos",
@@ -11279,7 +11279,7 @@
       "posteLabel": "accueil",
       "numero": "A001",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Renseignement",
@@ -11293,7 +11293,7 @@
       "posteLabel": "accueil",
       "numero": "A002",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "urgence",
       "motif": "Malaise",
@@ -11307,7 +11307,7 @@
       "posteLabel": "consultation",
       "numero": "C001",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "ordre_arrivee",
       "motif": "Fièvre",
@@ -11321,7 +11321,7 @@
       "posteLabel": "consultation",
       "numero": "C002",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Contrôle",
@@ -11336,7 +11336,7 @@
       "posteLabel": "consultation",
       "numero": "C003",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "urgence_vitale",
       "motif": "Détresse",
@@ -11351,7 +11351,7 @@
       "posteLabel": "consultation",
       "numero": "C004",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Toux",
@@ -11366,7 +11366,7 @@
       "posteLabel": "consultation",
       "numero": "C005",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "urgence",
       "motif": "Plaie",
@@ -11380,7 +11380,7 @@
       "posteLabel": "consultation",
       "numero": "C006",
       "patient": "DOSSOU Salifou",
-      "patientCode": "CNT/8/25",
+      "patientCode": "CBG/8/25",
       "patientId": "PAT0008",
       "priorite": "rdv",
       "motif": "Résultats",
@@ -11394,7 +11394,7 @@
       "posteLabel": "consultation",
       "numero": "C000",
       "patient": "TCHANE Bertine",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patientId": "PAT0001",
       "priorite": "ordre_arrivee",
       "motif": "Déjà reçu",
@@ -11410,7 +11410,7 @@
       "posteLabel": "caisse",
       "numero": "C101",
       "patient": "BAKO Boukari",
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "patientId": "PAT0002",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11424,7 +11424,7 @@
       "posteLabel": "caisse",
       "numero": "C102",
       "patient": "N’TCHA Yacoubou",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patientId": "PAT0003",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11438,7 +11438,7 @@
       "posteLabel": "caisse",
       "numero": "C100",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "ordre_arrivee",
       "motif": "Règlement",
@@ -11454,7 +11454,7 @@
       "posteLabel": "prelevement",
       "numero": "S001",
       "patient": "PARAISO Sabi",
-      "patientCode": "CNT/4/26",
+      "patientCode": "CBG/4/26",
       "patientId": "PAT0004",
       "priorite": "rdv",
       "motif": "Prélèvement",
@@ -11468,7 +11468,7 @@
       "posteLabel": "pharmacie",
       "numero": "P001",
       "patient": "TAKI Ganiou",
-      "patientCode": "CNT/5/26",
+      "patientCode": "CBG/5/26",
       "patientId": "PAT0005",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -11482,7 +11482,7 @@
       "posteLabel": "pharmacie",
       "numero": "P000",
       "patient": "DIEYABIDI Bibata",
-      "patientCode": "CNT/6/25",
+      "patientCode": "CBG/6/25",
       "patientId": "PAT0006",
       "priorite": "ordre_arrivee",
       "motif": "Ordonnance",
@@ -11498,7 +11498,7 @@
       "posteLabel": "pharmacie",
       "numero": "P002",
       "patient": "OROU YO Adissa",
-      "patientCode": "CNT/7/25",
+      "patientCode": "CBG/7/25",
       "patientId": "PAT0007",
       "priorite": "ordre_arrivee",
       "motif": "Clos",
@@ -11577,7 +11577,7 @@
         {
          "cellules": [
           "20/08/2026 à 14h00",
-          "PARAISO Sabi — CNT/4/26",
+          "PARAISO Sabi — CBG/4/26",
           "Plaie infectée",
           "Domicile",
           "Planifiée"
@@ -11587,7 +11587,7 @@
         {
          "cellules": [
           "17/08/2026 à 09h00",
-          "TCHANE Bertine — CNT/1/25",
+          "TCHANE Bertine — CBG/1/25",
           "Suivi de grossesse",
           "Consultation",
           "Planifiée"
@@ -11597,7 +11597,7 @@
         {
          "cellules": [
           "16/08/2026 à 13h30",
-          "TCHANE Bertine — CNT/1/25",
+          "TCHANE Bertine — CBG/1/25",
           "Fièvre persistante",
           "Consultation",
           "Planifiée"
@@ -11617,7 +11617,7 @@
         {
          "cellules": [
           "16/08/2026 à 10h30",
-          "TAKI Ganiou — CNT/5/26",
+          "TAKI Ganiou — CBG/5/26",
           "Paludisme suspecté",
           "Consultation",
           "Planifiée"
@@ -11627,7 +11627,7 @@
         {
          "cellules": [
           "16/08/2026 à 09h00",
-          "BAKO Boukari — CNT/2/26",
+          "BAKO Boukari — CBG/2/26",
           "Plaie infectée",
           "Consultation",
           "Planifiée"
@@ -11637,7 +11637,7 @@
         {
          "cellules": [
           "16/08/2026 à 08h30",
-          "TCHANE Bertine — CNT/1/25",
+          "TCHANE Bertine — CBG/1/25",
           "Contrôle diabète",
           "Consultation",
           "Terminée"
@@ -11647,7 +11647,7 @@
         {
          "cellules": [
           "14/08/2026 à 10h00",
-          "TAKI Ganiou — CNT/5/26",
+          "TAKI Ganiou — CBG/5/26",
           "Plaie infectée",
           "Contrôle",
           "Terminée"
@@ -11657,7 +11657,7 @@
         {
          "cellules": [
           "11/08/2026 à 09h00",
-          "OROU YO Adissa — CNT/7/25",
+          "OROU YO Adissa — CBG/7/25",
           "Suivi de grossesse",
           "Urgence",
           "Planifiée"
@@ -11667,7 +11667,7 @@
         {
          "cellules": [
           "27/07/2026 à 08h00",
-          "BAKO Boukari — CNT/2/26",
+          "BAKO Boukari — CBG/2/26",
           "Plaie infectée",
           "Consultation",
           "Terminée"
@@ -11677,7 +11677,7 @@
         {
          "cellules": [
           "17/07/2026 à 09h00",
-          "TAKI Ganiou — CNT/5/26",
+          "TAKI Ganiou — CBG/5/26",
           "Paludisme suspecté",
           "Consultation",
           "Terminée"
@@ -11687,7 +11687,7 @@
         {
          "cellules": [
           "16/07/2026 à 09h00",
-          "DIEYABIDI Bibata — CNT/6/25",
+          "DIEYABIDI Bibata — CBG/6/25",
           "Contrôle diabète",
           "Consultation",
           "Terminée"
@@ -11747,7 +11747,7 @@
         {
          "cellules": [
           "25/08/2026 à 09h00",
-          "TAKI Ganiou — CNT/5/26",
+          "TAKI Ganiou — CBG/5/26",
           "Fièvre persistante",
           "Consultation",
           "Planifiée"
@@ -11757,7 +11757,7 @@
         {
          "cellules": [
           "18/08/2026 à 10h00",
-          "BAKO Boukari — CNT/2/26",
+          "BAKO Boukari — CBG/2/26",
           "Paludisme suspecté",
           "Contrôle",
           "Reporté"
@@ -11767,7 +11767,7 @@
         {
          "cellules": [
           "16/08/2026 à 15h00",
-          "BAKO Boukari — CNT/2/26",
+          "BAKO Boukari — CBG/2/26",
           "Suivi de grossesse",
           "Contrôle",
           "Reporté"
@@ -11777,7 +11777,7 @@
         {
          "cellules": [
           "16/08/2026 à 11h00",
-          "DIEYABIDI Bibata — CNT/6/25",
+          "DIEYABIDI Bibata — CBG/6/25",
           "Contrôle diabète",
           "Consultation",
           "Planifiée"
@@ -11787,7 +11787,7 @@
         {
          "cellules": [
           "16/08/2026 à 09h30",
-          "N’TCHA Yacoubou — CNT/3/26",
+          "N’TCHA Yacoubou — CBG/3/26",
           "Fièvre persistante",
           "Contrôle",
           "Planifiée"
@@ -11797,7 +11797,7 @@
         {
          "cellules": [
           "15/08/2026 à 15h00",
-          "PARAISO Sabi — CNT/4/26",
+          "PARAISO Sabi — CBG/4/26",
           "Contrôle diabète",
           "Consultation",
           "Planifiée"
@@ -11817,7 +11817,7 @@
         {
          "cellules": [
           "12/08/2026 à 10h00",
-          "TCHANE Bertine — CNT/1/25",
+          "TCHANE Bertine — CBG/1/25",
           "Fièvre persistante",
           "Consultation",
           "Terminée"
@@ -11827,7 +11827,7 @@
         {
          "cellules": [
           "06/08/2026 à 10h00",
-          "DOSSOU Salifou — CNT/8/25",
+          "DOSSOU Salifou — CBG/8/25",
           "Paludisme suspecté",
           "Domicile",
           "Terminée"
@@ -11837,7 +11837,7 @@
         {
          "cellules": [
           "22/07/2026 à 09h00",
-          "N’TCHA Yacoubou — CNT/3/26",
+          "N’TCHA Yacoubou — CBG/3/26",
           "Fièvre persistante",
           "Contrôle",
           "En cours"
@@ -11847,7 +11847,7 @@
         {
          "cellules": [
           "02/07/2026 à 09h00",
-          "OROU YO Adissa — CNT/7/25",
+          "OROU YO Adissa — CBG/7/25",
           "Plaie infectée",
           "Domicile",
           "Terminée"
@@ -11907,7 +11907,7 @@
         {
          "cellules": [
           "25/09/2026 à 09h00",
-          "DIEYABIDI Bibata — CNT/6/25",
+          "DIEYABIDI Bibata — CBG/6/25",
           "Suivi de grossesse",
           "Consultation",
           "Planifiée"
@@ -11927,7 +11927,7 @@
         {
          "cellules": [
           "19/08/2026 à 08h30",
-          "N’TCHA Yacoubou — CNT/3/26",
+          "N’TCHA Yacoubou — CBG/3/26",
           "Contrôle diabète",
           "Urgence",
           "Planifiée"
@@ -11937,7 +11937,7 @@
         {
          "cellules": [
           "16/08/2026 à 16h00",
-          "N’TCHA Yacoubou — CNT/3/26",
+          "N’TCHA Yacoubou — CBG/3/26",
           "Paludisme suspecté",
           "Consultation",
           "Non honoré"
@@ -11947,7 +11947,7 @@
         {
          "cellules": [
           "16/08/2026 à 11h30",
-          "OROU YO Adissa — CNT/7/25",
+          "OROU YO Adissa — CBG/7/25",
           "Plaie infectée",
           "Consultation",
           "Planifiée"
@@ -11957,7 +11957,7 @@
         {
          "cellules": [
           "16/08/2026 à 10h00",
-          "PARAISO Sabi — CNT/4/26",
+          "PARAISO Sabi — CBG/4/26",
           "Suivi de grossesse",
           "Urgence",
           "En cours"
@@ -11967,7 +11967,7 @@
         {
          "cellules": [
           "13/08/2026 à 14h00",
-          "DIEYABIDI Bibata — CNT/6/25",
+          "DIEYABIDI Bibata — CBG/6/25",
           "Fièvre persistante",
           "Consultation",
           "Non honoré"
@@ -11977,7 +11977,7 @@
         {
          "cellules": [
           "04/08/2026 à 11h00",
-          "TCHANE Bertine — CNT/1/25",
+          "TCHANE Bertine — CBG/1/25",
           "Contrôle diabète",
           "Consultation",
           "Terminée"
@@ -11987,7 +11987,7 @@
         {
          "cellules": [
           "18/07/2026 à 09h00",
-          "PARAISO Sabi — CNT/4/26",
+          "PARAISO Sabi — CBG/4/26",
           "Suivi de grossesse",
           "Consultation",
           "Terminée"
@@ -11997,7 +11997,7 @@
         {
          "cellules": [
           "17/06/2026 à 09h00",
-          "DOSSOU Salifou — CNT/8/25",
+          "DOSSOU Salifou — CBG/8/25",
           "Fièvre persistante",
           "Consultation",
           "Planifiée"

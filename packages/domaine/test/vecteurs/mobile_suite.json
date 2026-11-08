@@ -1434,10 +1434,10 @@
      "clavier": null,
      "placeholder": null,
      "options": [
-      "AKPO Marc — CNT/1241/26",
+      "AKPO Marc — CBG/1241/26",
       "HOUNKPATIN Ida — PROV-1"
      ],
-     "valeur": "AKPO Marc — CNT/1241/26"
+     "valeur": "AKPO Marc — CBG/1241/26"
     },
     {
      "section": null,
@@ -1876,22 +1876,22 @@
    "items": [
     {
      "titre": "DOSSOU Aline",
-     "detail": "CNT/12/26",
+     "detail": "CBG/12/26",
      "fin": ""
     },
     {
      "titre": "KPOGNON Rose",
-     "detail": "CNT/174/26",
+     "detail": "CBG/174/26",
      "fin": ""
     },
     {
      "titre": "TAMOU Félix",
-     "detail": "CNT/1109/26",
+     "detail": "CBG/1109/26",
      "fin": ""
     },
     {
      "titre": "SOUROU Mariam",
-     "detail": "CNT/913/25",
+     "detail": "CBG/913/25",
      "fin": ""
     }
    ],

@@ -10,7 +10,7 @@
 // (décision de la Direction du 06/11/2026 au soir). Les fiches de parité des écrans autonomes (docs/architecture/ecrans) reçoivent en plus
 // la présentation, la localisation et la dénomination composées par l'écran de connexion Baguidi.
 //
-// CE QU'IL NE TOUCHE JAMAIS : les noms d'agents, de patients, les montants, les codes patient (`CNT/n/AA` : les tests les rejouent sous le sigle de
+// CE QU'IL NE TOUCHE JAMAIS : les noms d'agents, de patients, les montants, les codes patient (`CBG/n/AA` : les tests les rejouent sous le sigle de
 // la maquette, voir `sousLeSigleDeLaMaquette`), les références de notes de service, les noms de documents (« Tarifs des consultations NASSIERA
 // TOO »), les adresses des patients. Un autre lot remplacera les données.
 //
@@ -42,7 +42,7 @@ export const SUBSTITUTIONS = [
   ['cliniquenassiera@gmail.com', 'cliniquebaguidi@yahoo.fr'],
   ['3201642748214', '3201001996110'],
   ['RB/NAT/2016-B-268', 'RB/PKO/17 A 4240'],
-  ['SIGH-CNT', 'SIGH-CBG'],
+  ['SIGH-CBG', 'SIGH-CBG'],
   ['Quartier Tchirimina, Natitingou', 'Quartier Zongo II, Parakou'],
   ['Fait à Natitingou', 'Fait à Parakou'],
   // La ligne des rendez-vous citée par les messages de rappel : Baguidi n'en a pas de dédiée, c'est le premier téléphone de l'en-tête.
@@ -53,7 +53,7 @@ export const SUBSTITUTIONS = [
 // ne cite pas comme identité (sigle, forme juridique, autorisation, régime de TVA) ; Baguidi n'a ni forme, ni autorisation, ni régime renseignés.
 const PROPRES = {
   'fiscal-date.json': [
-    ['"sigle": "CNT"', '"sigle": "CBG"'],
+    ['"sigle": "CBG"', '"sigle": "CBG"'],
     ['"telephones": [\n    "01 95 44 51 51",\n    "01 66 43 28 20"\n   ],', '"telephones": [\n    "95 74 69 56",\n    "95 95 99 14",\n    "97 09 34 99"\n   ],'],
     ['"forme": "Société à Responsabilité Limitée"', '"forme": ""'],
     ['"autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation": ""'],
@@ -63,7 +63,7 @@ const PROPRES = {
   // La version 1 de l'identité légale du jeu livré (collection `identiteLegale`, JSON compact) : la graine devient celle de Baguidi, avec les champs
   // que la maquette ne porte pas (nom court, activité, date du RCCM, n° d'enregistrement ONMB) ; forme, autorisation et régime de TVA restent VIDES.
   'identiteLegale.json': [
-    ['"sigle":"CNT"', '"sigle":"CBG","nomCourt":"CLINIQUE BAGUIDI","activite":"CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE"'],
+    ['"sigle":"CBG"', '"sigle":"CBG","nomCourt":"CLINIQUE BAGUIDI","activite":"CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE"'],
     ['"forme":"Société à Responsabilité Limitée"', '"forme":""'],
     ['"telephones":["01 95 44 51 51","01 66 43 28 20"]', '"telephones":["95 74 69 56","95 95 99 14","97 09 34 99"]'],
     ['"autorisation":"N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020"', '"autorisation":"","rccmDate":"19/03/2009","enregistrement":"0416/ONMB/ATL/2002"'],

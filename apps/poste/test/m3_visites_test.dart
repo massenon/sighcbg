@@ -63,7 +63,7 @@ void main() {
     expect(find.widgetWithText(BoutonSigh, 'Modifier'), findsOneWidget);
     expect(find.widgetWithText(BoutonSigh, 'Archiver'), findsOneWidget);
     expect(find.text('Patient hospitalisé'), findsOneWidget);
-    expect(find.text('BAKO Boukari — lit C1 LIT1 (CNT/2/26)'), findsOneWidget);
+    expect(find.text('BAKO Boukari — lit C1 LIT1 (CBG/2/26)'), findsOneWidget);
   });
 
   cas('visites : création — valeurs par défaut, refus sans visiteur, patient recopié de l\'admission', (t) async {
@@ -78,7 +78,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget, reason: 'visiteur obligatoire');
     expect(m.collection('visitesHospi').actives.length, 4);
-    await choisir(t, 'admissionId', 'BAKO Boukari — lit C1 LIT1 (CNT/2/26)');
+    await choisir(t, 'admissionId', 'BAKO Boukari — lit C1 LIT1 (CBG/2/26)');
     await ecrire(t, 'heure', '11:15');
     await choisir(t, 'type', 'Personnel traitant');
     await ecrire(t, 'visiteur', 'Dr TAKI');
@@ -99,8 +99,8 @@ void main() {
     await ouvrir(t, m, 'm3-visites-patients');
     await toucher(t, find.byTooltip('Modifier').first); // VIS0003 : « Sœur de la patiente »
     expect(find.text('Modifier l’enregistrement VIS0003'), findsOneWidget);
-    expect(find.descendant(of: find.byKey(const Key('kit:champ:admissionId')), matching: find.text('BAKO Boukari — lit C1 LIT1 (CNT/2/26)')), findsOneWidget);
-    await choisir(t, 'admissionId', 'TCHANE Bertine — lit A1 LIT1 (CNT/1/25)');
+    expect(find.descendant(of: find.byKey(const Key('kit:champ:admissionId')), matching: find.text('BAKO Boukari — lit C1 LIT1 (CBG/2/26)')), findsOneWidget);
+    await choisir(t, 'admissionId', 'TCHANE Bertine — lit A1 LIT1 (CBG/1/25)');
     await ecrire(t, 'observation', 'Corrigée');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     final att = dico(dico(dico(v['modification'])['enregistre'])['fiche']);

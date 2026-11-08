@@ -128,7 +128,7 @@ void main() {
         // Le jeu du poste ne porte aucun document numérisé (la maquette l'amorce à l'ouverture de l'écran) : les en-têtes du tableau ne se dessinent
         // qu'avec des lignes — on mesure donc cet écran sur le jeu posé du vecteur.
         final mm = id == 'm1-documents'
-            ? petit({'patients': [p('K1', 'CNT/1/26')], 'documentsPatient': [for (final x in (vecteurs('pat_documents')['jeu'] as List)) (x as Map).cast<String, Object?>()]})
+            ? petit({'patients': [p('K1', 'CBG/1/26')], 'documentsPatient': [for (final x in (vecteurs('pat_documents')['jeu'] as List)) (x as Map).cast<String, Object?>()]})
             : m;
         await ouvrir(t, mm, id);
         final r = comparerContenu(id, f, textesVisibles(t));
@@ -159,7 +159,7 @@ void main() {
 
     cas('« Nouveau » conduit à la page d\'ouverture, qui réserve le code et l\'écrit au format CBG/n/AA (sigle de la clinique)', (t) async {
       final m = petit({
-        'patients': [p('1', 'CNT/1109/26'), p('2', 'CNT530/26')],
+        'patients': [p('1', 'CBG/1109/26'), p('2', 'CBG530/26')],
         'audit': []
       });
       await ouvrir(t, m, 'm1-patient-nouveau');
@@ -182,7 +182,7 @@ void main() {
     });
 
     cas('un champ obligatoire vide : rien n\'est écrit', (t) async {
-      final m = petit({'patients': [p('1', 'CNT/1/26')]});
+      final m = petit({'patients': [p('1', 'CBG/1/26')]});
       await ouvrir(t, m, 'm1-patient-nouveau');
       await toucher(t, find.text('Ouvrir le dossier').last);
       expect(m.collection('patients').toutes.length, 1);
@@ -192,7 +192,7 @@ void main() {
     cas('la fiche : menu des rubriques et leurs comptes sur le jeu posé', (t) async {
       final d = vecteurs('pat_profil');
       final m = petit({
-        'patients': [p('P1', 'CNT/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
+        'patients': [p('P1', 'CBG/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
         'consultations': [
           {'id': 'C1', 'statut': 'actif', 'patientId': 'P1', 'type': 'Consultation', 'date': '2026-08-10', 'motif': 'Toux', 'diagnostic': 'Asthme', 'medecin': 'Dr A'}
         ],
@@ -223,7 +223,7 @@ void main() {
 
     cas('le dossier imprimé est le dossier ENTIER : toutes les rubriques figurent sur le papier (05/11/2026)', (t) async {
       final m = petit({
-        'patients': [p('P1', 'CNT/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
+        'patients': [p('P1', 'CBG/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
         'consultations': [
           {'id': 'C1', 'statut': 'actif', 'patientId': 'P1', 'type': 'Consultation', 'date': '2026-08-10', 'motif': 'Toux', 'diagnostic': 'Asthme', 'medecin': 'Dr A'},
           {'id': 'C2', 'statut': 'actif', 'patientId': 'P1', 'type': 'Domicile', 'date': '2026-08-12', 'motif': 'Fièvre', 'medecin': 'Dr B'}
@@ -254,7 +254,7 @@ void main() {
     });
 
     cas('un profil sans le droit d\'écrire ne voit ni « Modifier le dossier » ni « Nouveau »', (t) async {
-      final m = petit({'patients': [p('1', 'CNT/1/26')]});
+      final m = petit({'patients': [p('1', 'CBG/1/26')]});
       await ouvrir(t, m, 'm1-patient-profil', role: 'laborantin');
       expect(find.text('Modifier le dossier'), findsNothing);
     });
@@ -277,12 +277,12 @@ void main() {
       final jeu = [for (final x in (d['jeu'] as List)) (x as Map).cast<String, Object?>()];
       final m = petit({'patients': jeu, 'audit': []});
       await ouvrir(t, m, 'm1-antecedents');
-      await t.enterText(find.byType(TextField).first, 'CNT/3/26');
+      await t.enterText(find.byType(TextField).first, 'CBG/3/26');
       await t.pump(const Duration(milliseconds: 500));
       await toucher(t, find.byTooltip('Modifier les antécédents'));
       await saisir(t, 'antecedentsAutres', 'Appendicectomie');
       await toucher(t, find.text('Enregistrer').last);
-      final f = m.collection('patients').toutes.firstWhere((x) => x['code'] == 'CNT/3/26');
+      final f = m.collection('patients').toutes.firstWhere((x) => x['code'] == 'CBG/3/26');
       expect(f['antecedents'], ['Drépanocytose', 'Asthme']);
       expect(f['antecedentsAutres'], 'Appendicectomie');
       expect(find.text('Éléments médicaux enregistrés.'), findsOneWidget);
@@ -293,7 +293,7 @@ void main() {
   group('m1-constantes', () {
     final d = vecteurs('pat_constantes');
     cas('indicateurs et contrôle des bornes sur le jeu posé', (t) async {
-      final pats = [for (final n in [1, 2, 3]) p('K$n', 'CNT/$n/26')];
+      final pats = [for (final n in [1, 2, 3]) p('K$n', 'CBG/$n/26')];
       final jeu = [for (final x in (d['jeu'] as List)) (x as Map).cast<String, Object?>()];
       await ouvrir(t, petit({'patients': pats, 'constantes': jeu}), 'm1-constantes');
       final k = d['kpis'] as List;
@@ -306,15 +306,15 @@ void main() {
 
     cas('un relevé complet : tension et IMC sont CALCULÉS, la référence suit le registre', (t) async {
       final m = petit({
-        'patients': [p('K2', 'CNT/2/26')],
+        'patients': [p('K2', 'CBG/2/26')],
         'constantes': [
-          {'id': 'C1', 'statut': 'actif', 'reference': 'CST-00013', 'patientCode': 'CNT/2/26', 'dateHeure': '2026-10-30T08:00'}
+          {'id': 'C1', 'statut': 'actif', 'reference': 'CST-00013', 'patientCode': 'CBG/2/26', 'dateHeure': '2026-10-30T08:00'}
         ],
         'audit': []
       });
       await ouvrir(t, m, 'm1-constantes');
       await toucher(t, find.text('Nouveau relevé').last);
-      await choisir(t, 'patientCode', 'CNT/2/26 — NOMK2 PreK2');
+      await choisir(t, 'patientCode', 'CBG/2/26 — NOMK2 PreK2');
       await choisir(t, 'moment', 'Midi');
       await saisir(t, 'tensionSys', '12');
       await saisir(t, 'tensionDia', '8');
@@ -336,7 +336,7 @@ void main() {
   group('m1-reference et m1-contre-reference', () {
     final d = vecteurs('pat_reference');
     cas('fiches : indicateurs, onglets et contre-référence attendue', (t) async {
-      final pats = [for (final n in [1, 2, 3]) p('K$n', 'CNT/$n/26')];
+      final pats = [for (final n in [1, 2, 3]) p('K$n', 'CBG/$n/26')];
       await ouvrir(
           t,
           petit({
@@ -356,7 +356,7 @@ void main() {
       await ouvrir(
           t,
           petit({
-            'patients': [p('K1', 'CNT/1/26')],
+            'patients': [p('K1', 'CBG/1/26')],
             'fichesReference': [for (final x in (d['jeuRefs'] as List)) (x as Map).cast<String, Object?>()],
             'contreReferences': [for (final x in (d['jeuContre'] as List)) (x as Map).cast<String, Object?>()],
           }),
@@ -376,9 +376,9 @@ void main() {
           .toList();
       return petit({
         'patients': [
-          p('K1', 'CNT/1/26'),
-          p('K2', 'CNT/2/26', {'assureur': 'SOS', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'}),
-          p('K4', 'CNT/4/26', {'externe': true}),
+          p('K1', 'CBG/1/26'),
+          p('K2', 'CBG/2/26', {'assureur': 'SOS', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'}),
+          p('K4', 'CBG/4/26', {'externe': true}),
         ],
         'pieces': posees,
         'factures': [
@@ -410,7 +410,7 @@ void main() {
       await ouvrir(t, m, 'm1-pieces');
       await toucher(t, find.text('Délivrer une pièce').last);
       await choisir(t, 'typeId', 'Certificat médical de visite et de contre-visite');
-      await choisir(t, 'patientCode', 'CNT/2/26 — NOMK2 PreK2');
+      await choisir(t, 'patientCode', 'CBG/2/26 — NOMK2 PreK2');
       await choisir(t, 'medecin', 'BASSONGUI Chabi Séko — Directeur médical');
       await toucher(t, find.text('Créer').last);
       final piece = m.collection('pieces').toutes.first;
@@ -442,13 +442,13 @@ void main() {
     final d = vecteurs('pat_externe');
     cas('le registre dit la cause du verrou : caisse, ou échantillon non parvenu (E309)', (t) async {
       final dem = (Fiche o) => {
-            'statut': 'actif', 'patientId': 'E1', 'patientCode': 'CNT/901/26', 'patient': 'EXT1 Un', 'analyse': 'NFS',
+            'statut': 'actif', 'patientId': 'E1', 'patientCode': 'CBG/901/26', 'patient': 'EXT1 Un', 'analyse': 'NFS',
             'dateHeure': '2026-08-01T10:00:00.000Z', 'prescripteur': 'Dr Ext', 'origineDemande': 'externe', 'factureId': 'F1', ...o
           };
       await ouvrir(
           t,
           petit({
-            'patients': [p('E1', 'CNT/901/26', {'externe': true})],
+            'patients': [p('E1', 'CBG/901/26', {'externe': true})],
             'demandesAnalyses': [
               dem({'id': 'D1', 'reference': 'LAB-00001', 'bloqueParPaiement': true, 'etatAnalyse': 'en_attente'}),
               dem({'id': 'D2', 'reference': 'LAB-00002', 'etatAnalyse': 'attente_prelevement', 'dateHeure': '2026-08-02T10:00:00.000Z'}),
@@ -470,7 +470,7 @@ void main() {
     cas('transcrire deux analyses : dossier externe, facture à lignes payables, caisse saisie, prélèvement bloqué', (t) async {
       final cat = (d['analysesCatalogue'] as List).cast<Map>().map((e) => e.cast<String, Object?>()).toList();
       final m = Magasin({
-        'patients': [for (var i = 0; i < 3; i++) p('x$i', 'CNT/${i + 1}/26')],
+        'patients': [for (var i = 0; i < 3; i++) p('x$i', 'CBG/${i + 1}/26')],
         'demandesAnalyses': [],
         'factures': [],
         'taches': [],
@@ -513,7 +513,7 @@ void main() {
     final d = vecteurs('pat_documents');
     cas('indicateurs, fichier déposé ou référencé, poids lisible', (t) async {
       final jeu = [for (final x in (d['jeu'] as List)) (x as Map).cast<String, Object?>()];
-      await ouvrir(t, petit({'patients': [p('K1', 'CNT/1/26'), p('K2', 'CNT/2/26')], 'documentsPatient': jeu}), 'm1-documents');
+      await ouvrir(t, petit({'patients': [p('K1', 'CBG/1/26'), p('K2', 'CBG/2/26')], 'documentsPatient': jeu}), 'm1-documents');
       final k = d['kpis'] as List;
       expect(kpi(t, 'Documents numérisés'), (k[0] as List)[1]);
       expect(kpi(t, 'Validés'), (k[1] as List)[1]);
@@ -525,7 +525,7 @@ void main() {
 
     cas('retirer un document : motif obligatoire, archivé (RG-14), annulable', (t) async {
       final jeu = [for (final x in (d['jeu'] as List)) (x as Map).cast<String, Object?>()];
-      final m = petit({'patients': [p('K1', 'CNT/1/26')], 'documentsPatient': jeu, 'audit': []});
+      final m = petit({'patients': [p('K1', 'CBG/1/26')], 'documentsPatient': jeu, 'audit': []});
       await ouvrir(t, m, 'm1-documents');
       await toucher(t, find.byTooltip('Retirer du dossier').first);
       expect(find.textContaining('du dossier ?'), findsOneWidget);

@@ -15,7 +15,7 @@ String _pad(int n, int l) => n.toString().padLeft(l, '0');
 num? _nombre(Object? v) => v is num ? v : num.tryParse('${v ?? ''}');
 
 /// `PR.dossierExterne(v, date)` : le dossier d'un patient adressé de l'extérieur — UNE SEULE fabrique, pour l'accueil, le laboratoire, l'imagerie et
-/// la délivrance d'une pièce. Le code suit `C.codePatient()` (`CNT/(900 + nombre de dossiers)/AA`). L'âge DÉCLARÉ est daté du jour de la
+/// la délivrance d'une pièce. Le code suit `C.codePatient()` (`CBG/(900 + nombre de dossiers)/AA`). L'âge DÉCLARÉ est daté du jour de la
 /// déclaration : sans cette date il se figerait. Rend la fiche à INSÉRER (sans identifiant : le magasin l'attribue).
 FichePat patDossierExterne(FichePat v, DateTime date, int effectifRepertoire) {
   if ('${v['nom'] ?? ''}'.trim().isEmpty || '${v['prenom'] ?? ''}'.trim().isEmpty) {

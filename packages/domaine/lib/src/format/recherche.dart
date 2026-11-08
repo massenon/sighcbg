@@ -38,7 +38,7 @@ int _cle(String c) {
 }
 
 /// Comparaison « naturelle » française : les suites de chiffres se comparent comme nombres, le reste sans accents ni casse,
-/// et `CNT/1/25` précède `CNT900/25` (la ponctuation passe avant les chiffres, comme dans `Intl`).
+/// et `CBG/1/25` précède `CBG900/25` (la ponctuation passe avant les chiffres, comme dans `Intl`).
 int comparerNaturel(Object? a, Object? b) {
   final x = normaliser(a), y = normaliser(b);
   var i = 0, j = 0;

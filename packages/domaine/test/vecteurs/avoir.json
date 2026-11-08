@@ -10,7 +10,7 @@
      "numero": "FN-2026-00801",
      "patientId": "P1",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "lignes": [
       {
        "id": "L1",
@@ -73,7 +73,7 @@
      "factureNumero": "FN-2026-00801",
      "patientId": "P1",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "montant": 8000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -142,7 +142,7 @@
      "numero": "FN-2026-00802",
      "patientId": "P2",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "lignes": [
       {
        "id": "L1",
@@ -208,7 +208,7 @@
      "factureNumero": "FN-2026-00802",
      "patientId": "P2",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "montant": 2000,
      "motif": "Interruption de soins",
      "observations": "Patient évacué",
@@ -273,7 +273,7 @@
      "numero": "FN-2026-00803",
      "patientId": "P3",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "lignes": [
       {
        "id": "L1",
@@ -342,7 +342,7 @@
      "factureNumero": "FN-2026-00803",
      "patientId": "P3",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "montant": 2000,
      "motif": "Autre (préciser en observations)",
      "observations": "",
@@ -407,7 +407,7 @@
      "numero": "FN-2026-00804",
      "patientId": "P4",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "lignes": [
       {
        "id": "L1",
@@ -482,7 +482,7 @@
      "factureNumero": "FN-2026-00804",
      "patientId": "P4",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -547,7 +547,7 @@
      "numero": "FN-2026-00805",
      "patientId": "P5",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "lignes": [
       {
        "id": "L1",
@@ -626,7 +626,7 @@
      "factureNumero": "FN-2026-00805",
      "patientId": "P5",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -691,7 +691,7 @@
      "numero": "FN-2026-00806",
      "patientId": "P6",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/6/26",
+     "patientCode": "CBG/6/26",
      "lignes": [],
      "montantTTC": 8000,
      "statutPaiement": "soldee",
@@ -747,7 +747,7 @@
      "factureNumero": "FN-2026-00806",
      "patientId": "P6",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/6/26",
+     "patientCode": "CBG/6/26",
      "montant": 8000,
      "motif": "Prestation non réalisée",
      "observations": "",
@@ -812,7 +812,7 @@
      "numero": "FN-2026-00807",
      "patientId": "P7",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/7/26",
+     "patientCode": "CBG/7/26",
      "lignes": [
       {
        "id": "L1",
@@ -912,7 +912,7 @@
      "factureNumero": "FN-2026-00807",
      "patientId": "P7",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/7/26",
+     "patientCode": "CBG/7/26",
      "montant": 3000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -977,7 +977,7 @@
      "numero": "FN-2026-00808",
      "patientId": "P8",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/8/26",
+     "patientCode": "CBG/8/26",
      "lignes": [
       {
        "id": "L1",
@@ -1087,7 +1087,7 @@
      "factureNumero": "FN-2026-00808",
      "patientId": "P8",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/8/26",
+     "patientCode": "CBG/8/26",
      "montant": 3000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -1152,7 +1152,7 @@
      "numero": "FN-2026-00809",
      "patientId": "P9",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/9/26",
+     "patientCode": "CBG/9/26",
      "lignes": [
       {
        "id": "L1",
@@ -1278,7 +1278,7 @@
      "numero": "FN-2026-00810",
      "patientId": "P10",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/10/26",
+     "patientCode": "CBG/10/26",
      "lignes": [
       {
        "id": "L1",
@@ -1398,7 +1398,7 @@
      "numero": "FN-2026-00811",
      "patientId": "P11",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/11/26",
+     "patientCode": "CBG/11/26",
      "lignes": [
       {
        "id": "L1",
@@ -1513,7 +1513,7 @@
      "numero": "FN-2026-00812",
      "patientId": "P12",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/12/26",
+     "patientCode": "CBG/12/26",
      "lignes": [
       {
        "id": "L1",
@@ -1627,7 +1627,7 @@
      "numero": "FN-2026-00813",
      "patientId": "P13",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/13/26",
+     "patientCode": "CBG/13/26",
      "lignes": [
       {
        "id": "L1",
@@ -1829,7 +1829,7 @@
      "numero": "FN-2026-00814",
      "patientId": "P14",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/14/26",
+     "patientCode": "CBG/14/26",
      "lignes": [
       {
        "id": "L1",
@@ -1961,7 +1961,7 @@
      "numero": "FN-2026-00815",
      "patientId": "P15",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/15/26",
+     "patientCode": "CBG/15/26",
      "lignes": [
       {
        "id": "L1",
@@ -2104,7 +2104,7 @@
      "numero": "FN-2026-00816",
      "patientId": "P16",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/16/26",
+     "patientCode": "CBG/16/26",
      "lignes": [
       {
        "id": "L1",
@@ -2252,7 +2252,7 @@
      "factureNumero": "FN-2026-00816",
      "patientId": "P16",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/16/26",
+     "patientCode": "CBG/16/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -2317,7 +2317,7 @@
      "numero": "FN-2026-00817",
      "patientId": "P17",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/17/26",
+     "patientCode": "CBG/17/26",
      "lignes": [
       {
        "id": "L1",
@@ -2480,7 +2480,7 @@
      "factureNumero": "FN-2026-00817",
      "patientId": "P17",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/17/26",
+     "patientCode": "CBG/17/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -2545,7 +2545,7 @@
      "numero": "FN-2026-00820",
      "patientId": "P20",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/20/26",
+     "patientCode": "CBG/20/26",
      "lignes": [
       {
        "id": "L1",
@@ -2714,7 +2714,7 @@
      "factureNumero": "FN-2026-00820",
      "patientId": "P20",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/20/26",
+     "patientCode": "CBG/20/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -2779,7 +2779,7 @@
      "numero": "FN-2026-00821",
      "patientId": "P21",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/21/26",
+     "patientCode": "CBG/21/26",
      "lignes": [
       {
        "id": "L1",
@@ -2953,7 +2953,7 @@
      "factureNumero": "FN-2026-00821",
      "patientId": "P21",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/21/26",
+     "patientCode": "CBG/21/26",
      "montant": 2000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -3018,7 +3018,7 @@
      "numero": "FN-2026-00822",
      "patientId": "P22",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/22/26",
+     "patientCode": "CBG/22/26",
      "lignes": [
       {
        "id": "L1",
@@ -3198,7 +3198,7 @@
      "factureNumero": "FN-2026-00822",
      "patientId": "P22",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/22/26",
+     "patientCode": "CBG/22/26",
      "montant": 4000,
      "motif": "Erreur de tarif",
      "observations": "",
@@ -3263,7 +3263,7 @@
      "numero": "FN-2026-00823",
      "patientId": "P23",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/23/26",
+     "patientCode": "CBG/23/26",
      "lignes": [
       {
        "id": "L1",
@@ -3449,7 +3449,7 @@
      "factureNumero": "FN-2026-00823",
      "patientId": "P23",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/23/26",
+     "patientCode": "CBG/23/26",
      "montant": 2500,
      "motif": "Autre (préciser en observations)",
      "observations": "Remboursement au patient",
@@ -3514,7 +3514,7 @@
      "numero": "FN-2026-00824",
      "patientId": "P24",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/24/26",
+     "patientCode": "CBG/24/26",
      "lignes": [
       {
        "id": "L1",
@@ -3720,7 +3720,7 @@
      "numero": "FN-2026-00825",
      "patientId": "P25",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/25/26",
+     "patientCode": "CBG/25/26",
      "lignes": [
       {
        "id": "L1",
@@ -3925,7 +3925,7 @@
      "factureNumero": "FN-2026-00825",
      "patientId": "P25",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/25/26",
+     "patientCode": "CBG/25/26",
      "montant": 4000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -3990,7 +3990,7 @@
      "numero": "FN-2026-00826",
      "patientId": "P26",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/26/26",
+     "patientCode": "CBG/26/26",
      "lignes": [
       {
        "id": "L1",
@@ -4203,7 +4203,7 @@
      "numero": "FN-2026-00827",
      "patientId": "P27",
      "patient": "TEST Avoir",
-     "patientCode": "CNT/27/26",
+     "patientCode": "CBG/27/26",
      "lignes": [
       {
        "id": "L1",

@@ -11,7 +11,7 @@ import '../../shell/contexte_ecran.dart';
 import '../m14/commun_m14.dart';
 import 'cfa_commun.dart';
 
-/// `cfg-organisation` — « Organisation & organigramme » : deux référentiels administrables. Les SECTEURS de la NS 145/08/DA/CNT/2026 donnent la maille
+/// `cfg-organisation` — « Organisation & organigramme » : deux référentiels administrables. Les SECTEURS de la NS 145/08/DA/CBG/2026 donnent la maille
 /// réelle des habilitations ; l'ORGANIGRAMME pilote la matrice RBAC (chaque poste porte un rôle). RG-14 — retirer un secteur ou un poste l'archive.
 class EcranOrganisation extends StatelessWidget with EcranMaquette {
   const EcranOrganisation({super.key});
@@ -21,7 +21,7 @@ class EcranOrganisation extends StatelessWidget with EcranMaquette {
   String get description => 'Secteurs de la clinique, structure hiérarchique et rôles qui en découlent.';
   @override
   String get regle =>
-      'Deux référentiels administrables. Les secteurs (NS 145/08/DA/CNT/2026) donnent la maille réelle des habilitations et de l’évaluation des services. L’organigramme pilote la matrice RBAC : chaque poste porte un rôle qui détermine son périmètre d’accès. RG-14 — retirer un secteur ou un poste l’archive : rien n’est supprimé, tout se restaure.';
+      'Deux référentiels administrables. Les secteurs (NS 145/08/DA/CBG/2026) donnent la maille réelle des habilitations et de l’évaluation des services. L’organigramme pilote la matrice RBAC : chaque poste porte un rôle qui détermine son périmètre d’accès. RG-14 — retirer un secteur ou un poste l’archive : rien n’est supprimé, tout se restaure.';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {

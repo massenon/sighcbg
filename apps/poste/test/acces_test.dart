@@ -47,7 +47,7 @@ String baguidi(String texte) {
     'Votre santé, notre raison de vivre' => IdentiteClinique.slogan,
     'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268' => mention,
     'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214' => mention,
-    'CLINIQUE NASSIERA TOO SARL — SIGH-CNT' => '${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}',
+    'CLINIQUE NASSIERA TOO SARL — SIGH-CBG' => '${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}',
     'CLINIQUE NASSIERA TOO SARL' => IdentiteClinique.nom,
     '3201642748214' => IdentiteClinique.ifu,
     'RB/NAT/2016-B-268' => IdentiteClinique.rccm,

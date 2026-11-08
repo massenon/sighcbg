@@ -122,7 +122,7 @@
       "Sans repos codifié",
       "5 000 mensuelle",
       "7 jours",
-      "NS n° 132/07/DM/DA/CNT/2026 — prime d’incinération",
+      "NS n° 132/07/DM/DA/CBG/2026 — prime d’incinération",
       ""
      ]
     ],
@@ -1184,7 +1184,7 @@
      ]
     ]
    },
-   "notes": "Le barème est consultable. Pour le modifier, ouvrir la porte depuis « Paramètres système », onglet Barème NS 131. Un barème de sanctions ne se retouche pas au détour d’un écran d’évaluation. Barème d’évaluation — NS 131/07/DM/DA/CNT/2026 Colonnes Exporter Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et assiduité Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 0 % 6 % 10 % 13/07/2026 02 Exécution des tâches Tâches non exécutées · Tâches mal exécutées 0 % 10 % 15 % 13/07/2026 03 Attitude envers les patients Parler mal au malade · Dispute avec malade · Insulter ",
+   "notes": "Le barème est consultable. Pour le modifier, ouvrir la porte depuis « Paramètres système », onglet Barème NS 131. Un barème de sanctions ne se retouche pas au détour d’un écran d’évaluation. Barème d’évaluation — NS 131/07/DM/DA/CBG/2026 Colonnes Exporter Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et assiduité Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 0 % 6 % 10 % 13/07/2026 02 Exécution des tâches Tâches non exécutées · Tâches mal exécutées 0 % 10 % 15 % 13/07/2026 03 Attitude envers les patients Parler mal au malade · Dispute avec malade · Insulter ",
    "boutonsBareme": [
     "Colonnes affichées",
     "Exporter",
@@ -1964,7 +1964,7 @@
      ]
     ]
    },
-   "notes": " par direction et service Critères sanctionnés (NS 131) Montant retenu par critère Les quatre axes du barème NS 131/07/DM/DA/CNT/2026 — ponctualité et assiduité, exécution des tâches, attitude envers les patients, respect de la hiérarchie — ne pèsent pas du même poids. Ce croisement montre lequel appelle une action de la Direction, plutôt que de traiter les sanctions une à une."
+   "notes": " par direction et service Critères sanctionnés (NS 131) Montant retenu par critère Les quatre axes du barème NS 131/07/DM/DA/CBG/2026 — ponctualité et assiduité, exécution des tâches, attitude envers les patients, respect de la hiérarchie — ne pèsent pas du même poids. Ce croisement montre lequel appelle une action de la Direction, plutôt que de traiter les sanctions une à une."
   },
   "primes": {
    "kpis": [
@@ -1990,10 +1990,10 @@
     }
    ],
    "cartes": [
-    "Grille des primes — NS n° 132/07/DM/DA/CNT/2026"
+    "Grille des primes — NS n° 132/07/DM/DA/CBG/2026"
    ],
    "grille": {
-    "titre": "Grille des primes — NS n° 132/07/DM/DA/CNT/2026",
+    "titre": "Grille des primes — NS n° 132/07/DM/DA/CBG/2026",
     "entetes": [
      "PRIME",
      "MODE",
@@ -3519,7 +3519,7 @@
       "Sans repos codifié",
       "5 000 mensuelle",
       "7 jours",
-      "NS n° 132/07/DM/DA/CNT/2026 — prime d’incinération",
+      "NS n° 132/07/DM/DA/CBG/2026 — prime d’incinération",
       ""
      ]
     ],
@@ -6805,7 +6805,7 @@
       "16/08/2026"
      ]
     ],
-    "contenu": "AgentFonctionServiceGardesPermanencesSoiréesTotalHeuresGARBA YahouzaInfirmier(ère)Soins infirmiers210021356 hIDRISSOU ANIKI Baba-ToundéInfirmier(ère)Soins infirmiers210021369 hBAGRI ElvyreInfirmier(ère)Soins infirmiers210021356 hPARAISO AbdoulInfirmier(ère)Soins infirmiers210021369 hDOSSOU MoussaInfirmier(ère)Soins infirmiers210021356 hOROU YO AlimatouInfirmier(ère)Soins infirmiers210021369 hOURTCHA TereyamaAgent de sécuritéDirection1101021404 hSOULE EdmondAgent de sécuritéDirection1001121394 hISSA RabiatouAgent d’entretienDirection011021210 hBAKO ChantalAgent d’entretienDirection010021210 hNKOUÉ JeanInfirmier(ère)Soins infirmiers200020345 hOURTCHA BertineInfirmier(ère)Soins infirmiers200020345 hSAMBIENI MargueriteCaissièreAccueil1010020340 hAHOHOU ChantalAccueil / Secrétaire médicalAccueil1010020340 hYARO OrouAgent de sécuritéDirection1001020380 hOROU YO BertineAgent d’entretienDirection010020200 hDIEYABIDI AïssatouCaissièrePharmacie118019344 hOROU YO EdmondAccueil / Secrétaire médicalAccueil118019344 hSANNI BibataAccueil / Secrétaire médicalAccueil108018320 hYENI M’PO FlorentMédecinMédecine générale160016384 hAHOHOU RodrigueMédecinImagerie / Échographie160016384 hBOUKARI NadègeSage-femmeMaternité160016384 hBASSONGUI Chabi SékoMédecinDirection150015360 hTAKI OrouMédecinMédecine générale150015360 hBADO BANI A. B. ZoulehathSage-femmeMaternité150015360 hADAM ColetteSage-femmeMaternité150015360 hTEPA SéraphineAide-soignant(e)Soins infirmiers110011264 hTAKI BibataAide-soignant(e)Soins infirmiers110011264 hOURTCHA MargueriteAide-soignant(e)Soins infirmiers110011264 hDAOUDA ZoukanériAide-soignant(e)Soins infirmiers100010240 hYENI RachidaAide-soignant(e)Soins infirmiers100010240 hWOROU SalamatouAide-soignant(e)Soins infirmiers100010240 hDAOUDA JustineAide-soignant(e)Soins infirmiers100010240 hGBEDJI ZoukanériAide-soignant(e)Soins infirmiers100010240 hTOTAL440753157710 934 hComptage des vacations travaillées : gardes, permanences, soirées, entretien général et incinération. Les repos et congés en sont exclus. Ce décompte est celui qui multiplie les primes de garde et de permanence de la note de service NS n° 132/07/DM/DA/CNT/2026.",
+    "contenu": "AgentFonctionServiceGardesPermanencesSoiréesTotalHeuresGARBA YahouzaInfirmier(ère)Soins infirmiers210021356 hIDRISSOU ANIKI Baba-ToundéInfirmier(ère)Soins infirmiers210021369 hBAGRI ElvyreInfirmier(ère)Soins infirmiers210021356 hPARAISO AbdoulInfirmier(ère)Soins infirmiers210021369 hDOSSOU MoussaInfirmier(ère)Soins infirmiers210021356 hOROU YO AlimatouInfirmier(ère)Soins infirmiers210021369 hOURTCHA TereyamaAgent de sécuritéDirection1101021404 hSOULE EdmondAgent de sécuritéDirection1001121394 hISSA RabiatouAgent d’entretienDirection011021210 hBAKO ChantalAgent d’entretienDirection010021210 hNKOUÉ JeanInfirmier(ère)Soins infirmiers200020345 hOURTCHA BertineInfirmier(ère)Soins infirmiers200020345 hSAMBIENI MargueriteCaissièreAccueil1010020340 hAHOHOU ChantalAccueil / Secrétaire médicalAccueil1010020340 hYARO OrouAgent de sécuritéDirection1001020380 hOROU YO BertineAgent d’entretienDirection010020200 hDIEYABIDI AïssatouCaissièrePharmacie118019344 hOROU YO EdmondAccueil / Secrétaire médicalAccueil118019344 hSANNI BibataAccueil / Secrétaire médicalAccueil108018320 hYENI M’PO FlorentMédecinMédecine générale160016384 hAHOHOU RodrigueMédecinImagerie / Échographie160016384 hBOUKARI NadègeSage-femmeMaternité160016384 hBASSONGUI Chabi SékoMédecinDirection150015360 hTAKI OrouMédecinMédecine générale150015360 hBADO BANI A. B. ZoulehathSage-femmeMaternité150015360 hADAM ColetteSage-femmeMaternité150015360 hTEPA SéraphineAide-soignant(e)Soins infirmiers110011264 hTAKI BibataAide-soignant(e)Soins infirmiers110011264 hOURTCHA MargueriteAide-soignant(e)Soins infirmiers110011264 hDAOUDA ZoukanériAide-soignant(e)Soins infirmiers100010240 hYENI RachidaAide-soignant(e)Soins infirmiers100010240 hWOROU SalamatouAide-soignant(e)Soins infirmiers100010240 hDAOUDA JustineAide-soignant(e)Soins infirmiers100010240 hGBEDJI ZoukanériAide-soignant(e)Soins infirmiers100010240 hTOTAL440753157710 934 hComptage des vacations travaillées : gardes, permanences, soirées, entretien général et incinération. Les repos et congés en sont exclus. Ce décompte est celui qui multiplie les primes de garde et de permanence de la note de service NS n° 132/07/DM/DA/CBG/2026.",
     "tables": [
      {
       "entetes": [
@@ -10938,7 +10938,7 @@
      ]
     ]
    },
-   "notes": "Le barème est consultable. Pour le modifier, ouvrir la porte depuis « Paramètres système », onglet Barème NS 131. Un barème de sanctions ne se retouche pas au détour d’un écran d’évaluation. Barème d’évaluation — NS 131/07/DM/DA/CNT/2026 Colonnes Exporter Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et assiduité Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 0 % 6 % 10 % 13/07/2026 02 Exécution des tâches Tâches non exécutées · Tâches mal exécutées 0 % 10 % 15 % 13/07/2026 03 Attitude envers les patients Parler mal au malade · Dispute avec malade · Insulter ",
+   "notes": "Le barème est consultable. Pour le modifier, ouvrir la porte depuis « Paramètres système », onglet Barème NS 131. Un barème de sanctions ne se retouche pas au détour d’un écran d’évaluation. Barème d’évaluation — NS 131/07/DM/DA/CBG/2026 Colonnes Exporter Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et assiduité Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 0 % 6 % 10 % 13/07/2026 02 Exécution des tâches Tâches non exécutées · Tâches mal exécutées 0 % 10 % 15 % 13/07/2026 03 Attitude envers les patients Parler mal au malade · Dispute avec malade · Insulter ",
    "boutonsBareme": [
     "Colonnes affichées",
     "Exporter",
@@ -11570,7 +11570,7 @@
        ],
        [
         "Référence barème",
-        "NS 131/07/DM/DA/CNT/2026"
+        "NS 131/07/DM/DA/CBG/2026"
        ]
       ],
       "contenu": "N°Éléments d’évaluation1) Résultat 2) Sanction 3) Prélèvement01Ponctualité et assiduité1) Bonne 2) Aucune 3) 002Exécution des tâches1) Bonne 2) Aucune 3) 003Attitude envers les patients1) Bonne 2) Aucune 3) 004Respect de la hiérarchie1) Faible à mauvaise 2) 10 % 3) 45 000TOTAL À PRÉLEVER : 45 000N°Éléments de soldeMontant01SALAIRE DE BASE450 00002PRIME D’ANCIENNETÉ72 00003PRIME DE GARDE04PRIME DE PERMANENCE05PRIME D’ACCUEILAUTRE PRIMESALAIRE BRUT450 000SALAIRE BRUT RESTANT405 000",
@@ -11727,7 +11727,7 @@
        ],
        [
         "Référence barème",
-        "NS 131/07/DM/DA/CNT/2026"
+        "NS 131/07/DM/DA/CBG/2026"
        ]
       ],
       "contenu": "N°Éléments d’évaluation1) Résultat 2) Sanction 3) Prélèvement01Ponctualité et assiduité1) Moyenne 2) 6 % 3) 16 80002Exécution des tâches1) Faible à mauvaise 2) 15 % 3) 42 00003Attitude envers les patients1) Bonne 2) Aucune 3) 004Respect de la hiérarchie1) Faible à mauvaise 2) 10 % 3) 28 000TOTAL À PRÉLEVER : 86 800N°Éléments de soldeMontant01SALAIRE DE BASE280 00002PRIME D’ANCIENNETÉ22 40003PRIME DE GARDE04PRIME DE PERMANENCE05PRIME D’ACCUEILAUTRE PRIMESALAIRE BRUT280 000SALAIRE BRUT RESTANT193 200",
@@ -11884,7 +11884,7 @@
        ],
        [
         "Référence barème",
-        "NS 131/07/DM/DA/CNT/2026"
+        "NS 131/07/DM/DA/CBG/2026"
        ]
       ],
       "contenu": "N°Éléments d’évaluation1) Résultat 2) Sanction 3) Prélèvement01Ponctualité et assiduité1) Bonne 2) Aucune 3) 002Exécution des tâches1) Bonne 2) Aucune 3) 003Attitude envers les patients1) Bonne 2) Aucune 3) 004Respect de la hiérarchie1) Faible à mauvaise 2) 10 % 3) 45 000TOTAL À PRÉLEVER : 45 000N°Éléments de soldeMontant01SALAIRE DE BASE450 00002PRIME D’ANCIENNETÉ72 00003PRIME DE GARDE04PRIME DE PERMANENCE05PRIME D’ACCUEILAUTRE PRIMESALAIRE BRUT450 000SALAIRE BRUT RESTANT405 000",
@@ -12077,7 +12077,7 @@
       ""
      ]
     ],
-    "apercu": "Nouvelle fiche d’évaluation NS 131/07/DM/DA/CNT/2026 — prélèvement calculé automatiquement sur le salaire brut Agent * 32 — ADAM Alimatou (Dispensatrice) Période évaluée * Août 2026 ÉLÉMENTS D’ÉVALUATION — BARÈME NS 131/07/DM/DA/CNT/2026 01 — Ponctualité et assiduité * Bonne (aucune sanction) Moyenne (− 6 %) Faible à mauvaise (− 10 %) Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 02 — Exécution des tâches * Bonne (aucune sanction) Moyenne (− 10 %) Faible à mauvaise (− 15 %) Tâches non exécutées · Tâches mal exécutées 03 — Attitude envers les patients * Bonne (aucune sanction) Moyenne (− 6 %) Faible à mauvaise (− 1"
+    "apercu": "Nouvelle fiche d’évaluation NS 131/07/DM/DA/CBG/2026 — prélèvement calculé automatiquement sur le salaire brut Agent * 32 — ADAM Alimatou (Dispensatrice) Période évaluée * Août 2026 ÉLÉMENTS D’ÉVALUATION — BARÈME NS 131/07/DM/DA/CBG/2026 01 — Ponctualité et assiduité * Bonne (aucune sanction) Moyenne (− 6 %) Faible à mauvaise (− 10 %) Retard · Sortie non autorisée · Absence au poste · Assemblée de bavardage · Dormir aux heures de travail · Usage de portable 02 — Exécution des tâches * Bonne (aucune sanction) Moyenne (− 10 %) Faible à mauvaise (− 15 %) Tâches non exécutées · Tâches mal exécutées 03 — Attitude envers les patients * Bonne (aucune sanction) Moyenne (− 6 %) Faible à mauvaise (− 1"
    },
    "apercuModifie": "Salaire brut de référence 350 000 FCFA Prélèvement total 27 % Montant prélevé 94 500 FCFA Salaire brut restant 255 500 FCFA Annuler Valider l’évaluation",
    "creation": {
@@ -12349,7 +12349,7 @@
      ]
     ]
    },
-   "notes": " par direction et service Critères sanctionnés (NS 131) Montant retenu par critère Les quatre axes du barème NS 131/07/DM/DA/CNT/2026 — ponctualité et assiduité, exécution des tâches, attitude envers les patients, respect de la hiérarchie — ne pèsent pas du même poids. Ce croisement montre lequel appelle une action de la Direction, plutôt que de traiter les sanctions une à une.",
+   "notes": " par direction et service Critères sanctionnés (NS 131) Montant retenu par critère Les quatre axes du barème NS 131/07/DM/DA/CBG/2026 — ponctualité et assiduité, exécution des tâches, attitude envers les patients, respect de la hiérarchie — ne pèsent pas du même poids. Ce croisement montre lequel appelle une action de la Direction, plutôt que de traiter les sanctions une à une.",
    "notification": {
     "titre": "Notification de sanction",
     "sousTitre": "EV-2026-0001 — Septembre 2026",
@@ -12379,7 +12379,7 @@
       "45 000 FCFA"
      ]
     ],
-    "contenu": "À la suite de l’évaluation du rendement du mois de Septembre 2026, et en application du barème NS 131/07/DM/DA/CNT/2026, il est procédé à une retenue de 10 % sur votre salaire brut, soit un montant de 45 000 FCFA.Élément d’évaluationRésultatRetenuePonctualité et assiduitéBonne—Exécution des tâchesBonne—Attitude envers les patientsBonne—Respect de la hiérarchieFaible à mauvaise10 %",
+    "contenu": "À la suite de l’évaluation du rendement du mois de Septembre 2026, et en application du barème NS 131/07/DM/DA/CBG/2026, il est procédé à une retenue de 10 % sur votre salaire brut, soit un montant de 45 000 FCFA.Élément d’évaluationRésultatRetenuePonctualité et assiduitéBonne—Exécution des tâchesBonne—Attitude envers les patientsBonne—Respect de la hiérarchieFaible à mauvaise10 %",
     "tables": [
      {
       "entetes": [
@@ -12453,10 +12453,10 @@
     }
    ],
    "cartes": [
-    "Grille des primes — NS n° 132/07/DM/DA/CNT/2026"
+    "Grille des primes — NS n° 132/07/DM/DA/CBG/2026"
    ],
    "grille": {
-    "titre": "Grille des primes — NS n° 132/07/DM/DA/CNT/2026",
+    "titre": "Grille des primes — NS n° 132/07/DM/DA/CBG/2026",
     "entetes": [
      "PRIME",
      "MODE",
@@ -13859,11 +13859,11 @@
    ],
    "note": {
     "titre": "Note de service — primes diverses",
-    "sousTitre": "NS n° 132/07/DM/DA/CNT/2026",
+    "sousTitre": "NS n° 132/07/DM/DA/CBG/2026",
     "cartouche": [
      [
       "Référence",
-      "NS n° 132/07/DM/DA/CNT/2026"
+      "NS n° 132/07/DM/DA/CBG/2026"
      ],
      [
       "Objet",
@@ -14011,7 +14011,7 @@
    },
    "etat": {
     "titre": "État des primes diverses",
-    "sousTitre": "août 2026 — barème NS n° 132/07/DM/DA/CNT/2026",
+    "sousTitre": "août 2026 — barème NS n° 132/07/DM/DA/CBG/2026",
     "cartouche": [
      [
       "Période",
@@ -14027,7 +14027,7 @@
      ],
      [
       "Référence",
-      "NS n° 132/07/DM/DA/CNT/2026"
+      "NS n° 132/07/DM/DA/CBG/2026"
      ]
     ],
     "contenu": "Mat.AgentFonctionGardesPrime gardePerm.Prime perm.Primes fixesTotal20ADAM ColetteSage-femme1522 50000022 50035AHOHOU ChantalAccueil / Secrétaire médical109 000107 0007 00023 00018BADO BANI A. B. ZoulehathSage-femme1522 50000022 50013BAGRI ElvyreInfirmier(ère)000010 00010 00019BOUKARI NadègeSage-femme1624 00000024 00026DAOUDA JustineAide-soignant(e)109 0000015 00024 00022DAOUDA ZoukanériAide-soignant(e)109 0000015 00024 00029DIEYABIDI AïssatouCaissière119 90084 80010 00024 70016DOSSOU MoussaInfirmier(ère)000010 00010 00010GARBA YahouzaInfirmier(ère)000010 00010 00028GBEDJI ZoukanériAide-soignant(e)109 0000015 00024 00011IDRISSOU ANIKI Baba-ToundéInfirmier(ère)000010 00010 00012NKOUÉ JeanInfirmier(ère)000010 00010 00017OROU YO AlimatouInfirmier(ère)000010 00010 00033OROU YO EdmondAccueil / Secrétaire médical119 90085 6007 00022 50015OURTCHA BertineInfirmier(ère)000010 00010 00027OURTCHA MargueriteAide-soignant(e)119 9000015 00024 90014PARAISO AbdoulInfirmier(ère)000010 00010 00034SAMBIENI MargueriteCaissière109 000106 00010 00025 00036SANNI BibataAccueil / Secrétaire médical109 00085 6007 00021 60024TAKI BibataAide-soignant(e)119 9000015 00024 90021TEPA SéraphineAide-soignant(e)119 9000015 00024 90025WOROU SalamatouAide-soignant(e)109 0000015 00024 00023YENI RachidaAide-soignant(e)109 0000015 00024 000TOTAL190 50029 000241 000460 500",
@@ -14112,7 +14112,7 @@
       },
       "dateEffet": "2026-08-16",
       "version": 2,
-      "source": "NS n° 132/07/DM/DA/CNT/2026",
+      "source": "NS n° 132/07/DM/DA/CBG/2026",
       "portee": "futur",
       "modifieeLe": "2026-08-16",
       "modifieePar": "BASSONGUI Chabi Séko"
@@ -14600,7 +14600,7 @@
       },
       "dateEffet": "2026-07-13",
       "version": 2,
-      "source": "NS n° 132/07/DM/DA/CNT/2026",
+      "source": "NS n° 132/07/DM/DA/CBG/2026",
       "portee": "tout",
       "modifieeLe": "2026-08-16",
       "modifieePar": "BASSONGUI Chabi Séko"
@@ -15064,7 +15064,7 @@
       },
       "dateEffet": "2026-08-16",
       "version": 2,
-      "source": "NS n° 132/07/DM/DA/CNT/2026",
+      "source": "NS n° 132/07/DM/DA/CBG/2026",
       "portee": "futur",
       "modifieeLe": "2026-08-16",
       "modifieePar": "BASSONGUI Chabi Séko"
@@ -15878,7 +15878,7 @@
      },
      "dateEffet": "2026-07-13",
      "version": 1,
-     "source": "NS n° 132/07/DM/DA/CNT/2026",
+     "source": "NS n° 132/07/DM/DA/CBG/2026",
      "_archivePar": "BASSONGUI Chabi Séko",
      "_archiveLe": "2026-08-16T12:00:38.928Z",
      "_motifArchivage": "Prime abrogée par note"
@@ -16295,7 +16295,7 @@
     ]
    },
    "beneficiaires": {
-    "ouverture": "Bénéficiaires : Accueil NS n° 132/07/DM/DA/CNT/2026 Aucun bénéficiaire désigné. Règle d’attente : le forfait est versé à tous les agents dont la fonction figure à la grille. Désigner un premier agent la remplace par la liste. Désigner des bénéficiaires Agents à désigner * — Aucune sélection — Depuis le * Désigner Fermer",
+    "ouverture": "Bénéficiaires : Accueil NS n° 132/07/DM/DA/CBG/2026 Aucun bénéficiaire désigné. Règle d’attente : le forfait est versé à tous les agents dont la fonction figure à la grille. Désigner un premier agent la remplace par la liste. Désigner des bénéficiaires Agents à désigner * — Aucune sélection — Depuis le * Désigner Fermer",
     "sansAgent": {
      "toast": null,
      "designations": 0
@@ -16322,7 +16322,7 @@
        "_creeLe": "2026-08-16T12:00:41.651Z"
       }
      ],
-     "texte": "Bénéficiaires : Accueil NS n° 132/07/DM/DA/CNT/2026 Seuls les agents désignés, aux dates indiquées, perçoivent ce forfait. AGENT DEPUIS LE JUSQU’AU OROU YO Edmond 16/08/2026 en cours Désigner des bénéficiaires Agents à désigner * — Aucune sélection — Depuis le * Désigner Fermer",
+     "texte": "Bénéficiaires : Accueil NS n° 132/07/DM/DA/CBG/2026 Seuls les agents désignés, aux dates indiquées, perçoivent ce forfait. AGENT DEPUIS LE JUSQU’AU OROU YO Edmond 16/08/2026 en cours Désigner des bénéficiaires Agents à désigner * — Aucune sélection — Depuis le * Désigner Fermer",
      "audit": {
       "id": "LOGmsvr6ysz",
       "dateHeure": "2026-08-16T12:00:41.651Z",
@@ -16664,7 +16664,7 @@
      "Retirer ce critère",
      "Imprimer la note"
     ],
-    "note": "Modification autorisée. La porte a été ouverte depuis « Paramètres système ». Chaque changement demandera sa portée — évaluations à venir seulement, ou évaluations déjà prononcées comprises. Penser à refermer la porte après usage. Barème d’évaluation — NS 131/07/DM/DA/CNT/2026 Colonnes Exporter Nouveau critère Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et as",
+    "note": "Modification autorisée. La porte a été ouverte depuis « Paramètres système ». Chaque changement demandera sa portée — évaluations à venir seulement, ou évaluations déjà prononcées comprises. Penser à refermer la porte après usage. Barème d’évaluation — NS 131/07/DM/DA/CBG/2026 Colonnes Exporter Nouveau critère Paramètres système N° CRITÈRE BONNE MOYENNE FAIBLE À MAUVAISE EN VIGUEUR DEPUIS ACTIONS 01 Ponctualité et as",
     "ligneBoutons": [
      "Modifier ce critère",
      "Retirer ce critère"
@@ -16730,7 +16730,7 @@
       },
       "dateEffet": "2026-08-16",
       "version": 2,
-      "source": "NS 131/07/DM/DA/CNT/2026",
+      "source": "NS 131/07/DM/DA/CBG/2026",
       "statut": "actif",
       "portee": "futur",
       "modifieLe": "2026-08-16",
@@ -16892,7 +16892,7 @@
       },
       "dateEffet": "2026-07-13",
       "version": 2,
-      "source": "NS 131/07/DM/DA/CNT/2026",
+      "source": "NS 131/07/DM/DA/CBG/2026",
       "statut": "actif",
       "portee": "tout",
       "modifieLe": "2026-08-16",

@@ -362,7 +362,7 @@ void main() {
       await chercher(t, 'Infirmier Général');
       await cliquer(t, find.byTooltip('Consulter').first);
       await t.pump(const Duration(seconds: 1));
-      for (final x in ['213/10/CNT/DA/2023', '26/10/2023', 'Mission 1 — Contrôler le personnel', '95 % des retards constatés et notifiés', 'Mission 5 — Représenter la clinique et faire le planning du personnel paramédical', 'Au moins 12 staffs cliniques par an']) {
+      for (final x in ['213/10/CBG/DA/2023', '26/10/2023', 'Mission 1 — Contrôler le personnel', '95 % des retards constatés et notifiés', 'Mission 5 — Représenter la clinique et faire le planning du personnel paramédical', 'Au moins 12 staffs cliniques par an']) {
         expect(texteAffiche(t).contains(sansEspaces(x).toLowerCase()), isTrue, reason: x);
       }
       expect(find.text('Aucun indicateur chiffré au document.'), findsWidgets);
@@ -403,7 +403,7 @@ void main() {
       // modification : la fiche vide « Comptable » ; le « statut du titulaire » est le champ `statut` de la fiche (collision signalée, E626)
       await chercher(t, 'Comptable');
       await cliquer(t, find.byTooltip('Modifier').first);
-      poser(t, {'resume': 'Tenir les livres.', 'archivage': '999/CNT'});
+      poser(t, {'resume': 'Tenir les livres.', 'archivage': '999/CBG'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
       final comptable = col.toutes.firstWhere((x) => x['intitule'] == 'Comptable');
@@ -622,7 +622,7 @@ void main() {
           for (final l in (obj((primes['tableaux'] as List).first)['lignes'] as List).cast<List>()) {
             cellulesAffichees(t, l, raison: 'primes');
           }
-          expect(find.textContaining('Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026.'), findsOneWidget);
+          expect(find.textContaining('Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026.'), findsOneWidget);
         }
         await cliquer(t, find.text('Évaluations & sanctions').last);
         final ev = obj(obj(onglets)['Évaluations & sanctions']);

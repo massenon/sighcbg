@@ -226,7 +226,7 @@ void main() {
     expect(find.textContaining('écart 50'), findsOneWidget);
     await ouvrir(t, m, 'imp-patients');
     await choisirFichier(t, 'pa-code-existant');
-    expect(find.textContaining('RG-01 : le code CNT/1/25 est déjà attribué'), findsOneWidget);
+    expect(find.textContaining('RG-01 : le code CBG/1/25 est déjà attribué'), findsOneWidget);
     expect(m.collection('patients').toutes.length, 2);
   });
 

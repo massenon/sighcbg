@@ -204,7 +204,7 @@ void main() {
       await ouvrir(t, m, 'm2-imagerie-irm');
       await toucher(t, find.byTooltip('Consulter').first);
       expect(find.text('IMG-0156 — IRM du rachis lombaire'), findsOneWidget);
-      expect(find.text('SOUMANOU Awaou — CNT/1109/26'), findsNWidgets(2),
+      expect(find.text('SOUMANOU Awaou — CBG/1109/26'), findsNWidgets(2),
           reason: 'la ligne et le tiroir');
       expect(find.text('Résultats'), findsOneWidget);
       expect(find.text('Contre-indications vérifiées'), findsOneWidget);
@@ -342,7 +342,7 @@ void main() {
       final patient = m
           .collection('patients')
           .actives
-          .firstWhere((p) => p['code'] == 'CNT/1/25');
+          .firstWhere((p) => p['code'] == 'CBG/1/25');
       await choisir(t, 'examenCode', 'IRM du genou');
       await choisir(t, 'patientCode',
           '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
@@ -383,7 +383,7 @@ void main() {
       final patient = m
           .collection('patients')
           .actives
-          .firstWhere((p) => p['code'] == 'CNT/1/25');
+          .firstWhere((p) => p['code'] == 'CBG/1/25');
       await choisir(t, 'examenCode', 'IRM du genou');
       await choisir(t, 'patientCode',
           '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
@@ -413,7 +413,7 @@ void main() {
       expect(n['statut'], 'brouillon');
       expect(n['examenCode'], 'IMG-IRM-GEN');
       expect(n['examen'], 'IRM du genou');
-      expect(n['patientCode'], 'CNT/1/25');
+      expect(n['patientCode'], 'CBG/1/25');
       expect(n['patient'], '${patient['nom']} ${patient['prenom']}');
       expect(n['prescripteur'], 'Dr SALIFOU Aminou, CS de Perma (extérieur)');
       expect(n['prescripteurId'], isNull);
@@ -520,7 +520,7 @@ void main() {
         'examenCode': 'IMG-ECHO-OBS1',
         'examen': 'Échographie obstétricale du 1er trimestre',
         'patient': 'TEST',
-        'patientCode': 'CNT/0/26',
+        'patientCode': 'CBG/0/26',
         'prescripteur': 'P',
         'realisateur': 'R',
         'valeurs': <String, Object?>{},

@@ -45,12 +45,12 @@ String cfaMajuscules(String s) => s.toUpperCase();
 /// `D.NS145` (sans la liste des secteurs, qui vit dans la collection `secteurs`).
 class CfaNs145 {
   const CfaNs145._();
-  static const reference = 'NS 145/08/DA/CNT/2026';
+  static const reference = 'NS 145/08/DA/CBG/2026';
   static const objet = 'Répartition des secteurs de la clinique et désignation des responsables';
   static const dateSignature = '2026-08-06';
   static const dateEffet = '2026-08-07';
   static const signataire = 'TAKI Alimatou épse BASSONGUI, Directrice Administrative';
-  static const source = 'DOC — Note de service NS 145/08/DA/CNT/2026';
+  static const source = 'DOC — Note de service NS 145/08/DA/CBG/2026';
 }
 
 /// `C.BRAND` : ce que l'écran d'identité affiche en plus de `IdentiteClinique` (UNE identité légale). Forme juridique et adresse VIVENT dans

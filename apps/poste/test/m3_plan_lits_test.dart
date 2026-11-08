@@ -94,7 +94,7 @@ void main() {
     final long = '${carte(plan()['tiroirLong'])['texte']}';
     for (final f in [
       'N’TCHA Yacoubou',
-      'CNT/3/26 — Lit A3 LIT2',
+      'CBG/3/26 — Lit A3 LIT2',
       '10/08/2026',
       '6 jour(s)',
       'Diagnostic 7',

@@ -21,7 +21,7 @@ Magasin jeu() => Magasin({
           'id': 'F1',
           'numero': 'FN-2026-00001',
           'patient': 'AWA K.',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'patientId': 'P1',
           'date': '2026-10-30',
           'type': 'Pharmacie',
@@ -73,7 +73,7 @@ Magasin jeu() => Magasin({
           'factureId': 'F1',
           'reference': 'ORD-0001',
           'patient': 'AWA K.',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'detail': 'Encaisser',
           'montant': 6000,
           'date': '2026-10-30'
@@ -85,7 +85,7 @@ Magasin jeu() => Magasin({
           'factureId': 'F1',
           'reference': 'ORD-0001',
           'patient': 'AWA K.',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'detail': 'Délivrer',
           'date': '2026-10-30'
         },

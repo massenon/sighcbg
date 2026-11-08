@@ -8,7 +8,7 @@
     "reference": "H00001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
     "typeChambre": "standard",
@@ -22,7 +22,7 @@
     "reference": "H00002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
     "typeChambre": "standard",
@@ -36,7 +36,7 @@
     "reference": "H00003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
     "typeChambre": "standard",
@@ -53,7 +53,7 @@
     "heure": "09:00",
     "admissionId": "ADM1",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Famille",
     "visiteur": "Accompagnant déclaré",
@@ -66,7 +66,7 @@
     "heure": "14:30",
     "admissionId": "ADM1",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Personnel traitant",
     "visiteur": "GARBA Yahouza",
@@ -79,7 +79,7 @@
     "heure": "10:00",
     "admissionId": "ADM2",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "C1 LIT1",
     "type": "Famille",
     "visiteur": "Sœur de la patiente",
@@ -92,7 +92,7 @@
     "heure": "08:00",
     "admissionId": "ADM2",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "C1 LIT1",
     "type": "Personnel traitant",
     "visiteur": "GARBA Yahouza",
@@ -105,7 +105,7 @@
     "heure": "19:30",
     "admissionId": "ADM1",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Famille",
     "visiteur": "Voisin",
@@ -272,7 +272,7 @@
    ]
   },
   "detail": {
-   "texte": "BAKO Boukari Date 16/08/2026 Heure 10:00 Lit C1 LIT1 Patient BAKO Boukari Type Famille Visiteur Sœur de la patiente Observation — Patient hospitalisé BAKO Boukari — lit C1 LIT1 (CNT/2/26) Modifier Archiver",
+   "texte": "BAKO Boukari Date 16/08/2026 Heure 10:00 Lit C1 LIT1 Patient BAKO Boukari Type Famille Visiteur Sœur de la patiente Observation — Patient hospitalisé BAKO Boukari — lit C1 LIT1 (CBG/2/26) Modifier Archiver",
    "boutons": [
     "Fermer",
     "Modifier",
@@ -306,11 +306,11 @@
    "optionsAdmission": [
     [
      "ADM1",
-     "TCHANE Bertine — lit A1 LIT1 (CNT/1/25)"
+     "TCHANE Bertine — lit A1 LIT1 (CBG/1/25)"
     ],
     [
      "ADM2",
-     "BAKO Boukari — lit C1 LIT1 (CNT/2/26)"
+     "BAKO Boukari — lit C1 LIT1 (CBG/2/26)"
     ]
    ],
    "optionsType": [
@@ -347,7 +347,7 @@
      "visiteur": "Dr TAKI",
      "observation": "Réévaluation",
      "patient": "BAKO Boukari",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "lit": "C1 LIT1"
     },
     "total": 6,
@@ -363,7 +363,7 @@
     "visiteur": "Mère",
     "observation": "",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1"
    }
   },
@@ -499,7 +499,7 @@
      "heure": "10:00",
      "admissionId": "ADM1",
      "patient": "TCHANE Bertine",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "lit": "A1 LIT1",
      "type": "Famille",
      "visiteur": "Sœur de la patiente",
@@ -602,7 +602,7 @@
     "id": "RAP1",
     "statut": "actif",
     "reference": "RAP-0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
     "age": 31,
@@ -629,7 +629,7 @@
     "id": "RAP2",
     "statut": "actif",
     "reference": "RAP-0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
     "age": 32,
@@ -656,7 +656,7 @@
     "id": "RAP3",
     "statut": "actif",
     "reference": "RAP-0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
     "age": 33,
@@ -683,7 +683,7 @@
     "id": "RAP4",
     "statut": "archive",
     "reference": "RAP-0004",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
     "age": 34,
@@ -744,7 +744,7 @@
      "lignes": [
       [
        "RAP-0003",
-       "N’TCHA Yacoubou — CNT/3/26",
+       "N’TCHA Yacoubou — CBG/3/26",
        "11/08/2026",
        "14/08/2026",
        "Sortie 3",
@@ -753,7 +753,7 @@
       ],
       [
        "RAP-0001",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "06/08/2026",
        "en cours",
        "Sortie 1",
@@ -762,7 +762,7 @@
       ],
       [
        "RAP-0002",
-       "BAKO Boukari — CNT/2/26",
+       "BAKO Boukari — CBG/2/26",
        "27/07/2026",
        "01/08/2026",
        "Sortie 2",
@@ -923,7 +923,7 @@
     "Médecin traitant *"
    ],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateEntree": "",
     "dateSortie": "",
     "motif": "",
@@ -941,22 +941,22 @@
    },
    "boutons": [
     "Fermer",
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Créer"
    ],
    "optionsPatient": [
     [
-     "CNT/1/25",
-     "CNT/1/25 — TCHANE Bertine"
+     "CBG/1/25",
+     "CBG/1/25 — TCHANE Bertine"
     ],
     [
-     "CNT/2/26",
-     "CNT/2/26 — BAKO Boukari"
+     "CBG/2/26",
+     "CBG/2/26 — BAKO Boukari"
     ],
     [
-     "CNT/3/26",
-     "CNT/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26",
+     "CBG/3/26 — N’TCHA Yacoubou"
     ]
    ],
    "nbOptionsPatient": 198,
@@ -1000,7 +1000,7 @@
     "fiche": {
      "id": "RAPxmsvmvr40omm0s",
      "statut": "actif",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "dateEntree": "2026-08-12",
      "dateSortie": "",
      "motif": "Fièvre",
@@ -1066,7 +1066,7 @@
      "lignes": [
       [
        "RAP-0005",
-       "BAKO Boukari — CNT/2/26",
+       "BAKO Boukari — CBG/2/26",
        "12/08/2026",
        "en cours",
        "Guérison",
@@ -1075,7 +1075,7 @@
       ],
       [
        "RAP-0003",
-       "N’TCHA Yacoubou — CNT/3/26",
+       "N’TCHA Yacoubou — CBG/3/26",
        "11/08/2026",
        "14/08/2026",
        "Sortie 3",
@@ -1084,7 +1084,7 @@
       ],
       [
        "RAP-0001",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "06/08/2026",
        "en cours",
        "Sortie 1",
@@ -1093,7 +1093,7 @@
       ],
       [
        "RAP-0002",
-       "BAKO Boukari — CNT/2/26",
+       "BAKO Boukari — CBG/2/26",
        "27/07/2026",
        "01/08/2026",
        "Sortie 2",
@@ -1105,9 +1105,9 @@
    ]
   },
   "modification": {
-   "titre": "Modifier l’enregistrement RAP-0001 Patient * CNT/1/25 — TCHA",
+   "titre": "Modifier l’enregistrement RAP-0001 Patient * CBG/1/25 — TCHA",
    "valeurs": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "dateEntree": "2026-08-06",
     "dateSortie": "",
     "motif": "Motif 1",
@@ -1133,7 +1133,7 @@
      "id": "RAP1",
      "statut": "actif",
      "reference": "RAP-0001",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "patientId": "PAT0001",
      "patient": "TCHANE Bertine",
      "age": 31,

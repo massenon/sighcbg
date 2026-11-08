@@ -220,7 +220,7 @@ void main() {
         expect(find.text(o, skipOffstage: false), findsWidgets, reason: o);
       }
       expect(find.text('HOUNKPATIN Ida — PROV-1', skipOffstage: false), findsWidgets);
-      expect(find.text('DOSSOU Aline — CNT/12/26', skipOffstage: false), findsNothing, reason: 'un patient du poste n\'est pas un dossier de secours');
+      expect(find.text('DOSSOU Aline — CBG/12/26', skipOffstage: false), findsNothing, reason: 'un patient du poste n\'est pas un dossier de secours');
       await t.tap(find.byKey(const Key('champ-dest')));
       await t.pumpAndSettle();
       await t.tap(find.text('Maternité').last);

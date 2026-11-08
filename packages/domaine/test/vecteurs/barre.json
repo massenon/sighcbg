@@ -5,28 +5,28 @@
   "patients": [
    {
     "id": "PAT1",
-    "code": "CNT/1/26",
+    "code": "CBG/1/26",
     "nom": "PADONOU",
     "prenom": "Amina",
     "quartier": "Péporiyakou"
    },
    {
     "id": "PAT2",
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "KOUAGOU",
     "prenom": "Paulin",
     "quartier": "Natitingou"
    },
    {
     "id": "PAT3",
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "TAMOU",
     "prenom": "Sanni",
     "quartier": "Yimporima"
    },
    {
     "id": "PAT4",
-    "code": "CNT/4/26",
+    "code": "CBG/4/26",
     "nom": "ARCHIVÉ",
     "prenom": "Pascal",
     "quartier": "Boriyoure",
@@ -1854,14 +1854,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -1996,21 +1996,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2288,14 +2288,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2323,21 +2323,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2433,14 +2433,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2514,21 +2514,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2678,14 +2678,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2701,21 +2701,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2846,14 +2846,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -2906,21 +2906,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -3004,14 +3004,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -3039,21 +3039,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -3235,14 +3235,14 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
@@ -3377,21 +3377,21 @@
      "resultats": [
       {
        "label": "PADONOU Amina",
-       "detail": "CNT/1/26, Péporiyakou",
+       "detail": "CBG/1/26, Péporiyakou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "KOUAGOU Paulin",
-       "detail": "CNT/2/26, Natitingou",
+       "detail": "CBG/2/26, Natitingou",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null
       },
       {
        "label": "TAMOU Sanni",
-       "detail": "CNT/3/26, Yimporima",
+       "detail": "CBG/3/26, Yimporima",
        "icone": "user",
        "ecran": "m1-patients",
        "onglet": null

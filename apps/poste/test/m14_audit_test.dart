@@ -83,8 +83,8 @@ void main() {
     expect(find.text('{\n  "statut": "brouillon"\n}'), findsOneWidget);
     expect(find.text('{\n  "statut": "validee"\n}'), findsOneWidget);
     // Un texte qui n'est pas du JSON (valeur du jeu tronquée à cent caractères) est rendu tel quel.
-    expect(secJsonLisible('{"id":"CST1","statut":"actif","reference":"CST-00091","patientCode":"CNT/95/25","patien'),
-        '{"id":"CST1","statut":"actif","reference":"CST-00091","patientCode":"CNT/95/25","patien');
+    expect(secJsonLisible('{"id":"CST1","statut":"actif","reference":"CST-00091","patientCode":"CBG/95/25","patien'),
+        '{"id":"CST1","statut":"actif","reference":"CST-00091","patientCode":"CBG/95/25","patien');
   });
 
   casM14('RG-12 : toute écriture du poste entre au journal (en tête) ; il est plafonné à 400 entrées, les plus anciennes sortent du tampon', (t) async {

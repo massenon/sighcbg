@@ -41,7 +41,7 @@
 ; Identifiant FIXE de l'application : NE JAMAIS LE CHANGER. C'est lui qui fait
 ; qu'une nouvelle version REMPLACE l'ancienne au lieu de s'installer a cote.
 ; Celui de SIGH-CBG est PROPRE a la Clinique Baguidi (06/11/2026, PRD P0-7) et
-; differe de celui de SIGH-CNT : les deux logiciels cohabitent sur une machine.
+; differe de celui de SIGH-CBG : les deux logiciels cohabitent sur une machine.
 AppId={{8DE5823E-F0D2-40FD-A337-280D6E5BF4D5}
 AppName={#AppName}
 AppVersion={#AppVersion}

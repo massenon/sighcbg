@@ -233,7 +233,7 @@ void main() {
         'numero': 'FN-2026-09999',
         'patientId': 'PTEST',
         'patient': 'TEST Client',
-        'patientCode': 'CNT/9999/26',
+        'patientCode': 'CBG/9999/26',
         'date': '2026-08-15',
         'type': 'Consultation',
         'statut': 'actif',

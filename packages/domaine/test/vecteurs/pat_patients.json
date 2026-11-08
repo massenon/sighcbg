@@ -7,99 +7,99 @@
    {
     "nom": "registre vide",
     "codes": [],
-    "attendu": "CNT/1/26"
+    "attendu": "CBG/1/26"
    },
    {
     "nom": "nouveau format seul : plus grand rang + 1",
     "codes": [
      [
-      "CNT/1/26",
+      "CBG/1/26",
       "actif"
      ],
      [
-      "CNT/12/26",
+      "CBG/12/26",
       "actif"
      ],
      [
-      "CNT/7/26",
+      "CBG/7/26",
       "actif"
      ]
     ],
-    "attendu": "CNT/13/26"
+    "attendu": "CBG/13/26"
    },
    {
     "nom": "ancien format seul",
     "codes": [
      [
-      "CNT530/26",
+      "CBG530/26",
       "actif"
      ],
      [
-      "CNT12/26",
+      "CBG12/26",
       "actif"
      ]
     ],
-    "attendu": "CNT/531/26"
+    "attendu": "CBG/531/26"
    },
    {
     "nom": "les deux formats se lisent ensemble",
     "codes": [
      [
-      "CNT/1109/26",
+      "CBG/1109/26",
       "actif"
      ],
      [
-      "CNT530/26",
+      "CBG530/26",
       "actif"
      ],
      [
-      "CNT/20/26",
+      "CBG/20/26",
       "actif"
      ]
     ],
-    "attendu": "CNT/1110/26"
+    "attendu": "CBG/1110/26"
    },
    {
     "nom": "une autre année est ignorée",
     "codes": [
      [
-      "CNT/900/25",
+      "CBG/900/25",
       "actif"
      ],
      [
-      "CNT/4/26",
+      "CBG/4/26",
       "actif"
      ],
      [
-      "CNT/50/27",
+      "CBG/50/27",
       "actif"
      ]
     ],
-    "attendu": "CNT/5/26"
+    "attendu": "CBG/5/26"
    },
    {
     "nom": "un dossier archivé garde son rang (RG-01)",
     "codes": [
      [
-      "CNT/40/26",
+      "CBG/40/26",
       "archive"
      ],
      [
-      "CNT/3/26",
+      "CBG/3/26",
       "actif"
      ]
     ],
-    "attendu": "CNT/41/26"
+    "attendu": "CBG/41/26"
    },
    {
     "nom": "code illisible ignoré",
     "codes": [
      [
-      "CNT-X",
+      "CBG-X",
       "actif"
      ],
      [
-      "CNT/8/26",
+      "CBG/8/26",
       "actif"
      ],
      [
@@ -107,11 +107,11 @@
       "actif"
      ],
      [
-      "CNT//26",
+      "CBG//26",
       "actif"
      ]
     ],
-    "attendu": "CNT/9/26"
+    "attendu": "CBG/9/26"
    }
   ]
  },
@@ -137,7 +137,7 @@
     "crees": [
      {
       "statut": "actif",
-      "code": "CNT/179/26",
+      "code": "CBG/179/26",
       "nom": "Bio",
       "prenom": "Zakari",
       "sexe": "M",
@@ -166,7 +166,7 @@
      "opts": {
       "type": "success",
       "duration": 7000,
-      "detail": "CNT/179/26"
+      "detail": "CBG/179/26"
      }
     },
     "aller": [
@@ -188,7 +188,7 @@
     "crees": [
      {
       "statut": "actif",
-      "code": "CNT/180/26",
+      "code": "CBG/180/26",
       "nom": "Kora",
       "prenom": "Zakari",
       "sexe": "M",
@@ -217,7 +217,7 @@
      "opts": {
       "type": "success",
       "duration": 7000,
-      "detail": "CNT/180/26"
+      "detail": "CBG/180/26"
      }
     },
     "aller": [
@@ -242,7 +242,7 @@
     "crees": [
      {
       "statut": "actif",
-      "code": "CNT/181/26",
+      "code": "CBG/181/26",
       "nom": "Assure",
       "prenom": "Zakari",
       "sexe": "M",
@@ -271,7 +271,7 @@
      "opts": {
       "type": "success",
       "duration": 7000,
-      "detail": "CNT/181/26"
+      "detail": "CBG/181/26"
      }
     },
     "aller": [
@@ -301,7 +301,7 @@
     "crees": [
      {
       "statut": "actif",
-      "code": "CNT/182/26",
+      "code": "CBG/182/26",
       "nom": "Listes",
       "prenom": "Zakari",
       "sexe": "M",
@@ -335,7 +335,7 @@
      "opts": {
       "type": "success",
       "duration": 7000,
-      "detail": "CNT/182/26"
+      "detail": "CBG/182/26"
      }
     },
     "aller": [
@@ -387,7 +387,7 @@
      "dateNaissance": "1990-05-12",
      "telephone": "97000001"
     },
-    "codeReserve": "CNT/183/26",
+    "codeReserve": "CBG/183/26",
     "crees": [],
     "toasts": [
      "Ce code dossier est déjà attribué. Recharger la page pour obtenir le suivant."
@@ -403,7 +403,7 @@
    {
     "id": "RCNT126",
     "statut": "actif",
-    "code": "CNT/1/26",
+    "code": "CBG/1/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -415,7 +415,7 @@
    {
     "id": "RCNT226",
     "statut": "actif",
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "M",
@@ -427,7 +427,7 @@
    {
     "id": "RCNT326",
     "statut": "actif",
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -443,7 +443,7 @@
    {
     "id": "RCNT426",
     "statut": "actif",
-    "code": "CNT/4/26",
+    "code": "CBG/4/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -458,7 +458,7 @@
    {
     "id": "RCNT526",
     "statut": "actif",
-    "code": "CNT/5/26",
+    "code": "CBG/5/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "M",
@@ -473,7 +473,7 @@
    {
     "id": "RCNT626",
     "statut": "actif",
-    "code": "CNT/6/26",
+    "code": "CBG/6/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -488,7 +488,7 @@
    {
     "id": "RCNT726",
     "statut": "archive",
-    "code": "CNT/7/26",
+    "code": "CBG/7/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -500,7 +500,7 @@
    {
     "id": "RCNT826",
     "statut": "actif",
-    "code": "CNT/8/26",
+    "code": "CBG/8/26",
     "nom": "NOM/26",
     "prenom": "Prénom",
     "sexe": "F",
@@ -540,7 +540,7 @@
   "lignes": [
    [
     "",
-    "CNT/1/26",
+    "CBG/1/26",
     "NP NOM/26 Prénom Femme — 36 ans",
     "9/26",
     "Tchirimina",
@@ -551,7 +551,7 @@
    ],
    [
     "",
-    "CNT/2/26",
+    "CBG/2/26",
     "NP NOM/26 Prénom Homme — 36 ans",
     "9/26",
     "Boriyoure",
@@ -562,7 +562,7 @@
    ],
    [
     "",
-    "CNT/3/26",
+    "CBG/3/26",
     "NP NOM/26 Prénom Femme — 36 ans",
     "9/26",
     "Tchirimina",
@@ -573,7 +573,7 @@
    ],
    [
     "",
-    "CNT/4/26",
+    "CBG/4/26",
     "NP NOM/26 Prénom Femme — 36 ans",
     "9/26",
     "Tchirimina",
@@ -584,7 +584,7 @@
    ],
    [
     "",
-    "CNT/5/26",
+    "CBG/5/26",
     "NP NOM/26 Prénom Homme — 36 ans",
     "9/26",
     "Boriyoure",
@@ -595,7 +595,7 @@
    ],
    [
     "",
-    "CNT/6/26",
+    "CBG/6/26",
     "NP NOM/26 Prénom Femme — 36 ans",
     "9/26",
     "Tchirimina",
@@ -606,7 +606,7 @@
    ],
    [
     "",
-    "CNT/8/26",
+    "CBG/8/26",
     "NP NOM/26 Prénom Femme — 36 ans",
     "9/26",
     "Tchirimina",
@@ -670,46 +670,46 @@
     "filtre": "Sexe",
     "valeur": "Masculin",
     "codes": [
-     "CNT/2/26",
-     "CNT/5/26"
+     "CBG/2/26",
+     "CBG/5/26"
     ]
    },
    {
     "filtre": "Sexe",
     "valeur": "Féminin",
     "codes": [
-     "CNT/1/26",
-     "CNT/3/26",
-     "CNT/4/26",
-     "CNT/6/26",
-     "CNT/8/26"
+     "CBG/1/26",
+     "CBG/3/26",
+     "CBG/4/26",
+     "CBG/6/26",
+     "CBG/8/26"
     ]
    },
    {
     "filtre": "Couverture",
     "valeur": "Assurés",
     "codes": [
-     "CNT/3/26",
-     "CNT/4/26",
-     "CNT/5/26",
-     "CNT/6/26"
+     "CBG/3/26",
+     "CBG/4/26",
+     "CBG/5/26",
+     "CBG/6/26"
     ]
    },
    {
     "filtre": "Couverture",
     "valeur": "Non assurés",
     "codes": [
-     "CNT/1/26",
-     "CNT/2/26",
-     "CNT/8/26"
+     "CBG/1/26",
+     "CBG/2/26",
+     "CBG/8/26"
     ]
    },
    {
     "filtre": "Couverture",
     "valeur": "Carte expirée",
     "codes": [
-     "CNT/4/26",
-     "CNT/6/26"
+     "CBG/4/26",
+     "CBG/6/26"
     ]
    },
    {
@@ -761,11 +761,11 @@
     "filtre": "Quartier",
     "valeur": "Tchirimina",
     "codes": [
-     "CNT/1/26",
-     "CNT/3/26",
-     "CNT/4/26",
-     "CNT/6/26",
-     "CNT/8/26"
+     "CBG/1/26",
+     "CBG/3/26",
+     "CBG/4/26",
+     "CBG/6/26",
+     "CBG/8/26"
     ]
    },
    {

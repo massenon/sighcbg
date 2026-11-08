@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT : LE MODE PAIR (ADR-0006), RÈGLE DE FUSION ENTRE FILEULS
+ * SIGH-CBG : LE MODE PAIR (ADR-0006), RÈGLE DE FUSION ENTRE FILEULS
  * -----------------------------------------------------------------------------
  * Quand la mère est éteinte, les fileuls échangent leurs opérations par le relais. Pour que deux appareils qui ont reçu LES MÊMES opérations aboutissent
  * au MÊME état, quel que soit l'ordre d'arrivée, l'état est une FONCTION PURE de l'ensemble des opérations :

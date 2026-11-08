@@ -51,7 +51,7 @@
   }
  ],
  "patientRepertoire": {
-  "code": "CNT/1/25",
+  "code": "CBG/1/25",
   "id": "PAT0001",
   "nom": "TCHANE",
   "prenom": "Bertine"
@@ -68,7 +68,7 @@
      "prescripteur": "BASSONGUI Chabi Séko",
      "laborantin": "KINNOU A. Ganiou",
      "etatAnalyse": "en_attente",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "urgent": true
     },
     "refsExistantes": [
@@ -89,7 +89,7 @@
     {
      "id": "DEMxmvvd2xizt2tuw",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "analyseCode": "L02",
      "dateHeure": "2026-10-30T09:30",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -125,7 +125,7 @@
      "prescripteur": "BASSONGUI Chabi Séko",
      "laborantin": "KINNOU A. Ganiou",
      "etatAnalyse": "en_attente",
-     "patientCode": "CNT/1/25"
+     "patientCode": "CBG/1/25"
     },
     "refsExistantes": [
      "LAB-00159",
@@ -145,7 +145,7 @@
     {
      "id": "DEMxmvvd2xul4vqzu",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "analyseCode": "L03",
      "dateHeure": "2026-10-30T09:30",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -207,7 +207,7 @@
     {
      "id": "DEMxmvvd2y1m8mozs",
      "statut": "actif",
-     "patientCode": "CNT/1098/26",
+     "patientCode": "CBG/1098/26",
      "analyseCode": "L02",
      "dateHeure": "2026-10-30T09:30",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -230,7 +230,7 @@
     {
      "id": "PATxmvvd2y1m7c6dq",
      "statut": "actif",
-     "code": "CNT/1098/26",
+     "code": "CBG/1098/26",
      "nom": "KASSA",
      "prenom": "Imorou",
      "sexe": "M",
@@ -290,7 +290,7 @@
     {
      "id": "DEMxmvvd2y8rj8xid",
      "statut": "actif",
-     "patientCode": "CNT/1099/26",
+     "patientCode": "CBG/1099/26",
      "analyseCode": "L04",
      "dateHeure": "2026-10-30T09:30",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -313,7 +313,7 @@
     {
      "id": "PATxmvvd2y8r78y52",
      "statut": "actif",
-     "code": "CNT/1099/26",
+     "code": "CBG/1099/26",
      "nom": "BONI",
      "prenom": "Yaya",
      "sexe": "F",
@@ -349,7 +349,7 @@
      "prescripteur": "BASSONGUI Chabi Séko",
      "laborantin": "KINNOU A. Ganiou",
      "etatAnalyse": "en_attente",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "nom": "Ignoré",
      "prenom": "Aussi"
     },
@@ -371,7 +371,7 @@
     {
      "id": "DEMxmvvd2yel9b775",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "analyseCode": "L02",
      "dateHeure": "2026-10-30T09:30",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -474,7 +474,7 @@
      "prescripteur": "BASSONGUI Chabi Séko",
      "laborantin": "KINNOU A. Ganiou",
      "etatAnalyse": "en_attente",
-     "patientCode": "CNT/1/25"
+     "patientCode": "CBG/1/25"
     },
     "refsExistantes": [
      "LAB-00163",
@@ -494,7 +494,7 @@
     {
      "id": "DEMxmvvd2ywipjbfa",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "analyseCode": "L02",
      "dateHeure": "2027-02-03T08:15",
      "prescripteur": "BASSONGUI Chabi Séko",
@@ -531,7 +531,7 @@
     "urgent": false
    },
    "prerempli": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "nom": "",
     "prenom": "",
     "sexe": "",
@@ -551,7 +551,7 @@
    "avant": {
     "id": "DEMxmvvd2xizt2tuw",
     "statut": "actif",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "analyseCode": "L02",
     "dateHeure": "2026-10-30T09:30",
     "prescripteur": "BASSONGUI Chabi Séko",

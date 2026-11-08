@@ -63,7 +63,7 @@ void main() {
     pasDeStock = meds[1];
     m.collection('produits').mettreAJour(pasDeStock['id'], {'stockDetail': 1, 'stock': 1});
     src = SourceMemoire({
-      'patients': [const PieceSync('s1', {'code': 'CNT/7777/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'sexe': 'F', 'dateNaissance': '1990-01-01'})],
+      'patients': [const PieceSync('s1', {'code': 'CBG/7777/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'sexe': 'F', 'dateNaissance': '1990-01-01'})],
       'notes': [const PieceSync('n1', {'diagnostic': 'Paludisme simple', 'patientId': 's1'})],
       'prescriptions': [],
     });
@@ -73,15 +73,15 @@ void main() {
   PieceSync pieceSync(String id, Map<String, Object?> data) => PieceSync(id, data);
 
   test('une ordonnance du médecin devient ordonnance + facture + files d\'aval, au PRIX D\'ACHAT du catalogue (RG-02), et le dossier du patient entre au poste', () async {
-    expect(m.collection('patients').actives.where((p) => p['code'] == 'CNT/7777/26'), isEmpty);
+    expect(m.collection('patients').actives.where((p) => p['code'] == 'CBG/7777/26'), isEmpty);
     final avantOrdo = m.collection('ordonnances').actives.length;
     final avantFact = m.collection('factures').actives.length;
-    src.donnees['prescriptions']!.add(pieceSync('p1', piece('s1', 'CNT/7777/26', [
+    src.donnees['prescriptions']!.add(pieceSync('p1', piece('s1', 'CBG/7777/26', [
       {'produitId': produit['id'], 'medicament': produit['designation'], 'quantite': 2, 'posologie': '1 cp x 3/j', 'dureeJours': 5}
     ])));
     final r = await svc.traiter();
     expect((r.transcrites, r.refusees), (1, 0));
-    expect(m.collection('patients').actives.where((p) => p['code'] == 'CNT/7777/26').length, 1, reason: 'le dossier vient de la synchronisation, code intact (RG-01)');
+    expect(m.collection('patients').actives.where((p) => p['code'] == 'CBG/7777/26').length, 1, reason: 'le dossier vient de la synchronisation, code intact (RG-01)');
     final o = m.collection('ordonnances').actives.first;
     expect(m.collection('ordonnances').actives.length, avantOrdo + 1);
     expect(o['pieceMobileId'], 'p1');
@@ -107,16 +107,16 @@ void main() {
     final avantOrdo = m.collection('ordonnances').actives.length;
     final avantFact = m.collection('factures').actives.length;
     src.donnees['prescriptions']!.addAll([
-      pieceSync('p2', piece('s1', 'CNT/7777/26', [
+      pieceSync('p2', piece('s1', 'CBG/7777/26', [
         {'medicament': 'Paracétamol 500 mg', 'quantite': 1, 'posologie': 'x', 'dureeJours': 1}
       ])),
-      pieceSync('p3', piece('s1', 'CNT/7777/26', [
+      pieceSync('p3', piece('s1', 'CBG/7777/26', [
         {'produitId': pasDeStock['id'], 'medicament': pasDeStock['designation'], 'quantite': 3, 'posologie': 'x', 'dureeJours': 1}
       ])),
-      pieceSync('p4', piece('s1', 'CNT/7777/26', [
+      pieceSync('p4', piece('s1', 'CBG/7777/26', [
         {'produitId': produit['id'], 'medicament': produit['designation'], 'quantite': 1, 'posologie': 'x', 'dureeJours': 1}
       ], fonction: 'infirmier')),
-      pieceSync('p5', piece('s9', 'CNT/9999/26', [
+      pieceSync('p5', piece('s9', 'CBG/9999/26', [
         {'produitId': produit['id'], 'medicament': produit['designation'], 'quantite': 1, 'posologie': 'x', 'dureeJours': 1}
       ])),
     ]);
@@ -139,7 +139,7 @@ void main() {
   });
 
   test('une demande d\'analyses : les examens du mobile sont rapprochés du catalogue du laboratoire, une demande au laboratoire par examen, bloquée jusqu\'à la caisse', () async {
-    src.donnees['prescriptions']!.add(pieceSync('p6', piece('s1', 'CNT/7777/26', const [], nature: 'analyse', examens: ['NFS', 'CRP'])));
+    src.donnees['prescriptions']!.add(pieceSync('p6', piece('s1', 'CBG/7777/26', const [], nature: 'analyse', examens: ['NFS', 'CRP'])));
     final avant = m.collection('demandesAnalyses').actives.length;
     final r = await svc.traiter();
     expect(r.transcrites, 1);
@@ -150,10 +150,10 @@ void main() {
 
   testWidgets('l\'écran des ordonnances montre l\'ordonnance transcrite et nomme les pièces refusées (code, motif, geste)', (t) async {
     src.donnees['prescriptions']!.addAll([
-      pieceSync('p1', piece('s1', 'CNT/7777/26', [
+      pieceSync('p1', piece('s1', 'CBG/7777/26', [
         {'produitId': produit['id'], 'medicament': produit['designation'], 'quantite': 2, 'posologie': '1 cp x 3/j', 'dureeJours': 5}
       ])),
-      pieceSync('p3', piece('s1', 'CNT/7777/26', [
+      pieceSync('p3', piece('s1', 'CBG/7777/26', [
         {'produitId': pasDeStock['id'], 'medicament': pasDeStock['designation'], 'quantite': 3, 'posologie': 'x', 'dureeJours': 1}
       ])),
     ]);

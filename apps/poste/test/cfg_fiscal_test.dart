@@ -45,7 +45,7 @@ void main() {
   casM14('identification fiscale UNIQUE (arbitrage du 31/08/2026), numérotation, obligations déclaratives : aucune saisie, aucune commande d’écriture', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-fiscalite');
-    for (final k in [IdentiteClinique.ifu, IdentiteClinique.rccm, 'FN-AAAA-NNNNN', 'CNT/[n°]/[AA]', 'Impôt sur les traitements salariaux (ITS)']) {
+    for (final k in [IdentiteClinique.ifu, IdentiteClinique.rccm, 'FN-AAAA-NNNNN', 'CBG/[n°]/[AA]', 'Impôt sur les traitements salariaux (ITS)']) {
       expect(find.text(k), findsWidgets, reason: k);
     }
     // Le formulaire d'identité est l'écran (Direction, 06/11/2026) ; la table des obligations déclaratives est DÉRIVÉE des quatre mensuelles + deux fixes.

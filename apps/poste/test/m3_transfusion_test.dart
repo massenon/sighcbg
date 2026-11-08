@@ -84,7 +84,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
     expect(m.collection('surveillancesTransfusion').actives.length, 2);
-    await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
     await ecrire(t, 'service', 'Médecine');
     await ecrire(t, 'pochePSL', 'PSL-900');
     await ecrire(t, 'debut', '08h30');
@@ -111,7 +111,7 @@ void main() {
     final m = magasin();
     await ouvrir(t, m, 'm3-transfusion');
     await toucher(t, find.text('Nouvelle surveillance'));
-    await choisir(t, 'patientCode', 'CNT/3/26 — N’TCHA Yacoubou');
+    await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
     await ecrire(t, 'service', 'Urgences');
     await ecrire(t, 'pochePSL', 'PSL-901');
     await ecrire(t, 'debut', '09h00');

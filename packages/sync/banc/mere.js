@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — BANC DE SYNCHRONISATION : le POSTE MÈRE (implémentation de référence)
+ * SIGH-CBG — BANC DE SYNCHRONISATION : le POSTE MÈRE (implémentation de référence)
  * -----------------------------------------------------------------------------
  * Ce fichier n'est PAS le produit : c'est l'exécutable de référence du protocole
  * décrit dans docs/specs/SPEC-protocole-synchronisation.md. Il sert à éprouver
@@ -147,7 +147,7 @@ function traiter(op, app) {
     const champs = Object.assign({}, op.champs);
     let numero;
     if (op.collection === 'patients') {
-      const m = /^[A-Z]{2,6}\/(\d+)\/26$/.exec(String(champs.code || '')); // tout sigle se relit (CNT, CBG…)
+      const m = /^[A-Z]{2,6}\/(\d+)\/26$/.exec(String(champs.code || '')); // tout sigle se relit (CBG, CBG…)
       if (!champs.code || String(champs.code).startsWith('PROV-')) {
         const n = +meta('next_patient'); setMeta('next_patient', n + 1);
         champs.code = `CBG/${n}/26`; numero = champs.code; // le sigle de la Clinique Baguidi

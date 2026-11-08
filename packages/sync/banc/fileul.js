@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — BANC DE SYNCHRONISATION : le POSTE FILEUL (implémentation de référence)
+ * SIGH-CBG — BANC DE SYNCHRONISATION : le POSTE FILEUL (implémentation de référence)
  * -----------------------------------------------------------------------------
  * Base locale (SQLite), file d'envoi persistée, curseur, cycle « on reçoit toujours
  * avant d'envoyer », reprise après coupure, suspension à la révocation, traitement

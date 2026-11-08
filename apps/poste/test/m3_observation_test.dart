@@ -166,7 +166,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Mettre en observation').last);
     expect(col.actives.length, avant, reason: 'motif manquant : rien n\'est écrit');
     expect(find.text('Ce champ est obligatoire.'), findsWidgets);
-    await choisir(t, 'patientCode', 'CNT/4/26 — PARAISO Sabi');
+    await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
     await choisir(t, 'unite', 'Salle d’observation — pédiatrie (2 place(s) libre(s))');
     await saisir(t, 'motif', 'Malaise');
     await saisir(t, 'place', 'P2');

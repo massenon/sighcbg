@@ -53,23 +53,23 @@
    [
     "1",
     "BDG-00001-2026",
-    "CNT-BDG|MAT:1|SER:BDG-00001-2026"
+    "CBG-BDG|MAT:1|SER:BDG-00001-2026"
    ],
    [
     "2",
     "BDG-00002-2026",
-    "CNT-BDG|MAT:2|SER:BDG-00002-2026"
+    "CBG-BDG|MAT:2|SER:BDG-00002-2026"
    ],
    [
     "3",
     "BDG-00003-2026",
-    "CNT-BDG|MAT:3|SER:BDG-00003-2026"
+    "CBG-BDG|MAT:3|SER:BDG-00003-2026"
    ]
   ],
-  "qrSansChamps": "CNT-BDG|MAT:|SER:",
+  "qrSansChamps": "CBG-BDG|MAT:|SER:",
   "lecture": [
    [
-    "CNT-BDG|MAT:1|SER:BDG-00001-2026",
+    "CBG-BDG|MAT:1|SER:BDG-00001-2026",
     {
      "matricule": "1",
      "numero": "BDG-00001-2026",
@@ -93,7 +93,7 @@
     }
    ],
    [
-    "CNT-BDG|MAT:|SER:BDG-00002-2026",
+    "CBG-BDG|MAT:|SER:BDG-00002-2026",
     {
      "matricule": null,
      "numero": "BDG-00002-2026",
@@ -101,10 +101,10 @@
     }
    ],
    [
-    "CNT-BDG|MAT:7",
+    "CBG-BDG|MAT:7",
     {
      "matricule": null,
-     "numero": "CNT-BDG|MAT:7",
+     "numero": "CBG-BDG|MAT:7",
      "source": "saisie"
     }
    ],
@@ -125,7 +125,7 @@
     }
    ],
    [
-    "CNT-BDG|MAT:1|SER: BDG-00001-2026 ",
+    "CBG-BDG|MAT:1|SER: BDG-00001-2026 ",
     {
      "matricule": "1",
      "numero": "BDG-00001-2026",
@@ -165,7 +165,7 @@
    },
    {
     "nom": "valide, par la charge utile du QR",
-    "saisie": "CNT-BDG|MAT:1|SER:BDG-00001-2026",
+    "saisie": "CBG-BDG|MAT:1|SER:BDG-00001-2026",
     "reponse": {
      "texte": "BADGE VALIDE Valable jusqu’au 07/07/2028. Agent BASSONGUI Chabi Séko Matricule 1 Fonction Directeur Médical Service Direction N° de série BDG-00001-2026 Vérification journalisée le 30/10/2026 à 10h00 par BASSONGUI Chabi Séko.",
      "classe": "success",
@@ -273,7 +273,7 @@
    },
    {
     "nom": "QR incohérent : matricule contredit",
-    "saisie": "CNT-BDG|MAT:999|SER:BDG-00001-2026",
+    "saisie": "CBG-BDG|MAT:999|SER:BDG-00001-2026",
     "reponse": {
      "texte": "BADGE VALIDE Valable jusqu’au 07/07/2028. Agent BASSONGUI Chabi Séko Matricule 1 Fonction Directeur Médical Service Direction N° de série BDG-00001-2026 Incohérence : le code présenté annonce le matricule 999, le registre porte le matricule 1 pour ce numéro de série. Badge à retenir et à signaler. Vérification journalisée le 30/10/2026 à 10h00 par BASSONGUI Chabi Séko.",
      "classe": "success",
@@ -300,7 +300,7 @@
    },
    {
     "nom": "QR sans matricule",
-    "saisie": "CNT-BDG|MAT:|SER:BDG-00001-2026",
+    "saisie": "CBG-BDG|MAT:|SER:BDG-00001-2026",
     "reponse": {
      "texte": "BADGE VALIDE Valable jusqu’au 07/07/2028. Agent BASSONGUI Chabi Séko Matricule 1 Fonction Directeur Médical Service Direction N° de série BDG-00001-2026 Vérification journalisée le 30/10/2026 à 10h00 par BASSONGUI Chabi Séko.",
      "classe": "success",
@@ -2103,7 +2103,7 @@
    }
   },
   "tiroir": {
-   "texte": "BDG-00014-2025 PARAISO Abdoul N° de série BDG-00014-2025 Agent PARAISO Abdoul Matricule 14 Poste Infirmier(ère) Service Soins infirmiers Émis le 16/11/2025 par Jeu de démonstration Valable jusqu’au 16/11/2027 Remis le 16/11/2025 Modèle Badge agent — CR80 paysage État Remis à l’agent Motif du retrait — Contrôle BADGE VALIDE Valable jusqu’au 16/11/2027. CNT-BDG|MAT:14|SER:BDG-00014-2025 Le code ne porte que le matricule et le numéro de série. Imprimer la carte",
+   "texte": "BDG-00014-2025 PARAISO Abdoul N° de série BDG-00014-2025 Agent PARAISO Abdoul Matricule 14 Poste Infirmier(ère) Service Soins infirmiers Émis le 16/11/2025 par Jeu de démonstration Valable jusqu’au 16/11/2027 Remis le 16/11/2025 Modèle Badge agent — CR80 paysage État Remis à l’agent Motif du retrait — Contrôle BADGE VALIDE Valable jusqu’au 16/11/2027. CBG-BDG|MAT:14|SER:BDG-00014-2025 Le code ne porte que le matricule et le numéro de série. Imprimer la carte",
    "boutons": [
     "Fermer",
     "Imprimer la carte"
@@ -6529,7 +6529,7 @@
      [
       "14/08/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -6539,7 +6539,7 @@
      [
       "13/08/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "BASSONGUI Chabi Séko",
@@ -6549,7 +6549,7 @@
      [
       "11/08/2026",
       "TAKI Alimatou 2 · Direction",
-      "CNT901/25",
+      "CBG901/25",
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
@@ -6559,7 +6559,7 @@
      [
       "11/08/2026",
       "GARBA Yahouza 10 · Infirmier(ère)",
-      "CNT909/25",
+      "CBG909/25",
       "Consultation",
       "Consultation — Fièvre et céphalées",
       "TAKI Orou",
@@ -6569,7 +6569,7 @@
      [
       "10/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Urgence — Toux chronique",
       "YENI M’PO Florent",
@@ -6579,7 +6579,7 @@
      [
       "07/08/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -6589,7 +6589,7 @@
      [
       "07/08/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
@@ -6599,7 +6599,7 @@
      [
       "05/08/2026",
       "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT908/25",
+      "CBG908/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "TAKI Orou",
@@ -6609,7 +6609,7 @@
      [
       "03/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Domicile — Toux chronique",
       "TAKI Orou",
@@ -6619,7 +6619,7 @@
      [
       "02/08/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Consultation",
       "Contrôle — Hypertension artérielle",
       "TAKI Orou",
@@ -6811,7 +6811,7 @@
      [
       "14/08/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -6821,7 +6821,7 @@
      [
       "13/08/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "BASSONGUI Chabi Séko",
@@ -6831,7 +6831,7 @@
      [
       "11/08/2026",
       "TAKI Alimatou 2 · Direction",
-      "CNT901/25",
+      "CBG901/25",
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
@@ -6841,7 +6841,7 @@
      [
       "11/08/2026",
       "GARBA Yahouza 10 · Infirmier(ère)",
-      "CNT909/25",
+      "CBG909/25",
       "Consultation",
       "Consultation — Fièvre et céphalées",
       "TAKI Orou",
@@ -6851,7 +6851,7 @@
      [
       "10/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Urgence — Toux chronique",
       "YENI M’PO Florent",
@@ -6861,7 +6861,7 @@
      [
       "07/08/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -6871,7 +6871,7 @@
      [
       "07/08/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
@@ -6881,7 +6881,7 @@
      [
       "05/08/2026",
       "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT908/25",
+      "CBG908/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "TAKI Orou",
@@ -6891,7 +6891,7 @@
      [
       "03/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Domicile — Toux chronique",
       "TAKI Orou",
@@ -6901,7 +6901,7 @@
      [
       "02/08/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Consultation",
       "Contrôle — Hypertension artérielle",
       "TAKI Orou",
@@ -6911,7 +6911,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE GGT",
       "YENI M’PO Florent",
@@ -6921,7 +6921,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TEST D’EMMEL",
       "YENI M’PO Florent",
@@ -6931,7 +6931,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE TGP / ALAT",
       "YENI M’PO Florent",
@@ -6941,7 +6941,7 @@
      [
       "31/07/2026",
       "NKOUÉ Jean 12 · Infirmier(ère)",
-      "CNT911/25",
+      "CBG911/25",
       "Consultation",
       "Consultation — Plaie infectée",
       "BASSONGUI Chabi Séko",
@@ -6951,7 +6951,7 @@
      [
       "31/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Consultation — Toux chronique",
       "YENI M’PO Florent",
@@ -6961,7 +6961,7 @@
      [
       "29/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Urgence — Contrôle diabète",
       "BASSONGUI Chabi Séko",
@@ -6971,7 +6971,7 @@
      [
       "28/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Domicile — Visite d’un patient alité",
       "BASSONGUI Chabi Séko",
@@ -6981,7 +6981,7 @@
      [
       "25/07/2026",
       "KINNOU A. Ganiou 8 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT907/25",
+      "CBG907/25",
       "Consultation",
       "Contrôle — Fièvre persistante",
       "YENI M’PO Florent",
@@ -6991,7 +6991,7 @@
      [
       "25/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Domicile — Contrôle post-opératoire",
       "TAKI Orou",
@@ -7001,7 +7001,7 @@
      [
       "23/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Consultation — Traumatisme",
       "BASSONGUI Chabi Séko",
@@ -7266,7 +7266,7 @@
      [
       "14/08/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -7276,7 +7276,7 @@
      [
       "13/08/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "BASSONGUI Chabi Séko",
@@ -7286,7 +7286,7 @@
      [
       "11/08/2026",
       "TAKI Alimatou 2 · Direction",
-      "CNT901/25",
+      "CBG901/25",
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
@@ -7296,7 +7296,7 @@
      [
       "11/08/2026",
       "GARBA Yahouza 10 · Infirmier(ère)",
-      "CNT909/25",
+      "CBG909/25",
       "Consultation",
       "Consultation — Fièvre et céphalées",
       "TAKI Orou",
@@ -7306,7 +7306,7 @@
      [
       "10/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Urgence — Toux chronique",
       "YENI M’PO Florent",
@@ -7316,7 +7316,7 @@
      [
       "07/08/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -7326,7 +7326,7 @@
      [
       "07/08/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
@@ -7336,7 +7336,7 @@
      [
       "05/08/2026",
       "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT908/25",
+      "CBG908/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "TAKI Orou",
@@ -7346,7 +7346,7 @@
      [
       "03/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Domicile — Toux chronique",
       "TAKI Orou",
@@ -7356,7 +7356,7 @@
      [
       "02/08/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Consultation",
       "Contrôle — Hypertension artérielle",
       "TAKI Orou",
@@ -7366,7 +7366,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE GGT",
       "YENI M’PO Florent",
@@ -7376,7 +7376,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TEST D’EMMEL",
       "YENI M’PO Florent",
@@ -7386,7 +7386,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE TGP / ALAT",
       "YENI M’PO Florent",
@@ -7396,7 +7396,7 @@
      [
       "31/07/2026",
       "NKOUÉ Jean 12 · Infirmier(ère)",
-      "CNT911/25",
+      "CBG911/25",
       "Consultation",
       "Consultation — Plaie infectée",
       "BASSONGUI Chabi Séko",
@@ -7406,7 +7406,7 @@
      [
       "31/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Consultation — Toux chronique",
       "YENI M’PO Florent",
@@ -7416,7 +7416,7 @@
      [
       "29/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Urgence — Contrôle diabète",
       "BASSONGUI Chabi Séko",
@@ -7426,7 +7426,7 @@
      [
       "28/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Domicile — Visite d’un patient alité",
       "BASSONGUI Chabi Séko",
@@ -7436,7 +7436,7 @@
      [
       "25/07/2026",
       "KINNOU A. Ganiou 8 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT907/25",
+      "CBG907/25",
       "Consultation",
       "Contrôle — Fièvre persistante",
       "YENI M’PO Florent",
@@ -7446,7 +7446,7 @@
      [
       "25/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Domicile — Contrôle post-opératoire",
       "TAKI Orou",
@@ -7456,7 +7456,7 @@
      [
       "23/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Consultation — Traumatisme",
       "BASSONGUI Chabi Séko",
@@ -7730,7 +7730,7 @@
      [
       "14/08/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -7740,7 +7740,7 @@
      [
       "13/08/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "BASSONGUI Chabi Séko",
@@ -7750,7 +7750,7 @@
      [
       "11/08/2026",
       "TAKI Alimatou 2 · Direction",
-      "CNT901/25",
+      "CBG901/25",
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
@@ -7760,7 +7760,7 @@
      [
       "11/08/2026",
       "GARBA Yahouza 10 · Infirmier(ère)",
-      "CNT909/25",
+      "CBG909/25",
       "Consultation",
       "Consultation — Fièvre et céphalées",
       "TAKI Orou",
@@ -7770,7 +7770,7 @@
      [
       "10/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Urgence — Toux chronique",
       "YENI M’PO Florent",
@@ -7780,7 +7780,7 @@
      [
       "07/08/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -7790,7 +7790,7 @@
      [
       "07/08/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
@@ -7800,7 +7800,7 @@
      [
       "05/08/2026",
       "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT908/25",
+      "CBG908/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "TAKI Orou",
@@ -7810,7 +7810,7 @@
      [
       "03/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Domicile — Toux chronique",
       "TAKI Orou",
@@ -7820,7 +7820,7 @@
      [
       "02/08/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Consultation",
       "Contrôle — Hypertension artérielle",
       "TAKI Orou",
@@ -7830,7 +7830,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE GGT",
       "YENI M’PO Florent",
@@ -7840,7 +7840,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TEST D’EMMEL",
       "YENI M’PO Florent",
@@ -7850,7 +7850,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE TGP / ALAT",
       "YENI M’PO Florent",
@@ -7860,7 +7860,7 @@
      [
       "31/07/2026",
       "NKOUÉ Jean 12 · Infirmier(ère)",
-      "CNT911/25",
+      "CBG911/25",
       "Consultation",
       "Consultation — Plaie infectée",
       "BASSONGUI Chabi Séko",
@@ -7870,7 +7870,7 @@
      [
       "31/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Consultation — Toux chronique",
       "YENI M’PO Florent",
@@ -7880,7 +7880,7 @@
      [
       "29/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Urgence — Contrôle diabète",
       "BASSONGUI Chabi Séko",
@@ -7890,7 +7890,7 @@
      [
       "28/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Domicile — Visite d’un patient alité",
       "BASSONGUI Chabi Séko",
@@ -7900,7 +7900,7 @@
      [
       "25/07/2026",
       "KINNOU A. Ganiou 8 · TSL (Technicien Supérieur de Laboratoire)",
-      "CNT907/25",
+      "CBG907/25",
       "Consultation",
       "Contrôle — Fièvre persistante",
       "YENI M’PO Florent",
@@ -7910,7 +7910,7 @@
      [
       "25/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Domicile — Contrôle post-opératoire",
       "TAKI Orou",
@@ -7920,7 +7920,7 @@
      [
       "23/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Consultation — Traumatisme",
       "BASSONGUI Chabi Séko",
@@ -8216,7 +8216,7 @@
        [
         "14/08/2026",
         "BAGRI Elvyre 13 · Infirmier(ère)",
-        "CNT912/25",
+        "CBG912/25",
         "Hospitalisation",
         "— lit A4 LIT2",
         "—",
@@ -8226,7 +8226,7 @@
        [
         "13/08/2026",
         "BASSONGUI Chabi Séko 1 · Médecin",
-        "CNT900/25",
+        "CBG900/25",
         "Consultation",
         "Consultation — Paludisme suspecté",
         "BASSONGUI Chabi Séko",
@@ -8236,7 +8236,7 @@
        [
         "11/08/2026",
         "TAKI Alimatou 2 · Direction",
-        "CNT901/25",
+        "CBG901/25",
         "Hospitalisation",
         "— lit B2 LIT2",
         "—",
@@ -8246,7 +8246,7 @@
        [
         "11/08/2026",
         "GARBA Yahouza 10 · Infirmier(ère)",
-        "CNT909/25",
+        "CBG909/25",
         "Consultation",
         "Consultation — Fièvre et céphalées",
         "TAKI Orou",
@@ -8256,7 +8256,7 @@
        [
         "10/08/2026",
         "OROU YO Alimatou 17 · Infirmier(ère)",
-        "CNT916/25",
+        "CBG916/25",
         "Consultation",
         "Urgence — Toux chronique",
         "YENI M’PO Florent",
@@ -8266,7 +8266,7 @@
        [
         "07/08/2026",
         "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-        "CNT910/25",
+        "CBG910/25",
         "Hospitalisation",
         "— lit A4 LIT2",
         "—",
@@ -8276,7 +8276,7 @@
        [
         "07/08/2026",
         "YENI M’PO Florent 5 · Médecin",
-        "CNT904/25",
+        "CBG904/25",
         "Hospitalisation",
         "— lit A2 LIT2",
         "—",
@@ -8286,7 +8286,7 @@
        [
         "05/08/2026",
         "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-        "CNT908/25",
+        "CBG908/25",
         "Consultation",
         "Consultation — Paludisme suspecté",
         "TAKI Orou",
@@ -8296,7 +8296,7 @@
        [
         "03/08/2026",
         "OROU YO Alimatou 17 · Infirmier(ère)",
-        "CNT916/25",
+        "CBG916/25",
         "Consultation",
         "Domicile — Toux chronique",
         "TAKI Orou",
@@ -8306,7 +8306,7 @@
        [
         "02/08/2026",
         "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-        "CNT917/25",
+        "CBG917/25",
         "Consultation",
         "Contrôle — Hypertension artérielle",
         "TAKI Orou",
@@ -8316,7 +8316,7 @@
        [
         "31/07/2026",
         "YENI M’PO Florent 5 · Médecin",
-        "CNT904/25",
+        "CBG904/25",
         "Analyse",
         "TRANSAMINASE GGT",
         "YENI M’PO Florent",
@@ -8326,7 +8326,7 @@
        [
         "31/07/2026",
         "YENI M’PO Florent 5 · Médecin",
-        "CNT904/25",
+        "CBG904/25",
         "Analyse",
         "TEST D’EMMEL",
         "YENI M’PO Florent",
@@ -8336,7 +8336,7 @@
        [
         "31/07/2026",
         "YENI M’PO Florent 5 · Médecin",
-        "CNT904/25",
+        "CBG904/25",
         "Analyse",
         "TRANSAMINASE TGP / ALAT",
         "YENI M’PO Florent",
@@ -8346,7 +8346,7 @@
        [
         "31/07/2026",
         "NKOUÉ Jean 12 · Infirmier(ère)",
-        "CNT911/25",
+        "CBG911/25",
         "Consultation",
         "Consultation — Plaie infectée",
         "BASSONGUI Chabi Séko",
@@ -8356,7 +8356,7 @@
        [
         "31/07/2026",
         "PARAISO Abdoul 14 · Infirmier(ère)",
-        "CNT913/25",
+        "CBG913/25",
         "Consultation",
         "Consultation — Toux chronique",
         "YENI M’PO Florent",
@@ -8366,7 +8366,7 @@
        [
         "29/07/2026",
         "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-        "CNT910/25",
+        "CBG910/25",
         "Consultation",
         "Urgence — Contrôle diabète",
         "BASSONGUI Chabi Séko",
@@ -8376,7 +8376,7 @@
        [
         "28/07/2026",
         "PARAISO Abdoul 14 · Infirmier(ère)",
-        "CNT913/25",
+        "CBG913/25",
         "Consultation",
         "Domicile — Visite d’un patient alité",
         "BASSONGUI Chabi Séko",
@@ -8386,7 +8386,7 @@
        [
         "25/07/2026",
         "KINNOU A. Ganiou 8 · TSL (Technicien Supérieur de Laboratoire)",
-        "CNT907/25",
+        "CBG907/25",
         "Consultation",
         "Contrôle — Fièvre persistante",
         "YENI M’PO Florent",
@@ -8396,7 +8396,7 @@
        [
         "25/07/2026",
         "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-        "CNT910/25",
+        "CBG910/25",
         "Consultation",
         "Domicile — Contrôle post-opératoire",
         "TAKI Orou",
@@ -8406,7 +8406,7 @@
        [
         "23/07/2026",
         "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-        "CNT910/25",
+        "CBG910/25",
         "Consultation",
         "Consultation — Traumatisme",
         "BASSONGUI Chabi Séko",
@@ -8731,7 +8731,7 @@
     [
      "14/08/2026",
      "BAGRI Elvyre 13 · Infirmier(ère)",
-     "CNT912/25",
+     "CBG912/25",
      "Hospitalisation",
      "— lit A4 LIT2",
      "—",
@@ -8741,7 +8741,7 @@
     [
      "13/08/2026",
      "BASSONGUI Chabi Séko 1 · Médecin",
-     "CNT900/25",
+     "CBG900/25",
      "Consultation",
      "Consultation — Paludisme suspecté",
      "BASSONGUI Chabi Séko",
@@ -8751,7 +8751,7 @@
     [
      "11/08/2026",
      "TAKI Alimatou 2 · Direction",
-     "CNT901/25",
+     "CBG901/25",
      "Hospitalisation",
      "— lit B2 LIT2",
      "—",
@@ -8761,7 +8761,7 @@
     [
      "11/08/2026",
      "GARBA Yahouza 10 · Infirmier(ère)",
-     "CNT909/25",
+     "CBG909/25",
      "Consultation",
      "Consultation — Fièvre et céphalées",
      "TAKI Orou",
@@ -8771,7 +8771,7 @@
     [
      "10/08/2026",
      "OROU YO Alimatou 17 · Infirmier(ère)",
-     "CNT916/25",
+     "CBG916/25",
      "Consultation",
      "Urgence — Toux chronique",
      "YENI M’PO Florent",
@@ -8781,7 +8781,7 @@
     [
      "07/08/2026",
      "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-     "CNT910/25",
+     "CBG910/25",
      "Hospitalisation",
      "— lit A4 LIT2",
      "—",
@@ -8791,7 +8791,7 @@
     [
      "07/08/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Hospitalisation",
      "— lit A2 LIT2",
      "—",
@@ -8801,7 +8801,7 @@
     [
      "05/08/2026",
      "AGOSSOU Yahouza 9 · TSL (Technicien Supérieur de Laboratoire)",
-     "CNT908/25",
+     "CBG908/25",
      "Consultation",
      "Consultation — Paludisme suspecté",
      "TAKI Orou",
@@ -8811,7 +8811,7 @@
     [
      "03/08/2026",
      "OROU YO Alimatou 17 · Infirmier(ère)",
-     "CNT916/25",
+     "CBG916/25",
      "Consultation",
      "Domicile — Toux chronique",
      "TAKI Orou",
@@ -8821,7 +8821,7 @@
     [
      "02/08/2026",
      "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-     "CNT917/25",
+     "CBG917/25",
      "Consultation",
      "Contrôle — Hypertension artérielle",
      "TAKI Orou",
@@ -8831,7 +8831,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TRANSAMINASE GGT",
      "YENI M’PO Florent",
@@ -8841,7 +8841,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TEST D’EMMEL",
      "YENI M’PO Florent",
@@ -8851,7 +8851,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TRANSAMINASE TGP / ALAT",
      "YENI M’PO Florent",
@@ -8861,7 +8861,7 @@
     [
      "31/07/2026",
      "NKOUÉ Jean 12 · Infirmier(ère)",
-     "CNT911/25",
+     "CBG911/25",
      "Consultation",
      "Consultation — Plaie infectée",
      "BASSONGUI Chabi Séko",
@@ -8871,7 +8871,7 @@
     [
      "31/07/2026",
      "PARAISO Abdoul 14 · Infirmier(ère)",
-     "CNT913/25",
+     "CBG913/25",
      "Consultation",
      "Consultation — Toux chronique",
      "YENI M’PO Florent",
@@ -8881,7 +8881,7 @@
     [
      "29/07/2026",
      "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-     "CNT910/25",
+     "CBG910/25",
      "Consultation",
      "Urgence — Contrôle diabète",
      "BASSONGUI Chabi Séko",
@@ -8891,7 +8891,7 @@
     [
      "28/07/2026",
      "PARAISO Abdoul 14 · Infirmier(ère)",
-     "CNT913/25",
+     "CBG913/25",
      "Consultation",
      "Domicile — Visite d’un patient alité",
      "BASSONGUI Chabi Séko",
@@ -8901,7 +8901,7 @@
     [
      "25/07/2026",
      "KINNOU A. Ganiou 8 · TSL (Technicien Supérieur de Laboratoire)",
-     "CNT907/25",
+     "CBG907/25",
      "Consultation",
      "Contrôle — Fièvre persistante",
      "YENI M’PO Florent",
@@ -8911,7 +8911,7 @@
     [
      "25/07/2026",
      "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-     "CNT910/25",
+     "CBG910/25",
      "Consultation",
      "Domicile — Contrôle post-opératoire",
      "TAKI Orou",
@@ -8921,7 +8921,7 @@
     [
      "23/07/2026",
      "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-     "CNT910/25",
+     "CBG910/25",
      "Consultation",
      "Consultation — Traumatisme",
      "BASSONGUI Chabi Séko",
@@ -8959,7 +8959,7 @@
      [
       "13/08/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Consultation",
       "Consultation — Paludisme suspecté",
       "BASSONGUI Chabi Séko",
@@ -8969,7 +8969,7 @@
      [
       "07/08/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
@@ -8979,7 +8979,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE GGT",
       "YENI M’PO Florent",
@@ -8989,7 +8989,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TEST D’EMMEL",
       "YENI M’PO Florent",
@@ -8999,7 +8999,7 @@
      [
       "31/07/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Analyse",
       "TRANSAMINASE TGP / ALAT",
       "YENI M’PO Florent",
@@ -9009,7 +9009,7 @@
      [
       "15/07/2026",
       "AHOHOU Rodrigue 7 · Médecin",
-      "CNT906/25",
+      "CBG906/25",
       "Consultation",
       "Domicile — Diarrhée aiguë",
       "YENI M’PO Florent",
@@ -9019,7 +9019,7 @@
      [
       "29/06/2026",
       "AHOHOU Rodrigue 7 · Médecin",
-      "CNT906/25",
+      "CBG906/25",
       "Consultation",
       "Domicile — Fièvre persistante",
       "TAKI Orou",
@@ -9029,7 +9029,7 @@
      [
       "19/06/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Analyse",
       "MAGNESEMIE",
       "BASSONGUI Chabi Séko",
@@ -9039,7 +9039,7 @@
      [
       "19/06/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Analyse",
       "PRELEVEMENT VAGINAL (PV)",
       "BASSONGUI Chabi Séko",
@@ -9049,7 +9049,7 @@
      [
       "19/06/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Analyse",
       "TRANSAMINASE GGT",
       "BASSONGUI Chabi Séko",
@@ -9059,7 +9059,7 @@
      [
       "19/06/2026",
       "BASSONGUI Chabi Séko 1 · Médecin",
-      "CNT900/25",
+      "CBG900/25",
       "Analyse",
       "BU",
       "BASSONGUI Chabi Séko",
@@ -9069,7 +9069,7 @@
      [
       "07/06/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Consultation",
       "Consultation — Plaie infectée",
       "YENI M’PO Florent",
@@ -9079,7 +9079,7 @@
      [
       "10/05/2026",
       "YENI M’PO Florent 5 · Médecin",
-      "CNT904/25",
+      "CBG904/25",
       "Consultation",
       "Consultation — Asthénie",
       "BASSONGUI Chabi Séko",
@@ -9089,7 +9089,7 @@
      [
       "23/04/2026",
       "TAKI Orou 6 · Médecin",
-      "CNT905/25",
+      "CBG905/25",
       "Consultation",
       "Urgence — Céphalées",
       "YENI M’PO Florent",
@@ -9126,7 +9126,7 @@
      [
       "14/08/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -9136,7 +9136,7 @@
      [
       "11/08/2026",
       "GARBA Yahouza 10 · Infirmier(ère)",
-      "CNT909/25",
+      "CBG909/25",
       "Consultation",
       "Consultation — Fièvre et céphalées",
       "TAKI Orou",
@@ -9146,7 +9146,7 @@
      [
       "10/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Urgence — Toux chronique",
       "YENI M’PO Florent",
@@ -9156,7 +9156,7 @@
      [
       "07/08/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
@@ -9166,7 +9166,7 @@
      [
       "03/08/2026",
       "OROU YO Alimatou 17 · Infirmier(ère)",
-      "CNT916/25",
+      "CBG916/25",
       "Consultation",
       "Domicile — Toux chronique",
       "TAKI Orou",
@@ -9176,7 +9176,7 @@
      [
       "31/07/2026",
       "NKOUÉ Jean 12 · Infirmier(ère)",
-      "CNT911/25",
+      "CBG911/25",
       "Consultation",
       "Consultation — Plaie infectée",
       "BASSONGUI Chabi Séko",
@@ -9186,7 +9186,7 @@
      [
       "31/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Consultation — Toux chronique",
       "YENI M’PO Florent",
@@ -9196,7 +9196,7 @@
      [
       "29/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Urgence — Contrôle diabète",
       "BASSONGUI Chabi Séko",
@@ -9206,7 +9206,7 @@
      [
       "28/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Domicile — Visite d’un patient alité",
       "BASSONGUI Chabi Séko",
@@ -9216,7 +9216,7 @@
      [
       "25/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Domicile — Contrôle post-opératoire",
       "TAKI Orou",
@@ -9226,7 +9226,7 @@
      [
       "23/07/2026",
       "IDRISSOU ANIKI Baba-Toundé 11 · Infirmier(ère)",
-      "CNT910/25",
+      "CBG910/25",
       "Consultation",
       "Consultation — Traumatisme",
       "BASSONGUI Chabi Séko",
@@ -9236,7 +9236,7 @@
      [
       "21/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Analyse",
       "PSA LIBRE",
       "YENI M’PO Florent",
@@ -9246,7 +9246,7 @@
      [
       "21/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Analyse",
       "TPHA",
       "YENI M’PO Florent",
@@ -9256,7 +9256,7 @@
      [
       "21/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Analyse",
       "URICEMIE (ACIDE URIQUE)",
       "YENI M’PO Florent",
@@ -9266,7 +9266,7 @@
      [
       "18/07/2026",
       "NKOUÉ Jean 12 · Infirmier(ère)",
-      "CNT911/25",
+      "CBG911/25",
       "Hospitalisation",
       "— lit D2 LIT1",
       "—",
@@ -9276,7 +9276,7 @@
      [
       "18/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Consultation",
       "Consultation — Suivi de grossesse",
       "BASSONGUI Chabi Séko",
@@ -9286,7 +9286,7 @@
      [
       "07/07/2026",
       "BAGRI Elvyre 13 · Infirmier(ère)",
-      "CNT912/25",
+      "CBG912/25",
       "Consultation",
       "Consultation — Contrôle diabète",
       "BASSONGUI Chabi Séko",
@@ -9296,7 +9296,7 @@
      [
       "03/07/2026",
       "PARAISO Abdoul 14 · Infirmier(ère)",
-      "CNT913/25",
+      "CBG913/25",
       "Hospitalisation",
       "— lit C3 LIT1",
       "—",
@@ -9306,7 +9306,7 @@
      [
       "08/06/2026",
       "DOSSOU Moussa 16 · Infirmier(ère)",
-      "CNT915/25",
+      "CBG915/25",
       "Hospitalisation",
       "— lit D2 LIT1",
       "—",
@@ -9316,7 +9316,7 @@
      [
       "02/06/2026",
       "OURTCHA Bertine 15 · Infirmier(ère)",
-      "CNT914/25",
+      "CBG914/25",
       "Consultation",
       "Domicile — Traumatisme",
       "TAKI Orou",
@@ -9379,7 +9379,7 @@
      [
       "02/08/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Consultation",
       "Contrôle — Hypertension artérielle",
       "TAKI Orou",
@@ -9389,7 +9389,7 @@
      [
       "24/04/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Analyse",
       "GLYCEMIE CAPILLAIRE",
       "YENI M’PO Florent",
@@ -9399,7 +9399,7 @@
      [
       "24/04/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Analyse",
       "SPERMOGRAMME SOS",
       "YENI M’PO Florent",
@@ -9409,7 +9409,7 @@
      [
       "24/04/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Analyse",
       "CALCEMIE",
       "YENI M’PO Florent",
@@ -9419,7 +9419,7 @@
      [
       "24/04/2026",
       "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-      "CNT917/25",
+      "CBG917/25",
       "Analyse",
       "PROLACTINE",
       "YENI M’PO Florent",
@@ -9463,7 +9463,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TRANSAMINASE GGT",
      "YENI M’PO Florent",
@@ -9473,7 +9473,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TEST D’EMMEL",
      "YENI M’PO Florent",
@@ -9483,7 +9483,7 @@
     [
      "31/07/2026",
      "YENI M’PO Florent 5 · Médecin",
-     "CNT904/25",
+     "CBG904/25",
      "Analyse",
      "TRANSAMINASE TGP / ALAT",
      "YENI M’PO Florent",
@@ -9493,7 +9493,7 @@
     [
      "21/07/2026",
      "PARAISO Abdoul 14 · Infirmier(ère)",
-     "CNT913/25",
+     "CBG913/25",
      "Analyse",
      "PSA LIBRE",
      "YENI M’PO Florent",
@@ -9503,7 +9503,7 @@
     [
      "21/07/2026",
      "PARAISO Abdoul 14 · Infirmier(ère)",
-     "CNT913/25",
+     "CBG913/25",
      "Analyse",
      "TPHA",
      "YENI M’PO Florent",
@@ -9513,7 +9513,7 @@
     [
      "21/07/2026",
      "PARAISO Abdoul 14 · Infirmier(ère)",
-     "CNT913/25",
+     "CBG913/25",
      "Analyse",
      "URICEMIE (ACIDE URIQUE)",
      "YENI M’PO Florent",
@@ -9523,7 +9523,7 @@
     [
      "14/07/2026",
      "GBEDJI Hervé 4 · Comptable",
-     "CNT903/25",
+     "CBG903/25",
      "Analyse",
      "TRANSAMINASE TGO / ASAT",
      "BASSONGUI Chabi Séko",
@@ -9533,7 +9533,7 @@
     [
      "14/07/2026",
      "GBEDJI Hervé 4 · Comptable",
-     "CNT903/25",
+     "CBG903/25",
      "Analyse",
      "URICEMIE (ACIDE URIQUE)",
      "BASSONGUI Chabi Séko",
@@ -9543,7 +9543,7 @@
     [
      "19/06/2026",
      "BASSONGUI Chabi Séko 1 · Médecin",
-     "CNT900/25",
+     "CBG900/25",
      "Analyse",
      "MAGNESEMIE",
      "BASSONGUI Chabi Séko",
@@ -9553,7 +9553,7 @@
     [
      "19/06/2026",
      "BASSONGUI Chabi Séko 1 · Médecin",
-     "CNT900/25",
+     "CBG900/25",
      "Analyse",
      "PRELEVEMENT VAGINAL (PV)",
      "BASSONGUI Chabi Séko",
@@ -9563,7 +9563,7 @@
     [
      "19/06/2026",
      "BASSONGUI Chabi Séko 1 · Médecin",
-     "CNT900/25",
+     "CBG900/25",
      "Analyse",
      "TRANSAMINASE GGT",
      "BASSONGUI Chabi Séko",
@@ -9573,7 +9573,7 @@
     [
      "19/06/2026",
      "BASSONGUI Chabi Séko 1 · Médecin",
-     "CNT900/25",
+     "CBG900/25",
      "Analyse",
      "BU",
      "BASSONGUI Chabi Séko",
@@ -9583,7 +9583,7 @@
     [
      "01/06/2026",
      "GBEDJI Hervé 4 · Comptable",
-     "CNT903/25",
+     "CBG903/25",
      "Analyse",
      "HEPATITE B",
      "TAKI Orou",
@@ -9593,7 +9593,7 @@
     [
      "01/06/2026",
      "GBEDJI Hervé 4 · Comptable",
-     "CNT903/25",
+     "CBG903/25",
      "Analyse",
      "TPHA",
      "TAKI Orou",
@@ -9603,7 +9603,7 @@
     [
      "09/05/2026",
      "KASSA Augustin 3 · Comptable",
-     "CNT902/25",
+     "CBG902/25",
      "Analyse",
      "TEST D’EMMEL",
      "TAKI Orou",
@@ -9613,7 +9613,7 @@
     [
      "09/05/2026",
      "KASSA Augustin 3 · Comptable",
-     "CNT902/25",
+     "CBG902/25",
      "Analyse",
      "VITESSE DE SEDIMENTATION (VS)",
      "TAKI Orou",
@@ -9623,7 +9623,7 @@
     [
      "09/05/2026",
      "KASSA Augustin 3 · Comptable",
-     "CNT902/25",
+     "CBG902/25",
      "Analyse",
      "CRP",
      "TAKI Orou",
@@ -9633,7 +9633,7 @@
     [
      "24/04/2026",
      "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-     "CNT917/25",
+     "CBG917/25",
      "Analyse",
      "GLYCEMIE CAPILLAIRE",
      "YENI M’PO Florent",
@@ -9643,7 +9643,7 @@
     [
      "24/04/2026",
      "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-     "CNT917/25",
+     "CBG917/25",
      "Analyse",
      "SPERMOGRAMME SOS",
      "YENI M’PO Florent",
@@ -9653,7 +9653,7 @@
     [
      "24/04/2026",
      "BADO BANI A. B. Zoulehath 18 · Sage-femme",
-     "CNT917/25",
+     "CBG917/25",
      "Analyse",
      "CALCEMIE",
      "YENI M’PO Florent",

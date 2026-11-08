@@ -20,7 +20,7 @@ Magasin magasinEssai() => Magasin({
       'soins': [for (final x in liste(soi()['soins'])) {...x}],
       'taches': [for (final x in liste(soi()['taches'])) {...x}],
       'ordonnances': [
-        {'id': 'ORD1', 'numero': 'ORD-T1', 'statut': 'actif', 'patientCode': 'CNT/1/25', 'patient': 'TCHANE Bertine'}
+        {'id': 'ORD1', 'numero': 'ORD-T1', 'statut': 'actif', 'patientCode': 'CBG/1/25', 'patient': 'TCHANE Bertine'}
       ],
       'audit': const [],
     }, 'POSTE');
@@ -113,7 +113,7 @@ void main() {
     await ouvrir(t, magasinEssai(), 'm3-soins');
     await toucher(t, find.text('Pose de perfusion').last);
     final d = '${carte(soi()['detail'])['texte']}';
-    for (final f in ['Date et heure 15/08/2026 à 12:00', 'Dossier CNT/1/25', 'Lit A1 LIT1', 'Planifié']) {
+    for (final f in ['Date et heure 15/08/2026 à 12:00', 'Dossier CBG/1/25', 'Lit A1 LIT1', 'Planifié']) {
       expect(sansEspaces(d).contains(sansEspaces(f)), isTrue, reason: 'vecteur : $f');
     }
     expect(affiche(t, '15/08/2026 à 12:00'), isTrue);
@@ -144,7 +144,7 @@ void main() {
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
     expect(col.toutes.length, avant);
     await t.pump(const Duration(seconds: 10));
-    await choisir(t, 'admissionId', 'BAKO Boukari — lit A2 LIT1 (CNT/2/26)');
+    await choisir(t, 'admissionId', 'BAKO Boukari — lit A2 LIT1 (CBG/2/26)');
     await choisir(t, 'acte', 'Injection intramusculaire');
     await saisir(t, 'produit', 'Ceftriaxone');
     await saisir(t, 'quantite', '1');
@@ -170,12 +170,12 @@ void main() {
     final col = m.collection('soins');
     await toucher(t, find.text('Soins de nursing').last); // SOI4 : BAKO Boukari, lit A2 LIT1
     await toucher(t, find.widgetWithText(BoutonSigh, 'Modifier'));
-    await choisir(t, 'admissionId', 'TCHANE Bertine — lit A1 LIT1 (CNT/1/25)');
+    await choisir(t, 'admissionId', 'TCHANE Bertine — lit A1 LIT1 (CBG/1/25)');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     final f = col.parId('SOI4')!;
     expect(f['patient'], 'TCHANE Bertine');
     expect(f['lit'], 'A1 LIT1');
-    expect(f['patientCode'], 'CNT/1/25');
+    expect(f['patientCode'], 'CBG/1/25');
     expect(f['admissionId'], 'ADM1');
     expect(find.text('Modifications enregistrées.'), findsOneWidget);
     final att = carte(carte(carte(soi()['modification'])['enregistre'])['fiche']);

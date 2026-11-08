@@ -6,7 +6,7 @@
    "entree": {
     "operateur": "DIEYABIDI Aïssatou",
     "numero": "F-2026-00012",
-    "dossier": "CNT/12/26",
+    "dossier": "CBG/12/26",
     "date": [
      2026,
      9,
@@ -42,7 +42,7 @@
     "--------------------------------",
     "OPÉRATEUR|DIEYABIDI Aïssatou",
     "TYPE VENTE|COMPTANT",
-    "DOSSIER|CNT/12/26",
+    "DOSSIER|CBG/12/26",
     "N° PIÈCE|F-2026-00012",
     "DATE|30/10/2026 14h05",
     "--------------------------------",
@@ -71,7 +71,7 @@
     "typeVente": "CRÉDIT",
     "assureur": "NSIA",
     "assure": "KPOSSOU Awa",
-    "dossier": "CNT/13/26",
+    "dossier": "CBG/13/26",
     "date": [
      2026,
      9,
@@ -112,7 +112,7 @@
     "TYPE VENTE|CRÉDIT",
     "ASSUREUR|NSIA",
     "ASSURÉ|KPOSSOU Awa",
-    "DOSSIER|CNT/13/26",
+    "DOSSIER|CBG/13/26",
     "N° PIÈCE|F-2026-00013-A",
     "DATE|30/10/2026 09h40",
     "--------------------------------",

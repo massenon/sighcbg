@@ -87,7 +87,7 @@
     "g/l",
     "gramme par litre",
     "Biochimie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -95,7 +95,7 @@
     "mg/l",
     "milligramme par litre",
     "Biochimie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -103,7 +103,7 @@
     "mmol/l",
     "millimole par litre",
     "Biochimie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -111,7 +111,7 @@
     "UI/l",
     "unité internationale par litre",
     "Biochimie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -119,7 +119,7 @@
     "%",
     "pour cent",
     "Général",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -127,7 +127,7 @@
     "—",
     "sans unité",
     "Général",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -135,7 +135,7 @@
     "G/l",
     "giga par litre",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -143,7 +143,7 @@
     "T/l",
     "téra par litre",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -151,7 +151,7 @@
     "g/dl",
     "gramme par décilitre",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -159,7 +159,7 @@
     "fl",
     "femtolitre",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -167,7 +167,7 @@
     "pg",
     "picogramme",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -175,7 +175,7 @@
     "mm",
     "millimètre (sédimentation)",
     "Hématologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -199,7 +199,7 @@
     "ng/ml",
     "nanogramme par millilitre",
     "Hormonologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -231,7 +231,7 @@
     "parasites/µl",
     "parasites par microlitre",
     "Parasitologie",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ]
   ],
@@ -349,7 +349,7 @@
     "c",
     "charlie",
     "Général",
-    "Fiche de résultats CNT",
+    "Fiche de résultats CBG",
     ""
    ],
    [
@@ -459,7 +459,7 @@
     "symbole": "G/l",
     "libelle": "giga par litre",
     "domaine": "Hématologie",
-    "source": "Fiche de résultats CNT"
+    "source": "Fiche de résultats CBG"
    },
    "prerempli": [
     [

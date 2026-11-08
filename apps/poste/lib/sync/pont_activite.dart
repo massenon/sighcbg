@@ -158,7 +158,7 @@ class PontActivite {
   final ValueNotifier<int> envoyees = ValueNotifier<int>(0);
   final ValueNotifier<int> recues = ValueNotifier<int>(0);
 
-  /// Les patients dont le code CNT existe en double (RG-01) : jamais corrigés en silence, comptés et marqués `codeEnDoublon`.
+  /// Les patients dont le code CBG existe en double (RG-01) : jamais corrigés en silence, comptés et marqués `codeEnDoublon`.
   final ValueNotifier<int> doublonsDeCode = ValueNotifier<int>(0);
 
   void demarrer({Duration intervalle = const Duration(seconds: 3)}) {

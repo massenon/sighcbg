@@ -16,7 +16,7 @@ Magasin poste() => Magasin({'patients': <Map<String, Object?>>[]});
 void main() {
   test('sans service de plage, la règle historique (plus grand rang + 1) ; plage détenue : le numéro suivant, qui avance dès la réservation', () async {
     final m = poste();
-    m.collection('patients').inserer({'code': 'CNT/7/26', 'nom': 'A'}, prefixe: 'PAT');
+    m.collection('patients').inserer({'code': 'CBG/7/26', 'nom': 'A'}, prefixe: 'PAT');
     final s = PlagesCodes.de(m);
     expect(s.actif, isFalse);
     expect(s.prochainCode(m.collection('patients').toutes, auj), 'CBG/8/26');
@@ -61,7 +61,7 @@ void main() {
     final moteurB = MoteurFileul.creer(dbChemin: ':memory:', mere: 'http://127.0.0.1:1', nom: 'B');
     final mm = poste(), ma = poste(), mb = poste();
     // Des dossiers déjà là sur la mère : les plages doivent commencer au-dessus.
-    mm.collection('patients').inserer({'code': 'CNT/1109/26', 'nom': 'ANCIEN'}, prefixe: 'PAT');
+    mm.collection('patients').inserer({'code': 'CBG/1109/26', 'nom': 'ANCIEN'}, prefixe: 'PAT');
     final transportMere = TransportMereLocale(port: port, admin: 'secret-test');
     PlagesCodes.de(mm).obtenir = transportMere.plage;
     PlagesCodes.de(ma).obtenir = (t, mi) => moteurA.demanderPlage(taille: t, minimum: mi);

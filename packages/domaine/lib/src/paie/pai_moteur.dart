@@ -178,7 +178,7 @@ Map<String, Object?>? paiFicheOrtbALaDate(Iterable<PaiFiche> obligations, Iterab
   return versionEnVigueur(courante, historique.where(estParametres), dateIso);
 }
 
-/// Une prime de la note NS 132/07/DM/DA/CNT/2026 : `fixe` = forfait mensuel, `occurrence` = selon le nombre de gardes / permanences.
+/// Une prime de la note NS 132/07/DM/DA/CBG/2026 : `fixe` = forfait mensuel, `occurrence` = selon le nombre de gardes / permanences.
 class PaiPrime {
   const PaiPrime(this.id, this.libelle, this.mode, this.montants);
   final String id, libelle, mode;

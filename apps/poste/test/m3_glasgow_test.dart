@@ -62,7 +62,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget, reason: 'sans date : refus nommé');
     expect(m.collection('scoresGlasgow').actives.length, avant);
-    await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
     await dater(t, 'dateHeure_d', 16);
     await ecrire(t, 'dateHeure_h', '09:00');
     await choisir(t, 'axe0', 'À la douleur — 2 point(s)');
@@ -90,7 +90,7 @@ void main() {
     final val = dico(modif['valeurs']);
     // GCS-0003 est la 3e ligne du tableau (tri par date décroissante)
     await toucher(t, find.byTooltip('Modifier').at(2));
-    // le formulaire s'ouvre sur LA fiche : patient CNT/3/26, axes 2/2/3 — pas sur le premier patient et les meilleures réponses
+    // le formulaire s'ouvre sur LA fiche : patient CBG/3/26, axes 2/2/3 — pas sur le premier patient et les meilleures réponses
     expect(find.descendant(of: find.byKey(const Key('kit:champ:patientCode')), matching: find.textContaining('${val['patientCode']}')), findsOneWidget);
     expect(find.descendant(of: find.byKey(const Key('kit:champ:axe0')), matching: find.text('À la douleur — 2 point(s)')), findsOneWidget);
     expect(find.descendant(of: find.byKey(const Key('kit:champ:axe1')), matching: find.text('Incompréhensible — 2 point(s)')), findsOneWidget);

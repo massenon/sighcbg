@@ -29,7 +29,7 @@ void main() {
         expect(norm(kpis(t)[x.key]), x.value, reason: x.key);
       }
       expect(find.textContaining('Le barème est consultable. Pour le modifier, ouvrir la porte depuis « Paramètres système »'), findsOneWidget);
-      expect(find.text('Barème d’évaluation — NS 131/07/DM/DA/CNT/2026'), findsOneWidget);
+      expect(find.text('Barème d’évaluation — NS 131/07/DM/DA/CBG/2026'), findsOneWidget);
       expect(find.text('Évaluations mensuelles'), findsWidgets);
       // La porte est fermée : la modification est ABSENTE, pas grisée.
       for (final c in ['Nouveau critère', 'Modifier ce critère', 'Retirer ce critère']) {
@@ -134,7 +134,7 @@ void main() {
       await ouvrirM14(t, magasinRhb(), 'm10-evaluations', horloge: auj16);
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la note'));
       expect(find.text('Note de service'), findsOneWidget);
-      expect(find.text('N/Réf. : NS 131/07/DM/DA/CNT/2026'), findsOneWidget);
+      expect(find.text('N/Réf. : NS 131/07/DM/DA/CBG/2026'), findsOneWidget);
       expect(find.text('BASSONGUI C. Séko Y., Directeur Médical'), findsOneWidget);
       expect(find.textContaining('Ampliation : Intéressés 41 — Archive 01'), findsOneWidget);
     });
@@ -264,7 +264,7 @@ void main() {
         expect(norm(kpis(t)[x.key]), x.value, reason: x.key);
       }
       expect(find.text('Registre des sanctions'), findsOneWidget);
-      expect(find.textContaining('Les sanctions sont exclusivement issues du barème NS 131/07/DM/DA/CNT/2026.'), findsOneWidget);
+      expect(find.textContaining('Les sanctions sont exclusivement issues du barème NS 131/07/DM/DA/CBG/2026.'), findsOneWidget);
       for (final titre in ['Sanctions par direction et service', 'Critères sanctionnés (NS 131)', 'Montant retenu par critère']) {
         expect(find.text(titre), findsOneWidget, reason: titre);
       }
@@ -318,7 +318,7 @@ void main() {
       for (final x in v.entries) {
         expect(norm(kpis(t)[x.key]), x.value, reason: x.key);
       }
-      expect(find.text('Grille des primes — NS n° 132/07/DM/DA/CNT/2026'), findsOneWidget);
+      expect(find.text('Grille des primes — NS n° 132/07/DM/DA/CBG/2026'), findsOneWidget);
       expect(find.text('Primes acquises — août 2026'), findsOneWidget);
       for (final p in m.collection('grillePrimes').actives) {
         expect(find.text('${p['label']}'), findsWidgets, reason: '${p['label']}');
@@ -516,7 +516,7 @@ void main() {
       await ouvrirM14(t, magasinRhb(), 'm10-primes', horloge: auj16);
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Éditer l’état des primes'));
       expect(find.text('État des primes diverses'), findsOneWidget);
-      expect(find.text('août 2026 — barème NS n° 132/07/DM/DA/CNT/2026'), findsOneWidget);
+      expect(find.text('août 2026 — barème NS n° 132/07/DM/DA/CBG/2026'), findsOneWidget);
       expect(find.text('Le Responsable RH'), findsOneWidget);
       expect(find.text(money(460500, avecDevise: false)), findsWidgets);
     });

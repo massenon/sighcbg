@@ -407,23 +407,23 @@ void main() {
       };
   if (nom.startsWith('création complète')) {
     return (
-      v: complet('CNT/1001/26', {
+      v: complet('CBG/1001/26', {
         'antecedentsObstetricaux': {'gestite': 2, 'parite': 1, 'pathologies': ['Œuf clair']},
         'examenObstetrical': {'terme': '30 SA'}
       }),
       record: null
     );
   }
-  if (nom.startsWith('patient sans relevé')) return (v: complet('CNT/1002/26'), record: null);
-  if (nom.startsWith('patient inconnu')) return (v: complet('CNT/9999/26'), record: null);
+  if (nom.startsWith('patient sans relevé')) return (v: complet('CBG/1002/26'), record: null);
+  if (nom.startsWith('patient inconnu')) return (v: complet('CBG/9999/26'), record: null);
   if (nom.startsWith('second dossier') || nom.startsWith('un dossier EN ATTENTE')) {
-    return (v: complet('CNT/1001/26'), record: null);
+    return (v: complet('CBG/1001/26'), record: null);
   }
   if (nom.startsWith('édition d’un dossier EN ATTENTE')) {
-    return (v: complet('CNT/1001/26', {'motifVenue': 'Corrigé'}), record: dossiers.first);
+    return (v: complet('CBG/1001/26', {'motifVenue': 'Corrigé'}), record: dossiers.first);
   }
   if (nom.startsWith('édition d’un dossier CLÔTURÉ')) {
-    return (v: complet('CNT/1001/26'), record: dossiers.first);
+    return (v: complet('CBG/1001/26'), record: dossiers.first);
   }
-  return (v: complet('CNT/1001/26', {'actesChirurgicaux': 'Nouvel acte'}), record: dossiers.first);
+  return (v: complet('CBG/1001/26', {'actesChirurgicaux': 'Nouvel acte'}), record: dossiers.first);
 }

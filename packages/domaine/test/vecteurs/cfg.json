@@ -1,14 +1,14 @@
 {
  "constantes": {
   "ns145": {
-   "reference": "NS 145/08/DA/CNT/2026",
+   "reference": "NS 145/08/DA/CBG/2026",
    "objet": "Répartition des secteurs de la clinique et désignation des responsables",
    "version": 1,
    "dateSignature": "2026-08-06",
    "dateEffet": "2026-08-07",
    "statut": "ACTIVE",
    "signataire": "TAKI Alimatou épse BASSONGUI, Directrice Administrative",
-   "source": "DOC — Note de service NS 145/08/DA/CNT/2026",
+   "source": "DOC — Note de service NS 145/08/DA/CBG/2026",
    "secteurs": [
     {
      "id": "SEC01",
@@ -20,7 +20,7 @@
      "adjoint": "YARADJINNIN Hafissou",
      "qualification": "Secrétaire médical",
      "role": "reception",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC02",
@@ -32,7 +32,7 @@
      "adjoint": "KASSA Augustin",
      "qualification": "Comptable",
      "role": "da",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC03",
@@ -44,7 +44,7 @@
      "adjoint": "ODEITO Mathieu",
      "qualification": "Médecin généraliste",
      "role": "medecin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC04",
@@ -56,7 +56,7 @@
      "adjoint": null,
      "qualification": "Chirurgien généraliste",
      "role": "medecin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC05",
@@ -68,7 +68,7 @@
      "adjoint": "YERRO SANNI Lamatou",
      "qualification": "Sage-femme",
      "role": "infirmier",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC06",
@@ -80,7 +80,7 @@
      "adjoint": "AHOHOU Rodrigue",
      "qualification": "Échographiste",
      "role": "medecin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC07",
@@ -92,7 +92,7 @@
      "adjoint": "IMOROU Choucouratou",
      "qualification": "ABM",
      "role": "laborantin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC08",
@@ -104,7 +104,7 @@
      "adjoint": "MAMAM Safarath",
      "qualification": "Infirmière",
      "role": "infirmier",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC09",
@@ -116,7 +116,7 @@
      "adjoint": "TAKPARA Adiabath",
      "qualification": "Infirmière",
      "role": "infirmier",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC10",
@@ -128,7 +128,7 @@
      "adjoint": "ADRIEN B. Modeste",
      "qualification": "Infirmier",
      "role": "infirmier",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC11",
@@ -140,7 +140,7 @@
      "adjoint": null,
      "qualification": "Infirmier général",
      "role": "infirmier",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC12",
@@ -152,7 +152,7 @@
      "adjoint": "TCHANDO S. Lucresse",
      "qualification": "Dispensatrice",
      "role": "pharmacien",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC13",
@@ -164,7 +164,7 @@
      "adjoint": "TEOU B. Albert",
      "qualification": "Gardien",
      "role": "agentadmin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     },
     {
      "id": "SEC14",
@@ -176,7 +176,7 @@
      "adjoint": "YARIGO B. Petronie",
      "qualification": "Ménagère",
      "role": "agentadmin",
-     "source": "NS 145/08/DA/CNT/2026 du 06/08/2026"
+     "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
     }
    ]
   },
@@ -223,7 +223,7 @@
    "Pharmacie"
   ],
   "brand": {
-   "sigle": "CNT",
+   "sigle": "CBG",
    "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
    "slogan": "Votre bien-être est notre raison d’être.",
    "forme": "Société à Responsabilité Limitée",
@@ -620,11 +620,11 @@
    ]
   },
   "notes": [
-   "NS 145/08/DA/CNT/2026 — Répartition des secteurs de la clinique et désignation des responsables, signée le 06/08/2026 par TAKI Alimatou épse BASSONGUI, Directrice Administrative, avec effet au 07/08/2026. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code."
+   "NS 145/08/DA/CBG/2026 — Répartition des secteurs de la clinique et désignation des responsables, signée le 06/08/2026 par TAKI Alimatou épse BASSONGUI, Directrice Administrative, avec effet au 07/08/2026. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code."
   ],
   "impressionRepartition": {
    "titre": "Répartition des secteurs de la clinique",
-   "sousTitre": "NS 145/08/DA/CNT/2026",
+   "sousTitre": "NS 145/08/DA/CBG/2026",
    "cartouche": [
     [
      "Objet",
@@ -1043,7 +1043,7 @@
  "branding": {
   "champs": {
    "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
-   "sigle": "CNT",
+   "sigle": "CBG",
    "forme": "Société à Responsabilité Limitée",
    "slogan": "Votre bien-être est notre raison d’être.",
    "adresse": "Quartier Zongo II, Parakou",
@@ -1073,7 +1073,7 @@
   "notes": [
    "Les états produits par le prototype reprennent déjà fidèlement l’entête réelle relevée sur les documents de la clinique."
   ],
-  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — RB/PKO/17 A 4240 — IFU 3201001996110 · Document généré par BASSONGUI Chabi Séko le 01/11/2026 à 18h32 · Réf. CNT-XXXXXXXX-0001",
+  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — RB/PKO/17 A 4240 — IFU 3201001996110 · Document généré par BASSONGUI Chabi Séko le 01/11/2026 à 18h32 · Réf. CBG-XXXXXXXX-0001",
   "ressources": [
    "Logo principalUtilisé sur tous les états et dans l’applicationÀ fournir",
    "Logo monochromePour les impressions en noir et blancÀ fournir",
@@ -1110,7 +1110,7 @@
     "entite": "BrandConfiguration",
     "reference": "BRAND",
     "ancienneValeur": null,
-    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DU CŒUR »\",\"sigle\":\"CNT\",\"forme\":\"Société à Responsabilité Limitée\",\"slogan",
+    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DU CŒUR »\",\"sigle\":\"CBG\",\"forme\":\"Société à Responsabilité Limitée\",\"slogan",
     "poste": "POSTE-LOCAL",
     "succes": true
    },
@@ -3019,7 +3019,7 @@
      "7 000 FCFA",
      ""
     ],
-    "tiroir": "Attestation de grossesseSigleATGPièceAttestation de grossesseDirection émettriceDG/DENumérotationATG n°/n°/CNT/DG/DE/2026Tarif7 000 FCFACouvertureSOS seule"
+    "tiroir": "Attestation de grossesseSigleATGPièceAttestation de grossesseDirection émettriceDG/DENumérotationATG n°/n°/CBG/DG/DE/2026Tarif7 000 FCFACouvertureSOS seule"
    },
    {
     "ligne": [
@@ -3029,7 +3029,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical d’accouchementSigleCMAPièceCertificat médical d’accouchementDirection émettriceDG/DENumérotationCMA n°/n°/CNT/DG/DE/2026Tarifnon tariféCouverture—Le sigle CMA désigne aussi le certificat médical d’aptitude. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
+    "tiroir": "Certificat médical d’accouchementSigleCMAPièceCertificat médical d’accouchementDirection émettriceDG/DENumérotationCMA n°/n°/CBG/DG/DE/2026Tarifnon tariféCouverture—Le sigle CMA désigne aussi le certificat médical d’aptitude. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
    },
    {
     "ligne": [
@@ -3039,7 +3039,7 @@
      "7 000 FCFA",
      ""
     ],
-    "tiroir": "Certificat médical d’aptitudeSigleCMAPièceCertificat médical d’aptitudeDirection émettriceDG/DENumérotationCMA n°/n°/CNT/DG/DE/2026Tarif7 000 FCFACouvertureSOS seuleLe sigle CMA désigne aussi le certificat médical d’accouchement. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
+    "tiroir": "Certificat médical d’aptitudeSigleCMAPièceCertificat médical d’aptitudeDirection émettriceDG/DENumérotationCMA n°/n°/CBG/DG/DE/2026Tarif7 000 FCFACouvertureSOS seuleLe sigle CMA désigne aussi le certificat médical d’accouchement. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
    },
    {
     "ligne": [
@@ -3049,7 +3049,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical d’arrêt de travail et/ou d’hospitalisationSigleCMR-HPièceCertificat médical d’arrêt de travail et/ou d’hospitalisationDirection émettriceDG/DANumérotationCMR-H n°/n°/CNT/DG/DA/2026Tarifnon tariféCouverture—"
+    "tiroir": "Certificat médical d’arrêt de travail et/ou d’hospitalisationSigleCMR-HPièceCertificat médical d’arrêt de travail et/ou d’hospitalisationDirection émettriceDG/DANumérotationCMR-H n°/n°/CBG/DG/DA/2026Tarifnon tariféCouverture—"
    },
    {
     "ligne": [
@@ -3059,7 +3059,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical d’hospitalisation (garde-malade)SigleCMHPièceCertificat médical d’hospitalisation (garde-malade)Direction émettriceDG/DENumérotationCMH n°/n°/CNT/DG/DE/2026Tarifnon tariféCouverture—"
+    "tiroir": "Certificat médical d’hospitalisation (garde-malade)SigleCMHPièceCertificat médical d’hospitalisation (garde-malade)Direction émettriceDG/DENumérotationCMH n°/n°/CBG/DG/DE/2026Tarifnon tariféCouverture—"
    },
    {
     "ligne": [
@@ -3069,7 +3069,7 @@
      "20 000 FCFA",
      ""
     ],
-    "tiroir": "Certificat médical de coups et blessures volontairesSigleCMCBVPièceCertificat médical de coups et blessures volontairesDirection émettriceCNNumérotationCMCBV n°/n°/CNT/CN/2026Tarif20 000 FCFACouvertureSOS seule"
+    "tiroir": "Certificat médical de coups et blessures volontairesSigleCMCBVPièceCertificat médical de coups et blessures volontairesDirection émettriceCNNumérotationCMCBV n°/n°/CBG/CN/2026Tarif20 000 FCFACouvertureSOS seule"
    },
    {
     "ligne": [
@@ -3079,7 +3079,7 @@
      "10 000 FCFA",
      ""
     ],
-    "tiroir": "Certificat médical de décèsSigleCMDPièceCertificat médical de décèsDirection émettriceDANumérotationCMD n°/n°/CNT/DA/2026Tarif10 000 FCFACouvertureSOS seuleLe sigle CMD désigne aussi le certificat de genre de mort. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
+    "tiroir": "Certificat médical de décèsSigleCMDPièceCertificat médical de décèsDirection émettriceDANumérotationCMD n°/n°/CBG/DA/2026Tarif10 000 FCFACouvertureSOS seuleLe sigle CMD désigne aussi le certificat de genre de mort. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
    },
    {
     "ligne": [
@@ -3089,7 +3089,7 @@
      "5 000 FCFA",
      ""
     ],
-    "tiroir": "Certificat médical de dispense aux activités physiques et sportivesSigleCMDPSPièceCertificat médical de dispense aux activités physiques et sportivesDirection émettriceDG/DENumérotationCMDPS n°/n°/CNT/DG/DE/2026Tarif5 000 FCFACouvertureSOS seule"
+    "tiroir": "Certificat médical de dispense aux activités physiques et sportivesSigleCMDPSPièceCertificat médical de dispense aux activités physiques et sportivesDirection émettriceDG/DENumérotationCMDPS n°/n°/CBG/DG/DE/2026Tarif5 000 FCFACouvertureSOS seule"
    },
    {
     "ligne": [
@@ -3099,7 +3099,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical de genre de mortSigleCMDPièceCertificat médical de genre de mortDirection émettriceDANumérotationCMD n°/n°/CNT/DA/2026Tarifnon tariféCouverture—Le sigle CMD désigne aussi le certificat médical de décès. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
+    "tiroir": "Certificat médical de genre de mortSigleCMDPièceCertificat médical de genre de mortDirection émettriceDANumérotationCMD n°/n°/CBG/DA/2026Tarifnon tariféCouverture—Le sigle CMD désigne aussi le certificat médical de décès. Le sigle est conservé tel quel : la correspondance avec les registres papier prime sur la cohérence apparente."
    },
    {
     "ligne": [
@@ -3109,7 +3109,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical de non contre-indication aux activités physiques et sportivesSigleCMNCIPièceCertificat médical de non contre-indication aux activités physiques et sportivesDirection émettriceDM/DANumérotationCMNCI n°/n°/CNT/DM/DA/2026Tarifnon tariféCouverture—"
+    "tiroir": "Certificat médical de non contre-indication aux activités physiques et sportivesSigleCMNCIPièceCertificat médical de non contre-indication aux activités physiques et sportivesDirection émettriceDM/DANumérotationCMNCI n°/n°/CBG/DM/DA/2026Tarifnon tariféCouverture—"
    },
    {
     "ligne": [
@@ -3119,7 +3119,7 @@
      "—",
      ""
     ],
-    "tiroir": "Certificat médical de non-infirmitéSigleCMNIPièceCertificat médical de non-infirmitéDirection émettriceDG/DENumérotationCMNI n°/n°/CNT/DG/DE/2026Tarifnon tariféCouverture—"
+    "tiroir": "Certificat médical de non-infirmitéSigleCMNIPièceCertificat médical de non-infirmitéDirection émettriceDG/DENumérotationCMNI n°/n°/CBG/DG/DE/2026Tarifnon tariféCouverture—"
    },
    {
     "ligne": [
@@ -3129,7 +3129,7 @@
      "8 000 FCFA",
      ""
     ],
-    "tiroir": "Certificat médical de visite et de contre-visiteSigleCMVCPièceCertificat médical de visite et de contre-visiteDirection émettriceDG/DENumérotationCMVC n°/n°/CNT/DG/DE/2026Tarif8 000 FCFACouvertureSOS seule"
+    "tiroir": "Certificat médical de visite et de contre-visiteSigleCMVCPièceCertificat médical de visite et de contre-visiteDirection émettriceDG/DENumérotationCMVC n°/n°/CBG/DG/DE/2026Tarif8 000 FCFACouvertureSOS seule"
    }
   ]
  },
@@ -3621,7 +3621,7 @@
    }
   ],
   "patient": {
-   "code": "CNT/1/25",
+   "code": "CBG/1/25",
    "nom": "TCHANE Bertine"
   },
   "praticien": "BASSONGUI Chabi Séko",
@@ -3642,7 +3642,7 @@
   "delivrance": {
    "fiche": [
     {
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "praticien": "BASSONGUI Chabi Séko",
      "date": "2026-08-16",
      "duree": 3,
@@ -3671,7 +3671,7 @@
      ],
      [
       "Dossier",
-      "CNT/1/25"
+      "CBG/1/25"
      ],
      [
       "Âge",

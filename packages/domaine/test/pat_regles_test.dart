@@ -22,8 +22,8 @@ void main() {
       });
     }
     test('un code déjà pris est refusé en le nommant', () {
-      expect(patRefusCode([{'code': 'CNT/5/26'}], 'CNT/5/26'), contains('déjà attribué'));
-      expect(patRefusCode([{'code': 'CNT/5/26'}], 'CNT/6/26'), isNull);
+      expect(patRefusCode([{'code': 'CBG/5/26'}], 'CBG/5/26'), contains('déjà attribué'));
+      expect(patRefusCode([{'code': 'CBG/5/26'}], 'CBG/6/26'), isNull);
     });
   });
 
@@ -77,7 +77,7 @@ void main() {
       }
     });
     test('âge déclaré vieilli', () {
-      final p = actifs.firstWhere((x) => x['code'] == 'CNT/8/26');
+      final p = actifs.firstWhere((x) => x['code'] == 'CBG/8/26');
       expect(patAge(p, maintenant), 36);
     });
   });
@@ -133,9 +133,9 @@ void main() {
       if (crees.isEmpty) continue;
       test('${c['nom']}', () {
         final pats = [
-          for (final n in [1, 2, 3]) {'id': 'K$n', 'code': 'CNT/$n/26', 'nom': 'Nom$n', 'prenom': 'Pre$n'}
+          for (final n in [1, 2, 3]) {'id': 'K$n', 'code': 'CBG/$n/26', 'nom': 'Nom$n', 'prenom': 'Pre$n'}
         ];
-        final v = patValeursReleve({'patientCode': 'CNT/1/26', ...(c['saisie'] as Map).cast<String, Object?>()}, pats);
+        final v = patValeursReleve({'patientCode': 'CBG/1/26', ...(c['saisie'] as Map).cast<String, Object?>()}, pats);
         for (final k in ['patientId', 'patient', 'tension', 'imc']) {
           expect(v[k], crees.first[k], reason: k);
         }
@@ -146,7 +146,7 @@ void main() {
       final avant = (m['avant'] as Map).cast<String, Object?>();
       final patch = (m['patch'] as Map).cast<String, Object?>();
       final v = patValeursReleve({...avant, 'poids': 80, 'tensionSys': 15, 'tensionDia': 9}, [
-        {'id': 'K1', 'code': 'CNT/1/26', 'nom': 'Nom1', 'prenom': 'Pre1'}
+        {'id': 'K1', 'code': 'CBG/1/26', 'nom': 'Nom1', 'prenom': 'Pre1'}
       ]);
       expect(v['tension'], patch['tension']);
       expect(v['imc'], patch['imc']);
@@ -170,7 +170,7 @@ void main() {
     });
     test('création : numéro, âge, sexe, adresse', () {
       final pats = [
-        {'id': 'K2', 'code': 'CNT/2/26', 'nom': 'Nom2', 'prenom': 'Pre2', 'sexe': 'M', 'dateNaissance': '1990-01-01', 'quartier': 'Perma'}
+        {'id': 'K2', 'code': 'CBG/2/26', 'nom': 'Nom2', 'prenom': 'Pre2', 'sexe': 'M', 'dateNaissance': '1990-01-01', 'quartier': 'Perma'}
       ];
       final c = liste((d['reference'] as Map)['creations']).first;
       final v = patDeduitReference((c['saisie'] as Map).cast<String, Object?>(), pats, refs, maintenant);
@@ -213,8 +213,8 @@ void main() {
     });
     test('indicateurs', () {
       final pats = [
-        {'id': 'K1', 'code': 'CNT/1/26'},
-        {'id': 'K4', 'code': 'CNT/4/26', 'externe': true}
+        {'id': 'K1', 'code': 'CBG/1/26'},
+        {'id': 'K4', 'code': 'CBG/4/26', 'externe': true}
       ];
       final factures = [
         {'id': 'F1', 'lignes': [{'statutPaiement': 'paye'}]},
@@ -256,8 +256,8 @@ void main() {
             'code': p['patientCode'],
             'nom': '${p['patient']}'.split(' ').first,
             'prenom': '${p['patient']}'.split(' ').last,
-            if (p['patientCode'] == 'CNT/2/26') ...{'assureur': 'SOS', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'},
-            if (p['patientCode'] == 'CNT/3/26') ...{'assureur': 'NSIA', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'},
+            if (p['patientCode'] == 'CBG/2/26') ...{'assureur': 'SOS', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'},
+            if (p['patientCode'] == 'CBG/3/26') ...{'assureur': 'NSIA', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31'},
           };
           final r = patFacturerPiece(
               patient: pat,

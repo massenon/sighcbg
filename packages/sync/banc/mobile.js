@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — BANC : le MOBILE (implémentation de référence du profil « réception de secours » / « soignant »)
+ * SIGH-CBG — BANC : le MOBILE (implémentation de référence du profil « réception de secours » / « soignant »)
  * -----------------------------------------------------------------------------
  * Il ne connaît QUE le relais : pas l'adresse de la mère, jamais le réseau local. Tout ce qu'il envoie et
  * reçoit est chiffré de bout en bout (clé de clinique reçue à l'appairage). Base locale, file persistée,

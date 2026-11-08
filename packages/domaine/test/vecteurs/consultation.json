@@ -109,7 +109,7 @@
        "cellules": [
         "",
         "05/10/2026 10h00",
-        "GARBA Aïssatou CNT/13/26",
+        "GARBA Aïssatou CBG/13/26",
         "Soins de plaie à domicile",
         "Asthénie du sujet âgé",
         "TAKI Orou",
@@ -128,7 +128,7 @@
        "cellules": [
         "",
         "04/10/2026 10h00",
-        "TIGRI Séraphine CNT/11/26",
+        "TIGRI Séraphine CBG/11/26",
         "Visite d’un patient alité",
         "Déshydratation modérée",
         "BASSONGUI Chabi Séko",
@@ -147,7 +147,7 @@
        "cellules": [
         "",
         "03/10/2026 10h00",
-        "SANNI Nadège CNT/174/26",
+        "SANNI Nadège CBG/174/26",
         "Perfusion à domicile",
         "Asthénie du sujet âgé",
         "YENI M’PO Florent",
@@ -166,7 +166,7 @@
        "cellules": [
         "",
         "02/10/2026 10h00",
-        "BASSONGUI Hervé CNT/126/25",
+        "BASSONGUI Hervé CBG/126/25",
         "Perfusion à domicile",
         "Plaie en voie de cicatrisation",
         "TAKI Orou",
@@ -185,7 +185,7 @@
        "cellules": [
         "",
         "01/10/2026 10h00",
-        "HOUNKPATIN Salifou CNT/74/26",
+        "HOUNKPATIN Salifou CBG/74/26",
         "Soins de plaie à domicile",
         "Plaie en voie de cicatrisation",
         "BASSONGUI Chabi Séko",
@@ -204,7 +204,7 @@
        "cellules": [
         "",
         "26/08/2026 10h00",
-        "YARO Edmond CNT/138/26",
+        "YARO Edmond CBG/138/26",
         "Hypertension — contrôle",
         "Hypertension artérielle mal équilibrée",
         "BASSONGUI Chabi Séko",
@@ -223,7 +223,7 @@
        "cellules": [
         "",
         "26/08/2026 10h00",
-        "SAMBIENI Ganiou CNT/34/26",
+        "SAMBIENI Ganiou CBG/34/26",
         "Douleurs épigastriques",
         "Gastrite aiguë",
         "BADO BANI A. B. Zoulehath",
@@ -242,7 +242,7 @@
        "cellules": [
         "",
         "16/08/2026 17h30",
-        "BAKO Sylvie CNT/67/26",
+        "BAKO Sylvie CBG/67/26",
         "Plaie infectée",
         "HTA essentielle",
         "YENI M’PO Florent",
@@ -261,7 +261,7 @@
        "cellules": [
         "",
         "16/08/2026 15h30",
-        "TCHANE Idrissou CNT/65/26",
+        "TCHANE Idrissou CBG/65/26",
         "Consultation prénatale",
         "Gastro-entérite",
         "AHOHOU Rodrigue",
@@ -280,7 +280,7 @@
        "cellules": [
         "",
         "15/08/2026 18h15",
-        "BOUKARI Alassane CNT/148/25",
+        "BOUKARI Alassane CBG/148/25",
         "Traumatisme",
         "Grossesse évolutive",
         "TAKI Orou",
@@ -299,7 +299,7 @@
        "cellules": [
         "",
         "15/08/2026 17h00",
-        "YARO Bertine CNT/42/26",
+        "YARO Bertine CBG/42/26",
         "Suivi de grossesse",
         "Dermatose infectieuse",
         "BASSONGUI Chabi Séko",
@@ -318,7 +318,7 @@
        "cellules": [
         "",
         "15/08/2026 16h30",
-        "HOUNKPATIN Salifou CNT/74/26",
+        "HOUNKPATIN Salifou CBG/74/26",
         "Plaie infectée",
         "Paludisme simple",
         "AHOHOU Rodrigue",
@@ -452,7 +452,7 @@
        "cellules": [
         "DOS-00028",
         "31/10/2026 13h15",
-        "KINNOU A. Ganiou CNT907/25",
+        "KINNOU A. Ganiou CBG907/25",
         "Contrôle",
         "Hypertension — contrôle",
         "3 appareil(s)",
@@ -468,7 +468,7 @@
        "cellules": [
         "DOS-00027",
         "31/10/2026 17h56",
-        "BAKO Sylvie CNT/67/26",
+        "BAKO Sylvie CBG/67/26",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
@@ -484,7 +484,7 @@
        "cellules": [
         "DOS-00026",
         "31/10/2026 14h58",
-        "AHOHOU Zakari CNT/80/26",
+        "AHOHOU Zakari CBG/80/26",
         "Première consultation",
         "Brûlures mictionnelles",
         "2 appareil(s)",
@@ -500,7 +500,7 @@
        "cellules": [
         "DOS-00007",
         "26/08/2026 10h23",
-        "YARO Edmond CNT/138/26",
+        "YARO Edmond CBG/138/26",
         "Contrôle",
         "Hypertension — contrôle",
         "3 appareil(s)",
@@ -519,7 +519,7 @@
        "cellules": [
         "DOS-00005",
         "26/08/2026 07h54",
-        "MAMAN Yahouza CNT/68/26",
+        "MAMAN Yahouza CBG/68/26",
         "Première consultation",
         "Brûlures mictionnelles",
         "non consigné",
@@ -537,7 +537,7 @@
        "cellules": [
         "DOS-00003",
         "26/08/2026 14h11",
-        "SAMBIENI Ganiou CNT/34/26",
+        "SAMBIENI Ganiou CBG/34/26",
         "Contrôle",
         "Douleurs épigastriques",
         "2 appareil(s)",
@@ -556,7 +556,7 @@
        "cellules": [
         "DOS-00001",
         "26/08/2026 14h54",
-        "N’TCHA Salifou CNT/90/26",
+        "N’TCHA Salifou CBG/90/26",
         "Première consultation",
         "Fièvre et céphalées",
         "non consigné",
@@ -574,7 +574,7 @@
        "cellules": [
         "DOS-00008",
         "25/08/2026 07h06",
-        "YARO Ramatou CNT/92/25",
+        "YARO Ramatou CBG/92/25",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
@@ -590,7 +590,7 @@
        "cellules": [
         "DOS-00006",
         "25/08/2026 09h33",
-        "PARAISO Abdoul CNT913/25",
+        "PARAISO Abdoul CBG913/25",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
@@ -609,7 +609,7 @@
        "cellules": [
         "DOS-00002",
         "25/08/2026 12h48",
-        "TAKI Alimatou CNT901/25",
+        "TAKI Alimatou CBG901/25",
         "Première consultation",
         "Toux productive",
         "3 appareil(s)",
@@ -628,7 +628,7 @@
        "cellules": [
         "DOS-00024",
         "24/08/2026 17h16",
-        "GARBA Tamou CNT/144/26",
+        "GARBA Tamou CBG/144/26",
         "Contrôle",
         "Douleurs épigastriques",
         "2 appareil(s)",
@@ -647,7 +647,7 @@
        "cellules": [
         "DOS-00004",
         "24/08/2026 09h52",
-        "PARAISO Colette CNT/109/26",
+        "PARAISO Colette CBG/109/26",
         "Suivi",
         "Consultation prénatale",
         "3 appareil(s)",
@@ -663,7 +663,7 @@
        "cellules": [
         "DOS-00022",
         "17/08/2026 08h29",
-        "BOUKARI Justine CNT/43/26",
+        "BOUKARI Justine CBG/43/26",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
@@ -679,7 +679,7 @@
        "cellules": [
         "DOS-00015",
         "11/08/2026 15h51",
-        "GARBA Yahouza CNT909/25",
+        "GARBA Yahouza CBG909/25",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
@@ -695,7 +695,7 @@
        "cellules": [
         "DOS-00013",
         "23/06/2026 10h40",
-        "SOULE Nadège CNT/97/26",
+        "SOULE Nadège CBG/97/26",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
@@ -1528,7 +1528,7 @@
        "cellules": [
         "ORD-2026-00087",
         "25/08/2026",
-        "DAOUDA Djibril CNT/124/25",
+        "DAOUDA Djibril CBG/124/25",
         "YENI M’PO Florent",
         "1 médic. 1 analyse(s)",
         "3 600",
@@ -1545,7 +1545,7 @@
        "cellules": [
         "ORD-2026-00034",
         "25/08/2026",
-        "PARAISO Rachida CNT/153/25",
+        "PARAISO Rachida CBG/153/25",
         "TAKI Orou",
         "2 médic. 4 analyse(s)",
         "23 372",
@@ -1562,7 +1562,7 @@
        "cellules": [
         "ORD-2026-00085",
         "24/08/2026",
-        "TEPA Aïssatou CNT/71/26",
+        "TEPA Aïssatou CBG/71/26",
         "YENI M’PO Florent",
         "2 analyse(s)",
         "16 000",
@@ -1579,7 +1579,7 @@
        "cellules": [
         "ORD-2026-00038Urgent",
         "24/08/2026",
-        "BASSONGUI Hervé CNT/126/25",
+        "BASSONGUI Hervé CBG/126/25",
         "BASSONGUI Chabi Séko",
         "2 médic. 2 analyse(s)",
         "8 223",
@@ -1596,7 +1596,7 @@
        "cellules": [
         "ORD-2026-00106",
         "22/08/2026",
-        "YARO Bio CNT/121/25",
+        "YARO Bio CBG/121/25",
         "BASSONGUI Chabi Séko",
         "2 médic. 3 analyse(s)",
         "23 250",
@@ -1613,7 +1613,7 @@
        "cellules": [
         "ORD-2026-00117",
         "21/08/2026",
-        "HOUNKPATIN Rabiatou CNT/16/26",
+        "HOUNKPATIN Rabiatou CBG/16/26",
         "TAKI Orou",
         "4 analyse(s)",
         "16 500",
@@ -1630,7 +1630,7 @@
        "cellules": [
         "ORD-2026-00033Urgent",
         "21/08/2026",
-        "DOSSOU Souleymane CNT/129/26",
+        "DOSSOU Souleymane CBG/129/26",
         "YENI M’PO Florent",
         "2 médic. 2 analyse(s)",
         "5 740",
@@ -1647,7 +1647,7 @@
        "cellules": [
         "ORD-2026-00057",
         "20/08/2026",
-        "GARBA Zoukanéri CNT/164/26",
+        "GARBA Zoukanéri CBG/164/26",
         "BASSONGUI Chabi Séko",
         "2 médic. 2 analyse(s)",
         "6 600",
@@ -1664,7 +1664,7 @@
        "cellules": [
         "ORD-2026-00076",
         "18/08/2026",
-        "BAKO Chantal CNT/100/25",
+        "BAKO Chantal CBG/100/25",
         "TAKI Orou",
         "3 médic. 1 analyse(s)",
         "4 800",
@@ -1681,7 +1681,7 @@
        "cellules": [
         "ORD-2026-00053",
         "17/08/2026",
-        "AGOSSOU Souleymane CNT/110/25",
+        "AGOSSOU Souleymane CBG/110/25",
         "YENI M’PO Florent",
         "4 analyse(s)",
         "21 500",
@@ -1698,7 +1698,7 @@
        "cellules": [
         "ORD-2026-00120Urgent",
         "14/08/2026",
-        "GARBA Aïssatou CNT/13/26",
+        "GARBA Aïssatou CBG/13/26",
         "YENI M’PO Florent",
         "1 analyse(s)",
         "1 000",
@@ -1715,7 +1715,7 @@
        "cellules": [
         "ORD-2026-00016",
         "12/08/2026",
-        "TCHOUKOUROU Zakari CNT/73/26",
+        "TCHOUKOUROU Zakari CBG/73/26",
         "YENI M’PO Florent",
         "2 médic. 4 analyse(s)",
         "14 395",
@@ -1812,7 +1812,7 @@
        "cellules": [
         "ORD-2026-00034",
         "25/08/2026 à 00h00",
-        "PARAISO Rachida — CNT/153/25",
+        "PARAISO Rachida — CBG/153/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1831,7 +1831,7 @@
        "cellules": [
         "ORD-2026-00087",
         "25/08/2026 à 00h00",
-        "DAOUDA Djibril — CNT/124/25",
+        "DAOUDA Djibril — CBG/124/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1850,7 +1850,7 @@
        "cellules": [
         "ORD-2026-00038",
         "24/08/2026 à 00h00",
-        "BASSONGUI Hervé — CNT/126/25",
+        "BASSONGUI Hervé — CBG/126/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1869,7 +1869,7 @@
        "cellules": [
         "PRS-00010",
         "24/08/2026 à 00h00",
-        "SAMBIENI Ganiou — CNT/34/26",
+        "SAMBIENI Ganiou — CBG/34/26",
         "Soins",
         "Maternité",
         "Hospitalisation",
@@ -1888,7 +1888,7 @@
        "cellules": [
         "PRS-00013",
         "24/08/2026 à 00h00",
-        "KASSA Alassane — CNT/60/26",
+        "KASSA Alassane — CBG/60/26",
         "Soins",
         "Consultation",
         "Salle de soins",
@@ -1907,7 +1907,7 @@
        "cellules": [
         "ORD-2026-00106",
         "22/08/2026 à 00h00",
-        "YARO Bio — CNT/121/25",
+        "YARO Bio — CBG/121/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1926,7 +1926,7 @@
        "cellules": [
         "ORD-2026-00033",
         "21/08/2026 à 00h00",
-        "DOSSOU Souleymane — CNT/129/26",
+        "DOSSOU Souleymane — CBG/129/26",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1945,7 +1945,7 @@
        "cellules": [
         "PRS-00028",
         "21/08/2026 à 00h00",
-        "TAKI Fatouma — CNT/169/26",
+        "TAKI Fatouma — CBG/169/26",
         "Soins",
         "Consultation",
         "Salle de soins",
@@ -1964,7 +1964,7 @@
        "cellules": [
         "ORD-2026-00057",
         "20/08/2026 à 00h00",
-        "GARBA Zoukanéri — CNT/164/26",
+        "GARBA Zoukanéri — CBG/164/26",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -1983,7 +1983,7 @@
        "cellules": [
         "PRS-00061",
         "19/08/2026 à 00h00",
-        "AGOSSOU Bio — CNT/120/26",
+        "AGOSSOU Bio — CBG/120/26",
         "Soins",
         "Bloc opératoire",
         "Salle de soins",
@@ -2002,7 +2002,7 @@
        "cellules": [
         "ORD-2026-00076",
         "18/08/2026 à 00h00",
-        "BAKO Chantal — CNT/100/25",
+        "BAKO Chantal — CBG/100/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
@@ -2021,7 +2021,7 @@
        "cellules": [
         "PRS-00056",
         "15/08/2026 à 00h00",
-        "TCHANE Zakari — CNT/39/26",
+        "TCHANE Zakari — CBG/39/26",
         "Soins",
         "Hospitalisation",
         "Hospitalisation",
@@ -2141,7 +2141,7 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CNT/153/25",
+          "PARAISO Rachida — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2160,7 +2160,7 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CNT/124/25",
+          "DAOUDA Djibril — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2179,7 +2179,7 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CNT/126/25",
+          "BASSONGUI Hervé — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2198,7 +2198,7 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CNT/34/26",
+          "SAMBIENI Ganiou — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
@@ -2217,7 +2217,7 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CNT/60/26",
+          "KASSA Alassane — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
@@ -2236,7 +2236,7 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CNT/121/25",
+          "YARO Bio — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2255,7 +2255,7 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CNT/129/26",
+          "DOSSOU Souleymane — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2274,7 +2274,7 @@
          "cellules": [
           "PRS-00028",
           "21/08/2026 à 00h00",
-          "TAKI Fatouma — CNT/169/26",
+          "TAKI Fatouma — CBG/169/26",
           "Soins",
           "Consultation",
           "Salle de soins",
@@ -2293,7 +2293,7 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CNT/164/26",
+          "GARBA Zoukanéri — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2312,7 +2312,7 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CNT/120/26",
+          "AGOSSOU Bio — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
@@ -2331,7 +2331,7 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CNT/100/25",
+          "BAKO Chantal — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2350,7 +2350,7 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CNT/39/26",
+          "TCHANE Zakari — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -2470,7 +2470,7 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CNT/34/26",
+          "SAMBIENI Ganiou — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
@@ -2489,7 +2489,7 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CNT/60/26",
+          "KASSA Alassane — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
@@ -2508,7 +2508,7 @@
          "cellules": [
           "PRS-00028",
           "21/08/2026 à 00h00",
-          "TAKI Fatouma — CNT/169/26",
+          "TAKI Fatouma — CBG/169/26",
           "Soins",
           "Consultation",
           "Salle de soins",
@@ -2527,7 +2527,7 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CNT/120/26",
+          "AGOSSOU Bio — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
@@ -2546,7 +2546,7 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CNT/39/26",
+          "TCHANE Zakari — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -2565,7 +2565,7 @@
          "cellules": [
           "PRS-00040",
           "07/08/2026 à 00h00",
-          "MAMAN Chantal — CNT/85/26",
+          "MAMAN Chantal — CBG/85/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -2584,7 +2584,7 @@
          "cellules": [
           "PRS-00060",
           "07/08/2026 à 00h00",
-          "KINNOU Bertine — CNT/56/25",
+          "KINNOU Bertine — CBG/56/25",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -2603,7 +2603,7 @@
          "cellules": [
           "PRS-00059",
           "04/08/2026 à 00h00",
-          "WOROU Marguerite — CNT/21/25",
+          "WOROU Marguerite — CBG/21/25",
           "Soins",
           "Maternité",
           "Salle de soins",
@@ -2622,7 +2622,7 @@
          "cellules": [
           "PRS-00014",
           "01/08/2026 à 00h00",
-          "SAMBIENI Rabiatou — CNT/104/26",
+          "SAMBIENI Rabiatou — CBG/104/26",
           "Soins",
           "Hospitalisation",
           "Salle de soins",
@@ -2641,7 +2641,7 @@
          "cellules": [
           "PRS-00015",
           "01/08/2026 à 00h00",
-          "WOROU Alimatou — CNT/137/26",
+          "WOROU Alimatou — CBG/137/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -2660,7 +2660,7 @@
          "cellules": [
           "PRS-00020",
           "01/08/2026 à 00h00",
-          "TCHOUKOUROU Nourou — CNT/113/25",
+          "TCHOUKOUROU Nourou — CBG/113/25",
           "Soins",
           "Maternité",
           "Salle de soins",
@@ -2679,7 +2679,7 @@
          "cellules": [
           "PRS-00062",
           "30/07/2026 à 00h00",
-          "HOUNKPATIN Salifou — CNT/74/26",
+          "HOUNKPATIN Salifou — CBG/74/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
@@ -2799,7 +2799,7 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CNT/153/25",
+          "PARAISO Rachida — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2818,7 +2818,7 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CNT/124/25",
+          "DAOUDA Djibril — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2837,7 +2837,7 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CNT/126/25",
+          "BASSONGUI Hervé — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2856,7 +2856,7 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CNT/121/25",
+          "YARO Bio — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2875,7 +2875,7 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CNT/129/26",
+          "DOSSOU Souleymane — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2894,7 +2894,7 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CNT/164/26",
+          "GARBA Zoukanéri — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2913,7 +2913,7 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CNT/100/25",
+          "BAKO Chantal — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2932,7 +2932,7 @@
          "cellules": [
           "ORD-2026-00016",
           "12/08/2026 à 00h00",
-          "TCHOUKOUROU Zakari — CNT/73/26",
+          "TCHOUKOUROU Zakari — CBG/73/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2951,7 +2951,7 @@
          "cellules": [
           "ORD-2026-00040",
           "01/08/2026 à 00h00",
-          "SEIDOU Fatouma — CNT/118/26",
+          "SEIDOU Fatouma — CBG/118/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2970,7 +2970,7 @@
          "cellules": [
           "ORD-2026-00123",
           "01/08/2026 à 00h00",
-          "YENI Chantal — CNT/98/26",
+          "YENI Chantal — CBG/98/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -2989,7 +2989,7 @@
          "cellules": [
           "ORD-2026-00060",
           "31/07/2026 à 00h00",
-          "YENI M’PO Florent — CNT904/25",
+          "YENI M’PO Florent — CBG904/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3008,7 +3008,7 @@
          "cellules": [
           "ORD-2026-00132",
           "30/07/2026 à 10h15",
-          "TIGRI Séraphine — CNT/11/26",
+          "TIGRI Séraphine — CBG/11/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3128,7 +3128,7 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CNT/153/25",
+          "PARAISO Rachida — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3147,7 +3147,7 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CNT/124/25",
+          "DAOUDA Djibril — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3166,7 +3166,7 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CNT/126/25",
+          "BASSONGUI Hervé — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3185,7 +3185,7 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CNT/34/26",
+          "SAMBIENI Ganiou — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
@@ -3204,7 +3204,7 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CNT/60/26",
+          "KASSA Alassane — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
@@ -3223,7 +3223,7 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CNT/121/25",
+          "YARO Bio — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3242,7 +3242,7 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CNT/129/26",
+          "DOSSOU Souleymane — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3261,7 +3261,7 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CNT/164/26",
+          "GARBA Zoukanéri — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3280,7 +3280,7 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CNT/120/26",
+          "AGOSSOU Bio — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
@@ -3299,7 +3299,7 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CNT/100/25",
+          "BAKO Chantal — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3318,7 +3318,7 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CNT/39/26",
+          "TCHANE Zakari — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
@@ -3337,7 +3337,7 @@
          "cellules": [
           "ORD-2026-00016",
           "12/08/2026 à 00h00",
-          "TCHOUKOUROU Zakari — CNT/73/26",
+          "TCHOUKOUROU Zakari — CBG/73/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
@@ -3455,7 +3455,7 @@
       {
        "cellules": [
         "ORD-2026-00132",
-        "TIGRI Séraphine — CNT/11/26",
+        "TIGRI Séraphine — CBG/11/26",
         "BUPIVACAINE HYPERBARE/4ML",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3469,7 +3469,7 @@
       {
        "cellules": [
         "ORD-2026-00131",
-        "BOUKARI Florent — CNT/116/25",
+        "BOUKARI Florent — CBG/116/25",
         "GENTAMICINE 80 MG INJ",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3483,7 +3483,7 @@
       {
        "cellules": [
         "PRS-00065",
-        "ISSA Awaou — CNT/128/25",
+        "ISSA Awaou — CBG/128/25",
         "Oxygénothérapie — 4 à 6 heures",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3497,7 +3497,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CNT/139/25",
+        "TCHANE Moussa — CBG/139/25",
         "Oxygénothérapie — 13 à 24 heures",
         "1 / 5",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3511,7 +3511,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CNT/139/25",
+        "TCHANE Moussa — CBG/139/25",
         "Pose de sérum",
         "1 / 4",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3525,7 +3525,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CNT/139/25",
+        "TCHANE Moussa — CBG/139/25",
         "Infiltration — petite",
         "1 / 4",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3539,7 +3539,7 @@
       {
        "cellules": [
         "PRS-00063",
-        "ISSA Zoukanéri — CNT/159/26",
+        "ISSA Zoukanéri — CBG/159/26",
         "Extraction d’ongle",
         "1 / 3",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3553,7 +3553,7 @@
       {
        "cellules": [
         "PRS-00063",
-        "ISSA Zoukanéri — CNT/159/26",
+        "ISSA Zoukanéri — CBG/159/26",
         "Pansement — moyen",
         "1 / 5",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3567,7 +3567,7 @@
       {
        "cellules": [
         "PRS-00061",
-        "AGOSSOU Bio — CNT/120/26",
+        "AGOSSOU Bio — CBG/120/26",
         "Infiltration — petite",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3581,7 +3581,7 @@
       {
        "cellules": [
         "PRS-00061",
-        "AGOSSOU Bio — CNT/120/26",
+        "AGOSSOU Bio — CBG/120/26",
         "Ponction lombaire E",
         "1 / 3",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3595,7 +3595,7 @@
       {
        "cellules": [
         "PRS-00057",
-        "WOROU Adissa — CNT/157/25",
+        "WOROU Adissa — CBG/157/25",
         "Ponction simple",
         "1 / 2",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3609,7 +3609,7 @@
       {
        "cellules": [
         "PRS-00057",
-        "WOROU Adissa — CNT/157/25",
+        "WOROU Adissa — CBG/157/25",
         "Ponction — grande",
         "1 / 3",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -8218,7 +8218,7 @@
   "patients": [
    {
     "id": "PATX1",
-    "code": "CNT/1001/26",
+    "code": "CBG/1001/26",
     "nom": "ALPHA",
     "prenom": "Une",
     "sexe": "F",
@@ -8227,7 +8227,7 @@
    },
    {
     "id": "PATX2",
-    "code": "CNT/1002/26",
+    "code": "CBG/1002/26",
     "nom": "BETA",
     "prenom": "Deux",
     "sexe": "M",
@@ -8240,7 +8240,7 @@
    },
    {
     "id": "PATX3",
-    "code": "CNT/1003/26",
+    "code": "CBG/1003/26",
     "nom": "GAMMA",
     "prenom": "Trois",
     "sexe": "F",
@@ -8253,7 +8253,7 @@
    },
    {
     "id": "PATX4",
-    "code": "CNT/1004/26",
+    "code": "CBG/1004/26",
     "nom": "DELTA",
     "prenom": "Quatre",
     "sexe": "M",
@@ -8263,7 +8263,7 @@
    },
    {
     "id": "PATX5",
-    "code": "CNT/1005/26",
+    "code": "CBG/1005/26",
     "nom": "EPSILON",
     "prenom": "Cinq",
     "sexe": "F",
@@ -8275,7 +8275,7 @@
    {
     "id": "CSTX1",
     "statut": "actif",
-    "patientCode": "CNT/1001/26",
+    "patientCode": "CBG/1001/26",
     "patientId": "PATX1",
     "dateHeure": "2026-08-10T08:00",
     "temperature": 37.2,
@@ -8289,7 +8289,7 @@
    {
     "id": "CSTX2",
     "statut": "actif",
-    "patientCode": "CNT/1001/26",
+    "patientCode": "CBG/1001/26",
     "patientId": "PATX1",
     "dateHeure": "2026-08-12T09:30",
     "temperature": 38.1,
@@ -8318,7 +8318,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -8327,7 +8327,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -8340,7 +8340,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -8353,7 +8353,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -8363,7 +8363,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -8375,7 +8375,7 @@
       {
        "id": "CSTX1",
        "statut": "actif",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patientId": "PATX1",
        "dateHeure": "2026-08-10T08:00",
        "temperature": 37.2,
@@ -8389,7 +8389,7 @@
       {
        "id": "CSTX2",
        "statut": "actif",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patientId": "PATX1",
        "dateHeure": "2026-08-12T09:30",
        "temperature": 38.1,
@@ -8411,7 +8411,7 @@
        {
         "id": "DOSxmvwc46ksee7br",
         "statut": "actif",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "soignant": "BASSONGUI Chabi Séko",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
@@ -8451,7 +8451,7 @@
         "risqueOperatoire": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "nip": "CNT/1001/26",
+        "nip": "CBG/1001/26",
         "age": 36,
         "sexe": "F",
         "assureur": null,
@@ -8483,7 +8483,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -8492,7 +8492,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -8505,7 +8505,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -8518,7 +8518,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -8528,7 +8528,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -8545,7 +8545,7 @@
        {
         "id": "DOSxmvwc46kta2fbd",
         "statut": "actif",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "soignant": "BASSONGUI Chabi Séko",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
@@ -8577,7 +8577,7 @@
         "risqueOperatoire": null,
         "patientId": "PATX2",
         "patient": "BETA Deux",
-        "nip": "CNT/1002/26",
+        "nip": "CBG/1002/26",
         "age": 41,
         "sexe": "M",
         "assureur": "NSIA",
@@ -8596,7 +8596,7 @@
     "nom": "patient inconnu au répertoire",
     "entree": {},
     "sortie": {
-     "erreur": "Patient introuvable au répertoire : CNT/9999/26.",
+     "erreur": "Patient introuvable au répertoire : CBG/9999/26.",
      "code": null,
      "inserts": {},
      "modifs": {}
@@ -8610,8 +8610,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -8637,8 +8637,8 @@
        "id": "DOSX-1001attente",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "attente",
        "motifVenue": "Fièvre",
@@ -8657,7 +8657,7 @@
        {
         "id": "DOSxmvwc46r2qhadk",
         "statut": "actif",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "soignant": "BASSONGUI Chabi Séko",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
@@ -8689,7 +8689,7 @@
         "risqueOperatoire": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "nip": "CNT/1001/26",
+        "nip": "CBG/1001/26",
         "age": 36,
         "sexe": "F",
         "assureur": null,
@@ -8723,8 +8723,8 @@
        "id": "DOSX-1001attente",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "attente",
        "motifVenue": "Fièvre",
@@ -8790,8 +8790,8 @@
        "id": "DOSX-1001cloture",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "cloture",
        "motifVenue": "Fièvre",
@@ -8817,8 +8817,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -8899,7 +8899,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -8925,8 +8925,8 @@
        "id": "DOSX-1001attente",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "attente",
        "motifVenue": "Fièvre",
@@ -8950,7 +8950,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -8976,8 +8976,8 @@
        "id": "DOSX-1001cloture",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "cloture",
        "motifVenue": "Fièvre",
@@ -9001,7 +9001,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9028,8 +9028,8 @@
        "id": "DOSX-1002consultation",
        "statut": "actif",
        "reference": "DOS-91002",
-       "patientCode": "CNT/1002/26",
-       "nip": "CNT/1002/26",
+       "patientCode": "CBG/1002/26",
+       "nip": "CBG/1002/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9053,7 +9053,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9080,8 +9080,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9105,7 +9105,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9129,8 +9129,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9154,7 +9154,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9178,13 +9178,13 @@
      "dossiers": []
     },
     "sortie": {
-     "erreur": "Patient introuvable au répertoire : CNT/9999/26.",
+     "erreur": "Patient introuvable au répertoire : CBG/9999/26.",
      "code": null,
      "inserts": {},
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/9999/26",
+     "patientCode": "CBG/9999/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9210,8 +9210,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9236,7 +9236,7 @@
        {
         "id": "CONxmvwc46rsjvpoq",
         "statut": "planifiee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patientId": "PATX1",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
@@ -9250,7 +9250,7 @@
        {
         "id": "CONxmvwc46rscav2g",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -9316,7 +9316,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9343,8 +9343,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9369,7 +9369,7 @@
        {
         "id": "CONxmvwc46rtmsauc",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -9430,7 +9430,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9456,8 +9456,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9482,7 +9482,7 @@
        {
         "id": "CONxmvwc46rton3w0",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -9525,7 +9525,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme simple",
@@ -9594,7 +9594,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 2000,
@@ -9633,7 +9633,7 @@
         "factureId": "FACxmvwc46rty0z9d",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -9655,7 +9655,7 @@
         "factureId": "FACxmvwc46rty0z9d",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -9673,7 +9673,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -9727,7 +9727,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -9760,8 +9760,8 @@
        "id": "DOSX-1002consultation",
        "statut": "actif",
        "reference": "DOS-91002",
-       "patientCode": "CNT/1002/26",
-       "nip": "CNT/1002/26",
+       "patientCode": "CBG/1002/26",
+       "nip": "CBG/1002/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -9786,7 +9786,7 @@
        {
         "id": "CONxmvwc46rutgx32",
         "statut": "terminee",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -9829,7 +9829,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme simple",
@@ -9889,7 +9889,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -9917,7 +9917,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
@@ -10016,7 +10016,7 @@
         "numeroMecef": null,
         "patientId": "PATX2",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 8000,
@@ -10055,7 +10055,7 @@
         "factureId": "FACxmvwc46rucbbtl",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -10077,7 +10077,7 @@
         "factureId": "FACxmvwc46rucbbtl",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -10099,7 +10099,7 @@
         "factureId": "FACxmvwc46rucbbtl",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -10122,7 +10122,7 @@
         "factureId": "FACxmvwc46rucbbtl",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -10176,7 +10176,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -10234,7 +10234,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1002/26",
+     "patientCode": "CBG/1002/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10271,8 +10271,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -10297,7 +10297,7 @@
        {
         "id": "CONxmvwc46rwfxg75",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -10382,7 +10382,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10408,8 +10408,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -10434,7 +10434,7 @@
        {
         "id": "CONxmvwc46rwpi2ph",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -10500,7 +10500,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10526,8 +10526,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -10546,7 +10546,7 @@
        {
         "id": "CONxmvwc46rwcn0ok",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Urgence",
@@ -10607,7 +10607,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10633,8 +10633,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -10662,7 +10662,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "examenCode": "IMG-SANS-PRIX",
         "examen": "Examen sans tarif (fixture)",
@@ -10685,7 +10685,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10720,8 +10720,8 @@
        "id": "DOSX-1001consultation",
        "statut": "actif",
        "reference": "DOS-91001",
-       "patientCode": "CNT/1001/26",
-       "nip": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
+       "nip": "CBG/1001/26",
        "patient": "X",
        "etat": "consultation",
        "motifVenue": "Fièvre",
@@ -10743,7 +10743,7 @@
        {
         "id": "CONxmvwc46ry5dyz4",
         "statut": "terminee",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "medecin": "BASSONGUI Chabi Séko",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
@@ -10804,7 +10804,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
@@ -10830,7 +10830,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -10839,7 +10839,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -10852,7 +10852,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -10865,7 +10865,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -10875,7 +10875,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -10895,7 +10895,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -10981,7 +10981,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L02",
         "analyse": "ASLO",
@@ -11007,7 +11007,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -11035,7 +11035,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
@@ -11203,7 +11203,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 22750,
@@ -11242,7 +11242,7 @@
         "factureId": "FACxmvwc46r9vsel9",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11264,7 +11264,7 @@
         "factureId": "FACxmvwc46r9vsel9",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11286,7 +11286,7 @@
         "factureId": "FACxmvwc46r9vsel9",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11308,7 +11308,7 @@
         "factureId": "FACxmvwc46r9vsel9",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11331,7 +11331,7 @@
         "factureId": "FACxmvwc46r9vsel9",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11368,7 +11368,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -11411,7 +11411,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -11448,7 +11448,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -11457,7 +11457,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -11470,7 +11470,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -11483,7 +11483,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -11493,7 +11493,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -11513,7 +11513,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -11599,7 +11599,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "analyseCode": "L02",
         "analyse": "ASLO",
@@ -11625,7 +11625,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -11653,7 +11653,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
@@ -11821,7 +11821,7 @@
         "numeroMecef": null,
         "patientId": "PATX2",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 16750,
@@ -11860,7 +11860,7 @@
         "factureId": "FACxmvwc46rdds86d",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11882,7 +11882,7 @@
         "factureId": "FACxmvwc46rdds86d",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11904,7 +11904,7 @@
         "factureId": "FACxmvwc46rdds86d",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11926,7 +11926,7 @@
         "factureId": "FACxmvwc46rdds86d",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11949,7 +11949,7 @@
         "factureId": "FACxmvwc46rdds86d",
         "factureNumero": "FP-2026-00001",
         "patient": "BETA Deux",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -11986,7 +11986,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -12029,7 +12029,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1002/26",
+     "patientCode": "CBG/1002/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -12066,7 +12066,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -12075,7 +12075,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -12088,7 +12088,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -12101,7 +12101,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -12111,7 +12111,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -12131,7 +12131,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -12217,7 +12217,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "analyseCode": "L02",
         "analyse": "ASLO",
@@ -12243,7 +12243,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -12271,7 +12271,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
@@ -12439,7 +12439,7 @@
         "numeroMecef": null,
         "patientId": "PATX3",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 22750,
@@ -12478,7 +12478,7 @@
         "factureId": "FACxmvwc46re5vsyd",
         "factureNumero": "FP-2026-00001",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -12500,7 +12500,7 @@
         "factureId": "FACxmvwc46re5vsyd",
         "factureNumero": "FP-2026-00001",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -12522,7 +12522,7 @@
         "factureId": "FACxmvwc46re5vsyd",
         "factureNumero": "FP-2026-00001",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -12544,7 +12544,7 @@
         "factureId": "FACxmvwc46re5vsyd",
         "factureNumero": "FP-2026-00001",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -12567,7 +12567,7 @@
         "factureId": "FACxmvwc46re5vsyd",
         "factureNumero": "FP-2026-00001",
         "patient": "GAMMA Trois",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -12604,7 +12604,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -12647,7 +12647,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1003/26",
+     "patientCode": "CBG/1003/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -12684,7 +12684,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -12693,7 +12693,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -12706,7 +12706,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -12719,7 +12719,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -12729,7 +12729,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -12749,7 +12749,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX4",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -12835,7 +12835,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX4",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "analyseCode": "L02",
         "analyse": "ASLO",
@@ -12861,7 +12861,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX4",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -12889,7 +12889,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX4",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
@@ -13057,7 +13057,7 @@
         "numeroMecef": null,
         "patientId": "PATX4",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 22750,
@@ -13096,7 +13096,7 @@
         "factureId": "FACxmvwc46rgalj3h",
         "factureNumero": "FP-2026-00001",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13118,7 +13118,7 @@
         "factureId": "FACxmvwc46rgalj3h",
         "factureNumero": "FP-2026-00001",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13140,7 +13140,7 @@
         "factureId": "FACxmvwc46rgalj3h",
         "factureNumero": "FP-2026-00001",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13162,7 +13162,7 @@
         "factureId": "FACxmvwc46rgalj3h",
         "factureNumero": "FP-2026-00001",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13185,7 +13185,7 @@
         "factureId": "FACxmvwc46rgalj3h",
         "factureNumero": "FP-2026-00001",
         "patient": "DELTA Quatre",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13222,7 +13222,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX4",
-        "patientCode": "CNT/1004/26",
+        "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -13265,7 +13265,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1004/26",
+     "patientCode": "CBG/1004/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -13302,7 +13302,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -13311,7 +13311,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -13324,7 +13324,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -13337,7 +13337,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -13347,7 +13347,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -13367,7 +13367,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -13469,7 +13469,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 2750,
@@ -13508,7 +13508,7 @@
         "factureId": "FACxmvwc46rjrpx33",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": true,
         "faitLe": null,
@@ -13530,7 +13530,7 @@
         "factureId": "FACxmvwc46rjrpx33",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": true,
         "faitLe": null,
@@ -13548,7 +13548,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -13591,7 +13591,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -13622,7 +13622,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -13631,7 +13631,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -13644,7 +13644,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -13657,7 +13657,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -13667,7 +13667,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -13687,7 +13687,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -13736,7 +13736,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L02",
         "analyse": "ASLO",
@@ -13762,7 +13762,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -13839,7 +13839,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 6000,
@@ -13878,7 +13878,7 @@
         "factureId": "FACxmvwc46rl5si6v",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13900,7 +13900,7 @@
         "factureId": "FACxmvwc46rl5si6v",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -13920,7 +13920,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -13940,7 +13940,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -13949,7 +13949,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -13962,7 +13962,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -13975,7 +13975,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -13985,7 +13985,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -14005,7 +14005,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -14074,7 +14074,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 250,
@@ -14113,7 +14113,7 @@
         "factureId": "FACxmvwc46rmta7eo",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14135,7 +14135,7 @@
         "factureId": "FACxmvwc46rmta7eo",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14153,7 +14153,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -14187,7 +14187,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -14217,7 +14217,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -14226,7 +14226,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -14239,7 +14239,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -14252,7 +14252,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -14262,7 +14262,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -14282,7 +14282,7 @@
         "reference": "IME-00001",
         "dateHeure": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "examenCode": "IMG-SANS-PRIX",
         "examen": "Examen sans tarif (fixture)",
@@ -14305,7 +14305,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -14331,7 +14331,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -14340,7 +14340,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -14353,7 +14353,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -14366,7 +14366,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -14376,7 +14376,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -14396,7 +14396,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -14430,7 +14430,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 0,
@@ -14469,7 +14469,7 @@
         "factureId": "FACxmvwc46rnf2cao",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14489,7 +14489,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -14506,7 +14506,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -14515,7 +14515,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -14528,7 +14528,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -14541,7 +14541,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -14551,7 +14551,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -14561,13 +14561,13 @@
      ]
     },
     "sortie": {
-     "erreur": "Patient introuvable : CNT/9999/26",
+     "erreur": "Patient introuvable : CBG/9999/26",
      "code": null,
      "inserts": {},
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/9999/26",
+     "patientCode": "CBG/9999/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -14611,7 +14611,7 @@
         "numero": "ORD-2026-00001",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -14667,7 +14667,7 @@
         "reference": "LAB-00001",
         "codeAnalyse": "00001-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -14747,7 +14747,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 3000,
@@ -14788,7 +14788,7 @@
         "factureId": "FACxmvwc46rog3ytm",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14812,7 +14812,7 @@
         "factureId": "FACxmvwc46rog3ytm",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14836,7 +14836,7 @@
         "factureId": "FACxmvwc46rog3ytm",
         "factureNumero": "FP-2026-00001",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -14857,7 +14857,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -14886,7 +14886,7 @@
      }
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "medecin": "BASSONGUI Chabi Séko",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
@@ -14916,7 +14916,7 @@
         "numero": "ORD-2026-00002",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "medecin": "BASSONGUI Chabi Séko",
         "diagnostic": "Paludisme",
@@ -14968,7 +14968,7 @@
         "reference": "LAB-00002",
         "codeAnalyse": "00002-2026",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "analyseCode": "L01",
         "analyse": "AKOP",
@@ -15045,7 +15045,7 @@
         "numeroMecef": null,
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20",
         "type": "Prescription",
         "montantHT": 3000,
@@ -15084,7 +15084,7 @@
         "factureId": "FACxmvwc46rpro4xe",
         "factureNumero": "FP-2026-00002",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -15106,7 +15106,7 @@
         "factureId": "FACxmvwc46rpro4xe",
         "factureNumero": "FP-2026-00002",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -15128,7 +15128,7 @@
         "factureId": "FACxmvwc46rpro4xe",
         "factureNumero": "FP-2026-00002",
         "patient": "ALPHA Une",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "date": "2026-08-20T09:00:00.000Z",
         "urgent": false,
         "faitLe": null,
@@ -15146,7 +15146,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15181,7 +15181,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15190,7 +15190,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15203,7 +15203,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15216,7 +15216,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15226,7 +15226,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15267,7 +15267,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15313,7 +15313,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "prescripteurId": "SOI01",
      "origine": "consultation",
      "secteurDestinataire": "salle_soins",
@@ -15338,7 +15338,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15347,7 +15347,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15360,7 +15360,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15373,7 +15373,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15383,7 +15383,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15424,7 +15424,7 @@
         "origine": "hospitalisation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX2",
-        "patientCode": "CNT/1002/26",
+        "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": "SOI01",
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15457,7 +15457,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1002/26",
+     "patientCode": "CBG/1002/26",
      "prescripteurId": "SOI01",
      "origine": "hospitalisation",
      "secteurDestinataire": "hospitalisation",
@@ -15478,7 +15478,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15487,7 +15487,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15500,7 +15500,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15513,7 +15513,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15523,7 +15523,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15564,7 +15564,7 @@
         "origine": "bloc",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX3",
-        "patientCode": "CNT/1003/26",
+        "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "prescripteurId": "SOI01",
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15597,7 +15597,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1003/26",
+     "patientCode": "CBG/1003/26",
      "prescripteurId": "SOI01",
      "origine": "bloc",
      "secteurDestinataire": "salle_soins",
@@ -15617,7 +15617,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15626,7 +15626,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15639,7 +15639,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15652,7 +15652,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15662,7 +15662,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15678,7 +15678,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "prescripteurId": "SOI04",
      "origine": "consultation",
      "actes": [
@@ -15695,7 +15695,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15704,7 +15704,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15717,7 +15717,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15730,7 +15730,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15740,7 +15740,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15781,7 +15781,7 @@
         "origine": "maternite",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15827,7 +15827,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "prescripteurId": "SOI01",
      "origine": "maternite",
      "secteurDestinataire": "maternite",
@@ -15848,7 +15848,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15857,7 +15857,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -15870,7 +15870,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -15883,7 +15883,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -15893,7 +15893,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -15934,7 +15934,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
         "prescripteur": "BASSONGUI Chabi Séko",
@@ -15967,7 +15967,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "prescripteurId": "SOI01",
      "actes": [
       "ZZZ-INCONNU"
@@ -15981,7 +15981,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -15990,7 +15990,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -16003,7 +16003,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -16016,7 +16016,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -16026,7 +16026,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -16036,13 +16036,13 @@
      ]
     },
     "sortie": {
-     "erreur": "Patient introuvable : CNT/9999/26",
+     "erreur": "Patient introuvable : CBG/9999/26",
      "code": null,
      "inserts": {},
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/9999/26",
+     "patientCode": "CBG/9999/26",
      "prescripteurId": "SOI01",
      "actes": [
       {
@@ -16058,7 +16058,7 @@
      "patients": [
       {
        "id": "PATX1",
-       "code": "CNT/1001/26",
+       "code": "CBG/1001/26",
        "nom": "ALPHA",
        "prenom": "Une",
        "sexe": "F",
@@ -16067,7 +16067,7 @@
       },
       {
        "id": "PATX2",
-       "code": "CNT/1002/26",
+       "code": "CBG/1002/26",
        "nom": "BETA",
        "prenom": "Deux",
        "sexe": "M",
@@ -16080,7 +16080,7 @@
       },
       {
        "id": "PATX3",
-       "code": "CNT/1003/26",
+       "code": "CBG/1003/26",
        "nom": "GAMMA",
        "prenom": "Trois",
        "sexe": "F",
@@ -16093,7 +16093,7 @@
       },
       {
        "id": "PATX4",
-       "code": "CNT/1004/26",
+       "code": "CBG/1004/26",
        "nom": "DELTA",
        "prenom": "Quatre",
        "sexe": "M",
@@ -16103,7 +16103,7 @@
       },
       {
        "id": "PATX5",
-       "code": "CNT/1005/26",
+       "code": "CBG/1005/26",
        "nom": "EPSILON",
        "prenom": "Cinq",
        "sexe": "F",
@@ -16144,7 +16144,7 @@
         "origine": "consultation",
         "date": "2026-08-20T09:00:00.000Z",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
         "prescripteur": "Dr Libre",
@@ -16177,7 +16177,7 @@
      "modifs": {}
     },
     "params": {
-     "patientCode": "CNT/1001/26",
+     "patientCode": "CBG/1001/26",
      "prescripteur": "Dr Libre",
      "urgent": true,
      "actes": [
@@ -16202,7 +16202,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16258,7 +16258,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16292,7 +16292,7 @@
         "ligneIndex": 0,
         "libelle": "Acte A",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "dateHeure": "2026-10-31T11:45:30.962Z",
         "rang": 1,
@@ -16339,7 +16339,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16373,7 +16373,7 @@
         "ligneIndex": 0,
         "libelle": "Acte A",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "dateHeure": "2026-10-31T11:45:30.963Z",
         "rang": 1,
@@ -16420,7 +16420,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16492,7 +16492,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16534,7 +16534,7 @@
         "ligneIndex": 0,
         "libelle": "Acte A",
         "patientId": "PATX1",
-        "patientCode": "CNT/1001/26",
+        "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "dateHeure": "2026-10-31T11:45:30.964Z",
         "rang": 2,
@@ -16597,7 +16597,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16653,7 +16653,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16727,7 +16727,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16759,7 +16759,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16784,7 +16784,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",
@@ -16809,7 +16809,7 @@
        "origine": "consultation",
        "date": "2026-08-20T09:00:00.000Z",
        "patientId": "PATX1",
-       "patientCode": "CNT/1001/26",
+       "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteur": "X",
        "secteurDestinataire": "salle_soins",

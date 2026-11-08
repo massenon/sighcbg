@@ -32,9 +32,9 @@ class SourceMemoire implements SourceMobile {
 /// Le lot de la tournée du 31/10/2026 : DOSSOU (carte valide, allergique, rendez-vous 09h30), KPOGNON (carte expirée, rendez-vous 10h45), TAMOU (non assuré).
 SourceMemoire lotDeDemonstration() => SourceMemoire({
       'patients': [
-        const LigneLot('p1', {'code': 'CNT/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'assureur': 'NSIA', 'carteExpiration': '2026-12-31', 'allergies': ['Pénicilline']}),
-        const LigneLot('p2', {'code': 'CNT/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose', 'quartier': 'Péporiyakou', 'ageDeclare': 29, 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'}),
-        const LigneLot('p3', {'code': 'CNT/1109/26', 'nom': 'TAMOU', 'prenom': 'Félix', 'quartier': 'Bérécingou', 'ageDeclare': 8}),
+        const LigneLot('p1', {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'assureur': 'NSIA', 'carteExpiration': '2026-12-31', 'allergies': ['Pénicilline']}),
+        const LigneLot('p2', {'code': 'CBG/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose', 'quartier': 'Péporiyakou', 'ageDeclare': 29, 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'}),
+        const LigneLot('p3', {'code': 'CBG/1109/26', 'nom': 'TAMOU', 'prenom': 'Félix', 'quartier': 'Bérécingou', 'ageDeclare': 8}),
       ],
       'rendezvous': [
         const LigneLot('r1', {'patientId': 'p1', 'date': '2026-10-31T09:30', 'statut': 'planifiee', 'type': 'Domicile', 'motif': 'Suivi HTA'}),
@@ -49,7 +49,7 @@ SourceMemoire lotDeDemonstration() => SourceMemoire({
         const LigneLot('PRD0002', {'designation': 'AMOXICILLINE 500 MG', 'unite': 'Boîte', 'categorie': 'medicament', 'prixAchat': 1200, 'stockDetail': 2}),
       ],
       'constantes': [
-        const LigneLot('c1', {'patientId': 'p1', 'patientCode': 'CNT/12/26', 'dateHeure': '2026-10-31T08:15', 'temperature': 38.6, 'pouls': 96, 'tension': '120/80'}),
+        const LigneLot('c1', {'patientId': 'p1', 'patientCode': 'CBG/12/26', 'dateHeure': '2026-10-31T08:15', 'temperature': 38.6, 'pouls': 96, 'tension': '120/80'}),
       ],
     });
 

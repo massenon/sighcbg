@@ -13,8 +13,8 @@ String codePatient(Object ordre, Object annee) {
   return '${IdentiteClinique.sigle}/${_texte(ordre)}/$yy';
 }
 
-/// La forme d'un code patient : un sigle en capitales (celui de la clinique, ou un sigle antérieur comme `CNT`), la barre facultative de l'ancien
-/// format (`CNT530/25`), le rang, l'année sur deux chiffres. Groupe 1 : le rang ; groupe 2 : l'année. Le sigle n'est PAS imposé à la lecture : un code
+/// La forme d'un code patient : un sigle en capitales (celui de la clinique, ou un sigle antérieur comme `CBG`), la barre facultative de l'ancien
+/// format (`CBG530/25`), le rang, l'année sur deux chiffres. Groupe 1 : le rang ; groupe 2 : l'année. Le sigle n'est PAS imposé à la lecture : un code
 /// déjà attribué reste compté (RG-01, jamais réutilisé), même si le sigle a changé depuis.
 final RegExp reCodePatient = RegExp(r'^[A-Z]{2,6}/?(\d+)/(\d{2})$');
 

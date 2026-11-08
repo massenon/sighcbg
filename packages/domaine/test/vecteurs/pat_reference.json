@@ -8,7 +8,7 @@
    "sens": "sortante",
    "urgent": false,
    "patientId": "K1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patient": "Nom1 Pre1",
    "formationSanitaire": "CLINIQUE",
    "centreDestination": "CNHU Cotonou",
@@ -26,7 +26,7 @@
    "sens": "sortante",
    "urgent": true,
    "patientId": "K2",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patient": "Nom2 Pre2",
    "formationSanitaire": "CLINIQUE",
    "centreDestination": "Hôpital de zone",
@@ -44,7 +44,7 @@
    "sens": "entrante",
    "urgent": false,
    "patientId": "K1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patient": "Nom1 Pre1",
    "formationSanitaire": "CLINIQUE",
    "centreDestination": "Centre de santé de Perma",
@@ -62,7 +62,7 @@
    "sens": "sortante",
    "urgent": false,
    "patientId": "K1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patient": "Nom1 Pre1",
    "formationSanitaire": "CLINIQUE",
    "centreDestination": "CNHU Cotonou",
@@ -80,7 +80,7 @@
    "sens": "sortante",
    "urgent": false,
    "patientId": "K1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patient": "Nom1 Pre1",
    "formationSanitaire": "CLINIQUE",
    "centreDestination": "CNHU Cotonou",
@@ -100,7 +100,7 @@
    "numeroReference": "REF-00001",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "centreAccueil": "CNHU",
    "dateArrivee": "2026-08-11",
    "diagnosticEntree": "DE",
@@ -117,7 +117,7 @@
    "numeroReference": "REF-00002",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "centreAccueil": "CNHU",
    "dateArrivee": "2026-08-12",
    "diagnosticEntree": "DE",
@@ -170,7 +170,7 @@
    [
     "REF-00004",
     "Sortante",
-    "Nom1 Pre1 — CNT/1/26",
+    "Nom1 Pre1 — CBG/1/26",
     "CNHU Cotonou",
     "04/08/2026",
     "Agent 4",
@@ -180,7 +180,7 @@
    [
     "REF-00003",
     "Entrante",
-    "Nom1 Pre1 — CNT/1/26",
+    "Nom1 Pre1 — CBG/1/26",
     "Centre de santé de Perma",
     "03/08/2026",
     "Agent 3",
@@ -190,7 +190,7 @@
    [
     "REF-00002 URGENT",
     "Sortante",
-    "Nom2 Pre2 — CNT/2/26",
+    "Nom2 Pre2 — CBG/2/26",
     "Hôpital de zone",
     "02/08/2026",
     "Agent 2",
@@ -200,7 +200,7 @@
    [
     "REF-00001",
     "Sortante",
-    "Nom1 Pre1 — CNT/1/26",
+    "Nom1 Pre1 — CBG/1/26",
     "CNHU Cotonou",
     "01/08/2026",
     "Agent 1",
@@ -226,7 +226,7 @@
     "nom": "fiche minimale : le numéro suit le registre (archivés compris)",
     "saisie": {
      "sens": "sortante",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "formationSanitaire": "CLINIQUE NASSIERA TOO",
      "symptomes": "Détresse respiratoire",
      "motifs": [
@@ -241,7 +241,7 @@
       "statut": "actif",
       "sens": "sortante",
       "urgent": false,
-      "patientCode": "CNT/2/26",
+      "patientCode": "CBG/2/26",
       "formationSanitaire": "CLINIQUE NASSIERA TOO",
       "centreAlerte": false,
       "dateAdmission": "",
@@ -284,7 +284,7 @@
     "nom": "fiche complète entrante, urgente",
     "saisie": {
      "sens": "entrante",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "formationSanitaire": "CLINIQUE NASSIERA TOO",
      "symptomes": "Détresse respiratoire",
      "motifs": [
@@ -308,7 +308,7 @@
       "statut": "actif",
       "sens": "entrante",
       "urgent": true,
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "formationSanitaire": "CLINIQUE NASSIERA TOO",
       "centreAlerte": true,
       "dateAdmission": "",
@@ -351,7 +351,7 @@
     "nom": "motif de référence absent : refusé",
     "saisie": {
      "sens": "sortante",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "formationSanitaire": "CLINIQUE NASSIERA TOO",
      "symptomes": "Détresse respiratoire",
      "motifs": [],
@@ -367,9 +367,9 @@
    }
   ],
   "details": {
-   "avecRetour": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00001 Sortante Nom1 Pre1 — CNT/1/26 CNHU Cotonou 01/08/2026 Agent 1 Reçue le 11/08/2026 Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00001 N° DE RÉFÉRENCE REF-00001 SENS Sortante — patient orienté ailleurs URGENCE Non PATIENT Nom1 Pre1 — CNT/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE CNHU Cotonou DATE ET HEURE 01/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 1 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 1 Motif de la référence MOTIF Absence de moyens de diagnostic Contre-référence reçue le 11/08/2026 — diagnostic de sortie : DS · concordance : OUI · référence justifiée.",
-   "sansRetourSortante": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00004 Sortante Nom1 Pre1 — CNT/1/26 CNHU Cotonou 04/08/2026 Agent 4 Attendue Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00004 N° DE RÉFÉRENCE REF-00004 SENS Sortante — patient orienté ailleurs URGENCE Non PATIENT Nom1 Pre1 — CNT/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE CNHU Cotonou DATE ET HEURE 04/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 4 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 4 Motif de la référence MOTIF Absence de moyens de diagnostic Aucune contre-référence reçue à ce jour. Son absence est suivie : c’est un indicateur de la relation avec le centre d’accueil, pas un oubli de saisie.",
-   "entrante": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00003 Entrante Nom1 Pre1 — CNT/1/26 Centre de santé de Perma 03/08/2026 Agent 3 — Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00003 N° DE RÉFÉRENCE REF-00003 SENS Entrante — patient adressé à la clinique URGENCE Non PATIENT Nom1 Pre1 — CNT/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE Centre de santé de Perma DATE ET HEURE 03/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 3 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 3 Motif de la référence MOTIF Absence de moyens de diagnostic"
+   "avecRetour": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00001 Sortante Nom1 Pre1 — CBG/1/26 CNHU Cotonou 01/08/2026 Agent 1 Reçue le 11/08/2026 Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00001 N° DE RÉFÉRENCE REF-00001 SENS Sortante — patient orienté ailleurs URGENCE Non PATIENT Nom1 Pre1 — CBG/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE CNHU Cotonou DATE ET HEURE 01/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 1 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 1 Motif de la référence MOTIF Absence de moyens de diagnostic Contre-référence reçue le 11/08/2026 — diagnostic de sortie : DS · concordance : OUI · référence justifiée.",
+   "sansRetourSortante": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00004 Sortante Nom1 Pre1 — CBG/1/26 CNHU Cotonou 04/08/2026 Agent 4 Attendue Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00004 N° DE RÉFÉRENCE REF-00004 SENS Sortante — patient orienté ailleurs URGENCE Non PATIENT Nom1 Pre1 — CBG/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE CNHU Cotonou DATE ET HEURE 04/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 4 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 4 Motif de la référence MOTIF Absence de moyens de diagnostic Aucune contre-référence reçue à ce jour. Son absence est suivie : c’est un indicateur de la relation avec le centre d’accueil, pas un oubli de saisie.",
+   "entrante": "Fiches de référence 6 Sortantes 4 Entrantes 2 patients adressés à la clinique Sans contre-référence 2 le centre d’accueil n’a pas encore répondu Une fiche entrante ouvre un dossier local sans effacer la pièce d’origine : celle-ci est numérisée et conservée au dossier, avec sa couverture d’assurance. Le patient référé arrive avec ses documents — les jeter reviendrait à perdre tout ce que le centre d’origine a déjà fait. Toutes6 Sortantes4 Entrantes2 Contre-référence attendue2 Colonnes Exporter Nouvelle fiche de référence N° DE RÉFÉRENCE SENS PATIENT CENTRE DESTINATAIRE DATE AGENT RÉFÉRENT CONTRE-RÉFÉRENCE ACTIONS REF-00003 Entrante Nom1 Pre1 — CBG/1/26 Centre de santé de Perma 03/08/2026 Agent 3 — Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. REF-00003 N° DE RÉFÉRENCE REF-00003 SENS Entrante — patient adressé à la clinique URGENCE Non PATIENT Nom1 Pre1 — CBG/1/26 FORMATION SANITAIRE CLINIQUE CENTRE D’ACCUEIL ALERTÉ Non CONSTANTES — ABORD VEINEUX Non posé CENTRE DESTINATAIRE Centre de santé de Perma DATE ET HEURE 03/08/2026 MOYEN DE TRANSPORT — AGENT RÉFÉRENT Agent 3 DÉPART — ARRIVÉE — AMBULANCIER — Symptômes dominants / diagnostic Symptômes 3 Motif de la référence MOTIF Absence de moyens de diagnostic"
   }
  },
  "contre": {
@@ -469,7 +469,7 @@
       "reference": "CRF-00003",
       "patientId": "K1",
       "patient": "Nom1 Pre1",
-      "patientCode": "CNT/1/26"
+      "patientCode": "CBG/1/26"
      }
     ],
     "toasts": [
@@ -513,7 +513,7 @@
       "reference": "CRF-00004",
       "patientId": "K2",
       "patient": "Nom2 Pre2",
-      "patientCode": "CNT/2/26"
+      "patientCode": "CBG/2/26"
      }
     ],
     "toasts": [

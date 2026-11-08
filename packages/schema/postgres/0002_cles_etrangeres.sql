@@ -1,5 +1,5 @@
 -- =============================================================================
--- SIGH-CNT — clés étrangères entre collections (schéma CIBLE, non appliquées à la copie du prototype)
+-- SIGH-CBG — clés étrangères entre collections (schéma CIBLE, non appliquées à la copie du prototype)
 -- ENGENDRÉ par prototype_html/build/gen-schema-pg.js. Seulement celles que les données actuelles
 -- respectent à 100 %. Le prototype écrit par DEUX chemins sans ordre entre eux (magasin.php, crud.php) :
 -- une facture et sa demande d'imagerie peuvent arriver dans l'ordre inverse, et une clé étrangère

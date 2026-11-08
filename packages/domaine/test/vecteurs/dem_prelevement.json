@@ -124,7 +124,7 @@
     "ref": "LAB-90001",
     "cellules": [
      "LAB-90001",
-     "PAT D0001 CNT/01/26",
+     "PAT D0001 CBG/01/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -140,7 +140,7 @@
     "ref": "LAB-90002",
     "cellules": [
      "LAB-90002",
-     "PAT D0002 CNT/02/26",
+     "PAT D0002 CBG/02/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -156,7 +156,7 @@
     "ref": "LAB-90003",
     "cellules": [
      "LAB-90003",
-     "PAT D0003 CNT/03/26 · externe",
+     "PAT D0003 CBG/03/26 · externe",
      "AKOP",
      "Selles",
      "Urgent",
@@ -172,7 +172,7 @@
     "ref": "LAB-90004",
     "cellules": [
      "LAB-90004",
-     "PAT D0004 CNT/04/26",
+     "PAT D0004 CBG/04/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -190,7 +190,7 @@
     "ref": "LAB-90005",
     "cellules": [
      "LAB-90005",
-     "PAT D0005 CNT/05/26",
+     "PAT D0005 CBG/05/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -206,7 +206,7 @@
     "ref": "LAB-90008",
     "cellules": [
      "LAB-90008",
-     "PAT D0008 CNT/08/26",
+     "PAT D0008 CBG/08/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -224,7 +224,7 @@
     "ref": "LAB-90006",
     "cellules": [
      "LAB-90006",
-     "PAT D0006 CNT/06/26",
+     "PAT D0006 CBG/06/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -240,7 +240,7 @@
     "ref": "LAB-90011",
     "cellules": [
      "LAB-90011",
-     "PAT D0011 CNT/11/26",
+     "PAT D0011 CBG/11/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -256,7 +256,7 @@
     "ref": "LAB-90013",
     "cellules": [
      "LAB-90013",
-     "PAT D0013 CNT/13/26",
+     "PAT D0013 CBG/13/26",
      "AKOP",
      "Selles",
      "Courant",
@@ -288,7 +288,7 @@
     "f_natureEchantillon",
     "f_observationPrelevement"
    ],
-   "texteModale": "Enregistrer le prélèvement PAT D0002 — AKOP Patient PAT D0002 Dossier CNT/02/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
+   "texteModale": "Enregistrer le prélèvement PAT D0002 — AKOP Patient PAT D0002 Dossier CBG/02/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
    "patch": {
     "preleveur": "KINNOU A. Ganiou",
     "heurePrelevement": "08:45",
@@ -329,7 +329,7 @@
     "f_natureEchantillon",
     "f_observationPrelevement"
    ],
-   "texteModale": "Enregistrer le prélèvement PAT D0003 — AKOP Patient PAT D0003 Dossier CNT/03/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
+   "texteModale": "Enregistrer le prélèvement PAT D0003 — AKOP Patient PAT D0003 Dossier CBG/03/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
    "patch": {},
    "toasts": [],
    "modaleOuverteApres": true,

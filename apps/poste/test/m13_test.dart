@@ -532,7 +532,7 @@ void main() {
       expect(f['verifieLe'], '2026-10-30');
       expect('${f['verifiePar']}', isNotEmpty);
       fichesEgales(f, obj(obj(r['verification'])['fiche']), ignores: {'verifiePar'});
-      await chercher(t, 'Ambulance CNT 02');
+      await chercher(t, 'Ambulance CBG 02');
       await cliquer(t, find.byTooltip('Changer la disponibilité').first);
       poser(t, {'disponibilite': 'en_course', 'observations': 'Sortie à Tanguiéta'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Appliquer'));

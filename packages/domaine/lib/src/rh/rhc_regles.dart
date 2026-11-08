@@ -147,7 +147,7 @@ String rhcNumeroBadge(Iterable<FicheRhc> badges, Object? date, DateTime maintena
 
 /// `PR.badgeQR(badge)` — LA décision la plus importante du module : le QR ne porte que le MATRICULE et le NUMÉRO DE SÉRIE. Ni nom, ni fonction, ni
 /// téléphone, ni URL : un badge se photographie dans un couloir, le logiciel est hors ligne, et la vérification doit passer par le LOGICIEL.
-String rhcBadgeQR(FicheRhc badge) => 'CNT-BDG|MAT:${_vrai(badge['matricule']) ? badge['matricule'] : ''}|SER:${_vrai(badge['numero']) ? badge['numero'] : ''}';
+String rhcBadgeQR(FicheRhc badge) => 'CBG-BDG|MAT:${_vrai(badge['matricule']) ? badge['matricule'] : ''}|SER:${_vrai(badge['numero']) ? badge['numero'] : ''}';
 
 /// Le QR de la maquette est vendoré et s'arrête à la VERSION 6 (106 octets, correction M) : au-delà, la norme impose des blocs d'information de version, et
 /// refuser explicitement vaut mieux qu'un code que rien ne saurait relire. Le poste applique la même limite.
@@ -159,7 +159,7 @@ bool rhcQrAcceptable(String charge) => utf8.encode(charge).length <= rhcQrOctets
 ({String? matricule, String numero, String source})? rhcLireBadgeQR(Object? texte) {
   final t = '${texte ?? ''}'.trim();
   if (t.isEmpty) return null;
-  final m = RegExp(r'^CNT-BDG\|MAT:([^|]*)\|SER:(.+)$').firstMatch(t);
+  final m = RegExp(r'^CBG-BDG\|MAT:([^|]*)\|SER:(.+)$').firstMatch(t);
   if (m != null) return (matricule: m.group(1)!.isEmpty ? null : m.group(1), numero: m.group(2)!.trim(), source: 'qr');
   return (matricule: null, numero: t, source: 'saisie');
 }

@@ -489,7 +489,7 @@ void main() {
       await fin(t);
     });
 
-    testWidgets('un asset illisible ne disparaît PAS en silence : le monogramme « CNT » prend la place', (t) async {
+    testWidgets('un asset illisible ne disparaît PAS en silence : le monogramme « CBG » prend la place', (t) async {
       await t.pumpWidget(MaterialApp(
           home: DefaultAssetBundle(bundle: _BundleVide(), child: const Scaffold(body: LogoClinique(largeur: 60, hauteur: 40)))));
       await t.pump(const Duration(milliseconds: 100));

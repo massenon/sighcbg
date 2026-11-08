@@ -11,8 +11,8 @@ class CfbSource {
 
 const cfbSourcesVerite = <CfbSource>[
   CfbSource('Organigramme de la Clinique NASSIERA TOO', 'Structure organisationnelle + RBAC', 'M14 / CFG', 'cfg-organisation', 'Intégré'),
-  CfbSource('NS 131/07/DM/DA/CNT/2026', 'Moteur d’évaluation et de sanctions', 'M10', 'm10-evaluations', 'Intégré'),
-  CfbSource('NS 132/07/DM/DA/CNT/2026', 'Moteur des primes', 'M10 / M11', 'm10-primes', 'Intégré'),
+  CfbSource('NS 131/07/DM/DA/CBG/2026', 'Moteur d’évaluation et de sanctions', 'M10', 'm10-evaluations', 'Intégré'),
+  CfbSource('NS 132/07/DM/DA/CBG/2026', 'Moteur des primes', 'M10 / M11', 'm10-primes', 'Intégré'),
   CfbSource('Fiche d’évaluation et de solde (juillet 2026)', 'Modèle d’état imprimable', 'M10 / RAP', 'm10-evaluations', 'Intégré'),
   CfbSource('Tarifs des analyses de laboratoire (48)', 'Catalogue laboratoire', 'M5', 'm5-catalogue', 'Intégré — tarifs à confirmer'),
   CfbSource('Tarifs des médicaments et accessoires (144)', 'Catalogue tarifaire pharmacie', 'M6', 'cfg-tarifs', 'Intégré — tarifs à confirmer'),
@@ -33,7 +33,7 @@ class CfbRegleGestion {
 }
 
 const cfbReglesGestion = <CfbRegleGestion>[
-  CfbRegleGestion('RG-01', 'Identifiant patient CNT/[n°]/[année] généré automatiquement, unique et non modifiable', 'M1', 'm1-patients'),
+  CfbRegleGestion('RG-01', 'Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiable', 'M1', 'm1-patients'),
   CfbRegleGestion('RG-02', 'Médicaments facturés au prix d’achat, sans marge bénéficiaire', 'M6 / M8', 'm6-produits'),
   CfbRegleGestion('RG-03', 'Toute sortie de stock rattachée à un justificatif ; stock jamais négatif', 'M6', 'm6-mouvements'),
   CfbRegleGestion('RG-04', 'Commande de stock gros validée par la Directrice Administrative', 'M7', 'm7-commandes'),
@@ -81,8 +81,8 @@ class CfbNoteService {
 }
 
 /// `D.NS131` / `D.NS132` (référence, version, date d'effet, statut, objet).
-const cfbNs131 = CfbNoteService('NS 131/07/DM/DA/CNT/2026', 1, '2026-07-13', 'ACTIVE', 'Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale');
-const cfbNs132 = CfbNoteService('NS n° 132/07/DM/DA/CNT/2026', 1, '2026-07-13', 'ACTIVE', 'Primes diverses');
+const cfbNs131 = CfbNoteService('NS 131/07/DM/DA/CBG/2026', 1, '2026-07-13', 'ACTIVE', 'Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale');
+const cfbNs132 = CfbNoteService('NS n° 132/07/DM/DA/CBG/2026', 1, '2026-07-13', 'ACTIVE', 'Primes diverses');
 
 class CfbObligation {
   const CfbObligation(this.code, this.libelle, this.periodicite, this.jour, this.mois, this.part, this.declaration, this.note, this.source);
@@ -126,7 +126,7 @@ const cfbNumerotation = <(String, String, String, String)>[
   ('Facture normalisée', 'FN-2026-', 'FN-AAAA-NNNNN', 'Strictement séquentielle'),
   ('Facture pro-forma', 'PRO-2026-', 'PRO-AAAA-NNNNN', 'Indépendante'),
   ('Avoir', 'AV-2026-', 'AV-AAAA-NNNN', 'Strictement séquentielle'),
-  ('Dossier patient', 'CNT', 'CNT/[n°]/[AA]', 'Par année civile (RG-01)'),
+  ('Dossier patient', 'CBG', 'CBG/[n°]/[AA]', 'Par année civile (RG-01)'),
   ('Bon de commande', 'BC-2026-', 'BC-AAAA-NNNN', 'Par exercice'),
   ('Bon d’expression de besoins', 'BEB-2026-', 'BEB-AAAA-NNNN', 'Par exercice'),
   ('Bulletin de paie', 'BP-', 'BP-NNNNN', 'Par période de paie'),

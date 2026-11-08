@@ -2,7 +2,7 @@
 ///
 /// Un rendez-vous HONORÉ n'est ni supprimé ni archivé : il change d'onglet (il EST la consultation). REPORTÉ et NON HONORÉ sont deux états distincts
 /// (confondre les deux ferait disparaître l'absentéisme). Une personne NON ENREGISTRÉE a quatre champs — nom, prénom, quartier, téléphone — et
-/// n'ouvre aucun dossier, ne consomme aucun code CNT (RG-01).
+/// n'ouvre aucun dossier, ne consomme aucun code CBG (RG-01).
 library;
 
 import '../format/format_fr.dart';
@@ -98,7 +98,7 @@ AgFiche _completerPatient(AgFiche v, AgFiche? record, Iterable<AgFiche> patients
   return r;
 }
 
-/// `completerVenue` : un patient du répertoire, OU une personne non enregistrée — dont la venue porte l'identité, PAS un dossier : aucun code CNT
+/// `completerVenue` : un patient du répertoire, OU une personne non enregistrée — dont la venue porte l'identité, PAS un dossier : aucun code CBG
 /// n'est consommé. « NON-PATIENT » relu à l'édition n'est pas le choix d'un dossier.
 AgFiche agCompleterVenue(AgFiche v,
     {AgFiche? record,

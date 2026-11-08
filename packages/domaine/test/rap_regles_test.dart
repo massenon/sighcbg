@@ -327,7 +327,7 @@ void main() {
       final inj = liste(obj(v['historiqueEditions'])['injection']);
       final rows = rapEditions([...inj, ...actives(jeuDossier('audit'))], noms, maintenant);
       comparer(rows, obj(v['historiqueEditions']), 'éditions');
-      expect(rows.where((r) => r['reference'] == 'CNT-00001'), hasLength(1));
+      expect(rows.where((r) => r['reference'] == 'CBG-00001'), hasLength(1));
       expect(rows.where((r) => r['module'] == 'RAP' && r['poste'] == 'POSTE-LOCAL'), hasLength(3));
     });
 

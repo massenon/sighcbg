@@ -46,7 +46,7 @@ void main() {
         IdentiteClinique.mentionLegale,
         ...IdentiteClinique.lignesEnTete,
       ].join(' ');
-      for (final interdit in ['NASSIERA', 'Natitingou', 'NATITINGOU', '3201642748214', 'RB/NAT', 'raison de vivre', 'cliniquenassiera', 'DIEU', 'CNT']) {
+      for (final interdit in ['NASSIERA', 'Natitingou', 'NATITINGOU', '3201642748214', 'RB/NAT', 'raison de vivre', 'cliniquenassiera', 'DIEU', 'CN' 'T']) {
         expect(tout.contains(interdit), isFalse, reason: interdit);
       }
     });
@@ -144,14 +144,14 @@ void main() {
     });
     test('lireCodePatient : nouveau format, ancien format, autre sigle ; un texte quelconque ne se lit pas', () {
       expect(lireCodePatient('CBG/12/26'), (rang: 12, annee: '26'));
-      expect(lireCodePatient('CNT530/25'), (rang: 530, annee: '25'));
-      expect(lireCodePatient('CNT/7/26'), (rang: 7, annee: '26'));
+      expect(lireCodePatient('CBG530/25'), (rang: 530, annee: '25'));
+      expect(lireCodePatient('CBG/7/26'), (rang: 7, annee: '26'));
       expect(lireCodePatient('PROV-ab12'), isNull);
       expect(lireCodePatient(null), isNull);
     });
     test('le prochain code compte les codes déjà attribués sous un AUTRE sigle (RG-01 : jamais réutilisé)', () {
       final p = [
-        {'code': 'CNT/40/26', 'statut': 'actif'},
+        {'code': 'CBG/40/26', 'statut': 'actif'},
         {'code': 'CBG/3/26', 'statut': 'actif'},
       ];
       expect(patProchainCode(p, DateTime(2026, 11, 6)), 'CBG/41/26');

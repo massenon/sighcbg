@@ -143,7 +143,7 @@ void main() {
       expect(core, contains("BRAND.nom + ' — IFU ' + BRAND.ifu + ' — RCCM ' + BRAND.rccm + '.'"));
       final app = File('../../prototype_html/assets/js/app.js').readAsStringSync();
       expect(RegExp(r"C\.mentionLegale\(\)").allMatches(app).length, 2, reason: 'une fois dans la coque, une fois sur les pages autonomes');
-      expect(app, isNot(contains('Prototype SIGH-CNT, jeu de données')));
+      expect(app, isNot(contains('Prototype SIGH-CBG, jeu de données')));
     });
 
     test('la mention n\'est écrite en dur nulle part ailleurs dans lib/', () {

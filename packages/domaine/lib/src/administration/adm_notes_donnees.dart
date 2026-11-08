@@ -35,26 +35,26 @@ class AdmNoteService {
 }
 
 const AdmNoteService admNs131 = AdmNoteService(
-  reference: 'NS 131/07/DM/DA/CNT/2026',
+  reference: 'NS 131/07/DM/DA/CBG/2026',
   objet: 'Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale',
   version: 1,
   dateSignature: '2026-07-13',
   dateEffet: '2026-07-13',
   statut: 'ACTIVE',
   signataire: 'BASSONGUI C. Séko Y., Directeur Médical',
-  source: 'DOC — Note de service NS 131/07/DM/DA/CNT/2026',
+  source: 'DOC — Note de service NS 131/07/DM/DA/CBG/2026',
   mention: 'Abroge toute disposition antérieure contraire.',
 );
 
 const AdmNoteService admNs132 = AdmNoteService(
-  reference: 'NS n° 132/07/DM/DA/CNT/2026',
+  reference: 'NS n° 132/07/DM/DA/CBG/2026',
   objet: 'Primes diverses',
   version: 1,
   dateSignature: '2026-07-13',
   dateEffet: '2026-07-13',
   statut: 'ACTIVE',
   signataire: 'BASSONGUI Chabi Séko, Directeur Médical',
-  source: 'DOC — Note de service NS 132/07/DM/DA/CNT/2026',
+  source: 'DOC — Note de service NS 132/07/DM/DA/CBG/2026',
   mention: 'Abroge toute disposition antérieure contraire.',
 );
 

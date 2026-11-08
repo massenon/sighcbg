@@ -50,7 +50,7 @@ void main() {
   });
 
   test('une fiche créée sur un poste arrive aux autres, une seule fois, sans doublon chez son auteur', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CNT/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
     expect(mb.collection('patients').toutes.single['nom'], 'AGBO');
     expect(mm.collection('patients').toutes.single['nom'], 'AGBO');
@@ -69,7 +69,7 @@ void main() {
   });
 
   test('champs différents modifiés en même temps sur deux postes : les deux changements survivent', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'telephone': '1', 'quartier': 'X', 'code': 'CNT/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGBO', 'telephone': '1', 'quartier': 'X', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
     final ida = ma.collection('patients').toutes.single['id'];
     final idb = mb.collection('patients').toutes.single['id'];
@@ -83,7 +83,7 @@ void main() {
   });
 
   test('un archivage voyage (RG-14) et rien n’est supprimé', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CNT/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb]);
     mb.collection('patients').archiver(mb.collection('patients').toutes.single['id']);
     await tour([pa, pb]);
@@ -94,7 +94,7 @@ void main() {
   test('un cycle sans geste n’écrit plus rien dans le journal', () async {
     final t = TransportFictif(j);
     final p = PontActivite(ma, t, etiquette: 'A');
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CNT/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await p.cycle();
     final n = t.ecritures;
     await p.cycle();
@@ -122,14 +122,14 @@ void main() {
   });
 
   test('RG-01 : deux dossiers au même code après rencontre de deux postes sont MARQUÉS, jamais renumérotés en silence', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CNT/7/26'}, prefixe: 'PAT');
-    mb.collection('patients').inserer({'nom': 'ZANNOU', 'code': 'CNT/7/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/7/26'}, prefixe: 'PAT');
+    mb.collection('patients').inserer({'nom': 'ZANNOU', 'code': 'CBG/7/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
     expect(pm.doublonsDeCode.value, 2);
     for (final m in [ma, mb, mm]) {
       final fs = m.collection('patients').toutes;
       expect(fs, hasLength(2));
-      expect(fs.every((f) => f['codeEnDoublon'] == true && f['code'] == 'CNT/7/26'), isTrue);
+      expect(fs.every((f) => f['codeEnDoublon'] == true && f['code'] == 'CBG/7/26'), isTrue);
     }
   });
 

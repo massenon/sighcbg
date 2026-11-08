@@ -10,7 +10,7 @@ void main() {
 
   Magasin avecMarqueurs() {
     final m = Magasin({}, 'POSTE', {});
-    m.collection('patients').inserer({'statut': 'actif', 'code': 'CNT/12/26', 'codeEnDoublon': true});
+    m.collection('patients').inserer({'statut': 'actif', 'code': 'CBG/12/26', 'codeEnDoublon': true});
     m.collection('factures').inserer({'statut': 'actif', 'numero': 'FAC-0042', 'numeroEnDoublon': true});
     m.collection('admissions').inserer({'statut': 'actif', 'lit': 'Ch2-L1', 'litEnConflit': true});
     m.collection('produits').inserer({'statut': 'actif', 'designation': 'Paracétamol 500 mg', 'stockNegatifDetecte': true});
@@ -22,7 +22,7 @@ void main() {
 
   test('la Direction voit chaque doublon, nommé, avec l’écran où le traiter', () {
     final a = pour(avecMarqueurs(), 'direction');
-    expect(a.map((n) => n.titre), containsAll(['Dossier en doublon : CNT/12/26', 'Facture au numéro en double : FAC-0042', 'Lit en conflit : Ch2-L1', 'Stock négatif détecté : Paracétamol 500 mg']));
+    expect(a.map((n) => n.titre), containsAll(['Dossier en doublon : CBG/12/26', 'Facture au numéro en double : FAC-0042', 'Lit en conflit : Ch2-L1', 'Stock négatif détecté : Paracétamol 500 mg']));
     expect(a.every((n) => n.lien == null || donnees.matrice.peutVoir('direction', n.lien!)), isTrue);
   });
 
@@ -32,9 +32,9 @@ void main() {
 
   test('ADR-0006 : un conflit entre pairs est annoncé à ceux qui tranchent, pas aux autres', () {
     final m = Magasin({}, 'POSTE', {});
-    m.collection('conflitsPair').inserer({'statut': 'actif', 'collection': 'patients', 'fiche': 'p1', 'champ': 'telephone', 'libelle': 'téléphone du patient CNT/12/26', 'valeurs': '90 / 91', 'ecran': 'm1-patients'});
+    m.collection('conflitsPair').inserer({'statut': 'actif', 'collection': 'patients', 'fiche': 'p1', 'champ': 'telephone', 'libelle': 'téléphone du patient CBG/12/26', 'valeurs': '90 / 91', 'ecran': 'm1-patients'});
     List<AlerteNotif> de(String r) => CentreNotifications(magasin: m, donnees: () => donnees, role: () => r, horloge: () => horloge).collecter().where((n) => n.source == 'pair_conflits').toList();
-    expect(de('da').single.titre, 'Conflit à trancher : téléphone du patient CNT/12/26');
+    expect(de('da').single.titre, 'Conflit à trancher : téléphone du patient CBG/12/26');
     expect(de('da').single.lien, 'm1-patients');
     expect(de('direction'), hasLength(1));
     expect(de('caissier'), isEmpty);

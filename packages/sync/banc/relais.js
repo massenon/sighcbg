@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — BANC : le RELAIS EN LIGNE (implémentation de référence du contrat de apps/web)
+ * SIGH-CBG — BANC : le RELAIS EN LIGNE (implémentation de référence du contrat de apps/web)
  * -----------------------------------------------------------------------------
  * OPAQUE par construction : ce fichier n'importe ni `crypto.js` ni aucune clé. Il stocke des enveloppes
  * dont il ne voit que (appareil, sens, rang, taille), des indicateurs EN CLAIR sans nom de patient, et le

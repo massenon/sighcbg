@@ -20,7 +20,7 @@ Fiche dem(String ref, String etat, {Map<String, Object?> plus = const {}}) => {
       'reference': ref,
       'patientId': 'PAT1',
       'patient': 'DOSSOU Aline',
-      'patientCode': 'CNT/1/26',
+      'patientCode': 'CBG/1/26',
       'analyseCode': 'L01',
       'analyse': 'AKOP',
       'categorie': 'Parasitologie',
@@ -46,7 +46,7 @@ Magasin magasin({
               {
                 'id': 'PAT1',
                 'statut': 'actif',
-                'code': 'CNT/1/26',
+                'code': 'CBG/1/26',
                 'nom': 'DOSSOU',
                 'prenom': 'Aline',
                 'sexe': 'F'
@@ -253,7 +253,7 @@ void main() {
           'ordonnanceId': 'ORD-9',
           'reference': 'ORD-9',
           'patient': 'DOSSOU Aline',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'detail': '3 analyse(s)',
           'montant': 6000,
           'date': '2026-10-29'
@@ -281,7 +281,7 @@ void main() {
           'ordonnanceId': 'ORD-9',
           'reference': 'ORD-9',
           'patient': 'DOSSOU Aline',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'detail': '1 analyse(s)',
           'montant': 2000,
           'date': '2026-10-29'
@@ -303,7 +303,7 @@ void main() {
       final m = avecRegistre();
       await ouvrir(t, m, 'm5-demandes');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-      await choisir(t, 'patientCode', 'CNT/1/26 — DOSSOU Aline');
+      await choisir(t, 'patientCode', 'CBG/1/26 — DOSSOU Aline');
       await choisir(t, 'analyseCode', 'L02 — ASLO');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final d = m.collection('demandesAnalyses').actives.first;

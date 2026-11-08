@@ -229,7 +229,7 @@ String catProvenanceUnite(FicheCat u) => _vrai(u['aValider']) ? 'à confirmer' :
 
 /// Ce que la cellule « Provenance » affiche pour une unité DOCUMENTÉE : sa source, ou la fiche de résultats de la clinique.
 String catSourceUnite(FicheCat u) =>
-    _vrai(u['source']) ? '${u['source']}' : 'Fiche de résultats CNT';
+    _vrai(u['source']) ? '${u['source']}' : 'Fiche de résultats CBG';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // m5-valeurs-reference

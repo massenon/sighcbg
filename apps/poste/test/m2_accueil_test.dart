@@ -229,7 +229,7 @@ void main() {
       await fin(t);
     });
 
-    testWidgets('personne non enregistrée : quatre champs, aucun dossier ni code CNT', (t) async {
+    testWidgets('personne non enregistrée : quatre champs, aucun dossier ni code CBG', (t) async {
       final m = magasin(consultations: liste((v['rendezvous'] as Map)['fixtures']));
       final patients = m.collection('patients').toutes.length;
       await ouvrir(t, m, 'm2-rendezvous');

@@ -30,14 +30,14 @@ List<Fiche> jeuJson(String nom) => liste(jsonDecode(File('assets/donnees/jeu/$no
 /// Les huit premiers dossiers du jeu de la maquette, tels que les vecteurs les nomment (PAT0001 … PAT0008).
 List<Fiche> patients() => [
       for (final (i, p) in [
-        ('TCHANE', 'Bertine', 'CNT/1/25'),
-        ('BAKO', 'Boukari', 'CNT/2/26'),
-        ('N’TCHA', 'Yacoubou', 'CNT/3/26'),
-        ('PARAISO', 'Sabi', 'CNT/4/26'),
-        ('TAKI', 'Ganiou', 'CNT/5/26'),
-        ('DIEYABIDI', 'Bibata', 'CNT/6/25'),
-        ('OROU YO', 'Adissa', 'CNT/7/25'),
-        ('DOSSOU', 'Salifou', 'CNT/8/25'),
+        ('TCHANE', 'Bertine', 'CBG/1/25'),
+        ('BAKO', 'Boukari', 'CBG/2/26'),
+        ('N’TCHA', 'Yacoubou', 'CBG/3/26'),
+        ('PARAISO', 'Sabi', 'CBG/4/26'),
+        ('TAKI', 'Ganiou', 'CBG/5/26'),
+        ('DIEYABIDI', 'Bibata', 'CBG/6/25'),
+        ('OROU YO', 'Adissa', 'CBG/7/25'),
+        ('DOSSOU', 'Salifou', 'CBG/8/25'),
       ].indexed)
         {
           'id': 'PAT000${i + 1}',
@@ -187,7 +187,7 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-cpa');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle CPA'));
-      await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+      await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
       await dateAujourdhui(t, 'date');
       await saisir(t, 'antecedentsAnesthesiques', 'Aucun');
       await saisir(t, 'allergies', 'Aucune connue');
@@ -234,7 +234,7 @@ void main() {
       expect(find.text('Conclusion avec réserves : les nommer.'), findsOneWidget);
       expect(parRef(m, 'cpa', 'CPA-2026-0002')['observations'], 'HTA à équilibrer');
       await saisir(t, 'observations', 'HTA équilibrée');
-      await choisir(t, 'patientCode', 'CNT/6/25 — DIEYABIDI Bibata');
+      await choisir(t, 'patientCode', 'CBG/6/25 — DIEYABIDI Bibata');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       final f = parRef(m, 'cpa', 'CPA-2026-0002');
       expect(f['observations'], 'HTA équilibrée');
@@ -312,7 +312,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       expect(m.collection('crOperatoires').toutes.length, 5);
-      await choisir(t, 'patientCode', 'CNT/3/26 — N’TCHA Yacoubou');
+      await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
       await saisir(t, 'nip', 'NIP-9');
       await dateAujourdhui(t, 'dateOperation');
       await saisir(t, 'diagnosticPeroperatoire', 'Kyste');
@@ -429,7 +429,7 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-cr-anesthesie');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau compte rendu'));
-      await choisir(t, 'patientCode', 'CNT/4/26 — PARAISO Sabi');
+      await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
       await dateAujourdhui(t, 'dateOperation');
       await choisir(t, 'croReference', 'CRO-0001 — TCHANE Bertine');
       await saisir(t, 'agents', 'Kétamine');
@@ -529,7 +529,7 @@ void main() {
       await ouvrir(t, m, 'm3-bloc-checklist');
       await toucher(t, onglet('Check-liste de sortie'));
       await toucher(t, find.widgetWithText(BoutonSigh, 'Remplir la check-liste'));
-      await choisir(t, 'patientCode', 'CNT/4/26 — PARAISO Sabi');
+      await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
       await choisir(t, 'responsableId', 'BOUKARI Nadège — Sage-femme');
       for (final n in ['it0', 'it1', 'it2']) {
         await cocher(t, n);
@@ -597,7 +597,7 @@ void main() {
     }
 
     Future<void> remplir(WidgetTester t, {String prescripteur = 'BASSONGUI Chabi Séko — Directeur Médical'}) async {
-      await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+      await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
       await saisir(t, 'residence', 'Natitingou');
       await choisir(t, 'prescripteur', prescripteur);
       await saisir(t, 'indication', 'Anémie');
@@ -664,7 +664,7 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
-      await choisir(t, 'patientCode', 'CNT/3/26 — N’TCHA Yacoubou');
+      await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
       await saisir(t, 'residence', 'Natitingou');
       await choisir(t, 'serviceDemandeur', 'Médecine');
       await saisir(t, 'indication', 'Anémie');
@@ -696,10 +696,10 @@ void main() {
     cas('la résidence se reprend du dossier au choix du patient, sans écraser une saisie', (t) async {
       await ouvrir(t, base(), 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
-      await choisir(t, 'patientCode', 'CNT/6/25 — DIEYABIDI Bibata');
+      await choisir(t, 'patientCode', 'CBG/6/25 — DIEYABIDI Bibata');
       expect(find.text('Santa, Natitingou'), findsOneWidget);
       await saisir(t, 'residence', 'Boriyoure');
-      await choisir(t, 'patientCode', 'CNT/7/25 — OROU YO Adissa');
+      await choisir(t, 'patientCode', 'CBG/7/25 — OROU YO Adissa');
       expect(find.text('Boriyoure'), findsOneWidget);
     });
 
@@ -798,7 +798,7 @@ void main() {
         m.collection('patients').mettreAJour('PAT0002', {'carteExpiration': expiration});
         await ouvrir(t, m, 'm3-bons-pansements');
         await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau bon de pansement'));
-        await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+        await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
         await choisir(t, 'acteCode', 'Pansement');
         await saisir(t, 'seances', '2');
         await saisir(t, 'indication', 'Plaie du pied');
@@ -1014,13 +1014,13 @@ void main() {
       await ouvrir(t, m, 'm3-sortie-avis-medical');
       // La procédure SAM0002 vise une admission qui n'est plus « en cours » : sans l'E419, le champ retombait sur le premier hospitalisé.
       await toucher(t, find.byTooltip('Modifier').at(1));
-      expect(find.text('B2 LIT1 — TAKI Ganiou (CNT/5/26)'), findsOneWidget);
+      expect(find.text('B2 LIT1 — TAKI Ganiou (CBG/5/26)'), findsOneWidget);
       await cocher(t, 'decharge');
       await cocher(t, 'cloture');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer').last);
       final f = m.collection('sortiesAvisMedical').toutes.firstWhere((x) => x['reference'] == 'SAM0002');
       expect(f['patient'], 'TAKI Ganiou');
-      expect(f['patientCode'], 'CNT/5/26');
+      expect(f['patientCode'], 'CBG/5/26');
       expect(f['lit'], 'B2 LIT1');
       expect([f['decharge'], f['cloture']], [true, true]);
       expect(f['reference'], 'SAM0002', reason: 'la référence reste celle de la fiche');

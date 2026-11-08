@@ -72,7 +72,7 @@
  ],
  "vues": {
   "m5-demandes-maternite": {
-   "kpiTexte": "Demandes du service 5 En attente de règlement 1 À prélever / transmettre 2 Résultats rendus 1 Demandes — maternité Colonnes Exporter N° ORIGINE DATE PATIENT ANALYSE ÉCHANTILLON PRESCRIPTEUR PRIORITÉ ÉTAT LAB-90001 Saisie laboratoire Manuelle 30/10/2026 PAT S0001 CNT/01/26 AKOP Parasitologie Selles — Normale En attente LAB-90002 ",
+   "kpiTexte": "Demandes du service 5 En attente de règlement 1 À prélever / transmettre 2 Résultats rendus 1 Demandes — maternité Colonnes Exporter N° ORIGINE DATE PATIENT ANALYSE ÉCHANTILLON PRESCRIPTEUR PRIORITÉ ÉTAT LAB-90001 Saisie laboratoire Manuelle 30/10/2026 PAT S0001 CBG/01/26 AKOP Parasitologie Selles — Normale En attente LAB-90002 ",
    "lignes": [
     "LAB-90001",
     "LAB-90002",
@@ -82,7 +82,7 @@
    ]
   },
   "m5-demandes-hospitalisation": {
-   "kpiTexte": "Demandes du service 4 En attente de règlement 1 À prélever / transmettre 1 Résultats rendus 1 Demandes — hospitalisation Colonnes Exporter N° ORIGINE DATE PATIENT ANALYSE ÉCHANTILLON PRESCRIPTEUR PRIORITÉ ÉTAT LAB-90006 Saisie laboratoire Manuelle 30/10/2026 PAT S0006 CNT/06/26 AKOP Parasitologie Selles — Normale En attente LAB-",
+   "kpiTexte": "Demandes du service 4 En attente de règlement 1 À prélever / transmettre 1 Résultats rendus 1 Demandes — hospitalisation Colonnes Exporter N° ORIGINE DATE PATIENT ANALYSE ÉCHANTILLON PRESCRIPTEUR PRIORITÉ ÉTAT LAB-90006 Saisie laboratoire Manuelle 30/10/2026 PAT S0006 CBG/06/26 AKOP Parasitologie Selles — Normale En attente LAB-",
    "lignes": [
     "LAB-90006",
     "LAB-90007",

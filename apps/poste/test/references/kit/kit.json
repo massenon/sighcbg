@@ -683,7 +683,7 @@
     "fond": "rgba(0, 0, 0, 0)",
     "couleur": "rgb(30, 41, 59)",
     "bordure": "rgb(229, 231, 235)",
-    "texte": "CNT/1/26Patient 11500actif"
+    "texte": "CBG/1/26Patient 11500actif"
    },
    "cellule": {
     "x": 17,
@@ -696,7 +696,7 @@
     "fond": "rgba(0, 0, 0, 0)",
     "couleur": "rgb(51, 65, 85)",
     "bordure": "rgb(241, 245, 249)",
-    "texte": "CNT/1/26"
+    "texte": "CBG/1/26"
    },
    "pied": {
     "x": 17,

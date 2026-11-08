@@ -142,14 +142,14 @@
    "statut": "actif",
    "numero": 1,
    "annee": 2026,
-   "reference": "CMVC 001/001/CNT/DG/DE/2026",
+   "reference": "CMVC 001/001/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-01",
    "montant": 5000,
@@ -161,14 +161,14 @@
    "statut": "actif",
    "numero": 2,
    "annee": 2026,
-   "reference": "CMVC 002/002/CNT/DG/DE/2026",
+   "reference": "CMVC 002/002/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K4",
    "patient": "Nom4 Pre4",
-   "patientCode": "CNT/4/26",
+   "patientCode": "CBG/4/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-02",
    "montant": 7000,
@@ -180,14 +180,14 @@
    "statut": "actif",
    "numero": 3,
    "annee": 2026,
-   "reference": "CMVC 003/003/CNT/DG/DE/2026",
+   "reference": "CMVC 003/003/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-03",
    "montant": 8000
@@ -197,14 +197,14 @@
    "statut": "actif",
    "numero": 4,
    "annee": 2026,
-   "reference": "CMVC 004/004/CNT/DG/DE/2026",
+   "reference": "CMVC 004/004/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-04",
    "montant": null
@@ -214,14 +214,14 @@
    "statut": "actif",
    "numero": 5,
    "annee": 2026,
-   "reference": "CMVC 005/005/CNT/DG/DE/2026",
+   "reference": "CMVC 005/005/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-05",
    "montant": 5000,
@@ -232,14 +232,14 @@
    "statut": "actif",
    "numero": 6,
    "annee": 2025,
-   "reference": "CMVC 001/001/CNT/DG/DE/2025",
+   "reference": "CMVC 001/001/CBG/DG/DE/2025",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-06",
    "montant": 5000
@@ -249,14 +249,14 @@
    "statut": "archive",
    "numero": 7,
    "annee": 2026,
-   "reference": "CMVC 007/007/CNT/DG/DE/2026",
+   "reference": "CMVC 007/007/CBG/DG/DE/2026",
    "sigle": "CMVC",
    "libelle": "Certificat médical de visite et de contre-visite",
    "direction": "DG/DE",
    "typeId": "TPC12",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "medecin": "Dr X",
    "dateDelivrance": "2026-08-07",
    "montant": 5000
@@ -315,7 +315,7 @@
     "3 pièce(s) sans pièce de caisse liée"
    ]
   ],
-  "notes": "Pièces délivrées 6 5 clinique · 1 externes Sur l’exercice 2026 5 Encaissé 5 000 FCFA À encaisser 7 000 FCFA 3 pièce(s) sans pièce de caisse liée L’assurance ne couvre pas les certificats, à l’exception de SOS. La mention figure en toutes lettres sur la grille tarifaire de la clinique. Un assuré d’une autre compagnie règle donc intégralement, et la pièce de caisse en porte le motif. 3 pièce(s) sans pièce de caisse liée — délivrées avant que la caisse n’entre dans le circuit. Elles ne sont ni réglées ni impayées : on ne sait pas. Les compter comme encaissées gonflerait la recette d’autant. Toutes les pièces6 Patients de la clinique5 Patients externes1 Archives1 Colonnes Exporter Délivrer une pièce RÉFÉRENCE PIÈCE PATIENT ORIGINE DÉLIVRÉE LE SIGNATAIRE MONTANT RÈGLEMENT ACTIONS CMVC 001/001/CNT/DG/DE/2025 Certificat médical de visite et de contre-visite Nom1 Pre1 CNT/1/26 Clinique 06/08/202",
+  "notes": "Pièces délivrées 6 5 clinique · 1 externes Sur l’exercice 2026 5 Encaissé 5 000 FCFA À encaisser 7 000 FCFA 3 pièce(s) sans pièce de caisse liée L’assurance ne couvre pas les certificats, à l’exception de SOS. La mention figure en toutes lettres sur la grille tarifaire de la clinique. Un assuré d’une autre compagnie règle donc intégralement, et la pièce de caisse en porte le motif. 3 pièce(s) sans pièce de caisse liée — délivrées avant que la caisse n’entre dans le circuit. Elles ne sont ni réglées ni impayées : on ne sait pas. Les compter comme encaissées gonflerait la recette d’autant. Toutes les pièces6 Patients de la clinique5 Patients externes1 Archives1 Colonnes Exporter Délivrer une pièce RÉFÉRENCE PIÈCE PATIENT ORIGINE DÉLIVRÉE LE SIGNATAIRE MONTANT RÈGLEMENT ACTIONS CMVC 001/001/CBG/DG/DE/2025 Certificat médical de visite et de contre-visite Nom1 Pre1 CBG/1/26 Clinique 06/08/202",
   "onglets": [
    "Toutes les pièces6",
    "Patients de la clinique5",
@@ -335,9 +335,9 @@
   ],
   "lignes": [
    [
-    "CMVC 001/001/CNT/DG/DE/2025",
+    "CMVC 001/001/CBG/DG/DE/2025",
     "Certificat médical de visite et de contre-visite",
-    "Nom1 Pre1 CNT/1/26",
+    "Nom1 Pre1 CBG/1/26",
     "Clinique",
     "06/08/2026",
     "Dr X",
@@ -346,9 +346,9 @@
     ""
    ],
    [
-    "CMVC 005/005/CNT/DG/DE/2026",
+    "CMVC 005/005/CBG/DG/DE/2026",
     "Certificat médical de visite et de contre-visite",
-    "Nom1 Pre1 CNT/1/26",
+    "Nom1 Pre1 CBG/1/26",
     "Clinique",
     "05/08/2026",
     "Dr X",
@@ -357,9 +357,9 @@
     ""
    ],
    [
-    "CMVC 004/004/CNT/DG/DE/2026",
+    "CMVC 004/004/CBG/DG/DE/2026",
     "Certificat médical de visite et de contre-visite",
-    "Nom1 Pre1 CNT/1/26",
+    "Nom1 Pre1 CBG/1/26",
     "Clinique",
     "04/08/2026",
     "Dr X",
@@ -368,9 +368,9 @@
     ""
    ],
    [
-    "CMVC 003/003/CNT/DG/DE/2026",
+    "CMVC 003/003/CBG/DG/DE/2026",
     "Certificat médical de visite et de contre-visite",
-    "Nom1 Pre1 CNT/1/26",
+    "Nom1 Pre1 CBG/1/26",
     "Clinique",
     "03/08/2026",
     "Dr X",
@@ -379,9 +379,9 @@
     ""
    ],
    [
-    "CMVC 002/002/CNT/DG/DE/2026",
+    "CMVC 002/002/CBG/DG/DE/2026",
     "Certificat médical de visite et de contre-visite",
-    "Nom4 Pre4 CNT/4/26",
+    "Nom4 Pre4 CBG/4/26",
     "Externe",
     "02/08/2026",
     "Dr X",
@@ -390,9 +390,9 @@
     ""
    ],
    [
-    "CMVC 001/001/CNT/DG/DE/2026",
+    "CMVC 001/001/CBG/DG/DE/2026",
     "Certificat médical de visite et de contre-visite",
-    "Nom1 Pre1 CNT/1/26",
+    "Nom1 Pre1 CBG/1/26",
     "Clinique",
     "01/08/2026",
     "Dr X",
@@ -403,17 +403,17 @@
   ],
   "parOnglet": {
    "Patients de la clinique": [
-    "CMVC 001/001/CNT/DG/DE/2025",
-    "CMVC 005/005/CNT/DG/DE/2026",
-    "CMVC 004/004/CNT/DG/DE/2026",
-    "CMVC 003/003/CNT/DG/DE/2026",
-    "CMVC 001/001/CNT/DG/DE/2026"
+    "CMVC 001/001/CBG/DG/DE/2025",
+    "CMVC 005/005/CBG/DG/DE/2026",
+    "CMVC 004/004/CBG/DG/DE/2026",
+    "CMVC 003/003/CBG/DG/DE/2026",
+    "CMVC 001/001/CBG/DG/DE/2026"
    ],
    "Patients externes": [
-    "CMVC 002/002/CNT/DG/DE/2026"
+    "CMVC 002/002/CBG/DG/DE/2026"
    ],
    "Archives": [
-    "CMVC 007/007/CNT/DG/DE/2026"
+    "CMVC 007/007/CBG/DG/DE/2026"
    ]
   }
  },
@@ -483,7 +483,7 @@
     "dateDelivrance": "2026-10-30",
     "medecin": "BASSONGUI Chabi Séko",
     "typeId": "TPC12",
-    "patientCode": "CNT/1/26",
+    "patientCode": "CBG/1/26",
     "contenu": "Visite.",
     "remisA": "L'intéressée"
    },
@@ -491,14 +491,14 @@
     {
      "statut": "actif",
      "typeId": "TPC12",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "Visite.",
      "remisA": "L'intéressée",
      "numero": 7,
      "annee": 2026,
-     "reference": "CMVC 007/007/CNT/DG/DE/2026",
+     "reference": "CMVC 007/007/CBG/DG/DE/2026",
      "sigle": "CMVC",
      "libelle": "Certificat médical de visite et de contre-visite",
      "direction": "DG/DE",
@@ -538,14 +538,14 @@
        "montantRegle": 0,
        "payeLe": null,
        "payePar": null,
-       "pieceRef": "CMVC 007/007/CNT/DG/DE/2026"
+       "pieceRef": "CMVC 007/007/CBG/DG/DE/2026"
       }
      ],
      "numero": "FC-2026-00003",
      "numeroMecef": null,
      "patientId": "K1",
      "patient": "Nom1 Pre1",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "date": "2026-10-30",
      "type": "Certificat & attestation",
      "montantHT": 8000,
@@ -565,7 +565,7 @@
      "statutPaiement": "impayee",
      "statutMecef": "en_attente",
      "pieceId": null,
-     "pieceRef": "CMVC 007/007/CNT/DG/DE/2026",
+     "pieceRef": "CMVC 007/007/CBG/DG/DE/2026",
      "motifCouverture": "Certificat non couvert par les assurances (mention de la grille tarifaire)"
     }
    ],
@@ -575,7 +575,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Certificat médical de visite et de contre-visite — Nom1 Pre1",
-     "detail": "CMVC 007/007/CNT/DG/DE/2026 — 8 000",
+     "detail": "CMVC 007/007/CBG/DG/DE/2026 — 8 000",
      "reference": "FC-2026-00003",
      "factureId": "FACxmvvhulmbfzynf",
      "patientId": "K1",
@@ -595,20 +595,20 @@
     "dateDelivrance": "2026-10-30",
     "medecin": "BASSONGUI Chabi Séko",
     "typeId": "TPC12",
-    "patientCode": "CNT/2/26"
+    "patientCode": "CBG/2/26"
    },
    "pieces": [
     {
      "statut": "actif",
      "typeId": "TPC12",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
      "numero": 8,
      "annee": 2026,
-     "reference": "CMVC 008/008/CNT/DG/DE/2026",
+     "reference": "CMVC 008/008/CBG/DG/DE/2026",
      "sigle": "CMVC",
      "libelle": "Certificat médical de visite et de contre-visite",
      "direction": "DG/DE",
@@ -648,14 +648,14 @@
        "montantRegle": 0,
        "payeLe": null,
        "payePar": null,
-       "pieceRef": "CMVC 008/008/CNT/DG/DE/2026"
+       "pieceRef": "CMVC 008/008/CBG/DG/DE/2026"
       }
      ],
      "numero": "FC-2026-00004",
      "numeroMecef": null,
      "patientId": "K2",
      "patient": "Nom2 Pre2",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "date": "2026-10-30",
      "type": "Certificat & attestation",
      "montantHT": 8000,
@@ -675,7 +675,7 @@
      "statutPaiement": "impayee",
      "statutMecef": "en_attente",
      "pieceId": null,
-     "pieceRef": "CMVC 008/008/CNT/DG/DE/2026",
+     "pieceRef": "CMVC 008/008/CBG/DG/DE/2026",
      "motifCouverture": "Certificat couvert par SOS — seule compagnie conventionnée sur ces pièces"
     }
    ],
@@ -685,7 +685,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Certificat médical de visite et de contre-visite — Nom2 Pre2",
-     "detail": "CMVC 008/008/CNT/DG/DE/2026 — 8 000",
+     "detail": "CMVC 008/008/CBG/DG/DE/2026 — 8 000",
      "reference": "FC-2026-00004",
      "factureId": "FACxmvvhult9wj3uw",
      "patientId": "K2",
@@ -705,20 +705,20 @@
     "dateDelivrance": "2026-10-30",
     "medecin": "BASSONGUI Chabi Séko",
     "typeId": "TPC12",
-    "patientCode": "CNT/3/26"
+    "patientCode": "CBG/3/26"
    },
    "pieces": [
     {
      "statut": "actif",
      "typeId": "TPC12",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
      "numero": 9,
      "annee": 2026,
-     "reference": "CMVC 009/009/CNT/DG/DE/2026",
+     "reference": "CMVC 009/009/CBG/DG/DE/2026",
      "sigle": "CMVC",
      "libelle": "Certificat médical de visite et de contre-visite",
      "direction": "DG/DE",
@@ -758,14 +758,14 @@
        "montantRegle": 0,
        "payeLe": null,
        "payePar": null,
-       "pieceRef": "CMVC 009/009/CNT/DG/DE/2026"
+       "pieceRef": "CMVC 009/009/CBG/DG/DE/2026"
       }
      ],
      "numero": "FC-2026-00005",
      "numeroMecef": null,
      "patientId": "K3",
      "patient": "Nom3 Pre3",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "date": "2026-10-30",
      "type": "Certificat & attestation",
      "montantHT": 8000,
@@ -785,7 +785,7 @@
      "statutPaiement": "impayee",
      "statutMecef": "en_attente",
      "pieceId": null,
-     "pieceRef": "CMVC 009/009/CNT/DG/DE/2026",
+     "pieceRef": "CMVC 009/009/CBG/DG/DE/2026",
      "motifCouverture": "Certificat non couvert par les assurances (mention de la grille tarifaire)"
     }
    ],
@@ -795,7 +795,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Certificat médical de visite et de contre-visite — Nom3 Pre3",
-     "detail": "CMVC 009/009/CNT/DG/DE/2026 — 8 000",
+     "detail": "CMVC 009/009/CBG/DG/DE/2026 — 8 000",
      "reference": "FC-2026-00005",
      "factureId": "FACxmvvhum0um9iy2",
      "patientId": "K3",
@@ -815,20 +815,20 @@
     "dateDelivrance": "2026-10-30",
     "medecin": "BASSONGUI Chabi Séko",
     "typeId": "TPC02",
-    "patientCode": "CNT/1/26"
+    "patientCode": "CBG/1/26"
    },
    "pieces": [
     {
      "statut": "actif",
      "typeId": "TPC02",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
      "numero": 1,
      "annee": 2026,
-     "reference": "CMNI 001/001/CNT/DG/DE/2026",
+     "reference": "CMNI 001/001/CBG/DG/DE/2026",
      "sigle": "CMNI",
      "libelle": "Certificat médical de non-infirmité",
      "direction": "DG/DE",
@@ -849,7 +849,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Certificat médical de visite et de contre-visite — Nom3 Pre3",
-     "detail": "CMVC 009/009/CNT/DG/DE/2026 — 8 000",
+     "detail": "CMVC 009/009/CBG/DG/DE/2026 — 8 000",
      "reference": "FC-2026-00005",
      "factureId": "FACxmvvhum0um9iy2",
      "patientId": "K3",
@@ -869,20 +869,20 @@
     "dateDelivrance": "2026-10-30",
     "medecin": "BASSONGUI Chabi Séko",
     "typeId": "TPC01",
-    "patientCode": "CNT/1/26"
+    "patientCode": "CBG/1/26"
    },
    "pieces": [
     {
      "statut": "actif",
      "typeId": "TPC01",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
      "numero": 1,
      "annee": 2026,
-     "reference": "ATG 001/001/CNT/DG/DE/2026",
+     "reference": "ATG 001/001/CBG/DG/DE/2026",
      "sigle": "ATG",
      "libelle": "Attestation de grossesse",
      "direction": "DG/DE",
@@ -922,14 +922,14 @@
        "montantRegle": 0,
        "payeLe": null,
        "payePar": null,
-       "pieceRef": "ATG 001/001/CNT/DG/DE/2026"
+       "pieceRef": "ATG 001/001/CBG/DG/DE/2026"
       }
      ],
      "numero": "FC-2026-00006",
      "numeroMecef": null,
      "patientId": "K1",
      "patient": "Nom1 Pre1",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "date": "2026-10-30",
      "type": "Certificat & attestation",
      "montantHT": 7000,
@@ -949,7 +949,7 @@
      "statutPaiement": "impayee",
      "statutMecef": "en_attente",
      "pieceId": null,
-     "pieceRef": "ATG 001/001/CNT/DG/DE/2026",
+     "pieceRef": "ATG 001/001/CBG/DG/DE/2026",
      "motifCouverture": "Certificat non couvert par les assurances (mention de la grille tarifaire)"
     }
    ],
@@ -959,7 +959,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Attestation de grossesse — Nom1 Pre1",
-     "detail": "ATG 001/001/CNT/DG/DE/2026 — 7 000",
+     "detail": "ATG 001/001/CBG/DG/DE/2026 — 7 000",
      "reference": "FC-2026-00006",
      "factureId": "FACxmvvhumeu7r1l7",
      "patientId": "K1",
@@ -991,14 +991,14 @@
     {
      "statut": "actif",
      "typeId": "TPC02",
-     "patientCode": "CNT/904/26",
+     "patientCode": "CBG/904/26",
      "medecin": "BASSONGUI Chabi Séko",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
      "numero": 2,
      "annee": 2026,
-     "reference": "CMNI 002/002/CNT/DG/DE/2026",
+     "reference": "CMNI 002/002/CBG/DG/DE/2026",
      "sigle": "CMNI",
      "libelle": "Certificat médical de non-infirmité",
      "direction": "DG/DE",
@@ -1014,7 +1014,7 @@
    "patients": [
     {
      "statut": "actif",
-     "code": "CNT/904/26",
+     "code": "CBG/904/26",
      "nom": "GADO",
      "prenom": "Issa",
      "sexe": "M",
@@ -1040,7 +1040,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Attestation de grossesse — Nom1 Pre1",
-     "detail": "ATG 001/001/CNT/DG/DE/2026 — 7 000",
+     "detail": "ATG 001/001/CBG/DG/DE/2026 — 7 000",
      "reference": "FC-2026-00006",
      "factureId": "FACxmvvhumeu7r1l7",
      "patientId": "K1",
@@ -1071,7 +1071,7 @@
      "type": "encaissement",
      "poste": "caisse",
      "libelle": "Attestation de grossesse — Nom1 Pre1",
-     "detail": "ATG 001/001/CNT/DG/DE/2026 — 7 000",
+     "detail": "ATG 001/001/CBG/DG/DE/2026 — 7 000",
      "reference": "FC-2026-00006",
      "factureId": "FACxmvvhumeu7r1l7",
      "patientId": "K1",
@@ -1106,5 +1106,5 @@
    "3 pièce(s) sans pièce de caisse liée"
   ]
  ],
- "detail": "nie règle donc intégralement, et la pièce de caisse en porte le motif. 3 pièce(s) sans pièce de caisse liée — délivrées avant que la caisse n’entre dans le circuit. Elles ne sont ni réglées ni impayées : on ne sait pas. Les compter comme encaissées gonflerait la recette d’autant. Toutes les pièces12 Patients de la clinique10 Patients externes2 Archives1 Colonnes Exporter Délivrer une pièce RÉFÉRENCE PIÈCE PATIENT ORIGINE DÉLIVRÉE LE SIGNATAIRE MONTANT RÈGLEMENT ACTIONS CMVC 001/001/CNT/DG/DE/2026 Certificat médical de visite et de contre-visite Nom1 Pre1 CNT/1/26 Clinique 01/08/2026 Dr X 5 000 Réglé Affichage de 1 à 1 sur 1 enregistrement Choisir un dossier du répertoire, ou saisir le nom et les prénoms du patient adressé de l’extérieur. Certificat médical de visite et de contre-visite RÉFÉRENCE CMVC 001/001/CNT/DG/DE/2026 PIÈCE Certificat médical de visite et de contre-visite PATIENT Nom1 Pre1 — CNT/1/26 DÉLIVRÉE LE 01/08/2026 SIGNATAIRE Dr X REMISE À L’intéressé(e) MONTANT 5 000 FCFA COUVERTURE — RÈGLEMENT Réglé PIÈCE DE CAISSE FC-2026-00001 Réglé à la caisse — pièce FC-2026-00001."
+ "detail": "nie règle donc intégralement, et la pièce de caisse en porte le motif. 3 pièce(s) sans pièce de caisse liée — délivrées avant que la caisse n’entre dans le circuit. Elles ne sont ni réglées ni impayées : on ne sait pas. Les compter comme encaissées gonflerait la recette d’autant. Toutes les pièces12 Patients de la clinique10 Patients externes2 Archives1 Colonnes Exporter Délivrer une pièce RÉFÉRENCE PIÈCE PATIENT ORIGINE DÉLIVRÉE LE SIGNATAIRE MONTANT RÈGLEMENT ACTIONS CMVC 001/001/CBG/DG/DE/2026 Certificat médical de visite et de contre-visite Nom1 Pre1 CBG/1/26 Clinique 01/08/2026 Dr X 5 000 Réglé Affichage de 1 à 1 sur 1 enregistrement Choisir un dossier du répertoire, ou saisir le nom et les prénoms du patient adressé de l’extérieur. Certificat médical de visite et de contre-visite RÉFÉRENCE CMVC 001/001/CBG/DG/DE/2026 PIÈCE Certificat médical de visite et de contre-visite PATIENT Nom1 Pre1 — CBG/1/26 DÉLIVRÉE LE 01/08/2026 SIGNATAIRE Dr X REMISE À L’intéressé(e) MONTANT 5 000 FCFA COUVERTURE — RÈGLEMENT Réglé PIÈCE DE CAISSE FC-2026-00001 Réglé à la caisse — pièce FC-2026-00001."
 }

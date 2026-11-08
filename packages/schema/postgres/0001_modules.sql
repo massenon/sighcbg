@@ -1,5 +1,5 @@
 -- =============================================================================
--- SIGH-CNT — tables relationnelles de TOUS les modules (PostgreSQL)
+-- SIGH-CBG — tables relationnelles de TOUS les modules (PostgreSQL)
 -- ENGENDRÉ par prototype_html/build/gen-schema-pg.js — ne pas éditer à la main.
 -- Une table par collection du magasin, un schéma par module, des tables filles pour
 -- les tableaux d'objets, une colonne `extra` pour tout champ non prévu, des clés

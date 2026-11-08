@@ -10,14 +10,14 @@
     "statut": "Intégré"
    },
    {
-    "document": "NS 131/07/DM/DA/CNT/2026",
+    "document": "NS 131/07/DM/DA/CBG/2026",
     "devient": "Moteur d’évaluation et de sanctions",
     "module": "M10",
     "ecran": "m10-evaluations",
     "statut": "Intégré"
    },
    {
-    "document": "NS 132/07/DM/DA/CNT/2026",
+    "document": "NS 132/07/DM/DA/CBG/2026",
     "devient": "Moteur des primes",
     "module": "M10 / M11",
     "ecran": "m10-primes",
@@ -182,14 +182,14 @@
    }
   ],
   "ns131": {
-   "reference": "NS 131/07/DM/DA/CNT/2026",
+   "reference": "NS 131/07/DM/DA/CBG/2026",
    "version": 1,
    "dateEffet": "2026-07-13",
    "statut": "ACTIVE",
    "objet": "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale"
   },
   "ns132": {
-   "reference": "NS n° 132/07/DM/DA/CNT/2026",
+   "reference": "NS n° 132/07/DM/DA/CBG/2026",
    "version": 1,
    "dateEffet": "2026-07-13",
    "statut": "ACTIVE",
@@ -1760,14 +1760,14 @@
        "Intégré"
       ],
       [
-       "NS 131/07/DM/DA/CNT/2026",
+       "NS 131/07/DM/DA/CBG/2026",
        "Moteur d’évaluation et de sanctions",
        "M10",
        "Ouvrir",
        "Intégré"
       ],
       [
-       "NS 132/07/DM/DA/CNT/2026",
+       "NS 132/07/DM/DA/CBG/2026",
        "Moteur des primes",
        "M10 / M11",
        "Ouvrir",
@@ -1869,7 +1869,7 @@
      "lignes": [
       [
        "RG-01",
-       "Identifiant patient CNT/[n°]/[année] généré automatiquement, unique et non modifiable",
+       "Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiable",
        "M1",
        "Voir"
       ],
@@ -1964,7 +1964,7 @@
      ],
      "lignes": [
       [
-       "NS 131/07/DM/DA/CNT/2026",
+       "NS 131/07/DM/DA/CBG/2026",
        "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale",
        "v1",
        "13/07/2026",
@@ -1972,7 +1972,7 @@
        "Évaluation et sanctions"
       ],
       [
-       "NS n° 132/07/DM/DA/CNT/2026",
+       "NS n° 132/07/DM/DA/CBG/2026",
        "Primes diverses",
        "v1",
        "13/07/2026",
@@ -2004,9 +2004,9 @@
   "cartesTexte": [
    "Valorisation des sorties de stock Annotation manuscrite de la réunion du 30/12/2024 : « Paramétrer pour que les produits sortent au Prix de Vente et non au CUMP ». La Direction demandait un paramètre — le voici, avec la mesure de ce qu’il change. Prix de vente Valeur de sortie = prix de vente de l’article. Demandé par la Direction ; la marge éventuelle est reconnue dès la sortie de stock. En vigueur Coût unitaire moyen pondéré (CUMP) Valeur de sortie = coût moyen d’acquisition. Méthode comptable classique ; la marge n’apparaît qu’à la facturation. EFFET MESURÉ SUR LE STOCK DÉTENU Écart entre les deux méthodes : 246 FCFA sur l’ensemble du stock — un effet d’arrondi, non une différence de méthode. 49 article(s) sur 184 présentent un prix de vente différent du CUMP. Tant que RG-02 s’applique — médicaments au prix d’achat, sans marge — les deux valorisations coïncident. Elles divergeront le jour où une marge sera appliquée à un article hors médicament.",
    "Groupes et familles d’articles Les familles viennent du document : l’inventaire SAGE « Grand Stock » classe ses articles en sept catégories. Les groupes, eux, ne figurent dans aucun document — ce regroupement en quatre ensembles est une proposition soumise à la Direction, et non une donnée reprise d’une source. GROUPE FAMILLE ARTICLES QUANTITÉ EN STOCK VALEUR Équipement et petit matériel Petit matériel médical 1 94 9 400 Laboratoire Réactifs de laboratoire 3 260 262 460 Laboratoire Consommables de laboratoire 10 382 948 982 Logistique et fonctionnement Produits d’entretien 8 298 177 310 Logistique et fonctionnement Fournitures de bureau 8 419 50 460 Pharmacie et consommables de soins Médicaments 68 5 922 2 607 564 Pharmacie et consommables de soins Consommables médicaux 86 4 705 1 317 456",
-   "Matrice « document collecté → rôle dans le logiciel » Colonnes Exporter DOCUMENT COLLECTÉ DEVIENT DANS LE LOGICIEL MODULE ÉCRAN STATUT Organigramme de la Clinique NASSIERA TOO Structure organisationnelle + RBAC M14 / CFG Ouvrir Intégré NS 131/07/DM/DA/CNT/2026 Moteur d’évaluation et de sanctions M10 Ouvrir Intégré NS 132/07/DM/DA/CNT/2026 Moteur des primes M10 / M11 Ouvrir Intégré Fiche d’évaluation et de solde (juillet 2026) Modèle d’état imprimable M10 / RAP Ouvrir Intégré Tarifs des analyses de laboratoire (48) Catalogue laboratoire M5 Ouvrir Intégré — tarifs à confirmer Tarifs des médicaments et accessoires (144) Catalogue tarifaire pharmacie M6 Ouvrir Intégré — tarifs à confirmer Inventaire « Grand Stock » (SAGE 100) Stock initial — 175 articles repris M6 Ouvrir Intégré Facture fournisseur SoBAPS (BL 26LNA00026) Modèle du workflow achat M7 Ouvrir Intégré Bon d’expression de besoins (modèle vierge) Workflow de demande interne M7 Ouvrir Intégré Classeur comptable SYSCOHADA Plan comptable + journaux M12 Ouvrir Intégré — partiel Compte de résultat mensuel 2025 Baseline financière de comparaison M12 / M14 Ouvrir À importer Planning de travail des médecins Moteur de planning (garde 24h) M10 Ouvrir Intégré Planning agents d’entretien et sécurité Moteur de planning RH M10 Ouvrir Intégré Liste des 13 compagnies d’assurance Référentiel assureurs M9 Ouvrir Intégré Photographies du site et entête officielle Brand Configuration Center CFG Ouvrir Intégré Affichage de 1 à 15 sur 15 enregistrements",
-   "Règles de gestion transversales Colonnes Exporter Imprimer la matrice CODE RÈGLE APPLIQUÉE MODULE ÉCRAN D’APPLICATION RG-01 Identifiant patient CNT/[n°]/[année] généré automatiquement, unique et non modifiable M1 Voir RG-02 Médicaments facturés au prix d’achat, sans marge bénéficiaire M6 / M8 Voir RG-03 Toute sortie de stock rattachée à un justificatif ; stock jamais négatif M6 Voir RG-04 Commande de stock gros validée par la Directrice Administrative M7 Voir RG-05 Rangement FEFO et alertes de péremption automatiques M6 Voir RG-06 Sortie d’hospitalisation conditionnée à l’apurement du solde M3 Voir RG-07 Sortie requérant signature patient, signature infirmier et constat du gardien M3 Voir RG-08 Sortie contre avis médical motivée ; avis du Procureur si nécessaire M3 Voir RG-09 Prise en charge assurance appliquée uniquement si la carte est valide M9 Voir RG-10 Toute écriture comptable équilibrée avant validation M12 Voir RG-11 Primes de garde et de permanence calculées depuis le planning validé M10 / M11 Voir RG-12 Journalisation de toute action ; aucune action anonyme M14 Voir RG-13 Cloisonnement des données médicales, financières et RH M14 Voir RG-14 Suppression logique uniquement, jamais de suppression physique Transverse Voir Affichage de 1 à 14 sur 14 enregistrements",
-   "Règles métier versionnées Consulter les notes RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT MOTEUR PILOTÉ NS 131/07/DM/DA/CNT/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE Évaluation et sanctions NS n° 132/07/DM/DA/CNT/2026 Primes diverses v1 13/07/2026 ACTIVE Primes diverses"
+   "Matrice « document collecté → rôle dans le logiciel » Colonnes Exporter DOCUMENT COLLECTÉ DEVIENT DANS LE LOGICIEL MODULE ÉCRAN STATUT Organigramme de la Clinique NASSIERA TOO Structure organisationnelle + RBAC M14 / CFG Ouvrir Intégré NS 131/07/DM/DA/CBG/2026 Moteur d’évaluation et de sanctions M10 Ouvrir Intégré NS 132/07/DM/DA/CBG/2026 Moteur des primes M10 / M11 Ouvrir Intégré Fiche d’évaluation et de solde (juillet 2026) Modèle d’état imprimable M10 / RAP Ouvrir Intégré Tarifs des analyses de laboratoire (48) Catalogue laboratoire M5 Ouvrir Intégré — tarifs à confirmer Tarifs des médicaments et accessoires (144) Catalogue tarifaire pharmacie M6 Ouvrir Intégré — tarifs à confirmer Inventaire « Grand Stock » (SAGE 100) Stock initial — 175 articles repris M6 Ouvrir Intégré Facture fournisseur SoBAPS (BL 26LNA00026) Modèle du workflow achat M7 Ouvrir Intégré Bon d’expression de besoins (modèle vierge) Workflow de demande interne M7 Ouvrir Intégré Classeur comptable SYSCOHADA Plan comptable + journaux M12 Ouvrir Intégré — partiel Compte de résultat mensuel 2025 Baseline financière de comparaison M12 / M14 Ouvrir À importer Planning de travail des médecins Moteur de planning (garde 24h) M10 Ouvrir Intégré Planning agents d’entretien et sécurité Moteur de planning RH M10 Ouvrir Intégré Liste des 13 compagnies d’assurance Référentiel assureurs M9 Ouvrir Intégré Photographies du site et entête officielle Brand Configuration Center CFG Ouvrir Intégré Affichage de 1 à 15 sur 15 enregistrements",
+   "Règles de gestion transversales Colonnes Exporter Imprimer la matrice CODE RÈGLE APPLIQUÉE MODULE ÉCRAN D’APPLICATION RG-01 Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiable M1 Voir RG-02 Médicaments facturés au prix d’achat, sans marge bénéficiaire M6 / M8 Voir RG-03 Toute sortie de stock rattachée à un justificatif ; stock jamais négatif M6 Voir RG-04 Commande de stock gros validée par la Directrice Administrative M7 Voir RG-05 Rangement FEFO et alertes de péremption automatiques M6 Voir RG-06 Sortie d’hospitalisation conditionnée à l’apurement du solde M3 Voir RG-07 Sortie requérant signature patient, signature infirmier et constat du gardien M3 Voir RG-08 Sortie contre avis médical motivée ; avis du Procureur si nécessaire M3 Voir RG-09 Prise en charge assurance appliquée uniquement si la carte est valide M9 Voir RG-10 Toute écriture comptable équilibrée avant validation M12 Voir RG-11 Primes de garde et de permanence calculées depuis le planning validé M10 / M11 Voir RG-12 Journalisation de toute action ; aucune action anonyme M14 Voir RG-13 Cloisonnement des données médicales, financières et RH M14 Voir RG-14 Suppression logique uniquement, jamais de suppression physique Transverse Voir Affichage de 1 à 14 sur 14 enregistrements",
+   "Règles métier versionnées Consulter les notes RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT MOTEUR PILOTÉ NS 131/07/DM/DA/CBG/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE Évaluation et sanctions NS n° 132/07/DM/DA/CBG/2026 Primes diverses v1 13/07/2026 ACTIVE Primes diverses"
   ],
   "methode": "prixVente",
   "impression": {
@@ -2040,7 +2040,7 @@
      "nom": "BASSONGUI Chabi Séko"
     }
    ],
-   "texte": "Documents collectés et leur rôle dans le logicielDocument collectéDevient dans le logicielModuleStatutOrganigramme de la Clinique NASSIERA TOOStructure organisationnelle + RBACM14 / CFGIntégréNS 131/07/DM/DA/CNT/2026Moteur d’évaluation et de sanctionsM10IntégréNS 132/07/DM/DA/CNT/2026Moteur des primesM10 / M11IntégréFiche d’évaluation et de solde (juillet 2026)Modèle d’état imprimableM10 / RAPIntégréTarifs des analyses de laboratoire (48)Catalogue laboratoireM5Intégré — tarifs à confirmerTarifs des médicaments et accessoires (144)Catalogue tarifaire pharmacieM6Intégré — tarifs à confirmerInventaire « Grand Stock » (SAGE 100)Stock initial — 175 articles reprisM6IntégréFacture fournisseur SoBAPS (BL 26LNA00026)Modèle du workflow achatM7IntégréBon d’expression de besoins (modèle vierge)Workflow de demande interneM7IntégréClasseur comptable SYSCOHADAPlan comptable + journauxM12Intégré — partielCompte de résultat mensuel 2025Baseline financière de comparaisonM12 / M14À importerPlanning de travail des médecinsMoteur de planning (garde 24h)M10IntégréPlanning agents d’entretien et sécuritéMoteur de planning RHM10IntégréListe des 13 compagnies d’assuranceRéférentiel assureursM9IntégréPhotographies du site et entête officielleBrand Configuration CenterCFGIntégréRègles de gestion transversalesCodeRègle appliquéeModuleRG-01Identifiant patient CNT/[n°]/[année] généré automatiquement, unique et non modifiableM1RG-02Médicaments facturés au prix d’achat, sans marge bénéficiaireM6 / M8RG-03Toute sortie de stock rattachée à un justificatif ; stock jamais négatifM6RG-04Commande de stock gros validée par la Directrice AdministrativeM7RG-05Rangement FEFO et alertes de péremption automatiquesM6RG-06Sortie d’hospitalisation conditionnée à l’apurement du soldeM3RG-07Sortie requérant signature patient, signature infirmier et constat du gardienM3RG-08Sortie contre avis médical motivée ; avis du Procureur si nécessaireM3RG-09Prise en charge assurance appliquée uniquement si la carte est valideM9RG-10Toute écriture comptable équilibrée avant validationM12RG-11Primes de garde et de permanence calculées depuis le planning validéM10 / M11RG-12Journalisation de toute action ; aucune action anonymeM14RG-13Cloisonnement des données médicales, financières et RHM14RG-14Suppression logique uniquement, jamais de suppression physiqueTransverse",
+   "texte": "Documents collectés et leur rôle dans le logicielDocument collectéDevient dans le logicielModuleStatutOrganigramme de la Clinique NASSIERA TOOStructure organisationnelle + RBACM14 / CFGIntégréNS 131/07/DM/DA/CBG/2026Moteur d’évaluation et de sanctionsM10IntégréNS 132/07/DM/DA/CBG/2026Moteur des primesM10 / M11IntégréFiche d’évaluation et de solde (juillet 2026)Modèle d’état imprimableM10 / RAPIntégréTarifs des analyses de laboratoire (48)Catalogue laboratoireM5Intégré — tarifs à confirmerTarifs des médicaments et accessoires (144)Catalogue tarifaire pharmacieM6Intégré — tarifs à confirmerInventaire « Grand Stock » (SAGE 100)Stock initial — 175 articles reprisM6IntégréFacture fournisseur SoBAPS (BL 26LNA00026)Modèle du workflow achatM7IntégréBon d’expression de besoins (modèle vierge)Workflow de demande interneM7IntégréClasseur comptable SYSCOHADAPlan comptable + journauxM12Intégré — partielCompte de résultat mensuel 2025Baseline financière de comparaisonM12 / M14À importerPlanning de travail des médecinsMoteur de planning (garde 24h)M10IntégréPlanning agents d’entretien et sécuritéMoteur de planning RHM10IntégréListe des 13 compagnies d’assuranceRéférentiel assureursM9IntégréPhotographies du site et entête officielleBrand Configuration CenterCFGIntégréRègles de gestion transversalesCodeRègle appliquéeModuleRG-01Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiableM1RG-02Médicaments facturés au prix d’achat, sans marge bénéficiaireM6 / M8RG-03Toute sortie de stock rattachée à un justificatif ; stock jamais négatifM6RG-04Commande de stock gros validée par la Directrice AdministrativeM7RG-05Rangement FEFO et alertes de péremption automatiquesM6RG-06Sortie d’hospitalisation conditionnée à l’apurement du soldeM3RG-07Sortie requérant signature patient, signature infirmier et constat du gardienM3RG-08Sortie contre avis médical motivée ; avis du Procureur si nécessaireM3RG-09Prise en charge assurance appliquée uniquement si la carte est valideM9RG-10Toute écriture comptable équilibrée avant validationM12RG-11Primes de garde et de permanence calculées depuis le planning validéM10 / M11RG-12Journalisation de toute action ; aucune action anonymeM14RG-13Cloisonnement des données médicales, financières et RHM14RG-14Suppression logique uniquement, jamais de suppression physiqueTransverse",
    "tableaux": [
     {
      "entetes": [
@@ -2057,13 +2057,13 @@
        "Intégré"
       ],
       [
-       "NS 131/07/DM/DA/CNT/2026",
+       "NS 131/07/DM/DA/CBG/2026",
        "Moteur d’évaluation et de sanctions",
        "M10",
        "Intégré"
       ],
       [
-       "NS 132/07/DM/DA/CNT/2026",
+       "NS 132/07/DM/DA/CBG/2026",
        "Moteur des primes",
        "M10 / M11",
        "Intégré"
@@ -2152,7 +2152,7 @@
      "lignes": [
       [
        "RG-01",
-       "Identifiant patient CNT/[n°]/[année] généré automatiquement, unique et non modifiable",
+       "Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiable",
        "M1"
       ],
       [
@@ -2380,8 +2380,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -2714,8 +2714,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -3048,8 +3048,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -3382,8 +3382,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -3716,8 +3716,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -4050,8 +4050,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -4384,8 +4384,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -4718,8 +4718,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -5052,8 +5052,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -5306,7 +5306,7 @@
    "cartesTexte": [
     "Identification fiscale de l’établissement IDENTIFICATION FISCALE DE L’ÉTABLISSEMENT (VERSION 1 EN FORCE) Dénomination sociale Se modifie à l’écran Identité & papier à en-tête. Forme juridique IFU (13 chiffres) * RCCM * Autorisation d’ouverture Adresse fiscale (adresse postale imprimée) Devise Code ISO de la devise Régime de TVA Porté tel qu’affiché ; le MECeF applique l’exonération relevée sur la facture de référence (divergence signalée, E2272). Enregistrer Valider l’identité légale Configuration MECeF",
     "Versions de l’identité légale VERSION EN FORCE DU AU IFU / RCCM VALIDÉE MOTIF v1 Aujourd’hui ouverture du dossier en force 3201642748214 / RB/NAT/2016-B-268 À valider semence (arbitrage du 31/08/2026)",
-    "Numérotation des documents TYPE DE DOCUMENT PRÉFIXE FORMAT SÉQUENCE Facture normalisée FN-2026- FN-AAAA-NNNNN Strictement séquentielle Facture pro-forma PRO-2026- PRO-AAAA-NNNNN Indépendante Avoir AV-2026- AV-AAAA-NNNN Strictement séquentielle Dossier patient CNT CNT/[n°]/[AA] Par année civile (RG-01) Bon de commande BC-2026- BC-AAAA-NNNN Par exercice Bon d’expression de besoins BEB-2026- BEB-AAAA-NNNN Par exercice Bulletin de paie BP- BP-NNNNN Par période de paie Écriture comptable [JOURNAL]-2026- JJJ-AAAA-NNNNN Par journal",
+    "Numérotation des documents TYPE DE DOCUMENT PRÉFIXE FORMAT SÉQUENCE Facture normalisée FN-2026- FN-AAAA-NNNNN Strictement séquentielle Facture pro-forma PRO-2026- PRO-AAAA-NNNNN Indépendante Avoir AV-2026- AV-AAAA-NNNN Strictement séquentielle Dossier patient CBG CBG/[n°]/[AA] Par année civile (RG-01) Bon de commande BC-2026- BC-AAAA-NNNN Par exercice Bon d’expression de besoins BEB-2026- BEB-AAAA-NNNN Par exercice Bulletin de paie BP- BP-NNNNN Par période de paie Écriture comptable [JOURNAL]-2026- JJJ-AAAA-NNNNN Par journal",
     "Obligations déclaratives (dérivées des obligations en vigueur) DÉCLARATION PÉRIODICITÉ ÉCHÉANCE ÉCRAN PRODUCTEUR Impôt sur les traitements salariaux (ITS) Mensuelle le 10 du mois suivant Éditer Acompte sur impôt assis sur les bénéfices (AIB) Mensuelle le 10 du mois suivant Éditer Versement patronal sur salaires (VPS) Mensuelle le 10 du mois suivant Éditer Cotisations sociales CNSS (CNSS) Mensuelle le 10 du mois suivant Éditer Transmission des factures normalisées Continue À l’émission Éditer États financiers de synthèse Annuelle Clôture de l’exercice, dépôt au 30 avril Éditer",
     "Calendrier fiscal et social Périodicité Mensuelle Annuelle Colonnes Exporter CODE OBLIGATION PÉRIODICITÉ PROCHAINE ÉCHÉANCE DANS RÈGLE APPLIQUÉE ITS Impôt sur les traitements salariaux Mensuelle 10/11/2026 11 j Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end. AIB Acompte sur impôt assis sur les bénéfices Mensuelle 10/11/2026 11 j Le 10 de chaque mois, après la déclaration préalable. VPS Versement patronal sur salaires Mensuelle 10/11/2026 11 j Le 10 du mois suivant le mois d’exercice. CNSS Cotisations sociales CNSS Mensuelle 10/11/2026 11 j Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %. IS-4 Impôt sur les sociétés — 4e acompte Annuelle 10/12/2026 41 j Quatrième acompte trimestriel. PATENTE-DECL Patente — déclaration prévisionnelle Annuelle 01/02/2027 reportée — jour ouvrable 94 j Date limite de la déclaration prévisionnelle de la patente. PATENTE-1 Patente — 1er acompte Annuelle 10/02/2027 103 j Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches. CCIB-DECL CCIB — déclaration prévisionnelle Annuelle 01/03/2027 reportée — jour ouvrable 122 j La déclaration prévisionnelle s’effectue à la FIN DU MOIS, avant le premier acompte — confirmé par la Direction le 25/08/2026. IS-1 Impôt sur les sociétés — 1er acompte Annuelle 10/03/2027 131 j Premier des quatre acomptes trimestriels, assis sur l’impôt de l’exercice précédent divisé par quatre. Le 10 mars — confirmé par la Direction le 25/08/2026. CCIB-1 CCIB — 1re tranche Annuelle 10/03/2027 131 j Contribution annuelle de 300 000 FCFA, réglée en deux tranches égales de 150 000 FCFA. Premier acompte le 10 mars (50 %) — confirmé par la Direction le 25/08/2026. ORTB-RADIO Redevance ORTB / Radio Annuelle 30/03/2027 151 j Prélevée sur TOUS les salariés sans exception — 1 000 FCFA par agent, au mois de mars. IS-SOLDE Liquidation du solde de l’impôt sur les sociétés Annuelle 30/04/2027 182 j Le 30 avril de chaque année, PRÉALABLEMENT au dépôt des états financiers. Ajuste à la hausse ou à la baisse les acomptes versés l’exercice précédent — confirmé par la Direction le 25/08/2026. ETATS-FIN Dépôt des états financiers Annuelle 30/04/2027 182 j Le 30 avril de l’année suivant l’exercice clos, après la liquidation du solde. PATENTE-2 Patente — solde Annuelle 30/04/2027 182 j Seconde moitié, au 30 avril. TVM Taxe sur véhicules à moteur Annuelle 30/04/2027 182 j Une fois par an, au plus tard le 30 avril. IS-2 Impôt sur les sociétés — 2e acompte Annuelle 10/06/2027 223 j Deuxième acompte trimestriel. CCIB-2 CCIB — 2e tranche Annuelle 10/06/2027 223 j Seconde tranche de 150 000 FCFA, le 10 juin (50 %) — confirmé par la Direction le 25/08/2026. ORTB-TELE Redevance ORTB / Télé Annuelle 30/06/2027 243 j Prélevée en SUS de la radio sur les salaires supérieurs à 60 000 FCFA — 3 000 FCFA par agent, au mois de juin. IS-3 Impôt sur les sociétés — 3e acompte Annuelle 10/09/2027 315 j Troisième acompte trimestriel. Affichage de 1 à 19 sur 19 enregistrements"
    ],
@@ -5392,8 +5392,8 @@
        ],
        [
         "Dossier patient",
-        "CNT",
-        "CNT/[n°]/[AA]",
+        "CBG",
+        "CBG/[n°]/[AA]",
         "Par année civile (RG-01)"
        ],
        [
@@ -9362,7 +9362,7 @@
   },
   "bareme": {
    "avant": {
-    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CNT/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Fermée Référence NS 131/07/DM/DA/CNT/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Autoriser la modification",
+    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CBG/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Fermée Référence NS 131/07/DM/DA/CBG/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Autoriser la modification",
     "ouverte": false,
     "boutons": [
      "Installation et données",
@@ -9387,13 +9387,13 @@
      "action": "Ouverture de la modification du barème",
      "module": "M10",
      "entite": "Barème",
-     "reference": "NS 131/07/DM/DA/CNT/2026",
+     "reference": "NS 131/07/DM/DA/CBG/2026",
      "ancienneValeur": null,
      "nouvelleValeur": "{\"motif\":\"Révision du barème\"}",
      "poste": "POSTE-LOCAL",
      "succes": true
     },
-    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CNT/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Ouverte Référence NS 131/07/DM/DA/CNT/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Refermer la modification",
+    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CBG/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Ouverte Référence NS 131/07/DM/DA/CBG/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Refermer la modification",
     "boutons": [
      "Installation et données",
      "Corbeille2",
@@ -9416,13 +9416,13 @@
      "action": "Fermeture de la modification du barème",
      "module": "M10",
      "entite": "Barème",
-     "reference": "NS 131/07/DM/DA/CNT/2026",
+     "reference": "NS 131/07/DM/DA/CBG/2026",
      "ancienneValeur": null,
      "nouvelleValeur": "{}",
      "poste": "POSTE-LOCAL",
      "succes": true
     },
-    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CNT/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Fermée Référence NS 131/07/DM/DA/CNT/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Autoriser la modification"
+    "texte": "Installation et données Corbeille2 Barème NS 131 Jeux de test Relais en ligne Le barème d’évaluation NS 131/07/DM/DA/CBG/2026 fixe les retenues appliquées au salaire brut. Sa modification est fermée par défaut. L’ouvrir ici rend le barème modifiable à l’écran « Évaluations » — et l’ouverture est journalisée. Chaque modification demandera ensuite sa portée : évaluations à venir seulement, ou évaluations déjà prononcées comprises. Modification du barème État Fermée Référence NS 131/07/DM/DA/CBG/2026 En vigueur depuis 13/07/2026 Critères au barème 4 Versions antérieures 0 Autoriser la modification"
    }
   },
   "reinit": {

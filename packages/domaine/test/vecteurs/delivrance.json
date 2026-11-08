@@ -29,7 +29,7 @@
      "numero": "ORD-V1",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -131,7 +131,7 @@
      "numero": "ORD-V2",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -275,7 +275,7 @@
      "numero": "ORD-V3",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -363,7 +363,7 @@
      "numero": "ORD-V4",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "medecin": "Dr TEST",
      "statutPaiement": "impayee",
      "statutDispensation": "en_attente",
@@ -434,7 +434,7 @@
      "numero": "ORD-V5",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "servie",
@@ -505,7 +505,7 @@
      "numero": "ORD-V6",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/6/26",
+     "patientCode": "CBG/6/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -590,7 +590,7 @@
      "numero": "ORD-V7",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/7/26",
+     "patientCode": "CBG/7/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -680,7 +680,7 @@
      "numero": "ORD-V8",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/8/26",
+     "patientCode": "CBG/8/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -751,7 +751,7 @@
      "numero": "ORD-V9",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/9/26",
+     "patientCode": "CBG/9/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -828,7 +828,7 @@
      "numero": "ORD-V10",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/10/26",
+     "patientCode": "CBG/10/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -965,7 +965,7 @@
      "numero": "ORD-V11",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/11/26",
+     "patientCode": "CBG/11/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1074,7 +1074,7 @@
      "numero": "ORD-V12",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/12/26",
+     "patientCode": "CBG/12/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1183,7 +1183,7 @@
      "numero": "ORD-V13",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/13/26",
+     "patientCode": "CBG/13/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1292,7 +1292,7 @@
      "numero": "ORD-V14",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/14/26",
+     "patientCode": "CBG/14/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1401,7 +1401,7 @@
      "numero": "ORD-V15",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/15/26",
+     "patientCode": "CBG/15/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1520,7 +1520,7 @@
      "numero": "ORD-V16",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/16/26",
+     "patientCode": "CBG/16/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1639,7 +1639,7 @@
      "numero": "ORD-V17",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/17/26",
+     "patientCode": "CBG/17/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1727,7 +1727,7 @@
      "numero": "ORD-V18",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/18/26",
+     "patientCode": "CBG/18/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1822,7 +1822,7 @@
      "numero": "ORD-V19",
      "date": "2026-10-01",
      "patient": "TEST Delivrance",
-     "patientCode": "CNT/19/26",
+     "patientCode": "CBG/19/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -1844,7 +1844,7 @@
       "ordonnanceId": "OV19",
       "reference": "ORD-V19",
       "patient": "TEST",
-      "patientCode": "CNT/1/26",
+      "patientCode": "CBG/1/26",
       "detail": "Délivrer",
       "montant": 1000
      }
@@ -1899,7 +1899,7 @@
       "ordonnanceId": "OV19",
       "reference": "ORD-V19",
       "patient": "TEST",
-      "patientCode": "CNT/1/26",
+      "patientCode": "CBG/1/26",
       "detail": "Délivrer",
       "montant": 1000,
       "faitPar": "BASSONGUI Chabi Séko",
@@ -1985,7 +1985,7 @@
       "numero": "ORD-PE",
       "date": "2026-10-05",
       "patient": "TEST PatientE",
-      "patientCode": "CNT/E/26",
+      "patientCode": "CBG/E/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2010,7 +2010,7 @@
       "numero": "ORD-PD",
       "date": "2026-10-04",
       "patient": "TEST PatientD",
-      "patientCode": "CNT/D/26",
+      "patientCode": "CBG/D/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2034,7 +2034,7 @@
       "numero": "ORD-PC",
       "date": "2026-10-03",
       "patient": "TEST PatientC",
-      "patientCode": "CNT/C/26",
+      "patientCode": "CBG/C/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "servie",
@@ -2052,7 +2052,7 @@
       "numero": "ORD-PB",
       "date": "2026-10-02",
       "patient": "TEST PatientB",
-      "patientCode": "CNT/B/26",
+      "patientCode": "CBG/B/26",
       "medecin": "Dr TEST",
       "statutPaiement": "impayee",
       "statutDispensation": "en_attente",
@@ -2076,7 +2076,7 @@
       "numero": "ORD-PA",
       "date": "2026-10-01",
       "patient": "TEST PatientA",
-      "patientCode": "CNT/A/26",
+      "patientCode": "CBG/A/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2110,7 +2110,7 @@
       "cellules": [
        "ORD-PE",
        "05/10/2026",
-       "TEST PatientE — CNT/E/26",
+       "TEST PatientE — CBG/E/26",
        "PARACETAMOL 500 MG CP",
        "2",
        "Posologie PARACETAMOL",
@@ -2125,7 +2125,7 @@
       "cellules": [
        "ORD-PD",
        "04/10/2026",
-       "TEST PatientD — CNT/D/26",
+       "TEST PatientD — CBG/D/26",
        "SERUM SALE 0,9 % 500 ML INJ",
        "5",
        "Posologie SERUM",
@@ -2140,7 +2140,7 @@
       "cellules": [
        "ORD-PB",
        "02/10/2026",
-       "TEST PatientB — CNT/B/26",
+       "TEST PatientB — CBG/B/26",
        "SERUM SALE 0,9 % 500 ML INJ",
        "1",
        "Posologie SERUM",
@@ -2155,7 +2155,7 @@
       "cellules": [
        "ORD-PA",
        "01/10/2026",
-       "TEST PatientA — CNT/A/26",
+       "TEST PatientA — CBG/A/26",
        "ADRENALINE 1 MG INJ",
        "2",
        "Posologie ADRENALINE",
@@ -2253,7 +2253,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PARACETAMOL 500 MG CP",
          "2",
          "Posologie PARACETAMOL",
@@ -2268,7 +2268,7 @@
         "cellules": [
          "ORD-PD",
          "04/10/2026",
-         "TEST PatientD — CNT/D/26",
+         "TEST PatientD — CBG/D/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "5",
          "Posologie SERUM",
@@ -2283,7 +2283,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "1",
          "Posologie SERUM",
@@ -2298,7 +2298,7 @@
         "cellules": [
          "ORD-PA",
          "01/10/2026",
-         "TEST PatientA — CNT/A/26",
+         "TEST PatientA — CBG/A/26",
          "ADRENALINE 1 MG INJ",
          "2",
          "Posologie ADRENALINE",
@@ -2397,7 +2397,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PARACETAMOL 500 MG CP",
          "2",
          "Posologie PARACETAMOL",
@@ -2412,7 +2412,7 @@
         "cellules": [
          "ORD-PD",
          "04/10/2026",
-         "TEST PatientD — CNT/D/26",
+         "TEST PatientD — CBG/D/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "5",
          "Posologie SERUM",
@@ -2427,7 +2427,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "1",
          "Posologie SERUM",
@@ -2442,7 +2442,7 @@
         "cellules": [
          "ORD-PA",
          "01/10/2026",
-         "TEST PatientA — CNT/A/26",
+         "TEST PatientA — CBG/A/26",
          "ADRENALINE 1 MG INJ",
          "2",
          "Posologie ADRENALINE",
@@ -2554,7 +2554,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PARACETAMOL 500 MG CP",
          "2",
          "Posologie PARACETAMOL",
@@ -2569,7 +2569,7 @@
         "cellules": [
          "ORD-PD",
          "04/10/2026",
-         "TEST PatientD — CNT/D/26",
+         "TEST PatientD — CBG/D/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "5",
          "Posologie SERUM",
@@ -2584,7 +2584,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "SERUM SALE 0,9 % 500 ML INJ",
          "1",
          "Posologie SERUM",
@@ -2676,7 +2676,7 @@
       "numero": "ORD-PE",
       "date": "2026-10-05",
       "patient": "TEST PatientE",
-      "patientCode": "CNT/E/26",
+      "patientCode": "CBG/E/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2701,7 +2701,7 @@
       "numero": "ORD-PD",
       "date": "2026-10-04",
       "patient": "TEST PatientD",
-      "patientCode": "CNT/D/26",
+      "patientCode": "CBG/D/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2725,7 +2725,7 @@
       "numero": "ORD-PC",
       "date": "2026-10-03",
       "patient": "TEST PatientC",
-      "patientCode": "CNT/C/26",
+      "patientCode": "CBG/C/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "servie",
@@ -2743,7 +2743,7 @@
       "numero": "ORD-PB",
       "date": "2026-10-02",
       "patient": "TEST PatientB",
-      "patientCode": "CNT/B/26",
+      "patientCode": "CBG/B/26",
       "medecin": "Dr TEST",
       "statutPaiement": "impayee",
       "statutDispensation": "en_attente",
@@ -2767,7 +2767,7 @@
       "numero": "ORD-PA",
       "date": "2026-10-01",
       "patient": "TEST PatientA",
-      "patientCode": "CNT/A/26",
+      "patientCode": "CBG/A/26",
       "medecin": "Dr TEST",
       "statutPaiement": "soldee",
       "statutDispensation": "en_attente",
@@ -2801,7 +2801,7 @@
       "cellules": [
        "ORD-PE",
        "05/10/2026",
-       "TEST PatientE — CNT/E/26",
+       "TEST PatientE — CBG/E/26",
        "PRODUIT INCONNU",
        "1",
        "Posologie PRODUIT",
@@ -2816,7 +2816,7 @@
       "cellules": [
        "ORD-PD",
        "04/10/2026",
-       "TEST PatientD — CNT/D/26",
+       "TEST PatientD — CBG/D/26",
        "AMOXICILLINE 500 MG GELULE",
        "1",
        "Posologie AMOXICILLINE",
@@ -2831,7 +2831,7 @@
       "cellules": [
        "ORD-PB",
        "02/10/2026",
-       "TEST PatientB — CNT/B/26",
+       "TEST PatientB — CBG/B/26",
        "PARACETAMOL 500 MG CP",
        "3",
        "Posologie PARACETAMOL",
@@ -2846,7 +2846,7 @@
       "cellules": [
        "ORD-PA",
        "01/10/2026",
-       "TEST PatientA — CNT/A/26",
+       "TEST PatientA — CBG/A/26",
        "PARACETAMOL 500 MG CP",
        "10",
        "Posologie PARACETAMOL",
@@ -2944,7 +2944,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PRODUIT INCONNU",
          "1",
          "Posologie PRODUIT",
@@ -2959,7 +2959,7 @@
         "cellules": [
          "ORD-PD",
          "04/10/2026",
-         "TEST PatientD — CNT/D/26",
+         "TEST PatientD — CBG/D/26",
          "AMOXICILLINE 500 MG GELULE",
          "1",
          "Posologie AMOXICILLINE",
@@ -2974,7 +2974,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "PARACETAMOL 500 MG CP",
          "3",
          "Posologie PARACETAMOL",
@@ -2989,7 +2989,7 @@
         "cellules": [
          "ORD-PA",
          "01/10/2026",
-         "TEST PatientA — CNT/A/26",
+         "TEST PatientA — CBG/A/26",
          "PARACETAMOL 500 MG CP",
          "10",
          "Posologie PARACETAMOL",
@@ -3101,7 +3101,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PRODUIT INCONNU",
          "1",
          "Posologie PRODUIT",
@@ -3116,7 +3116,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "PARACETAMOL 500 MG CP",
          "3",
          "Posologie PARACETAMOL",
@@ -3131,7 +3131,7 @@
         "cellules": [
          "ORD-PA",
          "01/10/2026",
-         "TEST PatientA — CNT/A/26",
+         "TEST PatientA — CBG/A/26",
          "PARACETAMOL 500 MG CP",
          "10",
          "Posologie PARACETAMOL",
@@ -3243,7 +3243,7 @@
         "cellules": [
          "ORD-PE",
          "05/10/2026",
-         "TEST PatientE — CNT/E/26",
+         "TEST PatientE — CBG/E/26",
          "PRODUIT INCONNU",
          "1",
          "Posologie PRODUIT",
@@ -3258,7 +3258,7 @@
         "cellules": [
          "ORD-PB",
          "02/10/2026",
-         "TEST PatientB — CNT/B/26",
+         "TEST PatientB — CBG/B/26",
          "PARACETAMOL 500 MG CP",
          "3",
          "Posologie PARACETAMOL",
@@ -3344,7 +3344,7 @@
      "date": "2026-10-02",
      "patientId": "P2",
      "patient": "TEST Durand",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "lignes": [],
      "montant": 0,
      "dispensePar": "DIEYABIDI Aïssatou"
@@ -3355,7 +3355,7 @@
      "date": "2026-09-25",
      "patientId": "P1",
      "patient": "TEST Martin",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "lignes": [
       {
        "produit": "SERUM SALE 0,9 % 500 ML INJ",
@@ -3373,7 +3373,7 @@
      "date": "2026-09-20",
      "patientId": "P0",
      "patient": "TEST Dupont",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "lignes": [
       {
        "produit": "ARTESUNATE 60 MG INJ",
@@ -3398,7 +3398,7 @@
      "numero": "ORD-D1",
      "date": "2026-10-10",
      "patient": "TEST Dispensation1",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -3422,7 +3422,7 @@
      "numero": "ORD-D2",
      "date": "2026-10-11",
      "patient": "TEST Dispensation2",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "medecin": "Dr TEST",
      "statutPaiement": "soldee",
      "statutDispensation": "en_attente",
@@ -3446,7 +3446,7 @@
      "numero": "ORD-D3",
      "date": "2026-10-12",
      "patient": "TEST Dispensation3",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "medecin": "Dr TEST",
      "statutPaiement": "impayee",
      "statutDispensation": "en_attente",
@@ -3464,7 +3464,7 @@
      "numero": "ORD-D4",
      "date": "2026-10-13",
      "patient": "TEST Dispensation4",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "medecin": "Dr TEST",
      "statutPaiement": "impayee",
      "statutDispensation": "en_attente",
@@ -3487,7 +3487,7 @@
      "ordonnanceId": "DO224",
      "reference": "ORD-D4",
      "patient": "TEST Dispensation4",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "detail": "Délivrer 1 ligne(s)",
      "montant": 1000,
      "urgent": false
@@ -3500,7 +3500,7 @@
      "ordonnanceId": "DO223",
      "reference": "ORD-D3",
      "patient": "TEST Dispensation3",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "detail": "Délivrer 1 ligne(s)",
      "montant": 1000,
      "urgent": false
@@ -3513,7 +3513,7 @@
      "ordonnanceId": "DO222",
      "reference": "ORD-D2",
      "patient": "TEST Dispensation2",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "detail": "Délivrer 2 ligne(s)",
      "montant": 1000,
      "urgent": true
@@ -3526,7 +3526,7 @@
      "ordonnanceId": "DO221",
      "reference": "ORD-D1",
      "patient": "TEST Dispensation1",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "detail": "Délivrer 2 ligne(s)",
      "montant": 1000,
      "urgent": false
@@ -3555,7 +3555,7 @@
       {
        "cellules": [
         "ORD-D1",
-        "TEST Dispensation1 CNT/1/26",
+        "TEST Dispensation1 CBG/1/26",
         "Délivrer 2 ligne(s)",
         "1 000",
         "À traiter",
@@ -3568,7 +3568,7 @@
       {
        "cellules": [
         "ORD-D2Urgent",
-        "TEST Dispensation2 CNT/2/26",
+        "TEST Dispensation2 CBG/2/26",
         "Délivrer 2 ligne(s)",
         "1 000",
         "À traiter",
@@ -3581,7 +3581,7 @@
       {
        "cellules": [
         "ORD-D3",
-        "TEST Dispensation3 CNT/3/26",
+        "TEST Dispensation3 CBG/3/26",
         "Délivrer 1 ligne(s)",
         "1 000",
         "À traiter",
@@ -3594,7 +3594,7 @@
       {
        "cellules": [
         "ORD-D4",
-        "TEST Dispensation4 CNT/4/26",
+        "TEST Dispensation4 CBG/4/26",
         "Délivrer 1 ligne(s)",
         "1 000",
         "Attente encaissement",
@@ -3669,7 +3669,7 @@
     "ordonnance": "ORD-D1",
     "bouton": "Délivrer",
     "absent": false,
-    "modale": "Délivrer ORD-D1 TEST Dispensation1 Patient TEST Dispensation1 Dossier CNT/1/26 Prescripteur Dr TEST Ordonnance ORD-D1 Règlement Encaissé Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE ARTESUNATE 60 MG INJ 1 inj/j 2 12 Oui GANT STERILE — 1 5 Oui La sortie portera le numéro d’ordonnance comme justificatif (RG-03) et sera valorisée au prix d’achat (RG-02). Fermer Confirmer la délivrance",
+    "modale": "Délivrer ORD-D1 TEST Dispensation1 Patient TEST Dispensation1 Dossier CBG/1/26 Prescripteur Dr TEST Ordonnance ORD-D1 Règlement Encaissé Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE ARTESUNATE 60 MG INJ 1 inj/j 2 12 Oui GANT STERILE — 1 5 Oui La sortie portera le numéro d’ordonnance comme justificatif (RG-03) et sera valorisée au prix d’achat (RG-02). Fermer Confirmer la délivrance",
     "boutonsModale": [
      "Fermer",
      "Confirmer la délivrance"
@@ -3798,7 +3798,7 @@
         {
          "cellules": [
           "ORD-D2Urgent",
-          "TEST Dispensation2 CNT/2/26",
+          "TEST Dispensation2 CBG/2/26",
           "Délivrer 2 ligne(s)",
           "1 000",
           "À traiter",
@@ -3811,7 +3811,7 @@
         {
          "cellules": [
           "ORD-D3",
-          "TEST Dispensation3 CNT/3/26",
+          "TEST Dispensation3 CBG/3/26",
           "Délivrer 1 ligne(s)",
           "1 000",
           "À traiter",
@@ -3824,7 +3824,7 @@
         {
          "cellules": [
           "ORD-D4",
-          "TEST Dispensation4 CNT/4/26",
+          "TEST Dispensation4 CBG/4/26",
           "Délivrer 1 ligne(s)",
           "1 000",
           "Attente encaissement",
@@ -3899,7 +3899,7 @@
     "ordonnance": "ORD-D2",
     "bouton": "Délivrer",
     "absent": false,
-    "modale": "Délivrer ORD-D2 TEST Dispensation2 Patient TEST Dispensation2 Dossier CNT/2/26 Prescripteur Dr TEST Ordonnance ORD-D2 Règlement Encaissé Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE GANT STERILE 2/j 4 4 Oui SERUM SALE 0,9 % 500 ML INJ 1/j 6 2 Stock insuffisant RG-03 — le stock ne peut pas devenir négatif. La délivrance est refusée tant qu’une ligne n’est pas couverte : approvisionner la pharmacie par un transfert depuis le magasin, puis revenir ici. Fermer Aller aux transferts",
+    "modale": "Délivrer ORD-D2 TEST Dispensation2 Patient TEST Dispensation2 Dossier CBG/2/26 Prescripteur Dr TEST Ordonnance ORD-D2 Règlement Encaissé Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE GANT STERILE 2/j 4 4 Oui SERUM SALE 0,9 % 500 ML INJ 1/j 6 2 Stock insuffisant RG-03 — le stock ne peut pas devenir négatif. La délivrance est refusée tant qu’une ligne n’est pas couverte : approvisionner la pharmacie par un transfert depuis le magasin, puis revenir ici. Fermer Aller aux transferts",
     "boutonsModale": [
      "Fermer",
      "Aller aux transferts"
@@ -3910,7 +3910,7 @@
     "ordonnance": "ORD-D3",
     "bouton": "Délivrer",
     "absent": false,
-    "modale": "Délivrer ORD-D3 TEST Dispensation3 Patient TEST Dispensation3 Dossier CNT/3/26 Prescripteur Dr TEST Ordonnance ORD-D3 Règlement NON ENCAISSÉ Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE ARTESUNATE 60 MG INJ 1/j 1 10 Oui La sortie portera le numéro d’ordonnance comme justificatif (RG-03) et sera valorisée au prix d’achat (RG-02). Fermer Confirmer la délivrance",
+    "modale": "Délivrer ORD-D3 TEST Dispensation3 Patient TEST Dispensation3 Dossier CBG/3/26 Prescripteur Dr TEST Ordonnance ORD-D3 Règlement NON ENCAISSÉ Lignes à servir PRODUIT POSOLOGIE DEMANDÉ EN PHARMACIE SERVABLE ARTESUNATE 60 MG INJ 1/j 1 10 Oui La sortie portera le numéro d’ordonnance comme justificatif (RG-03) et sera valorisée au prix d’achat (RG-02). Fermer Confirmer la délivrance",
     "boutonsModale": [
      "Fermer",
      "Confirmer la délivrance"
@@ -4005,7 +4005,7 @@
         {
          "cellules": [
           "ORD-D2Urgent",
-          "TEST Dispensation2 CNT/2/26",
+          "TEST Dispensation2 CBG/2/26",
           "Délivrer 2 ligne(s)",
           "1 000",
           "À traiter",
@@ -4018,7 +4018,7 @@
         {
          "cellules": [
           "ORD-D3",
-          "TEST Dispensation3 CNT/3/26",
+          "TEST Dispensation3 CBG/3/26",
           "Délivrer 1 ligne(s)",
           "1 000",
           "À traiter",
@@ -4031,7 +4031,7 @@
         {
          "cellules": [
           "ORD-D4",
-          "TEST Dispensation4 CNT/4/26",
+          "TEST Dispensation4 CBG/4/26",
           "Délivrer 1 ligne(s)",
           "1 000",
           "Attente encaissement",
@@ -4115,7 +4115,7 @@
     ]
    }
   ],
-  "tiroir": "Dispensation DISP-00003 TEST Durand — 02/10/2026 Référence DISP-00003 Patient TEST Durand Dossier CNT/3/26 Date 02/10/2026 Dispensé par DIEYABIDI Aïssatou Montant 0 FCFA Produits délivrés Aucune donnée. Imprimer le bon",
+  "tiroir": "Dispensation DISP-00003 TEST Durand — 02/10/2026 Référence DISP-00003 Patient TEST Durand Dossier CBG/3/26 Date 02/10/2026 Dispensé par DIEYABIDI Aïssatou Montant 0 FCFA Produits délivrés Aucune donnée. Imprimer le bon",
   "tiroirRef": "DISP-00003"
  }
 }

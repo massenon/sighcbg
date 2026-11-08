@@ -100,12 +100,12 @@ void main() {
       await chercher(t, 'BDG-00014');
       await cliquer(t, find.byTooltip('Consulter le badge').first);
       final tiroir = obj(b['tiroir']);
-      for (final mot in ['BADGE VALIDE', 'Valable jusqu’au 16/11/2027.', 'CNT-BDG|MAT:14|SER:BDG-00014-2025', 'Le code ne porte que le matricule et le numéro de série.', 'PARAISO Abdoul']) {
+      for (final mot in ['BADGE VALIDE', 'Valable jusqu’au 16/11/2027.', 'CBG-BDG|MAT:14|SER:BDG-00014-2025', 'Le code ne porte que le matricule et le numéro de série.', 'PARAISO Abdoul']) {
         expect(find.textContaining(mot), findsWidgets, reason: mot);
       }
       expect(find.byKey(const Key('qual:qr')), findsOneWidget);
       expect(find.widgetWithText(BoutonSigh, 'Imprimer la carte'), findsOneWidget);
-      expect('${tiroir['texte']}'.contains('CNT-BDG|MAT:14|SER:BDG-00014-2025'), isTrue);
+      expect('${tiroir['texte']}'.contains('CBG-BDG|MAT:14|SER:BDG-00014-2025'), isTrue);
       await fermerToasts(t);
     });
 
@@ -380,7 +380,7 @@ void main() {
       final badges = jeu('badges');
       final modeles = jeu('modelesBadge');
       final modele = rhcModeleNormalise(modeles.first, modeles);
-      final carte = await t.runAsync(() async => pdfBadge(badge: badges.first, modele: modele, reference: 'CNT-TEST-0001', polices: await PolicesPdf.charger()));
+      final carte = await t.runAsync(() async => pdfBadge(badge: badges.first, modele: modele, reference: 'CBG-TEST-0001', polices: await PolicesPdf.charger()));
       final txt = latin1.decode(carte!);
       expect(txt.startsWith('%PDF'), isTrue);
       expect(RegExp(r'/Type\s*/Page(?![s])').allMatches(txt).length, 2, reason: 'recto et verso');
@@ -388,7 +388,7 @@ void main() {
       final planche = await t.runAsync(() async => pdfPlanche(
           modele: modele,
           badges: [for (final b in badges) (badge: b, agent: null)],
-          reference: 'CNT-TEST-0002',
+          reference: 'CBG-TEST-0002',
           utilisateur: utilisateurTest,
           edite: auj,
           polices: await PolicesPdf.charger()));

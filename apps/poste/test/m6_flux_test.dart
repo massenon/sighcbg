@@ -35,7 +35,7 @@ Fiche ordo(String num, String statut, List<Fiche> lignes, {String dispensation =
       'numero': num,
       'date': date,
       'patient': 'TEST $num',
-      'patientCode': 'CNT/1/26',
+      'patientCode': 'CBG/1/26',
       'medecin': 'Dr TEST',
       'statutPaiement': statut,
       'statutDispensation': dispensation,
@@ -319,7 +319,7 @@ void main() {
           'reference': 'DISP-00001',
           'date': '2026-09-20',
           'patient': 'TEST Dupont',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'dispensePar': 'DIEYABIDI Aïssatou',
           'montant': 3750,
           'lignes': [

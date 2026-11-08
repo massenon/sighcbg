@@ -75,7 +75,7 @@ class PatientComparable {
   final String code;
   final List<FicheLabo> mesures;
 
-  /// « TEST Alpha (CNT/901/26) — 3 résultat(s) ».
+  /// « TEST Alpha (CBG/901/26) — 3 résultat(s) ».
   String get libelle => '$patient ($code) — ${nombre(mesures.length)} résultat(s)';
 }
 

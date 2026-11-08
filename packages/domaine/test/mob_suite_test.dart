@@ -62,7 +62,7 @@ void main() {
 
     test('la ligne de journal garde toutes les mesures, nomme l\'acteur, jamais une suppression', () {
       final f = mobChampsCpn(
-          patient: {'code': 'CNT/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
+          patient: {'code': 'CBG/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
           patientId: 'p4',
           saisie: {'sa': '28', 'poids': '62,5', 'sys': '140', 'dia': '80', 'bcf': '140', 'hu': '27', 'sp': 'SP 2', 'milda': 'Non', 'proteinurie': '+', 'rdv': '2026-11-14'},
           acteur: 'Sage-femme de garde',
@@ -99,7 +99,7 @@ void main() {
 
     test('la ligne de journal : mère et nouveau-né, acteur nommé', () {
       final f = mobChampsCpon(
-          patient: {'code': 'CNT/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose'},
+          patient: {'code': 'CBG/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose'},
           patientId: 'p2',
           saisie: {'ta': '12/8', 't': '38,6', 'pb': '3200', 'jour': 'J7', 'cordon': 'Infecté'},
           acteur: 'Sage-femme de garde',
@@ -129,7 +129,7 @@ void main() {
 
     test('la ligne de journal se rattache à une patiente (E1652) et ne garde que les mesures données', () {
       final f = mobChampsSurveillance(
-          patient: {'code': 'CNT/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
+          patient: {'code': 'CBG/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
           patientId: 'p4',
           saisie: {'heure': 'H12', 'mta': '12/8', 'bfr': '40'},
           acteur: 'Sage-femme de garde',

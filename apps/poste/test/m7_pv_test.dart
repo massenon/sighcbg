@@ -322,7 +322,7 @@ void main() {
                 nature: nature,
                 utilisateur: 'Test',
                 edite: aujourdhui,
-                reference: 'CNT-20261030-0001'),
+                reference: 'CBG-20261030-0001'),
             attendu);
       });
     }
@@ -336,7 +336,7 @@ void main() {
                 nature: '${c['nature']}',
                 utilisateur: 'Test',
                 edite: aujourdhui,
-                reference: 'CNT-20261030-0001'),
+                reference: 'CBG-20261030-0001'),
             (s['impression']! as Map).cast<String, Object?>());
       });
     }

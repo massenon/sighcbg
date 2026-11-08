@@ -73,7 +73,7 @@ String referenceSerie(String prefixe, int largeur, Iterable<FicheImg> fiches) {
 /// `PR.ouvrirDemandeImagerie(v)`.
 ///  · [examens] : codes cochés ; [catalogue] : `examensImagerie` ; [prixDe] : `D.tarifPrix(code, assure)` (le tarif vit au catalogue tarifaire).
 ///  · [patientId] : un patient du répertoire (cherché dans [patients], archivés compris) ; sinon l'identité [nom]/[prenom]… ouvre un dossier
-///    externe, dont le code est `CNT/(900 + nombre de dossiers)/AA`.
+///    externe, dont le code est `CBG/(900 + nombre de dossiers)/AA`.
 ///  · [date] : horodatage ISO de la demande ; [maintenant] : celui de la notification ; [nouvelId] attribue les identifiants.
 OuvertureImagerie ouvrirDemandeImagerie({
   required List<String> examens,

@@ -183,7 +183,7 @@ void main() {
     cas('« Rendre » : sans conclusion il est refusé ; avec, la demande est validée et le prescripteur notifié', (t) async {
       final dem = {
         'id': 'D1', 'reference': 'IME-00001', 'statut': 'executee', 'dateHeure': '2026-08-20T09:00:00.000Z', 'patient': 'ALI Sidi',
-        'patientCode': 'CNT/7/26', 'examenCode': 'IMG-TDM-CER', 'examen': 'Scanner cérébral', 'prescripteur': 'Dr TEST', 'prix': 70000,
+        'patientCode': 'CBG/7/26', 'examenCode': 'IMG-TDM-CER', 'examen': 'Scanner cérébral', 'prescripteur': 'Dr TEST', 'prix': 70000,
       };
       final cr = {
         'id': 'C1', 'reference': 'IMG-0100', 'statut': 'brouillon', 'demandeImagerieId': 'D1', 'examen': 'Scanner cérébral', 'examenCode': 'IMG-TDM-CER',

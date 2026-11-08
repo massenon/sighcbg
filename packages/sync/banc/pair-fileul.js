@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT, BANC : UN FILEUL EN MODE PAIR (ADR-0006)
+ * SIGH-CBG, BANC : UN FILEUL EN MODE PAIR (ADR-0006)
  * -----------------------------------------------------------------------------
  * Un poste qui n'a PAS besoin de la mère : il publie ses opérations (chiffrées de bout en bout) dans SON journal au relais, relève les journaux des autres
  * appareils, et calcule son état par la règle de fusion de `pair.js` (fonction pure de l'ensemble des opérations). Tout est persisté : un SIGKILL à n'importe

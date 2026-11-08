@@ -1,5 +1,5 @@
 // DÉRIVÉ DE LA MAQUETTE BAGUIDI (prototype_html/tailwind.config.js), ÉDITÉ À LA MAIN le 06/11/2026 :
-// la chaîne d'engendrement d'origine (build/extraire.js) reste chez l'éditeur (dépôt SIGH-CNT) et n'est pas dans ce dépôt.
+// la chaîne d'engendrement d'origine (build/extraire.js) reste chez l'éditeur (dépôt SIGH-CBG) et n'est pas dans ce dépôt.
 // Jetons de design de la maquette. Aucune couleur en dur ailleurs.
 // ignore_for_file: constant_identifier_names
 

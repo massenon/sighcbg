@@ -5,7 +5,7 @@ import '../moteur/moteur_mobile.dart';
 import 'orientation.dart';
 
 /// Réception de secours : l'accueil continue quand les postes fileuls n'ont plus de courant. On enregistre le dossier ici ;
-/// le code CNT vient de la plage réservée à CE téléphone, jamais inventé à la main (RG-01). Un homonyme n'est pas refusé :
+/// le code CBG vient de la plage réservée à CE téléphone, jamais inventé à la main (RG-01). Un homonyme n'est pas refusé :
 /// il est SIGNALÉ « doublon possible » à la mère, qui arbitre — on ne bloque pas un patient devant le guichet.
 class Reception extends StatefulWidget {
   const Reception({super.key, required this.moteur});

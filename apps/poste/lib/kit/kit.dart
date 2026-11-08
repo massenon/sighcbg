@@ -1,4 +1,4 @@
-/// Kit de composants SIGH-CBG (repris de SIGH-CNT) : copie des composants de la maquette (`ui.js`, `_kit.js`). Géométrie vérifiée contre
+/// Kit de composants SIGH-CBG (repris de SIGH-CBG) : copie des composants de la maquette (`ui.js`, `_kit.js`). Géométrie vérifiée contre
 /// `test/references/kit/kit.json` (engendré par `prototype_html/build/reference-kit.js`).
 library;
 

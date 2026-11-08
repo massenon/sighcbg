@@ -6673,14 +6673,14 @@
      ]
     }
    ],
-   "vide": "IMG-014724/08/2026 à 13h00YARO Bertine — CNT/42/26Échographie pelvienneBOUKARI N",
+   "vide": "IMG-014724/08/2026 à 13h00YARO Bertine — CBG/42/26Échographie pelvienneBOUKARI N",
    "pages": [
     [
      {
       "cellules": [
        "IMG-0147",
        "24/08/2026 à 13h00",
-       "YARO Bertine — CNT/42/26",
+       "YARO Bertine — CBG/42/26",
        "Échographie pelvienne",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -6704,7 +6704,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0042",
        "patient": "YARO Bertine",
-       "patientCode": "CNT/42/26",
+       "patientCode": "CBG/42/26",
        "age": 7,
        "indication": "Suivi de grossesse",
        "ddr": "—",
@@ -6747,7 +6747,7 @@
         ],
         [
          "Patient",
-         "YARO Bertine — CNT/42/26"
+         "YARO Bertine — CBG/42/26"
         ],
         [
          "Âge",
@@ -6944,7 +6944,7 @@
       "cellules": [
        "IMG-0150",
        "24/08/2026 à 12h00",
-       "SOUMANOU Awaou — CNT/1109/26",
+       "SOUMANOU Awaou — CBG/1109/26",
        "Électrocardiogramme (ECG)",
        "Dr AGBO Koffi — CS de Perma",
        "AHOHOU Rodrigue",
@@ -6968,7 +6968,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PATxmvvd3adstc5j1",
        "patient": "SOUMANOU Awaou",
-       "patientCode": "CNT/1109/26",
+       "patientCode": "CBG/1109/26",
        "age": 47,
        "indication": "Bilan préopératoire",
        "ddr": "—",
@@ -7008,7 +7008,7 @@
         ],
         [
          "Patient",
-         "SOUMANOU Awaou — CNT/1109/26"
+         "SOUMANOU Awaou — CBG/1109/26"
         ],
         [
          "Âge",
@@ -7188,7 +7188,7 @@
       "cellules": [
        "IMG-0087",
        "24/08/2026 à 10h00",
-       "AHOHOU Djibril — CNT/132/26",
+       "AHOHOU Djibril — CBG/132/26",
        "Électrocardiogramme (ECG)",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -7210,7 +7210,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0132",
        "patient": "AHOHOU Djibril",
-       "patientCode": "CNT/132/26",
+       "patientCode": "CBG/132/26",
        "age": 42,
        "indication": "HTA",
        "ddr": "—",
@@ -7249,7 +7249,7 @@
         ],
         [
          "Patient",
-         "AHOHOU Djibril — CNT/132/26"
+         "AHOHOU Djibril — CBG/132/26"
         ],
         [
          "Âge",
@@ -7434,7 +7434,7 @@
       "cellules": [
        "IMG-0149",
        "23/08/2026 à 16h00",
-       "YARO Zoukanéri — CNT/70/26",
+       "YARO Zoukanéri — CBG/70/26",
        "Échographie obstétricale",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -7458,7 +7458,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0070",
        "patient": "YARO Zoukanéri",
-       "patientCode": "CNT/70/26",
+       "patientCode": "CBG/70/26",
        "age": 21,
        "indication": "Douleurs à explorer",
        "ddr": "inconnue",
@@ -7515,7 +7515,7 @@
         ],
         [
          "Patient",
-         "YARO Zoukanéri — CNT/70/26"
+         "YARO Zoukanéri — CBG/70/26"
         ],
         [
          "Âge",
@@ -7851,7 +7851,7 @@
       "cellules": [
        "IMG-0035",
        "22/08/2026 à 11h00",
-       "TCHANE Fatouma — CNT/96/26",
+       "TCHANE Fatouma — CBG/96/26",
        "Échographie abdomino-pelvienne",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -7875,7 +7875,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0096",
        "patient": "TCHANE Fatouma",
-       "patientCode": "CNT/96/26",
+       "patientCode": "CBG/96/26",
        "age": 23,
        "indication": "Bilan d’extension",
        "ddr": "—",
@@ -7926,7 +7926,7 @@
         ],
         [
          "Patient",
-         "TCHANE Fatouma — CNT/96/26"
+         "TCHANE Fatouma — CBG/96/26"
         ],
         [
          "Âge",
@@ -8217,7 +8217,7 @@
       "cellules": [
        "IMG-0089",
        "21/08/2026 à 09h00",
-       "N’TCHA Alimatou — CNT/23/26",
+       "N’TCHA Alimatou — CBG/23/26",
        "Électrocardiogramme (ECG)",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -8239,7 +8239,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0023",
        "patient": "N’TCHA Alimatou",
-       "patientCode": "CNT/23/26",
+       "patientCode": "CBG/23/26",
        "age": 27,
        "indication": "Douleur thoracique",
        "ddr": "—",
@@ -8278,7 +8278,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Alimatou — CNT/23/26"
+         "N’TCHA Alimatou — CBG/23/26"
         ],
         [
          "Âge",
@@ -8463,7 +8463,7 @@
       "cellules": [
        "IMG-0009",
        "20/08/2026 à 08h00",
-       "MAMAN Chantal — CNT/85/26",
+       "MAMAN Chantal — CBG/85/26",
        "Échographie pelvienne",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -8485,7 +8485,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0085",
        "patient": "MAMAN Chantal",
-       "patientCode": "CNT/85/26",
+       "patientCode": "CBG/85/26",
        "age": 52,
        "indication": "Bilan d’infertilité",
        "ddr": "—",
@@ -8527,7 +8527,7 @@
         ],
         [
          "Patient",
-         "MAMAN Chantal — CNT/85/26"
+         "MAMAN Chantal — CBG/85/26"
         ],
         [
          "Âge",
@@ -8729,7 +8729,7 @@
       "cellules": [
        "IMG-0060",
        "19/08/2026 à 15h00",
-       "DIEYABIDI Ramatou — CNT/25/26",
+       "DIEYABIDI Ramatou — CBG/25/26",
        "Échographie obstétricale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -8751,7 +8751,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0025",
        "patient": "DIEYABIDI Ramatou",
-       "patientCode": "CNT/25/26",
+       "patientCode": "CBG/25/26",
        "age": 52,
        "indication": "Terme",
        "ddr": "20/12/2025",
@@ -8811,7 +8811,7 @@
         ],
         [
          "Patient",
-         "DIEYABIDI Ramatou — CNT/25/26"
+         "DIEYABIDI Ramatou — CBG/25/26"
         ],
         [
          "Âge",
@@ -9152,7 +9152,7 @@
       "cellules": [
        "IMG-0048",
        "19/08/2026 à 09h00",
-       "SANNI Nadège — CNT/174/26",
+       "SANNI Nadège — CBG/174/26",
        "Échographie vésico-prostatique",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -9174,7 +9174,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0174",
        "patient": "SANNI Nadège",
-       "patientCode": "CNT/174/26",
+       "patientCode": "CBG/174/26",
        "age": 43,
        "indication": "RAU",
        "ddr": "—",
@@ -9226,7 +9226,7 @@
         ],
         [
          "Patient",
-         "SANNI Nadège — CNT/174/26"
+         "SANNI Nadège — CBG/174/26"
         ],
         [
          "Âge",
@@ -9512,7 +9512,7 @@
       "cellules": [
        "IMG-0001",
        "14/08/2026 à 14h00",
-       "DOSSOU Moussa — CNT915/25",
+       "DOSSOU Moussa — CBG915/25",
        "Échographie pelvienne",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -9534,7 +9534,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT-AG016",
        "patient": "DOSSOU Moussa",
-       "patientCode": "CNT915/25",
+       "patientCode": "CBG915/25",
        "age": 38,
        "indication": "Bilan d’infertilité",
        "ddr": "—",
@@ -9576,7 +9576,7 @@
         ],
         [
          "Patient",
-         "DOSSOU Moussa — CNT915/25"
+         "DOSSOU Moussa — CBG915/25"
         ],
         [
          "Âge",
@@ -9778,7 +9778,7 @@
       "cellules": [
        "IMG-0010",
        "11/08/2026 à 12h00",
-       "YENI Zoukanéri — CNT/152/26",
+       "YENI Zoukanéri — CBG/152/26",
        "Échographie pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -9800,7 +9800,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0152",
        "patient": "YENI Zoukanéri",
-       "patientCode": "CNT/152/26",
+       "patientCode": "CBG/152/26",
        "age": 65,
        "indication": "Bilan d’infertilité",
        "ddr": "—",
@@ -9842,7 +9842,7 @@
         ],
         [
          "Patient",
-         "YENI Zoukanéri — CNT/152/26"
+         "YENI Zoukanéri — CBG/152/26"
         ],
         [
          "Âge",
@@ -10056,7 +10056,7 @@
       "cellules": [
        "IMG-0095",
        "06/08/2026 à 10h00",
-       "YARO Florent — CNT/122/25",
+       "YARO Florent — CBG/122/25",
        "Électrocardiogramme (ECG)",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -10078,7 +10078,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0122",
        "patient": "YARO Florent",
-       "patientCode": "CNT/122/25",
+       "patientCode": "CBG/122/25",
        "age": 28,
        "indication": "HTA",
        "ddr": "—",
@@ -10117,7 +10117,7 @@
         ],
         [
          "Patient",
-         "YARO Florent — CNT/122/25"
+         "YARO Florent — CBG/122/25"
         ],
         [
          "Âge",
@@ -10304,7 +10304,7 @@
       "cellules": [
        "IMG-0042",
        "29/07/2026 à 17h00",
-       "ISSA Nadège — CNT/15/26",
+       "ISSA Nadège — CBG/15/26",
        "Échographie vésico-prostatique",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -10328,7 +10328,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0015",
        "patient": "ISSA Nadège",
-       "patientCode": "CNT/15/26",
+       "patientCode": "CBG/15/26",
        "age": 54,
        "indication": "RAU",
        "ddr": "—",
@@ -10376,7 +10376,7 @@
         ],
         [
          "Patient",
-         "ISSA Nadège — CNT/15/26"
+         "ISSA Nadège — CBG/15/26"
         ],
         [
          "Âge",
@@ -10650,7 +10650,7 @@
       "cellules": [
        "IMG-0051",
        "29/07/2026 à 12h00",
-       "BASSONGUI Marguerite — CNT/76/26",
+       "BASSONGUI Marguerite — CBG/76/26",
        "Échographie obstétricale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -10672,7 +10672,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0076",
        "patient": "BASSONGUI Marguerite",
-       "patientCode": "CNT/76/26",
+       "patientCode": "CBG/76/26",
        "age": 10,
        "indication": "Croissance",
        "ddr": "18/03/2026",
@@ -10728,7 +10728,7 @@
         ],
         [
          "Patient",
-         "BASSONGUI Marguerite — CNT/76/26"
+         "BASSONGUI Marguerite — CBG/76/26"
         ],
         [
          "Âge",
@@ -11069,7 +11069,7 @@
       "cellules": [
        "IMG-0058",
        "14/07/2026 à 13h00",
-       "SOULE Nadège — CNT/97/26",
+       "SOULE Nadège — CBG/97/26",
        "Échographie obstétricale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -11091,7 +11091,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0097",
        "patient": "SOULE Nadège",
-       "patientCode": "CNT/97/26",
+       "patientCode": "CBG/97/26",
        "age": 63,
        "indication": "Terme",
        "ddr": "inconnue",
@@ -11147,7 +11147,7 @@
         ],
         [
          "Patient",
-         "SOULE Nadège — CNT/97/26"
+         "SOULE Nadège — CBG/97/26"
         ],
         [
          "Âge",
@@ -11500,7 +11500,7 @@
       "cellules": [
        "IMG-0072",
        "14/07/2026 à 13h00",
-       "OURTCHA Sylvie — CNT/150/26",
+       "OURTCHA Sylvie — CBG/150/26",
        "Échographie obstétricale du 1er trimestre",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -11522,7 +11522,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0150",
        "patient": "OURTCHA Sylvie",
-       "patientCode": "CNT/150/26",
+       "patientCode": "CBG/150/26",
        "age": 42,
        "indication": "Terme",
        "ddr": "inconnue",
@@ -11570,7 +11570,7 @@
         ],
         [
          "Patient",
-         "OURTCHA Sylvie — CNT/150/26"
+         "OURTCHA Sylvie — CBG/150/26"
         ],
         [
          "Âge",
@@ -11866,7 +11866,7 @@
       "cellules": [
        "IMG-0006",
        "10/07/2026 à 10h00",
-       "ZIME Djibril — CNT/91/26",
+       "ZIME Djibril — CBG/91/26",
        "Échographie pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -11890,7 +11890,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0091",
        "patient": "ZIME Djibril",
-       "patientCode": "CNT/91/26",
+       "patientCode": "CBG/91/26",
        "age": 51,
        "indication": "Kyste ovarien ?",
        "ddr": "—",
@@ -11932,7 +11932,7 @@
         ],
         [
          "Patient",
-         "ZIME Djibril — CNT/91/26"
+         "ZIME Djibril — CBG/91/26"
         ],
         [
          "Âge",
@@ -12146,7 +12146,7 @@
       "cellules": [
        "IMG-0090",
        "08/07/2026 à 13h00",
-       "TCHOUKOUROU Zakari — CNT/123/26",
+       "TCHOUKOUROU Zakari — CBG/123/26",
        "Électrocardiogramme (ECG)",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -12168,7 +12168,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0123",
        "patient": "TCHOUKOUROU Zakari",
-       "patientCode": "CNT/123/26",
+       "patientCode": "CBG/123/26",
        "age": 33,
        "indication": "HTA",
        "ddr": "—",
@@ -12209,7 +12209,7 @@
         ],
         [
          "Patient",
-         "TCHOUKOUROU Zakari — CNT/123/26"
+         "TCHOUKOUROU Zakari — CBG/123/26"
         ],
         [
          "Âge",
@@ -12406,7 +12406,7 @@
       "cellules": [
        "IMG-0096",
        "08/07/2026 à 12h00",
-       "YENI Salamatou — CNT/83/26",
+       "YENI Salamatou — CBG/83/26",
        "Électrocardiogramme (ECG)",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -12428,7 +12428,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0083",
        "patient": "YENI Salamatou",
-       "patientCode": "CNT/83/26",
+       "patientCode": "CBG/83/26",
        "age": 42,
        "indication": "HTA",
        "ddr": "—",
@@ -12469,7 +12469,7 @@
         ],
         [
          "Patient",
-         "YENI Salamatou — CNT/83/26"
+         "YENI Salamatou — CBG/83/26"
         ],
         [
          "Âge",
@@ -12666,7 +12666,7 @@
       "cellules": [
        "IMG-0148",
        "04/07/2026 à 14h00",
-       "YOROU Aboubakar — CNT/1101/26",
+       "YOROU Aboubakar — CBG/1101/26",
        "Échographie abdominale",
        "Dr AGBO Koffi — CS de Perma",
        "AHOHOU Rodrigue",
@@ -12688,7 +12688,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PATxmvvd3adg84u30",
        "patient": "YOROU Aboubakar",
-       "patientCode": "CNT/1101/26",
+       "patientCode": "CBG/1101/26",
        "age": 50,
        "indication": "Contrôle évolutif",
        "ddr": "—",
@@ -12734,7 +12734,7 @@
         ],
         [
          "Patient",
-         "YOROU Aboubakar — CNT/1101/26"
+         "YOROU Aboubakar — CBG/1101/26"
         ],
         [
          "Âge",
@@ -12985,7 +12985,7 @@
       "cellules": [
        "IMG-0028",
        "22/06/2026 à 11h00",
-       "YARO Edmond — CNT/138/26",
+       "YARO Edmond — CBG/138/26",
        "Échographie abdomino-pelvienne",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -13007,7 +13007,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0138",
        "patient": "YARO Edmond",
-       "patientCode": "CNT/138/26",
+       "patientCode": "CBG/138/26",
        "age": 51,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -13058,7 +13058,7 @@
         ],
         [
          "Patient",
-         "YARO Edmond — CNT/138/26"
+         "YARO Edmond — CBG/138/26"
         ],
         [
          "Âge",
@@ -13361,7 +13361,7 @@
       "cellules": [
        "IMG-0030",
        "20/06/2026 à 09h00",
-       "TIGRI Kassim — CNT/180/25",
+       "TIGRI Kassim — CBG/180/25",
        "Échographie abdomino-pelvienne",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -13383,7 +13383,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0180",
        "patient": "TIGRI Kassim",
-       "patientCode": "CNT/180/25",
+       "patientCode": "CBG/180/25",
        "age": 16,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -13434,7 +13434,7 @@
         ],
         [
          "Patient",
-         "TIGRI Kassim — CNT/180/25"
+         "TIGRI Kassim — CBG/180/25"
         ],
         [
          "Âge",
@@ -13737,7 +13737,7 @@
       "cellules": [
        "IMG-0004",
        "12/06/2026 à 17h00",
-       "SAMBIENI Nadège — CNT/142/26",
+       "SAMBIENI Nadège — CBG/142/26",
        "Échographie pelvienne",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -13759,7 +13759,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0142",
        "patient": "SAMBIENI Nadège",
-       "patientCode": "CNT/142/26",
+       "patientCode": "CBG/142/26",
        "age": 76,
        "indication": "Métrorragies",
        "ddr": "—",
@@ -13803,7 +13803,7 @@
         ],
         [
          "Patient",
-         "SAMBIENI Nadège — CNT/142/26"
+         "SAMBIENI Nadège — CBG/142/26"
         ],
         [
          "Âge",
@@ -14017,7 +14017,7 @@
       "cellules": [
        "IMG-0091",
        "12/06/2026 à 14h00",
-       "ZIME Salifou — CNT/105/26",
+       "ZIME Salifou — CBG/105/26",
        "Électrocardiogramme (ECG)",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -14039,7 +14039,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0105",
        "patient": "ZIME Salifou",
-       "patientCode": "CNT/105/26",
+       "patientCode": "CBG/105/26",
        "age": 74,
        "indication": "HTA",
        "ddr": "—",
@@ -14078,7 +14078,7 @@
         ],
         [
          "Patient",
-         "ZIME Salifou — CNT/105/26"
+         "ZIME Salifou — CBG/105/26"
         ],
         [
          "Âge",
@@ -14265,7 +14265,7 @@
       "cellules": [
        "IMG-0079",
        "05/06/2026 à 13h00",
-       "TEPA Aïssatou — CNT/71/26",
+       "TEPA Aïssatou — CBG/71/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -14287,7 +14287,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0071",
        "patient": "TEPA Aïssatou",
-       "patientCode": "CNT/71/26",
+       "patientCode": "CBG/71/26",
        "age": 66,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -14336,7 +14336,7 @@
         ],
         [
          "Patient",
-         "TEPA Aïssatou — CNT/71/26"
+         "TEPA Aïssatou — CBG/71/26"
         ],
         [
          "Âge",
@@ -14829,7 +14829,7 @@
       "cellules": [
        "IMG-0036",
        "04/06/2026 à 15h00",
-       "BASSONGUI Marguerite — CNT/76/26",
+       "BASSONGUI Marguerite — CBG/76/26",
        "Échographie abdomino-pelvienne",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -14851,7 +14851,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0076",
        "patient": "BASSONGUI Marguerite",
-       "patientCode": "CNT/76/26",
+       "patientCode": "CBG/76/26",
        "age": 10,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -14902,7 +14902,7 @@
         ],
         [
          "Patient",
-         "BASSONGUI Marguerite — CNT/76/26"
+         "BASSONGUI Marguerite — CBG/76/26"
         ],
         [
          "Âge",
@@ -15193,7 +15193,7 @@
       "cellules": [
        "IMG-0086",
        "04/06/2026 à 08h00",
-       "YENI M’PO Florent — CNT904/25",
+       "YENI M’PO Florent — CBG904/25",
        "Électrocardiogramme (ECG)",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -15215,7 +15215,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT-AG005",
        "patient": "YENI M’PO Florent",
-       "patientCode": "CNT904/25",
+       "patientCode": "CBG904/25",
        "age": 38,
        "indication": "Douleur thoracique",
        "ddr": "—",
@@ -15254,7 +15254,7 @@
         ],
         [
          "Patient",
-         "YENI M’PO Florent — CNT904/25"
+         "YENI M’PO Florent — CBG904/25"
         ],
         [
          "Âge",
@@ -15439,7 +15439,7 @@
       "cellules": [
        "IMG-0073",
        "01/06/2026 à 14h00",
-       "GARBA Marguerite — CNT/134/25",
+       "GARBA Marguerite — CBG/134/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -15461,7 +15461,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0134",
        "patient": "GARBA Marguerite",
-       "patientCode": "CNT/134/25",
+       "patientCode": "CBG/134/25",
        "age": 14,
        "indication": "Bilan",
        "ddr": "17/02/2026",
@@ -15508,7 +15508,7 @@
         ],
         [
          "Patient",
-         "GARBA Marguerite — CNT/134/25"
+         "GARBA Marguerite — CBG/134/25"
         ],
         [
          "Âge",
@@ -15879,7 +15879,7 @@
       "cellules": [
        "IMG-0023",
        "29/05/2026 à 13h00",
-       "BASSONGUI Adissa — CNT/170/25",
+       "BASSONGUI Adissa — CBG/170/25",
        "Échographie abdominale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -15901,7 +15901,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0170",
        "patient": "BASSONGUI Adissa",
-       "patientCode": "CNT/170/25",
+       "patientCode": "CBG/170/25",
        "age": 26,
        "indication": "Ictère",
        "ddr": "—",
@@ -15946,7 +15946,7 @@
         ],
         [
          "Patient",
-         "BASSONGUI Adissa — CNT/170/25"
+         "BASSONGUI Adissa — CBG/170/25"
         ],
         [
          "Âge",
@@ -16209,7 +16209,7 @@
       "cellules": [
        "IMG-0088",
        "28/05/2026 à 16h00",
-       "BAKO Nadège — CNT/133/26",
+       "BAKO Nadège — CBG/133/26",
        "Électrocardiogramme (ECG)",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -16231,7 +16231,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0133",
        "patient": "BAKO Nadège",
-       "patientCode": "CNT/133/26",
+       "patientCode": "CBG/133/26",
        "age": 25,
        "indication": "HTA",
        "ddr": "—",
@@ -16270,7 +16270,7 @@
         ],
         [
          "Patient",
-         "BAKO Nadège — CNT/133/26"
+         "BAKO Nadège — CBG/133/26"
         ],
         [
          "Âge",
@@ -16455,7 +16455,7 @@
       "cellules": [
        "IMG-0022",
        "26/05/2026 à 15h00",
-       "TEPA Aïssatou — CNT/71/26",
+       "TEPA Aïssatou — CBG/71/26",
        "Échographie abdominale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -16477,7 +16477,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0071",
        "patient": "TEPA Aïssatou",
-       "patientCode": "CNT/71/26",
+       "patientCode": "CBG/71/26",
        "age": 66,
        "indication": "Ictère",
        "ddr": "—",
@@ -16522,7 +16522,7 @@
         ],
         [
          "Patient",
-         "TEPA Aïssatou — CNT/71/26"
+         "TEPA Aïssatou — CBG/71/26"
         ],
         [
          "Âge",
@@ -16785,7 +16785,7 @@
       "cellules": [
        "IMG-0069",
        "26/05/2026 à 12h00",
-       "BAKO Chantal — CNT/100/25",
+       "BAKO Chantal — CBG/100/25",
        "Échographie obstétricale du 1er trimestre",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -16807,7 +16807,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0100",
        "patient": "BAKO Chantal",
-       "patientCode": "CNT/100/25",
+       "patientCode": "CBG/100/25",
        "age": 27,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "inconnue",
@@ -16851,7 +16851,7 @@
         ],
         [
          "Patient",
-         "BAKO Chantal — CNT/100/25"
+         "BAKO Chantal — CBG/100/25"
         ],
         [
          "Âge",
@@ -17195,7 +17195,7 @@
       "cellules": [
        "IMG-0008",
        "25/05/2026 à 15h00",
-       "OROU YO Ramatou — CNT/81/26",
+       "OROU YO Ramatou — CBG/81/26",
        "Échographie pelvienne",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -17217,7 +17217,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0081",
        "patient": "OROU YO Ramatou",
-       "patientCode": "CNT/81/26",
+       "patientCode": "CBG/81/26",
        "age": 30,
        "indication": "Douleurs pelviennes",
        "ddr": "—",
@@ -17259,7 +17259,7 @@
         ],
         [
          "Patient",
-         "OROU YO Ramatou — CNT/81/26"
+         "OROU YO Ramatou — CBG/81/26"
         ],
         [
          "Âge",
@@ -17461,7 +17461,7 @@
       "cellules": [
        "IMG-0032",
        "23/05/2026 à 17h00",
-       "BAKO Bio — CNT/79/26",
+       "BAKO Bio — CBG/79/26",
        "Échographie abdomino-pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -17483,7 +17483,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0079",
        "patient": "BAKO Bio",
-       "patientCode": "CNT/79/26",
+       "patientCode": "CBG/79/26",
        "age": 15,
        "indication": "Bilan d’extension",
        "ddr": "—",
@@ -17534,7 +17534,7 @@
         ],
         [
          "Patient",
-         "BAKO Bio — CNT/79/26"
+         "BAKO Bio — CBG/79/26"
         ],
         [
          "Âge",
@@ -17837,7 +17837,7 @@
       "cellules": [
        "IMG-0016",
        "23/05/2026 à 16h00",
-       "HOUNKPATIN Aïssatou — CNT/117/26",
+       "HOUNKPATIN Aïssatou — CBG/117/26",
        "Échographie abdominale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -17859,7 +17859,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0117",
        "patient": "HOUNKPATIN Aïssatou",
-       "patientCode": "CNT/117/26",
+       "patientCode": "CBG/117/26",
        "age": 3,
        "indication": "Ictère",
        "ddr": "—",
@@ -17904,7 +17904,7 @@
         ],
         [
          "Patient",
-         "HOUNKPATIN Aïssatou — CNT/117/26"
+         "HOUNKPATIN Aïssatou — CBG/117/26"
         ],
         [
          "Âge",
@@ -18167,7 +18167,7 @@
       "cellules": [
        "IMG-0038",
        "23/05/2026 à 11h00",
-       "ADAM Salifou — CNT/106/25",
+       "ADAM Salifou — CBG/106/25",
        "Échographie vésico-prostatique",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -18189,7 +18189,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0106",
        "patient": "ADAM Salifou",
-       "patientCode": "CNT/106/25",
+       "patientCode": "CBG/106/25",
        "age": 43,
        "indication": "Dysurie",
        "ddr": "—",
@@ -18237,7 +18237,7 @@
         ],
         [
          "Patient",
-         "ADAM Salifou — CNT/106/25"
+         "ADAM Salifou — CBG/106/25"
         ],
         [
          "Âge",
@@ -18513,7 +18513,7 @@
       "cellules": [
        "IMG-0003",
        "18/05/2026 à 13h00",
-       "TEPA Fatouma — CNT/145/25",
+       "TEPA Fatouma — CBG/145/25",
        "Échographie pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -18535,7 +18535,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0145",
        "patient": "TEPA Fatouma",
-       "patientCode": "CNT/145/25",
+       "patientCode": "CBG/145/25",
        "age": 5,
        "indication": "Métrorragies",
        "ddr": "—",
@@ -18577,7 +18577,7 @@
         ],
         [
          "Patient",
-         "TEPA Fatouma — CNT/145/25"
+         "TEPA Fatouma — CBG/145/25"
         ],
         [
          "Âge",
@@ -18779,7 +18779,7 @@
       "cellules": [
        "IMG-0018",
        "15/05/2026 à 10h00",
-       "MAMAN Séko — CNT/112/26",
+       "MAMAN Séko — CBG/112/26",
        "Échographie abdominale",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -18801,7 +18801,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0112",
        "patient": "MAMAN Séko",
-       "patientCode": "CNT/112/26",
+       "patientCode": "CBG/112/26",
        "age": 47,
        "indication": "Douleurs de l’hypochondre droit",
        "ddr": "—",
@@ -18846,7 +18846,7 @@
         ],
         [
          "Patient",
-         "MAMAN Séko — CNT/112/26"
+         "MAMAN Séko — CBG/112/26"
         ],
         [
          "Âge",
@@ -19097,7 +19097,7 @@
       "cellules": [
        "IMG-0093",
        "11/05/2026 à 16h00",
-       "YENI Florent — CNT/149/26",
+       "YENI Florent — CBG/149/26",
        "Électrocardiogramme (ECG)",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -19119,7 +19119,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0149",
        "patient": "YENI Florent",
-       "patientCode": "CNT/149/26",
+       "patientCode": "CBG/149/26",
        "age": 22,
        "indication": "Palpitations",
        "ddr": "—",
@@ -19158,7 +19158,7 @@
         ],
         [
          "Patient",
-         "YENI Florent — CNT/149/26"
+         "YENI Florent — CBG/149/26"
         ],
         [
          "Âge",
@@ -19355,7 +19355,7 @@
       "cellules": [
        "IMG-0064",
        "09/05/2026 à 16h00",
-       "PARAISO Rachida — CNT/153/25",
+       "PARAISO Rachida — CBG/153/25",
        "Échographie obstétricale du 1er trimestre",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -19377,7 +19377,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0153",
        "patient": "PARAISO Rachida",
-       "patientCode": "CNT/153/25",
+       "patientCode": "CBG/153/25",
        "age": 15,
        "indication": "Datation",
        "ddr": "20/03/2026",
@@ -19421,7 +19421,7 @@
         ],
         [
          "Patient",
-         "PARAISO Rachida — CNT/153/25"
+         "PARAISO Rachida — CBG/153/25"
         ],
         [
          "Âge",
@@ -19845,7 +19845,7 @@
       "cellules": [
        "IMG-0062",
        "09/05/2026 à 10h00",
-       "TCHANE Rachida — CNT/17/26",
+       "TCHANE Rachida — CBG/17/26",
        "Échographie obstétricale du 1er trimestre",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -19867,7 +19867,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0017",
        "patient": "TCHANE Rachida",
-       "patientCode": "CNT/17/26",
+       "patientCode": "CBG/17/26",
        "age": 45,
        "indication": "Datation",
        "ddr": "16/02/2026",
@@ -19911,7 +19911,7 @@
         ],
         [
          "Patient",
-         "TCHANE Rachida — CNT/17/26"
+         "TCHANE Rachida — CBG/17/26"
         ],
         [
          "Âge",
@@ -20207,7 +20207,7 @@
       "cellules": [
        "IMG-0034",
        "09/05/2026 à 08h00",
-       "GARBA Yahouza — CNT909/25",
+       "GARBA Yahouza — CBG909/25",
        "Échographie abdomino-pelvienne",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -20229,7 +20229,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT-AG010",
        "patient": "GARBA Yahouza",
-       "patientCode": "CNT909/25",
+       "patientCode": "CBG909/25",
        "age": 38,
        "indication": "Bilan d’extension",
        "ddr": "—",
@@ -20280,7 +20280,7 @@
         ],
         [
          "Patient",
-         "GARBA Yahouza — CNT909/25"
+         "GARBA Yahouza — CBG909/25"
         ],
         [
          "Âge",
@@ -20571,7 +20571,7 @@
       "cellules": [
        "IMG-0025",
        "08/05/2026 à 08h00",
-       "OROU YO Adissa — CNT/7/25",
+       "OROU YO Adissa — CBG/7/25",
        "Échographie abdomino-pelvienne",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -20593,7 +20593,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0007",
        "patient": "OROU YO Adissa",
-       "patientCode": "CNT/7/25",
+       "patientCode": "CBG/7/25",
        "age": 25,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -20644,7 +20644,7 @@
         ],
         [
          "Patient",
-         "OROU YO Adissa — CNT/7/25"
+         "OROU YO Adissa — CBG/7/25"
         ],
         [
          "Âge",
@@ -20935,7 +20935,7 @@
       "cellules": [
        "IMG-0094",
        "02/05/2026 à 17h00",
-       "OURTCHA Ganiou — CNT/108/25",
+       "OURTCHA Ganiou — CBG/108/25",
        "Électrocardiogramme (ECG)",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -20957,7 +20957,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0108",
        "patient": "OURTCHA Ganiou",
-       "patientCode": "CNT/108/25",
+       "patientCode": "CBG/108/25",
        "age": 44,
        "indication": "Douleur thoracique",
        "ddr": "—",
@@ -20998,7 +20998,7 @@
         ],
         [
          "Patient",
-         "OURTCHA Ganiou — CNT/108/25"
+         "OURTCHA Ganiou — CBG/108/25"
         ],
         [
          "Âge",
@@ -21183,7 +21183,7 @@
       "cellules": [
        "IMG-0015",
        "01/05/2026 à 12h00",
-       "SOULE Orou — CNT/114/25",
+       "SOULE Orou — CBG/114/25",
        "Échographie abdominale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -21205,7 +21205,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0114",
        "patient": "SOULE Orou",
-       "patientCode": "CNT/114/25",
+       "patientCode": "CBG/114/25",
        "age": 18,
        "indication": "Douleurs de l’hypochondre droit",
        "ddr": "—",
@@ -21250,7 +21250,7 @@
         ],
         [
          "Patient",
-         "SOULE Orou — CNT/114/25"
+         "SOULE Orou — CBG/114/25"
         ],
         [
          "Âge",
@@ -21513,7 +21513,7 @@
       "cellules": [
        "IMG-0084",
        "28/04/2026 à 11h00",
-       "GARBA Zoukanéri — CNT/164/26",
+       "GARBA Zoukanéri — CBG/164/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -21535,7 +21535,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0164",
        "patient": "GARBA Zoukanéri",
-       "patientCode": "CNT/164/26",
+       "patientCode": "CBG/164/26",
        "age": 34,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -21584,7 +21584,7 @@
         ],
         [
          "Patient",
-         "GARBA Zoukanéri — CNT/164/26"
+         "GARBA Zoukanéri — CBG/164/26"
         ],
         [
          "Âge",
@@ -22010,7 +22010,7 @@
       "cellules": [
        "IMG-0045",
        "27/04/2026 à 13h00",
-       "ISSA Chantal — CNT/22/26",
+       "ISSA Chantal — CBG/22/26",
        "Échographie vésico-prostatique",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -22032,7 +22032,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0022",
        "patient": "ISSA Chantal",
-       "patientCode": "CNT/22/26",
+       "patientCode": "CBG/22/26",
        "age": 34,
        "indication": "Dysurie",
        "ddr": "—",
@@ -22082,7 +22082,7 @@
         ],
         [
          "Patient",
-         "ISSA Chantal — CNT/22/26"
+         "ISSA Chantal — CBG/22/26"
         ],
         [
          "Âge",
@@ -22368,7 +22368,7 @@
       "cellules": [
        "IMG-0002",
        "24/04/2026 à 13h00",
-       "N’TCHA Salifou — CNT/90/26",
+       "N’TCHA Salifou — CBG/90/26",
        "Échographie pelvienne",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -22390,7 +22390,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0090",
        "patient": "N’TCHA Salifou",
-       "patientCode": "CNT/90/26",
+       "patientCode": "CBG/90/26",
        "age": 59,
        "indication": "Métrorragies",
        "ddr": "—",
@@ -22432,7 +22432,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Salifou — CNT/90/26"
+         "N’TCHA Salifou — CBG/90/26"
         ],
         [
          "Âge",
@@ -22648,7 +22648,7 @@
       "cellules": [
        "IMG-0078",
        "20/04/2026 à 09h00",
-       "ZIME Ramatou — CNT/163/25",
+       "ZIME Ramatou — CBG/163/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -22670,7 +22670,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0163",
        "patient": "ZIME Ramatou",
-       "patientCode": "CNT/163/25",
+       "patientCode": "CBG/163/25",
        "age": 43,
        "indication": "Bilan",
        "ddr": "30/12/2025",
@@ -22719,7 +22719,7 @@
         ],
         [
          "Patient",
-         "ZIME Ramatou — CNT/163/25"
+         "ZIME Ramatou — CBG/163/25"
         ],
         [
          "Âge",
@@ -23078,7 +23078,7 @@
       "cellules": [
        "IMG-0044",
        "17/04/2026 à 08h00",
-       "KASSA Adissa — CNT/115/26",
+       "KASSA Adissa — CBG/115/26",
        "Échographie vésico-prostatique",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -23100,7 +23100,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0115",
        "patient": "KASSA Adissa",
-       "patientCode": "CNT/115/26",
+       "patientCode": "CBG/115/26",
        "age": 70,
        "indication": "PSA élevé",
        "ddr": "—",
@@ -23148,7 +23148,7 @@
         ],
         [
          "Patient",
-         "KASSA Adissa — CNT/115/26"
+         "KASSA Adissa — CBG/115/26"
         ],
         [
          "Âge",
@@ -23422,7 +23422,7 @@
       "cellules": [
        "IMG-0017",
        "16/04/2026 à 10h00",
-       "BAKO Bio — CNT/79/26",
+       "BAKO Bio — CBG/79/26",
        "Échographie abdominale",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -23444,7 +23444,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0079",
        "patient": "BAKO Bio",
-       "patientCode": "CNT/79/26",
+       "patientCode": "CBG/79/26",
        "age": 15,
        "indication": "Hépatomégalie",
        "ddr": "—",
@@ -23489,7 +23489,7 @@
         ],
         [
          "Patient",
-         "BAKO Bio — CNT/79/26"
+         "BAKO Bio — CBG/79/26"
         ],
         [
          "Âge",
@@ -23752,7 +23752,7 @@
       "cellules": [
        "IMG-0029",
        "15/04/2026 à 17h00",
-       "SANNI Nadège — CNT/174/26",
+       "SANNI Nadège — CBG/174/26",
        "Échographie abdomino-pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -23774,7 +23774,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0174",
        "patient": "SANNI Nadège",
-       "patientCode": "CNT/174/26",
+       "patientCode": "CBG/174/26",
        "age": 43,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -23825,7 +23825,7 @@
         ],
         [
          "Patient",
-         "SANNI Nadège — CNT/174/26"
+         "SANNI Nadège — CBG/174/26"
         ],
         [
          "Âge",
@@ -24128,7 +24128,7 @@
       "cellules": [
        "IMG-0050",
        "14/04/2026 à 11h00",
-       "WOROU Adissa — CNT/157/25",
+       "WOROU Adissa — CBG/157/25",
        "Échographie obstétricale",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -24150,7 +24150,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0157",
        "patient": "WOROU Adissa",
-       "patientCode": "CNT/157/25",
+       "patientCode": "CBG/157/25",
        "age": 79,
        "indication": "Terme",
        "ddr": "inconnue",
@@ -24206,7 +24206,7 @@
         ],
         [
          "Patient",
-         "WOROU Adissa — CNT/157/25"
+         "WOROU Adissa — CBG/157/25"
         ],
         [
          "Âge",
@@ -24547,7 +24547,7 @@
       "cellules": [
        "IMG-0031",
        "14/04/2026 à 08h00",
-       "PARAISO Séraphine — CNT/45/26",
+       "PARAISO Séraphine — CBG/45/26",
        "Échographie abdomino-pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -24569,7 +24569,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0045",
        "patient": "PARAISO Séraphine",
-       "patientCode": "CNT/45/26",
+       "patientCode": "CBG/45/26",
        "age": 3,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -24620,7 +24620,7 @@
         ],
         [
          "Patient",
-         "PARAISO Séraphine — CNT/45/26"
+         "PARAISO Séraphine — CBG/45/26"
         ],
         [
          "Âge",
@@ -24911,7 +24911,7 @@
       "cellules": [
        "IMG-0037",
        "10/04/2026 à 09h00",
-       "YENI Orou — CNT/52/26",
+       "YENI Orou — CBG/52/26",
        "Échographie vésico-prostatique",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -24933,7 +24933,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0052",
        "patient": "YENI Orou",
-       "patientCode": "CNT/52/26",
+       "patientCode": "CBG/52/26",
        "age": 24,
        "indication": "PSA élevé",
        "ddr": "—",
@@ -24981,7 +24981,7 @@
         ],
         [
          "Patient",
-         "YENI Orou — CNT/52/26"
+         "YENI Orou — CBG/52/26"
         ],
         [
          "Âge",
@@ -25255,7 +25255,7 @@
       "cellules": [
        "IMG-0071",
        "09/04/2026 à 12h00",
-       "BOUKARI Ramatou — CNT/146/26",
+       "BOUKARI Ramatou — CBG/146/26",
        "Échographie obstétricale du 1er trimestre",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -25277,7 +25277,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0146",
        "patient": "BOUKARI Ramatou",
-       "patientCode": "CNT/146/26",
+       "patientCode": "CBG/146/26",
        "age": 25,
        "indication": "Terme",
        "ddr": "10/01/2026",
@@ -25321,7 +25321,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Ramatou — CNT/146/26"
+         "BOUKARI Ramatou — CBG/146/26"
         ],
         [
          "Âge",
@@ -25653,7 +25653,7 @@
       "cellules": [
        "IMG-0027",
        "08/04/2026 à 14h00",
-       "YENI M’PO Florent — CNT904/25",
+       "YENI M’PO Florent — CBG904/25",
        "Échographie abdomino-pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -25675,7 +25675,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT-AG005",
        "patient": "YENI M’PO Florent",
-       "patientCode": "CNT904/25",
+       "patientCode": "CBG904/25",
        "age": 38,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -25726,7 +25726,7 @@
         ],
         [
          "Patient",
-         "YENI M’PO Florent — CNT904/25"
+         "YENI M’PO Florent — CBG904/25"
         ],
         [
          "Âge",
@@ -26017,7 +26017,7 @@
       "cellules": [
        "IMG-0080",
        "08/04/2026 à 08h00",
-       "OURTCHA Kadidjatou — CNT/99/26",
+       "OURTCHA Kadidjatou — CBG/99/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -26039,7 +26039,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0099",
        "patient": "OURTCHA Kadidjatou",
-       "patientCode": "CNT/99/26",
+       "patientCode": "CBG/99/26",
        "age": 47,
        "indication": "Bilan",
        "ddr": "13/01/2026",
@@ -26086,7 +26086,7 @@
         ],
         [
          "Patient",
-         "OURTCHA Kadidjatou — CNT/99/26"
+         "OURTCHA Kadidjatou — CBG/99/26"
         ],
         [
          "Âge",
@@ -26445,7 +26445,7 @@
       "cellules": [
        "IMG-0054",
        "01/04/2026 à 08h00",
-       "KINNOU Bertine — CNT/56/25",
+       "KINNOU Bertine — CBG/56/25",
        "Échographie obstétricale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -26467,7 +26467,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0056",
        "patient": "KINNOU Bertine",
-       "patientCode": "CNT/56/25",
+       "patientCode": "CBG/56/25",
        "age": 30,
        "indication": "Croissance",
        "ddr": "inconnue",
@@ -26525,7 +26525,7 @@
         ],
         [
          "Patient",
-         "KINNOU Bertine — CNT/56/25"
+         "KINNOU Bertine — CBG/56/25"
         ],
         [
          "Âge",
@@ -26878,7 +26878,7 @@
       "cellules": [
        "IMG-0021",
        "30/03/2026 à 09h00",
-       "MAMAN Chantal — CNT/85/26",
+       "MAMAN Chantal — CBG/85/26",
        "Échographie abdominale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -26900,7 +26900,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0085",
        "patient": "MAMAN Chantal",
-       "patientCode": "CNT/85/26",
+       "patientCode": "CBG/85/26",
        "age": 52,
        "indication": "Hépatomégalie",
        "ddr": "—",
@@ -26945,7 +26945,7 @@
         ],
         [
          "Patient",
-         "MAMAN Chantal — CNT/85/26"
+         "MAMAN Chantal — CBG/85/26"
         ],
         [
          "Âge",
@@ -27210,7 +27210,7 @@
       "cellules": [
        "IMG-0092",
        "24/03/2026 à 09h00",
-       "BOUKARI Ramatou — CNT/146/26",
+       "BOUKARI Ramatou — CBG/146/26",
        "Électrocardiogramme (ECG)",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -27232,7 +27232,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0146",
        "patient": "BOUKARI Ramatou",
-       "patientCode": "CNT/146/26",
+       "patientCode": "CBG/146/26",
        "age": 25,
        "indication": "Douleur thoracique",
        "ddr": "—",
@@ -27271,7 +27271,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Ramatou — CNT/146/26"
+         "BOUKARI Ramatou — CBG/146/26"
         ],
         [
          "Âge",
@@ -27456,7 +27456,7 @@
       "cellules": [
        "IMG-0043",
        "23/03/2026 à 17h00",
-       "BANI Souleymane — CNT/140/25",
+       "BANI Souleymane — CBG/140/25",
        "Échographie vésico-prostatique",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -27478,7 +27478,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0140",
        "patient": "BANI Souleymane",
-       "patientCode": "CNT/140/25",
+       "patientCode": "CBG/140/25",
        "age": 59,
        "indication": "PSA élevé",
        "ddr": "—",
@@ -27526,7 +27526,7 @@
         ],
         [
          "Patient",
-         "BANI Souleymane — CNT/140/25"
+         "BANI Souleymane — CBG/140/25"
         ],
         [
          "Âge",
@@ -27812,7 +27812,7 @@
       "cellules": [
        "IMG-0065",
        "20/03/2026 à 08h00",
-       "BAKO Nadège — CNT/133/26",
+       "BAKO Nadège — CBG/133/26",
        "Échographie obstétricale du 1er trimestre",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -27834,7 +27834,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0133",
        "patient": "BAKO Nadège",
-       "patientCode": "CNT/133/26",
+       "patientCode": "CBG/133/26",
        "age": 25,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "inconnue",
@@ -27878,7 +27878,7 @@
         ],
         [
          "Patient",
-         "BAKO Nadège — CNT/133/26"
+         "BAKO Nadège — CBG/133/26"
         ],
         [
          "Âge",
@@ -28146,7 +28146,7 @@
       "cellules": [
        "IMG-0085",
        "13/03/2026 à 09h00",
-       "PARAISO Bertine — CNT/131/26",
+       "PARAISO Bertine — CBG/131/26",
        "Électrocardiogramme (ECG)",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -28168,7 +28168,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0131",
        "patient": "PARAISO Bertine",
-       "patientCode": "CNT/131/26",
+       "patientCode": "CBG/131/26",
        "age": 11,
        "indication": "Douleur thoracique",
        "ddr": "—",
@@ -28207,7 +28207,7 @@
         ],
         [
          "Patient",
-         "PARAISO Bertine — CNT/131/26"
+         "PARAISO Bertine — CBG/131/26"
         ],
         [
          "Âge",
@@ -28392,7 +28392,7 @@
       "cellules": [
        "IMG-0014",
        "11/03/2026 à 09h00",
-       "BOUKARI Rachida — CNT/172/26",
+       "BOUKARI Rachida — CBG/172/26",
        "Échographie abdominale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -28414,7 +28414,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0172",
        "patient": "BOUKARI Rachida",
-       "patientCode": "CNT/172/26",
+       "patientCode": "CBG/172/26",
        "age": 68,
        "indication": "Douleurs de l’hypochondre droit",
        "ddr": "—",
@@ -28459,7 +28459,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Rachida — CNT/172/26"
+         "BOUKARI Rachida — CBG/172/26"
         ],
         [
          "Âge",
@@ -28710,7 +28710,7 @@
       "cellules": [
        "IMG-0013",
        "10/03/2026 à 17h00",
-       "GARBA Tamou — CNT/144/26",
+       "GARBA Tamou — CBG/144/26",
        "Échographie abdominale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -28732,7 +28732,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0144",
        "patient": "GARBA Tamou",
-       "patientCode": "CNT/144/26",
+       "patientCode": "CBG/144/26",
        "age": 81,
        "indication": "Douleurs de l’hypochondre droit",
        "ddr": "—",
@@ -28777,7 +28777,7 @@
         ],
         [
          "Patient",
-         "GARBA Tamou — CNT/144/26"
+         "GARBA Tamou — CBG/144/26"
         ],
         [
          "Âge",
@@ -29040,7 +29040,7 @@
       "cellules": [
        "IMG-0047",
        "05/03/2026 à 16h00",
-       "OROU YO Ramatou — CNT/81/26",
+       "OROU YO Ramatou — CBG/81/26",
        "Échographie vésico-prostatique",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -29062,7 +29062,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0081",
        "patient": "OROU YO Ramatou",
-       "patientCode": "CNT/81/26",
+       "patientCode": "CBG/81/26",
        "age": 30,
        "indication": "RAU",
        "ddr": "—",
@@ -29110,7 +29110,7 @@
         ],
         [
          "Patient",
-         "OROU YO Ramatou — CNT/81/26"
+         "OROU YO Ramatou — CBG/81/26"
         ],
         [
          "Âge",
@@ -29384,7 +29384,7 @@
       "cellules": [
        "IMG-0056",
        "03/03/2026 à 12h00",
-       "BOUKARI Rachida — CNT/172/26",
+       "BOUKARI Rachida — CBG/172/26",
        "Échographie obstétricale",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -29406,7 +29406,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0172",
        "patient": "BOUKARI Rachida",
-       "patientCode": "CNT/172/26",
+       "patientCode": "CBG/172/26",
        "age": 68,
        "indication": "Croissance",
        "ddr": "inconnue",
@@ -29462,7 +29462,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Rachida — CNT/172/26"
+         "BOUKARI Rachida — CBG/172/26"
         ],
         [
          "Âge",
@@ -29803,7 +29803,7 @@
       "cellules": [
        "IMG-0052",
        "24/02/2026 à 17h00",
-       "BOUKARI Sylvie — CNT/35/25",
+       "BOUKARI Sylvie — CBG/35/25",
        "Échographie obstétricale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -29825,7 +29825,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0035",
        "patient": "BOUKARI Sylvie",
-       "patientCode": "CNT/35/25",
+       "patientCode": "CBG/35/25",
        "age": 50,
        "indication": "Croissance",
        "ddr": "22/02/2026",
@@ -29881,7 +29881,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Sylvie — CNT/35/25"
+         "BOUKARI Sylvie — CBG/35/25"
         ],
         [
          "Âge",
@@ -30234,7 +30234,7 @@
       "cellules": [
        "IMG-0070",
        "23/02/2026 à 11h00",
-       "PARAISO Rachida — CNT/153/25",
+       "PARAISO Rachida — CBG/153/25",
        "Échographie obstétricale du 1er trimestre",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -30256,7 +30256,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0153",
        "patient": "PARAISO Rachida",
-       "patientCode": "CNT/153/25",
+       "patientCode": "CBG/153/25",
        "age": 15,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "09/03/2026",
@@ -30300,7 +30300,7 @@
         ],
         [
          "Patient",
-         "PARAISO Rachida — CNT/153/25"
+         "PARAISO Rachida — CBG/153/25"
         ],
         [
          "Âge",
@@ -30528,7 +30528,7 @@
       "cellules": [
        "IMG-0012",
        "21/02/2026 à 08h00",
-       "DOSSOU Séko — CNT/135/26",
+       "DOSSOU Séko — CBG/135/26",
        "Échographie pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -30550,7 +30550,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0135",
        "patient": "DOSSOU Séko",
-       "patientCode": "CNT/135/26",
+       "patientCode": "CBG/135/26",
        "age": 3,
        "indication": "Bilan d’infertilité",
        "ddr": "—",
@@ -30596,7 +30596,7 @@
         ],
         [
          "Patient",
-         "DOSSOU Séko — CNT/135/26"
+         "DOSSOU Séko — CBG/135/26"
         ],
         [
          "Âge",
@@ -30798,7 +30798,7 @@
       "cellules": [
        "IMG-0020",
        "20/02/2026 à 08h00",
-       "ADAM Salifou — CNT/106/25",
+       "ADAM Salifou — CBG/106/25",
        "Échographie abdominale",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -30820,7 +30820,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0106",
        "patient": "ADAM Salifou",
-       "patientCode": "CNT/106/25",
+       "patientCode": "CBG/106/25",
        "age": 43,
        "indication": "Ictère",
        "ddr": "—",
@@ -30867,7 +30867,7 @@
         ],
         [
          "Patient",
-         "ADAM Salifou — CNT/106/25"
+         "ADAM Salifou — CBG/106/25"
         ],
         [
          "Âge",
@@ -31120,7 +31120,7 @@
       "cellules": [
        "IMG-0040",
        "18/02/2026 à 17h00",
-       "KINNOU Orou — CNT/51/25",
+       "KINNOU Orou — CBG/51/25",
        "Échographie vésico-prostatique",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -31142,7 +31142,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0051",
        "patient": "KINNOU Orou",
-       "patientCode": "CNT/51/25",
+       "patientCode": "CBG/51/25",
        "age": 9,
        "indication": "RAU",
        "ddr": "—",
@@ -31190,7 +31190,7 @@
         ],
         [
          "Patient",
-         "KINNOU Orou — CNT/51/25"
+         "KINNOU Orou — CBG/51/25"
         ],
         [
          "Âge",
@@ -31464,7 +31464,7 @@
       "cellules": [
        "IMG-0098",
        "17/02/2026 à 17h00",
-       "PARAISO Ganiou — CNT/179/25",
+       "PARAISO Ganiou — CBG/179/25",
        "Électrocardiogramme (ECG)",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -31486,7 +31486,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0179",
        "patient": "PARAISO Ganiou",
-       "patientCode": "CNT/179/25",
+       "patientCode": "CBG/179/25",
        "age": 64,
        "indication": "Palpitations",
        "ddr": "—",
@@ -31525,7 +31525,7 @@
         ],
         [
          "Patient",
-         "PARAISO Ganiou — CNT/179/25"
+         "PARAISO Ganiou — CBG/179/25"
         ],
         [
          "Âge",
@@ -31710,7 +31710,7 @@
       "cellules": [
        "IMG-0066",
        "17/02/2026 à 16h00",
-       "WOROU Rachida — CNT/155/25",
+       "WOROU Rachida — CBG/155/25",
        "Échographie obstétricale du 1er trimestre",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -31732,7 +31732,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0155",
        "patient": "WOROU Rachida",
-       "patientCode": "CNT/155/25",
+       "patientCode": "CBG/155/25",
        "age": 21,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "25/12/2025",
@@ -31776,7 +31776,7 @@
         ],
         [
          "Patient",
-         "WOROU Rachida — CNT/155/25"
+         "WOROU Rachida — CBG/155/25"
         ],
         [
          "Âge",
@@ -32148,7 +32148,7 @@
       "cellules": [
        "IMG-0039",
        "06/02/2026 à 10h00",
-       "N’TCHA Salifou — CNT/130/26",
+       "N’TCHA Salifou — CBG/130/26",
        "Échographie vésico-prostatique",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -32170,7 +32170,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0130",
        "patient": "N’TCHA Salifou",
-       "patientCode": "CNT/130/26",
+       "patientCode": "CBG/130/26",
        "age": 75,
        "indication": "RAU",
        "ddr": "—",
@@ -32218,7 +32218,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Salifou — CNT/130/26"
+         "N’TCHA Salifou — CBG/130/26"
         ],
         [
          "Âge",
@@ -32504,7 +32504,7 @@
       "cellules": [
        "IMG-0033",
        "06/02/2026 à 08h00",
-       "TCHANE Zakari — CNT/39/26",
+       "TCHANE Zakari — CBG/39/26",
        "Échographie abdomino-pelvienne",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -32526,7 +32526,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0039",
        "patient": "TCHANE Zakari",
-       "patientCode": "CNT/39/26",
+       "patientCode": "CBG/39/26",
        "age": 35,
        "indication": "Douleurs abdominales diffuses",
        "ddr": "—",
@@ -32577,7 +32577,7 @@
         ],
         [
          "Patient",
-         "TCHANE Zakari — CNT/39/26"
+         "TCHANE Zakari — CBG/39/26"
         ],
         [
          "Âge",
@@ -32868,7 +32868,7 @@
       "cellules": [
        "IMG-0076",
        "05/02/2026 à 11h00",
-       "MAMAN Chantal — CNT/85/26",
+       "MAMAN Chantal — CBG/85/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -32890,7 +32890,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0085",
        "patient": "MAMAN Chantal",
-       "patientCode": "CNT/85/26",
+       "patientCode": "CBG/85/26",
        "age": 52,
        "indication": "Bilan",
        "ddr": "24/06/2026",
@@ -32937,7 +32937,7 @@
         ],
         [
          "Patient",
-         "MAMAN Chantal — CNT/85/26"
+         "MAMAN Chantal — CBG/85/26"
         ],
         [
          "Âge",
@@ -33326,7 +33326,7 @@
       "cellules": [
        "IMG-0053",
        "04/02/2026 à 15h00",
-       "N’TCHA Alimatou — CNT/23/26",
+       "N’TCHA Alimatou — CBG/23/26",
        "Échographie obstétricale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -33348,7 +33348,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0023",
        "patient": "N’TCHA Alimatou",
-       "patientCode": "CNT/23/26",
+       "patientCode": "CBG/23/26",
        "age": 27,
        "indication": "Vitalité fœtale",
        "ddr": "05/02/2026",
@@ -33404,7 +33404,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Alimatou — CNT/23/26"
+         "N’TCHA Alimatou — CBG/23/26"
         ],
         [
          "Âge",
@@ -33757,7 +33757,7 @@
       "cellules": [
        "IMG-0046",
        "31/01/2026 à 15h00",
-       "KASSA Adissa — CNT/115/26",
+       "KASSA Adissa — CBG/115/26",
        "Échographie vésico-prostatique",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -33779,7 +33779,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT0115",
        "patient": "KASSA Adissa",
-       "patientCode": "CNT/115/26",
+       "patientCode": "CBG/115/26",
        "age": 70,
        "indication": "RAU",
        "ddr": "—",
@@ -33827,7 +33827,7 @@
         ],
         [
          "Patient",
-         "KASSA Adissa — CNT/115/26"
+         "KASSA Adissa — CBG/115/26"
         ],
         [
          "Âge",
@@ -34101,7 +34101,7 @@
       "cellules": [
        "IMG-0007",
        "30/01/2026 à 17h00",
-       "SAMBIENI Ganiou — CNT/34/26",
+       "SAMBIENI Ganiou — CBG/34/26",
        "Échographie pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -34123,7 +34123,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0034",
        "patient": "SAMBIENI Ganiou",
-       "patientCode": "CNT/34/26",
+       "patientCode": "CBG/34/26",
        "age": 47,
        "indication": "Kyste ovarien ?",
        "ddr": "—",
@@ -34167,7 +34167,7 @@
         ],
         [
          "Patient",
-         "SAMBIENI Ganiou — CNT/34/26"
+         "SAMBIENI Ganiou — CBG/34/26"
         ],
         [
          "Âge",
@@ -34369,7 +34369,7 @@
       "cellules": [
        "IMG-0026",
        "27/01/2026 à 13h00",
-       "GBEDJI Augustin — CNT/127/26",
+       "GBEDJI Augustin — CBG/127/26",
        "Échographie abdomino-pelvienne",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -34391,7 +34391,7 @@
        "examen": "Échographie abdomino-pelvienne",
        "patientId": "PAT0127",
        "patient": "GBEDJI Augustin",
-       "patientCode": "CNT/127/26",
+       "patientCode": "CBG/127/26",
        "age": 55,
        "indication": "Bilan d’extension",
        "ddr": "—",
@@ -34442,7 +34442,7 @@
         ],
         [
          "Patient",
-         "GBEDJI Augustin — CNT/127/26"
+         "GBEDJI Augustin — CBG/127/26"
         ],
         [
          "Âge",
@@ -34745,7 +34745,7 @@
       "cellules": [
        "IMG-0081",
        "13/01/2026 à 11h00",
-       "DIEYABIDI Bibata — CNT/6/25",
+       "DIEYABIDI Bibata — CBG/6/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -34767,7 +34767,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0006",
        "patient": "DIEYABIDI Bibata",
-       "patientCode": "CNT/6/25",
+       "patientCode": "CBG/6/25",
        "age": 27,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -34814,7 +34814,7 @@
         ],
         [
          "Patient",
-         "DIEYABIDI Bibata — CNT/6/25"
+         "DIEYABIDI Bibata — CBG/6/25"
         ],
         [
          "Âge",
@@ -35057,7 +35057,7 @@
       "cellules": [
        "IMG-0041",
        "12/01/2026 à 15h00",
-       "KASSA Augustin — CNT902/25",
+       "KASSA Augustin — CBG902/25",
        "Échographie vésico-prostatique",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -35079,7 +35079,7 @@
        "examen": "Échographie vésico-prostatique",
        "patientId": "PAT-AG003",
        "patient": "KASSA Augustin",
-       "patientCode": "CNT902/25",
+       "patientCode": "CBG902/25",
        "age": 38,
        "indication": "RAU",
        "ddr": "—",
@@ -35127,7 +35127,7 @@
         ],
         [
          "Patient",
-         "KASSA Augustin — CNT902/25"
+         "KASSA Augustin — CBG902/25"
         ],
         [
          "Âge",
@@ -35403,7 +35403,7 @@
       "cellules": [
        "IMG-0011",
        "12/01/2026 à 11h00",
-       "KASSA Alassane — CNT/60/26",
+       "KASSA Alassane — CBG/60/26",
        "Échographie pelvienne",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -35425,7 +35425,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0060",
        "patient": "KASSA Alassane",
-       "patientCode": "CNT/60/26",
+       "patientCode": "CBG/60/26",
        "age": 32,
        "indication": "Bilan d’infertilité",
        "ddr": "—",
@@ -35467,7 +35467,7 @@
         ],
         [
          "Patient",
-         "KASSA Alassane — CNT/60/26"
+         "KASSA Alassane — CBG/60/26"
         ],
         [
          "Âge",
@@ -35681,7 +35681,7 @@
       "cellules": [
        "IMG-0082",
        "08/01/2026 à 16h00",
-       "GARBA Marguerite — CNT/134/25",
+       "GARBA Marguerite — CBG/134/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -35703,7 +35703,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0134",
        "patient": "GARBA Marguerite",
-       "patientCode": "CNT/134/25",
+       "patientCode": "CBG/134/25",
        "age": 14,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -35750,7 +35750,7 @@
         ],
         [
          "Patient",
-         "GARBA Marguerite — CNT/134/25"
+         "GARBA Marguerite — CBG/134/25"
         ],
         [
          "Âge",
@@ -36243,7 +36243,7 @@
       "cellules": [
        "IMG-0077",
        "06/01/2026 à 09h00",
-       "YARO Ramatou — CNT/92/25",
+       "YARO Ramatou — CBG/92/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -36265,7 +36265,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0092",
        "patient": "YARO Ramatou",
-       "patientCode": "CNT/92/25",
+       "patientCode": "CBG/92/25",
        "age": 48,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -36314,7 +36314,7 @@
         ],
         [
          "Patient",
-         "YARO Ramatou — CNT/92/25"
+         "YARO Ramatou — CBG/92/25"
         ],
         [
          "Âge",
@@ -36691,7 +36691,7 @@
       "cellules": [
        "IMG-0019",
        "05/01/2026 à 15h00",
-       "MAMAN Yahouza — CNT/68/26",
+       "MAMAN Yahouza — CBG/68/26",
        "Échographie abdominale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -36713,7 +36713,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0068",
        "patient": "MAMAN Yahouza",
-       "patientCode": "CNT/68/26",
+       "patientCode": "CBG/68/26",
        "age": 62,
        "indication": "Ictère",
        "ddr": "—",
@@ -36760,7 +36760,7 @@
         ],
         [
          "Patient",
-         "MAMAN Yahouza — CNT/68/26"
+         "MAMAN Yahouza — CBG/68/26"
         ],
         [
          "Âge",
@@ -37023,7 +37023,7 @@
       "cellules": [
        "IMG-0061",
        "05/01/2026 à 12h00",
-       "OROU YO Alimatou — CNT916/25",
+       "OROU YO Alimatou — CBG916/25",
        "Échographie obstétricale du 1er trimestre",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -37045,7 +37045,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT-AG017",
        "patient": "OROU YO Alimatou",
-       "patientCode": "CNT916/25",
+       "patientCode": "CBG916/25",
        "age": 38,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "inconnue",
@@ -37089,7 +37089,7 @@
         ],
         [
          "Patient",
-         "OROU YO Alimatou — CNT916/25"
+         "OROU YO Alimatou — CBG916/25"
         ],
         [
          "Âge",
@@ -37305,7 +37305,7 @@
       "cellules": [
        "IMG-0005",
        "03/01/2026 à 10h00",
-       "MAMAN Yahouza — CNT/68/26",
+       "MAMAN Yahouza — CBG/68/26",
        "Échographie pelvienne",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -37327,7 +37327,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PAT0068",
        "patient": "MAMAN Yahouza",
-       "patientCode": "CNT/68/26",
+       "patientCode": "CBG/68/26",
        "age": 62,
        "indication": "Douleurs pelviennes",
        "ddr": "—",
@@ -37369,7 +37369,7 @@
         ],
         [
          "Patient",
-         "MAMAN Yahouza — CNT/68/26"
+         "MAMAN Yahouza — CBG/68/26"
         ],
         [
          "Âge",
@@ -37583,7 +37583,7 @@
       "cellules": [
        "IMG-0097",
        "02/01/2026 à 16h00",
-       "BOUKARI Yacoubou — CNT/53/25",
+       "BOUKARI Yacoubou — CBG/53/25",
        "Électrocardiogramme (ECG)",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -37605,7 +37605,7 @@
        "examen": "Électrocardiogramme (ECG)",
        "patientId": "PAT0053",
        "patient": "BOUKARI Yacoubou",
-       "patientCode": "CNT/53/25",
+       "patientCode": "CBG/53/25",
        "age": 30,
        "indication": "Palpitations",
        "ddr": "—",
@@ -37646,7 +37646,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Yacoubou — CNT/53/25"
+         "BOUKARI Yacoubou — CBG/53/25"
         ],
         [
          "Âge",
@@ -37843,7 +37843,7 @@
       "cellules": [
        "IMG-0024",
        "29/12/2025 à 10h00",
-       "TCHOUKOUROU Chantal — CNT/50/26",
+       "TCHOUKOUROU Chantal — CBG/50/26",
        "Échographie abdominale",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -37865,7 +37865,7 @@
        "examen": "Échographie abdominale",
        "patientId": "PAT0050",
        "patient": "TCHOUKOUROU Chantal",
-       "patientCode": "CNT/50/26",
+       "patientCode": "CBG/50/26",
        "age": 82,
        "indication": "Ictère",
        "ddr": "—",
@@ -37910,7 +37910,7 @@
         ],
         [
          "Patient",
-         "TCHOUKOUROU Chantal — CNT/50/26"
+         "TCHOUKOUROU Chantal — CBG/50/26"
         ],
         [
          "Âge",
@@ -38173,7 +38173,7 @@
       "cellules": [
        "IMG-0074",
        "27/12/2025 à 14h00",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "Échographie obstétricale du 1er trimestre évolué",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -38195,7 +38195,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0001",
        "patient": "TCHANE Bertine",
-       "patientCode": "CNT/1/25",
+       "patientCode": "CBG/1/25",
        "age": 37,
        "indication": "Bilan",
        "ddr": "03/02/2026",
@@ -38244,7 +38244,7 @@
         ],
         [
          "Patient",
-         "TCHANE Bertine — CNT/1/25"
+         "TCHANE Bertine — CBG/1/25"
         ],
         [
          "Âge",
@@ -38691,7 +38691,7 @@
       "cellules": [
        "IMG-0067",
        "27/12/2025 à 08h00",
-       "ISSA Awaou — CNT/128/25",
+       "ISSA Awaou — CBG/128/25",
        "Échographie obstétricale du 1er trimestre",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -38713,7 +38713,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0128",
        "patient": "ISSA Awaou",
-       "patientCode": "CNT/128/25",
+       "patientCode": "CBG/128/25",
        "age": 51,
        "indication": "Datation",
        "ddr": "inconnue",
@@ -38757,7 +38757,7 @@
         ],
         [
          "Patient",
-         "ISSA Awaou — CNT/128/25"
+         "ISSA Awaou — CBG/128/25"
         ],
         [
          "Âge",
@@ -38973,7 +38973,7 @@
       "cellules": [
        "IMG-0055",
        "23/12/2025 à 08h00",
-       "OURTCHA Sylvie — CNT/150/26",
+       "OURTCHA Sylvie — CBG/150/26",
        "Échographie obstétricale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -38995,7 +38995,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0150",
        "patient": "OURTCHA Sylvie",
-       "patientCode": "CNT/150/26",
+       "patientCode": "CBG/150/26",
        "age": 42,
        "indication": "Croissance",
        "ddr": "15/01/2026",
@@ -39051,7 +39051,7 @@
         ],
         [
          "Patient",
-         "OURTCHA Sylvie — CNT/150/26"
+         "OURTCHA Sylvie — CBG/150/26"
         ],
         [
          "Âge",
@@ -39404,7 +39404,7 @@
       "cellules": [
        "IMG-0075",
        "20/12/2025 à 17h00",
-       "PARAISO Séraphine — CNT/45/26",
+       "PARAISO Séraphine — CBG/45/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -39426,7 +39426,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0045",
        "patient": "PARAISO Séraphine",
-       "patientCode": "CNT/45/26",
+       "patientCode": "CBG/45/26",
        "age": 3,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -39473,7 +39473,7 @@
         ],
         [
          "Patient",
-         "PARAISO Séraphine — CNT/45/26"
+         "PARAISO Séraphine — CBG/45/26"
         ],
         [
          "Âge",
@@ -39730,7 +39730,7 @@
       "cellules": [
        "IMG-0059",
        "18/12/2025 à 13h00",
-       "OROU YO Adissa — CNT/7/25",
+       "OROU YO Adissa — CBG/7/25",
        "Échographie obstétricale",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -39752,7 +39752,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0007",
        "patient": "OROU YO Adissa",
-       "patientCode": "CNT/7/25",
+       "patientCode": "CBG/7/25",
        "age": 25,
        "indication": "Croissance",
        "ddr": "04/05/2026",
@@ -39808,7 +39808,7 @@
         ],
         [
          "Patient",
-         "OROU YO Adissa — CNT/7/25"
+         "OROU YO Adissa — CBG/7/25"
         ],
         [
          "Âge",
@@ -40149,7 +40149,7 @@
       "cellules": [
        "IMG-0057",
        "13/12/2025 à 11h00",
-       "YENI Zoukanéri — CNT/152/26",
+       "YENI Zoukanéri — CBG/152/26",
        "Échographie obstétricale",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -40171,7 +40171,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0152",
        "patient": "YENI Zoukanéri",
-       "patientCode": "CNT/152/26",
+       "patientCode": "CBG/152/26",
        "age": 65,
        "indication": "Vitalité fœtale",
        "ddr": "24/05/2026",
@@ -40227,7 +40227,7 @@
         ],
         [
          "Patient",
-         "YENI Zoukanéri — CNT/152/26"
+         "YENI Zoukanéri — CBG/152/26"
         ],
         [
          "Âge",
@@ -40568,7 +40568,7 @@
       "cellules": [
        "IMG-0063",
        "06/12/2025 à 17h00",
-       "WOROU Rachida — CNT/155/25",
+       "WOROU Rachida — CBG/155/25",
        "Échographie obstétricale du 1er trimestre",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -40590,7 +40590,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0155",
        "patient": "WOROU Rachida",
-       "patientCode": "CNT/155/25",
+       "patientCode": "CBG/155/25",
        "age": 21,
        "indication": "Terme",
        "ddr": "inconnue",
@@ -40634,7 +40634,7 @@
         ],
         [
          "Patient",
-         "WOROU Rachida — CNT/155/25"
+         "WOROU Rachida — CBG/155/25"
         ],
         [
          "Âge",
@@ -40862,7 +40862,7 @@
       "cellules": [
        "IMG-0083",
        "05/12/2025 à 13h00",
-       "TAKI Aïssatou — CNT/33/26",
+       "TAKI Aïssatou — CBG/33/26",
        "Échographie obstétricale du 1er trimestre évolué",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -40884,7 +40884,7 @@
        "examen": "Échographie obstétricale du 1er trimestre évolué",
        "patientId": "PAT0033",
        "patient": "TAKI Aïssatou",
-       "patientCode": "CNT/33/26",
+       "patientCode": "CBG/33/26",
        "age": 72,
        "indication": "Bilan",
        "ddr": "inconnue",
@@ -40931,7 +40931,7 @@
         ],
         [
          "Patient",
-         "TAKI Aïssatou — CNT/33/26"
+         "TAKI Aïssatou — CBG/33/26"
         ],
         [
          "Âge",
@@ -41186,7 +41186,7 @@
       "cellules": [
        "IMG-0068",
        "04/12/2025 à 13h00",
-       "KINNOU Bertine — CNT/56/25",
+       "KINNOU Bertine — CBG/56/25",
        "Échographie obstétricale du 1er trimestre",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -41208,7 +41208,7 @@
        "examen": "Échographie obstétricale du 1er trimestre",
        "patientId": "PAT0056",
        "patient": "KINNOU Bertine",
-       "patientCode": "CNT/56/25",
+       "patientCode": "CBG/56/25",
        "age": 30,
        "indication": "Métrorragies du premier trimestre",
        "ddr": "15/01/2026",
@@ -41252,7 +41252,7 @@
         ],
         [
          "Patient",
-         "KINNOU Bertine — CNT/56/25"
+         "KINNOU Bertine — CBG/56/25"
         ],
         [
          "Âge",
@@ -41468,7 +41468,7 @@
       "cellules": [
        "IMG-0049",
        "02/12/2025 à 16h00",
-       "OURTCHA Kadidjatou — CNT/99/26",
+       "OURTCHA Kadidjatou — CBG/99/26",
        "Échographie obstétricale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -41490,7 +41490,7 @@
        "examen": "Échographie obstétricale",
        "patientId": "PAT0099",
        "patient": "OURTCHA Kadidjatou",
-       "patientCode": "CNT/99/26",
+       "patientCode": "CBG/99/26",
        "age": 47,
        "indication": "Croissance",
        "ddr": "09/02/2026",
@@ -41546,7 +41546,7 @@
         ],
         [
          "Patient",
-         "OURTCHA Kadidjatou — CNT/99/26"
+         "OURTCHA Kadidjatou — CBG/99/26"
         ],
         [
          "Âge",
@@ -41991,14 +41991,14 @@
      ]
     }
    ],
-   "vide": "IMG-015225/08/2026 à 13h00YENI Florent — CNT/149/26Radiographie d’un membreBADO ",
+   "vide": "IMG-015225/08/2026 à 13h00YENI Florent — CBG/149/26Radiographie d’un membreBADO ",
    "pages": [
     [
      {
       "cellules": [
        "IMG-0152",
        "25/08/2026 à 13h00",
-       "YENI Florent — CNT/149/26",
+       "YENI Florent — CBG/149/26",
        "Radiographie d’un membre",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -42022,7 +42022,7 @@
        "examen": "Radiographie d’un membre",
        "patientId": "PAT0149",
        "patient": "YENI Florent",
-       "patientCode": "CNT/149/26",
+       "patientCode": "CBG/149/26",
        "age": 22,
        "indication": "Bilan préopératoire",
        "ddr": "—",
@@ -42062,7 +42062,7 @@
         ],
         [
          "Patient",
-         "YENI Florent — CNT/149/26"
+         "YENI Florent — CBG/149/26"
         ],
         [
          "Âge",
@@ -42246,7 +42246,7 @@
       "cellules": [
        "IMG-0106",
        "18/08/2026 à 14h00",
-       "TIGRI Séraphine — CNT/11/26",
+       "TIGRI Séraphine — CBG/11/26",
        "Radiographie du rachis",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -42268,7 +42268,7 @@
        "examen": "Radiographie du rachis",
        "patientId": "PAT0011",
        "patient": "TIGRI Séraphine",
-       "patientCode": "CNT/11/26",
+       "patientCode": "CBG/11/26",
        "age": 28,
        "indication": "Bilan",
        "ddr": "—",
@@ -42308,7 +42308,7 @@
         ],
         [
          "Patient",
-         "TIGRI Séraphine — CNT/11/26"
+         "TIGRI Séraphine — CBG/11/26"
         ],
         [
          "Âge",
@@ -42508,7 +42508,7 @@
       "cellules": [
        "IMG-0099",
        "07/08/2026 à 12h00",
-       "HOUNKPATIN Edmond — CNT/64/26",
+       "HOUNKPATIN Edmond — CBG/64/26",
        "Radiographie du thorax",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -42530,7 +42530,7 @@
        "examen": "Radiographie du thorax",
        "patientId": "PAT0064",
        "patient": "HOUNKPATIN Edmond",
-       "patientCode": "CNT/64/26",
+       "patientCode": "CBG/64/26",
        "age": 15,
        "indication": "Bilan",
        "ddr": "—",
@@ -42572,7 +42572,7 @@
         ],
         [
          "Patient",
-         "HOUNKPATIN Edmond — CNT/64/26"
+         "HOUNKPATIN Edmond — CBG/64/26"
         ],
         [
          "Âge",
@@ -42798,7 +42798,7 @@
       "cellules": [
        "IMG-0116",
        "18/06/2026 à 11h00",
-       "SEIDOU Rachida — CNT/10/25",
+       "SEIDOU Rachida — CBG/10/25",
        "Abdomen sans préparation (ASP)",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -42820,7 +42820,7 @@
        "examen": "Abdomen sans préparation (ASP)",
        "patientId": "PAT0010",
        "patient": "SEIDOU Rachida",
-       "patientCode": "CNT/10/25",
+       "patientCode": "CBG/10/25",
        "age": 61,
        "indication": "Bilan",
        "ddr": "—",
@@ -42861,7 +42861,7 @@
         ],
         [
          "Patient",
-         "SEIDOU Rachida — CNT/10/25"
+         "SEIDOU Rachida — CBG/10/25"
         ],
         [
          "Âge",
@@ -43031,7 +43031,7 @@
       "cellules": [
        "IMG-0114",
        "13/06/2026 à 17h00",
-       "TAKI Salifou — CNT/61/26",
+       "TAKI Salifou — CBG/61/26",
        "Abdomen sans préparation (ASP)",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -43053,7 +43053,7 @@
        "examen": "Abdomen sans préparation (ASP)",
        "patientId": "PAT0061",
        "patient": "TAKI Salifou",
-       "patientCode": "CNT/61/26",
+       "patientCode": "CBG/61/26",
        "age": 46,
        "indication": "Bilan",
        "ddr": "—",
@@ -43090,7 +43090,7 @@
         ],
         [
          "Patient",
-         "TAKI Salifou — CNT/61/26"
+         "TAKI Salifou — CBG/61/26"
         ],
         [
          "Âge",
@@ -43260,7 +43260,7 @@
       "cellules": [
        "IMG-0109",
        "29/05/2026 à 13h00",
-       "YENI Chantal — CNT/98/26",
+       "YENI Chantal — CBG/98/26",
        "Radiographie d’un membre",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -43282,7 +43282,7 @@
        "examen": "Radiographie d’un membre",
        "patientId": "PAT0098",
        "patient": "YENI Chantal",
-       "patientCode": "CNT/98/26",
+       "patientCode": "CBG/98/26",
        "age": 15,
        "indication": "Bilan",
        "ddr": "—",
@@ -43323,7 +43323,7 @@
         ],
         [
          "Patient",
-         "YENI Chantal — CNT/98/26"
+         "YENI Chantal — CBG/98/26"
         ],
         [
          "Âge",
@@ -43536,7 +43536,7 @@
       "cellules": [
        "IMG-0151",
        "28/05/2026 à 16h00",
-       "GOUNOU Rachidatou — CNT/1098/26",
+       "GOUNOU Rachidatou — CBG/1098/26",
        "Radiographie d’un membre",
        "Dr AGBO Koffi — CS de Perma",
        "AHOHOU Rodrigue",
@@ -43558,7 +43558,7 @@
        "examen": "Radiographie d’un membre",
        "patientId": "PATxmvvd3adbffnx8",
        "patient": "GOUNOU Rachidatou",
-       "patientCode": "CNT/1098/26",
+       "patientCode": "CBG/1098/26",
        "age": 32,
        "indication": "Contrôle évolutif",
        "ddr": "—",
@@ -43598,7 +43598,7 @@
         ],
         [
          "Patient",
-         "GOUNOU Rachidatou — CNT/1098/26"
+         "GOUNOU Rachidatou — CBG/1098/26"
         ],
         [
          "Âge",
@@ -43787,7 +43787,7 @@
       "cellules": [
        "IMG-0112",
        "20/05/2026 à 08h00",
-       "GARBA Marguerite — CNT/134/25",
+       "GARBA Marguerite — CBG/134/25",
        "Radiographie du crâne et des sinus",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -43809,7 +43809,7 @@
        "examen": "Radiographie du crâne et des sinus",
        "patientId": "PAT0134",
        "patient": "GARBA Marguerite",
-       "patientCode": "CNT/134/25",
+       "patientCode": "CBG/134/25",
        "age": 14,
        "indication": "Bilan",
        "ddr": "—",
@@ -43846,7 +43846,7 @@
         ],
         [
          "Patient",
-         "GARBA Marguerite — CNT/134/25"
+         "GARBA Marguerite — CBG/134/25"
         ],
         [
          "Âge",
@@ -44023,7 +44023,7 @@
       "cellules": [
        "IMG-0113",
        "12/05/2026 à 15h00",
-       "KASSA Alassane — CNT/60/26",
+       "KASSA Alassane — CBG/60/26",
        "Radiographie du crâne et des sinus",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -44045,7 +44045,7 @@
        "examen": "Radiographie du crâne et des sinus",
        "patientId": "PAT0060",
        "patient": "KASSA Alassane",
-       "patientCode": "CNT/60/26",
+       "patientCode": "CBG/60/26",
        "age": 32,
        "indication": "Bilan",
        "ddr": "—",
@@ -44081,7 +44081,7 @@
         ],
         [
          "Patient",
-         "KASSA Alassane — CNT/60/26"
+         "KASSA Alassane — CBG/60/26"
         ],
         [
          "Âge",
@@ -44246,7 +44246,7 @@
       "cellules": [
        "IMG-0102",
        "06/05/2026 à 15h00",
-       "DOSSOU Colette — CNT/36/26",
+       "DOSSOU Colette — CBG/36/26",
        "Radiographie du bassin",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -44268,7 +44268,7 @@
        "examen": "Radiographie du bassin",
        "patientId": "PAT0036",
        "patient": "DOSSOU Colette",
-       "patientCode": "CNT/36/26",
+       "patientCode": "CBG/36/26",
        "age": 18,
        "indication": "Bilan",
        "ddr": "—",
@@ -44305,7 +44305,7 @@
         ],
         [
          "Patient",
-         "DOSSOU Colette — CNT/36/26"
+         "DOSSOU Colette — CBG/36/26"
         ],
         [
          "Âge",
@@ -44475,7 +44475,7 @@
       "cellules": [
        "IMG-0104",
        "06/05/2026 à 13h00",
-       "WOROU Rachida — CNT/155/25",
+       "WOROU Rachida — CBG/155/25",
        "Radiographie du bassin",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -44497,7 +44497,7 @@
        "examen": "Radiographie du bassin",
        "patientId": "PAT0155",
        "patient": "WOROU Rachida",
-       "patientCode": "CNT/155/25",
+       "patientCode": "CBG/155/25",
        "age": 21,
        "indication": "Bilan",
        "ddr": "—",
@@ -44538,7 +44538,7 @@
         ],
         [
          "Patient",
-         "WOROU Rachida — CNT/155/25"
+         "WOROU Rachida — CBG/155/25"
         ],
         [
          "Âge",
@@ -44708,7 +44708,7 @@
       "cellules": [
        "IMG-0101",
        "02/05/2026 à 15h00",
-       "GARBA Yahouza — CNT909/25",
+       "GARBA Yahouza — CBG909/25",
        "Radiographie du thorax",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -44730,7 +44730,7 @@
        "examen": "Radiographie du thorax",
        "patientId": "PAT-AG010",
        "patient": "GARBA Yahouza",
-       "patientCode": "CNT909/25",
+       "patientCode": "CBG909/25",
        "age": 38,
        "indication": "Bilan",
        "ddr": "—",
@@ -44775,7 +44775,7 @@
         ],
         [
          "Patient",
-         "GARBA Yahouza — CNT909/25"
+         "GARBA Yahouza — CBG909/25"
         ],
         [
          "Âge",
@@ -44991,7 +44991,7 @@
       "cellules": [
        "IMG-0108",
        "03/04/2026 à 11h00",
-       "TCHANE Moussa — CNT/139/25",
+       "TCHANE Moussa — CBG/139/25",
        "Radiographie d’un membre",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -45013,7 +45013,7 @@
        "examen": "Radiographie d’un membre",
        "patientId": "PAT0139",
        "patient": "TCHANE Moussa",
-       "patientCode": "CNT/139/25",
+       "patientCode": "CBG/139/25",
        "age": 62,
        "indication": "Bilan",
        "ddr": "—",
@@ -45053,7 +45053,7 @@
         ],
         [
          "Patient",
-         "TCHANE Moussa — CNT/139/25"
+         "TCHANE Moussa — CBG/139/25"
         ],
         [
          "Âge",
@@ -45254,7 +45254,7 @@
       "cellules": [
        "IMG-0107",
        "10/03/2026 à 12h00",
-       "TCHANE Yacoubou — CNT/26/25",
+       "TCHANE Yacoubou — CBG/26/25",
        "Radiographie du rachis",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -45276,7 +45276,7 @@
        "examen": "Radiographie du rachis",
        "patientId": "PAT0026",
        "patient": "TCHANE Yacoubou",
-       "patientCode": "CNT/26/25",
+       "patientCode": "CBG/26/25",
        "age": 13,
        "indication": "Bilan",
        "ddr": "—",
@@ -45315,7 +45315,7 @@
         ],
         [
          "Patient",
-         "TCHANE Yacoubou — CNT/26/25"
+         "TCHANE Yacoubou — CBG/26/25"
         ],
         [
          "Âge",
@@ -45503,7 +45503,7 @@
       "cellules": [
        "IMG-0111",
        "24/02/2026 à 08h00",
-       "AGOSSOU Souleymane — CNT/110/25",
+       "AGOSSOU Souleymane — CBG/110/25",
        "Radiographie du crâne et des sinus",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -45525,7 +45525,7 @@
        "examen": "Radiographie du crâne et des sinus",
        "patientId": "PAT0110",
        "patient": "AGOSSOU Souleymane",
-       "patientCode": "CNT/110/25",
+       "patientCode": "CBG/110/25",
        "age": 74,
        "indication": "Bilan",
        "ddr": "—",
@@ -45562,7 +45562,7 @@
         ],
         [
          "Patient",
-         "AGOSSOU Souleymane — CNT/110/25"
+         "AGOSSOU Souleymane — CBG/110/25"
         ],
         [
          "Âge",
@@ -45739,7 +45739,7 @@
       "cellules": [
        "IMG-0100",
        "21/02/2026 à 09h00",
-       "KASSA Florent — CNT/57/26",
+       "KASSA Florent — CBG/57/26",
        "Radiographie du thorax",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -45761,7 +45761,7 @@
        "examen": "Radiographie du thorax",
        "patientId": "PAT0057",
        "patient": "KASSA Florent",
-       "patientCode": "CNT/57/26",
+       "patientCode": "CBG/57/26",
        "age": 9,
        "indication": "Bilan",
        "ddr": "—",
@@ -45803,7 +45803,7 @@
         ],
         [
          "Patient",
-         "KASSA Florent — CNT/57/26"
+         "KASSA Florent — CBG/57/26"
         ],
         [
          "Âge",
@@ -46029,7 +46029,7 @@
       "cellules": [
        "IMG-0105",
        "05/02/2026 à 17h00",
-       "BAKO Justine — CNT/9/26",
+       "BAKO Justine — CBG/9/26",
        "Radiographie du rachis",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -46051,7 +46051,7 @@
        "examen": "Radiographie du rachis",
        "patientId": "PAT0009",
        "patient": "BAKO Justine",
-       "patientCode": "CNT/9/26",
+       "patientCode": "CBG/9/26",
        "age": 58,
        "indication": "Bilan",
        "ddr": "—",
@@ -46091,7 +46091,7 @@
         ],
         [
          "Patient",
-         "BAKO Justine — CNT/9/26"
+         "BAKO Justine — CBG/9/26"
         ],
         [
          "Âge",
@@ -46291,7 +46291,7 @@
       "cellules": [
        "IMG-0103",
        "03/02/2026 à 08h00",
-       "BOUKARI Ramatou — CNT/146/26",
+       "BOUKARI Ramatou — CBG/146/26",
        "Radiographie du bassin",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -46313,7 +46313,7 @@
        "examen": "Radiographie du bassin",
        "patientId": "PAT0146",
        "patient": "BOUKARI Ramatou",
-       "patientCode": "CNT/146/26",
+       "patientCode": "CBG/146/26",
        "age": 25,
        "indication": "Bilan",
        "ddr": "—",
@@ -46350,7 +46350,7 @@
         ],
         [
          "Patient",
-         "BOUKARI Ramatou — CNT/146/26"
+         "BOUKARI Ramatou — CBG/146/26"
         ],
         [
          "Âge",
@@ -46520,7 +46520,7 @@
       "cellules": [
        "IMG-0110",
        "25/12/2025 à 15h00",
-       "KASSA Augustin — CNT902/25",
+       "KASSA Augustin — CBG902/25",
        "Radiographie d’un membre",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -46542,7 +46542,7 @@
        "examen": "Radiographie d’un membre",
        "patientId": "PAT-AG003",
        "patient": "KASSA Augustin",
-       "patientCode": "CNT902/25",
+       "patientCode": "CBG902/25",
        "age": 38,
        "indication": "Bilan",
        "ddr": "—",
@@ -46582,7 +46582,7 @@
         ],
         [
          "Patient",
-         "KASSA Augustin — CNT902/25"
+         "KASSA Augustin — CBG902/25"
         ],
         [
          "Âge",
@@ -46783,7 +46783,7 @@
       "cellules": [
        "IMG-0115",
        "11/12/2025 à 08h00",
-       "ISSA Awaou — CNT/171/25",
+       "ISSA Awaou — CBG/171/25",
        "Abdomen sans préparation (ASP)",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -46805,7 +46805,7 @@
        "examen": "Abdomen sans préparation (ASP)",
        "patientId": "PAT0171",
        "patient": "ISSA Awaou",
-       "patientCode": "CNT/171/25",
+       "patientCode": "CBG/171/25",
        "age": 19,
        "indication": "Bilan",
        "ddr": "—",
@@ -46843,7 +46843,7 @@
         ],
         [
          "Patient",
-         "ISSA Awaou — CNT/171/25"
+         "ISSA Awaou — CBG/171/25"
         ],
         [
          "Âge",
@@ -47111,14 +47111,14 @@
      ]
     }
    ],
-   "vide": "IMG-015322/08/2026 à 14h00BAKO Zoukanéri — CNT/111/26Mammographie bilatérale de ",
+   "vide": "IMG-015322/08/2026 à 14h00BAKO Zoukanéri — CBG/111/26Mammographie bilatérale de ",
    "pages": [
     [
      {
       "cellules": [
        "IMG-0153",
        "22/08/2026 à 14h00",
-       "BAKO Zoukanéri — CNT/111/26",
+       "BAKO Zoukanéri — CBG/111/26",
        "Mammographie bilatérale de dépistage",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -47142,7 +47142,7 @@
        "examen": "Mammographie bilatérale de dépistage",
        "patientId": "PAT0111",
        "patient": "BAKO Zoukanéri",
-       "patientCode": "CNT/111/26",
+       "patientCode": "CBG/111/26",
        "age": 26,
        "indication": "Suivi de grossesse",
        "ddr": "—",
@@ -47185,7 +47185,7 @@
         ],
         [
          "Patient",
-         "BAKO Zoukanéri — CNT/111/26"
+         "BAKO Zoukanéri — CBG/111/26"
         ],
         [
          "Âge",
@@ -47404,7 +47404,7 @@
       "cellules": [
        "IMG-0119",
        "03/08/2026 à 15h00",
-       "SOULE Nadège — CNT/97/26",
+       "SOULE Nadège — CBG/97/26",
        "Mammographie bilatérale de dépistage",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -47426,7 +47426,7 @@
        "examen": "Mammographie bilatérale de dépistage",
        "patientId": "PAT0097",
        "patient": "SOULE Nadège",
-       "patientCode": "CNT/97/26",
+       "patientCode": "CBG/97/26",
        "age": 63,
        "indication": "Bilan",
        "ddr": "—",
@@ -47469,7 +47469,7 @@
         ],
         [
          "Patient",
-         "SOULE Nadège — CNT/97/26"
+         "SOULE Nadège — CBG/97/26"
         ],
         [
          "Âge",
@@ -47705,7 +47705,7 @@
       "cellules": [
        "IMG-0154",
        "23/07/2026 à 12h00",
-       "GOUNOU Rachidatou — CNT/1098/26",
+       "GOUNOU Rachidatou — CBG/1098/26",
        "Mammographie diagnostique",
        "Dr AGBO Koffi — CS de Perma",
        "AHOHOU Rodrigue",
@@ -47727,7 +47727,7 @@
        "examen": "Mammographie diagnostique",
        "patientId": "PATxmvvd3adbffnx8",
        "patient": "GOUNOU Rachidatou",
-       "patientCode": "CNT/1098/26",
+       "patientCode": "CBG/1098/26",
        "age": 32,
        "indication": "Douleurs à explorer",
        "ddr": "—",
@@ -47772,7 +47772,7 @@
         ],
         [
          "Patient",
-         "GOUNOU Rachidatou — CNT/1098/26"
+         "GOUNOU Rachidatou — CBG/1098/26"
         ],
         [
          "Âge",
@@ -48014,7 +48014,7 @@
       "cellules": [
        "IMG-0122",
        "23/04/2026 à 12h00",
-       "SEIDOU Awaou — CNT/55/26",
+       "SEIDOU Awaou — CBG/55/26",
        "Mammographie diagnostique",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -48036,7 +48036,7 @@
        "examen": "Mammographie diagnostique",
        "patientId": "PAT0055",
        "patient": "SEIDOU Awaou",
-       "patientCode": "CNT/55/26",
+       "patientCode": "CBG/55/26",
        "age": 57,
        "indication": "Bilan",
        "ddr": "—",
@@ -48081,7 +48081,7 @@
         ],
         [
          "Patient",
-         "SEIDOU Awaou — CNT/55/26"
+         "SEIDOU Awaou — CBG/55/26"
         ],
         [
          "Âge",
@@ -48335,7 +48335,7 @@
       "cellules": [
        "IMG-0117",
        "30/03/2026 à 17h00",
-       "YENI Zoukanéri — CNT/152/26",
+       "YENI Zoukanéri — CBG/152/26",
        "Mammographie bilatérale de dépistage",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -48357,7 +48357,7 @@
        "examen": "Mammographie bilatérale de dépistage",
        "patientId": "PAT0152",
        "patient": "YENI Zoukanéri",
-       "patientCode": "CNT/152/26",
+       "patientCode": "CBG/152/26",
        "age": 65,
        "indication": "Bilan",
        "ddr": "—",
@@ -48400,7 +48400,7 @@
         ],
         [
          "Patient",
-         "YENI Zoukanéri — CNT/152/26"
+         "YENI Zoukanéri — CBG/152/26"
         ],
         [
          "Âge",
@@ -48636,7 +48636,7 @@
       "cellules": [
        "IMG-0120",
        "28/02/2026 à 16h00",
-       "KASSA Adissa — CNT/115/26",
+       "KASSA Adissa — CBG/115/26",
        "Mammographie diagnostique",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -48658,7 +48658,7 @@
        "examen": "Mammographie diagnostique",
        "patientId": "PAT0115",
        "patient": "KASSA Adissa",
-       "patientCode": "CNT/115/26",
+       "patientCode": "CBG/115/26",
        "age": 70,
        "indication": "Bilan",
        "ddr": "—",
@@ -48705,7 +48705,7 @@
         ],
         [
          "Patient",
-         "KASSA Adissa — CNT/115/26"
+         "KASSA Adissa — CBG/115/26"
         ],
         [
          "Âge",
@@ -48959,7 +48959,7 @@
       "cellules": [
        "IMG-0121",
        "13/02/2026 à 11h00",
-       "SEIDOU Fatouma — CNT/118/26",
+       "SEIDOU Fatouma — CBG/118/26",
        "Mammographie diagnostique",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -48981,7 +48981,7 @@
        "examen": "Mammographie diagnostique",
        "patientId": "PAT0118",
        "patient": "SEIDOU Fatouma",
-       "patientCode": "CNT/118/26",
+       "patientCode": "CBG/118/26",
        "age": 46,
        "indication": "Bilan",
        "ddr": "—",
@@ -49026,7 +49026,7 @@
         ],
         [
          "Patient",
-         "SEIDOU Fatouma — CNT/118/26"
+         "SEIDOU Fatouma — CBG/118/26"
         ],
         [
          "Âge",
@@ -49280,7 +49280,7 @@
       "cellules": [
        "IMG-0118",
        "18/12/2025 à 09h00",
-       "OROU YO Adissa — CNT/7/25",
+       "OROU YO Adissa — CBG/7/25",
        "Mammographie bilatérale de dépistage",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -49302,7 +49302,7 @@
        "examen": "Mammographie bilatérale de dépistage",
        "patientId": "PAT0007",
        "patient": "OROU YO Adissa",
-       "patientCode": "CNT/7/25",
+       "patientCode": "CBG/7/25",
        "age": 25,
        "indication": "Bilan",
        "ddr": "—",
@@ -49346,7 +49346,7 @@
         ],
         [
          "Patient",
-         "OROU YO Adissa — CNT/7/25"
+         "OROU YO Adissa — CBG/7/25"
         ],
         [
          "Âge",
@@ -49690,14 +49690,14 @@
      ]
     }
    ],
-   "vide": "IMG-015524/08/2026 à 15h00TCHANE Rachida — CNT/17/26Scanner cérébralBOUKARI Nadè",
+   "vide": "IMG-015524/08/2026 à 15h00TCHANE Rachida — CBG/17/26Scanner cérébralBOUKARI Nadè",
    "pages": [
     [
      {
       "cellules": [
        "IMG-0155",
        "24/08/2026 à 15h00",
-       "TCHANE Rachida — CNT/17/26",
+       "TCHANE Rachida — CBG/17/26",
        "Scanner cérébral",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -49721,7 +49721,7 @@
        "examen": "Scanner cérébral",
        "patientId": "PAT0017",
        "patient": "TCHANE Rachida",
-       "patientCode": "CNT/17/26",
+       "patientCode": "CBG/17/26",
        "age": 45,
        "indication": "Bilan lésionnel",
        "ddr": "—",
@@ -49765,7 +49765,7 @@
         ],
         [
          "Patient",
-         "TCHANE Rachida — CNT/17/26"
+         "TCHANE Rachida — CBG/17/26"
         ],
         [
          "Âge",
@@ -49985,7 +49985,7 @@
       "cellules": [
        "IMG-0132",
        "01/08/2026 à 10h00",
-       "MAMAN Séko — CNT/112/26",
+       "MAMAN Séko — CBG/112/26",
        "Scanner du rachis",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -50007,7 +50007,7 @@
        "examen": "Scanner du rachis",
        "patientId": "PAT0112",
        "patient": "MAMAN Séko",
-       "patientCode": "CNT/112/26",
+       "patientCode": "CBG/112/26",
        "age": 47,
        "indication": "Bilan",
        "ddr": "—",
@@ -50049,7 +50049,7 @@
         ],
         [
          "Patient",
-         "MAMAN Séko — CNT/112/26"
+         "MAMAN Séko — CBG/112/26"
         ],
         [
          "Âge",
@@ -50264,7 +50264,7 @@
       "cellules": [
        "IMG-0133",
        "16/07/2026 à 17h00",
-       "ISSA Chantal — CNT/22/26",
+       "ISSA Chantal — CBG/22/26",
        "Scanner du rachis",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -50286,7 +50286,7 @@
        "examen": "Scanner du rachis",
        "patientId": "PAT0022",
        "patient": "ISSA Chantal",
-       "patientCode": "CNT/22/26",
+       "patientCode": "CBG/22/26",
        "age": 34,
        "indication": "Bilan",
        "ddr": "—",
@@ -50328,7 +50328,7 @@
         ],
         [
          "Patient",
-         "ISSA Chantal — CNT/22/26"
+         "ISSA Chantal — CBG/22/26"
         ],
         [
          "Âge",
@@ -50543,7 +50543,7 @@
       "cellules": [
        "IMG-0124",
        "26/05/2026 à 13h00",
-       "BAKO Zoukanéri — CNT/111/26",
+       "BAKO Zoukanéri — CBG/111/26",
        "Scanner cérébral",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -50565,7 +50565,7 @@
        "examen": "Scanner cérébral",
        "patientId": "PAT0111",
        "patient": "BAKO Zoukanéri",
-       "patientCode": "CNT/111/26",
+       "patientCode": "CBG/111/26",
        "age": 26,
        "indication": "Bilan",
        "ddr": "—",
@@ -50610,7 +50610,7 @@
         ],
         [
          "Patient",
-         "BAKO Zoukanéri — CNT/111/26"
+         "BAKO Zoukanéri — CBG/111/26"
         ],
         [
          "Âge",
@@ -50859,7 +50859,7 @@
       "cellules": [
        "IMG-0127",
        "25/05/2026 à 11h00",
-       "N’TCHA Alassane — CNT/47/25",
+       "N’TCHA Alassane — CBG/47/25",
        "Scanner thoracique",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -50881,7 +50881,7 @@
        "examen": "Scanner thoracique",
        "patientId": "PAT0047",
        "patient": "N’TCHA Alassane",
-       "patientCode": "CNT/47/25",
+       "patientCode": "CBG/47/25",
        "age": 72,
        "indication": "Bilan",
        "ddr": "—",
@@ -50924,7 +50924,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Alassane — CNT/47/25"
+         "N’TCHA Alassane — CBG/47/25"
         ],
         [
          "Âge",
@@ -51152,7 +51152,7 @@
       "cellules": [
        "IMG-0129",
        "27/04/2026 à 12h00",
-       "BANI Zoukanéri — CNT/62/25",
+       "BANI Zoukanéri — CBG/62/25",
        "Scanner abdomino-pelvien",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -51174,7 +51174,7 @@
        "examen": "Scanner abdomino-pelvien",
        "patientId": "PAT0062",
        "patient": "BANI Zoukanéri",
-       "patientCode": "CNT/62/25",
+       "patientCode": "CBG/62/25",
        "age": 57,
        "indication": "Bilan",
        "ddr": "—",
@@ -51219,7 +51219,7 @@
         ],
         [
          "Patient",
-         "BANI Zoukanéri — CNT/62/25"
+         "BANI Zoukanéri — CBG/62/25"
         ],
         [
          "Âge",
@@ -51468,7 +51468,7 @@
       "cellules": [
        "IMG-0125",
        "23/04/2026 à 15h00",
-       "DOSSOU Salifou — CNT/8/25",
+       "DOSSOU Salifou — CBG/8/25",
        "Scanner cérébral",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -51490,7 +51490,7 @@
        "examen": "Scanner cérébral",
        "patientId": "PAT0008",
        "patient": "DOSSOU Salifou",
-       "patientCode": "CNT/8/25",
+       "patientCode": "CBG/8/25",
        "age": 40,
        "indication": "Bilan",
        "ddr": "—",
@@ -51538,7 +51538,7 @@
         ],
         [
          "Patient",
-         "DOSSOU Salifou — CNT/8/25"
+         "DOSSOU Salifou — CBG/8/25"
         ],
         [
          "Âge",
@@ -51775,7 +51775,7 @@
       "cellules": [
        "IMG-0131",
        "21/03/2026 à 08h00",
-       "TCHANE Moussa — CNT/139/25",
+       "TCHANE Moussa — CBG/139/25",
        "Scanner abdomino-pelvien",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -51797,7 +51797,7 @@
        "examen": "Scanner abdomino-pelvien",
        "patientId": "PAT0139",
        "patient": "TCHANE Moussa",
-       "patientCode": "CNT/139/25",
+       "patientCode": "CBG/139/25",
        "age": 62,
        "indication": "Bilan",
        "ddr": "—",
@@ -51846,7 +51846,7 @@
         ],
         [
          "Patient",
-         "TCHANE Moussa — CNT/139/25"
+         "TCHANE Moussa — CBG/139/25"
         ],
         [
          "Âge",
@@ -52095,7 +52095,7 @@
       "cellules": [
        "IMG-0128",
        "14/03/2026 à 10h00",
-       "TIGRI Séraphine — CNT/11/26",
+       "TIGRI Séraphine — CBG/11/26",
        "Scanner thoracique",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -52117,7 +52117,7 @@
        "examen": "Scanner thoracique",
        "patientId": "PAT0011",
        "patient": "TIGRI Séraphine",
-       "patientCode": "CNT/11/26",
+       "patientCode": "CBG/11/26",
        "age": 28,
        "indication": "Bilan",
        "ddr": "—",
@@ -52160,7 +52160,7 @@
         ],
         [
          "Patient",
-         "TIGRI Séraphine — CNT/11/26"
+         "TIGRI Séraphine — CBG/11/26"
         ],
         [
          "Âge",
@@ -52388,7 +52388,7 @@
       "cellules": [
        "IMG-0126",
        "21/02/2026 à 16h00",
-       "PARAISO Rabiatou — CNT/177/25",
+       "PARAISO Rabiatou — CBG/177/25",
        "Scanner thoracique",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -52410,7 +52410,7 @@
        "examen": "Scanner thoracique",
        "patientId": "PAT0177",
        "patient": "PARAISO Rabiatou",
-       "patientCode": "CNT/177/25",
+       "patientCode": "CBG/177/25",
        "age": 33,
        "indication": "Bilan",
        "ddr": "—",
@@ -52453,7 +52453,7 @@
         ],
         [
          "Patient",
-         "PARAISO Rabiatou — CNT/177/25"
+         "PARAISO Rabiatou — CBG/177/25"
         ],
         [
          "Âge",
@@ -52681,7 +52681,7 @@
       "cellules": [
        "IMG-0123",
        "12/02/2026 à 15h00",
-       "DIEYABIDI Ramatou — CNT/25/26",
+       "DIEYABIDI Ramatou — CBG/25/26",
        "Scanner cérébral",
        "YENI M’PO Florent",
        "AHOHOU Rodrigue",
@@ -52703,7 +52703,7 @@
        "examen": "Scanner cérébral",
        "patientId": "PAT0025",
        "patient": "DIEYABIDI Ramatou",
-       "patientCode": "CNT/25/26",
+       "patientCode": "CBG/25/26",
        "age": 52,
        "indication": "Bilan",
        "ddr": "—",
@@ -52749,7 +52749,7 @@
         ],
         [
          "Patient",
-         "DIEYABIDI Ramatou — CNT/25/26"
+         "DIEYABIDI Ramatou — CBG/25/26"
         ],
         [
          "Âge",
@@ -52986,7 +52986,7 @@
       "cellules": [
        "IMG-0130",
        "25/12/2025 à 15h00",
-       "BASSONGUI Hervé — CNT/126/25",
+       "BASSONGUI Hervé — CBG/126/25",
        "Scanner abdomino-pelvien",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -53008,7 +53008,7 @@
        "examen": "Scanner abdomino-pelvien",
        "patientId": "PAT0126",
        "patient": "BASSONGUI Hervé",
-       "patientCode": "CNT/126/25",
+       "patientCode": "CBG/126/25",
        "age": 47,
        "indication": "Bilan",
        "ddr": "—",
@@ -53052,7 +53052,7 @@
         ],
         [
          "Patient",
-         "BASSONGUI Hervé — CNT/126/25"
+         "BASSONGUI Hervé — CBG/126/25"
         ],
         [
          "Âge",
@@ -53291,7 +53291,7 @@
       "cellules": [
        "IMG-0134",
        "16/12/2025 à 11h00",
-       "TCHANE Idrissou — CNT/65/26",
+       "TCHANE Idrissou — CBG/65/26",
        "Scanner du rachis",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -53313,7 +53313,7 @@
        "examen": "Scanner du rachis",
        "patientId": "PAT0065",
        "patient": "TCHANE Idrissou",
-       "patientCode": "CNT/65/26",
+       "patientCode": "CBG/65/26",
        "age": 79,
        "indication": "Bilan",
        "ddr": "—",
@@ -53355,7 +53355,7 @@
         ],
         [
          "Patient",
-         "TCHANE Idrissou — CNT/65/26"
+         "TCHANE Idrissou — CBG/65/26"
         ],
         [
          "Âge",
@@ -53666,14 +53666,14 @@
      ]
     }
    ],
-   "vide": "IMG-015624/08/2026 à 16h00SOUMANOU Awaou — CNT/1109/26IRM du rachis lombaireDr A",
+   "vide": "IMG-015624/08/2026 à 16h00SOUMANOU Awaou — CBG/1109/26IRM du rachis lombaireDr A",
    "pages": [
     [
      {
       "cellules": [
        "IMG-0156",
        "24/08/2026 à 16h00",
-       "SOUMANOU Awaou — CNT/1109/26",
+       "SOUMANOU Awaou — CBG/1109/26",
        "IRM du rachis lombaire",
        "Dr AGBO Koffi — CS de Perma",
        "AHOHOU Rodrigue",
@@ -53697,7 +53697,7 @@
        "examen": "IRM du rachis lombaire",
        "patientId": "PATxmvvd3adstc5j1",
        "patient": "SOUMANOU Awaou",
-       "patientCode": "CNT/1109/26",
+       "patientCode": "CBG/1109/26",
        "age": 47,
        "indication": "Bilan lésionnel",
        "ddr": "—",
@@ -53744,7 +53744,7 @@
         ],
         [
          "Patient",
-         "SOUMANOU Awaou — CNT/1109/26"
+         "SOUMANOU Awaou — CBG/1109/26"
         ],
         [
          "Âge",
@@ -53928,7 +53928,7 @@
       "cellules": [
        "IMG-0142",
        "22/08/2026 à 13h00",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "IRM du genou",
        "ADAM Colette",
        "AHOHOU Rodrigue",
@@ -53950,7 +53950,7 @@
        "examen": "IRM du genou",
        "patientId": "PAT0001",
        "patient": "TCHANE Bertine",
-       "patientCode": "CNT/1/25",
+       "patientCode": "CBG/1/25",
        "age": 37,
        "indication": "Bilan",
        "ddr": "—",
@@ -53994,7 +53994,7 @@
         ],
         [
          "Patient",
-         "TCHANE Bertine — CNT/1/25"
+         "TCHANE Bertine — CBG/1/25"
         ],
         [
          "Âge",
@@ -54221,7 +54221,7 @@
       "cellules": [
        "IMG-0137",
        "13/08/2026 à 12h00",
-       "DIEYABIDI Ramatou — CNT/25/26",
+       "DIEYABIDI Ramatou — CBG/25/26",
        "IRM cérébrale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -54245,7 +54245,7 @@
        "examen": "IRM cérébrale",
        "patientId": "PAT0025",
        "patient": "DIEYABIDI Ramatou",
-       "patientCode": "CNT/25/26",
+       "patientCode": "CBG/25/26",
        "age": 52,
        "indication": "Bilan",
        "ddr": "—",
@@ -54290,7 +54290,7 @@
         ],
         [
          "Patient",
-         "DIEYABIDI Ramatou — CNT/25/26"
+         "DIEYABIDI Ramatou — CBG/25/26"
         ],
         [
          "Âge",
@@ -54487,7 +54487,7 @@
       "cellules": [
        "IMG-0146",
        "11/08/2026 à 12h00",
-       "SANNI Chantal — CNT/94/26",
+       "SANNI Chantal — CBG/94/26",
        "IRM pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -54509,7 +54509,7 @@
        "examen": "IRM pelvienne",
        "patientId": "PAT0094",
        "patient": "SANNI Chantal",
-       "patientCode": "CNT/94/26",
+       "patientCode": "CBG/94/26",
        "age": 5,
        "indication": "Bilan",
        "ddr": "—",
@@ -54554,7 +54554,7 @@
         ],
         [
          "Patient",
-         "SANNI Chantal — CNT/94/26"
+         "SANNI Chantal — CBG/94/26"
         ],
         [
          "Âge",
@@ -54755,7 +54755,7 @@
       "cellules": [
        "IMG-0136",
        "09/06/2026 à 13h00",
-       "AGOSSOU Foussena — CNT/78/26",
+       "AGOSSOU Foussena — CBG/78/26",
        "IRM cérébrale",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -54777,7 +54777,7 @@
        "examen": "IRM cérébrale",
        "patientId": "PAT0078",
        "patient": "AGOSSOU Foussena",
-       "patientCode": "CNT/78/26",
+       "patientCode": "CBG/78/26",
        "age": 61,
        "indication": "Bilan",
        "ddr": "—",
@@ -54825,7 +54825,7 @@
         ],
         [
          "Patient",
-         "AGOSSOU Foussena — CNT/78/26"
+         "AGOSSOU Foussena — CBG/78/26"
         ],
         [
          "Âge",
@@ -55022,7 +55022,7 @@
       "cellules": [
        "IMG-0144",
        "23/05/2026 à 13h00",
-       "N’TCHA Alimatou — CNT/23/26",
+       "N’TCHA Alimatou — CBG/23/26",
        "IRM pelvienne",
        "BOUKARI Nadège",
        "AHOHOU Rodrigue",
@@ -55044,7 +55044,7 @@
        "examen": "IRM pelvienne",
        "patientId": "PAT0023",
        "patient": "N’TCHA Alimatou",
-       "patientCode": "CNT/23/26",
+       "patientCode": "CBG/23/26",
        "age": 27,
        "indication": "Bilan",
        "ddr": "—",
@@ -55092,7 +55092,7 @@
         ],
         [
          "Patient",
-         "N’TCHA Alimatou — CNT/23/26"
+         "N’TCHA Alimatou — CBG/23/26"
         ],
         [
          "Âge",
@@ -55305,7 +55305,7 @@
       "cellules": [
        "IMG-0140",
        "02/05/2026 à 17h00",
-       "TCHOUKOUROU Zakari — CNT/123/26",
+       "TCHOUKOUROU Zakari — CBG/123/26",
        "IRM du rachis lombaire",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -55327,7 +55327,7 @@
        "examen": "IRM du rachis lombaire",
        "patientId": "PAT0123",
        "patient": "TCHOUKOUROU Zakari",
-       "patientCode": "CNT/123/26",
+       "patientCode": "CBG/123/26",
        "age": 33,
        "indication": "Bilan",
        "ddr": "—",
@@ -55378,7 +55378,7 @@
         ],
         [
          "Patient",
-         "TCHOUKOUROU Zakari — CNT/123/26"
+         "TCHOUKOUROU Zakari — CBG/123/26"
         ],
         [
          "Âge",
@@ -55591,7 +55591,7 @@
       "cellules": [
        "IMG-0138",
        "02/05/2026 à 12h00",
-       "TEPA Nadège — CNT/30/26",
+       "TEPA Nadège — CBG/30/26",
        "IRM du rachis lombaire",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -55613,7 +55613,7 @@
        "examen": "IRM du rachis lombaire",
        "patientId": "PAT0030",
        "patient": "TEPA Nadège",
-       "patientCode": "CNT/30/26",
+       "patientCode": "CBG/30/26",
        "age": 37,
        "indication": "Bilan",
        "ddr": "—",
@@ -55661,7 +55661,7 @@
         ],
         [
          "Patient",
-         "TEPA Nadège — CNT/30/26"
+         "TEPA Nadège — CBG/30/26"
         ],
         [
          "Âge",
@@ -55862,7 +55862,7 @@
       "cellules": [
        "IMG-0141",
        "15/04/2026 à 11h00",
-       "BANI Zoukanéri — CNT/62/25",
+       "BANI Zoukanéri — CBG/62/25",
        "IRM du genou",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -55884,7 +55884,7 @@
        "examen": "IRM du genou",
        "patientId": "PAT0062",
        "patient": "BANI Zoukanéri",
-       "patientCode": "CNT/62/25",
+       "patientCode": "CBG/62/25",
        "age": 57,
        "indication": "Bilan",
        "ddr": "—",
@@ -55929,7 +55929,7 @@
         ],
         [
          "Patient",
-         "BANI Zoukanéri — CNT/62/25"
+         "BANI Zoukanéri — CBG/62/25"
         ],
         [
          "Âge",
@@ -56156,7 +56156,7 @@
       "cellules": [
        "IMG-0135",
        "11/04/2026 à 11h00",
-       "GARBA Zoukanéri — CNT/164/26",
+       "GARBA Zoukanéri — CBG/164/26",
        "IRM cérébrale",
        "TAKI Orou",
        "AHOHOU Rodrigue",
@@ -56178,7 +56178,7 @@
        "examen": "IRM cérébrale",
        "patientId": "PAT0164",
        "patient": "GARBA Zoukanéri",
-       "patientCode": "CNT/164/26",
+       "patientCode": "CBG/164/26",
        "age": 34,
        "indication": "Bilan",
        "ddr": "—",
@@ -56221,7 +56221,7 @@
         ],
         [
          "Patient",
-         "GARBA Zoukanéri — CNT/164/26"
+         "GARBA Zoukanéri — CBG/164/26"
         ],
         [
          "Âge",
@@ -56418,7 +56418,7 @@
       "cellules": [
        "IMG-0143",
        "14/02/2026 à 10h00",
-       "OROU YO Chantal — CNT/162/26",
+       "OROU YO Chantal — CBG/162/26",
        "IRM du genou",
        "BADO BANI A. B. Zoulehath",
        "AHOHOU Rodrigue",
@@ -56440,7 +56440,7 @@
        "examen": "IRM du genou",
        "patientId": "PAT0162",
        "patient": "OROU YO Chantal",
-       "patientCode": "CNT/162/26",
+       "patientCode": "CBG/162/26",
        "age": 68,
        "indication": "Bilan",
        "ddr": "—",
@@ -56492,7 +56492,7 @@
         ],
         [
          "Patient",
-         "OROU YO Chantal — CNT/162/26"
+         "OROU YO Chantal — CBG/162/26"
         ],
         [
          "Âge",
@@ -56719,7 +56719,7 @@
       "cellules": [
        "IMG-0145",
        "13/02/2026 à 12h00",
-       "GARBA Zoukanéri — CNT/164/26",
+       "GARBA Zoukanéri — CBG/164/26",
        "IRM pelvienne",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -56741,7 +56741,7 @@
        "examen": "IRM pelvienne",
        "patientId": "PAT0164",
        "patient": "GARBA Zoukanéri",
-       "patientCode": "CNT/164/26",
+       "patientCode": "CBG/164/26",
        "age": 34,
        "indication": "Bilan",
        "ddr": "—",
@@ -56786,7 +56786,7 @@
         ],
         [
          "Patient",
-         "GARBA Zoukanéri — CNT/164/26"
+         "GARBA Zoukanéri — CBG/164/26"
         ],
         [
          "Âge",
@@ -57001,7 +57001,7 @@
       "cellules": [
        "IMG-0139",
        "26/12/2025 à 13h00",
-       "DOSSOU Colette — CNT/36/26",
+       "DOSSOU Colette — CBG/36/26",
        "IRM du rachis lombaire",
        "BASSONGUI Chabi Séko",
        "AHOHOU Rodrigue",
@@ -57023,7 +57023,7 @@
        "examen": "IRM du rachis lombaire",
        "patientId": "PAT0036",
        "patient": "DOSSOU Colette",
-       "patientCode": "CNT/36/26",
+       "patientCode": "CBG/36/26",
        "age": 18,
        "indication": "Bilan",
        "ddr": "—",
@@ -57071,7 +57071,7 @@
         ],
         [
          "Patient",
-         "DOSSOU Colette — CNT/36/26"
+         "DOSSOU Colette — CBG/36/26"
         ],
         [
          "Âge",
@@ -64351,7 +64351,7 @@
    "modalite": "echographie",
    "entete": {
     "examenCode": "IMG-ECHO-PEL",
-    "patientCode": "CNT/1106/26",
+    "patientCode": "CBG/1106/26",
     "indication": "Douleur",
     "prescripteurId": "EXTERNE",
     "prescripteurIdExterne": "Dr SALIFOU Aminou, CS de Perma",
@@ -64376,7 +64376,7 @@
     ],
     [
      "Patient",
-     "CNT/1106/26"
+     "CBG/1106/26"
     ],
     [
      "Indication",
@@ -64428,7 +64428,7 @@
        "examen": "Échographie pelvienne",
        "patientId": "PATxmvvd3adoqd2il",
        "patient": "OUOROU Mariam",
-       "patientCode": "CNT/1106/26",
+       "patientCode": "CBG/1106/26",
        "age": 41,
        "indication": "Douleur",
        "ddr": "inconnue",
@@ -64464,7 +64464,7 @@
    "modalite": "irm",
    "entete": {
     "examenCode": "IMG-IRM-GEN",
-    "patientCode": "CNT/1106/26",
+    "patientCode": "CBG/1106/26",
     "indication": "Douleur",
     "prescripteurId": "EXTERNE",
     "prescripteurIdExterne": "Dr SALIFOU Aminou, CS de Perma",
@@ -64493,7 +64493,7 @@
     ],
     [
      "Patient",
-     "CNT/1106/26"
+     "CBG/1106/26"
     ],
     [
      "Indication",
@@ -64545,7 +64545,7 @@
        "examen": "IRM du genou",
        "patientId": "PATxmvvd3adoqd2il",
        "patient": "OUOROU Mariam",
-       "patientCode": "CNT/1106/26",
+       "patientCode": "CBG/1106/26",
        "age": 41,
        "indication": "Douleur",
        "ddr": "inconnue",
@@ -64712,7 +64712,7 @@
     }
    ],
    "boutons": [
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Continuer vers la saisie"
    ],
@@ -64838,7 +64838,7 @@
    ],
    "okDepose": {
     "examenCode": "IMG-ECHO-PEL",
-    "patientCode": "CNT/1108/26",
+    "patientCode": "CBG/1108/26",
     "indication": "Contrôle",
     "prescripteurId": "SOI01",
     "realisateurId": "SOI01",
@@ -64951,7 +64951,7 @@
     }
    ],
    "boutons": [
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Continuer vers la saisie"
    ],
@@ -65069,7 +65069,7 @@
    ],
    "okDepose": {
     "examenCode": "IMG-RX-THO",
-    "patientCode": "CNT/1108/26",
+    "patientCode": "CBG/1108/26",
     "indication": "Contrôle",
     "prescripteurId": "SOI01",
     "realisateurId": "SOI01",
@@ -65177,7 +65177,7 @@
     }
    ],
    "boutons": [
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Continuer vers la saisie"
    ],
@@ -65279,7 +65279,7 @@
    ],
    "okDepose": {
     "examenCode": "IMG-MAM-DEP",
-    "patientCode": "CNT/1108/26",
+    "patientCode": "CBG/1108/26",
     "indication": "Contrôle",
     "prescripteurId": "SOI01",
     "realisateurId": "SOI01",
@@ -65389,7 +65389,7 @@
     }
    ],
    "boutons": [
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Continuer vers la saisie"
    ],
@@ -65499,7 +65499,7 @@
    ],
    "okDepose": {
     "examenCode": "IMG-TDM-CER",
-    "patientCode": "CNT/1108/26",
+    "patientCode": "CBG/1108/26",
     "indication": "Contrôle",
     "prescripteurId": "SOI01",
     "realisateurId": "SOI01",
@@ -65609,7 +65609,7 @@
     }
    ],
    "boutons": [
-    "CNT/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TCHANE Bertine",
     "Annuler",
     "Continuer vers la saisie"
    ],
@@ -65719,7 +65719,7 @@
    ],
    "okDepose": {
     "examenCode": "IMG-IRM-CER",
-    "patientCode": "CNT/1108/26",
+    "patientCode": "CBG/1108/26",
     "indication": "Contrôle",
     "prescripteurId": "SOI01",
     "realisateurId": "SOI01",

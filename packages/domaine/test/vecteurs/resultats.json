@@ -8,7 +8,7 @@
     "codeAnalyse": "00025-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -200,7 +200,7 @@
     "codeAnalyse": "00026-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "NFS",
     "analyse": "Libellé sans rapport",
     "categorie": "Hématologie",
@@ -391,7 +391,7 @@
     "codeAnalyse": "00027-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "ZZ",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "categorie": "Hématologie",
@@ -582,7 +582,7 @@
     "codeAnalyse": "00028-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "ZZ",
     "analyse": "NFS COMPLETE",
     "categorie": "Hématologie",
@@ -773,7 +773,7 @@
     "codeAnalyse": "00029-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "ZZ",
     "analyse": "NFS spécial urgent",
     "categorie": "Hématologie",
@@ -964,7 +964,7 @@
     "codeAnalyse": "00030-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "ZZ",
     "analyse": "EXAMEN INCONNU DU CATALOGUE",
     "categorie": "Hématologie",
@@ -994,7 +994,7 @@
     "codeAnalyse": "00031-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -1201,7 +1201,7 @@
     "codeAnalyse": "00032-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "VIH",
     "examenCode": "VIH",
@@ -1451,7 +1451,7 @@
      "codeAnalyse": "00024-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1483,7 +1483,7 @@
      "codeAnalyse": "00023-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1515,7 +1515,7 @@
      "codeAnalyse": "00022-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1546,7 +1546,7 @@
      "codeAnalyse": "00021-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1577,7 +1577,7 @@
      "codeAnalyse": "00020-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1609,7 +1609,7 @@
      "codeAnalyse": "00019-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1637,7 +1637,7 @@
      "codeAnalyse": "00018-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1662,7 +1662,7 @@
      "codeAnalyse": "00017-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1687,7 +1687,7 @@
      "codeAnalyse": "00016-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1709,7 +1709,7 @@
      "codeAnalyse": "00015-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1737,7 +1737,7 @@
      "codeAnalyse": "00040-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1759,7 +1759,7 @@
      "codeAnalyse": "00039-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1782,7 +1782,7 @@
      "codeAnalyse": "00038-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1804,7 +1804,7 @@
      "codeAnalyse": "00037-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1827,7 +1827,7 @@
      "codeAnalyse": "00036-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1851,7 +1851,7 @@
      "codeAnalyse": "00035-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1873,7 +1873,7 @@
      "codeAnalyse": "00034-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -1895,7 +1895,7 @@
      "codeAnalyse": "00033-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2028,7 +2028,7 @@
      "codeAnalyse": "00049-2026",
      "patientId": "PX3",
      "patient": "TEST Charlie",
-     "patientCode": "CNT/903/26",
+     "patientCode": "CBG/903/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2051,7 +2051,7 @@
      "codeAnalyse": "00048-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE",
      "categorie": "Hématologie",
@@ -2076,7 +2076,7 @@
      "codeAnalyse": "00047-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "categorie": "Hématologie",
@@ -2101,7 +2101,7 @@
      "codeAnalyse": "00046-2026",
      "patientId": "PX3",
      "patient": "TEST Charlie",
-     "patientCode": "CNT/903/26",
+     "patientCode": "CBG/903/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2126,7 +2126,7 @@
      "codeAnalyse": "00045-2026",
      "patientId": "PX2",
      "patient": "TEST Bravo",
-     "patientCode": "CNT/902/26",
+     "patientCode": "CBG/902/26",
      "analyseCode": "L01",
      "analyse": "GLYCEMIE",
      "examenCode": "GLY",
@@ -2151,7 +2151,7 @@
      "codeAnalyse": "00044-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2176,7 +2176,7 @@
      "codeAnalyse": "00043-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2203,7 +2203,7 @@
      "codeAnalyse": "00042-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2231,7 +2231,7 @@
      "codeAnalyse": "00041-2026",
      "patientId": "PX1",
      "patient": "TEST Alpha",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2301,7 +2301,7 @@
      "codeAnalyse": "00056-2026",
      "patientId": "SP9",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2324,7 +2324,7 @@
      "codeAnalyse": "00055-2026",
      "patientId": "SP1",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2347,7 +2347,7 @@
      "codeAnalyse": "00054-2026",
      "patientId": "SP4",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "ZZ",
      "analyse": "EXAMEN INCONNU DU CATALOGUE",
      "categorie": "Hématologie",
@@ -2368,7 +2368,7 @@
      "codeAnalyse": "00053-2026",
      "patientId": "SP3",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "GLYCEMIE",
      "examenCode": "GLY",
@@ -2392,7 +2392,7 @@
      "codeAnalyse": "00052-2026",
      "patientId": "SP2",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2415,7 +2415,7 @@
      "codeAnalyse": "00051-2026",
      "patientId": "SP1",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "GLYCEMIE",
      "examenCode": "GLY",
@@ -2438,7 +2438,7 @@
      "codeAnalyse": "00050-2026",
      "patientId": "SP1",
      "patient": "ST Stat",
-     "patientCode": "CNT/901/26",
+     "patientCode": "CBG/901/26",
      "analyseCode": "L24",
      "analyse": "NFS COMPLETE (HEMOGRAMME)",
      "examenCode": "NFS",
@@ -2462,7 +2462,7 @@
      "statut": "actif",
      "nom": "STSP4",
      "prenom": "Stat",
-     "code": "CNT/SP4/26",
+     "code": "CBG/SP4/26",
      "sexe": "F",
      "dateNaissance": null
     },
@@ -2471,7 +2471,7 @@
      "statut": "actif",
      "nom": "STSP3",
      "prenom": "Stat",
-     "code": "CNT/SP3/26",
+     "code": "CBG/SP3/26",
      "sexe": "M",
      "dateNaissance": "1950-01-01"
     },
@@ -2480,7 +2480,7 @@
      "statut": "actif",
      "nom": "STSP2",
      "prenom": "Stat",
-     "code": "CNT/SP2/26",
+     "code": "CBG/SP2/26",
      "sexe": "M",
      "dateNaissance": "2020-03-01"
     },
@@ -2489,7 +2489,7 @@
      "statut": "actif",
      "nom": "STSP1",
      "prenom": "Stat",
-     "code": "CNT/SP1/26",
+     "code": "CBG/SP1/26",
      "sexe": "F",
      "dateNaissance": "1990-05-01"
     }
@@ -4796,7 +4796,7 @@
     "codeAnalyse": "00001-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4823,7 +4823,7 @@
     "codeAnalyse": "00001-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4852,7 +4852,7 @@
     "codeAnalyse": "00002-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4875,7 +4875,7 @@
     "codeAnalyse": "00002-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4899,7 +4899,7 @@
     "codeAnalyse": "00003-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4923,7 +4923,7 @@
     "codeAnalyse": "00003-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4959,7 +4959,7 @@
     "codeAnalyse": "00004-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -4986,7 +4986,7 @@
     "codeAnalyse": "00004-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5015,7 +5015,7 @@
      "poste": "prescripteur",
      "destinataire": "Dr TEST Prescripteur",
      "libelle": "Résultat disponible — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26)",
+     "detail": "TEST Alpha (CBG/901/26)",
      "priorite": "normale",
      "demandeId": "DEMxmvvdunvw341s9",
      "factureId": null,
@@ -5033,7 +5033,7 @@
     "codeAnalyse": "00005-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5061,7 +5061,7 @@
     "codeAnalyse": "00005-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5090,7 +5090,7 @@
      "poste": "prescripteur",
      "destinataire": "Dr TEST Prescripteur",
      "libelle": "Résultat disponible — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26)",
+     "detail": "TEST Alpha (CBG/901/26)",
      "priorite": "normale",
      "demandeId": "DEMxmvvdunvzd9ftc",
      "factureId": null,
@@ -5108,7 +5108,7 @@
     "codeAnalyse": "00006-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5135,7 +5135,7 @@
     "codeAnalyse": "00006-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5163,7 +5163,7 @@
     "codeAnalyse": "00007-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5190,7 +5190,7 @@
     "codeAnalyse": "00007-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5218,7 +5218,7 @@
     "codeAnalyse": "00008-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5245,7 +5245,7 @@
     "codeAnalyse": "00008-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5284,7 +5284,7 @@
     "codeAnalyse": "00009-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5310,7 +5310,7 @@
     "codeAnalyse": "00009-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5338,7 +5338,7 @@
      "poste": "prescripteur",
      "destinataire": null,
      "libelle": "Résultat disponible — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26)",
+     "detail": "TEST Alpha (CBG/901/26)",
      "priorite": "normale",
      "demandeId": "DEMxmvvdunw0k8umi",
      "factureId": null,
@@ -5356,7 +5356,7 @@
     "codeAnalyse": "00010-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5386,7 +5386,7 @@
     "codeAnalyse": "00010-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5431,7 +5431,7 @@
      "poste": "prescripteur",
      "destinataire": "Dr TEST Prescripteur",
      "libelle": "RÉSULTAT RECTIFIÉ — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26) — version 2. Motif : Erreur de transcription du GB. Le résultat que vous avez consulté a changé.",
+     "detail": "TEST Alpha (CBG/901/26) — version 2. Motif : Erreur de transcription du GB. Le résultat que vous avez consulté a changé.",
      "priorite": "haute",
      "demandeId": "DEMxmvvdunw0v7cb6",
      "factureId": null,
@@ -5449,7 +5449,7 @@
     "codeAnalyse": "00011-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5491,7 +5491,7 @@
     "codeAnalyse": "00011-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5542,7 +5542,7 @@
      "poste": "prescripteur",
      "destinataire": "Dr TEST Prescripteur",
      "libelle": "RÉSULTAT RECTIFIÉ — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26) — version 3. Motif : Second contrôle. Le résultat que vous avez consulté a changé.",
+     "detail": "TEST Alpha (CBG/901/26) — version 3. Motif : Second contrôle. Le résultat que vous avez consulté a changé.",
      "priorite": "haute",
      "demandeId": "DEMxmvvdunw1gdn5s",
      "factureId": null,
@@ -5560,7 +5560,7 @@
     "codeAnalyse": "00012-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5588,7 +5588,7 @@
     "codeAnalyse": "00012-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5630,7 +5630,7 @@
      "poste": "prescripteur",
      "destinataire": "Dr TEST Prescripteur",
      "libelle": "RÉSULTAT RECTIFIÉ — NFS COMPLETE (HEMOGRAMME)",
-     "detail": "TEST Alpha (CNT/901/26) — version 2. Motif : Contre-expertise. Le résultat que vous avez consulté a changé.",
+     "detail": "TEST Alpha (CBG/901/26) — version 2. Motif : Contre-expertise. Le résultat que vous avez consulté a changé.",
      "priorite": "haute",
      "demandeId": "DEMxmvvdunw1sqt3e",
      "factureId": null,
@@ -5648,7 +5648,7 @@
     "codeAnalyse": "00013-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5675,7 +5675,7 @@
     "codeAnalyse": "00013-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5703,7 +5703,7 @@
     "codeAnalyse": "00014-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5730,7 +5730,7 @@
     "codeAnalyse": "00014-2026",
     "patientId": "PX1",
     "patient": "TEST Alpha",
-    "patientCode": "CNT/901/26",
+    "patientCode": "CBG/901/26",
     "analyseCode": "L24",
     "analyse": "NFS COMPLETE (HEMOGRAMME)",
     "examenCode": "NFS",
@@ -5785,7 +5785,7 @@
    "accompagnement": false,
    "retractable": false,
    "aValider": false,
-   "source": "Fiche de résultats CNT du 21/08/2026",
+   "source": "Fiche de résultats CBG du 21/08/2026",
    "statut": "actif"
   },
   "cas": [
@@ -11938,15 +11938,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": []
@@ -11970,15 +11970,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [
@@ -12090,15 +12090,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [
@@ -12225,15 +12225,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [
@@ -12345,15 +12345,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [
@@ -12392,15 +12392,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [
@@ -12536,15 +12536,15 @@
     "patients": [
      {
       "value": "PX2",
-      "libelle": "TEST Bravo (CNT/902/26) — 3 résultat(s)"
+      "libelle": "TEST Bravo (CBG/902/26) — 3 résultat(s)"
      },
      {
       "value": "PX3",
-      "libelle": "TEST Charlie (CNT/903/26) — 1 résultat(s)"
+      "libelle": "TEST Charlie (CBG/903/26) — 1 résultat(s)"
      },
      {
       "value": "PX1",
-      "libelle": "TEST Alpha (CNT/901/26) — 3 résultat(s)"
+      "libelle": "TEST Alpha (CBG/901/26) — 3 résultat(s)"
      }
     ],
     "examens": [

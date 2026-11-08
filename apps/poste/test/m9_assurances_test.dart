@@ -166,7 +166,7 @@ void main() {
     cas('Mettre à jour la couverture : l’ancienne est CLOSE (jamais écrasée), la nouvelle ouverte, le tout daté', (t) async {
       final m = magasin();
       await ouvrir(t, m, 'm9-assures');
-      final p = m.collection('patients').actives.firstWhere((x) => x['code'] == 'CNT/2/26');
+      final p = m.collection('patients').actives.firstWhere((x) => x['code'] == 'CBG/2/26');
       await changer(t);
       final hist = m.collection('couverturesAssurance').actives
           .where((x) => x['patientId'] == p['id'])
@@ -187,7 +187,7 @@ void main() {
     cas('une date d’effet passée change la fiche du dossier tout de suite', (t) async {
       final m = magasin();
       await ouvrir(t, m, 'm9-assures');
-      final p = m.collection('patients').actives.firstWhere((x) => x['code'] == 'CNT/2/26');
+      final p = m.collection('patients').actives.firstWhere((x) => x['code'] == 'CBG/2/26');
       await changer(t, jour: 10);
       expect(m.collection('patients').parId(p['id'])!['assureur'], 'NSIA');
       expect(m.collection('patients').parId(p['id'])!['numeroPolice'], 'NSIA/2026/9999');

@@ -6,7 +6,7 @@
    "id": "C1",
    "statut": "actif",
    "reference": "CST-00001",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T01:00",
@@ -22,7 +22,7 @@
    "id": "C2",
    "statut": "actif",
    "reference": "CST-00002",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T02:00",
@@ -44,7 +44,7 @@
    "id": "C3",
    "statut": "actif",
    "reference": "CST-00003",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T03:00",
@@ -57,7 +57,7 @@
    "id": "C4",
    "statut": "actif",
    "reference": "CST-00004",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T04:00",
@@ -70,7 +70,7 @@
    "id": "C5",
    "statut": "actif",
    "reference": "CST-00005",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T05:00",
@@ -83,7 +83,7 @@
    "id": "C6",
    "statut": "actif",
    "reference": "CST-00006",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T06:00",
@@ -96,7 +96,7 @@
    "id": "C7",
    "statut": "actif",
    "reference": "CST-00007",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T07:00",
@@ -109,7 +109,7 @@
    "id": "C8",
    "statut": "actif",
    "reference": "CST-00008",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T08:00",
@@ -122,7 +122,7 @@
    "id": "C9",
    "statut": "actif",
    "reference": "CST-00009",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T00:00",
@@ -135,7 +135,7 @@
    "id": "C10",
    "statut": "actif",
    "reference": "CST-00010",
-   "patientCode": "CNT/2/26",
+   "patientCode": "CBG/2/26",
    "patientId": "K2",
    "patient": "Nom2 Pre2",
    "dateHeure": "2026-08-01T10:00",
@@ -151,7 +151,7 @@
    "id": "C11",
    "statut": "actif",
    "reference": "CST-00011",
-   "patientCode": "CNT/3/26",
+   "patientCode": "CBG/3/26",
    "patientId": "K3",
    "patient": "Nom3 Pre3",
    "dateHeure": "2026-08-02T10:00",
@@ -163,7 +163,7 @@
    "id": "C12",
    "statut": "actif",
    "reference": "CST-00012",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T03:00",
@@ -175,7 +175,7 @@
    "id": "C13",
    "statut": "archive",
    "reference": "CST-00013",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T04:00",
@@ -217,7 +217,7 @@
  "lignes": [
   [
    "30/10/2026 à 08h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "—",
    "—",
@@ -229,7 +229,7 @@
   ],
   [
    "30/10/2026 à 07h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "—",
    "—",
@@ -241,7 +241,7 @@
   ],
   [
    "30/10/2026 à 06h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "—",
    "—",
@@ -253,7 +253,7 @@
   ],
   [
    "30/10/2026 à 05h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "—",
    "—",
@@ -265,7 +265,7 @@
   ],
   [
    "30/10/2026 à 04h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "38.1 °C",
    "—",
@@ -277,7 +277,7 @@
   ],
   [
    "30/10/2026 à 03h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Midi",
    "—",
    "—",
@@ -289,7 +289,7 @@
   ],
   [
    "30/10/2026 à 03h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "35.9 °C",
    "—",
@@ -301,7 +301,7 @@
   ],
   [
    "30/10/2026 à 02h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "38 °C",
    "12/8",
@@ -313,7 +313,7 @@
   ],
   [
    "30/10/2026 à 01h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "36 °C",
    "—",
@@ -325,7 +325,7 @@
   ],
   [
    "30/10/2026 à 00h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "—",
    "—",
@@ -337,7 +337,7 @@
   ],
   [
    "02/08/2026 à 10h00",
-   "Nom3 Pre3 — CNT/3/26",
+   "Nom3 Pre3 — CBG/3/26",
    "Soir",
    "—",
    "—",
@@ -349,7 +349,7 @@
   ],
   [
    "01/08/2026 à 10h00",
-   "Nom2 Pre2 — CNT/2/26",
+   "Nom2 Pre2 — CBG/2/26",
    "Matin",
    "39 °C",
    "—",
@@ -364,7 +364,7 @@
   {
    "nom": "relevé complet : tension et IMC calculés",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "dateHeure": "2026-10-30T09:30",
     "moment": "midi",
     "releveePar": "SANNI Bibata",
@@ -381,7 +381,7 @@
    "crees": [
     {
      "statut": "actif",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "dateHeure": "2026-10-30T09:30",
      "moment": "midi",
      "temperature": 37.2,
@@ -410,7 +410,7 @@
   {
    "nom": "poids sans taille : pas d'IMC",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "dateHeure": "2026-10-30T09:30",
     "moment": "midi",
     "releveePar": "SANNI Bibata",
@@ -419,7 +419,7 @@
    "crees": [
     {
      "statut": "actif",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "dateHeure": "2026-10-30T09:30",
      "moment": "midi",
      "temperature": null,
@@ -448,7 +448,7 @@
   {
    "nom": "une seule valeur de tension : pas de tension",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "dateHeure": "2026-10-30T09:30",
     "moment": "midi",
     "releveePar": "SANNI Bibata",
@@ -457,7 +457,7 @@
    "crees": [
     {
      "statut": "actif",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "dateHeure": "2026-10-30T09:30",
      "moment": "midi",
      "temperature": null,
@@ -486,7 +486,7 @@
   {
    "nom": "IMC arrondi au dixième",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "dateHeure": "2026-10-30T09:30",
     "moment": "midi",
     "releveePar": "SANNI Bibata",
@@ -496,7 +496,7 @@
    "crees": [
     {
      "statut": "actif",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "dateHeure": "2026-10-30T09:30",
      "moment": "midi",
      "temperature": null,
@@ -532,7 +532,7 @@
    "crees": [
     {
      "statut": "actif",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "dateHeure": "2026-10-30T09:30",
      "moment": "soir",
      "temperature": null,
@@ -561,7 +561,7 @@
   {
    "nom": "relevé par vide : formulaire refusé",
    "saisie": {
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "dateHeure": "2026-10-30T09:30",
     "moment": "soir"
    },
@@ -575,7 +575,7 @@
  "debug": [
   [
    "30/10/2026 à 02h00",
-   "Nom1 Pre1 — CNT/1/26",
+   "Nom1 Pre1 — CBG/1/26",
    "Matin",
    "38 °C",
    "12/8",
@@ -587,11 +587,11 @@
   ]
  ],
  "debugQ": "2026-10-30T02:00",
- "detail": "Relevés enregistrés 17 Aujourd’hui 15 Patients suivis 3 Constantes hors bornes 8 Ces relevés alimentent la feuille de température (graphique à cinq échelles) et la fiche de surveillance (le même relevé en tableau). Une seule collection, deux présentations : les tenir séparées produirait deux vérités divergentes sur les constantes d’un même patient. Colonnes Exporter Nouveau relevé DATE ET HEURE PATIENT MOMENT T° TA POULS SPO₂ IMC CONTRÔLE ACTIONS 30/10/2026 à 02h00 Nom1 Pre1 — CNT/1/26 Matin 38 °C 12/8 100 bpm 100 % 22.9 normales Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. Nom1 Pre1 — 30/10/2026 à 02h00 PATIENT Nom1 Pre1 — CNT/1/26 DATE ET HEURE 30/10/2026 à 02h00 MOMENT Matin TEMPÉRATURE 38 °C TENSION ARTÉRIELLE 12/8 POULS 100 bpm FRÉQUENCE RESPIRATOIRE 20 /min SPO₂ 100 % DIURÈSE — POIDS 70 kg TAILLE 175 cm IMC 22.9 (calculé) RELEVÉ PAR Agent",
+ "detail": "Relevés enregistrés 17 Aujourd’hui 15 Patients suivis 3 Constantes hors bornes 8 Ces relevés alimentent la feuille de température (graphique à cinq échelles) et la fiche de surveillance (le même relevé en tableau). Une seule collection, deux présentations : les tenir séparées produirait deux vérités divergentes sur les constantes d’un même patient. Colonnes Exporter Nouveau relevé DATE ET HEURE PATIENT MOMENT T° TA POULS SPO₂ IMC CONTRÔLE ACTIONS 30/10/2026 à 02h00 Nom1 Pre1 — CBG/1/26 Matin 38 °C 12/8 100 bpm 100 % 22.9 normales Affichage de 1 à 1 sur 1 enregistrement Le formulaire comporte des erreurs. Nom1 Pre1 — 30/10/2026 à 02h00 PATIENT Nom1 Pre1 — CBG/1/26 DATE ET HEURE 30/10/2026 à 02h00 MOMENT Matin TEMPÉRATURE 38 °C TENSION ARTÉRIELLE 12/8 POULS 100 bpm FRÉQUENCE RESPIRATOIRE 20 /min SPO₂ 100 % DIURÈSE — POIDS 70 kg TAILLE 175 cm IMC 22.9 (calculé) RELEVÉ PAR Agent",
  "modification": {
   "nom": "modifier poids et tension : le calculé suit-il ?",
   "prerempli": {
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "dateHeure": "2026-10-30T02:00",
    "moment": "matin",
    "temperature": "38",
@@ -608,7 +608,7 @@
   "avant": {
    "statut": "actif",
    "reference": "CST-00002",
-   "patientCode": "CNT/1/26",
+   "patientCode": "CBG/1/26",
    "patientId": "K1",
    "patient": "Nom1 Pre1",
    "dateHeure": "2026-10-30T02:00",

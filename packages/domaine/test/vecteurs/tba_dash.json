@@ -312,70 +312,70 @@
          "lignes": [
           [
            "26/08/2026 10h00",
-           "CNT/138/26",
+           "CBG/138/26",
            "YARO Edmond",
            "Hypertension — contrôle",
            "Terminée"
           ],
           [
            "26/08/2026 10h00",
-           "CNT/34/26",
+           "CBG/34/26",
            "SAMBIENI Ganiou",
            "Douleurs épigastriques",
            "Terminée"
           ],
           [
            "16/08/2026 17h30",
-           "CNT/67/26",
+           "CBG/67/26",
            "BAKO Sylvie",
            "Plaie infectée",
            "En cours"
           ],
           [
            "16/08/2026 15h30",
-           "CNT/65/26",
+           "CBG/65/26",
            "TCHANE Idrissou",
            "Consultation prénatale",
            "Terminée"
           ],
           [
            "15/08/2026 18h15",
-           "CNT/148/25",
+           "CBG/148/25",
            "BOUKARI Alassane",
            "Traumatisme",
            "Terminée"
           ],
           [
            "15/08/2026 17h00",
-           "CNT/42/26",
+           "CBG/42/26",
            "YARO Bertine",
            "Suivi de grossesse",
            "Terminée"
           ],
           [
            "15/08/2026 16h30",
-           "CNT/74/26",
+           "CBG/74/26",
            "HOUNKPATIN Salifou",
            "Plaie infectée",
            "Terminée"
           ],
           [
            "15/08/2026 10h15",
-           "CNT/10/25",
+           "CBG/10/25",
            "SEIDOU Rachida",
            "Contrôle diabète",
            "Planifiée"
           ],
           [
            "14/08/2026 13h45",
-           "CNT/45/26",
+           "CBG/45/26",
            "PARAISO Séraphine",
            "Fièvre persistante",
            "En cours"
           ],
           [
            "14/08/2026 11h45",
-           "CNT/4/26",
+           "CBG/4/26",
            "PARAISO Sabi",
            "Céphalées",
            "Terminée"
@@ -407,7 +407,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CNT/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CNT/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CNT/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CNT/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CNT/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CNT/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CNT/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CNT/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CNT/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CNT/4/26 PARAISO Sabi Céphalées Terminée"
+       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PARAISO Sabi Céphalées Terminée"
       }
      ]
     },
@@ -764,7 +764,7 @@
           [
            "A1 LIT1",
            "SAMBIENI Bibata",
-           "CNT/20/26",
+           "CBG/20/26",
            "07/08/2026",
            "10",
            "Paludisme grave",
@@ -773,7 +773,7 @@
           [
            "A1 LIT2",
            "WOROU Boukari",
-           "CNT/119/26",
+           "CBG/119/26",
            "11/08/2026",
            "6",
            "Infection urinaire basse",
@@ -782,7 +782,7 @@
           [
            "A2 LIT1",
            "N’TCHA Hervé",
-           "CNT/75/26",
+           "CBG/75/26",
            "08/08/2026",
            "9",
            "Gastro-entérite",
@@ -791,7 +791,7 @@
           [
            "A2 LIT2",
            "YENI M’PO Florent",
-           "CNT904/25",
+           "CBG904/25",
            "07/08/2026",
            "10",
            "Dermatose infectieuse",
@@ -800,7 +800,7 @@
           [
            "A3 LIT1",
            "TCHANE Colette",
-           "CNT/54/26",
+           "CBG/54/26",
            "07/08/2026",
            "10",
            "Bronchite aiguë",
@@ -809,7 +809,7 @@
           [
            "A3 LIT2",
            "HOUNKPATIN Salifou",
-           "CNT/74/26",
+           "CBG/74/26",
            "13/08/2026",
            "4",
            "Infection urinaire basse",
@@ -818,7 +818,7 @@
           [
            "A4 LIT1",
            "KASSA Florent",
-           "CNT/57/26",
+           "CBG/57/26",
            "13/08/2026",
            "4",
            "Paludisme simple",
@@ -827,7 +827,7 @@
           [
            "A4 LIT2",
            "TIGRI Kassim",
-           "CNT/180/25",
+           "CBG/180/25",
            "11/08/2026",
            "6",
            "HTA essentielle",
@@ -836,7 +836,7 @@
           [
            "B1 LIT1",
            "OROU YO Ganiou",
-           "CNT/88/26",
+           "CBG/88/26",
            "11/08/2026",
            "6",
            "Fièvre typhoïde",
@@ -845,7 +845,7 @@
           [
            "B1 LIT2",
            "SOULE Nadège",
-           "CNT/97/26",
+           "CBG/97/26",
            "12/08/2026",
            "5",
            "Diabète de type 2",
@@ -854,7 +854,7 @@
           [
            "B2 LIT1",
            "BASSONGUI Bio",
-           "CNT/167/26",
+           "CBG/167/26",
            "09/08/2026",
            "8",
            "Bronchite aiguë",
@@ -863,7 +863,7 @@
           [
            "B2 LIT2",
            "TAKI Alimatou",
-           "CNT901/25",
+           "CBG901/25",
            "11/08/2026",
            "6",
            "Gastro-entérite",
@@ -872,7 +872,7 @@
           [
            "B3 LIT1",
            "SANNI Nadège",
-           "CNT/174/26",
+           "CBG/174/26",
            "11/08/2026",
            "6",
            "HTA essentielle",
@@ -881,7 +881,7 @@
           [
            "B3 LIT2",
            "AHOHOU Zakari",
-           "CNT/80/26",
+           "CBG/80/26",
            "10/08/2026",
            "7",
            "Infection respiratoire aiguë",
@@ -918,7 +918,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Patients hospitalisés — service Plan des lits LIT PATIENT DOSSIER ENTRÉE JOURS DIAGNOSTIC PRISE EN CHARGE A1 LIT1 SAMBIENI Bibata CNT/20/26 07/08/2026 10 Paludisme grave Plus de 8h A1 LIT2 WOROU Boukari CNT/119/26 11/08/2026 6 Infection urinaire basse Plus de 8h A2 LIT1 N’TCHA Hervé CNT/75/26 08/08/2026 9 Gastro-entérite Moins de 8h A2 LIT2 YENI M’PO Florent CNT904/25 07/08/2026 10 Dermatose infectieuse Moins de 8h A3 LIT1 TCHANE Colette CNT/54/26 07/08/2026 10 Bronchite aiguë Plus de 8h A3 LIT2 HOUNKPATIN Salifou CNT/74/26 13/08/2026 4 Infection urinaire basse Moins de 8h A4 LIT1 KASSA Florent CNT/57/26 13/08/2026 4 Paludisme simple Plus de 8h A4 LIT2 TIGRI Kassim CNT/180/25 11/08/2026 6 HTA essentielle Moins de 8h B1 LIT1 OROU YO Ganiou CNT/88/26 11/08/2026 6 Fièvre typhoïde Plus de 8h B1 LIT2 SOULE Nadège CNT/97/26 12/08/2026 5 Diabète de type 2 Moins de 8h B2 LIT1 BASSONGUI Bio CNT/167/26 09/08/2026 8 Bronchite aiguë Plus de 8h B2 LIT2 TAKI Alimatou CNT901/25 11/08/2026 6 Gastro-entérite Plus de 8h B3 LIT1 SANNI Nadège CNT/174/26 11/08/2026 6 HTA essentielle Plus de 8h B3 LIT2 AHOHOU Zakari CNT/80/26 10/08/2026 7 Infection respiratoire aiguë Plus de 8h"
+       "texte": "Patients hospitalisés — service Plan des lits LIT PATIENT DOSSIER ENTRÉE JOURS DIAGNOSTIC PRISE EN CHARGE A1 LIT1 SAMBIENI Bibata CBG/20/26 07/08/2026 10 Paludisme grave Plus de 8h A1 LIT2 WOROU Boukari CBG/119/26 11/08/2026 6 Infection urinaire basse Plus de 8h A2 LIT1 N’TCHA Hervé CBG/75/26 08/08/2026 9 Gastro-entérite Moins de 8h A2 LIT2 YENI M’PO Florent CBG904/25 07/08/2026 10 Dermatose infectieuse Moins de 8h A3 LIT1 TCHANE Colette CBG/54/26 07/08/2026 10 Bronchite aiguë Plus de 8h A3 LIT2 HOUNKPATIN Salifou CBG/74/26 13/08/2026 4 Infection urinaire basse Moins de 8h A4 LIT1 KASSA Florent CBG/57/26 13/08/2026 4 Paludisme simple Plus de 8h A4 LIT2 TIGRI Kassim CBG/180/25 11/08/2026 6 HTA essentielle Moins de 8h B1 LIT1 OROU YO Ganiou CBG/88/26 11/08/2026 6 Fièvre typhoïde Plus de 8h B1 LIT2 SOULE Nadège CBG/97/26 12/08/2026 5 Diabète de type 2 Moins de 8h B2 LIT1 BASSONGUI Bio CBG/167/26 09/08/2026 8 Bronchite aiguë Plus de 8h B2 LIT2 TAKI Alimatou CBG901/25 11/08/2026 6 Gastro-entérite Plus de 8h B3 LIT1 SANNI Nadège CBG/174/26 11/08/2026 6 HTA essentielle Plus de 8h B3 LIT2 AHOHOU Zakari CBG/80/26 10/08/2026 7 Infection respiratoire aiguë Plus de 8h"
       }
      ]
     }
@@ -950,7 +950,7 @@
          "lignes": [
           [
            "ORD-2025-00045",
-           "ADAM Rabiatou CNT/82/26",
+           "ADAM Rabiatou CBG/82/26",
            "2 médicament(s) — 344",
            "344",
            "À traiter",
@@ -958,7 +958,7 @@
           ],
           [
            "ORD-2025-00108",
-           "ZIME Salifou CNT/105/26",
+           "ZIME Salifou CBG/105/26",
            "1 médicament(s) — 228",
            "228",
            "À traiter",
@@ -966,7 +966,7 @@
           ],
           [
            "ORD-2025-00112",
-           "HOUNKPATIN Salifou CNT/74/26",
+           "HOUNKPATIN Salifou CBG/74/26",
            "2 médicament(s) — 1 972",
            "1 972",
            "À traiter",
@@ -974,7 +974,7 @@
           ],
           [
            "ORD-2025-00113",
-           "BAKO Justine CNT/9/26",
+           "BAKO Justine CBG/9/26",
            "1 médicament(s) — 100",
            "100",
            "À traiter",
@@ -982,7 +982,7 @@
           ],
           [
            "ORD-2025-00056Urgent",
-           "SANNI Nadège CNT/174/26",
+           "SANNI Nadège CBG/174/26",
            "3 médicament(s) — 11 700",
            "11 700",
            "À traiter",
@@ -990,7 +990,7 @@
           ],
           [
            "ORD-2026-00023Urgent",
-           "YENI Moussa CNT/18/26",
+           "YENI Moussa CBG/18/26",
            "3 médicament(s) — 3 288",
            "3 288",
            "À traiter",
@@ -998,7 +998,7 @@
           ],
           [
            "ORD-2026-00062",
-           "AGOSSOU Bio CNT/120/26",
+           "AGOSSOU Bio CBG/120/26",
            "2 médicament(s) — 3 976",
            "3 976",
            "À traiter",
@@ -1006,7 +1006,7 @@
           ],
           [
            "ORD-2026-00122",
-           "MAMAN Yahouza CNT/68/26",
+           "MAMAN Yahouza CBG/68/26",
            "1 médicament(s) — 2 250",
            "2 250",
            "À traiter",
@@ -1053,7 +1053,7 @@
          "lignes": [
           [
            "ORD-2025-00045",
-           "ADAM Rabiatou CNT/82/26",
+           "ADAM Rabiatou CBG/82/26",
            "2 médicament(s) — 344",
            "344",
            "À traiter",
@@ -1061,7 +1061,7 @@
           ],
           [
            "ORD-2025-00108",
-           "ZIME Salifou CNT/105/26",
+           "ZIME Salifou CBG/105/26",
            "1 médicament(s) — 228",
            "228",
            "À traiter",
@@ -1069,7 +1069,7 @@
           ],
           [
            "ORD-2025-00112",
-           "HOUNKPATIN Salifou CNT/74/26",
+           "HOUNKPATIN Salifou CBG/74/26",
            "2 médicament(s) — 1 972",
            "1 972",
            "À traiter",
@@ -1077,7 +1077,7 @@
           ],
           [
            "ORD-2025-00113",
-           "BAKO Justine CNT/9/26",
+           "BAKO Justine CBG/9/26",
            "1 médicament(s) — 100",
            "100",
            "À traiter",
@@ -1085,7 +1085,7 @@
           ],
           [
            "ORD-2025-00056Urgent",
-           "SANNI Nadège CNT/174/26",
+           "SANNI Nadège CBG/174/26",
            "3 médicament(s) — 11 700",
            "11 700",
            "À traiter",
@@ -1093,7 +1093,7 @@
           ],
           [
            "ORD-2026-00023Urgent",
-           "YENI Moussa CNT/18/26",
+           "YENI Moussa CBG/18/26",
            "3 médicament(s) — 3 288",
            "3 288",
            "À traiter",
@@ -1101,7 +1101,7 @@
           ],
           [
            "ORD-2026-00062",
-           "AGOSSOU Bio CNT/120/26",
+           "AGOSSOU Bio CBG/120/26",
            "2 médicament(s) — 3 976",
            "3 976",
            "À traiter",
@@ -1109,7 +1109,7 @@
           ],
           [
            "ORD-2026-00122",
-           "MAMAN Yahouza CNT/68/26",
+           "MAMAN Yahouza CBG/68/26",
            "1 médicament(s) — 2 250",
            "2 250",
            "À traiter",
@@ -1126,7 +1126,7 @@
          ]
         }
        ],
-       "texte": "Ordonnances à délivrer — 51 à traiter, 42 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS ORD-2025-00045 ADAM Rabiatou CNT/82/26 2 médicament(s) — 344 344 À traiter ORD-2025-00108 ZIME Salifou CNT/105/26 1 médicament(s) — 228 228 À traiter ORD-2025-00112 HOUNKPATIN Salifou CNT/74/26 2 médicament(s) — 1 972 1 972 À traiter ORD-2025-00113 BAKO Justine CNT/9/26 1 médicament(s) — 100 100 À traiter ORD-2025-00056Urgent SANNI Nadège CNT/174/26 3 médicament(s) — 11 700 11 700 À traiter ORD-2026-00023Urgent YENI Moussa CNT/18/26 3 médicament(s) — 3 288 3 288 À traiter ORD-2026-00062 AGOSSOU Bio CNT/120/26 2 médicament(s) — 3 976 3 976 À traiter ORD-2026-00122 MAMAN Yahouza CNT/68/26 1 médicament(s) — 2 250 2 250 À traiter Affichage de 1 à 8 sur 93 enregistrements 1 2 3 4 5"
+       "texte": "Ordonnances à délivrer — 51 à traiter, 42 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS ORD-2025-00045 ADAM Rabiatou CBG/82/26 2 médicament(s) — 344 344 À traiter ORD-2025-00108 ZIME Salifou CBG/105/26 1 médicament(s) — 228 228 À traiter ORD-2025-00112 HOUNKPATIN Salifou CBG/74/26 2 médicament(s) — 1 972 1 972 À traiter ORD-2025-00113 BAKO Justine CBG/9/26 1 médicament(s) — 100 100 À traiter ORD-2025-00056Urgent SANNI Nadège CBG/174/26 3 médicament(s) — 11 700 11 700 À traiter ORD-2026-00023Urgent YENI Moussa CBG/18/26 3 médicament(s) — 3 288 3 288 À traiter ORD-2026-00062 AGOSSOU Bio CBG/120/26 2 médicament(s) — 3 976 3 976 À traiter ORD-2026-00122 MAMAN Yahouza CBG/68/26 1 médicament(s) — 2 250 2 250 À traiter Affichage de 1 à 8 sur 93 enregistrements 1 2 3 4 5"
       }
      ]
     },
@@ -4034,7 +4034,7 @@
            "ecran": "m1-patients",
            "poste": null,
            "ferme": false,
-           "detail": "Code CNT/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite."
+           "detail": "Code CBG/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite."
           },
           {
            "rang": "2",
@@ -4438,7 +4438,7 @@
        ],
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Ce que vous faites ici — les parcours de l’accueil Nouveau patient Le patient n’a jamais été reçu à la clinique. 1 Créer le dossier patient Code CNT/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite. 2 Relever les constantes Température, TA, pouls, SpO₂, poids, taille. Elles alimentent la feuille de surveillance. 3 Inscrire à la file d’attente 4 Le soignant ouvre le dossier de consultationConsultation Ouvrir un dossier Rendez-vous de consultation Le patient appelle ou se présente pour une date à venir. 1 Prendre le rendez-vous Généraliste et sage-femme sept jours sur sept ; chirurgien-gynécologue les lundi et jeudi. 2 Vérifier ou créer le dossier 3 Le jour venu : constantes puis file d’attente 4 Le soignant reçoitConsultation 5 RèglementCaisse Prendre le rendez-vous Rendez-vous de contrôle Le patient revient après un traitement ou un examen. 1 Programmer le contrôle Le motif « contrôle » distingue la venue d’une première consultation. 2 Vérifier que les résultats sont rendus— fermé à votre profil Un contrôle sans son résultat fait revenir le patient pour rien. 3 Relever les constantes à l’arrivée 4 Le soignant reçoitConsultation Programmer le contrôle Patient référé par un autre centre Le patient arrive avec sa fiche de référence. 1 Enregistrer la fiche de référence entrante La pièce d’origine est conservée et numérisée : elle porte ce que le centre a déjà fait. 2 Créer le dossier local Sans effacer la pièce d’origine ni sa couverture d’assurance. 3 Numériser la fiche reçue 4 Relever les constantes 5 Le soignant reçoitConsultation 6 Renvoyer la contre-référence au centre d’origine Elle dit ce qu’il est advenu du patient — c’est ce que le centre attend. Enregistrer la référence File d’attente et écran d’appel L’ordre d’arrivée gouverne, sauf urgence. 1 Inscrire et appeler les patients Le rang est calculé : priorité d’abord, heure d’arrivée ensuite. Il ne se saisit pas. 2 Afficher l’écran d’appel en salle d’attente Numéros seuls — jamais le nom ni le motif du patient. Gérer la file Sortie d’hospitalisation Le séjour est terminé, le patient rentre chez lui. 1 Vérifier que le solde est apuré— fermé à votre profil RG-06 — aucune sortie tant qu’un reliquat subsiste. 2 Établir la fiche de sortie RG-07 — signature du patient, de l’infirmier et constat du gardien. 3 Remettre le traitement de sortiePharmacie 4 Programmer le contrôle Sortie contre avis médical Le patient part malgré l’avis du médecin. 1 Recueillir la décharge de responsabilité RG-08 — le motif est obligatoire, l’avis du Procureur consigné le cas échéant. 2 Faire signer le patient ou son accompagnant 3 Régulariser le solde— fermé à votre profil La sortie contre avis n’efface pas la dette. Enregistrer la sortie Registre des appels Appels entrants et sortants du standard. 1 Consigner l’appel Objet, interlocuteur, suite donnée. 2 Prendre le rendez-vous si l’appel le demande 3 Appeler l’ambulance si l’appel est une urgence Ouvrir le registre Visites aux hospitalisés Les proches se présentent pour un patient hospitalisé. 1 Vérifier les heures de visite et enregistrer 2 Orienter vers la chambre Enregistrer une visite Annuaire des ambulances Une évacuation est nécessaire. 1 Appeler un moyen disponible Les disponibles remontent en tête ; le numéro est cliquable. 2 Établir la fiche de référence sortante Elle part avec le patient et porte ses constantes et ses traitements reçus. 3 Consigner l’interventionAmbulance— fermé à votre profil Consulter l’annuaire Certificats et attestations Le patient réclame un certificat. 1 Délivrer la pièce Numérotée par sigle et par année. Les certificats ne sont couverts que par SOS. 2 EncaisserCaisse Délivrer une pièce"
+       "texte": "Ce que vous faites ici — les parcours de l’accueil Nouveau patient Le patient n’a jamais été reçu à la clinique. 1 Créer le dossier patient Code CBG/[n°]/[année] attribué automatiquement — RG-01, non modifiable ensuite. 2 Relever les constantes Température, TA, pouls, SpO₂, poids, taille. Elles alimentent la feuille de surveillance. 3 Inscrire à la file d’attente 4 Le soignant ouvre le dossier de consultationConsultation Ouvrir un dossier Rendez-vous de consultation Le patient appelle ou se présente pour une date à venir. 1 Prendre le rendez-vous Généraliste et sage-femme sept jours sur sept ; chirurgien-gynécologue les lundi et jeudi. 2 Vérifier ou créer le dossier 3 Le jour venu : constantes puis file d’attente 4 Le soignant reçoitConsultation 5 RèglementCaisse Prendre le rendez-vous Rendez-vous de contrôle Le patient revient après un traitement ou un examen. 1 Programmer le contrôle Le motif « contrôle » distingue la venue d’une première consultation. 2 Vérifier que les résultats sont rendus— fermé à votre profil Un contrôle sans son résultat fait revenir le patient pour rien. 3 Relever les constantes à l’arrivée 4 Le soignant reçoitConsultation Programmer le contrôle Patient référé par un autre centre Le patient arrive avec sa fiche de référence. 1 Enregistrer la fiche de référence entrante La pièce d’origine est conservée et numérisée : elle porte ce que le centre a déjà fait. 2 Créer le dossier local Sans effacer la pièce d’origine ni sa couverture d’assurance. 3 Numériser la fiche reçue 4 Relever les constantes 5 Le soignant reçoitConsultation 6 Renvoyer la contre-référence au centre d’origine Elle dit ce qu’il est advenu du patient — c’est ce que le centre attend. Enregistrer la référence File d’attente et écran d’appel L’ordre d’arrivée gouverne, sauf urgence. 1 Inscrire et appeler les patients Le rang est calculé : priorité d’abord, heure d’arrivée ensuite. Il ne se saisit pas. 2 Afficher l’écran d’appel en salle d’attente Numéros seuls — jamais le nom ni le motif du patient. Gérer la file Sortie d’hospitalisation Le séjour est terminé, le patient rentre chez lui. 1 Vérifier que le solde est apuré— fermé à votre profil RG-06 — aucune sortie tant qu’un reliquat subsiste. 2 Établir la fiche de sortie RG-07 — signature du patient, de l’infirmier et constat du gardien. 3 Remettre le traitement de sortiePharmacie 4 Programmer le contrôle Sortie contre avis médical Le patient part malgré l’avis du médecin. 1 Recueillir la décharge de responsabilité RG-08 — le motif est obligatoire, l’avis du Procureur consigné le cas échéant. 2 Faire signer le patient ou son accompagnant 3 Régulariser le solde— fermé à votre profil La sortie contre avis n’efface pas la dette. Enregistrer la sortie Registre des appels Appels entrants et sortants du standard. 1 Consigner l’appel Objet, interlocuteur, suite donnée. 2 Prendre le rendez-vous si l’appel le demande 3 Appeler l’ambulance si l’appel est une urgence Ouvrir le registre Visites aux hospitalisés Les proches se présentent pour un patient hospitalisé. 1 Vérifier les heures de visite et enregistrer 2 Orienter vers la chambre Enregistrer une visite Annuaire des ambulances Une évacuation est nécessaire. 1 Appeler un moyen disponible Les disponibles remontent en tête ; le numéro est cliquable. 2 Établir la fiche de référence sortante Elle part avec le patient et porte ses constantes et ses traitements reçus. 3 Consigner l’interventionAmbulance— fermé à votre profil Consulter l’annuaire Certificats et attestations Le patient réclame un certificat. 1 Délivrer la pièce Numérotée par sigle et par année. Les certificats ne sont couverts que par SOS. 2 EncaisserCaisse Délivrer une pièce"
       }
      ]
     },
@@ -4485,7 +4485,7 @@
          "lignes": [
           [
            "15h30",
-           "CNT/65/26",
+           "CBG/65/26",
            "TCHANE Idrissou",
            "Consultation prénatale",
            "AHOHOU Rodrigue",
@@ -4493,7 +4493,7 @@
           ],
           [
            "17h30",
-           "CNT/67/26",
+           "CBG/67/26",
            "BAKO Sylvie",
            "Plaie infectée",
            "YENI M’PO Florent",
@@ -4518,7 +4518,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Rendez-vous et consultations du jour Agenda complet HEURE DOSSIER PATIENT MOTIF PRATICIEN STATUT 15h30 CNT/65/26 TCHANE Idrissou Consultation prénatale AHOHOU Rodrigue Terminée 17h30 CNT/67/26 BAKO Sylvie Plaie infectée YENI M’PO Florent En cours"
+       "texte": "Rendez-vous et consultations du jour Agenda complet HEURE DOSSIER PATIENT MOTIF PRATICIEN STATUT 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale AHOHOU Rodrigue Terminée 17h30 CBG/67/26 BAKO Sylvie Plaie infectée YENI M’PO Florent En cours"
       }
      ]
     }
@@ -4624,13 +4624,13 @@
          ],
          "lignes": [
           [
-           "NS 131/07/DM/DA/CNT/2026",
+           "NS 131/07/DM/DA/CBG/2026",
            "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale",
            "13/07/2026",
            "ACTIVE"
           ],
           [
-           "NS n° 132/07/DM/DA/CNT/2026",
+           "NS n° 132/07/DM/DA/CBG/2026",
            "Primes diverses",
            "13/07/2026",
            "ACTIVE"
@@ -4649,7 +4649,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Notes de service en vigueur RÉFÉRENCE OBJET SIGNATURE STATUT NS 131/07/DM/DA/CNT/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale 13/07/2026 ACTIVE NS n° 132/07/DM/DA/CNT/2026 Primes diverses 13/07/2026 ACTIVE"
+       "texte": "Notes de service en vigueur RÉFÉRENCE OBJET SIGNATURE STATUT NS 131/07/DM/DA/CBG/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale 13/07/2026 ACTIVE NS n° 132/07/DM/DA/CBG/2026 Primes diverses 13/07/2026 ACTIVE"
       }
      ]
     }
@@ -4750,7 +4750,7 @@
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CNT908/25",
+           "AGOSSOU Yahouza CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4776,7 +4776,7 @@
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CNT908/25",
+           "AGOSSOU Yahouza CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4797,7 +4797,7 @@
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CNT908/25",
+           "AGOSSOU Yahouza CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4819,7 +4819,7 @@
          "entetes": []
         }
        ],
-       "texte": "Vos patients en attente 1 patient(s) vous attendent nommément, et 0 patient(s) sont en file commune — le prochain praticien libre les prend. Adressés à BADO BANI A. B. Zoulehath Colonnes Exporter N° PATIENT PRIORITÉ MOTIF ARRIVÉ À ACTIONS C001 AGOSSOU Yahouza CNT908/25 Urgence Règlement 07:03 Recevoir Affichage de 1 à 1 sur 1 enregistrement File commune de consultation Aucun patient en file commune. Ouvrir la file d’attente"
+       "texte": "Vos patients en attente 1 patient(s) vous attendent nommément, et 0 patient(s) sont en file commune — le prochain praticien libre les prend. Adressés à BADO BANI A. B. Zoulehath Colonnes Exporter N° PATIENT PRIORITÉ MOTIF ARRIVÉ À ACTIONS C001 AGOSSOU Yahouza CBG908/25 Urgence Règlement 07:03 Recevoir Affichage de 1 à 1 sur 1 enregistrement File commune de consultation Aucun patient en file commune. Ouvrir la file d’attente"
       }
      ]
     },
@@ -5035,70 +5035,70 @@
          "lignes": [
           [
            "26/08/2026 10h00",
-           "CNT/138/26",
+           "CBG/138/26",
            "YARO Edmond",
            "Hypertension — contrôle",
            "Terminée"
           ],
           [
            "26/08/2026 10h00",
-           "CNT/34/26",
+           "CBG/34/26",
            "SAMBIENI Ganiou",
            "Douleurs épigastriques",
            "Terminée"
           ],
           [
            "16/08/2026 17h30",
-           "CNT/67/26",
+           "CBG/67/26",
            "BAKO Sylvie",
            "Plaie infectée",
            "En cours"
           ],
           [
            "16/08/2026 15h30",
-           "CNT/65/26",
+           "CBG/65/26",
            "TCHANE Idrissou",
            "Consultation prénatale",
            "Terminée"
           ],
           [
            "15/08/2026 18h15",
-           "CNT/148/25",
+           "CBG/148/25",
            "BOUKARI Alassane",
            "Traumatisme",
            "Terminée"
           ],
           [
            "15/08/2026 17h00",
-           "CNT/42/26",
+           "CBG/42/26",
            "YARO Bertine",
            "Suivi de grossesse",
            "Terminée"
           ],
           [
            "15/08/2026 16h30",
-           "CNT/74/26",
+           "CBG/74/26",
            "HOUNKPATIN Salifou",
            "Plaie infectée",
            "Terminée"
           ],
           [
            "15/08/2026 10h15",
-           "CNT/10/25",
+           "CBG/10/25",
            "SEIDOU Rachida",
            "Contrôle diabète",
            "Planifiée"
           ],
           [
            "14/08/2026 13h45",
-           "CNT/45/26",
+           "CBG/45/26",
            "PARAISO Séraphine",
            "Fièvre persistante",
            "En cours"
           ],
           [
            "14/08/2026 11h45",
-           "CNT/4/26",
+           "CBG/4/26",
            "PARAISO Sabi",
            "Céphalées",
            "Terminée"
@@ -5130,7 +5130,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CNT/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CNT/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CNT/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CNT/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CNT/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CNT/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CNT/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CNT/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CNT/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CNT/4/26 PARAISO Sabi Céphalées Terminée"
+       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PARAISO Sabi Céphalées Terminée"
       }
      ]
     },

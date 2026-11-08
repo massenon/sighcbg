@@ -111,7 +111,7 @@ void main() {
 
   cas('surveillance : changer de patient redessine la courbe et le tableau', (t) async {
     await ouvrir(t, magasin(), 'm3-surveillance');
-    await choisir(t, 'patient', 'CNT/2/26 — BAKO Boukari');
+    await choisir(t, 'patient', 'CBG/2/26 — BAKO Boukari');
     final s = dico(v['second']);
     expect(find.text('Feuille de température — BAKO Boukari'), findsOneWidget);
     verifierTable(t, s);

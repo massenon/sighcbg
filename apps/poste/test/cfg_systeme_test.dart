@@ -83,7 +83,7 @@ void main() {
     await ouvrirM14(t, m, 'cfg-systeme');
     await onglet(t, 'bareme');
     expect(find.text('Fermée'), findsOneWidget);
-    expect(find.text('NS 131/07/DM/DA/CNT/2026'), findsWidgets);
+    expect(find.text('NS 131/07/DM/DA/CBG/2026'), findsWidgets);
     expect(find.text('13/07/2026'), findsOneWidget);
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Autoriser la modification'));
     expect(find.textContaining('Le barème fixe les retenues sur salaire.'), findsOneWidget);
@@ -98,7 +98,7 @@ void main() {
     expect(find.text('Modification du barème autorisée.'), findsOneWidget);
     expect(find.text('Ouverte'), findsOneWidget);
     final j = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Ouverture de la modification du barème');
-    expect([j['module'], j['entite'], j['reference']], ['M10', 'Barème', 'NS 131/07/DM/DA/CNT/2026']);
+    expect([j['module'], j['entite'], j['reference']], ['M10', 'Barème', 'NS 131/07/DM/DA/CBG/2026']);
     expect(j['apres'], {'motif': 'Révision du barème'});
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Refermer la modification'));
     expect(reglage(m, 'baremeModifiable')!['valeur'], false);
@@ -283,7 +283,7 @@ void main() {
       expect(find.text('Primes (NS 132)'), findsWidgets);
       expect(find.text('Évaluations & sanctions (barème NS 131)'), findsWidgets);
       expect(find.text('Ouverte'), findsNWidgets(2));
-      expect(find.textContaining('Note de service NS n° 132/07/DM/DA/CNT/2026'), findsOneWidget, reason: 'l’écran dit d’où vient le barème');
+      expect(find.textContaining('Note de service NS n° 132/07/DM/DA/CBG/2026'), findsOneWidget, reason: 'l’écran dit d’où vient le barème');
       expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: true, sanctionsNs131: true));
 
       await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));

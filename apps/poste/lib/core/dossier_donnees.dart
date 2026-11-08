@@ -1,7 +1,7 @@
 import 'dart:io';
 
 /// LE DOSSIER DES DONNÉES DU POSTE (PRD installateur Windows, phase A). Les données ne vivent JAMAIS dans le dossier d'installation : une mise à jour
-/// remplace les fichiers du programme et n'y touche pas. Sous Windows : `%LOCALAPPDATA%\SIGHCBG\donnees` (machine locale, non itinérant). Le dossier est PROPRE à la clinique (PRD Baguidi P0-7) : SIGH-CNT
+/// remplace les fichiers du programme et n'y touche pas. Sous Windows : `%LOCALAPPDATA%\SIGHCBG\donnees` (machine locale, non itinérant). Le dossier est PROPRE à la clinique (PRD Baguidi P0-7) : SIGH-CBG
 /// (`SIGHCNT`) et SIGH-CBG (`SIGHCBG`) installés sur la même machine démarrent chacun sur leurs propres données. `SIGH_DONNEES`
 /// (développement, tests) l'emporte et est pris tel quel.
 /// Le nom du dossier de l'application sous `%LOCALAPPDATA%` ou `~/.local/share`. FIXE : il ne suit pas le sigle modifiable de l'identité, sans quoi

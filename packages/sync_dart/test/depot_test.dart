@@ -67,9 +67,9 @@ void main() {
       });
 
       test('extraction JSON identique : champJson', () async {
-        await d.exec('INSERT INTO t(d,n) VALUES(?,?)', ['{"code":"CNT/12/26","x":1}', 1]);
+        await d.exec('INSERT INTO t(d,n) VALUES(?,?)', ['{"code":"CBG/12/26","x":1}', 1]);
         final r = await d.select('SELECT ${d.champJson('d', 'code')} AS c FROM t');
-        expect(r.first['c'], 'CNT/12/26');
+        expect(r.first['c'], 'CBG/12/26');
       });
 
       test('les sommes sont des entiers (CAST … AS BIGINT) sur les deux moteurs', () async {

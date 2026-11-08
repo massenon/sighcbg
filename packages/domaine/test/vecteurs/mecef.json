@@ -10,7 +10,7 @@
     "numero": "FN-2099-00001",
     "patientId": "P1",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/1/26",
+    "patientCode": "CBG/1/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 10000,
@@ -45,7 +45,7 @@
     ],
     [
      "Dossier client",
-     "CNT/1/26"
+     "CBG/1/26"
     ],
     [
      "IFU client",
@@ -138,7 +138,7 @@
     "numero": "FN-2099-00002",
     "patientId": "P2",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 18000,
@@ -178,7 +178,7 @@
     ],
     [
      "Dossier client",
-     "CNT/2/26"
+     "CBG/2/26"
     ],
     [
      "IFU client",
@@ -279,7 +279,7 @@
     "numero": "FN-2099-00003",
     "patientId": "P3",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 7777,
@@ -314,7 +314,7 @@
     ],
     [
      "Dossier client",
-     "CNT/3/26"
+     "CBG/3/26"
     ],
     [
      "IFU client",
@@ -407,7 +407,7 @@
     "numero": "FN-2099-00004",
     "patientId": "P4",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 5000,
@@ -435,7 +435,7 @@
     ],
     [
      "Dossier client",
-     "CNT/4/26"
+     "CBG/4/26"
     ],
     [
      "IFU client",
@@ -528,7 +528,7 @@
     "numero": "FN-2099-00005",
     "patientId": "P5",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 184552,
@@ -563,7 +563,7 @@
     ],
     [
      "Dossier client",
-     "CNT/5/26"
+     "CBG/5/26"
     ],
     [
      "IFU client",
@@ -656,7 +656,7 @@
     "numero": "FN-2099-00006",
     "patientId": "P6",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/6/26",
+    "patientCode": "CBG/6/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 10000,
@@ -692,7 +692,7 @@
     ],
     [
      "Dossier client",
-     "CNT/6/26"
+     "CBG/6/26"
     ],
     [
      "IFU client",
@@ -785,7 +785,7 @@
     "numero": "FN-2099-00001",
     "patientId": "P1",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/1/26",
+    "patientCode": "CBG/1/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 10000,
@@ -820,7 +820,7 @@
     ],
     [
      "Dossier client",
-     "CNT/1/26"
+     "CBG/1/26"
     ],
     [
      "IFU client",
@@ -912,7 +912,7 @@
     "numero": "FN-2099-00002",
     "patientId": "P2",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 18000,
@@ -952,7 +952,7 @@
     ],
     [
      "Dossier client",
-     "CNT/2/26"
+     "CBG/2/26"
     ],
     [
      "IFU client",
@@ -1052,7 +1052,7 @@
     "numero": "FN-2099-00003",
     "patientId": "P3",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 7777,
@@ -1087,7 +1087,7 @@
     ],
     [
      "Dossier client",
-     "CNT/3/26"
+     "CBG/3/26"
     ],
     [
      "IFU client",
@@ -1179,7 +1179,7 @@
     "numero": "FN-2099-00004",
     "patientId": "P4",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 5000,
@@ -1207,7 +1207,7 @@
     ],
     [
      "Dossier client",
-     "CNT/4/26"
+     "CBG/4/26"
     ],
     [
      "IFU client",
@@ -1299,7 +1299,7 @@
     "numero": "FN-2099-00005",
     "patientId": "P5",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/5/26",
+    "patientCode": "CBG/5/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 184552,
@@ -1334,7 +1334,7 @@
     ],
     [
      "Dossier client",
-     "CNT/5/26"
+     "CBG/5/26"
     ],
     [
      "IFU client",
@@ -1426,7 +1426,7 @@
     "numero": "FN-2099-00006",
     "patientId": "P6",
     "patient": "TEST Fiscal",
-    "patientCode": "CNT/6/26",
+    "patientCode": "CBG/6/26",
     "date": "2026-12-31",
     "type": "Consultation",
     "montantTTC": 10000,
@@ -1462,7 +1462,7 @@
     ],
     [
      "Dossier client",
-     "CNT/6/26"
+     "CBG/6/26"
     ],
     [
      "IFU client",
@@ -1971,7 +1971,7 @@
      "numero": "FN-2097-00001",
      "patientId": "R1",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -1996,7 +1996,7 @@
      "factureNumero": "FN-2097-00001",
      "patientId": "R1",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/1/26",
+     "patientCode": "CBG/1/26",
      "montant": 4000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -2025,7 +2025,7 @@
      "numero": "FN-2097-00002",
      "patientId": "R2",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2056,7 +2056,7 @@
      "factureNumero": "FN-2097-00002",
      "patientId": "R2",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "montant": 10000,
      "motif": "Erreur de facturation",
      "observations": "",
@@ -2085,7 +2085,7 @@
      "numero": "FN-2097-00003",
      "patientId": "R3",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2124,7 +2124,7 @@
      "numero": "FN-2097-00004",
      "patientId": "R4",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2161,7 +2161,7 @@
      "factureNumero": "FN-2097-00004",
      "patientId": "R4",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "montant": 4000,
      "motif": "Erreur de facturation",
      "observations": "Patient évacué",
@@ -2190,7 +2190,7 @@
      "numero": "FN-2097-00005",
      "patientId": "R5",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/5/26",
+     "patientCode": "CBG/5/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2234,7 +2234,7 @@
      "numero": "FN-2097-00006",
      "patientId": "R6",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/6/26",
+     "patientCode": "CBG/6/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2289,7 +2289,7 @@
      "numero": "FN-2097-00007",
      "patientId": "R7",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/7/26",
+     "patientCode": "CBG/7/26",
      "date": "2026-12-31",
      "type": "Consultation",
      "montantTTC": 10000,
@@ -2346,7 +2346,7 @@
      "factureNumero": "FN-2097-00007",
      "patientId": "R7",
      "patient": "TEST Avoir MECeF",
-     "patientCode": "CNT/7/26",
+     "patientCode": "CBG/7/26",
      "montant": 4000,
      "motif": "Erreur de facturation",
      "observations": "",

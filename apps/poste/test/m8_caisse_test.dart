@@ -263,7 +263,7 @@ void main() {
           'numero': 'PRO-2026-00001',
           'proforma': true,
           'patient': 'AWA K.',
-          'patientCode': 'CNT/1/26',
+          'patientCode': 'CBG/1/26',
           'type': 'Consultation',
           'date': '2026-10-01',
           'montantTTC': 5000,

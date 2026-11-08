@@ -210,7 +210,7 @@
     "L’écran demandé n’existe pas ou a été déplacé. Utiliser le plan du site pour retrouver le module recherché.",
     "Retour à l’accueil",
     "Plan du site",
-    "CLINIQUE NASSIERA TOO SARL — SIGH-CNT"
+    "CLINIQUE NASSIERA TOO SARL — SIGH-CBG"
    ],
    "liensConnecte": [
     {
@@ -241,7 +241,7 @@
     "Votre profil ne dispose pas des habilitations requises pour cet écran. L’accès est régi par la matrice RBAC (CDCT §12.1) et toute tentative est journalisée.",
     "Retour à l’accueil",
     "Plan du site",
-    "CLINIQUE NASSIERA TOO SARL — SIGH-CNT"
+    "CLINIQUE NASSIERA TOO SARL — SIGH-CBG"
    ],
    "liensConnecte": [
     {
@@ -370,7 +370,7 @@
    ]
   },
   "delaiDefautMinutes": 15,
-  "cleRetour": "sigh-cnt:verrou-retour"
+  "cleRetour": "sigh-cbg:verrou-retour"
  },
  "plan": {
   "entete": [
@@ -2042,7 +2042,7 @@
   "faq": [
    {
     "q": "Comment est attribué le numéro de dossier d’un patient ?",
-    "r": "Automatiquement, au format CNT/[n° d’ordre]/[année] — par exemple CNT/530/25. Le champ est verrouillé à la saisie : il ne peut être ni choisi ni modifié après création (règle RG-01). C’est cette unicité qui permet de retrouver un dossier partout dans l’application.",
+    "r": "Automatiquement, au format CBG/[n° d’ordre]/[année] — par exemple CBG/530/25. Le champ est verrouillé à la saisie : il ne peut être ni choisi ni modifié après création (règle RG-01). C’est cette unicité qui permet de retrouver un dossier partout dans l’application.",
     "ouvert": true
    },
    {
@@ -2342,7 +2342,7 @@
    ]
   ],
   "textes": [
-   "Le SIGH-CNT est le Système Intégré de Gestion Hospitalière de la CLINIQUE NASSIERA TOO SARL. Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.",
+   "Le SIGH-CBG est le Système Intégré de Gestion Hospitalière de la CLINIQUE NASSIERA TOO SARL. Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.",
    "Une donnée saisie une fois circule ensuite d’un module à l’autre : une prescription alimente la facturation, une dispensation décrémente le stock, un planning validé nourrit le calcul des primes.",
    "Les quatorze règles de gestion du cahier des charges sont appliquées et rappelées à l’écran là où elles s’imposent : identifiant patient, marge nulle sur les médicaments, stock jamais négatif, signatures de sortie, validité des cartes d’assurance, équilibre des écritures, journalisation et archivage logique.",
    "À propos",
@@ -2670,7 +2670,7 @@
   ],
   "coordonnees": [
    "Dr MASSENON Rhodes",
-   "Éditeur du logiciel SIGH-CNT",
+   "Éditeur du logiciel SIGH-CBG",
    "rarhodes06@gmail.com · contact@massenonrhodes.com",
    "+229 01 51 33 50 40",
    "Lundi au vendredi, 8h – 17h (GMT)"

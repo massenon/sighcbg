@@ -65,7 +65,7 @@
      ],
      "lignes": [
       [
-       "NS 131/07/DM/DA/CNT/2026",
+       "NS 131/07/DM/DA/CBG/2026",
        "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale",
        "v1",
        "13/07/2026",
@@ -73,7 +73,7 @@
        "BASSONGUI C. Séko Y., Directeur Médical"
       ],
       [
-       "NS n° 132/07/DM/DA/CNT/2026",
+       "NS n° 132/07/DM/DA/CBG/2026",
        "Primes diverses",
        "v1",
        "13/07/2026",
@@ -154,7 +154,7 @@
    "Répartition par service",
    "Masse salariale par service",
    "Planning du jour",
-   "Règles métier en vigueur RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT SIGNATAIRE NS 131/07/DM/DA/CNT/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE BASSONGUI C. Séko Y., Directeur Médical NS n° 132/07/DM/DA/CNT/2026 Primes diverses v1 13/07/2026 ACTIVE BASSONGUI Chabi Séko, Directeur Médical"
+   "Règles métier en vigueur RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT SIGNATAIRE NS 131/07/DM/DA/CBG/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE BASSONGUI C. Séko Y., Directeur Médical NS n° 132/07/DM/DA/CBG/2026 Primes diverses v1 13/07/2026 ACTIVE BASSONGUI Chabi Séko, Directeur Médical"
   ],
   "liens": [
    [
@@ -496,7 +496,7 @@
     "intitule": "Assistant(e) de Direction",
     "elaboration": "2023-12-01",
     "archivage": "245",
-    "rattachement": "Administration de la CNT",
+    "rattachement": "Administration de la CBG",
     "niveauN": "Décideur",
     "niveauSup": "Directeur Médical",
     "niveauInf": "DAF",
@@ -581,7 +581,7 @@
     "redigee": true,
     "intitule": "Infirmier Général (IG)",
     "elaboration": "2023-10-26",
-    "archivage": "213/10/CNT/DA/2023",
+    "archivage": "213/10/CBG/DA/2023",
     "rattachement": "Soins médico-infirmiers et obstétricaux",
     "niveauN": "Exécutant",
     "niveauSup": "Médecin, DA",
@@ -655,7 +655,7 @@
       ]
      }
     ],
-    "relationsInternes": "Clinique Nassièra Too · tous les secteurs de la CNT — contacts physiques, corporate, mails, courriers",
+    "relationsInternes": "Clinique Nassièra Too · tous les secteurs de la CBG — contacts physiques, corporate, mails, courriers",
     "relationsExternes": "DDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagers",
     "environnement": "Mobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètre",
     "diplomes": "Diplôme d’Infirmier d’État",
@@ -760,7 +760,7 @@
       ],
       [
        "Assistant(e) de Direction",
-       "Administration de la CNT",
+       "Administration de la CBG",
        "245",
        "3",
        "Rédigée",
@@ -880,7 +880,7 @@
    ],
    [
     "Assistant(e) de Direction",
-    "Administration de la CNT",
+    "Administration de la CBG",
     "245",
     "3",
     "Rédigée",
@@ -936,7 +936,7 @@
    "Archiver"
   ],
   "detailIG": {
-   "texte": "Infirmier Général (IG) INTITULÉ DU POSTE Infirmier Général (IG) NUMÉRO D’ARCHIVAGE 213/10/CNT/DA/2023 ÉLABORATION 26/10/2023 MISE À JOUR — STRUCTURE DE RATTACHEMENT Soins médico-infirmiers et obstétricaux NIVEAU N Exécutant NIVEAU N+1 Médecin, DA NIVEAU N−1 Infirmiers, sages-femmes STATUT DU TITULAIRE Employé SOURCE Description de poste du 26/10/2023 Résumé succinct du poste Contrôler le personnel, superviser les soins, produire les statistiques, régler les conflits. Mission 1 — Contrôler le personnel ACTIVITÉS ET TÂCHES Contrôler et superviser l’exécution des soins prescrits par les médecins et sages-femmes Vérifier le bon remplissage des documents de transfusion sanguine Veiller au bon remplissage des différents registres en vigueur Contrôler la bonne tenue des documents médicaux Veiller au port des tenues réglementaires Veiller à l’exécution des programmes nationaux Surveiller les retards, les sorties et les absences non autorisées Surveiller l’utilisation du portable durant le service RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des documents de transfusion sanguine vérifiés et corrigés par mois 100 % des registres contrôlés par mois 100 % des agents en tenue réglementaire 95 % des retards constatés et notifiés Mission 2 — Participer aux soins ACTIVITÉS ET TÂCHES Faire la visite des patients avec les médecins Superviser les soins infirmiers aux patients Informer les médecins et le chirurgien des cas réputés graves Aucun indicateur chiffré au document. Mission 3 — Commander les registres à mettre à la disposition du personnel ACTIVITÉS ET TÂCHES Collecter les données pour les statistiques Transmettre les statistiques à la zone sanitaire à bonne date RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des statistiques mensuelles transmises à bonne date Mission 4 — Régler les conflits entre agents et avec les usagers ACTIVITÉS ET TÂCHES Écouter les agents en conflit et faire la réconciliation Faire la médiation entre usagers en conflit RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Au moins 75 % des conflits réglés Mission 5 — Représenter la clinique et faire le planning du personnel paramédical ACTIVITÉS ET TÂCHES Conseiller l’administration sur les améliorations à apporter Servir d’intermédiaire entre l’administration et le personnel Signaler les pannes et défectuosités constatées sur les matériels Participer aux réunions et aux prises de décisions Participer à l’élaboration des protocoles de soins Faire des staffs cliniques avec les infirmiers et sages-femmes Veiller à l’hygiène RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 80 % de suggestions faites à l’administration 100 % des pannes signalées Au moins 12 staffs cliniques par an Relations fonctionnelles et compétences RUBRIQUE CONTENU Relations internes Clinique Nassièra Too · tous les secteurs de la CNT — contacts physiques, corporate, mails, courriers Relations externes DDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagers Environnement et moyens Mobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètre Diplômes attendus Diplôme d’Infirmier d’État Savoir-faire Expérience professionnelle d’au moins 2 ans · maîtrise de la déontologie médicale · connaissance des textes réglementaires · facilité à communiquer et habileté diplomatique · travail en équipe et sous pression · maîtrise minimale de l’outil informatique et d’internet Savoir-être Respect de la hiérarchie · courtoisie avec les collègues · courtoisie avec les usagers · éviction des actes immoraux (ivresse, propos déplacés, vol)",
+   "texte": "Infirmier Général (IG) INTITULÉ DU POSTE Infirmier Général (IG) NUMÉRO D’ARCHIVAGE 213/10/CBG/DA/2023 ÉLABORATION 26/10/2023 MISE À JOUR — STRUCTURE DE RATTACHEMENT Soins médico-infirmiers et obstétricaux NIVEAU N Exécutant NIVEAU N+1 Médecin, DA NIVEAU N−1 Infirmiers, sages-femmes STATUT DU TITULAIRE Employé SOURCE Description de poste du 26/10/2023 Résumé succinct du poste Contrôler le personnel, superviser les soins, produire les statistiques, régler les conflits. Mission 1 — Contrôler le personnel ACTIVITÉS ET TÂCHES Contrôler et superviser l’exécution des soins prescrits par les médecins et sages-femmes Vérifier le bon remplissage des documents de transfusion sanguine Veiller au bon remplissage des différents registres en vigueur Contrôler la bonne tenue des documents médicaux Veiller au port des tenues réglementaires Veiller à l’exécution des programmes nationaux Surveiller les retards, les sorties et les absences non autorisées Surveiller l’utilisation du portable durant le service RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des documents de transfusion sanguine vérifiés et corrigés par mois 100 % des registres contrôlés par mois 100 % des agents en tenue réglementaire 95 % des retards constatés et notifiés Mission 2 — Participer aux soins ACTIVITÉS ET TÂCHES Faire la visite des patients avec les médecins Superviser les soins infirmiers aux patients Informer les médecins et le chirurgien des cas réputés graves Aucun indicateur chiffré au document. Mission 3 — Commander les registres à mettre à la disposition du personnel ACTIVITÉS ET TÂCHES Collecter les données pour les statistiques Transmettre les statistiques à la zone sanitaire à bonne date RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des statistiques mensuelles transmises à bonne date Mission 4 — Régler les conflits entre agents et avec les usagers ACTIVITÉS ET TÂCHES Écouter les agents en conflit et faire la réconciliation Faire la médiation entre usagers en conflit RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Au moins 75 % des conflits réglés Mission 5 — Représenter la clinique et faire le planning du personnel paramédical ACTIVITÉS ET TÂCHES Conseiller l’administration sur les améliorations à apporter Servir d’intermédiaire entre l’administration et le personnel Signaler les pannes et défectuosités constatées sur les matériels Participer aux réunions et aux prises de décisions Participer à l’élaboration des protocoles de soins Faire des staffs cliniques avec les infirmiers et sages-femmes Veiller à l’hygiène RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 80 % de suggestions faites à l’administration 100 % des pannes signalées Au moins 12 staffs cliniques par an Relations fonctionnelles et compétences RUBRIQUE CONTENU Relations internes Clinique Nassièra Too · tous les secteurs de la CBG — contacts physiques, corporate, mails, courriers Relations externes DDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagers Environnement et moyens Mobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètre Diplômes attendus Diplôme d’Infirmier d’État Savoir-faire Expérience professionnelle d’au moins 2 ans · maîtrise de la déontologie médicale · connaissance des textes réglementaires · facilité à communiquer et habileté diplomatique · travail en équipe et sous pression · maîtrise minimale de l’outil informatique et d’internet Savoir-être Respect de la hiérarchie · courtoisie avec les collègues · courtoisie avec les usagers · éviction des actes immoraux (ivresse, propos déplacés, vol)",
    "boutons": [
     "Fermer"
    ]
@@ -948,7 +948,7 @@
    ]
   },
   "detailAssistant": {
-   "texte": "Assistant(e) de Direction INTITULÉ DU POSTE Assistant(e) de Direction NUMÉRO D’ARCHIVAGE 245 ÉLABORATION 01/12/2023 MISE À JOUR — STRUCTURE DE RATTACHEMENT Administration de la CNT NIVEAU N Décideur NIVEAU N+1 Directeur Médical NIVEAU N−1 DAF STATUT DU TITULAIRE Employé(e) SOURCE Description de poste du 01/12/2023 Le document s’intitule « DIRECTRICE ADMINISTRATIVE (DA) » mais son corps décrit son ADJOINT : mission 2 « assister la Directrice Administrative », activité 28 « assurer l’intérim de la DA ». Un poste ne peut pas être à la fois la DA et son assistant. L’intitulé retenu est donc « Assistant(e) de Direction », conformément à la liste de comptes du 25/08/2026 — et l’écart avec le titre du document est signalé plutôt que corrigé en silence. Résumé succinct du poste Tenir la comptabilité, assister la DA, représenter la clinique à diverses occasions, sous l’autorité de la DA. Mission 1 — Tenir la comptabilité ACTIVITÉS ET TÂCHES Mettre à jour les différents livres de compte Réclamer les factures normalisées après chaque achat Enregistrer les recettes et les dépenses Suivre les versements des recettes à la banque Suivre le compte de la banque à la clinique et de la clinique à la banque Faire les rapprochements bancaires Faire le recouvrement des créances chez les débiteurs particuliers et les compagnies d’assurance Suivre le règlement des créances par les débiteurs et surtout les assureurs Exécuter les achats et les dépenses budgétisés Faire les dépôts de recettes, remises de chèque, ordres de virement et retraits Traiter les salaires des employés et les rémunérations des prestataires, sur avis de la DA Faire le point des recettes et dépenses autorisées à la caisse en l’absence de la DA Déclarer et payer à bonne date les obligations fiscales et sociales (Impôts, CNSS, CCIB) Suivre et rembourser les emprunts de la clinique à bonne date Calculer chaque mois le bénéfice comptable et le bénéfice fiscal Suivre les décaissements et les recouvrements des prêts-études Faire un compte rendu mensuel de la comptabilité à la hiérarchie Analyser et commenter l’évolution des recettes et des dépenses RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des livres de compte à jour 100 % des factures d’achats normalisées 100 % des irrégularités et écarts à la banque constatés et réglés 100 % des traitements salariaux et rémunérations prêts à bonne date 100 % des déclarations fiscales et sociales faites à bonne date Mission 2 — Assister la Directrice Administrative ACTIVITÉS ET TÂCHES Faire des suggestions pour améliorer le climat des affaires Anticiper par proactivité sur les événements susceptibles de susciter des déconvenues Veiller au bon fonctionnement du groupe électrogène avec les agents de sécurité Assister la DA dans la gestion du personnel médical, paramédical et non soignant Faire l’inventaire périodique et annuel des médicaments d’urgence et des réactifs de laboratoire Faire l’inventaire périodique et annuel des matériels avec le Directeur Médical Faire le point journalier de la caisse en l’absence de la DA Faire appel aux réparateurs pour les pannes, sur avis de la DA Établir un plan de maintenance des appareils et matériels Faire les petites commandes et les petites dépenses urgentes sur avis de la DA Assurer l’intérim de la DA RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Proportion de bonnes suggestions faites Proportion des inventaires faits à bonne date Mission 3 — Représenter la clinique à diverses occasions ACTIVITÉS ET TÂCHES Être le porte-parole de la clinique Faire les courses administratives RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Pourcentage de courses administratives réussies Relations fonctionnelles et compétences RUBRIQUE CONTENU Relations internes Direction · comptabilité · caisse · tous les secteurs Relations externes Banques · administration fiscale · CNSS · CCIB · compagnies d’assurance · fournisseurs Environnement et moyens Mobilier de bureau, PC, imprimante, connexion internet, logiciels de gestion Diplômes attendus À préciser par la Direction Savoir-faire À préciser par la Direction Savoir-être À préciser par la Direction",
+   "texte": "Assistant(e) de Direction INTITULÉ DU POSTE Assistant(e) de Direction NUMÉRO D’ARCHIVAGE 245 ÉLABORATION 01/12/2023 MISE À JOUR — STRUCTURE DE RATTACHEMENT Administration de la CBG NIVEAU N Décideur NIVEAU N+1 Directeur Médical NIVEAU N−1 DAF STATUT DU TITULAIRE Employé(e) SOURCE Description de poste du 01/12/2023 Le document s’intitule « DIRECTRICE ADMINISTRATIVE (DA) » mais son corps décrit son ADJOINT : mission 2 « assister la Directrice Administrative », activité 28 « assurer l’intérim de la DA ». Un poste ne peut pas être à la fois la DA et son assistant. L’intitulé retenu est donc « Assistant(e) de Direction », conformément à la liste de comptes du 25/08/2026 — et l’écart avec le titre du document est signalé plutôt que corrigé en silence. Résumé succinct du poste Tenir la comptabilité, assister la DA, représenter la clinique à diverses occasions, sous l’autorité de la DA. Mission 1 — Tenir la comptabilité ACTIVITÉS ET TÂCHES Mettre à jour les différents livres de compte Réclamer les factures normalisées après chaque achat Enregistrer les recettes et les dépenses Suivre les versements des recettes à la banque Suivre le compte de la banque à la clinique et de la clinique à la banque Faire les rapprochements bancaires Faire le recouvrement des créances chez les débiteurs particuliers et les compagnies d’assurance Suivre le règlement des créances par les débiteurs et surtout les assureurs Exécuter les achats et les dépenses budgétisés Faire les dépôts de recettes, remises de chèque, ordres de virement et retraits Traiter les salaires des employés et les rémunérations des prestataires, sur avis de la DA Faire le point des recettes et dépenses autorisées à la caisse en l’absence de la DA Déclarer et payer à bonne date les obligations fiscales et sociales (Impôts, CNSS, CCIB) Suivre et rembourser les emprunts de la clinique à bonne date Calculer chaque mois le bénéfice comptable et le bénéfice fiscal Suivre les décaissements et les recouvrements des prêts-études Faire un compte rendu mensuel de la comptabilité à la hiérarchie Analyser et commenter l’évolution des recettes et des dépenses RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR 100 % des livres de compte à jour 100 % des factures d’achats normalisées 100 % des irrégularités et écarts à la banque constatés et réglés 100 % des traitements salariaux et rémunérations prêts à bonne date 100 % des déclarations fiscales et sociales faites à bonne date Mission 2 — Assister la Directrice Administrative ACTIVITÉS ET TÂCHES Faire des suggestions pour améliorer le climat des affaires Anticiper par proactivité sur les événements susceptibles de susciter des déconvenues Veiller au bon fonctionnement du groupe électrogène avec les agents de sécurité Assister la DA dans la gestion du personnel médical, paramédical et non soignant Faire l’inventaire périodique et annuel des médicaments d’urgence et des réactifs de laboratoire Faire l’inventaire périodique et annuel des matériels avec le Directeur Médical Faire le point journalier de la caisse en l’absence de la DA Faire appel aux réparateurs pour les pannes, sur avis de la DA Établir un plan de maintenance des appareils et matériels Faire les petites commandes et les petites dépenses urgentes sur avis de la DA Assurer l’intérim de la DA RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Proportion de bonnes suggestions faites Proportion des inventaires faits à bonne date Mission 3 — Représenter la clinique à diverses occasions ACTIVITÉS ET TÂCHES Être le porte-parole de la clinique Faire les courses administratives RÉSULTATS ATTENDUS ET INDICATEURS INDICATEUR Pourcentage de courses administratives réussies Relations fonctionnelles et compétences RUBRIQUE CONTENU Relations internes Direction · comptabilité · caisse · tous les secteurs Relations externes Banques · administration fiscale · CNSS · CCIB · compagnies d’assurance · fournisseurs Environnement et moyens Mobilier de bureau, PC, imprimante, connexion internet, logiciels de gestion Diplômes attendus À préciser par la Direction Savoir-faire À préciser par la Direction Savoir-être À préciser par la Direction",
    "boutons": [
     "Fermer"
    ]
@@ -969,7 +969,7 @@
      "mention": "Signature et cachet"
     }
    ],
-   "texte": "I — Identification du posteRubriqueContenuIntitulé du posteInfirmier Général (IG)Numéro d’archivage213/10/CNT/DA/2023Élaboration26/10/2023Structure de rattachementSoins médico-infirmiers et obstétricauxNiveau hiérarchiqueN : Exécutant N+1 : Médecin, DA N−1 : Infirmiers, sages-femmesStatut du titulaireEmployéTextes réglementairesConvention collective du travail · Contrat de travail · Note de service portant nomination de l’IGRésumé succinctContrôler le personnel, superviser les soins, produire les statistiques, régler les conflits.II — Missions, activités et tâchesMission 1 : Contrôler le personnelActivités et tâchesRésultats attendus et indicateursActivité 1 : Contrôler et superviser l’exécution des soins prescrits par les médecins et sages-femmes100 % des documents de transfusion sanguine vérifiés et corrigés par moisActivité 2 : Vérifier le bon remplissage des documents de transfusion sanguine100 % des registres contrôlés par moisActivité 3 : Veiller au bon remplissage des différents registres en vigueur100 % des agents en tenue réglementaireActivité 4 : Contrôler la bonne tenue des documents médicaux95 % des retards constatés et notifiésActivité 5 : Veiller au port des tenues réglementairesActivité 6 : Veiller à l’exécution des programmes nationauxActivité 7 : Surveiller les retards, les sorties et les absences non autoriséesActivité 8 : Surveiller l’utilisation du portable durant le serviceMission 2 : Participer aux soinsActivités et tâchesRésultats attendus et indicateursActivité 1 : Faire la visite des patients avec les médecinsActivité 2 : Superviser les soins infirmiers aux patientsActivité 3 : Informer les médecins et le chirurgien des cas réputés gravesMission 3 : Commander les registres à mettre à la disposition du personnelActivités et tâchesRésultats attendus et indicateursActivité 1 : Collecter les données pour les statistiques100 % des statistiques mensuelles transmises à bonne dateActivité 2 : Transmettre les statistiques à la zone sanitaire à bonne dateMission 4 : Régler les conflits entre agents et avec les usagersActivités et tâchesRésultats attendus et indicateursActivité 1 : Écouter les agents en conflit et faire la réconciliationAu moins 75 % des conflits réglésActivité 2 : Faire la médiation entre usagers en conflitMission 5 : Représenter la clinique et faire le planning du personnel paramédicalActivités et tâchesRésultats attendus et indicateursActivité 1 : Conseiller l’administration sur les améliorations à apporter80 % de suggestions faites à l’administrationActivité 2 : Servir d’intermédiaire entre l’administration et le personnel100 % des pannes signaléesActivité 3 : Signaler les pannes et défectuosités constatées sur les matérielsAu moins 12 staffs cliniques par anActivité 4 : Participer aux réunions et aux prises de décisionsActivité 5 : Participer à l’élaboration des protocoles de soinsActivité 6 : Faire des staffs cliniques avec les infirmiers et sages-femmesActivité 7 : Veiller à l’hygièneIII — Relations fonctionnelles et environnement de travailRubriqueContenuAu plan interneClinique Nassièra Too · tous les secteurs de la CNT — contacts physiques, corporate, mails, courriersAu plan externeDDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagersEnvironnement et moyens de travailMobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètreIV — Compétences et qualifications requisesDiplômes attendusCompétences techniques (savoir-faire)Savoir-êtreDiplôme d’Infirmier d’ÉtatExpérience professionnelle d’au moins 2 ans · maîtrise de la déontologie médicale · connaissance des textes réglementaires · facilité à communiquer et habileté diplomatique · travail en équipe et sous pression · maîtrise minimale de l’outil informatique et d’internetRespect de la hiérarchie · courtoisie avec les collègues · courtoisie avec les usagers · éviction des actes immoraux (ivresse, propos déplacés, vol)",
+   "texte": "I — Identification du posteRubriqueContenuIntitulé du posteInfirmier Général (IG)Numéro d’archivage213/10/CBG/DA/2023Élaboration26/10/2023Structure de rattachementSoins médico-infirmiers et obstétricauxNiveau hiérarchiqueN : Exécutant N+1 : Médecin, DA N−1 : Infirmiers, sages-femmesStatut du titulaireEmployéTextes réglementairesConvention collective du travail · Contrat de travail · Note de service portant nomination de l’IGRésumé succinctContrôler le personnel, superviser les soins, produire les statistiques, régler les conflits.II — Missions, activités et tâchesMission 1 : Contrôler le personnelActivités et tâchesRésultats attendus et indicateursActivité 1 : Contrôler et superviser l’exécution des soins prescrits par les médecins et sages-femmes100 % des documents de transfusion sanguine vérifiés et corrigés par moisActivité 2 : Vérifier le bon remplissage des documents de transfusion sanguine100 % des registres contrôlés par moisActivité 3 : Veiller au bon remplissage des différents registres en vigueur100 % des agents en tenue réglementaireActivité 4 : Contrôler la bonne tenue des documents médicaux95 % des retards constatés et notifiésActivité 5 : Veiller au port des tenues réglementairesActivité 6 : Veiller à l’exécution des programmes nationauxActivité 7 : Surveiller les retards, les sorties et les absences non autoriséesActivité 8 : Surveiller l’utilisation du portable durant le serviceMission 2 : Participer aux soinsActivités et tâchesRésultats attendus et indicateursActivité 1 : Faire la visite des patients avec les médecinsActivité 2 : Superviser les soins infirmiers aux patientsActivité 3 : Informer les médecins et le chirurgien des cas réputés gravesMission 3 : Commander les registres à mettre à la disposition du personnelActivités et tâchesRésultats attendus et indicateursActivité 1 : Collecter les données pour les statistiques100 % des statistiques mensuelles transmises à bonne dateActivité 2 : Transmettre les statistiques à la zone sanitaire à bonne dateMission 4 : Régler les conflits entre agents et avec les usagersActivités et tâchesRésultats attendus et indicateursActivité 1 : Écouter les agents en conflit et faire la réconciliationAu moins 75 % des conflits réglésActivité 2 : Faire la médiation entre usagers en conflitMission 5 : Représenter la clinique et faire le planning du personnel paramédicalActivités et tâchesRésultats attendus et indicateursActivité 1 : Conseiller l’administration sur les améliorations à apporter80 % de suggestions faites à l’administrationActivité 2 : Servir d’intermédiaire entre l’administration et le personnel100 % des pannes signaléesActivité 3 : Signaler les pannes et défectuosités constatées sur les matérielsAu moins 12 staffs cliniques par anActivité 4 : Participer aux réunions et aux prises de décisionsActivité 5 : Participer à l’élaboration des protocoles de soinsActivité 6 : Faire des staffs cliniques avec les infirmiers et sages-femmesActivité 7 : Veiller à l’hygièneIII — Relations fonctionnelles et environnement de travailRubriqueContenuAu plan interneClinique Nassièra Too · tous les secteurs de la CBG — contacts physiques, corporate, mails, courriersAu plan externeDDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagersEnvironnement et moyens de travailMobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètreIV — Compétences et qualifications requisesDiplômes attendusCompétences techniques (savoir-faire)Savoir-êtreDiplôme d’Infirmier d’ÉtatExpérience professionnelle d’au moins 2 ans · maîtrise de la déontologie médicale · connaissance des textes réglementaires · facilité à communiquer et habileté diplomatique · travail en équipe et sous pression · maîtrise minimale de l’outil informatique et d’internetRespect de la hiérarchie · courtoisie avec les collègues · courtoisie avec les usagers · éviction des actes immoraux (ivresse, propos déplacés, vol)",
    "tableaux": [
     {
      "entetes": [
@@ -983,7 +983,7 @@
       ],
       [
        "Numéro d’archivage",
-       "213/10/CNT/DA/2023"
+       "213/10/CBG/DA/2023"
       ],
       [
        "Élaboration",
@@ -1153,7 +1153,7 @@
      "lignes": [
       [
        "Au plan interne",
-       "Clinique Nassièra Too · tous les secteurs de la CNT — contacts physiques, corporate, mails, courriers"
+       "Clinique Nassièra Too · tous les secteurs de la CBG — contacts physiques, corporate, mails, courriers"
       ],
       [
        "Au plan externe",
@@ -1340,7 +1340,7 @@
      "redigee": true,
      "intitule": "Infirmier Général (IG)",
      "elaboration": "2023-10-26",
-     "archivage": "213/10/CNT/DA/2023",
+     "archivage": "213/10/CBG/DA/2023",
      "rattachement": "Soins médico-infirmiers et obstétricaux",
      "niveauN": "Exécutant",
      "niveauSup": "Médecin, DA",
@@ -1414,7 +1414,7 @@
        ]
       }
      ],
-     "relationsInternes": "Clinique Nassièra Too · tous les secteurs de la CNT — contacts physiques, corporate, mails, courriers",
+     "relationsInternes": "Clinique Nassièra Too · tous les secteurs de la CBG — contacts physiques, corporate, mails, courriers",
      "relationsExternes": "DDS · Zone Sanitaire de Natitingou · Ministère de la Santé · usagers",
      "environnement": "Mobilier de bureau, armoire, brasseur, PC, imprimante, connexion internet, corporate, oxymètre de pouls, stéthoscope, tensiomètre",
      "diplomes": "Diplôme d’Infirmier d’État",
@@ -1518,7 +1518,7 @@
        ],
        [
         "Assistant(e) de Direction",
-        "Administration de la CNT",
+        "Administration de la CBG",
         "245",
         "3",
         "Rédigée",
@@ -1638,7 +1638,7 @@
     ],
     [
      "Assistant(e) de Direction",
-     "Administration de la CNT",
+     "Administration de la CBG",
      "245",
      "3",
      "Rédigée",
@@ -1701,7 +1701,7 @@
      "missions": [],
      "redigee": false,
      "source": "Poste relevé à l’organigramme — fiche à rédiger",
-     "archivage": "999/CNT",
+     "archivage": "999/CBG",
      "elaboration": "",
      "miseAJour": "",
      "niveauN": "",
@@ -1801,7 +1801,7 @@
     ],
     [
      "Assistant(e) de Direction",
-     "Administration de la CNT",
+     "Administration de la CBG",
      "245",
      "3",
      "Rédigée",
@@ -3237,7 +3237,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "GY GARBA Yahouza Surveillant Matricule 10 — Soins infirmiers — catégorie E2-2 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Hydrotubation Par occurrence 1 300 0 0",
+       "texte": "GY GARBA Yahouza Surveillant Matricule 10 — Soins infirmiers — catégorie E2-2 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Hydrotubation Par occurrence 1 300 0 0",
        "kpis": [],
        "tableaux": [
         {
@@ -3288,7 +3288,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -3475,7 +3475,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "BB BADO BANI A. B. Zoulehath Sage-femme Matricule 18 — Maternité — catégorie E1-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Accouchement Par occurrence 1 000 0 0 Circoncision Par occurrence 1 000 0 0",
+       "texte": "BB BADO BANI A. B. Zoulehath Sage-femme Matricule 18 — Maternité — catégorie E1-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Accouchement Par occurrence 1 000 0 0 Circoncision Par occurrence 1 000 0 0",
        "kpis": [],
        "tableaux": [
         {
@@ -3526,7 +3526,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -3713,7 +3713,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "DA DIEYABIDI Aïssatou Caissière-Dispensatrice Matricule 29 — Pharmacie — catégorie E3-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 0 0 Aide bloc Par occurrence 500 0 0 Caisse Forfait mensuel 10 000 1 10 000",
+       "texte": "DA DIEYABIDI Aïssatou Caissière-Dispensatrice Matricule 29 — Pharmacie — catégorie E3-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 0 0 Aide bloc Par occurrence 500 0 0 Caisse Forfait mensuel 10 000 1 10 000",
        "kpis": [],
        "tableaux": [
         {
@@ -3757,7 +3757,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -3907,7 +3907,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "TS TEPA Séraphine Aide-soignante — Chef de service Matricule 21 — Soins infirmiers — catégorie E4-1 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Incinération Forfait mensuel 5 000 1 5 000",
+       "texte": "TS TEPA Séraphine Aide-soignante — Chef de service Matricule 21 — Soins infirmiers — catégorie E4-1 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Incinération Forfait mensuel 5 000 1 5 000",
        "kpis": [],
        "tableaux": [
         {
@@ -3958,7 +3958,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -4863,7 +4863,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "GY GARBA Yahouza Surveillant Matricule 10 — Soins infirmiers — catégorie E2-2 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Hydrotubation Par occurrence 1 300 0 0",
+       "texte": "GY GARBA Yahouza Surveillant Matricule 10 — Soins infirmiers — catégorie E2-2 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 0 0 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Hydrotubation Par occurrence 1 300 0 0",
        "kpis": [],
        "tableaux": [
         {
@@ -4914,7 +4914,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -5277,7 +5277,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "BB BADO BANI A. B. Zoulehath Sage-femme Matricule 18 — Maternité — catégorie E1-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 15 22 500 Aide bloc Par occurrence 500 0 0 Accouchement Par occurrence 1 000 0 0 Circoncision Par occurrence 1 000 0 0",
+       "texte": "BB BADO BANI A. B. Zoulehath Sage-femme Matricule 18 — Maternité — catégorie E1-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 800 0 0 Garde Par occurrence 1 500 15 22 500 Aide bloc Par occurrence 500 0 0 Accouchement Par occurrence 1 000 0 0 Circoncision Par occurrence 1 000 0 0",
        "kpis": [],
        "tableaux": [
         {
@@ -5328,7 +5328,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -5691,7 +5691,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "DA DIEYABIDI Aïssatou Caissière-Dispensatrice Matricule 29 — Pharmacie — catégorie E3-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 8 4 800 Garde Par occurrence 900 11 9 900 Aide bloc Par occurrence 500 0 0 Caisse Forfait mensuel 10 000 1 10 000",
+       "texte": "DA DIEYABIDI Aïssatou Caissière-Dispensatrice Matricule 29 — Pharmacie — catégorie E3-3 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 8 4 800 Garde Par occurrence 900 11 9 900 Aide bloc Par occurrence 500 0 0 Caisse Forfait mensuel 10 000 1 10 000",
        "kpis": [],
        "tableaux": [
         {
@@ -5735,7 +5735,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -6061,7 +6061,7 @@
        "notes": []
       },
       "Primes (NS 132)": {
-       "texte": "TS TEPA Séraphine Aide-soignante — Chef de service Matricule 21 — Soins infirmiers — catégorie E4-1 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 11 9 900 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Incinération Forfait mensuel 5 000 1 5 000",
+       "texte": "TS TEPA Séraphine Aide-soignante — Chef de service Matricule 21 — Soins infirmiers — catégorie E4-1 Informations Planning du mois Primes (NS 132) Présences & congés Évaluations & sanctions Assurances Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026. PRIME MODE MONTANT UNITAIRE NOMBRE TOTAL DU MOIS Permanence Par occurrence 600 0 0 Garde Par occurrence 900 11 9 900 Aide bloc Par occurrence 500 0 0 Prime de bloc fixe Forfait mensuel 10 000 1 10 000 Incinération Forfait mensuel 5 000 1 5 000",
        "kpis": [],
        "tableaux": [
         {
@@ -6112,7 +6112,7 @@
         }
        ],
        "notes": [
-        "Grille issue de la note de service NS n° 132/07/DM/DA/CNT/2026, en vigueur depuis le 13/07/2026."
+        "Grille issue de la note de service NS n° 132/07/DM/DA/CBG/2026, en vigueur depuis le 13/07/2026."
        ]
       },
       "Présences & congés": {
@@ -6639,7 +6639,7 @@
      ],
      "lignes": [
       [
-       "NS 131/07/DM/DA/CNT/2026",
+       "NS 131/07/DM/DA/CBG/2026",
        "Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale",
        "v1",
        "13/07/2026",
@@ -6647,7 +6647,7 @@
        "BASSONGUI C. Séko Y., Directeur Médical"
       ],
       [
-       "NS n° 132/07/DM/DA/CNT/2026",
+       "NS n° 132/07/DM/DA/CBG/2026",
        "Primes diverses",
        "v1",
        "13/07/2026",
@@ -6746,7 +6746,7 @@
    "Répartition par service",
    "Masse salariale par service",
    "Planning du jour",
-   "Règles métier en vigueur RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT SIGNATAIRE NS 131/07/DM/DA/CNT/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE BASSONGUI C. Séko Y., Directeur Médical NS n° 132/07/DM/DA/CNT/2026 Primes diverses v1 13/07/2026 ACTIVE BASSONGUI Chabi Séko, Directeur Médical"
+   "Règles métier en vigueur RÉFÉRENCE OBJET VERSION DATE D’EFFET STATUT SIGNATAIRE NS 131/07/DM/DA/CBG/2026 Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale v1 13/07/2026 ACTIVE BASSONGUI C. Séko Y., Directeur Médical NS n° 132/07/DM/DA/CBG/2026 Primes diverses v1 13/07/2026 ACTIVE BASSONGUI Chabi Séko, Directeur Médical"
   ]
  },
  "contrats": {
@@ -9211,7 +9211,7 @@
       ],
       [
        "OM-2026-0007",
-       "Formation au logiciel SIGH-CNT Formation · Porto-Novo",
+       "Formation au logiciel SIGH-CBG Formation · Porto-Novo",
        "KINNOU A. Ganiou Biologiste médical — Chef de service",
        "CLINIQUE NASSIERA TOO SARL",
        "18/09/2026 au 20/09/2026",
@@ -9375,7 +9375,7 @@
    ],
    [
     "OM-2026-0007",
-    "Formation au logiciel SIGH-CNT Formation · Porto-Novo",
+    "Formation au logiciel SIGH-CBG Formation · Porto-Novo",
     "KINNOU A. Ganiou Biologiste médical — Chef de service",
     "CLINIQUE NASSIERA TOO SARL",
     "18/09/2026 au 20/09/2026",
@@ -9784,7 +9784,7 @@
        ],
        [
         "OM-2026-0007",
-        "Formation au logiciel SIGH-CNT Formation · Porto-Novo",
+        "Formation au logiciel SIGH-CBG Formation · Porto-Novo",
         "KINNOU A. Ganiou Biologiste médical — Chef de service",
         "CLINIQUE NASSIERA TOO SARL",
         "18/09/2026 au 20/09/2026",

@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — BANC DE SYNCHRONISATION : le commutateur de réseau
+ * SIGH-CBG — BANC DE SYNCHRONISATION : le commutateur de réseau
  * -----------------------------------------------------------------------------
  * Un relais TCP entre les postes et la mère. Trois états, changés EN COURS DE ROUTE :
  *   ouvert        — le réseau fonctionne

@@ -389,7 +389,7 @@ const Map<String, Object?> mobSuiteDonnees = {
         'clavier': null,
         'placeholder': null,
         'options': [
-          'AKPO Marc — CNT/1241/26',
+          'AKPO Marc — CBG/1241/26',
           'HOUNKPATIN Ida — PROV-1',
         ],
       },

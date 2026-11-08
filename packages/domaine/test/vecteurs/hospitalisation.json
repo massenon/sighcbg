@@ -341,25 +341,25 @@
   "patients": [
    {
     "id": "PAT0001",
-    "code": "CNT/1/25",
+    "code": "CBG/1/25",
     "nom": "TCHANE",
     "prenom": "Bertine"
    },
    {
     "id": "PAT0002",
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "BAKO",
     "prenom": "Boukari"
    },
    {
     "id": "PAT0003",
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "N’TCHA",
     "prenom": "Yacoubou"
    },
    {
     "id": "PAT0004",
-    "code": "CNT/4/26",
+    "code": "CBG/4/26",
     "nom": "PARAISO",
     "prenom": "Sabi"
    }
@@ -372,7 +372,7 @@
     "reference": "H00001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
     "typeChambre": "standard",
@@ -389,7 +389,7 @@
     "reference": "H00002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
     "typeChambre": "vip",
@@ -406,7 +406,7 @@
     "reference": "H00003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
     "typeChambre": "standard",
@@ -423,7 +423,7 @@
     "reference": "H00004",
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "chambre": "B1",
     "lit": "B1 LIT1",
     "typeChambre": "standard",
@@ -440,7 +440,7 @@
     "reference": "H00005",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "D1",
     "lit": "D1 LIT1",
     "typeChambre": "vvip",
@@ -457,7 +457,7 @@
     "reference": "H00006",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "B2",
     "lit": "B2 LIT1",
     "typeChambre": "standard",
@@ -474,7 +474,7 @@
     "reference": "H00007",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "chambre": "A3",
     "lit": "A3 LIT2",
     "typeChambre": "standard",
@@ -542,7 +542,7 @@
       [
        "",
        "H00005",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "D1 LIT1",
        "VVIP",
        "16/08/2026",
@@ -555,7 +555,7 @@
       [
        "",
        "H00002",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "C1 LIT1",
        "VIP",
        "14/08/2026",
@@ -568,7 +568,7 @@
       [
        "",
        "H00007",
-       "N’TCHA Yacoubou CNT/3/26",
+       "N’TCHA Yacoubou CBG/3/26",
        "A3 LIT2",
        "Standard",
        "10/08/2026",
@@ -581,7 +581,7 @@
       [
        "",
        "H00004",
-       "PARAISO Sabi CNT/4/26",
+       "PARAISO Sabi CBG/4/26",
        "B1 LIT1",
        "Standard",
        "07/08/2026",
@@ -594,7 +594,7 @@
       [
        "",
        "H00001",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "A1 LIT1",
        "Standard",
        "06/08/2026",
@@ -607,7 +607,7 @@
       [
        "",
        "H00003",
-       "N’TCHA Yacoubou CNT/3/26",
+       "N’TCHA Yacoubou CBG/3/26",
        "A2 LIT1",
        "Standard",
        "27/07/2026",
@@ -686,7 +686,7 @@
    ]
   },
   "tiroirSolde": {
-   "texte": "TCHANE Bertine H00001 Référence H00001 Patient TCHANE Bertine Dossier CNT/1/25 Lit A1 LIT1 Chambre Standard Date d’entrée 06/08/2026 Date de sortie En cours Durée 10 jour(s) Diagnostic d’entrée Diagnostic 1 Symptômes Symptômes 1 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Reste à régler : 7 500 FCFA avant finalisation de la sortie. Imprimer Modifier Archiver",
+   "texte": "TCHANE Bertine H00001 Référence H00001 Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Date d’entrée 06/08/2026 Date de sortie En cours Durée 10 jour(s) Diagnostic d’entrée Diagnostic 1 Symptômes Symptômes 1 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Reste à régler : 7 500 FCFA avant finalisation de la sortie. Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -695,7 +695,7 @@
    ]
   },
   "tiroirApure": {
-   "texte": "BAKO Boukari H00002 Référence H00002 Patient BAKO Boukari Dossier CNT/2/26 Lit C1 LIT1 Chambre VIP Date d’entrée 14/08/2026 Date de sortie En cours Durée 2 jour(s) Diagnostic d’entrée Diagnostic 2 Symptômes Symptômes 2 Prise en charge Moins de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Situation financière apurée. Imprimer Modifier Archiver",
+   "texte": "BAKO Boukari H00002 Référence H00002 Patient BAKO Boukari Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Date d’entrée 14/08/2026 Date de sortie En cours Durée 2 jour(s) Diagnostic d’entrée Diagnostic 2 Symptômes Symptômes 2 Prise en charge Moins de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Situation financière apurée. Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -704,7 +704,7 @@
    ]
   },
   "tiroirSortie": {
-   "texte": "N’TCHA Yacoubou H00003 Référence H00003 Patient N’TCHA Yacoubou Dossier CNT/3/26 Lit A2 LIT1 Chambre Standard Date d’entrée 27/07/2026 Date de sortie 02/08/2026 Durée 6 jour(s) Diagnostic d’entrée Diagnostic 3 Symptômes Symptômes 3 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut Sorti Imprimer Modifier Archiver",
+   "texte": "N’TCHA Yacoubou H00003 Référence H00003 Patient N’TCHA Yacoubou Dossier CBG/3/26 Lit A2 LIT1 Chambre Standard Date d’entrée 27/07/2026 Date de sortie 02/08/2026 Durée 6 jour(s) Diagnostic d’entrée Diagnostic 3 Symptômes Symptômes 3 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut Sorti Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -722,7 +722,7 @@
     ],
     [
      "Dossier",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "Date d’entrée",
@@ -768,7 +768,7 @@
     "Symptômes constatés"
    ],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT2",
     "infirmier": "GARBA Yahouza",
     "dateEntree": "2026-08-16",
@@ -928,16 +928,16 @@
    ],
    "optionsPatient": [
     [
-     "CNT/1/25",
-     "CNT/1/25 — TCHANE Bertine"
+     "CBG/1/25",
+     "CBG/1/25 — TCHANE Bertine"
     ],
     [
-     "CNT/2/26",
-     "CNT/2/26 — BAKO Boukari"
+     "CBG/2/26",
+     "CBG/2/26 — BAKO Boukari"
     ],
     [
-     "CNT/3/26",
-     "CNT/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26",
+     "CBG/3/26 — N’TCHA Yacoubou"
     ]
    ],
    "refusVide": {
@@ -966,7 +966,7 @@
     "fiche": {
      "id": "ADMxmsvmvr400b6p5",
      "statut": "en_cours",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "lit": "A1 LIT2",
      "infirmier": "IDRISSOU ANIKI Baba-Toundé",
      "dateEntree": "2026-08-16",
@@ -985,7 +985,7 @@
     "fiche": {
      "id": "ADMxmsvmvr40jnl17",
      "statut": "en_cours",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "lit": "B3 LIT1",
      "infirmier": "GARBA Yahouza",
      "dateEntree": "2026-08-16",
@@ -1069,7 +1069,7 @@
     ]
    ],
    "valeurs": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "infirmier": "GARBA Yahouza",
     "dateEntree": "2026-08-06",
@@ -1089,7 +1089,7 @@
      "reference": "H00001",
      "patientId": "PAT0001",
      "patient": "TCHANE Bertine",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "chambre": "A2",
      "lit": "A2 LIT2",
      "typeChambre": "standard",
@@ -1113,7 +1113,7 @@
      "reference": "H00002",
      "patientId": "PAT0002",
      "patient": "BAKO Boukari",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "chambre": "C1",
      "lit": "C1 LIT1",
      "typeChambre": "vip",
@@ -1130,7 +1130,7 @@
    {
     "id": "ADMxmsvmvr40jnl17",
     "statut": "en_cours",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "lit": "B3 LIT1",
     "infirmier": "GARBA Yahouza",
     "dateEntree": "2026-08-16",
@@ -1148,7 +1148,7 @@
    {
     "id": "ADMxmsvmvr400b6p5",
     "statut": "en_cours",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "A1 LIT2",
     "infirmier": "IDRISSOU ANIKI Baba-Toundé",
     "dateEntree": "2026-08-16",
@@ -1169,7 +1169,7 @@
     "reference": "H00001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "A2",
     "lit": "A2 LIT2",
     "typeChambre": "standard",
@@ -1188,7 +1188,7 @@
     "reference": "H00002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
     "typeChambre": "vip",
@@ -1205,7 +1205,7 @@
     "reference": "H00003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
     "typeChambre": "standard",
@@ -1222,7 +1222,7 @@
     "reference": "H00004",
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "chambre": "B1",
     "lit": "B1 LIT1",
     "typeChambre": "standard",
@@ -1239,7 +1239,7 @@
     "reference": "H00005",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "D1",
     "lit": "D1 LIT1",
     "typeChambre": "vvip",
@@ -1256,7 +1256,7 @@
     "reference": "H00006",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "B2",
     "lit": "B2 LIT1",
     "typeChambre": "standard",
@@ -1273,7 +1273,7 @@
     "reference": "H00007",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "chambre": "A3",
     "lit": "A3 LIT2",
     "typeChambre": "standard",
@@ -1785,7 +1785,7 @@
     ]
    },
    "tiroirLong": {
-    "texte": "N’TCHA Yacoubou CNT/3/26 — Lit A3 LIT2 Dossier CNT/3/26 Lit A3 LIT2 Chambre Standard Date d’entrée 10/08/2026 Durée de séjour 6 jour(s) Diagnostic d’entrée Diagnostic 7 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza RG-06 — Solde apuré : la sortie peut être finalisée. Feuille de température Préparer la sortie",
+    "texte": "N’TCHA Yacoubou CBG/3/26 — Lit A3 LIT2 Dossier CBG/3/26 Lit A3 LIT2 Chambre Standard Date d’entrée 10/08/2026 Durée de séjour 6 jour(s) Diagnostic d’entrée Diagnostic 7 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza RG-06 — Solde apuré : la sortie peut être finalisée. Feuille de température Préparer la sortie",
     "boutons": [
      "Fermer"
     ]
@@ -1801,7 +1801,7 @@
      "reference": "OBS-2026-0001",
      "patientId": "PAT0121",
      "patient": "YARO Bio",
-     "patientCode": "CNT/121/25",
+     "patientCode": "CBG/121/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
      "place": " maternité — place 1",
@@ -1859,7 +1859,7 @@
      "reference": "OBS-2026-0002",
      "patientId": "PAT-AG013",
      "patient": "BAGRI Elvyre",
-     "patientCode": "CNT912/25",
+     "patientCode": "CBG912/25",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
      "place": "e générale — place 2",
@@ -1908,7 +1908,7 @@
      "reference": "OBS-2026-0003",
      "patientId": "PAT0093",
      "patient": "TIGRI Séko",
-     "patientCode": "CNT/93/25",
+     "patientCode": "CBG/93/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
      "place": " maternité — place 1",
@@ -1957,7 +1957,7 @@
      "reference": "OBS-2026-0004",
      "patientId": "PAT0087",
      "patient": "GBEDJI Aïssatou",
-     "patientCode": "CNT/87/26",
+     "patientCode": "CBG/87/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
      "place": " pédiatrie — place 2",
@@ -2006,7 +2006,7 @@
      "reference": "OBS-2026-0005",
      "patientId": "PAT0012",
      "patient": "SOULE Hervé",
-     "patientCode": "CNT/12/25",
+     "patientCode": "CBG/12/25",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
      "place": " pédiatrie — place 1",
@@ -2055,7 +2055,7 @@
      "reference": "OBS-2026-0006",
      "patientId": "PAT-AG001",
      "patient": "BASSONGUI Chabi Séko",
-     "patientCode": "CNT900/25",
+     "patientCode": "CBG900/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 2",
@@ -2122,7 +2122,7 @@
      "reference": "OBS-2026-0007",
      "patientId": "PAT0024",
      "patient": "DAOUDA Justine",
-     "patientCode": "CNT/24/25",
+     "patientCode": "CBG/24/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 3",
@@ -2171,7 +2171,7 @@
      "reference": "OBS-2026-0008",
      "patientId": "PAT0132",
      "patient": "AHOHOU Djibril",
-     "patientCode": "CNT/132/26",
+     "patientCode": "CBG/132/26",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 4",
@@ -2211,7 +2211,7 @@
      "reference": "OBS-2026-0009",
      "patientId": "PAT0130",
      "patient": "N’TCHA Salifou",
-     "patientCode": "CNT/130/26",
+     "patientCode": "CBG/130/26",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 1",
@@ -2278,7 +2278,7 @@
      "reference": "OBS-2026-0010",
      "patientId": "PAT-AG015",
      "patient": "OURTCHA Bertine",
-     "patientCode": "CNT914/25",
+     "patientCode": "CBG914/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 2",
@@ -2345,7 +2345,7 @@
      "reference": "OBS-2026-0011",
      "patientId": "PAT0008",
      "patient": "DOSSOU Salifou",
-     "patientCode": "CNT/8/25",
+     "patientCode": "CBG/8/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 3",
@@ -2394,7 +2394,7 @@
      "reference": "OBS-2026-0012",
      "patientId": "PAT-AG003",
      "patient": "KASSA Augustin",
-     "patientCode": "CNT902/25",
+     "patientCode": "CBG902/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
      "place": " maternité — place 2",
@@ -2461,7 +2461,7 @@
      "reference": "OBS-2026-0013",
      "patientId": "PAT0119",
      "patient": "WOROU Boukari",
-     "patientCode": "CNT/119/26",
+     "patientCode": "CBG/119/26",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
      "place": " maternité — place 1",
@@ -2528,7 +2528,7 @@
      "reference": "OBS-2026-0014",
      "patientId": "PAT0051",
      "patient": "KINNOU Orou",
-     "patientCode": "CNT/51/25",
+     "patientCode": "CBG/51/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "— urgences — place 2",
@@ -2595,7 +2595,7 @@
      "reference": "OBS-2026-0015",
      "patientId": "PAT0029",
      "patient": "KINNOU Séko",
-     "patientCode": "CNT/29/26",
+     "patientCode": "CBG/29/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
      "place": " pédiatrie — place 1",
@@ -2662,7 +2662,7 @@
      "reference": "OBS-2026-0016",
      "patientId": "PAT0101",
      "patient": "ZIME Abdoul",
-     "patientCode": "CNT/101/26",
+     "patientCode": "CBG/101/26",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
      "place": "e générale — place 1",
@@ -2711,7 +2711,7 @@
      "reference": "OBS-2026-0017",
      "patientId": "PAT0118",
      "patient": "SEIDOU Fatouma",
-     "patientCode": "CNT/118/26",
+     "patientCode": "CBG/118/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
      "place": " pédiatrie — place 1",
@@ -2760,7 +2760,7 @@
      "reference": "OBS-2026-0018",
      "patientId": "PAT-AG017",
      "patient": "OROU YO Alimatou",
-     "patientCode": "CNT916/25",
+     "patientCode": "CBG916/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
      "place": " maternité — place 2",
@@ -2870,7 +2870,7 @@
      "lignes": [
       [
        "OBS-2026-0005",
-       "SOULE Hervé CNT/12/25",
+       "SOULE Hervé CBG/12/25",
        "Malaise",
        "pédiatrie",
        "16/08/2026 03h00",
@@ -2881,7 +2881,7 @@
       ],
       [
        "OBS-2026-0006",
-       "BASSONGUI Chabi Séko CNT900/25",
+       "BASSONGUI Chabi Séko CBG900/25",
        "Malaise",
        "urgences",
        "15/08/2026 21h00",
@@ -2892,7 +2892,7 @@
       ],
       [
        "OBS-2026-0004",
-       "GBEDJI Aïssatou CNT/87/26",
+       "GBEDJI Aïssatou CBG/87/26",
        "Vomissements répétés",
        "pédiatrie",
        "15/08/2026 17h00",
@@ -2903,7 +2903,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAGRI Elvyre CNT912/25",
+       "BAGRI Elvyre CBG912/25",
        "Traumatisme crânien léger",
        "médecine générale",
        "15/08/2026 15h00",
@@ -2914,7 +2914,7 @@
       ],
       [
        "OBS-2026-0003",
-       "TIGRI Séko CNT/93/25",
+       "TIGRI Séko CBG/93/25",
        "Douleur thoracique",
        "maternité",
        "15/08/2026 14h00",
@@ -2925,7 +2925,7 @@
       ],
       [
        "OBS-2026-0001",
-       "YARO Bio CNT/121/25",
+       "YARO Bio CBG/121/25",
        "Vomissements répétés",
        "maternité",
        "15/08/2026 05h00",
@@ -2945,7 +2945,7 @@
     "reference": "OBS-2026-0001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
     "place": "place 1",
@@ -2985,7 +2985,7 @@
     "reference": "OBS-2026-0002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 2",
@@ -3006,7 +3006,7 @@
     "reference": "OBS-2026-0003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 3",
@@ -3055,7 +3055,7 @@
     "reference": "OBS-2026-0004",
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "unite": "maternite",
     "uniteLabel": "Salle d’observation — maternité",
     "place": "place 4",
@@ -3086,7 +3086,7 @@
     "reference": "OBS-2026-0005",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
     "place": "place 5",
@@ -3117,7 +3117,7 @@
     "reference": "OBS-2026-0006",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
     "place": "place 6",
@@ -3138,7 +3138,7 @@
     "reference": "OBS-2026-0007",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 7",
@@ -3233,7 +3233,7 @@
      "lignes": [
       [
        "OBS-2026-0001",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "Motif 1",
        "urgences",
        "16/08/2026 07h00",
@@ -3244,7 +3244,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "Motif 2",
        "médecine générale",
        "15/08/2026 14h00",
@@ -3255,7 +3255,7 @@
       ],
       [
        "OBS-2026-0003",
-       "N’TCHA Yacoubou CNT/3/26",
+       "N’TCHA Yacoubou CBG/3/26",
        "Motif 3",
        "médecine générale",
        "15/08/2026 09h00",
@@ -3266,7 +3266,7 @@
       ],
       [
        "OBS-2026-0004",
-       "PARAISO Sabi CNT/4/26",
+       "PARAISO Sabi CBG/4/26",
        "Motif 4",
        "maternité",
        "14/08/2026 10h00",
@@ -3370,7 +3370,7 @@
      "lignes": [
       [
        "OBS-2026-0005",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "Motif 5",
        "pédiatrie",
        "14/08/2026 08h00",
@@ -3381,7 +3381,7 @@
       ],
       [
        "OBS-2026-0006",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "Motif 6",
        "urgences",
        "12/08/2026 06h00",
@@ -3409,7 +3409,7 @@
    ]
   },
   "fiche": {
-   "texte": "OBS-2026-0003 N’TCHA Yacoubou — Salle d’observation — médecine générale Référence OBS-2026-0003 Patient N’TCHA Yacoubou Dossier CNT/3/26 Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Place place 3 Entrée 15/08/2026 à 09h00 Durée 25 h — au-delà de la référence Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes HEURE T° TA POULS SPO₂ OBSERVATION RELEVÉ PAR 15/08/2026 10h00 36.8 °C 13/8 72 bpm 99 % Conscient GARBA Yahouza 15/08/2026 22h00 37.0 °C 12/8 76 bpm 98 % GARBA Yahouza 16/08/2026 08h00 39.1 °C 10/6 110 bpm 93 % Sous perfusion NKOUÉ Jean Évolution Prescrire Imprimer la feuille Décider de l’orientation",
+   "texte": "OBS-2026-0003 N’TCHA Yacoubou — Salle d’observation — médecine générale Référence OBS-2026-0003 Patient N’TCHA Yacoubou Dossier CBG/3/26 Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Place place 3 Entrée 15/08/2026 à 09h00 Durée 25 h — au-delà de la référence Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes HEURE T° TA POULS SPO₂ OBSERVATION RELEVÉ PAR 15/08/2026 10h00 36.8 °C 13/8 72 bpm 99 % Conscient GARBA Yahouza 15/08/2026 22h00 37.0 °C 12/8 76 bpm 98 % GARBA Yahouza 16/08/2026 08h00 39.1 °C 10/6 110 bpm 93 % Sous perfusion NKOUÉ Jean Évolution Prescrire Imprimer la feuille Décider de l’orientation",
    "boutons": [
     "Fermer",
     "Relever les constantes",
@@ -3492,7 +3492,7 @@
    ]
   },
   "ficheSansReleve": {
-   "texte": "OBS-2026-0002 BAKO Boukari — Salle d’observation — médecine générale Référence OBS-2026-0002 Patient BAKO Boukari Dossier CNT/2/26 Motif de surveillance Motif 2 Unité Salle d’observation — médecine générale Place place 2 Entrée 15/08/2026 à 14h00 Durée 20 h Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes Aucun relevé enregistré. Prescrire Imprimer la feuille Décider de l’orientation",
+   "texte": "OBS-2026-0002 BAKO Boukari — Salle d’observation — médecine générale Référence OBS-2026-0002 Patient BAKO Boukari Dossier CBG/2/26 Motif de surveillance Motif 2 Unité Salle d’observation — médecine générale Place place 2 Entrée 15/08/2026 à 14h00 Durée 20 h Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes Aucun relevé enregistré. Prescrire Imprimer la feuille Décider de l’orientation",
    "boutons": [
     "Fermer",
     "Relever les constantes",
@@ -3511,7 +3511,7 @@
     ],
     [
      "Dossier",
-     "CNT/3/26"
+     "CBG/3/26"
     ],
     [
      "Motif de surveillance",
@@ -3608,7 +3608,7 @@
     "Infirmier de surveillance"
    ],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "motif": "",
     "unite": "urgences",
     "place": "",
@@ -3747,7 +3747,7 @@
      "reference": "OBS-2026-0008",
      "patientId": "PAT0004",
      "patient": "PARAISO Sabi",
-     "patientCode": "CNT/4/26",
+     "patientCode": "CBG/4/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
      "place": "P2",
@@ -3883,7 +3883,7 @@
      "reference": "OBS-2026-0003",
      "patientId": "PAT0003",
      "patient": "N’TCHA Yacoubou",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
      "place": "place 3",
@@ -3952,7 +3952,7 @@
      "reference": "OBS-2026-0001",
      "patientId": "PAT0001",
      "patient": "TCHANE Bertine",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
      "place": "place 1",
@@ -3995,7 +3995,7 @@
      "reference": "H00001",
      "patientId": "PAT0001",
      "patient": "TCHANE Bertine",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "dateEntree": "2026-08-16",
      "dateSortie": null,
      "diagnosticEntree": "Aggravation constatée",
@@ -4082,7 +4082,7 @@
      "lignes": [
       [
        "OBS-2026-0008",
-       "PARAISO Sabi CNT/4/26",
+       "PARAISO Sabi CBG/4/26",
        "Malaise",
        "pédiatrie",
        "16/08/2026 08h30",
@@ -4093,7 +4093,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "Motif 2",
        "médecine générale",
        "15/08/2026 14h00",
@@ -4104,7 +4104,7 @@
       ],
       [
        "OBS-2026-0004",
-       "PARAISO Sabi CNT/4/26",
+       "PARAISO Sabi CBG/4/26",
        "Motif 4",
        "maternité",
        "14/08/2026 10h00",
@@ -4124,7 +4124,7 @@
     "reference": "OBS-2026-0008",
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
     "place": "P2",
@@ -4147,7 +4147,7 @@
     "reference": "OBS-2026-0001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
     "place": "place 1",
@@ -4191,7 +4191,7 @@
     "reference": "OBS-2026-0002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 2",
@@ -4212,7 +4212,7 @@
     "reference": "OBS-2026-0003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 3",
@@ -4274,7 +4274,7 @@
     "reference": "OBS-2026-0004",
     "patientId": "PAT0004",
     "patient": "PARAISO Sabi",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "unite": "maternite",
     "uniteLabel": "Salle d’observation — maternité",
     "place": "place 4",
@@ -4305,7 +4305,7 @@
     "reference": "OBS-2026-0005",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
     "place": "place 5",
@@ -4336,7 +4336,7 @@
     "reference": "OBS-2026-0006",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
     "place": "place 6",
@@ -4357,7 +4357,7 @@
     "reference": "OBS-2026-0007",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
     "place": "place 7",
@@ -4382,7 +4382,7 @@
     "reference": "H00001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
     "typeChambre": "standard",
@@ -4399,7 +4399,7 @@
     "reference": "H00002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
     "typeChambre": "vip",
@@ -4736,17 +4736,17 @@
     "Archiver ce relevé",
     "Archiver ce relevé"
    ],
-   "texte": "Patient hospitalisé TCHANE Bertine Nouveau relevé Imprimer la feuille Patient Patient TCHANE Bertine Dossier CNT/1/25 Lit A1 LIT1 Chambre Standard Entrée 12/08/2026 Séjour 4 jour(s) Diagnostic Diagnostic 1 Infirmier référent GARBA Yahouza Courbe de température (°C) Fréquence cardiaque et saturation Relevés de constantes Colonnes Exporter DATE HEURE T° (°C) TA FC SPO₂ FR DIURÈSE (ML) POIDS (KG) TRAITEMENT SAISI PAR ACTIONS 15/08/2026 14:00 39.2 14/9 110 90 % 18 906 66 Traitement 6 DOSSOU Moussa 15/08/2026 08:00 36.9 11/7 74 97 % 18 905 65 Traitement 5 DOSSOU Moussa 14/08/2026 20:00 38 12/8 88 94 % 18 904 64 Traitement 4 DOSSOU Moussa 14/08/2026 08:00 35.8 10/6 62 99 % 18 903 63 Traitement 3 D",
+   "texte": "Patient hospitalisé TCHANE Bertine Nouveau relevé Imprimer la feuille Patient Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Entrée 12/08/2026 Séjour 4 jour(s) Diagnostic Diagnostic 1 Infirmier référent GARBA Yahouza Courbe de température (°C) Fréquence cardiaque et saturation Relevés de constantes Colonnes Exporter DATE HEURE T° (°C) TA FC SPO₂ FR DIURÈSE (ML) POIDS (KG) TRAITEMENT SAISI PAR ACTIONS 15/08/2026 14:00 39.2 14/9 110 90 % 18 906 66 Traitement 6 DOSSOU Moussa 15/08/2026 08:00 36.9 11/7 74 97 % 18 905 65 Traitement 5 DOSSOU Moussa 14/08/2026 20:00 38 12/8 88 94 % 18 904 64 Traitement 4 DOSSOU Moussa 14/08/2026 08:00 35.8 10/6 62 99 % 18 903 63 Traitement 3 D",
    "options": [
     [
      "ADM1",
      "TCHANE Bertine",
-     "Lit A1 LIT1 — CNT/1/25"
+     "Lit A1 LIT1 — CBG/1/25"
     ],
     [
      "ADM2",
      "BAKO Boukari",
-     "Lit C1 LIT1 — CNT/2/26"
+     "Lit C1 LIT1 — CBG/2/26"
     ]
    ]
   },
@@ -5049,7 +5049,7 @@
     ],
     [
      "Dossier",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "Lit",
@@ -5084,7 +5084,7 @@
    "cartes": [
     "Patient"
    ],
-   "texte": "Patient hospitalisé BAKO Boukari Nouveau relevé Imprimer la feuille Patient Patient BAKO Boukari Dossier CNT/2/26 Lit C1 LIT1 Chambre VIP Entrée 15/08/2026 Séjour 1 jour(s) Diagnostic Diagnostic 2 Infirmier référent GARBA Yahouza Aucun relevé enregistré pour ce patient. Saisir le premier relevé",
+   "texte": "Patient hospitalisé BAKO Boukari Nouveau relevé Imprimer la feuille Patient Patient BAKO Boukari Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Entrée 15/08/2026 Séjour 1 jour(s) Diagnostic Diagnostic 2 Infirmier référent GARBA Yahouza Aucun relevé enregistré pour ce patient. Saisir le premier relevé",
    "boutons": [
     "BAKO Boukari",
     "Nouveau relevé",
@@ -5104,7 +5104,7 @@
     "reference": "H00001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
     "typeChambre": "standard",
@@ -5121,7 +5121,7 @@
     "reference": "H00002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
     "typeChambre": "standard",
@@ -5142,7 +5142,7 @@
     "admissionId": "ADM1",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "acte": "Injection intraveineuse",
     "produit": "Produit 1",
@@ -5159,7 +5159,7 @@
     "admissionId": "ADM1",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "acte": "Pose de perfusion",
     "produit": "",
@@ -5176,7 +5176,7 @@
     "admissionId": "ADM2",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Aérosol",
     "produit": "Produit 3",
@@ -5193,7 +5193,7 @@
     "admissionId": "ADM2",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Soins de nursing",
     "produit": "",
@@ -5210,7 +5210,7 @@
     "admissionId": "ADM2",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Aérosol",
     "produit": "Produit 5",
@@ -5232,7 +5232,7 @@
     "reference": "ORD-T1",
     "ordonnanceId": "ORD1",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-11T09:00:00.000Z",
     "urgent": true,
     "detail": "2 acte(s) — Soin 1",
@@ -5249,7 +5249,7 @@
     "reference": "ORD-T2",
     "ordonnanceId": null,
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "date": "2026-08-12T09:00:00.000Z",
     "urgent": false,
     "detail": "2 acte(s) — Soin 2",
@@ -5266,7 +5266,7 @@
     "reference": "ORD-T3",
     "ordonnanceId": null,
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "date": "2026-08-13T09:00:00.000Z",
     "urgent": false,
     "detail": "2 acte(s) — Soin 3",
@@ -5315,7 +5315,7 @@
      "lignes": [
       [
        "ORD-T1Urgent",
-       "TCHANE Bertine CNT/1/25",
+       "TCHANE Bertine CBG/1/25",
        "2 acte(s) — Soin 1",
        "1 500",
        "À traiter",
@@ -5323,7 +5323,7 @@
       ],
       [
        "ORD-T3",
-       "N’TCHA Yacoubou CNT/3/26",
+       "N’TCHA Yacoubou CBG/3/26",
        "2 acte(s) — Soin 3",
        "4 500",
        "À traiter",
@@ -5331,7 +5331,7 @@
       ],
       [
        "ORD-T2",
-       "BAKO Boukari CNT/2/26",
+       "BAKO Boukari CBG/2/26",
        "2 acte(s) — Soin 2",
        "3 000",
        "Attente encaissement",
@@ -5531,7 +5531,7 @@
     "reference": "ORD-T1",
     "ordonnanceId": "ORD1",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "date": "2026-08-11T09:00:00.000Z",
     "urgent": true,
     "detail": "2 acte(s) — Soin 1",
@@ -5543,7 +5543,7 @@
     "id": "ORD1",
     "numero": "ORD-T1",
     "statut": "actif",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "statutActes": "fait",
     "actesFaitsLe": "2026-08-16T10:00:00.000Z",
@@ -5636,7 +5636,7 @@
    ]
   },
   "detail": {
-   "texte": "TCHANE Bertine Date et heure 15/08/2026 à 12:00 Patient TCHANE Bertine Dossier CNT/1/25 Lit A1 LIT1 Acte Pose de perfusion Produit administré — Quantité — Soignant DOSSOU Moussa État Planifié Observations — Imprimer Modifier Archiver",
+   "texte": "TCHANE Bertine Date et heure 15/08/2026 à 12:00 Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Acte Pose de perfusion Produit administré — Quantité — Soignant DOSSOU Moussa État Planifié Observations — Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -5654,7 +5654,7 @@
     ],
     [
      "Dossier",
-     "CNT/1/25"
+     "CBG/1/25"
     ],
     [
      "Date",
@@ -5702,11 +5702,11 @@
    "optionsPatient": [
     [
      "ADM1",
-     "TCHANE Bertine — lit A1 LIT1 (CNT/1/25)"
+     "TCHANE Bertine — lit A1 LIT1 (CBG/1/25)"
     ],
     [
      "ADM2",
-     "BAKO Boukari — lit A2 LIT1 (CNT/2/26)"
+     "BAKO Boukari — lit A2 LIT1 (CBG/2/26)"
     ]
    ],
    "optionsActe": [
@@ -5788,7 +5788,7 @@
      "etat": "realise",
      "observations": "Bien toléré",
      "patient": "BAKO Boukari",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "patientId": "PAT0002",
      "lit": "A2 LIT1"
     },
@@ -5849,7 +5849,7 @@
      "etat": "realise",
      "observations": "Bien toléré",
      "patient": "TCHANE Bertine",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "patientId": "PAT0001",
      "lit": "A1 LIT1"
     }
@@ -5866,7 +5866,7 @@
     "origine": "hospitalisation",
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "prescripteur": "BASSONGUI Chabi Séko",
     "modalite": "hospitalisation",
@@ -5898,7 +5898,7 @@
     "origine": "hospitalisation",
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0002",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "patient": "BAKO Boukari",
     "prescripteur": "BASSONGUI Chabi Séko",
     "modalite": "hospitalisation",
@@ -5922,7 +5922,7 @@
     "origine": "hospitalisation",
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou",
     "prescripteur": "BASSONGUI Chabi Séko",
     "modalite": "ambulatoire",
@@ -5946,7 +5946,7 @@
     "origine": "hospitalisation",
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0004",
-    "patientCode": "CNT/4/26",
+    "patientCode": "CBG/4/26",
     "patient": "PARAISO Sabi",
     "prescripteur": "BASSONGUI Chabi Séko",
     "modalite": "hospitalisation",
@@ -5970,7 +5970,7 @@
     "origine": "hospitalisation",
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "prescripteur": "BASSONGUI Chabi Séko",
     "modalite": "hospitalisation",
@@ -5997,7 +5997,7 @@
     "ligneIndex": 0,
     "libelle": "Ligne 1",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-15T01:00:00.000Z",
     "rang": 1,
@@ -6017,7 +6017,7 @@
     "ligneIndex": 0,
     "libelle": "Ligne 2",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-15T02:00:00.000Z",
     "rang": 1,
@@ -6037,7 +6037,7 @@
     "ligneIndex": 0,
     "libelle": "Ligne 3",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-15T03:00:00.000Z",
     "rang": 1,
@@ -6057,7 +6057,7 @@
     "ligneIndex": 0,
     "libelle": "Ligne 4",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-15T04:00:00.000Z",
     "rang": 2,
@@ -6077,7 +6077,7 @@
     "ligneIndex": 0,
     "libelle": "Ligne 5",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-15T05:00:00.000Z",
     "rang": 2,
@@ -6110,7 +6110,7 @@
       "ligneIndex": 0,
       "libelle": "Ceftriaxone 1 g",
       "patientId": "PAT0001",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patient": "TCHANE Bertine",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 2,
@@ -6146,7 +6146,7 @@
       "ligneIndex": 0,
       "libelle": "Ceftriaxone 1 g",
       "patientId": "PAT0001",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "patient": "TCHANE Bertine",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 3,
@@ -6266,7 +6266,7 @@
       "ligneIndex": 0,
       "libelle": "Injection IM",
       "patientId": "PAT0003",
-      "patientCode": "CNT/3/26",
+      "patientCode": "CBG/3/26",
       "patient": "N’TCHA Yacoubou",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 1,
@@ -6349,7 +6349,7 @@
      "lignes": [
       [
        "PRS-00001",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "Ceftriaxone 1 g",
        "2 / 3",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6358,7 +6358,7 @@
       ],
       [
        "PRS-00002",
-       "BAKO Boukari — CNT/2/26",
+       "BAKO Boukari — CBG/2/26",
        "Métronidazole",
        "2 / 2",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6475,7 +6475,7 @@
     "ligneIndex": 0,
     "libelle": "Ceftriaxone 1 g",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-16T10:00:00.000Z",
     "rang": 2,
@@ -6525,7 +6525,7 @@
      "lignes": [
       [
        "PRS-00001",
-       "TCHANE Bertine — CNT/1/25",
+       "TCHANE Bertine — CBG/1/25",
        "Ceftriaxone 1 g",
        "3 / 3",
        "Administration n° 3 : le relais est passé à l’hospitalisation.",
@@ -6534,7 +6534,7 @@
       ],
       [
        "PRS-00002",
-       "BAKO Boukari — CNT/2/26",
+       "BAKO Boukari — CBG/2/26",
        "Métronidazole",
        "2 / 2",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6578,7 +6578,7 @@
     "statut": "actif",
     "reference": "CST-00001",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-07T09:30",
     "temperature": 38.9,
@@ -6596,7 +6596,7 @@
     "statut": "actif",
     "reference": "CST-00002",
     "patientId": "PAT0001",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "patient": "TCHANE Bertine",
     "dateHeure": "2026-08-07T15:00",
     "temperature": 39.4,
@@ -6614,7 +6614,7 @@
     "statut": "actif",
     "reference": "CST-00003",
     "patientId": "PAT0003",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "patient": "N’TCHA Yacoubou",
     "dateHeure": "2026-08-14T09:00",
     "temperature": 37,
@@ -6820,19 +6820,19 @@
   "patients": [
    {
     "id": "PAT0001",
-    "code": "CNT/1/25",
+    "code": "CBG/1/25",
     "nom": "TCHANE",
     "prenom": "Bertine"
    },
    {
     "id": "PAT0002",
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "BAKO",
     "prenom": "Boukari"
    },
    {
     "id": "PAT0003",
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "N’TCHA",
     "prenom": "Yacoubou"
    }
@@ -6840,15 +6840,15 @@
   "options": [
    [
     "PAT0001",
-    "CNT/1/25 — TCHANE Bertine"
+    "CBG/1/25 — TCHANE Bertine"
    ],
    [
     "PAT0002",
-    "CNT/2/26 — BAKO Boukari"
+    "CBG/2/26 — BAKO Boukari"
    ],
    [
     "PAT0003",
-    "CNT/3/26 — N’TCHA Yacoubou"
+    "CBG/3/26 — N’TCHA Yacoubou"
    ]
   ],
   "premier": {
@@ -7879,7 +7879,7 @@
     "reference": "TRF-0001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "service": "Service 1",
     "date": "2026-08-15",
     "pochePSL": "PSL-1",
@@ -7980,7 +7980,7 @@
     "reference": "TRF-0002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "patientCode": "CNT/2/26",
+    "patientCode": "CBG/2/26",
     "service": "Service 2",
     "date": "2026-08-14",
     "pochePSL": "PSL-2",
@@ -8051,7 +8051,7 @@
     "reference": "TRF-0003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "patientCode": "CNT/3/26",
+    "patientCode": "CBG/3/26",
     "service": "Service 3",
     "date": "2026-08-13",
     "pochePSL": "PSL-3",
@@ -8150,19 +8150,19 @@
   "patients": [
    {
     "id": "PAT0001",
-    "code": "CNT/1/25",
+    "code": "CBG/1/25",
     "nom": "TCHANE",
     "prenom": "Bertine"
    },
    {
     "id": "PAT0002",
-    "code": "CNT/2/26",
+    "code": "CBG/2/26",
     "nom": "BAKO",
     "prenom": "Boukari"
    },
    {
     "id": "PAT0003",
-    "code": "CNT/3/26",
+    "code": "CBG/3/26",
     "nom": "N’TCHA",
     "prenom": "Yacoubou"
    }
@@ -8449,7 +8449,7 @@
    ],
    "sections": [],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "service": "",
     "date": "2026-08-16",
     "pochePSL": "",
@@ -8505,16 +8505,16 @@
    ],
    "optionsPatient": [
     [
-     "CNT/1/25",
-     "CNT/1/25 — TCHANE Bertine"
+     "CBG/1/25",
+     "CBG/1/25 — TCHANE Bertine"
     ],
     [
-     "CNT/2/26",
-     "CNT/2/26 — BAKO Boukari"
+     "CBG/2/26",
+     "CBG/2/26 — BAKO Boukari"
     ],
     [
-     "CNT/3/26",
-     "CNT/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26",
+     "CBG/3/26 — N’TCHA Yacoubou"
     ]
    ],
    "refusVide": {
@@ -8539,7 +8539,7 @@
      "reference": "TRF-0004",
      "patientId": "PAT0002",
      "patient": "BAKO Boukari",
-     "patientCode": "CNT/2/26",
+     "patientCode": "CBG/2/26",
      "service": "Médecine",
      "date": "2026-08-16",
      "pochePSL": "PSL-900",
@@ -8660,7 +8660,7 @@
      "reference": "TRF-0005",
      "patientId": "PAT0003",
      "patient": "N’TCHA Yacoubou",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "service": "Urgences",
      "date": "2026-08-16",
      "pochePSL": "PSL-901",
@@ -8879,7 +8879,7 @@
     "reference": "GCS-0001",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "nip": "CNT/1/25",
+    "nip": "CBG/1/25",
     "dateHeure": "2026-08-15T11:00",
     "axes": [
      {
@@ -8909,7 +8909,7 @@
     "reference": "GCS-0002",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "nip": "CNT/2/26",
+    "nip": "CBG/2/26",
     "dateHeure": "2026-08-14T12:00",
     "axes": [
      {
@@ -8939,7 +8939,7 @@
     "reference": "GCS-0003",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "nip": "CNT/3/26",
+    "nip": "CBG/3/26",
     "dateHeure": "2026-08-13T13:00",
     "axes": [
      {
@@ -8969,7 +8969,7 @@
     "reference": "GCS-0004",
     "patientId": "PAT0001",
     "patient": "TCHANE Bertine",
-    "nip": "CNT/1/25",
+    "nip": "CBG/1/25",
     "dateHeure": "2026-08-12T14:00",
     "axes": [
      {
@@ -8999,7 +8999,7 @@
     "reference": "GCS-0005",
     "patientId": "PAT0002",
     "patient": "BAKO Boukari",
-    "nip": "CNT/2/26",
+    "nip": "CBG/2/26",
     "dateHeure": "2026-08-11T15:00",
     "axes": [
      {
@@ -9029,7 +9029,7 @@
     "reference": "GCS-0006",
     "patientId": "PAT0003",
     "patient": "N’TCHA Yacoubou",
-    "nip": "CNT/3/26",
+    "nip": "CBG/3/26",
     "dateHeure": "2026-08-10T16:00",
     "axes": [
      {
@@ -9094,7 +9094,7 @@
       [
        "GCS-0001",
        "15/08/2026 à 11h00",
-       "TCHANE Bertine — NIP CNT/1/25",
+       "TCHANE Bertine — NIP CBG/1/25",
        "15 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9102,7 +9102,7 @@
       [
        "GCS-0002",
        "14/08/2026 à 12h00",
-       "BAKO Boukari — NIP CNT/2/26",
+       "BAKO Boukari — NIP CBG/2/26",
        "12 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9110,7 +9110,7 @@
       [
        "GCS-0003",
        "13/08/2026 à 13h00",
-       "N’TCHA Yacoubou — NIP CNT/3/26",
+       "N’TCHA Yacoubou — NIP CBG/3/26",
        "7 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9118,7 +9118,7 @@
       [
        "GCS-0004",
        "12/08/2026 à 14h00",
-       "TCHANE Bertine — NIP CNT/1/25",
+       "TCHANE Bertine — NIP CBG/1/25",
        "3 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9126,7 +9126,7 @@
       [
        "GCS-0006",
        "10/08/2026 à 16h00",
-       "N’TCHA Yacoubou — NIP CNT/3/26",
+       "N’TCHA Yacoubou — NIP CBG/3/26",
        "10 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9164,7 +9164,7 @@
    ]
   },
   "detail": {
-   "texte": "GCS-0003 — 7/15 RÉFÉRENCE GCS-0003 PATIENT N’TCHA Yacoubou NIP CNT/3/26 DATE ET HEURE 13/08/2026 à 13h00 SCORE TOTAL 7 / 15 (calculé) ÉVALUÉ PAR IDRISSOU ANIKI Baba-Toundé Détail par axe AXE RÉPONSE OBSERVÉE POINTS Ouverture des yeux x 2 Réponse verbale y 2 Réponse motrice z 3",
+   "texte": "GCS-0003 — 7/15 RÉFÉRENCE GCS-0003 PATIENT N’TCHA Yacoubou NIP CBG/3/26 DATE ET HEURE 13/08/2026 à 13h00 SCORE TOTAL 7 / 15 (calculé) ÉVALUÉ PAR IDRISSOU ANIKI Baba-Toundé Détail par axe AXE RÉPONSE OBSERVÉE POINTS Ouverture des yeux x 2 Réponse verbale y 2 Réponse motrice z 3",
    "boutons": [
     "Fermer"
    ],
@@ -9207,7 +9207,7 @@
     "Évalué par *"
    ],
    "defauts": {
-    "patientCode": "CNT/1/25",
+    "patientCode": "CBG/1/25",
     "nip": "",
     "dateHeure": "",
     "axe0": "4",
@@ -9355,8 +9355,8 @@
     "fiche": {
      "id": "GCSxmsvmvr401gi82",
      "statut": "actif",
-     "patientCode": "CNT/2/26",
-     "nip": "CNT/2/26",
+     "patientCode": "CBG/2/26",
+     "nip": "CBG/2/26",
      "dateHeure": "2026-08-16T09:00",
      "axe0": "2",
      "axe1": "3",
@@ -9392,7 +9392,7 @@
     "fiche": {
      "id": "GCSxmsvmvr40jchyz",
      "statut": "actif",
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "nip": "NIP-77",
      "dateHeure": "2026-08-16T09:30",
      "axe0": "4",
@@ -9462,7 +9462,7 @@
       [
        "GCS-0007",
        "16/08/2026 à 09h00",
-       "BAKO Boukari — NIP CNT/2/26",
+       "BAKO Boukari — NIP CBG/2/26",
        "9 / 15",
        "BASSONGUI Chabi Séko",
        ""
@@ -9470,7 +9470,7 @@
       [
        "GCS-0001",
        "15/08/2026 à 11h00",
-       "TCHANE Bertine — NIP CNT/1/25",
+       "TCHANE Bertine — NIP CBG/1/25",
        "15 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9478,7 +9478,7 @@
       [
        "GCS-0002",
        "14/08/2026 à 12h00",
-       "BAKO Boukari — NIP CNT/2/26",
+       "BAKO Boukari — NIP CBG/2/26",
        "12 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9486,7 +9486,7 @@
       [
        "GCS-0003",
        "13/08/2026 à 13h00",
-       "N’TCHA Yacoubou — NIP CNT/3/26",
+       "N’TCHA Yacoubou — NIP CBG/3/26",
        "7 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9494,7 +9494,7 @@
       [
        "GCS-0004",
        "12/08/2026 à 14h00",
-       "TCHANE Bertine — NIP CNT/1/25",
+       "TCHANE Bertine — NIP CBG/1/25",
        "3 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9502,7 +9502,7 @@
       [
        "GCS-0006",
        "10/08/2026 à 16h00",
-       "N’TCHA Yacoubou — NIP CNT/3/26",
+       "N’TCHA Yacoubou — NIP CBG/3/26",
        "10 / 15",
        "IDRISSOU ANIKI Baba-Toundé",
        ""
@@ -9523,8 +9523,8 @@
     "Évalué par *"
    ],
    "valeurs": {
-    "patientCode": "CNT/3/26",
-    "nip": "CNT/3/26",
+    "patientCode": "CBG/3/26",
+    "nip": "CBG/3/26",
     "dateHeure": "2026-08-13T13:00",
     "axe0": "2",
     "axe1": "2",
@@ -9544,7 +9544,7 @@
      "reference": "GCS-0003",
      "patientId": "PAT0003",
      "patient": "N’TCHA Yacoubou",
-     "nip": "CNT/3/26",
+     "nip": "CBG/3/26",
      "dateHeure": "2026-08-13T13:00",
      "axes": [
       {
@@ -9567,7 +9567,7 @@
      "evaluePar": "SOI06",
      "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
      "observation": "Corrigée",
-     "patientCode": "CNT/3/26",
+     "patientCode": "CBG/3/26",
      "axe0": "1",
      "axe1": "2",
      "axe2": "3"

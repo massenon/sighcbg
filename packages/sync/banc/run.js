@@ -1,6 +1,6 @@
 'use strict';
 /* =============================================================================
- * SIGH-CNT — LE BANC DE SYNCHRONISATION À PLUSIEURS PROCESSUS
+ * SIGH-CBG — LE BANC DE SYNCHRONISATION À PLUSIEURS PROCESSUS
  * -----------------------------------------------------------------------------
  * Une mère et des fileuls sont de VRAIS processus (fork), chacun avec sa base.
  * Un commutateur TCP coupe le réseau en cours de route ; la mère et les postes

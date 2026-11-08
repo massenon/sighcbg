@@ -83,8 +83,8 @@ void main() {
         }
 
         for (var i = 0; i < 3; i++) {
-          // La maquette décrit le code patient sous le sigle CNT ; le poste, sous le sigle de la clinique en vigueur.
-          String sigle(String x) => x.replaceAll('${IdentiteClinique.sigle}/n/AA', 'CNT/n/AA');
+          // La maquette décrit le code patient sous le sigle CBG ; le poste, sous le sigle de la clinique en vigueur.
+          String sigle(String x) => x.replaceAll('${IdentiteClinique.sigle}/n/AA', 'CBG/n/AA');
           expect([for (final l in poste[i].lignes) sansQueue(l).map(sigle).toList()], [for (final l in maquette[i].lignes) sansQueue(l)], reason: 'feuille ${poste[i].nom}');
         }
       });

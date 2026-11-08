@@ -1,5 +1,5 @@
 // DÉRIVÉ DE LA MAQUETTE BAGUIDI (tailwind.config.js), ÉDITÉ À LA MAIN le 06/11/2026 : la chaîne d'engendrement d'origine
-// (build/gen-poste-assets.js depuis docs/design/design-tokens.json) reste chez l'éditeur (dépôt SIGH-CNT) et n'est pas dans ce dépôt.
+// (build/gen-poste-assets.js depuis docs/design/design-tokens.json) reste chez l'éditeur (dépôt SIGH-CBG) et n'est pas dans ce dépôt.
 // Constantes de couleur de la coque. Les « slate » sont la palette neutre par défaut de Tailwind, utilisée par la maquette.
 // Charte BAGUIDI : `navy` est RÉAFFECTÉ comme dans la maquette (50 à 900 = Bleu Santé, 950 = Noir Anthracite) ;
 // les palettes coeur/sante/anthracite sont NOUVELLES ; success/warning/danger/info et les OMBRES (teinte rgb(11 30 61),

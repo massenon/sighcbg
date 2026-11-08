@@ -22,7 +22,7 @@ Fiche? _tarif(Magasin m, Object? code) {
 // =============================================================================================================================================
 
 /// `cfg-types-piece` — « Types de pièces certifiantes » : les quatorze gabarits officiels relevés sur les documents réels, chacun avec son sigle de
-/// référence et sa direction émettrice (numérotation « SIGLE n°/n°/CNT/direction/année »). DEUX COLLISIONS DE SIGLES existent dans les sources — CMA
+/// référence et sa direction émettrice (numérotation « SIGLE n°/n°/CBG/direction/année »). DEUX COLLISIONS DE SIGLES existent dans les sources — CMA
 /// (accouchement / aptitude), CMD (décès / genre de mort) : elles sont CONSERVÉES et signalées, renuméroter romprait la correspondance avec les registres
 /// papier tenus depuis des années.
 class EcranTypesPiece extends StatelessWidget with EcranMaquette {

@@ -478,8 +478,8 @@ AdmFiche admFicheAmbulance(Map<String, Object?> v, DateTime maintenant) =>
 /// officiel), puis trois structures extérieures dont le numéro N'EST PAS inventé (fiche vide qui le dit).
 List<AdmFiche> admAmorcerRepertoire(DateTime maintenant, List<String> telephonesClinique, String chauffeur) {
   const defs = <(String, String, int?, String?, String, bool)>[
-    ('Ambulance CNT 01', 'clinique', 0, null, 'Natitingou — clinique', true),
-    ('Ambulance CNT 02', 'clinique', 1, 'Chauffeur de garde', 'Natitingou — clinique', true),
+    ('Ambulance CBG 01', 'clinique', 0, null, 'Natitingou — clinique', true),
+    ('Ambulance CBG 02', 'clinique', 1, 'Chauffeur de garde', 'Natitingou — clinique', true),
     ('CHD Atacora — ambulance', 'publique', null, 'Régulation du CHD', 'Natitingou', false),
     ('Zone sanitaire de Natitingou', 'publique', null, 'Bureau de la zone', 'Natitingou', false),
     ('Sapeurs-pompiers', 'publique', null, 'Poste de commandement', 'Natitingou', false),

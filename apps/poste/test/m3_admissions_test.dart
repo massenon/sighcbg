@@ -95,7 +95,7 @@ void main() {
     final col = m.collection('admissions');
     final avant = col.actives.length;
     await toucher(t, find.text('Nouveau'));
-    await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
     await choisir(t, 'lit', 'A1 LIT2 — Aile A — Médecine (Standard)');
     await choisir(t, 'infirmier', 'IDRISSOU ANIKI Baba-Toundé — Infirmier');
     await saisir(t, 'diagnosticEntree', 'Paludisme grave');
@@ -112,7 +112,7 @@ void main() {
     expect(find.text('H00008'), findsWidgets, reason: 'la référence figure au toast');
     // deuxième création : la série avance (le compteur de page de la maquette redonnait H00008)
     await toucher(t, find.text('Nouveau'));
-    await choisir(t, 'patientCode', 'CNT/3/26 — N’TCHA Yacoubou');
+    await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
     await choisir(t, 'lit', 'B3 LIT1 — Aile B — Maternité (Standard)');
     await saisir(t, 'diagnosticEntree', 'Deuxième création');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));

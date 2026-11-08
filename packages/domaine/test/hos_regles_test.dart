@@ -50,7 +50,7 @@ void main() {
     final refus = hosRefusAdmission('A1 LIT1', null, jeu);
     expect(refus, (m(a['creation'])['refusLitOccupe'] as Map)['toasts'][0][0]);
     expect(hosRefusAdmission('A1 LIT1', jeu.firstWhere((x) => x['id'] == 'ADM1'), jeu), isNull);
-    final cree = hosConstruireAdmission({'patientCode': 'CNT/2/26', 'lit': 'A1 LIT2'}, null, liste(a['patients']),
+    final cree = hosConstruireAdmission({'patientCode': 'CBG/2/26', 'lit': 'A1 LIT2'}, null, liste(a['patients']),
         liste(a['jeu']),
         reference: referenceSuivante);
     expect(cree['reference'], 'H00008');

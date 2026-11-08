@@ -54,7 +54,7 @@ void main() {
       expect(id, isNotEmpty);
       final c = src.de('constantes').single;
       expect(c['releveePar'], 'Dr YENI M’PO Florent');
-      expect(c['patientCode'], 'CNT/174/26');
+      expect(c['patientCode'], 'CBG/174/26');
       expect(c['tension'], '110/70');
       expect((await src.liste('constantes')).length, 2);
     });

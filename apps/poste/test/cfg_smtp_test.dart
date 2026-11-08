@@ -143,7 +143,7 @@ void main() {
     final m = p.messages.single;
     expect(m['de'], 'cnt@clinique.bj');
     expect(m['a'], ['dg@clinique.bj']);
-    expect((m['entetes']! as Map)['subject'], 'SIGH-CNT : test de la messagerie');
+    expect((m['entetes']! as Map)['subject'], 'SIGH-CBG : test de la messagerie');
     expect(m['corps'], contains('é è à ç ô, symbole €'));
     expect((m['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>', reason: 'En-tête Reply-To proposé par défaut, reçu par le puits');
     final c = (m['commandes']! as List).cast<String>();
@@ -249,7 +249,7 @@ void main() {
     expect(p.messages, hasLength(1));
     final msg = p.messages.single;
     expect(msg['a'], ['rarhodes06@gmail.com']);
-    expect((msg['entetes']! as Map)['subject'], '[SIGH-CNT] Question sur la comptabilité');
+    expect((msg['entetes']! as Map)['subject'], '[SIGH-CBG] Question sur la comptabilité');
     expect(msg['corps'], contains('où règle-t-on le plan ? Merci é à ç.'));
     expect(msg['corps'], contains('Référence : SUP-'));
     expect((msg['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>');

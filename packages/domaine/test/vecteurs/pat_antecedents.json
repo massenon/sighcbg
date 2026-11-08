@@ -4,7 +4,7 @@
   {
    "id": "A1",
    "statut": "actif",
-   "code": "CNT/1/26",
+   "code": "CBG/1/26",
    "nom": "Nom1",
    "prenom": "Pre1",
    "sexe": "F",
@@ -16,7 +16,7 @@
   {
    "id": "A2",
    "statut": "actif",
-   "code": "CNT/2/26",
+   "code": "CBG/2/26",
    "nom": "Nom2",
    "prenom": "Pre2",
    "sexe": "F",
@@ -36,7 +36,7 @@
   {
    "id": "A3",
    "statut": "actif",
-   "code": "CNT/3/26",
+   "code": "CBG/3/26",
    "nom": "Nom3",
    "prenom": "Pre3",
    "sexe": "F",
@@ -52,7 +52,7 @@
   {
    "id": "A4",
    "statut": "actif",
-   "code": "CNT/4/26",
+   "code": "CBG/4/26",
    "nom": "Nom4",
    "prenom": "Pre4",
    "sexe": "F",
@@ -67,7 +67,7 @@
   {
    "id": "A5",
    "statut": "actif",
-   "code": "CNT/5/26",
+   "code": "CBG/5/26",
    "nom": "Nom5",
    "prenom": "Pre5",
    "sexe": "F",
@@ -81,7 +81,7 @@
   {
    "id": "A6",
    "statut": "actif",
-   "code": "CNT/6/26",
+   "code": "CBG/6/26",
    "nom": "Nom6",
    "prenom": "Pre6",
    "sexe": "F",
@@ -95,7 +95,7 @@
   {
    "id": "A7",
    "statut": "actif",
-   "code": "CNT/7/26",
+   "code": "CBG/7/26",
    "nom": "Nom7",
    "prenom": "Pre7",
    "sexe": "F",
@@ -114,7 +114,7 @@
   {
    "id": "A8",
    "statut": "archive",
-   "code": "CNT/8/26",
+   "code": "CBG/8/26",
    "nom": "Nom8",
    "prenom": "Pre8",
    "sexe": "F",
@@ -157,7 +157,7 @@
  ],
  "lignes": [
   [
-   "CNT/1/26",
+   "CBG/1/26",
    "Nom1 Pre1",
    "—",
    "Aucun antécédent notable",
@@ -167,7 +167,7 @@
    ""
   ],
   [
-   "CNT/2/26",
+   "CBG/2/26",
    "Nom2 Pre2",
    "O+",
    "Asthme",
@@ -177,7 +177,7 @@
    ""
   ],
   [
-   "CNT/3/26",
+   "CBG/3/26",
    "Nom3 Pre3",
    "—",
    "Drépanocytose, Asthme",
@@ -187,7 +187,7 @@
    ""
   ],
   [
-   "CNT/4/26",
+   "CBG/4/26",
    "Nom4 Pre4",
    "—",
    "Épilepsie Césarienne 2019",
@@ -197,7 +197,7 @@
    ""
   ],
   [
-   "CNT/5/26",
+   "CBG/5/26",
    "Nom5 Pre5",
    "—",
    "Aucun antécédent notable",
@@ -207,7 +207,7 @@
    ""
   ],
   [
-   "CNT/6/26",
+   "CBG/6/26",
    "Nom6 Pre6",
    "—",
    "Aucun antécédent notable",
@@ -217,7 +217,7 @@
    ""
   ],
   [
-   "CNT/7/26",
+   "CBG/7/26",
    "Nom7 Pre7",
    "—",
    "Diabète de type 2",
@@ -264,14 +264,14 @@
    "filtre": "Allergie",
    "valeur": "Pénicilline",
    "codes": [
-    "CNT/4/26"
+    "CBG/4/26"
    ]
   },
   {
    "filtre": "Allergie",
    "valeur": "Sulfamides",
    "codes": [
-    "CNT/2/26"
+    "CBG/2/26"
    ]
   },
   {
@@ -283,14 +283,14 @@
    "filtre": "Allergie",
    "valeur": "Arachide",
    "codes": [
-    "CNT/7/26"
+    "CBG/7/26"
    ]
   },
   {
    "filtre": "Allergie",
    "valeur": "Iode",
    "codes": [
-    "CNT/7/26"
+    "CBG/7/26"
    ]
   },
   {
@@ -302,10 +302,10 @@
    "filtre": "Allergie",
    "valeur": "Aucune allergie connue",
    "codes": [
-    "CNT/1/26",
-    "CNT/3/26",
-    "CNT/5/26",
-    "CNT/6/26"
+    "CBG/1/26",
+    "CBG/3/26",
+    "CBG/5/26",
+    "CBG/6/26"
    ]
   },
   {
@@ -317,22 +317,22 @@
    "filtre": "Antécédent",
    "valeur": "Diabète de type 2",
    "codes": [
-    "CNT/7/26"
+    "CBG/7/26"
    ]
   },
   {
    "filtre": "Antécédent",
    "valeur": "Asthme",
    "codes": [
-    "CNT/2/26",
-    "CNT/3/26"
+    "CBG/2/26",
+    "CBG/3/26"
    ]
   },
   {
    "filtre": "Antécédent",
    "valeur": "Drépanocytose",
    "codes": [
-    "CNT/3/26"
+    "CBG/3/26"
    ]
   },
   {
@@ -344,7 +344,7 @@
    "filtre": "Antécédent",
    "valeur": "Épilepsie",
    "codes": [
-    "CNT/4/26"
+    "CBG/4/26"
    ]
   },
   {
@@ -371,16 +371,16 @@
    "filtre": "Antécédent",
    "valeur": "Aucun antécédent notable",
    "codes": [
-    "CNT/1/26",
-    "CNT/5/26",
-    "CNT/6/26"
+    "CBG/1/26",
+    "CBG/5/26",
+    "CBG/6/26"
    ]
   }
  ],
  "modifications": [
   {
    "nom": "un antécédent à risque et une allergie",
-   "code": "CNT/1/26",
+   "code": "CBG/1/26",
    "saisie": {
     "antecedents": [
      "Drépanocytose",
@@ -393,7 +393,7 @@
     "traitementEnCours": "Hydroxyurée",
     "groupeSanguin": "A+"
    },
-   "titre": "Antécédents et allergies Nom1 Pre1 — CNT/1/26 Antécédents — Aucune sélection — Autres antécédents Allergies connues — Au",
+   "titre": "Antécédents et allergies Nom1 Pre1 — CBG/1/26 Antécédents — Aucune sélection — Autres antécédents Allergies connues — Au",
    "prerempli": {
     "antecedents": [],
     "antecedentsAutres": "",
@@ -415,7 +415,7 @@
     "groupeSanguin": "A+"
    },
    "toasts": [
-    "Éléments médicaux enregistrés. | CNT/1/26"
+    "Éléments médicaux enregistrés. | CBG/1/26"
    ],
    "kpisApres": [
     [
@@ -438,11 +438,11 @@
   },
   {
    "nom": "fiche à deux antécédents : enregistrer n'efface aucune valeur",
-   "code": "CNT/3/26",
+   "code": "CBG/3/26",
    "saisie": {
     "antecedentsAutres": "Appendicectomie"
    },
-   "titre": "Antécédents et allergies Nom3 Pre3 — CNT/3/26 Antécédents Asthme, Drépanocytose Autres antécédents Allergies connues — A",
+   "titre": "Antécédents et allergies Nom3 Pre3 — CBG/3/26 Antécédents Asthme, Drépanocytose Autres antécédents Allergies connues — A",
    "prerempli": {
     "antecedents": [
      "Drépanocytose",
@@ -460,7 +460,7 @@
     "groupeSanguin": ""
    },
    "toasts": [
-    "Éléments médicaux enregistrés. | CNT/3/26"
+    "Éléments médicaux enregistrés. | CBG/3/26"
    ],
    "kpisApres": [
     [
@@ -483,12 +483,12 @@
   },
   {
    "nom": "retour à « Aucun antécédent notable »",
-   "code": "CNT/4/26",
+   "code": "CBG/4/26",
    "saisie": {
     "antecedents": [],
     "allergies": []
    },
-   "titre": "Antécédents et allergies Nom4 Pre4 — CNT/4/26 Antécédents Épilepsie Autres antécédents Allergies connues Pénicilline Tra",
+   "titre": "Antécédents et allergies Nom4 Pre4 — CBG/4/26 Antécédents Épilepsie Autres antécédents Allergies connues Pénicilline Tra",
    "prerempli": {
     "antecedents": [
      "Épilepsie"
@@ -507,7 +507,7 @@
     "groupeSanguin": ""
    },
    "toasts": [
-    "Éléments médicaux enregistrés. | CNT/4/26"
+    "Éléments médicaux enregistrés. | CBG/4/26"
    ],
    "kpisApres": [
     [

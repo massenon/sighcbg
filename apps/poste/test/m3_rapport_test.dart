@@ -18,9 +18,9 @@ final soignants = liste(jsonDecode(File('assets/donnees/jeu/soignants.json').rea
 
 /// Les trois patients du vecteur, avec les champs que la maquette recopie sur le rapport (âge calculé depuis la naissance relevée).
 final patients = [
-  {'id': 'PAT0001', 'code': 'CNT/1/25', 'nom': 'TCHANE', 'prenom': 'Bertine', 'sexe': 'F', 'quartier': 'Boukoumbé', 'telephone': '0372398919', 'dateNaissance': '1995-05-01'},
-  {'id': 'PAT0002', 'code': 'CNT/2/26', 'nom': 'BAKO', 'prenom': 'Boukari', 'sexe': 'M', 'quartier': 'Yimporima', 'telephone': '0395837962', 'dateNaissance': '1969-12-10'},
-  {'id': 'PAT0003', 'code': 'CNT/3/26', 'nom': 'N’TCHA', 'prenom': 'Yacoubou', 'sexe': 'M', 'quartier': 'Kouandé', 'telephone': '0673723379', 'dateNaissance': '1993-01-01'},
+  {'id': 'PAT0001', 'code': 'CBG/1/25', 'nom': 'TCHANE', 'prenom': 'Bertine', 'sexe': 'F', 'quartier': 'Boukoumbé', 'telephone': '0372398919', 'dateNaissance': '1995-05-01'},
+  {'id': 'PAT0002', 'code': 'CBG/2/26', 'nom': 'BAKO', 'prenom': 'Boukari', 'sexe': 'M', 'quartier': 'Yimporima', 'telephone': '0395837962', 'dateNaissance': '1969-12-10'},
+  {'id': 'PAT0003', 'code': 'CBG/3/26', 'nom': 'N’TCHA', 'prenom': 'Yacoubou', 'sexe': 'M', 'quartier': 'Kouandé', 'telephone': '0673723379', 'dateNaissance': '1993-01-01'},
 ];
 
 Magasin magasin() => Magasin({
@@ -83,7 +83,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
     expect(m.collection('rapportsMedicaux').toutes.length, 4);
-    await choisir(t, 'patientCode', 'CNT/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
     await dater(t, 'dateEntree', 12);
     await ecrire(t, 'motif', 'Fièvre');
     await ecrire(t, 'anamnese', 'Depuis 3 jours');

@@ -2,7 +2,7 @@
   "name": "sighcnt",
   "version": "0.1.0",
   "private": true,
-  "description": "SIGH-CNT — monorepo du Système Intégré de Gestion Hospitalière de la CLINIQUE NASSIERA TOO SARL (Natitingou, Bénin)",
+  "description": "SIGH-CBG — monorepo du Système Intégré de Gestion Hospitalière de la CLINIQUE NASSIERA TOO SARL (Natitingou, Bénin)",
   "license": "UNLICENSED",
   "engines": {
     "node": ">=22"

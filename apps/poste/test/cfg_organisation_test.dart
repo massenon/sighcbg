@@ -42,7 +42,7 @@ void main() {
     for (final l in lignes.take(6)) {
       expect(find.text('${l[1]}'), findsWidgets, reason: '${l[1]}');
     }
-    expect(find.textContaining('NS 145/08/DA/CNT/2026'), findsWidgets);
+    expect(find.textContaining('NS 145/08/DA/CBG/2026'), findsWidgets);
     expect(find.widgetWithText(BoutonSigh, 'Imprimer la répartition'), findsOneWidget);
     expect(find.widgetWithText(BoutonSigh, 'Nouveau'), findsOneWidget);
   });

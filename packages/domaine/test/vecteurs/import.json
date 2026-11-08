@@ -51,7 +51,7 @@
   "patients": [
    {
     "id": "PAT0001",
-    "code": "CNT/1/25",
+    "code": "CBG/1/25",
     "nom": "TCHANE",
     "prenom": "Bertine",
     "dateNaissance": "1989-07-01",
@@ -60,7 +60,7 @@
    },
    {
     "id": "PAT0002",
-    "code": "CNT/7/26",
+    "code": "CBG/7/26",
     "nom": "ADJOVI",
     "prenom": "Paul",
     "telephone": "0197000001",
@@ -1056,7 +1056,7 @@
      "Date d’ouverture du dossier"
     ],
     [
-     "CNT/12/24",
+     "CBG/12/24",
      "AKPO",
      "Marc",
      "M",
@@ -1159,7 +1159,7 @@
      "Date d’ouverture du dossier"
     ],
     [
-     "CNT/1/25",
+     "CBG/1/25",
      "AUTRE",
      "Personne",
      "F",
@@ -1190,7 +1190,7 @@
       "colonne": "Code dossier",
       "code": "DOUBLON_MAGASIN",
       "niveau": "refus",
-      "valeur": "CNT/1/25"
+      "valeur": "CBG/1/25"
      }
     ],
     "etats": [
@@ -4179,7 +4179,7 @@
       "lotImport": "IMP-2026-003",
       "validePar": "ADMIN TEST",
       "dateImport": "2026-11-01",
-      "code": "CNT/12/24",
+      "code": "CBG/12/24",
       "nom": "AKPO",
       "prenom": "Marc",
       "sexe": "M",
@@ -4204,7 +4204,7 @@
       "lotImport": "IMP-2026-003",
       "validePar": "ADMIN TEST",
       "dateImport": "2026-11-01",
-      "code": "CNT/8/26",
+      "code": "CBG/8/26",
       "nom": "DOSSOU",
       "prenom": "Aïcha",
       "sexe": "F",
@@ -4227,7 +4227,7 @@
       "lotImport": "IMP-2026-003",
       "validePar": "ADMIN TEST",
       "dateImport": "2026-11-01",
-      "code": "CNT/9/26",
+      "code": "CBG/9/26",
       "nom": "GBEDO",
       "prenom": "Lucien",
       "sexe": "M",

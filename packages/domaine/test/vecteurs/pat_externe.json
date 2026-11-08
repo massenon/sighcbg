@@ -116,7 +116,7 @@
    [
     "LAB-00006",
     "06/08/2026",
-    "EXT1 Un CNT/901/26",
+    "EXT1 Un CBG/901/26",
     "NFS",
     "Hospitalisation et soins",
     "Dr Ext",
@@ -126,7 +126,7 @@
    [
     "LAB-00005",
     "05/08/2026",
-    "EXT2 Deux CNT/902/26",
+    "EXT2 Deux CBG/902/26",
     "NFS",
     "Maternité",
     "Dr Ext",
@@ -136,7 +136,7 @@
    [
     "LAB-00004",
     "04/08/2026",
-    "EXT1 Un CNT/901/26",
+    "EXT1 Un CBG/901/26",
     "NFS",
     "—",
     "Dr Ext",
@@ -146,7 +146,7 @@
    [
     "LAB-00003",
     "03/08/2026",
-    "EXT1 Un CNT/901/26",
+    "EXT1 Un CBG/901/26",
     "NFS",
     "—",
     "Dr Ext",
@@ -156,7 +156,7 @@
    [
     "LAB-00002",
     "02/08/2026",
-    "EXT1 Un CNT/901/26",
+    "EXT1 Un CBG/901/26",
     "NFS",
     "—",
     "Dr Ext",
@@ -166,7 +166,7 @@
    [
     "LAB-00001",
     "01/08/2026",
-    "EXT1 Un CNT/901/26",
+    "EXT1 Un CBG/901/26",
     "NFS",
     "—",
     "Dr Ext",
@@ -211,12 +211,12 @@
     "lignes": [
      [
       "LAB-00005",
-      "EXT2 Deux CNT/902/26",
+      "EXT2 Deux CBG/902/26",
       "Résultat rendu"
      ],
      [
       "IME-00002",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À exécuter"
      ]
     ],
@@ -246,12 +246,12 @@
     "lignes": [
      [
       "LAB-00006",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À saisir"
      ],
      [
       "IME-00004",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Compte rendu rendu"
      ]
     ],
@@ -281,22 +281,22 @@
     "lignes": [
      [
       "IME-00004",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Compte rendu rendu"
      ],
      [
       "IME-00003",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Exécuté — CR à rendre"
      ],
      [
       "IME-00002",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À exécuter"
      ],
      [
       "IME-00001",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "En attente de caisse"
      ]
     ],
@@ -333,52 +333,52 @@
     "lignes": [
      [
       "LAB-00006",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À saisir"
      ],
      [
       "LAB-00005",
-      "EXT2 Deux CNT/902/26",
+      "EXT2 Deux CBG/902/26",
       "Résultat rendu"
      ],
      [
       "LAB-00004",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À saisir"
      ],
      [
       "IME-00004",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Compte rendu rendu"
      ],
      [
       "LAB-00003",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Échantillon non parvenu"
      ],
      [
       "IME-00003",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Exécuté — CR à rendre"
      ],
      [
       "LAB-00002",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "Échantillon non parvenu"
      ],
      [
       "IME-00002",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "À exécuter"
      ],
      [
       "LAB-00001",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "En attente de caisse"
      ],
      [
       "IME-00001",
-      "EXT1 Un CNT/901/26",
+      "EXT1 Un CBG/901/26",
       "En attente de caisse"
      ]
     ],
@@ -465,7 +465,7 @@
    "patients": [
     {
      "statut": "actif",
-     "code": "CNT/1098/26",
+     "code": "CBG/1098/26",
      "nom": "GADO",
      "prenom": "Issa",
      "sexe": "M",
@@ -490,7 +490,7 @@
      "reference": "LAB-00002",
      "codeAnalyse": "00002-2026",
      "patientId": "PATxmvvhuous6vw1p",
-     "patientCode": "CNT/1098/26",
+     "patientCode": "CBG/1098/26",
      "patient": "GADO Issa",
      "analyseCode": "L02",
      "analyse": "ASLO",
@@ -518,7 +518,7 @@
      "reference": "LAB-00001",
      "codeAnalyse": "00001-2026",
      "patientId": "PATxmvvhuous6vw1p",
-     "patientCode": "CNT/1098/26",
+     "patientCode": "CBG/1098/26",
      "patient": "GADO Issa",
      "analyseCode": "L01",
      "analyse": "AKOP",
@@ -598,7 +598,7 @@
      "numeroMecef": null,
      "patientId": "PATxmvvhuous6vw1p",
      "patient": "GADO Issa",
-     "patientCode": "CNT/1098/26",
+     "patientCode": "CBG/1098/26",
      "date": "2026-10-30",
      "type": "Analyses — patient externe",
      "montantHT": 6000,
@@ -649,7 +649,7 @@
     }
    ],
    "toasts": [],
-   "modale": "Demande enregistrée GADO Issa — CNT/1098/26 Dossier ouvert CNT/1098/26 Examens demandés 2 Facture FE-2026-00231 À régler à la caisse 6 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
+   "modale": "Demande enregistrée GADO Issa — CBG/1098/26 Dossier ouvert CBG/1098/26 Examens demandés 2 Facture FE-2026-00231 À régler à la caisse 6 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
   },
   {
    "nom": "assuré à 80 % : la part assureur suit le taux",
@@ -675,7 +675,7 @@
    "patients": [
     {
      "statut": "actif",
-     "code": "CNT/1099/26",
+     "code": "CBG/1099/26",
      "nom": "ASSURE",
      "prenom": "Issa",
      "sexe": "M",
@@ -700,7 +700,7 @@
      "reference": "LAB-00003",
      "codeAnalyse": "00003-2026",
      "patientId": "PATxmvvhup77k6815",
-     "patientCode": "CNT/1099/26",
+     "patientCode": "CBG/1099/26",
      "patient": "ASSURE Issa",
      "analyseCode": "L03",
      "analyse": "AZOTEMIE (UREMIE)",
@@ -757,7 +757,7 @@
      "numeroMecef": null,
      "patientId": "PATxmvvhup77k6815",
      "patient": "ASSURE Issa",
-     "patientCode": "CNT/1099/26",
+     "patientCode": "CBG/1099/26",
      "date": "2026-10-30",
      "type": "Analyses — patient externe",
      "montantHT": 2500,
@@ -808,7 +808,7 @@
     }
    ],
    "toasts": [],
-   "modale": "Demande enregistrée ASSURE Issa — CNT/1099/26 Dossier ouvert CNT/1099/26 Examens demandés 1 Facture FE-2026-00232 À régler à la caisse 500 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
+   "modale": "Demande enregistrée ASSURE Issa — CBG/1099/26 Dossier ouvert CBG/1099/26 Examens demandés 1 Facture FE-2026-00232 À régler à la caisse 500 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
   },
   {
    "nom": "bilan urgent",
@@ -830,7 +830,7 @@
    "patients": [
     {
      "statut": "actif",
-     "code": "CNT/1100/26",
+     "code": "CBG/1100/26",
      "nom": "URGENT",
      "prenom": "Issa",
      "sexe": "M",
@@ -855,7 +855,7 @@
      "reference": "LAB-00004",
      "codeAnalyse": "00004-2026",
      "patientId": "PATxmvvhuph7a2ole",
-     "patientCode": "CNT/1100/26",
+     "patientCode": "CBG/1100/26",
      "patient": "URGENT Issa",
      "analyseCode": "L01",
      "analyse": "AKOP",
@@ -912,7 +912,7 @@
      "numeroMecef": null,
      "patientId": "PATxmvvhuph7a2ole",
      "patient": "URGENT Issa",
-     "patientCode": "CNT/1100/26",
+     "patientCode": "CBG/1100/26",
      "date": "2026-10-30",
      "type": "Analyses — patient externe",
      "montantHT": 2000,
@@ -963,7 +963,7 @@
     }
    ],
    "toasts": [],
-   "modale": "Demande enregistrée URGENT Issa — CNT/1100/26 Dossier ouvert CNT/1100/26 Examens demandés 1 Facture FE-2026-00233 À régler à la caisse 2 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
+   "modale": "Demande enregistrée URGENT Issa — CBG/1100/26 Dossier ouvert CBG/1100/26 Examens demandés 1 Facture FE-2026-00233 À régler à la caisse 2 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
   },
   {
    "nom": "imagerie : une échographie",
@@ -986,7 +986,7 @@
    "patients": [
     {
      "statut": "actif",
-     "code": "CNT/1101/26",
+     "code": "CBG/1101/26",
      "nom": "ECHO",
      "prenom": "Issa",
      "sexe": "M",
@@ -1012,7 +1012,7 @@
      "reference": "IME-00001",
      "dateHeure": "2026-10-30T21:38:20.515Z",
      "patientId": "PATxmvvhupr7frkg5",
-     "patientCode": "CNT/1101/26",
+     "patientCode": "CBG/1101/26",
      "patient": "ECHO Issa",
      "examenCode": "IMG-ECHO-PEL",
      "examen": "Échographie pelvienne",
@@ -1064,7 +1064,7 @@
      "numeroMecef": null,
      "patientId": "PATxmvvhupr7frkg5",
      "patient": "ECHO Issa",
-     "patientCode": "CNT/1101/26",
+     "patientCode": "CBG/1101/26",
      "date": "2026-10-30",
      "type": "Imagerie",
      "montantHT": 9000,
@@ -1113,7 +1113,7 @@
     }
    ],
    "toasts": [],
-   "modale": "Demande enregistrée ECHO Issa — CNT/1101/26 Dossier ouvert CNT/1101/26 Examens demandés 1 Facture FI-2026-00234 À régler à la caisse 9 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
+   "modale": "Demande enregistrée ECHO Issa — CBG/1101/26 Dossier ouvert CBG/1101/26 Examens demandés 1 Facture FI-2026-00234 À régler à la caisse 9 000 FCFA Le patient se présente maintenant à la caisse avec son bulletin. Le prélèvement n’aura lieu qu’après règlement — et seuls les examens réglés seront transmis au laboratoire. Fermer Imprimer le bulletin Aller à la caisse"
   },
   {
    "nom": "aucun examen coché : refus nommé",

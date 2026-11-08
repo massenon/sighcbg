@@ -406,7 +406,7 @@ void main() {
 
     testWidgets('avec des refus : cause nommée, geste de correction, âge ; pas de commande Relancer', (t) async {
       src.refusListe = [
-        RefusMra(appareil: 'u-1', operation: 'op-1', code: 'numero_hors_plage', motif: 'Le code CNT/1/26 n\'appartient pas à la plage de ce poste.', geste: 'Demander une nouvelle plage', quand: _t0.subtract(const Duration(hours: 2))),
+        RefusMra(appareil: 'u-1', operation: 'op-1', code: 'numero_hors_plage', motif: 'Le code CBG/1/26 n\'appartient pas à la plage de ce poste.', geste: 'Demander une nouvelle plage', quand: _t0.subtract(const Duration(hours: 2))),
         RefusMra(appareil: 'u-2', operation: 'op-2', code: 'invariant_viole', motif: 'Stock insuffisant pour A1 (RG-03).', geste: 'Corriger la quantité', quand: _t0.subtract(const Duration(minutes: 5))),
         RefusMra(appareil: 'u-1', operation: 'op-3', code: 'droit_refuse', motif: 'Un référentiel ne se modifie qu\'à la console de la mère.', geste: 'Demander la modification', quand: _t0.subtract(const Duration(minutes: 1))),
       ];
@@ -572,8 +572,8 @@ void main() {
       final m = Magasin({
         'audit': const <Fiche>[],
         'patients': [
-          {'id': 'p1', 'statut': 'actif', 'code': 'CNT/1/26', 'nom': 'AKPO', 'prenom': 'Rose'},
-          {'id': 'p2', 'statut': 'actif', 'code': 'CNT/2/26', 'nom': 'BIO', 'prenom': 'Paul'},
+          {'id': 'p1', 'statut': 'actif', 'code': 'CBG/1/26', 'nom': 'AKPO', 'prenom': 'Rose'},
+          {'id': 'p2', 'statut': 'actif', 'code': 'CBG/2/26', 'nom': 'BIO', 'prenom': 'Paul'},
         ],
       }, 'POSTE');
       await monter(t, EcranMraLotsTournee(source: src), magasin: m);

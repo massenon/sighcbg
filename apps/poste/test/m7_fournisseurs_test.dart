@@ -246,7 +246,7 @@ void main() {
       for (final d in liste(f['detail'])) {
         final p = pieceFournisseur(
             (d['fiche']! as Map).cast<String, Object?>(), cmds,
-            utilisateur: 'Test', edite: aujourdhui, reference: 'CNT-20261030-0001');
+            utilisateur: 'Test', edite: aujourdhui, reference: 'CBG-20261030-0001');
         final a = (d['impression']! as Map).cast<String, Object?>();
         expect(p.titre, a['titre']);
         expect(p.sousTitre, a['sousTitre']);

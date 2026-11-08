@@ -5,12 +5,12 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 import 'package:test/test.dart';
 
-/// LA MAQUETTE NUMÉROTE SOUS LE SIGLE « CNT » (codes patient `CNT/n/AA`, pièces `… /CNT/…`, références `CNT-…`, fichiers `sigh-cnt-…`) : ses
+/// LA MAQUETTE NUMÉROTE SOUS LE SIGLE « CBG » (codes patient `CBG/n/AA`, pièces `… /CBG/…`, références `CBG-…`, fichiers `sigh-cbg-…`) : ses
 /// vecteurs portent ce sigle. Le logiciel, lui, préfixe avec le sigle EN VIGUEUR (`IdentiteClinique.sigle`, CBG par défaut). Pour rejouer un vecteur de
 /// numérotation, le fichier applique le sigle de la maquette le temps de chaque test, puis rend l'identité initiale. Le sigle par défaut et la
 /// surcharge sont sondés à part (identite_clinique_test.dart).
 void sousLeSigleDeLaMaquette() {
-  setUp(() => IdentiteClinique.appliquer({'sigle': 'CNT'}));
+  setUp(() => IdentiteClinique.appliquer({'sigle': 'CBG'}));
   tearDown(IdentiteClinique.reinitialiser);
 }
 
@@ -31,7 +31,7 @@ String identiteBaguidi(String texte) {
     ('cliniquenassiera@gmail.com', 'cliniquebaguidi@yahoo.fr'),
     ('3201642748214', '3201001996110'),
     ('RB/NAT/2016-B-268', 'RB/PKO/17 A 4240'),
-    ('SIGH-CNT', 'SIGH-CBG'),
+    ('SIGH-CBG', 'SIGH-CBG'),
     ('Quartier Tchirimina, Natitingou', 'Quartier Zongo II, Parakou'),
     ('Fait à Natitingou', 'Fait à Parakou'),
     ('60 33 92 92', '95 74 69 56'),

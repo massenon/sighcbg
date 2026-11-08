@@ -271,7 +271,7 @@ void main() {
       ], k);
       expect(find.text('10⁶/ml'), findsOneWidget);
       expect(find.text('À confirmer'), findsWidgets);
-      expect(find.text('Fiche de résultats CNT'), findsWidgets);
+      expect(find.text('Fiche de résultats CBG'), findsWidgets);
       final y = (t.getTopLeft(find.text('10⁶/ml')).dy);
       expect(y, lessThan(t.getTopLeft(find.text('mg/l')).dy), reason: 'Andrologie avant Biochimie');
     });
@@ -314,7 +314,7 @@ void main() {
       await ouvrir(t, m, 'm5-unites');
       expect(find.text('Ma source'), findsOneWidget);
       expect(find.text('À confirmer'), findsNWidgets(2), reason: 'le KPI et le badge');
-      expect(find.text('Fiche de résultats CNT'), findsOneWidget);
+      expect(find.text('Fiche de résultats CBG'), findsOneWidget);
       expect(kpi(t, 'À confirmer'), '1');
       expect(kpi(t, 'Reprises de la fiche'), '2');
     });
@@ -418,7 +418,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       final v = fiche(m, 'variablesLabo', (x) => x['id'] == 'VAR-NFS-LY');
       expect(v['libelle'], 'Lymphocytes (corrigé)');
-      expect(v['source'], 'Fiche de résultats CNT du 21/08/2026');
+      expect(v['source'], 'Fiche de résultats CBG du 21/08/2026');
       expect(v['min'], 1);
       expect(v['max'], 4.5);
     });

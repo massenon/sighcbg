@@ -327,7 +327,7 @@ void main() {
     }));
     afficherTiroir<void>(ctx,
         titre: 'Fiche patient',
-        sousTitre: 'CNT/12/26',
+        sousTitre: 'CBG/12/26',
         corps: const Text('Détail'),
         pied: (f) => [
               BoutonSigh(
@@ -355,7 +355,7 @@ void main() {
       for (var i = 1; i <= 30; i++)
         {
           'id': 'r$i',
-          'code': 'CNT/$i/26',
+          'code': 'CBG/$i/26',
           'nom': 'Patient $i',
           'montant': i * 1500,
           'statut': i.isOdd ? 'actif' : 'archive'
@@ -393,8 +393,8 @@ void main() {
         tolH: 1, tolL: 2.5);
     expect(find.text('Affichage de 1 à 12 sur 30 enregistrements'),
         findsOneWidget);
-    expect(find.text('CNT/1/26'), findsOneWidget);
-    expect(find.text('CNT/13/26'), findsNothing, reason: 'pagination de 12');
+    expect(find.text('CBG/1/26'), findsOneWidget);
+    expect(find.text('CBG/13/26'), findsNothing, reason: 'pagination de 12');
   });
 
   testWidgets(

@@ -77,7 +77,7 @@ const rhbReglesPlanning = <RhbRegle>[
   RhbRegle(['securite'], 'Agents de sécurité', ['garde', 'soiree'], 'repos24', 3, 'Planning des agents de sécurité',
       'Rotation « G » (garde 24 h), « S » (soirée de 18h à 8h) et « R » (repos).'),
   RhbRegle(['aide_soignant', 'entretien'], 'Incinération des déchets de l’hôpital', ['incineration'], null, 7,
-      'NS n° 132/07/DM/DA/CNT/2026 — prime d’incinération',
+      'NS n° 132/07/DM/DA/CBG/2026 — prime d’incinération',
       'Incinération des déchets hospitaliers, poste hebdomadaire rémunéré 5 000 FCFA par mois au titre de la prime d’incinération (NS 132).',
       honoraire: 5000, honorairePeriodicite: 'mensuelle'),
 ];
@@ -150,7 +150,7 @@ String rhbFonctionLabel(Object? id) {
 // NS 131 : barème d'évaluation et de sanction (la note d'origine ; les évaluations lisent le barème EN VIGUEUR À LEUR DATE, voir rhbCriteresALaDate)
 // ---------------------------------------------------------------------------------------------------------------------
 
-const rhbNs131Reference = 'NS 131/07/DM/DA/CNT/2026';
+const rhbNs131Reference = 'NS 131/07/DM/DA/CBG/2026';
 const rhbNs131DateEffet = '2026-07-13';
 const rhbNs131DateSignature = '2026-07-13';
 const rhbNs131Version = 1;
@@ -262,7 +262,7 @@ int rhbMontantPrelevement(Object? salaire, Object? pct) => arrondiJs(nombreOuZer
 // NS 132 — grille des primes diverses, DATÉE (RG-11 : jamais changer une prime déjà calculée)
 // ---------------------------------------------------------------------------------------------------------------------
 
-const rhbNs132Reference = 'NS n° 132/07/DM/DA/CNT/2026';
+const rhbNs132Reference = 'NS n° 132/07/DM/DA/CBG/2026';
 const rhbNs132Objet = 'Primes diverses';
 const rhbNs132DateEffet = '2026-07-13';
 const rhbNs132DateSignature = '2026-07-13';

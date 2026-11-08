@@ -46,7 +46,7 @@
    "page1": [
     [
      "",
-     "BANI Zoukanéri CNT/62/25",
+     "BANI Zoukanéri CBG/62/25",
      "39 SA",
      "02/09/2026",
      "17 j",
@@ -59,7 +59,7 @@
     ],
     [
      "",
-     "PARAISO Rabiatou CNT/177/25",
+     "PARAISO Rabiatou CBG/177/25",
      "38 SA",
      "09/09/2026",
      "24 j",
@@ -72,7 +72,7 @@
     ],
     [
      "",
-     "OROU YO Ramatou CNT/81/26",
+     "OROU YO Ramatou CBG/81/26",
      "37 SA",
      "16/09/2026",
      "31 j",
@@ -85,7 +85,7 @@
     ],
     [
      "",
-     "KASSA Adissa CNT/115/26",
+     "KASSA Adissa CBG/115/26",
      "36 SA",
      "23/09/2026",
      "38 j",
@@ -98,7 +98,7 @@
     ],
     [
      "",
-     "TIGRI Séraphine CNT/11/26",
+     "TIGRI Séraphine CBG/11/26",
      "35 SA",
      "30/09/2026",
      "45 j",
@@ -111,7 +111,7 @@
     ],
     [
      "",
-     "DOSSOU Colette CNT/36/26",
+     "DOSSOU Colette CBG/36/26",
      "35 SA",
      "30/09/2026",
      "45 j",
@@ -124,7 +124,7 @@
     ],
     [
      "",
-     "OURTCHA Kadidjatou CNT/99/26",
+     "OURTCHA Kadidjatou CBG/99/26",
      "34 SA",
      "07/10/2026",
      "52 j",
@@ -137,7 +137,7 @@
     ],
     [
      "",
-     "OURTCHA Kadidjatou CNT/99/26",
+     "OURTCHA Kadidjatou CBG/99/26",
      "32 SA",
      "21/10/2026",
      "66 j",
@@ -150,7 +150,7 @@
     ],
     [
      "",
-     "MAMAN Chantal CNT/85/26",
+     "MAMAN Chantal CBG/85/26",
      "30 SA",
      "04/11/2026",
      "80 j",
@@ -163,7 +163,7 @@
     ],
     [
      "",
-     "GARBA Aïssatou CNT/13/26",
+     "GARBA Aïssatou CBG/13/26",
      "25 SA",
      "11/11/2026",
      "87 j",
@@ -176,7 +176,7 @@
     ],
     [
      "",
-     "GARBA Aïssatou CNT/13/26",
+     "GARBA Aïssatou CBG/13/26",
      "17 SA",
      "11/11/2026",
      "87 j",
@@ -189,7 +189,7 @@
     ],
     [
      "",
-     "SOULE Bertine CNT/27/26",
+     "SOULE Bertine CBG/27/26",
      "25 SA",
      "11/11/2026",
      "87 j",
@@ -301,9 +301,9 @@
     }
    ],
    "fiche": {
-    "ref": "BANI Zoukanéri CNT/62/25",
+    "ref": "BANI Zoukanéri CBG/62/25",
     "titre": "BANI Zoukanéri",
-    "texte": "Patiente BANI Zoukanéri CNT/62/25 Terme (SA) 39 SA Date prévue 02/09/2026 Échéance 17 j CPN réalisées 4 Groupe AB+ Risque Standard Sage-femme BOUKARI Nadège Observations Diabète gestationnel Patiente CNT/62/25 — BANI Zoukanéri Poids de la patiente (kg) 74",
+    "texte": "Patiente BANI Zoukanéri CBG/62/25 Terme (SA) 39 SA Date prévue 02/09/2026 Échéance 17 j CPN réalisées 4 Groupe AB+ Risque Standard Sage-femme BOUKARI Nadège Observations Diabète gestationnel Patiente CBG/62/25 — BANI Zoukanéri Poids de la patiente (kg) 74",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -377,7 +377,7 @@
      "",
      "ACC-0020",
      "20/08/2026 à 01h31",
-     "TIGRI Séraphine CNT/11/26",
+     "TIGRI Séraphine CBG/11/26",
      "Dirigé",
      "—",
      "8 h",
@@ -390,7 +390,7 @@
      "",
      "ACC-0041",
      "19/08/2026 à 23h22",
-     "OURTCHA Bertine CNT914/25",
+     "OURTCHA Bertine CBG914/25",
      "Césarienne",
      "Délivrance artificielle",
      "15 h",
@@ -403,7 +403,7 @@
      "",
      "ACC-0018",
      "16/08/2026 à 16h51",
-     "ZIME Ramatou CNT/163/25",
+     "ZIME Ramatou CBG/163/25",
      "Dystocique",
      "Révision utérine",
      "7 h",
@@ -416,7 +416,7 @@
      "",
      "ACC-0014",
      "16/08/2026 à 12h49",
-     "OROU YO Ramatou CNT/81/26",
+     "OROU YO Ramatou CBG/81/26",
      "Dystocique",
      "—",
      "16 h",
@@ -429,7 +429,7 @@
      "",
      "ACC-0043",
      "16/08/2026 à 07h06",
-     "DAOUDA Zoukanéri CNT/165/26",
+     "DAOUDA Zoukanéri CBG/165/26",
      "Eutocique",
      "Ventouse obstétricale",
      "16 h",
@@ -442,7 +442,7 @@
      "",
      "ACC-0039",
      "10/08/2026 à 22h09",
-     "ISSA Chantal CNT/22/26",
+     "ISSA Chantal CBG/22/26",
      "Dystocique",
      "—",
      "16 h",
@@ -455,7 +455,7 @@
      "",
      "ACC-0026",
      "25/07/2026 à 02h46",
-     "AGOSSOU Foussena CNT/78/26",
+     "AGOSSOU Foussena CBG/78/26",
      "Césarienne",
      "—",
      "4 h",
@@ -468,7 +468,7 @@
      "",
      "ACC-0027",
      "21/07/2026 à 23h13",
-     "SAMBIENI Rabiatou CNT/104/26",
+     "SAMBIENI Rabiatou CBG/104/26",
      "Césarienne",
      "—",
      "14 h",
@@ -481,7 +481,7 @@
      "",
      "ACC-0038",
      "21/07/2026 à 11h05",
-     "BAKO Zoukanéri CNT/89/26",
+     "BAKO Zoukanéri CBG/89/26",
      "Eutocique",
      "Révision utérine",
      "8 h",
@@ -494,7 +494,7 @@
      "",
      "ACC-0012",
      "20/07/2026 à 04h33",
-     "BOUKARI Ramatou CNT/146/26",
+     "BOUKARI Ramatou CBG/146/26",
      "Eutocique",
      "—",
      "4 h",
@@ -507,7 +507,7 @@
      "",
      "ACC-0003",
      "17/07/2026 à 04h44",
-     "DIEYABIDI Ramatou CNT/25/26",
+     "DIEYABIDI Ramatou CBG/25/26",
      "Eutocique",
      "—",
      "13 h",
@@ -520,7 +520,7 @@
      "",
      "ACC-0009",
      "16/07/2026 à 20h09",
-     "KORA Marguerite CNT/141/25",
+     "KORA Marguerite CBG/141/25",
      "Eutocique",
      "—",
      "16 h",
@@ -779,7 +779,7 @@
    "fiche": {
     "ref": "ACC-0020",
     "titre": "TIGRI Séraphine",
-    "texte": "RÉFÉRENCE ACC-0020 PARTURIENTE TIGRI Séraphine — CNT/11/26 DATE ET HEURE 20/08/2026 à 01h31 TYPE Dirigé ACTES ASSOCIÉS — DURÉE DU TRAVAIL 8 h COMPLICATIONS Aucune PRATICIEN TAKI Orou ISSUE Favorable Certificat de repos post-partum",
+    "texte": "RÉFÉRENCE ACC-0020 PARTURIENTE TIGRI Séraphine — CBG/11/26 DATE ET HEURE 20/08/2026 à 01h31 TYPE Dirigé ACTES ASSOCIÉS — DURÉE DU TRAVAIL 8 h COMPLICATIONS Aucune PRATICIEN TAKI Orou ISSUE Favorable Certificat de repos post-partum",
     "boutons": [
      "Fermer",
      "Certificat de repos post-partum",
@@ -857,7 +857,7 @@
      "NAI-0020",
      "20/08/2026 à 01h31",
      "TIGRI Séraphine",
-     "CNT/11/26",
+     "CBG/11/26",
      "Masculin",
      "2.94",
      "5 / 7 / 8",
@@ -871,7 +871,7 @@
      "NAI-0041",
      "19/08/2026 à 23h22",
      "OURTCHA Bertine",
-     "CNT914/25",
+     "CBG914/25",
      "Féminin",
      "2.42",
      "7 / 7 / 8",
@@ -885,7 +885,7 @@
      "NAI-0018",
      "16/08/2026 à 16h51",
      "ZIME Ramatou",
-     "CNT/163/25",
+     "CBG/163/25",
      "Masculin",
      "4.17",
      "8 / 9 / 10",
@@ -899,7 +899,7 @@
      "NAI-0014",
      "16/08/2026 à 12h49",
      "OROU YO Ramatou",
-     "CNT/81/26",
+     "CBG/81/26",
      "Masculin",
      "3.14",
      "5 / 6 / 6",
@@ -913,7 +913,7 @@
      "NAI-0043",
      "16/08/2026 à 07h06",
      "DAOUDA Zoukanéri",
-     "CNT/165/26",
+     "CBG/165/26",
      "Masculin",
      "4.02",
      "9 / 10 / 10",
@@ -927,7 +927,7 @@
      "NAI-0039",
      "10/08/2026 à 22h09",
      "ISSA Chantal",
-     "CNT/22/26",
+     "CBG/22/26",
      "Féminin",
      "3.89",
      "6 / 7 / 8",
@@ -941,7 +941,7 @@
      "NAI-0026",
      "25/07/2026 à 02h46",
      "AGOSSOU Foussena",
-     "CNT/78/26",
+     "CBG/78/26",
      "Masculin",
      "2.38",
      "4 / 6 / 8",
@@ -955,7 +955,7 @@
      "NAI-0027",
      "21/07/2026 à 23h13",
      "SAMBIENI Rabiatou",
-     "CNT/104/26",
+     "CBG/104/26",
      "Féminin",
      "3.85",
      "8 / 10 / 10",
@@ -969,7 +969,7 @@
      "NAI-0038",
      "21/07/2026 à 11h05",
      "BAKO Zoukanéri",
-     "CNT/89/26",
+     "CBG/89/26",
      "Masculin",
      "3.76",
      "9 / 10 / 10",
@@ -983,7 +983,7 @@
      "NAI-0012",
      "20/07/2026 à 04h33",
      "BOUKARI Ramatou",
-     "CNT/146/26",
+     "CBG/146/26",
      "Féminin",
      "2.99",
      "7 / 9 / 10",
@@ -997,7 +997,7 @@
      "NAI-0003",
      "17/07/2026 à 04h44",
      "DIEYABIDI Ramatou",
-     "CNT/25/26",
+     "CBG/25/26",
      "Féminin",
      "3.95",
      "9 / 9 / 10",
@@ -1011,7 +1011,7 @@
      "NAI-0009",
      "16/07/2026 à 20h09",
      "KORA Marguerite",
-     "CNT/141/25",
+     "CBG/141/25",
      "Masculin",
      "4.18",
      "9 / 10 / 10",
@@ -1233,7 +1233,7 @@
    "fiche": {
     "ref": "NAI-0020",
     "titre": "NAI-0020",
-    "texte": "N° NAI-0020 Date et heure 20/08/2026 à 01h31 Mère TIGRI Séraphine Dossier mère CNT/11/26 Sexe Masculin Poids (kg) 2.94 Apgar 1/5/10 5 / 7 / 8 PC / PT (cm) 36.9 / 33.7 État Né vivant État civil Déclarée Taille (cm) 48 Périmètre thoracique — PT (cm) 33.7 Apgar à 1 min (/10) 5 Apgar à 10 min (/10) 8 Réanimation néonatale effectuée Non Vitamine K1 administrée Oui Collyre tétracycline Oui Polio oral (VPO0) Non BCG Oui Hépatite B (J0) Oui",
+    "texte": "N° NAI-0020 Date et heure 20/08/2026 à 01h31 Mère TIGRI Séraphine Dossier mère CBG/11/26 Sexe Masculin Poids (kg) 2.94 Apgar 1/5/10 5 / 7 / 8 PC / PT (cm) 36.9 / 33.7 État Né vivant État civil Déclarée Taille (cm) 48 Périmètre thoracique — PT (cm) 33.7 Apgar à 1 min (/10) 5 Apgar à 10 min (/10) 8 Réanimation néonatale effectuée Non Vitamine K1 administrée Oui Collyre tétracycline Oui Polio oral (VPO0) Non BCG Oui Hépatite B (J0) Oui",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -1306,7 +1306,7 @@
      "",
      "DEC-0002",
      "16/08/2026 à 05h46",
-     "SOULE Adissa CNT/143/26",
+     "SOULE Adissa CBG/143/26",
      "Cause naturelle — grand âge",
      "Hospitalisation",
      "BOUKARI Nadège",
@@ -1317,7 +1317,7 @@
      "",
      "DEC-0010",
      "04/08/2026 à 03h27",
-     "YARO Zoukanéri CNT/70/26",
+     "YARO Zoukanéri CBG/70/26",
      "Paludisme grave",
      "Hospitalisation",
      "BASSONGUI Chabi Séko",
@@ -1328,7 +1328,7 @@
      "",
      "DEC-0003",
      "28/07/2026 à 10h05",
-     "HOUNKPATIN Tamou CNT/63/26",
+     "HOUNKPATIN Tamou CBG/63/26",
      "Insuffisance rénale aiguë",
      "Maternité",
      "ADAM Colette",
@@ -1339,7 +1339,7 @@
      "",
      "DEC-0004",
      "24/06/2026 à 11h03",
-     "N’TCHA Alassane CNT/47/25",
+     "N’TCHA Alassane CBG/47/25",
      "Accident vasculaire cérébral",
      "Urgences",
      "BADO BANI A. B. Zoulehath",
@@ -1350,7 +1350,7 @@
      "",
      "DEC-0012",
      "12/04/2026 à 19h14",
-     "BAKO Zakari CNT/37/26",
+     "BAKO Zakari CBG/37/26",
      "Insuffisance rénale aiguë",
      "Hospitalisation",
      "TAKI Orou",
@@ -1361,7 +1361,7 @@
      "",
      "DEC-0009",
      "09/04/2026 à 22h14",
-     "WOROU Boukari CNT/119/26",
+     "WOROU Boukari CBG/119/26",
      "Choc septique",
      "Urgences",
      "BADO BANI A. B. Zoulehath",
@@ -1372,7 +1372,7 @@
      "",
      "DEC-0011",
      "24/03/2026 à 13h57",
-     "ADAM Edmond CNT/59/26",
+     "ADAM Edmond CBG/59/26",
      "Accident vasculaire cérébral",
      "Maternité",
      "AHOHOU Rodrigue",
@@ -1383,7 +1383,7 @@
      "",
      "DEC-0005",
      "24/03/2026 à 03h05",
-     "DAOUDA Zakari CNT/166/26",
+     "DAOUDA Zakari CBG/166/26",
      "Paludisme grave",
      "Bloc opératoire",
      "BADO BANI A. B. Zoulehath",
@@ -1394,7 +1394,7 @@
      "",
      "DEC-0001",
      "22/03/2026 à 18h47",
-     "DAOUDA Djibril CNT/124/25",
+     "DAOUDA Djibril CBG/124/25",
      "Accident vasculaire cérébral",
      "Hospitalisation",
      "AHOHOU Rodrigue",
@@ -1405,7 +1405,7 @@
      "",
      "DEC-0007",
      "15/03/2026 à 19h29",
-     "TCHOUKOUROU Zakari CNT/73/26",
+     "TCHOUKOUROU Zakari CBG/73/26",
      "Cause naturelle — grand âge",
      "Maternité",
      "BOUKARI Nadège",
@@ -1416,7 +1416,7 @@
      "",
      "DEC-0008",
      "05/03/2026 à 19h02",
-     "TAKI Alimatou CNT901/25",
+     "TAKI Alimatou CBG901/25",
      "Détresse respiratoire",
      "Urgences",
      "BOUKARI Nadège",
@@ -1427,7 +1427,7 @@
      "",
      "DEC-0014",
      "23/02/2026 à 16h10",
-     "KASSA Alassane CNT/60/26",
+     "KASSA Alassane CBG/60/26",
      "Insuffisance rénale aiguë",
      "Urgences",
      "TAKI Orou",
@@ -1530,7 +1530,7 @@
    "fiche": {
     "ref": "DEC-0002",
     "titre": "SOULE Adissa",
-    "texte": "N° DEC-0002 Date et heure 16/08/2026 à 05h46 Patient SOULE Adissa CNT/143/26 Cause du décès Cause naturelle — grand âge Lieu Hospitalisation Médecin constatant BOUKARI Nadège Déclaration Déclaré Patient CNT/143/26 — SOULE Adissa Observations —",
+    "texte": "N° DEC-0002 Date et heure 16/08/2026 à 05h46 Patient SOULE Adissa CBG/143/26 Cause du décès Cause naturelle — grand âge Lieu Hospitalisation Médecin constatant BOUKARI Nadège Déclaration Déclaré Patient CBG/143/26 — SOULE Adissa Observations —",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -1603,7 +1603,7 @@
     [
      "",
      "CPN-0007",
-     "N’TCHA Alimatou CNT/23/26",
+     "N’TCHA Alimatou CBG/23/26",
      "37 SA",
      "16/09/2026",
      "—",
@@ -1617,7 +1617,7 @@
     [
      "",
      "CPN-0017",
-     "GARBA Zoukanéri CNT/164/26",
+     "GARBA Zoukanéri CBG/164/26",
      "37 SA",
      "16/09/2026",
      "—",
@@ -1631,7 +1631,7 @@
     [
      "",
      "CPN-0008",
-     "GARBA Zoukanéri CNT/164/26",
+     "GARBA Zoukanéri CBG/164/26",
      "36 SA",
      "23/09/2026",
      "GROSSESSE À RISQUE",
@@ -1645,7 +1645,7 @@
     [
      "",
      "CPN-0014",
-     "KASSA Justine CNT/136/26",
+     "KASSA Justine CBG/136/26",
      "36 SA",
      "23/09/2026",
      "GROSSESSE À RISQUE",
@@ -1659,7 +1659,7 @@
     [
      "",
      "CPN-0001",
-     "KASSA Justine CNT/136/26",
+     "KASSA Justine CBG/136/26",
      "30 SA",
      "04/11/2026",
      "GROSSESSE À RISQUE",
@@ -1673,7 +1673,7 @@
     [
      "",
      "CPN-0003",
-     "GARBA Aïssatou CNT/13/26",
+     "GARBA Aïssatou CBG/13/26",
      "29 SA",
      "11/11/2026",
      "—",
@@ -1687,7 +1687,7 @@
     [
      "",
      "CPN-0013",
-     "SOULE Bertine CNT/27/26",
+     "SOULE Bertine CBG/27/26",
      "29 SA",
      "11/11/2026",
      "—",
@@ -1701,7 +1701,7 @@
     [
      "",
      "CPN-0005",
-     "KINNOU Salamatou CNT/28/25",
+     "KINNOU Salamatou CBG/28/25",
      "27 SA",
      "25/11/2026",
      "—",
@@ -1715,7 +1715,7 @@
     [
      "",
      "CPN-0002",
-     "KORA Marguerite CNT/141/25",
+     "KORA Marguerite CBG/141/25",
      "24 SA",
      "16/12/2026",
      "GROSSESSE À RISQUE",
@@ -1729,7 +1729,7 @@
     [
      "",
      "CPN-0010",
-     "TAKI Marguerite CNT/125/25",
+     "TAKI Marguerite CBG/125/25",
      "22 SA",
      "30/12/2026",
      "—",
@@ -1743,7 +1743,7 @@
     [
      "",
      "CPN-0004",
-     "DIEYABIDI Ramatou CNT/25/26",
+     "DIEYABIDI Ramatou CBG/25/26",
      "21 SA",
      "06/01/2027",
      "—",
@@ -1757,7 +1757,7 @@
     [
      "",
      "CPN-0006",
-     "YARO Zoukanéri CNT/70/26",
+     "YARO Zoukanéri CBG/70/26",
      "18 SA",
      "27/01/2027",
      "—",
@@ -1891,7 +1891,7 @@
    "fiche": {
     "ref": "CPN-0007",
     "titre": "N’TCHA Alimatou",
-    "texte": "RÉFÉRENCE CPN-0007 PATIENTE N’TCHA Alimatou — CNT/23/26 DDR 10/12/2025 DPA 16/09/2026 TERME 37 SA GROUPE SANGUIN O- DOSES SP SP1, SP2, SP3, SP4, SP5 MILDA Remise MÉBENDAZOLE Administré VAT VAT3 FER / FOLATES Fer / folates SAGE-FEMME TAKI Orou Visites CPN — la grille du formulaire national CPN DATE TA POIDS (KG) HU (CM) BDCF ALBUMINE SUCRE CPN 1 04/02/2026 12/7 70 18 153 — — CPN 2 01/04/2026 12/6 59 22 136 — — CPN 3 27/05/2026 9/9 72 29 158 — — CPN 4 22/07/2026 9/6 79 34 143 — — Ajouter une visite CPN",
+    "texte": "RÉFÉRENCE CPN-0007 PATIENTE N’TCHA Alimatou — CBG/23/26 DDR 10/12/2025 DPA 16/09/2026 TERME 37 SA GROUPE SANGUIN O- DOSES SP SP1, SP2, SP3, SP4, SP5 MILDA Remise MÉBENDAZOLE Administré VAT VAT3 FER / FOLATES Fer / folates SAGE-FEMME TAKI Orou Visites CPN — la grille du formulaire national CPN DATE TA POIDS (KG) HU (CM) BDCF ALBUMINE SUCRE CPN 1 04/02/2026 12/7 70 18 153 — — CPN 2 01/04/2026 12/6 59 22 136 — — CPN 3 27/05/2026 9/9 72 29 158 — — CPN 4 22/07/2026 9/6 79 34 143 — — Ajouter une visite CPN",
     "boutons": [
      "Fermer",
      "Ajouter une visite CPN",
@@ -1963,7 +1963,7 @@
     [
      "",
      "NAI-0001",
-     "Nouveau-né de TCHANE Fatouma CNT/96/26 — 09/07/2026 à 11h11",
+     "Nouveau-né de TCHANE Fatouma CBG/96/26 — 09/07/2026 à 11h11",
      "3.38",
      "34.8",
      "31.9",
@@ -1975,7 +1975,7 @@
     [
      "",
      "NAI-0002",
-     "Nouveau-né de PARAISO Rabiatou CNT/177/25 — 09/01/2026 à 02h21",
+     "Nouveau-né de PARAISO Rabiatou CBG/177/25 — 09/01/2026 à 02h21",
      "3.09",
      "37.9",
      "33.7",
@@ -1987,7 +1987,7 @@
     [
      "",
      "NAI-0003",
-     "Nouveau-né de DIEYABIDI Ramatou CNT/25/26 — 17/07/2026 à 04h44",
+     "Nouveau-né de DIEYABIDI Ramatou CBG/25/26 — 17/07/2026 à 04h44",
      "3.95",
      "37.3",
      "30.3",
@@ -1999,7 +1999,7 @@
     [
      "",
      "NAI-0004",
-     "Nouveau-né de BANI Salamatou CNT/41/26 — 02/01/2026 à 00h03",
+     "Nouveau-né de BANI Salamatou CBG/41/26 — 02/01/2026 à 00h03",
      "3.75",
      "32.7",
      "31",
@@ -2011,7 +2011,7 @@
     [
      "",
      "NAI-0005",
-     "Nouveau-né de GBEDJI Aïssatou CNT/87/26 — 27/04/2026 à 22h10",
+     "Nouveau-né de GBEDJI Aïssatou CBG/87/26 — 27/04/2026 à 22h10",
      "2.70",
      "37.9",
      "30.6",
@@ -2023,7 +2023,7 @@
     [
      "",
      "NAI-0006",
-     "Nouveau-né de SAMBIENI Foussena CNT/168/26 — 11/04/2026 à 16h57",
+     "Nouveau-né de SAMBIENI Foussena CBG/168/26 — 11/04/2026 à 16h57",
      "3.87",
      "35.7",
      "30.4",
@@ -2035,7 +2035,7 @@
     [
      "",
      "NAI-0007",
-     "Nouveau-né de ZIME Ramatou CNT/163/25 — 18/12/2025 à 19h37",
+     "Nouveau-né de ZIME Ramatou CBG/163/25 — 18/12/2025 à 19h37",
      "2.52",
      "34.4",
      "33",
@@ -2047,7 +2047,7 @@
     [
      "",
      "NAI-0008",
-     "Nouveau-né de N’TCHA Alimatou CNT/23/26 — 15/04/2026 à 17h47",
+     "Nouveau-né de N’TCHA Alimatou CBG/23/26 — 15/04/2026 à 17h47",
      "2.29",
      "32.4",
      "33",
@@ -2059,7 +2059,7 @@
     [
      "",
      "NAI-0009",
-     "Nouveau-né de KORA Marguerite CNT/141/25 — 16/07/2026 à 20h09",
+     "Nouveau-né de KORA Marguerite CBG/141/25 — 16/07/2026 à 20h09",
      "4.18",
      "36.8",
      "33.6",
@@ -2071,7 +2071,7 @@
     [
      "",
      "NAI-0010",
-     "Nouveau-né de BAKO Zoukanéri CNT/111/26 — 01/02/2026 à 15h31",
+     "Nouveau-né de BAKO Zoukanéri CBG/111/26 — 01/02/2026 à 15h31",
      "3.55",
      "36.6",
      "35.2",
@@ -2083,7 +2083,7 @@
     [
      "",
      "NAI-0011",
-     "Nouveau-né de ISSA Awaou CNT/128/25 — 25/03/2026 à 18h00",
+     "Nouveau-né de ISSA Awaou CBG/128/25 — 25/03/2026 à 18h00",
      "3.71",
      "33.2",
      "31.8",
@@ -2095,7 +2095,7 @@
     [
      "",
      "NAI-0012",
-     "Nouveau-né de BOUKARI Ramatou CNT/146/26 — 20/07/2026 à 04h33",
+     "Nouveau-né de BOUKARI Ramatou CBG/146/26 — 20/07/2026 à 04h33",
      "2.99",
      "35.9",
      "33.3",
@@ -2239,7 +2239,7 @@
    "fiche": {
     "ref": "NAI-0001",
     "titre": "NAI-0001",
-    "texte": "N° NAI-0001 Nouveau-né de Nouveau-né de TCHANE Fatouma CNT/96/26 — 09/07/2026 à 11h11 Poids (kg) 3.38 PC (cm) 34.8 PT (cm) 31.9 Apgar 1/5/10 6 / 6 / 8 Réanimation Réanimé — fonction 7 SONU Soins J0 Vit K1 VPO0 BCG Dossier de la mère CNT/96/26 — TCHANE Fatouma Date et heure de naissance 09/07/2026 à 11h11 Sexe du nouveau-né Masculin Né vivant Oui Taille (cm) 50 Apgar à 1 min (/10) 6 Apgar à 10 min (/10) 8 Collyre tétracycline Oui Polio oral (VPO0) Oui BCG Oui Hépatite B (J0) Non Déclaré à l’état civil Oui",
+    "texte": "N° NAI-0001 Nouveau-né de Nouveau-né de TCHANE Fatouma CBG/96/26 — 09/07/2026 à 11h11 Poids (kg) 3.38 PC (cm) 34.8 PT (cm) 31.9 Apgar 1/5/10 6 / 6 / 8 Réanimation Réanimé — fonction 7 SONU Soins J0 Vit K1 VPO0 BCG Dossier de la mère CBG/96/26 — TCHANE Fatouma Date et heure de naissance 09/07/2026 à 11h11 Sexe du nouveau-né Masculin Né vivant Oui Taille (cm) 50 Apgar à 1 min (/10) 6 Apgar à 10 min (/10) 8 Collyre tétracycline Oui Polio oral (VPO0) Oui BCG Oui Hépatite B (J0) Non Déclaré à l’état civil Oui",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -2313,7 +2313,7 @@
      "",
      "CPO-0019",
      "27/09/2026",
-     "ZIME Ramatou — CNT/163/25",
+     "ZIME Ramatou — CBG/163/25",
      "CPoN 1",
      "OUI — Rupture utérine",
      "Non",
@@ -2325,7 +2325,7 @@
      "",
      "CPO-0018",
      "15/09/2026",
-     "TIGRI Séraphine — CNT/11/26",
+     "TIGRI Séraphine — CBG/11/26",
      "CPoN 2",
      "Non",
      "Non",
@@ -2337,7 +2337,7 @@
      "",
      "CPO-0002",
      "14/09/2026",
-     "ZIME Ramatou — CNT/163/25",
+     "ZIME Ramatou — CBG/163/25",
      "CPoN 3",
      "Non",
      "HPP",
@@ -2349,7 +2349,7 @@
      "",
      "CPO-0005",
      "26/08/2026",
-     "BAKO Zoukanéri — CNT/89/26",
+     "BAKO Zoukanéri — CBG/89/26",
      "CPoN 1",
      "Non",
      "Non",
@@ -2361,7 +2361,7 @@
      "",
      "CPO-0015",
      "07/08/2026",
-     "SAMBIENI Nadège — CNT/142/26",
+     "SAMBIENI Nadège — CBG/142/26",
      "CPoN 1",
      "Non",
      "Non",
@@ -2373,7 +2373,7 @@
      "",
      "CPO-0014",
      "16/07/2026",
-     "SAMBIENI Nadège — CNT/142/26",
+     "SAMBIENI Nadège — CBG/142/26",
      "CPoN 2",
      "Non",
      "HPP",
@@ -2385,7 +2385,7 @@
      "",
      "CPO-0006",
      "16/06/2026",
-     "BOUKARI Fatouma — CNT/66/26",
+     "BOUKARI Fatouma — CBG/66/26",
      "CPoN 3",
      "Non",
      "HPP",
@@ -2397,7 +2397,7 @@
      "",
      "CPO-0012",
      "14/06/2026",
-     "GARBA Aïssatou — CNT/13/26",
+     "GARBA Aïssatou — CBG/13/26",
      "CPoN 3",
      "Non",
      "Non",
@@ -2409,7 +2409,7 @@
      "",
      "CPO-0020",
      "30/05/2026",
-     "GARBA Aïssatou — CNT/13/26",
+     "GARBA Aïssatou — CBG/13/26",
      "CPoN 2",
      "Non",
      "Non",
@@ -2421,7 +2421,7 @@
      "",
      "CPO-0010",
      "13/05/2026",
-     "N’TCHA Alimatou — CNT/23/26",
+     "N’TCHA Alimatou — CBG/23/26",
      "CPoN 1",
      "Non",
      "Non",
@@ -2433,7 +2433,7 @@
      "",
      "CPO-0007",
      "24/04/2026",
-     "MAMAN Chantal — CNT/85/26",
+     "MAMAN Chantal — CBG/85/26",
      "CPoN 2",
      "Non",
      "Non",
@@ -2445,7 +2445,7 @@
      "",
      "CPO-0016",
      "21/03/2026",
-     "SEIDOU Rachida — CNT/10/25",
+     "SEIDOU Rachida — CBG/10/25",
      "CPoN 2",
      "Non",
      "Non",
@@ -2592,7 +2592,7 @@
    "fiche": {
     "ref": "CPO-0019",
     "titre": "ZIME Ramatou",
-    "texte": "N° CPO-0019 Date 27/09/2026 Accouchée ZIME Ramatou — CNT/163/25 Séance CPoN 1 Hémorragie ANTE-partum OUI — Rupture utérine HPP Non Conseil PF — Sage-femme BADO BANI A. B. Zoulehath Accouchée CNT/163/25 — ZIME Ramatou Étiologie (si hémorragie ante-partum) Rupture utérine Examen clinique (TA, T°, utérus, lochies, seins) TA, T°, utérus, lochies, seins — sans particularité Supplémentation (Vit A, fer, folates) Vit A + Fer/Folates État du nouveau-né (poids, ictère, cordon, allaitement) Cordon propre, poids en hausse",
+    "texte": "N° CPO-0019 Date 27/09/2026 Accouchée ZIME Ramatou — CBG/163/25 Séance CPoN 1 Hémorragie ANTE-partum OUI — Rupture utérine HPP Non Conseil PF — Sage-femme BADO BANI A. B. Zoulehath Accouchée CBG/163/25 — ZIME Ramatou Étiologie (si hémorragie ante-partum) Rupture utérine Examen clinique (TA, T°, utérus, lochies, seins) TA, T°, utérus, lochies, seins — sans particularité Supplémentation (Vit A, fer, folates) Vit A + Fer/Folates État du nouveau-né (poids, ictère, cordon, allaitement) Cordon propre, poids en hausse",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -2663,7 +2663,7 @@
      "",
      "SONU-0003",
      "24/08/2026 à 02h51",
-     "SOULE Adissa — CNT/143/26",
+     "SOULE Adissa — CBG/143/26",
      "Venue d’elle-même",
      "2 — Anticonvulsivants parentéraux 5 — AMIU / curetage / curage 10 — Césarienne d’urgence",
      "Favorable",
@@ -2674,7 +2674,7 @@
      "",
      "SONU-0005",
      "13/08/2026 à 06h40",
-     "KINNOU Salamatou — CNT/28/25",
+     "KINNOU Salamatou — CBG/28/25",
      "Évacuée — Venue d’elle-même",
      "4 — Délivrance artificielle et révision utérine 8 — Transfusion sanguine d’urgence",
      "Favorable",
@@ -2685,7 +2685,7 @@
      "",
      "SONU-0008",
      "24/07/2026 à 03h12",
-     "WOROU Adissa — CNT/157/25",
+     "WOROU Adissa — CBG/157/25",
      "Évacuée — Venue d’elle-même",
      "8 — Transfusion sanguine d’urgence",
      "Favorable",
@@ -2696,7 +2696,7 @@
      "",
      "SONU-0004",
      "11/07/2026 à 14h24",
-     "YENI Salamatou — CNT/83/26",
+     "YENI Salamatou — CBG/83/26",
      "Évacuée — Venue d’elle-même",
      "5 — AMIU / curetage / curage",
      "Décédée",
@@ -2707,7 +2707,7 @@
      "",
      "SONU-0010",
      "29/04/2026 à 19h44",
-     "PARAISO Séraphine — CNT/45/26",
+     "PARAISO Séraphine — CBG/45/26",
      "Venue d’elle-même",
      "1 — Antibiotiques parentéraux",
      "Décédée",
@@ -2718,7 +2718,7 @@
      "",
      "SONU-0009",
      "16/03/2026 à 07h30",
-     "BASSONGUI Adissa — CNT/170/25",
+     "BASSONGUI Adissa — CBG/170/25",
      "Venue d’elle-même",
      "4 — Délivrance artificielle et révision utérine 5 — AMIU / curetage / curage 8 — Transfusion sanguine d’urgence",
      "Favorable",
@@ -2729,7 +2729,7 @@
      "",
      "SONU-0007",
      "10/03/2026 à 06h25",
-     "SAMBIENI Rabiatou — CNT/104/26",
+     "SAMBIENI Rabiatou — CBG/104/26",
      "Venue d’elle-même",
      "10 — Césarienne d’urgence",
      "Référée",
@@ -2740,7 +2740,7 @@
      "",
      "SONU-0001",
      "19/02/2026 à 23h57",
-     "BASSONGUI Marguerite — CNT/76/26",
+     "BASSONGUI Marguerite — CBG/76/26",
      "Évacuée — Venue d’elle-même",
      "1 — Antibiotiques parentéraux 8 — Transfusion sanguine d’urgence 9 — PEC éclampsie compliquée / chirurgie obstétricale",
      "Favorable",
@@ -2751,7 +2751,7 @@
      "",
      "SONU-0006",
      "30/01/2026 à 18h44",
-     "ISSA Zoukanéri — CNT/159/26",
+     "ISSA Zoukanéri — CBG/159/26",
      "Venue d’elle-même",
      "1 — Antibiotiques parentéraux 6 — Ventouse obstétricale 10 — Césarienne d’urgence",
      "Référée",
@@ -2762,7 +2762,7 @@
      "",
      "SONU-0002",
      "19/01/2026 à 03h50",
-     "YENI Chantal — CNT/98/26",
+     "YENI Chantal — CBG/98/26",
      "Venue d’elle-même",
      "1 — Antibiotiques parentéraux 7 — Réanimation du nouveau-né 10 — Césarienne d’urgence",
      "Favorable",
@@ -2878,7 +2878,7 @@
    "fiche": {
     "ref": "SONU-0003",
     "titre": "SOULE Adissa",
-    "texte": "N° SONU-0003 Arrivée 24/08/2026 à 02h51 Patiente SOULE Adissa — CNT/143/26 Provenance Venue d’elle-même Fonctions SONU posées 2 — Anticonvulsivants parentéraux 5 — AMIU / curetage / curage 10 — Césarienne d’urgence Évolution Favorable Agent BOUKARI Nadège Patiente CNT/143/26 — SOULE Adissa Gestité 2 Parité 2 Provenance (CS / localité) Venue d’elle-même Diagnostic d’évacuation — Heure de l’abord veineux 02h03 Autre geste SONU (texte libre) — Heure de fin des gestes 04h51",
+    "texte": "N° SONU-0003 Arrivée 24/08/2026 à 02h51 Patiente SOULE Adissa — CBG/143/26 Provenance Venue d’elle-même Fonctions SONU posées 2 — Anticonvulsivants parentéraux 5 — AMIU / curetage / curage 10 — Césarienne d’urgence Évolution Favorable Agent BOUKARI Nadège Patiente CBG/143/26 — SOULE Adissa Gestité 2 Parité 2 Provenance (CS / localité) Venue d’elle-même Diagnostic d’évacuation — Heure de l’abord veineux 02h03 Autre geste SONU (texte libre) — Heure de fin des gestes 04h51",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -2945,7 +2945,7 @@
     [
      "",
      "PTME-0001",
-     "TAKI Aïssatou — CNT/33/26",
+     "TAKI Aïssatou — CBG/33/26",
      "Indétectable",
      "Artificiel",
      "PCR naissance : Négatif PCR-1 (6 sem) : à faire · PCR-2 (9 mois) : Négatif",
@@ -2955,7 +2955,7 @@
     [
      "",
      "PTME-0002",
-     "YARO Zoukanéri — CNT/70/26",
+     "YARO Zoukanéri — CBG/70/26",
      "Indétectable",
      "Artificiel",
      "PCR naissance : En attente PCR-1 (6 sem) : Négatif · PCR-2 (9 mois) : à faire",
@@ -2965,7 +2965,7 @@
     [
      "",
      "PTME-0003",
-     "YARO Zoukanéri — CNT/70/26",
+     "YARO Zoukanéri — CBG/70/26",
      "1753 copies/ml",
      "Mixte",
      "PCR naissance : Négatif PCR-1 (6 sem) : Négatif · PCR-2 (9 mois) : à faire",
@@ -2975,7 +2975,7 @@
     [
      "",
      "PTME-0004",
-     "OROU YO Ramatou — CNT/81/26",
+     "OROU YO Ramatou — CBG/81/26",
      "Indétectable",
      "Artificiel",
      "PCR naissance : Négatif PCR-1 (6 sem) : à faire · PCR-2 (9 mois) : à faire",
@@ -2985,7 +2985,7 @@
     [
      "",
      "PTME-0005",
-     "DAOUDA Zoukanéri — CNT/165/26",
+     "DAOUDA Zoukanéri — CBG/165/26",
      "2419 copies/ml",
      "Exclusif",
      "PCR naissance : Négatif PCR-1 (6 sem) : Négatif · PCR-2 (9 mois) : à faire",
@@ -2995,7 +2995,7 @@
     [
      "",
      "PTME-0006",
-     "TEPA Nadège — CNT/30/26",
+     "TEPA Nadège — CBG/30/26",
      "Indétectable",
      "Exclusif",
      "PCR naissance : En attente PCR-1 (6 sem) : à faire · PCR-2 (9 mois) : à faire",
@@ -3016,7 +3016,7 @@
    "fiche": {
     "ref": "PTME-0001",
     "titre": "TAKI Aïssatou",
-    "texte": "Fiche sensible — le détail reste derrière les permissions de M4 ; il ne figure ni dans les notifications, ni dans les alertes sonores. RÉFÉRENCE PTME-0001 MÈRE TAKI Aïssatou — CNT/33/26 DÉPISTAGE VIH VIH-1 (T2) · Ag HBs Négatif · Syphilis Négatif CHARGE VIRALE Indétectable PROTOCOLE TDF + 3TC + DTG — < 8 semaines ALLAITEMENT Artificiel PROPHYLAXIE NN 1 ENFANT EXPOSÉ PCR naissance Négatif · PCR-1 — · PCR-2 Négatif · Séro 18 m — CTM / HÉP. B J0 CTM / fait Volet 4 — dispensation mensuelle des ARV MOIS SERVIE 2026-08 MANQUÉE 2026-07 Oui 2026-06 Oui",
+    "texte": "Fiche sensible — le détail reste derrière les permissions de M4 ; il ne figure ni dans les notifications, ni dans les alertes sonores. RÉFÉRENCE PTME-0001 MÈRE TAKI Aïssatou — CBG/33/26 DÉPISTAGE VIH VIH-1 (T2) · Ag HBs Négatif · Syphilis Négatif CHARGE VIRALE Indétectable PROTOCOLE TDF + 3TC + DTG — < 8 semaines ALLAITEMENT Artificiel PROPHYLAXIE NN 1 ENFANT EXPOSÉ PCR naissance Négatif · PCR-1 — · PCR-2 Négatif · Séro 18 m — CTM / HÉP. B J0 CTM / fait Volet 4 — dispensation mensuelle des ARV MOIS SERVIE 2026-08 MANQUÉE 2026-07 Oui 2026-06 Oui",
     "boutons": [
      "Fermer",
      "Modifier",
@@ -3083,7 +3083,7 @@
      "",
      "PF-0019",
      "08/08/2026",
-     "YENI Salamatou — CNT/83/26",
+     "YENI Salamatou — CBG/83/26",
      "N — ancienne",
      "DMPA-SC Sayana Press Courte durée",
      "24/11/2026",
@@ -3094,7 +3094,7 @@
      "",
      "PF-0021",
      "07/08/2026",
-     "TAKI Hélène — CNT/176/26",
+     "TAKI Hélène — CBG/176/26",
      "A — nouvelle",
      "DMPA-SC Sayana Press Courte durée",
      "01/11/2026",
@@ -3105,7 +3105,7 @@
      "",
      "PF-0010",
      "05/08/2026",
-     "WOROU Rachida — CNT/155/25",
+     "WOROU Rachida — CBG/155/25",
      "A — nouvelle",
      "Jadelle (2 bâtonnets) Longue durée",
      "27/09/2026",
@@ -3116,7 +3116,7 @@
      "",
      "PF-0020",
      "03/08/2026",
-     "TAKI Marguerite — CNT/125/25",
+     "TAKI Marguerite — CBG/125/25",
      "A — nouvelle",
      "Depo IM (Dépo-Provera) Courte durée",
      "05/11/2026",
@@ -3127,7 +3127,7 @@
      "",
      "PF-0005",
      "06/07/2026",
-     "YARO Zoukanéri — CNT/70/26",
+     "YARO Zoukanéri — CBG/70/26",
      "A — nouvelle",
      "CO (Contraceptifs Oraux) Courte durée",
      "23/09/2026",
@@ -3138,7 +3138,7 @@
      "",
      "PF-0012",
      "27/06/2026",
-     "SANNI Séraphine — CNT/160/26",
+     "SANNI Séraphine — CBG/160/26",
      "N — ancienne",
      "DIU PP Immédiat Longue durée",
      "06/12/2026",
@@ -3149,7 +3149,7 @@
      "",
      "PF-0003",
      "08/06/2026",
-     "YARO Aïssatou — CNT/156/26",
+     "YARO Aïssatou — CBG/156/26",
      "A — nouvelle",
      "CO (Contraceptifs Oraux) Courte durée",
      "16/11/2026",
@@ -3160,7 +3160,7 @@
      "",
      "PF-0008",
      "06/06/2026",
-     "SANNI Nadège — CNT/174/26",
+     "SANNI Nadège — CBG/174/26",
      "N — ancienne",
      "DMPA-SC Sayana Press Courte durée",
      "27/09/2026",
@@ -3171,7 +3171,7 @@
      "",
      "PF-0011",
      "06/06/2026",
-     "TAKI Marguerite — CNT/125/25",
+     "TAKI Marguerite — CBG/125/25",
      "N — ancienne",
      "Ligature des trompes Définitive",
      "14/12/2026",
@@ -3182,7 +3182,7 @@
      "",
      "PF-0004",
      "25/05/2026",
-     "DOSSOU Colette — CNT/36/26",
+     "DOSSOU Colette — CBG/36/26",
      "A — nouvelle",
      "Préservatifs masculins / féminins Naturelle / barrière",
      "25/09/2026",
@@ -3193,7 +3193,7 @@
      "",
      "PF-0018",
      "25/05/2026",
-     "ISSA Awaou — CNT/128/25",
+     "ISSA Awaou — CBG/128/25",
      "N — ancienne",
      "CO (Contraceptifs Oraux) Courte durée",
      "11/12/2026",
@@ -3204,7 +3204,7 @@
      "",
      "PF-0001",
      "12/05/2026",
-     "OROU YO Ramatou — CNT/81/26",
+     "OROU YO Ramatou — CBG/81/26",
      "A — nouvelle",
      "DIU PP Immédiat Longue durée",
      "22/11/2026",
@@ -3615,7 +3615,7 @@
    "fiche": {
     "ref": "PF-0019",
     "titre": "YENI Salamatou",
-    "texte": "N° PF-0019 Date 08/08/2026 Cliente YENI Salamatou — CNT/83/26 A/N N — ancienne Méthode adoptée DMPA-SC Sayana Press Courte durée Prochain RDV 24/11/2026 Sage-femme BADO BANI A. B. Zoulehath Cliente CNT/83/26 — YENI Salamatou Méthode antérieure utilisée — Date des dernières règles (DDR) 20/08/2026 Constantes (poids, TA, IMC) 83 kg · 14/8",
+    "texte": "N° PF-0019 Date 08/08/2026 Cliente YENI Salamatou — CBG/83/26 A/N N — ancienne Méthode adoptée DMPA-SC Sayana Press Courte durée Prochain RDV 24/11/2026 Sage-femme BADO BANI A. B. Zoulehath Cliente CBG/83/26 — YENI Salamatou Méthode antérieure utilisée — Date des dernières règles (DDR) 20/08/2026 Constantes (poids, TA, IMC) 83 kg · 14/8",
     "boutons": [
      "Fermer",
      "Imprimer",
@@ -3690,7 +3690,7 @@
      "",
      "SCM-0016",
      "26/08/2026",
-     "WOROU Adissa — CNT/157/25",
+     "WOROU Adissa — CBG/157/25",
      "Anémie",
      "—",
      "—",
@@ -3702,7 +3702,7 @@
      "",
      "SCM-0015",
      "08/08/2026",
-     "HOUNKPATIN Aïssatou — CNT/117/26",
+     "HOUNKPATIN Aïssatou — CBG/117/26",
      "Menace d’accouchement prématuré",
      "Délivrée",
      "—",
@@ -3714,7 +3714,7 @@
      "",
      "SCM-0013",
      "15/07/2026",
-     "BASSONGUI Adissa — CNT/170/25",
+     "BASSONGUI Adissa — CBG/170/25",
      "Paludisme simple",
      "Délivrée",
      "—",
@@ -3726,7 +3726,7 @@
      "",
      "SCM-0005",
      "01/07/2026",
-     "OURTCHA Kadidjatou — CNT/99/26",
+     "OURTCHA Kadidjatou — CBG/99/26",
      "Anémie",
      "—",
      "—",
@@ -3738,7 +3738,7 @@
      "",
      "SCM-0001",
      "13/06/2026",
-     "OROU YO Chantal — CNT/162/26",
+     "OROU YO Chantal — CBG/162/26",
      "Menace d’accouchement prématuré",
      "—",
      "—",
@@ -3750,7 +3750,7 @@
      "",
      "SCM-0014",
      "01/06/2026",
-     "DAOUDA Justine — CNT/24/25",
+     "DAOUDA Justine — CBG/24/25",
      "Paludisme simple",
      "Délivrée",
      "—",
@@ -3762,7 +3762,7 @@
      "",
      "SCM-0010",
      "12/05/2026",
-     "GARBA Zoukanéri — CNT/164/26",
+     "GARBA Zoukanéri — CBG/164/26",
      "Infection urinaire",
      "Délivrée",
      "—",
@@ -3774,7 +3774,7 @@
      "",
      "SCM-0006",
      "03/04/2026",
-     "BANI Zoukanéri — CNT/62/25",
+     "BANI Zoukanéri — CBG/62/25",
      "Paludisme simple",
      "Délivrée",
      "—",
@@ -3786,7 +3786,7 @@
      "",
      "SCM-0003",
      "25/03/2026",
-     "WOROU Marguerite — CNT/21/25",
+     "WOROU Marguerite — CBG/21/25",
      "Menace d’accouchement prématuré",
      "—",
      "—",
@@ -3798,7 +3798,7 @@
      "",
      "SCM-0002",
      "24/03/2026",
-     "BOUKARI Rachida — CNT/172/26",
+     "BOUKARI Rachida — CBG/172/26",
      "Infection urinaire",
      "Délivrée",
      "—",
@@ -3810,7 +3810,7 @@
      "",
      "SCM-0012",
      "24/03/2026",
-     "TAKI Aïssatou — CNT/33/26",
+     "TAKI Aïssatou — CBG/33/26",
      "Infection urinaire",
      "—",
      "—",
@@ -3822,7 +3822,7 @@
      "",
      "SCM-0004",
      "07/03/2026",
-     "BASSONGUI Marguerite — CNT/76/26",
+     "BASSONGUI Marguerite — CBG/76/26",
      "Infection urinaire",
      "—",
      "—",
@@ -4070,7 +4070,7 @@
    "fiche": {
     "ref": "SCM-0016",
     "titre": "WOROU Adissa",
-    "texte": "N° SCM-0016 Date 26/08/2026 Consultante WOROU Adissa — CNT/157/25 Diagnostic Anémie MILDA — Urgence maternité — Devenir (Case 27) Observée Agent YENI M’PO Florent Consultante CNT/157/25 — WOROU Adissa Tranche d’âge 15–19 ans Symptômes et signes (si toux, préciser la durée) Toux depuis 5 jours Traitement / posologie Tocolyse et repos Femme observée Oui Nombre de jours d’hospitalisation —",
+    "texte": "N° SCM-0016 Date 26/08/2026 Consultante WOROU Adissa — CBG/157/25 Diagnostic Anémie MILDA — Urgence maternité — Devenir (Case 27) Observée Agent YENI M’PO Florent Consultante CBG/157/25 — WOROU Adissa Tranche d’âge 15–19 ans Symptômes et signes (si toux, préciser la durée) Toux depuis 5 jours Traitement / posologie Tocolyse et repos Femme observée Oui Nombre de jours d’hospitalisation —",
     "boutons": [
      "Fermer",
      "Modifier",
@@ -4141,7 +4141,7 @@
     [
      "",
      "00001/26",
-     "KASSA Justine CNT/136/26 · 22 ans",
+     "KASSA Justine CBG/136/26 · 22 ans",
      "G2 P0",
      "28/01/2026",
      "04/11/2026 dans 80 j",
@@ -4152,7 +4152,7 @@
     [
      "",
      "00002/26",
-     "KORA Marguerite CNT/141/25 · 28 ans",
+     "KORA Marguerite CBG/141/25 · 28 ans",
      "G8 P7",
      "11/03/2026",
      "16/12/2026 dans 122 j",
@@ -4163,7 +4163,7 @@
     [
      "",
      "00003/26",
-     "GARBA Aïssatou CNT/13/26 · 77 ans",
+     "GARBA Aïssatou CBG/13/26 · 77 ans",
      "G6 P4",
      "04/02/2026",
      "11/11/2026 dans 87 j",
@@ -4174,7 +4174,7 @@
     [
      "",
      "00004/26",
-     "DIEYABIDI Ramatou CNT/25/26 · 52 ans",
+     "DIEYABIDI Ramatou CBG/25/26 · 52 ans",
      "G7 P6",
      "01/04/2026",
      "06/01/2027 dans 143 j",
@@ -4185,7 +4185,7 @@
     [
      "",
      "00005/26",
-     "KINNOU Salamatou CNT/28/25 · 45 ans",
+     "KINNOU Salamatou CBG/28/25 · 45 ans",
      "G9 P7",
      "18/02/2026",
      "25/11/2026 dans 101 j",
@@ -4196,7 +4196,7 @@
     [
      "",
      "00006/26",
-     "YARO Zoukanéri CNT/70/26 · 21 ans",
+     "YARO Zoukanéri CBG/70/26 · 21 ans",
      "G2 P1",
      "22/04/2026",
      "27/01/2027 dans 164 j",
@@ -4207,7 +4207,7 @@
     [
      "",
      "00007/26",
-     "N’TCHA Alimatou CNT/23/26 · 27 ans",
+     "N’TCHA Alimatou CBG/23/26 · 27 ans",
      "G7 P5",
      "10/12/2025",
      "16/09/2026 dans 31 j",
@@ -4218,7 +4218,7 @@
     [
      "",
      "00008/26",
-     "GARBA Zoukanéri CNT/164/26 · 34 ans",
+     "GARBA Zoukanéri CBG/164/26 · 34 ans",
      "G3 P2",
      "17/12/2025",
      "23/09/2026 dans 38 j",
@@ -4229,7 +4229,7 @@
     [
      "",
      "00009/26",
-     "DOSSOU Colette CNT/36/26 · 18 ans",
+     "DOSSOU Colette CBG/36/26 · 18 ans",
      "G3 P1",
      "27/05/2026",
      "03/03/2027 dans 199 j",
@@ -4240,7 +4240,7 @@
     [
      "",
      "00010/26",
-     "TAKI Marguerite CNT/125/25 · 24 ans",
+     "TAKI Marguerite CBG/125/25 · 24 ans",
      "G4 P3",
      "25/03/2026",
      "30/12/2026 dans 136 j",
@@ -4251,7 +4251,7 @@
     [
      "",
      "00011/26",
-     "KINNOU Bertine CNT/56/25 · 30 ans",
+     "KINNOU Bertine CBG/56/25 · 30 ans",
      "G4 P2",
      "27/05/2026",
      "03/03/2027 dans 199 j",
@@ -4262,7 +4262,7 @@
     [
      "",
      "00012/26",
-     "BAKO Zoukanéri CNT/111/26 · 26 ans",
+     "BAKO Zoukanéri CBG/111/26 · 26 ans",
      "G8 P7",
      "01/07/2026",
      "07/04/2027 dans 234 j",
@@ -4615,7 +4615,7 @@
    "fiche": {
     "ref": "00001/26",
     "titre": "KASSA Justine",
-    "texte": "N° de dossier 00001/26 Gestité / Parité G2 P0 Terme prévu 04/11/2026 Facteurs de surveillance 1 Identité & antécédents Soins préventifs Consultations prénatales (2) Accouchement & nouveau-né Partogramme & suites Parturiente N° de dossier 00001/26 Nom KASSA Justine Dossier patient CNT/136/26 Âge 22 ans Taille 1.49 m Profession Aide-soignante Nationalité Béninoise Quartier Boukoumbé Téléphone 0377653549 Personne à contacter La mère · 97767368 Venue D’elle-même Date d’entrée 07/04/2026 Sage-femme référente ADAM Colette Procréateur Nom et prénoms N. Bio Profession Cultivateur Groupe sanguin / Rhésus O− Sérologie du conjoint Négative Antécédents Maladies et opérations Néant Traitements en cours Néant Allergies Non connues Gestité 2 Parité 0 Avortements 0 Enfants vivants 0 Enfants décédés 0 Transfusions antérieures 0 DDR 28/01/2026 Date probable de l’accouchement 04/11/2026 Facteurs de surveillance Grossesse à risque — 1 facteur(s) coché(s). C’est leur CUMUL qui classe, jamais un facteur isolé. FACTEUR RELEVÉ Taille < 1,50 m Examens complémentaires EXAMEN GROUPE RÉSULTAT Groupe sanguin Immuno-hématologie O Rhésus Immuno-hématologie Positif Test de Coombs indirect Immuno-hématologie Négatif Électrophorèse de l’hémoglobine Immuno-hématologie AS Taux d’hémoglobine Hématologie 11.8 g/dl Hématocrite Hématologie 34 % Plaquettes Hématologie 269 G/l TPHA Sérologie Négatif VDRL Sérologie Négatif HIV 1 Sérologie Négatif HIV 2 Sérologie Négatif Toxoplasmose IgG Sérologie Négatif Toxoplasmose IgM Sérologie Négatif Rubéole IgG Sérologie Négatif Rubéole IgM Sérologie Négatif Hépatite B (à partir de 6 mois) Sérologie Négatif ECBU Bactériologie Stérile Glycémie à jeun Biochimie 0.82 g/l GP 75 Biochimie Normale",
+    "texte": "N° de dossier 00001/26 Gestité / Parité G2 P0 Terme prévu 04/11/2026 Facteurs de surveillance 1 Identité & antécédents Soins préventifs Consultations prénatales (2) Accouchement & nouveau-né Partogramme & suites Parturiente N° de dossier 00001/26 Nom KASSA Justine Dossier patient CBG/136/26 Âge 22 ans Taille 1.49 m Profession Aide-soignante Nationalité Béninoise Quartier Boukoumbé Téléphone 0377653549 Personne à contacter La mère · 97767368 Venue D’elle-même Date d’entrée 07/04/2026 Sage-femme référente ADAM Colette Procréateur Nom et prénoms N. Bio Profession Cultivateur Groupe sanguin / Rhésus O− Sérologie du conjoint Négative Antécédents Maladies et opérations Néant Traitements en cours Néant Allergies Non connues Gestité 2 Parité 0 Avortements 0 Enfants vivants 0 Enfants décédés 0 Transfusions antérieures 0 DDR 28/01/2026 Date probable de l’accouchement 04/11/2026 Facteurs de surveillance Grossesse à risque — 1 facteur(s) coché(s). C’est leur CUMUL qui classe, jamais un facteur isolé. FACTEUR RELEVÉ Taille < 1,50 m Examens complémentaires EXAMEN GROUPE RÉSULTAT Groupe sanguin Immuno-hématologie O Rhésus Immuno-hématologie Positif Test de Coombs indirect Immuno-hématologie Négatif Électrophorèse de l’hémoglobine Immuno-hématologie AS Taux d’hémoglobine Hématologie 11.8 g/dl Hématocrite Hématologie 34 % Plaquettes Hématologie 269 G/l TPHA Sérologie Négatif VDRL Sérologie Négatif HIV 1 Sérologie Négatif HIV 2 Sérologie Négatif Toxoplasmose IgG Sérologie Négatif Toxoplasmose IgM Sérologie Négatif Rubéole IgG Sérologie Négatif Rubéole IgM Sérologie Négatif Hépatite B (à partir de 6 mois) Sérologie Négatif ECBU Bactériologie Stérile Glycémie à jeun Biochimie 0.82 g/l GP 75 Biochimie Normale",
     "boutons": [
      "Fermer",
      "Identité & antécédents",
@@ -4696,84 +4696,84 @@
      [
       "CRM-0019",
       "26/08/2026 à 10h00",
-      "ZIME Ramatou — CNT/163/25",
+      "ZIME Ramatou — CBG/163/25",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0012",
       "13/08/2026 à 10h00",
-      "N’TCHA Alimatou — CNT/23/26",
+      "N’TCHA Alimatou — CBG/23/26",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0030",
       "13/08/2026 à 10h00",
-      "ZIME Ramatou — CNT/163/25",
+      "ZIME Ramatou — CBG/163/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0002",
       "05/08/2026 à 10h00",
-      "BOUKARI Justine — CNT/43/26",
+      "BOUKARI Justine — CBG/43/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0022",
       "01/08/2026 à 10h00",
-      "YENI Chantal — CNT/98/26",
+      "YENI Chantal — CBG/98/26",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0004",
       "20/07/2026 à 10h00",
-      "YENI Zoukanéri — CNT/152/26",
+      "YENI Zoukanéri — CBG/152/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0034",
       "20/07/2026 à 10h00",
-      "PARAISO Rabiatou — CNT/177/25",
+      "PARAISO Rabiatou — CBG/177/25",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0014",
       "10/07/2026 à 10h00",
-      "KINNOU Salamatou — CNT/28/25",
+      "KINNOU Salamatou — CBG/28/25",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0027",
       "09/07/2026 à 10h00",
-      "SEIDOU Rachida — CNT/10/25",
+      "SEIDOU Rachida — CBG/10/25",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0009",
       "19/06/2026 à 10h00",
-      "ISSA Awaou — CNT/128/25",
+      "ISSA Awaou — CBG/128/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0016",
       "13/06/2026 à 10h00",
-      "TCHANE Colette — CNT/54/26",
+      "TCHANE Colette — CBG/54/26",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0028",
       "11/06/2026 à 10h00",
-      "ISSA Awaou — CNT/171/25",
+      "ISSA Awaou — CBG/171/25",
       "BOUKARI Nadège",
       ""
      ]
@@ -4794,84 +4794,84 @@
      [
       "CRM-0105",
       "24/08/2026 à 10h00",
-      "BOUKARI Sylvie — CNT/35/25",
+      "BOUKARI Sylvie — CBG/35/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0121",
       "18/08/2026 à 10h00",
-      "OURTCHA Bertine — CNT914/25",
+      "OURTCHA Bertine — CBG914/25",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0112",
       "12/08/2026 à 10h00",
-      "ISSA Chantal — CNT/22/26",
+      "ISSA Chantal — CBG/22/26",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0113",
       "24/07/2026 à 10h00",
-      "WOROU Rachida — CNT/155/25",
+      "WOROU Rachida — CBG/155/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0103",
       "16/07/2026 à 10h00",
-      "SEIDOU Awaou — CNT/55/26",
+      "SEIDOU Awaou — CBG/55/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0116",
       "01/07/2026 à 10h00",
-      "BADO BANI A. B. Zoulehath — CNT917/25",
+      "BADO BANI A. B. Zoulehath — CBG917/25",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0110",
       "23/06/2026 à 10h00",
-      "BAKO Nadège — CNT/133/26",
+      "BAKO Nadège — CBG/133/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0114",
       "16/06/2026 à 10h00",
-      "DAOUDA Zoukanéri — CNT/165/26",
+      "DAOUDA Zoukanéri — CBG/165/26",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0115",
       "08/05/2026 à 10h00",
-      "TEPA Fatouma — CNT/145/25",
+      "TEPA Fatouma — CBG/145/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0108",
       "07/05/2026 à 10h00",
-      "YARO Aïssatou — CNT/156/26",
+      "YARO Aïssatou — CBG/156/26",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0120",
       "05/05/2026 à 10h00",
-      "WOROU Rachida — CNT/155/25",
+      "WOROU Rachida — CBG/155/25",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0118",
       "13/04/2026 à 10h00",
-      "YARO Zoukanéri — CNT/70/26",
+      "YARO Zoukanéri — CBG/70/26",
       "BOUKARI Nadège",
       ""
      ]
@@ -4892,63 +4892,63 @@
      [
       "CRM-0201",
       "22/07/2026 à 10h00",
-      "YARO Bertine — CNT/42/26",
+      "YARO Bertine — CBG/42/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0208",
       "12/05/2026 à 10h00",
-      "BAKO Chantal — CNT/100/25",
+      "BAKO Chantal — CBG/100/25",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0202",
       "07/05/2026 à 10h00",
-      "OROU YO Chantal — CNT/162/26",
+      "OROU YO Chantal — CBG/162/26",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0206",
       "29/04/2026 à 10h00",
-      "SAMBIENI Rabiatou — CNT/104/26",
+      "SAMBIENI Rabiatou — CBG/104/26",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0209",
       "22/04/2026 à 10h00",
-      "TCHOUKOUROU Chantal — CNT/50/26",
+      "TCHOUKOUROU Chantal — CBG/50/26",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0203",
       "21/04/2026 à 10h00",
-      "SOULE Adissa — CNT/143/26",
+      "SOULE Adissa — CBG/143/26",
       "ADAM Colette",
       ""
      ],
      [
       "CRM-0204",
       "08/04/2026 à 10h00",
-      "BAKO Justine — CNT/9/26",
+      "BAKO Justine — CBG/9/26",
       "BADO BANI A. B. Zoulehath",
       ""
      ],
      [
       "CRM-0207",
       "09/02/2026 à 10h00",
-      "DIEYABIDI Bibata — CNT/6/25",
+      "DIEYABIDI Bibata — CBG/6/25",
       "BOUKARI Nadège",
       ""
      ],
      [
       "CRM-0205",
       "04/02/2026 à 10h00",
-      "TIGRI Nadège — CNT/38/26",
+      "TIGRI Nadège — CBG/38/26",
       "BOUKARI Nadège",
       ""
      ]
@@ -4961,24 +4961,24 @@
    {
     "onglet": "d’accouchement34",
     "titre": "CRM-0019",
-    "texte": "RÉFÉRENCE CRM-0019 TYPE Compte rendu d’accouchement PATIENTE ZIME Ramatou — CNT/163/25 RÉDIGÉ PAR BOUKARI Nadège ENREGISTRÉ LE 26/08/2026 à 10h00 Compte rendu d’accouchement RUBRIQUE VALEUR Date et heure de l’accouchement 2026-05-23T13:10 Terme (semaines d’aménorrhée) 38 Présentation Autre Voie d’accouchement Voie basse eutocique Durée du travail (heures) 25 Délivrance Spontanée et complète Épisiotomie Oui Déchirure périnéale Degré 1 Pertes sanguines estimées (ml) 20 Sexe de l’enfant Féminin Poids de l’enfant (g) 3434 Apgar à 1 minute 10 Apgar à 5 minutes 9 État de la mère à l’issue Évolution favorable. Observations Surveillance rapprochée."
+    "texte": "RÉFÉRENCE CRM-0019 TYPE Compte rendu d’accouchement PATIENTE ZIME Ramatou — CBG/163/25 RÉDIGÉ PAR BOUKARI Nadège ENREGISTRÉ LE 26/08/2026 à 10h00 Compte rendu d’accouchement RUBRIQUE VALEUR Date et heure de l’accouchement 2026-05-23T13:10 Terme (semaines d’aménorrhée) 38 Présentation Autre Voie d’accouchement Voie basse eutocique Durée du travail (heures) 25 Délivrance Spontanée et complète Épisiotomie Oui Déchirure périnéale Degré 1 Pertes sanguines estimées (ml) 20 Sexe de l’enfant Féminin Poids de l’enfant (g) 3434 Apgar à 1 minute 10 Apgar à 5 minutes 9 État de la mère à l’issue Évolution favorable. Observations Surveillance rapprochée."
    },
    {
     "onglet": "de planning familial22",
     "titre": "CRM-0105",
-    "texte": "RÉFÉRENCE CRM-0105 TYPE Compte rendu de planning familial PATIENTE BOUKARI Sylvie — CNT/35/25 RÉDIGÉ PAR ADAM Colette ENREGISTRÉ LE 24/08/2026 à 10h00 Compte rendu de planning familial RUBRIQUE VALEUR Date de l’acte 30/12/2025 Méthode Autre Geste Pose Counseling délivré Non Effets secondaires expliqués Oui Prochain rendez-vous 11/03/2026 Observations Surveillance rapprochée."
+    "texte": "RÉFÉRENCE CRM-0105 TYPE Compte rendu de planning familial PATIENTE BOUKARI Sylvie — CBG/35/25 RÉDIGÉ PAR ADAM Colette ENREGISTRÉ LE 24/08/2026 à 10h00 Compte rendu de planning familial RUBRIQUE VALEUR Date de l’acte 30/12/2025 Méthode Autre Geste Pose Counseling délivré Non Effets secondaires expliqués Oui Prochain rendez-vous 11/03/2026 Observations Surveillance rapprochée."
    },
    {
     "onglet": "d’AMIU9",
     "titre": "CRM-0201",
-    "texte": "RÉFÉRENCE CRM-0201 TYPE Compte rendu d’AMIU PATIENTE YARO Bertine — CNT/42/26 RÉDIGÉ PAR ADAM Colette ENREGISTRÉ LE 22/07/2026 à 10h00 Compte rendu d’AMIU RUBRIQUE VALEUR Date et heure 2026-06-05T21:05 Indication Suites simples. Terme au moment du geste (SA) 29 Anesthésie / analgésie Évolution favorable. Déroulement du geste Évolution favorable. Produit aspiré Surveillance rapprochée. Complications Surveillance rapprochée. Suites et conduite à tenir Suites simples. Opérateur ADAM Colette"
+    "texte": "RÉFÉRENCE CRM-0201 TYPE Compte rendu d’AMIU PATIENTE YARO Bertine — CBG/42/26 RÉDIGÉ PAR ADAM Colette ENREGISTRÉ LE 22/07/2026 à 10h00 Compte rendu d’AMIU RUBRIQUE VALEUR Date et heure 2026-06-05T21:05 Indication Suites simples. Terme au moment du geste (SA) 29 Anesthésie / analgésie Évolution favorable. Déroulement du geste Évolution favorable. Produit aspiré Surveillance rapprochée. Complications Surveillance rapprochée. Suites et conduite à tenir Suites simples. Opérateur ADAM Colette"
    }
   ],
   "creations": [
    {
     "nom": "planning",
     "saisie": {
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "sageFemmeId": "SOI01",
      "dateActe": "2026-08-10",
      "methode": "Implant",
@@ -4990,7 +4990,7 @@
     "initial": [
      [
       "patientCode",
-      "CNT/1/25"
+      "CBG/1/25"
      ],
      [
       "sageFemmeId",
@@ -5029,7 +5029,7 @@
      {
       "id": "CRMxmvvhmqm2jfaqd",
       "statut": "actif",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "sageFemmeId": "SOI01",
       "dateActe": "2026-08-10",
       "methode": "Implant",
@@ -5057,7 +5057,7 @@
    {
     "nom": "planning : méthode manquante (refus)",
     "saisie": {
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "sageFemmeId": "SOI01",
      "dateActe": "2026-08-10",
      "geste": "Pose"
@@ -5066,7 +5066,7 @@
     "initial": [
      [
       "patientCode",
-      "CNT/1/25"
+      "CBG/1/25"
      ],
      [
       "sageFemmeId",
@@ -5112,7 +5112,7 @@
    {
     "nom": "amiu",
     "saisie": {
-     "patientCode": "CNT/1/25",
+     "patientCode": "CBG/1/25",
      "sageFemmeId": "SOI01",
      "dateHeure": "2026-08-11T09:30",
      "indication": "Avortement incomplet",
@@ -5124,7 +5124,7 @@
     "initial": [
      [
       "patientCode",
-      "CNT/1/25"
+      "CBG/1/25"
      ],
      [
       "sageFemmeId",
@@ -5171,7 +5171,7 @@
      {
       "id": "CRMxmvvhmrip2yxsd",
       "statut": "actif",
-      "patientCode": "CNT/1/25",
+      "patientCode": "CBG/1/25",
       "sageFemmeId": "SOI01",
       "dateHeure": "2026-08-11T09:30",
       "indication": "Avortement incomplet",
@@ -5199,7 +5199,7 @@
     "modaleOuverte": false
    }
   ],
-  "femme": "CNT/1/25",
+  "femme": "CBG/1/25",
   "soignant": {
    "id": "SOI01",
    "nom": "BASSONGUI Chabi Séko"
@@ -5217,7 +5217,7 @@
     ],
     [
      "Dossier",
-     "CNT/62/25"
+     "CBG/62/25"
     ],
     [
      "Terme",
@@ -5286,7 +5286,7 @@
     ],
     [
      "Dossier",
-     "CNT/25/26"
+     "CBG/25/26"
     ],
     [
      "Date et heure",
@@ -5359,7 +5359,7 @@
     ],
     [
      "Dossier mère",
-     "CNT/25/26"
+     "CBG/25/26"
     ],
     [
      "Sexe",
@@ -5450,7 +5450,7 @@
     ],
     [
      "Dossier",
-     "CNT/63/26"
+     "CBG/63/26"
     ],
     [
      "Date et heure",
@@ -5524,7 +5524,7 @@
     ],
     [
      "Dossier",
-     "CNT/13/26"
+     "CBG/13/26"
     ],
     [
      "DDR",
@@ -5633,7 +5633,7 @@
     ],
     [
      "Dossier mère",
-     "CNT/41/26"
+     "CBG/41/26"
     ],
     [
      "Naissance",
@@ -5710,7 +5710,7 @@
     ],
     [
      "Dossier",
-     "CNT/134/25"
+     "CBG/134/25"
     ],
     [
      "Date",
@@ -5784,7 +5784,7 @@
     ],
     [
      "Dossier",
-     "CNT/156/26"
+     "CBG/156/26"
     ],
     [
      "Date",
@@ -5858,7 +5858,7 @@
     ],
     [
      "Dossier",
-     "CNT/143/26"
+     "CBG/143/26"
     ],
     [
      "Arrivée",
@@ -5956,7 +5956,7 @@
     ],
     [
      "Dossier patient",
-     "CNT/13/26"
+     "CBG/13/26"
     ],
     [
      "Âge",
@@ -6182,7 +6182,7 @@
     ],
     [
      "Dossier",
-     "CNT/11/26"
+     "CBG/11/26"
     ],
     [
      "Accouchement du",

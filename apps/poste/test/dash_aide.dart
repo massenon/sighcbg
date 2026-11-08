@@ -118,8 +118,8 @@ void comparer(WidgetTester t, M v, {bool parcours = true}) {
         for (final e in liste(g['etapes'])) {
           expect(a('${e['libelle']}'), isTrue, reason: 'étape « ${e['libelle']} »');
           if (e['poste'] != null) expect(a('${e['poste']}'), isTrue, reason: 'poste « ${e['poste']} »');
-          // La maquette numérote sous le sigle CNT ; le poste cite le sigle de la clinique en vigueur.
-          if (e['detail'] != null) expect(a('${e['detail']}'.replaceAll('Code CNT/', 'Code ${IdentiteClinique.sigle}/')), isTrue, reason: 'détail de « ${e['libelle']} »');
+          // La maquette numérote sous le sigle CBG ; le poste cite le sigle de la clinique en vigueur.
+          if (e['detail'] != null) expect(a('${e['detail']}'.replaceAll('Code CBG/', 'Code ${IdentiteClinique.sigle}/')), isTrue, reason: 'détail de « ${e['libelle']} »');
         }
         // L'étape qui ouvre un écran est cliquable SSI l'écran est ouvert au profil : le relevé dit lesquelles sont fermées.
         final fermees = liste(g['etapes']).where((e) => e['ferme'] == true).length;

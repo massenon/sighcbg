@@ -1,7 +1,7 @@
 /// M1 — RÉPERTOIRE DES PATIENTS ET ANTÉCÉDENTS : règles portées de `m1-patients.js`, rejouées sur les vecteurs tirés des écrans RÉELS
 /// (`test/vecteurs/pat_patients.json`, `pat_antecedents.json`, `pat_profil.json`).
 ///
-/// RG-01 : le code patient `CNT/n/AA` est généré par la fabrique UNIQUE [codePatient] ; il ne se modifie plus. RG-09 : la validité de la carte
+/// RG-01 : le code patient `CBG/n/AA` est généré par la fabrique UNIQUE [codePatient] ; il ne se modifie plus. RG-09 : la validité de la carte
 /// se lit à la date (moteur `carteValide` de la caisse), jamais sur une copie locale. RG-14 : on archive, on ne supprime pas.
 library;
 

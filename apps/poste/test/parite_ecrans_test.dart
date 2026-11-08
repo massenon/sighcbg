@@ -80,7 +80,7 @@ void main() {
     'numero': 'ORD-PARITE',
     'date': '2026-08-16',
     'patient': 'TEST Parité',
-    'patientCode': 'CNT/1/26',
+    'patientCode': 'CBG/1/26',
     'statutPaiement': 'soldee',
     'statutDispensation': 'en_attente',
     'medicaments': [

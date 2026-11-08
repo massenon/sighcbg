@@ -6,7 +6,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/jetons_shell.dart';
 import '../donnees/magasin.dart';
 
-/// LE CHOIX D'EXERCICE DE LA SESSION (arbitrage du 05/11/2026), miroir de `sigh-cnt:exercice` de la maquette : tenu EN MÉMOIRE pour la session du poste, jamais
+/// LE CHOIX D'EXERCICE DE LA SESSION (arbitrage du 05/11/2026), miroir de `sigh-cbg:exercice` de la maquette : tenu EN MÉMOIRE pour la session du poste, jamais
 /// écrit dans le magasin. Absent, l'exercice affiché est le plus récent encore ouvert ([cpcExerciceParDefaut]). Une nouvelle session repart du défaut.
 class ChoixExercice {
   ChoixExercice._();

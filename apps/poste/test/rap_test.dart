@@ -446,8 +446,8 @@ void main() {
           findsOneWidget);
       // La première ligne est la plus récente du vecteur.
       expect(
-          find.text('${_l(att['lignes']).first['reference']}'.replaceFirst(RegExp(r'^CNT-'), '${IdentiteClinique.sigle}-')), findsOneWidget,
-          reason: 'la maquette numérote sous le sigle CNT, le poste sous le sigle de la clinique');
+          find.text('${_l(att['lignes']).first['reference']}'.replaceFirst(RegExp(r'^CBG-'), '${IdentiteClinique.sigle}-')), findsOneWidget,
+          reason: 'la maquette numérote sous le sigle CBG, le poste sous le sigle de la clinique');
     });
 
     casM14(
@@ -455,7 +455,7 @@ void main() {
         (t) async {
       final m = _m();
       m.utilisateur = 'TAKI Alimatou';
-      m.journaliser('Impression', 'RAP', 'Document', 'CNT-20261030-0042', null,
+      m.journaliser('Impression', 'RAP', 'Document', 'CBG-20261030-0042', null,
           {'titre': 'Point mensuel'});
       await _ouvrir(t, m, 'rapports-historique',
           horloge: DateTime(2026, 10, 30, 10));
@@ -467,7 +467,7 @@ void main() {
           ],
           DateTime(2026, 10, 30, 10));
       expect(rows.length, 60);
-      expect(rows.where((r) => r['reference'] == 'CNT-20261030-0042'),
+      expect(rows.where((r) => r['reference'] == 'CBG-20261030-0042'),
           hasLength(1));
       final st = rapStatsHistorique(rows, DateTime(2026, 10, 30, 10));
       expect(find.text('${st.ceMois}'), findsWidgets);

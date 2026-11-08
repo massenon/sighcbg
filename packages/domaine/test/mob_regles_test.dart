@@ -47,7 +47,7 @@ void main() {
       expect(mobUrgencesAnalyses, (a['urgences'] as List).cast<String>());
       final aucun = (a['aucunExamen'] as Map).cast<String, Object?>();
       expect(aucun['visible'], isTrue);
-      final fiche = {'code': 'CNT/1/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
+      final fiche = {'code': 'CBG/1/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
       try {
         mobChampsDemandeAnalyses(patient: fiche, patientId: 'p1', noteId: 'n1', examens: const [], urgence: '', acteur: 'X', fonction: 'medecin', maintenant: maintenant);
         fail('une demande sans examen doit être refusée');
@@ -135,7 +135,7 @@ void main() {
   });
 
   group('constantes et note : ce que le mobile écrit', () {
-    final patient = {'code': 'CNT/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
+    final patient = {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
     test('la fiche des constantes reprend les champs du relevé de l\'accueil', () {
       final c = mobChampsConstantes(patient: patient, patientId: 'p1', saisie: saisie({'temperature': '38,5', 'sys': '120', 'dia': '80', 'poids': '62'}), acteur: 'YENI M’PO Florent', maintenant: maintenant);
       expect(c['temperature'], 38.5);
@@ -143,7 +143,7 @@ void main() {
       expect(c['tensionSys'], 120);
       expect(c['dateHeure'], '2026-08-16T12:00');
       expect(c['releveePar'], 'YENI M’PO Florent');
-      expect(c['patientCode'], 'CNT/12/26');
+      expect(c['patientCode'], 'CBG/12/26');
       expect(c.containsKey('pouls'), isFalse, reason: 'un champ non saisi n\'est pas écrit');
       expect(mobFievre(saisie({'temperature': '38'})), isTrue);
       expect(mobFievre(saisie({'temperature': '37,9'})), isFalse);
@@ -159,9 +159,9 @@ void main() {
 
     test('la note reprend la dernière constante (copie datée), range l\'orientation de la fiche, exige un diagnostic', () {
       final constantes = [
-        {'patientId': 'p1', 'patientCode': 'CNT/12/26', 'dateHeure': '2026-08-16T08:00', 'temperature': 37.0, 'pouls': 80},
-        {'patientId': 'p1', 'patientCode': 'CNT/12/26', 'dateHeure': '2026-08-16T11:00', 'temperature': 38.5, 'pouls': 96, 'tension': '12/8'},
-        {'patientId': 'p2', 'patientCode': 'CNT/174/26', 'dateHeure': '2026-08-16T11:30', 'temperature': 36.0},
+        {'patientId': 'p1', 'patientCode': 'CBG/12/26', 'dateHeure': '2026-08-16T08:00', 'temperature': 37.0, 'pouls': 80},
+        {'patientId': 'p1', 'patientCode': 'CBG/12/26', 'dateHeure': '2026-08-16T11:00', 'temperature': 38.5, 'pouls': 96, 'tension': '12/8'},
+        {'patientId': 'p2', 'patientCode': 'CBG/174/26', 'dateHeure': '2026-08-16T11:30', 'temperature': 36.0},
       ];
       final n = mobChampsNote(
           patient: patient,
@@ -248,10 +248,10 @@ void main() {
     final cartes = ((v['dossier'] as Map)['cartes'] as Map).cast<String, Object?>();
     String couv(String p) => ((cartes[p] as Map)['Couverture']) as String;
     test('trois états de couverture, comme le bandeau du simulateur (RG-09 à la date)', () {
-      final valide = {'code': 'CNT/12/26', 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
-      final expiree = {'code': 'CNT/174/26', 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'};
-      final lejour = {'code': 'CNT/9/26', 'assureur': 'NSIA', 'carteExpiration': '2026-08-16'};
-      final aucune = {'code': 'CNT/1109/26'};
+      final valide = {'code': 'CBG/12/26', 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
+      final expiree = {'code': 'CBG/174/26', 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'};
+      final lejour = {'code': 'CBG/9/26', 'assureur': 'NSIA', 'carteExpiration': '2026-08-16'};
+      final aucune = {'code': 'CBG/1109/26'};
       expect(mobCouvertureDe(valide, maintenant), MobCouverture.carteValide);
       expect(mobCouvertureDe(expiree, maintenant), MobCouverture.carteNonValide);
       expect(mobCouvertureDe(lejour, maintenant), MobCouverture.carteValide, reason: 'la carte qui expire le jour même reste valide');
@@ -263,7 +263,7 @@ void main() {
     });
 
     test('identité, allergies, dernières constantes hors bornes, notes et prescriptions du patient seulement', () {
-      final p = {'code': 'CNT/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'allergies': ['Pénicilline'], 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
+      final p = {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'allergies': ['Pénicilline'], 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
       final d = mobDossier(
           patient: p,
           patientId: 'p1',

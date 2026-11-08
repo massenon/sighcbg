@@ -598,7 +598,7 @@ class BlocPatient {
   final Cumul total;
   final List<BlocSecteur> secteurs;
 
-  /// « CNT/25/26 — assuré AFR » / « … — non assuré ».
+  /// « CBG/25/26 — assuré AFR » / « … — non assuré ».
   String get sousTitre =>
       '${_vrai(code) ? code : '—'}${assureur != null ? ' — assuré $assureur' : ' — non assuré'}';
 }

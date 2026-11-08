@@ -1,5 +1,5 @@
 name: sigh_poste
-description: SIGH-CNT — poste de travail (fileul) et poste mère, Flutter desktop.
+description: SIGH-CBG — poste de travail (fileul) et poste mère, Flutter desktop.
 publish_to: none
 version: 0.1.0+1
 environment:
