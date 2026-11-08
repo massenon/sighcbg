@@ -110,8 +110,8 @@ void main() {
     expect(a4.width, closeTo((ref['a4']['l'] as num).toDouble(), 0.5));
     expect(a4.height, greaterThanOrEqualTo(mm(297) - 0.5));
     final e = t.getRect(find.byKey(const Key('impression:entete')));
-    final he = (ref['entete']['h'] as num).toDouble();
-    expect(e.height, closeTo(he, 8), reason: 'en-tête ${e.height} vs $he');
+    // L'en-tête n'a plus la hauteur de la maquette Nassiera Too (titre centré) : il suit le papier en trois zones de Baguidi (P0-13).
+    expect(e.height, greaterThan(mm(24)), reason: 'au moins la hauteur du logo de 2,4 cm');
     expect(e.width, closeTo((ref['entete']['l'] as num).toDouble(), 1));
     final ti = t.getRect(find.byKey(const Key('impression:titre')));
     expect(ti.height, closeTo((ref['titre']['h'] as num).toDouble(), 6));
@@ -119,7 +119,7 @@ void main() {
     expect(pied.height, closeTo((ref['pied']['h'] as num).toDouble(), 6));
     // L'identité légale est imprimée une fois, depuis le domaine.
     expect(
-        find.textContaining('IFU : ${IdentiteClinique.ifu}'), findsOneWidget);
+        find.textContaining('IFU : ${IdentiteClinique.ifu} du ${IdentiteClinique.ifuDate}'), findsOneWidget);
     expect(
         find.textContaining('RCCM : ${IdentiteClinique.rccm}'), findsOneWidget);
     // Le total est calculé : 1000 + 250.
@@ -130,7 +130,7 @@ void main() {
             'Document généré par ADJAHO Rose le 30/10/2026 à 14h05'),
         findsOneWidget);
     expect(find.text('Réf. document : CBG-20261030-0001'), findsOneWidget);
-    expect(find.text('AUTORISATION D’OUVERTURE N° 012/MS/DNSP/2009'), findsOneWidget);
+    expect(find.text('Autorisation d’ouverture : N° 012/MS/DNSP/2009'), findsOneWidget);
     expect(find.text('Édité depuis le SIGH-CBG'), findsOneWidget);
     expect(find.textContaining('Fait à Parakou, le '), findsOneWidget, reason: 'la ville de l’adresse de la clinique, jamais Natitingou');
   });
@@ -138,13 +138,11 @@ void main() {
   testWidgets('A4, identité initiale : l’autorisation d’ouverture VIDE n’imprime ni sa ligne ni son libellé ; l’en-tête raccourcit d’autant', (t) async {
     await monter(t, FeuilleA4(piece: piece));
     expect(find.textContaining('AUTORISATION'), findsNothing);
-    expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
-    expect(find.text(IdentiteClinique.ligneCoordonnees), findsOneWidget);
+    expect(find.text(IdentiteClinique.nom), findsOneWidget);
+    expect(find.text(IdentiteClinique.bp), findsOneWidget);
     expect(find.text(IdentiteClinique.slogan), findsOneWidget);
     expect(find.textContaining('NASSIERA'), findsNothing);
     expect(find.textContaining('Natitingou'), findsNothing);
-    final he = (ref['entete']['h'] as num).toDouble();
-    expect(t.getRect(find.byKey(const Key('impression:entete'))).height, lessThan(he - 8), reason: 'une ligne de moins que la maquette');
   });
 
   test('référence de pièce <SIGLE>-AAAAMMJJ-NNNN : le sigle de la clinique (CBG), jamais écrit en dur', () {

@@ -33,6 +33,7 @@ export 'src/stock/points.dart' hide etatStock, trierStable;
 export 'src/graphiques/echelle.dart';
 export 'src/stock/mouvements_stock.dart'
     hide FicheStock, TypeMouvement, categoriesProduit, typesMouvement, typesStock;
+export 'src/impression/entete.dart';
 export 'src/impression/identite.dart';
 export 'src/impression/ticket.dart';
 export 'src/impression/etat.dart';

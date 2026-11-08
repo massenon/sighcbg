@@ -58,8 +58,8 @@
   {
    "id": "cfg-branding",
    "mesure": true,
-   "attendus": 20,
-   "presents": 20,
+   "attendus": 19,
+   "presents": 19,
    "taux": 1.0,
    "manquants": []
   },

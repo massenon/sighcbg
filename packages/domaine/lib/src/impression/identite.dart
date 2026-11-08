@@ -25,6 +25,7 @@ class IdentiteClinique {
     'telephones': ['95 74 69 56', '95 95 99 14', '97 09 34 99'],
     'email': 'cliniquebaguidi@yahoo.fr',
     'ifu': '3201001996110',
+    'ifuDate': '26 novembre 2010',
     'rccm': 'RB/PKO/17 A 4240',
     'rccmDate': '19/03/2009',
     'enregistrement': '0416/ONMB/ATL/2002',
@@ -40,7 +41,7 @@ class IdentiteClinique {
 
   /// Les champs qu'une surcharge peut porter (les autres clés d'une fiche enregistrée, options d'impression comprises, sont ignorées ici).
   static const champs = [
-    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'rccm', 'rccmDate', 'enregistrement', 'autorisation', 'formuleArrete', 'formulePolitesse',
+    'sigle', 'nom', 'nomCourt', 'activite', 'forme', 'slogan', 'adresse', 'bp', 'telephones', 'email', 'ifu', 'ifuDate', 'rccm', 'rccmDate', 'enregistrement', 'autorisation', 'formuleArrete', 'formulePolitesse',
     'pays', 'telephoneRdv', 'devise', 'codeDevise', 'logo', 'regimeTva'
   ];
 
@@ -133,6 +134,9 @@ class IdentiteClinique {
 
   static String get email => _texte('email');
   static String get ifu => _texte('ifu');
+
+  /// Date de délivrance de l'IFU, telle qu'on l'écrit sur le papier (« 26 novembre 2010 ») : vide, l'en-tête n'imprime que le numéro.
+  static String get ifuDate => _texte('ifuDate');
   static String get rccm => _texte('rccm');
 
   /// Date d'immatriculation au RCCM (19/03/2009) : conservée À PART, jamais concaténée au numéro (décision du 06/11/2026).
@@ -208,6 +212,7 @@ const List<String> champsIdentiteLegale = [
   'telephoneRdv',
   'email',
   'ifu',
+  'ifuDate',
   'rccm',
   'rccmDate',
   'enregistrement',
@@ -245,6 +250,7 @@ class IdentiteImprimee {
     required this.telephoneRdv,
     required this.email,
     required this.ifu,
+    this.ifuDate = '',
     required this.rccm,
     this.rccmDate = '',
     this.enregistrement = '',
@@ -278,6 +284,7 @@ class IdentiteImprimee {
         telephoneRdv: IdentiteClinique.telephoneRdv,
         email: IdentiteClinique.email,
         ifu: IdentiteClinique.ifu,
+        ifuDate: IdentiteClinique.ifuDate,
         rccm: IdentiteClinique.rccm,
         rccmDate: IdentiteClinique.rccmDate,
         enregistrement: IdentiteClinique.enregistrement,
@@ -314,6 +321,7 @@ class IdentiteImprimee {
       telephoneRdv: t('telephoneRdv', semence.telephoneRdv),
       email: t('email', semence.email),
       ifu: t('ifu', semence.ifu),
+      ifuDate: t('ifuDate', semence.ifuDate),
       rccm: t('rccm', semence.rccm),
       rccmDate: t('rccmDate', semence.rccmDate),
       enregistrement: t('enregistrement', semence.enregistrement),
@@ -332,7 +340,7 @@ class IdentiteImprimee {
     );
   }
 
-  final String sigle, nom, nomCourtFiche, activite, slogan, forme, adresse, bp, pays, telephoneRdv, email, ifu, rccm, rccmDate, enregistrement, autorisation;
+  final String sigle, nom, nomCourtFiche, activite, slogan, forme, adresse, bp, pays, telephoneRdv, email, ifu, ifuDate, rccm, rccmDate, enregistrement, autorisation;
   final String autorisationExerciceMotif, devise, codeDevise, logo, formuleArrete, formulePolitesse, regimeTva;
   final String? autorisationExercice;
   final List<String> telephones;
@@ -389,6 +397,7 @@ class IdentiteImprimee {
         'telephoneRdv': telephoneRdv,
         'email': email,
         'ifu': ifu,
+        'ifuDate': ifuDate,
         'rccm': rccm,
         'rccmDate': rccmDate,
         'enregistrement': enregistrement,

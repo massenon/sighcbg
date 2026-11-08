@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/jetons_shell.dart';
-import '../shell/logo_clinique.dart';
+import 'entete_papier.dart';
 import 'piece.dart';
 
 /// 1 mm = 96/25,4 px logiques : le gabarit imprimé garde ses dimensions physiques à l'aperçu (A4 = 210 × 297 mm, rouleau = 80 mm).
@@ -83,7 +83,7 @@ class FeuilleTicket extends StatelessWidget {
   }
 }
 
-/// Feuille A4 (`P.etat`) : 210 × 297 mm, marge 12 mm. En-tête : filet navy-900 de 3 px, logo, nom 22 px gras, coordonnées 9–10 px.
+/// Feuille A4 (`P.etat`) : 210 × 297 mm, marge 12 mm. En-tête légal en trois zones (`EnteteLegal`, P0-13) puis double filet rouge cœur / bleu santé.
 class FeuilleA4 extends StatelessWidget {
   const FeuilleA4({super.key, required this.piece});
   final PieceA4 piece;
@@ -147,65 +147,7 @@ class FeuilleA4 extends StatelessWidget {
         ),
       );
 
-  Widget _entete() {
-    final i = piece.identiteImprimee;
-    return Container(
-        key: const Key('impression:entete'),
-        padding: const EdgeInsets.only(bottom: 8),
-        decoration: const BoxDecoration(
-            border: Border(
-                bottom: BorderSide(color: JetonsShell.navy900, width: 3))),
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const LogoClinique(largeur: 64, hauteur: 64),
-          const SizedBox(width: 16),
-          Flexible(
-            child: Column(children: [
-              // L'identité EN VIGUEUR (surchargeable depuis cfg-branding) ; une mention vide n'imprime ni sa ligne ni son libellé.
-              Text(i.nomCourt,
-                  key: const Key('impression:entete:nom'),
-                  style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      height: 1.25,
-                      letterSpacing: -0.5,
-                      color: JetonsShell.navy950)),
-              if (i.ligneCoordonnees.isNotEmpty)
-                Text(i.ligneCoordonnees,
-                    style: const TextStyle(
-                        fontSize: 10,
-                        height: 1.375,
-                        color: JetonsShell.slate700)),
-              if (i.ligneAutorisation.isNotEmpty)
-                Text(i.ligneAutorisation,
-                    style: const TextStyle(
-                        fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              if (i.ligneFiscale.isNotEmpty)
-                Text(i.ligneFiscale,
-                    key: const Key('impression:entete:ifu-rccm'),
-                    style: const TextStyle(
-                        fontSize: 9,
-                        height: 1.375,
-                        fontWeight: FontWeight.w600,
-                        color: JetonsShell.slate800)),
-              if (i.ligneEmail.isNotEmpty)
-                Text(i.ligneEmail,
-                    style: const TextStyle(
-                        fontSize: 9, height: 1.375, color: JetonsShell.slate700)),
-              if (i.slogan.isNotEmpty)
-                Text(i.slogan,
-                    style: const TextStyle(
-                        fontSize: 9,
-                        height: 1.375,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic,
-                        color: JetonsShell.navy800)),
-            ]),
-          ),
-          const SizedBox(width: 16),
-          const SizedBox(width: 64, height: 64),
-        ]),
-      );
-  }
+  Widget _entete() => EnteteLegal(identite: piece.identiteImprimee);
 
   Widget _filtres() => Container(
         key: const Key('impression:filtres'),
@@ -371,14 +313,14 @@ class FeuilleA4 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(piece.identiteImprimee.piedLegal),
+                  Text(EnteteTroisZones.depuis(piece.identiteImprimee).piedLegal),
                   Text(
                       'Document généré par ${piece.utilisateur} le ${dateHeure(piece.edite)}'),
                 ]),
                 Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Text('Réf. document : ${piece.reference}',
                       style: const TextStyle(fontFamily: _mono)),
-                  Text(IdentiteClinique.editeDepuis),
+                  Text(EnteteTroisZones.depuis(piece.identiteImprimee).editeDepuis),
                 ]),
               ]),
         ),

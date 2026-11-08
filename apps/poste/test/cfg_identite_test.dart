@@ -43,12 +43,24 @@ void main() {
     expect(find.byType(TextField), findsNothing);
   });
 
+  casM14('cfg-branding : l’aperçu porte l’en-tête en trois zones et le double filet de la pièce ; l’option « logo de part et d’autre » a disparu', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'cfg-branding');
+    for (final k in ['entete:gauche', 'entete:centre', 'entete:droite', 'entete:filet-coeur', 'entete:filet-sante']) {
+      expect(find.byKey(Key(k)), findsOneWidget, reason: k);
+    }
+    expect(find.text('IFU : ${IdentiteClinique.ifu} du ${IdentiteClinique.ifuDate}'), findsOneWidget);
+    expect(find.byKey(const Key('kit:champ:ifuDate')), findsOneWidget);
+    expect(find.byKey(const Key('kit:champ:doubleLogo')), findsNothing);
+    expect(find.textContaining('de part et d’autre'), findsNothing);
+  });
+
   casM14('cfg-branding : les 14 champs de la maquette, plus le nom court et la formule de politesse, préremplis de l’identité en vigueur ; trois cartes', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
     // Les champs de la part VISIBLE (plus le nom court et la formule de politesse) ; la part fiscale (forme, IFU, RCCM, autorisation, adresse fiscale,
     // devise, TVA) se saisit à cfg-fiscalite (même fiche).
-    for (final c in ['nom', 'nomCourt', 'sigle', 'logo', 'slogan', 'formulePolitesse', 'adresse', 'pays', 'email', 'telephones', 'telephoneRdv', 'doubleLogo', 'filigrane']) {
+    for (final c in ['nom', 'nomCourt', 'sigle', 'logo', 'slogan', 'formulePolitesse', 'adresse', 'pays', 'email', 'telephones', 'telephoneRdv', 'ifuDate', 'filigrane']) {
       expect(find.byKey(Key('kit:champ:$c')), findsOneWidget, reason: c);
     }
     for (final c in ['forme', 'ifu', 'rccm', 'autorisation', 'regimeTva']) {

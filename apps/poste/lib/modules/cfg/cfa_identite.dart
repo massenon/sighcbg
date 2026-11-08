@@ -8,6 +8,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/identite_poste.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../impression/entete_papier.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -99,7 +100,7 @@ class _EtatEntetes extends State<EcranEntetes> {
 /// faisait que journaliser et annoncer ; l'identité vit désormais dans la collection `identiteLegale`, par versions datées, et cet écran en écrit la part
 /// VISIBLE (dénomination, sigle, slogan, logo, adresse, pays, téléphones, courriel). Les mentions FISCALES (forme, IFU, RCCM, autorisation, adresse fiscale,
 /// devise, TVA) se saisissent et se VALIDENT à « Paramètres fiscaux » : c'est la MÊME fiche, chaque écran ses champs. Les options d'impression sont des
-/// RÉGLAGES d'exploitation (`impression.doubleLogo`, `impression.filigrane`) lus par l'impression ; la case « pied de page normalisé » est retirée : le
+/// RÉGLAGES d'exploitation (`impression.filigrane`) lus par l'impression ; la case « pied de page normalisé » est retirée : le
 /// pied est obligatoire (RG-12).
 class EcranBranding extends StatefulWidget with EcranMaquette {
   const EcranBranding({super.key});
@@ -169,7 +170,7 @@ class _EtatBranding extends State<EcranBranding> {
 }
 
 /// Les champs que `cfg-branding` écrit (`CHAMPS_BRANDING`).
-const List<String> champsBranding = ['nom', 'nomCourt', 'sigle', 'slogan', 'formulePolitesse', 'logo', 'adresse', 'pays', 'telephones', 'telephoneRdv', 'email'];
+const List<String> champsBranding = ['nom', 'nomCourt', 'sigle', 'slogan', 'formulePolitesse', 'logo', 'adresse', 'pays', 'telephones', 'telephoneRdv', 'email', 'ifuDate'];
 
 class _CarteIdentite extends StatefulWidget {
   const _CarteIdentite({super.key, required this.cf});
@@ -194,8 +195,8 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
     const ChampDef(nom: 'email', libelle: 'Adresse électronique', type: TypeChamp.email),
     const ChampDef(nom: 'telephones', libelle: 'Téléphones (séparés par « / »)', requis: true),
     const ChampDef(nom: 'telephoneRdv', libelle: 'Ligne rendez-vous'),
+    const ChampDef(nom: 'ifuDate', libelle: 'Date de l’IFU (imprimée après le numéro)', aide: 'Texte tel qu’il s’écrit sur le papier : « 26 novembre 2010 ». Vide : l’en-tête n’imprime que le numéro.'),
     const ChampDef.section('Options d’impression (réglages d’exploitation, lus par le moteur d’impression)'),
-    const ChampDef(nom: 'doubleLogo', libelle: 'Logo de part et d’autre de la dénomination', type: TypeChamp.case_, col: ColChamp.plein),
     const ChampDef(nom: 'filigrane', libelle: 'Filigrane par défaut', type: TypeChamp.select, options: [OptionChamp('', ''), OptionChamp('Document officiel'), OptionChamp('Confidentiel')]),
   ], {
     'nom': _i.nom,
@@ -209,7 +210,7 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
     'email': _i.email,
     'telephones': _i.telephones.join(' / '),
     'telephoneRdv': _i.telephoneRdv,
-    'doubleLogo': cfbReglage(widget.cf.m, 'impression.doubleLogo', true) != false,
+    'ifuDate': _i.ifuDate,
     'filigrane': '${cfbReglage(widget.cf.m, 'impression.filigrane', '') ?? ''}',
   });
 
@@ -228,7 +229,6 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
     final cf = widget.cf;
     // Les options d'impression ne sont pas des champs de l'identité : des réglages, lus par l'impression. Un fileul ne les écrit pas non plus (garde du magasin).
     if (cfbRefuseSiGarde(context, () {
-      cfbPoserReglage(cf.m, 'impression.doubleLogo', v['doubleLogo'] == true);
       cfbPoserReglage(cf.m, 'impression.filigrane', '${v['filigrane'] ?? ''}');
     })) return;
     cfbEnregistrerIdentiteDepuis(context, cf, 'cfg-branding', {for (final k in champsBranding) k: v[k]});
@@ -255,6 +255,7 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
               {'k': 'Adresse électronique', 'v': j.email},
               {'k': 'Autorisation d’ouverture', 'v': j.autorisation},
               {'k': 'IFU', 'v': j.ifu},
+              {'k': 'Date de l’IFU', 'v': j.ifuDate},
               {'k': 'RCCM', 'v': j.rccm},
             ])
               if ('${l['v']}'.isNotEmpty) l,
@@ -284,46 +285,27 @@ class _CarteApercu extends StatelessWidget {
   const _CarteApercu({required this.cf});
   final ConfigurationFiscalePoste cf;
 
-  Widget _logo() => Image.asset(CfaIdentite.logo, width: 48, height: 48, fit: BoxFit.contain, errorBuilder: (_, __, ___) => const SizedBox(width: 48, height: 48));
-
   @override
   Widget build(BuildContext context) => ValueListenableBuilder<int>(valueListenable: versionIdentite, builder: (ctx, _, __) => _construire(ctx));
 
   Widget _construire(BuildContext context) {
     final c = ContexteEcran.of(context);
     final i = cf.identiteImprimee();
-    final doubleLogo = cfbReglage(cf.m, 'impression.doubleLogo', true) != false;
-    const t = TextStyle(color: JetonsShell.slate700);
     return CarteSigh(
         titre: 'Aperçu du papier à en-tête (version ${i.version ?? 1} en force)',
         child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), border: Border.all(color: JetonsShell.slate300)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                _logo(),
-                const SizedBox(width: 16),
-                Flexible(
-                    child: Column(children: [
-                  Text(i.nomCourt, key: const Key('cfa:apercu:nom'), style: const TextStyle(fontSize: 16, height: 24 / 16, fontWeight: FontWeight.w700, color: JetonsShell.navy950)),
-                  if (i.ligneCoordonnees.isNotEmpty) Text(i.ligneCoordonnees, textAlign: TextAlign.center, style: t.copyWith(fontSize: 9)),
-                  if (i.ligneAutorisation.isNotEmpty) Text(i.ligneAutorisation, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
-                  if (i.ligneFiscale.isNotEmpty) Text(i.ligneFiscale, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
-                  if (i.ligneEmail.isNotEmpty) Text(i.ligneEmail, textAlign: TextAlign.center, style: t.copyWith(fontSize: 8)),
-                  if (i.slogan.isNotEmpty) Text(i.slogan, key: const Key('cfa:apercu:slogan'), textAlign: TextAlign.center, style: t.copyWith(fontSize: 8, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic, color: JetonsShell.navy800)),
-                  ])),
-                const SizedBox(width: 16),
-                if (doubleLogo) _logo() else const SizedBox(width: 48, height: 48),
-              ]),
-              const SizedBox(height: 8),
-              Container(height: 2, color: JetonsShell.navy900),
+              // Le MÊME en-tête que la feuille A4 et le PDF (P0-13) : trois zones, double filet, aucune ligne vide.
+              EnteteLegal(identite: i, echelle: 0.9),
               const SizedBox(height: 16),
               const Text('(corps du document)', textAlign: TextAlign.center, style: TextStyle(fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic, color: JetonsShell.slate400)),
               const SizedBox(height: 16),
               Container(
                   padding: const EdgeInsets.only(top: 8),
                   decoration: const BoxDecoration(border: Border(top: BorderSide(color: JetonsShell.slate300))),
-                  child: Text('${i.piedLegal} · Document généré par ${acteur(c).nom} le ${dateHeure(c.aujourdhui)} · Réf. ${i.sigle}-XXXXXXXX-0001',
+                  child: Text('${EnteteTroisZones.depuis(i).piedLegal} · Document généré par ${acteur(c).nom} le ${dateHeure(c.aujourdhui)} · Réf. ${i.sigle}-XXXXXXXX-0001 · ${EnteteTroisZones.depuis(i).editeDepuis}',
                       style: const TextStyle(fontSize: 8, color: JetonsShell.slate500))),
             ])));
   }

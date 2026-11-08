@@ -1,17 +1,23 @@
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/painting.dart' show Color;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/jetons_shell.dart';
+import '../shell/logo_clinique.dart';
 import 'piece.dart';
 
 /// Génération PDF des mêmes pièces que l'aperçu — à partir des MÊMES lignes (`lignesTicket`, `TableauEtat.pied`) : l'écran et le papier
 /// ne peuvent pas diverger. Polices Liberation (métriques d'Arial/Courier, licence SIL OFL) : le paquet `pdf` n'embarque pas les OTF d'Inter.
+///
+/// Montserrat Bold (dénomination) et Dancing Script (devise) sont chargées comme Liberation, depuis les OTF/TTF de l'application : même police à
+/// l'écran et sur le PDF.
 class PolicesPdf {
-  PolicesPdf(this.sans, this.gras, this.italique, this.mono, this.monoGras);
-  final pw.Font sans, gras, italique, mono, monoGras;
+  PolicesPdf(this.sans, this.gras, this.italique, this.mono, this.monoGras, this.titre, this.devise);
+  final pw.Font sans, gras, italique, mono, monoGras, titre, devise;
 
   static Future<PolicesPdf> charger() async {
     Future<pw.Font> f(String n) async =>
@@ -21,7 +27,9 @@ class PolicesPdf {
         await f('LiberationSans-Bold'),
         await f('LiberationSans-Italic'),
         await f('LiberationMono-Regular'),
-        await f('LiberationMono-Bold'));
+        await f('LiberationMono-Bold'),
+        pw.Font.ttf(await rootBundle.load('assets/polices/Montserrat-Bold.ttf')),
+        pw.Font.ttf(await rootBundle.load('assets/polices/DancingScript-Regular.ttf')));
   }
 }
 
@@ -89,35 +97,59 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
   pw.TextStyle s(double t, {pw.Font? f}) =>
       pw.TextStyle(font: f ?? p.sans, fontSize: t);
   final logo = pw.MemoryImage(
-      (await rootBundle.load('assets/img/logo.jpeg')).buffer.asUint8List());
-  final bleu = PdfColor.fromInt(0xFF12315E);
+      (await rootBundle.load(LogoClinique.asset)).buffer.asUint8List());
+  final e = EnteteTroisZones.depuis(i);
+  PdfColor couleur(Color c) => PdfColor.fromInt(c.toARGB32());
+  final coeur = couleur(JetonsShell.coeur500), sante = couleur(JetonsShell.sante600);
 
-  pw.Widget entete() => pw.Container(
-        padding: const pw.EdgeInsets.only(bottom: 6),
-        decoration: pw.BoxDecoration(
-            border: pw.Border(bottom: pw.BorderSide(color: bleu, width: 2.2))),
-        child:
-            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
-          pw.Image(logo, width: 48, height: 48),
-          pw.SizedBox(width: 12),
-          pw.Column(children: [
-            // L'identité EN VIGUEUR ; une mention vide n'imprime ni sa ligne ni son libellé (aucun « AUTORISATION D'OUVERTURE » orphelin).
-            pw.Text(i.nomCourt, style: s(18, f: p.gras)),
-            if (i.ligneCoordonnees.isNotEmpty)
-              pw.Text(i.ligneCoordonnees, style: s(7.5)),
-            if (i.ligneAutorisation.isNotEmpty)
-              pw.Text(i.ligneAutorisation, style: s(7)),
-            if (i.ligneFiscale.isNotEmpty)
-              pw.Text(i.ligneFiscale, style: s(7, f: p.gras)),
-            if (i.ligneEmail.isNotEmpty)
-              pw.Text(i.ligneEmail, style: s(7)),
-            if (i.slogan.isNotEmpty)
-              pw.Text(i.slogan, style: s(7, f: p.italique)),
-          ]),
-          pw.SizedBox(width: 12),
-          pw.SizedBox(width: 48, height: 48),
-        ]),
-      );
+  // L'en-tête légal en trois zones : le MÊME modèle (EnteteTroisZones) que la feuille de l'écran et l'aperçu de cfg-branding.
+  pw.Widget entete() => pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
+        pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 3),
+            child: pw.Row(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
+              pw.Expanded(
+                  flex: (EnteteTroisZones.partGauche * 100).round(),
+                  child: pw.Column(children: [
+                    pw.Image(logo,
+                        width: EnteteTroisZones.logoCm * 10 * _mm,
+                        height: EnteteTroisZones.logoCm * 10 * _mm,
+                        fit: pw.BoxFit.contain),
+                    if (e.devise.isNotEmpty)
+                      pw.Padding(
+                          padding: const pw.EdgeInsets.only(top: 3),
+                          child: pw.Text(e.devise,
+                              textAlign: pw.TextAlign.center,
+                              style: pw.TextStyle(font: p.devise, fontSize: 9, color: coeur))),
+                  ])),
+              pw.Expanded(
+                  flex: 100 - (EnteteTroisZones.partGauche * 100).round() - (EnteteTroisZones.partDroite * 100).round(),
+                  child: pw.Padding(
+                      padding: const pw.EdgeInsets.symmetric(horizontal: 6),
+                      child: pw.Column(children: [
+                        pw.Text(e.denomination,
+                            textAlign: pw.TextAlign.center,
+                            style: pw.TextStyle(font: p.titre, fontSize: 14.5, color: coeur)),
+                        if (e.sousTitre.isNotEmpty)
+                          pw.Padding(
+                              padding: const pw.EdgeInsets.only(top: 2),
+                              child: pw.Text(e.sousTitre,
+                                  textAlign: pw.TextAlign.center,
+                                  style: pw.TextStyle(font: p.gras, fontSize: 7.5, letterSpacing: 0.3, color: couleur(JetonsShell.anthracite900)))),
+                      ]))),
+              pw.Expanded(
+                  flex: (EnteteTroisZones.partDroite * 100).round(),
+                  child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
+                    for (final l in e.lignesDroite)
+                      pw.Text(l,
+                          textAlign: pw.TextAlign.right,
+                          style: s(6.8, f: l.startsWith('IFU') ? p.gras : null)),
+                  ])),
+            ])),
+        pw.SizedBox(height: 3),
+        pw.Container(height: EnteteTroisZones.filetPx, color: coeur),
+        pw.SizedBox(height: EnteteTroisZones.interFiletPx),
+        pw.Container(height: EnteteTroisZones.filetPx, color: sante),
+      ]);
 
   pw.Widget pied(pw.Context c) => pw.Container(
         padding: const pw.EdgeInsets.only(top: 6),
@@ -131,7 +163,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
               pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text(i.piedLegal, style: s(6)),
+                    pw.Text(e.piedLegal, style: s(6)),
                     pw.Text(
                         'Document généré par ${x.utilisateur} le ${dateHeure(x.edite)}',
                         style: s(6)),
@@ -142,7 +174,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
                     pw.Text('Réf. document : ${x.reference}',
                         style: s(6, f: p.mono)),
                     pw.Text(
-                        'Page ${c.pageNumber} / ${c.pagesCount} — ${IdentiteClinique.editeDepuis}',
+                        'Page ${c.pageNumber} / ${c.pagesCount} — ${e.editeDepuis}',
                         style: s(6)),
                   ]),
             ]),
@@ -182,7 +214,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
               padding: const pw.EdgeInsets.only(bottom: 3, left: 18, right: 18),
               decoration: pw.BoxDecoration(
                   border: pw.Border(
-                      bottom: pw.BorderSide(color: bleu, width: 1.5))),
+                      bottom: pw.BorderSide(color: sante, width: 1.5))),
               child: pw.Text(x.titre.toUpperCase(), style: s(12, f: p.gras)))),
       if (x.sousTitre != null)
         pw.Center(child: pw.Text(x.sousTitre!, style: s(8))),

@@ -31,6 +31,8 @@ void main() {
       expect(IdentiteClinique.autorisation, '');
       expect(IdentiteClinique.formulePolitesse, 'Votre bien-être est notre raison d’être.');
       expect(IdentiteClinique.rccmDate, '19/03/2009');
+      expect(IdentiteClinique.ifuDate, '26 novembre 2010');
+      expect(IdentiteImprimee.semence.fiche['ifuDate'], '26 novembre 2010');
       expect(IdentiteClinique.enregistrement, '0416/ONMB/ATL/2002');
       expect(IdentiteClinique.ligneEnregistrement, 'N° D’ENREGISTREMENT 0416/ONMB/ATL/2002');
     });
