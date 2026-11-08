@@ -160,9 +160,9 @@ void main() {
       expect(nt(money(x.totalHorsExploitation)), nt(k[7]['valeur']));
     });
 
-    test('141 667 FCFA n\'est PAS un arrondi : c\'est l\'échéance mensuelle omise par la ligne TOTAL (calculé, jamais écrit en dur)', () {
+    test('425 001 FCFA n\'est PAS un arrondi : c\'est l\'échéance mensuelle omise par la ligne TOTAL (calculé, jamais écrit en dur)', () {
       final d = cpcExpliquerEcart(x)!;
-      expect(d.ecart, 141667);
+      expect(d.ecart, 425001);
       expect(d.incoherentes, isEmpty, reason: 'le détail somme exactement à ses propres totaux');
       expect(d.mensuelles.length, 1);
       expect(d.mensuelles.first.ligne.libelle, 'FONDS DE GARANTIE');

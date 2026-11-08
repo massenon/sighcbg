@@ -59,14 +59,14 @@ void main() {
     casM14('quatre indicateurs CITÉS de la liasse : CA, résultat net (et celui de N-1), total du bilan, six écarts internes', (t) async {
       final m = magasinComplet();
       await ouvrirM14(t, m, 'm12-etats-financiers');
-      expect(find.text(money(190830994)), findsOneWidget);
-      expect(find.text(money(4561200)), findsOneWidget);
-      expect(find.text('N-1 : ${money(4472283)}'), findsOneWidget);
-      expect(find.text(money(112937495)), findsOneWidget);
+      expect(find.text(money(572492982)), findsOneWidget);
+      expect(find.text(money(13683600)), findsOneWidget);
+      expect(find.text('N-1 : ${money(13416849)}'), findsOneWidget);
+      expect(find.text(money(338812485)), findsOneWidget);
       expect(find.text('Actif = Passif — le bilan s’équilibre'), findsOneWidget);
       expect(find.text('6'), findsWidgets);
       expect(find.text('Signalés, jamais arbitrés'), findsOneWidget);
-      expect(find.textContaining('Liasse CLINIQUE NASSIERA SARL, IFU 3201642748214, déposée le 15/05/2026 — code BK505416', findRichText: true), findsOneWidget);
+      expect(find.textContaining('Liasse CLINIQUE BAGUIDI « L’AS DU CŒUR », IFU 3201001996110, déposée le 30/04/2026 — code DEMO', findRichText: true), findsOneWidget);
       expect(find.textContaining('Direction Générale des Impôts, République du Bénin'), findsOneWidget);
     });
   });
@@ -85,11 +85,11 @@ void main() {
       }
       expect(find.text('BRUT 2025'), findsOneWidget);
       expect(find.text('NET 2024'), findsNWidgets(2));
-      expect(find.textContaining('Le bilan déposé s’équilibre : total général de l’actif ${money(112937495)} = total général du passif ${money(112937495)}.', findRichText: true),
+      expect(find.textContaining('Le bilan déposé s’équilibre : total général de l’actif ${money(338812485)} = total général du passif ${money(338812485)}.', findRichText: true),
           findsOneWidget);
       // le dépôt se CITE tel quel, y compris ses zéros
-      expect(find.text(money(180151372, avecDevise: false)), findsWidgets);
-      expect(find.text(money(100066531, avecDevise: false)), findsWidgets);
+      expect(find.text(money(540454116, avecDevise: false)), findsWidgets);
+      expect(find.text(money(300199593, avecDevise: false)), findsWidgets);
     });
 
     casM14('la colonne « Exercice en cours » est CALCULÉE : « Clients » porte le solde débiteur du journal, une ligne que le journal n\'alimente pas reste « — »', (t) async {
@@ -148,7 +148,7 @@ void main() {
       expect(find.text('-2${' '}415${' '}000'), findsOneWidget, reason: 'les charges du journal en négatif : la convention du formulaire');
     });
 
-    casM14('flux de trésorerie : trois écarts internes CONSERVÉS, non arbitrés, nommés ; ZB porte toujours −18 108 317', (t) async {
+    casM14('flux de trésorerie : trois écarts internes CONSERVÉS, non arbitrés, nommés ; ZB porte toujours −54 324 951', (t) async {
       final m = magasinComplet();
       await ouvrirM14(t, m, 'm12-etats-financiers');
       await onglet(t, 'Tableau des flux de trésorerie');
@@ -156,7 +156,7 @@ void main() {
       expect(find.text('Écarts internes du document déposé — conservés, non arbitrés'), findsOneWidget);
       expect(find.text('écart du document'), findsNWidgets(2), reason: 'deux lignes du tableau portent le badge ; trois écarts sont détaillés dessous');
       expect(find.text('Flux des activités opérationnelles (ZB)'), findsOneWidget);
-      expect(find.text(money(-18108317, avecDevise: false)), findsOneWidget);
+      expect(find.text(money(-54324951, avecDevise: false)), findsOneWidget);
       expect(find.textContaining('les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé', findRichText: true), findsOneWidget);
       expect(find.text('FLUX DE TRÉSORERIE PROVENANT DES ACTIVITÉS OPÉRATIONNELLES'), findsOneWidget);
     });
@@ -180,7 +180,7 @@ void main() {
       expect(find.text('NOTE 34 : FICHE DE SYNTHÈSE DES PRINCIPAUX INDICATEURS FINANCIERS (feuillet 51/51)'), findsOneWidget);
       expect(find.text('7.72 %'), findsOneWidget);
       expect(find.text('Notes du formulaire'), findsOneWidget);
-      expect(find.textContaining('450 F d’écart'), findsOneWidget);
+      expect(find.textContaining('1 350 F d’écart'), findsOneWidget);
       expect(find.text('Trésorerie nette'), findsOneWidget);
       expect(find.textContaining('(b) Les écarts de conversion doivent être éliminés'), findsOneWidget);
     });
@@ -199,7 +199,7 @@ void main() {
         await ouvrirM14(t, m, 'm12-etats-financiers');
         await toucherM14(t, find.widgetWithText(BoutonSigh, bouton));
         expect(find.text(titre), findsWidgets);
-        expect(find.textContaining('BK505416', findRichText: true), findsWidgets);
+        expect(find.textContaining('DEMO', findRichText: true), findsWidgets);
         expect(find.textContaining(contient, findRichText: true), findsWidgets);
         expect(find.textContaining('TAKI Alimatou', findRichText: true), findsWidgets);
       });

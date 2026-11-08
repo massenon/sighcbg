@@ -28,10 +28,10 @@ void main() {
   final courant = cpcSourceExercice(exos, ecr, 2026);
 
   group('la liasse déposée est ENGENDRÉE depuis la maquette, jamais recopiée', () {
-    test('six écarts internes, le dépôt du 15/05/2026 (BK505416), N = 2025 et N-1 = 2024', () {
+    test('six écarts internes, le dépôt du 30/04/2026 (DEMO), N = 2025 et N-1 = 2024', () {
       expect(L.ecarts.length, 6);
       expect(L.ecarts.map((e) => e['cle']), ['cafg', 'bf', 'zb', 'fluxOp', 'fluxFin', 'tresorerie']);
-      expect([L.depot['code'], L.depot['dateDepot'], L.exerciceN, L.exerciceN1], ['BK505416', '2026-05-15', 2025, 2024]);
+      expect([L.depot['code'], L.depot['dateDepot'], L.exerciceN, L.exerciceN1], ['DEMO', '2026-04-30', 2025, 2024]);
       expect(L.bilanActif.length, 29);
       expect(L.bilanPassif.length, 28);
       expect(L.resultat.length, 42);
@@ -176,10 +176,10 @@ void main() {
       final tabSy = lignes((sy['tables'] as List)[1]['lignes']);
       expect(tabSy.map((l) => l[2]), [for (final e in L.ecartsDe(['cafg', 'fluxOp', 'fluxFin', 'tresorerie'])) nt(e['lecture'])]);
     });
-    test('les chiffres du document ne sont PAS corrigés : ZB porte −18 108 317 quoi qu\'en dise la somme de ses composantes', () {
-      expect(L.ligne(L.flux, 'ZB')!['n'], -18108317);
-      expect(L.ligne(L.flux, 'ZH')!['n'], 6300639);
-      expect(L.ecart('tresorerie')!['constat'], contains('450 F d’écart'));
+    test('les chiffres du document ne sont PAS corrigés : ZB porte −54 324 951 quoi qu\'en dise la somme de ses composantes', () {
+      expect(L.ligne(L.flux, 'ZB')!['n'], -54324951);
+      expect(L.ligne(L.flux, 'ZH')!['n'], 18901917);
+      expect(L.ecart('tresorerie')!['constat'], contains('1 350 F d’écart'));
     });
   });
 }

@@ -563,15 +563,19 @@ void main() {
       await t.pump(const Duration(seconds: 10));
     });
 
-    testWidgets('répertoire vide : amorcé avec les deux numéros de l’en-tête officiel et trois structures SANS numéro', (t) async {
+    testWidgets('répertoire vide : amorcé avec le JEU DE DÉMONSTRATION (numéros fictifs 00 00 00 00 0N, mention visible, une fiche SANS numéro)', (t) async {
       final m = poste({'ambulances': []});
       await ouvrir(t, m, 'm13-repertoire-ambulances');
       final a = m.collection('ambulances').toutes;
-      expect(a.length, 5);
-      // Les deux ambulances de la clinique reçoivent les DEUX premiers numéros de l'en-tête (la Clinique Baguidi en déclare trois).
-      expect([for (final x in a) if (x['telephone'] != null) x['telephone']].toSet(), IdentiteClinique.telephones.take(2).toSet());
-      expect(a.where((x) => x['telephone'] == null).length, 3);
-      expect(find.textContaining('3 fiche(s) sans numéro'), findsOneWidget);
+      expect(a.length, 9);
+      // Plus aucun numéro de l'en-tête de la clinique sur une fiche d'ambulance : ce sont ceux de l'identité.
+      final tels = {for (final x in a) if (x['telephone'] != null) '${x['telephone']}'};
+      expect(tels.every((n) => RegExp(r'^00 00 00 00 0[1-9]$').hasMatch(n)), isTrue);
+      expect(tels.intersection(IdentiteClinique.telephones.toSet()), isEmpty);
+      expect(a.where((x) => x['telephone'] == null).length, 1);
+      expect(find.textContaining('1 fiche(s) sans numéro'), findsOneWidget);
+      expect(find.textContaining('Jeu de démonstration : 8 fiche(s)'), findsOneWidget);
+      expect(find.text('Numéro fictif de démonstration'), findsWidgets, reason: 'la mention est visible sur les cartes et au tableau');
       await t.pump(const Duration(seconds: 10));
     });
   });

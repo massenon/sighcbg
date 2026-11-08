@@ -138,7 +138,7 @@ void main() {
   testWidgets('A4, identité initiale : l’autorisation d’ouverture VIDE n’imprime ni sa ligne ni son libellé ; l’en-tête raccourcit d’autant', (t) async {
     await monter(t, FeuilleA4(piece: piece));
     expect(find.textContaining('AUTORISATION'), findsNothing);
-    expect(find.text(IdentiteClinique.nom), findsOneWidget);
+    expect(find.text(EnteteTroisZones.denominationInsecable(IdentiteClinique.nom)), findsOneWidget);
     expect(find.text(IdentiteClinique.bp), findsOneWidget);
     expect(find.text(IdentiteClinique.slogan), findsOneWidget);
     expect(find.textContaining('NASSIERA'), findsNothing);

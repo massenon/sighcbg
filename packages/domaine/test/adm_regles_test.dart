@@ -296,20 +296,37 @@ void main() {
       expect(att['source'], f['source']);
       expect(admFicheAmbulance({'telephone': '+229 90 00 00 09'}, maintenant)['aCompleter'], false);
     });
-    test('amorçage à froid = ce que la maquette sème (ordre d’insertion, numéros de l’en-tête officiel, aucun numéro inventé)', () {
-      final a = admAmorcerRepertoire(maintenant, [for (final t in (r['brand'] as List)) '$t'], 'TCHANE Nourou');
-      // la maquette insère en TÊTE : sa collection est l'ordre inverse.
-      final att = liste(obj(r['amorcage'])['fiches']);
-      expect(a.length, att.length);
-      for (final (i, f) in a.reversed.indexed) {
-        for (final k in ['libelle', 'type', 'contact', 'base', 'disponibilite', 'aCompleter', 'source']) {
-          final attendu = att[i][k];
-          // le jeu de la maquette est celui de la clinique d'origine : ville et structures extérieures sont celles de Parakou
-          expect(f[k], attendu is String ? attendu.replaceAll('CHD Atacora — ambulance', 'Hôpital de référence — ambulance').replaceAll('Régulation du CHD', 'Régulation de l’hôpital').replaceAll('Natitingou', 'Parakou') : attendu, reason: '${att[i]['libelle']} $k');
-        }
-        expect(f['telephone'], att[i]['telephone'], reason: '${att[i]['libelle']} téléphone');
-        expect(f['verifieLe'], att[i]['verifieLe'], reason: '${att[i]['libelle']} vérifié');
+    test('amorçage à froid = JEU DE DÉMONSTRATION (08/11/2026) : numéros fictifs 00 00 00 00 0N, mention portée, une fiche sans numéro, une vérification périmée', () {
+      // La maquette de Nassiera Too n'a plus d'objet ici : ses numéros d'en-tête ne sont plus ceux d'une ambulance.
+      final a = admAmorcerRepertoire(maintenant, 'Chauffeur de garde');
+      expect(a.length, inInclusiveRange(8, 10));
+      final numeros = [for (final f in a) ...[if (f['telephone'] != null) '${f['telephone']}', if (f['telephone2'] != null) '${f['telephone2']}']];
+      final motif = RegExp(r'^00 00 00 00 0[1-9]$');
+      expect(numeros, isNotEmpty);
+      for (final n in numeros) {
+        expect(motif.hasMatch(n), isTrue, reason: '$n doit être fictif et non composable');
       }
+      // Les numéros de l'identité ne sont plus posés sur les fiches d'ambulance.
+      for (final t in IdentiteClinique.telephones) {
+        expect(numeros, isNot(contains(t)));
+      }
+      for (final f in a.where((f) => f['telephone'] != null)) {
+        expect(f['fictif'], true, reason: '${f['libelle']}');
+        expect(f['source'], admMentionNumeroFictif);
+      }
+      final sans = a.where((f) => f['telephone'] == null).toList();
+      expect(sans.length, 1);
+      expect(sans.single['aCompleter'], true);
+      expect(sans.single['source'], isNot(contains('fictif')));
+      expect(admNoteSansNumero(a), startsWith('1 fiche(s) sans numéro'));
+      expect(admNoteDemo(a), contains('${a.length - 1} fiche(s)'));
+      expect(admNoteDemo([for (final f in a) {...f, 'fictif': false}]), isNull, reason: 'répertoire réel : aucune note de démonstration');
+      // Disponibilités variées, dates de vérification étalées dont une périmée ; le joignable remonte en tête.
+      expect({for (final f in a) f['disponibilite']}, {'disponible', 'en_course', 'indisponible'});
+      expect(a.where((f) => f['telephone'] != null && admPerime(f, maintenant)).length, greaterThanOrEqualTo(1));
+      expect(admOrdreAppelRapide(a).first['disponibilite'], 'disponible');
+      expect({for (final t in a) t['type']}.containsAll(['clinique', 'publique', 'partenaire', 'prive']), isTrue);
+      expect(a.map((f) => f['libelle']).join(' | '), allOf(contains('Sapeurs-pompiers'), contains('Zone sanitaire de Parakou'), contains('SAMU'), contains('Hôpital de référence')));
     });
   });
 

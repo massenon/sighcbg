@@ -11,7 +11,7 @@ import '../../shell/contexte_ecran.dart';
 import '../m13/qual_commun.dart' show sourceQual;
 import 'cpc_commun.dart';
 
-/// `m12-etats-financiers` — « États financiers de synthèse » : les CINQ feuillets de la liasse déposée à la DGI le 15/05/2026 (code BK505416) — bilan,
+/// `m12-etats-financiers` — « États financiers de synthèse » : les CINQ feuillets de la liasse de démonstration (code DEMO) — bilan,
 /// compte de résultat, tableau des flux de trésorerie, note 11 « Disponibilités », note 34 « Fiche de synthèse » — avec les MÊMES références, libellés et
 /// ordre : un comptable doit retrouver SES lignes, à LEUR place, pour rapprocher l'écran du dépôt.
 ///
@@ -32,7 +32,7 @@ class EcranEtatsFinanciers extends StatefulWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'L’écran reproduit les cinq feuillets de la liasse déposée le 15/05/2026 (code BK505416) : mêmes références, mêmes libellés, même ordre. La colonne « déposé » CITE le document — elle ne se recalcule pas ; la colonne « exercice en cours » est CALCULÉE depuis le journal, par les préfixes de comptes SYSCOHADA. Une ligne que le journal n’alimente pas reste vide : un zéro y ferait croire à un solde nul là où il n’y a pas de donnée. Les écarts internes du document sont signalés, jamais arbitrés.';
+      'L’écran reproduit les cinq feuillets de la liasse de démonstration (code DEMO) : mêmes références, mêmes libellés, même ordre. La colonne « déposé » CITE le document — elle ne se recalcule pas ; la colonne « exercice en cours » est CALCULÉE depuis le journal, par les préfixes de comptes SYSCOHADA. Une ligne que le journal n’alimente pas reste vide : un zéro y ferait croire à un solde nul là où il n’y a pas de donnée. Les écarts internes du document sont signalés, jamais arbitrés. $cpbMentionDemonstration';
 
   @override
   State<EcranEtatsFinanciers> createState() => _EtatEtats();

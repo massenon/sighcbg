@@ -455,7 +455,8 @@ class EcranNotesService extends StatelessWidget with EcranMaquette {
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 /// On vient ici DANS UNE URGENCE : les disponibles remontent en tête, le numéro se lit en grand, la dernière vérification est datée, et JAMAIS un numéro
-/// d'urgence n'est inventé — une structure dont le numéro n'est pas relevé a une fiche vide qui le dit.
+/// d'urgence réel n'est inventé — une structure dont le numéro n'est pas relevé a une fiche vide qui le dit. Seul le JEU DE DÉMONSTRATION porte des numéros,
+/// visiblement fictifs et non composables (00 00 00 00 0N, mention « Numéro fictif de démonstration » sur chaque fiche).
 class EcranRepertoireAmbulances extends StatefulWidget with EcranMaquette {
   const EcranRepertoireAmbulances({super.key});
   @override
@@ -584,6 +585,8 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
                     message: admHrefTel(r['telephone']),
                     child: Text('${r['telephone']}',
                         style: const TextStyle(fontFamily: matPoliceMono, fontSize: 24, height: 32 / 24, fontWeight: FontWeight.w700, color: JetonsShell.navy900)))),
+            if (r['fictif'] == true)
+              const Padding(padding: EdgeInsets.only(top: 2), child: Text(admMentionNumeroFictif, style: TextStyle(color: JetonsShell.warning700, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic))),
             if (matVrai(r['telephone2']))
               Padding(
                   padding: const EdgeInsets.only(top: 4),
@@ -615,7 +618,7 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
       _amorce = true;
       if (col.toutes.isEmpty) {
         final chauffeur = c.magasin.collection('personnel').actives.where((a) => a['fonction'] == 'chauffeur').firstOrNull;
-        for (final f in admAmorcerRepertoire(c.aujourdhui, IdentiteClinique.telephones, chauffeur == null ? 'Chauffeur de garde' : '${chauffeur['nomComplet']}')) {
+        for (final f in admAmorcerRepertoire(c.aujourdhui, chauffeur == null ? 'Chauffeur de garde' : '${chauffeur['nomComplet']}')) {
           col.inserer(f, prefixe: 'AMB');
         }
       }
@@ -630,6 +633,10 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
             admLectureSeule(c),
             admKpis(admKpisRepertoire(rows, now)),
             const SizedBox(height: 16),
+            if (admNoteDemo(rows) case final demo?) ...[
+              NoteSigh(demo, ton: TonSigh.info, icone: LucideIcons.flaskConical),
+              const SizedBox(height: 16),
+            ],
             if (sansNumero != null) ...[
               NoteSigh(sansNumero, ton: TonSigh.attention, icone: LucideIcons.phoneOff),
               const SizedBox(height: 16),
@@ -650,10 +657,14 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
                 ColonneTableau(
                     cle: 'telephone',
                     libelle: 'Téléphone',
-                    texte: (r) => matVrai(r['telephone']) ? '${r['telephone']}' : 'à renseigner',
+                    texte: (r) => matVrai(r['telephone']) ? '${r['telephone']}${r['fictif'] == true ? ' ($admMentionNumeroFictif)' : ''}' : 'à renseigner',
                     rendu: (_, r) => !matVrai(r['telephone'])
                         ? const Text('à renseigner', style: TextStyle(color: JetonsShell.warning700, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic))
-                        : Text('${r['telephone']}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate800))),
+                        : Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                            Text('${r['telephone']}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
+                            if (r['fictif'] == true)
+                              const Text(admMentionNumeroFictif, style: TextStyle(color: JetonsShell.warning700, fontSize: 11, height: 14 / 11, fontStyle: FontStyle.italic)),
+                          ])),
                 ColonneTableau(cle: 'contact', libelle: 'Demander', texte: (r) => matVrai(r['contact']) ? '${r['contact']}' : '—'),
                 ColonneTableau(cle: 'base', libelle: 'Base', texte: (r) => matVrai(r['base']) ? '${r['base']}' : '—'),
                 ColonneTableau(cle: 'disponibilite', libelle: 'Disponibilité', texte: (r) => admDisponibilite(r['disponibilite']).libelle, rendu: (_, r) => admBadge(admDisponibilite(r['disponibilite']).libelle, admDisponibilite(r['disponibilite']).ton)),

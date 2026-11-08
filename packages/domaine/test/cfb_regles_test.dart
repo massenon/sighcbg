@@ -384,9 +384,10 @@ void main() {
       final att = {for (final x in (sy['collections'] as List).cast<List>()) x[0] as String: x};
       expect(stats.length, att.length);
       // Le vecteur a créé deux centres de coûts avant de mesurer : +2 sur cette seule collection.
-      expect(stats.fold<int>(0, (a, x) => a + x.total) + 2, 11452);
+      // Et le jeu de démonstration du répertoire des ambulances (08/11/2026) compte 9 fiches là où le vecteur en comptait 5 : +4 sur cette seule collection (le vecteur est rapproché en retranchant ces quatre fiches).
+      expect(stats.fold<int>(0, (a, x) => a + x.total) + 2, 11452 + 4);
       for (final x in stats) {
-        final plus = x.nom == 'centresCouts' ? 2 : 0;
+        final plus = x.nom == 'centresCouts' ? 2 : x.nom == 'ambulances' ? -4 : 0;
         expect([x.total + plus, x.actifs + plus, x.archives], [att[x.nom]![1], att[x.nom]![2], att[x.nom]![3]], reason: x.nom);
       }
     });

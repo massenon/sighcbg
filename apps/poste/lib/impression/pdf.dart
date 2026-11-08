@@ -126,7 +126,8 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
                   child: pw.Padding(
                       padding: const pw.EdgeInsets.symmetric(horizontal: 6),
                       child: pw.Column(children: [
-                        pw.Text(e.denomination,
+                        // Le moteur PDF ignore l'espace insécable : la coupure est posée à la main, avant les guillemets.
+                        pw.Text(e.denomination.replaceFirst(RegExp(r'\s+(?=«)'), '\n'),
                             textAlign: pw.TextAlign.center,
                             style: pw.TextStyle(font: p.titre, fontSize: 14.5, color: coeur)),
                         if (e.sousTitre.isNotEmpty)

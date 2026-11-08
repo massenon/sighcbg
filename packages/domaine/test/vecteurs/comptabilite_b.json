@@ -1,4 +1,5 @@
 {
+ "_demoLiasse": "Montants de la liasse et du classeur 2025 multipliés par 3 dans ecrans.m12-compte-resultat, ecrans.m12-flux-tresorerie (tools/baguidi/demo-liasse.mjs) : données de démonstration Baguidi",
  "referentiels": {
   "centres": [
    {
@@ -47,22 +48,22 @@
      {
       "label": "Chiffre d’affaires (XB)",
       "valeur": "11 522 544 FCFA",
-      "indice": "N-1 : 190 830 994 FCFA (-94.0 %)"
+      "indice": "N-1 : 572 492 982 FCFA (-98.0 %)"
      },
      {
       "label": "Valeur ajoutée (XC)",
       "valeur": "-22 792 456 FCFA",
-      "indice": "N-1 : 51 635 495 FCFA (-144.1 %)"
+      "indice": "N-1 : 154 906 485 FCFA (-114.7 %)"
      },
      {
       "label": "Excédent brut d’exploitation (XD)",
       "valeur": "-24 350 456 FCFA",
-      "indice": "N-1 : 24 088 517 FCFA (-201.1 %)"
+      "indice": "N-1 : 72 265 551 FCFA (-133.7 %)"
      },
      {
       "label": "Résultat net (XI)",
       "valeur": "-24 350 456 FCFA",
-      "indice": "N-1 : 4 561 200 FCFA (-633.9 %)"
+      "indice": "N-1 : 13 683 600 FCFA (-278.0 %)"
      }
     ],
     "tables": [
@@ -79,7 +80,7 @@
        ],
        [
         "NET (1) — calculé — arrêté au 30/10/2026",
-        "NET (1) — déposé — liasse BK505416"
+        "NET (1) — déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -151,7 +152,7 @@
          "+",
          "21",
          "10 989 544",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -175,7 +176,7 @@
          "",
          "",
          "11 522 544",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -247,7 +248,7 @@
          "-",
          "22",
          "—",
-         "-30 226 188"
+         "-90 678 564"
         ],
         "boutons": []
        },
@@ -271,7 +272,7 @@
          "-",
          "22",
          "-14 151 000",
-         "-34 823 421"
+         "-104 470 263"
         ],
         "boutons": []
        },
@@ -295,7 +296,7 @@
          "-",
          "23",
          "—",
-         "-88 000"
+         "-264 000"
         ],
         "boutons": []
        },
@@ -307,7 +308,7 @@
          "-",
          "24",
          "-15 139 000",
-         "-56 648 919"
+         "-169 946 757"
         ],
         "boutons": []
        },
@@ -319,7 +320,7 @@
          "-",
          "25",
          "-2 610 000",
-         "-10 063 357"
+         "-30 190 071"
         ],
         "boutons": []
        },
@@ -331,7 +332,7 @@
          "-",
          "26",
          "—",
-         "-7 345 614"
+         "-22 036 842"
         ],
         "boutons": []
        },
@@ -343,7 +344,7 @@
          "",
          "",
          "-22 792 456",
-         "51 635 495"
+         "154 906 485"
         ],
         "boutons": []
        },
@@ -355,7 +356,7 @@
          "-",
          "27",
          "-1 558 000",
-         "-27 546 978"
+         "-82 640 934"
         ],
         "boutons": []
        },
@@ -367,7 +368,7 @@
          "",
          "",
          "-24 350 456",
-         "24 088 517"
+         "72 265 551"
         ],
         "boutons": []
        },
@@ -391,7 +392,7 @@
          "-",
          "3C&28",
          "—",
-         "-10 617 358"
+         "-31 852 074"
         ],
         "boutons": []
        },
@@ -403,7 +404,7 @@
          "",
          "",
          "-24 350 456",
-         "13 471 159"
+         "40 413 477"
         ],
         "boutons": []
        },
@@ -451,7 +452,7 @@
          "-",
          "29",
          "—",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -475,7 +476,7 @@
          "",
          "",
          "0",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -487,7 +488,7 @@
          "",
          "",
          "-24 350 456",
-         "6 516 000"
+         "19 548 000"
         ],
         "boutons": []
        },
@@ -571,7 +572,7 @@
          "-",
          "37",
          "—",
-         "-1 954 800"
+         "-5 864 400"
         ],
         "boutons": []
        },
@@ -583,7 +584,7 @@
          "",
          "",
          "-24 350 456",
-         "4 561 200"
+         "13 683 600"
         ],
         "boutons": []
        }
@@ -601,7 +602,7 @@
      "Imprimer le compte de résultat"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 30/10/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
+     "Exercice 2026 : calculé — arrêté au 30/10/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
      "MARGE COMMERCIALE (XA) — RG-02 facture les médicaments au prix d’achat, sans marge : ce solde doit être nul ou quasi nul, et il l’est à la liasse déposée. S’il cessait de l’être, ce serait un signal, pas une bonne nouvelle.",
      "EXCÉDENT BRUT D’EXPLOITATION (XD) — ce qui reste après avoir payé les hommes et l’État. Il ignore les amortissements et le financement, qui dépendent de décisions passées : c’est lui qu’on regarde pour savoir si l’exploitation tient debout.",
      "RÉSULTAT FINANCIER (XF) — les intérêts d’emprunt (RM) sont ici, PAS dans l’exploitation : les y mettre ferait juger l’activité sur des choix de financement.",
@@ -620,7 +621,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -647,11 +648,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -660,8 +661,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ],
     "piece": {
      "titre": "Compte de résultat",
@@ -669,11 +670,11 @@
      "cartouche": [
       [
        "Dénomination sociale",
-       "CLINIQUE NASSIERA SARL"
+       "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
       ],
       [
        "IFU",
-       "3201642748214"
+       "3201001996110"
       ],
       [
        "Date de dépôt",
@@ -689,10 +690,10 @@
       ],
       [
        "Colonne N-1",
-       "Exercice au 31/12/2025 — déposé — liasse BK505416"
+       "Exercice au 31/12/2025 — déposé — liasse DEMO"
       ]
      ],
-     "contenu": "RÉFLIBELLÉS(2)NOTEEXERCICE 2026 (N)EXERCICE AU 31/12/2025 (N-1)NET (1) — calculé — arrêté au 30/10/2026NET (1) — déposé — liasse BK505416TAVentes de marchandisesA+21533 0000RAAchats de marchandises-22-2 415 0000RBVariation de stocks de marchandises-/+60XAMARGE COMMERCIALE (Somme TA à RB)-1 882 0000TBVentes de produits fabriquésB+210TCTravaux, services vendusC+2110 989 544190 830 994TDProduits accessoiresD+210XBCHIFFRE D’AFFAIRES (A + B + C + D)11 522 544190 830 994TEProduction stockée (ou déstockage)-/+60TFProduction immobilisée+210TGSubventions d’exploitation+210THAutres produits+210TITransferts de charges d’exploitation+120RCAchats de matières premières et fournitures liées-22-30 226 188RDVariation de stocks de matières premières et fournitures liées-/+60REAutres achats-22-14 151 000-34 823 421RFVariation de stocks d’autres approvisionnements-/+60RGTransports-23-88 000RHServices extérieurs-24-15 139 000-56 648 919RIImpôts et taxes-25-2 610 000-10 063 357RJAutres charges-26-7 345 614XCVALEUR AJOUTÉE (XB + RA + RB) + (somme TE à RJ)-22 792 45651 635 495RKCharges de personnel-27-1 558 000-27 546 978XDEXCÉDENT BRUT D’EXPLOITATION (XC + RK)-24 350 45624 088 517TJReprises d’amortissements, provisions et dépréciations+280RLDotations aux amortissements, aux provisions et dépréciations-3C&28-10 617 358XERÉSULTAT D’EXPLOITATION (XD + TJ + RL)-24 350 45613 471 159TKRevenus financiers et assimilés+290TLReprises de provisions et dépréciations financières+280TMTransferts de charges financières+120RMFrais financiers et charges assimilées-29-6 955 159RNDotations aux provisions et aux dépréciations financières-3C&280XFRÉSULTAT FINANCIER (somme TK à RN)0-6 955 159XGRÉSULTAT DES ACTIVITÉS ORDINAIRES (XE + XF)-24 350 4566 516 000TNProduits des cessions d’immobilisations+3D0TOAutres Produits HAO+300ROValeurs comptables des cessions d’immobilisations-3D0RPAutres Charges HAO-300XHRÉSULTAT HORS ACTIVITÉS ORDINAIRES (somme TN à RP)00RQParticipation des travailleurs-300RSImpôts sur le résultat-37-1 954 800XIRÉSULTAT NET (XG + XH + RQ + RS)-24 350 4564 561 200(1) Montants nets. (2) + produit, - charge, -/+ variation. Formulaire au format du feuillet 7/51 de la liasse DGI ; sous-totaux calculés par les formules du formulaire.",
+     "contenu": "RÉFLIBELLÉS(2)NOTEEXERCICE 2026 (N)EXERCICE AU 31/12/2025 (N-1)NET (1) — calculé — arrêté au 30/10/2026NET (1) — déposé — liasse DEMOTAVentes de marchandisesA+21533 0000RAAchats de marchandises-22-2 415 0000RBVariation de stocks de marchandises-/+60XAMARGE COMMERCIALE (Somme TA à RB)-1 882 0000TBVentes de produits fabriquésB+210TCTravaux, services vendusC+2110 989 544572 492 982TDProduits accessoiresD+210XBCHIFFRE D’AFFAIRES (A + B + C + D)11 522 544572 492 982TEProduction stockée (ou déstockage)-/+60TFProduction immobilisée+210TGSubventions d’exploitation+210THAutres produits+210TITransferts de charges d’exploitation+120RCAchats de matières premières et fournitures liées-22-90 678 564RDVariation de stocks de matières premières et fournitures liées-/+60REAutres achats-22-14 151 000-104 470 263RFVariation de stocks d’autres approvisionnements-/+60RGTransports-23-264 000RHServices extérieurs-24-15 139 000-169 946 757RIImpôts et taxes-25-2 610 000-30 190 071RJAutres charges-26-22 036 842XCVALEUR AJOUTÉE (XB + RA + RB) + (somme TE à RJ)-22 792 456154 906 485RKCharges de personnel-27-1 558 000-82 640 934XDEXCÉDENT BRUT D’EXPLOITATION (XC + RK)-24 350 45672 265 551TJReprises d’amortissements, provisions et dépréciations+280RLDotations aux amortissements, aux provisions et dépréciations-3C&28-31 852 074XERÉSULTAT D’EXPLOITATION (XD + TJ + RL)-24 350 45640 413 477TKRevenus financiers et assimilés+290TLReprises de provisions et dépréciations financières+280TMTransferts de charges financières+120RMFrais financiers et charges assimilées-29-20 865 477RNDotations aux provisions et aux dépréciations financières-3C&280XFRÉSULTAT FINANCIER (somme TK à RN)0-20 865 477XGRÉSULTAT DES ACTIVITÉS ORDINAIRES (XE + XF)-24 350 45619 548 000TNProduits des cessions d’immobilisations+3D0TOAutres Produits HAO+300ROValeurs comptables des cessions d’immobilisations-3D0RPAutres Charges HAO-300XHRÉSULTAT HORS ACTIVITÉS ORDINAIRES (somme TN à RP)00RQParticipation des travailleurs-300RSImpôts sur le résultat-37-5 864 400XIRÉSULTAT NET (XG + XH + RQ + RS)-24 350 45613 683 600(1) Montants nets. (2) + produit, - charge, -/+ variation. Formulaire au format du feuillet 7/51 de la liasse DGI ; sous-totaux calculés par les formules du formulaire.",
      "tables": [
       {
        "entetes": [
@@ -707,7 +708,7 @@
         ],
         [
          "NET (1) — calculé — arrêté au 30/10/2026",
-         "NET (1) — déposé — liasse BK505416"
+         "NET (1) — déposé — liasse DEMO"
         ]
        ],
        "lignes": [
@@ -763,7 +764,7 @@
          "+",
          "21",
          "10 989 544",
-         "190 830 994"
+         "572 492 982"
         ],
         [
          "TD",
@@ -781,7 +782,7 @@
          "",
          "",
          "11 522 544",
-         "190 830 994"
+         "572 492 982"
         ],
         [
          "TE",
@@ -835,7 +836,7 @@
          "-",
          "22",
          "",
-         "-30 226 188"
+         "-90 678 564"
         ],
         [
          "RD",
@@ -853,7 +854,7 @@
          "-",
          "22",
          "-14 151 000",
-         "-34 823 421"
+         "-104 470 263"
         ],
         [
          "RF",
@@ -871,7 +872,7 @@
          "-",
          "23",
          "",
-         "-88 000"
+         "-264 000"
         ],
         [
          "RH",
@@ -880,7 +881,7 @@
          "-",
          "24",
          "-15 139 000",
-         "-56 648 919"
+         "-169 946 757"
         ],
         [
          "RI",
@@ -889,7 +890,7 @@
          "-",
          "25",
          "-2 610 000",
-         "-10 063 357"
+         "-30 190 071"
         ],
         [
          "RJ",
@@ -898,7 +899,7 @@
          "-",
          "26",
          "",
-         "-7 345 614"
+         "-22 036 842"
         ],
         [
          "XC",
@@ -907,7 +908,7 @@
          "",
          "",
          "-22 792 456",
-         "51 635 495"
+         "154 906 485"
         ],
         [
          "RK",
@@ -916,7 +917,7 @@
          "-",
          "27",
          "-1 558 000",
-         "-27 546 978"
+         "-82 640 934"
         ],
         [
          "XD",
@@ -925,7 +926,7 @@
          "",
          "",
          "-24 350 456",
-         "24 088 517"
+         "72 265 551"
         ],
         [
          "TJ",
@@ -943,7 +944,7 @@
          "-",
          "3C&28",
          "",
-         "-10 617 358"
+         "-31 852 074"
         ],
         [
          "XE",
@@ -952,7 +953,7 @@
          "",
          "",
          "-24 350 456",
-         "13 471 159"
+         "40 413 477"
         ],
         [
          "TK",
@@ -988,7 +989,7 @@
          "-",
          "29",
          "",
-         "-6 955 159"
+         "-20 865 477"
         ],
         [
          "RN",
@@ -1006,7 +1007,7 @@
          "",
          "",
          "0",
-         "-6 955 159"
+         "-20 865 477"
         ],
         [
          "XG",
@@ -1015,7 +1016,7 @@
          "",
          "",
          "-24 350 456",
-         "6 516 000"
+         "19 548 000"
         ],
         [
          "TN",
@@ -1078,7 +1079,7 @@
          "-",
          "37",
          "",
-         "-1 954 800"
+         "-5 864 400"
         ],
         [
          "XI",
@@ -1087,7 +1088,7 @@
          "",
          "",
          "-24 350 456",
-         "4 561 200"
+         "13 683 600"
         ]
        ],
        "pied": []
@@ -1110,22 +1111,22 @@
      {
       "label": "Chiffre d’affaires (XB)",
       "valeur": "6 709 000 FCFA",
-      "indice": "N-1 : 190 830 994 FCFA (-96.5 %)"
+      "indice": "N-1 : 572 492 982 FCFA (-98.8 %)"
      },
      {
       "label": "Valeur ajoutée (XC)",
       "valeur": "-21 770 000 FCFA",
-      "indice": "N-1 : 51 635 495 FCFA (-142.2 %)"
+      "indice": "N-1 : 154 906 485 FCFA (-114.1 %)"
      },
      {
       "label": "Excédent brut d’exploitation (XD)",
       "valeur": "-22 404 000 FCFA",
-      "indice": "N-1 : 24 088 517 FCFA (-193.0 %)"
+      "indice": "N-1 : 72 265 551 FCFA (-131.0 %)"
      },
      {
       "label": "Résultat net (XI)",
       "valeur": "-22 404 000 FCFA",
-      "indice": "N-1 : 4 561 200 FCFA (-591.2 %)"
+      "indice": "N-1 : 13 683 600 FCFA (-263.7 %)"
      }
     ],
     "tables": [
@@ -1142,7 +1143,7 @@
        ],
        [
         "NET (1) — calculé — arrêté au 30/06/2026",
-        "NET (1) — déposé — liasse BK505416"
+        "NET (1) — déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -1214,7 +1215,7 @@
          "+",
          "21",
          "6 176 000",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -1238,7 +1239,7 @@
          "",
          "",
          "6 709 000",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -1310,7 +1311,7 @@
          "-",
          "22",
          "—",
-         "-30 226 188"
+         "-90 678 564"
         ],
         "boutons": []
        },
@@ -1334,7 +1335,7 @@
          "-",
          "22",
          "-13 152 000",
-         "-34 823 421"
+         "-104 470 263"
         ],
         "boutons": []
        },
@@ -1358,7 +1359,7 @@
          "-",
          "23",
          "—",
-         "-88 000"
+         "-264 000"
         ],
         "boutons": []
        },
@@ -1370,7 +1371,7 @@
          "-",
          "24",
          "-10 882 000",
-         "-56 648 919"
+         "-169 946 757"
         ],
         "boutons": []
        },
@@ -1382,7 +1383,7 @@
          "-",
          "25",
          "-2 610 000",
-         "-10 063 357"
+         "-30 190 071"
         ],
         "boutons": []
        },
@@ -1394,7 +1395,7 @@
          "-",
          "26",
          "—",
-         "-7 345 614"
+         "-22 036 842"
         ],
         "boutons": []
        },
@@ -1406,7 +1407,7 @@
          "",
          "",
          "-21 770 000",
-         "51 635 495"
+         "154 906 485"
         ],
         "boutons": []
        },
@@ -1418,7 +1419,7 @@
          "-",
          "27",
          "-634 000",
-         "-27 546 978"
+         "-82 640 934"
         ],
         "boutons": []
        },
@@ -1430,7 +1431,7 @@
          "",
          "",
          "-22 404 000",
-         "24 088 517"
+         "72 265 551"
         ],
         "boutons": []
        },
@@ -1454,7 +1455,7 @@
          "-",
          "3C&28",
          "—",
-         "-10 617 358"
+         "-31 852 074"
         ],
         "boutons": []
        },
@@ -1466,7 +1467,7 @@
          "",
          "",
          "-22 404 000",
-         "13 471 159"
+         "40 413 477"
         ],
         "boutons": []
        },
@@ -1514,7 +1515,7 @@
          "-",
          "29",
          "—",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -1538,7 +1539,7 @@
          "",
          "",
          "0",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -1550,7 +1551,7 @@
          "",
          "",
          "-22 404 000",
-         "6 516 000"
+         "19 548 000"
         ],
         "boutons": []
        },
@@ -1634,7 +1635,7 @@
          "-",
          "37",
          "—",
-         "-1 954 800"
+         "-5 864 400"
         ],
         "boutons": []
        },
@@ -1646,7 +1647,7 @@
          "",
          "",
          "-22 404 000",
-         "4 561 200"
+         "13 683 600"
         ],
         "boutons": []
        }
@@ -1664,7 +1665,7 @@
      "Imprimer le compte de résultat"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 30/06/2026 (208 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416.",
+     "Exercice 2026 : calculé — arrêté au 30/06/2026 (208 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO.",
      "MARGE COMMERCIALE (XA) — RG-02 facture les médicaments au prix d’achat, sans marge : ce solde doit être nul ou quasi nul, et il l’est à la liasse déposée. S’il cessait de l’être, ce serait un signal, pas une bonne nouvelle.",
      "EXCÉDENT BRUT D’EXPLOITATION (XD) — ce qui reste après avoir payé les hommes et l’État. Il ignore les amortissements et le financement, qui dépendent de décisions passées : c’est lui qu’on regarde pour savoir si l’exploitation tient debout.",
      "RÉSULTAT FINANCIER (XF) — les intérêts d’emprunt (RM) sont ici, PAS dans l’exploitation : les y mettre ferait juger l’activité sur des choix de financement.",
@@ -1683,7 +1684,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -1710,11 +1711,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -1742,11 +1743,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -1774,11 +1775,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -1787,8 +1788,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    },
    "2026_dec": {
@@ -1796,22 +1797,22 @@
      {
       "label": "Chiffre d’affaires (XB)",
       "valeur": "11 522 544 FCFA",
-      "indice": "N-1 : 190 830 994 FCFA (-94.0 %)"
+      "indice": "N-1 : 572 492 982 FCFA (-98.0 %)"
      },
      {
       "label": "Valeur ajoutée (XC)",
       "valeur": "-22 792 456 FCFA",
-      "indice": "N-1 : 51 635 495 FCFA (-144.1 %)"
+      "indice": "N-1 : 154 906 485 FCFA (-114.7 %)"
      },
      {
       "label": "Excédent brut d’exploitation (XD)",
       "valeur": "-24 350 456 FCFA",
-      "indice": "N-1 : 24 088 517 FCFA (-201.1 %)"
+      "indice": "N-1 : 72 265 551 FCFA (-133.7 %)"
      },
      {
       "label": "Résultat net (XI)",
       "valeur": "-24 350 456 FCFA",
-      "indice": "N-1 : 4 561 200 FCFA (-633.9 %)"
+      "indice": "N-1 : 13 683 600 FCFA (-278.0 %)"
      }
     ],
     "tables": [
@@ -1828,7 +1829,7 @@
        ],
        [
         "NET (1) — calculé — arrêté au 31/12/2026",
-        "NET (1) — déposé — liasse BK505416"
+        "NET (1) — déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -1900,7 +1901,7 @@
          "+",
          "21",
          "10 989 544",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -1924,7 +1925,7 @@
          "",
          "",
          "11 522 544",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -1996,7 +1997,7 @@
          "-",
          "22",
          "—",
-         "-30 226 188"
+         "-90 678 564"
         ],
         "boutons": []
        },
@@ -2020,7 +2021,7 @@
          "-",
          "22",
          "-14 151 000",
-         "-34 823 421"
+         "-104 470 263"
         ],
         "boutons": []
        },
@@ -2044,7 +2045,7 @@
          "-",
          "23",
          "—",
-         "-88 000"
+         "-264 000"
         ],
         "boutons": []
        },
@@ -2056,7 +2057,7 @@
          "-",
          "24",
          "-15 139 000",
-         "-56 648 919"
+         "-169 946 757"
         ],
         "boutons": []
        },
@@ -2068,7 +2069,7 @@
          "-",
          "25",
          "-2 610 000",
-         "-10 063 357"
+         "-30 190 071"
         ],
         "boutons": []
        },
@@ -2080,7 +2081,7 @@
          "-",
          "26",
          "—",
-         "-7 345 614"
+         "-22 036 842"
         ],
         "boutons": []
        },
@@ -2092,7 +2093,7 @@
          "",
          "",
          "-22 792 456",
-         "51 635 495"
+         "154 906 485"
         ],
         "boutons": []
        },
@@ -2104,7 +2105,7 @@
          "-",
          "27",
          "-1 558 000",
-         "-27 546 978"
+         "-82 640 934"
         ],
         "boutons": []
        },
@@ -2116,7 +2117,7 @@
          "",
          "",
          "-24 350 456",
-         "24 088 517"
+         "72 265 551"
         ],
         "boutons": []
        },
@@ -2140,7 +2141,7 @@
          "-",
          "3C&28",
          "—",
-         "-10 617 358"
+         "-31 852 074"
         ],
         "boutons": []
        },
@@ -2152,7 +2153,7 @@
          "",
          "",
          "-24 350 456",
-         "13 471 159"
+         "40 413 477"
         ],
         "boutons": []
        },
@@ -2200,7 +2201,7 @@
          "-",
          "29",
          "—",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -2224,7 +2225,7 @@
          "",
          "",
          "0",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -2236,7 +2237,7 @@
          "",
          "",
          "-24 350 456",
-         "6 516 000"
+         "19 548 000"
         ],
         "boutons": []
        },
@@ -2320,7 +2321,7 @@
          "-",
          "37",
          "—",
-         "-1 954 800"
+         "-5 864 400"
         ],
         "boutons": []
        },
@@ -2332,7 +2333,7 @@
          "",
          "",
          "-24 350 456",
-         "4 561 200"
+         "13 683 600"
         ],
         "boutons": []
        }
@@ -2350,7 +2351,7 @@
      "Imprimer le compte de résultat"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 31/12/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
+     "Exercice 2026 : calculé — arrêté au 31/12/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
      "MARGE COMMERCIALE (XA) — RG-02 facture les médicaments au prix d’achat, sans marge : ce solde doit être nul ou quasi nul, et il l’est à la liasse déposée. S’il cessait de l’être, ce serait un signal, pas une bonne nouvelle.",
      "EXCÉDENT BRUT D’EXPLOITATION (XD) — ce qui reste après avoir payé les hommes et l’État. Il ignore les amortissements et le financement, qui dépendent de décisions passées : c’est lui qu’on regarde pour savoir si l’exploitation tient debout.",
      "RÉSULTAT FINANCIER (XF) — les intérêts d’emprunt (RM) sont ici, PAS dans l’exploitation : les y mettre ferait juger l’activité sur des choix de financement.",
@@ -2369,7 +2370,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -2396,11 +2397,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -2428,11 +2429,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -2460,11 +2461,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -2473,31 +2474,31 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    },
    "depose": {
     "kpis": [
      {
       "label": "Chiffre d’affaires (XB)",
-      "valeur": "190 830 994 FCFA",
-      "indice": "N-1 : 177 153 094 FCFA (+7.7 %)"
+      "valeur": "572 492 982 FCFA",
+      "indice": "N-1 : 531 459 282 FCFA (+7.7 %)"
      },
      {
       "label": "Valeur ajoutée (XC)",
-      "valeur": "51 635 495 FCFA",
-      "indice": "N-1 : 43 450 392 FCFA (+18.8 %)"
+      "valeur": "154 906 485 FCFA",
+      "indice": "N-1 : 130 351 176 FCFA (+18.8 %)"
      },
      {
       "label": "Excédent brut d’exploitation (XD)",
-      "valeur": "24 088 517 FCFA",
-      "indice": "N-1 : 26 377 610 FCFA (-8.7 %)"
+      "valeur": "72 265 551 FCFA",
+      "indice": "N-1 : 79 132 830 FCFA (-8.7 %)"
      },
      {
       "label": "Résultat net (XI)",
-      "valeur": "4 561 200 FCFA",
-      "indice": "N-1 : 4 472 283 FCFA (+2.0 %)"
+      "valeur": "13 683 600 FCFA",
+      "indice": "N-1 : 13 416 849 FCFA (+2.0 %)"
      }
     ],
     "tables": [
@@ -2513,8 +2514,8 @@
         "EXERCICE AU 31/12/2024 (N-1)"
        ],
        [
-        "NET (1) — déposé — liasse BK505416",
-        "NET (1) — déposé — liasse BK505416"
+        "NET (1) — déposé — liasse DEMO",
+        "NET (1) — déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -2585,8 +2586,8 @@
          "C",
          "+",
          "21",
-         "190 830 994",
-         "177 153 094"
+         "572 492 982",
+         "531 459 282"
         ],
         "boutons": []
        },
@@ -2609,8 +2610,8 @@
          "",
          "",
          "",
-         "190 830 994",
-         "177 153 094"
+         "572 492 982",
+         "531 459 282"
         ],
         "boutons": []
        },
@@ -2681,8 +2682,8 @@
          "",
          "-",
          "22",
-         "-30 226 188",
-         "-40 656 095"
+         "-90 678 564",
+         "-121 968 285"
         ],
         "boutons": []
        },
@@ -2705,8 +2706,8 @@
          "",
          "-",
          "22",
-         "-34 823 421",
-         "-27 861 825"
+         "-104 470 263",
+         "-83 585 475"
         ],
         "boutons": []
        },
@@ -2729,8 +2730,8 @@
          "",
          "-",
          "23",
-         "-88 000",
-         "-94 000"
+         "-264 000",
+         "-282 000"
         ],
         "boutons": []
        },
@@ -2741,8 +2742,8 @@
          "",
          "-",
          "24",
-         "-56 648 919",
-         "-56 608 270"
+         "-169 946 757",
+         "-169 824 810"
         ],
         "boutons": []
        },
@@ -2753,8 +2754,8 @@
          "",
          "-",
          "25",
-         "-10 063 357",
-         "-6 456 990"
+         "-30 190 071",
+         "-19 370 970"
         ],
         "boutons": []
        },
@@ -2765,8 +2766,8 @@
          "",
          "-",
          "26",
-         "-7 345 614",
-         "-2 025 522"
+         "-22 036 842",
+         "-6 076 566"
         ],
         "boutons": []
        },
@@ -2777,8 +2778,8 @@
          "",
          "",
          "",
-         "51 635 495",
-         "43 450 392"
+         "154 906 485",
+         "130 351 176"
         ],
         "boutons": []
        },
@@ -2789,8 +2790,8 @@
          "",
          "-",
          "27",
-         "-27 546 978",
-         "-17 072 782"
+         "-82 640 934",
+         "-51 218 346"
         ],
         "boutons": []
        },
@@ -2801,8 +2802,8 @@
          "",
          "",
          "",
-         "24 088 517",
-         "26 377 610"
+         "72 265 551",
+         "79 132 830"
         ],
         "boutons": []
        },
@@ -2825,8 +2826,8 @@
          "",
          "-",
          "3C&28",
-         "-10 617 358",
-         "-11 203 158"
+         "-31 852 074",
+         "-33 609 474"
         ],
         "boutons": []
        },
@@ -2837,8 +2838,8 @@
          "",
          "",
          "",
-         "13 471 159",
-         "15 174 452"
+         "40 413 477",
+         "45 523 356"
         ],
         "boutons": []
        },
@@ -2885,8 +2886,8 @@
          "",
          "-",
          "29",
-         "-6 955 159",
-         "-8 785 769"
+         "-20 865 477",
+         "-26 357 307"
         ],
         "boutons": []
        },
@@ -2909,8 +2910,8 @@
          "",
          "",
          "",
-         "-6 955 159",
-         "-8 785 769"
+         "-20 865 477",
+         "-26 357 307"
         ],
         "boutons": []
        },
@@ -2921,8 +2922,8 @@
          "",
          "",
          "",
-         "6 516 000",
-         "6 388 683"
+         "19 548 000",
+         "19 166 049"
         ],
         "boutons": []
        },
@@ -3005,8 +3006,8 @@
          "",
          "-",
          "37",
-         "-1 954 800",
-         "-1 916 400"
+         "-5 864 400",
+         "-5 749 200"
         ],
         "boutons": []
        },
@@ -3017,8 +3018,8 @@
          "",
          "",
          "",
-         "4 561 200",
-         "4 472 283"
+         "13 683 600",
+         "13 416 849"
         ],
         "boutons": []
        }
@@ -3036,7 +3037,7 @@
      "Imprimer le compte de résultat"
     ],
     "notes": [
-     "Exercice au 31/12/2025 : déposé — liasse BK505416 · Exercice au 31/12/2024 : déposé — liasse BK505416.",
+     "Exercice au 31/12/2025 : déposé — liasse DEMO · Exercice au 31/12/2024 : déposé — liasse DEMO.",
      "MARGE COMMERCIALE (XA) — RG-02 facture les médicaments au prix d’achat, sans marge : ce solde doit être nul ou quasi nul, et il l’est à la liasse déposée. S’il cessait de l’être, ce serait un signal, pas une bonne nouvelle.",
      "EXCÉDENT BRUT D’EXPLOITATION (XD) — ce qui reste après avoir payé les hommes et l’État. Il ignore les amortissements et le financement, qui dépendent de décisions passées : c’est lui qu’on regarde pour savoir si l’exploitation tient debout.",
      "RÉSULTAT FINANCIER (XF) — les intérêts d’emprunt (RM) sont ici, PAS dans l’exploitation : les y mettre ferait juger l’activité sur des choix de financement.",
@@ -3055,7 +3056,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -3082,11 +3083,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -3104,62 +3105,62 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        },
        {
         "label": "Exercice au 31/12/2024",
         "data": [
-         43450392,
-         26377610,
-         15174452,
-         6388683,
-         4472283
+         130351176,
+         79132830,
+         45523356,
+         19166049,
+         13416849
         ]
        }
       ]
      }
     ],
     "entete": [
-     "Date de dépôt : 15/05/2026",
-     "Code de dépôt : BK505416",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Date de dépôt : 30/04/2026",
+     "Code de dépôt : DEMO",
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ],
     "piece": {
      "titre": "Compte de résultat",
-     "sousTitre": "Exercice au 31/12/2025 — déposé — liasse BK505416",
+     "sousTitre": "Exercice au 31/12/2025 — déposé — liasse DEMO",
      "cartouche": [
       [
        "Dénomination sociale",
-       "CLINIQUE NASSIERA SARL"
+       "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
       ],
       [
        "IFU",
-       "3201642748214"
+       "3201001996110"
       ],
       [
        "Date de dépôt",
-       "15/05/2026"
+       "30/04/2026"
       ],
       [
        "Code de dépôt",
-       "BK505416"
+       "DEMO"
       ],
       [
        "Colonne N",
-       "Exercice au 31/12/2025 — déposé — liasse BK505416"
+       "Exercice au 31/12/2025 — déposé — liasse DEMO"
       ],
       [
        "Colonne N-1",
-       "Exercice au 31/12/2024 — déposé — liasse BK505416"
+       "Exercice au 31/12/2024 — déposé — liasse DEMO"
       ]
      ],
-     "contenu": "RÉFLIBELLÉS(2)NOTEEXERCICE AU 31/12/2025 (N)EXERCICE AU 31/12/2024 (N-1)NET (1) — déposé — liasse BK505416NET (1) — déposé — liasse BK505416TAVentes de marchandisesA+2100RAAchats de marchandises-2200RBVariation de stocks de marchandises-/+600XAMARGE COMMERCIALE (Somme TA à RB)00TBVentes de produits fabriquésB+2100TCTravaux, services vendusC+21190 830 994177 153 094TDProduits accessoiresD+2100XBCHIFFRE D’AFFAIRES (A + B + C + D)190 830 994177 153 094TEProduction stockée (ou déstockage)-/+600TFProduction immobilisée+2100TGSubventions d’exploitation+2100THAutres produits+2100TITransferts de charges d’exploitation+1200RCAchats de matières premières et fournitures liées-22-30 226 188-40 656 095RDVariation de stocks de matières premières et fournitures liées-/+600REAutres achats-22-34 823 421-27 861 825RFVariation de stocks d’autres approvisionnements-/+600RGTransports-23-88 000-94 000RHServices extérieurs-24-56 648 919-56 608 270RIImpôts et taxes-25-10 063 357-6 456 990RJAutres charges-26-7 345 614-2 025 522XCVALEUR AJOUTÉE (XB + RA + RB) + (somme TE à RJ)51 635 49543 450 392RKCharges de personnel-27-27 546 978-17 072 782XDEXCÉDENT BRUT D’EXPLOITATION (XC + RK)24 088 51726 377 610TJReprises d’amortissements, provisions et dépréciations+2800RLDotations aux amortissements, aux provisions et dépréciations-3C&28-10 617 358-11 203 158XERÉSULTAT D’EXPLOITATION (XD + TJ + RL)13 471 15915 174 452TKRevenus financiers et assimilés+2900TLReprises de provisions et dépréciations financières+2800TMTransferts de charges financières+1200RMFrais financiers et charges assimilées-29-6 955 159-8 785 769RNDotations aux provisions et aux dépréciations financières-3C&2800XFRÉSULTAT FINANCIER (somme TK à RN)-6 955 159-8 785 769XGRÉSULTAT DES ACTIVITÉS ORDINAIRES (XE + XF)6 516 0006 388 683TNProduits des cessions d’immobilisations+3D00TOAutres Produits HAO+3000ROValeurs comptables des cessions d’immobilisations-3D00RPAutres Charges HAO-3000XHRÉSULTAT HORS ACTIVITÉS ORDINAIRES (somme TN à RP)00RQParticipation des travailleurs-3000RSImpôts sur le résultat-37-1 954 800-1 916 400XIRÉSULTAT NET (XG + XH + RQ + RS)4 561 2004 472 283(1) Montants nets. (2) + produit, - charge, -/+ variation. Formulaire au format du feuillet 7/51 de la liasse DGI ; sous-totaux calculés par les formules du formulaire.",
+     "contenu": "RÉFLIBELLÉS(2)NOTEEXERCICE AU 31/12/2025 (N)EXERCICE AU 31/12/2024 (N-1)NET (1) — déposé — liasse DEMONET (1) — déposé — liasse DEMOTAVentes de marchandisesA+2100RAAchats de marchandises-2200RBVariation de stocks de marchandises-/+600XAMARGE COMMERCIALE (Somme TA à RB)00TBVentes de produits fabriquésB+2100TCTravaux, services vendusC+21572 492 982531 459 282TDProduits accessoiresD+2100XBCHIFFRE D’AFFAIRES (A + B + C + D)572 492 982531 459 282TEProduction stockée (ou déstockage)-/+600TFProduction immobilisée+2100TGSubventions d’exploitation+2100THAutres produits+2100TITransferts de charges d’exploitation+1200RCAchats de matières premières et fournitures liées-22-90 678 564-121 968 285RDVariation de stocks de matières premières et fournitures liées-/+600REAutres achats-22-104 470 263-83 585 475RFVariation de stocks d’autres approvisionnements-/+600RGTransports-23-264 000-282 000RHServices extérieurs-24-169 946 757-169 824 810RIImpôts et taxes-25-30 190 071-19 370 970RJAutres charges-26-22 036 842-6 076 566XCVALEUR AJOUTÉE (XB + RA + RB) + (somme TE à RJ)154 906 485130 351 176RKCharges de personnel-27-82 640 934-51 218 346XDEXCÉDENT BRUT D’EXPLOITATION (XC + RK)72 265 55179 132 830TJReprises d’amortissements, provisions et dépréciations+2800RLDotations aux amortissements, aux provisions et dépréciations-3C&28-31 852 074-33 609 474XERÉSULTAT D’EXPLOITATION (XD + TJ + RL)40 413 47745 523 356TKRevenus financiers et assimilés+2900TLReprises de provisions et dépréciations financières+2800TMTransferts de charges financières+1200RMFrais financiers et charges assimilées-29-20 865 477-26 357 307RNDotations aux provisions et aux dépréciations financières-3C&2800XFRÉSULTAT FINANCIER (somme TK à RN)-20 865 477-26 357 307XGRÉSULTAT DES ACTIVITÉS ORDINAIRES (XE + XF)19 548 00019 166 049TNProduits des cessions d’immobilisations+3D00TOAutres Produits HAO+3000ROValeurs comptables des cessions d’immobilisations-3D00RPAutres Charges HAO-3000XHRÉSULTAT HORS ACTIVITÉS ORDINAIRES (somme TN à RP)00RQParticipation des travailleurs-3000RSImpôts sur le résultat-37-5 864 400-5 749 200XIRÉSULTAT NET (XG + XH + RQ + RS)13 683 60013 416 849(1) Montants nets. (2) + produit, - charge, -/+ variation. Formulaire au format du feuillet 7/51 de la liasse DGI ; sous-totaux calculés par les formules du formulaire.",
      "tables": [
       {
        "entetes": [
@@ -3173,8 +3174,8 @@
          "EXERCICE AU 31/12/2024 (N-1)"
         ],
         [
-         "NET (1) — déposé — liasse BK505416",
-         "NET (1) — déposé — liasse BK505416"
+         "NET (1) — déposé — liasse DEMO",
+         "NET (1) — déposé — liasse DEMO"
         ]
        ],
        "lignes": [
@@ -3229,8 +3230,8 @@
          "C",
          "+",
          "21",
-         "190 830 994",
-         "177 153 094"
+         "572 492 982",
+         "531 459 282"
         ],
         [
          "TD",
@@ -3247,8 +3248,8 @@
          "",
          "",
          "",
-         "190 830 994",
-         "177 153 094"
+         "572 492 982",
+         "531 459 282"
         ],
         [
          "TE",
@@ -3301,8 +3302,8 @@
          "",
          "-",
          "22",
-         "-30 226 188",
-         "-40 656 095"
+         "-90 678 564",
+         "-121 968 285"
         ],
         [
          "RD",
@@ -3319,8 +3320,8 @@
          "",
          "-",
          "22",
-         "-34 823 421",
-         "-27 861 825"
+         "-104 470 263",
+         "-83 585 475"
         ],
         [
          "RF",
@@ -3337,8 +3338,8 @@
          "",
          "-",
          "23",
-         "-88 000",
-         "-94 000"
+         "-264 000",
+         "-282 000"
         ],
         [
          "RH",
@@ -3346,8 +3347,8 @@
          "",
          "-",
          "24",
-         "-56 648 919",
-         "-56 608 270"
+         "-169 946 757",
+         "-169 824 810"
         ],
         [
          "RI",
@@ -3355,8 +3356,8 @@
          "",
          "-",
          "25",
-         "-10 063 357",
-         "-6 456 990"
+         "-30 190 071",
+         "-19 370 970"
         ],
         [
          "RJ",
@@ -3364,8 +3365,8 @@
          "",
          "-",
          "26",
-         "-7 345 614",
-         "-2 025 522"
+         "-22 036 842",
+         "-6 076 566"
         ],
         [
          "XC",
@@ -3373,8 +3374,8 @@
          "",
          "",
          "",
-         "51 635 495",
-         "43 450 392"
+         "154 906 485",
+         "130 351 176"
         ],
         [
          "RK",
@@ -3382,8 +3383,8 @@
          "",
          "-",
          "27",
-         "-27 546 978",
-         "-17 072 782"
+         "-82 640 934",
+         "-51 218 346"
         ],
         [
          "XD",
@@ -3391,8 +3392,8 @@
          "",
          "",
          "",
-         "24 088 517",
-         "26 377 610"
+         "72 265 551",
+         "79 132 830"
         ],
         [
          "TJ",
@@ -3409,8 +3410,8 @@
          "",
          "-",
          "3C&28",
-         "-10 617 358",
-         "-11 203 158"
+         "-31 852 074",
+         "-33 609 474"
         ],
         [
          "XE",
@@ -3418,8 +3419,8 @@
          "",
          "",
          "",
-         "13 471 159",
-         "15 174 452"
+         "40 413 477",
+         "45 523 356"
         ],
         [
          "TK",
@@ -3454,8 +3455,8 @@
          "",
          "-",
          "29",
-         "-6 955 159",
-         "-8 785 769"
+         "-20 865 477",
+         "-26 357 307"
         ],
         [
          "RN",
@@ -3472,8 +3473,8 @@
          "",
          "",
          "",
-         "-6 955 159",
-         "-8 785 769"
+         "-20 865 477",
+         "-26 357 307"
         ],
         [
          "XG",
@@ -3481,8 +3482,8 @@
          "",
          "",
          "",
-         "6 516 000",
-         "6 388 683"
+         "19 548 000",
+         "19 166 049"
         ],
         [
          "TN",
@@ -3544,8 +3545,8 @@
          "",
          "-",
          "37",
-         "-1 954 800",
-         "-1 916 400"
+         "-5 864 400",
+         "-5 749 200"
         ],
         [
          "XI",
@@ -3553,8 +3554,8 @@
          "",
          "",
          "",
-         "4 561 200",
-         "4 472 283"
+         "13 683 600",
+         "13 416 849"
         ]
        ],
        "pied": []
@@ -3577,22 +3578,22 @@
      {
       "label": "Chiffre d’affaires (XB)",
       "valeur": "0 FCFA",
-      "indice": "N-1 : 190 830 994 FCFA (-100.0 %)"
+      "indice": "N-1 : 572 492 982 FCFA (-100.0 %)"
      },
      {
       "label": "Valeur ajoutée (XC)",
       "valeur": "0 FCFA",
-      "indice": "N-1 : 51 635 495 FCFA (-100.0 %)"
+      "indice": "N-1 : 154 906 485 FCFA (-100.0 %)"
      },
      {
       "label": "Excédent brut d’exploitation (XD)",
       "valeur": "0 FCFA",
-      "indice": "N-1 : 24 088 517 FCFA (-100.0 %)"
+      "indice": "N-1 : 72 265 551 FCFA (-100.0 %)"
      },
      {
       "label": "Résultat net (XI)",
       "valeur": "0 FCFA",
-      "indice": "N-1 : 4 561 200 FCFA (-100.0 %)"
+      "indice": "N-1 : 13 683 600 FCFA (-100.0 %)"
      }
     ],
     "tables": [
@@ -3609,7 +3610,7 @@
        ],
        [
         "NET (1) — calculé — arrêté au 01/01/2026",
-        "NET (1) — déposé — liasse BK505416"
+        "NET (1) — déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -3681,7 +3682,7 @@
          "+",
          "21",
          "—",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -3705,7 +3706,7 @@
          "",
          "",
          "0",
-         "190 830 994"
+         "572 492 982"
         ],
         "boutons": []
        },
@@ -3777,7 +3778,7 @@
          "-",
          "22",
          "—",
-         "-30 226 188"
+         "-90 678 564"
         ],
         "boutons": []
        },
@@ -3801,7 +3802,7 @@
          "-",
          "22",
          "—",
-         "-34 823 421"
+         "-104 470 263"
         ],
         "boutons": []
        },
@@ -3825,7 +3826,7 @@
          "-",
          "23",
          "—",
-         "-88 000"
+         "-264 000"
         ],
         "boutons": []
        },
@@ -3837,7 +3838,7 @@
          "-",
          "24",
          "—",
-         "-56 648 919"
+         "-169 946 757"
         ],
         "boutons": []
        },
@@ -3849,7 +3850,7 @@
          "-",
          "25",
          "—",
-         "-10 063 357"
+         "-30 190 071"
         ],
         "boutons": []
        },
@@ -3861,7 +3862,7 @@
          "-",
          "26",
          "—",
-         "-7 345 614"
+         "-22 036 842"
         ],
         "boutons": []
        },
@@ -3873,7 +3874,7 @@
          "",
          "",
          "0",
-         "51 635 495"
+         "154 906 485"
         ],
         "boutons": []
        },
@@ -3885,7 +3886,7 @@
          "-",
          "27",
          "—",
-         "-27 546 978"
+         "-82 640 934"
         ],
         "boutons": []
        },
@@ -3897,7 +3898,7 @@
          "",
          "",
          "0",
-         "24 088 517"
+         "72 265 551"
         ],
         "boutons": []
        },
@@ -3921,7 +3922,7 @@
          "-",
          "3C&28",
          "—",
-         "-10 617 358"
+         "-31 852 074"
         ],
         "boutons": []
        },
@@ -3933,7 +3934,7 @@
          "",
          "",
          "0",
-         "13 471 159"
+         "40 413 477"
         ],
         "boutons": []
        },
@@ -3981,7 +3982,7 @@
          "-",
          "29",
          "—",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -4005,7 +4006,7 @@
          "",
          "",
          "0",
-         "-6 955 159"
+         "-20 865 477"
         ],
         "boutons": []
        },
@@ -4017,7 +4018,7 @@
          "",
          "",
          "0",
-         "6 516 000"
+         "19 548 000"
         ],
         "boutons": []
        },
@@ -4101,7 +4102,7 @@
          "-",
          "37",
          "—",
-         "-1 954 800"
+         "-5 864 400"
         ],
         "boutons": []
        },
@@ -4113,7 +4114,7 @@
          "",
          "",
          "0",
-         "4 561 200"
+         "13 683 600"
         ],
         "boutons": []
        }
@@ -4131,7 +4132,7 @@
      "Imprimer le compte de résultat"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 01/01/2026 (0 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416.",
+     "Exercice 2026 : calculé — arrêté au 01/01/2026 (0 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO.",
      "MARGE COMMERCIALE (XA) — RG-02 facture les médicaments au prix d’achat, sans marge : ce solde doit être nul ou quasi nul, et il l’est à la liasse déposée. S’il cessait de l’être, ce serait un signal, pas une bonne nouvelle.",
      "EXCÉDENT BRUT D’EXPLOITATION (XD) — ce qui reste après avoir payé les hommes et l’État. Il ignore les amortissements et le financement, qui dépendent de décisions passées : c’est lui qu’on regarde pour savoir si l’exploitation tient debout.",
      "RÉSULTAT FINANCIER (XF) — les intérêts d’emprunt (RM) sont ici, PAS dans l’exploitation : les y mettre ferait juger l’activité sur des choix de financement.",
@@ -4150,7 +4151,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -4177,11 +4178,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -4209,11 +4210,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -4241,11 +4242,11 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         51635495,
-         24088517,
-         13471159,
-         6516000,
-         4561200
+         154906485,
+         72265551,
+         40413477,
+         19548000,
+         13683600
         ]
        }
       ]
@@ -4254,8 +4255,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    }
   },
@@ -4296,7 +4297,7 @@
        ],
        [
         "calculé — arrêté au 30/10/2026",
-        "déposé — liasse BK505416"
+        "déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -4307,7 +4308,7 @@
          "A",
          "",
          "0",
-         "875 686"
+         "2 627 058"
         ],
         "boutons": []
        },
@@ -4325,7 +4326,7 @@
          "",
          "",
          "-24 350 456",
-         "15 178 558"
+         "45 535 674"
         ],
         "boutons": []
        },
@@ -4358,7 +4359,7 @@
          "",
          "",
          "-7 397 000",
-         "15 327 350"
+         "45 982 050"
         ],
         "boutons": []
        },
@@ -4369,7 +4370,7 @@
          "",
          "",
          "25 385 000",
-         "-17 959 525"
+         "-53 878 575"
         ],
         "boutons": []
        },
@@ -4380,7 +4381,7 @@
          "",
          "",
          "17 988 000",
-         "31 359 405"
+         "94 078 215"
         ],
         "boutons": []
        },
@@ -4391,7 +4392,7 @@
          "B",
          "",
          "-6 362 456",
-         "-18 108 317"
+         "-54 324 951"
         ],
         "boutons": []
        },
@@ -4420,7 +4421,7 @@
          "",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -4464,7 +4465,7 @@
          "C",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -4544,7 +4545,7 @@
          "",
          "",
          "0",
-         "71 118 761"
+         "213 356 283"
         ],
         "boutons": []
        },
@@ -4566,7 +4567,7 @@
          "",
          "",
          "0",
-         "-40 601 891"
+         "-121 805 673"
         ],
         "boutons": []
        },
@@ -4577,7 +4578,7 @@
          "E",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -4588,7 +4589,7 @@
          "F",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -4599,7 +4600,7 @@
          "G",
          "",
          "-6 362 456",
-         "5 424 953"
+         "16 274 859"
         ],
         "boutons": []
        },
@@ -4610,7 +4611,7 @@
          "H",
          "",
          "-6 362 456",
-         "6 300 639"
+         "18 901 917"
         ],
         "boutons": []
        },
@@ -4640,7 +4641,7 @@
        {
         "cellules": [
          "Variation du besoin de financement (FB+FC+FD+FE)",
-         "La ligne porte 31 359 405 alors que FB+FC+FD+FE vaut −2 632 175.",
+         "La ligne porte 94 078 215 alors que FB+FC+FD+FE vaut −7 896 525.",
          "La somme annoncée ne se retrouve pas à partir de ses composantes déposées."
         ],
         "boutons": []
@@ -4648,7 +4649,7 @@
        {
         "cellules": [
          "Flux des activités opérationnelles (ZB)",
-         "ZB porte −18 108 317, quand FA + (FB à FE) donne 12 546 383. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 5 424 953 = ZG, et ZG + ZA = 6 300 639 = ZH.",
+         "ZB porte −54 324 951, quand FA + (FB à FE) donne 37 639 149. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 16 274 859 = ZG, et ZG + ZA = 18 901 917 = ZH.",
          "Le bas du tableau est cohérent ; c’est le bloc opérationnel qui ne l’est pas."
         ],
         "boutons": []
@@ -4667,10 +4668,10 @@
      "Imprimer le tableau des flux"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 30/10/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
+     "Exercice 2026 : calculé — arrêté au 30/10/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
      "Exercice 2026 (calculé) — contrôle du formulaire : trésorerie des comptes de classe 5 au 30/10/2026 = -6 362 456 FCFA, trésorerie par les flux (ZH) = -6 362 456 FCFA. Les deux concordent : chaque mouvement de trésorerie est expliqué par une ligne du tableau.",
-     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 6 300 639 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
-     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 31 359 405 FCFA, recalculé -2 632 175 FCFA) ; ZB (déposé -18 108 317 FCFA, recalculé 12 546 383 FCFA). Écarts du document, conservés et non arbitrés.",
+     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 18 901 917 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
+     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 94 078 215 FCFA, recalculé -7 896 525 FCFA) ; ZB (déposé -54 324 951 FCFA, recalculé 37 639 149 FCFA). Écarts du document, conservés et non arbitrés.",
      "Le formulaire déposé ne se recoupe pas partout. Ces écarts sont ceux du document remis à l’administration : les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé — précisément ce qu’un contrôle vient comparer."
     ],
     "reglages": {
@@ -4685,7 +4686,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -4713,8 +4714,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ],
     "piece": {
      "titre": "Tableau des flux de trésorerie",
@@ -4722,11 +4723,11 @@
      "cartouche": [
       [
        "Dénomination sociale",
-       "CLINIQUE NASSIERA SARL"
+       "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
       ],
       [
        "IFU",
-       "3201642748214"
+       "3201001996110"
       ],
       [
        "Date de dépôt",
@@ -4742,10 +4743,10 @@
       ],
       [
        "Colonne N-1",
-       "Exercice au 31/12/2025 — déposé — liasse BK505416"
+       "Exercice au 31/12/2025 — déposé — liasse DEMO"
       ]
      ],
-     "contenu": "RÉFLIBELLÉSNOTEEXERCICE 2026 (N)EXERCICE AU 31/12/2025 (N-1)calculé — arrêté au 30/10/2026déposé — liasse BK505416ZATrésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)A0875 686Flux de trésorerie provenant des activités opérationnellesFACapacité d’Autofinancement Globale (CAFG)-24 350 45615 178 558FB- Variation d’actif circulant HAO (1)00FC- Variation des stocks00FD- Variation des créances-7 397 00015 327 350FE+ Variation du passif circulant (1)25 385 000-17 959 525Variation du BF lié aux activités opérationnellesFB+FC+FD+FE :17 988 00031 359 405ZBFlux de trésorerie provenant des activités opérationnelles (Somme FA à FE)B-6 362 456-18 108 317Flux de trésorerie provenant des activités d’InvestissementsFF- Décaissements liés aux acquisitions d’immobilisations incorporelles00FG- Décaissements liés aux acquisitions d’immobilisations corporelles0-6 983 600FH- Décaissements liés aux acquisitions d’immobilisations financières00FI+ Encaissements liés aux cessions d’immobilisations incorporelles et corporelles00FJ+ Encaissements liés aux cessions d’immobilisations financières00ZCFlux de trésorerie provenant des activités d’Investissement (somme FF à FJ)C0-6 983 600Flux de trésorerie provenant du financement par les capitaux propresFK+ Augmentations de capital par apports nouveaux00FL+ Subventions d’investissement reçues00FM- Prélèvements sur le capital00FN- Dividendes versés00ZDFlux de trésorerie provenant des capitaux propres (somme FK à FN)D00Trésorerie provenant du financement par les capitaux étrangersFO+ Emprunts (2)071 118 761FP+ Autres dettes financières diverses (3)00FQ- Remboursements des emprunts et autres dettes financières0-40 601 891ZEFlux de trésorerie provenant des capitaux étrangers (somme FO à FQ)E030 516 870ZFFlux de trésorerie provenant des activités de financement (D+E)F030 516 870ZGVARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)G-6 362 4565 424 953ZHTrésorerie nette au 31 Décembre (G+A)H-6 362 4566 300 639Contrôle : Trésorerie actif N - Trésorerie passif N-6 362 456(1) À l’exclusion des variations des créances et dettes liées aux activités d’investissement et de financement. Formulaire au format du feuillet 8/51 de la liasse DGI.",
+     "contenu": "RÉFLIBELLÉSNOTEEXERCICE 2026 (N)EXERCICE AU 31/12/2025 (N-1)calculé — arrêté au 30/10/2026déposé — liasse DEMOZATrésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)A02 627 058Flux de trésorerie provenant des activités opérationnellesFACapacité d’Autofinancement Globale (CAFG)-24 350 45645 535 674FB- Variation d’actif circulant HAO (1)00FC- Variation des stocks00FD- Variation des créances-7 397 00045 982 050FE+ Variation du passif circulant (1)25 385 000-53 878 575Variation du BF lié aux activités opérationnellesFB+FC+FD+FE :17 988 00094 078 215ZBFlux de trésorerie provenant des activités opérationnelles (Somme FA à FE)B-6 362 456-54 324 951Flux de trésorerie provenant des activités d’InvestissementsFF- Décaissements liés aux acquisitions d’immobilisations incorporelles00FG- Décaissements liés aux acquisitions d’immobilisations corporelles0-20 950 800FH- Décaissements liés aux acquisitions d’immobilisations financières00FI+ Encaissements liés aux cessions d’immobilisations incorporelles et corporelles00FJ+ Encaissements liés aux cessions d’immobilisations financières00ZCFlux de trésorerie provenant des activités d’Investissement (somme FF à FJ)C0-20 950 800Flux de trésorerie provenant du financement par les capitaux propresFK+ Augmentations de capital par apports nouveaux00FL+ Subventions d’investissement reçues00FM- Prélèvements sur le capital00FN- Dividendes versés00ZDFlux de trésorerie provenant des capitaux propres (somme FK à FN)D00Trésorerie provenant du financement par les capitaux étrangersFO+ Emprunts (2)0213 356 283FP+ Autres dettes financières diverses (3)00FQ- Remboursements des emprunts et autres dettes financières0-121 805 673ZEFlux de trésorerie provenant des capitaux étrangers (somme FO à FQ)E091 550 610ZFFlux de trésorerie provenant des activités de financement (D+E)F091 550 610ZGVARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)G-6 362 45616 274 859ZHTrésorerie nette au 31 Décembre (G+A)H-6 362 45618 901 917Contrôle : Trésorerie actif N - Trésorerie passif N-6 362 456(1) À l’exclusion des variations des créances et dettes liées aux activités d’investissement et de financement. Formulaire au format du feuillet 8/51 de la liasse DGI.",
      "tables": [
       {
        "entetes": [
@@ -4759,7 +4760,7 @@
         ],
         [
          "calculé — arrêté au 30/10/2026",
-         "déposé — liasse BK505416"
+         "déposé — liasse DEMO"
         ]
        ],
        "lignes": [
@@ -4769,7 +4770,7 @@
          "A",
          "",
          "0",
-         "875 686"
+         "2 627 058"
         ],
         [
          "",
@@ -4781,7 +4782,7 @@
          "",
          "",
          "-24 350 456",
-         "15 178 558"
+         "45 535 674"
         ],
         [
          "FB",
@@ -4805,7 +4806,7 @@
          "",
          "",
          "-7 397 000",
-         "15 327 350"
+         "45 982 050"
         ],
         [
          "FE",
@@ -4813,7 +4814,7 @@
          "",
          "",
          "25 385 000",
-         "-17 959 525"
+         "-53 878 575"
         ],
         [
          "",
@@ -4821,7 +4822,7 @@
          "",
          "",
          "17 988 000",
-         "31 359 405"
+         "94 078 215"
         ],
         [
          "ZB",
@@ -4829,7 +4830,7 @@
          "B",
          "",
          "-6 362 456",
-         "-18 108 317"
+         "-54 324 951"
         ],
         [
          "",
@@ -4849,7 +4850,7 @@
          "",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         [
          "FH",
@@ -4881,7 +4882,7 @@
          "C",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         [
          "",
@@ -4937,7 +4938,7 @@
          "",
          "",
          "0",
-         "71 118 761"
+         "213 356 283"
         ],
         [
          "FP",
@@ -4953,7 +4954,7 @@
          "",
          "",
          "0",
-         "-40 601 891"
+         "-121 805 673"
         ],
         [
          "ZE",
@@ -4961,7 +4962,7 @@
          "E",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         [
          "ZF",
@@ -4969,7 +4970,7 @@
          "F",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         [
          "ZG",
@@ -4977,7 +4978,7 @@
          "G",
          "",
          "-6 362 456",
-         "5 424 953"
+         "16 274 859"
         ],
         [
          "ZH",
@@ -4985,7 +4986,7 @@
          "H",
          "",
          "-6 362 456",
-         "6 300 639"
+         "18 901 917"
         ],
         [
          "",
@@ -5047,7 +5048,7 @@
        ],
        [
         "calculé — arrêté au 30/06/2026",
-        "déposé — liasse BK505416"
+        "déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -5058,7 +5059,7 @@
          "A",
          "",
          "0",
-         "875 686"
+         "2 627 058"
         ],
         "boutons": []
        },
@@ -5076,7 +5077,7 @@
          "",
          "",
          "-22 404 000",
-         "15 178 558"
+         "45 535 674"
         ],
         "boutons": []
        },
@@ -5109,7 +5110,7 @@
          "",
          "",
          "-4 498 000",
-         "15 327 350"
+         "45 982 050"
         ],
         "boutons": []
        },
@@ -5120,7 +5121,7 @@
          "",
          "",
          "19 433 000",
-         "-17 959 525"
+         "-53 878 575"
         ],
         "boutons": []
        },
@@ -5131,7 +5132,7 @@
          "",
          "",
          "14 935 000",
-         "31 359 405"
+         "94 078 215"
         ],
         "boutons": []
        },
@@ -5142,7 +5143,7 @@
          "B",
          "",
          "-7 469 000",
-         "-18 108 317"
+         "-54 324 951"
         ],
         "boutons": []
        },
@@ -5171,7 +5172,7 @@
          "",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -5215,7 +5216,7 @@
          "C",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -5295,7 +5296,7 @@
          "",
          "",
          "0",
-         "71 118 761"
+         "213 356 283"
         ],
         "boutons": []
        },
@@ -5317,7 +5318,7 @@
          "",
          "",
          "0",
-         "-40 601 891"
+         "-121 805 673"
         ],
         "boutons": []
        },
@@ -5328,7 +5329,7 @@
          "E",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -5339,7 +5340,7 @@
          "F",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -5350,7 +5351,7 @@
          "G",
          "",
          "-7 469 000",
-         "5 424 953"
+         "16 274 859"
         ],
         "boutons": []
        },
@@ -5361,7 +5362,7 @@
          "H",
          "",
          "-7 469 000",
-         "6 300 639"
+         "18 901 917"
         ],
         "boutons": []
        },
@@ -5391,7 +5392,7 @@
        {
         "cellules": [
          "Variation du besoin de financement (FB+FC+FD+FE)",
-         "La ligne porte 31 359 405 alors que FB+FC+FD+FE vaut −2 632 175.",
+         "La ligne porte 94 078 215 alors que FB+FC+FD+FE vaut −7 896 525.",
          "La somme annoncée ne se retrouve pas à partir de ses composantes déposées."
         ],
         "boutons": []
@@ -5399,7 +5400,7 @@
        {
         "cellules": [
          "Flux des activités opérationnelles (ZB)",
-         "ZB porte −18 108 317, quand FA + (FB à FE) donne 12 546 383. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 5 424 953 = ZG, et ZG + ZA = 6 300 639 = ZH.",
+         "ZB porte −54 324 951, quand FA + (FB à FE) donne 37 639 149. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 16 274 859 = ZG, et ZG + ZA = 18 901 917 = ZH.",
          "Le bas du tableau est cohérent ; c’est le bloc opérationnel qui ne l’est pas."
         ],
         "boutons": []
@@ -5418,10 +5419,10 @@
      "Imprimer le tableau des flux"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 30/06/2026 (208 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416.",
+     "Exercice 2026 : calculé — arrêté au 30/06/2026 (208 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO.",
      "Exercice 2026 (calculé) — contrôle du formulaire : trésorerie des comptes de classe 5 au 30/06/2026 = -7 469 000 FCFA, trésorerie par les flux (ZH) = -7 469 000 FCFA. Les deux concordent : chaque mouvement de trésorerie est expliqué par une ligne du tableau.",
-     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 6 300 639 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
-     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 31 359 405 FCFA, recalculé -2 632 175 FCFA) ; ZB (déposé -18 108 317 FCFA, recalculé 12 546 383 FCFA). Écarts du document, conservés et non arbitrés.",
+     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 18 901 917 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
+     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 94 078 215 FCFA, recalculé -7 896 525 FCFA) ; ZB (déposé -54 324 951 FCFA, recalculé 37 639 149 FCFA). Écarts du document, conservés et non arbitrés.",
      "Le formulaire déposé ne se recoupe pas partout. Ces écarts sont ceux du document remis à l’administration : les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé — précisément ce qu’un contrôle vient comparer."
     ],
     "reglages": {
@@ -5436,7 +5437,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -5504,8 +5505,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    },
    "2026_dec": {
@@ -5544,7 +5545,7 @@
        ],
        [
         "calculé — arrêté au 31/12/2026",
-        "déposé — liasse BK505416"
+        "déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -5555,7 +5556,7 @@
          "A",
          "",
          "0",
-         "875 686"
+         "2 627 058"
         ],
         "boutons": []
        },
@@ -5573,7 +5574,7 @@
          "",
          "",
          "-24 350 456",
-         "15 178 558"
+         "45 535 674"
         ],
         "boutons": []
        },
@@ -5606,7 +5607,7 @@
          "",
          "",
          "-7 397 000",
-         "15 327 350"
+         "45 982 050"
         ],
         "boutons": []
        },
@@ -5617,7 +5618,7 @@
          "",
          "",
          "25 385 000",
-         "-17 959 525"
+         "-53 878 575"
         ],
         "boutons": []
        },
@@ -5628,7 +5629,7 @@
          "",
          "",
          "17 988 000",
-         "31 359 405"
+         "94 078 215"
         ],
         "boutons": []
        },
@@ -5639,7 +5640,7 @@
          "B",
          "",
          "-6 362 456",
-         "-18 108 317"
+         "-54 324 951"
         ],
         "boutons": []
        },
@@ -5668,7 +5669,7 @@
          "",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -5712,7 +5713,7 @@
          "C",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -5792,7 +5793,7 @@
          "",
          "",
          "0",
-         "71 118 761"
+         "213 356 283"
         ],
         "boutons": []
        },
@@ -5814,7 +5815,7 @@
          "",
          "",
          "0",
-         "-40 601 891"
+         "-121 805 673"
         ],
         "boutons": []
        },
@@ -5825,7 +5826,7 @@
          "E",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -5836,7 +5837,7 @@
          "F",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -5847,7 +5848,7 @@
          "G",
          "",
          "-6 362 456",
-         "5 424 953"
+         "16 274 859"
         ],
         "boutons": []
        },
@@ -5858,7 +5859,7 @@
          "H",
          "",
          "-6 362 456",
-         "6 300 639"
+         "18 901 917"
         ],
         "boutons": []
        },
@@ -5888,7 +5889,7 @@
        {
         "cellules": [
          "Variation du besoin de financement (FB+FC+FD+FE)",
-         "La ligne porte 31 359 405 alors que FB+FC+FD+FE vaut −2 632 175.",
+         "La ligne porte 94 078 215 alors que FB+FC+FD+FE vaut −7 896 525.",
          "La somme annoncée ne se retrouve pas à partir de ses composantes déposées."
         ],
         "boutons": []
@@ -5896,7 +5897,7 @@
        {
         "cellules": [
          "Flux des activités opérationnelles (ZB)",
-         "ZB porte −18 108 317, quand FA + (FB à FE) donne 12 546 383. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 5 424 953 = ZG, et ZG + ZA = 6 300 639 = ZH.",
+         "ZB porte −54 324 951, quand FA + (FB à FE) donne 37 639 149. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 16 274 859 = ZG, et ZG + ZA = 18 901 917 = ZH.",
          "Le bas du tableau est cohérent ; c’est le bloc opérationnel qui ne l’est pas."
         ],
         "boutons": []
@@ -5915,10 +5916,10 @@
      "Imprimer le tableau des flux"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 31/12/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
+     "Exercice 2026 : calculé — arrêté au 31/12/2026 (410 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO. 92 brouillon(s) écarté(s) : un brouillon n’est pas un fait comptable, et le compter donnerait un résultat qui change quand le comptable rectifie une saisie.",
      "Exercice 2026 (calculé) — contrôle du formulaire : trésorerie des comptes de classe 5 au 31/12/2026 = -6 362 456 FCFA, trésorerie par les flux (ZH) = -6 362 456 FCFA. Les deux concordent : chaque mouvement de trésorerie est expliqué par une ligne du tableau.",
-     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 6 300 639 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
-     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 31 359 405 FCFA, recalculé -2 632 175 FCFA) ; ZB (déposé -18 108 317 FCFA, recalculé 12 546 383 FCFA). Écarts du document, conservés et non arbitrés.",
+     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 18 901 917 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
+     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 94 078 215 FCFA, recalculé -7 896 525 FCFA) ; ZB (déposé -54 324 951 FCFA, recalculé 37 639 149 FCFA). Écarts du document, conservés et non arbitrés.",
      "Le formulaire déposé ne se recoupe pas partout. Ces écarts sont ceux du document remis à l’administration : les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé — précisément ce qu’un contrôle vient comparer."
     ],
     "reglages": {
@@ -5933,7 +5934,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -6001,30 +6002,30 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    },
    "depose": {
     "kpis": [
      {
       "label": "Trésorerie au 1er janvier (ZA)",
-      "valeur": "875 686 FCFA",
+      "valeur": "2 627 058 FCFA",
       "indice": null
      },
      {
       "label": "Flux opérationnels (ZB)",
-      "valeur": "-18 108 317 FCFA",
-      "indice": "CAFG : 15 178 558 FCFA"
+      "valeur": "-54 324 951 FCFA",
+      "indice": "CAFG : 45 535 674 FCFA"
      },
      {
       "label": "Variation de la trésorerie (ZG)",
-      "valeur": "5 424 953 FCFA",
-      "indice": "Investissement -6 983 600 FCFA · financement 30 516 870 FCFA"
+      "valeur": "16 274 859 FCFA",
+      "indice": "Investissement -20 950 800 FCFA · financement 91 550 610 FCFA"
      },
      {
       "label": "Trésorerie au 31 décembre (ZH)",
-      "valeur": "6 300 639 FCFA",
+      "valeur": "18 901 917 FCFA",
       "indice": "Égale au total trésorerie-actif du bilan (BT)"
      }
     ],
@@ -6040,8 +6041,8 @@
         "EXERCICE AU 31/12/2024 (N-1)"
        ],
        [
-        "déposé — liasse BK505416",
-        "déposé — liasse BK505416"
+        "déposé — liasse DEMO",
+        "déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -6051,8 +6052,8 @@
          "Trésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)",
          "A",
          "",
-         "875 686",
-         "1 963 014"
+         "2 627 058",
+         "5 889 042"
         ],
         "boutons": []
        },
@@ -6069,8 +6070,8 @@
          "Capacité d’Autofinancement Globale (CAFG)",
          "",
          "",
-         "15 178 558",
-         "43 450 392"
+         "45 535 674",
+         "130 351 176"
         ],
         "boutons": []
        },
@@ -6102,8 +6103,8 @@
          "- Variation des créances",
          "",
          "",
-         "15 327 350",
-         "-1 589 906"
+         "45 982 050",
+         "-4 769 718"
         ],
         "boutons": []
        },
@@ -6113,8 +6114,8 @@
          "+ Variation du passif circulant (1)",
          "",
          "",
-         "-17 959 525",
-         "6 123 760"
+         "-53 878 575",
+         "18 371 280"
         ],
         "boutons": []
        },
@@ -6124,8 +6125,8 @@
          "Variation du BF lié aux activités opérationnelles FB+FC+FD+FE : écart du document",
          "",
          "",
-         "31 359 405",
-         "-47 984 246"
+         "94 078 215",
+         "-143 952 738"
         ],
         "boutons": []
        },
@@ -6135,8 +6136,8 @@
          "Flux de trésorerie provenant des activités opérationnelles (Somme FA à FE)écart du document",
          "B",
          "",
-         "-18 108 317",
-         "47 984 246"
+         "-54 324 951",
+         "143 952 738"
         ],
         "boutons": []
        },
@@ -6164,8 +6165,8 @@
          "- Décaissements liés aux acquisitions d’immobilisations corporelles",
          "",
          "",
-         "-6 983 600",
-         "-8 000 000"
+         "-20 950 800",
+         "-24 000 000"
         ],
         "boutons": []
        },
@@ -6208,8 +6209,8 @@
          "Flux de trésorerie provenant des activités d’Investissement (somme FF à FJ)",
          "C",
          "",
-         "-6 983 600",
-         "-8 000 000"
+         "-20 950 800",
+         "-24 000 000"
         ],
         "boutons": []
        },
@@ -6288,7 +6289,7 @@
          "+ Emprunts (2)",
          "",
          "",
-         "71 118 761",
+         "213 356 283",
          "0"
         ],
         "boutons": []
@@ -6310,8 +6311,8 @@
          "- Remboursements des emprunts et autres dettes financières",
          "",
          "",
-         "-40 601 891",
-         "-40 764 003"
+         "-121 805 673",
+         "-122 292 009"
         ],
         "boutons": []
        },
@@ -6321,8 +6322,8 @@
          "Flux de trésorerie provenant des capitaux étrangers (somme FO à FQ)",
          "E",
          "",
-         "30 516 870",
-         "-40 764 003"
+         "91 550 610",
+         "-122 292 009"
         ],
         "boutons": []
        },
@@ -6332,8 +6333,8 @@
          "Flux de trésorerie provenant des activités de financement (D+E)",
          "F",
          "",
-         "30 516 870",
-         "-40 764 003"
+         "91 550 610",
+         "-122 292 009"
         ],
         "boutons": []
        },
@@ -6343,8 +6344,8 @@
          "VARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)",
          "G",
          "",
-         "5 424 953",
-         "-779 757"
+         "16 274 859",
+         "-2 339 271"
         ],
         "boutons": []
        },
@@ -6354,8 +6355,8 @@
          "Trésorerie nette au 31 Décembre (G+A)",
          "H",
          "",
-         "6 300 639",
-         "1 183 257"
+         "18 901 917",
+         "3 549 771"
         ],
         "boutons": []
        },
@@ -6385,7 +6386,7 @@
        {
         "cellules": [
          "CAFG de l’exercice N-1",
-         "Le tableau des flux porte 43 450 392 en N-1 (FA), la note 34 porte 15 675 441. La valeur du tableau des flux est celle de la VALEUR AJOUTÉE N-1 du compte de résultat.",
+         "Le tableau des flux porte 130 351 176 en N-1 (FA), la note 34 porte 47 026 323. La valeur du tableau des flux est celle de la VALEUR AJOUTÉE N-1 du compte de résultat.",
          "La note 34 paraît juste ; le tableau des flux semble avoir reçu la mauvaise ligne."
         ],
         "boutons": []
@@ -6393,7 +6394,7 @@
        {
         "cellules": [
          "Variation du besoin de financement (FB+FC+FD+FE)",
-         "La ligne porte 31 359 405 alors que FB+FC+FD+FE vaut −2 632 175.",
+         "La ligne porte 94 078 215 alors que FB+FC+FD+FE vaut −7 896 525.",
          "La somme annoncée ne se retrouve pas à partir de ses composantes déposées."
         ],
         "boutons": []
@@ -6401,7 +6402,7 @@
        {
         "cellules": [
          "Flux des activités opérationnelles (ZB)",
-         "ZB porte −18 108 317, quand FA + (FB à FE) donne 12 546 383. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 5 424 953 = ZG, et ZG + ZA = 6 300 639 = ZH.",
+         "ZB porte −54 324 951, quand FA + (FB à FE) donne 37 639 149. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 16 274 859 = ZG, et ZG + ZA = 18 901 917 = ZH.",
          "Le bas du tableau est cohérent ; c’est le bloc opérationnel qui ne l’est pas."
         ],
         "boutons": []
@@ -6420,9 +6421,9 @@
      "Imprimer le tableau des flux"
     ],
     "notes": [
-     "Exercice au 31/12/2025 : déposé — liasse BK505416 · Exercice au 31/12/2024 : déposé — liasse BK505416.",
-     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 31 359 405 FCFA, recalculé -2 632 175 FCFA) ; ZB (déposé -18 108 317 FCFA, recalculé 12 546 383 FCFA). Écarts du document, conservés et non arbitrés.",
-     "Exercice au 31/12/2024 (déposé) — 1 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé -47 984 246 FCFA, recalculé 4 533 854 FCFA). Écarts du document, conservés et non arbitrés.",
+     "Exercice au 31/12/2025 : déposé — liasse DEMO · Exercice au 31/12/2024 : déposé — liasse DEMO.",
+     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 94 078 215 FCFA, recalculé -7 896 525 FCFA) ; ZB (déposé -54 324 951 FCFA, recalculé 37 639 149 FCFA). Écarts du document, conservés et non arbitrés.",
+     "Exercice au 31/12/2024 (déposé) — 1 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé -143 952 738 FCFA, recalculé 4 533 854 FCFA). Écarts du document, conservés et non arbitrés.",
      "Le formulaire déposé ne se recoupe pas partout. Ces écarts sont ceux du document remis à l’administration : les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé — précisément ce qu’un contrôle vient comparer."
     ],
     "reglages": {
@@ -6437,7 +6438,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -6473,51 +6474,51 @@
        {
         "label": "Exercice au 31/12/2025",
         "data": [
-         -18108317,
-         -6983600,
-         30516870,
-         5424953
+         -54324951,
+         -20950800,
+         91550610,
+         16274859
         ]
        }
       ]
      }
     ],
     "entete": [
-     "Date de dépôt : 15/05/2026",
-     "Code de dépôt : BK505416",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Date de dépôt : 30/04/2026",
+     "Code de dépôt : DEMO",
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ],
     "piece": {
      "titre": "Tableau des flux de trésorerie",
-     "sousTitre": "Exercice au 31/12/2025 — déposé — liasse BK505416",
+     "sousTitre": "Exercice au 31/12/2025 — déposé — liasse DEMO",
      "cartouche": [
       [
        "Dénomination sociale",
-       "CLINIQUE NASSIERA SARL"
+       "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
       ],
       [
        "IFU",
-       "3201642748214"
+       "3201001996110"
       ],
       [
        "Date de dépôt",
-       "15/05/2026"
+       "30/04/2026"
       ],
       [
        "Code de dépôt",
-       "BK505416"
+       "DEMO"
       ],
       [
        "Colonne N",
-       "Exercice au 31/12/2025 — déposé — liasse BK505416"
+       "Exercice au 31/12/2025 — déposé — liasse DEMO"
       ],
       [
        "Colonne N-1",
-       "Exercice au 31/12/2024 — déposé — liasse BK505416"
+       "Exercice au 31/12/2024 — déposé — liasse DEMO"
       ]
      ],
-     "contenu": "RÉFLIBELLÉSNOTEEXERCICE AU 31/12/2025 (N)EXERCICE AU 31/12/2024 (N-1)déposé — liasse BK505416déposé — liasse BK505416ZATrésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)A875 6861 963 014Flux de trésorerie provenant des activités opérationnellesFACapacité d’Autofinancement Globale (CAFG)15 178 55843 450 392FB- Variation d’actif circulant HAO (1)00FC- Variation des stocks00FD- Variation des créances15 327 350-1 589 906FE+ Variation du passif circulant (1)-17 959 5256 123 760Variation du BF lié aux activités opérationnellesFB+FC+FD+FE :31 359 405-47 984 246ZBFlux de trésorerie provenant des activités opérationnelles (Somme FA à FE)B-18 108 31747 984 246Flux de trésorerie provenant des activités d’InvestissementsFF- Décaissements liés aux acquisitions d’immobilisations incorporelles00FG- Décaissements liés aux acquisitions d’immobilisations corporelles-6 983 600-8 000 000FH- Décaissements liés aux acquisitions d’immobilisations financières00FI+ Encaissements liés aux cessions d’immobilisations incorporelles et corporelles00FJ+ Encaissements liés aux cessions d’immobilisations financières00ZCFlux de trésorerie provenant des activités d’Investissement (somme FF à FJ)C-6 983 600-8 000 000Flux de trésorerie provenant du financement par les capitaux propresFK+ Augmentations de capital par apports nouveaux00FL+ Subventions d’investissement reçues00FM- Prélèvements sur le capital00FN- Dividendes versés00ZDFlux de trésorerie provenant des capitaux propres (somme FK à FN)D00Trésorerie provenant du financement par les capitaux étrangersFO+ Emprunts (2)71 118 7610FP+ Autres dettes financières diverses (3)00FQ- Remboursements des emprunts et autres dettes financières-40 601 891-40 764 003ZEFlux de trésorerie provenant des capitaux étrangers (somme FO à FQ)E30 516 870-40 764 003ZFFlux de trésorerie provenant des activités de financement (D+E)F30 516 870-40 764 003ZGVARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)G5 424 953-779 757ZHTrésorerie nette au 31 Décembre (G+A)H6 300 6391 183 257Contrôle : Trésorerie actif N - Trésorerie passif N(1) À l’exclusion des variations des créances et dettes liées aux activités d’investissement et de financement. Formulaire au format du feuillet 8/51 de la liasse DGI.",
+     "contenu": "RÉFLIBELLÉSNOTEEXERCICE AU 31/12/2025 (N)EXERCICE AU 31/12/2024 (N-1)déposé — liasse DEMOdéposé — liasse DEMOZATrésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)A2 627 0585 889 042Flux de trésorerie provenant des activités opérationnellesFACapacité d’Autofinancement Globale (CAFG)45 535 674130 351 176FB- Variation d’actif circulant HAO (1)00FC- Variation des stocks00FD- Variation des créances45 982 050-4 769 718FE+ Variation du passif circulant (1)-53 878 57518 371 280Variation du BF lié aux activités opérationnellesFB+FC+FD+FE :94 078 215-143 952 738ZBFlux de trésorerie provenant des activités opérationnelles (Somme FA à FE)B-54 324 951143 952 738Flux de trésorerie provenant des activités d’InvestissementsFF- Décaissements liés aux acquisitions d’immobilisations incorporelles00FG- Décaissements liés aux acquisitions d’immobilisations corporelles-20 950 800-24 000 000FH- Décaissements liés aux acquisitions d’immobilisations financières00FI+ Encaissements liés aux cessions d’immobilisations incorporelles et corporelles00FJ+ Encaissements liés aux cessions d’immobilisations financières00ZCFlux de trésorerie provenant des activités d’Investissement (somme FF à FJ)C-20 950 800-24 000 000Flux de trésorerie provenant du financement par les capitaux propresFK+ Augmentations de capital par apports nouveaux00FL+ Subventions d’investissement reçues00FM- Prélèvements sur le capital00FN- Dividendes versés00ZDFlux de trésorerie provenant des capitaux propres (somme FK à FN)D00Trésorerie provenant du financement par les capitaux étrangersFO+ Emprunts (2)213 356 2830FP+ Autres dettes financières diverses (3)00FQ- Remboursements des emprunts et autres dettes financières-121 805 673-122 292 009ZEFlux de trésorerie provenant des capitaux étrangers (somme FO à FQ)E91 550 610-122 292 009ZFFlux de trésorerie provenant des activités de financement (D+E)F91 550 610-122 292 009ZGVARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)G16 274 859-2 339 271ZHTrésorerie nette au 31 Décembre (G+A)H18 901 9173 549 771Contrôle : Trésorerie actif N - Trésorerie passif N(1) À l’exclusion des variations des créances et dettes liées aux activités d’investissement et de financement. Formulaire au format du feuillet 8/51 de la liasse DGI.",
      "tables": [
       {
        "entetes": [
@@ -6530,8 +6531,8 @@
          "EXERCICE AU 31/12/2024 (N-1)"
         ],
         [
-         "déposé — liasse BK505416",
-         "déposé — liasse BK505416"
+         "déposé — liasse DEMO",
+         "déposé — liasse DEMO"
         ]
        ],
        "lignes": [
@@ -6540,8 +6541,8 @@
          "Trésorerie nette au 1er janvier (Trésorerie actif N-1 - Trésorerie passif N-1)",
          "A",
          "",
-         "875 686",
-         "1 963 014"
+         "2 627 058",
+         "5 889 042"
         ],
         [
          "",
@@ -6552,8 +6553,8 @@
          "Capacité d’Autofinancement Globale (CAFG)",
          "",
          "",
-         "15 178 558",
-         "43 450 392"
+         "45 535 674",
+         "130 351 176"
         ],
         [
          "FB",
@@ -6576,32 +6577,32 @@
          "- Variation des créances",
          "",
          "",
-         "15 327 350",
-         "-1 589 906"
+         "45 982 050",
+         "-4 769 718"
         ],
         [
          "FE",
          "+ Variation du passif circulant (1)",
          "",
          "",
-         "-17 959 525",
-         "6 123 760"
+         "-53 878 575",
+         "18 371 280"
         ],
         [
          "",
          "Variation du BF lié aux activités opérationnellesFB+FC+FD+FE :",
          "",
          "",
-         "31 359 405",
-         "-47 984 246"
+         "94 078 215",
+         "-143 952 738"
         ],
         [
          "ZB",
          "Flux de trésorerie provenant des activités opérationnelles (Somme FA à FE)",
          "B",
          "",
-         "-18 108 317",
-         "47 984 246"
+         "-54 324 951",
+         "143 952 738"
         ],
         [
          "",
@@ -6620,8 +6621,8 @@
          "- Décaissements liés aux acquisitions d’immobilisations corporelles",
          "",
          "",
-         "-6 983 600",
-         "-8 000 000"
+         "-20 950 800",
+         "-24 000 000"
         ],
         [
          "FH",
@@ -6652,8 +6653,8 @@
          "Flux de trésorerie provenant des activités d’Investissement (somme FF à FJ)",
          "C",
          "",
-         "-6 983 600",
-         "-8 000 000"
+         "-20 950 800",
+         "-24 000 000"
         ],
         [
          "",
@@ -6708,7 +6709,7 @@
          "+ Emprunts (2)",
          "",
          "",
-         "71 118 761",
+         "213 356 283",
          "0"
         ],
         [
@@ -6724,40 +6725,40 @@
          "- Remboursements des emprunts et autres dettes financières",
          "",
          "",
-         "-40 601 891",
-         "-40 764 003"
+         "-121 805 673",
+         "-122 292 009"
         ],
         [
          "ZE",
          "Flux de trésorerie provenant des capitaux étrangers (somme FO à FQ)",
          "E",
          "",
-         "30 516 870",
-         "-40 764 003"
+         "91 550 610",
+         "-122 292 009"
         ],
         [
          "ZF",
          "Flux de trésorerie provenant des activités de financement (D+E)",
          "F",
          "",
-         "30 516 870",
-         "-40 764 003"
+         "91 550 610",
+         "-122 292 009"
         ],
         [
          "ZG",
          "VARIATION DE LA TRÉSORERIE NETTE DE LA PÉRIODE (B+C+F)",
          "G",
          "",
-         "5 424 953",
-         "-779 757"
+         "16 274 859",
+         "-2 339 271"
         ],
         [
          "ZH",
          "Trésorerie nette au 31 Décembre (G+A)",
          "H",
          "",
-         "6 300 639",
-         "1 183 257"
+         "18 901 917",
+         "3 549 771"
         ],
         [
          "",
@@ -6819,7 +6820,7 @@
        ],
        [
         "calculé — arrêté au 01/01/2026",
-        "déposé — liasse BK505416"
+        "déposé — liasse DEMO"
        ]
       ],
       "lignes": [
@@ -6830,7 +6831,7 @@
          "A",
          "",
          "0",
-         "875 686"
+         "2 627 058"
         ],
         "boutons": []
        },
@@ -6848,7 +6849,7 @@
          "",
          "",
          "0",
-         "15 178 558"
+         "45 535 674"
         ],
         "boutons": []
        },
@@ -6881,7 +6882,7 @@
          "",
          "",
          "0",
-         "15 327 350"
+         "45 982 050"
         ],
         "boutons": []
        },
@@ -6892,7 +6893,7 @@
          "",
          "",
          "0",
-         "-17 959 525"
+         "-53 878 575"
         ],
         "boutons": []
        },
@@ -6903,7 +6904,7 @@
          "",
          "",
          "0",
-         "31 359 405"
+         "94 078 215"
         ],
         "boutons": []
        },
@@ -6914,7 +6915,7 @@
          "B",
          "",
          "0",
-         "-18 108 317"
+         "-54 324 951"
         ],
         "boutons": []
        },
@@ -6943,7 +6944,7 @@
          "",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -6987,7 +6988,7 @@
          "C",
          "",
          "0",
-         "-6 983 600"
+         "-20 950 800"
         ],
         "boutons": []
        },
@@ -7067,7 +7068,7 @@
          "",
          "",
          "0",
-         "71 118 761"
+         "213 356 283"
         ],
         "boutons": []
        },
@@ -7089,7 +7090,7 @@
          "",
          "",
          "0",
-         "-40 601 891"
+         "-121 805 673"
         ],
         "boutons": []
        },
@@ -7100,7 +7101,7 @@
          "E",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -7111,7 +7112,7 @@
          "F",
          "",
          "0",
-         "30 516 870"
+         "91 550 610"
         ],
         "boutons": []
        },
@@ -7122,7 +7123,7 @@
          "G",
          "",
          "0",
-         "5 424 953"
+         "16 274 859"
         ],
         "boutons": []
        },
@@ -7133,7 +7134,7 @@
          "H",
          "",
          "0",
-         "6 300 639"
+         "18 901 917"
         ],
         "boutons": []
        },
@@ -7163,7 +7164,7 @@
        {
         "cellules": [
          "Variation du besoin de financement (FB+FC+FD+FE)",
-         "La ligne porte 31 359 405 alors que FB+FC+FD+FE vaut −2 632 175.",
+         "La ligne porte 94 078 215 alors que FB+FC+FD+FE vaut −7 896 525.",
          "La somme annoncée ne se retrouve pas à partir de ses composantes déposées."
         ],
         "boutons": []
@@ -7171,7 +7172,7 @@
        {
         "cellules": [
          "Flux des activités opérationnelles (ZB)",
-         "ZB porte −18 108 317, quand FA + (FB à FE) donne 12 546 383. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 5 424 953 = ZG, et ZG + ZA = 6 300 639 = ZH.",
+         "ZB porte −54 324 951, quand FA + (FB à FE) donne 37 639 149. En revanche ZB se recoupe en aval : ZB + ZC + ZF = 16 274 859 = ZG, et ZG + ZA = 18 901 917 = ZH.",
          "Le bas du tableau est cohérent ; c’est le bloc opérationnel qui ne l’est pas."
         ],
         "boutons": []
@@ -7190,10 +7191,10 @@
      "Imprimer le tableau des flux"
     ],
     "notes": [
-     "Exercice 2026 : calculé — arrêté au 01/01/2026 (0 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse BK505416.",
+     "Exercice 2026 : calculé — arrêté au 01/01/2026 (0 ligne(s) d’écriture validée(s) retenue(s)) · Exercice au 31/12/2025 : déposé — liasse DEMO.",
      "Exercice 2026 (calculé) — contrôle du formulaire : trésorerie des comptes de classe 5 au 01/01/2026 = 0 FCFA, trésorerie par les flux (ZH) = 0 FCFA. Les deux concordent : chaque mouvement de trésorerie est expliqué par une ligne du tableau.",
-     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 6 300 639 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
-     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 31 359 405 FCFA, recalculé -2 632 175 FCFA) ; ZB (déposé -18 108 317 FCFA, recalculé 12 546 383 FCFA). Écarts du document, conservés et non arbitrés.",
+     "La trésorerie au 1er janvier 2026 se lit dans le journal : sans à-nouveaux (bilan d’ouverture), elle vaut zéro. La liasse déposée porte 18 901 917 FCFA au 31/12/2025 — reporter les soldes par le bilan d’ouverture pour les faire coïncider.",
+     "Exercice au 31/12/2025 (déposé) — 2 sous-total(aux) déposé(s) ne se recalcule(nt) pas depuis ses lignes : Variation du BF (déposé 94 078 215 FCFA, recalculé -7 896 525 FCFA) ; ZB (déposé -54 324 951 FCFA, recalculé 37 639 149 FCFA). Écarts du document, conservés et non arbitrés.",
      "Le formulaire déposé ne se recoupe pas partout. Ces écarts sont ceux du document remis à l’administration : les corriger ici ferait diverger le logiciel de ce que la clinique a réellement déposé — précisément ce qu’un contrôle vient comparer."
     ],
     "reglages": {
@@ -7208,7 +7209,7 @@
      ],
      [
       "depose",
-      "Exercice 2025 — liasse déposée (BK505416)"
+      "Exercice 2025 — liasse déposée (DEMO)"
      ]
     ],
     "graphiques": [
@@ -7276,8 +7277,8 @@
     "entete": [
      "Date de dépôt : Non déposé — exercice calculé",
      "Code de dépôt : —",
-     "Dénomination sociale : CLINIQUE NASSIERA SARL",
-     "IFU : 3201642748214"
+     "Dénomination sociale : CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+     "IFU : 3201001996110"
     ]
    }
   },

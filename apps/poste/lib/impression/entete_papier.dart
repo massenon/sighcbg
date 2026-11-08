@@ -46,7 +46,7 @@ class EnteteLegal extends StatelessWidget {
               child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8 * k),
                   child: Column(key: const Key('entete:centre'), mainAxisSize: MainAxisSize.min, children: [
-                    Text(e.denomination,
+                    Text(EnteteTroisZones.denominationInsecable(e.denomination),
                         key: const Key('impression:entete:nom'),
                         textAlign: TextAlign.center,
                         style: TextStyle(

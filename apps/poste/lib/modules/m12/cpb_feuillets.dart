@@ -45,7 +45,7 @@ class EcranCompteResultat extends _EcranFeuillet {
 
   @override
   String get regle =>
-      'L’écran reproduit le formulaire déposé le 15/05/2026 (feuillet 7/51) : références TA à XI, libellés, colonne (2), notes et sous-totaux, au même ordre. Un exercice déposé se cite ; un exercice du journal se calcule — chaque écriture validée va à la ligne de son compte SYSCOHADA, et les sous-totaux suivent les formules imprimées sur le formulaire. Seules les écritures validées sont retenues, et le nombre de brouillons écartés est annoncé.';
+      'L’écran reproduit le formulaire de la liasse de démonstration (feuillet 7/51) : références TA à XI, libellés, colonne (2), notes et sous-totaux, au même ordre. Un exercice déposé se cite ; un exercice du journal se calcule — chaque écriture validée va à la ligne de son compte SYSCOHADA, et les sous-totaux suivent les formules imprimées sur le formulaire. Seules les écritures validées sont retenues, et le nombre de brouillons écartés est annoncé. $cpbMentionDemonstration';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {
@@ -80,7 +80,7 @@ class EcranFluxTresorerie extends _EcranFeuillet {
 
   @override
   String get regle =>
-      'L’écran reproduit le formulaire déposé (feuillet 8/51) : trésorerie au 1er janvier (ZA), flux opérationnels (FA à FE, ZB), d’investissement (FF à FJ, ZC), de financement (FK à FQ, ZD à ZF), variation (ZG) et trésorerie au 31 décembre (ZH). Un exercice du journal se calcule par la méthode indirecte et se termine par le contrôle du formulaire — trésorerie-actif moins trésorerie-passif. Un écart ne se corrige pas : il nomme les comptes que le tableau ne classe pas. Les écarts internes du document déposé sont signalés, jamais arbitrés.';
+      'L’écran reproduit le formulaire déposé (feuillet 8/51) : trésorerie au 1er janvier (ZA), flux opérationnels (FA à FE, ZB), d’investissement (FF à FJ, ZC), de financement (FK à FQ, ZD à ZF), variation (ZG) et trésorerie au 31 décembre (ZH). Un exercice du journal se calcule par la méthode indirecte et se termine par le contrôle du formulaire — trésorerie-actif moins trésorerie-passif. Un écart ne se corrige pas : il nomme les comptes que le tableau ne classe pas. Les écarts internes du document déposé sont signalés, jamais arbitrés. $cpbMentionDemonstration';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {

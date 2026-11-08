@@ -1,3 +1,5 @@
+import 'entete.dart';
+
 /// Identité légale imprimée (C.BRAND de la maquette, `core.js`) : UN SEUL en-tête sur toutes les pièces.
 ///
 /// SURCHARGEABLE (décision de la Direction du 06/11/2026, écart E841 levé) : les valeurs ci-dessous sont l'identité INITIALE de la Clinique Baguidi
@@ -190,8 +192,8 @@ class IdentiteClinique {
   /// Les lignes de l'en-tête légal sous la dénomination, dans l'ordre de la maquette, SANS les lignes vides.
   static List<String> get lignesEnTete => [ligneCoordonnees, ligneEnregistrement, ligneAutorisation, ligneFiscale, ligneEmail, slogan].where((l) => l.isNotEmpty).toList();
 
-  /// Pied des pièces imprimées : « Dénomination — RCCM — IFU … », sans mention vide.
-  static String get piedLegal => [nom, rccm, if (ifu.isNotEmpty) 'IFU $ifu'].where((p) => p.isNotEmpty).join(' — ');
+  /// Pied des pièces imprimées : « Dénomination — IFU — RCCM » (source unique : EnteteTroisZones.composerPied), sans mention vide.
+  static String get piedLegal => EnteteTroisZones.composerPied(nom, ifu, rccm);
 
   /// « Fait à <ville>, le <date> » ; « Fait le <date> » si la ville n'est pas connue.
   static String faitA(String date) => ville.isEmpty ? 'Fait le $date' : 'Fait à $ville, le $date';
@@ -377,8 +379,8 @@ class IdentiteImprimee {
   /// Les lignes de l'en-tête légal sous la dénomination, SANS les lignes vides.
   List<String> get lignesEnTete => [ligneCoordonnees, ligneEnregistrement, ligneAutorisation, ligneFiscale, ligneEmail, slogan].where((l) => l.isNotEmpty).toList();
 
-  /// Pied des pièces imprimées : « Dénomination — RCCM — IFU … », sans mention vide.
-  String get piedLegal => [nom, rccm, if (ifu.isNotEmpty) 'IFU $ifu'].where((p) => p.isNotEmpty).join(' — ');
+  /// Pied des pièces imprimées : « Dénomination — IFU — RCCM » (source unique : EnteteTroisZones.composerPied), sans mention vide.
+  String get piedLegal => EnteteTroisZones.composerPied(nom, ifu, rccm);
 
   String faitA(String date) => ville.isEmpty ? 'Fait le $date' : 'Fait à $ville, le $date';
 

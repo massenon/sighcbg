@@ -23,10 +23,7 @@ const BLANCHE = new Set([
   'packages/domaine/lib/src/rh/rhb_regles.dart',
   'packages/domaine/lib/src/administration/adm_regles.dart',   // responsables du plan annuel (personnel)
   'packages/domaine/lib/src/configuration/cfb_fiscal_date.dart', // validation des échéances par un comptable du personnel d'origine
-  // documents fiscaux de l'autre clinique : jamais réécrits (inventer une liasse serait une faute)
-  'packages/domaine/lib/src/comptabilite/cpb_liasse.dart',
-  'packages/domaine/lib/src/comptabilite/cpc_liasse.dart',
-  'packages/domaine/lib/src/comptabilite/cpc_donnees.dart',
+  // la liasse et le classeur 2025 sont désormais des données de DÉMONSTRATION Baguidi (tools/baguidi/demo-liasse.mjs, 08/11/2026) : plus d'exception
   // hors périmètre de ce lot (autres agents) : identité imprimée, règles de configuration
   'packages/domaine/lib/src/impression/identite.dart',
   'packages/domaine/lib/src/configuration/cfa_regles.dart',

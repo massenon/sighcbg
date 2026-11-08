@@ -62,12 +62,12 @@ void main() {
         expect(find.text('EXERCICE 2026 (N)'), findsOneWidget);
         expect(find.text('EXERCICE AU 31/12/2025 (N-1)'), findsOneWidget);
         expect(find.text('${res ? 'NET (1) — ' : ''}calculé — arrêté au 30/10/2026'), findsOneWidget);
-        expect(find.text('${res ? 'NET (1) — ' : ''}déposé — liasse BK505416'), findsOneWidget);
+        expect(find.text('${res ? 'NET (1) — ' : ''}déposé — liasse DEMO'), findsOneWidget);
         for (final ref in res ? ['XB', 'XC', 'XD', 'XI'] : ['ZA', 'ZB', 'ZG', 'ZH']) {
           expect(find.text(money(cols[0].val(ref))), findsWidgets, reason: ref);
         }
         // un sous-total CITÉ du dépôt (chiffre d'affaires 2025) figure à sa place
-        if (res) expect(find.text(money(190830994, avecDevise: false)), findsWidgets);
+        if (res) expect(find.text(money(572492982, avecDevise: false)), findsWidgets);
       });
 
       casM14('la colonne « calculé » reste VIDE (—) là où le journal ne porte rien ; la colonne « déposé » porte ses zéros', (t) async {
@@ -89,20 +89,20 @@ void main() {
       casM14('« liasse déposée » : les deux colonnes sont CITÉES, la date d\'arrêt disparaît, l\'en-tête de dépôt s\'affiche', (t) async {
         final m = magasinComplet();
         await ouvrir(t, m, id);
-        await choisirM14(t, 'exercice', 'Exercice 2025 — liasse déposée (BK505416)');
+        await choisirM14(t, 'exercice', 'Exercice 2025 — liasse déposée (DEMO)');
         expect(find.text('Arrêté au'), findsNothing);
         expect(find.text('EXERCICE AU 31/12/2025 (N)'), findsOneWidget);
         expect(find.text('EXERCICE AU 31/12/2024 (N-1)'), findsOneWidget);
-        expect(find.text('15/05/2026'), findsOneWidget);
-        expect(find.text('BK505416'), findsWidgets);
-        expect(find.text('3201642748214'), findsOneWidget);
+        expect(find.text('30/04/2026'), findsOneWidget);
+        expect(find.text('DEMO'), findsWidgets);
+        expect(find.text('3201001996110'), findsOneWidget);
         expect(find.textContaining('(déposé)'), findsWidgets);
         if (res) {
           expect(find.textContaining('les 9 sous-totaux déposés (XA à XI) se recalculent à l’identique'), findsWidgets);
         } else {
           // les écarts internes du document déposé sont CONSERVÉS et signalés, non arbitrés
           expect(find.text('Écarts internes du document déposé — conservés, non arbitrés'), findsOneWidget);
-          expect(find.textContaining('Variation du BF (déposé ${money(31359405)}, recalculé ${money(-2632175)})'), findsOneWidget);
+          expect(find.textContaining('Variation du BF (déposé ${money(94078215)}, recalculé ${money(-7896525)})'), findsOneWidget);
           expect(find.text('écart du document'), findsWidgets);
         }
       });

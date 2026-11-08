@@ -190,7 +190,7 @@ void main() {
   });
 
   group('m12-baseline-2025', () {
-    casM14('huit indicateurs : le résultat 2025 CITE le classeur (190 830 994 − 160 264 063)', (t) async {
+    casM14('huit indicateurs : le résultat 2025 CITE le classeur (572 492 982 − 480 792 188)', (t) async {
       final m = magasinComplet();
       await ouvrirM14(t, m, 'm12-baseline-2025');
       final e = cpcExercice2025;
@@ -203,10 +203,10 @@ void main() {
       expect(find.text('Emprunt, cautionnements, immobilisation'), findsOneWidget);
     });
 
-    casM14('le DIAGNOSTIC est calculé : 141 667 FCFA est l\'échéance mensuelle du FONDS DE GARANTIE omise par la ligne TOTAL', (t) async {
+    casM14('le DIAGNOSTIC est calculé : 425 001 FCFA est l\'échéance mensuelle du FONDS DE GARANTIE omise par la ligne TOTAL', (t) async {
       final m = magasinComplet();
       await ouvrirM14(t, m, 'm12-baseline-2025');
-      expect(find.textContaining('Écart de ${money(141667)}', findRichText: true), findsOneWidget);
+      expect(find.textContaining('Écart de ${money(425001)}', findRichText: true), findsOneWidget);
       expect(find.textContaining('l’écart n’est pas un arrondi', findRichText: true), findsOneWidget);
       expect(find.textContaining('« FONDS DE GARANTIE » (novembre et décembre)', findRichText: true), findsOneWidget);
       expect(find.textContaining('c’est elle qui est fautive, non le détail', findRichText: true), findsOneWidget);

@@ -474,33 +474,54 @@ String? admAlerteVerification(AdmFiche r, DateTime maintenant) {
 AdmFiche admFicheAmbulance(Map<String, Object?> v, DateTime maintenant) =>
     {'verifieLe': iso(maintenant), 'aCompleter': !admVrai(v['telephone']), 'source': 'Saisie à l’accueil', ...v};
 
-/// Amorçage du répertoire (collection vide), DANS L'ORDRE D'INSERTION de la maquette : les deux ambulances de la clinique (numéros de l'en-tête
-/// officiel), puis trois structures extérieures dont le numéro N'EST PAS inventé (fiche vide qui le dit).
-List<AdmFiche> admAmorcerRepertoire(DateTime maintenant, List<String> telephonesClinique, String chauffeur) {
-  const defs = <(String, String, int?, String?, String, bool)>[
-    ('Ambulance CBG 01', 'clinique', 0, null, 'Parakou — clinique', true),
-    ('Ambulance CBG 02', 'clinique', 1, 'Chauffeur de garde', 'Parakou — clinique', true),
-    ('Hôpital de référence — ambulance', 'publique', null, 'Régulation de l’hôpital', 'Parakou', false),
-    ('Zone sanitaire de Parakou', 'publique', null, 'Bureau de la zone', 'Parakou', false),
-    ('Sapeurs-pompiers', 'publique', null, 'Poste de commandement', 'Parakou', false),
+/// Mention portée par chaque fiche de démonstration dont le numéro est fictif (visible sur la carte, au tableau, au tiroir).
+const String admMentionNumeroFictif = 'Numéro fictif de démonstration';
+
+/// Amorçage du répertoire (collection vide) : JEU DE DÉMONSTRATION (décision de la Direction du 08/11/2026). La règle « aucun numéro d'urgence ne
+/// s'invente » est levée POUR CE JEU SEUL, à condition que chaque numéro soit visiblement FICTIF et NON COMPOSABLE : le motif `00 00 00 00 0N`
+/// (N de 1 à 9) ne peut correspondre à aucun abonné. Chaque fiche numérotée porte `fictif: true` et la mention [admMentionNumeroFictif] ; une fiche
+/// reste volontairement SANS numéro pour montrer « à compléter », et une autre porte une vérification périmée (> 90 j). Les numéros de l'en-tête
+/// officiel de la clinique sont ceux de l'identité, pas ceux d'une ambulance : ils ne figurent plus ici. En production, ce jeu est vidé (voir
+/// docs/baguidi/PRODUCTION-VIDER-LE-JEU.md) et l'accueil saisit les vrais numéros.
+List<AdmFiche> admAmorcerRepertoire(DateTime maintenant, String chauffeur) {
+  // libellé, type, téléphone, second numéro, contact, base, disponibilité, jours depuis la vérification (null = jamais)
+  final defs = <(String, String, String?, String?, String?, String, String, int?)>[
+    ('Ambulance CBG 01', 'clinique', '00 00 00 00 01', null, null, 'Parakou — clinique', 'disponible', 1),
+    ('Ambulance CBG 02', 'clinique', '00 00 00 00 02', null, 'Chauffeur de garde', 'Parakou — clinique', 'en_course', 12),
+    ('Hôpital de référence — ambulance', 'publique', '00 00 00 00 03', '00 00 00 00 09', 'Régulation de l’hôpital', 'Parakou', 'disponible', 20),
+    ('Zone sanitaire de Parakou', 'publique', '00 00 00 00 04', null, 'Bureau de la zone', 'Parakou', 'disponible', 45),
+    ('Sapeurs-pompiers', 'publique', '00 00 00 00 05', null, 'Poste de commandement', 'Parakou', 'disponible', 60),
+    ('Ambulance privée — Transport sanitaire (démonstration)', 'prive', '00 00 00 00 06', null, 'Permanence', 'Parakou', 'en_course', 85),
+    ('SAMU régional', 'publique', '00 00 00 00 07', null, 'Régulation médicale', 'Parakou', 'indisponible', 130),
+    ('Centre de santé de renfort', 'partenaire', '00 00 00 00 08', null, 'Infirmier de garde', 'Parakou — périphérie', 'disponible', 30),
+    ('Structure partenaire — évacuation sanitaire', 'partenaire', null, null, 'À identifier', 'Parakou', 'indisponible', null),
   ];
-  return [
-    for (final d in defs)
-      () {
-        final tel = d.$3 == null || d.$3! >= telephonesClinique.length ? null : telephonesClinique[d.$3!];
-        return <String, Object?>{
-          'libelle': d.$1,
-          'type': d.$2,
-          if (tel != null) 'telephone': tel,
-          'contact': d.$4 ?? chauffeur,
-          'base': d.$5,
-          'disponibilite': tel != null ? 'disponible' : 'indisponible',
-          if (d.$6) 'verifieLe': iso(maintenant),
-          'aCompleter': tel == null,
-          'source': d.$6 ? 'En-tête officiel de la clinique' : 'Structure à contacter — numéro à renseigner',
-        };
-      }()
-  ];
+  AdmFiche une((String, String, String?, String?, String?, String, String, int?) d) {
+    final tel = d.$3;
+    return <String, Object?>{
+      'libelle': d.$1,
+      'type': d.$2,
+      if (tel != null) 'telephone': tel,
+      if (d.$4 != null) 'telephone2': d.$4,
+      'contact': d.$5 ?? chauffeur,
+      'base': d.$6,
+      'disponibilite': d.$7,
+      if (d.$8 != null) 'verifieLe': iso(DateTime(maintenant.year, maintenant.month, maintenant.day - d.$8!)),
+      'aCompleter': tel == null,
+      if (tel != null) 'fictif': true,
+      'source': tel == null ? 'Structure à contacter — numéro à renseigner' : admMentionNumeroFictif,
+    };
+  }
+
+  return [for (final d in defs) une(d)];
+}
+
+/// Note du jeu de démonstration (texte brut) : `null` quand aucune fiche ne porte un numéro fictif (répertoire réel).
+String? admNoteDemo(List<AdmFiche> rows) {
+  final n = rows.where((r) => r['fictif'] == true).length;
+  if (n == 0) return null;
+  return 'Jeu de démonstration : $n fiche(s) portent un $admMentionNumeroFictif (00 00 00 00 0N, non composable). '
+      'Ils seront remplacés par les vrais numéros avant la mise en production.';
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------

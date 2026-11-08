@@ -405,7 +405,7 @@ void main() {
       await ligne(t, '571000 — Caisse', credit: '1000');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Valider l’écriture'));
       expect(find.text('Écriture refusée.'), findsOneWidget);
-      expect(find.textContaining('Exercice 2025 clos le 15/05/2026 — lecture seule.'), findsOneWidget);
+      expect(find.textContaining('Exercice 2025 clos le 30/04/2026 — lecture seule.'), findsOneWidget);
       expect(find.textContaining('enregistrée ('), findsNothing);
       expect(m.collection('ecritures').toutes.length, n0);
     });
@@ -668,7 +668,7 @@ void main() {
       await ajouter(t, 'Frais bancaires BOA', '631810 — Frais bancaire BOA', '9000');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       expect(find.text('Écriture refusée.'), findsOneWidget);
-      expect(find.textContaining('Exercice 2025 clos le 15/05/2026'), findsOneWidget);
+      expect(find.textContaining('Exercice 2025 clos le 30/04/2026'), findsOneWidget);
       expect(m.collection('depenses').toutes.length, n0);
       expect(m.collection('ecritures').toutes.length, e0);
     });

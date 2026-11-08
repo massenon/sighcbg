@@ -35,7 +35,7 @@ void main() {
       expect(cpbFormulesResultat.keys, ['XA', 'XB', 'XC', 'XD', 'XE', 'XF', 'XG', 'XH', 'XI']);
       expect(cpbFormulesFlux.keys, ['BF', 'ZB', 'ZC', 'ZD', 'ZE', 'ZF', 'ZG', 'ZH']);
       expect(cpbEcarts.length, 6);
-      expect(cpbDepot['code'], 'BK505416');
+      expect(cpbDepot['code'], 'DEMO');
       expect(cpbExerciceN, 2025);
       expect(cpbExerciceN1, 2024);
     });
@@ -57,7 +57,7 @@ void main() {
       final notes = liste([
         for (final n in (carte(carte(ecrans['m12-flux-tresorerie'])['depose'])['notes'] as List)) {'t': n}
       ]).map((x) => x['t']).join(' ');
-      expect(nt(notes), contains('Variation du BF (déposé ${mof(31359405)}, recalculé ${mof(-2632175)})'));
+      expect(nt(notes), contains('Variation du BF (déposé ${mof(94078215)}, recalculé ${mof(-7896525)})'));
     });
   });
 
@@ -134,7 +134,7 @@ void main() {
         expect(a[1].titre, 'Exercice au 31/12/2024');
         final dep = colonnes(genre, carte(scens['depose']));
         expect([dep[0].depose, dep[1].depose], [true, true]);
-        expect(dep[0].sous, 'déposé — liasse BK505416');
+        expect(dep[0].sous, 'déposé — liasse DEMO');
       });
 
       test('le nombre de brouillons écartés est annoncé, et seules les écritures validées sont retenues', () {

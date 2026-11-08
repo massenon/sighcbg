@@ -71,7 +71,7 @@ void main() {
   group('la garde de lecture seule, posée sur la collection', () {
     test('les refus ont le motif de la maquette ; 2026 et une date absente passent', () {
       String? motif(String d) => cpcGardeEcritures(exo, d);
-      expect(motif('2025-03-01'), allOf(contains('Exercice 2025 clôturé le 15/05/2026'), contains('lecture seule'), contains('réouverture par le comptable')));
+      expect(motif('2025-03-01'), allOf(contains('Exercice 2025 clôturé le 30/04/2026'), contains('lecture seule'), contains('réouverture par le comptable')));
       expect(motif('2024-12-31'), contains('Exercice 2024 clôturé'));
       expect(motif('2025-06-01'), contains('Exercice 2025 clôturé'));
       expect(motif('2026-03-01'), isNull);

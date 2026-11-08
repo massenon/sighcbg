@@ -38,7 +38,7 @@ int? cpaAnnee(Object? date) {
 /// La liasse DÉPOSÉE à la DGI (data-liasse.js `DEPOT`) : les exercices 2024 et 2025 sont CLOS d'office, faits par la liasse.
 const int cpaLiasseExerciceN = 2025;
 const int cpaLiasseExerciceN1 = 2024;
-const String cpaLiasseDateDepot = '2026-05-15';
+const String cpaLiasseDateDepot = '2026-04-30';
 
 /// `exercice(annee).etat` : `clos` pour les deux exercices de la liasse déposée, `ouvert` sinon. Les clôtures VALIDÉES au poste (deux gestes) ne sont
 /// pas portées : aucune n'existe au jeu.

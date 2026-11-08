@@ -113,6 +113,11 @@ void main() {
       expect(IdentiteClinique.piedLegal, '${IdentiteClinique.nom} — IFU 3201001996110');
     });
 
+    test('un seul ordre du pied : dénomination, IFU, RCCM (classe, version et en-tête trois zones)', () {
+      IdentiteClinique.appliquer({'ifu': '3201001996110', 'rccm': 'RB/PKO/17 A 4240'});
+      expect(IdentiteClinique.piedLegal, '${IdentiteClinique.nom} — IFU 3201001996110 — RCCM RB/PKO/17 A 4240');
+    });
+
     test('« Fait à » : la ville de l’adresse ; sans ville, « Fait le »', () {
       expect(IdentiteClinique.faitA('6 novembre 2026'), 'Fait à Parakou, le 6 novembre 2026');
       IdentiteClinique.appliquer({'adresse': ''});

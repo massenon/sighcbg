@@ -55,7 +55,7 @@ void main() {
       expect(find.text('1'), findsWidgets);
       // les exercices de la liasse déposée sont CLOS d'office : ni pré-clôture ni validation
       expect(find.text('Exercice 2025'), findsOneWidget);
-      expect(find.text('Liasse déposée à la DGI — 15/05/2026'), findsNWidgets(2));
+      expect(find.text('Liasse déposée à la DGI — 30/04/2026'), findsNWidgets(2));
       expect(find.widgetWithText(BoutonSigh, 'Pré-clôture'), findsOneWidget, reason: 'seul 2026 est ouvert');
     });
 

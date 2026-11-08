@@ -1,4 +1,5 @@
 {
+ "_demoLiasse": "Date de dépôt de la liasse de démonstration (30/04/2026) : seules les dates de dépôt sont réécrites (tools/baguidi/demo-liasse.mjs)",
  "amorcage": {
   "exercices": [
    {
@@ -21,7 +22,7 @@
     "statut": "actif",
     "etat": "clos",
     "source": "liasse",
-    "valideLe": "2026-05-15",
+    "valideLe": "2026-04-30",
     "validePar": "Liasse déposée à la DGI",
     "motif": "Exercice antérieur à la mise en service : fait par la liasse déposée."
    },
@@ -33,7 +34,7 @@
     "statut": "actif",
     "etat": "clos",
     "source": "liasse",
-    "valideLe": "2026-05-15",
+    "valideLe": "2026-04-30",
     "validePar": "Liasse déposée à la DGI",
     "motif": "Exercice antérieur à la mise en service : fait par la liasse déposée."
    }
@@ -62,7 +63,7 @@
    "statut": "actif",
    "etat": "clos",
    "source": "liasse",
-   "valideLe": "2026-05-15",
+   "valideLe": "2026-04-30",
    "validePar": "Liasse déposée à la DGI",
    "motif": "Exercice antérieur à la mise en service : fait par la liasse déposée."
   },
@@ -74,7 +75,7 @@
    "statut": "actif",
    "etat": "clos",
    "source": "liasse",
-   "valideLe": "2026-05-15",
+   "valideLe": "2026-04-30",
    "validePar": "Liasse déposée à la DGI",
    "motif": "Exercice antérieur à la mise en service : fait par la liasse déposée."
   }
@@ -91,7 +92,7 @@
  "garde": {
   "inserer-2025": {
    "toast": [
-    "Exercice 2025 clôturé le 15/05/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
+    "Exercice 2025 clôturé le 30/04/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
    ],
    "nbApres": 0,
    "rendu": null
@@ -103,7 +104,7 @@
   },
   "inserer-2024": {
    "toast": [
-    "Exercice 2024 clôturé le 15/05/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
+    "Exercice 2024 clôturé le 30/04/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
    ],
    "nbApres": 0,
    "rendu": null
@@ -115,7 +116,7 @@
   },
   "modifier-date-vers-2025": {
    "toast": [
-    "Exercice 2025 clôturé le 15/05/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
+    "Exercice 2025 clôturé le 30/04/2026 : lecture seule. La correction passe par la réouverture par le comptable (motif obligatoire), ou par une écriture de l’exercice en cours."
    ],
    "nbApres": 0,
    "rendu": null
@@ -2136,7 +2137,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2148,7 +2149,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2191,7 +2192,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2200,7 +2201,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]
@@ -2262,7 +2263,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2274,7 +2275,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2317,7 +2318,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2326,7 +2327,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]
@@ -2388,7 +2389,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2400,7 +2401,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2443,7 +2444,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2452,7 +2453,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]
@@ -2514,7 +2515,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2526,7 +2527,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2569,7 +2570,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2578,7 +2579,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]
@@ -2711,7 +2712,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2723,7 +2724,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2767,7 +2768,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2776,7 +2777,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]
@@ -2839,7 +2840,7 @@
         "01/01/2025 → 31/12/2025",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2851,7 +2852,7 @@
         "01/01/2024 → 31/12/2024",
         "Clôturé",
         "—",
-        "Liasse déposée à la DGI — 15/05/2026",
+        "Liasse déposée à la DGI — 30/04/2026",
         "—",
         ""
        ],
@@ -2895,7 +2896,7 @@
      "01/01/2025 → 31/12/2025",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ],
@@ -2904,7 +2905,7 @@
      "01/01/2024 → 31/12/2024",
      "Clôturé",
      "—",
-     "Liasse déposée à la DGI — 15/05/2026",
+     "Liasse déposée à la DGI — 30/04/2026",
      "—",
      ""
     ]

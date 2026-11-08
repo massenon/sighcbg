@@ -1,7 +1,7 @@
 /// ÉTATS FINANCIERS DE SYNTHÈSE AU FORMAT DE LA LIASSE DÉPOSÉE (M12, `m12-etats-financiers`) — port de `m12-comptabilite.js` (vagues 57-59), rejoué sur
 /// `test/vecteurs/etats.json` tiré de l'écran réel.
 ///
-/// L'écran reproduit les CINQ feuillets de la liasse remise à la DGI le 15/05/2026 (code BK505416) : bilan, compte de résultat, flux de trésorerie, note 11
+/// L'écran reproduit les CINQ feuillets de la liasse de démonstration (code DEMO) : bilan, compte de résultat, flux de trésorerie, note 11
 /// « Disponibilités », note 34 « Fiche de synthèse ». Mêmes références (AD, AI, XB, ZA…), mêmes libellés, même ordre, mêmes sous-totaux : un comptable doit
 /// retrouver SES lignes, à LEUR place, pour rapprocher l'écran du dépôt. DEUX COLONNES DE NATURES DIFFÉRENTES, QUI NE SE MÉLANGENT JAMAIS :
 ///  * « déposé » (N et N-1) CITE le document — des faits, qui ne se recalculent pas ; la liasse est ENGENDRÉE (`cpc_liasse.dart`), jamais recopiée ;

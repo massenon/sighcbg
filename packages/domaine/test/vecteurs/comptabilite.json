@@ -966,13 +966,13 @@
     "annee": 2025,
     "etat": "clos",
     "source": "liasse",
-    "valideLe": "2026-05-15"
+    "valideLe": "2026-04-30"
    },
    {
     "annee": 2024,
     "etat": "clos",
     "source": "liasse",
-    "valideLe": "2026-05-15"
+    "valideLe": "2026-04-30"
    }
   ],
   "exerciceChoisi": 2026,
@@ -980,7 +980,7 @@
   "depot": {
    "exerciceN": 2025,
    "exerciceN1": 2024,
-   "dateDepot": "2026-05-15"
+   "dateDepot": "2026-04-30"
   }
  },
  "ecrans": {
@@ -11719,7 +11719,7 @@
       {
        "message": "Écriture refusée.",
        "type": "error",
-       "detail": "Exercice 2025 clos le 15/05/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
+       "detail": "Exercice 2025 clos le 30/04/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
       }
      ],
      "ecart": {
@@ -12151,12 +12151,12 @@
     {
      "message": "Écriture refusée.",
      "type": "error",
-     "detail": "Exercice 2025 clos le 15/05/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
+     "detail": "Exercice 2025 clos le 30/04/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
     },
     {
      "message": "Écriture refusée.",
      "type": "error",
-     "detail": "Exercice 2025 clos le 15/05/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
+     "detail": "Exercice 2025 clos le 30/04/2026 — lecture seule. La correction passe par une écriture de l’exercice en cours."
     }
    ],
    "ecart": {

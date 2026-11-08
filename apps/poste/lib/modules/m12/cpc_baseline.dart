@@ -30,7 +30,7 @@ class EcranBaseline2025 extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Le compte de résultat 2025 n’est pas un simple archivage : il constitue la référence de comparaison des tableaux de bord (2025 réel / 2026 réel / budget 2026), conformément au principe de reprise des documents de cadrage.';
+      'Le compte de résultat 2025 n’est pas un simple archivage : il constitue la référence de comparaison des tableaux de bord (2025 réel / 2026 réel / budget 2026), conformément au principe de reprise des documents de cadrage. Le classeur 2025 est ici un jeu de démonstration : $cpbMentionDemonstration';
 
   @override
   List<Widget> actionsEntete(BuildContext context) => [
