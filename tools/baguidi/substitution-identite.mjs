@@ -42,7 +42,6 @@ export const SUBSTITUTIONS = [
   ['cliniquenassiera@gmail.com', 'cliniquebaguidi@yahoo.fr'],
   ['3201642748214', '3201001996110'],
   ['RB/NAT/2016-B-268', 'RB/PKO/17 A 4240'],
-  ['SIGH-CBG', 'SIGH-CBG'],
   ['Quartier Tchirimina, Natitingou', 'Quartier Zongo II, Parakou'],
   ['Fait à Natitingou', 'Fait à Parakou'],
   // La ligne des rendez-vous citée par les messages de rappel : Baguidi n'en a pas de dédiée, c'est le premier téléphone de l'en-tête.
