@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../impression/identite_poste.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
@@ -424,6 +425,17 @@ class _EtatFacturation extends State<EcranFacturation> {
       final ins = factures.inserer(fiche, prefixe: 'FAC');
       creees.add(ins.fiche);
       annulations.add(ins.annuler);
+      // LE COMPTABLE EST INFORMÉ DÈS L'ÉMISSION (E2260) : l'écriture du moteur d'encaissement (571 du réglé, 411 de la part assureur, 706 du total),
+      // équilibrée (RG-10), en brouillon. Une pro-forma n'est pas une pièce comptable. Annuler l'émission archive ses écritures (RG-14).
+      if (!proforma) {
+        final ecrs = m.collection('ecritures');
+        final lignesEcr = ecritureEncaissement(ins.fiche, n(ins.fiche['montantPaye']).toDouble(),
+            iso(c.aujourdhui), ecrs.actives);
+        for (final e in lignesEcr) {
+          final pose = ecrs.inserer(e, prefixe: 'ECR');
+          annulations.add(pose.annuler);
+        }
+      }
     }
     // Sortie automatique du stock pour les médicaments facturés (CDCT §10.7) : RG-03, justificatif = numéro de la pièce.
     final produits = m.collection('produits');
@@ -504,7 +516,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           dossier: _reglement['dissocier'] == true ? null : '${p['code']}',
           date: c.aujourdhui,
           mecef: BlocMecef(
-              nim: 'NIM${IdentiteClinique.ifu.substring(IdentiteClinique.ifu.length - 8)}',
+              nim: 'NIM${identiteImprimeeDe(c.magasin, c.aujourdhui).ifu.substring(identiteImprimeeDe(c.magasin, c.aujourdhui).ifu.length - 8)}',
               code: 'CODE-DGI-EN-ATTENTE',
               compteurs: '${nbFactures + 1}/$nbFactures FN'),
           lignes: [

@@ -28,7 +28,7 @@
  ],
  "fixtureEnquete": {
   "enquete": {
-   "id": "ENQxmw3vvwjs30mo3",
+   "id": "ENQxmvux6yvo38wb7",
    "statut": "actif",
    "reference": "ENQ-SAT",
    "titre": "Satisfaction des patients",
@@ -55,23 +55,23 @@
     }
    ],
    "_creePar": "BASSONGUI Chabi Séko",
-   "_creeLe": "2026-11-05T18:33:20.008Z"
+   "_creeLe": "2026-10-30T12:00:00.276Z"
   },
   "jeton": {
-   "id": "JETxmw3vvwjsrt8ih",
+   "id": "JETxmvux6yvotsvp9",
    "statut": "actif",
-   "jeton": "kw7v5s6q69a3jvst65eykx99",
-   "enqueteId": "ENQxmw3vvwjs30mo3",
+   "jeton": "uht7wrvx59kgjcfzr9bxzvhc",
+   "enqueteId": "ENQxmvux6yvo38wb7",
    "enqueteTitre": "Satisfaction des patients",
    "anonyme": true,
    "usage": "Lien",
-   "creeLe": "2026-11-05",
+   "creeLe": "2026-10-30",
    "expireLe": "2099-12-31",
    "revoqueLe": null,
    "note": null,
    "ouvertPar": "extraction",
    "_creePar": "BASSONGUI Chabi Séko",
-   "_creeLe": "2026-11-05T18:33:20.008Z"
+   "_creeLe": "2026-10-30T12:00:00.276Z"
   }
  }
 }

@@ -31,7 +31,7 @@ void main() {
     expect(find.text('Identité légale imprimée sur chaque état'), findsOneWidget);
     expect(find.text('3201642748214'), findsWidgets);
     expect(find.text('RB/NAT/2016-B-268'), findsWidgets);
-    expect(find.textContaining('Non imprimée — Non applicable'), findsOneWidget);
+    expect(find.textContaining('Non imprimée : Non applicable'), findsOneWidget);
     expect(find.textContaining('Un document ancien qui diverge du présent en-tête n’est donc pas un faux.'), findsOneWidget);
     // Lecture pure : aucune commande d'écriture.
     expect(find.widgetWithText(BoutonSigh, 'Enregistrer'), findsNothing);
@@ -41,10 +41,14 @@ void main() {
   casM14('cfg-branding : les 14 champs de la maquette, préremplis de l’identité unique, trois cartes', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
-    for (final c in (b['champs'] as Map).keys) {
-      expect(find.byKey(Key('kit:champ:$c')), findsOneWidget, reason: '$c');
+    // Les champs de la part VISIBLE ; la part fiscale (forme, IFU, RCCM, autorisation, adresse fiscale, devise, TVA) se saisit à cfg-fiscalite (même fiche).
+    for (final c in ['nom', 'sigle', 'logo', 'slogan', 'adresse', 'pays', 'email', 'telephones', 'telephoneRdv', 'doubleLogo', 'filigrane']) {
+      expect(find.byKey(Key('kit:champ:$c')), findsOneWidget, reason: c);
     }
-    for (final c in ['Paramètres de l’identité', 'Aperçu du papier à en-tête', 'Ressources graphiques']) {
+    for (final c in ['forme', 'ifu', 'rccm', 'autorisation', 'regimeTva']) {
+      expect(find.byKey(Key('kit:champ:$c')), findsNothing, reason: '$c vit à cfg-fiscalite');
+    }
+    for (final c in ['Paramètres de l’identité (part visible)', 'Ressources graphiques']) {
       expect(find.text(c), findsOneWidget, reason: c);
     }
     expect(find.widgetWithText(BoutonSigh, 'Enregistrer'), findsOneWidget);
@@ -56,25 +60,26 @@ void main() {
     final champs = obj(b['champs']);
     final nom = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:nom')), matching: find.byType(TextField)));
     expect(nom.controller!.text, champs['nom']);
-    final ifu = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:ifu')), matching: find.byType(TextField)));
-    expect(ifu.controller!.text, champs['ifu']);
+    final tel = t.widget<TextField>(find.descendant(of: find.byKey(const Key('kit:champ:telephones')), matching: find.byType(TextField)));
+    expect(tel.controller!.text, '01 95 44 51 51 / 01 66 43 28 20');
   });
 
-  casM14('« Enregistrer » journalise la modification (RG-12) et le dit ; un nom ou un IFU vide est REFUSÉ, rien n’est journalisé', (t) async {
+  casM14('« Enregistrer » journalise la modification (RG-12) et le dit ; un nom vide est REFUSÉ, rien n’est journalisé', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-branding');
     final avant = m.collection('audit').toutes.length;
-    await saisir(t, 'ifu', '');
+    await saisir(t, 'nom', '');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
     expect(m.collection('audit').toutes.length, avant);
     await t.pump(const Duration(seconds: 10));
-    await saisir(t, 'ifu', '3201642748214');
+    await saisir(t, 'nom', 'Clinique Nassièra Too');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
-    expect(find.text('Identité enregistrée.'), findsOneWidget);
-    expect(m.collection('audit').toutes.length, avant + 1);
-    final j = m.collection('audit').toutes.first;
-    expect([j['action'], j['module'], j['entite'], j['reference']], ['Modification', 'CFG', 'BrandConfiguration', 'BRAND']);
+    expect(find.textContaining('Identité enregistrée'), findsOneWidget);
+    final nouvelles = m.collection('audit').toutes.take(m.collection('audit').toutes.length - avant).where((e) => e['entite'] == 'identiteLegale').toList();
+    expect(nouvelles.length, 1, reason: 'une seule ligne de journal pour l’identité (RG-12) ; les réglages d’impression semés à l’ouverture sont à part');
+    final j = nouvelles.first;
+    expect([j['action'], j['module'], j['entite']], ['Modification', 'CFG', 'identiteLegale']);
     expect(j['utilisateur'], isNotEmpty);
   });
 
