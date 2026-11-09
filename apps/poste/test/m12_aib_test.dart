@@ -43,6 +43,26 @@ void main() {
     expect(m.collection('situationsAib').actives.length, 3, reason: 'les trois situations de la maquette : IFU actif, sans IFU actif, prestation de service');
   });
 
+  casM14('UNE SEULE source pour les comptes : aucune fiche du barème n\'en porte, le détail lit ceux des Paramètres (à confirmer) et mène à l\'onglet « Comptes de l\'AIB »', (t) async {
+    final m = magasinAib();
+    for (final f in m.collection('baremeAib').toutes) {
+      for (final k in ['compteRetenu', 'compteSubi', 'compteImputation']) {
+        expect(f.containsKey(k), isFalse, reason: '${f['id']} ne porte plus $k');
+      }
+    }
+    await ouvrirM14(t, m, 'm12-aib');
+    await toucherM14(t, find.text('3 %').first);
+    expect(find.text('Compte de l’AIB retenu (dette), en vigueur'), findsOneWidget);
+    expect(find.text('Compte de l’AIB subi (créance), en vigueur'), findsOneWidget);
+    expect(find.textContaining('À CONFIRMER PAR L’EXPERT-COMPTABLE'), findsOneWidget);
+    expect(find.textContaining('Ils se corrigent aux Paramètres'), findsOneWidget);
+    // Une version de comptes validée aux Paramètres change ce que le détail affiche : la fiche du barème n'a rien à réécrire.
+    await t.pump(const Duration(seconds: 1));
+    await toucherM14(t, find.byKey(const Key('aib:vers-comptes')));
+    await t.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const Key('aib:valider:comptes')), findsOneWidget, reason: 'l\'écran des validations s\'ouvre sur l\'onglet des comptes');
+  });
+
   casM14('créer une VERSION DATÉE : « sans IFU actif » à 6 % arrêté, à compter du 01/01/2027 — le 5 % reste en vigueur avant (journalisé, RG-12)', (t) async {
     final m = magasinAib();
     await ouvrirM14(t, m, 'm12-aib');

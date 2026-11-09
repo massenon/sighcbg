@@ -41,6 +41,8 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection(cpaCollection);
+    final ancre = ongletValidationsAibDemande;
+    ongletValidationsAibDemande = null;
     return ListenableBuilder(
       listenable: Listenable.merge([col, c.magasin.collection('baremeAib'), c.magasin.collection('situationsAib')]),
       builder: (context, _) => cfaPile([
@@ -48,10 +50,10 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
           NoteSigh(
               _fileul(c)
                   ? 'Réglé sur la mère : ces validations se font sur le poste principal, puis elles sont reprises ici.'
-                  : 'Lecture seule : les validations sont réservées à la Direction, à la DAF, au comptable et à l’administrateur.',
+                  : 'Lecture seule : les validations sont réservées à la DAF, au comptable et à l’administrateur.',
               ton: TonSigh.info,
               icone: LucideIcons.lock),
-        OngletsSigh(onglets: [
+        OngletsSigh(ancre: ancre, onglets: [
           OngletDef(id: 'bareme', libelle: 'Barème AIB', construire: (_) => _OngletBareme(c: c)),
           OngletDef(id: 'base', libelle: 'Base des factures fournisseurs', construire: (_) => _OngletBase(c: c)),
           OngletDef(id: 'ifu', libelle: 'Branchement IFU', construire: (_) => _OngletIfu(c: c)),
@@ -61,6 +63,10 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
     );
   }
 }
+
+/// L'onglet demandé à l'ouverture de l'écran par un LIEN PROFOND venu d'un autre écran (le détail du barème de `m12-aib` demande « comptes ») : lu une fois,
+/// à l'ouverture, puis vidé — un lien qui resterait collé rouvrirait le mauvais onglet à l'ouverture suivante.
+String? ongletValidationsAibDemande;
 
 bool _fileul(ContexteEcran c) => ServiceInstallation.de(c.magasin).rattache;
 
@@ -238,9 +244,6 @@ class _EtatBareme extends State<_OngletBareme> {
         'dateEffet': isoJour(v['dateEffet']),
         'dateArret': isoJour(v['dateDecision']),
         'decideurArret': '${v['decideur']}'.trim(),
-        'compteRetenu': record['compteRetenu'],
-        'compteSubi': record['compteSubi'],
-        'compteImputation': record['compteImputation'],
       };
       final refus = cpdControlerVersionAib(saisie, record, bareme.actives, c.aujourdhui, situations: situations);
       if (refus != null) return refuser(refus);

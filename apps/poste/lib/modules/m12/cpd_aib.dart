@@ -10,6 +10,7 @@ import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m14/crud_m14.dart';
+import '../cfg/cfg_validations_aib.dart' show ongletValidationsAibDemande;
 import 'cpc_commun.dart';
 
 /// `m12-aib` — « Acompte sur impôt (AIB) » : le BARÈME de l'acompte sur impôt assis sur les bénéfices que la clinique retient à la source, PAR SITUATION de
@@ -102,9 +103,6 @@ class EcranAib extends StatelessWidget with EcranMaquette {
             provenance: sourceBareme,
             valeursCreation: const {
               'statutArret': cpdStatutNonArrete,
-              'compteRetenu': cpdCompteAibRetenu,
-              'compteSubi': cpdCompteAibSubi,
-              'compteImputation': cpdCompteAibImputation,
             },
             kpis: (rows) => [
               KpiSigh(libelle: 'Versions arrêtées', valeur: nombre(rows.where(cpdEstArretee).length), icone: LucideIcons.gavel, ton: TonSigh.succes, indice: 'décidées par la Direction'),
@@ -207,9 +205,6 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                   libelle: 'Décideur de l’arrêt',
                   aide: 'La personne ou l’instance qui a arrêté ce taux (la Direction).',
                   condition: (controle: 'statutArret', quand: [cpdStatutArrete])),
-              const ChampDef(nom: 'compteRetenu', libelle: 'Compte de l’AIB retenu', requis: true, aide: 'Dette envers l’État (4478).'),
-              const ChampDef(nom: 'compteSubi', libelle: 'Compte de l’AIB subi', requis: true, aide: 'Créance sur l’État (4492).'),
-              const ChampDef(nom: 'compteImputation', libelle: 'Compte d’imputation', requis: true, aide: 'Impôt sur les bénéfices (891).'),
               const ChampDef(
                   nom: 'source',
                   libelle: 'Source du taux',
@@ -234,9 +229,6 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                 'aValider': !arrete,
                 'dateArret': arrete ? '${s['dateArret']}' : null,
                 'decideurArret': arrete ? '${s['decideurArret']}'.trim() : null,
-                'compteRetenu': '${s['compteRetenu']}'.trim(),
-                'compteSubi': '${s['compteSubi']}'.trim(),
-                'compteImputation': '${s['compteImputation']}'.trim(),
                 'source': '${s['source']}'.trim(),
                 'motif': '${s['motif']}'.trim(),
               };
@@ -255,6 +247,7 @@ class EcranAib extends StatelessWidget with EcranMaquette {
     final arretee = cpdEstArretee(f);
     final jour = c.aujourdhui;
     final v = cpdTauxAibALaDate(actives, '${f['situation']}', jour, situations: situations);
+    final comptes = cpaComptesALaDate(c.magasin.collection(cpaCollection).actives, jour);
     final fin = arretee ? cpdFinDeVersion(actives, f) : null;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       NoteSigh(
@@ -264,6 +257,11 @@ class EcranAib extends StatelessWidget with EcranMaquette {
           ton: arretee ? TonSigh.succes : TonSigh.attention,
           icone: arretee ? LucideIcons.gavel : LucideIcons.triangleAlert),
       const SizedBox(height: 12),
+      if (comptes.aConfirmer) ...[
+        NoteSigh('Comptes de l’AIB À CONFIRMER PAR L’EXPERT-COMPTABLE : ${comptes.marquage}. Ils se corrigent aux Paramètres, jamais sur la fiche du barème.',
+            ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
+        const SizedBox(height: 12),
+      ],
       DescListeSigh([
         ('Situation de l’acheteur', _libelleSituation(situations, f['situation'])),
         ('Taux', _pct(f['taux'])),
@@ -272,19 +270,41 @@ class EcranAib extends StatelessWidget with EcranMaquette {
         ('Statut', arretee ? 'Arrêté' : 'Non arrêté (à valider)'),
         ('Date de l’arrêt', arretee ? _d(f['dateArret']) : null),
         ('Décideur de l’arrêt', arretee ? '${f['decideurArret']}' : null),
-        ('Compte de l’AIB retenu (dette)', '${f['compteRetenu'] ?? cpdCompteAibRetenu}'),
-        ('Compte de l’AIB subi (créance)', '${f['compteSubi'] ?? cpdCompteAibSubi}'),
-        ('Compte d’imputation', '${f['compteImputation'] ?? cpdCompteAibImputation}'),
+        ('Compte de l’AIB retenu (dette), en vigueur', comptes.retenu),
+        ('Compte de l’AIB subi (créance), en vigueur', comptes.subi),
+        ('Compte d’imputation, en vigueur', comptes.imputation),
+        ('Provenance des comptes', comptes.provenance),
         ('Source du taux', f['source'] == null ? null : '${f['source']}'),
         ('Motif', f['motif'] == null ? null : '${f['motif']}'),
         ('Taux de la situation au ${dateFR(jour)}', v.taux == null ? 'Aucun — ${v.motif}' : '${_pct(v.taux)} — ${v.motif}'),
       ]),
+      const SizedBox(height: 12),
+      Text(
+          'Les comptes ne sont plus portés par les fiches du barème : ils se lisent à UNE seule source, la rubrique « comptes » des Paramètres, à la date de la pièce. Une pièce déjà passée garde les comptes de son époque.',
+          style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500)),
+      if (c.ouvre?.call('cfg-validations-aib') ?? false) ...[
+        const SizedBox(height: 8),
+        Wrap(children: [
+          Builder(
+              builder: (ctx) => BoutonSigh(
+                  key: const Key('aib:vers-comptes'),
+                  libelle: 'Corriger les comptes aux Paramètres',
+                  icone: LucideIcons.settings,
+                  variante: VarianteBouton.secondaire,
+                  onPressed: () {
+                    ongletValidationsAibDemande = 'comptes';
+                    if (Navigator.of(ctx).canPop()) Navigator.of(ctx).pop();
+                    c.aller('cfg-validations-aib');
+                  })),
+        ]),
+      ],
     ]);
   }
 
   void _imprimer(BuildContext ctx, ContexteEcran c, Fiche f, List<Fiche> situations) {
     final arretee = cpdEstArretee(f);
     final libelle = _libelleSituation(situations, f['situation']);
+    final comptes = cpaComptesALaDate(c.magasin.collection(cpaCollection).actives, c.aujourdhui);
     afficherApercu(
         ctx,
         pieceM9(c,
@@ -303,9 +323,10 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                 ColonneEtat(libelle: 'Rubrique', valeur: (l) => l['k']),
                 ColonneEtat(libelle: 'Information', valeur: (l) => l['v']),
               ], lignes: [
-                {'k': 'AIB retenu (dette envers l’État)', 'v': 'Compte ${f['compteRetenu'] ?? cpdCompteAibRetenu}'},
-                {'k': 'AIB subi (créance sur l’État)', 'v': 'Compte ${f['compteSubi'] ?? cpdCompteAibSubi}'},
-                {'k': 'Imputation sur l’impôt sur les bénéfices', 'v': 'Compte ${f['compteImputation'] ?? cpdCompteAibImputation}'},
+                {'k': 'AIB retenu (dette envers l’État), compte en vigueur', 'v': 'Compte ${comptes.retenu}'},
+                {'k': 'AIB subi (créance sur l’État), compte en vigueur', 'v': 'Compte ${comptes.subi}'},
+                {'k': 'Imputation sur l’impôt sur les bénéfices, compte en vigueur', 'v': 'Compte ${comptes.imputation}'},
+                {'k': 'Provenance des comptes (Paramètres)', 'v': comptes.provenance},
                 {'k': 'Source du taux', 'v': '${f['source'] ?? '—'}'},
                 {'k': 'Motif', 'v': '${f['motif'] ?? '—'}'},
                 {'k': 'Application', 'v': arretee ? 'S’applique à compter de la date d’effet.' : 'Ne s’applique à aucune retenue tant que la Direction ne l’a pas arrêté.'},

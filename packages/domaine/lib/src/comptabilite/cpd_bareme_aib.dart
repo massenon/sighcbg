@@ -13,7 +13,9 @@
 /// version arrêtée s'applique : un taux non arrêté ne sert jamais à retenir quoi que ce soit, il est offert à la Direction. Sans version arrêtée
 /// en vigueur à la date demandée, le moteur rend un taux absent (jamais zéro), le code nommé `AIB_SANS_BAREME` ET le motif.
 ///
-/// Les comptes : 4478 (AIB retenu, dette envers l'État), 4492 (AIB subi, créance sur l'État), 891 (imputation sur l'impôt sur les bénéfices).
+/// Les comptes ne sont PAS portés par les fiches du barème (décision de la Direction, 09/11/2026 : « on va le corriger dans les Paramètres ») : l'unique source est la
+/// rubrique `comptes` de `parametresAib` (`cpaComptesALaDate`). Les constantes ci-dessous ne sont que la GRAINE qui amorce cette rubrique : 4478 (AIB retenu, dette envers
+/// l'État), 4492 (AIB subi, créance sur l'État), 891 (imputation sur l'impôt sur les bénéfices) — à confirmer par l'expert-comptable.
 library;
 
 import '../referentiels/versions_datees.dart';
@@ -282,9 +284,6 @@ String? cpdControlerVersionAib(Map<String, Object?> saisie, CpdFiche? record, It
         taux != taux0 ||
         _jour(saisie['dateEffet']) != _jour(record['dateEffet']) ||
         !arrete ||
-        change('compteRetenu') ||
-        change('compteSubi') ||
-        change('compteImputation') ||
         change('dateArret', (v) => _jour(v)) ||
         change('decideurArret');
     if (modifie) {
