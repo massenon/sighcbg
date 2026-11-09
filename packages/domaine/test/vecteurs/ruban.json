@@ -1566,8 +1566,7 @@
        "label": "Configuration Clinique",
        "hub": "hub-cfg",
        "ecrans": [
-        "cfg-imagerie-catalogue",
-        "cfg-validations-aib"
+        "cfg-imagerie-catalogue"
        ]
       }
      ]
