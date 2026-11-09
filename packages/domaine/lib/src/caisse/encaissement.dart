@@ -68,7 +68,8 @@ ResultatEncaissement encaisser(
   bool mecefActif = true,
   List<Map<String, Object?>> ecritures = const [],
   Map<String, Object?>? acheteur,
-  int aibParDefaut = aibTauxParDefaut,
+  int? aibParDefaut,
+  int? longueurIfu,
 }) {
   if (facture['statutPaiement'] == 'soldee') {
     return ResultatEncaissement(
@@ -88,7 +89,8 @@ ResultatEncaissement encaisser(
         nom: acheteur['nom'],
         aibTaux: acheteur['aibTaux'],
         aibSituation: acheteur['aibSituation'],
-        aibParDefaut: aibParDefaut);
+        aibParDefaut: aibParDefaut,
+        longueurIfu: longueurIfu);
     if (v.refus != null) {
       final lignesDues = ((facture['lignes'] ?? const []) as List)
           .map((l) => (l as Map).cast<String, Object?>())
@@ -206,6 +208,7 @@ ResultatEncaissement encaisser(
       'acheteurNom': acheteurSaisi.nom,
       'aibTaux': acheteurSaisi.aibTaux,
       if (acheteurSaisi.aibSituation != null) 'aibSituation': acheteurSaisi.aibSituation,
+      if (acheteurSaisi.aibRepli) 'aibRepli': true,
     },
     'dernierReglement': {
       'date': maintenant,

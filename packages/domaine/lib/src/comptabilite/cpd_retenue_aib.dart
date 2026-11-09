@@ -29,7 +29,7 @@ class RefusRetenueAib implements Exception {
 /// Le résultat du calcul : la situation, le taux appliqué, la base, le montant (au franc) et le motif du taux.
 class CpdRetenueAib {
   const CpdRetenueAib(
-      {required this.situation, required this.taux, required this.base, required this.montant, required this.motif, required this.dateEffet, this.versionId});
+      {required this.situation, required this.taux, required this.base, required this.montant, required this.motif, required this.dateEffet, this.versionId, this.baseSource, this.baseMotif});
   final String situation;
   final num taux;
   final num base;
@@ -40,12 +40,27 @@ class CpdRetenueAib {
   /// La version du barème sous laquelle la retenue a été calculée : une correction ultérieure du barème ne la réécrit pas.
   final String? versionId;
 
-  Map<String, Object?> versFiche() =>
-      {'situation': situation, 'taux': taux, 'base': base, 'montant': montant, 'motif': motif, 'dateEffet': dateEffet, if (versionId != null) 'versionId': versionId};
+  /// D'où vient la base (`ht` ou `facture`, voir `cpaBaseRetenue`) et la phrase qui le dit (repli sur le montant facturé compris) : la pièce PORTE la base
+  /// qui a servi, une validation ultérieure des Paramètres ne la réécrit pas.
+  final String? baseSource;
+  final String? baseMotif;
+
+  Map<String, Object?> versFiche() => {
+        'situation': situation,
+        'taux': taux,
+        'base': base,
+        'montant': montant,
+        'motif': motif,
+        'dateEffet': dateEffet,
+        if (versionId != null) 'versionId': versionId,
+        if (baseSource != null) 'baseSource': baseSource,
+        if (baseMotif != null) 'baseMotif': baseMotif,
+      };
 }
 
 /// Calcule la retenue sur [base] pour la situation [situation] à [date]. Refuse (nommément) : base nulle ou négative, aucun taux arrêté en vigueur.
-CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String situation, num base, DateTime date, {Iterable<CpdFiche>? situations}) {
+CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String situation, num base, DateTime date,
+    {Iterable<CpdFiche>? situations, String? baseSource, String? baseMotif}) {
   if (base <= 0) throw const RefusRetenueAib('La base de la retenue doit être positive.');
   final r = cpdTauxAibALaDate(bareme, situation, date, situations: situations);
   final t = r.taux;
@@ -57,6 +72,8 @@ CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String situation,
       base: base,
       montant: cpdMontantAib(base, t),
       motif: r.motif,
+      baseSource: baseSource,
+      baseMotif: baseMotif,
       dateEffet: isoJour(r.version!['dateEffet'] ?? date));
 }
 

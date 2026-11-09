@@ -15,13 +15,18 @@ Map<String, Object?> vente([Map<String, Object?> sup = const {}]) => {
 
 void main() {
   group('preparerNormalisation', () {
-    test('une vente encaissée est préparée : acheteur par défaut, montants entiers', () {
+    test('une vente encaissée est préparée : acheteur par défaut, montants entiers (taux de repli des Paramètres : 0 %, plus de 1 % écrit en dur)', () {
       final p = preparerNormalisation(vente());
       expect(p.ok, isTrue);
-      expect(p.acheteur!.aibTaux, 1);
+      expect(p.acheteur!.aibTaux, CpdParametresAib.graine.tauxRepli);
+      expect(p.acheteur!.aibTaux, 0);
       expect(p.montants!.base, 10000);
-      expect(p.montants!.aib, 100);
-      expect(p.montants!.net, 10100);
+      expect(p.montants!.aib, 0);
+      expect(p.montants!.net, 10000);
+    });
+    test('le taux de repli lu aux Paramètres (aibParDefaut) gouverne la vente sans taux : 2 % de 10 000 = 200', () {
+      final p = preparerNormalisation(vente(), aibParDefaut: 2);
+      expect(p.acheteur!.aibTaux, 2);
     });
     test('l\'acheteur de la pièce, sinon celui de la fenêtre', () {
       final p = preparerNormalisation(vente({'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X', 'aibTaux': 5}));

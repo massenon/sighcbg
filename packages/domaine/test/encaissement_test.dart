@@ -303,11 +303,11 @@ void testsCorrections() {
       expect(r.facture['statutMecef'], 'en_attente');
     });
 
-    test('particulier sans acheteur saisi : le taux par défaut, aucun IFU', () {
+    test('particulier sans acheteur saisi : le taux de repli (0 % à la graine), aucun IFU', () {
       final r = encaisser(piece(),
           aujourdhui: '2026-11-09', maintenant: 'x', acheteur: const {});
       expect(r.facture['ifuClient'], isNull);
-      expect(r.facture['aibTaux'], 1);
+      expect(r.facture['aibTaux'], 0);
     });
 
     test('règlement partiel : la base ne porte que la part patient des lignes réglées', () {

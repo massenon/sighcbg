@@ -621,6 +621,7 @@
    "historiqueObligations",
    "situationsAib",
    "baremeAib",
+   "parametresAib",
    "examensLabo",
    "unitesLabo",
    "variablesLabo",
@@ -7195,7 +7196,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "318",
+     "valeur": "319",
      "indice": null
     },
     {
@@ -7210,7 +7211,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "316",
+     "valeur": "317",
      "indice": null
     }
    ],
@@ -7474,7 +7475,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 318,
+  "tousEcrans": 319,
   "modulesListe": [
    [
     "M2",
@@ -7600,7 +7601,7 @@
     "Configuration Clinique",
     "sliders-horizontal",
     "Système",
-    21
+    22
    ],
    [
     "IMP",
@@ -7676,7 +7677,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "318",
+     "valeur": "319",
      "indice": null
     },
     {
@@ -7691,7 +7692,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "307",
+     "valeur": "308",
      "indice": null
     }
    ],
@@ -7933,7 +7934,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "318",
+     "valeur": "319",
      "indice": null
     },
     {
@@ -7948,7 +7949,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "316",
+     "valeur": "317",
      "indice": null
     }
    ],
@@ -8069,7 +8070,7 @@
      "DASH — Tableaux de bord par poste"
     ]
    ],
-   "nbEcrans": 318
+   "nbEcrans": 319
   },
   "declarerCfg": {
    "fiche": {
@@ -8152,7 +8153,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "318",
+     "valeur": "319",
      "indice": null
     },
     {
@@ -8167,7 +8168,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "314",
+     "valeur": "315",
      "indice": null
     }
    ],
