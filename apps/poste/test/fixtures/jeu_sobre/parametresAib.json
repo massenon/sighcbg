@@ -1,0 +1,4 @@
+[
+{"id":"PAA-BASE-1","statut":"actif","rubrique":"base_retenue","version":1,"base":"ht","graine":true,"aValider":true,"motif":"Graine semée à l’installation : valeur d’attente, à valider par la Direction, la DAF, le comptable ou l’administrateur aux Paramètres."},
+{"id":"PAA-IFU-1","statut":"actif","rubrique":"branchement_ifu","version":1,"longueurIfu":13,"situationIfuRenseigne":"ifu_actif","situationIfuAbsent":"ifu_inactif_ou_absent","tauxRepli":0,"graine":true,"aValider":true,"motif":"Graine semée à l’installation : valeur d’attente, à valider par la Direction, la DAF, le comptable ou l’administrateur aux Paramètres."}
+]

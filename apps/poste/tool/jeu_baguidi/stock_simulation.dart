@@ -620,6 +620,11 @@ class Stock {
     final com = _commande(reference);
     final montant = _n(liv['montant']);
     final echeance = Contexte.date(jourIso(c.facture!).add(const Duration(days: 30)));
+    // D7 : le montant HORS TAXES (base de la retenue d'AIB) accompagne le montant facturé. Sans tirage (aucune autre donnée du jeu ne se décale) : les produits
+    // de santé (pharmacie, réactifs) sont exonérés, le hors-taxes vaut le facturé et aucune ligne de TVA ne s'écrit ; le fournisseur de fournitures générales
+    // (FEB) facture la TVA de 18 % sur une ligne séparée (hors taxes = facturé / 1,18, arrondi au franc).
+    final avecTva = c.fournisseur == 'FEB';
+    final ht = avecTva ? (montant / 1.18).round() : montant;
     final ff = a.ajouter(
         'facturesFournisseurs',
         {
@@ -632,6 +637,8 @@ class Stock {
           'fournisseurNom': com['fournisseurNom'],
           'montantLivraison': montant,
           'montantFacture': montant,
+          'montantHT': ht,
+          if (avecTva) 'montantTVA': montant - ht,
           'ecart': 0,
           'statutRappro': 'rapproche',
           'statutPaiement': 'impayee',

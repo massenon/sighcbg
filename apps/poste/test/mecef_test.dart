@@ -292,4 +292,41 @@ void main() {
     expect(m.collection('audit').toutes.any((e) => e['entite'] == 'ConfigurationFiscale'), isTrue);
     expect(find.textContaining('Le prototype simule les échanges avec le dispositif fiscal'), findsOneWidget);
   });
+
+  // D1 (Direction, 09/11/2026) : l'écran dit quel taux ARRÊTÉ est en vigueur aujourd'hui, lu au barème — plus de « 1 % » écrit en dur, plus de taux saisi ici.
+  cas('configuration : l\'AIB est celui du barème arrêté en vigueur (5 % au 30/10/2026), jamais un 1 % écrit en dur', (t) async {
+    final m = magasin();
+    await ouvrir(t, m, 'mecef-config');
+    expect(find.text('Acompte AIB en vigueur aujourd’hui'), findsOneWidget);
+    expect(find.textContaining('5 % arrêté au barème, du montant hors taxes'), findsWidgets);
+    expect(find.byKey(const Key('mecef:config-aib')), findsOneWidget);
+    expect(find.textContaining('Taux de 5 % arrêté, en vigueur depuis le 07/09/2026'), findsOneWidget);
+    expect(find.textContaining('AIB 1 %'), findsNothing);
+    expect(find.text('Taux d’AIB (%)'), findsNothing, reason: 'le taux ne se saisit plus ici : il se règle au barème');
+  });
+
+  cas('configuration : sans taux arrêté en vigueur, l\'écran dit « aucun taux arrêté : 0 % » avec le motif du moteur', (t) async {
+    final m = magasin();
+    final b = m.collection('baremeAib');
+    for (final f in b.actives.where((f) => f['arrete'] == true)) {
+      b.mettreAJour(f['id'], {'arrete': false, 'statutArret': 'non_arrete'});
+    }
+    await ouvrir(t, m, 'mecef-config');
+    expect(find.textContaining('aucun taux arrêté : 0 % (taux de repli des Paramètres)'), findsWidgets);
+    expect(find.textContaining('Aucun taux arrêté en vigueur au 30/10/2026'), findsOneWidget);
+  });
+
+  cas('configuration : le taux de repli validé aux Paramètres (3 %) est celui que l\'écran annonce sans taux arrêté', (t) async {
+    final m = magasin();
+    final b = m.collection('baremeAib');
+    for (final f in b.actives.where((f) => f['arrete'] == true)) {
+      b.mettreAJour(f['id'], {'arrete': false, 'statutArret': 'non_arrete'});
+    }
+    m.collection('parametresAib').ajouterSansJournal({
+      'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif',
+      'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
+    });
+    await ouvrir(t, m, 'mecef-config');
+    expect(find.textContaining('aucun taux arrêté : 3 % (taux de repli des Paramètres)'), findsWidgets);
+  });
 }

@@ -4621,6 +4621,11 @@
     1,
     1,
     1
+   ],
+   "cfg-validations-aib": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -6003,6 +6008,11 @@
     1,
     0,
     0
+   ],
+   "cfg-validations-aib": [
+    1,
+    1,
+    0
    ]
   },
   "dm": {
@@ -6725,6 +6735,11 @@
     1,
     1,
     1
+   ],
+   "cfg-validations-aib": [
+    1,
+    0,
+    0
    ]
   },
   "da": {
@@ -7884,6 +7899,11 @@
     1
    ],
    "enquete-publique": [
+    1,
+    1,
+    1
+   ],
+   "cfg-validations-aib": [
     1,
     1,
     1
@@ -10375,6 +10395,11 @@
     1,
     0,
     0
+   ],
+   "cfg-validations-aib": [
+    1,
+    1,
+    1
    ]
   },
   "rh": {},
@@ -11665,6 +11690,11 @@
     1,
     1,
     0
+   ],
+   "cfg-validations-aib": [
+    1,
+    0,
+    0
    ]
   },
   "chirurgien": {
@@ -12836,6 +12866,11 @@
     1,
     1,
     1
+   ],
+   "cfg-validations-aib": [
+    1,
+    0,
+    0
    ]
   }
  }

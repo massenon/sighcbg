@@ -1408,6 +1408,10 @@
   "m2-mdt-conventions": {
    "titre": "Conventions de visites",
    "description": "Les conventions de visites médicales passées avec les entreprises clientes : période, périodicité, visites prévues."
+  },
+  "cfg-validations-aib": {
+   "titre": "Validations de l’AIB",
+   "description": "Trois formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur."
   }
  }
 }

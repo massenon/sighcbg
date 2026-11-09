@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart' as d;
 
 import 'magasin.dart';
+import 'parametres_aib.dart';
 
 /// Ce que la normalisation d'une vente a rendu : un numéro, un refus nommé (code, motif, geste) ou rien à faire.
 class ResultatNormalisation {
@@ -63,8 +64,30 @@ ResultatNormalisation normaliserVente(
   }
   // MECeF fermé (bascule P0-5 de Baguidi) : rien à normaliser, la pièce ne porte aucun champ fiscal.
   final mecefActif = d.fermeturesEnVigueur(m.collection('modulesActifs').toutes).mecefEnService;
+  // LE TAUX PAR DÉFAUT SE LIT AU BARÈME (D1, Direction, 09/11/2026) : une pièce qui ne porte aucun taux (retransmission d'une pièce restée sans taux, vente
+  // sans acheteur) reçoit le taux ARRÊTÉ en vigueur à la date de la facture pour la situation que le branchement IFU donne à son IFU ; sans taux arrêté, le
+  // taux de REPLI des Paramètres (0 % à la graine), jamais un taux inventé. Le motif du moteur est journalisé et porté par la pièce. Une pièce ou une
+  // fenêtre qui porte déjà son taux le GARDE.
+  Map<String, Object?>? acheteurEffectif = acheteur;
+  d.AibParDefaut? defaut;
+  final porteTaux = '${acheteur?['aibTaux'] ?? fac['aibTaux'] ?? ''}'.isNotEmpty;
+  if (mecefActif && !porteTaux) {
+    final dateAib = DateTime.tryParse('${fac['date'] ?? ''}') ?? maintenant;
+    final ifu = acheteur != null && acheteur.containsKey('ifu') ? acheteur['ifu'] : fac['ifuClient'];
+    defaut = aibParDefaut(m, dateAib, ifu: ifu);
+    acheteurEffectif = {
+      ...?acheteur,
+      'aibTaux': defaut.taux,
+      'aibSituation': defaut.situation,
+      'aibRepli': defaut.repli,
+    };
+  }
+  final params = parametresAib(m, maintenant);
   final prep = d.preparerNormalisation(fac,
-      acheteurSaisi: acheteur, modeDesactive: !mecefActif, tauxTvaCourant: tauxTvaCourant);
+      acheteurSaisi: acheteurEffectif,
+      modeDesactive: !mecefActif,
+      longueurIfu: params.longueurIfu,
+      tauxTvaCourant: tauxTvaCourant);
   if (prep.ignore) return const ResultatNormalisation.ignoree();
   final annulations = <VoidCallback>[];
   void undo() {
@@ -87,7 +110,7 @@ ResultatNormalisation normaliserVente(
       'AIB_TAUX_INVALIDE'
     };
     if (deMontants.contains(r.code)) {
-      final ach = d.acheteurDePiece(fac, saisi: acheteur).acheteur;
+      final ach = d.acheteurDePiece(fac, saisi: acheteurEffectif, longueurIfu: params.longueurIfu).acheteur;
       annulations.add(col.mettreAJour(factureId, {
         'statutMecef': 'rejete',
         'codeRetour': r.code,
@@ -95,8 +118,12 @@ ResultatNormalisation normaliserVente(
         if (ach != null) ...{
           'ifuClient': ach.ifu,
           'acheteurNom': ach.nom,
-          'aibTaux': ach.aibTaux,
-          if (ach.aibSituation != null) 'aibSituation': ach.aibSituation,
+          // Un taux LU au barème par défaut n'est PAS porté par une pièce refusée : la retransmission le relira à sa date, jamais un taux périmé.
+          if (defaut == null) ...{
+            'aibTaux': ach.aibTaux,
+            if (ach.aibSituation != null) 'aibSituation': ach.aibSituation,
+            if (ach.aibRepli) 'aibRepli': true,
+          },
         },
         'mecefSimule': true,
       }));
@@ -111,6 +138,8 @@ ResultatNormalisation normaliserVente(
     'acheteurNom': a.nom,
     'aibTaux': a.aibTaux,
     if (a.aibSituation != null) 'aibSituation': a.aibSituation,
+    if (a.aibRepli) 'aibRepli': true,
+    if (defaut != null) 'aibMotif': defaut.motif,
     'mecefSimule': true,
   };
   // L'état est écrit AVANT l'émission (un redémarrage reprend au bon endroit).
@@ -129,6 +158,6 @@ ResultatNormalisation normaliserVente(
     'normalisePar': m.utilisateur,
   }));
   m.journaliser('Normalisation', 'MECEF', 'facture', '${fac['numero']}',
-      {'statutMecef': 'en_attente'}, {'statutMecef': 'valide', 'numero': numero});
+      {'statutMecef': 'en_attente'}, {'statutMecef': 'valide', 'numero': numero, if (defaut != null) 'aib': '${a.aibTaux} % — ${defaut.motif}'});
   return ResultatNormalisation.ok(numero, annuler: undo);
 }

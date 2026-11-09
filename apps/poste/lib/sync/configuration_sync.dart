@@ -155,6 +155,15 @@ class ApplicateurConfiguration {
             final ici = DateTime.tryParse('${local['definiLe'] ?? ''}');
             if (distant == null || (ici != null && !distant.isAfter(ici))) continue;
           }
+          // Les VERSIONS DATÉES de l'AIB (paramètres décidés, barème arrêté) ne s'écrasent jamais : une version déjà décidée ou arrêtée ici garde son contenu,
+          // seul son ARCHIVAGE (RG-14) passe. Une correction est une AUTRE fiche (une version de plus) : la fusion garde donc toutes les versions, et la
+          // lecture à une date prend la plus récente par date d'effet (`cpaFicheALaDate`, `cpdTauxAibALaDate`).
+          if (local != null && _versionFigee(nom, local)) {
+            if (f['statut'] == 'archive' && local['statut'] != 'archive') {
+              if (col.appliquerDistante({...local, 'statut': 'archive'})) n++;
+            }
+            continue;
+          }
           if (col.appliquerDistante(f)) n++;
         }
       }
@@ -168,6 +177,10 @@ class ApplicateurConfiguration {
     return n;
   }
 }
+
+/// Une version déjà DÉCIDÉE (paramètre portant son décideur) ou ARRÊTÉE (barème) : elle ne se réécrit pas sous l'effet d'une fiche distante.
+bool _versionFigee(String collection, Fiche local) =>
+    (collection == cpaCollection && '${local['decideur'] ?? ''}'.isNotEmpty) || (collection == 'baremeAib' && cpdEstArretee(local));
 
 /// La publication réelle : le service de la mère du MÊME processus, par son point d'entrée d'administration (`POST /admin/referentiel`).
 Future<void> Function(String, String, Map<String, Object?>) publierVersMereLocale({required int port, required String admin, http.Client? client}) {

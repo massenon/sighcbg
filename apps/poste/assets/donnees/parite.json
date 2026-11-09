@@ -4841,6 +4841,26 @@
    "statut": "porté"
   },
   {
+   "id": "cfg-validations-aib",
+   "label": "Validations de l’AIB",
+   "module": "CFG",
+   "domaine": "Système",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da",
+    "direction",
+    "comptable",
+    "dm",
+    "aide_comptable",
+    "assistant_comptable"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "cfg-notifications",
    "label": "Notifications",
    "module": "CFG",

@@ -28,8 +28,22 @@ String iso8601(DateTime t) => t.toUtc().toIso8601String();
 /// La NORMALISATION de démonstration d'une vente soldée (MECeF, lot M1 : toute vente est normalisée, et l'émission laisse la pièce `en_attente`). Les
 /// contrôles et les montants entiers sont ceux du domaine (`preparerNormalisation`) ; le numéro est celui de l'appareil de démonstration, marqué
 /// `mecefSimule` (jamais un numéro fiscal). Une vente que le domaine refuserait reste `en_attente`, comme au poste.
-Fiche champsNormalisation(Fiche fac, String numero, DateTime quand) {
-  final prep = d.preparerNormalisation(fac);
+///
+/// LE TAUX D'AIB SUIT LA RÈGLE DU POSTE (D1) : une pièce sans taux reçoit le taux ARRÊTÉ du barème en vigueur à sa date pour la situation de son acheteur, sinon
+/// le taux de repli des Paramètres (0 %) — la même fonction que `normaliserVente` (`aibParDefautALaDate`), lue aux collections du jeu en construction.
+Fiche champsNormalisation(Fiche fac, String numero, DateTime quand, Contexte ctx) {
+  final date = DateTime.tryParse('${fac['date'] ?? ''}') ?? quand;
+  final situations = ctx.collection('situationsAib').actives;
+  final versions = ctx.collection('baremeAib').actives;
+  final parametres = d.cpaParametresALaDate(ctx.collection(d.cpaCollection).actives, date);
+  Map<String, Object?>? saisi;
+  String? motif;
+  if ('${fac['aibTaux'] ?? ''}'.isEmpty) {
+    final defaut = d.aibParDefautALaDate(ifu: fac['ifuClient'], date: date, situations: situations, versions: versions, parametres: parametres);
+    saisi = {'aibTaux': defaut.taux, 'aibSituation': defaut.situation, 'aibRepli': defaut.repli};
+    motif = defaut.motif;
+  }
+  final prep = d.preparerNormalisation(fac, acheteurSaisi: saisi, longueurIfu: parametres.longueurIfu);
   if (!prep.ok) return const {};
   final a = prep.acheteur!;
   return {
@@ -41,6 +55,9 @@ Fiche champsNormalisation(Fiche fac, String numero, DateTime quand) {
     'ifuClient': a.ifu,
     'acheteurNom': a.nom,
     'aibTaux': a.aibTaux,
+    if (a.aibSituation != null) 'aibSituation': a.aibSituation,
+    if (a.aibRepli) 'aibRepli': true,
+    if (motif != null) 'aibMotif': motif,
     'aibMontant': prep.montants!.aib,
   };
 }
@@ -259,7 +276,7 @@ class Caisse {
           }
       ];
       fiche['statut'] = 'actif';
-      if (p['mecef'] == true) fiche.addAll(champsNormalisation(fiche, numeroMecef(), quand));
+      if (p['mecef'] == true) fiche.addAll(champsNormalisation(fiche, numeroMecef(), quand, jeu.ctx));
       fiche.addAll(complement);
       final ins = jeu.ajouter('factures', fiche, 'FAC');
       ecrites.add(ins);
@@ -297,7 +314,7 @@ class Caisse {
         if (f.containsKey(k)) k: f[k],
     });
     if (mecefActif && f['statutPaiement'] == 'soldee' && fac['numeroMecef'] == null && d.nombreOuZero(f['partPatient']) > 0) {
-      jeu.maj('factures', factureId, champsNormalisation({...fac, ...f}, numeroMecef(), quand));
+      jeu.maj('factures', factureId, champsNormalisation({...fac, ...f}, numeroMecef(), quand, jeu.ctx));
     }
     final iso = iso8601(quand);
     final reglees = [

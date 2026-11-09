@@ -6,6 +6,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/normalisation_mecef.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
+import 'package:sigh_poste/modules/m8/acheteur_normalise.dart';
 import 'package:sigh_poste/main.dart';
 
 import 'aide_polices.dart';
@@ -285,6 +286,93 @@ void main() {
       final m = magasin();
       final f = vente(m, {'proforma': true});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'PROFORMA');
+    });
+
+    // D1 (Direction, 09/11/2026) : vente sans acheteur et retransmission lisent le taux au barème daté ; sans taux arrêté en vigueur, le repli des Paramètres (0 %).
+    test('D1 vente sans acheteur au 30/10/2026 : le taux ARRÊTÉ du barème (5 %), pas un 1 % écrit en dur ; la pièce porte son motif', () {
+      final m = magasin();
+      final f = vente(m, {'date': '2026-10-30'});
+      final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+      expect(r.ok, isTrue);
+      final p = m.collection('factures').parId(f['id'])!;
+      expect([p['aibTaux'], p['aibSituation'], p['aibMontant'], p['aibRepli']], [5, 'ifu_inactif_ou_absent', 500, null]);
+      expect(p['aibMotif'], 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
+      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Normalisation' && '${(a['apres'] as Map)['aib']}'.contains('5 % — Taux de 5 % arrêté')), isTrue,
+          reason: 'le motif du moteur est journalisé');
+    });
+
+    test('D1 vente sans acheteur AVANT l\'arrêt du 5 % : aucun taux arrêté → 0 %, repli annoncé avec le motif du moteur, journalisé', () {
+      final m = magasin();
+      final f = vente(m, {'date': '2026-08-01'});
+      final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+      expect(r.ok, isTrue);
+      final p = m.collection('factures').parId(f['id'])!;
+      expect([p['aibTaux'], p['aibMontant'], p['aibRepli']], [0, 0, true]);
+      expect(p['aibSituation'], isNull);
+      expect(p['aibMotif'], contains('Aucun taux arrêté en vigueur au 01/08/2026 : AIB à 0 %'));
+      expect(p['aibMotif'], contains('Aucun taux arrêté avant le 07/09/2026'));
+      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Normalisation' && '${(a['apres'] as Map)['aib']}'.contains('0 % — Aucun taux arrêté en vigueur')), isTrue);
+    });
+
+    test('D1 retransmission d\'une pièce refusée puis corrigée : le taux se lit à la date de la facture, le refus n\'écrit pas un taux périmé', () {
+      final m = magasin();
+      final f = vente(m, {'montantTTC': 10001, 'date': '2026-10-30'});
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'TOTAL_INCOHERENT');
+      final refusee = m.collection('factures').parId(f['id'])!;
+      expect(refusee['statutMecef'], 'rejete');
+      expect(refusee.containsKey('aibTaux'), isFalse, reason: 'un taux lu par défaut ne se porte pas sur une pièce refusée');
+      // la correction, puis la retransmission : le taux arrêté est lu à la date de la facture
+      m.collection('factures').mettreAJour(f['id'], {'montantTTC': 10000});
+      final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+      expect(r.ok, isTrue);
+      expect(m.collection('factures').parId(f['id'])!['aibTaux'], 5);
+    });
+
+    test('D1 acheteur avec IFU actif, 1 % non arrêté : la retransmission applique 0 % (jamais le 1 %), D8 : la fenêtre, elle, refuse ce même acheteur', () {
+      final m = magasin();
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+      expect(r.ok, isTrue);
+      final p = m.collection('factures').parId(f['id'])!;
+      expect([p['aibTaux'], p['aibRepli']], [0, true]);
+      expect(p['aibMotif'], contains('0 %'));
+      // D8 : la fenêtre « Facture normalisée » GARDE son refus nommé pour le même acheteur tant que le 1 % n'est pas arrêté.
+      final ctl = ControleurFormulaire(champsAcheteurNormalise(m, aujourdhui), {...valeursAcheteur(null), 'acheteurIfu': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final refus = controlerAcheteur(ctl, m, aujourdhui);
+      expect(refus!.code, 'AIB_SANS_BAREME');
+    });
+
+    test('D1 le taux de repli est celui des Paramètres : validé à 3 % pour l\'IFU actif, la retransmission applique 3 %', () {
+      final m = magasin();
+      m.collection('parametresAib').ajouterSansJournal({
+        'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif',
+        'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
+      });
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).ok, isTrue);
+      final p = m.collection('factures').parId(f['id'])!;
+      expect([p['aibTaux'], p['aibMontant']], [3, 300]);
+    });
+
+    test('une pièce qui porte déjà son taux le GARDE : la fenêtre a décidé, le défaut ne la réécrit pas', () {
+      final m = magasin();
+      final f = vente(m, {'date': '2026-10-30', 'aibTaux': 5, 'aibSituation': 'ifu_inactif_ou_absent'});
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).ok, isTrue);
+      final p = m.collection('factures').parId(f['id'])!;
+      expect(p['aibTaux'], 5);
+      expect(p.containsKey('aibMotif'), isFalse);
+    });
+
+    test('la longueur de l\'IFU vient des Paramètres : validée à 10 chiffres, un IFU de 13 est refusé en le disant', () {
+      final m = magasin();
+      m.collection('parametresAib').ajouterSansJournal({
+        'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 10, 'situationIfuRenseigne': 'ifu_actif',
+        'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 0, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
+      });
+      final f = vente(m, {'date': '2026-10-30'});
+      final r = normaliserVente(m, '${f['id']}', acheteur: {'ifu': '3201642748214', 'nom': 'X'}, maintenant: aujourdhui);
+      expect(r.code, 'IFU_INVALIDE');
+      expect(r.motif, contains('10 chiffres'));
     });
   });
 }
