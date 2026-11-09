@@ -1,1 +1,8 @@
-[]
+[
+{"id":"FDP0001","statut":"actif","intitule":"Direction Générale","rattachement":"À compléter par la Direction","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"},
+{"id":"FDP0002","statut":"actif","intitule":"Comptabilité","rattachement":"Direction Générale","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"},
+{"id":"FDP0003","statut":"actif","intitule":"Ressources humaines","rattachement":"Direction Générale","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"},
+{"id":"FDP0004","statut":"actif","intitule":"Médecine générale","rattachement":"Direction Générale","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"},
+{"id":"FDP0005","statut":"actif","intitule":"Soins infirmiers","rattachement":"Direction Générale","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"},
+{"id":"FDP0006","statut":"actif","intitule":"Administration système","rattachement":"À compléter par la Direction","resume":"Missions à compléter par la Direction.","missions":[],"missionsAcompleter":true,"redigee":false,"source":"Poste de la Clinique Baguidi (organisation de démonstration) : missions à compléter par la Direction"}
+]
