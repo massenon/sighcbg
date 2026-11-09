@@ -8,6 +8,7 @@ import 'package:window_manager/window_manager.dart';
 
 
 import 'donnees/magasin.dart';
+import 'donnees/migration_cnss_vers.dart';
 import 'donnees/persistance.dart';
 import 'modules/cfg/cfb_systeme.dart' show CfbPersistance;
 import 'core/config_poste.dart';
@@ -169,6 +170,8 @@ Future<void> main() async {
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
   await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
+  // D2 (Direction, 09/11/2026) : un poste déjà installé reçoit le versement CNSS du 15 (non arrêté) et ses échéances, sans rien écraser.
+  if (migrerCnssVers(magasin).aFaitQuelqueChose) await magasin.ecrireMaintenant();
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
   brancherIdentite(magasin);
   for (final probleme in persistance.problemes) {
