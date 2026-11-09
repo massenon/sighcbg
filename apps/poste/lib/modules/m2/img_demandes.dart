@@ -424,7 +424,7 @@ class _EtatModaleDemande extends State<_ModaleDemande> {
           col: ColChamp.tiers,
           condition: (controle: 'prescripteur', quand: [prescripteurExterneImagerie]),
           aide:
-              'Ex. : Dr SALIFOU Aminou, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
+              'Ex. : Dr SAZO Asounouta, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
       const ChampDef(
           nom: 'indication',
           libelle: 'Indication',

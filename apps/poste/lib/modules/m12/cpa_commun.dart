@@ -41,7 +41,7 @@ Listenable ecouteCompta(ContexteEcran c, [List<String> en = const []]) => Listen
 
 /// Signatures des états comptables (la maquette les écrit en dur).
 const signComptable = Signature('Le Comptable');
-const signDafCompta = Signature('La Directrice Administrative', nom: 'TAKI Alimatou');
+const signDafCompta = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
 
 // --- Colonnes réutilisables des écritures ------------------------------------------------------------------------------------------------------------
 

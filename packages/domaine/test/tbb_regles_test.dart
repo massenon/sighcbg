@@ -10,7 +10,7 @@ typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 
-const _jeu = '../../apps/poste/assets/donnees/jeu';
+const _jeu = '../../apps/poste/test/fixtures/jeu_reference';
 /// `texte()` de la maquette : toute espace (insécable, fine) devient une espace ordinaire.
 String esp(String s) => s.replaceAll(RegExp(r'\s+'), ' ');
 

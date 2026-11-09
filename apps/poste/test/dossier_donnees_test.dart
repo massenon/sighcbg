@@ -7,8 +7,8 @@ import 'package:sigh_poste/core/dossier_donnees.dart';
 void main() {
   group('resoudreDossierDonnees', () {
     test('Windows : %LOCALAPPDATA%\\SIGHCBG\\donnees, barre finale tolérée', () {
-      expect(resoudreDossierDonnees(env: {'LOCALAPPDATA': r'C:\Users\Awa\AppData\Local'}, windows: true), r'C:\Users\Awa\AppData\Local\SIGHCBG\donnees');
-      expect(resoudreDossierDonnees(env: {'LOCALAPPDATA': r'C:\Users\Awa\AppData\Local\'}, windows: true), r'C:\Users\Awa\AppData\Local\SIGHCBG\donnees');
+      expect(resoudreDossierDonnees(env: {'LOCALAPPDATA': r'C:\Users\Azemidia\AppData\Local'}, windows: true), r'C:\Users\Azemidia\AppData\Local\SIGHCBG\donnees');
+      expect(resoudreDossierDonnees(env: {'LOCALAPPDATA': r'C:\Users\Azemidia\AppData\Local\'}, windows: true), r'C:\Users\Azemidia\AppData\Local\SIGHCBG\donnees');
     });
     test('SIGH_DONNEES l\'emporte, tel quel (développement, tests)', () {
       expect(resoudreDossierDonnees(surcharge: 'donnees-test', env: {'LOCALAPPDATA': r'C:\x'}, windows: true), 'donnees-test');

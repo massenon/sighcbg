@@ -20,7 +20,7 @@ Magasin magasinEssai() => Magasin({
       'factures': [for (final x in liste(adm()['factures'])) {...x}],
       'patients': [for (final p in liste(adm()['patients'])) {...p, 'statut': 'actif'}],
       'personnel': [
-        for (final n in ['GARBA Yahouza', 'IDRISSOU ANIKI Baba-Toundé', 'NKOUÉ Jean'])
+        for (final n in ['GEVAMIAN Yelia', 'IGBOUPU ATUGBIPOU Badom-Tukepou', 'NIDJON Jagi'])
           {'id': 'P$n', 'statut': 'actif', 'nomComplet': n, 'fonction': 'infirmier', 'poste': 'Infirmier'}
       ],
       'audit': const [],
@@ -95,9 +95,9 @@ void main() {
     final col = m.collection('admissions');
     final avant = col.actives.length;
     await toucher(t, find.text('Nouveau'));
-    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
     await choisir(t, 'lit', 'A1 LIT2 — Aile A — Médecine (Standard)');
-    await choisir(t, 'infirmier', 'IDRISSOU ANIKI Baba-Toundé — Infirmier');
+    await choisir(t, 'infirmier', 'IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier');
     await saisir(t, 'diagnosticEntree', 'Paludisme grave');
     await saisir(t, 'symptomes', 'Fièvre');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
@@ -112,7 +112,7 @@ void main() {
     expect(find.text('H00008'), findsWidgets, reason: 'la référence figure au toast');
     // deuxième création : la série avance (le compteur de page de la maquette redonnait H00008)
     await toucher(t, find.text('Nouveau'));
-    await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
+    await choisir(t, 'patientCode', 'CBG/3/26 — N’ACHOU Yacha');
     await choisir(t, 'lit', 'B3 LIT1 — Aile B — Maternité (Standard)');
     await saisir(t, 'diagnosticEntree', 'Deuxième création');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
@@ -138,7 +138,7 @@ void main() {
     expect(find.text('Le lit A1 LIT2 est déjà occupé par AUTRE Patient.'), findsOneWidget);
     expect(col.actives.length, avant + 1, reason: 'seule l\'insertion du test : rien n\'a été écrit par l\'écran');
     final refus = carte(carte(adm()['creation'])['refusLitOccupe'])['toasts'];
-    expect(((refus as List).single as List).single, 'Le lit A1 LIT1 est déjà occupé par TCHANE Bertine.', reason: 'même forme de message que la maquette');
+    expect(((refus as List).single as List).single, 'Le lit A1 LIT1 est déjà occupé par TIAMOU Bodje.', reason: 'même forme de message que la maquette');
   });
 
   cas('modification : la référence reste (E360), la fiche prend le lit choisi ; un lit pris entre-temps est refusé en nommant l\'occupant, rien n\'est écrit', (t) async {

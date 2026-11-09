@@ -100,7 +100,7 @@ void main() {
       await chercher(t, 'BDG-00014');
       await cliquer(t, find.byTooltip('Consulter le badge').first);
       final tiroir = obj(b['tiroir']);
-      for (final mot in ['BADGE VALIDE', 'Valable jusqu’au 16/11/2027.', 'CBG-BDG|MAT:14|SER:BDG-00014-2025', 'Le code ne porte que le matricule et le numéro de série.', 'PARAISO Abdoul']) {
+      for (final mot in ['BADGE VALIDE', 'Valable jusqu’au 16/11/2027.', 'CBG-BDG|MAT:14|SER:BDG-00014-2025', 'Le code ne porte que le matricule et le numéro de série.', 'PENU Abebia']) {
         expect(find.textContaining(mot), findsWidgets, reason: mot);
       }
       expect(find.byKey(const Key('qual:qr')), findsOneWidget);
@@ -137,7 +137,7 @@ void main() {
       final attendue = obj(obj(b['emission'])['reussie'])['fiche'] as M;
       fichesEgales(n, attendue, ignores: {'personnelId', 'matricule', 'agent', 'poste', 'service', 'photo', ...champsAuteur});
       expect(n['numero'], 'BDG-00011-2026');
-      expect([n['personnelId'], n['agent'], n['emisPar']], ['EMP30', 'BOUKARI Fatouma', utilisateurTest]);
+      expect([n['personnelId'], n['agent'], n['emisPar']], ['EMP30', 'BUKE Fiapeken', utilisateurTest]);
       expect(find.text('Badge BDG-00011-2026 émis.'), findsOneWidget);
       await fermerToasts(t);
     });
@@ -149,7 +149,7 @@ void main() {
       await chercher(t, '${r['numero']}');
       await cliquer(t, find.byTooltip('Marquer remis à l’agent').first);
       expect(find.text('Marquer le badge remis à l’agent ?'), findsOneWidget);
-      expect(find.textContaining('Le badge BDG-00004-2025 sera enregistré comme remis à GBEDJI Hervé le 30/10/2026.'), findsOneWidget);
+      expect(find.textContaining('Le badge BDG-00004-2025 sera enregistré comme remis à GIDJI Hiabidjo le 30/10/2026.'), findsOneWidget);
       await t.tap(find.widgetWithText(BoutonSigh, 'Remis'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(m.collection('badges').toutes.firstWhere((x) => x['numero'] == r['numero']), obj(r['fiche']), ignores: champsAuteur);
@@ -407,7 +407,7 @@ void main() {
       await cliquer(t, find.byTooltip('Imprimer la carte seule').first);
       expect(find.byKey(const Key('rhc:carte:recto')), findsOneWidget);
       expect(find.byKey(const Key('rhc:carte:verso')), findsOneWidget);
-      for (final mot in ['YENI M’PO FLORENT', 'Matricule 5', 'Médecin Généraliste', 'Ce badge est la propriété de la Clinique BAGUIDI.', 'À restituer au départ de l’agent.', 'Contrôle SIGH']) {
+      for (final mot in ['YORO M’ABEKPIA FOULUMI', 'Matricule 5', 'Médecin Généraliste', 'Ce badge est la propriété de la Clinique BAGUIDI.', 'À restituer au départ de l’agent.', 'Contrôle SIGH']) {
         expect(find.textContaining(mot), findsWidgets, reason: mot);
       }
       // Le pied légal de la coque (bande fixe de la Direction, 01/11/2026) porte l'IFU de la clinique : la carte, elle, n'en porte pas.

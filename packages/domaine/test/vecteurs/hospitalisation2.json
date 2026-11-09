@@ -7,42 +7,42 @@
     "statut": "en_cours",
     "reference": "H00001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
     "typeChambre": "standard",
     "dateEntree": "2026-08-11",
     "dateSortie": null,
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM2",
     "statut": "en_cours",
     "reference": "H00002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
     "typeChambre": "standard",
     "dateEntree": "2026-08-11",
     "dateSortie": null,
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM3",
     "statut": "sortie",
     "reference": "H00003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
     "typeChambre": "standard",
     "dateEntree": "2026-08-11",
     "dateSortie": null,
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    }
   ],
   "jeu": [
@@ -52,7 +52,7 @@
     "date": "2026-08-15",
     "heure": "09:00",
     "admissionId": "ADM1",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Famille",
@@ -65,11 +65,11 @@
     "date": "2026-08-14",
     "heure": "14:30",
     "admissionId": "ADM1",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Personnel traitant",
-    "visiteur": "GARBA Yahouza",
+    "visiteur": "GEVAMIAN Yelia",
     "observation": "Visite médicale"
    },
    {
@@ -78,7 +78,7 @@
     "date": "2026-08-16",
     "heure": "10:00",
     "admissionId": "ADM2",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "lit": "C1 LIT1",
     "type": "Famille",
@@ -91,11 +91,11 @@
     "date": "2026-08-13",
     "heure": "08:00",
     "admissionId": "ADM2",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "lit": "C1 LIT1",
     "type": "Personnel traitant",
-    "visiteur": "GARBA Yahouza",
+    "visiteur": "GEVAMIAN Yelia",
     "observation": "Contrôle des constantes"
    },
    {
@@ -104,7 +104,7 @@
     "date": "2026-08-12",
     "heure": "19:30",
     "admissionId": "ADM1",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "type": "Famille",
@@ -154,7 +154,7 @@
        "16/08/2026",
        "10:00",
        "C1 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Famille",
        "Sœur de la patiente",
        "—",
@@ -165,7 +165,7 @@
        "15/08/2026",
        "09:00",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Famille",
        "Accompagnant déclaré",
        "Apport de repas",
@@ -176,9 +176,9 @@
        "14/08/2026",
        "14:30",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Personnel traitant",
-       "GARBA Yahouza",
+       "GEVAMIAN Yelia",
        "Visite médicale",
        ""
       ],
@@ -187,9 +187,9 @@
        "13/08/2026",
        "08:00",
        "C1 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Personnel traitant",
-       "GARBA Yahouza",
+       "GEVAMIAN Yelia",
        "Contrôle des constantes",
        ""
       ]
@@ -215,7 +215,7 @@
     "Modifier"
    ],
    "notes": [],
-   "texte": "Visites enregistrées 4 Visites familiales 2 Visites du personnel 2 Patients visités 2 Tous les visites4 Archivés1 Type de visite Famille Personnel traitant Colonnes Exporter Nouveau DATE HEURE LIT PATIENT TYPE VISITEUR OBSERVATION ACTIONS 16/08/2026 10:00 C1 LIT1 BAKO Boukari Famille Sœur de la patiente — 15/08/2026 09:00 A1 LIT1 TCHANE Bertine Famille Accompagnant déclaré Apport de repas 14/08/2026 14:30 A1 LIT1 TCHANE Bertine Personnel traitant GARBA Yahouza Visite médicale 13/08/2026 08:00 C1 LIT1 BAKO Boukari Personnel traitant GARBA Yahouza Contrôle des constantes Affichage de 1 à 4 sur 4 enregistrements Source : Registre des visites tenu à l’accueil du service.",
+   "texte": "Visites enregistrées 4 Visites familiales 2 Visites du personnel 2 Patients visités 2 Tous les visites4 Archivés1 Type de visite Famille Personnel traitant Colonnes Exporter Nouveau DATE HEURE LIT PATIENT TYPE VISITEUR OBSERVATION ACTIONS 16/08/2026 10:00 C1 LIT1 BIALI Buke Famille Sœur de la patiente — 15/08/2026 09:00 A1 LIT1 TIAMOU Bodje Famille Accompagnant déclaré Apport de repas 14/08/2026 14:30 A1 LIT1 TIAMOU Bodje Personnel traitant GEVAMIAN Yelia Visite médicale 13/08/2026 08:00 C1 LIT1 BIALI Buke Personnel traitant GEVAMIAN Yelia Contrôle des constantes Affichage de 1 à 4 sur 4 enregistrements Source : Registre des visites tenu à l’accueil du service.",
    "boutonsLigne": [
     "Consulter",
     "Modifier",
@@ -258,7 +258,7 @@
        "12/08/2026",
        "19:30",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Famille",
        "Voisin",
        "Visite de courtoisie",
@@ -272,7 +272,7 @@
    ]
   },
   "detail": {
-   "texte": "BAKO Boukari Date 16/08/2026 Heure 10:00 Lit C1 LIT1 Patient BAKO Boukari Type Famille Visiteur Sœur de la patiente Observation — Patient hospitalisé BAKO Boukari — lit C1 LIT1 (CBG/2/26) Modifier Archiver",
+   "texte": "BIALI Buke Date 16/08/2026 Heure 10:00 Lit C1 LIT1 Patient BIALI Buke Type Famille Visiteur Sœur de la patiente Observation — Patient hospitalisé BIALI Buke — lit C1 LIT1 (CBG/2/26) Modifier Archiver",
    "boutons": [
     "Fermer",
     "Modifier",
@@ -306,11 +306,11 @@
    "optionsAdmission": [
     [
      "ADM1",
-     "TCHANE Bertine — lit A1 LIT1 (CBG/1/25)"
+     "TIAMOU Bodje — lit A1 LIT1 (CBG/1/25)"
     ],
     [
      "ADM2",
-     "BAKO Boukari — lit C1 LIT1 (CBG/2/26)"
+     "BIALI Buke — lit C1 LIT1 (CBG/2/26)"
     ]
    ],
    "optionsType": [
@@ -344,9 +344,9 @@
      "date": "2026-08-16",
      "heure": "11:15",
      "type": "Personnel traitant",
-     "visiteur": "Dr TAKI",
+     "visiteur": "Dr TACHEDI",
      "observation": "Réévaluation",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "patientCode": "CBG/2/26",
      "lit": "C1 LIT1"
     },
@@ -362,7 +362,7 @@
     "type": "Famille",
     "visiteur": "Mère",
     "observation": "",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1"
    }
@@ -409,9 +409,9 @@
        "16/08/2026",
        "11:15",
        "C1 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Personnel traitant",
-       "Dr TAKI",
+       "Dr TACHEDI",
        "Réévaluation",
        ""
       ],
@@ -420,7 +420,7 @@
        "16/08/2026",
        "10:00",
        "C1 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Famille",
        "Sœur de la patiente",
        "—",
@@ -431,7 +431,7 @@
        "15/08/2026",
        "09:00",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Famille",
        "Accompagnant déclaré",
        "Apport de repas",
@@ -442,9 +442,9 @@
        "14/08/2026",
        "14:30",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Personnel traitant",
-       "GARBA Yahouza",
+       "GEVAMIAN Yelia",
        "Visite médicale",
        ""
       ],
@@ -453,9 +453,9 @@
        "13/08/2026",
        "08:00",
        "C1 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Personnel traitant",
-       "GARBA Yahouza",
+       "GEVAMIAN Yelia",
        "Contrôle des constantes",
        ""
       ]
@@ -464,7 +464,7 @@
    ]
   },
   "modification": {
-   "titre": "Modifier l’enregistrement VIS0003 Patient hospitalisé * TCHANE Bertine — lit A1 ",
+   "titre": "Modifier l’enregistrement VIS0003 Patient hospitalisé * TIAMOU Bodje — lit A1 ",
    "champs": [
     "Patient hospitalisé *",
     "Date *",
@@ -498,7 +498,7 @@
      "date": "2026-08-16",
      "heure": "10:00",
      "admissionId": "ADM1",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "patientCode": "CBG/1/25",
      "lit": "A1 LIT1",
      "type": "Famille",
@@ -568,7 +568,7 @@
      "indice": null
     }
    ],
-   "texte": "Visites enregistrées 4 Visites familiales 4 Visites du personnel 0 Patients visités 2 Tous les visites4 Archivés0 Type de visite Famille Personnel traitant Colonnes Exporter Nouveau DATE HEURE LIT PATIENT TYPE VISITEUR OBSERVATION ACTIONS 16/08/2026 11:00 C1 LIT1 BAKO Boukari Famille Accompagnant déclaré Accompagnement 15/08/2026 14:00 C1 LIT1 BAKO Boukari Famille Accompagnant déclaré Apport de repas 13/08/2026 19:00 A1 LIT1 TCHANE Bertine Famille Accompagnant déclaré Visite de courtoisie 13/08/2026 10:00 C1 LIT1 BAKO Boukari Famille Accompagnant déclaré Apport de repas Affichage de 1 à 4 sur 4 enregistrements Source : Registre des visites tenu à l’accueil du service."
+   "texte": "Visites enregistrées 4 Visites familiales 4 Visites du personnel 0 Patients visités 2 Tous les visites4 Archivés0 Type de visite Famille Personnel traitant Colonnes Exporter Nouveau DATE HEURE LIT PATIENT TYPE VISITEUR OBSERVATION ACTIONS 16/08/2026 11:00 C1 LIT1 BIALI Buke Famille Accompagnant déclaré Accompagnement 15/08/2026 14:00 C1 LIT1 BIALI Buke Famille Accompagnant déclaré Apport de repas 13/08/2026 19:00 A1 LIT1 TIAMOU Bodje Famille Accompagnant déclaré Visite de courtoisie 13/08/2026 10:00 C1 LIT1 BIALI Buke Famille Accompagnant déclaré Apport de repas Affichage de 1 à 4 sur 4 enregistrements Source : Registre des visites tenu à l’accueil du service."
   }
  },
  "rapport": {
@@ -604,7 +604,7 @@
     "reference": "RAP-0001",
     "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "age": 31,
     "sexe": "F",
     "adresse": "Boukoumbé",
@@ -623,7 +623,7 @@
     "traitementSortie": "",
     "diagnosticSortie": "Sortie 1",
     "medecinId": "SOI01",
-    "medecin": "BASSONGUI Chabi Séko"
+    "medecin": "BICHIASI Cezoune Sichovian"
    },
    {
     "id": "RAP2",
@@ -631,7 +631,7 @@
     "reference": "RAP-0002",
     "patientCode": "CBG/2/26",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "age": 32,
     "sexe": "M",
     "adresse": "Yimporima",
@@ -650,7 +650,7 @@
     "traitementSortie": "Paracétamol",
     "diagnosticSortie": "Sortie 2",
     "medecinId": "SOI01",
-    "medecin": "BASSONGUI Chabi Séko"
+    "medecin": "BICHIASI Cezoune Sichovian"
    },
    {
     "id": "RAP3",
@@ -658,7 +658,7 @@
     "reference": "RAP-0003",
     "patientCode": "CBG/3/26",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "age": 33,
     "sexe": "M",
     "adresse": "Kouandé",
@@ -677,7 +677,7 @@
     "traitementSortie": "Paracétamol",
     "diagnosticSortie": "Sortie 3",
     "medecinId": "SOI01",
-    "medecin": "BASSONGUI Chabi Séko"
+    "medecin": "BICHIASI Cezoune Sichovian"
    },
    {
     "id": "RAP4",
@@ -685,7 +685,7 @@
     "reference": "RAP-0004",
     "patientCode": "CBG/1/25",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "age": 34,
     "sexe": "F",
     "adresse": "Boukoumbé",
@@ -704,7 +704,7 @@
     "traitementSortie": "Paracétamol",
     "diagnosticSortie": "Sortie 4",
     "medecinId": "SOI01",
-    "medecin": "BASSONGUI Chabi Séko"
+    "medecin": "BICHIASI Cezoune Sichovian"
    }
   ],
   "ecran": {
@@ -744,29 +744,29 @@
      "lignes": [
       [
        "RAP-0003",
-       "N’TCHA Yacoubou — CBG/3/26",
+       "N’ACHOU Yacha — CBG/3/26",
        "11/08/2026",
        "14/08/2026",
        "Sortie 3",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "RAP-0001",
-       "TCHANE Bertine — CBG/1/25",
+       "TIAMOU Bodje — CBG/1/25",
        "06/08/2026",
        "en cours",
        "Sortie 1",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "RAP-0002",
-       "BAKO Boukari — CBG/2/26",
+       "BIALI Buke — CBG/2/26",
        "27/07/2026",
        "01/08/2026",
        "Sortie 2",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ]
      ]
@@ -805,25 +805,25 @@
    ]
   },
   "detail": {
-   "texte": "RAP-0003 RÉFÉRENCE RAP-0003 PATIENT N’TCHA Yacoubou ÂGE 33 ans SEXE M ADRESSE Kouandé TÉLÉPHONE 0673723379 DATE D’ENTRÉE 11/08/2026 DATE DE SORTIE 14/08/2026 MÉDECIN TRAITANT BASSONGUI Chabi Séko Motif de consultation Motif 3 Anamnèse Anamnèse 3 Examen physique Examen 3 Hypothèses diagnostiques Hypothèse 3 Traitement d’entrée Traitement entrée 3 Examens paracliniques NFS, CRP Diagnostic retenu Retenu 3 Évolution et traitement des complications Favorable Traitement de sortie Paracétamol Diagnostic de sortie Sortie 3",
+   "texte": "RAP-0003 RÉFÉRENCE RAP-0003 PATIENT N’ACHOU Yacha ÂGE 33 ans SEXE M ADRESSE Kouandé TÉLÉPHONE 0673723379 DATE D’ENTRÉE 11/08/2026 DATE DE SORTIE 14/08/2026 MÉDECIN TRAITANT BICHIASI Cezoune Sichovian Motif de consultation Motif 3 Anamnèse Anamnèse 3 Examen physique Examen 3 Hypothèses diagnostiques Hypothèse 3 Traitement d’entrée Traitement entrée 3 Examens paracliniques NFS, CRP Diagnostic retenu Retenu 3 Évolution et traitement des complications Favorable Traitement de sortie Paracétamol Diagnostic de sortie Sortie 3",
    "boutons": [
     "Fermer"
    ],
    "tables": []
   },
   "detailEnCours": {
-   "texte": "RAP-0001 RÉFÉRENCE RAP-0001 PATIENT TCHANE Bertine ÂGE 31 ans SEXE F ADRESSE Boukoumbé TÉLÉPHONE 0372398919 DATE D’ENTRÉE 06/08/2026 DATE DE SORTIE séjour en cours MÉDECIN TRAITANT BASSONGUI Chabi Séko Motif de consultation Motif 1 Anamnèse Anamnèse 1 Examen physique Examen 1 Hypothèses diagnostiques Hypothèse 1 Traitement d’entrée Traitement entrée 1 Diagnostic retenu Retenu 1 Diagnostic de sortie Sortie 1",
+   "texte": "RAP-0001 RÉFÉRENCE RAP-0001 PATIENT TIAMOU Bodje ÂGE 31 ans SEXE F ADRESSE Boukoumbé TÉLÉPHONE 0372398919 DATE D’ENTRÉE 06/08/2026 DATE DE SORTIE séjour en cours MÉDECIN TRAITANT BICHIASI Cezoune Sichovian Motif de consultation Motif 1 Anamnèse Anamnèse 1 Examen physique Examen 1 Hypothèses diagnostiques Hypothèse 1 Traitement d’entrée Traitement entrée 1 Diagnostic retenu Retenu 1 Diagnostic de sortie Sortie 1",
    "boutons": [
     "Fermer"
    ]
   },
   "impression": {
    "titre": "RAPPORT MÉDICAL",
-   "sousTitre": "RAP-0003 — N’TCHA Yacoubou",
+   "sousTitre": "RAP-0003 — N’ACHOU Yacha",
    "cartouche": [
     [
      "Nom et prénoms",
-     "N’TCHA Yacoubou"
+     "N’ACHOU Yacha"
     ],
     [
      "Âge",
@@ -853,7 +853,7 @@
    "signatures": [
     {
      "role": "Le Médecin traitant",
-     "nom": "BASSONGUI Chabi Séko",
+     "nom": "BICHIASI Cezoune Sichovian",
      "mention": "Signature et cachet"
     }
    ],
@@ -862,11 +862,11 @@
   },
   "impressionEnCours": {
    "titre": "RAPPORT MÉDICAL",
-   "sousTitre": "RAP-0001 — TCHANE Bertine",
+   "sousTitre": "RAP-0001 — TIAMOU Bodje",
    "cartouche": [
     [
      "Nom et prénoms",
-     "TCHANE Bertine"
+     "TIAMOU Bodje"
     ],
     [
      "Âge",
@@ -896,7 +896,7 @@
    "signatures": [
     {
      "role": "Le Médecin traitant",
-     "nom": "BASSONGUI Chabi Séko",
+     "nom": "BICHIASI Cezoune Sichovian",
      "mention": "Signature et cachet"
     }
    ],
@@ -941,41 +941,41 @@
    },
    "boutons": [
     "Fermer",
-    "CBG/1/25 — TCHANE Bertine",
+    "CBG/1/25 — TIAMOU Bodje",
     "Annuler",
     "Créer"
    ],
    "optionsPatient": [
     [
      "CBG/1/25",
-     "CBG/1/25 — TCHANE Bertine"
+     "CBG/1/25 — TIAMOU Bodje"
     ],
     [
      "CBG/2/26",
-     "CBG/2/26 — BAKO Boukari"
+     "CBG/2/26 — BIALI Buke"
     ],
     [
      "CBG/3/26",
-     "CBG/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26 — N’ACHOU Yacha"
     ]
    ],
    "nbOptionsPatient": 198,
    "optionsMedecin": [
     [
      "SOI01",
-     "BASSONGUI Chabi Séko — Directeur Médical"
+     "BICHIASI Cezoune Sichovian — Directeur Médical"
     ],
     [
      "SOI02",
-     "YENI M’PO Florent — Médecin Généraliste"
+     "YORO M’ABEKPIA Foulumi — Médecin Généraliste"
     ],
     [
      "SOI03",
-     "TAKI Orou — Médecin Généraliste"
+     "TACHEDI Odjipiar — Médecin Généraliste"
     ],
     [
      "SOI04",
-     "AHOHOU Rodrigue — Échographiste"
+     "AKPOMER Ridur — Échographiste"
     ]
    ],
    "aides": [
@@ -1017,12 +1017,12 @@
      "medecinId": "SOI01",
      "reference": "RAP-0005",
      "patientId": "PAT0002",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "age": 56,
      "sexe": "M",
      "adresse": "Yimporima",
      "telephone": "0395837962",
-     "medecin": "BASSONGUI Chabi Séko"
+     "medecin": "BICHIASI Cezoune Sichovian"
     },
     "total": 5,
     "premier": "Fièvre",
@@ -1066,38 +1066,38 @@
      "lignes": [
       [
        "RAP-0005",
-       "BAKO Boukari — CBG/2/26",
+       "BIALI Buke — CBG/2/26",
        "12/08/2026",
        "en cours",
        "Guérison",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "RAP-0003",
-       "N’TCHA Yacoubou — CBG/3/26",
+       "N’ACHOU Yacha — CBG/3/26",
        "11/08/2026",
        "14/08/2026",
        "Sortie 3",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "RAP-0001",
-       "TCHANE Bertine — CBG/1/25",
+       "TIAMOU Bodje — CBG/1/25",
        "06/08/2026",
        "en cours",
        "Sortie 1",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "RAP-0002",
-       "BAKO Boukari — CBG/2/26",
+       "BIALI Buke — CBG/2/26",
        "27/07/2026",
        "01/08/2026",
        "Sortie 2",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ]
      ]
@@ -1135,7 +1135,7 @@
      "reference": "RAP-0001",
      "patientCode": "CBG/1/25",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "age": 31,
      "sexe": "F",
      "adresse": "Boukoumbé",
@@ -1154,7 +1154,7 @@
      "traitementSortie": "",
      "diagnosticSortie": "Sortie corrigée",
      "medecinId": "SOI01",
-     "medecin": "BASSONGUI Chabi Séko"
+     "medecin": "BICHIASI Cezoune Sichovian"
     }
    }
   },

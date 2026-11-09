@@ -112,7 +112,7 @@ void main() {
       expect(find.text('du 01/08/2026 au 31/08/2026'), findsWidgets);
       expect(find.text('Vacations travaillées'), findsWidgets);
       expect(find.text('Le Surveillant Général'), findsWidgets);
-      expect(find.text('GARBA Yahouza'), findsWidgets);
+      expect(find.text('GEVAMIAN Yelia'), findsWidgets);
       expect(find.text('La Directrice Administrative'), findsWidgets);
       expect(find.text('TOTAL'), findsNWidgets(2)); // l'en-tête de la colonne et la ligne de total
     });
@@ -122,7 +122,7 @@ void main() {
     casM14('ouverture : permanences du mois arrêté au jour, comptées comme la maquette', (t) async {
       await ouvrirM14(t, magasinM14(), 'm10-stats-permanences', horloge: _auj16);
       final k = kpis(t);
-      expect([k['Permanences assurées'], k['Agents concernés'], k['Moyenne par agent'], k['Le plus sollicité']], ['51', '8', '6.4', 'ISSA Rabiatou']);
+      expect([k['Permanences assurées'], k['Agents concernés'], k['Moyenne par agent'], k['Le plus sollicité']], ['51', '8', '6.4', 'ISIASIABU Rafiakpe']);
       expect(indices(t)['Le plus sollicité'], '7 permanence(s)');
       final c = cas('permanences').first;
       expect(find.textContaining(norm(c['note']).split(' — ').first), findsOneWidget);
@@ -138,7 +138,7 @@ void main() {
       await regler(t, 'arret', '2026-08-31');
       await regler(t, 'service', 'Accueil');
       var k = kpis(t);
-      expect([k['Permanences assurées'], k['Agents concernés'], k['Moyenne par agent'], k['Le plus sollicité']], ['34', '4', '8.5', 'SAMBIENI Marguerite']);
+      expect([k['Permanences assurées'], k['Agents concernés'], k['Moyenne par agent'], k['Le plus sollicité']], ['34', '4', '8.5', 'SEMIA Mibu']);
       await regler(t, 'service', 'Comptabilité');
       k = kpis(t);
       expect([k['Permanences assurées'], k['Agents concernés'], k['Moyenne par agent'], k['Le plus sollicité']], ['0', '0', '0', '—']);

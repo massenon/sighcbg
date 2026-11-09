@@ -93,7 +93,7 @@ PieceA4 pieceFournisseur(Fiche f, List<Fiche> commandes,
             italique: true),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri')
+      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo')
     ],
   );
 }

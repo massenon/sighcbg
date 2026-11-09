@@ -15,7 +15,7 @@ Map<String, Object?> carte(Object? v) => (v as Map).cast<String, Object?>();
 String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 String mof(Object? v) => nt(money(v));
 
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 void main() {
   final f = File('test/vecteurs/comptabilite_b.json');

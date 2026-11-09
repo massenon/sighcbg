@@ -364,7 +364,7 @@ void main() {
             appareil('u1', 'Caisse', contact: ms - 5 * 60000),
             appareil('u2', 'Réception', contact: ms - 50 * 60000),
             appareil('u3', 'Ancien', contact: ms, etat: 'revoque'),
-            appareil('m1', 'Dr Yeni', contact: ms, role: 'mobile'),
+            appareil('m1', 'Dr Yoro', contact: ms, role: 'mobile'),
           ]),
           santeV: sante([]))
         ..adresses = ['192.168.1.20'];
@@ -706,8 +706,8 @@ void main() {
       expect(c['jeu_depart'], isFalse);
       expect(c['activation'], isFalse);
       expect(c['appairage'], isNull);
-      s.consigner('jeu_depart', choix: 'demonstration', par: 'TAKI Alimatou');
-      s.consigner('jeu_depart', choix: 'essentiels', par: 'TAKI Alimatou');
+      s.consigner('jeu_depart', choix: 'demonstration', par: 'TACHEDI Arialu');
+      s.consigner('jeu_depart', choix: 'essentiels', par: 'TACHEDI Arialu');
       c = await s.constats(const ConfigPoste(mode: ModePoste.mere), etat(appareils: [appareil('u1', 'Caisse')]));
       expect(c['jeu_depart'], isTrue);
       expect(c['appairage'], isTrue);

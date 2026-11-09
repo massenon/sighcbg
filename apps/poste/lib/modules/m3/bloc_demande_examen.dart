@@ -76,7 +76,7 @@ class EcranDemandeExamen extends StatelessWidget with EcranMaquette {
           col: ColChamp.plein,
           condition: (controle: 'prescripteur', quand: [blocPrescripteurExterne]),
           aide:
-              'Ex. : Dr SALIFOU Aminou, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
+              'Ex. : Dr SAZO Asounouta, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
       const ChampDef(
           nom: 'indication',
           libelle: 'Indication clinique',

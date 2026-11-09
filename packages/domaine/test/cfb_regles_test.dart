@@ -11,7 +11,7 @@ typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 M lire(String nom) => obj(jsonDecode(File('test/vecteurs/$nom.json').readAsStringSync()));
-const jeuDir = '../../apps/poste/assets/donnees/jeu';
+const jeuDir = '../../apps/poste/test/fixtures/jeu_reference';
 List<M> jeu(String nom) => liste(jsonDecode(File('$jeuDir/$nom.json').readAsStringSync()));
 List<M> actives(String nom) => [for (final f in jeu(nom)) if (f['statut'] != 'archive') f];
 
@@ -299,7 +299,7 @@ void main() {
     final rangees = rangeesManifeste();
     // Les vecteurs de la maquette ont été relevés sur la configuration d'extraction (banque de sang et donneurs fermés), et non sur le jeu livré, qui porte
     // depuis le 06/11/2026 les fermetures de la Clinique Baguidi.
-    final fiches = liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync()));
+    final fiches = liste(jsonDecode(File('../../apps/poste/assets/donnees/modulesActifs.reference.json').readAsStringSync()));
     test('écrans au périmètre et modules du logiciel = ceux du manifeste de la maquette', () {
       expect(cfbTousEcrans(rangees).length, md['tousEcrans']);
       final att = (md['modulesListe'] as List).cast<List>();
@@ -376,8 +376,8 @@ void main() {
     final fiches = {
       for (final n in noms.where(connues.contains))
         n: n == 'modulesActifs'
-            ? liste(jsonDecode(File('$jeuDir/../modulesActifs.reference.json').readAsStringSync()))
-            : n == 'rbac' ? liste(jsonDecode(File('$jeuDir/../rbac.reference.json').readAsStringSync())) : jeu(n)
+            ? liste(jsonDecode(File('../../apps/poste/assets/donnees/modulesActifs.reference.json').readAsStringSync()))
+            : n == 'rbac' ? liste(jsonDecode(File('../../apps/poste/assets/donnees/rbac.reference.json').readAsStringSync())) : jeu(n)
     };
     test('contenu du jeu : collections, enregistrements, actifs, archivés', () {
       final stats = [for (final n in fiches.keys) cfbStatCollection(n, fiches[n]!)];

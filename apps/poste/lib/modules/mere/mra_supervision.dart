@@ -222,7 +222,7 @@ class _EtatAppareils extends EtatEcranMra<EcranMraAppareils> {
       fonction = a.fonction;
     } else {
       final ctl = ControleurFormulaire(const [
-        ChampDef(nom: 'etiquette', libelle: 'Nom de l’appareil (ex. Réception, Dr Yeni)', requis: true, col: ColChamp.plein),
+        ChampDef(nom: 'etiquette', libelle: 'Nom de l’appareil (ex. Réception, Dr Yoro)', requis: true, col: ColChamp.plein),
       ]);
       final saisie = await afficherModale<Map<String, Object?>>(context,
           titre: 'Appairer un poste',

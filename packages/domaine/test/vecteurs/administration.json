@@ -8,7 +8,7 @@
    "dateSignature": "2026-07-13",
    "dateEffet": "2026-07-13",
    "statut": "ACTIVE",
-   "signataire": "BASSONGUI C. Séko Y., Directeur Médical",
+   "signataire": "BICHIASI C. Sichovian Y., Directeur Médical",
    "ampliation": "Intéressés 41 — Archive 01",
    "source": "DOC — Note de service NS 131/07/DM/DA/CBG/2026",
    "mention": "Abroge toute disposition antérieure contraire.",
@@ -102,8 +102,8 @@
    "dateSignature": "2026-07-13",
    "dateEffet": "2026-07-13",
    "statut": "ACTIVE",
-   "signataire": "BASSONGUI Chabi Séko, Directeur Médical",
-   "recuPar": "KASSA A. B. Augustin — reçu le 13/07/2026",
+   "signataire": "BICHIASI Cezoune Sichovian, Directeur Médical",
+   "recuPar": "KALOU A. B. Avolutu — reçu le 13/07/2026",
    "source": "DOC — Note de service NS 132/07/DM/DA/CBG/2026",
    "mention": "Abroge toute disposition antérieure contraire.",
    "primes": [
@@ -425,8 +425,8 @@
    ]
   ],
   "descListes": [
-   "Référence NS 131/07/DM/DA/CBG/2026 Objet Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI C. Séko Y., Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 131/07/DM/DA/CBG/2026",
-   "Référence NS n° 132/07/DM/DA/CBG/2026 Objet Primes diverses Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BASSONGUI Chabi Séko, Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 132/07/DM/DA/CBG/2026"
+   "Référence NS 131/07/DM/DA/CBG/2026 Objet Modification de l’évaluation du rendement entrant dans le compte de la rémunération salariale Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BICHIASI C. Sichovian Y., Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 131/07/DM/DA/CBG/2026",
+   "Référence NS n° 132/07/DM/DA/CBG/2026 Objet Primes diverses Date de signature 13/07/2026 Date d’effet 13/07/2026 Signataire BICHIASI Cezoune Sichovian, Directeur Médical Statut ACTIVE Mention Abroge toute disposition antérieure contraire. Provenance DOC — Note de service NS 132/07/DM/DA/CBG/2026"
   ],
   "badgesFonctions": [
    [
@@ -652,7 +652,7 @@
     "traitement": "traite",
     "accuseReception": true,
     "numerise": true,
-    "_archivePar": "BASSONGUI Chabi Séko",
+    "_archivePar": "BICHIASI Cezoune Sichovian",
     "_archiveLe": "2026-10-30T10:00:00.000Z",
     "_motifArchivage": "test"
    }
@@ -1022,7 +1022,7 @@
     },
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
    "texte": "RubriqueInformationObjetRapport mensuel d’activitéÉtat du traitementEn coursAccusé de réceptionOuiDocument numériséOuiObservationsÀ signer avant envoi",
@@ -1055,7 +1055,7 @@
     },
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
    "texte": "N° d’ordreSensDateCorrespondantObjetAffecté àTraitementDEP-2026-0007Départ30/10/2026Zone sanitaireRapport mensuel d’activitéDirection AdministrativeEn coursARR-2026-0008Arrivée30/10/2026Fournisseur DIPHARMLivraison annoncéeGestion des stocksTraitéARR-2026-0006Arrivée27/10/2026CHD AtacoraDemande de transfert de dossierDirection MédicaleEn attenteDEP-2026-0005Départ21/10/2026NSIA AssurancesFacture mensuelleComptabilitéEn attenteARR-2026-0004Arrivée18/10/2026Ministère de la SantéCirculaire sur la vaccinationDirection MédicaleEn attenteARR-2026-0003Arrivée30/09/2026CNSSAppel de cotisationsRessources humainesEn coursDEP-2026-0002Départ25/09/2026SoBAPS SABon de commande de médicamentsComptabilitéTraitéARR-2026-0001Arrivée20/09/2026DGI — Centre des impôtsNotification de contrôle fiscalDirection AdministrativeTraité",
@@ -1489,7 +1489,7 @@
     "heure": "09:00",
     "type": "Réunion de direction",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 8,
     "ordreDuJour": "Ordre du jour 1",
     "compteRendu": true
@@ -1502,7 +1502,7 @@
     "heure": "10:30",
     "type": "Comité d’hygiène",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 12,
     "ordreDuJour": "Ordre du jour 2",
     "compteRendu": false,
@@ -1516,7 +1516,7 @@
     "heure": "14:00",
     "type": "Réunion de service",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 6,
     "ordreDuJour": "Ordre du jour 3",
     "compteRendu": false
@@ -1529,7 +1529,7 @@
     "heure": "08:00",
     "type": "Revue mensuelle d’activité",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 10,
     "ordreDuJour": "Ordre du jour 4",
     "compteRendu": false
@@ -1542,7 +1542,7 @@
     "heure": "15:00",
     "type": "Réunion du personnel",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 30,
     "ordreDuJour": "Ordre du jour 5",
     "compteRendu": false
@@ -1555,7 +1555,7 @@
     "heure": "11:00",
     "type": "Comité de gestion des stocks",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 5,
     "ordreDuJour": "Ordre du jour 6",
     "compteRendu": false
@@ -1568,11 +1568,11 @@
     "heure": "09:00",
     "type": "Réunion de direction",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 7,
     "ordreDuJour": "Ordre du jour 7",
     "compteRendu": true,
-    "_archivePar": "BASSONGUI Chabi Séko",
+    "_archivePar": "BICHIASI Cezoune Sichovian",
     "_archiveLe": "2026-10-30T10:00:00.000Z",
     "_motifArchivage": "test"
    },
@@ -1584,13 +1584,13 @@
     "heure": "15:00",
     "type": "Réunion de service",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 9,
     "ordreDuJour": "Ordre du jour 8",
     "compteRendu": false
    }
   ],
-  "president": "BASSONGUI Chabi Séko",
+  "president": "BICHIASI Cezoune Sichovian",
   "ecran": {
    "kpis": [
     {
@@ -1640,7 +1640,7 @@
        "11:00",
        "Comité de gestion des stocks",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "5",
        "À venir",
        "À rédiger",
@@ -1652,7 +1652,7 @@
        "15:00",
        "Réunion du personnel",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "30",
        "À venir",
        "À rédiger",
@@ -1664,7 +1664,7 @@
        "08:00",
        "Revue mensuelle d’activité",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "10",
        "Tenue",
        "À rédiger",
@@ -1676,7 +1676,7 @@
        "15:00",
        "Réunion de service",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "9",
        "À venir",
        "À rédiger",
@@ -1688,7 +1688,7 @@
        "14:00",
        "Réunion de service",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "6",
        "Tenue",
        "À rédiger",
@@ -1700,7 +1700,7 @@
        "10:30",
        "Comité d’hygiène",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "12",
        "Tenue",
        "À rédiger",
@@ -1712,7 +1712,7 @@
        "09:00",
        "Réunion de direction",
        "Salle de réunion",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        "8",
        "Tenue",
        "Rédigé",
@@ -1801,7 +1801,7 @@
      ],
      [
       "Présidée par",
-      "BASSONGUI Chabi Séko"
+      "BICHIASI Cezoune Sichovian"
      ]
     ],
     "signatures": [
@@ -1810,7 +1810,7 @@
      },
      {
       "role": "Le Président de séance",
-      "nom": "BASSONGUI Chabi Séko"
+      "nom": "BICHIASI Cezoune Sichovian"
      }
     ],
     "texte": "Ordre du jourOrdre du jour 4Résolutions adoptéesAucune résolution consignée.Nombre de participants : 10",
@@ -1842,13 +1842,13 @@
      ],
      [
       "Présidée par",
-      "BASSONGUI Chabi Séko"
+      "BICHIASI Cezoune Sichovian"
      ]
     ],
     "signatures": [
      {
       "role": "La Directrice Administrative",
-      "nom": "TAKI Alimatou"
+      "nom": "TACHEDI Arialu"
      }
     ],
     "texte": "Ordre du jourOrdre du jour 5Les personnes concernées sont priées de bien vouloir prendre toutes dispositions utiles pour prendre part à cette réunion.",
@@ -1880,7 +1880,7 @@
      ],
      [
       "Présidée par",
-      "BASSONGUI Chabi Séko"
+      "BICHIASI Cezoune Sichovian"
      ]
     ],
     "signatures": [
@@ -1889,7 +1889,7 @@
      },
      {
       "role": "Le Président de séance",
-      "nom": "BASSONGUI Chabi Séko"
+      "nom": "BICHIASI Cezoune Sichovian"
      }
     ],
     "texte": "Ordre du jourOrdre du jour 2Résolutions adoptéesRenforcer le lavage des mainsNombre de participants : 12",
@@ -1897,7 +1897,7 @@
    }
   },
   "detail": {
-   "texte": "RU-2026-005 RU-2026-005 N° RU-2026-005 Date 31/10/2026 Heure 15:00 Type Réunion du personnel Lieu Salle de réunion Présidée par BASSONGUI Chabi Séko Participants 30 Statut À venir Compte rendu À rédiger Ordre du jour Ordre du jour 5 Résolutions adoptées — Imprimer Modifier Archiver",
+   "texte": "RU-2026-005 RU-2026-005 N° RU-2026-005 Date 31/10/2026 Heure 15:00 Type Réunion du personnel Lieu Salle de réunion Présidée par BICHIASI Cezoune Sichovian Participants 30 Statut À venir Compte rendu À rédiger Ordre du jour Ordre du jour 5 Résolutions adoptées — Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -1923,7 +1923,7 @@
     "date": "2026-10-30",
     "heure": "09:00",
     "lieu": "Salle de réunion",
-    "president": "ADAM Alimatou",
+    "president": "ACHOUBE Arialu",
     "participants": "8",
     "ordreDuJour": "",
     "compteRendu": false,
@@ -1997,7 +1997,7 @@
      "date": "2026-10-30",
      "heure": "09:00",
      "lieu": "Salle de réunion",
-     "president": "ADAM Alimatou",
+     "president": "ACHOUBE Arialu",
      "participants": 8,
      "ordreDuJour": "Budget 2027",
      "compteRendu": false,
@@ -2055,7 +2055,7 @@
         "11:00",
         "Comité de gestion des stocks",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "5",
         "À venir",
         "À rédiger",
@@ -2067,7 +2067,7 @@
         "15:00",
         "Réunion du personnel",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "30",
         "À venir",
         "À rédiger",
@@ -2079,7 +2079,7 @@
         "09:00",
         "Réunion de direction",
         "Salle de réunion",
-        "ADAM Alimatou",
+        "ACHOUBE Arialu",
         "8",
         "Tenue",
         "À rédiger",
@@ -2091,7 +2091,7 @@
         "08:00",
         "Revue mensuelle d’activité",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "10",
         "Tenue",
         "À rédiger",
@@ -2103,7 +2103,7 @@
         "15:00",
         "Réunion de service",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "9",
         "À venir",
         "À rédiger",
@@ -2115,7 +2115,7 @@
         "14:00",
         "Réunion de service",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "6",
         "Tenue",
         "À rédiger",
@@ -2127,7 +2127,7 @@
         "10:30",
         "Comité d’hygiène",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "12",
         "Tenue",
         "À rédiger",
@@ -2139,7 +2139,7 @@
         "09:00",
         "Réunion de direction",
         "Salle de réunion",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "8",
         "Tenue",
         "Rédigé",
@@ -2176,7 +2176,7 @@
     "heure": "14:00",
     "type": "Réunion de service",
     "lieu": "Salle de réunion",
-    "president": "BASSONGUI Chabi Séko",
+    "president": "BICHIASI Cezoune Sichovian",
     "participants": 6,
     "ordreDuJour": "Ordre du jour 3",
     "compteRendu": true,
@@ -2217,7 +2217,7 @@
     "date": "2026-09-30",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "TAKI Alimatou",
+    "responsable": "TACHEDI Arialu",
     "notifier": true,
     "canaux": [
      "In-app",
@@ -2233,7 +2233,7 @@
     "date": "2026-10-30",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "KASSA Augustin",
+    "responsable": "KALOU Avolutu",
     "notifier": true,
     "canaux": [
      "In-app"
@@ -2248,7 +2248,7 @@
     "date": "2026-10-31",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "GBEDJI Hervé",
+    "responsable": "GIDJI Hiabidjo",
     "notifier": true,
     "canaux": [
      "In-app",
@@ -2265,7 +2265,7 @@
     "date": "2026-11-04",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "YENI M’PO Florent",
+    "responsable": "YORO M’ABEKPIA Foulumi",
     "notifier": false,
     "canaux": []
    },
@@ -2278,7 +2278,7 @@
     "date": "2026-11-07",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "TAKI Orou",
+    "responsable": "TACHEDI Odjipiar",
     "notifier": true,
     "canaux": [
      "In-app"
@@ -2293,7 +2293,7 @@
     "date": "2026-11-19",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "AHOHOU Rodrigue",
+    "responsable": "AKPOMER Ridur",
     "notifier": true,
     "canaux": [
      "In-app",
@@ -2309,7 +2309,7 @@
     "date": "2026-11-29",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "KINNOU A. Ganiou",
+    "responsable": "KELE A. Gedur",
     "notifier": false,
     "canaux": []
    },
@@ -2322,7 +2322,7 @@
     "date": "2026-12-14",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "AGOSSOU Yahouza",
+    "responsable": "AKIAFADJO Yelia",
     "notifier": true,
     "canaux": [
      "In-app"
@@ -2337,7 +2337,7 @@
     "date": "2026-12-29",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "GARBA Yahouza",
+    "responsable": "GEVAMIAN Yelia",
     "notifier": true,
     "canaux": [
      "In-app",
@@ -2353,7 +2353,7 @@
     "date": "2027-01-28",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "IDRISSOU ANIKI Baba-Toundé",
+    "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "notifier": false,
     "canaux": []
    }
@@ -2408,7 +2408,7 @@
        "28/01/2027",
        "09:00",
        "Clinique",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        "Aucune",
        ""
       ],
@@ -2419,7 +2419,7 @@
        "29/12/2026",
        "09:00",
        "Clinique",
-       "GARBA Yahouza",
+       "GEVAMIAN Yelia",
        "In-app SMS",
        ""
       ],
@@ -2430,7 +2430,7 @@
        "14/12/2026",
        "09:00",
        "Clinique",
-       "AGOSSOU Yahouza",
+       "AKIAFADJO Yelia",
        "In-app",
        ""
       ],
@@ -2441,7 +2441,7 @@
        "29/11/2026",
        "09:00",
        "Clinique",
-       "KINNOU A. Ganiou",
+       "KELE A. Gedur",
        "Aucune",
        ""
       ],
@@ -2452,7 +2452,7 @@
        "19/11/2026",
        "09:00",
        "Clinique",
-       "AHOHOU Rodrigue",
+       "AKPOMER Ridur",
        "In-app Courriel",
        ""
       ],
@@ -2463,7 +2463,7 @@
        "07/11/2026",
        "09:00",
        "Clinique",
-       "TAKI Orou",
+       "TACHEDI Odjipiar",
        "In-app",
        ""
       ],
@@ -2474,7 +2474,7 @@
        "04/11/2026",
        "09:00",
        "Clinique",
-       "YENI M’PO Florent",
+       "YORO M’ABEKPIA Foulumi",
        "Aucune",
        ""
       ],
@@ -2485,7 +2485,7 @@
        "31/10/2026",
        "09:00",
        "Clinique",
-       "GBEDJI Hervé",
+       "GIDJI Hiabidjo",
        "In-app SMS Courriel",
        ""
       ],
@@ -2496,7 +2496,7 @@
        "30/10/2026",
        "09:00",
        "Clinique",
-       "KASSA Augustin",
+       "KALOU Avolutu",
        "In-app",
        ""
       ],
@@ -2507,7 +2507,7 @@
        "30/09/2026",
        "09:00",
        "Clinique",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "In-app SMS",
        ""
       ]
@@ -2597,7 +2597,7 @@
     "Aujourd’hui",
     "Audit qualité interne",
     "vendredi 30 octobre 2026 à 09:00",
-    "Clinique — KASSA Augustin",
+    "Clinique — KALOU Avolutu",
     "In-app"
    ],
    [
@@ -2605,7 +2605,7 @@
     "Dans 1 j",
     "Formation aux gestes d’urgence",
     "samedi 31 octobre 2026 à 09:00",
-    "Clinique — GBEDJI Hervé",
+    "Clinique — GIDJI Hiabidjo",
     "In-app",
     "SMS",
     "Courriel"
@@ -2615,14 +2615,14 @@
     "Dans 5 j",
     "Inventaire annuel",
     "mercredi 4 novembre 2026 à 09:00",
-    "Clinique — YENI M’PO Florent"
+    "Clinique — YORO M’ABEKPIA Foulumi"
    ],
    [
     "Sécurité",
     "Dans 8 j",
     "Contrôle des extincteurs",
     "samedi 7 novembre 2026 à 09:00",
-    "Clinique — TAKI Orou",
+    "Clinique — TACHEDI Odjipiar",
     "In-app"
    ],
    [
@@ -2630,7 +2630,7 @@
     "Dans 20 j",
     "Journée portes ouvertes",
     "jeudi 19 novembre 2026 à 09:00",
-    "Clinique — AHOHOU Rodrigue",
+    "Clinique — AKPOMER Ridur",
     "In-app",
     "Courriel"
    ],
@@ -2639,16 +2639,16 @@
     "Dans 30 j",
     "Maintenance de l’échographe",
     "dimanche 29 novembre 2026 à 09:00",
-    "Clinique — KINNOU A. Ganiou"
+    "Clinique — KELE A. Gedur"
    ]
   ],
   "prochainsBrut": [
-   "Qualité Aujourd’hui Audit qualité interne vendredi 30 octobre 2026 à 09:00 Clinique — KASSA Augustin In-app",
-   "Formation Dans 1 j Formation aux gestes d’urgence samedi 31 octobre 2026 à 09:00 Clinique — GBEDJI Hervé In-app SMS Courriel",
-   "Logistique Dans 5 j Inventaire annuel mercredi 4 novembre 2026 à 09:00 Clinique — YENI M’PO Florent",
-   "Sécurité Dans 8 j Contrôle des extincteurs samedi 7 novembre 2026 à 09:00 Clinique — TAKI Orou In-app",
-   "Communication Dans 20 j Journée portes ouvertes jeudi 19 novembre 2026 à 09:00 Clinique — AHOHOU Rodrigue In-app Courriel",
-   "Technique Dans 30 j Maintenance de l’échographe dimanche 29 novembre 2026 à 09:00 Clinique — KINNOU A. Ganiou"
+   "Qualité Aujourd’hui Audit qualité interne vendredi 30 octobre 2026 à 09:00 Clinique — KALOU Avolutu In-app",
+   "Formation Dans 1 j Formation aux gestes d’urgence samedi 31 octobre 2026 à 09:00 Clinique — GIDJI Hiabidjo In-app SMS Courriel",
+   "Logistique Dans 5 j Inventaire annuel mercredi 4 novembre 2026 à 09:00 Clinique — YORO M’ABEKPIA Foulumi",
+   "Sécurité Dans 8 j Contrôle des extincteurs samedi 7 novembre 2026 à 09:00 Clinique — TACHEDI Odjipiar In-app",
+   "Communication Dans 20 j Journée portes ouvertes jeudi 19 novembre 2026 à 09:00 Clinique — AKPOMER Ridur In-app Courriel",
+   "Technique Dans 30 j Maintenance de l’échographe dimanche 29 novembre 2026 à 09:00 Clinique — KELE A. Gedur"
   ],
   "prochainsRouges": [
    true,
@@ -2889,7 +2889,7 @@
     "date": "2026-11-04",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "YENI M’PO Florent",
+    "responsable": "YORO M’ABEKPIA Foulumi",
     "notifier": false,
     "observations": ""
    },
@@ -2903,7 +2903,7 @@
      "date": "2026-11-04",
      "heure": "09:00",
      "lieu": "Extérieur",
-     "responsable": "YENI M’PO Florent",
+     "responsable": "YORO M’ABEKPIA Foulumi",
      "notifier": true,
      "canaux": [
       "In-app"
@@ -2924,7 +2924,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 4,
     "avancement": "En cours",
-    "responsable": "TAKI Alimatou"
+    "responsable": "TACHEDI Arialu"
    },
    {
     "id": "PAT002",
@@ -2935,7 +2935,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 1,
     "avancement": "Réalisée",
-    "responsable": "MAMAN Zoukanéri"
+    "responsable": "METIAVI Zobo"
    },
    {
     "id": "PAT003",
@@ -2946,7 +2946,7 @@
     "trimestreDebut": 3,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "TAKI Alimatou"
+    "responsable": "TACHEDI Arialu"
    },
    {
     "id": "PAT004",
@@ -2957,7 +2957,7 @@
     "trimestreDebut": 4,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "KASSA Augustin"
+    "responsable": "KALOU Avolutu"
    },
    {
     "id": "PAT005",
@@ -2968,7 +2968,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 2,
     "avancement": "Réalisée",
-    "responsable": "TAKI Alimatou"
+    "responsable": "TACHEDI Arialu"
    },
    {
     "id": "PAT006",
@@ -2979,7 +2979,7 @@
     "trimestreDebut": 2,
     "trimestreFin": 3,
     "avancement": "En cours",
-    "responsable": "TAKI Alimatou"
+    "responsable": "TACHEDI Arialu"
    },
    {
     "id": "PAT007",
@@ -2990,7 +2990,7 @@
     "trimestreDebut": 4,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "TAKI Alimatou"
+    "responsable": "TACHEDI Arialu"
    }
   ],
   "ecran": {
@@ -3114,7 +3114,7 @@
        "Déploiement du SIGH-CBG",
        "Digitalisation",
        "T1 – T4",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "En cours",
        ""
       ],
@@ -3123,7 +3123,7 @@
        "Inventaire général des stocks",
        "Logistique",
        "T1 – T1",
-       "MAMAN Zoukanéri",
+       "METIAVI Zobo",
        "Réalisée",
        ""
       ],
@@ -3132,7 +3132,7 @@
        "Formation du personnel",
        "Formation",
        "T3 – T4",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "Planifiée",
        ""
       ],
@@ -3141,7 +3141,7 @@
        "Clôture comptable de l’exercice",
        "Finance",
        "T4 – T4",
-       "KASSA Augustin",
+       "KALOU Avolutu",
        "Planifiée",
        ""
       ],
@@ -3150,7 +3150,7 @@
        "Renouvellement des conventions",
        "Partenariats",
        "T1 – T2",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "Réalisée",
        ""
       ],
@@ -3159,7 +3159,7 @@
        "Campagne de dépistage",
        "Santé publique",
        "T2 – T3",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "En cours",
        ""
       ],
@@ -3168,7 +3168,7 @@
        "Audit qualité",
        "Qualité",
        "T4 – T4",
-       "TAKI Alimatou",
+       "TACHEDI Arialu",
        "Planifiée",
        ""
       ]
@@ -3346,18 +3346,18 @@
    "signatures": [
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     },
     {
      "role": "Le Directeur Médical",
-     "nom": "BASSONGUI Chabi Séko"
+     "nom": "BICHIASI Cezoune Sichovian"
     }
    ],
-   "texte": "N°ActionAxePériodeResponsableAvancementPA-2026-001Déploiement du SIGH-CBGDigitalisationT1 à T4TAKI AlimatouEn coursPA-2026-002Inventaire général des stocksLogistiqueT1 à T1MAMAN ZoukanériRéaliséePA-2026-005Renouvellement des conventionsPartenariatsT1 à T2TAKI AlimatouRéaliséePA-2026-006Campagne de dépistageSanté publiqueT2 à T3TAKI AlimatouEn coursPA-2026-003Formation du personnelFormationT3 à T4TAKI AlimatouPlanifiéePA-2026-004Clôture comptable de l’exerciceFinanceT4 à T4KASSA AugustinPlanifiéePA-2026-007Audit qualitéQualitéT4 à T4TAKI AlimatouPlanifiée",
+   "texte": "N°ActionAxePériodeResponsableAvancementPA-2026-001Déploiement du SIGH-CBGDigitalisationT1 à T4TACHEDI ArialuEn coursPA-2026-002Inventaire général des stocksLogistiqueT1 à T1METIAVI ZoboRéaliséePA-2026-005Renouvellement des conventionsPartenariatsT1 à T2TACHEDI ArialuRéaliséePA-2026-006Campagne de dépistageSanté publiqueT2 à T3TACHEDI ArialuEn coursPA-2026-003Formation du personnelFormationT3 à T4TACHEDI ArialuPlanifiéePA-2026-004Clôture comptable de l’exerciceFinanceT4 à T4KALOU AvolutuPlanifiéePA-2026-007Audit qualitéQualitéT4 à T4TACHEDI ArialuPlanifiée",
    "tableaux": []
   },
   "detail": {
-   "texte": "Connexion perdue avec le serveur de base de données L’enregistrement a été refusé et la saisie n’a pas été conservée. Rien n’est écrit dans ce navigateur : les données de la clinique vivent sur le serveur, et lui seul en répond. Vérifier que le serveur est démarré, puis recharger la page. Le travail déjà enregistré est intact. Écriture refusée (archiver / courriers) — Aucune fiche « COU9 » dans « courriers ». Recharger la page Modifications enregistrées. Annuler Actions programmées 7 Réalisées 2 En cours 2 Planifiées 3 Plan annuel de travail 2026 Imprimer le plan ACTION AXE T1 T2 T3 T4 AVANCEMENT Déploiement du SIGH-CBG Digitalisation En cours Inventaire général des stocks Logistique Réalisée Renouvellement des conventions Partenariats Réalisée Campagne de dépistage Santé publique En cours Formation du personnel Formation Planifiée Clôture comptable de l’exercice Finance Planifiée Audit qualité Qualité Planifiée Détail des actions Axe Digitalisation Finance Formation Logistique Partenariats Qualité Santé publique Avancement Réalisée En cours Planifiée Colonnes Exporter N° ACTION AXE PÉRIODE RESPONSABLE AVANCEMENT ACTIONS PA-2026-001 Déploiement du SIGH-CBG Digitalisation T1 – T4 TAKI Alimatou En cours PA-2026-002 Inventaire général des stocks Logistique T1 – T1 MAMAN Zoukanéri Réalisée PA-2026-003 Formation du personnel Formation T3 – T4 TAKI Alimatou Planifiée PA-2026-004 Clôture comptable de l’exercice Finance T4 – T4 KASSA Augustin Planifiée PA-2026-005 Renouvellement des conventions Partenariats T1 – T2 TAKI Alimatou Réalisée PA-2026-006 Campagne de dépistage Santé publique T2 – T3 TAKI Alimatou En cours PA-2026-007 Audit qualité Qualité T4 – T4 TAKI Alimatou Planifiée Affichage de 1 à 7 sur 7 enregistrements",
+   "texte": "Connexion perdue avec le serveur de base de données L’enregistrement a été refusé et la saisie n’a pas été conservée. Rien n’est écrit dans ce navigateur : les données de la clinique vivent sur le serveur, et lui seul en répond. Vérifier que le serveur est démarré, puis recharger la page. Le travail déjà enregistré est intact. Écriture refusée (archiver / courriers) — Aucune fiche « COU9 » dans « courriers ». Recharger la page Modifications enregistrées. Annuler Actions programmées 7 Réalisées 2 En cours 2 Planifiées 3 Plan annuel de travail 2026 Imprimer le plan ACTION AXE T1 T2 T3 T4 AVANCEMENT Déploiement du SIGH-CBG Digitalisation En cours Inventaire général des stocks Logistique Réalisée Renouvellement des conventions Partenariats Réalisée Campagne de dépistage Santé publique En cours Formation du personnel Formation Planifiée Clôture comptable de l’exercice Finance Planifiée Audit qualité Qualité Planifiée Détail des actions Axe Digitalisation Finance Formation Logistique Partenariats Qualité Santé publique Avancement Réalisée En cours Planifiée Colonnes Exporter N° ACTION AXE PÉRIODE RESPONSABLE AVANCEMENT ACTIONS PA-2026-001 Déploiement du SIGH-CBG Digitalisation T1 – T4 TACHEDI Arialu En cours PA-2026-002 Inventaire général des stocks Logistique T1 – T1 METIAVI Zobo Réalisée PA-2026-003 Formation du personnel Formation T3 – T4 TACHEDI Arialu Planifiée PA-2026-004 Clôture comptable de l’exercice Finance T4 – T4 KALOU Avolutu Planifiée PA-2026-005 Renouvellement des conventions Partenariats T1 – T2 TACHEDI Arialu Réalisée PA-2026-006 Campagne de dépistage Santé publique T2 – T3 TACHEDI Arialu En cours PA-2026-007 Audit qualité Qualité T4 – T4 TACHEDI Arialu Planifiée Affichage de 1 à 7 sur 7 enregistrements",
    "boutons": [
     "Recharger la page",
     "Annuler",
@@ -3394,7 +3394,7 @@
    ],
    "valeurs": {
     "action": "Campagne de dépistage",
-    "responsable": "TAKI Alimatou",
+    "responsable": "TACHEDI Arialu",
     "echeance": "",
     "avancement": "En cours",
     "tauxAvancement": "",
@@ -3415,7 +3415,7 @@
      "trimestreDebut": 2,
      "trimestreFin": 3,
      "avancement": "En cours",
-     "responsable": "TAKI Alimatou",
+     "responsable": "TACHEDI Arialu",
      "echeance": "2026-12-15",
      "tauxAvancement": null,
      "observations": ""
@@ -3456,7 +3456,7 @@
     "trimestreDebut": 2,
     "trimestreFin": 3,
     "avancement": "Réalisée",
-    "responsable": "TAKI Alimatou",
+    "responsable": "TACHEDI Arialu",
     "echeance": "2026-12-15",
     "tauxAvancement": 60,
     "observations": ""
@@ -3489,7 +3489,7 @@
      "Campagne de dépistage communautaire",
      "Santé publique",
      "T2 – T3",
-     "TAKI Alimatou",
+     "TACHEDI Arialu",
      "Réalisée",
      ""
     ]
@@ -3506,13 +3506,13 @@
     "motif": "Urgence médicale",
     "destination": "CHD Atacora",
     "kilometrage": 12,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "terminee",
     "tarif": 11000,
     "facture": true,
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25"
    },
    {
@@ -3523,13 +3523,13 @@
     "motif": "Transfert inter-hospitalier",
     "destination": "CNHU-HKM Cotonou",
     "kilometrage": 480,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "terminee",
     "tarif": 245000,
     "facture": true,
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26"
    },
    {
@@ -3540,13 +3540,13 @@
     "motif": "Retour à domicile",
     "destination": "Domicile — Tchirimina",
     "kilometrage": 7,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "terminee",
     "tarif": 8500,
     "facture": false,
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26"
    },
    {
@@ -3557,13 +3557,13 @@
     "motif": "Urgence obstétricale",
     "destination": "Hôpital de zone de Tanguiéta",
     "kilometrage": 52,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "terminee",
     "tarif": 31000,
     "facture": true,
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26"
    },
    {
@@ -3574,13 +3574,13 @@
     "motif": "Évacuation sanitaire",
     "destination": "CHD Atacora",
     "kilometrage": 15,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "en_cours",
     "tarif": 12500,
     "facture": false,
     "patientId": "PAT0005",
-    "patient": "TAKI Ganiou",
+    "patient": "TACHEDI Gedur",
     "patientCode": "CBG/5/26"
    },
    {
@@ -3591,13 +3591,13 @@
     "motif": "Accident de la voie publique",
     "destination": "Clinique",
     "kilometrage": 4,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "demandee",
     "tarif": 7000,
     "facture": false,
     "patientId": "PAT0006",
-    "patient": "DIEYABIDI Bibata",
+    "patient": "DATU Bouboli",
     "patientCode": "CBG/6/25"
    },
    {
@@ -3608,35 +3608,35 @@
     "motif": "Urgence médicale",
     "destination": "CHD Atacora",
     "kilometrage": 10,
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "etat": "terminee",
     "tarif": 10000,
     "facture": true,
     "patientId": "PAT0007",
-    "patient": "OROU YO Adissa",
+    "patient": "ODJIPIAR YUDJOUVOU Afagu",
     "patientCode": "CBG/7/25"
    }
   ],
-  "chauffeur": "TCHANE Nourou",
-  "accompagnant": "TAKI Alimatou",
+  "chauffeur": "TIAMOU Noupi",
+  "accompagnant": "TACHEDI Arialu",
   "patients": [
    {
     "code": "CBG/1/25",
-    "nom": "TCHANE",
-    "prenom": "Bertine",
+    "nom": "TIAMOU",
+    "prenom": "Bodje",
     "id": "PAT0001"
    },
    {
     "code": "CBG/2/26",
-    "nom": "BAKO",
-    "prenom": "Boukari",
+    "nom": "BIALI",
+    "prenom": "Buke",
     "id": "PAT0002"
    },
    {
     "code": "CBG/3/26",
-    "nom": "N’TCHA",
-    "prenom": "Yacoubou",
+    "nom": "N’ACHOU",
+    "prenom": "Yacha",
     "id": "PAT0003"
    }
   ],
@@ -3688,12 +3688,12 @@
       [
        "AM-2026-0006",
        "30/10/2026 à 09h15",
-       "DIEYABIDI Bibata CBG/6/25",
+       "DATU Bouboli CBG/6/25",
        "Accident de la voie publique",
        "Clinique",
        "4",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "7 000",
        "Demandée",
        "À facturer",
@@ -3702,12 +3702,12 @@
       [
        "AM-2026-0005",
        "30/10/2026 à 07h15",
-       "TAKI Ganiou CBG/5/26",
+       "TACHEDI Gedur CBG/5/26",
        "Évacuation sanitaire",
        "CHD Atacora",
        "15",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "12 500",
        "En cours",
        "À facturer",
@@ -3716,12 +3716,12 @@
       [
        "AM-2026-0004",
        "27/10/2026 à 03h15",
-       "PARAISO Sabi CBG/4/26",
+       "PENU Sabar CBG/4/26",
        "Urgence obstétricale",
        "Hôpital de zone de Tanguiéta",
        "52",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "31 000",
        "Terminée",
        "Facturée",
@@ -3730,12 +3730,12 @@
       [
        "AM-2026-0007",
        "25/10/2026 à 18h15",
-       "OROU YO Adissa CBG/7/25",
+       "ODJIPIAR YUDJOUVOU Afagu CBG/7/25",
        "Urgence médicale",
        "CHD Atacora",
        "10",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "10 000",
        "Terminée",
        "Facturée",
@@ -3744,12 +3744,12 @@
       [
        "AM-2026-0002",
        "10/10/2026 à 22h15",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "Transfert inter-hospitalier",
        "CNHU-HKM Cotonou",
        "480",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "245 000",
        "Terminée",
        "Facturée",
@@ -3758,12 +3758,12 @@
       [
        "AM-2026-0003",
        "01/10/2026 à 14h15",
-       "N’TCHA Yacoubou CBG/3/26",
+       "N’ACHOU Yacha CBG/3/26",
        "Retour à domicile",
        "Domicile — Tchirimina",
        "7",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "8 500",
        "Terminée",
        "À facturer",
@@ -3772,12 +3772,12 @@
       [
        "AM-2026-0001",
        "10/09/2026 à 08h15",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "Urgence médicale",
        "CHD Atacora",
        "12",
-       "TCHANE Nourou",
-       "TAKI Alimatou",
+       "TIAMOU Noupi",
+       "TACHEDI Arialu",
        "11 000",
        "Terminée",
        "Facturée",
@@ -3986,7 +3986,7 @@
     ],
     [
      "Patient",
-     "BAKO Boukari"
+     "BIALI Buke"
     ],
     [
      "Dossier",
@@ -4004,22 +4004,22 @@
    "signatures": [
     {
      "role": "Le Chauffeur",
-     "nom": "TCHANE Nourou"
+     "nom": "TIAMOU Noupi"
     },
     {
      "role": "L’Accompagnant médical",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     },
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
-   "texte": "RubriqueInformationKilométrage parcouru480 kmChauffeurTCHANE NourouAccompagnant médicalTAKI AlimatouMontant facturé245 000 FCFAFacturationFacturée",
+   "texte": "RubriqueInformationKilométrage parcouru480 kmChauffeurTIAMOU NoupiAccompagnant médicalTAKI ArialuMontant facturé245 000 FCFAFacturationFacturée",
    "tableaux": []
   },
   "detail": {
-   "texte": "BAKO Boukari AM-2026-0002 N° AM-2026-0002 Date et heure 10/10/2026 à 22h15 Patient BAKO Boukari CBG/2/26 Motif Transfert inter-hospitalier Destination CNHU-HKM Cotonou Km 480 Chauffeur TCHANE Nourou Accompagnant TAKI Alimatou Montant 245 000 État Terminée Facturation Facturée Patient CBG/2/26 — BAKO Boukari Imprimer Modifier Archiver",
+   "texte": "BIALI Buke AM-2026-0002 N° AM-2026-0002 Date et heure 10/10/2026 à 22h15 Patient BIALI Buke CBG/2/26 Motif Transfert inter-hospitalier Destination CNHU-HKM Cotonou Km 480 Chauffeur TIAMOU Noupi Accompagnant TACHEDI Arialu Montant 245 000 État Terminée Facturation Facturée Patient CBG/2/26 — BIALI Buke Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -4028,7 +4028,7 @@
    ]
   },
   "creation": {
-   "modale": "Nouveau intervention Les champs marqués d’un astérisque sont obligatoires. Patient * CBG/1/25 — TCHANE Bertine Date et heure * Motif * Urgence médicale Transfer",
+   "modale": "Nouveau intervention Les champs marqués d’un astérisque sont obligatoires. Patient * CBG/1/25 — TIAMOU Bodje Date et heure * Motif * Urgence médicale Transfer",
    "champs": [
     "Patient *",
     "Date et heure *",
@@ -4048,7 +4048,7 @@
     "destination": "",
     "kilometrage": "10",
     "etat": "demandee",
-    "chauffeur": "TCHANE Nourou",
+    "chauffeur": "TIAMOU Noupi",
     "accompagnant": "",
     "tarif": "",
     "facture": false
@@ -4096,30 +4096,30 @@
     ],
     "chauffeur": [
      [
-      "ADAM Alimatou",
-      "ADAM Alimatou — Dispensatrice"
+      "ACHOUBE Arialu",
+      "ACHOUBE Arialu — Dispensatrice"
      ],
      [
-      "ADAM Colette",
-      "ADAM Colette — Sage-femme"
+      "ACHOUBE Coufi",
+      "ACHOUBE Coufi — Sage-femme"
      ],
      [
-      "AGOSSOU Yahouza",
-      "AGOSSOU Yahouza — Biologiste médical"
+      "AKIAFADJO Yelia",
+      "AKIAFADJO Yelia — Biologiste médical"
      ]
     ],
     "patientCode": [
      [
       "CBG/1/25",
-      "CBG/1/25 — TCHANE Bertine"
+      "CBG/1/25 — TIAMOU Bodje"
      ],
      [
       "CBG/2/26",
-      "CBG/2/26 — BAKO Boukari"
+      "CBG/2/26 — BIALI Buke"
      ],
      [
       "CBG/3/26",
-      "CBG/3/26 — N’TCHA Yacoubou"
+      "CBG/3/26 — N’ACHOU Yacha"
      ]
     ],
     "nbPatients": 198,
@@ -4149,12 +4149,12 @@
      "destination": "Centre de santé de Perma",
      "kilometrage": 20,
      "etat": "demandee",
-     "chauffeur": "TCHANE Nourou",
+     "chauffeur": "TIAMOU Noupi",
      "accompagnant": "",
      "tarif": 15000,
      "facture": false,
      "patientId": "PAT0008",
-     "patient": "DOSSOU Salifou",
+     "patient": "DULOUNE Sazo",
      "reference": "AM-2026-0008"
     },
     "total": 8,
@@ -4191,12 +4191,12 @@
      "destination": "CHD Atacora",
      "kilometrage": 5,
      "etat": "terminee",
-     "chauffeur": "TCHANE Nourou",
+     "chauffeur": "TIAMOU Noupi",
      "accompagnant": "",
      "tarif": 9000,
      "facture": true,
      "patientId": "PAT0009",
-     "patient": "BAKO Justine",
+     "patient": "BIALI Jiakpune",
      "reference": "AM-2026-0009"
     },
     "kpis": [
@@ -4231,8 +4231,8 @@
     "destination": "Domicile — Tchirimina",
     "kilometrage": "7",
     "etat": "terminee",
-    "chauffeur": "TCHANE Nourou",
-    "accompagnant": "TAKI Alimatou",
+    "chauffeur": "TIAMOU Noupi",
+    "accompagnant": "TACHEDI Arialu",
     "tarif": "8500",
     "facture": false
    },
@@ -4245,19 +4245,19 @@
      "motif": "Retour à domicile",
      "destination": "Domicile — Tchirimina",
      "kilometrage": 7,
-     "chauffeur": "TCHANE Nourou",
-     "accompagnant": "TAKI Alimatou",
+     "chauffeur": "TIAMOU Noupi",
+     "accompagnant": "TACHEDI Arialu",
      "etat": "terminee",
      "tarif": 8500,
      "facture": true,
      "patientId": "PAT0010",
-     "patient": "SEIDOU Rachida",
+     "patient": "SIANUVU Rarouvil",
      "patientCode": "CBG/10/25"
     },
     "patient": {
      "code": "CBG/10/25",
      "id": "PAT0010",
-     "nom": "SEIDOU Rachida"
+     "nom": "SIANUVU Rarouvil"
     }
    }
   }
@@ -4327,7 +4327,7 @@
      "libelle": "Ambulance CBG 01",
      "type": "clinique",
      "telephone": "01 95 44 51 51",
-     "contact": "TCHANE Nourou",
+     "contact": "TIAMOU Noupi",
      "base": "Natitingou — clinique",
      "disponibilite": "disponible",
      "verifieLe": "2026-10-30",
@@ -4379,7 +4379,7 @@
         "Ambulance CBG 01",
         "Ambulance de la clinique",
         "01 95 44 51 51",
-        "TCHANE Nourou",
+        "TIAMOU Noupi",
         "Natitingou — clinique",
         "Disponible",
         "30/10/2026 (0 j)",
@@ -4918,7 +4918,7 @@
     "verifieLe": "2026-10-30",
     "aCompleter": false,
     "capacite": "Brancard, oxygène",
-    "verifiePar": "BASSONGUI Chabi Séko"
+    "verifiePar": "BICHIASI Cezoune Sichovian"
    },
    "toasts": [
     [
@@ -6211,7 +6211,7 @@
     },
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
    "texte": "ObservationPanne signalée par le bloc.Fiche à compléter : marque, numéro de série ou date de mise en service non relevés sur la machine.",
@@ -6264,7 +6264,7 @@
     },
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
    "texte": "ObservationAucune observation consignée.",
@@ -6555,7 +6555,7 @@
      "observations": "",
      "reference": "EVT-0012",
      "canaux": [],
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -6573,7 +6573,7 @@
      "canaux": [
       "In-app"
      ],
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -6585,7 +6585,7 @@
      "date": "2026-09-30",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "TAKI Alimatou",
+     "responsable": "TACHEDI Arialu",
      "notifier": true,
      "canaux": [
       "In-app",
@@ -6601,7 +6601,7 @@
      "date": "2026-10-30",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "KASSA Augustin",
+     "responsable": "KALOU Avolutu",
      "notifier": true,
      "canaux": [
       "In-app"
@@ -6616,7 +6616,7 @@
      "date": "2026-10-31",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "GBEDJI Hervé",
+     "responsable": "GIDJI Hiabidjo",
      "notifier": true,
      "canaux": [
       "In-app",
@@ -6633,13 +6633,13 @@
      "date": "2026-11-04",
      "heure": "09:00",
      "lieu": "Extérieur",
-     "responsable": "YENI M’PO Florent",
+     "responsable": "YORO M’ABEKPIA Foulumi",
      "notifier": true,
      "canaux": [
       "In-app"
      ],
      "observations": "",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -6651,7 +6651,7 @@
      "date": "2026-11-07",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "TAKI Orou",
+     "responsable": "TACHEDI Odjipiar",
      "notifier": true,
      "canaux": [
       "In-app"
@@ -6666,7 +6666,7 @@
      "date": "2026-11-19",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "AHOHOU Rodrigue",
+     "responsable": "AKPOMER Ridur",
      "notifier": true,
      "canaux": [
       "In-app",
@@ -6682,7 +6682,7 @@
      "date": "2026-11-29",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "KINNOU A. Ganiou",
+     "responsable": "KELE A. Gedur",
      "notifier": false,
      "canaux": []
     },
@@ -6695,7 +6695,7 @@
      "date": "2026-12-14",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "AGOSSOU Yahouza",
+     "responsable": "AKIAFADJO Yelia",
      "notifier": true,
      "canaux": [
       "In-app"
@@ -6710,7 +6710,7 @@
      "date": "2026-12-29",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "GARBA Yahouza",
+     "responsable": "GEVAMIAN Yelia",
      "notifier": true,
      "canaux": [
       "In-app",
@@ -6726,7 +6726,7 @@
      "date": "2027-01-28",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "IDRISSOU ANIKI Baba-Toundé",
+     "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "notifier": false,
      "canaux": []
     }
@@ -6755,11 +6755,11 @@
    ],
    "prochainsBrut": [
     "Santé publique Aujourd’hui Dépistage du cancer du sein vendredi 30 octobre 2026 à 09:00 Salle de réunion — In-app",
-    "Qualité Aujourd’hui Audit qualité interne vendredi 30 octobre 2026 à 09:00 Clinique — KASSA Augustin In-app",
-    "Formation Dans 1 j Formation aux gestes d’urgence samedi 31 octobre 2026 à 09:00 Clinique — GBEDJI Hervé In-app SMS Courriel",
+    "Qualité Aujourd’hui Audit qualité interne vendredi 30 octobre 2026 à 09:00 Clinique — KALOU Avolutu In-app",
+    "Formation Dans 1 j Formation aux gestes d’urgence samedi 31 octobre 2026 à 09:00 Clinique — GIDJI Hiabidjo In-app SMS Courriel",
     "Santé publique Dans 3 j Réunion sans annonce lundi 2 novembre 2026 à 09:00 —",
-    "Logistique Dans 5 j Inventaire annuel mercredi 4 novembre 2026 à 09:00 Extérieur — YENI M’PO Florent In-app",
-    "Sécurité Dans 8 j Contrôle des extincteurs samedi 7 novembre 2026 à 09:00 Clinique — TAKI Orou In-app"
+    "Logistique Dans 5 j Inventaire annuel mercredi 4 novembre 2026 à 09:00 Extérieur — YORO M’ABEKPIA Foulumi In-app",
+    "Sécurité Dans 8 j Contrôle des extincteurs samedi 7 novembre 2026 à 09:00 Clinique — TACHEDI Odjipiar In-app"
    ],
    "prochainsRouges": [
     true,
@@ -6779,13 +6779,13 @@
      "date": "2026-10-30",
      "heure": "09:00",
      "lieu": "Salle de réunion",
-     "president": "ADAM Alimatou",
+     "president": "ACHOUBE Arialu",
      "participants": 8,
      "ordreDuJour": "Budget 2027",
      "compteRendu": false,
      "resolutions": "",
      "reference": "RU-2026-009",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -6796,7 +6796,7 @@
      "heure": "09:00",
      "type": "Réunion de direction",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 8,
      "ordreDuJour": "Ordre du jour 1",
      "compteRendu": true
@@ -6809,7 +6809,7 @@
      "heure": "10:30",
      "type": "Comité d’hygiène",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 12,
      "ordreDuJour": "Ordre du jour 2",
      "compteRendu": false,
@@ -6823,12 +6823,12 @@
      "heure": "14:00",
      "type": "Réunion de service",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 6,
      "ordreDuJour": "Ordre du jour 3",
      "compteRendu": true,
      "resolutions": "RAS",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -6839,7 +6839,7 @@
      "heure": "08:00",
      "type": "Revue mensuelle d’activité",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 10,
      "ordreDuJour": "Ordre du jour 4",
      "compteRendu": false
@@ -6852,7 +6852,7 @@
      "heure": "15:00",
      "type": "Réunion du personnel",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 30,
      "ordreDuJour": "Ordre du jour 5",
      "compteRendu": false
@@ -6865,7 +6865,7 @@
      "heure": "11:00",
      "type": "Comité de gestion des stocks",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 5,
      "ordreDuJour": "Ordre du jour 6",
      "compteRendu": false
@@ -6878,11 +6878,11 @@
      "heure": "09:00",
      "type": "Réunion de direction",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 7,
      "ordreDuJour": "Ordre du jour 7",
      "compteRendu": true,
-     "_archivePar": "BASSONGUI Chabi Séko",
+     "_archivePar": "BICHIASI Cezoune Sichovian",
      "_archiveLe": "2026-10-30T10:00:00.000Z",
      "_motifArchivage": "test"
     },
@@ -6894,7 +6894,7 @@
      "heure": "15:00",
      "type": "Réunion de service",
      "lieu": "Salle de réunion",
-     "president": "BASSONGUI Chabi Séko",
+     "president": "BICHIASI Cezoune Sichovian",
      "participants": 9,
      "ordreDuJour": "Ordre du jour 8",
      "compteRendu": false
@@ -6942,7 +6942,7 @@
       "11:00",
       "Comité de gestion des stocks",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "5",
       "À venir",
       "À rédiger",
@@ -6954,7 +6954,7 @@
       "15:00",
       "Réunion du personnel",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "30",
       "À venir",
       "À rédiger",
@@ -6966,7 +6966,7 @@
       "09:00",
       "Réunion de direction",
       "Salle de réunion",
-      "ADAM Alimatou",
+      "ACHOUBE Arialu",
       "8",
       "Tenue",
       "À rédiger",
@@ -6978,7 +6978,7 @@
       "08:00",
       "Revue mensuelle d’activité",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "10",
       "Tenue",
       "À rédiger",
@@ -6990,7 +6990,7 @@
       "15:00",
       "Réunion de service",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "9",
       "À venir",
       "À rédiger",
@@ -7002,7 +7002,7 @@
       "14:00",
       "Réunion de service",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "6",
       "Tenue",
       "Rédigé",
@@ -7014,7 +7014,7 @@
       "10:30",
       "Comité d’hygiène",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "12",
       "Tenue",
       "À rédiger",
@@ -7026,7 +7026,7 @@
       "09:00",
       "Réunion de direction",
       "Salle de réunion",
-      "BASSONGUI Chabi Séko",
+      "BICHIASI Cezoune Sichovian",
       "8",
       "Tenue",
       "Rédigé",
@@ -7052,7 +7052,7 @@
      "disponibilite": "disponible",
      "capacite": "",
      "observations": "",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -7070,7 +7070,7 @@
      "disponibilite": "disponible",
      "capacite": "",
      "observations": "",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -7098,7 +7098,7 @@
      "verifieLe": "2026-10-30",
      "aCompleter": false,
      "observations": "Sortie à Tanguiéta",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -7123,8 +7123,8 @@
      "verifieLe": "2026-10-30",
      "aCompleter": false,
      "capacite": "Brancard, oxygène",
-     "verifiePar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "verifiePar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -7154,7 +7154,7 @@
      "aCompleter": false,
      "capacite": "",
      "observations": "",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-30T10:00:00.000Z"
     },
     {
@@ -7168,7 +7168,7 @@
      "disponibilite": "disponible",
      "verifieLe": "2026-07-31",
      "aCompleter": false,
-     "_archivePar": "BASSONGUI Chabi Séko",
+     "_archivePar": "BICHIASI Cezoune Sichovian",
      "_archiveLe": "2026-10-30T10:00:00.000Z",
      "_motifArchivage": "Doublon"
     },

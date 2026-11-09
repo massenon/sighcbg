@@ -11,7 +11,7 @@ typedef F = Map<String, Object?>;
 List<F> liste(Object? v) => ((v ?? const []) as List).map((x) => (x as Map).cast<String, Object?>()).toList();
 F carte(Object? v) => (v as Map).cast<String, Object?>();
 String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 /// Les champs qui ne dépendent ni d'un identifiant tiré au hasard ni de l'horloge d'écriture.
 String _v(Object? x) => x is num && x == x.truncate() ? '${x.toInt()}' : '${x ?? ''}';
@@ -212,21 +212,21 @@ void main() {
     final tout = valides(actives(ecr));
     final maintenant = auj;
     test('démarrer : mêmes refus nommés, mêmes états', () {
-      expect(cpcDemarrerCloture(exo, tout, 2031, acteur: 'KASSA Augustin', role: 'comptable', maintenant: maintenant).motif, carte(cl['inconnue'])['motif']);
-      expect(cpcDemarrerCloture(exo, tout, 2025, acteur: 'KASSA Augustin', role: 'comptable', maintenant: maintenant).motif, carte(cl['dejaClos'])['motif']);
-      final d = cpcDemarrerCloture(exo, tout, 2026, acteur: 'KASSA Augustin', role: 'comptable', maintenant: maintenant);
+      expect(cpcDemarrerCloture(exo, tout, 2031, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant).motif, carte(cl['inconnue'])['motif']);
+      expect(cpcDemarrerCloture(exo, tout, 2025, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant).motif, carte(cl['dejaClos'])['motif']);
+      final d = cpcDemarrerCloture(exo, tout, 2026, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant);
       expect(d.ok, carte(cl['demande'])['ok']);
       expect(d.patch!['etat'], 'en_cloture');
     });
     test('clôturer : les refus nommés de la maquette, puis les pièces, le résultat et l\'équilibre', () {
-      final enC = [for (final x in exo) if (x['annee'] == 2026) {...x, 'etat': 'en_cloture', 'demandePar': 'KASSA Augustin'} else x];
+      final enC = [for (final x in exo) if (x['annee'] == 2026) {...x, 'etat': 'en_cloture', 'demandePar': 'KALOU Avolutu'} else x];
       CpcValidation val(List<F> e, int a, String motif, String role, String acteur) =>
           cpcValiderCloture(e, tout, a, motif: motif, acteur: acteur, role: role, maintenant: maintenant, toutesEcritures: tout);
-      expect(carte(cl['validerRole'])['motif'], val(enC, 2026, 'Conforme', 'comptable', 'KASSA Augustin').motif);
-      expect(carte(cl['validerDemandeur'])['motif'], val(enC, 2026, 'Conforme', 'direction', 'KASSA Augustin').motif);
-      expect(carte(cl['validerSansMotif'])['motif'], val(enC, 2026, '', 'direction', 'BASSONGUI Chabi Séko').motif);
-      expect(carte(cl['validerInconnue'])['motif'], val(enC, 2030, 'Conforme', 'direction', 'BASSONGUI Chabi Séko').motif);
-      final r = val(enC, 2026, 'Exercice 2026 conforme', 'direction', 'BASSONGUI Chabi Séko');
+      expect(carte(cl['validerRole'])['motif'], val(enC, 2026, 'Conforme', 'comptable', 'KALOU Avolutu').motif);
+      expect(carte(cl['validerDemandeur'])['motif'], val(enC, 2026, 'Conforme', 'direction', 'KALOU Avolutu').motif);
+      expect(carte(cl['validerSansMotif'])['motif'], val(enC, 2026, '', 'direction', 'BICHIASI Cezoune Sichovian').motif);
+      expect(carte(cl['validerInconnue'])['motif'], val(enC, 2030, 'Conforme', 'direction', 'BICHIASI Cezoune Sichovian').motif);
+      final r = val(enC, 2026, 'Exercice 2026 conforme', 'direction', 'BICHIASI Cezoune Sichovian');
       final att = carte(cl['valider']);
       expect(r.ok, true, reason: r.motif);
       expect(r.clNumero, att['clNumero']);

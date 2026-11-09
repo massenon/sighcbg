@@ -153,7 +153,7 @@ void main() {
             : nom.contains('médecin')
                 ? const SessionLabo(role: 'medecin', fonction: 'medecin')
                 : const SessionLabo(role: 'laborantin', fonction: 'biologiste');
-        final utilisateur = nom.startsWith('biologique : le TSL') ? 'IMOROU Choucouratou' : (nom.contains('seconde') ? 'IMOROU Choucouratou' : 'KINNOU Ganiou');
+        final utilisateur = nom.startsWith('biologique : le TSL') ? 'IMEFULU Cochesia' : (nom.contains('seconde') ? 'IMEFULU Cochesia' : 'KELE Gedur');
         GesteResultat appeler() {
           if (nom.startsWith('technique')) {
             return validerTechnique(d, utilisateur: utilisateur, maintenant: t0);
@@ -236,8 +236,8 @@ void main() {
   });
 
   group('saisie structurée : quel examen, quelles variables, quel résumé', () {
-    final examens = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/examensLabo.json').readAsStringSync()));
-    final variables = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/variablesLabo.json').readAsStringSync()));
+    final examens = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/examensLabo.json').readAsStringSync()));
+    final variables = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/variablesLabo.json').readAsStringSync()));
     for (final c in liste(v['saisie'])) {
       test('${c['nom']}', () {
         final d = (c['demande'] as Map).cast<String, Object?>();
@@ -304,9 +304,9 @@ void main() {
     final ent = (v['entrees'] as Map)['comparatif'] as Map;
     final demandes = liste(ent['demandes']);
     final plages = liste(ent['plages']);
-    final examens = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/examensLabo.json').readAsStringSync()));
-    final variables = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/variablesLabo.json').readAsStringSync()));
-    final unites = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/unitesLabo.json').readAsStringSync()));
+    final examens = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/examensLabo.json').readAsStringSync()));
+    final variables = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/variablesLabo.json').readAsStringSync()));
+    final unites = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/unitesLabo.json').readAsStringSync()));
     final cas = liste(v['comparatif']);
     final direction = const SessionLabo(role: 'direction', fonction: 'direction');
     test('les patients comparables, dans l\'ordre du registre', () {
@@ -352,7 +352,7 @@ void main() {
     final ent = (v['entrees'] as Map)['stats'] as Map;
     final demandes = liste(ent['demandes']);
     final patients = liste(ent['patients']);
-    final examens = liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/examensLabo.json').readAsStringSync()));
+    final examens = liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/examensLabo.json').readAsStringSync()));
     final aujourdhui = DateTime(2026, 10, 30, 12);
     for (final c in liste(v['stats'])) {
       final fl = (c['filtres'] as Map).cast<String, Object?>();

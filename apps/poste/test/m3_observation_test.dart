@@ -92,7 +92,7 @@ void main() {
     await toucher(t, find.text('OBS-2026-0003').first);
     final f = carte(obs()['fiche']);
     for (final x in [
-      'N’TCHA Yacoubou — Salle d’observation — médecine générale',
+      'N’ACHOU Yacha — Salle d’observation — médecine générale',
       'Entrée 15/08/2026 à 09h00',
       'Durée 25 h — au-delà de la référence',
       'Issue en cours',
@@ -166,7 +166,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Mettre en observation').last);
     expect(col.actives.length, avant, reason: 'motif manquant : rien n\'est écrit');
     expect(find.text('Ce champ est obligatoire.'), findsWidgets);
-    await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
+    await choisir(t, 'patientCode', 'CBG/4/26 — PENU Sabar');
     await choisir(t, 'unite', 'Salle d’observation — pédiatrie (2 place(s) libre(s))');
     await saisir(t, 'motif', 'Malaise');
     await saisir(t, 'place', 'P2');

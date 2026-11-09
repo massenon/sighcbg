@@ -118,12 +118,12 @@ void main() {
 
     test('les fiches portent source, lot et validateur ; le prix de vente est le prix d’achat (RG-02) ; aucun seuil inventé', () {
       final a = mrcAnalyserImport(csvSage(), mrcProfilSage);
-      final f = mrcFichesProduits(a, lot: 'IMPORT-SAGE-20261031', date: '2026-10-31', validePar: 'TAKI Alimatou');
+      final f = mrcFichesProduits(a, lot: 'IMPORT-SAGE-20261031', date: '2026-10-31', validePar: 'TACHEDI Arialu');
       expect(f.length, 184);
       for (final x in f) {
         expect(x['source'], 'SAGE_100_GESTION_COMMERCIALE_15.01');
         expect(x['lotImport'], 'IMPORT-SAGE-20261031');
-        expect(x['validePar'], 'TAKI Alimatou');
+        expect(x['validePar'], 'TACHEDI Arialu');
         expect(x['prixVente'], x['prixAchat']);
         expect(x.containsKey('seuilAlerte'), isFalse);
       }

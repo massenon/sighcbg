@@ -3,7 +3,7 @@
 /// Rejoué sur `test/vecteurs/achats-commandes.json` (écran réel piloté dans Chrome).
 ///
 /// Écarts de la maquette portés fidèlement et signalés (E72) : le geste « Valider (DA) » est offert à tout profil qui écrit dans M7 (le gestionnaire
-/// de stock compris) et le validateur est TOUJOURS 'TAKI Alimatou' ; surtout, choisir le statut « Validée », « Transmise », « Livrée » ou « Soldée »
+/// de stock compris) et le validateur est TOUJOURS 'TACHEDI Arialu' ; surtout, choisir le statut « Validée », « Transmise », « Livrée » ou « Soldée »
 /// dans le formulaire pose d'office la validation de la DAF — RG-04 est donc contournable par qui peut modifier une commande.
 library;
 

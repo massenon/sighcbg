@@ -32,11 +32,11 @@ final auj = DateTime.parse(v['horloge'] as String);
 
 /// Le jeu de la sonde de la maquette (collections de la barre) par-dessus les collections vides d'un poste neuf.
 Magasin magasin({bool vide = false}) {
-  final ref = obj(jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()));
+  final ref = obj(jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()));
   final jeu = obj(v['jeu']);
   return Magasin({
     'audit': const <M>[],
-    'rbac': fl(jsonDecode(File('assets/donnees/jeu/rbac.json').readAsStringSync())),
+    'rbac': fl(jsonDecode(File('test/fixtures/jeu_reference/rbac.json').readAsStringSync())),
     if (!vide) for (final e in jeu.entries) e.key: fl(e.value),
   }, 'POSTE', ref);
 }
@@ -145,9 +145,9 @@ void main() {
       expect(find.byKey(const Key('resultat:m6-produits:AMOXICILLINE 500 MG')), findsNothing, reason: 'm6-produits est fermé à la réception');
       expect(find.byKey(const Key('recherche-aucun')), findsOneWidget);
       expect(find.text('Aucun résultat pour « amox ».'), findsOneWidget);
-      await t.enterText(find.byKey(const Key('recherche-champ')), 'padonou');
+      await t.enterText(find.byKey(const Key('recherche-champ')), 'pachetol');
       await t.pump();
-      expect(find.textContaining('PADONOU Amina'), findsOneWidget, reason: 'la réception voit le répertoire des patients');
+      expect(find.textContaining('PACHETOL Asare'), findsOneWidget, reason: 'la réception voit le répertoire des patients');
       await fin(t);
     });
   });
@@ -298,12 +298,12 @@ void main() {
   // ============================================================================================================================ PROFIL
   group('le menu du profil', () {
     testWidgets('nom, rôle, liens du compte, verrouiller, déconnexion', (t) async {
-      final session = SessionPoste.ouverte('da', nom: 'GBEDJI Hervé', horloge: () => auj);
+      final session = SessionPoste.ouverte('da', nom: 'GIDJI Hiabidjo', horloge: () => auj);
       await monter(t, role: 'da', session: session);
       expect(find.byKey(const Key('nom-courant')), findsOneWidget);
       await toucher(t, find.byKey(const Key('barre-profil')));
       expect(titreModale(t), 'Profil utilisateur');
-      expect(t.widget<Text>(find.byKey(const Key('profil-nom'))).data, 'GBEDJI Hervé');
+      expect(t.widget<Text>(find.byKey(const Key('profil-nom'))).data, 'GIDJI Hiabidjo');
       expect(t.widget<Text>(find.byKey(const Key('profil-role'))).data, donnees.matrice.libelle('da'));
       expect(find.byKey(const Key('profil-lien:cfg-compte')), findsOneWidget);
       expect(find.byKey(const Key('profil-verrouiller')), findsOneWidget);
@@ -315,7 +315,7 @@ void main() {
     });
 
     testWidgets('« Verrouiller l\'écran » suspend la session (jamais fermée) et pose l\'écran de verrouillage', (t) async {
-      final session = SessionPoste.ouverte('da', nom: 'GBEDJI Hervé', horloge: () => auj);
+      final session = SessionPoste.ouverte('da', nom: 'GIDJI Hiabidjo', horloge: () => auj);
       await monter(t, role: 'da', session: session);
       await toucher(t, find.byKey(const Key('barre-profil')));
       await toucher(t, find.byKey(const Key('profil-verrouiller')));
@@ -333,7 +333,7 @@ void main() {
     });
 
     testWidgets('« Se déconnecter » ferme la session et ouvre la connexion, sans chrome', (t) async {
-      final session = SessionPoste(exigeConnexion: true, compte: const AccCompte(identifiant: 'da', nom: 'GBEDJI Hervé', role: 'da'), horloge: () => auj);
+      final session = SessionPoste(exigeConnexion: true, compte: const AccCompte(identifiant: 'da', nom: 'GIDJI Hiabidjo', role: 'da'), horloge: () => auj);
       await monter(t, role: 'da', session: session);
       await toucher(t, find.byKey(const Key('barre-profil')));
       await toucher(t, find.byKey(const Key('profil-deconnexion')));
@@ -407,7 +407,7 @@ void main() {
         'statut': 'actif',
         'type': 'demande_imagerie',
         'poste': 'imagerie',
-        'libelle': 'Nouvelle demande d’imagerie : BANI Zoukanéri',
+        'libelle': 'Nouvelle demande d’imagerie : BIAREL Zobo',
         'detail': 'IRM pelvienne',
         'lue': false
       });
@@ -415,11 +415,11 @@ void main() {
       await monter(t, role: 'admin', session: session, m: m);
       await seConnecter(t, session, 'echographiste');
       expect(titreModale(t), 'À votre arrivée');
-      expect(find.textContaining('BANI'), findsNothing);
+      expect(find.textContaining('BIAREL'), findsNothing);
       expect(find.text('Notification de poste'), findsOneWidget);
       await fermerModales(t);
       await toucher(t, find.byKey(const Key('barre-cloche')));
-      expect(find.textContaining('BANI'), findsOneWidget, reason: 'le centre de la cloche, derrière les droits du poste, détaille');
+      expect(find.textContaining('BIAREL'), findsOneWidget, reason: 'le centre de la cloche, derrière les droits du poste, détaille');
       await fin(t);
     });
 

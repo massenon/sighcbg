@@ -325,7 +325,7 @@ class _EtatEtats extends State<EcranEtatsFinanciers> {
     ];
     final signatures = [
       signComptable,
-      const Signature('La Directrice de l’Administration et des Finances', nom: 'TAKI Alimatou'),
+      const Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu'),
       const Signature('La Direction'),
     ];
     TableauEtat t(List<ColonneEtat> cols, List<Fiche> l) => TableauEtat(colonnes: cols, lignes: l);

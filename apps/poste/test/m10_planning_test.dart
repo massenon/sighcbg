@@ -60,7 +60,7 @@ void main() {
       // La garde en cause est lue sur le planning du jeu (le relevé de la maquette en avait posé une de contrôle au 15/08).
       final conflit = rhbIncompatibiliteGarde(m.collection('planning').actives, employeId: 'EMP01', jour: DateTime(2026, 8, 16), type: 'garde', repos: 'repos48');
       expect(conflit, isNotNull);
-      expect(find.text('Garde déjà programmée le ${dateFR(DateTime.parse(conflit!))} pour BASSONGUI Chabi Séko.'), findsOneWidget);
+      expect(find.text('Garde déjà programmée le ${dateFR(DateTime.parse(conflit!))} pour BICHIASI Cezoune Sichovian.'), findsOneWidget);
       expect(m.collection('planning').toutes.length, avant);
       expect(find.text('Affectation de vacation'), findsOneWidget, reason: 'la modale reste ouverte');
     });
@@ -240,7 +240,7 @@ void main() {
       final m = magasinRhb();
       await ouvrirM14(t, m, 'm10-presences', horloge: auj16);
       final avant = m.collection('presences').toutes.length;
-      final agent = m.collection('personnel').actives.firstWhere((e) => e['nomComplet'] == 'BASSONGUI Chabi Séko');
+      final agent = m.collection('personnel').actives.firstWhere((e) => e['nomComplet'] == 'BICHIASI Cezoune Sichovian');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Ajouter un pointage'));
       expect(find.text('Nouveau pointage'), findsOneWidget);
       await choisirM14(t, 'employeId', '${agent['matricule']} — ${agent['nomComplet']} (${agent['poste']})');

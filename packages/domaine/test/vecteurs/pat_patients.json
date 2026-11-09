@@ -126,8 +126,8 @@
    {
     "nom": "patient sans assurance, date de naissance connue",
     "saisie": {
-     "nom": "Bio",
-     "prenom": "Zakari",
+     "nom": "Bounoukia",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "date",
      "dateNaissance": "1990-05-12",
@@ -138,8 +138,8 @@
      {
       "statut": "actif",
       "code": "CBG/179/26",
-      "nom": "Bio",
-      "prenom": "Zakari",
+      "nom": "Bounoukia",
+      "prenom": "Zapeto",
       "sexe": "M",
       "dateNaissance": "1990-05-12",
       "groupeSanguin": "",
@@ -176,8 +176,8 @@
    {
     "nom": "âge déclaré : la date est effacée et l'âge est daté du jour",
     "saisie": {
-     "nom": "Kora",
-     "prenom": "Zakari",
+     "nom": "Kiavumu",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "age",
      "dateNaissance": "1990-05-12",
@@ -189,8 +189,8 @@
      {
       "statut": "actif",
       "code": "CBG/180/26",
-      "nom": "Kora",
-      "prenom": "Zakari",
+      "nom": "Kiavumu",
+      "prenom": "Zapeto",
       "sexe": "M",
       "age": 41,
       "groupeSanguin": "",
@@ -228,7 +228,7 @@
     "nom": "assuré : le nom de la compagnie est repris du référentiel",
     "saisie": {
      "nom": "Assure",
-     "prenom": "Zakari",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "date",
      "dateNaissance": "1990-05-12",
@@ -244,7 +244,7 @@
       "statut": "actif",
       "code": "CBG/181/26",
       "nom": "Assure",
-      "prenom": "Zakari",
+      "prenom": "Zapeto",
       "sexe": "M",
       "dateNaissance": "1990-05-12",
       "groupeSanguin": "",
@@ -282,7 +282,7 @@
     "nom": "éléments médicaux : listes multiples",
     "saisie": {
      "nom": "Listes",
-     "prenom": "Zakari",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "date",
      "dateNaissance": "1990-05-12",
@@ -303,7 +303,7 @@
       "statut": "actif",
       "code": "CBG/182/26",
       "nom": "Listes",
-      "prenom": "Zakari",
+      "prenom": "Zapeto",
       "sexe": "M",
       "dateNaissance": "1990-05-12",
       "groupeSanguin": "O+",
@@ -363,7 +363,7 @@
     "nom": "date de naissance dans le futur : refus",
     "saisie": {
      "nom": "Futur",
-     "prenom": "Zakari",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "date",
      "dateNaissance": "2999-01-01",
@@ -380,8 +380,8 @@
    {
     "nom": "le code a été pris entre-temps : refus nommé, rien d'écrit",
     "saisie": {
-     "nom": "Bio",
-     "prenom": "Zakari",
+     "nom": "Bounoukia",
+     "prenom": "Zapeto",
      "sexe": "M",
      "naissanceConnue": "date",
      "dateNaissance": "1990-05-12",

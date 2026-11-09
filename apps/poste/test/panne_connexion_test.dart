@@ -83,7 +83,7 @@ void main() {
       expect(source.value.depuis, isNotNull, reason: 'depuis quand, jamais un voyant muet');
       final codePatient = PlagesCodes.de(mf).prochainCode(mf.collection('patients').toutes, horloge);
       expect(codePatient, matches(RegExp('^${IdentiteClinique.sigle}/\\d+/\\d{2}\$')), reason: 'un numéro de SA plage, pas un provisoire');
-      final patient = mf.collection('patients').inserer({'nom': 'ADJOVI', 'prenom': 'Rose', 'code': codePatient}, prefixe: 'PAT').fiche;
+      final patient = mf.collection('patients').inserer({'nom': 'AGBUZIA', 'prenom': 'Roulin', 'code': codePatient}, prefixe: 'PAT').fiche;
       expect(mf.collection('patients').toutes, hasLength(1), reason: 'la saisie locale ne dépend d’aucun réseau');
       horloge = horloge.add(const Duration(minutes: 10));
       await pf.cycle(); // le pont écrit dans la file LOCALE du moteur : il réussit sans la mère
@@ -110,7 +110,7 @@ void main() {
         }
         await Future<void>.delayed(const Duration(milliseconds: 200));
       }
-      expect(mm.collection('patients').toutes.single['nom'], 'ADJOVI');
+      expect(mm.collection('patients').toutes.single['nom'], 'AGBUZIA');
       expect(mm.collection('patients').toutes.single['code'], codePatient, reason: 'le code attribué hors ligne, dans la plage du poste, n’est pas renuméroté (RG-01)');
       horloge = DateTime.now();
       for (var i = 0; i < 3; i++) {

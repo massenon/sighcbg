@@ -127,7 +127,7 @@
     "montant": 6500,
     "statutCommande": "validee",
     "delaiLivraison": 7,
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    "message": "Valider la commande BC-2098-0112 ?En application de la règle RG-04, cette validation autorise la transmission au fournisseur CAME — Centrale d'Achat des Médicaments Essentiels pour un montant de 6 500 FCFA. L’opération est journalisée.AnnulerValider la commande",
@@ -255,7 +255,7 @@
     "montant": 6500,
     "statutCommande": "validee",
     "delaiLivraison": 7,
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    "message": "Valider la commande BC-2098-0114 ?En application de la règle RG-04, cette validation autorise la transmission au fournisseur CAME — Centrale d'Achat des Médicaments Essentiels pour un montant de 6 500 FCFA. L’opération est journalisée.AnnulerValider la commande",
@@ -447,7 +447,7 @@
     ],
     "montant": 1400,
     "reference": "BC-2026-0018",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    "ouverte": false,
@@ -501,7 +501,7 @@
     ],
     "montant": 500,
     "reference": "BC-2026-0019",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    "ouverte": false,
@@ -777,7 +777,7 @@
     "delaiLivraison": 7,
     "statutCommande": "validee",
     "observations": "",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    "toasts": [
@@ -1002,7 +1002,7 @@
    "delaiLivraison": 7,
    "statutCommande": "validee",
    "observations": "",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-10-30"
   },
   {
@@ -1026,7 +1026,7 @@
    ],
    "montant": 500,
    "reference": "BC-2026-0019",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-10-30"
   },
   {
@@ -1050,7 +1050,7 @@
    ],
    "montant": 1400,
    "reference": "BC-2026-0018",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-10-30"
   },
   {
@@ -1125,7 +1125,7 @@
    "montant": 6500,
    "statutCommande": "validee",
    "delaiLivraison": 7,
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-10-30"
   },
   {
@@ -1169,7 +1169,7 @@
    "montant": 6500,
    "statutCommande": "validee",
    "delaiLivraison": 7,
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-10-30"
   },
   {
@@ -1199,7 +1199,7 @@
    ],
    "montant": 94650,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-08-13",
    "delaiLivraison": 2
   },
@@ -1238,7 +1238,7 @@
    ],
    "montant": 1177940,
    "statutCommande": "soldee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-06-03",
    "delaiLivraison": 2
   },
@@ -1285,7 +1285,7 @@
    ],
    "montant": 859198,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-06-07",
    "delaiLivraison": 14
   },
@@ -1332,7 +1332,7 @@
    ],
    "montant": 287010,
    "statutCommande": "soldee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-03-31",
    "delaiLivraison": 14
   },
@@ -1371,7 +1371,7 @@
    ],
    "montant": 1449289,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-04-12",
    "delaiLivraison": 14
   },
@@ -1410,7 +1410,7 @@
    ],
    "montant": 104140,
    "statutCommande": "soldee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-08-10",
    "delaiLivraison": 2
   },
@@ -1449,7 +1449,7 @@
    ],
    "montant": 512192,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-05-25",
    "delaiLivraison": 7
   },
@@ -1496,7 +1496,7 @@
    ],
    "montant": 613500,
    "statutCommande": "soldee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-05-12",
    "delaiLivraison": 10
   },
@@ -1535,7 +1535,7 @@
    ],
    "montant": 242500,
    "statutCommande": "soldee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-06-23",
    "delaiLivraison": 2
   },
@@ -1566,7 +1566,7 @@
    ],
    "montant": 813000,
    "statutCommande": "validee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-06-09",
    "delaiLivraison": 7
   },
@@ -1597,7 +1597,7 @@
    ],
    "montant": 126500,
    "statutCommande": "validee",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-02-19",
    "delaiLivraison": 14
   },
@@ -1628,7 +1628,7 @@
    ],
    "montant": 130200,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-07-03",
    "delaiLivraison": 2
   },
@@ -1706,7 +1706,7 @@
    ],
    "montant": 670502,
    "statutCommande": "livree",
-   "valideePar": "TAKI Alimatou",
+   "valideePar": "TACHEDI Arialu",
    "dateValidation": "2026-03-11",
    "delaiLivraison": 10
   },

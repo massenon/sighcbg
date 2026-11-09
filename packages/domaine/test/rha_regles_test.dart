@@ -15,7 +15,7 @@ final v = obj(jsonDecode(File('test/vecteurs/rh.json').readAsStringSync()));
 final auj = DateTime(2026, 10, 30, 10);
 final aout = DateTime(2026, 8, 20, 10);
 
-List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<M> actives(String nom) => [
       for (final f in jeu(nom))
         if (f['statut'] != 'archive') f
@@ -73,8 +73,8 @@ void main() {
       final p = actives('personnel');
       final e = obj(v['personnel']);
       kpisEgaux(rhaKpisPersonnel(p), obj(e['ecran'])['kpis']);
-      final nouveau = rhaAgentEnregistrable({'nom': 'AGBO', 'prenom': 'Rosine', 'sexe': 'F', 'salaireBase': 120000});
-      expect(nouveau['nomComplet'], 'AGBO Rosine');
+      final nouveau = rhaAgentEnregistrable({'nom': 'AGORO', 'prenom': 'Routoun', 'sexe': 'F', 'salaireBase': 120000});
+      expect(nouveau['nomComplet'], 'AGORO Routoun');
       kpisEgaux(rhaKpisPersonnel([nouveau, ...p]), obj(obj(e['creation'])['apres'])['kpis']);
       kpisEgaux(rhaKpisPersonnel(p), obj(e['archivage'])['kpis']);
     });
@@ -89,9 +89,9 @@ void main() {
     });
 
     test('initiales : les deux premiers mots, en majuscules', () {
-      expect(rhaInitiales('BASSONGUI Chabi Séko'), 'BC');
-      expect(rhaInitiales('GBEDJI Hervé'), 'GH');
-      expect(rhaInitiales('YENI M’PO Florent'), 'YM');
+      expect(rhaInitiales('BICHIASI Cezoune Sichovian'), 'BC');
+      expect(rhaInitiales('GIDJI Hiabidjo'), 'GH');
+      expect(rhaInitiales('YORO M’ABEKPIA Foulumi'), 'YM');
     });
   });
 
@@ -243,7 +243,7 @@ void main() {
       ];
       kpisEgaux(rhaKpisMissions(apres), obj(obj(e['validation'])['ecran'])['kpis']);
       final fiche = obj(obj(obj(e['validation'])['apres'])['fiche']);
-      expect(fiche['valideePar'], 'TAKI Alimatou');
+      expect(fiche['valideePar'], 'TACHEDI Arialu');
       expect(fiche['valideeLe'], '2026-10-30');
     });
 

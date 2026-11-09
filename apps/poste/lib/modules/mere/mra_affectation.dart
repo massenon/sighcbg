@@ -26,7 +26,7 @@ String libelleFonctionMobile(String? profil, String? fonction) {
 /// Demande à l'administrateur le nom, le profil et (pour un soignant) la fonction du téléphone à appairer. `null` : annulé.
 Future<AffectationMobile?> demanderAffectationMobile(BuildContext context, {String titre = 'Appairer un mobile', String libelleOk = 'Générer le code'}) async {
   final ctl = ControleurFormulaire([
-    const ChampDef(nom: 'etiquette', libelle: 'Nom de l’appareil (ex. Réception, Dr Yeni)', requis: true, col: ColChamp.plein),
+    const ChampDef(nom: 'etiquette', libelle: 'Nom de l’appareil (ex. Réception, Dr Yoro)', requis: true, col: ColChamp.plein),
     const ChampDef(
       nom: 'profil',
       libelle: 'Profil du téléphone',

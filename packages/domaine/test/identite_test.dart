@@ -12,8 +12,8 @@ final auj = DateTime.utc(2026, 10, 31, 10);
 void main() {
   group('Agent : l\'identité nominative', () {
     final personnel = <M>[
-      {'id': 'EMP18', 'matricule': '18', 'nomComplet': 'BADO BANI A. B. Zoulehath', 'fonction': 'sage_femme', 'service': 'Maternité'},
-      {'id': 'EMP10', 'matricule': '10', 'nomComplet': 'GARBA Yahouza', 'fonction': 'infirmier', 'service': 'Soins infirmiers'},
+      {'id': 'EMP18', 'matricule': '18', 'nomComplet': 'BATOL BIAREL A. B. Zouguti', 'fonction': 'sage_femme', 'service': 'Maternité'},
+      {'id': 'EMP10', 'matricule': '10', 'nomComplet': 'GEVAMIAN Yelia', 'fonction': 'infirmier', 'service': 'Soins infirmiers'},
       {'id': 'EMP99', 'matricule': '99', 'nomComplet': 'INCONNU Service', 'fonction': 'medecin', 'service': 'Service Imaginaire'},
     ];
     final soignants = <M>[
@@ -22,7 +22,7 @@ void main() {
 
     test('un compte rattaché à son dossier RH : identifiant, matricule, nom, fonction et secteur viennent du dossier', () {
       final a = agentDepuisCompte(
-          {'id': 'USR018', 'identifiant': 'z.bado', 'role': 'infirmier', 'nomComplet': 'BADO BANI A. B. Zoulehath', 'employeId': 'EMP18'},
+          {'id': 'USR018', 'identifiant': 'z.batol', 'role': 'infirmier', 'nomComplet': 'BATOL BIAREL A. B. Zouguti', 'employeId': 'EMP18'},
           personnel: personnel,
           soignants: soignants);
       expect(a.utilisateurId, 'USR018');
@@ -79,7 +79,7 @@ void main() {
           {
             'annee': 2026,
             'etat': 'en_attente_cloture',
-            'demandePar': 'KASSA Augustin',
+            'demandePar': 'KALOU Avolutu',
             if (demandeParId != null) 'demandeParId': demandeParId,
           }
         ];
@@ -93,14 +93,14 @@ void main() {
 
     test('deux agents de même NOM mais d\'identifiants différents sont deux personnes : le contrôle ne refuse pas sur le nom', () {
       final r = cpcValiderCloture(exercices(demandeParId: 'USR003'), const [], 2026,
-          motif: 'Exercice conforme', acteur: 'KASSA Augustin', acteurId: 'USR777', role: 'direction', maintenant: auj);
+          motif: 'Exercice conforme', acteur: 'KALOU Avolutu', acteurId: 'USR777', role: 'direction', maintenant: auj);
       // Le refus éventuel vient d'ailleurs (pas d'écritures à clore), jamais de la séparation des tâches.
       expect(r.motif ?? '', isNot(contains('Signer n’est pas saisir')));
     });
 
     test('une demande ANTÉRIEURE sans identifiant retombe sur le nom, faute de mieux', () {
       final r = cpcValiderCloture(exercices(), const [], 2026,
-          motif: 'Exercice conforme', acteur: 'KASSA Augustin', acteurId: 'USR003', role: 'direction', maintenant: auj);
+          motif: 'Exercice conforme', acteur: 'KALOU Avolutu', acteurId: 'USR003', role: 'direction', maintenant: auj);
       expect(r.motif, contains('Signer n’est pas saisir'));
     });
   });
@@ -119,8 +119,8 @@ void main() {
     });
 
     test('le mot de passe ne contient pas l\'identifiant de connexion', () {
-      expect(accRegleManquantes('Xa.kassa#2026Zz', identifiant: 'a.kassa'), ['Ne doit pas contenir l’identifiant de connexion']);
-      expect(accRegleManquantes('Xa.kassa#2026Zz', identifiant: 'ab'), isEmpty, reason: 'un identifiant de moins de quatre caractères ne se cherche pas');
+      expect(accRegleManquantes('Xa.kalou#2026Zz', identifiant: 'a.kalou'), ['Ne doit pas contenir l’identifiant de connexion']);
+      expect(accRegleManquantes('Xa.kalou#2026Zz', identifiant: 'ab'), isEmpty, reason: 'un identifiant de moins de quatre caractères ne se cherche pas');
     });
 
     test('le refus est une phrase qui nomme les règles ; null si conforme', () {
@@ -237,7 +237,7 @@ void main() {
 
   group('paie : générateur ≠ validateur sur l\'identifiant (A2 + A1)', () {
     final lot = <M>[
-      {'periode': 'Mai 2026', 'genereePar': 'KASSA Augustin', 'genereeParId': 'USR003'}
+      {'periode': 'Mai 2026', 'genereePar': 'KALOU Avolutu', 'genereeParId': 'USR003'}
     ];
 
     test('la même personne est refusée même sous un autre libellé', () {
@@ -245,14 +245,14 @@ void main() {
     });
 
     test('un homonyme (même nom, autre compte) n\'est pas la même personne', () {
-      expect(paiControleSeparation(lot, 'KASSA Augustin', validateurId: 'USR777'), isNull);
+      expect(paiControleSeparation(lot, 'KALOU Avolutu', validateurId: 'USR777'), isNull);
     });
 
     test('une pièce antérieure, sans identifiant, retombe sur le nom', () {
       final ancien = <M>[
-        {'periode': 'Avril 2026', 'genereePar': 'KASSA Augustin'}
+        {'periode': 'Avril 2026', 'genereePar': 'KALOU Avolutu'}
       ];
-      expect(paiControleSeparation(ancien, 'KASSA  Augustin', validateurId: 'USR003'), isNotNull);
+      expect(paiControleSeparation(ancien, 'KALOU  Avolutu', validateurId: 'USR003'), isNotNull);
       expect(paiControleSeparation(ancien, 'AUTRE Agent', validateurId: 'USR004'), isNull);
     });
   });

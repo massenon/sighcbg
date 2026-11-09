@@ -92,7 +92,7 @@ void main() {
     final filtres = <List<AgFiche>>[
       base,
       [for (final f in base) if (f['reference'] != 'C00008') f],
-      [for (final f in base) if (f['reference'] != 'C00008' && f['visiteurNom'] != 'kpade') f],
+      [for (final f in base) if (f['reference'] != 'C00008' && f['visiteurNom'] != 'kougbom') f],
       <AgFiche>[],
     ];
     for (final (i, c) in cas.indexed) {
@@ -470,7 +470,7 @@ void main() {
         test(nom, () {
           final premier = agFileTriee(ff, 'consultation').first;
           final servi = (g['apres'] as List).cast<Map>().firstWhere((x) => x['numero'] == premier['numero']);
-          memes({...premier, ...agPatchAppel('BASSONGUI Chabi Séko', maintenant)}, servi, 'appel', ignorer: {...ignorer, 'statut'});
+          memes({...premier, ...agPatchAppel('BICHIASI Cezoune Sichovian', maintenant)}, servi, 'appel', ignorer: {...ignorer, 'statut'});
         });
       } else if (nom.startsWith('priorité avec')) {
         test(nom, () {

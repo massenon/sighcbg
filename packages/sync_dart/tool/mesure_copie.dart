@@ -19,7 +19,7 @@ Future<void> main(List<String> args) async {
   final cle = '00' * 32;
   final pair = FileulPair(ConfigPair(port: 0, relais: 'http://127.0.0.1:1', dbChemin: ':memory:', cleHex: cle, collectionsCopie: {'patients'}, droits: (_) => true));
   pair.base.poserMeta('uuid', 'F1');
-  final noms = ['AKPO', 'KOUA', 'DOSSOU', 'ADJOVI', 'SOGLO', 'HOUNKPATIN', 'TCHANDO', 'BIO'];
+  final noms = ['AMITU', 'KIMAR', 'DULOUNE', 'AGBUZIA', 'SOLEKPU', 'HOULUKE', 'TIAFIMA', 'BIO'];
   var h = 1000;
   final t0 = Stopwatch()..start();
   pair.base.tx(() {

@@ -111,7 +111,7 @@ Fiche p(String id, String code, [Fiche extra = const {}]) => {
     };
 
 Magasin petit(Map<String, List<Fiche>> jeux) => Magasin(jeux, 'POSTE', {
-      ...(jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()
+      ...(jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()
     });
 
 void main() {
@@ -165,15 +165,15 @@ void main() {
       await ouvrir(t, m, 'm1-patient-nouveau');
       expect(find.byKey(const Key('m1:code')), findsOneWidget);
       expect((t.widget<Text>(find.byKey(const Key('m1:code')))).data, 'CBG/1110/26');
-      await saisir(t, 'nom', 'Bio');
-      await saisir(t, 'prenom', 'Zakari');
+      await saisir(t, 'nom', 'Bounoukia');
+      await saisir(t, 'prenom', 'Zapeto');
       await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
       await saisir(t, 'age', '41');
       await saisir(t, 'telephone', '97000001');
       await toucher(t, find.text('Ouvrir le dossier').last);
       final cree = m.collection('patients').toutes.first;
       expect(cree['code'], 'CBG/1110/26');
-      expect(cree['nom'], 'Bio');
+      expect(cree['nom'], 'Bounoukia');
       expect(cree['age'], 41);
       expect(cree['ageReferenceLe'], '2026-10-30');
       expect(cree['statut'], 'actif');
@@ -192,7 +192,7 @@ void main() {
     cas('la fiche : menu des rubriques et leurs comptes sur le jeu posé', (t) async {
       final d = vecteurs('pat_profil');
       final m = petit({
-        'patients': [p('P1', 'CBG/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
+        'patients': [p('P1', 'CBG/1/26', {'nom': 'TIAMOU', 'prenom': 'Bodje', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
         'consultations': [
           {'id': 'C1', 'statut': 'actif', 'patientId': 'P1', 'type': 'Consultation', 'date': '2026-08-10', 'motif': 'Toux', 'diagnostic': 'Asthme', 'medecin': 'Dr A'}
         ],
@@ -223,7 +223,7 @@ void main() {
 
     cas('le dossier imprimé est le dossier ENTIER : toutes les rubriques figurent sur le papier (05/11/2026)', (t) async {
       final m = petit({
-        'patients': [p('P1', 'CBG/1/26', {'nom': 'TCHANE', 'prenom': 'Bertine', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
+        'patients': [p('P1', 'CBG/1/26', {'nom': 'TIAMOU', 'prenom': 'Bodje', 'allergies': ['Sulfamides'], 'assureur': 'NSIA', 'assureurNom': 'NSIA ASSURANCE', 'carteExpiration': '2027-12-31'})],
         'consultations': [
           {'id': 'C1', 'statut': 'actif', 'patientId': 'P1', 'type': 'Consultation', 'date': '2026-08-10', 'motif': 'Toux', 'diagnostic': 'Asthme', 'medecin': 'Dr A'},
           {'id': 'C2', 'statut': 'actif', 'patientId': 'P1', 'type': 'Domicile', 'date': '2026-08-12', 'motif': 'Fièvre', 'medecin': 'Dr B'}
@@ -320,7 +320,7 @@ void main() {
       await saisir(t, 'tensionDia', '8');
       await saisir(t, 'poids', '62.5');
       await saisir(t, 'taille', '168');
-      await saisir(t, 'releveePar', 'SANNI Bibata');
+      await saisir(t, 'releveePar', 'SIACHOU Bouboli');
       await toucher(t, find.text('Créer').last);
       final r = m.collection('constantes').toutes.first;
       expect(r['reference'], 'CST-00014');
@@ -371,7 +371,7 @@ void main() {
     final d = vecteurs('pat_pieces');
     Magasin jeuPieces() {
       final posees = [for (final x in (d['jeu'] as List)) (x as Map).cast<String, Object?>()];
-      final cat = (jsonDecode(File('assets/donnees/jeu/catalogueTarifs.json').readAsStringSync()) as List)
+      final cat = (jsonDecode(File('test/fixtures/jeu_reference/catalogueTarifs.json').readAsStringSync()) as List)
           .map((e) => (e as Map).cast<String, Object?>())
           .toList();
       return petit({
@@ -387,7 +387,7 @@ void main() {
         ],
         'catalogueTarifs': cat,
         'personnel': [
-          {'id': 'MED', 'statut': 'actif', 'nomComplet': 'BASSONGUI Chabi Séko', 'fonction': 'medecin', 'poste': 'Directeur médical'}
+          {'id': 'MED', 'statut': 'actif', 'nomComplet': 'BICHIASI Cezoune Sichovian', 'fonction': 'medecin', 'poste': 'Directeur médical'}
         ],
         'taches': [],
         'audit': []
@@ -411,7 +411,7 @@ void main() {
       await toucher(t, find.text('Délivrer une pièce').last);
       await choisir(t, 'typeId', 'Certificat médical de visite et de contre-visite');
       await choisir(t, 'patientCode', 'CBG/2/26 — NOMK2 PreK2');
-      await choisir(t, 'medecin', 'BASSONGUI Chabi Séko — Directeur médical');
+      await choisir(t, 'medecin', 'BICHIASI Cezoune Sichovian — Directeur médical');
       await toucher(t, find.text('Créer').last);
       final piece = m.collection('pieces').toutes.first;
       expect(piece['numero'], 7);
@@ -430,7 +430,7 @@ void main() {
       await ouvrir(t, m, 'm1-pieces');
       await toucher(t, find.text('Délivrer une pièce').last);
       await choisir(t, 'typeId', 'Certificat médical de non-infirmité');
-      await choisir(t, 'medecin', 'BASSONGUI Chabi Séko — Directeur médical');
+      await choisir(t, 'medecin', 'BICHIASI Cezoune Sichovian — Directeur médical');
       await toucher(t, find.text('Créer').last);
       expect(m.collection('pieces').toutes.length, avant);
       expect(find.textContaining('Choisir un dossier du répertoire'), findsOneWidget);
@@ -479,13 +479,13 @@ void main() {
       }, 'POSTE', {'analyses': cat});
       await ouvrir(t, m, 'm1-externe');
       await toucher(t, find.text('Nouvelle demande externe').last);
-      await saisir(t, 'nom', 'Gado');
-      await saisir(t, 'prenom', 'Issa');
+      await saisir(t, 'nom', 'Gakaria');
+      await saisir(t, 'prenom', 'Isiasiabu');
       await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
       await saisir(t, 'age', '41');
       await saisir(t, 'telephone', '97000000');
       await saisir(t, 'residence', 'Boriyoure');
-      await saisir(t, 'prescripteur', 'Dr HOUNSOU Rémi');
+      await saisir(t, 'prescripteur', 'Dr HUNIAM Riazialo');
       await choisir(t, 'analyses', 'AKOP');
       // Le panneau d'une liste à cases reste ouvert d'un choix à l'autre : un clic hors du panneau le referme.
       await t.tapAt(const Offset(5, 5));

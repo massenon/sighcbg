@@ -829,7 +829,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
             Signature('Le Caissier', nom: acteur(c).nom),
             const Signature('Le Comptable'),
             const Signature('La Directrice Administrative',
-                nom: 'TAKI Alimatou')
+                nom: 'TACHEDI Arialu')
           ],
         ));
   }

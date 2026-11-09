@@ -396,7 +396,7 @@ class EcranNumerisation extends StatelessWidget with EcranMaquette {
                         for (final l in _lots) {'lot': l.$1, 'total': l.$2, 'fait': l.$3}
                       ])),
                     ],
-                    signatures: const [Signature('Le Secrétaire Médical'), Signature('La Directrice Administrative', nom: 'TAKI Alimatou')]))
+                    signatures: const [Signature('Le Secrétaire Médical'), Signature('La Directrice Administrative', nom: 'TACHEDI Arialu')]))
           ],
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             for (final l in _lots)

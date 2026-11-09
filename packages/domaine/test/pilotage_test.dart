@@ -13,7 +13,7 @@ List<F> liste(Object? v) => ((v ?? const []) as List).map((x) => (x as Map).cast
 F carte(Object? v) => (v as Map).cast<String, Object?>();
 String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 String sans(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), '');
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<F> actives(List<F> l) => [for (final x in l) if (x['statut'] != 'archive') x];
 
 String libelleMode(String id) =>

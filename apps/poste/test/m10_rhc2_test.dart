@@ -62,7 +62,7 @@ void main() {
       expect(rhcEvenementCible, isNull, reason: 'le message est consommé UNE fois');
       final k = kpisRhc(t);
       expect(k['Participations'], '43', reason: 'les 43 participations de l’événement le plus récent');
-      expect(texteEcran(t).contains(sansEspaces('Mariage — KASSA Augustin — 11/08/2026').toLowerCase()), isTrue);
+      expect(texteEcran(t).contains(sansEspaces('Mariage — KALOU Avolutu — 11/08/2026').toLowerCase()), isTrue);
       await fermerToasts(t);
     });
 
@@ -98,13 +98,13 @@ void main() {
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer et engendrer les participations'));
       await t.pump(const Duration(milliseconds: 300));
       expect(col.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      poser(t, {'nature': 'mariage', 'libelle': 'Mariage de KORA Salifou', 'beneficiaireId': 'EMP05', 'montantParAgent': '1500', 'periodePaiement': '2026-12', 'modeParDefaut': 'comptant', 'observation': 'Cotisation de service.'});
+      poser(t, {'nature': 'mariage', 'libelle': 'Mariage de KIAVUMU Sazo', 'beneficiaireId': 'EMP05', 'montantParAgent': '1500', 'periodePaiement': '2026-12', 'modeParDefaut': 'comptant', 'observation': 'Cotisation de service.'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer et engendrer les participations'));
       await t.pump(const Duration(milliseconds: 400));
       final ok = obj(cr['creee']);
       final evt = col.toutes.first;
       fichesEgales(evt, obj(ok['fiche']), ignores: {'beneficiaire'});
-      expect(evt['beneficiaire'], 'YENI M’PO Florent');
+      expect(evt['beneficiaire'], 'YORO M’ABEKPIA Foulumi');
       expect(evt['reference'], 'EVT-0010', reason: 'la série SUIT le registre (E743)');
       final nouvelles = parts.toutes.take(parts.toutes.length - p0).toList();
       expect(nouvelles.length, ok['nbParticipations']);
@@ -126,7 +126,7 @@ void main() {
       final parts = m.collection('participations');
       final p0 = parts.toutes.length;
       await appuyer(t, 'Nouvel événement');
-      poser(t, {'nature': 'deces', 'libelle': 'Décès du père de TEPA Séraphine', 'beneficiaireId': 'EMP10', 'portee': 'selection', 'montantParAgent': '0', 'periodePaiement': '2026-11'});
+      poser(t, {'nature': 'deces', 'libelle': 'Décès du père de TOGA Sigbudja', 'beneficiaireId': 'EMP10', 'portee': 'selection', 'montantParAgent': '0', 'periodePaiement': '2026-11'});
       formulaire(t).poser('participants', ['EMP10', 'EMP11', 'EMP12']);
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer et engendrer les participations'));
       await t.pump(const Duration(milliseconds: 400));
@@ -147,33 +147,33 @@ void main() {
     testWidgets('modification : SEULES les participations non réglées suivent le nouveau montant ; les règlements déjà encaissés restent intacts', (t) async {
       final m = posteRhc();
       final parts = m.collection('participations');
-      final cible = m.collection('evenements').toutes.firstWhere((x) => x['libelle'] == 'Mariage — KASSA Augustin');
+      final cible = m.collection('evenements').toutes.firstWhere((x) => x['libelle'] == 'Mariage — KALOU Avolutu');
       final miens = parts.toutes.where((p) => p['evenementId'] == cible['id']).toList();
       miens[0]..['statutPaiement'] = 'paye'..['datePaiement'] = '2026-10-30';
       miens[1]..['statutPaiement'] = 'paye'..['datePaiement'] = '2026-10-30';
       await ouvrir(t, m, 'm10-evenements');
-      await chercher(t, 'KASSA');
+      await chercher(t, 'KALOU');
       await cliquer(t, find.byTooltip('Modifier l’événement').first);
       expect(find.textContaining('2 participation(s) sont déjà réglées pour cet événement.'), findsOneWidget);
-      poser(t, {'montantParAgent': '2000', 'periodePaiement': '2027-01', 'libelle': 'Mariage de KASSA A.'});
+      poser(t, {'montantParAgent': '2000', 'periodePaiement': '2027-01', 'libelle': 'Mariage de KALOU A.'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(find.text('41 participation(s) non réglée(s) mise(s) à jour ; 2 déjà encaissée(s) laissée(s) intacte(s).'), findsOneWidget);
       final apres = parts.toutes.where((p) => p['evenementId'] == cible['id']).toList();
-      expect(apres.where((p) => p['statutPaiement'] == 'paye').every((p) => p['montant'] == 1000 && p['evenementLibelle'] == 'Mariage — KASSA Augustin'), isTrue);
-      expect(apres.where((p) => p['statutPaiement'] != 'paye').every((p) => p['montant'] == 2000 && p['periodeRetenue'] == '2027-01' && p['evenementLibelle'] == 'Mariage de KASSA A.'), isTrue);
+      expect(apres.where((p) => p['statutPaiement'] == 'paye').every((p) => p['montant'] == 1000 && p['evenementLibelle'] == 'Mariage — KALOU Avolutu'), isTrue);
+      expect(apres.where((p) => p['statutPaiement'] != 'paye').every((p) => p['montant'] == 2000 && p['periodeRetenue'] == '2027-01' && p['evenementLibelle'] == 'Mariage de KALOU A.'), isTrue);
       await fermerToasts(t);
     });
 
     testWidgets('annulation : un avertissement réglé sur ce qu’il y a à perdre, le motif exigé, RG-14 (rien n’est supprimé), et l’annulation restitue l’événement ET ses participations', (t) async {
       final m = posteRhc();
       final evts = m.collection('evenements'), parts = m.collection('participations');
-      final cible = evts.toutes.firstWhere((x) => x['libelle'] == 'Mariage — KASSA Augustin');
+      final cible = evts.toutes.firstWhere((x) => x['libelle'] == 'Mariage — KALOU Avolutu');
       for (final p in parts.toutes.where((p) => p['evenementId'] == cible['id']).take(2)) {
         p..['statutPaiement'] = 'paye'..['datePaiement'] = '2026-10-30';
       }
       await ouvrir(t, m, 'm10-evenements');
-      await chercher(t, 'KASSA');
+      await chercher(t, 'KALOU');
       await cliquer(t, find.byTooltip('Annuler l’événement').first);
       expect(aff(t, 'Attention. 2 participation(s) sur 43 ont déjà été réglées, pour 2 000 FCFA.'), isTrue);
       expect(find.textContaining('les sommes déjà encaissées restent tracées et devront être restituées hors application'), findsOneWidget);
@@ -208,7 +208,7 @@ void main() {
       expect(find.textContaining('Aucune participation n’a encore été engendrée pour cet événement : l’annulation n’a donc aucune conséquence financière.'), findsOneWidget);
       await t.tap(find.widgetWithText(BoutonSigh, 'Annuler').first);
       await t.pump(const Duration(milliseconds: 300));
-      await chercher(t, 'Naissance — TAKI Bibata');
+      await chercher(t, 'Naissance — TACHEDI Bouboli');
       await cliquer(t, find.byTooltip('Annuler l’événement').first);
       expect(find.textContaining('43 participation(s) ont été engendrées, aucune n’a encore été réglée. L’annulation les archive toutes : rien n’a été encaissé, rien n’est à restituer.'), findsOneWidget);
       await fermerToasts(t);
@@ -384,7 +384,7 @@ void main() {
       await regler(t, 'evenement', evtId);
       await appuyer(t, 'Imprimer l’état');
       expect(find.text('État des participations du personnel'.toUpperCase()), findsOneWidget);
-      expect(find.text('Mariage — KASSA Augustin — 11/08/2026'), findsWidgets);
+      expect(find.text('Mariage — KALOU Avolutu — 11/08/2026'), findsWidgets);
       presentes(t, ['Participations', '43', 'Montant attendu', '43 000 FCFA', 'Montant encaissé', '3 000 FCFA', 'Établi par', utilisateurTest]);
       expect(find.text('TOTAL'), findsOneWidget);
       expect(find.text('La Directrice Administrative'), findsOneWidget);
@@ -524,7 +524,7 @@ void main() {
       final plan = m.collection('planning');
       // Un agent de sécurité : garde, soirée, repos ; un agent d'entretien : quatre types.
       await ouvrirCase(t, 'EMP38', DateTime(2026, 11, 8));
-      expect(find.text('Rotation — OURTCHA Tereyama'), findsOneWidget);
+      expect(find.text('Rotation — OSIAMIAM Tougbial'), findsOneWidget);
       expect(find.text('Vacation actuelle'), findsOneWidget);
       expect(find.text('Aucune'), findsOneWidget);
       final types = [for (final x in obj(s['modaleSecurite'])['types'] as List) '${(x as List)[1]}'];
@@ -545,7 +545,7 @@ void main() {
       final cree = plan.toutes.first;
       fichesEgales(cree, obj(obj(s['affectation'])['fiche']), ignores: {'id'});
       expect(plan.toutes.length, n0 + 1);
-      expect(find.text('OURTCHA Tereyama — Soirée le 27/10/2026'), findsOneWidget);
+      expect(find.text('OSIAMIAM Tougbial — Soirée le 27/10/2026'), findsOneWidget);
       await fermerToasts(t);
       // Modifier : le bouton « Retirer » apparaît, la vacation devient un repos.
       await ouvrirCase(t, 'EMP38', DateTime(2026, 10, 27));
@@ -576,7 +576,7 @@ void main() {
     testWidgets('une garde la veille interdit la suivante : refus NOMMÉ, la modale reste ouverte, rien n’est écrit ; une soirée, elle, passe', (t) async {
       final m = posteRhc();
       final plan = m.collection('planning');
-      plan.inserer({'statut': 'validee', 'date': '2026-10-28', 'employeId': 'EMP38', 'employe': 'OURTCHA Tereyama', 'fonction': 'securite', 'service': 'Direction', 'type': 'garde'});
+      plan.inserer({'statut': 'validee', 'date': '2026-10-28', 'employeId': 'EMP38', 'employe': 'OSIAMIAM Tougbial', 'fonction': 'securite', 'service': 'Direction', 'type': 'garde'});
       await ouvrir(t, m, 'm10-securite-entretien');
       final n0 = plan.toutes.length;
       await ouvrirCase(t, 'EMP38', DateTime(2026, 10, 29));
@@ -587,7 +587,7 @@ void main() {
       expect(find.text('${((inc['toasts'] as List).first as List)[0]}'), findsOneWidget);
       expect(find.text('${((inc['toasts'] as List).first as List)[1]}'), findsOneWidget);
       expect(plan.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      expect(find.text('Rotation — OURTCHA Tereyama'), findsOneWidget, reason: 'la modale reste ouverte');
+      expect(find.text('Rotation — OSIAMIAM Tougbial'), findsOneWidget, reason: 'la modale reste ouverte');
       poser(t, {'type': 'soiree'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
@@ -609,14 +609,14 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       await fermerToasts(t);
-      poser(t, {'nomComplet': 'ADAM Ibrahim', 'fonction': 'entretien', 'salaireBase': '45000', 'telephone': '0190000000'});
+      poser(t, {'nomComplet': 'ACHOUBE Ibaze', 'fonction': 'entretien', 'salaireBase': '45000', 'telephone': '0190000000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['creee'])['fiche']), ignores: {'id'});
       expect(find.text('Agent créé.'), findsOneWidget);
       await fermerToasts(t);
       await appuyer(t, 'Nouvel agent');
-      poser(t, {'nomComplet': 'BIO Mama'});
+      poser(t, {'nomComplet': 'BIO Maful'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['seconde'])['fiche']), ignores: {'id'});
@@ -626,7 +626,7 @@ void main() {
       expect(find.byTooltip('Affecter une vacation'), findsNWidgets(8 * 14));
       // Modifier : le matricule et le service sont GARDÉS.
       final modif = obj(s['modificationAgent']);
-      await chercher(t, 'ADAM Ibrahim');
+      await chercher(t, 'ACHOUBE Ibaze');
       await cliquer(t, find.byTooltip('Modifier').first);
       for (final k in ['nomComplet', 'fonction', 'poste', 'dateEmbauche', 'salaireBase', 'telephone']) {
         expect('${formulaire(t)[k]}', '${obj(modif['valeurs'])[k]}', reason: 'valeur $k');
@@ -634,14 +634,14 @@ void main() {
       poser(t, {'salaireBase': '47000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
-      fichesEgales(col.toutes.firstWhere((x) => x['nomComplet'] == 'ADAM Ibrahim'), obj(obj(modif['resultat'])['fiche']), ignores: {'id'});
+      fichesEgales(col.toutes.firstWhere((x) => x['nomComplet'] == 'ACHOUBE Ibaze'), obj(obj(modif['resultat'])['fiche']), ignores: {'id'});
       expect(find.text('Modifications enregistrées.'), findsOneWidget);
       await fermerToasts(t);
       // Archiver : motif exigé, RG-14.
-      await chercher(t, 'ADAM Ibrahim');
+      await chercher(t, 'ACHOUBE Ibaze');
       await archiverLigne(t, 'Doublon');
       expect(col.archivees.length, 1);
-      expect(col.toutes.firstWhere((x) => x['nomComplet'] == 'ADAM Ibrahim')['statut'], 'archive');
+      expect(col.toutes.firstWhere((x) => x['nomComplet'] == 'ACHOUBE Ibaze')['statut'], 'archive');
       kpisIdentiquesRhc(t, obj(s['archivageAgent'])['kpis']);
       await fermerToasts(t);
     });
@@ -653,7 +653,7 @@ void main() {
       expect(find.text('Planning des agents de sécurité et d’entretien'.toUpperCase()), findsOneWidget);
       expect(find.text('Du 27/10/2026 au 09/11/2026'), findsOneWidget);
       expect(find.text('Le Chef de service'), findsOneWidget);
-      expect(find.text('OURTCHA TEREYAMA'), findsOneWidget);
+      expect(find.text('OSIAMIAM TOUGBIAL'), findsOneWidget);
       presentes(t, [for (final h in (obj((p['tableaux'] as List).first)['entetes'] as List)) h]);
       await t.tap(find.widgetWithText(BoutonSigh, 'Fermer').last);
       await t.pump(const Duration(milliseconds: 300));

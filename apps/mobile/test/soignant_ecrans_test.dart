@@ -37,17 +37,17 @@ void main() {
     await ouvrir(t);
     expect(find.text('Ma tournée'), findsOneWidget);
     expect(find.text('09h30'), findsOneWidget);
-    expect(find.text('DOSSOU Aline'), findsOneWidget);
+    expect(find.text('DULOUNE Aline'), findsOneWidget);
     expect(find.textContaining('Suivi HTA'), findsOneWidget);
     expect(find.text('10h45'), findsOneWidget);
     expect(find.byKey(const Key('en-souffrance')), findsOneWidget);
-    expect(find.text('TAMOU Félix'), findsOneWidget);
+    expect(find.text('TAVAPI Fikponou'), findsOneWidget);
     expect(find.textContaining('demain et après'), findsNothing, reason: 'un rendez-vous futur n\'est pas dans l\'agenda du jour');
     expect(find.textContaining('archivé'), findsNothing);
 
     await t.tap(find.byKey(const Key('rdv-0')));
     await t.pumpAndSettle();
-    expect(find.text('DOSSOU Aline'), findsWidgets);
+    expect(find.text('DULOUNE Aline'), findsWidgets);
     expect(find.text('Carte valide'), findsOneWidget);
   });
 
@@ -132,7 +132,7 @@ void main() {
     final c = m.source.de('constantes').single;
     expect(c['temperature'], 38.5);
     expect(c['tension'], '120/80');
-    expect(c['releveePar'], 'Dr YENI M’PO Florent');
+    expect(c['releveePar'], 'Dr YORO M’ABEKPIA Foulumi');
     expect(find.textContaining('Fièvre (38,5 °C)'), findsOneWidget);
   });
 
@@ -185,7 +185,7 @@ void main() {
     await t.pumpAndSettle();
     final n = m.source.de('notes').single;
     expect(n['diagnostic'], 'Dermatose');
-    expect(n['redigePar'], 'Dr YENI M’PO Florent');
+    expect(n['redigePar'], 'Dr YORO M’ABEKPIA Foulumi');
     expect(find.textContaining('Suivi HTA : Dermatose'), findsOneWidget, reason: 'la note se relit au dossier');
 
     await t.scrollUntilVisible(find.byKey(const Key('prescrire')), 300, scrollable: find.byType(Scrollable).last);

@@ -896,7 +896,7 @@ List<CfaFiche> cfbGenEcheances(int exercice,
         'datePaiement': paye ? isoJour(echue) : null,
         'montant': null,
         'reference': paye ? 'QUIT-$code-$exercice' : null,
-        'valideePar': paye ? 'KASSA Augustin' : null,
+        'valideePar': paye ? 'KALOU Avolutu' : null,
       });
     }
   }

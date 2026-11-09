@@ -277,7 +277,7 @@
    "ref": "LAB-90002",
    "action": "Enregistrer le prélèvement",
    "saisie": {
-    "preleveur": "KINNOU A. Ganiou",
+    "preleveur": "KELE A. Gedur",
     "heurePrelevement": "08:45",
     "natureEchantillon": "Sang veineux",
     "observationPrelevement": "À jeun"
@@ -288,9 +288,9 @@
     "f_natureEchantillon",
     "f_observationPrelevement"
    ],
-   "texteModale": "Enregistrer le prélèvement PAT D0002 — AKOP Patient PAT D0002 Dossier CBG/02/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
+   "texteModale": "Enregistrer le prélèvement PAT D0002 — AKOP Patient PAT D0002 Dossier CBG/02/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KELE A. Gedur AKIAFADJO Yelia Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
    "patch": {
-    "preleveur": "KINNOU A. Ganiou",
+    "preleveur": "KELE A. Gedur",
     "heurePrelevement": "08:45",
     "natureEchantillon": "Sang veineux",
     "observationPrelevement": "À jeun",
@@ -329,7 +329,7 @@
     "f_natureEchantillon",
     "f_observationPrelevement"
    ],
-   "texteModale": "Enregistrer le prélèvement PAT D0003 — AKOP Patient PAT D0003 Dossier CBG/03/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KINNOU A. Ganiou AGOSSOU Yahouza Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
+   "texteModale": "Enregistrer le prélèvement PAT D0003 — AKOP Patient PAT D0003 Dossier CBG/03/26 Examen AKOP Prescripteur — Une fois le prélèvement enregistré, le patient peut partir. L’échantillon reste à acheminer au laboratoire avec son bon. Prélevé par * KELE A. Gedur AKIAFADJO Yelia Heure du prélèvement * Nature de l’échantillon * Reprise de la demande ; corrigeable si le prélèvement a différé. Observation Difficulté de prélèvement, patient à jeun ou non, tout ce que le laboratoire doit savoir. Annuler Prélèvement effectué",
    "patch": {},
    "toasts": [],
    "modaleOuverteApres": true,
@@ -412,7 +412,7 @@
    "patch": {
     "etatAnalyse": "en_cours",
     "recuLaboLe": "2026-10-30T19:24:49.267Z",
-    "recuPar": "BASSONGUI Chabi Séko"
+    "recuPar": "BICHIASI Cezoune Sichovian"
    },
    "toasts": [
     [

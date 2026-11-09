@@ -21,7 +21,7 @@ import 'aide_polices.dart';
 
 /// PLAN étapes 3 et 4, côté ÉCRAN : l'accueil à deux choix, la création du premier compte, le code de secours et la récupération.
 typedef M = Map<String, Object?>;
-List<M> jeu(String nom) => [for (final x in (jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()];
+List<M> jeu(String nom) => [for (final x in (jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()];
 
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 11, 2, 9);
@@ -117,8 +117,8 @@ void main() {
     await monter(t, m, s);
     await toucher(t, find.byKey(const Key('ins:premiere')));
     expect(find.text('Créer l’administrateur'), findsOneWidget);
-    await saisir(t, 'ins:nom', 'ADJOVI Koffi');
-    await saisir(t, 'ins:identifiant', 'k.adjovi');
+    await saisir(t, 'ins:nom', 'AGBUZIA Kiafour');
+    await saisir(t, 'ins:identifiant', 'k.agbuzia');
     await saisir(t, 'ins:motdepasse', secret);
     await saisir(t, 'ins:confirmation', 'Autre#Chose2026');
     await toucher(t, find.byKey(const Key('ins:creer')));
@@ -142,7 +142,7 @@ void main() {
     await toucher(t, find.byKey(const Key('ins:suite')));
     expect(s.etat, EtatSession.connectee);
     expect(s.role, 'admin');
-    expect(s.compte!.identifiant, 'k.adjovi');
+    expect(s.compte!.identifiant, 'k.agbuzia');
     expect(ServiceInstallation.de(m).etat.phase, PhaseInstallation.enCours);
     await fin(t);
   });
@@ -154,7 +154,7 @@ void main() {
     await t.runAsync(() async {
       final s = ServiceInstallation.de(m);
       await s.attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u'));
-      final r = await s.creerPremierAdministrateur(identifiant: 'k.adjovi', nom: 'ADJOVI Koffi', motDePasse: secret, confirmation: secret, maintenant: auj);
+      final r = await s.creerPremierAdministrateur(identifiant: 'k.agbuzia', nom: 'AGBUZIA Kiafour', motDePasse: secret, confirmation: secret, maintenant: auj);
       code = r.codeSecours!;
       id = '${r.compte!.agent?.utilisateurId ?? ''}';
     });
@@ -164,7 +164,7 @@ void main() {
     await toucher(t, find.text('J’ai perdu mon mot de passe administrateur'));
     expect(find.text('Mot de passe administrateur perdu'), findsOneWidget);
 
-    await saisir(t, 'sec:identifiant', 'k.adjovi');
+    await saisir(t, 'sec:identifiant', 'k.agbuzia');
     await saisir(t, 'sec:code', 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE');
     await saisir(t, 'sec:motdepasse', 'Nouveau#Mot2Passe9');
     await saisir(t, 'sec:confirmation', 'Nouveau#Mot2Passe9');
@@ -179,7 +179,7 @@ void main() {
     final nouveau = ((t.widget(find.byKey(const Key('sec:code'))) as Container).child as SelectableText).data!;
     expect(nouveau, isNot(code));
     final ok = await t.runAsync(() => ServiceIdentifiants.de(m).motDePasseActuel(
-        '${m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'k.adjovi')['id']}', 'Nouveau#Mot2Passe9'));
+        '${m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'k.agbuzia')['id']}', 'Nouveau#Mot2Passe9'));
     expect(ok, isTrue, reason: id);
     await fin(t);
   });
@@ -194,8 +194,8 @@ Future<(Magasin, SessionPoste, ServiceInstallation)> installeEtConnecte(WidgetTe
   final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
   await monter(t, m, s);
   await toucher(t, find.byKey(const Key('ins:premiere')));
-  await saisir(t, 'ins:nom', 'ADJOVI Koffi');
-  await saisir(t, 'ins:identifiant', 'k.adjovi');
+  await saisir(t, 'ins:nom', 'AGBUZIA Kiafour');
+  await saisir(t, 'ins:identifiant', 'k.agbuzia');
   await saisir(t, 'ins:motdepasse', secret);
   await saisir(t, 'ins:confirmation', secret);
   await toucher(t, find.byKey(const Key('ins:creer')));
@@ -311,7 +311,7 @@ void mainModale() {
       expect(m.collection('audit').toutes.map((f) => f['action']), contains('Assistant d’installation clos'));
 
       // Le moteur refuse d'archiver un administrateur qui laisserait moins de deux administrateurs actifs.
-      final premier = m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'k.adjovi');
+      final premier = m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'k.agbuzia');
       expect(() => m.collection('utilisateurs').archiver(premier['id']), throwsA(isA<EcritureRefusee>()));
       expect(m.collection('utilisateurs').parId(premier['id'])!['statut'], 'actif');
       await toucher(t, find.byKey(const Key('ins:modale-fermer')));

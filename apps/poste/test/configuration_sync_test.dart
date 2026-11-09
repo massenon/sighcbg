@@ -21,14 +21,14 @@ const secret = 'Clinique#Natitingou26';
 
 Magasin mere() => Magasin({
       'utilisateurs': [
-        {'id': 'USR001', 'statut': 'actif', 'identifiant': 'k.adjovi', 'nomComplet': 'ADJOVI Koffi', 'role': 'admin', 'echecs': 0}
+        {'id': 'USR001', 'statut': 'actif', 'identifiant': 'k.agbuzia', 'nomComplet': 'AGBUZIA Kiafour', 'role': 'admin', 'echecs': 0}
       ],
       'actes': [
         {'id': 'ACT1', 'code': 'CS', 'libelle': 'Consultation', 'prix': 3000},
         {'id': 'ACT2', 'code': 'PS', 'libelle': 'Pansement', 'prix': 9000},
       ],
       'personnel': [
-        {'id': 'PER1', 'nom': 'AGBO', 'fonction': 'infirmier', 'salaireBase': 150000, 'cnss': '123456'}
+        {'id': 'PER1', 'nom': 'AGORO', 'fonction': 'infirmier', 'salaireBase': 150000, 'cnss': '123456'}
       ],
       'patients': [
         {'id': 'P1', 'nom': 'BIO'}
@@ -126,7 +126,7 @@ void main() {
           {'id': 'ACT1', 'prix': 3000}
         ],
         'utilisateurs': [
-          {'id': 'USR001', 'identifiant': 'k.adjovi', 'echecs': 0}
+          {'id': 'USR001', 'identifiant': 'k.agbuzia', 'echecs': 0}
         ]
       });
       a.demarrer(intervalle: const Duration(hours: 1));
@@ -195,9 +195,9 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 200));
       }
       expect(mf.collection('actes').parId('ACT2')!['prix'], 9000);
-      expect(mf.collection('utilisateurs').toutes.single['identifiant'], 'k.adjovi');
+      expect(mf.collection('utilisateurs').toutes.single['identifiant'], 'k.agbuzia');
       // Le haché voyage : le mot de passe défini sur la mère ouvre la session sur le fileul.
-      final r = await ServiceIdentifiants.de(mf).verifier(identifiant: 'k.adjovi', motDePasse: secret, rolesArchives: const {}, libelleRole: (x) => x, maintenant: auj);
+      final r = await ServiceIdentifiants.de(mf).verifier(identifiant: 'k.agbuzia', motDePasse: secret, rolesArchives: const {}, libelleRole: (x) => x, maintenant: auj);
       expect(r.decision.accepte, isTrue);
       // L'activité synchronisable arrive aussi (le pont) ; la rémunération, elle, ne part pas.
       await pontF.cycle();
@@ -205,7 +205,7 @@ void main() {
       expect(mf.collection('personnel').toutes.single.containsKey('salaireBase'), isFalse);
       // MOT DE PASSE REMONTÉ : l'agent le change sur le fileul, la mère le reçoit et le vérifie.
       const nouveau = 'Nouveau-mdp-9';
-      await ServiceIdentifiants.de(mf).definir('USR001', nouveau, par: 'k.adjovi', doitChanger: false, maintenant: auj.add(const Duration(days: 1)));
+      await ServiceIdentifiants.de(mf).definir('USR001', nouveau, par: 'k.agbuzia', doitChanger: false, maintenant: auj.add(const Duration(days: 1)));
       final fin2 = DateTime.now().add(const Duration(seconds: 25));
       while (true) {
         await pontF.cycle();
@@ -214,7 +214,7 @@ void main() {
         if (DateTime.now().isAfter(fin2)) fail('le mot de passe changé sur le fileul n’est pas remonté à la mère (envoyés : $envoyes, erreurs : ${pontF.erreur.value} ${pontM.erreur.value})');
         await Future<void>.delayed(const Duration(milliseconds: 200));
       }
-      final r2 = await ServiceIdentifiants.de(mm).verifier(identifiant: 'k.adjovi', motDePasse: nouveau, rolesArchives: const {}, libelleRole: (x) => x, maintenant: auj.add(const Duration(days: 1)));
+      final r2 = await ServiceIdentifiants.de(mm).verifier(identifiant: 'k.agbuzia', motDePasse: nouveau, rolesArchives: const {}, libelleRole: (x) => x, maintenant: auj.add(const Duration(days: 1)));
       expect(r2.decision.accepte, isTrue, reason: 'la mère ouvre la session avec le NOUVEAU mot de passe');
     } finally {
       appl.arreter();

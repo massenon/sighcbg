@@ -13,7 +13,7 @@ const bon = 'Clinique#Natitingou26';
 Magasin magasin() => Magasin({
       'utilisateurs': [
         {'id': 'USR000', 'statut': 'actif', 'identifiant': 'admin.systeme', 'nomComplet': 'Administrateur système', 'role': 'admin'},
-        {'id': 'USR001', 'statut': 'actif', 'identifiant': 'f.yeni', 'nomComplet': 'YENI Florent', 'role': 'medecin'},
+        {'id': 'USR001', 'statut': 'actif', 'identifiant': 'f.yoro', 'nomComplet': 'YORO Foulumi', 'role': 'medecin'},
       ],
     });
 
@@ -51,11 +51,11 @@ void main() {
   group('création du premier administrateur', () {
     test('le compte, le haché et le code de secours naissent ; le mot de passe n’est écrit nulle part', () async {
       final (m, s) = await poste();
-      final r = await s.creerPremierAdministrateur(identifiant: 'k.adjovi', nom: 'ADJOVI Koffi', motDePasse: bon, confirmation: bon, maintenant: auj);
+      final r = await s.creerPremierAdministrateur(identifiant: 'k.agbuzia', nom: 'AGBUZIA Kiafour', motDePasse: bon, confirmation: bon, maintenant: auj);
       expect(r.ok, isTrue, reason: r.message);
       expect(r.compte!.role, 'admin');
       expect(accFormaterCodeSecours(r.codeSecours!).length, 29, reason: '25 caractères en cinq groupes');
-      final u = m.collection('utilisateurs').toutes.firstWhere((x) => x['identifiant'] == 'k.adjovi');
+      final u = m.collection('utilisateurs').toutes.firstWhere((x) => x['identifiant'] == 'k.agbuzia');
       expect(u['role'], 'admin');
       expect(await ServiceIdentifiants.de(m).motDePasseActuel('${u['id']}', bon), isTrue);
       final partout = [
@@ -76,9 +76,9 @@ void main() {
       expect(await essai('AB', 'X Y', bon, bon), contains('invalide'));
       expect(await essai('Prénom Nom', 'X Y', bon, bon), contains('invalide'));
       expect(await essai('admin.systeme', 'X Y', bon, bon), contains('existe déjà'));
-      expect(await essai('k.adjovi', ' ', bon, bon), contains('nom complet'));
-      expect(await essai('k.adjovi', 'X Y', bon, 'autre'), contains('ne correspondent pas'));
-      expect(await essai('k.adjovi', 'X Y', 'court', 'court'), contains('non conforme'));
+      expect(await essai('k.agbuzia', ' ', bon, bon), contains('nom complet'));
+      expect(await essai('k.agbuzia', 'X Y', bon, 'autre'), contains('ne correspondent pas'));
+      expect(await essai('k.agbuzia', 'X Y', 'court', 'court'), contains('non conforme'));
       expect(m.collection('identifiants').toutes, isEmpty);
       expect(m.collection('utilisateurs').toutes.length, 2);
       expect(s.etat.phase, PhaseInstallation.nonInstalle);
@@ -88,8 +88,8 @@ void main() {
   group('code de secours', () {
     Future<(Magasin, ServiceInstallation, String, String)> installe() async {
       final (m, s) = await poste();
-      final r = await s.creerPremierAdministrateur(identifiant: 'k.adjovi', nom: 'ADJOVI Koffi', motDePasse: bon, confirmation: bon, maintenant: auj);
-      return (m, s, '${m.collection('utilisateurs').toutes.firstWhere((x) => x['identifiant'] == 'k.adjovi')['id']}', r.codeSecours!);
+      final r = await s.creerPremierAdministrateur(identifiant: 'k.agbuzia', nom: 'AGBUZIA Kiafour', motDePasse: bon, confirmation: bon, maintenant: auj);
+      return (m, s, '${m.collection('utilisateurs').toutes.firstWhere((x) => x['identifiant'] == 'k.agbuzia')['id']}', r.codeSecours!);
     }
 
     const nouveau = 'Autre#Mot2Passe9';
@@ -97,17 +97,17 @@ void main() {
     test('le bon code remplace le mot de passe, est consommé, et un nouveau code est rendu', () async {
       final (m, _, id, code) = await installe();
       final ident = ServiceIdentifiants.de(m);
-      final r = await ident.recuperer(identifiant: 'k.adjovi', code: code.toLowerCase().replaceAll('-', ' '), nouveau: nouveau, confirmation: nouveau, maintenant: auj);
+      final r = await ident.recuperer(identifiant: 'k.agbuzia', code: code.toLowerCase().replaceAll('-', ' '), nouveau: nouveau, confirmation: nouveau, maintenant: auj);
       expect(r.ok, isTrue, reason: r.message);
       expect(await ident.motDePasseActuel(id, nouveau), isTrue);
       expect(await ident.motDePasseActuel(id, bon), isFalse);
       expect(r.nouveauCode, isNot(code));
       // L'ancien code est consommé : il ne se rejoue pas.
-      final rejeu = await ident.recuperer(identifiant: 'k.adjovi', code: code, nouveau: 'Encore#Un2Autre9', confirmation: 'Encore#Un2Autre9', maintenant: auj);
+      final rejeu = await ident.recuperer(identifiant: 'k.agbuzia', code: code, nouveau: 'Encore#Un2Autre9', confirmation: 'Encore#Un2Autre9', maintenant: auj);
       expect(rejeu.ok, isFalse);
       expect(rejeu.message, accMessageSecoursRefus);
       // Le nouveau code, lui, vaut.
-      final suite = await ident.recuperer(identifiant: 'k.adjovi', code: r.nouveauCode!, nouveau: 'Encore#Un2Autre9', confirmation: 'Encore#Un2Autre9', maintenant: auj);
+      final suite = await ident.recuperer(identifiant: 'k.agbuzia', code: r.nouveauCode!, nouveau: 'Encore#Un2Autre9', confirmation: 'Encore#Un2Autre9', maintenant: auj);
       expect(suite.ok, isTrue);
     });
 
@@ -115,8 +115,8 @@ void main() {
       final (m, _, _, code) = await installe();
       final ident = ServiceIdentifiants.de(m);
       final inconnu = await ident.recuperer(identifiant: 'fantome', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj);
-      final faux = await ident.recuperer(identifiant: 'k.adjovi', code: 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE', nouveau: nouveau, confirmation: nouveau, maintenant: auj);
-      final medecin = await ident.recuperer(identifiant: 'f.yeni', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj);
+      final faux = await ident.recuperer(identifiant: 'k.agbuzia', code: 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE', nouveau: nouveau, confirmation: nouveau, maintenant: auj);
+      final medecin = await ident.recuperer(identifiant: 'f.yoro', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj);
       for (final r in [inconnu, faux, medecin]) {
         expect(r.ok, isFalse);
         expect(r.message, accMessageSecoursRefus);
@@ -129,13 +129,13 @@ void main() {
       final ident = ServiceIdentifiants.de(m);
       ResultatSecours? dernier;
       for (var i = 0; i < 5; i++) {
-        dernier = await ident.recuperer(identifiant: 'k.adjovi', code: 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE', nouveau: nouveau, confirmation: nouveau, maintenant: auj);
+        dernier = await ident.recuperer(identifiant: 'k.agbuzia', code: 'AAAAA-BBBBB-CCCCC-DDDDD-EEEEE', nouveau: nouveau, confirmation: nouveau, maintenant: auj);
       }
       expect(dernier!.bloqueJusqua, auj.add(accDureeBlocageSecours));
-      final bloque = await ident.recuperer(identifiant: 'k.adjovi', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj.add(const Duration(minutes: 5)));
+      final bloque = await ident.recuperer(identifiant: 'k.agbuzia', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj.add(const Duration(minutes: 5)));
       expect(bloque.ok, isFalse);
       expect(bloque.message, contains('bloquée'));
-      final apres = await ident.recuperer(identifiant: 'k.adjovi', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj.add(const Duration(minutes: 16)));
+      final apres = await ident.recuperer(identifiant: 'k.agbuzia', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj.add(const Duration(minutes: 16)));
       expect(apres.ok, isTrue, reason: apres.message);
       expect(await ident.motDePasseActuel(id, nouveau), isTrue);
     });
@@ -143,11 +143,11 @@ void main() {
     test('un nouveau mot de passe refusé ne brûle pas le code', () async {
       final (m, _, _, code) = await installe();
       final ident = ServiceIdentifiants.de(m);
-      final refuse = await ident.recuperer(identifiant: 'k.adjovi', code: code, nouveau: 'court', confirmation: 'court', maintenant: auj);
+      final refuse = await ident.recuperer(identifiant: 'k.agbuzia', code: code, nouveau: 'court', confirmation: 'court', maintenant: auj);
       expect(refuse.ok, isFalse);
       expect(refuse.codeBon, isTrue);
       expect(refuse.message, contains('non conforme'));
-      final ok = await ident.recuperer(identifiant: 'k.adjovi', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj);
+      final ok = await ident.recuperer(identifiant: 'k.agbuzia', code: code, nouveau: nouveau, confirmation: nouveau, maintenant: auj);
       expect(ok.ok, isTrue);
     });
 
@@ -206,8 +206,8 @@ void main() {
     test('les sessions ouvertes du compte sont clôturées, les autres non', () async {
       final (m, admin, cible) = await deuxComptes();
       final sessions = m.collection('sessionsUtilisateur');
-      sessions.ajouterSansJournal({'id': 'S1', 'identifiant': 'f.yeni', 'etat': 'active'});
-      sessions.ajouterSansJournal({'id': 'S2', 'identifiant': 'f.yeni', 'etat': 'suspendue'});
+      sessions.ajouterSansJournal({'id': 'S1', 'identifiant': 'f.yoro', 'etat': 'active'});
+      sessions.ajouterSansJournal({'id': 'S2', 'identifiant': 'f.yoro', 'etat': 'suspendue'});
       sessions.ajouterSansJournal({'id': 'S3', 'identifiant': 'autre', 'etat': 'active'});
       await ServiceIdentifiants.de(m).reinitialiser(cibleId: cible, acteurRole: 'admin', acteurId: admin, acteurNom: 'ADMIN', maintenant: auj);
       expect(sessions.parId('S1')!['etat'], 'cloturee');
@@ -221,7 +221,7 @@ void main() {
       final ident = ServiceIdentifiants.de(m);
       final r = await ident.reinitialiser(cibleId: cible, acteurRole: 'admin', acteurId: admin, acteurNom: 'ADMIN', maintenant: auj);
       Future<ResultatConnexion> essai(DateTime quand) => ident.verifier(
-          identifiant: 'f.yeni', motDePasse: r.temporaire!, rolesArchives: const {}, libelleRole: (x) => x, maintenant: quand);
+          identifiant: 'f.yoro', motDePasse: r.temporaire!, rolesArchives: const {}, libelleRole: (x) => x, maintenant: quand);
       final dans = await essai(auj.add(const Duration(hours: 23)));
       expect(dans.decision.accepte, isTrue);
       expect(dans.doitChanger, isTrue);

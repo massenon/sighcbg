@@ -6,7 +6,7 @@ import 'package:sigh_mobile/moteur/moteur_mobile.dart';
 
 import 'aide_mobile.dart';
 
-ServiceSoignant service(SourceMemoire s, {String fonction = 'medecin', String agent = 'Dr YENI M’PO Florent'}) =>
+ServiceSoignant service(SourceMemoire s, {String fonction = 'medecin', String agent = 'Dr YORO M’ABEKPIA Foulumi'}) =>
     ServiceSoignant(s, session: SessionSoignant(agent: agent, fonction: fonction), maintenant: () => horloge);
 
 Future<RefusMobile> refuse(Future<Object?> Function() f) async {
@@ -24,11 +24,11 @@ void main() {
   group('lecture', () {
     test('agenda du jour : les rendez-vous d\'aujourd\'hui par heure, le planifié passé signalé à part, l\'archivé et le futur absents', () async {
       final a = await service(lotDeDemonstration()).agenda();
-      expect(a.duJour.map((l) => '${l.heure} ${l.patient}'), ['09h30 DOSSOU Aline', '10h45 KPOGNON Rose']);
+      expect(a.duJour.map((l) => '${l.heure} ${l.patient}'), ['09h30 DULOUNE Aline', '10h45 KOUZO Roulin']);
       expect(a.duJour.first.motif, 'Suivi HTA');
       expect(a.duJour.first.statut, 'Planifiée');
       expect(a.duJour.first.patientId, 'p1');
-      expect(a.enSouffrance.map((l) => l.patient), ['TAMOU Félix']);
+      expect(a.enSouffrance.map((l) => l.patient), ['TAVAPI Fikponou']);
       expect(a.enSouffrance.single.enSouffrance, isTrue);
     });
 
@@ -53,7 +53,7 @@ void main() {
       final id = await service(src).enregistrerConstantes('p2', {'temperature': '37,2', 'sys': '110', 'dia': '70'});
       expect(id, isNotEmpty);
       final c = src.de('constantes').single;
-      expect(c['releveePar'], 'Dr YENI M’PO Florent');
+      expect(c['releveePar'], 'Dr YORO M’ABEKPIA Foulumi');
       expect(c['patientCode'], 'CBG/174/26');
       expect(c['tension'], '110/70');
       expect((await src.liste('constantes')).length, 2);
@@ -100,7 +100,7 @@ void main() {
       final src = lotDeDemonstration();
       await service(src).enregistrerNote('p1', {'motif': 'Suivi HTA', 'diagnostic': 'Hypertension artérielle', 'orientation': 'domicile', 'palpation': 'RAS'});
       final n = src.de('notes').single;
-      expect(n['redigePar'], 'Dr YENI M’PO Florent');
+      expect(n['redigePar'], 'Dr YORO M’ABEKPIA Foulumi');
       expect(n['fonction'], 'medecin');
       expect((n['constantesAccueil'] as Map)['temperature'], 38.6);
       expect(n['orientationLabel'], 'Domicile — traitement ambulatoire');
@@ -139,7 +139,7 @@ void main() {
       expect(o['noteId'], noteId);
       expect(o['emise'], isTrue);
       expect(o['nature'], 'medicament');
-      expect(o['prescripteur'], 'Dr YENI M’PO Florent');
+      expect(o['prescripteur'], 'Dr YORO M’ABEKPIA Foulumi');
       // La note d'un autre patient ne couvre pas celui-ci.
       expect((await refuse(() => s.prescrireMedicament('p2', {'med': 'x', 'poso': 'y', 'duree': '1'}))).code, 'SANS_NOTE');
     });

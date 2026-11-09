@@ -150,7 +150,7 @@ class EcranDemandesAnalyses extends StatelessWidget with EcranMaquette {
             col: ColChamp.plein,
             condition: (controle: 'prescripteur', quand: [_prescripteurExterne]),
             aide:
-                'Ex. : Dr SALIFOU Aminou, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
+                'Ex. : Dr SAZO Asounouta, médecin généraliste, Centre de santé de Perma. C’est ce qui permet de lui renvoyer le compte rendu.'),
         ChampDef(
             nom: 'laborantin',
             libelle: 'Laborantin',

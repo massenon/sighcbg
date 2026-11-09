@@ -60,7 +60,7 @@ void main() {
 
       await t.enterText(find.byKey(const Key('code')), 'abcd2345');
       await t.enterText(find.byKey(const Key('cle')), 'Y2xl');
-      await t.enterText(find.byKey(const Key('agent')), 'SOUROU Mariam');
+      await t.enterText(find.byKey(const Key('agent')), 'SUGBIA Migikpa');
       await t.ensureVisible(find.byKey(const Key('appairer')));
       await t.tap(find.byKey(const Key('appairer')));
       await t.pumpAndSettle();
@@ -190,7 +190,7 @@ void main() {
       expect(find.text('Code PIN'), findsNothing);
       await t.enterText(find.byKey(const Key('code')), 'abcd2345');
       await t.enterText(find.byKey(const Key('cle')), 'Y2xl');
-      await t.enterText(find.byKey(const Key('agent')), 'SOUROU Mariam');
+      await t.enterText(find.byKey(const Key('agent')), 'SUGBIA Migikpa');
       await t.ensureVisible(find.byKey(const Key('appairer')));
       await t.tap(find.byKey(const Key('appairer')));
       await t.pumpAndSettle();

@@ -406,6 +406,6 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
                 for (final (i, j) in jours.indexed) ColonneEtat(libelle: '${_jour2(j)} ${j.day}', valeur: (r) => r['j$i']),
               ], lignes: lignes)),
             ],
-            signatures: const [Signature('Le Chef de service', nom: 'OURTCHA TEREYAMA'), rhbSignDaf]));
+            signatures: const [Signature('Le Chef de service', nom: 'OSIAMIAM TOUGBIAL'), rhbSignDaf]));
   }
 }

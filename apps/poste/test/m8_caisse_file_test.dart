@@ -20,7 +20,7 @@ Magasin jeu() => Magasin({
         {
           'id': 'F1',
           'numero': 'FN-2026-00001',
-          'patient': 'AWA K.',
+          'patient': 'AZEMIDIA K.',
           'patientCode': 'CBG/1/26',
           'patientId': 'P1',
           'date': '2026-10-30',
@@ -72,7 +72,7 @@ Magasin jeu() => Magasin({
           'statut': 'en_attente',
           'factureId': 'F1',
           'reference': 'ORD-0001',
-          'patient': 'AWA K.',
+          'patient': 'AZEMIDIA K.',
           'patientCode': 'CBG/1/26',
           'detail': 'Encaisser',
           'montant': 6000,
@@ -84,7 +84,7 @@ Magasin jeu() => Magasin({
           'statut': 'bloque',
           'factureId': 'F1',
           'reference': 'ORD-0001',
-          'patient': 'AWA K.',
+          'patient': 'AZEMIDIA K.',
           'patientCode': 'CBG/1/26',
           'detail': 'Délivrer',
           'date': '2026-10-30'
@@ -291,7 +291,7 @@ void main() {
     final m = Magasin({
       'factures': [
         {
-          'id': 'FS1', 'numero': 'FN-2026-09999', 'patient': 'KOTO A.', 'date': '2026-10-30', 'type': 'Consultation',
+          'id': 'FS1', 'numero': 'FN-2026-09999', 'patient': 'KIGBINO A.', 'date': '2026-10-30', 'type': 'Consultation',
           'montantTTC': 8000, 'partAssurance': 0, 'partPatient': 8000, 'montantPaye': 0, 'reliquat': 8000,
           'statutPaiement': 'impayee', 'statutMecef': 'en_attente', 'lignes': <Object?>[], 'statut': 'actif',
         }

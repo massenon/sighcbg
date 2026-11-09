@@ -72,7 +72,7 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
                 ColonneEtat(libelle: 'Occupant', valeur: (r) => r['occupant'] ?? ''),
               ], lignes: rows),
             ],
-            signatures: const [Signature('Le Surveillant Général', nom: 'GARBA Yahouza')],
+            signatures: const [Signature('Le Surveillant Général', nom: 'GEVAMIAN Yelia')],
             reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
             utilisateur: acteur(c).nom,
             edite: c.aujourdhui));

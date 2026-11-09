@@ -134,16 +134,16 @@ void main() {
     final accueil = await appairer('accueil', 'reception');
     await synchroniser(accueil);
     final srcAccueil = SourceSync(accueil);
-    final dossier = await srcAccueil.creer('patients', {'nom': 'HOUNKPATIN', 'prenom': 'Ida', 'ageDeclare': 22, 'origine': 'reception_secours'});
-    final reception = ServiceSuite.reception(_Extensions(srcAccueil, 'OROU YO Edmond'));
-    expect((await reception.dossiersOuverts()).map((d) => d.nom), ['HOUNKPATIN Ida']);
+    final dossier = await srcAccueil.creer('patients', {'nom': 'HOULUKE', 'prenom': 'Ichufuva', 'ageDeclare': 22, 'origine': 'reception_secours'});
+    final reception = ServiceSuite.reception(_Extensions(srcAccueil, 'ODJIPIAR YUDJOUVOU Edjukavom'));
+    expect((await reception.dossiersOuverts()).map((d) => d.nom), ['HOULUKE Ichufuva']);
     await reception.orienter(dossier, destination: 'Maternité', degre: 'Urgent');
     await synchroniser(accueil);
     await _attendre(() async => await compte('orientations') == 1 && await compte('patients') == 1, 'la mère a reçu le dossier et l\'orientation');
 
     // --- le téléphone de la sage-femme : CPN, CPoN, surveillance dans son lot -------------------------------------------------------------------------------
     final tel = await appairer('sagefemme', 'soignant', fonction: 'sage_femme');
-    final a = await srcAccueil.creer('patients', {'nom': 'SOUROU', 'prenom': 'Mariam', 'ageDeclare': 31});
+    final a = await srcAccueil.creer('patients', {'nom': 'SUGBIA', 'prenom': 'Migikpa', 'ageDeclare': 31});
     await synchroniser(accueil);
     await _attendre(() async => await compte('patients') == 2, 'la mère a reçu la patiente');
     final uuid = (await tel.commande('GET /etat', const {}, const {})).$2! as Map;
@@ -165,7 +165,7 @@ void main() {
     await sf.enregistrerCpon(a, {'ta': '12/8', 't': '37', 'pb': '3200'});
     await sf.enregistrerSurveillance(a, {'heure': 'H8', 'mta': '12/8', 'bfr': '40'});
     // Le contrôle est refait au moteur du téléphone : le médecin n'écrit pas la CPN, rien ne part.
-    final medecin = ServiceSuite.depuisSoignant(ServiceSoignant(src, session: const SessionSoignant(agent: 'Dr YENI', fonction: 'medecin')));
+    final medecin = ServiceSuite.depuisSoignant(ServiceSoignant(src, session: const SessionSoignant(agent: 'Dr YORO', fonction: 'medecin')));
     final refusMedecin = await medecin.enregistrerCpn(a, {'sa': '28', 'poids': '62', 'sys': '120', 'dia': '80'}).then<Object?>((_) => null, onError: (Object e) => e);
     expect((refusMedecin! as RefusMobile).code, 'ECRAN_FERME_AU_PROFIL');
     // ... et si l'écran était contourné, la MÈRE refuse selon le profil du téléphone : la réception n'écrit pas dans `cpn`, le soignant pas dans `orientations`.
@@ -186,7 +186,7 @@ void main() {
     }
 
     final relu = (await sf.soignant!.dossier(a)).fiche;
-    expect(relu['nom'], 'SOUROU');
+    expect(relu['nom'], 'SUGBIA');
     final cpn = (await src.liste('cpn')).single.data;
     expect(cpn['redigePar'], 'Sage-femme de garde');
     expect(cpn['aRisque'], isTrue);

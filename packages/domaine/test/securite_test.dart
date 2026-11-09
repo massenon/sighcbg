@@ -66,7 +66,7 @@ void main() {
               }
             : null;
         final obtenu = secTransformerCompte(form,
-            agent: agent, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant, jour: jour);
+            agent: agent, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant, jour: jour);
         // Le secret ne franchit pas la transformation.
         expect(obtenu.containsKey('motDePasse'), isFalse);
         expect(obtenu.containsKey('motDePasseConfirmation'), isFalse);

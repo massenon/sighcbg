@@ -453,7 +453,7 @@ void main() {
         'les éditions archivées entrent en tête de liste de lecture et dans les indicateurs ; aucune commande d\'écriture',
         (t) async {
       final m = _m();
-      m.utilisateur = 'TAKI Alimatou';
+      m.utilisateur = 'TACHEDI Arialu';
       m.journaliser('Impression', 'RAP', 'Document', 'CBG-20261030-0042', null,
           {'titre': 'Point mensuel'});
       await _ouvrir(t, m, 'rapports-historique',

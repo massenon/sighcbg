@@ -342,26 +342,26 @@
    {
     "id": "PAT0001",
     "code": "CBG/1/25",
-    "nom": "TCHANE",
-    "prenom": "Bertine"
+    "nom": "TIAMOU",
+    "prenom": "Bodje"
    },
    {
     "id": "PAT0002",
     "code": "CBG/2/26",
-    "nom": "BAKO",
-    "prenom": "Boukari"
+    "nom": "BIALI",
+    "prenom": "Buke"
    },
    {
     "id": "PAT0003",
     "code": "CBG/3/26",
-    "nom": "N’TCHA",
-    "prenom": "Yacoubou"
+    "nom": "N’ACHOU",
+    "prenom": "Yacha"
    },
    {
     "id": "PAT0004",
     "code": "CBG/4/26",
-    "nom": "PARAISO",
-    "prenom": "Sabi"
+    "nom": "PENU",
+    "prenom": "Sabar"
    }
   ],
   "nbPatients": 198,
@@ -371,7 +371,7 @@
     "statut": "en_cours",
     "reference": "H00001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
@@ -381,14 +381,14 @@
     "diagnosticEntree": "Diagnostic 1",
     "symptomes": "Symptômes 1",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM2",
     "statut": "en_cours",
     "reference": "H00002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
@@ -398,14 +398,14 @@
     "diagnosticEntree": "Diagnostic 2",
     "symptomes": "Symptômes 2",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM3",
     "statut": "sortie",
     "reference": "H00003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
@@ -415,14 +415,14 @@
     "diagnosticEntree": "Diagnostic 3",
     "symptomes": "Symptômes 3",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM4",
     "statut": "sortie",
     "reference": "H00004",
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26",
     "chambre": "B1",
     "lit": "B1 LIT1",
@@ -432,14 +432,14 @@
     "diagnosticEntree": "Diagnostic 4",
     "symptomes": "Symptômes 4",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM5",
     "statut": "en_cours",
     "reference": "H00005",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "D1",
     "lit": "D1 LIT1",
@@ -449,14 +449,14 @@
     "diagnosticEntree": "Diagnostic 5",
     "symptomes": "Symptômes 5",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM6",
     "statut": "archive",
     "reference": "H00006",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "B2",
     "lit": "B2 LIT1",
@@ -466,14 +466,14 @@
     "diagnosticEntree": "Diagnostic 6",
     "symptomes": "Symptômes 6",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM7",
     "statut": "en_cours",
     "reference": "H00007",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "chambre": "A3",
     "lit": "A3 LIT2",
@@ -483,7 +483,7 @@
     "diagnosticEntree": "Diagnostic 7",
     "symptomes": "Symptômes 7",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    }
   ],
   "factures": [
@@ -542,7 +542,7 @@
       [
        "",
        "H00005",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "D1 LIT1",
        "VVIP",
        "16/08/2026",
@@ -555,7 +555,7 @@
       [
        "",
        "H00002",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "C1 LIT1",
        "VIP",
        "14/08/2026",
@@ -568,7 +568,7 @@
       [
        "",
        "H00007",
-       "N’TCHA Yacoubou CBG/3/26",
+       "N’ACHOU Yacha CBG/3/26",
        "A3 LIT2",
        "Standard",
        "10/08/2026",
@@ -581,7 +581,7 @@
       [
        "",
        "H00004",
-       "PARAISO Sabi CBG/4/26",
+       "PENU Sabar CBG/4/26",
        "B1 LIT1",
        "Standard",
        "07/08/2026",
@@ -594,7 +594,7 @@
       [
        "",
        "H00001",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "A1 LIT1",
        "Standard",
        "06/08/2026",
@@ -607,7 +607,7 @@
       [
        "",
        "H00003",
-       "N’TCHA Yacoubou CBG/3/26",
+       "N’ACHOU Yacha CBG/3/26",
        "A2 LIT1",
        "Standard",
        "27/07/2026",
@@ -686,7 +686,7 @@
    ]
   },
   "tiroirSolde": {
-   "texte": "TCHANE Bertine H00001 Référence H00001 Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Date d’entrée 06/08/2026 Date de sortie En cours Durée 10 jour(s) Diagnostic d’entrée Diagnostic 1 Symptômes Symptômes 1 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Reste à régler : 7 500 FCFA avant finalisation de la sortie. Imprimer Modifier Archiver",
+   "texte": "TIAMOU Bodje H00001 Référence H00001 Patient TIAMOU Bodje Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Date d’entrée 06/08/2026 Date de sortie En cours Durée 10 jour(s) Diagnostic d’entrée Diagnostic 1 Symptômes Symptômes 1 Prise en charge Plus de 8h Infirmier référent GEVAMIAN Yelia Statut En cours RG-06 — Reste à régler : 7 500 FCFA avant finalisation de la sortie. Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -695,7 +695,7 @@
    ]
   },
   "tiroirApure": {
-   "texte": "BAKO Boukari H00002 Référence H00002 Patient BAKO Boukari Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Date d’entrée 14/08/2026 Date de sortie En cours Durée 2 jour(s) Diagnostic d’entrée Diagnostic 2 Symptômes Symptômes 2 Prise en charge Moins de 8h Infirmier référent GARBA Yahouza Statut En cours RG-06 — Situation financière apurée. Imprimer Modifier Archiver",
+   "texte": "BIALI Buke H00002 Référence H00002 Patient BIALI Buke Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Date d’entrée 14/08/2026 Date de sortie En cours Durée 2 jour(s) Diagnostic d’entrée Diagnostic 2 Symptômes Symptômes 2 Prise en charge Moins de 8h Infirmier référent GEVAMIAN Yelia Statut En cours RG-06 — Situation financière apurée. Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -704,7 +704,7 @@
    ]
   },
   "tiroirSortie": {
-   "texte": "N’TCHA Yacoubou H00003 Référence H00003 Patient N’TCHA Yacoubou Dossier CBG/3/26 Lit A2 LIT1 Chambre Standard Date d’entrée 27/07/2026 Date de sortie 02/08/2026 Durée 6 jour(s) Diagnostic d’entrée Diagnostic 3 Symptômes Symptômes 3 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza Statut Sorti Imprimer Modifier Archiver",
+   "texte": "N’ACHOU Yacha H00003 Référence H00003 Patient N’ACHOU Yacha Dossier CBG/3/26 Lit A2 LIT1 Chambre Standard Date d’entrée 27/07/2026 Date de sortie 02/08/2026 Durée 6 jour(s) Diagnostic d’entrée Diagnostic 3 Symptômes Symptômes 3 Prise en charge Plus de 8h Infirmier référent GEVAMIAN Yelia Statut Sorti Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -718,7 +718,7 @@
    "cartouche": [
     [
      "Patient",
-     "TCHANE Bertine"
+     "TIAMOU Bodje"
     ],
     [
      "Dossier",
@@ -738,7 +738,7 @@
     ],
     [
      "Infirmier référent",
-     "GARBA Yahouza"
+     "GEVAMIAN Yelia"
     ]
    ],
    "signatures": [
@@ -748,7 +748,7 @@
     },
     {
      "role": "L’Infirmier traitant",
-     "nom": "GARBA Yahouza"
+     "nom": "GEVAMIAN Yelia"
     },
     {
      "role": "Le Patient ou son représentant"
@@ -770,7 +770,7 @@
    "defauts": {
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT2",
-    "infirmier": "GARBA Yahouza",
+    "infirmier": "GEVAMIAN Yelia",
     "dateEntree": "2026-08-16",
     "priseEnCharge": "plus_8h",
     "diagnosticEntree": "",
@@ -840,80 +840,80 @@
    ],
    "optionsInfirmier": [
     [
-     "GARBA Yahouza",
-     "GARBA Yahouza — Surveillant"
+     "GEVAMIAN Yelia",
+     "GEVAMIAN Yelia — Surveillant"
     ],
     [
-     "IDRISSOU ANIKI Baba-Toundé",
-     "IDRISSOU ANIKI Baba-Toundé — Infirmier"
+     "IGBOUPU ATUGBIPOU Badom-Tukepou",
+     "IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier"
     ],
     [
-     "NKOUÉ Jean",
-     "NKOUÉ Jean — Infirmier"
+     "NIDJON Jagi",
+     "NIDJON Jagi — Infirmier"
     ],
     [
-     "BAGRI Elvyre",
-     "BAGRI Elvyre — Infirmière"
+     "BELABO Egbifepo",
+     "BELABO Egbifepo — Infirmière"
     ],
     [
-     "PARAISO Abdoul",
-     "PARAISO Abdoul — Infirmier(ère)"
+     "PENU Abebia",
+     "PENU Abebia — Infirmier(ère)"
     ],
     [
-     "OURTCHA Bertine",
-     "OURTCHA Bertine — Infirmier(ère)"
+     "OSIAMIAM Bodje",
+     "OSIAMIAM Bodje — Infirmier(ère)"
     ],
     [
-     "DOSSOU Moussa",
-     "DOSSOU Moussa — Infirmier(ère)"
+     "DULOUNE Mudovur",
+     "DULOUNE Mudovur — Infirmier(ère)"
     ],
     [
-     "OROU YO Alimatou",
-     "OROU YO Alimatou — Infirmier(ère)"
+     "ODJIPIAR YUDJOUVOU Arialu",
+     "ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)"
     ],
     [
-     "BADO BANI A. B. Zoulehath",
-     "BADO BANI A. B. Zoulehath — Sage-femme"
+     "BATOL BIAREL A. B. Zouguti",
+     "BATOL BIAREL A. B. Zouguti — Sage-femme"
     ],
     [
-     "BOUKARI Nadège",
-     "BOUKARI Nadège — Sage-femme"
+     "BUKE Nedi",
+     "BUKE Nedi — Sage-femme"
     ],
     [
-     "ADAM Colette",
-     "ADAM Colette — Sage-femme"
+     "ACHOUBE Coufi",
+     "ACHOUBE Coufi — Sage-femme"
     ],
     [
-     "TEPA Séraphine",
-     "TEPA Séraphine — Aide-soignante — Chef de service"
+     "TOGA Sigbudja",
+     "TOGA Sigbudja — Aide-soignante — Chef de service"
     ],
     [
-     "DAOUDA Zoukanéri",
-     "DAOUDA Zoukanéri — Aide-soignante"
+     "DACHULO Zobo",
+     "DACHULO Zobo — Aide-soignante"
     ],
     [
-     "YENI Rachida",
-     "YENI Rachida — Aide-soignante"
+     "YORO Rarouvil",
+     "YORO Rarouvil — Aide-soignante"
     ],
     [
-     "TAKI Bibata",
-     "TAKI Bibata — Aide-soignante"
+     "TACHEDI Bouboli",
+     "TACHEDI Bouboli — Aide-soignante"
     ],
     [
-     "WOROU Salamatou",
-     "WOROU Salamatou — Aide-soignante"
+     "WEDIA Saliagel",
+     "WEDIA Saliagel — Aide-soignante"
     ],
     [
-     "DAOUDA Justine",
-     "DAOUDA Justine — Aide-soignante"
+     "DACHULO Jiakpune",
+     "DACHULO Jiakpune — Aide-soignante"
     ],
     [
-     "OURTCHA Marguerite",
-     "OURTCHA Marguerite — Aide-soignante"
+     "OSIAMIAM Mibu",
+     "OSIAMIAM Mibu — Aide-soignante"
     ],
     [
-     "GBEDJI Zoukanéri",
-     "GBEDJI Zoukanéri — Aide-soignante"
+     "GIDJI Zobo",
+     "GIDJI Zobo — Aide-soignante"
     ]
    ],
    "optionsPriseEnCharge": [
@@ -929,15 +929,15 @@
    "optionsPatient": [
     [
      "CBG/1/25",
-     "CBG/1/25 — TCHANE Bertine"
+     "CBG/1/25 — TIAMOU Bodje"
     ],
     [
      "CBG/2/26",
-     "CBG/2/26 — BAKO Boukari"
+     "CBG/2/26 — BIALI Buke"
     ],
     [
      "CBG/3/26",
-     "CBG/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26 — N’ACHOU Yacha"
     ]
    ],
    "refusVide": {
@@ -951,7 +951,7 @@
    "refusLitOccupe": {
     "toasts": [
      [
-      "Le lit A1 LIT1 est déjà occupé par TCHANE Bertine."
+      "Le lit A1 LIT1 est déjà occupé par TIAMOU Bodje."
      ]
     ],
     "total": 7
@@ -968,13 +968,13 @@
      "statut": "en_cours",
      "patientCode": "CBG/2/26",
      "lit": "A1 LIT2",
-     "infirmier": "IDRISSOU ANIKI Baba-Toundé",
+     "infirmier": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "dateEntree": "2026-08-16",
      "priseEnCharge": "plus_8h",
      "diagnosticEntree": "Paludisme grave",
      "symptomes": "Fièvre",
      "patientId": "PAT0002",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "chambre": "A1",
      "typeChambre": "standard",
      "reference": "H00008"
@@ -987,13 +987,13 @@
      "statut": "en_cours",
      "patientCode": "CBG/3/26",
      "lit": "B3 LIT1",
-     "infirmier": "GARBA Yahouza",
+     "infirmier": "GEVAMIAN Yelia",
      "dateEntree": "2026-08-16",
      "priseEnCharge": "plus_8h",
      "diagnosticEntree": "Deuxième création",
      "symptomes": "",
      "patientId": "PAT0003",
-     "patient": "N’TCHA Yacoubou",
+     "patient": "N’ACHOU Yacha",
      "chambre": "B3",
      "typeChambre": "standard",
      "reference": "H00009"
@@ -1071,7 +1071,7 @@
    "valeurs": {
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
-    "infirmier": "GARBA Yahouza",
+    "infirmier": "GEVAMIAN Yelia",
     "dateEntree": "2026-08-06",
     "priseEnCharge": "plus_8h",
     "diagnosticEntree": "Diagnostic 1"
@@ -1088,7 +1088,7 @@
      "statut": "en_cours",
      "reference": "H00001",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "patientCode": "CBG/1/25",
      "chambre": "A2",
      "lit": "A2 LIT2",
@@ -1098,13 +1098,13 @@
      "diagnosticEntree": "Diagnostic corrigé",
      "symptomes": "Symptômes 1",
      "priseEnCharge": "plus_8h",
-     "infirmier": "GARBA Yahouza"
+     "infirmier": "GEVAMIAN Yelia"
     }
    },
    "refusOccupe": {
     "toasts": [
      [
-      "Le lit A2 LIT2 est déjà occupé par TCHANE Bertine."
+      "Le lit A2 LIT2 est déjà occupé par TIAMOU Bodje."
      ]
     ],
     "fiche": {
@@ -1112,7 +1112,7 @@
      "statut": "en_cours",
      "reference": "H00002",
      "patientId": "PAT0002",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "patientCode": "CBG/2/26",
      "chambre": "C1",
      "lit": "C1 LIT1",
@@ -1122,7 +1122,7 @@
      "diagnosticEntree": "Diagnostic 2",
      "symptomes": "Symptômes 2",
      "priseEnCharge": "moins_8h",
-     "infirmier": "GARBA Yahouza"
+     "infirmier": "GEVAMIAN Yelia"
     }
    }
   },
@@ -1132,17 +1132,17 @@
     "statut": "en_cours",
     "patientCode": "CBG/3/26",
     "lit": "B3 LIT1",
-    "infirmier": "GARBA Yahouza",
+    "infirmier": "GEVAMIAN Yelia",
     "dateEntree": "2026-08-16",
     "priseEnCharge": "plus_8h",
     "diagnosticEntree": "Deuxième création",
     "symptomes": "",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "chambre": "B3",
     "typeChambre": "standard",
     "reference": "H00009",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-08-16T10:00:00.000Z"
    },
    {
@@ -1150,17 +1150,17 @@
     "statut": "en_cours",
     "patientCode": "CBG/2/26",
     "lit": "A1 LIT2",
-    "infirmier": "IDRISSOU ANIKI Baba-Toundé",
+    "infirmier": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "dateEntree": "2026-08-16",
     "priseEnCharge": "plus_8h",
     "diagnosticEntree": "Paludisme grave",
     "symptomes": "Fièvre",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "chambre": "A1",
     "typeChambre": "standard",
     "reference": "H00008",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-08-16T10:00:00.000Z"
    },
    {
@@ -1168,7 +1168,7 @@
     "statut": "en_cours",
     "reference": "H00001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "A2",
     "lit": "A2 LIT2",
@@ -1178,8 +1178,8 @@
     "diagnosticEntree": "Diagnostic corrigé",
     "symptomes": "Symptômes 1",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza",
-    "_modifiePar": "BASSONGUI Chabi Séko",
+    "infirmier": "GEVAMIAN Yelia",
+    "_modifiePar": "BICHIASI Cezoune Sichovian",
     "_modifieLe": "2026-08-16T10:00:00.000Z"
    },
    {
@@ -1187,7 +1187,7 @@
     "statut": "en_cours",
     "reference": "H00002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
@@ -1197,14 +1197,14 @@
     "diagnosticEntree": "Diagnostic 2",
     "symptomes": "Symptômes 2",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM3",
     "statut": "sortie",
     "reference": "H00003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
@@ -1214,14 +1214,14 @@
     "diagnosticEntree": "Diagnostic 3",
     "symptomes": "Symptômes 3",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM4",
     "statut": "sortie",
     "reference": "H00004",
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26",
     "chambre": "B1",
     "lit": "B1 LIT1",
@@ -1231,14 +1231,14 @@
     "diagnosticEntree": "Diagnostic 4",
     "symptomes": "Symptômes 4",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM5",
     "statut": "en_cours",
     "reference": "H00005",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "D1",
     "lit": "D1 LIT1",
@@ -1248,14 +1248,14 @@
     "diagnosticEntree": "Diagnostic 5",
     "symptomes": "Symptômes 5",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM6",
     "statut": "archive",
     "reference": "H00006",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "B2",
     "lit": "B2 LIT1",
@@ -1265,14 +1265,14 @@
     "diagnosticEntree": "Diagnostic 6",
     "symptomes": "Symptômes 6",
     "priseEnCharge": "moins_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM7",
     "statut": "en_cours",
     "reference": "H00007",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "chambre": "A3",
     "lit": "A3 LIT2",
@@ -1282,7 +1282,7 @@
     "diagnosticEntree": "Diagnostic 7",
     "symptomes": "Symptômes 7",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    }
   ],
   "chambres": {
@@ -1338,7 +1338,7 @@
        "Standard",
        "5 000",
        "Occupé",
-       "BAKO Boukari",
+       "BIALI Buke",
        "16/08/2026"
       ],
       [
@@ -1358,7 +1358,7 @@
        "Standard",
        "5 000",
        "Occupé",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "06/08/2026"
       ],
       [
@@ -1378,7 +1378,7 @@
        "Standard",
        "5 000",
        "Occupé",
-       "N’TCHA Yacoubou",
+       "N’ACHOU Yacha",
        "10/08/2026"
       ],
       [
@@ -1448,7 +1448,7 @@
        "Standard",
        "5 000",
        "Occupé",
-       "N’TCHA Yacoubou",
+       "N’ACHOU Yacha",
        "16/08/2026"
       ],
       [
@@ -1468,7 +1468,7 @@
        "VIP",
        "15 000",
        "Occupé",
-       "BAKO Boukari",
+       "BIALI Buke",
        "14/08/2026"
       ],
       [
@@ -1498,7 +1498,7 @@
        "VVIP",
        "25 000",
        "Occupé",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "16/08/2026"
       ],
       [
@@ -1581,10 +1581,10 @@
     "signatures": [
      {
       "role": "Le Surveillant Général",
-      "nom": "GARBA Yahouza"
+      "nom": "GEVAMIAN Yelia"
      }
     ],
-    "texte": "LitChambreAileCatégorieÉtatOccupantA1 LIT1A1Aile A — MédecineStandardLibreA1 LIT2A1Aile A — MédecineStandardOccupéBAKO BoukariA2 LIT1A2Aile A — MédecineStandardLibreA2 LIT2A2Aile A — MédecineStandardOccupéTCHANE BertineA3 LIT1A3Aile A — MédecineStandardLibreA3 LIT2A3Aile A — MédecineStandardOccupéN’TCHA YacoubouA4 LIT1A4Aile A — MédecineStandardLibreA4 LIT2A4Aile A — MédecineStandardLibreB1 LIT1B1Aile B — MaternitéStandardLibreB1 LIT2B1Aile B — MaternitéStandardLibreB2 LIT1B2Aile B — MaternitéStandardLibreB2 LIT2B2Aile B — MaternitéStandardLibreB3 LIT1B3Aile B — MaternitéStandardOccupéN’TCHA YacoubouB3 LIT2B3Aile B — MaternitéStandardLibreC1 LIT1C1Aile C — VIPVIPOccupéBAKO BoukariC2 LIT1C2Aile C — VIPVIPLibreC3 LIT1C3Aile C — VIPVIPLibreD1 LIT1D1Aile D — VVIPVVIPOccupéTCHANE BertineD2 LIT1D2Aile D — VVIPVVIPLibre",
+    "texte": "LitChambreAileCatégorieÉtatOccupantA1 LIT1A1Aile A — MédecineStandardLibreA1 LIT2A1Aile A — MédecineStandardOccupéBAKO BukeA2 LIT1A2Aile A — MédecineStandardLibreA2 LIT2A2Aile A — MédecineStandardOccupéTCHANE BodjeA3 LIT1A3Aile A — MédecineStandardLibreA3 LIT2A3Aile A — MédecineStandardOccupéN’TCHA YachaA4 LIT1A4Aile A — MédecineStandardLibreA4 LIT2A4Aile A — MédecineStandardLibreB1 LIT1B1Aile B — MaternitéStandardLibreB1 LIT2B1Aile B — MaternitéStandardLibreB2 LIT1B2Aile B — MaternitéStandardLibreB2 LIT2B2Aile B — MaternitéStandardLibreB3 LIT1B3Aile B — MaternitéStandardOccupéN’TCHA YachaB3 LIT2B3Aile B — MaternitéStandardLibreC1 LIT1C1Aile C — VIPVIPOccupéBAKO BukeC2 LIT1C2Aile C — VIPVIPLibreC3 LIT1C3Aile C — VIPVIPLibreD1 LIT1D1Aile D — VVIPVVIPOccupéTCHANE BodjeD2 LIT1D2Aile D — VVIPVVIPLibre",
     "tableaux": []
    }
   },
@@ -1625,7 +1625,7 @@
      "couleur": "success"
     },
     {
-     "texte": "A1 LIT2BAKO Boukari0 j",
+     "texte": "A1 LIT2BIALI Buke0 j",
      "couleur": "danger"
     },
     {
@@ -1633,7 +1633,7 @@
      "couleur": "success"
     },
     {
-     "texte": "A2 LIT2TCHANE Bertine10 j",
+     "texte": "A2 LIT2TIAMOU Bodje10 j",
      "couleur": "warning"
     },
     {
@@ -1641,7 +1641,7 @@
      "couleur": "success"
     },
     {
-     "texte": "A3 LIT2N’TCHA Yacoubou6 j",
+     "texte": "A3 LIT2N’ACHOU Yacha6 j",
      "couleur": "warning"
     },
     {
@@ -1669,7 +1669,7 @@
      "couleur": "success"
     },
     {
-     "texte": "B3 LIT1N’TCHA Yacoubou0 j",
+     "texte": "B3 LIT1N’ACHOU Yacha0 j",
      "couleur": "danger"
     },
     {
@@ -1677,7 +1677,7 @@
      "couleur": "success"
     },
     {
-     "texte": "C1 LIT1BAKO Boukari2 j",
+     "texte": "C1 LIT1BIALI Buke2 j",
      "couleur": "danger"
     },
     {
@@ -1689,7 +1689,7 @@
      "couleur": "success"
     },
     {
-     "texte": "D1 LIT1TCHANE Bertine0 j",
+     "texte": "D1 LIT1TIAMOU Bodje0 j",
      "couleur": "danger"
     },
     {
@@ -1785,7 +1785,7 @@
     ]
    },
    "tiroirLong": {
-    "texte": "N’TCHA Yacoubou CBG/3/26 — Lit A3 LIT2 Dossier CBG/3/26 Lit A3 LIT2 Chambre Standard Date d’entrée 10/08/2026 Durée de séjour 6 jour(s) Diagnostic d’entrée Diagnostic 7 Prise en charge Plus de 8h Infirmier référent GARBA Yahouza RG-06 — Solde apuré : la sortie peut être finalisée. Feuille de température Préparer la sortie",
+    "texte": "N’ACHOU Yacha CBG/3/26 — Lit A3 LIT2 Dossier CBG/3/26 Lit A3 LIT2 Chambre Standard Date d’entrée 10/08/2026 Durée de séjour 6 jour(s) Diagnostic d’entrée Diagnostic 7 Prise en charge Plus de 8h Infirmier référent GEVAMIAN Yelia RG-06 — Solde apuré : la sortie peut être finalisée. Feuille de température Préparer la sortie",
     "boutons": [
      "Fermer"
     ]
@@ -1800,7 +1800,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0001",
      "patientId": "PAT0121",
-     "patient": "YARO Bio",
+     "patient": "YIAKI Bounoukia",
      "patientCode": "CBG/121/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
@@ -1808,8 +1808,8 @@
      "motif": "Vomissements répétés",
      "dateEntree": "2026-08-15T05:00:00.000Z",
      "dateSortie": null,
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "BAGRI Elvyre",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "BELABO Egbifepo",
      "constantes": [
       {
        "heure": "2026-08-15T05:00:00.000Z",
@@ -1818,7 +1818,7 @@
        "pouls": 117,
        "spo2": 98,
        "observation": "Surveillance rapprochée",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       },
       {
        "heure": "2026-08-15T09:00:00.000Z",
@@ -1827,7 +1827,7 @@
        "pouls": 73,
        "spo2": 99,
        "observation": "Sous perfusion",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-08-15T13:00:00.000Z",
@@ -1836,7 +1836,7 @@
        "pouls": 92,
        "spo2": 96,
        "observation": "Douleur en diminution",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-08-15T17:00:00.000Z",
@@ -1845,7 +1845,7 @@
        "pouls": 83,
        "spo2": 100,
        "observation": "Douleur en diminution",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       }
      ],
      "statutObservation": "en_cours",
@@ -1858,7 +1858,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0002",
      "patientId": "PAT-AG013",
-     "patient": "BAGRI Elvyre",
+     "patient": "BELABO Egbifepo",
      "patientCode": "CBG912/25",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
@@ -1866,8 +1866,8 @@
      "motif": "Traumatisme crânien léger",
      "dateEntree": "2026-08-15T15:00:00.000Z",
      "dateSortie": null,
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "OURTCHA Bertine",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "OSIAMIAM Bodje",
      "constantes": [
       {
        "heure": "2026-08-15T15:00:00.000Z",
@@ -1876,7 +1876,7 @@
        "pouls": 111,
        "spo2": 96,
        "observation": "Patient conscient, orienté",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-08-15T19:00:00.000Z",
@@ -1885,7 +1885,7 @@
        "pouls": 111,
        "spo2": 97,
        "observation": "Douleur en diminution",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-08-15T23:00:00.000Z",
@@ -1894,7 +1894,7 @@
        "pouls": 118,
        "spo2": 94,
        "observation": "Patient conscient, orienté",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       }
      ],
      "statutObservation": "en_cours",
@@ -1907,7 +1907,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0003",
      "patientId": "PAT0093",
-     "patient": "TIGRI Séko",
+     "patient": "TOUZA Sichovian",
      "patientCode": "CBG/93/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
@@ -1915,8 +1915,8 @@
      "motif": "Douleur thoracique",
      "dateEntree": "2026-08-15T14:00:00.000Z",
      "dateSortie": null,
-     "medecin": "AHOHOU Rodrigue",
-     "infirmier": "IDRISSOU ANIKI Baba-Toundé",
+     "medecin": "AKPOMER Ridur",
+     "infirmier": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "constantes": [
       {
        "heure": "2026-08-15T14:00:00.000Z",
@@ -1925,7 +1925,7 @@
        "pouls": 72,
        "spo2": 97,
        "observation": "Vomissements",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-08-15T18:00:00.000Z",
@@ -1934,7 +1934,7 @@
        "pouls": 72,
        "spo2": 96,
        "observation": "Repos",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-08-15T22:00:00.000Z",
@@ -1943,7 +1943,7 @@
        "pouls": 73,
        "spo2": 98,
        "observation": "Vomissements",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       }
      ],
      "statutObservation": "en_cours",
@@ -1956,7 +1956,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0004",
      "patientId": "PAT0087",
-     "patient": "GBEDJI Aïssatou",
+     "patient": "GIDJI Amachim",
      "patientCode": "CBG/87/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
@@ -1964,8 +1964,8 @@
      "motif": "Vomissements répétés",
      "dateEntree": "2026-08-15T17:00:00.000Z",
      "dateSortie": null,
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "DOSSOU Moussa",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "DULOUNE Mudovur",
      "constantes": [
       {
        "heure": "2026-08-15T17:00:00.000Z",
@@ -1974,7 +1974,7 @@
        "pouls": 96,
        "spo2": 92,
        "observation": "Vomissements",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-08-15T21:00:00.000Z",
@@ -1983,7 +1983,7 @@
        "pouls": 66,
        "spo2": 98,
        "observation": "Surveillance rapprochée",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       },
       {
        "heure": "2026-08-16T01:00:00.000Z",
@@ -1992,7 +1992,7 @@
        "pouls": 81,
        "spo2": 96,
        "observation": "Repos",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       }
      ],
      "statutObservation": "en_cours",
@@ -2005,7 +2005,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0005",
      "patientId": "PAT0012",
-     "patient": "SOULE Hervé",
+     "patient": "SOUDER Hiabidjo",
      "patientCode": "CBG/12/25",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
@@ -2013,8 +2013,8 @@
      "motif": "Malaise",
      "dateEntree": "2026-08-16T03:00:00.000Z",
      "dateSortie": null,
-     "medecin": "YENI M’PO Florent",
-     "infirmier": "OURTCHA Bertine",
+     "medecin": "YORO M’ABEKPIA Foulumi",
+     "infirmier": "OSIAMIAM Bodje",
      "constantes": [
       {
        "heure": "2026-08-16T03:00:00.000Z",
@@ -2023,7 +2023,7 @@
        "pouls": 61,
        "spo2": 97,
        "observation": "Vomissements",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-08-16T07:00:00.000Z",
@@ -2032,7 +2032,7 @@
        "pouls": 118,
        "spo2": 93,
        "observation": "Sous perfusion",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-08-16T11:00:00.000Z",
@@ -2041,7 +2041,7 @@
        "pouls": 86,
        "spo2": 98,
        "observation": "Surveillance rapprochée",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       }
      ],
      "statutObservation": "en_cours",
@@ -2054,7 +2054,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0006",
      "patientId": "PAT-AG001",
-     "patient": "BASSONGUI Chabi Séko",
+     "patient": "BICHIASI Cezoune Sichovian",
      "patientCode": "CBG900/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2062,8 +2062,8 @@
      "motif": "Malaise",
      "dateEntree": "2026-08-15T21:00:00.000Z",
      "dateSortie": null,
-     "medecin": "YENI M’PO Florent",
-     "infirmier": "BAGRI Elvyre",
+     "medecin": "YORO M’ABEKPIA Foulumi",
+     "infirmier": "BELABO Egbifepo",
      "constantes": [
       {
        "heure": "2026-08-15T21:00:00.000Z",
@@ -2072,7 +2072,7 @@
        "pouls": 69,
        "spo2": 100,
        "observation": "Patient conscient, orienté",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-08-16T01:00:00.000Z",
@@ -2081,7 +2081,7 @@
        "pouls": 104,
        "spo2": 97,
        "observation": "Sous perfusion",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-08-16T05:00:00.000Z",
@@ -2090,7 +2090,7 @@
        "pouls": 96,
        "spo2": 95,
        "observation": "Sous perfusion",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-08-16T09:00:00.000Z",
@@ -2099,7 +2099,7 @@
        "pouls": 111,
        "spo2": 97,
        "observation": "Surveillance rapprochée",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       },
       {
        "heure": "2026-08-16T13:00:00.000Z",
@@ -2108,7 +2108,7 @@
        "pouls": 109,
        "spo2": 95,
        "observation": "Vomissements",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       }
      ],
      "statutObservation": "en_cours",
@@ -2121,7 +2121,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0007",
      "patientId": "PAT0024",
-     "patient": "DAOUDA Justine",
+     "patient": "DACHULO Jiakpune",
      "patientCode": "CBG/24/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2129,8 +2129,8 @@
      "motif": "Suspicion de paludisme grave",
      "dateEntree": "2026-08-02T04:00:00.000Z",
      "dateSortie": "2026-08-03T04:00:00.000Z",
-     "medecin": "YENI M’PO Florent",
-     "infirmier": "OURTCHA Bertine",
+     "medecin": "YORO M’ABEKPIA Foulumi",
+     "infirmier": "OSIAMIAM Bodje",
      "constantes": [
       {
        "heure": "2026-08-02T04:00:00.000Z",
@@ -2139,7 +2139,7 @@
        "pouls": 71,
        "spo2": 98,
        "observation": "Repos",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-08-02T08:00:00.000Z",
@@ -2148,7 +2148,7 @@
        "pouls": 63,
        "spo2": 96,
        "observation": "Douleur en diminution",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       },
       {
        "heure": "2026-08-02T12:00:00.000Z",
@@ -2157,7 +2157,7 @@
        "pouls": 91,
        "spo2": 96,
        "observation": "Repos",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       }
      ],
      "statutObservation": "clos",
@@ -2170,7 +2170,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0008",
      "patientId": "PAT0132",
-     "patient": "AHOHOU Djibril",
+     "patient": "AKPOMER Doulom",
      "patientCode": "CBG/132/26",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2178,8 +2178,8 @@
      "motif": "Suspicion de paludisme grave",
      "dateEntree": "2026-07-26T01:00:00.000Z",
      "dateSortie": "2026-07-26T12:00:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "DOSSOU Moussa",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "DULOUNE Mudovur",
      "constantes": [
       {
        "heure": "2026-07-26T01:00:00.000Z",
@@ -2188,7 +2188,7 @@
        "pouls": 91,
        "spo2": 98,
        "observation": "Douleur en diminution",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-07-26T05:00:00.000Z",
@@ -2197,7 +2197,7 @@
        "pouls": 114,
        "spo2": 95,
        "observation": "Vomissements",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       }
      ],
      "statutObservation": "clos",
@@ -2210,7 +2210,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0009",
      "patientId": "PAT0130",
-     "patient": "N’TCHA Salifou",
+     "patient": "N’ACHOU Sazo",
      "patientCode": "CBG/130/26",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2218,8 +2218,8 @@
      "motif": "Douleur thoracique",
      "dateEntree": "2026-07-25T16:00:00.000Z",
      "dateSortie": "2026-07-26T11:00:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "BAGRI Elvyre",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "BELABO Egbifepo",
      "constantes": [
       {
        "heure": "2026-07-25T16:00:00.000Z",
@@ -2228,7 +2228,7 @@
        "pouls": 83,
        "spo2": 95,
        "observation": "Patient conscient, orienté",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-07-25T20:00:00.000Z",
@@ -2237,7 +2237,7 @@
        "pouls": 114,
        "spo2": 96,
        "observation": "Vomissements",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-07-26T00:00:00.000Z",
@@ -2246,7 +2246,7 @@
        "pouls": 94,
        "spo2": 96,
        "observation": "Douleur en diminution",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-26T04:00:00.000Z",
@@ -2255,7 +2255,7 @@
        "pouls": 68,
        "spo2": 98,
        "observation": "Vomissements",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-07-26T08:00:00.000Z",
@@ -2264,7 +2264,7 @@
        "pouls": 110,
        "spo2": 99,
        "observation": "Repos",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       }
      ],
      "statutObservation": "clos",
@@ -2277,7 +2277,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0010",
      "patientId": "PAT-AG015",
-     "patient": "OURTCHA Bertine",
+     "patient": "OSIAMIAM Bodje",
      "patientCode": "CBG914/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2285,8 +2285,8 @@
      "motif": "Douleur thoracique",
      "dateEntree": "2026-07-20T21:00:00.000Z",
      "dateSortie": "2026-07-21T17:00:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "NKOUÉ Jean",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "NIDJON Jagi",
      "constantes": [
       {
        "heure": "2026-07-20T21:00:00.000Z",
@@ -2295,7 +2295,7 @@
        "pouls": 84,
        "spo2": 95,
        "observation": "Patient conscient, orienté",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       },
       {
        "heure": "2026-07-21T01:00:00.000Z",
@@ -2304,7 +2304,7 @@
        "pouls": 114,
        "spo2": 97,
        "observation": "Douleur en diminution",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-21T05:00:00.000Z",
@@ -2313,7 +2313,7 @@
        "pouls": 114,
        "spo2": 96,
        "observation": "Vomissements",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       },
       {
        "heure": "2026-07-21T09:00:00.000Z",
@@ -2322,7 +2322,7 @@
        "pouls": 90,
        "spo2": 97,
        "observation": "Surveillance rapprochée",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-07-21T13:00:00.000Z",
@@ -2331,7 +2331,7 @@
        "pouls": 74,
        "spo2": 100,
        "observation": "Patient conscient, orienté",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       }
      ],
      "statutObservation": "clos",
@@ -2344,7 +2344,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0011",
      "patientId": "PAT0008",
-     "patient": "DOSSOU Salifou",
+     "patient": "DULOUNE Sazo",
      "patientCode": "CBG/8/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2352,8 +2352,8 @@
      "motif": "Fièvre à explorer",
      "dateEntree": "2026-08-07T06:00:00.000Z",
      "dateSortie": "2026-08-07T17:00:00.000Z",
-     "medecin": "YENI M’PO Florent",
-     "infirmier": "DOSSOU Moussa",
+     "medecin": "YORO M’ABEKPIA Foulumi",
+     "infirmier": "DULOUNE Mudovur",
      "constantes": [
       {
        "heure": "2026-08-07T06:00:00.000Z",
@@ -2362,7 +2362,7 @@
        "pouls": 68,
        "spo2": 94,
        "observation": "Douleur en diminution",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-08-07T10:00:00.000Z",
@@ -2371,7 +2371,7 @@
        "pouls": 81,
        "spo2": 96,
        "observation": "Surveillance rapprochée",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-08-07T14:00:00.000Z",
@@ -2380,7 +2380,7 @@
        "pouls": 86,
        "spo2": 100,
        "observation": "Repos",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       }
      ],
      "statutObservation": "clos",
@@ -2393,7 +2393,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0012",
      "patientId": "PAT-AG003",
-     "patient": "KASSA Augustin",
+     "patient": "KALOU Avolutu",
      "patientCode": "CBG902/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
@@ -2401,8 +2401,8 @@
      "motif": "Suspicion de paludisme grave",
      "dateEntree": "2026-07-28T01:00:00.000Z",
      "dateSortie": "2026-07-28T18:00:00.000Z",
-     "medecin": "TAKI Orou",
-     "infirmier": "BAGRI Elvyre",
+     "medecin": "TACHEDI Odjipiar",
+     "infirmier": "BELABO Egbifepo",
      "constantes": [
       {
        "heure": "2026-07-28T01:00:00.000Z",
@@ -2411,7 +2411,7 @@
        "pouls": 86,
        "spo2": 97,
        "observation": "Vomissements",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-28T05:00:00.000Z",
@@ -2420,7 +2420,7 @@
        "pouls": 89,
        "spo2": 93,
        "observation": "Sous perfusion",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-07-28T09:00:00.000Z",
@@ -2429,7 +2429,7 @@
        "pouls": 112,
        "spo2": 96,
        "observation": "Surveillance rapprochée",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-07-28T13:00:00.000Z",
@@ -2438,7 +2438,7 @@
        "pouls": 93,
        "spo2": 95,
        "observation": "Repos",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-07-28T17:00:00.000Z",
@@ -2447,7 +2447,7 @@
        "pouls": 88,
        "spo2": 93,
        "observation": "Surveillance rapprochée",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       }
      ],
      "statutObservation": "clos",
@@ -2460,7 +2460,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0013",
      "patientId": "PAT0119",
-     "patient": "WOROU Boukari",
+     "patient": "WEDIA Buke",
      "patientCode": "CBG/119/26",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
@@ -2468,8 +2468,8 @@
      "motif": "Suspicion de paludisme grave",
      "dateEntree": "2026-07-21T05:00:00.000Z",
      "dateSortie": "2026-07-22T03:00:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "BAGRI Elvyre",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "BELABO Egbifepo",
      "constantes": [
       {
        "heure": "2026-07-21T05:00:00.000Z",
@@ -2478,7 +2478,7 @@
        "pouls": 102,
        "spo2": 93,
        "observation": "Surveillance rapprochée",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-07-21T09:00:00.000Z",
@@ -2487,7 +2487,7 @@
        "pouls": 74,
        "spo2": 98,
        "observation": "Vomissements",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-07-21T13:00:00.000Z",
@@ -2496,7 +2496,7 @@
        "pouls": 109,
        "spo2": 93,
        "observation": "Douleur en diminution",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-07-21T17:00:00.000Z",
@@ -2505,7 +2505,7 @@
        "pouls": 104,
        "spo2": 96,
        "observation": "Douleur en diminution",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-21T21:00:00.000Z",
@@ -2514,7 +2514,7 @@
        "pouls": 74,
        "spo2": 95,
        "observation": "Douleur en diminution",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       }
      ],
      "statutObservation": "clos",
@@ -2527,7 +2527,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0014",
      "patientId": "PAT0051",
-     "patient": "KINNOU Orou",
+     "patient": "KELE Odjipiar",
      "patientCode": "CBG/51/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -2535,8 +2535,8 @@
      "motif": "Douleur abdominale",
      "dateEntree": "2026-07-29T08:00:00.000Z",
      "dateSortie": "2026-07-29T16:00:00.000Z",
-     "medecin": "AHOHOU Rodrigue",
-     "infirmier": "IDRISSOU ANIKI Baba-Toundé",
+     "medecin": "AKPOMER Ridur",
+     "infirmier": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "constantes": [
       {
        "heure": "2026-07-29T08:00:00.000Z",
@@ -2545,7 +2545,7 @@
        "pouls": 116,
        "spo2": 100,
        "observation": "Vomissements",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-29T12:00:00.000Z",
@@ -2554,7 +2554,7 @@
        "pouls": 103,
        "spo2": 95,
        "observation": "Surveillance rapprochée",
-       "par": "OURTCHA Bertine"
+       "par": "OSIAMIAM Bodje"
       },
       {
        "heure": "2026-07-29T16:00:00.000Z",
@@ -2563,7 +2563,7 @@
        "pouls": 74,
        "spo2": 96,
        "observation": "Repos",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-07-29T20:00:00.000Z",
@@ -2572,7 +2572,7 @@
        "pouls": 68,
        "spo2": 92,
        "observation": "Douleur en diminution",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-07-30T00:00:00.000Z",
@@ -2581,7 +2581,7 @@
        "pouls": 58,
        "spo2": 99,
        "observation": "Surveillance rapprochée",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       }
      ],
      "statutObservation": "clos",
@@ -2594,7 +2594,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0015",
      "patientId": "PAT0029",
-     "patient": "KINNOU Séko",
+     "patient": "KELE Sichovian",
      "patientCode": "CBG/29/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
@@ -2602,8 +2602,8 @@
      "motif": "Vomissements répétés",
      "dateEntree": "2026-08-14T06:00:00.000Z",
      "dateSortie": "2026-08-15T12:00:00.000Z",
-     "medecin": "TAKI Orou",
-     "infirmier": "OROU YO Alimatou",
+     "medecin": "TACHEDI Odjipiar",
+     "infirmier": "ODJIPIAR YUDJOUVOU Arialu",
      "constantes": [
       {
        "heure": "2026-08-14T06:00:00.000Z",
@@ -2612,7 +2612,7 @@
        "pouls": 83,
        "spo2": 94,
        "observation": "Patient conscient, orienté",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-08-14T10:00:00.000Z",
@@ -2621,7 +2621,7 @@
        "pouls": 70,
        "spo2": 93,
        "observation": "Surveillance rapprochée",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-08-14T14:00:00.000Z",
@@ -2630,7 +2630,7 @@
        "pouls": 84,
        "spo2": 100,
        "observation": "Douleur en diminution",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       },
       {
        "heure": "2026-08-14T18:00:00.000Z",
@@ -2639,7 +2639,7 @@
        "pouls": 61,
        "spo2": 94,
        "observation": "Douleur en diminution",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       },
       {
        "heure": "2026-08-14T22:00:00.000Z",
@@ -2648,7 +2648,7 @@
        "pouls": 117,
        "spo2": 98,
        "observation": "Vomissements",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       }
      ],
      "statutObservation": "clos",
@@ -2661,7 +2661,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0016",
      "patientId": "PAT0101",
-     "patient": "ZIME Abdoul",
+     "patient": "ZIAVEL Abebia",
      "patientCode": "CBG/101/26",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
@@ -2669,8 +2669,8 @@
      "motif": "Vomissements répétés",
      "dateEntree": "2026-08-01T23:00:00.000Z",
      "dateSortie": "2026-08-02T16:00:00.000Z",
-     "medecin": "YENI M’PO Florent",
-     "infirmier": "OURTCHA Bertine",
+     "medecin": "YORO M’ABEKPIA Foulumi",
+     "infirmier": "OSIAMIAM Bodje",
      "constantes": [
       {
        "heure": "2026-08-01T23:00:00.000Z",
@@ -2679,7 +2679,7 @@
        "pouls": 79,
        "spo2": 94,
        "observation": "Vomissements",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       },
       {
        "heure": "2026-08-02T03:00:00.000Z",
@@ -2688,7 +2688,7 @@
        "pouls": 113,
        "spo2": 95,
        "observation": "Sous perfusion",
-       "par": "PARAISO Abdoul"
+       "par": "PENU Abebia"
       },
       {
        "heure": "2026-08-02T07:00:00.000Z",
@@ -2697,7 +2697,7 @@
        "pouls": 93,
        "spo2": 96,
        "observation": "Sous perfusion",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       }
      ],
      "statutObservation": "clos",
@@ -2710,7 +2710,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0017",
      "patientId": "PAT0118",
-     "patient": "SEIDOU Fatouma",
+     "patient": "SIANUVU Fiapeken",
      "patientCode": "CBG/118/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
@@ -2718,8 +2718,8 @@
      "motif": "Douleur thoracique",
      "dateEntree": "2026-08-12T18:00:00.000Z",
      "dateSortie": "2026-08-13T12:00:00.000Z",
-     "medecin": "TAKI Orou",
-     "infirmier": "GARBA Yahouza",
+     "medecin": "TACHEDI Odjipiar",
+     "infirmier": "GEVAMIAN Yelia",
      "constantes": [
       {
        "heure": "2026-08-12T18:00:00.000Z",
@@ -2728,7 +2728,7 @@
        "pouls": 58,
        "spo2": 97,
        "observation": "Vomissements",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-08-12T22:00:00.000Z",
@@ -2737,7 +2737,7 @@
        "pouls": 113,
        "spo2": 93,
        "observation": "Sous perfusion",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-08-13T02:00:00.000Z",
@@ -2746,7 +2746,7 @@
        "pouls": 59,
        "spo2": 94,
        "observation": "Douleur en diminution",
-       "par": "IDRISSOU ANIKI Baba-Toundé"
+       "par": "IGBOUPU ATUGBIPOU Badom-Tukepou"
       }
      ],
      "statutObservation": "clos",
@@ -2759,7 +2759,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0018",
      "patientId": "PAT-AG017",
-     "patient": "OROU YO Alimatou",
+     "patient": "ODJIPIAR YUDJOUVOU Arialu",
      "patientCode": "CBG916/25",
      "unite": "maternite",
      "uniteLabel": "Salle d’observation — maternité",
@@ -2767,8 +2767,8 @@
      "motif": "Douleur abdominale",
      "dateEntree": "2026-08-01T16:00:00.000Z",
      "dateSortie": "2026-08-02T21:00:00.000Z",
-     "medecin": "AHOHOU Rodrigue",
-     "infirmier": "OROU YO Alimatou",
+     "medecin": "AKPOMER Ridur",
+     "infirmier": "ODJIPIAR YUDJOUVOU Arialu",
      "constantes": [
       {
        "heure": "2026-08-01T16:00:00.000Z",
@@ -2777,7 +2777,7 @@
        "pouls": 76,
        "spo2": 98,
        "observation": "Patient conscient, orienté",
-       "par": "OROU YO Alimatou"
+       "par": "ODJIPIAR YUDJOUVOU Arialu"
       },
       {
        "heure": "2026-08-01T20:00:00.000Z",
@@ -2786,7 +2786,7 @@
        "pouls": 99,
        "spo2": 99,
        "observation": "Surveillance rapprochée",
-       "par": "BAGRI Elvyre"
+       "par": "BELABO Egbifepo"
       }
      ],
      "statutObservation": "clos",
@@ -2870,7 +2870,7 @@
      "lignes": [
       [
        "OBS-2026-0005",
-       "SOULE Hervé CBG/12/25",
+       "SOUDER Hiabidjo CBG/12/25",
        "Malaise",
        "pédiatrie",
        "16/08/2026 03h00",
@@ -2881,7 +2881,7 @@
       ],
       [
        "OBS-2026-0006",
-       "BASSONGUI Chabi Séko CBG900/25",
+       "BICHIASI Cezoune Sichovian CBG900/25",
        "Malaise",
        "urgences",
        "15/08/2026 21h00",
@@ -2892,7 +2892,7 @@
       ],
       [
        "OBS-2026-0004",
-       "GBEDJI Aïssatou CBG/87/26",
+       "GIDJI Amachim CBG/87/26",
        "Vomissements répétés",
        "pédiatrie",
        "15/08/2026 17h00",
@@ -2903,7 +2903,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAGRI Elvyre CBG912/25",
+       "BELABO Egbifepo CBG912/25",
        "Traumatisme crânien léger",
        "médecine générale",
        "15/08/2026 15h00",
@@ -2914,7 +2914,7 @@
       ],
       [
        "OBS-2026-0003",
-       "TIGRI Séko CBG/93/25",
+       "TOUZA Sichovian CBG/93/25",
        "Douleur thoracique",
        "maternité",
        "15/08/2026 14h00",
@@ -2925,7 +2925,7 @@
       ],
       [
        "OBS-2026-0001",
-       "YARO Bio CBG/121/25",
+       "YIAKI Bounoukia CBG/121/25",
        "Vomissements répétés",
        "maternité",
        "15/08/2026 05h00",
@@ -2944,7 +2944,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
@@ -2952,8 +2952,8 @@
     "motif": "Motif 1",
     "dateEntree": "2026-08-16T07:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-16T07:00:00.000Z",
@@ -2962,7 +2962,7 @@
       "pouls": 80,
       "spo2": 98,
       "observation": "Repos",
-      "par": "DOSSOU Moussa"
+      "par": "DULOUNE Mudovur"
      },
      {
       "heure": "2026-08-16T09:00:00.000Z",
@@ -2971,7 +2971,7 @@
       "pouls": 96,
       "spo2": 95,
       "observation": "Fièvre",
-      "par": "DOSSOU Moussa"
+      "par": "DULOUNE Mudovur"
      }
     ],
     "statutObservation": "en_cours",
@@ -2984,7 +2984,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -2992,8 +2992,8 @@
     "motif": "Motif 2",
     "dateEntree": "2026-08-15T14:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "en_cours",
     "orientation": null,
@@ -3005,7 +3005,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -3013,8 +3013,8 @@
     "motif": "Motif 3",
     "dateEntree": "2026-08-15T09:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-15T10:00:00.000Z",
@@ -3023,7 +3023,7 @@
       "pouls": 72,
       "spo2": 99,
       "observation": "Conscient",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-15T22:00:00.000Z",
@@ -3032,7 +3032,7 @@
       "pouls": 76,
       "spo2": 98,
       "observation": "",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-16T08:00:00.000Z",
@@ -3041,7 +3041,7 @@
       "pouls": 110,
       "spo2": 93,
       "observation": "Sous perfusion",
-      "par": "NKOUÉ Jean"
+      "par": "NIDJON Jagi"
      }
     ],
     "statutObservation": "en_cours",
@@ -3054,7 +3054,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0004",
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26",
     "unite": "maternite",
     "uniteLabel": "Salle d’observation — maternité",
@@ -3062,8 +3062,8 @@
     "motif": "Motif 4",
     "dateEntree": "2026-08-14T10:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-14T18:00:00.000Z",
@@ -3072,7 +3072,7 @@
       "pouls": 88,
       "spo2": 97,
       "observation": "",
-      "par": "BAGRI Elvyre"
+      "par": "BELABO Egbifepo"
      }
     ],
     "statutObservation": "en_cours",
@@ -3085,7 +3085,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0005",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
@@ -3093,8 +3093,8 @@
     "motif": "Motif 5",
     "dateEntree": "2026-08-14T08:00:00.000Z",
     "dateSortie": "2026-08-15T04:00:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-14T09:00:00.000Z",
@@ -3103,7 +3103,7 @@
       "pouls": 70,
       "spo2": 99,
       "observation": "",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      }
     ],
     "statutObservation": "clos",
@@ -3116,7 +3116,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0006",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
@@ -3124,8 +3124,8 @@
     "motif": "Motif 6",
     "dateEntree": "2026-08-12T06:00:00.000Z",
     "dateSortie": "2026-08-13T12:00:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "clos",
     "orientation": "hospitalisation",
@@ -3137,7 +3137,7 @@
     "statut": "archive",
     "reference": "OBS-2026-0007",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -3145,8 +3145,8 @@
     "motif": "Motif 7",
     "dateEntree": "2026-08-16T00:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "en_cours",
     "orientation": null,
@@ -3233,7 +3233,7 @@
      "lignes": [
       [
        "OBS-2026-0001",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "Motif 1",
        "urgences",
        "16/08/2026 07h00",
@@ -3244,7 +3244,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "Motif 2",
        "médecine générale",
        "15/08/2026 14h00",
@@ -3255,7 +3255,7 @@
       ],
       [
        "OBS-2026-0003",
-       "N’TCHA Yacoubou CBG/3/26",
+       "N’ACHOU Yacha CBG/3/26",
        "Motif 3",
        "médecine générale",
        "15/08/2026 09h00",
@@ -3266,7 +3266,7 @@
       ],
       [
        "OBS-2026-0004",
-       "PARAISO Sabi CBG/4/26",
+       "PENU Sabar CBG/4/26",
        "Motif 4",
        "maternité",
        "14/08/2026 10h00",
@@ -3370,7 +3370,7 @@
      "lignes": [
       [
        "OBS-2026-0005",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "Motif 5",
        "pédiatrie",
        "14/08/2026 08h00",
@@ -3381,7 +3381,7 @@
       ],
       [
        "OBS-2026-0006",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "Motif 6",
        "urgences",
        "12/08/2026 06h00",
@@ -3409,7 +3409,7 @@
    ]
   },
   "fiche": {
-   "texte": "OBS-2026-0003 N’TCHA Yacoubou — Salle d’observation — médecine générale Référence OBS-2026-0003 Patient N’TCHA Yacoubou Dossier CBG/3/26 Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Place place 3 Entrée 15/08/2026 à 09h00 Durée 25 h — au-delà de la référence Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes HEURE T° TA POULS SPO₂ OBSERVATION RELEVÉ PAR 15/08/2026 10h00 36.8 °C 13/8 72 bpm 99 % Conscient GARBA Yahouza 15/08/2026 22h00 37.0 °C 12/8 76 bpm 98 % GARBA Yahouza 16/08/2026 08h00 39.1 °C 10/6 110 bpm 93 % Sous perfusion NKOUÉ Jean Évolution Prescrire Imprimer la feuille Décider de l’orientation",
+   "texte": "OBS-2026-0003 N’ACHOU Yacha — Salle d’observation — médecine générale Référence OBS-2026-0003 Patient N’ACHOU Yacha Dossier CBG/3/26 Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Place place 3 Entrée 15/08/2026 à 09h00 Durée 25 h — au-delà de la référence Médecin responsable BICHIASI Cezoune Sichovian Infirmier de surveillance GEVAMIAN Yelia Issue en cours Feuille de surveillance Relever les constantes HEURE T° TA POULS SPO₂ OBSERVATION RELEVÉ PAR 15/08/2026 10h00 36.8 °C 13/8 72 bpm 99 % Conscient GEVAMIAN Yelia 15/08/2026 22h00 37.0 °C 12/8 76 bpm 98 % GEVAMIAN Yelia 16/08/2026 08h00 39.1 °C 10/6 110 bpm 93 % Sous perfusion NIDJON Jagi Évolution Prescrire Imprimer la feuille Décider de l’orientation",
    "boutons": [
     "Fermer",
     "Relever les constantes",
@@ -3467,7 +3467,7 @@
        "72 bpm",
        "99 %",
        "Conscient",
-       "GARBA Yahouza"
+       "GEVAMIAN Yelia"
       ],
       [
        "15/08/2026 22h00",
@@ -3476,7 +3476,7 @@
        "76 bpm",
        "98 %",
        "",
-       "GARBA Yahouza"
+       "GEVAMIAN Yelia"
       ],
       [
        "16/08/2026 08h00",
@@ -3485,14 +3485,14 @@
        "110 bpm",
        "93 %",
        "Sous perfusion",
-       "NKOUÉ Jean"
+       "NIDJON Jagi"
       ]
      ]
     }
    ]
   },
   "ficheSansReleve": {
-   "texte": "OBS-2026-0002 BAKO Boukari — Salle d’observation — médecine générale Référence OBS-2026-0002 Patient BAKO Boukari Dossier CBG/2/26 Motif de surveillance Motif 2 Unité Salle d’observation — médecine générale Place place 2 Entrée 15/08/2026 à 14h00 Durée 20 h Médecin responsable BASSONGUI Chabi Séko Infirmier de surveillance GARBA Yahouza Issue en cours Feuille de surveillance Relever les constantes Aucun relevé enregistré. Prescrire Imprimer la feuille Décider de l’orientation",
+   "texte": "OBS-2026-0002 BIALI Buke — Salle d’observation — médecine générale Référence OBS-2026-0002 Patient BIALI Buke Dossier CBG/2/26 Motif de surveillance Motif 2 Unité Salle d’observation — médecine générale Place place 2 Entrée 15/08/2026 à 14h00 Durée 20 h Médecin responsable BICHIASI Cezoune Sichovian Infirmier de surveillance GEVAMIAN Yelia Issue en cours Feuille de surveillance Relever les constantes Aucun relevé enregistré. Prescrire Imprimer la feuille Décider de l’orientation",
    "boutons": [
     "Fermer",
     "Relever les constantes",
@@ -3503,11 +3503,11 @@
   },
   "etat": {
    "titre": "Feuille de mise en observation",
-   "sousTitre": "OBS-2026-0003 — N’TCHA Yacoubou",
+   "sousTitre": "OBS-2026-0003 — N’ACHOU Yacha",
    "cartouche": [
     [
      "Patient",
-     "N’TCHA Yacoubou"
+     "N’ACHOU Yacha"
     ],
     [
      "Dossier",
@@ -3531,7 +3531,7 @@
     ],
     [
      "Médecin responsable",
-     "BASSONGUI Chabi Séko"
+     "BICHIASI Cezoune Sichovian"
     ],
     [
      "Issue",
@@ -3541,14 +3541,14 @@
    "signatures": [
     {
      "role": "L’infirmier de surveillance",
-     "nom": "GARBA Yahouza"
+     "nom": "GEVAMIAN Yelia"
     },
     {
      "role": "Le médecin responsable",
-     "nom": "BASSONGUI Chabi Séko"
+     "nom": "BICHIASI Cezoune Sichovian"
     }
    ],
-   "texte": "HeureTempératureTensionPoulsSpO₂ObservationRelevé par15/08/2026 10h0036.8 °C13/872 bpm99 %ConscientGARBA Yahouza15/08/2026 22h0037.0 °C12/876 bpm98 %GARBA Yahouza16/08/2026 08h0039.1 °C10/6110 bpm93 %Sous perfusionNKOUÉ Jean",
+   "texte": "HeureTempératureTensionPoulsSpO₂ObservationRelevé par15/08/2026 10h0036.8 °C13/872 bpm99 %ConscientGEVAMIAN Yelia15/08/2026 22h0037.0 °C12/876 bpm98 %GEVAMIAN Yelia16/08/2026 08h0039.1 °C10/6110 bpm93 %Sous perfusionNIDJON Jagi",
    "tableaux": [
     {
      "entetes": [
@@ -3568,7 +3568,7 @@
        "72 bpm",
        "99 %",
        "Conscient",
-       "GARBA Yahouza"
+       "GEVAMIAN Yelia"
       ],
       [
        "15/08/2026 22h00",
@@ -3577,7 +3577,7 @@
        "76 bpm",
        "98 %",
        "",
-       "GARBA Yahouza"
+       "GEVAMIAN Yelia"
       ],
       [
        "16/08/2026 08h00",
@@ -3586,7 +3586,7 @@
        "110 bpm",
        "93 %",
        "Sous perfusion",
-       "NKOUÉ Jean"
+       "NIDJON Jagi"
       ]
      ]
     }
@@ -3613,7 +3613,7 @@
     "unite": "urgences",
     "place": "",
     "dateEntree": "2026-08-16T10:00",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "infirmier": ""
    },
    "optionsUnite": [
@@ -3636,98 +3636,98 @@
    ],
    "optionsMedecin": [
     [
-     "BASSONGUI Chabi Séko",
-     "BASSONGUI Chabi Séko"
+     "BICHIASI Cezoune Sichovian",
+     "BICHIASI Cezoune Sichovian"
     ],
     [
-     "YENI M’PO Florent",
-     "YENI M’PO Florent"
+     "YORO M’ABEKPIA Foulumi",
+     "YORO M’ABEKPIA Foulumi"
     ],
     [
-     "TAKI Orou",
-     "TAKI Orou"
+     "TACHEDI Odjipiar",
+     "TACHEDI Odjipiar"
     ],
     [
-     "AHOHOU Rodrigue",
-     "AHOHOU Rodrigue"
+     "AKPOMER Ridur",
+     "AKPOMER Ridur"
     ]
    ],
    "optionsInfirmier": [
     [
-     "GARBA Yahouza",
-     "GARBA Yahouza — Surveillant"
+     "GEVAMIAN Yelia",
+     "GEVAMIAN Yelia — Surveillant"
     ],
     [
-     "IDRISSOU ANIKI Baba-Toundé",
-     "IDRISSOU ANIKI Baba-Toundé — Infirmier"
+     "IGBOUPU ATUGBIPOU Badom-Tukepou",
+     "IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier"
     ],
     [
-     "NKOUÉ Jean",
-     "NKOUÉ Jean — Infirmier"
+     "NIDJON Jagi",
+     "NIDJON Jagi — Infirmier"
     ],
     [
-     "BAGRI Elvyre",
-     "BAGRI Elvyre — Infirmière"
+     "BELABO Egbifepo",
+     "BELABO Egbifepo — Infirmière"
     ],
     [
-     "PARAISO Abdoul",
-     "PARAISO Abdoul — Infirmier(ère)"
+     "PENU Abebia",
+     "PENU Abebia — Infirmier(ère)"
     ],
     [
-     "OURTCHA Bertine",
-     "OURTCHA Bertine — Infirmier(ère)"
+     "OSIAMIAM Bodje",
+     "OSIAMIAM Bodje — Infirmier(ère)"
     ],
     [
-     "DOSSOU Moussa",
-     "DOSSOU Moussa — Infirmier(ère)"
+     "DULOUNE Mudovur",
+     "DULOUNE Mudovur — Infirmier(ère)"
     ],
     [
-     "OROU YO Alimatou",
-     "OROU YO Alimatou — Infirmier(ère)"
+     "ODJIPIAR YUDJOUVOU Arialu",
+     "ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)"
     ],
     [
-     "BADO BANI A. B. Zoulehath",
-     "BADO BANI A. B. Zoulehath — Sage-femme"
+     "BATOL BIAREL A. B. Zouguti",
+     "BATOL BIAREL A. B. Zouguti — Sage-femme"
     ],
     [
-     "BOUKARI Nadège",
-     "BOUKARI Nadège — Sage-femme"
+     "BUKE Nedi",
+     "BUKE Nedi — Sage-femme"
     ],
     [
-     "ADAM Colette",
-     "ADAM Colette — Sage-femme"
+     "ACHOUBE Coufi",
+     "ACHOUBE Coufi — Sage-femme"
     ],
     [
-     "TEPA Séraphine",
-     "TEPA Séraphine — Aide-soignante — Chef de service"
+     "TOGA Sigbudja",
+     "TOGA Sigbudja — Aide-soignante — Chef de service"
     ],
     [
-     "DAOUDA Zoukanéri",
-     "DAOUDA Zoukanéri — Aide-soignante"
+     "DACHULO Zobo",
+     "DACHULO Zobo — Aide-soignante"
     ],
     [
-     "YENI Rachida",
-     "YENI Rachida — Aide-soignante"
+     "YORO Rarouvil",
+     "YORO Rarouvil — Aide-soignante"
     ],
     [
-     "TAKI Bibata",
-     "TAKI Bibata — Aide-soignante"
+     "TACHEDI Bouboli",
+     "TACHEDI Bouboli — Aide-soignante"
     ],
     [
-     "WOROU Salamatou",
-     "WOROU Salamatou — Aide-soignante"
+     "WEDIA Saliagel",
+     "WEDIA Saliagel — Aide-soignante"
     ],
     [
-     "DAOUDA Justine",
-     "DAOUDA Justine — Aide-soignante"
+     "DACHULO Jiakpune",
+     "DACHULO Jiakpune — Aide-soignante"
     ],
     [
-     "OURTCHA Marguerite",
-     "OURTCHA Marguerite — Aide-soignante"
+     "OSIAMIAM Mibu",
+     "OSIAMIAM Mibu — Aide-soignante"
     ],
     [
-     "GBEDJI Zoukanéri",
-     "GBEDJI Zoukanéri — Aide-soignante"
+     "GIDJI Zobo",
+     "GIDJI Zobo — Aide-soignante"
     ]
    ],
    "refusVide": {
@@ -3737,7 +3737,7 @@
    "cree": {
     "toasts": [
      [
-      "PARAISO Sabi mis(e) en observation.",
+      "PENU Sabar mis(e) en observation.",
       "Salle d’observation — pédiatrie — entrée à 08h30"
      ]
     ],
@@ -3746,7 +3746,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0008",
      "patientId": "PAT0004",
-     "patient": "PARAISO Sabi",
+     "patient": "PENU Sabar",
      "patientCode": "CBG/4/26",
      "unite": "pediatrie",
      "uniteLabel": "Salle d’observation — pédiatrie",
@@ -3754,7 +3754,7 @@
      "motif": "Malaise",
      "dateEntree": "2026-08-16T08:30:00.000Z",
      "dateSortie": null,
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "infirmier": null,
      "constantes": [],
      "statutObservation": "en_cours",
@@ -3782,7 +3782,7 @@
     "pouls": "",
     "spo2": "",
     "observation": "",
-    "par": "BASSONGUI Chabi Séko"
+    "par": "BICHIASI Cezoune Sichovian"
    },
    "refusVide": {
     "toasts": []
@@ -3802,7 +3802,7 @@
       "pouls": 72,
       "spo2": 99,
       "observation": "Conscient",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-15T22:00:00.000Z",
@@ -3811,7 +3811,7 @@
       "pouls": 76,
       "spo2": 98,
       "observation": "",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-16T08:00:00.000Z",
@@ -3820,7 +3820,7 @@
       "pouls": 110,
       "spo2": 93,
       "observation": "Sous perfusion",
-      "par": "NKOUÉ Jean"
+      "par": "NIDJON Jagi"
      },
      {
       "heure": "2026-08-16T09:45:00.000Z",
@@ -3829,7 +3829,7 @@
       "pouls": 90,
       "spo2": null,
       "observation": "",
-      "par": "BASSONGUI Chabi Séko"
+      "par": "BICHIASI Cezoune Sichovian"
      }
     ]
    }
@@ -3846,10 +3846,10 @@
     "orientation": "domicile",
     "conclusion": "",
     "dateSortie": "2026-08-16T10:00",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "destination": ""
    },
-   "texte": "Orientation à l’issue de l’observation N’TCHA Yacoubou — 25 h de surveillance Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Entrée 15/08/2026 à 09h00 Relevés de constantes 4 Décision d’orientation * Sortie définitive — retour à domicile Hospitalisation complète Transfert vers un autre établissement Passage au bloc opératoire Conclusion de la surveillance * Heure de sortie d’observation * Décision prise par * Établissement de destination À renseigner en cas de transfert. Une hospitalisation complète ouvre une admission dans le module M3 : l’observation se termine, le séjour commence, et les deux restent distincts au dossier. Annuler Enregistrer la décision",
+   "texte": "Orientation à l’issue de l’observation N’ACHOU Yacha — 25 h de surveillance Motif de surveillance Motif 3 Unité Salle d’observation — médecine générale Entrée 15/08/2026 à 09h00 Relevés de constantes 4 Décision d’orientation * Sortie définitive — retour à domicile Hospitalisation complète Transfert vers un autre établissement Passage au bloc opératoire Conclusion de la surveillance * Heure de sortie d’observation * Décision prise par * Établissement de destination À renseigner en cas de transfert. Une hospitalisation complète ouvre une admission dans le module M3 : l’observation se termine, le séjour commence, et les deux restent distincts au dossier. Annuler Enregistrer la décision",
    "optionsOrientation": [
     [
      "domicile",
@@ -3882,7 +3882,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0003",
      "patientId": "PAT0003",
-     "patient": "N’TCHA Yacoubou",
+     "patient": "N’ACHOU Yacha",
      "patientCode": "CBG/3/26",
      "unite": "medecine",
      "uniteLabel": "Salle d’observation — médecine générale",
@@ -3890,8 +3890,8 @@
      "motif": "Motif 3",
      "dateEntree": "2026-08-15T09:00:00.000Z",
      "dateSortie": "2026-08-16T09:50:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "GARBA Yahouza",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "GEVAMIAN Yelia",
      "constantes": [
       {
        "heure": "2026-08-15T10:00:00.000Z",
@@ -3900,7 +3900,7 @@
        "pouls": 72,
        "spo2": 99,
        "observation": "Conscient",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-08-15T22:00:00.000Z",
@@ -3909,7 +3909,7 @@
        "pouls": 76,
        "spo2": 98,
        "observation": "",
-       "par": "GARBA Yahouza"
+       "par": "GEVAMIAN Yelia"
       },
       {
        "heure": "2026-08-16T08:00:00.000Z",
@@ -3918,7 +3918,7 @@
        "pouls": 110,
        "spo2": 93,
        "observation": "Sous perfusion",
-       "par": "NKOUÉ Jean"
+       "par": "NIDJON Jagi"
       },
       {
        "heure": "2026-08-16T09:45:00.000Z",
@@ -3927,14 +3927,14 @@
        "pouls": 90,
        "spo2": null,
        "observation": "",
-       "par": "BASSONGUI Chabi Séko"
+       "par": "BICHIASI Cezoune Sichovian"
       }
      ],
      "statutObservation": "clos",
      "orientation": "domicile",
      "orientationLabel": "Sortie définitive — retour à domicile",
      "conclusion": "Évolution favorable",
-     "decidePar": "BASSONGUI Chabi Séko",
+     "decidePar": "BICHIASI Cezoune Sichovian",
      "destination": null
     },
     "admissionsCreees": 0
@@ -3951,7 +3951,7 @@
      "statut": "actif",
      "reference": "OBS-2026-0001",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "patientCode": "CBG/1/25",
      "unite": "urgences",
      "uniteLabel": "Salle d’observation — urgences",
@@ -3959,8 +3959,8 @@
      "motif": "Motif 1",
      "dateEntree": "2026-08-16T07:00:00.000Z",
      "dateSortie": "2026-08-16T09:55:00.000Z",
-     "medecin": "BASSONGUI Chabi Séko",
-     "infirmier": "GARBA Yahouza",
+     "medecin": "BICHIASI Cezoune Sichovian",
+     "infirmier": "GEVAMIAN Yelia",
      "constantes": [
       {
        "heure": "2026-08-16T07:00:00.000Z",
@@ -3969,7 +3969,7 @@
        "pouls": 80,
        "spo2": 98,
        "observation": "Repos",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       },
       {
        "heure": "2026-08-16T09:00:00.000Z",
@@ -3978,14 +3978,14 @@
        "pouls": 96,
        "spo2": 95,
        "observation": "Fièvre",
-       "par": "DOSSOU Moussa"
+       "par": "DULOUNE Mudovur"
       }
      ],
      "statutObservation": "clos",
      "orientation": "hospitalisation",
      "orientationLabel": "Hospitalisation complète",
      "conclusion": "Aggravation constatée",
-     "decidePar": "BASSONGUI Chabi Séko",
+     "decidePar": "BICHIASI Cezoune Sichovian",
      "destination": null
     },
     "admissionsCreees": 1,
@@ -3994,14 +3994,14 @@
      "statut": "en_cours",
      "reference": "H00001",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "patientCode": "CBG/1/25",
      "dateEntree": "2026-08-16",
      "dateSortie": null,
      "diagnosticEntree": "Aggravation constatée",
      "symptomes": "Motif 1",
      "priseEnCharge": "plus_8h",
-     "infirmier": "GARBA Yahouza",
+     "infirmier": "GEVAMIAN Yelia",
      "origineObservation": "OBS-2026-0001"
     }
    }
@@ -4082,7 +4082,7 @@
      "lignes": [
       [
        "OBS-2026-0008",
-       "PARAISO Sabi CBG/4/26",
+       "PENU Sabar CBG/4/26",
        "Malaise",
        "pédiatrie",
        "16/08/2026 08h30",
@@ -4093,7 +4093,7 @@
       ],
       [
        "OBS-2026-0002",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "Motif 2",
        "médecine générale",
        "15/08/2026 14h00",
@@ -4104,7 +4104,7 @@
       ],
       [
        "OBS-2026-0004",
-       "PARAISO Sabi CBG/4/26",
+       "PENU Sabar CBG/4/26",
        "Motif 4",
        "maternité",
        "14/08/2026 10h00",
@@ -4123,7 +4123,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0008",
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
@@ -4131,14 +4131,14 @@
     "motif": "Malaise",
     "dateEntree": "2026-08-16T08:30:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "infirmier": null,
     "constantes": [],
     "statutObservation": "en_cours",
     "orientation": null,
     "orientationLabel": null,
     "conclusion": null,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-08-16T10:00:00.000Z"
    },
    {
@@ -4146,7 +4146,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
@@ -4154,8 +4154,8 @@
     "motif": "Motif 1",
     "dateEntree": "2026-08-16T07:00:00.000Z",
     "dateSortie": "2026-08-16T09:55:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-16T07:00:00.000Z",
@@ -4164,7 +4164,7 @@
       "pouls": 80,
       "spo2": 98,
       "observation": "Repos",
-      "par": "DOSSOU Moussa"
+      "par": "DULOUNE Mudovur"
      },
      {
       "heure": "2026-08-16T09:00:00.000Z",
@@ -4173,16 +4173,16 @@
       "pouls": 96,
       "spo2": 95,
       "observation": "Fièvre",
-      "par": "DOSSOU Moussa"
+      "par": "DULOUNE Mudovur"
      }
     ],
     "statutObservation": "clos",
     "orientation": "hospitalisation",
     "orientationLabel": "Hospitalisation complète",
     "conclusion": "Aggravation constatée",
-    "decidePar": "BASSONGUI Chabi Séko",
+    "decidePar": "BICHIASI Cezoune Sichovian",
     "destination": null,
-    "_modifiePar": "BASSONGUI Chabi Séko",
+    "_modifiePar": "BICHIASI Cezoune Sichovian",
     "_modifieLe": "2026-08-16T10:00:00.000Z"
    },
    {
@@ -4190,7 +4190,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -4198,8 +4198,8 @@
     "motif": "Motif 2",
     "dateEntree": "2026-08-15T14:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "en_cours",
     "orientation": null,
@@ -4211,7 +4211,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -4219,8 +4219,8 @@
     "motif": "Motif 3",
     "dateEntree": "2026-08-15T09:00:00.000Z",
     "dateSortie": "2026-08-16T09:50:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-15T10:00:00.000Z",
@@ -4229,7 +4229,7 @@
       "pouls": 72,
       "spo2": 99,
       "observation": "Conscient",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-15T22:00:00.000Z",
@@ -4238,7 +4238,7 @@
       "pouls": 76,
       "spo2": 98,
       "observation": "",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      },
      {
       "heure": "2026-08-16T08:00:00.000Z",
@@ -4247,7 +4247,7 @@
       "pouls": 110,
       "spo2": 93,
       "observation": "Sous perfusion",
-      "par": "NKOUÉ Jean"
+      "par": "NIDJON Jagi"
      },
      {
       "heure": "2026-08-16T09:45:00.000Z",
@@ -4256,16 +4256,16 @@
       "pouls": 90,
       "spo2": null,
       "observation": "",
-      "par": "BASSONGUI Chabi Séko"
+      "par": "BICHIASI Cezoune Sichovian"
      }
     ],
     "statutObservation": "clos",
     "orientation": "domicile",
     "orientationLabel": "Sortie définitive — retour à domicile",
     "conclusion": "Évolution favorable",
-    "_modifiePar": "BASSONGUI Chabi Séko",
+    "_modifiePar": "BICHIASI Cezoune Sichovian",
     "_modifieLe": "2026-08-16T10:00:00.000Z",
-    "decidePar": "BASSONGUI Chabi Séko",
+    "decidePar": "BICHIASI Cezoune Sichovian",
     "destination": null
    },
    {
@@ -4273,7 +4273,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0004",
     "patientId": "PAT0004",
-    "patient": "PARAISO Sabi",
+    "patient": "PENU Sabar",
     "patientCode": "CBG/4/26",
     "unite": "maternite",
     "uniteLabel": "Salle d’observation — maternité",
@@ -4281,8 +4281,8 @@
     "motif": "Motif 4",
     "dateEntree": "2026-08-14T10:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-14T18:00:00.000Z",
@@ -4291,7 +4291,7 @@
       "pouls": 88,
       "spo2": 97,
       "observation": "",
-      "par": "BAGRI Elvyre"
+      "par": "BELABO Egbifepo"
      }
     ],
     "statutObservation": "en_cours",
@@ -4304,7 +4304,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0005",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "unite": "pediatrie",
     "uniteLabel": "Salle d’observation — pédiatrie",
@@ -4312,8 +4312,8 @@
     "motif": "Motif 5",
     "dateEntree": "2026-08-14T08:00:00.000Z",
     "dateSortie": "2026-08-15T04:00:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [
      {
       "heure": "2026-08-14T09:00:00.000Z",
@@ -4322,7 +4322,7 @@
       "pouls": 70,
       "spo2": 99,
       "observation": "",
-      "par": "GARBA Yahouza"
+      "par": "GEVAMIAN Yelia"
      }
     ],
     "statutObservation": "clos",
@@ -4335,7 +4335,7 @@
     "statut": "actif",
     "reference": "OBS-2026-0006",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "unite": "urgences",
     "uniteLabel": "Salle d’observation — urgences",
@@ -4343,8 +4343,8 @@
     "motif": "Motif 6",
     "dateEntree": "2026-08-12T06:00:00.000Z",
     "dateSortie": "2026-08-13T12:00:00.000Z",
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "clos",
     "orientation": "hospitalisation",
@@ -4356,7 +4356,7 @@
     "statut": "archive",
     "reference": "OBS-2026-0007",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "unite": "medecine",
     "uniteLabel": "Salle d’observation — médecine générale",
@@ -4364,8 +4364,8 @@
     "motif": "Motif 7",
     "dateEntree": "2026-08-16T00:00:00.000Z",
     "dateSortie": null,
-    "medecin": "BASSONGUI Chabi Séko",
-    "infirmier": "GARBA Yahouza",
+    "medecin": "BICHIASI Cezoune Sichovian",
+    "infirmier": "GEVAMIAN Yelia",
     "constantes": [],
     "statutObservation": "en_cours",
     "orientation": null,
@@ -4381,7 +4381,7 @@
     "statut": "en_cours",
     "reference": "H00001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
@@ -4391,14 +4391,14 @@
     "diagnosticEntree": "Diagnostic 1",
     "symptomes": "",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM2",
     "statut": "en_cours",
     "reference": "H00002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "C1",
     "lit": "C1 LIT1",
@@ -4408,7 +4408,7 @@
     "diagnosticEntree": "Diagnostic 2",
     "symptomes": "",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    }
   ],
   "releves": [
@@ -4427,7 +4427,7 @@
     "poids": 61,
     "taille": 170,
     "traitement": "Traitement 1",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL2",
@@ -4444,7 +4444,7 @@
     "poids": 62,
     "taille": 170,
     "traitement": "Traitement 2",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL3",
@@ -4461,7 +4461,7 @@
     "poids": 63,
     "taille": 170,
     "traitement": "Traitement 3",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL4",
@@ -4478,7 +4478,7 @@
     "poids": 64,
     "taille": 170,
     "traitement": "Traitement 4",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL5",
@@ -4495,7 +4495,7 @@
     "poids": 65,
     "taille": 170,
     "traitement": "Traitement 5",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL6",
@@ -4512,7 +4512,7 @@
     "poids": 66,
     "taille": 170,
     "traitement": "Traitement 6",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL7",
@@ -4529,7 +4529,7 @@
     "poids": 67,
     "taille": 170,
     "traitement": "Traitement 7",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    }
   ],
   "ecran": {
@@ -4567,7 +4567,7 @@
        "906",
        "66",
        "Traitement 6",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4581,7 +4581,7 @@
        "905",
        "65",
        "Traitement 5",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4595,7 +4595,7 @@
        "904",
        "64",
        "Traitement 4",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4609,7 +4609,7 @@
        "903",
        "63",
        "Traitement 3",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4623,7 +4623,7 @@
        "902",
        "62",
        "Traitement 2",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4637,7 +4637,7 @@
        "901",
        "61",
        "Traitement 1",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ]
      ]
@@ -4723,7 +4723,7 @@
     }
    ],
    "boutons": [
-    "TCHANE Bertine",
+    "TIAMOU Bodje",
     "Nouveau relevé",
     "Imprimer la feuille",
     "Colonnes",
@@ -4736,16 +4736,16 @@
     "Archiver ce relevé",
     "Archiver ce relevé"
    ],
-   "texte": "Patient hospitalisé TCHANE Bertine Nouveau relevé Imprimer la feuille Patient Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Entrée 12/08/2026 Séjour 4 jour(s) Diagnostic Diagnostic 1 Infirmier référent GARBA Yahouza Courbe de température (°C) Fréquence cardiaque et saturation Relevés de constantes Colonnes Exporter DATE HEURE T° (°C) TA FC SPO₂ FR DIURÈSE (ML) POIDS (KG) TRAITEMENT SAISI PAR ACTIONS 15/08/2026 14:00 39.2 14/9 110 90 % 18 906 66 Traitement 6 DOSSOU Moussa 15/08/2026 08:00 36.9 11/7 74 97 % 18 905 65 Traitement 5 DOSSOU Moussa 14/08/2026 20:00 38 12/8 88 94 % 18 904 64 Traitement 4 DOSSOU Moussa 14/08/2026 08:00 35.8 10/6 62 99 % 18 903 63 Traitement 3 D",
+   "texte": "Patient hospitalisé TIAMOU Bodje Nouveau relevé Imprimer la feuille Patient Patient TIAMOU Bodje Dossier CBG/1/25 Lit A1 LIT1 Chambre Standard Entrée 12/08/2026 Séjour 4 jour(s) Diagnostic Diagnostic 1 Infirmier référent GEVAMIAN Yelia Courbe de température (°C) Fréquence cardiaque et saturation Relevés de constantes Colonnes Exporter DATE HEURE T° (°C) TA FC SPO₂ FR DIURÈSE (ML) POIDS (KG) TRAITEMENT SAISI PAR ACTIONS 15/08/2026 14:00 39.2 14/9 110 90 % 18 906 66 Traitement 6 DULOUNE Mudovur 15/08/2026 08:00 36.9 11/7 74 97 % 18 905 65 Traitement 5 DULOUNE Mudovur 14/08/2026 20:00 38 12/8 88 94 % 18 904 64 Traitement 4 DULOUNE Mudovur 14/08/2026 08:00 35.8 10/6 62 99 % 18 903 63 Traitement 3 D",
    "options": [
     [
      "ADM1",
-     "TCHANE Bertine",
+     "TIAMOU Bodje",
      "Lit A1 LIT1 — CBG/1/25"
     ],
     [
      "ADM2",
-     "BAKO Boukari",
+     "BIALI Buke",
      "Lit C1 LIT1 — CBG/2/26"
     ]
    ]
@@ -4816,7 +4816,7 @@
      "taille": null,
      "traitement": "Paracétamol",
      "admissionId": "ADM1",
-     "saisiPar": "BASSONGUI Chabi Séko"
+     "saisiPar": "BICHIASI Cezoune Sichovian"
     },
     "total": 8
    }
@@ -4856,7 +4856,7 @@
        "1200",
        "—",
        "Paracétamol",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
@@ -4870,7 +4870,7 @@
        "906",
        "66",
        "Traitement 6",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4884,7 +4884,7 @@
        "905",
        "65",
        "Traitement 5",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4898,7 +4898,7 @@
        "904",
        "64",
        "Traitement 4",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4912,7 +4912,7 @@
        "903",
        "63",
        "Traitement 3",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4926,7 +4926,7 @@
        "902",
        "62",
        "Traitement 2",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ],
       [
@@ -4940,7 +4940,7 @@
        "901",
        "61",
        "Traitement 1",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        ""
       ]
      ]
@@ -5045,7 +5045,7 @@
    "cartouche": [
     [
      "Patient",
-     "TCHANE Bertine"
+     "TIAMOU Bodje"
     ],
     [
      "Dossier",
@@ -5071,7 +5071,7 @@
    "signatures": [
     {
      "role": "L’Infirmier traitant",
-     "nom": "GARBA Yahouza"
+     "nom": "GEVAMIAN Yelia"
     },
     {
      "role": "Le Médecin"
@@ -5084,9 +5084,9 @@
    "cartes": [
     "Patient"
    ],
-   "texte": "Patient hospitalisé BAKO Boukari Nouveau relevé Imprimer la feuille Patient Patient BAKO Boukari Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Entrée 15/08/2026 Séjour 1 jour(s) Diagnostic Diagnostic 2 Infirmier référent GARBA Yahouza Aucun relevé enregistré pour ce patient. Saisir le premier relevé",
+   "texte": "Patient hospitalisé BIALI Buke Nouveau relevé Imprimer la feuille Patient Patient BIALI Buke Dossier CBG/2/26 Lit C1 LIT1 Chambre VIP Entrée 15/08/2026 Séjour 1 jour(s) Diagnostic Diagnostic 2 Infirmier référent GEVAMIAN Yelia Aucun relevé enregistré pour ce patient. Saisir le premier relevé",
    "boutons": [
-    "BAKO Boukari",
+    "BIALI Buke",
     "Nouveau relevé",
     "Imprimer la feuille",
     "Saisir le premier relevé"
@@ -5103,7 +5103,7 @@
     "statut": "en_cours",
     "reference": "H00001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "chambre": "A1",
     "lit": "A1 LIT1",
@@ -5113,14 +5113,14 @@
     "diagnosticEntree": "Diagnostic 1",
     "symptomes": "",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    },
    {
     "id": "ADM2",
     "statut": "en_cours",
     "reference": "H00002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "chambre": "A2",
     "lit": "A2 LIT1",
@@ -5130,7 +5130,7 @@
     "diagnosticEntree": "Diagnostic 2",
     "symptomes": "",
     "priseEnCharge": "plus_8h",
-    "infirmier": "GARBA Yahouza"
+    "infirmier": "GEVAMIAN Yelia"
    }
   ],
   "soins": [
@@ -5141,13 +5141,13 @@
     "heure": "08:00",
     "admissionId": "ADM1",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "acte": "Injection intraveineuse",
     "produit": "Produit 1",
     "quantite": 2,
-    "soignant": "DOSSOU Moussa",
+    "soignant": "DULOUNE Mudovur",
     "observations": "RAS",
     "etat": "realise"
    },
@@ -5158,13 +5158,13 @@
     "heure": "12:00",
     "admissionId": "ADM1",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "lit": "A1 LIT1",
     "acte": "Pose de perfusion",
     "produit": "",
     "quantite": 0,
-    "soignant": "DOSSOU Moussa",
+    "soignant": "DULOUNE Mudovur",
     "observations": "",
     "etat": "planifie"
    },
@@ -5175,13 +5175,13 @@
     "heure": "16:00",
     "admissionId": "ADM2",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Aérosol",
     "produit": "Produit 3",
     "quantite": 2,
-    "soignant": "DOSSOU Moussa",
+    "soignant": "DULOUNE Mudovur",
     "observations": "",
     "etat": "realise"
    },
@@ -5192,13 +5192,13 @@
     "heure": "09:00",
     "admissionId": "ADM2",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Soins de nursing",
     "produit": "",
     "quantite": 0,
-    "soignant": "DOSSOU Moussa",
+    "soignant": "DULOUNE Mudovur",
     "observations": "",
     "etat": "planifie"
    },
@@ -5209,13 +5209,13 @@
     "heure": "10:00",
     "admissionId": "ADM2",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "lit": "A2 LIT1",
     "acte": "Aérosol",
     "produit": "Produit 5",
     "quantite": 2,
-    "soignant": "DOSSOU Moussa",
+    "soignant": "DULOUNE Mudovur",
     "observations": "",
     "etat": "realise"
    }
@@ -5231,7 +5231,7 @@
     "titre": "Exécuter les soins",
     "reference": "ORD-T1",
     "ordonnanceId": "ORD1",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "date": "2026-08-11T09:00:00.000Z",
     "urgent": true,
@@ -5248,7 +5248,7 @@
     "titre": "Exécuter les soins",
     "reference": "ORD-T2",
     "ordonnanceId": null,
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "date": "2026-08-12T09:00:00.000Z",
     "urgent": false,
@@ -5265,7 +5265,7 @@
     "titre": "Exécuter les soins",
     "reference": "ORD-T3",
     "ordonnanceId": null,
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "date": "2026-08-13T09:00:00.000Z",
     "urgent": false,
@@ -5315,7 +5315,7 @@
      "lignes": [
       [
        "ORD-T1Urgent",
-       "TCHANE Bertine CBG/1/25",
+       "TIAMOU Bodje CBG/1/25",
        "2 acte(s) — Soin 1",
        "1 500",
        "À traiter",
@@ -5323,7 +5323,7 @@
       ],
       [
        "ORD-T3",
-       "N’TCHA Yacoubou CBG/3/26",
+       "N’ACHOU Yacha CBG/3/26",
        "2 acte(s) — Soin 3",
        "4 500",
        "À traiter",
@@ -5331,7 +5331,7 @@
       ],
       [
        "ORD-T2",
-       "BAKO Boukari CBG/2/26",
+       "BIALI Buke CBG/2/26",
        "2 acte(s) — Soin 2",
        "3 000",
        "Attente encaissement",
@@ -5358,10 +5358,10 @@
        "16/08/2026",
        "09:00",
        "A2 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Soins de nursing",
        "—",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Planifié",
        ""
       ],
@@ -5370,10 +5370,10 @@
        "15/08/2026",
        "12:00",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Pose de perfusion",
        "—",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Planifié",
        ""
       ],
@@ -5382,10 +5382,10 @@
        "15/08/2026",
        "16:00",
        "A2 LIT1",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Aérosol",
        "Produit 3",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Réalisé",
        ""
       ],
@@ -5394,10 +5394,10 @@
        "14/08/2026",
        "08:00",
        "A1 LIT1",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Injection intraveineuse",
        "Produit 1",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Réalisé",
        ""
       ]
@@ -5530,24 +5530,24 @@
     "titre": "Exécuter les soins",
     "reference": "ORD-T1",
     "ordonnanceId": "ORD1",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "date": "2026-08-11T09:00:00.000Z",
     "urgent": true,
     "detail": "2 acte(s) — Soin 1",
     "montant": 1500,
     "faitLe": "2026-08-16T10:00:00.000Z",
-    "faitPar": "BASSONGUI Chabi Séko"
+    "faitPar": "BICHIASI Cezoune Sichovian"
    },
    "ordonnance": {
     "id": "ORD1",
     "numero": "ORD-T1",
     "statut": "actif",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "statutActes": "fait",
     "actesFaitsLe": "2026-08-16T10:00:00.000Z",
-    "actesFaitsPar": "BASSONGUI Chabi Séko"
+    "actesFaitsPar": "BICHIASI Cezoune Sichovian"
    },
    "boutons": [
     "Colonnes",
@@ -5590,10 +5590,10 @@
      "16/08/2026",
      "09:00",
      "A2 LIT1",
-     "BAKO Boukari",
+     "BIALI Buke",
      "Soins de nursing",
      "—",
-     "DOSSOU Moussa",
+     "DULOUNE Mudovur",
      "Planifié",
      ""
     ],
@@ -5602,10 +5602,10 @@
      "15/08/2026",
      "12:00",
      "A1 LIT1",
-     "TCHANE Bertine",
+     "TIAMOU Bodje",
      "Pose de perfusion",
      "—",
-     "DOSSOU Moussa",
+     "DULOUNE Mudovur",
      "Planifié",
      ""
     ],
@@ -5614,10 +5614,10 @@
      "15/08/2026",
      "16:00",
      "A2 LIT1",
-     "BAKO Boukari",
+     "BIALI Buke",
      "Aérosol",
      "Produit 3",
-     "DOSSOU Moussa",
+     "DULOUNE Mudovur",
      "Réalisé",
      ""
     ],
@@ -5626,17 +5626,17 @@
      "14/08/2026",
      "08:00",
      "A1 LIT1",
-     "TCHANE Bertine",
+     "TIAMOU Bodje",
      "Injection intraveineuse",
      "Produit 1",
-     "DOSSOU Moussa",
+     "DULOUNE Mudovur",
      "Réalisé",
      ""
     ]
    ]
   },
   "detail": {
-   "texte": "TCHANE Bertine Date et heure 15/08/2026 à 12:00 Patient TCHANE Bertine Dossier CBG/1/25 Lit A1 LIT1 Acte Pose de perfusion Produit administré — Quantité — Soignant DOSSOU Moussa État Planifié Observations — Imprimer Modifier Archiver",
+   "texte": "TIAMOU Bodje Date et heure 15/08/2026 à 12:00 Patient TIAMOU Bodje Dossier CBG/1/25 Lit A1 LIT1 Acte Pose de perfusion Produit administré — Quantité — Soignant DULOUNE Mudovur État Planifié Observations — Imprimer Modifier Archiver",
    "boutons": [
     "Fermer",
     "Imprimer",
@@ -5646,11 +5646,11 @@
   },
   "etat": {
    "titre": "Feuille de soins",
-   "sousTitre": "TCHANE Bertine — lit A1 LIT1",
+   "sousTitre": "TIAMOU Bodje — lit A1 LIT1",
    "cartouche": [
     [
      "Patient",
-     "TCHANE Bertine"
+     "TIAMOU Bodje"
     ],
     [
      "Dossier",
@@ -5662,7 +5662,7 @@
     ],
     [
      "Soignant",
-     "DOSSOU Moussa"
+     "DULOUNE Mudovur"
     ]
    ],
    "signatures": [
@@ -5695,18 +5695,18 @@
     "acte": "Injection intraveineuse",
     "produit": "",
     "quantite": "1",
-    "soignant": "BASSONGUI Chabi Séko",
+    "soignant": "BICHIASI Cezoune Sichovian",
     "etat": "realise",
     "observations": ""
    },
    "optionsPatient": [
     [
      "ADM1",
-     "TCHANE Bertine — lit A1 LIT1 (CBG/1/25)"
+     "TIAMOU Bodje — lit A1 LIT1 (CBG/1/25)"
     ],
     [
      "ADM2",
-     "BAKO Boukari — lit A2 LIT1 (CBG/2/26)"
+     "BIALI Buke — lit A2 LIT1 (CBG/2/26)"
     ]
    ],
    "optionsActe": [
@@ -5784,10 +5784,10 @@
      "acte": "Injection intramusculaire",
      "produit": "Ceftriaxone",
      "quantite": 1,
-     "soignant": "NKOUÉ Jean",
+     "soignant": "NIDJON Jagi",
      "etat": "realise",
      "observations": "Bien toléré",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "patientCode": "CBG/2/26",
      "patientId": "PAT0002",
      "lit": "A2 LIT1"
@@ -5827,7 +5827,7 @@
     "acte": "Injection intramusculaire",
     "produit": "Ceftriaxone",
     "quantite": "1",
-    "soignant": "NKOUÉ Jean",
+    "soignant": "NIDJON Jagi",
     "etat": "realise"
    },
    "enregistre": {
@@ -5845,10 +5845,10 @@
      "acte": "Injection intramusculaire",
      "produit": "Ceftriaxone",
      "quantite": 1,
-     "soignant": "NKOUÉ Jean",
+     "soignant": "NIDJON Jagi",
      "etat": "realise",
      "observations": "Bien toléré",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "patientCode": "CBG/1/25",
      "patientId": "PAT0001",
      "lit": "A1 LIT1"
@@ -5867,8 +5867,8 @@
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
-    "prescripteur": "BASSONGUI Chabi Séko",
+    "patient": "TIAMOU Bodje",
+    "prescripteur": "BICHIASI Cezoune Sichovian",
     "modalite": "hospitalisation",
     "statutPaiement": "payee",
     "lignes": [
@@ -5899,8 +5899,8 @@
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0002",
     "patientCode": "CBG/2/26",
-    "patient": "BAKO Boukari",
-    "prescripteur": "BASSONGUI Chabi Séko",
+    "patient": "BIALI Buke",
+    "prescripteur": "BICHIASI Cezoune Sichovian",
     "modalite": "hospitalisation",
     "statutPaiement": "impayee",
     "lignes": [
@@ -5923,8 +5923,8 @@
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0003",
     "patientCode": "CBG/3/26",
-    "patient": "N’TCHA Yacoubou",
-    "prescripteur": "BASSONGUI Chabi Séko",
+    "patient": "N’ACHOU Yacha",
+    "prescripteur": "BICHIASI Cezoune Sichovian",
     "modalite": "ambulatoire",
     "statutPaiement": "payee",
     "lignes": [
@@ -5947,8 +5947,8 @@
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0004",
     "patientCode": "CBG/4/26",
-    "patient": "PARAISO Sabi",
-    "prescripteur": "BASSONGUI Chabi Séko",
+    "patient": "PENU Sabar",
+    "prescripteur": "BICHIASI Cezoune Sichovian",
     "modalite": "hospitalisation",
     "statutPaiement": "payee",
     "lignes": [
@@ -5971,8 +5971,8 @@
     "date": "2026-08-14T09:00:00.000Z",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
-    "prescripteur": "BASSONGUI Chabi Séko",
+    "patient": "TIAMOU Bodje",
+    "prescripteur": "BICHIASI Cezoune Sichovian",
     "modalite": "hospitalisation",
     "statutPaiement": "payee",
     "lignes": [
@@ -5998,13 +5998,13 @@
     "libelle": "Ligne 1",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-15T01:00:00.000Z",
     "rang": 1,
     "total": 3,
     "secteur": "salle_soins",
     "executantId": "SOI06",
-    "executant": "IDRISSOU ANIKI Baba-Toundé",
+    "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "",
     "modalite": "hospitalisation"
    },
@@ -6018,13 +6018,13 @@
     "libelle": "Ligne 2",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-15T02:00:00.000Z",
     "rang": 1,
     "total": 2,
     "secteur": "salle_soins",
     "executantId": "SOI06",
-    "executant": "IDRISSOU ANIKI Baba-Toundé",
+    "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "RAS",
     "modalite": "hospitalisation"
    },
@@ -6038,13 +6038,13 @@
     "libelle": "Ligne 3",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-15T03:00:00.000Z",
     "rang": 1,
     "total": 2,
     "secteur": "salle_soins",
     "executantId": "SOI06",
-    "executant": "IDRISSOU ANIKI Baba-Toundé",
+    "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "",
     "modalite": "hospitalisation"
    },
@@ -6058,13 +6058,13 @@
     "libelle": "Ligne 4",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-15T04:00:00.000Z",
     "rang": 2,
     "total": 2,
     "secteur": "hospitalisation",
     "executantId": "SOI06",
-    "executant": "IDRISSOU ANIKI Baba-Toundé",
+    "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "",
     "modalite": "hospitalisation"
    },
@@ -6078,13 +6078,13 @@
     "libelle": "Ligne 5",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-15T05:00:00.000Z",
     "rang": 2,
     "total": 3,
     "secteur": "hospitalisation",
     "executantId": "SOI06",
-    "executant": "IDRISSOU ANIKI Baba-Toundé",
+    "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "",
     "modalite": "hospitalisation"
    }
@@ -6111,14 +6111,14 @@
       "libelle": "Ceftriaxone 1 g",
       "patientId": "PAT0001",
       "patientCode": "CBG/1/25",
-      "patient": "TCHANE Bertine",
+      "patient": "TIAMOU Bodje",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 2,
       "total": 3,
       "secteur": "hospitalisation",
       "motifSecteur": "Administration n° 2 : le relais est passé à l’hospitalisation.",
       "executantId": "SOI07",
-      "executant": "NKOUÉ Jean",
+      "executant": "NIDJON Jagi",
       "observation": "Bien toléré",
       "modalite": "hospitalisation"
      },
@@ -6147,14 +6147,14 @@
       "libelle": "Ceftriaxone 1 g",
       "patientId": "PAT0001",
       "patientCode": "CBG/1/25",
-      "patient": "TCHANE Bertine",
+      "patient": "TIAMOU Bodje",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 3,
       "total": 3,
       "secteur": "hospitalisation",
       "motifSecteur": "Administration n° 3 : le relais est passé à l’hospitalisation.",
       "executantId": "SOI06",
-      "executant": "IDRISSOU ANIKI Baba-Toundé",
+      "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
       "observation": "",
       "modalite": "hospitalisation"
      },
@@ -6244,7 +6244,7 @@
     "resultat": {
      "ok": false,
      "rang": 3,
-     "motif": "BASSONGUI Chabi Séko (Directeur Médical) n’exécute pas les soins."
+     "motif": "BICHIASI Cezoune Sichovian (Directeur Médical) n’exécute pas les soins."
     },
     "ecrites": 0
    },
@@ -6267,14 +6267,14 @@
       "libelle": "Injection IM",
       "patientId": "PAT0003",
       "patientCode": "CBG/3/26",
-      "patient": "N’TCHA Yacoubou",
+      "patient": "N’ACHOU Yacha",
       "dateHeure": "2026-08-16T10:00:00.000Z",
       "rang": 1,
       "total": 2,
       "secteur": "salle_soins",
       "motifSecteur": "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
       "executantId": "SOI06",
-      "executant": "IDRISSOU ANIKI Baba-Toundé",
+      "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
       "observation": "",
       "modalite": "ambulatoire"
      },
@@ -6349,7 +6349,7 @@
      "lignes": [
       [
        "PRS-00001",
-       "TCHANE Bertine — CBG/1/25",
+       "TIAMOU Bodje — CBG/1/25",
        "Ceftriaxone 1 g",
        "2 / 3",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6358,7 +6358,7 @@
       ],
       [
        "PRS-00002",
-       "BAKO Boukari — CBG/2/26",
+       "BIALI Buke — CBG/2/26",
        "Métronidazole",
        "2 / 2",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6408,10 +6408,10 @@
       [
        "ADM-00004",
        "15/08/2026 à 04h00",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Ligne 4",
        "2 / 2",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        "—"
       ]
      ]
@@ -6419,7 +6419,7 @@
    ]
   },
   "modale": {
-   "texte": "Administrer — Ceftriaxone 1 g TCHANE Bertine — passage 2 sur 3 Administration n° 2 : le relais est passé à l’hospitalisation. Exécutant * IDRISSOU ANIKI Baba-Toundé — Infirmier NKOUÉ Jean — Infirmier BAGRI Elvyre — Infirmière PARAISO Abdoul — Infirmier(ère) OURTCHA Bertine — Infirmier(ère) DOSSOU Moussa — Infirmier(ère) OROU YO Alimatou — Infirmier(ère) Infirmiers et sages-femmes. Le médecin prescrit, il n’exécute pas les soins. Observation Annuler Confirmer l’administration",
+   "texte": "Administrer — Ceftriaxone 1 g TIAMOU Bodje — passage 2 sur 3 Administration n° 2 : le relais est passé à l’hospitalisation. Exécutant * IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier NIDJON Jagi — Infirmier BELABO Egbifepo — Infirmière PENU Abebia — Infirmier(ère) OSIAMIAM Bodje — Infirmier(ère) DULOUNE Mudovur — Infirmier(ère) ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère) Infirmiers et sages-femmes. Le médecin prescrit, il n’exécute pas les soins. Observation Annuler Confirmer l’administration",
    "champs": [
     "Exécutant *",
     "Observation"
@@ -6427,31 +6427,31 @@
    "options": [
     [
      "SOI06",
-     "IDRISSOU ANIKI Baba-Toundé — Infirmier"
+     "IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier"
     ],
     [
      "SOI07",
-     "NKOUÉ Jean — Infirmier"
+     "NIDJON Jagi — Infirmier"
     ],
     [
      "SOI08",
-     "BAGRI Elvyre — Infirmière"
+     "BELABO Egbifepo — Infirmière"
     ],
     [
      "SOI09",
-     "PARAISO Abdoul — Infirmier(ère)"
+     "PENU Abebia — Infirmier(ère)"
     ],
     [
      "SOI10",
-     "OURTCHA Bertine — Infirmier(ère)"
+     "OSIAMIAM Bodje — Infirmier(ère)"
     ],
     [
      "SOI11",
-     "DOSSOU Moussa — Infirmier(ère)"
+     "DULOUNE Mudovur — Infirmier(ère)"
     ],
     [
      "SOI12",
-     "OROU YO Alimatou — Infirmier(ère)"
+     "ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)"
     ]
    ],
    "defauts": {
@@ -6463,7 +6463,7 @@
    "toasts": [
     [
      "Administration n° 2 enregistrée.",
-     "Ceftriaxone 1 g — TCHANE Bertine"
+     "Ceftriaxone 1 g — TIAMOU Bodje"
     ]
    ],
    "fiche": {
@@ -6476,14 +6476,14 @@
     "libelle": "Ceftriaxone 1 g",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-16T10:00:00.000Z",
     "rang": 2,
     "total": 3,
     "secteur": "hospitalisation",
     "motifSecteur": "Administration n° 2 : le relais est passé à l’hospitalisation.",
     "executantId": "SOI07",
-    "executant": "NKOUÉ Jean",
+    "executant": "NIDJON Jagi",
     "observation": "Bien toléré",
     "modalite": "hospitalisation"
    }
@@ -6525,7 +6525,7 @@
      "lignes": [
       [
        "PRS-00001",
-       "TCHANE Bertine — CBG/1/25",
+       "TIAMOU Bodje — CBG/1/25",
        "Ceftriaxone 1 g",
        "3 / 3",
        "Administration n° 3 : le relais est passé à l’hospitalisation.",
@@ -6534,7 +6534,7 @@
       ],
       [
        "PRS-00002",
-       "BAKO Boukari — CBG/2/26",
+       "BIALI Buke — CBG/2/26",
        "Métronidazole",
        "2 / 2",
        "Administration n° 2 : le relais est passé à l’hospitalisation.",
@@ -6579,7 +6579,7 @@
     "reference": "CST-00001",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-07T09:30",
     "temperature": 38.9,
     "tensionSys": 13,
@@ -6588,7 +6588,7 @@
     "fr": 28,
     "spo2": 94,
     "diurese": 0.5,
-    "releveePar": "SANNI Bibata",
+    "releveePar": "SIACHOU Bouboli",
     "origine": "accueil"
    },
    {
@@ -6597,7 +6597,7 @@
     "reference": "CST-00002",
     "patientId": "PAT0001",
     "patientCode": "CBG/1/25",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "dateHeure": "2026-08-07T15:00",
     "temperature": 39.4,
     "tensionSys": 14,
@@ -6606,7 +6606,7 @@
     "fr": 30,
     "spo2": 92,
     "diurese": 0.7,
-    "releveePar": "SANNI Bibata",
+    "releveePar": "SIACHOU Bouboli",
     "origine": "accueil"
    },
    {
@@ -6615,7 +6615,7 @@
     "reference": "CST-00003",
     "patientId": "PAT0003",
     "patientCode": "CBG/3/26",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "dateHeure": "2026-08-14T09:00",
     "temperature": 37,
     "tensionSys": 12,
@@ -6624,7 +6624,7 @@
     "fr": 18,
     "spo2": 98,
     "diurese": 1,
-    "releveePar": "SANNI Bibata",
+    "releveePar": "SIACHOU Bouboli",
     "origine": "accueil"
    }
   ],
@@ -6644,7 +6644,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL2",
@@ -6661,7 +6661,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL3",
@@ -6678,7 +6678,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL4",
@@ -6695,7 +6695,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL5",
@@ -6712,7 +6712,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL6",
@@ -6729,7 +6729,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL7",
@@ -6746,7 +6746,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL8",
@@ -6763,7 +6763,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL9",
@@ -6780,7 +6780,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL10",
@@ -6797,7 +6797,7 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    },
    {
     "id": "REL11",
@@ -6814,41 +6814,41 @@
     "poids": 60,
     "taille": 170,
     "traitement": "",
-    "saisiPar": "DOSSOU Moussa"
+    "saisiPar": "DULOUNE Mudovur"
    }
   ],
   "patients": [
    {
     "id": "PAT0001",
     "code": "CBG/1/25",
-    "nom": "TCHANE",
-    "prenom": "Bertine"
+    "nom": "TIAMOU",
+    "prenom": "Bodje"
    },
    {
     "id": "PAT0002",
     "code": "CBG/2/26",
-    "nom": "BAKO",
-    "prenom": "Boukari"
+    "nom": "BIALI",
+    "prenom": "Buke"
    },
    {
     "id": "PAT0003",
     "code": "CBG/3/26",
-    "nom": "N’TCHA",
-    "prenom": "Yacoubou"
+    "nom": "N’ACHOU",
+    "prenom": "Yacha"
    }
   ],
   "options": [
    [
     "PAT0001",
-    "CBG/1/25 — TCHANE Bertine"
+    "CBG/1/25 — TIAMOU Bodje"
    ],
    [
     "PAT0002",
-    "CBG/2/26 — BAKO Boukari"
+    "CBG/2/26 — BIALI Buke"
    ],
    [
     "PAT0003",
-    "CBG/3/26 — N’TCHA Yacoubou"
+    "CBG/3/26 — N’ACHOU Yacha"
    ]
   ],
   "premier": {
@@ -6876,7 +6876,7 @@
    ],
    "cartes": [
     "Patient suivi",
-    "Feuille de température — TCHANE Bertine",
+    "Feuille de température — TIAMOU Bodje",
     "Relevés horodatés"
    ],
    "tableaux": [
@@ -6903,7 +6903,7 @@
        "12",
        "160",
        "0.1 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6915,7 +6915,7 @@
        "35",
        "120",
        "—",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6927,7 +6927,7 @@
        "—",
        "110",
        "2 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6939,7 +6939,7 @@
        "50",
        "90",
        "1.5 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6951,7 +6951,7 @@
        "20",
        "130",
        "0.5 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6963,7 +6963,7 @@
        "10",
        "140",
        "1.25 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6975,7 +6975,7 @@
        "70",
        "180",
        "0 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6987,7 +6987,7 @@
        "—",
        "50",
        "2.6 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -6999,7 +6999,7 @@
        "30",
        "150",
        "0.7 L",
-       "SANNI Bibata",
+       "SIACHOU Bouboli",
        "Accueil"
       ],
       [
@@ -7011,7 +7011,7 @@
        "28",
        "118",
        "0.5 L",
-       "SANNI Bibata",
+       "SIACHOU Bouboli",
        "Accueil"
       ],
       [
@@ -7023,7 +7023,7 @@
        "24",
        "100",
        "0.8 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ]
      ]
@@ -7585,7 +7585,7 @@
   "second": {
    "cartes": [
     "Patient suivi",
-    "Feuille de température — BAKO Boukari",
+    "Feuille de température — BIALI Buke",
     "Relevés horodatés"
    ],
    "tableaux": [
@@ -7612,7 +7612,7 @@
        "16",
        "70",
        "1.2 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ],
       [
@@ -7624,7 +7624,7 @@
        "22",
        "88",
        "1 L",
-       "DOSSOU Moussa",
+       "DULOUNE Mudovur",
        "Hospitalisation"
       ]
      ]
@@ -7878,14 +7878,14 @@
     "statut": "actif",
     "reference": "TRF-0001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "patientCode": "CBG/1/25",
     "service": "Service 1",
     "date": "2026-08-15",
     "pochePSL": "PSL-1",
     "debut": "01h15",
     "responsableId": "SOI06",
-    "responsable": "IDRISSOU ANIKI Baba-Toundé",
+    "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "valeurs": {
      "t0": {
       "temperature": "38",
@@ -7979,14 +7979,14 @@
     "statut": "actif",
     "reference": "TRF-0002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "patientCode": "CBG/2/26",
     "service": "Service 2",
     "date": "2026-08-14",
     "pochePSL": "PSL-2",
     "debut": "02h15",
     "responsableId": "SOI06",
-    "responsable": "IDRISSOU ANIKI Baba-Toundé",
+    "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "valeurs": {
      "t0": {
       "temperature": "35",
@@ -8050,14 +8050,14 @@
     "statut": "archive",
     "reference": "TRF-0003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "patientCode": "CBG/3/26",
     "service": "Service 3",
     "date": "2026-08-13",
     "pochePSL": "PSL-3",
     "debut": "03h15",
     "responsableId": "SOI06",
-    "responsable": "IDRISSOU ANIKI Baba-Toundé",
+    "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "valeurs": {
      "t0": {
       "temperature": "38",
@@ -8151,20 +8151,20 @@
    {
     "id": "PAT0001",
     "code": "CBG/1/25",
-    "nom": "TCHANE",
-    "prenom": "Bertine"
+    "nom": "TIAMOU",
+    "prenom": "Bodje"
    },
    {
     "id": "PAT0002",
     "code": "CBG/2/26",
-    "nom": "BAKO",
-    "prenom": "Boukari"
+    "nom": "BIALI",
+    "prenom": "Buke"
    },
    {
     "id": "PAT0003",
     "code": "CBG/3/26",
-    "nom": "N’TCHA",
-    "prenom": "Yacoubou"
+    "nom": "N’ACHOU",
+    "prenom": "Yacha"
    }
   ],
   "ecran": {
@@ -8210,7 +8210,7 @@
       [
        "TRF-0001",
        "15/08/2026",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Service 1",
        "PSL-1",
        "01h15",
@@ -8221,7 +8221,7 @@
       [
        "TRF-0002",
        "14/08/2026",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Service 2",
        "PSL-2",
        "02h15",
@@ -8251,7 +8251,7 @@
    ]
   },
   "detail": {
-   "texte": "TRF-0002 RÉFÉRENCE TRF-0002 PATIENT BAKO Boukari SERVICE Service 2 DATE 14/08/2026 RÉFÉRENCE DE LA POCHE DE PSL PSL-2 HEURE DE DÉBUT DE LA TRANSFUSION 02h15 RESPONSABLE DE LA SURVEILLANCE IDRISSOU ANIKI Baba-Toundé INCIDENT OUI — Frissons Relevés du protocole ÉLÉMENT AVANT LA POSE 15 MIN 30 MIN 60 MIN 90 MIN FIN 1 HEURE APRÈS 2 HEURES APRÈS Température 35 35 35 35 35 — — — Tension artérielle 12/8 12/8 12/8 12/8 12/8 — — — Fréquence respiratoire 35 35 35 35 35 — — — Fréquence cardiaque 35 35 35 35 35 — — — SpO₂ 35 35 35 35 35 — — — Aspect des urines claires claires claires claires claires — — — Conscience 35 35 35 35 35 — — — Autre élément surveillé — — — — — — — — Conclusion Conclusion 2",
+   "texte": "TRF-0002 RÉFÉRENCE TRF-0002 PATIENT BIALI Buke SERVICE Service 2 DATE 14/08/2026 RÉFÉRENCE DE LA POCHE DE PSL PSL-2 HEURE DE DÉBUT DE LA TRANSFUSION 02h15 RESPONSABLE DE LA SURVEILLANCE IGBOUPU ATUGBIPOU Badom-Tukepou INCIDENT OUI — Frissons Relevés du protocole ÉLÉMENT AVANT LA POSE 15 MIN 30 MIN 60 MIN 90 MIN FIN 1 HEURE APRÈS 2 HEURES APRÈS Température 35 35 35 35 35 — — — Tension artérielle 12/8 12/8 12/8 12/8 12/8 — — — Fréquence respiratoire 35 35 35 35 35 — — — Fréquence cardiaque 35 35 35 35 35 — — — SpO₂ 35 35 35 35 35 — — — Aspect des urines claires claires claires claires claires — — — Conscience 35 35 35 35 35 — — — Autre élément surveillé — — — — — — — — Conclusion Conclusion 2",
    "boutons": [
     "Fermer"
    ],
@@ -8362,7 +8362,7 @@
    ]
   },
   "detailSansIncident": {
-   "texte": "TRF-0001 RÉFÉRENCE TRF-0001 PATIENT TCHANE Bertine SERVICE Service 1 DATE 15/08/2026 RÉFÉRENCE DE LA POCHE DE PSL PSL-1 HEURE DE DÉBUT DE LA TRANSFUSION 01h15 RESPONSABLE DE LA SURVEILLANCE IDRISSOU ANIKI Baba-Toundé INCIDENT Non Relevés du protocole ÉLÉMENT AVANT LA POSE 15 MIN 30 MIN 60 MIN 90 MIN FIN 1 HEURE APRÈS 2 HEURES APRÈS Température 38 38 38 38 38 38 38 38 Tension artérielle 12/8 12/8 12/8 12/8 12/8 12/8 12/8 12/8 Fréquence respiratoire 38 38 38 38 38 38 38 38 Fréquence cardiaque 38 38 38 38 38 38 38 38 SpO₂ 38 38 38 38 38 38 38 38 Aspect des urines claires claires claires claires claires claires claires claires Conscience 38 38 38 38 38 38 38 38 Autre élément surveillé — — — — — — — — Conclusion Conclusion 1"
+   "texte": "TRF-0001 RÉFÉRENCE TRF-0001 PATIENT TIAMOU Bodje SERVICE Service 1 DATE 15/08/2026 RÉFÉRENCE DE LA POCHE DE PSL PSL-1 HEURE DE DÉBUT DE LA TRANSFUSION 01h15 RESPONSABLE DE LA SURVEILLANCE IGBOUPU ATUGBIPOU Badom-Tukepou INCIDENT Non Relevés du protocole ÉLÉMENT AVANT LA POSE 15 MIN 30 MIN 60 MIN 90 MIN FIN 1 HEURE APRÈS 2 HEURES APRÈS Température 38 38 38 38 38 38 38 38 Tension artérielle 12/8 12/8 12/8 12/8 12/8 12/8 12/8 12/8 Fréquence respiratoire 38 38 38 38 38 38 38 38 Fréquence cardiaque 38 38 38 38 38 38 38 38 SpO₂ 38 38 38 38 38 38 38 38 Aspect des urines claires claires claires claires claires claires claires claires Conscience 38 38 38 38 38 38 38 38 Autre élément surveillé — — — — — — — — Conclusion Conclusion 1"
   },
   "modifier": {
    "erreurs": [
@@ -8464,57 +8464,57 @@
    "optionsResponsable": [
     [
      "SOI06",
-     "IDRISSOU ANIKI Baba-Toundé — Infirmier"
+     "IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier"
     ],
     [
      "SOI07",
-     "NKOUÉ Jean — Infirmier"
+     "NIDJON Jagi — Infirmier"
     ],
     [
      "SOI08",
-     "BAGRI Elvyre — Infirmière"
+     "BELABO Egbifepo — Infirmière"
     ],
     [
      "SOI09",
-     "PARAISO Abdoul — Infirmier(ère)"
+     "PENU Abebia — Infirmier(ère)"
     ],
     [
      "SOI10",
-     "OURTCHA Bertine — Infirmier(ère)"
+     "OSIAMIAM Bodje — Infirmier(ère)"
     ],
     [
      "SOI11",
-     "DOSSOU Moussa — Infirmier(ère)"
+     "DULOUNE Mudovur — Infirmier(ère)"
     ],
     [
      "SOI12",
-     "OROU YO Alimatou — Infirmier(ère)"
+     "ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)"
     ],
     [
      "SOI13",
-     "BADO BANI A. B. Zoulehath — Sage-femme"
+     "BATOL BIAREL A. B. Zouguti — Sage-femme"
     ],
     [
      "SOI14",
-     "BOUKARI Nadège — Sage-femme"
+     "BUKE Nedi — Sage-femme"
     ],
     [
      "SOI15",
-     "ADAM Colette — Sage-femme"
+     "ACHOUBE Coufi — Sage-femme"
     ]
    ],
    "optionsPatient": [
     [
      "CBG/1/25",
-     "CBG/1/25 — TCHANE Bertine"
+     "CBG/1/25 — TIAMOU Bodje"
     ],
     [
      "CBG/2/26",
-     "CBG/2/26 — BAKO Boukari"
+     "CBG/2/26 — BIALI Buke"
     ],
     [
      "CBG/3/26",
-     "CBG/3/26 — N’TCHA Yacoubou"
+     "CBG/3/26 — N’ACHOU Yacha"
     ]
    ],
    "refusVide": {
@@ -8538,14 +8538,14 @@
      "statut": "actif",
      "reference": "TRF-0004",
      "patientId": "PAT0002",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "patientCode": "CBG/2/26",
      "service": "Médecine",
      "date": "2026-08-16",
      "pochePSL": "PSL-900",
      "debut": "08h30",
      "responsableId": "SOI06",
-     "responsable": "IDRISSOU ANIKI Baba-Toundé",
+     "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "valeurs": {
       "t0": {
        "temperature": "37.0",
@@ -8659,14 +8659,14 @@
      "statut": "actif",
      "reference": "TRF-0005",
      "patientId": "PAT0003",
-     "patient": "N’TCHA Yacoubou",
+     "patient": "N’ACHOU Yacha",
      "patientCode": "CBG/3/26",
      "service": "Urgences",
      "date": "2026-08-16",
      "pochePSL": "PSL-901",
      "debut": "09h00",
      "responsableId": "SOI06",
-     "responsable": "IDRISSOU ANIKI Baba-Toundé",
+     "responsable": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "valeurs": {
       "t0": {
        "temperature": "37",
@@ -8797,7 +8797,7 @@
       [
        "TRF-0004",
        "16/08/2026",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Médecine",
        "PSL-900",
        "08h30",
@@ -8808,7 +8808,7 @@
       [
        "TRF-0005",
        "16/08/2026",
-       "N’TCHA Yacoubou",
+       "N’ACHOU Yacha",
        "Urgences",
        "PSL-901",
        "09h00",
@@ -8819,7 +8819,7 @@
       [
        "TRF-0001",
        "15/08/2026",
-       "TCHANE Bertine",
+       "TIAMOU Bodje",
        "Service 1",
        "PSL-1",
        "01h15",
@@ -8830,7 +8830,7 @@
       [
        "TRF-0002",
        "14/08/2026",
-       "BAKO Boukari",
+       "BIALI Buke",
        "Service 2",
        "PSL-2",
        "02h15",
@@ -8878,7 +8878,7 @@
     "statut": "actif",
     "reference": "GCS-0001",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "nip": "CBG/1/25",
     "dateHeure": "2026-08-15T11:00",
     "axes": [
@@ -8900,7 +8900,7 @@
     ],
     "score": 15,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": "Stable"
    },
    {
@@ -8908,7 +8908,7 @@
     "statut": "actif",
     "reference": "GCS-0002",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "nip": "CBG/2/26",
     "dateHeure": "2026-08-14T12:00",
     "axes": [
@@ -8930,7 +8930,7 @@
     ],
     "score": 12,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": ""
    },
    {
@@ -8938,7 +8938,7 @@
     "statut": "actif",
     "reference": "GCS-0003",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "nip": "CBG/3/26",
     "dateHeure": "2026-08-13T13:00",
     "axes": [
@@ -8960,7 +8960,7 @@
     ],
     "score": 7,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": ""
    },
    {
@@ -8968,7 +8968,7 @@
     "statut": "actif",
     "reference": "GCS-0004",
     "patientId": "PAT0001",
-    "patient": "TCHANE Bertine",
+    "patient": "TIAMOU Bodje",
     "nip": "CBG/1/25",
     "dateHeure": "2026-08-12T14:00",
     "axes": [
@@ -8990,7 +8990,7 @@
     ],
     "score": 3,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": ""
    },
    {
@@ -8998,7 +8998,7 @@
     "statut": "archive",
     "reference": "GCS-0005",
     "patientId": "PAT0002",
-    "patient": "BAKO Boukari",
+    "patient": "BIALI Buke",
     "nip": "CBG/2/26",
     "dateHeure": "2026-08-11T15:00",
     "axes": [
@@ -9020,7 +9020,7 @@
     ],
     "score": 15,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": ""
    },
    {
@@ -9028,7 +9028,7 @@
     "statut": "actif",
     "reference": "GCS-0006",
     "patientId": "PAT0003",
-    "patient": "N’TCHA Yacoubou",
+    "patient": "N’ACHOU Yacha",
     "nip": "CBG/3/26",
     "dateHeure": "2026-08-10T16:00",
     "axes": [
@@ -9050,7 +9050,7 @@
     ],
     "score": 10,
     "evaluePar": "SOI06",
-    "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+    "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "observation": ""
    }
   ],
@@ -9094,41 +9094,41 @@
       [
        "GCS-0001",
        "15/08/2026 à 11h00",
-       "TCHANE Bertine — NIP CBG/1/25",
+       "TIAMOU Bodje — NIP CBG/1/25",
        "15 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0002",
        "14/08/2026 à 12h00",
-       "BAKO Boukari — NIP CBG/2/26",
+       "BIALI Buke — NIP CBG/2/26",
        "12 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0003",
        "13/08/2026 à 13h00",
-       "N’TCHA Yacoubou — NIP CBG/3/26",
+       "N’ACHOU Yacha — NIP CBG/3/26",
        "7 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0004",
        "12/08/2026 à 14h00",
-       "TCHANE Bertine — NIP CBG/1/25",
+       "TIAMOU Bodje — NIP CBG/1/25",
        "3 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0006",
        "10/08/2026 à 16h00",
-       "N’TCHA Yacoubou — NIP CBG/3/26",
+       "N’ACHOU Yacha — NIP CBG/3/26",
        "10 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ]
      ]
@@ -9164,7 +9164,7 @@
    ]
   },
   "detail": {
-   "texte": "GCS-0003 — 7/15 RÉFÉRENCE GCS-0003 PATIENT N’TCHA Yacoubou NIP CBG/3/26 DATE ET HEURE 13/08/2026 à 13h00 SCORE TOTAL 7 / 15 (calculé) ÉVALUÉ PAR IDRISSOU ANIKI Baba-Toundé Détail par axe AXE RÉPONSE OBSERVÉE POINTS Ouverture des yeux x 2 Réponse verbale y 2 Réponse motrice z 3",
+   "texte": "GCS-0003 — 7/15 RÉFÉRENCE GCS-0003 PATIENT N’ACHOU Yacha NIP CBG/3/26 DATE ET HEURE 13/08/2026 à 13h00 SCORE TOTAL 7 / 15 (calculé) ÉVALUÉ PAR IGBOUPU ATUGBIPOU Badom-Tukepou Détail par axe AXE RÉPONSE OBSERVÉE POINTS Ouverture des yeux x 2 Réponse verbale y 2 Réponse motrice z 3",
    "boutons": [
     "Fermer"
    ],
@@ -9287,55 +9287,55 @@
    "optionsEvaluateur": [
     [
      "SOI01",
-     "BASSONGUI Chabi Séko — Directeur Médical"
+     "BICHIASI Cezoune Sichovian — Directeur Médical"
     ],
     [
      "SOI02",
-     "YENI M’PO Florent — Médecin Généraliste"
+     "YORO M’ABEKPIA Foulumi — Médecin Généraliste"
     ],
     [
      "SOI03",
-     "TAKI Orou — Médecin Généraliste"
+     "TACHEDI Odjipiar — Médecin Généraliste"
     ],
     [
      "SOI06",
-     "IDRISSOU ANIKI Baba-Toundé — Infirmier"
+     "IGBOUPU ATUGBIPOU Badom-Tukepou — Infirmier"
     ],
     [
      "SOI07",
-     "NKOUÉ Jean — Infirmier"
+     "NIDJON Jagi — Infirmier"
     ],
     [
      "SOI08",
-     "BAGRI Elvyre — Infirmière"
+     "BELABO Egbifepo — Infirmière"
     ],
     [
      "SOI09",
-     "PARAISO Abdoul — Infirmier(ère)"
+     "PENU Abebia — Infirmier(ère)"
     ],
     [
      "SOI10",
-     "OURTCHA Bertine — Infirmier(ère)"
+     "OSIAMIAM Bodje — Infirmier(ère)"
     ],
     [
      "SOI11",
-     "DOSSOU Moussa — Infirmier(ère)"
+     "DULOUNE Mudovur — Infirmier(ère)"
     ],
     [
      "SOI12",
-     "OROU YO Alimatou — Infirmier(ère)"
+     "ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)"
     ],
     [
      "SOI13",
-     "BADO BANI A. B. Zoulehath — Sage-femme"
+     "BATOL BIAREL A. B. Zouguti — Sage-femme"
     ],
     [
      "SOI14",
-     "BOUKARI Nadège — Sage-femme"
+     "BUKE Nedi — Sage-femme"
     ],
     [
      "SOI15",
-     "ADAM Colette — Sage-femme"
+     "ACHOUBE Coufi — Sage-femme"
     ]
    ],
    "refusSansDate": {
@@ -9365,7 +9365,7 @@
      "evaluePar": "SOI01",
      "reference": "GCS-0007",
      "patientId": "PAT0002",
-     "patient": "BAKO Boukari",
+     "patient": "BIALI Buke",
      "axes": [
       {
        "axe": "Ouverture des yeux",
@@ -9384,7 +9384,7 @@
       }
      ],
      "score": 9,
-     "evaluateur": "BASSONGUI Chabi Séko"
+     "evaluateur": "BICHIASI Cezoune Sichovian"
     },
     "total": 7
    },
@@ -9402,7 +9402,7 @@
      "evaluePar": "SOI01",
      "reference": "GCS-0008",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "axes": [
       {
        "axe": "Ouverture des yeux",
@@ -9421,7 +9421,7 @@
       }
      ],
      "score": 15,
-     "evaluateur": "BASSONGUI Chabi Séko"
+     "evaluateur": "BICHIASI Cezoune Sichovian"
     }
    }
   },
@@ -9462,49 +9462,49 @@
       [
        "GCS-0007",
        "16/08/2026 à 09h00",
-       "BAKO Boukari — NIP CBG/2/26",
+       "BIALI Buke — NIP CBG/2/26",
        "9 / 15",
-       "BASSONGUI Chabi Séko",
+       "BICHIASI Cezoune Sichovian",
        ""
       ],
       [
        "GCS-0001",
        "15/08/2026 à 11h00",
-       "TCHANE Bertine — NIP CBG/1/25",
+       "TIAMOU Bodje — NIP CBG/1/25",
        "15 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0002",
        "14/08/2026 à 12h00",
-       "BAKO Boukari — NIP CBG/2/26",
+       "BIALI Buke — NIP CBG/2/26",
        "12 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0003",
        "13/08/2026 à 13h00",
-       "N’TCHA Yacoubou — NIP CBG/3/26",
+       "N’ACHOU Yacha — NIP CBG/3/26",
        "7 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0004",
        "12/08/2026 à 14h00",
-       "TCHANE Bertine — NIP CBG/1/25",
+       "TIAMOU Bodje — NIP CBG/1/25",
        "3 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ],
       [
        "GCS-0006",
        "10/08/2026 à 16h00",
-       "N’TCHA Yacoubou — NIP CBG/3/26",
+       "N’ACHOU Yacha — NIP CBG/3/26",
        "10 / 15",
-       "IDRISSOU ANIKI Baba-Toundé",
+       "IGBOUPU ATUGBIPOU Badom-Tukepou",
        ""
       ]
      ]
@@ -9543,7 +9543,7 @@
      "statut": "actif",
      "reference": "GCS-0003",
      "patientId": "PAT0003",
-     "patient": "N’TCHA Yacoubou",
+     "patient": "N’ACHOU Yacha",
      "nip": "CBG/3/26",
      "dateHeure": "2026-08-13T13:00",
      "axes": [
@@ -9565,7 +9565,7 @@
      ],
      "score": 6,
      "evaluePar": "SOI06",
-     "evaluateur": "IDRISSOU ANIKI Baba-Toundé",
+     "evaluateur": "IGBOUPU ATUGBIPOU Badom-Tukepou",
      "observation": "Corrigée",
      "patientCode": "CBG/3/26",
      "axe0": "1",

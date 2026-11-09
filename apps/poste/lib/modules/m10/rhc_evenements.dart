@@ -153,7 +153,7 @@ class EcranEvenements extends StatelessWidget with EcranMaquette {
 
   List<ChampDef> _champs(Magasin m) => [
         ChampDef(nom: 'nature', libelle: 'Nature de l’événement', type: TypeChamp.select, requis: true, options: [for (final n in rhcNaturesEvenement) OptionChamp(n.id, n.label)]),
-        const ChampDef(nom: 'libelle', libelle: 'Intitulé de l’événement', requis: true, col: ColChamp.plein, aide: 'Par exemple « Mariage de KORA Salifou » ou « Décès du père de TEPA Séraphine »'),
+        const ChampDef(nom: 'libelle', libelle: 'Intitulé de l’événement', requis: true, col: ColChamp.plein, aide: 'Par exemple « Mariage de KIAVUMU Sazo » ou « Décès du père de TOGA Sigbudja »'),
         ChampDef(
             nom: 'beneficiaireId',
             libelle: 'Agent bénéficiaire',

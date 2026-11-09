@@ -25,19 +25,19 @@ List<Fiche> liste(Object? v) => [for (final x in (v as List)) (x as Map).cast<St
 String _s(Object? v) => '${v ?? ''}'.replaceAll(RegExp(r'[\s  ]'), '');
 final aujourdhui = DateTime(2026, 8, 16, 10);
 
-List<Fiche> jeuJson(String nom) => liste(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<Fiche> jeuJson(String nom) => liste(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 /// Les huit premiers dossiers du jeu de la maquette, tels que les vecteurs les nomment (PAT0001 … PAT0008).
 List<Fiche> patients() => [
       for (final (i, p) in [
-        ('TCHANE', 'Bertine', 'CBG/1/25'),
-        ('BAKO', 'Boukari', 'CBG/2/26'),
-        ('N’TCHA', 'Yacoubou', 'CBG/3/26'),
-        ('PARAISO', 'Sabi', 'CBG/4/26'),
-        ('TAKI', 'Ganiou', 'CBG/5/26'),
-        ('DIEYABIDI', 'Bibata', 'CBG/6/25'),
-        ('OROU YO', 'Adissa', 'CBG/7/25'),
-        ('DOSSOU', 'Salifou', 'CBG/8/25'),
+        ('TIAMOU', 'Bodje', 'CBG/1/25'),
+        ('BIALI', 'Buke', 'CBG/2/26'),
+        ('N’ACHOU', 'Yacha', 'CBG/3/26'),
+        ('PENU', 'Sabar', 'CBG/4/26'),
+        ('TACHEDI', 'Gedur', 'CBG/5/26'),
+        ('DATU', 'Bouboli', 'CBG/6/25'),
+        ('ODJIPIAR YUDJOUVOU', 'Afagu', 'CBG/7/25'),
+        ('DULOUNE', 'Sazo', 'CBG/8/25'),
       ].indexed)
         {
           'id': 'PAT000${i + 1}',
@@ -59,7 +59,7 @@ Magasin magasin(Map<String, List<Fiche>> plus) => Magasin({
       'catalogueTarifs': jeuJson('catalogueTarifs'),
       'audit': const <Fiche>[],
       for (final e in plus.entries) e.key: [for (final f in e.value) {...f}],
-    }, 'POSTE', {...(jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()});
+    }, 'POSTE', {...(jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()});
 
 Future<void> ouvrir(WidgetTester t, Magasin m, String ecran, {String role = 'admin'}) async {
   t.view.physicalSize = const Size(1600, 1100);
@@ -187,11 +187,11 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-cpa');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle CPA'));
-      await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
+      await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
       await dateAujourdhui(t, 'date');
       await saisir(t, 'antecedentsAnesthesiques', 'Aucun');
       await saisir(t, 'allergies', 'Aucune connue');
-      await saisir(t, 'anesthesiste', 'ADAM Colette');
+      await saisir(t, 'anesthesiste', 'ACHOUBE Coufi');
       await choisir(t, 'conclusion', 'Apte avec réserves');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(find.text('Conclusion avec réserves : les nommer.'), findsOneWidget);
@@ -201,7 +201,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(m.collection('cpa').toutes.length, 4);
       final f = parRef(m, 'cpa', 'CPA-2026-0004');
-      expect(f['patient'], 'BAKO Boukari');
+      expect(f['patient'], 'BIALI Buke');
       expect(f['patientId'], 'PAT0002');
       expect(f['conclusion'], 'Apte avec réserves');
       expect(f['asa'], 'I', reason: 'la première entrée est présélectionnée, comme la liste native');
@@ -234,11 +234,11 @@ void main() {
       expect(find.text('Conclusion avec réserves : les nommer.'), findsOneWidget);
       expect(parRef(m, 'cpa', 'CPA-2026-0002')['observations'], 'HTA à équilibrer');
       await saisir(t, 'observations', 'HTA équilibrée');
-      await choisir(t, 'patientCode', 'CBG/6/25 — DIEYABIDI Bibata');
+      await choisir(t, 'patientCode', 'CBG/6/25 — DATU Bouboli');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       final f = parRef(m, 'cpa', 'CPA-2026-0002');
       expect(f['observations'], 'HTA équilibrée');
-      expect(f['patient'], 'DIEYABIDI Bibata');
+      expect(f['patient'], 'DATU Bouboli');
       expect(f['patientId'], 'PAT0006');
       expect(f['reference'], 'CPA-2026-0002');
       expect(find.text('Modifications enregistrées.'), findsOneWidget);
@@ -312,16 +312,16 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       expect(m.collection('crOperatoires').toutes.length, 5);
-      await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
+      await choisir(t, 'patientCode', 'CBG/3/26 — N’ACHOU Yacha');
       await saisir(t, 'nip', 'NIP-9');
       await dateAujourdhui(t, 'dateOperation');
       await saisir(t, 'diagnosticPeroperatoire', 'Kyste');
       await saisir(t, 'intervention', 'Kystectomie');
       await saisir(t, 'anesthesie', 'Rachianesthésie');
       await saisir(t, 'cro', 'Ligne 1\nLigne 2');
-      await choisir(t, 'operateurId', 'TAKI Orou — Médecin Généraliste');
-      await choisir(t, 'aideOperateurId', 'OROU YO Alimatou — Infirmier(ère)');
-      await choisir(t, 'anesthesisteId', 'ADAM Colette — Sage-femme');
+      await choisir(t, 'operateurId', 'TACHEDI Odjipiar — Médecin Généraliste');
+      await choisir(t, 'aideOperateurId', 'ODJIPIAR YUDJOUVOU Arialu — Infirmier(ère)');
+      await choisir(t, 'anesthesisteId', 'ACHOUBE Coufi — Sage-femme');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final attendu = m_(m_(c['creation'])['cree'])['fiche'] as Map<String, Object?>;
       final f = parRef(m, 'crOperatoires', 'CRO-0006');
@@ -352,11 +352,11 @@ void main() {
       await ouvrir(t, m, 'm3-bloc-cro');
       await toucher(t, find.byTooltip('Modifier').at(3));
       expect(find.text('CRO-0002'), findsWidgets);
-      await choisir(t, 'operateurId', 'AHOHOU Rodrigue — Échographiste');
+      await choisir(t, 'operateurId', 'AKPOMER Ridur — Échographiste');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       final f = parRef(m, 'crOperatoires', 'CRO-0002');
       expect(f['operateurId'], 'SOI04');
-      expect(f['operateur'], 'AHOHOU Rodrigue');
+      expect(f['operateur'], 'AKPOMER Ridur');
       expect(f['reference'], 'CRO-0002');
     });
 
@@ -429,9 +429,9 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-cr-anesthesie');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau compte rendu'));
-      await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
+      await choisir(t, 'patientCode', 'CBG/4/26 — PENU Sabar');
       await dateAujourdhui(t, 'dateOperation');
-      await choisir(t, 'croReference', 'CRO-0001 — TCHANE Bertine');
+      await choisir(t, 'croReference', 'CRO-0001 — TIAMOU Bodje');
       await saisir(t, 'agents', 'Kétamine');
       await saisir(t, 'heureInduction', '10:00');
       await saisir(t, 'heureFin', '11:00');
@@ -439,7 +439,7 @@ void main() {
       await saisir(t, 'heureArriveeReveil', '11:10');
       await saisir(t, 'etatReveil', 'Éveillé');
       await choisir(t, 'decisionSortie', 'Surveillance prolongée en salle de réveil');
-      await saisir(t, 'anesthesiste', 'ADAM Colette');
+      await saisir(t, 'anesthesiste', 'ACHOUBE Coufi');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final attendu = m_(m_(c['creation'])['cree']);
       final f = parRef(m, 'crAnesthesie', 'CRA-2026-0005');
@@ -529,8 +529,8 @@ void main() {
       await ouvrir(t, m, 'm3-bloc-checklist');
       await toucher(t, onglet('Check-liste de sortie'));
       await toucher(t, find.widgetWithText(BoutonSigh, 'Remplir la check-liste'));
-      await choisir(t, 'patientCode', 'CBG/4/26 — PARAISO Sabi');
-      await choisir(t, 'responsableId', 'BOUKARI Nadège — Sage-femme');
+      await choisir(t, 'patientCode', 'CBG/4/26 — PENU Sabar');
+      await choisir(t, 'responsableId', 'BUKE Nedi — Sage-femme');
       for (final n in ['it0', 'it1', 'it2']) {
         await cocher(t, n);
       }
@@ -539,9 +539,9 @@ void main() {
       final f = parRef(m, 'checklistsBloc', 'CKL-0005');
       expect(f['coches'], 3);
       expect(f['items'], attendu['items']);
-      expect(f['patient'], 'PARAISO Sabi');
+      expect(f['patient'], 'PENU Sabar');
       expect(f['responsableId'], 'SOI14');
-      expect(f['responsable'], 'BOUKARI Nadège');
+      expect(f['responsable'], 'BUKE Nedi');
       expect(DateTime.parse('${f['dateHeure']}').isUtc, isTrue);
     });
 
@@ -596,8 +596,8 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
     }
 
-    Future<void> remplir(WidgetTester t, {String prescripteur = 'BASSONGUI Chabi Séko — Directeur Médical'}) async {
-      await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
+    Future<void> remplir(WidgetTester t, {String prescripteur = 'BICHIASI Cezoune Sichovian — Directeur Médical'}) async {
+      await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
       await saisir(t, 'residence', 'Natitingou');
       await choisir(t, 'prescripteur', prescripteur);
       await saisir(t, 'indication', 'Anémie');
@@ -664,7 +664,7 @@ void main() {
       final m = base();
       await ouvrir(t, m, 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
-      await choisir(t, 'patientCode', 'CBG/3/26 — N’TCHA Yacoubou');
+      await choisir(t, 'patientCode', 'CBG/3/26 — N’ACHOU Yacha');
       await saisir(t, 'residence', 'Natitingou');
       await choisir(t, 'serviceDemandeur', 'Médecine');
       await saisir(t, 'indication', 'Anémie');
@@ -686,20 +686,20 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
       expect(find.text('Prescripteur extérieur — nom, qualification et structure *'), findsNothing);
       await remplir(t, prescripteur: '— Prescripteur extérieur à la clinique —');
-      await saisir(t, 'prescripteurExterne', 'Dr SALIFOU Aminou, Centre de santé de Perma');
+      await saisir(t, 'prescripteurExterne', 'Dr SAZO Asounouta, Centre de santé de Perma');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Émettre la fiche'));
       final d = m.collection('demandesAnalyses').toutes.first;
-      expect(d['prescripteur'], 'Dr SALIFOU Aminou, Centre de santé de Perma (extérieur)');
+      expect(d['prescripteur'], 'Dr SAZO Asounouta, Centre de santé de Perma (extérieur)');
       expect(d['prescripteur'], liste(m_(c['externe'])['demandes']).single['prescripteur']);
     });
 
     cas('la résidence se reprend du dossier au choix du patient, sans écraser une saisie', (t) async {
       await ouvrir(t, base(), 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
-      await choisir(t, 'patientCode', 'CBG/6/25 — DIEYABIDI Bibata');
+      await choisir(t, 'patientCode', 'CBG/6/25 — DATU Bouboli');
       expect(find.text('Santa, Natitingou'), findsOneWidget);
       await saisir(t, 'residence', 'Boriyoure');
-      await choisir(t, 'patientCode', 'CBG/7/25 — OROU YO Adissa');
+      await choisir(t, 'patientCode', 'CBG/7/25 — ODJIPIAR YUDJOUVOU Afagu');
       expect(find.text('Boriyoure'), findsOneWidget);
     });
 
@@ -798,7 +798,7 @@ void main() {
         m.collection('patients').mettreAJour('PAT0002', {'carteExpiration': expiration});
         await ouvrir(t, m, 'm3-bons-pansements');
         await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau bon de pansement'));
-        await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
+        await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
         await choisir(t, 'acteCode', 'Pansement');
         await saisir(t, 'seances', '2');
         await saisir(t, 'indication', 'Plaie du pied');
@@ -1014,12 +1014,12 @@ void main() {
       await ouvrir(t, m, 'm3-sortie-avis-medical');
       // La procédure SAM0002 vise une admission qui n'est plus « en cours » : sans l'E419, le champ retombait sur le premier hospitalisé.
       await toucher(t, find.byTooltip('Modifier').at(1));
-      expect(find.text('B2 LIT1 — TAKI Ganiou (CBG/5/26)'), findsOneWidget);
+      expect(find.text('B2 LIT1 — TACHEDI Gedur (CBG/5/26)'), findsOneWidget);
       await cocher(t, 'decharge');
       await cocher(t, 'cloture');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer').last);
       final f = m.collection('sortiesAvisMedical').toutes.firstWhere((x) => x['reference'] == 'SAM0002');
-      expect(f['patient'], 'TAKI Ganiou');
+      expect(f['patient'], 'TACHEDI Gedur');
       expect(f['patientCode'], 'CBG/5/26');
       expect(f['lit'], 'B2 LIT1');
       expect([f['decharge'], f['cloture']], [true, true]);

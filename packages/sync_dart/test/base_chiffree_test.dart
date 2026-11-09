@@ -20,12 +20,12 @@ void main() {
     final chemin = '${d.path}/mere.db';
     var b = Base(chemin, cle);
     b.db.execute('CREATE TABLE t(a)');
-    b.db.execute("INSERT INTO t VALUES ('PATIENT-AGBO-confidentiel')");
+    b.db.execute("INSERT INTO t VALUES ('PATIENT-AGORO-confidentiel')");
     b.db.dispose();
-    expect(lisible(chemin, 'PATIENT-AGBO-confidentiel'), isFalse);
+    expect(lisible(chemin, 'PATIENT-AGORO-confidentiel'), isFalse);
     expect(lisible(chemin, 'SQLite format 3'), isFalse, reason: 'même l’en-tête SQLite est chiffré');
     b = Base(chemin, cle);
-    expect(b.db.select('SELECT a FROM t').single['a'], 'PATIENT-AGBO-confidentiel');
+    expect(b.db.select('SELECT a FROM t').single['a'], 'PATIENT-AGORO-confidentiel');
     b.db.dispose();
     expect(() => Base(chemin, autre), throwsA(isA<StateError>().having((e) => '$e', 'message', contains('clé incorrecte'))));
     expect(() => Base(chemin), throwsA(anything), reason: 'sans clé, une base chiffrée ne s’ouvre pas');

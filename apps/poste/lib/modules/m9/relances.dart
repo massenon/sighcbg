@@ -124,7 +124,7 @@ class EcranRelances extends StatelessWidget with EcranMaquette {
                   ],
                   signatures: const [
                     Signature('La Directrice Administrative',
-                        nom: 'TAKI Alimatou', mention: 'Signature et cachet')
+                        nom: 'TACHEDI Arialu', mention: 'Signature et cachet')
                   ]));
         }
 

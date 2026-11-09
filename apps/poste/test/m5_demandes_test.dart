@@ -19,7 +19,7 @@ Fiche dem(String ref, String etat, {Map<String, Object?> plus = const {}}) => {
       'statut': 'actif',
       'reference': ref,
       'patientId': 'PAT1',
-      'patient': 'DOSSOU Aline',
+      'patient': 'DULOUNE Aline',
       'patientCode': 'CBG/1/26',
       'analyseCode': 'L01',
       'analyse': 'AKOP',
@@ -47,7 +47,7 @@ Magasin magasin({
                 'id': 'PAT1',
                 'statut': 'actif',
                 'code': 'CBG/1/26',
-                'nom': 'DOSSOU',
+                'nom': 'DULOUNE',
                 'prenom': 'Aline',
                 'sexe': 'F'
               }
@@ -252,7 +252,7 @@ void main() {
           'type': 'prelevement',
           'ordonnanceId': 'ORD-9',
           'reference': 'ORD-9',
-          'patient': 'DOSSOU Aline',
+          'patient': 'DULOUNE Aline',
           'patientCode': 'CBG/1/26',
           'detail': '3 analyse(s)',
           'montant': 6000,
@@ -280,7 +280,7 @@ void main() {
           'type': 'prelevement',
           'ordonnanceId': 'ORD-9',
           'reference': 'ORD-9',
-          'patient': 'DOSSOU Aline',
+          'patient': 'DULOUNE Aline',
           'patientCode': 'CBG/1/26',
           'detail': '1 analyse(s)',
           'montant': 2000,
@@ -303,7 +303,7 @@ void main() {
       final m = avecRegistre();
       await ouvrir(t, m, 'm5-demandes');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-      await choisir(t, 'patientCode', 'CBG/1/26 — DOSSOU Aline');
+      await choisir(t, 'patientCode', 'CBG/1/26 — DULOUNE Aline');
       await choisir(t, 'analyseCode', 'L02 — ASLO');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final d = m.collection('demandesAnalyses').actives.first;
@@ -311,7 +311,7 @@ void main() {
       expect(d['codeAnalyse'], '00013-2026');
       expect(d['analyse'], 'ASLO');
       expect(d['prix'], 4000);
-      expect(d['patient'], 'DOSSOU Aline');
+      expect(d['patient'], 'DULOUNE Aline');
       expect(d['patientId'], 'PAT1');
       expect(d['urgent'], false);
       expect(d['etatAnalyse'], 'en_attente');
@@ -325,8 +325,8 @@ void main() {
       final m = avecRegistre();
       await ouvrir(t, m, 'm5-demandes');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-      await saisir(t, 'nom', 'Kassa');
-      await saisir(t, 'prenom', 'Imorou');
+      await saisir(t, 'nom', 'Kalou');
+      await saisir(t, 'prenom', 'Imefulu');
       await choisir(t, 'sexe', 'Masculin');
       await choisir(t, 'naissanceConnue', 'Inconnue — indiquer l’âge déclaré');
       await saisir(t, 'age', '41');
@@ -334,7 +334,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final p = m.collection('patients').actives.first;
       expect(p['code'], 'CBG/901/26');
-      expect(p['nom'], 'KASSA');
+      expect(p['nom'], 'KALOU');
       expect(p['externe'], true);
       expect(p['age'], 41);
       expect(p['ageReferenceLe'], '2026-10-30');
@@ -342,7 +342,7 @@ void main() {
       final d = m.collection('demandesAnalyses').actives.first;
       expect(d['patientCode'], 'CBG/901/26');
       expect(d['patientId'], p['id']);
-      expect(d['patient'], 'KASSA Imorou');
+      expect(d['patient'], 'KALOU Imefulu');
       expect(d['origineDemande'], 'externe');
       expect(d.containsKey('nom'), isFalse, reason: 'l\'identité n\'est pas gardée sur la demande');
       expect(d.containsKey('age'), isFalse);

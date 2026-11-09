@@ -79,7 +79,7 @@ void main() {
     // 1. Une fiche patient écrite par la mère : son nom ne doit JAMAIS apparaître chez le relais.
     final r = await http.post(Uri.parse('http://127.0.0.1:$port/admin/referentiel'),
         headers: {'x-admin': adminSecret, 'content-type': 'application/json'},
-        body: jsonEncode({'collection': 'patients', 'fiche': 'p1', 'champs': {'nom': 'KOUASSI Awa', 'telephone': '97000000'}}));
+        body: jsonEncode({'collection': 'patients', 'fiche': 'p1', 'champs': {'nom': 'KOPEGOU Azemidia', 'telephone': '97000000'}}));
     expect(r.statusCode, 200, reason: r.body);
 
     // 2. Ce que le moteur expose, tel que l'adaptateur le lit.
@@ -98,7 +98,7 @@ void main() {
     // 3. Le relais reçoit le journal, CHIFFRÉ. Preuve d'opacité sur les corps réellement expédiés.
     await attendre(() => relais.depots.isNotEmpty && relais.indicateurs.isNotEmpty, raison: () => 'chemins reçus par le relais : ${relais.chemins.toSet()}');
     for (final corps in relais.depots) {
-      expect(mrbDefautsOpacite(corps, interdits: ['KOUASSI', 'Awa', '97000000', 'patients', 'telephone', cleBase64]), isEmpty,
+      expect(mrbDefautsOpacite(corps, interdits: ['KOPEGOU', 'Azemidia', '97000000', 'patients', 'telephone', cleBase64]), isEmpty,
           reason: 'ce qui part au relais doit être du chiffré : ${jsonEncode(corps)}');
     }
     final enveloppe = (relais.depots.first['enveloppe']! as Map);
@@ -109,7 +109,7 @@ void main() {
     final publie = ((relais.indicateurs.last['indicateurs']) as Map).cast<String, Object?>();
     expect(publie.keys.toList(), mrbChampsPublies);
     expect(mrbVerifierIndicateurs(publie).sansDonneeDeSante, isTrue);
-    expect(jsonEncode(relais.indicateurs), isNot(contains('KOUASSI')));
+    expect(jsonEncode(relais.indicateurs), isNot(contains('KOPEGOU')));
     expect(publie['patients_actifs'], 1, reason: 'l’aperçu de l’écran calcule la même valeur par /admin/compte');
 
     // 5. La réplication rattrape son retard : le compteur d'enveloppes avance.
@@ -122,27 +122,27 @@ void main() {
     expect(fichier, endsWith('.enc'));
     expect(File(fichier).existsSync(), isTrue);
     final claire = File(fichier).readAsBytesSync();
-    expect(utf8.decode(claire, allowMalformed: true), isNot(contains('KOUASSI')), reason: 'la sauvegarde est chiffrée avec la clé de clinique');
+    expect(utf8.decode(claire, allowMalformed: true), isNot(contains('KOPEGOU')), reason: 'la sauvegarde est chiffrée avec la clé de clinique');
     final sante2 = await s.supervision();
     expect(sante2.controle('Sauvegarde')!.etat, 'ok');
     expect(sante2.controle('Sauvegarde')!.valeur, isA<num>(), reason: 'la date de la dernière sauvegarde vient de la supervision');
 
     // 7. QR mobile : le code et la clé sortent par la seule route prévue.
-    final mobile = await s.codeMobile('Dr Yeni', profil: 'soignant', fonction: 'medecin');
+    final mobile = await s.codeMobile('Dr Yoro', profil: 'soignant', fonction: 'medecin');
     expect(mobile.code, hasLength(8));
     expect(mobile.payloadQr, contains(cleBase64));
     expect(relais.chemins, contains('POST /mere/code'), reason: 'seul le HACHÉ du code est déclaré au relais');
 
     // 8. Réinitialisation : fermée par défaut, gardes nommées par le moteur, trace au journal.
-    await expectLater(s.reinitialiser(confirmation: 'NASSIERA TOO', second: 'Mme TAKI'),
+    await expectLater(s.reinitialiser(confirmation: 'NASSIERA TOO', second: 'Mme TACHEDI'),
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'reinit_fermee')));
     await s.ouvrirFenetreReinit(true);
     expect((await s.etat()).reinitOuverte, isTrue);
-    await expectLater(s.reinitialiser(confirmation: 'autre nom', second: 'Mme TAKI'),
+    await expectLater(s.reinitialiser(confirmation: 'autre nom', second: 'Mme TACHEDI'),
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'confirmation_invalide')));
     await expectLater(s.reinitialiser(confirmation: s.nomClinique, second: ''),
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'second_profil_requis')));
-    final fait = await s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TAKI');
+    final fait = await s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TACHEDI');
     expect(fait.sauvegarde, isNotEmpty);
     expect(fait.epoch, 2, reason: 'l’époque est incrémentée');
     expect(await s.patientsActifs(), 0, reason: 'l’activité est vidée');
@@ -153,7 +153,7 @@ void main() {
     // 9. Même après tout cela, rien d'identifiant n'est parti chez le relais.
     await Future<void>.delayed(const Duration(milliseconds: 600));
     for (final corps in relais.depots) {
-      expect(mrbDefautsOpacite(corps, interdits: ['KOUASSI', 'patients', cleBase64]), isEmpty);
+      expect(mrbDefautsOpacite(corps, interdits: ['KOPEGOU', 'patients', cleBase64]), isEmpty);
     }
     expect(jsonEncode(relais.depots) + jsonEncode(relais.indicateurs), isNot(contains(cleBase64)), reason: 'la clé n’est jamais envoyée au relais');
   });

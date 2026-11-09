@@ -74,7 +74,7 @@ void main() {
     final s = (v['saisie']! as Map).cast<String, Object?>();
     final aba = ref.articles.firstWhere((a) => a.code == s['code']);
     final fiche = ficheValorisation(aba,
-        prixRevient: 850, source: 'Facture UBIPHARM n° 4471', observation: 'Relevé du 28/10', auteur: 'c.bassongui', jour: '2026-10-30');
+        prixRevient: 850, source: 'Facture UBIPHARM n° 4471', observation: 'Relevé du 28/10', auteur: 'c.bichiasi', jour: '2026-10-30');
     memes(fiche, (s['ok']! as Map)['fiche'], 'fiche', ignorer: const {'id'});
     expect(['Référence valorisée.', detailValorisation(aba, 850)], ((s['ok']! as Map)['toasts'] as List).single);
     // Sans observation, le champ n'est pas écrit (la maquette écrit `null`, que le magasin n'enregistre pas).
@@ -84,4 +84,4 @@ void main() {
 
 /// La surcouche semée au socle de la maquette (34 fiches), telle que le jeu du poste la porte.
 List<Map<String, Object?>> _surcoucheDuJeu() => liste(jsonDecode(
-    File('../../apps/poste/assets/donnees/jeu/valorisationsSage.json').readAsStringSync()));
+    File('../../apps/poste/test/fixtures/jeu_reference/valorisationsSage.json').readAsStringSync()));

@@ -21,7 +21,7 @@ function mesureDart() {
   SORTIE.mere = lire('tool/mesure_copie_mere.dart', [`--patients=${PATIENTS}`, '--ops=200000']);
 }
 
-const noms = ['AKPO', 'KOUA', 'DOSSOU', 'ADJOVI', 'SOGLO', 'HOUNKPATIN', 'TCHANDO', 'BIO'];
+const noms = ['AMITU', 'KIMAR', 'DULOUNE', 'AGBUZIA', 'SOLEKPU', 'HOULUKE', 'TIAFIMA', 'BIO'];
 const fiche = (i) => ({ collection: 'patients', fiche: 'p' + i, data: { nom: noms[i % 8], prenom: 'Prénom' + i, tel: '9' + String(i).padStart(7, '0'), quartier: 'Quartier ' + (i % 40), naissance: '19' + (60 + i % 40) + '-01-01' }, archive: false, ordre: [3, 5000 + i, 'F1', 'o' + i] });
 
 async function mesurePage() {

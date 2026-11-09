@@ -29,7 +29,7 @@ List<M> fl(Object? v) => [for (final x in (v as List)) obj(x)];
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 10, 30, 10);
 
-List<M> jeu(String nom) => fl(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => fl(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 M? fiche(String id) {
   final f = File('../../docs/architecture/ecrans/$id.json');
@@ -109,7 +109,7 @@ Future<void> ouvrir(WidgetTester t, String id, M f) async {
     case 'auth-2fa':
     case 'plan-du-site':
       await monter(t, poste(),
-          ecran: id, session: SessionPoste.ouverte('admin', nom: 'BASSONGUI Chabi Séko', horloge: () => auj), taille: const Size(1440, 40000));
+          ecran: id, session: SessionPoste.ouverte('admin', nom: 'BICHIASI Cezoune Sichovian', horloge: () => auj), taille: const Size(1440, 40000));
     case 'enquete-publique':
       final fx = obj(f['fixtureEnquete']);
       await monter(t, poste(jetons: [obj(fx['jeton'])], enquetes: [obj(fx['enquete'])]),

@@ -26,10 +26,10 @@ const messageReservesExigees =
     'Une conclusion avec réserves ou non conforme EXIGE ses réserves écrites.';
 
 /// La maquette lit `sess.nomComplet`, qui n'existe pas dans la session (écart E18) : le magasinier du PV est TOUJOURS ce défaut.
-const magasinierParDefaut = 'MAMAN Zoukanéri';
+const magasinierParDefaut = 'METIAVI Zobo';
 
 /// Signataire écrit en dur sur la pièce imprimée (la DAF).
-const dafSignataire = 'TAKI Alimatou';
+const dafSignataire = 'TACHEDI Arialu';
 
 /// Un refus du PV. [motif] est le message à afficher ; `null` signifie « formulaire en erreur » (champ obligatoire vide) : les erreurs sont
 /// alors portées par les champs eux-mêmes, aucun message global n'est émis.

@@ -320,7 +320,7 @@ void main() {
           'date': '2026-09-20',
           'patient': 'TEST Dupont',
           'patientCode': 'CBG/1/26',
-          'dispensePar': 'DIEYABIDI Aïssatou',
+          'dispensePar': 'DATU Amachim',
           'montant': 3750,
           'lignes': [
             {'produit': 'ARTESUNATE 60 MG INJ', 'quantite': 2, 'unite': 'Unité', 'prix': 1500},

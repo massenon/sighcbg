@@ -30,7 +30,7 @@ Map<String, Object?> carte(Object? o) => (o! as Map).cast<String, Object?>();
 Map<String, Object?> sorties() => carte(vecteurs['sorties']);
 
 List<Fiche> fournisseurs() => liste(jsonDecode(
-    File('assets/donnees/jeu/fournisseurs.json').readAsStringSync()));
+    File('test/fixtures/jeu_reference/fournisseurs.json').readAsStringSync()));
 
 /// Le magasin du jeu d'essai de la maquette (produits, lots, mouvements) + le référentiel des fournisseurs du jeu.
 Magasin magasinEssai() {

@@ -2020,7 +2020,7 @@
      ],
      [
       "Établi par",
-      "BASSONGUI Chabi Séko"
+      "BICHIASI Cezoune Sichovian"
      ],
      [
       "Date d’édition",
@@ -2033,7 +2033,7 @@
      },
      {
       "role": "Le Directeur Médical",
-      "nom": "BASSONGUI Chabi Séko"
+      "nom": "BICHIASI Cezoune Sichovian"
      }
     ],
     "contenu": [
@@ -2405,7 +2405,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "ZZ1",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -2505,7 +2505,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "ZZ2",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -2575,7 +2575,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "ZZ2",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -2677,7 +2677,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "ZZ4",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -2778,7 +2778,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "ZZ5",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    }
   ],
@@ -2871,7 +2871,7 @@
      "parent": "",
      "normal": "",
      "regle": "",
-     "source": "Modifiée par BASSONGUI Chabi Séko le 30/10/2026 — précédemment : 4 - 8"
+     "source": "Modifiée par BICHIASI Cezoune Sichovian le 30/10/2026 — précédemment : 4 - 8"
     },
     "toasts": [
      [
@@ -2884,7 +2884,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "GB",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -2984,7 +2984,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "LY",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    },
    {
@@ -3072,7 +3072,7 @@
      "max": null,
      "normal": "",
      "regle": "",
-     "source": "Modifiée par BASSONGUI Chabi Séko le 30/10/2026 — précédemment : 0.2 - 1"
+     "source": "Modifiée par BICHIASI Cezoune Sichovian le 30/10/2026 — précédemment : 0.2 - 1"
     },
     "toasts": [
      [
@@ -3085,7 +3085,7 @@
      "module": "M5",
      "entite": "Variable",
      "reference": "MO",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     }
    }
   ],
@@ -3104,7 +3104,7 @@
     "patch": {
      "actif": false,
      "fermeeLe": "2026-10-30",
-     "fermeePar": "BASSONGUI Chabi Séko"
+     "fermeePar": "BICHIASI Cezoune Sichovian"
     },
     "toasts": [
      [
@@ -3239,7 +3239,7 @@
      "module": "M5",
      "entite": "PlageReactif",
      "reference": "LOT-2026-A",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     },
     "tableau": [
      [
@@ -3300,7 +3300,7 @@
      "module": "M5",
      "entite": "PlageReactif",
      "reference": "LOT-2026-A",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     },
     "tableau": [
      [
@@ -3376,7 +3376,7 @@
      "module": "M5",
      "entite": "PlageReactif",
      "reference": "LOT-2026-B",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     },
     "tableau": [
      [
@@ -3440,7 +3440,7 @@
      "module": "M5",
      "entite": "PlageReactif",
      "reference": "LOT-2026-B",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     },
     "tableau": [
      [
@@ -3535,7 +3535,7 @@
     "module": "M5",
     "entite": "PlageReactif",
     "reference": "LOT-2026-A",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    }
   },
   "archivage": {

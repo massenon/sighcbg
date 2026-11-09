@@ -23,7 +23,7 @@ String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 /// l'hydratation, comme un journal repris).
 Magasin magasinAvec2025() {
   List<Fiche> lire(String n) =>
-      [for (final f in jsonDecode(File('assets/donnees/jeu/$n.json').readAsStringSync()) as List) (f as Map).cast<String, Object?>()];
+      [for (final f in jsonDecode(File('test/fixtures/jeu_reference/$n.json').readAsStringSync()) as List) (f as Map).cast<String, Object?>()];
   final jeux = {for (final n in Magasin.collectionsDuJeu) n: lire(n)};
   jeux['ecritures'] = [
     for (final (i, x) in const [
@@ -35,7 +35,7 @@ Magasin magasinAvec2025() {
       {'id': 'X25-$i', 'numero': 'E25-${i ~/ 2}', 'date': '2025-03-01', 'journal': 'OD', 'compte': x[0], 'debit': x[1], 'credit': x[2], 'statut': 'validee'},
     ...jeux['ecritures']!
   ];
-  return Magasin(jeux, 'POSTE', (jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>());
+  return Magasin(jeux, 'POSTE', (jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>());
 }
 
 /// Un onglet de l'écran (le ruban de la coque porte, lui aussi, des pastilles « Compte de résultat » ou « Flux de trésorerie » : on ne touche que l'onglet).
@@ -201,7 +201,7 @@ void main() {
         expect(find.text(titre), findsWidgets);
         expect(find.textContaining('DEMO', findRichText: true), findsWidgets);
         expect(find.textContaining(contient, findRichText: true), findsWidgets);
-        expect(find.textContaining('TAKI Alimatou', findRichText: true), findsWidgets);
+        expect(find.textContaining('TACHEDI Arialu', findRichText: true), findsWidgets);
       });
     }
 

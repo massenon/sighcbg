@@ -23,7 +23,7 @@ import 'aide_polices.dart';
 /// `packages/domaine/test/identite_test.dart` ; l'écran de connexion dans `acces_test.dart`.
 typedef M = Map<String, Object?>;
 List<M> jeu(String nom) => [
-      for (final x in (jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()
+      for (final x in (jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()
     ];
 
 final donnees = DonneesNavigation.depuisDossier();
@@ -70,17 +70,17 @@ void main() {
   group('A1 : l\'agent de la session, exposé aux écrans', () {
     testWidgets('session nominative : ContexteEcran.agent est la PERSONNE (identifiant, matricule, fonction, secteur), pas le libellé du rôle', (t) async {
       final m = magasin();
-      final a = agentDe(m, 'z.bado');
+      final a = agentDe(m, 'z.batol');
       await monter(t, m, 'aide-apropos', session: sessionDe_(a), role: 'infirmier');
       final c = contexte(t);
       expect(c.agent.utilisateurId, 'USR018');
-      expect(c.agent.nom, 'BADO BANI A. B. Zoulehath');
+      expect(c.agent.nom, 'BATOL BIAREL A. B. Zouguti');
       expect(c.agent.matricule, isNotEmpty);
       expect(c.agent.fonction, 'sage_femme');
       expect(c.agent.secteur, 'MAT');
       expect(c.agent.demonstration, isFalse);
       expect(acteur(c).utilisateurId, 'USR018', reason: 'la fabrique centrale lit l\'agent de la session');
-      expect(c.utilisateur, 'BADO BANI A. B. Zoulehath');
+      expect(c.utilisateur, 'BATOL BIAREL A. B. Zouguti');
       await t.pumpWidget(const SizedBox());
       await t.pump(const Duration(seconds: 10));
     });
@@ -102,7 +102,7 @@ void main() {
 
     testWidgets('le Magasin reçoit l\'acteur de la session : chaque entrée du journal (RG-12) porte son identifiant de compte et son matricule', (t) async {
       final m = magasin();
-      final a = agentDe(m, 'a.kassa');
+      final a = agentDe(m, 'a.kalou');
       await monter(t, m, 'aide-apropos', session: sessionDe_(a));
       expect(m.acteur!.utilisateurId, a.utilisateurId);
       expect(m.utilisateur, a.nom);
@@ -117,8 +117,8 @@ void main() {
 
     testWidgets('deux comptables de même rôle sont deux acteurs : l\'identifiant les distingue, le libellé du rôle jamais', (t) async {
       final m = magasin();
-      final a = agentDe(m, 'a.kassa');
-      final b = agentDe(m, 'h.gbedji');
+      final a = agentDe(m, 'a.kalou');
+      final b = agentDe(m, 'h.gidji');
       expect(a.role == b.role || true, isTrue);
       await monter(t, m, 'aide-apropos', session: sessionDe_(a));
       final ia = contexte(t).agent;
@@ -132,7 +132,7 @@ void main() {
 
     testWidgets('D1 : la session porte le secteur du dossier RH ; la prescription le lit (sessionDe), la visibilité des résultats aussi (profilLabo)', (t) async {
       final m = magasin();
-      final a = agentDe(m, 'z.bado');
+      final a = agentDe(m, 'z.batol');
       await monter(t, m, 'aide-apropos', session: sessionDe_(a), role: 'infirmier');
       final c = contexte(t);
       final s = sessionDe(c);
@@ -164,7 +164,7 @@ void main() {
 
     testWidgets('la continuité du prélèvement lit l\'AGENT : celui qui a prélevé (désigné par n\'importe lequel de ses identifiants) valide, les autres non', (t) async {
       final m = magasin();
-      final a = agentDe(m, 'z.bado');
+      final a = agentDe(m, 'z.batol');
       final soignant = m.collection('soignants').actives.firstWhere((x) => x['personnelId'] == a.personnelId);
       await monter(t, m, 'aide-apropos', session: sessionDe_(a), role: 'infirmier');
       final p = profilLabo(contexte(t));
@@ -172,9 +172,9 @@ void main() {
       // Le jeu désigne le préleveur par l'identifiant de SOIGNANT (`SOI…`), pas par le dossier RH.
       final cont = continuiteRespectee({'preleveParId': soignant['id'], 'prelevePar': a.nom}, agentId: p.agentId, agentNom: 'quelqu\'un d\'autre', identifiants: p.identifiants);
       expect(cont.ok, isTrue);
-      final autre = continuiteRespectee({'preleveParId': 'SOI99', 'prelevePar': 'KINNOU Ganiou'}, agentId: p.agentId, agentNom: p.agentNom, identifiants: p.identifiants);
+      final autre = continuiteRespectee({'preleveParId': 'SOI99', 'prelevePar': 'KELE Gedur'}, agentId: p.agentId, agentNom: p.agentNom, identifiants: p.identifiants);
       expect(autre.ok, isFalse);
-      expect(autre.motif, contains('KINNOU Ganiou'), reason: 'le refus NOMME le préleveur');
+      expect(autre.motif, contains('KELE Gedur'), reason: 'le refus NOMME le préleveur');
       await t.pumpWidget(const SizedBox());
       await t.pump(const Duration(seconds: 10));
     });
@@ -189,7 +189,7 @@ void main() {
       final x = m.collection('exercices').actives.firstWhere((e) => e['annee'] == 2026, orElse: () => <String, Object?>{});
       if (x.isEmpty) m.collection('exercices').inserer({'annee': 2026, 'etat': 'ouvert', 'statut': 'actif'});
       final id = m.collection('exercices').actives.firstWhere((e) => e['annee'] == 2026)['id'];
-      m.collection('exercices').mettreAJour(id, {'etat': 'en_cloture', 'demandePar': 'KASSA Augustin', 'demandeParId': demandeParId, 'demandeLe': '2026-10-30T09:00:00.000Z'});
+      m.collection('exercices').mettreAJour(id, {'etat': 'en_cloture', 'demandePar': 'KALOU Avolutu', 'demandeParId': demandeParId, 'demandeLe': '2026-10-30T09:00:00.000Z'});
       return m;
     }
 
@@ -205,7 +205,7 @@ void main() {
 
     testWidgets('la même personne ne valide pas sa propre demande : refus NOMMÉ, exercice inchangé', (t) async {
       final m = avecDemande(demandeParId: 'USR002');
-      final da = agentDe(m, 'a.taki'); // USR002, rôle da (peut valider) : la demande est la sienne
+      final da = agentDe(m, 'a.tachedi'); // USR002, rôle da (peut valider) : la demande est la sienne
       await monter(t, m, 'm12-cloture', session: sessionDe_(da), role: 'da');
       await validerCloture(t);
       expect(find.text('Clôture refusée.'), findsOneWidget);
@@ -218,7 +218,7 @@ void main() {
 
     testWidgets('une AUTRE personne, fût-elle de même rôle ou de même nom affiché, valide : la clôture se pose, validePar porte son nom ET son identifiant', (t) async {
       final m = avecDemande(demandeParId: 'USR003');
-      final da = agentDe(m, 'a.taki'); // USR002, rôle da
+      final da = agentDe(m, 'a.tachedi'); // USR002, rôle da
       await monter(t, m, 'm12-cloture', session: sessionDe_(da), role: 'da');
       await validerCloture(t);
       final x = m.collection('exercices').actives.firstWhere((e) => e['annee'] == 2026);
@@ -272,7 +272,7 @@ void main() {
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR003', secret, par: 'test', doitChanger: false, maintenant: auj);
       Future<ResultatConnexion> essai(String mdp, DateTime t0) =>
-          s.verifier(identifiant: 'a.kassa', motDePasse: mdp, rolesArchives: const {}, libelleRole: (r) => r, maintenant: t0);
+          s.verifier(identifiant: 'a.kalou', motDePasse: mdp, rolesArchives: const {}, libelleRole: (r) => r, maintenant: t0);
       expect((await essai('mauvais', auj)).accepte, isFalse);
       expect(m.collection('utilisateurs').parId('USR003')!['echecs'], 1);
       expect(s.fiche('USR003')!['echecs'], 1);
@@ -288,7 +288,7 @@ void main() {
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR003', secret, par: 'test', doitChanger: false, maintenant: auj);
       Future<ResultatConnexion> essai(String mdp, DateTime t0) =>
-          s.verifier(identifiant: 'a.kassa', motDePasse: mdp, rolesArchives: const {}, libelleRole: (r) => r, maintenant: t0);
+          s.verifier(identifiant: 'a.kalou', motDePasse: mdp, rolesArchives: const {}, libelleRole: (r) => r, maintenant: t0);
       for (var i = 0; i < 3; i++) {
         await essai('mauvais$i', auj);
       }
@@ -304,12 +304,12 @@ void main() {
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR003', secret, par: 'test', doitChanger: false, maintenant: auj);
       for (var i = 0; i < 3; i++) {
-        await s.verifier(identifiant: 'a.kassa', motDePasse: 'x$i', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+        await s.verifier(identifiant: 'a.kalou', motDePasse: 'x$i', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       }
       expect(accVerrouJusqua(s.fiche('USR003')!, auj), isNotNull);
       await s.definir('USR003', 'Nouveau#Natitingou28', par: 'Administrateur', doitChanger: true, maintenant: auj);
       expect(accVerrouJusqua(s.fiche('USR003')!, auj), isNull);
-      final r = await s.verifier(identifiant: 'a.kassa', motDePasse: 'Nouveau#Natitingou28', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+      final r = await s.verifier(identifiant: 'a.kalou', motDePasse: 'Nouveau#Natitingou28', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       expect(r.accepte, isTrue);
       expect(r.doitChanger, isTrue, reason: 'mot de passe défini par l\'administrateur : changement obligatoire');
     });
@@ -318,9 +318,9 @@ void main() {
       final m = magasin();
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR003', secret, par: 'test', doitChanger: false, maintenant: auj);
-      final avant = await s.verifier(identifiant: 'a.kassa', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj.add(const Duration(days: 89)));
+      final avant = await s.verifier(identifiant: 'a.kalou', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj.add(const Duration(days: 89)));
       expect(avant.doitChanger, isFalse);
-      final apres = await s.verifier(identifiant: 'a.kassa', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj.add(const Duration(days: 90)));
+      final apres = await s.verifier(identifiant: 'a.kalou', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj.add(const Duration(days: 90)));
       expect(apres.accepte, isTrue);
       expect(apres.doitChanger, isTrue);
     });
@@ -328,7 +328,7 @@ void main() {
     test('un compte SANS mot de passe défini ne peut pas se connecter (refus générique, motif nommé au journal)', () async {
       final m = magasin();
       final s = ServiceIdentifiants.de(m);
-      final r = await s.verifier(identifiant: 'a.kassa', motDePasse: 'peu importe', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+      final r = await s.verifier(identifiant: 'a.kalou', motDePasse: 'peu importe', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       expect(r.accepte, isFalse);
       expect(r.decision.message, accMessageRefus, reason: 'le message ne dit pas que le compte n\'a pas de mot de passe');
       expect(m.collection('tentativesConnexion').toutes.first['motif'], accMotifSansIdentifiant);
@@ -339,7 +339,7 @@ void main() {
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR003', secret, par: 'test', doitChanger: false, maintenant: auj);
       final inconnu = await s.verifier(identifiant: 'zz.inconnu', motDePasse: 'x', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
-      final faux = await s.verifier(identifiant: 'a.kassa', motDePasse: 'x', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+      final faux = await s.verifier(identifiant: 'a.kalou', motDePasse: 'x', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       expect(inconnu.decision.message, faux.decision.message);
     });
 

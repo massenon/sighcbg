@@ -750,7 +750,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -786,7 +786,7 @@
        "patientId": "PATX1",
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -971,7 +971,7 @@
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -1024,7 +1024,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -1060,7 +1060,7 @@
        "patientId": "PATX2",
        "patientCode": "CBG/1002/26",
        "patient": "BETA Deux",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -1212,7 +1212,7 @@
        "patientCode": "CBG/1002/26",
        "patient": "BETA Deux",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -1256,7 +1256,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -1292,7 +1292,7 @@
        "patientId": "PATX3",
        "patientCode": "CBG/1003/26",
        "patient": "GAMMA Trois",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -1444,7 +1444,7 @@
        "patientCode": "CBG/1003/26",
        "patient": "GAMMA Trois",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -1488,7 +1488,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -1524,7 +1524,7 @@
        "patientId": "PATX5",
        "patientCode": "CBG/1005/26",
        "patient": "EPSILON Cinq",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -1676,7 +1676,7 @@
        "patientCode": "CBG/1005/26",
        "patient": "EPSILON Cinq",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -1720,7 +1720,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -1756,7 +1756,7 @@
        "patientId": "PATX5",
        "patientCode": "CBG/1005/26",
        "patient": "EPSILON Cinq",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -1908,7 +1908,7 @@
        "patientCode": "CBG/1005/26",
        "patient": "EPSILON Cinq",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -1952,7 +1952,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -1988,7 +1988,7 @@
        "patientId": "PATX4",
        "patientCode": "CBG/1004/26",
        "patient": "DELTA Quatre",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -2140,7 +2140,7 @@
        "patientCode": "CBG/1004/26",
        "patient": "DELTA Quatre",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -2180,7 +2180,7 @@
       "Glycémie"
      ],
      "urgence": "Non urgent",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -2216,7 +2216,7 @@
        "patientId": "PATX1",
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -2275,7 +2275,7 @@
        "delai": "2 h",
        "prix": 1500,
        "dateHeure": "2026-08-20T09:00:00.000Z",
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "laborantin": null,
        "urgent": false,
        "etatAnalyse": "en_attente",
@@ -2301,7 +2301,7 @@
        "delai": "4 h",
        "prix": 4000,
        "dateHeure": "2026-08-20T09:00:00.000Z",
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "laborantin": null,
        "urgent": false,
        "etatAnalyse": "en_attente",
@@ -2458,7 +2458,7 @@
       "CRP"
      ],
      "urgence": "Urgent — bilan entier",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -2494,7 +2494,7 @@
        "patientId": "PATX1",
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -2545,7 +2545,7 @@
        "delai": "4 h",
        "prix": 4000,
        "dateHeure": "2026-08-20T09:00:00.000Z",
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "laborantin": null,
        "urgent": true,
        "etatAnalyse": "en_attente",
@@ -2905,7 +2905,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -2937,7 +2937,7 @@
        "patientId": "PATX1",
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -3089,7 +3089,7 @@
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -3170,7 +3170,7 @@
       "Glycémie"
      ],
      "urgence": "Non urgent",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "aide_soignant",
      "emise": true,
      "origine": "mobile"
@@ -3211,7 +3211,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "",
      "emise": true,
      "origine": "mobile"
@@ -3243,7 +3243,7 @@
      "patient": "ALPHA Une",
      "date": "2026-08-20T09:00:00.000Z",
      "noteId": "NOTE-1",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3284,7 +3284,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3325,7 +3325,7 @@
        "dureeJours": 1
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3364,7 +3364,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3405,7 +3405,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3453,7 +3453,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3494,7 +3494,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3530,7 +3530,7 @@
        "patientId": "PATX1",
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
-       "medecin": "Dr YENI M’PO Florent",
+       "medecin": "Dr YORO M’ABEKPIA Foulumi",
        "diagnostic": "Paludisme simple",
        "consultationId": null,
        "dossierConsultationId": null,
@@ -3682,7 +3682,7 @@
        "patientCode": "CBG/1001/26",
        "patient": "ALPHA Une",
        "prescripteurId": null,
-       "prescripteur": "Dr YENI M’PO Florent",
+       "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
        "secteurDestinataire": "pharmacie",
        "modalite": "ambulatoire",
        "premierAdministrateur": "salle_soins",
@@ -3726,7 +3726,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3767,7 +3767,7 @@
        "dureeJours": 3
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3800,7 +3800,7 @@
      "date": "2026-08-20T09:00:00.000Z",
      "noteId": "NOTE-1",
      "lignes": [],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3837,7 +3837,7 @@
       "IRM cérébrale"
      ],
      "urgence": "Non urgent",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3871,7 +3871,7 @@
      "noteId": "NOTE-1",
      "examens": [],
      "urgence": "Non urgent",
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"
@@ -3912,7 +3912,7 @@
        "dureeJours": 5
       }
      ],
-     "prescripteur": "Dr YENI M’PO Florent",
+     "prescripteur": "Dr YORO M’ABEKPIA Foulumi",
      "fonction": "medecin",
      "emise": true,
      "origine": "mobile"

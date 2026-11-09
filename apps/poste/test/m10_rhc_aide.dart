@@ -24,7 +24,7 @@ List<M> participationsAvantE742() => [for (final x in (jsonDecode(File('test/fix
 Magasin posteRhc([Map<String, List<M>> remplace = const {}]) => Magasin({
       'audit': const [],
       for (final n in collectionsRhc) n: [for (final x in (remplace[n] ?? (n == 'participations' ? participationsAvantE742() : jeu(n)))) {...x}],
-    }, 'POSTE', (jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>());
+    }, 'POSTE', (jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>());
 
 /// Les libellés d'indicateurs affichés (libellé → valeur) et leurs indices.
 Map<String, String> kpisRhc(WidgetTester t) => {for (final k in t.widgetList<KpiSigh>(find.byType(KpiSigh))) k.libelle: k.valeur};
@@ -47,10 +47,10 @@ List<List<String>> lignesTableau(Object? ecran, [int tableau = 0]) => [
       for (final l in ((obj((obj(ecran)['tableaux'] as List)[tableau]))['lignes'] as List)) [for (final c in (l as List)) '$c']
     ];
 
-/// L'agent connecté des tests (rôle `admin`) : la maquette tournait sous « BASSONGUI Chabi Séko » — les pièces de la maquette qui le nomment (auteur d'un retrait, d'un encaissement,
+/// L'agent connecté des tests (rôle `admin`) : la maquette tournait sous « BICHIASI Cezoune Sichovian » — les pièces de la maquette qui le nomment (auteur d'un retrait, d'un encaissement,
 /// d'une vérification) se comparent avec ce nom-ci.
 const utilisateurTest = 'Administrateur système';
-const auteurMaquette = 'BASSONGUI Chabi Séko';
+const auteurMaquette = 'BICHIASI Cezoune Sichovian';
 const champsAuteur = {'emisPar', 'retirePar', 'encaissePar', 'annulePar', '_creePar', '_modifiePar'};
 
 int nombreFeuilles(WidgetTester t) => find.byWidgetPredicate((w) => w.key is ValueKey && '${(w.key as ValueKey).value}'.startsWith('rhc:feuille-planche')).evaluate().length;

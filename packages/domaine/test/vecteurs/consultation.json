@@ -109,10 +109,10 @@
        "cellules": [
         "",
         "05/10/2026 10h00",
-        "GARBA Aïssatou CBG/13/26",
+        "GEVAMIAN Amachim CBG/13/26",
         "Soins de plaie à domicile",
         "Asthénie du sujet âgé",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "10 000",
         "Terminée",
         ""
@@ -128,10 +128,10 @@
        "cellules": [
         "",
         "04/10/2026 10h00",
-        "TIGRI Séraphine CBG/11/26",
+        "TOUZA Sigbudja CBG/11/26",
         "Visite d’un patient alité",
         "Déshydratation modérée",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "10 000",
         "Terminée",
         ""
@@ -147,10 +147,10 @@
        "cellules": [
         "",
         "03/10/2026 10h00",
-        "SANNI Nadège CBG/174/26",
+        "SIACHOU Nedi CBG/174/26",
         "Perfusion à domicile",
         "Asthénie du sujet âgé",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "10 000",
         "Terminée",
         ""
@@ -166,10 +166,10 @@
        "cellules": [
         "",
         "02/10/2026 10h00",
-        "BASSONGUI Hervé CBG/126/25",
+        "BICHIASI Hiabidjo CBG/126/25",
         "Perfusion à domicile",
         "Plaie en voie de cicatrisation",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "10 000",
         "Terminée",
         ""
@@ -185,10 +185,10 @@
        "cellules": [
         "",
         "01/10/2026 10h00",
-        "HOUNKPATIN Salifou CBG/74/26",
+        "HOULUKE Sazo CBG/74/26",
         "Soins de plaie à domicile",
         "Plaie en voie de cicatrisation",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "10 000",
         "Terminée",
         ""
@@ -204,10 +204,10 @@
        "cellules": [
         "",
         "26/08/2026 10h00",
-        "YARO Edmond CBG/138/26",
+        "YIAKI Edjukavom CBG/138/26",
         "Hypertension — contrôle",
         "Hypertension artérielle mal équilibrée",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "3 000",
         "Terminée",
         ""
@@ -223,10 +223,10 @@
        "cellules": [
         "",
         "26/08/2026 10h00",
-        "SAMBIENI Ganiou CBG/34/26",
+        "SEMIA Gedur CBG/34/26",
         "Douleurs épigastriques",
         "Gastrite aiguë",
-        "BADO BANI A. B. Zoulehath",
+        "BATOL BIAREL A. B. Zouguti",
         "3 000",
         "Terminée",
         ""
@@ -242,10 +242,10 @@
        "cellules": [
         "",
         "16/08/2026 17h30",
-        "BAKO Sylvie CBG/67/26",
+        "BIALI Sunokpu CBG/67/26",
         "Plaie infectée",
         "HTA essentielle",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "5 000",
         "En cours",
         ""
@@ -261,10 +261,10 @@
        "cellules": [
         "",
         "16/08/2026 15h30",
-        "TCHANE Idrissou CBG/65/26",
+        "TIAMOU Igboupu CBG/65/26",
         "Consultation prénatale",
         "Gastro-entérite",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "5 000",
         "Terminée",
         ""
@@ -280,10 +280,10 @@
        "cellules": [
         "",
         "15/08/2026 18h15",
-        "BOUKARI Alassane CBG/148/25",
+        "BUKE Anapouzia CBG/148/25",
         "Traumatisme",
         "Grossesse évolutive",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "5 000",
         "Terminée",
         ""
@@ -299,10 +299,10 @@
        "cellules": [
         "",
         "15/08/2026 17h00",
-        "YARO Bertine CBG/42/26",
+        "YIAKI Bodje CBG/42/26",
         "Suivi de grossesse",
         "Dermatose infectieuse",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "5 000",
         "Terminée",
         ""
@@ -318,10 +318,10 @@
        "cellules": [
         "",
         "15/08/2026 16h30",
-        "HOUNKPATIN Salifou CBG/74/26",
+        "HOULUKE Sazo CBG/74/26",
         "Plaie infectée",
         "Paludisme simple",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "5 000",
         "Terminée",
         ""
@@ -452,11 +452,11 @@
        "cellules": [
         "DOS-00028",
         "31/10/2026 13h15",
-        "KINNOU A. Ganiou CBG907/25",
+        "KELE A. Gedur CBG907/25",
         "Contrôle",
         "Hypertension — contrôle",
         "3 appareil(s)",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "CLÔTURÉ",
         ""
        ],
@@ -468,11 +468,11 @@
        "cellules": [
         "DOS-00027",
         "31/10/2026 17h56",
-        "BAKO Sylvie CBG/67/26",
+        "BIALI Sunokpu CBG/67/26",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "CLÔTURÉ",
         ""
        ],
@@ -484,11 +484,11 @@
        "cellules": [
         "DOS-00026",
         "31/10/2026 14h58",
-        "AHOHOU Zakari CBG/80/26",
+        "AKPOMER Zapeto CBG/80/26",
         "Première consultation",
         "Brûlures mictionnelles",
         "2 appareil(s)",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "CLÔTURÉ",
         ""
        ],
@@ -500,11 +500,11 @@
        "cellules": [
         "DOS-00007",
         "26/08/2026 10h23",
-        "YARO Edmond CBG/138/26",
+        "YIAKI Edjukavom CBG/138/26",
         "Contrôle",
         "Hypertension — contrôle",
         "3 appareil(s)",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "EN ATTENTE LABO",
         ""
        ],
@@ -519,11 +519,11 @@
        "cellules": [
         "DOS-00005",
         "26/08/2026 07h54",
-        "MAMAN Yahouza CBG/68/26",
+        "METIAVI Yelia CBG/68/26",
         "Première consultation",
         "Brûlures mictionnelles",
         "non consigné",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "EN ATTENTE",
         ""
        ],
@@ -537,11 +537,11 @@
        "cellules": [
         "DOS-00003",
         "26/08/2026 14h11",
-        "SAMBIENI Ganiou CBG/34/26",
+        "SEMIA Gedur CBG/34/26",
         "Contrôle",
         "Douleurs épigastriques",
         "2 appareil(s)",
-        "BADO BANI A. B. Zoulehath",
+        "BATOL BIAREL A. B. Zouguti",
         "EN ATTENTE LABO",
         ""
        ],
@@ -556,11 +556,11 @@
        "cellules": [
         "DOS-00001",
         "26/08/2026 14h54",
-        "N’TCHA Salifou CBG/90/26",
+        "N’ACHOU Sazo CBG/90/26",
         "Première consultation",
         "Fièvre et céphalées",
         "non consigné",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "EN ATTENTE",
         ""
        ],
@@ -574,11 +574,11 @@
        "cellules": [
         "DOS-00008",
         "25/08/2026 07h06",
-        "YARO Ramatou CBG/92/25",
+        "YIAKI Riadife CBG/92/25",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
-        "BADO BANI A. B. Zoulehath",
+        "BATOL BIAREL A. B. Zouguti",
         "CLÔTURÉ",
         ""
        ],
@@ -590,11 +590,11 @@
        "cellules": [
         "DOS-00006",
         "25/08/2026 09h33",
-        "PARAISO Abdoul CBG913/25",
+        "PENU Abebia CBG913/25",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "EN CONSULTATION",
         ""
        ],
@@ -609,11 +609,11 @@
        "cellules": [
         "DOS-00002",
         "25/08/2026 12h48",
-        "TAKI Alimatou CBG901/25",
+        "TACHEDI Arialu CBG901/25",
         "Première consultation",
         "Toux productive",
         "3 appareil(s)",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "EN CONSULTATION",
         ""
        ],
@@ -628,11 +628,11 @@
        "cellules": [
         "DOS-00024",
         "24/08/2026 17h16",
-        "GARBA Tamou CBG/144/26",
+        "GEVAMIAN Tavapi CBG/144/26",
         "Contrôle",
         "Douleurs épigastriques",
         "2 appareil(s)",
-        "BADO BANI A. B. Zoulehath",
+        "BATOL BIAREL A. B. Zouguti",
         "EN ATTENTE LABO",
         ""
        ],
@@ -647,11 +647,11 @@
        "cellules": [
         "DOS-00004",
         "24/08/2026 09h52",
-        "PARAISO Colette CBG/109/26",
+        "PENU Coufi CBG/109/26",
         "Suivi",
         "Consultation prénatale",
         "3 appareil(s)",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "CLÔTURÉ",
         ""
        ],
@@ -663,11 +663,11 @@
        "cellules": [
         "DOS-00022",
         "17/08/2026 08h29",
-        "BOUKARI Justine CBG/43/26",
+        "BUKE Jiakpune CBG/43/26",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
-        "ADAM Colette",
+        "ACHOUBE Coufi",
         "CLÔTURÉ",
         ""
        ],
@@ -679,11 +679,11 @@
        "cellules": [
         "DOS-00015",
         "11/08/2026 15h51",
-        "GARBA Yahouza CBG909/25",
+        "GEVAMIAN Yelia CBG909/25",
         "Première consultation",
         "Fièvre et céphalées",
         "4 appareil(s)",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "CLÔTURÉ",
         ""
        ],
@@ -695,11 +695,11 @@
        "cellules": [
         "DOS-00013",
         "23/06/2026 10h40",
-        "SOULE Nadège CBG/97/26",
+        "SOUDER Nedi CBG/97/26",
         "Urgence",
         "Plaie de la jambe",
         "3 appareil(s)",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "CLÔTURÉ",
         ""
        ],
@@ -1528,8 +1528,8 @@
        "cellules": [
         "ORD-2026-00087",
         "25/08/2026",
-        "DAOUDA Djibril CBG/124/25",
-        "YENI M’PO Florent",
+        "DACHULO Doulom CBG/124/25",
+        "YORO M’ABEKPIA Foulumi",
         "1 médic. 1 analyse(s)",
         "3 600",
         "Réglée",
@@ -1545,8 +1545,8 @@
        "cellules": [
         "ORD-2026-00034",
         "25/08/2026",
-        "PARAISO Rachida CBG/153/25",
-        "TAKI Orou",
+        "PENU Rarouvil CBG/153/25",
+        "TACHEDI Odjipiar",
         "2 médic. 4 analyse(s)",
         "23 372",
         "Réglée",
@@ -1562,8 +1562,8 @@
        "cellules": [
         "ORD-2026-00085",
         "24/08/2026",
-        "TEPA Aïssatou CBG/71/26",
-        "YENI M’PO Florent",
+        "TOGA Amachim CBG/71/26",
+        "YORO M’ABEKPIA Foulumi",
         "2 analyse(s)",
         "16 000",
         "À encaisser",
@@ -1579,8 +1579,8 @@
        "cellules": [
         "ORD-2026-00038Urgent",
         "24/08/2026",
-        "BASSONGUI Hervé CBG/126/25",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Hiabidjo CBG/126/25",
+        "BICHIASI Cezoune Sichovian",
         "2 médic. 2 analyse(s)",
         "8 223",
         "Réglée",
@@ -1596,8 +1596,8 @@
        "cellules": [
         "ORD-2026-00106",
         "22/08/2026",
-        "YARO Bio CBG/121/25",
-        "BASSONGUI Chabi Séko",
+        "YIAKI Bounoukia CBG/121/25",
+        "BICHIASI Cezoune Sichovian",
         "2 médic. 3 analyse(s)",
         "23 250",
         "À encaisser",
@@ -1613,8 +1613,8 @@
        "cellules": [
         "ORD-2026-00117",
         "21/08/2026",
-        "HOUNKPATIN Rabiatou CBG/16/26",
-        "TAKI Orou",
+        "HOULUKE Rafiakpe CBG/16/26",
+        "TACHEDI Odjipiar",
         "4 analyse(s)",
         "16 500",
         "Réglée",
@@ -1630,8 +1630,8 @@
        "cellules": [
         "ORD-2026-00033Urgent",
         "21/08/2026",
-        "DOSSOU Souleymane CBG/129/26",
-        "YENI M’PO Florent",
+        "DULOUNE Soukoul CBG/129/26",
+        "YORO M’ABEKPIA Foulumi",
         "2 médic. 2 analyse(s)",
         "5 740",
         "À encaisser",
@@ -1647,8 +1647,8 @@
        "cellules": [
         "ORD-2026-00057",
         "20/08/2026",
-        "GARBA Zoukanéri CBG/164/26",
-        "BASSONGUI Chabi Séko",
+        "GEVAMIAN Zobo CBG/164/26",
+        "BICHIASI Cezoune Sichovian",
         "2 médic. 2 analyse(s)",
         "6 600",
         "À encaisser",
@@ -1664,8 +1664,8 @@
        "cellules": [
         "ORD-2026-00076",
         "18/08/2026",
-        "BAKO Chantal CBG/100/25",
-        "TAKI Orou",
+        "BIALI Cichin CBG/100/25",
+        "TACHEDI Odjipiar",
         "3 médic. 1 analyse(s)",
         "4 800",
         "À encaisser",
@@ -1681,8 +1681,8 @@
        "cellules": [
         "ORD-2026-00053",
         "17/08/2026",
-        "AGOSSOU Souleymane CBG/110/25",
-        "YENI M’PO Florent",
+        "AKIAFADJO Soukoul CBG/110/25",
+        "YORO M’ABEKPIA Foulumi",
         "4 analyse(s)",
         "21 500",
         "À encaisser",
@@ -1698,8 +1698,8 @@
        "cellules": [
         "ORD-2026-00120Urgent",
         "14/08/2026",
-        "GARBA Aïssatou CBG/13/26",
-        "YENI M’PO Florent",
+        "GEVAMIAN Amachim CBG/13/26",
+        "YORO M’ABEKPIA Foulumi",
         "1 analyse(s)",
         "1 000",
         "Réglée",
@@ -1715,8 +1715,8 @@
        "cellules": [
         "ORD-2026-00016",
         "12/08/2026",
-        "TCHOUKOUROU Zakari CBG/73/26",
-        "YENI M’PO Florent",
+        "TIGECHE Zapeto CBG/73/26",
+        "YORO M’ABEKPIA Foulumi",
         "2 médic. 4 analyse(s)",
         "14 395",
         "À encaisser",
@@ -1812,11 +1812,11 @@
        "cellules": [
         "ORD-2026-00034",
         "25/08/2026 à 00h00",
-        "PARAISO Rachida — CBG/153/25",
+        "PENU Rarouvil — CBG/153/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "1 372 FCFA",
         "Non réglée",
         ""
@@ -1831,11 +1831,11 @@
        "cellules": [
         "ORD-2026-00087",
         "25/08/2026 à 00h00",
-        "DAOUDA Djibril — CBG/124/25",
+        "DACHULO Doulom — CBG/124/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "600 FCFA",
         "Non réglée",
         ""
@@ -1850,11 +1850,11 @@
        "cellules": [
         "ORD-2026-00038",
         "24/08/2026 à 00h00",
-        "BASSONGUI Hervé — CBG/126/25",
+        "BICHIASI Hiabidjo — CBG/126/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "1 723 FCFA",
         "Non réglée",
         ""
@@ -1869,11 +1869,11 @@
        "cellules": [
         "PRS-00010",
         "24/08/2026 à 00h00",
-        "SAMBIENI Ganiou — CBG/34/26",
+        "SEMIA Gedur — CBG/34/26",
         "Soins",
         "Maternité",
         "Hospitalisation",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "2 700 FCFA",
         "Réglée",
         ""
@@ -1888,11 +1888,11 @@
        "cellules": [
         "PRS-00013",
         "24/08/2026 à 00h00",
-        "KASSA Alassane — CBG/60/26",
+        "KALOU Anapouzia — CBG/60/26",
         "Soins",
         "Consultation",
         "Salle de soins",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "12 000 FCFA",
         "Non réglée",
         ""
@@ -1907,11 +1907,11 @@
        "cellules": [
         "ORD-2026-00106",
         "22/08/2026 à 00h00",
-        "YARO Bio — CBG/121/25",
+        "YIAKI Bounoukia — CBG/121/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "750 FCFA",
         "Non réglée",
         ""
@@ -1926,11 +1926,11 @@
        "cellules": [
         "ORD-2026-00033",
         "21/08/2026 à 00h00",
-        "DOSSOU Souleymane — CBG/129/26",
+        "DULOUNE Soukoul — CBG/129/26",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "740 FCFA",
         "Non réglée",
         ""
@@ -1945,11 +1945,11 @@
        "cellules": [
         "PRS-00028",
         "21/08/2026 à 00h00",
-        "TAKI Fatouma — CBG/169/26",
+        "TACHEDI Fiapeken — CBG/169/26",
         "Soins",
         "Consultation",
         "Salle de soins",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "12 000 FCFA",
         "Réglée",
         ""
@@ -1964,11 +1964,11 @@
        "cellules": [
         "ORD-2026-00057",
         "20/08/2026 à 00h00",
-        "GARBA Zoukanéri — CBG/164/26",
+        "GEVAMIAN Zobo — CBG/164/26",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "1 100 FCFA",
         "Non réglée",
         ""
@@ -1983,11 +1983,11 @@
        "cellules": [
         "PRS-00061",
         "19/08/2026 à 00h00",
-        "AGOSSOU Bio — CBG/120/26",
+        "AKIAFADJO Bounoukia — CBG/120/26",
         "Soins",
         "Bloc opératoire",
         "Salle de soins",
-        "BADO BANI A. B. Zoulehath",
+        "BATOL BIAREL A. B. Zouguti",
         "10 000 FCFA",
         "Non réglée",
         ""
@@ -2002,11 +2002,11 @@
        "cellules": [
         "ORD-2026-00076",
         "18/08/2026 à 00h00",
-        "BAKO Chantal — CBG/100/25",
+        "BIALI Cichin — CBG/100/25",
         "Ordonnance",
         "Consultation",
         "Pharmacie",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "3 300 FCFA",
         "Non réglée",
         ""
@@ -2021,11 +2021,11 @@
        "cellules": [
         "PRS-00056",
         "15/08/2026 à 00h00",
-        "TCHANE Zakari — CBG/39/26",
+        "TIAMOU Zapeto — CBG/39/26",
         "Soins",
         "Hospitalisation",
         "Hospitalisation",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "5 000 FCFA",
         "Réglée",
         ""
@@ -2141,11 +2141,11 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CBG/153/25",
+          "PENU Rarouvil — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "1 372 FCFA",
           "Non réglée",
           ""
@@ -2160,11 +2160,11 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CBG/124/25",
+          "DACHULO Doulom — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "600 FCFA",
           "Non réglée",
           ""
@@ -2179,11 +2179,11 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CBG/126/25",
+          "BICHIASI Hiabidjo — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 723 FCFA",
           "Non réglée",
           ""
@@ -2198,11 +2198,11 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CBG/34/26",
+          "SEMIA Gedur — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "2 700 FCFA",
           "Réglée",
           ""
@@ -2217,11 +2217,11 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CBG/60/26",
+          "KALOU Anapouzia — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "12 000 FCFA",
           "Non réglée",
           ""
@@ -2236,11 +2236,11 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CBG/121/25",
+          "YIAKI Bounoukia — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "750 FCFA",
           "Non réglée",
           ""
@@ -2255,11 +2255,11 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CBG/129/26",
+          "DULOUNE Soukoul — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "740 FCFA",
           "Non réglée",
           ""
@@ -2274,11 +2274,11 @@
          "cellules": [
           "PRS-00028",
           "21/08/2026 à 00h00",
-          "TAKI Fatouma — CBG/169/26",
+          "TACHEDI Fiapeken — CBG/169/26",
           "Soins",
           "Consultation",
           "Salle de soins",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "12 000 FCFA",
           "Réglée",
           ""
@@ -2293,11 +2293,11 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CBG/164/26",
+          "GEVAMIAN Zobo — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 100 FCFA",
           "Non réglée",
           ""
@@ -2312,11 +2312,11 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CBG/120/26",
+          "AKIAFADJO Bounoukia — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
-          "BADO BANI A. B. Zoulehath",
+          "BATOL BIAREL A. B. Zouguti",
           "10 000 FCFA",
           "Non réglée",
           ""
@@ -2331,11 +2331,11 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CBG/100/25",
+          "BIALI Cichin — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "3 300 FCFA",
           "Non réglée",
           ""
@@ -2350,11 +2350,11 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CBG/39/26",
+          "TIAMOU Zapeto — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BOUKARI Nadège",
+          "BUKE Nedi",
           "5 000 FCFA",
           "Réglée",
           ""
@@ -2470,11 +2470,11 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CBG/34/26",
+          "SEMIA Gedur — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "2 700 FCFA",
           "Réglée",
           ""
@@ -2489,11 +2489,11 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CBG/60/26",
+          "KALOU Anapouzia — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "12 000 FCFA",
           "Non réglée",
           ""
@@ -2508,11 +2508,11 @@
          "cellules": [
           "PRS-00028",
           "21/08/2026 à 00h00",
-          "TAKI Fatouma — CBG/169/26",
+          "TACHEDI Fiapeken — CBG/169/26",
           "Soins",
           "Consultation",
           "Salle de soins",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "12 000 FCFA",
           "Réglée",
           ""
@@ -2527,11 +2527,11 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CBG/120/26",
+          "AKIAFADJO Bounoukia — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
-          "BADO BANI A. B. Zoulehath",
+          "BATOL BIAREL A. B. Zouguti",
           "10 000 FCFA",
           "Non réglée",
           ""
@@ -2546,11 +2546,11 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CBG/39/26",
+          "TIAMOU Zapeto — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BOUKARI Nadège",
+          "BUKE Nedi",
           "5 000 FCFA",
           "Réglée",
           ""
@@ -2565,11 +2565,11 @@
          "cellules": [
           "PRS-00040",
           "07/08/2026 à 00h00",
-          "MAMAN Chantal — CBG/85/26",
+          "METIAVI Cichin — CBG/85/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BOUKARI Nadège",
+          "BUKE Nedi",
           "12 000 FCFA",
           "Non réglée",
           ""
@@ -2584,11 +2584,11 @@
          "cellules": [
           "PRS-00060",
           "07/08/2026 à 00h00",
-          "KINNOU Bertine — CBG/56/25",
+          "KELE Bodje — CBG/56/25",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BADO BANI A. B. Zoulehath",
+          "BATOL BIAREL A. B. Zouguti",
           "5 000 FCFA",
           "Réglée",
           ""
@@ -2603,11 +2603,11 @@
          "cellules": [
           "PRS-00059",
           "04/08/2026 à 00h00",
-          "WOROU Marguerite — CBG/21/25",
+          "WEDIA Mibu — CBG/21/25",
           "Soins",
           "Maternité",
           "Salle de soins",
-          "ADAM Colette",
+          "ACHOUBE Coufi",
           "8 000 FCFA",
           "Réglée",
           ""
@@ -2622,11 +2622,11 @@
          "cellules": [
           "PRS-00014",
           "01/08/2026 à 00h00",
-          "SAMBIENI Rabiatou — CBG/104/26",
+          "SEMIA Rafiakpe — CBG/104/26",
           "Soins",
           "Hospitalisation",
           "Salle de soins",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "15 500 FCFA",
           "Réglée",
           ""
@@ -2641,11 +2641,11 @@
          "cellules": [
           "PRS-00015",
           "01/08/2026 à 00h00",
-          "WOROU Alimatou — CBG/137/26",
+          "WEDIA Arialu — CBG/137/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BADO BANI A. B. Zoulehath",
+          "BATOL BIAREL A. B. Zouguti",
           "14 000 FCFA",
           "Réglée",
           ""
@@ -2660,11 +2660,11 @@
          "cellules": [
           "PRS-00020",
           "01/08/2026 à 00h00",
-          "TCHOUKOUROU Nourou — CBG/113/25",
+          "TIGECHE Noupi — CBG/113/25",
           "Soins",
           "Maternité",
           "Salle de soins",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "11 000 FCFA",
           "Réglée",
           ""
@@ -2679,11 +2679,11 @@
          "cellules": [
           "PRS-00062",
           "30/07/2026 à 00h00",
-          "HOUNKPATIN Salifou — CBG/74/26",
+          "HOULUKE Sazo — CBG/74/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
-          "ADAM Colette",
+          "ACHOUBE Coufi",
           "9 500 FCFA",
           "Réglée",
           ""
@@ -2799,11 +2799,11 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CBG/153/25",
+          "PENU Rarouvil — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "1 372 FCFA",
           "Non réglée",
           ""
@@ -2818,11 +2818,11 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CBG/124/25",
+          "DACHULO Doulom — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "600 FCFA",
           "Non réglée",
           ""
@@ -2837,11 +2837,11 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CBG/126/25",
+          "BICHIASI Hiabidjo — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 723 FCFA",
           "Non réglée",
           ""
@@ -2856,11 +2856,11 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CBG/121/25",
+          "YIAKI Bounoukia — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "750 FCFA",
           "Non réglée",
           ""
@@ -2875,11 +2875,11 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CBG/129/26",
+          "DULOUNE Soukoul — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "740 FCFA",
           "Non réglée",
           ""
@@ -2894,11 +2894,11 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CBG/164/26",
+          "GEVAMIAN Zobo — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 100 FCFA",
           "Non réglée",
           ""
@@ -2913,11 +2913,11 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CBG/100/25",
+          "BIALI Cichin — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "3 300 FCFA",
           "Non réglée",
           ""
@@ -2932,11 +2932,11 @@
          "cellules": [
           "ORD-2026-00016",
           "12/08/2026 à 00h00",
-          "TCHOUKOUROU Zakari — CBG/73/26",
+          "TIGECHE Zapeto — CBG/73/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "2 895 FCFA",
           "Non réglée",
           ""
@@ -2951,11 +2951,11 @@
          "cellules": [
           "ORD-2026-00040",
           "01/08/2026 à 00h00",
-          "SEIDOU Fatouma — CBG/118/26",
+          "SIANUVU Fiapeken — CBG/118/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "1 190 FCFA",
           "Non réglée",
           ""
@@ -2970,11 +2970,11 @@
          "cellules": [
           "ORD-2026-00123",
           "01/08/2026 à 00h00",
-          "YENI Chantal — CBG/98/26",
+          "YORO Cichin — CBG/98/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "5 081 FCFA",
           "Non réglée",
           ""
@@ -2989,11 +2989,11 @@
          "cellules": [
           "ORD-2026-00060",
           "31/07/2026 à 00h00",
-          "YENI M’PO Florent — CBG904/25",
+          "YORO M’ABEKPIA Foulumi — CBG904/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "4 602 FCFA",
           "Non réglée",
           ""
@@ -3008,11 +3008,11 @@
          "cellules": [
           "ORD-2026-00132",
           "30/07/2026 à 10h15",
-          "TIGRI Séraphine — CBG/11/26",
+          "TOUZA Sigbudja — CBG/11/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 098 FCFA",
           "Non réglée",
           ""
@@ -3128,11 +3128,11 @@
          "cellules": [
           "ORD-2026-00034",
           "25/08/2026 à 00h00",
-          "PARAISO Rachida — CBG/153/25",
+          "PENU Rarouvil — CBG/153/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "1 372 FCFA",
           "Non réglée",
           ""
@@ -3147,11 +3147,11 @@
          "cellules": [
           "ORD-2026-00087",
           "25/08/2026 à 00h00",
-          "DAOUDA Djibril — CBG/124/25",
+          "DACHULO Doulom — CBG/124/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "600 FCFA",
           "Non réglée",
           ""
@@ -3166,11 +3166,11 @@
          "cellules": [
           "ORD-2026-00038",
           "24/08/2026 à 00h00",
-          "BASSONGUI Hervé — CBG/126/25",
+          "BICHIASI Hiabidjo — CBG/126/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 723 FCFA",
           "Non réglée",
           ""
@@ -3185,11 +3185,11 @@
          "cellules": [
           "PRS-00010",
           "24/08/2026 à 00h00",
-          "SAMBIENI Ganiou — CBG/34/26",
+          "SEMIA Gedur — CBG/34/26",
           "Soins",
           "Maternité",
           "Hospitalisation",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "2 700 FCFA",
           "Réglée",
           ""
@@ -3204,11 +3204,11 @@
          "cellules": [
           "PRS-00013",
           "24/08/2026 à 00h00",
-          "KASSA Alassane — CBG/60/26",
+          "KALOU Anapouzia — CBG/60/26",
           "Soins",
           "Consultation",
           "Salle de soins",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "12 000 FCFA",
           "Non réglée",
           ""
@@ -3223,11 +3223,11 @@
          "cellules": [
           "ORD-2026-00106",
           "22/08/2026 à 00h00",
-          "YARO Bio — CBG/121/25",
+          "YIAKI Bounoukia — CBG/121/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "750 FCFA",
           "Non réglée",
           ""
@@ -3242,11 +3242,11 @@
          "cellules": [
           "ORD-2026-00033",
           "21/08/2026 à 00h00",
-          "DOSSOU Souleymane — CBG/129/26",
+          "DULOUNE Soukoul — CBG/129/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "740 FCFA",
           "Non réglée",
           ""
@@ -3261,11 +3261,11 @@
          "cellules": [
           "ORD-2026-00057",
           "20/08/2026 à 00h00",
-          "GARBA Zoukanéri — CBG/164/26",
+          "GEVAMIAN Zobo — CBG/164/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "BASSONGUI Chabi Séko",
+          "BICHIASI Cezoune Sichovian",
           "1 100 FCFA",
           "Non réglée",
           ""
@@ -3280,11 +3280,11 @@
          "cellules": [
           "PRS-00061",
           "19/08/2026 à 00h00",
-          "AGOSSOU Bio — CBG/120/26",
+          "AKIAFADJO Bounoukia — CBG/120/26",
           "Soins",
           "Bloc opératoire",
           "Salle de soins",
-          "BADO BANI A. B. Zoulehath",
+          "BATOL BIAREL A. B. Zouguti",
           "10 000 FCFA",
           "Non réglée",
           ""
@@ -3299,11 +3299,11 @@
          "cellules": [
           "ORD-2026-00076",
           "18/08/2026 à 00h00",
-          "BAKO Chantal — CBG/100/25",
+          "BIALI Cichin — CBG/100/25",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "TAKI Orou",
+          "TACHEDI Odjipiar",
           "3 300 FCFA",
           "Non réglée",
           ""
@@ -3318,11 +3318,11 @@
          "cellules": [
           "PRS-00056",
           "15/08/2026 à 00h00",
-          "TCHANE Zakari — CBG/39/26",
+          "TIAMOU Zapeto — CBG/39/26",
           "Soins",
           "Hospitalisation",
           "Hospitalisation",
-          "BOUKARI Nadège",
+          "BUKE Nedi",
           "5 000 FCFA",
           "Réglée",
           ""
@@ -3337,11 +3337,11 @@
          "cellules": [
           "ORD-2026-00016",
           "12/08/2026 à 00h00",
-          "TCHOUKOUROU Zakari — CBG/73/26",
+          "TIGECHE Zapeto — CBG/73/26",
           "Ordonnance",
           "Consultation",
           "Pharmacie",
-          "YENI M’PO Florent",
+          "YORO M’ABEKPIA Foulumi",
           "2 895 FCFA",
           "Non réglée",
           ""
@@ -3455,7 +3455,7 @@
       {
        "cellules": [
         "ORD-2026-00132",
-        "TIGRI Séraphine — CBG/11/26",
+        "TOUZA Sigbudja — CBG/11/26",
         "BUPIVACAINE HYPERBARE/4ML",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3469,7 +3469,7 @@
       {
        "cellules": [
         "ORD-2026-00131",
-        "BOUKARI Florent — CBG/116/25",
+        "BUKE Foulumi — CBG/116/25",
         "GENTAMICINE 80 MG INJ",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3483,7 +3483,7 @@
       {
        "cellules": [
         "PRS-00065",
-        "ISSA Awaou — CBG/128/25",
+        "ISIASIABU Azomou — CBG/128/25",
         "Oxygénothérapie — 4 à 6 heures",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3497,7 +3497,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CBG/139/25",
+        "TIAMOU Mudovur — CBG/139/25",
         "Oxygénothérapie — 13 à 24 heures",
         "1 / 5",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3511,7 +3511,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CBG/139/25",
+        "TIAMOU Mudovur — CBG/139/25",
         "Pose de sérum",
         "1 / 4",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3525,7 +3525,7 @@
       {
        "cellules": [
         "PRS-00064",
-        "TCHANE Moussa — CBG/139/25",
+        "TIAMOU Mudovur — CBG/139/25",
         "Infiltration — petite",
         "1 / 4",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3539,7 +3539,7 @@
       {
        "cellules": [
         "PRS-00063",
-        "ISSA Zoukanéri — CBG/159/26",
+        "ISIASIABU Zobo — CBG/159/26",
         "Extraction d’ongle",
         "1 / 3",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3553,7 +3553,7 @@
       {
        "cellules": [
         "PRS-00063",
-        "ISSA Zoukanéri — CBG/159/26",
+        "ISIASIABU Zobo — CBG/159/26",
         "Pansement — moyen",
         "1 / 5",
         "Première administration d’un traitement hospitalier : elle revient à la salle de soins.",
@@ -3567,7 +3567,7 @@
       {
        "cellules": [
         "PRS-00061",
-        "AGOSSOU Bio — CBG/120/26",
+        "AKIAFADJO Bounoukia — CBG/120/26",
         "Infiltration — petite",
         "1 / 1",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3581,7 +3581,7 @@
       {
        "cellules": [
         "PRS-00061",
-        "AGOSSOU Bio — CBG/120/26",
+        "AKIAFADJO Bounoukia — CBG/120/26",
         "Ponction lombaire E",
         "1 / 3",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3595,7 +3595,7 @@
       {
        "cellules": [
         "PRS-00057",
-        "WOROU Adissa — CBG/157/25",
+        "WEDIA Afagu — CBG/157/25",
         "Ponction simple",
         "1 / 2",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -3609,7 +3609,7 @@
       {
        "cellules": [
         "PRS-00057",
-        "WOROU Adissa — CBG/157/25",
+        "WEDIA Afagu — CBG/157/25",
         "Ponction — grande",
         "1 / 3",
         "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
@@ -7296,7 +7296,7 @@
    {
     "id": "SOI01",
     "personnelId": "EMP01",
-    "nomComplet": "BASSONGUI Chabi Séko",
+    "nomComplet": "BICHIASI Cezoune Sichovian",
     "poste": "Directeur Médical",
     "qualite": "medecin",
     "prescrit": true,
@@ -7314,7 +7314,7 @@
    {
     "id": "SOI02",
     "personnelId": "EMP05",
-    "nomComplet": "YENI M’PO Florent",
+    "nomComplet": "YORO M’ABEKPIA Foulumi",
     "poste": "Médecin Généraliste",
     "qualite": "medecin",
     "prescrit": true,
@@ -7332,7 +7332,7 @@
    {
     "id": "SOI03",
     "personnelId": "EMP06",
-    "nomComplet": "TAKI Orou",
+    "nomComplet": "TACHEDI Odjipiar",
     "poste": "Médecin Généraliste",
     "qualite": "medecin",
     "prescrit": true,
@@ -7350,7 +7350,7 @@
    {
     "id": "SOI04",
     "personnelId": "EMP07",
-    "nomComplet": "AHOHOU Rodrigue",
+    "nomComplet": "AKPOMER Ridur",
     "poste": "Échographiste",
     "qualite": "medecin",
     "prescrit": false,
@@ -7368,7 +7368,7 @@
    {
     "id": "SOI05",
     "personnelId": "EMP10",
-    "nomComplet": "GARBA Yahouza",
+    "nomComplet": "GEVAMIAN Yelia",
     "poste": "Surveillant",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7385,7 +7385,7 @@
    {
     "id": "SOI06",
     "personnelId": "EMP11",
-    "nomComplet": "IDRISSOU ANIKI Baba-Toundé",
+    "nomComplet": "IGBOUPU ATUGBIPOU Badom-Tukepou",
     "poste": "Infirmier",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7402,7 +7402,7 @@
    {
     "id": "SOI07",
     "personnelId": "EMP12",
-    "nomComplet": "NKOUÉ Jean",
+    "nomComplet": "NIDJON Jagi",
     "poste": "Infirmier",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7419,7 +7419,7 @@
    {
     "id": "SOI08",
     "personnelId": "EMP13",
-    "nomComplet": "BAGRI Elvyre",
+    "nomComplet": "BELABO Egbifepo",
     "poste": "Infirmière",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7436,7 +7436,7 @@
    {
     "id": "SOI09",
     "personnelId": "EMP14",
-    "nomComplet": "PARAISO Abdoul",
+    "nomComplet": "PENU Abebia",
     "poste": "Infirmier(ère)",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7453,7 +7453,7 @@
    {
     "id": "SOI10",
     "personnelId": "EMP15",
-    "nomComplet": "OURTCHA Bertine",
+    "nomComplet": "OSIAMIAM Bodje",
     "poste": "Infirmier(ère)",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7470,7 +7470,7 @@
    {
     "id": "SOI11",
     "personnelId": "EMP16",
-    "nomComplet": "DOSSOU Moussa",
+    "nomComplet": "DULOUNE Mudovur",
     "poste": "Infirmier(ère)",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7487,7 +7487,7 @@
    {
     "id": "SOI12",
     "personnelId": "EMP17",
-    "nomComplet": "OROU YO Alimatou",
+    "nomComplet": "ODJIPIAR YUDJOUVOU Arialu",
     "poste": "Infirmier(ère)",
     "qualite": "infirmier",
     "prescrit": false,
@@ -7504,7 +7504,7 @@
    {
     "id": "SOI13",
     "personnelId": "EMP18",
-    "nomComplet": "BADO BANI A. B. Zoulehath",
+    "nomComplet": "BATOL BIAREL A. B. Zouguti",
     "poste": "Sage-femme",
     "qualite": "sage_femme",
     "prescrit": true,
@@ -7521,7 +7521,7 @@
    {
     "id": "SOI14",
     "personnelId": "EMP19",
-    "nomComplet": "BOUKARI Nadège",
+    "nomComplet": "BUKE Nedi",
     "poste": "Sage-femme",
     "qualite": "sage_femme",
     "prescrit": true,
@@ -7538,7 +7538,7 @@
    {
     "id": "SOI15",
     "personnelId": "EMP20",
-    "nomComplet": "ADAM Colette",
+    "nomComplet": "ACHOUBE Coufi",
     "poste": "Sage-femme",
     "qualite": "sage_femme",
     "prescrit": true,
@@ -8302,7 +8302,7 @@
     "releveePar": "ACCUEIL Y"
    }
   ],
-  "medecin": "BASSONGUI Chabi Séko",
+  "medecin": "BICHIASI Cezoune Sichovian",
   "ami": [
    "ABCG",
    "ABCM",
@@ -8412,7 +8412,7 @@
         "id": "DOSxmvwc46ksee7br",
         "statut": "actif",
         "patientCode": "CBG/1001/26",
-        "soignant": "BASSONGUI Chabi Séko",
+        "soignant": "BICHIASI Cezoune Sichovian",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
         "heureArrivee": "08h30",
@@ -8546,7 +8546,7 @@
         "id": "DOSxmvwc46kta2fbd",
         "statut": "actif",
         "patientCode": "CBG/1002/26",
-        "soignant": "BASSONGUI Chabi Séko",
+        "soignant": "BICHIASI Cezoune Sichovian",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
         "heureArrivee": "08h30",
@@ -8616,7 +8616,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z"
       }
@@ -8643,7 +8643,7 @@
        "etat": "attente",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z"
       }
@@ -8658,7 +8658,7 @@
         "id": "DOSxmvwc46r2qhadk",
         "statut": "actif",
         "patientCode": "CBG/1001/26",
-        "soignant": "BASSONGUI Chabi Séko",
+        "soignant": "BICHIASI Cezoune Sichovian",
         "typeVenue": "premiere",
         "dateArrivee": "2026-08-15",
         "heureArrivee": "08h30",
@@ -8729,7 +8729,7 @@
        "etat": "attente",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -8796,7 +8796,7 @@
        "etat": "cloture",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z"
       }
@@ -8823,7 +8823,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "actesChirurgicaux": "Ancien acte"
@@ -8900,7 +8900,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -8931,7 +8931,7 @@
        "etat": "attente",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -8951,7 +8951,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -8982,7 +8982,7 @@
        "etat": "cloture",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9002,7 +9002,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9034,7 +9034,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9054,7 +9054,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9086,7 +9086,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9106,7 +9106,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9135,7 +9135,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9155,7 +9155,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9185,7 +9185,7 @@
     },
     "params": {
      "patientCode": "CBG/9999/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9216,7 +9216,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9239,7 +9239,7 @@
         "patientCode": "CBG/1001/26",
         "patientId": "PATX1",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "type": "Contrôle",
         "date": "2026-08-27T10:00",
         "motif": "Contrôle — Paludisme simple",
@@ -9251,7 +9251,7 @@
         "id": "CONxmvwc46rscav2g",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -9317,7 +9317,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9349,7 +9349,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9370,7 +9370,7 @@
         "id": "CONxmvwc46rtmsauc",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -9431,7 +9431,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9462,7 +9462,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9483,7 +9483,7 @@
         "id": "CONxmvwc46rton3w0",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -9527,7 +9527,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme simple",
         "consultationId": "CONxmvwc46rton3w0",
         "dossierConsultationId": "DOSX-1001consultation",
@@ -9676,7 +9676,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -9728,7 +9728,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -9766,7 +9766,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -9787,7 +9787,7 @@
         "id": "CONxmvwc46rutgx32",
         "statut": "terminee",
         "patientCode": "CBG/1002/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -9831,7 +9831,7 @@
         "patientId": "PATX2",
         "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme simple",
         "consultationId": "CONxmvwc46rutgx32",
         "dossierConsultationId": "DOSX-1002consultation",
@@ -9898,7 +9898,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -9922,7 +9922,7 @@
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme simple",
         "urgent": false,
         "secteurDemandeur": "ADMINISTRATION",
@@ -10139,7 +10139,7 @@
         "poste": "hospitalisation",
         "destinataire": null,
         "libelle": "Admission demandée — BETA Deux",
-        "detail": "Paludisme simple — prescrit par BASSONGUI Chabi Séko (dossier DOS-91002)",
+        "detail": "Paludisme simple — prescrit par BICHIASI Cezoune Sichovian (dossier DOS-91002)",
         "priorite": "haute",
         "demandeId": null,
         "factureId": null,
@@ -10179,7 +10179,7 @@
         "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -10235,7 +10235,7 @@
     },
     "params": {
      "patientCode": "CBG/1002/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10277,7 +10277,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -10298,7 +10298,7 @@
         "id": "CONxmvwc46rwfxg75",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -10337,7 +10337,7 @@
         "poste": "observation",
         "destinataire": null,
         "libelle": "Mise en observation demandée — ALPHA Une",
-        "detail": "Paludisme simple — prescrit par BASSONGUI Chabi Séko (dossier DOS-91001)",
+        "detail": "Paludisme simple — prescrit par BICHIASI Cezoune Sichovian (dossier DOS-91001)",
         "priorite": "haute",
         "demandeId": null,
         "factureId": null,
@@ -10383,7 +10383,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10414,7 +10414,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -10435,7 +10435,7 @@
         "id": "CONxmvwc46rwpi2ph",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -10501,7 +10501,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10532,7 +10532,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "urgence",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z"
       }
@@ -10547,7 +10547,7 @@
         "id": "CONxmvwc46rwcn0ok",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Urgence",
         "motif": "Fièvre",
@@ -10608,7 +10608,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10639,7 +10639,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "constantesAccueil": {
@@ -10667,7 +10667,7 @@
         "examenCode": "IMG-SANS-PRIX",
         "examen": "Examen sans tarif (fixture)",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme simple",
         "urgent": false,
         "secteurDemandeur": "ADMINISTRATION",
@@ -10686,7 +10686,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10726,7 +10726,7 @@
        "etat": "consultation",
        "motifVenue": "Fièvre",
        "typeVenue": "premiere",
-       "soignant": "BASSONGUI Chabi Séko",
+       "soignant": "BICHIASI Cezoune Sichovian",
        "dateArrivee": "2026-08-15",
        "dossierSaisiLe": "2026-08-15T09:00:00.000Z",
        "temperature": 39,
@@ -10744,7 +10744,7 @@
         "id": "CONxmvwc46ry5dyz4",
         "statut": "terminee",
         "patientCode": "CBG/1001/26",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "date": "2026-08-20T09:00:00.000Z",
         "type": "Consultation",
         "motif": "Fièvre",
@@ -10805,7 +10805,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-20T09:00",
      "resumeSyndromique": "Syndrome fébrile",
      "hypotheses": "Palu",
@@ -10897,7 +10897,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -10990,7 +10990,7 @@
         "delai": "24 h",
         "prix": 4000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -11016,7 +11016,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -11040,7 +11040,7 @@
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme",
         "urgent": false,
         "secteurDemandeur": "Consultation",
@@ -11371,7 +11371,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -11412,7 +11412,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -11515,7 +11515,7 @@
         "patientId": "PATX2",
         "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -11608,7 +11608,7 @@
         "delai": "24 h",
         "prix": 4000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -11634,7 +11634,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -11658,7 +11658,7 @@
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme",
         "urgent": false,
         "secteurDemandeur": "Consultation",
@@ -11989,7 +11989,7 @@
         "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -12030,7 +12030,7 @@
     },
     "params": {
      "patientCode": "CBG/1002/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -12133,7 +12133,7 @@
         "patientId": "PATX3",
         "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -12226,7 +12226,7 @@
         "delai": "24 h",
         "prix": 4000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -12252,7 +12252,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -12276,7 +12276,7 @@
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme",
         "urgent": false,
         "secteurDemandeur": "Consultation",
@@ -12607,7 +12607,7 @@
         "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -12648,7 +12648,7 @@
     },
     "params": {
      "patientCode": "CBG/1003/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -12751,7 +12751,7 @@
         "patientId": "PATX4",
         "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -12844,7 +12844,7 @@
         "delai": "24 h",
         "prix": 4000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -12870,7 +12870,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -12894,7 +12894,7 @@
         "examenCode": "IMG-ECHO-PEL",
         "examen": "Échographie pelvienne",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme",
         "urgent": false,
         "secteurDemandeur": "Consultation",
@@ -13225,7 +13225,7 @@
         "patientCode": "CBG/1004/26",
         "patient": "DELTA Quatre",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -13266,7 +13266,7 @@
     },
     "params": {
      "patientCode": "CBG/1004/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -13369,7 +13369,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -13551,7 +13551,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -13592,7 +13592,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -13689,7 +13689,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -13745,7 +13745,7 @@
         "delai": "24 h",
         "prix": 4000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -13771,7 +13771,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -13921,7 +13921,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14007,7 +14007,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -14156,7 +14156,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -14188,7 +14188,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14287,7 +14287,7 @@
         "examenCode": "IMG-SANS-PRIX",
         "examen": "Examen sans tarif (fixture)",
         "modalite": "echographie",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "indication": "Paludisme",
         "urgent": false,
         "secteurDemandeur": "Consultation",
@@ -14306,7 +14306,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14398,7 +14398,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -14490,7 +14490,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14568,7 +14568,7 @@
     },
     "params": {
      "patientCode": "CBG/9999/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14613,7 +14613,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -14652,11 +14652,11 @@
         "statutAnalyses": "en_attente",
         "statutActes": "sans_objet",
         "statutImagerie": "sans_objet",
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z",
         "factureId": "FACxmvwc46rog3ytm",
         "factureNumero": "FP-2026-00001",
-        "_modifiePar": "BASSONGUI Chabi Séko",
+        "_modifiePar": "BICHIASI Cezoune Sichovian",
         "_modifieLe": "2026-10-31T11:45:30.948Z"
        }
       ],
@@ -14676,7 +14676,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -14686,7 +14686,7 @@
         "dossierConsultationId": null,
         "secteurDemandeur": "Consultation",
         "bloqueParPaiement": true,
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        }
       ],
@@ -14769,7 +14769,7 @@
         "ordonnanceId": "ORDxmvwc46rou6bo9",
         "ordonnanceNumero": "ORD-2026-00001",
         "dossierConsultationId": null,
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        }
       ],
@@ -14795,7 +14795,7 @@
         "faitPar": null,
         "detail": "1 analyse(s) — AKOP",
         "montant": 2000,
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        },
        {
@@ -14819,7 +14819,7 @@
         "faitPar": null,
         "detail": "1 médicament(s) — 1 000",
         "montant": 1000,
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        },
        {
@@ -14843,7 +14843,7 @@
         "faitPar": null,
         "detail": "1 médicament(s) · 1 analyse(s)",
         "montant": 3000,
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        }
       ],
@@ -14860,7 +14860,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -14878,7 +14878,7 @@
         ],
         "montant": 1000,
         "statutPaiement": "impayee",
-        "_creePar": "BASSONGUI Chabi Séko",
+        "_creePar": "BICHIASI Cezoune Sichovian",
         "_creeLe": "2026-10-31T11:45:30.948Z"
        }
       ],
@@ -14887,7 +14887,7 @@
     },
     "params": {
      "patientCode": "CBG/1001/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "diagnostic": "Paludisme",
      "date": "2026-08-20T09:00:00.000Z",
      "secteurDemandeur": "Consultation",
@@ -14918,7 +14918,7 @@
         "patientId": "PATX1",
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
-        "medecin": "BASSONGUI Chabi Séko",
+        "medecin": "BICHIASI Cezoune Sichovian",
         "diagnostic": "Paludisme",
         "consultationId": null,
         "dossierConsultationId": null,
@@ -14977,7 +14977,7 @@
         "delai": "24 h",
         "prix": 2000,
         "dateHeure": "2026-08-20T09:00:00.000Z",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "laborantin": null,
         "urgent": false,
         "etatAnalyse": "en_attente",
@@ -15149,7 +15149,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": null,
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "pharmacie",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -15247,7 +15247,7 @@
         "poste": "salle_soins",
         "destinataire": null,
         "libelle": "Nouvelle prescription de soins — ALPHA Une",
-        "detail": "PRS-00001 — 2 acte(s) — BASSONGUI Chabi Séko",
+        "detail": "PRS-00001 — 2 acte(s) — BICHIASI Cezoune Sichovian",
         "priorite": "normale",
         "demandeId": null,
         "factureId": null,
@@ -15270,7 +15270,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "salle_soins",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -15404,7 +15404,7 @@
         "poste": "hospitalisation",
         "destinataire": null,
         "libelle": "Nouvelle prescription de soins — BETA Deux",
-        "detail": "PRS-00002 — 1 acte(s) — BASSONGUI Chabi Séko",
+        "detail": "PRS-00002 — 1 acte(s) — BICHIASI Cezoune Sichovian",
         "priorite": "normale",
         "demandeId": null,
         "factureId": null,
@@ -15427,7 +15427,7 @@
         "patientCode": "CBG/1002/26",
         "patient": "BETA Deux",
         "prescripteurId": "SOI01",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "hospitalisation",
         "modalite": "hospitalisation",
         "premierAdministrateur": "salle_soins",
@@ -15544,7 +15544,7 @@
         "poste": "salle_soins",
         "destinataire": null,
         "libelle": "Nouvelle prescription de soins — GAMMA Trois",
-        "detail": "PRS-00003 — 1 acte(s) — BASSONGUI Chabi Séko",
+        "detail": "PRS-00003 — 1 acte(s) — BICHIASI Cezoune Sichovian",
         "priorite": "normale",
         "demandeId": null,
         "factureId": null,
@@ -15567,7 +15567,7 @@
         "patientCode": "CBG/1003/26",
         "patient": "GAMMA Trois",
         "prescripteurId": "SOI01",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "salle_soins",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -15672,7 +15672,7 @@
      ]
     },
     "sortie": {
-     "erreur": "AHOHOU Rodrigue (Échographiste) n’est pas habilité à prescrire.",
+     "erreur": "AKPOMER Ridur (Échographiste) n’est pas habilité à prescrire.",
      "code": null,
      "inserts": {},
      "modifs": {}
@@ -15761,7 +15761,7 @@
         "poste": "maternite",
         "destinataire": null,
         "libelle": "Nouvelle prescription de soins — ALPHA Une",
-        "detail": "PRS-00004 — 2 acte(s) — BASSONGUI Chabi Séko",
+        "detail": "PRS-00004 — 2 acte(s) — BICHIASI Cezoune Sichovian",
         "priorite": "normale",
         "demandeId": null,
         "factureId": null,
@@ -15784,7 +15784,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "maternite",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -15914,7 +15914,7 @@
         "poste": "salle_soins",
         "destinataire": null,
         "libelle": "Nouvelle prescription de soins — ALPHA Une",
-        "detail": "PRS-00005 — 1 acte(s) — BASSONGUI Chabi Séko",
+        "detail": "PRS-00005 — 1 acte(s) — BICHIASI Cezoune Sichovian",
         "priorite": "normale",
         "demandeId": null,
         "factureId": null,
@@ -15937,7 +15937,7 @@
         "patientCode": "CBG/1001/26",
         "patient": "ALPHA Une",
         "prescripteurId": "SOI01",
-        "prescripteur": "BASSONGUI Chabi Séko",
+        "prescripteur": "BICHIASI Cezoune Sichovian",
         "secteurDestinataire": "salle_soins",
         "modalite": "ambulatoire",
         "premierAdministrateur": "salle_soins",
@@ -16300,7 +16300,7 @@
         "secteur": "salle_soins",
         "motifSecteur": "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
         "executantId": "SOI06",
-        "executant": "IDRISSOU ANIKI Baba-Toundé",
+        "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
         "observation": "",
         "modalite": "ambulatoire"
        }
@@ -16381,7 +16381,7 @@
         "secteur": "salle_soins",
         "motifSecteur": "Traitement ambulatoire : toutes les administrations reviennent à la salle de soins.",
         "executantId": "SOI06",
-        "executant": "IDRISSOU ANIKI Baba-Toundé",
+        "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
         "observation": "RAS",
         "modalite": "ambulatoire"
        }
@@ -16542,7 +16542,7 @@
         "secteur": "hospitalisation",
         "motifSecteur": "Administration n° 2 : le relais est passé à l’hospitalisation.",
         "executantId": "SOI06",
-        "executant": "IDRISSOU ANIKI Baba-Toundé",
+        "executant": "IGBOUPU ATUGBIPOU Badom-Tukepou",
         "observation": "",
         "modalite": "hospitalisation"
        }
@@ -16627,7 +16627,7 @@
       "rang": 1,
       "secteur": null,
       "secteurAttendu": null,
-      "motif": "BASSONGUI Chabi Séko (Directeur Médical) n’exécute pas les soins."
+      "motif": "BICHIASI Cezoune Sichovian (Directeur Médical) n’exécute pas les soins."
      }
     },
     "params": {

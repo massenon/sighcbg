@@ -17,7 +17,7 @@ const scenario = () => [
   op('mere', 12, 'stock', 'para', 'bail', { appareil: 'F2', qte: 20 }),
   op('F1', 20, 'stock', 'para', 'sortie', { qte: 25 }),
   op('F2', 21, 'stock', 'para', 'sortie', { qte: 25 }), // hors part (20) : marquée, jamais appliquée
-  op('F1', 22, 'patients', 'p1', 'creer', { nom: 'KOUA', tel: '1' }),
+  op('F1', 22, 'patients', 'p1', 'creer', { nom: 'KIMAR', tel: '1' }),
   op('F2', 23, 'patients', 'p1', 'modifier', { tel: '2' }, { vu: { tel: 22 } }),
 ];
 
@@ -158,7 +158,7 @@ test('SCÉNARIO : mère éteinte, trois fileuls s\'échangent par le relais et c
   };
   emettre('F1', 'stock', 'para', 'creer', { qte: 40 }, { role: 'stock' });
   emettre('F1', 'stock', 'para', 'bail', { appareil: 'F2', qte: 10 }, { role: 'stock' });
-  emettre('F2', 'patients', 'p1', 'creer', { nom: 'AKPO', tel: '1' });
+  emettre('F2', 'patients', 'p1', 'creer', { nom: 'AMITU', tel: '1' });
   echanger('F3', true); echanger('F1'); echanger('F2', true);
   emettre('F3', 'besoins', 'b1', 'soumettre', { article: 'gants' }, { role: 'stock' });
   emettre('F2', 'stock', 'para', 'sortie', { qte: 6 });

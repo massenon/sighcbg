@@ -155,9 +155,9 @@ void main() {
     final pres = liste(a['prescriptions']);
     var ads = liste(a['administrations']).where((x) => x['statut'] != 'archive').toList();
     final soignants = [
-      {'id': 'SOI01', 'nomComplet': 'BASSONGUI Chabi Séko', 'poste': 'Directeur Médical', 'execute': false},
-      {'id': 'SOI06', 'nomComplet': 'IDRISSOU ANIKI Baba-Toundé', 'poste': 'Infirmier', 'execute': true},
-      {'id': 'SOI07', 'nomComplet': 'NKOUÉ Jean', 'poste': 'Infirmier', 'execute': true},
+      {'id': 'SOI01', 'nomComplet': 'BICHIASI Cezoune Sichovian', 'poste': 'Directeur Médical', 'execute': false},
+      {'id': 'SOI06', 'nomComplet': 'IGBOUPU ATUGBIPOU Badom-Tukepou', 'poste': 'Infirmier', 'execute': true},
+      {'id': 'SOI07', 'nomComplet': 'NIDJON Jagi', 'poste': 'Infirmier', 'execute': true},
     ];
     final dus = hosSoinsDuSecteur('hospitalisation', pres, ads);
     expect([for (final x in dus) '${x.prescription['reference']}|${x.rang}|${x.bloque}'], ['PRS-00001|2|false', 'PRS-00002|2|true']);

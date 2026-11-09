@@ -49,7 +49,7 @@ class CfaNs145 {
   static const objet = 'Répartition des secteurs de la clinique et désignation des responsables';
   static const dateSignature = '2026-08-06';
   static const dateEffet = '2026-08-07';
-  static const signataire = 'TAKI Alimatou épse BASSONGUI, Directrice Administrative';
+  static const signataire = 'TACHEDI Arialu épse BICHIASI, Directrice Administrative';
   static const source = 'DOC — Note de service NS 145/08/DA/CBG/2026';
 }
 
@@ -406,7 +406,7 @@ const cfaModelesProposes = <(String, String, String)>[
   ('echeance', 'Rappel de règlement', 'Bonjour {{nom}}, un reliquat reste dû sur votre dossier à {{clinique}}. Nous vous remercions de bien vouloir passer à la caisse.'),
 ];
 
-const cfaNomExemple = 'OROU YO Marguerite';
+const cfaNomExemple = 'ODJIPIAR YUDJOUVOU Mibu';
 
 /// `apercu(texte)` : les variables remplacées par des valeurs d'exemple. [jour] = « AAAA-MM-JJ ». Un jeton inconnu reste tel quel.
 String cfaApercuMessage(String texte, {required String clinique, required String telephone, required String jour}) {

@@ -15,7 +15,7 @@
    "taille": 2048,
    "donnees": null,
    "etat": "valide",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   },
   {
    "id": "DOC2",
@@ -31,7 +31,7 @@
    "taille": 3145728,
    "donnees": null,
    "etat": "en_attente",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   },
   {
    "id": "DOC3",
@@ -47,7 +47,7 @@
    "taille": 500,
    "donnees": "data:image/png;base64,AAAA",
    "etat": "valide",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   },
   {
    "id": "DOC4",
@@ -63,7 +63,7 @@
    "taille": 8192,
    "donnees": null,
    "etat": "valide",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   },
   {
    "id": "DOC5",
@@ -79,7 +79,7 @@
    "taille": null,
    "donnees": null,
    "etat": "valide",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   }
  ],
  "kpis": [
@@ -119,7 +119,7 @@
    "Ordonnance",
    "05/08/2026",
    "PDF · — référencé",
-   "OROU YO Edmond",
+   "ODJIPIAR YUDJOUVOU Edjukavom",
    "Validé",
    ""
   ],
@@ -130,7 +130,7 @@
    "Ordonnance",
    "03/08/2026",
    "PNG · 0 Ko déposé",
-   "OROU YO Edmond",
+   "ODJIPIAR YUDJOUVOU Edjukavom",
    "Validé",
    ""
   ],
@@ -141,7 +141,7 @@
    "Facture",
    "02/08/2026",
    "JPEG · 3.0 Mo référencé",
-   "OROU YO Edmond",
+   "ODJIPIAR YUDJOUVOU Edjukavom",
    "En attente",
    ""
   ],
@@ -152,7 +152,7 @@
    "Ordonnance",
    "01/08/2026",
    "PDF · 2 Ko référencé",
-   "OROU YO Edmond",
+   "ODJIPIAR YUDJOUVOU Edjukavom",
    "Validé",
    ""
   ]
@@ -210,12 +210,12 @@
    "type": "Ordonnance",
    "date": "2026-08-01",
    "etat": "valide",
-   "depose": "OROU YO Edmond"
+   "depose": "ODJIPIAR YUDJOUVOU Edjukavom"
   },
   "patch": {
    "type": "Consentement éclairé",
    "etat": "en_attente",
-   "depose": "GARBA Yahouza"
+   "depose": "GEVAMIAN Yelia"
   },
   "toasts": [
    "Modifications enregistrées."

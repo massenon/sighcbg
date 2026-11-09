@@ -41,7 +41,7 @@ void main() {
     m.collection('audit').inserer({
       'id': 'LOGX1',
       'dateHeure': '2026-10-30T09:59:30.000Z',
-      'utilisateur': 'OROU YO Edmond',
+      'utilisateur': 'ODJIPIAR YUDJOUVOU Edjukavom',
       'action': 'Connexion',
       'module': 'M14',
       'entite': 'session',
@@ -65,7 +65,7 @@ void main() {
     m.collection('audit').inserer({
       'id': 'LOGX2',
       'dateHeure': '2026-10-30T09:58:00.000Z',
-      'utilisateur': 'TAKI Alimatou',
+      'utilisateur': 'TACHEDI Arialu',
       'action': 'Modification',
       'module': 'M12',
       'entite': 'écriture',

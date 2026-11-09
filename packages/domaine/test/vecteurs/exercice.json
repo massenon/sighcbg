@@ -1918,7 +1918,7 @@
   },
   "validerDemandeur": {
    "ok": false,
-   "motif": "Signer n’est pas saisir : la clôture définitive doit venir d’une autre personne que celle qui a démarré la clôture (KASSA Augustin)."
+   "motif": "Signer n’est pas saisir : la clôture définitive doit venir d’une autre personne que celle qui a démarré la clôture (KALOU Avolutu)."
   },
   "validerSansMotif": {
    "ok": false,
@@ -2912,7 +2912,7 @@
    ]
   },
   "modaleValidation": {
-   "texte": "Valider la clôture de l’exercice 2026 Clôture démarrée par KASSA Augustin. Les contrôles sont rejoués, puis, d’un seul tenant : pièce de clôture (journal CL) qui solde les classes 6, 7 et 8 centre par centre, pièce d’à-nouveaux (journal AN) de 2027, verrou, archive. Seul le comptable peut ensuite rouvrir l’exercice. Annuler Clôturer définitivement",
+   "texte": "Valider la clôture de l’exercice 2026 Clôture démarrée par KALOU Avolutu. Les contrôles sont rejoués, puis, d’un seul tenant : pièce de clôture (journal CL) qui solde les classes 6, 7 et 8 centre par centre, pièce d’à-nouveaux (journal AN) de 2027, verrou, archive. Seul le comptable peut ensuite rouvrir l’exercice. Annuler Clôturer définitivement",
    "boutons": [
     "Annuler",
     "Clôturer définitivement"
@@ -3427,11 +3427,11 @@
    "signatures": [
     {
      "role": "Le Comptable",
-     "nom": "KASSA Augustin"
+     "nom": "KALOU Avolutu"
     },
     {
      "role": "La Directrice de l’Administration et des Finances",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ]
   },

@@ -114,7 +114,7 @@ Widget noteSource(String texte) => Padding(
 /// Les deux signataires de toute pièce de la GED.
 List<Signature> signaturesGed() => const [
       Signature('L’Agent administratif'),
-      Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
+      Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'),
     ];
 
 /// Imprime une pièce de la GED dans l'aperçu commun.

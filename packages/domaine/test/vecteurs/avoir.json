@@ -43,7 +43,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.693Z"
     },
     "facturesMere": [],
@@ -62,7 +62,7 @@
      "motif": "Erreur de facturation",
      "remboursement": "creance"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -90,8 +90,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.697Z"
     },
     "ecritures": [
@@ -175,7 +175,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.698Z"
     },
     "facturesMere": [],
@@ -197,7 +197,7 @@
      "remboursement": "especes",
      "observations": "Patient évacué"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -221,8 +221,8 @@
      "remboursement": "especes",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.700Z"
     },
     "ecritures": [
@@ -306,7 +306,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.701Z"
     },
     "facturesMere": [],
@@ -331,7 +331,7 @@
      ],
      "motif": "Autre (préciser en observations)"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -355,8 +355,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.702Z"
     },
     "ecritures": [
@@ -440,7 +440,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.702Z"
     },
     "facturesMere": [],
@@ -471,7 +471,7 @@
      "motif": "Erreur de facturation",
      "date": "2026-03-15"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -495,8 +495,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.703Z"
     },
     "ecritures": [
@@ -580,7 +580,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "en_attente",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.704Z"
     },
     "facturesMere": [],
@@ -615,7 +615,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -639,8 +639,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "sans_objet",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.705Z"
     },
     "ecritures": [
@@ -696,7 +696,7 @@
      "montantTTC": 8000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.706Z"
     },
     "facturesMere": [],
@@ -736,7 +736,7 @@
      ],
      "motif": "Prestation non réalisée"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -760,8 +760,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.706Z"
     },
     "ecritures": [
@@ -845,13 +845,13 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.707Z",
      "avoirIds": [
       "AVRxmvwc1di3h88jf"
      ],
      "montantAvoirs": 5000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.707Z"
     },
     "facturesMere": [],
@@ -901,7 +901,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -925,8 +925,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.708Z"
     },
     "ecritures": [
@@ -1010,13 +1010,13 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.709Z",
      "avoirIds": [
       "AVRxmvwc1di51d05z"
      ],
      "montantAvoirs": 7000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.709Z"
     },
     "facturesMere": [],
@@ -1076,7 +1076,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1100,8 +1100,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.711Z"
     },
     "ecritures": [
@@ -1185,13 +1185,13 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.711Z",
      "avoirIds": [
       "AVRxmvwc1di7uz4ap"
      ],
      "montantAvoirs": 7000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.712Z"
     },
     "facturesMere": [],
@@ -1261,7 +1261,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1311,7 +1311,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.713Z"
     },
     "facturesMere": [],
@@ -1381,7 +1381,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1431,7 +1431,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.713Z"
     },
     "facturesMere": [],
@@ -1496,7 +1496,7 @@
      "lignes": [],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1546,7 +1546,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.713Z"
     },
     "facturesMere": [],
@@ -1610,7 +1610,7 @@
     "params": {
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1660,7 +1660,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.714Z"
     },
     "facturesMere": [],
@@ -1730,7 +1730,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1812,7 +1812,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1862,7 +1862,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.715Z"
     },
     "facturesMere": [
@@ -1874,7 +1874,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -1944,7 +1944,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -1994,7 +1994,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.715Z"
     },
     "facturesMere": [
@@ -2006,7 +2006,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2017,7 +2017,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -2087,7 +2087,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -2137,7 +2137,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.715Z"
     },
     "facturesMere": [
@@ -2149,7 +2149,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2160,7 +2160,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2171,7 +2171,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -2241,7 +2241,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -2265,8 +2265,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.716Z"
     },
     "ecritures": [
@@ -2350,7 +2350,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.717Z"
     },
     "facturesMere": [
@@ -2362,7 +2362,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2373,7 +2373,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2384,7 +2384,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -2469,7 +2469,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -2493,8 +2493,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.719Z"
     },
     "ecritures": [
@@ -2578,7 +2578,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.719Z"
     },
     "facturesMere": [
@@ -2590,7 +2590,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2601,7 +2601,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2612,7 +2612,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -2703,7 +2703,7 @@
      "motif": "Erreur de facturation",
      "date": "2027-01-04"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -2727,8 +2727,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.720Z"
     },
     "ecritures": [
@@ -2812,7 +2812,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.721Z"
     },
     "facturesMere": [
@@ -2824,7 +2824,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2835,7 +2835,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -2846,7 +2846,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -2942,7 +2942,7 @@
      "motif": "Erreur de facturation",
      "date": "2026-03-15T23:30:00.000Z"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -2966,8 +2966,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.721Z"
     },
     "ecritures": [
@@ -3051,7 +3051,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.722Z"
     },
     "facturesMere": [
@@ -3063,7 +3063,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3074,7 +3074,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3085,7 +3085,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -3187,7 +3187,7 @@
      "remboursement": "creance",
      "origine": "mecef"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -3211,8 +3211,8 @@
      "remboursement": "creance",
      "origine": "mecef",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.722Z"
     },
     "ecritures": [
@@ -3296,7 +3296,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.723Z"
     },
     "facturesMere": [
@@ -3308,7 +3308,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3319,7 +3319,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3330,7 +3330,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -3438,7 +3438,7 @@
      "remboursement": "especes",
      "origine": "caisse"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -3462,8 +3462,8 @@
      "remboursement": "especes",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.723Z"
     },
     "ecritures": [
@@ -3547,13 +3547,13 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.724Z",
      "avoirIds": [
       "AVRxmvwc1dikgjlfj"
      ],
      "montantAvoirs": 6000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.725Z"
     },
     "facturesMere": [
@@ -3565,7 +3565,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3576,7 +3576,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3587,7 +3587,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -3703,7 +3703,7 @@
      "motif": "Erreur de facturation",
      "origine": "caisse"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -3753,13 +3753,13 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.725Z",
      "avoirIds": [
       "AVRxmvwc1dil1ycp0"
      ],
      "montantAvoirs": 6000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.726Z"
     },
     "facturesMere": [
@@ -3771,7 +3771,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3782,7 +3782,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -3793,7 +3793,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -3914,7 +3914,7 @@
      "motif": "Erreur de facturation",
      "origine": "caisse"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -3938,8 +3938,8 @@
      "remboursement": "creance",
      "origine": "caisse",
      "statutMecef": "en_attente",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:43:19.727Z"
     },
     "ecritures": [
@@ -4023,7 +4023,7 @@
      "montantTTC": 10000,
      "statutPaiement": "soldee",
      "statutMecef": "valide",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.727Z"
     },
     "facturesMere": [
@@ -4035,7 +4035,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -4046,7 +4046,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -4057,7 +4057,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -4186,7 +4186,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {
@@ -4237,7 +4237,7 @@
      "statutPaiement": "soldee",
      "statutMecef": "valide",
      "type": "Avoir",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:43:19.727Z"
     },
     "facturesMere": [
@@ -4249,7 +4249,7 @@
       "piecesFilles": [
        "AUTRE-PIECE"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -4260,7 +4260,7 @@
       "piecesFilles": [
        "FN-2026-00815"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      },
      {
@@ -4271,7 +4271,7 @@
       "piecesFilles": [
        "FN-2026-00814"
       ],
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-31T11:43:19.715Z"
      }
     ],
@@ -4396,7 +4396,7 @@
      ],
      "motif": "Erreur de facturation"
     },
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "jour": "2026-10-31"
    },
    "sortie": {

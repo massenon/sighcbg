@@ -2027,17 +2027,17 @@
     ],
     [
      "Établi par",
-     "BASSONGUI Chabi Séko"
+     "BICHIASI Cezoune Sichovian"
     ]
    ],
    "signatures": [
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     },
     {
      "role": "Le Directeur Médical",
-     "nom": "BASSONGUI Chabi Séko"
+     "nom": "BICHIASI Cezoune Sichovian"
     }
    ],
    "texte": "Documents collectés et leur rôle dans le logicielDocument collectéDevient dans le logicielModuleStatutOrganigramme de la Clinique NASSIERA TOOStructure organisationnelle + RBACM14 / CFGIntégréNS 131/07/DM/DA/CBG/2026Moteur d’évaluation et de sanctionsM10IntégréNS 132/07/DM/DA/CBG/2026Moteur des primesM10 / M11IntégréFiche d’évaluation et de solde (juillet 2026)Modèle d’état imprimableM10 / RAPIntégréTarifs des analyses de laboratoire (48)Catalogue laboratoireM5Intégré — tarifs à confirmerTarifs des médicaments et accessoires (144)Catalogue tarifaire pharmacieM6Intégré — tarifs à confirmerInventaire « Grand Stock » (SAGE 100)Stock initial — 175 articles reprisM6IntégréFacture fournisseur SoBAPS (BL 26LNA00026)Modèle du workflow achatM7IntégréBon d’expression de besoins (modèle vierge)Workflow de demande interneM7IntégréClasseur comptable SYSCOHADAPlan comptable + journauxM12Intégré — partielCompte de résultat mensuel 2025Baseline financière de comparaisonM12 / M14À importerPlanning de travail des médecinsMoteur de planning (garde 24h)M10IntégréPlanning agents d’entretien et sécuritéMoteur de planning RHM10IntégréListe des 13 compagnies d’assuranceRéférentiel assureursM9IntégréPhotographies du site et entête officielleBrand Configuration CenterCFGIntégréRègles de gestion transversalesCodeRègle appliquéeModuleRG-01Identifiant patient CBG/[n°]/[année] généré automatiquement, unique et non modifiableM1RG-02Médicaments facturés au prix d’achat, sans marge bénéficiaireM6 / M8RG-03Toute sortie de stock rattachée à un justificatif ; stock jamais négatifM6RG-04Commande de stock gros validée par la Directrice AdministrativeM7RG-05Rangement FEFO et alertes de péremption automatiquesM6RG-06Sortie d’hospitalisation conditionnée à l’apurement du soldeM3RG-07Sortie requérant signature patient, signature infirmier et constat du gardienM3RG-08Sortie contre avis médical motivée ; avis du Procureur si nécessaireM3RG-09Prise en charge assurance appliquée uniquement si la carte est valideM9RG-10Toute écriture comptable équilibrée avant validationM12RG-11Primes de garde et de permanence calculées depuis le planning validéM10 / M11RG-12Journalisation de toute action ; aucune action anonymeM14RG-13Cloisonnement des données médicales, financières et RHM14RG-14Suppression logique uniquement, jamais de suppression physiqueTransverse",
@@ -2243,7 +2243,7 @@
     ]
    ],
    "audit": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Paramétrage",
     "module": "M6",
     "entite": "Valorisation des sorties",
@@ -6469,7 +6469,7 @@
     ]
    ],
    "audit": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "CFG",
     "entite": "ParametrageNotifications",
@@ -6852,9 +6852,9 @@
   },
   "session": {
    "role": "admin",
-   "nom": "BASSONGUI Chabi Séko",
+   "nom": "BICHIASI Cezoune Sichovian",
    "poste": "Administrateur système",
-   "identifiant": "c.bassongui",
+   "identifiant": "c.bichiasi",
    "fonction": "direction",
    "secteur": "ADM"
   },
@@ -6868,7 +6868,7 @@
    "cartesTexte": [
     "Informations personnelles Nom et prénoms * Identifiant de connexion Poste Téléphone Adresse électronique Enregistrer",
     "Sécurité du compte Mot de passe actuel * Nouveau mot de passe * Confirmer le nouveau mot de passe * Activer l’authentification à deux facteurs Politique en vigueur : 8 caractères minimum, majuscules, minuscules, chiffre et caractère spécial, renouvellement tous les 90 jours, verrouillage après trois tentatives infructueuses. Modifier le mot de passe",
-    "BC BASSONGUI Chabi Séko Administrateur système Compte actif",
+    "BC BICHIASI Cezoune Sichovian Administrateur système Compte actif",
     "Périmètre d’accès Matrice RBAC M2 M1 M13 CFG M1 M2 M2 M3 M4 M5 M6 M7 M8 M9 MECEF M12 M10 M11 M13 GED RAP M14 CFG IMP MERE MERE MERE MERE MERE RLS PIL M12 DASH",
     "Activité récente Modification — ParametrageNotifications Module CFG à l’instant Paramétrage — Valorisation des sorties Module M6 à l’instant Paramétrage — Valorisation des sorties Module M6 à l’instant Création — centre de coûts Module M12 à l’instant Création — centre de coûts Module M12 à l’instant Création — relevé de constantes Module M1 à l’instant"
    ],
@@ -6894,12 +6894,12 @@
   "valeursInitiales": [
    [
     "nom",
-    "BASSONGUI Chabi Séko",
+    "BICHIASI Cezoune Sichovian",
     false
    ],
    [
     "identifiant",
-    "c.bassongui",
+    "c.bichiasi",
     true
    ],
    [
@@ -6973,7 +6973,7 @@
     "role": "admin",
     "nom": "NOUVEAU Nom",
     "poste": "Administrateur système",
-    "identifiant": "c.bassongui",
+    "identifiant": "c.bichiasi",
     "fonction": "direction",
     "secteur": "ADM"
    }
@@ -6984,7 +6984,7 @@
     "role": "admin",
     "nom": "NOUVEAU Nom",
     "poste": "Administrateur système",
-    "identifiant": "c.bassongui",
+    "identifiant": "c.bichiasi",
     "fonction": "direction",
     "secteur": "ADM"
    }
@@ -6997,7 +6997,7 @@
    ],
    "audit": 0,
    "premier": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "CFG",
     "entite": "ParametrageNotifications",
@@ -7016,7 +7016,7 @@
    ],
    "audit": 0,
    "premier": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "CFG",
     "entite": "ParametrageNotifications",
@@ -7035,7 +7035,7 @@
    ],
    "audit": 0,
    "premier": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "CFG",
     "entite": "ParametrageNotifications",
@@ -7054,11 +7054,11 @@
    ],
    "audit": 0,
    "premier": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "M14",
     "entite": "Utilisateur",
-    "reference": "c.bassongui",
+    "reference": "c.bichiasi",
     "ancienneValeur": null,
     "nouvelleValeur": "{\"motDePasse\":\"modifié\"}",
     "poste": "POSTE-LOCAL",
@@ -7073,11 +7073,11 @@
    ],
    "audit": 0,
    "premier": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "M14",
     "entite": "Utilisateur",
-    "reference": "c.bassongui",
+    "reference": "c.bichiasi",
     "ancienneValeur": null,
     "nouvelleValeur": "{\"motDePasse\":\"modifié\"}",
     "poste": "POSTE-LOCAL",
@@ -7544,7 +7544,7 @@
     "actif": false,
     "motif": "Pas de service d’achats pour le test",
     "fermeLe": "2026-10-30",
-    "fermePar": "BASSONGUI Chabi Séko",
+    "fermePar": "BICHIASI Cezoune Sichovian",
     "rouvertLe": null,
     "rouvertPar": null
    },
@@ -7558,7 +7558,7 @@
     ]
    ],
    "audit": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Fermeture d’une activité",
     "module": "CFG",
     "entite": "Activité",
@@ -7806,7 +7806,7 @@
     "fermeLe": null,
     "fermePar": null,
     "rouvertLe": "2026-10-30",
-    "rouvertPar": "BASSONGUI Chabi Séko"
+    "rouvertPar": "BICHIASI Cezoune Sichovian"
    },
    "toasts": [
     [
@@ -7815,7 +7815,7 @@
     ]
    ],
    "audit": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Réouverture d’une activité",
     "module": "CFG",
     "entite": "Activité",
@@ -8036,7 +8036,7 @@
     "code": "M6-CRANSDET",
     "actif": false,
     "fermeLe": "2026-10-30",
-    "fermePar": "BASSONGUI Chabi Séko",
+    "fermePar": "BICHIASI Cezoune Sichovian",
     "rouvertLe": null,
     "rouvertPar": null
    },
@@ -9343,7 +9343,7 @@
     ]
    ],
    "audit": {
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Restauration",
     "module": "—",
     "entite": "rbac",
@@ -9383,7 +9383,7 @@
      ]
     ],
     "audit": {
-     "utilisateur": "BASSONGUI Chabi Séko",
+     "utilisateur": "BICHIASI Cezoune Sichovian",
      "action": "Ouverture de la modification du barème",
      "module": "M10",
      "entite": "Barème",
@@ -9412,7 +9412,7 @@
      ]
     ],
     "audit": {
-     "utilisateur": "BASSONGUI Chabi Séko",
+     "utilisateur": "BICHIASI Cezoune Sichovian",
      "action": "Fermeture de la modification du barème",
      "module": "M10",
      "entite": "Barème",
@@ -9493,7 +9493,7 @@
      "Régénérer le jeu de démonstration complet"
     ],
     "audit": {
-     "utilisateur": "BASSONGUI Chabi Séko",
+     "utilisateur": "BICHIASI Cezoune Sichovian",
      "action": "Déverrouillage",
      "module": "CFG",
      "entite": "Réinitialisation",
@@ -9518,7 +9518,7 @@
      ]
     ],
     "audit0": {
-     "utilisateur": "BASSONGUI Chabi Séko",
+     "utilisateur": "BICHIASI Cezoune Sichovian",
      "action": "Réinitialisation des jeux de test",
      "module": "CFG",
      "entite": "Base",
@@ -9804,7 +9804,7 @@
    "reverrouillee": {
     "cle": null,
     "audit": {
-     "utilisateur": "BASSONGUI Chabi Séko",
+     "utilisateur": "BICHIASI Cezoune Sichovian",
      "action": "Verrouillage",
      "module": "CFG",
      "entite": "Réinitialisation",

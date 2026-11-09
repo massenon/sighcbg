@@ -46,4 +46,4 @@ Widget bandeauLectureSeule(ContexteEcran c) => (!c.droit.editer && c.droit.voir)
     : const SizedBox.shrink();
 
 /// La signature « Directrice de l'Administration et des Finances » des feuillets de la liasse (la maquette l'écrit en dur).
-const signDafFinances = Signature('La Directrice de l’Administration et des Finances', nom: 'TAKI Alimatou');
+const signDafFinances = Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu');

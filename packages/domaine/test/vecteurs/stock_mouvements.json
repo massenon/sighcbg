@@ -19,7 +19,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:26.470Z"
      }
     ],
@@ -39,7 +39,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -75,7 +75,7 @@
       "nbLignes": 1,
       "quantiteTotale": 12,
       "valeur": 1200,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 5",
@@ -95,7 +95,7 @@
       "quantite": 12,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00001",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -108,7 +108,7 @@
       "quantite": 12,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00001",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -139,7 +139,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:26.757Z"
      },
      {
@@ -156,7 +156,7 @@
       "stockGros": 30,
       "stockDetail": 0,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:26.757Z"
      },
      {
@@ -173,7 +173,7 @@
       "stockGros": 7,
       "stockDetail": 3,
       "stock": 10,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:26.757Z"
      }
     ],
@@ -210,7 +210,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -270,7 +270,7 @@
       "nbLignes": 3,
       "quantiteTotale": 47,
       "valeur": 10700,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "3 articles",
@@ -290,7 +290,7 @@
       "quantite": 7,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -303,7 +303,7 @@
       "quantite": 7,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -316,7 +316,7 @@
       "quantite": 30,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -329,7 +329,7 @@
       "quantite": 30,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -342,7 +342,7 @@
       "quantite": 10,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -355,7 +355,7 @@
       "quantite": 10,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00002",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -398,7 +398,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:27.117Z"
      }
     ],
@@ -433,7 +433,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -470,7 +470,7 @@
       "nbLignes": 1,
       "quantiteTotale": 25,
       "valeur": 2500,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 9",
@@ -490,7 +490,7 @@
       "quantite": 25,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00003",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -503,7 +503,7 @@
       "quantite": 25,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00003",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -534,7 +534,7 @@
       "stockGros": 8,
       "stockDetail": 10,
       "stock": 18,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:27.470Z"
      }
     ],
@@ -567,7 +567,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -615,7 +615,7 @@
       "stockGros": 20,
       "stockDetail": 10,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:27.774Z"
      }
     ],
@@ -654,7 +654,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -696,7 +696,7 @@
       "nbLignes": 1,
       "quantiteTotale": 15,
       "valeur": 1500,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 11",
@@ -716,7 +716,7 @@
       "quantite": 15,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00004",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -729,7 +729,7 @@
       "quantite": 15,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00004",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -760,7 +760,7 @@
       "stockGros": 20,
       "stockDetail": 10,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:28.101Z"
      }
     ],
@@ -803,7 +803,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -840,7 +840,7 @@
       "nbLignes": 1,
       "quantiteTotale": 20,
       "valeur": 2000,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 12",
@@ -860,7 +860,7 @@
       "quantite": 20,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00005",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -873,7 +873,7 @@
       "quantite": 20,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00005",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -904,7 +904,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:28.447Z"
      }
     ],
@@ -945,7 +945,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -993,7 +993,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:28.740Z"
      }
     ],
@@ -1034,7 +1034,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1082,7 +1082,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:29.039Z"
      }
     ],
@@ -1116,7 +1116,7 @@
     },
     "gestes": [],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1157,7 +1157,7 @@
       "stockGros": 20,
       "stockDetail": 10,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:29.289Z"
      }
     ],
@@ -1204,7 +1204,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1241,7 +1241,7 @@
       "nbLignes": 1,
       "quantiteTotale": 20,
       "valeur": 2000,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 16",
@@ -1261,7 +1261,7 @@
       "quantite": 20,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00006",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1274,7 +1274,7 @@
       "quantite": 20,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00006",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -1305,7 +1305,7 @@
       "stockGros": 20,
       "stockDetail": 10,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:29.665Z"
      }
     ],
@@ -1356,7 +1356,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1398,7 +1398,7 @@
       "nbLignes": 1,
       "quantiteTotale": 5,
       "valeur": 500,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 17",
@@ -1418,7 +1418,7 @@
       "quantite": 5,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00007",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1431,7 +1431,7 @@
       "quantite": 5,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00007",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -1462,7 +1462,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:30.031Z"
      },
      {
@@ -1479,7 +1479,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:30.031Z"
      }
     ],
@@ -1540,7 +1540,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1595,7 +1595,7 @@
       "nbLignes": 2,
       "quantiteTotale": 7,
       "valeur": 700,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "2 articles",
@@ -1615,7 +1615,7 @@
       "quantite": 4,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00008",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1628,7 +1628,7 @@
       "quantite": 4,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00008",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1641,7 +1641,7 @@
       "quantite": 3,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00008",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1654,7 +1654,7 @@
       "quantite": 3,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00008",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -1691,7 +1691,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:30.468Z"
      },
      {
@@ -1708,7 +1708,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:30.468Z"
      }
     ],
@@ -1770,7 +1770,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1813,7 +1813,7 @@
       "nbLignes": 1,
       "quantiteTotale": 4,
       "valeur": 400,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 21",
@@ -1833,7 +1833,7 @@
       "quantite": 4,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00009",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -1846,7 +1846,7 @@
       "quantite": 4,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00009",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -1883,7 +1883,7 @@
       "stockGros": 20,
       "stockDetail": 10,
       "stock": 30,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:30.919Z"
      }
     ],
@@ -1948,7 +1948,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -1992,7 +1992,7 @@
       "stockGros": 40,
       "stockDetail": 10,
       "stock": 40,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:31.214Z"
      }
     ],
@@ -2078,7 +2078,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -2114,7 +2114,7 @@
       "nbLignes": 1,
       "quantiteTotale": 6,
       "valeur": 600,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 23",
@@ -2134,7 +2134,7 @@
       "quantite": 6,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00010",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -2147,7 +2147,7 @@
       "quantite": 6,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00010",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -2178,7 +2178,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:31.511Z"
      }
     ],
@@ -2251,7 +2251,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -2287,7 +2287,7 @@
       "nbLignes": 1,
       "quantiteTotale": 2,
       "valeur": 200,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "ZZ Test 24",
@@ -2307,7 +2307,7 @@
       "quantite": 2,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00013",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -2320,7 +2320,7 @@
       "quantite": 2,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00013",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -2351,7 +2351,7 @@
       "stockGros": 50,
       "stockDetail": 10,
       "stock": 60,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:31.826Z"
      },
      {
@@ -2368,7 +2368,7 @@
       "stockGros": 9,
       "stockDetail": 10,
       "stock": 19,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:31.826Z"
      }
     ],
@@ -2451,7 +2451,7 @@
      }
     ],
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -2499,7 +2499,7 @@
       "nbLignes": 2,
       "quantiteTotale": 13,
       "valeur": 1300,
-      "operateur": "BASSONGUI Chabi Séko",
+      "operateur": "BICHIASI Cezoune Sichovian",
       "etat": "receptionne",
       "dateReception": "2026-10-30",
       "produit": "2 articles",
@@ -2519,7 +2519,7 @@
       "quantite": 9,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00014",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -2532,7 +2532,7 @@
       "quantite": 9,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00014",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -2545,7 +2545,7 @@
       "quantite": 4,
       "stockType": "detail",
       "justificatif": "Bon de transfert TR-00014",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "statut": "actif",
@@ -2558,7 +2558,7 @@
       "quantite": 4,
       "stockType": "gros",
       "justificatif": "Bon de transfert TR-00014",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -2621,7 +2621,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:32.274Z"
     },
     "saisie": {
@@ -2635,7 +2635,7 @@
     "rangMax": 406,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2661,7 +2661,7 @@
       "justificatif": "BL-777",
       "produit": "ZZ Test 27",
       "typeLabel": "Entrée",
-      "utilisateur": "BASSONGUI Chabi Séko",
+      "utilisateur": "BICHIASI Cezoune Sichovian",
       "reference": "M000407"
      }
     ],
@@ -2691,7 +2691,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:32.571Z"
     },
     "saisie": {
@@ -2705,7 +2705,7 @@
     "rangMax": 407,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2731,7 +2731,7 @@
       "justificatif": "FAC-1",
       "produit": "ZZ Test 28",
       "typeLabel": "Sortie",
-      "utilisateur": "BASSONGUI Chabi Séko",
+      "utilisateur": "BICHIASI Cezoune Sichovian",
       "reference": "M000408"
      }
     ],
@@ -2761,7 +2761,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:32.837Z"
     },
     "saisie": {
@@ -2775,7 +2775,7 @@
     "rangMax": 408,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2817,7 +2817,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:33.095Z"
     },
     "saisie": {
@@ -2831,7 +2831,7 @@
     "rangMax": 408,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2873,7 +2873,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:33.369Z"
     },
     "saisie": {
@@ -2887,7 +2887,7 @@
     "rangMax": 408,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2929,7 +2929,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:33.610Z"
     },
     "saisie": {
@@ -2943,7 +2943,7 @@
     "rangMax": 408,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -2969,7 +2969,7 @@
       "justificatif": "TR-X",
       "produit": "ZZ Test 32",
       "typeLabel": "Transfert",
-      "utilisateur": "BASSONGUI Chabi Séko",
+      "utilisateur": "BICHIASI Cezoune Sichovian",
       "reference": "M000409"
      }
     ],
@@ -2999,7 +2999,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:33.873Z"
     },
     "saisie": {
@@ -3013,7 +3013,7 @@
     "rangMax": 409,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -3055,7 +3055,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:34.143Z"
     },
     "saisie": {
@@ -3069,7 +3069,7 @@
     "rangMax": 409,
     "edition": null,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -3111,7 +3111,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:34.391Z"
     },
     "saisie": {
@@ -3135,7 +3135,7 @@
      "utilisateur": "Ancien"
     },
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -3162,7 +3162,7 @@
      "stockType": "detail",
      "date": "2026-10-01",
      "justificatif": "FAC-5",
-     "utilisateur": "BASSONGUI Chabi Séko"
+     "utilisateur": "BICHIASI Cezoune Sichovian"
     },
     "produit": {
      "id": "PRD-ZT35",
@@ -3189,7 +3189,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:35.037Z"
     },
     "saisie": {
@@ -3213,7 +3213,7 @@
      "utilisateur": "Ancien"
     },
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "valeursParDefaut": {
      "type": "entree",
      "stockType": "gros",
@@ -3277,7 +3277,7 @@
       "stockGros": 20,
       "stockDetail": 8,
       "stock": 28,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      },
      {
@@ -3294,7 +3294,7 @@
       "stockGros": 5,
       "stockDetail": 0,
       "stock": 5,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      },
      {
@@ -3311,7 +3311,7 @@
       "stockGros": 12,
       "stockDetail": 6,
       "stock": 18,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      },
      {
@@ -3328,7 +3328,7 @@
       "stockGros": 10,
       "stockDetail": 8,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      }
     ],
@@ -3339,7 +3339,7 @@
     "inventairesExistants": [],
     "rangMax": 400,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -3512,9 +3512,9 @@
       "stockGros": 23,
       "stockDetail": 8,
       "stock": 31,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:24.998Z"
      },
      {
@@ -3531,9 +3531,9 @@
       "stockGros": 2,
       "stockDetail": 0,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:24.998Z"
      },
      {
@@ -3550,7 +3550,7 @@
       "stockGros": 12,
       "stockDetail": 6,
       "stock": 18,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      },
      {
@@ -3567,7 +3567,7 @@
       "stockGros": 10,
       "stockDetail": 8,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      }
     ],
@@ -3580,7 +3580,7 @@
     ],
     "rangMax": 402,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -3753,9 +3753,9 @@
       "stockGros": 23,
       "stockDetail": 5,
       "stock": 28,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.365Z"
      },
      {
@@ -3772,9 +3772,9 @@
       "stockGros": 2,
       "stockDetail": 0,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:24.998Z"
      },
      {
@@ -3791,9 +3791,9 @@
       "stockGros": 12,
       "stockDetail": 9,
       "stock": 21,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.366Z"
      },
      {
@@ -3810,7 +3810,7 @@
       "stockGros": 10,
       "stockDetail": 8,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      }
     ],
@@ -3821,7 +3821,7 @@
     ],
     "rangMax": 404,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -3956,9 +3956,9 @@
       "stockGros": 23,
       "stockDetail": 5,
       "stock": 28,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.365Z"
      },
      {
@@ -3975,9 +3975,9 @@
       "stockGros": 2,
       "stockDetail": 0,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:24.998Z"
      },
      {
@@ -3994,9 +3994,9 @@
       "stockGros": 12,
       "stockDetail": 9,
       "stock": 21,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.366Z"
      },
      {
@@ -4013,7 +4013,7 @@
       "stockGros": 10,
       "stockDetail": 8,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z"
      }
     ],
@@ -4027,7 +4027,7 @@
     ],
     "rangMax": 404,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -4182,9 +4182,9 @@
       "stockGros": 23,
       "stockDetail": 5,
       "stock": 28,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.365Z"
      },
      {
@@ -4201,9 +4201,9 @@
       "stockGros": 2,
       "stockDetail": 0,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:24.998Z"
      },
      {
@@ -4220,9 +4220,9 @@
       "stockGros": 12,
       "stockDetail": 9,
       "stock": 21,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.366Z"
      },
      {
@@ -4239,9 +4239,9 @@
       "stockGros": 10,
       "stockDetail": 0,
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.863Z"
      }
     ],
@@ -4257,7 +4257,7 @@
     ],
     "rangMax": 405,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -4460,9 +4460,9 @@
       "stockGros": 23,
       "stockDetail": 5,
       "stock": 28,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:26.187Z"
      },
      {
@@ -4479,9 +4479,9 @@
       "stockGros": 2,
       "stockDetail": 0,
       "stock": 2,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:26.187Z"
      },
      {
@@ -4498,9 +4498,9 @@
       "stockGros": 12,
       "stockDetail": 9,
       "stock": 21,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.366Z"
      },
      {
@@ -4517,9 +4517,9 @@
       "stockGros": 10,
       "stockDetail": 0,
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:58:24.833Z",
-      "_modifiePar": "BASSONGUI Chabi Séko",
+      "_modifiePar": "BICHIASI Cezoune Sichovian",
       "_modifieLe": "2026-10-30T17:58:25.863Z"
      }
     ],
@@ -4534,7 +4534,7 @@
     ],
     "rangMax": 405,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "lignesAffichees": 4,
@@ -4683,7 +4683,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:35.679Z"
     },
     "saisie": {
@@ -4697,7 +4697,7 @@
     },
     "rangMax": 0,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -4724,7 +4724,7 @@
       "justificatif": "PV-100",
       "constatePar": "Magasinier",
       "observation": "Chute du carton",
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produit": {
@@ -4752,7 +4752,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:35.936Z"
     },
     "saisie": {
@@ -4765,7 +4765,7 @@
     },
     "rangMax": 1,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -4792,7 +4792,7 @@
       "justificatif": "Lot L-9",
       "constatePar": "Pharmacien",
       "observation": null,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produit": {
@@ -4820,7 +4820,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:36.184Z"
     },
     "saisie": {
@@ -4833,7 +4833,7 @@
     },
     "rangMax": 2,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -4869,7 +4869,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:36.460Z"
     },
     "saisie": {
@@ -4882,7 +4882,7 @@
     },
     "rangMax": 2,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [],
@@ -4912,7 +4912,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:36.707Z"
     },
     "saisie": {
@@ -4925,7 +4925,7 @@
     },
     "rangMax": 2,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -4952,7 +4952,7 @@
       "justificatif": "PV-102",
       "constatePar": "Magasinier",
       "observation": null,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produit": {
@@ -4996,7 +4996,7 @@
      "stockGros": 10,
      "stockDetail": 4,
      "stock": 14,
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-30T17:58:37.006Z"
     },
     "saisie": {
@@ -5009,7 +5009,7 @@
     },
     "rangMax": 2,
     "jour": "2026-10-30",
-    "utilisateur": "BASSONGUI Chabi Séko"
+    "utilisateur": "BICHIASI Cezoune Sichovian"
    },
    "sortie": {
     "messages": [
@@ -5036,7 +5036,7 @@
       "justificatif": "PV-103",
       "constatePar": "Magasinier",
       "observation": null,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produit": {

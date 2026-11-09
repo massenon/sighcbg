@@ -7,7 +7,7 @@ import 'package:sigh_poste/donnees/persistance.dart';
 
 Magasin neuf() => Magasin({
       'patients': [
-        {'id': 'P1', 'nom': 'AGBO'}
+        {'id': 'P1', 'nom': 'AGORO'}
       ],
       'utilisateurs': [
         {'id': 'U1', 'identifiant': 'admin.systeme'}
@@ -24,7 +24,7 @@ void main() {
     final b = neuf();
     await b.brancherPersistance(p);
     final noms = b.collection('patients').toutes.map((f) => f['nom']).toList();
-    expect(noms, containsAll(['AGBO', 'BIO']));
+    expect(noms, containsAll(['AGORO', 'BIO']));
     expect(b.collection('patients').toutes.length, 2, reason: 'le contenu écrit REMPLACE le jeu, il ne s’y ajoute pas');
   });
 
@@ -33,7 +33,7 @@ void main() {
     final a = neuf();
     await a.brancherPersistance(p, delai: Duration.zero);
     a.collection('utilisateurs'); // simple lecture
-    a.collection('patients').mettreAJour('P1', {'nom': 'AGBO-2'});
+    a.collection('patients').mettreAJour('P1', {'nom': 'AGORO-2'});
     await a.ecrireMaintenant();
     expect(p.ecritures.toSet().contains('patients'), isTrue);
     expect(p.ecritures.contains('utilisateurs'), isFalse);

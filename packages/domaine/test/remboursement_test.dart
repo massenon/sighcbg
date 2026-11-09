@@ -58,7 +58,7 @@ void main() {
           avoirs: liste(e['avoirs']),
           idAvoir: 'AVR-TEST',
           jour: e['jour']! as String,
-          utilisateur: 'BASSONGUI Chabi Séko');
+          utilisateur: 'BICHIASI Cezoune Sichovian');
       if (attendues.isEmpty) {
         // Refus NOMMÉ (champ manquant, montant nul, plafond cumulé) : rien n'est écrit.
         expect(enregistrer, throwsA(isA<RefusOperation>()));

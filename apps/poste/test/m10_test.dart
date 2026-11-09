@@ -47,7 +47,7 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsWidgets);
       expect(col.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      poser(t, {'matricule': '99', 'nom': 'AGBO', 'prenom': 'Rosine', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
+      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
@@ -62,22 +62,22 @@ void main() {
       await ouvrir(t, m, 'm10-personnel');
       final col = m.collection('personnel');
       await cliquer(t, find.widgetWithText(BoutonSigh, 'Nouveau').first);
-      poser(t, {'matricule': '99', 'nom': 'AGBO', 'prenom': 'Rosine', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
+      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
-      await chercher(t, 'AGBO');
+      await chercher(t, 'AGORO');
       await cliquer(t, find.byTooltip('Modifier').first);
       final ctl = formulaire(t);
       for (final e in obj(obj(p['modification'])['valeurs']).entries) {
         if (e.key == 'dateEmbauche') continue;
         expect('${ctl[e.key]}', '${e.value}', reason: 'valeur à la modification : ${e.key}');
       }
-      poser(t, {'prenom': 'Rosine-Marie', 'telephone': '0197000000'});
+      poser(t, {'prenom': 'Routoun-Marie', 'telephone': '0197000000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
       final f = col.toutes.firstWhere((x) => x['matricule'] == '99');
       fichesEgales(f, obj(obj(obj(p['modification'])['enregistre'])['fiche']));
-      expect(f['nomComplet'], 'AGBO Rosine-Marie');
+      expect(f['nomComplet'], 'AGORO Routoun-Marie');
       await archiverLigne(t, 'Départ');
       expect(col.toutes.firstWhere((x) => x['matricule'] == '99')['statut'], 'archive');
       expect(col.toutes.length, 45, reason: 'jamais supprimée');
@@ -89,7 +89,7 @@ void main() {
     testWidgets('le tiroir porte la fiche employé : six onglets, informations de la maquette', (t) async {
       final m = poste({for (final n in ['presences', 'conges', 'planning', 'evaluations', 'grillePrimes']) n: jeu(n)});
       await ouvrir(t, m, 'm10-personnel');
-      await chercher(t, 'BASSONGUI');
+      await chercher(t, 'BICHIASI');
       await cliquer(t, find.byTooltip('Consulter').first);
       await t.pump(const Duration(seconds: 1)); // le tiroir glisse depuis la droite
       for (final o in (obj(p['tiroir'])['onglets'] as List)) {
@@ -117,7 +117,7 @@ void main() {
     testWidgets('fiche imprimée : l’état de la maquette (cartouche, rubriques, signatures)', (t) async {
       final m = poste({});
       await ouvrir(t, m, 'm10-personnel');
-      await chercher(t, 'BASSONGUI');
+      await chercher(t, 'BICHIASI');
       await cliquer(t, find.byTooltip('Imprimer l’état').first);
       final e = obj(p['etat']);
       expect(find.text('${e['titre']}'), findsWidgets);
@@ -243,7 +243,7 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('La date de fin doit être postérieure à la date de début.'), findsWidgets);
       expect(col.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      poser(t, {'dateFin': '2026-11-16', 'remplacant': 'GARBA Yahouza', 'motif': 'Repos annuel'});
+      poser(t, {'dateFin': '2026-11-16', 'remplacant': 'GEVAMIAN Yelia', 'motif': 'Repos annuel'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['creation'])['creee'])['fiche'] as M);
@@ -267,8 +267,8 @@ void main() {
       await chercher(t, '${x['reference']}');
       await cliquer(t, find.byTooltip('Imprimer l’état').first);
       expect(find.text('Décision de congé'), findsWidgets);
-      expect(find.textContaining('Accorde à YENI M’PO Florent'), findsWidgets);
-      expect(find.textContaining('remplacé(e) par TAKI Orou'), findsWidgets);
+      expect(find.textContaining('Accorde à YORO M’ABEKPIA Foulumi'), findsWidgets);
+      expect(find.textContaining('remplacé(e) par TACHEDI Odjipiar'), findsWidgets);
       await t.pump(const Duration(seconds: 10));
     });
   });
@@ -284,7 +284,7 @@ void main() {
       ordreIdentique(t, (obj(c['ecran'])['tableaux'] as List).first);
       await t.scrollUntilVisible(find.text('Les huit prestataires les plus rémunérés'), 400, scrollable: find.byType(Scrollable).first);
       final classement = (c['cartes'] as List)[4] as String;
-      for (final nom in ['Dr KORA Colette — Circoncision', 'Dr PARAISO Moussa — Anesthésie', 'M. DAOUDA Idrissou — Anesthésie']) {
+      for (final nom in ['Dr KIAVUMU Coufi — Circoncision', 'Dr PENU Mudovur — Anesthésie', 'M. DACHULO Igboupu — Anesthésie']) {
         expect(classement.contains(nom), isTrue);
         expect(find.text(nom), findsOneWidget);
       }
@@ -306,7 +306,7 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsWidgets);
       expect(col.toutes.length, n0);
-      poser(t, {'nom': 'Dr ZOUMAROU Ali', 'specialite': 'Échographie', 'tarifActe': '15000', 'actesRealises': '4'});
+      poser(t, {'nom': 'Dr ZOUZATUM Apadama', 'specialite': 'Échographie', 'tarifActe': '15000', 'actesRealises': '4'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['creation'])['creee'])['fiche'] as M);
@@ -463,11 +463,11 @@ void main() {
       await chercher(t, 'OM-2026-0004');
       await cliquer(t, find.byTooltip('Valider (Directrice Administrative)').first);
       expect(find.text('Valider l’ordre de mission OM-2026-0004 ?'), findsOneWidget);
-      expect(find.textContaining('La validation autorise le départ de NKOUÉ Jean du 18/11/2026 au 22/11/2026, aux frais de Ministère de la Santé.'), findsOneWidget);
+      expect(find.textContaining('La validation autorise le départ de NIDJON Jagi du 18/11/2026 au 22/11/2026, aux frais de Ministère de la Santé.'), findsOneWidget);
       await t.tap(find.widgetWithText(BoutonSigh, 'Valider l’ordre'));
       await t.pump(const Duration(milliseconds: 400));
       final f = col.toutes.firstWhere((x) => x['reference'] == 'OM-2026-0004');
-      // E625 levé (A1) : la maquette écrit « TAKI Alimatou » quelle que soit la personne connectée ; le poste écrit l'AGENT qui valide.
+      // E625 levé (A1) : la maquette écrit « TACHEDI Arialu » quelle que soit la personne connectée ; le poste écrit l'AGENT qui valide.
       fichesEgales(f, obj(obj(obj(o['validation'])['apres'])['fiche']), ignores: {'valideePar', 'valideeParId'});
       expect(f['valideePar'], 'Administrateur système', reason: 'agent de démonstration du rôle admin');
       expect(f['valideeParId'], 'demo:admin');
@@ -488,7 +488,7 @@ void main() {
       // état de la maquette au moment de la création : l'ordre OM-2026-0004 a été validé puis terminé (un seul ordre reste à valider avant le nouveau)
       final jeuMissions = [
         for (final x in jeu('missions'))
-          if (x['reference'] == 'OM-2026-0004') {...x, 'statutMission': 'terminee', 'valideePar': 'TAKI Alimatou', 'valideeLe': '2026-10-30'} else x
+          if (x['reference'] == 'OM-2026-0004') {...x, 'statutMission': 'terminee', 'valideePar': 'TACHEDI Arialu', 'valideeLe': '2026-10-30'} else x
       ];
       final m = poste({'missions': jeuMissions});
       await ouvrir(t, m, 'm10-missions');
@@ -529,7 +529,7 @@ void main() {
       await chercher(t, 'OM-2026-0004');
       await cliquer(t, find.byTooltip('Imprimer l’ordre').first);
       expect(find.text('Ordre de mission'), findsWidgets);
-      expect(find.textContaining('donne ordre à NKOUÉ Jean, Infirmier, de se rendre à Parakou du 18/11/2026 au 22/11/2026, à l’effet de : Formation en hygiène hospitalière.'), findsWidgets);
+      expect(find.textContaining('donne ordre à NIDJON Jagi, Infirmier, de se rendre à Parakou du 18/11/2026 au 22/11/2026, à l’effet de : Formation en hygiène hospitalière.'), findsWidgets);
       expect(find.text('Visa de départ'), findsWidgets);
       expect(find.text('Visa de retour'), findsWidgets);
       await t.pump(const Duration(seconds: 10));
@@ -590,7 +590,7 @@ void main() {
 
     testWidgets('s’ouvre sur le premier agent par matricule, avec ses six onglets, le lien de retour et le sélecteur « Agent »', (t) async {
       await ouvrir(t, complet(), 'm10-employe-profil');
-      expect(find.text('BASSONGUI Chabi Séko'), findsWidgets);
+      expect(find.text('BICHIASI Cezoune Sichovian'), findsWidgets);
       for (final o in (obj(obj(pr['octobre'])['agents'])['EMP01'] as Map)['onglets'] as List) {
         expect(find.text('$o'), findsWidgets, reason: 'onglet $o');
       }

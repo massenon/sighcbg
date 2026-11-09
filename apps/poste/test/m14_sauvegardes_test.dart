@@ -156,7 +156,7 @@ void main() {
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Exporter le journal des sauvegardes'));
     expect(find.text('Historique glissant — situation au 30/10/2026'), findsOneWidget);
     expect(find.text('La Directrice Administrative'), findsOneWidget);
-    expect(find.text('TAKI Alimatou'), findsOneWidget);
+    expect(find.text('TACHEDI Arialu'), findsOneWidget);
   });
 
   casM14('lecture seule : générer, importer, lancer et restaurer sont ABSENTS ; télécharger et tester restent offerts', (t) async {

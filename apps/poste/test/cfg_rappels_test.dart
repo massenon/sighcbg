@@ -75,7 +75,7 @@ void main() {
     expect(find.text('Modèle créé.'), findsOneWidget);
     await t.pump(const Duration(seconds: 10));
     await toucherM14(t, find.byTooltip('Consulter').first);
-    expect(find.textContaining('OROU YO Marguerite — {{inconnu}} à ${IdentiteClinique.nom}'), findsOneWidget);
+    expect(find.textContaining('ODJIPIAR YUDJOUVOU Mibu — {{inconnu}} à ${IdentiteClinique.nom}'), findsOneWidget);
   });
 
   casM14('anniversaires du jour : un rappel EN FILE par patient (références RPL-…), jamais deux fois le même ; le logiciel ne les envoie pas', (t) async {
@@ -93,7 +93,7 @@ void main() {
     for (final x in col.actives) {
       expect([x['occasion'], x['etat'], x['dateEcheance']], ['Anniversaire', 'en_file', '2026-10-30']);
       expect('${x['message']}', contains('${x['destinataire']}'));
-      expect('${x['message']}', isNot(contains('OROU YO')));
+      expect('${x['message']}', isNot(contains('ODJIPIAR YUDJOUVOU')));
     }
     expect(find.text('2 rappel(s) préparé(s) — 2 anniversaire(s) aujourd’hui.'), findsOneWidget);
     expect(find.text('Les messages sont EN FILE : le logiciel ne les envoie pas.'), findsOneWidget);

@@ -127,7 +127,7 @@ void main() {
       return '${(r! as Map)['fiche']}';
     }
 
-    final a = await ecrireAccueil('patients', {'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'age': 67, 'assureur': 'NSIA', 'carteExpiration': '${aujourdhui.year + 1}-12-31', 'allergies': ['Pénicilline']});
+    final a = await ecrireAccueil('patients', {'nom': 'DULOUNE', 'prenom': 'Aline', 'quartier': 'Kouba', 'age': 67, 'assureur': 'NSIA', 'carteExpiration': '${aujourdhui.year + 1}-12-31', 'allergies': ['Pénicilline']});
     final b = await ecrireAccueil('patients', {'nom': 'HORS', 'prenom': 'Tournée'});
     final rdv = await ecrireAccueil('rendezvous', {'patientId': a, 'date': '${jour(aujourdhui)}T09:30', 'statut': 'planifiee', 'type': 'Domicile', 'motif': 'Suivi HTA'});
     final releve = await ecrireAccueil('constantes', {'patientId': a, 'dateHeure': '${jour(aujourdhui)}T08:00', 'temperature': 38.6, 'pouls': 96});
@@ -151,7 +151,7 @@ void main() {
       'ttl_ms': 600000,
     });
     final src = SourceSync(tel);
-    ServiceSoignant service(String fonction, {String agent = 'Dr YENI M’PO Florent'}) => ServiceSoignant(src, session: SessionSoignant(agent: agent, fonction: fonction));
+    ServiceSoignant service(String fonction, {String agent = 'Dr YORO M’ABEKPIA Foulumi'}) => ServiceSoignant(src, session: SessionSoignant(agent: agent, fonction: fonction));
     await synchroniser(tel, jusqua: () => true);
     await _attendre(() async {
       await tel.cycle();
@@ -160,11 +160,11 @@ void main() {
     final medecin = service('medecin');
     expect((await medecin.produits()).map((p) => '${p.designation} ${p.stock}'), ['PARACETAMOL 500 MG 40'], reason: 'le catalogue du lot : le médicament se choisit, il ne se tape plus');
     expect((await tel.commande('GET /etat', const {}, const {})).$2! as Map, containsPair('fonction', 'medecin'), reason: 'la fonction est celle du code, reçue de la mère');
-    expect((await medecin.patients()).map((p) => p.nom), ['DOSSOU Aline'], reason: 'le dossier hors tournée ne descend pas ($b)');
+    expect((await medecin.patients()).map((p) => p.nom), ['DULOUNE Aline'], reason: 'le dossier hors tournée ne descend pas ($b)');
 
     // --- lecture : l'agenda du jour et le dossier se lisent dans le lot --------------------------------------------------------------------------
     final agenda = await medecin.agenda();
-    expect(agenda.duJour.map((l) => '${l.heure} ${l.patient} ${l.motif}'), ['09h30 DOSSOU Aline Suivi HTA']);
+    expect(agenda.duJour.map((l) => '${l.heure} ${l.patient} ${l.motif}'), ['09h30 DULOUNE Aline Suivi HTA']);
     final dossier = await medecin.dossier(a);
     expect(dossier.resume.couverture, MobCouverture.carteValide);
     expect(dossier.resume.allergies, ['Pénicilline']);
@@ -202,7 +202,7 @@ void main() {
     // Le dossier relu après synchronisation porte la note et les prescriptions du médecin.
     final relu = await medecin.dossier(a);
     expect(relu.resume.notes.length, 1);
-    expect(relu.resume.notes.single['redigePar'], 'Dr YENI M’PO Florent');
+    expect(relu.resume.notes.single['redigePar'], 'Dr YORO M’ABEKPIA Foulumi');
     expect(relu.resume.prescriptions.length, greaterThanOrEqualTo(2));
 
     // --- lot expiré : l'écriture est refusée en le disant, puis les dossiers s'effacent du téléphone ----------------------------------------------

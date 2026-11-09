@@ -53,7 +53,7 @@ void main() {
         config: const ConfigPoste(
             mode: ModePoste.fileul,
             role: 'admin',
-            nomPoste: 'BASSONGUI Chabi Séko'));
+            nomPoste: 'BICHIASI Cezoune Sichovian'));
     expect(find.byKey(const Key('barre-superieure')), findsOneWidget);
     expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
     expect(find.byKey(const Key('recherche-globale')), findsOneWidget);

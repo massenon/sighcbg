@@ -197,7 +197,7 @@ Future<Magasin> monterSeul(WidgetTester t, Widget ecran, Faux faux, {Droit droit
                   role: 'admin',
                   droit: droit,
                   magasin: m,
-                  utilisateur: 'Mme TAKI',
+                  utilisateur: 'Mme TACHEDI',
                   aller: (_) {},
                   horloge: horloge ?? () => maintenant,
                   child: ecran)))));
@@ -436,13 +436,13 @@ void main() {
       expect(m.collection(mrbCollectionAttestations).toutes, isEmpty);
       await t.pump(const Duration(seconds: 10));
 
-      await t.enterText(find.byKey(const Key('mrb:detenteur')), 'Mme TAKI Alimatou');
+      await t.enterText(find.byKey(const Key('mrb:detenteur')), 'Mme TACHEDI Arialu');
       await t.enterText(find.byKey(const Key('mrb:scelle')), 'SC-0042');
-      await t.enterText(find.byKey(const Key('mrb:controle-par')), 'Dr BASSONGUI');
+      await t.enterText(find.byKey(const Key('mrb:controle-par')), 'Dr BICHIASI');
       await t.tap(bouton('Enregistrer l’attestation'));
       await pomper(t);
       final att = m.collection(mrbCollectionAttestations).toutes.single;
-      expect(att['detenteur'], 'Mme TAKI Alimatou');
+      expect(att['detenteur'], 'Mme TACHEDI Arialu');
       expect(att['scelle'], 'SC-0042');
       expect(att['date'], '2026-10-31');
       expect(kpi(t, 'Copie papier'), 'Attestée le 31/10/2026');
@@ -457,11 +457,11 @@ void main() {
       await ouvrir(t, 'mere-cle-clinique', f);
       await t.tap(bouton('Afficher le QR d’appairage mobile'));
       await pomper(t);
-      await t.enterText(find.byType(TextField).last, 'Dr Yeni');
+      await t.enterText(find.byType(TextField).last, 'Dr Yoro');
       await t.tap(bouton('Générer le QR'));
       await pomper(t);
       // E1600 : le code porte le profil et la fonction (par défaut le premier choix : soignant, médecin).
-      expect(f.appels, contains('codeMobile Dr Yeni soignant medecin'));
+      expect(f.appels, contains('codeMobile Dr Yoro soignant medecin'));
       expect(find.byKey(const Key('qual:qr')), findsOneWidget);
       expect(find.text('MOBI9999'), findsOneWidget);
       expect(toutLeTexte(t), isNot(contains(cleBase64)), reason: 'la clé ne s’affiche jamais en clair');
@@ -503,7 +503,7 @@ void main() {
     Faux avecBloque() => Faux()
       ..etatV = unEtat(
           bloques: ['u-2'],
-          appareils: const [MrbAppareil(uuid: 'u-2', etiquette: 'Dr Yeni', role: 'mobile', etat: 'actif')],
+          appareils: const [MrbAppareil(uuid: 'u-2', etiquette: 'Dr Yoro', role: 'mobile', etat: 'actif')],
           alertes: [
             {'type': 'authentification', 'appareil': 'u-2', 'n': 4, 'quand': ago(const Duration(hours: 2))}
           ])
@@ -518,7 +518,7 @@ void main() {
       expect(kpi(t, 'Appareils bloqués'), '1');
       expect(kpi(t, 'Enveloppes altérées (30 j)'), '1');
       expect(kpi(t, 'Trous détectés'), '1', reason: 'le trou de 40 jours est hors des 30 jours');
-      expect(find.text('Dr Yeni'), findsOneWidget);
+      expect(find.text('Dr Yoro'), findsOneWidget);
       expect(find.text('Enveloppe altérée (authentification GCM échouée)'), findsOneWidget);
       expect(find.text(mrbDateHeureMs(ago(const Duration(hours: 2)))), findsOneWidget);
       expect(find.text('4'), findsWidgets);
@@ -564,7 +564,7 @@ void main() {
       await monterSeul(t, const EcranIntegrite(), avecBloque(), droit: lectureSeule);
       expect(bouton('Débloquer'), findsNothing);
       expect(bouton('Révoquer'), findsNothing);
-      expect(find.text('Dr Yeni'), findsOneWidget);
+      expect(find.text('Dr Yoro'), findsOneWidget);
     });
 
     testWidgets('aucun appareil bloqué : le dit', (t) async {
@@ -627,7 +627,7 @@ void main() {
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'mme taki');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
-      expect(find.textContaining('une autre personne'), findsOneWidget, reason: 'l’auteur (Mme TAKI) ne peut pas être son propre second profil');
+      expect(find.textContaining('une autre personne'), findsOneWidget, reason: 'l’auteur (Mme TACHEDI) ne peut pas être son propre second profil');
       await t.pump(const Duration(seconds: 10));
 
       expect(f.appels.where((a) => a.startsWith('reinit')), isEmpty);
@@ -638,7 +638,7 @@ void main() {
       final m = await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
-      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
       expect(find.text('Dernière confirmation'), findsOneWidget);
@@ -646,13 +646,13 @@ void main() {
       await t.tap(bouton('Réinitialiser').last);
       await pomper(t);
       await pomper(t);
-      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TAKI Alimatou'));
+      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TACHEDI Arialu'));
       expect(find.textContaining('Sauvegarde préalable : /srv/avant-reinit.db'), findsWidgets);
       expect(find.textContaining('Le geste est inscrit au journal technique de la mère'), findsOneWidget);
       expect(find.textContaining('Nouvelle époque : 4'), findsOneWidget);
       final trace = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Réinitialisation de production');
       expect(trace['succes'], isTrue);
-      expect((trace['apres'] as Map)['secondProfil'], 'Mme TAKI Alimatou');
+      expect((trace['apres'] as Map)['secondProfil'], 'Mme TACHEDI Arialu');
       expect((trace['apres'] as Map)['sauvegardePrealable'], '/srv/avant-reinit.db');
       expect(bouton('Réinitialiser'), findsNothing, reason: 'la fenêtre se referme avec le geste');
       await t.pump(const Duration(seconds: 10));
@@ -663,7 +663,7 @@ void main() {
       await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
-      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
       await t.tap(bouton('Réinitialiser').last);
@@ -680,7 +680,7 @@ void main() {
       await ouvrir(t, 'mere-reinit', f);
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
-      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TAKI Alimatou');
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
       await t.tap(bouton('Réinitialiser').last);
@@ -820,7 +820,7 @@ void main() {
             switch (r.url.path) {
               case '/admin/etat':
                 return http.Response(
-                    '{"epoch":3,"seq_max":120,"rep_seq":100,"rep_n":7,"nb_operations":120,"depot":"pg","reinit_ouverte":true,"alertes":[{"type":"trou","appareil":"u1","attendu":3,"recu":5,"quand":1000}],"bloques":["u1"],"derives":[],"appareils":[{"uuid":"u1","etiquette":"Dr Yeni","role":"mobile","etat":"actif"}],"restauration":null}',
+                    '{"epoch":3,"seq_max":120,"rep_seq":100,"rep_n":7,"nb_operations":120,"depot":"pg","reinit_ouverte":true,"alertes":[{"type":"trou","appareil":"u1","attendu":3,"recu":5,"quand":1000}],"bloques":["u1"],"derives":[],"appareils":[{"uuid":"u1","etiquette":"Dr Yoro","role":"mobile","etat":"actif"}],"restauration":null}',
                     200);
               case '/admin/supervision':
                 return http.Response('{"etat":"ok","depot":"pg","controles":[{"nom":"Sauvegarde","etat":"ok","detail":"d","valeur":1234}]}', 200);
@@ -840,14 +840,14 @@ void main() {
       final e = await s.etat();
       expect((e.epoch, e.seqMax, e.repN, e.retardRelais, e.reinitOuverte), (3, 120, 7, 20, true));
       expect(e.bloques, ['u1']);
-      expect(e.appareil('u1')!.nom, 'Dr Yeni');
+      expect(e.appareil('u1')!.nom, 'Dr Yoro');
       expect(e.alertes.single['type'], 'trou');
       final sa = await s.supervision();
       expect(sa.controle('Sauvegarde')!.valeur, 1234);
       expect((await s.journal(limite: 500)).single.niveau, 'erreur');
       expect(appels, contains('GET /admin/journal?limite=500'));
       expect(await s.patientsActifs(), 42);
-      final mobile = await s.codeMobile('Dr Yeni', profil: 'soignant', fonction: 'medecin');
+      final mobile = await s.codeMobile('Dr Yoro', profil: 'soignant', fonction: 'medecin');
       expect(mobile.code, 'MOBI9999');
       expect(mobile.payloadQr, contains(cleBase64));
       final r = await s.reinitialiser(confirmation: IdentiteClinique.confirmationReinit, second: 'X');

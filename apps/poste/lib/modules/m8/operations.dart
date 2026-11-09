@@ -399,7 +399,7 @@ class _EcranOperationsState extends State<EcranOperations> {
                             Signature('L’agent de caisse',
                                 nom: '${v['agent']}'),
                             const Signature('La Directrice Administrative',
-                                nom: 'TAKI Alimatou')
+                                nom: 'TACHEDI Arialu')
                           ],
                         ));
                   }),

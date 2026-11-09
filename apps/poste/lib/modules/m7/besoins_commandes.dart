@@ -45,7 +45,7 @@ PieceA4 pieceCommande(Fiche cm,
       ], lignes: lignesDeBonAchat(cm))),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri'),
+      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
       Signature('La Directrice Administrative',
           nom: directriceAdministrative, mention: 'Bon pour commande (RG-04)'),
     ],

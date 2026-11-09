@@ -71,7 +71,7 @@ void main() {
       expect(find.text('Échéances de l’exercice 2026'), findsOneWidget);
       expect(find.text('reportée — jour ouvrable'), findsWidgets);
       expect(find.text('Payée'), findsWidgets);
-      expect(find.text('KASSA Augustin'), findsWidgets);
+      expect(find.text('KALOU Avolutu'), findsWidgets);
       await filtrer(t, 'État', 'en_retard');
       expect(find.textContaining('j de retard'), findsWidgets);
       expect(find.text('Payée'), findsNothing);

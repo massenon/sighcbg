@@ -74,7 +74,7 @@ void main() {
       maintenant = DateTime(2026, 11, 1, 9);
       final s = sessionDemarrage(horloge: () => maintenant)!;
       await monter(t, session: s);
-      s.connecter(const AccCompte(identifiant: 'da', nom: 'GBEDJI Hervé', role: 'da'));
+      s.connecter(const AccCompte(identifiant: 'da', nom: 'GIDJI Hiabidjo', role: 'da'));
       await t.pump();
       for (var i = 0; i < 4; i++) {
         await t.pump(const Duration(milliseconds: 150));

@@ -172,12 +172,12 @@ void main() {
     test('E200 : la référence suit le rang le plus haut, archivées comprises', () {
       final cr = (d['creation'] as Map).cast<String, Object?>();
       final tous = liste(d['donneurs']);
-      final saisie = {'nom': 'IMOROU Zaki', 'telephone': '97111111', 'groupe': 'AB-', 'type': 'Compensation', 'dernierDon': '2026-07-01', 'nbDons': '6', 'eligible': false};
+      final saisie = {'nom': 'IMEFULU Zesian', 'telephone': '97111111', 'groupe': 'AB-', 'type': 'Compensation', 'dernierDon': '2026-07-01', 'nbDons': '6', 'eligible': false};
       final f1 = sangFicheDonneur(saisie, existants: tous);
       final att1 = ((cr['cree'] as Map)['fiche'] as Map).cast<String, Object?>();
       expect(f1['reference'], att1['reference']);
       expect(f1['nbDons'], att1['nbDons']);
-      final f2 = sangFicheDonneur({'nom': 'JOHNSON Mary', 'nbDons': '1'}, existants: [...tous, f1]);
+      final f2 = sangFicheDonneur({'nom': 'JOHNSON Modjo', 'nbDons': '1'}, existants: [...tous, f1]);
       expect(f2['reference'], ((cr['creeDefauts'] as Map)['fiche'] as Map)['reference']);
     });
 

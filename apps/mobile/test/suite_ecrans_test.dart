@@ -139,7 +139,7 @@ void main() {
       await toucher(t, 'enregistrer');
       final f = m.source.de('cpon').single;
       expect(f['jourPostNatal'], 'J1');
-      expect(f['libelle'], 'CPoN J1 — KPOGNON Rose');
+      expect(f['libelle'], 'CPoN J1 — KOUZO Roulin');
       expect(f['detail'], 'T° 37 · cordon propre et sec');
       expect(f['redigePar'], 'Sage-femme de garde');
     });
@@ -164,7 +164,7 @@ void main() {
     });
 
     testWidgets('le contrôle est REFAIT au moteur : un médecin qui contourne le bouton est refusé en le nommant, rien n\'est écrit', (t) async {
-      final m = FauxMoteurSuite(fonction: 'medecin', agent: 'Dr YENI', source: lotSageFemme())..profil = ProfilMobile.soignant;
+      final m = FauxMoteurSuite(fonction: 'medecin', agent: 'Dr YORO', source: lotSageFemme())..profil = ProfilMobile.soignant;
       final suite = ServiceSuite.depuisSoignant(m.soignant!);
       expect(suite.peut('cpn'), isFalse);
       await expectLater(
@@ -219,8 +219,8 @@ void main() {
       for (final o in ['Médecin de garde', 'Laboratoire', 'Salle de soins', 'Maternité', 'Caisse (dès retour du courant)', 'Référence vers un autre établissement']) {
         expect(find.text(o, skipOffstage: false), findsWidgets, reason: o);
       }
-      expect(find.text('HOUNKPATIN Ida — PROV-1', skipOffstage: false), findsWidgets);
-      expect(find.text('DOSSOU Aline — CBG/12/26', skipOffstage: false), findsNothing, reason: 'un patient du poste n\'est pas un dossier de secours');
+      expect(find.text('HOULUKE Ichufuva — PROV-1', skipOffstage: false), findsWidgets);
+      expect(find.text('DULOUNE Aline — CBG/12/26', skipOffstage: false), findsNothing, reason: 'un patient du poste n\'est pas un dossier de secours');
       await t.tap(find.byKey(const Key('champ-dest')));
       await t.pumpAndSettle();
       await t.tap(find.text('Maternité').last);
@@ -231,9 +231,9 @@ void main() {
       await t.pumpAndSettle();
       await toucher(t, 'envoyer-orientation');
       final f = m.source.de('orientations').single;
-      expect(f['libelle'], 'Orientation — HOUNKPATIN Ida');
+      expect(f['libelle'], 'Orientation — HOULUKE Ichufuva');
       expect(f['detail'], 'Maternité · Très urgent');
-      expect(f['orientePar'], 'OROU YO Edmond');
+      expect(f['orientePar'], 'ODJIPIAR YUDJOUVOU Edjukavom');
       expect(f['origine'], 'reception_secours');
     });
 
@@ -260,7 +260,7 @@ void main() {
       expect(find.text('Expire le 31/10/2026 à 20h00'), findsOneWidget);
       expect(find.textContaining('Date de dépôt : non communiquée'), findsOneWidget);
       expect(find.textContaining('Le lot est chiffré et expire'), findsOneWidget);
-      expect(find.text('SOUROU Mariam'), findsOneWidget);
+      expect(find.text('SUGBIA Migikpa'), findsOneWidget);
       await toucher(t, 'rafraichir-lot');
       expect(m.rafraichissements, 1);
     });

@@ -91,7 +91,7 @@ void main() {
         expect(ft(k[1]), findsWidgets, reason: '${k[0]}');
         if (k[2] != null) expect(find.text('${k[2]}'), findsOneWidget);
       }
-      expect(find.text('AHOHOU Rodrigue'), findsOneWidget);
+      expect(find.text('AKPOMER Ridur'), findsOneWidget);
     });
     casM14('aucun registre : « — » et le délai dit qu’aucune paire n’est tracée, jamais un zéro', (t) async {
       final m = magasinComplet();
@@ -114,8 +114,8 @@ void main() {
       expect(find.text('46'), findsWidgets);
       expect(find.text('Rendez-vous planifiés, non encore honorés'), findsOneWidget);
       expect(find.text('54'), findsOneWidget);
-      expect(find.text('BASSONGUI Chabi Séko — Direction'), findsOneWidget);
-      expect(find.text('TAKI Orou — Médecine générale'), findsOneWidget);
+      expect(find.text('BICHIASI Cezoune Sichovian — Direction'), findsOneWidget);
+      expect(find.text('TACHEDI Odjipiar — Médecine générale'), findsOneWidget);
     });
     casM14('la plage filtre ; « Toute la période » la lève', (t) async {
       await ouvrirM14(t, magasinComplet(), 'm2-stats-consultations');
@@ -239,7 +239,7 @@ void main() {
     });
     casM14('un agent à 450 000 F : 541 800 F de coût employeur, la CNSS ouvrière à part, ORTB 4 000 F (radio + télé qui se CUMULENT)', (t) async {
       await ouvrirM14(t, magasinComplet(), 'm10-cout-agent');
-      await choisirM14(t, 'agent', 'BASSONGUI Chabi Séko — Directeur Médical');
+      await choisirM14(t, 'agent', 'BICHIASI Cezoune Sichovian — Directeur Médical');
       expect(find.text(money(541800)), findsOneWidget);
       expect(find.text('COÛT EMPLOYEUR'), findsOneWidget);
       expect(find.text('Retenue à l’agent'), findsOneWidget);
@@ -250,13 +250,13 @@ void main() {
     });
     casM14('l’historique des paies LIT les bulletins et ne génère rien ; sans bulletin il dit où la paie se calcule', (t) async {
       await ouvrirM14(t, magasinComplet(), 'm10-cout-agent');
-      await choisirM14(t, 'agent', 'BASSONGUI Chabi Séko — Directeur Médical');
+      await choisirM14(t, 'agent', 'BICHIASI Cezoune Sichovian — Directeur Médical');
       expect(find.textContaining('Aucun bulletin émis pour cet agent'), findsOneWidget);
       final m = magasinComplet();
-      final id = m.collection('personnel').actives.firstWhere((p) => p['nomComplet'] == 'BASSONGUI Chabi Séko')['id'];
+      final id = m.collection('personnel').actives.firstWhere((p) => p['nomComplet'] == 'BICHIASI Cezoune Sichovian')['id'];
       m.collection('bulletins').inserer({'id': 'BUL-T', 'personnelId': id, 'annee': 2026, 'mois': 8, 'brut': 450000, 'net': 364500});
       await ouvrirM14(t, m, 'm10-cout-agent');
-      await choisirM14(t, 'agent', 'BASSONGUI Chabi Séko — Directeur Médical');
+      await choisirM14(t, 'agent', 'BICHIASI Cezoune Sichovian — Directeur Médical');
       expect(find.text('septembre 2026'), findsOneWidget);
       expect(find.text(money(364500, avecDevise: false)), findsOneWidget);
     });

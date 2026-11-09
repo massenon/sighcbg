@@ -232,7 +232,7 @@ void main() {
       expect(p['age'], 33);
       expect(p['dateNaissance'], isNull);
       expect(p['ageReferenceLe'], isNotNull);
-      expect(p['prescripteurExterieur'], 'Dr SALIFOU Aminou, CS de Perma (extérieur)');
+      expect(p['prescripteurExterieur'], 'Dr SAZO Asounouta, CS de Perma (extérieur)');
     });
   });
 

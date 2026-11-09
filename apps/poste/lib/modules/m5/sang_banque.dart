@@ -131,7 +131,7 @@ class EcranBanqueSang extends StatelessWidget with EcranMaquette {
             ],
             signatures: const [
               Signature('Le Médecin prescripteur'),
-              Signature('Le Laborantin', nom: 'KINNOU Addoul Ganiou'),
+              Signature('Le Laborantin', nom: 'KELE Adjapilo Gedur'),
               Signature('Le Directeur Médical', mention: 'Agrément'),
             ],
             reference:

@@ -15,7 +15,7 @@ import '../m4/mat_commun.dart';
 /// saisie en modale, archivage annulable (RG-14). Les RÈGLES sont dans `packages/domaine/lib/src/configuration/cfa_regles.dart`, rejouées sur les
 /// vecteurs de la maquette ; ces fichiers ne font que les mettre en page.
 
-const cfaSignDa = Signature('La Directrice Administrative', nom: 'TAKI Alimatou');
+const cfaSignDa = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
 const cfaSignDm = Signature('Le Directeur Médical');
 
 IconData cfaIcone(String nom) => switch (nom) {

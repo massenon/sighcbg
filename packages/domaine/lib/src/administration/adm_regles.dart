@@ -307,7 +307,7 @@ List<AdmFiche> admAmorcerPlan() {
         'trimestreDebut': a.$3,
         'trimestreFin': a.$4,
         'avancement': a.$5,
-        'responsable': a.$2 == 'Finance' ? 'KASSA Augustin' : (a.$2 == 'Logistique' ? 'MAMAN Zoukanéri' : 'TAKI Alimatou'),
+        'responsable': a.$2 == 'Finance' ? 'KALOU Avolutu' : (a.$2 == 'Logistique' ? 'METIAVI Zobo' : 'TACHEDI Arialu'),
       }
   ];
 }

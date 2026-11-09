@@ -7,7 +7,7 @@
    "dateSignature": "2026-08-06",
    "dateEffet": "2026-08-07",
    "statut": "ACTIVE",
-   "signataire": "TAKI Alimatou épse BASSONGUI, Directrice Administrative",
+   "signataire": "TACHEDI Arialu épse BICHIASI, Directrice Administrative",
    "source": "DOC — Note de service NS 145/08/DA/CBG/2026",
    "secteurs": [
     {
@@ -16,8 +16,8 @@
      "ordre": 1,
      "code": "ACC",
      "libelle": "ACCUEIL",
-     "responsable": "OROU YO S. Edmond",
-     "adjoint": "YARADJINNIN Hafissou",
+     "responsable": "ODJIPIAR YUDJOUVOU S. Edjukavom",
+     "adjoint": "YEVUN Hakpuram",
      "qualification": "Secrétaire médical",
      "role": "reception",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -28,8 +28,8 @@
      "ordre": 2,
      "code": "ADM",
      "libelle": "ADMINISTRATION",
-     "responsable": "TAKI Alimatou",
-     "adjoint": "KASSA Augustin",
+     "responsable": "TACHEDI Arialu",
+     "adjoint": "KALOU Avolutu",
      "qualification": "Comptable",
      "role": "da",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -40,8 +40,8 @@
      "ordre": 3,
      "code": "MGE",
      "libelle": "MÉDECINE GÉNÉRALE",
-     "responsable": "YENI M’PO Florent",
-     "adjoint": "ODEITO Mathieu",
+     "responsable": "YORO M’ABEKPIA Foulumi",
+     "adjoint": "OBEKI Mopekpal",
      "qualification": "Médecin généraliste",
      "role": "medecin",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -52,7 +52,7 @@
      "ordre": 4,
      "code": "CHI",
      "libelle": "CHIRURGIE",
-     "responsable": "Dr BASSONGUI Chabi Seko Y.",
+     "responsable": "Dr BICHIASI Cezoune Sichovian Y.",
      "adjoint": null,
      "qualification": "Chirurgien généraliste",
      "role": "medecin",
@@ -64,8 +64,8 @@
      "ordre": 5,
      "code": "MAT",
      "libelle": "MATERNITÉ",
-     "responsable": "BADO BANI A. B. Zoulehath",
-     "adjoint": "YERRO SANNI Lamatou",
+     "responsable": "BATOL BIAREL A. B. Zouguti",
+     "adjoint": "YOUSEZO SIACHOU Ladjefo",
      "qualification": "Sage-femme",
      "role": "infirmier",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -76,8 +76,8 @@
      "ordre": 6,
      "code": "ECH",
      "libelle": "ÉCHOGRAPHIE",
-     "responsable": "AHOHOU Rodrigue",
-     "adjoint": "AHOHOU Rodrigue",
+     "responsable": "AKPOMER Ridur",
+     "adjoint": "AKPOMER Ridur",
      "qualification": "Échographiste",
      "role": "medecin",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -88,8 +88,8 @@
      "ordre": 7,
      "code": "LAB",
      "libelle": "LABORATOIRE",
-     "responsable": "KINNOU A. Ganiou",
-     "adjoint": "IMOROU Choucouratou",
+     "responsable": "KELE A. Gedur",
+     "adjoint": "IMEFULU Cochesia",
      "qualification": "ABM",
      "role": "laborantin",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -100,8 +100,8 @@
      "ordre": 8,
      "code": "HOS",
      "libelle": "HOSPI",
-     "responsable": "BAGRI Elvyre",
-     "adjoint": "MAMAM Safarath",
+     "responsable": "BELABO Egbifepo",
+     "adjoint": "MEFUTI Sadjoto",
      "qualification": "Infirmière",
      "role": "infirmier",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -112,8 +112,8 @@
      "ordre": 9,
      "code": "SOI",
      "libelle": "SALLE DE SOINS",
-     "responsable": "ANIKI Baba Tounde",
-     "adjoint": "TAKPARA Adiabath",
+     "responsable": "ATUGBIPOU Badom Tukepou",
+     "adjoint": "TAGBAKPUR Adjoupi",
      "qualification": "Infirmière",
      "role": "infirmier",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -124,7 +124,7 @@
      "ordre": 10,
      "code": "BLO",
      "libelle": "BLOC OPÉRATOIRE",
-     "responsable": "N’KOUEI B. Jean",
+     "responsable": "N’KOUEI B. Jagi",
      "adjoint": "ADRIEN B. Modeste",
      "qualification": "Infirmier",
      "role": "infirmier",
@@ -136,7 +136,7 @@
      "ordre": 11,
      "code": "SUR",
      "libelle": "SURVEILLANCE",
-     "responsable": "GARBA Yahouza",
+     "responsable": "GEVAMIAN Yelia",
      "adjoint": null,
      "qualification": "Infirmier général",
      "role": "infirmier",
@@ -148,8 +148,8 @@
      "ordre": 12,
      "code": "CPH",
      "libelle": "CAISSE / PHARMACIE",
-     "responsable": "DIEYABIDI Aïchatou",
-     "adjoint": "TCHANDO S. Lucresse",
+     "responsable": "DATU Aliazian",
+     "adjoint": "TIAFIMA S. Lucresse",
      "qualification": "Dispensatrice",
      "role": "pharmacien",
      "source": "NS 145/08/DA/CBG/2026 du 06/08/2026"
@@ -160,7 +160,7 @@
      "ordre": 13,
      "code": "SEC",
      "libelle": "SÉCURITÉ",
-     "responsable": "OURTCHA Tereyama",
+     "responsable": "OSIAMIAM Tougbial",
      "adjoint": "TEOU B. Albert",
      "qualification": "Gardien",
      "role": "agentadmin",
@@ -172,7 +172,7 @@
      "ordre": 14,
      "code": "ENT",
      "libelle": "ENTRETIEN",
-     "responsable": "ISSA Rabiatou",
+     "responsable": "ISIASIABU Rafiakpe",
      "adjoint": "YARIGO B. Petronie",
      "qualification": "Ménagère",
      "role": "agentadmin",
@@ -508,31 +508,31 @@
     [
      "ACC",
      "ACCUEIL",
-     "OROU YO S. EdmondSecrétaire médical",
-     "YARADJINNIN Hafissou",
+     "ODJIPIAR YUDJOUVOU S. EdjukavomSecrétaire médical",
+     "YEVUN Hakpuram",
      "Réception / Accueil",
      ""
     ],
     [
      "ADM",
      "ADMINISTRATION",
-     "TAKI AlimatouComptable",
-     "KASSA Augustin",
+     "TACHEDI ArialuComptable",
+     "KALOU Avolutu",
      "Directrice de l’Administration et des Finances (DAF)",
      ""
     ],
     [
      "MGE",
      "MÉDECINE GÉNÉRALE",
-     "YENI M’PO FlorentMédecin généraliste",
-     "ODEITO Mathieu",
+     "YORO M’ABEKPIA FoulumiMédecin généraliste",
+     "OBEKI Mopekpal",
      "Médecin",
      ""
     ],
     [
      "CHI",
      "CHIRURGIE",
-     "Dr BASSONGUI Chabi Seko Y.Chirurgien généraliste",
+     "Dr BICHIASI Cezoune Sichovian Y.Chirurgien généraliste",
      "non désigné",
      "Médecin",
      ""
@@ -540,40 +540,40 @@
     [
      "MAT",
      "MATERNITÉ",
-     "BADO BANI A. B. ZoulehathSage-femme",
-     "YERRO SANNI Lamatou",
+     "BATOL BIAREL A. B. ZougutiSage-femme",
+     "YOUSEZO SIACHOU Ladjefo",
      "Infirmier / Sage-femme",
      ""
     ],
     [
      "ECH",
      "ÉCHOGRAPHIE",
-     "AHOHOU RodrigueÉchographiste",
-     "AHOHOU Rodrigue",
+     "AKPOMER RodrigueÉchographiste",
+     "AKPOMER Ridur",
      "Médecin",
      ""
     ],
     [
      "LAB",
      "LABORATOIRE",
-     "KINNOU A. GaniouABM",
-     "IMOROU Choucouratou",
+     "KELE A. GedurABM",
+     "IMEFULU Cochesia",
      "Biologiste médical",
      ""
     ],
     [
      "HOS",
      "HOSPI",
-     "BAGRI ElvyreInfirmière",
-     "MAMAM Safarath",
+     "BELABO EgbifepoInfirmière",
+     "MEFUTI Sadjoto",
      "Infirmier / Sage-femme",
      ""
     ],
     [
      "SOI",
      "SALLE DE SOINS",
-     "ANIKI Baba ToundeInfirmière",
-     "TAKPARA Adiabath",
+     "ATUGBIPOU Badom TukepouInfirmière",
+     "TAGBAKPUR Adjoupi",
      "Infirmier / Sage-femme",
      ""
     ],
@@ -588,7 +588,7 @@
     [
      "SUR",
      "SURVEILLANCE",
-     "GARBA YahouzaInfirmier général",
+     "GEVAMIAN YeliaInfirmier général",
      "non désigné",
      "Infirmier / Sage-femme",
      ""
@@ -596,15 +596,15 @@
     [
      "CPH",
      "CAISSE / PHARMACIE",
-     "DIEYABIDI AïchatouDispensatrice",
-     "TCHANDO S. Lucresse",
+     "DATU AliazianDispensatrice",
+     "TIAFIMA S. Lucresse",
      "Pharmacien",
      ""
     ],
     [
      "SEC",
      "SÉCURITÉ",
-     "OURTCHA TereyamaGardien",
+     "OSIAMIAM TougbialGardien",
      "TEOU B. Albert",
      "Agent Administratif",
      ""
@@ -612,7 +612,7 @@
     [
      "ENT",
      "ENTRETIEN",
-     "ISSA RabiatouMénagère",
+     "ISIASIABU RafiakpeMénagère",
      "YARIGO B. Petronie",
      "Agent Administratif",
      ""
@@ -620,7 +620,7 @@
    ]
   },
   "notes": [
-   "NS 145/08/DA/CBG/2026 — Répartition des secteurs de la clinique et désignation des responsables, signée le 06/08/2026 par TAKI Alimatou épse BASSONGUI, Directrice Administrative, avec effet au 07/08/2026. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code."
+   "NS 145/08/DA/CBG/2026 — Répartition des secteurs de la clinique et désignation des responsables, signée le 06/08/2026 par TACHEDI Arialu épse BICHIASI, Directrice Administrative, avec effet au 07/08/2026. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code."
   ],
   "impressionRepartition": {
    "titre": "Répartition des secteurs de la clinique",
@@ -646,10 +646,10 @@
    "signatures": [
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou épse BASSONGUI"
+     "nom": "TACHEDI Arialu épse BICHIASI"
     }
    ],
-   "texte": "N°SecteurResponsableResponsable adjointQualification1ACCUEILOROU YO S. EdmondYARADJINNIN HafissouSecrétaire médical2ADMINISTRATIONTAKI AlimatouKASSA AugustinComptable3MÉDECINE GÉNÉRALEYENI M’PO FlorentODEITO MathieuMédecin généraliste4CHIRURGIEDr BASSONGUI Chabi Seko Y.—Chirurgien généraliste5MATERNITÉBADO BANI A. B. ZoulehathYERRO SANNI LamatouSage-femme6ÉCHOGRAPHIEAHOHOU RodrigueAHOHOU RodrigueÉchographiste7LABORATOIREKINNOU A. GaniouIMOROU ChoucouratouABM8HOSPIBAGRI ElvyreMAMAM SafarathInfirmière9SALLE DE SOINSANIKI Baba ToundeTAKPARA AdiabathInfirmière10BLOC OPÉRATOIREN’KOUEI B. JeanADRIEN B. ModesteInfirmier11SURVEILLANCEGARBA Yahouza—Infirmier général12CAISSE / PHARMACIEDIEYABIDI AïchatouTCHANDO S. LucresseDispensatrice13SÉCURITÉOURTCHA TereyamaTEOU B. AlbertGardien14ENTRETIENISSA RabiatouYARIGO B. PetronieMénagère"
+   "texte": "N°SecteurResponsableResponsable adjointQualification1ACCUEILOROU YUDJOUVOU S. EdjukavomYEVUN HakpuramSecrétaire médical2ADMINISTRATIONTAKI ArialuKALOU AvolutuComptable3MÉDECINE GÉNÉRALEYENI M’ABEKPIA FoulumiOBEKI MopekpalMédecin généraliste4CHIRURGIEDr BICHIASI Cezoune Sichovian Y.—Chirurgien généraliste5MATERNITÉBADO BIAREL A. B. ZougutiYOUSEZO SIACHOU LadjefoSage-femme6ÉCHOGRAPHIEAHOHOU RidurAKPOMER RodrigueÉchographiste7LABORATOIREKINNOU A. GedurIMEFULU CochesiaABM8HOSPIBAGRI EgbifepoMEFUTI SadjotoInfirmière9SALLE DE SOINSATUGBIPOU Badom TukepouTAGBAKPUR AdjoupiInfirmière10BLOC OPÉRATOIREN’KOUEI B. JeanADRIEN B. ModesteInfirmier11SURVEILLANCEGARBA Yelia—Infirmier général12CAISSE / PHARMACIEDIEYABIDI AliazianTIAFIMA S. LucresseDispensatrice13SÉCURITÉOURTCHA TougbialTEOU B. AlbertGardien14ENTRETIENISSA RafiakpeYARIGO B. PetronieMénagère"
   },
   "organigramme": {
    "entetes": [
@@ -665,7 +665,7 @@
      "Directeur Médical",
      "Sommet",
      "1",
-     "BASSONGUI Chabi Séko",
+     "BICHIASI Cezoune Sichovian",
      "Directeur Médical",
      ""
     ],
@@ -673,7 +673,7 @@
      "Directrice Administrative",
      "Directeur Médical",
      "1",
-     "TAKI Alimatou épse BASSONGUI",
+     "TACHEDI Arialu épse BICHIASI",
      "Directrice de l’Administration et des Finances (DAF)",
      ""
     ],
@@ -681,7 +681,7 @@
      "Comptable",
      "Directrice Administrative",
      "1",
-     "KASSA Augustin",
+     "KALOU Avolutu",
      "Comptable",
      ""
     ],
@@ -689,7 +689,7 @@
      "Assistant Comptable",
      "Comptable",
      "1",
-     "GBEDJI Hervé",
+     "GIDJI Hiabidjo",
      "Comptable",
      ""
     ],
@@ -697,7 +697,7 @@
      "Gestionnaire de Stock",
      "Directrice Administrative",
      "1",
-     "MAMAN Zoukanéri",
+     "METIAVI Zobo",
      "Gestionnaire de Stock",
      ""
     ],
@@ -705,7 +705,7 @@
      "Secrétaires Médicaux",
      "Directrice Administrative",
      "4",
-     "OROU YO Edmond — chef de service",
+     "ODJIPIAR YUDJOUVOU Edjukavom — chef de service",
      "Réception / Accueil",
      ""
     ],
@@ -713,7 +713,7 @@
      "Dispensatrices",
      "Directrice Administrative",
      "4",
-     "DIEYABIDI Aïssatou — chef de service",
+     "DATU Amachim — chef de service",
      "Pharmacien",
      ""
     ],
@@ -721,7 +721,7 @@
      "Agents de Sécurité",
      "Directrice Administrative",
      "3",
-     "OURTCHA TEREYAMA — chef de service",
+     "OSIAMIAM TOUGBIAL — chef de service",
      "Agent Administratif",
      ""
     ],
@@ -729,7 +729,7 @@
      "Agents d’Entretien",
      "Directrice Administrative",
      "3",
-     "ISSA Rabiatou — chef de service",
+     "ISIASIABU Rafiakpe — chef de service",
      "Agent Administratif",
      ""
     ],
@@ -737,7 +737,7 @@
      "Chauffeur Coursier",
      "Directrice Administrative",
      "1",
-     "TCHANE Nourou",
+     "TIAMOU Noupi",
      "Ambulancier",
      ""
     ],
@@ -745,7 +745,7 @@
      "Médecins Généralistes",
      "Directeur Médical",
      "2",
-     "YENI M’PO Florent",
+     "YORO M’ABEKPIA Foulumi",
      "Médecin",
      ""
     ],
@@ -753,7 +753,7 @@
      "Échographiste",
      "Directeur Médical",
      "1",
-     "AHOHOU Rodrigue",
+     "AKPOMER Ridur",
      "Médecin",
      ""
     ],
@@ -761,7 +761,7 @@
      "Laborantins",
      "Directeur Médical",
      "2",
-     "KINNOU Addoul Ganiou — chef de service",
+     "KELE Adjapilo Gedur — chef de service",
      "Biologiste médical",
      ""
     ],
@@ -769,7 +769,7 @@
      "Infirmiers",
      "Directeur Médical",
      "8",
-     "GARBA Yahouza — chef de service",
+     "GEVAMIAN Yelia — chef de service",
      "Infirmier / Sage-femme",
      ""
     ],
@@ -785,29 +785,29 @@
      "Aide-Soignantes",
      "Directeur Médical",
      "8",
-     "TEPA Séraphine — chef de service",
+     "TOGA Sigbudja — chef de service",
      "Aide-soignante",
      ""
     ]
    ]
   },
   "arbre": [
-   "Directeur Médical(01)BASSONGUI Chabi SékoDirecteur Médical",
-   "Directrice Administrative(01)TAKI Alimatou épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)",
-   "Comptable(01)KASSA AugustinComptable",
-   "Assistant Comptable(01)GBEDJI HervéComptable",
-   "Gestionnaire de Stock(01)MAMAN ZoukanériGestionnaire de Stock",
-   "Secrétaires Médicaux(04)OROU YO Edmond — chef de serviceRéception / Accueil",
-   "Dispensatrices(04)DIEYABIDI Aïssatou — chef de servicePharmacien",
-   "Agents de Sécurité(03)OURTCHA TEREYAMA — chef de serviceAgent Administratif",
-   "Agents d’Entretien(03)ISSA Rabiatou — chef de serviceAgent Administratif",
-   "Chauffeur Coursier(01)TCHANE NourouAmbulancier",
-   "Médecins Généralistes(02)YENI M’PO FlorentMédecin",
-   "Échographiste(01)AHOHOU RodrigueMédecin",
-   "Laborantins(02)KINNOU Addoul Ganiou — chef de serviceBiologiste médical",
-   "Infirmiers(08)GARBA Yahouza — chef de serviceInfirmier / Sage-femme",
+   "Directeur Médical(01)BICHIASI Cezoune SékoDirecteur Médical",
+   "Directrice Administrative(01)TACHEDI Arialu épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)",
+   "Comptable(01)KALOU AvolutuComptable",
+   "Assistant Comptable(01)GIDJI HiabidjoComptable",
+   "Gestionnaire de Stock(01)METIAVI ZoboGestionnaire de Stock",
+   "Secrétaires Médicaux(04)ODJIPIAR YUDJOUVOU Edjukavom — chef de serviceRéception / Accueil",
+   "Dispensatrices(04)DATU Amachim — chef de servicePharmacien",
+   "Agents de Sécurité(03)OSIAMIAM TOUGBIAL — chef de serviceAgent Administratif",
+   "Agents d’Entretien(03)ISIASIABU Rafiakpe — chef de serviceAgent Administratif",
+   "Chauffeur Coursier(01)TIAMOU NoupiAmbulancier",
+   "Médecins Généralistes(02)YORO M’ABEKPIA FoulumiMédecin",
+   "Échographiste(01)AKPOMER RidurMédecin",
+   "Laborantins(02)KELE Adjapilo Gedur — chef de serviceBiologiste médical",
+   "Infirmiers(08)GEVAMIAN Yelia — chef de serviceInfirmier / Sage-femme",
    "Sages-Femmes(03)Infirmier / Sage-femme",
-   "Aide-Soignantes(08)TEPA Séraphine — chef de serviceAide-soignante"
+   "Aide-Soignantes(08)TOGA Sigbudja — chef de serviceAide-soignante"
   ],
   "impressionOrganigramme": {
    "titre": "Organigramme de la Clinique NASSIERA TOO",
@@ -833,14 +833,14 @@
    "signatures": [
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     },
     {
      "role": "Le Directeur Médical",
-     "nom": "BASSONGUI Chabi Séko"
+     "nom": "BICHIASI Cezoune Sichovian"
     }
    ],
-   "texte": "PosteRattaché àEffectifTitulaire / chef de serviceRôle dans le systèmeDirecteur Médical—1BASSONGUI Chabi SékoDirecteur MédicalDirectrice AdministrativeDirecteur Médical1TAKI Alimatou épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)ComptableDirectrice Administrative1KASSA AugustinComptableAssistant ComptableComptable1GBEDJI HervéComptableGestionnaire de StockDirectrice Administrative1MAMAN ZoukanériGestionnaire de StockSecrétaires MédicauxDirectrice Administrative4OROU YO EdmondRéception / AccueilDispensatricesDirectrice Administrative4DIEYABIDI AïssatouPharmacienAgents de SécuritéDirectrice Administrative3OURTCHA TEREYAMAAgent AdministratifAgents d’EntretienDirectrice Administrative3ISSA RabiatouAgent AdministratifChauffeur CoursierDirectrice Administrative1TCHANE NourouAmbulancierMédecins GénéralistesDirecteur Médical2YENI M’PO FlorentMédecinÉchographisteDirecteur Médical1AHOHOU RodrigueMédecinLaborantinsDirecteur Médical2KINNOU Addoul GaniouBiologiste médicalInfirmiersDirecteur Médical8GARBA YahouzaInfirmier / Sage-femmeSages-FemmesDirecteur Médical3—Infirmier / Sage-femmeAide-SoignantesDirecteur Médical8TEPA SéraphineAide-soignante"
+   "texte": "PosteRattaché àEffectifTitulaire / chef de serviceRôle dans le systèmeDirecteur Médical—1BICHIASI Cezoune SékoDirecteur MédicalDirectrice AdministrativeDirecteur Médical1TACHEDI Arialu épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)ComptableDirectrice Administrative1KALOU AvolutuComptableAssistant ComptableComptable1GIDJI HiabidjoComptableGestionnaire de StockDirectrice Administrative1METIAVI ZoboGestionnaire de StockSecrétaires MédicauxDirectrice Administrative4ODJIPIAR YUDJOUVOU EdjukavomRéception / AccueilDispensatricesDirectrice Administrative4DATU AmachimPharmacienAgents de SécuritéDirectrice Administrative3OSIAMIAM TEREYAMAAgent AdministratifAgents d’EntretienDirectrice Administrative3ISIASIABU RafiakpeAgent AdministratifChauffeur CoursierDirectrice Administrative1TIAMOU NoupiAmbulancierMédecins GénéralistesDirecteur Médical2YORO M’ABEKPIA FoulumiMédecinÉchographisteDirecteur Médical1AKPOMER RidurMédecinLaborantinsDirecteur Médical2KELE Adjapilo GedurBiologiste médicalInfirmiersDirecteur Médical8GEVAMIAN YeliaInfirmier / Sage-femmeSages-FemmesDirecteur Médical3—Infirmier / Sage-femmeAide-SoignantesDirecteur Médical8TOGA SigbudjaAide-soignante"
   },
   "roles": {
    "entetes": [
@@ -854,98 +854,98 @@
     [
      "Directeur Médical",
      "1",
-     "BASSONGUI Chabi Séko",
+     "BICHIASI Cezoune Sichovian",
      "Directeur Médical",
      "M2M1M13M1M2M2M3M4M5M6M7M8M13RAPPILDASH"
     ],
     [
      "Directrice Administrative",
      "1",
-     "TAKI Alimatou épse BASSONGUI",
+     "TACHEDI Arialu épse BICHIASI",
      "Directrice de l’Administration et des Finances (DAF)",
      "M1M13CFGM1M6M7M8M9MECEFM12M10M11M13GEDRAPM14CFGIMPMEREMEREMEREMEREMEREPILM12DASH"
     ],
     [
      "Comptable",
      "1",
-     "KASSA Augustin",
+     "KALOU Avolutu",
      "Comptable",
      "M1M13M1M6M7M8M9MECEFM12M11M13GEDRAPIMPPILM12DASH"
     ],
     [
      "Assistant Comptable",
      "1",
-     "GBEDJI Hervé",
+     "GIDJI Hiabidjo",
      "Comptable",
      "M1M13M1M6M7M8M9MECEFM12M11M13GEDRAPIMPPILM12DASH"
     ],
     [
      "Gestionnaire de Stock",
      "1",
-     "MAMAN Zoukanéri",
+     "METIAVI Zobo",
      "Gestionnaire de Stock",
      "M6M7M8RAPIMPDASH"
     ],
     [
      "Secrétaires Médicaux",
      "4",
-     "OROU YO Edmond",
+     "ODJIPIAR YUDJOUVOU Edjukavom",
      "Réception / Accueil",
      "M2M1M13CFGM1M2M3M7M13RAPCFGIMPDASH"
     ],
     [
      "Dispensatrices",
      "4",
-     "DIEYABIDI Aïssatou",
+     "DATU Amachim",
      "Pharmacien",
      ""
     ],
     [
      "Agents de Sécurité",
      "3",
-     "OURTCHA TEREYAMA",
+     "OSIAMIAM TOUGBIAL",
      "Agent Administratif",
      "M1M13M1M7M13GEDRAPIMPDASH"
     ],
     [
      "Agents d’Entretien",
      "3",
-     "ISSA Rabiatou",
+     "ISIASIABU Rafiakpe",
      "Agent Administratif",
      "M1M13M1M7M13GEDRAPIMPDASH"
     ],
     [
      "Chauffeur Coursier",
      "1",
-     "TCHANE Nourou",
+     "TIAMOU Noupi",
      "Ambulancier",
      "M1M13M1M7M13RAPDASH"
     ],
     [
      "Médecins Généralistes",
      "2",
-     "YENI M’PO Florent",
+     "YORO M’ABEKPIA Foulumi",
      "Médecin",
      "M2M1M1M2M2M3M4M5M6M7RAPPILDASH"
     ],
     [
      "Échographiste",
      "1",
-     "AHOHOU Rodrigue",
+     "AKPOMER Ridur",
      "Médecin",
      "M2M1M1M2M2M3M4M5M6M7RAPPILDASH"
     ],
     [
      "Laborantins",
      "2",
-     "KINNOU Addoul Ganiou",
+     "KELE Adjapilo Gedur",
      "Biologiste médical",
      "M1M13M1M5M7RAPIMPPILDASH"
     ],
     [
      "Infirmiers",
      "8",
-     "GARBA Yahouza",
+     "GEVAMIAN Yelia",
      "Infirmier / Sage-femme",
      "M2M1M13M1M2M2M3M4M5M7M13RAPPILDASH"
     ],
@@ -959,7 +959,7 @@
     [
      "Aide-Soignantes",
      "8",
-     "TEPA Séraphine",
+     "TOGA Sigbudja",
      "Aide-soignante",
      "M1M1M3M7RAPDASH"
     ]
@@ -1073,7 +1073,7 @@
   "notes": [
    "Les états produits par le prototype reprennent déjà fidèlement l’entête réelle relevée sur les documents de la clinique."
   ],
-  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 · Document généré par BASSONGUI Chabi Séko le 01/11/2026 à 18h32 · Réf. CBG-XXXXXXXX-0001",
+  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 · Document généré par BICHIASI Cezoune Sichovian le 01/11/2026 à 18h32 · Réf. CBG-XXXXXXXX-0001",
   "ressources": [
    "Logo principalUtilisé sur tous les états et dans l’applicationÀ fournir",
    "Logo monochromePour les impressions en noir et blancÀ fournir",
@@ -1088,7 +1088,7 @@
    "signatures": [
     {
      "role": "La Directrice Administrative",
-     "nom": "TAKI Alimatou"
+     "nom": "TACHEDI Arialu"
     }
    ],
    "texte": "Ce document illustre le gabarit officiel appliqué automatiquement à l’ensemble des états produits par le système : factures normalisées, ordonnances, bulletins de paie, bons de commande et de sortie, résultats de laboratoire, états comptables et rapports de direction.MentionValeurDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR »Adresse postale02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Adresse électroniquecliniquebaguidi@yahoo.frAutorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU3201001996110RCCMRB/PKO/17 A 4240"
@@ -1104,7 +1104,7 @@
    "audit": {
     "id": "LOGmvy64303",
     "dateHeure": "2026-11-01T18:33:00.723Z",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Modification",
     "module": "CFG",
     "entite": "BrandConfiguration",
@@ -3247,7 +3247,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Rappel de règlementIntituléRappel de règlementOccasionÉchéance de règlementActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, un reliquat reste dû sur votre dossier à {{clinique}}. Nous vous remercions de bien vouloir passer à la caisse.Aperçu, variables remplacéesBonjour OROU YO Marguerite, un reliquat reste dû sur votre dossier à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Nous vous remercions de bien vouloir passer à la caisse."
+    "tiroir": "Rappel de règlementIntituléRappel de règlementOccasionÉchéance de règlementActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, un reliquat reste dû sur votre dossier à {{clinique}}. Nous vous remercions de bien vouloir passer à la caisse.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, un reliquat reste dû sur votre dossier à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Nous vous remercions de bien vouloir passer à la caisse."
    },
    {
     "ligne": [
@@ -3257,7 +3257,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Résultat disponibleIntituléRésultat disponibleOccasionRésultat disponibleActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, votre résultat est disponible à {{clinique}}. Vous pouvez le retirer aux heures d’ouverture.Aperçu, variables remplacéesBonjour OROU YO Marguerite, votre résultat est disponible à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Vous pouvez le retirer aux heures d’ouverture."
+    "tiroir": "Résultat disponibleIntituléRésultat disponibleOccasionRésultat disponibleActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, votre résultat est disponible à {{clinique}}. Vous pouvez le retirer aux heures d’ouverture.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, votre résultat est disponible à CLINIQUE BAGUIDI « L’AS DU CŒUR ». Vous pouvez le retirer aux heures d’ouverture."
    },
    {
     "ligne": [
@@ -3267,7 +3267,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Rappel de rendez-vousIntituléRappel de rendez-vousOccasionRappel de rendez-vousActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.Aperçu, variables remplacéesBonjour OROU YO Marguerite, nous vous rappelons votre rendez-vous à CLINIQUE BAGUIDI « L’AS DU CŒUR » le 01/11/2026 à 09h00. Pour toute modification, appelez le 95 74 69 56."
+    "tiroir": "Rappel de rendez-vousIntituléRappel de rendez-vousOccasionRappel de rendez-vousActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, nous vous rappelons votre rendez-vous à {{clinique}} le {{rdv}}. Pour toute modification, appelez le {{telephone}}.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, nous vous rappelons votre rendez-vous à CLINIQUE BAGUIDI « L’AS DU CŒUR » le 01/11/2026 à 09h00. Pour toute modification, appelez le 95 74 69 56."
    },
    {
     "ligne": [
@@ -3277,7 +3277,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Vœux de fêteIntituléVœux de fêteOccasionFête ou jour fériéActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite une excellente fête, entouré des vôtres."
+    "tiroir": "Vœux de fêteIntituléVœux de fêteOccasionFête ou jour fériéActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous souhaite une excellente fête, entouré des vôtres.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite une excellente fête, entouré des vôtres."
    },
    {
     "ligne": [
@@ -3287,7 +3287,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "Vœux de nouvel anIntituléVœux de nouvel anOccasionNouvel anActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille.Aperçu, variables remplacéesBonjour OROU YO Marguerite, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille."
+    "tiroir": "Vœux de nouvel anIntituléVœux de nouvel anOccasionNouvel anActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, {{clinique}} vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, CLINIQUE BAGUIDI « L’AS DU CŒUR » vous présente ses meilleurs vœux pour la nouvelle année : santé, paix et prospérité à vous et à toute votre famille."
    },
    {
     "ligne": [
@@ -3297,7 +3297,7 @@
      "Oui",
      ""
     ],
-    "tiroir": "AnniversaireIntituléAnniversaireOccasionAnniversaire du patientActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être.Aperçu, variables remplacéesBonjour OROU YO Marguerite, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+    "tiroir": "AnniversaireIntituléAnniversaireOccasionAnniversaire du patientActifOuiOrigineModèle proposé — à valider par la DirectionTexte du modèleBonjour {{nom}}, toute l’équipe de {{clinique}} vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être.Aperçu, variables remplacéesBonjour ODJIPIAR YUDJOUVOU Mibu, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
    }
   ],
   "rappelsVide": null,
@@ -3340,12 +3340,12 @@
   "jour": "2026-11-01",
   "patients": [
    {
-    "nom": "TCHANE Bertine",
+    "nom": "TIAMOU Bodje",
     "tel": "0372398919",
     "dateNaissance": "1990-11-01"
    },
    {
-    "nom": "BAKO Boukari",
+    "nom": "BIALI Buke",
     "tel": "0395837962",
     "dateNaissance": "2001-11-01"
    }
@@ -3364,21 +3364,21 @@
      "reference": "RPL-00002",
      "occasion": "Anniversaire",
      "patientId": "PAT0002",
-     "destinataire": "BAKO Boukari",
+     "destinataire": "BIALI Buke",
      "telephone": "0395837962",
      "dateEcheance": "2026-11-01",
      "etat": "en_file",
-     "message": "Bonjour BAKO Boukari, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+     "message": "Bonjour BIALI Buke, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
     },
     {
      "reference": "RPL-00001",
      "occasion": "Anniversaire",
      "patientId": "PAT0001",
-     "destinataire": "TCHANE Bertine",
+     "destinataire": "TIAMOU Bodje",
      "telephone": "0372398919",
      "dateEcheance": "2026-11-01",
      "etat": "en_file",
-     "message": "Bonjour TCHANE Bertine, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
+     "message": "Bonjour TIAMOU Bodje, toute l’équipe de CLINIQUE BAGUIDI « L’AS DU CŒUR » vous souhaite un très joyeux anniversaire et une excellente santé. Votre bien-être est notre raison d’être."
     }
    ],
    "onglets": [
@@ -3487,8 +3487,8 @@
      "Durée du repos (jours) *",
      "À compter du *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste que son état de santé nécessite un repos de …………… jour(s) à compter du …………….",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste que son état de santé nécessite un repos de …………… jour(s) à compter du …………….",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026."
    },
    {
     "carte": "Certificat médical de grossesseAucun délivré",
@@ -3506,8 +3506,8 @@
      "Terme (semaines d’aménorrhée) *",
      "Terme présumé *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste qu’elle présente une grossesse évolutive de …………… semaines d’aménorrhée, dont le terme est présumé au …………….",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste qu’elle présente une grossesse évolutive de 28 semaines d’aménorrhée, dont le terme est présumé au 20/11/2026."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste qu’elle présente une grossesse évolutive de …………… semaines d’aménorrhée, dont le terme est présumé au …………….",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste qu’elle présente une grossesse évolutive de 28 semaines d’aménorrhée, dont le terme est présumé au 20/11/2026."
    },
    {
     "carte": "Attestation d’accouchementAucun délivré",
@@ -3525,8 +3525,8 @@
      "Date d’accouchement *",
      "Sexe de l’enfant *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, atteste que TCHANE Bertine a accouché dans notre établissement le …………… d’un enfant de sexe masculin.",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, atteste que TCHANE Bertine a accouché dans notre établissement le 10/08/2026 d’un enfant de sexe féminin."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, atteste que TIAMOU Bodje a accouché dans notre établissement le …………… d’un enfant de sexe masculin.",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, atteste que TIAMOU Bodje a accouché dans notre établissement le 10/08/2026 d’un enfant de sexe féminin."
    },
    {
     "carte": "Certificat médical de coups et blessures involontairesAucun délivré",
@@ -3544,8 +3544,8 @@
      "Constatations médicales *",
      "Incapacité totale de travail (jours) *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et avoir constaté : ……………. Ces lésions entraînent une incapacité totale de travail de …………… jour(s), sauf complications.",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et avoir constaté : une plaie superficielle du bras. Ces lésions entraînent une incapacité totale de travail de 5 jour(s), sauf complications."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et avoir constaté : ……………. Ces lésions entraînent une incapacité totale de travail de …………… jour(s), sauf complications.",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et avoir constaté : une plaie superficielle du bras. Ces lésions entraînent une incapacité totale de travail de 5 jour(s), sauf complications."
    },
    {
     "carte": "Certificat médical initialAucun délivré",
@@ -3563,8 +3563,8 @@
      "Constatations médicales *",
      "Incapacité totale de travail (jours) *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et avoir constaté : ……………. Incapacité totale de travail estimée à …………… jour(s), sous réserve de complications ultérieures.",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et avoir constaté : une plaie superficielle du bras. Incapacité totale de travail estimée à 5 jour(s), sous réserve de complications ultérieures."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et avoir constaté : ……………. Incapacité totale de travail estimée à …………… jour(s), sous réserve de complications ultérieures.",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et avoir constaté : une plaie superficielle du bras. Incapacité totale de travail estimée à 5 jour(s), sous réserve de complications ultérieures."
    },
    {
     "carte": "Certificat médical de guérisonAucun délivré",
@@ -3582,8 +3582,8 @@
      "Affection traitée *",
      "Date de guérison *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie que TCHANE Bertine, traité(e) pour ……………, est déclaré(e) guéri(e) depuis le …………… et peut reprendre ses activités.",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie que TCHANE Bertine, traité(e) pour un paludisme simple, est déclaré(e) guéri(e) depuis le 12/08/2026 et peut reprendre ses activités."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie que TIAMOU Bodje, traité(e) pour ……………, est déclaré(e) guéri(e) depuis le …………… et peut reprendre ses activités.",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie que TIAMOU Bodje, traité(e) pour un paludisme simple, est déclaré(e) guéri(e) depuis le 12/08/2026 et peut reprendre ses activités."
    },
    {
     "carte": "Certificat prénuptialAucun délivré",
@@ -3599,8 +3599,8 @@
      "Date de délivrance *",
      "Examens pratiqués *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine dans le cadre d’un examen prénuptial. Examens pratiqués : ……………. Aucune contre-indication médicale au mariage n’a été relevée.",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine dans le cadre d’un examen prénuptial. Examens pratiqués : NFS, groupe sanguin, sérologies. Aucune contre-indication médicale au mariage n’a été relevée."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje dans le cadre d’un examen prénuptial. Examens pratiqués : ……………. Aucune contre-indication médicale au mariage n’a été relevée.",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje dans le cadre d’un examen prénuptial. Examens pratiqués : NFS, groupe sanguin, sérologies. Aucune contre-indication médicale au mariage n’a été relevée."
    },
    {
     "carte": "Certificat d’aptitude physiqueAucun délivré",
@@ -3616,15 +3616,15 @@
      "Date de délivrance *",
      "Activité concernée *"
     ],
-    "apercuVide": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et n’avoir constaté aucune contre-indication à la pratique de : …………….",
-    "apercuRempli": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine et n’avoir constaté aucune contre-indication à la pratique de : la natation."
+    "apercuVide": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et n’avoir constaté aucune contre-indication à la pratique de : …………….",
+    "apercuRempli": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje et n’avoir constaté aucune contre-indication à la pratique de : la natation."
    }
   ],
   "patient": {
    "code": "CBG/1/25",
-   "nom": "TCHANE Bertine"
+   "nom": "TIAMOU Bodje"
   },
-  "praticien": "BASSONGUI Chabi Séko",
+  "praticien": "BICHIASI Cezoune Sichovian",
   "valeurs": {
    "duree": "3",
    "dateDebut": "2026-08-17",
@@ -3643,22 +3643,22 @@
    "fiche": [
     {
      "patientCode": "CBG/1/25",
-     "praticien": "BASSONGUI Chabi Séko",
+     "praticien": "BICHIASI Cezoune Sichovian",
      "date": "2026-08-16",
      "duree": 3,
      "dateDebut": "2026-08-17",
      "type": "repos",
      "numero": "CERT-2026-0001",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
-     "texte": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026."
+     "patient": "TIAMOU Bodje",
+     "texte": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026."
     }
    ],
    "toasts": [
     {
      "message": "Certificat CERT-2026-0001 délivré.",
      "type": "success",
-     "detail": "Certificat médical de repos — TCHANE Bertine"
+     "detail": "Certificat médical de repos — TIAMOU Bodje"
     }
    ],
    "impression": {
@@ -3667,7 +3667,7 @@
     "cartouche": [
      [
       "Patient",
-      "TCHANE Bertine"
+      "TIAMOU Bodje"
      ],
      [
       "Dossier",
@@ -3683,7 +3683,7 @@
      ],
      [
       "Praticien",
-      "BASSONGUI Chabi Séko"
+      "BICHIASI Cezoune Sichovian"
      ],
      [
       "N° du certificat",
@@ -3693,22 +3693,22 @@
     "signatures": [
      {
       "role": "Le praticien",
-      "nom": "BASSONGUI Chabi Séko",
+      "nom": "BICHIASI Cezoune Sichovian",
       "mention": "Signature et cachet"
      }
     ],
-    "texte": "Je soussigné(e), BASSONGUI Chabi Séko, certifie avoir examiné ce jour TCHANE Bertine, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026.Certificat établi à la demande de l’intéressé(e) et remis en main propre pour servir et valoir ce que de droit."
+    "texte": "Je soussigné(e), BICHIASI Cezoune Sichovian, certifie avoir examiné ce jour TIAMOU Bodje, et atteste que son état de santé nécessite un repos de 3 jour(s) à compter du 17/08/2026.Certificat établi à la demande de l’intéressé(e) et remis en main propre pour servir et valoir ce que de droit."
    },
    "journal": {
     "id": "LOGmvy648wc",
     "dateHeure": "2026-11-01T18:33:08.364Z",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "action": "Délivrance de certificat",
     "module": "CFG",
     "entite": "Certificat médical de repos",
     "reference": "CERT-2026-0001",
     "ancienneValeur": null,
-    "nouvelleValeur": "{\"patient\":\"TCHANE Bertine\"}",
+    "nouvelleValeur": "{\"patient\":\"TIAMOU Bodje\"}",
     "poste": "POSTE-LOCAL",
     "succes": true
    }
@@ -3726,9 +3726,9 @@
     [
      "CERT-2026-0001",
      "16/08/2026",
-     "TCHANE BertineCNT/1/25",
+     "TIAMOU BodjeCNT/1/25",
      "Certificat médical de repos",
-     "BASSONGUI Chabi Séko",
+     "BICHIASI Cezoune Sichovian",
      ""
     ]
    ]

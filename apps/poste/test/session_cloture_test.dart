@@ -22,7 +22,7 @@ import 'aide_polices.dart';
 /// ouvre une AUTRE. Un compte bloqué n'ouvre pas de session. Les règles sont rejouées sur les vecteurs de la maquette par packages/domaine/test.
 typedef M = Map<String, Object?>;
 List<M> fl(Object? v) => [for (final x in (v as List)) (x as Map).cast<String, Object?>()];
-List<M> jeu(String nom) => fl(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => fl(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 10, 30, 10);
@@ -83,17 +83,17 @@ void main() {
   });
   tearDown(ToastsSigh.viderPourTests);
 
-  const admin = SecActeurSession(role: 'admin', identifiant: 'c.bassongui', nom: 'BASSONGUI Chabi Séko');
+  const admin = SecActeurSession(role: 'admin', identifiant: 'c.bichiasi', nom: 'BICHIASI Cezoune Sichovian');
 
   testWidgets('connexion : une fiche de session naît ; l\'administrateur la clôture ; au PROCHAIN GESTE le poste retombe sur la connexion qui le dit ; se reconnecter ouvre une AUTRE session',
       (t) async {
     final m = poste();
     var maintenant = auj;
     final s = SessionPoste(exigeConnexion: true, horloge: () => maintenant);
-    final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.orou');
+    final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.odjipiar');
     await t.runAsync(() => ServiceIdentifiants.de(m).definir('${compte['id']}', secret, par: 'test', doitChanger: false, maintenant: auj));
     await monter(t, m, s, horloge: () => maintenant);
-    await connecter(t, 'e.orou');
+    await connecter(t, 'e.odjipiar');
     expect(s.etat, EtatSession.connectee);
     // À la connexion, le centre de notifications s'ouvre de lui-même : l'agent le referme (premier geste).
     await t.sendKeyEvent(LogicalKeyboardKey.escape);
@@ -104,7 +104,7 @@ void main() {
     final premiere = s.sessionId!;
     final f = reg.fiche(premiere)!;
     expect(f['etat'], 'active');
-    expect(f['identifiant'], 'e.orou');
+    expect(f['identifiant'], 'e.odjipiar');
     expect(f['source'], 'poste');
     expect(f['role'], compte['role']);
     expect(find.byType(BarreSuperieure), findsOneWidget);
@@ -127,13 +127,13 @@ void main() {
     // La fiche clôturée reste au registre : date, heure, auteur, motif (RG-12, RG-14).
     final cl = reg.fiche(premiere)!;
     expect(cl['clotureLe'], isNotNull);
-    expect(cl['cloturePar'], 'BASSONGUI Chabi Séko');
+    expect(cl['cloturePar'], 'BICHIASI Cezoune Sichovian');
     expect(cl['clotureMotif'], 'Poste laissé ouvert');
     expect(cl['statut'], isNot('archive'), reason: 'rien n\'est archivé ni supprimé (RG-14)');
 
     // Se reconnecter ouvre une AUTRE session ; l'ancienne ne rouvre pas.
     maintenant = auj.add(const Duration(seconds: 4));
-    await connecter(t, 'e.orou');
+    await connecter(t, 'e.odjipiar');
     expect(s.etat, EtatSession.connectee);
     expect(s.sessionId, isNot(premiere));
     expect(reg.fiche(premiere)!['etat'], 'cloturee');
@@ -148,8 +148,8 @@ void main() {
     var maintenant = auj;
     final s = SessionPoste(exigeConnexion: true, horloge: () => maintenant);
     final reg = RegistreSessions.de(m);
-    s.connecter(const AccCompte(identifiant: 'e.orou', nom: 'OROU YO Edmond', role: 'reception'));
-    s.sessionId = reg.ouvrir(identifiant: 'e.orou', nomComplet: 'OROU YO Edmond', role: 'reception', poste: 'POSTE-ACCUEIL', maintenant: auj);
+    s.connecter(const AccCompte(identifiant: 'e.odjipiar', nom: 'ODJIPIAR YUDJOUVOU Edjukavom', role: 'reception'));
+    s.sessionId = reg.ouvrir(identifiant: 'e.odjipiar', nomComplet: 'ODJIPIAR YUDJOUVOU Edjukavom', role: 'reception', poste: 'POSTE-ACCUEIL', maintenant: auj);
     s.estCloturee = reg.estCloturee;
     s.surEtat = (i, e) => reg.changerEtat(i, e, maintenant);
     final id = s.sessionId!;
@@ -173,7 +173,7 @@ void main() {
     var maintenant = auj;
     var appels = 0;
     final s = SessionPoste(exigeConnexion: true, horloge: () => maintenant);
-    s.connecter(const AccCompte(identifiant: 'e.orou', nom: 'OROU YO Edmond', role: 'reception'));
+    s.connecter(const AccCompte(identifiant: 'e.odjipiar', nom: 'ODJIPIAR YUDJOUVOU Edjukavom', role: 'reception'));
     s.sessionId = 'X';
     s.estCloturee = (_) {
       appels++;
@@ -192,16 +192,16 @@ void main() {
   test('un compte BLOQUÉ par l\'administrateur n\'ouvre pas de session, même avec le bon mot de passe ; débloqué, il l\'ouvre', () async {
     ServiceIdentifiants.parametres = AccParametresHachage.tests;
     final m = poste();
-    final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.orou');
+    final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.odjipiar');
     final id = '${compte['id']}';
     await ServiceIdentifiants.de(m).definir(id, secret, par: 'test', doitChanger: false, maintenant: auj);
     Future<ResultatConnexion> essayer() => ServiceIdentifiants.de(m).verifier(
-        identifiant: 'e.orou', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+        identifiant: 'e.odjipiar', motDePasse: secret, rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
     expect((await essayer()).decision.accepte, isTrue);
 
     final bloc = secBloquerCompte(m.collection('utilisateurs').parId(id),
         motif: 'Accès à retirer',
-        acteur: const SecActeurCompte(identifiant: 'c.bassongui', nom: 'BASSONGUI Chabi Séko'),
+        acteur: const SecActeurCompte(identifiant: 'c.bichiasi', nom: 'BICHIASI Cezoune Sichovian'),
         politique: secPolitique(null),
         maintenant: auj);
     expect(bloc.ok, isTrue);
@@ -213,7 +213,7 @@ void main() {
     expect(m.collection('tentativesConnexion').toutes.last['motif'], accMotifCompteBloque, reason: 'la tentative est écrite (RG-12)');
 
     final deb = secDebloquerCompte(m.collection('utilisateurs').parId(id),
-        acteur: const SecActeurCompte(identifiant: 'c.bassongui', nom: 'BASSONGUI Chabi Séko'), politique: secPolitique(null), maintenant: auj);
+        acteur: const SecActeurCompte(identifiant: 'c.bichiasi', nom: 'BICHIASI Cezoune Sichovian'), politique: secPolitique(null), maintenant: auj);
     m.collection('utilisateurs').mettreAJour(id, deb.patch);
     expect((await essayer()).decision.accepte, isTrue);
   });

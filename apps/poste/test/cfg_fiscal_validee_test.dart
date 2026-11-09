@@ -149,7 +149,7 @@ void main() {
       expect(s.lignesConfiguration()['cfg-fiscalite']!.ecrit, isFalse, reason: 'MUTATION : une écriture sans validation ne coche pas');
       expect(s.lignesConfiguration()['cfg-fiscalite']!.verifie, isFalse);
       // Validation de l'identité seule : la ligne fiscalité est faite, la comptabilité non.
-      final r = cfbValiderIdentite(m.collection('identiteLegale').toutes, role: 'admin', acteur: 'ADJOVI', maintenant: DateTime(2026, 10, 30), aujourdhui: DateTime(2026, 10, 30));
+      final r = cfbValiderIdentite(m.collection('identiteLegale').toutes, role: 'admin', acteur: 'AGBUZIA', maintenant: DateTime(2026, 10, 30), aujourdhui: DateTime(2026, 10, 30));
       expect(r.ok, isTrue);
       for (final id in r.ids) {
         m.collection('identiteLegale').mettreAJour(id, r.patch);
@@ -184,14 +184,14 @@ void main() {
     expect(find.byKey(const Key('qual:config:obligations')), findsOneWidget);
     expect(find.text('Identité légale à valider (première configuration)'), findsOneWidget);
     expect(find.text('Obligations fiscales à valider'), findsOneWidget);
-    final ri = cfbValiderIdentite(m.collection('identiteLegale').toutes, role: 'admin', acteur: 'ADJOVI', maintenant: DateTime(2026, 10, 30), aujourdhui: DateTime(2026, 10, 30));
+    final ri = cfbValiderIdentite(m.collection('identiteLegale').toutes, role: 'admin', acteur: 'AGBUZIA', maintenant: DateTime(2026, 10, 30), aujourdhui: DateTime(2026, 10, 30));
     for (final id in ri.ids) {
       m.collection('identiteLegale').mettreAJour(id, ri.patch);
     }
     await t.pump();
     expect(find.byKey(const Key('qual:config:identite')), findsNothing);
     expect(find.byKey(const Key('qual:config:obligations')), findsOneWidget);
-    final ro = cfbValiderObligations(m.collection('obligationsFiscales').toutes, role: 'admin', acteur: 'ADJOVI', maintenant: DateTime(2026, 10, 30));
+    final ro = cfbValiderObligations(m.collection('obligationsFiscales').toutes, role: 'admin', acteur: 'AGBUZIA', maintenant: DateTime(2026, 10, 30));
     for (final id in ro.ids) {
       m.collection('obligationsFiscales').mettreAJour(id, ro.patch);
     }

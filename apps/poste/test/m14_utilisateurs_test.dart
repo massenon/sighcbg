@@ -119,11 +119,11 @@ void main() {
 
   casM14('modification : pas de champ de mot de passe, dernier accès et échecs CONSERVÉS (E591)', (t) async {
     final m = magasinM14();
-    final cible = m.collection('utilisateurs').actives.firstWhere((u) => u['identifiant'] == 's.bassongui');
+    final cible = m.collection('utilisateurs').actives.firstWhere((u) => u['identifiant'] == 's.bichiasi');
     expect(cible['echecs'], 2);
     final dernier = cible['dernierAcces'];
     await ouvrirM14(t, m, 'm14-utilisateurs');
-    await t.enterText(find.byType(TextField).first, 's.bassongui');
+    await t.enterText(find.byType(TextField).first, 's.bichiasi');
     await t.pump(const Duration(milliseconds: 300));
     await toucherM14(t, find.byTooltip('Modifier').first);
     expect(find.byKey(const Key('kit:champ:motDePasse')), findsNothing);
@@ -157,7 +157,7 @@ void main() {
   casM14('la fiche : périmètre d\'accès du rôle, et la fiche imprimable', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'm14-utilisateurs');
-    await t.enterText(find.byType(TextField).first, 's.bassongui');
+    await t.enterText(find.byType(TextField).first, 's.bichiasi');
     await t.pump(const Duration(milliseconds: 300));
     await toucherM14(t, find.byTooltip('Consulter').first);
     await t.pump(const Duration(milliseconds: 600));
@@ -219,9 +219,9 @@ void main() {
 
   casM14('A5 : « Définir le mot de passe » sur la fiche d\'un compte : politique appliquée, haché posé, verrou levé, journal sans secret', (t) async {
     final m = magasinM14();
-    final cible = m.collection('utilisateurs').actives.firstWhere((u) => u['identifiant'] == 'a.kassa');
+    final cible = m.collection('utilisateurs').actives.firstWhere((u) => u['identifiant'] == 'a.kalou');
     await ouvrirM14(t, m, 'm14-utilisateurs');
-    await t.enterText(find.byType(TextField).first, 'a.kassa');
+    await t.enterText(find.byType(TextField).first, 'a.kalou');
     await t.pump(const Duration(milliseconds: 300));
     await toucherM14(t, find.byTooltip('Consulter').first);
     await t.pump(const Duration(milliseconds: 600));
@@ -248,7 +248,7 @@ void main() {
   casM14('A5 : sans le droit d\'écrire, « Définir le mot de passe » est ABSENT de la fiche (jamais grisé)', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'm14-utilisateurs', role: 'da', donnees: donneesLectureSeule('da', 'm14-utilisateurs'));
-    await t.enterText(find.byType(TextField).first, 'a.kassa');
+    await t.enterText(find.byType(TextField).first, 'a.kalou');
     await t.pump(const Duration(milliseconds: 300));
     await toucherM14(t, find.byTooltip('Consulter').first);
     await t.pump(const Duration(milliseconds: 600));

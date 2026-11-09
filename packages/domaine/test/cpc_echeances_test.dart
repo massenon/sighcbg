@@ -12,7 +12,7 @@ typedef F = Map<String, Object?>;
 List<F> liste(Object? v) => ((v ?? const []) as List).map((x) => (x as Map).cast<String, Object?>()).toList();
 F carte(Object? v) => (v as Map).cast<String, Object?>();
 String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<String> cellules(Object? l) => [for (final c in (l as List)) nt(c)];
 
 void main() {
@@ -128,7 +128,7 @@ void main() {
       final att = carte(liste(carte(carte(carte(e['apres'])['ecart'])['modifs'])['echeancesFiscales']).first['patch']);
       expect(
           cpcPatchPaiement(
-              datePaiement: '2026-10-30', montant: 125000, moyen: 'Virement bancaire', reference: 'QUIT-TEST-0001', valideePar: 'BASSONGUI Chabi Séko'),
+              datePaiement: '2026-10-30', montant: 125000, moyen: 'Virement bancaire', reference: 'QUIT-TEST-0001', valideePar: 'BICHIASI Cezoune Sichovian'),
           att);
     });
     test('l\'annulation remet l\'échéance DUE, garde le motif, et ne touche pas au moyen', () {

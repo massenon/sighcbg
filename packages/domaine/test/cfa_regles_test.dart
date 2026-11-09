@@ -12,7 +12,7 @@ typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 M lire(String nom) => obj(jsonDecode(File('test/vecteurs/$nom.json').readAsStringSync()));
-List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<M> actives(String nom) => [for (final f in jeu(nom)) if (f['statut'] != 'archive') f];
 
 /// Le jeu livré est encore celui de Nassiera Too (un autre lot le remplace) : ses textes passent par la substitution d'identité avant comparaison.
@@ -373,7 +373,7 @@ void main() {
       // L'heure est celle du tirage du vecteur (l'horloge de la page) : on la relit sur l'aperçu.
       final h = RegExp(r'le (\d\d)/(\d\d)/(\d{4}) à (\d\d)h(\d\d)').firstMatch(ap)!;
       final quand = DateTime(int.parse(h.group(3)!), int.parse(h.group(2)!), int.parse(h.group(1)!), int.parse(h.group(4)!), int.parse(h.group(5)!));
-      final pied = cfaPiedApercu('BASSONGUI Chabi Séko', quand);
+      final pied = cfaPiedApercu('BICHIASI Cezoune Sichovian', quand);
       expect(s(ap).contains(s(pied)), isTrue, reason: pied);
     });
     test('ressources attendues = celles de l’écran', () {

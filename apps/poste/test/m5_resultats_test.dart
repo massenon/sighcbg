@@ -207,7 +207,7 @@ void main() {
           'plagesReactif': liste((entrees['comparatif'] as Map)['plages']),
         });
         await monter(t, m, const EcranResultats(fonction: 'biologiste', agentId: 'AG1'),
-            role: 'laborantin', utilisateur: 'KINNOU Ganiou');
+            role: 'laborantin', utilisateur: 'KELE Gedur');
         await toucher(t, find.byKey(Key('res:saisir:${d['reference']}')));
         if (c['ouverte'] != true) {
           expect(find.text('Aucune variable paramétrée pour cet examen.'), findsOneWidget);
@@ -282,13 +282,13 @@ void main() {
   group('m5-resultats : les gestes', () {
     cas('le biologiste qui a prélevé valide : visible du prescripteur, notifié, journalisé, annulable', (t) async {
       final m = jeuResultats();
-      final d = demande(m, 'valide_technique', prelevePar: 'KINNOU Ganiou');
+      final d = demande(m, 'valide_technique', prelevePar: 'KELE Gedur');
       await monter(
           t,
           m,
           const EcranResultats(fonction: 'biologiste', agentId: 'AG1'),
           role: 'laborantin',
-          utilisateur: 'KINNOU Ganiou');
+          utilisateur: 'KELE Gedur');
       // Avant : le médecin ne voit pas ce résultat (premier verrou).
       expect(peutVoirResultat(d, const SessionLabo(fonction: 'medecin')).autorise, isFalse);
       await onglet(t, 'relecture');
@@ -297,7 +297,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Valider biologiquement'));
       final apres = m.collection('demandesAnalyses').parId(d['id'])!;
       expect(apres['etatAnalyse'], 'valide');
-      expect(apres['valideBiologiquePar'], 'KINNOU Ganiou');
+      expect(apres['valideBiologiquePar'], 'KELE Gedur');
       expect(apres['validationInterim'], false);
       expect(apres['qualiteValidateur'], 'Biologiste médical');
       final nots = m.collection('notifications').actives;
@@ -316,9 +316,9 @@ void main() {
 
     cas('le TSL ne valide que par intérim, et l\'intérim est porté sur la pièce', (t) async {
       final m = jeuResultats();
-      final d = demande(m, 'valide_technique', prelevePar: 'IMOROU Choucouratou');
+      final d = demande(m, 'valide_technique', prelevePar: 'IMEFULU Cochesia');
       await monter(t, m, const EcranResultats(agentId: 'AG2'),
-          role: 'laborantin', utilisateur: 'IMOROU Choucouratou');
+          role: 'laborantin', utilisateur: 'IMEFULU Cochesia');
       await onglet(t, 'relecture');
       expect(find.text('Valider par intérim'), findsWidgets);
       await toucher(t, find.byKey(Key('res:valider-bio:${d['reference']}')));
@@ -331,14 +331,14 @@ void main() {
 
     cas('la continuité : un biologiste ne valide pas le prélèvement de l\'autre, et le refus NOMME le préleveur', (t) async {
       final m = jeuResultats();
-      final d = demande(m, 'valide_technique', prelevePar: 'KINNOU Ganiou');
+      final d = demande(m, 'valide_technique', prelevePar: 'KELE Gedur');
       await monter(t, m, const EcranResultats(fonction: 'biologiste', agentId: 'AG3'),
           role: 'laborantin', utilisateur: 'AUTRE Biologiste');
       await onglet(t, 'relecture');
       expect(find.byKey(Key('res:valider-bio:${d['reference']}')), findsNothing);
       await toucher(t, find.byKey(Key('res:verrou-relecture:${d['reference']}')));
       expect(find.text('Relecture réservée au préleveur.'), findsOneWidget);
-      expect(find.textContaining('Le prélèvement a été fait par KINNOU Ganiou'), findsOneWidget);
+      expect(find.textContaining('Le prélèvement a été fait par KELE Gedur'), findsOneWidget);
       expect(m.collection('demandesAnalyses').parId(d['id'])!['etatAnalyse'], 'valide_technique');
       expect(m.collection('notifications').actives, isEmpty);
     });
@@ -356,7 +356,7 @@ void main() {
       final m = jeuResultats();
       final d = demande(m, 'en_attente');
       await monter(t, m, const EcranResultats(fonction: 'biologiste', agentId: 'AG1'),
-          role: 'laborantin', utilisateur: 'KINNOU Ganiou');
+          role: 'laborantin', utilisateur: 'KELE Gedur');
       await toucher(t, find.byKey(Key('res:saisir-verrou:${d['reference']}')));
       expect(find.text('Saisie impossible.'), findsOneWidget);
       expect(find.textContaining('Le patient doit d’abord passer à la caisse.'), findsOneWidget);
@@ -372,7 +372,7 @@ void main() {
       final m = jeuResultats();
       final d = demande(m, 'en_cours');
       await monter(t, m, const EcranResultats(fonction: 'biologiste', agentId: 'AG1'),
-          role: 'laborantin', utilisateur: 'KINNOU Ganiou');
+          role: 'laborantin', utilisateur: 'KELE Gedur');
       await toucher(t, find.byKey(Key('res:saisir:${d['reference']}')));
       expect(find.text('Saisie du résultat — ${d['analyse']}'), findsOneWidget);
       // Les deux identifiants du dossier sont lus en tête de la saisie.
@@ -412,7 +412,7 @@ void main() {
       final m = jeuResultats();
       final d = demande(m, 'en_cours');
       await monter(t, m, const EcranResultats(fonction: 'biologiste', agentId: 'AG1'),
-          role: 'laborantin', utilisateur: 'KINNOU Ganiou');
+          role: 'laborantin', utilisateur: 'KELE Gedur');
       await toucher(t, find.byKey(Key('res:saisir:${d['reference']}')));
       await t.enterText(find.byKey(const Key('res:champ:GB')), '5');
       await toucher(t, find.byKey(const Key('res:enregistrer')));

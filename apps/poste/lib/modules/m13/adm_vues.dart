@@ -13,7 +13,7 @@ import 'adm_commun.dart';
 /// Les quatre écrans de M13 construits à la main (`U.dataTable` + `K.creer` + `K.actionsLigne` dans la maquette) : événements & notifications, plan annuel
 /// de travail, notes de service, répertoire des ambulances.
 
-const _signDa = Signature('La Directrice Administrative', nom: 'TAKI Alimatou');
+const _signDa = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
 
 const TextStyle _petit = TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12);
 

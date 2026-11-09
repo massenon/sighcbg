@@ -29,12 +29,12 @@ class SourceMemoire implements SourceMobile {
   List<Map<String, Object?>> de(String collection) => [for (final e in ecritures) if (e.$1 == collection) e.$2];
 }
 
-/// Le lot de la tournée du 31/10/2026 : DOSSOU (carte valide, allergique, rendez-vous 09h30), KPOGNON (carte expirée, rendez-vous 10h45), TAMOU (non assuré).
+/// Le lot de la tournée du 31/10/2026 : DULOUNE (carte valide, allergique, rendez-vous 09h30), KOUZO (carte expirée, rendez-vous 10h45), TAVAPI (non assuré).
 SourceMemoire lotDeDemonstration() => SourceMemoire({
       'patients': [
-        const LigneLot('p1', {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'assureur': 'NSIA', 'carteExpiration': '2026-12-31', 'allergies': ['Pénicilline']}),
-        const LigneLot('p2', {'code': 'CBG/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose', 'quartier': 'Péporiyakou', 'ageDeclare': 29, 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'}),
-        const LigneLot('p3', {'code': 'CBG/1109/26', 'nom': 'TAMOU', 'prenom': 'Félix', 'quartier': 'Bérécingou', 'ageDeclare': 8}),
+        const LigneLot('p1', {'code': 'CBG/12/26', 'nom': 'DULOUNE', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'assureur': 'NSIA', 'carteExpiration': '2026-12-31', 'allergies': ['Pénicilline']}),
+        const LigneLot('p2', {'code': 'CBG/174/26', 'nom': 'KOUZO', 'prenom': 'Roulin', 'quartier': 'Péporiyakou', 'ageDeclare': 29, 'assureur': 'NSIA', 'carteExpiration': '2026-08-15'}),
+        const LigneLot('p3', {'code': 'CBG/1109/26', 'nom': 'TAVAPI', 'prenom': 'Fikponou', 'quartier': 'Bérécingou', 'ageDeclare': 8}),
       ],
       'rendezvous': [
         const LigneLot('r1', {'patientId': 'p1', 'date': '2026-10-31T09:30', 'statut': 'planifiee', 'type': 'Domicile', 'motif': 'Suivi HTA'}),
@@ -54,7 +54,7 @@ SourceMemoire lotDeDemonstration() => SourceMemoire({
     });
 
 class FauxMoteur implements MoteurMobile {
-  FauxMoteur({this.refus, SourceMemoire? source, this.fonction = 'medecin', this.agent = 'Dr YENI M’PO Florent', this.refusATraiter = const [], this.profilDuCode = ProfilMobile.soignant})
+  FauxMoteur({this.refus, SourceMemoire? source, this.fonction = 'medecin', this.agent = 'Dr YORO M’ABEKPIA Foulumi', this.refusATraiter = const [], this.profilDuCode = ProfilMobile.soignant})
       : source = source ?? lotDeDemonstration();
 
   /// Le profil que le CODE d'appairage porte (E1600) : le téléphone ne le choisit pas, il le reçoit de la mère.

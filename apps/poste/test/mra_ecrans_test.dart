@@ -35,7 +35,7 @@ class SourceFauxMra implements SourceMra {
       epoch: 3, seqMax: 120, repSeq: 100, conflitsOuverts: 2, alertes: const [], derives: const ['u-2'], bloques: const [], reinitOuverte: false, restauration: null,
       appareils: [
         app('u-1', 'Caisse', 'fileul', contact: _t0.subtract(const Duration(minutes: 4)), seq: 118),
-        app('u-2', 'Dr Yeni', 'mobile', contact: _t0.subtract(const Duration(hours: 3)), seq: 90, derive: 700000),
+        app('u-2', 'Dr Yoro', 'mobile', contact: _t0.subtract(const Duration(hours: 3)), seq: 90, derive: 700000),
         app('u-3', 'Ancien', 'fileul', etat: 'revoque', contact: _t0.subtract(const Duration(days: 9)), seq: 3),
         app('u-4', 'Neuf', 'fileul', seq: 0),
       ]);
@@ -293,10 +293,10 @@ void main() {
       await toucher(t, bouton('Fermer'));
 
       await toucher(t, bouton('Appairer un mobile'));
-      await t.enterText(find.byType(TextField).last, 'Dr Yeni 2');
+      await t.enterText(find.byType(TextField).last, 'Dr Yoro 2');
       await toucher(t, bouton('Générer le code'));
       // E1600 : le code porte l'affectation (profil, fonction), présélectionnée sur le premier choix.
-      expect(src.appels.last, 'code-mobile Dr Yeni 2 soignant medecin');
+      expect(src.appels.last, 'code-mobile Dr Yoro 2 soignant medecin');
       expect(find.byKey(const Key('mra-affectation')), findsOneWidget);
       expect(find.textContaining('Ce code appaire : Soignant, Médecin.'), findsOneWidget);
       expect(find.text('CLE-CLINIQUE-XYZ'), findsOneWidget);
@@ -572,15 +572,15 @@ void main() {
       final m = Magasin({
         'audit': const <Fiche>[],
         'patients': [
-          {'id': 'p1', 'statut': 'actif', 'code': 'CBG/1/26', 'nom': 'AKPO', 'prenom': 'Rose'},
-          {'id': 'p2', 'statut': 'actif', 'code': 'CBG/2/26', 'nom': 'BIO', 'prenom': 'Paul'},
+          {'id': 'p1', 'statut': 'actif', 'code': 'CBG/1/26', 'nom': 'AMITU', 'prenom': 'Roulin'},
+          {'id': 'p2', 'statut': 'actif', 'code': 'CBG/2/26', 'nom': 'BIO', 'prenom': 'Pouchul'},
         ],
       }, 'POSTE');
       await monter(t, EcranMraLotsTournee(source: src), magasin: m);
       await toucher(t, bouton('Composer un lot'));
       expect(find.textContaining('Dossiers du jour'), findsOneWidget);
       await toucher(t, find.descendant(of: find.byKey(const Key('kit:champ:dossiers')), matching: find.byType(InkWell)).first);
-      await toucher(t, find.textContaining('AKPO').last);
+      await toucher(t, find.textContaining('AMITU').last);
       await toucher(t, find.textContaining('BIO').last);
       await t.tapAt(const Offset(5, 5));
       await t.pump(const Duration(milliseconds: 400));

@@ -378,8 +378,8 @@ void main() {
     test('le validateur ne peut pas être celui qui a généré (refus nommé, rien d’écrit) ; une autre personne valide', () {
       final refus = paiControleSeparation(bulletins, '${sep['generateur']}');
       expect('Validation refusée. ${sp(refus!)}', refusDe(sep['memePersonne']));
-      expect(paiControleSeparation(bulletins, '  basSONGUI   Chabi Séko '), isNotNull, reason: 'casse et espaces ne contournent pas le contrôle');
-      expect(paiControleSeparation(bulletins, 'TAKI Alimatou'), isNull);
+      expect(paiControleSeparation(bulletins, '  bicHIASI   Cezoune Sichovian '), isNotNull, reason: 'casse et espaces ne contournent pas le contrôle');
+      expect(paiControleSeparation(bulletins, 'TACHEDI Arialu'), isNull);
       expect(paiControleSeparation(bulletins, ''), contains('RG-12'), reason: 'aucune action anonyme');
       expect(paiControleSeparation([{'periode': 'Mai 2026'}], 'quelqu’un'), isNull, reason: 'une pièce sans auteur n’est pas contestée');
       expect(m(m(sep['memePersonne'])['ecart']), {'inserts': {}, 'modifs': {}});
@@ -413,7 +413,7 @@ void main() {
       expect(m(m(autre['ecart'])['modifs']).keys, contains('bulletins'));
       for (final mod in liste(m(m(autre['ecart'])['modifs'])['bulletins'])) {
         expect(m(mod['patch']).keys.toSet(), {'statutBulletin', 'validePar', 'dateValidation', 'ecritureNumero'});
-        expect(m(mod['patch'])['validePar'], 'TAKI Alimatou', reason: 'E687 : l’agent connecté, plus un nom écrit en dur');
+        expect(m(mod['patch'])['validePar'], 'TACHEDI Arialu', reason: 'E687 : l’agent connecté, plus un nom écrit en dur');
       }
     });
 
@@ -472,7 +472,7 @@ void main() {
         final produits = <M>[];
         for (final p in personnel) {
           final c = paiCalculer(p, 2026, mo, entrees, auj);
-          final b = paiBulletinDe(c, paiReferenceSuivante('BP-', 5, existants), genereePar: 'BASSONGUI Chabi Séko', dateGeneration: '2026-10-30');
+          final b = paiBulletinDe(c, paiReferenceSuivante('BP-', 5, existants), genereePar: 'BICHIASI Cezoune Sichovian', dateGeneration: '2026-10-30');
           existants.add(b);
           produits.add(b);
         }
@@ -553,7 +553,7 @@ void main() {
       final pr = m(g['prets']);
       final cree = liste(m(m(m(pr['creation'])['ecart'])['inserts'])['pretsEtudes']).single;
       final a = agent('${m(m(pr['creation'])['agent'])['matricule']}');
-      memes(paiPretTransform({'employeId': a['id'], 'nature': 'pret_etudes', 'objet': 'Formation continue', 'montant': 100001, 'dateAccord': '2026-10-30', 'premiereEcheance': '2026-12', 'nbEcheances': 3, 'autorisePar': 'TAKI Alimatou'}, a, reference: 'PRT-0013'), cree, 'prêt', ignorer: {'id', 'statut'});
+      memes(paiPretTransform({'employeId': a['id'], 'nature': 'pret_etudes', 'objet': 'Formation continue', 'montant': 100001, 'dateAccord': '2026-10-30', 'premiereEcheance': '2026-12', 'nbEcheances': 3, 'autorisePar': 'TACHEDI Arialu'}, a, reference: 'PRT-0013'), cree, 'prêt', ignorer: {'id', 'statut'});
       final e = paiEcheancier(cree);
       expect([for (final x in e) (x.mois, x.montant)], [('2026-12', 33333), ('2027-01', 33333), ('2027-02', 33335)]);
       expect(e.fold<num>(0, (a, x) => a + x.montant), 100001, reason: 'le total des échéances vaut le montant accordé au franc près');
@@ -622,10 +622,10 @@ List<String> ligneUnique(Object? table) => [for (final c in ((m(table)['lignes']
 // E1175 et E1174 (arbitrages du 04/11/2026) : un net négatif ne se valide pas ; la validation écrit les retenues.
 void paieValidationTests() {
   group('validation de la paie : net négatif et retenues imputées', () {
-    final neg = <String, Object?>{'employe': 'AGBO Marie', 'net': -12500, 'prets': 30000, 'avances': 30000, 'participations': 2000};
+    final neg = <String, Object?>{'employe': 'AGORO Marie', 'net': -12500, 'prets': 30000, 'avances': 30000, 'participations': 2000};
     test('un net négatif est refusé en nommant l’agent, le déficit et les retenues en cause', () {
       final r = paiControleNetNegatif([neg])!;
-      expect(r, contains('AGBO Marie'));
+      expect(r, contains('AGORO Marie'));
       expect(r, contains('déficit'));
       expect(r, allOf(contains('prêt'), contains('avance'), contains('participation')));
     });

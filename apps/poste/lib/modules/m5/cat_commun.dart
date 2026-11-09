@@ -12,9 +12,9 @@ import '../../shell/contexte_ecran.dart';
 /// rejouées sur les vecteurs de la maquette ; ces fichiers ne font que les mettre en page.
 
 /// Le Laborantin chef et la Directrice Administrative signent les états du catalogue et du bon de réactifs, comme dans `m5-laboratoire.js`.
-const laborantinChef = 'KINNOU Addoul Ganiou';
-const directriceAdministrativeLabo = 'TAKI Alimatou';
-const gestionnaireStockLabo = 'MAMAN Zoukanéri';
+const laborantinChef = 'KELE Adjapilo Gedur';
+const directriceAdministrativeLabo = 'TACHEDI Arialu';
+const gestionnaireStockLabo = 'METIAVI Zobo';
 const String? directeurMedicalLabo = null;
 
 /// Source du paramétrage (`L.source`), citée au pied des écrans qui en tirent leurs valeurs.

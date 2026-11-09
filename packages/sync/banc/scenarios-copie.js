@@ -18,14 +18,14 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     };
     const fichesDe = (charges) => { const o = {}; for (const c of charges) for (const x of (c.lot || [c])) o[x.collection + '/' + x.fiche] = x; return o; };
 
-    await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AKPO', tel: '1' }, role: 'reception' });
-    await f1.emettre({ collection: 'patients', fiche: 'p2', type: 'creer', champs: { nom: 'KOUA' }, role: 'reception' });
+    await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AMITU', tel: '1' }, role: 'reception' });
+    await f1.emettre({ collection: 'patients', fiche: 'p2', type: 'creer', champs: { nom: 'KIMAR' }, role: 'reception' });
     await f1.emettre({ collection: 'rendezvous', fiche: 'r1', type: 'creer', champs: { motif: 'CPN' }, role: 'reception' });
     await f1.emettre({ collection: 'constantes', fiche: 'c1', type: 'creer', champs: { pouls: 70 }, role: 'infirmier' });
     verifier('le poste dépose la copie de ses fiches (patients et rendez-vous, pas les constantes hors choix)', await attendre(async () => (await f1.etat()).copie_deposee >= 3, 15000));
     let a = await lire(f1.uuid);
     const f = fichesDe(a.charges);
-    verifier('la copie déchiffrée porte les trois fiches et rien d\'autre', Object.keys(f).sort().join() === 'patients/p1,patients/p2,rendezvous/r1' && f['patients/p1'].data.nom === 'AKPO' && f['patients/p1'].archive === false, Object.keys(f));
+    verifier('la copie déchiffrée porte les trois fiches et rien d\'autre', Object.keys(f).sort().join() === 'patients/p1,patients/p2,rendezvous/r1' && f['patients/p1'].data.nom === 'AMITU' && f['patients/p1'].archive === false, Object.keys(f));
     verifier('rangs contigus dans la copie du poste', a.lignes.length >= 3 && a.lignes.every((l, i) => l.n === i + 1), a.lignes.map((l) => l.n));
 
     await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'modifier', champs: { tel: '2' }, vu: { tel: (await f1.fiches()).fiches['patients/p1'].hlc.tel }, role: 'reception' });
@@ -47,7 +47,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     verifier('après SIGKILL de la mère : aucune copie dupliquée', (await lire('mere')).lignes.length === nMere);
 
     const brut = JSON.stringify((await lire()).tout.lignes.filter((l) => l.dir === 'copie'));
-    verifier('le relais ne voit AUCUN clair dans la copie (noms, collections, champs)', brut.length > 50 && !/AKPO|KOUA|patients|rendezvous|"nom"|"tel"|"lot"/.test(brut.replace(/"ct":"[^"]*"/g, '"ct"').replace(/"nonce":"[^"]*"/g, '"nonce"')));
+    verifier('le relais ne voit AUCUN clair dans la copie (noms, collections, champs)', brut.length > 50 && !/AMITU|KIMAR|patients|rendezvous|"nom"|"tel"|"lot"/.test(brut.replace(/"ct":"[^"]*"/g, '"ct"').replace(/"nonce":"[^"]*"/g, '"nonce"')));
     const tard = (await lire(f1.uuid)).lignes.length;
     verifier('le poste ne dépose pas la copie du poste voisin : chaque appareil a SA copie', (await lire()).lignes.every((l) => l.appareil === f1.uuid || l.appareil === 'mere') && tard === avant);
     await m.fermer();

@@ -379,7 +379,7 @@ void main() {
     String nom, List<Map<String, Object?>> dossiers) {
   Map<String, Object?> complet(String code, [Map<String, Object?> extra = const {}]) => {
         'patientCode': code,
-        'soignant': 'BASSONGUI Chabi Séko',
+        'soignant': 'BICHIASI Cezoune Sichovian',
         'typeVenue': 'premiere',
         'dateArrivee': '2026-08-15',
         'heureArrivee': '08h30',

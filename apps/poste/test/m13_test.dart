@@ -27,7 +27,7 @@ final v = obj(jsonDecode(File('../../packages/domaine/test/vecteurs/administrati
 final auj = DateTime(2026, 10, 30, 10);
 String _s(Object? x) => '$x'.replaceAll(RegExp(r'[\s  ]'), '');
 
-List<M> jeu(String nom) => liste(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => liste(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 Magasin poste(Map<String, List<M>> collections) => Magasin({
       'audit': const [],

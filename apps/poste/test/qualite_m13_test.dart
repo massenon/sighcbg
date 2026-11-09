@@ -446,10 +446,10 @@ void main() {
       await toucher(t, find.text('Envoyer ma réponse'));
       expect(find.text('Merci de compléter les réponses attendues.'), findsOneWidget);
       expect(m.collection('reponsesEnquetes').toutes.length, avant, reason: 'rien n’est écrit');
-      await saisir(t, '_repondant', 'KOUASSI Awa');
+      await saisir(t, '_repondant', 'KOPEGOU Azemidia');
       await toucher(t, find.text('Envoyer ma réponse'));
       final r = m.collection('reponsesEnquetes').toutes.first;
-      expect(r['saisiPar'], 'KOUASSI Awa');
+      expect(r['saisiPar'], 'KOPEGOU Azemidia');
       expect(r['canal'], 'Lien public');
       expect(m_(r['reponses']).containsKey('_repondant'), isFalse, reason: 'le nom ne se mêle pas aux réponses');
     });

@@ -6,7 +6,7 @@
    "entree": {
     "nom": "une ligne : stock de détail et stock total décomptés, justificatif = n° d'ordonnance, valorisée au prix de vente",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000400",
     "produits": [
      {
@@ -64,7 +64,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -82,7 +82,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 960,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [],
@@ -94,7 +94,7 @@
    "entree": {
     "nom": "deux produits sur la même ordonnance : une sortie par ligne",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000401",
     "produits": [
      {
@@ -185,7 +185,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -203,7 +203,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 960,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "reference": "M000403",
@@ -219,7 +219,7 @@
       "valeur": 2100,
       "valeurPrixVente": 2100,
       "valeurCump": 1950,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -252,7 +252,7 @@
    "entree": {
     "nom": "produit sans stock de détail : le stock total sert de disponible",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000403",
     "produits": [
      {
@@ -310,7 +310,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -328,7 +328,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [],
@@ -340,7 +340,7 @@
    "entree": {
     "nom": "ordonnance non réglée : la délivrance est bloquée",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -411,7 +411,7 @@
    "entree": {
     "nom": "ordonnance déjà servie : rien n'est refait",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -482,7 +482,7 @@
    "entree": {
     "nom": "stock de détail insuffisant : refus NOMMÉ, rien n'est écrit",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -553,7 +553,7 @@
    "entree": {
     "nom": "une ligne couverte et une non couverte : tout est refusé (jamais de service à moitié)",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -657,7 +657,7 @@
    "entree": {
     "nom": "produit introuvable : refus nommé (0 disponible)",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -728,7 +728,7 @@
    "entree": {
     "nom": "RG-03 — deux lignes du MÊME produit : le cumul dépasse le stock, refusé (écart E42 corrigé)",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -805,7 +805,7 @@
    "entree": {
     "nom": "deux lignes du même produit dont le cumul tient : servies",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000404",
     "produits": [
      {
@@ -869,7 +869,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -887,7 +887,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "reference": "M000406",
@@ -903,7 +903,7 @@
       "valeur": 2500,
       "valeurPrixVente": 2500,
       "valeurCump": 2400,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -942,7 +942,7 @@
    "entree": {
     "nom": "valorisation au CUMP (paramètre de la Direction) : les DEUX valeurs sont portées",
     "methode": "cump",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000406",
     "produits": [
      {
@@ -1000,7 +1000,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1018,7 +1018,7 @@
       "valeur": 1441,
       "valeurPrixVente": 1500,
       "valeurCump": 1441,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1051,7 +1051,7 @@
    "entree": {
     "nom": "produit sans prix de vente : le prix d'achat sert",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000407",
     "produits": [
      {
@@ -1109,7 +1109,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1127,7 +1127,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 1000,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1160,7 +1160,7 @@
    "entree": {
     "nom": "la sortie fait passer SOUS le seuil : une tâche de réapprovisionnement naît",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000408",
     "produits": [
      {
@@ -1218,7 +1218,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1236,7 +1236,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1269,7 +1269,7 @@
    "entree": {
     "nom": "la sortie vide le rayon : RUPTURE, priorité haute",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000409",
     "produits": [
      {
@@ -1327,7 +1327,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1345,7 +1345,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1378,7 +1378,7 @@
    "entree": {
     "nom": "une tâche de réapprovisionnement déjà ouverte : mise à jour, jamais de doublon",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000410",
     "produits": [
      {
@@ -1448,7 +1448,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1466,7 +1466,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1497,7 +1497,7 @@
    "entree": {
     "nom": "une tâche de réapprovisionnement déjà TERMINÉE (statut « fait ») : mise à jour aussi, aucune nouvelle (écart E43 porté tel quel)",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000411",
     "produits": [
      {
@@ -1567,7 +1567,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1585,7 +1585,7 @@
       "valeur": 1500,
       "valeurPrixVente": 1500,
       "valeurCump": 1440,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1616,7 +1616,7 @@
    "entree": {
     "nom": "au-dessus du seuil : aucune alerte",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000412",
     "produits": [
      {
@@ -1674,7 +1674,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1692,7 +1692,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 960,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [],
@@ -1704,7 +1704,7 @@
    "entree": {
     "nom": "seuil non fixé : signalé « sans seuil », aucune tâche",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000413",
     "produits": [
      {
@@ -1762,7 +1762,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1780,7 +1780,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 960,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [],
@@ -1799,7 +1799,7 @@
    "entree": {
     "nom": "la tâche de dispensation de l'ordonnance est refermée",
     "methode": "prixVente",
-    "utilisateur": "BASSONGUI Chabi Séko",
+    "utilisateur": "BICHIASI Cezoune Sichovian",
     "refMouvementMax": "M000414",
     "produits": [
      {
@@ -1870,7 +1870,7 @@
     ],
     "ordonnance": {
      "statutDispensation": "servie",
-     "dispensePar": "BASSONGUI Chabi Séko",
+     "dispensePar": "BICHIASI Cezoune Sichovian",
      "aDispenseLe": true
     },
     "mouvements": [
@@ -1888,7 +1888,7 @@
       "valeur": 1000,
       "valeurPrixVente": 1000,
       "valeurCump": 960,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "taches": [
@@ -1902,7 +1902,7 @@
       "patientCode": "CBG/1/26",
       "detail": "Délivrer",
       "montant": 1000,
-      "faitPar": "BASSONGUI Chabi Séko",
+      "faitPar": "BICHIASI Cezoune Sichovian",
       "id": "TV19D"
      }
     ],
@@ -3347,7 +3347,7 @@
      "patientCode": "CBG/3/26",
      "lignes": [],
      "montant": 0,
-     "dispensePar": "DIEYABIDI Aïssatou"
+     "dispensePar": "DATU Amachim"
     },
     {
      "id": "DISxmvv9s9aksvkzz",
@@ -3365,7 +3365,7 @@
       }
      ],
      "montant": 1800,
-     "dispensePar": "DIEYABIDI Aïssatou"
+     "dispensePar": "DATU Amachim"
     },
     {
      "id": "DISxmvv9s9aka3zvr",
@@ -3389,7 +3389,7 @@
       }
      ],
      "montant": 3750,
-     "dispensePar": "DIEYABIDI Aïssatou"
+     "dispensePar": "DATU Amachim"
     }
    ],
    "ordonnances": [
@@ -3624,7 +3624,7 @@
         "TEST Durand",
         "0",
         "0",
-        "DIEYABIDI Aïssatou",
+        "DATU Amachim",
         ""
        ],
        "actions": [
@@ -3638,7 +3638,7 @@
         "TEST Martin",
         "1",
         "1 800",
-        "DIEYABIDI Aïssatou",
+        "DATU Amachim",
         ""
        ],
        "actions": [
@@ -3652,7 +3652,7 @@
         "TEST Dupont",
         "2",
         "3 750",
-        "DIEYABIDI Aïssatou",
+        "DATU Amachim",
         ""
        ],
        "actions": [
@@ -3696,7 +3696,7 @@
       "valeur": 100,
       "valeurPrixVente": 100,
       "valeurCump": 100,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      },
      {
       "reference": "M000416",
@@ -3712,7 +3712,7 @@
       "valeur": 200,
       "valeurPrixVente": 200,
       "valeurCump": 200,
-      "utilisateur": "BASSONGUI Chabi Séko"
+      "utilisateur": "BICHIASI Cezoune Sichovian"
      }
     ],
     "produits": [
@@ -3854,7 +3854,7 @@
           "TEST Durand",
           "0",
           "0",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -3868,7 +3868,7 @@
           "TEST Martin",
           "1",
           "1 800",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -3882,7 +3882,7 @@
           "TEST Dupont",
           "2",
           "3 750",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -4061,7 +4061,7 @@
           "TEST Durand",
           "0",
           "0",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -4075,7 +4075,7 @@
           "TEST Martin",
           "1",
           "1 800",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -4089,7 +4089,7 @@
           "TEST Dupont",
           "2",
           "3 750",
-          "DIEYABIDI Aïssatou",
+          "DATU Amachim",
           ""
          ],
          "actions": [
@@ -4115,7 +4115,7 @@
     ]
    }
   ],
-  "tiroir": "Dispensation DISP-00003 TEST Durand — 02/10/2026 Référence DISP-00003 Patient TEST Durand Dossier CBG/3/26 Date 02/10/2026 Dispensé par DIEYABIDI Aïssatou Montant 0 FCFA Produits délivrés Aucune donnée. Imprimer le bon",
+  "tiroir": "Dispensation DISP-00003 TEST Durand — 02/10/2026 Référence DISP-00003 Patient TEST Durand Dossier CBG/3/26 Date 02/10/2026 Dispensé par DATU Amachim Montant 0 FCFA Produits délivrés Aucune donnée. Imprimer le bon",
   "tiroirRef": "DISP-00003"
  }
 }

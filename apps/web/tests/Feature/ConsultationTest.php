@@ -76,7 +76,7 @@ class ConsultationTest extends TestCase
     public function test_un_appareil_depose_sa_copie_de_facon_idempotente_a_rangs_contigus(): void
     {
         $f1 = $this->appairer('F1');
-        $e1 = $this->enveloppe(['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Awa']], 'F1', 1);
+        $e1 = $this->enveloppe(['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Azemidia']], 'F1', 1);
         $this->postJson('/depot', ['enveloppe' => $e1], $f1)->assertOk()->assertJsonMissing(['rejeu' => true]);
         $this->postJson('/depot', ['enveloppe' => $e1], $f1)->assertOk()->assertJson(['rejeu' => true]);
         $this->assertSame(1, DB::table('relais_enveloppes')->where('dir', 'copie')->count());
@@ -176,14 +176,14 @@ class ConsultationTest extends TestCase
     public function test_le_relais_ne_contient_aucun_clair_ni_aucune_cle(): void
     {
         $f1 = $this->appairer('F1');
-        $charge = ['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Dossou Awa Marguerite', 'telephone' => '97000001', 'diagnostic' => 'paludisme grave']];
+        $charge = ['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Duloune Azemidia Mibu', 'telephone' => '97000001', 'diagnostic' => 'paludisme grave']];
         $this->postJson('/depot', ['enveloppe' => $this->enveloppe($charge, 'F1', 1)], $f1)->assertOk();
         // tout ce que la base détient, toutes tables confondues
         $tout = '';
         foreach (DB::select("select name from sqlite_master where type='table'") as $t) {
             $tout .= json_encode(DB::table($t->name)->get());
         }
-        foreach (['Dossou', 'Awa', 'Marguerite', '97000001', 'paludisme', 'telephone', 'diagnostic', self::CLE] as $clair) {
+        foreach (['Duloune', 'Azemidia', 'Mibu', '97000001', 'paludisme', 'telephone', 'diagnostic', self::CLE] as $clair) {
             $this->assertStringNotContainsString($clair, $tout, "« $clair » est lisible au relais");
         }
         $this->assertSame(0, Opacite::mesurer()['lisibles']);
@@ -203,7 +203,7 @@ class ConsultationTest extends TestCase
     public function test_le_script_du_navigateur_dechiffre_une_enveloppe_des_postes(): void
     {
         $this->exigerNode();
-        $charge = ['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Dossou Awa']];
+        $charge = ['collection' => 'patients', 'fiche' => 'p1', 'data' => ['nom' => 'Duloune Azemidia']];
         $e = $this->enveloppe($charge, 'F1', 3);
         $this->assertSame($charge, $this->node(['env' => $e, 'cle' => self::CLE])['charge']);
     }

@@ -95,7 +95,7 @@ void main() {
       expect([kp.total, kp.mois, kp.sansAide], [k(e, 0), k(e, 1), k(e, 2)]);
       final cree = m(m(cro['creation'])['cree']);
       final fiche = m(cree['fiche']);
-      final noms = {'SOI03': 'TAKI Orou', 'SOI12': 'OROU YO Alimatou', 'SOI15': 'ADAM Colette'};
+      final noms = {'SOI03': 'TACHEDI Odjipiar', 'SOI12': 'ODJIPIAR YUDJOUVOU Arialu', 'SOI15': 'ACHOUBE Coufi'};
       final saisie = {
         for (final x in fiche.entries)
           if (!{'id', 'statut', 'reference', 'patientId', 'patient', 'operateur', 'aideOperateur', 'anesthesiste'}.contains(x.key)) x.key: x.value
@@ -116,11 +116,11 @@ void main() {
       expect(m(apres)['operateurId'], 'SOI04');
       final f = blocConstruireCro({'operateurId': 'SOI04', 'anesthesisteId': 'SOI15', 'aideOperateurId': '', 'patientCode': m(apres)['patientCode']},
           patient: patientDe(m(apres)),
-          nomSoignant: (id) => {'SOI04': 'AHOHOU Rodrigue', 'SOI15': 'ADAM Colette'}['$id'] ?? '—',
+          nomSoignant: (id) => {'SOI04': 'AKPOMER Ridur', 'SOI15': 'ACHOUBE Coufi'}['$id'] ?? '—',
           existante: m(apres),
           toutes: const []);
       expect(f['operateur'], m(apres)['operateur']);
-      expect(f['operateur'], 'AHOHOU Rodrigue');
+      expect(f['operateur'], 'AKPOMER Ridur');
     });
   });
 
@@ -144,7 +144,7 @@ void main() {
       for (final x in fiche.entries)
         if (!{'id', 'statut', 'reference', 'patientId', 'patient'}.contains(x.key)) x.key: x.value
     };
-    memes(blocConstruirePatientCode(saisie, patient: {'id': fiche['patientId'], 'nom': 'PARAISO', 'prenom': 'Sabi'}, prefixeReference: 'CRA-2026-', toutes: rows),
+    memes(blocConstruirePatientCode(saisie, patient: {'id': fiche['patientId'], 'nom': 'PENU', 'prenom': 'Sabar'}, prefixeReference: 'CRA-2026-', toutes: rows),
         fiche, 'cra', ignorer: {'id', 'statut'});
   });
 

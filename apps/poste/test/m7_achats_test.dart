@@ -82,7 +82,7 @@ void cas(String nom, Future<void> Function(WidgetTester) corps) =>
 
 /// Un bon posé au sommet du registre (date lointaine : la table trie par date décroissante).
 Fiche poserBon(Magasin m, String ref, String etape,
-        {String demandeur = 'GARBA Yahouza', String date = '2099-01-01'}) =>
+        {String demandeur = 'GEVAMIAN Yelia', String date = '2099-01-01'}) =>
     m.collection('besoins').inserer({
       'reference': ref,
       'date': date,
@@ -387,7 +387,7 @@ void main() {
       await toucher(t, bouton('Valider la commande'));
       final c = m.collection('commandes').toutes.firstWhere((x) => x['reference'] == 'BC-TEST-1');
       expect(c['statutCommande'], 'validee');
-      expect(c['valideePar'], 'TAKI Alimatou');
+      expect(c['valideePar'], 'TACHEDI Arialu');
       expect(c['dateValidation'], '2026-10-30');
       await toucher(t, find.text('Annuler').last);
       final apres = m.collection('commandes').toutes.firstWhere((x) => x['reference'] == 'BC-TEST-1');
@@ -437,7 +437,7 @@ void main() {
         (t) async {
       final m = magasin();
       commande(m, 'BC-TEST-ATTENTE', 'attente_validation');
-      commande(m, 'BC-TEST-VALIDEE', 'validee', valideePar: 'TAKI Alimatou');
+      commande(m, 'BC-TEST-VALIDEE', 'validee', valideePar: 'TACHEDI Arialu');
       await ouvrir(t, m, 'm7-receptions', role: 'stock');
       expect(find.text('BC-TEST-VALIDEE'), findsOneWidget);
       expect(find.text('BC-TEST-ATTENTE'), findsNothing);
@@ -452,7 +452,7 @@ void main() {
           'fournisseurNom': 'CAME — Centrale d’Achat des Médicaments Essentiels',
           'delaiLivraison': 7,
           'statutCommande': 'validee',
-          'valideePar': 'TAKI Alimatou',
+          'valideePar': 'TACHEDI Arialu',
           'statut': 'actif',
           'lignes': [
             {
@@ -501,7 +501,7 @@ void main() {
       expect(bl['reference'], '26LNA00099');
       expect(bl['commandeRef'], 'BC-TEST-REC');
       expect(bl['statutReception'], 'ecart');
-      expect(bl['controlePar'], ['MAMAN Zoukanéri', 'DIEYABIDI Aïssatou']);
+      expect(bl['controlePar'], ['METIAVI Zobo', 'DATU Amachim']);
       final ls = (bl['lignes'] as List).cast<Map>();
       expect([ls[0]['quantiteLivree'], ls[0]['ecart']], [15, -5]);
       expect([ls[1]['quantiteLivree'], ls[1]['ecart']], [7, 0]);

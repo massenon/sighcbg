@@ -50,10 +50,10 @@ void main() {
   });
 
   test('une fiche créée sur un poste arrive aux autres, une seule fois, sans doublon chez son auteur', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGORO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
-    expect(mb.collection('patients').toutes.single['nom'], 'AGBO');
-    expect(mm.collection('patients').toutes.single['nom'], 'AGBO');
+    expect(mb.collection('patients').toutes.single['nom'], 'AGORO');
+    expect(mm.collection('patients').toutes.single['nom'], 'AGORO');
     expect(ma.collection('patients').toutes, hasLength(1), reason: 'l’auteur ne se réimporte pas');
     expect(mb.collection('patients').toutes.single['id'], ma.collection('patients').toutes.single['idSync']);
   });
@@ -69,7 +69,7 @@ void main() {
   });
 
   test('champs différents modifiés en même temps sur deux postes : les deux changements survivent', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'telephone': '1', 'quartier': 'X', 'code': 'CBG/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGORO', 'telephone': '1', 'quartier': 'X', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
     final ida = ma.collection('patients').toutes.single['id'];
     final idb = mb.collection('patients').toutes.single['id'];
@@ -83,7 +83,7 @@ void main() {
   });
 
   test('un archivage voyage (RG-14) et rien n’est supprimé', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGORO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await tour([pa, pb]);
     mb.collection('patients').archiver(mb.collection('patients').toutes.single['id']);
     await tour([pa, pb]);
@@ -94,7 +94,7 @@ void main() {
   test('un cycle sans geste n’écrit plus rien dans le journal', () async {
     final t = TransportFictif(j);
     final p = PontActivite(ma, t, etiquette: 'A');
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGORO', 'code': 'CBG/1/26'}, prefixe: 'PAT');
     await p.cycle();
     final n = t.ecritures;
     await p.cycle();
@@ -122,8 +122,8 @@ void main() {
   });
 
   test('RG-01 : deux dossiers au même code après rencontre de deux postes sont MARQUÉS, jamais renumérotés en silence', () async {
-    ma.collection('patients').inserer({'nom': 'AGBO', 'code': 'CBG/7/26'}, prefixe: 'PAT');
-    mb.collection('patients').inserer({'nom': 'ZANNOU', 'code': 'CBG/7/26'}, prefixe: 'PAT');
+    ma.collection('patients').inserer({'nom': 'AGORO', 'code': 'CBG/7/26'}, prefixe: 'PAT');
+    mb.collection('patients').inserer({'nom': 'ZIAKPA', 'code': 'CBG/7/26'}, prefixe: 'PAT');
     await tour([pa, pb, pm]);
     expect(pm.doublonsDeCode.value, 2);
     for (final m in [ma, mb, mm]) {

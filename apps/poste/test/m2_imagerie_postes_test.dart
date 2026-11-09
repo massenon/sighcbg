@@ -182,12 +182,12 @@ void main() {
 
     cas('« Rendre » : sans conclusion il est refusé ; avec, la demande est validée et le prescripteur notifié', (t) async {
       final dem = {
-        'id': 'D1', 'reference': 'IME-00001', 'statut': 'executee', 'dateHeure': '2026-08-20T09:00:00.000Z', 'patient': 'ALI Sidi',
+        'id': 'D1', 'reference': 'IME-00001', 'statut': 'executee', 'dateHeure': '2026-08-20T09:00:00.000Z', 'patient': 'ALI Sochasi',
         'patientCode': 'CBG/7/26', 'examenCode': 'IMG-TDM-CER', 'examen': 'Scanner cérébral', 'prescripteur': 'Dr TEST', 'prix': 70000,
       };
       final cr = {
         'id': 'C1', 'reference': 'IMG-0100', 'statut': 'brouillon', 'demandeImagerieId': 'D1', 'examen': 'Scanner cérébral', 'examenCode': 'IMG-TDM-CER',
-        'patient': 'ALI Sidi', 'patientId': 'P7', 'prescripteur': 'Dr TEST', 'conclusion': '',
+        'patient': 'ALI Sochasi', 'patientId': 'P7', 'prescripteur': 'Dr TEST', 'conclusion': '',
       };
       final m = magasin(demandes: [dem], comptesRendus: [cr]);
       await ouvrir(t, m, 'm2-imagerie-demandes');
@@ -205,7 +205,7 @@ void main() {
       expect(m.collection('demandesImagerie').parId('D1')!['statut'], 'validee');
       final n = m.collection('notifications').actives.first;
       expect(n['type'], 'imagerie_rendue');
-      expect(n['libelle'], 'Compte rendu d’imagerie rendu — ALI Sidi');
+      expect(n['libelle'], 'Compte rendu d’imagerie rendu — ALI Sochasi');
       expect(find.text('Compte rendu rendu au prescripteur.'), findsOneWidget);
       expect(find.text('Rendre'), findsNothing, reason: 'la demande est validée : plus de commande d\'écriture');
     });
@@ -229,7 +229,7 @@ void main() {
       await choisir(t, 'patientCode', '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
       await cocher(t, 'examens', examen);
       await choisir(t, 'prescripteur', '— Prescripteur extérieur à la clinique —');
-      await t.enterText(champTexte('prescripteurExterne'), 'Dr SALIFOU Aminou, CS de Perma');
+      await t.enterText(champTexte('prescripteurExterne'), 'Dr SAZO Asounouta, CS de Perma');
       await t.enterText(champTexte('indication'), 'Douleurs pelviennes');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Émettre la demande'));
     }
@@ -264,7 +264,7 @@ void main() {
       final d = m.collection('demandesImagerie').actives.first;
       expect(d['statut'], 'demandee');
       expect(d['bloqueParPaiement'], true);
-      expect(d['prescripteur'], 'Dr SALIFOU Aminou, CS de Perma (extérieur)');
+      expect(d['prescripteur'], 'Dr SAZO Asounouta, CS de Perma (extérieur)');
       expect(d['prix'], entree['prixNonAssure']);
       expect(d['patientCode'], patient['code']);
       final f = m.collection('factures').actives.first;
@@ -416,13 +416,13 @@ void main() {
       final dossier = Directory.systemTemp.createTempSync('cliche');
       addTearDown(() => dossier.deleteSync(recursive: true));
       final fichier = File('${dossier.path}/echo.png')..writeAsBytesSync(base64Decode(_png.split(',').last));
-      final cr = {'id': 'C1', 'reference': 'IMG-0100', 'statut': 'brouillon', 'examen': 'Échographie pelvienne', 'patient': 'ALI Sidi'};
+      final cr = {'id': 'C1', 'reference': 'IMG-0100', 'statut': 'brouillon', 'examen': 'Échographie pelvienne', 'patient': 'ALI Sochasi'};
       final m = magasin(comptesRendus: [cr]);
       final patient = m.collection('patients').actives.first;
       await ouvrir(t, m, 'm2-echographie-galerie');
       await toucher(t, find.text('Ajouter un cliché'));
       await choisir(t, 'patientCode', '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
-      await choisir(t, 'crReference', 'IMG-0100 — Échographie pelvienne — ALI Sidi');
+      await choisir(t, 'crReference', 'IMG-0100 — Échographie pelvienne — ALI Sochasi');
       await choisir(t, 'examen', 'Échographie pelvienne');
       await t.enterText(champTexte('legende'), 'Coupe sagittale');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Conserver le cliché'));

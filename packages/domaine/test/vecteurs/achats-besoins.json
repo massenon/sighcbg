@@ -86,7 +86,7 @@
     "reference": "BEB-2099-0005",
     "date": "2099-01-05",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "distribue",
     "motif": "Vecteur",
     "lignes": [
@@ -108,7 +108,7 @@
     "reference": "BEB-2099-0004",
     "date": "2099-01-04",
     "service": "Accueil",
-    "demandeur": "BASSONGUI Chabi Séko",
+    "demandeur": "BICHIASI Cezoune Sichovian",
     "etape": "complement",
     "motif": "Vecteur",
     "lignes": [
@@ -130,7 +130,7 @@
     "reference": "BEB-2099-0003",
     "date": "2099-01-03",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "rejete",
     "motif": "Vecteur",
     "lignes": [
@@ -152,7 +152,7 @@
     "reference": "BEB-2099-0002",
     "date": "2099-01-02",
     "service": "Accueil",
-    "demandeur": "BASSONGUI Chabi Séko",
+    "demandeur": "BICHIASI Cezoune Sichovian",
     "etape": "livre",
     "motif": "Vecteur",
     "lignes": [
@@ -174,7 +174,7 @@
     "reference": "BEB-2099-0001",
     "date": "2099-01-01",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "motif": "Vecteur",
     "lignes": [
@@ -196,7 +196,7 @@
     "reference": "BEB-2026-0001",
     "date": "2026-04-08",
     "service": "Laboratoire",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "accorde",
     "motif": "Besoin exceptionnel",
     "lignes": [
@@ -220,7 +220,7 @@
      }
     ],
     "montantEstime": 19200,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0002",
@@ -228,7 +228,7 @@
     "reference": "BEB-2026-0002",
     "date": "2026-06-25",
     "service": "Maternité",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "validation_da",
     "motif": "Dotation de service",
     "lignes": [
@@ -243,7 +243,7 @@
      }
     ],
     "montantEstime": 33000,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0003",
@@ -251,7 +251,7 @@
     "reference": "BEB-2026-0003",
     "date": "2026-06-22",
     "service": "Hospitalisation",
-    "demandeur": "DIEYABIDI Aïssatou",
+    "demandeur": "DATU Amachim",
     "etape": "cloture",
     "motif": "Dotation de service",
     "lignes": [
@@ -266,7 +266,7 @@
      }
     ],
     "montantEstime": 1984,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0004",
@@ -274,7 +274,7 @@
     "reference": "BEB-2026-0004",
     "date": "2026-06-20",
     "service": "Bloc opératoire",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "brouillon",
     "motif": "Rupture constatée",
     "lignes": [
@@ -297,7 +297,7 @@
     "reference": "BEB-2026-0005",
     "date": "2026-04-04",
     "service": "Accueil",
-    "demandeur": "DIEYABIDI Aïssatou",
+    "demandeur": "DATU Amachim",
     "etape": "accorde",
     "motif": "Réapprovisionnement mensuel",
     "lignes": [
@@ -330,7 +330,7 @@
      }
     ],
     "montantEstime": 177126,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0006",
@@ -338,7 +338,7 @@
     "reference": "BEB-2026-0006",
     "date": "2026-03-06",
     "service": "Bloc opératoire",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "prepare",
     "motif": "Rupture constatée",
     "lignes": [
@@ -353,7 +353,7 @@
      }
     ],
     "montantEstime": 15849,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0007",
@@ -361,7 +361,7 @@
     "reference": "BEB-2026-0007",
     "date": "2026-03-13",
     "service": "Accueil",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "soumis",
     "motif": "Dotation de service",
     "lignes": [
@@ -393,7 +393,7 @@
     "reference": "BEB-2026-0008",
     "date": "2026-07-05",
     "service": "Laboratoire",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "soumis",
     "motif": "Dotation de service",
     "lignes": [
@@ -443,7 +443,7 @@
     "reference": "BEB-2026-0009",
     "date": "2026-03-06",
     "service": "Pharmacie d’urgence",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "cloture",
     "motif": "Rupture constatée",
     "lignes": [
@@ -458,7 +458,7 @@
      }
     ],
     "montantEstime": 9900,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0010",
@@ -466,7 +466,7 @@
     "reference": "BEB-2026-0010",
     "date": "2026-04-06",
     "service": "Hospitalisation",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "motif": "Rupture constatée",
     "lignes": [
@@ -525,7 +525,7 @@
     "reference": "BEB-2026-0011",
     "date": "2026-03-02",
     "service": "Maternité",
-    "demandeur": "MAMAN Zoukanéri",
+    "demandeur": "METIAVI Zobo",
     "etape": "cloture",
     "motif": "Besoin exceptionnel",
     "lignes": [
@@ -558,7 +558,7 @@
      }
     ],
     "montantEstime": 42346,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0012",
@@ -566,7 +566,7 @@
     "reference": "BEB-2026-0012",
     "date": "2026-05-15",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "motif": "Besoin exceptionnel",
     "lignes": [
@@ -625,7 +625,7 @@
     "reference": "BEB-2026-0013",
     "date": "2026-06-10",
     "service": "Accueil",
-    "demandeur": "DIEYABIDI Aïssatou",
+    "demandeur": "DATU Amachim",
     "etape": "controle_stock",
     "motif": "Besoin exceptionnel",
     "lignes": [
@@ -657,7 +657,7 @@
     "reference": "BEB-2026-0014",
     "date": "2026-05-10",
     "service": "Bloc opératoire",
-    "demandeur": "DIEYABIDI Aïssatou",
+    "demandeur": "DATU Amachim",
     "etape": "controle_stock",
     "motif": "Dotation de service",
     "lignes": [
@@ -689,7 +689,7 @@
     "reference": "BEB-2026-0015",
     "date": "2026-06-05",
     "service": "Entretien",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "livre",
     "motif": "Réapprovisionnement mensuel",
     "lignes": [
@@ -722,7 +722,7 @@
      }
     ],
     "montantEstime": 55622,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0016",
@@ -730,7 +730,7 @@
     "reference": "BEB-2026-0016",
     "date": "2026-04-30",
     "service": "Bloc opératoire",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "accorde",
     "motif": "Dotation de service",
     "lignes": [
@@ -772,7 +772,7 @@
      }
     ],
     "montantEstime": 350700,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0017",
@@ -780,7 +780,7 @@
     "reference": "BEB-2026-0017",
     "date": "2026-04-22",
     "service": "Laboratoire",
-    "demandeur": "MAMAN Zoukanéri",
+    "demandeur": "METIAVI Zobo",
     "etape": "validation_da",
     "motif": "Réapprovisionnement mensuel",
     "lignes": [
@@ -822,7 +822,7 @@
      }
     ],
     "montantEstime": 290286,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0018",
@@ -830,7 +830,7 @@
     "reference": "BEB-2026-0018",
     "date": "2026-04-28",
     "service": "Bloc opératoire",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "prepare",
     "motif": "Rupture constatée",
     "lignes": [
@@ -845,7 +845,7 @@
      }
     ],
     "montantEstime": 11250,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0019",
@@ -853,7 +853,7 @@
     "reference": "BEB-2026-0019",
     "date": "2026-05-21",
     "service": "Administration",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "accorde",
     "motif": "Dotation de service",
     "lignes": [
@@ -895,7 +895,7 @@
      }
     ],
     "montantEstime": 68606,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    {
     "id": "BEB0020",
@@ -903,7 +903,7 @@
     "reference": "BEB-2026-0020",
     "date": "2026-06-11",
     "service": "Hospitalisation",
-    "demandeur": "KINNOU Addoul Ganiou",
+    "demandeur": "KELE Adjapilo Gedur",
     "etape": "controle_stock",
     "motif": "Besoin exceptionnel",
     "lignes": [
@@ -933,7 +933,7 @@
   "cas": [
    {
     "role": "admin",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1095,7 +1095,7 @@
    },
    {
     "role": "admin",
-    "nom": "BASSONGUI Chabi Séko",
+    "nom": "BICHIASI Cezoune Sichovian",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1248,7 +1248,7 @@
    },
    {
     "role": "da",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1410,7 +1410,7 @@
    },
    {
     "role": "direction",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1570,7 +1570,7 @@
    },
    {
     "role": "stock",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1706,7 +1706,7 @@
    },
    {
     "role": "comptable",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1840,7 +1840,7 @@
    },
    {
     "role": "aide_comptable",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -1974,7 +1974,7 @@
    },
    {
     "role": "laborantin",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -2060,7 +2060,7 @@
    },
    {
     "role": "medecin",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -2145,7 +2145,7 @@
    },
    {
     "role": "caissier",
-    "nom": "GARBA Yahouza",
+    "nom": "GEVAMIAN Yelia",
     "onglets": [
      {
       "libelle": "Mes demandes",
@@ -2247,7 +2247,7 @@
      "reference": "BEB-2098-0101",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "validation_da",
      "motif": "Dotation",
      "lignes": [
@@ -2278,7 +2278,7 @@
      "reference": "BEB-2098-0101",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "accorde",
      "motif": "Dotation",
      "lignes": [
@@ -2302,9 +2302,9 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TAKI Alimatou",
+     "arbitrePar": "TACHEDI Arialu",
      "motifArbitrage": null,
-     "valideePar": "TAKI Alimatou"
+     "valideePar": "TACHEDI Arialu"
     },
     "notifications": [
      {
@@ -2348,7 +2348,7 @@
      "reference": "BEB-2098-0102",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "soumis",
      "motif": "Dotation",
      "lignes": [
@@ -2379,7 +2379,7 @@
      "reference": "BEB-2098-0102",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "accorde",
      "motif": "Dotation",
      "lignes": [
@@ -2403,9 +2403,9 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TAKI Alimatou",
+     "arbitrePar": "TACHEDI Arialu",
      "motifArbitrage": "Budget disponible",
-     "valideePar": "TAKI Alimatou"
+     "valideePar": "TACHEDI Arialu"
     },
     "notifications": [
      {
@@ -2449,7 +2449,7 @@
      "reference": "BEB-2098-0103",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "validation_da",
      "motif": "Dotation",
      "lignes": [
@@ -2480,7 +2480,7 @@
      "reference": "BEB-2098-0103",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "rejete",
      "motif": "Dotation",
      "lignes": [
@@ -2504,7 +2504,7 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TAKI Alimatou",
+     "arbitrePar": "TACHEDI Arialu",
      "motifArbitrage": "Déjà en stock",
      "valideePar": null
     },
@@ -2533,7 +2533,7 @@
      "reference": "BEB-2098-0104",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "validation_da",
      "motif": "Dotation",
      "lignes": [
@@ -2564,7 +2564,7 @@
      "reference": "BEB-2098-0104",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "validation_da",
      "motif": "Dotation",
      "lignes": [
@@ -2614,7 +2614,7 @@
      "reference": "BEB-2098-0105",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "controle_stock",
      "motif": "Dotation",
      "lignes": [
@@ -2645,7 +2645,7 @@
      "reference": "BEB-2098-0105",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "complement",
      "motif": "Dotation",
      "lignes": [
@@ -2669,7 +2669,7 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TAKI Alimatou",
+     "arbitrePar": "TACHEDI Arialu",
      "motifArbitrage": "Préciser la marque",
      "valideePar": null
     },
@@ -2698,7 +2698,7 @@
      "reference": "BEB-2098-0106",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "soumis",
      "motif": "Dotation",
      "lignes": [
@@ -2729,7 +2729,7 @@
      "reference": "BEB-2098-0106",
      "date": "2098-01-01",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "soumis",
      "motif": "Dotation",
      "lignes": [
@@ -2775,7 +2775,7 @@
      "reference": "BEB-2097-0107",
      "date": "2097-01-01",
      "service": "Laboratoire",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "accorde",
      "motif": "Réactifs",
      "lignes": [
@@ -2790,7 +2790,7 @@
       }
      ],
      "montantEstime": 3900,
-     "preparePar": "MAMAN Zoukanéri"
+     "preparePar": "METIAVI Zobo"
     },
     "apres": {
      "id": "BESxmvvapkb0muixe",
@@ -2798,7 +2798,7 @@
      "reference": "BEB-2097-0107",
      "date": "2097-01-01",
      "service": "Laboratoire",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "prepare",
      "motif": "Réactifs",
      "lignes": [
@@ -2813,7 +2813,7 @@
       }
      ],
      "montantEstime": 3900,
-     "preparePar": "MAMAN Zoukanéri"
+     "preparePar": "METIAVI Zobo"
     },
     "allers": [
      "m7-commandes"
@@ -2829,7 +2829,7 @@
      "reference": "BEB-2097-0108",
      "date": "2097-01-01",
      "service": "Laboratoire",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "accorde",
      "motif": "Réactifs",
      "lignes": [
@@ -2844,7 +2844,7 @@
       }
      ],
      "montantEstime": 3900,
-     "distribuePar": "MAMAN Zoukanéri"
+     "distribuePar": "METIAVI Zobo"
     },
     "apres": {
      "id": "BESxmvvapkko1i0er",
@@ -2852,7 +2852,7 @@
      "reference": "BEB-2097-0108",
      "date": "2097-01-01",
      "service": "Laboratoire",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "etape": "distribue",
      "motif": "Réactifs",
      "lignes": [
@@ -2867,7 +2867,7 @@
       }
      ],
      "montantEstime": 3900,
-     "distribuePar": "MAMAN Zoukanéri"
+     "distribuePar": "METIAVI Zobo"
     },
     "allers": [
      "m7-besoins"
@@ -2915,7 +2915,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "etape": "brouillon",
@@ -2937,7 +2937,7 @@
      "statut": "actif",
      "date": "2026-10-30",
      "service": "Laboratoire",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Consommables médicaux",
      "urgent": false,
      "etape": "brouillon",
@@ -2964,7 +2964,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "médecin : pas d'étape à choisir, le bon part SOUMIS",
@@ -3000,7 +3000,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "motif": ""
@@ -3012,7 +3012,7 @@
      "statut": "actif",
      "date": "2026-10-30",
      "service": "Hospitalisation",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Consommables médicaux",
      "urgent": true,
      "motif": "Urgence",
@@ -3048,7 +3048,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "comptable : pilote le circuit comme le stock (brouillon par défaut)",
@@ -3078,7 +3078,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "etape": "brouillon",
@@ -3100,7 +3100,7 @@
      "statut": "actif",
      "date": "2026-10-30",
      "service": "Administration",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Autre — à préciser",
      "urgent": false,
      "etape": "brouillon",
@@ -3127,7 +3127,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "stock choisit « Validation DA » : le validateur est posé d'office",
@@ -3158,7 +3158,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "etape": "brouillon",
@@ -3180,7 +3180,7 @@
      "statut": "actif",
      "date": "2026-10-30",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Consommables médicaux",
      "urgent": false,
      "etape": "validation_da",
@@ -3198,7 +3198,7 @@
      ],
      "montantEstime": 6500,
      "reference": "BEB-2026-0024",
-     "valideePar": "TAKI Alimatou"
+     "valideePar": "TACHEDI Arialu"
     },
     "ouverte": false,
     "toasts": [
@@ -3208,7 +3208,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "stock choisit « Quantité accordée » (écart signalé E73 : la DAF est portée validatrice)",
@@ -3239,7 +3239,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "etape": "brouillon",
@@ -3261,7 +3261,7 @@
      "statut": "actif",
      "date": "2026-10-30",
      "service": "Maternité",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Consommables médicaux",
      "urgent": false,
      "etape": "accorde",
@@ -3279,7 +3279,7 @@
      ],
      "montantEstime": 4000,
      "reference": "BEB-2026-0025",
-     "valideePar": "TAKI Alimatou"
+     "valideePar": "TACHEDI Arialu"
     },
     "ouverte": false,
     "toasts": [
@@ -3289,7 +3289,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "SANS ligne : refusé",
@@ -3312,7 +3312,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "motif": ""
@@ -3328,7 +3328,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "quantité accordée > demandée : la ligne est refusée",
@@ -3357,7 +3357,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "motif": ""
@@ -3378,7 +3378,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    },
    {
     "nom": "quantité demandée nulle : la ligne est refusée",
@@ -3407,7 +3407,7 @@
     "defauts": {
      "date": "2026-10-30",
      "service": "Pharmacie d’urgence",
-     "demandeur": "GARBA Yahouza",
+     "demandeur": "GEVAMIAN Yelia",
      "categorie": "Produits d’entretien (nettoyage, désinfection)",
      "urgent": false,
      "motif": ""
@@ -3428,7 +3428,7 @@
       "detail": null
      }
     ],
-    "demandeur": "GARBA Yahouza"
+    "demandeur": "GEVAMIAN Yelia"
    }
   ],
   "serie2026": [
@@ -3468,7 +3468,7 @@
     "reference": "BEB-2095-0109",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "categorie": "Autre — à préciser",
     "motif": "Départ",
@@ -3488,7 +3488,7 @@
    "defauts": {
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "categorie": "Autre — à préciser",
     "urgent": false,
     "etape": "soumis",
@@ -3503,7 +3503,7 @@
     "reference": "BEB-2095-0109",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "validation_da",
     "categorie": "Autre — à préciser",
     "motif": "Départ",
@@ -3520,7 +3520,7 @@
     ],
     "montantEstime": 6500,
     "urgent": false,
-    "valideePar": "TAKI Alimatou"
+    "valideePar": "TACHEDI Arialu"
    },
    "toasts": [
     {
@@ -3538,7 +3538,7 @@
     "reference": "BEB-2095-0110",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "categorie": "Autre — à préciser",
     "motif": "Départ",
@@ -3559,7 +3559,7 @@
    "defauts": {
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "categorie": "Autre — à préciser",
     "urgent": false,
     "etape": "soumis",
@@ -3574,7 +3574,7 @@
     "reference": "BEB-2095-0110",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "validation_da",
     "categorie": "Autre — à préciser",
     "motif": "Départ",
@@ -3609,7 +3609,7 @@
     "reference": "BEB-2095-0111",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "soumis",
     "categorie": "Autre — à préciser",
     "motif": "Départ",
@@ -3629,7 +3629,7 @@
    "defauts": {
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "categorie": "Autre — à préciser",
     "urgent": false,
     "etape": "soumis",
@@ -3645,7 +3645,7 @@
     "reference": "BEB-2095-0111",
     "date": "2099-12-31",
     "service": "Accueil",
-    "demandeur": "GARBA Yahouza",
+    "demandeur": "GEVAMIAN Yelia",
     "etape": "brouillon",
     "categorie": "Autre — à préciser",
     "motif": "Revu",

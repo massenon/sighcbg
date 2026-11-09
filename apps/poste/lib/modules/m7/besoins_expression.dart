@@ -56,7 +56,7 @@ PieceA4 pieceBon(Fiche b,
     signatures: [
       Signature('Le Demandeur', nom: '${b['demandeur'] ?? ''}'),
       const Signature('Le Gestionnaire de Stock',
-          nom: 'MAMAN Zoukanéri', mention: 'Contrôle de disponibilité'),
+          nom: 'METIAVI Zobo', mention: 'Contrôle de disponibilité'),
       Signature('La Directrice Administrative',
           nom: directriceAdministrative, mention: 'Validation (RG-04)'),
     ],

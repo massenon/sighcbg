@@ -97,7 +97,7 @@ void main() {
       final c = enq.firstWhere((x) => x['nom'].toString().startsWith('Recueillir'));
       final r = qualReponse({'id': 'ENQ0001', 'questions': c['questionsApres']},
           {'Q_ACCUEIL': '5', 'Q_ATTENTE': '3', 'Q_PROPRETE': '4', 'Q_SOINS': '4', 'Q_RECO': 'Plutôt oui', 'Q_LIBRE': 'Mieux indiquer la salle', 'Q_NEUF': 'Oui'},
-          aujourdhui: aujourdhui, canal: 'À la sortie', saisiPar: 'BASSONGUI Chabi Séko');
+          aujourdhui: aujourdhui, canal: 'À la sortie', saisiPar: 'BICHIASI Cezoune Sichovian');
       final attendu = obj(c['reponse']);
       memes(r, attendu, 'reponse', ignorer: {'statut', 'jetonId', 'saisiPar'});
       expect(c['ajoutees'], 1);
@@ -123,7 +123,7 @@ void main() {
           expireLe: '2026-09-15',
           note: 'Salle d’attente',
           aujourdhui: aujourdhui,
-          ouvertPar: 'BASSONGUI Chabi Séko');
+          ouvertPar: 'BICHIASI Cezoune Sichovian');
       memes(j, obj(partage['jeton']), 'jeton', ignorer: {'statut', 'jeton', 'ouvertPar'});
       expect(partage['formatJeton'], isTrue);
       expect(partage['lienSansIdEnquete'], isTrue);

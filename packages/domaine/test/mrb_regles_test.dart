@@ -138,7 +138,7 @@ void main() {
 
     test('un champ hors liste ou une valeur textuelle (un nom) est refusé', () {
       expect(mrbVerifierIndicateurs({'patients_actifs': 12, 'seq_max': 5, 'retard_replication': 0}).sansDonneeDeSante, isTrue);
-      final v = mrbVerifierIndicateurs({'patients_actifs': 'KOUASSI Awa', 'nom': 'x'});
+      final v = mrbVerifierIndicateurs({'patients_actifs': 'KOPEGOU Azemidia', 'nom': 'x'});
       expect(v.sansDonneeDeSante, isFalse);
       expect(v.horsListe, ['nom']);
       expect(v.nonNumeriques, ['patients_actifs', 'nom']);
@@ -148,7 +148,7 @@ void main() {
       final bonne = {
         'enveloppe': {'id': 'journal-1', 'appareil': 'mere', 'dir': 'journal', 'n': 1, 'nonce': 'AAAAAAAAAAAAAAAA', 'ct': 'QUJDREVGR0g='}
       };
-      expect(mrbDefautsOpacite(bonne, interdits: ['patients', 'KOUASSI']), isEmpty);
+      expect(mrbDefautsOpacite(bonne, interdits: ['patients', 'KOPEGOU']), isEmpty);
       final mauvaise = {
         'enveloppe': {'id': 'x', 'appareil': 'mere', 'dir': 'journal', 'n': 1, 'nonce': 'AAAA', 'ct': 'pas du base64 !', 'collection': 'patients'}
       };

@@ -18,8 +18,8 @@ void main() {
         ['a10', 'a2', 'a1']);
     expect(trierPar<Object?>([3, null, 1], (s) => s), [1, 3, null]);
     expect(trierPar([10, 9, 100], (n) => n), [9, 10, 100]);
-    expect(trierPar(['Étienne', 'Eve', 'Adam'], (s) => s),
-        ['Adam', 'Étienne', 'Eve']);
+    expect(trierPar(['Étienne', 'Eve', 'Achoube'], (s) => s),
+        ['Achoube', 'Étienne', 'Eve']);
   });
   test('CSV : BOM, point-virgule, guillemets doublés, CRLF', () {
     final c = exporterCsv([

@@ -22,7 +22,7 @@ void main() {
         config: const ConfigPoste(
             mode: ModePoste.fileul,
             role: 'admin',
-            nomPoste: 'BASSONGUI Chabi Séko')));
+            nomPoste: 'BICHIASI Cezoune Sichovian')));
     await t.pump();
     await t.tap(find.byKey(const Key('domaine-Financier')));
     await t.pump();

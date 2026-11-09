@@ -14,7 +14,7 @@ import 'parite/extracteur.dart';
 /// `m3-administrations` : l'écran rejoue les vecteurs de la maquette (`hospitalisation.json`, groupe `administrations`, tiré de l'écran réel piloté dans
 /// Chrome). Le RANG du passage décide du secteur : ce poste ne voit jamais la première administration d'un traitement hospitalier.
 final v = dico(lireVecteurs('hospitalisation.json')['administrations']);
-final soignants = liste(jsonDecode(File('assets/donnees/jeu/soignants.json').readAsStringSync()));
+final soignants = liste(jsonDecode(File('test/fixtures/jeu_reference/soignants.json').readAsStringSync()));
 
 Magasin magasin() => Magasin({
       'prescriptions': [for (final x in liste(v['prescriptions'])) {...x}],
@@ -90,8 +90,8 @@ void main() {
     for (final a in attendus) {
       expect(find.text(a), findsWidgets, reason: a);
     }
-    expect(find.textContaining('BASSONGUI Chabi Séko'), findsNothing, reason: 'Le médecin prescrit, il n’exécute pas les soins.');
-    await toucher(t, find.text('NKOUÉ Jean — Infirmier').last);
+    expect(find.textContaining('BICHIASI Cezoune Sichovian'), findsNothing, reason: 'Le médecin prescrit, il n’exécute pas les soins.');
+    await toucher(t, find.text('NIDJON Jagi — Infirmier').last);
     await ecrire(t, 'observation', 'Bien toléré');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Confirmer l’administration'));
     final att = dico(dico(v['administre'])['fiche']);

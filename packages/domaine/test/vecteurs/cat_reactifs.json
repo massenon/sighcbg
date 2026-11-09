@@ -870,21 +870,21 @@
        ],
        [
         "Établi par",
-        "KINNOU Addoul Ganiou"
+        "KELE Adjapilo Gedur"
        ]
       ],
       "signatures": [
        {
         "role": "Le Laborantin chef",
-        "nom": "KINNOU Addoul Ganiou"
+        "nom": "KELE Adjapilo Gedur"
        },
        {
         "role": "Le Gestionnaire de Stock",
-        "nom": "MAMAN Zoukanéri"
+        "nom": "METIAVI Zobo"
        },
        {
         "role": "La Directrice Administrative",
-        "nom": "TAKI Alimatou",
+        "nom": "TACHEDI Arialu",
         "mention": "Validation"
        }
       ],
@@ -1076,21 +1076,21 @@
        ],
        [
         "Établi par",
-        "KINNOU Addoul Ganiou"
+        "KELE Adjapilo Gedur"
        ]
       ],
       "signatures": [
        {
         "role": "Le Laborantin chef",
-        "nom": "KINNOU Addoul Ganiou"
+        "nom": "KELE Adjapilo Gedur"
        },
        {
         "role": "Le Gestionnaire de Stock",
-        "nom": "MAMAN Zoukanéri"
+        "nom": "METIAVI Zobo"
        },
        {
         "role": "La Directrice Administrative",
-        "nom": "TAKI Alimatou",
+        "nom": "TACHEDI Arialu",
         "mention": "Validation"
        }
       ],
@@ -1225,7 +1225,7 @@
       "fournisseur": "LABOTECH",
       "examensLies": [],
       "code": "LAB-0001",
-      "seuilDefiniPar": "BASSONGUI Chabi Séko",
+      "seuilDefiniPar": "BICHIASI Cezoune Sichovian",
       "seuilDefiniLe": "2026-10-30"
      }
     ],
@@ -1329,7 +1329,7 @@
       "fournisseur": "",
       "examensLies": [],
       "code": "LAB-0002",
-      "seuilDefiniPar": "BASSONGUI Chabi Séko",
+      "seuilDefiniPar": "BICHIASI Cezoune Sichovian",
       "seuilDefiniLe": "2026-10-30"
      }
     ],

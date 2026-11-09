@@ -10,7 +10,7 @@ import 'aide_vecteurs.dart';
 
 typedef M = Map<String, Object?>;
 
-const jeu = '../../apps/poste/assets/donnees/jeu';
+const jeu = '../../apps/poste/test/fixtures/jeu_reference';
 
 List<M> charger(String nom) => (jsonDecode(File('$jeu/$nom.json').readAsStringSync()) as List)
     .map((x) => (x as Map).cast<String, Object?>())
@@ -320,7 +320,7 @@ void main() {
       for (final c in liste(g['creations']).where((c) => (c['nouvelles'] as List).isNotEmpty)) {
         test('création « ${c['nom']} »', () {
           final ecrit = catTransformVariable(formulaire(c),
-              examensActifs: exs, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant);
+              examensActifs: exs, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
           egalFiche({'statut': 'actif', ...ecrit}, obj((c['nouvelles'] as List).first), '${c['nom']}');
         });
       }
@@ -332,7 +332,7 @@ void main() {
             ...obj(c['saisie']),
           };
           final ecrit = catTransformVariable(form,
-              existante: avant, examensActifs: exs, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant);
+              existante: avant, examensActifs: exs, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
           final apres = {...avant, ...ecrit};
           final patch = obj(c['patch']);
           for (final k in {...avant.keys, ...apres.keys}) {
@@ -354,9 +354,9 @@ void main() {
     });
     test('fermer / rouvrir : le patch de la maquette', () {
       final f = liste(g['fermetures']);
-      final fermee = catPatchBascule({'actif': true}, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant);
+      final fermee = catPatchBascule({'actif': true}, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
       expect(fermee, obj(f[0]['patch']));
-      final rouverte = catPatchBascule({'actif': false}, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant);
+      final rouverte = catPatchBascule({'actif': false}, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
       expect(rouverte, obj(f[1]['patch']));
       expect(f[2]['patch'], isEmpty);
     });
@@ -516,7 +516,7 @@ void main() {
       test('création complète', () {
         final c = liste(s['creations'])[0];
         final ecrit = catNouveauReactif(formulaire(c),
-            produits: tous, utilisateur: 'BASSONGUI Chabi Séko', maintenant: maintenant);
+            produits: tous, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
         egalFiche({'statut': 'actif', 'examensLies': <String>[], ...ecrit}, obj((c['nouvelles'] as List).first), 'complet');
       });
       test('E184 : le seuil critique non saisi reste vide, pas zéro', () {

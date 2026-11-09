@@ -56,7 +56,7 @@ void main() {
     for (final x in (etat['cartouche'] as List).cast<List>().take(3)) {
       expect(find.textContaining('${x[0]}'), findsWidgets, reason: '${x[0]}');
     }
-    expect(find.textContaining('TAKI Alimatou épse BASSONGUI'), findsWidgets);
+    expect(find.textContaining('TACHEDI Arialu épse BICHIASI'), findsWidgets);
   });
 
   casM14('création d’un secteur sans code : trois lettres, rang 15 ; avec code : le code saisi est GARDÉ', (t) async {

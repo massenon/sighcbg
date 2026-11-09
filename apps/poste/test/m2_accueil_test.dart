@@ -234,8 +234,8 @@ void main() {
       final patients = m.collection('patients').toutes.length;
       await ouvrir(t, m, 'm2-rendezvous');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-      await ecrire(t, 'visiteurNom', 'dossou');
-      await ecrire(t, 'visiteurPrenom', 'Alice');
+      await ecrire(t, 'visiteurNom', 'duloune');
+      await ecrire(t, 'visiteurPrenom', 'Apomu');
       await ecrire(t, 'visiteurQuartier', 'Péporiyakou');
       await ecrire(t, 'visiteurTelephone', '0197112233');
       await choisir(t, 'medecin', '${liste(v['medecins']).first['nomComplet']}');
@@ -243,7 +243,7 @@ void main() {
       await dateHeure(t, 'date');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final r = m.collection('consultations').actives.first;
-      expect(r['patient'], 'DOSSOU Alice');
+      expect(r['patient'], 'DULOUNE Apomu');
       expect(r['patientCode'], 'NON-PATIENT');
       expect(r['patientId'], isNull);
       expect(r['nonPatient'], true);
@@ -326,7 +326,7 @@ void main() {
       await ouvrir(t, m, 'm2-registre-appels');
       expect(kpisE(t), kpisV((a['defaut'] as Map)['kpis']));
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-      await ecrire(t, 'interlocuteur', 'ZIME Ramatou');
+      await ecrire(t, 'interlocuteur', 'ZIAVEL Riadife');
       await ecrire(t, 'telephone', '0197555555');
       await choisir(t, 'objet', 'Rappel de règlement');
       await ecrire(t, 'agent', 'Caisse');
@@ -416,7 +416,7 @@ void main() {
       expect(find.text('C000'), findsOneWidget, reason: 'dernier numéro appelé en consultation');
       expect(find.text('C003   ·   C005   ·   C006'), findsOneWidget);
       expect(find.text('6 patient(s) en attente'), findsOneWidget);
-      expect(find.textContaining('TAKI'), findsNothing);
+      expect(find.textContaining('TACHEDI'), findsNothing);
       expect(find.textContaining('Détresse'), findsNothing);
       await fin(t);
     });
@@ -429,7 +429,7 @@ void main() {
       for (final c in (cab['cartes'] as List)) {
         expect(find.text(c as String), findsOneWidget);
       }
-      final ys = [for (final n in ['OROU YO Adissa', 'DOSSOU Salifou', 'N’TCHA Yacoubou']) t.getTopLeft(find.text(n)).dy];
+      final ys = [for (final n in ['ODJIPIAR YUDJOUVOU Afagu', 'DULOUNE Sazo', 'N’ACHOU Yacha']) t.getTopLeft(find.text(n)).dy];
       expect(ys, orderedEquals([...ys]..sort()));
       await fin(t);
     });

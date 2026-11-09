@@ -222,9 +222,9 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
             ], lignes: [for (final l in (i['lignes'] as List? ?? const [])) (l as Map).cast<String, Object?>()])
           ],
           signatures: const [
-            Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri'),
-            Signature('Le Pharmacien', nom: 'DIEYABIDI Aïssatou'),
-            Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
+            Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
+            Signature('Le Pharmacien', nom: 'DATU Amachim'),
+            Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'),
           ],
         ));
   }

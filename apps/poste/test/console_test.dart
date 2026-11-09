@@ -35,7 +35,7 @@ class FauxService {
       },
       {
         'uuid': 'u-2',
-        'etiquette': 'Dr Yeni',
+        'etiquette': 'Dr Yoro',
         'role': 'mobile',
         'etat': 'actif',
         'dernier_contact': null,
@@ -241,7 +241,7 @@ void main() {
     await t.pumpAndSettle();
     await t.tap(find.text('Appairer un mobile'));
     await t.pumpAndSettle();
-    await t.enterText(find.byType(TextField), 'Dr Yeni');
+    await t.enterText(find.byType(TextField), 'Dr Yoro');
     await t.tap(find.text('Générer le code'));
     await t.pumpAndSettle();
     expect(find.text('MOBI9999'), findsOneWidget);

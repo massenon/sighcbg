@@ -13,7 +13,7 @@ typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 M lire(String nom) => obj(jsonDecode(File('test/vecteurs/$nom.json').readAsStringSync()));
-List<M> jeuDossier(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeuDossier(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 /// Les espaces (ordinaires, insécables, fines) ne comptent pas dans les comparaisons de libellés.
 String s(Object? v) => '$v'.replaceAll(RegExp(r'[\s  ]'), '');

@@ -106,7 +106,7 @@
     "emplacement": "Rayon E — Casier 3",
     "fournisseur": "NATIFOURN",
     "seuilAlerte": 10,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -125,7 +125,7 @@
     "emplacement": "Rayon E — Casier 2",
     "fournisseur": "NATIFOURN",
     "seuilAlerte": 8,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -144,7 +144,7 @@
     "emplacement": "Rayon E — Casier 1",
     "fournisseur": "MEDIPLUS",
     "seuilAlerte": 1,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -163,7 +163,7 @@
     "emplacement": "Rayon D — Casier 2",
     "fournisseur": "LABOTECH",
     "seuilAlerte": 10,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -182,7 +182,7 @@
     "emplacement": "Rayon D — Casier 1",
     "fournisseur": "LABOTECH",
     "seuilAlerte": 40,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -201,7 +201,7 @@
     "emplacement": "Rayon A — Casier 3",
     "fournisseur": "CAME",
     "seuilAlerte": 0,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -220,7 +220,7 @@
     "emplacement": "Rayon C — Casier 1",
     "fournisseur": "CAME",
     "seuilAlerte": 0,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -239,7 +239,7 @@
     "emplacement": "Rayon B — Casier 3",
     "fournisseur": "SOBAPS",
     "seuilAlerte": null,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -258,7 +258,7 @@
     "emplacement": "Rayon B — Casier 2",
     "fournisseur": "SOBAPS",
     "seuilAlerte": null,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -277,7 +277,7 @@
     "emplacement": "Rayon B — Casier 1",
     "fournisseur": "SOBAPS",
     "seuilAlerte": 5,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -296,7 +296,7 @@
     "emplacement": "Rayon A — Casier 2",
     "fournisseur": "CAME",
     "seuilAlerte": 5,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -315,7 +315,7 @@
     "emplacement": "Rayon A — Casier 1",
     "fournisseur": "CAME",
     "seuilAlerte": 5,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    }
   ],
@@ -329,7 +329,7 @@
     "datePeremption": "2026-09-30",
     "quantiteRestante": 0,
     "emplacement": "Rayon A — Casier 1",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -341,7 +341,7 @@
     "datePeremption": "2026-09-16",
     "quantiteRestante": 9,
     "emplacement": "Rayon B — Casier 3",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -353,7 +353,7 @@
     "datePeremption": "2027-09-20",
     "quantiteRestante": 12,
     "emplacement": "Rayon A — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -365,7 +365,7 @@
     "datePeremption": "2026-11-15",
     "quantiteRestante": 5,
     "emplacement": "Rayon E — Casier 3",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -377,7 +377,7 @@
     "datePeremption": "2026-11-14",
     "quantiteRestante": 2,
     "emplacement": "Rayon E — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -389,7 +389,7 @@
     "datePeremption": "2026-11-13",
     "quantiteRestante": 6,
     "emplacement": "Rayon E — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -401,7 +401,7 @@
     "datePeremption": "2026-09-16",
     "quantiteRestante": 3,
     "emplacement": "Rayon D — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -413,7 +413,7 @@
     "datePeremption": "2026-09-15",
     "quantiteRestante": 3,
     "emplacement": "Rayon D — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -425,7 +425,7 @@
     "datePeremption": "2026-09-14",
     "quantiteRestante": 5,
     "emplacement": "Rayon D — Casier 1",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -437,7 +437,7 @@
     "datePeremption": "2026-08-17",
     "quantiteRestante": 10,
     "emplacement": "Rayon D — Casier 1",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -449,7 +449,7 @@
     "datePeremption": "2026-08-16",
     "quantiteRestante": 1,
     "emplacement": "Rayon B — Casier 1",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -461,7 +461,7 @@
     "datePeremption": "2026-08-15",
     "quantiteRestante": 2,
     "emplacement": "Rayon B — Casier 1",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    },
    {
@@ -473,7 +473,7 @@
     "datePeremption": "2026-08-06",
     "quantiteRestante": 4,
     "emplacement": "Rayon A — Casier 2",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.078Z"
    }
   ],
@@ -489,9 +489,9 @@
     "typeLabel": "Péremption",
     "quantite": 2,
     "justificatif": "Retour R-1",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "detail",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -505,9 +505,9 @@
     "typeLabel": "Entrée",
     "quantite": 6,
     "justificatif": "BL-005",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -521,9 +521,9 @@
     "typeLabel": "Entrée",
     "quantite": 8,
     "justificatif": "BL-004",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -537,8 +537,8 @@
     "typeLabel": "Casse / bris",
     "quantite": 1,
     "justificatif": "Casse C-1",
-    "utilisateur": "MAMAN Zoukanéri",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "utilisateur": "METIAVI Zobo",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -552,9 +552,9 @@
     "typeLabel": "Sortie",
     "quantite": 7,
     "justificatif": "BS-003",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -568,9 +568,9 @@
     "typeLabel": "Entrée",
     "quantite": 4,
     "justificatif": "BL-003",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -584,9 +584,9 @@
     "typeLabel": "Entrée",
     "quantite": 5,
     "justificatif": "TR-001",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "detail",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -600,9 +600,9 @@
     "typeLabel": "Sortie",
     "quantite": 1,
     "justificatif": "BS-002",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -616,9 +616,9 @@
     "typeLabel": "Sortie",
     "quantite": 1,
     "justificatif": "BS-001",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -632,9 +632,9 @@
     "typeLabel": "Entrée",
     "quantite": 10,
     "justificatif": "BL-002",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -648,9 +648,9 @@
     "typeLabel": "Perte",
     "quantite": 2,
     "justificatif": "Perte P-1",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -664,9 +664,9 @@
     "typeLabel": "Sortie",
     "quantite": 3,
     "justificatif": "FAC-001",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "detail",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    },
    {
@@ -680,9 +680,9 @@
     "typeLabel": "Entrée",
     "quantite": 50,
     "justificatif": "BL-001",
-    "utilisateur": "MAMAN Zoukanéri",
+    "utilisateur": "METIAVI Zobo",
     "stockType": "gros",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-30T17:55:04.079Z"
    }
   ]
@@ -1254,14 +1254,14 @@
           "Sortie",
           "3",
           "FAC-001",
-          "MAMAN Zoukanéri"
+          "METIAVI Zobo"
          ],
          [
           "05/06/2026",
           "Entrée",
           "5",
           "TR-001",
-          "MAMAN Zoukanéri"
+          "METIAVI Zobo"
          ]
         ]
        }
@@ -1302,7 +1302,7 @@
           "Péremption",
           "2",
           "Retour R-1",
-          "MAMAN Zoukanéri"
+          "METIAVI Zobo"
          ]
         ]
        }
@@ -2460,7 +2460,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 7,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:08.310Z"
      },
      "erreurs": [],
@@ -2498,7 +2498,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:09.160Z"
      },
      "erreurs": [],
@@ -2536,7 +2536,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:09.994Z"
      },
      "erreurs": [],
@@ -2572,7 +2572,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:10.828Z"
      },
      "erreurs": [],
@@ -2610,7 +2610,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:11.682Z"
      },
      "erreurs": [],
@@ -2746,7 +2746,7 @@
       "emplacement": "",
       "fournisseur": "",
       "stock": 0,
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:16.625Z"
      },
      "erreurs": [],
@@ -2776,7 +2776,7 @@
       "quantiteRestante": 5,
       "emplacement": "Rayon A — Casier 2",
       "produit": "PARACETAMOL 500 MG",
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:17.481Z"
      },
      "erreurs": [],
@@ -2804,7 +2804,7 @@
       "quantiteRestante": 5,
       "emplacement": "Rayon A — Casier 2",
       "produit": "PARACETAMOL 500 MG",
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:18.311Z"
      },
      "erreurs": [],
@@ -2832,7 +2832,7 @@
       "quantiteRestante": 5,
       "emplacement": "Rayon A — Casier 2",
       "produit": "PARACETAMOL 500 MG",
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:19.161Z"
      },
      "erreurs": [],
@@ -2860,7 +2860,7 @@
       "quantiteRestante": 5,
       "emplacement": "Rayon A — Casier 2",
       "produit": "PARACETAMOL 500 MG",
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:20.006Z"
      },
      "erreurs": [],
@@ -2888,7 +2888,7 @@
       "quantiteRestante": 5,
       "emplacement": "Rayon A — Casier 2",
       "produit": "REACTIF GLYCEMIE",
-      "_creePar": "BASSONGUI Chabi Séko",
+      "_creePar": "BICHIASI Cezoune Sichovian",
       "_creeLe": "2026-10-30T17:55:20.853Z"
      },
      "erreurs": [],

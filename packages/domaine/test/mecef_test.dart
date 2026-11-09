@@ -86,7 +86,7 @@ void main() {
             saisie: saisie,
             avoirs: liste(e['avoirs']),
             idAvoir: 'AVR-TEST',
-            utilisateur: 'BASSONGUI Chabi Séko');
+            utilisateur: 'BICHIASI Cezoune Sichovian');
         if (attendus.isEmpty) {
           expect(emettre, throwsA(isA<RefusAvoirMecef>()));
           return;

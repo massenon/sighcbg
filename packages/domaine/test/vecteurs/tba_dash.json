@@ -313,70 +313,70 @@
           [
            "26/08/2026 10h00",
            "CBG/138/26",
-           "YARO Edmond",
+           "YIAKI Edjukavom",
            "Hypertension — contrôle",
            "Terminée"
           ],
           [
            "26/08/2026 10h00",
            "CBG/34/26",
-           "SAMBIENI Ganiou",
+           "SEMIA Gedur",
            "Douleurs épigastriques",
            "Terminée"
           ],
           [
            "16/08/2026 17h30",
            "CBG/67/26",
-           "BAKO Sylvie",
+           "BIALI Sunokpu",
            "Plaie infectée",
            "En cours"
           ],
           [
            "16/08/2026 15h30",
            "CBG/65/26",
-           "TCHANE Idrissou",
+           "TIAMOU Igboupu",
            "Consultation prénatale",
            "Terminée"
           ],
           [
            "15/08/2026 18h15",
            "CBG/148/25",
-           "BOUKARI Alassane",
+           "BUKE Anapouzia",
            "Traumatisme",
            "Terminée"
           ],
           [
            "15/08/2026 17h00",
            "CBG/42/26",
-           "YARO Bertine",
+           "YIAKI Bodje",
            "Suivi de grossesse",
            "Terminée"
           ],
           [
            "15/08/2026 16h30",
            "CBG/74/26",
-           "HOUNKPATIN Salifou",
+           "HOULUKE Sazo",
            "Plaie infectée",
            "Terminée"
           ],
           [
            "15/08/2026 10h15",
            "CBG/10/25",
-           "SEIDOU Rachida",
+           "SIANUVU Rarouvil",
            "Contrôle diabète",
            "Planifiée"
           ],
           [
            "14/08/2026 13h45",
            "CBG/45/26",
-           "PARAISO Séraphine",
+           "PENU Sigbudja",
            "Fièvre persistante",
            "En cours"
           ],
           [
            "14/08/2026 11h45",
            "CBG/4/26",
-           "PARAISO Sabi",
+           "PENU Sabar",
            "Céphalées",
            "Terminée"
           ]
@@ -407,7 +407,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PARAISO Sabi Céphalées Terminée"
+       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YIAKI Edjukavom Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SEMIA Gedur Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BIALI Sunokpu Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TIAMOU Igboupu Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BUKE Anapouzia Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YIAKI Bodje Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOULUKE Sazo Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SIANUVU Rarouvil Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PENU Sigbudja Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PENU Sabar Céphalées Terminée"
       }
      ]
     },
@@ -763,7 +763,7 @@
          "lignes": [
           [
            "A1 LIT1",
-           "SAMBIENI Bibata",
+           "SEMIA Bouboli",
            "CBG/20/26",
            "07/08/2026",
            "10",
@@ -772,7 +772,7 @@
           ],
           [
            "A1 LIT2",
-           "WOROU Boukari",
+           "WEDIA Buke",
            "CBG/119/26",
            "11/08/2026",
            "6",
@@ -781,7 +781,7 @@
           ],
           [
            "A2 LIT1",
-           "N’TCHA Hervé",
+           "N’ACHOU Hiabidjo",
            "CBG/75/26",
            "08/08/2026",
            "9",
@@ -790,7 +790,7 @@
           ],
           [
            "A2 LIT2",
-           "YENI M’PO Florent",
+           "YORO M’ABEKPIA Foulumi",
            "CBG904/25",
            "07/08/2026",
            "10",
@@ -799,7 +799,7 @@
           ],
           [
            "A3 LIT1",
-           "TCHANE Colette",
+           "TIAMOU Coufi",
            "CBG/54/26",
            "07/08/2026",
            "10",
@@ -808,7 +808,7 @@
           ],
           [
            "A3 LIT2",
-           "HOUNKPATIN Salifou",
+           "HOULUKE Sazo",
            "CBG/74/26",
            "13/08/2026",
            "4",
@@ -817,7 +817,7 @@
           ],
           [
            "A4 LIT1",
-           "KASSA Florent",
+           "KALOU Foulumi",
            "CBG/57/26",
            "13/08/2026",
            "4",
@@ -826,7 +826,7 @@
           ],
           [
            "A4 LIT2",
-           "TIGRI Kassim",
+           "TOUZA Kedjopou",
            "CBG/180/25",
            "11/08/2026",
            "6",
@@ -835,7 +835,7 @@
           ],
           [
            "B1 LIT1",
-           "OROU YO Ganiou",
+           "ODJIPIAR YUDJOUVOU Gedur",
            "CBG/88/26",
            "11/08/2026",
            "6",
@@ -844,7 +844,7 @@
           ],
           [
            "B1 LIT2",
-           "SOULE Nadège",
+           "SOUDER Nedi",
            "CBG/97/26",
            "12/08/2026",
            "5",
@@ -853,7 +853,7 @@
           ],
           [
            "B2 LIT1",
-           "BASSONGUI Bio",
+           "BICHIASI Bounoukia",
            "CBG/167/26",
            "09/08/2026",
            "8",
@@ -862,7 +862,7 @@
           ],
           [
            "B2 LIT2",
-           "TAKI Alimatou",
+           "TACHEDI Arialu",
            "CBG901/25",
            "11/08/2026",
            "6",
@@ -871,7 +871,7 @@
           ],
           [
            "B3 LIT1",
-           "SANNI Nadège",
+           "SIACHOU Nedi",
            "CBG/174/26",
            "11/08/2026",
            "6",
@@ -880,7 +880,7 @@
           ],
           [
            "B3 LIT2",
-           "AHOHOU Zakari",
+           "AKPOMER Zapeto",
            "CBG/80/26",
            "10/08/2026",
            "7",
@@ -918,7 +918,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Patients hospitalisés — service Plan des lits LIT PATIENT DOSSIER ENTRÉE JOURS DIAGNOSTIC PRISE EN CHARGE A1 LIT1 SAMBIENI Bibata CBG/20/26 07/08/2026 10 Paludisme grave Plus de 8h A1 LIT2 WOROU Boukari CBG/119/26 11/08/2026 6 Infection urinaire basse Plus de 8h A2 LIT1 N’TCHA Hervé CBG/75/26 08/08/2026 9 Gastro-entérite Moins de 8h A2 LIT2 YENI M’PO Florent CBG904/25 07/08/2026 10 Dermatose infectieuse Moins de 8h A3 LIT1 TCHANE Colette CBG/54/26 07/08/2026 10 Bronchite aiguë Plus de 8h A3 LIT2 HOUNKPATIN Salifou CBG/74/26 13/08/2026 4 Infection urinaire basse Moins de 8h A4 LIT1 KASSA Florent CBG/57/26 13/08/2026 4 Paludisme simple Plus de 8h A4 LIT2 TIGRI Kassim CBG/180/25 11/08/2026 6 HTA essentielle Moins de 8h B1 LIT1 OROU YO Ganiou CBG/88/26 11/08/2026 6 Fièvre typhoïde Plus de 8h B1 LIT2 SOULE Nadège CBG/97/26 12/08/2026 5 Diabète de type 2 Moins de 8h B2 LIT1 BASSONGUI Bio CBG/167/26 09/08/2026 8 Bronchite aiguë Plus de 8h B2 LIT2 TAKI Alimatou CBG901/25 11/08/2026 6 Gastro-entérite Plus de 8h B3 LIT1 SANNI Nadège CBG/174/26 11/08/2026 6 HTA essentielle Plus de 8h B3 LIT2 AHOHOU Zakari CBG/80/26 10/08/2026 7 Infection respiratoire aiguë Plus de 8h"
+       "texte": "Patients hospitalisés — service Plan des lits LIT PATIENT DOSSIER ENTRÉE JOURS DIAGNOSTIC PRISE EN CHARGE A1 LIT1 SEMIA Bouboli CBG/20/26 07/08/2026 10 Paludisme grave Plus de 8h A1 LIT2 WEDIA Buke CBG/119/26 11/08/2026 6 Infection urinaire basse Plus de 8h A2 LIT1 N’ACHOU Hiabidjo CBG/75/26 08/08/2026 9 Gastro-entérite Moins de 8h A2 LIT2 YORO M’ABEKPIA Foulumi CBG904/25 07/08/2026 10 Dermatose infectieuse Moins de 8h A3 LIT1 TIAMOU Coufi CBG/54/26 07/08/2026 10 Bronchite aiguë Plus de 8h A3 LIT2 HOULUKE Sazo CBG/74/26 13/08/2026 4 Infection urinaire basse Moins de 8h A4 LIT1 KALOU Foulumi CBG/57/26 13/08/2026 4 Paludisme simple Plus de 8h A4 LIT2 TOUZA Kedjopou CBG/180/25 11/08/2026 6 HTA essentielle Moins de 8h B1 LIT1 ODJIPIAR YUDJOUVOU Gedur CBG/88/26 11/08/2026 6 Fièvre typhoïde Plus de 8h B1 LIT2 SOUDER Nedi CBG/97/26 12/08/2026 5 Diabète de type 2 Moins de 8h B2 LIT1 BICHIASI Bounoukia CBG/167/26 09/08/2026 8 Bronchite aiguë Plus de 8h B2 LIT2 TACHEDI Arialu CBG901/25 11/08/2026 6 Gastro-entérite Plus de 8h B3 LIT1 SIACHOU Nedi CBG/174/26 11/08/2026 6 HTA essentielle Plus de 8h B3 LIT2 AKPOMER Zapeto CBG/80/26 10/08/2026 7 Infection respiratoire aiguë Plus de 8h"
       }
      ]
     }
@@ -950,7 +950,7 @@
          "lignes": [
           [
            "ORD-2025-00045",
-           "ADAM Rabiatou CBG/82/26",
+           "ACHOUBE Rafiakpe CBG/82/26",
            "2 médicament(s) — 344",
            "344",
            "À traiter",
@@ -958,7 +958,7 @@
           ],
           [
            "ORD-2025-00108",
-           "ZIME Salifou CBG/105/26",
+           "ZIAVEL Sazo CBG/105/26",
            "1 médicament(s) — 228",
            "228",
            "À traiter",
@@ -966,7 +966,7 @@
           ],
           [
            "ORD-2025-00112",
-           "HOUNKPATIN Salifou CBG/74/26",
+           "HOULUKE Sazo CBG/74/26",
            "2 médicament(s) — 1 972",
            "1 972",
            "À traiter",
@@ -974,7 +974,7 @@
           ],
           [
            "ORD-2025-00113",
-           "BAKO Justine CBG/9/26",
+           "BIALI Jiakpune CBG/9/26",
            "1 médicament(s) — 100",
            "100",
            "À traiter",
@@ -982,7 +982,7 @@
           ],
           [
            "ORD-2025-00056Urgent",
-           "SANNI Nadège CBG/174/26",
+           "SIACHOU Nedi CBG/174/26",
            "3 médicament(s) — 11 700",
            "11 700",
            "À traiter",
@@ -990,7 +990,7 @@
           ],
           [
            "ORD-2026-00023Urgent",
-           "YENI Moussa CBG/18/26",
+           "YORO Mudovur CBG/18/26",
            "3 médicament(s) — 3 288",
            "3 288",
            "À traiter",
@@ -998,7 +998,7 @@
           ],
           [
            "ORD-2026-00062",
-           "AGOSSOU Bio CBG/120/26",
+           "AKIAFADJO Bounoukia CBG/120/26",
            "2 médicament(s) — 3 976",
            "3 976",
            "À traiter",
@@ -1006,7 +1006,7 @@
           ],
           [
            "ORD-2026-00122",
-           "MAMAN Yahouza CBG/68/26",
+           "METIAVI Yelia CBG/68/26",
            "1 médicament(s) — 2 250",
            "2 250",
            "À traiter",
@@ -1053,7 +1053,7 @@
          "lignes": [
           [
            "ORD-2025-00045",
-           "ADAM Rabiatou CBG/82/26",
+           "ACHOUBE Rafiakpe CBG/82/26",
            "2 médicament(s) — 344",
            "344",
            "À traiter",
@@ -1061,7 +1061,7 @@
           ],
           [
            "ORD-2025-00108",
-           "ZIME Salifou CBG/105/26",
+           "ZIAVEL Sazo CBG/105/26",
            "1 médicament(s) — 228",
            "228",
            "À traiter",
@@ -1069,7 +1069,7 @@
           ],
           [
            "ORD-2025-00112",
-           "HOUNKPATIN Salifou CBG/74/26",
+           "HOULUKE Sazo CBG/74/26",
            "2 médicament(s) — 1 972",
            "1 972",
            "À traiter",
@@ -1077,7 +1077,7 @@
           ],
           [
            "ORD-2025-00113",
-           "BAKO Justine CBG/9/26",
+           "BIALI Jiakpune CBG/9/26",
            "1 médicament(s) — 100",
            "100",
            "À traiter",
@@ -1085,7 +1085,7 @@
           ],
           [
            "ORD-2025-00056Urgent",
-           "SANNI Nadège CBG/174/26",
+           "SIACHOU Nedi CBG/174/26",
            "3 médicament(s) — 11 700",
            "11 700",
            "À traiter",
@@ -1093,7 +1093,7 @@
           ],
           [
            "ORD-2026-00023Urgent",
-           "YENI Moussa CBG/18/26",
+           "YORO Mudovur CBG/18/26",
            "3 médicament(s) — 3 288",
            "3 288",
            "À traiter",
@@ -1101,7 +1101,7 @@
           ],
           [
            "ORD-2026-00062",
-           "AGOSSOU Bio CBG/120/26",
+           "AKIAFADJO Bounoukia CBG/120/26",
            "2 médicament(s) — 3 976",
            "3 976",
            "À traiter",
@@ -1109,7 +1109,7 @@
           ],
           [
            "ORD-2026-00122",
-           "MAMAN Yahouza CBG/68/26",
+           "METIAVI Yelia CBG/68/26",
            "1 médicament(s) — 2 250",
            "2 250",
            "À traiter",
@@ -1126,7 +1126,7 @@
          ]
         }
        ],
-       "texte": "Ordonnances à délivrer — 51 à traiter, 42 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS ORD-2025-00045 ADAM Rabiatou CBG/82/26 2 médicament(s) — 344 344 À traiter ORD-2025-00108 ZIME Salifou CBG/105/26 1 médicament(s) — 228 228 À traiter ORD-2025-00112 HOUNKPATIN Salifou CBG/74/26 2 médicament(s) — 1 972 1 972 À traiter ORD-2025-00113 BAKO Justine CBG/9/26 1 médicament(s) — 100 100 À traiter ORD-2025-00056Urgent SANNI Nadège CBG/174/26 3 médicament(s) — 11 700 11 700 À traiter ORD-2026-00023Urgent YENI Moussa CBG/18/26 3 médicament(s) — 3 288 3 288 À traiter ORD-2026-00062 AGOSSOU Bio CBG/120/26 2 médicament(s) — 3 976 3 976 À traiter ORD-2026-00122 MAMAN Yahouza CBG/68/26 1 médicament(s) — 2 250 2 250 À traiter Affichage de 1 à 8 sur 93 enregistrements 1 2 3 4 5"
+       "texte": "Ordonnances à délivrer — 51 à traiter, 42 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS ORD-2025-00045 ACHOUBE Rafiakpe CBG/82/26 2 médicament(s) — 344 344 À traiter ORD-2025-00108 ZIAVEL Sazo CBG/105/26 1 médicament(s) — 228 228 À traiter ORD-2025-00112 HOULUKE Sazo CBG/74/26 2 médicament(s) — 1 972 1 972 À traiter ORD-2025-00113 BIALI Jiakpune CBG/9/26 1 médicament(s) — 100 100 À traiter ORD-2025-00056Urgent SIACHOU Nedi CBG/174/26 3 médicament(s) — 11 700 11 700 À traiter ORD-2026-00023Urgent YORO Mudovur CBG/18/26 3 médicament(s) — 3 288 3 288 À traiter ORD-2026-00062 AKIAFADJO Bounoukia CBG/120/26 2 médicament(s) — 3 976 3 976 À traiter ORD-2026-00122 METIAVI Yelia CBG/68/26 1 médicament(s) — 2 250 2 250 À traiter Affichage de 1 à 8 sur 93 enregistrements 1 2 3 4 5"
       }
      ]
     },
@@ -1461,7 +1461,7 @@
          "lignes": [
           [
            "FE-2026-00372",
-           "SOUMANOU Awaou",
+           "SOUVOLOUR Azomou",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1469,7 +1469,7 @@
           ],
           [
            "FE-2026-00371",
-           "MOUMOUNI Karim",
+           "MOUFIADO Kagbouta",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1477,7 +1477,7 @@
           ],
           [
            "FE-2026-00369",
-           "OUOROU Mariam",
+           "OGILU Migikpa",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1485,7 +1485,7 @@
           ],
           [
            "FE-2026-00368",
-           "DJATO Émile",
+           "DOKPEDE Ekiatia",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1493,7 +1493,7 @@
           ],
           [
            "FE-2026-00366",
-           "BIAOU Célestine",
+           "BONA Cager",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1501,7 +1501,7 @@
           ],
           [
            "FE-2026-00365",
-           "KOUAGOU Fidèle",
+           "KOGAL Fidèle",
            "1 examen(s)",
            "0",
            "À traiter",
@@ -1509,7 +1509,7 @@
           ],
           [
            "FE-2026-00364",
-           "YOROU Aboubakar",
+           "YUMERAL Aboumoge",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1517,7 +1517,7 @@
           ],
           [
            "FE-2026-00363",
-           "N’TCHA Bernadette",
+           "N’ACHOU Biredo",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1564,7 +1564,7 @@
          "lignes": [
           [
            "FE-2026-00372",
-           "SOUMANOU Awaou",
+           "SOUVOLOUR Azomou",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1572,7 +1572,7 @@
           ],
           [
            "FE-2026-00371",
-           "MOUMOUNI Karim",
+           "MOUFIADO Kagbouta",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1580,7 +1580,7 @@
           ],
           [
            "FE-2026-00369",
-           "OUOROU Mariam",
+           "OGILU Migikpa",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1588,7 +1588,7 @@
           ],
           [
            "FE-2026-00368",
-           "DJATO Émile",
+           "DOKPEDE Ekiatia",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1596,7 +1596,7 @@
           ],
           [
            "FE-2026-00366",
-           "BIAOU Célestine",
+           "BONA Cager",
            "2 examen(s)",
            "0",
            "À traiter",
@@ -1604,7 +1604,7 @@
           ],
           [
            "FE-2026-00365",
-           "KOUAGOU Fidèle",
+           "KOGAL Fidèle",
            "1 examen(s)",
            "0",
            "À traiter",
@@ -1612,7 +1612,7 @@
           ],
           [
            "FE-2026-00364",
-           "YOROU Aboubakar",
+           "YUMERAL Aboumoge",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1620,7 +1620,7 @@
           ],
           [
            "FE-2026-00363",
-           "N’TCHA Bernadette",
+           "N’ACHOU Biredo",
            "3 examen(s)",
            "0",
            "À traiter",
@@ -1637,7 +1637,7 @@
          ]
         }
        ],
-       "texte": "Prélèvements à réaliser — 78 à traiter, 66 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS FE-2026-00372 SOUMANOU Awaou 2 examen(s) 0 À traiter FE-2026-00371 MOUMOUNI Karim 3 examen(s) 0 À traiter FE-2026-00369 OUOROU Mariam 3 examen(s) 0 À traiter FE-2026-00368 DJATO Émile 2 examen(s) 0 À traiter FE-2026-00366 BIAOU Célestine 2 examen(s) 0 À traiter FE-2026-00365 KOUAGOU Fidèle 1 examen(s) 0 À traiter FE-2026-00364 YOROU Aboubakar 3 examen(s) 0 À traiter FE-2026-00363 N’TCHA Bernadette 3 examen(s) 0 À traiter Affichage de 1 à 8 sur 144 enregistrements 1 2 3 4 5"
+       "texte": "Prélèvements à réaliser — 78 à traiter, 66 en attente de caisse Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS FE-2026-00372 SOUVOLOUR Azomou 2 examen(s) 0 À traiter FE-2026-00371 MOUFIADO Kagbouta 3 examen(s) 0 À traiter FE-2026-00369 OGILU Migikpa 3 examen(s) 0 À traiter FE-2026-00368 DOKPEDE Ekiatia 2 examen(s) 0 À traiter FE-2026-00366 BONA Cager 2 examen(s) 0 À traiter FE-2026-00365 KOGAL Fidèle 1 examen(s) 0 À traiter FE-2026-00364 YUMERAL Aboumoge 3 examen(s) 0 À traiter FE-2026-00363 N’ACHOU Biredo 3 examen(s) 0 À traiter Affichage de 1 à 8 sur 144 enregistrements 1 2 3 4 5"
       }
      ]
     },
@@ -2367,7 +2367,7 @@
            "Transfert — entrée pharmacie",
            "18",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2375,7 +2375,7 @@
            "Transfert — sortie magasin",
            "18",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2383,7 +2383,7 @@
            "Transfert — entrée pharmacie",
            "4",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2391,7 +2391,7 @@
            "Transfert — sortie magasin",
            "4",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2399,7 +2399,7 @@
            "Transfert — entrée pharmacie",
            "5",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2407,7 +2407,7 @@
            "Transfert — sortie magasin",
            "5",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2415,7 +2415,7 @@
            "Transfert — entrée pharmacie",
            "1",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2423,7 +2423,7 @@
            "Transfert — sortie magasin",
            "1",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2431,7 +2431,7 @@
            "Transfert — entrée pharmacie",
            "2",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ],
           [
            "18/08/2026",
@@ -2439,7 +2439,7 @@
            "Transfert — sortie magasin",
            "2",
            "Bon de transfert TR-00020",
-           "MAMAN Zoukanéri"
+           "METIAVI Zobo"
           ]
          ],
          "boutons": [
@@ -2468,7 +2468,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Derniers mouvements Registre complet DATE PRODUIT TYPE QUANTITÉ JUSTIFICATIF OPÉRATEUR 18/08/2026 TUBE AKOP Transfert — entrée pharmacie 18 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 TUBE AKOP Transfert — sortie magasin 18 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 TUBE ECBU Transfert — entrée pharmacie 4 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 TUBE ECBU Transfert — sortie magasin 4 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 TBG URINAIRE Transfert — entrée pharmacie 5 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 TBG URINAIRE Transfert — sortie magasin 5 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 HEMOGLOBINE CAPILLAIRE Transfert — entrée pharmacie 1 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 HEMOGLOBINE CAPILLAIRE Transfert — sortie magasin 1 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 ECOUVILLON Transfert — entrée pharmacie 2 Bon de transfert TR-00020 MAMAN Zoukanéri 18/08/2026 ECOUVILLON Transfert — sortie magasin 2 Bon de transfert TR-00020 MAMAN Zoukanéri"
+       "texte": "Derniers mouvements Registre complet DATE PRODUIT TYPE QUANTITÉ JUSTIFICATIF OPÉRATEUR 18/08/2026 TUBE AKOP Transfert — entrée pharmacie 18 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 TUBE AKOP Transfert — sortie magasin 18 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 TUBE ECBU Transfert — entrée pharmacie 4 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 TUBE ECBU Transfert — sortie magasin 4 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 TBG URINAIRE Transfert — entrée pharmacie 5 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 TBG URINAIRE Transfert — sortie magasin 5 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 HEMOGLOBINE CAPILLAIRE Transfert — entrée pharmacie 1 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 HEMOGLOBINE CAPILLAIRE Transfert — sortie magasin 1 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 ECOUVILLON Transfert — entrée pharmacie 2 Bon de transfert TR-00020 METIAVI Zobo 18/08/2026 ECOUVILLON Transfert — sortie magasin 2 Bon de transfert TR-00020 METIAVI Zobo"
       }
      ]
     },
@@ -2587,7 +2587,7 @@
          "lignes": [
           [
            "FI-2026-00407",
-           "BANI Zoukanéri",
+           "BIAREL Zobo",
            "1 examen(s) — 160 000",
            "160 000",
            "À traiter",
@@ -2595,7 +2595,7 @@
           ],
           [
            "FI-2026-00402",
-           "BAKO Chantal",
+           "BIALI Cichin",
            "1 examen(s) — 85 000",
            "85 000",
            "À traiter",
@@ -2603,7 +2603,7 @@
           ],
           [
            "FI-2026-00397",
-           "ADAM Rabiatou",
+           "ACHOUBE Rafiakpe",
            "1 examen(s) — 35 000",
            "35 000",
            "À traiter",
@@ -2611,7 +2611,7 @@
           ],
           [
            "FI-2026-00392",
-           "KOUAGOU Fidèle",
+           "KOGAL Fidèle",
            "1 examen(s) — 12 000",
            "12 000",
            "À traiter",
@@ -2619,7 +2619,7 @@
           ],
           [
            "FI-2026-00387",
-           "KINNOU Séko",
+           "KELE Sichovian",
            "1 examen(s) — 10 000",
            "10 000",
            "À traiter",
@@ -2627,7 +2627,7 @@
           ],
           [
            "FI-2026-00382",
-           "DOSSOU Colette",
+           "DULOUNE Coufi",
            "1 examen(s) — 9 000",
            "9 000",
            "À traiter",
@@ -2635,7 +2635,7 @@
           ],
           [
            "FI-2026-00377",
-           "BOUKARI Nourou",
+           "BUKE Noupi",
            "1 examen(s) — 20 000",
            "20 000",
            "À traiter",
@@ -2643,7 +2643,7 @@
           ],
           [
            "FE-2026-00370",
-           "KPATINDÉ Honorine",
+           "KOUMEDJAL Hine",
            "1 examen(s) — 12 000",
            "12 000",
            "À traiter",
@@ -2690,7 +2690,7 @@
          "lignes": [
           [
            "FI-2026-00407",
-           "BANI Zoukanéri",
+           "BIAREL Zobo",
            "1 examen(s) — 160 000",
            "160 000",
            "À traiter",
@@ -2698,7 +2698,7 @@
           ],
           [
            "FI-2026-00402",
-           "BAKO Chantal",
+           "BIALI Cichin",
            "1 examen(s) — 85 000",
            "85 000",
            "À traiter",
@@ -2706,7 +2706,7 @@
           ],
           [
            "FI-2026-00397",
-           "ADAM Rabiatou",
+           "ACHOUBE Rafiakpe",
            "1 examen(s) — 35 000",
            "35 000",
            "À traiter",
@@ -2714,7 +2714,7 @@
           ],
           [
            "FI-2026-00392",
-           "KOUAGOU Fidèle",
+           "KOGAL Fidèle",
            "1 examen(s) — 12 000",
            "12 000",
            "À traiter",
@@ -2722,7 +2722,7 @@
           ],
           [
            "FI-2026-00387",
-           "KINNOU Séko",
+           "KELE Sichovian",
            "1 examen(s) — 10 000",
            "10 000",
            "À traiter",
@@ -2730,7 +2730,7 @@
           ],
           [
            "FI-2026-00382",
-           "DOSSOU Colette",
+           "DULOUNE Coufi",
            "1 examen(s) — 9 000",
            "9 000",
            "À traiter",
@@ -2738,7 +2738,7 @@
           ],
           [
            "FI-2026-00377",
-           "BOUKARI Nourou",
+           "BUKE Noupi",
            "1 examen(s) — 20 000",
            "20 000",
            "À traiter",
@@ -2746,7 +2746,7 @@
           ],
           [
            "FE-2026-00370",
-           "KPATINDÉ Honorine",
+           "KOUMEDJAL Hine",
            "1 examen(s) — 12 000",
            "12 000",
            "À traiter",
@@ -2763,7 +2763,7 @@
          ]
         }
        ],
-       "texte": "Prescriptions à encaisser — 73 à traiter Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS FI-2026-00407 BANI Zoukanéri 1 examen(s) — 160 000 160 000 À traiter FI-2026-00402 BAKO Chantal 1 examen(s) — 85 000 85 000 À traiter FI-2026-00397 ADAM Rabiatou 1 examen(s) — 35 000 35 000 À traiter FI-2026-00392 KOUAGOU Fidèle 1 examen(s) — 12 000 12 000 À traiter FI-2026-00387 KINNOU Séko 1 examen(s) — 10 000 10 000 À traiter FI-2026-00382 DOSSOU Colette 1 examen(s) — 9 000 9 000 À traiter FI-2026-00377 BOUKARI Nourou 1 examen(s) — 20 000 20 000 À traiter FE-2026-00370 KPATINDÉ Honorine 1 examen(s) — 12 000 12 000 À traiter Affichage de 1 à 8 sur 73 enregistrements 1 2 3 4 5"
+       "texte": "Prescriptions à encaisser — 73 à traiter Colonnes Exporter ORIGINE PATIENT À FAIRE MONTANT ÉTAT ACTIONS FI-2026-00407 BIAREL Zobo 1 examen(s) — 160 000 160 000 À traiter FI-2026-00402 BIALI Cichin 1 examen(s) — 85 000 85 000 À traiter FI-2026-00397 ACHOUBE Rafiakpe 1 examen(s) — 35 000 35 000 À traiter FI-2026-00392 KOGAL Fidèle 1 examen(s) — 12 000 12 000 À traiter FI-2026-00387 KELE Sichovian 1 examen(s) — 10 000 10 000 À traiter FI-2026-00382 DULOUNE Coufi 1 examen(s) — 9 000 9 000 À traiter FI-2026-00377 BUKE Noupi 1 examen(s) — 20 000 20 000 À traiter FE-2026-00370 KOUMEDJAL Hine 1 examen(s) — 12 000 12 000 À traiter Affichage de 1 à 8 sur 73 enregistrements 1 2 3 4 5"
       }
      ]
     },
@@ -3033,7 +3033,7 @@
          "lignes": [
           [
            "FP-2026-00409",
-           "TIGRI Séraphine",
+           "TOUZA Sigbudja",
            "Prescription",
            "6 598",
            "0",
@@ -3042,7 +3042,7 @@
           ],
           [
            "FP-2026-00408",
-           "BOUKARI Florent",
+           "BUKE Foulumi",
            "Prescription",
            "5 800",
            "1 160",
@@ -3051,7 +3051,7 @@
           ],
           [
            "FI-2026-00407",
-           "BANI Zoukanéri",
+           "BIAREL Zobo",
            "Imagerie",
            "160 000",
            "0",
@@ -3060,7 +3060,7 @@
           ],
           [
            "FI-2026-00406",
-           "OROU YO Chantal",
+           "ODJIPIAR YUDJOUVOU Cichin",
            "Imagerie",
            "140 000",
            "140 000",
@@ -3069,7 +3069,7 @@
           ],
           [
            "FI-2026-00405",
-           "BOUKARI Nourou",
+           "BUKE Noupi",
            "Imagerie",
            "150 000",
            "150 000",
@@ -3078,7 +3078,7 @@
           ],
           [
            "FI-2026-00404",
-           "SOUMANOU Awaou",
+           "SOUVOLOUR Azomou",
            "Imagerie",
            "150 000",
            "150 000",
@@ -3087,7 +3087,7 @@
           ],
           [
            "FI-2026-00403",
-           "AGOSSOU Foussena",
+           "AKIAFADJO Fuchibu",
            "Imagerie",
            "150 000",
            "150 000",
@@ -3096,7 +3096,7 @@
           ],
           [
            "FI-2026-00402",
-           "BAKO Chantal",
+           "BIALI Cichin",
            "Imagerie",
            "85 000",
            "0",
@@ -3105,7 +3105,7 @@
           ],
           [
            "FI-2026-00401",
-           "TCHANE Moussa",
+           "TIAMOU Mudovur",
            "Imagerie",
            "100 000",
            "100 000",
@@ -3114,7 +3114,7 @@
           ],
           [
            "FI-2026-00400",
-           "YOROU Aboubakar",
+           "YUMERAL Aboumoge",
            "Imagerie",
            "85 000",
            "85 000",
@@ -3152,7 +3152,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Dernières factures Nouvelle facture État de caisse N° FACTURE PATIENT TYPE MONTANT PAYÉ RESTE STATUT FP-2026-00409 TIGRI Séraphine Prescription 6 598 0 — Soldée FP-2026-00408 BOUKARI Florent Prescription 5 800 1 160 — Soldée FI-2026-00407 BANI Zoukanéri Imagerie 160 000 0 160 000 Impayée FI-2026-00406 OROU YO Chantal Imagerie 140 000 140 000 — Soldée FI-2026-00405 BOUKARI Nourou Imagerie 150 000 150 000 — Soldée FI-2026-00404 SOUMANOU Awaou Imagerie 150 000 150 000 — Soldée FI-2026-00403 AGOSSOU Foussena Imagerie 150 000 150 000 — Soldée FI-2026-00402 BAKO Chantal Imagerie 85 000 0 85 000 Impayée FI-2026-00401 TCHANE Moussa Imagerie 100 000 100 000 — Soldée FI-2026-00400 YOROU Aboubakar Imagerie 85 000 85 000 — Soldée"
+       "texte": "Dernières factures Nouvelle facture État de caisse N° FACTURE PATIENT TYPE MONTANT PAYÉ RESTE STATUT FP-2026-00409 TOUZA Sigbudja Prescription 6 598 0 — Soldée FP-2026-00408 BUKE Foulumi Prescription 5 800 1 160 — Soldée FI-2026-00407 BIAREL Zobo Imagerie 160 000 0 160 000 Impayée FI-2026-00406 ODJIPIAR YUDJOUVOU Cichin Imagerie 140 000 140 000 — Soldée FI-2026-00405 BUKE Noupi Imagerie 150 000 150 000 — Soldée FI-2026-00404 SOUVOLOUR Azomou Imagerie 150 000 150 000 — Soldée FI-2026-00403 AKIAFADJO Fuchibu Imagerie 150 000 150 000 — Soldée FI-2026-00402 BIALI Cichin Imagerie 85 000 0 85 000 Impayée FI-2026-00401 TIAMOU Mudovur Imagerie 100 000 100 000 — Soldée FI-2026-00400 YUMERAL Aboumoge Imagerie 85 000 85 000 — Soldée"
       }
      ]
     },
@@ -3490,7 +3490,7 @@
            "30/10/2026",
            "CAI",
            "706000",
-           "Encaissement facture FP-2026-00408 — BOUKARI Florent",
+           "Encaissement facture FP-2026-00408 — BUKE Foulumi",
            "—",
            "1 160"
           ],
@@ -3499,7 +3499,7 @@
            "30/10/2026",
            "CAI",
            "571000",
-           "Encaissement facture FP-2026-00408 — BOUKARI Florent",
+           "Encaissement facture FP-2026-00408 — BUKE Foulumi",
            "1 160",
            "—"
           ],
@@ -3508,7 +3508,7 @@
            "30/10/2026",
            "CAI",
            "706000",
-           "Encaissement facture FI-2026-00406 — OROU YO Chantal",
+           "Encaissement facture FI-2026-00406 — ODJIPIAR YUDJOUVOU Cichin",
            "—",
            "140 000"
           ],
@@ -3517,7 +3517,7 @@
            "30/10/2026",
            "CAI",
            "571000",
-           "Encaissement facture FI-2026-00406 — OROU YO Chantal",
+           "Encaissement facture FI-2026-00406 — ODJIPIAR YUDJOUVOU Cichin",
            "140 000",
            "—"
           ],
@@ -3526,7 +3526,7 @@
            "30/10/2026",
            "CAI",
            "706000",
-           "Encaissement facture FI-2026-00405 — BOUKARI Nourou",
+           "Encaissement facture FI-2026-00405 — BUKE Noupi",
            "—",
            "150 000"
           ],
@@ -3535,7 +3535,7 @@
            "30/10/2026",
            "CAI",
            "571000",
-           "Encaissement facture FI-2026-00405 — BOUKARI Nourou",
+           "Encaissement facture FI-2026-00405 — BUKE Noupi",
            "150 000",
            "—"
           ],
@@ -3544,7 +3544,7 @@
            "30/10/2026",
            "CAI",
            "706000",
-           "Encaissement facture FI-2026-00404 — SOUMANOU Awaou",
+           "Encaissement facture FI-2026-00404 — SOUVOLOUR Azomou",
            "—",
            "150 000"
           ],
@@ -3553,7 +3553,7 @@
            "30/10/2026",
            "CAI",
            "571000",
-           "Encaissement facture FI-2026-00404 — SOUMANOU Awaou",
+           "Encaissement facture FI-2026-00404 — SOUVOLOUR Azomou",
            "150 000",
            "—"
           ],
@@ -3562,7 +3562,7 @@
            "30/10/2026",
            "CAI",
            "706000",
-           "Encaissement facture FI-2026-00403 — AGOSSOU Foussena",
+           "Encaissement facture FI-2026-00403 — AKIAFADJO Fuchibu",
            "—",
            "150 000"
           ],
@@ -3571,7 +3571,7 @@
            "30/10/2026",
            "CAI",
            "571000",
-           "Encaissement facture FI-2026-00403 — AGOSSOU Foussena",
+           "Encaissement facture FI-2026-00403 — AKIAFADJO Fuchibu",
            "150 000",
            "—"
           ]
@@ -3602,7 +3602,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Dernières écritures Toutes les écritures N° DATE JOURNAL COMPTE LIBELLÉ DÉBIT CRÉDIT CAI-2026-00247 30/10/2026 CAI 706000 Encaissement facture FP-2026-00408 — BOUKARI Florent — 1 160 CAI-2026-00247 30/10/2026 CAI 571000 Encaissement facture FP-2026-00408 — BOUKARI Florent 1 160 — CAI-2026-00246 30/10/2026 CAI 706000 Encaissement facture FI-2026-00406 — OROU YO Chantal — 140 000 CAI-2026-00246 30/10/2026 CAI 571000 Encaissement facture FI-2026-00406 — OROU YO Chantal 140 000 — CAI-2026-00245 30/10/2026 CAI 706000 Encaissement facture FI-2026-00405 — BOUKARI Nourou — 150 000 CAI-2026-00245 30/10/2026 CAI 571000 Encaissement facture FI-2026-00405 — BOUKARI Nourou 150 000 — CAI-2026-00244 30/10/2026 CAI 706000 Encaissement facture FI-2026-00404 — SOUMANOU Awaou — 150 000 CAI-2026-00244 30/10/2026 CAI 571000 Encaissement facture FI-2026-00404 — SOUMANOU Awaou 150 000 — CAI-2026-00243 30/10/2026 CAI 706000 Encaissement facture FI-2026-00403 — AGOSSOU Foussena — 150 000 CAI-2026-00243 30/10/2026 CAI 571000 Encaissement facture FI-2026-00403 — AGOSSOU Foussena 150 000 —"
+       "texte": "Dernières écritures Toutes les écritures N° DATE JOURNAL COMPTE LIBELLÉ DÉBIT CRÉDIT CAI-2026-00247 30/10/2026 CAI 706000 Encaissement facture FP-2026-00408 — BUKE Foulumi — 1 160 CAI-2026-00247 30/10/2026 CAI 571000 Encaissement facture FP-2026-00408 — BUKE Foulumi 1 160 — CAI-2026-00246 30/10/2026 CAI 706000 Encaissement facture FI-2026-00406 — ODJIPIAR YUDJOUVOU Cichin — 140 000 CAI-2026-00246 30/10/2026 CAI 571000 Encaissement facture FI-2026-00406 — ODJIPIAR YUDJOUVOU Cichin 140 000 — CAI-2026-00245 30/10/2026 CAI 706000 Encaissement facture FI-2026-00405 — BUKE Noupi — 150 000 CAI-2026-00245 30/10/2026 CAI 571000 Encaissement facture FI-2026-00405 — BUKE Noupi 150 000 — CAI-2026-00244 30/10/2026 CAI 706000 Encaissement facture FI-2026-00404 — SOUVOLOUR Azomou — 150 000 CAI-2026-00244 30/10/2026 CAI 571000 Encaissement facture FI-2026-00404 — SOUVOLOUR Azomou 150 000 — CAI-2026-00243 30/10/2026 CAI 706000 Encaissement facture FI-2026-00403 — AKIAFADJO Fuchibu — 150 000 CAI-2026-00243 30/10/2026 CAI 571000 Encaissement facture FI-2026-00403 — AKIAFADJO Fuchibu 150 000 —"
       }
      ]
     },
@@ -4486,17 +4486,17 @@
           [
            "15h30",
            "CBG/65/26",
-           "TCHANE Idrissou",
+           "TIAMOU Igboupu",
            "Consultation prénatale",
-           "AHOHOU Rodrigue",
+           "AKPOMER Ridur",
            "Terminée"
           ],
           [
            "17h30",
            "CBG/67/26",
-           "BAKO Sylvie",
+           "BIALI Sunokpu",
            "Plaie infectée",
-           "YENI M’PO Florent",
+           "YORO M’ABEKPIA Foulumi",
            "En cours"
           ]
          ],
@@ -4518,7 +4518,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "Rendez-vous et consultations du jour Agenda complet HEURE DOSSIER PATIENT MOTIF PRATICIEN STATUT 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale AHOHOU Rodrigue Terminée 17h30 CBG/67/26 BAKO Sylvie Plaie infectée YENI M’PO Florent En cours"
+       "texte": "Rendez-vous et consultations du jour Agenda complet HEURE DOSSIER PATIENT MOTIF PRATICIEN STATUT 15h30 CBG/65/26 TIAMOU Igboupu Consultation prénatale AKPOMER Ridur Terminée 17h30 CBG/67/26 BIALI Sunokpu Plaie infectée YORO M’ABEKPIA Foulumi En cours"
       }
      ]
     }
@@ -4659,7 +4659,7 @@
   "dash-medecin#nomme": {
    "id": "dash-medecin",
    "role": "medecin",
-   "nom": "BADO BANI A. B. Zoulehath",
+   "nom": "BATOL BIAREL A. B. Zouguti",
    "titre": "Tableau de bord — Médecin",
    "description": "Consultations du jour, patients hospitalisés sous responsabilité et prescriptions récentes.",
    "blocs": [
@@ -4750,7 +4750,7 @@
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CBG908/25",
+           "AKIAFADJO Yelia CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4772,11 +4772,11 @@
        "raccourcis": null,
        "sousCartes": [
         {
-         "titre": "Adressés à BADO BANI A. B. Zoulehath",
+         "titre": "Adressés à BATOL BIAREL A. B. Zouguti",
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CBG908/25",
+           "AKIAFADJO Yelia CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4797,7 +4797,7 @@
          "lignes": [
           [
            "C001",
-           "AGOSSOU Yahouza CBG908/25",
+           "AKIAFADJO Yelia CBG908/25",
            "Urgence",
            "Règlement",
            "07:03",
@@ -4819,7 +4819,7 @@
          "entetes": []
         }
        ],
-       "texte": "Vos patients en attente 1 patient(s) vous attendent nommément, et 0 patient(s) sont en file commune — le prochain praticien libre les prend. Adressés à BADO BANI A. B. Zoulehath Colonnes Exporter N° PATIENT PRIORITÉ MOTIF ARRIVÉ À ACTIONS C001 AGOSSOU Yahouza CBG908/25 Urgence Règlement 07:03 Recevoir Affichage de 1 à 1 sur 1 enregistrement File commune de consultation Aucun patient en file commune. Ouvrir la file d’attente"
+       "texte": "Vos patients en attente 1 patient(s) vous attendent nommément, et 0 patient(s) sont en file commune — le prochain praticien libre les prend. Adressés à BATOL BIAREL A. B. Zouguti Colonnes Exporter N° PATIENT PRIORITÉ MOTIF ARRIVÉ À ACTIONS C001 AKIAFADJO Yelia CBG908/25 Urgence Règlement 07:03 Recevoir Affichage de 1 à 1 sur 1 enregistrement File commune de consultation Aucun patient en file commune. Ouvrir la file d’attente"
       }
      ]
     },
@@ -5036,70 +5036,70 @@
           [
            "26/08/2026 10h00",
            "CBG/138/26",
-           "YARO Edmond",
+           "YIAKI Edjukavom",
            "Hypertension — contrôle",
            "Terminée"
           ],
           [
            "26/08/2026 10h00",
            "CBG/34/26",
-           "SAMBIENI Ganiou",
+           "SEMIA Gedur",
            "Douleurs épigastriques",
            "Terminée"
           ],
           [
            "16/08/2026 17h30",
            "CBG/67/26",
-           "BAKO Sylvie",
+           "BIALI Sunokpu",
            "Plaie infectée",
            "En cours"
           ],
           [
            "16/08/2026 15h30",
            "CBG/65/26",
-           "TCHANE Idrissou",
+           "TIAMOU Igboupu",
            "Consultation prénatale",
            "Terminée"
           ],
           [
            "15/08/2026 18h15",
            "CBG/148/25",
-           "BOUKARI Alassane",
+           "BUKE Anapouzia",
            "Traumatisme",
            "Terminée"
           ],
           [
            "15/08/2026 17h00",
            "CBG/42/26",
-           "YARO Bertine",
+           "YIAKI Bodje",
            "Suivi de grossesse",
            "Terminée"
           ],
           [
            "15/08/2026 16h30",
            "CBG/74/26",
-           "HOUNKPATIN Salifou",
+           "HOULUKE Sazo",
            "Plaie infectée",
            "Terminée"
           ],
           [
            "15/08/2026 10h15",
            "CBG/10/25",
-           "SEIDOU Rachida",
+           "SIANUVU Rarouvil",
            "Contrôle diabète",
            "Planifiée"
           ],
           [
            "14/08/2026 13h45",
            "CBG/45/26",
-           "PARAISO Séraphine",
+           "PENU Sigbudja",
            "Fièvre persistante",
            "En cours"
           ],
           [
            "14/08/2026 11h45",
            "CBG/4/26",
-           "PARAISO Sabi",
+           "PENU Sabar",
            "Céphalées",
            "Terminée"
           ]
@@ -5130,7 +5130,7 @@
        "parcours": null,
        "raccourcis": null,
        "sousCartes": [],
-       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YARO Edmond Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SAMBIENI Ganiou Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BAKO Sylvie Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TCHANE Idrissou Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BOUKARI Alassane Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YARO Bertine Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOUNKPATIN Salifou Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SEIDOU Rachida Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PARAISO Séraphine Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PARAISO Sabi Céphalées Terminée"
+       "texte": "File d’attente et consultations récentes Toutes les consultations DATE DOSSIER PATIENT MOTIF STATUT 26/08/2026 10h00 CBG/138/26 YIAKI Edjukavom Hypertension — contrôle Terminée 26/08/2026 10h00 CBG/34/26 SEMIA Gedur Douleurs épigastriques Terminée 16/08/2026 17h30 CBG/67/26 BIALI Sunokpu Plaie infectée En cours 16/08/2026 15h30 CBG/65/26 TIAMOU Igboupu Consultation prénatale Terminée 15/08/2026 18h15 CBG/148/25 BUKE Anapouzia Traumatisme Terminée 15/08/2026 17h00 CBG/42/26 YIAKI Bodje Suivi de grossesse Terminée 15/08/2026 16h30 CBG/74/26 HOULUKE Sazo Plaie infectée Terminée 15/08/2026 10h15 CBG/10/25 SIANUVU Rarouvil Contrôle diabète Planifiée 14/08/2026 13h45 CBG/45/26 PENU Sigbudja Fièvre persistante En cours 14/08/2026 11h45 CBG/4/26 PENU Sabar Céphalées Terminée"
       }
      ]
     },

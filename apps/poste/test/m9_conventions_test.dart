@@ -108,7 +108,7 @@ void main() {
     await t.pumpAndSettle();
     final sim = lm(conv['simulations']);
     // Carte valide, souscripteur CNSS Atacora : 75 % plafonné à 6 000, hospitalisation plafonnée à 15 000 par jour.
-    await choisir(t, 'assure', 'ADAM Salifou');
+    await choisir(t, 'assure', 'ACHOUBE Sazo');
     final tt = textes(t);
     expect(tt, contains('Part assureur 23 130 FCFA'.replaceAll('Part assureur ', '')));
     expect(tt, contains('35 600 FCFA'));
@@ -116,7 +116,7 @@ void main() {
     expect(tt, contains('Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour'));
     expect(sim[0]['texte'], contains('Part assureur 23 130 FCFA'));
     // Carte expirée : RG-09, rien n'est couvert.
-    await choisir(t, 'assure', 'BAKO Boukari');
+    await choisir(t, 'assure', 'BIALI Buke');
     final t2 = textes(t);
     expect(t2, contains('NON VALIDE — expirée le 21/07/2026'));
     expect(t2.where((x) => x == 'Carte non valide à la date de facturation (RG-09)').length, 5);
@@ -127,7 +127,7 @@ void main() {
     await ouvrir(t, magasin(), 'm9-conventions');
     await toucher(t, find.text('Simulateur de répartition'));
     await t.pumpAndSettle();
-    await choisir(t, 'assure', 'ADAM Salifou');
+    await choisir(t, 'assure', 'ACHOUBE Sazo');
     final tt = textes(t);
     expect(tt.where((x) => x.startsWith('Convention non saisie pour ') || x.startsWith('Carte non valide')).length, 5);
     expect(tt, contains('à collecter'));

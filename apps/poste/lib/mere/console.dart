@@ -372,7 +372,7 @@ class _ConsoleMereState extends State<ConsoleMere> {
       taille: TailleModale.sm,
       corps: StatefulBuilder(
         builder: (c, majEtat) => Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          const LibelleChamp('Nom de l’appareil (ex. Réception, Dr Yeni)'),
+          const LibelleChamp('Nom de l’appareil (ex. Réception, Dr Yoro)'),
           TextField(controller: nom, autofocus: true, style: styleSaisie, decoration: decorationChamp()),
           if (mobile) ...[
             const SizedBox(height: 12),

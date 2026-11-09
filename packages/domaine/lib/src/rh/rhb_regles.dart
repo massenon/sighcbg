@@ -155,7 +155,7 @@ const rhbNs131DateEffet = '2026-07-13';
 const rhbNs131DateSignature = '2026-07-13';
 const rhbNs131Version = 1;
 const rhbNs131Statut = 'ACTIVE';
-const rhbNs131Signataire = 'BASSONGUI C. Séko Y., Directeur Médical';
+const rhbNs131Signataire = 'BICHIASI C. Sichovian Y., Directeur Médical';
 const rhbNs131Ampliation = 'Intéressés 41 — Archive 01';
 const rhbNs131Mention = 'Abroge toute disposition antérieure contraire.';
 
@@ -268,8 +268,8 @@ const rhbNs132DateEffet = '2026-07-13';
 const rhbNs132DateSignature = '2026-07-13';
 const rhbNs132Version = 1;
 const rhbNs132Statut = 'ACTIVE';
-const rhbNs132Signataire = 'BASSONGUI Chabi Séko, Directeur Médical';
-const rhbNs132RecuPar = 'KASSA A. B. Augustin — reçu le 13/07/2026';
+const rhbNs132Signataire = 'BICHIASI Cezoune Sichovian, Directeur Médical';
+const rhbNs132RecuPar = 'KALOU A. B. Avolutu — reçu le 13/07/2026';
 
 class RhbPrimeOrigine {
   const RhbPrimeOrigine(this.id, this.label, this.mode, this.montants);

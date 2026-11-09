@@ -584,9 +584,17 @@ class Magasin {
             .cast<String, Object?>()
       });
 
-  /// Pour les tests : mêmes fichiers, lus sur le disque.
-  static Magasin depuisDossier(List<String> noms,
-          [String dossier = 'assets/donnees/jeu']) =>
+  /// Le dossier du JEU DE TEST (décision J11, 08/11/2026) : copie PSEUDONYMISÉE du jeu qu'a livré la clinique d'origine, sur laquelle les tests de parité
+  /// comparent leurs résultats aux vecteurs de la maquette. Le jeu LIVRÉ avec le poste (`assets/donnees/jeu`, engendré par `tool/generer_jeu_baguidi.dart`)
+  /// est celui de la clinique Baguidi : il ne sert plus de référence aux tests. Chemin relatif à `apps/poste`, où `flutter test` s'exécute.
+  static const dossierJeuDeTest = 'test/fixtures/jeu_reference';
+
+  /// Pour les tests : mêmes fichiers, lus sur le disque. Sans dossier, le jeu de test ([dossierJeuDeTest]) ; le chargement de production, lui, passe par
+  /// [depuisAssets] et ne change pas.
+  static Magasin depuisDossier(List<String> noms, [String? dossier]) =>
+      _depuisDossier(noms, dossier ?? dossierJeuDeTest);
+
+  static Magasin _depuisDossier(List<String> noms, String dossier) =>
       Magasin({
         for (final n in noms)
           n: _lire(File('$dossier/$n.json').readAsStringSync())

@@ -283,7 +283,7 @@
     "Votre santé, notre raison de vivre",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
-    "EZIN Orou",
+    "ESEDJOR Odjipiar",
     "Réception / Accueil",
     "Votre session est suspendue, pas fermée.",
     "Au déverrouillage, vous reviendrez sur « Agenda ».",
@@ -301,7 +301,7 @@
     "action": "Déverrouillage de session",
     "module": "M14",
     "entite": "Session",
-    "reference": "e.orou",
+    "reference": "e.odjipiar",
     "apres": null
    }
   },
@@ -321,7 +321,7 @@
     "Votre santé, notre raison de vivre",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
-    "EZIN Orou",
+    "ESEDJOR Odjipiar",
     "Réception / Accueil",
     "Mot de passe",
     "Déverrouiller",
@@ -348,7 +348,7 @@
     "Votre santé, notre raison de vivre",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
-    "EZIN Orou",
+    "ESEDJOR Odjipiar",
     "Réception / Accueil",
     "Mot de passe",
     "Déverrouiller",
@@ -2326,7 +2326,7 @@
    ],
    [
     "Éditeur",
-    "Dr MASSENON Rhodes"
+    "Dr MOGBO Rhodes"
    ],
    [
     "Établissement",
@@ -2669,7 +2669,7 @@
    }
   ],
   "coordonnees": [
-   "Dr MASSENON Rhodes",
+   "Dr MOGBO Rhodes",
    "Éditeur du logiciel SIGH-CBG",
    "rarhodes06@gmail.com · contact@massenonrhodes.com",
    "+229 01 51 33 50 40",

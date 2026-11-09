@@ -238,7 +238,7 @@ void main() {
           {'reference': 'M000415'}
         ],
         methode: 'prixVente',
-        utilisateur: 'BASSONGUI Chabi Séko',
+        utilisateur: 'BICHIASI Cezoune Sichovian',
         instant: _instant,
       );
       expect('Médicaments délivrés — ${r.mouvements.length} sortie(s) de stock.', (a['toasts'] as List).first.first);

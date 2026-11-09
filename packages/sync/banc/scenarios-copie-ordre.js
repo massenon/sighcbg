@@ -29,18 +29,18 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     };
     const pretes = async (p) => { const e = await p.etat(); return e.copie_en_attente === 0; };
 
-    await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AKPO', tel: '1' }, role: 'reception' });
+    await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AMITU', tel: '1' }, role: 'reception' });
     verifier('F2 reçoit la fiche', await attendre(async () => !!(await f2.fiches()).fiches['patients/p1'], 15000));
     const vu = (await f1.fiches()).fiches['patients/p1'].hlc;
     f1.coupe(); f2.coupe();
     await dormir(300);
     await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'modifier', champs: { tel: '2' }, vu: { tel: vu.tel }, role: 'reception' });
-    await f2.emettre({ collection: 'patients', fiche: 'p1', type: 'modifier', champs: { nom: 'AKPO-DOSSOU' }, vu: { nom: vu.nom }, role: 'reception' });
+    await f2.emettre({ collection: 'patients', fiche: 'p1', type: 'modifier', champs: { nom: 'AMITU-DULOUNE' }, vu: { nom: vu.nom }, role: 'reception' });
     await dormir(400);
     f2.rouvre(); await dormir(800); f1.rouvre();
     verifier('les deux postes reconvergent sur la même fiche (tel 2 ET nom modifié)', await attendre(async () => {
       const a = (await f1.fiches()).fiches['patients/p1'], b = (await f2.fiches()).fiches['patients/p1'];
-      return a && b && a.data.tel === '2' && a.data.nom === 'AKPO-DOSSOU' && JSON.stringify(a.data) === JSON.stringify(b.data);
+      return a && b && a.data.tel === '2' && a.data.nom === 'AMITU-DULOUNE' && JSON.stringify(a.data) === JSON.stringify(b.data);
     }, 25000));
     verifier('chacun a déposé sa copie finale', await attendre(async () => (await pretes(f1)) && (await pretes(f2)), 25000));
     await dormir(800);

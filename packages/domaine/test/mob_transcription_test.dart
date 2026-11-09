@@ -117,7 +117,7 @@ void main() {
     final produits = liste(cat['produits']);
     final champs = mobChampsOrdonnance(
         patient: patient, patientId: '${patient['id']}', noteId: 'n1', saisie: {'med': '${produits.first['id']}', 'quantite': '2', 'poso': '1 cp × 3/j', 'duree': '5'},
-        acteur: 'Dr YENI', fonction: 'medecin', maintenant: DateTime.parse('2026-10-31T10:00:00'), produits: produits);
+        acteur: 'Dr YORO', fonction: 'medecin', maintenant: DateTime.parse('2026-10-31T10:00:00'), produits: produits);
     final r = mobTranscrire(m, {...champs, 'id': 'pm1'}, note: {'diagnostic': 'Paludisme simple'});
     expect(r.deja, isFalse);
     expect(r.ordonnance['montant'], (produits.first['prixAchat'] as num) * 2, reason: 'RG-02');
@@ -126,7 +126,7 @@ void main() {
     expect([for (final t in r.taches) t['type']], containsAll(['encaissement', 'dispensation']));
 
     final ana = mobChampsDemandeAnalyses(
-        patient: patient, patientId: '${patient['id']}', noteId: 'n1', examens: const ['NFS', 'CRP'], urgence: mobUrgencesAnalyses[1], acteur: 'Dr YENI', fonction: 'medecin', maintenant: DateTime.parse('2026-10-31T10:00:00'));
+        patient: patient, patientId: '${patient['id']}', noteId: 'n1', examens: const ['NFS', 'CRP'], urgence: mobUrgencesAnalyses[1], acteur: 'Dr YORO', fonction: 'medecin', maintenant: DateTime.parse('2026-10-31T10:00:00'));
     final r2 = mobTranscrire(m, {...ana, 'id': 'pm2'});
     expect(r2.demandes.length, 2);
     expect(r2.ordonnance['urgent'], isTrue);

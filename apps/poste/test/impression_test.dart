@@ -36,7 +36,7 @@ final entree = EntreeTicket(
 final piece = PieceA4(
   titre: 'État de test',
   reference: 'CBG-20261030-0001',
-  utilisateur: 'ADJAHO Rose',
+  utilisateur: 'AGBESEN Roulin',
   edite: date,
   tableaux: [
     TableauEtat(colonnes: [
@@ -127,7 +127,7 @@ void main() {
     expect(find.text('TOTAL'), findsOneWidget);
     expect(
         find.textContaining(
-            'Document généré par ADJAHO Rose le 30/10/2026 à 14h05'),
+            'Document généré par AGBESEN Roulin le 30/10/2026 à 14h05'),
         findsOneWidget);
     expect(find.text('Réf. document : CBG-20261030-0001'), findsOneWidget);
     expect(find.text('Autorisation d’ouverture : N° 012/MS/DNSP/2009'), findsOneWidget);

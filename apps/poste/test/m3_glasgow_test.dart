@@ -16,7 +16,7 @@ import 'parite/extracteur.dart';
 /// et sa parité N1 est mesurée contre la fiche extraite.
 final v = dico(lireVecteurs('hospitalisation.json')['glasgow']);
 final patients = liste(dico(lireVecteurs('hospitalisation.json')['transfusion'])['patients']);
-final soignants = liste(jsonDecode(File('assets/donnees/jeu/soignants.json').readAsStringSync()));
+final soignants = liste(jsonDecode(File('test/fixtures/jeu_reference/soignants.json').readAsStringSync()));
 
 Magasin magasin() => Magasin({
       'scoresGlasgow': [for (final x in liste(v['jeu'])) {...x}],
@@ -62,7 +62,7 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
     expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget, reason: 'sans date : refus nommé');
     expect(m.collection('scoresGlasgow').actives.length, avant);
-    await choisir(t, 'patientCode', 'CBG/2/26 — BAKO Boukari');
+    await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
     await dater(t, 'dateHeure_d', 16);
     await ecrire(t, 'dateHeure_h', '09:00');
     await choisir(t, 'axe0', 'À la douleur — 2 point(s)');

@@ -321,7 +321,7 @@ void main() {
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       expect(m.collection('heuresSup').actives.length, n0, reason: 'rien n’est écrit sur un formulaire incomplet');
       final a = mm(mm(hs['creation'])['agent']);
-      await choisir(t, 'employeId', '${a['matricule']} — IDRISSOU ANIKI Baba-Toundé');
+      await choisir(t, 'employeId', '${a['matricule']} — IGBOUPU ATUGBIPOU Badom-Tukepou');
       await saisir(t, 'heures', '10');
       await saisir(t, 'majoration', '50');
       await choisir(t, 'motif', 'Urgence');
@@ -404,7 +404,7 @@ void main() {
       final a = mm(av['refusPlafond']);
       await toucher(t, find.text('Nouveau'));
       await t.pumpAndSettle();
-      await choisir(t, 'employeId', '11 — IDRISSOU ANIKI Baba-Toundé (salaire ${money(a['salaireBase'])})');
+      await choisir(t, 'employeId', '11 — IGBOUPU ATUGBIPOU Badom-Tukepou (salaire ${money(a['salaireBase'])})');
       await saisir(t, 'montant', '${(a['salaireBase'] as num) * 3 + 1}');
       await saisir(t, 'nbMensualites', '7');
       await choisir(t, 'motif', 'Frais de santé');
@@ -460,7 +460,7 @@ void main() {
           expect(tt, contains('$cel'), reason: 'tableau : $cel');
         }
       }
-      expect(tt.any((x) => x.startsWith('Il est accordé à AGOSSOU Yahouza, matricule 9')), true);
+      expect(tt.any((x) => x.startsWith('Il est accordé à AKIAFADJO Yelia, matricule 9')), true);
       expect(tt.any((x) => x.contains('jusqu’à apurement complet.')), true);
       for (final s in lm(piece['signatures'])) {
         expect(tt, contains(s['role']));
@@ -508,13 +508,13 @@ void main() {
       await toucher(t, find.text('Créer'));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       expect(m.collection('pretsEtudes').actives.length, n0);
-      await choisir(t, 'employeId', 'KINNOU A. Ganiou');
+      await choisir(t, 'employeId', 'KELE A. Gedur');
       await saisir(t, 'objet', 'Formation continue');
       await saisir(t, 'montant', '100001');
       await dater(t, 'dateAccord', 15);
       await saisir(t, 'premiereEcheance', '2026-12');
       await saisir(t, 'nbEcheances', '3');
-      await saisir(t, 'autorisePar', 'TAKI Alimatou');
+      await saisir(t, 'autorisePar', 'TACHEDI Arialu');
       await toucher(t, find.text('Créer'));
       await t.pumpAndSettle();
       final f = m.collection('pretsEtudes').actives.first;

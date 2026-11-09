@@ -17,7 +17,7 @@ M obj(Object? o) => (o as Map).cast<String, Object?>();
 /// L'horloge du script : 16/08/2026 10 h (UTC dans le navigateur du banc).
 final maintenant = DateTime.utc(2026, 8, 16, 10);
 final aujourdhui = DateTime(2026, 8, 16);
-const acteur = 'BASSONGUI Chabi Séko';
+const acteur = 'BICHIASI Cezoune Sichovian';
 DateTime d(String iso) => DateTime.parse(iso);
 
 /// Applique une écriture d'obligation au magasin simulé : la copie va à l'historique, la fiche est remplacée (ou créée, ou archivée).
@@ -135,7 +135,7 @@ void main() {
       expect(r.id, 'IDL001');
       expect(r.fiche!['slogan'], 'Nouveau slogan');
       expect(r.fiche!['modifiePar'], acteur);
-      final validees = [for (final x in versions) {...x, 'valideLe': '2026-08-16T11:00:00.000Z', 'validePar': 'TAKI Alimatou'}];
+      final validees = [for (final x in versions) {...x, 'valideLe': '2026-08-16T11:00:00.000Z', 'validePar': 'TACHEDI Arialu'}];
       expect(cfbEnregistrerIdentite(validees, {'slogan': 'X'}, acteur: acteur, maintenant: maintenant, aujourdhui: aujourdhui).refus!.code, 'VERSION_REQUISE');
       expect(cfbEnregistrerIdentite(versions, {'ifu': '12'}, acteur: acteur, maintenant: maintenant, aujourdhui: aujourdhui).refus!.code, 'IFU_FORMAT');
       expect(cfbEnregistrerIdentite(const [], {'slogan': 'X'}, acteur: acteur, maintenant: maintenant, aujourdhui: aujourdhui).refus!.code, 'IDENTITE_ABSENTE');
@@ -395,7 +395,7 @@ void main() {
     });
 
     test('la DAF valide d’un coup les 19 fiches actives (18 obligations après le retrait de la TVM, plus les paramètres ORTB) : état « valide »', () {
-      final r = cfbValiderObligations(obligations, role: 'da', acteur: 'TAKI Alimatou', maintenant: maintenant);
+      final r = cfbValiderObligations(obligations, role: 'da', acteur: 'TACHEDI Arialu', maintenant: maintenant);
       final att = obj(vv['da']);
       expect([r.ok, r.nombre, r.validePar], [att['ok'], att['nombre'], att['validePar']]);
       for (var i = 0; i < obligations.length; i++) {
@@ -403,8 +403,8 @@ void main() {
       }
       final e = cfbEtatObligations(obligations, historique);
       expect(e.etat, vv['etatObligations']);
-      expect(e.validePar, 'TAKI Alimatou');
-      expect(cfbTexteEtat(e, 'liste des obligations', (iso) => iso), 'Validé le ${r.valideLe} par TAKI Alimatou.');
+      expect(e.validePar, 'TACHEDI Arialu');
+      expect(cfbTexteEtat(e, 'liste des obligations', (iso) => iso), 'Validé le ${r.valideLe} par TACHEDI Arialu.');
       expect(cfbEtatObligations(const [], const []).etat, 'a_valider');
     });
 
@@ -415,7 +415,7 @@ void main() {
       appliquer(r, obligations, historique);
       final e = cfbEtatObligations(obligations, historique);
       expect(e.etat, att['etat']);
-      expect(e.validationAnterieure!['validePar'], 'TAKI Alimatou');
+      expect(e.validationAnterieure!['validePar'], 'TACHEDI Arialu');
       expect(e.modifiePar, acteur);
       expect(cfbTexteEtat(e, 'liste des obligations', (iso) => iso), startsWith('Modifié le ${e.modifieLe} par $acteur depuis la validation du '));
       final reg = cfbRegenererEcheances(echeances, code: 'ITS', dateEffet: '2026-09-01', auteur: acteur, maintenant: maintenant, obligations: obligations, historique: historique);

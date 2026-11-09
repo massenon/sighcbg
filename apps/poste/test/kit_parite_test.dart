@@ -254,7 +254,7 @@ void main() {
     expect(find.text('Ce champ est obligatoire.'), findsOneWidget);
     expect(find.byKey(const Key('kit:champ:precision')), findsNothing,
         reason: 'masqué tant que « Autre » n’est pas choisi');
-    c.poser('nom', 'Awa');
+    c.poser('nom', 'Azemidia');
     final ok = c.valider();
     expect(ok, isNotNull);
     expect(ok!.containsKey('precision'), isFalse);
@@ -403,7 +403,7 @@ void main() {
     String? csv;
     final lignes = [
       for (var i = 1; i <= 30; i++)
-        {'id': 'r$i', 'nom': i == 5 ? 'Hélène' : 'Patient $i', 'n': i}
+        {'id': 'r$i', 'nom': i == 5 ? 'Hekoukpol' : 'Patient $i', 'n': i}
     ];
     await monter(
         t,
@@ -415,9 +415,9 @@ void main() {
           lignes: lignes,
           alExporter: (nom, c) => csv = c,
         ));
-    await t.enterText(find.byKey(const Key('kit:tableau-recherche')), 'helene');
+    await t.enterText(find.byKey(const Key('kit:tableau-recherche')), 'hekoukpol');
     await t.pump();
-    expect(find.text('Hélène'), findsOneWidget);
+    expect(find.text('Hekoukpol'), findsOneWidget);
     expect(
         find.text('Affichage de 1 à 1 sur 1 enregistrement'), findsOneWidget);
     await t.enterText(find.byKey(const Key('kit:tableau-recherche')), 'zzz');

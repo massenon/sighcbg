@@ -188,7 +188,7 @@ class EcranDirection extends StatelessWidget with EcranMaquette {
                 ],
                 lignes: [for (final l in d.lignesRapport) {'k': l.$1, 'v': l.$2}])),
           ],
-          signatures: const [Signature('Le Directeur Médical'), Signature('La Directrice Administrative', nom: 'TAKI Alimatou')],
+          signatures: const [Signature('Le Directeur Médical'), Signature('La Directrice Administrative', nom: 'TACHEDI Arialu')],
         ));
   }
 

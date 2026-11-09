@@ -12,7 +12,7 @@
 ///   · E74 ✅ modifier un bon déjà validé écrasait le validateur ; E75 ✅ modifier un bon le RENUMÉROTAIT ;
 ///   · E73 porté fidèlement : qui pilote le circuit peut poser l'étape « Validation DA » ou « Quantité accordée » à la saisie, et la DAF est alors portée
 ///     validatrice sans avoir arbitré ;
-///   · E77 porté fidèlement : « DAF » = 'TAKI Alimatou', écrit en dur (validateur, signatures) quel que soit l'agent connecté.
+///   · E77 porté fidèlement : « DAF » = 'TACHEDI Arialu', écrit en dur (validateur, signatures) quel que soit l'agent connecté.
 library;
 
 import '../format/format_fr.dart';
@@ -27,7 +27,7 @@ class RefusAchat implements Exception {
 }
 
 /// L'agent qui valide pour la Directrice Administrative dans la maquette (E77 : écrit en dur).
-const directriceAdministrative = 'TAKI Alimatou';
+const directriceAdministrative = 'TACHEDI Arialu';
 
 class EtatBesoin {
   const EtatBesoin(this.id, this.libelle, this.ton);

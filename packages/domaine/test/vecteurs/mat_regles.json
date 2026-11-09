@@ -23,7 +23,7 @@
     "reference": "NAI-9000",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -81,7 +81,7 @@
     "reference": "NAI-9001",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -139,7 +139,7 @@
     "reference": "NAI-9002",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -197,7 +197,7 @@
     "reference": "NAI-9003",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -255,7 +255,7 @@
     "reference": "NAI-9004",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -313,7 +313,7 @@
     "reference": "NAI-9005",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -371,7 +371,7 @@
     "reference": "NAI-9006",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -429,7 +429,7 @@
     "reference": "NAI-9007",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -487,7 +487,7 @@
     "reference": "NAI-9008",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -545,7 +545,7 @@
     "reference": "NAI-9009",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -603,7 +603,7 @@
     "reference": "NAI-9010",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -661,7 +661,7 @@
     "reference": "NAI-9011",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -719,7 +719,7 @@
     "reference": "NAI-9012",
     "accouchementId": "ACC0001",
     "dateHeure": "2026-07-09T11:11:00.000Z",
-    "mere": "TCHANE Fatouma",
+    "mere": "TIAMOU Fiapeken",
     "mereCode": "CBG/96/26",
     "mereId": "PAT0096",
     "sexe": "M",
@@ -1494,7 +1494,7 @@
     ],
     [
      "accoucheur",
-     "BASSONGUI Chabi Séko"
+     "BICHIASI Cezoune Sichovian"
     ]
    ],
    "nouveau": [
@@ -1505,9 +1505,9 @@
      "debut": "2026-08-16T08:00:00.000Z",
      "gestite": 2,
      "parite": 1,
-     "accoucheur": "BASSONGUI Chabi Séko",
+     "accoucheur": "BICHIASI Cezoune Sichovian",
      "patientId": "PAT0001",
-     "patient": "TCHANE Bertine",
+     "patient": "TIAMOU Bodje",
      "reference": "PARTO-9007",
      "mesures": [],
      "clos": false
@@ -1835,12 +1835,12 @@
   ],
   "imprime": {
    "titre": "PARTOGRAPHIE",
-   "sousTitre": "PARTO-9007 — TCHANE Bertine",
+   "sousTitre": "PARTO-9007 — TIAMOU Bodje",
    "filigrane": null,
    "cartouche": [
     [
      "Parturiente",
-     "TCHANE Bertine"
+     "TIAMOU Bodje"
     ],
     [
      "Dossier",
@@ -1856,7 +1856,7 @@
     ],
     [
      "Accoucheur",
-     "BASSONGUI Chabi Séko"
+     "BICHIASI Cezoune Sichovian"
     ],
     [
      "Résumé",
@@ -1866,7 +1866,7 @@
    "signatures": [
     {
      "role": "L’Accoucheur",
-     "nom": "BASSONGUI Chabi Séko",
+     "nom": "BICHIASI Cezoune Sichovian",
      "mention": "Nom, qualification et signature"
     }
    ],
@@ -2306,7 +2306,7 @@
       "sageFemme": "",
       "statutDossier": "suivi",
       "patientId": "PAT0001",
-      "patient": "TCHANE Bertine",
+      "patient": "TIAMOU Bodje",
       "age": 37,
       "dpa": "2027-02-14",
       "facteurs": {}
@@ -2540,7 +2540,7 @@
       "sageFemme": "",
       "statutDossier": "suivi",
       "patientId": "PAT0006",
-      "patient": "DIEYABIDI Bibata",
+      "patient": "DATU Bouboli",
       "age": 27,
       "dpa": "2026-10-07",
       "facteurs": {
@@ -2789,7 +2789,7 @@
     "numeroDossier": "00003/26",
     "dateEntree": "2026-04-20",
     "patientId": "PAT0013",
-    "patient": "GARBA Aïssatou",
+    "patient": "GEVAMIAN Amachim",
     "patientCode": "CBG/13/26",
     "age": 77,
     "taille": 1.58,
@@ -2801,7 +2801,7 @@
     "telephoneContact": "97771257",
     "referee": false,
     "refereePar": "",
-    "procreateurNom": "N. Bio",
+    "procreateurNom": "N. Bounoukia",
     "procreateurProfession": "Maçon",
     "procreateurGs": "AB+",
     "procreateurSerologie": "Négative",
@@ -2875,7 +2875,7 @@
     "infoPF": "",
     "referenceCPN": "",
     "referenceAccouchement": "",
-    "sageFemme": "BASSONGUI Chabi Séko",
+    "sageFemme": "BICHIASI Cezoune Sichovian",
     "statutDossier": "suivi"
    },
    "prerempli": [
@@ -2925,7 +2925,7 @@
     ],
     [
      "procreateurNom",
-     "N. Bio"
+     "N. Bounoukia"
     ],
     [
      "procreateurProfession",
@@ -3046,7 +3046,7 @@
     "numeroDossier": "00003/26",
     "dateEntree": "2026-04-20",
     "patientId": "PAT0013",
-    "patient": "GARBA Aïssatou",
+    "patient": "GEVAMIAN Amachim",
     "patientCode": "CBG/13/26",
     "age": 77,
     "taille": 1.58,
@@ -3058,7 +3058,7 @@
     "telephoneContact": "97771257",
     "referee": false,
     "refereePar": "",
-    "procreateurNom": "N. Bio",
+    "procreateurNom": "N. Bounoukia",
     "procreateurProfession": "Maçon",
     "procreateurGs": "AB+",
     "procreateurSerologie": "Négative",
@@ -3187,7 +3187,7 @@
    "parOnglet": [
     {
      "onglet": "Identité & antécédents",
-     "texte": "N° de dossier 00001/26 Gestité / Parité G7 P7 Terme prévu 07/10/2026 Facteurs de surveillance 2 Identité & antécédents Soins préventifs Consultations prénatales (0) Accouchement & nouveau-né Partogramme & suites Parturiente N° de dossier 00001/26 Nom DIEYABIDI Bibata Dossier patient CBG/6/25 Âge 27 ans Taille — Profession — Nationalité — Quartier — Téléphone — Personne à contacter — Venue Référée par CS Kouandé Date d’entrée 16/08/2026 Sage-femme référente — Procréateur Nom et prénoms — Profession — Groupe sanguin / Rhésus — Sérologie du conjoint — Antécédents Maladies et opérations Néant Traitements en cours Néant Allergies Non connues Gestité 7 Parité 7 Avortements 0 Enfants vivants 0 Enfants décédés 0 Transfusions antérieures 0 DDR 31/12/2025 Date probable de l’accouchement 07/10/2026 Facteurs de surveillance Grossesse à risque — 2 facteur(s) coché(s). C’est leur CUMUL qui classe, jamais un facteur isolé. FACTEUR RELEVÉ Parité > 6 HTA connue Examens complémentaires EXAMEN GROUPE RÉSULTAT Groupe sanguin Immuno-hématologie Non renseigné Rhésus Immuno-hématologie Non renseigné Test de Coombs indirect Immuno-hématologie Non renseigné Électrophorèse de l’hémoglobine Immuno-hématologie Non renseigné Taux d’hémoglobine Hématologie Non renseigné Hématocrite Hématologie Non renseigné Plaquettes Hématologie Non renseigné TPHA Sérologie Non renseigné VDRL Sérologie Non renseigné HIV 1 Sérologie Non renseigné HIV 2 Sérologie Non renseigné Toxoplasmose IgG Sérologie Non renseigné Toxoplasmose IgM Sérologie Non renseigné Rubéole IgG Sérologie Non renseigné Rubéole IgM Sérologie Non renseigné Hépatite B (à partir de 6 mois) Sérologie Non renseigné ECBU Bactériologie Non renseigné Glycémie à jeun Biochimie Non renseigné GP 75 Biochimie Non renseigné",
+     "texte": "N° de dossier 00001/26 Gestité / Parité G7 P7 Terme prévu 07/10/2026 Facteurs de surveillance 2 Identité & antécédents Soins préventifs Consultations prénatales (0) Accouchement & nouveau-né Partogramme & suites Parturiente N° de dossier 00001/26 Nom DATU Bouboli Dossier patient CBG/6/25 Âge 27 ans Taille — Profession — Nationalité — Quartier — Téléphone — Personne à contacter — Venue Référée par CS Kouandé Date d’entrée 16/08/2026 Sage-femme référente — Procréateur Nom et prénoms — Profession — Groupe sanguin / Rhésus — Sérologie du conjoint — Antécédents Maladies et opérations Néant Traitements en cours Néant Allergies Non connues Gestité 7 Parité 7 Avortements 0 Enfants vivants 0 Enfants décédés 0 Transfusions antérieures 0 DDR 31/12/2025 Date probable de l’accouchement 07/10/2026 Facteurs de surveillance Grossesse à risque — 2 facteur(s) coché(s). C’est leur CUMUL qui classe, jamais un facteur isolé. FACTEUR RELEVÉ Parité > 6 HTA connue Examens complémentaires EXAMEN GROUPE RÉSULTAT Groupe sanguin Immuno-hématologie Non renseigné Rhésus Immuno-hématologie Non renseigné Test de Coombs indirect Immuno-hématologie Non renseigné Électrophorèse de l’hémoglobine Immuno-hématologie Non renseigné Taux d’hémoglobine Hématologie Non renseigné Hématocrite Hématologie Non renseigné Plaquettes Hématologie Non renseigné TPHA Sérologie Non renseigné VDRL Sérologie Non renseigné HIV 1 Sérologie Non renseigné HIV 2 Sérologie Non renseigné Toxoplasmose IgG Sérologie Non renseigné Toxoplasmose IgM Sérologie Non renseigné Rubéole IgG Sérologie Non renseigné Rubéole IgM Sérologie Non renseigné Hépatite B (à partir de 6 mois) Sérologie Non renseigné ECBU Bactériologie Non renseigné Glycémie à jeun Biochimie Non renseigné GP 75 Biochimie Non renseigné",
      "cartes": [
       "Parturiente",
       "Parturiente",

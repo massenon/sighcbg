@@ -77,7 +77,7 @@ void main() {
       expect(kpisAffiches(t), k(c['kpis']));
       expect(find.text('Détail du calcul — mars 2026'), findsOneWidget);
       // le tiroir de l'agent n° 1 : gains, retenues (ORTB Radio dû, Télé en juin), charges patronales
-      await toucher(t, find.text('BASSONGUI Chabi Séko').first);
+      await toucher(t, find.text('BICHIASI Cezoune Sichovian').first);
       await t.pumpAndSettle();
       expect(find.text('Paie de Mars 2026'), findsOneWidget, reason: 'la période du tiroir est le LIBELLÉ du mois, pas « 2026-03 » (E681)');
       final tiroir = mm(mm(c['tiroirs'])['1']);
@@ -98,7 +98,7 @@ void main() {
       await ouvrir(t, magasin(), 'm11-calcul');
       await choisir(t, 'mois', 'Juin 2026');
       expect(kpisAffiches(t), k(mm(mois(5)['calcul'])['kpis']));
-      await toucher(t, find.text('BASSONGUI Chabi Séko').first);
+      await toucher(t, find.text('BICHIASI Cezoune Sichovian').first);
       await t.pumpAndSettle();
       final tt = textes(t);
       expect(tt, contains('Annuelle, prélevée en mars'));
@@ -114,7 +114,7 @@ void main() {
       final pieceMaquette = mm(mm(mm(mois(2)['calcul'])['tiroirs'])['1'])['piece'] as Map;
       expect(find.text('Bulletin de paie'), findsWidgets);
       final tt = textes(t);
-      expect(tt, contains('BASSONGUI Chabi Séko'));
+      expect(tt, contains('BICHIASI Cezoune Sichovian'));
       for (final tb in lm(pieceMaquette['tables'])) {
         for (final l in lm([for (final x in tb['lignes'] as List) {'c': x}])) {
           for (final cel in (l['c'] as List)) {
@@ -341,7 +341,7 @@ void main() {
       await ouvrir(t, avecS1(), 'm11-calcul');
       final c = mm(mm(mm(s1['mois'])['9'])['calcul']);
       expect(kpisAffiches(t), kpisVecteur(c['kpis']));
-      await toucher(t, find.text('BASSONGUI Chabi Séko').first);
+      await toucher(t, find.text('BICHIASI Cezoune Sichovian').first);
       await t.pumpAndSettle();
       final tt = textes(t);
       final tiroir = mm(mm(c['tiroirs'])['1']);
@@ -360,7 +360,7 @@ void main() {
 
     cas('le bulletin imprimé porte les deux rubriques, et son total retombe sur celui du tiroir', (t) async {
       await ouvrir(t, avecS1(), 'm11-calcul');
-      await toucher(t, find.text('BASSONGUI Chabi Séko').first);
+      await toucher(t, find.text('BICHIASI Cezoune Sichovian').first);
       await t.pumpAndSettle();
       await toucher(t, find.text('Éditer le bulletin'));
       await t.pumpAndSettle();

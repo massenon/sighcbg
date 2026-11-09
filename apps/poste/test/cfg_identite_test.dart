@@ -138,7 +138,7 @@ void main() {
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Prévisualiser un état'));
     expect(find.text('Aperçu du papier à en-tête'), findsWidgets);
     expect(find.textContaining('Modèle appliqué à tous les documents édités'), findsWidgets);
-    expect(find.textContaining('TAKI Alimatou'), findsWidgets);
+    expect(find.textContaining('TACHEDI Arialu'), findsWidgets);
   });
 
   casM14('dépôt d’une ressource : le fichier est CONSERVÉ dans le poste, la ligne passe à « Déposé » ; remplacer archive l’ancien ; retirer archive (RG-14)', (t) async {

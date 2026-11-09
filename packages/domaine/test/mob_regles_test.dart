@@ -47,7 +47,7 @@ void main() {
       expect(mobUrgencesAnalyses, (a['urgences'] as List).cast<String>());
       final aucun = (a['aucunExamen'] as Map).cast<String, Object?>();
       expect(aucun['visible'], isTrue);
-      final fiche = {'code': 'CBG/1/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
+      final fiche = {'code': 'CBG/1/26', 'nom': 'DULOUNE', 'prenom': 'Aline'};
       try {
         mobChampsDemandeAnalyses(patient: fiche, patientId: 'p1', noteId: 'n1', examens: const [], urgence: '', acteur: 'X', fonction: 'medecin', maintenant: maintenant);
         fail('une demande sans examen doit être refusée');
@@ -135,14 +135,14 @@ void main() {
   });
 
   group('constantes et note : ce que le mobile écrit', () {
-    final patient = {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline'};
+    final patient = {'code': 'CBG/12/26', 'nom': 'DULOUNE', 'prenom': 'Aline'};
     test('la fiche des constantes reprend les champs du relevé de l\'accueil', () {
-      final c = mobChampsConstantes(patient: patient, patientId: 'p1', saisie: saisie({'temperature': '38,5', 'sys': '120', 'dia': '80', 'poids': '62'}), acteur: 'YENI M’PO Florent', maintenant: maintenant);
+      final c = mobChampsConstantes(patient: patient, patientId: 'p1', saisie: saisie({'temperature': '38,5', 'sys': '120', 'dia': '80', 'poids': '62'}), acteur: 'YORO M’ABEKPIA Foulumi', maintenant: maintenant);
       expect(c['temperature'], 38.5);
       expect(c['tension'], '120/80');
       expect(c['tensionSys'], 120);
       expect(c['dateHeure'], '2026-08-16T12:00');
-      expect(c['releveePar'], 'YENI M’PO Florent');
+      expect(c['releveePar'], 'YORO M’ABEKPIA Foulumi');
       expect(c['patientCode'], 'CBG/12/26');
       expect(c.containsKey('pouls'), isFalse, reason: 'un champ non saisi n\'est pas écrit');
       expect(mobFievre(saisie({'temperature': '38'})), isTrue);
@@ -167,14 +167,14 @@ void main() {
           patient: patient,
           patientId: 'p1',
           saisie: {'motif': 'Suivi HTA', 'diagnostic': 'Hypertension artérielle', 'palpation': 'Abdomen souple', 'auscultation': '  ', 'orientation': 'domicile'},
-          acteur: 'YENI M’PO Florent',
+          acteur: 'YORO M’ABEKPIA Foulumi',
           fonction: 'medecin',
           maintenant: maintenant,
           constantes: constantes);
       expect((n['constantesAccueil'] as Map)['temperature'], 38.5, reason: 'la plus récente, du bon patient');
       expect(n['examenClinique'], {'palpation': 'Abdomen souple'});
       expect(n['orientationLabel'], 'Domicile — traitement ambulatoire');
-      expect(n['redigePar'], 'YENI M’PO Florent');
+      expect(n['redigePar'], 'YORO M’ABEKPIA Foulumi');
       expect(n['type'], 'Domicile');
       final autre = mobChampsNote(
           patient: patient, patientId: 'p1', saisie: {'motif': 'm', 'diagnostic': mobDiagnosticAutre, 'precision': 'Dermatose'}, acteur: 'X', fonction: 'medecin', maintenant: maintenant);
@@ -202,7 +202,7 @@ void main() {
       {'id': 'PRD0005', 'designation': 'RAYON', 'categorie': 'reactif', 'stock': 5},
     ];
     Map<String, Object?> ordonnance(Map<String, String> saisie) => mobChampsOrdonnance(
-        patient: patient, patientId: 'p1', noteId: 'n1', saisie: saisie, acteur: 'YENI M’PO Florent', fonction: 'medecin', maintenant: maintenant, produits: produits);
+        patient: patient, patientId: 'p1', noteId: 'n1', saisie: saisie, acteur: 'YORO M’ABEKPIA Foulumi', fonction: 'medecin', maintenant: maintenant, produits: produits);
 
     test('le catalogue du lot : médicaments et consommables médicaux, par ordre alphabétique, sans archivés ni réactifs ; le stock du jour est le détail', () {
       final l = mobProduitsPrescriptibles(produits);
@@ -263,7 +263,7 @@ void main() {
     });
 
     test('identité, allergies, dernières constantes hors bornes, notes et prescriptions du patient seulement', () {
-      final p = {'code': 'CBG/12/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'allergies': ['Pénicilline'], 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
+      final p = {'code': 'CBG/12/26', 'nom': 'DULOUNE', 'prenom': 'Aline', 'quartier': 'Kouba', 'telephone': '97 11 22 33', 'ageDeclare': 67, 'allergies': ['Pénicilline'], 'assureur': 'NSIA', 'carteExpiration': '2026-12-31'};
       final d = mobDossier(
           patient: p,
           patientId: 'p1',
@@ -280,14 +280,14 @@ void main() {
           prescriptions: [
             {'patientId': 'p2', 'date': '2026-08-16T10:00'}
           ]);
-      expect(d.nom, 'DOSSOU Aline');
+      expect(d.nom, 'DULOUNE Aline');
       expect(d.age, 67);
       expect(d.allergies, ['Pénicilline']);
       expect(d.horsBornes, ['température']);
       expect(d.notes.map((n) => n['motif']), ['récente', 'ancienne']);
       expect(d.prescriptions, isEmpty);
       expect(d.couverture, MobCouverture.carteValide);
-      final nu = mobDossier(patient: {'nom': 'AKPO', 'prenom': 'Marc'}, patientId: 'n0', maintenant: maintenant);
+      final nu = mobDossier(patient: {'nom': 'AMITU', 'prenom': 'Mevour'}, patientId: 'n0', maintenant: maintenant);
       expect(nu.code, 'en attente de numéro');
       expect(nu.allergies, isEmpty);
       expect(nu.dernierReleve, isNull);
@@ -310,13 +310,13 @@ void main() {
     }, skip: horsUtc);
 
     test('les heures et l\'ordre sont ceux de l\'écran du médecin (du plus tôt au plus tard)', () {
-      final p = praticiens.firstWhere((x) => x['praticien'] == 'BASSONGUI Chabi Séko');
+      final p = praticiens.firstWhere((x) => x['praticien'] == 'BICHIASI Cezoune Sichovian');
       final table = (((p['lu'] as Map)['tables'] as List).first as Map)['lignes'] as List;
       final duJourEcran = [
         for (final l in table)
           if ('${(l as Map)['cellules'][0]}'.startsWith('16/08/2026')) '${l['cellules'][0]}'.split(' à ').last
       ].reversed.toList(); // l'écran trie du plus récent au plus ancien
-      final r = mobAgendaDuJour([for (final f in fixtures) if (f['medecin'] == 'BASSONGUI Chabi Séko') f], maintenant);
+      final r = mobAgendaDuJour([for (final f in fixtures) if (f['medecin'] == 'BICHIASI Cezoune Sichovian') f], maintenant);
       expect(r.duJour.map(mobHeureRendezVous).toList(), duJourEcran);
     }, skip: horsUtc);
 

@@ -475,13 +475,13 @@
    "detail": "Aucune pièce de caisse liée — certificat délivré avant que la caisse ne soit dans le circuit. Ni réglé, ni impayé : on ne sait pas."
   }
  ],
- "medecin": "BASSONGUI Chabi Séko",
+ "medecin": "BICHIASI Cezoune Sichovian",
  "delivrances": [
   {
    "nom": "CMVC pour un patient non assuré : n° 7 de la série (le registre en compte 6 en 2026, dont un archivé)",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC12",
     "patientCode": "CBG/1/26",
     "contenu": "Visite.",
@@ -492,7 +492,7 @@
      "statut": "actif",
      "typeId": "TPC12",
      "patientCode": "CBG/1/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "Visite.",
      "remisA": "L'intéressée",
@@ -593,7 +593,7 @@
    "nom": "CMVC pour un assuré SOS : couvert au taux du dossier",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC12",
     "patientCode": "CBG/2/26"
    },
@@ -602,7 +602,7 @@
      "statut": "actif",
      "typeId": "TPC12",
      "patientCode": "CBG/2/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
@@ -703,7 +703,7 @@
    "nom": "CMVC pour un assuré NSIA : intégralement au patient",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC12",
     "patientCode": "CBG/3/26"
    },
@@ -712,7 +712,7 @@
      "statut": "actif",
      "typeId": "TPC12",
      "patientCode": "CBG/3/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
@@ -813,7 +813,7 @@
    "nom": "pièce non tarifée (CMNI) : aucune pièce de caisse",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC02",
     "patientCode": "CBG/1/26"
    },
@@ -822,7 +822,7 @@
      "statut": "actif",
      "typeId": "TPC02",
      "patientCode": "CBG/1/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
@@ -867,7 +867,7 @@
    "nom": "sigle différent : sa propre série",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC01",
     "patientCode": "CBG/1/26"
    },
@@ -876,7 +876,7 @@
      "statut": "actif",
      "typeId": "TPC01",
      "patientCode": "CBG/1/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
@@ -977,11 +977,11 @@
    "nom": "patient adressé de l'extérieur : le dossier naît",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC02",
     "patientCode": "",
-    "extNom": "Gado",
-    "extPrenom": "Issa",
+    "extNom": "Gakaria",
+    "extPrenom": "Isiasiabu",
     "extSexe": "M",
     "extAge": 33,
     "extTelephone": "96000000",
@@ -992,7 +992,7 @@
      "statut": "actif",
      "typeId": "TPC02",
      "patientCode": "CBG/904/26",
-     "medecin": "BASSONGUI Chabi Séko",
+     "medecin": "BICHIASI Cezoune Sichovian",
      "dateDelivrance": "2026-10-30",
      "contenu": "",
      "remisA": "",
@@ -1003,7 +1003,7 @@
      "libelle": "Certificat médical de non-infirmité",
      "direction": "DG/DE",
      "patientId": "PATxmvvhumltv3k0y",
-     "patient": "GADO Issa",
+     "patient": "GAKARIA Isiasiabu",
      "patientExterne": true,
      "montant": null,
      "factureId": null,
@@ -1015,8 +1015,8 @@
     {
      "statut": "actif",
      "code": "CBG/904/26",
-     "nom": "GADO",
-     "prenom": "Issa",
+     "nom": "GAKARIA",
+     "prenom": "Isiasiabu",
      "sexe": "M",
      "dateNaissance": null,
      "age": 33,
@@ -1058,7 +1058,7 @@
    "nom": "ni dossier ni identité : refus nommé",
    "saisie": {
     "dateDelivrance": "2026-10-30",
-    "medecin": "BASSONGUI Chabi Séko",
+    "medecin": "BICHIASI Cezoune Sichovian",
     "typeId": "TPC02",
     "patientCode": ""
    },

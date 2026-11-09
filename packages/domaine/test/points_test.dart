@@ -109,10 +109,10 @@ void main() {
     memes([for (final x in famillesArticles) {'id': x.id, 'label': x.label, 'groupe': x.groupe}], v['familles'], 'familles');
   });
 
-  test('l\'apostrophe typographique est de la ponctuation : « N’TCHA » précède « NKOUÉ » (écart E45)', () {
-    expect(comparerNaturel('N’TCHA Alassane', 'NKOUÉ Jean'), lessThan(0));
-    expect(comparerNaturel('N\'TCHA', 'NKOUÉ'), lessThan(0));
-    expect(pts.trierStable(['NKOUÉ Jean', 'N’TCHA Alassane', 'NAMBONI'], (x) => x), ['N’TCHA Alassane', 'NAMBONI', 'NKOUÉ Jean'],
+  test('l\'apostrophe typographique est de la ponctuation : « N’ACHOU » précède « NIDJON » (écart E45)', () {
+    expect(comparerNaturel('N’ACHOU Anapouzia', 'NIDJON Jagi'), lessThan(0));
+    expect(comparerNaturel('N\'TCHA', 'NIDJON'), lessThan(0));
+    expect(pts.trierStable(['NIDJON Jagi', 'N’ACHOU Anapouzia', 'NAMBONI'], (x) => x), ['N’ACHOU Anapouzia', 'NAMBONI', 'NIDJON Jagi'],
         reason: 'la ponctuation passe avant les lettres (ICU, non-ignorable)');
   });
 

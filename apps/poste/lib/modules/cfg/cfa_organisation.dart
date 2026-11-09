@@ -148,7 +148,7 @@ class _OngletSecteurs extends StatelessWidget {
                             ColonneEtat(libelle: 'Qualification', valeur: (l) => cfaOuTiret(l['qualification'])),
                           ], lignes: rows)),
                         ],
-                        signatures: const [Signature('La Directrice Administrative', nom: 'TAKI Alimatou épse BASSONGUI')])),
+                        signatures: const [Signature('La Directrice Administrative', nom: 'TACHEDI Arialu épse BICHIASI')])),
               ],
             ),
             cfaSource(CfaNs145.source),
@@ -226,7 +226,7 @@ class _OngletOrganigramme extends StatelessWidget {
                   ColonneEtat(libelle: 'Rôle dans le système', valeur: (l) => libelleRole(c.magasin, l['role'])),
                 ], lignes: plats)),
               ],
-              signatures: const [Signature('La Directrice Administrative', nom: 'TAKI Alimatou'), cfaSignDm]);
+              signatures: const [Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'), cfaSignDm]);
           return cfaPile([
             CarteSigh(
                 titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',

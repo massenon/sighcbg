@@ -321,7 +321,7 @@ void main() {
       for (final l in ['N°', 'Donneur', 'Groupe', 'Téléphone', 'Type de don', 'Dons', 'Dernier don', 'Éligibilité']) {
         expect(find.text(l), findsWidgets, reason: l);
       }
-      expect(find.text('CHABI Rock'), findsWidgets);
+      expect(find.text('CEZOUNE Rock'), findsWidgets);
       expect(find.text('Délai 1 j'), findsWidgets);
       expect(find.widgetWithText(BoutonSigh, 'Modifier'), findsOneWidget);
       expect(find.widgetWithText(BoutonSigh, 'Archiver'), findsOneWidget);
@@ -345,19 +345,19 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       expect(m.collection('donneurs').toutes.length, 9);
-      await saisir(t, 'nom', 'IMOROU Zaki');
+      await saisir(t, 'nom', 'IMEFULU Zesian');
       await saisir(t, 'telephone', '97111111');
       await saisir(t, 'nbDons', '6');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final f = m.collection('donneurs').toutes.first;
-      expect(f['nom'], 'IMOROU Zaki');
+      expect(f['nom'], 'IMEFULU Zesian');
       expect(f['nbDons'], 6);
       expect(f['groupe'], 'O+');
       expect(f['eligible'], true);
       expect(f['reference'], 'DON-0010', reason: 'le rang suit DON-0009 (archivé) : jamais un compteur de page');
       expect(find.text('Nouveau donneur créé.'), findsOneWidget);
       await toucher(t, find.text('Annuler').last);
-      expect(m.collection('donneurs').actives.any((x) => x['nom'] == 'IMOROU Zaki'), isFalse);
+      expect(m.collection('donneurs').actives.any((x) => x['nom'] == 'IMEFULU Zesian'), isFalse);
     });
 
     cas('modifier : la référence est conservée, le nombre de dons redevient un nombre', (t) async {

@@ -24,12 +24,12 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => {
     const f1 = await m.pair('F1'); const f2 = await m.pair('F2');
     let n = 0;
     const emettre = async (poste, cmd) => { await poste.emettre(cmd); n += 1; await attendre(async () => (await etat()).ops === n, 15000); };
-    await emettre(f1, { collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AKPO', tel: '1' }, role: 'reception' });
+    await emettre(f1, { collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AMITU', tel: '1' }, role: 'reception' });
     await attendre(async () => (await f2.fiches()).fiches['patients/p1'], 15000);
     const vu = (await f2.fiches()).fiches['patients/p1'].hlc.tel;
     await emettre(f1, { collection: 'patients', fiche: 'p1', type: 'modifier', champs: { tel: '91' }, vu: { tel: vu }, role: 'reception' });
     await emettre(f2, { collection: 'patients', fiche: 'p1', type: 'modifier', champs: { tel: '92' }, vu: { tel: vu }, role: 'reception' });
-    await emettre(f1, { collection: 'patients', fiche: 'p2', type: 'creer', champs: { nom: 'KOUA' }, role: 'reception' });
+    await emettre(f1, { collection: 'patients', fiche: 'p2', type: 'creer', champs: { nom: 'KIMAR' }, role: 'reception' });
     await emettre(f1, { collection: 'patients', fiche: 'p2', type: 'archiver', champs: {}, role: 'reception' });
     await emettre(f1, { collection: 'stock', fiche: 'gants', type: 'creer', champs: { qte: 50 }, role: 'stock' });
     await emettre(f2, { collection: 'constantes', fiche: 'c1', type: 'creer', champs: { pouls: 70 }, role: 'infirmier' });

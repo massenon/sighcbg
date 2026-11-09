@@ -3,7 +3,7 @@
  "jour": "2026-10-30",
  "entete": {
   "boutons": [
-   "TCHANE Bertine",
+   "TIAMOU Bodje",
    "Modifier le dossier",
    "Fiche de consultation",
    "Documents numérisés",
@@ -16,7 +16,7 @@
    "Maternité2",
    "Analyses & résultats3"
   ],
-  "texte": "Sélectionner un dossier patient TCHANE Bertine Modifier le dossier Fiche de consultation Documents numérisés Imprimer la fiche Retour au répertoire Rubriques du dossier Administratif Médical 1 Antécédents & allergies Soins 1 Hospitalisations 3 Maternité 2 Analyses & résultats 3 Imagerie médicale 2 Ordonnances 1 À domicile 1 Financier 3 Assurance Traçabilité Identité et couverture TB TCHANE Bertine CBG/1/26 Femme — 41 ans — Groupe O+ NSIA ASSURANCE Carte valide Expire le 31/12/2027 Allergie(s) déclarée(s) : Sulfamides. Vérifier toute prescription et toute dispensation avant délivrance. Dossier de consultation — DOS-1 Dernier dossier : DOS-1 — venue du 10/08/2026 à 09h00, enregistré le 10/08/2026 à 09h05, par Dr A. Motif de consultation Toux Type de venue premiere Histoire de la maladie Depuis 3 jours Traitements en cours Salbutamol ANTÉCÉDENTS Antécédents médicaux Asthme Antécédents chirurgicaux Appendicectomie Antécédents gynéco-obstétricaux G2P2 DONNÉES PRÉALABLES Allergies Sulfamides Allergies médicamenteuses — Statut vaccinal À jour Groupe sanguin O+ Électrophorèse Hb — Dépistage — CONSTANTES REPRISES DE L’ACCUEIL Relevées le 10/08/2026 à 08h50 Température 37.2 °C Tension 12/8 Poids 62 kg Pouls 80 /min EXAMEN PHYSIQUE PAR APPAREIL (IPPOA) APPAREIL EXAMINÉ LE PORTÉ AU DOSSIER LE CONSTAT Appareil cardio-vasculaire 10/08/2026 à 09h00 10/08/2026 à 09h05 RAS — normal Appareil pleuro-pulmonaire 10/08/2026 à 09h00 10/08/2026 à 09h05 Inspection : RAS · Auscultation : Sibilants bilatéraux Ouvrir le dossier de consultation Fiche de consultation Administratif Code dossier CBG/1/26 Nom et prénoms TCHANE Bertine Sexe Féminin Date de naissance 10/03/1985 (41 ans) Téléphone 97000001 "
+  "texte": "Sélectionner un dossier patient TIAMOU Bodje Modifier le dossier Fiche de consultation Documents numérisés Imprimer la fiche Retour au répertoire Rubriques du dossier Administratif Médical 1 Antécédents & allergies Soins 1 Hospitalisations 3 Maternité 2 Analyses & résultats 3 Imagerie médicale 2 Ordonnances 1 À domicile 1 Financier 3 Assurance Traçabilité Identité et couverture TB TIAMOU Bodje CBG/1/26 Femme — 41 ans — Groupe O+ NSIA ASSURANCE Carte valide Expire le 31/12/2027 Allergie(s) déclarée(s) : Sulfamides. Vérifier toute prescription et toute dispensation avant délivrance. Dossier de consultation — DOS-1 Dernier dossier : DOS-1 — venue du 10/08/2026 à 09h00, enregistré le 10/08/2026 à 09h05, par Dr A. Motif de consultation Toux Type de venue premiere Histoire de la maladie Depuis 3 jours Traitements en cours Salbutamol ANTÉCÉDENTS Antécédents médicaux Asthme Antécédents chirurgicaux Appendicectomie Antécédents gynéco-obstétricaux G2P2 DONNÉES PRÉALABLES Allergies Sulfamides Allergies médicamenteuses — Statut vaccinal À jour Groupe sanguin O+ Électrophorèse Hb — Dépistage — CONSTANTES REPRISES DE L’ACCUEIL Relevées le 10/08/2026 à 08h50 Température 37.2 °C Tension 12/8 Poids 62 kg Pouls 80 /min EXAMEN PHYSIQUE PAR APPAREIL (IPPOA) APPAREIL EXAMINÉ LE PORTÉ AU DOSSIER LE CONSTAT Appareil cardio-vasculaire 10/08/2026 à 09h00 10/08/2026 à 09h05 RAS — normal Appareil pleuro-pulmonaire 10/08/2026 à 09h00 10/08/2026 à 09h05 Inspection : RAS · Auscultation : Sibilants bilatéraux Ouvrir le dossier de consultation Fiche de consultation Administratif Code dossier CBG/1/26 Nom et prénoms TIAMOU Bodje Sexe Féminin Date de naissance 10/03/1985 (41 ans) Téléphone 97000001 "
  },
  "menu": [
   "Administratif",
@@ -36,7 +36,7 @@
  "rubriques": {
   "admin": {
    "libelle": "Administratif",
-   "texte": "Administratif Code dossier CBG/1/26 Nom et prénoms TCHANE Bertine Sexe Féminin Date de naissance 10/03/1985 (41 ans) Téléphone 97000001 Quartier Perma Adresse Rue 12 Personne à prévenir Époux 96000000 Groupe sanguin O+ Dossier créé le 05/01/2026"
+   "texte": "Administratif Code dossier CBG/1/26 Nom et prénoms TIAMOU Bodje Sexe Féminin Date de naissance 10/03/1985 (41 ans) Téléphone 97000001 Quartier Perma Adresse Rue 12 Personne à prévenir Époux 96000000 Groupe sanguin O+ Dossier créé le 05/01/2026"
   },
   "medical": {
    "libelle": "Médical",
@@ -92,8 +92,8 @@
  "modification": {
   "prerempli": {
    "code": "CBG/1/26",
-   "nom": "TCHANE",
-   "prenom": "Bertine",
+   "nom": "TIAMOU",
+   "prenom": "Bodje",
    "sexe": "F",
    "naissanceConnue": "date",
    "dateNaissance": "1985-03-10",

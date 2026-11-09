@@ -42,7 +42,7 @@ PieceA4 pieceEcarts(List<Fiche> rows,
       ], lignes: rows)),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri'),
+      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
       Signature('La Directrice Administrative', nom: directriceAdministrative),
     ],
   );

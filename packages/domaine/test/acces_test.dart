@@ -41,7 +41,7 @@ void main() {
     });
 
     final utilisateurs = <M>[
-      {'identifiant': 'e.orou', 'nomComplet': 'Orou Ezin', 'role': 'reception', 'statut': 'actif', 'mfa': false},
+      {'identifiant': 'e.odjipiar', 'nomComplet': 'Odjipiar Esedjor', 'role': 'reception', 'statut': 'actif', 'mfa': false},
       {'identifiant': 'a.ferme', 'nomComplet': 'Compte fermé', 'role': 'caissier', 'statut': 'archive'},
       {'identifiant': 'p.pharma', 'nomComplet': 'Ancien pharmacien', 'role': 'pharmacien', 'statut': 'actif'},
     ];
@@ -49,7 +49,7 @@ void main() {
         identifiant: id, utilisateurs: utilisateurs, rolesArchives: {'pharmacien'}, libelleRole: (r) => r == 'pharmacien' ? 'Pharmacien' : r);
 
     test('un compte actif est reconnu ; le mot de passe n’est JAMAIS vérifié et la décision le dit', () {
-      final d = eval(' e.orou ');
+      final d = eval(' e.odjipiar ');
       expect(d.accepte, isTrue);
       expect(d.compte!.role, 'reception');
       expect(d.motDePasseVerifie, isFalse);
@@ -173,7 +173,7 @@ void main() {
         expect(sp(accTexteSansBalises(accFaq[i].r)), sp(faq[i]['r']));
       }
       expect([for (final l in a['apropos'] as List) (l as List)[1]],
-          ['Prototype v1.0 — août 2026', 'Dr MASSENON Rhodes', 'CLINIQUE NASSIERA TOO SARL', '3201642748214', 'RB/NAT/2016-B-268']);
+          ['Prototype v1.0 — août 2026', 'Dr MOGBO Rhodes', 'CLINIQUE NASSIERA TOO SARL', '3201642748214', 'RB/NAT/2016-B-268']);
       expect(accEditeur['version'], 'Prototype v1.0 — août 2026');
     });
 

@@ -389,8 +389,8 @@ const Map<String, Object?> mobSuiteDonnees = {
         'clavier': null,
         'placeholder': null,
         'options': [
-          'AKPO Marc — CBG/1241/26',
-          'HOUNKPATIN Ida — PROV-1',
+          'AMITU Mevour — CBG/1241/26',
+          'HOULUKE Ichufuva — PROV-1',
         ],
       },
       {
@@ -505,12 +505,12 @@ const Map<String, Object?> mobSuiteDonnees = {
   'profils': {
     'soignant': {
       'label': 'Soignant (infirmier)',
-      'agent': 'BADO BANI A. B. Zoulehath',
+      'agent': 'BATOL BIAREL A. B. Zouguti',
       'accueil': 'accueil-soignant',
     },
     'medecin': {
       'label': 'Médecin',
-      'agent': 'Dr YENI M’PO Florent',
+      'agent': 'Dr YORO M’ABEKPIA Foulumi',
       'accueil': 'accueil-medecin',
     },
     'sagefemme': {
@@ -520,7 +520,7 @@ const Map<String, Object?> mobSuiteDonnees = {
     },
     'reception': {
       'label': 'Réception de secours',
-      'agent': 'OROU YO Edmond',
+      'agent': 'ODJIPIAR YUDJOUVOU Edjukavom',
       'accueil': 'accueil-reception',
     },
   },

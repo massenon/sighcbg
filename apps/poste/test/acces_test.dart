@@ -55,7 +55,7 @@ String baguidi(String texte) {
   };
 }
 
-List<M> jeu(String nom) => fl(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => fl(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 String sp(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 
 Magasin poste({List<M> utilisateurs = const [], List<M> rbac = const [], List<M> jetons = const [], List<M> enquetes = const []}) => Magasin({
@@ -316,10 +316,10 @@ void main() {
     cas('compte du jeu : un mauvais mot de passe est REFUSÉ, le bon ouvre la session sous SON rôle et SON agent, la connexion est journalisée', (t) async {
       final m = poste();
       final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
-      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.orou');
+      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.odjipiar');
       await mdp(t, m, '${compte['id']}', secret);
       await monter(t, m, session: s);
-      await saisir(t, 'acces:identifiant', 'e.orou');
+      await saisir(t, 'acces:identifiant', 'e.odjipiar');
       await saisir(t, 'acces:motdepasse', 'nimporte-quoi');
       await bouton(t, 'Se connecter');
       await calculer(t);
@@ -342,7 +342,7 @@ void main() {
       expect(find.byType(BarreSuperieure), findsOneWidget, reason: 'la coque prend le relais');
       expect(find.byKey(const Key('acces:identifiant')), findsNothing);
       final e = audit(m, 'Connexion').single;
-      expect(e['reference'], 'e.orou');
+      expect(e['reference'], 'e.odjipiar');
       expect(e['module'], 'M14');
       expect(obj(e['apres'])['motDePasseVerifie'], true);
       // RG-12 : le journal porte désormais l'identifiant du compte et le matricule, pas seulement un nom.
@@ -357,11 +357,11 @@ void main() {
     cas('trois échecs : le compte se VERROUILLE (message nommé), même le bon mot de passe est refusé, chaque tentative est écrite', (t) async {
       final m = poste();
       final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
-      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'a.kassa');
+      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'a.kalou');
       await mdp(t, m, '${compte['id']}', secret);
       await monter(t, m, session: s);
       for (var i = 0; i < 3; i++) {
-        await saisir(t, 'acces:identifiant', 'a.kassa');
+        await saisir(t, 'acces:identifiant', 'a.kalou');
         await saisir(t, 'acces:motdepasse', 'faux$i');
         await bouton(t, 'Se connecter');
         await calculer(t);
@@ -382,10 +382,10 @@ void main() {
     cas('mot de passe provisoire : le bon mot de passe n’ouvre pas la session, le changement est OBLIGATOIRE et la politique APPLIQUÉE', (t) async {
       final m = poste();
       final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
-      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.orou');
+      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'e.odjipiar');
       await mdp(t, m, '${compte['id']}', 'Provisoire#2026ab', doitChanger: true);
       await monter(t, m, session: s);
-      await saisir(t, 'acces:identifiant', 'e.orou');
+      await saisir(t, 'acces:identifiant', 'e.odjipiar');
       await saisir(t, 'acces:motdepasse', 'Provisoire#2026ab');
       await bouton(t, 'Se connecter');
       await calculer(t);
@@ -478,12 +478,12 @@ void main() {
       }
       await bouton(t, 'Envoyer les instructions');
       expect(find.text('Renseigner l’identifiant ou l’adresse électronique.'), findsOneWidget, reason: 'champ obligatoire');
-      await saisir(t, 'acces:identifiant', 'a.kassa');
+      await saisir(t, 'acces:identifiant', 'a.kalou');
       await bouton(t, 'Envoyer les instructions');
       expect(find.text('Demande transmise à l’administrateur système.'), findsOneWidget, reason: 'le poste enregistre la demande, contrairement à la maquette');
-      expect(audit(m, 'Demande de réinitialisation du mot de passe').single['reference'], 'a.kassa');
+      expect(audit(m, 'Demande de réinitialisation du mot de passe').single['reference'], 'a.kalou');
       // Branché sur le mécanisme : le compte porte la demande, que l'administrateur lit avant de définir un nouveau mot de passe.
-      final kassa = m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'a.kassa');
+      final kassa = m.collection('utilisateurs').toutes.firstWhere((u) => u['identifiant'] == 'a.kalou');
       expect(kassa['reinitialisationDemandeeLe'], isNotNull);
       await t.pump(const Duration(milliseconds: 1300));
       expect(find.text('Réinitialiser le mot de passe'), findsWidgets, reason: 'navigation vers auth-reset (le poste, branché, y mène ; la maquette ne navigue plus)');
@@ -492,13 +492,13 @@ void main() {
 
     cas('réinitialisation : quatre règles COCHÉES à la frappe, politique appliquée, mot de passe actuel vérifié, haché remplacé, secret jamais journalisé', (t) async {
       final m = poste();
-      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'a.kassa');
+      final compte = jeu('utilisateurs').firstWhere((u) => u['identifiant'] == 'a.kalou');
       await mdp(t, m, '${compte['id']}', 'Provisoire#2026ab', doitChanger: true);
       await monter(t, m, ecran: 'auth-reset');
       final r = obj(v['reinit']);
       // La liste des règles n'est plus affichée (Direction, 03/11/2026) : la politique reste appliquée, le refus ci-dessous nomme la règle.
       expect(find.byKey(const Key('acces:politique')), findsNothing);
-      await saisir(t, 'acces:identifiant', 'a.kassa');
+      await saisir(t, 'acces:identifiant', 'a.kalou');
       await saisir(t, 'acces:actuel', 'Provisoire#2026ab');
       await saisir(t, 'acces:nouveau', 'a');
       await saisir(t, 'acces:confirmation', 'a');
@@ -558,7 +558,7 @@ void main() {
     cas('quinze minutes d’inactivité suspendent la session SANS la fermer : le travail reste monté, intact, sous l’écran verrouillé', (t) async {
       var maintenant = auj;
       final m = poste();
-      final s = SessionPoste.ouverte('reception', nom: 'EZIN Orou', horloge: () => maintenant);
+      final s = SessionPoste.ouverte('reception', nom: 'ESEDJOR Odjipiar', horloge: () => maintenant);
       await monter(t, m, ecran: 'aide-apropos', session: s, horloge: () => maintenant);
       // L'agent a ouvert la deuxième question : un état local que le verrou ne doit pas perdre.
       await toucher(t, find.text(question2.q));
@@ -580,7 +580,7 @@ void main() {
       expect(find.text(accTitreRetour), findsOneWidget);
       expect(find.text('Au déverrouillage, vous reviendrez sur « $aide ».'), findsOneWidget);
       expect(find.textContaining('après 15 minutes d’inactivité'), findsOneWidget);
-      expect(find.text('EZIN Orou'), findsOneWidget);
+      expect(find.text('ESEDJOR Odjipiar'), findsOneWidget);
       // Le travail est CACHÉ, pas détruit : il n'est plus visible, plus focalisable.
       expect(reponse2(), findsNothing);
       expect(reponse2().evaluate().length, 0);
@@ -621,7 +621,7 @@ void main() {
 
     cas('« Se connecter avec un autre compte » : la session et l’adresse de retour disparaissent, la connexion s’ouvre', (t) async {
       var maintenant = auj;
-      final s = SessionPoste(exigeConnexion: true, horloge: () => maintenant, compte: const AccCompte(identifiant: 'e.orou', nom: 'EZIN Orou', role: 'reception'));
+      final s = SessionPoste(exigeConnexion: true, horloge: () => maintenant, compte: const AccCompte(identifiant: 'e.odjipiar', nom: 'ESEDJOR Odjipiar', role: 'reception'));
       await monter(t, poste(), ecran: 'aide-apropos', session: s, horloge: () => maintenant);
       maintenant = auj.add(const Duration(minutes: 16));
       await t.pump(const Duration(seconds: 3));
@@ -635,7 +635,7 @@ void main() {
     });
 
     cas('sans verrou posé (adresse directe), le déverrouillage ramène à l’accueil du profil', (t) async {
-      final s = SessionPoste.ouverte('reception', nom: 'EZIN Orou', horloge: () => auj);
+      final s = SessionPoste.ouverte('reception', nom: 'ESEDJOR Odjipiar', horloge: () => auj);
       await monter(t, poste(), ecran: 'auth-lock', session: s);
       expect(find.textContaining('Au déverrouillage'), findsNothing, reason: 'aucune adresse de retour');
       await saisir(t, 'acces:motdepasse', 'x');

@@ -389,7 +389,7 @@ void main() {
       final c = liste(ok['confirms']).single;
       expect(
           messageRendreCR(
-              {'reference': 'IMG-0155', 'prescripteur': 'BOUKARI Nadège'}),
+              {'reference': 'IMG-0155', 'prescripteur': 'BUKE Nedi'}),
           brut(c['message']));
     });
 

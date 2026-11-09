@@ -68,7 +68,7 @@ void main() {
       test(nom, () {
         final id = '${c['id']}';
         final op = c['opts'] == null ? <String, Object?>{} : f(c['opts']);
-        final acteur = SecActeurSession(role: '${c['role']}', identifiant: 'c.bassongui', nom: 'BASSONGUI Chabi Séko', sessionId: sessionPropre);
+        final acteur = SecActeurSession(role: '${c['role']}', identifiant: 'c.bichiasi', nom: 'BICHIASI Cezoune Sichovian', sessionId: sessionPropre);
         final fiche = fiches[id];
         final r = secCloturerSession(
             fiche: fiche,
@@ -162,7 +162,7 @@ void main() {
   group('comptes : bloquer, débloquer, imposer la réinitialisation', () {
     final pol = Map<String, int>.from(secPolitiqueDefaut);
     var u = <String, Object?>{'id': '${v['idDemo']}', 'identifiant': 'demo.anesthesiste', 'echecs': 0};
-    final admin = const SecActeurCompte(identifiant: 'c.bassongui', nom: 'BASSONGUI Chabi Séko');
+    final admin = const SecActeurCompte(identifiant: 'c.bichiasi', nom: 'BICHIASI Cezoune Sichovian');
     final lui = const SecActeurCompte(identifiant: 'demo.anesthesiste', nom: 'Compte à pourvoir');
     for (final c in liste(v['comptesCas'])) {
       final nom = '${c['nom']}';

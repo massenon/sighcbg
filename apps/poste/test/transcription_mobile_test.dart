@@ -35,12 +35,12 @@ Map<String, Object?> piece(String patientId, String code, List<Map<String, Objec
       'nature': nature,
       'patientId': patientId,
       'patientCode': code,
-      'patient': 'DOSSOU Aline',
+      'patient': 'DULOUNE Aline',
       'date': '2026-10-31T10:00',
       'noteId': 'n1',
       if (nature == 'medicament') 'lignes': lignes,
       if (nature == 'analyse') ...{'examens': examens, 'urgence': 'Non urgent'},
-      'prescripteur': 'Dr YENI M’PO Florent',
+      'prescripteur': 'Dr YORO M’ABEKPIA Foulumi',
       'fonction': fonction,
       'emise': true,
       'origine': 'mobile',
@@ -63,7 +63,7 @@ void main() {
     pasDeStock = meds[1];
     m.collection('produits').mettreAJour(pasDeStock['id'], {'stockDetail': 1, 'stock': 1});
     src = SourceMemoire({
-      'patients': [const PieceSync('s1', {'code': 'CBG/7777/26', 'nom': 'DOSSOU', 'prenom': 'Aline', 'sexe': 'F', 'dateNaissance': '1990-01-01'})],
+      'patients': [const PieceSync('s1', {'code': 'CBG/7777/26', 'nom': 'DULOUNE', 'prenom': 'Aline', 'sexe': 'F', 'dateNaissance': '1990-01-01'})],
       'notes': [const PieceSync('n1', {'diagnostic': 'Paludisme simple', 'patientId': 's1'})],
       'prescriptions': [],
     });

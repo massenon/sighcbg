@@ -46,7 +46,7 @@ void main() {
       final m = magasinRhb();
       await ouvrirM14(t, m, 'm10-evaluations', horloge: auj16);
       final avant = m.collection('evaluations').toutes.length;
-      final agent = m.collection('personnel').actives.firstWhere((x) => x['nomComplet'] == 'TAKI Alimatou');
+      final agent = m.collection('personnel').actives.firstWhere((x) => x['nomComplet'] == 'TACHEDI Arialu');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouvelle évaluation'));
       expect(find.text('Nouvelle fiche d’évaluation'), findsOneWidget);
       await choisirM14(t, 'employeId', '${agent['matricule']} — ${agent['nomComplet']} (${agent['poste']})');
@@ -123,8 +123,8 @@ void main() {
 
     casM14('consulter une évaluation : le tiroir donne le détail par critère', (t) async {
       await ouvrirM14(t, magasinRhb(), 'm10-evaluations', horloge: auj16);
-      await toucherM14(t, find.text('TAKI Alimatou').first);
-      expect(find.text('Évaluation — TAKI Alimatou'), findsOneWidget);
+      await toucherM14(t, find.text('TACHEDI Arialu').first);
+      expect(find.text('Évaluation — TACHEDI Arialu'), findsOneWidget);
       expect(find.text('Détail par critère'), findsOneWidget);
       expect(find.text('− 10 %'), findsWidgets);
       expect(find.widgetWithText(BoutonSigh, 'Modifier l’évaluation'), findsOneWidget);
@@ -135,7 +135,7 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la note'));
       expect(find.text('Note de service'), findsOneWidget);
       expect(find.text('N/Réf. : NS 131/07/DM/DA/CBG/2026'), findsOneWidget);
-      expect(find.text('BASSONGUI C. Séko Y., Directeur Médical'), findsOneWidget);
+      expect(find.text('BICHIASI C. Sichovian Y., Directeur Médical'), findsOneWidget);
       expect(find.textContaining('Ampliation : Intéressés 41 — Archive 01'), findsOneWidget);
     });
 
@@ -508,7 +508,7 @@ void main() {
       await ouvrirM14(t, magasinRhb(), 'm10-primes', horloge: auj16);
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la note'));
       expect(find.text('Note de service — primes diverses'), findsOneWidget);
-      expect(find.textContaining('Reçu par : KASSA A. B. Augustin — reçu le 13/07/2026'), findsOneWidget);
+      expect(find.textContaining('Reçu par : KALOU A. B. Avolutu — reçu le 13/07/2026'), findsOneWidget);
       expect(find.textContaining('* Pour les primes qui varient en fonction du nombre'), findsOneWidget);
     });
 

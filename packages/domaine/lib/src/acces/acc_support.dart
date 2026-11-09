@@ -8,7 +8,7 @@ import '../navigation/manifeste.dart';
 
 /// Coordonnées de l'éditeur (`EDITEUR` de la maquette).
 const Map<String, Object> accEditeur = {
-  'auteur': 'Dr MASSENON Rhodes',
+  'auteur': 'Dr MOGBO Rhodes',
   'emails': ['rarhodes06@gmail.com', 'contact@massenonrhodes.com'],
   'telephone': '+229 01 51 33 50 40',
   'horaires': 'Lundi au vendredi, 8h – 17h (GMT)',

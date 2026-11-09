@@ -24,13 +24,13 @@ String sp(Object? v) => '${v ?? ''}'.replaceAll(RegExp(r'[\s  ]+'), '');
 
 final vecteurs = m_(jsonDecode(File('../../packages/domaine/test/vecteurs/qualite.json').readAsStringSync()));
 
-List<Fiche> jeuJson(String nom) => liste(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<Fiche> jeuJson(String nom) => liste(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 /// Un magasin dont les collections sont posées par le test (les autres sont vides).
 Magasin magasinDe(Map<String, List<Fiche>> collections) => Magasin({
       'audit': const <Fiche>[],
       for (final e in collections.entries) e.key: [for (final f in e.value) {...f}],
-    }, 'POSTE', {...(jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()});
+    }, 'POSTE', {...(jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>()});
 
 Future<void> ouvrir(WidgetTester t, Magasin m, String ecran, {String role = 'admin'}) async {
   t.view.physicalSize = const Size(1600, 1100);

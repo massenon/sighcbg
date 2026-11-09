@@ -25,7 +25,7 @@
     "numeroMecef": "MECEF1234567",
     "statutPaiement": "soldee",
     "montantPaye": 10000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.200Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -158,7 +158,7 @@
     "numeroMecef": "MECEF7654321",
     "statutPaiement": "soldee",
     "montantPaye": 18000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.221Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -294,7 +294,7 @@
     "numeroMecef": "MECEF1000001",
     "statutPaiement": "soldee",
     "montantPaye": 7777,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.233Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -415,7 +415,7 @@
     "statutMecef": "en_attente",
     "statutPaiement": "soldee",
     "montantPaye": 5000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.242Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -543,7 +543,7 @@
     "numeroMecef": "MECEF9999999",
     "statutPaiement": "soldee",
     "montantPaye": 184552,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.256Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -672,7 +672,7 @@
     "statutPaiement": "soldee",
     "montantPaye": 10000,
     "ifuClient": "3201912345678",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.266Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -800,7 +800,7 @@
     "numeroMecef": "MECEF1234567",
     "statutPaiement": "soldee",
     "montantPaye": 10000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.336Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -932,7 +932,7 @@
     "numeroMecef": "MECEF7654321",
     "statutPaiement": "soldee",
     "montantPaye": 18000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.342Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -1067,7 +1067,7 @@
     "numeroMecef": "MECEF1000001",
     "statutPaiement": "soldee",
     "montantPaye": 7777,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.347Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -1187,7 +1187,7 @@
     "statutMecef": "en_attente",
     "statutPaiement": "soldee",
     "montantPaye": 5000,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.353Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -1314,7 +1314,7 @@
     "numeroMecef": "MECEF9999999",
     "statutPaiement": "soldee",
     "montantPaye": 184552,
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.358Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -1442,7 +1442,7 @@
     "statutPaiement": "soldee",
     "montantPaye": 10000,
     "ifuClient": "3201912345678",
-    "_creePar": "BASSONGUI Chabi Séko",
+    "_creePar": "BICHIASI Cezoune Sichovian",
     "_creeLe": "2026-10-31T11:42:02.365Z"
    },
    "titre": "Facture de vente — normalisée",
@@ -1978,7 +1978,7 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:04.577Z"
     },
     "saisie": {
@@ -2009,8 +2009,8 @@
      "remboursement": "creance",
      "origine": "mecef",
      "statutMecef": "valide",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:04.628Z",
      "mecef": true
     }
@@ -2032,7 +2032,7 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:04.684Z"
     },
     "saisie": {
@@ -2069,8 +2069,8 @@
      "remboursement": "creance",
      "origine": "mecef",
      "statutMecef": "valide",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:04.790Z",
      "mecef": true
     }
@@ -2092,7 +2092,7 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:04.857Z"
     },
     "saisie": {
@@ -2131,7 +2131,7 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:05.553Z"
     },
     "saisie": {
@@ -2174,8 +2174,8 @@
      "remboursement": "creance",
      "origine": "mecef",
      "statutMecef": "valide",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:05.848Z",
      "mecef": true
     }
@@ -2197,7 +2197,7 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:06.433Z"
     },
     "saisie": {
@@ -2241,13 +2241,13 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:06.693Z",
      "avoirIds": [
       "AVRxmvwbzt5x1qzsk"
      ],
      "montantAvoirs": 6000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:06.694Z"
     },
     "saisie": {
@@ -2296,13 +2296,13 @@
      "lignes": [],
      "statutMecef": "valide",
      "statutPaiement": "soldee",
-     "_creePar": "BASSONGUI Chabi Séko",
+     "_creePar": "BICHIASI Cezoune Sichovian",
      "_creeLe": "2026-10-31T11:42:07.550Z",
      "avoirIds": [
       "AVRxmvwbzttqsqlbv"
      ],
      "montantAvoirs": 6000,
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:07.551Z"
     },
     "saisie": {
@@ -2359,8 +2359,8 @@
      "remboursement": "creance",
      "origine": "mecef",
      "statutMecef": "valide",
-     "emisPar": "BASSONGUI Chabi Séko",
-     "_modifiePar": "BASSONGUI Chabi Séko",
+     "emisPar": "BICHIASI Cezoune Sichovian",
+     "_modifiePar": "BICHIASI Cezoune Sichovian",
      "_modifieLe": "2026-10-31T11:42:07.733Z",
      "mecef": true
     }

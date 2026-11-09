@@ -71,7 +71,7 @@ void main() {
             body: SingleChildScrollView(
                 child: RepaintBoundary(
                     key: const Key('cap'),
-                    child: FeuilleA4(piece: PieceA4(titre: 'État de démonstration', reference: 'CBG-20261108-0001', utilisateur: 'BASSONGUI Chabi Séko', edite: DateTime(2026, 11, 8), identite: i)))))));
+                    child: FeuilleA4(piece: PieceA4(titre: 'État de démonstration', reference: 'CBG-20261108-0001', utilisateur: 'BICHIASI Cezoune Sichovian', edite: DateTime(2026, 11, 8), identite: i)))))));
     await t.runAsync(() => Future.delayed(const Duration(milliseconds: 300)));
     await t.pump();
     await _png(t, const Key('cap'), 'en-tete-a4.png');
@@ -79,7 +79,7 @@ void main() {
 
   testWidgets('capture : PDF A4 (octets écrits)', skip: _sortie == null, (t) async {
     final p = (await t.runAsync(PolicesPdf.charger))!;
-    final piece = PieceA4(titre: 'État de démonstration', reference: 'CBG-20261108-0001', utilisateur: 'BASSONGUI Chabi Séko', edite: DateTime(2026, 11, 8), identite: i);
+    final piece = PieceA4(titre: 'État de démonstration', reference: 'CBG-20261108-0001', utilisateur: 'BICHIASI Cezoune Sichovian', edite: DateTime(2026, 11, 8), identite: i);
     final octets = (await t.runAsync(() => pdfA4(piece, p)))!;
     File('$_sortie/en-tete.pdf').writeAsBytesSync(octets);
   });

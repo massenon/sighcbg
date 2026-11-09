@@ -4,7 +4,7 @@
   {
    "nom": "comptant simple",
    "entree": {
-    "operateur": "DIEYABIDI Aïssatou",
+    "operateur": "DATU Amachim",
     "numero": "F-2026-00012",
     "dossier": "CBG/12/26",
     "date": [
@@ -40,7 +40,7 @@
     "IFU 3201001996110",
     "RCCM RB/PKO/17 A 4240",
     "--------------------------------",
-    "OPÉRATEUR|DIEYABIDI Aïssatou",
+    "OPÉRATEUR|DATU Amachim",
     "TYPE VENTE|COMPTANT",
     "DOSSIER|CBG/12/26",
     "N° PIÈCE|F-2026-00012",
@@ -66,11 +66,11 @@
   {
    "nom": "assuré, part non assurée, règlement partiel",
    "entree": {
-    "operateur": "DIEYABIDI Aïssatou",
+    "operateur": "DATU Amachim",
     "numero": "F-2026-00013-A",
     "typeVente": "CRÉDIT",
     "assureur": "NSIA",
-    "assure": "KPOSSOU Awa",
+    "assure": "KULUN Azemidia",
     "dossier": "CBG/13/26",
     "date": [
      2026,
@@ -108,10 +108,10 @@
     "IFU 3201001996110",
     "RCCM RB/PKO/17 A 4240",
     "--------------------------------",
-    "OPÉRATEUR|DIEYABIDI Aïssatou",
+    "OPÉRATEUR|DATU Amachim",
     "TYPE VENTE|CRÉDIT",
     "ASSUREUR|NSIA",
-    "ASSURÉ|KPOSSOU Awa",
+    "ASSURÉ|KULUN Azemidia",
     "DOSSIER|CBG/13/26",
     "N° PIÈCE|F-2026-00013-A",
     "DATE|30/10/2026 09h40",
@@ -139,7 +139,7 @@
   {
    "nom": "sans dossier, MECeF",
    "entree": {
-    "operateur": "ADJAHO Rose",
+    "operateur": "AGBESEN Roulin",
     "numero": "F-2026-00014",
     "date": [
      2026,
@@ -177,7 +177,7 @@
     "CPT : 12/34 FV",
     "HEURE : 08:00:12",
     "--------------------------------",
-    "OPÉRATEUR|ADJAHO Rose",
+    "OPÉRATEUR|AGBESEN Roulin",
     "TYPE VENTE|COMPTANT",
     "DOSSIER|VENTE AU COMPTOIR — sans dossier",
     "N° PIÈCE|F-2026-00014",

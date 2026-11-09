@@ -260,7 +260,7 @@ class EcranRemboursements extends StatelessWidget with EcranMaquette {
       const ChampDef(nom: 'autorisePar', libelle: 'Autorisé par', requis: true),
     ], {
       'date': iso(c.aujourdhui),
-      'autorisePar': 'TAKI Alimatou',
+      'autorisePar': 'TACHEDI Arialu',
     });
     afficherModale<void>(ctx,
         titre: 'Remboursement ou annulation',

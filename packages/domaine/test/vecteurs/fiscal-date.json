@@ -121,7 +121,7 @@
    "valideLe": null,
    "validePar": null,
    "modifieLe": "2026-08-16T10:00:00.000Z",
-   "modifiePar": "BASSONGUI Chabi Séko",
+   "modifiePar": "BICHIASI Cezoune Sichovian",
    "validationAnterieure": null
   }
  },
@@ -935,10 +935,10 @@
    "obligationId": "ORTB-PARAMETRES",
    "dateFin": "2026-07-31",
    "remplaceeLe": "2026-08-16T10:00:00.000Z",
-   "remplaceePar": "BASSONGUI Chabi Séko",
+   "remplaceePar": "BICHIASI Cezoune Sichovian",
    "motifRemplacement": "Vecteur : seuil relevé",
    "retiree": false,
-   "_creePar": "BASSONGUI Chabi Séko",
+   "_creePar": "BICHIASI Cezoune Sichovian",
    "_creeLe": "2026-08-16T10:00:00.000Z"
   },
   "parametresApres": {
@@ -979,11 +979,11 @@
    "source": "Direction — précision du 20/08/2026",
    "dateEffet": "2026-08-01",
    "modifieLe": "2026-08-16T10:00:00.000Z",
-   "modifiePar": "BASSONGUI Chabi Séko",
+   "modifiePar": "BICHIASI Cezoune Sichovian",
    "motif": "Vecteur : seuil relevé",
    "valideLe": null,
    "validePar": null,
-   "_modifiePar": "BASSONGUI Chabi Séko",
+   "_modifiePar": "BICHIASI Cezoune Sichovian",
    "_modifieLe": "2026-08-16T10:00:00.000Z"
   },
   "cas": [
@@ -1207,7 +1207,7 @@
   "da": {
    "ok": true,
    "nombre": 19,
-   "validePar": "TAKI Alimatou"
+   "validePar": "TACHEDI Arialu"
   },
   "etatObligations": "valide",
   "apresModification": {

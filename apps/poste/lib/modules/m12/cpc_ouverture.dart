@@ -95,7 +95,7 @@ class _EtatOuverture extends State<EcranOuverture> {
               const BlocTexte(
                   'Seules les classes 1 à 5 sont reportées : un compte de charge ou de produit ne passe jamais à l’exercice suivant, il est soldé par le résultat. Les deux totaux doivent être égaux (RG-10).'),
             ],
-            signatures: [signComptable, const Signature('La Directrice de l’Administration et des Finances', nom: 'TAKI Alimatou')]));
+            signatures: [signComptable, const Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu')]));
   }
 
   Future<void> _ecrire(BuildContext ctx, ContexteEcran c) async {

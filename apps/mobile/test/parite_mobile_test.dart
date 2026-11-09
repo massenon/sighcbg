@@ -133,17 +133,17 @@ void verifier(String id, Mesure m) {
 
 void main() {
   testWidgets('N1 cpn : chaque libellé de la page (carte Examen, carte Prévention, listes, exemples, commande)', (t) async {
-    await monter(t, FormulaireSuite(ecran: 'cpn', sous: 'SOUROU Mariam', enregistrer: (s) async {}));
-    verifier('cpn', comparer('cpn', fiche('cpn'), textesAgent(t), exclure: {normaliser('SOUROU Mariam')}));
+    await monter(t, FormulaireSuite(ecran: 'cpn', sous: 'SUGBIA Migikpa', enregistrer: (s) async {}));
+    verifier('cpn', comparer('cpn', fiche('cpn'), textesAgent(t), exclure: {normaliser('SUGBIA Migikpa')}));
   });
 
   testWidgets('N1 cpon : mère et nouveau-né', (t) async {
-    await monter(t, FormulaireSuite(ecran: 'cpon', sous: 'KPOGNON Rose', enregistrer: (s) async {}));
+    await monter(t, FormulaireSuite(ecran: 'cpon', sous: 'KOUZO Roulin', enregistrer: (s) async {}));
     verifier('cpon', comparer('cpon', fiche('cpon'), textesAgent(t)));
   });
 
   testWidgets('N1 surveillance : la note de la grille unique, Mère, Bébé', (t) async {
-    await monter(t, FormulaireSuite(ecran: 'surveillance', sous: 'SOUROU Mariam', notes: [mobNoteEcranSuite('surveillance')!], enregistrer: (s) async {}));
+    await monter(t, FormulaireSuite(ecran: 'surveillance', sous: 'SUGBIA Migikpa', notes: [mobNoteEcranSuite('surveillance')!], enregistrer: (s) async {}));
     verifier('surveillance', comparer('surveillance', fiche('surveillance'), textesAgent(t)));
   });
 

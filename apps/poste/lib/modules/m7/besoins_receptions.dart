@@ -214,8 +214,8 @@ class _EtatModaleReception extends State<_ModaleReception> {
           col: ColChamp.plein),
     ], {
       'date': iso(widget.contexte.aujourdhui),
-      'controleur1': 'MAMAN Zoukanéri',
-      'controleur2': 'DIEYABIDI Aïssatou',
+      'controleur1': 'METIAVI Zobo',
+      'controleur2': 'DATU Amachim',
     });
     for (final r in _recus) {
       r.addListener(() => setState(() {}));

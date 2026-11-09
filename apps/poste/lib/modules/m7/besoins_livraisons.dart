@@ -52,7 +52,7 @@ PieceA4 pieceLivraison(Fiche l,
     ],
     signatures: const [
       Signature('Le Livreur', mention: 'Fournisseur'),
-      Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri'),
+      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
       Signature('Le Contrôleur', mention: 'Vérification contradictoire'),
     ],
   );

@@ -101,7 +101,7 @@ void main() {
   cas('l\'écran s\'ouvre sur le premier patient (par code) et la première nature',
       (t) async {
     await ouvrir(t, magasin());
-    expect(find.text('TCHANE Bertine'), findsWidgets);
+    expect(find.text('TIAMOU Bodje'), findsWidgets);
     expect(find.text('Consultation généraliste'), findsWidgets);
     expect(find.text('Aucune prestation ajoutée.'), findsOneWidget);
     expect(find.textContaining('Patient non assuré'), findsWidgets);
@@ -166,7 +166,7 @@ void main() {
     final m = magasin();
     final avant = m.collection('factures').actives.length;
     await ouvrir(t, m);
-    await choisir(t, 'TCHANE Bertine', 'DOSSOU Salifou');
+    await choisir(t, 'TIAMOU Bodje', 'DULOUNE Sazo');
     expect(find.textContaining('Couverture OLEA ASSURANCE'), findsWidgets);
     // Une consultation du catalogue (couverte) puis une ligne libre (aucune garantie).
     await toucher(t, find.widgetWithText(BoutonSigh, 'Ajouter'));

@@ -93,7 +93,7 @@ void main() {
     await toucher(t, find.byKey(const Key('plan:lit:A3 LIT2')));
     final long = '${carte(plan()['tiroirLong'])['texte']}';
     for (final f in [
-      'N’TCHA Yacoubou',
+      'N’ACHOU Yacha',
       'CBG/3/26 — Lit A3 LIT2',
       '10/08/2026',
       '6 jour(s)',

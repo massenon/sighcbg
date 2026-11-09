@@ -293,14 +293,14 @@ void main() {
     final m = magasin(enrichi: false);
     await ouvrir(t, m, 'dash-patient', role: 'reception');
     final ech = liste(obj(obj(v['dash-patient'])['_selection'])['echantillon']);
-    // SAMBIENI Bibata : une hospitalisation et 7 950 F restant à payer.
-    final cible = ech.firstWhere((e) => obj(e['patient'])['nom'] == 'SAMBIENI');
+    // SEMIA Bouboli : une hospitalisation et 7 950 F restant à payer.
+    final cible = ech.firstWhere((e) => obj(e['patient'])['nom'] == 'SEMIA');
     final nom = '${obj(cible['patient'])['nom']} ${obj(cible['patient'])['prenom']}';
     await t.ensureVisible(find.byKey(const Key('kit:champ:patient')));
     await t.tap(find.descendant(of: find.byKey(const Key('kit:champ:patient')), matching: find.byType(InkWell)).first);
     await t.pump(const Duration(milliseconds: 300));
     if (find.text(nom).evaluate().isEmpty) {
-      await t.enterText(find.byType(TextField).last, 'SAMBIENI');
+      await t.enterText(find.byType(TextField).last, 'SEMIA');
       await t.pump(const Duration(milliseconds: 200));
     }
     await t.tap(find.text(nom).last);

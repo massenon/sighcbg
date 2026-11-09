@@ -14,7 +14,7 @@ const ajouter = (nom, ops) => cas.push({ nom, ops, attendu: ser(etat(ops, droits
 ajouter('scénario mixte : stock avec parts, fiche patient, sortie hors part', [
   op('mere', 10, 'stock', 'para', 'creer', { qte: 100 }, { role: 'stock' }), op('mere', 11, 'stock', 'para', 'bail', { appareil: 'F1', qte: 30 }, { role: 'stock' }),
   op('mere', 12, 'stock', 'para', 'bail', { appareil: 'F2', qte: 20 }, { role: 'stock' }), op('F1', 20, 'stock', 'para', 'sortie', { qte: 25 }, { role: 'infirmier' }),
-  op('F2', 21, 'stock', 'para', 'sortie', { qte: 25 }, { role: 'infirmier' }), op('F1', 22, 'patients', 'p1', 'creer', { nom: 'KOUA', tel: '1' }, { role: 'reception' }),
+  op('F2', 21, 'stock', 'para', 'sortie', { qte: 25 }, { role: 'infirmier' }), op('F1', 22, 'patients', 'p1', 'creer', { nom: 'KIMAR', tel: '1' }, { role: 'reception' }),
   op('F2', 23, 'patients', 'p1', 'modifier', { tel: '2' }, { role: 'reception', vu: { tel: 22 } }),
 ]);
 ajouter('écritures concurrentes du même champ : conflit marqué', [

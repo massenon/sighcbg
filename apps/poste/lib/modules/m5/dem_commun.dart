@@ -270,7 +270,7 @@ Future<void> imprimerDemande(BuildContext ctx, Fiche r) {
           signatures: [
             Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}'),
             const Signature('Le Biologiste responsable',
-                nom: 'KINNOU Addoul Ganiou'),
+                nom: 'KELE Adjapilo Gedur'),
           ],
         ));
   }

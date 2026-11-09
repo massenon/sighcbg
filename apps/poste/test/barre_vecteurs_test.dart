@@ -18,7 +18,7 @@ final horloge = DateTime.parse(v['horloge'] as String);
 
 Magasin magasinDeLaSonde() {
   final jeu = m_(v['jeu']);
-  final ref = m_(jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()));
+  final ref = m_(jsonDecode(File('test/fixtures/jeu_reference/referentiels.json').readAsStringSync()));
   return Magasin({for (final e in jeu.entries) e.key: l_(e.value)}, 'POSTE', ref);
 }
 

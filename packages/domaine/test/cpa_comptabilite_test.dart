@@ -16,7 +16,7 @@ String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 String mo(Object? v) => nt(cpaMontant(v));
 String mof(Object? v) => nt(money(v));
 
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 void main() {
   final f = File('test/vecteurs/comptabilite.json');

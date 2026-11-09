@@ -204,7 +204,7 @@ void main() {
       await ouvrir(t, m, 'm2-imagerie-irm');
       await toucher(t, find.byTooltip('Consulter').first);
       expect(find.text('IMG-0156 — IRM du rachis lombaire'), findsOneWidget);
-      expect(find.text('SOUMANOU Awaou — CBG/1109/26'), findsNWidgets(2),
+      expect(find.text('SOUVOLOUR Azomou — CBG/1109/26'), findsNWidgets(2),
           reason: 'la ligne et le tiroir');
       expect(find.text('Résultats'), findsOneWidget);
       expect(find.text('Contre-indications vérifiées'), findsOneWidget);
@@ -352,8 +352,8 @@ void main() {
       expect(
           find.textContaining('Prescripteur extérieur — nom'), findsOneWidget);
       await saisir(
-          t, 'prescripteurIdExterne', 'Dr SALIFOU Aminou, CS de Perma');
-      await choisir(t, 'realisateurId', 'AHOHOU Rodrigue — Échographiste');
+          t, 'prescripteurIdExterne', 'Dr SAZO Asounouta, CS de Perma');
+      await choisir(t, 'realisateurId', 'AKPOMER Ridur — Échographiste');
       await toucher(
           t, find.widgetWithText(BoutonSigh, 'Continuer vers la saisie'));
       await t.pump(const Duration(milliseconds: 400));
@@ -364,7 +364,7 @@ void main() {
           find.text(
               'Nouveau compte rendu — IRM — imagerie par résonance magnétique'),
           findsOneWidget);
-      expect(find.text('Dr SALIFOU Aminou, CS de Perma (extérieur)'),
+      expect(find.text('Dr SAZO Asounouta, CS de Perma (extérieur)'),
           findsOneWidget);
       expect(find.text('IRM du genou'), findsOneWidget);
       expect(find.text('Ménisques'), findsOneWidget);
@@ -391,8 +391,8 @@ void main() {
       await choisir(
           t, 'prescripteurId', '— Prescripteur extérieur à la clinique —');
       await saisir(
-          t, 'prescripteurIdExterne', 'Dr SALIFOU Aminou, CS de Perma');
-      await choisir(t, 'realisateurId', 'AHOHOU Rodrigue — Échographiste');
+          t, 'prescripteurIdExterne', 'Dr SAZO Asounouta, CS de Perma');
+      await choisir(t, 'realisateurId', 'AKPOMER Ridur — Échographiste');
       await saisir(t, 'provenance', 'CS de Perma');
       await toucher(
           t, find.widgetWithText(BoutonSigh, 'Continuer vers la saisie'));
@@ -415,9 +415,9 @@ void main() {
       expect(n['examen'], 'IRM du genou');
       expect(n['patientCode'], 'CBG/1/25');
       expect(n['patient'], '${patient['nom']} ${patient['prenom']}');
-      expect(n['prescripteur'], 'Dr SALIFOU Aminou, CS de Perma (extérieur)');
+      expect(n['prescripteur'], 'Dr SAZO Asounouta, CS de Perma (extérieur)');
       expect(n['prescripteurId'], isNull);
-      expect(n['realisateur'], 'AHOHOU Rodrigue');
+      expect(n['realisateur'], 'AKPOMER Ridur');
       expect(n['provenance'], 'CS de Perma');
       expect(n['conclusion'], 'Lésion méniscale.');
       expect(n['demandeImagerieId'], isNull,

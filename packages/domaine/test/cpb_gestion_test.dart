@@ -14,7 +14,7 @@ String nt(Object? s) => '$s'.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 String mof(Object? v) => nt(money(v));
 String mo(Object? v) => nt(money(v, avecDevise: false));
 
-List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<List<String>> lignesDe(Object? tableau) => liste(carte(tableau)['lignes']).map((l) => (l['cellules'] as List).cast<String>()).toList();
 
 void main() {

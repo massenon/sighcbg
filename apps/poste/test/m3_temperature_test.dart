@@ -54,7 +54,7 @@ void main() {
         expect(cellules.contains(sansEspaces(l[idx])), isTrue, reason: '${l[0]} ${l[1]} : « ${l[idx]} » absent');
       }
     }
-    expect(affiche(t, 'TCHANE Bertine'), isTrue);
+    expect(affiche(t, 'TIAMOU Bodje'), isTrue);
     expect(affiche(t, '4 jour(s)'), isTrue, reason: 'séjour depuis le 12/08/2026');
   });
 
@@ -78,7 +78,7 @@ void main() {
 
   cas('le sélecteur change de patient ; sans relevé : message dit, et le bouton « Saisir le premier relevé » pour qui peut écrire', (t) async {
     await ouvrir(t, magasinEssai(), 'm3-feuille-temperature');
-    await choisir(t, 'admissionId', 'BAKO Boukari');
+    await choisir(t, 'admissionId', 'BIALI Buke');
     final s = '${carte(tmp()['sansReleve'])['texte']}';
     expect(s, contains('Aucun relevé enregistré pour ce patient.'));
     expect(affiche(t, 'Aucun relevé enregistré pour ce patient.'), isTrue);
@@ -173,7 +173,7 @@ void main() {
     expect(find.widgetWithText(BoutonSigh, 'Nouveau relevé'), findsNothing);
     expect(find.byTooltip('Archiver ce relevé'), findsNothing);
     expect(find.widgetWithText(BoutonSigh, 'Imprimer la feuille'), findsOneWidget);
-    await choisir(t, 'admissionId', 'BAKO Boukari');
+    await choisir(t, 'admissionId', 'BIALI Buke');
     expect(affiche(t, 'Aucun relevé enregistré pour ce patient.'), isTrue);
     expect(find.widgetWithText(BoutonSigh, 'Saisir le premier relevé'), findsNothing);
   });

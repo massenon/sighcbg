@@ -91,7 +91,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -121,7 +121,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -145,8 +145,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -162,8 +162,8 @@
     "champs": {
      "referenceBL": "26LNA00099",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -227,8 +227,8 @@
      ],
      "montant": 20000,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme",
      "observations": ""
@@ -246,7 +246,7 @@
       "quantite": 7,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00099",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      },
      {
       "id": "MOUxmvvapr48ha6cf",
@@ -260,7 +260,7 @@
       "quantite": 20,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00099",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      }
     ],
     "ouverte": false,
@@ -320,7 +320,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -358,7 +358,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -390,8 +390,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -413,9 +413,9 @@
     "champs": {
      "referenceBL": "26LNA00100",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
-     "controleur3": "KINNOU Addoul Ganiou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
+     "controleur3": "KELE Adjapilo Gedur",
      "observations": "Carton endommagé"
     },
     "avantProduits": [
@@ -500,9 +500,9 @@
      ],
      "montant": 18750,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou",
-      "KINNOU Addoul Ganiou"
+      "METIAVI Zobo",
+      "DATU Amachim",
+      "KELE Adjapilo Gedur"
      ],
      "statutReception": "ecart",
      "observations": "Carton endommagé"
@@ -520,7 +520,7 @@
       "quantite": 9,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00100",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      },
      {
       "id": "MOUxmvvapreo7dmim",
@@ -534,7 +534,7 @@
       "quantite": 15,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00100",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      }
     ],
     "ouverte": false,
@@ -600,7 +600,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -622,7 +622,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -638,8 +638,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -653,8 +653,8 @@
     "champs": {
      "referenceBL": "26LNA00101",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -696,8 +696,8 @@
      ],
      "montant": 13370,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme",
      "observations": ""
@@ -715,7 +715,7 @@
       "quantite": 10,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00101",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      }
     ],
     "ouverte": false,
@@ -769,7 +769,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD-INCONNU",
@@ -799,7 +799,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD-INCONNU",
@@ -823,8 +823,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -840,8 +840,8 @@
     "champs": {
      "referenceBL": "26LNA00102",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -893,8 +893,8 @@
      ],
      "montant": 5600,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme",
      "observations": ""
@@ -912,7 +912,7 @@
       "quantite": 2,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00102",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      }
     ],
     "ouverte": false,
@@ -966,7 +966,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0003",
@@ -988,7 +988,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "livree",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0003",
@@ -1004,8 +1004,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -1019,8 +1019,8 @@
     "champs": {
      "referenceBL": "26LNA00103",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -1062,8 +1062,8 @@
      ],
      "montant": 750,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme",
      "observations": ""
@@ -1081,7 +1081,7 @@
       "quantite": 3,
       "stockType": "gros",
       "justificatif": "Bon de livraison 26LNA00103",
-      "utilisateur": "MAMAN Zoukanéri"
+      "utilisateur": "METIAVI Zobo"
      }
     ],
     "ouverte": false,
@@ -1135,7 +1135,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "validee",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -1157,7 +1157,7 @@
      "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
      "delaiLivraison": 7,
      "statutCommande": "validee",
-     "valideePar": "TAKI Alimatou",
+     "valideePar": "TACHEDI Arialu",
      "lignes": [
       {
        "produitId": "PRD0001",
@@ -1173,8 +1173,8 @@
     "defauts": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -1188,8 +1188,8 @@
     "champs": {
      "referenceBL": "",
      "date": "2026-10-30",
-     "controleur1": "MAMAN Zoukanéri",
-     "controleur2": "DIEYABIDI Aïssatou",
+     "controleur1": "METIAVI Zobo",
+     "controleur2": "DATU Amachim",
      "controleur3": "",
      "observations": ""
     },
@@ -1284,8 +1284,8 @@
     ],
     "montant": 94650,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "ecart"
    },
@@ -1331,8 +1331,8 @@
     ],
     "montant": 1177940,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1388,8 +1388,8 @@
     ],
     "montant": 859198,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1445,8 +1445,8 @@
     ],
     "montant": 287010,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1492,8 +1492,8 @@
     ],
     "montant": 1449289,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1539,8 +1539,8 @@
     ],
     "montant": 104140,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1586,8 +1586,8 @@
     ],
     "montant": 512192,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1643,8 +1643,8 @@
     ],
     "montant": 613500,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1690,8 +1690,8 @@
     ],
     "montant": 242500,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1727,8 +1727,8 @@
     ],
     "montant": 130200,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    },
@@ -1774,8 +1774,8 @@
     ],
     "montant": 670502,
     "controlePar": [
-     "MAMAN Zoukanéri",
-     "DIEYABIDI Aïssatou"
+     "METIAVI Zobo",
+     "DATU Amachim"
     ],
     "statutReception": "conforme"
    }
@@ -2437,7 +2437,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD0001",
@@ -2459,7 +2459,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "transmise",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD0003",
@@ -2481,7 +2481,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD-INCONNU",
@@ -2511,7 +2511,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD0001",
@@ -2533,7 +2533,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD0001",
@@ -2571,7 +2571,7 @@
     "fournisseurNom": "CAME — Centrale d'Achat des Médicaments Essentiels",
     "delaiLivraison": 7,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "lignes": [
      {
       "produitId": "PRD0001",
@@ -2659,7 +2659,7 @@
     "delaiLivraison": 7,
     "statutCommande": "validee",
     "observations": "",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    {
@@ -2683,7 +2683,7 @@
     ],
     "montant": 500,
     "reference": "BC-2026-0019",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    {
@@ -2707,7 +2707,7 @@
     ],
     "montant": 1400,
     "reference": "BC-2026-0018",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    {
@@ -2782,7 +2782,7 @@
     "montant": 6500,
     "statutCommande": "validee",
     "delaiLivraison": 7,
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    {
@@ -2826,7 +2826,7 @@
     "montant": 6500,
     "statutCommande": "validee",
     "delaiLivraison": 7,
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-10-30"
    },
    {
@@ -2856,7 +2856,7 @@
     ],
     "montant": 94650,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-08-13",
     "delaiLivraison": 2
    },
@@ -2895,7 +2895,7 @@
     ],
     "montant": 1177940,
     "statutCommande": "soldee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-06-03",
     "delaiLivraison": 2
    },
@@ -2942,7 +2942,7 @@
     ],
     "montant": 859198,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-06-07",
     "delaiLivraison": 14
    },
@@ -2989,7 +2989,7 @@
     ],
     "montant": 287010,
     "statutCommande": "soldee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-03-31",
     "delaiLivraison": 14
    },
@@ -3028,7 +3028,7 @@
     ],
     "montant": 1449289,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-04-12",
     "delaiLivraison": 14
    },
@@ -3067,7 +3067,7 @@
     ],
     "montant": 104140,
     "statutCommande": "soldee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-08-10",
     "delaiLivraison": 2
    },
@@ -3106,7 +3106,7 @@
     ],
     "montant": 512192,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-05-25",
     "delaiLivraison": 7
    },
@@ -3153,7 +3153,7 @@
     ],
     "montant": 613500,
     "statutCommande": "soldee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-05-12",
     "delaiLivraison": 10
    },
@@ -3192,7 +3192,7 @@
     ],
     "montant": 242500,
     "statutCommande": "soldee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-06-23",
     "delaiLivraison": 2
    },
@@ -3223,7 +3223,7 @@
     ],
     "montant": 813000,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-06-09",
     "delaiLivraison": 7
    },
@@ -3254,7 +3254,7 @@
     ],
     "montant": 126500,
     "statutCommande": "validee",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-02-19",
     "delaiLivraison": 14
    },
@@ -3285,7 +3285,7 @@
     ],
     "montant": 130200,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-07-03",
     "delaiLivraison": 2
    },
@@ -3363,7 +3363,7 @@
     ],
     "montant": 670502,
     "statutCommande": "livree",
-    "valideePar": "TAKI Alimatou",
+    "valideePar": "TACHEDI Arialu",
     "dateValidation": "2026-03-11",
     "delaiLivraison": 10
    },
@@ -3412,8 +3412,8 @@
      "fournisseurNom": "CAME",
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "lignes": [],
      "montant": 1000
@@ -3424,7 +3424,7 @@
      "date": "2099-02-01",
      "montant": "1000",
      "statutReception": "conforme",
-     "controlePar": "MAMAN Zoukanéri,DIEYABIDI Aïssatou"
+     "controlePar": "METIAVI Zobo,DATU Amachim"
     },
     "champs": {},
     "apres": {
@@ -3437,8 +3437,8 @@
      "fournisseurNom": "CAME",
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "lignes": [],
      "montant": 1000
@@ -3463,8 +3463,8 @@
      "fournisseurNom": "CAME",
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "lignes": [],
      "montant": 1000
@@ -3475,7 +3475,7 @@
      "date": "2099-02-02",
      "montant": "1000",
      "statutReception": "conforme",
-     "controlePar": "MAMAN Zoukanéri,DIEYABIDI Aïssatou"
+     "controlePar": "METIAVI Zobo,DATU Amachim"
     },
     "champs": {
      "controlePar": " A ,B,, C ",
@@ -3525,7 +3525,7 @@
      "date": "2026-10-30",
      "montant": "125000",
      "statutReception": "conforme",
-     "controlePar": "MAMAN Zoukanéri"
+     "controlePar": "METIAVI Zobo"
     },
     "bl": {
      "id": "LIVxmvvapu1oecuqr",
@@ -3536,7 +3536,7 @@
      "montant": 125000,
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri"
+      "METIAVI Zobo"
      ],
      "reference": "BL-00001",
      "fournisseurNom": "NATI Fournitures",
@@ -3805,8 +3805,8 @@
      "fournisseurNom": "CAME",
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "lignes": [],
      "montant": 1000
@@ -3833,7 +3833,7 @@
      "montant": 125000,
      "statutReception": "conforme",
      "controlePar": [
-      "MAMAN Zoukanéri"
+      "METIAVI Zobo"
      ],
      "reference": "BL-00001",
      "fournisseurNom": "NATI Fournitures",
@@ -3871,8 +3871,8 @@
      ],
      "montant": 94650,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "ecart"
     },
@@ -3918,8 +3918,8 @@
      ],
      "montant": 1177940,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -3975,8 +3975,8 @@
      ],
      "montant": 859198,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4032,8 +4032,8 @@
      ],
      "montant": 287010,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4079,8 +4079,8 @@
      ],
      "montant": 1449289,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4126,8 +4126,8 @@
      ],
      "montant": 104140,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4173,8 +4173,8 @@
      ],
      "montant": 512192,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4230,8 +4230,8 @@
      ],
      "montant": 613500,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4277,8 +4277,8 @@
      ],
      "montant": 242500,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4314,8 +4314,8 @@
      ],
      "montant": 130200,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     },
@@ -4361,8 +4361,8 @@
      ],
      "montant": 670502,
      "controlePar": [
-      "MAMAN Zoukanéri",
-      "DIEYABIDI Aïssatou"
+      "METIAVI Zobo",
+      "DATU Amachim"
      ],
      "statutReception": "conforme"
     }

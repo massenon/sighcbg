@@ -164,7 +164,7 @@ class _Corps extends StatelessWidget {
           ],
           signatures: const [
             Signature('Le Directeur Médical'),
-            Signature('La Directrice Administrative', nom: 'TAKI Alimatou'),
+            Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'),
           ],
         ));
   }

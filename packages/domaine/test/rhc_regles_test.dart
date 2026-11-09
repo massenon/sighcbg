@@ -10,7 +10,7 @@ import 'aide_vecteurs.dart';
 
 typedef F = Map<String, Object?>;
 
-const jeu = '../../apps/poste/assets/donnees/jeu';
+const jeu = '../../apps/poste/test/fixtures/jeu_reference';
 List<F> dossier(String nom) => liste(jsonDecode(File('$jeu/$nom.json').readAsStringSync()));
 List<F> actives(List<F> l) => [for (final f in l) if (f['statut'] != 'archive') f];
 F f(Object? x) => (x as Map).cast<String, Object?>();
@@ -231,7 +231,7 @@ void main() {
       ];
       final k = rhcCorrectifsParticipations(parts, f(m['fiche']));
       expect(k.keys.toList(), ['b', 'c']);
-      expect(k['b'], {'montant': 2000, 'periodeRetenue': '2027-01', 'evenementLibelle': 'Mariage de KORA S.', 'nature': 'mariage'});
+      expect(k['b'], {'montant': 2000, 'periodeRetenue': '2027-01', 'evenementLibelle': 'Mariage de KIAVUMU S.', 'nature': 'mariage'});
     });
     test('référentiels : sept natures, deux modes', () {
       expect(rhcNaturesEvenement.length, 7);

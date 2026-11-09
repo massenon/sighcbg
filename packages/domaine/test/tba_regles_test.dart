@@ -11,7 +11,7 @@ M obj(Object? o) => (o as Map).cast<String, Object?>();
 List<M> liste(Object? o) => [for (final x in (o as List)) obj(x)];
 M ecrans() => obj(obj(jsonDecode(File('test/vecteurs/tba_dash.json').readAsStringSync()))['ecrans']);
 List<M> jeu(String nom) =>
-    [for (final f in liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/$nom.json').readAsStringSync()))) if (f['statut'] != 'archive') f];
+    [for (final f in liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()))) if (f['statut'] != 'archive') f];
 String n(String s) => s.replaceAll(RegExp(r'[\s  ]+'), ' ').trim();
 final auj = DateTime(2026, 8, 16, 12);
 
@@ -79,7 +79,7 @@ void main() {
         fileAttente: jeu('fileAttente'),
         consultations: jeu('consultations'),
         admissions: jeu('admissions'),
-        nom: cle.endsWith('nomme') ? '${v['nom']}' : 'BASSONGUI Chabi Séko',
+        nom: cle.endsWith('nomme') ? '${v['nom']}' : 'BICHIASI Cezoune Sichovian',
         auj: auj,
       );
       premier(d.premier, v);
@@ -252,7 +252,7 @@ void main() {
 }
 
 List<M> _analyses() => [
-      for (final f in liste(jsonDecode(File('../../apps/poste/assets/donnees/jeu/analyses.json').readAsStringSync()))) f
+      for (final f in liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/analyses.json').readAsStringSync()))) f
     ];
 
 /// L'équivalent de `parMois(rows, date, valeur)` du kit sur 12 mois, ancré au mois de [ref].

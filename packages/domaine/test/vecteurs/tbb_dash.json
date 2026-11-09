@@ -108,9 +108,9 @@
       {
        "cellules": [
         "28/06/2026",
-        "HOUNKPATIN Salifou",
+        "HOULUKE Sazo",
         "Soins de plaie à domicile",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -118,9 +118,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BASSONGUI Hervé",
+        "BICHIASI Hiabidjo",
         "Perfusion à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -128,9 +128,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "SANNI Nadège",
+        "SIACHOU Nedi",
         "Perfusion à domicile",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -138,9 +138,9 @@
       {
        "cellules": [
         "04/07/2026",
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -148,9 +148,9 @@
       {
        "cellules": [
         "03/08/2026",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "Soins de plaie à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -158,9 +158,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BOUKARI Florent",
+        "BUKE Foulumi",
         "Visite d’un patient alité",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -168,9 +168,9 @@
       {
        "cellules": [
         "04/08/2026",
-        "TCHOUKOUROU Orou",
+        "TIGECHE Odjipiar",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -178,9 +178,9 @@
       {
        "cellules": [
         "28/07/2026",
-        "PARAISO Abdoul",
+        "PENU Abebia",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -188,9 +188,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "PARAISO Colette",
+        "PENU Coufi",
         "Douleurs abdominales",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "En cours"
        ],
        "boutons": []
@@ -198,9 +198,9 @@
       {
        "cellules": [
         "10/08/2026",
-        "N’TCHA Alassane",
+        "N’ACHOU Anapouzia",
         "Toux chronique",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "Terminée"
        ],
        "boutons": []
@@ -218,7 +218,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOUNKPATIN Salifou Soins de plaie à domicile BASSONGUI Chabi Séko Terminée 05/08/2026 BASSONGUI Hervé Perfusion à domicile TAKI Orou Terminée 11/08/2026 SANNI Nadège Perfusion à domicile YENI M’PO Florent Terminée 04/07/2026 TIGRI Séraphine Visite d’un patient alité BASSONGUI Chabi Séko Terminée 03/08/2026 GARBA Aïssatou Soins de plaie à domicile TAKI Orou Terminée 05/08/2026 BOUKARI Florent Visite d’un patient alité YENI M’PO Florent Terminée 04/08/2026 TCHOUKOUROU Orou Visite d’un patient alité BASSONGUI Chabi Séko Terminée 28/07/2026 PARAISO Abdoul Visite d’un patient alité BASSONGUI Chabi Séko Terminée 11/08/2026 PARAISO Colette Douleurs abdominales YENI M’PO Florent En cours 10/08/2026 N’TCHA Alassane Toux chronique AHOHOU Rodrigue Terminée",
+   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOULUKE Sazo Soins de plaie à domicile BICHIASI Cezoune Sichovian Terminée 05/08/2026 BICHIASI Hiabidjo Perfusion à domicile TACHEDI Odjipiar Terminée 11/08/2026 SIACHOU Nedi Perfusion à domicile YORO M’ABEKPIA Foulumi Terminée 04/07/2026 TOUZA Sigbudja Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 03/08/2026 GEVAMIAN Amachim Soins de plaie à domicile TACHEDI Odjipiar Terminée 05/08/2026 BUKE Foulumi Visite d’un patient alité YORO M’ABEKPIA Foulumi Terminée 04/08/2026 TIGECHE Odjipiar Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 28/07/2026 PENU Abebia Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 11/08/2026 PENU Coufi Douleurs abdominales YORO M’ABEKPIA Foulumi En cours 10/08/2026 N’ACHOU Anapouzia Toux chronique AKPOMER Ridur Terminée",
    "graphiques": [],
    "alertes": []
   },
@@ -333,9 +333,9 @@
       {
        "cellules": [
         "28/06/2026",
-        "HOUNKPATIN Salifou",
+        "HOULUKE Sazo",
         "Soins de plaie à domicile",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -343,9 +343,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BASSONGUI Hervé",
+        "BICHIASI Hiabidjo",
         "Perfusion à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -353,9 +353,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "SANNI Nadège",
+        "SIACHOU Nedi",
         "Perfusion à domicile",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -363,9 +363,9 @@
       {
        "cellules": [
         "04/07/2026",
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -373,9 +373,9 @@
       {
        "cellules": [
         "03/08/2026",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "Soins de plaie à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -383,9 +383,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BOUKARI Florent",
+        "BUKE Foulumi",
         "Visite d’un patient alité",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -393,9 +393,9 @@
       {
        "cellules": [
         "04/08/2026",
-        "TCHOUKOUROU Orou",
+        "TIGECHE Odjipiar",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -403,9 +403,9 @@
       {
        "cellules": [
         "28/07/2026",
-        "PARAISO Abdoul",
+        "PENU Abebia",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -413,9 +413,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "PARAISO Colette",
+        "PENU Coufi",
         "Douleurs abdominales",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "En cours"
        ],
        "boutons": []
@@ -423,9 +423,9 @@
       {
        "cellules": [
         "10/08/2026",
-        "N’TCHA Alassane",
+        "N’ACHOU Anapouzia",
         "Toux chronique",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "Terminée"
        ],
        "boutons": []
@@ -443,7 +443,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention— fermé à votre profil 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention— fermé à votre profil Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOUNKPATIN Salifou Soins de plaie à domicile BASSONGUI Chabi Séko Terminée 05/08/2026 BASSONGUI Hervé Perfusion à domicile TAKI Orou Terminée 11/08/2026 SANNI Nadège Perfusion à domicile YENI M’PO Florent Terminée 04/07/2026 TIGRI Séraphine Visite d’un patient alité BASSONGUI Chabi Séko Terminée 03/08/2026 GARBA Aïssatou Soins de plaie à domicile TAKI Orou Terminée 05/08/2026 BOUKARI Florent Visite d’un patient alité YENI M’PO Florent Terminée 04/08/2026 TCHOUKOUROU Orou Visite d’un patient alité BASSONGUI Chabi Séko Terminée 28/07/2026 PARAISO Abdoul Visite d’un patient alité BASSONGUI Chabi Séko Terminée 11/08/2026 PARAISO Colette Douleurs abdominales YENI M’PO Florent En cours 10/08/2026 N’TCHA Alassane Toux chronique AHOHOU Rodrigue Terminée",
+   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention— fermé à votre profil 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention— fermé à votre profil Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOULUKE Sazo Soins de plaie à domicile BICHIASI Cezoune Sichovian Terminée 05/08/2026 BICHIASI Hiabidjo Perfusion à domicile TACHEDI Odjipiar Terminée 11/08/2026 SIACHOU Nedi Perfusion à domicile YORO M’ABEKPIA Foulumi Terminée 04/07/2026 TOUZA Sigbudja Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 03/08/2026 GEVAMIAN Amachim Soins de plaie à domicile TACHEDI Odjipiar Terminée 05/08/2026 BUKE Foulumi Visite d’un patient alité YORO M’ABEKPIA Foulumi Terminée 04/08/2026 TIGECHE Odjipiar Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 28/07/2026 PENU Abebia Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 11/08/2026 PENU Coufi Douleurs abdominales YORO M’ABEKPIA Foulumi En cours 10/08/2026 N’ACHOU Anapouzia Toux chronique AKPOMER Ridur Terminée",
    "graphiques": [],
    "alertes": []
   },
@@ -549,9 +549,9 @@
       {
        "cellules": [
         "28/06/2026",
-        "HOUNKPATIN Salifou",
+        "HOULUKE Sazo",
         "Soins de plaie à domicile",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -559,9 +559,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BASSONGUI Hervé",
+        "BICHIASI Hiabidjo",
         "Perfusion à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -569,9 +569,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "SANNI Nadège",
+        "SIACHOU Nedi",
         "Perfusion à domicile",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -579,9 +579,9 @@
       {
        "cellules": [
         "04/07/2026",
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -589,9 +589,9 @@
       {
        "cellules": [
         "03/08/2026",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "Soins de plaie à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -599,9 +599,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BOUKARI Florent",
+        "BUKE Foulumi",
         "Visite d’un patient alité",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -609,9 +609,9 @@
       {
        "cellules": [
         "04/08/2026",
-        "TCHOUKOUROU Orou",
+        "TIGECHE Odjipiar",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -619,9 +619,9 @@
       {
        "cellules": [
         "28/07/2026",
-        "PARAISO Abdoul",
+        "PENU Abebia",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -629,9 +629,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "PARAISO Colette",
+        "PENU Coufi",
         "Douleurs abdominales",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "En cours"
        ],
        "boutons": []
@@ -639,9 +639,9 @@
       {
        "cellules": [
         "10/08/2026",
-        "N’TCHA Alassane",
+        "N’ACHOU Anapouzia",
         "Toux chronique",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "Terminée"
        ],
        "boutons": []
@@ -659,7 +659,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOUNKPATIN Salifou Soins de plaie à domicile BASSONGUI Chabi Séko Terminée 05/08/2026 BASSONGUI Hervé Perfusion à domicile TAKI Orou Terminée 11/08/2026 SANNI Nadège Perfusion à domicile YENI M’PO Florent Terminée 04/07/2026 TIGRI Séraphine Visite d’un patient alité BASSONGUI Chabi Séko Terminée 03/08/2026 GARBA Aïssatou Soins de plaie à domicile TAKI Orou Terminée 05/08/2026 BOUKARI Florent Visite d’un patient alité YENI M’PO Florent Terminée 04/08/2026 TCHOUKOUROU Orou Visite d’un patient alité BASSONGUI Chabi Séko Terminée 28/07/2026 PARAISO Abdoul Visite d’un patient alité BASSONGUI Chabi Séko Terminée 11/08/2026 PARAISO Colette Douleurs abdominales YENI M’PO Florent En cours 10/08/2026 N’TCHA Alassane Toux chronique AHOHOU Rodrigue Terminée",
+   "texteBrut": "À REGARDER EN PREMIER Aucune intervention en cours. La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 0 Transports programmés 0 Soins à domicile 53 Kilométrage du mois 0 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOULUKE Sazo Soins de plaie à domicile BICHIASI Cezoune Sichovian Terminée 05/08/2026 BICHIASI Hiabidjo Perfusion à domicile TACHEDI Odjipiar Terminée 11/08/2026 SIACHOU Nedi Perfusion à domicile YORO M’ABEKPIA Foulumi Terminée 04/07/2026 TOUZA Sigbudja Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 03/08/2026 GEVAMIAN Amachim Soins de plaie à domicile TACHEDI Odjipiar Terminée 05/08/2026 BUKE Foulumi Visite d’un patient alité YORO M’ABEKPIA Foulumi Terminée 04/08/2026 TIGECHE Odjipiar Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 28/07/2026 PENU Abebia Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 11/08/2026 PENU Coufi Douleurs abdominales YORO M’ABEKPIA Foulumi En cours 10/08/2026 N’ACHOU Anapouzia Toux chronique AKPOMER Ridur Terminée",
    "graphiques": [],
    "alertes": []
   },
@@ -775,9 +775,9 @@
       {
        "cellules": [
         "28/06/2026",
-        "HOUNKPATIN Salifou",
+        "HOULUKE Sazo",
         "Soins de plaie à domicile",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -785,9 +785,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BASSONGUI Hervé",
+        "BICHIASI Hiabidjo",
         "Perfusion à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -795,9 +795,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "SANNI Nadège",
+        "SIACHOU Nedi",
         "Perfusion à domicile",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -805,9 +805,9 @@
       {
        "cellules": [
         "04/07/2026",
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -815,9 +815,9 @@
       {
        "cellules": [
         "03/08/2026",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "Soins de plaie à domicile",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "Terminée"
        ],
        "boutons": []
@@ -825,9 +825,9 @@
       {
        "cellules": [
         "05/08/2026",
-        "BOUKARI Florent",
+        "BUKE Foulumi",
         "Visite d’un patient alité",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "Terminée"
        ],
        "boutons": []
@@ -835,9 +835,9 @@
       {
        "cellules": [
         "04/08/2026",
-        "TCHOUKOUROU Orou",
+        "TIGECHE Odjipiar",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -845,9 +845,9 @@
       {
        "cellules": [
         "28/07/2026",
-        "PARAISO Abdoul",
+        "PENU Abebia",
         "Visite d’un patient alité",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "Terminée"
        ],
        "boutons": []
@@ -855,9 +855,9 @@
       {
        "cellules": [
         "11/08/2026",
-        "PARAISO Colette",
+        "PENU Coufi",
         "Douleurs abdominales",
-        "YENI M’PO Florent",
+        "YORO M’ABEKPIA Foulumi",
         "En cours"
        ],
        "boutons": []
@@ -865,9 +865,9 @@
       {
        "cellules": [
         "10/08/2026",
-        "N’TCHA Alassane",
+        "N’ACHOU Anapouzia",
         "Toux chronique",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "Terminée"
        ],
        "boutons": []
@@ -885,7 +885,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "À REGARDER EN PREMIER 3 intervention(s) — sont demandées ou en cours La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Interventions Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 3 Transports programmés 2 Soins à domicile 53 Kilométrage du mois 135 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOUNKPATIN Salifou Soins de plaie à domicile BASSONGUI Chabi Séko Terminée 05/08/2026 BASSONGUI Hervé Perfusion à domicile TAKI Orou Terminée 11/08/2026 SANNI Nadège Perfusion à domicile YENI M’PO Florent Terminée 04/07/2026 TIGRI Séraphine Visite d’un patient alité BASSONGUI Chabi Séko Terminée 03/08/2026 GARBA Aïssatou Soins de plaie à domicile TAKI Orou Terminée 05/08/2026 BOUKARI Florent Visite d’un patient alité YENI M’PO Florent Terminée 04/08/2026 TCHOUKOUROU Orou Visite d’un patient alité BASSONGUI Chabi Séko Terminée 28/07/2026 PARAISO Abdoul Visite d’un patient alité BASSONGUI Chabi Séko Terminée 11/08/2026 PARAISO Colette Douleurs abdominales YENI M’PO Florent En cours 10/08/2026 N’TCHA Alassane Toux chronique AHOHOU Rodrigue Terminée",
+   "texteBrut": "À REGARDER EN PREMIER 3 intervention(s) — sont demandées ou en cours La fiche de référence porte les heures de départ et d’arrivée : c’est vous qui les renseignez, et elles font foi. Interventions Accès rapides Interventions Registre des sorties Soins à domicile Planification et facturation Ce que vous faites ici — vos parcours Assurer une évacuation Un transfert est demandé. 1 Prendre l’intervention 2 Emporter la fiche de référence— fermé à votre profil Elle porte les constantes et les traitements déjà donnés. 3 Renseigner départ et arrivée— fermé à votre profil Ces heures font foi : c’est vous qui les inscrivez. 4 Clore l’intervention Interventions Interventions du mois 3 Transports programmés 2 Soins à domicile 53 Kilométrage du mois 135 km Consultations et soins à domicile Planifier DATE PATIENT MOTIF PRATICIEN STATUT 28/06/2026 HOULUKE Sazo Soins de plaie à domicile BICHIASI Cezoune Sichovian Terminée 05/08/2026 BICHIASI Hiabidjo Perfusion à domicile TACHEDI Odjipiar Terminée 11/08/2026 SIACHOU Nedi Perfusion à domicile YORO M’ABEKPIA Foulumi Terminée 04/07/2026 TOUZA Sigbudja Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 03/08/2026 GEVAMIAN Amachim Soins de plaie à domicile TACHEDI Odjipiar Terminée 05/08/2026 BUKE Foulumi Visite d’un patient alité YORO M’ABEKPIA Foulumi Terminée 04/08/2026 TIGECHE Odjipiar Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 28/07/2026 PENU Abebia Visite d’un patient alité BICHIASI Cezoune Sichovian Terminée 11/08/2026 PENU Coufi Douleurs abdominales YORO M’ABEKPIA Foulumi En cours 10/08/2026 N’ACHOU Anapouzia Toux chronique AKPOMER Ridur Terminée",
    "graphiques": [],
    "alertes": [
     {
@@ -5539,73 +5539,73 @@
      "lignes": [
       {
        "cellules": [
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "CBG/11/26",
         "G5 P0",
         "18/08/2026 à 09h00",
         "9 cm",
         "3/5",
-        "BADO BANI A. B. Zoulehath"
+        "BATOL BIAREL A. B. Zouguti"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G4 P3",
         "24/08/2026 à 16h00",
         "5 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "DAOUDA Justine",
+        "DACHULO Jiakpune",
         "CBG/24/25",
         "G4 P4",
         "19/08/2026 à 11h00",
         "7 cm",
         "3/5",
-        "YENI M’PO Florent"
+        "YORO M’ABEKPIA Foulumi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G5 P4",
         "06/08/2026 à 18h00",
         "6 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "PARAISO Colette",
+        "PENU Coufi",
         "CBG/109/26",
         "G2 P3",
         "18/08/2026 à 13h00",
         "7 cm",
         "3/5",
-        "BOUKARI Nadège"
+        "BUKE Nedi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TCHANE Bertine",
+        "TIAMOU Bodje",
         "CBG/1/25",
         "G4 P2",
         "11/08/2026 à 17h00",
         "8 cm",
         "3/5",
-        "AHOHOU Rodrigue"
+        "AKPOMER Ridur"
        ],
        "boutons": []
       }
@@ -5627,11 +5627,11 @@
       {
        "cellules": [
         "00007/26",
-        "N’TCHA Alimatou",
+        "N’ACHOU Arialu",
         "16/09/2026",
         "dépassé de 44 j",
         "Sans facteur",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "0651591820"
        ],
        "boutons": []
@@ -5639,11 +5639,11 @@
       {
        "cellules": [
         "00008/26",
-        "GARBA Zoukanéri",
+        "GEVAMIAN Zobo",
         "23/09/2026",
         "dépassé de 37 j",
         "Sans facteur",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "0621861496"
        ],
        "boutons": []
@@ -5651,11 +5651,11 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "04/11/2026",
         "dans 5 j",
         "GAR — 1",
-        "ADAM Colette",
+        "ACHOUBE Coufi",
         "0377653549"
        ],
        "boutons": []
@@ -5663,11 +5663,11 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "0487231095"
        ],
        "boutons": []
@@ -5675,11 +5675,11 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "0617288966"
        ],
        "boutons": []
@@ -5700,7 +5700,7 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "22 ans",
         "G2 P0",
         "Taille < 1,50 m"
@@ -5710,7 +5710,7 @@
       {
        "cellules": [
         "00002/26",
-        "KORA Marguerite",
+        "KIAVUMU Mibu",
         "28 ans",
         "G8 P7",
         "Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement"
@@ -5720,7 +5720,7 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "77 ans",
         "G6 P4",
         "Âge > 35 ans"
@@ -5730,7 +5730,7 @@
       {
        "cellules": [
         "00004/26",
-        "DIEYABIDI Ramatou",
+        "DATU Riadife",
         "52 ans",
         "G7 P6",
         "Âge > 35 ans"
@@ -5740,7 +5740,7 @@
       {
        "cellules": [
         "00005/26",
-        "KINNOU Salamatou",
+        "KELE Saliagel",
         "45 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6"
@@ -5750,7 +5750,7 @@
       {
        "cellules": [
         "00012/26",
-        "BAKO Zoukanéri",
+        "BIALI Zobo",
         "26 ans",
         "G8 P7",
         "Parité > 6"
@@ -5760,7 +5760,7 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "81 ans",
         "G2 P1",
         "Âge > 35 ans"
@@ -5770,7 +5770,7 @@
       {
        "cellules": [
         "00014/26",
-        "BOUKARI Fatouma",
+        "BUKE Fiapeken",
         "78 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6 · HTA connue"
@@ -5780,7 +5780,7 @@
       {
        "cellules": [
         "00015/26",
-        "SEIDOU Fatouma",
+        "SIANUVU Fiapeken",
         "46 ans",
         "G7 P5",
         "Âge > 35 ans · Césarienne au dernier accouchement · HTA connue"
@@ -5833,7 +5833,7 @@
      ]
     ]
    ],
-   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TIGRI Séraphine CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BADO BANI A. B. Zoulehath TAKI Hélène CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BASSONGUI Chabi Séko DAOUDA Justine CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YENI M’PO Florent TAKI Hélène CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BASSONGUI Chabi Séko PARAISO Colette CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BOUKARI Nadège TCHANE Bertine CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AHOHOU Rodrigue Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’TCHA Alimatou 16/09/2026 dépassé de 44 j Sans facteur AHOHOU Rodrigue 0651591820 00008/26 GARBA Zoukanéri 23/09/2026 dépassé de 37 j Sans facteur TAKI Orou 0621861496 00001/26 KASSA Justine 04/11/2026 dans 5 j GAR — 1 ADAM Colette 0377653549 00003/26 GARBA Aïssatou 11/11/2026 dans 12 j GAR — 1 BASSONGUI Chabi Séko 0487231095 00013/26 SOULE Bertine 11/11/2026 dans 12 j GAR — 1 BOUKARI Nadège 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KASSA Justine 22 ans G2 P0 Taille < 1,50 m 00002/26 KORA Marguerite 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GARBA Aïssatou 77 ans G6 P4 Âge > 35 ans 00004/26 DIEYABIDI Ramatou 52 ans G7 P6 Âge > 35 ans 00005/26 KINNOU Salamatou 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BAKO Zoukanéri 26 ans G8 P7 Parité > 6 00013/26 SOULE Bertine 81 ans G2 P1 Âge > 35 ans 00014/26 BOUKARI Fatouma 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SEIDOU Fatouma 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
+   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TOUZA Sigbudja CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BATOL BIAREL A. B. Zouguti TACHEDI Hekoukpol CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BICHIASI Cezoune Sichovian DACHULO Jiakpune CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YORO M’ABEKPIA Foulumi TACHEDI Hekoukpol CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BICHIASI Cezoune Sichovian PENU Coufi CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BUKE Nedi TIAMOU Bodje CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AKPOMER Ridur Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’ACHOU Arialu 16/09/2026 dépassé de 44 j Sans facteur AKPOMER Ridur 0651591820 00008/26 GEVAMIAN Zobo 23/09/2026 dépassé de 37 j Sans facteur TACHEDI Odjipiar 0621861496 00001/26 KALOU Jiakpune 04/11/2026 dans 5 j GAR — 1 ACHOUBE Coufi 0377653549 00003/26 GEVAMIAN Amachim 11/11/2026 dans 12 j GAR — 1 BICHIASI Cezoune Sichovian 0487231095 00013/26 SOUDER Bodje 11/11/2026 dans 12 j GAR — 1 BUKE Nedi 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KALOU Jiakpune 22 ans G2 P0 Taille < 1,50 m 00002/26 KIAVUMU Mibu 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GEVAMIAN Amachim 77 ans G6 P4 Âge > 35 ans 00004/26 DATU Riadife 52 ans G7 P6 Âge > 35 ans 00005/26 KELE Saliagel 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BIALI Zobo 26 ans G8 P7 Parité > 6 00013/26 SOUDER Bodje 81 ans G2 P1 Âge > 35 ans 00014/26 BUKE Fiapeken 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SIANUVU Fiapeken 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
    "graphiques": [],
    "alertes": [
     {
@@ -6114,73 +6114,73 @@
      "lignes": [
       {
        "cellules": [
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "CBG/11/26",
         "G5 P0",
         "18/08/2026 à 09h00",
         "9 cm",
         "3/5",
-        "BADO BANI A. B. Zoulehath"
+        "BATOL BIAREL A. B. Zouguti"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G4 P3",
         "24/08/2026 à 16h00",
         "5 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "DAOUDA Justine",
+        "DACHULO Jiakpune",
         "CBG/24/25",
         "G4 P4",
         "19/08/2026 à 11h00",
         "7 cm",
         "3/5",
-        "YENI M’PO Florent"
+        "YORO M’ABEKPIA Foulumi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G5 P4",
         "06/08/2026 à 18h00",
         "6 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "PARAISO Colette",
+        "PENU Coufi",
         "CBG/109/26",
         "G2 P3",
         "18/08/2026 à 13h00",
         "7 cm",
         "3/5",
-        "BOUKARI Nadège"
+        "BUKE Nedi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TCHANE Bertine",
+        "TIAMOU Bodje",
         "CBG/1/25",
         "G4 P2",
         "11/08/2026 à 17h00",
         "8 cm",
         "3/5",
-        "AHOHOU Rodrigue"
+        "AKPOMER Ridur"
        ],
        "boutons": []
       }
@@ -6202,11 +6202,11 @@
       {
        "cellules": [
         "00007/26",
-        "N’TCHA Alimatou",
+        "N’ACHOU Arialu",
         "16/09/2026",
         "dépassé de 44 j",
         "Sans facteur",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "0651591820"
        ],
        "boutons": []
@@ -6214,11 +6214,11 @@
       {
        "cellules": [
         "00008/26",
-        "GARBA Zoukanéri",
+        "GEVAMIAN Zobo",
         "23/09/2026",
         "dépassé de 37 j",
         "Sans facteur",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "0621861496"
        ],
        "boutons": []
@@ -6226,11 +6226,11 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "04/11/2026",
         "dans 5 j",
         "GAR — 1",
-        "ADAM Colette",
+        "ACHOUBE Coufi",
         "0377653549"
        ],
        "boutons": []
@@ -6238,11 +6238,11 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "0487231095"
        ],
        "boutons": []
@@ -6250,11 +6250,11 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "0617288966"
        ],
        "boutons": []
@@ -6275,7 +6275,7 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "22 ans",
         "G2 P0",
         "Taille < 1,50 m"
@@ -6285,7 +6285,7 @@
       {
        "cellules": [
         "00002/26",
-        "KORA Marguerite",
+        "KIAVUMU Mibu",
         "28 ans",
         "G8 P7",
         "Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement"
@@ -6295,7 +6295,7 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "77 ans",
         "G6 P4",
         "Âge > 35 ans"
@@ -6305,7 +6305,7 @@
       {
        "cellules": [
         "00004/26",
-        "DIEYABIDI Ramatou",
+        "DATU Riadife",
         "52 ans",
         "G7 P6",
         "Âge > 35 ans"
@@ -6315,7 +6315,7 @@
       {
        "cellules": [
         "00005/26",
-        "KINNOU Salamatou",
+        "KELE Saliagel",
         "45 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6"
@@ -6325,7 +6325,7 @@
       {
        "cellules": [
         "00012/26",
-        "BAKO Zoukanéri",
+        "BIALI Zobo",
         "26 ans",
         "G8 P7",
         "Parité > 6"
@@ -6335,7 +6335,7 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "81 ans",
         "G2 P1",
         "Âge > 35 ans"
@@ -6345,7 +6345,7 @@
       {
        "cellules": [
         "00014/26",
-        "BOUKARI Fatouma",
+        "BUKE Fiapeken",
         "78 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6 · HTA connue"
@@ -6355,7 +6355,7 @@
       {
        "cellules": [
         "00015/26",
-        "SEIDOU Fatouma",
+        "SIANUVU Fiapeken",
         "46 ans",
         "G7 P5",
         "Âge > 35 ans · Césarienne au dernier accouchement · HTA connue"
@@ -6408,7 +6408,7 @@
      ]
     ]
    ],
-   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical— fermé à votre profil Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance— fermé à votre profil C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN— fermé à votre profil Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens— fermé à votre profil 2 Administrer le TPI / SP et le déparasitage— fermé à votre profil 3 Prescrire un bilan si nécessaireLaboratoire— fermé à votre profil 4 Fixer le rendez-vous et la classe des mères— fermé à votre profil Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme— fermé à votre profil Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance— fermé à votre profil Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né— fermé à votre profil PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance— fermé à votre profil 5 Établir la facture du séjourCaisse Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN— fermé à votre profil 2 Proposer une méthode de PF— fermé à votre profil 3 Clore le dossier obstétrical— fermé à votre profil Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TIGRI Séraphine CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BADO BANI A. B. Zoulehath TAKI Hélène CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BASSONGUI Chabi Séko DAOUDA Justine CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YENI M’PO Florent TAKI Hélène CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BASSONGUI Chabi Séko PARAISO Colette CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BOUKARI Nadège TCHANE Bertine CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AHOHOU Rodrigue Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’TCHA Alimatou 16/09/2026 dépassé de 44 j Sans facteur AHOHOU Rodrigue 0651591820 00008/26 GARBA Zoukanéri 23/09/2026 dépassé de 37 j Sans facteur TAKI Orou 0621861496 00001/26 KASSA Justine 04/11/2026 dans 5 j GAR — 1 ADAM Colette 0377653549 00003/26 GARBA Aïssatou 11/11/2026 dans 12 j GAR — 1 BASSONGUI Chabi Séko 0487231095 00013/26 SOULE Bertine 11/11/2026 dans 12 j GAR — 1 BOUKARI Nadège 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KASSA Justine 22 ans G2 P0 Taille < 1,50 m 00002/26 KORA Marguerite 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GARBA Aïssatou 77 ans G6 P4 Âge > 35 ans 00004/26 DIEYABIDI Ramatou 52 ans G7 P6 Âge > 35 ans 00005/26 KINNOU Salamatou 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BAKO Zoukanéri 26 ans G8 P7 Parité > 6 00013/26 SOULE Bertine 81 ans G2 P1 Âge > 35 ans 00014/26 BOUKARI Fatouma 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SEIDOU Fatouma 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
+   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical— fermé à votre profil Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance— fermé à votre profil C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN— fermé à votre profil Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens— fermé à votre profil 2 Administrer le TPI / SP et le déparasitage— fermé à votre profil 3 Prescrire un bilan si nécessaireLaboratoire— fermé à votre profil 4 Fixer le rendez-vous et la classe des mères— fermé à votre profil Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme— fermé à votre profil Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance— fermé à votre profil Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né— fermé à votre profil PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance— fermé à votre profil 5 Établir la facture du séjourCaisse Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN— fermé à votre profil 2 Proposer une méthode de PF— fermé à votre profil 3 Clore le dossier obstétrical— fermé à votre profil Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TOUZA Sigbudja CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BATOL BIAREL A. B. Zouguti TACHEDI Hekoukpol CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BICHIASI Cezoune Sichovian DACHULO Jiakpune CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YORO M’ABEKPIA Foulumi TACHEDI Hekoukpol CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BICHIASI Cezoune Sichovian PENU Coufi CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BUKE Nedi TIAMOU Bodje CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AKPOMER Ridur Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’ACHOU Arialu 16/09/2026 dépassé de 44 j Sans facteur AKPOMER Ridur 0651591820 00008/26 GEVAMIAN Zobo 23/09/2026 dépassé de 37 j Sans facteur TACHEDI Odjipiar 0621861496 00001/26 KALOU Jiakpune 04/11/2026 dans 5 j GAR — 1 ACHOUBE Coufi 0377653549 00003/26 GEVAMIAN Amachim 11/11/2026 dans 12 j GAR — 1 BICHIASI Cezoune Sichovian 0487231095 00013/26 SOUDER Bodje 11/11/2026 dans 12 j GAR — 1 BUKE Nedi 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KALOU Jiakpune 22 ans G2 P0 Taille < 1,50 m 00002/26 KIAVUMU Mibu 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GEVAMIAN Amachim 77 ans G6 P4 Âge > 35 ans 00004/26 DATU Riadife 52 ans G7 P6 Âge > 35 ans 00005/26 KELE Saliagel 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BIALI Zobo 26 ans G8 P7 Parité > 6 00013/26 SOUDER Bodje 81 ans G2 P1 Âge > 35 ans 00014/26 BUKE Fiapeken 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SIANUVU Fiapeken 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
    "graphiques": [],
    "alertes": [
     {
@@ -6657,73 +6657,73 @@
      "lignes": [
       {
        "cellules": [
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "CBG/11/26",
         "G5 P0",
         "18/08/2026 à 09h00",
         "9 cm",
         "3/5",
-        "BADO BANI A. B. Zoulehath"
+        "BATOL BIAREL A. B. Zouguti"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G4 P3",
         "24/08/2026 à 16h00",
         "5 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "DAOUDA Justine",
+        "DACHULO Jiakpune",
         "CBG/24/25",
         "G4 P4",
         "19/08/2026 à 11h00",
         "7 cm",
         "3/5",
-        "YENI M’PO Florent"
+        "YORO M’ABEKPIA Foulumi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G5 P4",
         "06/08/2026 à 18h00",
         "6 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "PARAISO Colette",
+        "PENU Coufi",
         "CBG/109/26",
         "G2 P3",
         "18/08/2026 à 13h00",
         "7 cm",
         "3/5",
-        "BOUKARI Nadège"
+        "BUKE Nedi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TCHANE Bertine",
+        "TIAMOU Bodje",
         "CBG/1/25",
         "G4 P2",
         "11/08/2026 à 17h00",
         "8 cm",
         "3/5",
-        "AHOHOU Rodrigue"
+        "AKPOMER Ridur"
        ],
        "boutons": []
       }
@@ -6745,11 +6745,11 @@
       {
        "cellules": [
         "00007/26",
-        "N’TCHA Alimatou",
+        "N’ACHOU Arialu",
         "16/09/2026",
         "dépassé de 44 j",
         "Sans facteur",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "0651591820"
        ],
        "boutons": []
@@ -6757,11 +6757,11 @@
       {
        "cellules": [
         "00008/26",
-        "GARBA Zoukanéri",
+        "GEVAMIAN Zobo",
         "23/09/2026",
         "dépassé de 37 j",
         "Sans facteur",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "0621861496"
        ],
        "boutons": []
@@ -6769,11 +6769,11 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "04/11/2026",
         "dans 5 j",
         "GAR — 1",
-        "ADAM Colette",
+        "ACHOUBE Coufi",
         "0377653549"
        ],
        "boutons": []
@@ -6781,11 +6781,11 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "0487231095"
        ],
        "boutons": []
@@ -6793,11 +6793,11 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "0617288966"
        ],
        "boutons": []
@@ -6818,7 +6818,7 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "22 ans",
         "G2 P0",
         "Taille < 1,50 m"
@@ -6828,7 +6828,7 @@
       {
        "cellules": [
         "00002/26",
-        "KORA Marguerite",
+        "KIAVUMU Mibu",
         "28 ans",
         "G8 P7",
         "Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement"
@@ -6838,7 +6838,7 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "77 ans",
         "G6 P4",
         "Âge > 35 ans"
@@ -6848,7 +6848,7 @@
       {
        "cellules": [
         "00004/26",
-        "DIEYABIDI Ramatou",
+        "DATU Riadife",
         "52 ans",
         "G7 P6",
         "Âge > 35 ans"
@@ -6858,7 +6858,7 @@
       {
        "cellules": [
         "00005/26",
-        "KINNOU Salamatou",
+        "KELE Saliagel",
         "45 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6"
@@ -6868,7 +6868,7 @@
       {
        "cellules": [
         "00012/26",
-        "BAKO Zoukanéri",
+        "BIALI Zobo",
         "26 ans",
         "G8 P7",
         "Parité > 6"
@@ -6878,7 +6878,7 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "81 ans",
         "G2 P1",
         "Âge > 35 ans"
@@ -6888,7 +6888,7 @@
       {
        "cellules": [
         "00014/26",
-        "BOUKARI Fatouma",
+        "BUKE Fiapeken",
         "78 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6 · HTA connue"
@@ -6898,7 +6898,7 @@
       {
        "cellules": [
         "00015/26",
-        "SEIDOU Fatouma",
+        "SIANUVU Fiapeken",
         "46 ans",
         "G7 P5",
         "Âge > 35 ans · Césarienne au dernier accouchement · HTA connue"
@@ -6951,7 +6951,7 @@
      ]
     ]
    ],
-   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TIGRI Séraphine CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BADO BANI A. B. Zoulehath TAKI Hélène CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BASSONGUI Chabi Séko DAOUDA Justine CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YENI M’PO Florent TAKI Hélène CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BASSONGUI Chabi Séko PARAISO Colette CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BOUKARI Nadège TCHANE Bertine CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AHOHOU Rodrigue Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’TCHA Alimatou 16/09/2026 dépassé de 44 j Sans facteur AHOHOU Rodrigue 0651591820 00008/26 GARBA Zoukanéri 23/09/2026 dépassé de 37 j Sans facteur TAKI Orou 0621861496 00001/26 KASSA Justine 04/11/2026 dans 5 j GAR — 1 ADAM Colette 0377653549 00003/26 GARBA Aïssatou 11/11/2026 dans 12 j GAR — 1 BASSONGUI Chabi Séko 0487231095 00013/26 SOULE Bertine 11/11/2026 dans 12 j GAR — 1 BOUKARI Nadège 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KASSA Justine 22 ans G2 P0 Taille < 1,50 m 00002/26 KORA Marguerite 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GARBA Aïssatou 77 ans G6 P4 Âge > 35 ans 00004/26 DIEYABIDI Ramatou 52 ans G7 P6 Âge > 35 ans 00005/26 KINNOU Salamatou 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BAKO Zoukanéri 26 ans G8 P7 Parité > 6 00013/26 SOULE Bertine 81 ans G2 P1 Âge > 35 ans 00014/26 BOUKARI Fatouma 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SEIDOU Fatouma 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
+   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 0 Nouveau-nés vivants du mois 0 Aucune naissance ce mois Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TOUZA Sigbudja CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BATOL BIAREL A. B. Zouguti TACHEDI Hekoukpol CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BICHIASI Cezoune Sichovian DACHULO Jiakpune CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YORO M’ABEKPIA Foulumi TACHEDI Hekoukpol CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BICHIASI Cezoune Sichovian PENU Coufi CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BUKE Nedi TIAMOU Bodje CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AKPOMER Ridur Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’ACHOU Arialu 16/09/2026 dépassé de 44 j Sans facteur AKPOMER Ridur 0651591820 00008/26 GEVAMIAN Zobo 23/09/2026 dépassé de 37 j Sans facteur TACHEDI Odjipiar 0621861496 00001/26 KALOU Jiakpune 04/11/2026 dans 5 j GAR — 1 ACHOUBE Coufi 0377653549 00003/26 GEVAMIAN Amachim 11/11/2026 dans 12 j GAR — 1 BICHIASI Cezoune Sichovian 0487231095 00013/26 SOUDER Bodje 11/11/2026 dans 12 j GAR — 1 BUKE Nedi 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KALOU Jiakpune 22 ans G2 P0 Taille < 1,50 m 00002/26 KIAVUMU Mibu 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GEVAMIAN Amachim 77 ans G6 P4 Âge > 35 ans 00004/26 DATU Riadife 52 ans G7 P6 Âge > 35 ans 00005/26 KELE Saliagel 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BIALI Zobo 26 ans G8 P7 Parité > 6 00013/26 SOUDER Bodje 81 ans G2 P1 Âge > 35 ans 00014/26 BUKE Fiapeken 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SIANUVU Fiapeken 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Aucun accouchement ce mois. Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
    "graphiques": [],
    "alertes": [
     {
@@ -7201,73 +7201,73 @@
      "lignes": [
       {
        "cellules": [
-        "TIGRI Séraphine",
+        "TOUZA Sigbudja",
         "CBG/11/26",
         "G5 P0",
         "18/08/2026 à 09h00",
         "9 cm",
         "3/5",
-        "BADO BANI A. B. Zoulehath"
+        "BATOL BIAREL A. B. Zouguti"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G4 P3",
         "24/08/2026 à 16h00",
         "5 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "DAOUDA Justine",
+        "DACHULO Jiakpune",
         "CBG/24/25",
         "G4 P4",
         "19/08/2026 à 11h00",
         "7 cm",
         "3/5",
-        "YENI M’PO Florent"
+        "YORO M’ABEKPIA Foulumi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TAKI Hélène",
+        "TACHEDI Hekoukpol",
         "CBG/176/26",
         "G5 P4",
         "06/08/2026 à 18h00",
         "6 cm",
         "4/5",
-        "BASSONGUI Chabi Séko"
+        "BICHIASI Cezoune Sichovian"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "PARAISO Colette",
+        "PENU Coufi",
         "CBG/109/26",
         "G2 P3",
         "18/08/2026 à 13h00",
         "7 cm",
         "3/5",
-        "BOUKARI Nadège"
+        "BUKE Nedi"
        ],
        "boutons": []
       },
       {
        "cellules": [
-        "TCHANE Bertine",
+        "TIAMOU Bodje",
         "CBG/1/25",
         "G4 P2",
         "11/08/2026 à 17h00",
         "8 cm",
         "3/5",
-        "AHOHOU Rodrigue"
+        "AKPOMER Ridur"
        ],
        "boutons": []
       }
@@ -7289,11 +7289,11 @@
       {
        "cellules": [
         "00007/26",
-        "N’TCHA Alimatou",
+        "N’ACHOU Arialu",
         "16/09/2026",
         "dépassé de 44 j",
         "Sans facteur",
-        "AHOHOU Rodrigue",
+        "AKPOMER Ridur",
         "0651591820"
        ],
        "boutons": []
@@ -7301,11 +7301,11 @@
       {
        "cellules": [
         "00008/26",
-        "GARBA Zoukanéri",
+        "GEVAMIAN Zobo",
         "23/09/2026",
         "dépassé de 37 j",
         "Sans facteur",
-        "TAKI Orou",
+        "TACHEDI Odjipiar",
         "0621861496"
        ],
        "boutons": []
@@ -7313,11 +7313,11 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "04/11/2026",
         "dans 5 j",
         "GAR — 1",
-        "ADAM Colette",
+        "ACHOUBE Coufi",
         "0377653549"
        ],
        "boutons": []
@@ -7325,11 +7325,11 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BASSONGUI Chabi Séko",
+        "BICHIASI Cezoune Sichovian",
         "0487231095"
        ],
        "boutons": []
@@ -7337,11 +7337,11 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "11/11/2026",
         "dans 12 j",
         "GAR — 1",
-        "BOUKARI Nadège",
+        "BUKE Nedi",
         "0617288966"
        ],
        "boutons": []
@@ -7362,7 +7362,7 @@
       {
        "cellules": [
         "00001/26",
-        "KASSA Justine",
+        "KALOU Jiakpune",
         "22 ans",
         "G2 P0",
         "Taille < 1,50 m"
@@ -7372,7 +7372,7 @@
       {
        "cellules": [
         "00002/26",
-        "KORA Marguerite",
+        "KIAVUMU Mibu",
         "28 ans",
         "G8 P7",
         "Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement"
@@ -7382,7 +7382,7 @@
       {
        "cellules": [
         "00003/26",
-        "GARBA Aïssatou",
+        "GEVAMIAN Amachim",
         "77 ans",
         "G6 P4",
         "Âge > 35 ans"
@@ -7392,7 +7392,7 @@
       {
        "cellules": [
         "00004/26",
-        "DIEYABIDI Ramatou",
+        "DATU Riadife",
         "52 ans",
         "G7 P6",
         "Âge > 35 ans"
@@ -7402,7 +7402,7 @@
       {
        "cellules": [
         "00005/26",
-        "KINNOU Salamatou",
+        "KELE Saliagel",
         "45 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6"
@@ -7412,7 +7412,7 @@
       {
        "cellules": [
         "00012/26",
-        "BAKO Zoukanéri",
+        "BIALI Zobo",
         "26 ans",
         "G8 P7",
         "Parité > 6"
@@ -7422,7 +7422,7 @@
       {
        "cellules": [
         "00013/26",
-        "SOULE Bertine",
+        "SOUDER Bodje",
         "81 ans",
         "G2 P1",
         "Âge > 35 ans"
@@ -7432,7 +7432,7 @@
       {
        "cellules": [
         "00014/26",
-        "BOUKARI Fatouma",
+        "BUKE Fiapeken",
         "78 ans",
         "G9 P7",
         "Âge > 35 ans · Parité > 6 · HTA connue"
@@ -7442,7 +7442,7 @@
       {
        "cellules": [
         "00015/26",
-        "SEIDOU Fatouma",
+        "SIANUVU Fiapeken",
         "46 ans",
         "G7 P5",
         "Âge > 35 ans · Césarienne au dernier accouchement · HTA connue"
@@ -7490,7 +7490,7 @@
      ]
     ]
    ],
-   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 3 Nouveau-nés vivants du mois 2 1 mort-né(s) sur 3 Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TIGRI Séraphine CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BADO BANI A. B. Zoulehath TAKI Hélène CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BASSONGUI Chabi Séko DAOUDA Justine CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YENI M’PO Florent TAKI Hélène CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BASSONGUI Chabi Séko PARAISO Colette CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BOUKARI Nadège TCHANE Bertine CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AHOHOU Rodrigue Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’TCHA Alimatou 16/09/2026 dépassé de 44 j Sans facteur AHOHOU Rodrigue 0651591820 00008/26 GARBA Zoukanéri 23/09/2026 dépassé de 37 j Sans facteur TAKI Orou 0621861496 00001/26 KASSA Justine 04/11/2026 dans 5 j GAR — 1 ADAM Colette 0377653549 00003/26 GARBA Aïssatou 11/11/2026 dans 12 j GAR — 1 BASSONGUI Chabi Séko 0487231095 00013/26 SOULE Bertine 11/11/2026 dans 12 j GAR — 1 BOUKARI Nadège 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KASSA Justine 22 ans G2 P0 Taille < 1,50 m 00002/26 KORA Marguerite 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GARBA Aïssatou 77 ans G6 P4 Âge > 35 ans 00004/26 DIEYABIDI Ramatou 52 ans G7 P6 Âge > 35 ans 00005/26 KINNOU Salamatou 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BAKO Zoukanéri 26 ans G8 P7 Parité > 6 00013/26 SOULE Bertine 81 ans G2 P1 Âge > 35 ans 00014/26 BOUKARI Fatouma 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SEIDOU Fatouma 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
+   "texteBrut": "À REGARDER EN PREMIER 6 partogramme(s) — ouverts — travail en cours Un partogramme non clos est une femme en salle de travail. La ligne d’alerte part de 4 cm à 1 cm par heure ; la ligne d’action lui est parallèle, décalée de 4 heures. Partogrammes Accès rapides Dossier obstétrical Le cahier de la parturiente Partogramme Salle de travail Accouchement Délivrance et issue CPoN Suites de couches Ce que vous faites ici — vos parcours Ouvrir un dossier obstétrical Une femme se présente pour sa première consultation prénatale. 1 Vérifier ou créer le dossier patient 2 Ouvrir le dossier obstétrical Numéro repris du registre papier ; la date probable se déduit de la DDR. 3 Cocher les facteurs de surveillance C’est leur CUMUL qui classe à risque, jamais un facteur isolé. 4 Enregistrer la première CPN Dossier obstétrical Suivre une CPN La grille se remplit en COLONNES : une par venue, les mêmes lignes à chaque fois. 1 Relever l’état général et les examens 2 Administrer le TPI / SP et le déparasitage 3 Prescrire un bilan si nécessaireLaboratoire 4 Fixer le rendez-vous et la classe des mères CPN & carte maternelle Conduire un accouchement De l’admission en salle de travail à la surveillance du deuxième jour. 1 Ouvrir le partogramme Dilatation, descente en travers de doigts, chevauchement, liquide amniotique. 2 Enregistrer l’accouchement et la délivrance Mode de délivrance, examen du placenta, issue mère et nouveau-né. 3 Renseigner le nouveau-né PC, PT et Apgar aux trois temps sont OBLIGATOIRES. 4 Déclarer la naissance 5 Établir la facture du séjourCaisse Partogramme Suivre les suites de couches Trois consultations post-natales, la première dans les 48 heures. 1 Enregistrer la CPoN 2 Proposer une méthode de PF 3 Clore le dossier obstétrical CPoN Dossiers suivis 15 Dossiers obstétricaux ouverts, non encore clos Grossesses à risque (GAR) 15 Au moins un facteur de surveillance coché Accouchements du mois 3 Nouveau-nés vivants du mois 2 1 mort-né(s) sur 3 Travail en cours — salle d’accouchement Partogrammes PARTURIENTE DOSSIER G / P DÉBUT DU TRAVAIL DILATATION DESCENTE ACCOUCHEUR TOUZA Sigbudja CBG/11/26 G5 P0 18/08/2026 à 09h00 9 cm 3/5 BATOL BIAREL A. B. Zouguti TACHEDI Hekoukpol CBG/176/26 G4 P3 24/08/2026 à 16h00 5 cm 4/5 BICHIASI Cezoune Sichovian DACHULO Jiakpune CBG/24/25 G4 P4 19/08/2026 à 11h00 7 cm 3/5 YORO M’ABEKPIA Foulumi TACHEDI Hekoukpol CBG/176/26 G5 P4 06/08/2026 à 18h00 6 cm 4/5 BICHIASI Cezoune Sichovian PENU Coufi CBG/109/26 G2 P3 18/08/2026 à 13h00 7 cm 3/5 BUKE Nedi TIAMOU Bodje CBG/1/25 G4 P2 11/08/2026 à 17h00 8 cm 3/5 AKPOMER Ridur Termes attendus — les quinze prochains jours Dossiers Un terme DÉPASSÉ n’est pas une erreur de saisie : c’est la femme qu’il faut rappeler. Le dossier reste « suivi » tant que l’accouchement n’est pas enregistré. N° DOSSIER PARTURIENTE TERME PRÉVU ÉCHÉANCE SURVEILLANCE SAGE-FEMME TÉLÉPHONE 00007/26 N’ACHOU Arialu 16/09/2026 dépassé de 44 j Sans facteur AKPOMER Ridur 0651591820 00008/26 GEVAMIAN Zobo 23/09/2026 dépassé de 37 j Sans facteur TACHEDI Odjipiar 0621861496 00001/26 KALOU Jiakpune 04/11/2026 dans 5 j GAR — 1 ACHOUBE Coufi 0377653549 00003/26 GEVAMIAN Amachim 11/11/2026 dans 12 j GAR — 1 BICHIASI Cezoune Sichovian 0487231095 00013/26 SOUDER Bodje 11/11/2026 dans 12 j GAR — 1 BUKE Nedi 0617288966 Grossesses à risque suivies N° DOSSIER PARTURIENTE ÂGE G / P FACTEURS RELEVÉS 00001/26 KALOU Jiakpune 22 ans G2 P0 Taille < 1,50 m 00002/26 KIAVUMU Mibu 28 ans G8 P7 Taille < 1,50 m · Parité > 6 · Césarienne au dernier accouchement 00003/26 GEVAMIAN Amachim 77 ans G6 P4 Âge > 35 ans 00004/26 DATU Riadife 52 ans G7 P6 Âge > 35 ans 00005/26 KELE Saliagel 45 ans G9 P7 Âge > 35 ans · Parité > 6 00012/26 BIALI Zobo 26 ans G8 P7 Parité > 6 00013/26 SOUDER Bodje 81 ans G2 P1 Âge > 35 ans 00014/26 BUKE Fiapeken 78 ans G9 P7 Âge > 35 ans · Parité > 6 · HTA connue 00015/26 SIANUVU Fiapeken 46 ans G7 P5 Âge > 35 ans · Césarienne au dernier accouchement · HTA connue Lecture du mois Accouchements du mois par type Facteurs de surveillance les plus fréquents Âge > 35 ans 10 Parité > 6 6 Taille < 1,50 m 2 Césarienne au dernier accouchement 2 HTA connue 2",
    "graphiques": [
     {
      "type": "barres",
@@ -7530,7 +7530,7 @@
    "parcours": [
     {
      "titre": "Toux chronique — HTA essentielle",
-     "detail": "Consultation avec TAKI Orou",
+     "detail": "Consultation avec TACHEDI Odjipiar",
      "etapes": [
       {
        "num": "",
@@ -7596,7 +7596,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TCHANE Bertine Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TAKI Orou 01/06/2026",
+   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TIAMOU Bodje Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TACHEDI Odjipiar 01/06/2026",
    "graphiques": [],
    "alertes": []
   },
@@ -7610,7 +7610,7 @@
    "parcours": [
     {
      "titre": "Toux chronique — HTA essentielle",
-     "detail": "Consultation avec TAKI Orou",
+     "detail": "Consultation avec TACHEDI Odjipiar",
      "etapes": [
       {
        "num": "",
@@ -7676,7 +7676,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TCHANE Bertine Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TAKI Orou 01/06/2026",
+   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TIAMOU Bodje Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TACHEDI Odjipiar 01/06/2026",
    "graphiques": [],
    "alertes": []
   },
@@ -7690,7 +7690,7 @@
    "parcours": [
     {
      "titre": "Toux chronique — HTA essentielle",
-     "detail": "Consultation avec TAKI Orou",
+     "detail": "Consultation avec TACHEDI Odjipiar",
      "etapes": [
       {
        "num": "",
@@ -7756,7 +7756,7 @@
    "vides": [],
    "liens": [],
    "classement": [],
-   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TCHANE Bertine Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TAKI Orou 01/06/2026",
+   "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TIAMOU Bodje Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TACHEDI Odjipiar 01/06/2026",
    "graphiques": [],
    "alertes": []
   },
@@ -7769,8 +7769,8 @@
      "patient": {
       "id": "PAT0001",
       "code": "CBG/1/25",
-      "nom": "TCHANE",
-      "prenom": "Bertine",
+      "nom": "TIAMOU",
+      "prenom": "Bodje",
       "quartier": "Boukoumbé"
      },
      "kpis": [
@@ -7795,9 +7795,9 @@
        "indice": null
       }
      ],
-     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TCHANE Bertine Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TAKI Orou 01/06/2026",
+     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient TIAMOU Bodje Consultations 1 Hospitalisations 0 Total facturé 21 200 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Toux chronique — HTA essentielle Consultation avec TACHEDI Odjipiar 01/06/2026",
      "boutons": [
-      "TCHANE Bertine",
+      "TIAMOU Bodje",
       "Remettre la fiche"
      ],
      "piece": {
@@ -7806,7 +7806,7 @@
       "cartouche": [
        [
         "Patient",
-        "TCHANE Bertine"
+        "TIAMOU Bodje"
        ],
        [
         "Dossier",
@@ -7821,7 +7821,7 @@
         "0 FCFA"
        ]
       ],
-      "contenu": "DateMotifDiagnosticPraticien01/06/2026Toux chroniqueHTA essentielleTAKI Orou",
+      "contenu": "DateMotifDiagnosticPraticien01/06/2026Toux chroniqueHTA essentielleTAKI Odjipiar",
       "tables": [],
       "signatures": [
        {
@@ -7829,14 +7829,14 @@
        }
       ]
      },
-     "fil": "Toux chronique — HTA essentielle Consultation avec TAKI Orou 01/06/2026"
+     "fil": "Toux chronique — HTA essentielle Consultation avec TACHEDI Odjipiar 01/06/2026"
     },
     {
      "patient": {
       "id": "PAT0010",
       "code": "CBG/10/25",
-      "nom": "SEIDOU",
-      "prenom": "Rachida",
+      "nom": "SIANUVU",
+      "prenom": "Rarouvil",
       "quartier": "Bérécingou"
      },
      "kpis": [
@@ -7861,9 +7861,9 @@
        "indice": null
       }
      ],
-     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient SEIDOU Rachida Consultations 1 Hospitalisations 0 Total facturé 8 000 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Contrôle diabète — Infection urinaire basse Contrôle avec BASSONGUI Chabi Séko 15/08/2026",
+     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient SIANUVU Rarouvil Consultations 1 Hospitalisations 0 Total facturé 8 000 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Contrôle diabète — Infection urinaire basse Contrôle avec BICHIASI Cezoune Sichovian 15/08/2026",
      "boutons": [
-      "SEIDOU Rachida",
+      "SIANUVU Rarouvil",
       "Remettre la fiche"
      ],
      "piece": {
@@ -7872,7 +7872,7 @@
       "cartouche": [
        [
         "Patient",
-        "SEIDOU Rachida"
+        "SIANUVU Rarouvil"
        ],
        [
         "Dossier",
@@ -7887,7 +7887,7 @@
         "0 FCFA"
        ]
       ],
-      "contenu": "DateMotifDiagnosticPraticien15/08/2026Contrôle diabèteInfection urinaire basseBASSONGUI Chabi Séko",
+      "contenu": "DateMotifDiagnosticPraticien15/08/2026Contrôle diabèteInfection urinaire basseBICHIASI Cezoune Sichovian",
       "tables": [],
       "signatures": [
        {
@@ -7895,14 +7895,14 @@
        }
       ]
      },
-     "fil": "Contrôle diabète — Infection urinaire basse Contrôle avec BASSONGUI Chabi Séko 15/08/2026"
+     "fil": "Contrôle diabète — Infection urinaire basse Contrôle avec BICHIASI Cezoune Sichovian 15/08/2026"
     },
     {
      "patient": {
       "id": "PAT0020",
       "code": "CBG/20/26",
-      "nom": "SAMBIENI",
-      "prenom": "Bibata",
+      "nom": "SEMIA",
+      "prenom": "Bouboli",
       "quartier": "Perma"
      },
      "kpis": [
@@ -7927,9 +7927,9 @@
        "indice": null
       }
      ],
-     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient SAMBIENI Bibata Consultations 1 Hospitalisations 1 Total facturé 34 500 FCFA Reste à payer 7 950 FCFA Parcours de soins Remettre la fiche Céphalées — Paludisme simple Urgence avec BASSONGUI Chabi Séko 25/06/2026",
+     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient SEMIA Bouboli Consultations 1 Hospitalisations 1 Total facturé 34 500 FCFA Reste à payer 7 950 FCFA Parcours de soins Remettre la fiche Céphalées — Paludisme simple Urgence avec BICHIASI Cezoune Sichovian 25/06/2026",
      "boutons": [
-      "SAMBIENI Bibata",
+      "SEMIA Bouboli",
       "Remettre la fiche"
      ],
      "piece": {
@@ -7938,7 +7938,7 @@
       "cartouche": [
        [
         "Patient",
-        "SAMBIENI Bibata"
+        "SEMIA Bouboli"
        ],
        [
         "Dossier",
@@ -7953,7 +7953,7 @@
         "7 950 FCFA"
        ]
       ],
-      "contenu": "DateMotifDiagnosticPraticien25/06/2026CéphaléesPaludisme simpleBASSONGUI Chabi Séko",
+      "contenu": "DateMotifDiagnosticPraticien25/06/2026CéphaléesPaludisme simpleBICHIASI Cezoune Sichovian",
       "tables": [],
       "signatures": [
        {
@@ -7961,14 +7961,14 @@
        }
       ]
      },
-     "fil": "Céphalées — Paludisme simple Urgence avec BASSONGUI Chabi Séko 25/06/2026"
+     "fil": "Céphalées — Paludisme simple Urgence avec BICHIASI Cezoune Sichovian 25/06/2026"
     },
     {
      "patient": {
       "id": "PAT-AG018",
       "code": "CBG917/25",
-      "nom": "BADO",
-      "prenom": "BANI A. B. Zoulehath"
+      "nom": "BATOL",
+      "prenom": "BIAREL A. B. Zouguti"
      },
      "kpis": [
       {
@@ -7992,9 +7992,9 @@
        "indice": null
       }
      ],
-     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient BADO BANI A. B. Zoulehath Consultations 1 Hospitalisations 0 Total facturé 34 956 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Hypertension artérielle — Anémie ferriprive Contrôle avec TAKI Orou 02/08/2026",
+     "texteBrut": "Accès rapides Répertoire des patients Rechercher ou créer un dossier Rendez-vous Programmer une consultation Nouvelle facture Établir la note du patient Documents du patient Pièces numérisées à remettre Patient BATOL BIAREL A. B. Zouguti Consultations 1 Hospitalisations 0 Total facturé 34 956 FCFA Reste à payer 0 FCFA Parcours de soins Remettre la fiche Hypertension artérielle — Anémie ferriprive Contrôle avec TACHEDI Odjipiar 02/08/2026",
      "boutons": [
-      "BADO BANI A. B. Zoulehath",
+      "BATOL BIAREL A. B. Zouguti",
       "Remettre la fiche"
      ],
      "piece": {
@@ -8003,7 +8003,7 @@
       "cartouche": [
        [
         "Patient",
-        "BADO BANI A. B. Zoulehath"
+        "BATOL BIAREL A. B. Zouguti"
        ],
        [
         "Dossier",
@@ -8018,7 +8018,7 @@
         "0 FCFA"
        ]
       ],
-      "contenu": "DateMotifDiagnosticPraticien02/08/2026Hypertension artérielleAnémie ferripriveTAKI Orou",
+      "contenu": "DateMotifDiagnosticPraticien02/08/2026Hypertension artérielleAnémie ferripriveTAKI Odjipiar",
       "tables": [],
       "signatures": [
        {
@@ -8026,7 +8026,7 @@
        }
       ]
      },
-     "fil": "Hypertension artérielle — Anémie ferriprive Contrôle avec TAKI Orou 02/08/2026"
+     "fil": "Hypertension artérielle — Anémie ferriprive Contrôle avec TACHEDI Odjipiar 02/08/2026"
     }
    ]
   }

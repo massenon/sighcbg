@@ -149,7 +149,7 @@ void main() {
   test('le jeu de démonstration est celui de la maquette (engendré, non édité)',
       () {
     final f =
-        jsonDecode(File('assets/donnees/jeu/factures.json').readAsStringSync())
+        jsonDecode(File('test/fixtures/jeu_reference/factures.json').readAsStringSync())
             as List;
     expect(f.length, greaterThan(100));
     expect((f.first as Map).containsKey('numero'), isTrue);

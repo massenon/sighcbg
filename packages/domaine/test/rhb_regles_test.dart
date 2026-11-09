@@ -10,7 +10,7 @@ import 'aide_vecteurs.dart';
 
 typedef F = Map<String, Object?>;
 
-const jeu = '../../apps/poste/assets/donnees/jeu';
+const jeu = '../../apps/poste/test/fixtures/jeu_reference';
 List<F> dossier(String nom) => liste(jsonDecode(File('$jeu/$nom.json').readAsStringSync()));
 List<F> actives(List<F> l) => [for (final f in l) if (f['statut'] != 'archive') f];
 

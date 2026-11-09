@@ -111,7 +111,7 @@ void main() {
       final octets = ecrireClasseur([
         const FeuilleXlsx('Données', [
           ['Nom', 'Âge', 'Actif', 'Note'],
-          ['ADJOVI Marie', 36, true, 'a & b < c'],
+          ['AGBUZIA Marie', 36, true, 'a & b < c'],
           ['', 2.5, false, ''],
         ]),
         const FeuilleXlsx('Texte', [
@@ -121,7 +121,7 @@ void main() {
       expect(octets.sublist(0, 2), [0x50, 0x4b], reason: 'archive ZIP « PK »');
       final f = lireClasseur(octets);
       expect(f.map((x) => x.nom), ['Données', 'Texte']);
-      expect(f[0].lignes[1], ['ADJOVI Marie', 36, true, 'a & b < c']);
+      expect(f[0].lignes[1], ['AGBUZIA Marie', 36, true, 'a & b < c']);
       expect(f[0].lignes[2], ['', 2.5, false]);
       expect(f[1].lignes.single, ['Mode d’emploi']);
     });

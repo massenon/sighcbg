@@ -13,7 +13,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
       m.mere.opts.cle = Buffer.from(m.clePair, 'hex').toString('base64');
       m.mere.opts.droits = mode;
       const f1 = await m.pair('F1');
-      await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AKPO' }, role: 'reception' });
+      await f1.emettre({ collection: 'patients', fiche: 'p1', type: 'creer', champs: { nom: 'AMITU' }, role: 'reception' });
       await f1.emettre({ collection: 'patients', fiche: 'p2', type: 'creer', champs: { nom: 'INTRUS' }, role: 'x' });
       await m.mere.demarrer();
       const etat = () => m.mere.admin('GET', '/admin/pair/etat').then((r) => r.json);

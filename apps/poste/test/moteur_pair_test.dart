@@ -69,8 +69,8 @@ void suitePont() {
     final pair = FileulPair(ConfigPair(port: 0, relais: 'http://127.0.0.1:1', dbChemin: ':memory:', cleHex: '00' * 32, nom: 'A'));
     pair.base.poserMeta('uuid', 'A');
     final t = TransportPair(pair, () => 'reception');
-    await t.ecrire('patients', 'p1', existe: false, champs: {'nom': 'Awa', 'telephone': '90'});
-    await t.ecrire('patients', 'p1', existe: true, champs: {'nom': 'Awa', 'telephone': '91'});
+    await t.ecrire('patients', 'p1', existe: false, champs: {'nom': 'Azemidia', 'telephone': '90'});
+    await t.ecrire('patients', 'p1', existe: true, champs: {'nom': 'Azemidia', 'telephone': '91'});
     expect(pair.conflits(), isEmpty, reason: 'l’auteur avait vu la version courante');
     final liste = await t.liste('patients');
     expect(liste.single.data['telephone'], '91');

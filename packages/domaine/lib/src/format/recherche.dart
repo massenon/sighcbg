@@ -23,7 +23,7 @@ bool correspond(Object? botte, String aiguille) =>
 int _rang(String c) {
   final u = c.codeUnitAt(0);
   if (u >= 0x30 && u <= 0x39) return 1;
-  // Les apostrophes typographiques (‘ ’) sont de la ponctuation, pas des lettres : « N’TCHA » précède « NKOUÉ », comme avec l'apostrophe droite.
+  // Les apostrophes typographiques (‘ ’) sont de la ponctuation, pas des lettres : « N’ACHOU » précède « NIDJON », comme avec l'apostrophe droite.
   final lettre = (u >= 0x61 && u <= 0x7a) || (u > 0x7f && u != 0x2018 && u != 0x2019);
   return lettre ? 2 : 0;
 }

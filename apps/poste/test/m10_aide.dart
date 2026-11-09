@@ -22,7 +22,7 @@ final aout = DateTime(2026, 8, 20, 10);
 
 String sansEspaces(Object? x) => '$x'.replaceAll(RegExp(r'[\s  ]'), '');
 
-List<M> jeu(String nom) => liste(jsonDecode(File('assets/donnees/jeu/$nom.json').readAsStringSync()));
+List<M> jeu(String nom) => liste(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 /// Un poste dont on pose les collections (copies : un test ne salit pas le suivant).
 Magasin poste(Map<String, List<M>> collections) => Magasin({

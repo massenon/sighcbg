@@ -31,7 +31,7 @@ void main() {
         expect(erreurs, saisie(c['erreurs']), reason: 'saisie $s');
         final op = c['op'] as Map?;
         if (op == null) continue;
-        final r = mobCpnResume('SOUROU Mariam', s);
+        final r = mobCpnResume('SUGBIA Migikpa', s);
         expect(r.libelle, op['libelle'], reason: '$s');
         expect(r.detail, op['detail'], reason: '$s');
         final toasts = (c['toasts'] as List).cast<String>();
@@ -62,7 +62,7 @@ void main() {
 
     test('la ligne de journal garde toutes les mesures, nomme l\'acteur, jamais une suppression', () {
       final f = mobChampsCpn(
-          patient: {'code': 'CBG/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
+          patient: {'code': 'CBG/913/25', 'nom': 'SUGBIA', 'prenom': 'Migikpa'},
           patientId: 'p4',
           saisie: {'sa': '28', 'poids': '62,5', 'sys': '140', 'dia': '80', 'bcf': '140', 'hu': '27', 'sp': 'SP 2', 'milda': 'Non', 'proteinurie': '+', 'rdv': '2026-11-14'},
           acteur: 'Sage-femme de garde',
@@ -91,7 +91,7 @@ void main() {
         expect(mobErreursCpon(s), saisie(c['erreurs']), reason: '$s');
         final op = c['op'] as Map?;
         if (op == null) continue;
-        final r = mobCponResume('KPOGNON Rose', s);
+        final r = mobCponResume('KOUZO Roulin', s);
         expect(r.libelle, op['libelle']);
         expect(r.detail, op['detail']);
       }
@@ -99,7 +99,7 @@ void main() {
 
     test('la ligne de journal : mère et nouveau-né, acteur nommé', () {
       final f = mobChampsCpon(
-          patient: {'code': 'CBG/174/26', 'nom': 'KPOGNON', 'prenom': 'Rose'},
+          patient: {'code': 'CBG/174/26', 'nom': 'KOUZO', 'prenom': 'Roulin'},
           patientId: 'p2',
           saisie: {'ta': '12/8', 't': '38,6', 'pb': '3200', 'jour': 'J7', 'cordon': 'Infecté'},
           acteur: 'Sage-femme de garde',
@@ -129,7 +129,7 @@ void main() {
 
     test('la ligne de journal se rattache à une patiente (E1652) et ne garde que les mesures données', () {
       final f = mobChampsSurveillance(
-          patient: {'code': 'CBG/913/25', 'nom': 'SOUROU', 'prenom': 'Mariam'},
+          patient: {'code': 'CBG/913/25', 'nom': 'SUGBIA', 'prenom': 'Migikpa'},
           patientId: 'p4',
           saisie: {'heure': 'H12', 'mta': '12/8', 'bfr': '40'},
           acteur: 'Sage-femme de garde',
@@ -156,13 +156,13 @@ void main() {
 
     test('${liste(o['cas']).length} cas pilotés (6 destinations x 3 degrés) : libellé et détail de l\'opération', () {
       for (final c in liste(o['cas'])) {
-        final dossier = {'code': 'PROV-1', 'nom': 'HOUNKPATIN', 'prenom': 'Ida'};
+        final dossier = {'code': 'PROV-1', 'nom': 'HOULUKE', 'prenom': 'Ichufuva'};
         expect(mobOrientationChoix(dossier), c['patient']);
-        final f = mobChampsOrientation(dossier: dossier, dossierId: 'd2', destination: '${c['dest']}', degre: '${c['urg']}', acteur: 'OROU YO Edmond', maintenant: maintenant);
+        final f = mobChampsOrientation(dossier: dossier, dossierId: 'd2', destination: '${c['dest']}', degre: '${c['urg']}', acteur: 'ODJIPIAR YUDJOUVOU Edjukavom', maintenant: maintenant);
         final op = m(c['op']);
         expect(f['libelle'], op['libelle']);
         expect(f['detail'], op['detail']);
-        expect(f['orientePar'], 'OROU YO Edmond');
+        expect(f['orientePar'], 'ODJIPIAR YUDJOUVOU Edjukavom');
         expect((c['toasts'] as List).single, mobToastEnregistreEnLigne);
       }
       expect(m(o['horsLigne'])['etat'], 'en_attente');

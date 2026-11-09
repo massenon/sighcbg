@@ -304,7 +304,7 @@
      "fiche": "p1",
      "type": "creer",
      "champs": {
-      "nom": "KOUA",
+      "nom": "KIMAR",
       "tel": "1"
      },
      "role": "reception"
@@ -329,7 +329,7 @@
     "fiches": {
      "patients/p1": {
       "data": {
-       "nom": "KOUA",
+       "nom": "KIMAR",
        "tel": "2"
       },
       "hlc": {

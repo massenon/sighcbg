@@ -13,7 +13,7 @@ void main() {
   testsCorrections();
   test('E2260 : facture assurée (en-tête partAssurance) : débit 411 = part assureur, crédit 706 = total, équilibrée', () {
     // L'en-tête d'une facture réelle porte `partAssurance` ; `partAssureur` n'existe que sur ses LIGNES.
-    final facture = {'id': 'F1', 'numero': 'FN-2026-00001', 'patient': 'KORA', 'assureur': 'OLEA', 'partAssurance': 1400, 'partPatient': 600};
+    final facture = {'id': 'F1', 'numero': 'FN-2026-00001', 'patient': 'KIAVUMU', 'assureur': 'OLEA', 'partAssurance': 1400, 'partPatient': 600};
     final e = ecritureEncaissement(facture, 600, '2026-11-06');
     double som(String c, String k) => e.where((x) => '${x['compte']}'.startsWith(c)).fold(0.0, (a, x) => a + (x[k]! as double));
     expect(som('571', 'debit'), 600);

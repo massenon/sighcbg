@@ -10,7 +10,7 @@ import 'aide_vecteurs.dart';
 
 typedef M = Map<String, Object?>;
 
-const jeu = '../../apps/poste/assets/donnees/jeu';
+const jeu = '../../apps/poste/test/fixtures/jeu_reference';
 List<M> charger(String nom) =>
     liste(jsonDecode(File('$jeu/$nom.json').readAsStringSync()));
 
@@ -471,7 +471,7 @@ void main() {
           depuis: depuis('${em['periode']}'),
           auj: DateTime(2026, 8, 16),
           nbExistantes: charger('facturesMere').length,
-          emisePar: 'BASSONGUI Chabi Séko');
+          emisePar: 'BICHIASI Cezoune Sichovian');
       for (final k in attendu.keys) {
         if (k == 'id' || k == 'statut') continue;
         expect(fiche[k], attendu[k], reason: k);

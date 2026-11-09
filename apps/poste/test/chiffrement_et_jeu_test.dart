@@ -9,7 +9,7 @@ import 'package:sigh_poste/donnees/persistance.dart';
 Magasin neuf(List<Map<String, Object?>> actes) => Magasin({
       'actes': actes,
       'patients': [
-        {'id': 'P1', 'nom': 'AGBO'}
+        {'id': 'P1', 'nom': 'AGORO'}
       ],
     });
 
@@ -25,25 +25,25 @@ void main() {
       final p = PersistanceFichiers('${d.path}/m', cle: cle);
       final m = neuf([]);
       await m.brancherPersistance(p, delai: Duration.zero);
-      m.collection('patients').inserer({'id': 'P2', 'nom': 'ADJOVI Koffi', 'telephone': '97000000'});
+      m.collection('patients').inserer({'id': 'P2', 'nom': 'AGBUZIA Kiafour', 'telephone': '97000000'});
       await m.ecrireMaintenant();
       final fichiers = Directory('${d.path}/m').listSync().whereType<File>().toList();
       expect(fichiers.any((f) => f.path.endsWith('patients.sigh')), isTrue);
       expect(fichiers.any((f) => f.path.endsWith('.json')), isFalse, reason: 'aucun clair');
       for (final f in fichiers) {
         final brut = latin1.decode(f.readAsBytesSync());
-        expect(brut, isNot(contains('ADJOVI')), reason: f.path);
+        expect(brut, isNot(contains('AGBUZIA')), reason: f.path);
         expect(brut, isNot(contains('97000000')));
       }
       final relu = neuf([]);
       await relu.brancherPersistance(PersistanceFichiers('${d.path}/m', cle: cle));
-      expect(relu.collection('patients').toutes.map((f) => f['nom']), contains('ADJOVI Koffi'));
+      expect(relu.collection('patients').toutes.map((f) => f['nom']), contains('AGBUZIA Kiafour'));
     });
 
     test('une mauvaise clé, un fichier altéré ou renommé : mis de côté et NOMMÉS, jamais lus', () async {
       final p = PersistanceFichiers('${d.path}/m', cle: cle);
       await p.ecrire('patients', [
-        {'id': 'P1', 'nom': 'AGBO'}
+        {'id': 'P1', 'nom': 'AGORO'}
       ]);
       final mauvaise = PersistanceFichiers('${d.path}/m', cle: List<int>.filled(32, 9));
       expect(await mauvaise.lireTout(), isEmpty);
@@ -69,11 +69,11 @@ void main() {
     test('migration : les fichiers en clair d’un poste d’avant sont réécrits chiffrés et le clair est SUPPRIMÉ', () async {
       Directory('${d.path}/m').createSync();
       File('${d.path}/m/patients.json').writeAsStringSync(jsonEncode([
-        {'id': 'P1', 'nom': 'AGBO'}
+        {'id': 'P1', 'nom': 'AGORO'}
       ]));
       final p = PersistanceFichiers('${d.path}/m', cle: cle);
       final lu = await p.lireTout();
-      expect(lu['patients']!.single['nom'], 'AGBO');
+      expect(lu['patients']!.single['nom'], 'AGORO');
       expect(File('${d.path}/m/patients.json').existsSync(), isFalse, reason: 'le clair ne reste pas');
       expect(File('${d.path}/m/patients.sigh').existsSync(), isTrue);
     });
@@ -101,9 +101,9 @@ void main() {
       // Les données chiffrées par l'ancienne clé se rouvrent avec la clé restaurée.
       final p = PersistanceFichiers('${d.path}/m', cle: cle);
       await p.ecrire('patients', [
-        {'id': 'P1', 'nom': 'AGBO'}
+        {'id': 'P1', 'nom': 'AGORO'}
       ]);
-      expect((await PersistanceFichiers('${d.path}/m', cle: await neuf.obtenir()).lireTout())['patients']!.single['nom'], 'AGBO');
+      expect((await PersistanceFichiers('${d.path}/m', cle: await neuf.obtenir()).lireTout())['patients']!.single['nom'], 'AGORO');
       await expectLater(neuf.importer(fichier, 'autre phrase de passe'), throwsA(isA<StateError>().having((e) => '$e', 'message', contains('incorrecte'))));
       final altere = File('${d.path}/altere.cle')..writeAsBytesSync([...File(fichier).readAsBytesSync()]..[40] ^= 1);
       await expectLater(neuf.importer(altere.path, 'phrase de passe longue'), throwsA(isA<StateError>()));
@@ -132,7 +132,7 @@ void main() {
           {'id': 'A2', 'libelle': 'Pansement', 'prix': 9000},
         ],
         'patients': [
-          {'id': 'P1', 'nom': 'AGBO'},
+          {'id': 'P1', 'nom': 'AGORO'},
           {'id': 'P9', 'nom': 'NOUVEAU DEMO'},
         ],
       });

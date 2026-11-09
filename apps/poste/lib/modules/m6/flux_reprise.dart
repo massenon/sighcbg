@@ -495,9 +495,9 @@ class EcranReprise extends StatelessWidget with EcranMaquette {
         ),
       ],
       signatures: const [
-        Signature('Le Gestionnaire de Stock', nom: 'MAMAN Zoukanéri', mention: 'Contrôle physique'),
-        Signature('Le Pharmacien', nom: 'DIEYABIDI Aïssatou'),
-        Signature('La Directrice Administrative', nom: 'TAKI Alimatou', mention: 'Validation de la reprise'),
+        Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo', mention: 'Contrôle physique'),
+        Signature('Le Pharmacien', nom: 'DATU Amachim'),
+        Signature('La Directrice Administrative', nom: 'TACHEDI Arialu', mention: 'Validation de la reprise'),
       ],
     );
   }
