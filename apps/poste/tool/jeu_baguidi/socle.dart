@@ -21,6 +21,8 @@ const List<String> collectionsGeneriques = [
   'modelesBadge', 'modelesMessage', 'enquetes', 'identiteLegale', 'tachesPlanifiees',
   // le répertoire des ambulances : neuf fiches fictives, marquées « Numéro fictif de démonstration », qui disent elles-mêmes qu'elles sont à remplacer
   'ambulances',
+  // le barème de l'AIB : 5 % arrêté depuis le 07/09/2026 (décision de Baguidi), 1 % et 3 % non arrêtés et marqués à valider ; versionné par date d'effet
+  'baremeAIB',
 ];
 
 /// Les tarifs hérités du logiciel d'origine : aucun n'est une grille de Baguidi (J7). Le motif est écrit sur CHAQUE fiche.
