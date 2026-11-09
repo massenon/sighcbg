@@ -9,6 +9,7 @@
 import 'package:sigh_domaine/sigh_domaine.dart' as d;
 import 'package:sigh_poste/donnees/magasin.dart';
 
+import 'clinique_base.dart' show champsNormalisation;
 import 'stock_base.dart';
 
 /// L'identité passée au moteur pour toute vente sans dossier : jamais insérée au répertoire des patients.
@@ -92,7 +93,6 @@ class CaisseComptoir {
     );
     final piece = r.pieces.single;
     final fiche = {...piece}..remove('mecef');
-    if (piece['mecef'] == true) fiche['numeroMecef'] = d.numeroMecefSimule(++_graineMecef);
     final ls = (piece['lignes'] as List).cast<Map<String, Object?>>();
     fiche['lignes'] = [
       for (final (i, l) in ls.indexed)
@@ -113,6 +113,7 @@ class CaisseComptoir {
       'lignes': [for (var i = 0; i < ls.length; i++) 'L${pad(i + 1, 3)}'],
       'encaissePar': comptableCaisse,
     };
+    if (piece['mecef'] == true) fiche.addAll(champsNormalisation(fiche, d.numeroMecefSimule(++_graineMecef), quand));
     fiche['venteComptoir'] = true;
     fiche['source'] = 'Vente de pharmacie au comptoir, sans dossier patient (client générique fictif)';
     final ins = a.ajouter('factures', fiche, 'FAC');

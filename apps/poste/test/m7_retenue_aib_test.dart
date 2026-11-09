@@ -8,7 +8,7 @@ import 'package:sigh_poste/main.dart';
 
 import 'aide_polices.dart';
 
-/// La retenue d'AIB sur facture fournisseur, AU GESTE : le taux vient du barème daté, la pièce naît plate et équilibrée en brouillon, la facture la porte,
+/// La retenue d'AIB sur facture fournisseur, AU GESTE : le taux vient du barème daté par situation (`situationsAib`, `baremeAib`), la pièce naît plate et équilibrée en brouillon, la facture la porte,
 /// le registre la relit ; une seconde retenue et une date antérieure au barème sont refusées en le disant.
 final _donnees = DonneesNavigation.depuisDossier();
 
@@ -73,7 +73,8 @@ void main() {
     final r = (f['retenueAib'] as Map).cast<String, Object?>();
     expect(r['montant'], 10000);
     expect(r['taux'], 5);
-    expect(r['code'], 'AIB-5');
+    expect(r['situation'], 'ifu_inactif_ou_absent', reason: 'la catégorie de la retenue EST une situation de l\'acheteur');
+    expect(r['versionId'], 'BAI01', reason: 'la retenue porte la version du barème sous laquelle elle a été calculée');
     expect(r['reversement'], '2026-11-10');
     final nouvelles = [for (final e in m.collection('ecritures').actives) if (e['pieceId'] == 'FFR1') e];
     expect(nouvelles.length, 2);

@@ -84,7 +84,7 @@ Widget detailFactureFournisseur(Fiche r) {
       if (r['retenueAib'] is Map)
         (
           'Retenue AIB',
-          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, catégorie ${(r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}'
+          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}'
         ),
     ]),
     const SizedBox(height: 16),
@@ -306,9 +306,10 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
     return;
   }
   final date = DateTime.tryParse('${r['date'] ?? ''}') ?? c.aujourdhui;
-  final bareme = c.magasin.collection('baremeAIB').actives;
+  final bareme = c.magasin.collection('baremeAib').actives;
+  final situations = c.magasin.collection('situationsAib').actives;
   final applicables = [
-    for (final b in cpdBaremeEnVigueur(bareme, date))
+    for (final b in cpdBaremeEnVigueur(situations, bareme, date))
       if (b.reponse.taux != null) b
   ];
   if (applicables.isEmpty) {
@@ -321,8 +322,8 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
   final base = (r['montantFacture'] as num?) ?? 0;
   final ctl = ControleurFormulaire([
     ChampDef(
-        nom: 'code',
-        libelle: 'Catégorie de retenue',
+        nom: 'situation',
+        libelle: 'Situation de l’acheteur (catégorie de retenue)',
         type: TypeChamp.select,
         requis: true,
         options: [for (final b in applicables) OptionChamp(b.code, '${b.libelle} — ${b.reponse.taux} %')]),
@@ -332,7 +333,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
         type: TypeChamp.nombre,
         requis: true,
         aide: 'Par défaut le montant facturé. Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
-  ], {'code': applicables.first.code, 'base': '${base.round()}'});
+  ], {'situation': applicables.first.code, 'base': '${base.round()}'});
   afficherModale<void>(ctx,
       titre: 'Retenir l’AIB — ${r['reference']}',
       sousTitre: '${r['fournisseurNom']} : ${money(base)} facturés le ${dateFR(date)}',
@@ -351,7 +352,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                   final CpdRetenueAib ret;
                   final List<Map<String, Object?>> lignes;
                   try {
-                    ret = cpdCalculerRetenueAib(bareme, '${v['code']}', num.tryParse('${v['base']}'.trim()) ?? 0, date);
+                    ret = cpdCalculerRetenueAib(bareme, '${v['situation']}', num.tryParse('${v['base']}'.trim()) ?? 0, date, situations: situations);
                     lignes = cpdEcrituresRetenueAib(
                         retenue: ret,
                         numero: 'AIB-${r['reference']}',
@@ -390,7 +391,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                     }
                   });
                   c.magasin.journaliser('Retenue d’AIB sur facture fournisseur', 'M7', 'FactureFournisseur', '${r['reference']}', null,
-                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'code': ret.code});
+                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'situation': ret.situation, 'versionId': ret.versionId});
                   fermer();
                   ToastsSigh.afficher(ctx, 'Retenue de ${money(ret.montant)} constatée (brouillon).',
                       type: TypeToast.succes,

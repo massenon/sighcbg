@@ -22,6 +22,9 @@ export 'src/caisse/emission.dart';
 export 'src/caisse/avoir.dart';
 export 'src/caisse/remboursement.dart';
 export 'src/caisse/mecef.dart';
+export 'src/mecef/montants.dart';
+export 'src/mecef/etats.dart';
+export 'src/mecef/normalisation.dart';
 export 'src/achats/pv_reception.dart';
 export 'src/achats/fournisseurs_m7.dart';
 export 'src/achats/factures_fournisseurs.dart';
@@ -72,6 +75,8 @@ export 'src/referentiels/versions_datees.dart';
 export 'src/qualite/qual_enquetes.dart';
 export 'src/qualite/qual_validations.dart';
 export 'src/qualite/qual_ged.dart';
+// Moteur de validation commun des référentiels (Direction, 07/11/2026) : registre des 14 familles, compte lu, geste unitaire, remise à valider.
+export 'src/validation/validation.dart';
 export 'src/assurances/ass_regles.dart';
 export 'src/securite/securite.dart';
 export 'src/rh/rha_regles.dart';

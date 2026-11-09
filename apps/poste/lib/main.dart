@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, valCollectionValidations;
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -167,7 +167,7 @@ Future<void> main() async {
   final persistance = PersistanceFichiers('$dossierDonnees/magasin', cle: cle);
   if (repartirAZero == 'oui') await persistance.mettreDeCote();
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
-  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles}.difference({'utilisateurs', 'identifiants'}));
+  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
   brancherIdentite(magasin);

@@ -19,7 +19,7 @@ void main() {
     await f.ouvrir(t, m);
     await f.choisir(t, 'TIAMOU Bodje', 'Client libre (vente sans dossier patient)');
     await f.ajouterLibre(t, 'Carnet de santé', '500', quantite: '2');
-    await f.saisir(t, 'clientNom', 'Mme Awa');
+    await f.saisir(t, 'clientNom', 'Mme Azemidia');
     await f.saisir(t, 'clientTelephone', '97000000');
     await f.toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     final neuves = [for (final x in m.collection('factures').toutes) if (!avant.contains(x['id'])) x];
@@ -28,7 +28,7 @@ void main() {
     expect(p['clientLibre'], true);
     expect(p['patientId'], isNull);
     expect(p['patientCode'], isNull);
-    expect(p['patient'].toString().trim(), 'Mme Awa');
+    expect(p['patient'].toString().trim(), 'Mme Azemidia');
     expect(p['clientTelephone'], '97000000');
     expect(p['operationDissociee'], true);
     expect(p['statutPaiement'], 'soldee');

@@ -183,7 +183,7 @@ PieceA4 pieceFacture(Fiche f,
           italique: true),
       if (mecefActif && !proforma && f['numeroMecef'] != null)
         BlocTexte(
-            'Identifiant fiscal MECeF : ${f['numeroMecef']} — IFU : ${i.ifu} — RCCM : ${i.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : f['statutMecef']}'),
+            'Identifiant fiscal MECeF : ${f['numeroMecef']} — IFU : ${i.ifu} — RCCM : ${i.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : (etatMecefDe(f)?.libelle ?? f['statutMecef'])}'),
       if (i.formulePolitesse.isNotEmpty) BlocTexte(i.formulePolitesse, gras: true),
     ],
     // Pas de signature patient sur une pièce de caisse : c'est la caisse qui atteste l'encaissement.

@@ -91,6 +91,34 @@ CREATE TABLE IF NOT EXISTS "cfg"."actes_variantes_grille" (
   FOREIGN KEY ("parent_id") REFERENCES "cfg"."actes" ("id") ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 COMMENT ON TABLE "cfg"."actes_variantes_grille" IS 'Lignes « variantesGrille » de « actes »';
+CREATE TABLE IF NOT EXISTS "cfg"."bareme_aib" (
+  "id" text PRIMARY KEY,
+  "taux" integer,
+  "motif" text,
+  "cree_le" date,
+  "source" text,
+  "statut" text,
+  "cree_le_2" timestamptz,
+  "cree_par" text,
+  "date_fin" date,
+  "cree_par_2" text,
+  "a_valider" boolean,
+  "date_effet" date,
+  "situation" text,
+  "archive_le" timestamptz,
+  "archive_par" text,
+  "motif_archivage" text,
+  "modifie_le" timestamptz,
+  "modifie_par" text,
+  "valide_le" timestamptz,
+  "valide_par" text,
+  "valide_role" text,
+  "modifie_le_2" date,
+  "modifie_par_2" text,
+  "extra" jsonb
+);
+COMMENT ON TABLE "cfg"."bareme_aib" IS 'Collection « baremeAib » — Configuration';
+CREATE INDEX IF NOT EXISTS "ix_bareme_aib_statut" ON "cfg"."bareme_aib" ("statut");
 CREATE TABLE IF NOT EXISTS "cfg"."catalogue_tarifs" (
   "id" text PRIMARY KEY,
   "code" text,
@@ -382,6 +410,21 @@ CREATE TABLE IF NOT EXISTS "cfg"."secteurs" (
 COMMENT ON TABLE "cfg"."secteurs" IS 'Collection « secteurs » — Configuration';
 CREATE INDEX IF NOT EXISTS "ix_secteurs_code" ON "cfg"."secteurs" ("code");
 CREATE INDEX IF NOT EXISTS "ix_secteurs_statut" ON "cfg"."secteurs" ("statut");
+CREATE TABLE IF NOT EXISTS "cfg"."situations_aib" (
+  "id" text PRIMARY KEY,
+  "code" text,
+  "ordre" integer,
+  "cree_le" date,
+  "statut" text,
+  "cree_par" text,
+  "libelle" text,
+  "declencheur" text,
+  "description" text,
+  "extra" jsonb
+);
+COMMENT ON TABLE "cfg"."situations_aib" IS 'Collection « situationsAib » — Configuration';
+CREATE INDEX IF NOT EXISTS "ix_situations_aib_code" ON "cfg"."situations_aib" ("code");
+CREATE INDEX IF NOT EXISTS "ix_situations_aib_statut" ON "cfg"."situations_aib" ("statut");
 CREATE TABLE IF NOT EXISTS "cfg"."types_piece" (
   "id" text PRIMARY KEY,
   "sigle" text,
@@ -1404,6 +1447,28 @@ COMMENT ON TABLE "m13"."evenements_etablissement" IS 'Collection « evenementsEt
 CREATE INDEX IF NOT EXISTS "ix_evenements_etablissement_date" ON "m13"."evenements_etablissement" ("date");
 CREATE INDEX IF NOT EXISTS "ix_evenements_etablissement_statut" ON "m13"."evenements_etablissement" ("statut");
 CREATE INDEX IF NOT EXISTS "ix_evenements_etablissement_reference" ON "m13"."evenements_etablissement" ("reference");
+CREATE TABLE IF NOT EXISTS "m13"."file_sms" (
+  "id" text PRIMARY KEY,
+  "cle" text,
+  "motif" text,
+  "texte" text,
+  "raison" text,
+  "statut" text,
+  "cree_le" timestamptz,
+  "cree_par" text,
+  "id_client" text,
+  "reporte_a" text,
+  "patient_id" text,
+  "raison_fin" text,
+  "modifie_le" timestamptz,
+  "tentatives" integer,
+  "modifie_par" text,
+  "id_message" text,
+  "extra" jsonb
+);
+COMMENT ON TABLE "m13"."file_sms" IS 'Collection « fileSms » — M13 Administration & ambulance';
+CREATE INDEX IF NOT EXISTS "ix_file_sms_statut" ON "m13"."file_sms" ("statut");
+CREATE INDEX IF NOT EXISTS "ix_file_sms_patient_id" ON "m13"."file_sms" ("patient_id");
 CREATE TABLE IF NOT EXISTS "m13"."jetons_enquete" (
   "_rang" integer PRIMARY KEY,
   "extra" jsonb
@@ -1430,6 +1495,34 @@ COMMENT ON TABLE "m13"."materiel" IS 'Collection « materiel » — M13 Administ
 CREATE INDEX IF NOT EXISTS "ix_materiel_etat" ON "m13"."materiel" ("etat");
 CREATE INDEX IF NOT EXISTS "ix_materiel_statut" ON "m13"."materiel" ("statut");
 CREATE INDEX IF NOT EXISTS "ix_materiel_reference" ON "m13"."materiel" ("reference");
+CREATE TABLE IF NOT EXISTS "m13"."messages_sms" (
+  "id" text PRIMARY KEY,
+  "cle" text,
+  "par" text,
+  "code" text,
+  "date" date,
+  "heure" text,
+  "motif" text,
+  "detail" text,
+  "statut" text,
+  "cree_le" timestamptz,
+  "jour_cle" date,
+  "cree_par" text,
+  "longueur" integer,
+  "reporte_a" timestamptz,
+  "id_message" text,
+  "patient_id" text,
+  "tentative" integer,
+  "fournisseur" text,
+  "motif_libelle" text,
+  "numero_masque" text,
+  "extra" jsonb
+);
+COMMENT ON TABLE "m13"."messages_sms" IS 'Collection « messagesSms » — M13 Administration & ambulance';
+CREATE INDEX IF NOT EXISTS "ix_messages_sms_code" ON "m13"."messages_sms" ("code");
+CREATE INDEX IF NOT EXISTS "ix_messages_sms_date" ON "m13"."messages_sms" ("date");
+CREATE INDEX IF NOT EXISTS "ix_messages_sms_statut" ON "m13"."messages_sms" ("statut");
+CREATE INDEX IF NOT EXISTS "ix_messages_sms_patient_id" ON "m13"."messages_sms" ("patient_id");
 CREATE TABLE IF NOT EXISTS "m13"."plan_annuel" (
   "id" text PRIMARY KEY,
   "axe" text,
@@ -1821,24 +1914,27 @@ CREATE INDEX IF NOT EXISTS "ix_fiches_reference_statut" ON "m1"."fiches_referenc
 CREATE INDEX IF NOT EXISTS "ix_fiches_reference_patient_id" ON "m1"."fiches_reference" ("patient_id");
 CREATE TABLE IF NOT EXISTS "m1"."patients" (
   "id" text PRIMARY KEY,
-  "age" integer,
   "nom" text,
   "code" text,
   "sexe" text,
-  "assure" boolean,
   "prenom" text,
   "statut" text,
   "cree_le" timestamptz,
-  "adresse" text,
-  "externe" boolean,
   "cree_par" text,
-  "assureur" text,
-  "quartier" text,
   "telephone" text,
+  "date_naissance" date,
+  "consentement_sms" boolean,
   "modifie_le" timestamptz,
   "modifie_par" text,
+  "consentement_sms_le" timestamptz,
+  "consentement_sms_par" text,
+  "age" integer,
+  "assure" boolean,
+  "adresse" text,
+  "externe" boolean,
+  "assureur" text,
+  "quartier" text,
   "date_creation" date,
-  "date_naissance" date,
   "age_reference_le" text,
   "origine_dossier" text,
   "taux_prise_en_charge" integer,

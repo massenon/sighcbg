@@ -70,7 +70,8 @@ void main() {
     test('MECeF ouvert (défaut) : la pièce porte mecef, statutMecef et baseMecef', () {
       final p = emettre(mecefActif: true).pieces.single;
       expect(p['mecef'], isTrue);
-      expect(p['statutMecef'], 'valide');
+      // MECeF lot M1 : l'émission ne dit jamais « normalisée » d'elle-même, la pièce attend la normalisation (geste de l'appareil de la caisse).
+      expect(p['statutMecef'], 'en_attente');
       expect(p['baseMecef'], 5000);
       // Le défaut du paramètre EST l'ouverture : un appelant qui ne dit rien garde le comportement d'avant.
       final defaut = emettreFacture(
@@ -101,7 +102,7 @@ void main() {
     test('réouverture : les pièces suivantes redeviennent normalisées', () {
       final p = emettre(mecefActif: true).pieces.single;
       expect(p['mecef'], isTrue);
-      expect(p['statutMecef'], 'valide');
+      expect(p['statutMecef'], 'en_attente', reason: 'normalisable à nouveau : la pièce attend sa normalisation, elle n\'est pas déclarée normalisée');
     });
   });
 
@@ -115,7 +116,7 @@ void main() {
           'montantPaye': 0,
           if (emiseOuverte) ...{'statutMecef': 'en_attente', 'baseMecef': 0.0},
           'lignes': [
-            {'id': 'L1', 'designation': 'Consultation', 'partPatient': 5000},
+            {'id': 'L1', 'designation': 'Consultation', 'quantite': 1, 'prixUnitaire': 5000, 'montant': 5000, 'partPatient': 5000},
           ],
         };
 
@@ -149,7 +150,7 @@ void main() {
           montant: 5000,
           aujourdhui: '2026-11-06',
           maintenant: '2026-11-06T10:00:00.000Z');
-      expect(r.facture['statutMecef'], 'valide');
+      expect(r.facture['statutMecef'], 'en_attente', reason: 'M1 : un encaissement ne dit jamais « normalisée » ; la normalisation est le geste suivant');
       expect(r.facture['baseMecef'], 5000);
     });
   });
