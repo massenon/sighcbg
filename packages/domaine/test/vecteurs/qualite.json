@@ -1464,7 +1464,7 @@
    "formatJeton": true,
    "lienGabarit": "http://127.0.0.1:15731/enquete-publique.php?jeton=<jeton>",
    "lienSansIdEnquete": true,
-   "tiroir": "Lien de partageSatisfaction des patientsOuvertAdresse à communiquerEn exploitation, c’est l’adresse du serveur sur le réseau de la clinique qu’il faut communiquer (http://<serveur>/…) — celle-ci est celle du poste courant.À afficher en salle d’attenteLe patient scanne avec son téléphone et remplit sur place. C’est là qu’on obtient des réponses : à chaud, avant de partir.Recueil ANONYME : ni identité, ni adresse réseau, ni lien vers un dossier patient.EnquêteSatisfaction des patientsOuvert le16/08/2026 par BICHIASI Cezoune SékoExpire le15/09/2026Réponses reçues0Note interneSalle d’attenteOuvrir la page publiqueCopier l’adresse",
+   "tiroir": "Lien de partageSatisfaction des patientsOuvertAdresse à communiquerEn exploitation, c’est l’adresse du serveur sur le réseau de la clinique qu’il faut communiquer (http://<serveur>/…) — celle-ci est celle du poste courant.À afficher en salle d’attenteLe patient scanne avec son téléphone et remplit sur place. C’est là qu’on obtient des réponses : à chaud, avant de partir.Recueil ANONYME : ni identité, ni adresse réseau, ni lien vers un dossier patient.EnquêteSatisfaction des patientsOuvert le16/08/2026 par BICHIASI Cezoune SichovianExpire le15/09/2026Réponses reçues0Note interneSalle d’attenteOuvrir la page publiqueCopier l’adresse",
    "qrPresent": true
   },
   {
@@ -3804,7 +3804,7 @@
      ],
      [
       "DOC-2026-00151",
-      "Contrats RH — BUKE NadègeContrats RH",
+      "Contrats RH — BUKE NediContrats RH",
       "BUKE Nedi",
       "MAT-19",
       "28/07/2026",
@@ -3843,7 +3843,7 @@
      ],
      [
       "DOC-2026-00124",
-      "Contrats RH — BICHIASI Cezoune SékoContrats RH",
+      "Contrats RH — BICHIASI Cezoune SichovianContrats RH",
       "BICHIASI Cezoune Sichovian",
       "MAT-1",
       "26/07/2026",

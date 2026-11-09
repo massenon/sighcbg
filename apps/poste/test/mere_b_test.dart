@@ -624,7 +624,7 @@ void main() {
       expect(find.textContaining('Un second profil (DAF ou Direction) doit confirmer'), findsOneWidget);
       await t.pump(const Duration(seconds: 10));
 
-      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'mme taki');
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'mme tachedi');
       await t.tap(bouton('Réinitialiser'));
       await pomper(t);
       expect(find.textContaining('une autre personne'), findsOneWidget, reason: 'l’auteur (Mme TACHEDI) ne peut pas être son propre second profil');

@@ -171,7 +171,7 @@ export const TABLE = {
   "parfait": ["piavegbam", 0, 1],
   "pascal": ["pimolel", 0, 1],
   "paul": ["pouchul", 0, 1],
-  "paulin": ["pouvol", 0, 1],
+  "paulin": ["pouvopal", 0, 1],
   "rabiatou": ["rafiakpe", 0, 1],
   "rachida": ["rarouvil", 0, 1],
   "rachidatou": ["resia", 0, 1],
@@ -241,11 +241,13 @@ const GENERIQUES = new Set(['jean', 'paul', 'marc', 'luc', 'eric', 'felix', 'lea
   'marguerite', 'bernadette', 'celestine', 'rosine', 'mariette', 'honorine', 'florent', 'herve', 'augustin', 'edmond', 'rodrigue', 'koffi', 'ibrahim', 'fatima', 'moussa', 'karim',
   'seraphine', 'zita', 'issifou', 'pascal', 'paulin', 'remi']);
 
+const PSEUDOS = new Set(Object.values(TABLE).map((v) => v[0]));
 export const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/’/g, "'");
 const hacher = (n) => createHash('sha256').update(n).digest('hex').slice(0, 14);
 
 // Formes collées relevées dans les sources (faute de frappe d'un espace) : le pseudonyme suit celui du jeton qu'elles contiennent.
-const COLLES = { choucouratoupar: ['choucouratou', 'par'], soinsaniki: ['soins', 'aniki'] };
+// « nadegecontrats » : « Nadège » soudé à « Contrats RH » dans un vecteur extrait d'un écran ; le nom passe en casse de titre, le reste reste tel quel (3e élément « reste »).
+const COLLES = { choucouratoupar: ['choucouratou', 'par'], soinsaniki: ['soins', 'aniki'], nadegecontrats: ['nadege', 'Contrats', 'reste'], sekocontrats: ['seko', 'Contrats', 'reste'] };
 const pseudoDe = (n) => (TABLE[n] ? TABLE[n][0] : (COLLES[n] ? (COLLES[n][0] === 'soins' ? 'soins' + TABLE[COLLES[n][1]][0] : TABLE[COLLES[n][0]][0] + COLLES[n][1]) : null));
 
 export function controlerTable() {
@@ -291,6 +293,7 @@ export function pseudonymiser(texte, { ambigus = false, minuscules = false } = {
       const lettres = tok.replace(/[’']/g, '');
       const e = TABLE[k] ? k : (COLLES[k] ? k : null);
       if (!e) return null;
+      if (COLLES[e] && COLLES[e][2] === 'reste') return mettreEnForme(TABLE[COLLES[e][0]][0], 'T', tok) + tok.slice(COLLES[e][0].length);
       const pseudo = pseudoDe(e);
       let forme = null;
       if (lettres.length >= 2 && MAJ(lettres)) forme = 'U';
@@ -299,10 +302,12 @@ export function pseudonymiser(texte, { ambigus = false, minuscules = false } = {
       else if ((minuscules || /["']/.test(texte[pos - 1] || '') && /["']/.test(texte[pos + tok.length] || '')) && lettres.length >= 4 && lettres === lettres.toLowerCase() && !APRES_NOM.has(e)) forme = 'L';
       // un nom saisi en minuscules seul dans sa chaîne (« kassa » : les vecteurs éprouvent l'insensibilité à la casse)
       else if (lettres === lettres.toLowerCase() && TABLE[e] && TABLE[e][1] && texte.slice(Math.max(0, pos - 2), pos).match(/[a-z]\.$/)) forme = 'L';
+      // un nom de famille saisi en minuscules derrière un titre de civilité (« mme taki », « dr kassa » : les tests tapent un nom de session au clavier)
+      else if (lettres === lettres.toLowerCase() && lettres.length >= 4 && TABLE[e] && TABLE[e][1] && /(?:^|[^a-z])(?:mme|mlle|dr|pr) $/i.test(texte.slice(Math.max(0, pos - 6), pos))) forme = 'L';
       if (!forme) return null;
       if (forme !== 'L' && lettres.length === 2 && forme === 'T') return null;
       // Un prénom qui est aussi un mot ou un code (AMI = actes médico-infirmiers, ANA01, BIO RAD, Bio-chimie) ne se remplace qu'en casse de titre et isolé.
-      if (APRES_NOM.has(e) && (tok.toLowerCase() !== e || (forme !== 'T' && !(forme === 'U' && pos - dernierFin <= 1)) || /[0-9_-]/.test(texte[pos - 1] || '') || /[0-9_-]/.test(texte[pos + tok.length] || ''))) return null;
+      if (APRES_NOM.has(e) && (tok.toLowerCase() !== e || (forme !== 'T' && !(forme === 'U' && pos - dernierFin <= 1)) || /[0-9_-]/.test(texte[pos - 1] || '') || /[_-]/.test(texte[pos + tok.length] || '') || (/[0-9]/.test(texte[pos + tok.length] || '') && !(pos - dernierFin <= 1)))) return null;
       if (ambigus && APRES_NOM.has(e) && !(pos - dernierFin <= 1 || /(?:Dr|Mme|Mlle|Pr|M\.|SF) $/.test(texte.slice(Math.max(0, pos - 5), pos)))) return null;
       return mettreEnForme(pseudo, forme, tok);
     };
@@ -315,7 +320,8 @@ export function pseudonymiser(texte, { ambigus = false, minuscules = false } = {
       const reste = reconnu(jeton.slice(i + 1), position + i + 1);
       if (reste !== null) { n++; dernierFin = position + jeton.length; return jeton.slice(0, i + 1) + reste; }
     }
-    if (r === null) return jeton;
+    // Un pseudonyme déjà posé reste un NOM pour ce qui le suit : sur un dépôt déjà passé, « BICHIASI Bio82 j » doit encore faire reconnaître « Bio ».
+    if (r === null) { if (PSEUDOS.has(norm(jeton))) dernierFin = position + jeton.length; return jeton; }
     n++; dernierFin = position + jeton.length;
     return r;
   });
@@ -330,7 +336,7 @@ export function pseudonymiser(texte, { ambigus = false, minuscules = false } = {
 
 const ACCENTS = { a: 'aàâä', e: 'eéèêë', i: 'iïî', o: 'oôö', u: 'uùûü', c: 'cç' };
 const motif = (cle, maj) => [...cle].map((c) => (c === "'" ? "['’]" : ACCENTS[c] ? `[${maj ? ACCENTS[c].toUpperCase() : ACCENTS[c]}]` : (maj ? c.toUpperCase() : c))).join('');
-const COLLES_RE = Object.entries(TABLE).filter(([k]) => k.length >= 5 && !APRES_NOM.has(k) && !CHEVAUCHENT.has(k)).flatMap(([k, [pseudo, famille]]) => [
+const COLLES_RE = Object.entries(TABLE).filter(([k]) => (k.length >= 5 || k === 'seko') && !APRES_NOM.has(k) && !CHEVAUCHENT.has(k)).flatMap(([k, [pseudo, famille]]) => [
   ...(famille ? [{ re: new RegExp(`(?<=[a-z0-9])(${motif(k, true)})(?![A-Za-zÀ-ÿ])`, 'g'), fn: (m) => mettreEnForme(pseudo, 'U', m[1]) }] : []),
   { re: new RegExp(`(?<![A-Za-zÀ-ÿ'’])(${motif(k[0], true)}${motif(k.slice(1), false)})(?=[A-Z])`, 'g'), fn: (m) => mettreEnForme(pseudo, 'T', m[1]) },
 ]);

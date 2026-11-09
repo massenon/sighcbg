@@ -792,7 +792,7 @@
    ]
   },
   "arbre": [
-   "Directeur Médical(01)BICHIASI Cezoune SékoDirecteur Médical",
+   "Directeur Médical(01)BICHIASI Cezoune SichovianDirecteur Médical",
    "Directrice Administrative(01)TACHEDI Arialu épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)",
    "Comptable(01)KALOU AvolutuComptable",
    "Assistant Comptable(01)GIDJI HiabidjoComptable",
@@ -840,7 +840,7 @@
      "nom": "BICHIASI Cezoune Sichovian"
     }
    ],
-   "texte": "PosteRattaché àEffectifTitulaire / chef de serviceRôle dans le systèmeDirecteur Médical—1BICHIASI Cezoune SékoDirecteur MédicalDirectrice AdministrativeDirecteur Médical1TACHEDI Arialu épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)ComptableDirectrice Administrative1KALOU AvolutuComptableAssistant ComptableComptable1GIDJI HiabidjoComptableGestionnaire de StockDirectrice Administrative1METIAVI ZoboGestionnaire de StockSecrétaires MédicauxDirectrice Administrative4ODJIPIAR YUDJOUVOU EdjukavomRéception / AccueilDispensatricesDirectrice Administrative4DATU AmachimPharmacienAgents de SécuritéDirectrice Administrative3OSIAMIAM TEREYAMAAgent AdministratifAgents d’EntretienDirectrice Administrative3ISIASIABU RafiakpeAgent AdministratifChauffeur CoursierDirectrice Administrative1TIAMOU NoupiAmbulancierMédecins GénéralistesDirecteur Médical2YORO M’ABEKPIA FoulumiMédecinÉchographisteDirecteur Médical1AKPOMER RidurMédecinLaborantinsDirecteur Médical2KELE Adjapilo GedurBiologiste médicalInfirmiersDirecteur Médical8GEVAMIAN YeliaInfirmier / Sage-femmeSages-FemmesDirecteur Médical3—Infirmier / Sage-femmeAide-SoignantesDirecteur Médical8TOGA SigbudjaAide-soignante"
+   "texte": "PosteRattaché àEffectifTitulaire / chef de serviceRôle dans le systèmeDirecteur Médical—1BICHIASI Cezoune SichovianDirecteur MédicalDirectrice AdministrativeDirecteur Médical1TACHEDI Arialu épse BASSONGUIDirectrice de l’Administration et des Finances (DAF)ComptableDirectrice Administrative1KALOU AvolutuComptableAssistant ComptableComptable1GIDJI HiabidjoComptableGestionnaire de StockDirectrice Administrative1METIAVI ZoboGestionnaire de StockSecrétaires MédicauxDirectrice Administrative4ODJIPIAR YUDJOUVOU EdjukavomRéception / AccueilDispensatricesDirectrice Administrative4DATU AmachimPharmacienAgents de SécuritéDirectrice Administrative3OSIAMIAM TEREYAMAAgent AdministratifAgents d’EntretienDirectrice Administrative3ISIASIABU RafiakpeAgent AdministratifChauffeur CoursierDirectrice Administrative1TIAMOU NoupiAmbulancierMédecins GénéralistesDirecteur Médical2YORO M’ABEKPIA FoulumiMédecinÉchographisteDirecteur Médical1AKPOMER RidurMédecinLaborantinsDirecteur Médical2KELE Adjapilo GedurBiologiste médicalInfirmiersDirecteur Médical8GEVAMIAN YeliaInfirmier / Sage-femmeSages-FemmesDirecteur Médical3—Infirmier / Sage-femmeAide-SoignantesDirecteur Médical8TOGA SigbudjaAide-soignante"
   },
   "roles": {
    "entetes": [

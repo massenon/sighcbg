@@ -91,6 +91,18 @@ Future<void> choisir(WidgetTester t, String champ, String cible) async {
   await t.pump(const Duration(milliseconds: 400));
 }
 
+/// Choisit [cible] dans une liste SANS champ de recherche (moins de neuf entrées : le jeu compte six prescripteurs) : l'entrée, hors de la fenêtre du panneau,
+/// se trouve en faisant défiler la liste, jamais en tapant dans un champ du formulaire.
+Future<void> choisirParDefilement(WidgetTester t, String champ, String cible) async {
+  await toucher(t, find.descendant(of: find.byKey(Key('kit:champ:$champ')), matching: find.byType(InkWell)).first);
+  if (find.text(cible).evaluate().isEmpty) {
+    await t.scrollUntilVisible(find.text(cible), 60, scrollable: find.byType(Scrollable).last);
+    await t.pump(const Duration(milliseconds: 200));
+  }
+  await toucher(t, find.text(cible).last);
+  await t.pump(const Duration(milliseconds: 400));
+}
+
 /// Coche [libelle] dans la liste à choix multiples [champ] (on la cherche d'abord : le panneau ne construit que les lignes visibles).
 Future<void> cocher(WidgetTester t, String champ, String libelle) async {
   await toucher(t, find.descendant(of: find.byKey(Key('kit:champ:$champ')), matching: find.byType(InkWell)).first);
@@ -228,7 +240,7 @@ void main() {
       await toucher(t, find.text('Nouvelle demande'));
       await choisir(t, 'patientCode', '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
       await cocher(t, 'examens', examen);
-      await choisir(t, 'prescripteur', '— Prescripteur extérieur à la clinique —');
+      await choisirParDefilement(t, 'prescripteur', '— Prescripteur extérieur à la clinique —');
       await t.enterText(champTexte('prescripteurExterne'), 'Dr SAZO Asounouta, CS de Perma');
       await t.enterText(champTexte('indication'), 'Douleurs pelviennes');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Émettre la demande'));
@@ -297,7 +309,7 @@ void main() {
       await ouvrir(t, m, 'm2-imagerie-demandes');
       await toucher(t, find.text('Nouvelle demande'));
       await cocher(t, 'examens', 'Échographie pelvienne');
-      await choisir(t, 'prescripteur', '— Prescripteur extérieur à la clinique —');
+      await choisirParDefilement(t, 'prescripteur', '— Prescripteur extérieur à la clinique —');
       await t.enterText(champTexte('indication'), 'x');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Émettre la demande'));
       expect(find.text('Sélectionner un patient du répertoire, ou renseigner le nom et les prénoms du patient adressé de l’extérieur.'), findsOneWidget);

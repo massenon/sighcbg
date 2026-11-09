@@ -17823,7 +17823,7 @@
      ]
     },
     {
-     "nom": "UtilisateurBICHIASI Cezoune SékoGEVAMIAN YeliaKALOU AvolutuOROU YUDJOUVOU EdjukavomTAKI Arialu",
+     "nom": "UtilisateurBICHIASI Cezoune SichovianGEVAMIAN YeliaKALOU AvolutuOROU YUDJOUVOU EdjukavomTAKI Arialu",
      "options": [
       "Résultat",
       "Réussies",
@@ -17864,7 +17864,7 @@
       "nom": "BICHIASI Cezoune Sichovian"
      }
     ],
-    "texte": "HorodatageUtilisateurActionModuleEntitéRéférencePosteRésultat30/10/2026 à 09h59KALOU AvolutuCréationM8factureFN-2026-00001POSTE-CAISSESuccès30/10/2026 à 09h55TACHEDI ArialuModificationM12écritureOD-2026-00004POSTE-DAFSuccès30/10/2026 à 07h00KALOU AvolutuArchivageM8factureFN-2026-00002POSTE-CAISSESuccès28/10/2026 à 10h00ODJIPIAR YUDJOUVOU EdjukavomConnexionM14sessionv.testPOSTE-ACCUEILÉchec01/10/2026 à 10h00BICHIASI Cezoune SékoValidationM5résultatLAB-00012POSTE-LABOSuccès20/09/2026 à 10h00TACHEDI ArialuImpressionM8factureFN-2026-00003Succès30/10/2026 à 09h59GEVAMIAN YeliaRestaurationM2rendez-vousRDV-00007POSTE-SOINSSuccès30/10/2026 à 09h00GEVAMIAN YeliaSuppressionM2rendez-vousPOSTE-SOINSSuccès"
+    "texte": "HorodatageUtilisateurActionModuleEntitéRéférencePosteRésultat30/10/2026 à 09h59KALOU AvolutuCréationM8factureFN-2026-00001POSTE-CAISSESuccès30/10/2026 à 09h55TACHEDI ArialuModificationM12écritureOD-2026-00004POSTE-DAFSuccès30/10/2026 à 07h00KALOU AvolutuArchivageM8factureFN-2026-00002POSTE-CAISSESuccès28/10/2026 à 10h00ODJIPIAR YUDJOUVOU EdjukavomConnexionM14sessionv.testPOSTE-ACCUEILÉchec01/10/2026 à 10h00BICHIASI Cezoune SichovianValidationM5résultatLAB-00012POSTE-LABOSuccès20/09/2026 à 10h00TACHEDI ArialuImpressionM8factureFN-2026-00003Succès30/10/2026 à 09h59GEVAMIAN YeliaRestaurationM2rendez-vousRDV-00007POSTE-SOINSSuccès30/10/2026 à 09h00GEVAMIAN YeliaSuppressionM2rendez-vousPOSTE-SOINSSuccès"
    }
   },
   {
@@ -18699,7 +18699,7 @@
    "poste": "Directrice de l’Administration et des Finances",
    "fonction": "direction"
   },
-  "detail": "BICHIASI Cezoune SékoAgentBICHIASI Cezoune SékoPosteDirecteur MédicalQualitéMédecinPrescritOuiExécute les soinsNonSuperviseNonRéalise l’imagerieNonOrigine de la ficheDérivé de l’organigramme ; effectifs confirmés par la Direction le 24/08/2026Prescrit ordonnances et soins, dans tous les secteurs.",
+  "detail": "BICHIASI Cezoune SichovianAgentBICHIASI Cezoune SichovianPosteDirecteur MédicalQualitéMédecinPrescritOuiExécute les soinsNonSuperviseNonRéalise l’imagerieNonOrigine de la ficheDérivé de l’organigramme ; effectifs confirmés par la Direction le 24/08/2026Prescrit ordonnances et soins, dans tous les secteurs.",
   "edition": {
    "apres": {
     "personnelId": "EMP01",
