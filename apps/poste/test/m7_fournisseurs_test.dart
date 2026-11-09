@@ -415,9 +415,9 @@ void main() {
       expect(find.byTooltip('Archiver'), findsNothing);
     });
 
-    test('le formulaire propose les noms de champs de la maquette, dans son ordre, puis le hors-taxes et la TVA (D7)', () {
+    test('le formulaire propose les noms de champs de la maquette, dans son ordre, puis le hors-taxes, la TVA (D7) et l\'AIB facturé (facultatif)', () {
       expect([for (final c in champsFactureFournisseur) c.nom],
-          ['numero', 'date', 'fournisseur', 'montant', 'montantHT', 'montantTVA', 'echeance', 'statutPaiement']);
+          ['numero', 'date', 'fournisseur', 'montant', 'montantHT', 'montantTVA', 'aibFactureMontant', 'aibFactureTaux', 'aibFactureBase', 'echeance', 'statutPaiement']);
     });
   });
 }

@@ -27,11 +27,20 @@ final champsFactureFournisseur = <ChampDef>[
       requis: true),
   const ChampDef(nom: 'fournisseur', libelle: 'Fournisseur', requis: true),
   const ChampDef(
-      nom: 'montant', libelle: 'Montant facturé (FCFA)', type: TypeChamp.nombre),
+      nom: 'montant',
+      libelle: 'Montant facturé (FCFA)',
+      type: TypeChamp.nombre),
   // D7 (Direction, 09/11/2026) : le montant HORS TAXES est la base de la retenue d'AIB (Paramètres, « Validation de la base de l’AIB des factures
   // fournisseurs »). Facultatif — sans lui, la retenue se rabat sur le montant facturé et le dit ; la TVA, sur une ligne séparée, l'est aussi.
   _champHt(null),
-  const ChampDef(nom: 'montantTVA', libelle: 'TVA (FCFA, ligne séparée)', type: TypeChamp.nombre, aide: 'Facultative : hors taxes + TVA = montant facturé.'),
+  const ChampDef(
+      nom: 'montantTVA',
+      libelle: 'TVA (FCFA, ligne séparée)',
+      type: TypeChamp.nombre,
+      aide: 'Facultative : hors taxes + TVA = montant facturé.'),
+  // L'AIB FACTURÉ par le fournisseur (position de la Direction du 09/11/2026) : facultatif, trois champs qui vont ensemble, en francs entiers. Le montant doit
+  // être cohérent avec la base hors taxes et le taux ; « Constater l'AIB subi » (action de la ligne) le pose ensuite en créance sur l'État.
+  ..._champsAib(null, null),
   const ChampDef(nom: 'echeance', libelle: 'Échéance', type: TypeChamp.date),
   ChampDef(
       nom: 'statutPaiement',
@@ -51,22 +60,128 @@ ChampDef _champHt(Object? factureDeLaFiche) => ChampDef(
     aide:
         'Facultatif. Base de la retenue d’AIB quand les Paramètres retiennent le hors-taxes ; vide, la retenue se calcule sur le montant facturé, en le disant.',
     valider: (v, vals) => cpaControlerMontantsFacture(
-        ht: v, tva: vals['montantTVA'], facture: '${vals['montant'] ?? ''}'.isEmpty ? factureDeLaFiche : vals['montant']));
+        ht: v,
+        tva: vals['montantTVA'],
+        facture: '${vals['montant'] ?? ''}'.isEmpty
+            ? factureDeLaFiche
+            : vals['montant']));
 
-/// Les champs de la modale pour la fiche [r] : ceux de la maquette, dont le hors-taxes se contrôle au montant facturé de la fiche.
-List<ChampDef> champsFactureFournisseurPour(Fiche r) => [
-      for (final c in champsFactureFournisseur) c.nom == 'montantHT' ? _champHt(r['montantFacture']) : c
+/// Le contrôle de l'AIB facturé, commun aux trois champs (chacun l'appelle avec SA valeur) : la COHÉRENCE se contrôle ici, le contrôle du domaine nomme son refus ;
+/// un AIB subi déjà constaté FIGE les trois — la facture le porte, elle n'est pas réécrite. Un champ vide n'est pas validé par le formulaire : c'est
+/// pourquoi les trois champs portent le même contrôle (un montant oublié se lit sur le taux et la base saisis).
+String? _controleAib(Object? montant, Object? taux, Object? base,
+    Object? factureDeLaFiche, Object? montantModale, Fiche? record) {
+  final subi = record?['aibSubi'];
+  final f = record?['aibFacture'];
+  if (subi is Map && f is Map) {
+    final change = '${montant ?? ''}'.trim() != '${f['montant']}' ||
+        '${taux ?? ''}'.trim() != '${f['taux']}' ||
+        '${base ?? ''}'.trim() != '${f['baseHt']}';
+    if (change)
+      return 'AIB_FACTURE_FIGEE : l’AIB subi est déjà constaté sur cette facture — la corriger se fait par une nouvelle pièce, jamais en la réécrivant.';
+  }
+  return cpdControlerAibFacture(
+      montant: montant,
+      taux: taux,
+      base: base,
+      montantFacture:
+          '${montantModale ?? ''}'.isEmpty ? factureDeLaFiche : montantModale);
+}
+
+/// Les trois champs de l'AIB facturé : facultatifs, ensemble, en francs entiers.
+List<ChampDef> _champsAib(Object? factureDeLaFiche, Fiche? record) => [
+      ChampDef(
+          nom: 'aibFactureMontant',
+          libelle: 'AIB facturé — montant (FCFA)',
+          type: TypeChamp.nombre,
+          aide:
+              'Facultatif : l’AIB que le fournisseur a facturé (francs entiers) = base hors taxes × taux. Les trois champs vont ensemble.',
+          valider: (v, vals) => _controleAib(
+              v,
+              vals['aibFactureTaux'],
+              vals['aibFactureBase'],
+              factureDeLaFiche,
+              vals['montant'],
+              record)),
+      ChampDef(
+          nom: 'aibFactureTaux',
+          libelle: 'AIB facturé — taux (%)',
+          type: TypeChamp.nombre,
+          aide:
+              'Entier (1 % ou 5 % le plus souvent). Un taux hors barème arrêté est signalé, pas refusé.',
+          valider: (v, vals) => _controleAib(
+              vals['aibFactureMontant'],
+              v,
+              vals['aibFactureBase'],
+              factureDeLaFiche,
+              vals['montant'],
+              record)),
+      ChampDef(
+          nom: 'aibFactureBase',
+          libelle: 'AIB facturé — base hors taxes (FCFA)',
+          type: TypeChamp.nombre,
+          valider: (v, vals) => _controleAib(
+              vals['aibFactureMontant'],
+              vals['aibFactureTaux'],
+              v,
+              factureDeLaFiche,
+              vals['montant'],
+              record)),
     ];
+
+/// Les champs de la modale pour la fiche [r] : ceux de la maquette, dont le hors-taxes se contrôle au montant facturé de la fiche, et l'AIB facturé à l'AIB
+/// subi déjà constaté.
+List<ChampDef> champsFactureFournisseurPour(Fiche r) {
+  final aib = _champsAib(r['montantFacture'], r);
+  return [
+    for (final c in champsFactureFournisseur)
+      if (c.nom == 'montantHT')
+        _champHt(r['montantFacture'])
+      else if (c.nom.startsWith('aibFacture'))
+        aib.firstWhere((x) => x.nom == c.nom)
+      else
+        c
+  ];
+}
+
+/// La fiche telle que la modale la relit : l'AIB facturé (objet `aibFacture`) est APLATI en ses trois champs de saisie.
+Fiche ficheAvecAibAplati(Fiche r) {
+  final a = r['aibFacture'];
+  return {
+    ...r,
+    if (a is Map) 'aibFactureMontant': a['montant'],
+    if (a is Map) 'aibFactureTaux': a['taux'],
+    if (a is Map) 'aibFactureBase': a['baseHt'],
+  };
+}
 
 /// Le patch de la modale « Modifier » (celui du domaine) PLUS le hors-taxes et la TVA, écrits sur la fiche sous leurs noms (`montantHT`, `montantTVA`) : un
 /// champ vidé se retire de la fiche (un nul ne s'écrit pas), il n'écrit pas un zéro.
 FicheFacture patchEditionAvecHt(Map<String, Object?> saisie) {
   final p = patchEditionFacture(saisie);
-  num? n(Object? v) => v is num ? v : num.tryParse('${v ?? ''}'.trim().replaceAll(',', '.'));
+  num? n(Object? v) =>
+      v is num ? v : num.tryParse('${v ?? ''}'.trim().replaceAll(',', '.'));
   final ht = n(saisie['montantHT']);
   final tva = n(saisie['montantTVA']);
+  // L'AIB facturé incohérent n'est JAMAIS écrit à moitié : le formulaire l'a déjà refusé champ par champ, le moteur le refuse aussi.
+  if (cpdControlerAibFacture(
+          montant: saisie['aibFactureMontant'],
+          taux: saisie['aibFactureTaux'],
+          base: saisie['aibFactureBase']) !=
+      null) {
+    throw FormulaireInvalide(const ['aibFacture']);
+  }
   // La cohérence avec le montant facturé est contrôlée au champ (`_champHt`), avant l'enregistrement.
-  return {...p, 'montantHT': ht, 'montantTVA': tva};
+  return {
+    ...p,
+    'montantHT': ht,
+    'montantTVA': tva,
+    // L'AIB facturé : l'objet de la facture, ou rien (trois champs vides : il se RETIRE, un nul ne s'écrit pas).
+    'aibFacture': cpdAibFactureDepuisSaisie(
+        montant: saisie['aibFactureMontant'],
+        taux: saisie['aibFactureTaux'],
+        base: saisie['aibFactureBase']),
+  };
 }
 
 TonSigh _ton(String t) => switch (t) {
@@ -93,7 +208,7 @@ Widget _ecart(Fiche r) => ecartConforme(r)
             fontWeight: FontWeight.w600));
 
 /// Le tiroir d'une facture : la fiche, puis le verdict du rapprochement.
-Widget detailFactureFournisseur(Fiche r) {
+Widget detailFactureFournisseur(Fiche r, {String? signalTaux}) {
   final anomalie = r['statutRappro'] == 'anomalie';
   return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
     DescListeSigh([
@@ -106,7 +221,18 @@ Widget detailFactureFournisseur(Fiche r) {
       ('Montant livré', money(r['montantLivraison'])),
       ('Montant facturé', money(r['montantFacture'])),
       if (r['montantHT'] != null) ('Montant hors taxes', money(r['montantHT'])),
-      if (r['montantTVA'] != null) ('TVA (ligne séparée)', money(r['montantTVA'])),
+      if (r['montantTVA'] != null)
+        ('TVA (ligne séparée)', money(r['montantTVA'])),
+      if (r['aibFacture'] is Map)
+        (
+          'AIB facturé',
+          '${money((r['aibFacture'] as Map)['montant'])} (${(r['aibFacture'] as Map)['taux']} % de ${money((r['aibFacture'] as Map)['baseHt'])} hors taxes)'
+        ),
+      if (r['aibSubi'] is Map)
+        (
+          'AIB subi',
+          'Créance de ${money((r['aibSubi'] as Map)['montant'])} sur l’État constatée au compte ${(r['aibSubi'] as Map)['compteSubi'] ?? '—'} (brouillon, journal des achats)'
+        ),
       (
         'Écart',
         ecartConforme(r)
@@ -120,6 +246,13 @@ Widget detailFactureFournisseur(Fiche r) {
           '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}${(r['retenueAib'] as Map)['baseMotif'] == null ? '' : '. ${(r['retenueAib'] as Map)['baseMotif']}'}'
         ),
     ]),
+    if (signalTaux != null) ...[
+      const SizedBox(height: 12),
+      KeyedSubtree(
+          key: const Key('aibsubi:signal-detail'),
+          child: NoteSigh(signalTaux,
+              ton: TonSigh.attention, icone: LucideIcons.triangleAlert)),
+    ],
     const SizedBox(height: 16),
     if (anomalie)
       const NoteSigh(
@@ -216,7 +349,8 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                       nom: 'fournisseur',
                       libelle: 'Fournisseur',
                       options: [
-                        for (final f in c.magasin.collection('fournisseurs').actives)
+                        for (final f
+                            in c.magasin.collection('fournisseurs').actives)
                           OptionChamp('${f['code']}', '${f['nom']}')
                       ]),
                 ],
@@ -280,7 +414,16 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                       cle: 'retenueAib',
                       libelle: 'Retenue AIB',
                       droite: true,
-                      texte: (r) => r['retenueAib'] is Map ? _m((r['retenueAib'] as Map)['montant']) : '—'),
+                      texte: (r) => r['retenueAib'] is Map
+                          ? _m((r['retenueAib'] as Map)['montant'])
+                          : '—'),
+                  ColonneTableau(
+                      cle: 'aibSubi',
+                      libelle: 'AIB subi',
+                      droite: true,
+                      texte: (r) => r['aibSubi'] is Map
+                          ? _m((r['aibSubi'] as Map)['montant'])
+                          : (r['aibFacture'] is Map ? 'à constater' : '—')),
                   ColonneTableau(
                       cle: 'echeance',
                       libelle: 'Échéance',
@@ -297,7 +440,8 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                 alClicLigne: (r) => afficherTiroir<void>(context,
                     titre: 'Facture ${r['reference']}',
                     sousTitre: '${r['fournisseurNom']} — ${_date(r['date'])}',
-                    corps: detailFactureFournisseur(r)),
+                    corps: detailFactureFournisseur(r,
+                        signalTaux: _signalAib(c, r))),
                 actionsLigne: (ctx, r) => [
                   if (c.droit.editer)
                     BoutonIcone(
@@ -308,7 +452,7 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                             champs: champsFactureFournisseurPour(r),
                             versFiche: patchEditionAvecHt,
                             entite: 'facture fournisseur',
-                            record: r,
+                            record: ficheAvecAibAplati(r),
                             detailMessage: false,
                             identifiant: (f) =>
                                 '${f['reference'] ?? f['numero'] ?? f['code'] ?? f['id']}')),
@@ -317,6 +461,13 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                         icone: LucideIcons.percent,
                         libelle: 'Retenir l’AIB',
                         onPressed: () => _retenirAib(ctx, c, r)),
+                  if (c.droit.editer &&
+                      r['aibFacture'] is Map &&
+                      r['aibSubi'] is! Map)
+                    BoutonIcone(
+                        icone: LucideIcons.landmark,
+                        libelle: 'Constater l’AIB subi',
+                        onPressed: () => _constaterAibSubi(ctx, c, r)),
                   if (c.droit.annuler)
                     BoutonIcone(
                         icone: LucideIcons.archive,
@@ -335,7 +486,8 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
 void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
   final refus = cpdControlerRetenueFacture(r);
   if (refus != null) {
-    ToastsSigh.afficher(ctx, 'Retenue refusée.', type: TypeToast.erreur, detail: refus);
+    ToastsSigh.afficher(ctx, 'Retenue refusée.',
+        type: TypeToast.erreur, detail: refus);
     return;
   }
   final date = DateTime.tryParse('${r['date'] ?? ''}') ?? c.aujourdhui;
@@ -355,6 +507,8 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
   // D7 : la BASE vient des Paramètres (version en vigueur à la date de la facture) : le hors-taxes quand il est renseigné, sinon le montant facturé — et
   // la fenêtre DIT laquelle des deux sert.
   final baseCalculee = cpaBaseRetenue(r, parametresAib(c.magasin, date));
+  // Les COMPTES de la pièce se lisent aux Paramètres, à la date de la facture : la pièce déjà passée garde les siens quand une version de plus est validée.
+  final comptes = comptesAib(c.magasin, date);
   final base = baseCalculee.base;
   final ctl = ControleurFormulaire([
     ChampDef(
@@ -362,35 +516,53 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
         libelle: 'Situation de l’acheteur (catégorie de retenue)',
         type: TypeChamp.select,
         requis: true,
-        options: [for (final b in applicables) OptionChamp(b.code, '${b.libelle} — ${b.reponse.taux} %')]),
+        options: [
+          for (final b in applicables)
+            OptionChamp(b.code, '${b.libelle} — ${b.reponse.taux} %')
+        ]),
     const ChampDef(
         nom: 'base',
         libelle: 'Base de la retenue (FCFA)',
         type: TypeChamp.nombre,
         requis: true,
-        aide: 'Proposée d’après les Paramètres (voir ci-dessus). Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
-  ], {'situation': applicables.first.code, 'base': '${base.round()}'});
+        aide:
+            'Proposée d’après les Paramètres (voir ci-dessus). Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
+  ], {
+    'situation': applicables.first.code,
+    'base': '${base.round()}'
+  });
   afficherModale<void>(ctx,
       titre: 'Retenir l’AIB — ${r['reference']}',
-      sousTitre: '${r['fournisseurNom']} : ${money(base)} facturés le ${dateFR(date)}',
-      corps: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        KeyedSubtree(
-            key: const Key('retenue:base'),
-            child: NoteSigh(baseCalculee.motif,
-                ton: baseCalculee.repli ? TonSigh.attention : TonSigh.info,
-                icone: baseCalculee.repli ? LucideIcons.triangleAlert : LucideIcons.info)),
-        const SizedBox(height: 12),
-        FormulaireSigh(controleur: ctl),
-      ]),
+      sousTitre:
+          '${r['fournisseurNom']} : ${money(base)} facturés le ${dateFR(date)}',
+      corps: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            KeyedSubtree(
+                key: const Key('retenue:base'),
+                child: NoteSigh(baseCalculee.motif,
+                    ton: baseCalculee.repli ? TonSigh.attention : TonSigh.info,
+                    icone: baseCalculee.repli
+                        ? LucideIcons.triangleAlert
+                        : LucideIcons.info)),
+            const SizedBox(height: 12),
+            FormulaireSigh(controleur: ctl),
+          ]),
       pied: (fermer) => [
-            BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
+            BoutonSigh(
+                libelle: 'Annuler',
+                variante: VarianteBouton.secondaire,
+                onPressed: fermer),
             BoutonSigh(
                 libelle: 'Constater la retenue',
                 icone: LucideIcons.check,
                 onPressed: () {
                   final v = ctl.valider();
                   if (v == null) {
-                    ToastsSigh.afficher(ctx, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
+                    ToastsSigh.afficher(
+                        ctx, 'Le formulaire comporte des erreurs.',
+                        type: TypeToast.erreur);
                     return;
                   }
                   final CpdRetenueAib ret;
@@ -398,19 +570,26 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                   try {
                     final baseSaisie = num.tryParse('${v['base']}'.trim()) ?? 0;
                     final modifiee = baseSaisie != baseCalculee.base;
-                    ret = cpdCalculerRetenueAib(bareme, '${v['situation']}', baseSaisie, date,
+                    ret = cpdCalculerRetenueAib(
+                        bareme, '${v['situation']}', baseSaisie, date,
                         situations: situations,
                         baseSource: modifiee ? 'manuelle' : baseCalculee.source,
-                        baseMotif: modifiee ? 'Base corrigée à la main à la retenue (proposée : ${money(baseCalculee.base)}). ${baseCalculee.motif}' : baseCalculee.motif);
+                        baseMotif: modifiee
+                            ? 'Base corrigée à la main à la retenue (proposée : ${money(baseCalculee.base)}). ${baseCalculee.motif}'
+                            : baseCalculee.motif);
                     lignes = cpdEcrituresRetenueAib(
                         retenue: ret,
                         numero: 'AIB-${r['reference']}',
                         date: iso(date),
                         reference: '${r['reference']}',
                         fournisseur: '${r['fournisseurNom']}',
-                        pieceId: '${r['id']}');
+                        pieceId: '${r['id']}',
+                        comptes: comptes);
                   } on RefusRetenueAib catch (e) {
-                    ToastsSigh.afficher(ctx, 'Retenue refusée.', type: TypeToast.erreur, detail: e.motif, duree: const Duration(seconds: 9));
+                    ToastsSigh.afficher(ctx, 'Retenue refusée.',
+                        type: TypeToast.erreur,
+                        detail: e.motif,
+                        duree: const Duration(seconds: 9));
                     return;
                   }
                   final ecr = c.magasin.collection('ecritures');
@@ -426,25 +605,193 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                     for (final a in annulations) {
                       a();
                     }
-                    ToastsSigh.afficher(ctx, 'Écriture refusée.', type: TypeToast.erreur, detail: e.motif);
+                    ToastsSigh.afficher(ctx, 'Écriture refusée.',
+                        type: TypeToast.erreur, detail: e.motif);
                     return;
                   }
-                  c.magasin.collection('facturesFournisseurs').mettreAJour(r['id'], {
+                  c.magasin
+                      .collection('facturesFournisseurs')
+                      .mettreAJour(r['id'], {
                     'retenueAib': {
                       ...ret.versFiche(),
                       'date': iso(date),
                       'reversement': iso(cpdEcheanceReversementAib(date)),
                       'ecritureIds': ids,
+                      'compteRetenu': comptes.retenu,
+                      'compteFournisseur': comptes.fournisseur,
+                      if (comptes.version != null)
+                        'comptesVersion': comptes.version,
                       'retenuPar': acteur(c).nom,
                       'retenueLe': iso(c.aujourdhui),
                     }
                   });
-                  c.magasin.journaliser('Retenue d’AIB sur facture fournisseur', 'M7', 'FactureFournisseur', '${r['reference']}', null,
-                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'situation': ret.situation, 'versionId': ret.versionId, 'baseSource': ret.baseSource});
+                  c.magasin.journaliser('Retenue d’AIB sur facture fournisseur',
+                      'M7', 'FactureFournisseur', '${r['reference']}', null, {
+                    'taux': ret.taux,
+                    'base': ret.base,
+                    'montant': ret.montant,
+                    'situation': ret.situation,
+                    'versionId': ret.versionId,
+                    'baseSource': ret.baseSource
+                  });
                   fermer();
-                  ToastsSigh.afficher(ctx, 'Retenue de ${money(ret.montant)} constatée (brouillon).',
+                  ToastsSigh.afficher(ctx,
+                      'Retenue de ${money(ret.montant)} constatée (brouillon).',
                       type: TypeToast.succes,
-                      detail: '${ret.taux} % — à reverser à l’État le ${dateFR(cpdEcheanceReversementAib(date))} (compte $cpdCompteAibRetenu).');
+                      detail:
+                          '${ret.taux} % — à reverser à l’État le ${dateFR(cpdEcheanceReversementAib(date))} (compte ${comptes.retenu}).');
                 }),
+          ]);
+}
+
+/// Le SIGNAL « taux non arrêté au barème » d'une facture qui porte un AIB facturé, à la date de la facture : `null` quand le taux est celui d'une version arrêtée
+/// du barème en vigueur (ou quand la facture ne porte pas d'AIB facturé). Il ne bloque rien : le fournisseur a facturé ce qu'il a facturé.
+String? _signalAib(ContexteEcran c, Fiche r) {
+  final a = r['aibFacture'];
+  if (a is! Map) return null;
+  final taux = a['taux'];
+  if (taux is! num) return null;
+  final date = DateTime.tryParse('${r['date'] ?? ''}') ?? c.aujourdhui;
+  return cpdSignalTauxAibFacture(c.magasin.collection('situationsAib').actives,
+      c.magasin.collection('baremeAib').actives, taux, date);
+}
+
+/// « Constater l'AIB subi » : l'AIB que le fournisseur a FACTURÉ est une créance sur l'État que l'acheteur récupère sur son impôt sur les bénéfices (position de
+/// la Direction du 09/11/2026). Une pièce PLATE en brouillon, RG-10 contrôlée équilibrée AVANT écriture : débit du compte d'AIB subi, crédit du compte fournisseur
+/// du même montant, journal des achats. La facture PORTE son AIB subi (elle n'est jamais réécrite) et n'en porte qu'un. Refus nommés : facture archivée, pas
+/// d'AIB facturé, déjà constaté, incohérent, exercice en clôture ; un taux hors barème arrêté est SIGNALÉ, pas refusé.
+void _constaterAibSubi(BuildContext ctx, ContexteEcran c, Fiche r) {
+  void refuser(String detail) => ToastsSigh.afficher(ctx, 'AIB subi refusé.',
+      type: TypeToast.erreur,
+      detail: detail,
+      duree: const Duration(seconds: 9));
+  final refus = cpdControlerAibSubi(r);
+  if (refus != null) return refuser(refus);
+  final date = DateTime.tryParse('${r['date'] ?? ''}') ?? c.aujourdhui;
+  final a = (r['aibFacture'] as Map).cast<String, Object?>();
+  final comptes = comptesAib(c.magasin, date);
+  final signal = _signalAib(c, r);
+  afficherModale<void>(ctx,
+      titre: 'Constater l’AIB subi — ${r['reference']}',
+      sousTitre:
+          '${r['fournisseurNom']} : ${money(a['montant'])} d’AIB facturé le ${dateFR(date)}',
+      corps: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const NoteSigh(
+                'L’AIB facturé par le fournisseur n’est pas une charge : c’est une CRÉANCE sur l’État, imputée en fin d’année sur l’impôt sur les bénéfices. La pièce naît en brouillon.',
+                ton: TonSigh.info,
+                icone: LucideIcons.info),
+            const SizedBox(height: 12),
+            DescListeSigh([
+              ('Base hors taxes', money(a['baseHt'])),
+              ('Taux', '${a['taux']} %'),
+              ('AIB subi', money(a['montant'])),
+              (
+                'Débit',
+                'compte ${comptes.subi} — AIB subi (créance sur l’État)'
+              ),
+              ('Crédit', 'compte ${comptes.fournisseur} — fournisseurs'),
+            ]),
+            if (signal != null) ...[
+              const SizedBox(height: 12),
+              KeyedSubtree(
+                  key: const Key('aibsubi:signal'),
+                  child: NoteSigh(signal,
+                      ton: TonSigh.attention,
+                      icone: LucideIcons.triangleAlert)),
+            ],
+            if (comptes.aConfirmer) ...[
+              const SizedBox(height: 12),
+              KeyedSubtree(
+                  key: const Key('aibsubi:comptes-a-confirmer'),
+                  child: NoteSigh(
+                      'Comptes ${comptes.deLaGraine ? 'de la graine' : 'des Paramètres'} : ${comptes.marquage}. Ils se valident aux Paramètres, « Validations de l’AIB ».',
+                      ton: TonSigh.attention,
+                      icone: LucideIcons.triangleAlert)),
+            ],
+          ]),
+      pied: (fermer) => [
+            BoutonSigh(
+                libelle: 'Annuler',
+                variante: VarianteBouton.secondaire,
+                onPressed: fermer),
+            // Le contexte du bouton (dans la fenêtre) porte les refus : celui de la ligne a pu disparaître avec la facture (archivée entre-temps).
+            Builder(
+                builder: (bc) => BoutonSigh(
+                    key: const Key('aibsubi:constater'),
+                    libelle: 'Constater l’AIB subi',
+                    icone: LucideIcons.check,
+                    onPressed: () {
+                      void refuserIci(String detail) =>
+                          ToastsSigh.afficher(bc, 'AIB subi refusé.',
+                              type: TypeToast.erreur,
+                              detail: detail,
+                              duree: const Duration(seconds: 9));
+                      // La facture a pu changer depuis l'ouverture de la fenêtre : on relit la fiche vivante (archivée comprise : le contrôle la refuse en le disant).
+                      final vivante = c.magasin
+                              .collection('facturesFournisseurs')
+                              .parId(r['id']) ??
+                          {...r, 'statut': 'archive'};
+                      final CpdAibSubiConstate pose;
+                      try {
+                        pose = cpdConstaterAibSubi(
+                            facture: vivante,
+                            date: date,
+                            comptes: comptes,
+                            numero: 'AIBS-${vivante['reference']}',
+                            signalTaux: signal);
+                      } on RefusAibSubi catch (e) {
+                        return refuserIci(e.motif);
+                      }
+                      final ecr = c.magasin.collection('ecritures');
+                      final ids = <Object?>[];
+                      final annulations = <VoidCallback>[];
+                      try {
+                        for (final l in pose.ecritures) {
+                          final x = ecr.inserer(l, prefixe: 'ECR');
+                          ids.add(x.fiche['id']);
+                          annulations.add(x.annuler);
+                        }
+                      } on EcritureRefusee catch (e) {
+                        for (final u in annulations) {
+                          u();
+                        }
+                        ToastsSigh.afficher(bc, 'Écriture refusée.',
+                            type: TypeToast.erreur, detail: e.motif);
+                        return;
+                      }
+                      c.magasin
+                          .collection('facturesFournisseurs')
+                          .mettreAJour(vivante['id'], {
+                        'aibSubi': {
+                          ...pose.fiche,
+                          'ecritureIds': ids,
+                          'constatePar': acteur(c).nom,
+                          'constateLe': iso(c.aujourdhui),
+                        }
+                      });
+                      c.magasin.journaliser(
+                          'AIB subi sur facture fournisseur',
+                          'M7',
+                          'FactureFournisseur',
+                          '${vivante['reference']}',
+                          null, {
+                        'montant': pose.fiche['montant'],
+                        'taux': pose.fiche['taux'],
+                        'base': pose.fiche['base'],
+                        'compteSubi': comptes.subi,
+                        'compteFournisseur': comptes.fournisseur,
+                        'comptesVersion': comptes.version,
+                        if (signal != null) 'signalTaux': true,
+                      });
+                      fermer();
+                      ToastsSigh.afficher(ctx,
+                          'AIB subi de ${money(pose.fiche['montant'])} constaté (brouillon).',
+                          type: TypeToast.succes,
+                          detail:
+                              'Débit ${comptes.subi}, crédit ${comptes.fournisseur}.${signal == null ? '' : ' Taux non arrêté au barème : signalé.'}');
+                    })),
           ]);
 }

@@ -15,6 +15,8 @@ import 'cfa_commun.dart';
 ///    `m12-aib` (`cpdControlerVersionAib`, la même, jamais dupliquée) : arrêter une version écrit son arrêt dans `baremeAib` ; la décision est consignée ;
 /// 2. « Validation de la base de l’AIB des factures fournisseurs » : le choix de la base (hors taxes, montant facturé), appliqué par le moteur de retenue à
 ///    partir de la version en vigueur à la date de la facture ;
+/// 4. « Comptes de l’AIB » : les quatre comptes (AIB subi, AIB retenu ou collecté, imputation, fournisseur) lus par la retenue et par l'AIB subi à la date de la pièce ;
+///    marqués « à confirmer par l'expert-comptable » tant qu'aucun décideur n'a validé ; une version de plus ne réécrit pas les pièces déjà passées.
 /// 3. « Validation du branchement IFU » : la table « situation de l'acheteur → taux du barème arrêté qu'elle utilise » (le branchement LIT le taux au barème,
 ///    il n'en porte aucun), la situation présumée quand l'IFU est renseigné, la longueur de l'IFU et le taux de repli sans taux arrêté.
 ///
@@ -29,11 +31,11 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
 
   @override
   String get description =>
-      'Trois formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur.';
+      'Quatre formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur, les comptes de l’AIB.';
 
   @override
   String get regle =>
-      'Rien n’est écrasé : chaque validation ajoute une version datée (décideur, date de la décision, date d’effet, motif), journalisée. Le branchement lit le taux au barème arrêté et n’en porte aucun ; sans taux arrêté en vigueur, le taux de repli s’applique.';
+      'Rien n’est écrasé : chaque validation ajoute une version datée (décideur, date de la décision, date d’effet, motif), journalisée. Le branchement lit le taux au barème arrêté et n’en porte aucun ; sans taux arrêté en vigueur, le taux de repli s’applique. Les comptes se lisent à la date de la pièce : les pièces déjà passées gardent les leurs.';
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
           OngletDef(id: 'bareme', libelle: 'Barème AIB', construire: (_) => _OngletBareme(c: c)),
           OngletDef(id: 'base', libelle: 'Base des factures fournisseurs', construire: (_) => _OngletBase(c: c)),
           OngletDef(id: 'ifu', libelle: 'Branchement IFU', construire: (_) => _OngletIfu(c: c)),
+          OngletDef(id: 'comptes', libelle: 'Comptes de l’AIB', construire: (_) => _OngletComptes(c: c)),
         ]),
       ]),
     );
@@ -66,7 +69,7 @@ bool _peutEcrire(ContexteEcran c) => c.droit.editer && !_fileul(c);
 
 String _d(Object? v) => v == null || '$v'.isEmpty ? '—' : dateDe(v);
 
-/// Les deux champs de la décision, communs aux trois formulaires : le décideur et la date de la décision sont OBLIGATOIRES.
+/// Les deux champs de la décision, communs aux quatre formulaires : le décideur et la date de la décision sont OBLIGATOIRES.
 List<ChampDef> _champsDecision() => const [
       ChampDef.section('La décision'),
       ChampDef(nom: 'decideur', libelle: 'Décideur', requis: true, col: ColChamp.tiers, aide: 'La personne ou l’instance qui décide (la Direction).'),
@@ -77,7 +80,7 @@ const ChampDef _champMotif = ChampDef(nom: 'motif', libelle: 'Motif', type: Type
 
 /// Le numéro et l'identifiant de la prochaine version d'une rubrique : `PAA-BASE-2`.
 String _idVersion(String rubrique, int n) =>
-    'PAA-${switch (rubrique) { cpaRubriqueBase => 'BASE', cpaRubriqueBranchement => 'IFU', _ => 'BAR' }}-$n';
+    'PAA-${switch (rubrique) { cpaRubriqueBase => 'BASE', cpaRubriqueBranchement => 'IFU', cpaRubriqueComptes => 'COMPTES', _ => 'BAR' }}-$n';
 
 /// Écrit UNE version datée (jamais d'écrasement), puis UNE ligne de journal nommée (RG-12). Rend la fiche écrite.
 Fiche _ecrireVersion(ContexteEcran c, String rubrique, String actionJournal, Map<String, Object?> contenu, Map<String, Object?> v) {
@@ -538,6 +541,114 @@ class _EtatIfu extends State<_OngletIfu> {
             ColonneMini('IFU absent', (x) => '${x['situationIfuAbsent'] ?? '—'}'),
             ColonneMini('Chiffres', (x) => '${x['longueurIfu'] ?? '—'}', droite: true),
             ColonneMini('Repli', (x) => '${x['tauxRepli'] ?? '—'} %', droite: true),
+          ])),
+    ]);
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// 4. Comptes de l'AIB
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+class _OngletComptes extends StatefulWidget {
+  const _OngletComptes({required this.c});
+  final ContexteEcran c;
+  @override
+  State<_OngletComptes> createState() => _EtatComptes();
+}
+
+class _EtatComptes extends State<_OngletComptes> {
+  ControleurFormulaire? _ctl;
+  ContexteEcran get c => widget.c;
+
+  @override
+  void dispose() {
+    _ctl?.dispose();
+    super.dispose();
+  }
+
+  ControleurFormulaire _formulaire() {
+    final p = cpaComptesALaDate(c.magasin.collection(cpaCollection).actives, c.aujourdhui);
+    return _ctl ??= ControleurFormulaire([
+      const ChampDef.section('Les comptes de l’AIB'),
+      const ChampDef(nom: 'compteAibSubi', libelle: 'Compte de l’AIB subi (créance sur l’État)', requis: true, col: ColChamp.tiers, aide: 'Débité quand un fournisseur facture un AIB à la clinique.'),
+      const ChampDef(nom: 'compteAibRetenu', libelle: 'Compte de l’AIB retenu ou collecté (dette)', requis: true, col: ColChamp.tiers, aide: 'Crédité par la retenue d’AIB sur une facture fournisseur.'),
+      const ChampDef(nom: 'compteImputation', libelle: 'Compte d’imputation', requis: true, col: ColChamp.tiers, aide: 'Impôt sur les bénéfices : indiqué en lecture au registre de l’AIB, jamais écrit.'),
+      const ChampDef(nom: 'compteFournisseur', libelle: 'Compte fournisseur', requis: true, col: ColChamp.tiers, aide: 'Débité par la retenue, crédité par l’AIB subi.'),
+      const ChampDef(
+          nom: 'dateEffet',
+          libelle: 'Date d’effet',
+          type: TypeChamp.date,
+          requis: true,
+          col: ColChamp.tiers,
+          aide: 'Le moteur lit, pour chaque pièce, la version en vigueur à SA date : une version de plus ne réécrit pas les pièces déjà passées.'),
+      ..._champsDecision(),
+      _champMotif,
+    ], {
+      'compteAibSubi': p.subi,
+      'compteAibRetenu': p.retenu,
+      'compteImputation': p.imputation,
+      'compteFournisseur': p.fournisseur,
+    });
+  }
+
+  void _enregistrer() {
+    final ctl = _ctl!;
+    final v = ctl.valider();
+    if (v == null) {
+      ToastsSigh.afficher(context, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
+      return;
+    }
+    final col = c.magasin.collection(cpaCollection);
+    final refus = cpaControlerVersion(cpaRubriqueComptes, v, col.toutes, c.aujourdhui);
+    if (refus != null) {
+      ToastsSigh.afficher(context, 'Validation refusée.', type: TypeToast.erreur, detail: refus, duree: const Duration(seconds: 9));
+      return;
+    }
+    final f = _ecrireVersion(c, cpaRubriqueComptes, 'Validation des comptes de l’AIB', {
+      'compteAibSubi': '${v['compteAibSubi']}'.trim(),
+      'compteAibRetenu': '${v['compteAibRetenu']}'.trim(),
+      'compteImputation': '${v['compteImputation']}'.trim(),
+      'compteFournisseur': '${v['compteFournisseur']}'.trim(),
+    }, v);
+    ToastsSigh.afficher(context, 'Comptes de l’AIB validés.',
+        type: TypeToast.succes, detail: 'Version ${f['version']} à compter du ${_d(f['dateEffet'])} : les pièces antérieures gardent leurs comptes.');
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final p = cpaComptesALaDate(c.magasin.collection(cpaCollection).actives, c.aujourdhui);
+    return cfaPile([
+      NoteSigh(
+          'Comptes en vigueur au ${dateFR(c.aujourdhui)} : AIB subi ${p.subi}, AIB retenu ${p.retenu}, imputation ${p.imputation}, fournisseur ${p.fournisseur} — ${p.provenance}. '
+          '${p.deLaGraine ? 'Aucune version n’est enregistrée : la graine du code répond (repli) jusqu’à la première validation. ' : ''}'
+          'La retenue et l’AIB subi lisent la version en vigueur à la date de la pièce ; une pièce déjà passée garde ses comptes d’origine.',
+          ton: p.aConfirmer ? TonSigh.attention : TonSigh.info,
+          icone: p.aConfirmer ? LucideIcons.triangleAlert : LucideIcons.info),
+      if (p.aConfirmer)
+        KeyedSubtree(
+            key: const Key('aib:comptes-a-confirmer'),
+            child: const NoteSigh(
+                'À CONFIRMER PAR L’EXPERT-COMPTABLE : aucune source consultée ne confirme 4492 pour l’AIB subi (ni 441) ; le plan SYSCOHADA place 4478 sous 447 et l’impôt sur les bénéfices en 891. Le marquage tombe à la validation (décideur et date de la décision).',
+                ton: TonSigh.attention,
+                icone: LucideIcons.triangleAlert)),
+      if (_peutEcrire(c))
+        CarteSigh(
+            titre: 'Validation des comptes de l’AIB',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              FormulaireSigh(controleur: _formulaire()),
+              const SizedBox(height: 16),
+              BoutonSigh(key: const Key('aib:valider:comptes'), libelle: 'Enregistrer la validation', icone: LucideIcons.gavel, onPressed: _enregistrer),
+            ])),
+      CarteSigh(
+          titre: 'Versions des comptes (la plus récente en tête)',
+          child: _tableVersions(c, cpaRubriqueComptes, [
+            ColonneMini('AIB subi', (x) => '${x['compteAibSubi'] ?? '—'}'),
+            ColonneMini('AIB retenu', (x) => '${x['compteAibRetenu'] ?? '—'}'),
+            ColonneMini('Imputation', (x) => '${x['compteImputation'] ?? '—'}'),
+            ColonneMini('Fournisseur', (x) => '${x['compteFournisseur'] ?? '—'}'),
+            ColonneMini('Confirmation', (x) => '${x['decideur'] ?? ''}'.isEmpty ? 'À confirmer par l’expert-comptable' : 'Validée'),
           ])),
     ]);
   }

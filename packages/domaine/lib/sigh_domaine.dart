@@ -100,6 +100,7 @@ export 'src/comptabilite/cpc_etats.dart';
 export 'src/comptabilite/cpd_bareme_aib.dart';
 export 'src/comptabilite/cpd_retenue_aib.dart';
 export 'src/comptabilite/cpd_parametres_aib.dart';
+export 'src/comptabilite/cpd_aib_subi.dart';
 export 'src/rh/rhc_regles.dart';
 export 'src/tableaux_de_bord/tbb_regles.dart';
 export 'src/pilotage/pil_vue.dart';

@@ -4,17 +4,20 @@
 /// de la retenue EST une situation (le fournisseur a un IFU actif, n'en a pas, ou la facture est une prestation retenue par le payeur). Seule une version ARRÊTÉE s'applique ;
 /// sans version arrêtée en vigueur, la retenue est REFUSÉE en disant pourquoi — jamais un taux « commode ». La retenue ne réécrit pas la pièce : elle
 /// s'ajoute (la facture PORTE sa retenue) et se constate par UNE pièce comptable plate, en brouillon, contrôlée équilibrée (RG-10) :
-/// débit du compte fournisseur (la dette envers le fournisseur diminue), crédit du compte 4478 (la dette envers l'État naît).
+/// débit du compte fournisseur (la dette envers le fournisseur diminue), crédit du compte d'AIB retenu (la dette envers l'État naît). LES COMPTES ne sont pas
+/// écrits ici : ils se lisent aux Paramètres (`cpaComptesALaDate`, rubrique `comptes`), à la date de la pièce — la graine du code ([CpdComptesAib.graine]) ne sert
+/// qu'à semer la collection et de repli quand elle est vide ; une pièce déjà passée garde ses comptes d'origine.
 ///
 /// Le reversement se fait le 10 du mois suivant, reporté au jour ouvrable suivant s'il tombe un samedi ou un dimanche — jamais avancé.
 library;
 
 import 'cpc_echeances.dart';
 import 'cpd_bareme_aib.dart';
+import 'cpd_parametres_aib.dart';
 import '../referentiels/versions_datees.dart';
 
-/// Le compte fournisseur débité par la retenue.
-const String cpdCompteFournisseurRetenue = '401000';
+/// Le compte fournisseur de la GRAINE (débité par la retenue) : la valeur d'amorçage de la rubrique `comptes`, jamais lue par un moteur du poste.
+const String cpdCompteFournisseurRetenue = cpaCompteFournisseurGraine;
 
 /// Le jour du mois suivant où l'AIB retenu se reverse.
 const int cpdJourReversementAib = 10;
@@ -89,8 +92,7 @@ List<Map<String, Object?>> cpdEcrituresRetenueAib({
   required String reference,
   required String fournisseur,
   required String pieceId,
-  String compteFournisseur = cpdCompteFournisseurRetenue,
-  String compteRetenu = cpdCompteAibRetenu,
+  CpdComptesAib comptes = CpdComptesAib.graine,
 }) {
   if (retenue.montant <= 0) throw const RefusRetenueAib('Une retenue nulle ne se constate pas.');
   final libelle = 'Retenue AIB ${retenue.taux} % — facture $reference — $fournisseur';
@@ -106,8 +108,8 @@ List<Map<String, Object?>> cpdEcrituresRetenueAib({
     'statut': 'brouillon',
   };
   final lignes = [
-    {...base, 'compte': compteFournisseur, 'compteLibelle': 'Fournisseurs', 'debit': retenue.montant, 'credit': 0},
-    {...base, 'compte': compteRetenu, 'compteLibelle': 'AIB retenu à reverser à l\'État', 'debit': 0, 'credit': retenue.montant},
+    {...base, 'compte': comptes.fournisseur, 'compteLibelle': 'Fournisseurs', 'debit': retenue.montant, 'credit': 0},
+    {...base, 'compte': comptes.retenu, 'compteLibelle': 'AIB retenu à reverser à l\'État', 'debit': 0, 'credit': retenue.montant},
   ];
   final d = lignes.fold<num>(0, (s, l) => s + (l['debit'] as num));
   final c = lignes.fold<num>(0, (s, l) => s + (l['credit'] as num));

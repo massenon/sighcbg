@@ -46,7 +46,7 @@ void main() {
       const g = CpdParametresAib.graine;
       expect([g.base, g.longueurIfu, g.situationIfuRenseigne, g.situationIfuAbsent, g.tauxRepli, g.deLaGraine], ['ht', 13, 'ifu_actif', 'ifu_inactif_ou_absent', 0, true]);
       final fiches = cpaFichesGraine();
-      expect(fiches.map((f) => f['rubrique']), [cpaRubriqueBase, cpaRubriqueBranchement]);
+      expect(fiches.map((f) => f['rubrique']), [cpaRubriqueBase, cpaRubriqueBranchement, cpaRubriqueComptes]);
       expect(fiches.every((f) => f['aValider'] == true && f['graine'] == true && !f.containsKey('decideur')), isTrue, reason: 'une graine n\'est pas une décision');
       expect(fiches.any((f) => f.containsKey('dateEffet')), isFalse, reason: 'sans date d\'effet : depuis l\'ouverture, et aucun champ nul');
     });
@@ -263,6 +263,65 @@ void main() {
       expect([a.aibTaux, a.aibRepli, a.toJson()['aibRepli']], [7, true, true]);
       expect(validerAcheteurMecef(aibTaux: 7).refus!.code, 'AIB_TAUX_INVALIDE', reason: 'hors repli, la voie héritée reste bornée à 0, 1 ou 5');
       expect(validerAcheteurMecef(aibTaux: 101, aibRepli: true).refus!.code, 'AIB_TAUX_INVALIDE');
+    });
+  });
+
+  group('les COMPTES de l\'AIB, en base et versionnés (rubrique `comptes`)', () {
+    Map<String, Object?> comptes({String subi = '4492', String retenu = '4478', String imputation = '891', String fournisseur = '401000'}) =>
+        {'compteAibSubi': subi, 'compteAibRetenu': retenu, 'compteImputation': imputation, 'compteFournisseur': fournisseur};
+
+    test('la graine : 4492, 4478, 891, 401000 ; marquée à confirmer par l\'expert-comptable, sans décideur', () {
+      const g = CpdComptesAib.graine;
+      expect([g.subi, g.retenu, g.imputation, g.fournisseur, g.deLaGraine, g.aConfirmer], ['4492', '4478', '891', '401000', true, true]);
+      final fiche = cpaFichesGraine().firstWhere((f) => f['rubrique'] == cpaRubriqueComptes);
+      expect([fiche['compteAibSubi'], fiche['compteAibRetenu'], fiche['compteImputation'], fiche['compteFournisseur']], ['4492', '4478', '891', '401000']);
+      expect(fiche['aConfirmerExpertComptable'], isTrue);
+      expect(fiche.containsKey('decideur'), isFalse, reason: 'une graine n\'est pas une décision');
+      expect(fiche.containsKey('dateEffet'), isFalse);
+    });
+
+    test('collection vide : la graine, et elle le dit ; semée : mêmes comptes, version 1, toujours à confirmer', () {
+      final vide = cpaComptesALaDate(const [], apres);
+      expect([vide.deLaGraine, vide.provenance], [true, contains('graine')]);
+      final semee = cpaComptesALaDate(cpaFichesGraine(), apres);
+      expect([semee.deLaGraine, semee.version, semee.aConfirmer, semee.subi], [false, 1, true, '4492']);
+      expect(semee.marquage, contains('expert-comptable'));
+      expect(semee.provenance, contains('à confirmer'));
+    });
+
+    test('une version validée (décideur + date) lève le marquage, prend effet à sa date, et la précédente reste lue avant', () {
+      final fiches = [
+        ...cpaFichesGraine(),
+        p(cpaRubriqueComptes, 2, {...comptes(subi: '4491'), 'decideur': 'Expert-comptable', 'dateDecision': '2026-11-10'}, effet: '2026-12-01'),
+      ];
+      final apresV2 = cpaComptesALaDate(fiches, DateTime(2026, 12, 15));
+      expect([apresV2.subi, apresV2.version, apresV2.aConfirmer, apresV2.marquage], ['4491', 2, false, '']);
+      final avantV2 = cpaComptesALaDate(fiches, DateTime(2026, 11, 30));
+      expect([avantV2.subi, avantV2.version], ['4492', 1], reason: 'les anciennes pièces gardent leurs comptes d\'origine');
+    });
+
+    test('une version archivée est ignorée ; un compte absent de la fiche retombe, lui seul, sur la graine', () {
+      final fiches = [
+        ...cpaFichesGraine(),
+        p(cpaRubriqueComptes, 2, comptes(subi: '4491'), effet: '2026-10-01', statut: 'archive'),
+        p(cpaRubriqueComptes, 3, {'compteAibSubi': '4493'}, effet: '2026-11-01'),
+      ];
+      final c = cpaComptesALaDate(fiches, apres);
+      expect([c.subi, c.retenu, c.imputation, c.fournisseur, c.version], ['4493', '4478', '891', '401000', 3]);
+    });
+
+    test('le contrôle : décideur, date, motif, date d\'effet postérieure, comptes de 3 à 8 chiffres et DISTINCTS', () {
+      final base = {'decideur': 'D', 'dateDecision': '2026-11-09', 'motif': 'm', 'dateEffet': '2026-11-10', ...comptes()};
+      final existantes = cpaFichesGraine();
+      expect(cpaControlerVersion(cpaRubriqueComptes, base, existantes, apres), isNull);
+      expect(cpaControlerVersion(cpaRubriqueComptes, {...base, 'decideur': ''}, existantes, apres), contains('PARAM_DECIDEUR_ABSENT'));
+      expect(cpaControlerVersion(cpaRubriqueComptes, {...base, 'dateEffet': null}, existantes, apres), contains('PARAM_DATE_EFFET_ABSENTE'));
+      expect(cpaControlerVersion(cpaRubriqueComptes, {...base, 'compteAibSubi': '44X2'}, existantes, apres), contains('PARAM_COMPTE_INVALIDE'));
+      expect(cpaControlerVersion(cpaRubriqueComptes, {...base, 'compteAibSubi': '12'}, existantes, apres), contains('3 à 8 chiffres'));
+      expect(cpaControlerVersion(cpaRubriqueComptes, {...base, 'compteAibSubi': '4478'}, existantes, apres), contains('PARAM_COMPTES_CONFONDUS'));
+      final v2 = [...existantes, p(cpaRubriqueComptes, 2, comptes(), effet: '2026-11-20')];
+      expect(cpaControlerVersion(cpaRubriqueComptes, base, v2, apres), contains('PARAM_DATE_ANTERIEURE'),
+          reason: 'le passé ne se réécrit pas : une version de plus prend une date d\'effet postérieure');
     });
   });
 }

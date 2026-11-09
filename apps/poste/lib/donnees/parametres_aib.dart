@@ -14,3 +14,7 @@ d.AibParDefaut aibParDefaut(Magasin m, DateTime date, {Object? ifu}) => d.aibPar
     situations: m.collection('situationsAib').actives,
     versions: m.collection('baremeAib').actives,
     parametres: parametresAib(m, date));
+
+/// Les COMPTES de l'AIB EN VIGUEUR à [date] (rubrique `comptes` de `parametresAib`) : AIB subi, AIB retenu, imputation, fournisseur. Les moteurs de pièces (retenue,
+/// AIB subi) les lisent À LA DATE DE LA PIÈCE ; la graine du code ne répond que si la collection est vide, et [d.CpdComptesAib.deLaGraine] le dit.
+d.CpdComptesAib comptesAib(Magasin m, DateTime date) => d.cpaComptesALaDate(m.collection(d.cpaCollection).actives, date);

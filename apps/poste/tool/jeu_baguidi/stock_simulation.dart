@@ -625,6 +625,10 @@ class Stock {
     // (FEB) facture la TVA de 18 % sur une ligne séparée (hors taxes = facturé / 1,18, arrondi au franc).
     final avecTva = c.fournisseur == 'FEB';
     final ht = avecTva ? (montant / 1.18).round() : montant;
+    // L'AIB FACTURÉ par le fournisseur (position de la Direction du 09/11/2026), facultatif et SANS tirage : le fournisseur de fournitures générales (FEB) en
+    // facture 5 % (taux arrêté au barème) et le grossiste MMN 1 % (taux NON arrêté : l'écran le signale). Montant entier, cohérent avec la base hors taxes ;
+    // aucun AIB subi n'est constaté ici — « Constater l'AIB subi » reste un geste du comptable.
+    final tauxAib = switch (c.fournisseur) { 'FEB' => 5, 'MMN' => 1, _ => null };
     final ff = a.ajouter(
         'facturesFournisseurs',
         {
@@ -639,6 +643,7 @@ class Stock {
           'montantFacture': montant,
           'montantHT': ht,
           if (avecTva) 'montantTVA': montant - ht,
+          if (tauxAib != null) 'aibFacture': {'montant': d.cpdMontantAib(ht, tauxAib), 'taux': tauxAib, 'baseHt': ht},
           'ecart': 0,
           'statutRappro': 'rapproche',
           'statutPaiement': 'impayee',

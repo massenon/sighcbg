@@ -53,6 +53,25 @@ void main() {
     expect(l[1]['credit'], 10000);
   });
 
+  test('les comptes de la pièce se LISENT aux Paramètres, à la date de la pièce : une version de plus ne réécrit pas la pièce d’hier', () {
+    final fiches = [
+      ...cpaFichesGraine(),
+      {
+        'id': 'P2', 'statut': 'actif', 'rubrique': cpaRubriqueComptes, 'version': 2, 'dateEffet': '2026-11-01',
+        'compteAibSubi': '4492', 'compteAibRetenu': '4479', 'compteImputation': '891', 'compteFournisseur': '401100',
+        'decideur': 'Expert-comptable', 'dateDecision': '2026-10-30', 'motif': 'confirmation',
+      },
+    ];
+    final r = cpdCalculerRetenueAib(bareme, sans, 200000, DateTime(2026, 10, 1));
+    List<Map<String, Object?>> piece(DateTime d) => cpdEcrituresRetenueAib(
+        retenue: r, numero: 'N', date: isoJour(d), reference: 'FF-1', fournisseur: 'GPB', pieceId: 'FF0001', comptes: cpaComptesALaDate(fiches, d));
+    final avant = piece(DateTime(2026, 10, 15));
+    expect([avant[0]['compte'], avant[1]['compte']], ['401000', '4478'], reason: 'avant la version 2 : les comptes d’origine');
+    final apres = piece(DateTime(2026, 11, 15));
+    expect([apres[0]['compte'], apres[1]['compte']], ['401100', '4479']);
+    expect(apres.fold<num>(0, (s, l) => s + (l['debit'] as num)), apres.fold<num>(0, (s, l) => s + (l['credit'] as num)));
+  });
+
   test('reversement : le 10 du mois suivant, reporté au lundi si week-end, jamais avancé', () {
     expect(cpdEcheanceReversementAib(DateTime(2026, 10, 15)), DateTime(2026, 11, 10)); // mardi
     expect(cpdEcheanceReversementAib(DateTime(2026, 11, 20)), DateTime(2026, 12, 10)); // jeudi

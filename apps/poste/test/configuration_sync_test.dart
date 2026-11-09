@@ -289,6 +289,7 @@ void main() {
           version('PAA-BASE-2', 'base_retenue', 2, {'base': 'facture'}, effet: '2026-10-20'),
           version('PAA-IFU-2', 'branchement_ifu', 2, {'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif', 'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 2}, effet: '2026-10-20'),
           version('PAA-BAR-1', 'bareme', 1, {'choix': 'arreter', 'versionBaremeId': 'BAI02'}),
+          version('PAA-COMPTES-2', 'comptes', 2, {'compteAibSubi': '4491', 'compteAibRetenu': '4479', 'compteImputation': '891', 'compteFournisseur': '401100'}, effet: '2026-11-01'),
         ],
         'baremeAib': [
           {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_inactif_ou_absent', 'taux': 5, 'dateEffet': '2026-09-07', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'},
@@ -300,15 +301,25 @@ void main() {
       final relais = <String, Map<String, Object?>>{};
       final pub = PublicateurConfiguration(mm, (c, f, champs) async => relais['$c/$f'] = champs, delai: Duration.zero);
       await pub.pousser();
-      expect(relais.keys, containsAll(['parametresAib/PAA-BASE-1', 'parametresAib/PAA-BASE-2', 'parametresAib/PAA-IFU-2', 'parametresAib/PAA-BAR-1', 'baremeAib/BAI01']));
+      expect(relais.keys, containsAll(['parametresAib/PAA-BASE-1', 'parametresAib/PAA-BASE-2', 'parametresAib/PAA-IFU-2', 'parametresAib/PAA-BAR-1', 'parametresAib/PAA-COMPTES-1', 'parametresAib/PAA-COMPTES-2', 'baremeAib/BAI01']));
       final mf = Magasin({'parametresAib': <M>[], 'baremeAib': <M>[], 'situationsAib': <M>[]});
       final appl = ApplicateurConfiguration(mf, (c) async => [for (final e in relais.entries) if (e.key.startsWith('$c/')) PieceSync(e.key.substring(c.length + 1), e.value)]);
-      expect(await appl.tirer(), 7);
+      expect(await appl.tirer(), 9);
       final a = cpaParametresALaDate(mm.collection('parametresAib').actives, DateTime(2026, 10, 30));
       final b = cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 30));
       expect([b.base, b.tauxRepli, b.versionBase, b.versionBranchement], [a.base, a.tauxRepli, a.versionBase, a.versionBranchement]);
       expect([b.base, b.tauxRepli], ['facture', 2]);
       expect(cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 1)).base, 'ht', reason: 'la version en vigueur à la date, sur le second poste aussi');
+      // LES COMPTES de l'AIB voyagent aussi (la rubrique `comptes`, famille R, la mère publie) : mêmes comptes à une date, sur les deux postes
+      for (final d in [DateTime(2026, 10, 30), DateTime(2026, 11, 15)]) {
+        final ca = cpaComptesALaDate(mm.collection('parametresAib').actives, d);
+        final cb = cpaComptesALaDate(mf.collection('parametresAib').actives, d);
+        expect([cb.subi, cb.retenu, cb.imputation, cb.fournisseur, cb.version, cb.aConfirmer], [ca.subi, ca.retenu, ca.imputation, ca.fournisseur, ca.version, ca.aConfirmer]);
+      }
+      final avantV2 = cpaComptesALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 30));
+      final apresV2 = cpaComptesALaDate(mf.collection('parametresAib').actives, DateTime(2026, 11, 15));
+      expect([avantV2.subi, avantV2.aConfirmer, apresV2.subi, apresV2.aConfirmer], ['4492', true, '4491', false],
+          reason: 'la graine reste « à confirmer » ; la version validée sur la mère lève le marquage à sa date, sur le fileul aussi');
       expect(mf.collection('audit').toutes, isEmpty, reason: 'la mère a déjà journalisé');
       // le fileul REFUSE d'écrire un paramètre (réglé sur la mère)
       appl.demarrer(intervalle: const Duration(hours: 1));
@@ -319,8 +330,9 @@ void main() {
 
     test('une version DÉJÀ DÉCIDÉE ne s\'écrase jamais : une fiche distante qui la contredit est ignorée, seul l\'archivage passe ; une version arrêtée du barème de même', () async {
       final decidee = version('PAA-BASE-2', 'base_retenue', 2, {'base': 'facture'}, effet: '2026-10-20');
+      final comptesDecides = version('PAA-COMPTES-2', 'comptes', 2, {'compteAibSubi': '4491', 'compteAibRetenu': '4478', 'compteImputation': '891', 'compteFournisseur': '401000'}, effet: '2026-11-01');
       final mf = Magasin({
-        'parametresAib': [decidee],
+        'parametresAib': [decidee, comptesDecides],
         'baremeAib': [
           {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_actif', 'taux': 1, 'dateEffet': '2026-12-01', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'},
           {'id': 'BAI02', 'statut': 'actif', 'situation': 'prestation_service', 'taux': 3, 'arrete': false, 'statutArret': 'non_arrete'},
@@ -332,7 +344,10 @@ void main() {
       final appl = ApplicateurConfiguration(
           mf,
           (c) async => [
-                if (c == 'parametresAib') PieceSync('PAA-BASE-2', distant['parametresAib']!),
+                if (c == 'parametresAib') ...[
+                  PieceSync('PAA-BASE-2', distant['parametresAib']!),
+                  PieceSync('PAA-COMPTES-2', {...comptesDecides, 'compteAibSubi': '4499'}),
+                ],
                 if (c == 'baremeAib') ...[
                   const PieceSync('BAI01', {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_actif', 'taux': 9, 'dateEffet': '2026-12-01', 'arrete': true}),
                   const PieceSync('BAI02', {'id': 'BAI02', 'statut': 'actif', 'situation': 'prestation_service', 'taux': 3, 'dateEffet': '2026-12-15', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'}),
@@ -340,6 +355,7 @@ void main() {
               ]);
       await appl.tirer();
       expect(mf.collection('parametresAib').parId('PAA-BASE-2')!['base'], 'facture', reason: 'la version décidée garde son contenu');
+      expect(mf.collection('parametresAib').parId('PAA-COMPTES-2')!['compteAibSubi'], '4491', reason: 'une version de comptes déjà décidée ne se réécrit pas : la règle de fusion ne l\'écrase pas');
       expect(mf.collection('baremeAib').parId('BAI01')!['taux'], 1, reason: 'une version arrêtée ne se réécrit pas');
       expect(mf.collection('baremeAib').parId('BAI02')!['arrete'], isTrue, reason: 'l\'arrêt d\'une version non arrêtée, décidé sur la mère, est repris');
       distant = {'parametresAib': {...decidee, 'statut': 'archive'}};

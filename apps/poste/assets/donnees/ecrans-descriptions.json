@@ -1411,7 +1411,7 @@
   },
   "cfg-validations-aib": {
    "titre": "Validations de l’AIB",
-   "description": "Trois formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur."
+   "description": "Quatre formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur, les comptes de l’AIB."
   }
  }
 }

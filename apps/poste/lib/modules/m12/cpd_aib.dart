@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/parametres_aib.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -24,7 +25,8 @@ import 'cpc_commun.dart';
 /// décision de Baguidi) ; les taux de 1 % et de 3 % figurent au barème mais NE SONT PAS ARRÊTÉS, marqués à valider, et ne s'appliquent à rien tant que la
 /// Direction ne les arrête pas.
 ///
-/// La retenue sur les factures fournisseurs se constate à l'écran « Factures fournisseurs » (M7) ; le registre ci-dessous la relit.
+/// La retenue sur les factures fournisseurs, comme l'AIB SUBI que le fournisseur a facturé, se constatent à l'écran « Factures fournisseurs » (M7) ; les registres
+/// ci-dessous les relisent, chacun avec son total, et l'imputation sur l'impôt sur les bénéfices (total subi + retenu de l'exercice) y est INDIQUÉE en lecture.
 class EcranAib extends StatelessWidget with EcranMaquette {
   const EcranAib({super.key});
 
@@ -36,7 +38,7 @@ class EcranAib extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'L’AIB est un acompte prélevé à la source : ce que la clinique RETIENT est une dette envers l’État (compte $cpdCompteAibRetenu), reversée le 10 du mois suivant ; ce qu’elle SUBIT sur ses propres factures est une créance (compte $cpdCompteAibSubi), imputée sur l’impôt sur les bénéfices (compte $cpdCompteAibImputation). Seule une version ARRÊTÉE par la Direction s’applique ; une version arrêtée ne se réécrit pas : une correction ajoute une version à une date d’effet postérieure.';
+      'L’AIB est un acompte prélevé à la source : ce que la clinique RETIENT est une dette envers l’État (compte d’AIB retenu), reversée le 10 du mois suivant ; ce qu’elle SUBIT sur ses propres factures est une créance (compte d’AIB subi), imputée sur l’impôt sur les bénéfices (compte d’imputation). Les comptes se lisent aux Paramètres (« Validations de l’AIB », onglet « Comptes de l’AIB »). Seule une version ARRÊTÉE par la Direction s’applique ; une version arrêtée ne se réécrit pas : une correction ajoute une version à une date d’effet postérieure.';
 
   static const sourceBareme =
       'Décision de la Direction de Baguidi : taux de 5 % généralisé à compter du 07/09/2026. Les taux de 1 % et de 3 % figurent aux pièces de la clinique d’origine, sans champ d’application arrêté.';
@@ -88,7 +90,7 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                 icone: LucideIcons.triangleAlert),
           ],
           const SizedBox(height: 16),
-          _RegistreRetenues(c.magasin.collection('facturesFournisseurs')),
+          _RegistresAib(c),
           const SizedBox(height: 16),
           CrudM14(
             collection: col,
@@ -447,45 +449,127 @@ class _Situations extends StatelessWidget {
   }
 }
 
-/// Le registre des retenues d'AIB : une ligne par facture fournisseur retenue, le total, et la date de reversement à l'État.
-class _RegistreRetenues extends StatelessWidget {
-  const _RegistreRetenues(this.factures);
-  final CollectionMagasin factures;
+/// Les registres de l'AIB : « Retenues » (dette envers l'État, à reverser) et « AIB subi » (créance sur l'État, facturée par les fournisseurs), un onglet chacun
+/// avec son total, puis l'IMPUTATION sur l'impôt sur les bénéfices INDIQUÉE en lecture (jamais écrite).
+class _RegistresAib extends StatelessWidget {
+  const _RegistresAib(this.c);
+  final ContexteEcran c;
 
   @override
   Widget build(BuildContext context) {
+    final factures = c.magasin.collection('facturesFournisseurs');
     return ListenableBuilder(
-      listenable: factures,
+      listenable: Listenable.merge([factures, c.magasin.collection(cpaCollection)]),
       builder: (context, _) {
-        final reg = cpdRegistreRetenuesAib(factures.actives);
+        final comptes = comptesAib(c.magasin, c.aujourdhui);
+        final imputation = cpdImputationAibExercice(factures.actives, c.aujourdhui.year, comptes);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          KpiGrilleSigh(kpis: [
-            KpiSigh(libelle: 'AIB retenu à reverser', valeur: money(reg.total), icone: LucideIcons.landmark, ton: reg.total > 0 ? TonSigh.attention : TonSigh.neutre, indice: 'compte $cpdCompteAibRetenu'),
-            KpiSigh(libelle: 'Factures retenues', valeur: nombre(reg.lignes.length), icone: LucideIcons.fileText),
+          OngletsSigh(onglets: [
+            OngletDef(id: 'retenues', libelle: 'Retenues (dette)', construire: (_) => _RegistreRetenues(factures, comptes)),
+            OngletDef(id: 'subi', libelle: 'AIB subi (créance)', construire: (_) => _RegistreSubi(factures, comptes)),
           ]),
-          const SizedBox(height: 16),
-          if (reg.lignes.isEmpty)
-            const NoteSigh('Aucune retenue constatée. Une retenue se constate depuis « Factures fournisseurs » (M7), au taux arrêté du barème à la date de la facture.',
-                ton: TonSigh.info, icone: LucideIcons.info)
-          else
-            TableauSigh(
-              titre: 'Registre des retenues d’AIB',
-              taillePage: 8,
-              nomExport: 'registre-retenues-aib',
-              lignes: reg.lignes,
-              colonnes: [
-                const ColonneTableau(cle: 'reference', libelle: 'Facture', sansCoupure: true),
-                const ColonneTableau(cle: 'fournisseur', libelle: 'Fournisseur'),
-                ColonneTableau(cle: 'date', libelle: 'Retenue le', sansCoupure: true, texte: (r) => dateDe(r['date'])),
-                const ColonneTableau(cle: 'situation', libelle: 'Situation', sansCoupure: true),
-                ColonneTableau(cle: 'base', libelle: 'Base', droite: true, texte: (r) => money(r['base'], avecDevise: false)),
-                ColonneTableau(cle: 'taux', libelle: 'Taux', droite: true, texte: (r) => '${r['taux']} %'),
-                ColonneTableau(cle: 'montant', libelle: 'Retenue', droite: true, texte: (r) => money(r['montant'], avecDevise: false)),
-                ColonneTableau(cle: 'reversement', libelle: 'À reverser le', sansCoupure: true, texte: (r) => dateDe(r['reversement'])),
-              ],
-            ),
+          const SizedBox(height: 12),
+          KeyedSubtree(
+              key: const Key('aib:imputation'),
+              child: NoteSigh(
+                  'Imputation sur l’impôt sur les bénéfices de ${imputation.annee} (indicative, aucune écriture d’imputation n’est passée) : AIB subi ${money(imputation.subi)} + AIB retenu ${money(imputation.retenu)} = ${money(imputation.total)}, compte d’imputation ${comptes.imputation}.${comptes.aConfirmer ? ' Comptes à confirmer par l’expert-comptable.' : ''}',
+                  ton: TonSigh.info,
+                  icone: LucideIcons.landmark)),
         ]);
       },
     );
+  }
+}
+
+/// Le registre des retenues d'AIB : une ligne par facture fournisseur retenue, le total, et la date de reversement à l'État.
+class _RegistreRetenues extends StatelessWidget {
+  const _RegistreRetenues(this.factures, this.comptes);
+  final CollectionMagasin factures;
+  final CpdComptesAib comptes;
+
+  @override
+  Widget build(BuildContext context) {
+    final reg = cpdRegistreRetenuesAib(factures.actives);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      KpiGrilleSigh(kpis: [
+        KpiSigh(libelle: 'AIB retenu à reverser', valeur: money(reg.total), icone: LucideIcons.landmark, ton: reg.total > 0 ? TonSigh.attention : TonSigh.neutre, indice: 'compte ${comptes.retenu}'),
+        KpiSigh(libelle: 'Factures retenues', valeur: nombre(reg.lignes.length), icone: LucideIcons.fileText),
+      ]),
+      const SizedBox(height: 16),
+      if (reg.lignes.isEmpty)
+        const NoteSigh('Aucune retenue constatée. Une retenue se constate depuis « Factures fournisseurs » (M7), au taux arrêté du barème à la date de la facture.',
+            ton: TonSigh.info, icone: LucideIcons.info)
+      else
+        TableauSigh(
+          titre: 'Registre des retenues d’AIB',
+          taillePage: 8,
+          nomExport: 'registre-retenues-aib',
+          lignes: reg.lignes,
+          colonnes: [
+            const ColonneTableau(cle: 'reference', libelle: 'Facture', sansCoupure: true),
+            const ColonneTableau(cle: 'fournisseur', libelle: 'Fournisseur'),
+            ColonneTableau(cle: 'date', libelle: 'Retenue le', sansCoupure: true, texte: (r) => dateDe(r['date'])),
+            const ColonneTableau(cle: 'situation', libelle: 'Situation', sansCoupure: true),
+            ColonneTableau(cle: 'base', libelle: 'Base', droite: true, texte: (r) => money(r['base'], avecDevise: false)),
+            ColonneTableau(cle: 'taux', libelle: 'Taux', droite: true, texte: (r) => '${r['taux']} %'),
+            ColonneTableau(cle: 'montant', libelle: 'Retenue', droite: true, texte: (r) => money(r['montant'], avecDevise: false)),
+            ColonneTableau(cle: 'reversement', libelle: 'À reverser le', sansCoupure: true, texte: (r) => dateDe(r['reversement'])),
+          ],
+        ),
+    ]);
+  }
+}
+
+/// Le registre de l'AIB SUBI : une ligne par facture fournisseur qui porte son AIB subi, le total, et le signal « taux non arrêté au barème » le cas échéant.
+class _RegistreSubi extends StatelessWidget {
+  const _RegistreSubi(this.factures, this.comptes);
+  final CollectionMagasin factures;
+  final CpdComptesAib comptes;
+
+  @override
+  Widget build(BuildContext context) {
+    final reg = cpdRegistreAibSubi(factures.actives);
+    final signales = reg.lignes.where((l) => l['signalTaux'] != null).length;
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      KpiGrilleSigh(kpis: [
+        KpiSigh(libelle: 'AIB subi (créance sur l’État)', valeur: money(reg.total), icone: LucideIcons.landmark, ton: reg.total > 0 ? TonSigh.info : TonSigh.neutre, indice: 'compte ${comptes.subi}'),
+        KpiSigh(libelle: 'Factures concernées', valeur: nombre(reg.lignes.length), icone: LucideIcons.fileText),
+        KpiSigh(
+            libelle: 'Taux non arrêté au barème',
+            valeur: nombre(signales),
+            icone: LucideIcons.triangleAlert,
+            ton: signales > 0 ? TonSigh.attention : TonSigh.neutre,
+            indice: 'signalé, jamais refusé'),
+      ]),
+      const SizedBox(height: 16),
+      if (reg.lignes.isEmpty)
+        const NoteSigh(
+            'Aucun AIB subi constaté. Quand un fournisseur facture un AIB, il se renseigne en modifiant la facture (« Factures fournisseurs », M7), puis « Constater l’AIB subi » pose la créance sur l’État en brouillon.',
+            ton: TonSigh.info,
+            icone: LucideIcons.info)
+      else
+        TableauSigh(
+          titre: 'Registre de l’AIB subi',
+          taillePage: 8,
+          nomExport: 'registre-aib-subi',
+          lignes: reg.lignes,
+          colonnes: [
+            const ColonneTableau(cle: 'reference', libelle: 'Facture', sansCoupure: true),
+            const ColonneTableau(cle: 'fournisseur', libelle: 'Fournisseur'),
+            ColonneTableau(cle: 'date', libelle: 'Constaté le', sansCoupure: true, texte: (r) => dateDe(r['date'])),
+            ColonneTableau(cle: 'base', libelle: 'Base', droite: true, texte: (r) => money(r['base'], avecDevise: false)),
+            ColonneTableau(cle: 'taux', libelle: 'Taux', droite: true, texte: (r) => '${r['taux']} %'),
+            ColonneTableau(cle: 'montant', libelle: 'AIB subi', droite: true, texte: (r) => money(r['montant'], avecDevise: false)),
+            ColonneTableau(cle: 'compte', libelle: 'Compte', sansCoupure: true, texte: (r) => '${r['compte'] ?? comptes.subi}'),
+            ColonneTableau(
+                cle: 'signalTaux',
+                libelle: 'Barème',
+                texte: (r) => r['signalTaux'] == null ? 'Arrêté' : 'Taux non arrêté au barème',
+                rendu: (_, r) => r['signalTaux'] == null
+                    ? const BadgeSigh('Arrêté', ton: TonSigh.succes, icone: LucideIcons.gavel)
+                    : const BadgeSigh('Taux non arrêté au barème', ton: TonSigh.attention, icone: LucideIcons.triangleAlert)),
+          ],
+        ),
+    ]);
   }
 }
