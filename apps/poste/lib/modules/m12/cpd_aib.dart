@@ -21,7 +21,7 @@ import 'cpc_commun.dart';
 /// L'écran dit CE QUI EST ARRÊTÉ ET CE QUI NE L'EST PAS : le taux de 5 % est arrêté (généralisé à compter du 07/09/2026, décision de Baguidi) ; les
 /// taux de 1 % et de 3 % figurent au barème mais NE SONT PAS ARRÊTÉS, marqués à valider, et ne s'appliquent à rien tant que la Direction ne les arrête pas.
 ///
-/// Hors périmètre de cet écran : la retenue sur les factures fournisseurs et les écritures qu'elle engendre (voir le « reste » du chantier).
+/// La retenue sur les factures fournisseurs se constate à l'écran « Factures fournisseurs » (M7) ; le registre ci-dessous la relit.
 class EcranAib extends StatelessWidget with EcranMaquette {
   const EcranAib({super.key});
 
@@ -74,6 +74,8 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                 ton: TonSigh.attention,
                 icone: LucideIcons.triangleAlert),
           ],
+          const SizedBox(height: 16),
+          _RegistreRetenues(c.magasin.collection('facturesFournisseurs')),
           const SizedBox(height: 16),
           CrudM14(
             collection: col,
@@ -340,5 +342,49 @@ class _EtatTauxALaDate extends State<_TauxALaDate> {
         ],
       ),
     ]);
+  }
+}
+
+
+/// Le registre des retenues d'AIB : une ligne par facture fournisseur retenue, le total, et la date de reversement à l'État.
+class _RegistreRetenues extends StatelessWidget {
+  const _RegistreRetenues(this.factures);
+  final CollectionMagasin factures;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: factures,
+      builder: (context, _) {
+        final reg = cpdRegistreRetenuesAib(factures.actives);
+        return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          KpiGrilleSigh(kpis: [
+            KpiSigh(libelle: 'AIB retenu à reverser', valeur: money(reg.total), icone: LucideIcons.landmark, ton: reg.total > 0 ? TonSigh.attention : TonSigh.neutre, indice: 'compte $cpdCompteAibRetenu'),
+            KpiSigh(libelle: 'Factures retenues', valeur: nombre(reg.lignes.length), icone: LucideIcons.fileText),
+          ]),
+          const SizedBox(height: 16),
+          if (reg.lignes.isEmpty)
+            const NoteSigh('Aucune retenue constatée. Une retenue se constate depuis « Factures fournisseurs » (M7), au taux arrêté du barème à la date de la facture.',
+                ton: TonSigh.info, icone: LucideIcons.info)
+          else
+            TableauSigh(
+              titre: 'Registre des retenues d’AIB',
+              taillePage: 8,
+              nomExport: 'registre-retenues-aib',
+              lignes: reg.lignes,
+              colonnes: [
+                const ColonneTableau(cle: 'reference', libelle: 'Facture', sansCoupure: true),
+                const ColonneTableau(cle: 'fournisseur', libelle: 'Fournisseur'),
+                ColonneTableau(cle: 'date', libelle: 'Retenue le', sansCoupure: true, texte: (r) => dateDe(r['date'])),
+                const ColonneTableau(cle: 'code', libelle: 'Catégorie', sansCoupure: true),
+                ColonneTableau(cle: 'base', libelle: 'Base', droite: true, texte: (r) => money(r['base'], avecDevise: false)),
+                ColonneTableau(cle: 'taux', libelle: 'Taux', droite: true, texte: (r) => '${r['taux']} %'),
+                ColonneTableau(cle: 'montant', libelle: 'Retenue', droite: true, texte: (r) => money(r['montant'], avecDevise: false)),
+                ColonneTableau(cle: 'reversement', libelle: 'À reverser le', sansCoupure: true, texte: (r) => dateDe(r['reversement'])),
+              ],
+            ),
+        ]);
+      },
+    );
   }
 }

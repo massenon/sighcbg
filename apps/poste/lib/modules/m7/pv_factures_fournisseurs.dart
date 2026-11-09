@@ -81,6 +81,11 @@ Widget detailFactureFournisseur(Fiche r) {
             : BadgeSigh(money(r['ecart']), ton: TonSigh.danger)
       ),
       ('Échéance', _date(r['echeance'])),
+      if (r['retenueAib'] is Map)
+        (
+          'Retenue AIB',
+          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, catégorie ${(r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}'
+        ),
     ]),
     const SizedBox(height: 16),
     if (anomalie)
@@ -239,6 +244,11 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                       texte: (r) => _m(r['ecart']),
                       rendu: (_, r) => _ecart(r)),
                   ColonneTableau(
+                      cle: 'retenueAib',
+                      libelle: 'Retenue AIB',
+                      droite: true,
+                      texte: (r) => r['retenueAib'] is Map ? _m((r['retenueAib'] as Map)['montant']) : '—'),
+                  ColonneTableau(
                       cle: 'echeance',
                       libelle: 'Échéance',
                       sansCoupure: true,
@@ -269,6 +279,11 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                             detailMessage: false,
                             identifiant: (f) =>
                                 '${f['reference'] ?? f['numero'] ?? f['code'] ?? f['id']}')),
+                  if (c.droit.editer && r['retenueAib'] is! Map)
+                    BoutonIcone(
+                        icone: LucideIcons.percent,
+                        libelle: 'Retenir l’AIB',
+                        onPressed: () => _retenirAib(ctx, c, r)),
                   if (c.droit.annuler)
                     BoutonIcone(
                         icone: LucideIcons.archive,
@@ -280,4 +295,106 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
       },
     );
   }
+}
+
+/// « Retenir l'AIB » : la retenue se CALCULE au barème daté (jamais saisie), se constate par une pièce plate en brouillon (RG-10), et la facture la PORTE.
+/// Refus nommés : aucun taux arrêté en vigueur, facture déjà retenue, exercice en clôture.
+void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
+  final refus = cpdControlerRetenueFacture(r);
+  if (refus != null) {
+    ToastsSigh.afficher(ctx, 'Retenue refusée.', type: TypeToast.erreur, detail: refus);
+    return;
+  }
+  final date = DateTime.tryParse('${r['date'] ?? ''}') ?? c.aujourdhui;
+  final bareme = c.magasin.collection('baremeAIB').actives;
+  final applicables = [
+    for (final b in cpdBaremeEnVigueur(bareme, date))
+      if (b.reponse.taux != null) b
+  ];
+  if (applicables.isEmpty) {
+    ToastsSigh.afficher(ctx, 'Retenue impossible.',
+        type: TypeToast.erreur,
+        detail:
+            'Aucun taux d’AIB arrêté n’est en vigueur à la date de la facture (${dateFR(date)}). La Direction arrête le barème dans Paramètres, « Acompte sur impôt (AIB) ».');
+    return;
+  }
+  final base = (r['montantFacture'] as num?) ?? 0;
+  final ctl = ControleurFormulaire([
+    ChampDef(
+        nom: 'code',
+        libelle: 'Catégorie de retenue',
+        type: TypeChamp.select,
+        requis: true,
+        options: [for (final b in applicables) OptionChamp(b.code, '${b.libelle} — ${b.reponse.taux} %')]),
+    const ChampDef(
+        nom: 'base',
+        libelle: 'Base de la retenue (FCFA)',
+        type: TypeChamp.nombre,
+        requis: true,
+        aide: 'Par défaut le montant facturé. Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
+  ], {'code': applicables.first.code, 'base': '${base.round()}'});
+  afficherModale<void>(ctx,
+      titre: 'Retenir l’AIB — ${r['reference']}',
+      sousTitre: '${r['fournisseurNom']} : ${money(base)} facturés le ${dateFR(date)}',
+      corps: FormulaireSigh(controleur: ctl),
+      pied: (fermer) => [
+            BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
+            BoutonSigh(
+                libelle: 'Constater la retenue',
+                icone: LucideIcons.check,
+                onPressed: () {
+                  final v = ctl.valider();
+                  if (v == null) {
+                    ToastsSigh.afficher(ctx, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
+                    return;
+                  }
+                  final CpdRetenueAib ret;
+                  final List<Map<String, Object?>> lignes;
+                  try {
+                    ret = cpdCalculerRetenueAib(bareme, '${v['code']}', num.tryParse('${v['base']}'.trim()) ?? 0, date);
+                    lignes = cpdEcrituresRetenueAib(
+                        retenue: ret,
+                        numero: 'AIB-${r['reference']}',
+                        date: iso(date),
+                        reference: '${r['reference']}',
+                        fournisseur: '${r['fournisseurNom']}',
+                        pieceId: '${r['id']}');
+                  } on RefusRetenueAib catch (e) {
+                    ToastsSigh.afficher(ctx, 'Retenue refusée.', type: TypeToast.erreur, detail: e.motif, duree: const Duration(seconds: 9));
+                    return;
+                  }
+                  final ecr = c.magasin.collection('ecritures');
+                  final ids = <Object?>[];
+                  final annulations = <VoidCallback>[];
+                  try {
+                    for (final l in lignes) {
+                      final x = ecr.inserer(l, prefixe: 'ECR');
+                      ids.add(x.fiche['id']);
+                      annulations.add(x.annuler);
+                    }
+                  } on EcritureRefusee catch (e) {
+                    for (final a in annulations) {
+                      a();
+                    }
+                    ToastsSigh.afficher(ctx, 'Écriture refusée.', type: TypeToast.erreur, detail: e.motif);
+                    return;
+                  }
+                  c.magasin.collection('facturesFournisseurs').mettreAJour(r['id'], {
+                    'retenueAib': {
+                      ...ret.versFiche(),
+                      'date': iso(date),
+                      'reversement': iso(cpdEcheanceReversementAib(date)),
+                      'ecritureIds': ids,
+                      'retenuPar': acteur(c).nom,
+                      'retenueLe': iso(c.aujourdhui),
+                    }
+                  });
+                  c.magasin.journaliser('Retenue d’AIB sur facture fournisseur', 'M7', 'FactureFournisseur', '${r['reference']}', null,
+                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'code': ret.code});
+                  fermer();
+                  ToastsSigh.afficher(ctx, 'Retenue de ${money(ret.montant)} constatée (brouillon).',
+                      type: TypeToast.succes,
+                      detail: '${ret.taux} % — à reverser à l’État le ${dateFR(cpdEcheanceReversementAib(date))} (compte $cpdCompteAibRetenu).');
+                }),
+          ]);
 }
