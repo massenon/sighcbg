@@ -119,6 +119,32 @@ void main() {
     });
   });
 
+  group('l\'éditeur de modèle : questions à plat et retour', () {
+    test('aller-retour sur chaque fiche de base : le modèle ne change pas', () {
+      for (final f in fiches) {
+        final m = f['modele'] as Map<String, Object?>;
+        final plat = specQuestionsPlates(m);
+        final retour = specModeleDepuisQuestions(plat, appareils: [for (final a in m['appareils'] as List) '$a'], antecedents: m['antecedents'] == true);
+        expect(retour['sections'], m['sections'], reason: '${f['code']}');
+        expect(retour['appareils'], m['appareils']);
+        expect(retour['antecedents'], m['antecedents']);
+      }
+    });
+    test('les questions consécutives de même section se regroupent, les champs vides ne s\'écrivent pas', () {
+      final m = specModeleDepuisQuestions([
+        {'code': 'a', 'libelle': 'A', 'type': 'texte', 'section': 'S1', 'options': <String>[], 'unite': ''},
+        {'code': 'b', 'libelle': 'B', 'type': 'nombre', 'section': 'S1', 'unite': 'kg', 'requis': false},
+        {'code': 'c', 'libelle': 'C', 'type': 'texte', 'section': ''},
+      ]);
+      final s = m['sections'] as List;
+      expect(s.length, 2);
+      expect((s[0] as Map)['titre'], 'S1');
+      expect(((s[0] as Map)['champs'] as List).first, {'code': 'a', 'libelle': 'A', 'type': 'texte'});
+      expect(((s[0] as Map)['champs'] as List)[1], {'code': 'b', 'libelle': 'B', 'type': 'nombre', 'unite': 'kg'});
+      expect((s[1] as Map)['titre'], 'Questions');
+    });
+  });
+
   group('l\'identité des écrans dynamiques', () {
     final codes = ['medecine-travail', 'cardiologie', 'a'];
     test('aller-retour, y compris pour un code à tirets', () {

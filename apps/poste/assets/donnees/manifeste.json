@@ -207,6 +207,46 @@
   },
   {
    "domaine": "Soins",
+   "code": "M2",
+   "label": "Spécialités",
+   "icone": "stethoscope",
+   "alias": false,
+   "secondaire": true,
+   "roles": [
+    "reception",
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ],
+   "ecrans": [
+    "m2-specialites"
+   ]
+  },
+  {
+   "domaine": "Soins",
+   "code": "M2",
+   "label": "Médecine du travail",
+   "icone": "briefcase",
+   "alias": false,
+   "secondaire": true,
+   "roles": [
+    "reception",
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ],
+   "ecrans": [
+    "m2-mdt-visites",
+    "m2-mdt-entreprises",
+    "m2-mdt-conventions"
+   ]
+  },
+  {
+   "domaine": "Soins",
    "code": "M3",
    "label": "Hospitalisation",
    "icone": "bed-double",
@@ -7361,6 +7401,84 @@
    "universel": false,
    "servant": null,
    "roles": "*"
+  },
+  {
+   "id": "m2-specialites",
+   "label": "Spécialités",
+   "icone": "stethoscope",
+   "module": "M2",
+   "moduleLabel": "Spécialités",
+   "domaine": "Soins",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "m2-mdt-visites",
+   "label": "Visites de médecine du travail",
+   "icone": "briefcase",
+   "module": "M2",
+   "moduleLabel": "Médecine du travail",
+   "domaine": "Soins",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "m2-mdt-entreprises",
+   "label": "Entreprises clientes et salariés",
+   "icone": "building-2",
+   "module": "M2",
+   "moduleLabel": "Médecine du travail",
+   "domaine": "Soins",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "reception",
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "m2-mdt-conventions",
+   "label": "Conventions de visites",
+   "icone": "file-check-2",
+   "module": "M2",
+   "moduleLabel": "Médecine du travail",
+   "domaine": "Soins",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "reception",
+    "medecin",
+    "infirmier",
+    "dm",
+    "admin",
+    "direction"
+   ]
   }
  ]
 }

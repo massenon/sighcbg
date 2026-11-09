@@ -1392,6 +1392,22 @@
   "rls-tableau": {
    "titre": "Tableau de bord du relais",
    "description": "La mère est-elle vivante, à jour, sauvegardée ? Volumes et alertes — sans aucun nom de patient."
+  },
+  "m2-specialites": {
+   "titre": "Spécialités",
+   "description": "Les spécialités de la clinique, une fiche chacune : modèle de consultation, praticiens, actes. Une fiche de plus, c’est une spécialité de plus au ruban."
+  },
+  "m2-mdt-visites": {
+   "titre": "Visites de médecine du travail",
+   "description": "Visites d’embauche, périodiques et de reprise ; avis d’aptitude et fiche d’aptitude, pièce certifiante tarifée par la caisse."
+  },
+  "m2-mdt-entreprises": {
+   "titre": "Entreprises clientes et salariés",
+   "description": "Les entreprises qui confient leurs salariés à la clinique, leur convention de visites, et l’échéance de chaque salarié."
+  },
+  "m2-mdt-conventions": {
+   "titre": "Conventions de visites",
+   "description": "Les conventions de visites médicales passées avec les entreprises clientes : période, périodicité, visites prévues."
   }
  }
 }

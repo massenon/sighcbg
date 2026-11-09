@@ -1,6 +1,6 @@
 # Générateur du jeu de démonstration Baguidi
 
-Décision J12 de la Direction (08/11/2026). Le jeu livré avec le poste (`assets/donnees/jeu/`, 154 fichiers JSON) n'est plus écrit à la main : il est
+Décision J12 de la Direction (08/11/2026). Le jeu livré avec le poste (`assets/donnees/jeu/`, 156 fichiers JSON) n'est plus écrit à la main : il est
 ENGENDRÉ, de façon déterministe, par ce générateur.
 
 ## Commande (depuis `apps/poste`)
@@ -11,7 +11,7 @@ flutter test tool/generer_jeu_baguidi.dart
 
 Elle tourne sous Flutter et non sous `dart run` : le magasin du poste importe `package:flutter` (donc `dart:ui`). Variable `JEU_SORTIE` pour écrire
 ailleurs que dans `assets/donnees/jeu`. Le test `test/generer_jeu_baguidi_test.dart` prouve le déterminisme (deux exécutions, mêmes octets), la
-conservation des 154 noms de fichier, l'absence de champ nul et que le jeu livré est à jour : après toute modification d'une étape, relancer la commande.
+conservation des 156 noms de fichier, l'absence de champ nul et que le jeu livré est à jour : après toute modification d'une étape, relancer la commande.
 
 ## Architecture
 
@@ -21,6 +21,8 @@ conservation des 154 noms de fichier, l'absence de champ nul et que le jeu livr�
   aucun champ nul, `[]` pour une collection vide, journal d'audit livré vide).
 - `jeu_baguidi/socle.dart` : référentiels (plan comptable, actes et tarifs, assureurs, entreprises, secteurs, postes, calendrier fiscal).
 - `jeu_baguidi/personnes.dart` : personnel, comptes, soignants, vacataires fictifs.
+- `jeu_baguidi/specialites.dart` : les quatorze fiches de `specialites` (données du domaine, `specFichesDeBase`), la fiche d'aptitude comme pièce TPC15, les conventions de
+  visites des entreprises fictives, et le champ `specialite` posé sur les consultations de démonstration qui en relèvent (aucune consultation créée).
 - `jeu_baguidi/module_clinique.dart`, `module_rh_paie.dart`, `module_stock_finance.dart` : un fichier par sous-lot, déjà branchés, vides.
   Chaque sous-lot ne modifie QUE son fichier (et peut en ajouter d'autres à côté). L'ordre d'exécution est celui des dépendances : la clinique produit
   les patients, le stock et la finance lisent tout ce qui précède.

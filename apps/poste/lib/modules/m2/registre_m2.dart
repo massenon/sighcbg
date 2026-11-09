@@ -16,6 +16,8 @@ import 'cs_fiche.dart';
 import 'cs_ordonnances.dart';
 import 'cs_pathologies.dart';
 import 'cs_prescriptions.dart';
+import 'sp_repertoire.dart';
+import 'sp_travail.dart';
 
 typedef ConstruireEcran = Widget Function(BuildContext contexte, ConfigPoste config);
 
@@ -49,4 +51,10 @@ final Map<String, ConstruireEcran> ecransM2 = {
   'm2-ordonnance-nouvelle': (c, cfg) => const EcranOrdonnanceNouvelle(),
   'm2-prescriptions': (c, cfg) => const EcranPrescriptions(),
   'm2-salle-soins': (c, cfg) => const EcranSalleSoins(),
+  // Les spécialités : le répertoire administrable, et les trois écrans propres de la médecine du travail. Les écrans de chaque spécialité (hub, consultation,
+  // agenda, statistiques) naissent des fiches : `sp_registre.dart` les résout, aucun n'est nommé ici.
+  'm2-specialites': (c, cfg) => const EcranSpecialites(),
+  'm2-mdt-visites': (c, cfg) => const EcranMdtVisites(),
+  'm2-mdt-entreprises': (c, cfg) => const EcranMdtEntreprises(),
+  'm2-mdt-conventions': (c, cfg) => const EcranMdtConventions(),
 };

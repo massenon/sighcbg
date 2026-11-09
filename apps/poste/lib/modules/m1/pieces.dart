@@ -15,12 +15,16 @@ String _t(Object? v, [String vide = '—']) => patVrai(v) ? '$v' : vide;
 /// maquette — le jeu du poste ne porte pas encore cette collection).
 List<PatTypePiece> typesPiece(Magasin m) {
   final l = m.collection('typesPiece').actives;
-  if (l.isEmpty) return patTypesPiece;
-  return [
-    for (final t in l)
-      PatTypePiece('${t['id']}', '${t['sigle']}', '${t['libelle']}', '${t['direction']}', t['tarifCode'] as String?,
-          t['collision'] as String?, (t['examens'] as List?)?.cast<String>())
-  ];
+  final base = l.isEmpty
+      ? patTypesPiece
+      : [
+          for (final t in l)
+            PatTypePiece('${t['id']}', '${t['sigle']}', '${t['libelle']}', '${t['direction']}', t['tarifCode'] as String?,
+                t['collision'] as String?, (t['examens'] as List?)?.cast<String>())
+        ];
+  // La fiche d'aptitude de la médecine du travail (TPC15) est une pièce certifiante comme les autres : un poste dont le jeu d'origine ne la porte pas la
+  // reçoit ici, sans quoi sa délivrance échouerait sur un type inconnu.
+  return base.any((t) => t.id == mdtTypePiece.id) ? base : [...base, mdtTypePiece];
 }
 
 Fiche? _tarif(Magasin m, String? code) =>
@@ -105,7 +109,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
 
   /// `transform` : la pièce reçoit son numéro, son patient (au besoin le dossier externe naît par la fabrique UNIQUE), son montant à la grille, et
   /// LA CAISSE EST SAISIE À LA DÉLIVRANCE — une pièce tarifée qui ne produit aucune facture compte dans les recettes une somme que personne n'a encaissée.
-  static Fiche _transformer(ContexteEcran c, Map<String, Object?> s, Fiche? existante) {
+  static Fiche transformerPiece(ContexteEcran c, Map<String, Object?> s, Fiche? existante) {
     if (existante != null) return s;
     final m = c.magasin;
     final t = typesPiece(m).firstWhere((x) => x.id == s['typeId']);
@@ -210,7 +214,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
                 champs: champs,
                 valeursInitiales: (cc) => {'dateDelivrance': iso(cc.aujourdhui), 'patientCode': ''},
                 refuser: _refuser,
-                transformer: _transformer,
+                transformer: transformerPiece,
                 etat: _imprimer,
                 titreDetail: (x) => '${x['libelle']}',
                 actionsSup: (ctx, r) => [

@@ -19,12 +19,14 @@ import 'jeu_baguidi/module_rh_paie.dart' as rh_paie;
 import 'jeu_baguidi/module_stock_finance.dart' as stock_finance;
 import 'jeu_baguidi/personnes.dart' as personnes;
 import 'jeu_baguidi/socle.dart' as socle;
+import 'jeu_baguidi/specialites.dart' as specialites;
 
 /// Les étapes, dans l'ordre. Une étape est une fonction `generer(Contexte)` ; elle lit ce que les précédentes ont écrit.
 final List<(String, void Function(Contexte))> etapes = [
   ('socle', socle.generer),
   ('personnes', personnes.generer),
   ('clinique', clinique.generer),
+  ('specialites', specialites.generer),
   ('rh_paie', rh_paie.generer),
   ('stock_finance', stock_finance.generer),
 ];

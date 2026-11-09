@@ -187,6 +187,27 @@ String? specRefusModele(Object? modele) {
   return null;
 }
 
+/// Les questions d'un modèle À PLAT (l'éditeur les liste dans l'ordre) : chacune porte le titre de sa section. Le contraire de [specModeleDepuisQuestions].
+List<FicheSp> specQuestionsPlates(Object? modele) => [
+      for (final s in _liste((modele as Map?)?['sections']))
+        for (final q in _liste(s['champs'])) {...q, 'section': '${s['titre']}'}
+    ];
+
+/// Un modèle depuis des questions à plat : les questions CONSÉCUTIVES de même section se regroupent (l'ordre saisi est l'ordre du formulaire) ; une
+/// question sans section tombe dans « Questions ». Les champs que l'éditeur laisse vides (options, unité, bornes) ne sont pas écrits.
+Map<String, Object?> specModeleDepuisQuestions(List<FicheSp> questions, {List<String> appareils = const [], bool antecedents = false, int version = 1}) {
+  final sections = <Map<String, Object?>>[];
+  for (final q in questions) {
+    final titre = _txt(q['section']).isEmpty ? 'Questions' : _txt(q['section']);
+    if (sections.isEmpty || sections.last['titre'] != titre) sections.add({'titre': titre, 'champs': <Map<String, Object?>>[]});
+    (sections.last['champs'] as List<Map<String, Object?>>).add({
+      for (final e in q.entries)
+        if (e.key != 'section' && e.value != null && e.value != '' && !(e.value is List && (e.value as List).isEmpty) && e.value != false) e.key: e.value
+    });
+  }
+  return {'version': version, 'sections': sections, 'appareils': appareils, 'antecedents': antecedents};
+}
+
 /// Ce que le formulaire a recueilli, rangé comme la consultation le garde.
 class SpecSaisie {
   const SpecSaisie({required this.reponses, required this.examensPhysiques, required this.antecedents, required this.diagnostic, required this.conduite});

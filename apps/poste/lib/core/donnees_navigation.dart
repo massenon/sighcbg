@@ -100,9 +100,63 @@ class DonneesNavigation {
       for (final f in m.collection('modulesActifs').toutes)
         if (appliquerPerimetreLivre || !perimetreLivre.contains('${f['id']}')) f
     ];
-    if ((referenceRbac == null && referenceModules == null) || (rbac.isEmpty && modules.isEmpty)) return this;
-    return avecMatrice(superposerDroits(matrice, manifeste,
-        rbac: rbac, modulesActifs: modules, referenceRbac: referenceRbac ?? const [], referenceModules: referenceModules ?? const []));
+    final base = ((referenceRbac == null && referenceModules == null) || (rbac.isEmpty && modules.isEmpty))
+        ? this
+        : avecMatrice(superposerDroits(matrice, manifeste,
+            rbac: rbac, modulesActifs: modules, referenceRbac: referenceRbac ?? const [], referenceModules: referenceModules ?? const []));
+    // LES SPÉCIALITÉS s'ajoutent APRÈS la superposition : leurs écrans copient les droits que la matrice EN FORCE donne à leur écran modèle, donc une
+    // décision saisie dans m14-roles ou cfg-modules les suit sans qu'on les nomme.
+    return base.avecSpecialites(m.collection('specialites').actives);
+  }
+
+  /// LES SPÉCIALITÉS (PRD P0-12) : une fiche de la collection `specialites` = une entrée du ruban (« Spécialités », rangée secondaire de M2, domaine Soins)
+  /// et trois écrans génériques (consultation, agenda et file, statistiques), SANS une ligne de code par spécialité. Les droits de chaque écran sont ceux de
+  /// son écran modèle ([specModelesDroits]) : un rôle qui n'a pas le module n'a pas la spécialité. Aucune fiche : la navigation est rendue telle quelle.
+  DonneesNavigation avecSpecialites(Iterable<Map<String, Object?>> fiches) {
+    final actives = [for (final f in fiches) if (f['statut'] != 'archive' && '${f['code'] ?? ''}'.isNotEmpty) f];
+    if (actives.isEmpty) return this;
+    final ecrans = <EcranNav>[];
+    final descriptions = {..._descriptions};
+    final modeles = <String, String>{};
+    for (final f in actives) {
+      final code = '${f['code']}';
+      final libelle = '${f['libelle'] ?? code}';
+      for (final v in SpecVue.values) {
+        final id = specIdEcran(code, v);
+        final modele = manifeste.ecran(specModelesDroits[v]!);
+        ecrans.add(EcranNav(
+            id: id,
+            label: v == SpecVue.hub ? libelle : '$libelle — ${v.libelle}',
+            icone: v == SpecVue.hub ? '${f['icone'] ?? 'stethoscope'}' : ['clipboard-list', 'calendar-days', 'chart-column'][v.index - 1],
+            module: specModule,
+            moduleLabel: specRangeeLibelle,
+            domaine: specDomaine,
+            hub: false,
+            standalone: false,
+            roles: modele?.roles));
+        modeles[id] = specModelesDroits[v]!;
+        descriptions[id] = (
+          titre: v == SpecVue.hub ? libelle : '$libelle — ${v.libelle}',
+          description: v == SpecVue.hub ? '${f['description'] ?? ''}' : '${v.libelle} de la spécialité ${libelle.toLowerCase()}.'
+        );
+      }
+    }
+    return DonneesNavigation(
+        manifeste: manifeste.avecEcrans(
+            ecrans: ecrans,
+            domaine: specDomaine,
+            code: specModule,
+            libelleRangee: specRangeeLibelle,
+            icone: 'stethoscope',
+            idsRangee: [for (final f in actives) specIdEcran('${f['code']}')]),
+        matrice: matrice.avecDroitsDerives(modeles),
+        parite: _parite,
+        referenceRbac: referenceRbac,
+        referenceModules: referenceModules,
+        perimetreLivre: perimetreLivre,
+        barre: barre,
+        modulesVoir: _modulesVoir,
+        descriptions: descriptions);
   }
 
   /// Tranche de portage (1 à 6) d'un écran, ou `null`.

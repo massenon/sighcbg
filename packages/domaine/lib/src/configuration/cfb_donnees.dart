@@ -252,6 +252,8 @@ const cfbLibellesCollections = <String, (String, String)>{
   'badges': ('M10', 'Badges du personnel'),
   'banques': ('M12', 'Comptes de trésorerie'),
   'baremeAIB': ('M12', 'Barème de l’AIB'),
+  'specialites': ('M2', 'Spécialités de la clinique'),
+  'conventionsVisites': ('M2', 'Conventions de visites de médecine du travail'),
   'baremeNS131': ('M10', 'Barème d’évaluation NS 131'),
   'besoins': ('M7', 'Bons de besoins'),
   'budgets': ('M12', 'Budgets'),

@@ -77,7 +77,7 @@ List<FicheSpec> specFichesDeBase() => [
           1,
           'medecine-travail',
           'Médecine du travail',
-          'hard-hat',
+          'briefcase',
           'Cœur de métier de la clinique : visites d’embauche, périodiques et de reprise, fiche d’aptitude, entreprises clientes et leurs salariés, conventions de visites.',
           _modele([
             _s('Poste de travail', [
@@ -105,7 +105,7 @@ List<FicheSpec> specFichesDeBase() => [
           2,
           'sante-publique',
           'Santé publique',
-          'shield-plus',
+          'shield-check',
           'Prévention et santé communautaire : vaccination, dépistage, éducation sanitaire, hygiène et nutrition.',
           _modele([
             _s('Action de santé publique', [
@@ -123,7 +123,7 @@ List<FicheSpec> specFichesDeBase() => [
           3,
           'gynecologie',
           'Gynécologie',
-          'baby',
+          'calendar-heart',
           'Santé de la femme : consultation gynécologique, contraception, suivi. La grossesse, l’accouchement et le planning familial se tiennent au module Maternité.',
           _modele([
             _s('Histoire gynécologique', [
@@ -200,7 +200,7 @@ List<FicheSpec> specFichesDeBase() => [
           7,
           'ophtalmologie',
           'Ophtalmologie',
-          'eye',
+          'scan-search',
           'Vision et segment antérieur : acuité visuelle, tension oculaire, fond d’œil.',
           _modele([
             _s('Examen de la vision', [
@@ -218,7 +218,7 @@ List<FicheSpec> specFichesDeBase() => [
           8,
           'orthophonie',
           'Orthophonie',
-          'message-circle',
+          'megaphone',
           'Langage, voix, parole et déglutition : bilan et séances de rééducation.',
           _modele([
             _s('Bilan et rééducation', [
@@ -307,7 +307,7 @@ List<FicheSpec> specFichesDeBase() => [
           13,
           'kinesitherapie',
           'Kinésithérapie',
-          'dumbbell',
+          'hand-heart',
           'Rééducation fonctionnelle : massage, mobilisation, renforcement, électrothérapie.',
           _modele([
             _s('Séance de rééducation', [

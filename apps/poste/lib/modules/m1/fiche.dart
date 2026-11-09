@@ -84,6 +84,10 @@ class _FichePatientState extends State<FichePatient> {
     final age = patAge(p, maintenant);
     final consultations = _sien(c, 'consultations').where((x) => x['type'] != 'Domicile').toList();
     final domicile = _sien(c, 'consultations').where((x) => x['type'] == 'Domicile').toList();
+    final specialisees = [
+      for (final x in consultations)
+        if (specDeLaConsultation(x) != null && x['statut'] == 'terminee') x
+    ];
     final admissions = _sien(c, 'admissions');
     final observations = _sien(c, 'observations');
     final idsAdm = admissions.map((a) => a['id']).toSet();
@@ -151,6 +155,22 @@ class _FichePatientState extends State<FichePatient> {
                 ColonneMini('Diagnostic', (x) => _t(x['diagnostic'], '')),
                 ColonneMini('Médecin', (x) => _t(x['medecin'], '')),
               ], _tri(consultations, 'date').take(15).toList())
+      ),
+      (
+        // Les consultations des spécialités (PRD P0-12) : celles que `specialite` désigne, plus les visites de médecine du travail d'avant la mécanique.
+        // Un rendez-vous planifié n'est pas une consultation : il n'y figure pas.
+        id: 'specialites',
+        label: 'Consultations spécialisées',
+        badge: specialisees.length,
+        rendu: () => specialisees.isEmpty
+            ? vide('Aucune consultation spécialisée enregistrée.', LucideIcons.stethoscope)
+            : mini([
+                ColonneMini('Date', (x) => dateFrM1(x['date'])),
+                ColonneMini('Spécialité', (x) => '${x['specialiteLibelle'] ?? (specDeLaConsultation(x) == specCodeMedecineTravail ? 'Médecine du travail' : specDeLaConsultation(x) ?? '')}'),
+                ColonneMini('Motif', (x) => _t(x['motif'], '')),
+                ColonneMini('Diagnostic', (x) => _t(x['diagnostic'], '')),
+                ColonneMini('Praticien', (x) => _t(x['medecin'], '')),
+              ], _tri(specialisees, 'date').take(15).toList())
       ),
       (
         id: 'antecedents',

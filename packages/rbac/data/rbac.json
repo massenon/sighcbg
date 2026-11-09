@@ -4601,6 +4601,26 @@
     1,
     1,
     1
+   ],
+   "m2-specialites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-visites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-conventions": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -5963,6 +5983,26 @@
     1,
     1,
     1
+   ],
+   "m2-specialites": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-visites": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-conventions": [
+    1,
+    0,
+    0
    ]
   },
   "dm": {
@@ -6660,6 +6700,26 @@
     1,
     1,
     0
+   ],
+   "m2-specialites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-visites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-conventions": [
+    1,
+    1,
+    1
    ]
   },
   "da": {
@@ -8414,6 +8474,26 @@
     1,
     1,
     0
+   ],
+   "m2-specialites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-visites": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    1
+   ],
+   "m2-mdt-conventions": [
+    1,
+    1,
+    1
    ]
   },
   "infirmier": {
@@ -8911,6 +8991,26 @@
     1,
     1,
     1
+   ],
+   "m2-specialites": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-visites": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-conventions": [
+    1,
+    1,
+    0
    ]
   },
   "pharmacien": {},
@@ -10608,6 +10708,16 @@
     1,
     0,
     0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-conventions": [
+    1,
+    1,
+    0
    ]
   },
   "agentadmin": {
@@ -11258,6 +11368,16 @@
     0
    ],
    "m1-certificats-externes": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-conventions": [
     1,
     0,
     0
@@ -11979,6 +12099,26 @@
     0
    ],
    "m1-certificats-externes": [
+    1,
+    1,
+    0
+   ],
+   "m2-specialites": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-visites": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    1,
+    0
+   ],
+   "m2-mdt-conventions": [
     1,
     1,
     0

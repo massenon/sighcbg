@@ -8,6 +8,7 @@ import '../core/config_poste.dart';
 import '../core/donnees_navigation.dart';
 import '../core/identite_poste.dart';
 import '../modules/registre.dart';
+import '../modules/m2/sp_registre.dart' show ecranSpecialitePour;
 import '../sync/etat_sync.dart';
 import 'barre_superieure.dart';
 import 'ecran_a_porter.dart';
@@ -137,7 +138,7 @@ class _CoquePosteState extends State<CoquePoste> {
     _nav = _calculerNav();
     final m = widget.magasin;
     if (m != null) {
-      _ecouteDroits = Listenable.merge([m.collection('rbac'), m.collection('modulesActifs')])..addListener(_surDroits);
+      _ecouteDroits = Listenable.merge([m.collection('rbac'), m.collection('modulesActifs'), m.collection('specialites')])..addListener(_surDroits);
     }
   }
 
@@ -709,7 +710,9 @@ class _CoquePosteState extends State<CoquePoste> {
     final hubDuModule = _nav.manifeste.ecran('hub-${e.module.toLowerCase()}');
     final fermeture = _fermeturePour(id);
     if (fermeture != null) return PageActiviteFermee(ecran: e, fermeture: fermeture, fil: fil);
-    final porte = widget.ecrans[id];
+    // Les écrans des SPÉCIALITÉS naissent de fiches (`specialites`) : le registre statique ne les connaît pas, leur résolveur lit le code dans l'identifiant.
+    final porte = widget.ecrans[id] ??
+        ecranSpecialitePour(id, [for (final f in (widget.magasin?.collection('specialites').actives ?? const <Map<String, Object?>>[])) '${f['code']}']);
     if (porte == null) {
       return EcranAPorter(ecran: e, donnees: _nav, fil: fil);
     }

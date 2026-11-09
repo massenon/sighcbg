@@ -6944,6 +6944,86 @@
    ],
    "scenarios": [],
    "statut": "porté"
+  },
+  {
+   "id": "m2-specialites",
+   "label": "Spécialités",
+   "module": "M2",
+   "domaine": "Soins",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "dm",
+    "medecin",
+    "infirmier",
+    "chirurgien"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "m2-mdt-visites",
+   "label": "Visites de médecine du travail",
+   "module": "M2",
+   "domaine": "Soins",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "dm",
+    "medecin",
+    "infirmier",
+    "chirurgien"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "m2-mdt-entreprises",
+   "label": "Entreprises clientes et salariés",
+   "module": "M2",
+   "domaine": "Soins",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "dm",
+    "medecin",
+    "infirmier",
+    "reception",
+    "echographiste",
+    "chirurgien"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "m2-mdt-conventions",
+   "label": "Conventions de visites",
+   "module": "M2",
+   "domaine": "Soins",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "dm",
+    "medecin",
+    "infirmier",
+    "reception",
+    "echographiste",
+    "chirurgien"
+   ],
+   "scenarios": [],
+   "statut": "porté"
   }
  ]
 }

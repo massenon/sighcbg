@@ -12,5 +12,6 @@
 {"id":"TPC11","sigle":"CMNCI","libelle":"Certificat médical de non contre-indication aux activités physiques et sportives","direction":"DM/DA","statut":"actif"},
 {"id":"TPC12","sigle":"CMVC","libelle":"Certificat médical de visite et de contre-visite","direction":"DG/DE","tarifCode":"CERT-VC","statut":"actif"},
 {"id":"TPC13","sigle":"CMR-H","libelle":"Certificat médical d’arrêt de travail et/ou d’hospitalisation","direction":"DG/DA","statut":"actif"},
-{"id":"TPC14","sigle":"SCAM","libelle":"Sortie contre avis médical","direction":"CN","statut":"actif"}
+{"id":"TPC14","sigle":"SCAM","libelle":"Sortie contre avis médical","direction":"CN","statut":"actif"},
+{"id":"TPC15","sigle":"FAP","libelle":"Fiche d’aptitude (médecine du travail)","direction":"DM/DA","tarifCode":"MT-FAP","statut":"actif"}
 ]

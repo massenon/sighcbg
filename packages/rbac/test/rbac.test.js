@@ -52,3 +52,13 @@ test('une page de saisie hérite des droits du registre qu\'elle alimente (serva
     }
   }
 });
+test('spécialités (P0-12) : le répertoire et les visites de médecine du travail sont cliniques — fermés à l\'accueil et au technicien d\'échographie', () => {
+  for (const r of ['reception', 'echographiste']) for (const e of ['m2-specialites', 'm2-mdt-visites']) assert.equal(droit(r, e), null, `${r} → ${e}`);
+  assert.deepEqual(droit('infirmier', 'm2-specialites'), [1, 0, 0], 'l\'infirmier lit le répertoire sans le modifier');
+  assert.deepEqual(droit('medecin', 'm2-mdt-visites'), [1, 1, 1]);
+});
+test('spécialités : les entreprises et conventions se lisent à l\'accueil, aucun rôle sans le module M2 n\'y entre', () => {
+  assert.ok(droit('reception', 'm2-mdt-entreprises') && droit('reception', 'm2-mdt-conventions'));
+  for (const r of ['caissier', 'comptable', 'stock', 'laborantin', 'rh', 'pharmacien', 'da'])
+    for (const e of ['m2-specialites', 'm2-mdt-visites', 'm2-mdt-entreprises', 'm2-mdt-conventions']) assert.equal(droit(r, e), null, `${r} → ${e}`);
+});
