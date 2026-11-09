@@ -141,7 +141,11 @@ class ConfigMere {
     this.cleStockage = '',
     this.droits = 'matrice',
     this.matriceChemin = '',
+    this.versionApplication = '0.1.0',
   });
+
+  /// Numéro de version de l'application, publié dans les indicateurs agrégés (forme imposée : `1.2.3` ou `1.2.3+4`).
+  final String versionApplication;
 
   /// Les droits de l'échange entre pairs : `matrice` (production : la matrice RBAC engendrée `rbac.json`) ou `banc` (la table des rôles du banc d'essai).
   final String droits;
@@ -594,6 +598,18 @@ class Mere {
         final m2 = '${maintenantMs()}';
         await base.poserMeta('resync', m2);
         return {'marque': m2};
+      case 'GET /admin/indicateurs-clinique':
+        adminOk(req);
+        return pont.indicateurs.etat();
+      case 'GET /admin/indicateurs-clinique/apercu':
+        adminOk(req);
+        return {'instantane': await pont.indicateurs.instantane()};
+      case 'POST /admin/indicateurs-clinique/reglages':
+        adminOk(req);
+        return pont.indicateurs.regler(b);
+      case 'POST /admin/indicateurs-clinique/publier':
+        adminOk(req);
+        return pont.indicateurs.publier();
       case 'GET /admin/pair/etat':
         adminOk(req);
         return pair.etat();

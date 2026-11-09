@@ -15,6 +15,7 @@ use App\Livewire\Panneau\Opacite;
 use App\Livewire\Panneau\Parametres;
 use App\Livewire\Panneau\Sauvegarde;
 use App\Livewire\Panneau\Superadmin;
+use App\Livewire\Panneau\TableauClinique;
 use App\Livewire\Panneau\Tableau;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::prefix('panneau')->group(function () {
     // Les douze écrans du module RLS (maquette), chacun une page Livewire. Tout est derrière l'authentification.
     Route::middleware('auth')->group(function () {
         Route::get('/', Tableau::class)->name('panneau.tableau');
+        // Lecture seule : indicateurs agrégés non nominatifs publiés par la mère (ADR-0007). Aucune route d'écriture n'existe pour cette page.
+        Route::get('/clinique', TableauClinique::class)->name('panneau.clinique');
         Route::get('/appareils', Appareils::class)->name('panneau.appareils');
         Route::get('/boites', Boites::class)->name('panneau.boites');
         Route::get('/codes', Codes::class)->name('panneau.codes');

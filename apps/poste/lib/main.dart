@@ -132,7 +132,8 @@ Future<void> main() async {
         dbChemin: '$dossierDonnees/mere.db',
         admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
         cleStockage: cleSqlite,
-        dossierSauvegardes: '$dossierDonnees/sauvegardes')),
+        dossierSauvegardes: '$dossierDonnees/sauvegardes',
+        versionApplication: const String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0'))),
     relaisPour: (relais, secret) => RelaisMereHttp(
         base: Uri.parse(relais), secretMere: secret, client: http.Client()),
   );

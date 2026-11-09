@@ -133,6 +133,36 @@ class MrbResultatReinit {
   int get totalBrouillons => brouillons.values.fold(0, (a, n) => a + n);
 }
 
+/// Les réglages et le dernier envoi des indicateurs agrégés non nominatifs (ADR-0007) tels que le service de la mère les annonce.
+class MrbIndicateursClinique {
+  const MrbIndicateursClinique({
+    required this.publier,
+    required this.intervalleS,
+    required this.joursPeremption,
+    required this.relaisConfigure,
+    this.defautIntervalleS = 900,
+    this.defautJoursPeremption = 90,
+    this.dernier,
+    this.envoyeLe,
+    this.derniereTentative,
+    this.erreur,
+  });
+
+  /// L'interrupteur : FERMÉ par défaut, rien ne part tant que la Direction ne l'a pas ouvert.
+  final bool publier;
+  final int intervalleS;
+  final int joursPeremption;
+  final int defautIntervalleS;
+  final int defautJoursPeremption;
+  final bool relaisConfigure;
+
+  /// Le contenu EXACT du dernier instantané réellement envoyé ; `null` : aucun n'est jamais parti.
+  final Map<String, Object?>? dernier;
+  final DateTime? envoyeLe;
+  final DateTime? derniereTentative;
+  final String? erreur;
+}
+
 abstract class MrbSource {
   const MrbSource();
 
@@ -170,6 +200,19 @@ abstract class MrbSource {
 
   /// Dernier battement réussi vers le relais. `null` : le moteur ne l'annonce pas (il le garde dans sa base).
   Future<DateTime?> dernierBattement() async => null;
+
+  /// Réglages et dernier instantané des indicateurs agrégés. `null` : le service ne propose pas cette publication.
+  Future<MrbIndicateursClinique?> indicateursClinique() async => null;
+
+  /// Ce que la mère enverrait MAINTENANT (calculé, rien n'est envoyé). `null` : non disponible.
+  Future<Map<String, Object?>?> apercuIndicateursClinique() async => null;
+
+  Future<void> reglerIndicateursClinique({bool? publier, int? intervalleS, int? joursPeremption}) async =>
+      throw MrbIndisponible('Le service de la mère ne propose pas la publication des indicateurs agrégés.');
+
+  /// Publie tout de suite (interrupteur ouvert seulement) ; rend la raison d'un non-envoi, `null` si l'instantané est parti.
+  Future<String?> publierIndicateursClinique() async =>
+      throw MrbIndisponible('Le service de la mère ne propose pas la publication des indicateurs agrégés.');
 
   Future<void> verifierDerniereSauvegarde() async =>
       throw MrbIndisponible('La vérification de restauration (test à blanc) n’est pas proposée par le service de la mère : '
@@ -257,6 +300,51 @@ class MrbSourceClient extends MrbSource {
   Future<int?> patientsActifs() async {
     final j = await _get('/admin/compte?collection=patients');
     return j['n'] is num ? _entier(j['n']) : null;
+  }
+
+  @override
+  Future<MrbIndicateursClinique?> indicateursClinique() async {
+    final j = await _get('/admin/indicateurs-clinique');
+    final r = j['reglages'];
+    if (r is! Map || r['publier'] is! bool) {
+      throw ErreurMere(502, 'reponse_inattendue', 'Le service de la mère a répondu sans réglages de publication : réponse ignorée.');
+    }
+    final d = (r['defauts'] as Map?) ?? const {};
+    final dernier = j['dernier'] is Map ? (j['dernier'] as Map).cast<String, Object?>() : null;
+    DateTime? ms(Object? v) => v is num ? DateTime.fromMillisecondsSinceEpoch(v.toInt()) : null;
+    return MrbIndicateursClinique(
+      publier: r['publier'] as bool,
+      intervalleS: _entier(r['intervalle_s']),
+      joursPeremption: _entier(r['jours_peremption']),
+      defautIntervalleS: d['intervalle_s'] is num ? _entier(d['intervalle_s']) : 900,
+      defautJoursPeremption: d['jours_peremption'] is num ? _entier(d['jours_peremption']) : 90,
+      relaisConfigure: j['relais_configure'] == true,
+      dernier: dernier == null || dernier['instantane'] is! Map ? null : (dernier['instantane'] as Map).cast<String, Object?>(),
+      envoyeLe: dernier == null ? null : ms(dernier['envoye_le']),
+      derniereTentative: ms(j['derniere_tentative_ms']),
+      erreur: j['erreur'] as String?,
+    );
+  }
+
+  @override
+  Future<Map<String, Object?>?> apercuIndicateursClinique() async {
+    final j = await _get('/admin/indicateurs-clinique/apercu');
+    return j['instantane'] is Map ? (j['instantane'] as Map).cast<String, Object?>() : null;
+  }
+
+  @override
+  Future<void> reglerIndicateursClinique({bool? publier, int? intervalleS, int? joursPeremption}) async {
+    await client.brut('POST', '/admin/indicateurs-clinique/reglages', {
+      if (publier != null) 'publier': publier,
+      if (intervalleS != null) 'intervalle_s': intervalleS,
+      if (joursPeremption != null) 'jours_peremption': joursPeremption,
+    });
+  }
+
+  @override
+  Future<String?> publierIndicateursClinique() async {
+    final j = await client.brut('POST', '/admin/indicateurs-clinique/publier');
+    return j['publie'] == true ? null : '${j['raison'] ?? 'inconnue'}';
   }
 
   @override
