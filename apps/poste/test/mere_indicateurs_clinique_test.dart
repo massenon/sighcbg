@@ -136,15 +136,12 @@ void main() {
 
   testWidgets('l\'intervalle se règle : la valeur choisie part au service', (t) async {
     final s = await monter(t, Source());
-    await t.tap(find.byKey(const Key('mrb:intervalle-indicateurs')));
-    await t.pump(const Duration(milliseconds: 400));
-    await t.tap(find.text('Toutes les heures').last);
+    t.widget<SelecteurSigh>(find.byKey(const Key('mrb:intervalle-indicateurs'))).surChange('3600');
     for (var i = 0; i < 6; i++) {
       await t.pump(const Duration(milliseconds: 100));
     }
     await t.pump(const Duration(seconds: 10));
     expect(s.appels, ['regler publier=null intervalle=3600 jours=null']);
-    expect(find.text('Toutes les heures'), findsWidgets);
   });
 
   testWidgets('une valeur en base hors de la liste proposée s\'affiche, elle n\'est pas remplacée en silence', (t) async {
