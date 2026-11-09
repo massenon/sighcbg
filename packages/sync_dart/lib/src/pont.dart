@@ -17,6 +17,7 @@ import 'commun.dart';
 import 'depot.dart';
 import 'mere.dart';
 import 'copie_mere.dart';
+import 'indicateurs_clinique.dart';
 
 /// Chiffrement des enveloppes : même format que le banc Node (`crypto.js`) — nonce de 12 octets, `ct = chiffré ‖ tag`,
 /// métadonnées authentifiées (AAD = `id|appareil|dir|n`). Une enveloppe déplacée, rejouée sous un autre rang ou altérée
@@ -62,6 +63,7 @@ class Pont {
   final List<Map<String, Object?>> alertes = [];
   final HttpClient _http = HttpClient()..connectionTimeout = const Duration(milliseconds: 1500);
   final List<Timer> _minuteries = [];
+  late final PublicationIndicateurs indicateurs = PublicationIndicateurs(mere);
 
   String get cleBase64 => base64.encode(_cleOctets);
   bool get actif => mere.cfg.relais.isNotEmpty;
@@ -81,11 +83,14 @@ class Pont {
     mere.evenementAsync('alerte', 'relais', 'Alerte ${a['type']} (appareil ${a['appareil'] ?? '—'})');
   }
 
-  Future<Map<String, Object?>> rel(String methode, String chemin, [Map<String, Object?>? corps]) async {
+  /// `signer` : joint l'en-tête `x-signature` (HMAC-SHA256 du corps exact, clé = secret de la mère) ; réservé aux dépôts en clair (indicateurs agrégés).
+  Future<Map<String, Object?>> rel(String methode, String chemin, [Map<String, Object?>? corps, bool signer = false]) async {
     final req = await _http.openUrl(methode, Uri.parse('${mere.cfg.relais}$chemin')).timeout(const Duration(milliseconds: 1500));
     req.headers.contentType = ContentType.json;
     req.headers.set('x-mere', mere.cfg.secretRelais);
-    if (corps != null) req.add(utf8.encode(enJson(corps)));
+    final octets = corps == null ? null : utf8.encode(enJson(corps));
+    if (signer && octets != null) req.headers.set('x-signature', 'sha256=${PublicationIndicateurs.signer(mere.cfg.secretRelais, octets)}');
+    if (octets != null) req.add(octets);
     final rep = await req.close().timeout(const Duration(milliseconds: 1500));
     final texte = await utf8.decoder.bind(rep).join().timeout(const Duration(milliseconds: 1500));
     final j = texte.isEmpty ? <String, Object?>{} : (jsonDecode(texte) as Map).cast<String, Object?>();
@@ -362,6 +367,8 @@ class Pont {
     tour(() => mere.pair.tour(), 250);
     final copie = CopieMere(mere);
     tour(copie.tour, 500);
+    // Indicateurs agrégés non nominatifs (ADR-0007) : interrupteur FERMÉ par défaut ; le tour ne fait rien tant que la Direction ne l'a pas ouvert.
+    tour(indicateurs.tour, 5000);
     tour(() async {
       await mere.verrou.executer(() => base.poserMeta('relais_dernier_ok', _dernierOk));
       await rel('POST', '/mere/battement', {});

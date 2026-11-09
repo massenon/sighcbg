@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'mrb_commun.dart';
+import 'mrb_indicateurs_clinique.dart';
 import 'mrb_source.dart';
 
 /// `mere-indicateurs` : ce que la mère publie au relais pour la supervision à distance (M-14). Des compteurs, jamais un nom de patient.
@@ -102,6 +103,8 @@ class _EtatIndicateurs extends MrbEtatEcran<EcranIndicateursPublies, _Publicatio
               style: TextStyle(fontSize: 12, color: JetonsShell.slate500)),
         ]),
       ),
+      const SizedBox(height: 16),
+      const CarteIndicateursClinique(),
     ]);
   }
 }
