@@ -116,7 +116,7 @@ void main() {
     expect(find.widgetWithText(BoutonSigh, 'Suppression physique des jeux de test'), findsNothing);
     expect(find.widgetWithText(BoutonSigh, 'Régénérer le jeu de démonstration complet'), findsNothing);
     expect(find.text('Réinitialisation verrouillée — activer l’autorisation ci-dessus pour la rendre possible.'), findsOneWidget);
-    expect(find.textContaining('produits (184)'), findsOneWidget, reason: 'ce qui serait conservé est montré avec ses effectifs');
+    expect(find.textContaining('Produits et médicaments (184)'), findsOneWidget, reason: 'ce qui serait conservé est montré avec ses effectifs');
   });
 
   casM14('le bouton de maintenance, tant que les jeux de test sont verrouillés, REFUSE en le disant — rien n’est effacé', (t) async {
