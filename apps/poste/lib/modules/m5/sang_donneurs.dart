@@ -53,7 +53,7 @@ class EcranDonneurs extends StatelessWidget with EcranMaquette {
                   'La ${IdentiteClinique.nom} remercie chaleureusement ce donneur pour son engagement au service de la collectivité.'),
             ],
             signatures: const [
-              Signature('Le Laborantin', nom: 'KELE Adjapilo Gedur'),
+              Signature('Le Laborantin', qualite: PaiQualite.laborantin),
               Signature('Le Directeur Médical'),
             ],
             reference:

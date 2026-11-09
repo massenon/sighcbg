@@ -59,7 +59,8 @@ void main() {
               saisie: saisie,
               livraisons: livraisons,
               produits: produits,
-              references: refs);
+              references: refs,
+              nomSession: 'METIAVI Zobo');
           fail('le PV aurait dû être refusé');
         } on RefusPv catch (r) {
           expect(r.motif, messages.isEmpty ? isNull : messages.first['message'],
@@ -72,7 +73,9 @@ void main() {
           saisie: saisie,
           livraisons: livraisons,
           produits: produits,
-          references: refs);
+          references: refs,
+          // La maquette écrit toujours ce magasinier (E18) ; le moteur reçoit désormais le nom de la session, jamais un défaut écrit en dur.
+          nomSession: 'METIAVI Zobo');
       memes(pv, s['pv'], 'pv');
     });
 

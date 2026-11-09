@@ -216,6 +216,6 @@ class EcranMissions extends StatelessWidget with EcranMaquette {
             {'a': 'Date, cachet et signature', 'b': 'Date, cachet et signature'}
           ])),
         ],
-        signatures: [Signature('L’agent', nom: '${m['agent']}'), Signature('La Directrice Administrative', nom: rhaVrai(m['valideePar']) ? '${m['valideePar']}' : 'TACHEDI Arialu')]);
+        signatures: [Signature('L’agent', nom: '${m['agent']}'), Signature('La Directrice Administrative', nom: rhaVrai(m['valideePar']) ? '${m['valideePar']}' : null, qualite: PaiQualite.daf)]);
   }
 }

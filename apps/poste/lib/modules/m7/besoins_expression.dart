@@ -56,9 +56,9 @@ PieceA4 pieceBon(Fiche b,
     signatures: [
       Signature('Le Demandeur', nom: '${b['demandeur'] ?? ''}'),
       const Signature('Le Gestionnaire de Stock',
-          nom: 'METIAVI Zobo', mention: 'Contrôle de disponibilité'),
+          qualite: PaiQualite.gestionnaireStock, mention: 'Contrôle de disponibilité'),
       Signature('La Directrice Administrative',
-          nom: directriceAdministrative, mention: 'Validation (RG-04)'),
+          qualite: PaiQualite.daf, mention: 'Validation (RG-04)'),
     ],
   );
 }

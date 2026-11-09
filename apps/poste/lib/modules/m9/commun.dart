@@ -109,7 +109,7 @@ PieceA4 pieceM9(ContexteEcran c,
         filtres: filtres,
         signatures: signatures);
 
-const signDaf = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
+const signDaf = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 
 /// Pastille de ton selon l'état d'une carte.
 Widget badgeValidite(String texte, bool valide) =>

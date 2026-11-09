@@ -74,7 +74,9 @@ Future<void> afficherApercu(BuildContext context, PieceA4 piece0) {
   final magasin = ContexteEcran.maybeOf(context)?.magasin;
   // L'EN-TÊTE LÉGAL EST CELUI DE LA DATE DE LA PIÈCE (`P.etat({date})`) : une pièce qui ne fixe pas son identité (état du jour) reçoit la version en force à la
   // date d'édition, lue au magasin ; une facture, un avoir, un reçu l'ont fixée à leur date.
-  final piece = piece0.identite != null || magasin == null ? piece0 : piece0.avecIdentite(identiteImprimeeDe(magasin, piece0.edite));
+  final identifiee = piece0.identite != null || magasin == null ? piece0 : piece0.avecIdentite(identiteImprimeeDe(magasin, piece0.edite));
+  // LES SIGNATAIRES SE LISENT AU PERSONNEL (par qualité), jamais dans le code : sans titulaire, la ligne de signature reste sans nom.
+  final piece = magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives);
   return afficherModale<void>(
       context,
       titre: piece.titre,

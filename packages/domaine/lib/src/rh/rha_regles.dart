@@ -253,6 +253,30 @@ RhaFiche rhaAgentEnregistrable(RhaFiche v) {
   return v;
 }
 
+/// LES VALEURS D'ATTENTE : une valeur que la clinique n'a pas encore reçue (salaire, date d'embauche, tarif d'un vacataire) est posée à titre PROVISOIRE et
+/// MARQUÉE (`salaireProvisoire`, `dateEmbaucheProvisoire`, `tarifAFournir`). Le marquage reste VISIBLE tant que la valeur n'est pas arrêtée ; il TOMBE quand la
+/// valeur est modifiée (la saisie de la valeur remise par la Direction l'arrête). Paires (champ, drapeau) par registre.
+const List<(String, String)> rhaAttentePersonnel = [('salaireBase', 'salaireProvisoire'), ('dateEmbauche', 'dateEmbaucheProvisoire')];
+const List<(String, String)> rhaAttentePrestataire = [('tarifActe', 'tarifAFournir')];
+
+bool _egalAttente(Object? a, Object? b) {
+  final x = num.tryParse('${a ?? ''}'.trim()), y = num.tryParse('${b ?? ''}'.trim());
+  if (x != null && y != null) return x == y;
+  String jour(Object? v) => '${v ?? ''}'.trim().length > 10 ? '${v}'.trim().substring(0, 10) : '${v ?? ''}'.trim();
+  return jour(a) == jour(b);
+}
+
+/// Les champs de [f] dont le marquage « provisoire » est posé : la valeur est d'attente, elle n'est pas arrêtée.
+List<String> rhaValeursEnAttente(RhaFiche f, List<(String, String)> paires) => [for (final (champ, drapeau) in paires) if (f[drapeau] == true) champ];
+
+/// Ce qu'une modification ARRÊTE : pour chaque champ marqué provisoire sur la fiche [avant] dont la valeur CHANGE dans [apres], le drapeau passe à `false`.
+/// Rend le patch à fusionner (vide si rien n'est arrêté). Un champ resté tel quel garde son marquage : modifier le téléphone n'arrête pas le salaire.
+Map<String, Object?> rhaValeursArretees(RhaFiche? avant, RhaFiche apres, List<(String, String)> paires) => {
+      if (avant != null)
+        for (final (champ, drapeau) in paires)
+          if (avant[drapeau] == true && !_egalAttente(avant[champ], apres[champ])) drapeau: false
+    };
+
 /// Le portrait de l'agent : les deux premières initiales (`C.initials`).
 String rhaInitiales(Object? s) => '$s'
     .trim()
@@ -558,7 +582,7 @@ RhaFiche rhaMissionEnregistrable(RhaFiche v, RhaFiche? agent, {required Iterable
 
 /// Ce que la validation écrit : état « Validée », la validatrice et la date (la maquette ne connaît que la Directrice Administrative).
 /// [par] / [parId] (A1, E625 levé) : l'AGENT qui valide, nom et identifiant de compte. Sans eux (vecteurs de la maquette, qui écrit « TACHEDI Arialu » quelle
-/// que soit la personne connectée), la valeur d'origine est conservée.
+/// que soit la personne connectée), la valeur d'origine est conservée : le poste passe TOUJOURS l'agent, cette valeur ne sert qu'aux vecteurs.
 RhaFiche rhaCorrectifValidationMission(DateTime auj, {String? par, String? parId}) =>
     {'statutMission': 'validee', 'valideePar': par ?? 'TACHEDI Arialu', if (parId != null) 'valideeParId': parId, 'valideeLe': iso(auj)};
 

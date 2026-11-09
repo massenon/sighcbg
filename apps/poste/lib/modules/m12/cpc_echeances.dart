@@ -11,6 +11,7 @@ import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../cfg/cfb_configuration_fiscale.dart';
+import 'cpc_calendrier_echeances.dart';
 import 'cpc_commun.dart';
 
 /// `m12-echeances` — « Échéances fiscales & paiements » : le SUIVI des obligations du calendrier fiscal (ce qui est dû, ce qui approche, ce qui est
@@ -316,7 +317,22 @@ class _EtatEcheances extends State<EcranEcheances> {
           const SizedBox(height: 16),
           for (final a in cpcBarreEcheances(rows)) _alerteCarte(context, c, a),
           const SizedBox(height: 8),
-          TableauSigh(
+          OngletsSigh(onglets: [
+            OngletDef(id: 'liste', libelle: 'Liste', compte: rows.length, construire: (_) => _tableau(c, rows, familles)),
+            // La VUE CALENDRIER : l'exercice en douze mois, chaque échéance cliquable vers sa fiche de suivi, l'état dit par une icône ET un libellé.
+            OngletDef(
+                id: 'calendrier',
+                libelle: 'Calendrier',
+                construire: (ctx) => calendrierEcheances(ctx, lignes: rows, annee: c.aujourdhui.year, ouvrir: (e) => _fiche(ctx, c, e))),
+          ]),
+        ]);
+      },
+    );
+  }
+
+  Widget _tableau(ContexteEcran c, List<Fiche> rows, List<String> familles) {
+    return Builder(builder: (context) {
+      return TableauSigh(
             titre: 'Échéances de l’exercice ${c.aujourdhui.year}',
             lignes: rows,
             nomExport: 'echeances-fiscales',
@@ -421,9 +437,7 @@ class _EtatEcheances extends State<EcranEcheances> {
                       BoutonIcone(icone: LucideIcons.check, libelle: 'Valider le paiement effectué', onPressed: () => _valider(context, c, e)),
                     BoutonIcone(icone: LucideIcons.bell, libelle: 'Rappeler cette échéance', onPressed: () => _rappeler(context, e)),
                   ],
-          ),
-        ]);
-      },
-    );
+      );
+    });
   }
 }

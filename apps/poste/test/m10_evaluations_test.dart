@@ -135,7 +135,11 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la note'));
       expect(find.text('Note de service'), findsOneWidget);
       expect(find.text('N/Réf. : NS 131/07/DM/DA/CBG/2026'), findsOneWidget);
-      expect(find.text('BICHIASI C. Sichovian Y., Directeur Médical'), findsOneWidget);
+      // Le signataire de la note est LU au personnel (le poste de directeur médical), jamais écrit dans le code.
+      expect(find.text('Le Directeur Médical'), findsOneWidget);
+      final dm = paiSignataire(magasinRhb().collection('personnel').actives, PaiQualite.directeurMedical);
+      expect(dm, isNotNull);
+      expect(find.text(dm!), findsWidgets);
       expect(find.textContaining('Ampliation : Intéressés 41 — Archive 01'), findsOneWidget);
     });
 
@@ -508,7 +512,7 @@ void main() {
       await ouvrirM14(t, magasinRhb(), 'm10-primes', horloge: auj16);
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la note'));
       expect(find.text('Note de service — primes diverses'), findsOneWidget);
-      expect(find.textContaining('Reçu par : KALOU A. B. Avolutu — reçu le 13/07/2026'), findsOneWidget);
+      expect(find.textContaining('Reçu par : l’agent destinataire — reçu le 13/07/2026'), findsOneWidget);
       expect(find.textContaining('* Pour les primes qui varient en fonction du nombre'), findsOneWidget);
     });
 

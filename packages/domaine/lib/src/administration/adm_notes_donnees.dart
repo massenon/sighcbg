@@ -41,7 +41,7 @@ const AdmNoteService admNs131 = AdmNoteService(
   dateSignature: '2026-07-13',
   dateEffet: '2026-07-13',
   statut: 'ACTIVE',
-  signataire: 'BICHIASI C. Sichovian Y., Directeur Médical',
+  signataire: 'Directeur Médical',
   source: 'DOC — Note de service NS 131/07/DM/DA/CBG/2026',
   mention: 'Abroge toute disposition antérieure contraire.',
 );
@@ -53,7 +53,7 @@ const AdmNoteService admNs132 = AdmNoteService(
   dateSignature: '2026-07-13',
   dateEffet: '2026-07-13',
   statut: 'ACTIVE',
-  signataire: 'BICHIASI Cezoune Sichovian, Directeur Médical',
+  signataire: 'Directeur Médical',
   source: 'DOC — Note de service NS 132/07/DM/DA/CBG/2026',
   mention: 'Abroge toute disposition antérieure contraire.',
 );

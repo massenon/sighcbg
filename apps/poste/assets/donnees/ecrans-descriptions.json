@@ -581,6 +581,10 @@
    "titre": "Dépenses journalières",
    "description": "Saisie au fil de l’eau des charges de trésorerie directes, avec justificatif, écriture automatique et historique."
   },
+  "m12-aib": {
+   "titre": "Acompte sur impôt (AIB)",
+   "description": "Barème de l’AIB retenu à la source, versionné par date d’effet : ce qui est arrêté, ce qui ne l’est pas."
+  },
   "m12-echeances": {
    "titre": "Échéances fiscales & paiements",
    "description": "Suivi des obligations fiscales et sociales : ce qui est dû, ce qui approche, ce qui est réglé."

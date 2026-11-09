@@ -72,7 +72,7 @@ void main() {
         expect(find.textContaining('${(x as List)[1]}'), findsWidgets, reason: '${x[0]}');
       }
       expect(find.textContaining('L’Agent administratif'), findsWidgets);
-      expect(find.textContaining('TACHEDI Arialu'), findsWidgets);
+      expect(find.text('La Directrice Administrative'), findsWidgets, reason: 'la signataire se lit au personnel : sans titulaire, la ligne reste sans nom');
     });
 
     cas('l’écran est en lecture : aucune commande d’écriture', (t) async {
@@ -301,7 +301,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Éditer le bordereau d’archivage'));
       expect(find.text('Bordereau d’archivage documentaire'), findsWidgets);
       expect(find.textContaining('Situation au 16/08/2026'), findsWidgets);
-      expect(find.textContaining('TACHEDI Arialu'), findsWidgets);
+      expect(find.text('La Directrice Administrative'), findsWidgets, reason: 'la signataire se lit au personnel : sans titulaire, la ligne reste sans nom');
       expect(find.byIcon(LucideIcons.printer), findsWidgets);
     });
 

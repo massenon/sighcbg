@@ -69,7 +69,7 @@ PieceA4 pieceAvoir(Fiche a,
     signatures: const [
       Signature('Le Comptable'),
       Signature('La Directrice de l’Administration et des Finances',
-          nom: 'TACHEDI Arialu'),
+          qualite: PaiQualite.daf),
     ],
   );
 }

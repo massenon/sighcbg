@@ -63,7 +63,8 @@ void main() {
       expect(CfaNs145.objet, n['objet']);
       expect(CfaNs145.dateSignature, n['dateSignature']);
       expect(CfaNs145.dateEffet, n['dateEffet']);
-      expect(CfaNs145.signataire, n['signataire']);
+      // Le signataire de la note est une QUALITÉ (son nom se lit au personnel) : le vecteur de la maquette porte « NOM Prénom, qualité ».
+      expect('${n['signataire']}', endsWith(CfaNs145.signataire));
       expect(CfaNs145.source, n['source']);
     });
     test('familles tarifaires et types de variable', () {

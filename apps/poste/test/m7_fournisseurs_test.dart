@@ -251,8 +251,9 @@ void main() {
         expect(p.titre, a['titre']);
         expect(p.sousTitre, a['sousTitre']);
         expect([for (final c in p.cartouche) [c.$1, c.$2]], a['cartouche']);
-        expect([for (final s in p.signatures) {'role': s.role, 'nom': s.nom}],
-            a['signatures']);
+        // La maquette écrit le nom du gestionnaire en dur ; le poste porte sa QUALITÉ, le nom se lit au personnel à l'aperçu.
+        expect([for (final s in p.signatures) {'role': s.role, 'nom': s.nom ?? (s.qualite == null ? null : '<qualité ${s.qualite!.name}>')}],
+            [for (final x in (a['signatures'] as List).cast<Map>()) {'role': x['role'], 'nom': x['nom'] == 'METIAVI Zobo' ? '<qualité gestionnaireStock>' : x['nom']}]);
         final contenu = liste(a['contenu']);
         if (contenu.isNotEmpty) {
           final tab = (contenu.single['table']! as Map).cast<String, Object?>();

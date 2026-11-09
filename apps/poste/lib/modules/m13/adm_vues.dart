@@ -13,7 +13,7 @@ import 'adm_commun.dart';
 /// Les quatre écrans de M13 construits à la main (`U.dataTable` + `K.creer` + `K.actionsLigne` dans la maquette) : événements & notifications, plan annuel
 /// de travail, notes de service, répertoire des ambulances.
 
-const _signDa = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
+const _signDa = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 
 const TextStyle _petit = TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12);
 
@@ -400,7 +400,7 @@ class EcranNotesService extends StatelessWidget with EcranMaquette {
                   ('Objet', n.objet),
                   ('Date de signature', admDateFR(n.dateSignature)),
                   ('Date d’effet', admDateFR(n.dateEffet)),
-                  ('Signataire', n.signataire),
+                  ('Signataire', paiSignataireLibelle(c.magasin.collection('personnel').actives, PaiQualite.directeurMedical, n.signataire)),
                   ('Statut', BadgeSigh(n.statut, ton: TonSigh.succes)),
                   ('Mention', n.mention),
                   ('Provenance', n.source),

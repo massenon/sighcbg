@@ -85,10 +85,10 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
               ], lignes: perimes)),
             ],
             signatures: const [
-              Signature('Le Pharmacien', nom: pharmacien),
-              Signature('Le Gestionnaire de Stock', nom: gestionnaireStock),
+              Signature('Le Pharmacien', qualite: PaiQualite.pharmacien),
+              Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
               Signature('La Directrice Administrative',
-                  nom: directriceAdministrativeStock),
+                  qualite: PaiQualite.daf),
             ],
             reference:
                 PieceA4.reference_(auj, ImpressionPoste.prochainNumero()),
@@ -124,8 +124,8 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
                   : 'Ce lot doit être servi selon le principe FEFO (premier périmé, premier sorti).'),
             ],
             signatures: const [
-              Signature('Le Pharmacien', nom: pharmacien),
-              Signature('Le Gestionnaire de Stock', nom: gestionnaireStock),
+              Signature('Le Pharmacien', qualite: PaiQualite.pharmacien),
+              Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
             ],
             reference:
                 PieceA4.reference_(auj, ImpressionPoste.prochainNumero()),

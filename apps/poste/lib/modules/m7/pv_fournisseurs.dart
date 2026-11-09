@@ -93,7 +93,7 @@ PieceA4 pieceFournisseur(Fiche f, List<Fiche> commandes,
             italique: true),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo')
+      Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock)
     ],
   );
 }

@@ -1131,6 +1131,10 @@
         "href": "pages/m12-baseline-2025.php"
        },
        {
+        "label": "Acompte sur impôt (AIB)",
+        "href": "pages/m12-aib.php"
+       },
+       {
         "label": "Échéances fiscales & paiements",
         "href": "pages/m12-echeances.php"
        },
@@ -2016,7 +2020,7 @@
     ]
    }
   ],
-  "pied": "321 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
+  "pied": "322 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
   "retour": "Retour à l’application",
   "homeAdmin": "dash-admin"
  },
@@ -2028,7 +2032,7 @@
    },
    {
     "label": "Écrans disponibles",
-    "valeur": "321"
+    "valeur": "322"
    },
    {
     "label": "Règles de gestion appliquées",
@@ -2349,7 +2353,7 @@
    "Modules fonctionnels",
    "33",
    "Écrans disponibles",
-   "321",
+   "322",
    "Règles de gestion appliquées",
    "14",
    "Profils d’utilisateur",

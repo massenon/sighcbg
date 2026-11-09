@@ -3360,6 +3360,24 @@
    "statut": "porté"
   },
   {
+   "id": "m12-aib",
+   "label": "Acompte sur impôt (AIB)",
+   "module": "M12",
+   "domaine": "Financier",
+   "tranche": 5,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "da",
+    "comptable",
+    "aide_comptable"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "m12-echeances",
    "label": "Échéances fiscales & paiements",
    "module": "M12",

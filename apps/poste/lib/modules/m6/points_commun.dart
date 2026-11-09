@@ -140,7 +140,7 @@ PieceA4 piecePoint(BuildContext ctx, EtatPoint e,
     ],
     signatures: const [
       Signature('Le Gestionnaire de Stock'),
-      Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'),
+      Signature('La Directrice Administrative', qualite: PaiQualite.daf),
     ],
   );
 }

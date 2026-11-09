@@ -308,7 +308,7 @@ class _EcranRecettesState extends State<EcranRecettes> {
           ],
           signatures: const [
             Signature('L’agent de caisse'),
-            Signature('La Directrice Administrative', nom: 'TACHEDI Arialu')
+            Signature('La Directrice Administrative', qualite: PaiQualite.daf)
           ],
         ));
   }

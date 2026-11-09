@@ -11,10 +11,8 @@ import '../../shell/contexte_ecran.dart';
 /// réactifs. Les RÈGLES (références, plages par lot, provenances, seuils, bon de demande) sont dans `packages/domaine/lib/src/labo/cat_regles.dart`,
 /// rejouées sur les vecteurs de la maquette ; ces fichiers ne font que les mettre en page.
 
-/// Le Laborantin chef et la Directrice Administrative signent les états du catalogue et du bon de réactifs, comme dans `m5-laboratoire.js`.
-const laborantinChef = 'KELE Adjapilo Gedur';
-const directriceAdministrativeLabo = 'TACHEDI Arialu';
-const gestionnaireStockLabo = 'METIAVI Zobo';
+/// Le Laborantin chef, le gestionnaire de stock et la Directrice Administrative signent les états du catalogue et du bon de réactifs : leur NOM se lit au
+/// personnel par qualité (`Signature.qualite`), jamais dans le code. Le Directeur Médical n'a pas de titulaire désigné à ces états.
 const String? directeurMedicalLabo = null;
 
 /// Source du paramétrage (`L.source`), citée au pied des écrans qui en tirent leurs valeurs.

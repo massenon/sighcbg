@@ -25,12 +25,6 @@ const conclusionsPv = [
 const messageReservesExigees =
     'Une conclusion avec réserves ou non conforme EXIGE ses réserves écrites.';
 
-/// La maquette lit `sess.nomComplet`, qui n'existe pas dans la session (écart E18) : le magasinier du PV est TOUJOURS ce défaut.
-const magasinierParDefaut = 'METIAVI Zobo';
-
-/// Signataire écrit en dur sur la pièce imprimée (la DAF).
-const dafSignataire = 'TACHEDI Arialu';
-
 /// Un refus du PV. [motif] est le message à afficher ; `null` signifie « formulaire en erreur » (champ obligatoire vide) : les erreurs sont
 /// alors portées par les champs eux-mêmes, aucun message global n'est émis.
 class RefusPv implements Exception {
@@ -156,9 +150,9 @@ FichePv etablirPv({
     if (nature == natureReactifs) 'chaineFroid': saisie['chaineFroid'] == true,
     'conclusion': conclusion,
     'reserves': reserves,
-    'magasinier': (nomSession == null || nomSession.isEmpty)
-        ? magasinierParDefaut
-        : nomSession,
+    // Le magasinier est l'agent de la session ; sans nom de session, la ligne reste vide (aucun nom n'est écrit dans le code : la pièce imprime alors
+    // une ligne de signature sans nom). La maquette écrivait ici un nom en dur (écart E18 : elle lisait `sess.nomComplet`, qui n'existe pas).
+    'magasinier': (nomSession == null || nomSession.isEmpty) ? '' : nomSession,
     'representantFournisseur': saisie['representantFournisseur'],
   };
 }

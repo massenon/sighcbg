@@ -556,10 +556,13 @@ void main() {
       for (final c in (obj(d['ecran'])['cartes'] as List)) {
         expect(find.text('$c'), findsWidgets, reason: 'carte $c');
       }
+      final dm = paiSignataireLibelle(m.collection('personnel').actives, PaiQualite.directeurMedical, 'Directeur Médical');
       for (final l in (obj((obj(d['ecran'])['tableaux'] as List).first)['lignes'] as List).cast<List>()) {
-        for (final cel in l) {
+        for (final cel in l.take(l.length - 1)) {
           expect(find.textContaining('$cel'), findsWidgets, reason: 'règle : $cel');
         }
+        // La dernière colonne est le signataire : la maquette l'écrivait en dur, le poste le LIT au personnel.
+        expect(find.textContaining(dm), findsWidgets, reason: 'signataire : $dm');
       }
       // le classement par fonction : ordre de la maquette
       final texte = (d['cartes'] as List)[1] as String;

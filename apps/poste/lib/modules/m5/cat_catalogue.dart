@@ -59,8 +59,8 @@ class EcranCatalogueAnalyses extends StatelessWidget with EcranMaquette {
               ], lignes: rows)),
             ],
             signatures: const [
-              Signature('Le Laborantin chef', nom: laborantinChef),
-              Signature('La Directrice Administrative', nom: directriceAdministrativeLabo),
+              Signature('Le Laborantin chef', qualite: PaiQualite.laborantin),
+              Signature('La Directrice Administrative', qualite: PaiQualite.daf),
             ]));
   }
 

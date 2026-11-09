@@ -1,10 +1,20 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+/// Une ligne de signature d'une pièce. Le NOM n'est jamais écrit dans le code : une signature qui porte une [qualite] (`PaiQualite`) et pas de nom reçoit,
+/// à l'aperçu et au PDF (`afficherApercu`), le nom de l'agent qui porte cette qualité au dossier du personnel ; sans titulaire, la pièce imprime une
+/// ligne de signature sans nom, que l'on signe à la main.
 class Signature {
-  const Signature(this.role, {this.nom, this.mention = 'Signature'});
+  const Signature(this.role, {this.nom, this.mention = 'Signature', this.qualite});
   final String role;
   final String? nom;
   final String mention;
+  final PaiQualite? qualite;
+
+  /// La même signature, avec le nom lu au personnel.
+  Signature avecNom(String? n) => Signature(role, nom: n, mention: mention, qualite: qualite);
+
+  /// Reste-t-il à lire le nom de cette signature au personnel ?
+  bool get aResoudre => qualite != null && (nom == null || nom!.isEmpty);
 }
 
 /// Pièce A4 (`P.etat`) : en-tête légal UNIQUE (jamais passé par l'appelant), titre, filtres en force, contenu tabulaire dont le total est
@@ -65,6 +75,23 @@ class PieceA4 {
       lieuDate: lieuDate,
       filigrane: filigrane,
       identite: i);
+
+  /// La même pièce, avec ses signatures lues au personnel (voir [Signature.qualite]) : le nom d'un signataire vient du dossier du personnel, jamais du code.
+  PieceA4 avecSignatures(Iterable<Map<String, Object?>> personnel) => !signatures.any((s) => s.aResoudre)
+      ? this
+      : PieceA4(
+          titre: titre,
+          reference: reference,
+          utilisateur: utilisateur,
+          edite: edite,
+          sousTitre: sousTitre,
+          blocs: blocs,
+          cartouche: cartouche,
+          filtres: filtres,
+          signatures: [for (final s in signatures) s.aResoudre ? s.avecNom(paiSignataire(personnel, s.qualite!)) : s],
+          lieuDate: lieuDate,
+          filigrane: filigrane,
+          identite: identite);
 
   /// L'identité effectivement imprimée : celle fixée, sinon la semence.
   IdentiteImprimee get identiteImprimee => identite ?? IdentiteImprimee.semence;

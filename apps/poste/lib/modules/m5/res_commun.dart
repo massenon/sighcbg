@@ -444,7 +444,7 @@ Future<void> imprimerResultat(BuildContext ctx, Fiche r) {
         signatures: [
           Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}'),
           const Signature('Le Biologiste responsable',
-              nom: 'KELE Adjapilo Gedur'),
+              qualite: PaiQualite.laborantin),
         ],
       ));
 }

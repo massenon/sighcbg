@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show PaiQualite;
 
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
@@ -46,4 +47,4 @@ Widget bandeauLectureSeule(ContexteEcran c) => (!c.droit.editer && c.droit.voir)
     : const SizedBox.shrink();
 
 /// La signature « Directrice de l'Administration et des Finances » des feuillets de la liasse (la maquette l'écrit en dur).
-const signDafFinances = Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu');
+const signDafFinances = Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf);

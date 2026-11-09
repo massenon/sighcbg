@@ -89,7 +89,7 @@ class EcranDashboardRh extends StatelessWidget with EcranMaquette {
                   ColonneMini('Signataire', (n) => '${n['signataire']}'),
                 ], lignes: [
                   for (final n in [admNs131, admNs132])
-                    {'reference': n.reference, 'objet': n.objet, 'version': n.version, 'dateEffet': n.dateEffet, 'statut': n.statut, 'signataire': n.signataire}
+                    {'reference': n.reference, 'objet': n.objet, 'version': n.version, 'dateEffet': n.dateEffet, 'statut': n.statut, 'signataire': paiSignataireLibelle(c.magasin.collection('personnel').actives, PaiQualite.directeurMedical, n.signataire)}
                 ])),
           ]);
         });

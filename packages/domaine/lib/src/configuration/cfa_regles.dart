@@ -49,7 +49,8 @@ class CfaNs145 {
   static const objet = 'Répartition des secteurs de la clinique et désignation des responsables';
   static const dateSignature = '2026-08-06';
   static const dateEffet = '2026-08-07';
-  static const signataire = 'TACHEDI Arialu épse BICHIASI, Directrice Administrative';
+  /// La QUALITÉ du signataire : son nom se lit au dossier du personnel (`paiSignataire`), jamais dans le code.
+  static const signataire = 'Directrice Administrative';
   static const source = 'DOC — Note de service NS 145/08/DA/CBG/2026';
 }
 

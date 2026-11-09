@@ -276,7 +276,7 @@ class _GrilleObjectifReel extends StatelessWidget {
                 }
             ])),
           ],
-          signatures: const [Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu'), Signature('La Direction')],
+          signatures: const [Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf), Signature('La Direction')],
         ));
   }
 
