@@ -117,7 +117,7 @@ class EcranVisitesPatients extends StatelessWidget with EcranMaquette {
                       lignes: trierPar(rows, (r) => r['date'], descendant: true),
                       prefixe: 'VIS',
                       nomExport: 'visitesHospi',
-                      messageVide: 'Aucun visite enregistré.',
+                      messageVide: 'Aucune visite enregistrée.',
                       libelleRecherche: 'Rechercher un visite…',
                       taillePage: 15,
                       triInitial: 'date',

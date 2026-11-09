@@ -305,10 +305,10 @@ class _Corps extends StatelessWidget {
       nomExport: 'consultations',
       triInitial: 'date',
       sensInitial: 'desc',
-      libelleRecherche: 'Rechercher un consultation…',
+      libelleRecherche: rechercherEntite('consultation'),
       messageVide: archive
           ? 'Aucun enregistrement archivé.'
-          : 'Aucun consultation enregistré.',
+          : aucuneEntiteEnregistree('consultation'),
       indiceVide: archive
           ? null
           : 'Utiliser le bouton « Nouveau » pour créer le premier enregistrement.',

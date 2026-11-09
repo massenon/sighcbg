@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../donnees/magasin.dart';
+import 'accord.dart';
 import '../shell/contexte_ecran.dart';
 import 'bouton.dart';
 import 'carte.dart';
@@ -151,10 +152,10 @@ class _CrudSighState extends State<CrudSigh> {
       nomExport: widget.collection.nom,
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,
-      libelleRecherche: 'Rechercher un ${widget.entite}…',
+      libelleRecherche: rechercherEntite(widget.entite),
       messageVide: archive
           ? 'Aucun enregistrement archivé.'
-          : 'Aucun ${widget.entite} enregistré.',
+          : aucuneEntiteEnregistree(widget.entite),
       indiceVide: archive
           ? null
           : 'Utiliser le bouton « Nouveau » pour créer le premier enregistrement.',

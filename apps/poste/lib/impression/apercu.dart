@@ -85,9 +85,13 @@ Future<void> afficherApercu(BuildContext context, PieceA4 piece0) {
       corps: Container(
         color: const Color(0xFFE2E8F0),
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Center(child: FeuilleA4(piece: piece))),
+        // `Center` dans un défilement horizontal ne centre rien (largeur non bornée) : on impose la largeur disponible comme minimum.
+        child: LayoutBuilder(
+            builder: (context, c) => SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: c.maxWidth),
+                    child: Center(child: FeuilleA4(piece: piece))))),
       ),
       pied: (fermer) => [
         BoutonSigh(
@@ -133,10 +137,13 @@ Future<void> afficherApercuTicket(
       corps: Container(
         color: const Color(0xFFE2E8F0),
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Center(
-                child: FeuilleTicket(entree: entree, reference: reference, identite: identite))),
+        child: LayoutBuilder(
+            builder: (context, c) => SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: c.maxWidth),
+                    child: Center(
+                        child: FeuilleTicket(entree: entree, reference: reference, identite: identite))))),
       ),
       pied: (fermer) => [
         BoutonSigh(

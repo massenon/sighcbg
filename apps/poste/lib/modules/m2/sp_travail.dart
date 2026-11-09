@@ -190,6 +190,9 @@ ConsultationEnregistree enregistrerVisiteTravail(ContexteEcran c, Fiche spec, Ma
 // m2-mdt-visites
 // =============================================================================================================================================
 
+/// Le CODE d'une nature de visite, y compris pour une fiche qui porterait le libellé accentué (« périodique ») au lieu du code.
+String? _codeNature(Object? v) => mdtNature(v == 'périodique' ? 'periodique' : v)?.code;
+
 /// `m2-mdt-visites` — « Visites de médecine du travail » : embauche, périodique, reprise, et la fiche d'aptitude. Le formulaire est celui du MODÈLE de la
 /// fiche « Médecine du travail » (poste, risques, avis d'aptitude, examen par appareil) précédé de la nature, du salarié et de l'entreprise.
 class EcranMdtVisites extends StatelessWidget with EcranMaquette {
@@ -216,7 +219,7 @@ class EcranMdtVisites extends StatelessWidget with EcranMaquette {
           final rows = trierPar<Fiche>(visitesTravail(m), (x) => x['date'], descendant: true);
           final annee = '${c.aujourdhui.year}';
           final deLAnnee = rows.where((x) => '${x['date']}'.startsWith(annee)).toList();
-          int n(String nature) => deLAnnee.where((x) => x['natureVisite'] == nature).length;
+          int n(String nature) => deLAnnee.where((x) => _codeNature(x['natureVisite']) == nature).length;
           final apt = rows.where((x) => x['aptitude'] == 'Apte').length;
           final sans = rows.where((x) => !specVrai(x['ficheAptitude'])).length;
           return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -246,7 +249,7 @@ class EcranMdtVisites extends StatelessWidget with EcranMaquette {
               triInitial: 'date',
               sensInitial: 'desc',
               filtres: [
-                FiltreTableau(nom: 'nature', libelle: 'Nature', options: [for (final x in mdtNatures) OptionChamp(x.code, x.libelle)], correspond: (r, v) => r['natureVisite'] == v),
+                FiltreTableau(nom: 'nature', libelle: 'Nature', options: [for (final x in mdtNatures) OptionChamp(x.code, x.libelle)], correspond: (r, v) => _codeNature(r['natureVisite']) == v),
                 FiltreTableau(nom: 'aptitude', libelle: 'Avis', options: [for (final a in mdtAptitudes) OptionChamp(a)], correspond: (r, v) => r['aptitude'] == v),
               ],
               actions: [

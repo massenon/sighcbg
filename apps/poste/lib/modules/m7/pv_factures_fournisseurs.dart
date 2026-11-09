@@ -354,11 +354,11 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                           OptionChamp('${f['code']}', '${f['nom']}')
                       ]),
                 ],
+                colonnesMasquees: const ['montantLivraison'],
                 colonnes: [
                   ColonneTableau(
                       cle: 'reference',
                       libelle: 'N° interne',
-                      sansCoupure: true,
                       texte: (r) => '${r['reference'] ?? ''}',
                       rendu: (_, r) => Text('${r['reference'] ?? ''}',
                           style: const TextStyle(
@@ -368,8 +368,7 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                               color: JetonsShell.slate800))),
                   const ColonneTableau(
                       cle: 'numeroFournisseur',
-                      libelle: 'N° fournisseur',
-                      sansCoupure: true),
+                      libelle: 'N° fournisseur',),
                   ColonneTableau(
                       cle: 'date',
                       libelle: 'Date',
@@ -380,7 +379,6 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                   ColonneTableau(
                       cle: 'blRef',
                       libelle: 'BL rattaché',
-                      sansCoupure: true,
                       texte: (r) => '${r['blRef'] ?? ''}',
                       rendu: (_, r) => Text('${r['blRef'] ?? ''}',
                           style: const TextStyle(

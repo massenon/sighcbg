@@ -137,7 +137,9 @@ Future<T?> afficherModale<T>(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         child: DecoratedBox(
+                          // Le fond blanc est ICI : une ombre de `BoxDecoration` se peint aussi sous un cadre transparent et grisait l'en-tête et le corps.
                           decoration: BoxDecoration(
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: JetonsShell.ombrePop),
                           child: ClipRRect(
@@ -241,7 +243,7 @@ Future<T?> afficherTiroir<T>(
                   elevation: 0,
                   child: DecoratedBox(
                     decoration:
-                        const BoxDecoration(boxShadow: JetonsShell.ombrePop),
+                        const BoxDecoration(color: Colors.white, boxShadow: JetonsShell.ombrePop),
                     child: SizedBox.expand(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -61,6 +61,7 @@ class TableauSigh extends StatefulWidget {
     this.filtres = const [],
     this.selectionnable = false,
     this.actionsLigne,
+    this.colonnesMasquees = const [],
     this.alClicLigne,
     this.messageVide = 'Aucun enregistrement.',
     this.indiceVide,
@@ -81,6 +82,9 @@ class TableauSigh extends StatefulWidget {
   final List<FiltreTableau> filtres;
   final bool selectionnable;
   final List<Widget> Function(BuildContext, Ligne)? actionsLigne;
+
+  /// Colonnes (par `cle`) masquées à l'ouverture, remises par le menu « Colonnes » : sur un tableau de douze colonnes, les commandes de ligne sortaient du cadre.
+  final List<String> colonnesMasquees;
   final void Function(Ligne)? alClicLigne;
   final String messageVide;
   final String? indiceVide;
@@ -107,7 +111,7 @@ class TableauSighState extends State<TableauSigh> {
   String? _tri;
   String _sens = 'asc';
   int _page = 1;
-  final Set<String> _caches = {};
+  late final Set<String> _caches = {...widget.colonnesMasquees};
   final Set<Object?> _selection = {};
 
   @override

@@ -42,6 +42,9 @@ TextStyle get _styleTick => const TextStyle(
 
 String _num(num v) => nombre(v);
 
+/// Graduation d'axe : une graduation fractionnaire (0,5 ; 1,5 sur un axe qui monte à 2) garde sa décimale — l'arrondir affichait « 1 · 1 · 0 » deux fois de suite.
+String _numTick(num v) => v == v.roundToDouble() ? nombre(v) : '${double.parse(v.toStringAsFixed(2))}'.replaceAll('.', ',');
+
 /// Texte alternatif : un graphique n'est pas lisible par un lecteur d'écran, ses valeurs le sont.
 String descriptionGraphique(
     String type, List<String> etiquettes, List<SerieGraphique> series) {
@@ -137,7 +140,7 @@ class _Cartesien extends StatelessWidget {
     final largeurEtiquette = [
       for (final g in ech.graduations)
         (TextPainter(
-                text: TextSpan(text: _num(g), style: _styleTick),
+                text: TextSpan(text: _numTick(g), style: _styleTick),
                 textDirection: TextDirection.ltr)
               ..layout())
             .width
@@ -249,7 +252,7 @@ abstract class _Base extends CustomPainter {
       final y = yDe(z, g);
       c.drawLine(Offset(z.left, y), Offset(z.right, y), trait);
       final tp = TextPainter(
-          text: TextSpan(text: _num(g), style: _styleTick),
+          text: TextSpan(text: _numTick(g), style: _styleTick),
           textDirection: TextDirection.ltr)
         ..layout();
       tp.paint(c, Offset(z.left - 7.5 - tp.width, y - tp.height / 2));
@@ -579,7 +582,7 @@ class _BarresH extends StatelessWidget {
               final etiqMax = [
                 for (final g in candidates)
                   (TextPainter(
-                          text: TextSpan(text: _num(g), style: _styleTick),
+                          text: TextSpan(text: _numTick(g), style: _styleTick),
                           textDirection: TextDirection.ltr)
                         ..layout())
                       .width
@@ -621,7 +624,7 @@ class _PeintreBarresH extends CustomPainter {
     for (final g in echelle.graduations) {
       c.drawLine(Offset(x(g), z.top), Offset(x(g), z.bottom), trait);
       final tp = TextPainter(
-          text: TextSpan(text: _num(g), style: _styleTick),
+          text: TextSpan(text: _numTick(g), style: _styleTick),
           textDirection: TextDirection.ltr)
         ..layout();
       tp.paint(c, Offset(x(g) - tp.width / 2, z.bottom + 6));
