@@ -64,7 +64,7 @@ void main() {
     expect(cfbToastArchivage(b), contains('Aucune fiche n’est supprimée'));
     expect(cfbToastArchivage(b), contains('63 paiement(s) fictif(s)'));
     final lignes = cfbLignesBilanArchivage(b);
-    expect(lignes.first, startsWith('ecritures : '));
+    expect(lignes.first, startsWith('Écritures : '));
     expect(lignes.first, contains('dont'));
     expect(lignes.length, 2);
   });

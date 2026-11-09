@@ -1,4 +1,5 @@
 import '../format/format_fr.dart' show nombre;
+import 'cfb_regles.dart' show cfbLibelleCollection;
 
 /// L'ARCHIVAGE DU JEU DE DÉMONSTRATION (décision D6 de la Direction, 09/11/2026 : « remise du jeu de démonstration : les ARCHIVER, les brouillons, etc. »).
 ///
@@ -88,7 +89,7 @@ String cfbToastArchivage(CfbBilanArchivage b) =>
 List<String> cfbLignesBilanArchivage(CfbBilanArchivage b) {
   final noms = b.collections..sort((x, y) => b.parCollection[y]!.compareTo(b.parCollection[x]!) != 0 ? b.parCollection[y]!.compareTo(b.parCollection[x]!) : x.compareTo(y));
   return [
-    for (final n in noms) '$n : ${nombre(b.parCollection[n]!)} archivée(s)${(b.brouillons[n] ?? 0) > 0 ? ', dont ${nombre(b.brouillons[n]!)} brouillon(s)' : ''}',
+    for (final n in noms) '${cfbLibelleCollection(n).$2} : ${nombre(b.parCollection[n]!)} archivée(s)${(b.brouillons[n] ?? 0) > 0 ? ', dont ${nombre(b.brouillons[n]!)} brouillon(s)' : ''}',
   ];
 }
 

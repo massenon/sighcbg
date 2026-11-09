@@ -806,7 +806,8 @@ class _EtatJeuxDeTest extends State<_JeuxDeTest> {
     final plan = cfbPlanVidage(tailles, {...cfbEssentielles, ...cfbCollectionsTechniques});
     final conservees = [for (final n in cfbEssentielles) if (tailles.containsKey(n)) n];
     final actives = {for (final n in plan.collections) n: m.collection(n).actives.length};
-    final aArchiver = [for (final e in actives.entries) if (e.value > 0) e.key];
+    // `echeancesFiscales` reste en service (ses paiements fictifs sont retirés, la fiche n'est pas archivée) : elle ne figure pas parmi les collections archivées.
+    final aArchiver = [for (final e in actives.entries) if (e.value > 0 && e.key != 'echeancesFiscales') e.key];
     final fichesActives = actives.values.fold<int>(0, (a, b) => a + b);
     final autorisee = _autorisee;
     return cfaPile([
@@ -838,8 +839,8 @@ class _EtatJeuxDeTest extends State<_JeuxDeTest> {
       CarteSigh(
           titre: 'Ce qui serait archivé, ce qui serait conservé',
           child: LayoutBuilder(builder: (_, k) {
-            final a = _puces('Archivé — données d’activité (fiches actives)', [for (final n in aArchiver.take(24)) '$n (${actives[n]})'], danger: true);
-            final b = _puces('Conservé — paramétrage et référentiels', [for (final n in conservees) '$n (${tailles[n]})'], danger: false);
+            final a = _puces('Archivé — données d’activité (fiches actives)', [for (final n in aArchiver.take(24)) '${cfbLibelleCollection(n).$2} (${actives[n]})'], danger: true);
+            final b = _puces('Conservé — paramétrage et référentiels', [for (final n in conservees) '${cfbLibelleCollection(n).$2} (${tailles[n]})'], danger: false);
             return k.maxWidth >= 640
                 ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: a), const SizedBox(width: 12), Expanded(child: b)])
                 : cfaPile([a, b], espace: 12);
