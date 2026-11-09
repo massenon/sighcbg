@@ -1,0 +1,7 @@
+[
+{"code":"GPB","nom":"Grossiste Pharma Borgou","type":"Grossiste pharmaceutique","ville":"Parakou","tel":"","delai":5,"habilite":true,"fictif":true,"source":"Fournisseur fictif de démonstration : nom générique, sans téléphone, IFU, compte ni agrément","id":"F001","statut":"actif"},
+{"code":"CAP","nom":"Centrale d’achat de Parakou","type":"Centrale d’achat","ville":"Parakou","tel":"","delai":7,"habilite":true,"fictif":true,"source":"Fournisseur fictif de démonstration : nom générique, sans téléphone, IFU, compte ni agrément","id":"F002","statut":"actif"},
+{"code":"REA","nom":"Comptoir des Réactifs du Nord","type":"Réactifs & consommables labo","ville":"Parakou","tel":"","delai":10,"habilite":false,"fictif":true,"source":"Fournisseur fictif de démonstration : nom générique, sans téléphone, IFU, compte ni agrément","id":"F003","statut":"actif"},
+{"code":"MMN","nom":"Matériel Médical du Nord","type":"Matériel médical","ville":"Parakou","tel":"","delai":14,"habilite":false,"fictif":true,"source":"Fournisseur fictif de démonstration : nom générique, sans téléphone, IFU, compte ni agrément","id":"F004","statut":"actif"},
+{"code":"FEB","nom":"Fournitures et Entretien du Borgou","type":"Fournitures & entretien","ville":"Parakou","tel":"","delai":3,"habilite":false,"fictif":true,"source":"Fournisseur fictif de démonstration : nom générique, sans téléphone, IFU, compte ni agrément","id":"F005","statut":"actif"}
+]

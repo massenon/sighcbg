@@ -1,0 +1,10 @@
+{
+  "id": "m12-aib",
+  "module": "M12",
+  "domaine": "Financier",
+  "libelleManifeste": "Acompte sur impôt (AIB)",
+  "acces": "ouvert",
+  "titre": "Acompte sur impôt (AIB)",
+  "description": "Barème de l’AIB retenu à la source, versionné par date d’effet : ce qui est arrêté, ce qui ne l’est pas.",
+  "note": "Fiche rédigée pour le poste Baguidi (barème versionné par date d’effet) : l’écran m12-aib de la maquette de Baguidi porte la retenue sur factures fournisseurs, qui reste à brancher au poste."
+}
