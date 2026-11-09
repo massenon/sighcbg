@@ -194,8 +194,10 @@ void main() {
       final msg = fiches.firstWhere((f) => f['type'] == 'message');
       final ano = fiches.firstWhere((f) => f['type'] == 'anomalie');
       for (final f in [msg, ano]) {
-        f.removeWhere((k, _) => ['statut', 'reference', 'date', 'auteur', 'etat', 'captureDonnees'].contains(k));
+        f.removeWhere((k, _) => ['statut', 'reference', 'date', 'auteur', 'etat'].contains(k));
       }
+      // Depuis le 20/10/2026 la demande d'anomalie porte `captureDonnees` (null au poste : pas de sélecteur de fichier) ; le message n'en porte pas.
+      msg.remove('captureDonnees');
       expect(accDemandeMessage('Question sur la comptabilité', 'Comment lire la balance ?'), {...msg, 'module': null, 'etapes': null, 'capture': null});
       expect(accDemandeAnomalie('M8', 'Le reçu ne se détaille pas', '1. Encaisser 2. Imprimer', null), {...ano, 'capture': null});
     });

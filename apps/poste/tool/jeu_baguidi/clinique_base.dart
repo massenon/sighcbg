@@ -24,6 +24,26 @@ String pad(int n, int l) => n.toString().padLeft(l, '0');
 DateTime instant(DateTime jour, int h, [int mn = 0]) => DateTime.utc(jour.year, jour.month, jour.day, h, mn);
 
 String iso8601(DateTime t) => t.toUtc().toIso8601String();
+
+/// La NORMALISATION de démonstration d'une vente soldée (MECeF, lot M1 : toute vente est normalisée, et l'émission laisse la pièce `en_attente`). Les
+/// contrôles et les montants entiers sont ceux du domaine (`preparerNormalisation`) ; le numéro est celui de l'appareil de démonstration, marqué
+/// `mecefSimule` (jamais un numéro fiscal). Une vente que le domaine refuserait reste `en_attente`, comme au poste.
+Fiche champsNormalisation(Fiche fac, String numero, DateTime quand) {
+  final prep = d.preparerNormalisation(fac);
+  if (!prep.ok) return const {};
+  final a = prep.acheteur!;
+  return {
+    'statutMecef': 'valide',
+    'numeroMecef': numero,
+    'codeRetour': 'OK-200',
+    'dateTransmission': iso8601(quand),
+    'mecefSimule': true,
+    'ifuClient': a.ifu,
+    'acheteurNom': a.nom,
+    'aibTaux': a.aibTaux,
+    'aibMontant': prep.montants!.aib,
+  };
+}
 String jourDe(DateTime t) => Contexte.date(t);
 
 /// Le jour calendaire suivant [n] jours (instants UTC, heure conservée).
@@ -225,7 +245,6 @@ class Caisse {
     final ecrites = <Fiche>[];
     for (final p in r.pieces) {
       final fiche = {...p}..remove('mecef');
-      if (p['mecef'] == true) fiche['numeroMecef'] = numeroMecef();
       final soldeeD = (p['statutPaiement'] == 'soldee');
       fiche['lignes'] = [
         for (final (i, l) in (p['lignes'] as List).cast<Map<String, Object?>>().indexed)
@@ -240,6 +259,7 @@ class Caisse {
           }
       ];
       fiche['statut'] = 'actif';
+      if (p['mecef'] == true) fiche.addAll(champsNormalisation(fiche, numeroMecef(), quand));
       fiche.addAll(complement);
       final ins = jeu.ajouter('factures', fiche, 'FAC');
       ecrites.add(ins);
@@ -276,8 +296,8 @@ class Caisse {
       for (final k in ['lignes', 'montantPaye', 'reliquat', 'modePaiement', 'statutPaiement', 'statutMecef', 'baseMecef', 'dernierReglement'])
         if (f.containsKey(k)) k: f[k],
     });
-    if (mecefActif && f['statutMecef'] == 'valide' && fac['numeroMecef'] == null && d.nombreOuZero(f['partPatient']) > 0) {
-      jeu.maj('factures', factureId, {'numeroMecef': numeroMecef()});
+    if (mecefActif && f['statutPaiement'] == 'soldee' && fac['numeroMecef'] == null && d.nombreOuZero(f['partPatient']) > 0) {
+      jeu.maj('factures', factureId, champsNormalisation({...fac, ...f}, numeroMecef(), quand));
     }
     final iso = iso8601(quand);
     final reglees = [

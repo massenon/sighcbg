@@ -1,6 +1,7 @@
 /// LA RETENUE D'AIB SUR UNE FACTURE FOURNISSEUR (M7 → M12) : ce que la clinique retient à la source et doit reverser à l'État.
 ///
-/// Le taux ne s'écrit nulle part ici : il vient du barème daté (`cpd_bareme_aib.dart`), à la date de la facture. Seule une version ARRÊTÉE s'applique ;
+/// Le taux ne s'écrit nulle part ici : il vient du barème daté par situation de l'acheteur (`cpd_bareme_aib.dart`), à la date de la facture : la catégorie
+/// de la retenue EST une situation (le fournisseur a un IFU actif, n'en a pas, ou la facture est une prestation retenue par le payeur). Seule une version ARRÊTÉE s'applique ;
 /// sans version arrêtée en vigueur, la retenue est REFUSÉE en disant pourquoi — jamais un taux « commode ». La retenue ne réécrit pas la pièce : elle
 /// s'ajoute (la facture PORTE sa retenue) et se constate par UNE pièce comptable plate, en brouillon, contrôlée équilibrée (RG-10) :
 /// débit du compte fournisseur (la dette envers le fournisseur diminue), crédit du compte 4478 (la dette envers l'État naît).
@@ -25,27 +26,33 @@ class RefusRetenueAib implements Exception {
   String toString() => motif;
 }
 
-/// Le résultat du calcul : la catégorie, le taux appliqué, la base, le montant (au franc) et le motif du taux.
+/// Le résultat du calcul : la situation, le taux appliqué, la base, le montant (au franc) et le motif du taux.
 class CpdRetenueAib {
-  const CpdRetenueAib({required this.code, required this.taux, required this.base, required this.montant, required this.motif, required this.dateEffet});
-  final String code;
+  const CpdRetenueAib(
+      {required this.situation, required this.taux, required this.base, required this.montant, required this.motif, required this.dateEffet, this.versionId});
+  final String situation;
   final num taux;
   final num base;
   final int montant;
   final String motif;
   final String dateEffet;
 
-  Map<String, Object?> versFiche() => {'code': code, 'taux': taux, 'base': base, 'montant': montant, 'motif': motif, 'dateEffet': dateEffet};
+  /// La version du barème sous laquelle la retenue a été calculée : une correction ultérieure du barème ne la réécrit pas.
+  final String? versionId;
+
+  Map<String, Object?> versFiche() =>
+      {'situation': situation, 'taux': taux, 'base': base, 'montant': montant, 'motif': motif, 'dateEffet': dateEffet, if (versionId != null) 'versionId': versionId};
 }
 
-/// Calcule la retenue sur [base] pour la catégorie [code] à [date]. Refuse (nommément) : base nulle ou négative, aucun taux arrêté en vigueur.
-CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String code, num base, DateTime date) {
+/// Calcule la retenue sur [base] pour la situation [situation] à [date]. Refuse (nommément) : base nulle ou négative, aucun taux arrêté en vigueur.
+CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String situation, num base, DateTime date, {Iterable<CpdFiche>? situations}) {
   if (base <= 0) throw const RefusRetenueAib('La base de la retenue doit être positive.');
-  final r = cpdTauxAibALaDate(bareme, code, date);
+  final r = cpdTauxAibALaDate(bareme, situation, date, situations: situations);
   final t = r.taux;
-  if (t == null || r.version == null) throw RefusRetenueAib('Retenue impossible pour « $code » : ${r.motif}');
+  if (t == null || r.version == null) throw RefusRetenueAib('Retenue impossible pour « $situation » : ${r.motif}');
   return CpdRetenueAib(
-      code: code,
+      situation: situation,
+      versionId: r.version!['id'] == null ? null : '${r.version!['id']}',
       taux: t,
       base: base,
       montant: cpdMontantAib(base, t),
@@ -123,7 +130,7 @@ CpdRegistreRetenues cpdRegistreRetenuesAib(Iterable<Map<String, Object?>> factur
       'reference': f['reference'],
       'fournisseur': f['fournisseurNom'],
       'date': date == null ? null : isoJour(date),
-      'code': r['code'],
+      'situation': r['situation'] ?? r['code'],
       'taux': r['taux'],
       'base': r['base'],
       'montant': m,

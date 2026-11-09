@@ -1500,7 +1500,21 @@
      ]
     }
    ],
-   "cartes": []
+   "cartes": [
+    {
+     "domaine": "Système",
+     "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-imagerie-catalogue"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "role": "da",
@@ -2601,6 +2615,14 @@
     {
      "domaine": "Administration",
      "rangees": [
+      {
+       "code": "M13",
+       "label": "Administration & Ambulance",
+       "hub": "hub-m13",
+       "ecrans": [
+        "adm-validations"
+       ]
+      },
       {
        "code": "RAP",
        "label": "Rapports & Impression",
@@ -3776,6 +3798,14 @@
      "domaine": "Administration",
      "rangees": [
       {
+       "code": "M13",
+       "label": "Administration & Ambulance",
+       "hub": "hub-m13",
+       "ecrans": [
+        "adm-validations"
+       ]
+      },
+      {
        "code": "RAP",
        "label": "Rapports & Impression",
        "hub": "hub-rap",
@@ -3810,7 +3840,21 @@
      ]
     }
    ],
-   "cartes": []
+   "cartes": [
+    {
+     "domaine": "Système",
+     "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-imagerie-catalogue"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "role": "surveillant",
@@ -4145,6 +4189,14 @@
      "domaine": "Administration",
      "rangees": [
       {
+       "code": "M13",
+       "label": "Administration & Ambulance",
+       "hub": "hub-m13",
+       "ecrans": [
+        "adm-validations"
+       ]
+      },
+      {
        "code": "RAP",
        "label": "Rapports & Impression",
        "hub": "hub-rap",
@@ -4284,6 +4336,14 @@
     {
      "domaine": "Administration",
      "rangees": [
+      {
+       "code": "M13",
+       "label": "Administration & Ambulance",
+       "hub": "hub-m13",
+       "ecrans": [
+        "adm-validations"
+       ]
+      },
       {
        "code": "RAP",
        "label": "Rapports & Impression",

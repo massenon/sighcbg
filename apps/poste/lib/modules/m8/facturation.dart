@@ -8,6 +8,8 @@ import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../donnees/normalisation_mecef.dart';
+import 'acheteur_normalise.dart';
 import 'commun.dart';
 import 'impression.dart';
 
@@ -66,6 +68,7 @@ class _EtatFacturation extends State<EcranFacturation> {
   late ControleurFormulaire _nature;
   late ControleurFormulaire _ajout;
   late ControleurFormulaire _reglement;
+  late ControleurFormulaire _acheteur;
   List<Fiche> _patients = const [];
   List<_Article> _articles = const [];
   String _natureVue = '';
@@ -203,6 +206,7 @@ class _EtatFacturation extends State<EcranFacturation> {
     ], {
       'regle': '0'
     });
+    _acheteur = ControleurFormulaire(champsAcheteurNormalise, valeursAcheteur(null));
     _patient.addListener(_majPatient);
     _ajout.addListener(_majAjout);
     _remplirArticles(m);
@@ -437,11 +441,26 @@ class _EtatFacturation extends State<EcranFacturation> {
           type: TypeToast.erreur, detail: 'Le client libre n’a pas de dossier : choisir un patient du répertoire.');
       return;
     }
+    // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien.
+    final saisieAcheteur = !proforma && mecefEnService(m);
+    final refusAcheteur = saisieAcheteur ? controlerAcheteur(_acheteur) : null;
+    if (refusAcheteur != null) {
+      ToastsSigh.afficher(
+          context, '${refusAcheteur.code} : ${refusAcheteur.motif}',
+          type: TypeToast.erreur,
+          detail: refusAcheteur.geste,
+          duree: const Duration(seconds: 9));
+      return;
+    }
+    final acheteur = saisieAcheteur ? lireAcheteur(_acheteur) : null;
     final r = _emettre(proforma);
     final annulations = <VoidCallback>[];
     final creees = <Fiche>[];
+    final normalisations = <ResultatNormalisation>[];
     final factures = m.collection('factures');
     for (final p in r.pieces) {
+      // Le numéro fiscal vient de la NORMALISATION, jamais d'un tirage à l'émission : une vente non soldée n'en porte pas (E2299).
+      final aNormaliser = p['mecef'] == true;
       final fiche = {...p}..remove('mecef');
       if (_clientLibre) {
         fiche['clientLibre'] = true;
@@ -449,15 +468,26 @@ class _EtatFacturation extends State<EcranFacturation> {
         fiche['clientNom'] = '${_client['clientNom'] ?? ''}'.trim();
         fiche['clientTelephone'] = '${_client['clientTelephone'] ?? ''}'.trim();
       }
-      if (p['mecef'] == true) {
-        // Identifiant simulé, tiré de l'horloge comme la maquette (`Date.now() % 100000 + rang`) : le boîtier physique n'est pas branché.
-        fiche['numeroMecef'] = numeroMecefSimule(
-            c.aujourdhui.millisecondsSinceEpoch % 100000 + creees.length);
+      if (acheteur != null) {
+        final v = validerAcheteurMecef(
+            ifu: acheteur['ifu'], nom: acheteur['nom'], aibTaux: acheteur['aibTaux']);
+        final a = v.acheteur!;
+        fiche['ifuClient'] = a.ifu;
+        fiche['acheteurNom'] = a.nom;
+        fiche['aibTaux'] = a.aibTaux;
       }
       fiche['statut'] = 'actif';
       final ins = factures.inserer(fiche, prefixe: 'FAC');
       creees.add(ins.fiche);
       annulations.add(ins.annuler);
+      // TOUTE VENTE SOLDÉE EST NORMALISÉE ; le refus de la normalisation ne défait pas l'émission (l'argent est reçu) : la pièce devient refusée.
+      if (aNormaliser) {
+        final norm = normaliserVente(m, '${ins.fiche['id']}',
+            acheteur: acheteur, maintenant: c.aujourdhui);
+        annulations.add(norm.annuler);
+        normalisations.add(norm);
+        creees[creees.length - 1] = factures.parId(ins.fiche['id'])!;
+      }
       // LE COMPTABLE EST INFORMÉ DÈS L'ÉMISSION (E2260) : l'écriture du moteur d'encaissement (571 du réglé, 411 de la part assureur, 706 du total),
       // équilibrée (RG-10), en brouillon. Une pro-forma n'est pas une pièce comptable. Annuler l'émission archive ses écritures (RG-14).
       if (!proforma) {
@@ -496,6 +526,9 @@ class _EtatFacturation extends State<EcranFacturation> {
     }
     final encaisse =
         creees.fold<num>(0, (a, f) => a + n(f['montantPaye']));
+    for (final nm in normalisations) {
+      annoncerNormalisation(context, nm);
+    }
     ToastsSigh.afficher(
         context,
         proforma
@@ -938,6 +971,11 @@ class _EtatFacturation extends State<EcranFacturation> {
             icone: LucideIcons.landmark),
         const SizedBox(height: 12),
         FormulaireSigh(controleur: _reglement),
+        // TOUTE VENTE EST NORMALISÉE (E2299) : la fenêtre ne sert qu'à saisir l'acheteur et le taux d'AIB. MECeF fermé (bascule P0-5) : absente.
+        if (_c != null && mecefEnService(_c!.magasin)) ...[
+          const SizedBox(height: 12),
+          SectionAcheteur(controleur: _acheteur),
+        ],
       ]),
     );
   }
