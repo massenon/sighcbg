@@ -1,0 +1,22 @@
+{
+ "id": "error-404",
+ "module": "AUTH",
+ "domaine": "Système",
+ "libelleManifeste": "Page introuvable",
+ "acces": "ouvert",
+ "autonome": true,
+ "titre": "Page introuvable",
+ "titreOnglet": "Page introuvable — SIGH Clinique NASSIERA TOO",
+ "description": [
+  "404",
+  "L’écran demandé n’existe pas ou a été déplacé. Utiliser le plan du site pour retrouver le module recherché.",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — SIGH-CBG",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240."
+ ],
+ "cartes": [],
+ "champs": [],
+ "commandes": [
+  "Retour à l’accueil",
+  "Plan du site"
+ ]
+}

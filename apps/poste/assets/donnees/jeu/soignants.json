@@ -1,0 +1,4 @@
+[
+{"id":"SOI01","personnelId":"m-004","nomComplet":"IDOHOU Abraham","poste":"Médecin","qualite":"medecin","prescrit":true,"execute":false,"supervise":false,"realiseImagerie":false,"secteurs":["salle_soins","hospitalisation","maternite"],"statut":"actif","source":"Dérivé du personnel de la Clinique Baguidi"},
+{"id":"SOI02","personnelId":"m-005","nomComplet":"AKONDE Octave","poste":"Infirmier","qualite":"infirmier","prescrit":false,"execute":true,"supervise":false,"realiseImagerie":false,"secteurs":["salle_soins","hospitalisation"],"statut":"actif","source":"Dérivé du personnel de la Clinique Baguidi"}
+]
