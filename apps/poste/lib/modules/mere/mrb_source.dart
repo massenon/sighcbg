@@ -119,9 +119,18 @@ class MrbCodeMobile {
 }
 
 class MrbResultatReinit {
-  const MrbResultatReinit({required this.sauvegarde, this.epoch});
+  const MrbResultatReinit({required this.sauvegarde, this.epoch, this.mode = mrbModeArchiver, this.archivees = const {}, this.brouillons = const {}});
   final String sauvegarde;
   final int? epoch;
+
+  /// `archiver` (défaut, RG-14) ou `supprimer` (suppression physique).
+  final String mode;
+
+  /// Le bilan d'un ARCHIVAGE : par collection, les fiches archivées et, à part, les brouillons.
+  final Map<String, int> archivees;
+  final Map<String, int> brouillons;
+  int get totalArchivees => archivees.values.fold(0, (a, n) => a + n);
+  int get totalBrouillons => brouillons.values.fold(0, (a, n) => a + n);
 }
 
 abstract class MrbSource {
@@ -142,7 +151,7 @@ abstract class MrbSource {
   Future<void> debloquer(String uuid);
   Future<void> revoquer(String uuid);
   Future<void> ouvrirFenetreReinit(bool ouvrir);
-  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second});
+  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second, String motif = '', bool supprimer = false});
   Future<MrbCodeMobile> codeMobile(String etiquette, {required String profil, String? fonction});
 
   /// Le nom de la clinique que le moteur exige en confirmation (`_clinique` dans `mere.dart`).
@@ -263,9 +272,21 @@ class MrbSourceClient extends MrbSource {
   Future<void> ouvrirFenetreReinit(bool ouvrir) => client.ouvrirFenetreReinit(ouvrir);
 
   @override
-  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second}) async {
-    final j = await client.brut('POST', '/admin/reinitialiser', {'confirmation': confirmation, 'second': second});
-    return MrbResultatReinit(sauvegarde: '${j['sauvegarde']}', epoch: j['epoch'] is num ? _entier(j['epoch']) : null);
+  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second, String motif = '', bool supprimer = false}) async {
+    final j = await client.brut('POST', '/admin/reinitialiser', {
+      'confirmation': confirmation,
+      'second': second,
+      'mode': supprimer ? mrbModeSupprimer : mrbModeArchiver,
+      if (motif.isNotEmpty) 'motif': motif,
+      if (supprimer) 'suppression_physique': true,
+    });
+    Map<String, int> comptes(Object? o) => {for (final e in ((o as Map?) ?? const {}).entries) '${e.key}': _entier(e.value)};
+    return MrbResultatReinit(
+        sauvegarde: '${j['sauvegarde']}',
+        epoch: j['epoch'] is num ? _entier(j['epoch']) : null,
+        mode: '${j['mode'] ?? (supprimer ? mrbModeSupprimer : mrbModeArchiver)}',
+        archivees: comptes(j['archivees']),
+        brouillons: comptes(j['brouillons']));
   }
 
   @override

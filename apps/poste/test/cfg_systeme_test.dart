@@ -112,7 +112,8 @@ void main() {
     await onglet(t, 'reinitialisation');
     expect(find.text('Verrouillée'), findsOneWidget);
     expect(find.text('Aucun effacement possible'), findsOneWidget);
-    expect(find.widgetWithText(BoutonSigh, 'Vider les jeux de test'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Suppression physique des jeux de test'), findsNothing);
     expect(find.widgetWithText(BoutonSigh, 'Régénérer le jeu de démonstration complet'), findsNothing);
     expect(find.text('Réinitialisation verrouillée — activer l’autorisation ci-dessus pour la rendre possible.'), findsOneWidget);
     expect(find.textContaining('produits (184)'), findsOneWidget, reason: 'ce qui serait conservé est montré avec ses effectifs');
@@ -128,7 +129,53 @@ void main() {
     expect(m.collection('patients').toutes.length, avant);
   });
 
-  casM14('autoriser puis vider : motif exigé ; les données d’ACTIVITÉ, la corbeille et le journal partent, le paramétrage et les droits restent ; le vidage est l’UNIQUE entrée du journal neuf', (t) async {
+  casM14('ARCHIVER le jeu de démonstration (geste par défaut, RG-14) : motif exigé, rien n’est supprimé, bilan affiché, Corbeille, journal conservé, essentielles intactes', (t) async {
+    final m = magasinM14();
+    final produits = m.collection('produits').toutes.length;
+    final patients = m.collection('patients').toutes.length;
+    final personnel = jsonEncode(m.collection('personnel').toutes);
+    final aAvant = m.collection('audit').toutes.length;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'reinitialisation');
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing, reason: 'fermé : bouton absent');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:bascule')));
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Autoriser'));
+    expect(find.text('Mise en production'), findsOneWidget);
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:archiver')));
+    expect(find.textContaining('Rien n’est supprimé (RG-14)'), findsOneWidget, reason: 'la confirmation DIT que rien n’est supprimé');
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').actives, isNotEmpty, reason: 'sans motif, rien ne part');
+    await t.enterText(find.byType(TextField).last, 'Mise en production de la clinique');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').actives, isEmpty);
+    expect(m.collection('patients').toutes.length, patients, reason: 'rien n’est supprimé');
+    expect(m.collection('produits').toutes.length, produits);
+    expect(jsonEncode(m.collection('personnel').toutes), personnel, reason: 'les essentielles — salaires compris — ne bougent pas');
+    expect(m.collection('echeancesFiscales').toutes.any((e) => e['paye'] == true), isFalse);
+    expect(m.collection('audit').toutes.length, greaterThan(aAvant + 10), reason: 'le journal est conservé et enrichi : une entrée par table, une synthèse');
+    expect(m.collection('audit').toutes.any((a) => a['action'] == 'Archivage du jeu de démonstration (synthèse)'), isTrue);
+    expect(find.byKey(const Key('cfb:reinit:bilan')), findsOneWidget);
+    expect(find.textContaining('table(s) archivée(s)'), findsWidgets);
+    expect(find.textContaining('brouillon(s)'), findsWidgets);
+    expect(cfbCorbeille(m).where((l) => l.collection == 'patients').length, patients, reason: 'les fiches archivées se retrouvent à la Corbeille');
+    await onglet(t, 'corbeille');
+    expect(find.textContaining('Jeu de démonstration, mise en production'), findsWidgets);
+  });
+
+  casM14('l’archivage est REFUSÉ sans la bascule, depuis le bouton de l’onglet Installation aussi : rien n’est écrit', (t) async {
+    final m = magasinM14();
+    final patients = m.collection('patients').actives.length;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Réinitialiser le jeu de données'));
+    expect(find.text('Réinitialisation verrouillée.'), findsOneWidget);
+    expect(m.collection('patients').actives.length, patients);
+    expect(m.collection('audit').toutes.where((a) => '${a['action']}'.startsWith('Archivage du jeu')), isEmpty);
+  });
+
+  casM14('SUPPRESSION PHYSIQUE (seconde porte, contraire à RG-14) : motif PUIS confirmation nommée ; les données d’ACTIVITÉ, la corbeille et le journal partent, le paramétrage et les droits restent ; le vidage est l’UNIQUE entrée du journal neuf', (t) async {
     final m = magasinM14();
     final produits = m.collection('produits').toutes.length;
     final patients = m.collection('patients').toutes.length;
@@ -157,14 +204,28 @@ void main() {
     expect(reglage(m, 'reinitAutorisee')!['valeur'], true);
     expect(find.text('Autorisée'), findsOneWidget);
     expect(m.collection('audit').toutes.any((a) => a['action'] == 'Déverrouillage'), isTrue);
-    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Vider les jeux de test'));
-    expect(find.textContaining('Les ${plan.tables} tables d’activité seront vidées'), findsOneWidget);
-    await t.tap(find.widgetWithText(BoutonSigh, 'Vider les jeux de test').last);
+    expect(find.text('Suppression physique (hors RG-14)'), findsOneWidget);
+    expect(find.textContaining('CONTREDIT RG-14'), findsOneWidget, reason: 'l’écran dit que la suppression physique contredit RG-14');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:supprimer')));
+    expect(find.textContaining('Les ${plan.tables} tables d’activité seront VIDÉES'), findsOneWidget);
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
     await t.pump(const Duration(milliseconds: 400));
     expect(m.collection('patients').toutes.length, patients, reason: 'sans motif, rien ne part');
     await t.enterText(find.byType(TextField).last, 'Fin de la recette');
     await t.pump();
-    await t.tap(find.widgetWithText(BoutonSigh, 'Vider les jeux de test').last);
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(find.text('Suppression physique : dernière confirmation'), findsOneWidget);
+    expect(m.collection('patients').toutes.length, patients, reason: 'le motif ne suffit pas : la confirmation NOMMÉE est exigée');
+    await t.tap(find.widgetWithText(BoutonSigh, 'Renoncer'));
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').toutes.length, patients, reason: 'renoncer ne supprime rien');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:supprimer')));
+    await t.enterText(find.byType(TextField).last, 'Fin de la recette');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
+    await t.pump(const Duration(milliseconds: 400));
+    await t.tap(find.widgetWithText(BoutonSigh, 'Supprimer physiquement'));
     await t.pump(const Duration(milliseconds: 400));
     expect(m.collection('patients').toutes, isEmpty);
     expect(m.collection('factures').toutes, isEmpty);
@@ -200,7 +261,8 @@ void main() {
     // verrouiller de nouveau : les boutons disparaissent
     await toucherM14(t, find.byKey(const Key('cfb:reinit:bascule')));
     expect(reglage(m, 'reinitAutorisee')!['valeur'], false);
-    expect(find.widgetWithText(BoutonSigh, 'Vider les jeux de test'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Suppression physique des jeux de test'), findsNothing);
     expect(m.collection('audit').toutes.any((a) => a['action'] == 'Verrouillage'), isTrue);
   });
 
@@ -210,14 +272,10 @@ void main() {
     CfbJeu.charger = (nom) async => File('test/fixtures/jeu_sobre/$nom.json').readAsStringSync();
     m.collection('reglages').inserer({'id': 'reinitAutorisee', 'statut': 'actif', 'valeur': true});
     m.collection('reglages').inserer({'id': 'valorisationSortie', 'statut': 'actif', 'valeur': 'cump'});
+    cfbViderActivite(m, 'Essai');
+    expect(m.collection('patients').toutes, isEmpty);
     await ouvrirM14(t, m, 'cfg-systeme');
     await onglet(t, 'reinitialisation');
-    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Vider les jeux de test'));
-    await t.enterText(find.byType(TextField).last, 'Essai');
-    await t.pump();
-    await t.tap(find.widgetWithText(BoutonSigh, 'Vider les jeux de test').last);
-    await t.pump(const Duration(milliseconds: 400));
-    expect(m.collection('patients').toutes, isEmpty);
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Régénérer le jeu de démonstration complet'));
     expect(find.textContaining('Toute la base est remplacée par le jeu initial, paramétrage compris.'), findsOneWidget);
     await t.enterText(find.byType(TextField).last, 'Reprise de la démonstration');

@@ -43,6 +43,7 @@ class _ConsoleMereState extends State<ConsoleMere> {
   // Les champs de la maintenance vivent dans l'état : la console se rafraîchit toutes les 3 s et ne doit pas vider la saisie.
   final TextEditingController _confirmation = TextEditingController();
   final TextEditingController _secondProfil = TextEditingController();
+  final TextEditingController _motifReinit = TextEditingController();
 
   DateTime _maintenant() => (widget.maintenant ?? DateTime.now)();
 
@@ -58,6 +59,7 @@ class _ConsoleMereState extends State<ConsoleMere> {
     _minuterie?.cancel();
     _confirmation.dispose();
     _secondProfil.dispose();
+    _motifReinit.dispose();
     super.dispose();
   }
 
@@ -511,10 +513,10 @@ class _ConsoleMereState extends State<ConsoleMere> {
           padding: const EdgeInsets.all(16),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Réinitialiser les données de test',
+            Text('Archiver le jeu de démonstration',
                 style: Theme.of(context).textTheme.titleMedium),
             const Text(
-                'Vide l’activité (patients, factures, stocks mouvementés…) et conserve ce qui fait fonctionner le logiciel (référentiels, comptes, droits, tarifs). Une sauvegarde préalable est toujours faite. La commande n’est disponible que pendant une fenêtre ouverte par l’administrateur.'),
+                'Archive l’activité de démonstration (patients, factures, stocks mouvementés, brouillons…) sans rien supprimer (RG-14) et conserve ce qui fait fonctionner le logiciel (référentiels, comptes, droits, tarifs). Une sauvegarde préalable est toujours faite. La commande n’est disponible que pendant une fenêtre ouverte par l’administrateur. La suppression physique se fait à l’écran « Réinitialisation de production ».'),
             SwitchListTile(
                 value: e.reinitOuverte,
                 onChanged: (v) =>
@@ -530,6 +532,10 @@ class _ConsoleMereState extends State<ConsoleMere> {
                   decoration: const InputDecoration(
                       labelText:
                           'Second profil confirmant (DAF ou Direction)')),
+              TextField(
+                  controller: _motifReinit,
+                  decoration: const InputDecoration(
+                      labelText: 'Motif de l’archivage (obligatoire)')),
               const SizedBox(height: 8),
               FilledButton(
                 style:
@@ -537,10 +543,11 @@ class _ConsoleMereState extends State<ConsoleMere> {
                 onPressed: () => _geste(() async {
                   final sauv = await widget.client.reinitialiser(
                       confirmation: _confirmation.text,
-                      second: _secondProfil.text);
-                  if (mounted) ToastsSigh.afficher(context, 'Réinitialisé. Sauvegarde : $sauv', type: TypeToast.succes);
+                      second: _secondProfil.text,
+                      motif: _motifReinit.text.trim());
+                  if (mounted) ToastsSigh.afficher(context, 'Jeu de démonstration archivé. Sauvegarde : $sauv', type: TypeToast.succes);
                 }),
-                child: const Text('Réinitialiser'),
+                child: const Text('Archiver'),
               ),
             ] else
               const Text(

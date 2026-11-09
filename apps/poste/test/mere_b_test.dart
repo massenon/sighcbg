@@ -121,11 +121,23 @@ class Faux extends MrbSource {
   }
 
   @override
-  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second}) async {
-    appels.add('reinit $confirmation|$second');
+  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second, String motif = '', bool supprimer = false}) async {
+    appels.add('reinit $confirmation|$second|$motif|${supprimer ? 'supprimer' : 'archiver'}');
     etatV = unEtat(reinit: false);
-    journalV = [MrbLigneJournal(quand: maintenant.millisecondsSinceEpoch, niveau: 'alerte', source: 'administration', message: 'Réinitialisation des données (sauvegarde préalable : /srv/avant-reinit.db)'), ...journalV];
-    return MrbResultatReinit(sauvegarde: reponseReinit ?? '/srv/avant-reinit.db', epoch: 4);
+    journalV = [
+      MrbLigneJournal(
+          quand: maintenant.millisecondsSinceEpoch,
+          niveau: 'alerte',
+          source: 'administration',
+          message: supprimer ? 'Réinitialisation des données : SUPPRESSION PHYSIQUE (sauvegarde préalable : /srv/avant-reinit.db)' : 'Archivage du jeu de démonstration (motif : $motif ; sauvegarde préalable : /srv/avant-reinit.db)'),
+      ...journalV
+    ];
+    return MrbResultatReinit(
+        sauvegarde: reponseReinit ?? '/srv/avant-reinit.db',
+        epoch: 4,
+        mode: supprimer ? mrbModeSupprimer : mrbModeArchiver,
+        archivees: supprimer ? const {} : const {'patients': 5, 'ecritures': 7},
+        brouillons: supprimer ? const {} : const {'ecritures': 3});
   }
 
   @override
@@ -582,52 +594,59 @@ void main() {
       await pomper(t);
     }
 
-    testWidgets('fenêtre fermée : seule la commande d’ouverture existe, la réinitialisation est ABSENTE', (t) async {
+    testWidgets('fenêtre fermée : seule la commande d’ouverture existe, l’archivage est ABSENT', (t) async {
       await ouvrir(t, 'mere-reinit', Faux());
       expect(find.text('La fenêtre de réinitialisation est fermée.'), findsOneWidget);
       expect(bouton('Ouvrir la fenêtre (30 min)'), findsOneWidget);
-      expect(bouton('Réinitialiser'), findsNothing);
+      expect(bouton('Archiver le jeu de démonstration'), findsNothing);
       expect(find.byKey(const Key('mrb:confirmation')), findsNothing);
       expect(find.text('Ce qui est conservé'), findsOneWidget);
       expect(find.text('• tarifs'), findsOneWidget, reason: 'les essentiels du MOTEUR sont nommés');
-      expect(find.text('• Patients et consultations'), findsOneWidget, reason: 'ce qui est vidé aussi');
+      expect(find.text('• Patients et consultations'), findsOneWidget, reason: 'ce qui est archivé aussi');
+      expect(find.textContaining('Archivé (par défaut)'), findsOneWidget);
     });
 
     testWidgets('sans le droit d’annuler : aucune commande, ni ouverture ni réinitialisation (absentes, pas grisées)', (t) async {
       await monterSeul(t, const EcranReinitialisation(), Faux(), droit: ecritureSansAnnulation);
       expect(bouton('Ouvrir la fenêtre (30 min)'), findsNothing);
-      expect(bouton('Réinitialiser'), findsNothing);
+      expect(bouton('Archiver le jeu de démonstration'), findsNothing);
       await monterSeul(t, const EcranReinitialisation(), Faux()..etatV = unEtat(reinit: true), droit: ecritureSansAnnulation);
-      expect(bouton('Réinitialiser'), findsNothing, reason: 'même fenêtre ouverte par un autre : pas de droit, pas de commande');
+      expect(bouton('Archiver le jeu de démonstration'), findsNothing, reason: 'même fenêtre ouverte par un autre : pas de droit, pas de commande');
       expect(find.byKey(const Key('mrb:confirmation')), findsNothing);
     });
 
     testWidgets('chaque garde refuse en se nommant et AUCUN appel de réinitialisation ne part', (t) async {
       final f = Faux()..etatV = unEtat(reinit: true);
       await monterSeul(t, const EcranReinitialisation(), f);
-      expect(bouton('Réinitialiser'), findsOneWidget);
+      expect(bouton('Archiver le jeu de démonstration'), findsOneWidget);
 
-      await t.tap(bouton('Réinitialiser'));
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.textContaining('Saisir le nom de la clinique'), findsOneWidget);
       await t.pump(const Duration(seconds: 10));
 
       await t.enterText(find.byKey(const Key('mrb:confirmation')), 'nassiera too');
-      await t.tap(bouton('Réinitialiser'));
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.textContaining('Saisir le nom de la clinique'), findsOneWidget, reason: 'le nom se saisit à l’identique');
       await t.pump(const Duration(seconds: 10));
 
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
-      await t.tap(bouton('Réinitialiser'));
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.textContaining('Un second profil (DAF ou Direction) doit confirmer'), findsOneWidget);
       await t.pump(const Duration(seconds: 10));
 
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'mme tachedi');
-      await t.tap(bouton('Réinitialiser'));
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.textContaining('une autre personne'), findsOneWidget, reason: 'l’auteur (Mme TACHEDI) ne peut pas être son propre second profil');
+      await t.pump(const Duration(seconds: 10));
+
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Dr YORO');
+      await t.tap(bouton('Archiver le jeu de démonstration'));
+      await pomper(t);
+      expect(find.textContaining('Un motif est obligatoire pour archiver'), findsOneWidget, reason: 'sans motif, l’archivage est refusé en le nommant');
       await t.pump(const Duration(seconds: 10));
 
       expect(f.appels.where((a) => a.startsWith('reinit')), isEmpty);
@@ -639,22 +658,46 @@ void main() {
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
-      await t.tap(bouton('Réinitialiser'));
+      await t.enterText(find.byKey(const Key('mrb:motif')), 'Mise en production');
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.text('Dernière confirmation'), findsOneWidget);
       expect(f.appels.where((a) => a.startsWith('reinit')), isEmpty, reason: 'rien ne part avant la dernière confirmation');
-      await t.tap(bouton('Réinitialiser').last);
+      await t.tap(bouton('Archiver le jeu de démonstration').last);
       await pomper(t);
       await pomper(t);
-      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TACHEDI Arialu'));
+      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TACHEDI Arialu|Mise en production|archiver'));
       expect(find.textContaining('Sauvegarde préalable : /srv/avant-reinit.db'), findsWidgets);
       expect(find.textContaining('Le geste est inscrit au journal technique de la mère'), findsOneWidget);
-      expect(find.textContaining('Nouvelle époque : 4'), findsOneWidget);
-      final trace = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Réinitialisation de production');
+      expect(find.textContaining('Époque : 4'), findsOneWidget);
+      expect(find.textContaining('Jeu de démonstration archivé : 12 fiches dans 2 collection(s), dont 3 brouillon(s)'), findsWidgets);
+      expect(find.textContaining('ecritures : 7 (dont 3 brouillon(s))'), findsOneWidget, reason: 'le bilan dit combien par collection et combien de brouillons');
+      final trace = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Archivage du jeu de démonstration (mère)');
       expect(trace['succes'], isTrue);
       expect((trace['apres'] as Map)['secondProfil'], 'Mme TACHEDI Arialu');
       expect((trace['apres'] as Map)['sauvegardePrealable'], '/srv/avant-reinit.db');
-      expect(bouton('Réinitialiser'), findsNothing, reason: 'la fenêtre se referme avec le geste');
+      expect([(trace['apres'] as Map)['motif'], (trace['apres'] as Map)['fiches'], (trace['apres'] as Map)['brouillons']], ['Mise en production', 12, 3]);
+      expect(bouton('Archiver le jeu de démonstration'), findsNothing, reason: 'la fenêtre se referme avec le geste');
+      await t.pump(const Duration(seconds: 10));
+    });
+
+    testWidgets('la SUPPRESSION PHYSIQUE a sa porte : bouton distinct, confirmation qui dit qu’elle contredit RG-14, mode « supprimer » transmis', (t) async {
+      final f = Faux();
+      final m = await ouvrir(t, 'mere-reinit', f);
+      await ouvrirLaFenetre(t);
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
+      await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
+      await t.tap(find.byKey(const Key('mrb:suppression-physique')));
+      await pomper(t);
+      expect(find.text('Suppression physique : dernière confirmation'), findsOneWidget);
+      expect(find.textContaining('contredit RG-14'), findsWidgets);
+      expect(f.appels.where((a) => a.startsWith('reinit')), isEmpty, reason: 'rien ne part avant la confirmation nommée');
+      await t.tap(bouton('Supprimer physiquement'));
+      await pomper(t);
+      await pomper(t);
+      expect(f.appels, contains('reinit ${IdentiteClinique.confirmationReinit}|Mme TACHEDI Arialu||supprimer'));
+      expect(find.textContaining('Activité supprimée physiquement'), findsWidgets);
+      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Réinitialisation de production (suppression physique)'), isTrue);
       await t.pump(const Duration(seconds: 10));
     });
 
@@ -664,9 +707,10 @@ void main() {
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
-      await t.tap(bouton('Réinitialiser'));
+      await t.enterText(find.byKey(const Key('mrb:motif')), 'Mise en production');
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
-      await t.tap(bouton('Réinitialiser').last);
+      await t.tap(bouton('Archiver le jeu de démonstration').last);
       await pomper(t);
       await pomper(t);
       expect(f.appels.where((a) => a.startsWith('reinit')), hasLength(1));
@@ -681,12 +725,13 @@ void main() {
       await ouvrirLaFenetre(t);
       await t.enterText(find.byKey(const Key('mrb:confirmation')), IdentiteClinique.confirmationReinit);
       await t.enterText(find.byKey(const Key('mrb:second-profil')), 'Mme TACHEDI Arialu');
-      await t.tap(bouton('Réinitialiser'));
+      await t.enterText(find.byKey(const Key('mrb:motif')), 'Mise en production');
+      await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
-      await t.tap(bouton('Réinitialiser').last);
+      await t.tap(bouton('Archiver le jeu de démonstration').last);
       await pomper(t);
       expect(find.textContaining('reinit_fermee'), findsOneWidget);
-      expect(find.textContaining('Activité réinitialisée'), findsNothing);
+      expect(find.textContaining('Jeu de démonstration archivé'), findsNothing);
       await t.pump(const Duration(seconds: 10));
     });
 
@@ -831,7 +876,7 @@ void main() {
               case '/admin/code-mobile':
                 return http.Response('{"code":"MOBI9999","cle":"$cleBase64"}', 200);
               case '/admin/reinitialiser':
-                return http.Response('{"sauvegarde":"/s/avant.db","epoch":4}', 200);
+                return http.Response('{"mode":"archiver","sauvegarde":"/s/avant.db","epoch":4,"archivees":{"patients":2},"brouillons":{}}', 200);
               default:
                 return http.Response('{"code":"route_inconnue","motif":"Route inconnue."}', 404);
             }
@@ -850,8 +895,9 @@ void main() {
       final mobile = await s.codeMobile('Dr Yoro', profil: 'soignant', fonction: 'medecin');
       expect(mobile.code, 'MOBI9999');
       expect(mobile.payloadQr, contains(cleBase64));
-      final r = await s.reinitialiser(confirmation: IdentiteClinique.confirmationReinit, second: 'X');
-      expect((r.sauvegarde, r.epoch), ('/s/avant.db', 4));
+      final r = await s.reinitialiser(confirmation: IdentiteClinique.confirmationReinit, second: 'X', motif: 'Mise en production');
+      expect((r.sauvegarde, r.epoch, r.mode, r.totalArchivees), ('/s/avant.db', 4, 'archiver', 2));
+      expect(r.archivees, {'patients': 2});
       // Ce que le service n'expose pas : non disponible, sans appel réseau.
       appels.clear();
       expect(await s.empreinteCle(), isNull);
@@ -887,15 +933,15 @@ void main() {
 /// Un service qui refuse la réinitialisation (fenêtre refermée entre-temps) : l'écran doit nommer la cause.
 class _FauxRefus extends Faux {
   @override
-  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second}) =>
+  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second, String motif = '', bool supprimer = false}) =>
       throw ErreurMere(403, 'reinit_fermee', 'La réinitialisation est fermée : l’administrateur doit ouvrir la fenêtre.');
 }
 
 /// Un service dont le journal ne garde aucune trace de la réinitialisation.
 class _FauxSansTrace extends Faux {
   @override
-  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second}) async {
-    appels.add('reinit $confirmation|$second');
+  Future<MrbResultatReinit> reinitialiser({required String confirmation, required String second, String motif = '', bool supprimer = false}) async {
+    appels.add('reinit $confirmation|$second|$motif|${supprimer ? 'supprimer' : 'archiver'}');
     etatV = unEtat(reinit: false);
     return const MrbResultatReinit(sauvegarde: '/srv/avant-reinit.db', epoch: 4);
   }

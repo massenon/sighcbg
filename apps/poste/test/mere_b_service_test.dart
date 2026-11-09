@@ -142,13 +142,44 @@ void main() {
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'confirmation_invalide')));
     await expectLater(s.reinitialiser(confirmation: s.nomClinique, second: ''),
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'second_profil_requis')));
-    final fait = await s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TACHEDI');
-    expect(fait.sauvegarde, isNotEmpty);
-    expect(fait.epoch, 2, reason: 'l’époque est incrémentée');
-    expect(await s.patientsActifs(), 0, reason: 'l’activité est vidée');
+    // D6 (09/11/2026) : le défaut ARCHIVE. Sans motif : refusé, nommé. Avec motif : la fiche passe à l'état archivé, rien n'est supprimé, l'époque ne bouge pas.
+    await expectLater(s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TACHEDI'),
+        throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'motif_requis')));
+    final archive = await s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TACHEDI', motif: 'Mise en production');
+    expect(archive.sauvegarde, isNotEmpty);
+    expect(archive.mode, 'archiver');
+    expect(archive.epoch, 1, reason: 'archiver n’est pas purger : l’époque ne change pas, les postes n’ont rien à resynchroniser');
+    expect(archive.archivees['patients'], 1);
+    expect(archive.totalArchivees, 1);
+    expect(await s.patientsActifs(), 0, reason: 'la fiche est archivée, donc plus active');
+    final liste = await http.get(Uri.parse('http://127.0.0.1:$port/admin/liste?collection=patients'), headers: {'x-admin': adminSecret});
+    final fiches = jsonDecode(liste.body) as List;
+    expect(fiches, hasLength(1), reason: 'RG-14 : la fiche existe toujours');
+    expect((fiches.single as Map)['archive'], isTrue);
+    expect(((fiches.single as Map)['data'] as Map)['_motifArchivage'], 'Jeu de démonstration, mise en production');
+    expect(((fiches.single as Map)['data'] as Map)['nom'], 'KOPEGOU Azemidia', reason: 'le contenu est intact');
     expect((await s.etat()).reinitOuverte, isFalse, reason: 'la fenêtre se referme avec le geste');
     final journal = await s.journal(limite: 50);
-    expect(journal.any((l) => l.message.startsWith('Réinitialisation') && l.niveau == 'alerte'), isTrue);
+    expect(journal.any((l) => l.message.startsWith('Archivage du jeu de démonstration') && l.niveau == 'alerte'), isTrue);
+    // Une fiche archivée par la mère se RESTAURE par l'opération `restaurer` du journal (le pont du poste l'émet depuis la Corbeille).
+    final restauree = await http.post(Uri.parse('http://127.0.0.1:$port/admin/referentiel'),
+        headers: {'x-admin': adminSecret, 'content-type': 'application/json'}, body: jsonEncode({'collection': 'patients', 'fiche': 'p1', 'type': 'restaurer', 'champs': {}}));
+    expect(restauree.statusCode, 200, reason: restauree.body);
+    expect(await s.patientsActifs(), 1, reason: 'restaurée : de nouveau active');
+    // La suppression physique a sa porte : fenêtre rouverte, confirmation explicite, époque + 1.
+    await s.ouvrirFenetreReinit(true);
+    final ouvertes = await http.post(Uri.parse('http://127.0.0.1:$port/admin/reinitialiser'),
+        headers: {'x-admin': adminSecret, 'content-type': 'application/json'}, body: jsonEncode({'confirmation': s.nomClinique, 'second': 'X', 'mode': 'supprimer'}));
+    expect(ouvertes.statusCode, 422, reason: 'sans suppression_physique: true, jamais de vidage');
+    expect((jsonDecode(ouvertes.body) as Map)['code'], 'suppression_physique_non_confirmee');
+    final fait = await s.reinitialiser(confirmation: s.nomClinique, second: 'Mme TACHEDI', supprimer: true);
+    expect(fait.sauvegarde, isNotEmpty);
+    expect(fait.mode, 'supprimer');
+    expect(fait.epoch, 2, reason: 'la suppression physique incrémente l’époque');
+    expect((jsonDecode((await http.get(Uri.parse('http://127.0.0.1:$port/admin/liste?collection=patients'), headers: {'x-admin': adminSecret})).body) as List), isEmpty);
+    expect((await s.etat()).reinitOuverte, isFalse);
+    final journal2 = await s.journal(limite: 50);
+    expect(journal2.any((l) => l.message.startsWith('Réinitialisation') && l.niveau == 'alerte'), isTrue);
 
     // 9. Même après tout cela, rien d'identifiant n'est parti chez le relais.
     await Future<void>.delayed(const Duration(milliseconds: 600));

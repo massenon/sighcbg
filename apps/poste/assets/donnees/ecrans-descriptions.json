@@ -1303,7 +1303,7 @@
   },
   "mere-reinit": {
    "titre": "Réinitialisation de production",
-   "description": "Vider l’activité (tests de mise en service) en gardant les essentiels : tarifs, secteurs, comptes, droits, catalogues."
+   "description": "Archiver l’activité de démonstration (mise en service) en gardant les essentiels : tarifs, secteurs, comptes, droits, catalogues."
   },
   "mere-relais": {
    "titre": "Relais en ligne",

@@ -23,6 +23,12 @@ class TransportPair implements TransportPont {
     ];
   }
 
+  /// Mode pair : la restauration est une opération `restaurer` signée par le rôle de l'agent, comme tout geste (la règle de fusion du domaine la rejoue).
+  @override
+  Future<void> restaurer(String collection, String fiche) async {
+    _pair.emettre({'collection': collection, 'fiche': fiche, 'type': 'restaurer', 'champs': <String, Object?>{}, 'role': _role()});
+  }
+
   @override
   Future<void> ecrire(String collection, String fiche, {required bool existe, required Map<String, Object?> champs}) async {
     final courant = _pair.etatActuel().fiches['$collection/$fiche'];

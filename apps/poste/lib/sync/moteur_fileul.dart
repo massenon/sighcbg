@@ -46,6 +46,12 @@ class MoteurFileul {
     return r;
   }
 
+  /// Écrit une opération `restaurer` : remet en activité une fiche que la mère a archivée (RG-14).
+  void restaurer(String collection, String fiche) {
+    final r = _fileul.ecrire({'collection': collection, 'fiche': fiche, 'type': 'restaurer', 'champs': <String, Object?>{}});
+    if (r['refus'] != null) throw StateError('${r['motif'] ?? r['refus']}');
+  }
+
   /// Demande à la mère une PLAGE de numéros de dossier (RG-01) ; rend `(début, fin)`. Refus nommé (`StateError`) si la mère ne répond pas ou refuse.
   Future<(int, int)> demanderPlage({int taille = 50, int minimum = 0}) async {
     final (statut, corps) = await _fileul.commande('POST /plage', {'taille': taille, 'minimum': minimum}, const {});

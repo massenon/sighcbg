@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show IdentiteClinique, RefusMobile, cfbEssentielles, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, reCodePatient;
+    show IdentiteClinique, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, reCodePatient;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -677,11 +677,13 @@ class Mere {
         return base.tx(() async {
           final existe = await lire('${b['collection']}', '${b['fiche']}');
           final champs = ((b['champs'] ?? {}) as Map).cast<String, Object?>();
+          // `type: restaurer` : la mère remet en activité une fiche qu'elle a archivée (D6, RG-14) ; toute autre valeur est ignorée.
+          final restaure = b['type'] == 'restaurer' && existe != null;
           final op = <String, Object?>{
-            'id': 'ref-${uuid7()}', 'collection': b['collection'], 'fiche': b['fiche'], 'type': existe != null ? 'modifier' : 'creer',
+            'id': 'ref-${uuid7()}', 'collection': b['collection'], 'fiche': b['fiche'], 'type': restaure ? 'restaurer' : (existe != null ? 'modifier' : 'creer'),
             'champs': champs, 'hlc': maintenantMs(), 'vu': <String, Object?>{},
           };
-          if (existe != null) op['vu'] = {for (final k in champs.keys) k: nb(existe.fieldseq[k])};
+          if (existe != null && !restaure) op['vu'] = {for (final k in champs.keys) k: nb(existe.fieldseq[k])};
           return traiter(op, Appareil('mere', 'mere'));
         });
       case 'POST /admin/stock':
@@ -696,27 +698,94 @@ class Mere {
         return {'ouverte': b['ouvrir'] == true, 'duree_minutes': dureeFenetreReinit.inMinutes};
       case 'POST /admin/reinitialiser':
         adminOk(req);
-        if (!await reinitOuverte()) throw Err(403, 'reinit_fermee', 'La réinitialisation est fermée : l’administrateur doit ouvrir la fenêtre.');
-        if (b['confirmation'] != _clinique) throw Err(422, 'confirmation_invalide', 'Saisir le nom de la clinique pour confirmer.');
-        if (b['second'] == null || b['second'] == '' || b['second'] == false) throw Err(422, 'second_profil_requis', 'Un second profil (DAF ou Direction) doit confirmer.');
-        final sauvegarde = await base.sauvegarder('avant-reinit');
-        await evenement('alerte', 'administration', 'Réinitialisation des données (sauvegarde préalable : $sauvegarde)');
-        await base.tx(() async {
-          final liste = essentielles.map((c) => "'$c'").join(',');
-          await base.exec('DELETE FROM operations WHERE collection NOT IN ($liste)');
-          await base.exec('DELETE FROM fiches WHERE collection NOT IN ($liste)');
-          for (final t in ['resultats', 'conflits', 'plages', 'baux', 'acks', 'portee']) {
-            await base.exec('DELETE FROM $t');
-          }
-          await base.poserMeta('epoch', await base.metaInt('epoch') + 1);
-          await base.poserMeta('reinit_ouverte', 0);
-          await base.poserMeta('reinit_ouverte_ms', 0);
-          await base.poserMeta('next_patient', 1000);
-          await base.poserMeta('marqueur_epoch', 1);
-        });
-        return {'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch')};
+        return reinitialiser(b);
     }
     throw Err(404, 'route_inconnue', 'Route inconnue.');
+  }
+
+  /// Les collections que la mise en production ne touche JAMAIS à la mère : les essentielles du moteur, les référentiels (famille R : la mère seule les écrit,
+  /// donc aussi la configuration diffusée aux postes), les hachés de mots de passe, le battement des postes et les variations de compteur (un compteur n'est
+  /// pas une fiche qu'on archive : il se reconstitue par addition).
+  Set<String> get collectionsConserveesParArchivage => {
+        ...essentielles,
+        for (final e in familles.entries)
+          if (e.value == 'R') e.key,
+        'identifiants',
+        'postesClinique',
+        'deltasCompteurs',
+      };
+
+  /// `POST /admin/reinitialiser` : la mise en production de la mère. DEUX modes, et le défaut ARCHIVE (décision D6 de la Direction, 09/11/2026, RG-14) :
+  ///
+  /// * `archiver` (défaut, motif OBLIGATOIRE) : chaque fiche ACTIVE des collections d'activité passe à l'état archivé, par une opération `archiver` du journal
+  ///   — donc propagée aux fileuls et aux mobiles comme n'importe quel archivage, sans purge ni changement d'époque. Les brouillons sont archivés comme les
+  ///   autres. L'époque, les plages de numéros et `next_patient` ne bougent pas : un code archivé n'est jamais réattribué (RG-01). Rend le bilan par collection.
+  /// * `supprimer` (exige `suppression_physique: true`) : le vidage destructif d'origine — il CONTREDIT RG-14, change l'époque et remet la numérotation à
+  ///   zéro. Gardé pour remettre à neuf une mère d'essai.
+  ///
+  /// Mêmes garde-fous dans les deux cas : fenêtre ouverte (30 min), nom de la clinique à l'identique, second profil, sauvegarde préalable non désactivable.
+  Future<Map<String, Object?>> reinitialiser(Map<String, Object?> b) async {
+    final mode = '${b['mode'] ?? 'archiver'}';
+    if (mode != 'archiver' && mode != 'supprimer') throw Err(422, 'mode_invalide', 'Mode de réinitialisation inconnu : $mode (archiver ou supprimer).');
+    if (!await reinitOuverte()) throw Err(403, 'reinit_fermee', 'La réinitialisation est fermée : l’administrateur doit ouvrir la fenêtre.');
+    if (b['confirmation'] != _clinique) throw Err(422, 'confirmation_invalide', 'Saisir le nom de la clinique pour confirmer.');
+    if (b['second'] == null || b['second'] == '' || b['second'] == false) throw Err(422, 'second_profil_requis', 'Un second profil (DAF ou Direction) doit confirmer.');
+    final motif = '${b['motif'] ?? ''}'.trim();
+    if (mode == 'archiver' && motif.isEmpty) throw Err(422, 'motif_requis', 'Un motif est obligatoire pour archiver le jeu de démonstration (journalisé, RG-12).');
+    if (mode == 'supprimer' && b['suppression_physique'] != true) {
+      throw Err(422, 'suppression_physique_non_confirmee',
+          'La suppression physique contredit RG-14 : la confirmer explicitement (suppression_physique), ou archiver le jeu de démonstration.');
+    }
+    final sauvegarde = await base.sauvegarder('avant-reinit');
+    if (mode == 'archiver') {
+      await evenement('alerte', 'administration', 'Archivage du jeu de démonstration (motif : $motif ; second profil : ${b['second']} ; sauvegarde préalable : $sauvegarde)');
+      final conservees = collectionsConserveesParArchivage;
+      final archivees = <String, int>{}, brouillons = <String, int>{};
+      final marques = <String, Object?>{'_archiveLe': DateTime.now().toIso8601String(), '_archivePar': 'mere', '_motifArchivage': cfbMotifArchivageJeuDemo};
+      await base.tx(() async {
+        final collections = [for (final r in await base.select('SELECT DISTINCT collection FROM fiches ORDER BY collection')) r['collection'] as String];
+        for (final c in collections) {
+          if (conservees.contains(c)) continue;
+          for (final r in await base.select('SELECT id FROM fiches WHERE collection=? AND archive=0 ORDER BY id', [c])) {
+            final id = r['id'] as String;
+            final f = (await lire(c, id))!;
+            // Deux opérations STANDARD, que tout récepteur (fileul, mobile, restauration du relais) sait déjà rejouer : les marques (date, auteur, motif) en
+            // `modifier`, puis l'`archiver`. Aucun type nouveau, donc aucun récepteur à toucher.
+            final seq = await journaliser({'id': 'archi-m-${uuid7()}', 'collection': c, 'fiche': id, 'type': 'modifier', 'hlc': maintenantMs()}, marques, 'mere');
+            await journaliser({'id': 'archi-a-${uuid7()}', 'collection': c, 'fiche': id, 'type': 'archiver', 'hlc': maintenantMs()}, <String, Object?>{}, 'mere');
+            if (f.data['statut'] == 'brouillon') brouillons[c] = (brouillons[c] ?? 0) + 1;
+            f.archive = true;
+            f.data.addAll(marques);
+            for (final k in marques.keys) {
+              f.fieldseq[k] = seq;
+            }
+            await ecrire(c, id, f);
+            archivees[c] = (archivees[c] ?? 0) + 1;
+          }
+        }
+        await base.poserMeta('reinit_ouverte', 0);
+        await base.poserMeta('reinit_ouverte_ms', 0);
+      });
+      final total = archivees.values.fold<int>(0, (a, n) => a + n);
+      await evenement('info', 'administration',
+          'Archivage du jeu de démonstration : $total fiche(s) archivée(s) dans ${archivees.length} collection(s), dont ${brouillons.values.fold<int>(0, (a, n) => a + n)} brouillon(s)');
+      return {'mode': 'archiver', 'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch'), 'archivees': archivees, 'brouillons': brouillons, 'total': total, 'motif': cfbMotifArchivageJeuDemo};
+    }
+    await evenement('alerte', 'administration', 'Réinitialisation des données : SUPPRESSION PHYSIQUE (sauvegarde préalable : $sauvegarde)');
+    await base.tx(() async {
+      final liste = essentielles.map((c) => "'$c'").join(',');
+      await base.exec('DELETE FROM operations WHERE collection NOT IN ($liste)');
+      await base.exec('DELETE FROM fiches WHERE collection NOT IN ($liste)');
+      for (final t in ['resultats', 'conflits', 'plages', 'baux', 'acks', 'portee']) {
+        await base.exec('DELETE FROM $t');
+      }
+      await base.poserMeta('epoch', await base.metaInt('epoch') + 1);
+      await base.poserMeta('reinit_ouverte', 0);
+      await base.poserMeta('reinit_ouverte_ms', 0);
+      await base.poserMeta('next_patient', 1000);
+      await base.poserMeta('marqueur_epoch', 1);
+    });
+    return {'mode': 'supprimer', 'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch')};
   }
 
   /// Sauvegarde chiffrée (AES-256-GCM, clé de clinique) : le fichier en clair n'existe que le temps de l'écriture.

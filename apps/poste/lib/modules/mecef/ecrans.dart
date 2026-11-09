@@ -1304,7 +1304,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
         'prefixeFacture': 'FN-2026-',
         'prefixeAvoir': 'AV-2026-',
         'prefixeProforma': 'PRO-2026-',
-        'prochainNumero': '${normalisees(mag).length + 1}',
+        // Le prochain numéro de la SÉRIE, archivées comprises : « actives + 1 » repartirait de 1 après l'archivage du jeu de démonstration (RG-01, D6).
+        'prochainNumero': '${rangSerieFactures('FN-2026-', mag.collection('factures').toutes)}',
         'regimeTva': p.regimeTva,
         'devise': 'FCFA',
         'modeTransmission': 'Automatique à l’émission',
