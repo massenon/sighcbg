@@ -1,4 +1,4 @@
-// Client SMTP Dart contre le PUITS SMTP de la maquette (prototype_html/build/_smtp_sink.js, processus Node) : un vrai message part par le protocole,
+// Client SMTP Dart contre le PUITS SMTP de test (test/aide/smtp_sink.js, processus Node pur) : un vrai message part par le protocole,
 // chaque refus est nommé par son étape, le mot de passe n'est jamais rendu.
 import 'dart:async';
 import 'dart:convert';
@@ -26,7 +26,7 @@ class Puits {
 }
 
 Future<Puits> demarrer(String mode, {String refuser = '', bool echo = false}) async {
-  final proc = await Process.start('node', ['../../prototype_html/build/_smtp_sink.js', '--user=clinique', '--pass=Zx9-secret-ç€', '--mode=$mode', '--refuser=$refuser', if (echo) '--echo=1']);
+  final proc = await Process.start('node', ['test/aide/smtp_sink.js', '--user=clinique', '--pass=Zx9-secret-ç€', '--mode=$mode', '--refuser=$refuser', if (echo) '--echo=1']);
   final pret = Completer<int>();
   final messages = <Map<String, Object?>>[];
   proc.stdout.transform(utf8.decoder).transform(const LineSplitter()).listen((l) {
