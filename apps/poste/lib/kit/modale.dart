@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../core/jetons_shell.dart';
+import '../shell/contexte_ecran.dart';
 import 'bouton.dart';
 
 enum TailleModale {
@@ -96,63 +97,68 @@ Future<T?> afficherModale<T>(
   required Widget corps,
   ConstruirePied? pied,
   bool fermetureParFond = true,
-}) =>
-    showGeneralDialog<T>(
-      context: context,
-      barrierDismissible: fermetureParFond,
-      barrierLabel: 'Fermer la fenêtre',
-      barrierColor: JetonsShell.scrim,
-      transitionDuration: const Duration(milliseconds: 150),
-      transitionBuilder: (_, a, __, child) => FadeTransition(
-          opacity: a,
-          child: ScaleTransition(
-              scale: Tween(begin: 0.97, end: 1.0)
-                  .animate(CurvedAnimation(parent: a, curve: Curves.easeOut)),
-              alignment: Alignment.topCenter,
-              child: child)),
-      pageBuilder: (ctx, _, __) {
-        void fermer() => Navigator.of(ctx).pop();
-        return SafeArea(
-          child: Align(
+}) {
+  // D5 : la modale est une route du navigateur racine, hors de l'arbre de l'écran : on y relaie le contexte d'écran (voir `ContexteEcran.relayer`).
+  final origine = context;
+  return showGeneralDialog<T>(
+    context: context,
+    barrierDismissible: fermetureParFond,
+    barrierLabel: 'Fermer la fenêtre',
+    barrierColor: JetonsShell.scrim,
+    transitionDuration: const Duration(milliseconds: 150),
+    transitionBuilder: (_, a, __, child) => FadeTransition(
+        opacity: a,
+        child: ScaleTransition(
+            scale: Tween(begin: 0.97, end: 1.0)
+                .animate(CurvedAnimation(parent: a, curve: Curves.easeOut)),
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: taille.largeurMax),
-                child: SizedBox(
-                  width: double.infinity, // `w-full max-w-*`
-                  child: Semantics(
-                    scopesRoute: true,
-                    namesRoute: true,
-                    explicitChildNodes: true,
-                    label: titre,
-                    child: Material(
-                      key: const Key('kit:modale-panneau'),
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
+            child: child)),
+    pageBuilder: (ctx, _, __) {
+      void fermer() => Navigator.of(ctx).pop();
+      return ContexteEcran.relayer(
+          origine,
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: taille.largeurMax),
+                  child: SizedBox(
+                    width: double.infinity, // `w-full max-w-*`
+                    child: Semantics(
+                      scopesRoute: true,
+                      namesRoute: true,
+                      explicitChildNodes: true,
+                      label: titre,
+                      child: Material(
+                        key: const Key('kit:modale-panneau'),
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: JetonsShell.ombrePop),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            boxShadow: JetonsShell.ombrePop),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                _Entete(
-                                    titre: titre,
-                                    sousTitre: sousTitre,
-                                    surFermer: fermer),
-                                Flexible(
-                                    child: SingleChildScrollView(
-                                        key: const Key('kit:modale-corps'),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 16),
-                                        child: corps)),
-                                if (pied != null) _Pied(pied(fermer)),
-                              ]),
+                            child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  _Entete(
+                                      titre: titre,
+                                      sousTitre: sousTitre,
+                                      surFermer: fermer),
+                                  Flexible(
+                                      child: SingleChildScrollView(
+                                          key: const Key('kit:modale-corps'),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 16),
+                                          child: corps)),
+                                  if (pied != null) _Pied(pied(fermer)),
+                                ]),
+                          ),
                         ),
                       ),
                     ),
@@ -160,10 +166,10 @@ Future<T?> afficherModale<T>(
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          ));
+    },
+  );
+}
 
 /// `U.confirm` : modale `sm` à deux boutons ; renvoie `true` sur confirmation, `false` sinon (Échap, fond, annulation).
 /// Le message est un TEXTE (jamais interprété) — pas d'injection par un nom de patient.
@@ -203,60 +209,65 @@ Future<T?> afficherTiroir<T>(
   double largeurMax = 576,
   required Widget corps,
   ConstruirePied? pied,
-}) =>
-    showGeneralDialog<T>(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: 'Fermer le panneau',
-      barrierColor: JetonsShell.scrim,
-      transitionDuration: const Duration(milliseconds: 200),
-      transitionBuilder: (_, a, __, child) => SlideTransition(
-          position: Tween(begin: const Offset(1, 0), end: Offset.zero)
-              .animate(CurvedAnimation(parent: a, curve: Curves.easeOut)),
-          child: child),
-      pageBuilder: (ctx, _, __) {
-        void fermer() => Navigator.of(ctx).pop();
-        return Align(
-          alignment: Alignment.centerRight,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: largeurMax),
-            child: Semantics(
-              scopesRoute: true,
-              namesRoute: true,
-              explicitChildNodes: true,
-              label: titre,
-              child: Material(
-                key: const Key('kit:tiroir-panneau'),
-                color: Colors.white,
-                elevation: 0,
-                child: DecoratedBox(
-                  decoration:
-                      const BoxDecoration(boxShadow: JetonsShell.ombrePop),
-                  child: SizedBox.expand(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _Entete(
-                              titre: titre,
-                              sousTitre: sousTitre,
-                              surFermer: fermer,
-                              tronquer: true),
-                          Expanded(
-                              child: SingleChildScrollView(
-                                  key: const Key('kit:tiroir-corps'),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 16),
-                                  child: corps)),
-                          if (pied != null) _Pied(pied(fermer)),
-                        ]),
+}) {
+  // D5 : le tiroir est une route du navigateur racine, hors de l'arbre de l'écran : on y relaie le contexte d'écran (voir `ContexteEcran.relayer`).
+  final origine = context;
+  return showGeneralDialog<T>(
+    context: context,
+    barrierDismissible: true,
+    barrierLabel: 'Fermer le panneau',
+    barrierColor: JetonsShell.scrim,
+    transitionDuration: const Duration(milliseconds: 200),
+    transitionBuilder: (_, a, __, child) => SlideTransition(
+        position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+            .animate(CurvedAnimation(parent: a, curve: Curves.easeOut)),
+        child: child),
+    pageBuilder: (ctx, _, __) {
+      void fermer() => Navigator.of(ctx).pop();
+      return ContexteEcran.relayer(
+          origine,
+          Align(
+            alignment: Alignment.centerRight,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: largeurMax),
+              child: Semantics(
+                scopesRoute: true,
+                namesRoute: true,
+                explicitChildNodes: true,
+                label: titre,
+                child: Material(
+                  key: const Key('kit:tiroir-panneau'),
+                  color: Colors.white,
+                  elevation: 0,
+                  child: DecoratedBox(
+                    decoration:
+                        const BoxDecoration(boxShadow: JetonsShell.ombrePop),
+                    child: SizedBox.expand(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _Entete(
+                                titre: titre,
+                                sousTitre: sousTitre,
+                                surFermer: fermer,
+                                tronquer: true),
+                            Expanded(
+                                child: SingleChildScrollView(
+                                    key: const Key('kit:tiroir-corps'),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 16),
+                                    child: corps)),
+                            if (pied != null) _Pied(pied(fermer)),
+                          ]),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          ));
+    },
+  );
+}
 
 /// `U.confirm({requireMotif: true})` : confirmation qui EXIGE un motif (journalisé, RG-12). Renvoie le motif, ou `null` si annulée.
 Future<String?> confirmerAvecMotif(BuildContext context,

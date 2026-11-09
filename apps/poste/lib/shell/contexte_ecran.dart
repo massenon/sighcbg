@@ -44,7 +44,9 @@ class ContexteEcran extends InheritedWidget {
 
   /// L'agent qui agit : l'agent de la session, sinon l'agent de DÉMONSTRATION du rôle (déterministe, nom = [utilisateur]). Les écrans ne lisent jamais
   /// [utilisateur] pour s'attribuer un geste : ils passent par `acteur(contexte)` du kit, qui lit ceci.
-  Agent get agent => agentConnecte ?? agentDemonstration(role, nom: utilisateur.isEmpty ? null : utilisateur);
+  Agent get agent =>
+      agentConnecte ??
+      agentDemonstration(role, nom: utilisateur.isEmpty ? null : utilisateur);
 
   /// Horloge du poste, fixable par un test ; `null` = l'horloge réelle (`C.aujourdhui()`).
   final DateTime Function()? horloge;
@@ -55,6 +57,29 @@ class ContexteEcran extends InheritedWidget {
     assert(c != null,
         'ContexteEcran absent : l’écran doit être monté par la coque.');
     return c!;
+  }
+
+  /// UNE COPIE de ce contexte pour un sous-arbre posé AILLEURS que sous l'écran (D5, Direction 09/11/2026). Les modales et les tiroirs sont des routes du
+  /// navigateur RACINE : ils se montent dans l'overlay, au-dessus de la page, donc HORS de l'arbre de l'écran. Tout widget qu'on y met et qui lit
+  /// `ContexteEcran.of(context)` (la fiche du patient, ses impressions) levait « ContexteEcran absent » — alors que la même fiche, ouverte en page, marchait.
+  /// Le relais se fait UNE fois, dans `afficherModale` et `afficherTiroir` : écrire `ContexteEcran(...)` à chaque appelant aurait laissé le défaut revenir
+  /// avec le prochain tiroir. Le contexte est celui de l'ouverture (instantané, comme `InheritedTheme.capture`) ; sans écran au-dessus de [origine]
+  /// (écran autonome, test de widget nu), l'enfant est rendu tel quel.
+  static Widget relayer(BuildContext origine, Widget enfant) {
+    final c = origine.getInheritedWidgetOfExactType<ContexteEcran>();
+    if (c == null) return enfant;
+    return ContexteEcran(
+        ecranId: c.ecranId,
+        role: c.role,
+        droit: c.droit,
+        magasin: c.magasin,
+        aller: c.aller,
+        utilisateur: c.utilisateur,
+        agentConnecte: c.agentConnecte,
+        horloge: c.horloge,
+        ouvre: c.ouvre,
+        donnees: c.donnees,
+        child: enfant);
   }
 
   static ContexteEcran? maybeOf(BuildContext context) =>
