@@ -175,7 +175,7 @@ void main() {
 
   group('la consultation enregistrée et les statistiques recomptées', () {
     final fiche = fiches.firstWhere((f) => f['code'] == 'cardiologie');
-    final patient = {'id': 'P1', 'code': 'CBG/1/26', 'nom': 'AKO', 'prenom': 'Bio', 'sexe': 'M'};
+    final patient = {'id': 'P1', 'code': 'CBG/1/26', 'nom': 'EXEMPLE', 'prenom': 'Patient', 'sexe': 'M'};
     test('la pièce porte la spécialité, les réponses et les champs de lecture du dossier', () {
       final s = specSeparer(fiche['modele'], {'q_fc': '70', 'diagnostic': 'RAS'});
       final c = specNouvelleConsultation(
