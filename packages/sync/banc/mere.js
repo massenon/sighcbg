@@ -38,6 +38,7 @@ const FAMILLES = {
   tarifs: 'R', chambres: 'R', produits: 'R', transcriptions: 'B',
 };
 const ESSENTIELLES = new Set(['tarifs', 'chambres']);
+const MOTIF_ARCHIVAGE = 'Jeu de démonstration, mise en production'; /* le même que cfbMotifArchivageJeuDemo (Dart) */
 
 const db = new DatabaseSync(DB);
 db.exec(`
@@ -457,7 +458,8 @@ const routes = {
   }),
   'POST /admin/referentiel': (req, b) => tx(() => {
     adminOk(req);
-    const op = { id: 'ref-' + crypto.randomUUID(), collection: b.collection, fiche: b.fiche, type: lire(b.collection, b.fiche) ? 'modifier' : 'creer', champs: b.champs, hlc: Date.now(), vu: {} };
+    const restaure = b.type === 'restaurer' && !!lire(b.collection, b.fiche); /* la mère remet en activité une fiche qu'elle a archivée (D6, RG-14) */
+    const op = { id: 'ref-' + crypto.randomUUID(), collection: b.collection, fiche: b.fiche, type: restaure ? 'restaurer' : (lire(b.collection, b.fiche) ? 'modifier' : 'creer'), champs: b.champs || {}, hlc: Date.now(), vu: {} };
     if (op.type === 'modifier') { const f = lire(b.collection, b.fiche); op.vu = Object.fromEntries(Object.keys(b.champs).map((k) => [k, f.fieldseq[k] || 0])); }
     return traiter(op, { uuid: 'mere', role: 'mere' });
   }),
@@ -468,11 +470,40 @@ const routes = {
   'POST /admin/reinit-fenetre': (req, b) => { adminOk(req); setMeta('reinit_ouverte', b.ouvrir ? 1 : 0); return { ouverte: !!b.ouvrir }; },
   'POST /admin/reinitialiser': (req, b) => {
     adminOk(req);
+    /* Deux modes, et le défaut ARCHIVE (décision D6 de la Direction, 09/11/2026, RG-14) : `archiver` passe chaque fiche active des collections d'activité à
+       l'état archivé par des opérations `archiver` du journal (propagées aux fileuls, sans purge ni changement d'époque, numérotation intacte) ; `supprimer`
+       est le vidage destructif d'origine, qui exige `suppression_physique: true`. Miroir de `Mere.reinitialiser` (mere.dart). */
+    const mode = b.mode === undefined ? 'archiver' : String(b.mode);
+    if (mode !== 'archiver' && mode !== 'supprimer') throw new Err(422, 'mode_invalide', 'Mode de réinitialisation inconnu : ' + mode + ' (archiver ou supprimer).');
     if (meta('reinit_ouverte') !== '1') throw new Err(403, 'reinit_fermee', 'La réinitialisation est fermée : l’administrateur doit ouvrir la fenêtre.');
     if (b.confirmation !== CLINIQUE) throw new Err(422, 'confirmation_invalide', 'Saisir le nom de la clinique pour confirmer.');
     if (!b.second) throw new Err(422, 'second_profil_requis', 'Un second profil (DAF ou Direction) doit confirmer.');
+    const motif = String(b.motif || '').trim();
+    if (mode === 'archiver' && !motif) throw new Err(422, 'motif_requis', 'Un motif est obligatoire pour archiver le jeu de démonstration (journalisé, RG-12).');
+    if (mode === 'supprimer' && b.suppression_physique !== true) throw new Err(422, 'suppression_physique_non_confirmee', 'La suppression physique contredit RG-14 : la confirmer explicitement (suppression_physique), ou archiver le jeu de démonstration.');
     const sauvegarde = `${DB === ':memory:' ? 'mere' : DB}.avant-reinit-${Date.now()}.bak`;
     db.exec(`VACUUM INTO '${sauvegarde.replace(/'/g, '')}'`);
+    if (mode === 'archiver') {
+      const conservees = new Set([...ESSENTIELLES, ...Object.keys(FAMILLES).filter((c) => FAMILLES[c] === 'R'), 'identifiants', 'postesClinique', 'deltasCompteurs']);
+      const marques = { _archiveLe: new Date().toISOString(), _archivePar: 'mere', _motifArchivage: MOTIF_ARCHIVAGE };
+      const archivees = {}; const brouillons = {};
+      tx(() => {
+        for (const { collection: c } of db.prepare('SELECT DISTINCT collection FROM fiches ORDER BY collection').all()) {
+          if (conservees.has(c)) continue;
+          for (const { id } of db.prepare('SELECT id FROM fiches WHERE collection=? AND archive=0 ORDER BY id').all(c)) {
+            const f = lire(c, id);
+            const seq = journaliser({ id: 'archi-m-' + crypto.randomUUID(), collection: c, fiche: id, type: 'modifier', hlc: Date.now() }, marques, 'mere');
+            journaliser({ id: 'archi-a-' + crypto.randomUUID(), collection: c, fiche: id, type: 'archiver', hlc: Date.now() }, {}, 'mere');
+            if (f.data.statut === 'brouillon') brouillons[c] = (brouillons[c] || 0) + 1;
+            f.archive = true; Object.assign(f.data, marques); for (const k of Object.keys(marques)) f.fieldseq[k] = seq;
+            ecrire(c, id, f);
+            archivees[c] = (archivees[c] || 0) + 1;
+          }
+        }
+        setMeta('reinit_ouverte', 0);
+      });
+      return { mode, sauvegarde, epoch: +meta('epoch'), archivees, brouillons, total: Object.values(archivees).reduce((a, n) => a + n, 0), motif: MOTIF_ARCHIVAGE };
+    }
     tx(() => {
       const liste = Array.from(ESSENTIELLES).map((c) => `'${c}'`).join(',');
       db.exec(`DELETE FROM operations WHERE collection NOT IN (${liste});
@@ -481,7 +512,7 @@ const routes = {
       db.exec('DELETE FROM portee;');
       setMeta('epoch', +meta('epoch') + 1); setMeta('reinit_ouverte', 0); setMeta('next_patient', 1000); setMeta('marqueur_epoch', 1);
     });
-    return { sauvegarde, epoch: +meta('epoch') };
+    return { mode, sauvegarde, epoch: +meta('epoch') };
   },
 };
 

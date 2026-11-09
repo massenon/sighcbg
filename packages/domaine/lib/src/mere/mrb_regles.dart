@@ -137,7 +137,9 @@ class MrbRefus {
 ///  1. droit d'annuler sur l'écran (la commande est ABSENTE sans lui : ce refus ne sert qu'à une écriture hors interface) ;
 ///  2. fenêtre ouverte (`reinit_fermee`) ;
 ///  3. nom de la clinique saisi à l'identique (`confirmation_invalide`) ;
-///  4. second profil renseigné (`second_profil_requis`) ET différent de l'auteur du geste (spec : le geste ne repose pas sur une seule personne).
+///  4. second profil renseigné (`second_profil_requis`) ET différent de l'auteur du geste (spec : le geste ne repose pas sur une seule personne) ;
+///  5. selon le mode : un MOTIF pour archiver (`motif_requis`), la confirmation EXPLICITE de la suppression physique pour supprimer
+///     (`suppression_physique_non_confirmee`, elle contredit RG-14).
 MrbRefus? mrbRefusReinit({
   required bool droitAnnuler,
   required bool fenetreOuverte,
@@ -145,6 +147,9 @@ MrbRefus? mrbRefusReinit({
   required String nomClinique,
   required String second,
   required String auteur,
+  String mode = mrbModeArchiver,
+  String motif = '',
+  bool suppressionConfirmee = false,
 }) {
   if (!droitAnnuler) return const MrbRefus('droit_refuse', 'Votre profil ne permet pas la réinitialisation de production.');
   if (!fenetreOuverte) return const MrbRefus('reinit_fermee', 'La réinitialisation est fermée : l’administrateur doit ouvrir la fenêtre.');
@@ -155,8 +160,18 @@ MrbRefus? mrbRefusReinit({
   if (second.trim().toLowerCase() == auteur.trim().toLowerCase()) {
     return const MrbRefus('second_profil_identique', 'Le second profil doit être une autre personne que celle qui réinitialise.');
   }
+  if (mode == mrbModeArchiver && motif.trim().isEmpty) {
+    return const MrbRefus('motif_requis', 'Un motif est obligatoire pour archiver le jeu de démonstration (journalisé, RG-12).');
+  }
+  if (mode == mrbModeSupprimer && !suppressionConfirmee) {
+    return const MrbRefus('suppression_physique_non_confirmee', 'La suppression physique contredit RG-14 : la confirmer explicitement, ou archiver le jeu de démonstration.');
+  }
   return null;
 }
+
+/// Les deux modes de la mise en production de la mère. Le défaut ARCHIVE (décision D6, 09/11/2026) : la suppression physique a sa propre porte.
+const String mrbModeArchiver = 'archiver';
+const String mrbModeSupprimer = 'supprimer';
 
 /// Temps restant de la fenêtre. `null` : on ne sait pas depuis quand elle est ouverte (ouverte par une autre console, ou avant celle-ci).
 Duration? mrbFenetreRestante({required DateTime? ouverteLe, required DateTime maintenant, Duration duree = mrbDureeFenetreReinit}) {

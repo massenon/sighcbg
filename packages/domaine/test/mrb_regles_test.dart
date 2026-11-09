@@ -94,9 +94,20 @@ void main() {
       String confirmation = 'NASSIERA TOO',
       String second = 'Mme DAF',
       String auteur = 'Admin',
+      String mode = mrbModeArchiver,
+      String motif = 'Mise en production',
+      bool suppression = false,
     }) =>
         mrbRefusReinit(
-            droitAnnuler: droit, fenetreOuverte: fenetre, confirmation: confirmation, nomClinique: 'NASSIERA TOO', second: second, auteur: auteur);
+            droitAnnuler: droit,
+            fenetreOuverte: fenetre,
+            confirmation: confirmation,
+            nomClinique: 'NASSIERA TOO',
+            second: second,
+            auteur: auteur,
+            mode: mode,
+            motif: motif,
+            suppressionConfirmee: suppression);
 
     test('chaque garde refuse en se nommant, dans l’ordre', () {
       expect(refus(droit: false)!.code, 'droit_refuse');
@@ -106,6 +117,13 @@ void main() {
       expect(refus(second: '  ')!.code, 'second_profil_requis');
       expect(refus(second: 'admin')!.code, 'second_profil_identique');
       expect(refus(), isNull);
+    });
+
+    test('D6 : le défaut ARCHIVE et exige un motif ; la suppression physique exige sa confirmation explicite (elle contredit RG-14)', () {
+      expect(refus(motif: '  ')!.code, 'motif_requis');
+      expect(refus(mode: mrbModeSupprimer, motif: '')!.code, 'suppression_physique_non_confirmee', reason: 'supprimer ne demande pas de motif, mais sa confirmation');
+      expect(refus(mode: mrbModeSupprimer, motif: '', suppression: true), isNull);
+      expect(refus(second: '  ', motif: '')!.code, 'second_profil_requis', reason: 'les gardes communes passent avant le motif');
     });
 
     test('un nom de clinique vide ne se confirme jamais par une saisie vide', () {

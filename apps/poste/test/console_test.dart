@@ -279,19 +279,19 @@ void main() {
   });
 
   testConsole(
-      'maintenance : fenêtre fermée → la réinitialisation est ABSENTE ; ouverte → saisie préservée',
+      'maintenance : fenêtre fermée → l’archivage est ABSENT ; ouverte → saisie préservée, motif transmis, mode archiver',
       (t) async {
     final f = await monter(t);
     await t.tap(find.text('Maintenance'));
     await t.pumpAndSettle();
-    expect(find.widgetWithText(FilledButton, 'Réinitialiser'), findsNothing);
+    expect(find.widgetWithText(FilledButton, 'Archiver'), findsNothing);
     expect(find.textContaining('absente, pas grisée'), findsOneWidget);
     f.etat = {...f.etat, 'reinit_ouverte': true};
     await t.tap(find.byType(Switch)); // la mère répond ensuite « ouverte »
     await t.pumpAndSettle();
     expect(f.appels.any((a) => a.startsWith('POST /admin/reinit-fenetre')),
         isTrue);
-    expect(find.widgetWithText(FilledButton, 'Réinitialiser'), findsOneWidget);
+    expect(find.widgetWithText(FilledButton, 'Archiver'), findsOneWidget);
     await t.enterText(
         find.widgetWithText(
             TextField, 'Tapez le nom de la clinique pour confirmer'),
@@ -300,13 +300,16 @@ void main() {
         find.widgetWithText(
             TextField, 'Second profil confirmant (DAF ou Direction)'),
         'DAF');
-    await t.tap(find.widgetWithText(FilledButton, 'Réinitialiser'));
+    await t.enterText(find.widgetWithText(TextField, 'Motif de l’archivage (obligatoire)'), 'Mise en production');
+    await t.tap(find.widgetWithText(FilledButton, 'Archiver'));
     await t.pumpAndSettle();
     expect(
         f.appels.any((a) =>
             a.startsWith('POST /admin/reinitialiser') &&
             a.contains(IdentiteClinique.confirmationReinit) &&
-            a.contains('DAF')),
+            a.contains('DAF') &&
+            a.contains('archiver') &&
+            a.contains('Mise en production')),
         isTrue);
   });
 

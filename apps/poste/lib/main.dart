@@ -207,7 +207,8 @@ Future<void> main() async {
         magasin,
         TransportFileul(
             lire: moteur.liste,
-            ecrireFiche: (c, f, {required existe, required champs}) => moteur.ecrire(c, f, existe: existe, champs: champs)),
+            ecrireFiche: (c, f, {required existe, required champs}) => moteur.ecrire(c, f, existe: existe, champs: champs),
+            restaurerFiche: moteur.restaurer),
         enLectureSeule: collectionsDeLaMereSeule,
         liaison: () async {
           final i = await moteur.instantane();

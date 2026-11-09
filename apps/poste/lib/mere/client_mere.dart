@@ -273,11 +273,16 @@ class ClientMere {
   Future<void> ouvrirFenetreReinit(bool ouvrir) =>
       _appel('POST', '/admin/reinit-fenetre', {'ouvrir': ouvrir});
 
+  /// La mise en production de la mère. Le défaut ARCHIVE (D6, 09/11/2026, RG-14) et exige un [motif] ; [supprimer] est le vidage destructif, qui exige en plus
+  /// la confirmation explicite de la suppression physique.
   Future<String> reinitialiser(
-          {required String confirmation, required String second}) async =>
+          {required String confirmation, required String second, String motif = '', bool supprimer = false}) async =>
       '${(await _appel('POST', '/admin/reinitialiser', {
             'confirmation': confirmation,
-            'second': second
+            'second': second,
+            'mode': supprimer ? 'supprimer' : 'archiver',
+            if (motif.isNotEmpty) 'motif': motif,
+            if (supprimer) 'suppression_physique': true,
           }))['sauvegarde']}';
 
   Future<Supervision> supervision() async {

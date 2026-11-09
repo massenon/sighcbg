@@ -16,6 +16,30 @@ import '../donnees/magasin.dart';
 ///   MARQUÉES et comptées ; la Direction tranche.
 /// * **lits** : une admission active par lit ; deux admissions actives sur le même lit sont marquées `litEnConflit`.
 
+/// L'ARCHIVAGE L'EMPORTE (RG-14, D6 du 09/11/2026 : la mise en production archive le jeu de démonstration d'un poste ou de la mère). La fusion à trois voies garde
+/// ce que l'agent a changé ICI : un poste qui avait modifié le statut d'une fiche pendant que la mère l'archivait aurait donc ÉCRASÉ l'archivage, et la fiche
+/// de démonstration serait revenue en activité. Quand l'une des deux versions ([local] ou [recu]) est archivée, [fusion] l'est aussi : `statut: 'archive'`, ancien
+/// statut gardé pour la restauration, marques (date, auteur, motif) reprises de la version archivée. Une restauration, elle, est un changement de statut
+/// ordinaire : si la fiche était DÉJÀ archivée à la dernière synchronisation ([base]), l'archivage n'est plus une nouveauté et la fusion à trois voies décide
+/// seule, donc une restauration (de l'un ou de l'autre poste) se propage. Modifie [fusion] en place ; rend vrai si l'archivage a été imposé.
+bool fusionnerArchivage(Map<String, Object?> fusion, Fiche local, Map<String, Object?> recu, {Map<String, Object?>? base}) {
+  if (base != null && base['statut'] == 'archive') return false;
+  final localArchive = local['statut'] == 'archive', recuArchive = recu['statut'] == 'archive';
+  if (!localArchive && !recuArchive) return false;
+  if (fusion['statut'] == 'archive' && fusion.containsKey('statutAvantArchivage')) return false;
+  final source = recuArchive ? recu : local;
+  final autre = recuArchive ? local : recu;
+  // Le statut d'avant : celui que la version archivée avait gardé, sinon le statut de l'AUTRE version (la fiche active), sinon celui de la fusion.
+  final avant = source['statutAvantArchivage'] ?? (autre['statut'] != 'archive' ? autre['statut'] : null) ?? (fusion['statut'] != 'archive' ? fusion['statut'] : null);
+  fusion['statut'] = 'archive';
+  if (avant != null) fusion['statutAvantArchivage'] = avant;
+  for (final k in const ['_archiveLe', '_archivePar', '_motifArchivage']) {
+    final v = source[k] ?? autre[k];
+    if (v != null) fusion[k] = v;
+  }
+  return true;
+}
+
 /// Les champs d'une fiche qui sont des COMPTEURS (additionnés, jamais remplacés).
 const Map<String, Set<String>> champsCompteurs = {
   'produits': {'stockGros', 'stockDetail', 'stock'},

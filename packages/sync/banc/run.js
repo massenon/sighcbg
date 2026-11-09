@@ -357,7 +357,7 @@ const scenarios = {
     await m.fermer();
   },
   async R8() {
-    courant = 'SYNC-R9/R16/R17 · réinitialisation en production : fenêtre, second profil, sauvegarde, époque';
+    courant = 'SYNC-R9/R16/R17 · SUPPRESSION PHYSIQUE en production (mode supprimer) : fenêtre, second profil, sauvegarde, époque';
     const m = await monde(); const f1 = await m.fileul('F1'); const f2 = await m.fileul('F2');
     await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'À effacer' } });
     await m.mere.admin('POST', '/admin/referentiel', { collection: 'tarifs', fiche: 'CONSULT', champs: { prix: 5000 } });
@@ -369,14 +369,14 @@ const scenarios = {
     const ferme = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });
     verifier('fenêtre fermée : réinitialisation refusée, nommée', ferme.status === 403 && ferme.json.code === 'reinit_fermee', ferme);
     await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
-    const sans2 = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI' });
+    const sans2 = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', mode: 'supprimer', suppression_physique: true });
     verifier('sans second profil : refusée', sans2.status === 422 && sans2.json.code === 'second_profil_requis', sans2);
     const mauvaise = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'autre', second: 'daf' });
     verifier('mauvaise confirmation : refusée', mauvaise.status === 422, mauvaise);
     m.reseau.regler('ferme');
     await f2.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Non envoyé' } });
-    const ok = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });
-    verifier('réinitialisation acceptée, époque + 1', ok.status === 200 && ok.json.epoch === 2, ok);
+    const ok = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf', mode: 'supprimer', suppression_physique: true });
+    verifier('suppression physique acceptée, époque + 1', ok.status === 200 && ok.json.epoch === 2, ok);
     verifier('une SAUVEGARDE préalable existe', ok.json.sauvegarde && fs.existsSync(ok.json.sauvegarde), ok.json.sauvegarde);
     const perime = await m.mere.direct('POST', '/sync/push', { epoch: 1, horloge: Date.now(), ops: [{ id: 'ancien-1', appareil: brut, epoch: 1, collection: 'patients', fiche: 'zombie', type: 'creer', champs: { nom: 'Zombie', code: 'PROV-x' } }] },
       { Authorization: 'Bearer ' + jb.jeton });
@@ -390,6 +390,52 @@ const scenarios = {
     verifier('les ESSENTIELS (tarifs) sont conservés partout', await attendre(async () => (await f1.vue('tarifs', 'CONSULT')).data.prix === 5000 && (await f2.vue('tarifs', 'CONSULT')).data.prix === 5000, 10000));
     verifier('les opérations d\'avant ne ressuscitent pas', (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 0);
     verifier('la fenêtre se referme d\'elle-même', (await m.mere.admin('GET', '/admin/etat')).json.reinit_ouverte === false);
+    await m.fermer();
+  },
+  async R8a() {
+    courant = 'SYNC-D6 · mise en production par ARCHIVAGE (défaut, RG-14) : motif exigé, rien supprimé, époque et numérotation intactes, propagé aux fileuls, restaurable';
+    const m = await monde(); const f1 = await m.fileul('F1'); const f2 = await m.fileul('F2');
+    const p1 = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Démo UN', telephone: '111' } });
+    const p2 = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Démo DEUX' } });
+    await f1.ecrire({ type: 'creer', collection: 'constantes', champs: { patient: 'x', pouls: 80 } });
+    await m.mere.admin('POST', '/admin/referentiel', { collection: 'tarifs', fiche: 'CONSULT', champs: { prix: 5000 } });
+    await attendre(async () => (await f2.liste('patients')).length === 2 && (await f2.vue('tarifs', 'CONSULT')).existe, 15000);
+    const codesAvant = (await f1.liste('patients')).map((x) => x.data.code).sort();
+    await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
+    const sansMotif = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });
+    verifier('sans motif : archivage refusé, nommé', sansMotif.status === 422 && sansMotif.json.code === 'motif_requis', sansMotif);
+    const sansMode = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf', mode: 'supprimer' });
+    verifier('suppression physique sans confirmation explicite : refusée, nommée', sansMode.status === 422 && sansMode.json.code === 'suppression_physique_non_confirmee', sansMode);
+    verifier('rien n\'a bougé après ces refus', (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 2);
+    /* Un fileul hors ligne modifie un dossier pendant l'archivage : sa modification ne ressuscite rien. */
+    m.reseau.regler('ferme');
+    await f2.ecrire({ type: 'modifier', collection: 'patients', fiche: p1.fiche, champs: { telephone: '222' }, vu: {} });
+    const ok = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf', motif: 'Mise en production' });
+    verifier('archivage accepté, époque INCHANGÉE (1)', ok.status === 200 && ok.json.mode === 'archiver' && ok.json.epoch === 1, ok);
+    verifier('une SAUVEGARDE préalable existe', ok.json.sauvegarde && fs.existsSync(ok.json.sauvegarde), ok.json.sauvegarde);
+    verifier('le bilan nomme les collections : 2 patients, 1 constante, rien pour tarifs', ok.json.archivees.patients === 2 && ok.json.archivees.constantes === 1 && ok.json.archivees.tarifs === undefined && ok.json.total === 3, ok.json);
+    verifier('les dossiers existent toujours à la mère, archivés (RG-14)', (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 0 && (await m.mere.admin('GET', '/admin/fiche?collection=patients&id=' + p1.fiche)).json.archive === true);
+    const mf = (await m.mere.admin('GET', '/admin/fiche?collection=patients&id=' + p1.fiche)).json;
+    verifier('la fiche garde son contenu et porte motif, acteur et date', mf.data.nom === 'Démo UN' && mf.data._motifArchivage === 'Jeu de démonstration, mise en production' && mf.data._archivePar === 'mere' && !!mf.data._archiveLe, mf.data);
+    m.reseau.regler('ouvert');
+    verifier('les DEUX fileuls reçoivent l\'archivage (dossiers archivés, aucun purgé)', await attendre(async () => {
+      const a = await f1.liste('patients'); const b = await f2.liste('patients');
+      return a.length === 2 && b.length === 2 && a.every((x) => x.archive) && b.every((x) => x.archive);
+    }, 20000));
+    verifier('la modification hors ligne du fileul ne ressuscite pas le dossier (refus nommé « fiche_archivée »), et l\'archivé reste archivé', (await m.mere.admin('GET', '/admin/fiche?collection=patients&id=' + p1.fiche)).json.archive === true);
+    verifier('le fileul a bien le motif sur sa copie', (await f2.vue('patients', p2.fiche)).data._motifArchivage === 'Jeu de démonstration, mise en production');
+    verifier('les ESSENTIELS (tarifs) ne sont pas archivés', (await f2.vue('tarifs', 'CONSULT')).archive === false && (await m.mere.admin('GET', '/admin/compte?collection=tarifs')).json.n === 1);
+    verifier('aucun appareil n\'a exporté ni purgé (pas de changement d\'époque)', (await f1.etat()).exports.length === 0 && (await f2.etat()).exports.length === 0);
+    verifier('la fenêtre se referme d\'elle-même', (await m.mere.admin('GET', '/admin/etat')).json.reinit_ouverte === false);
+    /* La numérotation ne recule pas (RG-01) : le prochain dossier ne reprend aucun code archivé. */
+    const p3 = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Vrai patient' } });
+    await attendre(async () => f1.vide(), 15000);
+    const codes = (await f1.liste('patients')).map((x) => x.data.code);
+    const nouveau = (await f1.vue('patients', p3.fiche)).data.code;
+    verifier('le premier vrai dossier a un code NEUF, jamais un code archivé', !codesAvant.includes(nouveau) && new Set(codes).size === 3, { codesAvant, nouveau });
+    /* Une fiche archivée se restaure : c'est une opération normale. */
+    await f1.ecrire({ type: 'restaurer', collection: 'patients', fiche: p2.fiche });
+    verifier('restaurée depuis un fileul, la fiche redevient active partout', await attendre(async () => !(await f2.vue('patients', p2.fiche)).archive && (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 2, 15000));
     await m.fermer();
   },
   async R21() {
@@ -783,7 +829,7 @@ const scenarios = {
     await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Avant reinit' } });
     await attendre(async () => { const e = (await m.mere.admin('GET', '/admin/etat')).json; return (await f1.vide()) && e.rep_seq === e.seq_max; }, 15000);
     await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
-    verifier('réinitialisation acceptée', (await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' })).status === 200);
+    verifier('suppression physique acceptée', (await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf', mode: 'supprimer', suppression_physique: true })).status === 200);
     await attendre(async () => (await f1.liste('patients')).length === 0, 10000);
     await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Apres reinit' } });
     await attendre(async () => { const e = (await m.mere.admin('GET', '/admin/etat')).json; return (await f1.vide()) && e.rep_seq === e.seq_max && e.seq_max > 0; }, 15000);

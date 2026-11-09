@@ -51,6 +51,63 @@ class CfbJeu {
   static Future<String> Function(String nom) charger = (nom) => rootBundle.loadString('assets/donnees/jeu/$nom.json');
 }
 
+/// LE GESTE PAR DÉFAUT DE MISE EN PRODUCTION (décision D6 de la Direction, 09/11/2026) : ARCHIVER le jeu de démonstration, ne rien effacer (RG-14).
+///
+/// Pour chaque collection d'ACTIVITÉ (la même liste que [cfbViderActivite] : ni essentielle, ni technique), TOUTES les fiches actives passent à l'état archivé
+/// avec le motif [cfbMotifArchivageJeuDemo], l'acteur de la session et la date — brouillons compris, jamais validés au passage. Les
+/// files d'attente, tâches bloquées et notifications sont des collections d'activité comme les autres. Les échéances fiscales restent en service, remises à
+/// « non payée », et leur paiement de démonstration est rangé dans `paiementsArchives` ([cfbRemettreEcheance]).
+///
+/// Ce qui ne bouge PAS : les collections essentielles et techniques (personnel, tarifs, plan comptable, comptes, droits, identité, paramètres fiscaux…), les
+/// salaires du personnel, les comptes de démonstration, la Corbeille, et le JOURNAL D'AUDIT — il reçoit une entrée par collection touchée (compte archivé,
+/// dont brouillons) et une entrée de synthèse (RG-12). Les compteurs de numérotation ne reculent pas : les générateurs lisent les fiches archivées comprises,
+/// donc un code archivé n'est jamais réattribué (RG-01). Tout se restaure depuis la Corbeille de `cfg-systeme`.
+///
+/// Garde-fous TENUS ICI, non seulement par le bouton : la bascule « autoriser la réinitialisation » doit être ouverte et [motifDuGeste] (celui que l'agent a
+/// saisi) doit être renseigné, sinon [CfbRefusArchivage] est levée AVANT toute écriture. Le motif du geste va au journal ; celui des fiches est fixe.
+CfbBilanArchivage cfbArchiverJeuDemo(Magasin m, {required String motifDuGeste}) {
+  final refus = cfbRefusArchivage(autorisee: cfbReglage(m, _idReinit, false) == true, motif: motifDuGeste);
+  if (refus != null) throw CfbRefusArchivage(refus);
+  const motif = cfbMotifArchivageJeuDemo;
+  final conservees = {...cfbEssentielles, ...cfbCollectionsTechniques};
+  final par = m.utilisateur;
+  final le = m.horloge();
+  final marques = cfbMarquesArchivage(motif: motif, par: par, le: le);
+  final archivees = <String, int>{}, brouillons = <String, int>{};
+  var echeancesRemises = 0;
+  final noms = [for (final n in cfbNomsCollections()) if (!conservees.contains(n)) n];
+  for (final n in noms) {
+    final col = m.collection(n);
+    if (n == 'echeancesFiscales') {
+      final remises = [for (final f in col.toutes) cfbRemettreEcheance(f, motif: motif, par: par, le: le) ?? f];
+      echeancesRemises = col.toutes.where(cfbEcheanceAPaiement).length;
+      if (echeancesRemises > 0) {
+        col.remplacerContenu(remises);
+        m.journaliser('Échéances fiscales remises à non payées', col.module, col.entite ?? n, n, {'payees': echeancesRemises},
+            {'paiementsArchives': echeancesRemises, 'motif': motif});
+      }
+      continue;
+    }
+    final avant = col.actives.length;
+    if (avant == 0) continue;
+    final r = col.archiverTout(marques: marques, estBrouillon: cfbEstBrouillon);
+    archivees[n] = r.archivees;
+    brouillons[n] = r.brouillons;
+    m.journaliser('Archivage du jeu de démonstration', col.module, col.entite ?? n, n, {'actives': avant}, cfbApresArchivageCollection(r.archivees, r.brouillons, motif));
+  }
+  final bilan = CfbBilanArchivage(parCollection: archivees, brouillons: brouillons, echeancesRemises: echeancesRemises, motif: motif);
+  m.journaliser('Archivage du jeu de démonstration (synthèse)', 'CFG', 'Base', 'archivage', null, {
+    'tables': bilan.tables,
+    'fiches': bilan.total,
+    'brouillons': bilan.totalBrouillons,
+    'echeancesRemises': echeancesRemises,
+    'motif': motif,
+    'motifDuGeste': motifDuGeste.trim(),
+    'parCollection': archivees,
+  });
+  return bilan;
+}
+
 /// `S.viderActivite(motif)` : vide les données d'ACTIVITÉ, garde l'essentiel (paramétrage, référentiels, comptes, droits, catalogues, journal), et le DIT au
 /// journal — l'entrée de vidage est la première du journal conservé (RG-12). Le calendrier fiscal, dérivé d'un document, revient aussitôt SANS règlement.
 CfbPlanVidage cfbViderActivite(Magasin m, String motif) {
@@ -119,6 +176,29 @@ CfbPlanVidage cfbViderActivite(Magasin m, String motif) {
     'motif': motif
   });
   return plan;
+}
+
+/// Le geste complet, de la confirmation au toast : motif obligatoire, confirmation dangereuse qui DIT que rien n'est supprimé, puis l'archivage. Partagé par
+/// l'onglet « Jeux de test » et le bouton de l'onglet « Installation » : un seul chemin, un seul bilan. Rend le bilan, ou `null` si l'agent renonce.
+Future<CfbBilanArchivage?> cfbLancerArchivage(BuildContext ctx, ContexteEcran c) async {
+  final m = c.magasin;
+  final conservees = {...cfbEssentielles, ...cfbCollectionsTechniques};
+  final nb = [for (final n in cfbNomsCollections()) if (!conservees.contains(n) && m.collection(n).actives.isNotEmpty) n].length;
+  final motif = await confirmerAvecMotif(ctx,
+      titre: 'Archiver le jeu de démonstration ?',
+      message:
+          'Les fiches actives des $nb tables d’activité (patients, consultations, factures, écritures, brouillons compris, files d’attente, notifications…) passent à l’état archivé, avec le motif « $cfbMotifArchivageJeuDemo ». Rien n’est supprimé (RG-14) : tout se retrouve et se restaure depuis la Corbeille. Le personnel, les tarifs, le plan comptable, les comptes, les droits, l’identité et le journal d’audit ne bougent pas. Générer une sauvegarde d’abord.',
+      libelleOk: 'Archiver le jeu de démonstration',
+      dangereux: true);
+  if (motif == null || !ctx.mounted) return null;
+  try {
+    final bilan = cfbArchiverJeuDemo(m, motifDuGeste: motif);
+    ToastsSigh.afficher(ctx, cfbToastArchivage(bilan), type: TypeToast.succes, detail: 'Journal d’audit conservé : une entrée par table et une synthèse.');
+    return bilan;
+  } on CfbRefusArchivage catch (e) {
+    ToastsSigh.afficher(ctx, 'Archivage refusé.', type: TypeToast.erreur, detail: e.motif);
+    return null;
+  }
 }
 
 /// `S.reset()` : la base revient au jeu initial, paramétrage compris. L'autorisation de réinitialiser (une bascule du poste, non une donnée du jeu) survit.
@@ -232,15 +312,8 @@ class _Installation extends StatelessWidget {
       ToastsSigh.afficher(ctx, 'Réinitialisation verrouillée.', type: TypeToast.erreur, detail: 'Autoriser d’abord l’effacement des jeux de test, à l’onglet « Jeux de test ».');
       return;
     }
-    final motif = await confirmerAvecMotif(ctx,
-        titre: 'Réinitialiser toutes les données de démonstration ?',
-        message:
-            'Les données de test — patients, consultations, factures, mouvements, écritures — seront retirées. Le paramétrage, les référentiels, les comptes, la matrice des droits et les catalogues sont conservés. L’opération est journalisée et irréversible : générer une sauvegarde d’abord.',
-        libelleOk: 'Réinitialiser',
-        dangereux: true);
-    if (motif == null || !ctx.mounted) return;
-    final bilan = cfbViderActivite(c.magasin, motif);
-    ToastsSigh.afficher(ctx, cfbToastVidage(bilan), type: TypeToast.succes, detail: 'Paramétrage, référentiels, comptes et droits conservés.');
+    // Le geste par défaut de mise en production ARCHIVE (D6, RG-14) : la suppression physique a sa propre porte, à l'onglet « Jeux de test ».
+    await cfbLancerArchivage(ctx, c);
     rafraichir();
   }
 
@@ -620,10 +693,20 @@ class _ActivitesPaie extends StatelessWidget {
 // Onglet « Jeux de test » — la bascule fermée par défaut : fermée, le bouton est ABSENT et non grisé
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-class _JeuxDeTest extends StatelessWidget {
+class _JeuxDeTest extends StatefulWidget {
   const _JeuxDeTest({required this.c, required this.rafraichir});
   final ContexteEcran c;
   final VoidCallback rafraichir;
+  @override
+  State<_JeuxDeTest> createState() => _EtatJeuxDeTest();
+}
+
+class _EtatJeuxDeTest extends State<_JeuxDeTest> {
+  ContexteEcran get c => widget.c;
+  VoidCallback get rafraichir => widget.rafraichir;
+
+  /// Le bilan du dernier archivage de cette ouverture de l'écran : dit combien de fiches par table, et combien de brouillons.
+  CfbBilanArchivage? _bilan;
 
   bool get _autorisee => cfbReglage(c.magasin, _idReinit, false) == true;
 
@@ -645,16 +728,33 @@ class _JeuxDeTest extends StatelessWidget {
     rafraichir();
   }
 
-  Future<void> _vider(BuildContext ctx, CfbPlanVidage plan) async {
+  Future<void> _archiver(BuildContext ctx) async {
+    final b = await cfbLancerArchivage(ctx, c);
+    if (b != null) setState(() => _bilan = b);
+    rafraichir();
+  }
+
+  /// LA SUPPRESSION PHYSIQUE : seconde porte, nommée, qui CONTREDIT RG-14 et le dit. Gardée pour un poste d'essai qu'on remet à neuf (jamais pour la mise en
+  /// production, qui archive) : le motif d'abord, puis une confirmation à part dont le titre et le bouton disent « suppression physique ».
+  Future<void> _viderPhysiquement(BuildContext ctx, CfbPlanVidage plan) async {
     final motif = await confirmerAvecMotif(ctx,
-        titre: 'Vider les jeux de test ?',
+        titre: 'Suppression physique des jeux de test ?',
         message:
-            'Les ${plan.tables} tables d’activité seront vidées : patients, consultations, factures, mouvements, ordonnances. Les paramètres, les référentiels et le compte administrateur sont conservés. L’opération est journalisée et irréversible — générer une sauvegarde d’abord.',
-        libelleOk: 'Vider les jeux de test',
+            'Les ${plan.tables} tables d’activité seront VIDÉES, la Corbeille et le journal d’audit aussi. Ce n’est pas l’archivage : c’est une suppression physique, qui contredit RG-14 et ne se défait pas. Pour mettre le poste en production, utiliser « Archiver le jeu de démonstration ».',
+        libelleOk: 'Continuer',
         dangereux: true);
     if (motif == null || !ctx.mounted) return;
+    final sure = await confirmerSigh(ctx,
+        titre: 'Suppression physique : dernière confirmation',
+        message:
+            'Vous allez SUPPRIMER PHYSIQUEMENT ${nombre(plan.enregistrements)} enregistrements, sans archivage ni retour possible depuis la Corbeille. Les numéros de dossier et de pièce repartiront du début. Une sauvegarde préalable est indispensable.',
+        libelleOk: 'Supprimer physiquement',
+        libelleAnnuler: 'Renoncer',
+        dangereux: true);
+    if (!sure || !ctx.mounted) return;
     final bilan = cfbViderActivite(c.magasin, motif);
-    ToastsSigh.afficher(ctx, cfbToastVidage(bilan), type: TypeToast.succes, detail: 'Paramétrage, référentiels, comptes et droits conservés.');
+    setState(() => _bilan = null);
+    ToastsSigh.afficher(ctx, cfbToastVidage(bilan), type: TypeToast.succes, detail: 'Suppression physique faite. Paramétrage, référentiels, comptes et droits conservés.');
     rafraichir();
   }
 
@@ -699,12 +799,15 @@ class _JeuxDeTest extends StatelessWidget {
     final tailles = {for (final n in noms) n: m.collection(n).toutes.length};
     final plan = cfbPlanVidage(tailles, {...cfbEssentielles, ...cfbCollectionsTechniques});
     final conservees = [for (final n in cfbEssentielles) if (tailles.containsKey(n)) n];
+    final actives = {for (final n in plan.collections) n: m.collection(n).actives.length};
+    final aArchiver = [for (final e in actives.entries) if (e.value > 0) e.key];
+    final fichesActives = actives.values.fold<int>(0, (a, b) => a + b);
     final autorisee = _autorisee;
     return cfaPile([
       cfaKpis([
         CfaKpi('Réinitialisation', autorisee ? 'Autorisée' : 'Verrouillée', autorisee ? 'unlock' : 'lock', autorisee ? 'danger' : 'success',
-            autorisee ? 'Le poste accepte l’effacement des jeux de test' : 'Aucun effacement possible'),
-        CfaKpi('Tables d’activité', nombre(plan.tables), 'database', 'info', '${nombre(plan.enregistrements)} enregistrements'),
+            autorisee ? 'Le poste accepte l’archivage du jeu de démonstration' : 'Aucun effacement possible'),
+        CfaKpi('Tables d’activité', nombre(plan.tables), 'database', 'info', '${nombre(fichesActives)} fiches actives, ${nombre(plan.enregistrements)} au total'),
         CfaKpi('Tables de paramétrage préservées', nombre(noms.length - plan.tables), 'shield-check', 'success', 'Tarifs, secteurs, conventions, comptes'),
       ]),
       CarteSigh(
@@ -727,27 +830,66 @@ class _JeuxDeTest extends StatelessWidget {
                     ])),
                   ])))),
       CarteSigh(
-          titre: 'Ce qui serait effacé, ce qui serait conservé',
+          titre: 'Ce qui serait archivé, ce qui serait conservé',
           child: LayoutBuilder(builder: (_, k) {
-            final a = _puces('Effacé — données d’activité', [for (final n in plan.collections.take(24)) '$n (${tailles[n]})'], danger: true);
+            final a = _puces('Archivé — données d’activité (fiches actives)', [for (final n in aArchiver.take(24)) '$n (${actives[n]})'], danger: true);
             final b = _puces('Conservé — paramétrage et référentiels', [for (final n in conservees) '$n (${tailles[n]})'], danger: false);
             return k.maxWidth >= 640
                 ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: a), const SizedBox(width: 12), Expanded(child: b)])
                 : cfaPile([a, b], espace: 12);
           })),
       cfbNote(
-          'L’administrateur, les réglages et les référentiels administrés par la clinique ne sont jamais effacés. La réinitialisation ne retire que les données engendrées pour la démonstration — patients, consultations, factures, mouvements.'),
+          'Mettre le poste en production, c’est ARCHIVER le jeu de démonstration (RG-14 : rien n’est supprimé). Chaque fiche active garde son contenu, passe à l’état archivé avec le motif « $cfbMotifArchivageJeuDemo », l’auteur et la date, et se restaure depuis la Corbeille. Les brouillons sont archivés comme les autres, jamais validés. L’administrateur, les réglages, les référentiels, le journal d’audit et les compteurs de numérotation ne sont pas touchés : un code archivé n’est jamais réattribué (RG-01).'),
+      if (_bilan != null) _carteBilan(_bilan!),
       if (autorisee)
         CarteSigh(
-            titre: 'Réinitialisation',
+            titre: 'Mise en production',
             child: Wrap(spacing: 8, runSpacing: 8, children: [
               if (c.droit.editer) ...[
-                BoutonSigh(libelle: 'Vider les jeux de test', icone: LucideIcons.trash2, variante: VarianteBouton.danger, onPressed: () => _vider(context, plan)),
+                BoutonSigh(
+                    key: const Key('cfb:reinit:archiver'),
+                    libelle: 'Archiver le jeu de démonstration',
+                    icone: LucideIcons.archive,
+                    variante: VarianteBouton.danger,
+                    onPressed: () => _archiver(context)),
                 BoutonSigh(libelle: 'Régénérer le jeu de démonstration complet', icone: LucideIcons.rotateCcw, variante: VarianteBouton.secondaire, onPressed: () => _regenerer(context)),
               ]
             ]))
       else
-        const CarteSigh(titre: 'Réinitialisation', child: VideSigh('Réinitialisation verrouillée — activer l’autorisation ci-dessus pour la rendre possible.', icone: LucideIcons.lock)),
+        const CarteSigh(titre: 'Mise en production', child: VideSigh('Réinitialisation verrouillée — activer l’autorisation ci-dessus pour la rendre possible.', icone: LucideIcons.lock)),
+      if (autorisee && c.droit.editer)
+        CarteSigh(
+            titre: 'Suppression physique (hors RG-14)',
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const NoteSigh(
+                  'La suppression physique CONTREDIT RG-14 : les fiches d’activité, la Corbeille et le journal d’audit sont vidés, sans retour possible, et les numéros de dossier et de pièce repartent du début. Elle ne sert qu’à remettre à neuf un poste d’essai. Pour la mise en production, archiver.',
+                  ton: TonSigh.attention,
+                  icone: LucideIcons.triangleAlert),
+              const SizedBox(height: 12),
+              BoutonSigh(
+                  key: const Key('cfb:reinit:supprimer'),
+                  libelle: 'Suppression physique des jeux de test',
+                  icone: LucideIcons.trash2,
+                  variante: VarianteBouton.secondaire,
+                  onPressed: () => _viderPhysiquement(context, plan)),
+            ])),
     ]);
   }
+
+  Widget _carteBilan(CfbBilanArchivage b) => CarteSigh(
+      titre: 'Bilan de l’archivage',
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(cfbToastArchivage(b), key: const Key('cfb:reinit:bilan'), style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
+        const SizedBox(height: 4),
+        Text('${nombre(b.echeancesRemises)} échéance(s) fiscale(s) remise(s) à non payée(s), leur paiement de démonstration rangé dans `paiementsArchives`.',
+            style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500)),
+        const SizedBox(height: 8),
+        Wrap(spacing: 4, runSpacing: 4, children: [
+          for (final l in cfbLignesBilanArchivage(b))
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(color: JetonsShell.success50, borderRadius: BorderRadius.circular(4)),
+                child: Text(l, style: const TextStyle(fontSize: 10, height: 14 / 10, color: JetonsShell.success700))),
+        ]),
+      ]));
 }

@@ -58,18 +58,29 @@ const Set<String> champsLocauxDuHache = {'echecs', 'verrouJusqua', 'dernierEchec
 abstract class TransportPont {
   Future<List<PieceSync>> liste(String collection);
   Future<void> ecrire(String collection, String fiche, {required bool existe, required Map<String, Object?> champs});
+
+  /// RESTAURE une fiche que la MÈRE a archivée (opération `restaurer` du journal, RG-14). Un archivage par la mère est un drapeau du journal, non un champ : le
+  /// remettre en activité n'est donc pas une modification de champ. Un transport qui ne sait pas le faire le dit (refus nommé, `StateError`).
+  Future<void> restaurer(String collection, String fiche);
 }
 
 /// Le transport du FILEUL : sa base de synchronisation locale.
 class TransportFileul implements TransportPont {
-  TransportFileul({required this.lire, required this.ecrireFiche});
+  TransportFileul({required this.lire, required this.ecrireFiche, this.restaurerFiche});
   final Future<List<PieceSync>> Function(String) lire;
+  final void Function(String collection, String fiche)? restaurerFiche;
   final void Function(String collection, String fiche, {required bool existe, required Map<String, Object?> champs}) ecrireFiche;
   @override
   Future<List<PieceSync>> liste(String collection) => lire(collection);
   @override
   Future<void> ecrire(String collection, String fiche, {required bool existe, required Map<String, Object?> champs}) async =>
       ecrireFiche(collection, fiche, existe: existe, champs: champs);
+  @override
+  Future<void> restaurer(String collection, String fiche) async {
+    final f = restaurerFiche;
+    if (f == null) throw StateError('ce transport ne porte pas la restauration d’une fiche archivée par la mère');
+    f(collection, fiche);
+  }
 }
 
 /// Le transport de la MÈRE : le service de son propre processus (`GET /admin/liste`, `POST /admin/referentiel`).
@@ -107,6 +118,17 @@ class TransportMereLocale implements TransportPont {
     final r = await _c
         .post(Uri.parse('http://127.0.0.1:$port/admin/referentiel'),
             headers: {'content-type': 'application/json', 'x-admin': admin}, body: jsonEncode({'collection': collection, 'fiche': fiche, 'champs': champs}))
+        .timeout(const Duration(seconds: 8));
+    if (r.statusCode != 200) throw StateError('la mère a répondu ${r.statusCode} : ${r.body}');
+    final corps = jsonDecode(r.body);
+    if (corps is Map && corps['statut'] == 'refusee') throw StateError('${corps['motif'] ?? corps['code']}');
+  }
+
+  @override
+  Future<void> restaurer(String collection, String fiche) async {
+    final r = await _c
+        .post(Uri.parse('http://127.0.0.1:$port/admin/referentiel'),
+            headers: {'content-type': 'application/json', 'x-admin': admin}, body: jsonEncode({'collection': collection, 'fiche': fiche, 'type': 'restaurer', 'champs': <String, Object?>{}}))
         .timeout(const Duration(seconds: 8));
     if (r.statusCode != 200) throw StateError('la mère a répondu ${r.statusCode} : ${r.body}');
     final corps = jsonDecode(r.body);
@@ -265,17 +287,55 @@ class PontActivite {
           }
         }
         // Seuls les champs qui ont changé partent : deux postes qui touchent des champs différents ne s'écrasent pas.
-        final diff = base == null || _atomique(c)
-            ? champs
-            : <String, Object?>{for (final e in champs.entries) if (_j(base[e.key]) != _j(e.value)) e.key: e.value};
+        final diff = <String, Object?>{
+          if (base == null || _atomique(c)) ...champs else for (final e in champs.entries) if (_j(base[e.key]) != _j(e.value)) e.key: e.value
+        };
         distant ??= await transport.liste(c);
-        final existe = distant.any((p) => p.id == cle);
+        final cible = distant.where((p) => p.id == cle).firstOrNull;
+        final existe = cible != null;
+        // UN ARCHIVAGE N'EST PAS ÉCRASÉ PAR UN POSTE QUI NE L'A PAS VU (RG-14, D6) : si le journal porte cette fiche archivée (par la mère ou par un autre poste) et que ce
+        // poste n'a jamais vu l'archivage, son changement de statut est une modification concurrente — elle ne remplace pas `archive`. Le reste de ses champs part.
+        if (cible != null && !_atomique(c) && diff.containsKey('statut') && diff['statut'] != 'archive') {
+          final archiveeLa = cible.archive || cible.data['statut'] == 'archive';
+          final vuIci = base != null && base['statut'] == 'archive';
+          if (archiveeLa && !vuIci) {
+            diff.remove('statut');
+            diff.remove('statutAvantArchivage');
+            if (diff.isEmpty) {
+              _base['$c/$cle'] = champs;
+              continue;
+            }
+          }
+        }
         if (_atomique(c) && existe) {
           // Un haché plus ANCIEN que celui du journal ne l'écrase jamais (poste resté en retard) : il sera remplacé à la réception.
           final brut = distant.firstWhere((p) => p.id == cle).data['atome'];
           final d = brut is String ? DateTime.tryParse('${(jsonDecode(brut) as Map)['definiLe'] ?? ''}') : null;
           final i = DateTime.tryParse('${f['definiLe'] ?? ''}');
           if (d != null && (i == null || d.isAfter(i))) continue;
+        }
+        // La RESTAURATION d'une fiche archivée par la MÈRE (drapeau `archive` du journal, vue ici : la base porte `statut: archive`) est une opération `restaurer`, non une
+        // modification de champ : sans elle, la fiche resterait archivée à la mère et chez les autres postes. Les marques d'archivage sont effacées avec elle.
+        if (cible != null && !_atomique(c) && cible.archive && base != null && base['statut'] == 'archive' && champs['statut'] != 'archive') {
+          try {
+            await transport.restaurer(c, cle);
+          } on StateError catch (e) {
+            final emp = _j(champs);
+            _refusees['$c/$cle'] = emp;
+            motifsRefus['$c/$cle'] = '$e';
+            refus.value = motifsRefus.length;
+            continue;
+          }
+          diff.remove('statut');
+          diff.remove('statutAvantArchivage');
+          for (final k in const ['_archiveLe', '_archivePar', '_motifArchivage']) {
+            if (base.containsKey(k) && !champs.containsKey(k)) diff[k] = null;
+          }
+          n++;
+          if (diff.isEmpty) {
+            _base['$c/$cle'] = champs;
+            continue;
+          }
         }
         final empreinteRefus = _j(champs);
         if (_refusees['$c/$cle'] == empreinteRefus) continue;
@@ -331,7 +391,15 @@ class PontActivite {
           continue;
         }
         final local = _parSync(col, cle);
-        final recu = <String, Object?>{...distant, 'idSync': cle, if (p.archive) 'statut': 'archive'};
+        final recu = <String, Object?>{
+          ...distant,
+          'idSync': cle,
+          if (p.archive) ...{
+            // Une fiche archivée à la mère garde, pour sa restauration, le statut qu'elle portait : sans lui, « restaurer » retirerait le statut (RG-14).
+            if (distant['statut'] != null && distant['statut'] != 'archive' && !distant.containsKey('statutAvantArchivage')) 'statutAvantArchivage': distant['statut'],
+            'statut': 'archive',
+          },
+        };
         if (local == null) {
           if (col.appliquerDistante({...recu, 'id': cle})) n++;
           _base['$c/$cle'] = recu;
@@ -347,6 +415,9 @@ class PontActivite {
           if (v != null) fusion[k] = v;
         }
         fusion['id'] = local['id'];
+        // UN ARCHIVAGE N'EST PAS ÉCRASÉ par une modification concurrente (RG-14, D6 : la mise en production archive le jeu) : si l'une des deux versions est archivée,
+        // la fusion l'est.
+        fusionnerArchivage(fusion, local, recu, base: base);
         // Les règles propres à la famille : un règlement ne se perd pas.
         if (c == 'factures') {
           final regle = fusionnerFacture(fusion, local, recu);

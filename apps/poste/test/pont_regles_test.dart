@@ -15,6 +15,8 @@ class Journal {
 }
 
 class Transport implements TransportPont {
+  @override
+  Future<void> restaurer(String collection, String fiche) async => throw StateError('non porté par ce transport d’essai');
   Transport(this.j);
   final Journal j;
   @override

@@ -177,9 +177,32 @@ class CollectionMagasin extends ChangeNotifier {
     return () => restaurer(id);
   }
 
+  /// ARCHIVE EN BLOC toutes les fiches actives (mise en production du jeu de démonstration, D6 du 09/11/2026) : même état que [archiver] (`statut: 'archive'`,
+  /// ancien statut gardé, donc restaurable depuis la Corbeille), plus les [marques] (date, auteur, motif). Les gardes de la collection ne jouent pas : c'est
+  /// une remise du jeu, non l'écriture d'une fiche par un agent (comme [remplacerContenu]). Aucun journal ici — l'appelant écrit une entrée par collection
+  /// (RG-12) ; une seule notification pour toute la collection. Une fiche DÉJÀ archivée n'est pas touchée : sa date et son motif d'origine se conservent.
+  /// Rend le nombre de fiches archivées et, parmi elles, celui des brouillons ([estBrouillon]).
+  ({int archivees, int brouillons}) archiverTout({required Map<String, Object?> marques, bool Function(Fiche)? estBrouillon}) {
+    var n = 0, b = 0;
+    for (final f in _fiches) {
+      if (estArchivee(f)) continue;
+      if (estBrouillon != null && estBrouillon(f)) b++;
+      f['statutAvantArchivage'] = f['statut'];
+      f['statut'] = 'archive';
+      f.addAll(marques);
+      n++;
+    }
+    if (n > 0) notifyListeners();
+    return (archivees: n, brouillons: b);
+  }
+
   void restaurer(Object? id) {
     final f = parId(id);
     if (f == null || !estArchivee(f)) return;
+    // Les marques posées par l'archivage en bloc ne survivent pas à la restauration : une fiche restaurée n'est plus « archivée le … ».
+    f.remove('_archiveLe');
+    f.remove('_archivePar');
+    f.remove('_motifArchivage');
     final avant = f.remove('statutAvantArchivage');
     if (avant == null) {
       f.remove('statut');
