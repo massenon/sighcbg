@@ -6494,6 +6494,8 @@
      "M1",
      "M2",
      "M2",
+     "M2",
+     "M2",
      "M3",
      "M4",
      "M5",
@@ -6533,6 +6535,8 @@
      "M1",
      "M2",
      "M2",
+     "M2",
+     "M2",
      "M3",
      "M4",
      "M5",
@@ -6563,6 +6567,8 @@
      "M1",
      "M13",
      "M1",
+     "M2",
+     "M2",
      "M2",
      "M2",
      "M3",
@@ -6617,6 +6623,8 @@
      "M1",
      "M2",
      "M2",
+     "M2",
+     "M2",
      "M3",
      "M4",
      "M5",
@@ -6634,6 +6642,8 @@
      "M1",
      "M13",
      "M1",
+     "M2",
+     "M2",
      "M2",
      "M2",
      "M3",
@@ -6731,6 +6741,7 @@
      "M1",
      "M2",
      "M2",
+     "M2",
      "M3",
      "M13",
      "RAP",
@@ -6780,6 +6791,8 @@
      "M1",
      "M2",
      "M2",
+     "M2",
+     "M2",
      "M5",
      "RAP",
      "PIL",
@@ -6812,6 +6825,8 @@
      "M2",
      "M1",
      "M1",
+     "M2",
+     "M2",
      "M2",
      "M2",
      "M3",
@@ -7091,7 +7106,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "314",
+     "valeur": "318",
      "indice": null
     },
     {
@@ -7106,7 +7121,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "312",
+     "valeur": "316",
      "indice": null
     }
    ],
@@ -7370,7 +7385,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 314,
+  "tousEcrans": 318,
   "modulesListe": [
    [
     "M2",
@@ -7572,7 +7587,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "314",
+     "valeur": "318",
      "indice": null
     },
     {
@@ -7587,7 +7602,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "303",
+     "valeur": "307",
      "indice": null
     }
    ],
@@ -7829,7 +7844,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "314",
+     "valeur": "318",
      "indice": null
     },
     {
@@ -7844,7 +7859,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "312",
+     "valeur": "316",
      "indice": null
     }
    ],
@@ -7965,7 +7980,7 @@
      "DASH — Tableaux de bord par poste"
     ]
    ],
-   "nbEcrans": 314
+   "nbEcrans": 318
   },
   "declarerCfg": {
    "fiche": {
@@ -8048,7 +8063,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "314",
+     "valeur": "318",
      "indice": null
     },
     {
@@ -8063,7 +8078,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "310",
+     "valeur": "314",
      "indice": null
     }
    ],

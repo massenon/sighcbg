@@ -595,6 +595,34 @@
       ]
      },
      {
+      "titre": "Spécialités",
+      "code": "M2",
+      "ecrans": [
+       {
+        "label": "Spécialités",
+        "href": "pages/m2-specialites.php"
+       }
+      ]
+     },
+     {
+      "titre": "Médecine du travail",
+      "code": "M2",
+      "ecrans": [
+       {
+        "label": "Visites de médecine du travail",
+        "href": "pages/m2-mdt-visites.php"
+       },
+       {
+        "label": "Entreprises clientes et salariés",
+        "href": "pages/m2-mdt-entreprises.php"
+       },
+       {
+        "label": "Conventions de visites",
+        "href": "pages/m2-mdt-conventions.php"
+       }
+      ]
+     },
+     {
       "titre": "Hospitalisation",
       "code": "M3",
       "ecrans": [
@@ -2020,7 +2048,7 @@
     ]
    }
   ],
-  "pied": "322 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
+  "pied": "326 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
   "retour": "Retour à l’application",
   "homeAdmin": "dash-admin"
  },
@@ -2028,11 +2056,11 @@
   "kpis": [
    {
     "label": "Modules fonctionnels",
-    "valeur": "33"
+    "valeur": "35"
    },
    {
     "label": "Écrans disponibles",
-    "valeur": "322"
+    "valeur": "326"
    },
    {
     "label": "Règles de gestion appliquées",
@@ -2135,6 +2163,20 @@
    },
    {
     "titre": "Imagerie médicale",
+    "code": "M2",
+    "resume": "Agenda, rendez-vous, consultations, ordonnances et soins à domicile, en remplacement des registres papier.",
+    "domaine": "Domaine Soins",
+    "href": "pages/hub-m2.php"
+   },
+   {
+    "titre": "Spécialités",
+    "code": "M2",
+    "resume": "Agenda, rendez-vous, consultations, ordonnances et soins à domicile, en remplacement des registres papier.",
+    "domaine": "Domaine Soins",
+    "href": "pages/hub-m2.php"
+   },
+   {
+    "titre": "Médecine du travail",
     "code": "M2",
     "resume": "Agenda, rendez-vous, consultations, ordonnances et soins à domicile, en remplacement des registres papier.",
     "domaine": "Domaine Soins",
@@ -2351,9 +2393,9 @@
    "Les quatorze règles de gestion du cahier des charges sont appliquées et rappelées à l’écran là où elles s’imposent : identifiant patient, marge nulle sur les médicaments, stock jamais négatif, signatures de sortie, validité des cartes d’assurance, équilibre des écritures, journalisation et archivage logique.",
    "À propos",
    "Modules fonctionnels",
-   "33",
+   "35",
    "Écrans disponibles",
-   "322",
+   "326",
    "Règles de gestion appliquées",
    "14",
    "Profils d’utilisateur",
@@ -2534,6 +2576,16 @@
    {
     "valeur": "M2",
     "label": "M2 — Imagerie médicale",
+    "domaine": "Soins"
+   },
+   {
+    "valeur": "M2",
+    "label": "M2 — Spécialités",
+    "domaine": "Soins"
+   },
+   {
+    "valeur": "M2",
+    "label": "M2 — Médecine du travail",
     "domaine": "Soins"
    },
    {

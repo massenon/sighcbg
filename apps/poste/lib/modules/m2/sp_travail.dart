@@ -85,6 +85,15 @@ String _jour(Object? v) {
   }, null);
   final ins = pieces.inserer(fiche, prefixe: 'PCE');
   annulations.add(ins.annuler);
+  // `transformerPiece` a écrit, en plus de la pièce, sa facture et sa tâche d'encaissement : les défaire avec elle, sans quoi une délivrance annulée
+  // laisserait à la caisse une pièce due pour une fiche qui n'existe plus.
+  final factureId = fiche['factureId'];
+  if (factureId != null) {
+    annulations.add(() => m.collection('factures').archiver('$factureId'));
+    for (final t in m.collection('taches').actives.where((t) => t['factureId'] == factureId)) {
+      annulations.add(() => m.collection('taches').archiver('${t['id']}'));
+    }
+  }
   final fa = <String, Object?>{
     'reference': referenceFa,
     'conclusion': aptitude,

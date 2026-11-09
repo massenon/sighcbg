@@ -104,6 +104,24 @@
        ]
       },
       {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
        "code": "M3",
        "label": "Hospitalisation",
        "hub": "hub-m3",
@@ -840,6 +858,24 @@
        ]
       },
       {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
        "code": "M3",
        "label": "Hospitalisation",
        "hub": "hub-m3",
@@ -1319,6 +1355,24 @@
         "m2-imagerie-scanner",
         "m2-imagerie-irm",
         "m2-echographie-galerie"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
        ]
       },
       {
@@ -2170,6 +2224,24 @@
        ]
       },
       {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
        "code": "M3",
        "label": "Hospitalisation",
        "hub": "hub-m3",
@@ -2397,6 +2469,24 @@
         "m2-imagerie-scanner",
         "m2-imagerie-irm",
         "m2-echographie-galerie"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
        ]
       },
       {
@@ -3265,6 +3355,15 @@
        ]
       },
       {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
        "code": "M3",
        "label": "Hospitalisation",
        "hub": "hub-m3",
@@ -3738,6 +3837,15 @@
        ]
       },
       {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
        "code": "M5",
        "label": "Laboratoire",
        "hub": "hub-m5",
@@ -4079,6 +4187,24 @@
         "m2-imagerie-scanner",
         "m2-imagerie-irm",
         "m2-echographie-galerie"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Spécialités",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-specialites"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-visites",
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
        ]
       },
       {

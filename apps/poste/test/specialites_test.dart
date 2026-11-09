@@ -476,6 +476,26 @@ void main() {
       expect(find.byTooltip('Délivrer la fiche d’aptitude'), findsNothing, reason: 'une fiche délivrée ne se délivre pas deux fois');
     });
 
+    cas('annuler la délivrance défait TOUT : la fiche, la pièce du registre, la facture et la tâche de caisse', (t) async {
+      final m = magasin(patients: 3, consultations: false);
+      m.collection('consultations').inserer({
+        'statut': 'terminee', 'type': 'Médecine du travail', 'specialite': 'medecine-travail', 'natureVisite': 'periodique', 'entrepriseId': 'SOU001',
+        'entreprise': 'Société Cotonnière du Borgou', 'patientId': 'PAT0002', 'patientCode': 'CBG/2/26', 'patient': 'BIO-GUERA Hadjara',
+        'medecin': 'IDOHOU Abraham', 'date': '2026-08-10T09:00:00.000Z', 'motif': 'Visite périodique', 'diagnostic': 'Apte', 'aptitude': 'Apte', 'poste': 'Imprimeur',
+        'reference': 'C00001',
+      }, prefixe: 'CON');
+      await ouvrir(t, m, 'm2-mdt-visites', role: 'medecin');
+      await toucher(t, find.byTooltip('Délivrer la fiche d’aptitude').first);
+      expect(m.collection('pieces').actives.length, 1);
+      expect(m.collection('factures').actives.length, 1);
+      expect(m.collection('taches').actives.length, 1);
+      await toucher(t, find.text('Annuler').first);
+      expect(m.collection('pieces').actives, isEmpty);
+      expect(m.collection('factures').actives, isEmpty, reason: 'la pièce de caisse de la fiche annulée ne reste pas due');
+      expect(m.collection('taches').actives, isEmpty);
+      expect(m.collection('consultations').toutes.single['ficheAptitude'], isNull);
+    });
+
     cas('entreprises et salariés : les six entreprises fictives, leurs salariés (patients rattachés) et l\'échéance de chacun', (t) async {
       final m = magasin();
       final ent = livre('souscripteurs').where((s) => s['categorie'] == 'entreprise').map((s) => s['id']).toSet();
