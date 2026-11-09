@@ -26,7 +26,6 @@ void main() {
   });
 
   group('la remise d\'une échéance à non payée', () {
-    final le = DateTime(2026, 11, 9);
     final payee = {
       'id': 'ECH0001', 'statut': 'actif', 'code': 'ITS', 'paye': true, 'datePaiement': '2026-01-12', 'montant': 120000, 'moyen': 'Virement bancaire',
       'reference': 'VIR-1', 'valideePar': 'Mme X', 'echeance': '2026-01-12',
