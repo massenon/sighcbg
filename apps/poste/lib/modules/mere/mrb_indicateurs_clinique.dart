@@ -178,20 +178,34 @@ class _EtatCarte extends State<CarteIndicateursClinique> {
           Wrap(spacing: 24, runSpacing: 12, crossAxisAlignment: WrapCrossAlignment.end, children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
               const Text('Intervalle de publication', style: TextStyle(fontSize: 12, color: JetonsShell.slate500)),
-              DropdownButton<int>(
-                key: const Key('mrb:intervalle-indicateurs'),
-                value: e.intervalleS,
-                items: [for (final s in intervalles) DropdownMenuItem(value: s, child: Text(mrbLibelleIntervalle(s) + (s == e.defautIntervalleS ? ' (défaut)' : '')))],
-                onChanged: peutRegler ? (v) => v == null ? null : _regler(context, intervalleS: v, ok: 'Intervalle réglé : ${mrbLibelleIntervalle(v).toLowerCase()}.') : null,
+              SizedBox(
+                width: 260,
+                child: SelecteurSigh(
+                  key: const Key('mrb:intervalle-indicateurs'),
+                  libelle: 'Intervalle de publication',
+                  valeur: '${e.intervalleS}',
+                  options: [for (final s in intervalles) OptionChamp('$s', mrbLibelleIntervalle(s) + (s == e.defautIntervalleS ? ' (défaut)' : ''))],
+                  surChange: (v) {
+                    final n = int.tryParse(v);
+                    if (peutRegler && n != null && n != e.intervalleS) _regler(context, intervalleS: n, ok: 'Intervalle réglé : ${mrbLibelleIntervalle(n).toLowerCase()}.');
+                  },
+                ),
               ),
             ]),
             Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
               const Text('Lot « proche de la péremption » (jours)', style: TextStyle(fontSize: 12, color: JetonsShell.slate500)),
-              DropdownButton<int>(
-                key: const Key('mrb:jours-peremption'),
-                value: e.joursPeremption,
-                items: [for (final j in {30, 60, 90, 120, 180, e.joursPeremption}.toList()..sort()) DropdownMenuItem(value: j, child: Text('$j jours${j == e.defautJoursPeremption ? ' (défaut)' : ''}'))],
-                onChanged: peutRegler ? (v) => v == null ? null : _regler(context, joursPeremption: v, ok: 'Seuil de péremption réglé : $v jours.') : null,
+              SizedBox(
+                width: 220,
+                child: SelecteurSigh(
+                  key: const Key('mrb:jours-peremption'),
+                  libelle: 'Jours avant péremption',
+                  valeur: '${e.joursPeremption}',
+                  options: [for (final j in {30, 60, 90, 120, 180, e.joursPeremption}.toList()..sort()) OptionChamp('$j', '$j jours${j == e.defautJoursPeremption ? ' (défaut)' : ''}')],
+                  surChange: (v) {
+                    final n = int.tryParse(v);
+                    if (peutRegler && n != null && n != e.joursPeremption) _regler(context, joursPeremption: n, ok: 'Seuil de péremption réglé : $n jours.');
+                  },
+                ),
               ),
             ]),
             if (peutRegler)
