@@ -99,7 +99,7 @@ Future<T?> afficherModale<T>(
   bool fermetureParFond = true,
 }) {
   // D5 : la modale est une route du navigateur racine, hors de l'arbre de l'écran : on y relaie le contexte d'écran (voir `ContexteEcran.relayer`).
-  final origine = context;
+  final origine = ContexteEcran.capturer(context);
   return showGeneralDialog<T>(
     context: context,
     barrierDismissible: fermetureParFond,
@@ -211,7 +211,7 @@ Future<T?> afficherTiroir<T>(
   ConstruirePied? pied,
 }) {
   // D5 : le tiroir est une route du navigateur racine, hors de l'arbre de l'écran : on y relaie le contexte d'écran (voir `ContexteEcran.relayer`).
-  final origine = context;
+  final origine = ContexteEcran.capturer(context);
   return showGeneralDialog<T>(
     context: context,
     barrierDismissible: true,

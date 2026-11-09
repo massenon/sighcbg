@@ -65,8 +65,12 @@ class ContexteEcran extends InheritedWidget {
   /// Le relais se fait UNE fois, dans `afficherModale` et `afficherTiroir` : écrire `ContexteEcran(...)` à chaque appelant aurait laissé le défaut revenir
   /// avec le prochain tiroir. Le contexte est celui de l'ouverture (instantané, comme `InheritedTheme.capture`) ; sans écran au-dessus de [origine]
   /// (écran autonome, test de widget nu), l'enfant est rendu tel quel.
-  static Widget relayer(BuildContext origine, Widget enfant) {
-    final c = origine.getInheritedWidgetOfExactType<ContexteEcran>();
+  static ContexteEcran? capturer(BuildContext origine) => origine.mounted ? origine.getInheritedWidgetOfExactType<ContexteEcran>() : null;
+
+  /// Le sous-arbre [enfant] sous une copie de [capture] (rendu tel quel si `null`). La capture se fait à l'OUVERTURE ([capturer]) : le constructeur de page de
+  /// la route est rejoué plus tard, et le contexte d'origine peut alors être désactivé (« Looking up a deactivated widget's ancestor is unsafe »).
+  static Widget relayer(ContexteEcran? capture, Widget enfant) {
+    final c = capture;
     if (c == null) return enfant;
     return ContexteEcran(
         ecranId: c.ecranId,
