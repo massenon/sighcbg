@@ -21,7 +21,7 @@ import 'cfa_commun.dart';
 ///    il n'en porte aucun), la situation présumée quand l'IFU est renseigné, la longueur de l'IFU et le taux de repli sans taux arrêté.
 ///
 /// Chaque validation est une VERSION DATÉE de la collection `parametresAib` : décideur, date de la décision, date d'effet et motif obligatoires, journalisée
-/// (RG-12), jamais d'écrasement (une version de plus). Les commandes d'écriture sont ABSENTES sans le droit (Direction, DAF, comptable, administrateur) et sur un
+/// (RG-12), jamais d'écrasement (une version de plus). Les commandes d'écriture sont ABSENTES sans le droit (DAF, comptable, administrateur — la Direction n'écrit plus, décision du 09/11/2026) et sur un
 /// poste fileul (la configuration est tenue par la mère, puis reprise ici par la synchronisation).
 class EcranValidationsAib extends StatelessWidget with EcranMaquette {
   const EcranValidationsAib({super.key});
@@ -64,7 +64,7 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
 
 bool _fileul(ContexteEcran c) => ServiceInstallation.de(c.magasin).rattache;
 
-/// Le droit d'écrire : celui de l'écran (matrice : Direction, DAF, comptable, administrateur) ET un poste qui tient sa configuration.
+/// Le droit d'écrire : celui de l'écran (matrice : DAF, comptable, administrateur ; lecture : aide-comptable, assistant de direction) ET un poste qui tient sa configuration.
 bool _peutEcrire(ContexteEcran c) => c.droit.editer && !_fileul(c);
 
 String _d(Object? v) => v == null || '$v'.isEmpty ? '—' : dateDe(v);

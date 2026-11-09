@@ -5601,7 +5601,6 @@
    "roles": [
     "admin",
     "da",
-    "direction",
     "comptable",
     "aide_comptable",
     "assistant_comptable"
