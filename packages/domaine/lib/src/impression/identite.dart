@@ -231,7 +231,7 @@ const List<String> champsIdentiteLegale = [
 
 /// L'identité qu'une PIÈCE imprime : la version en force à sa date, ou la semence.
 ///
-/// Configuration fiscale DATÉE (Nassiera Too, 06/11/2026) : la collection `identiteLegale` porte une fiche par version (`debut` null = depuis
+/// Configuration fiscale DATÉE (modèle de l’éditeur d’origine, 06/11/2026) : la collection `identiteLegale` porte une fiche par version (`debut` null = depuis
 /// l'ouverture, `fin` null = en force). [IdentiteClinique] reste la PORTE D'ENTRÉE des écrans et des états courants, et la SEMENCE de ces versions :
 /// ses valeurs initiales sont celles de la Clinique Baguidi, surchargeables depuis `cfg-branding`. Une pièce s'imprime avec l'identité en force À
 /// SA DATE (`cfbIdentiteImprimee`) : une facture d'hier garde le RCCM d'hier, même si une version prend effet demain. Chaque champ qu'une version
