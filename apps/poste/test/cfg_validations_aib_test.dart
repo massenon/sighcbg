@@ -36,18 +36,17 @@ void main() {
   setUpAll(chargerPolices);
   tearDown(ToastsSigh.viderPourTests);
 
-  group('droits : écriture administrateur, DAF, comptable ; lecture aide-comptable et assistant de direction ; rien ailleurs, la Direction comprise', () {
+  group('droits : écriture DAF, comptable, administrateur ; lecture Direction, aide-comptable et assistant de direction ; rien ailleurs', () {
     test('la matrice du poste', () {
       for (final r in ['admin', 'da', 'comptable']) {
         expect(donneesNav.matrice.peutEditer(r, 'cfg-validations-aib'), isTrue, reason: r);
       }
-      for (final r in ['aide_comptable', 'assistant_comptable']) {
+      for (final r in ['direction', 'aide_comptable', 'assistant_comptable']) {
         expect(donneesNav.matrice.peutVoir(r, 'cfg-validations-aib'), isTrue, reason: r);
         expect(donneesNav.matrice.peutEditer(r, 'cfg-validations-aib'), isFalse, reason: r);
       }
-      // La Direction n'écrit plus les validations AIB (décision « oui » du 09/11/2026) et n'a PAS non plus l'accès en lecture : la liste arrêtée est « comptable, DAF,
-      // administrateur, aide-comptable, assistant de direction », la Direction n'y figure pas. Le directeur médical non plus.
-      for (final r in ['direction', 'dm', 'caissier', 'medecin', 'reception', 'stock', 'laborantin', 'infirmier']) {
+      // Le directeur médical n'a PAS accès (liste arrêtée par la Direction le 09/11/2026 : comptable, DAF, administrateur, aide-comptable, assistant de direction, et la Direction elle-même en lecture).
+      for (final r in ['dm', 'caissier', 'medecin', 'reception', 'stock', 'laborantin', 'infirmier']) {
         expect(donneesNav.matrice.peutVoir(r, 'cfg-validations-aib'), isFalse, reason: r);
       }
       expect(donneesNav.manifeste.ecran('cfg-validations-aib')!.module, 'CFG');
@@ -82,13 +81,6 @@ void main() {
     casM14('le directeur médical n\'a plus l\'écran : l\'adresse renvoie à l\'accès refusé, aucune ligne dans la matrice', (t) async {
       final m = magasinAib();
       await ouvrirM14(t, m, 'cfg-validations-aib', role: 'dm');
-      expect(find.text('Validations de l’AIB'), findsNothing);
-      expect(find.byKey(const Key('aib:valider:bareme')), findsNothing);
-    });
-
-    casM14('la Direction n\'a plus l\'écran : l\'adresse renvoie à l\'accès refusé, malgré son droit d\'écriture sur le module Paramètres', (t) async {
-      expect(donneesNav.matrice.droit('direction', 'cfg-systeme').voir, isTrue, reason: 'le reste de Paramètres lui reste ouvert');
-      await ouvrirM14(t, magasinAib(), 'cfg-validations-aib', role: 'direction');
       expect(find.text('Validations de l’AIB'), findsNothing);
       expect(find.byKey(const Key('aib:valider:bareme')), findsNothing);
     });

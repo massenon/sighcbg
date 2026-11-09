@@ -1251,6 +1251,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
