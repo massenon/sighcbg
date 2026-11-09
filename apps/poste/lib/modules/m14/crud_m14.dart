@@ -272,8 +272,8 @@ class _CrudM14State extends State<CrudM14> {
       nomExport: widget.collection.nom,
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,
-      libelleRecherche: 'Rechercher un ${widget.entite}…',
-      messageVide: archive ? 'Aucun enregistrement archivé.' : 'Aucun ${widget.entite} enregistré.',
+      libelleRecherche: rechercherEntite(widget.entite),
+      messageVide: archive ? 'Aucun enregistrement archivé.' : aucuneEntiteEnregistree(widget.entite),
       indiceVide: archive ? null : 'Utiliser le bouton « Nouveau » pour créer le premier enregistrement.',
       alClicLigne: (f) => _ouvrirDetail(ctx, f),
       actions: [

@@ -430,7 +430,7 @@ Map<String, Object?> ligneHonoraires(Jeu j, Fiche pat, String codeTarif, String 
 
 const _natures = {
   'mt_embauche': ('MT-EMB', 'MT01', 'Visite médicale d’embauche', 'embauche'),
-  'mt_periodique': ('MT-PER', 'MT02', 'Visite médicale périodique', 'périodique'),
+  'mt_periodique': ('MT-PER', 'MT02', 'Visite médicale périodique', 'periodique'),
   'mt_reprise': ('MT-REP', 'MT03', 'Visite médicale de reprise', 'reprise'),
 };
 

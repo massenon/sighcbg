@@ -55,7 +55,7 @@ void main() {
     expect(consultations.length, 200);
     final mt = consultations.where((x) => x['type'] == 'Médecine du travail').toList();
     expect(mt.length, 110);
-    expect([for (final k in ['embauche', 'périodique', 'reprise']) mt.where((x) => x['natureVisite'] == k).length], [45, 55, 10]);
+    expect([for (final k in ['embauche', 'periodique', 'reprise']) mt.where((x) => x['natureVisite'] == k).length], [45, 55, 10]);
     expect(mt.every((x) => x['medecin'] == 'IDOHOU Abraham'), isTrue);
     final prestataires = c('prestataires').map((p) => '${p['nom']}').toSet();
     final personnel = c('personnel').map((p) => '${p['nomComplet']}').toSet();

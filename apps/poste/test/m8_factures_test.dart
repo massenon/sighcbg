@@ -142,7 +142,7 @@ void main() {
 
   testWidgets('un magasin vide affiche l’état vide, pas une erreur', (t) async {
     await ouvrir(t, Magasin());
-    expect(find.text('Aucun facture enregistré.'), findsOneWidget);
+    expect(find.text('Aucune facture enregistrée.'), findsOneWidget);
     expect(find.text('Affichage'), findsNothing);
   });
 

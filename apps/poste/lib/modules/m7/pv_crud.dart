@@ -200,10 +200,10 @@ class _CrudFormulaireSighState extends State<CrudFormulaireSigh> {
       nomExport: widget.collection.nom,
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,
-      libelleRecherche: 'Rechercher un ${widget.entite}…',
+      libelleRecherche: rechercherEntite(widget.entite),
       messageVide: archive
           ? 'Aucun enregistrement archivé.'
-          : 'Aucun ${widget.entite} enregistré.',
+          : aucuneEntiteEnregistree(widget.entite),
       indiceVide: archive
           ? null
           : 'Utiliser le bouton « Nouveau » pour créer le premier enregistrement.',

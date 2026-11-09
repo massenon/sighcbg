@@ -263,10 +263,10 @@ class _CrudStockState extends State<CrudStock> {
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,
       libelleRecherche:
-          widget.libelleRecherche ?? 'Rechercher un ${widget.entite}…',
+          widget.libelleRecherche ?? rechercherEntite(widget.entite),
       messageVide: archive
           ? 'Aucun enregistrement archivé.'
-          : 'Aucun ${widget.entite} enregistré.',
+          : aucuneEntiteEnregistree(widget.entite),
       indiceVide: archive
           ? null
           : (c.droit.editer

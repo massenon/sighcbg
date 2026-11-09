@@ -614,6 +614,7 @@ class _PanneauListeState extends State<_PanneauListe> {
           side: const BorderSide(color: JetonsShell.slate200)),
       child: DecoratedBox(
         decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: JetonsShell.ombrePop),
         child: ClipRRect(
@@ -643,7 +644,8 @@ class _PanneauListeState extends State<_PanneauListe> {
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       children: [
-                        if (!widget.multi && !d.requis)
+                        // Une option dont la valeur EST vide (« Automatique ») tient déjà la place de « — Aucun — » : les deux, cochés ensemble, disaient deux choix à la fois.
+                        if (!widget.multi && !d.requis && !options.any((o) => o.valeur == ''))
                           _Ligne(
                               libelle: d.indicatif ?? '— Aucun —',
                               actif: valeur == '',

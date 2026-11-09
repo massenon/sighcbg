@@ -343,7 +343,9 @@ class _EtatFacturation extends State<EcranFacturation> {
 
   void _proposerReglement() {
     if (_c == null) return;
-    _reglement.poser('regle', '${_totaux().partPatient}');
+    // Un montant entier se saisit sans décimale : « 5000 », jamais « 5000.0 » (la part patient est un double).
+    final part = _totaux().partPatient;
+    _reglement.poser('regle', part == part.roundToDouble() ? '${part.round()}' : '$part');
   }
 
   // --- gestes ------------------------------------------------------------------------------------------------------
