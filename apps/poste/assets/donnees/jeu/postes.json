@@ -1,0 +1,8 @@
+[
+{"id":"PST001","statut":"actif","poste":"Directeur Général","effectif":1,"titulaire":"BAGUIDI Rafiou","chef":false,"role":"direction","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"PST002","statut":"actif","parentId":"PST001","poste":"Direction","effectif":1,"titulaire":"SOKOU Peace","chef":false,"role":"direction","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"PST003","statut":"actif","parentId":"PST001","poste":"Comptables","effectif":2,"titulaire":"SANOUSSI Adamon","chef":false,"role":"comptable","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"PST004","statut":"actif","parentId":"PST001","poste":"Responsables des ressources humaines","effectif":2,"titulaire":"MABOUDOU Nawal","chef":false,"role":"rh","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"PST005","statut":"actif","parentId":"PST001","poste":"Médecin","effectif":1,"titulaire":"IDOHOU Abraham","chef":false,"role":"medecin","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"PST006","statut":"actif","parentId":"PST001","poste":"Infirmier","effectif":1,"titulaire":"AKONDE Octave","chef":false,"role":"infirmier","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"}
+]

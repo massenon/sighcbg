@@ -1,0 +1,34 @@
+{
+ "id": "auth-forgot",
+ "module": "AUTH",
+ "domaine": "Système",
+ "libelleManifeste": "Mot de passe oublié",
+ "acces": "ouvert",
+ "autonome": true,
+ "titre": "Système Intégré de Gestion Hospitalière",
+ "titreOnglet": "Mot de passe oublié — SIGH Clinique NASSIERA TOO",
+ "description": [
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+  "Parakou, République du Bénin",
+  "Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord.",
+  "Traçabilité intégrale des actions (journal d’audit)",
+  "Alertes de rupture et de péremption automatiques (FEFO)",
+  "Facture normalisée conforme au dispositif MECeF",
+  "Comptabilité SYSCOHADA alimentée automatiquement",
+  "« Votre bien-être est notre raison d’être. »",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.",
+  "La réinitialisation est prise en charge par l’Administrateur système et journalisée.",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240."
+ ],
+ "cartes": [
+  "Mot de passe oublié"
+ ],
+ "champs": [
+  "Identifiant ou adresse électronique",
+  "prenom.nom"
+ ],
+ "commandes": [
+  "Envoyer les instructions",
+  "← Retour à la connexion"
+ ]
+}
