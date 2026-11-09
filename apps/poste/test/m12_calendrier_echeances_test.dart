@@ -18,7 +18,9 @@ void main() {
 
   casM14('l\'écran de suivi s\'ouvre PEUPLÉ sur l\'exercice 2026 : la collection, vide au départ, est semée depuis les obligations, CNSS le 15', (t) async {
     final m = magasinLivre();
-    expect(m.collection('echeancesFiscales').toutes, isEmpty, reason: 'le jeu livré ne porte aucune échéance : elles naissent à l\'ouverture');
+    // Le jeu livré porte désormais ses échéances (sous-lot finance) : pour éprouver le SEMIS à l'ouverture, on part d'une collection vidée.
+    m.collection('echeancesFiscales').remplacerContenu(const []);
+    expect(m.collection('echeancesFiscales').toutes, isEmpty);
     await ouvrirM14(t, m, 'm12-echeances');
     final e = m.collection('echeancesFiscales').actives;
     expect(e, isNotEmpty);

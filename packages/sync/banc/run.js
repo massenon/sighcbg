@@ -569,7 +569,7 @@ const scenarios = {
     const mob = await m.mobile('ACCUEIL', { profil: 'reception' });
     await f1.tuer(); await f2.tuer();
     await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Ahouansou', naissance: '1990-02-02' } });
-    await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'kouassi ', naissance: '1980-01-01' } });
+    await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'kopegou ', naissance: '1980-01-01' } });
     await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Zinsou', naissance: '1985-05-05' } });
     const fact = await mob.ecrire({ type: 'creer', collection: 'factures', champs: { total: 1 } });
     verifier('la réception de secours enregistre hors fileuls : les 4 saisies partent par le relais', await attendre(async () => mob.vide(), 15000));
