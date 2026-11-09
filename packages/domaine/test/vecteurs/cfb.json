@@ -1,5 +1,5 @@
 {
- "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-cfg-b.js — ne pas éditer. Horloge : 30/10/2026 10 h. Jeu : apps/poste/assets/donnees/jeu.",
+ "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-cfg-b.js — ne pas éditer. Horloge : 30/10/2026 10 h. Jeu : apps/poste/assets/donnees/jeu. | 09/11/2026 : séparation de la CNSS en deux obligations (déclaration unique CNSS au 10, versement CNSS-VERS au 15, non arrêtée). Les valeurs touchées (calendrier fiscal, indicateurs et tableau « Calendrier fiscal et social » de cfg-fiscalite, indicateurs de cfg-comptabilite) ont été RELEVÉES SUR LE CODE du domaine, après preuve que les lignes des 19 obligations d'origine restent celles de la maquette ; la maquette n'est pas rejouable. Les blocs « reference » (copie textuelle de l'écran de la maquette) ne sont pas modifiés.",
  "constantes": {
   "sourcesVerite": [
    {
@@ -241,16 +241,16 @@
    {
     "id": "FIS04",
     "code": "CNSS",
-    "libelle": "Cotisations sociales CNSS",
+    "libelle": "Déclaration unique (ITS, VPS, déclaration CNSS)",
     "periodicite": "mensuelle",
     "jour": 10,
     "mois": null,
-    "part": 100,
-    "declaration": "Déclaration mensuelle avant paiement",
-    "note": "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %.",
+    "part": null,
+    "declaration": null,
+    "note": "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end.",
     "famille": "CNSS",
     "statut": "actif",
-    "source": "Précisions du comptable — réunion du 19/08/2026"
+    "source": "Décision de la Direction du 09/11/2026 (la CNSS se sépare en deux obligations) ; précisions du comptable — réunion du 19/08/2026"
    },
    {
     "id": "FIS05",
@@ -461,6 +461,22 @@
     "famille": "ORTB",
     "statut": "actif",
     "source": "Précisions du comptable — réunion du 19/08/2026"
+   },
+   {
+    "id": "FIS20",
+    "code": "CNSS-VERS",
+    "libelle": "CNSS, versement des cotisations",
+    "periodicite": "mensuelle",
+    "jour": 15,
+    "mois": null,
+    "part": 100,
+    "declaration": "Déclaration unique déposée avant le versement",
+    "note": "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end.",
+    "famille": "CNSS",
+    "statut": "actif",
+    "source": "Décision de la Direction du 09/11/2026 ; guides AfriCarrières et Rivermate — date NON ARRÊTÉE",
+    "nonArretee": true,
+    "motifNonArret": "Le 15 vient de guides commerciaux ; la CNSS écrit « dans les quinze jours qui suivent la période ». À confirmer auprès de la CNSS avant d’arrêter la date."
    }
   ],
   "montantsFiscaux": {
@@ -2306,29 +2322,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "4",
+      "valeur": "5",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "4 échéance(s) dans les trente jours : ITS le 10/11/2026 · AIB le 10/11/2026 · VPS le 10/11/2026 · CNSS le 10/11/2026. Une déclaration précède généralement le paiement.",
+     "5 échéance(s) dans les trente jours : ITS le 10/11/2026 · AIB le 10/11/2026 · VPS le 10/11/2026 · CNSS le 10/11/2026 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -2494,11 +2510,19 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "10/11/2026",
         "11 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "16/11/2026 reportée — jour ouvrable",
+        "17 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "IS-4",
@@ -2640,29 +2664,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "4",
+      "valeur": "5",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "4 échéance(s) dans les trente jours : ITS le 12/10/2026 · AIB le 12/10/2026 · VPS le 12/10/2026 · CNSS le 12/10/2026. Une déclaration précède généralement le paiement.",
+     "5 échéance(s) dans les trente jours : ITS le 12/10/2026 · AIB le 12/10/2026 · VPS le 12/10/2026 · CNSS le 12/10/2026 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -2828,11 +2852,19 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "12/10/2026 reportée — jour ouvrable",
         "11 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/10/2026",
+        "14 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "IS-4",
@@ -2974,346 +3006,12 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
-      "indice": "ITS, AIB, VPS, CNSS"
-     },
-     {
-      "libelle": "Dans les 30 jours",
-      "valeur": "4",
-      "indice": null
-     },
-     {
-      "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
-      "indice": "Deux tranches de 150 000 F"
-     }
-    ],
-    "notes": [
-     "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
-     "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "4 échéance(s) dans les trente jours : ITS le 11/01/2027 · AIB le 11/01/2027 · VPS le 11/01/2027 · CNSS le 11/01/2027. Une déclaration précède généralement le paiement.",
-     "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
-    ],
-    "tableaux": [
-     {
-      "entetes": [
-       "VERSION",
-       "EN FORCE",
-       "DU",
-       "AU",
-       "IFU / RCCM",
-       "VALIDÉE",
-       "MOTIF"
-      ],
-      "lignes": [
-       [
-        "v1",
-        "Aujourd’hui",
-        "ouverture du dossier",
-        "en force",
-        "3201642748214 / RB/NAT/2016-B-268",
-        "À valider",
-        "semence (arbitrage du 31/08/2026)"
-       ]
-      ]
-     },
-     {
-      "entetes": [
-       "TYPE DE DOCUMENT",
-       "PRÉFIXE",
-       "FORMAT",
-       "SÉQUENCE"
-      ],
-      "lignes": [
-       [
-        "Facture normalisée",
-        "FN-2026-",
-        "FN-AAAA-NNNNN",
-        "Strictement séquentielle"
-       ],
-       [
-        "Facture pro-forma",
-        "PRO-2026-",
-        "PRO-AAAA-NNNNN",
-        "Indépendante"
-       ],
-       [
-        "Avoir",
-        "AV-2026-",
-        "AV-AAAA-NNNN",
-        "Strictement séquentielle"
-       ],
-       [
-        "Dossier patient",
-        "CBG",
-        "CBG/[n°]/[AA]",
-        "Par année civile (RG-01)"
-       ],
-       [
-        "Bon de commande",
-        "BC-2026-",
-        "BC-AAAA-NNNN",
-        "Par exercice"
-       ],
-       [
-        "Bon d’expression de besoins",
-        "BEB-2026-",
-        "BEB-AAAA-NNNN",
-        "Par exercice"
-       ],
-       [
-        "Bulletin de paie",
-        "BP-",
-        "BP-NNNNN",
-        "Par période de paie"
-       ],
-       [
-        "Écriture comptable",
-        "[JOURNAL]-2026-",
-        "JJJ-AAAA-NNNNN",
-        "Par journal"
-       ]
-      ]
-     },
-     {
-      "entetes": [
-       "DÉCLARATION",
-       "PÉRIODICITÉ",
-       "ÉCHÉANCE",
-       "ÉCRAN PRODUCTEUR"
-      ],
-      "lignes": [
-       [
-        "Impôt sur les traitements salariaux (ITS)",
-        "Mensuelle",
-        "le 10 du mois suivant",
-        "Éditer"
-       ],
-       [
-        "Acompte sur impôt assis sur les bénéfices (AIB)",
-        "Mensuelle",
-        "le 10 du mois suivant",
-        "Éditer"
-       ],
-       [
-        "Versement patronal sur salaires (VPS)",
-        "Mensuelle",
-        "le 10 du mois suivant",
-        "Éditer"
-       ],
-       [
-        "Cotisations sociales CNSS (CNSS)",
-        "Mensuelle",
-        "le 10 du mois suivant",
-        "Éditer"
-       ],
-       [
-        "Transmission des factures normalisées",
-        "Continue",
-        "À l’émission",
-        "Éditer"
-       ],
-       [
-        "États financiers de synthèse",
-        "Annuelle",
-        "Clôture de l’exercice, dépôt au 30 avril",
-        "Éditer"
-       ]
-      ]
-     },
-     {
-      "entetes": [
-       "CODE",
-       "OBLIGATION",
-       "PÉRIODICITÉ",
-       "PROCHAINE ÉCHÉANCE",
-       "DANS",
-       "RÈGLE APPLIQUÉE"
-      ],
-      "lignes": [
-       [
-        "ITS",
-        "Impôt sur les traitements salariaux",
-        "Mensuelle",
-        "11/01/2027 reportée — jour ouvrable",
-        "11 j",
-        "Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
-       ],
-       [
-        "AIB",
-        "Acompte sur impôt assis sur les bénéfices",
-        "Mensuelle",
-        "11/01/2027 reportée — jour ouvrable",
-        "11 j",
-        "Le 10 de chaque mois, après la déclaration préalable."
-       ],
-       [
-        "VPS",
-        "Versement patronal sur salaires",
-        "Mensuelle",
-        "11/01/2027 reportée — jour ouvrable",
-        "11 j",
-        "Le 10 du mois suivant le mois d’exercice."
-       ],
-       [
-        "CNSS",
-        "Cotisations sociales CNSS",
-        "Mensuelle",
-        "11/01/2027 reportée — jour ouvrable",
-        "11 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
-       ],
-       [
-        "PATENTE-DECL",
-        "Patente — déclaration prévisionnelle",
-        "Annuelle",
-        "01/02/2027 reportée — jour ouvrable",
-        "32 j",
-        "Date limite de la déclaration prévisionnelle de la patente."
-       ],
-       [
-        "PATENTE-1",
-        "Patente — 1er acompte",
-        "Annuelle",
-        "10/02/2027",
-        "41 j",
-        "Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches."
-       ],
-       [
-        "CCIB-DECL",
-        "CCIB — déclaration prévisionnelle",
-        "Annuelle",
-        "01/03/2027 reportée — jour ouvrable",
-        "60 j",
-        "La déclaration prévisionnelle s’effectue à la FIN DU MOIS, avant le premier acompte — confirmé par la Direction le 25/08/2026."
-       ],
-       [
-        "IS-1",
-        "Impôt sur les sociétés — 1er acompte",
-        "Annuelle",
-        "10/03/2027",
-        "69 j",
-        "Premier des quatre acomptes trimestriels, assis sur l’impôt de l’exercice précédent divisé par quatre. Le 10 mars — confirmé par la Direction le 25/08/2026."
-       ],
-       [
-        "CCIB-1",
-        "CCIB — 1re tranche",
-        "Annuelle",
-        "10/03/2027",
-        "69 j",
-        "Contribution annuelle de 300 000 FCFA, réglée en deux tranches égales de 150 000 FCFA. Premier acompte le 10 mars (50 %) — confirmé par la Direction le 25/08/2026."
-       ],
-       [
-        "ORTB-RADIO",
-        "Redevance ORTB / Radio",
-        "Annuelle",
-        "30/03/2027",
-        "89 j",
-        "Prélevée sur TOUS les salariés sans exception — 1 000 FCFA par agent, au mois de mars."
-       ],
-       [
-        "IS-SOLDE",
-        "Liquidation du solde de l’impôt sur les sociétés",
-        "Annuelle",
-        "30/04/2027",
-        "120 j",
-        "Le 30 avril de chaque année, PRÉALABLEMENT au dépôt des états financiers. Ajuste à la hausse ou à la baisse les acomptes versés l’exercice précédent — confirmé par la Direction le 25/08/2026."
-       ],
-       [
-        "ETATS-FIN",
-        "Dépôt des états financiers",
-        "Annuelle",
-        "30/04/2027",
-        "120 j",
-        "Le 30 avril de l’année suivant l’exercice clos, après la liquidation du solde."
-       ],
-       [
-        "PATENTE-2",
-        "Patente — solde",
-        "Annuelle",
-        "30/04/2027",
-        "120 j",
-        "Seconde moitié, au 30 avril."
-       ],
-       [
-        "TVM",
-        "Taxe sur véhicules à moteur",
-        "Annuelle",
-        "30/04/2027",
-        "120 j",
-        "Une fois par an, au plus tard le 30 avril."
-       ],
-       [
-        "IS-2",
-        "Impôt sur les sociétés — 2e acompte",
-        "Annuelle",
-        "10/06/2027",
-        "161 j",
-        "Deuxième acompte trimestriel."
-       ],
-       [
-        "CCIB-2",
-        "CCIB — 2e tranche",
-        "Annuelle",
-        "10/06/2027",
-        "161 j",
-        "Seconde tranche de 150 000 FCFA, le 10 juin (50 %) — confirmé par la Direction le 25/08/2026."
-       ],
-       [
-        "ORTB-TELE",
-        "Redevance ORTB / Télé",
-        "Annuelle",
-        "30/06/2027",
-        "181 j",
-        "Prélevée en SUS de la radio sur les salaires supérieurs à 60 000 FCFA — 3 000 FCFA par agent, au mois de juin."
-       ],
-       [
-        "IS-3",
-        "Impôt sur les sociétés — 3e acompte",
-        "Annuelle",
-        "10/09/2027",
-        "253 j",
-        "Troisième acompte trimestriel."
-       ],
-       [
-        "IS-4",
-        "Impôt sur les sociétés — 4e acompte",
-        "Annuelle",
-        "10/12/2027",
-        "344 j",
-        "Quatrième acompte trimestriel."
-       ]
-      ]
-     }
-    ],
-    "cartes": [
-     "Identification fiscale de l’établissement",
-     "Versions de l’identité légale",
-     "Numérotation des documents",
-     "Obligations déclaratives (dérivées des obligations en vigueur)",
-     "Calendrier fiscal et social"
-    ]
-   },
-   {
-    "jour": [
-     2027,
-     0,
-     2
-    ],
-    "kpis": [
-     {
-      "libelle": "Échéances suivies",
-      "valeur": "19",
-      "indice": null
-     },
-     {
-      "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
@@ -3323,7 +3021,7 @@
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
@@ -3475,6 +3173,348 @@
         "Impôt sur les traitements salariaux",
         "Mensuelle",
         "11/01/2027 reportée — jour ouvrable",
+        "11 j",
+        "Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "AIB",
+        "Acompte sur impôt assis sur les bénéfices",
+        "Mensuelle",
+        "11/01/2027 reportée — jour ouvrable",
+        "11 j",
+        "Le 10 de chaque mois, après la déclaration préalable."
+       ],
+       [
+        "VPS",
+        "Versement patronal sur salaires",
+        "Mensuelle",
+        "11/01/2027 reportée — jour ouvrable",
+        "11 j",
+        "Le 10 du mois suivant le mois d’exercice."
+       ],
+       [
+        "CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
+        "Mensuelle",
+        "11/01/2027 reportée — jour ouvrable",
+        "11 j",
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/01/2027",
+        "15 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "PATENTE-DECL",
+        "Patente — déclaration prévisionnelle",
+        "Annuelle",
+        "01/02/2027 reportée — jour ouvrable",
+        "32 j",
+        "Date limite de la déclaration prévisionnelle de la patente."
+       ],
+       [
+        "PATENTE-1",
+        "Patente — 1er acompte",
+        "Annuelle",
+        "10/02/2027",
+        "41 j",
+        "Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches."
+       ],
+       [
+        "CCIB-DECL",
+        "CCIB — déclaration prévisionnelle",
+        "Annuelle",
+        "01/03/2027 reportée — jour ouvrable",
+        "60 j",
+        "La déclaration prévisionnelle s’effectue à la FIN DU MOIS, avant le premier acompte — confirmé par la Direction le 25/08/2026."
+       ],
+       [
+        "IS-1",
+        "Impôt sur les sociétés — 1er acompte",
+        "Annuelle",
+        "10/03/2027",
+        "69 j",
+        "Premier des quatre acomptes trimestriels, assis sur l’impôt de l’exercice précédent divisé par quatre. Le 10 mars — confirmé par la Direction le 25/08/2026."
+       ],
+       [
+        "CCIB-1",
+        "CCIB — 1re tranche",
+        "Annuelle",
+        "10/03/2027",
+        "69 j",
+        "Contribution annuelle de 300 000 FCFA, réglée en deux tranches égales de 150 000 FCFA. Premier acompte le 10 mars (50 %) — confirmé par la Direction le 25/08/2026."
+       ],
+       [
+        "ORTB-RADIO",
+        "Redevance ORTB / Radio",
+        "Annuelle",
+        "30/03/2027",
+        "89 j",
+        "Prélevée sur TOUS les salariés sans exception — 1 000 FCFA par agent, au mois de mars."
+       ],
+       [
+        "IS-SOLDE",
+        "Liquidation du solde de l’impôt sur les sociétés",
+        "Annuelle",
+        "30/04/2027",
+        "120 j",
+        "Le 30 avril de chaque année, PRÉALABLEMENT au dépôt des états financiers. Ajuste à la hausse ou à la baisse les acomptes versés l’exercice précédent — confirmé par la Direction le 25/08/2026."
+       ],
+       [
+        "ETATS-FIN",
+        "Dépôt des états financiers",
+        "Annuelle",
+        "30/04/2027",
+        "120 j",
+        "Le 30 avril de l’année suivant l’exercice clos, après la liquidation du solde."
+       ],
+       [
+        "PATENTE-2",
+        "Patente — solde",
+        "Annuelle",
+        "30/04/2027",
+        "120 j",
+        "Seconde moitié, au 30 avril."
+       ],
+       [
+        "TVM",
+        "Taxe sur véhicules à moteur",
+        "Annuelle",
+        "30/04/2027",
+        "120 j",
+        "Une fois par an, au plus tard le 30 avril."
+       ],
+       [
+        "IS-2",
+        "Impôt sur les sociétés — 2e acompte",
+        "Annuelle",
+        "10/06/2027",
+        "161 j",
+        "Deuxième acompte trimestriel."
+       ],
+       [
+        "CCIB-2",
+        "CCIB — 2e tranche",
+        "Annuelle",
+        "10/06/2027",
+        "161 j",
+        "Seconde tranche de 150 000 FCFA, le 10 juin (50 %) — confirmé par la Direction le 25/08/2026."
+       ],
+       [
+        "ORTB-TELE",
+        "Redevance ORTB / Télé",
+        "Annuelle",
+        "30/06/2027",
+        "181 j",
+        "Prélevée en SUS de la radio sur les salaires supérieurs à 60 000 FCFA — 3 000 FCFA par agent, au mois de juin."
+       ],
+       [
+        "IS-3",
+        "Impôt sur les sociétés — 3e acompte",
+        "Annuelle",
+        "10/09/2027",
+        "253 j",
+        "Troisième acompte trimestriel."
+       ],
+       [
+        "IS-4",
+        "Impôt sur les sociétés — 4e acompte",
+        "Annuelle",
+        "10/12/2027",
+        "344 j",
+        "Quatrième acompte trimestriel."
+       ]
+      ]
+     }
+    ],
+    "cartes": [
+     "Identification fiscale de l’établissement",
+     "Versions de l’identité légale",
+     "Numérotation des documents",
+     "Obligations déclaratives (dérivées des obligations en vigueur)",
+     "Calendrier fiscal et social"
+    ]
+   },
+   {
+    "jour": [
+     2027,
+     0,
+     2
+    ],
+    "kpis": [
+     {
+      "libelle": "Échéances suivies",
+      "valeur": "20",
+      "indice": null
+     },
+     {
+      "libelle": "Mensuelles",
+      "valeur": "5",
+      "indice": "ITS, AIB, VPS, CNSS"
+     },
+     {
+      "libelle": "Dans les 30 jours",
+      "valeur": "6",
+      "indice": null
+     },
+     {
+      "libelle": "CCIB annuelle",
+      "valeur": "300 000 FCFA",
+      "indice": "Deux tranches de 150 000 F"
+     }
+    ],
+    "notes": [
+     "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
+     "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
+     "6 échéance(s) dans les trente jours : ITS le 11/01/2027 · AIB le 11/01/2027 · VPS le 11/01/2027 · CNSS le 11/01/2027 …. Une déclaration précède généralement le paiement.",
+     "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
+    ],
+    "tableaux": [
+     {
+      "entetes": [
+       "VERSION",
+       "EN FORCE",
+       "DU",
+       "AU",
+       "IFU / RCCM",
+       "VALIDÉE",
+       "MOTIF"
+      ],
+      "lignes": [
+       [
+        "v1",
+        "Aujourd’hui",
+        "ouverture du dossier",
+        "en force",
+        "3201642748214 / RB/NAT/2016-B-268",
+        "À valider",
+        "semence (arbitrage du 31/08/2026)"
+       ]
+      ]
+     },
+     {
+      "entetes": [
+       "TYPE DE DOCUMENT",
+       "PRÉFIXE",
+       "FORMAT",
+       "SÉQUENCE"
+      ],
+      "lignes": [
+       [
+        "Facture normalisée",
+        "FN-2026-",
+        "FN-AAAA-NNNNN",
+        "Strictement séquentielle"
+       ],
+       [
+        "Facture pro-forma",
+        "PRO-2026-",
+        "PRO-AAAA-NNNNN",
+        "Indépendante"
+       ],
+       [
+        "Avoir",
+        "AV-2026-",
+        "AV-AAAA-NNNN",
+        "Strictement séquentielle"
+       ],
+       [
+        "Dossier patient",
+        "CBG",
+        "CBG/[n°]/[AA]",
+        "Par année civile (RG-01)"
+       ],
+       [
+        "Bon de commande",
+        "BC-2026-",
+        "BC-AAAA-NNNN",
+        "Par exercice"
+       ],
+       [
+        "Bon d’expression de besoins",
+        "BEB-2026-",
+        "BEB-AAAA-NNNN",
+        "Par exercice"
+       ],
+       [
+        "Bulletin de paie",
+        "BP-",
+        "BP-NNNNN",
+        "Par période de paie"
+       ],
+       [
+        "Écriture comptable",
+        "[JOURNAL]-2026-",
+        "JJJ-AAAA-NNNNN",
+        "Par journal"
+       ]
+      ]
+     },
+     {
+      "entetes": [
+       "DÉCLARATION",
+       "PÉRIODICITÉ",
+       "ÉCHÉANCE",
+       "ÉCRAN PRODUCTEUR"
+      ],
+      "lignes": [
+       [
+        "Impôt sur les traitements salariaux (ITS)",
+        "Mensuelle",
+        "le 10 du mois suivant",
+        "Éditer"
+       ],
+       [
+        "Acompte sur impôt assis sur les bénéfices (AIB)",
+        "Mensuelle",
+        "le 10 du mois suivant",
+        "Éditer"
+       ],
+       [
+        "Versement patronal sur salaires (VPS)",
+        "Mensuelle",
+        "le 10 du mois suivant",
+        "Éditer"
+       ],
+       [
+        "Cotisations sociales CNSS (CNSS)",
+        "Mensuelle",
+        "le 10 du mois suivant",
+        "Éditer"
+       ],
+       [
+        "Transmission des factures normalisées",
+        "Continue",
+        "À l’émission",
+        "Éditer"
+       ],
+       [
+        "États financiers de synthèse",
+        "Annuelle",
+        "Clôture de l’exercice, dépôt au 30 avril",
+        "Éditer"
+       ]
+      ]
+     },
+     {
+      "entetes": [
+       "CODE",
+       "OBLIGATION",
+       "PÉRIODICITÉ",
+       "PROCHAINE ÉCHÉANCE",
+       "DANS",
+       "RÈGLE APPLIQUÉE"
+      ],
+      "lignes": [
+       [
+        "ITS",
+        "Impôt sur les traitements salariaux",
+        "Mensuelle",
+        "11/01/2027 reportée — jour ouvrable",
         "9 j",
         "Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
@@ -3496,11 +3536,19 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "11/01/2027 reportée — jour ouvrable",
         "9 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/01/2027",
+        "13 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "PATENTE-DECL",
@@ -3642,29 +3690,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "6",
+      "valeur": "7",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "6 échéance(s) dans les trente jours : ITS le 10/02/2027 · AIB le 10/02/2027 · VPS le 10/02/2027 · CNSS le 10/02/2027 …. Une déclaration précède généralement le paiement.",
+     "7 échéance(s) dans les trente jours : ITS le 10/02/2027 · AIB le 10/02/2027 · VPS le 10/02/2027 · CNSS le 10/02/2027 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -3838,11 +3886,11 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "10/02/2027",
         "12 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "PATENTE-1",
@@ -3851,6 +3899,14 @@
         "10/02/2027",
         "12 j",
         "Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/02/2027",
+        "17 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "CCIB-DECL",
@@ -3976,29 +4032,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "1",
+      "valeur": "2",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "1 échéance(s) dans les trente jours : ORTB-RADIO le 30/03/2027. Une déclaration précède généralement le paiement.",
+     "2 échéance(s) dans les trente jours : ORTB-RADIO le 30/03/2027 · CNSS-VERS le 15/03/2027. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -4139,6 +4195,14 @@
       ],
       "lignes": [
        [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/03/2027",
+        "5 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
         "ORTB-RADIO",
         "Redevance ORTB / Radio",
         "Annuelle",
@@ -4172,11 +4236,11 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "12/04/2027 reportée — jour ouvrable",
         "33 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "IS-SOLDE",
@@ -4310,29 +4374,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "4",
+      "valeur": "5",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "4 échéance(s) dans les trente jours : ITS le 10/05/2027 · AIB le 10/05/2027 · VPS le 10/05/2027 · CNSS le 10/05/2027. Une déclaration précède généralement le paiement.",
+     "5 échéance(s) dans les trente jours : ITS le 10/05/2027 · AIB le 10/05/2027 · VPS le 10/05/2027 · CNSS le 10/05/2027 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -4498,11 +4562,19 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "10/05/2027",
         "9 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "17/05/2027 reportée — jour ouvrable",
+        "16 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "IS-2",
@@ -4644,29 +4716,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "8",
+      "valeur": "9",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "8 échéance(s) dans les trente jours : ITS le 10/02/2026 · AIB le 10/02/2026 · VPS le 10/02/2026 · CNSS le 10/02/2026 …. Une déclaration précède généralement le paiement.",
+     "9 échéance(s) dans les trente jours : ITS le 10/02/2026 · AIB le 10/02/2026 · VPS le 10/02/2026 · CNSS le 10/02/2026 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -4832,11 +4904,11 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "10/02/2026",
         "1 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "PATENTE-1",
@@ -4845,6 +4917,14 @@
         "10/02/2026",
         "1 j",
         "Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "16/02/2026 reportée — jour ouvrable",
+        "7 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "CCIB-DECL",
@@ -4978,29 +5058,29 @@
     "kpis": [
      {
       "libelle": "Échéances suivies",
-      "valeur": "19",
+      "valeur": "20",
       "indice": null
      },
      {
       "libelle": "Mensuelles",
-      "valeur": "4",
+      "valeur": "5",
       "indice": "ITS, AIB, VPS, CNSS"
      },
      {
       "libelle": "Dans les 30 jours",
-      "valeur": "4",
+      "valeur": "5",
       "indice": null
      },
      {
       "libelle": "CCIB annuelle",
-      "valeur": "300 000 FCFA",
+      "valeur": "300 000 FCFA",
       "indice": "Deux tranches de 150 000 F"
      }
     ],
     "notes": [
      "identité légale à valider (première configuration) : vérifier chaque mention, corriger ce qui doit l’être, puis Valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.",
      "Ces paramètres sont partagés avec le module MECeF. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.",
-     "4 échéance(s) dans les trente jours : ITS le 11/05/2026 · AIB le 11/05/2026 · VPS le 11/05/2026 · CNSS le 11/05/2026. Une déclaration précède généralement le paiement.",
+     "5 échéance(s) dans les trente jours : ITS le 11/05/2026 · AIB le 11/05/2026 · VPS le 11/05/2026 · CNSS le 11/05/2026 …. Une déclaration précède généralement le paiement.",
      "Impôt sur les sociétés. L’impôt de l’exercice se paie par anticipation : l’impôt de l’année précédente est divisé en quatre acomptes, versés les 10 mars, 10 juin, 10 septembre et 10 décembre. Le 30 avril de l’année suivante, la liquidation du solde ajuste à la hausse ou à la baisse, en même temps que le dépôt des états financiers."
     ],
     "tableaux": [
@@ -5166,11 +5246,19 @@
        ],
        [
         "CNSS",
-        "Cotisations sociales CNSS",
+        "Déclaration unique (ITS, VPS, déclaration CNSS)",
         "Mensuelle",
         "11/05/2026 reportée — jour ouvrable",
         "11 j",
-        "Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %."
+        "Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end."
+       ],
+       [
+        "CNSS-VERS",
+        "CNSS, versement des cotisations",
+        "Mensuelle",
+        "15/05/2026",
+        "15 j",
+        "Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end."
        ],
        [
         "IS-2",
@@ -5694,12 +5782,12 @@
    "kpis": [
     {
      "libelle": "Obligations en vigueur",
-     "valeur": "19",
+     "valeur": "20",
      "indice": null
     },
     {
      "libelle": "Mensuelles",
-     "valeur": "4",
+     "valeur": "5",
      "indice": "ITS, AIB, VPS, CNSS"
     },
     {

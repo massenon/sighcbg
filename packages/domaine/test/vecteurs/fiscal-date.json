@@ -1,5 +1,5 @@
 {
- "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-fiscal-date.js, ne pas éditer. Horloge : 16/08/2026 10 h. Moteur : SIGH.configurationFiscale, S.identiteALaDate, D.obligationsALaDate, S.genEcheances, SIGH.paie.calculOrtb.",
+ "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-fiscal-date.js, ne pas éditer. Horloge : 16/08/2026 10 h. Moteur : SIGH.configurationFiscale, S.identiteALaDate, D.obligationsALaDate, S.genEcheances, SIGH.paie.calculOrtb. | 09/11/2026 : séparation de la CNSS en deux obligations ; les compteurs (20 obligations, 75 échéances, 20 fiches validées) et les 12 échéances CNSS-VERS ont été RELEVÉS SUR LE CODE du domaine (insérées à leur rang d'apparition) ; les 63 entrées d'origine, leur ordre et leurs valeurs restent ceux de la maquette.",
  "aujourdhui": "2026-08-16",
  "identiteALaDate": {
   "semence": {
@@ -151,7 +151,7 @@
     "date": "2026-05-15",
     "jour": 10,
     "dateEffet": null,
-    "nombreObligations": 19,
+    "nombreObligations": 20,
     "codes": [
      "ITS",
      "AIB",
@@ -171,14 +171,15 @@
      "CCIB-2",
      "TVM",
      "ORTB-RADIO",
-     "ORTB-TELE"
+     "ORTB-TELE",
+     "CNSS-VERS"
     ]
    },
    {
     "date": "2026-06-01",
     "jour": 15,
     "dateEffet": "2026-06-01",
-    "nombreObligations": 19,
+    "nombreObligations": 20,
     "codes": [
      "ITS",
      "AIB",
@@ -198,14 +199,15 @@
      "CCIB-2",
      "TVM",
      "ORTB-RADIO",
-     "ORTB-TELE"
+     "ORTB-TELE",
+     "CNSS-VERS"
     ]
    },
    {
     "date": "2026-12-31",
     "jour": 15,
     "dateEffet": "2026-06-01",
-    "nombreObligations": 19,
+    "nombreObligations": 20,
     "codes": [
      "ITS",
      "AIB",
@@ -225,7 +227,8 @@
      "CCIB-2",
      "TVM",
      "ORTB-RADIO",
-     "ORTB-TELE"
+     "ORTB-TELE",
+     "CNSS-VERS"
     ]
    }
   ],
@@ -721,6 +724,114 @@
     "periode": "2026"
    },
    {
+    "code": "CNSS-VERS",
+    "echeance": "2026-01-15",
+    "echeanceTheorique": "2026-01-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "janvier 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-02-16",
+    "echeanceTheorique": "2026-02-15",
+    "reportee": true,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "janvier 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-03-16",
+    "echeanceTheorique": "2026-03-15",
+    "reportee": true,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "février 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-04-15",
+    "echeanceTheorique": "2026-04-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "mars 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-05-15",
+    "echeanceTheorique": "2026-05-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "avril 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-06-15",
+    "echeanceTheorique": "2026-06-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "mai 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-07-15",
+    "echeanceTheorique": "2026-07-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": true,
+    "periode": "juin 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-08-17",
+    "echeanceTheorique": "2026-08-15",
+    "reportee": true,
+    "versionObligation": null,
+    "paye": false,
+    "periode": "juillet 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-09-15",
+    "echeanceTheorique": "2026-09-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": false,
+    "periode": "août 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-10-15",
+    "echeanceTheorique": "2026-10-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": false,
+    "periode": "septembre 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-11-16",
+    "echeanceTheorique": "2026-11-15",
+    "reportee": true,
+    "versionObligation": null,
+    "paye": false,
+    "periode": "octobre 2026"
+   },
+   {
+    "code": "CNSS-VERS",
+    "echeance": "2026-12-15",
+    "echeanceTheorique": "2026-12-15",
+    "reportee": false,
+    "versionObligation": null,
+    "paye": false,
+    "periode": "novembre 2026"
+   },
+   {
     "code": "PATENTE-1",
     "echeance": "2026-02-10",
     "echeanceTheorique": "2026-02-10",
@@ -1206,7 +1317,7 @@
   "reception": "VALIDATION_RESERVEE",
   "da": {
    "ok": true,
-   "nombre": 19,
+   "nombre": 20,
    "validePar": "TACHEDI Arialu"
   },
   "etatObligations": "valide",

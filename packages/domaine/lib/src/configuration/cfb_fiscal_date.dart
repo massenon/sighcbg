@@ -12,6 +12,7 @@
 library;
 
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice;
+import '../comptabilite/cpd_bareme_aib.dart' show cpdStatutArrete, cpdStatutNonArrete;
 import '../format/format_fr.dart' show dateFR, nombre;
 import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../impression/identite.dart';
@@ -449,7 +450,19 @@ CfaFiche cfbFicheDepuisObligation(CfbObligation o, {String? id}) => {
       'motif': null,
       'valideLe': null,
       'validePar': null,
+      // La date NON ARRÊTÉE se porte comme celle du barème de l'AIB (`statutArret`, `dateArret`, `decideurArret`) ; une fiche arrêtée d'origine ne porte
+      // AUCUN de ces champs : l'absence vaut « arrêtée » (le calendrier confirmé les 19-25/08/2026).
+      if (o.nonArretee) ...{
+        'statutArret': cpdStatutNonArrete,
+        'dateArret': null,
+        'decideurArret': null,
+        'motifNonArret': o.motifNonArret,
+        'source': o.source,
+      },
     };
+
+/// Une obligation dont la date n'est PAS arrêtée par la Direction : `statutArret` vaut `non_arrete`. L'absence du champ vaut « arrêtée ».
+bool cfbObligationNonArretee(Map<String, Object?> f) => '${f['statutArret'] ?? ''}' == cpdStatutNonArrete;
 
 /// Une fiche du magasin relue sur la forme du calendrier (pour les fonctions de `cfb_regles.dart` qui lisent des [CfbObligation]).
 CfbObligation cfbObligationDepuisFiche(CfaFiche f) => CfbObligation(
@@ -461,7 +474,9 @@ CfbObligation cfbObligationDepuisFiche(CfaFiche f) => CfbObligation(
     f['part'] == null ? null : nombreOuZero(f['part']).toInt(),
     f['declaration'] == null ? null : '${f['declaration']}',
     '${f['note'] ?? ''}',
-    '${f['source'] ?? ''}');
+    '${f['source'] ?? ''}',
+    nonArretee: cfbObligationNonArretee(f),
+    motifNonArret: f['motifNonArret'] == null ? null : '${f['motifNonArret']}');
 
 /// `D.semenceOrtbParametres()` : la fiche `ORTB-PARAMETRES` semée depuis `D.PARAM_PAIE.ortb`.
 CfaFiche cfbSemenceOrtbParametres() => {
@@ -636,7 +651,26 @@ CfbEcritureObligation cfbModifierObligation(Iterable<CfaFiche> obligations,
   r = cfbControleValeursObligation(fusion);
   if (r != null) return CfbEcritureObligation.refusee(r);
   final apres = cfbValeursObligation(fusion);
-  final patch = {...apres, 'dateEffet': d, 'modifieLe': _horodatage(maintenant), 'modifiePar': acteur, 'motif': motif!.trim(), 'valideLe': null, 'validePar': null};
+  // Un jour arrêté par la Direction puis CHANGÉ n'est plus le jour qu'elle a arrêté : l'arrêt tombe, la date redevient « à valider » (comme la validation).
+  final perdArret = '${fiche['statutArret'] ?? ''}' == cpdStatutArrete &&
+      (apres['jour'] != nombreOuZero(fiche['jour']).toInt() ||
+          apres['mois'] != (fiche['mois'] == null ? null : nombreOuZero(fiche['mois']).toInt()) ||
+          apres['periodicite'] != fiche['periodicite']);
+  final patch = {
+    ...apres,
+    'dateEffet': d,
+    'modifieLe': _horodatage(maintenant),
+    'modifiePar': acteur,
+    'motif': motif!.trim(),
+    'valideLe': null,
+    'validePar': null,
+    if (perdArret) ...{
+      'statutArret': cpdStatutNonArrete,
+      'dateArret': null,
+      'decideurArret': null,
+      'motifNonArret': 'Le jour a été modifié le ${_dateFrIso(d)} depuis son arrêt${fiche['dateArret'] == null ? '' : ' du ${_dateFrIso('${fiche['dateArret']}')}'} : la nouvelle valeur n’a pas été arrêtée par la Direction.',
+    },
+  };
   return CfbEcritureObligation._(
       id: '${fiche['id']}',
       code: '${fiche['code']}',
@@ -688,6 +722,51 @@ CfbEcritureObligation cfbCreerObligation(Iterable<CfaFiche> obligations, Iterabl
     'valideLe': null,
     'validePar': null,
   });
+}
+
+/// L'ARRÊT d'une date par la Direction (décision du 09/11/2026 : le versement CNSS est présent mais « non arrêté » jusqu'à confirmation auprès de la CNSS).
+/// Arrêter ne CHANGE aucune valeur : le jour reste celui que la fiche porte (le modifier est un autre geste, daté, qui régénère les échéances) ; la fiche reçoit
+/// `statutArret: arrete`, la date de l'arrêt et son décideur, et le marquage « non arrêtée » disparaît de tous les écrans, qui le lisent sur la fiche. Refus
+/// nommés : `FILEUL_LECTURE_SEULE`, `VALIDATION_RESERVEE` (Direction, DAF ou administrateur seuls), `OBLIGATION_INCONNUE`, `ARRET_SANS_OBJET` (déjà arrêtée),
+/// `DECIDEUR_REQUIS`, `DATE_ARRET_FUTURE`.
+CfbEcritureObligation cfbArreterObligation(Iterable<CfaFiche> obligations,
+    {String? id,
+    String? code,
+    Object? dateArret,
+    String? decideur,
+    required String? role,
+    required String acteur,
+    required DateTime maintenant,
+    required DateTime aujourdhui,
+    bool fileul = false,
+    String Function(String?)? libelleRole}) {
+  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole);
+  if (r != null) return CfbEcritureObligation.refusee(r);
+  final fiche = _obligationActive(obligations, id: id, code: code);
+  if (fiche == null) return const CfbEcritureObligation.refusee(_obligationInconnue);
+  if (!cfbObligationNonArretee(fiche)) {
+    return CfbEcritureObligation.refusee(CfbRefus('ARRET_SANS_OBJET', 'L’obligation ${fiche['code']} est déjà arrêtée : il n’y a rien à arrêter.',
+        'Pour changer son jour, utiliser « Modifier » : une version datée naît et l’arrêt est à reprendre.'));
+  }
+  if (_vide(decideur)) {
+    return const CfbEcritureObligation.refusee(CfbRefus('DECIDEUR_REQUIS', 'Le décideur de l’arrêt est obligatoire.', 'Nommer celui qui arrête la date (Direction, DAF…).'));
+  }
+  final d = isoJour(dateArret ?? aujourdhui);
+  if (d.compareTo(isoJour(aujourdhui)) > 0) {
+    return const CfbEcritureObligation.refusee(CfbRefus('DATE_ARRET_FUTURE', 'La date de l’arrêt ne peut pas être postérieure à aujourd’hui.', 'Saisir la date à laquelle la Direction a décidé.'));
+  }
+  return CfbEcritureObligation._(
+      id: '${fiche['id']}',
+      code: '${fiche['code']}',
+      dateEffet: d,
+      fiche: {
+        ...fiche,
+        'statutArret': cpdStatutArrete,
+        'dateArret': d,
+        'decideurArret': decideur!.trim(),
+        'modifieLe': _horodatage(maintenant),
+        'modifiePar': acteur,
+      });
 }
 
 /// `retirerObligation` : réservé au droit `annuler` de CFG (`RETRAIT_RESERVE` : la Direction édite et valide, ne retire pas) ; la dernière version

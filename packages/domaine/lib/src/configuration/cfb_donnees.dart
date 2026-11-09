@@ -85,9 +85,17 @@ const cfbNs131 = CfbNoteService('NS 131/07/DM/DA/CBG/2026', 1, '2026-07-13', 'AC
 const cfbNs132 = CfbNoteService('NS n° 132/07/DM/DA/CBG/2026', 1, '2026-07-13', 'ACTIVE', 'Primes diverses');
 
 class CfbObligation {
-  const CfbObligation(this.code, this.libelle, this.periodicite, this.jour, this.mois, this.part, this.declaration, this.note, this.source);
+  const CfbObligation(this.code, this.libelle, this.periodicite, this.jour, this.mois, this.part, this.declaration, this.note, this.source,
+      {this.nonArretee = false, this.motifNonArret});
   final String code, libelle, periodicite, note, source;
   final int jour;
+
+  /// Date NON ARRÊTÉE (décision de la Direction du 09/11/2026 pour le versement CNSS) : l'obligation est présente et suivie, mais son jour reste « à
+  /// valider » à l'écran tant que la Direction ne l'a pas arrêté (date et décideur). Faux pour tout le calendrier confirmé les 19-25/08/2026.
+  final bool nonArretee;
+
+  /// Pourquoi la date n'est pas arrêtée (affiché avec le marquage) ; `null` quand [nonArretee] est faux.
+  final String? motifNonArret;
 
   /// 0 (janvier) à 11 ; `null` pour une obligation mensuelle.
   final int? mois;
@@ -102,7 +110,9 @@ const cfbCalendrierFiscal = <CfbObligation>[
   CfbObligation('ITS', 'Impôt sur les traitements salariaux', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('AIB', 'Acompte sur impôt assis sur les bénéfices', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 de chaque mois, après la déclaration préalable.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('VPS', 'Versement patronal sur salaires', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 du mois suivant le mois d’exercice.', 'Précisions du comptable — réunion du 19/08/2026'),
-  CfbObligation('CNSS', 'Cotisations sociales CNSS', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %.', 'Précisions du comptable — réunion du 19/08/2026'),
+  CfbObligation('CNSS', 'Déclaration unique (ITS, VPS, déclaration CNSS)', 'mensuelle', 10, null, null, null,
+      'Le 10 du mois suivant le mois d’exercice : une seule déclaration porte l’ITS, la VPS et la déclaration CNSS (DGI). Le versement des cotisations se suit à part, sous le code CNSS-VERS. Reportée au jour ouvrable suivant si l’échéance tombe un week-end.',
+      'Décision de la Direction du 09/11/2026 (la CNSS se sépare en deux obligations) ; précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('IS-1', 'Impôt sur les sociétés — 1er acompte', 'annuelle', 10, 2, 25, null, 'Premier des quatre acomptes trimestriels, assis sur l’impôt de l’exercice précédent divisé par quatre. Le 10 mars — confirmé par la Direction le 25/08/2026.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('IS-2', 'Impôt sur les sociétés — 2e acompte', 'annuelle', 10, 5, 25, null, 'Deuxième acompte trimestriel.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('IS-3', 'Impôt sur les sociétés — 3e acompte', 'annuelle', 10, 8, 25, null, 'Troisième acompte trimestriel.', 'Précisions du comptable — réunion du 19/08/2026'),
@@ -118,6 +128,14 @@ const cfbCalendrierFiscal = <CfbObligation>[
   CfbObligation('TVM', 'Taxe sur véhicules à moteur', 'annuelle', 30, 3, 100, null, 'Une fois par an, au plus tard le 30 avril.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('ORTB-RADIO', 'Redevance ORTB / Radio', 'annuelle', 30, 2, 100, null, 'Prélevée sur TOUS les salariés sans exception — 1 000 FCFA par agent, au mois de mars.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('ORTB-TELE', 'Redevance ORTB / Télé', 'annuelle', 30, 5, 100, null, 'Prélevée en SUS de la radio sur les salaires supérieurs à 60 000 FCFA — 3 000 FCFA par agent, au mois de juin.', 'Précisions du comptable — réunion du 19/08/2026'),
+  // Placée en FIN de calendrier : la semence, le jeu et les échéances (ECH0001…) numérotent dans l'ordre du calendrier, et l'insérer plus haut aurait décalé
+  // tous les identifiants existants. Le code CNSS reste celui de la DÉCLARATION (identifiant technique historique, paie M11 et alertes) ; le VERSEMENT porte
+  // le code nouveau. Les deux partagent la famille « CNSS » (préfixe avant le premier trait d'union).
+  CfbObligation('CNSS-VERS', 'CNSS, versement des cotisations', 'mensuelle', 15, null, 100, 'Déclaration unique déposée avant le versement',
+      'Le 15 du mois suivant le mois d’exercice. Part patronale 16,4 %, part ouvrière 3,6 %. Reporté au jour ouvrable suivant si l’échéance tombe un week-end.',
+      'Décision de la Direction du 09/11/2026 ; guides AfriCarrières et Rivermate — date NON ARRÊTÉE',
+      nonArretee: true,
+      motifNonArret: 'Le 15 vient de guides commerciaux ; la CNSS écrit « dans les quinze jours qui suivent la période ». À confirmer auprès de la CNSS avant d’arrêter la date.'),
 ];
 const cfbCcibTotal = 300000;
 
@@ -131,14 +149,6 @@ const cfbNumerotation = <(String, String, String, String)>[
   ('Bon d’expression de besoins', 'BEB-2026-', 'BEB-AAAA-NNNN', 'Par exercice'),
   ('Bulletin de paie', 'BP-', 'BP-NNNNN', 'Par période de paie'),
   ('Écriture comptable', '[JOURNAL]-2026-', 'JJJ-AAAA-NNNNN', 'Par journal'),
-];
-/// Obligations déclaratives (littéral de l'écran) : déclaration, périodicité, échéance, écran producteur.
-const cfbObligationsDeclaratives = <(String, String, String, String)>[
-  ('Cotisations CNSS', 'Mensuelle', '15 du mois suivant', 'm11-cotisations'),
-  ('Impôt sur les traitements et salaires (ITS)', 'Mensuelle', '10 du mois suivant', 'm11-cotisations'),
-  ('Versement patronal de solidarité (VPS)', 'Mensuelle', '10 du mois suivant', 'm11-cotisations'),
-  ('Transmission des factures normalisées', 'Continue', 'À l’émission', 'mecef-transmission'),
-  ('États financiers de synthèse', 'Annuelle', 'Clôture de l’exercice', 'm12-etats-financiers'),
 ];
 const cfbEcranMecefConfig = 'mecef-config';
 

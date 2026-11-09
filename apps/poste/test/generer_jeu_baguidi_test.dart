@@ -82,7 +82,12 @@ void main() {
       'Société Cotonnière du Borgou', 'Huilerie de Parakou', 'Transports Okpara', 'Brasserie des Collines', 'BTP Alafia', 'Imprimerie Gurma'
     ]);
     expect(s.every((x) => x['fictif'] == true && x['periodiciteFacturation'] == 'mensuelle'), isTrue);
-    expect(lire(a, 'obligationsFiscales').firstWhere((x) => x['code'] == 'CNSS')['jour'], 15);
+    final obl = lire(a, 'obligationsFiscales');
+    expect(obl.firstWhere((x) => x['code'] == 'CNSS')['jour'], 10, reason: 'la déclaration unique (ITS, VPS, déclaration CNSS) : le 10');
+    final vers = obl.firstWhere((x) => x['code'] == 'CNSS-VERS');
+    expect(vers['jour'], 15, reason: 'le versement des cotisations CNSS : le 15');
+    expect(vers['statutArret'], 'non_arrete', reason: 'le 15 vient de guides : à confirmer auprès de la CNSS, la Direction ne l\'a pas arrêté');
+    expect(obl.where((x) => x['statutArret'] == 'non_arrete').length, 1, reason: 'le reste du calendrier n\'est pas marqué');
     expect(lire(a, 'secteurs').length, 6);
   });
 }

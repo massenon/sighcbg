@@ -206,8 +206,8 @@ class Comptabilite {
 
   // --- échéances fiscales --------------------------------------------------------------------------------------------------------------------
 
-  /// L'exercice 2026 déroulé par le moteur depuis le calendrier du socle (CNSS au 15) : payées jusqu'aux déclarations de septembre (échues le 10 et le 12
-  /// octobre), à l'exception d'UNE, la CNSS de septembre échue le 15 octobre, volontairement dépassée pour que l'alarme ait quelque chose à montrer. Les
+  /// L'exercice 2026 déroulé par le moteur depuis le calendrier du socle (déclaration unique CNSS au 10, versement CNSS-VERS au 15) : payées jusqu'aux
+  /// déclarations de septembre (échues le 10 et le 12 octobre), à l'exception d'UNE, le versement CNSS de septembre échu le 15 octobre, volontairement dépassé pour que l'alarme ait quelque chose à montrer. Les
   /// quittances ne portent AUCUN montant (aucun document ne donne les bases).
   void echeances() {
     final obligations = [for (final o in a.fiches('obligationsFiscales')) if (o['type'] == 'obligation') o];
@@ -215,7 +215,7 @@ class Comptabilite {
     var i = 0;
     for (final e in gen) {
       final due = '${e['echeance']}';
-      final enRetard = e['code'] == 'CNSS' && due == '2026-10-15';
+      final enRetard = e['code'] == 'CNSS-VERS' && due == '2026-10-15';
       final payee = due.compareTo('2026-10-15') <= 0 && !enRetard;
       a.ajouter(
           'echeancesFiscales',
@@ -228,7 +228,7 @@ class Comptabilite {
               'reference': 'QUIT-${e['code']}-${due.substring(0, 7)}',
               'valideePar': (i++).isEven ? comptableStock : comptableCaisse,
             },
-            'source': 'Calendrier de l’exercice 2026 (CNSS au 15) ; règlements de démonstration, montants non renseignés',
+            'source': 'Calendrier de l’exercice 2026 (déclaration unique CNSS au 10, versement CNSS au 15 non arrêté) ; règlements de démonstration, montants non renseignés',
           },
           'ECH',
           largeur: 4);

@@ -151,11 +151,12 @@ void main() {
   group('obligations à la date (CCIB-2 du 10 au 15 juin, à effet du 01/06/2026)', () {
     final vo = obj(v['obligationsALaDate']);
 
-    test('la semence : 19 obligations du calendrier confirmé et la fiche ORTB-PARAMETRES, aucune validée', () {
-      expect(obligations.length, 20);
+    test('la semence : 20 obligations du calendrier (19 confirmées + le versement CNSS non arrêté) et la fiche ORTB-PARAMETRES, aucune validée', () {
+      expect(obligations.length, 21);
       expect(obligations.where((o) => o['type'] == 'obligation').length, cfbCalendrierFiscal.length);
       expect(obligations.last['code'], 'ORTB-PARAMETRES');
       expect(obligations.every((o) => o['valideLe'] == null && o['dateEffet'] == null), isTrue);
+      expect(cfbCalendrierFiscal.length, 20);
       expect(obligations.first['id'], 'FIS01');
       expect(obligations.first['famille'], 'ITS');
       expect(obligations.where((o) => o['code'] == 'CCIB-1').single['famille'], 'CCIB');
@@ -203,7 +204,7 @@ void main() {
       expect(historique.single['remplaceePar'], acteur);
     });
 
-    test('trois dates : le 15/05 lit la version d’origine (le 10), le 01/06 et le 31/12 la nouvelle (le 15) ; les 19 codes restent, dans l’ordre', () {
+    test('trois dates : le 15/05 lit la version d’origine (le 10), le 01/06 et le 31/12 la nouvelle (le 15) ; les 20 codes restent, dans l’ordre', () {
       for (final c in liste(vo['dates'])) {
         final l = cfbObligationsALaDate(obligations, historique, d('${c['date']}'));
         final o = l.where((x) => x['code'] == 'CCIB-2').single;
@@ -219,7 +220,7 @@ void main() {
 
     test('le magasin du jeu : 2026 engendré depuis la semence (CCIB-2 au 10/06 réputée payée : le script la remet due)', () {
       echeances.addAll(cfbGenEcheances(2026, obligationsFixes: cfbSemenceObligations(), aujourdhui: aujourdhui));
-      expect(echeances.length, 63, reason: '4 mensuelles sur 12 mois et 15 annuelles');
+      expect(echeances.length, 75, reason: '5 mensuelles sur 12 mois (la CNSS compte pour deux) et 15 annuelles');
       final ccib2 = echeances.where((e) => e['code'] == 'CCIB-2').single;
       expect(ccib2['echeance'], '2026-06-10');
       expect(ccib2['paye'], isTrue, reason: 'le 10/06 est passé de plus de 25 jours au 16/08');
@@ -247,7 +248,7 @@ void main() {
       expect(r.libelle, 'Échéances régénérées : CCIB-2, 1');
     });
 
-    test('2026 engendré depuis la version en vigueur de chaque mois : 61 échéances, CCIB-2 au 15/06 avec sa version, dates, reports, périodes et règlements = maquette', () {
+    test('2026 engendré depuis la version en vigueur de chaque mois : 75 échéances, CCIB-2 au 15/06 avec sa version, dates, reports, périodes et règlements = maquette', () {
       final l = cfbGenEcheances(2026, obligations: obligations, historique: historique, aujourdhui: aujourdhui);
       final att = liste(ve['engendrees2026']);
       expect(l.length, att.length);
@@ -394,7 +395,7 @@ void main() {
       }
     });
 
-    test('la DAF valide d’un coup les 19 fiches actives (18 obligations après le retrait de la TVM, plus les paramètres ORTB) : état « valide »', () {
+    test('la DAF valide d’un coup les 20 fiches actives (19 obligations après le retrait de la TVM, plus les paramètres ORTB) : état « valide »', () {
       final r = cfbValiderObligations(obligations, role: 'da', acteur: 'TACHEDI Arialu', maintenant: maintenant);
       final att = obj(vv['da']);
       expect([r.ok, r.nombre, r.validePar], [att['ok'], att['nombre'], att['validePar']]);

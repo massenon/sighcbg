@@ -5,6 +5,7 @@
 // est RECOPIÉ du jeu de référence ; tout le reste démarre vide et appartient à une étape suivante (`module_*.dart`).
 import 'dart:io';
 
+import 'package:sigh_domaine/sigh_domaine.dart' as d;
 import 'package:sigh_poste/donnees/magasin.dart';
 
 import 'contexte.dart';
@@ -355,11 +356,15 @@ void _organisation(Contexte ctx) {
   ctx.note('socle : 6 secteurs et 6 postes limités aux neuf personnes');
 }
 
-// --- Calendrier fiscal (décision du 06/11/2026) ------------------------------------------------------------------------------------------------
+// --- Calendrier fiscal (décisions du 06/11/2026 et du 09/11/2026) -----------------------------------------------------------------------------
 
-/// La CNSS se déclare et se paie au 15 du mois suivant. Les autres échéances héritées sont GARDÉES : le régime d'imposition de Baguidi est à revoir par le
-/// comptable, et chaque fiche le dit.
+/// La CNSS se SÉPARE en deux obligations (Direction, 09/11/2026), toutes deux lues dans le calendrier du domaine — le jour n'est écrit nulle part ici :
+///  - `CNSS` (identifiant technique historique) devient la « Déclaration unique (ITS, VPS, déclaration CNSS) », au jour de la donnée (le 10) ;
+///  - `CNSS-VERS`, nouvelle, est le versement des cotisations (le 15), MARQUÉE NON ARRÊTÉE : la Direction l'arrêtera après confirmation auprès de la CNSS.
+/// Les autres échéances héritées sont GARDÉES : le régime d'imposition de Baguidi est à revoir par le comptable, et chaque fiche le dit.
 void _calendrierFiscal(Contexte ctx) {
+  final declaration = d.cfbCalendrierFiscal.firstWhere((o) => o.code == 'CNSS');
+  final versement = d.cfbCalendrierFiscal.firstWhere((o) => o.code == 'CNSS-VERS');
   final fiches = <Fiche>[];
   for (final o in ctx.fiches('obligationsFiscales')) {
     if (o['type'] != 'obligation') {
@@ -369,9 +374,12 @@ void _calendrierFiscal(Contexte ctx) {
     if (o['code'] == 'CNSS') {
       fiches.add({
         ...o,
-        'jour': 15,
-        'note': 'Le 15 du mois suivant. Part patronale 16,4 %, part ouvrière 3,6 %.',
-        'source': 'Décision de la Direction du 06/11/2026 (échéance CNSS au 15)',
+        'libelle': declaration.libelle,
+        'jour': declaration.jour,
+        'part': declaration.part,
+        'declaration': declaration.declaration,
+        'note': declaration.note,
+        'source': declaration.source,
       });
     } else {
       fiches.add({
@@ -382,8 +390,12 @@ void _calendrierFiscal(Contexte ctx) {
       });
     }
   }
+  // Le versement est inséré APRÈS la dernière obligation (avant la fiche des paramètres ORTB) : aucun identifiant FIS existant ne bouge.
+  final rang = fiches.lastIndexWhere((f) => f['type'] == 'obligation') + 1;
+  final n = fiches.where((f) => f['type'] == 'obligation').length + 1;
+  fiches.insert(rang, d.cfbFicheDepuisObligation(versement, id: 'FIS${n.toString().padLeft(2, '0')}'));
   ctx.remplacer('obligationsFiscales', fiches);
-  ctx.note('socle : CNSS au 15 du mois suivant, ${fiches.where((f) => f['aRevoir'] == true).length} autres échéances gardées et marquées à revoir');
+  ctx.note('socle : CNSS scindée (déclaration unique au ${declaration.jour}, versement au ${versement.jour} non arrêté), ${fiches.where((f) => f['aRevoir'] == true).length} autres échéances gardées et marquées à revoir');
 }
 
 // --- Caisse ------------------------------------------------------------------------------------------------------------------------------------

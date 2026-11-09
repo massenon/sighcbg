@@ -88,7 +88,12 @@ class _EtatEcheances extends State<EcranEcheances> {
     super.dispose();
   }
 
-  List<Fiche> _lignes(ContexteEcran c) => cpcLignesEcheances(c.magasin.collection('echeancesFiscales').actives, c.aujourdhui);
+  /// Les lignes du suivi, chacune portant `nonArretee` : la date de son obligation n'est pas arrêtée par la Direction (le versement CNSS). Le marquage se lit sur
+  /// l'obligation VIVANTE, jamais sur l'échéance : l'arrêt le retire sans régénérer la moindre échéance.
+  List<Fiche> _lignes(ContexteEcran c) {
+    final codes = ConfigurationFiscalePoste(c).codesNonArretes();
+    return [for (final l in cpcLignesEcheances(c.magasin.collection('echeancesFiscales').actives, c.aujourdhui)) {...l, if (codes.contains('${l['code']}')) 'nonArretee': true}];
+  }
 
   TonSigh _ton(String t) => switch (t) {
         'succes' => TonSigh.succes,
@@ -232,6 +237,7 @@ class _EtatEcheances extends State<EcranEcheances> {
             ('Périodicité', '${e['periodicite']}'),
             ('Période concernée', '${e['periode']}'),
             ('Échéance', '${_d(e['echeance'])}${e['reportee'] == true ? ' — reportée au jour ouvrable suivant' : ''}'),
+            if (e['nonArretee'] == true) ('Date de l’obligation', 'NON ARRÊTÉE par la Direction (à valider) — voir Obligations & règles'),
             ('Part', e['part'] != null && e['part'] != 0 ? '${e['part']} %' : '—'),
             ('Déclaration préalable', '${e['declaration'] ?? 'aucune'}'),
             ('État', cpcEtat('${e['etat']}').$2),
@@ -296,7 +302,7 @@ class _EtatEcheances extends State<EcranEcheances> {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return ListenableBuilder(
-      listenable: c.magasin.collection('echeancesFiscales'),
+      listenable: Listenable.merge([c.magasin.collection('echeancesFiscales'), c.magasin.collection('obligationsFiscales')]),
       builder: (context, _) {
         final rows = _lignes(c);
         int nb(String s) => rows.where((e) => e['etat'] == s).length;
@@ -370,12 +376,14 @@ class _EtatEcheances extends State<EcranEcheances> {
               ColonneTableau(
                   cle: 'libelle',
                   libelle: 'Obligation',
-                  texte: (e) => '${e['libelle']} ${e['periode']}${e['part'] != null && (e['part'] as num) < 100 ? ' · tranche de ${e['part']} %' : ''}',
+                  texte: (e) => '${e['libelle']} ${e['periode']}${e['part'] != null && (e['part'] as num) < 100 ? ' · tranche de ${e['part']} %' : ''}${e['nonArretee'] == true ? ' — date non arrêtée (à valider)' : ''}',
                   rendu: (_, e) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                         Text('${e['libelle']}',
                             overflow: TextOverflow.ellipsis, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14)),
                         Text('${e['periode']}${e['part'] != null && (e['part'] as num) < 100 ? ' · tranche de ${e['part']} %' : ''}',
                             overflow: TextOverflow.ellipsis, style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
+                        if (e['nonArretee'] == true)
+                          BadgeSigh('Date non arrêtée (à valider)', key: Key('cpc:nonarretee:${e['code']}:${e['echeanceTheorique']}'), ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
                       ])),
               ColonneTableau(
                   cle: 'echeance',

@@ -94,6 +94,22 @@ class ConfigurationFiscalePoste {
   Fiche ortbALaDate([DateTime? date]) => cfbOrtbALaDate(obligations.toutes, historique.toutes, date ?? maintenant);
   CfbEtatConfiguration etatObligations() => cfbEtatObligations(obligations.toutes, historique.toutes);
 
+  /// Les obligations ACTIVES dont la date n'est PAS arrêtée (le versement CNSS, décision du 09/11/2026), lues sur les fiches vivantes (jamais sur une copie de
+  /// l'historique) : c'est la source du marquage « non arrêtée » de tous les écrans, qui disparaît dès que l'arrêt est écrit.
+  List<Fiche> obligationsNonArretees() => [for (final o in obligations.actives) if (o['type'] == 'obligation' && cfbObligationNonArretee(o)) o];
+
+  /// Les codes des obligations dont la date n'est pas arrêtée (pour marquer leurs échéances au suivi).
+  Set<String> codesNonArretes() => {for (final o in obligationsNonArretees()) '${o['code']}'};
+
+  /// ARRÊTER la date d'une obligation (Direction, DAF ou administrateur) : date et décideur de l'arrêt écrits sur la fiche ; AUCUNE échéance régénérée (le jour
+  /// ne change pas). Le refus du moteur (rôle, déjà arrêtée, décideur) est rendu tel quel.
+  CfbEcritureObligation arreterObligation(Fiche o, {required String decideur, Object? dateArret}) {
+    final r = cfbArreterObligation(obligations.toutes,
+        id: '${o['id']}', dateArret: dateArret, decideur: decideur, role: c.role, acteur: acteurNomme, maintenant: maintenant, aujourdhui: maintenant, fileul: fileul);
+    if (r.ok) obligations.mettreAJour(r.id, r.fiche!);
+    return r;
+  }
+
   CfbValidation validerObligations() {
     final r = cfbValiderObligations(obligations.toutes, role: c.role, acteur: acteurNomme, maintenant: maintenant, fileul: fileul);
     if (r.ok) _validerFiches(obligations, r, 'Obligations fiscales validées');
