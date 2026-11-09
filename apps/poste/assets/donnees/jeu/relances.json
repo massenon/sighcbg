@@ -1,1 +1,5 @@
-[]
+[
+{"assureur":"NSIA","assureurNom":"NSIA ASSURANCE","date":"2026-10-20","periode":"Août 2026","montant":101800,"niveau":"1re relance","canal":"Courrier électronique","observations":"Facture mère émise le 05/09/2026, aucun règlement reçu.","reference":"REL-0001","statutRelance":"en_attente","fictif":true,"source":"Jeu de démonstration Baguidi : donnée fictive, à remplacer par la clinique","id":"REL0001","statut":"actif"},
+{"assureur":"SANLAM","assureurNom":"SANLAM ASSURANCE","date":"2026-11-02","periode":"Août 2026","montant":25740,"niveau":"1re relance","canal":"Courrier remis en main propre","observations":"Acompte reçu le 14/10/2026 ; le solde reste dû.","reference":"REL-0002","statutRelance":"en_attente","fictif":true,"source":"Jeu de démonstration Baguidi : donnée fictive, à remplacer par la clinique","id":"REL0002","statut":"actif"},
+{"assureur":"NSIA","assureurNom":"NSIA ASSURANCE","date":"2026-11-04","periode":"Août 2026","montant":101800,"niveau":"2e relance","canal":"Courrier recommandé","observations":"Sans réponse à la première relance du 20/10/2026.","reference":"REL-0003","statutRelance":"en_attente","fictif":true,"source":"Jeu de démonstration Baguidi : donnée fictive, à remplacer par la clinique","id":"REL0003","statut":"actif"}
+]

@@ -78,10 +78,11 @@ void main() {
     }
   });
 
-  test('écritures de paie : une pièce par lot validé, équilibrée (RG-10), en brouillon, journal SAL ; rien pour octobre', () {
+  test('écritures de paie : une pièce par lot validé, équilibrée (RG-10), validée par la comptabilité, journal SAL ; rien pour octobre', () {
     final sal = [for (final e in c('ecritures')) if (e['journal'] == 'SAL') e];
     expect({for (final e in sal) e['pieceId']}, {'PAIE-Août 2026', 'PAIE-Septembre 2026'});
-    expect(sal.every((e) => e['statut'] == 'brouillon'), isTrue);
+    // En brouillon à la génération ; le sous-lot stock et comptabilité valide les pièces d'août et de septembre.
+    expect(sal.every((e) => e['statut'] == 'validee'), isTrue);
     for (final numero in {for (final e in sal) e['numero']}) {
       final lignes = sal.where((e) => e['numero'] == numero);
       expect(lignes.fold<num>(0, (a, e) => a + n(e['debit'])), lignes.fold<num>(0, (a, e) => a + n(e['credit'])), reason: '$numero');

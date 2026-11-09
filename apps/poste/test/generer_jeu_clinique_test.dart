@@ -18,7 +18,8 @@ void main() {
   List<F> c(String nom) => lire(jeu, nom);
 
   final patients = c('patients');
-  final factures = c('factures');
+  // Les factures du sous-lot clinique : les ventes de pharmacie au comptoir (sous-lot stock, sans dossier patient) sont écartées.
+  final factures = [for (final f in c('factures')) if (f['venteComptoir'] != true) f];
   final ecritures = c('ecritures');
   final consultations = c('consultations');
 
@@ -172,7 +173,8 @@ void main() {
       expect(plan.contains('${e['compte']}'), isTrue, reason: 'compte ${e['compte']} absent du plan');
       expect(n(e['debit']) == 0 || n(e['credit']) == 0, isTrue);
       expect(n(e['debit']) + n(e['credit']), greaterThan(0));
-      expect(e['statut'], 'brouillon');
+      // Brouillon, ou validée : le sous-lot stock et comptabilité valide les pièces d'août et de septembre.
+      expect(e['statut'], isIn(['brouillon', 'validee']));
     }
     for (final e in parPiece.entries) {
       final deb = e.value.fold<num>(0, (s, x) => s + n(x['debit']));
@@ -198,7 +200,7 @@ void main() {
       }
     }
     expect(c('ordonnances').every((o) => (o['medicaments'] as List).isEmpty), isTrue);
-    expect(c('produits'), isEmpty);
+    // Les produits relèvent du sous-lot stock : le stock est peuplé, aucune facture de ce sous-lot n'en porte.
   });
 
   test('avoirs : trois, émis par le moteur, plafonnés à la facture, contre-passation équilibrée ; factures mères du mois rapprochées', () {
