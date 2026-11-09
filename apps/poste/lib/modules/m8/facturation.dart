@@ -61,6 +61,8 @@ class _EtatFacturation extends State<EcranFacturation> {
   ContexteEcran? _c;
 
   late ControleurFormulaire _patient;
+  late ControleurFormulaire _client;
+  static const _idLibre = '__libre__';
   late ControleurFormulaire _nature;
   late ControleurFormulaire _ajout;
   late ControleurFormulaire _reglement;
@@ -86,12 +88,22 @@ class _EtatFacturation extends State<EcranFacturation> {
           recherche: true,
           indicatif: 'Choisir un patient',
           options: [
+            const OptionChamp(_idLibre, 'Client libre (vente sans dossier patient)'),
             for (final p in _patients)
               OptionChamp('${p['id']}', '${p['nom']} ${p['prenom']}')
           ])
     ], {
       'patient': _patients.isEmpty ? '' : '${_patients.first['id']}'
     });
+    _client = ControleurFormulaire(const [
+      ChampDef(
+          nom: 'clientNom',
+          libelle: 'Nom du client (facultatif)',
+          col: ColChamp.demi,
+          aide: 'Laissé vide, la pièce porte « Client libre ». Aucun dossier patient n’est ouvert, aucun code CBG consommé.'),
+      ChampDef(nom: 'clientTelephone', libelle: 'Téléphone (facultatif)', col: ColChamp.demi),
+    ], const {});
+    _client.addListener(() => setState(() {}));
     _nature = ControleurFormulaire([
       ChampDef(
           nom: 'nature',
@@ -200,6 +212,7 @@ class _EtatFacturation extends State<EcranFacturation> {
   void dispose() {
     if (_pret) {
       _patient.dispose();
+      _client.dispose();
       _nature.dispose();
       _ajout.dispose();
       _reglement.dispose();
@@ -207,9 +220,16 @@ class _EtatFacturation extends State<EcranFacturation> {
     super.dispose();
   }
 
-  Fiche? get _patientCourant => _patients
-      .where((p) => '${p['id']}' == '${_patient['patient']}')
-      .firstOrNull;
+  bool get _clientLibre => '${_patient['patient']}' == _idLibre;
+
+  /// Le client libre n'est PAS un patient : une fiche de passage, sans identifiant, sans code, sans couverture. Il ne s'écrit nulle part au répertoire.
+  Fiche? get _patientCourant {
+    if (_clientLibre) {
+      final nom = '${_client['clientNom'] ?? ''}'.trim();
+      return {'id': null, 'code': null, 'nom': nom.isEmpty ? 'Client libre' : nom, 'prenom': ''};
+    }
+    return _patients.where((p) => '${p['id']}' == '${_patient['patient']}').firstOrNull;
+  }
 
   void _majPatient() => setState(() => _proposerReglement());
 
@@ -391,7 +411,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           1,
       reglement: nombreOuZero(_reglement['regle']),
       proforma: proforma,
-      dissocier: _reglement['dissocier'] == true,
+      dissocier: _clientLibre || _reglement['dissocier'] == true,
       // L'état du module MECEF, lu dans les fermetures en vigueur et PASSÉ au moteur (P0-5) : fermé, la pièce ne porte aucun champ fiscal.
       mecefActif: mecefEnService(c.magasin),
       couvertures: _liste('couverturesAssurance'),
@@ -412,12 +432,23 @@ class _EtatFacturation extends State<EcranFacturation> {
     }
     final c = _c!;
     final m = c.magasin;
+    if (_clientLibre && '${_nature['nature']}' == 'hospitalisation') {
+      ToastsSigh.afficher(context, 'Une hospitalisation exige un dossier patient.',
+          type: TypeToast.erreur, detail: 'Le client libre n’a pas de dossier : choisir un patient du répertoire.');
+      return;
+    }
     final r = _emettre(proforma);
     final annulations = <VoidCallback>[];
     final creees = <Fiche>[];
     final factures = m.collection('factures');
     for (final p in r.pieces) {
       final fiche = {...p}..remove('mecef');
+      if (_clientLibre) {
+        fiche['clientLibre'] = true;
+        fiche['venteComptoir'] = true;
+        fiche['clientNom'] = '${_client['clientNom'] ?? ''}'.trim();
+        fiche['clientTelephone'] = '${_client['clientTelephone'] ?? ''}'.trim();
+      }
       if (p['mecef'] == true) {
         // Identifiant simulé, tiré de l'horloge comme la maquette (`Date.now() % 100000 + rang`) : le boîtier physique n'est pas branché.
         fiche['numeroMecef'] = numeroMecefSimule(
@@ -517,7 +548,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           typeVente: assure ? 'ASSURANCE' : 'COMPTANT',
           assureur: assure ? '${p['assureurNom']}' : null,
           assure: assure ? '${p['nom']} ${p['prenom']}' : null,
-          dossier: _reglement['dissocier'] == true ? null : '${p['code']}',
+          dossier: (_clientLibre || _reglement['dissocier'] == true) ? null : '${p['code']}',
           date: c.aujourdhui,
           mecef: mecefActif
               ? BlocMecef(
@@ -678,6 +709,10 @@ class _EtatFacturation extends State<EcranFacturation> {
                     Expanded(child: nature),
                   ]);
           }),
+          if (_clientLibre) ...[
+            const SizedBox(height: 12),
+            FormulaireSigh(controleur: _client),
+          ],
           const SizedBox(height: 12),
           _infoAssurance(c),
         ]),
@@ -686,6 +721,11 @@ class _EtatFacturation extends State<EcranFacturation> {
   Widget _infoAssurance(ContexteEcran c) {
     final p = _patientCourant;
     if (p == null) return const SizedBox.shrink();
+    if (_clientLibre) {
+      return const NoteSigh(
+          'Client libre : vente au comptoir sans dossier patient, intégralement à la charge du client. Aucune prise en charge, aucun code CBG consommé.',
+          icone: LucideIcons.userRound);
+    }
     if (!(p['assureur'] != null && p['assureur'] != '')) {
       return const NoteSigh(
           'Patient non assuré : la facturation est intégrale à sa charge.');
