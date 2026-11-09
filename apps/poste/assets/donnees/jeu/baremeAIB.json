@@ -1,0 +1,5 @@
+[
+{"id":"BAIB01","statut":"actif","code":"AIB-5","categorie":"Taux généralisé : IFU désactivé ou absent du fichier actif","taux":5,"dateEffet":"2026-09-07","statutArret":"arrete","arrete":true,"aValider":false,"dateArret":"2026-09-07","decideurArret":"Direction","compteRetenu":"4478","compteSubi":"4492","compteImputation":"891","motif":"Généralisation du taux de 5 % à compter du 07/09/2026, décision de la Direction de Baguidi."},
+{"id":"BAIB02","statut":"actif","code":"AIB-1","categorie":"Taux de 1 % : champ d’application à préciser","taux":1,"statutArret":"non_arrete","arrete":false,"aValider":true,"compteRetenu":"4478","compteSubi":"4492","compteImputation":"891","motif":"Taux de 1 % présent aux pièces de la clinique d’origine, sans champ d’application arrêté : à valider par la Direction."},
+{"id":"BAIB03","statut":"actif","code":"AIB-3","categorie":"Taux de 3 % : champ d’application à préciser","taux":3,"statutArret":"non_arrete","arrete":false,"aValider":true,"compteRetenu":"4478","compteSubi":"4492","compteImputation":"891","motif":"Taux de 3 % présent aux pièces de la clinique d’origine, sans champ d’application arrêté : à valider par la Direction."}
+]

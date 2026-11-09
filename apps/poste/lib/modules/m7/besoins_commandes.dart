@@ -45,9 +45,9 @@ PieceA4 pieceCommande(Fiche cm,
       ], lignes: lignesDeBonAchat(cm))),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
+      Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
       Signature('La Directrice Administrative',
-          nom: directriceAdministrative, mention: 'Bon pour commande (RG-04)'),
+          qualite: PaiQualite.daf, mention: 'Bon pour commande (RG-04)'),
     ],
   );
 }

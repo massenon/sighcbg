@@ -653,7 +653,7 @@ void main() {
       expect(find.text('Planning des agents de sécurité et d’entretien'.toUpperCase()), findsOneWidget);
       expect(find.text('Du 27/10/2026 au 09/11/2026'), findsOneWidget);
       expect(find.text('Le Chef de service'), findsOneWidget);
-      expect(find.text('OSIAMIAM TOUGBIAL'), findsOneWidget);
+      expect(find.text('OSIAMIAM TOUGBIAL'), findsNothing, reason: 'aucun nom de chef de service n\'est écrit dans le code : la ligne de signature reste sans nom');
       presentes(t, [for (final h in (obj((p['tableaux'] as List).first)['entetes'] as List)) h]);
       await t.tap(find.widgetWithText(BoutonSigh, 'Fermer').last);
       await t.pump(const Duration(milliseconds: 300));

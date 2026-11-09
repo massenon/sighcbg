@@ -271,7 +271,7 @@ class _VueSauvegardesState extends State<_VueSauvegardes> {
           ],
           signatures: const [
             Signature('L’Administrateur système'),
-            Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'),
+            Signature('La Directrice Administrative', qualite: PaiQualite.daf),
           ],
         ));
   }

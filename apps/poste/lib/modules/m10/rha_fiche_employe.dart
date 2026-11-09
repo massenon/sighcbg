@@ -74,12 +74,12 @@ class FicheEmploye extends StatelessWidget {
           ('Poste', e['poste'] as String?),
           ('Service', e['service'] as String?),
           ('Catégorie / échelon', e['categorie'] as String?),
-          ('Date d’embauche', rhaDateFR(e['dateEmbauche'])),
+          ('Date d’embauche', rhaDateFR(e['dateEmbauche']) + (e['dateEmbaucheProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
           ('Ancienneté', rhaAncienneteLongue(e['dateEmbauche'], auj)),
           ('Numéro CNSS', e['cnss'] as String?),
           ('Téléphone', e['telephone'] as String?),
           ('Situation matrimoniale', e['situation'] as String?),
-          ('Salaire de base', moneyOu(e['salaireBase'])),
+          ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
         ]),
       );
 

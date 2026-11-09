@@ -133,9 +133,9 @@ class _EtatNiveauStock extends State<EcranNiveauStock> {
               ], lignes: presents)),
             ],
             signatures: const [
-              Signature('Le Gestionnaire de Stock', nom: gestionnaireStock),
+              Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
               Signature('La Directrice Administrative',
-                  nom: directriceAdministrativeStock),
+                  qualite: PaiQualite.daf),
             ],
             reference:
                 PieceA4.reference_(auj, ImpressionPoste.prochainNumero()),

@@ -66,8 +66,12 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
             cle: 'salaireBase',
             libelle: 'Salaire de base',
             droite: true,
-            texte: (r) => moneyOu(r['salaireBase'], 'Non renseigné', false),
-            rendu: (_, r) => Text(moneyOu(r['salaireBase'], 'Non renseigné', false), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: JetonsShell.slate800))),
+            texte: (r) => '${moneyOu(r['salaireBase'], 'Non renseigné', false)}${r['salaireProvisoire'] == true ? ' (provisoire)' : ''}',
+            // Le marquage « provisoire » reste VISIBLE tant que la valeur n'est pas arrêtée : l'icône ET le libellé, jamais la couleur seule.
+            rendu: (_, r) => Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, runSpacing: 2, children: [
+                  if (r['salaireProvisoire'] == true) const BadgeSigh('provisoire', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+                  Text(moneyOu(r['salaireBase'], 'Non renseigné', false), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: JetonsShell.slate800)),
+                ])),
       ],
       champs: (m) => [
         const ChampDef.section('Identité'),
@@ -89,6 +93,24 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
       ],
       valeursInitiales: () => {'dateEmbauche': iso(c.aujourdhui), 'salaireBase': '60000', 'categorie': 'E1-1', 'sexe': 'F'},
       transformer: (ctx, v) => rhaAgentEnregistrable({...v, 'salaireBase': rhaNum(v['salaireBase'])}),
+      // MODIFIER une valeur d'attente (salaire, date d'embauche) l'ARRÊTE : le drapeau « provisoire » tombe dans la même écriture, donc au même journal (RG-12 :
+      // ancienne et nouvelle valeur, drapeau compris). Une valeur laissée telle quelle garde son marquage.
+      transformerExistante: (ctx, v, existante) {
+        final f = rhaAgentEnregistrable({...v, 'salaireBase': rhaNum(v['salaireBase'])});
+        return {...f, ...rhaValeursArretees(existante, f, rhaAttentePersonnel)};
+      },
+      intro: (ctx) {
+        final actifs = col.actives;
+        final salaires = actifs.where((a) => a['salaireProvisoire'] == true).length;
+        final dates = actifs.where((a) => a['dateEmbaucheProvisoire'] == true).length;
+        if (salaires + dates == 0) return const SizedBox.shrink();
+        return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: NoteSigh(
+                'Valeurs d’attente : $salaires salaire(s) et $dates date(s) d’embauche sont PROVISOIRES (marqués « provisoire »). Ils le restent tant que la Direction n’a pas remis la valeur : la modifier depuis la fiche de l’agent l’arrête et retire le marquage (journalisé).',
+                ton: TonSigh.attention,
+                icone: LucideIcons.hourglass));
+      },
       filtres: [
         FiltreTableau(nom: 'fonction', libelle: 'Fonction', options: rhaOptionsFonctions()),
         FiltreTableau(nom: 'service', libelle: 'Service', options: rhaOptions(rhaServices)),

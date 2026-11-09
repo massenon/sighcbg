@@ -388,7 +388,7 @@ class _EtatReactifs extends State<EcranReactifsLabo> {
               ('Service demandeur', 'Laboratoire'),
               ('Date', dateFR(c.aujourdhui)),
               ('Références concernées', nombre(manquants.length)),
-              ('Établi par', laborantinChef),
+              ('Établi par', paiSignataire(c.magasin.collection('personnel').actives, PaiQualite.laborantin) ?? '—'),
             ],
             filtres: [('Période de consommation', _per.libelle)],
             blocs: [
@@ -412,10 +412,10 @@ class _EtatReactifs extends State<EcranReactifsLabo> {
               ], lignes: manquants)),
             ],
             signatures: const [
-              Signature('Le Laborantin chef', nom: laborantinChef),
-              Signature('Le Gestionnaire de Stock', nom: gestionnaireStockLabo),
+              Signature('Le Laborantin chef', qualite: PaiQualite.laborantin),
+              Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
               Signature('La Directrice Administrative',
-                  nom: directriceAdministrativeLabo, mention: 'Validation'),
+                  qualite: PaiQualite.daf, mention: 'Validation'),
             ]));
   }
 

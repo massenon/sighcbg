@@ -478,6 +478,7 @@
     "m12-seuil-rentabilite",
     "m12-etats-financiers",
     "m12-baseline-2025",
+    "m12-aib",
     "m12-echeances",
     "m12-cloture",
     "m12-ouverture"
@@ -4003,6 +4004,24 @@
    "id": "m12-baseline-2025",
    "label": "Baseline 2025",
    "icone": "history",
+   "module": "M12",
+   "moduleLabel": "Comptabilité SYSCOHADA",
+   "domaine": "Financier",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "comptable",
+    "da",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "m12-aib",
+   "label": "Acompte sur impôt (AIB)",
+   "icone": "percent",
    "module": "M12",
    "moduleLabel": "Comptabilité SYSCOHADA",
    "domaine": "Financier",

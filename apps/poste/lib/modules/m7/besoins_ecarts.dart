@@ -42,8 +42,8 @@ PieceA4 pieceEcarts(List<Fiche> rows,
       ], lignes: rows)),
     ],
     signatures: const [
-      Signature('Le Gestionnaire de Stock', nom: 'METIAVI Zobo'),
-      Signature('La Directrice Administrative', nom: directriceAdministrative),
+      Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock),
+      Signature('La Directrice Administrative', qualite: PaiQualite.daf),
     ],
   );
 }

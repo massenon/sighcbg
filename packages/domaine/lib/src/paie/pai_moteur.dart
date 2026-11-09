@@ -521,7 +521,7 @@ PaiFiche? paiFicheBascule(Iterable<PaiFiche> modulesActifs, PaiBascule b) =>
 // --- les signataires de la paie, lus au personnel ------------------------------------------------------------------------------------------
 /// Qui signe une pièce de paie : la qualité se reconnaît au POSTE du dossier du personnel (et à la fonction), jamais à un nom écrit dans le code. Un
 /// établissement qui change de comptable n'a rien à reprogrammer.
-enum PaiQualite { comptable, daf, direction, surveillant }
+enum PaiQualite { comptable, daf, direction, surveillant, directeurMedical, gestionnaireStock, pharmacien, laborantin }
 
 String _min(Object? v) => '${v ?? ''}'.toLowerCase();
 
@@ -530,7 +530,11 @@ String _min(Object? v) => '${v ?? ''}'.toLowerCase();
 /// * comptable : fonction « comptable » dont le poste dit « comptable » (l'assistant de direction, rangé dans la même fonction, ne signe pas) ;
 /// * DAF : le poste « administrati(f/on) » de la direction ;
 /// * direction : le poste de directeur général, puis de directeur médical, puis tout poste de direction qui n'est ni administratif ni assistant ;
-/// * surveillant : le poste « surveillant ».
+/// * surveillant : le poste « surveillant » ;
+/// * directeur médical : le poste de directeur médical, et lui seul (la direction générale ne signe pas à sa place) ;
+/// * gestionnaire de stock : le poste de gestionnaire (ou de magasinier) de stock ;
+/// * pharmacien : le poste « pharmac… » ou de dispensation (la Caissière-Dispensatrice tient la pharmacie) ;
+/// * laborantin : le poste « laborantin », « biologiste » ou de laboratoire.
 String? paiSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
   final actifs = personnel.where(_actif).where((p) => '${p['statut'] ?? 'actif'}' != 'inactif').toList();
   bool poste(PaiFiche p, String m) => _min(p['poste']).contains(m);
@@ -543,10 +547,21 @@ String? paiSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
         premier((p) => poste(p, 'direct') && poste(p, 'médical')) ??
         premier((p) => poste(p, 'direct') && !poste(p, 'administrati') && !poste(p, 'assistant')),
     PaiQualite.surveillant => premier((p) => poste(p, 'surveillant')),
+    PaiQualite.directeurMedical => premier((p) => poste(p, 'direct') && poste(p, 'médical')),
+    PaiQualite.gestionnaireStock => premier((p) => poste(p, 'stock') && (poste(p, 'gestionn') || poste(p, 'magasin'))),
+    PaiQualite.pharmacien => premier((p) => poste(p, 'pharmac') || poste(p, 'dispensat')),
+    PaiQualite.laborantin => premier((p) => poste(p, 'laborantin') || poste(p, 'biolog') || poste(p, 'laboratoire')),
   };
   if (f == null) return null;
   final nom = '${f['nomComplet'] ?? [f['nom'], f['prenom']].where((x) => x != null && '$x'.isNotEmpty).join(' ')}'.trim();
   return nom.isEmpty ? null : nom;
+}
+
+/// Le signataire écrit pour une note ou une pièce : « NOM Prénom, Qualité » quand le dossier du personnel désigne un titulaire, sinon la qualité seule
+/// ([role]) — jamais un nom écrit dans le code.
+String paiSignataireLibelle(Iterable<PaiFiche> personnel, PaiQualite q, String role) {
+  final nom = paiSignataire(personnel, q);
+  return nom == null ? role : '$nom, $role';
 }
 
 /// L'exercice de la paie : celui de la collection `exercices` qui contient [aujourdhui] et n'est pas clos ; à défaut, l'année de l'horloge du poste.

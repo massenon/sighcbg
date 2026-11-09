@@ -10,7 +10,7 @@ import '../m4/mat_commun.dart';
 /// Briques communes aux écrans RH du premier lot (M10) : mise en page seulement — les règles chiffrées vivent dans
 /// `packages/domaine/lib/src/rh/rha_regles.dart`.
 
-const Signature rhaSignDa = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
+const Signature rhaSignDa = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 
 /// Un indicateur du domaine devient une carte (`U.kpiGrid`) ; les icônes viennent de la déclaration de l'écran, dans l'ordre des indicateurs.
 List<KpiSigh> rhaKpisW(List<RhaKpi> kpis, List<IconData> icones) => [

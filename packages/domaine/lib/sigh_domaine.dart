@@ -91,6 +91,7 @@ export 'src/comptabilite/cpc_baseline.dart';
 export 'src/comptabilite/cpc_echeances.dart';
 export 'src/comptabilite/cpc_bfr.dart';
 export 'src/comptabilite/cpc_etats.dart';
+export 'src/comptabilite/cpd_bareme_aib.dart';
 export 'src/rh/rhc_regles.dart';
 export 'src/tableaux_de_bord/tbb_regles.dart';
 export 'src/pilotage/pil_vue.dart';

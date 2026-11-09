@@ -77,7 +77,7 @@ class _OngletSecteurs extends StatelessWidget {
           final rows = trierPar(col.actives, (s) => s['ordre']);
           return cfaPile([
             NoteSigh(
-                '${CfaNs145.reference} — ${CfaNs145.objet}, signée le ${dateFR(DateTime.parse(CfaNs145.dateSignature))} par ${CfaNs145.signataire}, avec effet au ${dateFR(DateTime.parse(CfaNs145.dateEffet))}. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code.',
+                '${CfaNs145.reference} — ${CfaNs145.objet}, signée le ${dateFR(DateTime.parse(CfaNs145.dateSignature))} par ${paiSignataireLibelle(c.magasin.collection('personnel').actives, PaiQualite.daf, CfaNs145.signataire)}, avec effet au ${dateFR(DateTime.parse(CfaNs145.dateEffet))}. Une note ultérieure se saisit ici : le référentiel est versionné par sa source, pas par le code.',
                 icone: LucideIcons.fileCheck2),
             CfaTableau(
               collection: 'secteurs',
@@ -148,7 +148,7 @@ class _OngletSecteurs extends StatelessWidget {
                             ColonneEtat(libelle: 'Qualification', valeur: (l) => cfaOuTiret(l['qualification'])),
                           ], lignes: rows)),
                         ],
-                        signatures: const [Signature('La Directrice Administrative', nom: 'TACHEDI Arialu épse BICHIASI')])),
+                        signatures: const [Signature('La Directrice Administrative', qualite: PaiQualite.daf)])),
               ],
             ),
             cfaSource(CfaNs145.source),
@@ -226,7 +226,7 @@ class _OngletOrganigramme extends StatelessWidget {
                   ColonneEtat(libelle: 'Rôle dans le système', valeur: (l) => libelleRole(c.magasin, l['role'])),
                 ], lignes: plats)),
               ],
-              signatures: const [Signature('La Directrice Administrative', nom: 'TACHEDI Arialu'), cfaSignDm]);
+              signatures: const [Signature('La Directrice Administrative', qualite: PaiQualite.daf), cfaSignDm]);
           return cfaPile([
             CarteSigh(
                 titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',

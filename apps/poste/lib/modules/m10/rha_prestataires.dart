@@ -25,9 +25,13 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('prestataires');
-    Fiche fiche(BuildContext ctx, Map<String, Object?> v, Fiche? existante) => rhaPrestataireEnregistrable(
-        {...v, 'tarifActe': rhaNum(v['tarifActe']), 'actesRealises': rhaNum(v['actesRealises'])},
-        reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : admReferenceSuivante('PE-', 4, col.toutes));
+    Fiche fiche(BuildContext ctx, Map<String, Object?> v, Fiche? existante) {
+      final f = rhaPrestataireEnregistrable(
+          {...v, 'tarifActe': rhaNum(v['tarifActe']), 'actesRealises': rhaNum(v['actesRealises'])},
+          reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : admReferenceSuivante('PE-', 4, col.toutes));
+      // Saisir le tarif remis par la Direction l'ARRÊTE : le marquage « à fournir » tombe dans la même écriture, donc au même journal (RG-12).
+      return {...f, ...rhaValeursArretees(existante, f, rhaAttentePrestataire)};
+    }
 
     return CrudMat(
       collection: col,
@@ -42,7 +46,16 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
         const ColonneTableau(cle: 'nom', libelle: 'Prestataire'),
         ColonneTableau(cle: 'specialite', libelle: 'Spécialité / acte', rendu: (_, r) => BadgeSigh('${r['specialite']}', ton: TonSigh.navy)),
         const ColonneTableau(cle: 'telephone', libelle: 'Téléphone', sansCoupure: true),
-        ColonneTableau(cle: 'tarifActe', libelle: 'Tarif par acte', droite: true, texte: (r) => money(r['tarifActe'], avecDevise: false)),
+        ColonneTableau(
+            cle: 'tarifActe',
+            libelle: 'Tarif par acte',
+            droite: true,
+            texte: (r) => '${money(r['tarifActe'], avecDevise: false)}${r['tarifAFournir'] == true ? ' (à fournir)' : ''}',
+            // Le tarif d'un vacataire que la Direction n'a pas remis est MARQUÉ « à fournir » (icône ET libellé) jusqu'à sa saisie.
+            rendu: (_, r) => Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, runSpacing: 2, children: [
+                  if (r['tarifAFournir'] == true) const BadgeSigh('à fournir', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+                  Text(money(r['tarifActe'], avecDevise: false)),
+                ])),
         const ColonneTableau(cle: 'actesRealises', libelle: 'Actes réalisés', droite: true),
         ColonneTableau(
             cle: 'montantDu',
@@ -66,7 +79,12 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
         const ChampDef(nom: 'nom', libelle: 'Nom du prestataire', requis: true, col: ColChamp.plein),
         ChampDef(nom: 'specialite', libelle: 'Spécialité / type d’acte', type: TypeChamp.select, requis: true, options: rhaOptions([...rhaSpecialitesPrestataire, 'Autre'])),
         const ChampDef(nom: 'telephone', libelle: 'Téléphone', type: TypeChamp.tel),
-        const ChampDef(nom: 'tarifActe', libelle: 'Tarif par acte (FCFA)', type: TypeChamp.nombre, requis: true),
+        const ChampDef(
+            nom: 'tarifActe',
+            libelle: 'Tarif par acte (FCFA)',
+            type: TypeChamp.nombre,
+            requis: true,
+            aide: 'Tarif de vacation ou par acte remis par la Direction. Tant qu’il n’est pas saisi, le tarif reste marqué « à fournir » ; le modifier l’arrête.'),
         const ChampDef(nom: 'actesRealises', libelle: 'Actes réalisés (mois en cours)', type: TypeChamp.nombre),
         const ChampDef(nom: 'ifu', libelle: 'IFU du prestataire'),
         const ChampDef(nom: 'factureNormalisee', libelle: 'Facture normalisée fournie', type: TypeChamp.case_, col: ColChamp.plein),

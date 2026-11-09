@@ -214,8 +214,9 @@ class _EtatModaleReception extends State<_ModaleReception> {
           col: ColChamp.plein),
     ], {
       'date': iso(widget.contexte.aujourdhui),
-      'controleur1': 'METIAVI Zobo',
-      'controleur2': 'DATU Amachim',
+      // Les deux contrôleurs se LISENT au personnel (gestionnaire de stock, pharmacien) ; sans titulaire, le champ reste à saisir.
+      'controleur1': paiSignataire(widget.contexte.magasin.collection('personnel').actives, PaiQualite.gestionnaireStock) ?? '',
+      'controleur2': paiSignataire(widget.contexte.magasin.collection('personnel').actives, PaiQualite.pharmacien) ?? '',
     });
     for (final r in _recus) {
       r.addListener(() => setState(() {}));

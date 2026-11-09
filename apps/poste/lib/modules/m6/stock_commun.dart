@@ -19,11 +19,6 @@ const typographieMono = TextStyle(
     height: 16 / 12,
     fontWeight: FontWeight.w600);
 
-/// Les noms qui signent les états de stock dans la maquette (`m6-stock.js`), repris tels quels.
-const gestionnaireStock = 'METIAVI Zobo';
-const directriceAdministrativeStock = 'TACHEDI Arialu';
-const pharmacien = 'DATU Amachim';
-
 num qte(Object? v) => nombreOuZero(v);
 String mnt(Object? v) => money(v, avecDevise: false);
 String dateFiche(Object? v) {
@@ -274,7 +269,7 @@ Future<void> imprimerFicheArticle(BuildContext ctx, Fiche p) {
                   titre: 'Lots en stock (classement FEFO)'),
           ],
           signatures: const [
-            Signature('Le Gestionnaire de Stock', nom: gestionnaireStock)
+            Signature('Le Gestionnaire de Stock', qualite: PaiQualite.gestionnaireStock)
           ]));
 }
 

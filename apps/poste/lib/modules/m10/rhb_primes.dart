@@ -442,7 +442,7 @@ class _Grille extends StatelessWidget {
               const BlocTexte('* Pour les primes qui varient en fonction du nombre — ✱ pour les primes fixes.'),
               const BlocTexte('Reçu par : $rhbNs132RecuPar'),
             ],
-            signatures: const [Signature('Le Directeur Médical', nom: rhbNs132Signataire)]));
+            signatures: const [Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)]));
   }
 }
 

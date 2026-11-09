@@ -415,7 +415,7 @@ void imprimerNoteNs131(BuildContext ctx, ContexteEcran c) {
             const BlocTexte('$rhbNs131Mention Entre en vigueur à compter de sa date de signature.'),
             const BlocTexte('Ampliation : $rhbNs131Ampliation', italique: true),
           ],
-          signatures: const [Signature('Le Directeur Médical', nom: rhbNs131Signataire)]));
+          signatures: const [Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)]));
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

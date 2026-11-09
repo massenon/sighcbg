@@ -261,7 +261,7 @@ class _CarteIdentiteState extends State<_CarteIdentite> {
               if ('${l['v']}'.isNotEmpty) l,
           ])),
         ],
-        signatures: const [Signature('La Directrice Administrative', nom: 'TACHEDI Arialu')]);
+        signatures: const [Signature('La Directrice Administrative', qualite: PaiQualite.daf)]);
   }
 
   @override

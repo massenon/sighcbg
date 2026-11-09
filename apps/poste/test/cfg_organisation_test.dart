@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/modules/cfg/cfa_commun.dart';
 
@@ -56,7 +57,11 @@ void main() {
     for (final x in (etat['cartouche'] as List).cast<List>().take(3)) {
       expect(find.textContaining('${x[0]}'), findsWidgets, reason: '${x[0]}');
     }
-    expect(find.textContaining('TACHEDI Arialu épse BICHIASI'), findsWidgets);
+    // La signataire est LUE au personnel (le poste de la direction administrative), jamais écrite dans le code.
+    expect(find.text('La Directrice Administrative'), findsWidgets);
+    final daf = paiSignataire(m.collection('personnel').actives, PaiQualite.daf);
+    expect(daf, isNotNull);
+    expect(find.textContaining(daf!), findsWidgets);
   });
 
   casM14('création d’un secteur sans code : trois lettres, rang 15 ; avec code : le code saisi est GARDÉ', (t) async {

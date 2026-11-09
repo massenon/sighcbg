@@ -497,7 +497,7 @@ class _EtatDepenses extends State<EcranDepenses> {
             signatures: const [
               Signature('Le bénéficiaire'),
               Signature('Le Comptable'),
-              Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu'),
+              Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf),
             ]));
   }
 
@@ -533,7 +533,7 @@ class _EtatDepenses extends State<EcranDepenses> {
             ],
             signatures: const [
               Signature('Le Comptable'),
-              Signature('La Directrice de l’Administration et des Finances', nom: 'TACHEDI Arialu'),
+              Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf),
             ]));
   }
 

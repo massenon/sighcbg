@@ -14,7 +14,7 @@ import 'adm_commun.dart';
 /// Les quatre registres de M13 construits sur `K.crud` : courriers, réunions, interventions d'ambulance, parc technique. Règles et références dans
 /// `packages/domaine/lib/src/administration` ; la mise en page est celle de `CrudMat` (copie fidèle de `K.crud`).
 
-const _signDa = Signature('La Directrice Administrative', nom: 'TACHEDI Arialu');
+const _signDa = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 
 num _entier(num n) => n == n.roundToDouble() ? n.toInt() : n;
 
@@ -348,7 +348,11 @@ class EcranAmbulance extends StatelessWidget with EcranMaquette {
         ];
       },
       valeursInitiales: () => {
-        if (c.magasin.collection('personnel').actives.any((e) => e['nomComplet'] == 'TIAMOU Noupi')) 'chauffeur': 'TIAMOU Noupi',
+        // Le chauffeur par défaut se LIT au personnel (le poste « chauffeur ») ; sans titulaire, le champ reste à choisir.
+        ...() {
+          final ch = c.magasin.collection('personnel').actives.where((e) => '${e['poste']}'.toLowerCase().contains('chauffeur')).firstOrNull;
+          return ch == null ? const <String, Object?>{} : {'chauffeur': '${ch['nomComplet']}'};
+        }(),
         'facture': false,
         'kilometrage': '10',
         'etat': 'demandee',

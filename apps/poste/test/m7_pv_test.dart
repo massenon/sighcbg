@@ -203,7 +203,8 @@ void main() {
       }
       final pv = crees.single;
       // Le jeu du poste ne contient aucun PV : la série repart à 1 (la maquette, elle, continuait ses PV amorcés).
-      memes(pv, s['pv'], 'pv', ignorer: {'reference', 'id'});
+      // Le magasinier est l'agent de la SESSION (la maquette écrit toujours le même nom en dur : E18) : on ne compare pas ce champ au vecteur.
+      memes(pv, s['pv'], 'pv', ignorer: {'reference', 'id', 'magasinier'});
       expect(pv['reference'],
           'PV-${sigleNature(nature)}-2026-0001');
       expect(find.text('PV ${pv['reference']} établi.'), findsOneWidget);
@@ -365,6 +366,7 @@ void verifierPiece(PieceA4 p, Map<String, Object?> attendu) {
       expect((b as BlocTexte).texte, x['texte']);
     }
   }
-  expect([for (final s in p.signatures) {'role': s.role, 'nom': s.nom}],
-      attendu['signatures']);
+  // La maquette écrit le nom de la DAF en dur ; le poste ne l'écrit plus : la signature porte la QUALITÉ « daf » et son nom se lit au personnel à l'aperçu.
+  expect([for (final s in p.signatures) {'role': s.role, 'nom': s.nom ?? (s.qualite == null ? null : '<qualité ${s.qualite!.name}>')}],
+      [for (final x in liste(attendu['signatures'])) {'role': x['role'], 'nom': x['nom'] == 'TACHEDI Arialu' ? '<qualité daf>' : x['nom']}]);
 }

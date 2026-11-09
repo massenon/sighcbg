@@ -380,7 +380,7 @@ class _EtatTransferts extends State<EcranTransferts> {
         ], lignes: lg),
       ],
       signatures: [
-        Signature('Le Gestionnaire de Stock', nom: '${t['operateur'] ?? 'METIAVI Zobo'}', mention: 'Sortie magasin'),
+        Signature('Le Gestionnaire de Stock', nom: t['operateur'] == null ? null : '${t['operateur']}', qualite: PaiQualite.gestionnaireStock, mention: 'Sortie magasin'),
         Signature('Le Service demandeur', nom: t['receptionnaire'] as String?, mention: 'Réception'),
       ],
     );

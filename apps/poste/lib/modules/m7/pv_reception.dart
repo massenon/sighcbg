@@ -83,7 +83,7 @@ PieceA4 piecePv(Fiche r,
     signatures: [
       Signature('Le Magasinier', nom: '${r['magasinier'] ?? ''}'),
       const Signature('La Directrice de l’Administration et des Finances',
-          nom: dafSignataire),
+          qualite: PaiQualite.daf),
       Signature('Le représentant du fournisseur',
           nom: '${r['representantFournisseur'] ?? ''}'),
     ],
@@ -375,7 +375,9 @@ class EcranPvReception extends StatelessWidget with EcranMaquette {
                           references: [
                             for (final x in m.collection('pvReceptions').toutes)
                               '${x['reference'] ?? ''}'
-                          ]);
+                          ],
+                          // Le magasinier du PV est l'agent de la session : aucun nom n'est écrit dans le code.
+                          nomSession: acteurNom(c));
                     } on RefusPv catch (e) {
                       if (e.motif != null) {
                         ToastsSigh.afficher(ctx, e.motif!,
