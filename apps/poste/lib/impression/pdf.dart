@@ -201,6 +201,9 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
   }
 
   doc.addPage(pw.MultiPage(
+    // Le moteur refuse par défaut un état de plus de 20 pages (PdfTooBigPageException) : un grand livre d'exploitation réelle les dépasse. 500 pages couvrent
+    // largement l'usage ; au-delà, c'est une erreur de mise en page qui doit se voir, pas un état qu'on imprime.
+    maxPages: 500,
     pageFormat: PdfPageFormat.a4.copyWith(
         marginLeft: 12 * _mm,
         marginRight: 12 * _mm,
@@ -250,17 +253,17 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
                     child: pw.Text('${c.$1} : ${c.$2}', style: s(7.5))),
             ])),
       for (final b in x.blocs) ...[
-        switch (b) {
-          BlocTableau() => pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.stretch,
-                children: [
-                  if (b.titre != null)
-                    pw.Text(b.titre!.toUpperCase(), style: s(8, f: p.gras)),
-                  tableau(b.tableau),
-                ]),
-          BlocTexte() => pw.Text(b.texte,
-              style:
-                  s(8, f: b.gras ? p.gras : (b.italique ? p.italique : null))),
+        // Le tableau est posé DIRECTEMENT dans la liste de `MultiPage` (jamais dans une `Column` : un widget non « spanning » ne se coupe pas entre deux pages,
+        // et un tableau plus haut qu'une page — grand livre, plan comptable, état de stock — faisait tourner la mise en page jusqu'à la limite de pages).
+        ...switch (b) {
+          BlocTableau() => [
+              if (b.titre != null)
+                pw.Padding(padding: const pw.EdgeInsets.only(bottom: 3), child: pw.Text(b.titre!.toUpperCase(), style: s(8, f: p.gras))),
+              tableau(b.tableau),
+            ],
+          BlocTexte() => [
+              pw.Text(b.texte, style: s(8, f: b.gras ? p.gras : (b.italique ? p.italique : null))),
+            ],
         },
         pw.SizedBox(height: 10),
       ],
