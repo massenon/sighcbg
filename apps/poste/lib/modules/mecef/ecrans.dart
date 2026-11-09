@@ -9,6 +9,7 @@ import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../donnees/normalisation_mecef.dart';
+import '../../donnees/parametres_aib.dart';
 import '../m8/commun.dart' show ecrireAvoirEmis, idAvoirSuivant;
 import 'commun.dart';
 
@@ -45,8 +46,16 @@ class EcranMecefTableauDeBord extends StatelessWidget with EcranMaquette {
             nn.where((f) => '${f['date']}'.startsWith(jour)).length;
         final tva = validees.fold<num>(
             0, (a, f) => a + tvaRegistre(n(f['montantTTC']), p));
-        final aib = validees.fold<num>(
-            0, (a, f) => a + decomposer(n(f['montantTTC']), p).aib);
+        // L'AIB collecté est celui que CHAQUE pièce porte (le taux appliqué à sa date : barème arrêté ou repli), jamais un taux unique lu à la configuration.
+        num aibPiece(Fiche f) {
+          final porte = f['aibMontant'];
+          if (porte is num) return porte;
+          final t = f['aibTaux'];
+          return t is num ? arrondiJs(decomposer(n(f['montantTTC']), p).ht * t / 100) : 0;
+        }
+
+        final aib = validees.fold<num>(0, (a, f) => a + aibPiece(f));
+        final aibJour = aibParDefaut(c.magasin, auj);
         final parNature = <String, int>{};
         for (final f in nn) {
           parNature['${f['type']}'] = (parNature['${f['type']}'] ?? 0) + 1;
@@ -121,7 +130,7 @@ class EcranMecefTableauDeBord extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.landmark,
                     indice: p.tauxTva != 0
                         ? 'Taux ${p.tauxTva} %'
-                        : 'AIB ${p.tauxAib} % — TVA exonérée'),
+                        : 'AIB ${aibJour.arrete ? '${aibJour.taux} % arrêté' : 'aucun taux arrêté : ${aibJour.taux} %'} — TVA exonérée'),
                 KpiSigh(
                     libelle: 'Taux de validation',
                     valeur: pourcent(nn.isEmpty ? 0 : validees.length / nn.length * 100),
@@ -1221,6 +1230,12 @@ class _EtatConfig extends State<EcranMecefConfig> {
     final c = ContexteEcran.of(context);
     final mag = c.magasin;
     final p = paramFiscal(mag);
+    // LE TAUX D'AIB N'EST PLUS UNE SAISIE NI UNE CONSTANTE (D1) : il se LIT au barème daté de M12, à la date du jour, pour un acheteur sans IFU actif ; sans
+    // taux arrêté en vigueur, l'écran le dit (« aucun taux arrêté : 0 % », le taux de repli des Paramètres) avec le motif du moteur.
+    final aibJour = aibParDefaut(mag, c.aujourdhui);
+    final aibTexte = aibJour.arrete
+        ? '${aibJour.taux} % arrêté au barème, du montant hors taxes'
+        : 'aucun taux arrêté : ${aibJour.taux} % (taux de repli des Paramètres)';
     if (!_pret) {
       _pret = true;
       _f = ControleurFormulaire([
@@ -1258,11 +1273,6 @@ class _EtatConfig extends State<EcranMecefConfig> {
             aide:
                 'Le régime exonéré est celui relevé sur la facture de référence : à confirmer avec le service comptable.',
             options: [for (final r in p.regimes) OptionChamp(r.id, r.libelle)]),
-        const ChampDef(
-            nom: 'tauxAib',
-            libelle: 'Taux d’AIB (%)',
-            type: TypeChamp.nombre,
-            aide: 'Acompte sur impôt assis sur les bénéfices, prélevé à la source.'),
         const ChampDef(nom: 'devise', libelle: 'Devise'),
         const ChampDef.section('Transmission'),
         const ChampDef(
@@ -1296,7 +1306,6 @@ class _EtatConfig extends State<EcranMecefConfig> {
         'prefixeProforma': 'PRO-2026-',
         'prochainNumero': '${normalisees(mag).length + 1}',
         'regimeTva': p.regimeTva,
-        'tauxAib': '${p.tauxAib}',
         'devise': 'FCFA',
         'modeTransmission': 'Automatique à l’émission',
         'delaiRetransmission': '15',
@@ -1357,8 +1366,16 @@ class _EtatConfig extends State<EcranMecefConfig> {
                   ('Devise', 'FCFA'),
                   ('Régime de TVA', p.regime.libelle),
                   ('Taux de TVA appliqué', '${p.tauxTva} %'),
-                  ('Acompte AIB', '${p.tauxAib} % du montant hors taxes'),
+                  // Le libellé de la maquette (« Taux d’AIB (%) ») est conservé, mais LU : le taux est celui du barème arrêté, il ne se saisit plus ici.
+                  ('Taux d’AIB (%)', aibTexte),
                 ])),
+            const SizedBox(height: 16),
+            KeyedSubtree(
+                key: const Key('mecef:config-aib'),
+                child: NoteSigh(
+                    'AIB au ${dateFR(c.aujourdhui)} : $aibTexte. ${aibJour.motif} Le taux se règle au barème (Paramètres, « Acompte sur impôt (AIB) »), jamais ici.',
+                    ton: aibJour.arrete ? TonSigh.info : TonSigh.attention,
+                    icone: LucideIcons.percent)),
             const SizedBox(height: 16),
             const NoteSigh(
                 'Le régime exonéré est celui relevé sur la facture de référence certifiée MECeF, où la TVA est portée à zéro et le net à payer vaut le hors-taxes augmenté du seul AIB. Ce choix doit être confirmé par le service comptable pour les prestations de la clinique.',

@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/parametres_aib.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'pv_crud.dart';
@@ -26,7 +27,11 @@ final champsFactureFournisseur = <ChampDef>[
       requis: true),
   const ChampDef(nom: 'fournisseur', libelle: 'Fournisseur', requis: true),
   const ChampDef(
-      nom: 'montant', libelle: 'Montant (FCFA)', type: TypeChamp.nombre),
+      nom: 'montant', libelle: 'Montant facturé (FCFA)', type: TypeChamp.nombre),
+  // D7 (Direction, 09/11/2026) : le montant HORS TAXES est la base de la retenue d'AIB (Paramètres, « Validation de la base de l’AIB des factures
+  // fournisseurs »). Facultatif — sans lui, la retenue se rabat sur le montant facturé et le dit ; la TVA, sur une ligne séparée, l'est aussi.
+  _champHt(null),
+  const ChampDef(nom: 'montantTVA', libelle: 'TVA (FCFA, ligne séparée)', type: TypeChamp.nombre, aide: 'Facultative : hors taxes + TVA = montant facturé.'),
   const ChampDef(nom: 'echeance', libelle: 'Échéance', type: TypeChamp.date),
   ChampDef(
       nom: 'statutPaiement',
@@ -37,6 +42,32 @@ final champsFactureFournisseur = <ChampDef>[
           OptionChamp(e.key, e.value.$1)
       ].reversed.toList()),
 ];
+
+/// Le champ « Montant hors taxes » : la cohérence se contrôle au montant de la modale, sinon à [factureDeLaFiche] (le montant facturé que porte la fiche).
+ChampDef _champHt(Object? factureDeLaFiche) => ChampDef(
+    nom: 'montantHT',
+    libelle: 'Montant hors taxes (FCFA)',
+    type: TypeChamp.nombre,
+    aide:
+        'Facultatif. Base de la retenue d’AIB quand les Paramètres retiennent le hors-taxes ; vide, la retenue se calcule sur le montant facturé, en le disant.',
+    valider: (v, vals) => cpaControlerMontantsFacture(
+        ht: v, tva: vals['montantTVA'], facture: '${vals['montant'] ?? ''}'.isEmpty ? factureDeLaFiche : vals['montant']));
+
+/// Les champs de la modale pour la fiche [r] : ceux de la maquette, dont le hors-taxes se contrôle au montant facturé de la fiche.
+List<ChampDef> champsFactureFournisseurPour(Fiche r) => [
+      for (final c in champsFactureFournisseur) c.nom == 'montantHT' ? _champHt(r['montantFacture']) : c
+    ];
+
+/// Le patch de la modale « Modifier » (celui du domaine) PLUS le hors-taxes et la TVA, écrits sur la fiche sous leurs noms (`montantHT`, `montantTVA`) : un
+/// champ vidé se retire de la fiche (un nul ne s'écrit pas), il n'écrit pas un zéro.
+FicheFacture patchEditionAvecHt(Map<String, Object?> saisie) {
+  final p = patchEditionFacture(saisie);
+  num? n(Object? v) => v is num ? v : num.tryParse('${v ?? ''}'.trim().replaceAll(',', '.'));
+  final ht = n(saisie['montantHT']);
+  final tva = n(saisie['montantTVA']);
+  // La cohérence avec le montant facturé est contrôlée au champ (`_champHt`), avant l'enregistrement.
+  return {...p, 'montantHT': ht, 'montantTVA': tva};
+}
 
 TonSigh _ton(String t) => switch (t) {
       'succes' => TonSigh.succes,
@@ -74,6 +105,8 @@ Widget detailFactureFournisseur(Fiche r) {
       ('Bordereau de livraison', r['blRef']),
       ('Montant livré', money(r['montantLivraison'])),
       ('Montant facturé', money(r['montantFacture'])),
+      if (r['montantHT'] != null) ('Montant hors taxes', money(r['montantHT'])),
+      if (r['montantTVA'] != null) ('TVA (ligne séparée)', money(r['montantTVA'])),
       (
         'Écart',
         ecartConforme(r)
@@ -84,7 +117,7 @@ Widget detailFactureFournisseur(Fiche r) {
       if (r['retenueAib'] is Map)
         (
           'Retenue AIB',
-          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}'
+          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}${(r['retenueAib'] as Map)['baseMotif'] == null ? '' : '. ${(r['retenueAib'] as Map)['baseMotif']}'}'
         ),
     ]),
     const SizedBox(height: 16),
@@ -272,8 +305,8 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                         libelle: 'Modifier',
                         onPressed: () => ouvrirFormulaireFiche(ctx,
                             collection: col,
-                            champs: champsFactureFournisseur,
-                            versFiche: patchEditionFacture,
+                            champs: champsFactureFournisseurPour(r),
+                            versFiche: patchEditionAvecHt,
                             entite: 'facture fournisseur',
                             record: r,
                             detailMessage: false,
@@ -319,7 +352,10 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
             'Aucun taux d’AIB arrêté n’est en vigueur à la date de la facture (${dateFR(date)}). La Direction arrête le barème dans Paramètres, « Acompte sur impôt (AIB) ».');
     return;
   }
-  final base = (r['montantFacture'] as num?) ?? 0;
+  // D7 : la BASE vient des Paramètres (version en vigueur à la date de la facture) : le hors-taxes quand il est renseigné, sinon le montant facturé — et
+  // la fenêtre DIT laquelle des deux sert.
+  final baseCalculee = cpaBaseRetenue(r, parametresAib(c.magasin, date));
+  final base = baseCalculee.base;
   final ctl = ControleurFormulaire([
     ChampDef(
         nom: 'situation',
@@ -332,12 +368,20 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
         libelle: 'Base de la retenue (FCFA)',
         type: TypeChamp.nombre,
         requis: true,
-        aide: 'Par défaut le montant facturé. Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
+        aide: 'Proposée d’après les Paramètres (voir ci-dessus). Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
   ], {'situation': applicables.first.code, 'base': '${base.round()}'});
   afficherModale<void>(ctx,
       titre: 'Retenir l’AIB — ${r['reference']}',
       sousTitre: '${r['fournisseurNom']} : ${money(base)} facturés le ${dateFR(date)}',
-      corps: FormulaireSigh(controleur: ctl),
+      corps: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        KeyedSubtree(
+            key: const Key('retenue:base'),
+            child: NoteSigh(baseCalculee.motif,
+                ton: baseCalculee.repli ? TonSigh.attention : TonSigh.info,
+                icone: baseCalculee.repli ? LucideIcons.triangleAlert : LucideIcons.info)),
+        const SizedBox(height: 12),
+        FormulaireSigh(controleur: ctl),
+      ]),
       pied: (fermer) => [
             BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
             BoutonSigh(
@@ -352,7 +396,12 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                   final CpdRetenueAib ret;
                   final List<Map<String, Object?>> lignes;
                   try {
-                    ret = cpdCalculerRetenueAib(bareme, '${v['situation']}', num.tryParse('${v['base']}'.trim()) ?? 0, date, situations: situations);
+                    final baseSaisie = num.tryParse('${v['base']}'.trim()) ?? 0;
+                    final modifiee = baseSaisie != baseCalculee.base;
+                    ret = cpdCalculerRetenueAib(bareme, '${v['situation']}', baseSaisie, date,
+                        situations: situations,
+                        baseSource: modifiee ? 'manuelle' : baseCalculee.source,
+                        baseMotif: modifiee ? 'Base corrigée à la main à la retenue (proposée : ${money(baseCalculee.base)}). ${baseCalculee.motif}' : baseCalculee.motif);
                     lignes = cpdEcrituresRetenueAib(
                         retenue: ret,
                         numero: 'AIB-${r['reference']}',
@@ -391,7 +440,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                     }
                   });
                   c.magasin.journaliser('Retenue d’AIB sur facture fournisseur', 'M7', 'FactureFournisseur', '${r['reference']}', null,
-                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'situation': ret.situation, 'versionId': ret.versionId});
+                      {'taux': ret.taux, 'base': ret.base, 'montant': ret.montant, 'situation': ret.situation, 'versionId': ret.versionId, 'baseSource': ret.baseSource});
                   fermer();
                   ToastsSigh.afficher(ctx, 'Retenue de ${money(ret.montant)} constatée (brouillon).',
                       type: TypeToast.succes,

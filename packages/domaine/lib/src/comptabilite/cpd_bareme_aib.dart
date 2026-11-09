@@ -203,19 +203,27 @@ class CpdSituationAcheteur {
   bool get ok => situation != null;
 }
 
-/// La situation qui se choisit d'OFFICE d'après l'IFU de l'acheteur : vide, la situation au déclencheur « IFU absent » ; 13 chiffres (espaces tolérés),
-/// celle au déclencheur « IFU saisi », présumée active ; autre chose, un refus nommé `IFU_INVALIDE`.
-CpdSituationAcheteur cpdSituationPourAcheteur(Iterable<CpdFiche> situations, {Object? ifu}) {
+/// La situation qui se choisit d'OFFICE d'après l'IFU de l'acheteur : vide, la situation « IFU absent » ; [longueurIfu] chiffres (espaces tolérés), la
+/// situation « IFU saisi », présumée active ; autre chose, un refus nommé `IFU_INVALIDE`.
+///
+/// Le BRANCHEMENT est celui des Paramètres (`parametresAib`, rubrique `branchement_ifu`) : [situationRenseigne] et [situationAbsente] nomment les situations
+/// du barème retenues ; absentes (ou non actives au barème), la situation se retrouve par son déclencheur (`ifu_renseigne` / `ifu_absent`). [longueurIfu]
+/// vient aussi des Paramètres (13 par défaut de graine : l'appelant du poste le lit toujours à la collection).
+CpdSituationAcheteur cpdSituationPourAcheteur(Iterable<CpdFiche> situations,
+    {Object? ifu, int longueurIfu = 13, String? situationRenseigne, String? situationAbsente}) {
   final nu = '${ifu ?? ''}'.replaceAll(RegExp(r'[\s  ]'), '');
   final String declencheur;
   if (nu.isEmpty) {
     declencheur = cpdDeclencheurIfuAbsent;
-  } else if (RegExp(r'^\d{13}$').hasMatch(nu)) {
+  } else if (RegExp('^\\d{$longueurIfu}\$').hasMatch(nu)) {
     declencheur = cpdDeclencheurIfuRenseigne;
   } else {
-    return CpdSituationAcheteur(refusCode: 'IFU_INVALIDE', refusMotif: 'L\'IFU de l\'acheteur (« $nu ») doit comporter exactement 13 chiffres.');
+    return CpdSituationAcheteur(refusCode: 'IFU_INVALIDE', refusMotif: 'L\'IFU de l\'acheteur (« $nu ») doit comporter exactement $longueurIfu chiffres.');
   }
-  final trouvees = [for (final s in cpdSituationsActives(situations)) if ('${s['declencheur']}' == declencheur) s];
+  final actives = cpdSituationsActives(situations);
+  final voulue = declencheur == cpdDeclencheurIfuAbsent ? situationAbsente : situationRenseigne;
+  var trouvees = [for (final s in actives) if (voulue != null && voulue.isNotEmpty && '${s['code']}' == voulue) s];
+  if (trouvees.isEmpty) trouvees = [for (final s in actives) if ('${s['declencheur']}' == declencheur) s];
   if (trouvees.isEmpty) {
     return CpdSituationAcheteur(
         refusCode: cpdCodeAibSansBareme,

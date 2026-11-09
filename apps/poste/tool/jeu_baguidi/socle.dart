@@ -25,6 +25,9 @@ const List<String> collectionsGeneriques = [
   // le barème de l'AIB par situation de l'acheteur (modèle de la maquette) : 5 % arrêté depuis le 07/09/2026 (décision de Baguidi), 1 % et 3 % non arrêtés et
   // marqués à valider ; versionné par date d'effet
   'situationsAib', 'baremeAib',
+  // les PARAMÈTRES de l'AIB (base de la retenue, branchement IFU, taux de repli, longueur de l'IFU) : la graine, une version 1 par rubrique, à valider aux
+  // Paramètres ; les validations ajoutent des versions datées, elles n'écrasent rien
+  'parametresAib',
 ];
 
 /// Les tarifs hérités du logiciel d'origine : aucun n'est une grille de Baguidi (J7). Le motif est écrit sur CHAQUE fiche.

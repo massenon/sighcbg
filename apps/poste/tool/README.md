@@ -1,6 +1,6 @@
 # Générateur du jeu de démonstration Baguidi
 
-Décision J12 de la Direction (08/11/2026). Le jeu livré avec le poste (`assets/donnees/jeu/`, 158 fichiers JSON) n'est plus écrit à la main : il est
+Décision J12 de la Direction (08/11/2026). Le jeu livré avec le poste (`assets/donnees/jeu/`, 159 fichiers JSON) n'est plus écrit à la main : il est
 ENGENDRÉ, de façon déterministe, par ce générateur.
 
 ## Commande (depuis `apps/poste`)
@@ -11,7 +11,7 @@ flutter test tool/generer_jeu_baguidi.dart
 
 Elle tourne sous Flutter et non sous `dart run` : le magasin du poste importe `package:flutter` (donc `dart:ui`). Variable `JEU_SORTIE` pour écrire
 ailleurs que dans `assets/donnees/jeu`. Le test `test/generer_jeu_baguidi_test.dart` prouve le déterminisme (deux exécutions, mêmes octets), la
-conservation des 158 noms de fichier, l'absence de champ nul et que le jeu livré est à jour : après toute modification d'une étape, relancer la commande.
+conservation des 159 noms de fichier, l'absence de champ nul et que le jeu livré est à jour : après toute modification d'une étape, relancer la commande.
 
 ## Architecture
 

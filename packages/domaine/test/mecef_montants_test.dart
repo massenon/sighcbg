@@ -112,8 +112,10 @@ void main() {
     for (final c in (j['acheteurs'] as List).map(m)) {
       final e = m(c['entree']);
       test('${jsonEncode(e)}', () {
+        // Les vecteurs sont ceux de la maquette, dont le défaut historique est 1 % : il est passé EXPLICITEMENT (le moteur, lui, lit le taux de repli des
+        // Paramètres, 0 % à la graine — Direction, 09/11/2026).
         final r = validerAcheteurMecef(
-            ifu: e['ifu'], nom: e['nom'], aibTaux: e['aibTaux']);
+            ifu: e['ifu'], nom: e['nom'], aibTaux: e['aibTaux'], aibParDefaut: 1);
         final att = m(c['sortie']);
         if (att['ok'] == true) {
           expect(r.refus, isNull);

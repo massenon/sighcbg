@@ -7,6 +7,8 @@
 /// contrôlés avant tout envoi. Toute l'arithmétique est ENTIÈRE : aucune décimale ne traverse. Aucun protocole de boîtier n'est supposé.
 library;
 
+import '../comptabilite/cpd_parametres_aib.dart';
+
 /// Un refus nommé : code, motif lisible, geste de correction.
 class RefusMecef {
   const RefusMecef(this.code, this.motif, this.geste);
@@ -121,9 +123,6 @@ class ResultatMontants {
 
 /// Les taux d'AIB offerts à la fenêtre : 0, 1 ou 5 %.
 const aibTauxAdmis = [0, 1, 5];
-
-/// 1 % par défaut (régime de la facture de référence, à confirmer par la Direction : Q4 du PRD).
-const aibTauxParDefaut = 1;
 
 /// L'écriture JavaScript d'une valeur dans un message (`1` et non `1.0`).
 String _js(Object? v) {
@@ -378,7 +377,7 @@ String _nomLigne(Map<String, Object?> l, int i) {
 
 /// L'acheteur validé de la fenêtre « Facture normalisée ».
 class AcheteurMecef {
-  const AcheteurMecef({this.ifu, this.nom, required this.aibTaux, this.aibSituation});
+  const AcheteurMecef({this.ifu, this.nom, required this.aibTaux, this.aibSituation, this.aibRepli = false});
   final String? ifu;
   final String? nom;
   final int aibTaux;
@@ -386,25 +385,36 @@ class AcheteurMecef {
   /// La situation du barème de l'AIB qui a donné [aibTaux] (`ifu_actif`, `ifu_inactif_ou_absent`…), `null` pour un taux fixé hors barème (ancienne voie).
   final String? aibSituation;
 
-  Map<String, Object?> toJson() => {'ifu': ifu, 'nom': nom, 'aibTaux': aibTaux, if (aibSituation != null) 'aibSituation': aibSituation};
+  /// Le taux est le taux de REPLI des Paramètres (aucun taux arrêté en vigueur à la date), non un taux du barème : la pièce le dit.
+  final bool aibRepli;
+
+  Map<String, Object?> toJson() =>
+      {'ifu': ifu, 'nom': nom, 'aibTaux': aibTaux, if (aibSituation != null) 'aibSituation': aibSituation, if (aibRepli) 'aibRepli': true};
 }
 
 /// Contrôle de la fenêtre « Facture normalisée » : IFU de l'acheteur (13 chiffres quand il est renseigné, facultatif pour un particulier),
 /// nom (obligatoire dès qu'un IFU est saisi), taux d'AIB (0, 1 ou 5 ; [aibParDefaut] quand il est vide).
+///
+/// [aibParDefaut] et [longueurIfu] viennent des Paramètres (`parametresAib`) : vides, ils retombent sur la GRAINE du moteur ([CpdParametresAib.graine]),
+/// jamais sur un taux écrit ici. [aibRepli] marque un taux de repli (aucun taux arrêté) : entier de 0 à 100, sans situation.
 ({AcheteurMecef? acheteur, RefusMecef? refus}) validerAcheteurMecef({
   Object? ifu,
   Object? nom,
   Object? aibTaux,
-  int aibParDefaut = aibTauxParDefaut,
+  int? aibParDefaut,
+  int? longueurIfu,
+  bool aibRepli = false,
   Object? aibSituation,
 }) {
+  final defaut = aibParDefaut ?? CpdParametresAib.graine.tauxRepli;
+  final longueur = longueurIfu ?? CpdParametresAib.graine.longueurIfu;
   final i = (ifu == null ? '' : '$ifu').replaceAll(RegExp('[\\s  ]'), '');
-  if (i.isNotEmpty && !RegExp(r'^\d{13}$').hasMatch(i)) {
+  if (i.isNotEmpty && !RegExp('^\\d{$longueur}\$').hasMatch(i)) {
     return (
       acheteur: null,
       refus: _refus(
           'IFU_INVALIDE',
-          'L’IFU de l’acheteur (« $i ») doit comporter exactement 13 chiffres.',
+          'L’IFU de l’acheteur (« $i ») doit comporter exactement $longueur chiffres.',
           'Corriger l’IFU, ou le laisser vide pour un particulier.')
     );
   }
@@ -429,8 +439,9 @@ class AcheteurMecef {
           'Reprendre la situation de l\u2019acheteur : le taux vient du barème de l\u2019AIB.')
     );
   }
-  final brut = aibTaux == null || aibTaux == '' ? aibParDefaut.toDouble() : _nombre(aibTaux);
-  final admis = duBareme ? (brut >= 0 && brut <= 100) : aibTauxAdmis.contains(brut.isFinite ? brut.toInt() : -1);
+  final brut = aibTaux == null || aibTaux == '' ? defaut.toDouble() : _nombre(aibTaux);
+  final duDefaut = aibTaux == null || aibTaux == '';
+  final admis = duBareme || aibRepli || duDefaut ? (brut >= 0 && brut <= 100) : aibTauxAdmis.contains(brut.isFinite ? brut.toInt() : -1);
   if (!brut.isFinite || !admis || brut != brut.truncateToDouble()) {
     return (
       acheteur: null,
@@ -442,7 +453,7 @@ class AcheteurMecef {
   }
   return (
     acheteur: AcheteurMecef(
-        ifu: i.isEmpty ? null : i, nom: n.isEmpty ? null : n, aibTaux: brut.toInt(), aibSituation: duBareme ? sit : null),
+        ifu: i.isEmpty ? null : i, nom: n.isEmpty ? null : n, aibTaux: brut.toInt(), aibSituation: duBareme ? sit : null, aibRepli: aibRepli && !duBareme),
     refus: null
   );
 }

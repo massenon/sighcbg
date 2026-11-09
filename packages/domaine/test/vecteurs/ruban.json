@@ -449,6 +449,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
@@ -639,6 +640,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
@@ -1249,6 +1251,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
@@ -1563,7 +1566,8 @@
        "label": "Configuration Clinique",
        "hub": "hub-cfg",
        "ecrans": [
-        "cfg-imagerie-catalogue"
+        "cfg-imagerie-catalogue",
+        "cfg-validations-aib"
        ]
       }
      ]
@@ -1887,6 +1891,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
@@ -2062,6 +2067,7 @@
         "cfg-regles",
         "cfg-fiscalite",
         "cfg-comptabilite",
+        "cfg-validations-aib",
         "cfg-notifications",
         "cfg-compte",
         "cfg-modules",
@@ -3271,6 +3277,14 @@
      "domaine": "Système",
      "rangees": [
       {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-validations-aib"
+       ]
+      },
+      {
        "code": "IMP",
        "label": "Importation de données",
        "hub": "hub-imp",
@@ -4148,7 +4162,21 @@
      ]
     }
    ],
-   "cartes": []
+   "cartes": [
+    {
+     "domaine": "Système",
+     "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-validations-aib"
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "role": "chirurgien",
@@ -4650,7 +4678,21 @@
      ]
     }
    ],
-   "cartes": []
+   "cartes": [
+    {
+     "domaine": "Système",
+     "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-validations-aib"
+       ]
+      }
+     ]
+    }
+   ]
   }
  ]
 }

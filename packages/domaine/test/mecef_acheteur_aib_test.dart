@@ -142,7 +142,7 @@ void main() {
       expect(validerAcheteurMecef(aibTaux: 3, aibSituation: 'prestation_service').acheteur!.aibTaux, 3);
       expect(validerAcheteurMecef(aibSituation: 'prestation_service').refus!.code, 'AIB_TAUX_INVALIDE');
       expect(validerAcheteurMecef(aibTaux: 120, aibSituation: 'x').refus!.code, 'AIB_TAUX_INVALIDE');
-      expect(validerAcheteurMecef().acheteur!.aibTaux, aibTauxParDefaut);
+      expect(validerAcheteurMecef().acheteur!.aibTaux, CpdParametresAib.graine.tauxRepli);
       expect(validerAcheteurMecef().acheteur!.toJson().containsKey('aibSituation'), isFalse);
     });
 

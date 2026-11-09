@@ -269,4 +269,137 @@ void main() {
       } catch (_) {}
     }
   }, timeout: const Timeout(Duration(seconds: 90)));
+
+  // LES PARAMÈTRES DE L'AIB voyagent du poste qui les valide vers un second poste (Direction, 09/11/2026) : base, branchement IFU, validations du barème.
+  group('paramètres de l\'AIB : une validation faite sur un poste arrive sur un second', () {
+    Map<String, Object?> version(String id, String rubrique, int n, Map<String, Object?> champs, {String? effet}) => {
+          'id': id, 'statut': 'actif', 'rubrique': rubrique, 'version': n, if (effet != null) 'dateEffet': effet,
+          'decideur': 'Direction', 'dateDecision': '2026-10-29', 'motif': 'Décision', ...champs,
+        };
+
+    test('la collection fait partie de la configuration diffusée, et ses libellés sont connus', () {
+      expect(collectionsConfiguration(), containsAll(['parametresAib', 'baremeAib', 'situationsAib']));
+      expect(cfbLibellesCollections['parametresAib'], isNotNull);
+    });
+
+    test('MÈRE → FILEUL (publication puis application) : les versions arrivent, la lecture à une date donne la même base et le même repli', () async {
+      final mm = Magasin({
+        'parametresAib': [
+          ...cpaFichesGraine(),
+          version('PAA-BASE-2', 'base_retenue', 2, {'base': 'facture'}, effet: '2026-10-20'),
+          version('PAA-IFU-2', 'branchement_ifu', 2, {'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif', 'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 2}, effet: '2026-10-20'),
+          version('PAA-BAR-1', 'bareme', 1, {'choix': 'arreter', 'versionBaremeId': 'BAI02'}),
+        ],
+        'baremeAib': [
+          {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_inactif_ou_absent', 'taux': 5, 'dateEffet': '2026-09-07', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'},
+        ],
+        'situationsAib': [
+          {'id': 'SAI01', 'statut': 'actif', 'code': 'ifu_actif', 'libelle': 'IFU actif', 'declencheur': 'ifu_renseigne', 'ordre': 1},
+        ],
+      });
+      final relais = <String, Map<String, Object?>>{};
+      final pub = PublicateurConfiguration(mm, (c, f, champs) async => relais['$c/$f'] = champs, delai: Duration.zero);
+      await pub.pousser();
+      expect(relais.keys, containsAll(['parametresAib/PAA-BASE-1', 'parametresAib/PAA-BASE-2', 'parametresAib/PAA-IFU-2', 'parametresAib/PAA-BAR-1', 'baremeAib/BAI01']));
+      final mf = Magasin({'parametresAib': <M>[], 'baremeAib': <M>[], 'situationsAib': <M>[]});
+      final appl = ApplicateurConfiguration(mf, (c) async => [for (final e in relais.entries) if (e.key.startsWith('$c/')) PieceSync(e.key.substring(c.length + 1), e.value)]);
+      expect(await appl.tirer(), 7);
+      final a = cpaParametresALaDate(mm.collection('parametresAib').actives, DateTime(2026, 10, 30));
+      final b = cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 30));
+      expect([b.base, b.tauxRepli, b.versionBase, b.versionBranchement], [a.base, a.tauxRepli, a.versionBase, a.versionBranchement]);
+      expect([b.base, b.tauxRepli], ['facture', 2]);
+      expect(cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 1)).base, 'ht', reason: 'la version en vigueur à la date, sur le second poste aussi');
+      expect(mf.collection('audit').toutes, isEmpty, reason: 'la mère a déjà journalisé');
+      // le fileul REFUSE d'écrire un paramètre (réglé sur la mère)
+      appl.demarrer(intervalle: const Duration(hours: 1));
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      appl.arreter();
+      expect(() => mf.collection('parametresAib').inserer({'id': 'PAA-BASE-9'}), throwsA(isA<EcritureRefusee>()));
+    });
+
+    test('une version DÉJÀ DÉCIDÉE ne s\'écrase jamais : une fiche distante qui la contredit est ignorée, seul l\'archivage passe ; une version arrêtée du barème de même', () async {
+      final decidee = version('PAA-BASE-2', 'base_retenue', 2, {'base': 'facture'}, effet: '2026-10-20');
+      final mf = Magasin({
+        'parametresAib': [decidee],
+        'baremeAib': [
+          {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_actif', 'taux': 1, 'dateEffet': '2026-12-01', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'},
+          {'id': 'BAI02', 'statut': 'actif', 'situation': 'prestation_service', 'taux': 3, 'arrete': false, 'statutArret': 'non_arrete'},
+        ],
+      });
+      var distant = <String, Map<String, Object?>>{
+        'parametresAib': {...decidee, 'base': 'ht'},
+      };
+      final appl = ApplicateurConfiguration(
+          mf,
+          (c) async => [
+                if (c == 'parametresAib') PieceSync('PAA-BASE-2', distant['parametresAib']!),
+                if (c == 'baremeAib') ...[
+                  const PieceSync('BAI01', {'id': 'BAI01', 'statut': 'actif', 'situation': 'ifu_actif', 'taux': 9, 'dateEffet': '2026-12-01', 'arrete': true}),
+                  const PieceSync('BAI02', {'id': 'BAI02', 'statut': 'actif', 'situation': 'prestation_service', 'taux': 3, 'dateEffet': '2026-12-15', 'arrete': true, 'statutArret': 'arrete', 'decideurArret': 'Direction'}),
+                ],
+              ]);
+      await appl.tirer();
+      expect(mf.collection('parametresAib').parId('PAA-BASE-2')!['base'], 'facture', reason: 'la version décidée garde son contenu');
+      expect(mf.collection('baremeAib').parId('BAI01')!['taux'], 1, reason: 'une version arrêtée ne se réécrit pas');
+      expect(mf.collection('baremeAib').parId('BAI02')!['arrete'], isTrue, reason: 'l\'arrêt d\'une version non arrêtée, décidé sur la mère, est repris');
+      distant = {'parametresAib': {...decidee, 'statut': 'archive'}};
+      final archive = ApplicateurConfiguration(mf, (c) async => [if (c == 'parametresAib') PieceSync('PAA-BASE-2', distant['parametresAib']!, archive: true)]);
+      await archive.tirer();
+      expect(mf.collection('parametresAib').parId('PAA-BASE-2')!['statut'], 'archive', reason: 'l\'archivage (RG-14) passe');
+      expect(mf.collection('parametresAib').parId('PAA-BASE-2')!['base'], 'facture');
+    });
+
+    test('BOUT EN BOUT : mère réelle, moteur fileul réel — la validation faite sur la mère arrive sur le second poste', () async {
+      const port = 19470;
+      final mere0 = await Mere.creer(ConfigMere(port: port, dbChemin: ':memory:', admin: 'secret-test', dossierSauvegardes: '/tmp/sigh-test-sauvegardes-aib'));
+      await mere0.demarrer();
+      final mm = Magasin({
+        'utilisateurs': [
+          {'id': 'USR001', 'statut': 'actif', 'identifiant': 'k.agbuzia', 'nomComplet': 'AGBUZIA Kiafour', 'role': 'admin', 'echecs': 0}
+        ],
+        'parametresAib': [
+          ...cpaFichesGraine(),
+          version('PAA-BASE-2', 'base_retenue', 2, {'base': 'facture'}, effet: '2026-10-20'),
+        ],
+      });
+      final pub = PublicateurConfiguration(mm, publierVersMereLocale(port: port, admin: 'secret-test'), delai: Duration.zero);
+      final console = ClientMere(base: Uri.parse('http://127.0.0.1:$port'), secretAdmin: 'secret-test');
+      final moteur = MoteurFileul.creer(dbChemin: ':memory:', mere: 'http://127.0.0.1:1', nom: 'Caisse');
+      final mf = Magasin({'utilisateurs': <M>[], 'parametresAib': <M>[]});
+      final appl = ApplicateurConfiguration(mf, moteur.liste);
+      try {
+        expect(await pub.pousser(), greaterThanOrEqualTo(3));
+        expect(pub.erreur.value, isNull);
+        final code = await console.codeAppareil('Caisse').timeout(const Duration(seconds: 20));
+        await moteur.rattacher('http://127.0.0.1:$port', code).timeout(const Duration(seconds: 20));
+        moteur.demarrer();
+        final fin = DateTime.now().add(const Duration(seconds: 25));
+        while (mf.collection('parametresAib').toutes.length < 3) {
+          await appl.tirer();
+          if (DateTime.now().isAfter(fin)) fail('les paramètres de l\'AIB ne sont pas arrivés : ${mf.collection('parametresAib').toutes.length} fiches (${appl.erreur.value})');
+          await Future<void>.delayed(const Duration(milliseconds: 200));
+        }
+        final b = cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 10, 30));
+        expect([b.base, b.versionBase], ['facture', 2]);
+        // une NOUVELLE validation sur la mère arrive à son tour (une version de plus, jamais un écrasement)
+        mm.collection('parametresAib').ajouterSansJournal(version('PAA-BASE-3', 'base_retenue', 3, {'base': 'ht'}, effet: '2027-01-01'));
+        await pub.pousser();
+        final fin2 = DateTime.now().add(const Duration(seconds: 25));
+        while (mf.collection('parametresAib').parId('PAA-BASE-3') == null) {
+          await appl.tirer();
+          if (DateTime.now().isAfter(fin2)) fail('la seconde validation n\'est pas arrivée');
+          await Future<void>.delayed(const Duration(milliseconds: 200));
+        }
+        expect(cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2027, 1, 1)).base, 'ht');
+        expect(cpaParametresALaDate(mf.collection('parametresAib').actives, DateTime(2026, 12, 31)).base, 'facture');
+        expect(mf.collection('parametresAib').parId('PAA-BASE-2')!['base'], 'facture', reason: 'la version 2 n\'a pas été écrasée');
+      } finally {
+        appl.arreter();
+        pub.arreter();
+        try {
+          await mere0.arreter();
+        } catch (_) {}
+      }
+    }, timeout: const Timeout(Duration(seconds: 120)));
+  });
 }

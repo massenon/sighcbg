@@ -113,7 +113,7 @@ class CaisseComptoir {
       'lignes': [for (var i = 0; i < ls.length; i++) 'L${pad(i + 1, 3)}'],
       'encaissePar': comptableCaisse,
     };
-    if (piece['mecef'] == true) fiche.addAll(champsNormalisation(fiche, d.numeroMecefSimule(++_graineMecef), quand));
+    if (piece['mecef'] == true) fiche.addAll(champsNormalisation(fiche, d.numeroMecefSimule(++_graineMecef), quand, a.ctx));
     fiche['venteComptoir'] = true;
     fiche['source'] = 'Vente de pharmacie au comptoir, sans dossier patient (client générique fictif)';
     final ins = a.ajouter('factures', fiche, 'FAC');

@@ -705,6 +705,7 @@
     "cfg-regles",
     "cfg-fiscalite",
     "cfg-comptabilite",
+    "cfg-validations-aib",
     "cfg-notifications",
     "cfg-compte",
     "cfg-modules",
@@ -5584,6 +5585,27 @@
     "admin",
     "da",
     "direction"
+   ]
+  },
+  {
+   "id": "cfg-validations-aib",
+   "label": "Validations de l’AIB",
+   "icone": "percent",
+   "module": "CFG",
+   "moduleLabel": "Configuration Clinique",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da",
+    "direction",
+    "comptable",
+    "dm",
+    "aide_comptable",
+    "assistant_comptable"
    ]
   },
   {

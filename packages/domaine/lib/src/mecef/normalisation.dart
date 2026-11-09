@@ -36,14 +36,17 @@ num _num(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
 ({AcheteurMecef? acheteur, RefusMecef? refus}) acheteurDePiece(
     Map<String, Object?> fac,
     {Map<String, Object?>? saisi,
-    int aibParDefaut = aibTauxParDefaut}) {
+    int? aibParDefaut,
+    int? longueurIfu}) {
   final s = saisi ?? const {};
   return validerAcheteurMecef(
     ifu: s.containsKey('ifu') ? s['ifu'] : fac['ifuClient'],
     nom: s.containsKey('nom') ? s['nom'] : fac['acheteurNom'],
     aibTaux: s.containsKey('aibTaux') ? s['aibTaux'] : fac['aibTaux'],
     aibSituation: s.containsKey('aibTaux') ? s['aibSituation'] : fac['aibSituation'],
+    aibRepli: s.containsKey('aibTaux') ? s['aibRepli'] == true : fac['aibRepli'] == true,
     aibParDefaut: aibParDefaut,
+    longueurIfu: longueurIfu,
   );
 }
 
@@ -71,7 +74,8 @@ PreparationNormalisation preparerNormalisation(
   Map<String, Object?> fac, {
   Map<String, Object?>? acheteurSaisi,
   bool modeDesactive = false,
-  int aibParDefaut = aibTauxParDefaut,
+  int? aibParDefaut,
+  int? longueurIfu,
   num tauxTvaCourant = 0,
 }) {
   final num_ = '${fac['numero'] ?? fac['id']}';
@@ -94,7 +98,7 @@ PreparationNormalisation preparerNormalisation(
         'La facture $num_ est déjà normalisée (${fac['numeroMecef']}) : elle ne se renormalise jamais.',
         'La corriger par un avoir.'));
   }
-  final ach = acheteurDePiece(fac, saisi: acheteurSaisi, aibParDefaut: aibParDefaut);
+  final ach = acheteurDePiece(fac, saisi: acheteurSaisi, aibParDefaut: aibParDefaut, longueurIfu: longueurIfu);
   if (ach.refus != null) return PreparationNormalisation.refus(ach.refus!);
   final m = mecefMontants(
     lignes: lignesMontantsPiece(fac),
