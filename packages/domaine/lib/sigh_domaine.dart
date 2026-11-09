@@ -119,3 +119,6 @@ export 'src/mobile/mob_transcription.dart';
 export 'src/import/donnees_import.dart';
 export 'src/import/moteur_import.dart';
 export 'src/import/jeux_import.dart';
+export 'src/specialites/spec_donnees.dart';
+export 'src/specialites/spec_moteur.dart';
+export 'src/specialites/spec_travail.dart';

@@ -181,6 +181,46 @@ class Manifeste {
     ];
   }
 
+  /// Le même manifeste AUGMENTÉ d'écrans qui ne s'écrivent pas au manifeste : les entrées que des DONNÉES engendrent (une spécialité = une fiche, donc un
+  /// écran de ruban). [ecrans] s'ajoutent (un identifiant déjà connu est conservé, jamais écrasé) ; [idsRangee] sont ceux que la rangée
+  /// [domaine] / [code] / [libelleRangee] porte au ruban — elle est étendue si elle existe, créée sinon (rangée secondaire : le module ne change pas).
+  Manifeste avecEcrans(
+      {required List<EcranNav> ecrans,
+      required String domaine,
+      required String code,
+      required String libelleRangee,
+      String? icone,
+      required List<String> idsRangee}) {
+    final tous = {..._ecrans};
+    for (final e in ecrans) {
+      tous.putIfAbsent(e.id, () => e);
+    }
+    var trouvee = false;
+    final rangees = <RangeeManifeste>[
+      for (final r in this.rangees)
+        if (r.domaine == domaine && r.code == code && r.label == libelleRangee)
+          () {
+            trouvee = true;
+            return RangeeManifeste(
+                domaine: r.domaine,
+                code: r.code,
+                label: r.label,
+                icone: r.icone,
+                alias: r.alias,
+                secondaire: r.secondaire,
+                ecrans: [...r.ecrans, for (final id in idsRangee) if (!r.ecrans.contains(id)) id],
+                libellesEcrans: r.libellesEcrans);
+          }()
+        else
+          r
+    ];
+    if (!trouvee) {
+      rangees.add(RangeeManifeste(
+          domaine: domaine, code: code, label: libelleRangee, icone: icone, alias: false, secondaire: true, ecrans: [...idsRangee]));
+    }
+    return Manifeste._(domaines, rangees, tous, _raccourcis);
+  }
+
   EcranNav? ecran(String id) => _ecrans[id];
   Iterable<EcranNav> get tousLesEcrans => _ecrans.values;
 

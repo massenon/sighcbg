@@ -89,6 +89,23 @@ class MatriceDroits {
     );
   }
 
+  /// La même matrice avec des écrans DÉRIVÉS : chaque écran de [modeles] (`nouvel écran → écran modèle`) reçoit, pour chaque rôle, EXACTEMENT les droits que
+  /// ce rôle a sur son modèle. Un écran que des données engendrent (une spécialité) n'a ainsi aucun droit propre à écrire ni à oublier : il suit celui d'un
+  /// écran du manifeste, surcharges et fermetures de module comprises (la matrice reçue est déjà la matrice EN FORCE). Un rôle sans droit sur le
+  /// modèle n'en a pas sur le dérivé : aucun écran ne s'ouvre à un rôle qui n'a pas le module.
+  MatriceDroits avecDroitsDerives(Map<String, String> modeles) {
+    final parRole = <String, Map<String, Droit>>{};
+    _parRole.forEach((role, ecrans) {
+      final nouveau = {...ecrans};
+      modeles.forEach((derive, modele) {
+        final d = ecrans[modele];
+        if (d != null && d.voir) nouveau[derive] = d;
+      });
+      parRole[role] = nouveau;
+    });
+    return MatriceDroits._(parRole, _archives, _libelles, _accueils, rolesBruts, fermetures);
+  }
+
   /// Un rôle archivé n'ouvre aucune session (RG-14) : il n'a jamais d'écran.
   bool estArchive(String role) => _archives.contains(role);
 
