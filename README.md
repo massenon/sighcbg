@@ -23,6 +23,10 @@ SIGH-CBG est un logiciel de gestion hospitalière conçu pour la Clinique Baguid
 
 Il est pensé pour **continuer à travailler sans connexion** : chaque poste est autonome et les données se rejoignent ensuite par synchronisation chiffrée.
 
+<div align="center">
+<img src="docs/images/ecran-financier.png" alt="Le poste de travail : menu en ruban par domaine" width="860">
+</div>
+
 ## Fonctionnalités principales
 
 ### Accueil et soins
