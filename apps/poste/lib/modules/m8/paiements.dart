@@ -167,7 +167,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
 
   void _encaisser(BuildContext ctx, Fiche f) {
     final reste = n(f['reliquat']);
-    final acheteur = ControleurFormulaire(champsAcheteurNormalise, valeursAcheteur(f));
+    final cx = ContexteEcran.of(ctx);
+    final acheteur = ControleurFormulaire(champsAcheteurNormalise(cx.magasin, cx.aujourdhui), valeursAcheteur(f));
     final form = ControleurFormulaire(const [
       ChampDef(
           nom: 'montant',
@@ -219,7 +220,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
               const SizedBox(height: 12),
               FormulaireSigh(controleur: form),
               const SizedBox(height: 12),
-              if (mecefEnService(ContexteEcran.of(ctx).magasin)) SectionAcheteur(controleur: acheteur),
+              if (mecefEnService(cx.magasin)) SectionAcheteur(controleur: acheteur, magasin: cx.magasin, date: cx.aujourdhui),
             ]),
         pied: (fermer) => [
               BoutonSigh(
@@ -255,7 +256,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                     // comptable (571, 411 de la part assureur, 706). Un encaissement ne s'annule pas : remboursement ou avoir.
                     final c = ContexteEcran.of(ctx);
                     // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien (E2299).
-                    final refusAcheteur = mecefEnService(c.magasin) ? controlerAcheteur(acheteur) : null;
+                    final refusAcheteur = mecefEnService(c.magasin) ? controlerAcheteur(acheteur, c.magasin, c.aujourdhui) : null;
                     if (refusAcheteur != null) {
                       ToastsSigh.afficher(ctx,
                           '${refusAcheteur.code} : ${refusAcheteur.motif}',
@@ -267,7 +268,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                     final ResultatCaisse res;
                     try {
                       res = encaisserFacture(c.magasin, '${f['id']}',
-                          acheteur: mecefEnService(c.magasin) ? lireAcheteur(acheteur) : null,
+                          acheteur: mecefEnService(c.magasin) ? lireAcheteur(acheteur, c.magasin, c.aujourdhui) : null,
                           montant: montant,
                           mode: '${v['modePaiement']}',
                           maintenant: c.aujourdhui);

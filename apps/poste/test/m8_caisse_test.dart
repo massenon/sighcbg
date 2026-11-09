@@ -122,11 +122,19 @@ void main() {
     expect(m.collection('factures').parId(f['id'])!['reliquat'], f['reliquat'],
         reason: 'rien n’est écrit');
     await saisir('acheteurIfu', '3201642748214');
+    // IFU présenté : situation « IFU actif », dont le 1 % n'est pas arrêté — refus nommé, rien n'est écrit.
+    await toucher(t, find.text('Valider l’encaissement'));
+    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
+    expect(m.collection('ecritures').actives.length, ecrAvant);
+    // L'agent ramène l'acheteur à la situation « sans IFU actif » (5 % arrêté), choisie parmi celles du barème.
+    await toucher(t, find.text('Automatique — d’après l’IFU saisi').first);
+    await toucher(t, find.textContaining('Acheteur sans IFU actif — 5 % arrêté').last);
     await toucher(t, find.text('Valider l’encaissement'));
     final apres = m.collection('factures').actives
         .firstWhere((x) => x['ifuClient'] == '3201642748214');
     expect(apres['acheteurNom'], 'Clinique X');
-    expect(apres['aibTaux'], 1);
+    expect(apres['aibTaux'], 5);
+    expect(apres['aibSituation'], 'ifu_inactif_ou_absent');
     expect(apres['statutPaiement'], 'soldee');
     expect(apres['statutMecef'], 'valide');
     expect(RegExp(r'^MECEF\d{7}$').hasMatch('${apres['numeroMecef']}'), isTrue);

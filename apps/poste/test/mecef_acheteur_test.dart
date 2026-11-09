@@ -77,8 +77,87 @@ void main() {
     expect(find.text('FACTURE NORMALISÉE'), findsOneWidget);
     expect(find.text('IFU de l’acheteur'), findsWidgets);
     expect(find.text('Nom de l’acheteur'), findsWidgets);
-    expect(find.text('Taux d’AIB'), findsWidgets);
+    expect(find.text('Situation de l’acheteur (AIB)'), findsWidgets);
     expect(find.textContaining('Toute vente est normalisée'), findsOneWidget);
+    // Le taux affiché vient du BARÈME à la date de la facture (30/10/2026) : sans IFU, 5 % arrêté depuis le 07/09/2026, calculé sur le hors taxes.
+    expect(find.textContaining('AIB au 30/10/2026 : 5 %'), findsOneWidget);
+    expect(find.textContaining('arrêté, en vigueur depuis le 07/09/2026'), findsOneWidget);
+    expect(find.textContaining('hors taxes'), findsWidgets);
+  });
+
+  cas('les choix de situation viennent du barème : plus de liste 0 / 1 / 5 % codée, les taux non arrêtés sont dits « à valider »', (t) async {
+    await ouvrir(t, magasin());
+    await toucher(t, find.text('Automatique — d’après l’IFU saisi').first);
+    expect(find.textContaining('Acheteur avec IFU actif — 1 % non arrêté, à valider'), findsWidgets);
+    expect(find.textContaining('Acheteur sans IFU actif — 5 % arrêté'), findsWidgets);
+    expect(find.textContaining('Prestation de service retenue par le payeur — 3 % non arrêté, à valider'), findsWidgets);
+    expect(find.text('1 % (taux de la facture de référence, à confirmer)'), findsNothing);
+  });
+
+  cas('IFU actif : le 1 % n\'est pas arrêté, la vente est refusée en nommant AIB_SANS_BAREME, rien n\'est écrit', (t) async {
+    final m = magasin();
+    final avant = m.collection('factures').actives.length;
+    final ecrAvant = m.collection('ecritures').actives.length;
+    await ouvrir(t, m);
+    await ajouterLibre(t, 'Carnet de santé', '500');
+    await saisir(t, 'acheteurIfu', '3201642748214');
+    await saisir(t, 'acheteurNom', 'Clinique X');
+    expect(find.textContaining('aucun taux applicable'), findsOneWidget);
+    expect(find.textContaining('1 % — non arrêté, à valider'), findsWidgets);
+    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
+    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
+    expect(m.collection('factures').actives.length, avant);
+    expect(m.collection('ecritures').actives.length, ecrAvant);
+  });
+
+  cas('à une date AVANT le 07/09/2026 aucun taux n\'est arrêté : refus nommé, jamais un taux commode', (t) async {
+    final m = magasin();
+    final avant = m.collection('factures').actives.length;
+    t.view.physicalSize = const Size(1600, 2400);
+    t.view.devicePixelRatio = 1;
+    addTearDown(t.view.resetPhysicalSize);
+    await t.pumpWidget(SighPoste(
+        key: UniqueKey(),
+        donnees: donnees,
+        config: const ConfigPoste(mode: ModePoste.fileul, role: 'admin'),
+        ecranInitial: 'm8-facturation',
+        magasin: m,
+        horloge: () => DateTime(2026, 9, 6)));
+    for (var i = 0; i < 4; i++) {
+      await t.pump(const Duration(milliseconds: 100));
+    }
+    await ajouterLibre(t, 'Carnet de santé', '500');
+    expect(find.textContaining('aucun taux applicable'), findsOneWidget);
+    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
+    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
+    expect(find.textContaining('07/09/2026'), findsWidgets);
+    expect(m.collection('factures').actives.length, avant);
+  });
+
+  cas('l\'agent change la situation : « sans IFU actif » (5 % arrêté) sur un acheteur qui présente un IFU ; une situation non arrêtée reste refusée', (t) async {
+    final m = magasin();
+    await ouvrir(t, m);
+    await ajouterLibre(t, 'Carnet de santé', '500');
+    await saisir(t, 'acheteurIfu', '3201642748214');
+    await saisir(t, 'acheteurNom', 'Clinique X');
+    await choisir(t, 'Automatique — d’après l’IFU saisi', 'Prestation de service retenue par le payeur — 3 % non arrêté, à valider');
+    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
+    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
+    expect(m.collection('factures').actives.where((f) => f['ifuClient'] == '3201642748214'), isEmpty);
+  });
+
+  cas('MECeF fermé (bascule mecefActif) : la fenêtre est absente, la pièce ne porte aucun champ fiscal ni acheteur, le barème n\'est pas lu', (t) async {
+    final m = magasin();
+    m.collection('modulesActifs').inserer({'module': 'MECEF', 'actif': false, 'statut': 'actif'});
+    await ouvrir(t, m);
+    expect(find.text('FACTURE NORMALISÉE'), findsNothing);
+    await ajouterLibre(t, 'Carnet de santé', '500');
+    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
+    final f = m.collection('factures').actives.first;
+    expect(f['statutPaiement'], 'soldee');
+    for (final k in ['ifuClient', 'acheteurNom', 'aibTaux', 'aibSituation', 'aibMontant', 'numeroMecef']) {
+      expect(f[k], isNull, reason: k);
+    }
   });
 
   cas('un IFU invalide est refusé en le nommant, AVANT toute écriture', (t) async {
@@ -113,10 +192,11 @@ void main() {
     await ajouterLibre(t, 'Carnet de santé', '500');
     await saisir(t, 'acheteurIfu', '3201 6427 48214');
     await saisir(t, 'acheteurNom', 'Clinique X');
-    await choisir(t, '1 % (taux de la facture de référence, à confirmer)', '5 %');
+    await choisir(t, 'Automatique — d’après l’IFU saisi', 'Acheteur sans IFU actif — 5 % arrêté');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     final f = m.collection('factures').actives.first;
     expect(f['statutPaiement'], 'soldee');
+    expect(f['aibSituation'], 'ifu_inactif_ou_absent');
     expect(f['ifuClient'], '3201642748214');
     expect(f['acheteurNom'], 'Clinique X');
     expect(f['aibTaux'], 5);

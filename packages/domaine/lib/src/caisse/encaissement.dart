@@ -87,6 +87,7 @@ ResultatEncaissement encaisser(
         ifu: acheteur['ifu'],
         nom: acheteur['nom'],
         aibTaux: acheteur['aibTaux'],
+        aibSituation: acheteur['aibSituation'],
         aibParDefaut: aibParDefaut);
     if (v.refus != null) {
       final lignesDues = ((facture['lignes'] ?? const []) as List)
@@ -204,6 +205,7 @@ ResultatEncaissement encaisser(
       'ifuClient': acheteurSaisi.ifu,
       'acheteurNom': acheteurSaisi.nom,
       'aibTaux': acheteurSaisi.aibTaux,
+      if (acheteurSaisi.aibSituation != null) 'aibSituation': acheteurSaisi.aibSituation,
     },
     'dernierReglement': {
       'date': maintenant,

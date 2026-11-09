@@ -411,7 +411,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
     ];
     final choisies = {for (final l in lignes) '${l['id']}'};
     final version = ValueNotifier(0);
-    final acheteur = ControleurFormulaire(champsAcheteurNormalise, valeursAcheteur(fac));
+    final acheteur = ControleurFormulaire(champsAcheteurNormalise(c.magasin, c.aujourdhui), valeursAcheteur(fac));
     final form = ControleurFormulaire([
       ChampDef(
           nom: 'mode',
@@ -652,7 +652,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                         const SizedBox(height: 12),
                         FormulaireSigh(controleur: form),
                         const SizedBox(height: 12),
-                        if (mecefEnService(c.magasin)) SectionAcheteur(controleur: acheteur),
+                        if (mecefEnService(c.magasin)) SectionAcheteur(controleur: acheteur, magasin: c.magasin, date: c.aujourdhui),
                       ]);
                 })),
         pied: (fermer) => [
@@ -680,7 +680,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                       return;
                     }
                     // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien (E2299).
-                    final refusAcheteur = mecefEnService(c.magasin) ? controlerAcheteur(acheteur) : null;
+                    final refusAcheteur = mecefEnService(c.magasin) ? controlerAcheteur(acheteur, c.magasin, c.aujourdhui) : null;
                     if (refusAcheteur != null) {
                       ToastsSigh.afficher(ctx,
                           '${refusAcheteur.code} : ${refusAcheteur.motif}',
@@ -692,7 +692,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                     ResultatCaisse res;
                     try {
                       res = encaisserFacture(c.magasin, '${fac['id']}',
-                          acheteur: mecefEnService(c.magasin) ? lireAcheteur(acheteur) : null,
+                          acheteur: mecefEnService(c.magasin) ? lireAcheteur(acheteur, c.magasin, c.aujourdhui) : null,
                           lignes: lignes.isNotEmpty ? choisies.toList() : null,
                           montant: lignes.isEmpty ? n(fac['reliquat']) : null,
                           mode: '${form['mode']}',

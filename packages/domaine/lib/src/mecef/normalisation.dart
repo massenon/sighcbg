@@ -42,6 +42,7 @@ num _num(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
     ifu: s.containsKey('ifu') ? s['ifu'] : fac['ifuClient'],
     nom: s.containsKey('nom') ? s['nom'] : fac['acheteurNom'],
     aibTaux: s.containsKey('aibTaux') ? s['aibTaux'] : fac['aibTaux'],
+    aibSituation: s.containsKey('aibTaux') ? s['aibSituation'] : fac['aibSituation'],
     aibParDefaut: aibParDefaut,
   );
 }

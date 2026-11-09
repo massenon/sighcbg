@@ -206,7 +206,7 @@ class _EtatFacturation extends State<EcranFacturation> {
     ], {
       'regle': '0'
     });
-    _acheteur = ControleurFormulaire(champsAcheteurNormalise, valeursAcheteur(null));
+    _acheteur = ControleurFormulaire(champsAcheteurNormalise(m, c.aujourdhui), valeursAcheteur(null));
     _patient.addListener(_majPatient);
     _ajout.addListener(_majAjout);
     _remplirArticles(m);
@@ -443,7 +443,7 @@ class _EtatFacturation extends State<EcranFacturation> {
     }
     // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien.
     final saisieAcheteur = !proforma && mecefEnService(m);
-    final refusAcheteur = saisieAcheteur ? controlerAcheteur(_acheteur) : null;
+    final refusAcheteur = saisieAcheteur ? controlerAcheteur(_acheteur, m, c.aujourdhui) : null;
     if (refusAcheteur != null) {
       ToastsSigh.afficher(
           context, '${refusAcheteur.code} : ${refusAcheteur.motif}',
@@ -452,7 +452,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           duree: const Duration(seconds: 9));
       return;
     }
-    final acheteur = saisieAcheteur ? lireAcheteur(_acheteur) : null;
+    final acheteur = saisieAcheteur ? lireAcheteur(_acheteur, m, c.aujourdhui) : null;
     final r = _emettre(proforma);
     final annulations = <VoidCallback>[];
     final creees = <Fiche>[];
@@ -470,11 +470,15 @@ class _EtatFacturation extends State<EcranFacturation> {
       }
       if (acheteur != null) {
         final v = validerAcheteurMecef(
-            ifu: acheteur['ifu'], nom: acheteur['nom'], aibTaux: acheteur['aibTaux']);
+            ifu: acheteur['ifu'],
+            nom: acheteur['nom'],
+            aibTaux: acheteur['aibTaux'],
+            aibSituation: acheteur['aibSituation']);
         final a = v.acheteur!;
         fiche['ifuClient'] = a.ifu;
         fiche['acheteurNom'] = a.nom;
         fiche['aibTaux'] = a.aibTaux;
+        if (a.aibSituation != null) fiche['aibSituation'] = a.aibSituation;
       }
       fiche['statut'] = 'actif';
       final ins = factures.inserer(fiche, prefixe: 'FAC');
@@ -974,7 +978,7 @@ class _EtatFacturation extends State<EcranFacturation> {
         // TOUTE VENTE EST NORMALISÉE (E2299) : la fenêtre ne sert qu'à saisir l'acheteur et le taux d'AIB. MECeF fermé (bascule P0-5) : absente.
         if (_c != null && mecefEnService(_c!.magasin)) ...[
           const SizedBox(height: 12),
-          SectionAcheteur(controleur: _acheteur),
+          SectionAcheteur(controleur: _acheteur, magasin: _c!.magasin, date: _c!.aujourdhui),
         ],
       ]),
     );

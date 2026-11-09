@@ -96,6 +96,7 @@ ResultatNormalisation normaliserVente(
           'ifuClient': ach.ifu,
           'acheteurNom': ach.nom,
           'aibTaux': ach.aibTaux,
+          if (ach.aibSituation != null) 'aibSituation': ach.aibSituation,
         },
         'mecefSimule': true,
       }));
@@ -109,6 +110,7 @@ ResultatNormalisation normaliserVente(
     'ifuClient': a.ifu,
     'acheteurNom': a.nom,
     'aibTaux': a.aibTaux,
+    if (a.aibSituation != null) 'aibSituation': a.aibSituation,
     'mecefSimule': true,
   };
   // L'état est écrit AVANT l'émission (un redémarrage reprend au bon endroit).

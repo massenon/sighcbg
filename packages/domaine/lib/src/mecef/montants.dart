@@ -378,12 +378,15 @@ String _nomLigne(Map<String, Object?> l, int i) {
 
 /// L'acheteur validé de la fenêtre « Facture normalisée ».
 class AcheteurMecef {
-  const AcheteurMecef({this.ifu, this.nom, required this.aibTaux});
+  const AcheteurMecef({this.ifu, this.nom, required this.aibTaux, this.aibSituation});
   final String? ifu;
   final String? nom;
   final int aibTaux;
 
-  Map<String, Object?> toJson() => {'ifu': ifu, 'nom': nom, 'aibTaux': aibTaux};
+  /// La situation du barème de l'AIB qui a donné [aibTaux] (`ifu_actif`, `ifu_inactif_ou_absent`…), `null` pour un taux fixé hors barème (ancienne voie).
+  final String? aibSituation;
+
+  Map<String, Object?> toJson() => {'ifu': ifu, 'nom': nom, 'aibTaux': aibTaux, if (aibSituation != null) 'aibSituation': aibSituation};
 }
 
 /// Contrôle de la fenêtre « Facture normalisée » : IFU de l'acheteur (13 chiffres quand il est renseigné, facultatif pour un particulier),
@@ -393,6 +396,7 @@ class AcheteurMecef {
   Object? nom,
   Object? aibTaux,
   int aibParDefaut = aibTauxParDefaut,
+  Object? aibSituation,
 }) {
   final i = (ifu == null ? '' : '$ifu').replaceAll(RegExp('[\\s  ]'), '');
   if (i.isNotEmpty && !RegExp(r'^\d{13}$').hasMatch(i)) {
@@ -414,8 +418,20 @@ class AcheteurMecef {
           'Saisir le nom de l’acheteur qui porte cet IFU.')
     );
   }
+  // Un taux issu du BARÈME (une situation est nommée) est rendu par le moteur du barème, qui ne rend que des pourcentages entiers : il n'est pas
+  // borné à 0, 1, 5 — mais il est OBLIGATOIRE (jamais le défaut hérité) et entier de 0 à 100.
+  final sit = (aibSituation == null ? '' : '$aibSituation').trim();
+  final duBareme = sit.isNotEmpty;
+  if (duBareme && (aibTaux == null || aibTaux == '')) {
+    return (
+      acheteur: null,
+      refus: _refus('AIB_TAUX_INVALIDE', 'La situation « $sit » est nommée sans taux : un taux du barème ne se devine jamais.',
+          'Reprendre la situation de l\u2019acheteur : le taux vient du barème de l\u2019AIB.')
+    );
+  }
   final brut = aibTaux == null || aibTaux == '' ? aibParDefaut.toDouble() : _nombre(aibTaux);
-  if (!brut.isFinite || !aibTauxAdmis.contains(brut.toInt()) || brut != brut.truncateToDouble()) {
+  final admis = duBareme ? (brut >= 0 && brut <= 100) : aibTauxAdmis.contains(brut.isFinite ? brut.toInt() : -1);
+  if (!brut.isFinite || !admis || brut != brut.truncateToDouble()) {
     return (
       acheteur: null,
       refus: _refus(
@@ -426,7 +442,7 @@ class AcheteurMecef {
   }
   return (
     acheteur: AcheteurMecef(
-        ifu: i.isEmpty ? null : i, nom: n.isEmpty ? null : n, aibTaux: brut.toInt()),
+        ifu: i.isEmpty ? null : i, nom: n.isEmpty ? null : n, aibTaux: brut.toInt(), aibSituation: duBareme ? sit : null),
     refus: null
   );
 }
