@@ -390,12 +390,13 @@ export function pseudonymiserClasseur(buf) {
 
 // --- Périmètre ------------------------------------------------------------------------------------------------------------------------------------
 const PERIMETRE = [
-  'apps/poste/test', 'packages/domaine/test', 'apps/poste/lib', 'packages/domaine/lib', 'docs/architecture', 'docs/baguidi', 'docs/prd',
+  'apps/poste/test', 'packages/domaine/test', 'apps/poste/lib', 'packages/domaine/lib', 'docs/architecture',
   'apps/mobile', 'apps/web/tests', 'packages/sync', 'packages/sync_dart',
   // les deux références figées de la matrice des droits (comparées par les tests du domaine) : jamais le jeu livré
   'apps/poste/assets/donnees/rbac.reference.json', 'apps/poste/assets/donnees/modulesActifs.reference.json',
 ];
-const SAUF = /(^|\/)(node_modules|\.git|build|vendor|\.dart_tool|\.claude|storage|golden)(\/|$)/;
+// Le test du générateur et la documentation de Baguidi citent les noms RÉELS des neuf agents (dont ZIME, aussi nom d'un agent de l'ancien jeu) : jamais pseudonymisés.
+const SAUF = /(^|\/)(node_modules|\.git|build|vendor|\.dart_tool|\.claude|storage|golden)(\/|$)|generer_jeu_baguidi_test\.dart$/;
 const EXT = /\.(dart|json|md|txt|mjs|cjs|js|ts|vue|yaml|yml|csv|html|php|xlsx)$/;
 const lister = (chemin, sortie = []) => {
   if (SAUF.test(chemin) || !existsSync(chemin)) return sortie;

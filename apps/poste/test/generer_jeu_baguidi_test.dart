@@ -26,7 +26,7 @@ void main() {
     expect(reference.length, 153);
     expect(a.keys.toSet(), reference);
     for (final e in a.entries) {
-      expect(File('test/fixtures/jeu_reference/${e.key}').readAsStringSync(), e.value, reason: '${e.key} : relancer flutter test tool/generer_jeu_baguidi.dart');
+      expect(File('assets/donnees/jeu/${e.key}').readAsStringSync(), e.value, reason: '${e.key} : relancer flutter test tool/generer_jeu_baguidi.dart');
     }
   });
 
@@ -40,7 +40,7 @@ void main() {
   test('les neuf personnes réelles, leurs comptes sans secret, les vacataires fictifs', () {
     final p = lire(a, 'personnel');
     expect(p.map((x) => x['nomComplet']), [
-      'BAGUIDI Rafiou', 'SANOUSSI Adamon', 'MABOUDOU Nawal', 'IDOHOU Abraham', 'AKONDE Octave', 'SOKOU Peace', 'ZIAKPOUM Nemera', 'TOUNGOUH A. Zoulkifouli'
+      'BAGUIDI Rafiou', 'SANOUSSI Adamon', 'MABOUDOU Nawal', 'IDOHOU Abraham', 'AKONDE Octave', 'SOKOU Peace', 'ZIME Nadège', 'TOUNGOUH A. Zoulkifouli'
     ]);
     expect(p.every((x) => x['cnss'] == '' && x['telephone'] == '' && x['salaireProvisoire'] == true), isTrue);
     final u = lire(a, 'utilisateurs');
