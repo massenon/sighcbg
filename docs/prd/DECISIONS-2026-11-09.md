@@ -19,3 +19,5 @@ Source : formulaire publié (artefact privé), réponses lues dans sa base le 09
 
 ## Règle générale (Direction, 09/11/2026)
 **Tout ce qui est paramétrable l'est dans les Paramètres du poste et du web, ENREGISTRÉ EN BASE, avec un défaut.** Aucune constante métier lue directement dans le code : le code ne porte qu'une graine qui amorce la collection de paramètres ; les moteurs lisent la valeur en vigueur à la date (versionnée, jamais écrasée). Le côté web (relais Laravel, opaque) est à définir : quels paramètres y remontent et comment.
+
+**Web : tranché (Direction, 09/11/2026) — « Synchroniser ».** Les paramètres se synchronisent depuis le poste vers le relais, qui les stocke chiffrés ; le panneau web n'affiche que les réglages propres au relais. Le relais reste opaque (aucune règle métier côté Laravel) ; les nouvelles collections de paramètres entrent dans le mécanisme de synchronisation existant (journal d'opérations, règles de fusion par collection).
