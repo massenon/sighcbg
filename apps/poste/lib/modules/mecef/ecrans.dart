@@ -1366,7 +1366,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
                   ('Devise', 'FCFA'),
                   ('Régime de TVA', p.regime.libelle),
                   ('Taux de TVA appliqué', '${p.tauxTva} %'),
-                  ('Acompte AIB en vigueur aujourd’hui', aibTexte),
+                  // Le libellé de la maquette (« Taux d’AIB (%) ») est conservé, mais LU : le taux est celui du barème arrêté, il ne se saisit plus ici.
+                  ('Taux d’AIB (%)', aibTexte),
                 ])),
             const SizedBox(height: 16),
             KeyedSubtree(

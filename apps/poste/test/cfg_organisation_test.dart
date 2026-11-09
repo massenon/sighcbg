@@ -150,7 +150,13 @@ void main() {
       final reel = [...cfaModulesDuRole(m, donneesNav, role)];
       // Le vecteur range les codes de module bout à bout (« M2M1M13… ») : on les relit un à un.
       final attendu = [for (final x in RegExp(r'M\d+|MECEF|MERE|RLS|GED|RAP|PIL|DASH|CFG|IMP|SUP|AUTH').allMatches('${l[4]}')) x.group(0)!];
-      if (!attendu.contains('CFG') && reel.contains('CFG') && donneesNav.matrice.droit(role, 'cfg-imagerie-catalogue').voir) reel.remove('CFG');
+      // Troisième ouverture, du 09/11/2026 : les validations de l'AIB (module CFG) s'ouvrent en écriture au comptable et en lecture à l'aide-comptable, à l'assistant de
+      // direction et au directeur médical : la rangée CFG qu'elles ajoutent est retirée de même, seulement quand le droit qui l'explique est celui de la matrice.
+      if (!attendu.contains('CFG') &&
+          reel.contains('CFG') &&
+          (donneesNav.matrice.droit(role, 'cfg-imagerie-catalogue').voir || donneesNav.matrice.droit(role, 'cfg-validations-aib').voir)) {
+        reel.remove('CFG');
+      }
       if (reel.where((x) => x == 'M13').length > attendu.where((x) => x == 'M13').length && donneesNav.matrice.droit(role, 'adm-validations').voir) {
         reel.remove('M13');
       }

@@ -297,12 +297,12 @@ void main() {
   cas('configuration : l\'AIB est celui du barème arrêté en vigueur (5 % au 30/10/2026), jamais un 1 % écrit en dur', (t) async {
     final m = magasin();
     await ouvrir(t, m, 'mecef-config');
-    expect(find.text('Acompte AIB en vigueur aujourd’hui'), findsOneWidget);
+    expect(find.text('Taux d’AIB (%)'), findsOneWidget, reason: 'le libellé de la maquette, en lecture : une ligne, pas un champ');
     expect(find.textContaining('5 % arrêté au barème, du montant hors taxes'), findsWidgets);
     expect(find.byKey(const Key('mecef:config-aib')), findsOneWidget);
     expect(find.textContaining('Taux de 5 % arrêté, en vigueur depuis le 07/09/2026'), findsOneWidget);
     expect(find.textContaining('AIB 1 %'), findsNothing);
-    expect(find.text('Taux d’AIB (%)'), findsNothing, reason: 'le taux ne se saisit plus ici : il se règle au barème');
+    expect(find.byKey(const Key('kit:champ:tauxAib')), findsNothing, reason: 'le taux ne se saisit plus ici : il se règle au barème');
   });
 
   cas('configuration : sans taux arrêté en vigueur, l\'écran dit « aucun taux arrêté : 0 % » avec le motif du moteur', (t) async {
