@@ -12,6 +12,7 @@
 @php
     $menu = [
         'panneau.tableau' => 'Tableau de bord du relais',
+        'panneau.clinique' => 'Tableau de bord de la clinique',
         'panneau.appareils' => 'Appareils',
         'panneau.boites' => 'Boîtes aux lettres',
         'panneau.codes' => 'Codes d’appairage',

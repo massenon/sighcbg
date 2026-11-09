@@ -6,6 +6,8 @@ use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Relais\Format;
+use App\Relais\IndicateursClinique;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -299,6 +301,49 @@ class RelaisController extends Controller
         DB::table('relais_indicateurs_historique')->insert(['quand' => (int) (microtime(true) * 1000), 'charge' => $charge]);
 
         return response()->json(['ok' => true]);
+    }
+
+    /**
+     * Instantané d'indicateurs AGRÉGÉS NON NOMINATIFS (ADR-0007). Trois barrières, dans cet ordre : la mère (secret), l'intégrité du corps (signature
+     * HMAC-SHA256 sur le corps exact, clé = secret de la mère), puis le schéma FERMÉ (nombres et formes imposées ; tout autre champ est refusé). Un
+     * refus journalise la cause, jamais le contenu reçu.
+     */
+    public function indicateursClinique(Request $r): JsonResponse
+    {
+        $this->exigerMere($r);
+        $corps = (string) $r->getContent();
+        if (strlen($corps) > (int) config('relais.indicateurs_clinique_octets_max')) {
+            $this->refusIndicateurs(413, 'corps_trop_gros', 'Un instantané est petit : ce corps dépasse la taille permise.');
+        }
+        $attendue = 'sha256='.hash_hmac('sha256', $corps, (string) config('relais.secret_mere'));
+        if (! hash_equals($attendue, (string) $r->header('x-signature'))) {
+            $this->refusIndicateurs(401, 'signature_invalide', 'La signature du corps ne correspond pas : instantané refusé.');
+        }
+        $json = json_decode($corps, true);
+        if (! is_array($json) || array_keys($json) !== ['instantane']) {
+            $this->refusIndicateurs(422, 'instantane_invalide', 'Le corps doit porter un seul objet « instantane ».');
+        }
+        $defauts = IndicateursClinique::valider($json['instantane']);
+        if ($defauts !== []) {
+            $this->refusIndicateurs(422, 'instantane_invalide', 'Instantané non conforme au schéma : '.implode(' ; ', array_slice($defauts, 0, 5)));
+        }
+        $i = $json['instantane'];
+        if ($i['genere_le'] > Format::maintenant() + 600000) {
+            $this->refusIndicateurs(422, 'instantane_invalide', 'genere_le est dans le futur : horloge de la mère à vérifier.');
+        }
+        $dernier = (int) DB::table('indicateurs_clinique')->max('genere_le');
+        if ($i['genere_le'] <= $dernier) {
+            $this->refusIndicateurs(409, $i['genere_le'] === $dernier ? 'instantane_deja_recu' : 'instantane_perime', 'Un instantané plus récent est déjà enregistré : celui-ci est ignoré.');
+        }
+        IndicateursClinique::enregistrer($i);
+
+        return response()->json(['ok' => true]);
+    }
+
+    private function refusIndicateurs(int $statut, string $code, string $motif): never
+    {
+        DB::table('relais_audit')->insert(['quand' => Format::maintenant(), 'acteur' => 'mère', 'action' => 'indicateurs_clinique_refuse', 'detail' => $code]);
+        $this->refus($statut, $code, $motif);
     }
 
     public function etat(Request $r): JsonResponse

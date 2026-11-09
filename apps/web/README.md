@@ -12,6 +12,19 @@ le dossier (racine web = `public/`). Files de tâches en pilote `database`, `que
 Contrat du relais : `packages/sync/banc/relais.js` (implémentation de référence) et `docs/specs/SPEC-protocole-synchronisation.md` §12.
 **État : squelette Laravel 12 sans code métier.**
 
+## Tableau de bord de la clinique (ADR-0007, décision de la Direction du 09/11/2026)
+
+Le relais reste opaque pour tout dossier. Il accepte en plus de la mère un **instantané d'indicateurs agrégés non nominatifs**, que le panneau superadmin montre en **lecture seule** (`/panneau/clinique`, menu « Tableau de bord de la clinique »).
+
+- **Ce que le relais voit** : des nombres (patients actifs, consultations et visites du mois, factures émises, montants facturé / encaissé / reste dû en FCFA, articles sous seuil, lots proches de la péremption, échéances en retard, brouillons comptables, utilisateurs actifs, taux d'occupation des lits), la prochaine échéance fiscale (code d'obligation et date), l'identifiant technique et la dernière synchronisation de chaque poste, la version de l'application, l'état du jeu (démonstration ou production).
+- **Ce que le relais ne voit toujours pas** : aucun dossier, aucun nom, code patient, téléphone, adresse, motif, diagnostic, fournisseur ni agent. Tout le contenu des dossiers reste dans des enveloppes chiffrées de bout en bout.
+- **Route** `POST /mere/indicateurs-clinique` (distincte de `/mere/indicateurs`, qui garde ses trois compteurs de supervision). Trois barrières : le secret de la mère (`x-mere`), la **signature du corps** (`x-signature: sha256=<HMAC-SHA256 du corps exact, clé = RELAIS_SECRET_MERE>`), puis un **schéma fermé** (`App\Relais\IndicateursClinique`) : tout champ inattendu, toute chaîne libre, tout type inattendu est refusé (422), un corps de plus de 16 Ko aussi (413). Un instantané rejoué ou plus ancien que le dernier reçu est refusé (409). Les refus sont journalisés par leur code, jamais par leur contenu.
+- **Conservation** : table `indicateurs_clinique` (migration `2026_11_09_000000`), les `RELAIS_INDICATEURS_CLINIQUE_MAX` derniers instantanés (500 par défaut), purge à chaque réception. Incluse dans l'export de sauvegarde du relais.
+- **Réglages** (`.env`, voir `config/relais.php`) : `RELAIS_INDICATEURS_CLINIQUE_MAX`, `RELAIS_SEUIL_INDICATEURS_CLINIQUE_MS` (plancher de l'alerte « trop ancien », 1 h ; le seuil réel est le plus grand de ce plancher et de trois fois l'intervalle observé entre les deux derniers instantanés), `RELAIS_INDICATEURS_CLINIQUE_OCTETS_MAX`.
+- **Côté poste** : l'interrupteur « publier les indicateurs au relais » est **fermé par défaut** ; il se règle, avec l'intervalle de publication, aux Paramètres du poste mère (écran « Indicateurs publiés »), qui affiche le contenu exact du dernier instantané envoyé. Tant qu'il est fermé, le tableau affiche « Jamais publié ».
+- **Droits** : réservé aux comptes du panneau (tous superadmin, ADR-0005). **Lecture seule** : la page n'a aucune route d'écriture et aucune action ; un test le prouve.
+- **Tests** : `php artisan test` (SQLite en mémoire) ; une copie de `.env.example` en `.env` avec `php artisan key:generate` est nécessaire à un poste neuf.
+
 ## Essai local sur un poste de développement (PostgreSQL)
 
 Le relais tourne sur PostgreSQL, comme en production : un essai local sur SQLite ne prouverait rien sur ce que l'hébergeur servira.

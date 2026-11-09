@@ -1,5 +1,13 @@
 # Release Notes
 
+## Relais SIGH-CBG : tableau de bord de la clinique (09/11/2026)
+
+* Nouvelle route `POST /mere/indicateurs-clinique` : instantané d'indicateurs AGRÉGÉS NON NOMINATIFS publié par la mère, signé (HMAC-SHA256 du corps), validé par un schéma fermé ; tout champ inattendu ou chaîne libre est refusé (ADR-0007).
+* Nouvelle table `indicateurs_clinique` (migration `2026_11_09_000000`) : les N derniers instantanés, purge réglable (`RELAIS_INDICATEURS_CLINIQUE_MAX`).
+* Nouvelle page superadmin en lecture seule « Tableau de bord de la clinique » (`/panneau/clinique`) : cartes avec variation et fraîcheur, courbe d'évolution, note permanente sur ce que le relais voit et ne voit pas, état « jamais publié » explicite.
+* Le relais reste opaque pour tout dossier ; `/mere/indicateurs` (trois compteurs de supervision) est inchangé.
+* `tests/Unit` créé (le dossier manquait : `php artisan test` échouait avant d'exécuter quoi que ce soit).
+
 ## [Unreleased](https://github.com/laravel/laravel/compare/v12.12.1...12.x)
 
 ## [v12.12.1](https://github.com/laravel/laravel/compare/v12.12.0...v12.12.1) - 2026-03-10

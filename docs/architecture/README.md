@@ -15,5 +15,6 @@
 | [ADR-0003](adr/ADR-0003-stack-poste-hub-mobile.md) | Un seul langage, Dart : poste Windows/Linux et smartphone en Flutter, hub en Dart, règles partagées ; boîtier MECeF physique | proposé |
 | ADR-0004 | Moteur de synchronisation (PowerSync / ElectricSQL / maison) — après le banc de validation d'ADR-0003 | à écrire |
 | [ADR-0005](adr/ADR-0005-laravel-api-flutter-poste-pwa.md) | Poste mère Flutter, relais en ligne opaque (Laravel, cPanel), mobile minimal par le relais, accès distant par indicateurs ; **réévalue ADR-0003** | proposé |
+| [ADR-0007](adr/ADR-0007-indicateurs-agreges-non-nominatifs-au-relais.md) | Le relais voit désormais des agrégats non nominatifs, publiés sur interrupteur ouvert, jamais de détail ; précise ADR-0005 | accepté |
 
 Nouvelle décision : `/adr`.

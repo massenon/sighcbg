@@ -11,6 +11,8 @@ Charger d'abord `sigh-maitre`.
 
 **Opaque.** Il stocke des enveloppes chiffrées de bout en bout (il ne voit que appareil, sens, rang, taille), des **indicateurs sans nom de patient**, le battement de cœur de la mère. **Aucune clé, aucune règle de gestion, aucun écran métier.** Un test (`test_le_relais_ne_contient_aucun_chiffrement_ni_cle`) interdit tout appel de chiffrement dans le contrôleur : ne pas le contourner.
 
+**Depuis l'ADR-0007 (09/11/2026), le relais voit aussi des agrégats non nominatifs**, publiés par la mère sur interrupteur ouvert (fermé par défaut) à `POST /mere/indicateurs-clinique` : des nombres et quatre formes imposées (code d'obligation, date, version, identifiant technique d'appareil), signés (`x-signature`, HMAC-SHA256 du corps, secret de la mère), validés par un schéma FERMÉ (`App\Relais\IndicateursClinique`, réplique de `packages/domaine/lib/src/mere/indicateurs_clinique.dart`). La page « Tableau de bord de la clinique » est en **lecture seule** : aucune route d'écriture, aucune action Livewire (les aides de mise en forme vivent hors du composant, dans `App\Relais\VueIndicateurs`, car une méthode publique d'un composant est appelable du navigateur). **Toujours opaque** : tout dossier, tout nominatif, toute règle métier. Ajouter un champ à l'instantané = le déclarer des DEUX côtés (un test Dart lit le PHP). Les vues et classes du panneau n'admettent aucun tiret cadratin (test de parité).
+
 Contrat : `packages/sync/banc/relais.js` (référence) ; le code Laravel doit passer **les mêmes scénarios** (`SIGH_RELAIS=laravel`).
 
 ## Contraintes d'hébergement (ADR-0005)
