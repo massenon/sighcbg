@@ -45,35 +45,30 @@ const cfbChampsPaiementEcheance = <String>['paye', 'datePaiement', 'montant', 'm
 /// Une échéance qui porte un paiement de démonstration.
 bool cfbEcheanceAPaiement(Map<String, Object?> f) => f['paye'] == true || f['datePaiement'] != null || f['reference'] != null;
 
-/// La remise d'une échéance fiscale à « non payée » SANS perdre la trace : la fiche (le calendrier, dérivé d'un document, reste en service) repart sans
-/// règlement ; le paiement de démonstration qu'elle portait est rangé, avec son motif, son acteur et sa date, dans `paiementsArchives`. Une échéance sans
-/// paiement n'est pas touchée (rend `null`).
-Map<String, Object?>? cfbRemettreEcheance(Map<String, Object?> f, {required String motif, required String par, required DateTime le}) {
-  if (!cfbEcheanceAPaiement(f)) return null;
-  final trace = <String, Object?>{
-    for (final c in cfbChampsPaiementEcheance)
-      if (f[c] != null) c: f[c],
-    ...cfbMarquesArchivage(motif: motif, par: par, le: le),
-    'statut': 'archive',
-  };
-  return {
-    ...f,
-    'paye': false,
-    'datePaiement': null,
-    'montant': null,
-    'moyen': null,
-    'reference': null,
-    'valideePar': null,
-    'paiementsArchives': [...((f['paiementsArchives'] as List?) ?? const []), trace],
-  };
+/// LA REMISE D'UNE ÉCHÉANCE FISCALE À « NON PAYÉE » (décision de la Direction, 09/11/2026) : le paiement porté par le jeu de démonstration est une donnée
+/// FICTIVE, pas une pièce comptable. Il est donc SUPPRIMÉ — champs de règlement remis à vide, `paiementsArchives` (trace des anciens archivages) retirée —
+/// et n'est rangé nulle part ; le calendrier, dérivé d'un document, reste en service. Rend la fiche remise et le nombre de paiements fictifs retirés (celui de
+/// la fiche, plus ceux d'une ancienne trace), ou `null` si l'échéance ne porte aucun paiement.
+({Map<String, Object?> fiche, int retires})? cfbRetirerPaiementDemo(Map<String, Object?> f) {
+  final anciens = (f['paiementsArchives'] as List?)?.length ?? 0;
+  final porte = cfbEcheanceAPaiement(f);
+  if (!porte && anciens == 0) return null;
+  final fiche = {...f}..remove('paiementsArchives');
+  if (porte) {
+    for (final c in cfbChampsPaiementEcheance) {
+      fiche.remove(c);
+    }
+    fiche['paye'] = false;
+  }
+  return (fiche: fiche, retires: (porte ? 1 : 0) + anciens);
 }
 
-/// Le bilan d'un archivage : par collection, le nombre de fiches archivées et, à part, celui des brouillons ; les échéances remises à « non payée ».
+/// Le bilan d'un archivage : par collection, le nombre de fiches archivées et, à part, celui des brouillons ; les paiements fictifs d'échéances retirés.
 class CfbBilanArchivage {
-  const CfbBilanArchivage({required this.parCollection, required this.brouillons, this.echeancesRemises = 0, this.motif = cfbMotifArchivageJeuDemo});
+  const CfbBilanArchivage({required this.parCollection, required this.brouillons, this.paiementsRetires = 0, this.motif = cfbMotifArchivageJeuDemo});
   final Map<String, int> parCollection;
   final Map<String, int> brouillons;
-  final int echeancesRemises;
+  final int paiementsRetires;
   final String motif;
 
   /// Les collections réellement touchées.
@@ -83,9 +78,11 @@ class CfbBilanArchivage {
   int get totalBrouillons => brouillons.values.fold(0, (a, b) => a + b);
 }
 
-/// « 83 table(s) archivée(s) — 9 520 fiches archivées, dont 648 brouillon(s). Rien n’est supprimé : tout se restaure depuis la Corbeille. »
+/// « 83 table(s) archivée(s) — 9 520 fiches archivées, dont 648 brouillon(s). Aucune fiche n’est supprimée : tout se restaure depuis la Corbeille. »
+/// Quand des paiements fictifs d'échéances ont été retirés, la phrase le DIT (c'est la seule suppression du geste).
 String cfbToastArchivage(CfbBilanArchivage b) =>
-    '${b.tables} table(s) archivée(s) — ${nombre(b.total)} fiches archivées, dont ${nombre(b.totalBrouillons)} brouillon(s). Rien n’est supprimé : tout se restaure depuis la Corbeille.';
+    '${b.tables} table(s) archivée(s) — ${nombre(b.total)} fiches archivées, dont ${nombre(b.totalBrouillons)} brouillon(s). Aucune fiche n’est supprimée : tout se restaure depuis la Corbeille.'
+    '${b.paiementsRetires > 0 ? ' ${nombre(b.paiementsRetires)} paiement(s) fictif(s) d’échéances fiscales supprimé(s) (donnée de démonstration, non rangée).' : ''}';
 
 /// Le détail du bilan, une ligne par collection (nom, archivées, dont brouillons), de la plus fournie à la moins fournie.
 List<String> cfbLignesBilanArchivage(CfbBilanArchivage b) {

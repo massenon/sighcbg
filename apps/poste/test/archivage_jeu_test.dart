@@ -38,6 +38,7 @@ void main() {
     late int brouillonsAvant, archiveesAvant, auditAvant;
     late String essentiellesAvant;
     late String codePatient, rangFacture, numeroEcriture;
+    late int paiementsAvant;
     final conservees = {...cfbEssentielles, ...cfbCollectionsTechniques};
     final auj = DateTime(2026, 11, 9);
 
@@ -48,6 +49,7 @@ void main() {
       auditAvant = m.collection('audit').toutes.length;
       activesAvant = {for (final n in activite(m)) n: m.collection(n).actives.length};
       brouillonsAvant = [for (final n in activite(m)) if (n != 'echeancesFiscales') ...m.collection(n).actives.where(cfbEstBrouillon)].length;
+      paiementsAvant = m.collection('echeancesFiscales').toutes.where(cfbEcheanceAPaiement).length;
       archiveesAvant = [for (final n in cfbNomsCollections()) m.collection(n).archivees.length].fold(0, (a, b) => a + b);
       essentiellesAvant = instantane(m, [for (final n in cfbNomsCollections()) if (conservees.contains(n) && n != 'audit' && n != 'reglages') n]);
       codePatient = patProchainCode(m.collection('patients').toutes, auj);
@@ -98,17 +100,18 @@ void main() {
       expect(m.collection('personnel').toutes.every((p) => p['salaireBase'] != null), isTrue);
     });
 
-    test('les échéances fiscales sont remises à non payées, leur paiement de démonstration est archivé', () {
+    test('les échéances fiscales sont remises à non payées, leur paiement de démonstration est SUPPRIMÉ et rangé nulle part', () {
       final e = m.collection('echeancesFiscales');
       expect(e.toutes.length, 75, reason: 'le calendrier reste en service');
       expect(e.actives.length, 75);
-      expect(e.toutes.any((f) => f['paye'] == true || f['reference'] != null), isFalse);
-      final payees = e.toutes.where((f) => f['paiementsArchives'] != null).toList();
-      expect(payees, isNotEmpty);
-      expect(bilan.echeancesRemises, payees.length);
-      final trace = (payees.first['paiementsArchives'] as List).first as Map;
-      expect([trace['statut'], trace['_motifArchivage'], trace['_archivePar']], ['archive', 'Jeu de démonstration, mise en production', m.utilisateur]);
-      expect(trace['paye'], true);
+      expect(e.toutes.any((f) => f['paye'] == true || f['reference'] != null || f['datePaiement'] != null), isFalse);
+      expect(e.toutes.any((f) => f.containsKey('paiementsArchives')), isFalse, reason: 'aucune trace rangée sur la fiche');
+      expect(e.toutes.any((f) => cfbChampsPaiementEcheance.any((c) => c != 'paye' && f[c] != null)), isFalse);
+      expect(e.toutes.every((f) => f['statut'] != 'archive'), isTrue, reason: 'l\'échéance reste active, jamais archivée');
+      expect(bilan.paiementsRetires, paiementsAvant);
+      expect(paiementsAvant, greaterThan(0));
+      final l = m.collection('audit').toutes.firstWhere((l) => l['action'] == 'Paiements fictifs d’échéances fiscales retirés');
+      expect((l['apres'] as Map)['paiementsRetires'], paiementsAvant, reason: 'une ligne du journal dit combien de paiements fictifs ont été retirés');
     });
 
     test('le journal n\'est PAS vidé : une entrée par collection (compte archivé) et une synthèse', () {

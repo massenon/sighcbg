@@ -56,7 +56,7 @@ class CfbJeu {
 /// Pour chaque collection d'ACTIVITÉ (la même liste que [cfbViderActivite] : ni essentielle, ni technique), TOUTES les fiches actives passent à l'état archivé
 /// avec le motif [cfbMotifArchivageJeuDemo], l'acteur de la session et la date — brouillons compris, jamais validés au passage. Les
 /// files d'attente, tâches bloquées et notifications sont des collections d'activité comme les autres. Les échéances fiscales restent en service, remises à
-/// « non payée », et leur paiement de démonstration est rangé dans `paiementsArchives` ([cfbRemettreEcheance]).
+/// « non payée » ; leur paiement de démonstration, donnée fictive et non pièce comptable, est SUPPRIMÉ et n'est rangé nulle part ([cfbRetirerPaiementDemo]).
 ///
 /// Ce qui ne bouge PAS : les collections essentielles et techniques (personnel, tarifs, plan comptable, comptes, droits, identité, paramètres fiscaux…), les
 /// salaires du personnel, les comptes de démonstration, la Corbeille, et le JOURNAL D'AUDIT — il reçoit une entrée par collection touchée (compte archivé,
@@ -74,17 +74,25 @@ CfbBilanArchivage cfbArchiverJeuDemo(Magasin m, {required String motifDuGeste}) 
   final le = m.horloge();
   final marques = cfbMarquesArchivage(motif: motif, par: par, le: le);
   final archivees = <String, int>{}, brouillons = <String, int>{};
-  var echeancesRemises = 0;
+  var paiementsRetires = 0;
   final noms = [for (final n in cfbNomsCollections()) if (!conservees.contains(n)) n];
   for (final n in noms) {
     final col = m.collection(n);
     if (n == 'echeancesFiscales') {
-      final remises = [for (final f in col.toutes) cfbRemettreEcheance(f, motif: motif, par: par, le: le) ?? f];
-      echeancesRemises = col.toutes.where(cfbEcheanceAPaiement).length;
-      if (echeancesRemises > 0) {
+      var retires = 0;
+      final remises = [
+        for (final f in col.toutes)
+          () {
+            final r = cfbRetirerPaiementDemo(f);
+            retires += r?.retires ?? 0;
+            return r?.fiche ?? f;
+          }()
+      ];
+      paiementsRetires = retires;
+      if (retires > 0) {
         col.remplacerContenu(remises);
-        m.journaliser('Échéances fiscales remises à non payées', col.module, col.entite ?? n, n, {'payees': echeancesRemises},
-            {'paiementsArchives': echeancesRemises, 'motif': motif});
+        m.journaliser('Paiements fictifs d’échéances fiscales retirés', col.module, col.entite ?? n, n, {'paiementsFictifs': retires},
+            {'paiementsRetires': retires, 'motif': motif});
       }
       continue;
     }
@@ -95,12 +103,12 @@ CfbBilanArchivage cfbArchiverJeuDemo(Magasin m, {required String motifDuGeste}) 
     brouillons[n] = r.brouillons;
     m.journaliser('Archivage du jeu de démonstration', col.module, col.entite ?? n, n, {'actives': avant}, cfbApresArchivageCollection(r.archivees, r.brouillons, motif));
   }
-  final bilan = CfbBilanArchivage(parCollection: archivees, brouillons: brouillons, echeancesRemises: echeancesRemises, motif: motif);
+  final bilan = CfbBilanArchivage(parCollection: archivees, brouillons: brouillons, paiementsRetires: paiementsRetires, motif: motif);
   m.journaliser('Archivage du jeu de démonstration (synthèse)', 'CFG', 'Base', 'archivage', null, {
     'tables': bilan.tables,
     'fiches': bilan.total,
     'brouillons': bilan.totalBrouillons,
-    'echeancesRemises': echeancesRemises,
+    'paiementsRetires': paiementsRetires,
     'motif': motif,
     'motifDuGeste': motifDuGeste.trim(),
     'parCollection': archivees,
@@ -116,9 +124,7 @@ CfbPlanVidage cfbViderActivite(Magasin m, String motif) {
   for (final n in plan.collections) {
     final col = m.collection(n);
     if (n == 'echeancesFiscales') {
-      col.remplacerContenu([
-        for (final f in col.toutes) {...f, 'paye': false, 'datePaiement': null, 'reference': null, 'valideePar': null}
-      ]);
+      col.remplacerContenu([for (final f in col.toutes) cfbRetirerPaiementDemo(f)?.fiche ?? f]);
     } else {
       col.remplacerContenu(const []);
     }
@@ -187,7 +193,7 @@ Future<CfbBilanArchivage?> cfbLancerArchivage(BuildContext ctx, ContexteEcran c)
   final motif = await confirmerAvecMotif(ctx,
       titre: 'Archiver le jeu de démonstration ?',
       message:
-          'Les fiches actives des $nb tables d’activité (patients, consultations, factures, écritures, brouillons compris, files d’attente, notifications…) passent à l’état archivé, avec le motif « $cfbMotifArchivageJeuDemo ». Rien n’est supprimé (RG-14) : tout se retrouve et se restaure depuis la Corbeille. Le personnel, les tarifs, le plan comptable, les comptes, les droits, l’identité et le journal d’audit ne bougent pas. Générer une sauvegarde d’abord.',
+          'Les fiches actives des $nb tables d’activité (patients, consultations, factures, écritures, brouillons compris, files d’attente, notifications…) passent à l’état archivé, avec le motif « $cfbMotifArchivageJeuDemo ». Rien n’est supprimé (RG-14) : tout se retrouve et se restaure depuis la Corbeille, à une seule exception : les paiements de démonstration des échéances fiscales, données fictives et non pièces comptables, sont SUPPRIMÉS (le journal dit combien). Le personnel, les tarifs, le plan comptable, les comptes, les droits, l’identité et le journal d’audit ne bougent pas. Générer une sauvegarde d’abord.',
       libelleOk: 'Archiver le jeu de démonstration',
       dangereux: true);
   if (motif == null || !ctx.mounted) return null;
@@ -839,7 +845,7 @@ class _EtatJeuxDeTest extends State<_JeuxDeTest> {
                 : cfaPile([a, b], espace: 12);
           })),
       cfbNote(
-          'Mettre le poste en production, c’est ARCHIVER le jeu de démonstration (RG-14 : rien n’est supprimé). Chaque fiche active garde son contenu, passe à l’état archivé avec le motif « $cfbMotifArchivageJeuDemo », l’auteur et la date, et se restaure depuis la Corbeille. Les brouillons sont archivés comme les autres, jamais validés. L’administrateur, les réglages, les référentiels, le journal d’audit et les compteurs de numérotation ne sont pas touchés : un code archivé n’est jamais réattribué (RG-01).'),
+          'Mettre le poste en production, c’est ARCHIVER le jeu de démonstration (RG-14 : rien n’est supprimé). Chaque fiche active garde son contenu, passe à l’état archivé avec le motif « $cfbMotifArchivageJeuDemo », l’auteur et la date, et se restaure depuis la Corbeille. Seule exception : le paiement de démonstration d’une échéance fiscale est une donnée fictive, il est SUPPRIMÉ (échéance remise à non payée, une ligne du journal dit combien) et n’est rangé nulle part. Les brouillons sont archivés comme les autres, jamais validés. L’administrateur, les réglages, les référentiels, le journal d’audit et les compteurs de numérotation ne sont pas touchés : un code archivé n’est jamais réattribué (RG-01).'),
       if (_bilan != null) _carteBilan(_bilan!),
       if (autorisee)
         CarteSigh(
@@ -881,7 +887,7 @@ class _EtatJeuxDeTest extends State<_JeuxDeTest> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(cfbToastArchivage(b), key: const Key('cfb:reinit:bilan'), style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate800)),
         const SizedBox(height: 4),
-        Text('${nombre(b.echeancesRemises)} échéance(s) fiscale(s) remise(s) à non payée(s), leur paiement de démonstration rangé dans `paiementsArchives`.',
+        Text('${nombre(b.paiementsRetires)} paiement(s) fictif(s) d’échéances fiscales retiré(s) : donnée de démonstration supprimée, non rangée, échéances remises à non payées.',
             style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500)),
         const SizedBox(height: 8),
         Wrap(spacing: 4, runSpacing: 4, children: [

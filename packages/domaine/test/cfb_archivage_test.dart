@@ -32,32 +32,38 @@ void main() {
       'reference': 'VIR-1', 'valideePar': 'Mme X', 'echeance': '2026-01-12',
     };
 
-    test('le calendrier reste en service, le paiement de démonstration est rangé avec son motif, son acteur et sa date', () {
-      final r = cfbRemettreEcheance(payee, motif: cfbMotifArchivageJeuDemo, par: 'Admin', le: le)!;
-      expect([r['paye'], r['datePaiement'], r['montant'], r['reference'], r['valideePar'], r['statut']], [false, null, null, null, null, 'actif']);
-      expect(r['echeance'], '2026-01-12', reason: 'la date due ne bouge pas');
-      final trace = (r['paiementsArchives'] as List).single as Map;
-      expect([trace['paye'], trace['reference'], trace['montant'], trace['statut'], trace['_archivePar'], trace['_motifArchivage']],
-          [true, 'VIR-1', 120000, 'archive', 'Admin', 'Jeu de démonstration, mise en production']);
+    test('le calendrier reste en service, le paiement de démonstration est SUPPRIMÉ : aucune trace, rien n\'est rangé', () {
+      final r = cfbRetirerPaiementDemo({...payee, 'observation': 'virement du 12', 'paiementsArchives': const []})!;
+      final f = r.fiche;
+      expect(r.retires, 1);
+      expect([f['paye'], f['statut'], f['echeance'], f['code']], [false, 'actif', '2026-01-12', 'ITS'], reason: 'le calendrier ne bouge pas, la date due non plus');
+      for (final c in [...cfbChampsPaiementEcheance.where((c) => c != 'paye'), 'paiementsArchives']) {
+        expect(f.containsKey(c), isFalse, reason: 'plus de trace de $c');
+      }
+      expect(f.keys.where((k) => k.contains('rchiv')), isEmpty);
     });
 
-    test('une échéance sans paiement n\'est pas touchée ; rejouer ne perd pas la première trace', () {
-      expect(cfbRemettreEcheance({'id': 'E', 'paye': false}, motif: 'm', par: 'A', le: le), isNull);
-      final une = cfbRemettreEcheance(payee, motif: 'm', par: 'A', le: le)!;
-      final deux = cfbRemettreEcheance({...une, 'paye': true, 'reference': 'VIR-2'}, motif: 'm', par: 'A', le: le)!;
-      expect((deux['paiementsArchives'] as List).length, 2);
+    test('une échéance sans paiement n\'est pas touchée ; une ancienne trace d\'archivage est retirée et comptée', () {
+      expect(cfbRetirerPaiementDemo({'id': 'E', 'paye': false}), isNull);
+      final ancienne = {'id': 'E', 'paye': false, 'paiementsArchives': [{'paye': true, 'reference': 'VIR-0'}]};
+      final r = cfbRetirerPaiementDemo(ancienne)!;
+      expect(r.retires, 1);
+      expect(r.fiche.containsKey('paiementsArchives'), isFalse);
+      final deux = cfbRetirerPaiementDemo({...payee, 'paiementsArchives': [{'paye': true}]})!;
+      expect(deux.retires, 2, reason: 'le paiement de la fiche et celui de l\'ancienne trace');
     });
   });
 
   test('le bilan compte par collection, à part les brouillons, et ne compte que les collections touchées', () {
-    const b = CfbBilanArchivage(parCollection: {'patients': 120, 'ecritures': 1211, 'vide': 0}, brouillons: {'ecritures': 642, 'resultatsImagerie': 6}, echeancesRemises: 63);
+    const b = CfbBilanArchivage(parCollection: {'patients': 120, 'ecritures': 1211, 'vide': 0}, brouillons: {'ecritures': 642, 'resultatsImagerie': 6}, paiementsRetires: 63);
     expect(b.tables, 2);
     expect(b.total, 1331);
     expect(b.totalBrouillons, 648);
     expect(cfbToastArchivage(b), startsWith('2 table(s) archivée(s) — '));
     expect(cfbToastArchivage(b), contains('dont'));
     expect(cfbToastArchivage(b), contains('brouillon(s)'));
-    expect(cfbToastArchivage(b), contains('Rien n’est supprimé'));
+    expect(cfbToastArchivage(b), contains('Aucune fiche n’est supprimée'));
+    expect(cfbToastArchivage(b), contains('63 paiement(s) fictif(s)'));
     final lignes = cfbLignesBilanArchivage(b);
     expect(lignes.first, startsWith('ecritures : '));
     expect(lignes.first, contains('dont'));
