@@ -163,10 +163,17 @@ class _EtatFiscalite extends State<EcranFiscalite> {
                 'jours': e.jours,
                 'reporte': e.reporte,
                 'note': e.obligation.note,
+                'nonArretee': e.obligation.nonArretee,
               }
           ];
           final declaratives = [
-            for (final o in mensuelles) {'d': '${o['libelle']} (${o['code']})', 'p': 'Mensuelle', 'e': 'le ${o['jour']} du mois suivant', 'ecran': 'm11-cotisations'},
+            for (final o in mensuelles)
+              {
+                'd': '${o['libelle']} (${o['code']})',
+                'p': 'Mensuelle',
+                'e': '${_libelleEcheance(o)}${cfbObligationNonArretee(o) ? ' — date non arrêtée (à valider)' : ''}',
+                'ecran': 'm11-cotisations'
+              },
             {'d': 'Transmission des factures normalisées', 'p': 'Continue', 'e': 'À l’émission', 'ecran': 'mecef-transmission'},
             {'d': 'États financiers de synthèse', 'p': 'Annuelle', 'e': 'Clôture de l’exercice, dépôt au 30 avril', 'ecran': 'm12-etats-financiers'},
           ];
@@ -219,7 +226,14 @@ class _EtatFiscalite extends State<EcranFiscalite> {
               filtres: const [FiltreTableau(nom: 'periodicite', libelle: 'Périodicité', options: [OptionChamp('mensuelle', 'Mensuelle'), OptionChamp('annuelle', 'Annuelle')])],
               colonnes: [
                 ColonneTableau(cle: 'code', libelle: 'Code', sansCoupure: true, rendu: (_, e) => _mono12('${e['code']}')),
-                const ColonneTableau(cle: 'libelle', libelle: 'Obligation'),
+                ColonneTableau(
+                    cle: 'libelle',
+                    libelle: 'Obligation',
+                    texte: (e) => '${e['libelle']}${e['nonArretee'] == true ? ' — date non arrêtée (à valider)' : ''}',
+                    rendu: (_, e) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                          Text('${e['libelle']}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate700)),
+                          if (e['nonArretee'] == true) BadgeSigh('Date non arrêtée (à valider)', key: Key('cfb:calendrier:nonarretee:${e['code']}'), ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
+                        ])),
                 ColonneTableau(
                     cle: 'periodicite',
                     libelle: 'Périodicité',
@@ -557,7 +571,66 @@ class _EtatComptabilite extends State<EcranComptabilite> {
     return Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.end, children: [
       if (c.droit.editer) BoutonIcone(key: Key('cfb:modifier:${o['code']}'), icone: LucideIcons.pencil, libelle: 'Modifier (version datée)', onPressed: () => _modifier(ctx, cf, o)),
       if (c.droit.annuler) BoutonIcone(key: Key('cfb:retirer:${o['code']}'), icone: LucideIcons.archive, libelle: 'Retirer (version datée)', onPressed: () => _retirer(ctx, cf, o)),
+      // ARRÊTER la date : réservé à la Direction, à la DAF et à l'administrateur (le moteur refait le contrôle) ; absent dès que la date est arrêtée.
+      if (cfbObligationNonArretee(o) && cf.peutValider) BoutonIcone(key: Key('cfb:arreter:${o['code']}'), icone: LucideIcons.gavel, libelle: 'Arrêter la date', onPressed: () => _arreter(ctx, cf, o)),
     ]);
+  }
+
+  /// ARRÊTER la date d'une obligation : le décideur (obligatoire) et la date de la décision. Le jour ne change pas ; le marquage « non arrêtée » disparaît.
+  void _arreter(BuildContext ctx, ConfigurationFiscalePoste cf, Fiche o) {
+    final auj = isoJour(cf.maintenant);
+    final f = ControleurFormulaire([
+      const ChampDef(nom: 'decideur', libelle: 'Décideur de l’arrêt', requis: true, aide: 'La personne ou l’instance qui arrête cette date (la Direction).'),
+      const ChampDef(nom: 'dateArret', libelle: 'Date de l’arrêt', type: TypeChamp.date, requis: true, aide: 'Le jour où la Direction a décidé ; jamais postérieur à aujourd’hui.'),
+    ], {'decideur': 'Direction', 'dateArret': auj});
+    afficherModale<void>(ctx,
+        titre: 'Arrêter la date de ${o['code']}',
+        sousTitre: '${o['libelle']} — ${_libelleEcheance(o)}',
+        taille: TailleModale.lg,
+        corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
+          NoteSigh('${o['motifNonArret'] ?? 'Cette date n’a pas été arrêtée par la Direction.'} Arrêter ne change pas le jour : la date reste ${_libelleEcheance(o)}. Pour la changer, utiliser « Modifier ».',
+              icone: LucideIcons.gavel, ton: TonSigh.attention),
+          const SizedBox(height: 12),
+          FormulaireSigh(controleur: f),
+        ]),
+        pied: (fermer) => [
+              BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
+              BoutonSigh(
+                  key: const Key('cfb:arreter:confirmer'),
+                  libelle: 'Arrêter la date',
+                  icone: LucideIcons.gavel,
+                  onPressed: () {
+                    final v = f.valider();
+                    if (v == null) {
+                      ToastsSigh.afficher(ctx, 'Décideur et date de l’arrêt sont obligatoires.', type: TypeToast.erreur);
+                      return;
+                    }
+                    try {
+                      final r = cf.arreterObligation(o, decideur: '${v['decideur']}', dateArret: v['dateArret']);
+                      if (!r.ok) {
+                        cfbToastRefus(ctx, r.refus!);
+                        return;
+                      }
+                    } on EcritureRefusee catch (e) {
+                      ToastsSigh.afficher(ctx, 'Écriture refusée.', type: TypeToast.erreur, detail: e.motif);
+                      return;
+                    }
+                    fermer();
+                    ToastsSigh.afficher(ctx, 'Date de ${o['code']} arrêtée.', type: TypeToast.succes, detail: 'Décideur : ${v['decideur']}, le ${_dateFr(v['dateArret'])}.');
+                    _rafraichir();
+                  }),
+            ]);
+  }
+
+  /// La cellule « Date » d'une obligation : arrêtée par X le D (si la fiche le porte), NON ARRÊTÉE (à valider), ou rien (calendrier confirmé d'origine).
+  Widget _celluleArret(Fiche e) {
+    if (cfbObligationNonArretee(e)) {
+      return BadgeSigh('Non arrêtée (à valider)', key: Key('cfb:nonarretee:${e['code']}'), ton: TonSigh.attention, icone: LucideIcons.triangleAlert);
+    }
+    if (e['decideurArret'] != null) {
+      return Text('Arrêtée par ${e['decideurArret']} le ${_dateFr(e['dateArret'])}', key: Key('cfb:arretee:${e['code']}'), style: const TextStyle(fontSize: 12, height: 16 / 12));
+    }
+    return const Text('—');
   }
 
   Widget _bloc(BuildContext ctx, ContexteEcran c, ConfigurationFiscalePoste cf, String titre, String sousTitre, List<Fiche> lignes) => Container(
@@ -612,6 +685,7 @@ class _EtatComptabilite extends State<EcranComptabilite> {
           final acomptes = [for (final e in cal) if (RegExp(r'^IS-\d$').hasMatch('${e['code']}')) e];
           final soldes = [for (final e in cal) if (e['code'] == 'IS-SOLDE' || e['code'] == 'ETATS-FIN') e];
           List<Fiche> famille(String f) => [for (final e in cal) if (e['famille'] == f) e];
+          final nonArretees = [for (final e in cal) if (cfbObligationNonArretee(e)) e];
           final joursMensuels = <int>{for (final e in mensuelles) nombreOuZero(e['jour']).toInt()};
           final titreMensuelles = 'Obligations mensuelles${joursMensuels.length == 1 ? ' : le ${joursMensuels.first} du mois suivant' : ''}';
           final ortb = cf.ortbALaDate();
@@ -627,18 +701,27 @@ class _EtatComptabilite extends State<EcranComptabilite> {
               if (valider != null) valider,
               BoutonSigh(libelle: 'Suivi des échéances', icone: LucideIcons.calendarClock, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m12-echeances')),
             ]),
+            if (nonArretees.isNotEmpty)
+              NoteSigh(
+                  'DATE NON ARRÊTÉE, À VALIDER : ${[for (final e in nonArretees) '${e['code']} (${_libelleEcheance(e)}) — ${e['motifNonArret'] ?? 'à confirmer'}'].join(' ; ')} '
+                  'L’obligation figure au calendrier et au suivi des échéances, mais la Direction n’a pas arrêté sa date : le marquage tombe quand elle l’arrête (date et décideur).',
+                  key: const Key('cfb:nonarretees'),
+                  ton: TonSigh.attention,
+                  icone: LucideIcons.triangleAlert),
             cfaKpis(cfbKpisComptabilite(obligations: _calendrier(cal))),
             CarteSigh(
                 titre: titreMensuelles,
                 child: cfaPile([
                   cfbNote(
-                      '${mensuelles.map((e) => e['code']).join(', ')} se paient chaque mois, pour le mois d’exercice précédent, au jour porté par chaque obligation. Une déclaration précède le paiement. Si le jour tombe un samedi ou un dimanche, le jour ouvrable qui suit immédiatement fait foi.'),
+                      '${mensuelles.map((e) => e['code']).join(', ')} sont dues chaque mois, pour le mois d’exercice précédent, au jour porté par chaque obligation (la déclaration unique et le versement des cotisations CNSS sont deux échéances distinctes). Une déclaration précède le paiement. Si le jour tombe un samedi ou un dimanche, le jour ouvrable qui suit immédiatement fait foi.'),
                   MiniTableauSigh(colonnes: [
                     ColonneMini('Code', (e) => '${e['code']}', rendu: (e) => _mono12('${e['code']}')),
                     ColonneMini('Obligation', (e) => '${e['libelle']}'),
                     ColonneMini('Échéance', _libelleEcheance),
                     ColonneMini('Déclaration préalable', (e) => cfaOuTiret(e['declaration'])),
                     ColonneMini('Version', (e) => e['dateEffet'] != null ? 'depuis le ${_dateFr(e['dateEffet'])}' : 'd’origine'),
+                    ColonneMini('Date', (e) => cfbObligationNonArretee(e) ? 'Non arrêtée (à valider)' : (e['decideurArret'] != null ? 'Arrêtée par ${e['decideurArret']}' : '—'),
+                        rendu: _celluleArret),
                     ColonneMini('', (e) => '', droite: true, rendu: (e) => _commandes(context, c, cf, e)),
                   ], lignes: mensuelles),
                   _encart('Assiettes arrêtées par le CDCT §10.10 (lecture seule)',

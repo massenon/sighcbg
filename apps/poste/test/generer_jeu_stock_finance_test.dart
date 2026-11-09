@@ -634,19 +634,20 @@ void main() {
     expect(factures.where((f) => f['venteComptoir'] == true).every((f) => n(f['reliquat']) == 0 && n(f['partAssurance']) == 0), isTrue);
   });
 
-  test('échéances fiscales de l\'exercice 2026 (CNSS au 15) : payées jusqu\'à septembre, UNE seule dépassée, aucun montant inventé', () {
+  test('échéances fiscales de l\'exercice 2026 (déclaration unique CNSS au 10, versement CNSS-VERS au 15) : payées jusqu\'à septembre, UNE seule dépassée, aucun montant inventé', () {
     final ech = c('echeancesFiscales');
-    expect(ech.length, 63);
+    expect(ech.length, 75, reason: '63 d\'origine + douze versements CNSS (séparation de la CNSS, 09/11/2026)');
     final lignes = d.cpcLignesEcheances(ech, aujourdhui);
     final retard = lignes.where((e) => e['etat'] == 'en_retard').toList();
     expect(retard.length, 1);
-    expect(retard.single['code'], 'CNSS');
+    expect(retard.single['code'], 'CNSS-VERS', reason: 'le versement des cotisations de septembre, échu le 15 octobre ; la déclaration unique du 10 est réglée');
     expect(retard.single['echeance'], '2026-10-15');
-    expect(lignes.where((e) => e['etat'] == 'payee').length, 53);
-    expect(lignes.where((e) => e['etat'] == 'a_payer' || e['etat'] == 'a_venir' || e['etat'] == 'declaration').length, 9);
+    expect(lignes.where((e) => e['etat'] == 'payee').length, 63);
+    expect(lignes.where((e) => e['etat'] == 'a_payer' || e['etat'] == 'a_venir' || e['etat'] == 'declaration').length, 11);
     expect(lignes.where((e) => '${e['echeance']}'.compareTo('2026-10-01') < 0).every((e) => e['paye'] == true), isTrue, reason: 'tout ce qui est échu avant octobre est payé');
     expect(ech.where((e) => e['paye'] == true).every((e) => e['montant'] == null && e['reference'] != null && e['valideePar'] != null), isTrue);
-    expect(ech.firstWhere((e) => e['code'] == 'CNSS')['echeanceTheorique'], '2026-01-15');
+    expect(ech.firstWhere((e) => e['code'] == 'CNSS')['echeanceTheorique'], '2026-01-10');
+    expect(ech.firstWhere((e) => e['code'] == 'CNSS-VERS')['echeanceTheorique'], '2026-01-15');
     final barre = d.cpcBarreEcheances(lignes);
     expect(barre.first.ton, 'danger');
     expect(d.cpcAlerteOuverture(lignes), isNotNull);
