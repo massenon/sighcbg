@@ -16,3 +16,6 @@ Source : formulaire publié (artefact privé), réponses lues dans sa base le 09
 ## Lectures retenues (à corriger si elles ne conviennent pas)
 - D1 « 0 % sans taux arrêté » et D8 « refus pour IFU actif » se recoupent : la lecture retenue est que le **0 %** vaut pour les trois endroits à défaut (retransmission, vente sans acheteur, affichage), et que la **fenêtre acheteur** garde son refus nommé quand l'acheteur a un IFU actif et que le 1 % n'est pas arrêté.
 - « web » désigne le relais en ligne (Laravel) : il est opaque et ne porte pas les règles métier ; le formulaire de validation se livre d'abord au **poste** (Paramètres), le côté web est à confirmer.
+
+## Règle générale (Direction, 09/11/2026)
+**Tout ce qui est paramétrable l'est dans les Paramètres du poste et du web, ENREGISTRÉ EN BASE, avec un défaut.** Aucune constante métier lue directement dans le code : le code ne porte qu'une graine qui amorce la collection de paramètres ; les moteurs lisent la valeur en vigueur à la date (versionnée, jamais écrasée). Le côté web (relais Laravel, opaque) est à définir : quels paramètres y remontent et comment.
