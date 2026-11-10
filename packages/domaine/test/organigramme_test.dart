@@ -100,7 +100,7 @@ void main() {
       final s = organigrammeScene([poste('A', code: 'X', niveau: 2, x: 2000, y: 100, l: 100), poste('B', code: 'Y', niveau: 5, x: 100, y: 100)], g);
       expect(s.largeur, 2000 + 50 + 12);
       expect(s.niveaux.map((n) => n.n), [2, 5]);
-      expect(s.niveaux.first.x, g.xNiveaux);
+      expect(s.niveaux.first.x, g.niveauxX[2]);
       expect(s.niveaux.first.y, g.niveauxY[2]);
     });
 
@@ -133,13 +133,13 @@ void main() {
 
     test('pagination : saut de page propre, une ligne n’est jamais coupée', () {
       final lignes = [for (var i = 0; i < 45; i++) LigneLegende('C$i', 'L$i')];
-      final pages = paginerLegende(lignes, 20);
-      expect(pages.map((p) => p.length), [20, 20, 5]);
-      expect(organigrammePages(45, 20), 4);
-      expect(organigrammePages(18, 20), 2);
-      expect(organigrammePages(0, 20), 1);
-      expect(organigrammePages(20, 20), 2);
-      expect(organigrammePages(21, 20), 3);
+      final pages = paginerLegende(lignes, 19);
+      expect(pages.map((p) => p.length), [19, 19, 7]);
+      expect(organigrammePages(45, 19), 4);
+      expect(organigrammePages(18, 19), 2);
+      expect(organigrammePages(0, 19), 1);
+      expect(organigrammePages(19, 19), 2);
+      expect(organigrammePages(20, 19), 3);
     });
   });
 

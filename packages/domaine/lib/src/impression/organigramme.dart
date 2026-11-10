@@ -23,16 +23,17 @@ class ParametresGrille {
   const ParametresGrille({
     this.largeur = 1520,
     this.hauteur = 850,
-    this.xNiveaux = 340,
+    this.xNiveaux = 350,
     this.niveauxY = const {},
+    this.niveauxX = const {},
     this.police = 17,
     this.caseLargeur = 110,
     this.caseHauteur = 44,
-    this.legendeParPage = 20,
+    this.legendeParPage = 19,
   });
 
   /// La graine : le gabarit du document de référence FCH_GRH_006, lu sur sa première page.
-  static const ParametresGrille graine = ParametresGrille(niveauxY: {1: 110, 2: 192, 3: 314, 4: 557, 5: 679, 6: 801});
+  static const ParametresGrille graine = ParametresGrille(niveauxY: {1: 110, 2: 192, 3: 314, 4: 557, 5: 679, 6: 801}, niveauxX: {1: 340, 2: 340, 3: 340, 4: 345, 5: 350, 6: 354});
 
   /// Dimensions du cadre du graphe, en unités de grille (le cadre s'agrandit si un poste en sort).
   final double largeur, hauteur;
@@ -42,6 +43,9 @@ class ParametresGrille {
 
   /// Ordonnée du numéro de chaque niveau (absente : moyenne des centres des cases du niveau).
   final Map<int, double> niveauxY;
+
+  /// Abscisse propre à un niveau (absente : [xNiveaux]) : le numéro se range à côté de la case la plus proche, comme au document.
+  final Map<int, double> niveauxX;
 
   /// Corps du texte des cases, en unités de grille.
   final double police;
@@ -54,15 +58,20 @@ class ParametresGrille {
 
   factory ParametresGrille.depuisFiche(Object? brut) {
     if (brut is! Map) return graine;
-    final y = <int, double>{};
-    final ny = brut['niveauxY'];
-    if (ny is Map) {
-      for (final e in ny.entries) {
-        final k = int.tryParse('${e.key}');
-        final v = _d(e.value);
-        if (k != null && v != null) y[k] = v;
+    Map<int, double> table(String cle) {
+      final r = <int, double>{};
+      final m = brut[cle];
+      if (m is Map) {
+        for (final e in m.entries) {
+          final k = int.tryParse('${e.key}');
+          final v = _d(e.value);
+          if (k != null && v != null) r[k] = v;
+        }
       }
+      return r;
     }
+
+    final y = table('niveauxY'), nx = table('niveauxX');
     double pos(String k, double defaut) {
       final v = _d(brut[k]);
       return v != null && v > 0 ? v : defaut;
@@ -74,6 +83,7 @@ class ParametresGrille {
       hauteur: pos('hauteur', graine.hauteur),
       xNiveaux: _d(brut['xNiveaux']) ?? graine.xNiveaux,
       niveauxY: y.isEmpty ? graine.niveauxY : y,
+      niveauxX: nx.isEmpty && !brut.containsKey('niveauxX') ? graine.niveauxX : nx,
       police: pos('police', graine.police),
       caseLargeur: pos('caseLargeur', graine.caseLargeur),
       caseHauteur: pos('caseHauteur', graine.caseHauteur),
@@ -86,6 +96,7 @@ class ParametresGrille {
         'hauteur': hauteur,
         'xNiveaux': xNiveaux,
         'niveauxY': {for (final e in niveauxY.entries) '${e.key}': e.value},
+        'niveauxX': {for (final e in niveauxX.entries) '${e.key}': e.value},
         'police': police,
         'caseLargeur': caseLargeur,
         'caseHauteur': caseHauteur,
@@ -312,7 +323,7 @@ SceneOrganigramme organigrammeScene(Iterable<Map<String, Object?>> postesActifs,
   final nums = {for (final c in cases) c.niveau}.toList()..sort();
   final marges = [
     for (final n in nums)
-      NiveauOrg(n, g.xNiveaux, g.niveauxY[n] ?? (() {
+      NiveauOrg(n, g.niveauxX[n] ?? g.xNiveaux, g.niveauxY[n] ?? (() {
         final ys = [for (final c in cases) if (c.niveau == n) c.cy];
         return ys.reduce((a, b) => a + b) / ys.length;
       })()),

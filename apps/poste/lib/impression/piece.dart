@@ -116,3 +116,101 @@ class PieceA4 {
   static String reference_(DateTime d, int compteur) =>
       '${IdentiteClinique.sigle}-${iso(d).replaceAll('-', '')}-${compteur.toString().padLeft(4, '0')}';
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// FICHE DOCUMENTAIRE PAYSAGE : le gabarit des fiches de la clinique qui ne sont pas des états tabulaires (organigramme, procédures, fiches de poste…).
+// Cartouche à quatre cases (logo · titre en deux étages · référence/date/version/page), contenu libre, pied normalisé. Une seule description pour l'aperçu
+// (`FeuilleFichePaysage`) ET le PDF (`pdfFichePaysage`) : ni l'un ni l'autre ne porte une cote, elles sont toutes ici.
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Une page de fiche paysage.
+sealed class PageFiche {
+  const PageFiche();
+}
+
+/// Le graphe de l'organigramme, dessiné depuis la scène que le domaine a bâtie sur les fiches de postes.
+class PageGraphe extends PageFiche {
+  const PageGraphe(this.scene);
+  final SceneOrganigramme scene;
+}
+
+/// Une page de légende : une ligne par abréviation, le code en gras suivi de son sens.
+class PageLegende extends PageFiche {
+  const PageLegende(this.lignes);
+  final List<LigneLegende> lignes;
+}
+
+/// Les cotes du gabarit paysage (A4 297 × 210 mm), en millimètres. UN seul jeu pour les deux rendus.
+class GabaritFichePaysage {
+  const GabaritFichePaysage();
+  double get largeur => 297;
+  double get hauteur => 210;
+  double get margeHaut => 8;
+  double get margeCote => 6;
+  double get margeBas => 7;
+
+  /// Cartouche : largeur centrée, hauteur, part des trois colonnes (logo, titre, références) et parts des deux étages du titre / des quatre lignes de droite.
+  double get cartoucheLargeur => 213;
+  double get cartoucheHauteur => 21;
+  List<int> get colonnes => const [12, 69, 19];
+  List<int> get etagesTitre => const [55, 45];
+  List<int> get lignesDroite => const [34, 26, 23, 24];
+
+  /// Écart entre le cartouche et le contenu ; hauteur réservée au pied (deux lignes d'adresse, la mention, la ligne de traçabilité).
+  double get ecartContenu => 3;
+  double get hauteurPied => 17;
+
+  /// La zone du graphe : sous le cartouche, au-dessus du pied.
+  double get zoneLargeur => largeur - 2 * margeCote;
+  double get zoneHauteur => hauteur - margeHaut - cartoucheHauteur - ecartContenu - hauteurPied - margeBas;
+
+  /// Habillage des cases : marges du libellé clair dans la case foncée, en unités de grille, épaisseur du bord ; trait fin du graphe en millimètres.
+  double get insetX => 12;
+  double get insetY => 6;
+  double get bordUnites => 4;
+  double get traitMm => 0.22;
+
+  /// Légende : retrait gauche (aligné sur le cartouche), haut, hauteur de ligne, corps (points).
+  double get legendeGauche => (largeur - cartoucheLargeur) / 2;
+  double get legendeHaut => 9;
+  double get legendeLigne => 7.4;
+  double get legendeCorps => 11;
+}
+
+class FichePaysage {
+  FichePaysage({
+    required this.fiche,
+    required this.pages,
+    required this.reference,
+    required this.utilisateur,
+    required this.edite,
+    required this.identite,
+  });
+
+  /// Les paramètres de la fiche, lus en base (référence, date, version, titres, mention).
+  final ParametresFiche fiche;
+  final List<PageFiche> pages;
+
+  /// Identifiant unique de l'édition (`CBG-AAAAMMJJ-NNNN`).
+  final String reference;
+  final String utilisateur;
+  final DateTime edite;
+  final IdentiteImprimee identite;
+
+  String get titre => '${fiche.titreHaut} — ${fiche.titre}';
+
+  /// Les quatre lignes du cartouche pour la page [i] (0 = première) : « Page n sur N » vient du nombre RÉEL de pages.
+  List<String> cartouche(int i) => fiche.lignesCartouche(i + 1, pages.length);
+
+  /// Les deux lignes d'identité du pied, lues de l'IDENTITÉ de la clinique, jamais recopiées : dénomination, boîte postale, téléphones / IFU, e-mail.
+  List<String> get pied {
+    final tel = identite.telephones.isEmpty ? '' : 'TEL : ${identite.telephones.join(' / ')}';
+    return [
+      [identite.nom, identite.bp, tel].where((p) => p.trim().isNotEmpty).join(' - '),
+      [if (identite.ifu.isNotEmpty) 'IFU : ${identite.ifu}', if (identite.email.isNotEmpty) 'Email : ${identite.email}'].join(' - '),
+    ];
+  }
+
+  /// La ligne de traçabilité (utilisateur, date et heure, identifiant) : la mention normalisée de toute pièce éditée.
+  String get tracabilite => 'Document généré par $utilisateur le ${dateHeure(edite)} — Réf. document : $reference — ${EnteteTroisZones.depuis(identite).editeDepuis}';
+}
