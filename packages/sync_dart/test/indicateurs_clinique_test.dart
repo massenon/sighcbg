@@ -50,9 +50,10 @@ void main() {
 
   List<Recu> indic() => recus.where((r) => r.chemin == '/mere/indicateurs-clinique').toList();
 
-  test('par défaut l\'interrupteur est FERMÉ, l\'intervalle et la péremption ont leur défaut, et rien ne part', () async {
+  test('par défaut l\'interrupteur est OUVERT (Direction, 10/11/2026), l\'intervalle et la péremption ont leur défaut ; fermé, rien ne part', () async {
     final r = await m.pont.indicateurs.reglages();
-    expect(r['publier'], false);
+    expect(r['publier'], true);
+    await m.pont.indicateurs.regler({'publier': false});
     expect(r['intervalle_s'], ikIntervalleDefautSecondes);
     expect(r['jours_peremption'], ikJoursPeremptionDefaut);
     expect(await m.pont.indicateurs.publier(), {'publie': false, 'raison': 'interrupteur_ferme'});
@@ -140,7 +141,7 @@ void main() {
       await expectLater(m.pont.indicateurs.regler(mauvais), throwsA(isA<Err>().having((x) => x.statut, 'statut', 422)));
     }
     expect((await m.pont.indicateurs.reglages())['intervalle_s'], ikIntervalleDefautSecondes);
-    expect((await m.pont.indicateurs.reglages())['publier'], false);
+    expect((await m.pont.indicateurs.reglages())['publier'], ikPublierDefaut);
   });
 
   test('sans relais configuré, rien ne part même interrupteur ouvert', () async {

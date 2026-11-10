@@ -5,7 +5,7 @@
 /// signature protège le corps de toute altération en route) et le dépose à `POST /mere/indicateurs-clinique`.
 ///
 /// Trois réglages vivent EN BASE (table `meta` de la mère, avec leur défaut) et se posent aux Paramètres du poste : l'interrupteur « publier les indicateurs
-/// au relais » (FERMÉ par défaut tant que la Direction ne l'a pas ouvert : fermé, RIEN ne part), l'intervalle de publication, et le nombre de jours qui
+/// au relais » (OUVERT par défaut depuis la décision de la Direction du 10/11/2026, FERMABLE aux Paramètres : fermé, RIEN ne part ; sans relais configuré, rien ne part non plus), l'intervalle de publication, et le nombre de jours qui
 /// fait qu'un lot est « proche de la péremption ». Le dernier instantané réellement envoyé est conservé tel quel : la Direction voit CE QUI PART.
 library;
 
@@ -38,10 +38,10 @@ class PublicationIndicateurs {
   static String signer(String secret, List<int> corps) => c.Hmac(c.sha256, utf8.encode(secret)).convert(corps).toString();
 
   Future<Map<String, Object?>> reglages() async => {
-        'publier': await mere.base.metaInt(cleActif) == 1,
+        'publier': await mere.base.metaInt(cleActif, ikPublierDefaut ? 1 : 0) == 1,
         'intervalle_s': await mere.base.metaInt(cleIntervalle, ikIntervalleDefautSecondes),
         'jours_peremption': await mere.base.metaInt(cleJours, ikJoursPeremptionDefaut),
-        'defauts': {'publier': false, 'intervalle_s': ikIntervalleDefautSecondes, 'jours_peremption': ikJoursPeremptionDefaut},
+        'defauts': {'publier': ikPublierDefaut, 'intervalle_s': ikIntervalleDefautSecondes, 'jours_peremption': ikJoursPeremptionDefaut},
         'bornes': {'intervalle_min_s': ikIntervalleMinSecondes, 'intervalle_max_s': ikIntervalleMaxSecondes},
       };
 
@@ -110,7 +110,7 @@ class PublicationIndicateurs {
 
   /// Publie maintenant. Interrupteur fermé ou relais non configuré : RIEN ne part, et la réponse le dit.
   Future<Map<String, Object?>> publier() async {
-    if (await mere.base.metaInt(cleActif) != 1) return {'publie': false, 'raison': 'interrupteur_ferme'};
+    if (await mere.base.metaInt(cleActif, ikPublierDefaut ? 1 : 0) != 1) return {'publie': false, 'raison': 'interrupteur_ferme'};
     if (!mere.pont.actif) return {'publie': false, 'raison': 'relais_non_configure'};
     if (_enCours) return {'publie': false, 'raison': 'deja_en_cours'};
     _enCours = true;
@@ -141,7 +141,7 @@ class PublicationIndicateurs {
 
   /// Un tour de boucle (toutes les quelques secondes) : publie si l'interrupteur est ouvert ET que l'intervalle est écoulé.
   Future<void> tour() async {
-    if (await mere.base.metaInt(cleActif) != 1) return;
+    if (await mere.base.metaInt(cleActif, ikPublierDefaut ? 1 : 0) != 1) return;
     final iv = await mere.base.metaInt(cleIntervalle, ikIntervalleDefautSecondes);
     if (maintenantMs() - await mere.base.metaInt(cleTentative) < iv * 1000) return;
     await publier();

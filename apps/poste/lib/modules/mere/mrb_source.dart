@@ -148,7 +148,7 @@ class MrbIndicateursClinique {
     this.erreur,
   });
 
-  /// L'interrupteur : FERMÉ par défaut, rien ne part tant que la Direction ne l'a pas ouvert.
+  /// L'interrupteur : OUVERT par défaut (Direction, 10/11/2026), fermable aux Paramètres ; fermé, rien ne part.
   final bool publier;
   final int intervalleS;
   final int joursPeremption;

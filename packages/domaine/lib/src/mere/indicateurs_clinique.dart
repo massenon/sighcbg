@@ -16,6 +16,9 @@ const int ikVersionSchema = 1;
 const int ikMaxAppareils = 50;
 
 /// Réglages par défaut (graines : la valeur en vigueur vit en base, aux Paramètres du poste).
+/// Le défaut de l'interrupteur de publication : OUVERT (décision de la Direction du 10/11/2026), graine de la valeur en base ; la Direction le ferme aux Paramètres.
+const bool ikPublierDefaut = true;
+
 const int ikIntervalleDefautSecondes = 900;
 const int ikIntervalleMinSecondes = 60;
 const int ikIntervalleMaxSecondes = 86400;

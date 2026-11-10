@@ -367,7 +367,7 @@ class Pont {
     tour(() => mere.pair.tour(), 250);
     final copie = CopieMere(mere);
     tour(copie.tour, 500);
-    // Indicateurs agrégés non nominatifs (ADR-0007) : interrupteur FERMÉ par défaut ; le tour ne fait rien tant que la Direction ne l'a pas ouvert.
+    // Indicateurs agrégés non nominatifs (ADR-0007) : interrupteur OUVERT par défaut (10/11/2026), fermable ; le tour ne fait rien quand la Direction l'a fermé ou sans relais configuré.
     tour(indicateurs.tour, 5000);
     tour(() async {
       await mere.verrou.executer(() => base.poserMeta('relais_dernier_ok', _dernierOk));

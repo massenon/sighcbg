@@ -13,7 +13,7 @@ import 'mrb_source.dart';
 
 /// Carte « Indicateurs agrégés pour le tableau de bord en ligne » (Direction, 09/11/2026, ADR-0007), posée sur l'écran `mere-indicateurs`.
 ///
-/// Elle porte les TROIS réglages (interrupteur FERMÉ par défaut, intervalle, jours de péremption) enregistrés en base par le service de la mère avec leur
+/// Elle porte les TROIS réglages (interrupteur OUVERT par défaut, fermable, intervalle, jours de péremption) enregistrés en base par le service de la mère avec leur
 /// défaut, et le CONTENU EXACT du dernier instantané réellement envoyé : la Direction voit CE QUI PART, ni plus ni moins. Un instantané ne porte que des
 /// nombres, des dates, un code d'obligation, un numéro de version et des identifiants techniques d'appareils : jamais un nom, un code patient, un motif.
 /// Les commandes d'écriture n'existent que pour qui a le droit d'écrire sur l'écran ; les autres lisent.

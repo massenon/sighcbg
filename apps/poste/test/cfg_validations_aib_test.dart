@@ -36,16 +36,16 @@ void main() {
   setUpAll(chargerPolices);
   tearDown(ToastsSigh.viderPourTests);
 
-  group('droits : écriture DAF, comptable, administrateur ; lecture Direction, aide-comptable et assistant de direction ; rien ailleurs', () {
+  group('droits : écriture Direction, DAF, comptable, administrateur ; lecture aide-comptable et assistant de direction ; rien ailleurs', () {
     test('la matrice du poste', () {
-      for (final r in ['admin', 'da', 'comptable']) {
+      for (final r in ['admin', 'direction', 'da', 'comptable']) {
         expect(donneesNav.matrice.peutEditer(r, 'cfg-validations-aib'), isTrue, reason: r);
       }
-      for (final r in ['direction', 'aide_comptable', 'assistant_comptable']) {
+      for (final r in ['aide_comptable', 'assistant_comptable']) {
         expect(donneesNav.matrice.peutVoir(r, 'cfg-validations-aib'), isTrue, reason: r);
         expect(donneesNav.matrice.peutEditer(r, 'cfg-validations-aib'), isFalse, reason: r);
       }
-      // Le directeur médical n'a PAS accès (liste arrêtée par la Direction le 09/11/2026 : comptable, DAF, administrateur, aide-comptable, assistant de direction, et la Direction elle-même en lecture).
+      // Le directeur médical n'a PAS accès (liste arrêtée par la Direction le 09/11/2026 : comptable, DAF, administrateur, aide-comptable, assistant de direction, et la Direction elle-même, qui valide aussi : décision du 10/11/2026, réglable à la matrice des droits des Paramètres).
       for (final r in ['dm', 'caissier', 'medecin', 'reception', 'stock', 'laborantin', 'infirmier']) {
         expect(donneesNav.matrice.peutVoir(r, 'cfg-validations-aib'), isFalse, reason: r);
       }
