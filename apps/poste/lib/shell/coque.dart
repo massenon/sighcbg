@@ -154,7 +154,7 @@ class _CoquePosteState extends State<CoquePoste> {
   /// ne le laisse pas à l'écran — il retombe sur son accueil, et l'accès est journalisé (RG-12, RG-13). Un droit retiré SEULEMENT en écriture n'a pas besoin de ça : le
   /// contexte de l'écran change, ses commandes d'écriture disparaissent au même instant (lecture seule), sans rien perdre de ce qui est affiché.
   void _fermerSiDroitRetire() {
-    final id = _ecran;
+    final id = _ecran ?? (_courantAffiche.isEmpty ? null : _courantAffiche);
     if (id == null || id.startsWith('hub-') || _autonome != null) return;
     if (_nav.manifeste.ecran(id) == null || _nav.matrice.peutVoir(_role, id) || _fermeturePour(id) != null) return;
     widget.magasin?.journaliser('Accès retiré à chaud', 'M14', 'Ecran', id, null, {'role': _role});

@@ -789,13 +789,16 @@ class _EtatFacturation extends State<EcranFacturation> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           FormulaireSigh(controleur: _ajout),
           const SizedBox(height: 12),
-          Align(
-              alignment: Alignment.centerLeft,
-              child: BoutonSigh(
-                  libelle: 'Ajouter',
-                  icone: LucideIcons.plus,
-                  onPressed: _ajouter)),
-          const SizedBox(height: 12),
+          // Sans le droit d'écrire, l'écran de facturation se lit : ajouter une prestation à une pièce qu'on ne pourra pas émettre serait une promesse (RG-13).
+          if (c.droit.editer) ...[
+            Align(
+                alignment: Alignment.centerLeft,
+                child: BoutonSigh(
+                    libelle: 'Ajouter',
+                    icone: LucideIcons.plus,
+                    onPressed: _ajouter)),
+            const SizedBox(height: 12),
+          ],
           _tableauLignes(),
         ]),
       );
