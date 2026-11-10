@@ -81,8 +81,12 @@ void main() {
       expect(cfbCalendrierFiscal.length, cal.length);
       for (var i = 0; i < cal.length; i++) {
         final e = cfbCalendrierFiscal[i];
+        // ÉCART BAGUIDI DOCUMENTÉ (10/11/2026) : la maquette écrit CCIB-DECL au jour 28 pour contourner le plafond du moteur ; ici « fin du mois » s'écrit 31 et le
+        // moteur tombe au dernier jour RÉEL du mois (cfbDateReelle). Tout le reste de la ligne reste celui de la maquette.
+        final jourMaquette = e.code == 'CCIB-DECL' ? 31 : cal[i]['jour'];
+        if (e.code == 'CCIB-DECL') expect(cal[i]['jour'], 28, reason: 'le vecteur de la maquette porte toujours 28');
         expect([e.code, e.libelle, e.periodicite, e.jour, e.mois, e.part, e.declaration, e.note],
-            [cal[i]['code'], cal[i]['libelle'], cal[i]['periodicite'], cal[i]['jour'], cal[i]['mois'], cal[i]['part'], cal[i]['declaration'], cal[i]['note']],
+            [cal[i]['code'], cal[i]['libelle'], cal[i]['periodicite'], jourMaquette, cal[i]['mois'], cal[i]['part'], cal[i]['declaration'], cal[i]['note']],
             reason: '${cal[i]['code']}');
       }
       expect(cfbCcibTotal, obj(obj(c['montantsFiscaux'])['ccib'])['total']);
@@ -206,8 +210,12 @@ void main() {
         for (var i = 0; i < att.length; i++) {
           expect(tri[i].code, att[i][0], reason: 'rang $i');
           final date = jjmmaaaa(tri[i].echeance) + (tri[i].reporte ? ' reportée — jour ouvrable' : '');
-          expect(att[i][3], date, reason: tri[i].code);
-          expect(att[i][4], cfbLibelleDelai(tri[i].jours), reason: tri[i].code);
+          // ÉCART BAGUIDI : en 2028 (bissextile) « fin février » est le 29 ; la maquette, au jour 28, écrit le 28.
+          final vecteur = tri[i].code == 'CCIB-DECL' && '${att[i][3]}'.startsWith('28/02/2028') ? '${att[i][3]}'.replaceFirst('28/02/2028', '29/02/2028') : att[i][3];
+          expect(vecteur, date, reason: tri[i].code);
+          final decale = vecteur != att[i][3];
+          final delaiVecteur = decale ? '${(int.parse('${att[i][4]}'.replaceAll(RegExp(r'[^0-9]'), '')) + 1)} j' : att[i][4];
+          expect(delaiVecteur, cfbLibelleDelai(tri[i].jours), reason: tri[i].code);
         }
       });
     }

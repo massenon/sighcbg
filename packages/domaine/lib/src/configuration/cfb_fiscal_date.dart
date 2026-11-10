@@ -20,6 +20,7 @@ import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCodeParametresOrtb, 
 import '../referentiels/versions_datees.dart';
 import 'cfa_regles.dart' show CfaFiche;
 import 'cfb_donnees.dart';
+import 'cfb_regles.dart' show cfbDateReelle, cfbJourOuvrable;
 
 export '../referentiels/versions_datees.dart' show isoJour, veilleIso, versionEnVigueur;
 
@@ -522,6 +523,43 @@ List<CfaFiche> cfbObligationsALaDate(Iterable<CfaFiche> obligations, Iterable<Cf
   return out;
 }
 
+/// UNE VERSION À VENIR (Baguidi, 10/11/2026) : la fiche courante d'une obligation dont la date d'effet est POSTÉRIEURE à aujourd'hui, face à la version qui reste en
+/// vigueur jusque-là. La lecture « à la date du jour » ([cfbObligationsALaDate]) ne montre que celle-ci : sans cette vue, une modification datée du mois prochain
+/// disparaissait du tableau jusqu'au jour dit, et personne ne savait qu'elle était enregistrée.
+class CfbVersionAVenir {
+  const CfbVersionAVenir({required this.code, required this.dateEffet, required this.aVenir, required this.enVigueur});
+  final String code;
+
+  /// AAAA-MM-JJ : le premier jour de la nouvelle version.
+  final String dateEffet;
+
+  /// La fiche courante, dont les valeurs s'appliqueront à partir de [dateEffet].
+  final CfaFiche aVenir;
+
+  /// La version qui s'applique jusqu'à la veille de [dateEffet] (`null` : l'obligation est créée à cette date, rien ne la précède).
+  final CfaFiche? enVigueur;
+}
+
+/// Les versions à venir à [aujourdhui], par date d'effet puis par code.
+List<CfbVersionAVenir> cfbVersionsAVenir(Iterable<CfaFiche> obligations, Iterable<CfaFiche> historique, DateTime aujourdhui) {
+  final auj = isoJour(aujourdhui);
+  final hist = historique.where(_estObligation).toList();
+  final out = [
+    for (final o in obligations)
+      if (_estObligation(o) && o['dateEffet'] != null && isoJour(o['dateEffet']).compareTo(auj) > 0)
+        CfbVersionAVenir(
+            code: '${o['code']}',
+            dateEffet: isoJour(o['dateEffet']),
+            aVenir: o,
+            enVigueur: versionEnVigueur(o, hist.where((h) => h['code'] == o['code']), auj))
+  ];
+  out.sort((a, b) {
+    final c = a.dateEffet.compareTo(b.dateEffet);
+    return c != 0 ? c : a.code.compareTo(b.code);
+  });
+  return out;
+}
+
 /// `D.ortbALaDate(date)` : la fiche `ORTB-PARAMETRES` en vigueur (courante ou copie d'historique) ; sans fiche, la semence.
 CfaFiche cfbOrtbALaDate(Iterable<CfaFiche> obligations, Iterable<CfaFiche> historique, DateTime date) =>
     paiFicheOrtbALaDate(obligations, historique, isoJour(date)) ?? cfbSemenceOrtbParametres();
@@ -901,12 +939,11 @@ CfbEcritureObligation cfbModifierOrtb(Iterable<CfaFiche> obligations,
 /// La date du jeu de démonstration (`new Date(2026, 7, 16)`), horloge par défaut de `genEcheances`.
 final DateTime cfbDateJeu = DateTime(2026, 8, 16);
 
-DateTime _jourOuvrableSuivant(DateTime d) {
-  var x = d;
-  while (x.weekday == DateTime.saturday || x.weekday == DateTime.sunday) {
-    x = DateTime(x.year, x.month, x.day + 1);
-  }
-  return x;
+/// La période couverte par une obligation MENSUELLE échue le [echeance] : le mois qui précède (janvier : décembre de l'année d'avant). « Février 2027 » pour
+/// l'échéance du 10 mars 2027, « Décembre 2026 » pour celle du 10 janvier 2027 — deux libellés distincts, jamais deux « janvier ».
+String cfbPeriodeMensuelle(DateTime echeance) {
+  final p = DateTime(echeance.year, echeance.month - 1, 1);
+  return '${paiMois[p.month - 1]} ${p.year}';
 }
 
 /// `S.genEcheances(exercice, opts)` : pour CHAQUE mois de l'exercice, la version de chaque obligation EN VIGUEUR AU PREMIER DU MOIS fixe
@@ -914,7 +951,10 @@ DateTime _jourOuvrableSuivant(DateTime d) {
 /// porte `echeanceTheorique`, `reportee` (jour ouvrable suivant) et `versionObligation` (la date d'effet de la version qui l'a engendrée, `null`
 /// pour la version d'origine). [obligationsFixes] impose la liste (le semis la passe) ; sinon la version en vigueur se lit dans [obligations] et
 /// [historique]. [aujourdhui] décide ce qui est réputé réglé (passée de plus de 25 jours) ; [sansReglement] n'invente aucune quittance.
-/// Quirk conservé : une annuelle s'inscrit au `min(jour, 28)` (le 30 avril s'inscrit au 28), comme avant le chantier.
+/// CORRIGÉ À LA RACINE (Baguidi, 10/11/2026) : la maquette plafonnait le jour d'une annuelle à 28 (le 30 avril s'inscrivait au 28, le 31 janvier au 28) et
+/// laissait une mensuelle au jour 31 déborder sur le mois suivant. Le jour tombe désormais au DERNIER JOUR RÉEL du mois ([cfbDateReelle]), le report au jour
+/// ouvrable suivant venant ensuite (jamais en arrière). La période d'une mensuelle est le MOIS PRÉCÉDENT l'échéance : celle de janvier est décembre de
+/// l'exercice d'avant, et non plus « janvier » comme celle de février.
 List<CfaFiche> cfbGenEcheances(int exercice,
     {Iterable<CfaFiche> obligations = const [],
     Iterable<CfaFiche> historique = const [],
@@ -932,9 +972,9 @@ List<CfaFiche> cfbGenEcheances(int exercice,
       DateTime? d;
       final jour = nombreOuZero(o['jour']).toInt();
       if (o['periodicite'] == 'mensuelle') {
-        d = DateTime(exercice, m + 1, jour);
+        d = cfbDateReelle(exercice, m + 1, jour);
       } else if (o['mois'] != null && nombreOuZero(o['mois']).toInt() == m) {
-        d = DateTime(exercice, m + 1, jour < 28 ? jour : 28);
+        d = cfbDateReelle(exercice, m + 1, jour);
       }
       if (d == null) continue;
       final code = '${o['code']}';
@@ -950,7 +990,7 @@ List<CfaFiche> cfbGenEcheances(int exercice,
   for (final code in ordre) {
     for (final (o, d) in parCode[code]!) {
       n++;
-      final echue = _jourOuvrableSuivant(d);
+      final echue = cfbJourOuvrable(d);
       final passee = echue.isBefore(auj0);
       final jours = arrondiJs(auj0.difference(echue).inMilliseconds / 86400000).toInt();
       final paye = !sansReglement && passee && jours > 25;
@@ -966,7 +1006,7 @@ List<CfaFiche> cfbGenEcheances(int exercice,
         'declaration': o['declaration'],
         'note': o['note'],
         'exercice': exercice,
-        'periode': mensuelle ? '${paiMois[(d.month - 2) < 0 ? 0 : d.month - 2]} $exercice' : '$exercice',
+        'periode': mensuelle ? cfbPeriodeMensuelle(d) : '$exercice',
         'echeance': isoJour(echue),
         'echeanceTheorique': isoJour(d),
         'reportee': isoJour(echue) != isoJour(d),

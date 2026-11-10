@@ -105,7 +105,8 @@ class CfbObligation {
   final String? declaration;
 }
 
-/// `D.CALENDRIER_FISCAL`, dans l'ordre de la maquette.
+/// `D.CALENDRIER_FISCAL`, dans l'ordre de la maquette. Baguidi : CCIB-DECL au jour 31 (« fin du mois » : le dernier jour RÉEL de février, 28 ou 29), là où la maquette
+/// écrivait 28 pour contourner le plafond du moteur, corrigé à la racine ([cfbDateReelle]).
 const cfbCalendrierFiscal = <CfbObligation>[
   CfbObligation('ITS', 'Impôt sur les traitements salariaux', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 du mois suivant le mois d’exercice. Reporté au jour ouvrable suivant si l’échéance tombe un week-end.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('AIB', 'Acompte sur impôt assis sur les bénéfices', 'mensuelle', 10, null, 100, 'Déclaration mensuelle avant paiement', 'Le 10 de chaque mois, après la déclaration préalable.', 'Précisions du comptable — réunion du 19/08/2026'),
@@ -122,7 +123,7 @@ const cfbCalendrierFiscal = <CfbObligation>[
   CfbObligation('PATENTE-DECL', 'Patente — déclaration prévisionnelle', 'annuelle', 31, 0, null, null, 'Date limite de la déclaration prévisionnelle de la patente.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('PATENTE-1', 'Patente — 1er acompte', 'annuelle', 10, 1, 50, 'Déclaration prévisionnelle au 31 janvier', 'Première moitié. La patente se paie une fois par an, avec possibilité de régler en deux tranches.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('PATENTE-2', 'Patente — solde', 'annuelle', 30, 3, 50, null, 'Seconde moitié, au 30 avril.', 'Précisions du comptable — réunion du 19/08/2026'),
-  CfbObligation('CCIB-DECL', 'CCIB — déclaration prévisionnelle', 'annuelle', 28, 1, null, null, 'La déclaration prévisionnelle s’effectue à la FIN DU MOIS, avant le premier acompte — confirmé par la Direction le 25/08/2026.', 'Précisions du comptable — réunion du 19/08/2026'),
+  CfbObligation('CCIB-DECL', 'CCIB — déclaration prévisionnelle', 'annuelle', 31, 1, null, null, 'La déclaration prévisionnelle s’effectue à la FIN DU MOIS, avant le premier acompte — confirmé par la Direction le 25/08/2026.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('CCIB-1', 'CCIB — 1re tranche', 'annuelle', 10, 2, 50, 'Déclaration prévisionnelle en fin de mois', 'Contribution annuelle de 300 000 FCFA, réglée en deux tranches égales de 150 000 FCFA. Premier acompte le 10 mars (50 %) — confirmé par la Direction le 25/08/2026.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('CCIB-2', 'CCIB — 2e tranche', 'annuelle', 10, 5, 50, null, 'Seconde tranche de 150 000 FCFA, le 10 juin (50 %) — confirmé par la Direction le 25/08/2026.', 'Précisions du comptable — réunion du 19/08/2026'),
   CfbObligation('TVM', 'Taxe sur véhicules à moteur', 'annuelle', 30, 3, 100, null, 'Une fois par an, au plus tard le 30 avril.', 'Précisions du comptable — réunion du 19/08/2026'),
@@ -137,6 +138,7 @@ const cfbCalendrierFiscal = <CfbObligation>[
       nonArretee: true,
       motifNonArret: 'Le 15 vient de guides commerciaux ; la CNSS écrit « dans les quinze jours qui suivent la période ». À confirmer auprès de la CNSS avant d’arrêter la date.'),
 ];
+/// La GRAINE du paramètre `fiscal.ccibMontant` (Baguidi, 10/11/2026) : aucun écran ne la lit directement, ils lisent la valeur en vigueur aux Paramètres.
 const cfbCcibTotal = 300000;
 
 /// Numérotation des documents (littéral de l'écran) : type, préfixe, format, séquence.

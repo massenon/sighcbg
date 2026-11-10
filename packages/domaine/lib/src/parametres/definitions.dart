@@ -2,15 +2,18 @@
 //
 // C'est une DONNÉE, pas du code de gestion : le poste en sème la version 0 dans la collection `parametres` au premier démarrage (même fiche sur tous les postes,
 // voir [Parametres.semer]) ; la valeur en vigueur se LIT ensuite dans la base, par [Parametres.resoudre], jamais ici. Chaque lot déclare ses paramètres dans cette
-// liste, avec la source de son défaut. Aucun taux, aucune date, aucun numéro n'est inventé : les six entrées ci-dessous portent les défauts que la Direction a
-// arrêtés le 09/11/2026 (`docs/decisions/DECISIONS-A-VALIDER.md`, section D ; `docs/plans/PLAN-decisions-2026-11-09.md`, colonne « Défaut »).
+// liste, avec la source de son défaut. Aucun taux, aucune date, aucun numéro n'est inventé. BAGUIDI : les six défauts ci-dessous viennent de la réplique d'origine
+// (décisions de SA Direction) ; la Direction de Baguidi n'en a arrêté aucun, ils s'affichent donc comme valeurs d'attente à confirmer, et se règlent aux Paramètres
+// par une version datée. Celui de l'AIB ne dit rien de la décision D4 de Baguidi (« les deux, selon la situation de l'émetteur », DECISIONS-2026-11-09) : il n'est
+// pas branché et la décision se porte par le barème des situations, pas par ce réglage.
 //
 // `branche: false` : le réglage s'enregistre et se synchronise, mais l'écran qu'il commande ne le lit pas encore (lot à venir) ; l'écran des paramètres le dit.
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
 import 'parametres.dart';
 
-const String _decisions = 'Décision de la Direction du 09/11/2026 (DECISIONS-A-VALIDER, section D)';
+const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
+const String _decisions = 'Valeur d\'attente reprise de la réplique d\'origine : à confirmer par la Direction de Baguidi';
 
 const List<DefinitionParametre> definitionsParametres = [
   DefinitionParametre(
@@ -34,7 +37,7 @@ const List<DefinitionParametre> definitionsParametres = [
     libellesChoix: {'clinique': 'La clinique', 'acheteur': 'L\'acheteur'},
     defaut: 'clinique',
     libelle: 'Qui supporte le prélèvement de l\'AIB',
-    aide: 'La clinique ne subit pas d\'AIB : par défaut elle supporte le prélèvement. Texte réglementaire à obtenir : tout reste « proposition à valider ».',
+    aide: 'Décision D4 de Baguidi : les deux, selon la situation de l\'émetteur ; communiqué de la DGI et comptes confirmés par l\'expert-comptable à obtenir. Réglage non branché : aucune écriture d\'AIB subi n\'en dépend.',
     source: _decisions,
     branche: false,
     appliquePar: 'Lot L2 (AIB)',
@@ -85,6 +88,36 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: false,
     appliquePar: 'Lot L8 (badge et pointage)',
   ),
+
+  // --- Calendrier fiscal (Baguidi, 10/11/2026) : les seuils et le montant qui vivaient en dur dans les moteurs. Ils sont BRANCHÉS : le suivi des échéances et
+  // la configuration fiscale lisent la valeur en vigueur AUJOURD'HUI (versionnée par date, jamais réécrite). Le défaut est celui de la graine du code.
+  DefinitionParametre(
+    cle: 'fiscal.delaiAPayerJours',
+    famille: 'fiscal',
+    type: TypeParametre.entier,
+    defaut: 10,
+    libelle: 'Échéance « à payer » : délai d\'alerte (jours)',
+    aide: 'Une échéance non réglée devient « à payer » quand elle tombe dans ce délai ; l\'alerte sonore de l\'ouverture suit le même délai.',
+    source: _reprise,
+  ),
+  DefinitionParametre(
+    cle: 'fiscal.delaiDeclarationJours',
+    famille: 'fiscal',
+    type: TypeParametre.entier,
+    defaut: 30,
+    libelle: 'Échéance « déclaration attendue » : délai (jours)',
+    aide: 'Quand une déclaration précède le paiement, l\'échéance passe « déclaration attendue » dans ce délai. Doit rester supérieur au délai « à payer ».',
+    source: _reprise,
+  ),
+  DefinitionParametre(
+    cle: 'fiscal.ccibMontant',
+    famille: 'fiscal',
+    type: TypeParametre.entier,
+    defaut: 300000,
+    libelle: 'CCIB : contribution annuelle (FCFA)',
+    aide: 'Réglée en deux tranches égales (mars et juin). Montant à confirmer par le cabinet comptable ; il s\'affiche aux indicateurs de la fiscalité et à la configuration fiscale.',
+    source: _reprise,
+  ),
 ];
 
 /// Le libellé d'une famille de paramètres, pour les onglets de l'écran des paramètres. Une famille absente de la table s'affiche sous son identifiant.
@@ -93,6 +126,7 @@ const Map<String, String> libellesFamillesParametres = {
   'bareme_aib': 'AIB',
   'planning': 'Planning et présences',
   'paie': 'Paie',
+  'fiscal': 'Calendrier fiscal',
 };
 
 /// La définition d'une clé, ou `null`.

@@ -131,6 +131,17 @@ DateTime cfbJourOuvrable(DateTime d) {
   return x;
 }
 
+/// Le dernier jour RÉEL d'un mois (28 ou 29 en février, 30 ou 31 ailleurs). [mois] va de 1 à 12 ; 13 est janvier de l'année suivante, 0 décembre de la précédente.
+int cfbDernierJour(int annee, int mois) => DateTime(annee, mois + 1, 0).day;
+
+/// La date d'une obligation de jour [jour] dans le mois [mois] (1 à 12) de [annee] : AU PLUS le dernier jour réel du mois. Un jour 31 vaut « fin de mois » : le
+/// 28 ou le 29 février, le 30 avril ; il ne DÉBORDE jamais sur le mois suivant (le constructeur de date, lui, rend le 3 mars pour un 31 février).
+DateTime cfbDateReelle(int annee, int mois, int jour) {
+  final premier = DateTime(annee, mois, 1);
+  final dernier = cfbDernierJour(premier.year, premier.month);
+  return DateTime(premier.year, premier.month, jour < 1 ? 1 : (jour > dernier ? dernier : jour));
+}
+
 String cfbIso(DateTime d) => '${d.year.toString().padLeft(4, '0')}-${_p2(d.month)}-${_p2(d.day)}';
 
 /// Une obligation avec sa PROCHAINE échéance calculée à une date.
@@ -153,15 +164,15 @@ CfbEcheance cfbProchaineEcheance(CfbObligation e, DateTime auj) {
   DateTime d;
   if (mensuelle) {
     final m = auj.month - 1;
-    d = DateTime(an, m + 1, e.jour);
-    if (d.isBefore(auj)) d = DateTime(an, m + 2, e.jour);
+    d = cfbDateReelle(an, m + 1, e.jour);
+    if (d.isBefore(auj)) d = cfbDateReelle(an, m + 2, e.jour);
   } else {
-    d = DateTime(an, e.mois! + 1, e.jour);
-    if (d.isBefore(auj)) d = DateTime(an + 1, e.mois! + 1, e.jour);
+    d = cfbDateReelle(an, e.mois! + 1, e.jour);
+    if (d.isBefore(auj)) d = cfbDateReelle(an + 1, e.mois! + 1, e.jour);
   }
   final ouvrable = cfbJourOuvrable(d);
-  final nominal = DateTime(ouvrable.year, mensuelle ? ouvrable.month : e.mois! + 1, e.jour);
-  final reporte = cfbIso(ouvrable) != cfbIso(nominal);
+  // Reportée : le jour ouvrable n'est pas la date NOMINALE (celle du calendrier, au dernier jour réel du mois si le jour le dépasse).
+  final reporte = cfbIso(ouvrable) != cfbIso(d);
   return CfbEcheance(e, ouvrable, arrondiJs(ouvrable.difference(auj).inMilliseconds / 86400000).toInt(), reporte);
 }
 
@@ -172,13 +183,14 @@ List<CfbEcheance> cfbEcheances(DateTime auj, {Iterable<CfbObligation> obligation
 /// Celles qui tombent dans les trente jours.
 List<CfbEcheance> cfbEcheancesProches(List<CfbEcheance> l) => [for (final e in l) if (e.jours >= 0 && e.jours <= 30) e];
 
-List<CfaKpi> cfbKpisFiscalite(List<CfbEcheance> l) {
+/// [ccib] : la contribution annuelle EN VIGUEUR (paramètre `fiscal.ccibMontant`, versionné par date) ; [cfbCcibTotal] n'est que la graine du paramètre.
+List<CfaKpi> cfbKpisFiscalite(List<CfbEcheance> l, {int ccib = cfbCcibTotal}) {
   final proches = cfbEcheancesProches(l);
   return [
     CfaKpi('Échéances suivies', nombre(l.length), 'landmark', 'navy'),
     CfaKpi('Mensuelles', nombre(l.where((e) => e.obligation.periodicite == 'mensuelle').length), 'calendar-days', 'info', 'ITS, AIB, VPS, CNSS'),
     CfaKpi('Dans les 30 jours', nombre(proches.length), 'alarm-clock', proches.isNotEmpty ? 'warning' : 'success'),
-    CfaKpi('CCIB annuelle', money(cfbCcibTotal), 'coins', 'neutral', 'Deux tranches de 150 000 F'),
+    CfaKpi('CCIB annuelle', money(ccib), 'coins', 'neutral', ccib == cfbCcibTotal ? 'Deux tranches de 150 000 F' : 'Deux tranches de ${nombre(ccib ~/ 2)} F'),
   ];
 }
 

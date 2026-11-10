@@ -17,6 +17,32 @@ M obj(Object? o) => (o as Map).cast<String, Object?>();
 /// L'horloge du script : 16/08/2026 10 h (UTC dans le navigateur du banc).
 final maintenant = DateTime.utc(2026, 8, 16, 10);
 final aujourdhui = DateTime(2026, 8, 16);
+
+/// LES DEUX CORRECTIONS BAGUIDI (10/11/2026) appliquées à une ligne du vecteur de la maquette, avec une arithmétique de date INDÉPENDANTE du moteur :
+///  1. le jour d'une obligation tombe au dernier jour RÉEL du mois (le vecteur le plafonne à 28 : « -28 » pour un 30 avril, un 31 janvier, un 30 mars) ;
+///  2. la période d'une mensuelle est le mois qui PRÉCÈDE l'échéance (le vecteur écrit « janvier » pour janvier ET pour février).
+Map<String, Object?> corrigeBaguidi(Map<String, Object?> a, int exercice) {
+  const mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  final theo = DateTime.parse('${a['echeanceTheorique']}');
+  final seed = cfbCalendrierFiscal.firstWhere((o) => o.code == a['code']);
+  // Une version datée (CCIB-2 au 15/06) change le jour : on ne corrige que ce que le plafond à 28 a pu changer, c'est-à-dire un jour demandé supérieur à 28.
+  final jourDemande = a['versionObligation'] == null ? seed.jour : theo.day;
+  if (jourDemande > 28 && theo.day == 28) {
+    final dernier = DateTime(theo.year, theo.month + 1, 0).day;
+    var d = DateTime(theo.year, theo.month, jourDemande < dernier ? jourDemande : dernier);
+    a['echeanceTheorique'] = isoJour(d);
+    while (d.weekday == DateTime.saturday || d.weekday == DateTime.sunday) {
+      d = DateTime(d.year, d.month, d.day + 1);
+    }
+    a['echeance'] = isoJour(d);
+    a['reportee'] = a['echeance'] != a['echeanceTheorique'];
+  }
+  if (seed.periodicite == 'mensuelle') {
+    final p = DateTime(theo.year, theo.month - 1, 1);
+    a['periode'] = '${mois[p.month - 1]} ${p.year}';
+  }
+  return a;
+}
 const acteur = 'BICHIASI Cezoune Sichovian';
 DateTime d(String iso) => DateTime.parse(iso);
 
@@ -250,7 +276,7 @@ void main() {
 
     test('2026 engendré depuis la version en vigueur de chaque mois : 75 échéances, CCIB-2 au 15/06 avec sa version, dates, reports, périodes et règlements = maquette', () {
       final l = cfbGenEcheances(2026, obligations: obligations, historique: historique, aujourdhui: aujourdhui);
-      final att = liste(ve['engendrees2026']);
+      final att = [for (final a in liste(ve['engendrees2026'])) corrigeBaguidi(Map<String, Object?>.from(a), 2026)];
       expect(l.length, att.length);
       for (var i = 0; i < att.length; i++) {
         memes({
