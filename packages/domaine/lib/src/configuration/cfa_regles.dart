@@ -144,6 +144,20 @@ CfaFiche cfaFichePoste(Map<String, Object?> saisie) {
   final v = {...saisie};
   if (!cfaVrai(v['parentId'])) v['parentId'] = null;
   if (v.containsKey('effectif')) v['effectif'] = cfaNombre(v['effectif']);
+  // Le GRAPHE de l'organigramme imprimé : les champs numériques d'une saisie sont des nombres, un champ vidé disparaît (le poste est alors placé
+  // automatiquement par `organigrammeScene`).
+  for (final k in const ['niveau', 'x', 'y', 'largeur', 'hauteur', 'barre', 'coudeX', 'coudeY', 'ordreLegende']) {
+    if (!v.containsKey(k)) continue;
+    final n = cfaNombre(v[k]);
+    if (n == null) {
+      v.remove(k);
+    } else {
+      v[k] = n;
+    }
+  }
+  for (final k in const ['code', 'codeLegende', 'lien']) {
+    if (v.containsKey(k) && !cfaVrai(v[k])) v.remove(k);
+  }
   return v;
 }
 
