@@ -126,7 +126,7 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
                     : Column(children: [
                         for (final (i, x) in familles.indexed) ...[
                           if (i > 0) const SizedBox(height: 8),
-                          _famille(c, x, ouvrable(x.ecran)),
+                          _famille(c, x, ouvrable(ecranDeFamille(x.ecran))),
                         ]
                       ])),
             if (!restreint) ...[
@@ -191,7 +191,7 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
               icone: LucideIcons.arrowRight,
               taille: TailleBouton.sm,
               variante: VarianteBouton.secondaire,
-              onPressed: () => c.aller(x.ecran)),
+              onPressed: () => c.aller(ecranDeFamille(x.ecran))),
         ],
       ]));
 
@@ -281,6 +281,11 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
         ],
       ]));
 }
+
+/// L'écran OÙ SE VALIDE une famille. Le registre du domaine nomme `cfg-bareme-aib` pour le barème de l'AIB (vecteur de la réplique d'origine, qui a un écran de ce
+/// nom) ; Baguidi tient ce barème, ses situations et ses décisions à `m12-aib` et `cfg-validations-aib` : le lien du centre des validations y mène, jamais à une
+/// adresse qui n'existe pas ici.
+String ecranDeFamille(String ecran) => ecran == 'cfg-bareme-aib' ? 'm12-aib' : ecran;
 
 class _LigneConfiguration {
   const _LigneConfiguration(this.nom, this.libelle, this.attente, this.ecran, this.motif);

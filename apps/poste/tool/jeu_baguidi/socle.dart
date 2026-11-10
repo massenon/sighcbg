@@ -387,6 +387,8 @@ void _calendrierFiscal(Contexte ctx) {
     } else {
       fiches.add({
         ...o,
+        // « Fin du mois » s'écrit 31 (le moteur tombe au dernier jour RÉEL du mois) : la donnée héritée portait 28, contournement du plafond de l'ancien moteur.
+        if (o['code'] == 'CCIB-DECL') 'jour': d.cfbCalendrierFiscal.firstWhere((x) => x.code == 'CCIB-DECL').jour,
         'aRevoir': true,
         'noteRegime': 'Échéance héritée du calendrier d’origine : le régime d’imposition de la Clinique Baguidi est à revoir par le comptable (décision du 06/11/2026).',
         'source': 'Calendrier hérité du logiciel d’origine ; régime d’imposition à revoir par le comptable de la clinique',

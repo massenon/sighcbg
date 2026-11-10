@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -48,7 +49,34 @@ class EcranEcheances extends StatefulWidget with EcranMaquette {
             icone: LucideIcons.bookOpenCheck,
             variante: VarianteBouton.secondaire,
             onPressed: () => ContexteEcran.of(context).aller('cfg-comptabilite')),
+        // L'en-tête n'est pas reconstruit quand la collection change : le bouton écoute lui-même, pour disparaître dès que l'exercice est généré.
+        ListenableBuilder(
+            listenable: ContexteEcran.of(context).magasin.collection('echeancesFiscales'), builder: (ctx, _) => _boutonExerciceSuivant(ctx)),
       ];
+
+  /// « Générer l'exercice N+1 » : le calendrier de l'année suivante, à la demande, depuis les versions en vigueur au premier de chaque mois (celles à venir
+  /// comprises). ABSENT sans le droit d'écrire, sur un fileul, et quand l'exercice existe déjà (il se régénère alors par obligation, depuis « Obligations & règles »).
+  Widget _boutonExerciceSuivant(BuildContext context) {
+    final c = ContexteEcran.of(context);
+    final cf = ConfigurationFiscalePoste(c);
+    final suivant = c.aujourdhui.year + 1;
+    final existe = c.magasin.collection('echeancesFiscales').toutes.any((e) => nombreOuZero(e['exercice']).toInt() == suivant);
+    if (!c.droit.editer || cf.fileul || existe) return const SizedBox.shrink();
+    return BoutonSigh(
+        key: const Key('cpc:generer-exercice'),
+        libelle: 'Générer l’exercice $suivant',
+        icone: LucideIcons.calendarPlus,
+        variante: VarianteBouton.secondaire,
+        onPressed: () {
+          final r = cf.genererExercice(suivant);
+          if (r.refus != null) {
+            ToastsSigh.afficher(context, r.refus!.motif, type: TypeToast.erreur, detail: r.refus!.geste);
+          } else {
+            ToastsSigh.afficher(context, 'Exercice $suivant généré : ${nombre(r.creees)} échéances.',
+                type: TypeToast.succes, detail: 'Depuis les versions en vigueur au premier de chaque mois ; aucune quittance inventée.');
+          }
+        });
+  }
 
   @override
   State<EcranEcheances> createState() => _EtatEcheances();
@@ -75,7 +103,7 @@ class _EtatEcheances extends State<EcranEcheances> {
     // « Le comptable ne consulte pas l'écran tous les jours ; c'est l'écran qui doit l'avertir » : l'alerte part 800 ms après l'ouverture.
     _alerte = Timer(const Duration(milliseconds: 800), () {
       if (!mounted) return;
-      final a = cpcAlerteOuverture(_lignes(c));
+      final a = cpcAlerteOuverture(_lignes(c), seuils: seuilsEcheance(c.magasin, c.aujourdhui));
       if (a == null) return;
       ToastsSigh.afficher(context, a.message,
           type: a.type == 'error' ? TypeToast.erreur : TypeToast.attention, detail: a.detail, duree: const Duration(seconds: 9));
@@ -92,7 +120,10 @@ class _EtatEcheances extends State<EcranEcheances> {
   /// l'obligation VIVANTE, jamais sur l'échéance : l'arrêt le retire sans régénérer la moindre échéance.
   List<Fiche> _lignes(ContexteEcran c) {
     final codes = ConfigurationFiscalePoste(c).codesNonArretes();
-    return [for (final l in cpcLignesEcheances(c.magasin.collection('echeancesFiscales').actives, c.aujourdhui)) {...l, if (codes.contains('${l['code']}')) 'nonArretee': true}];
+    return [
+      for (final l in cpcLignesEcheances(c.magasin.collection('echeancesFiscales').actives, c.aujourdhui, seuils: seuilsEcheance(c.magasin, c.aujourdhui)))
+        {...l, if (codes.contains('${l['code']}')) 'nonArretee': true}
+    ];
   }
 
   TonSigh _ton(String t) => switch (t) {
@@ -305,6 +336,7 @@ class _EtatEcheances extends State<EcranEcheances> {
       listenable: Listenable.merge([c.magasin.collection('echeancesFiscales'), c.magasin.collection('obligationsFiscales')]),
       builder: (context, _) {
         final rows = _lignes(c);
+        final seuils = seuilsEcheance(c.magasin, c.aujourdhui);
         int nb(String s) => rows.where((e) => e['etat'] == s).length;
         final retard = nb('en_retard'), aPayer = nb('a_payer');
         final familles = <String>{for (final e in rows) '${e['famille']}'}.toList()..sort();
@@ -316,7 +348,7 @@ class _EtatEcheances extends State<EcranEcheances> {
                 icone: LucideIcons.alarmClock,
                 ton: retard > 0 ? TonSigh.danger : TonSigh.succes,
                 indice: retard > 0 ? 'Risque de pénalité' : 'Aucun retard'),
-            KpiSigh(libelle: 'À payer sous 10 jours', valeur: nombre(aPayer), icone: LucideIcons.coins, ton: aPayer > 0 ? TonSigh.attention : TonSigh.succes),
+            KpiSigh(libelle: 'À payer sous ${seuils.aPayerJours} jours', valeur: nombre(aPayer), icone: LucideIcons.coins, ton: aPayer > 0 ? TonSigh.attention : TonSigh.succes),
             KpiSigh(libelle: 'Déclarations attendues', valeur: nombre(nb('declaration')), icone: LucideIcons.fileSignature, ton: TonSigh.info),
             KpiSigh(
                 libelle: 'Réglées sur l’exercice',
@@ -326,7 +358,7 @@ class _EtatEcheances extends State<EcranEcheances> {
                 indice: '${nombre(rows.length)} échéances au total'),
           ]),
           const SizedBox(height: 16),
-          for (final a in cpcBarreEcheances(rows)) _alerteCarte(context, c, a),
+          for (final a in cpcBarreEcheances(rows, seuils: seuils)) _alerteCarte(context, c, a),
           const SizedBox(height: 8),
           OngletsSigh(onglets: [
             OngletDef(id: 'liste', libelle: 'Liste', compte: rows.length, construire: (_) => _tableau(c, rows, familles)),
@@ -355,6 +387,11 @@ class _EtatEcheances extends State<EcranEcheances> {
                   libelle: 'État',
                   options: [for (final s in cpcEtatsEcheance) OptionChamp(s.$1, s.$2)],
                   correspond: (l, v) => l['etat'] == v),
+              FiltreTableau(
+                  nom: 'exercice',
+                  libelle: 'Exercice',
+                  options: [for (final x in (<String>{for (final e in rows) '${e['exercice']}'}.toList()..sort())) OptionChamp(x)],
+                  correspond: (l, v) => '${l['exercice']}' == v),
               FiltreTableau(
                   nom: 'famille',
                   libelle: 'Obligation',

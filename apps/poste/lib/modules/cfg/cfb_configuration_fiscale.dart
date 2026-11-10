@@ -201,6 +201,25 @@ class ConfigurationFiscalePoste {
     return r;
   }
 
+  /// Les versions d'OBLIGATION à venir (date d'effet postérieure à aujourd'hui) : la lecture du jour montre l'ancienne version, celle-ci montre ce qui est déjà enregistré.
+  List<CfbVersionAVenir> obligationsAVenir() => cfbVersionsAVenir(obligations.actives, historique.actives, maintenant);
+
+  /// L'EXERCICE SUIVANT, engendré à la demande depuis les versions en vigueur au premier de chaque mois (celles à venir comprises), sans quittance inventée. Refusé sur
+  /// un fileul (la configuration est tenue par la mère) et quand l'exercice existe déjà ; rend le nombre d'échéances créées, ou le refus nommé.
+  ({int creees, CfbRefus? refus}) genererExercice(int exercice) {
+    final f = cfbControleFileul(fileul);
+    if (f != null) return (creees: 0, refus: f);
+    if (echeances.toutes.any((e) => nombreOuZero(e['exercice']).toInt() == exercice)) {
+      return (creees: 0, refus: CfbRefus('EXERCICE_DEJA_GENERE', 'Les échéances de l’exercice $exercice existent déjà.', 'Une obligation modifiée à une date d’effet régénère ses échéances non payées depuis « Obligations & règles ».'));
+    }
+    final lignes = cfbGenEcheances(exercice, obligations: obligations.toutes, historique: historique.toutes, aujourdhui: maintenant, sansReglement: true);
+    for (final f in lignes) {
+      echeances.ajouterSansJournal({...f, 'id': 'ECH$exercice-${f['id']}'});
+    }
+    m.journaliser('Exercice généré', 'M12', 'echeancesFiscales', '$exercice', {}, {'exercice': exercice, 'echeances': lignes.length});
+    return (creees: lignes.length, refus: null);
+  }
+
   /// `amorcerEcheances()` de M12 : un exercice sans échéance les engendre depuis la version EN VIGUEUR (sans quittance inventée). À appeler avant le rendu.
   int amorcerEcheances(int exercice) {
     if (echeances.toutes.any((e) => nombreOuZero(e['exercice']).toInt() == exercice)) return 0;
@@ -259,6 +278,23 @@ Widget? cfbNoteVersionsAVenir(ConfigurationFiscalePoste cf) {
       '${futures.map((v) => 'version ${v['version']} à partir du ${dateFR(DateTime.parse(isoJour(v['debut'])))}${v['motif'] != null ? ' (${v['motif']})' : ''}').join(' ; ')}. '
       'Jusque-là, les pièces portent la version en force aujourd’hui.',
       key: const Key('cfb:versions-a-venir'),
+      ton: TonSigh.info,
+      icone: LucideIcons.calendarClock);
+}
+
+/// Les versions d'OBLIGATION à venir, en une note ; `null` s'il n'y en a pas. Sans elle, une modification datée du mois prochain disparaissait du tableau
+/// jusqu'au jour dit.
+Widget? cfbNoteObligationsAVenir(ConfigurationFiscalePoste cf) {
+  final futures = cf.obligationsAVenir();
+  if (futures.isEmpty) return null;
+  String echeance(Map<String, Object?> o) => o['periodicite'] == 'mensuelle'
+      ? 'le ${o['jour']} du mois suivant'
+      : 'le ${o['jour']} ${paiMois[nombreOuZero(o['mois']).toInt()]}';
+  return NoteSigh(
+      '${nombre(futures.length)} version(s) d’obligation à venir : '
+      '${futures.map((v) => '${v.code} ${echeance(v.aVenir)} à partir du ${dateFR(DateTime.parse(v.dateEffet))}${v.enVigueur == null ? ' (nouvelle obligation)' : ' (remplace ${echeance(v.enVigueur!)})'}').join(' ; ')}. '
+      'Jusque-là, le calendrier et les échéances suivent la version en vigueur aujourd’hui.',
+      key: const Key('cfb:obligations-a-venir'),
       ton: TonSigh.info,
       icone: LucideIcons.calendarClock);
 }

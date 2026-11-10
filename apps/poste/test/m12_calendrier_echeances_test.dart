@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
@@ -58,5 +60,62 @@ void main() {
     expect(find.textContaining('le 10 du mois suivant'), findsWidgets);
     expect(find.text('Déclaration unique (ITS, VPS, déclaration CNSS)'), findsWidgets);
     expect(find.text('CNSS, versement des cotisations'), findsWidgets);
+  });
+
+  // --- Calendrier fiscal corrigé et paramétré (Baguidi, 10/11/2026) ------------------------------------------------------------------------------------
+
+  casM14('l\'exercice suivant se génère à la demande depuis les versions en vigueur : le bouton disparaît ensuite, les dates tombent au dernier jour réel du mois', (t) async {
+    final m = magasinLivre();
+    final suivant = m.collection('echeancesFiscales').toutes.map((e) => int.parse('${e['exercice']}')).reduce((a, b) => a > b ? a : b) + 1;
+    expect(m.collection('echeancesFiscales').toutes.any((e) => e['exercice'] == suivant), isFalse);
+    await ouvrirM14(t, m, 'm12-echeances');
+    final bouton = find.byKey(const Key('cpc:generer-exercice'));
+    expect(bouton, findsOneWidget);
+    await toucherM14(t, bouton);
+    final nouvelles = m.collection('echeancesFiscales').toutes.where((e) => e['exercice'] == suivant).toList();
+    expect(nouvelles.length, greaterThan(60));
+    expect(nouvelles.every((e) => e['paye'] == false), isTrue, reason: 'aucune quittance inventée');
+    expect(nouvelles.firstWhere((e) => e['code'] == 'ETATS-FIN')['echeanceTheorique'], '$suivant-04-30', reason: 'le 30 avril, plus le 28');
+    expect(m.collection('audit').toutes.any((a) => '${a['action']}' == 'Exercice généré'), isTrue, reason: 'RG-12');
+    expect(find.byKey(const Key('cpc:generer-exercice')), findsNothing, reason: 'l\'exercice existe : la commande disparaît');
+  });
+
+  casM14('les seuils de l\'écran de suivi viennent des paramètres : réglés à 7 jours, le libellé du compteur le dit', (t) async {
+    final m = magasinLivre();
+    final s = serviceParametres(m, auteur: () => 'Essai', horloge: () => DateTime(2026, 10, 30));
+    s.semerDefauts();
+    expect(s.regler('fiscal.delaiAPayerJours', 7, '2026-10-01', motif: 'Essai').ok, isTrue);
+    expect(seuilsEcheance(m, DateTime(2026, 10, 30)).aPayerJours, 7);
+    expect(seuilsEcheance(m, DateTime(2026, 9, 30)).aPayerJours, 10, reason: 'avant la date d\'effet : le défaut');
+    await ouvrirM14(t, m, 'm12-echeances');
+    expect(find.text('À payer sous 7 jours'), findsOneWidget);
+    expect(find.text('À payer sous 10 jours'), findsNothing);
+  });
+
+  casM14('un poste jamais semé retombe sur les défauts : 10 jours, CCIB 300 000', (t) async {
+    final m = magasinLivre();
+    expect(seuilsEcheance(m, DateTime(2026, 10, 30)).aPayerJours, 10);
+    expect(seuilsEcheance(m, DateTime(2026, 10, 30)).declarationJours, 30);
+    expect(ccibMontant(m, DateTime(2026, 10, 30)), cfbCcibTotal);
+    final s = serviceParametres(m, auteur: () => 'Essai', horloge: () => DateTime(2026, 10, 30));
+    s.semerDefauts();
+    expect(s.regler('fiscal.ccibMontant', 400000, '2027-01-01', motif: 'Essai').ok, isTrue);
+    expect(ccibMontant(m, DateTime(2026, 12, 31)), 300000);
+    expect(ccibMontant(m, DateTime(2027, 1, 1)), 400000);
+  });
+
+  casM14('une version d\'obligation à venir est VISIBLE à cfg-comptabilite, avec ce qu\'elle remplace', (t) async {
+    final m = magasinLivre();
+    final its = m.collection('obligationsFiscales').actives.firstWhere((o) => o['code'] == 'ITS');
+    final r = cfbModifierObligation(m.collection('obligationsFiscales').actives,
+        id: '${its['id']}', valeurs: {'jour': 12}, dateEffet: '2026-12-01', motif: 'Essai', acteur: 'Essai', maintenant: DateTime(2026, 10, 30), aujourdhui: DateTime(2026, 10, 30));
+    expect(r.ok, isTrue, reason: '${r.refus?.motif}');
+    m.collection('obligationsFiscales').mettreAJour(r.id, r.fiche!);
+    m.collection('historiqueObligations').inserer(r.historique!);
+    await ouvrirM14(t, m, 'cfg-comptabilite');
+    final note = find.byKey(const Key('cfb:obligations-a-venir'));
+    expect(note, findsOneWidget);
+    expect(find.descendant(of: note, matching: find.textContaining('ITS le 12 du mois suivant à partir du 01/12/2026')), findsOneWidget);
+    expect(find.descendant(of: note, matching: find.textContaining('remplace le 10 du mois suivant')), findsOneWidget);
   });
 }

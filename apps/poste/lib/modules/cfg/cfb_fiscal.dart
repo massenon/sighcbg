@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
@@ -215,7 +216,7 @@ class _EtatFiscalite extends State<EcranFiscalite> {
                   ColonneMini('Écran producteur', (x) => 'Éditer',
                       rendu: (x) => BoutonSigh(libelle: 'Éditer', variante: VarianteBouton.secondaire, taille: TailleBouton.sm, onPressed: () => c.aller('${x['ecran']}'))),
                 ], lignes: declaratives)),
-            cfaKpis(cfbKpisFiscalite(echeances)),
+            cfaKpis(cfbKpisFiscalite(echeances, ccib: ccibMontant(c.magasin, c.aujourdhui))),
             if (note != null) cfbNote(note, ton: 'warning', icone: LucideIcons.alarmClock),
             TableauSigh(
               titre: 'Calendrier fiscal et social',
@@ -693,9 +694,12 @@ class _EtatComptabilite extends State<EcranComptabilite> {
           final (noteOrtb, agentOrtb) = cfbTextesOrtb(p);
           final fileul = cf.fileul;
           final valider = cfbBoutonValider(context, cf, identite: false, libelle: 'les obligations');
-          final ccibTranche = cfbCcibTotal ~/ 2;
+          final ccibTotal = ccibMontant(c.magasin, c.aujourdhui);
+          final ccibTranche = ccibTotal ~/ 2;
+          final aVenir = cfbNoteObligationsAVenir(cf);
           return cfaPile([
             cfbBandeauEtat(cf, identite: false, libelle: 'liste des obligations'),
+            if (aVenir != null) aVenir,
             Wrap(spacing: 8, runSpacing: 8, children: [
               if (!fileul && c.droit.editer) BoutonSigh(key: const Key('cfb:nouvelle-obligation'), libelle: 'Nouvelle obligation', icone: LucideIcons.plus, onPressed: () => _creer(context, cf)),
               if (valider != null) valider,
@@ -767,7 +771,7 @@ class _EtatComptabilite extends State<EcranComptabilite> {
                 child: LayoutBuilder(builder: (ctx, k) {
                   final blocs = [
                     _bloc(context, c, cf, 'Patente', 'Une fois par an, avec possibilité de régler en deux tranches.', famille('PATENTE')),
-                    _bloc(context, c, cf, 'CCIB', '${money(cfbCcibTotal)} par an, en deux tranches égales de ${money(ccibTranche)} (montant à confirmer par le cabinet comptable).', famille('CCIB')),
+                    _bloc(context, c, cf, 'CCIB', '${money(ccibTotal)} par an, en deux tranches égales de ${money(ccibTranche)} (montant à confirmer par le cabinet comptable).', famille('CCIB')),
                     _bloc(context, c, cf, 'TVM', 'Taxe sur véhicules à moteur. Une fois par an, en une seule fois.', famille('TVM')),
                   ];
                   if (k.maxWidth < 768) return cfaPile(blocs, espace: 12);

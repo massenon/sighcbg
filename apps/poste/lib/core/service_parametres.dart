@@ -23,3 +23,17 @@ ServiceParametres serviceParametres(Magasin m, {required String Function() auteu
     maintenant: horloge ?? DateTime.now,
   );
 }
+
+/// Les SEUILS d'état des échéances fiscales EN VIGUEUR à [date] (paramètres `fiscal.delaiAPayerJours` et `fiscal.delaiDeclarationJours`). Sans fiche en base (poste
+/// jamais semé) la valeur retombe sur le défaut de la définition, identique à la graine du moteur : un poste neuf se comporte comme avant.
+CpcSeuilsEcheance seuilsEcheance(Magasin m, DateTime date) {
+  final s = serviceParametres(m, auteur: () => 'lecture');
+  final iso = parametreDateIso(date);
+  return CpcSeuilsEcheance.depuis(s.valeur('fiscal.delaiAPayerJours', iso), s.valeur('fiscal.delaiDeclarationJours', iso));
+}
+
+/// La contribution annuelle de la CCIB EN VIGUEUR à [date] (paramètre `fiscal.ccibMontant`).
+int ccibMontant(Magasin m, DateTime date) {
+  final v = serviceParametres(m, auteur: () => 'lecture').valeur('fiscal.ccibMontant', parametreDateIso(date));
+  return v is num && v.isFinite && v >= 0 ? v.toInt() : cfbCcibTotal;
+}

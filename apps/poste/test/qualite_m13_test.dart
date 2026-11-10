@@ -185,7 +185,9 @@ void main() {
       final c = enq.first;
       // Le jeu du poste porte 26 réponses, comme la maquette amorcée.
       for (final k in liste(c['kpis'])) {
-        expect(sp(kpi(t, '${k['label']}')), sp(k['valeur']), reason: '${k['label']}');
+        // Le libellé a été reformulé au lot L1 (« Modèles en attente de validation ») ; le vecteur de la maquette porte l'ancien.
+        final libelle = k['label'] == 'Modèles à valider' ? 'Modèles en attente de validation' : '${k['label']}';
+        expect(sp(kpi(t, libelle)), sp(k['valeur']), reason: libelle);
       }
       expect(find.text('Modèles (1)'), findsOneWidget);
       expect(find.text('Liens de partage (0)'), findsOneWidget);
@@ -243,7 +245,8 @@ void main() {
 
     cas('Nouveau modèle : refus nommés, puis création en « proposition à valider »', (t) async {
       final m = magasinQualite();
-      await ouvrir(t, m, 'adm-enquetes');
+      // Lot L1 (Q5) : un modèle créé par la FAMILLE (direction, DAF, administrateur) naît validé ; il naît « à valider » créé HORS famille, ce que ce cas éprouve.
+      await ouvrir(t, m, 'adm-enquetes', role: 'agentadmin');
       final c = premier(enq, 'Nouveau modèle');
       final n0 = m.collection('enquetes').toutes.length;
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau modèle'));

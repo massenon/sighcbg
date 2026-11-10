@@ -215,7 +215,7 @@ void main() {
       final avant = m.collection('audit').toutes.length;
       await ouvrirPathologies(t, m, 'dm');
       await toucherM14(t, find.byTooltip('Modifier').first);
-      expect(find.widgetWithText(BoutonSigh, 'Valider'), findsOneWidget, reason: 'le choix Valider du pied de modale (profil de la famille, élément en attente)');
+      expect(find.byWidgetPredicate((w) => w.key is ValueKey<String> && (w.key as ValueKey<String>).value.startsWith('val:modale:')), findsOneWidget, reason: 'le choix Valider du pied de modale (les boutons « Valider » des lignes du tableau sont d\'autres commandes) : (profil de la famille, élément en attente)');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       final validees = col.actives.where((f) => f['aValider'] == false && f['valideLe'] != null).toList();
       expect(validees.length, 1, reason: 'UNE pathologie est validée par l’enregistrement');
@@ -232,7 +232,7 @@ void main() {
       }
       await ouvrirPathologies(t, m, 'admin');
       await toucherM14(t, find.byTooltip('Modifier').first);
-      expect(find.widgetWithText(BoutonSigh, 'Valider'), findsNothing, reason: 'commande ABSENTE hors famille, jamais grisée');
+      expect(find.byWidgetPredicate((w) => w.key is ValueKey<String> && (w.key as ValueKey<String>).value.startsWith('val:modale:')), findsNothing, reason: 'commande ABSENTE hors famille, jamais grisée');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
       expect(col.actives.where((f) => f['aValider'] == true).length, 1, reason: 'UNE pathologie est revenue « à valider »');
       expect(col.actives.where((f) => f['aValider'] == true).first['valideLe'], isNull);
