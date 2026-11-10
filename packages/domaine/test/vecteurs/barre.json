@@ -2170,6 +2170,13 @@
        "icone": "bone",
        "ecran": "m2-imagerie-radiographie",
        "onglet": null
+      },
+      {
+       "label": "Responsable Radiologie",
+       "detail": "Tableaux de bord par poste",
+       "icone": "scan-line",
+       "ecran": "dash-responsable-radiologie",
+       "onglet": null
       }
      ]
     },
@@ -3536,6 +3543,13 @@
        "detail": "Imagerie médicale",
        "icone": "bone",
        "ecran": "m2-imagerie-radiographie",
+       "onglet": null
+      },
+      {
+       "label": "Responsable Radiologie",
+       "detail": "Tableaux de bord par poste",
+       "icone": "scan-line",
+       "ecran": "dash-responsable-radiologie",
        "onglet": null
       }
      ]

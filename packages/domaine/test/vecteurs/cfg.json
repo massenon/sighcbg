@@ -463,6 +463,21 @@
     "aide_comptable",
     "Assistant Comptable",
     false
+   ],
+   [
+    "responsable_radiologie",
+    "Responsable Radiologie",
+    false
+   ],
+   [
+    "sage_femme",
+    "Responsable Maternité (sage-femme)",
+    false
+   ],
+   [
+    "responsable_assurance",
+    "Responsable Assurance",
+    false
    ]
   ],
   "jour": "2026-11-01"
@@ -486,7 +501,7 @@
    ],
    [
     "Rôles RBAC",
-    "22",
+    "25",
     null
    ]
   ],
@@ -823,7 +838,7 @@
     ],
     [
      "Rôles définis",
-     "22"
+     "25"
     ],
     [
      "Date d’édition",
