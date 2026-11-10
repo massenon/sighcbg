@@ -1,0 +1,418 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart'
+    show cfbChampsDeTestConserves, cfbEssentielles, cfbPlanVidage, paiActivites, paiBasculeNs131, paiBasculeNs132, paiFicheBascule;
+import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/kit/kit.dart';
+import 'package:sigh_poste/modules/cfg/cfb_systeme.dart';
+
+import 'aide_polices.dart';
+import 'm14_aide.dart';
+
+/// cfg-systeme : les règles (corbeille, bilan d'un vidage, libellés de collection) sont rejouées sur les vecteurs de la maquette
+/// (packages/domaine/test/cfb_regles_test.dart) ; ici, l'ÉCRAN — la corbeille qui restaure (RG-14), la porte du barème NS 131 (motif, journal, réglage lu par
+/// l'écran des évaluations), la bascule des jeux de test (bouton ABSENT quand elle est fermée), le vidage qui garde l'essentiel, l'export, la régénération.
+void main() {
+  setUpAll(chargerPolices);
+  tearDown(() {
+    ToastsSigh.viderPourTests();
+    CfbPersistance.disponible = () => false;
+  });
+
+  Future<void> onglet(WidgetTester t, String id) => toucherM14(t, find.byKey(Key('kit:onglet:$id')));
+  Fiche? reglage(Magasin m, String id) => m.collection('reglages').actives.where((f) => f['id'] == id).firstOrNull;
+
+  casM14('ouverture : quatre onglets, quatre indicateurs CALCULÉS sur le magasin, persistance dite honnêtement (en mémoire)', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'cfg-systeme');
+    for (final k in ['Installation et données', 'Corbeille', 'Barème NS 131', 'Jeux de test']) {
+      expect(find.text(k), findsWidgets, reason: k);
+    }
+    final noms = cfbNomsCollections();
+    final total = noms.fold<int>(0, (a, n) => a + m.collection(n).toutes.length);
+    expect(find.text('${noms.length}'), findsWidgets);
+    expect(find.byWidgetPredicate((w) => w is Text && (w.data ?? '').replaceAll(RegExp(r'[\s  ]'), '') == '$total'), findsWidgets);
+    expect(find.text('Mémoire'), findsOneWidget);
+    expect(find.text('Version du prototype'), findsOneWidget);
+    // La fiche « Architecture cible » et sa note sont retirées (Direction, 02/11/2026) : elles décrivaient une proposition web, non le poste.
+    expect(find.text('Architecture cible — proposition'), findsNothing);
+    expect(find.textContaining('Cette architecture est une proposition technique'), findsNothing);
+    expect(find.textContaining('base locale chiffrée du poste n’est pas encore branchée'), findsNothing);
+    for (final b in ['Réinitialiser le jeu de données', 'Exporter les données', 'Plan du site', 'Sauvegardes']) {
+      expect(find.widgetWithText(BoutonSigh, b), findsOneWidget, reason: b);
+    }
+  });
+
+  casM14('la corbeille balaie TOUS les modules : une fiche archivée à un endroit se retrouve ici, restaurée d’un geste et journalisée', (t) async {
+    final m = magasinM14();
+    m.collection('centresCouts').archiver(m.collection('centresCouts').actives.first['id']);
+    final fiche = m.collection('centresCouts').archivees.single;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'corbeille');
+    expect(find.text('Fiches archivées'), findsWidgets);
+    expect(find.text('Centres de coûts'), findsWidgets, reason: 'le type de fiche vient de la table de libellés de la maquette');
+    expect(find.text('${fiche['id']}'), findsOneWidget);
+    expect(find.text('Impossible'), findsOneWidget);
+    await toucherM14(t, find.byTooltip('Restaurer').first);
+    expect(find.textContaining('La fiche réapparaîtra dans Centres de coûts (M12) et redeviendra modifiable.'), findsOneWidget);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Restaurer').last);
+    expect(m.collection('centresCouts').archivees, isEmpty);
+    expect(m.collection('centresCouts').actives.length, 7, reason: 'restaurée : rien n’est perdu');
+    expect(find.text('Fiche restaurée dans Centres de coûts.'), findsOneWidget);
+    final j = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Restauration');
+    expect(j['reference'], fiche['code']);
+  });
+
+  casM14('corbeille vide : l’écran le dit au lieu d’un tableau vide', (t) async {
+    final m = magasinM14();
+    for (final n in cfbNomsCollections()) {
+      for (final f in m.collection(n).archivees) {
+        m.collection(n).restaurer(f['id']);
+      }
+    }
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'corbeille');
+    expect(find.text('La corbeille est vide — aucune fiche archivée.'), findsOneWidget);
+  });
+
+  casM14('barème NS 131 : fermé par défaut ; l’ouvrir exige un motif, écrit la porte aux réglages (lue par l’écran des évaluations), journalise ; la refermer aussi', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'bareme');
+    expect(find.text('Fermée'), findsOneWidget);
+    expect(find.text('NS 131/07/DM/DA/CBG/2026'), findsWidgets);
+    expect(find.text('13/07/2026'), findsOneWidget);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Autoriser la modification'));
+    expect(find.textContaining('Le barème fixe les retenues sur salaire.'), findsOneWidget);
+    await t.tap(find.widgetWithText(BoutonSigh, 'Autoriser la modification').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(reglage(m, 'baremeModifiable'), isNull, reason: 'sans motif, la porte reste fermée');
+    await t.enterText(find.byType(TextField).last, 'Révision du barème');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Autoriser la modification').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(reglage(m, 'baremeModifiable')!['valeur'], true);
+    expect(find.text('Modification du barème autorisée.'), findsOneWidget);
+    expect(find.text('Ouverte'), findsOneWidget);
+    final j = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Ouverture de la modification du barème');
+    expect([j['module'], j['entite'], j['reference']], ['M10', 'Barème', 'NS 131/07/DM/DA/CBG/2026']);
+    expect(j['apres'], {'motif': 'Révision du barème'});
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Refermer la modification'));
+    expect(reglage(m, 'baremeModifiable')!['valeur'], false);
+    expect(find.text('Modification du barème refermée.'), findsOneWidget);
+    expect(m.collection('audit').toutes.any((a) => a['action'] == 'Fermeture de la modification du barème'), isTrue);
+  });
+
+  casM14('jeux de test verrouillés : AUCUN bouton d’effacement (absent, non grisé), le message dit où l’autoriser', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'reinitialisation');
+    expect(find.text('Verrouillée'), findsOneWidget);
+    expect(find.text('Aucun effacement possible'), findsOneWidget);
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Suppression physique des jeux de test'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Régénérer le jeu de démonstration complet'), findsNothing);
+    expect(find.text('Réinitialisation verrouillée — activer l’autorisation ci-dessus pour la rendre possible.'), findsOneWidget);
+    expect(find.textContaining('Produits et médicaments (184)'), findsOneWidget, reason: 'ce qui serait conservé est montré avec ses effectifs');
+  });
+
+  casM14('le bouton de maintenance, tant que les jeux de test sont verrouillés, REFUSE en le disant — rien n’est effacé', (t) async {
+    final m = magasinM14();
+    final avant = m.collection('patients').toutes.length;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Réinitialiser le jeu de données'));
+    expect(find.text('Réinitialisation verrouillée.'), findsOneWidget);
+    expect(find.textContaining('Autoriser d’abord l’effacement'), findsOneWidget);
+    expect(m.collection('patients').toutes.length, avant);
+  });
+
+  casM14('ARCHIVER le jeu de démonstration (geste par défaut, RG-14) : motif exigé, rien n’est supprimé, bilan affiché, Corbeille, journal conservé, essentielles intactes', (t) async {
+    final m = magasinM14();
+    final produits = m.collection('produits').toutes.length;
+    final patients = m.collection('patients').toutes.length;
+    final personnel = jsonEncode(m.collection('personnel').toutes);
+    final aAvant = m.collection('audit').toutes.length;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'reinitialisation');
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing, reason: 'fermé : bouton absent');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:bascule')));
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Autoriser'));
+    expect(find.text('Mise en production'), findsOneWidget);
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:archiver')));
+    expect(find.textContaining('Rien n’est supprimé (RG-14)'), findsOneWidget, reason: 'la confirmation DIT que rien n’est supprimé');
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').actives, isNotEmpty, reason: 'sans motif, rien ne part');
+    await t.enterText(find.byType(TextField).last, 'Mise en production de la clinique');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').actives, isEmpty);
+    expect(m.collection('patients').toutes.length, patients, reason: 'rien n’est supprimé');
+    expect(m.collection('produits').toutes.length, produits);
+    expect(jsonEncode(m.collection('personnel').toutes), personnel, reason: 'les essentielles — salaires compris — ne bougent pas');
+    expect(m.collection('echeancesFiscales').toutes.any((e) => e['paye'] == true), isFalse);
+    expect(m.collection('audit').toutes.length, greaterThan(aAvant + 10), reason: 'le journal est conservé et enrichi : une entrée par table, une synthèse');
+    expect(m.collection('audit').toutes.any((a) => a['action'] == 'Archivage du jeu de démonstration (synthèse)'), isTrue);
+    expect(find.byKey(const Key('cfb:reinit:bilan')), findsOneWidget);
+    expect(find.textContaining('table(s) archivée(s)'), findsWidgets);
+    expect(find.textContaining('brouillon(s)'), findsWidgets);
+    expect(cfbCorbeille(m).where((l) => l.collection == 'patients').length, patients, reason: 'les fiches archivées se retrouvent à la Corbeille');
+    await onglet(t, 'corbeille');
+    expect(find.textContaining('Jeu de démonstration, mise en production'), findsWidgets);
+  });
+
+  casM14('l’archivage est REFUSÉ sans la bascule, depuis le bouton de l’onglet Installation aussi : rien n’est écrit', (t) async {
+    final m = magasinM14();
+    final patients = m.collection('patients').actives.length;
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Réinitialiser le jeu de données'));
+    expect(find.text('Réinitialisation verrouillée.'), findsOneWidget);
+    expect(m.collection('patients').actives.length, patients);
+    expect(m.collection('audit').toutes.where((a) => '${a['action']}'.startsWith('Archivage du jeu')), isEmpty);
+  });
+
+  casM14('SUPPRESSION PHYSIQUE (seconde porte, contraire à RG-14) : motif PUIS confirmation nommée ; les données d’ACTIVITÉ, la corbeille et le journal partent, le paramétrage et les droits restent ; le vidage est l’UNIQUE entrée du journal neuf', (t) async {
+    final m = magasinM14();
+    final produits = m.collection('produits').toutes.length;
+    final patients = m.collection('patients').toutes.length;
+    // Une fiche archivée pendant les essais (référentiel conservé) : la corbeille doit être vide après le vidage (Direction, 02/11/2026).
+    m.collection('centresCouts').archiver(m.collection('centresCouts').actives.first['id']);
+    // Un rôle archivé (`rbac`) et un compte archivé (`utilisateurs`) ferment un accès : le vidage les garde.
+    const gardees = {'rbac', 'utilisateurs'};
+    final archivees = cfbNomsCollections().where((n) => !gardees.contains(n)).fold<int>(0, (a, n) => a + m.collection(n).archivees.length);
+    expect(archivees, greaterThan(0));
+    final comptesAvant = m.collection('utilisateurs').toutes.length;
+    final plan = cfbPlanVidage({for (final n in cfbNomsCollections()) n: m.collection(n).toutes.length}, {...cfbEssentielles, ...cfbCollectionsTechniques});
+    final effectif = m.collection('personnel').toutes.length;
+    final fiches = m.collection('fichesPoste').toutes.length;
+    var valeursDeTest = 0;
+    for (final f in m.collection('personnel').toutes) {
+      for (final ch in cfbChampsDeTestConserves['personnel']!) {
+        if (f[ch] != null) valeursDeTest++;
+      }
+    }
+    expect(valeursDeTest, greaterThan(0), reason: 'le jeu porte des salaires de démonstration');
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'reinitialisation');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:bascule')));
+    expect(find.textContaining('Sur un poste en production, la laisser fermée est la seule position raisonnable'), findsOneWidget);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Autoriser'));
+    expect(reglage(m, 'reinitAutorisee')!['valeur'], true);
+    expect(find.text('Autorisée'), findsOneWidget);
+    expect(m.collection('audit').toutes.any((a) => a['action'] == 'Déverrouillage'), isTrue);
+    expect(find.text('Suppression physique (hors RG-14)'), findsOneWidget);
+    expect(find.textContaining('CONTREDIT RG-14'), findsOneWidget, reason: 'l’écran dit que la suppression physique contredit RG-14');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:supprimer')));
+    expect(find.textContaining('Les ${plan.tables} tables d’activité seront VIDÉES'), findsOneWidget);
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').toutes.length, patients, reason: 'sans motif, rien ne part');
+    await t.enterText(find.byType(TextField).last, 'Fin de la recette');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(find.text('Suppression physique : dernière confirmation'), findsOneWidget);
+    expect(m.collection('patients').toutes.length, patients, reason: 'le motif ne suffit pas : la confirmation NOMMÉE est exigée');
+    await t.tap(find.widgetWithText(BoutonSigh, 'Renoncer'));
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').toutes.length, patients, reason: 'renoncer ne supprime rien');
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:supprimer')));
+    await t.enterText(find.byType(TextField).last, 'Fin de la recette');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Continuer').last);
+    await t.pump(const Duration(milliseconds: 400));
+    await t.tap(find.widgetWithText(BoutonSigh, 'Supprimer physiquement'));
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').toutes, isEmpty);
+    expect(m.collection('factures').toutes, isEmpty);
+    expect(m.collection('produits').toutes.length, produits, reason: 'les référentiels sont conservés');
+    expect(m.collection('rbac').toutes, isNotEmpty);
+    expect(m.collection('modulesActifs').toutes, isNotEmpty);
+    expect(m.collection('modulesManifeste').toutes, isNotEmpty, reason: 'la matrice engendrée du poste survit à tout vidage');
+    expect(m.collection('echeancesFiscales').toutes.length, 63, reason: 'le calendrier, dérivé d’un document, revient SANS règlement');
+    expect(m.collection('echeancesFiscales').toutes.any((e) => e['paye'] == true), isFalse);
+    expect(cfbCorbeille(m).where((l) => !gardees.contains(l.collection)), isEmpty, reason: 'la corbeille est vidée avec les jeux de test');
+    expect(cfbNomsCollections().where((n) => !gardees.contains(n)).fold<int>(0, (a, n) => a + m.collection(n).archivees.length), 0);
+    expect(m.collection('audit').toutes.length, 1, reason: 'le journal est vidé ; seule reste l’entrée qui dit le vidage (RG-12)');
+    final j = m.collection('audit').toutes.first;
+    expect([j['action'], j['module'], j['entite'], j['reference']], ['Réinitialisation des jeux de test', 'CFG', 'Base', 'vidage']);
+    final apres = (j['apres'] as Map).cast<String, Object?>();
+    expect({for (final k in ['tables', 'enregistrements', 'valeursRetirees', 'motif']) k: apres[k]},
+        {'tables': plan.tables, 'enregistrements': plan.enregistrements, 'valeursRetirees': valeursDeTest, 'motif': 'Fin de la recette'});
+    expect(apres['archiveesRetirees'], archivees);
+    expect(apres['comptesDemoRetires'], comptesAvant, reason: 'aucun compte du jeu n’a de mot de passe : tous partent');
+    expect(m.collection('utilisateurs').toutes, isEmpty);
+    expect(apres['entreesJournalRetirees'], greaterThan(0));
+    // Retour de la Direction du 01/11/2026 : l'effectif reste, ni sa rémunération de démonstration ni les fiches de poste.
+    expect(m.collection('personnel').toutes.length, effectif);
+    for (final f in m.collection('personnel').toutes) {
+      for (final ch in cfbChampsDeTestConserves['personnel']!) {
+        expect(f[ch], isNull, reason: '$ch de ${f['nomComplet']} est une valeur de démonstration');
+      }
+    }
+    expect(fiches, greaterThan(0));
+    expect(m.collection('fichesPoste').toutes, isEmpty, reason: 'les fiches de poste de démonstration ne sont plus conservées');
+    expect(cfbEssentielles, isNot(contains('fichesPoste')));
+    expect(find.textContaining('table(s) vidée(s)'), findsOneWidget);
+    // verrouiller de nouveau : les boutons disparaissent
+    await toucherM14(t, find.byKey(const Key('cfb:reinit:bascule')));
+    expect(reglage(m, 'reinitAutorisee')!['valeur'], false);
+    expect(find.widgetWithText(BoutonSigh, 'Archiver le jeu de démonstration'), findsNothing);
+    expect(find.widgetWithText(BoutonSigh, 'Suppression physique des jeux de test'), findsNothing);
+    expect(m.collection('audit').toutes.any((a) => a['action'] == 'Verrouillage'), isTrue);
+  });
+
+  casM14('régénérer le jeu complet : tout revient du jeu initial, la porte des jeux de test reste dans son état', (t) async {
+    final m = magasinM14();
+    final patients = m.collection('patients').toutes.length;
+    CfbJeu.charger = (nom) async => File('test/fixtures/jeu_sobre/$nom.json').readAsStringSync();
+    m.collection('reglages').inserer({'id': 'reinitAutorisee', 'statut': 'actif', 'valeur': true});
+    m.collection('reglages').inserer({'id': 'valorisationSortie', 'statut': 'actif', 'valeur': 'cump'});
+    cfbViderActivite(m, 'Essai');
+    expect(m.collection('patients').toutes, isEmpty);
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await onglet(t, 'reinitialisation');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Régénérer le jeu de démonstration complet'));
+    expect(find.textContaining('Toute la base est remplacée par le jeu initial, paramétrage compris.'), findsOneWidget);
+    await t.enterText(find.byType(TextField).last, 'Reprise de la démonstration');
+    await t.pump();
+    await t.runAsync(() async {
+      await t.tap(find.widgetWithText(BoutonSigh, 'Régénérer').last);
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+    });
+    await t.pump(const Duration(milliseconds: 400));
+    expect(m.collection('patients').toutes.length, patients);
+    expect(reglage(m, 'reinitAutorisee')!['valeur'], true, reason: 'l’autorisation est une bascule du poste, non une donnée du jeu');
+    expect(reglage(m, 'valorisationSortie'), isNull, reason: 'le paramétrage revient au jeu initial');
+    expect(m.collection('audit').toutes.first['action'], 'Régénération du jeu de démonstration');
+    expect(find.text('Jeu de démonstration régénéré.'), findsOneWidget);
+  });
+
+  casM14('exporter les données : un fichier JSON daté, toutes les collections, le chemin annoncé ; un échec est DIT', (t) async {
+    final m = magasinM14();
+    String? nom, contenu;
+    CfbExport.ecrire = (n, c) async {
+      nom = n;
+      contenu = c;
+      return '/tmp/$n';
+    };
+    await ouvrirM14(t, m, 'cfg-systeme');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Exporter les données'));
+    await t.pump(const Duration(milliseconds: 300));
+    expect(nom, 'sigh-cbg-donnees-2026-10-30.json');
+    final j = jsonDecode(contenu!) as Map;
+    expect(j.keys.toSet(), cfbNomsCollections().toSet());
+    expect((j['centresCouts'] as List).length, 7);
+    expect(find.text('Export JSON généré.'), findsOneWidget);
+    CfbExport.ecrire = (n, c) async => throw const FileSystemException('disque plein');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Exporter les données'));
+    await t.pump(const Duration(milliseconds: 300));
+    expect(find.textContaining('Export impossible'), findsOneWidget);
+  });
+
+  casM14('droits : en lecture seule, la porte du barème, la bascule des jeux de test, la restauration et la maintenance sont ABSENTES', (t) async {
+    final m = magasinM14();
+    m.collection('centresCouts').archiver(m.collection('centresCouts').actives.first['id']);
+    final d = donneesLectureSeule('admin', 'cfg-systeme');
+    await ouvrirM14(t, m, 'cfg-systeme', role: 'admin', donnees: d);
+    expect(find.widgetWithText(BoutonSigh, 'Réinitialiser le jeu de données'), findsNothing);
+    await onglet(t, 'corbeille');
+    expect(find.byTooltip('Restaurer'), findsNothing);
+    await onglet(t, 'bareme');
+    expect(find.widgetWithText(BoutonSigh, 'Autoriser la modification'), findsNothing);
+    expect(find.text('Fermée'), findsOneWidget);
+  });
+
+  group('PRD P0-5 : les activités de la paie (primes NS 132, évaluations et sanctions NS 131)', () {
+    Future<void> confirmer(WidgetTester t, String libelle) async {
+      await t.tap(find.widgetWithText(BoutonSigh, libelle).last);
+      await t.pump(const Duration(milliseconds: 400));
+    }
+
+    casM14('ouvertes par défaut ; fermer exige un motif, écrit UNE fiche modulesActifs datée et signée, journalise ; rouvrir rend l’état', (t) async {
+      final m = magasinM14();
+      final reglagesAvant = m.collection('reglages').toutes.length;
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      expect(find.text('Primes (NS 132)'), findsWidgets);
+      expect(find.text('Évaluations & sanctions (barème NS 131)'), findsWidgets);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+      expect(find.textContaining('Note de service NS n° 132/07/DM/DA/CBG/2026'), findsOneWidget, reason: 'l’écran dit d’où vient le barème');
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: true, sanctionsNs131: true));
+
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      expect(find.text('Fermer l’activité « Primes (NS 132) » ?'), findsOneWidget);
+      await confirmer(t, 'Fermer l’activité');
+      expect(paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132), isNull, reason: 'sans motif, rien n’est écrit');
+      await t.enterText(find.byType(TextField).last, 'Pas de primes à la clinique');
+      await t.pump();
+      await confirmer(t, 'Fermer l’activité');
+      final f = paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132)!;
+      expect([f['actif'], f['module'], f['ecrans'], f['fermeLe'], f['motif']], [false, 'M10', ['m10-primes'], '2026-10-30', 'Pas de primes à la clinique']);
+      expect('${f['fermePar']}', isNotEmpty);
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: false, sanctionsNs131: true));
+      expect(m.collection('reglages').toutes.length, reglagesAvant, reason: 'aucun second drapeau : la fiche modulesActifs est la seule source');
+      final j = m.collection('audit').toutes.firstWhere((a) => a['action'] == 'Fermeture d’une activité de la paie');
+      expect([j['module'], j['reference']], ['CFG', 'PAIE-NS132']);
+      expect(find.text('Fermée'), findsOneWidget);
+
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      await confirmer(t, 'Rouvrir l’activité');
+      final r = paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs132)!;
+      expect([r['id'], r['actif'], r['rouvertLe']], [f['id'], true, '2026-10-30'], reason: 'la même fiche, jamais supprimée (RG-14)');
+      expect(paiActivites(m.collection('modulesActifs').toutes).primesNs132, true);
+      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Réouverture d’une activité de la paie' && a['reference'] == 'PAIE-NS132'), isTrue);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+    });
+
+    casM14('fermer la NS 131 ferme les évaluations ET les sanctions ; l’onglet du barème le dit', (t) async {
+      final m = magasinM14();
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS131')));
+      await t.enterText(find.byType(TextField).last, 'Pas d’évaluation chiffrée');
+      await t.pump();
+      await confirmer(t, 'Fermer l’activité');
+      expect(paiFicheBascule(m.collection('modulesActifs').toutes, paiBasculeNs131)!['ecrans'], ['m10-evaluations', 'm10-sanctions']);
+      expect(paiActivites(m.collection('modulesActifs').toutes), (primesNs132: true, sanctionsNs131: false));
+      await onglet(t, 'bareme');
+      expect(find.textContaining('aucune retenue ne remonte à la paie'), findsOneWidget);
+    });
+
+    casM14('une fermeture posée AILLEURS (module M10 entier) se lit ici, mais ne se rouvre pas d’ici : refus nommé', (t) async {
+      final m = magasinM14();
+      m.collection('modulesActifs').inserer({'statut': 'actif', 'code': 'MODULE-M10', 'module': 'M10', 'libelle': 'Module RH', 'actif': false, 'motif': 'Essai'}, prefixe: 'MOD');
+      await ouvrirM14(t, m, 'cfg-systeme');
+      await onglet(t, 'activites');
+      expect(find.text('Fermée'), findsNWidgets(2));
+      await toucherM14(t, find.byKey(const Key('cfg:bascule:PAIE-NS132')));
+      expect(find.text('Réouverture impossible ici.'), findsOneWidget);
+      expect(paiActivites(m.collection('modulesActifs').toutes).primesNs132, false);
+    });
+
+    casM14('la fiche écrite par la bascule FERME les écrans : m10-primes (NS 132), m10-evaluations et m10-sanctions (NS 131)', (t) async {
+      for (final (b, ecran) in [(paiBasculeNs132, 'm10-primes'), (paiBasculeNs131, 'm10-evaluations'), (paiBasculeNs131, 'm10-sanctions')]) {
+        final m = magasinM14();
+        m.collection('modulesActifs')
+            .inserer({'statut': 'actif', 'code': b.code, 'libelle': b.libelle, 'module': b.module, 'ecrans': b.ecrans, 'actif': false, 'motif': 'Essai $ecran'}, prefixe: 'MOD');
+        await ouvrirM14(t, m, ecran);
+        expect(find.byKey(const Key('activite-fermee')), findsOneWidget, reason: ecran);
+        expect(find.textContaining('Essai $ecran'), findsOneWidget, reason: 'le motif de la fiche est nommé');
+      }
+      await t.pump(const Duration(seconds: 10));
+    });
+
+    casM14('droits : sans le droit d’écrire sur Paramètres système, les bascules sont ABSENTES (l’état reste lisible)', (t) async {
+      final m = magasinM14();
+      await ouvrirM14(t, m, 'cfg-systeme', role: 'admin', donnees: donneesLectureSeule('admin', 'cfg-systeme'));
+      await onglet(t, 'activites');
+      expect(find.byKey(const Key('cfg:bascule:PAIE-NS132')), findsNothing);
+      expect(find.byKey(const Key('cfg:bascule:PAIE-NS131')), findsNothing);
+      expect(find.text('Ouverte'), findsNWidgets(2));
+    });
+  });
+}
