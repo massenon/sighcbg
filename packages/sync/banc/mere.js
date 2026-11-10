@@ -38,6 +38,9 @@ const FAMILLES = {
   tarifs: 'R', chambres: 'R', produits: 'R', transcriptions: 'B',
   /* L0 : les paramètres versionnés par date (R : la mère seule écrit, une fiche = une version immuable) et leurs usages par les pièces (B : ajout seul). */
   parametres: 'R', usagesParametres: 'B',
+  /* Les DROITS (10/11/2026) : la fiche de chaque rôle et les activités fermées sont de la configuration (R : la mère seule écrit, les fileuls reçoivent) ; les
+     DÉCISIONS de droits sont une fiche descriptive (A) qu'un poste habilité dépose à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche. */
+  rbac: 'R', modulesActifs: 'R', decisionsDroits: 'A',
 };
 const ESSENTIELLES = new Set(['tarifs', 'chambres']);
 const MOTIF_ARCHIVAGE = 'Jeu de démonstration, mise en production'; /* le même que cfbMotifArchivageJeuDemo (Dart) */
