@@ -167,3 +167,38 @@ Future<void> afficherApercuTicket(
       ],
     );
 }
+
+
+/// Aperçu d'une FICHE DOCUMENTAIRE PAYSAGE (organigramme) : les pages à 297 × 210 mm dans une modale, « Fermer » et « Enregistrer en PDF » — le PDF est le
+/// rendu des MÊMES pages. L'édition est journalisée (RG-12) comme celle d'une pièce A4.
+Future<void> afficherApercuFiche(BuildContext context, FichePaysage fiche) {
+  final magasin = ContexteEcran.maybeOf(context)?.magasin;
+  return afficherModale<void>(
+    context,
+    titre: fiche.titre,
+    sousTitre: fiche.reference,
+    taille: TailleModale.xl,
+    corps: Container(
+      color: const Color(0xFFE2E8F0),
+      padding: const EdgeInsets.all(16),
+      child: LayoutBuilder(
+          builder: (context, c) => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(constraints: BoxConstraints(minWidth: c.maxWidth), child: Center(child: FeuilleFichePaysage(fiche: fiche))))),
+    ),
+    pied: (fermer) => [
+      BoutonSigh(libelle: 'Fermer', variante: VarianteBouton.secondaire, onPressed: fermer),
+      BoutonSigh(
+          libelle: 'Enregistrer en PDF',
+          icone: LucideIcons.fileDown,
+          variante: VarianteBouton.secondaire,
+          onPressed: () async {
+            final p = await PolicesPdf.charger();
+            final octets = await pdfFichePaysage(fiche, p);
+            final chemin = await ImpressionPoste.enregistrer(octets, fiche.reference);
+            magasin?.journaliser('Impression', 'RAP', 'Document', fiche.reference, null, {'titre': fiche.titre, 'pages': fiche.pages.length});
+            if (context.mounted) ToastsSigh.afficher(context, 'PDF enregistré.', type: TypeToast.succes, detail: chemin);
+          }),
+    ],
+  );
+}

@@ -10,7 +10,7 @@
 //    (`tirageDe('nom')`) : ajouter un tirage dans une étape ne décale jamais les données d'une autre.
 //  - AUCUN CHAMP NUL ÉCRIT : un null se relit `undefined` côté poste (aucun enregistrement n'est comparé à `null`) ; l'écrire ne ferait que gonfler le jeu.
 //    Les chaînes vides, `false` et `0` sont écrits. Un null DANS une liste est gardé.
-//  - LES 159 NOMS DE FICHIER sont conservés (une collection vide s'écrit `[]` : le chargeur plante sinon). Écrire une collection inconnue est refusé.
+//  - LES 160 NOMS DE FICHIER sont conservés (une collection vide s'écrit `[]` : le chargeur plante sinon). Écrire une collection inconnue est refusé.
 import 'dart:convert';
 import 'dart:io';
 

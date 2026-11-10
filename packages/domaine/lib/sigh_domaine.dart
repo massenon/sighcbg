@@ -44,6 +44,7 @@ export 'src/impression/entete.dart';
 export 'src/impression/identite.dart';
 export 'src/impression/ticket.dart';
 export 'src/impression/etat.dart';
+export 'src/impression/organigramme.dart';
 
 export 'src/achats/achats.dart';
 export 'src/stock/delivrance.dart' hide referenceSuivante, LigneStock;

@@ -293,3 +293,147 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
   ));
   return doc.save();
 }
+
+
+/// Fiche documentaire PAYSAGE (organigramme) : A4 297 × 210 mm, une page PDF par page de la fiche, MÊMES cotes que l'aperçu (`GabaritFichePaysage`), même
+/// scène, mêmes lignes de légende. Le graphe est dessiné en vectoriel : traits et cases, jamais une image.
+Future<Uint8List> pdfFichePaysage(FichePaysage x, PolicesPdf p, {bool compresser = true}) async {
+  const g = GabaritFichePaysage();
+  final doc = pw.Document(compress: compresser, title: x.titre, author: x.identite.nom, subject: x.reference);
+  final logo = pw.MemoryImage((await rootBundle.load(LogoClinique.asset)).buffer.asUint8List());
+  PdfColor couleur(Color c) => PdfColor.fromInt(c.toARGB32());
+  final noir = couleur(JetonsShell.anthracite900),
+      bleu = couleur(JetonsShell.sante600),
+      bleuFonce = couleur(JetonsShell.sante800),
+      bleuClair = couleur(JetonsShell.sante100),
+      rouge = couleur(JetonsShell.coeur500),
+      gris = couleur(JetonsShell.slate500);
+  pw.TextStyle s(double t, {pw.Font? f, PdfColor? c}) => pw.TextStyle(font: f ?? p.sans, fontSize: t, color: c ?? noir);
+  final trait = pw.BorderSide(color: noir, width: 0.6);
+
+  pw.Widget cartouche(int i) {
+    final droite = x.cartouche(i);
+    return pw.Container(
+        width: g.cartoucheLargeur * _mm,
+        height: g.cartoucheHauteur * _mm,
+        decoration: pw.BoxDecoration(border: pw.Border.all(color: noir, width: 0.6)),
+        child: pw.Row(children: [
+          pw.Expanded(
+              flex: g.colonnes[0],
+              child: pw.Container(
+                  decoration: pw.BoxDecoration(border: pw.Border(right: trait)),
+                  padding: const pw.EdgeInsets.all(2),
+                  child: pw.Center(child: pw.Image(logo, fit: pw.BoxFit.contain)))),
+          pw.Expanded(
+              flex: g.colonnes[1],
+              child: pw.Column(children: [
+                pw.Expanded(
+                    flex: g.etagesTitre[0],
+                    child: pw.Container(
+                        decoration: pw.BoxDecoration(border: pw.Border(bottom: trait)),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(x.fiche.titreHaut, style: s(11)))),
+                pw.Expanded(flex: g.etagesTitre[1], child: pw.Center(child: pw.Text(x.fiche.titre, style: s(11, f: p.titre, c: bleu)))),
+              ])),
+          pw.Expanded(
+              flex: g.colonnes[2],
+              child: pw.Container(
+                  decoration: pw.BoxDecoration(border: pw.Border(left: trait)),
+                  child: pw.Column(children: [
+                    for (var k = 0; k < droite.length; k++)
+                      pw.Expanded(
+                          flex: g.lignesDroite[k],
+                          child: pw.Container(
+                              width: double.infinity,
+                              decoration: pw.BoxDecoration(border: k < droite.length - 1 ? pw.Border(bottom: trait) : null),
+                              padding: const pw.EdgeInsets.only(left: 4),
+                              alignment: pw.Alignment.centerLeft,
+                              child: pw.Text(droite[k], style: s(8.5)))),
+                  ]))),
+        ]));
+  }
+
+  pw.Widget graphe(SceneOrganigramme scene) {
+    final w = g.zoneLargeur * _mm, h = g.zoneHauteur * _mm;
+    final a = ajusterScene(scene, w, h);
+    final e = a.echelle;
+    return pw.SizedBox(
+        width: w,
+        height: h,
+        child: pw.Stack(overflow: pw.Overflow.visible, children: [
+          pw.Positioned(
+              left: 0,
+              top: 0,
+              child: pw.CustomPaint(
+                  size: PdfPoint(w, h),
+                  painter: (canvas, size) {
+                    canvas
+                      ..setStrokeColor(bleu)
+                      ..setLineWidth(g.traitMm * _mm);
+                    for (final t in scene.traits) {
+                      canvas
+                        ..moveTo(a.dx + t.x1 * e, h - (a.dy + t.y1 * e))
+                        ..lineTo(a.dx + t.x2 * e, h - (a.dy + t.y2 * e))
+                        ..strokePath();
+                    }
+                  })),
+          for (final n in scene.niveaux)
+            pw.Positioned(
+                left: a.dx + n.x * e - 20,
+                top: a.dy + n.y * e - scene.police * e * 0.7,
+                child: pw.SizedBox(width: 40, child: pw.Text('${n.n}', textAlign: pw.TextAlign.center, style: s(scene.police * e * 1.1)))),
+          for (final k in scene.cases)
+            pw.Positioned(
+                left: a.dx + k.x * e,
+                top: a.dy + k.y * e,
+                child: pw.Container(
+                    width: k.l * e,
+                    height: k.h * e,
+                    decoration: pw.BoxDecoration(color: bleu, border: pw.Border.all(color: bleuFonce, width: g.bordUnites * e)),
+                    padding: pw.EdgeInsets.symmetric(horizontal: g.insetX * e, vertical: g.insetY * e),
+                    child: pw.Container(
+                        color: bleuClair,
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(k.texte, textAlign: pw.TextAlign.center, maxLines: 3, style: s(scene.police * e))))),
+        ]));
+  }
+
+  pw.Widget legende(PageLegende page) => pw.Padding(
+      padding: pw.EdgeInsets.only(left: (g.legendeGauche - g.margeCote) * _mm, top: g.legendeHaut * _mm),
+      child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+        for (final l in page.lignes)
+          pw.SizedBox(
+              height: g.legendeLigne * _mm,
+              child: pw.RichText(
+                  text: pw.TextSpan(style: s(g.legendeCorps), children: [
+                pw.TextSpan(text: l.code, style: s(g.legendeCorps, f: p.gras)),
+                pw.TextSpan(text: ' : ${l.libelle}'),
+              ]))),
+      ]));
+
+  pw.Widget pied() => pw.Container(
+      height: g.hauteurPied * _mm,
+      alignment: pw.Alignment.bottomCenter,
+      child: pw.Column(mainAxisSize: pw.MainAxisSize.min, children: [
+        for (final l in x.pied) pw.Text(l, textAlign: pw.TextAlign.center, style: s(7.5)),
+        pw.Text(x.fiche.mention, textAlign: pw.TextAlign.center, style: s(9.5, c: rouge)),
+        pw.Text(x.tracabilite, textAlign: pw.TextAlign.center, style: s(5.5, c: gris)),
+      ]));
+
+  for (var i = 0; i < x.pages.length; i++) {
+    final page = x.pages[i];
+    doc.addPage(pw.Page(
+        pageFormat: PdfPageFormat(g.largeur * _mm, g.hauteur * _mm, marginLeft: g.margeCote * _mm, marginRight: g.margeCote * _mm, marginTop: g.margeHaut * _mm, marginBottom: g.margeBas * _mm),
+        build: (_) => pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
+              pw.Center(child: cartouche(i)),
+              pw.SizedBox(height: g.ecartContenu * _mm),
+              pw.Expanded(
+                  child: switch (page) {
+                PageGraphe() => graphe(page.scene),
+                PageLegende() => legende(page),
+              }),
+              pied(),
+            ])));
+  }
+  return doc.save();
+}

@@ -5,6 +5,8 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/donnees_navigation.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../impression/apercu.dart';
+import '../../impression/fiche_organigramme.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -203,11 +205,16 @@ class _OngletOrganigramme extends StatelessWidget {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('postes');
     return ListenableBuilder(
-        listenable: col,
+        listenable: Listenable.merge([col, c.magasin.collection(ficheDocCollection)]),
         builder: (ctx, _) {
           final plats = col.actives;
           final racines = cfaArbre(plats);
           String nomDe(Object? id) => plats.where((p) => p['id'] == id).map((p) => '${p['poste']}').firstOrNull ?? '—';
+          // L'ORGANIGRAMME IMPRIMÉ : la fiche documentaire paysage (cartouche, graphe, légende) bâtie sur les postes actifs et les paramètres de la fiche.
+          void imprimerOrganigramme() => afficherApercuFiche(
+              context,
+              fichePaysageOrganigramme(c.magasin,
+                  utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero())));
           void imprimer() => cfaImprimer(context,
               titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',
               sousTitre: 'Structure organisationnelle et correspondance des rôles',
@@ -230,8 +237,37 @@ class _OngletOrganigramme extends StatelessWidget {
           return cfaPile([
             CarteSigh(
                 titre: 'Organigramme de la ${IdentiteClinique.nomCourt}',
-                actions: [BoutonSigh(libelle: 'Imprimer l’organigramme', icone: LucideIcons.printer, variante: VarianteBouton.secondaire, taille: TailleBouton.sm, onPressed: imprimer)],
+                actions: [
+                  BoutonSigh(
+                      libelle: 'Imprimer l’organigramme', icone: LucideIcons.printer, variante: VarianteBouton.secondaire, taille: TailleBouton.sm, onPressed: imprimerOrganigramme),
+                  BoutonSigh(
+                      libelle: 'Imprimer la liste des postes', icone: LucideIcons.listOrdered, variante: VarianteBouton.secondaire, taille: TailleBouton.sm, onPressed: imprimer),
+                ],
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [for (final r in racines) _noeud(c.magasin, r, 0)])),
+            CfaTableau(
+              collection: ficheDocCollection,
+              titre: 'Fiche imprimée de l’organigramme — cartouche et mention de propriété',
+              entite: 'Fiche',
+              prefixeId: 'FDO',
+              nomExport: 'fiches-documentaires',
+              archivable: false,
+              creer: false,
+              colonnes: [
+                const ColonneTableau(cle: 'reference', libelle: 'Référence'),
+                ColonneTableau(cle: 'date', libelle: 'Date', texte: (f) => ParametresFiche.depuisFiche(f).dateImprimee),
+                const ColonneTableau(cle: 'version', libelle: 'Version'),
+                ColonneTableau(cle: 'titre', libelle: 'Titre', texte: (f) => '${f['titreHaut'] ?? ''} / ${f['titre'] ?? ''}'),
+                const ColonneTableau(cle: 'mention', libelle: 'Mention de propriété'),
+              ],
+              champs: (e) => const [
+                ChampDef(nom: 'reference', libelle: 'Référence documentaire', requis: true, aide: 'Imprimée dans le cartouche (ex. FCH_GRH_006).'),
+                ChampDef(nom: 'date', libelle: 'Date de la fiche', type: TypeChamp.date, requis: true),
+                ChampDef(nom: 'version', libelle: 'Version', requis: true),
+                ChampDef(nom: 'titreHaut', libelle: 'Titre (haut du cartouche)', requis: true),
+                ChampDef(nom: 'titre', libelle: 'Titre (bas du cartouche)', requis: true),
+                ChampDef(nom: 'mention', libelle: 'Mention de propriété (pied de page)', requis: true, col: ColChamp.plein),
+              ],
+            ),
             CfaTableau(
               collection: 'postes',
               titre: 'Postes — création, réaffectation et archivage',
@@ -273,6 +309,31 @@ class _OngletOrganigramme extends StatelessWidget {
                   const ChampDef(nom: 'titulaire', libelle: 'Titulaire / chef de service', col: ColChamp.plein),
                   ChampDef(nom: 'role', libelle: 'Rôle RBAC', type: TypeChamp.select, requis: true, options: _optionsRoles(c.magasin)),
                   const ChampDef(nom: 'chef', libelle: 'Chef de service', type: TypeChamp.case_),
+                  const ChampDef.section('Place dans l’organigramme imprimé'),
+                  const ChampDef(
+                      nom: 'code',
+                      libelle: 'Code abrégé',
+                      col: ColChamp.tiers,
+                      aide: 'Écrit dans la case du graphe et expliqué en légende. Vide : l’intitulé complet s’écrit dans la case, sans légende.'),
+                  const ChampDef(nom: 'codeLegende', libelle: 'Code en légende', col: ColChamp.tiers, aide: 'Seulement si la légende l’écrit autrement que la case.'),
+                  const ChampDef(nom: 'ordreLegende', libelle: 'Rang en légende', type: TypeChamp.nombre, col: ColChamp.tiers),
+                  const ChampDef(nom: 'niveau', libelle: 'Niveau (1 à 6)', type: TypeChamp.nombre, col: ColChamp.tiers, aide: 'Vide : niveau du rattachement + 1.'),
+                  const ChampDef(nom: 'x', libelle: 'Position horizontale (centre)', type: TypeChamp.nombre, col: ColChamp.tiers, aide: 'Unités de grille ; x et y vides : le poste est placé automatiquement.'),
+                  const ChampDef(nom: 'y', libelle: 'Position verticale (centre)', type: TypeChamp.nombre, col: ColChamp.tiers),
+                  const ChampDef(nom: 'largeur', libelle: 'Largeur de la case', type: TypeChamp.nombre, col: ColChamp.tiers),
+                  const ChampDef(nom: 'hauteur', libelle: 'Hauteur de la case', type: TypeChamp.nombre, col: ColChamp.tiers),
+                  ChampDef(
+                      nom: 'lien',
+                      libelle: 'Lien au rattachement',
+                      type: TypeChamp.select,
+                      col: ColChamp.tiers,
+                      options: [
+                        const OptionChamp('', 'Hiérarchique (par une barre)'),
+                        for (final l in organigrammeLiens.skip(1)) OptionChamp(l, l == 'accole' ? 'Accolé (trait horizontal)' : 'Direct (descente droite)'),
+                      ]),
+                  const ChampDef(nom: 'barre', libelle: 'Hauteur de la barre', type: TypeChamp.nombre, col: ColChamp.tiers, aide: 'Vide : à mi-chemin du rattachement.'),
+                  const ChampDef(nom: 'coudeX', libelle: 'Coude du tronc : horizontale', type: TypeChamp.nombre, col: ColChamp.tiers),
+                  const ChampDef(nom: 'coudeY', libelle: 'Coude du tronc : verticale', type: TypeChamp.nombre, col: ColChamp.tiers),
                 ];
               },
               valeursInitiales: () => {'effectif': '1', 'role': 'agentadmin'},
