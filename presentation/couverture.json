@@ -1856,8 +1856,8 @@
    "ecran": "cfg-organisation",
    "role": "admin",
    "geste": "onglet « Organigramme » › Imprimer l’organigramme",
-   "octets": 119779,
-   "pages": 1
+   "octets": 104327,
+   "pages": 2
   },
   {
    "module": "CFG",

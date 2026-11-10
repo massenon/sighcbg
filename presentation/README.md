@@ -253,7 +253,7 @@ Le tableau de **couverture** complet (écran source, rôle, pages, particularit�
 - [Aperçu du papier à en-tête](cfg-configuration/apercu-du-papier-a-en-tete.pdf) (1 p.)
 - [Grille tarifaire des actes et prestations](cfg-configuration/grille-tarifaire-des-actes-et-prestations.pdf) (2 p.)
 - [Matrice de traçabilité des règles métier](cfg-configuration/matrice-de-tracabilite-des-regles-metier.pdf) (2 p.)
-- [Organigramme de la CLINIQUE BAGUIDI](cfg-configuration/organigramme-de-la-clinique-baguidi.pdf) (1 p.)
+- [Organigramme de la CLINIQUE BAGUIDI](cfg-configuration/organigramme-de-la-clinique-baguidi.pdf) (2 p., paysage)
 - [Répartition des secteurs de la clinique](cfg-configuration/repartition-des-secteurs-de-la-clinique.pdf) (1 p.)
 
 ### Transverse — gabarit commun des listes filtrées

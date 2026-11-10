@@ -291,7 +291,7 @@ Fichier **engendré** par `apps/poste/tool/specimens/finaliser.py` à partir de 
 | Aperçu du papier à en-tête | [`cfg-configuration/apercu-du-papier-a-en-tete.pdf`](cfg-configuration/apercu-du-papier-a-en-tete.pdf) | 1 | `cfg-branding` | admin |  |
 | Grille tarifaire des actes et prestations | [`cfg-configuration/grille-tarifaire-des-actes-et-prestations.pdf`](cfg-configuration/grille-tarifaire-des-actes-et-prestations.pdf) | 2 | `cfg-tarifs` | admin |  |
 | Matrice de traçabilité des règles métier | [`cfg-configuration/matrice-de-tracabilite-des-regles-metier.pdf`](cfg-configuration/matrice-de-tracabilite-des-regles-metier.pdf) | 2 | `cfg-regles` | admin |  |
-| Organigramme de la CLINIQUE BAGUIDI | [`cfg-configuration/organigramme-de-la-clinique-baguidi.pdf`](cfg-configuration/organigramme-de-la-clinique-baguidi.pdf) | 1 | `cfg-organisation` | admin |  |
+| Organigramme de la CLINIQUE BAGUIDI (fiche FCH_GRH_006, paysage : graphe + légende) | [`cfg-configuration/organigramme-de-la-clinique-baguidi.pdf`](cfg-configuration/organigramme-de-la-clinique-baguidi.pdf) | 2 | `cfg-organisation` | admin | Remplace l’ancien tableau A4 portrait (toujours imprimable sous « Imprimer la liste des postes ») |
 | Répartition des secteurs de la clinique | [`cfg-configuration/repartition-des-secteurs-de-la-clinique.pdf`](cfg-configuration/repartition-des-secteurs-de-la-clinique.pdf) | 1 | `cfg-organisation` | admin |  |
 
 ## Transverse — gabarit commun des listes filtrées
