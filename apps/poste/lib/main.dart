@@ -9,6 +9,7 @@ import 'package:window_manager/window_manager.dart';
 
 
 import 'donnees/magasin.dart';
+import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
 import 'donnees/persistance.dart';
 import 'modules/cfg/cfb_systeme.dart' show CfbPersistance;
@@ -17,6 +18,7 @@ import 'core/dossier_donnees.dart';
 import 'core/identite_poste.dart';
 import 'core/controleur_poste.dart';
 import 'core/donnees_navigation.dart';
+import 'core/matrice_vive.dart';
 import 'core/identifiants.dart';
 import 'core/service_installation.dart';
 import 'core/parametres_poste.dart';
@@ -126,15 +128,17 @@ Future<void> main() async {
   final cle = chiffrementActif != 'non' ? await CleLocale('$dossierDonnees/cle-poste.bin').obtenir() : null;
   final cleSqlite = cle == null ? '' : cle.map((o) => o.toRadixString(16).padLeft(2, '0')).join();
   final stockage = StockageFichier('$dossierDonnees/poste.json', cle: cle);
+  // La mère démarre avant le magasin du poste : ses droits d'échange entre pairs sont posés plus bas (`configMere.droitsPair`), adossés à la matrice EN FORCE.
+  final configMere = ConfigMere(
+      port: 9000,
+      dbChemin: '$dossierDonnees/mere.db',
+      admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
+      cleStockage: cleSqlite,
+      dossierSauvegardes: '$dossierDonnees/sauvegardes',
+      versionApplication: const String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0'));
   final activation = ActivationMere(
     stockage: stockage,
-    service: ServiceMereLocal(ConfigMere(
-        port: 9000,
-        dbChemin: '$dossierDonnees/mere.db',
-        admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
-        cleStockage: cleSqlite,
-        dossierSauvegardes: '$dossierDonnees/sauvegardes',
-        versionApplication: const String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0'))),
+    service: ServiceMereLocal(configMere),
     relaisPour: (relais, secret) => RelaisMereHttp(
         base: Uri.parse(relais), secretMere: secret, client: http.Client()),
   );
@@ -172,6 +176,11 @@ Future<void> main() async {
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
   await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
+  // LA MATRICE EN FORCE, lue à chaque évaluation : la graine engendrée plus les décisions de droits du magasin. Ni l'échange entre pairs ni le jugement des décisions
+  // par la mère ne capturent une matrice au démarrage (une capture serait figée au jour du lancement).
+  final navigation = await DonneesNavigation.chargerAssets();
+  final matriceVive = MatriceVive(navigation, magasin);
+  configMere.droitsPair = droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler);
   // D2 (Direction, 09/11/2026) : un poste déjà installé reçoit le versement CNSS du 15 (non arrêté) et ses échéances, sans rien écraser.
   if (migrerCnssVers(magasin).aFaitQuelqueChose) await magasin.ecrireMaintenant();
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
@@ -194,6 +203,9 @@ Future<void> main() async {
       // Lot L0 : la MÈRE sème le défaut (version 0) de chaque paramètre déclaré, une seule fois ; les fileuls reçoivent ces fiches par le journal. Le semis part
       // ensuite avec le reste de la configuration, chiffré vers le relais.
       serviceParametres(magasin, auteur: () => 'Poste mère').semerDefauts();
+      // Les décisions de droits que les fileuls habilités ont envoyées : la mère les juge sur SA matrice en force, les applique, les journalise, et la fiche `rbac` repart
+      // vers tous les postes avec le reste de la configuration.
+      ServiceDroits.de(magasin).demarrerMere(peutEditerEnForce: matriceVive.peutEditer);
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();
@@ -279,14 +291,13 @@ Future<void> main() async {
     final cp = ConfigPairPoste.lire(dossierDonnees);
     if (cp != null) {
       // Les droits de l'échange viennent de la MATRICE RBAC engendrée (la même que celle de la navigation), plus de la table du banc.
-      final matrice = (await DonneesNavigation.chargerAssets()).matrice;
       moteurPair = MoteurPair.creer(
           magasin: magasin,
           dbChemin: '$dossierDonnees/pair.db',
           relais: cp.relais,
           cleHex: cp.cleHex,
           nom: cp.nom,
-          droits: droitsDepuisMatrice(peutEditer: matrice.peutEditer, peutAnnuler: matrice.peutAnnuler));
+          droits: droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler));
       if (!moteurPair.appaire && cp.code != null) {
         try {
           await moteurPair.appairer(cp.code!);
@@ -310,7 +321,7 @@ Future<void> main() async {
   }
   runApp(SighPoste(
       controleur: controleur,
-      donnees: await DonneesNavigation.chargerAssets(),
+      donnees: navigation,
       magasin: magasin,
       session: session,
       ouvrirTrancher: moteurPair == null

@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show IdentiteClinique, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient;
+    show DroitsOperation, IdentiteClinique, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -41,6 +41,9 @@ const familleDeBase = <String, String>{
   'deltasCompteurs': 'A',
   // Un battement par poste : de quoi compter les postes d'une clinique.
   'postesClinique': 'A',
+  // Les DÉCISIONS DE DROITS (10/11/2026) : un poste habilité (ou la mère) y dépose sa demande de modification d'un droit de rôle ; la mère la juge, l'applique à
+  // `rbac` (qu'elle seule écrit, famille R) et marque l'issue sur la même fiche. Rien ne s'y supprime.
+  'decisionsDroits': 'A',
   'constantes': 'B', 'notes': 'B',
   'cpn': 'B', 'cpon': 'B', 'surveillances': 'B', 'orientations': 'B', // suite du mobile (E1650 à E1660)
   'factures': 'C', 'prescriptions': 'C',
@@ -155,6 +158,10 @@ class ConfigMere {
 
   /// Chemin de `rbac.json` ; vide : cherché en remontant depuis le dossier courant (`packages/rbac/data/rbac.json`).
   final String matriceChemin;
+
+  /// Les droits de l'échange entre pairs fournis par le poste qui porte la mère, À ÉVALUER à chaque opération (la matrice EN FORCE : les décisions de droits y sont
+  /// déjà). Posé après la construction : la mère démarre avant le magasin du poste. `null` : la matrice engendrée `rbac.json`, qui n'est que la graine.
+  DroitsOperation? droitsPair;
 
   /// La clé (hexadécimale, 256 bits) qui chiffre la base SQLite de la mère au repos ; `''` : base en clair (bancs, développement).
   final String cleStockage;

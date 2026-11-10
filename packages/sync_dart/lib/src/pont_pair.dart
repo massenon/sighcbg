@@ -39,12 +39,15 @@ DroitsOperation chargerDroitsPair(String mode, String chemin) {
 }
 
 class PontPair {
-  PontPair(this.mere)
-      : horloge = HorlogePair(maintenantMs: maintenantMs),
-        droits = chargerDroitsPair(mere.cfg.droits, mere.cfg.matriceChemin);
+  PontPair(this.mere) : horloge = HorlogePair(maintenantMs: maintenantMs);
   final Mere mere;
   final HorlogePair horloge;
-  final DroitsOperation droits;
+
+  /// Les droits de l'échange, lus À CHAQUE ÉVALUATION : si le poste qui porte la mère a injecté les siens (`ConfigMere.droitsPair`, adossés à la matrice EN FORCE — graine
+  /// plus décisions de droits), une décision prise à l'écran « Rôles et permissions » vaut aussitôt pour l'échange entre pairs. Sans injection (mère autonome, bancs),
+  /// la matrice engendrée `rbac.json` est lue une fois, comme avant : c'est alors LA GRAINE, et elle ne bouge qu'avec le fichier.
+  DroitsOperation get droits => mere.cfg.droitsPair ?? (_depuisFichier ??= chargerDroitsPair(mere.cfg.droits, mere.cfg.matriceChemin));
+  DroitsOperation? _depuisFichier;
 
   Depot get base => mere.base;
 

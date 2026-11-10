@@ -517,6 +517,7 @@ class Magasin {
     'utilisateurs': 'M14',
     'identifiants': 'M14',
     'rbac': 'M14',
+    'decisionsDroits': 'M14',
     'tentativesConnexion': 'M14',
     'sessionsUtilisateur': 'M14',
     'politiqueSecurite': 'M14',

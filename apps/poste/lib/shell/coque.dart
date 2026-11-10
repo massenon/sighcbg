@@ -144,8 +144,35 @@ class _CoquePosteState extends State<CoquePoste> {
 
   void _surDroits() {
     if (!mounted) return;
-    setState(() => _nav = _calculerNav());
+    setState(() {
+      _nav = _calculerNav();
+      _fermerSiDroitRetire();
+    });
   }
+
+  /// UNE SESSION OUVERTE GARDE SA SESSION, PAS SES DROITS PÉRIMÉS (10/11/2026) : quand une décision de droits retire à l'agent l'écran qu'il a sous les yeux, la coque
+  /// ne le laisse pas à l'écran — il retombe sur son accueil, et l'accès est journalisé (RG-12, RG-13). Un droit retiré SEULEMENT en écriture n'a pas besoin de ça : le
+  /// contexte de l'écran change, ses commandes d'écriture disparaissent au même instant (lecture seule), sans rien perdre de ce qui est affiché.
+  void _fermerSiDroitRetire() {
+    final id = _ecran;
+    if (id == null || id.startsWith('hub-') || _autonome != null) return;
+    if (_nav.manifeste.ecran(id) == null || _nav.matrice.peutVoir(_role, id) || _fermeturePour(id) != null) return;
+    widget.magasin?.journaliser('Accès retiré à chaud', 'M14', 'Ecran', id, null, {'role': _role});
+    _ecran = null;
+    _domaine = null;
+    _panneauOuvert = false;
+    _droitRetire = id;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final retire = _droitRetire;
+      _droitRetire = null;
+      if (mounted && retire != null) {
+        ToastsSigh.afficher(context, 'Vos droits ont changé : l’écran « ${_nav.manifeste.ecran(retire)?.label ?? retire} » n’est plus ouvert à votre profil.',
+            type: TypeToast.attention);
+      }
+    });
+  }
+
+  String? _droitRetire;
 
   SessionPoste? get _session => widget.session;
   String get _role => _session?.role ?? widget.config.role;
@@ -293,7 +320,9 @@ class _CoquePosteState extends State<CoquePoste> {
 
   /// Les écrans qui se règlent sur la MÈRE : sur un poste fileul rattaché à une clinique ils sont en LECTURE SEULE (le moteur refuse aussi l'écriture, voir
   /// `ApplicateurConfiguration`). Les écrans de configuration (module CFG), les droits, les comptes et la configuration fiscale.
-  static const Set<String> _reglesSurLaMere = {'m14-roles', 'm14-utilisateurs', 'mecef-config'};
+  /// `m14-roles` n'y figure plus (10/11/2026) : un fileul habilité y décide des droits, la décision part à la mère qui la juge, l'applique et la diffuse à tous les
+  /// postes (`ServiceDroits`). La fiche `rbac` elle-même reste réglée sur la mère : le fileul ne l'écrit jamais.
+  static const Set<String> _reglesSurLaMere = {'m14-utilisateurs', 'mecef-config'};
 
   /// Sur un fileul rattaché, un écran réglé sur la mère le DIT en tête de sa règle (et pas seulement par le refus d'écriture).
   String? _regleAvecMere(String id, String? regle) {

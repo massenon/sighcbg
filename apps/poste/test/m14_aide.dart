@@ -84,6 +84,14 @@ Future<void> choisirM14(WidgetTester t, String champ, String cible) async {
 Future<void> cocher(WidgetTester t, String champ) =>
     toucherM14(t, find.byKey(Key('kit:champ:$champ')));
 
+/// Le MOTIF d'une décision de droits (10/11/2026) : la boîte « Motif * » s'ouvre au-dessus de la modale ; on le saisit et on confirme par le bouton de la boîte (le
+/// dernier de la pile : la modale dessous porte parfois le même libellé).
+Future<void> motifM14(WidgetTester t, String libelleOk, [String motif = 'Revue des habilitations']) async {
+  await t.enterText(find.byType(TextField).last, motif);
+  await t.pump();
+  await toucherM14(t, find.widgetWithText(BoutonSigh, libelleOk).last);
+}
+
 void casM14(String nom, Future<void> Function(WidgetTester) corps) =>
     testWidgets(nom, (t) async {
       await corps(t);

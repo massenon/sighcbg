@@ -128,11 +128,18 @@ void main() {
       await t.pump(const Duration(milliseconds: 400));
       await g.$2(t, m);
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer les droits'));
+      await motifM14(t, 'Enregistrer les droits');
       final attendu = f(f(liste0(f(c['apres'])['fiches']))['droits']);
       final obtenu = f(ficheRole(m, g.$1)['droits']);
-      expect(obtenu.keys.toSet(), attendu.keys.toSet(), reason: nom);
+      // Une décision de droits ne porte que les droits qui CHANGENT (la plus récente l'emporte clé par clé : réécrire un module inchangé écraserait la décision d'un autre
+      // poste). La maquette réécrivait tous les modules : l'équivalence se mesure donc sur le droit EFFECTIF de chaque module, qui doit être celui de la maquette.
       for (final code in attendu.keys) {
-        expect(f(obtenu[code]), f(attendu[code]), reason: '$nom — $code');
+        final d = secDroitModule(g.$1, code,
+            bases: {for (final b in m.collection('rolesBase').toutes) '${b['id']}': b},
+            sur: secSurcharges(m.collection('rbac').toutes),
+            rolesBase: m.collection('rolesBase').toutes);
+        expect({'voir': d.voir, 'editer': d.editer, 'annuler': d.annuler}, f(attendu[code]), reason: '$nom — $code');
+        if (obtenu.containsKey(code)) expect(f(obtenu[code]), f(attendu[code]), reason: '$nom — $code écrit');
       }
       // Le message d'enregistrement porte le détail de la maquette.
       expect(find.text('Droits du rôle « ${m.collection('rolesBase').toutes.firstWhere((r) => r['id'] == g.$1)['label']} » enregistrés.'), findsOneWidget, reason: nom);
@@ -153,6 +160,7 @@ void main() {
     await t.pump(const Duration(milliseconds: 400));
     await cliquer(t, 'case:${premierRang(m, 'M10')}:lecture');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer les droits'));
+    await motifM14(t, 'Enregistrer les droits');
     // Les deux rangées de M1 et de M2 sont synchrones (état par code) : seul M10 change de case.
     expect(find.byTooltip('Lecture seule').evaluate().length, greaterThan(avant));
   });
@@ -175,6 +183,7 @@ void main() {
     final rangPatients = initial.indexWhere((e) => e['id'] == 'm1-patients');
     await cliquer(t, 'ecran:$rangPatients:voir');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
+    await motifM14(t, 'Enregistrer');
     final ecrits = f(ficheRole(m, 'laborantin')['droitsEcrans']);
     expect(f(ecrits['m1-patients']), {'voir': false, 'editer': false, 'annuler': false});
     expect(find.text('Droits par écran enregistrés.'), findsOneWidget);
@@ -190,6 +199,7 @@ void main() {
     await icone(t, m, 'laborantin', 'Régler écran par écran');
     await t.pump(const Duration(milliseconds: 400));
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Retirer tous les réglages d’écran'));
+    await motifM14(t, 'Retirer les réglages');
     expect(f(ficheRole(m, 'laborantin')['droitsEcrans']), isEmpty);
     expect(find.text('Réglages d’écran retirés.'), findsOneWidget);
     expect(find.text('Tous les écrans suivent de nouveau leur module.'), findsOneWidget);

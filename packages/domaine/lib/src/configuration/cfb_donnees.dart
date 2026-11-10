@@ -373,6 +373,7 @@ const cfbLibellesCollections = <String, (String, String)>{
   'rapportsMedicaux': ('M3', 'Rapports médicaux'),
   'rapprochements': ('M12', 'Rapprochements bancaires'),
   'rbac': ('M14', 'Rôles et permissions'),
+  'decisionsDroits': ('M14', 'Décisions de droits'),
   'regimesTravail': ('M10', 'Régimes de travail par catégorie'),
   'registreSONU': ('M4', 'Registre SONUB / SONUC'),
   'relances': ('M9', 'Relances'),

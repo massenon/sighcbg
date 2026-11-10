@@ -28,6 +28,8 @@ const Set<String> collectionsActivite = {
   'consultations',
   'dossiersConsultation',
   'antecedents',
+  // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
+  'decisionsDroits',
   // Lot L0 : les USAGES des paramètres par les pièces (une ligne par pièce et par clé, ajout seul). Un fileul note ici qu'une pièce a utilisé une valeur ; la mère,
   // qui seule écrit les versions, refuse ensuite de réécrire ce que cette pièce a utilisé.
   'usagesParametres',

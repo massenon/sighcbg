@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/service_droits.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -101,23 +102,60 @@ class _Ctx {
   Fiche? fiche(String role) =>
       m.collection('rbac').toutes.where((f) => f['role'] == role).firstOrNull;
 
-  /// `enregistrer(roleId, valeurs, journal)` : met à jour la fiche du rôle ou en crée une, puis journalise (RG-12). Rend l'annulation.
-  VoidCallback enregistrer(
-      String role, Map<String, Object?> valeurs, String journal) {
-    final col = m.collection('rbac');
-    final f = fiche(role);
-    VoidCallback annuler;
-    if (f != null) {
-      annuler = col.mettreAJour(f['id'], valeurs);
-    } else {
-      annuler = col.inserer({
-        'role': role,
-        'libelleOrigine': this.role(role)?.labelOrigine ?? role,
-        ...valeurs,
-      }, prefixe: 'RBAC').annuler;
-    }
-    m.journaliser(journal, 'M14', 'Rôle', role, null, valeurs);
-    return annuler;
+  /// `enregistrer(roleId, valeurs, journal)` : décide des droits du rôle (10/11/2026). La décision porte son motif, son auteur, son horodatage ; elle s'applique
+  /// aussitôt ici (mère, poste isolé) ou part à la mère (fileul rattaché), puis se diffuse à tous les postes sans redémarrage. Journalisée (RG-12) avec l'ancien et
+  /// le nouveau droit. Rend l'annulation, qui est une décision de plus.
+  VoidCallback enregistrer(String role, Map<String, Object?> valeurs, String journal, {String? motif}) {
+    final service = ServiceDroits.de(m);
+    final neuf = service.ficheDuRole(role) == null;
+    final r = service.decider(
+        role: role,
+        valeurs: {if (neuf) 'libelleOrigine': this.role(role)?.labelOrigine ?? role, ...valeurs},
+        journal: journal,
+        motif: (motif ?? '').trim().isEmpty ? journal : motif!.trim(),
+        auteurRole: c.role);
+    derniere = r;
+    return r.annuler;
+  }
+
+  /// La dernière décision posée par cet écran (pour annoncer qu'elle est partie à la mère, ou qu'une décision plus récente l'a devancée).
+  ResultatPoseDroits? derniere;
+
+  /// Ce que la modification fait des AUTRES postes, en toutes lettres : elle s'applique à tous les postes appairés, sans redémarrage ni réinstallation.
+  String get diffusion {
+    final s = ServiceDroits.de(m);
+    final n = s.postesDeLaClinique();
+    final portee = n == null
+        ? 'à tous les postes appairés de la clinique (ce poste ne connaît pas leur nombre)'
+        : 'à ${nombre(n)} poste(s) de la clinique, la mère comprise';
+    return s.estFileul
+        ? 'Ce poste est rattaché à la mère : la décision part chez elle, qui la juge, l\'applique $portee et la diffuse, sans redémarrage ni réinstallation.'
+        : 'La modification s\'applique $portee, tout de suite et sans redémarrage ni réinstallation : le ruban, les accès rapides et les boutons d\'écriture des postes ouverts se recalculent.';
+  }
+}
+
+/// Après une décision : annonce ce que l'agent doit savoir (partie à la mère, écartée par une décision plus récente, concurrente d'une autre).
+void _annoncerDecision(BuildContext ctx, _Ctx x) {
+  final d = x.derniere;
+  if (d == null || !ctx.mounted) return;
+  if (d.transmise) {
+    ToastsSigh.afficher(ctx, 'Décision transmise à la mère.',
+        type: TypeToast.info, detail: 'Elle s\'appliquera à tous les postes dès qu\'elle l\'aura jugée.');
+    return;
+  }
+  final r = d.resultat;
+  if (r == null) return;
+  if (r.issue == 'ecartee') {
+    ToastsSigh.afficher(ctx, 'Décision écartée : une décision plus récente tient déjà ces droits.',
+        type: TypeToast.attention,
+        detail: [for (final l in r.ecartees) '${drLibelleCle(l.cle)} — ${l.remplaceeParAuteur ?? ''} : « ${l.remplaceeParMotif ?? ''} »'].join(' · '));
+  } else if (r.issue == 'partielle') {
+    ToastsSigh.afficher(ctx, 'Décision appliquée en partie.',
+        type: TypeToast.attention, detail: 'Écartés, car une décision plus récente les tient : ${[for (final l in r.ecartees) drLibelleCle(l.cle)].join(', ')}.');
+  } else if (r.concurrentes.isNotEmpty) {
+    ToastsSigh.afficher(ctx, 'Décision concurrente : elle remplace celle d\'un autre poste.',
+        type: TypeToast.attention,
+        detail: [for (final l in r.concurrentes) '${drLibelleCle(l.cle)} — remplace la décision de ${l.remplaceeParAuteur ?? 'un autre poste'} (« ${l.remplaceeParMotif ?? ''} »)'].join(' · '));
   }
 }
 
@@ -190,6 +228,11 @@ class _VueRolesState extends State<_VueRoles> {
             surExaminer: () => setState(() => _ancre = 'tentatives')),
         const SizedBox(height: 16),
       ],
+      NoteSigh(x.diffusion,
+          key: const Key('m14:diffusion'),
+          ton: TonSigh.info,
+          icone: LucideIcons.radio),
+      const SizedBox(height: 16),
       KpiGrilleSigh(kpis: [
         KpiSigh(
             libelle: 'Rôles actifs',
@@ -236,6 +279,11 @@ class _VueRolesState extends State<_VueRoles> {
               id: 'metier',
               libelle: 'Habilitations métier',
               construire: (ctx) => const _OngletMetier()),
+          OngletDef(
+              id: 'decisions',
+              libelle: 'Décisions de droits',
+              compte: x.m.collection(drCollectionDecisions).actives.length,
+              construire: (ctx) => _OngletDecisions(x: x)),
           OngletDef(
               id: 'tentatives',
               libelle: 'Tentatives refusées',
@@ -350,7 +398,7 @@ class _OngletMatrice extends StatelessWidget {
     final c = x.c;
     const largeRole = 240.0;
     const largeCase = 44.0;
-    const largeActions = 170.0;
+    const largeActions = 206.0;
     final entete = const TextStyle(
         color: JetonsShell.slate500,
         fontSize: 12,
@@ -427,6 +475,11 @@ class _OngletMatrice extends StatelessWidget {
                             icone: LucideIcons.pencil,
                             libelle: 'Renommer ce rôle',
                             onPressed: () => _renommer(context, x, r)),
+                        if (ServiceDroits.de(x.m).graineDuRole(r.id) != null)
+                          BoutonIcone(
+                              icone: LucideIcons.rotateCcw,
+                              libelle: 'Revenir au défaut d’origine',
+                              onPressed: () => _revenirAuDefaut(context, x, r)),
                       ],
                       if (c.droit.annuler)
                         BoutonIcone(
@@ -1026,7 +1079,13 @@ void _editerRole(BuildContext ctx, _Ctx x, RoleSec r) {
             BoutonSigh(
                 libelle: 'Enregistrer les droits',
                 icone: LucideIcons.save,
-                onPressed: () {
+                onPressed: () async {
+                  // Le MOTIF est obligatoire : une décision de droits sans motif ne s'applique pas, et il voyage avec elle jusqu'au journal (RG-12).
+                  final motif = await confirmerAvecMotif(ctx,
+                      titre: 'Enregistrer les droits de « ${r.label} » ?',
+                      message: x.diffusion,
+                      libelleOk: 'Enregistrer les droits');
+                  if (motif == null || !ctx.mounted) return;
                   // Le détail annoncé compte les RANGÉES du manifeste (`modules.filter`), comme la maquette.
                   final lignes = [
                     for (final mo in x.modules) etat['${mo['code']}']!
@@ -1043,8 +1102,10 @@ void _editerRole(BuildContext ctx, _Ctx x, RoleSec r) {
                         'definiLe': iso(c.aujourdhui),
                         'definiPar': acteur(c).nom,
                       },
-                      'Modification des droits RBAC');
+                      'Modification des droits RBAC',
+                      motif: motif);
                   fermer();
+                  _annoncerDecision(ctx, x);
                   ToastsSigh.afficher(
                       ctx, 'Droits du rôle « ${r.label} » enregistrés.',
                       type: TypeToast.succes,
@@ -1246,10 +1307,16 @@ void _editerEcrans(BuildContext ctx, _Ctx x, RoleSec r) {
                 libelle: 'Retirer tous les réglages d’écran',
                 icone: LucideIcons.rotateCcw,
                 variante: VarianteBouton.secondaire,
-                onPressed: () {
+                onPressed: () async {
+                  final motif = await confirmerAvecMotif(ctx,
+                      titre: 'Retirer tous les réglages d’écran de « ${r.label} » ?',
+                      message: x.diffusion,
+                      libelleOk: 'Retirer les réglages');
+                  if (motif == null || !ctx.mounted) return;
                   x.enregistrer(r.id, {'droitsEcrans': <String, Object?>{}},
-                      'Retrait des réglages d’écran');
+                      'Retrait des réglages d’écran', motif: motif);
                   fermer();
+                  _annoncerDecision(ctx, x);
                   ToastsSigh.afficher(ctx, 'Réglages d’écran retirés.',
                       type: TypeToast.succes,
                       detail:
@@ -1258,9 +1325,14 @@ void _editerEcrans(BuildContext ctx, _Ctx x, RoleSec r) {
             BoutonSigh(
                 libelle: 'Enregistrer',
                 icone: LucideIcons.save,
-                onPressed: () {
+                onPressed: () async {
+                  final motif = await confirmerAvecMotif(ctx,
+                      titre: 'Enregistrer les droits par écran de « ${r.label} » ?',
+                      message: x.diffusion,
+                      libelleOk: 'Enregistrer');
+                  if (motif == null || !ctx.mounted) return;
                   final existants = <String, Object?>{
-                    ...((f?['droitsEcrans'] as Map?)?.cast<String, Object?>() ??
+                    ...((x.fiche(r.id)?['droitsEcrans'] as Map?)?.cast<String, Object?>() ??
                         const {}),
                   };
                   for (final id in modifies) {
@@ -1269,8 +1341,10 @@ void _editerEcrans(BuildContext ctx, _Ctx x, RoleSec r) {
                   x.enregistrer(
                       r.id,
                       {'droitsEcrans': existants, 'statut': 'actif'},
-                      'Réglage des droits par écran');
+                      'Réglage des droits par écran',
+                      motif: motif);
                   fermer();
+                  _annoncerDecision(ctx, x);
                   final fermes = existants.values
                       .where((v) => (v as Map)['voir'] != true)
                       .length;
@@ -1387,24 +1461,28 @@ void _creerRole(BuildContext ctx, ContexteEcran c) {
                     'droits': z.droits,
                     'droitsEcrans': z.droitsEcrans,
                   };
-                  // Upsert : un rôle archivé qu'on recrée reprend sa fiche plutôt que d'en poser une seconde.
+                  // Upsert : un rôle archivé qu'on recrée reprend sa fiche plutôt que d'en poser une seconde. Dans les deux cas c'est une DÉCISION de droits :
+                  // motif, auteur, horodatage, diffusion à tous les postes.
                   final deja = nx.fiche(id);
                   if (deja != null) {
-                    nx.m.collection('rbac').mettreAJour(deja['id'], fiche);
+                    nx.enregistrer(id, fiche, 'Rétablissement d’un rôle', motif: '${v['motif'] ?? ''}');
                     fermer();
                     ToastsSigh.afficher(ctx, 'Rôle « $libelle » rétabli.',
                         type: TypeToast.succes);
+                    _annoncerDecision(ctx, nx);
                     return;
                   }
-                  nx.m.collection('rbac').inserer({
-                    'role': id,
-                    ...fiche,
-                    'definiLe': iso(c.aujourdhui),
-                    'definiPar': acteur(c).nom,
-                  }, prefixe: 'RBAC');
-                  nx.m.journaliser('Création d’un rôle', 'M14', 'Rôle', id,
-                      null, {'libelle': libelle});
+                  nx.enregistrer(
+                      id,
+                      {
+                        ...fiche,
+                        'definiLe': iso(c.aujourdhui),
+                        'definiPar': acteur(c).nom,
+                      },
+                      'Création d’un rôle',
+                      motif: '${v['motif'] ?? ''}');
                   fermer();
+                  _annoncerDecision(ctx, nx);
                   ToastsSigh.afficher(ctx, 'Rôle « $libelle » créé.',
                       type: TypeToast.succes,
                       duree: const Duration(seconds: 9),
@@ -1454,12 +1532,98 @@ void _renommer(BuildContext ctx, _Ctx x, RoleSec r) {
                       {'libelle': v['libelle'], 'statut': 'actif'},
                       'Renommage de rôle');
                   fermer();
+                  _annoncerDecision(ctx, x);
                   ToastsSigh.afficher(ctx, 'Rôle renommé.',
                       type: TypeToast.succes,
                       detail: '${r.label} → ${v['libelle']}',
                       annuler: annuler);
                 }),
           ]);
+}
+
+/// « Revenir au défaut d'origine » : réapplique la graine du rôle EN NOUVELLE VERSION. Jamais en supprimant l'historique : les décisions passées restent au
+/// journal des décisions, et la remise est une décision de plus (motif obligatoire).
+Future<void> _revenirAuDefaut(BuildContext ctx, _Ctx x, RoleSec r) async {
+  final service = ServiceDroits.de(x.m);
+  final motif = await confirmerAvecMotif(ctx,
+      titre: 'Revenir au défaut d’origine pour « ${r.label} » ?',
+      message:
+          'Les droits du rôle retrouvent ceux livrés avec le logiciel. Rien n\'est supprimé : les décisions passées restent au journal des décisions, la remise est une décision de plus (nouvelle version). ${x.diffusion}',
+      libelleOk: 'Revenir au défaut');
+  if (motif == null || !ctx.mounted) return;
+  final res = service.revenirAuDefaut(role: r.id, motif: motif, auteurRole: x.c.role);
+  if (res == null) {
+    ToastsSigh.afficher(ctx, 'Ce rôle n\'a pas de défaut d\'origine.',
+        type: TypeToast.attention, detail: 'Il a été créé en exploitation : aucune graine ne le décrit.');
+    return;
+  }
+  x.derniere = res;
+  if (res.issue == 'sans_effet') {
+    ToastsSigh.afficher(ctx, 'Les droits de « ${r.label} » sont déjà ceux d\'origine.', type: TypeToast.info);
+    return;
+  }
+  ToastsSigh.afficher(ctx, 'Droits de « ${r.label} » remis au défaut d\'origine.',
+      type: TypeToast.succes, detail: 'Nouvelle version ; l\'historique des décisions est conservé.', annuler: res.annuler);
+  _annoncerDecision(ctx, x);
+}
+
+class _OngletDecisions extends StatelessWidget {
+  const _OngletDecisions({required this.x});
+  final _Ctx x;
+
+  static const _issues = {
+    'en_attente': ('En attente de la mère', TonSigh.attention),
+    'appliquee': ('Appliquée', TonSigh.succes),
+    'partielle': ('Appliquée en partie', TonSigh.attention),
+    'ecartee': ('Écartée (décision plus récente)', TonSigh.attention),
+    'sans_effet': ('Sans effet', TonSigh.neutre),
+    'refusee': ('Refusée', TonSigh.danger),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = [
+      for (final d in x.m.collection(drCollectionDecisions).actives)
+        {
+          ...d,
+          'quand': _dateHeureIso(d['decideLe']),
+          'roleLabel': x.libelle('${d['role']}'),
+          'resume': [
+            for (final l in ((d['lignes'] as List?) ?? const []))
+              if (l is Map)
+                '${drLibelleCle('${l['cle']}')} : ${drLibelleValeur('${l['cle']}', l['ancien'])} → ${drLibelleValeur('${l['cle']}', l['nouveau'])}'
+                    '${l['statut'] == 'ecartee' ? ' (écarté)' : ''}${l['concurrent'] == true ? ' (concurrente)' : ''}'
+          ].join(' ; '),
+        }
+    ]..sort((a, b) => '${b['decideLe']}'.compareTo('${a['decideLe']}'));
+    if (rows.isEmpty) {
+      return const CarteSigh(
+          titre: 'Décisions de droits',
+          child: VideSigh('Aucune décision de droits enregistrée.',
+              icone: LucideIcons.history,
+              indice: 'Chaque modification de droit — de la mère ou d\'un poste habilité — s\'inscrit ici avec son motif, son auteur et son horodatage.'));
+    }
+    return TableauSigh(
+      titre: 'Décisions de droits',
+      lignes: rows,
+      taillePage: 15,
+      nomExport: 'decisions-droits',
+      colonnes: [
+        const ColonneTableau(cle: 'quand', libelle: 'Décidée le', sansCoupure: true),
+        const ColonneTableau(cle: 'roleLabel', libelle: 'Rôle'),
+        const ColonneTableau(cle: 'auteur', libelle: 'Auteur'),
+        const ColonneTableau(cle: 'motif', libelle: 'Motif'),
+        const ColonneTableau(cle: 'resume', libelle: 'Droits changés'),
+        ColonneTableau(
+            cle: 'statutDemande',
+            libelle: 'Issue',
+            rendu: (_, r) {
+              final i = _issues['${r['statutDemande']}'] ?? ('${r['statutDemande']}', TonSigh.neutre);
+              return BadgeSigh(i.$1, ton: i.$2);
+            }),
+      ],
+    );
+  }
 }
 
 Future<void> _archiver(BuildContext ctx, _Ctx x, RoleSec r) async {
@@ -1489,7 +1653,9 @@ Future<void> _archiver(BuildContext ctx, _Ctx x, RoleSec r) async {
         'archivePar': acteur(c).nom,
         'motifArchivage': motif,
       },
-      'Archivage de rôle');
+      'Archivage de rôle',
+      motif: motif);
+  _annoncerDecision(ctx, x);
   ToastsSigh.afficher(ctx, 'Rôle archivé.',
       type: TypeToast.succes,
       detail: comptes.isNotEmpty
@@ -1509,6 +1675,7 @@ void _restaurer(BuildContext ctx, _Ctx x, RoleSec r) {
         'restaurePar': acteur(c).nom
       },
       'Restauration de rôle');
+  _annoncerDecision(ctx, x);
   ToastsSigh.afficher(ctx, 'Rôle « ${r.label} » restauré.',
       type: TypeToast.succes,
       detail: 'Ses comptes peuvent de nouveau se connecter.');
