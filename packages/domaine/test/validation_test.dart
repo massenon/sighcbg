@@ -208,8 +208,8 @@ void main() {
         expect(etat[valCollectionValidations]!.where((f) => f['id'] == 'VRF-${c['id']}').length, c['nbFichesVrf'], reason: 'UNE fiche VRF par cible, jamais deux');
         final j = obj(c['journal']);
         expect([r.journal!.action, r.journal!.module, r.journal!.entite, r.journal!.reference], [j['action'], j['module'], j['entite'], j['reference']]);
-        expect(extrait(r.journal!.avant), j['avant']);
-        expect(extrait(r.journal!.apres), '${j['apres']}'.replaceAll(marqueur, r.valideLe!));
+        expect(extrait(r.journal!.avant, j['avant']), j['avant']);
+        expect(extrait(r.journal!.apres, '${j['apres']}'.replaceAll(marqueur, r.valideLe!)), '${j['apres']}'.replaceAll(marqueur, r.valideLe!));
       });
     }
   });
@@ -303,8 +303,8 @@ void main() {
           final j = obj(c['journal']);
           expect(jv, isNotNull);
           expect([jv!.action, jv.module, jv.entite, jv.reference], [j['action'], j['module'], j['entite'], j['reference']]);
-          expect(extrait(jv.avant), j['avant']);
-          expect(extrait(jv.apres), '${j['apres']}'.replaceAll(marqueur, instant));
+          expect(extrait(jv.avant, j['avant']), j['avant']);
+          expect(extrait(jv.apres, '${j['apres']}'.replaceAll(marqueur, instant)), '${j['apres']}'.replaceAll(marqueur, instant));
         }
       });
     }
