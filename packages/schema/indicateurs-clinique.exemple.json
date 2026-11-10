@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "genere_le": 1794218400000,
+  "version_application": "1.4.2+7",
+  "etat_jeu": "demonstration",
+  "patients": {
+    "actifs": 2,
+    "nouveaux_mois": 2
+  },
+  "activite_mois": {
+    "m2_consultations": 1,
+    "m2_visites": 1,
+    "m2_rendezvous": 0,
+    "m3_admissions": 1
+  },
+  "facturation_mois": {
+    "factures_emises": 2,
+    "montant_facture": 15500,
+    "montant_encaisse": 9500,
+    "reste_du": 6000
+  },
+  "stock": {
+    "articles_sous_seuil": 1,
+    "lots_proches_peremption": 1,
+    "lots_perimes": 1
+  },
+  "comptabilite": {
+    "echeances_en_retard": 1,
+    "brouillons_non_valides": 1,
+    "prochaine_echeance_code": "AIB",
+    "prochaine_echeance_date": "2026-11-12"
+  },
+  "utilisateurs_actifs": 1,
+  "taux_occupation_lits_pct": 25,
+  "postes": [
+    {
+      "appareil": "mobile-b2",
+      "derniere_synchro": 1762670000000
+    },
+    {
+      "appareil": "poste-a1",
+      "derniere_synchro": 1762680000000
+    }
+  ]
+}
