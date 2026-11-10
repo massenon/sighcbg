@@ -306,6 +306,17 @@ void _assureursEtEntreprises(Contexte ctx) {
 
 // --- Secteurs, postes, organigramme (J3, décision du 08/11/2026) ------------------------------------------------------------------------------
 
+/// Un poste de l'organigramme réel avec sa place dans le graphe imprimé. `parent` est le RANG (1 = premier poste) du rattachement, 0 pour le sommet.
+class _PosteOrg {
+  const _PosteOrg(this.code, this.codeLegende, this.libelle, this.role, this.parent, this.niveau, this.cx, this.cy, this.l, this.h,
+      {this.titulaire = '', this.lien, this.barre, this.coude});
+  final String code, libelle, role, titulaire;
+  final String? codeLegende, lien;
+  final int parent, niveau, cx, cy, l, h;
+  final int? barre;
+  final (int, int)? coude;
+}
+
 /// Les six secteurs que portent les neuf personnes. Rien n'est repris de l'organigramme de la clinique d'origine. Le responsable n'est nommé que lorsqu'il
 /// est la seule personne du secteur : désigner l'un des deux comptables ou l'un des deux responsables RH serait inventer une hiérarchie.
 void _organisation(Contexte ctx) {
@@ -333,30 +344,65 @@ void _organisation(Contexte ctx) {
         'source': source,
       }
   ]);
-  const postes = [
-    ('Directeur Général', 1, 'BAGUIDI Rafiou', 'direction', null),
-    ('Direction', 1, 'SOKOU Peace', 'direction', 1),
-    ('Comptables', 2, 'SANOUSSI Adamon', 'comptable', 1),
-    ('Responsables des ressources humaines', 2, 'MABOUDOU Nawal', 'rh', 1),
-    ('Médecin', 1, 'IDOHOU Abraham', 'medecin', 1),
-    ('Infirmier', 1, 'AKONDE Octave', 'infirmier', 1),
+  // L'ORGANISATION RÉELLE de la clinique (fiche FCH_GRH_006 du 03/05/2023, remise par la Direction) : dix-neuf postes, six niveaux. Chaque poste porte de quoi
+  // redessiner le graphe imprimé à l'identique (niveau, centre, taille, type de lien, barre, coude) ; le moteur ne connaît aucune coordonnée. Les titulaires
+  // ne figurent pas au document : seul le Directeur Général est connu du jeu, les autres postes restent à compléter par la Direction. Unité de grille : celle
+  // de la première page du document (1520 de large), origine sous le cartouche.
+  const sourcePoste = 'Organigramme de la Clinique Baguidi, fiche FCH_GRH_006 du 03/05/2023 (document remis par la Direction)';
+  const postes = <_PosteOrg>[
+    _PosteOrg('DG/ MC', 'DG/MC', 'Directeur Général/ Médecin chef', 'direction', 0, 1, 800, 42, 206, 43, titulaire: 'BAGUIDI Rafiou'),
+    _PosteOrg('SM', 'SM', 'Secrétaire médicale', 'agentadmin', 1, 1, 1030, 97, 122, 34, lien: 'accole'),
+    _PosteOrg('MG', 'MG', 'Médecin Généraliste', 'medecin', 1, 2, 666, 210, 166, 43, barre: 137),
+    _PosteOrg('MP', 'MP', 'Médecin pédiatre', 'medecin', 1, 2, 1396, 216, 142, 39, barre: 137),
+    _PosteOrg('CARH', 'CARH', 'Chargé de l’Administration et des Ressource Humaines', 'rh', 1, 3, 424, 336, 142, 45, barre: 258),
+    _PosteOrg('', null, 'Responsable Comptable', 'comptable', 1, 3, 660, 330, 178, 80, barre: 258),
+    _PosteOrg('RE', 'RE', 'Responsable Echographie', 'echographiste', 1, 3, 862, 337, 105, 48, barre: 258),
+    _PosteOrg('RM', 'RM', 'Responsable Maternité', 'infirmier', 1, 3, 1010, 339, 106, 45, barre: 258),
+    _PosteOrg('RR', 'RR', 'Responsable Radiologie', 'echographiste', 1, 3, 1170, 337, 90, 48, barre: 258),
+    _PosteOrg('RL', 'RL', 'Responsable Laboratoire', 'laborantin', 1, 3, 1395, 333, 105, 56, barre: 258),
+    _PosteOrg('FC', 'FC', 'Facturation Caisse', 'caissier', 1, 4, 52, 560, 64, 49, barre: 258),
+    _PosteOrg('RA', 'RA', 'Responsable Assurance', 'comptable', 1, 4, 224, 558, 68, 52, barre: 258),
+    _PosteOrg('AR', 'AR', 'Agent de Recouvrement', 'aide_comptable', 1, 5, 283, 681, 105, 52, barre: 258),
+    _PosteOrg('RSI', 'RSI', 'Responsable Soin Infirmier', 'surveillant', 10, 4, 1381, 559, 102, 54, lien: 'direct'),
+    _PosteOrg('AS', 'AS', 'Agent de Sécurité', 'agentadmin', 14, 5, 1383, 675, 99, 51, lien: 'direct'),
+    _PosteOrg('ADS', 'ADS', 'Agent De Sécurité', 'agentadmin', 5, 6, 286, 792, 99, 36, barre: 722, coude: (487, 453)),
+    _PosteOrg('AE', 'AES', 'Agent d’Entretien et de Service', 'agentadmin', 5, 6, 727, 785, 60, 36, barre: 722, coude: (487, 453)),
+    _PosteOrg('CVA/ AIM', 'CVA/ AIM', 'Conducteur de Véhicule Administratif/ Agent d’Infrastructure et Maintenance', 'ambulancier', 5, 6, 488, 792, 134, 36, barre: 722, coude: (487, 453)),
+    _PosteOrg('RI', 'RI', 'Responsable informatique', 'admin', 5, 6, 885, 785, 60, 36, barre: 722, coude: (487, 453)),
   ];
+  // La légende suit l'ordre du document (RSI avant RA, AES avant CVA/ AIM) : ce n'est pas l'ordre du graphe.
+  const ordreLegende = ['DG/ MC', 'SM', 'MG', 'MP', 'CARH', 'RE', 'RM', 'RR', 'RL', 'RSI', 'RA', 'AR', 'FC', 'ADS', 'AE', 'CVA/ AIM', 'AS', 'RI'];
+  String idPoste(int n) => 'PST${n.toString().padLeft(3, '0')}';
   var p = 0;
   ctx.remplacer('postes', [
-    for (final (poste, effectif, titulaire, role, parent) in postes)
+    for (final x in postes)
       {
-        'id': 'PST${(++p).toString().padLeft(3, '0')}',
+        'id': idPoste(++p),
         'statut': 'actif',
-        if (parent != null) 'parentId': 'PST${parent.toString().padLeft(3, '0')}',
-        'poste': poste,
-        'effectif': effectif,
-        'titulaire': titulaire,
+        if (x.parent > 0) 'parentId': idPoste(x.parent),
+        'poste': x.libelle,
+        if (x.code.isNotEmpty) 'code': x.code,
+        if (x.codeLegende != null && x.codeLegende != x.code) 'codeLegende': x.codeLegende,
+        if (x.code.isNotEmpty) 'ordreLegende': ordreLegende.indexOf(x.code) + 1,
+        'effectif': 1,
+        'titulaire': x.titulaire,
         'chef': false,
-        'role': role,
-        'source': source,
+        'role': x.role,
+        'niveau': x.niveau,
+        'x': x.cx,
+        'y': x.cy,
+        'largeur': x.l,
+        'hauteur': x.h,
+        if (x.lien != null) 'lien': x.lien,
+        if (x.barre != null) 'barre': x.barre,
+        if (x.coude != null) ...{'coudeX': x.coude!.$1, 'coudeY': x.coude!.$2},
+        'source': sourcePoste,
       }
   ]);
-  ctx.note('socle : 6 secteurs et 6 postes limités aux neuf personnes');
+  // Les mentions de la fiche (référence, date, version, titres, mention de propriété) et la grille du graphe : la GRAINE du domaine, amorcée en base. C'est la
+  // fiche de la collection qui est en force, modifiable à « Organisation & organigramme ».
+  ctx.remplacer('fichesDocumentaires', [d.ParametresFiche.graine.versFiche()]);
+  ctx.note('socle : 6 secteurs limités aux neuf personnes ; ${postes.length} postes de l\'organigramme réel (FCH_GRH_006) et sa fiche documentaire');
 }
 
 // --- Calendrier fiscal (décisions du 06/11/2026 et du 09/11/2026) -----------------------------------------------------------------------------
