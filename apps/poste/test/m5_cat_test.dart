@@ -411,7 +411,8 @@ void main() {
       expect(v['aValider'], true, reason: 'déplacer une borne remet la variable « à valider » : le biologiste revalide (moteur de validation commun)');
       expect(v['valideLe'], isNull);
       expect(find.text('Paramètres enregistrés.'), findsOneWidget);
-      expect(m.collection('audit').toutes.first['action'], 'Modification d’une valeur de référence');
+      // Lot L1 : UNE ligne de journal, celle du moteur de validation (hors famille, la variable validée repasse « à valider »).
+      expect(m.collection('audit').toutes.first['action'], 'Remise à valider');
     });
 
     cas('E182 : corriger seulement l\'intitulé ne fait PAS sortir la borne du document', (t) async {
@@ -444,7 +445,7 @@ void main() {
       expect(v['section'], 'serologie');
       expect(v['examenLibelle'], 'VIH');
       expect(v['source'], 'Créée dans l’application le 30/10/2026 — à valider');
-      expect(m.collection('audit').toutes.first['action'], 'Création d’une variable de résultat');
+      expect(m.collection('audit').toutes.first['action'], 'Création', reason: 'lot L1 : la ligne de journal du moteur de validation, hors famille la variable naît « à valider »');
     });
 
     cas('intitulé manquant : refus, rien n\'est écrit', (t) async {

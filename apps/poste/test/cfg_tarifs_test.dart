@@ -137,7 +137,10 @@ void main() {
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la grille tarifaire'));
     expect(find.text('Grille tarifaire des actes et prestations'), findsWidgets);
     expect(find.textContaining('Prestations au catalogue'), findsWidgets);
-    expect(find.textContaining('Tarifs à valider'), findsWidgets);
+    // Lot L1 : la ligne « Tarifs à valider » ne s'imprime que s'il en reste (un tarif arrêté ne dit plus « à valider »).
+    final enAttente = m.collection('actes').actives.where((a) => a['prix'] == null || a['tarifProvisoire'] == true).length;
+    expect(find.textContaining('Tarifs validés'), findsWidgets);
+    expect(find.textContaining('Tarifs à valider'), enAttente > 0 ? findsWidgets : findsNothing);
   });
 
   casM14('onglet Certificats : lus depuis le catalogue (6), SOS seule, et les pièces sans tarif sont NOMMÉES', (t) async {

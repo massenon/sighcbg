@@ -220,9 +220,12 @@ void main() {
       expect(find.text(money(apres.fixe)), findsOneWidget);
       expect(find.text(money(apres.variable)), findsOneWidget);
       // le journal est plafonné à 400 entrées : on lit la DERNIÈRE, pas la longueur
-      final dernier = m.collection('audit').toutes.first;
-      expect(dernier['reference'], 'naturesCharges');
-      expect(dernier['action'], 'Création', reason: 'la première correction crée la fiche de réglage ; les suivantes la modifient');
+      // Lot L1 : la famille (l'administrateur) qui corrige la répartition la VALIDE du même geste ; cette ligne de validation est donc en tête, la ligne du
+      // réglage lui-même vient juste après.
+      final audit = m.collection('audit').toutes;
+      expect([audit.first['action'], audit.first['reference']], ['Validation', 'repartition-fixe-variable'], reason: 'le suivi de validation, écrit après le réglage');
+      final reglage = audit.firstWhere((a) => a['reference'] == 'naturesCharges');
+      expect(reglage['action'], 'Création', reason: 'la première correction crée la fiche de réglage ; les suivantes la modifient');
     });
 
     casM14('une correction déjà écrite survit au rechargement de l\'écran', (t) async {

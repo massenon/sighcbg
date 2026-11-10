@@ -310,36 +310,56 @@ void main() {
       expect(find.text('donnée manquante, jamais un zéro'), findsOneWidget);
       expect(find.text('174 j'), findsNothing, reason: 'le DSO n’est pas calculable sans chiffre d’affaires : il ne devient pas un zéro');
     });
-    casM14('corriger une cible ne l’arrête PAS ; « Arrêter » est le geste de validation (moteur commun), et corriger une cible arrêtée la remet à valider', (t) async {
+    // Lot L1 (09/11/2026) : « enregistrer valide » pour le profil de la FAMILLE (direction, DAF, administrateur) ; tout autre profil qui corrige laisse la cible
+    // « à valider ». Les deux cas sont éprouvés, sous les deux profils.
+    casM14('HORS famille (comptable) : corriger une cible ne l’arrête PAS — elle reste « à valider », sans motif demandé', (t) async {
+      final m = magasinComplet();
+      await ouvrirM14(t, m, 'm12-tableau-decisionnel', role: 'comptable');
+      await toucherM14(t, find.text('Objectifs & seuils'));
+      expect(find.text('À valider'), findsNWidgets(8));
+      await toucherM14(t, find.byTooltip('Modifier').first);
+      await saisir(t, 'cible', '40');
+      await toucherM14(t, find.byKey(const Key('pil:enregistrer-objectif')));
+      final dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
+      expect(dso['cible'], 40);
+      expect(dso['aValider'], true, reason: 'hors famille, modifier ne valide pas');
+      expect(dso['arreteLe'], isNull);
+      expect(find.text('À valider'), findsNWidgets(8));
+    });
+    casM14('FAMILLE (administrateur) : « Arrêter » valide l’élément ; corriger la cible EXIGE son motif et enregistre VALIDÉ ; la cible arrêtée corrigée reste arrêtée', (t) async {
       final m = magasinComplet();
       await ouvrirM14(t, m, 'm12-tableau-decisionnel');
       await toucherM14(t, find.text('Objectifs & seuils'));
       expect(find.text('À valider'), findsNWidgets(8));
-      // Modifier : la valeur change, la cible reste à valider (la maquette ne l'arrête plus à l'enregistrement).
+      // Corriger une cible en attente : la valeur chiffrée change, le motif est demandé ; sans lui, rien n'est écrit.
       await toucherM14(t, find.byTooltip('Modifier').first);
       await saisir(t, 'cible', '40');
       await toucherM14(t, find.byKey(const Key('pil:enregistrer-objectif')));
       var dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
-      expect(dso['cible'], 40);
-      expect(dso['aValider'], true, reason: 'modifier ne valide pas');
-      expect(dso['arreteLe'], isNull);
-      // Arrêter : le geste unitaire de la Direction (ici l'administrateur), journalisé.
-      await toucherM14(t, find.byKey(const Key('val:valider:objectifs_pilotage:dso')));
-      await toucherM14(t, find.widgetWithText(BoutonSigh, 'Valider').last);
+      expect(dso['cible'], 45, reason: 'le motif n’est pas encore donné : rien n’est écrit');
+      await t.enterText(find.byType(TextField).last, 'Cible revue avec la Direction');
+      await t.pump();
+      await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer').last);
       dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
-      expect(dso['aValider'], false);
+      expect(dso['cible'], 40);
+      expect(dso['aValider'], false, reason: 'la famille qui enregistre VALIDE du même geste');
       expect(dso['valideLe'], isNotNull);
+      expect(dso['motifCorrection'], 'Cible revue avec la Direction');
       final j = m.collection('audit').toutes.first;
       expect([j['action'], j['reference']], ['Validation', 'dso'], reason: 'UNE ligne de journal en tête (le journal est plafonné à 400 : on lit la tête, pas la longueur)');
       expect(find.text('À valider'), findsNWidgets(7));
-      // Corriger la cible arrêtée la remet à valider.
+      // Corriger la cible déjà arrêtée : elle RESTE arrêtée (le profil de la famille), motif obligatoire, action « Modification ».
       await toucherM14(t, find.byTooltip('Modifier').first);
-      await saisir(t, 'cible', '45');
+      await saisir(t, 'cible', '42');
       await toucherM14(t, find.byKey(const Key('pil:enregistrer-objectif')));
+      await t.enterText(find.byType(TextField).last, 'Nouvelle correction');
+      await t.pump();
+      await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer').last);
       dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
-      expect(dso['aValider'], true);
-      expect(dso['valideLe'], isNull);
-      expect(find.text('À valider'), findsNWidgets(8));
+      expect(dso['cible'], 42);
+      expect(dso['aValider'], false);
+      expect(m.collection('audit').toutes.first['action'], 'Modification');
+      expect(find.text('À valider'), findsNWidgets(7));
     });
     casM14('sans le droit d’éditer, la commande « Modifier » est ABSENTE (RG-13) ; la consultation reste', (t) async {
       final m = magasinComplet();
