@@ -219,9 +219,9 @@ void main() {
     expect(find.text('Rôle « Auditeur externe » créé.'), findsOneWidget);
     expect(find.text(secDetailCreationRole(33)), findsOneWidget);
     expect(m.collection('audit').toutes.any((a) => a['action'] == 'Création d’un rôle'), isTrue);
-    // Le rôle figure à la matrice (21 actifs), sans compte, et n'ouvre RIEN.
+    // Le rôle figure à la matrice (24 actifs : 23 depuis les trois rôles du 10/11/2026, plus lui), sans compte, et n'ouvre RIEN.
     expect(find.text('Auditeur externe'), findsWidgets);
-    expect(find.text('21'), findsWidgets);
+    expect(find.text('24'), findsWidgets);
     for (final mo in rangees(m)) {
       final d = secDroitModule('auditeurexterne', '${mo['code']}',
           bases: {for (final b in m.collection('rolesBase').toutes) '${b['id']}': b},

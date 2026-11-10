@@ -70,7 +70,7 @@ const _postesNotif = <String, List<String>?>{
   'caisse': ['caissier'],
   'comptable': ['comptable', 'assistant_comptable', 'aide_comptable', 'da'],
   'direction': ['direction', 'da', 'dm'],
-  'imagerie': ['echographiste'],
+  'imagerie': ['echographiste', 'responsable_radiologie'],
   'laboratoire': ['laborantin'],
   'prescripteur': ['medecin', 'chirurgien', 'anesthesiste', 'dm'],
   'stock': ['stock', 'pharmacien', 'da'],
@@ -184,7 +184,7 @@ final List<_Source> _sources = [
             '${_nomAssureur(a.assureur)} : ${money(a.montant, avecDevise: false)} en souffrance',
             '${nombre(a.nb)} facture(s), jusqu’à ${a.jours} jours d’ancienneté (seuil retenu : ${_entier(a.seuil)} jours). Cette créance pèse sur le besoin en fonds de roulement.',
             'm9-relances',
-            const ['da', 'comptable', 'direction', 'assistant_comptable', 'aide_comptable']),
+            const ['da', 'comptable', 'direction', 'assistant_comptable', 'aide_comptable', 'responsable_assurance']),
     ];
   }),
   _Source('labo_a_traiter', 'metier', 'Laboratoire', (m, auj) => [

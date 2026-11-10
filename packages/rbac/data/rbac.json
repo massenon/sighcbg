@@ -220,6 +220,36 @@
    "labelOrigine": "Assistant Comptable",
    "shortOrigine": "Assist. Compta",
    "archive": false
+  },
+  {
+   "id": "responsable_radiologie",
+   "label": "Responsable Radiologie",
+   "short": "Resp. Radiologie",
+   "color": "info",
+   "home": "dash-responsable-radiologie",
+   "labelOrigine": "Responsable Radiologie",
+   "shortOrigine": "Resp. Radiologie",
+   "archive": false
+  },
+  {
+   "id": "sage_femme",
+   "label": "Responsable Maternité (sage-femme)",
+   "short": "Resp. Maternité",
+   "color": "success",
+   "home": "dash-sage-femme",
+   "labelOrigine": "Responsable Maternité (sage-femme)",
+   "shortOrigine": "Resp. Maternité",
+   "archive": false
+  },
+  {
+   "id": "responsable_assurance",
+   "label": "Responsable Assurance",
+   "short": "Resp. Assurance",
+   "color": "warning",
+   "home": "dash-responsable-assurance",
+   "labelOrigine": "Responsable Assurance",
+   "shortOrigine": "Resp. Assurance",
+   "archive": false
   }
  ],
  "matriceModules": {
@@ -2928,6 +2958,375 @@
    "SUP": {
     "horsMatrice": true
    }
+  },
+  "responsable_radiologie": {
+   "M2": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M1": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M3": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M4": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M5": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M6": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M7": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M8": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M9": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "MECEF": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M12": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M10": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M11": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M13": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "GED": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RAP": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M14": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "CFG": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "IMP": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "MERE": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RLS": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "PIL": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "DASH": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "AUTH": {
+    "horsMatrice": true
+   },
+   "SUP": {
+    "horsMatrice": true
+   }
+  },
+  "sage_femme": {
+   "M2": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M1": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M3": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M4": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "M5": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M6": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M7": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M8": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M9": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "MECEF": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M12": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M10": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M11": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M13": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "GED": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RAP": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M14": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "CFG": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "IMP": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "MERE": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RLS": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "PIL": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "DASH": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "AUTH": {
+    "horsMatrice": true
+   },
+   "SUP": {
+    "horsMatrice": true
+   }
+  },
+  "responsable_assurance": {
+   "M2": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M1": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M3": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M4": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M5": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M6": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M7": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M8": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M9": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "MECEF": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M12": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M10": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M11": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "M13": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "GED": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RAP": {
+    "voir": true,
+    "editer": false,
+    "annuler": false
+   },
+   "M14": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "CFG": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "IMP": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "MERE": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "RLS": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "PIL": {
+    "voir": false,
+    "editer": false,
+    "annuler": false
+   },
+   "DASH": {
+    "voir": true,
+    "editer": true,
+    "annuler": true
+   },
+   "AUTH": {
+    "horsMatrice": true
+   },
+   "SUP": {
+    "horsMatrice": true
+   }
   }
  },
  "parRole": {
@@ -4626,6 +5025,21 @@
     1,
     1,
     1
+   ],
+   "dash-responsable-radiologie": [
+    1,
+    1,
+    1
+   ],
+   "dash-sage-femme": [
+    1,
+    1,
+    1
+   ],
+   "dash-responsable-assurance": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -6013,6 +6427,21 @@
     1,
     1,
     0
+   ],
+   "dash-responsable-radiologie": [
+    1,
+    1,
+    1
+   ],
+   "dash-sage-femme": [
+    1,
+    1,
+    1
+   ],
+   "dash-responsable-assurance": [
+    1,
+    1,
+    1
    ]
   },
   "dm": {
@@ -7899,6 +8328,21 @@
     1
    ],
    "cfg-validations-aib": [
+    1,
+    1,
+    1
+   ],
+   "dash-responsable-radiologie": [
+    1,
+    1,
+    1
+   ],
+   "dash-sage-femme": [
+    1,
+    1,
+    1
+   ],
+   "dash-responsable-assurance": [
     1,
     1,
     1
@@ -12863,6 +13307,842 @@
     1
    ],
    "cfg-validations-aib": [
+    1,
+    0,
+    0
+   ]
+  },
+  "responsable_radiologie": {
+   "m2-agenda": [
+    1,
+    0,
+    0
+   ],
+   "m2-rendezvous": [
+    1,
+    0,
+    0
+   ],
+   "m2-file-attente": [
+    1,
+    0,
+    0
+   ],
+   "m2-file-cabinet": [
+    1,
+    0,
+    0
+   ],
+   "m2-agenda-medecin": [
+    1,
+    0,
+    0
+   ],
+   "m2-affichage": [
+    1,
+    0,
+    0
+   ],
+   "m2-domicile": [
+    1,
+    0,
+    0
+   ],
+   "m2-registre-appels": [
+    1,
+    0,
+    0
+   ],
+   "m2-consultations": [
+    1,
+    0,
+    0
+   ],
+   "m1-patients": [
+    1,
+    0,
+    0
+   ],
+   "m1-patient-profil": [
+    1,
+    0,
+    0
+   ],
+   "m1-externe": [
+    1,
+    0,
+    0
+   ],
+   "m1-antecedents": [
+    1,
+    0,
+    0
+   ],
+   "m2-consultation-fiche": [
+    1,
+    0,
+    0
+   ],
+   "m2-prescriptions": [
+    1,
+    0,
+    0
+   ],
+   "m2-dashboard-imagerie": [
+    1,
+    1,
+    0
+   ],
+   "m2-imagerie-demandes": [
+    1,
+    1,
+    0
+   ],
+   "m2-imagerie": [
+    1,
+    1,
+    1
+   ],
+   "m2-imagerie-radiographie": [
+    1,
+    1,
+    1
+   ],
+   "m2-imagerie-mammographie": [
+    1,
+    1,
+    1
+   ],
+   "m2-imagerie-scanner": [
+    1,
+    1,
+    1
+   ],
+   "m2-imagerie-irm": [
+    1,
+    1,
+    1
+   ],
+   "m2-echographie-galerie": [
+    1,
+    1,
+    1
+   ],
+   "m5-demandes": [
+    1,
+    0,
+    0
+   ],
+   "m5-demandes-maternite": [
+    1,
+    0,
+    0
+   ],
+   "m5-demandes-hospitalisation": [
+    1,
+    0,
+    0
+   ],
+   "m5-resultats": [
+    1,
+    0,
+    0
+   ],
+   "m5-resultats-comparatif": [
+    1,
+    0,
+    0
+   ],
+   "m5-impression-resultats": [
+    1,
+    0,
+    0
+   ],
+   "m5-catalogue": [
+    1,
+    0,
+    0
+   ],
+   "m5-unites": [
+    1,
+    0,
+    0
+   ],
+   "m5-valeurs-reference": [
+    1,
+    0,
+    0
+   ],
+   "m5-prelevement": [
+    1,
+    0,
+    0
+   ],
+   "m5-stats": [
+    1,
+    0,
+    0
+   ],
+   "m5-reactifs": [
+    1,
+    0,
+    0
+   ],
+   "m5-reactifs-stats": [
+    1,
+    0,
+    0
+   ],
+   "m7-besoins": [
+    1,
+    1,
+    0
+   ],
+   "adm-validations": [
+    1,
+    0,
+    0
+   ],
+   "rapports-bibliotheque": [
+    1,
+    0,
+    0
+   ],
+   "rapports-direction": [
+    1,
+    0,
+    0
+   ],
+   "rapports-generateur": [
+    1,
+    0,
+    0
+   ],
+   "rapports-historique": [
+    1,
+    0,
+    0
+   ],
+   "cfg-imagerie-catalogue": [
+    1,
+    0,
+    0
+   ],
+   "m2-stats-echographie": [
+    1,
+    0,
+    0
+   ],
+   "dash-responsable-radiologie": [
+    1,
+    1,
+    0
+   ],
+   "index": [
+    1,
+    1,
+    1
+   ],
+   "auth-forgot": [
+    1,
+    1,
+    1
+   ],
+   "auth-reset": [
+    1,
+    1,
+    1
+   ],
+   "auth-2fa": [
+    1,
+    1,
+    1
+   ],
+   "auth-lock": [
+    1,
+    1,
+    1
+   ],
+   "error-404": [
+    1,
+    1,
+    1
+   ],
+   "error-403": [
+    1,
+    1,
+    1
+   ],
+   "plan-du-site": [
+    1,
+    1,
+    1
+   ],
+   "aide-apropos": [
+    1,
+    1,
+    1
+   ],
+   "parametres-hub": [
+    1,
+    1,
+    1
+   ],
+   "contact-editeur": [
+    1,
+    1,
+    1
+   ],
+   "m1-dossier-medical": [
+    1,
+    0,
+    0
+   ],
+   "m2-imagerie-cr": [
+    1,
+    1,
+    1
+   ],
+   "m1-patient-nouveau": [
+    1,
+    0,
+    0
+   ],
+   "m2-visites": [
+    1,
+    0,
+    0
+   ],
+   "m1-certificats-externes": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-conventions": [
+    1,
+    0,
+    0
+   ]
+  },
+  "sage_femme": {
+   "m2-agenda": [
+    1,
+    0,
+    0
+   ],
+   "m2-rendezvous": [
+    1,
+    0,
+    0
+   ],
+   "m2-file-attente": [
+    1,
+    0,
+    0
+   ],
+   "m2-file-cabinet": [
+    1,
+    0,
+    0
+   ],
+   "m2-agenda-medecin": [
+    1,
+    0,
+    0
+   ],
+   "m2-affichage": [
+    1,
+    0,
+    0
+   ],
+   "m2-domicile": [
+    1,
+    0,
+    0
+   ],
+   "m2-registre-appels": [
+    1,
+    0,
+    0
+   ],
+   "m2-consultations": [
+    1,
+    0,
+    0
+   ],
+   "m1-patients": [
+    1,
+    0,
+    0
+   ],
+   "m1-patient-profil": [
+    1,
+    0,
+    0
+   ],
+   "m1-externe": [
+    1,
+    0,
+    0
+   ],
+   "m1-antecedents": [
+    1,
+    0,
+    0
+   ],
+   "m1-constantes": [
+    1,
+    1,
+    0
+   ],
+   "m1-reference": [
+    1,
+    0,
+    0
+   ],
+   "m1-contre-reference": [
+    1,
+    0,
+    0
+   ],
+   "m2-dossiers-consultation": [
+    1,
+    0,
+    0
+   ],
+   "m2-consultation-fiche": [
+    1,
+    0,
+    0
+   ],
+   "m2-pathologies": [
+    1,
+    0,
+    0
+   ],
+   "m2-ordonnances": [
+    1,
+    0,
+    0
+   ],
+   "m2-prescriptions": [
+    1,
+    0,
+    0
+   ],
+   "m2-salle-soins": [
+    1,
+    0,
+    0
+   ],
+   "m4-dossier-obstetrical": [
+    1,
+    1,
+    1
+   ],
+   "m4-maternite": [
+    1,
+    1,
+    1
+   ],
+   "m4-cpn": [
+    1,
+    1,
+    1
+   ],
+   "m4-partogramme": [
+    1,
+    1,
+    1
+   ],
+   "m4-accouchements": [
+    1,
+    1,
+    1
+   ],
+   "m4-dossier-bebe": [
+    1,
+    1,
+    1
+   ],
+   "m4-cpon": [
+    1,
+    1,
+    1
+   ],
+   "m4-planification": [
+    1,
+    1,
+    1
+   ],
+   "m4-sonu": [
+    1,
+    1,
+    1
+   ],
+   "m4-ptme": [
+    1,
+    1,
+    1
+   ],
+   "m4-soins-curatifs": [
+    1,
+    1,
+    1
+   ],
+   "m4-comptes-rendus": [
+    1,
+    1,
+    1
+   ],
+   "m4-naissances": [
+    1,
+    1,
+    1
+   ],
+   "m4-deces": [
+    1,
+    1,
+    1
+   ],
+   "m5-demandes-maternite": [
+    1,
+    0,
+    0
+   ],
+   "m5-resultats": [
+    1,
+    0,
+    0
+   ],
+   "m5-resultats-comparatif": [
+    1,
+    0,
+    0
+   ],
+   "m7-besoins": [
+    1,
+    1,
+    0
+   ],
+   "rapports-bibliotheque": [
+    1,
+    0,
+    0
+   ],
+   "rapports-direction": [
+    1,
+    0,
+    0
+   ],
+   "rapports-generateur": [
+    1,
+    0,
+    0
+   ],
+   "rapports-historique": [
+    1,
+    0,
+    0
+   ],
+   "m4-stats-maternite": [
+    1,
+    0,
+    0
+   ],
+   "dash-sage-femme": [
+    1,
+    1,
+    0
+   ],
+   "index": [
+    1,
+    1,
+    1
+   ],
+   "auth-forgot": [
+    1,
+    1,
+    1
+   ],
+   "auth-reset": [
+    1,
+    1,
+    1
+   ],
+   "auth-2fa": [
+    1,
+    1,
+    1
+   ],
+   "auth-lock": [
+    1,
+    1,
+    1
+   ],
+   "error-404": [
+    1,
+    1,
+    1
+   ],
+   "error-403": [
+    1,
+    1,
+    1
+   ],
+   "plan-du-site": [
+    1,
+    1,
+    1
+   ],
+   "aide-apropos": [
+    1,
+    1,
+    1
+   ],
+   "parametres-hub": [
+    1,
+    1,
+    1
+   ],
+   "contact-editeur": [
+    1,
+    1,
+    1
+   ],
+   "m1-dossier-medical": [
+    1,
+    0,
+    0
+   ],
+   "m2-dossier-consultation-nouveau": [
+    1,
+    0,
+    0
+   ],
+   "m2-ordonnance-nouvelle": [
+    1,
+    0,
+    0
+   ],
+   "m1-patient-nouveau": [
+    1,
+    0,
+    0
+   ],
+   "m4-dossier-obstetrical-nouveau": [
+    1,
+    1,
+    1
+   ],
+   "m2-visites": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-entreprises": [
+    1,
+    0,
+    0
+   ],
+   "m2-mdt-conventions": [
+    1,
+    0,
+    0
+   ]
+  },
+  "responsable_assurance": {
+   "m1-patients": [
+    1,
+    0,
+    0
+   ],
+   "m1-patient-profil": [
+    1,
+    0,
+    0
+   ],
+   "m7-besoins": [
+    1,
+    1,
+    0
+   ],
+   "m8-dashboard": [
+    1,
+    0,
+    0
+   ],
+   "m8-facturation": [
+    1,
+    0,
+    0
+   ],
+   "m8-factures": [
+    1,
+    0,
+    0
+   ],
+   "m8-proforma": [
+    1,
+    0,
+    0
+   ],
+   "m8-paiements": [
+    1,
+    0,
+    0
+   ],
+   "m8-reliquats": [
+    1,
+    0,
+    0
+   ],
+   "m8-remboursements": [
+    1,
+    0,
+    0
+   ],
+   "m8-facture-avoir": [
+    1,
+    0,
+    0
+   ],
+   "m9-dashboard": [
+    1,
+    1,
+    1
+   ],
+   "m9-compagnies": [
+    1,
+    1,
+    1
+   ],
+   "m9-assures": [
+    1,
+    1,
+    1
+   ],
+   "m9-conventions": [
+    1,
+    1,
+    1
+   ],
+   "m9-prises-en-charge": [
+    1,
+    1,
+    1
+   ],
+   "m9-factures-assureur": [
+    1,
+    1,
+    1
+   ],
+   "m9-facture-mere": [
+    1,
+    1,
+    1
+   ],
+   "m9-historique": [
+    1,
+    1,
+    1
+   ],
+   "m9-creances": [
+    1,
+    1,
+    1
+   ],
+   "m9-relances": [
+    1,
+    1,
+    1
+   ],
+   "rapports-bibliotheque": [
+    1,
+    0,
+    0
+   ],
+   "rapports-direction": [
+    1,
+    0,
+    0
+   ],
+   "rapports-generateur": [
+    1,
+    0,
+    0
+   ],
+   "rapports-historique": [
+    1,
+    0,
+    0
+   ],
+   "dash-responsable-assurance": [
+    1,
+    1,
+    0
+   ],
+   "index": [
+    1,
+    1,
+    1
+   ],
+   "auth-forgot": [
+    1,
+    1,
+    1
+   ],
+   "auth-reset": [
+    1,
+    1,
+    1
+   ],
+   "auth-2fa": [
+    1,
+    1,
+    1
+   ],
+   "auth-lock": [
+    1,
+    1,
+    1
+   ],
+   "error-404": [
+    1,
+    1,
+    1
+   ],
+   "error-403": [
+    1,
+    1,
+    1
+   ],
+   "plan-du-site": [
+    1,
+    1,
+    1
+   ],
+   "aide-apropos": [
+    1,
+    1,
+    1
+   ],
+   "parametres-hub": [
+    1,
+    1,
+    1
+   ],
+   "contact-editeur": [
+    1,
+    1,
+    1
+   ],
+   "m1-patient-nouveau": [
     1,
     0,
     0

@@ -48,6 +48,10 @@ class PosteImagerie {
   final List<LigneModalite> parModalite;
 }
 
+/// Les rôles qui EXÉCUTENT l'imagerie médicale sans la prescrire : le technicien d'échographie et, depuis le 10/11/2026, le Responsable Radiologie. Ils lisent
+/// tous les comptes rendus, ouvrent le compte rendu d'un examen payé et ne créent jamais une demande (prescrire n'est pas exécuter).
+const rolesExecutantsImagerie = {'echographiste', 'responsable_radiologie'};
+
 /// `afficher()` de `m2-dashboard-imagerie`. [moisCourant] : `AAAA-MM` de l'horloge du poste. Un CR est « rendu ce mois-ci » d'après sa date de
 /// rendu (`renduLe`), à défaut sa date de rédaction.
 PosteImagerie posteImagerie({

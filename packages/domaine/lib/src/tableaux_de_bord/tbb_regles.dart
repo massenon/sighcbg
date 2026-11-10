@@ -1,5 +1,6 @@
 import '../format/format_fr.dart';
 import '../format/js.dart' show nombreOuZero;
+import '../assurances/ass_regles.dart';
 import '../maternite/mat_regles.dart';
 
 /// RÈGLES DE LECTURE DES TABLEAUX DE BORD « B » — dash-ambulancier, dash-aide-soignant, dash-echographiste, dash-surveillant, dash-assistant-comptable,
@@ -651,3 +652,85 @@ List<String> tbbCellulesRisque(TbbFiche d) => [
 /// Domicile : date, patient, motif, praticien (le statut s'affiche en pastille).
 List<String> tbbCellulesDomicile(TbbFiche c) =>
     [_dateFr(c['date']), tbbCelluleCle(c['patient']), tbbCelluleCle(c['motif']), tbbCelluleCle(c['medecin'])];
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// Responsable Radiologie (10/11/2026) — il EXÉCUTE l'imagerie médicale, il ne prescrit pas et ne voit aucun montant.
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Le poste du responsable d'imagerie : les demandes PAYÉES attendent son exécution (premier regard), les demandes encore à la caisse ne sont pas
+/// exécutables, les comptes rendus non rendus sont en rédaction. Aucun montant : un manipulateur qui verrait la caisse pourrait faire dépendre l'examen du
+/// paiement (RG-13).
+TbbReleve tbbResponsableRadiologie(
+    {required Iterable<TbbFiche> demandes, required Iterable<TbbFiche> comptesRendus, required DateTime auj}) {
+  final dems = tbbActives(demandes);
+  final payees = [for (final d in dems) if (d['statut'] == 'payee') d];
+  final attente = [for (final d in dems) if (d['statut'] == 'demandee') d];
+  final executees = [for (final d in dems) if (d['statut'] == 'executee') d];
+  final rendusMois = [
+    for (final d in dems)
+      if (d['statut'] == 'validee' && _t(d['valideLe'] ?? d['dateHeure']).length >= 7 && _t(d['valideLe'] ?? d['dateHeure']).substring(0, 7) == iso(auj).substring(0, 7)) d
+  ];
+  final crEnRedaction = [for (final r in tbbActives(comptesRendus)) if (r['statut'] != 'rendu') r];
+  return TbbReleve(
+    TbbRegard(
+      valeur: payees.length,
+      unite: 'examen(s) d’imagerie',
+      question: 'payés, à exécuter',
+      vide: 'Aucun examen payé n’attend d’être exécuté.',
+      ton: 'warning',
+      icone: 'scan-line',
+      ecran: 'm2-dashboard-imagerie',
+      lienLabel: 'Poste d’imagerie',
+      note: 'Vous exécutez, vous ne prescrivez pas : une demande encore à la caisse n’est pas exécutable.',
+    ),
+    [
+      TbbKpi('À exécuter (payées)', nombre(payees.length), 'scan-line', 'warning'),
+      TbbKpi('En attente de la caisse', nombre(attente.length), 'clock', 'neutral'),
+      TbbKpi('Comptes rendus en rédaction', nombre(executees.length + crEnRedaction.length), 'file-clock', 'info'),
+      TbbKpi('Rendus ce mois-ci', nombre(rendusMois.length), 'send', 'success'),
+    ],
+  );
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// Responsable Assurance (10/11/2026) — assurances et créances, sans comptabilité ni dossier médical.
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Le poste du responsable d'assurance : les relances en attente (premier regard), les cartes expirées (RG-09 : facturation intégrale au patient) et la
+/// créance des assureurs, lue sur la part assureur des factures prises en charge. La validité de la carte est celle du moteur (couverture datée), passée en
+/// fonction : l'appelant n'en fait pas une copie.
+TbbReleve tbbResponsableAssurance(
+    {required Iterable<TbbFiche> assureurs,
+    required Iterable<TbbFiche> patients,
+    required Iterable<TbbFiche> factures,
+    required Iterable<TbbFiche> relances,
+    required bool Function(TbbFiche) carteValide,
+    required DateTime auj}) {
+  final k = assKpisDashboard(
+      assureurs: tbbActives(assureurs).toList(),
+      patients: tbbActives(patients).toList(),
+      factures: tbbActives(factures).toList(),
+      carteValide: carteValide);
+  final aRelancer = [for (final r in tbbActives(relances)) if (r['statutRelance'] == 'en_attente') r];
+  return TbbReleve(
+    TbbRegard(
+      valeur: aRelancer.length,
+      unite: 'relance(s)',
+      question: 'en attente auprès des assureurs',
+      vide: 'Aucune relance en attente.',
+      ton: 'warning',
+      icone: 'bell-ring',
+      ecran: 'm9-relances',
+      lienLabel: 'Relances',
+      note: 'Une créance se relance avant d’être ancienne ; la facture mère en est la pièce de référence.',
+    ),
+    [
+      TbbKpi('Créances des assureurs', money(k.creances), 'hand-coins', k.creances > 0 ? 'danger' : 'success'),
+      TbbKpi('Assurés', nombre(k.assures), 'id-card', 'navy'),
+      TbbKpi('Cartes expirées', nombre(k.expirees), 'shield-alert', k.expirees > 0 ? 'danger' : 'success',
+          indice: 'Facturation intégrale au patient tant que la carte n’est pas renouvelée (RG-09)'),
+      TbbKpi('Compagnies', nombre(k.compagnies), 'building-2', 'info'),
+    ],
+  );
+}

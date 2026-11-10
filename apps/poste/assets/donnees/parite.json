@@ -6299,6 +6299,57 @@
    "statut": "porté"
   },
   {
+   "id": "dash-responsable-radiologie",
+   "label": "Responsable Radiologie",
+   "module": "DASH",
+   "domaine": "Pilotage",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "da",
+    "responsable_radiologie"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "dash-sage-femme",
+   "label": "Responsable Maternité",
+   "module": "DASH",
+   "domaine": "Pilotage",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "da",
+    "sage_femme"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "dash-responsable-assurance",
+   "label": "Responsable Assurance",
+   "module": "DASH",
+   "domaine": "Pilotage",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "direction",
+    "da",
+    "responsable_assurance"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "dash-maternite",
    "label": "Maternité",
    "module": "DASH",

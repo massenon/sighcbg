@@ -595,6 +595,9 @@
         "dash-chirurgien",
         "dash-anesthesiste",
         "dash-aide-comptable",
+        "dash-responsable-radiologie",
+        "dash-sage-femme",
+        "dash-responsable-assurance",
         "dash-maternite",
         "dash-patient"
        ]
@@ -1208,6 +1211,9 @@
         "dash-chirurgien",
         "dash-anesthesiste",
         "dash-aide-comptable",
+        "dash-responsable-radiologie",
+        "dash-sage-femme",
+        "dash-responsable-assurance",
         "dash-maternite"
        ]
       }
@@ -2023,7 +2029,10 @@
         "dash-rh",
         "dash-surveillant",
         "dash-assistant-comptable",
-        "dash-aide-comptable"
+        "dash-aide-comptable",
+        "dash-responsable-radiologie",
+        "dash-sage-femme",
+        "dash-responsable-assurance"
        ]
       }
      ]
@@ -4692,6 +4701,457 @@
      ]
     }
    ]
+  },
+  {
+   "role": "responsable_radiologie",
+   "archive": false,
+   "domaines": [
+    {
+     "domaine": "Accueil",
+     "rangees": [
+      {
+       "code": "M2",
+       "label": "RDV, Visites & Consultations",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-agenda",
+        "m2-rendezvous",
+        "m2-file-attente",
+        "m2-file-cabinet",
+        "m2-agenda-medecin",
+        "m2-affichage",
+        "m2-domicile",
+        "m2-registre-appels",
+        "m2-consultations"
+       ]
+      },
+      {
+       "code": "M1",
+       "label": "Patients & constantes",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients",
+        "m1-externe"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Soins",
+     "rangees": [
+      {
+       "code": "M1",
+       "label": "Patients & Dossier médical",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients",
+        "m1-patient-profil",
+        "m1-externe",
+        "m1-antecedents"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Consultations & prescriptions",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-consultation-fiche",
+        "m2-prescriptions"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Imagerie médicale",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-dashboard-imagerie",
+        "m2-imagerie-demandes",
+        "m2-imagerie",
+        "m2-imagerie-radiographie",
+        "m2-imagerie-mammographie",
+        "m2-imagerie-scanner",
+        "m2-imagerie-irm",
+        "m2-echographie-galerie"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
+       "code": "M5",
+       "label": "Laboratoire",
+       "hub": "hub-m5",
+       "ecrans": [
+        "m5-demandes",
+        "m5-demandes-maternite",
+        "m5-demandes-hospitalisation",
+        "m5-resultats",
+        "m5-resultats-comparatif",
+        "m5-impression-resultats",
+        "m5-catalogue",
+        "m5-unites",
+        "m5-valeurs-reference",
+        "m5-prelevement",
+        "m5-stats",
+        "m5-reactifs",
+        "m5-reactifs-stats"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Logistique",
+     "rangees": [
+      {
+       "code": "M7",
+       "label": "Achats & Fournisseurs",
+       "hub": "hub-m7",
+       "ecrans": [
+        "m7-besoins"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Administration",
+     "rangees": [
+      {
+       "code": "M13",
+       "label": "Administration & Ambulance",
+       "hub": "hub-m13",
+       "ecrans": [
+        "adm-validations"
+       ]
+      },
+      {
+       "code": "RAP",
+       "label": "Rapports & Impression",
+       "hub": "hub-rap",
+       "ecrans": [
+        "rapports-bibliotheque",
+        "rapports-direction",
+        "rapports-generateur",
+        "rapports-historique"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Pilotage",
+     "rangees": [
+      {
+       "code": "PIL",
+       "label": "Pilotage & analyse",
+       "hub": "hub-pil",
+       "ecrans": [
+        "m2-stats-echographie"
+       ]
+      },
+      {
+       "code": "DASH",
+       "label": "Tableaux de bord par poste",
+       "hub": "hub-dash",
+       "ecrans": [
+        "dash-responsable-radiologie"
+       ]
+      }
+     ]
+    }
+   ],
+   "cartes": [
+    {
+     "domaine": "Système",
+     "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-imagerie-catalogue"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "role": "sage_femme",
+   "archive": false,
+   "domaines": [
+    {
+     "domaine": "Accueil",
+     "rangees": [
+      {
+       "code": "M2",
+       "label": "RDV, Visites & Consultations",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-agenda",
+        "m2-rendezvous",
+        "m2-file-attente",
+        "m2-file-cabinet",
+        "m2-agenda-medecin",
+        "m2-affichage",
+        "m2-domicile",
+        "m2-registre-appels",
+        "m2-consultations"
+       ]
+      },
+      {
+       "code": "M1",
+       "label": "Patients & constantes",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients",
+        "m1-constantes",
+        "m1-externe"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Soins",
+     "rangees": [
+      {
+       "code": "M1",
+       "label": "Patients & Dossier médical",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients",
+        "m1-patient-profil",
+        "m1-externe",
+        "m1-antecedents",
+        "m1-constantes",
+        "m1-reference",
+        "m1-contre-reference"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Consultations & prescriptions",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-dossiers-consultation",
+        "m2-consultation-fiche",
+        "m2-pathologies",
+        "m2-ordonnances",
+        "m2-prescriptions",
+        "m2-salle-soins"
+       ]
+      },
+      {
+       "code": "M2",
+       "label": "Médecine du travail",
+       "hub": "hub-m2",
+       "ecrans": [
+        "m2-mdt-entreprises",
+        "m2-mdt-conventions"
+       ]
+      },
+      {
+       "code": "M4",
+       "label": "Maternité, Naissances & Décès",
+       "hub": "hub-m4",
+       "ecrans": [
+        "m4-dossier-obstetrical",
+        "m4-maternite",
+        "m4-cpn",
+        "m4-partogramme",
+        "m4-accouchements",
+        "m4-dossier-bebe",
+        "m4-cpon",
+        "m4-planification",
+        "m4-sonu",
+        "m4-ptme",
+        "m4-soins-curatifs",
+        "m4-comptes-rendus",
+        "m4-naissances",
+        "m4-deces"
+       ]
+      },
+      {
+       "code": "M5",
+       "label": "Laboratoire",
+       "hub": "hub-m5",
+       "ecrans": [
+        "m5-demandes-maternite",
+        "m5-resultats",
+        "m5-resultats-comparatif"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Logistique",
+     "rangees": [
+      {
+       "code": "M7",
+       "label": "Achats & Fournisseurs",
+       "hub": "hub-m7",
+       "ecrans": [
+        "m7-besoins"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Administration",
+     "rangees": [
+      {
+       "code": "RAP",
+       "label": "Rapports & Impression",
+       "hub": "hub-rap",
+       "ecrans": [
+        "rapports-bibliotheque",
+        "rapports-direction",
+        "rapports-generateur",
+        "rapports-historique"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Pilotage",
+     "rangees": [
+      {
+       "code": "PIL",
+       "label": "Pilotage & analyse",
+       "hub": "hub-pil",
+       "ecrans": [
+        "m4-stats-maternite"
+       ]
+      },
+      {
+       "code": "DASH",
+       "label": "Tableaux de bord par poste",
+       "hub": "hub-dash",
+       "ecrans": [
+        "dash-sage-femme"
+       ]
+      }
+     ]
+    }
+   ],
+   "cartes": []
+  },
+  {
+   "role": "responsable_assurance",
+   "archive": false,
+   "domaines": [
+    {
+     "domaine": "Accueil",
+     "rangees": [
+      {
+       "code": "M1",
+       "label": "Patients & constantes",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Soins",
+     "rangees": [
+      {
+       "code": "M1",
+       "label": "Patients & Dossier médical",
+       "hub": "hub-m1",
+       "ecrans": [
+        "m1-patients",
+        "m1-patient-profil"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Logistique",
+     "rangees": [
+      {
+       "code": "M7",
+       "label": "Achats & Fournisseurs",
+       "hub": "hub-m7",
+       "ecrans": [
+        "m7-besoins"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Financier",
+     "rangees": [
+      {
+       "code": "M8",
+       "label": "Facturation & Caisse",
+       "hub": "hub-m8",
+       "ecrans": [
+        "m8-dashboard",
+        "m8-facturation",
+        "m8-factures",
+        "m8-proforma",
+        "m8-paiements",
+        "m8-reliquats",
+        "m8-remboursements",
+        "m8-facture-avoir"
+       ]
+      },
+      {
+       "code": "M9",
+       "label": "Assurances & Créances",
+       "hub": "hub-m9",
+       "ecrans": [
+        "m9-dashboard",
+        "m9-compagnies",
+        "m9-assures",
+        "m9-conventions",
+        "m9-prises-en-charge",
+        "m9-factures-assureur",
+        "m9-facture-mere",
+        "m9-historique",
+        "m9-creances",
+        "m9-relances"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Administration",
+     "rangees": [
+      {
+       "code": "RAP",
+       "label": "Rapports & Impression",
+       "hub": "hub-rap",
+       "ecrans": [
+        "rapports-bibliotheque",
+        "rapports-direction",
+        "rapports-generateur",
+        "rapports-historique"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "Pilotage",
+     "rangees": [
+      {
+       "code": "DASH",
+       "label": "Tableaux de bord par poste",
+       "hub": "hub-dash",
+       "ecrans": [
+        "dash-responsable-assurance"
+       ]
+      }
+     ]
+    }
+   ],
+   "cartes": []
   }
  ]
 }

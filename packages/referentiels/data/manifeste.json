@@ -931,6 +931,9 @@
     "dash-chirurgien",
     "dash-anesthesiste",
     "dash-aide-comptable",
+    "dash-responsable-radiologie",
+    "dash-sage-femme",
+    "dash-responsable-assurance",
     "dash-maternite",
     "dash-patient"
    ]
@@ -4976,7 +4979,8 @@
     "laborantin",
     "echographiste",
     "chirurgien",
-    "anesthesiste"
+    "anesthesiste",
+    "responsable_radiologie"
    ]
   },
   {
@@ -6589,7 +6593,8 @@
     "da",
     "direction",
     "admin",
-    "surveillant"
+    "surveillant",
+    "sage_femme"
    ]
   },
   {
@@ -6609,7 +6614,8 @@
     "da",
     "direction",
     "admin",
-    "echographiste"
+    "echographiste",
+    "responsable_radiologie"
    ]
   },
   {
@@ -7100,6 +7106,60 @@
    "servant": null,
    "roles": [
     "aide_comptable",
+    "admin",
+    "da",
+    "direction"
+   ]
+  },
+  {
+   "id": "dash-responsable-radiologie",
+   "label": "Responsable Radiologie",
+   "icone": "scan-line",
+   "module": "DASH",
+   "moduleLabel": "Tableaux de bord par poste",
+   "domaine": "Pilotage",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "responsable_radiologie",
+    "admin",
+    "da",
+    "direction"
+   ]
+  },
+  {
+   "id": "dash-sage-femme",
+   "label": "Responsable Maternité",
+   "icone": "baby",
+   "module": "DASH",
+   "moduleLabel": "Tableaux de bord par poste",
+   "domaine": "Pilotage",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "sage_femme",
+    "admin",
+    "da",
+    "direction"
+   ]
+  },
+  {
+   "id": "dash-responsable-assurance",
+   "label": "Responsable Assurance",
+   "icone": "shield-check",
+   "module": "DASH",
+   "moduleLabel": "Tableaux de bord par poste",
+   "domaine": "Pilotage",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "responsable_assurance",
     "admin",
     "da",
     "direction"

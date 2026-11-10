@@ -154,6 +154,8 @@ const Map<String, String> roleVersFonction = {
   'direction': 'direction',
   'da': 'direction',
   'infirmier': 'infirmier',
+  // Le Responsable Maternité (rôle créé le 10/11/2026) EST une sage-femme : elle lit les résultats de son secteur, pas ceux de la chirurgie.
+  'sage_femme': 'sage_femme',
   'pharmacien': 'dispensatrice',
   'laborantin': 'tsl',
   'caissier': 'caissiere',

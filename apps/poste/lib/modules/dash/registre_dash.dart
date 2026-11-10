@@ -15,6 +15,7 @@ import 'tbb_bloc.dart';
 import 'tbb_maternite.dart';
 import 'tbb_patient.dart';
 import 'tbb_postes.dart';
+import 'tbb_responsables.dart';
 
 typedef ConstruireEcran = Widget Function(BuildContext contexte, ConfigPoste config);
 
@@ -40,6 +41,9 @@ final Map<String, ConstruireEcran> ecransDASH = {
   'dash-chirurgien': (c, cfg) => const EcranDashChirurgien(),
   'dash-anesthesiste': (c, cfg) => const EcranDashAnesthesiste(),
   'dash-aide-comptable': (c, cfg) => const EcranDashAideComptable(),
+  'dash-responsable-radiologie': (c, cfg) => const EcranDashResponsableRadiologie(),
+  'dash-sage-femme': (c, cfg) => const EcranDashSageFemme(),
+  'dash-responsable-assurance': (c, cfg) => const EcranDashResponsableAssurance(),
   'dash-maternite': (c, cfg) => const EcranDashMaternite(),
   'dash-patient': (c, cfg) => const EcranDashPatient(),
 };

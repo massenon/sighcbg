@@ -2990,6 +2990,33 @@
    "commandes": 3
   },
   {
+   "id": "dash-responsable-radiologie",
+   "acces": "ouvert",
+   "titre": "Tableau de bord — Responsable Radiologie",
+   "kpis": 4,
+   "tableaux": 0,
+   "onglets": 0,
+   "commandes": 1
+  },
+  {
+   "id": "dash-sage-femme",
+   "acces": "ouvert",
+   "titre": "Tableau de bord — Responsable Maternité",
+   "kpis": 4,
+   "tableaux": 0,
+   "onglets": 0,
+   "commandes": 1
+  },
+  {
+   "id": "dash-responsable-assurance",
+   "acces": "ouvert",
+   "titre": "Tableau de bord — Responsable Assurance",
+   "kpis": 4,
+   "tableaux": 0,
+   "onglets": 0,
+   "commandes": 1
+  },
+  {
    "id": "dash-maternite",
    "acces": "ouvert",
    "titre": "Tableau de bord — Maternité",

@@ -69,6 +69,7 @@
    ],
    "roles": [
     "echographiste",
+    "responsable_radiologie",
     "dm"
    ],
    "ecran": "cfg-imagerie-catalogue",
@@ -317,7 +318,8 @@
   "assistant_comptable": "Assistant de Direction",
   "chirurgien": "Chirurgien",
   "anesthesiste": "Anesthésiste — Réanimateur",
-  "aide_comptable": "Assistant Comptable"
+  "aide_comptable": "Assistant Comptable",
+  "responsable_radiologie": "Responsable Radiologie"
  },
  "comptes": [
   {
@@ -406,9 +408,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -790,9 +793,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -1174,9 +1178,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -1560,9 +1565,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -1956,9 +1962,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -2329,9 +2336,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -2697,9 +2705,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -3068,9 +3077,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,
@@ -3405,9 +3415,10 @@
      ],
      "roles": [
       "echographiste",
+      "responsable_radiologie",
       "dm"
      ],
-     "profil": "Technicien d’échographie, Directeur Médical",
+     "profil": "Technicien d’échographie, Responsable Radiologie, Directeur Médical",
      "ecran": "cfg-imagerie-catalogue",
      "enAttente": null,
      "total": null,

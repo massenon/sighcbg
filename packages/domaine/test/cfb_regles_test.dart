@@ -393,9 +393,10 @@ void main() {
       expect(stats.length, att.length);
       // Le vecteur a créé deux centres de coûts avant de mesurer : +2 sur cette seule collection.
       // Et le jeu de démonstration du répertoire des ambulances (08/11/2026) compte 9 fiches là où le vecteur en comptait 5 : +4 sur cette seule collection (le vecteur est rapproché en retranchant ces quatre fiches).
-      expect(stats.fold<int>(0, (a, x) => a + x.total) + 2, 11452 + 4);
+      // Et les trois rôles créés le 10/11/2026 (Responsable Radiologie, Responsable Maternité, Responsable Assurance) : +3 fiches RBAC que le vecteur ne portait pas.
+      expect(stats.fold<int>(0, (a, x) => a + x.total) + 2, 11452 + 4 + 3);
       for (final x in stats) {
-        final plus = x.nom == 'centresCouts' ? 2 : x.nom == 'ambulances' ? -4 : 0;
+        final plus = x.nom == 'centresCouts' ? 2 : x.nom == 'ambulances' ? -4 : x.nom == 'rbac' ? -3 : 0;
         expect([x.total + plus, x.actifs + plus, x.archives], [att[x.nom]![1], att[x.nom]![2], att[x.nom]![3]], reason: x.nom);
       }
     });

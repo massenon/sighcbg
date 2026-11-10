@@ -2,6 +2,7 @@
 /// Rejoué sur `test/vecteurs/pat_profil.json`.
 library;
 
+import '../imagerie/img_demandes_poste.dart' show rolesExecutantsImagerie;
 import '../labo/res_habilitations.dart' show SessionLabo, capacites, libelleSecteur;
 import 'pat_patients.dart';
 
@@ -102,7 +103,7 @@ const patCategoriesAntecedent = [
 
 /// `porteeImagerie()` : `tous` · `secteur` · `aucun`. Le poste d'imagerie PRODUIT les comptes rendus : il les lit tous.
 String patPorteeImagerie(SessionLabo session) {
-  if (session.role == 'echographiste') return 'tous';
+  if (rolesExecutantsImagerie.contains(session.role)) return 'tous';
   switch (capacites(session).fonction) {
     case 'medecin':
     case 'chirurgien':
@@ -121,7 +122,7 @@ String patPorteeImagerie(SessionLabo session) {
     return (ok: false, motif: 'Votre profil ne lit pas les comptes rendus d’imagerie (RG-13).');
   }
   final rendu = (cr != null && cr['statut'] == 'rendu') || (dem != null && dem['statut'] == 'validee');
-  if (!rendu && session.role != 'echographiste') {
+  if (!rendu && !rolesExecutantsImagerie.contains(session.role)) {
     return (ok: false, motif: 'Compte rendu non encore rendu au prescripteur — l’imagerie le relit.');
   }
   if (portee == 'secteur') {

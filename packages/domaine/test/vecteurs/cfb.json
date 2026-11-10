@@ -7197,7 +7197,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "319",
+     "valeur": "322",
      "indice": null
     },
     {
@@ -7212,7 +7212,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "317",
+     "valeur": "320",
      "indice": null
     }
    ],
@@ -7476,7 +7476,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 319,
+  "tousEcrans": 322,
   "modulesListe": [
    [
     "M2",
@@ -7637,7 +7637,7 @@
     "Tableaux de bord par poste",
     "gauge",
     "Pilotage",
-    20
+    23
    ]
   ],
   "fermerM7Confirmation": "Fermer « Module — Achats & Fournisseurs » ? Le module M7 entier disparaîtra du méga-menu, de la recherche globale et de ses adresses, pour tous les rôles, administrateur compris. Aucune donnée n’est supprimée : la réouverture rend les écrans en l’état. Motif (consigné dans le journal d’audit) Annuler Fermer l’activité",
@@ -7678,7 +7678,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "319",
+     "valeur": "322",
      "indice": null
     },
     {
@@ -7693,7 +7693,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "308",
+     "valeur": "311",
      "indice": null
     }
    ],
@@ -7935,7 +7935,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "319",
+     "valeur": "322",
      "indice": null
     },
     {
@@ -7950,7 +7950,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "317",
+     "valeur": "320",
      "indice": null
     }
    ],
@@ -8071,7 +8071,7 @@
      "DASH — Tableaux de bord par poste"
     ]
    ],
-   "nbEcrans": 319
+   "nbEcrans": 322
   },
   "declarerCfg": {
    "fiche": {
@@ -8154,7 +8154,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "319",
+     "valeur": "322",
      "indice": null
     },
     {
@@ -8169,7 +8169,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "315",
+     "valeur": "318",
      "indice": null
     }
    ],

@@ -146,8 +146,8 @@ class EcranDemandesImagerie extends StatelessWidget with EcranMaquette {
         String modLibelle(Fiche r) =>
             modaliteDemandeImagerie(modaliteDemandeDeExamen(catalogue, r['examenCode']))
                 .libelle;
-        // OUVRIR une demande est un acte de PRESCRIPTION : l'échographiste exécute et saisit le CR, mais ne prescrit pas.
-        final peutOuvrir = c.droit.editer && c.role != 'echographiste';
+        // OUVRIR une demande est un acte de PRESCRIPTION : l'échographiste et le Responsable Radiologie exécutent et saisissent le CR, mais ne prescrit pas.
+        final peutOuvrir = c.droit.editer && !rolesExecutantsImagerie.contains(c.role);
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

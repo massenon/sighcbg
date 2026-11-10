@@ -1412,6 +1412,18 @@
   "cfg-validations-aib": {
    "titre": "Validations de l’AIB",
    "description": "Quatre formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur, les comptes de l’AIB."
+  },
+  "dash-responsable-radiologie": {
+   "titre": "Tableau de bord — Responsable Radiologie",
+   "description": "Demandes d’imagerie à exécuter, comptes rendus à rendre et activité par modalité — sans prescription ni accès financier."
+  },
+  "dash-sage-femme": {
+   "titre": "Tableau de bord — Responsable Maternité",
+   "description": "Travail en cours, termes proches, grossesses à risque et activité de la maternité — sans finance."
+  },
+  "dash-responsable-assurance": {
+   "titre": "Tableau de bord — Responsable Assurance",
+   "description": "Créances des assureurs, cartes à renouveler, factures assureur et relances à faire — sans comptabilité ni dossier médical."
   }
  }
 }

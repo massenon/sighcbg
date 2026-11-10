@@ -102,7 +102,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['examensImagerie', 'variablesImagerie'],
       champs: ['aValider'],
-      roles: ['echographiste', 'dm'],
+      roles: ['echographiste', 'responsable_radiologie', 'dm'],
       ecran: 'cfg-imagerie-catalogue'),
   FamilleValidation(
       id: 'checklists_bloc',
