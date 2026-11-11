@@ -29,11 +29,11 @@ class AccesSensible {
   factory AccesSensible.de(ContexteEcran c) => AccesSensible.depuis(role: c.role, magasin: c.magasin, donnees: c.donnees?.matrice);
 
   factory AccesSensible.depuis({required String role, required Magasin magasin, MatriceDroits? donnees}) => AccesSensible(
-      role, DroitsSensibles(fiches: magasin.collection('rbac').actives, peutVoirEcran: donnees == null ? null : donnees.peutVoir));
+      role, DroitsSensibles(fiches: magasin.collection('rbac').actives, peutVoirEcran: donnees?.peutVoir));
 
   bool peut(String categorie) => _droits.peut(role, categorie);
 
-  /// « Information réservée — droit requis : <catégorie> ».
+  /// « Information réservée — droit requis : » suivi du libellé de la catégorie.
   String mention(String categorie) => mentionReservee(categorie);
 
   /// La valeur, ou la mention si la catégorie est refusée : pour une cellule de texte, une paire de [DescListeSigh], une ligne d'état imprimé.

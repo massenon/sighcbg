@@ -100,7 +100,7 @@ List<GroupeRecherche> rechercheGlobale({
   famille('Patients', magasin.collection('patients').actives, (p) => ok('${t(p['nom'])} ${t(p['prenom'])} ${t(p['code'])}'), 5,
       (p) => ResultatRecherche(
           label: '${t(p['nom'])} ${t(p['prenom'])}',
-          detail: acces.peut('coordonnees') ? '${t(p['code'])}, ${t(p['quartier'])}' : '${t(p['code'])}',
+          detail: acces.peut('coordonnees') ? '${t(p['code'])}, ${t(p['quartier'])}' : t(p['code']),
           icone: 'user',
           ecran: 'm1-patients'),
       droit: 'm1-patients');

@@ -183,7 +183,7 @@ class ServiceSoignant {
       patientId: patientId,
       maintenant: maintenant,
       constantes: [for (final l in await _actives('constantes')) l.data],
-      notes: lireNotes ? [for (final l in await _actives('notes')) lireDiag ? l.data : {...l.data}..remove('diagnostic')] : const [],
+      notes: lireNotes ? [for (final l in await _actives('notes')) lireDiag ? l.data : ({...l.data}..remove('diagnostic'))] : const [],
       prescriptions: lireNotes ? [for (final l in await _actives('prescriptions')) {...l.data, 'id': l.id}] : const [],
     );
     final comptes = [for (final l in await _actives('transcriptions')) l.data];

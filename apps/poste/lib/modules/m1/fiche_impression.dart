@@ -151,7 +151,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
   garde(debDossier, 'notes_consultation', 'Dossier de consultation');
 
   // --- Médical -------------------------------------------------------------------------------------------------------------------------------
-  final deb_medical = blocs.length;
+  final debMedical = blocs.length;
   blocs.add(consultations.isEmpty
       ? vide('Médical', 'Aucune consultation enregistrée.')
       : tab('Médical', [
@@ -161,7 +161,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
           ('Médecin', (x) => t(x['medecin'], '')),
         ], tri(consultations, 'date')));
 
-  garde(deb_medical, 'notes_consultation', 'Médical');
+  garde(debMedical, 'notes_consultation', 'Médical');
 
   // --- Antécédents et allergies --------------------------------------------------------------------------------------------------------------
   blocs.add(kv('Antécédents & allergies', [
@@ -173,7 +173,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
   ]));
 
   // --- Soins ---------------------------------------------------------------------------------------------------------------------------------
-  final deb_soins = blocs.length;
+  final debSoins = blocs.length;
   blocs.add(soins.isEmpty
       ? vide('Soins', 'Aucun acte de soins enregistré pour ce patient.')
       : tab('Soins', [
@@ -184,10 +184,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
           ('État', (x) => statut(x['etat'] == 'realise' ? 'validee' : 'planifiee')),
         ], tri(soins, 'date')));
 
-  garde(deb_soins, 'notes_consultation', 'Soins');
+  garde(debSoins, 'notes_consultation', 'Soins');
 
   // --- Hospitalisations ----------------------------------------------------------------------------------------------------------------------
-  final deb_hospi = blocs.length;
+  final debHospi = blocs.length;
   blocs.add(admissions.isEmpty
       ? vide('Hospitalisations', 'Aucune hospitalisation.')
       : tab('Hospitalisations : admissions et lits occupés', [
@@ -243,10 +243,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
     ], sortiesAvis));
   }
 
-  garde(deb_hospi, 'hospitalisation_soins', 'Hospitalisations');
+  garde(debHospi, 'hospitalisation_soins', 'Hospitalisations');
 
   // --- Maternité -----------------------------------------------------------------------------------------------------------------------------
-  final deb_mat = blocs.length;
+  final debMat = blocs.length;
   if (maternite.isEmpty && accouchements.isEmpty && naissances.isEmpty && deces.isEmpty) {
     blocs.add(vide('Maternité', 'Aucun suivi de maternité pour ce dossier.'));
   }
@@ -289,10 +289,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
     ], deces));
   }
 
-  garde(deb_mat, 'donnees_obstetricales', 'Maternité');
+  garde(debMat, 'donnees_obstetricales', 'Maternité');
 
   // --- Analyses et résultats : les droits du profil s'appliquent au papier comme à l'écran --------------------------------------------------
-  final deb_ana = blocs.length;
+  final debAna = blocs.length;
   if (analyses.isEmpty) {
     blocs.add(vide('Analyses & résultats', 'Aucune demande d’analyse pour ce patient.'));
   } else {
@@ -312,10 +312,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
         tri(vus, 'dateHeure')));
   }
 
-  garde(deb_ana, 'resultats_analyses', 'Analyses & résultats');
+  garde(debAna, 'resultats_analyses', 'Analyses & résultats');
 
   // --- Imagerie médicale ---------------------------------------------------------------------------------------------------------------------
-  final deb_img = blocs.length;
+  final debImg = blocs.length;
   if (imageries.isEmpty && crImagerie.isEmpty) {
     blocs.add(vide('Imagerie médicale', 'Aucun examen d’imagerie médicale pour ce patient.'));
   } else {
@@ -348,10 +348,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
     ], tri(lignes, 'date')));
   }
 
-  garde(deb_img, 'resultats_analyses', 'Imagerie médicale');
+  garde(debImg, 'resultats_analyses', 'Imagerie médicale');
 
   // --- Ordonnances ---------------------------------------------------------------------------------------------------------------------------
-  final deb_ord = blocs.length;
+  final debOrd = blocs.length;
   blocs.add(ordonnances.isEmpty
       ? vide('Ordonnances', 'Aucune ordonnance émise pour ce patient.')
       : tab('Ordonnances', [
@@ -374,10 +374,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
           ('Dispensation', (x) => const {'servie': 'Servie', 'en_attente': 'À délivrer'}['${x['statutDispensation']}'] ?? '—'),
         ], tri(ordonnances, 'date')));
 
-  garde(deb_ord, 'notes_consultation', 'Ordonnances');
+  garde(debOrd, 'notes_consultation', 'Ordonnances');
 
   // --- À domicile ----------------------------------------------------------------------------------------------------------------------------
-  final deb_dom = blocs.length;
+  final debDom = blocs.length;
   blocs.add(domicile.isEmpty
       ? vide('À domicile', 'Aucune consultation ni soin à domicile.')
       : tab('À domicile', [
@@ -388,7 +388,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
           ('Tarif', (x) => money(x['tarif'] ?? 0, avecDevise: false)),
         ], tri(domicile, 'date')));
 
-  garde(deb_dom, 'notes_consultation', 'Consultations à domicile');
+  garde(debDom, 'notes_consultation', 'Consultations à domicile');
 
   // --- Financier -----------------------------------------------------------------------------------------------------------------------------
   num somme(String k) => factures.fold<num>(0, (a, f) => a + nombreOuZero(f[k]));
