@@ -223,48 +223,38 @@ class FeuilleA4 extends StatelessWidget {
                 color: JetonsShell.slate800)),
       };
 
+  /// RÈGLE UNIQUE des tableaux imprimés (aperçu ET PDF) : toutes les cellules d'une rangée ont la hauteur de la plus haute (`intrinsicHeight`),
+  /// le texte est aligné EN HAUT de sa cellule (les montants à droite), et les bordures sont tracées UNE fois par le tableau (`TableBorder.all`),
+  /// jamais cellule par cellule : des conteneurs indépendants se décalaient d'une colonne à l'autre dès qu'une cellule passait sur deux lignes.
+  /// Le fond de l'en-tête et de la ligne de total est porté par la RANGÉE.
   Widget _tableau(TableauEtat t) {
     final pied = t.pied;
-    Widget cellule(String s,
-            {bool droite = false, bool entete = false, bool total = false}) =>
-        Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-                color: entete
-                    ? JetonsShell.slate100
-                    : (total ? JetonsShell.slate50 : null),
-                border: Border.all(
-                    color: entete || total
-                        ? JetonsShell.slate400
-                        : JetonsShell.slate300,
-                    width: 0.5)),
-            alignment: droite ? Alignment.centerRight : Alignment.centerLeft,
+    Widget cellule(String s, {bool droite = false, bool entete = false, bool total = false}) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Align(
+            alignment: droite ? Alignment.topRight : Alignment.topLeft,
             child: Text(s,
                 textAlign: droite ? TextAlign.right : TextAlign.left,
                 style: TextStyle(
                     height: 1.3,
-                    fontWeight: entete
-                        ? FontWeight.w600
-                        : (total ? FontWeight.w700 : FontWeight.w400),
-                    fontFeatures:
-                        droite ? const [FontFeature.tabularFigures()] : null)));
+                    fontWeight: entete ? FontWeight.w600 : (total ? FontWeight.w700 : FontWeight.w400),
+                    fontFeatures: droite ? const [FontFeature.tabularFigures()] : null))));
     return Table(
         key: const Key('impression:tableau'),
         defaultColumnWidth: const IntrinsicColumnWidth(flex: 1),
+        defaultVerticalAlignment: TableCellVerticalAlignment.intrinsicHeight,
+        border: TableBorder.all(color: JetonsShell.slate300, width: 0.5),
         children: [
-          TableRow(children: [
-            for (final c in t.colonnes)
-              cellule(c.libelle, droite: c.droite, entete: true)
+          TableRow(decoration: const BoxDecoration(color: JetonsShell.slate100), children: [
+            for (final c in t.colonnes) cellule(c.libelle, droite: c.droite, entete: true)
           ]),
           for (final r in t.cellules)
             TableRow(children: [
-              for (var i = 0; i < r.length; i++)
-                cellule(r[i], droite: t.colonnes[i].droite)
+              for (var i = 0; i < r.length; i++) cellule(r[i], droite: t.colonnes[i].droite)
             ]),
           if (pied != null)
-            TableRow(children: [
-              for (var i = 0; i < pied.length; i++)
-                cellule(pied[i], droite: t.colonnes[i].droite, total: true)
+            TableRow(decoration: const BoxDecoration(color: JetonsShell.slate50), children: [
+              for (var i = 0; i < pied.length; i++) cellule(pied[i], droite: t.colonnes[i].droite, total: true)
             ]),
         ]);
   }

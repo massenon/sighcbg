@@ -181,6 +181,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
             ]),
       );
 
+  /// Règle unique des tableaux (identique à l'aperçu, `FeuilleA4._tableau`) : rangée de hauteur commune, texte aligné EN HAUT, bordures du tableau.
   pw.Widget tableau(TableauEtat t) {
     final pi = t.pied;
     return pw.TableHelper.fromTextArray(
@@ -193,8 +194,8 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
       cellAlignments: {
         for (var i = 0; i < t.colonnes.length; i++)
           i: t.colonnes[i].droite
-              ? pw.Alignment.centerRight
-              : pw.Alignment.centerLeft
+              ? pw.Alignment.topRight
+              : pw.Alignment.topLeft
       },
       cellPadding: const pw.EdgeInsets.symmetric(horizontal: 5, vertical: 3),
     );
