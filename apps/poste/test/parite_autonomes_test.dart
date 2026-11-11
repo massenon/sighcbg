@@ -38,6 +38,7 @@ M? fiche(String id) {
 
 Magasin poste({List<M> jetons = const [], List<M> enquetes = const []}) => Magasin({
       'audit': const <M>[],
+      'reglages': <M>[{'id': 'planDuSiteActif', 'statut': 'actif', 'valeur': true}],
       'utilisateurs': [for (final u in jeu('utilisateurs')) {...u}],
       'rbac': [for (final r in jeu('rbac')) {...r}],
       'tentativesConnexion': const <M>[],

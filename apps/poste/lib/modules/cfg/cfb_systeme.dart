@@ -366,6 +366,12 @@ class _Installation extends StatelessWidget {
             ]);
   }
 
+  void _basculerPlanDuSite(BuildContext ctx, bool voulue) {
+    cfbPoserReglage(c.magasin, cfbIdPlanDuSite, voulue);
+    c.magasin.journaliser(voulue ? 'Activation' : 'Désactivation', 'CFG', 'Plan du site', 'affichage', {'actif': !voulue}, {'actif': voulue});
+    rafraichir();
+  }
+
   Future<void> _exporter(BuildContext ctx) async {
     try {
       final contenu = const JsonEncoder.withIndent('  ').convert({for (final n in cfbNomsCollections()) n: c.magasin.collection(n).toutes});
@@ -417,6 +423,28 @@ class _Installation extends StatelessWidget {
             ],
           )),
       CarteSigh(
+          titre: 'Affichage',
+          child: InkWell(
+              key: const Key('cfg:plan-du-site:bascule'),
+              onTap: c.droit.editer ? () => _basculerPlanDuSite(context, !cfbPlanDuSiteActif(c.magasin)) : null,
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Checkbox(
+                        value: cfbPlanDuSiteActif(c.magasin),
+                        onChanged: c.droit.editer ? (v) => _basculerPlanDuSite(context, v == true) : null,
+                        activeColor: JetonsShell.navy900,
+                        visualDensity: VisualDensity.compact)),
+                const SizedBox(width: 12),
+                const Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('Afficher le plan du site', style: TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w500, color: JetonsShell.slate800)),
+                  Text('Désactivé par défaut : fermé, l’écran et les boutons qui y mènent n’apparaissent pas. Le changement est journalisé.',
+                      style: TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500)),
+                ])),
+              ]))),
+      CarteSigh(
           titre: 'Maintenance du prototype',
           child: Wrap(spacing: 8, runSpacing: 8, children: [
             if (c.droit.editer) BoutonSigh(libelle: 'Réinitialiser le jeu de données', icone: LucideIcons.rotateCcw, variante: VarianteBouton.danger, onPressed: () => _reinitialiser(context)),
@@ -428,7 +456,7 @@ class _Installation extends StatelessWidget {
                   icone: LucideIcons.keyRound,
                   variante: VarianteBouton.secondaire,
                   onPressed: () => _sauvegarderCle(context)),
-            BoutonSigh(libelle: 'Plan du site', icone: LucideIcons.map, variante: VarianteBouton.secondaire, onPressed: () => c.aller('plan-du-site')),
+            if (cfbPlanDuSiteActif(c.magasin)) BoutonSigh(libelle: 'Plan du site', icone: LucideIcons.map, variante: VarianteBouton.secondaire, onPressed: () => c.aller('plan-du-site')),
             BoutonSigh(libelle: 'Sauvegardes', icone: LucideIcons.databaseBackup, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m14-sauvegardes')),
           ])),
       cfbNote(

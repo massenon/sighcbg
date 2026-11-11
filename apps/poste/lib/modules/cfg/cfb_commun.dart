@@ -34,6 +34,10 @@ Object? cfbReglage(Magasin m, String id, [Object? defaut]) {
   return f != null && f.containsKey('valeur') ? f['valeur'] : defaut;
 }
 
+/// L'affichage du plan du site (écran et boutons qui y mènent) : un réglage du poste, FERMÉ par défaut. Absent = fermé.
+const cfbIdPlanDuSite = 'planDuSiteActif';
+bool cfbPlanDuSiteActif(Magasin m) => cfbReglage(m, cfbIdPlanDuSite, false) == true;
+
 void cfbPoserReglage(Magasin m, String id, Object? valeur) {
   final col = m.collection('reglages');
   final f = cfbFicheReglage(m, id);

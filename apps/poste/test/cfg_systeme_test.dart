@@ -41,9 +41,12 @@ void main() {
     expect(find.text('Architecture cible — proposition'), findsNothing);
     expect(find.textContaining('Cette architecture est une proposition technique'), findsNothing);
     expect(find.textContaining('base locale chiffrée du poste n’est pas encore branchée'), findsNothing);
-    for (final b in ['Réinitialiser le jeu de données', 'Exporter les données', 'Plan du site', 'Sauvegardes']) {
+    for (final b in ['Réinitialiser le jeu de données', 'Exporter les données', 'Sauvegardes']) {
       expect(find.widgetWithText(BoutonSigh, b), findsOneWidget, reason: b);
     }
+    // Le plan du site est DÉSACTIVÉ par défaut : ni bouton ni écran, jusqu'à la case des paramètres.
+    expect(find.widgetWithText(BoutonSigh, 'Plan du site'), findsNothing);
+    expect(find.text('Afficher le plan du site'), findsOneWidget);
   });
 
   casM14('la corbeille balaie TOUS les modules : une fiche archivée à un endroit se retrouve ici, restaurée d’un geste et journalisée', (t) async {

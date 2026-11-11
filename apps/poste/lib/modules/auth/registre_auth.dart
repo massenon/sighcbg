@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../shell/ecran_hub.dart';
 import '../../core/config_poste.dart';
+import '../../shell/contexte_autonome.dart';
+import '../cfg/cfb_commun.dart' show cfbPlanDuSiteActif;
 import 'acc_ecrans.dart';
 import 'ins_ecrans.dart';
 import 'acc_support.dart';
@@ -24,7 +26,7 @@ final Map<String, ConstruireEcran> ecransAUTH = {
   'auth-lock': (c, cfg) => const EcranVerrou(),
   'error-404': (c, cfg) => page404,
   'error-403': (c, cfg) => page403,
-  'plan-du-site': (c, cfg) => const EcranPlanDuSite(),
+  'plan-du-site': (c, cfg) => cfbPlanDuSiteActif(ContexteAutonome.of(c).magasin) ? const EcranPlanDuSite() : page404,
   'aide-apropos': (c, cfg) => const EcranAide(),
   'parametres-hub': (c, cfg) => EcranParametresHub(estMere: cfg.estMere),
   'contact-editeur': (c, cfg) => const EcranContactEditeur(),

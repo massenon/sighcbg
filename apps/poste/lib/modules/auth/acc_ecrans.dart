@@ -11,6 +11,7 @@ import '../../core/identifiants.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/verrou_secours_poste.dart';
 import '../../kit/kit.dart';
+import '../cfg/cfb_commun.dart' show cfbPlanDuSiteActif;
 import '../../shell/contexte_autonome.dart';
 import 'acc_gabarit.dart';
 import 'acc_registre_sessions.dart';
@@ -701,7 +702,6 @@ class _EtatVerrou extends State<EcranVerrou> {
     return SceneAcces(
       // L'écran verrouillé suit le DÉCOR ANTHRACITE de la maquette (auth.js : from-anthracite-950 via-anthracite-900 to-sante-950).
       decorSombre: true,
-      icone: LucideIcons.lock,
       titre: 'Session verrouillée',
       sousTitre: accSousTitreVerrou(x.session?.verrou.delai ?? accDelaiVerrou),
       corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -784,12 +784,6 @@ class PageErreur extends StatelessWidget with EcranAutonome {
             child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(color: JetonsShell.navy50, borderRadius: BorderRadius.circular(16)),
-                      child: Icon(icone, size: 32, color: JetonsShell.navy800)),
-                  const SizedBox(height: 24),
                   Text(code,
                       style: const TextStyle(color: JetonsShell.navy950, fontSize: 48, height: 1, fontWeight: FontWeight.w700, letterSpacing: -1.2)),
                   const SizedBox(height: 8),
@@ -805,11 +799,12 @@ class PageErreur extends StatelessWidget with EcranAutonome {
                   const SizedBox(height: 24),
                   Wrap(alignment: WrapAlignment.center, spacing: 8, runSpacing: 8, children: [
                     BoutonSigh(libelle: 'Retour à l’accueil', icone: LucideIcons.house, onPressed: () => x.aller(x.accueil())),
-                    BoutonSigh(
-                        libelle: 'Plan du site',
-                        variante: VarianteBouton.secondaire,
-                        icone: LucideIcons.map,
-                        onPressed: () => x.aller('plan-du-site')),
+                    if (cfbPlanDuSiteActif(x.magasin))
+                      BoutonSigh(
+                          libelle: 'Plan du site',
+                          variante: VarianteBouton.secondaire,
+                          icone: LucideIcons.map,
+                          onPressed: () => x.aller('plan-du-site')),
                   ]),
                   const SizedBox(height: 40),
                   Text('${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}', style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),

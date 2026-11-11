@@ -67,6 +67,7 @@ Magasin poste({List<M> utilisateurs = const [], List<M> rbac = const [], List<M>
       'soignants': jeu('soignants'),
       'rolesBase': jeu('rolesBase'),
       'support': const <M>[],
+      'reglages': <M>[{'id': 'planDuSiteActif', 'statut': 'actif', 'valeur': true}],
       'jetonsEnquete': jetons,
       'enquetes': enquetes,
       'reponsesEnquetes': const <M>[],
@@ -688,6 +689,24 @@ void main() {
   });
 
   // ============================================================================================================================ PLAN DU SITE
+  group('plan du site désactivé par défaut', () {
+    cas('sans réglage : la 403 n’offre pas le plan du site, l’adresse du plan mène à la 404 ; ni pastille en tête de la 403 ni de l’écran verrouillé', (t) async {
+      final m = poste();
+      m.collection('reglages').remplacerContenu(const <M>[]);
+      await monter(t, m, ecran: 'error-403');
+      expect(find.text('Accès refusé'), findsOneWidget);
+      expect(find.widgetWithText(BoutonSigh, 'Plan du site'), findsNothing);
+      expect(find.byIcon(LucideIcons.shieldX), findsNothing);
+      await fin(t);
+      await monter(t, m, ecran: 'plan-du-site');
+      expect(find.text('Page introuvable'), findsOneWidget);
+      await fin(t);
+      await monter(t, m, ecran: 'auth-lock');
+      expect(find.byIcon(LucideIcons.lock), findsNothing);
+      await fin(t);
+    });
+  });
+
   group('plan-du-site', () {
     cas('l’inventaire COMPLET du manifeste, dans l’ordre des domaines, avec le pied de la maquette', (t) async {
       await monter(t, poste(), ecran: 'plan-du-site', taille: const Size(1600, 30000));
