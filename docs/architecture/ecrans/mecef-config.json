@@ -1,0 +1,60 @@
+{
+ "id": "mecef-config",
+ "module": "MECEF",
+ "domaine": "Financier",
+ "libelleManifeste": "Configuration fiscale",
+ "acces": "ouvert",
+ "titre": "Configuration fiscale",
+ "description": "Paramètres d’émission : identifiants légaux, numérotation, taux de TVA et préfixes.",
+ "fil": [
+  "Accueil",
+  "Financier",
+  "MECeF — Facture normalisée",
+  "Configuration fiscale"
+ ],
+ "actions": [
+  "Tableau de bord fiscal",
+  "Factures normalisées",
+  "MECeF — Facture normalisée"
+ ],
+ "regle": [
+  "Boîtier physique. Le modèle, l’interface et le protocole du boîtier ne figurent dans aucun document remis (dix questions au fournisseur et à la DGI restent à poser). Aucun numéro n’est fabriqué comme s’il était fiscal : tant que l’adaptateur du boîtier n’est pas branché, une vente reste en attente de certification.",
+  "Lecture seule. Ces valeurs sont celles des référentiels du logiciel : les modifier ici ne conserverait rien. L’identité légale se règle à « Identité & papier à en-tête ».",
+  "Le régime exonéré est celui relevé sur la facture de référence certifiée MECeF, où la TVA est portée à zéro et le net à payer vaut le hors-taxes augmenté du seul AIB. Ce choix doit être confirmé par le service comptable pour les prestations de la clinique."
+ ],
+ "onglets": [],
+ "kpis": [],
+ "cartes": [
+  "Mode de certification",
+  "Paramètres fiscaux",
+  "Mentions portées sur chaque facture",
+  "Contrôles automatiques à l’émission"
+ ],
+ "tableaux": [],
+ "commandes": [
+  "Enregistrer le mode",
+  "Tester la connexion au dispositif"
+ ],
+ "champs": [
+  "Mode de certification des factures",
+  "Raison sociale *",
+  "IFU *",
+  "RCCM *",
+  "N° d’autorisation d’ouverture",
+  "Adresse",
+  "Téléphones",
+  "Adresse électronique",
+  "Préfixe des factures",
+  "Préfixe des avoirs",
+  "Préfixe des pro-forma",
+  "Prochain numéro",
+  "Régime de TVA *",
+  "Taux d’AIB (%)",
+  "Devise",
+  "Mode de transmission",
+  "Délai avant nouvelle tentative (minutes)",
+  "Archivage automatique des factures transmises"
+ ],
+ "nbTableaux": 0,
+ "nbKpis": 0
+}
