@@ -476,13 +476,15 @@ class _Corbeille extends StatelessWidget {
   final ContexteEcran c;
 
   Future<void> _restaurer(BuildContext ctx, CfbLigneCorbeille r) async {
+    final fiche = c.magasin.collection(r.collection).parId(r.refId);
+    final note = r.collection == 'postes' && fiche != null ? cfaNoteRestaurationPoste(fiche, c.magasin.collection('postes').actives) : null;
     final ok = await confirmerSigh(ctx,
         titre: 'Restaurer « ${r.libelle} » ?',
-        message: 'La fiche réapparaîtra dans ${r.entite} (${r.module}) et redeviendra modifiable. La restauration est journalisée (RG-12).',
+        message: 'La fiche réapparaîtra dans ${r.entite} (${r.module}) et redeviendra modifiable. La restauration est journalisée (RG-12).${note == null ? '' : ' $note'}',
         libelleOk: 'Restaurer');
     if (!ok || !ctx.mounted) return;
     c.magasin.collection(r.collection).restaurer(r.refId);
-    ToastsSigh.afficher(ctx, 'Fiche restaurée dans ${r.entite}.', type: TypeToast.succes);
+    ToastsSigh.afficher(ctx, 'Fiche restaurée dans ${r.entite}.', type: TypeToast.succes, detail: note);
   }
 
   @override

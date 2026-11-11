@@ -306,6 +306,7 @@ class _OngletOrganigramme extends StatelessWidget {
               entite: 'Poste',
               titreCreation: 'Nouveau poste ou département',
               prefixeId: 'PST',
+              archivage: (ctx2, col, f) => _archiverPoste(ctx2, col, f),
               taillePage: 20,
               nomExport: 'postes',
               colonnes: [
@@ -436,4 +437,46 @@ class _OngletRoles extends StatelessWidget {
       ),
     ], espace: 12);
   }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// Archivage d'un poste : ses sous-postes actifs sont réaffectés à son rattachement (décision de la Direction)
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// UN geste : la confirmation nomme les sous-postes réaffectés et leur nouveau rattachement ; chaque sous-poste est mis à jour par le magasin (une ligne
+/// de journal par sous-poste, ancien et nouveau `parentId` — RG-12) ; le poste porte la liste de ce qui a été réaffecté (la Corbeille la relit) ; rien n'est
+/// supprimé (RG-14). L'annulation restitue les rattachements d'origine — sauf ceux qu'on a modifiés entre-temps, qu'elle nomme sans les écraser.
+Future<void> _archiverPoste(BuildContext ctx, CollectionMagasin col, Fiche f) async {
+  final plan = cfaPlanArchivagePoste(col.actives, '${f['id']}');
+  final motif = await confirmerAvecMotif(ctx,
+      titre: 'Archiver le poste « ${plan.poste} » ?',
+      message: 'Archivage logique (RG-14) : le poste reste consultable et l’opération est annulable. ${plan.phrase}',
+      libelleOk: 'Archiver',
+      dangereux: true);
+  if (motif == null || !ctx.mounted) return;
+  for (final r in plan.reaffectations) {
+    col.mettreAJour(r.id, {'parentId': r.nouveauParentId});
+  }
+  if (plan.reaffectations.isNotEmpty) {
+    col.mettreAJour(plan.posteId, {'sousPostesReaffectes': [for (final r in plan.reaffectations) r.toJson()]});
+  }
+  final restaurer = col.archiver(plan.posteId);
+  void annuler() {
+    restaurer();
+    final p = cfaPlanAnnulationArchivage(col.actives, plan.reaffectations);
+    for (final r in p.restituables) {
+      col.mettreAJour(r.id, {'parentId': r.ancienParentId});
+    }
+    if (plan.reaffectations.isNotEmpty) col.mettreAJour(plan.posteId, {'sousPostesReaffectes': <Object?>[]});
+    if (p.modifies.isNotEmpty) {
+      ToastsSigh.afficher(ctx, 'Archivage annulé ; ${p.modifies.length > 1 ? 'des sous-postes ont été modifiés' : 'un sous-poste a été modifié'} entre-temps et n’${p.modifies.length > 1 ? 'ont' : 'a'} pas été remis sous ce poste.',
+          type: TypeToast.attention, detail: p.modifies.map((r) => '« ${r.poste} »').join(', '));
+    }
+  }
+
+  ToastsSigh.afficher(ctx, 'Poste archivé.',
+      type: TypeToast.succes,
+      detail: plan.reaffectations.isEmpty ? null : plan.phrase,
+      annuler: annuler,
+      messageAnnulation: 'Archivage annulé — les sous-postes retrouvent leur rattachement.');
 }

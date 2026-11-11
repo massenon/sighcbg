@@ -132,6 +132,87 @@ Set<String> cfaDescendantsDe(Iterable<CfaFiche> postesActifs, String id) {
   return r;
 }
 
+/// Un sous-poste réaffecté par l'archivage de son poste porteur : son rattachement d'avant et celui d'après (`null` : sommet).
+class CfaReaffectation {
+  const CfaReaffectation({required this.id, required this.poste, required this.ancienParentId, required this.nouveauParentId});
+  final String id;
+  final String poste;
+  final String ancienParentId;
+  final String? nouveauParentId;
+
+  Map<String, Object?> toJson() => {'id': id, 'poste': poste, 'ancienParentId': ancienParentId, 'nouveauParentId': nouveauParentId};
+  static CfaReaffectation depuisJson(Map<String, Object?> j) => CfaReaffectation(
+      id: '${j['id']}', poste: '${j['poste'] ?? ''}', ancienParentId: '${j['ancienParentId']}', nouveauParentId: cfaVrai(j['nouveauParentId']) ? '${j['nouveauParentId']}' : null);
+}
+
+/// Ce qu'archiver un poste fait de ses sous-postes (décision de la Direction) : les sous-postes ACTIFS sont réaffectés au rattachement du poste archivé
+/// (son parent ; un sommet laisse des sommets), pour qu'aucune boîte ne reste sans trait.
+class CfaPlanArchivagePoste {
+  const CfaPlanArchivagePoste({required this.posteId, required this.poste, required this.nouveauParentId, required this.nouveauParent, required this.reaffectations});
+  final String posteId;
+  final String poste;
+
+  /// Le rattachement d'accueil (`null` : les sous-postes deviennent des sommets) et son intitulé.
+  final String? nouveauParentId;
+  final String? nouveauParent;
+  final List<CfaReaffectation> reaffectations;
+
+  /// La phrase de la confirmation : combien de sous-postes, lesquels, vers quel poste.
+  String get phrase {
+    if (reaffectations.isEmpty) return 'Ce poste ne porte aucun sous-poste actif : rien n’est réaffecté.';
+    final n = reaffectations.length;
+    final noms = reaffectations.map((r) => '« ${r.poste} »').join(', ');
+    final tete = '$n sous-poste${n > 1 ? 's seront réaffectés' : ' sera réaffecté'} automatiquement : $noms';
+    return nouveauParentId == null
+        ? '$tete — ${n > 1 ? 'ils deviendront des sommets' : 'il deviendra un sommet'} de l’organigramme (le poste archivé en était un).'
+        : '$tete — ${n > 1 ? 'rattachés' : 'rattaché'} à « $nouveauParent » (le rattachement du poste archivé).';
+  }
+}
+
+/// Le plan d'archivage du poste [id] sur les postes ACTIFS. Fonction pure : seuls les sous-postes DIRECTS bougent (ils emportent les leurs).
+CfaPlanArchivagePoste cfaPlanArchivagePoste(Iterable<CfaFiche> postesActifs, String id) {
+  final actifs = postesActifs.toList();
+  final poste = actifs.firstWhere((p) => '${p['id']}' == id);
+  final pid = cfaVrai(poste['parentId']) ? '${poste['parentId']}' : null;
+  final parent = pid == null ? null : actifs.where((p) => '${p['id']}' == pid && '${p['id']}' != id).firstOrNull;
+  final nouveauId = parent == null ? null : '${parent['id']}';
+  return CfaPlanArchivagePoste(
+    posteId: id,
+    poste: '${poste['poste'] ?? ''}',
+    nouveauParentId: nouveauId,
+    nouveauParent: parent == null ? null : '${parent['poste'] ?? ''}',
+    reaffectations: [
+      for (final p in actifs)
+        if (cfaVrai(p['parentId']) && '${p['parentId']}' == id)
+          CfaReaffectation(id: '${p['id']}', poste: '${p['poste'] ?? ''}', ancienParentId: id, nouveauParentId: nouveauId)
+    ],
+  );
+}
+
+/// L'annulation de l'archivage : parmi les sous-postes réaffectés, ceux dont le rattachement est TOUJOURS celui que la réaffectation a posé (et qui
+/// sont actifs) retrouvent leur rattachement d'origine ; les autres ont été modifiés entre-temps — on ne les écrase pas, on les nomme.
+({List<CfaReaffectation> restituables, List<CfaReaffectation> modifies}) cfaPlanAnnulationArchivage(Iterable<CfaFiche> postesActifs, List<CfaReaffectation> reaffectations) {
+  final actifs = {for (final p in postesActifs) '${p['id']}': p};
+  final restituables = <CfaReaffectation>[];
+  final modifies = <CfaReaffectation>[];
+  for (final r in reaffectations) {
+    final p = actifs[r.id];
+    final courant = p != null && cfaVrai(p['parentId']) ? '${p['parentId']}' : null;
+    (p != null && courant == r.nouveauParentId ? restituables : modifies).add(r);
+  }
+  return (restituables: restituables, modifies: modifies);
+}
+
+/// La note de la RESTAURATION d'un poste archivé depuis la Corbeille : ses anciens sous-postes ne lui sont pas rattachés d'office. `null` : rien à dire.
+String? cfaNoteRestaurationPoste(CfaFiche poste, Iterable<CfaFiche> postesActifs) {
+  final liste = [for (final j in (poste['sousPostesReaffectes'] as List? ?? const [])) if (j is Map) CfaReaffectation.depuisJson({for (final e in j.entries) '${e.key}': e.value})];
+  if (liste.isEmpty) return null;
+  final actifs = {for (final p in postesActifs) '${p['id']}': p};
+  final noms = [for (final r in liste) if (actifs.containsKey(r.id)) '« ${r.poste} »'];
+  if (noms.isEmpty) return null;
+  return 'À son archivage, ${noms.length > 1 ? 'ses sous-postes ont été réaffectés' : 'son sous-poste a été réaffecté'} (${noms.join(', ')}) : ils ne sont PAS rattachés de nouveau d’office. Pour les replacer sous ce poste, modifier leur rattachement.';
+}
+
 num cfaEffectifTotal(Iterable<CfaNoeud> noeuds) =>
     noeuds.fold<num>(0, (s, n) => s + n.effectif + cfaEffectifTotal(n.enfants));
 

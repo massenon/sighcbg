@@ -248,6 +248,7 @@ class CfaTableau extends StatelessWidget {
     this.apres,
     this.largeurTiroir = 672,
     this.validation,
+    this.archivage,
   });
 
   final String collection;
@@ -290,6 +291,9 @@ class CfaTableau extends StatelessWidget {
 
   /// `validation: { famille, cible?, siChange? }` de `K.actionsLigne` : bouton Valider par ligne (moteur commun), et modifier remet « à valider ».
   final ValidationCrud? validation;
+
+  /// Archivage PROPRE à l'écran (les postes réaffectent leurs sous-postes) ; absent : [cfaArchiver].
+  final void Function(BuildContext, CollectionMagasin, Fiche)? archivage;
 
   Fiche _fiche(Map<String, Object?> s, Fiche? e) => fiche != null ? fiche!(s, e) : {...s};
 
@@ -347,7 +351,7 @@ class CfaTableau extends StatelessWidget {
                     icone: LucideIcons.pencil,
                     libelle: 'Modifier',
                     onPressed: () => cfaSaisir(ctx2, col: col, champs: champs(f), fiche: _fiche, existante: f, titreCreation: titreCreation, entite: entite, taille: taille, avant: avant, preparer: preparer, validation: validation)),
-              if (archivable && c.droit.annuler) BoutonIcone(icone: LucideIcons.archive, libelle: 'Archiver', onPressed: () => cfaArchiver(ctx2, col, f)),
+              if (archivable && c.droit.annuler) BoutonIcone(icone: LucideIcons.archive, libelle: 'Archiver', onPressed: () => (archivage ?? cfaArchiver)(ctx2, col, f)),
               ...?actionsLigneApres?.call(ctx2, f),
             ],
           );

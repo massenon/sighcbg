@@ -110,4 +110,102 @@ void main() {
     expect(find.text('Poste vacant'), findsWidgets);
     await t.pump(const Duration(seconds: 6));
   });
+
+  /// Archiver un poste PORTEUR par l'écran : motif, puis le toast. Rend le magasin pour que le test lise ce qui est écrit.
+  Future<void> archiverParEcran(WidgetTester t, int rang, String motif) async {
+    await toucherM14(t, find.text('Organigramme').first);
+    await toucherM14(t, find.byTooltip('Archiver').at(rang));
+    await t.enterText(find.byType(TextField).last, motif);
+    await t.pump();
+  }
+
+  List<String> enfantsActifs(Magasin m, String id) => [for (final p in m.collection('postes').actives) if (p['parentId'] == id) '${p['id']}'];
+
+  casM14('archiver un poste de 4 sous-postes : la confirmation les nomme, ils passent au parent (un geste, journalisé), la scène du PDF n’a aucune boîte orpheline ; annuler les restitue', (t) async {
+    final m = livre();
+    final col = m.collection('postes');
+    final avant = enfantsActifs(m, 'PST005');
+    expect(avant.length, 4);
+    await ouvrirM14(t, m, 'cfg-organisation');
+    await archiverParEcran(t, 4, 'Réorganisation');
+    // (1) la confirmation DIT combien, lesquels et vers quel poste.
+    expect(find.textContaining('4 sous-postes seront réaffectés'), findsOneWidget);
+    expect(find.textContaining('« Agent De Sécurité »'), findsOneWidget);
+    expect(find.textContaining('« Directeur Général/ Médecin chef »'), findsOneWidget);
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver').last);
+    await t.pump(const Duration(milliseconds: 400));
+    // (2) les sous-postes sont rattachés au parent du poste archivé ; le poste est archivé, jamais supprimé (RG-14).
+    for (final id in avant) {
+      expect(col.parId(id)!['parentId'], 'PST001', reason: id);
+      expect(col.parId(id)!['statut'] ?? 'actif', isNot('archive'));
+    }
+    expect(col.actives.any((p) => p['id'] == 'PST005'), isFalse);
+    expect(col.toutes.any((p) => p['id'] == 'PST005'), isTrue);
+    // Le journal porte, pour CHAQUE sous-poste, l'ancien et le nouveau rattachement (RG-12).
+    final reaff = m.collection('audit').toutes.where((e) => e['action'] == 'Modification' && e['avant'] is Map && (e['avant'] as Map)['parentId'] == 'PST005').toList();
+    expect(reaff.length, 4, reason: 'une ligne de journal par sous-poste réaffecté');
+    expect(reaff.every((e) => (e['apres'] as Map)['parentId'] == 'PST001'), isTrue);
+    expect(m.collection('audit').toutes.where((e) => e['action'] == 'Archivage').length, 1, reason: 'un seul archivage');
+    // (7) la scène du PDF paysage : aucune boîte orpheline — chaque case non sommet est reliée à un parent encore dessiné.
+    final sc = scene(m);
+    final ids = sc.cases.map((c) => c.id).toSet();
+    expect(ids, isNot(contains('PST005')));
+    for (final id in avant) {
+      expect(ids, contains(id));
+      final k = sc.cases.firstWhere((c) => c.id == id);
+      expect(sc.traits.any((tr) => tr.x2 >= k.x && tr.x2 <= k.x + k.l && tr.y2 >= k.y && tr.y2 <= k.bas), isTrue, reason: 'un trait aboutit à la boîte de $id');
+    }
+    final octets = await pdfFichePaysage(fiche(m), await PolicesPdf.charger());
+    expect(octets.length, greaterThan(1000));
+    // (3) l'annulation restitue les rattachements d'origine.
+    await t.tap(find.text('Annuler').last);
+    await t.pump(const Duration(milliseconds: 400));
+    for (final id in avant) {
+      expect(col.parId(id)!['parentId'], 'PST005', reason: id);
+    }
+    expect(col.actives.any((p) => p['id'] == 'PST005'), isTrue);
+    await t.pump(const Duration(seconds: 6));
+  });
+
+  casM14('annuler l’archivage : un sous-poste modifié entre-temps n’est PAS écrasé, et le toast le nomme', (t) async {
+    final m = livre();
+    final col = m.collection('postes');
+    await ouvrirM14(t, m, 'cfg-organisation');
+    await archiverParEcran(t, 4, 'Réorganisation');
+    await t.tap(find.widgetWithText(BoutonSigh, 'Archiver').last);
+    await t.pump(const Duration(milliseconds: 400));
+    col.mettreAJour('PST016', {'parentId': 'PST007'}); // modifié entre-temps
+    await t.tap(find.text('Annuler').last);
+    await t.pump(const Duration(milliseconds: 400));
+    expect(col.parId('PST016')!['parentId'], 'PST007', reason: 'non écrasé');
+    expect(col.parId('PST017')!['parentId'], 'PST005');
+    expect(find.textContaining('modifié entre-temps'), findsOneWidget);
+    expect(find.textContaining('« Agent De Sécurité »'), findsWidgets);
+    await t.pump(const Duration(seconds: 10));
+  });
+
+  test('un SOMMET archivé : ses sous-postes deviennent des sommets, la scène du PDF les place sans orphelin ; la restauration ne ré-attache pas d’office et le dit', () {
+    final m = livre();
+    final col = m.collection('postes');
+    // Un sommet de test portant deux sous-postes.
+    col.inserer({'id': 'PSTX', 'poste': 'Sommet X', 'parentId': null, 'effectif': 1, 'role': 'agentadmin', 'statut': 'actif'});
+    col.mettreAJour('PST002', {'parentId': 'PSTX'});
+    col.mettreAJour('PST003', {'parentId': 'PSTX'});
+    final plan = cfaPlanArchivagePoste(col.actives, 'PSTX');
+    expect(plan.nouveauParentId, isNull);
+    for (final r in plan.reaffectations) {
+      col.mettreAJour(r.id, {'parentId': r.nouveauParentId});
+    }
+    col.mettreAJour('PSTX', {'sousPostesReaffectes': [for (final r in plan.reaffectations) r.toJson()]});
+    col.archiver('PSTX');
+    expect(col.parId('PST002')!['parentId'], isNull);
+    expect(col.parId('PST003')!['parentId'], isNull);
+    expect(cfaArbre(col.actives).map((n) => n.fiche['id']), containsAll(['PST002', 'PST003']));
+    final sc = scene(m);
+    expect(sc.cases.map((c) => c.id), containsAll(['PST002', 'PST003']));
+    // Restauration : rien n'est rattaché d'office, la note le dit.
+    col.restaurer('PSTX');
+    expect(col.parId('PST002')!['parentId'], isNull);
+    expect(cfaNoteRestaurationPoste(col.parId('PSTX')!, col.actives), allOf(contains('PAS rattachés'), contains('Médecin Généraliste')));
+  });
 }
