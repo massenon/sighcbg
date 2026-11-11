@@ -756,16 +756,13 @@ class _OngletSensiblesState extends State<_OngletSensibles> {
                 alignment: Alignment.centerLeft,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 420),
-                    child: InputDecorator(
-                        decoration: const InputDecoration(labelText: 'Rôle', isDense: true, border: OutlineInputBorder()),
-                        child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                                key: const Key('m14:sensibles:role'),
-                                isDense: true,
-                                isExpanded: true,
-                                value: role.id,
-                                items: [for (final r in roles) DropdownMenuItem(value: r.id, child: Text(r.label))],
-                                onChanged: (v) => setState(() => _role = v)))))),
+                    child: SelecteurSigh(
+                        key: const Key('m14:sensibles:role'),
+                        libelle: 'Rôle',
+                        indicatif: 'Rôle',
+                        valeur: role.id,
+                        options: [for (final r in roles) OptionChamp(r.id, r.label)],
+                        surChange: (v) => setState(() => _role = v)))),
             const SizedBox(height: 12),
             for (final cat in categoriesSensibles)
               Builder(builder: (ctx) {

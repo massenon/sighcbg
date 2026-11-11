@@ -32,7 +32,7 @@ DonneesNavigation donneesLectureSeule(String role, String ecran) {
 
 Future<void> ouvrirM14(WidgetTester t, Magasin m, String ecran,
     {String role = 'admin', DonneesNavigation? donnees, DateTime? horloge}) async {
-  t.view.physicalSize = const Size(1600, 1200);
+  t.view.physicalSize = const Size(1600, 1500);
   t.view.devicePixelRatio = 1;
   addTearDown(t.view.resetPhysicalSize);
   await t.pumpWidget(SighPoste(
