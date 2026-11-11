@@ -1,7 +1,7 @@
 {
  "_doc": "ENGENDRÉ par apps/poste/test/parite_ecrans_test.dart — ne pas éditer. Parité N1 (contenu) des écrans Flutter portés contre la maquette.",
- "ecrans_du_manifeste": 346,
- "ecrans_portes": 369,
+ "ecrans_du_manifeste": 352,
+ "ecrans_portes": 375,
  "ecrans": [
   {
    "id": "adm-enquetes",
@@ -711,7 +711,31 @@
    "manquants": []
   },
   {
+   "id": "imp-courriers",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-emplacements",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
    "id": "imp-fournisseurs",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-inventaire",
    "mesure": true,
    "attendus": 19,
    "presents": 19,
@@ -743,6 +767,14 @@
    "manquants": []
   },
   {
+   "id": "imp-produits",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
    "id": "imp-soldes-ouverture",
    "mesure": true,
    "attendus": 19,
@@ -752,6 +784,22 @@
   },
   {
    "id": "imp-souscripteurs",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-stock-detail",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-transferts",
    "mesure": true,
    "attendus": 19,
    "presents": 19,

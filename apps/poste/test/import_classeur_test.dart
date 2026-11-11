@@ -26,6 +26,19 @@ Magasin magasinVecteurs() => Magasin({
 
 PortMagasin portVecteurs(Magasin m) => PortMagasin(m, aujourdhui: () => DateTime(2026, 11, 1), nomAgent: 'ADMIN TEST');
 
+/// Décisions du 11/11/2026 : le modèle du répertoire patients ne porte plus le code (RG-01 : généré) ni le groupe sanguin ; le modèle du personnel ne porte la colonne
+/// « Salaire de base » que pour le profil qui a le droit paie. Les classeurs de la maquette, écrits avant, sont relus tels quels puis ADAPTÉS avant l'analyse.
+const _retiresPatients = {'Code dossier', 'Groupe sanguin'};
+const _casCodeFourni = {'pa-code-existant', 'pa-code-invalide'};
+
+List<List<Object?>> adapter(String jeu, List<List<Object?>> lignes) {
+  if (jeu != 'patients' || lignes.isEmpty) return lignes;
+  final garde = [for (var i = 0; i < lignes.first.length; i++) if (!_retiresPatients.contains('${lignes.first[i]}')) i];
+  return [
+    for (final l in lignes) [for (final i in garde) if (i < l.length) l[i] else '']
+  ];
+}
+
 void main() {
   group('lecture des classeurs écrits par la maquette', () {
     for (final c in (vecteurs['cas'] as List).cast<Map>()) {
@@ -52,7 +65,8 @@ void main() {
         expect(lues, att);
         // Et le moteur du domaine rend le verdict de la maquette sur ces lignes lues par Dart.
         final jeu = jeuImportParId('${c['jeu']}')!;
-        final a = analyserLignes(jeu, feuilles.single.lignes, '${c['id']}.xlsx', portVecteurs(magasinVecteurs()));
+        if (_casCodeFourni.contains(c['id'])) return; // le code fourni par le fichier n'existe plus (RG-01) : voir packages/domaine/test/import_ecarts_test.dart
+        final a = analyserLignes(jeu, adapter(jeu.id, feuilles.single.lignes), '${c['id']}.xlsx', portVecteurs(magasinVecteurs()), options: OptionsImport(colonnesAccordees: jeu.colonnesReservees));
         final attendu = (c['attendu'] as Map).cast<String, Object?>();
         expect(a.accepte, attendu['accepte'], reason: '${c['id']} : accepté');
         expect(a.compte.versJson(), attendu['compte']);
@@ -63,16 +77,17 @@ void main() {
   });
 
   group('modèles : celui du poste et celui de la maquette disent la même chose', () {
-    for (final j in jeuxImport) {
+    final connus = (vecteurs['modeles'] as Map).cast<String, Object?>();
+    for (final j in jeuxImport.where((j) => connus.containsKey(j.id))) {
       test(j.id, () {
-        final m = (vecteurs['modeles'] as Map).cast<String, Object?>()[j.id] as Map;
+        final m = connus[j.id] as Map;
         // Le modèle de la maquette, relu par Dart.
         final maquette = lireClasseur(fixture('modele-${j.id}'));
         expect(maquette.map((f) => f.nom), ['Données', 'Instructions', 'Listes']);
         expect([for (final x in maquette[0].lignes.first) '$x'], m['entetes']);
-        // Le modèle du poste, relu par Dart : mêmes feuilles, mêmes en-têtes, mêmes lignes que celui de la maquette.
+        // Le modèle du poste, relu par Dart : mêmes feuilles, mêmes en-têtes, mêmes lignes que celui de la maquette (au profil qui a le droit paie).
         final port = portVecteurs(magasinVecteurs());
-        final poste = lireClasseur(classeurModele(j, port));
+        final poste = lireClasseur(classeurModele(j, port, colonnesAccordees: j.colonnesReservees));
         expect(poste.map((f) => f.nom), ['Données', 'Instructions', 'Listes']);
         List<String> sansQueue(Iterable<Object?> l) {
           final t = [for (final x in l) _t(x)];
@@ -82,13 +97,58 @@ void main() {
           return t;
         }
 
+        // Patients : on retire du modèle de la maquette le code et le groupe sanguin (colonnes, lignes d'instructions, liste).
+        List<List<String>> relu(int feuille) {
+          var lignes = [for (final l in maquette[feuille].lignes) sansQueue(l)];
+          if (j.id != 'patients') return lignes;
+          if (feuille == 0) {
+            final garde = [for (var i = 0; i < lignes.first.length; i++) if (!_retiresPatients.contains(lignes.first[i])) i];
+            lignes = [for (final l in lignes) [for (final i in garde) if (i < l.length) l[i]]];
+          } else if (feuille == 1) {
+            lignes = [for (final l in lignes) if (l.isEmpty || !_retiresPatients.contains(l.first)) l];
+          } else {
+            final i = lignes.first.indexOf('Groupe sanguin');
+            lignes = [for (final l in lignes) [for (var k = 0; k < l.length; k++) if (k != i) l[k]]];
+          }
+          lignes = [for (final l in lignes) sansQueue(l)];
+          while (lignes.isNotEmpty && lignes.last.isEmpty && j.id == 'patients') {
+            lignes.removeLast();
+          }
+          return lignes;
+        }
+
         for (var i = 0; i < 3; i++) {
           // La maquette décrit le code patient sous le sigle CBG ; le poste, sous le sigle de la clinique en vigueur.
           String sigle(String x) => x.replaceAll('${IdentiteClinique.sigle}/n/AA', 'CBG/n/AA').replaceAll('Zongo II, Parakou', 'Tchirimina, Natitingou');
-          expect([for (final l in poste[i].lignes) sansQueue(l).map(sigle).toList()], [for (final l in maquette[i].lignes) sansQueue(l)], reason: 'feuille ${poste[i].nom}');
+          final obtenu = [for (final l in poste[i].lignes) sansQueue(l).map(sigle).toList()];
+          while (obtenu.isNotEmpty && obtenu.last.isEmpty && j.id == 'patients') {
+            obtenu.removeLast();
+          }
+          expect(obtenu, relu(i), reason: 'feuille ${poste[i].nom}');
         }
       });
     }
+
+    for (final j in jeuxImport.where((j) => !connus.containsKey(j.id))) {
+      test('${j.id} (jeu du 11/11/2026) : le classeur du poste porte les en-têtes du jeu et se relit', () {
+        final poste = lireClasseur(classeurModele(j, portVecteurs(magasinVecteurs())));
+        expect(poste.map((f) => f.nom), ['Données', 'Instructions', 'Listes']);
+        expect([for (final x in poste[0].lignes.first) '$x'], [for (final c in j.colonnes) c.label]);
+        // Le modèle intact est un fichier vide : la ligne d'exemple n'est jamais importée.
+        final a = analyserLignes(j, poste[0].lignes, 'modele.xlsx', portVecteurs(magasinVecteurs()));
+        expect(a.accepte, isFalse);
+        expect(a.globaux.single.code, 'FICHIER_VIDE');
+      });
+    }
+
+    test('le modèle du personnel ne porte « Salaire de base » que pour le profil qui a le droit paie', () {
+      final port = portVecteurs(magasinVecteurs());
+      final sans = lireClasseur(classeurModele(jeuPersonnel, port));
+      final avec = lireClasseur(classeurModele(jeuPersonnel, port, colonnesAccordees: {'salaireBase'}));
+      expect([for (final x in sans[0].lignes.first) '$x'], isNot(contains('Salaire de base')));
+      expect([for (final x in avec[0].lignes.first) '$x'], contains('Salaire de base'));
+      expect(sans[1].lignes.expand((l) => l).map((x) => '$x').where((x) => x == 'Salaire de base'), isEmpty);
+    });
 
     test('le modèle intact (ligne d\'exemple non modifiée) est refusé comme fichier vide, jamais importé', () {
       final lu = lireClasseur(fixture('modele-grand-stock'));

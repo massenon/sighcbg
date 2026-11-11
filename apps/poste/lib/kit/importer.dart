@@ -197,7 +197,9 @@ class _EtatAssistantImport extends State<AssistantImport> {
           icone: LucideIcons.shieldCheck),
       const SizedBox(height: 12),
       if (_jeu.ignorable)
-        CheckboxListTile(
+        Material(
+            type: MaterialType.transparency,
+            child: CheckboxListTile(
             key: const Key('imp-ignorer-existants'),
             contentPadding: EdgeInsets.zero,
             controlAffinity: ListTileControlAffinity.leading,
@@ -208,7 +210,7 @@ class _EtatAssistantImport extends State<AssistantImport> {
                   _lotRefuse = null;
                 }),
             title: const Text('Ignorer les existants', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            subtitle: const Text('Une ligne dont la fiche existe déjà est listée et ignorée, jamais modifiée. Les autres lignes s’importent.', style: TextStyle(fontSize: 12))),
+            subtitle: const Text('Une ligne dont la fiche existe déjà est listée et ignorée, jamais modifiée. Les autres lignes s’importent.', style: TextStyle(fontSize: 12)))),
       Wrap(spacing: 8, runSpacing: 8, children: [
         BoutonSigh(
             key: const Key('import-choisir-fichier'),

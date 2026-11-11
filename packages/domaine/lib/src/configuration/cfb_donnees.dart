@@ -283,6 +283,7 @@ const cfbLibellesCollections = <String, (String, String)>{
   'checklistsBloc': ('M3', 'Check-listes du bloc'),
   'clichesImagerie': ('M2', 'Clichés d’échographie'),
   'commandes': ('M7', 'Commandes'),
+  'comptagesInventaire': ('M6', 'Comptages d’inventaire importés'),
   'comptes': ('M12', 'Plan comptable'),
   'conges': ('M10', 'Congés'),
   'constantes': ('—', 'constantes'),

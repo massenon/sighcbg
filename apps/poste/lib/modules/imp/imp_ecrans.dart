@@ -15,6 +15,8 @@ import '../../import/selecteurs_import.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
+import '../cfg/cfb_commun.dart' show cfbFicheReglage, cfbPoserReglage;
+import '../m6/flux_commun.dart' show modaleSaisie;
 import '../m6/flux_reprise.dart';
 
 // Les gestes de fichier vivent dans `lib/import/fichier_import.dart` ; ils restent joignables par ce fichier (les bancs d'essai les y ont toujours cherchés).
@@ -439,7 +441,9 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
               const SizedBox(height: 12),
               // La commande d'écriture est ABSENTE (jamais grisée) sans le droit d'écrire.
               if (c.droit.editer && j.ignorable)
-                CheckboxListTile(
+                Material(
+                    type: MaterialType.transparency,
+                    child: CheckboxListTile(
                     key: const Key('imp-ignorer-existants'),
                     contentPadding: EdgeInsets.zero,
                     controlAffinity: ListTileControlAffinity.leading,
@@ -447,7 +451,7 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
                     onChanged: (v) => setState(() => _ignorer = v == true),
                     title: const Text('Ignorer les existants', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                     subtitle: const Text('Une ligne dont la fiche existe déjà est listée et ignorée, jamais modifiée. Permis sur ce jeu seulement parce que l’existant y est une référence qu’on enrichit.',
-                        style: TextStyle(fontSize: 12))),
+                        style: TextStyle(fontSize: 12)))),
               if (c.droit.editer)
                 Row(children: [
                   BoutonSigh(libelle: 'Téléverser un fichier (.xlsx ou .csv)', icone: LucideIcons.upload, onPressed: () => _televerser(c)),
@@ -550,6 +554,9 @@ class EcranImportAccueil extends StatelessWidget with EcranMaquette {
                               BoutonSigh(libelle: 'Ouvrir', icone: LucideIcons.arrowRight, onPressed: () => c.aller(j.ecran)),
                             ]))),
                     ])),
+            // La borne de taille d'un fichier est un réglage PAR JEU (collection `reglages`) : qui arbitre les lots la règle, les autres la lisent à l'import.
+            if (droits.arbitreLesLots)
+              OngletDef(id: 'taille', libelle: 'Taille des fichiers', construire: (ctx) => _tailles(ctx, c, visibles)),
             OngletDef(
                 id: 'historique',
                 libelle: 'Historique des lots',
@@ -562,6 +569,51 @@ class EcranImportAccueil extends StatelessWidget with EcranMaquette {
         ]);
       },
     );
+  }
+
+  Widget _tailles(BuildContext ctx, ContexteEcran c, List<JeuImport> jeux) {
+    String ko(int o) => '${nombre((o / 1024).round())} Ko';
+    return CarteSigh(
+        titre: 'Taille maximale d’un fichier d’import, par jeu',
+        sansRemplissage: true,
+        child: TableauSigh(
+          lignes: [
+            for (final j in jeux)
+              {
+                'id': j.id,
+                'jeu': j.libelle,
+                'borne': octetsMaxDe(c.magasin, j),
+                'origine': cfbFicheReglage(c.magasin, cleReglageOctetsMax(j.id)) == null ? 'Valeur par défaut' : 'Réglée par la clinique',
+              }
+          ],
+          taillePage: 20,
+          triInitial: 'jeu',
+          messageVide: 'Aucun jeu.',
+          colonnes: [
+            const ColonneTableau(cle: 'jeu', libelle: 'Jeu d’import'),
+            ColonneTableau(cle: 'borne', libelle: 'Borne', droite: true, texte: (l) => ko(l['borne'] as int), valeur: (l) => l['borne']),
+            const ColonneTableau(cle: 'origine', libelle: 'Origine'),
+          ],
+          actionsLigne: (context, l) => [
+            BoutonIcone(
+                icone: LucideIcons.pencil,
+                libelle: 'Régler la borne',
+                onPressed: () => modaleSaisie(context,
+                    titre: 'Taille maximale : ${l['jeu']}',
+                    sousTitre: 'Un fichier plus gros est refusé avant toute lecture, en disant la borne.',
+                    champs: const [ChampDef(nom: 'ko', libelle: 'Borne (Ko)', type: TypeChamp.nombre, requis: true, col: ColChamp.plein)],
+                    initial: {'ko': ((l['borne'] as int) / 1024).round()},
+                    libelleOk: 'Enregistrer',
+                    icone: LucideIcons.check,
+                    surValider: (v) {
+                      final k = v['ko'];
+                      if (k is! num || k < 1) return false;
+                      cfbPoserReglage(c.magasin, cleReglageOctetsMax('${l['id']}'), (k * 1024).round());
+                      ToastsSigh.afficher(context, 'Borne enregistrée.', type: TypeToast.succes, detail: '${l['jeu']} : ${nombre(k.round())} Ko.');
+                      return true;
+                    })),
+          ],
+        ));
   }
 
   static String _dernier(List<Fiche> tous, String jeu) {
