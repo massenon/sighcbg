@@ -159,6 +159,33 @@ void main() {
       expect(mat.peutEditer(r, 'm1-patients'), isFalse, reason: 'le répertoire se lit, sans dossier médical');
     });
 
+    test('droit d’archiver : chaque rôle suit le rôle existant le plus proche, sans l’élargir (revu par la Direction le 11/11/2026)', () {
+      final mat = donnees.aChaud(poste()).matrice;
+      final ids = donnees.manifeste.tousLesEcrans.where((e) => !e.hub).toList();
+      // Responsable Radiologie = Technicien d'échographie sur tout écran que les deux ouvrent (hors tableau de bord propre à chacun).
+      for (final e in ids.where((e) => !e.id.startsWith('dash-'))) {
+        expect(mat.peutAnnuler('responsable_radiologie', e.id), mat.peutAnnuler('echographiste', e.id), reason: 'radiologie comme échographiste : ${e.id}');
+      }
+      // Responsable Maternité : archive en M4 comme l'infirmier (qui y a le droit), nulle part ailleurs que ce que l'infirmier peut.
+      for (final e in ids.where((e) => e.module == 'M4')) {
+        expect(mat.peutAnnuler('sage_femme', e.id), mat.peutAnnuler('infirmier', e.id), reason: 'sage-femme comme infirmier : ${e.id}');
+      }
+      expect(ids.any((e) => e.module == 'M4' && mat.peutAnnuler('infirmier', e.id)), isTrue, reason: 'l\'infirmier archive en M4 : l\'alignement n\'est pas une fermeture');
+      for (final e in ids.where((e) => mat.peutAnnuler('sage_femme', e.id) && !e.id.startsWith('dash-'))) {
+        expect(mat.peutAnnuler('infirmier', e.id), isTrue, reason: 'la sage-femme n\'archive pas où l\'infirmier ne le peut pas : ${e.id}');
+      }
+      // Responsable Assurance : M9 comme le comptable (modifie, n'archive pas) ; M8 en lecture seule.
+      for (final e in ids.where((e) => e.module == 'M9')) {
+        expect(mat.peutAnnuler('responsable_assurance', e.id), isFalse, reason: 'M9 : pas d\'archivage, comme le comptable : ${e.id}');
+        expect(mat.peutAnnuler('responsable_assurance', e.id), mat.peutAnnuler('comptable', e.id), reason: e.id);
+        expect(mat.peutEditer('responsable_assurance', e.id), mat.peutEditer('comptable', e.id), reason: e.id);
+      }
+      for (final e in ids.where((e) => e.module == 'M8')) {
+        expect(mat.peutEditer('responsable_assurance', e.id), isFalse, reason: e.id);
+        expect(mat.peutAnnuler('responsable_assurance', e.id), isFalse, reason: e.id);
+      }
+    });
+
     test('un tableau de bord par rôle, dans le manifeste, ouvert aux rôles qui lisent tout et fermé à tous les autres', () {
       final m = poste();
       const dash = {'responsable_radiologie': 'dash-responsable-radiologie', 'sage_femme': 'dash-sage-femme', 'responsable_assurance': 'dash-responsable-assurance'};

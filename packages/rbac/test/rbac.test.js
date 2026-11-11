@@ -103,6 +103,17 @@ test('Responsable Assurance : M9 en écriture, M8 en lecture, répertoire sans d
   for (const id of ['m1-dossier-medical', 'm1-antecedents', 'm1-constantes', 'm1-pieces', 'm8-caisse', 'm12-ecritures', 'm5-resultats', 'm2-consultations']) assert.equal(droit('responsable_assurance', id), null, id);
   for (const mod of ['M2', 'M3', 'M4', 'M5', 'M6', 'M10', 'M11', 'M12', 'MECEF', 'M13', 'M14', 'CFG']) assert.equal(modulesDe('responsable_assurance').has(mod), false, mod);
 });
+test('droit d\'archiver : chaque nouveau rôle suit le rôle existant le plus proche, sans l\'élargir (Direction, 11/11/2026)', () => {
+  const ecrans = (role) => Object.keys(rbac.parRole[role]).filter((id) => !id.startsWith('dash-'));
+  for (const id of ecrans('responsable_radiologie')) assert.equal(droit('responsable_radiologie', id)[2], droit('echographiste', id)[2], `radiologie/échographiste ${id}`);
+  for (const id of rolesEnModule('sage_femme', 'M4')) assert.equal(droit('sage_femme', id)[2], droit('infirmier', id)[2], `sage-femme/infirmier ${id}`);
+  for (const id of rolesEnModule('responsable_assurance', 'M9')) {
+    assert.equal(droit('responsable_assurance', id)[2], 0, `M9 sans archivage ${id}`);
+    assert.deepEqual(droit('responsable_assurance', id), droit('comptable', id), `comme le comptable ${id}`);
+  }
+  for (const id of rolesEnModule('responsable_assurance', 'M8')) assert.deepEqual(droit('responsable_assurance', id), [1, 0, 0], `M8 en lecture seule ${id}`);
+  for (const mod of ['M9']) assert.equal(rbac.matriceModules.responsable_assurance[mod].annuler, false);
+});
 test('un tableau de bord de rôle n\'est ouvert qu\'à son rôle et aux profils qui lisent tout', () => {
   for (const [role, dash] of [['responsable_radiologie', 'dash-responsable-radiologie'], ['sage_femme', 'dash-sage-femme'], ['responsable_assurance', 'dash-responsable-assurance']]) {
     for (const r of rbac.roles) assert.equal(!!droit(r.id, dash), r.id === role || ['admin', 'da', 'direction'].includes(r.id), `${dash} sous ${r.id}`);

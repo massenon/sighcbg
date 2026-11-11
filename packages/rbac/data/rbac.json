@@ -3249,7 +3249,7 @@
    "M9": {
     "voir": true,
     "editer": true,
-    "annuler": true
+    "annuler": false
    },
    "MECEF": {
     "voir": false,
@@ -14015,52 +14015,52 @@
    "m9-dashboard": [
     1,
     1,
-    1
+    0
    ],
    "m9-compagnies": [
     1,
     1,
-    1
+    0
    ],
    "m9-assures": [
     1,
     1,
-    1
+    0
    ],
    "m9-conventions": [
     1,
     1,
-    1
+    0
    ],
    "m9-prises-en-charge": [
     1,
     1,
-    1
+    0
    ],
    "m9-factures-assureur": [
     1,
     1,
-    1
+    0
    ],
    "m9-facture-mere": [
     1,
     1,
-    1
+    0
    ],
    "m9-historique": [
     1,
     1,
-    1
+    0
    ],
    "m9-creances": [
     1,
     1,
-    1
+    0
    ],
    "m9-relances": [
     1,
     1,
-    1
+    0
    ],
    "rapports-bibliotheque": [
     1,
