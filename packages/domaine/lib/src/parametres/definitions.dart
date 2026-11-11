@@ -11,6 +11,10 @@
 // Le lot L3 a branché `mecef.mode` (lu par la normalisation, voir `src/mecef/mode.dart`). Les lots L5 et L6 ont branché `planning.circuitPresences` et
 // `planning.agentModifieDirectement` (lus par le moteur du planning RH, `src/rh/planning_rh.dart`, et par la maquette). Les lots L7 et L8 ont branché
 // `paie.copieFichePaieTelephone` (`src/rh/espace_mes.dart`), `planning.badgeSertDePointage` et `planning.delaiEntrePointagesBadge` (`src/rh/pointage_badge.dart`).
+// AIB (lot L2 de la réplique d'origine) : les quatre réglages de l'AIB sont DÉCLARÉS (graine du registre, vecteurs `aib.json`, domaine `src/comptabilite/aib.dart`) mais NON
+// BRANCHÉS à Baguidi. Baguidi écrit déjà la retenue d'AIB à la facture fournisseur (`cpd_retenue_aib`, pièce plate 401000/4478 en brouillon, barème des situations et
+// `parametresAib`) : brancher « l'AIB sur les écritures d'achat » ajouterait un second écrivain de la même retenue, et la décision D4 (« les deux, selon la situation de
+// l'émetteur », aucune écriture d'AIB subi) interdit de faire dépendre une écriture du réglage « qui supporte le prélèvement ».
 // Le lot ORG2 a branché `securite.delaiVerrouPosteSecours` (`src/securite/verrou_secours.dart`, lu par le verrou de session d'un poste désigné de secours).
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
@@ -43,8 +47,7 @@ const List<DefinitionParametre> definitionsParametres = [
     libelle: 'Qui supporte le prélèvement de l\'AIB',
     aide: 'Décision D4 de Baguidi : les deux, selon la situation de l\'émetteur ; communiqué de la DGI et comptes confirmés par l\'expert-comptable à obtenir. Réglage non branché : aucune écriture d\'AIB subi n\'en dépend.',
     source: _decisions,
-    branche: true,
-    appliquePar: 'Lot L2 (AIB)',
+    branche: false,
   ),
   DefinitionParametre(
     cle: 'bareme_aib.branchementAchats',
@@ -56,8 +59,7 @@ const List<DefinitionParametre> definitionsParametres = [
     libelle: 'Brancher l\'AIB sur les écritures d\'achat',
     aide: 'Différé par décision de la Direction : désactivé par défaut. L\'activation exige le compte d\'acompte, le compte de contrepartie et la charge arrêtés (refus nommé sinon).',
     source: _decisions,
-    branche: true,
-    appliquePar: 'Lot L2 (AIB)',
+    branche: false,
   ),
   DefinitionParametre(
     cle: 'bareme_aib.compteAcompte',
@@ -67,8 +69,7 @@ const List<DefinitionParametre> definitionsParametres = [
     libelle: 'Compte d\'acompte (débit)',
     aide: 'Choisi par le comptable dans le plan comptable : aucun numéro n\'est proposé d\'office (vide tant qu\'il n\'est pas choisi).',
     source: _decisions,
-    branche: true,
-    appliquePar: 'Lot L2 (AIB)',
+    branche: false,
   ),
   DefinitionParametre(
     cle: 'bareme_aib.compteContrepartie',
@@ -78,8 +79,7 @@ const List<DefinitionParametre> definitionsParametres = [
     libelle: 'Compte de contrepartie (crédit)',
     aide: 'Choisi par le comptable dans le plan comptable : une écriture s\'équilibre sur deux comptes que la clinique désigne (vide tant qu\'il n\'est pas choisi).',
     source: _decisions,
-    branche: true,
-    appliquePar: 'Lot L2 (AIB)',
+    branche: false,
   ),
   DefinitionParametre(
     cle: 'planning.circuitPresences',

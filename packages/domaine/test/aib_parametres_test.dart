@@ -18,11 +18,11 @@ AibDonnees _d(List<Parametre> v) => AibDonnees(reglages: aibReglagesDepuisParame
     ]);
 
 void main() {
-  test('les quatre définitions sont au registre, branchées, avec les défauts de la Direction (clinique, désactivé, aucun compte)', () {
+  test('les quatre définitions sont au registre, NON branchées à Baguidi, avec les défauts de la Direction (clinique, désactivé, aucun compte)', () {
     for (final d in aibDefinitionsReglages) {
       final def = definitionDeParametre('$aibPrefixeParametre${d['cle']}');
       expect(def, isNotNull, reason: '${d['cle']}');
-      expect(def!.branche, isTrue);
+      expect(def!.branche, isFalse, reason: 'non branché à Baguidi : la retenue est écrite par cpd_retenue_aib');
       expect(def.famille, 'bareme_aib');
       expect(def.mobile, isFalse, reason: 'le barème ne va jamais au téléphone (RG-13)');
     }
