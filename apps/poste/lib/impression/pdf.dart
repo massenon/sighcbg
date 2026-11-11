@@ -395,7 +395,12 @@ Future<Uint8List> pdfFichePaysage(FichePaysage x, PolicesPdf p, {bool compresser
                     child: pw.Container(
                         color: bleuClair,
                         alignment: pw.Alignment.center,
-                        child: pw.Text(k.texte, textAlign: pw.TextAlign.center, maxLines: 3, style: s(scene.police * e))))),
+                        child: k.titre.isEmpty
+                            ? pw.Text(k.texte, textAlign: pw.TextAlign.center, maxLines: 3, style: s(scene.police * e))
+                            : pw.Column(mainAxisSize: pw.MainAxisSize.min, children: [
+                                pw.Text(k.texte, textAlign: pw.TextAlign.center, maxLines: 3, style: s(scene.police * e)),
+                                pw.Text(k.titre, textAlign: pw.TextAlign.center, maxLines: 1, style: s(scene.police * e * 0.8)),
+                              ])))),
         ]));
   }
 

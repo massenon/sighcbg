@@ -185,9 +185,12 @@ class ParametresFiche {
 
 /// Une case du graphe, en unités de grille (coin haut-gauche).
 class CaseOrg {
-  const CaseOrg({required this.id, required this.texte, required this.x, required this.y, required this.l, required this.h, required this.niveau});
+  const CaseOrg({required this.id, required this.texte, required this.x, required this.y, required this.l, required this.h, required this.niveau, this.titre = ''});
   final String id;
   final String texte;
+
+  /// Le titre PORTÉ par l'agent titulaire (ex. « SG »), écrit sous le code dans la boîte ; vide quand l'agent n'en porte pas.
+  final String titre;
   final double x, y, l, h;
   final int niveau;
   double get cx => x + l / 2;
@@ -235,6 +238,12 @@ AjustementScene ajusterScene(SceneOrganigramme s, double zoneLargeur, double zon
 /// Le texte d'une case : le code abrégé, ou à défaut l'intitulé complet (un poste sans abréviation s'écrit en toutes lettres).
 String organigrammeTexteCase(Map<String, Object?> p) => cfaVrai(p['code']) ? '${p['code']}'.trim() : '${p['poste'] ?? ''}'.trim();
 
+/// Le titre porté par le titulaire du poste, tel que la fiche le transmet (`titrePorte`, posé par l'application depuis le dossier du personnel) : « (SG) ».
+String organigrammeTitreCase(Map<String, Object?> p) {
+  final t = '${p['titrePorte'] ?? ''}'.trim();
+  return t.isEmpty ? '' : '($t)';
+}
+
 /// Construit la scène depuis les postes ACTIFS. Règles de lecture des fiches :
 ///  - `niveau` (1 à 6 et au-delà), `x` / `y` (centre), `largeur` / `hauteur` : absents, le poste est PLACÉ — au niveau de son rattachement + 1, à la
 ///    droite de la dernière case de ce niveau, à l'ordonnée du niveau ;
@@ -257,8 +266,11 @@ SceneOrganigramme organigrammeScene(Iterable<Map<String, Object?>> postesActifs,
   final niveaux = <String, int>{for (final p in postes) '${p['id']}': niveauDe(p)};
   CaseOrg poser(Map<String, Object?> p, double cx, double cy) {
     final l = _d(p['largeur']) ?? g.caseLargeur;
-    final h = _d(p['hauteur']) ?? g.caseHauteur;
-    return CaseOrg(id: '${p['id']}', texte: organigrammeTexteCase(p), x: cx - l / 2, y: cy - h / 2, l: l, h: h, niveau: niveaux['${p['id']}']!);
+    final titre = organigrammeTitreCase(p);
+    var h = _d(p['hauteur']) ?? g.caseHauteur;
+    // Un titre porté s'écrit sur une seconde ligne : la boîte grandit autour de son centre, sans quoi le titre sortirait du cadre.
+    if (titre.isNotEmpty && h < g.police * 2.9) h = g.police * 2.9;
+    return CaseOrg(id: '${p['id']}', texte: organigrammeTexteCase(p), titre: titre, x: cx - l / 2, y: cy - h / 2, l: l, h: h, niveau: niveaux['${p['id']}']!);
   }
 
   for (final p in postes) {

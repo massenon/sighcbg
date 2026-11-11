@@ -117,6 +117,21 @@ List<CfaNoeud> cfaArbre(Iterable<CfaFiche> postesActifs) {
   return racines;
 }
 
+/// Les identifiants de TOUS les postes portés, de près ou de loin, par le poste [id] : un poste ne peut pas être rattaché à l'un d'eux (le graphe ferait un cercle).
+Set<String> cfaDescendantsDe(Iterable<CfaFiche> postesActifs, String id) {
+  final r = <String>{};
+  var frontiere = {id};
+  while (frontiere.isNotEmpty) {
+    final suite = <String>{};
+    for (final p in postesActifs) {
+      final pid = '${p['id']}';
+      if (frontiere.contains('${p['parentId'] ?? ''}') && r.add(pid)) suite.add(pid);
+    }
+    frontiere = suite;
+  }
+  return r;
+}
+
 num cfaEffectifTotal(Iterable<CfaNoeud> noeuds) =>
     noeuds.fold<num>(0, (s, n) => s + n.effectif + cfaEffectifTotal(n.enfants));
 

@@ -476,11 +476,26 @@ class _Graphe extends StatelessWidget {
                         child: Container(
                             color: JetonsShell.sante100,
                             alignment: Alignment.center,
-                            child: Text(k.texte,
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(fontSize: scene.police * e, height: 1.1, color: JetonsShell.anthracite900))))),
+                            child: k.titre.isEmpty
+                                ? Text(k.texte,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(fontSize: scene.police * e, height: 1.1, color: JetonsShell.anthracite900))
+                                // Le titre porté par le titulaire, sous le code : « (SG) ». La boîte a grandi pour deux lignes (voir la scène).
+                                : Column(mainAxisSize: MainAxisSize.min, children: [
+                                    Text(k.texte,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(fontSize: scene.police * e, height: 1.1, color: JetonsShell.anthracite900)),
+                                    Text(k.titre,
+                                        key: Key('titre:${k.id}'),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(fontSize: scene.police * e * 0.8, height: 1.1, color: JetonsShell.anthracite900)),
+                                  ])))),
             ]));
       });
 }

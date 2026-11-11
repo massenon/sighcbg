@@ -163,6 +163,36 @@ class _OngletSecteurs extends StatelessWidget {
 // Onglet « Organigramme »
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
+/// Le choix « garder le titulaire actuel » d'un poste dont le nom écrit ne correspond à aucun agent du personnel (nom saisi avant le lien au dossier RH) : il évite
+/// qu'une retouche sans rapport (renommer le poste) efface ce nom.
+const String _titulaireActuel = '__actuel';
+
+/// Les titulaires possibles : le PERSONNEL actif (jamais une seconde liste de noms), plus « Poste vacant ».
+List<OptionChamp> _optionsTitulaires(Magasin m, Fiche? e) {
+  final agents = trierPar([...m.collection('personnel').actives], (a) => a['nomComplet']);
+  return [
+    const OptionChamp('', '— Poste vacant —'),
+    if (e != null && cfaVrai(e['titulaire']) && agentDuPoste(m, e) == null) OptionChamp(_titulaireActuel, '${e['titulaire']} (nom conservé, hors personnel)'),
+    for (final a in agents) OptionChamp('${a['id']}', '${a['nomComplet']}${cfaVrai(a['poste']) ? ' — ${a['poste']}' : ''}'),
+  ];
+}
+
+/// La fiche d'un poste telle qu'elle s'écrit : le titulaire choisi au personnel est recopié par son NOM (les lecteurs historiques du champ continuent de
+/// fonctionner) avec le lien `personnelId` ; « poste vacant » efface les deux.
+Fiche _fichePoste(Magasin m, Map<String, Object?> saisie, Fiche? existante) {
+  final v = cfaFichePoste(saisie);
+  final choix = '${v['personnelId'] ?? ''}';
+  if (choix == _titulaireActuel && existante != null) {
+    v['titulaire'] = existante['titulaire'];
+    v['personnelId'] = '';
+    return v;
+  }
+  final agent = m.collection('personnel').actives.where((a) => '${a['id']}' == choix).firstOrNull;
+  v['titulaire'] = agent == null ? '' : '${agent['nomComplet']}';
+  v['personnelId'] = agent == null ? '' : choix;
+  return v;
+}
+
 class _OngletOrganigramme extends StatelessWidget {
   const _OngletOrganigramme();
 
@@ -184,12 +214,14 @@ class _OngletOrganigramme extends StatelessWidget {
         Flexible(child: Text(n.poste, style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate800))),
         const SizedBox(width: 8),
         BadgeSigh('(${n.effectif.toString().padLeft(2, '0')})'),
-        if (cfaVrai(n.fiche['titulaire'])) ...[
-          const SizedBox(width: 8),
-          Flexible(
-              child: Text('${cfaTitulaireAvecTitre(m, n.fiche['titulaire'])}${cfaVrai(n.fiche['chef']) ? ' — chef de service' : ''}',
-                  style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500))),
-        ],
+        const SizedBox(width: 8),
+        Flexible(
+            child: cfaVrai(n.fiche['titulaire'])
+                ? Text('${cfaTitulaireDuPoste(m, n.fiche)}${cfaVrai(n.fiche['chef']) ? ' — chef de service' : ''}',
+                    key: Key('organigramme:titulaire:${n.fiche['id']}'), style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500))
+                : Text('Poste vacant',
+                    key: Key('organigramme:vacant:${n.fiche['id']}'),
+                    style: const TextStyle(fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic, color: JetonsShell.slate400))),
         if (cfaVrai(n.fiche['role'])) ...[const Spacer(), _badgeRole(m, n.fiche['role'])],
       ]),
     );
@@ -229,7 +261,7 @@ class _OngletOrganigramme extends StatelessWidget {
                   ColonneEtat(libelle: 'Poste', valeur: (l) => l['poste']),
                   ColonneEtat(libelle: 'Rattaché à', valeur: (l) => nomDe(l['parentId'])),
                   ColonneEtat(libelle: 'Effectif', droite: true, valeur: (l) => l['effectif']),
-                  ColonneEtat(libelle: 'Titulaire / chef de service', valeur: (l) => cfaVrai(l['titulaire']) ? cfaTitulaireAvecTitre(c.magasin, l['titulaire']) : '—'),
+                  ColonneEtat(libelle: 'Titulaire / chef de service', valeur: (l) => cfaVrai(l['titulaire']) ? cfaTitulaireDuPoste(c.magasin, l) : 'Poste vacant'),
                   ColonneEtat(libelle: 'Rôle dans le système', valeur: (l) => libelleRole(c.magasin, l['role'])),
                 ], lignes: plats)),
               ],
@@ -289,10 +321,10 @@ class _OngletOrganigramme extends StatelessWidget {
                 ColonneTableau(
                     cle: 'titulaire',
                     libelle: 'Titulaire',
-                    texte: (p) => cfaVrai(p['titulaire']) ? '${cfaTitulaireAvecTitre(c.magasin, p['titulaire'])}${cfaVrai(p['chef']) ? ' — chef de service' : ''}' : 'vacant',
+                    texte: (p) => cfaVrai(p['titulaire']) ? '${cfaTitulaireDuPoste(c.magasin, p)}${cfaVrai(p['chef']) ? ' — chef de service' : ''}' : 'Poste vacant',
                     rendu: (_, p) => cfaVrai(p['titulaire'])
-                        ? Text('${cfaTitulaireAvecTitre(c.magasin, p['titulaire'])}${cfaVrai(p['chef']) ? ' — chef de service' : ''}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate700))
-                        : const Text('vacant', style: TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate300))),
+                        ? Text('${cfaTitulaireDuPoste(c.magasin, p)}${cfaVrai(p['chef']) ? ' — chef de service' : ''}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate700))
+                        : const Text('Poste vacant', style: TextStyle(fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic, color: JetonsShell.slate400))),
                 ColonneTableau(cle: 'role', libelle: 'Rôle RBAC', texte: (p) => libelleRole(c.magasin, p['role']), rendu: (_, p) => _badgeRole(c.magasin, p['role'])),
               ],
               champs: (e) {
@@ -304,9 +336,18 @@ class _OngletOrganigramme extends StatelessWidget {
                       libelle: 'Rattaché à',
                       type: TypeChamp.select,
                       options: [const OptionChamp('', '— Sommet de l’organigramme —'), for (final p in autres) OptionChamp('${p['id']}', '${p['poste']}')],
-                      aide: 'Déplacer un poste ici le réaffecte, lui et les postes qu’il porte.'),
+                      aide: 'Déplacer un poste ici le réaffecte, lui et les postes qu’il porte.',
+                      valider: (v, _) => e != null && '$v'.isNotEmpty && cfaDescendantsDe(plats, '${e['id']}').contains('$v')
+                          ? 'Un poste ne peut pas être rattaché à l’un des postes qu’il porte.'
+                          : null),
                   const ChampDef(nom: 'effectif', libelle: 'Effectif', type: TypeChamp.nombre, requis: true),
-                  const ChampDef(nom: 'titulaire', libelle: 'Titulaire / chef de service', col: ColChamp.plein),
+                  ChampDef(
+                      nom: 'personnelId',
+                      libelle: 'Titulaire',
+                      type: TypeChamp.select,
+                      col: ColChamp.plein,
+                      options: _optionsTitulaires(c.magasin, e),
+                      aide: 'Choisi parmi le personnel : le nom suit son dossier. Aucun titulaire : le poste s’affiche « Poste vacant ». Le titre porté à l’organigramme se règle au dossier de l’agent.'),
                   ChampDef(nom: 'role', libelle: 'Rôle RBAC', type: TypeChamp.select, requis: true, options: _optionsRoles(c.magasin)),
                   const ChampDef(nom: 'chef', libelle: 'Chef de service', type: TypeChamp.case_),
                   const ChampDef.section('Place dans l’organigramme imprimé'),
@@ -337,7 +378,8 @@ class _OngletOrganigramme extends StatelessWidget {
                 ];
               },
               valeursInitiales: () => {'effectif': '1', 'role': 'agentadmin'},
-              fiche: (s, e) => cfaFichePoste(s),
+              fiche: (s, e) => _fichePoste(c.magasin, s, e),
+              preparer: (f) => {...f, 'personnelId': '${agentDuPoste(c.magasin, f)?['id'] ?? (cfaVrai(f['titulaire']) ? _titulaireActuel : '')}'},
             ),
             cfaSource('Organigramme de la ${IdentiteClinique.nomCourt} : document de cadrage, désormais administrable.'),
           ], espace: 12);

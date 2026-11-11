@@ -21,6 +21,43 @@ void main() {
         if (barre != null) 'barre': barre,
       };
 
+  group('modifiable : le graphe suit les fiches', () {
+    final racine = poste('A', code: 'DG', niveau: 1, x: 800, y: 40, l: 200, h: 40);
+    final mg = poste('B', code: 'MG', parent: 'A', niveau: 2, x: 600, y: 160, l: 100, h: 40, barre: 120);
+    final rl = poste('C', code: 'RL', parent: 'A', niveau: 2, x: 1000, y: 160, l: 100, h: 40, barre: 120);
+
+    test('un poste réaffecté à un autre rattachement : son trait part désormais de ce rattachement', () {
+      final avant = organigrammeScene([racine, mg, rl], g);
+      expect(avant.traits.any((t) => t.x1 == 800 && t.y1 == 60), isTrue, reason: 'MG et RL descendent de DG');
+      // MG passe sous RL : le tronc part du bas de RL (centre 1000), plus de DG.
+      final apres = organigrammeScene([racine, {...mg, 'parentId': 'C', 'barre': 200, 'y': 260}, rl], g);
+      final c = apres.cases.firstWhere((k) => k.id == 'B');
+      expect(apres.traits.any((t) => t.x1 == 1000 && t.y1 == 180 && t.x2 == 1000), isTrue, reason: 'le tronc part du bas de RL');
+      expect(apres.traits.any((t) => t.x2 == c.cx && t.y2 == c.y), isTrue, reason: 'et rejoint le haut de MG');
+      expect(apres.traits.where((t) => t.x2 == 600 && t.y2 == 140).isEmpty, isTrue, reason: 'plus de descente depuis la barre de DG');
+    });
+
+    test('le titre porté s’écrit dans la boîte : « (SG) » ; la boîte grandit pour le contenir ; sans titre rien ne change', () {
+      final sans = organigrammeScene([racine, mg], g);
+      expect(sans.cases.every((k) => k.titre.isEmpty), isTrue);
+      final avec = organigrammeScene([racine, {...mg, 'titrePorte': 'SG'}], g);
+      final k = avec.cases.firstWhere((c) => c.id == 'B');
+      expect(k.titre, '(SG)');
+      expect(k.texte, 'MG', reason: 'le code reste');
+      expect(k.h, greaterThanOrEqualTo(g.police * 2.9));
+      expect(k.cy, 160, reason: 'la boîte grandit autour de son centre');
+      expect('${avec.cases.firstWhere((c) => c.id == 'A').h}', '40.0');
+      expect(organigrammeScene([racine, {...mg, 'titrePorte': '   '}], g).cases.last.titre, '');
+    });
+
+    test('les descendants d’un poste : un poste ne peut pas être rattaché à l’un d’eux', () {
+      final postes = [racine, mg, rl, poste('D', parent: 'C'), poste('E', parent: 'D')];
+      expect(cfaDescendantsDe(postes, 'C'), {'D', 'E'});
+      expect(cfaDescendantsDe(postes, 'A'), {'B', 'C', 'D', 'E'});
+      expect(cfaDescendantsDe(postes, 'E'), isEmpty);
+    });
+  });
+
   group('scène', () {
     final racine = poste('A', code: 'DG', niveau: 1, x: 800, y: 40, l: 200, h: 40);
     test('une case prend la place de sa fiche : centre, largeur, hauteur', () {

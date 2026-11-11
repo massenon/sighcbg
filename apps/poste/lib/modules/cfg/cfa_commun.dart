@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/donnees_navigation.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../impression/fiche_organigramme.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
@@ -110,6 +111,14 @@ String cfaTitulaireAvecTitre(Magasin m, Object? nom) {
     return t.isEmpty ? n : '$n ($t)';
   }
   return n;
+}
+
+/// Le titulaire d'un POSTE tel qu'il s'écrit : son nom (gardé tel quel, « épse X » comprise) suivi du titre qu'il porte ; vide si le poste est vacant.
+String cfaTitulaireDuPoste(Magasin m, Map<String, Object?> poste) {
+  final nom = '${poste['titulaire'] ?? ''}'.trim();
+  if (nom.isEmpty) return '';
+  final t = titrePorteDuPoste(m, poste);
+  return t.isEmpty ? nom : '$nom ($t)';
 }
 
 /// Une saisie en modale — création ou modification — avec le contrôle métier [avant] de l'appelant (il refuse EN LE DISANT, rien n'est écrit).
