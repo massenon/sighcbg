@@ -7,6 +7,7 @@ library;
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import 'droits_mobile.dart';
 import 'service_soignant.dart';
 
 /// Ce que le moteur réel offre en plus de [MoteurMobile] : la source du service, l'agent, l'identité de l'appareil, le rafraîchissement et la
@@ -28,16 +29,19 @@ abstract class ExtensionsMobile {
 }
 
 class ServiceSuite {
-  ServiceSuite(this.source, {required this.profil, required this.agent, this.fonction = '', DateTime Function()? maintenant, this.soignant})
+  ServiceSuite(this.source, {required this.profil, required this.agent, this.fonction = '', DateTime Function()? maintenant, this.soignant, this.droits})
       : _maintenant = maintenant ?? DateTime.now;
+
+  /// La matrice que la mère diffuse (voir [ServiceSoignant.droits]) : absente, le profil du téléphone décide seul.
+  final SuiviDroits? droits;
 
   /// Le service d'un soignant : mêmes source, session et horloge que [ServiceSoignant] (rien n'est lu deux fois différemment).
   factory ServiceSuite.depuisSoignant(ServiceSoignant s) => ServiceSuite(s.source,
-      profil: mobProfilSimulateur(s.session.fonction), agent: s.session.agent, fonction: s.session.fonction, maintenant: () => s.maintenant, soignant: s);
+      profil: mobProfilSimulateur(s.session.fonction), agent: s.session.agent, fonction: s.session.fonction, maintenant: () => s.maintenant, soignant: s, droits: s.droits);
 
   /// Le service de la réception de secours.
-  factory ServiceSuite.reception(ExtensionsMobile ext, {DateTime Function()? maintenant}) =>
-      ServiceSuite(ext.source, profil: 'reception', agent: ext.agent, maintenant: maintenant);
+  factory ServiceSuite.reception(ExtensionsMobile ext, {DateTime Function()? maintenant, SuiviDroits? droits}) =>
+      ServiceSuite(ext.source, profil: 'reception', agent: ext.agent, maintenant: maintenant, droits: droits);
 
   final SourceMobile source;
 
@@ -50,7 +54,7 @@ class ServiceSuite {
   DateTime get maintenant => _maintenant();
 
   /// Une commande interdite est ABSENTE : l'interface ne dessine que ce que ce profil ouvre.
-  bool peut(String ecran) => mobEcranOuvertAuProfil(profil, ecran);
+  bool peut(String ecran) => mobEcranOuvertAuProfil(profil, ecran) && (droits?.peutEditer(ecran) ?? true);
 
   // --- lecture ------------------------------------------------------------------------------------------------------------------------------
 
@@ -79,6 +83,7 @@ class ServiceSuite {
 
   Future<Map<String, Object?>> _preparerClinique(String ecran, String patientId) async {
     mobControlerEcran(profil, ecran);
+    droits?.exiger(ecran);
     mobControlerActeur(agent);
     mobControlerLot(await source.lotExpire(), maintenant);
     return (await soignant!.dossier(patientId)).fiche;
@@ -103,6 +108,7 @@ class ServiceSuite {
   /// Oriente un patient de l'accueil de secours. Le dossier doit avoir été ouvert à l'accueil de secours ; la réception n'a pas de lot qui expire.
   Future<String> orienter(String dossierId, {required String destination, required String degre}) async {
     mobControlerEcran(profil, 'orientation');
+    droits?.exiger('orientation');
     mobControlerActeur(agent);
     final dossiers = await dossiersOuverts();
     mobControlerOrientation([for (final d in dossiers) d.champs]);

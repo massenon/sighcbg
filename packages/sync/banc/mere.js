@@ -574,14 +574,24 @@ async function repliquer() {
   await rel('POST', '/depot', { enveloppe: chiffrer(CLE, { type: 'journal', ops }, { id: 'journal-' + n, appareil: 'mere', dir: 'journal', n }) });
   setMeta('rep_n', n); setMeta('rep_seq', ops[ops.length - 1].seq);
 }
+/* Les DROITS (10/11/2026) : la fiche de droits d'un rôle (`rbac`) et les activités fermées (`modulesActifs`) sont de la configuration que la mère seule écrit. Un mobile
+   les reçoit, hors de toute portée de tournée, pour ÉVALUER la matrice comme le poste (le téléphone n'a pas d'autre source) : un instantané complet à la première
+   diffusion (un téléphone appairé AVANT cette règle le reçoit aussi), puis chaque opération de ces deux collections. Aucune donnée de santé n'y figure. */
+const COLLECTIONS_DROITS = ['rbac', 'modulesActifs'];
+function publierDroits(uuid) {
+  const fiches = db.prepare("SELECT collection,id FROM fiches WHERE collection IN ('rbac','modulesActifs') ORDER BY collection,id").all()
+    .map((x) => Object.assign({ collection: x.collection, id: x.id }, lire(x.collection, x.id)));
+  publier(uuid, { type: 'droits', fiches });
+}
 function diffuser() {
   for (const a of db.prepare("SELECT uuid FROM appareils WHERE role='mobile' AND etat='actif'").all()) {
     const cur = +meta('sortie_seq:' + a.uuid, -1); if (cur < 0) continue;
+    if (meta('droits_ok:' + a.uuid) !== '1') { publierDroits(a.uuid); setMeta('droits_ok:' + a.uuid, 1); }
     const ops = db.prepare('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>? ORDER BY seq LIMIT 100').all(cur);
     if (!ops.length) continue;
     /* L0 : un mobile ne reçoit de la configuration que les paramètres de la LISTE BLANCHE (déclarés `mobile`, non sensibles, famille non réservée : RG-13) ; le reste de
        `parametres`, comme toute autre collection hors de sa portée, ne part pas. */
-    const mine = ops.filter((o) => (o.collection === 'parametres' ? PARAMETRES.autoriseMobile(JSON.parse(o.champs)) : db.prepare('SELECT 1 FROM portee WHERE appareil=? AND collection=? AND fiche=?').get(a.uuid, o.collection, o.fiche)))
+    const mine = ops.filter((o) => (COLLECTIONS_DROITS.includes(o.collection) ? true : o.collection === 'parametres' ? PARAMETRES.autoriseMobile(JSON.parse(o.champs)) : db.prepare('SELECT 1 FROM portee WHERE appareil=? AND collection=? AND fiche=?').get(a.uuid, o.collection, o.fiche)))
       .map((o) => Object.assign({}, o, { seq: Number(o.seq), champs: JSON.parse(o.champs) }));
     setMeta('sortie_seq:' + a.uuid, Number(ops[ops.length - 1].seq));
     if (mine.length) publier(a.uuid, { type: 'ops', ops: mine });

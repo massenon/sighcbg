@@ -8,6 +8,14 @@ import 'commun.dart';
 /// La version de l'application, telle que le build la porte (la page du simulateur affiche une version de démonstration).
 const versionApplication = String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0+1');
 
+/// Ce que la page dit des droits : la date de la dernière livraison de la mère, ou « droits d'origine, pas encore synchronisés » (la matrice engendrée est alors
+/// la graine, hors ligne).
+String libelleMiseAJourDroits(EtatDroits d) {
+  final t = d.majLe;
+  if (t == null) return 'Droits d’origine, pas encore synchronisés';
+  return 'Droits mis à jour le ${dateFR(t)} à ${heure(t)}';
+}
+
 /// Réglages : le profil et l'agent de ce téléphone, les trois garanties (verrouillage, effacement à distance, notifications) et la réinitialisation de
 /// l'appairage. Ce que la page affiche comme « Activé » ne l'est que si c'est vrai : le verrouillage dépend du coffre du code PIN, les notifications ne
 /// sont pas branchées (E1571), et l'écran le dit au lieu d'afficher « Activées ».
@@ -62,6 +70,14 @@ class EcranReglages extends StatelessWidget {
               Text(t.appareil, key: const Key('reglages-appareil')),
             ]);
           },
+        ),
+        // Les DROITS : quand la clinique les a livrés pour la dernière fois, ou la vérité qu'ils sont ceux d'origine (sobre, une carte, deux lignes).
+        ValueListenableBuilder<EtatDroits>(
+          valueListenable: moteur.droits,
+          builder: (_, d, __) => CarteTitre(titre: 'Droits de la clinique', enfants: [
+            if (d.role != null) Text('Rôle : ${d.matrice.matrice.libelle(d.role!) ?? d.role}', key: const Key('reglages-droits-role')),
+            Text(libelleMiseAJourDroits(d), key: const Key('reglages-droits'), style: TextStyle(fontWeight: FontWeight.w600, color: d.synchronises ? ThemeSigh.succes : ThemeSigh.attention)),
+          ]),
         ),
         Card(
           child: Column(children: [

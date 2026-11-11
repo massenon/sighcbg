@@ -52,24 +52,34 @@ class _ReceptionState extends State<Reception> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ValueListenableBuilder<EtatDroits>(valueListenable: widget.moteur.droits, builder: (c, _, __) => _corps(c));
+
+  Widget _corps(BuildContext context) {
+    final droits = widget.moteur.droits;
+    // Ouvrir un dossier est une ÉCRITURE : sans le droit, le formulaire est ABSENT (jamais grisé) et la page dit pourquoi.
+    final peutOuvrir = droits.peutEditer('nouveau-dossier');
     return ListView(padding: const EdgeInsets.all(16), children: [
-      TextField(key: const Key('nom'), controller: _nom, decoration: const InputDecoration(labelText: 'Nom')),
-      TextField(key: const Key('prenom'), controller: _prenom, decoration: const InputDecoration(labelText: 'Prénom')),
-      TextField(key: const Key('age'), controller: _age, decoration: const InputDecoration(labelText: 'Âge déclaré'), keyboardType: TextInputType.number),
-      TextField(key: const Key('telephone'), controller: _telephone, decoration: const InputDecoration(labelText: 'Téléphone'), keyboardType: TextInputType.phone),
-      TextField(key: const Key('quartier'), controller: _quartier, decoration: const InputDecoration(labelText: 'Quartier')),
-      if (_erreur != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(_erreur!, key: const Key('erreur'), style: TextStyle(color: Theme.of(context).colorScheme.error))),
-      const SizedBox(height: 12),
-      FilledButton(key: const Key('creer'), onPressed: _creer, child: const Text('Ouvrir le dossier')),
+      if (peutOuvrir) ...[
+        TextField(key: const Key('nom'), controller: _nom, decoration: const InputDecoration(labelText: 'Nom')),
+        TextField(key: const Key('prenom'), controller: _prenom, decoration: const InputDecoration(labelText: 'Prénom')),
+        TextField(key: const Key('age'), controller: _age, decoration: const InputDecoration(labelText: 'Âge déclaré'), keyboardType: TextInputType.number),
+        TextField(key: const Key('telephone'), controller: _telephone, decoration: const InputDecoration(labelText: 'Téléphone'), keyboardType: TextInputType.phone),
+        TextField(key: const Key('quartier'), controller: _quartier, decoration: const InputDecoration(labelText: 'Quartier')),
+        if (_erreur != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(_erreur!, key: const Key('erreur'), style: TextStyle(color: Theme.of(context).colorScheme.error))),
+        const SizedBox(height: 12),
+        FilledButton(key: const Key('creer'), onPressed: _creer, child: const Text('Ouvrir le dossier')),
+      ] else
+        const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Text('L’ouverture d’un dossier n’est pas ouverte à votre profil : les droits de la clinique ne le permettent pas.', key: Key('creer-ferme'))),
       const SizedBox(height: 8),
       // L'orientation n'existe que pour la réception de secours (le simulateur la ferme aux autres profils) et si le moteur sait écrire une ligne de journal.
-      if (widget.moteur is ExtensionsMobile && ServiceSuite.reception(widget.moteur as ExtensionsMobile).peut('orientation'))
+      if (widget.moteur is ExtensionsMobile && ServiceSuite.reception(widget.moteur as ExtensionsMobile, droits: widget.moteur.droits).peut('orientation'))
         OutlinedButton.icon(
           key: const Key('orienter'),
           icon: const Icon(Icons.signpost_outlined),
           label: Text(mobLibelleEcran('orientation')),
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OrienterPatient(service: ServiceSuite.reception(widget.moteur as ExtensionsMobile)))),
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => OrienterPatient(service: ServiceSuite.reception(widget.moteur as ExtensionsMobile, droits: widget.moteur.droits)))),
         ),
       const Divider(height: 32),
       Text('Dossiers ouverts depuis ce téléphone', style: Theme.of(context).textTheme.titleMedium),

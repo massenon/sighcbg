@@ -10,6 +10,8 @@ library;
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import 'droits_mobile.dart';
+
 /// Une fiche du lot, telle que le moteur la livre.
 class LigneLot {
   const LigneLot(this.id, this.data, {this.archive = false});
@@ -79,20 +81,33 @@ const _libellesStatut = {
 };
 
 class ServiceSoignant {
-  ServiceSoignant(this.source, {required this.session, DateTime Function()? maintenant}) : _maintenant = maintenant ?? DateTime.now;
+  /// [droits] : la matrice que la mère diffuse, évaluée à chaque affichage et à chaque geste. Absent (tests de service seuls), le profil du téléphone décide seul ;
+  /// le moteur réel (`MoteurMobileSync`) le fournit toujours.
+  ServiceSoignant(this.source, {required this.session, DateTime Function()? maintenant, this.droits}) : _maintenant = maintenant ?? DateTime.now;
 
   final SourceMobile source;
   final SessionSoignant session;
+  final SuiviDroits? droits;
   final DateTime Function() _maintenant;
 
   DateTime get maintenant => _maintenant();
 
   // --- commandes offertes (une commande interdite est ABSENTE) -----------------------------------------------------------------------------
 
-  bool get peutSaisirNote => mobEcranOuvert(session.fonction, 'consultation');
+  bool get peutSaisirNote => mobEcranOuvert(session.fonction, 'consultation') && (droits?.peutEditer('consultation') ?? true);
 
-  /// Les natures offertes à la prescription : habilitation de la fonction ET écran ouvert au profil. Vide : la commande n'existe pas.
-  List<String> get naturesPrescriptibles => mobNaturesPrescriptibles(session.fonction);
+  /// Saisir les constantes : le droit d'écrire de la matrice (le profil du téléphone l'ouvre à toutes les fonctions du soignant).
+  bool get peutSaisirConstantes => droits?.peutEditer('constantes') ?? true;
+
+  /// Lire les dossiers du lot / l'agenda du jour : le droit de voir de la matrice.
+  bool get peutVoirDossiers => droits?.peutVoir('dossier') ?? true;
+  bool get peutVoirAgenda => droits?.peutVoir('agenda') ?? true;
+
+  /// Les natures offertes à la prescription : habilitation de la fonction ET écran ouvert au profil ET droit d'écrire de la matrice. Vide : la commande n'existe pas.
+  List<String> get naturesPrescriptibles => [
+        for (final n in mobNaturesPrescriptibles(session.fonction))
+          if (droits?.peutEditer(mobNaturesMobile[n] == 'prescription' ? 'prescription' : 'demande-analyse') ?? true) n
+      ];
 
   /// Le catalogue des médicaments du lot (le téléphone CHOISIT, il ne tape plus un nom) : vide pour une fonction qui ne prescrit pas, le lot n'en porte alors aucun.
   Future<List<MobProduit>> produits() async => mobProduitsPrescriptibles([for (final l in await _actives('produits')) {...l.data, 'id': l.id}]);
@@ -135,6 +150,7 @@ class ServiceSoignant {
 
   /// L'agenda du jour, lu dans le lot : les rendez-vous d'aujourd'hui du plus tôt au plus tard ; les planifiés d'un jour passé sont signalés à part.
   Future<AgendaDuJour> agenda() async {
+    droits?.exiger('agenda', ecriture: false);
     final pats = await patients();
     final rdv = [for (final l in await _actives('rendezvous')) l.data];
     final a = mobAgendaDuJour(rdv, maintenant);
@@ -146,6 +162,7 @@ class ServiceSoignant {
 
   /// Le dossier d'un patient du lot, en LECTURE seule.
   Future<DossierLu> dossier(String patientId) async {
+    droits?.exiger('dossier', ecriture: false);
     final p = await _patient(patientId);
     final resume = mobDossier(
       patient: p.champs,
@@ -177,12 +194,14 @@ class ServiceSoignant {
   }
 
   Future<String> enregistrerConstantes(String patientId, Map<String, String> saisie) async {
+    droits?.exiger('constantes');
     final p = await _preparer(patientId);
     final champs = mobChampsConstantes(patient: p.champs, patientId: patientId, saisie: saisie, acteur: session.agent, maintenant: maintenant);
     return source.creer('constantes', champs);
   }
 
   Future<String> enregistrerNote(String patientId, Map<String, String> saisie) async {
+    droits?.exiger('consultation');
     if (!peutSaisirNote) {
       throw RefusMobile('ECRAN_FERME_AU_PROFIL', '${session.libelleFonction} : la consultation à domicile n’est pas ouverte à ce profil.', 'Utiliser un poste de la clinique');
     }
@@ -214,6 +233,7 @@ class ServiceSoignant {
 
   /// Prescrit un médicament. Le contrôle (fonction, écran, note du jour, lot) est REFAIT ici : un bouton absent ne protège rien.
   Future<String> prescrireMedicament(String patientId, Map<String, String> saisie) async {
+    droits?.exiger('prescription');
     final p = await _preparer(patientId);
     final noteId = await _noteDuJour(patientId, 'medicament');
     final champs = mobChampsOrdonnance(
@@ -223,6 +243,7 @@ class ServiceSoignant {
 
   /// Demande des analyses. Rien ne se prélève avant le paiement : la demande part, le patient règle à la caisse de la clinique.
   Future<String> prescrireAnalyses(String patientId, List<String> examens, String urgence) async {
+    droits?.exiger('demande-analyse');
     final p = await _preparer(patientId);
     final noteId = await _noteDuJour(patientId, 'analyse');
     final champs = mobChampsDemandeAnalyses(

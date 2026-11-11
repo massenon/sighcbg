@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show GraineDroits, RefusMobile, mobRoleDroits;
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'droits_mobile.dart';
 import 'service_soignant.dart';
 import 'service_suite.dart';
 
+export 'droits_mobile.dart';
 export 'service_soignant.dart';
 export 'service_suite.dart';
 
@@ -31,6 +34,9 @@ class EtatMobile {
 /// Ce que l'interface sait du moteur. Rien d'autre : en test c'est un faux, en production `MoteurMobileSync`.
 abstract class MoteurMobile {
   ProfilMobile? get profil;
+
+  /// LES DROITS (10/11/2026) : la matrice que la mère diffuse, évaluée par le moteur du poste. L'interface la relit à chaque affichage et à chaque geste.
+  SuiviDroits get droits;
   ValueListenable<EtatMobile> get etat;
   /// Appaire le téléphone. Le PROFIL et la FONCTION du soignant ne sont plus déclarés ici (E1600) : ils sont portés par le code d'appairage émis par la
   /// console de la mère, que le téléphone reçoit d'elle (réponse chiffrée) ; ils n'arrivent donc qu'avec la réponse de la mère (`profil` reste `null`
@@ -75,7 +81,12 @@ class SourceSync implements SourceMobile {
 
   @override
   Future<String> creer(String collection, Map<String, Object?> champs) async {
-    final (_, c) = await _m.commande('POST /ecrire', {'type': 'creer', 'collection': collection, 'champs': champs}, const {});
+    final (statut, c) = await _m.commande('POST /ecrire', {'type': 'creer', 'collection': collection, 'champs': champs}, const {});
+    if (statut >= 400) {
+      // La configuration est réglée sur la mère : le moteur du téléphone refuse en nommant (code, motif, geste), rien n'est mis en file.
+      final r = c is Map ? c : const {};
+      throw RefusMobile('${r['code'] ?? 'ECRITURE_REFUSEE'}', '${r['motif'] ?? 'Écriture refusée.'}', '${r['geste'] ?? 'Contacter la clinique'}');
+    }
     return '${(c! as Map)['fiche']}';
   }
 
@@ -88,7 +99,7 @@ class SourceSync implements SourceMobile {
 
 /// Moteur réel : `packages/sync_dart` (même code que le banc d'essai à plusieurs processus).
 class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
-  MoteurMobileSync._(this._m) {
+  MoteurMobileSync._(this._m, GraineDroits graine) : _droits = SuiviDroits(graine) {
     _minuterie = Timer.periodic(const Duration(seconds: 2), (_) => actualiser());
     // Un téléphone déjà appairé retrouve son profil, son agent et sa fonction au redémarrage (ils vivent dans la base locale, pas en mémoire). Le profil
     // et la fonction sont ceux que la mère a fixés (E1600) ; sans réponse de la mère ils restent vides et la boucle attend.
@@ -99,13 +110,21 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
   }
 
   final Mobile _m;
+  final SuiviDroits _droits;
+
+  /// La date de réception des droits déjà lue (ms) : on ne relit les fiches de la mère que quand elle avance.
+  int _droitsLusLe = -1;
   ServiceSoignant? _soignant;
   Timer? _minuterie;
   final ValueNotifier<EtatMobile> _etat = ValueNotifier(const EtatMobile());
   ProfilMobile? _profil;
 
-  static MoteurMobileSync creer({required String dbChemin, required String relais}) =>
-      MoteurMobileSync._(Mobile(ConfigMobile(port: 0, relais: relais, dbChemin: dbChemin)));
+  /// [graine] : les droits d'origine du logiciel (hors ligne, avant la première synchronisation) ; ceux de la mère les remplacent dès qu'ils arrivent.
+  static MoteurMobileSync creer({required String dbChemin, required String relais, required GraineDroits graine}) =>
+      MoteurMobileSync._(Mobile(ConfigMobile(port: 0, relais: relais, dbChemin: dbChemin)), graine);
+
+  @override
+  SuiviDroits get droits => _droits;
 
   @override
   ProfilMobile? get profil => _profil;
@@ -124,8 +143,10 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
 
   void _bati() {
     final fonction = _m.base.meta('fonction') ?? '';
+    // Le rôle des droits est celui de la fonction que la MÈRE a fixée (code d'appairage) : jamais une valeur que le téléphone pourrait choisir.
+    _droits.definirRole(mobRoleDroits(reception: _profil != ProfilMobile.soignant, fonction: fonction));
     _soignant = _profil == ProfilMobile.soignant && fonction.isNotEmpty
-        ? ServiceSoignant(SourceSync(_m), session: SessionSoignant(agent: _m.base.meta('agent') ?? '', fonction: fonction))
+        ? ServiceSoignant(SourceSync(_m), session: SessionSoignant(agent: _m.base.meta('agent') ?? '', fonction: fonction), droits: _droits)
         : null;
   }
 
@@ -155,6 +176,7 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
       if (_profil == null && (_m.base.meta('jeton') ?? '').isNotEmpty) _adopterReponseMere();
       final (_, c) = await _m.commande('GET /etat', const {}, const {});
       final j = (c! as Map).cast<String, Object?>();
+      await _lireDroits((j['droits_maj_le'] as num?)?.toInt() ?? 0);
       _etat.value = EtatMobile(
         appaire: _profil != null,
         enAttenteClinique: _profil == null && (_m.base.meta('jeton') ?? '').isNotEmpty,
@@ -167,6 +189,22 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
     } catch (_) {
       _etat.value = EtatMobile(appaire: _profil != null, horsLigne: true, enAttenteClinique: _profil == null && (_m.base.meta('jeton') ?? '').isNotEmpty);
     }
+  }
+
+  /// Relit les fiches de droits de la mère (`rbac`, `modulesActifs`, gardées dans la base chiffrée du téléphone) quand sa date de réception avance.
+  Future<void> _lireDroits(int majLe) async {
+    if (majLe == _droitsLusLe) return;
+    Future<List<Map<String, Object?>>> fiches(String collection) async {
+      final (_, c) = await _m.commande('GET /liste', const {}, {'collection': collection});
+      return [
+        for (final x in (c! as List))
+          {...(((x as Map)['data'] ?? const {}) as Map).cast<String, Object?>(), 'id': ((x['data'] ?? const {}) as Map)['id'] ?? x['id'], if (x['archive'] == true) 'statut': 'archive'}
+      ];
+    }
+
+    _droits.appliquer(
+        rbac: await fiches('rbac'), modulesActifs: await fiches('modulesActifs'), majLe: majLe > 0 ? DateTime.fromMillisecondsSinceEpoch(majLe) : null);
+    _droitsLusLe = majLe;
   }
 
   Future<List<FichePatient>> _liste() async {
@@ -182,6 +220,8 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
 
   @override
   Future<String> creerPatient(Map<String, Object?> champs) async {
+    // Le droit est refait au GESTE : une commande absente de l'écran ne protège rien, et le droit a pu être retiré depuis l'affichage.
+    _droits.exiger('nouveau-dossier');
     final (_, c) = await _m.commande('POST /ecrire', {'type': 'creer', 'collection': 'patients', 'champs': champs}, const {});
     await actualiser();
     return '${(c! as Map)['fiche']}';
@@ -223,6 +263,7 @@ class MoteurMobileSync implements MoteurMobile, ExtensionsMobile {
     _m.base.poserMeta('profil', '');
     _profil = null;
     _soignant = null;
+    _droits.definirRole(null);
     _etat.value = const EtatMobile();
   }
 

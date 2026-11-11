@@ -71,4 +71,63 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     verifier('le fileul coupé la reçoit à son retour, sur sa base d\'avant', await attendre(async () => (await v(f2)) === 4, 20000), await v(f2));
     await m.fermer();
   },
+
+  /* Scénario RB2 (Direction de Baguidi, 10/11/2026) : « L'APPLICATION MOBILE ÉVALUE LA MATRICE DES DROITS ». Ce que la mère décide arrive au téléphone par le relais chiffré :
+     - un téléphone appairé AVANT toute fiche de droits reçoit l'instantané (vide), puis chaque modification, SANS redémarrer ;
+     - un téléphone appairé APRÈS la fiche la reçoit à sa bienvenue ;
+     - un téléphone coupé la reçoit à son retour, sur sa base d'avant ;
+     - le téléphone ne peut PAS l'écrire (famille R : refus nommé, rien n'est mis en file) ;
+     - la FONCTION reste celle du code d'appairage : une fiche de droits qui prétend en porter une ne la change pas.
+     Ce banc prouve le TRANSPORT et la garde d'écriture du téléphone ; l'évaluation (le moteur du poste rejoué) et l'effet à l'écran sont prouvés par les tests du domaine et de
+     l'application mobile (packages/domaine/test/mob_droits_test.dart, apps/mobile/test/droits_mobile_test.dart). */
+  async RB2() {
+    titre('RBAC-RB2 · la fiche de droits voyage de la mère à un mobile par le relais, sans redémarrage ; le mobile ne l\'écrit pas ; sa fonction reste celle du code d\'appairage');
+    const m = await monde({ relais: true });
+    const poser = (fiche, champs) => m.mere.admin('POST', '/admin/referentiel', { collection: 'rbac', fiche, champs }).then((r) => r.json);
+    const fiche = (version, voir) => ({ role: 'sage_femme', statut: 'actif', version, droitsEcrans: { 'm4-cpn': { voir, editer: voir, annuler: false } }, decideLe: `2026-11-10T0${version}:00:00.000Z` });
+    const droitsDe = async (tel) => ((await tel.liste('rbac')).find((x) => x.id === 'RBAC26') || {}).data;
+    const v = async (tel) => ((await droitsDe(tel)) || {}).version;
+
+    /* 1. un téléphone appairé AVANT toute fiche : la mère lui livre l'instantané (vide), il est « synchronisé » sans rien avoir à appliquer */
+    const sf = await m.mobile('SF', { profil: 'soignant', fonction: 'sage_femme' });
+    verifier('un mobile appairé sans fiche de droits reçoit tout de même l\'instantané : sa date de mise à jour est posée', await attendre(async () => (await sf.etat()).droits_maj_le > 0, 15000), (await sf.etat()).droits_maj_le);
+    verifier('mais il n\'a reçu aucune fiche (la graine d\'origine reste en force)', (await sf.liste('rbac')).length === 0);
+    const miseAJour0 = (await sf.etat()).droits_maj_le;
+    const pid = sf.proc.pid;
+
+    /* 2. la mère pose la fiche : le mobile la reçoit, sans redémarrer */
+    const r1 = await poser('RBAC26', fiche(1, true));
+    verifier('la mère accepte la fiche de droits', r1.statut === 'acceptee', r1);
+    verifier('le mobile reçoit la version 1', await attendre(async () => (await v(sf)) === 1, 15000), await v(sf));
+    verifier('sa date de mise à jour avance', (await sf.etat()).droits_maj_le >= miseAJour0);
+    await poser('RBAC26', fiche(2, false));
+    verifier('la version 2 (CPN fermée à la sage-femme) arrive à chaud : même processus', await attendre(async () => (await v(sf)) === 2, 15000) && sf.proc.pid === pid);
+    verifier('le contenu arrivé est le droit décidé, champ pour champ', (await droitsDe(sf)).droitsEcrans['m4-cpn'].voir === false);
+    verifier('la fiche de droits est du CONFIG, hors lot : elle n\'entre pas dans la portée de la tournée', (await sf.etat()).lot_expire === 0);
+
+    /* 3. le mobile n'écrit pas la configuration : refus nommé en local, rien n'est mis en file, la mère ne reçoit rien */
+    const enAttenteAvant = (await sf.etat()).en_attente;
+    const ecr = await sf.post('/ecrire', { type: 'modifier', collection: 'rbac', fiche: 'RBAC26', champs: { droitsEcrans: { 'm4-cpn': { voir: true, editer: true, annuler: true } } } });
+    verifier('le mobile REFUSE d\'écrire `rbac` : 403, code nommé, geste indiqué', ecr.status === 403 && ecr.json.code === 'regle_sur_la_mere' && /administrateur/.test(ecr.json.geste), ecr.json);
+    const ecrM = await sf.post('/ecrire', { type: 'creer', collection: 'modulesActifs', fiche: 'MODX', champs: { module: 'M4', actif: false } });
+    verifier('de même pour les activités fermées', ecr.status === 403 && ecrM.status === 403 && ecrM.json.code === 'regle_sur_la_mere', ecrM.json);
+    await dormir(600);
+    verifier('rien n\'a été mis en file, et la fiche de la mère n\'a pas bougé', (await sf.etat()).en_attente === enAttenteAvant && (await droitsDe(sf)).droitsEcrans['m4-cpn'].voir === false);
+
+    /* 4. la FONCTION ne vient pas du téléphone, ni d'une fiche de droits : elle reste celle du code (R27 reste vrai) */
+    await poser('RBAC26', { ...fiche(3, true), fonction: 'medecin', profil: 'reception' });
+    verifier('une fiche qui prétend porter une fonction ne change pas celle du téléphone', await attendre(async () => (await v(sf)) === 3, 15000) && (await sf.etat()).fonction === 'sage_femme' && (await sf.etat()).profil === 'soignant', await sf.etat());
+
+    /* 5. un téléphone coupé reçoit la décision à son retour, sur sa base d'avant */
+    await sf.tuer();
+    await poser('RBAC26', fiche(4, false));
+    await sf.demarrer();
+    verifier('le mobile redémarré reçoit la version 4', await attendre(async () => (await v(sf)) === 4, 20000), await v(sf));
+
+    /* 6. un second téléphone, appairé APRÈS la fiche, la reçoit avec sa bienvenue */
+    const inf = await m.mobile('INF', { profil: 'soignant', fonction: 'infirmier' });
+    verifier('un mobile appairé après la fiche la reçoit (instantané)', await attendre(async () => (await v(inf)) === 4, 15000), await v(inf));
+    verifier('et sa fonction est celle de SON code', (await inf.etat()).fonction === 'infirmier');
+    await m.fermer();
+  },
 });

@@ -3,6 +3,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../moteur/moteur_mobile.dart';
 import 'commun.dart';
+import 'garde_droit.dart';
 
 /// Orienter un patient (réception de secours). Les listes sont celles de la page du simulateur ; sans dossier ouvert, l'écran ne propose que le texte
 /// « Ouvrez d’abord un dossier. ». L'orientation est une ligne de journal : elle ne se modifie pas, elle ne se supprime pas (RG-14).
@@ -34,7 +35,9 @@ class _OrienterPatientState extends State<OrienterPatient> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.service.droits, ecran: 'orientation', ecriture: true, construire: _corps);
+
+  Widget _corps(BuildContext context) {
     final champs = {for (final c in mobChampsEcran('orientation')) c.id: c};
     final erreurs = _refus?.champs ?? const <String, String>{};
     return Scaffold(

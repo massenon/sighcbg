@@ -12,6 +12,7 @@ import 'dart:math';
 import 'package:sigh_domaine/sigh_domaine.dart' show codePatient;
 
 import 'commun.dart';
+import 'mere.dart' show collectionsConfigurationPoste, familles;
 import 'pont.dart' show Enveloppes;
 
 class ConfigMobile {
@@ -42,6 +43,10 @@ class _S {
   bool existe;
   Map<String, Object?> json() => {'data': data, 'fieldseq': fieldseq, 'archive': archive, 'dulot': dulot, 'existe': existe};
 }
+
+/// Les collections de CONFIGURATION (famille R) qu'un téléphone reçoit sans jamais les écrire : les essentielles du paramétrage, les droits et les activités
+/// fermées. La liste est celle de la mère (`collectionsConfigurationPoste`), plus ce que sa table des familles range en R.
+Set<String> get collectionsReglees => {...collectionsConfigurationPoste, ...familles.entries.where((e) => e.value == 'R').map((e) => e.key)};
 
 class Mobile {
   Mobile(this.cfg) : base = Base(cfg.dbChemin) {
@@ -228,6 +233,25 @@ class Mobile {
           ecrireConfirme(x['collection'] as String, x['id'] as String,
               _S((x['data'] as Map).cast<String, Object?>(), (x['fieldseq'] as Map).cast<String, Object?>(), x['archive'] == true, true, true));
         }
+      case 'droits':
+        // L'instantané des droits de la mère (`rbac`, `modulesActifs`) : jamais du lot, donc jamais purgé à l'expiration de la tournée. Une fiche déjà connue se
+        // fusionne champ par champ (le plus récent l'emporte) : une opération reçue avant l'instantané ne régresse pas.
+        for (final f in (p['fiches'] as List)) {
+          final x = (f as Map);
+          final s = lireConfirme(x['collection'] as String, x['id'] as String);
+          final data = (x['data'] as Map).cast<String, Object?>(), fs = (x['fieldseq'] as Map).cast<String, Object?>();
+          for (final k in data.keys) {
+            if (!s.existe || nb(fs[k]) >= nb(s.fieldseq[k])) {
+              s.data[k] = data[k];
+              s.fieldseq[k] = fs[k] ?? 0;
+            }
+          }
+          s.archive = x['archive'] == true;
+          s.existe = true;
+          s.dulot = false;
+          ecrireConfirme(x['collection'] as String, x['id'] as String, s);
+        }
+        base.poserMeta('droits_maj_le', maintenantMs());
       case 'ops':
         for (final o in (p['ops'] as List)) {
           final op = (o as Map);
@@ -236,6 +260,7 @@ class Mobile {
           ecrireConfirme(op['collection'] as String, op['fiche'] as String, s);
           final cs = base.metaInt('curseur_seq');
           if ((op['seq'] as num) > cs) base.poserMeta('curseur_seq', op['seq']);
+          if (op['collection'] == 'rbac' || op['collection'] == 'modulesActifs') base.poserMeta('droits_maj_le', maintenantMs());
         }
       case 'accuse':
         if (p['erreur'] == 'epoch_inconnue') {
@@ -342,6 +367,11 @@ class Mobile {
       case 'GET /secret':
         return (200, {'jeton': base.meta('jeton')});
       case 'POST /ecrire':
+        // Famille R : la configuration (droits, activités fermées, référentiels) est RÉGLÉE SUR LA MÈRE. Le téléphone la reçoit, il ne l'écrit pas : refus nommé,
+        // rien n'est mis en file (la mère le refuserait aussi, `droit_refuse`).
+        if (collectionsReglees.contains('${b['collection']}')) {
+          return (403, {'code': 'regle_sur_la_mere', 'motif': 'Cette donnée est réglée sur la mère de la clinique : un téléphone la reçoit, il ne l’écrit pas.', 'geste': 'Demander la modification à l’administrateur, à la console de la mère'});
+        }
         return (200, ecrire(b));
       case 'GET /vue':
         return (200, vue(q['collection'] ?? '', q['id'] ?? '').json());
@@ -351,7 +381,7 @@ class Mobile {
         return (200, {
           'hors_ligne': horsLigne, 'tentatives': tentatives, 'suspendu': suspendu, 'exports': exports, 'alertes': alertes,
           'uuid': uuid, 'bienvenu': base.meta('bienvenu') == '1', 'profil': (base.meta('profil') ?? '').isEmpty ? null : base.meta('profil'), 'fonction': (base.meta('fonction') ?? '').isEmpty ? null : base.meta('fonction'), 'epoch': base.metaInt('epoch', 1), 'curseur_n': base.metaInt('curseur_n'),
-          'lot_expire': base.metaInt('lot_expire'),
+          'lot_expire': base.metaInt('lot_expire'), 'droits_maj_le': base.metaInt('droits_maj_le'),
           'en_attente': base.select("SELECT COUNT(*) AS n FROM file WHERE etat IN ('en_attente','envoyee')").first['n'],
           'a_traiter': base.select("SELECT resultat FROM file WHERE etat='refusee'").map((r) => jsonDecode(r['resultat'] as String)).toList(),
           'resultats': base.select('SELECT id,etat,resultat FROM file ORDER BY ordre').map((r) => {

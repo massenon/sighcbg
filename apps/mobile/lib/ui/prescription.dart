@@ -3,6 +3,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../moteur/moteur_mobile.dart';
 import 'commun.dart';
+import 'garde_droit.dart';
 
 /// Prescription selon droits. Les natures proposées sont celles que la fonction peut prescrire ET que le profil ouvre ; sans aucune, l'écran n'est
 /// pas atteignable (la commande est absente du dossier). Le contrôle est refait à l'écriture : un refus s'affiche avec son code, son motif et son geste.
@@ -51,8 +52,12 @@ class _SaisiePrescriptionState extends State<SaisiePrescription> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.service.droits, ecran: 'prescription', ecriture: true, permis: () => widget.service.naturesPrescriptibles.isNotEmpty, construire: _corps);
+
+  Widget _corps(BuildContext context) {
     final natures = widget.service.naturesPrescriptibles;
+    // Un droit retiré à chaud peut ôter la nature en cours de saisie : on retombe sur celle qui reste (la garde ferme l'écran s'il n'en reste aucune).
+    if (natures.isNotEmpty && !natures.contains(_nature)) _nature = natures.first;
     final erreurs = _refus?.champs ?? const <String, String>{};
     final medicament = _nature == 'medicament';
     return Scaffold(
