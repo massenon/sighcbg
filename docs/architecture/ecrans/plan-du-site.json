@@ -64,8 +64,8 @@
   "Gestion & trésorerie",
   "Tableaux de bord par poste",
   "DASH",
-  "330 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
-  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240."
+  "332 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240."
  ],
  "cartes": [
   "Accueil",
@@ -252,6 +252,8 @@
   "Modèles de badge",
   "Planche d’impression des badges",
   "Planning & gardes",
+  "Propositions de planning",
+  "Mon espace",
   "Statistiques de garde",
   "Statistiques des permanences",
   "Taux de présence par service",

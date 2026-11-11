@@ -85,7 +85,7 @@ void main() {
         'BDG-NNNNN-AAAA',
         'Mentions portées au verso',
         'Le badge sert-il de support de POINTAGE ?',
-        'Non — décision non prise'
+        'Oui par défaut (décision du 09/11/2026)'
       ]) {
         expect(find.text(d), findsWidgets, reason: d);
       }
@@ -323,9 +323,10 @@ void main() {
       formulaire(t).poser('zones', ['photo', 'nom', 'qr']);
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
-      fichesEgales(col.toutes.first, obj(obj(mo['creation'])['creee'])['fiche'] as M, ignores: {'aValider', 'valideLe', 'validePar', 'valideRole'});
-      expect(col.toutes.first['valideLe'], isNotNull);
-      expect(col.toutes.first['aValider'], false, reason: 'lot L1 (Q5) : un modèle créé par la famille (ici l’administrateur) naît ARRÊTÉ, la maquette ne le marquait pas');
+      // Enregistrer VALIDE pour le profil de la famille (lot L1) : la maquette marque le modèle créé par l'administrateur « arrêté » (aValider faux, valideLe, valideRole).
+      // Seul l'auteur diffère : le vecteur a été tiré sous le compte du banc, le test joue sous `utilisateurTest`.
+      fichesEgales(col.toutes.first, obj(obj(mo['creation'])['creee'])['fiche'] as M, ignores: {'validePar'});
+      expect(col.toutes.first['validePar'], utilisateurTest);
       // Modifier : sans zone, refus.
       await chercher(t, 'visiteur');
       await cliquer(t, find.byTooltip('Modifier').first);
@@ -339,11 +340,11 @@ void main() {
       formulaire(t).poser('defaut', true);
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
-      // Lot L1 : un modèle modifié par le profil de la FAMILLE (ici l'administrateur) RESTE arrêté ; le marquage est la seule différence avec la maquette.
+      // Modifier un modèle EN TANT QU'ADMINISTRATEUR le laisse validé (le profil de la famille valide en enregistrant) : mêmes marquages que la maquette.
       final modifie = col.toutes.firstWhere((x) => x['libelle'] == 'Badge visiteur — portrait');
       expect(modifie['aValider'], false);
-      expect(modifie['valideLe'], isNotNull);
-      fichesEgales(modifie, obj(obj(mo['modification'])['enregistre'])['fiche'] as M, ignores: {'aValider', 'valideLe', 'validePar', 'valideRole'});
+      fichesEgales(modifie, obj(obj(mo['modification'])['enregistre'])['fiche'] as M, ignores: {'validePar'});
+      expect(modifie['validePar'], utilisateurTest);
       // E745 : la maquette ne retire pas l'ancien « par défaut » : les deux le sont.
       expect(col.toutes.where((x) => x['defaut'] == true).length, 2);
       await archiverLigne(t, 'Doublon');

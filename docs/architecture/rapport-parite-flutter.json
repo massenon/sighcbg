@@ -1,7 +1,7 @@
 {
  "_doc": "ENGENDRÉ par apps/poste/test/parite_ecrans_test.dart — ne pas éditer. Parité N1 (contenu) des écrans Flutter portés contre la maquette.",
- "ecrans_du_manifeste": 344,
- "ecrans_portes": 367,
+ "ecrans_du_manifeste": 346,
+ "ecrans_portes": 369,
  "ecrans": [
   {
    "id": "adm-enquetes",
@@ -910,16 +910,16 @@
   {
    "id": "m10-badges-verification",
    "mesure": true,
-   "attendus": 6,
-   "presents": 6,
+   "attendus": 9,
+   "presents": 9,
    "taux": 1.0,
    "manquants": []
   },
   {
    "id": "m10-conges",
    "mesure": true,
-   "attendus": 25,
-   "presents": 25,
+   "attendus": 27,
+   "presents": 27,
    "taux": 1.0,
    "manquants": []
   },
@@ -980,10 +980,18 @@
    "manquants": []
   },
   {
+   "id": "m10-mes",
+   "mesure": true,
+   "attendus": 24,
+   "presents": 24,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
    "id": "m10-missions",
    "mesure": true,
-   "attendus": 17,
-   "presents": 17,
+   "attendus": 19,
+   "presents": 19,
    "taux": 1.0,
    "manquants": []
   },
@@ -1006,16 +1014,16 @@
   {
    "id": "m10-planning",
    "mesure": true,
-   "attendus": 38,
-   "presents": 38,
+   "attendus": 53,
+   "presents": 53,
    "taux": 1.0,
    "manquants": []
   },
   {
    "id": "m10-presences",
    "mesure": true,
-   "attendus": 16,
-   "presents": 16,
+   "attendus": 32,
+   "presents": 32,
    "taux": 1.0,
    "manquants": []
   },
@@ -1032,6 +1040,14 @@
    "mesure": true,
    "attendus": 31,
    "presents": 31,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "m10-propositions-planning",
+   "mesure": true,
+   "attendus": 11,
+   "presents": 11,
    "taux": 1.0,
    "manquants": []
   },
@@ -1438,8 +1454,8 @@
   {
    "id": "m14-sessions",
    "mesure": true,
-   "attendus": 21,
-   "presents": 21,
+   "attendus": 24,
+   "presents": 24,
    "taux": 1.0,
    "manquants": []
   },
@@ -2558,8 +2574,8 @@
   {
    "id": "mecef-config",
    "mesure": true,
-   "attendus": 24,
-   "presents": 24,
+   "attendus": 26,
+   "presents": 26,
    "taux": 1.0,
    "manquants": []
   },

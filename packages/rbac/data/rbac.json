@@ -5040,6 +5040,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    1
+   ],
+   "m10-mes": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -6442,6 +6452,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "dm": {
@@ -7164,6 +7184,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "da": {
@@ -8346,6 +8376,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    1
+   ],
+   "m10-mes": [
+    1,
+    1,
+    1
    ]
   },
   "medecin": {
@@ -8958,6 +8998,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "infirmier": {
@@ -9475,6 +9525,16 @@
     1,
     1,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "pharmacien": {},
@@ -9683,6 +9743,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "stock": {
@@ -9945,6 +10015,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "caissier": {
@@ -10231,6 +10311,16 @@
    "m1-certificats-externes": [
     1,
     0,
+    0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
     0
    ]
   },
@@ -10839,6 +10929,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "rh": {},
@@ -11192,6 +11292,16 @@
     1,
     1,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "agentadmin": {
@@ -11359,6 +11469,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "ambulancier": {
@@ -11456,6 +11576,16 @@
     1,
     1,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "aide_soignant": {
@@ -11548,6 +11678,16 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "echographiste": {
@@ -11865,6 +12005,16 @@
     1,
     0,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "surveillant": {
@@ -11982,6 +12132,26 @@
     1,
     1,
     1
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
+   ],
+   "m10-conges": [
+    1,
+    0,
+    0
+   ],
+   "m10-missions": [
+    1,
+    0,
+    0
    ]
   },
   "assistant_comptable": {
@@ -12133,6 +12303,16 @@
    "cfg-validations-aib": [
     1,
     0,
+    0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
     0
    ]
   },
@@ -12616,6 +12796,16 @@
     1,
     1,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "anesthesiste": {
@@ -12937,6 +13127,16 @@
    "m1-certificats-externes": [
     1,
     0,
+    0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
     0
    ]
   },
@@ -13310,6 +13510,16 @@
     1,
     0,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "responsable_radiologie": {
@@ -13626,6 +13836,16 @@
    "m2-mdt-conventions": [
     1,
     0,
+    0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
     0
    ]
   },
@@ -13954,6 +14174,16 @@
     1,
     0,
     0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
+    0
    ]
   },
   "responsable_assurance": {
@@ -14145,6 +14375,16 @@
    "m1-patient-nouveau": [
     1,
     0,
+    0
+   ],
+   "m10-propositions-planning": [
+    1,
+    1,
+    0
+   ],
+   "m10-mes": [
+    1,
+    1,
     0
    ]
   }

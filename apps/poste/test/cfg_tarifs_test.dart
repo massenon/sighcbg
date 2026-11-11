@@ -143,6 +143,18 @@ void main() {
     expect(find.textContaining('Tarifs à valider'), enAttente > 0 ? findsWidgets : findsNothing);
   });
 
+  casM14('« Imprimer la grille tarifaire » : un acte créé sans tarif fait paraître « Tarifs à valider » à l’état', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'cfg-tarifs');
+    await onglet(t, 'Actes & hospitalisation');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
+    await saisir(t, 'libelle', 'Acte Test Sans Prix');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Créer'));
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la grille tarifaire'));
+    expect(find.text('Grille tarifaire des actes et prestations'), findsWidgets);
+    expect(find.textContaining('Tarifs à valider'), findsWidgets);
+  });
+
   casM14('onglet Certificats : lus depuis le catalogue (6), SOS seule, et les pièces sans tarif sont NOMMÉES', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'cfg-tarifs');

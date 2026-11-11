@@ -271,7 +271,9 @@ void main() {
       expect(neuf['titre'], attendu['titre']);
       expect(neuf['reference'], 'ENQ-001');
       expect(neuf['aValider'], true);
-      expect(neuf['source'], attendu['source']);
+      // Le vecteur de la maquette est relevé sous un profil validateur (modèle créé VALIDÉ, mention « à valider » retirée de la source) ; à Baguidi l'administrateur
+      // n'est pas de la famille de ce modèle : il le crée « à valider » et la mention reste.
+      expect(neuf['source'], '${attendu['source']} — à valider');
       expect(neuf['creeLe'], '2026-08-16');
       final q = liste(neuf['questions']).single;
       expect(q['options'], ['Accueil', 'Caisse', 'Labo']);

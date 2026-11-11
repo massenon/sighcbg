@@ -30,6 +30,10 @@ const Set<String> collectionsActivite = {
   'antecedents',
   // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
   'decisionsDroits',
+  // Lot L8 : les présences. Un pointage par badge s'écrit au poste (hors ligne comprise) et voyage comme les autres : une fiche par pointage, le départ et la validation
+  // sont des correctifs de champs, que la fusion champ à champ garde tous. Deux postes hors ligne peuvent chacun enregistrer une arrivée : les deux lignes restent
+  // visibles au registre, le surveillant régularise ou archive (RG-14), rien n'est corrigé en silence.
+  'presences',
   // Lot L0 : les USAGES des paramètres par les pièces (une ligne par pièce et par clé, ajout seul). Un fileul note ici qu'une pièce a utilisé une valeur ; la mère,
   // qui seule écrit les versions, refuse ensuite de réécrire ce que cette pièce a utilisé.
   'usagesParametres',
