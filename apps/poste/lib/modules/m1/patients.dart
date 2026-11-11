@@ -149,6 +149,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
   List<Widget> actionsEntete(BuildContext context) {
     final c = ContexteEcran.of(context);
     return [
+      ...actionsImporter(context, 'patients'),
       BoutonSigh(
           libelle: 'Plan de numérisation',
           icone: LucideIcons.scanLine,

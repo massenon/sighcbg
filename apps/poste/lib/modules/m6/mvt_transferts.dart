@@ -36,6 +36,9 @@ class EcranTransferts extends StatefulWidget with EcranMaquette {
   String get titre => 'Transferts gros → détail';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'transferts')];
+
+  @override
   String get description =>
       'Approvisionnement de la pharmacie d’urgence depuis le magasin central, avec traçabilité complète.';
 

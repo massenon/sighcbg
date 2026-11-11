@@ -31,6 +31,7 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
 
   @override
   List<Widget> actionsEntete(BuildContext context) => [
+        ...actionsImporter(context, 'courriers'),
         BoutonSigh(
             libelle: 'Imprimer le registre',
             icone: LucideIcons.printer,

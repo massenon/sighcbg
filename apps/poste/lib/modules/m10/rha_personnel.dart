@@ -17,6 +17,9 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
   const EcranPersonnel({super.key});
   @override
   String get titre => 'Personnel';
+
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'personnel')];
   @override
   String get description => 'Dossiers des agents : identité, fonction, catégorie, ancienneté, numéro CNSS et rémunération de base.';
 

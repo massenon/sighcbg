@@ -22,6 +22,9 @@ class EcranOuverture extends StatefulWidget with EcranMaquette {
   String get titre => 'Bilan d’ouverture & à-nouveaux';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'soldes-ouverture')];
+
+  @override
   String get description => 'Report des soldes de bilan au 1ᵉʳ janvier — les à-nouveaux, écrits au journal AN.';
 
   @override

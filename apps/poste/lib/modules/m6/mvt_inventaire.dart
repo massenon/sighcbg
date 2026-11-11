@@ -23,6 +23,9 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
   String get titre => 'Inventaires';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'inventaire')];
+
+  @override
   String get description =>
       'Inventaire mensuel et annuel : comparaison automatique entre stock physique saisi et stock théorique du système.';
 

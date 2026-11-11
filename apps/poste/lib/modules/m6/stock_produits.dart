@@ -20,6 +20,9 @@ class EcranProduitsStock extends StatelessWidget with EcranMaquette {
   String get titre => 'Référentiel produits';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'produits')];
+
+  @override
   String get description =>
       'Catalogue de tous les articles gérés : médicaments, réactifs, consommables, fournitures, entretien, petit matériel et immobilisations.';
 

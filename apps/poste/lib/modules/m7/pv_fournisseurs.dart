@@ -182,6 +182,9 @@ class EcranFournisseurs extends StatelessWidget with EcranMaquette {
   String get titre => 'Fournisseurs';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'fournisseurs')];
+
+  @override
   String get description =>
       'Référentiel des fournisseurs, habilitation pour les retours de produits périmés et historique des commandes.';
 

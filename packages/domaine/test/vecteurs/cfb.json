@@ -7197,7 +7197,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "324",
+     "valeur": "330",
      "indice": null
     },
     {
@@ -7212,7 +7212,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "322",
+     "valeur": "328",
      "indice": null
     }
    ],
@@ -7476,7 +7476,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 324,
+  "tousEcrans": 330,
   "modulesListe": [
    [
     "M2",
@@ -7609,7 +7609,7 @@
     "Importation de données",
     "file-up",
     "Système",
-    10
+    16
    ],
    [
     "MERE",
@@ -7675,7 +7675,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "324",
+     "valeur": "330",
      "indice": null
     },
     {
@@ -7690,7 +7690,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "313",
+     "valeur": "319",
      "indice": null
     }
    ],
@@ -7932,7 +7932,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "324",
+     "valeur": "330",
      "indice": null
     },
     {
@@ -7947,7 +7947,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "322",
+     "valeur": "328",
      "indice": null
     }
    ],
@@ -8068,7 +8068,7 @@
      "DASH — Tableaux de bord par poste"
     ]
    ],
-   "nbEcrans": 324
+   "nbEcrans": 330
   },
   "declarerCfg": {
    "fiche": {
@@ -8151,7 +8151,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "324",
+     "valeur": "330",
      "indice": null
     },
     {

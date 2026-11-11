@@ -341,6 +341,30 @@
    "titre": "Importation des soldes d’ouverture",
    "description": "À-nouveaux d’un exercice : une pièce du journal AN, en brouillon, équilibrée (RG-10). Seules les classes 1 à 5 se reportent."
   },
+  "imp-produits": {
+   "titre": "Importation du référentiel produits",
+   "description": "Le référentiel des articles : code, désignation, famille, unité, prix d’achat et prix de vente. Aucune quantité : le stock s’importe à part (stock initial)."
+  },
+  "imp-stock-detail": {
+   "titre": "Importation du stock détail initial",
+   "description": "La situation de départ de la pharmacie (stock détail), article par article. Légitime UNE seule fois par article, tant qu’aucun mouvement n’existe au stock détail."
+  },
+  "imp-transferts": {
+   "titre": "Importation d’un transfert gros → détail",
+   "description": "Un bon de transfert du magasin vers la pharmacie, article par article. RG-03 est contrôlé ligne par ligne (le stock du magasin ne devient jamais négatif) ; un seul justificatif pour tout le fichier."
+  },
+  "imp-inventaire": {
+   "titre": "Importation d’un comptage d’inventaire",
+   "description": "La feuille de comptage (jusqu’à 200 articles) : la quantité comptée par article pour UN magasin. Le comptage est une saisie ; la régularisation du stock reste un geste humain, à la feuille d’inventaire."
+  },
+  "imp-emplacements": {
+   "titre": "Importation des emplacements",
+   "description": "Les casiers du plan des rayons : code court et stable (celui de l’étiquette), intitulé, zone, conservation, capacité."
+  },
+  "imp-courriers": {
+   "titre": "Importation du registre des courriers",
+   "description": "Le registre du courrier départ et arrivée : sens, date, correspondant, objet, nature, service destinataire. Le numéro d’ordre est attribué par le logiciel (série annuelle)."
+  },
   "imp-souscripteurs": {
    "titre": "Importation des souscripteurs",
    "description": "Souscripteurs rattachés à une compagnie : n° de police, catégorie, effectif, période."

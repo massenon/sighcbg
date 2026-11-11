@@ -4546,6 +4546,36 @@
     1,
     1
    ],
+   "imp-produits": [
+    1,
+    1,
+    1
+   ],
+   "imp-stock-detail": [
+    1,
+    1,
+    1
+   ],
+   "imp-transferts": [
+    1,
+    1,
+    1
+   ],
+   "imp-inventaire": [
+    1,
+    1,
+    1
+   ],
+   "imp-emplacements": [
+    1,
+    1,
+    1
+   ],
+   "imp-courriers": [
+    1,
+    1,
+    1
+   ],
    "mere-supervision": [
     1,
     1,
@@ -6201,7 +6231,7 @@
    "imp-accueil": [
     1,
     1,
-    1
+    0
    ],
    "imp-actes": [
     1,
@@ -8057,6 +8087,36 @@
     1,
     1
    ],
+   "imp-produits": [
+    1,
+    1,
+    1
+   ],
+   "imp-stock-detail": [
+    1,
+    1,
+    1
+   ],
+   "imp-transferts": [
+    1,
+    1,
+    1
+   ],
+   "imp-inventaire": [
+    1,
+    1,
+    1
+   ],
+   "imp-emplacements": [
+    1,
+    1,
+    1
+   ],
+   "imp-courriers": [
+    1,
+    1,
+    1
+   ],
    "mere-supervision": [
     1,
     1,
@@ -9657,7 +9717,7 @@
    "imp-accueil": [
     1,
     1,
-    1
+    0
    ],
    "imp-analyses": [
     1,
@@ -9937,6 +9997,36 @@
     1
    ],
    "imp-accueil": [
+    1,
+    1,
+    0
+   ],
+   "imp-actes": [
+    1,
+    1,
+    0
+   ],
+   "imp-produits": [
+    1,
+    1,
+    1
+   ],
+   "imp-stock-detail": [
+    1,
+    1,
+    1
+   ],
+   "imp-transferts": [
+    1,
+    1,
+    1
+   ],
+   "imp-inventaire": [
+    1,
+    1,
+    1
+   ],
+   "imp-emplacements": [
     1,
     1,
     1
@@ -10783,7 +10873,7 @@
    "imp-accueil": [
     1,
     1,
-    1
+    0
    ],
    "imp-fournisseurs": [
     1,
@@ -11191,7 +11281,7 @@
    "imp-accueil": [
     1,
     1,
-    1
+    0
    ],
    "imp-patients": [
     1,
@@ -11391,6 +11481,11 @@
     0
    ],
    "imp-accueil": [
+    1,
+    1,
+    0
+   ],
+   "imp-courriers": [
     1,
     1,
     1

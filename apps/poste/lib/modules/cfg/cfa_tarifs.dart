@@ -17,6 +17,9 @@ class EcranTarifs extends StatelessWidget with EcranMaquette {
   const EcranTarifs({super.key});
   @override
   String get titre => 'Référentiel tarifaire';
+
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'actes')];
   @override
   String get description => 'Tarif unique consommé par la pharmacie, la facturation, les assurances, les rapports et la comptabilité.';
   @override

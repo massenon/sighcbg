@@ -16,10 +16,14 @@ import '../format/recherche.dart' show normaliser;
 
 typedef FicheImport = Map<String, Object?>;
 
-/// La borne par défaut de la taille d'un fichier d'import : 2 Mo. Mesure faite sur le classeur du poste (`ecrireClasseur`) : un fichier de 200 lignes
-/// pèse une quinzaine de Ko, les 18 000 dossiers papier d'un répertoire de patients environ 1 Mo. Deux Mo couvrent donc le plus gros jeu réel avec une marge
-/// de moitié, sans laisser charger en mémoire un fichier qui n'est pas un jeu d'import.
-const octetsMaxImportDefaut = 2 * 1024 * 1024;
+/// Les bornes par défaut de la taille d'un fichier d'import, MESURÉES sur le classeur du poste (`ecrireClasseur`, textes aléatoires donc peu compressibles :
+/// une valeur réelle pèse moins) : 200 lignes d'inventaire = 7 Ko, 184 articles du Grand Stock = 18 Ko, 1 000 produits ou patients = 70 Ko, 2 000 courriers =
+/// 120 Ko, et les 18 000 dossiers du registre papier = 1,25 Mo. Trois bornes en découlent : 512 Ko pour les jeux courts (plus de sept mille lignes : un
+/// fichier plus gros n'est pas ce jeu), 1 Mo pour les référentiels, 2 Mo pour le répertoire patients (le seul qui monte à ce volume). Chaque borne se règle
+/// PAR JEU dans la collection `reglages` (clé `importOctetsMax.<jeu>`).
+const octetsMaxImportDefaut = 1024 * 1024;
+const octetsMaxImportCourt = 512 * 1024;
+const octetsMaxImportPatients = 2 * 1024 * 1024;
 
 /// Niveaux d'un constat.
 const importRefus = 'refus';

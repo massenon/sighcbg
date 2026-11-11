@@ -7,7 +7,9 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
-import '../../import/classeur_xlsx.dart';
+import '../../import/droits_import.dart';
+import '../../import/execution_import.dart';
+import '../../import/fichier_import.dart';
 import '../../import/port_magasin.dart';
 import '../../import/selecteurs_import.dart';
 import '../../kit/kit.dart';
@@ -15,13 +17,15 @@ import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/flux_reprise.dart';
 
+// Les gestes de fichier vivent dans `lib/import/fichier_import.dart` ; ils restent joignables par ce fichier (les bancs d'essai les y ont toujours cherchés).
+export '../../import/fichier_import.dart';
+
 /// MODULE D'IMPORTATION (IMP), port de `prototype_html/assets/js/modules/import.js` : UN écran par jeu d'import (`EcranImportJeu`), plus l'accueil du module
 /// (`EcranImportAccueil`). Le moteur et les dix jeux sont dans `packages/domaine` (`src/import/`) : cet écran ne connaît AUCUNE règle, il enchaîne les
 /// gestes : télécharger le modèle .xlsx, téléverser (sélecteur natif INJECTABLE), analyse COMPLÈTE sans écriture, aperçu ligne par ligne, confirmation,
 /// écriture atomique du lot, historique, annulation du lot par archivage (RG-14), rapport d'erreurs .xlsx.
 
-PortMagasin _port(ContexteEcran c) =>
-    PortMagasin(c.magasin, aujourdhui: () => c.aujourdhui, nomAgent: c.agent.nom);
+PortMagasin _port(ContexteEcran c) => portImport(c);
 
 const _tonsEtat = {
   'applique': ('Appliqué', TonSigh.succes),
@@ -37,42 +41,6 @@ const _tonsLigne = {
 String _dateJour(Object? v) {
   final d = DateTime.tryParse('${v ?? ''}');
   return d == null ? '' : dateFR(d);
-}
-
-/// Le contenu du classeur-modèle d'un jeu : Données, Instructions, Listes (les mêmes que celui de la maquette).
-Uint8List classeurModele(JeuImport j, PortImport port) {
-  final m = modeleImport(j, port);
-  return ecrireClasseur([
-    FeuilleXlsx('Données', m.donnees,
-        largeurs: [for (final c in j.colonnes) c.label.length + 4 < 14 ? 14.0 : c.label.length + 4.0], validations: m.validations, colonnesTexte: m.colonnesTexte),
-    FeuilleXlsx('Instructions', m.instructions, entete: false, largeurs: const [28, 12, 28, 46, 22, 70]),
-    FeuilleXlsx('Listes', m.listes, largeurs: [for (var i = 0; i < m.listes.first.length; i++) 30.0]),
-  ]);
-}
-
-/// Le classeur du rapport d'erreurs d'un lot ou d'une analyse : la feuille « Erreurs » puis le « Résumé ».
-Uint8List classeurRapport(String jeuLibelle, String fichier, String lot, int nbLignes, List<Map<String, Object?>> problemes) =>
-    ecrireClasseur([
-      FeuilleXlsx('Erreurs', rapportImport(problemes), largeurs: const [8, 26, 24, 14, 24, 70, 70]),
-      FeuilleXlsx('Résumé', resumeRapportImport(jeuLibelle, fichier, lot, nbLignes, problemes.length), entete: false, largeurs: const [24, 50]),
-    ]);
-
-/// Lit un fichier choisi en lignes : .csv (UTF-8, séparateur détecté) ou classeur .xlsx (feuille « Données », à défaut la première). `null` + motif quand
-/// le fichier est illisible.
-({List<List<Object?>>? lignes, String? motif}) lireFichierImport(FichierChoisi f) {
-  try {
-    if (RegExp(r'\.(csv|txt)$', caseSensitive: false).hasMatch(f.nom)) {
-      return (lignes: [for (final l in importLireCsv(utf8.decode(f.octets, allowMalformed: true))) List<Object?>.of(l)], motif: null);
-    }
-    final feuilles = lireClasseur(f.octets);
-    if (feuilles.isEmpty) throw const FormatException('le classeur ne contient aucune feuille');
-    final donnees = feuilles.where((x) => normaliser(x.nom) == normaliser('Données')).firstOrNull ?? feuilles.first;
-    return (lignes: donnees.lignes, motif: null);
-  } on FormatException catch (e) {
-    return (lignes: null, motif: e.message);
-  } catch (e) {
-    return (lignes: null, motif: '$e');
-  }
 }
 
 String _valeursPermisesTexte(ColonneImport c, PortImport port, dynamic ctx) {
@@ -96,10 +64,14 @@ String _typeLisible(ColonneImport c) =>
     c.type;
 
 /// L'historique des lots : un tableau filtrable ; « Rapport » pour tout lot qui porte des constats, « Annuler le lot » (droit d'annuler) pour un lot appliqué.
+///
+/// L'historique ne montre JAMAIS les valeurs des cellules : le jeu, l'auteur, la date, le résultat, le compte de lignes et les erreurs nommées par numéro de
+/// ligne. Il est lu par son AUTEUR, et par qui arbitre les lots (DAF, administrateur : un droit de la matrice, pas un nom de rôle).
 Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, VoidCallback rafraichir) {
+  final droits = DroitsImport(c);
   return TableauSigh(
     lignes: [
-      for (final l in lots)
+      for (final l in droits.lotsVisibles(lots))
         {
           ...l,
           '_etat': (_tonsEtat[l['etat']]?.$1 ?? '${l['etat']}'),
@@ -131,6 +103,7 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
       ColonneTableau(cle: 'date', libelle: 'Date', texte: (l) => _dateJour(l['date']), valeur: (l) => l['date']),
       const ColonneTableau(cle: 'nbLignes', libelle: 'Lignes', droite: true),
       const ColonneTableau(cle: 'nbAvertissements', libelle: 'Avert.', droite: true),
+      ColonneTableau(cle: 'nbIgnorees', libelle: 'Ignorées', droite: true, texte: (l) => '${l['nbIgnorees'] ?? 0}'),
       ColonneTableau(cle: '_valide', libelle: 'Validé par', texte: (l) => '${l['_valide']}'),
       ColonneTableau(
           cle: 'etat',
@@ -147,7 +120,7 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
             icone: LucideIcons.fileDown,
             libelle: 'Rapport d’erreurs (.xlsx)',
             onPressed: () => _telechargerRapport(contexte, c, l)),
-      if (l['etat'] == 'applique' && c.droit.annuler)
+      if (l['etat'] == 'applique' && droits.arbitreLesLots)
         BoutonIcone(
             icone: LucideIcons.undo2,
             libelle: 'Annuler le lot',
@@ -216,6 +189,7 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
   String? _resultat;
   bool _resultatOk = true;
   bool _occupe = false;
+  bool _ignorer = false;
 
   JeuImport get _jeu => widget.jeu;
 
@@ -224,10 +198,10 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
     final Uint8List octets;
     final String nom;
     if (csv) {
-      octets = Uint8List.fromList(utf8.encode(modeleCsvImport(_jeu)));
+      octets = Uint8List.fromList(utf8.encode(modeleCsvImport(_jeu, colonnesAccordees: DroitsImport(c).colonnesAccordees(_jeu))));
       nom = '${_jeu.fichierModele}.csv';
     } else {
-      octets = classeurModele(_jeu, port);
+      octets = classeurModele(_jeu, port, colonnesAccordees: DroitsImport(c).colonnesAccordees(_jeu));
       nom = '${_jeu.fichierModele}.xlsx';
     }
     await _enregistrer(context, nom, octets);
@@ -236,11 +210,9 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
   Future<void> _televerser(ContexteEcran c) async {
     final f = await SelecteursImport.choisir();
     if (f == null || !mounted) return;
-    final port = _port(c);
-    final lu = lireFichierImport(f);
-    final a = analyserFichier(_jeu, lu.lignes, f.nom, port, motifIllisible: lu.motif, empreinte: importCrc32(f.octets));
-    Fiche? lot;
-    if (!a.accepte) lot = consigner(_jeu, a, port);
+    final v = verifierFichier(c, _jeu, f, ignorerExistants: _ignorer);
+    final a = v.analyse;
+    final lot = v.lotRefuse;
     setState(() {
       _analyse = a;
       _lotRefuse = lot;
@@ -305,6 +277,11 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
               'Fichier refusé. Rien n’a été écrit. Le fichier est consigné au lot ${_lotRefuse?['reference']} ; corrigez les points ci-dessous puis téléversez de nouveau.',
               ton: TonSigh.danger,
               icone: LucideIcons.octagonAlert),
+        if (a.ignorees.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          NoteSigh('${a.ignorees.length} ligne(s) ignorée(s), la fiche existe déjà : lignes ${a.ignorees.join(', ')}. Les fiches existantes ne sont pas modifiées.',
+              ton: TonSigh.info, icone: LucideIcons.info),
+        ],
         if (a.globaux.isNotEmpty) ...[
           const SizedBox(height: 12),
           CarteSigh(
@@ -449,7 +426,7 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
                 ColonneMini('Type', (l) => _typeLisible(l['c'] as ColonneImport)),
                 ColonneMini('Valeurs permises', (l) => _valeursPermisesTexte(l['c'] as ColonneImport, port, ctx)),
                 ColonneMini('Exemple', (l) => texteDe((l['c'] as ColonneImport).exemple)),
-              ], lignes: [for (final col in j.colonnes) {'c': col}]),
+              ], lignes: [for (final col in j.colonnesPour(DroitsImport(c).colonnesAccordees(j))) {'c': col}]),
             ]),
           ),
           const SizedBox(height: 16),
@@ -461,6 +438,16 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
                   style: TextStyle(fontSize: 14, color: JetonsShell.slate600)),
               const SizedBox(height: 12),
               // La commande d'écriture est ABSENTE (jamais grisée) sans le droit d'écrire.
+              if (c.droit.editer && j.ignorable)
+                CheckboxListTile(
+                    key: const Key('imp-ignorer-existants'),
+                    contentPadding: EdgeInsets.zero,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: _ignorer,
+                    onChanged: (v) => setState(() => _ignorer = v == true),
+                    title: const Text('Ignorer les existants', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    subtitle: const Text('Une ligne dont la fiche existe déjà est listée et ignorée, jamais modifiée. Permis sur ce jeu seulement parce que l’existant y est une référence qu’on enrichit.',
+                        style: TextStyle(fontSize: 12))),
               if (c.droit.editer)
                 Row(children: [
                   BoutonSigh(libelle: 'Téléverser un fichier (.xlsx ou .csv)', icone: LucideIcons.upload, onPressed: () => _televerser(c)),
@@ -520,12 +507,14 @@ class EcranImportAccueil extends StatelessWidget with EcranMaquette {
     return ListenableBuilder(
       listenable: Listenable.merge([lots, c.magasin.collection(valCollectionValidations)]),
       builder: (context, _) {
-        final tous = lots.toutes;
-        final visibles = [for (final j in jeuxImport) if (c.ouvre == null || c.ouvre!(j.ecran)) j];
+        final droits = DroitsImport(c);
+        // Les jeux que le profil a le droit d'IMPORTER (la matrice) et les lots qu'il a le droit de LIRE (les siens, ou tous s'il arbitre).
+        final tous = droits.lotsVisibles(lots.toutes);
+        final visibles = [for (final j in jeuxImport) if (droits.peutImporter(j)) j];
         int compte(String e) => tous.where((l) => l['etat'] == e).length;
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           KpiGrilleSigh(kpis: [
-            KpiSigh(libelle: 'Jeux d’import', valeur: '${jeuxImport.length}', icone: LucideIcons.files, ton: TonSigh.navy),
+            KpiSigh(libelle: 'Jeux d’import', valeur: '${visibles.length}', icone: LucideIcons.files, ton: TonSigh.navy),
             KpiSigh(libelle: 'Lots appliqués', valeur: '${compte('applique')}', icone: LucideIcons.packageCheck, ton: TonSigh.succes),
             KpiSigh(libelle: 'Fichiers refusés', valeur: '${compte('refuse')}', icone: LucideIcons.fileX, ton: TonSigh.attention),
             KpiSigh(libelle: 'Lots annulés', valeur: '${compte('annule')}', icone: LucideIcons.undo2, ton: TonSigh.neutre),

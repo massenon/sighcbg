@@ -112,6 +112,7 @@ final JeuImport jeuProduits = JeuImport(
 
 final JeuImport jeuStockDetail = JeuImport(
   id: 'stock-detail',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-stock-detail',
   libelle: 'Importation du stock détail initial',
   module: 'IMP',
@@ -188,6 +189,7 @@ final JeuImport jeuStockDetail = JeuImport(
 
 final JeuImport jeuTransferts = JeuImport(
   id: 'transferts',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-transferts',
   libelle: 'Importation d’un transfert gros → détail',
   module: 'IMP',
@@ -281,6 +283,7 @@ final JeuImport jeuTransferts = JeuImport(
 
 final JeuImport jeuInventaire = JeuImport(
   id: 'inventaire',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-inventaire',
   libelle: 'Importation d’un comptage d’inventaire',
   module: 'IMP',
@@ -352,6 +355,7 @@ final JeuImport jeuInventaire = JeuImport(
 
 final JeuImport jeuEmplacements = JeuImport(
   id: 'emplacements',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-emplacements',
   libelle: 'Importation des emplacements',
   module: 'IMP',
