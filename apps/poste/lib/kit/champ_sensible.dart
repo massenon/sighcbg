@@ -15,6 +15,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/jetons_shell.dart';
 import '../donnees/magasin.dart';
 import '../shell/contexte_ecran.dart';
+import 'tableau.dart';
 
 /// Ce que le profil de l'écran courant peut lire. Se construit à l'usage ([AccesSensible.de]) : rien n'est gardé d'un appel à l'autre.
 class AccesSensible {
@@ -41,6 +42,19 @@ class AccesSensible {
 
   /// Pour une cellule de tableau (`String Function(Fiche)`) : le texte, ou la mention.
   String texteSi(String categorie, String texte) => peut(categorie) ? texte : mention(categorie);
+
+  /// Une colonne de tableau dont toute la valeur relève de [categorie] : refusée, elle porte la mention, ne se trie pas et ne s'exporte pas (le texte de
+  /// colonne est aussi ce que la recherche du tableau lit). [lecture] : la valeur de la ligne (par défaut le champ [cle]).
+  ColonneTableau colonne(String categorie, String cle, String libelle, {Object? Function(Map<String, Object?>)? lecture, bool droite = false}) {
+    final ok = peut(categorie);
+    return ColonneTableau(
+        cle: cle,
+        libelle: libelle,
+        droite: droite,
+        triable: ok,
+        valeur: (r) => ok ? (lecture != null ? lecture(r) : r[cle]) : mention(categorie),
+        texte: (r) => ok ? '${(lecture != null ? lecture(r) : r[cle]) ?? ''}' : mention(categorie));
+  }
 
   /// Le widget de la catégorie, ou la mention posée dans une carte discrète.
   Widget champ(String categorie, Widget Function() rendu) => peut(categorie) ? rendu() : MentionReservee(categorie);

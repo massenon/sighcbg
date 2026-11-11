@@ -116,8 +116,11 @@ class EcranAdministrations extends StatelessWidget with EcranMaquette {
         .whenComplete(ctl.dispose);
   }
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final prescriptions = c.magasin.collection('prescriptions');
     final administrations = c.magasin.collection('administrations');

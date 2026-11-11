@@ -49,10 +49,13 @@ class SessionSoignant {
 
 /// Une ligne de l'agenda du jour.
 class LigneAgenda {
-  const LigneAgenda({required this.heure, required this.patient, required this.patientId, required this.motif, required this.type, required this.statut, required this.enSouffrance, required this.jour});
+  const LigneAgenda({required this.heure, required this.patient, required this.patientId, required this.motif, required this.type, required this.statut, required this.enSouffrance, required this.jour, this.motifMasque = false});
   final String heure, patient, motif, type, statut, jour;
   final String? patientId;
   final bool enSouffrance;
+
+  /// Le motif est remplacé par la mention « Information réservée » (droit refusé) : il ne doit alors ni se recopier ni préremplir une saisie.
+  final bool motifMasque;
 }
 
 class AgendaDuJour {
@@ -134,7 +137,11 @@ class ServiceSoignant {
 
   List<Map<String, Object?>> _avecId(List<LigneLot> l) => [for (final x in l) {...x.data, 'id': x.id}];
 
-  LigneAgenda _ligne(Map<String, Object?> r, List<FichePatient> patients, {required bool souffrance}) {
+  /// Le motif d'un rendez-vous est la raison de venue du patient : la catégorie « notes et dossier de consultation ». Relu à chaque appel, depuis les droits en
+  /// force (jamais capturé) ; sans suivi de droits (tests de service seuls), rien n'est masqué.
+  bool get _motifLisible => droits?.value.matrice.donneesSensibles.peut(droits?.role ?? '', 'notes_consultation') ?? true;
+
+  LigneAgenda _ligne(Map<String, Object?> r, List<FichePatient> patients, {required bool souffrance, bool motifLisible = true}) {
     FichePatient? p;
     for (final x in patients) {
       if (x.id == r['patientId'] || (r['patientCode'] != null && x.champs['code'] == r['patientCode'])) p = x;
@@ -144,7 +151,8 @@ class ServiceSoignant {
       heure: mobHeureRendezVous(r),
       patient: nom,
       patientId: p?.id,
-      motif: '${r['motif'] ?? ''}',
+      motif: motifLisible ? '${r['motif'] ?? ''}' : mentionReservee('notes_consultation'),
+      motifMasque: !motifLisible,
       type: '${r['type'] ?? ''}',
       statut: _libellesStatut['${r['statut']}'] ?? '${r['statut'] ?? ''}',
       enSouffrance: souffrance,
@@ -158,9 +166,10 @@ class ServiceSoignant {
     final pats = await patients();
     final rdv = [for (final l in await _actives('rendezvous')) l.data];
     final a = mobAgendaDuJour(rdv, maintenant);
+    final lisible = _motifLisible;
     return AgendaDuJour(
-      [for (final r in a.duJour) _ligne(r, pats, souffrance: false)],
-      [for (final r in a.enSouffrance) _ligne(r, pats, souffrance: true)],
+      [for (final r in a.duJour) _ligne(r, pats, souffrance: false, motifLisible: lisible)],
+      [for (final r in a.enSouffrance) _ligne(r, pats, souffrance: true, motifLisible: lisible)],
     );
   }
 

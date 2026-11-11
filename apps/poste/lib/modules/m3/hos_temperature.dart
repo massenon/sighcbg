@@ -160,7 +160,7 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
               ('Lit', '${courant['lit']}'),
               ('Chambre', hosLibelleTypeChambre(courant['typeChambre'])),
               ('Date d’entrée', jourFR(courant['dateEntree'])),
-              ('Diagnostic', '${courant['diagnosticEntree'] ?? ''}'),
+              ('Diagnostic', AccesSensible.de(c).texteSi('diagnostic_pathologie', '${courant['diagnosticEntree'] ?? ''}')),
             ],
             blocs: asc.isEmpty
                 ? [const BlocTexte('Aucun relevé enregistré.', italique: true)]
@@ -186,8 +186,11 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
             edite: c.aujourdhui));
   }
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final adm = c.magasin.collection('admissions');
     final releves = c.magasin.collection('releves');
@@ -248,7 +251,7 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
                     ('Chambre', hosLibelleTypeChambre(courant['typeChambre'])),
                     ('Entrée', jourFR(courant['dateEntree'])),
                     ('Séjour', '${hosDureeSejour(courant, c.aujourdhui)} jour(s)'),
-                    ('Diagnostic', courant['diagnosticEntree']),
+                    ('Diagnostic', AccesSensible.de(c).masquerSi('diagnostic_pathologie', courant['diagnosticEntree'])),
                     ('Infirmier référent', courant['infirmier']),
                   ])),
               const SizedBox(height: 16),

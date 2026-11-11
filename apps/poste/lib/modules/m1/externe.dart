@@ -272,25 +272,29 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
             ]);
   }
 
+  /// L'identité du bulletin remis au patient : l'âge et les coordonnées suivent leurs catégories de données sensibles (le papier ne dit pas plus que l'écran).
+  static List<(String, String)> cartoucheBulletin(Fiche p, Fiche f, ContexteEcran c, AccesSensible acces) => [
+        ('Patient', '${p['nom']} ${p['prenom']}'),
+        ('Dossier', '${p['code']}'),
+        ('Âge', acces.texteSi('identite_detaillee', ageTexte(p, c.aujourdhui))),
+        ('Sexe', p['sexe'] == 'F' ? 'Féminin' : 'Masculin'),
+        ('Téléphone', acces.texteSi('coordonnees', _t(p['telephone']))),
+        ('Résidence', acces.texteSi('coordonnees', _t(p['adresse']))),
+        ('Prescripteur extérieur', _t(p['prescripteurExterieur'])),
+        ('Date', dateFR(c.aujourdhui)),
+        ('À régler à la caisse', money(f['partPatient'])),
+      ];
+
   void _bulletin(BuildContext ctx, Map<String, Object?> res) {
     final p = res['patient'] as Fiche;
     final f = res['facture'] as Fiche;
     final c = ContexteEcran.of(ctx);
     final dem = (res['demandes'] as List).cast<Fiche>();
+    final acces = AccesSensible.de(c);
     imprimerM1(ctx,
         titre: 'Bulletin d’analyses bio-médicales',
         sousTitre: 'Patient externe — ${f['numero']}',
-        cartouche: [
-          ('Patient', '${p['nom']} ${p['prenom']}'),
-          ('Dossier', '${p['code']}'),
-          ('Âge', ageTexte(p, c.aujourdhui)),
-          ('Sexe', p['sexe'] == 'F' ? 'Féminin' : 'Masculin'),
-          ('Téléphone', _t(p['telephone'])),
-          ('Résidence', _t(p['adresse'])),
-          ('Prescripteur extérieur', _t(p['prescripteurExterieur'])),
-          ('Date', dateFR(c.aujourdhui)),
-          ('À régler à la caisse', money(f['partPatient'])),
-        ],
+        cartouche: cartoucheBulletin(p, f, c, acces),
         blocs: [
           BlocTableau(TableauEtat(colonnes: [
             ColonneEtat(libelle: 'Examen demandé', valeur: (d) => d['analyse'] ?? d['examen']),
@@ -305,6 +309,12 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
   }
 
   void _voir(BuildContext ctx, ContexteEcran c, Fiche r) {
+    // Un résultat d'analyse ou un compte rendu d'imagerie est une donnée sensible : refusée la catégorie, rien ne s'ouvre et le refus se nomme.
+    final acces = AccesSensible.de(c);
+    if (!acces.peut('resultats_analyses')) {
+      ToastsSigh.afficher(ctx, 'Résultat non consultable.', type: TypeToast.erreur, detail: acces.mention('resultats_analyses'));
+      return;
+    }
     if (patVrai(r['examenCode'])) {
       final cr = c.magasin
           .collection('resultatsImagerie')
@@ -375,7 +385,7 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
     return [
       if (patVrai(r['factureId']) || patVrai(r['facture']))
         BoutonIcone(icone: LucideIcons.coins, libelle: 'Voir la facture à la caisse', onPressed: () => c.aller('m8-caisse')),
-      if (rendu) BoutonIcone(icone: LucideIcons.eye, libelle: 'Voir le résultat', onPressed: () => _voir(ctx, c, r)),
+      if (rendu && AccesSensible.de(c).peut('resultats_analyses')) BoutonIcone(icone: LucideIcons.eye, libelle: 'Voir le résultat', onPressed: () => _voir(ctx, c, r)),
       if (bloc != null)
         // Verrouillé, et NOMMÉ : le laboratoire comme l'accueil doivent savoir chez qui la balle se trouve.
         Opacity(
@@ -441,7 +451,7 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     final m = c.magasin;
     return ListenableBuilder(
-        listenable: Listenable.merge([m.collection('demandesAnalyses'), m.collection('demandesImagerie'), m.collection('patients')]),
+        listenable: Listenable.merge([m.collection('demandesAnalyses'), m.collection('demandesImagerie'), m.collection('patients'), m.collection('rbac')]),
         builder: (context, _) {
           final dem = patDemandesExternes(m.collection('demandesAnalyses').actives);
           final img = patImagerieExterne(m.collection('demandesImagerie').actives, m.collection('patients').toutes);

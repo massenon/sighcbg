@@ -81,4 +81,23 @@ void main() {
     expect(find.textContaining('Winké'), findsNothing);
     expect(find.textContaining(mentionReservee('coordonnees')), findsWidgets);
   });
+
+  test('AGENDA : le motif d’un rendez-vous suit « notes et dossier de consultation » — masqué au service, rendu à chaud, jamais recopié dans une saisie', () async {
+    final m = FauxMoteur(fonction: 'medecin')..profil = ProfilMobile.soignant;
+    final s = m.soignant!;
+    var a = await s.agenda();
+    final motif = a.duJour.first.motif;
+    expect(motif, isNotEmpty);
+    expect(a.duJour.first.motifMasque, isFalse);
+    livrer(m, [decision('medecin', {'notes_consultation': false})]);
+    a = await s.agenda();
+    for (final l in [...a.duJour, ...a.enSouffrance]) {
+      expect(l.motif, mentionReservee('notes_consultation'), reason: 'le motif ne sort pas du service : l\'écran ne peut pas le montrer par un autre chemin');
+      expect(l.motifMasque, isTrue);
+    }
+    expect(a.duJour.first.patient, isNotEmpty, reason: 'l\'identification minimale reste');
+    livrer(m);
+    a = await s.agenda();
+    expect(a.duJour.first.motif, motif, reason: 'droit rendu à chaud, sans réappairage');
+  });
 }

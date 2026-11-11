@@ -88,13 +88,15 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
       const ChampDef.section('Délivrance'),
       ChampDef(nom: 'medecin', libelle: 'Médecin signataire', type: TypeChamp.select, requis: true, options: medecins),
       const ChampDef(nom: 'dateDelivrance', libelle: 'Date de délivrance', type: TypeChamp.date, requis: true),
-      const ChampDef(
-          nom: 'contenu',
-          libelle: 'Mentions portées sur la pièce',
-          type: TypeChamp.textarea,
-          lignes: 5,
-          col: ColChamp.plein,
-          aide: 'Le corps du certificat, tel qu’il sera imprimé.'),
+      // Le corps d'un certificat est un renseignement médical (catégorie « notes et dossier de consultation ») : on ne le saisit ni ne le réécrit sans le droit de le lire.
+      if (AccesSensible.de(c).peut('notes_consultation'))
+        const ChampDef(
+            nom: 'contenu',
+            libelle: 'Mentions portées sur la pièce',
+            type: TypeChamp.textarea,
+            lignes: 5,
+            col: ColChamp.plein,
+            aide: 'Le corps du certificat, tel qu’il sera imprimé.'),
       const ChampDef(nom: 'remisA', libelle: 'Remis à', aide: 'L’intéressé lui-même, ou la personne nommément désignée.'),
     ];
   }
@@ -173,20 +175,26 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
     };
   }
 
-  static void _imprimer(BuildContext ctx, Fiche r) => imprimerM1(ctx,
-      titre: '${r['libelle'] ?? ''}'.toUpperCase(),
-      sousTitre: 'N°/Réf : ${r['reference']}',
-      cartouche: [
-        ('Patient', '${r['patient']}'),
-        ('Dossier', '${r['patientCode']}'),
-        ('Délivrée le', dateFrM1(r['dateDelivrance'])),
-        ('Remise à', _t(r['remisA'], 'L’intéressé(e)')),
-      ],
-      blocs: [
-        BlocTexte(_t(r['contenu'], 'En foi de quoi la présente pièce est établie pour servir et valoir ce que de droit.')),
-        BlocTexte(_t(r['couverture'], ''), italique: true),
-      ],
-      signatures: [Signature('Le Médecin', nom: '${r['medecin']}', mention: 'Signature et cachet')]);
+  /// Le corps de la pièce imprimée : ce que le profil ne peut pas lire n'y figure pas, il y est DIT (la pièce remise au patient ne fuit rien).
+  static List<BlocPiece> blocsPiece(Fiche r, AccesSensible acces) => [
+        BlocTexte(acces.texteSi('notes_consultation', _t(r['contenu'], 'En foi de quoi la présente pièce est établie pour servir et valoir ce que de droit.'))),
+        BlocTexte(acces.texteSi('couverture_assurance', _t(r['couverture'], '')), italique: true),
+      ];
+
+  static void _imprimer(BuildContext ctx, Fiche r) {
+    final acces = AccesSensible.de(ContexteEcran.of(ctx));
+    imprimerM1(ctx,
+        titre: '${r['libelle'] ?? ''}'.toUpperCase(),
+        sousTitre: 'N°/Réf : ${r['reference']}',
+        cartouche: [
+          ('Patient', '${r['patient']}'),
+          ('Dossier', '${r['patientCode']}'),
+          ('Délivrée le', dateFrM1(r['dateDelivrance'])),
+          ('Remise à', _t(r['remisA'], 'L’intéressé(e)')),
+        ],
+        blocs: blocsPiece(r, acces),
+        signatures: [Signature('Le Médecin', nom: '${r['medecin']}', mention: 'Signature et cachet')]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +202,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
     final m = c.magasin;
     final col = m.collection('pieces');
     return ListenableBuilder(
-        listenable: Listenable.merge([col, m.collection('factures'), m.collection('patients')]),
+        listenable: Listenable.merge([col, m.collection('factures'), m.collection('patients'), m.collection('rbac')]),
         builder: (context, _) {
           final patients = m.collection('patients').toutes;
           final factures = m.collection('factures').toutes;
@@ -229,6 +237,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
                 ],
                 detail: (ctx, x) {
                   final s = st(x);
+                  final acces = AccesSensible.de(c);
                   return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                     DescListeSigh([
                       ('Référence', '${x['reference']}'),
@@ -238,13 +247,16 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
                       ('Signataire', x['medecin']),
                       ('Remise à', _t(x['remisA'], 'L’intéressé(e)')),
                       ('Montant', x['montant'] == null ? 'non tarifé' : money(x['montant'])),
-                      ('Couverture', _t(x['couverture'])),
+                      ('Couverture', acces.masquerSi('couverture_assurance', _t(x['couverture']))),
                       ('Règlement', s.label),
                       ('Pièce de caisse', _t(x['factureNumero'], 'aucune')),
                     ]),
                     const SizedBox(height: 12),
                     NoteSigh(s.detail.isEmpty ? '—' : s.detail, ton: tonDe(s.ton), icone: LucideIcons.coins),
-                    if (patVrai(x['contenu'])) sectionM1('Mentions portées', paragrapheM1('${x['contenu']}')),
+                    if (!acces.peut('notes_consultation'))
+                      sectionM1('Mentions portées', const MentionReservee('notes_consultation'))
+                    else if (patVrai(x['contenu']))
+                      sectionM1('Mentions portées', paragrapheM1('${x['contenu']}')),
                   ]);
                 },
                 colonnes: [
