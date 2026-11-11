@@ -156,7 +156,8 @@ ResultatNormalisation normaliserVente(
     final refus = ad.refus!;
     annulations.add(col.mettreAJour(factureId, d.champsEnAttenteCertification(refus, ad.mode)));
     m.journaliser('Normalisation en attente (adaptateur non configuré)', 'MECEF', 'facture', '${fac['numero']}',
-        {'statutMecef': fac['statutMecef']}, {'statutMecef': 'en_attente', 'code': refus.code, 'mode': ad.mode});
+        {'statutMecef': fac['statutMecef']},
+        {'statutMecef': 'en_attente', 'code': refus.code, 'mode': ad.mode, if (defaut != null) 'aib': '${a.aibTaux} % — ${defaut.motif}'});
     return ResultatNormalisation.refus(refus.code, refus.motif, refus.geste, annuler: undo);
   }
   // Un numéro déjà porté (pièce ancienne, ou réponse réconciliée) n'est JAMAIS réécrit : on ne rappelle pas l'appareil.

@@ -341,11 +341,11 @@ void main() {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.ok, isTrue);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibSituation'], p['aibMontant'], p['aibRepli']], [5, 'ifu_inactif_ou_absent', 500, null]);
       expect(p['aibMotif'], 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
-      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Normalisation' && '${(a['apres'] as Map)['aib']}'.contains('5 % — Taux de 5 % arrêté')), isTrue,
+      expect(m.collection('audit').toutes.any((a) => '${a['action']}'.startsWith('Normalisation') && '${(a['apres'] as Map)['aib']}'.contains('5 % — Taux de 5 % arrêté')), isTrue,
           reason: 'le motif du moteur est journalisé');
     });
 
@@ -353,13 +353,13 @@ void main() {
       final m = magasin();
       final f = vente(m, {'date': '2026-08-01'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.ok, isTrue);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibMontant'], p['aibRepli']], [0, 0, true]);
       expect(p['aibSituation'], isNull);
       expect(p['aibMotif'], contains('Aucun taux arrêté en vigueur au 01/08/2026 : AIB à 0 %'));
       expect(p['aibMotif'], contains('Aucun taux arrêté avant le 07/09/2026'));
-      expect(m.collection('audit').toutes.any((a) => a['action'] == 'Normalisation' && '${(a['apres'] as Map)['aib']}'.contains('0 % — Aucun taux arrêté en vigueur')), isTrue);
+      expect(m.collection('audit').toutes.any((a) => '${a['action']}'.startsWith('Normalisation') && '${(a['apres'] as Map)['aib']}'.contains('0 % — Aucun taux arrêté en vigueur')), isTrue);
     });
 
     test('D1 retransmission d\'une pièce refusée puis corrigée : le taux se lit à la date de la facture, le refus n\'écrit pas un taux périmé', () {
@@ -372,7 +372,7 @@ void main() {
       // la correction, puis la retransmission : le taux arrêté est lu à la date de la facture
       m.collection('factures').mettreAJour(f['id'], {'montantTTC': 10000});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.ok, isTrue);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
       expect(m.collection('factures').parId(f['id'])!['aibTaux'], 5);
     });
 
@@ -380,7 +380,7 @@ void main() {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.ok, isTrue);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibRepli']], [0, true]);
       expect(p['aibMotif'], contains('0 %'));
@@ -397,7 +397,7 @@ void main() {
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
       final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
-      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).ok, isTrue);
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibMontant']], [3, 300]);
     });
@@ -405,7 +405,7 @@ void main() {
     test('une pièce qui porte déjà son taux le GARDE : la fenêtre a décidé, le défaut ne la réécrit pas', () {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30', 'aibTaux': 5, 'aibSituation': 'ifu_inactif_ou_absent'});
-      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).ok, isTrue);
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
       expect(p['aibTaux'], 5);
       expect(p.containsKey('aibMotif'), isFalse);

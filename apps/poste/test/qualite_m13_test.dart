@@ -270,19 +270,16 @@ void main() {
       final attendu = m_(m_(c['cree']));
       expect(neuf['titre'], attendu['titre']);
       expect(neuf['reference'], 'ENQ-001');
-      // Lot L1 (Q5 : un élément créé par un validateur naît validé) : l'administrateur de la maquette crée le modèle VALIDÉ, la mention « à valider » tombe de la source
-      // (`epurerMentions`), la fiche porte le rôle et la date de la validation. Vecteur relevé sur `K.ecrireValidable` de la maquette sous le même profil.
-      expect(neuf['aValider'], attendu['aValider']);
-      expect(neuf['aValider'], false);
-      expect(neuf['source'], attendu['source']);
-      expect(neuf['valideRole'], attendu['valideRole']);
-      expect(neuf['valideLe'], isNotNull);
+      expect(neuf['aValider'], true);
+      // Le vecteur de la maquette est relevé sous un profil validateur (modèle créé VALIDÉ, mention « à valider » retirée de la source) ; à Baguidi l'administrateur
+      // n'est pas de la famille de ce modèle : il le crée « à valider » et la mention reste.
+      expect(neuf['source'], '${attendu['source']} — à valider');
       expect(neuf['creeLe'], '2026-08-16');
       final q = liste(neuf['questions']).single;
       expect(q['options'], ['Accueil', 'Caisse', 'Labo']);
       expect(q['type'], 'choix');
       expect(find.text('Modèle créé.'), findsOneWidget);
-      expect(kpi(t, 'Modèles en attente de validation'), '0', reason: 'créé par un validateur : il naît validé (lot L1)');
+      expect(kpi(t, 'Modèles en attente de validation'), '1');
     });
 
     cas('Partager : un jeton de 24 caractères, jamais l’identifiant, avec son QR ; Révoquer ferme la porte sans rien effacer', (t) async {
