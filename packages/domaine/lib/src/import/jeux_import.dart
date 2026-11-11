@@ -5,11 +5,15 @@
 /// une donnée incomplète et le dit. Les vecteurs de la maquette (`test/vecteurs/import.json`) rejouent chaque règle.
 library;
 
+import '../administration/adm_regles.dart' show admNaturesCourrier, admReferenceCourrier, admServicesCourrier, admTraitementsCourrier;
 import '../format/recherche.dart' show normaliser;
-import '../impression/identite.dart';
+import '../stock/emplacements.dart' show temperaturesConservation, zonesEmplacement;
+import '../stock/mouvements_stock.dart' show controlerBonAvantEcriture, emettreTransfert;
 import '../referentiels/regles.dart' show codePatient, reCodePatient;
 import 'donnees_import.dart';
 import 'moteur_import.dart';
+
+part 'jeux_import_stock.dart';
 
 typedef _V = Map<String, Object?>;
 
@@ -68,7 +72,6 @@ final JeuImport jeuGrandStock = JeuImport(
   libelle: 'Importation Grand Stock',
   module: 'M6',
   statut: 'supporte',
-  roles: const ['stock', 'da', 'admin', 'direction'],
   description: 'Situation initiale du magasin central : articles, lots, péremptions, quantités et prix de revient (inventaire SAGE « Grand Stock »).',
   source: 'Inventaire SAGE 100 « Grand Stock » du 15/07/2026 (docs/) : 184 articles, 12 080 unités, 3 976 459 FCFA.',
   cibles: const ['produits', 'lots', 'mouvements'],
@@ -240,14 +243,16 @@ String _referenceMouvement(List<_V> fiches) {
 
 final JeuImport jeuPersonnel = JeuImport(
   id: 'personnel',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-personnel',
   libelle: 'Importation du personnel',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['da', 'admin'],
   description: 'Fiches des agents : matricule, identité, fonction, service, embauche. Aucune donnée de paie hors salaire de base.',
   source: 'Organigramme et liste du personnel de la clinique (docs/) : 44 agents.',
   cibles: const ['personnel'],
+  // Le salaire de base est une donnée de PAIE : sa colonne n'est dans le modèle (ni acceptée dans le fichier) que pour le profil qui a le droit paie.
+  colonnesReservees: const {'salaireBase'},
   fichierModele: 'modele-import-personnel',
   gesteExiste: 'Retirez la ligne : un import ne modifie pas une fiche existante. Corrigez-la à l’écran Personnel.',
   colonnes: [
@@ -321,26 +326,21 @@ final JeuImport jeuPersonnel = JeuImport(
 
 // --- 3. PATIENTS -------------------------------------------------------------------------------------------------------------------
 
-final _reCodePatient = reCodePatient;
 
 final JeuImport jeuPatients = JeuImport(
   id: 'patients',
+  octetsMaxDefaut: octetsMaxImportPatients,
   ecran: 'imp-patients',
   libelle: 'Importation du répertoire patients',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['reception', 'agentadmin', 'da', 'admin'],
   description: 'Reprise du répertoire papier : identité, coordonnées, couverture. Jamais de dossier médical.',
+  limite: 'Modèle d’accueil : le code dossier n’est jamais lu dans le fichier, il est attribué par le logiciel (RG-01) ; le groupe sanguin n’en fait pas partie (renseignement médical, hors du guichet).',
   source: 'Registre papier des dossiers (environ 18 000) : seule l’identité administrative se reprend (CDCT 4.3).',
   cibles: const ['patients'],
   fichierModele: 'modele-import-patients',
   gesteExiste: 'Retirez la ligne : le dossier existe déjà. Un doublon d’identité se règle à l’écran Patients, jamais par un second dossier.',
   colonnes: [
-    _col('code', 'Code dossier', 'texte',
-        motif: _reCodePatient,
-        motifTexte: 'code de la forme ${IdentiteClinique.sigle}/n/AA',
-        exemple: '',
-        aide: 'RG-01 : un code existant du registre papier est conservé tel quel et ne se modifie jamais. Vide : le prochain code est attribué automatiquement.'),
     _oblig('nom', 'Nom', 'texte', longueurMax: 60, exemple: 'AGBUZIA'),
     _oblig('prenom', 'Prénom', 'texte', longueurMax: 80, exemple: 'Marie'),
     _oblig('sexe', 'Sexe', 'liste', liste: _fixe(['M', 'F']), exemple: 'F'),
@@ -350,7 +350,6 @@ final JeuImport jeuPatients = JeuImport(
     _col('quartier', 'Quartier', 'texte', longueurMax: 60, exemple: 'Boukoumbé'),
     _col('adresse', 'Adresse', 'texte', longueurMax: 120, exemple: 'Zongo II, Parakou'),
     _col('personneAPrevenir', 'Personne à prévenir', 'texte', longueurMax: 100, exemple: 'AGBUZIA Pouchul'),
-    _col('groupeSanguin', 'Groupe sanguin', 'liste', liste: _fixe(importGroupesSanguins), exemple: 'O+'),
     _col('assureur', 'Code assureur', 'liste', liste: (ctx) => [for (final a in ctx['assureurs'] as List<String>) ValeurListe(a)], exemple: ''),
     _col('numeroPolice', 'N° de police', 'texte', longueurMax: 40, exemple: ''),
     _col('dateCreation', 'Date d’ouverture du dossier', 'date', exemple: '2024-05-02', aide: 'Vide : date du jour.'),
@@ -370,14 +369,12 @@ final JeuImport jeuPatients = JeuImport(
   },
   cle: (v) {
     final k = <String>[];
-    if (v['code'] != null) k.add('code:${_n(v['code'])}');
     if (v['dateNaissance'] != null) k.add('nd:${_n(v['nom'])}|${_n(v['prenom'])}|${v['dateNaissance']}');
     if (v['telephone'] != null) k.add('nt:${_n(v['nom'])}|${_n(v['prenom'])}|${_s(v['telephone']).replaceAll(RegExp(r'\s'), '')}');
     return k;
   },
   existe: (v, ctx) {
-    _V? p = v['code'] != null ? (ctx['codes'] as Map)[_n(v['code'])] as _V? : null;
-    if (p != null) return 'RG-01 : le code ${p['code']} est déjà attribué à ${p['nom']} ${p['prenom']} (un code ne se réutilise jamais)';
+    _V? p;
     if (v['dateNaissance'] != null) p = (ctx['ident'] as Map)['${_n(v['nom'])}|${_n(v['prenom'])}|${v['dateNaissance']}'] as _V?;
     if (p == null && v['telephone'] != null) p = (ctx['tel'] as Map)['${_n(v['nom'])}|${_n(v['prenom'])}|${_s(v['telephone']).replaceAll(RegExp(r'\s'), '')}'] as _V?;
     return p != null ? 'doublon probable du dossier ${p['code']} (${p['nom']} ${p['prenom']})' : null;
@@ -416,19 +413,14 @@ final JeuImport jeuPatients = JeuImport(
     for (final p in port.toutes('patients')) {
       noter(_s(p['code']));
     }
-    for (final l in lignes) {
-      noter(l.v['code'] as String?);
-    }
     final jour = port.jour;
     for (final l in lignes) {
       final v = l.v;
       final creation = (v['dateCreation'] as String?) ?? jour;
-      var code = v['code'] as String?;
-      if (code == null) {
-        final an = creation.substring(2, 4);
-        rangs[an] = (rangs[an] ?? 0) + 1;
-        code = codePatient(rangs[an]!, an);
-      }
+      // RG-01 : le code n'est JAMAIS fourni par le fichier, il est généré (série annuelle, jamais réattribué).
+      final an = creation.substring(2, 4);
+      rangs[an] = (rangs[an] ?? 0) + 1;
+      final code = codePatient(rangs[an]!, an);
       final fiche = <String, Object?>{
         'code': code,
         'nom': v['nom'],
@@ -439,7 +431,6 @@ final JeuImport jeuPatients = JeuImport(
         'quartier': v['quartier'],
         'adresse': v['adresse'],
         'personneAPrevenir': v['personneAPrevenir'],
-        'groupeSanguin': v['groupeSanguin'],
         'assureur': v['assureur'],
         'numeroPolice': v['numeroPolice'],
         'dateCreation': creation,
@@ -479,7 +470,6 @@ final JeuImport jeuActes = JeuImport(
   libelle: 'Importation du catalogue des actes',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['da', 'admin', 'direction'],
   description: 'Actes et tarifs à deux prix (non assuré, assuré) avec les trois états de la colonne assurée : montant, NC (non couvert), tiret (valeur manquante).',
   source: 'Six grilles tarifaires imprimées et « Répartition des activités » (docs/) ; les prix du fichier font foi, aucun n’est complété par le logiciel.',
   cibles: const ['actes'],
@@ -560,7 +550,6 @@ final JeuImport jeuAnalyses = JeuImport(
   libelle: 'Importation du catalogue des analyses',
   module: 'IMP',
   statut: 'proposition',
-  roles: const ['laborantin', 'da', 'admin'],
   description: 'Entrées du catalogue des examens (code, désignation, section). Les variables, unités et bornes ne se reprennent pas : le biologiste les valide.',
   source: 'Bulletin d’analyses bio-médicales et fiche de résultats du 21/08/2026 (docs/) : 48 analyses au catalogue.',
   limite: 'PROPOSITION À VALIDER : seule l’entrée du catalogue est créée. Sans variables ni bornes, un examen importé ne peut pas recevoir de résultat avant que le biologiste les ait saisies et validées.',
@@ -614,14 +603,15 @@ final JeuImport jeuAnalyses = JeuImport(
 
 final JeuImport jeuFournisseurs = JeuImport(
   id: 'fournisseurs',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-fournisseurs',
   libelle: 'Importation des fournisseurs',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['stock', 'da', 'comptable', 'admin'],
   description: 'Fournisseurs de la clinique : identité fiscale, coordonnées, délai, banque.',
   source: 'Factures de vente et bons de livraison collectés (docs/), dont la facture SoBAPS.',
   cibles: const ['fournisseurs'],
+  ignorable: true,
   fichierModele: 'modele-import-fournisseurs',
   gesteExiste: 'Retirez la ligne : modifiez la fiche existante à l’écran Fournisseurs.',
   colonnes: [
@@ -680,11 +670,11 @@ final JeuImport jeuFournisseurs = JeuImport(
 
 final JeuImport jeuAssureurs = JeuImport(
   id: 'assureurs',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-assureurs',
   libelle: 'Importation des compagnies d’assurance',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['da', 'comptable', 'admin'],
   description: 'Compagnies d’assurance : code, raison sociale, contacts, état de la convention.',
   source: 'Treize assureurs relevés dans les documents de cadrage (docs/).',
   cibles: const ['assureurs'],
@@ -736,11 +726,11 @@ final JeuImport jeuAssureurs = JeuImport(
 
 final JeuImport jeuSouscripteurs = JeuImport(
   id: 'souscripteurs',
+  octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-souscripteurs',
   libelle: 'Importation des souscripteurs',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['da', 'comptable', 'admin'],
   description: 'Souscripteurs rattachés à une compagnie : n° de police, catégorie, effectif, période.',
   source: 'Relevés de prestations et factures mensuelles par souscripteur (docs/).',
   limite: 'La grille de garanties du souscripteur (taux par catégorie, plafonds, exclusions) ne s’importe pas : elle se saisit à l’écran Souscripteurs. Sans elle, la facture reste intégralement au patient.',
@@ -809,7 +799,6 @@ final JeuImport jeuPlanComptable = JeuImport(
   libelle: 'Importation du plan comptable',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['comptable', 'da', 'admin'],
   description: 'Comptes SYSCOHADA : numéro, libellé, journal par défaut. La classe se déduit du premier chiffre.',
   source: 'Plan comptable de la clinique, classeur SYSCOHADA 2025 (docs/) : 93 comptes.',
   cibles: const ['comptes'],
@@ -854,7 +843,6 @@ final JeuImport jeuSoldesOuverture = JeuImport(
   libelle: 'Importation des soldes d’ouverture',
   module: 'IMP',
   statut: 'supporte',
-  roles: const ['comptable', 'da', 'admin'],
   description: 'À-nouveaux d’un exercice : une pièce du journal AN, en brouillon, équilibrée (RG-10). Seules les classes 1 à 5 se reportent.',
   source: 'Bilan de clôture de l’exercice précédent : liasse déposée le 15/05/2026 (docs/).',
   cibles: const ['ecritures'],
@@ -947,7 +935,7 @@ final JeuImport jeuSoldesOuverture = JeuImport(
   dependances: (lot, port) => null,
 );
 
-/// Les dix jeux, dans l'ordre de la maquette.
+/// Les dix jeux de la maquette, puis les six du 11/11/2026 (produits, stock détail, transferts, inventaire, emplacements, courriers).
 final List<JeuImport> jeuxImport = [
   jeuGrandStock,
   jeuPersonnel,
@@ -959,6 +947,12 @@ final List<JeuImport> jeuxImport = [
   jeuSouscripteurs,
   jeuPlanComptable,
   jeuSoldesOuverture,
+  jeuProduits,
+  jeuStockDetail,
+  jeuTransferts,
+  jeuInventaire,
+  jeuEmplacements,
+  jeuCourriers,
 ];
 
 JeuImport? jeuImportParId(String id) => jeuxImport.where((j) => j.id == id).firstOrNull;

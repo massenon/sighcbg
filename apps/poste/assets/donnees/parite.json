@@ -5321,6 +5321,102 @@
    "statut": "porté"
   },
   {
+   "id": "imp-produits",
+   "label": "Importation du référentiel produits",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-stock-detail",
+   "label": "Importation du stock détail initial",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-transferts",
+   "label": "Importation d’un transfert gros → détail",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-inventaire",
+   "label": "Importation d’un comptage d’inventaire",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-emplacements",
+   "label": "Importation des emplacements",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-courriers",
+   "label": "Importation du registre des courriers",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "agentadmin",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-supervision",
    "label": "Supervision",
    "module": "MERE",

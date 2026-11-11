@@ -368,5 +368,11 @@
  "imp-souscripteurs": "porté",
  "imp-plan-comptable": "porté",
  "imp-soldes-ouverture": "porté",
+ "imp-produits": "porté",
+ "imp-stock-detail": "porté",
+ "imp-transferts": "porté",
+ "imp-inventaire": "porté",
+ "imp-emplacements": "porté",
+ "imp-courriers": "porté",
  "m6-import-grand-stock": "porté"
 }

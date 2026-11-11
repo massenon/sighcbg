@@ -29,6 +29,7 @@ class EcranPlanComptable extends StatelessWidget with EcranMaquette {
   List<Widget> actionsEntete(BuildContext context) {
     final c = ContexteEcran.of(context);
     return [
+      ...actionsImporter(context, 'plan-comptable'),
       BoutonSigh(
           libelle: 'Imprimer le plan comptable',
           icone: LucideIcons.printer,

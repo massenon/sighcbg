@@ -391,6 +391,7 @@ class Magasin {
     'dispensations': 'M6',
     'emplacements': 'M6',
     'inventaires': 'M6',
+    'comptagesInventaire': 'M6',
     'lots': 'M6',
     'transferts': 'M6',
     'valorisationsSage': 'M6',

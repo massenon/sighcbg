@@ -1611,6 +1611,30 @@
        {
         "label": "Importation des soldes d’ouverture",
         "href": "pages/imp-soldes-ouverture.php"
+       },
+       {
+        "label": "Importation du référentiel produits",
+        "href": "pages/imp-produits.php"
+       },
+       {
+        "label": "Importation du stock détail initial",
+        "href": "pages/imp-stock-detail.php"
+       },
+       {
+        "label": "Importation d’un transfert gros → détail",
+        "href": "pages/imp-transferts.php"
+       },
+       {
+        "label": "Importation d’un comptage d’inventaire",
+        "href": "pages/imp-inventaire.php"
+       },
+       {
+        "label": "Importation des emplacements",
+        "href": "pages/imp-emplacements.php"
+       },
+       {
+        "label": "Importation du registre des courriers",
+        "href": "pages/imp-courriers.php"
        }
       ]
      }
@@ -2072,7 +2096,7 @@
     ]
    }
   ],
-  "pied": "332 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
+  "pied": "338 écrans métier recensés au manifeste, plus 22 pages d’accès et système.",
   "retour": "Retour à l’application",
   "homeAdmin": "dash-admin"
  },
@@ -2084,7 +2108,7 @@
    },
    {
     "label": "Écrans disponibles",
-    "valeur": "332"
+    "valeur": "338"
    },
    {
     "label": "Règles de gestion appliquées",

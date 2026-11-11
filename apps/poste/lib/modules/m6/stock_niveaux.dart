@@ -48,6 +48,10 @@ class EcranNiveauStock extends StatefulWidget with EcranMaquette {
   @override
   String get description => descriptionEcran;
 
+  /// Le jeu d'import de cet écran : le stock initial du magasin central (Grand Stock) ou celui de la pharmacie (stock détail).
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, type == 'detail' ? 'stock-detail' : 'grand-stock')];
+
   @override
   State<EcranNiveauStock> createState() => _EtatNiveauStock();
 }

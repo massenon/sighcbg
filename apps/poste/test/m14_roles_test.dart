@@ -188,7 +188,8 @@ void main() {
     expect(f(ecrits['m1-patients']), {'voir': false, 'editer': false, 'annuler': false});
     expect(find.text('Droits par écran enregistrés.'), findsOneWidget);
     // Le centre des validations s'ouvre au biologiste (maquette du 07/11/2026, postérieure au vecteur) : un écran réglé de plus, ouvert.
-    final detail = '${(((c['toasts'] as List).first) as Map)['detail']}'.replaceFirst('14 écran(s) réglé(s)', '15 écran(s) réglé(s)');
+    // L'historique des lots d'importation (11/11/2026) en ajoute un autre : `imp-accueil` sans le droit d'annuler (l'auteur lit ses lots, qui arbitre lit tous les lots).
+    final detail = '${(((c['toasts'] as List).first) as Map)['detail']}'.replaceFirst('14 écran(s) réglé(s)', '16 écran(s) réglé(s)');
     expect(find.text(detail), findsOneWidget);
     sem.dispose();
   });

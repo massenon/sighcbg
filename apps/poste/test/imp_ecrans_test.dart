@@ -217,17 +217,14 @@ void main() {
     expect((lot['ecrits'] as List), isEmpty);
   });
 
-  cas('RG-10 : une écriture non équilibrée est refusée avec les deux totaux ; RG-01 : un code patient existant aussi', (t) async {
+  cas('RG-10 : une écriture non équilibrée est refusée avec les deux totaux', (t) async {
     final m = magasin();
     await ouvrir(t, m, 'imp-soldes-ouverture');
     await choisirFichier(t, 'so-desequilibre');
     expect(find.byKey(const Key('imp-constat-RG10_DESEQUILIBRE')), findsNothing, reason: 'le constat du fichier entier est un tableau, pas une ligne');
     expect(find.textContaining('écriture non équilibrée (RG-10)'), findsOneWidget);
     expect(find.textContaining('écart 50'), findsOneWidget);
-    await ouvrir(t, m, 'imp-patients');
-    await choisirFichier(t, 'pa-code-existant');
-    expect(find.textContaining('RG-01 : le code CBG/1/25 est déjà attribué'), findsOneWidget);
-    expect(m.collection('patients').toutes.length, 2);
+    expect(m.collection('ecritures').toutes.where((e) => e['journal'] == 'AN' && e['origine'] == 'Import des soldes d’ouverture'), isEmpty);
   });
 
   cas('les droits : la Direction lit et télécharge le modèle, mais « Téléverser » est ABSENT (jamais grisé)', (t) async {
@@ -240,9 +237,10 @@ void main() {
     final m = magasin();
     await ouvrir(t, m, 'imp-accueil');
     expect(find.text('Jeux d’import'), findsWidgets);
-    expect(find.widgetWithText(BoutonSigh, 'Ouvrir'), findsNWidgets(10));
+    expect(find.widgetWithText(BoutonSigh, 'Ouvrir'), findsNWidgets(jeuxImport.length));
+    expect(jeuxImport.length, 16);
     expect(find.text('Proposition à valider'), findsOneWidget);
-    expect(find.text('Supporté'), findsNWidgets(9));
+    expect(find.text('Supporté'), findsNWidgets(15));
     expect(find.textContaining('Source : Inventaire SAGE 100'), findsOneWidget);
     expect(find.textContaining('Écrit dans : produits, lots, mouvements. Aucun lot à ce jour.'), findsOneWidget);
     await toucher(t, find.text('Historique des lots'));

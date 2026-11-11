@@ -744,7 +744,13 @@
     "imp-assureurs",
     "imp-souscripteurs",
     "imp-plan-comptable",
-    "imp-soldes-ouverture"
+    "imp-soldes-ouverture",
+    "imp-produits",
+    "imp-stock-detail",
+    "imp-transferts",
+    "imp-inventaire",
+    "imp-emplacements",
+    "imp-courriers"
    ]
   },
   {
@@ -5959,6 +5965,108 @@
    "servant": null,
    "roles": [
     "comptable",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-produits",
+   "label": "Importation du référentiel produits",
+   "icone": "package",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-stock-detail",
+   "label": "Importation du stock détail initial",
+   "icone": "package-check",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-transferts",
+   "label": "Importation d’un transfert gros → détail",
+   "icone": "arrow-left-right",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-inventaire",
+   "label": "Importation d’un comptage d’inventaire",
+   "icone": "clipboard-check",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-emplacements",
+   "label": "Importation des emplacements",
+   "icone": "warehouse",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "stock",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-courriers",
+   "label": "Importation du registre des courriers",
+   "icone": "mail",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "agentadmin",
     "da",
     "admin"
    ]

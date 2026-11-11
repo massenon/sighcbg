@@ -82,6 +82,11 @@ class _EtatFeuille extends State<EcranInventaireFeuille> {
   Fiche? _valide;
   bool _pret = false;
 
+  /// Le lot du comptage IMPORTÉ dont les quantités ont été reprises dans cette feuille (`null` : saisie à la main). Le comptage n'est qu'une saisie : la
+  /// régularisation du stock reste le geste de « Valider l'inventaire », jamais automatique.
+  String? _lotComptage;
+  final List<Fiche> _comptagesRepris = [];
+
   String get _label => magasinLabelInventaire(_magasin);
 
   void _preparer(ContexteEcran c) {
@@ -92,6 +97,24 @@ class _EtatFeuille extends State<EcranInventaireFeuille> {
     _date = _entete.date ?? iso(c.aujourdhui);
     _operateur = _entete.operateur ?? acteur(c).nom;
     _cible = ciblesInventaire(produitsActifs(c), _entete.perimetre);
+    _reprendreComptageImporte(c);
+  }
+
+  /// Reprend, pour ce magasin, les quantités du DERNIER comptage importé (`imp-inventaire`) non encore régularisé : elles s'affichent dans la colonne « Physique »,
+  /// modifiables, et l'agent valide (ou non) lui-même. Un comptage d'un autre magasin n'est jamais repris (la feuille porte sur UN magasin nommé).
+  void _reprendreComptageImporte(ContexteEcran c) {
+    final ouverts = [
+      for (final x in c.magasin.collection('comptagesInventaire').actives)
+        if (x['magasin'] == _magasin && x['regularise'] != true) x
+    ];
+    if (ouverts.isEmpty) return;
+    final dernier = ouverts.map((x) => '${x['lot']}').reduce((a, b) => a.compareTo(b) >= 0 ? a : b);
+    final ids = {for (final p in _cible) '${p['id']}'};
+    for (final x in ouverts.where((x) => '${x['lot']}' == dernier && ids.contains('${x['produitId']}'))) {
+      _edites['${x['produitId']}'] = nombreBrut(n(x['physique']));
+      _comptagesRepris.add(x);
+    }
+    if (_comptagesRepris.isNotEmpty) _lotComptage = dernier;
   }
 
   @override
@@ -107,7 +130,7 @@ class _EtatFeuille extends State<EcranInventaireFeuille> {
   Fiche _ligne(Fiche p) => ligneComptage(p, _magasin, _edites.containsKey('${p['id']}') ? _edites['${p['id']}'] : stockTheorique(p, _magasin));
 
   TextEditingController _ctl(Fiche p) =>
-      _saisies.putIfAbsent('${p['id']}', () => TextEditingController(text: nombreBrut(stockTheorique(p, _magasin))));
+      _saisies.putIfAbsent('${p['id']}', () => TextEditingController(text: _edites['${p['id']}'] ?? nombreBrut(stockTheorique(p, _magasin))));
 
   static String nombreBrut(num v) => v == v.truncate() ? '${v.toInt()}' : '$v';
 
@@ -134,6 +157,16 @@ class _EtatFeuille extends State<EcranInventaireFeuille> {
       produits.mettreAJour(v.produits[i].id, v.produits[i].patch);
       annulations.add(mouvements.inserer(v.mouvements[i], prefixe: 'MVT').annuler);
     }
+    // Les quantités reprises d'un comptage importé sont désormais régularisées : le comptage porte la référence de l'inventaire qui les a consommées.
+    final comptages = c.magasin.collection('comptagesInventaire');
+    for (final x in _comptagesRepris) {
+      comptages.mettreAJour(x['id'], {'regularise': true, 'inventaire': v.inventaire['reference']});
+    }
+    annulations.add(() {
+      for (final x in _comptagesRepris) {
+        comptages.mettreAJour(x['id'], {'regularise': false, 'inventaire': null});
+      }
+    });
     final avant = v.avant;
     final nbEcarts = v.inventaire['nbEcarts'];
     annonce(context, 'Inventaire ${v.inventaire['reference']} validé — $nbEcarts écart(s) régularisé(s) sur le ${_label.toLowerCase()}.',
@@ -260,6 +293,13 @@ class _EtatFeuille extends State<EcranInventaireFeuille> {
     return CarteSigh(
       titre: 'Comptage — ${_entete.perimetre}',
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        if (_lotComptage != null) ...[
+          NoteSigh(
+              '${nombre(_comptagesRepris.length)} quantité(s) reprise(s) du comptage importé (lot $_lotComptage). Elles restent modifiables ; rien n’est régularisé tant que vous n’avez pas validé l’inventaire.',
+              ton: TonSigh.info,
+              icone: LucideIcons.fileUp),
+          const SizedBox(height: 12),
+        ],
         NoteSigh(
             'Saisir le stock physique compté pour chaque article. Les écarts avec le stock théorique du $_label sont calculés en direct et valorisés au CUMP.',
             icone: LucideIcons.clipboardList),

@@ -475,7 +475,13 @@
         "imp-assureurs",
         "imp-souscripteurs",
         "imp-plan-comptable",
-        "imp-soldes-ouverture"
+        "imp-soldes-ouverture",
+        "imp-produits",
+        "imp-stock-detail",
+        "imp-transferts",
+        "imp-inventaire",
+        "imp-emplacements",
+        "imp-courriers"
        ]
       }
      ]
@@ -669,7 +675,13 @@
         "imp-assureurs",
         "imp-souscripteurs",
         "imp-plan-comptable",
-        "imp-soldes-ouverture"
+        "imp-soldes-ouverture",
+        "imp-produits",
+        "imp-stock-detail",
+        "imp-transferts",
+        "imp-inventaire",
+        "imp-emplacements",
+        "imp-courriers"
        ]
       }
      ]
@@ -1940,7 +1952,13 @@
         "imp-assureurs",
         "imp-souscripteurs",
         "imp-plan-comptable",
-        "imp-soldes-ouverture"
+        "imp-soldes-ouverture",
+        "imp-produits",
+        "imp-stock-detail",
+        "imp-transferts",
+        "imp-inventaire",
+        "imp-emplacements",
+        "imp-courriers"
        ]
       }
      ]
@@ -2119,7 +2137,13 @@
         "imp-assureurs",
         "imp-souscripteurs",
         "imp-plan-comptable",
-        "imp-soldes-ouverture"
+        "imp-soldes-ouverture",
+        "imp-produits",
+        "imp-stock-detail",
+        "imp-transferts",
+        "imp-inventaire",
+        "imp-emplacements",
+        "imp-courriers"
        ]
       }
      ]
@@ -2960,7 +2984,13 @@
        "hub": "hub-imp",
        "ecrans": [
         "imp-accueil",
-        "imp-fournisseurs"
+        "imp-actes",
+        "imp-fournisseurs",
+        "imp-produits",
+        "imp-stock-detail",
+        "imp-transferts",
+        "imp-inventaire",
+        "imp-emplacements"
        ]
       }
      ]
@@ -3757,7 +3787,8 @@
        "hub": "hub-imp",
        "ecrans": [
         "imp-accueil",
-        "imp-patients"
+        "imp-patients",
+        "imp-courriers"
        ]
       }
      ]

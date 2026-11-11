@@ -24,6 +24,9 @@ class EcranEtiquetage extends StatelessWidget with EcranMaquette {
   String get titre => 'Étiquetage & emplacements';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'emplacements')];
+
+  @override
   String get description =>
       'Organisation des rayons et casiers, classement par date de péremption et édition des étiquettes produits.';
 
