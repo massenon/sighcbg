@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../moteur/droits_mobile.dart';
+
 import 'commun.dart';
+import 'garde_droit.dart';
 
 /// Un écran du simulateur rendu depuis sa page : les champs, leur ordre, leurs cartes, leurs listes, leurs claviers et leurs exemples sont ceux que la
 /// page a montrés dans Chrome (`mobChampsEcran`), jamais écrits ici. Sert la visite prénatale, la visite post-natale et la surveillance mère-bébé.
@@ -9,7 +12,10 @@ import 'commun.dart';
 /// Le geste d'enregistrement est celui du service (`ServiceSuite`) : il refait le contrôle d'habilitation, refuse en nommant (code, motif, geste) et
 /// écrit UNE opération. Un refus de champ s'affiche sous le champ ; un refus d'ensemble en carte de refus.
 class FormulaireSuite extends StatefulWidget {
-  const FormulaireSuite({super.key, required this.ecran, required this.enregistrer, this.sous, this.notes = const [], this.signalement});
+  const FormulaireSuite({super.key, required this.ecran, required this.enregistrer, this.sous, this.notes = const [], this.signalement, this.droits});
+
+  /// La matrice que la mère diffuse : si le droit d'écrire de cet écran est retiré pendant la saisie, l'écran se ferme (retour à l'accueil).
+  final SuiviDroits? droits;
 
   /// `cpn`, `cpon` ou `surveillance`.
   final String ecran;
@@ -97,7 +103,9 @@ class _FormulaireSuiteState extends State<FormulaireSuite> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.droits, ecran: widget.ecran, ecriture: true, construire: _corps);
+
+  Widget _corps(BuildContext context) {
     final erreurs = _refus?.champs ?? const <String, String>{};
     // Les champs d'une même carte se suivent : la page les groupe sous le titre de la carte ; hors carte, ils sont posés tels quels.
     final corps = <Widget>[];

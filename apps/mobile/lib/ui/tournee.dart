@@ -3,6 +3,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../moteur/moteur_mobile.dart';
 import 'commun.dart';
+import 'garde_droit.dart';
 import 'dossier.dart';
 
 /// Liste des dossiers du lot de la tournée ; un dossier s'ouvre en LECTURE, d'où partent les gestes que la fonction autorise.
@@ -91,7 +92,9 @@ class _SaisieConstantesState extends State<SaisieConstantes> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.service.droits, ecran: 'constantes', ecriture: true, construire: _corps);
+
+  Widget _corps(BuildContext context) {
     final erreurs = _refus?.champs ?? const <String, String>{};
     return Scaffold(
       appBar: AppBar(title: Text('Constantes, ${widget.titre}')),

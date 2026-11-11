@@ -1,9 +1,22 @@
 // Aides communes des tests de l'application mobile : une source en mémoire (le lot) et un faux moteur qui laisse tourner le VRAI service soignant.
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_mobile/moteur/moteur_mobile.dart';
 
 final horloge = DateTime(2026, 10, 31, 10, 0);
+
+/// La GRAINE des droits, lue sur le disque (les tests de widgets ne passent pas par le paquet d'assets) : les mêmes fichiers que l'application embarque.
+GraineDroits? _graine;
+GraineDroits graineDeTest() => _graine ??= GraineDroits.depuisJson(
+      manifeste: File('assets/droits/manifeste.json').readAsStringSync(),
+      rbac: File('assets/droits/rbac.json').readAsStringSync(),
+      rbacReference: File('assets/droits/rbac.reference.json').readAsStringSync(),
+      rbacLivre: File('assets/droits/rbac.livre.json').readAsStringSync(),
+      modulesReference: File('assets/droits/modulesActifs.reference.json').readAsStringSync(),
+      modulesLivres: File('assets/droits/modulesActifs.livre.json').readAsStringSync(),
+    );
 
 class SourceMemoire implements SourceMobile {
   SourceMemoire([Map<String, List<LigneLot>>? depart]) : donnees = depart ?? {};
@@ -55,7 +68,12 @@ SourceMemoire lotDeDemonstration() => SourceMemoire({
 
 class FauxMoteur implements MoteurMobile {
   FauxMoteur({this.refus, SourceMemoire? source, this.fonction = 'medecin', this.agent = 'Dr YORO M’ABEKPIA Foulumi', this.refusATraiter = const [], this.profilDuCode = ProfilMobile.soignant})
-      : source = source ?? lotDeDemonstration();
+      : source = source ?? lotDeDemonstration(),
+        // Le rôle des droits vient de la fonction que la mère fixe à l'appairage : le faux le pose comme le moteur réel, jamais autrement.
+        droits = SuiviDroits(graineDeTest(), role: mobRoleDroits(reception: profilDuCode != ProfilMobile.soignant, fonction: fonction));
+
+  @override
+  final SuiviDroits droits;
 
   /// Le profil que le CODE d'appairage porte (E1600) : le téléphone ne le choisit pas, il le reçoit de la mère.
   final ProfilMobile profilDuCode;
@@ -63,8 +81,15 @@ class FauxMoteur implements MoteurMobile {
   final SourceMemoire source;
   final String fonction, agent;
   final List<RefusAffiche> refusATraiter;
+  ProfilMobile? _profil;
   @override
-  ProfilMobile? profil;
+  ProfilMobile? get profil => _profil;
+
+  /// Le profil posé, le rôle des droits suit (réception : `reception` ; soignant : le rôle de sa fonction), comme dans le moteur réel.
+  set profil(ProfilMobile? p) {
+    _profil = p;
+    droits.definirRole(p == null ? null : mobRoleDroits(reception: p != ProfilMobile.soignant, fonction: fonction));
+  }
   @override
   final ValueNotifier<EtatMobile> etat = ValueNotifier(const EtatMobile(horsLigne: true));
   final List<FichePatient> crees = [];
@@ -72,7 +97,7 @@ class FauxMoteur implements MoteurMobile {
 
   @override
   ServiceSoignant? get soignant => profil == ProfilMobile.soignant
-      ? ServiceSoignant(source, session: SessionSoignant(agent: agent, fonction: fonction), maintenant: () => horloge)
+      ? ServiceSoignant(source, session: SessionSoignant(agent: agent, fonction: fonction), maintenant: () => horloge, droits: droits)
       : null;
 
   @override

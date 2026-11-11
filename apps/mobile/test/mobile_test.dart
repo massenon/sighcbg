@@ -109,7 +109,7 @@ void main() {
   });
 
   test('le moteur réel (sigh_sync) s\'instancie dans l\'application : non appairé, rien en attente, aucun profil', () async {
-    final m = MoteurMobileSync.creer(dbChemin: ':memory:', relais: 'http://127.0.0.1:1');
+    final m = MoteurMobileSync.creer(dbChemin: ':memory:', relais: 'http://127.0.0.1:1', graine: graineDeTest());
     expect(m.profil, isNull);
     expect(m.soignant, isNull);
     await m.actualiser();
@@ -120,7 +120,7 @@ void main() {
   });
 
   test('l\'agent est exigé à l\'appairage (RG-12) : refus avant tout appel réseau ; le profil et la fonction ne sont plus des paramètres du téléphone', () async {
-    final m = MoteurMobileSync.creer(dbChemin: ':memory:', relais: 'http://127.0.0.1:1');
+    final m = MoteurMobileSync.creer(dbChemin: ':memory:', relais: 'http://127.0.0.1:1', graine: graineDeTest());
     await expectLater(m.appairer(code: 'ABCD2345', cleClinique: 'Y2xl'), throwsStateError);
     m.arreter();
   });

@@ -3,6 +3,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../moteur/moteur_mobile.dart';
 import 'commun.dart';
+import 'garde_droit.dart';
 
 /// Note de consultation à domicile. Dossier, fiche, prescription : la prescription ne s'ouvre qu'après l'enregistrement de cette note.
 /// Les constantes relevées ce jour sont reprises dans la note (copie datée), jamais ressaisies. L'orientation est celle de la fiche de consultation.
@@ -46,7 +47,9 @@ class _SaisieNoteState extends State<SaisieNote> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.service.droits, ecran: 'consultation', ecriture: true, construire: _corps);
+
+  Widget _corps(BuildContext context) {
     final erreurs = _refus?.champs ?? const <String, String>{};
     return Scaffold(
       appBar: AppBar(title: Text(mobLibelleEcran('consultation'))),

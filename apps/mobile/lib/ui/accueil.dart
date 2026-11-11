@@ -72,7 +72,13 @@ class Accueil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // L'accueil relit la matrice à CHAQUE décision de la mère : un onglet dont le droit de voir est retiré disparaît, sans redémarrer l'application.
+    return ValueListenableBuilder<EtatDroits>(valueListenable: moteur.droits, builder: (c, _, __) => _accueil(c));
+  }
+
+  Widget _accueil(BuildContext context) {
     final soignant = moteur.profil == ProfilMobile.soignant;
+    final droits = moteur.droits;
     final bandeau = ValueListenableBuilder<EtatMobile>(
         valueListenable: moteur.etat,
         builder: (_, e, __) => BandeauEtat(etat: e, ouvrirATraiter: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => ATraiter(moteur: moteur)))));
@@ -82,18 +88,37 @@ class Accueil extends StatelessWidget {
         body: Column(children: [bandeau, Expanded(child: soignant ? Tournee(moteur: moteur) : Reception(moteur: moteur))]),
       );
     }
-    // Soignant : l'agenda du jour d'abord (ce qu'on ouvre en arrivant), puis les dossiers du lot.
+    // Soignant : l'agenda du jour d'abord (ce qu'on ouvre en arrivant), puis les dossiers du lot. Chaque onglet suit un droit de voir : sans aucun, la page le DIT.
+    final onglets = <(Key, String, Widget)>[
+      if (droits.peutVoir('agenda')) (const Key('onglet-agenda'), 'Agenda du jour', AgendaJour(moteur: moteur)),
+      if (droits.peutVoir('dossier')) (const Key('onglet-dossiers'), 'Dossiers du lot', Tournee(moteur: moteur)),
+    ];
+    if (onglets.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Ma tournée'), actions: _actions(context)),
+        body: Column(children: [
+          bandeau,
+          const Expanded(
+              child: Center(
+                  child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Text('Aucun écran n’est ouvert à votre profil sur ce téléphone : les droits de la clinique ne le permettent pas. Demandez à l’administrateur de les modifier, ils se mettront à jour à la prochaine synchronisation.',
+                          key: Key('aucun-ecran'), textAlign: TextAlign.center)))),
+        ]),
+      );
+    }
     return DefaultTabController(
-      length: 2,
+      key: ValueKey(onglets.map((o) => o.$2).join('|')),
+      length: onglets.length,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Ma tournée'),
           actions: _actions(context),
-          bottom: const TabBar(tabs: [Tab(key: Key('onglet-agenda'), text: 'Agenda du jour'), Tab(key: Key('onglet-dossiers'), text: 'Dossiers du lot')]),
+          bottom: onglets.length < 2 ? null : TabBar(tabs: [for (final o in onglets) Tab(key: o.$1, text: o.$2)]),
         ),
         body: Column(children: [
           bandeau,
-          Expanded(child: TabBarView(children: [AgendaJour(moteur: moteur), Tournee(moteur: moteur)])),
+          Expanded(child: TabBarView(children: [for (final o in onglets) o.$3])),
         ]),
       ),
     );

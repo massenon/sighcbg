@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/theme.dart';
 import '../moteur/moteur_mobile.dart';
 import 'commun.dart';
+import 'garde_droit.dart';
 import 'note.dart';
 import 'prescription.dart';
 import 'sage_femme.dart';
@@ -36,7 +37,9 @@ class _DossierPatientState extends State<DossierPatient> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeDroit(droits: widget.service.droits, ecran: 'dossier', construire: _corps);
+
+  Widget _corps(BuildContext context) {
     return FutureBuilder<DossierLu>(
       future: _dossier,
       builder: (context, snap) {
@@ -109,12 +112,13 @@ class _DossierPatientState extends State<DossierPatient> {
               for (final p in r.prescriptions) ..._etatTranscription(d.transcriptions['${p['id']}'], '${p['id']}', p['nature'] == 'analyse'),
             ]),
             // Les commandes : une commande dont la fonction n'a pas le droit n'est pas dessinée.
-            FilledButton.icon(
-              key: const Key('saisir-constantes'),
-              icon: const Icon(Icons.monitor_heart_outlined),
-              label: const Text('Saisir les constantes'),
-              onPressed: () => _ouvrir(SaisieConstantes(service: s, patientId: widget.patientId, titre: r.nom)),
-            ),
+            if (s.peutSaisirConstantes)
+              FilledButton.icon(
+                key: const Key('saisir-constantes'),
+                icon: const Icon(Icons.monitor_heart_outlined),
+                label: const Text('Saisir les constantes'),
+                onPressed: () => _ouvrir(SaisieConstantes(service: s, patientId: widget.patientId, titre: r.nom)),
+              ),
             if (s.peutSaisirNote) ...[
               const SizedBox(height: 8),
               OutlinedButton.icon(

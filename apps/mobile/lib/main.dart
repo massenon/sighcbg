@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart' show CoffrePin, IdentiteClinique, mobLibelleProfil, mobProfilDe;
 
 import 'core/coffre_pin_securise.dart';
+import 'core/graine_droits.dart';
 import 'core/theme.dart';
 import 'moteur/moteur_mobile.dart';
 import 'ui/accueil.dart';
@@ -14,11 +15,13 @@ const String cheminBase = String.fromEnvironment('SIGH_DB', defaultValue: 'sigh-
 /// Sur un téléphone, le code PIN est OBLIGATOIRE (spec §11) : le coffre est celui du système (`flutter_secure_storage`), jamais éprouvé ici faute de
 /// chaîne native (ECARTS-MAQUETTE E1658). Le coffre est SONDÉ au démarrage ; s'il ne répond pas, l'application ne s'ouvre pas et dit pourquoi (E1820) :
 /// pas de repli qui rangerait le haché du code ailleurs, pas de contournement du verrou.
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Les droits d'origine du logiciel (hors ligne, avant la première synchronisation) : embarqués, lus une fois au démarrage.
+  final graine = await chargerGraineDroits();
   runApp(Demarrage(
     stockage: StockageFlutterSecure(),
-    creerMoteur: () => MoteurMobileSync.creer(dbChemin: cheminBase, relais: adresseRelais),
+    creerMoteur: () => MoteurMobileSync.creer(dbChemin: cheminBase, relais: adresseRelais, graine: graine),
   ));
 }
 

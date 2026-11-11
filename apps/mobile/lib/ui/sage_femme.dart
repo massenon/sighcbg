@@ -14,6 +14,7 @@ Future<void> ouvrirCpn(BuildContext context, ServiceSuite suite, String patientI
   await Navigator.of(context).push(MaterialPageRoute<void>(
       builder: (_) => FormulaireSuite(
             ecran: 'cpn',
+            droits: suite.droits,
             sous: nom,
             notes: [if (note != null) note],
             enregistrer: (s) => suite.enregistrerCpn(patientId, s),
@@ -24,12 +25,12 @@ Future<void> ouvrirCpn(BuildContext context, ServiceSuite suite, String patientI
 Future<void> ouvrirCpon(BuildContext context, ServiceSuite suite, String patientId) async {
   final nom = await suite.nomDe(patientId);
   if (!context.mounted) return;
-  await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FormulaireSuite(ecran: 'cpon', sous: nom, enregistrer: (s) => suite.enregistrerCpon(patientId, s))));
+  await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => FormulaireSuite(ecran: 'cpon', droits: suite.droits, sous: nom, enregistrer: (s) => suite.enregistrerCpon(patientId, s))));
 }
 
 Future<void> ouvrirSurveillance(BuildContext context, ServiceSuite suite, String patientId) async {
   final nom = await suite.nomDe(patientId);
   if (!context.mounted) return;
   await Navigator.of(context).push(MaterialPageRoute<void>(
-      builder: (_) => FormulaireSuite(ecran: 'surveillance', sous: nom, notes: [mobNoteEcranSuite('surveillance')!], enregistrer: (s) => suite.enregistrerSurveillance(patientId, s))));
+      builder: (_) => FormulaireSuite(ecran: 'surveillance', droits: suite.droits, sous: nom, notes: [mobNoteEcranSuite('surveillance')!], enregistrer: (s) => suite.enregistrerSurveillance(patientId, s))));
 }
