@@ -453,6 +453,10 @@
    "titre": "Fiches de poste",
    "description": "Identification, missions, indicateurs de performance, relations fonctionnelles et compétences requises."
   },
+  "m10-mes": {
+   "titre": "Mon espace",
+   "description": "Mes informations d’agent, en lecture : poste, paie, contrat, planning, présences, congés, missions, primes, événements, assurance, notes de service, agenda."
+  },
   "m10-missions": {
    "titre": "Ordres de mission",
    "description": "Missions et formations du personnel : affectation, prise en charge, validation et états signés."
@@ -480,6 +484,10 @@
   "m10-primes": {
    "titre": "Primes diverses (NS 132)",
    "description": "Grille des primes par fonction et calcul des primes acquises à partir du planning validé."
+  },
+  "m10-propositions-planning": {
+   "titre": "Propositions de planning",
+   "description": "L’agent propose une modification ou un échange de son planning ; le surveillant valide."
   },
   "m10-sanctions": {
    "titre": "Sanctions",
@@ -965,6 +973,10 @@
    "titre": "Statistiques maternité & naissances",
    "description": "Indicateurs DHIS2/SNIS : CPN, SP, MILDA, GAR, accouchements, PF, vaccination et mortalité."
   },
+  "m5-banque-sang": {
+   "titre": "Banque de sang",
+   "description": "Gestion des poches de sang par groupe, dates de péremption et demandes de transfusion."
+  },
   "m5-catalogue": {
    "titre": "Catalogue des analyses",
    "description": "Référentiel des 48 analyses réalisées par le laboratoire de la clinique, avec catégorie, échantillon, délai et tarif."
@@ -980,6 +992,10 @@
   "m5-demandes": {
    "titre": "Demandes d’analyses",
    "description": "File des prescriptions de laboratoire, rattachées au dossier patient et à la facturation."
+  },
+  "m5-donneurs": {
+   "titre": "Donneurs & transfusions",
+   "description": "Registre des donneurs de sang, dons réalisés et transfusions effectuées avec leur agrément."
   },
   "m5-impression-resultats": {
    "titre": "Impression des résultats",

@@ -89,7 +89,8 @@ Future<void> ajouterLibre(WidgetTester t, String libelle, String prix,
 void cas(String nom, Future<void> Function(WidgetTester) corps) =>
     testWidgets(nom, (t) async {
       await corps(t);
-      await t.pump(const Duration(seconds: 10));
+      // 15 s : le refus nommé de la normalisation (MECEF_NON_CONFIGURE) vit 12 s, plus que les autres messages (lot L3).
+      await t.pump(const Duration(seconds: 15));
     });
 
 void main() {
@@ -126,7 +127,10 @@ void main() {
     expect(f['montantPaye'], 1000);
     expect(f['baseMecef'], 1000);
     expect(f['volet'], isNull);
-    expect(f['numeroMecef'], isNotNull);
+    // Lot L3 : le poste ne fabrique aucun numéro fiscal ; la vente soldée reste en attente de certification (refus nommé MECEF_NON_CONFIGURE).
+    expect(f['numeroMecef'], isNull);
+    expect(f['statutMecef'], 'en_attente');
+    expect(f['codeRetour'], 'MECEF_NON_CONFIGURE');
     // E2260 : l'écriture est posée à l'émission (571 = 706 = ce qui est réglé).
     final ecr1 = m.collection('ecritures').actives.where((e) => e['pieceId'] == f['id']).toList();
     expect(ecr1.fold<num>(0, (a, e) => a + n(e['debit'])), 1000);

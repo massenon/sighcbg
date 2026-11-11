@@ -1159,8 +1159,8 @@
        "paysage",
        "photo · nom · fonction · service · qr",
        "Modèle par défaut",
-       "Proposition à valider",
-       ""
+       "À valider",
+       "Valider"
       ]
      ]
     }
@@ -1176,6 +1176,7 @@
     "Archiver",
     "Tout désélectionner",
     "Consulter",
+    "Valider",
     "Modifier",
     "Archiver"
    ]
@@ -1188,12 +1189,13 @@
     "paysage",
     "photo · nom · fonction · service · qr",
     "Modèle par défaut",
-    "Proposition à valider",
-    ""
+    "À valider",
+    "Valider"
    ]
   ],
   "boutonsLigne": [
    "Consulter",
+   "Valider « Badge agent — CR80 paysage »",
    "Modifier",
    "Archiver"
   ],
@@ -1282,7 +1284,7 @@
      ]
     ],
     "fiche": {
-     "id": "MODxmvuswn40bfw87",
+     "id": "MODxmvuswn407doke",
      "statut": "actif",
      "libelle": "Badge visiteur — portrait",
      "format": "CR80 (85,6 × 54 mm)",
@@ -1293,7 +1295,11 @@
       "qr"
      ],
      "mentionsVerso": "Badge à restituer en sortant.\n\n  À porter visiblement.  ",
-     "defaut": false
+     "defaut": false,
+     "aValider": false,
+     "valideLe": "2026-10-30T10:00:00.000Z",
+     "validePar": "BICHIASI Cezoune Sichovian",
+     "valideRole": "Administrateur système"
     },
     "total": 2
    },
@@ -1306,7 +1312,7 @@
       "portrait",
       "photo · nom · qr",
       "—",
-      "Arrêté",
+      "Validé (Administrateur système, 30/10/2026)",
       ""
      ]
     ],
@@ -1344,7 +1350,7 @@
      ]
     ],
     "fiche": {
-     "id": "MODxmvuswn40bfw87",
+     "id": "MODxmvuswn407doke",
      "statut": "actif",
      "libelle": "Badge visiteur — portrait",
      "format": "CR80 (85,6 × 54 mm)",
@@ -1355,7 +1361,11 @@
       "qr"
      ],
      "mentionsVerso": "Badge à restituer en sortant.\n\n  À porter visiblement.  ",
-     "defaut": false
+     "defaut": false,
+     "aValider": false,
+     "valideLe": "2026-10-30T10:00:00.000Z",
+     "validePar": "BICHIASI Cezoune Sichovian",
+     "valideRole": "Administrateur système"
     }
    },
    "enregistre": {
@@ -1365,7 +1375,7 @@
      ]
     ],
     "fiche": {
-     "id": "MODxmvuswn40bfw87",
+     "id": "MODxmvuswn407doke",
      "statut": "actif",
      "libelle": "Badge visiteur — portrait",
      "format": "CR80 (85,6 × 54 mm)",
@@ -1375,7 +1385,11 @@
       "fonction"
      ],
      "mentionsVerso": "Badge à restituer en sortant.\n\n  À porter visiblement.  ",
-     "defaut": true
+     "defaut": true,
+     "aValider": false,
+     "valideLe": "2026-10-30T10:00:00.000Z",
+     "validePar": "BICHIASI Cezoune Sichovian",
+     "valideRole": "Administrateur système"
     },
     "autres": [
      [
@@ -1387,7 +1401,7 @@
   },
   "archivage": {
    "fiche": {
-    "id": "MODxmvuswn40bfw87",
+    "id": "MODxmvuswn407doke",
     "statut": "archive",
     "libelle": "Badge visiteur — portrait",
     "format": "CR80 (85,6 × 54 mm)",
@@ -1398,6 +1412,10 @@
     ],
     "mentionsVerso": "Badge à restituer en sortant.\n\n  À porter visiblement.  ",
     "defaut": true,
+    "aValider": false,
+    "valideLe": "2026-10-30T10:00:00.000Z",
+    "validePar": "BICHIASI Cezoune Sichovian",
+    "valideRole": "Administrateur système",
     "_motifArchivage": "Doublon"
    },
    "onglets": [
@@ -1412,8 +1430,8 @@
      "paysage",
      "photo · nom · fonction · service · qr",
      "Modèle par défaut",
-     "Proposition à valider",
-     ""
+     "À valider",
+     "Valider"
     ]
    ]
   }
@@ -2033,7 +2051,7 @@
     "notes": []
    },
    "À décider par la Direction": {
-    "texte": "Badges en cours 14 Remis à l’agent 11 À éditer ou à remettre 3 Expirent sous 60 jours 0 Retirés (perte, départ) 0 Agents sans badge 30 Effectif rapproché du registre Badges en cours (14) Retirés (0) Agents sans badge (30) À décider par la Direction Quatre points ne sont fixés par aucun document de cadrage. Les écrans fonctionnent avec des valeurs d’attente marquées comme telles : les inventer sans le dire aurait produit des badges dont personne ne saurait justifier la durée. En attente d’un arbitrage de la Direction POINT VALEUR D’ATTENTE POURQUOI ELLE N’EST PAS ARRÊTÉE Durée de validité d’un badge 24 mois Valeur d’attente — aucun document de cadrage ne fixe de durée. Deux ans est l’usage courant ; la Direction peut retenir la durée du contrat, ou une validité sans terme pour les titulaires. Format du numéro de série BDG-NNNNN-AAAA Proposé par analogie avec les pièces certifiantes, dont la série repart à 1 chaque année comme le registre papier. À confirmer : la clinique tient peut-être déjà une numérotation de badges qu’il faudrait reprendre. Mentions portées au verso Restitution, perte, propriété de la clinique Rédigées faute de texte remis. Elles engagent la clinique vis-à-vis du porteur : c’est à la Direction de les arrêter. Le badge sert-il de support de POINTAGE ? Non — décision non prise S’il pointe, il se relie au registre des présences (M10) et la conception change : lecteur à l’entrée, horodatage, traitement des oublis de badge. Tant que ce n’est pas tranché, le badge IDENTIFIE seulement.",
+    "texte": "Badges en cours 14 Remis à l’agent 11 À éditer ou à remettre 3 Expirent sous 60 jours 0 Retirés (perte, départ) 0 Agents sans badge 30 Effectif rapproché du registre Badges en cours (14) Retirés (0) Agents sans badge (30) À décider par la Direction Quatre points ne sont fixés par aucun document de cadrage. Les écrans fonctionnent avec des valeurs d’attente marquées comme telles : les inventer sans le dire aurait produit des badges dont personne ne saurait justifier la durée. En attente d’un arbitrage de la Direction POINT VALEUR D’ATTENTE POURQUOI ELLE N’EST PAS ARRÊTÉE Durée de validité d’un badge 24 mois Valeur d’attente — aucun document de cadrage ne fixe de durée. Deux ans est l’usage courant ; la Direction peut retenir la durée du contrat, ou une validité sans terme pour les titulaires. Format du numéro de série BDG-NNNNN-AAAA Proposé par analogie avec les pièces certifiantes, dont la série repart à 1 chaque année comme le registre papier. À confirmer : la clinique tient peut-être déjà une numérotation de badges qu’il faudrait reprendre. Mentions portées au verso Restitution, perte, propriété de la clinique Rédigées faute de texte remis. Elles engagent la clinique vis-à-vis du porteur : c’est à la Direction de les arrêter. Le badge sert-il de support de POINTAGE ? Oui par défaut (décision du 09/11/2026) Réglable au poste : un badge vérifié valide crée un pointage « à valider » au registre des présences (M10). Reste à arrêter par la Direction : le délai entre deux pointages (5 minutes proposées) et le traitement des oublis de badge.",
     "kpis": [
      {
       "libelle": "Badges en cours",
@@ -2091,8 +2109,8 @@
        ],
        [
         "Le badge sert-il de support de POINTAGE ?",
-        "Non — décision non prise",
-        "S’il pointe, il se relie au registre des présences (M10) et la conception change : lecteur à l’entrée, horodatage, traitement des oublis de badge. Tant que ce n’est pas tranché, le badge IDENTIFIE seulement."
+        "Oui par défaut (décision du 09/11/2026)",
+        "Réglable au poste : un badge vérifié valide crée un pointage « à valider » au registre des présences (M10). Reste à arrêter par la Direction : le délai entre deux pointages (5 minutes proposées) et le traitement des oublis de badge."
        ]
       ]
      }
@@ -6517,7 +6535,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "24 000 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 4 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -6533,7 +6551,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6553,7 +6571,7 @@
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6583,7 +6601,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6593,7 +6611,7 @@
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6634,7 +6652,7 @@
      "Prestations par fonction",
      "Les dix agents les plus pris en charge"
     ],
-    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 10 Valeur de l’avantage 24 000 FCFA Ni recette, ni créance Agents effectivement soignés 9 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module : une saisie ici créerait une seconde vérité",
+    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 10 Valeur de l’avantage 24 000 FCFA Ni recette, ni créance · 4 sans montant renseigné (non comptées) Agents effectivement soignés 9 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module : ",
     "etat": {
      "titre": "État de la prise en charge du personnel",
      "sousTitre": "Trois derniers mois",
@@ -6674,7 +6692,7 @@
        "nom": "BICHIASI Cezoune Sichovian"
       }
      ],
-     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge17ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 0009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)1005 00018BATOL BIAREL A. B. ZougutiSage-femme1005 0001BICHIASI Cezoune SichovianMédecin1003 00010GEVAMIAN YeliaInfirmier(ère)1003 00013BELABO EgbifepoInfirmier(ère)00102TACHEDI ArialuDirection001011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)00105YORO M’ABEKPIA FoulumiMédecin0010TOTAL60424 000Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
+     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge17ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 0009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)1005 00018BATOL BIAREL A. B. ZougutiSage-femme1005 0001BICHIASI Cezoune SichovianMédecin1003 00010GEVAMIAN YeliaInfirmier(ère)1003 00013BELABO EgbifepoInfirmier(ère)0010 (1 non renseignée)2TACHEDI ArialuDirection0010 (1 non renseignée)11IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)0010 (1 non renseignée)5YORO M’ABEKPIA FoulumiMédecin0010 (1 non renseignée)TOTAL60424 000Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
      "tableaux": [
       {
        "entetes": [
@@ -6739,7 +6757,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ],
         [
          "2",
@@ -6748,7 +6766,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ],
         [
          "11",
@@ -6757,7 +6775,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ],
         [
          "5",
@@ -6766,7 +6784,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ]
        ],
        "pied": [
@@ -6799,7 +6817,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "214 000 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 8 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -6815,7 +6833,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6835,7 +6853,7 @@
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6865,7 +6883,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -6875,7 +6893,7 @@
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7017,7 +7035,7 @@
      "Les dix agents les plus pris en charge",
      "Valeur mensuelle de l’avantage"
     ],
-    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 57 Valeur de l’avantage 214 000 FCFA Ni recette, ni créance Agents effectivement soignés 17 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module : une saisie ici créerait une seconde véri",
+    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 57 Valeur de l’avantage 214 000 FCFA Ni recette, ni créance · 8 sans montant renseigné (non comptées) Agents effectivement soignés 17 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module ",
     "etat": {
      "titre": "État de la prise en charge du personnel",
      "sousTitre": "Six derniers mois",
@@ -7057,7 +7075,7 @@
        "nom": "BICHIASI Cezoune Sichovian"
       }
      ],
-     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33136 00011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 0005YORO M’ABEKPIA FoulumiMédecin23123 0008KELE A. GedurTSL (Technicien Supérieur de Laboratoire)30016 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 0004GIDJI HiabidjoComptable04012 50013BELABO EgbifepoInfirmier(ère)30111 0003KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 0007AKPOMER RidurMédecin2008 00016DULOUNE MudovurInfirmier(ère)2018 00018BATOL BIAREL A. B. ZougutiSage-femme1005 00010GEVAMIAN YeliaInfirmier(ère)1003 0002TACHEDI ArialuDirection0010TOTAL32178214 000Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
+     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33136 000 (1 non renseignée)11IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 000 (1 non renseignée)5YORO M’ABEKPIA FoulumiMédecin23123 000 (1 non renseignée)8KELE A. GedurTSL (Technicien Supérieur de Laboratoire)30016 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 000 (1 non renseignée)4GIDJI HiabidjoComptable04012 50013BELABO EgbifepoInfirmier(ère)30111 000 (1 non renseignée)3KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 000 (1 non renseignée)7AKPOMER RidurMédecin2008 00016DULOUNE MudovurInfirmier(ère)2018 000 (1 non renseignée)18BATOL BIAREL A. B. ZougutiSage-femme1005 00010GEVAMIAN YeliaInfirmier(ère)1003 0002TACHEDI ArialuDirection0010 (1 non renseignée)TOTAL32178214 000Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
      "tableaux": [
       {
        "entetes": [
@@ -7077,7 +7095,7 @@
          "3",
          "3",
          "1",
-         "36 000"
+         "36 000 (1 non renseignée)"
         ],
         [
          "11",
@@ -7086,7 +7104,7 @@
          "4",
          "0",
          "1",
-         "26 000"
+         "26 000 (1 non renseignée)"
         ],
         [
          "5",
@@ -7095,7 +7113,7 @@
          "2",
          "3",
          "1",
-         "23 000"
+         "23 000 (1 non renseignée)"
         ],
         [
          "8",
@@ -7122,7 +7140,7 @@
          "3",
          "0",
          "1",
-         "13 000"
+         "13 000 (1 non renseignée)"
         ],
         [
          "4",
@@ -7140,7 +7158,7 @@
          "3",
          "0",
          "1",
-         "11 000"
+         "11 000 (1 non renseignée)"
         ],
         [
          "3",
@@ -7176,7 +7194,7 @@
          "2",
          "0",
          "1",
-         "8 000"
+         "8 000 (1 non renseignée)"
         ],
         [
          "7",
@@ -7194,7 +7212,7 @@
          "2",
          "0",
          "1",
-         "8 000"
+         "8 000 (1 non renseignée)"
         ],
         [
          "18",
@@ -7221,7 +7239,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ]
        ],
        "pied": [
@@ -7254,7 +7272,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "280 500 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 10 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -7270,7 +7288,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7290,7 +7308,7 @@
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7320,7 +7338,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7330,7 +7348,7 @@
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7472,7 +7490,7 @@
      "Les dix agents les plus pris en charge",
      "Valeur mensuelle de l’avantage"
     ],
-    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 71 Valeur de l’avantage 280 500 FCFA Ni recette, ni créance Agents effectivement soignés 18 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module : une saisie ici créerait une seconde véri",
+    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 71 Valeur de l’avantage 280 500 FCFA Ni recette, ni créance · 10 sans montant renseigné (non comptées) Agents effectivement soignés 18 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module",
     "etat": {
      "titre": "État de la prise en charge du personnel",
      "sousTitre": "Douze derniers mois",
@@ -7512,7 +7530,7 @@
        "nom": "BICHIASI Cezoune Sichovian"
       }
      ],
-     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33336 00013BELABO EgbifepoInfirmier(ère)42130 00018BATOL BIAREL A. B. ZougutiSage-femme14029 00011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 00016DULOUNE MudovurInfirmier(ère)32125 5005YORO M’ABEKPIA FoulumiMédecin23123 0008KELE A. GedurTSL (Technicien Supérieur de Laboratoire)40019 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 0004GIDJI HiabidjoComptable04012 5003KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 0007AKPOMER RidurMédecin2008 00010GEVAMIAN YeliaInfirmier(ère)1003 0006TACHEDI OrouMédecin1003 0002TACHEDI ArialuDirection0010TOTAL362510280 500Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
+     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33336 000 (3 non renseignées)13BELABO EgbifepoInfirmier(ère)42130 000 (1 non renseignée)18BATOL BIAREL A. B. ZougutiSage-femme14029 00011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 000 (1 non renseignée)16DULOUNE MudovurInfirmier(ère)32125 500 (1 non renseignée)5YORO M’ABEKPIA FoulumiMédecin23123 000 (1 non renseignée)8KELE A. GedurTSL (Technicien Supérieur de Laboratoire)40019 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 000 (1 non renseignée)4GIDJI HiabidjoComptable04012 5003KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 000 (1 non renseignée)7AKPOMER RidurMédecin2008 00010GEVAMIAN YeliaInfirmier(ère)1003 0006TACHEDI OrouMédecin1003 0002TACHEDI ArialuDirection0010 (1 non renseignée)TOTAL362510280 500Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
      "tableaux": [
       {
        "entetes": [
@@ -7532,7 +7550,7 @@
          "3",
          "3",
          "3",
-         "36 000"
+         "36 000 (3 non renseignées)"
         ],
         [
          "13",
@@ -7541,7 +7559,7 @@
          "4",
          "2",
          "1",
-         "30 000"
+         "30 000 (1 non renseignée)"
         ],
         [
          "18",
@@ -7559,7 +7577,7 @@
          "4",
          "0",
          "1",
-         "26 000"
+         "26 000 (1 non renseignée)"
         ],
         [
          "16",
@@ -7568,7 +7586,7 @@
          "3",
          "2",
          "1",
-         "25 500"
+         "25 500 (1 non renseignée)"
         ],
         [
          "5",
@@ -7577,7 +7595,7 @@
          "2",
          "3",
          "1",
-         "23 000"
+         "23 000 (1 non renseignée)"
         ],
         [
          "8",
@@ -7604,7 +7622,7 @@
          "3",
          "0",
          "1",
-         "13 000"
+         "13 000 (1 non renseignée)"
         ],
         [
          "4",
@@ -7649,7 +7667,7 @@
          "2",
          "0",
          "1",
-         "8 000"
+         "8 000 (1 non renseignée)"
         ],
         [
          "7",
@@ -7685,7 +7703,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ]
        ],
        "pied": [
@@ -7718,7 +7736,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "280 500 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 10 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -7734,7 +7752,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7754,7 +7772,7 @@
       "Hospitalisation",
       "— lit B2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7784,7 +7802,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7794,7 +7812,7 @@
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -7936,7 +7954,7 @@
      "Les dix agents les plus pris en charge",
      "Valeur mensuelle de l’avantage"
     ],
-    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 71 Valeur de l’avantage 280 500 FCFA Ni recette, ni créance Agents effectivement soignés 18 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module : une saisie ici créerait une seconde véri",
+    "texte": "Période Depuis toujours 30 derniers jours Trois derniers mois Six derniers mois Douze derniers mois Fonction Toutes les fonctions Aide-soignant(e) Caissière Accueil / Secrétaire médical Infirmier(ère) Sage-femme TSL (Technicien Supérieur de Laboratoire) Ingénieur biomédical Médecin Direction Comptable Gestionnaire de stock Dispensatrice Agent de sécurité Agent d’entretien Chauffeur coursier Imprimer l’état Agents ayant un dossier patient 18 sur 44 agents Prestations prises en charge 71 Valeur de l’avantage 280 500 FCFA Ni recette, ni créance · 10 sans montant renseigné (non comptées) Agents effectivement soignés 18 Ce tableau ne se saisit pas. Il se remplit dès qu’un agent est reçu en consultation, qu’une analyse lui est prescrite ou qu’il est hospitalisé — parce que son dossier patient porte son matricule. Pour corriger une ligne, il faut corriger la prestation d’origine dans son module",
     "etat": {
      "titre": "État de la prise en charge du personnel",
      "sousTitre": "Depuis l’origine",
@@ -7976,7 +7994,7 @@
        "nom": "BICHIASI Cezoune Sichovian"
       }
      ],
-     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33336 00013BELABO EgbifepoInfirmier(ère)42130 00018BATOL BIAREL A. B. ZougutiSage-femme14029 00011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 00016DULOUNE MudovurInfirmier(ère)32125 5005YORO M’ABEKPIA FoulumiMédecin23123 0008KELE A. GedurTSL (Technicien Supérieur de Laboratoire)40019 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 0004GIDJI HiabidjoComptable04012 5003KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 0007AKPOMER RidurMédecin2008 00010GEVAMIAN YeliaInfirmier(ère)1003 0006TACHEDI OrouMédecin1003 0002TACHEDI ArialuDirection0010TOTAL362510280 500Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
+     "texte": "MatriculeAgentFonctionConsult.AnalysesHospit.Valeur prise en charge14PENU AbebiaInfirmier(ère)33336 000 (3 non renseignées)13BELABO EgbifepoInfirmier(ère)42130 000 (1 non renseignée)18BATOL BIAREL A. B. ZougutiSage-femme14029 00011IGBOUPU ATUGBIPOU Badom-TukepouInfirmier(ère)40126 000 (1 non renseignée)16DULOUNE MudovurInfirmier(ère)32125 500 (1 non renseignée)5YORO M’ABEKPIA FoulumiMédecin23123 000 (1 non renseignée)8KELE A. GedurTSL (Technicien Supérieur de Laboratoire)40019 0001BICHIASI Cezoune SichovianMédecin14015 5009AKIAFADJO YeliaTSL (Technicien Supérieur de Laboratoire)30113 000 (1 non renseignée)4GIDJI HiabidjoComptable04012 5003KALOU AvolutuComptable13011 00015OSIAMIAM BodjeInfirmier(ère)20010 00017ODJIPIAR YUDJOUVOU ArialuInfirmier(ère)2008 00012NIDJON JeanInfirmier(ère)2018 000 (1 non renseignée)7AKPOMER RidurMédecin2008 00010GEVAMIAN YeliaInfirmier(ère)1003 0006TACHEDI OrouMédecin1003 0002TACHEDI ArialuDirection0010 (1 non renseignée)TOTAL362510280 500Les prestations dispensées au personnel de la clinique sont prises en charge à 100 % par l’établissement. Elles ne constituent ni une recette, ni une créance sur un tiers payeur, et ne donnent lieu à aucune écriture comptable. La valeur portée au présent état mesure l’avantage consenti au personnel ; elle ne correspond à aucun encaissement.",
      "tableaux": [
       {
        "entetes": [
@@ -7996,7 +8014,7 @@
          "3",
          "3",
          "3",
-         "36 000"
+         "36 000 (3 non renseignées)"
         ],
         [
          "13",
@@ -8005,7 +8023,7 @@
          "4",
          "2",
          "1",
-         "30 000"
+         "30 000 (1 non renseignée)"
         ],
         [
          "18",
@@ -8023,7 +8041,7 @@
          "4",
          "0",
          "1",
-         "26 000"
+         "26 000 (1 non renseignée)"
         ],
         [
          "16",
@@ -8032,7 +8050,7 @@
          "3",
          "2",
          "1",
-         "25 500"
+         "25 500 (1 non renseignée)"
         ],
         [
          "5",
@@ -8041,7 +8059,7 @@
          "2",
          "3",
          "1",
-         "23 000"
+         "23 000 (1 non renseignée)"
         ],
         [
          "8",
@@ -8068,7 +8086,7 @@
          "3",
          "0",
          "1",
-         "13 000"
+         "13 000 (1 non renseignée)"
         ],
         [
          "4",
@@ -8113,7 +8131,7 @@
          "2",
          "0",
          "1",
-         "8 000"
+         "8 000 (1 non renseignée)"
         ],
         [
          "7",
@@ -8149,7 +8167,7 @@
          "0",
          "0",
          "1",
-         "0"
+         "0 (1 non renseignée)"
         ]
        ],
        "pied": [
@@ -8184,7 +8202,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "280 500 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 10 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -8220,7 +8238,7 @@
         "Hospitalisation",
         "— lit A4 LIT2",
         "—",
-        "0 pris en charge 100 %",
+        "Non renseigné pris en charge 100 %",
         ""
        ],
        [
@@ -8240,7 +8258,7 @@
         "Hospitalisation",
         "— lit B2 LIT2",
         "—",
-        "0 pris en charge 100 %",
+        "Non renseigné pris en charge 100 %",
         ""
        ],
        [
@@ -8270,7 +8288,7 @@
         "Hospitalisation",
         "— lit A4 LIT2",
         "—",
-        "0 pris en charge 100 %",
+        "Non renseigné pris en charge 100 %",
         ""
        ],
        [
@@ -8280,7 +8298,7 @@
         "Hospitalisation",
         "— lit A2 LIT2",
         "—",
-        "0 pris en charge 100 %",
+        "Non renseigné pris en charge 100 %",
         ""
        ],
        [
@@ -8735,7 +8753,7 @@
      "Hospitalisation",
      "— lit A4 LIT2",
      "—",
-     "0 pris en charge 100 %",
+     "Non renseigné pris en charge 100 %",
      ""
     ],
     [
@@ -8755,7 +8773,7 @@
      "Hospitalisation",
      "— lit B2 LIT2",
      "—",
-     "0 pris en charge 100 %",
+     "Non renseigné pris en charge 100 %",
      ""
     ],
     [
@@ -8785,7 +8803,7 @@
      "Hospitalisation",
      "— lit A4 LIT2",
      "—",
-     "0 pris en charge 100 %",
+     "Non renseigné pris en charge 100 %",
      ""
     ],
     [
@@ -8795,7 +8813,7 @@
      "Hospitalisation",
      "— lit A2 LIT2",
      "—",
-     "0 pris en charge 100 %",
+     "Non renseigné pris en charge 100 %",
      ""
     ],
     [
@@ -8947,7 +8965,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "49 500 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 1 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -8973,7 +8991,7 @@
       "Hospitalisation",
       "— lit A2 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -9114,7 +9132,7 @@
      {
       "libelle": "Valeur de l’avantage",
       "valeur": "146 500 FCFA",
-      "indice": "Ni recette, ni créance"
+      "indice": "Ni recette, ni créance · 7 sans montant renseigné (non comptées)"
      },
      {
       "libelle": "Agents effectivement soignés",
@@ -9130,7 +9148,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -9160,7 +9178,7 @@
       "Hospitalisation",
       "— lit A4 LIT2",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -9270,7 +9288,7 @@
       "Hospitalisation",
       "— lit D2 LIT1",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -9300,7 +9318,7 @@
       "Hospitalisation",
       "— lit C3 LIT1",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -9310,7 +9328,7 @@
       "Hospitalisation",
       "— lit D2 LIT1",
       "—",
-      "0 pris en charge 100 %",
+      "Non renseigné pris en charge 100 %",
       ""
      ],
      [
@@ -10381,15 +10399,22 @@
     ]
    ],
    "fiche": {
-    "id": "PLAxmvuswn40aam3w",
+    "id": "PLAxmvuswn407j3do",
     "statut": "validee",
-    "type": "soiree",
-    "observation": "Remplacement.",
     "date": "2026-10-27",
     "employeId": "EMP38",
     "employe": "OSIAMIAM Tougbial",
     "fonction": "securite",
-    "service": "Direction"
+    "service": "Direction",
+    "type": "soiree",
+    "observation": "Remplacement.",
+    "regimeLibelle": "Agents de sécurité",
+    "regimeIndividuelId": null,
+    "derogations": [],
+    "validationEtat": "validee",
+    "validePar": "BICHIASI Cezoune Sichovian",
+    "valideLe": "2026-10-30",
+    "origine": "poste"
    },
    "texteCellule": "S"
   },
@@ -10410,15 +10435,22 @@
      ]
     ],
     "fiche": {
-     "id": "PLAxmvuswn40aam3w",
+     "id": "PLAxmvuswn407j3do",
      "statut": "validee",
-     "type": "repos24",
-     "observation": "Remplacement.",
      "date": "2026-10-27",
      "employeId": "EMP38",
      "employe": "OSIAMIAM Tougbial",
      "fonction": "securite",
-     "service": "Direction"
+     "service": "Direction",
+     "type": "repos24",
+     "observation": "Remplacement.",
+     "regimeLibelle": "Agents de sécurité",
+     "regimeIndividuelId": null,
+     "derogations": [],
+     "validationEtat": "validee",
+     "validePar": "BICHIASI Cezoune Sichovian",
+     "valideLe": "2026-10-30",
+     "origine": "poste"
     },
     "texteCellule": "R"
    }
@@ -10432,16 +10464,23 @@
      ]
     ],
     "fiche": {
-     "id": "PLAxmvuswn40aam3w",
+     "id": "PLAxmvuswn407j3do",
      "statut": "archive",
-     "type": "repos24",
-     "observation": "Remplacement.",
      "date": "2026-10-27",
      "employeId": "EMP38",
      "employe": "OSIAMIAM Tougbial",
      "fonction": "securite",
      "service": "Direction",
-     "_motifArchivage": null
+     "type": "repos24",
+     "observation": "Remplacement.",
+     "regimeLibelle": "Agents de sécurité",
+     "regimeIndividuelId": null,
+     "derogations": [],
+     "validationEtat": "validee",
+     "validePar": "BICHIASI Cezoune Sichovian",
+     "valideLe": "2026-10-30",
+     "origine": "poste",
+     "_motifArchivage": "Vacation retirée de la rotation"
     },
     "texteCellule": "+"
    }
@@ -10451,8 +10490,8 @@
    "veille": "2026-10-28",
    "toasts": [
     [
-     "Incompatibilité — le repos de 24 h qui suit une garde n’est pas respecté.",
-     "Garde déjà programmée le 28/10/2026 pour OSIAMIAM Tougbial."
+     "Incompatibilité : le repos de 24 h qui suit une garde n’est pas respecté (garde déjà programmée le 28/10/2026 pour OSIAMIAM Tougbial).",
+     "Choisir un jour après le repos de 24 h, ou retirer l’autre garde."
     ]
    ],
    "ecrit": 0,
@@ -10509,7 +10548,7 @@
      ]
     ],
     "fiche": {
-     "id": "PERxmvuswn40i9jb4",
+     "id": "PERxmvuswn4033bgl",
      "statut": "actif",
      "nomComplet": "ACHOUBE Ibaze",
      "fonction": "entretien",
@@ -10524,7 +10563,7 @@
    },
    "seconde": {
     "fiche": {
-     "id": "PERxmvuswn40fkozi",
+     "id": "PERxmvuswn4054jtu",
      "statut": "actif",
      "nomComplet": "BIO Maful",
      "fonction": "securite",
@@ -10582,7 +10621,7 @@
      ]
     ],
     "fiche": {
-     "id": "PERxmvuswn40i9jb4",
+     "id": "PERxmvuswn4033bgl",
      "statut": "actif",
      "nomComplet": "ACHOUBE Ibaze",
      "fonction": "entretien",
@@ -10597,7 +10636,7 @@
   },
   "archivageAgent": {
    "fiche": {
-    "id": "PERxmvuswn40i9jb4",
+    "id": "PERxmvuswn4033bgl",
     "statut": "archive",
     "nomComplet": "ACHOUBE Ibaze",
     "fonction": "entretien",

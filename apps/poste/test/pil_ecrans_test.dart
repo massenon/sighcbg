@@ -346,7 +346,15 @@ void main() {
       expect(dso['valideLe'], isNotNull);
       expect(dso['motifCorrection'], 'Cible revue avec la Direction');
       final j = m.collection('audit').toutes.first;
-      expect([j['action'], j['reference']], ['Validation', 'dso'], reason: 'UNE ligne de journal en tête (le journal est plafonné à 400 : on lit la tête, pas la longueur)');
+      expect([j['action'], j['reference']], ['Validation', 'dso']);
+      expect(find.text('À valider'), findsNWidgets(7));
+    });
+    casM14('lot L1 : hors famille, corriger une cible ARRÊTÉE la remet « à valider » (le comptable édite, il ne valide pas)', (t) async {
+      final m = magasinComplet();
+      // La cible est arrêtée par un geste de la famille, puis un profil hors famille la corrige.
+      m.collection('objectifsPilotage').mettreAJour('dso', {'aValider': false, 'valideLe': '2026-10-29T10:00:00.000Z', 'validePar': 'TACHEDI Arialu', 'valideRole': 'Directrice Administrative'});
+      await ouvrirM14(t, m, 'm12-tableau-decisionnel', role: 'comptable');
+      await toucherM14(t, find.text('Objectifs & seuils'));
       expect(find.text('À valider'), findsNWidgets(7));
       // Corriger la cible déjà arrêtée : elle RESTE arrêtée (le profil de la famille), motif obligatoire, action « Modification ».
       await toucherM14(t, find.byTooltip('Modifier').first);
@@ -355,7 +363,7 @@ void main() {
       await t.enterText(find.byType(TextField).last, 'Nouvelle correction');
       await t.pump();
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer').last);
-      dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
+      final dso = m.collection('objectifsPilotage').actives.firstWhere((o) => o['id'] == 'dso');
       expect(dso['cible'], 42);
       expect(dso['aValider'], false);
       expect(m.collection('audit').toutes.first['action'], 'Modification');

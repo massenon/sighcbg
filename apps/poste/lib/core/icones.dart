@@ -34,6 +34,7 @@ const Map<String, IconData> iconesLucide = {
   'calendar-heart': LucideIcons.calendarHeart,
   'calendar-plus': LucideIcons.calendarPlus,
   'calendar-range': LucideIcons.calendarRange,
+  'calendar-sync': LucideIcons.calendarSync,
   'chart-column': LucideIcons.chartColumn,
   'chart-no-axes-combined': LucideIcons.chartNoAxesCombined,
   'chart-scatter': LucideIcons.chartScatter,
