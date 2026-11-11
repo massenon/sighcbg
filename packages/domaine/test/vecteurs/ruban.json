@@ -5036,6 +5036,20 @@
      ]
     },
     {
+     "domaine": "RH",
+     "rangees": [
+      {
+       "code": "M10",
+       "label": "Ressources humaines",
+       "hub": "hub-m10",
+       "ecrans": [
+        "m10-propositions-planning",
+        "m10-mes"
+       ]
+      }
+     ]
+    },
+    {
      "domaine": "Administration",
      "rangees": [
       {
@@ -5218,6 +5232,20 @@
      ]
     },
     {
+     "domaine": "RH",
+     "rangees": [
+      {
+       "code": "M10",
+       "label": "Ressources humaines",
+       "hub": "hub-m10",
+       "ecrans": [
+        "m10-propositions-planning",
+        "m10-mes"
+       ]
+      }
+     ]
+    },
+    {
      "domaine": "Administration",
      "rangees": [
       {
@@ -5334,6 +5362,20 @@
         "m9-historique",
         "m9-creances",
         "m9-relances"
+       ]
+      }
+     ]
+    },
+    {
+     "domaine": "RH",
+     "rangees": [
+      {
+       "code": "M10",
+       "label": "Ressources humaines",
+       "hub": "hub-m10",
+       "ecrans": [
+        "m10-propositions-planning",
+        "m10-mes"
        ]
       }
      ]
