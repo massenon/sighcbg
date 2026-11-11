@@ -44,6 +44,9 @@ class EcranCompagnies extends StatelessWidget with EcranMaquette {
       'Référentiel des compagnies conventionnées avec la clinique : coordonnées, convention, assurés et créances.';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'assureurs')];
+
+  @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return ListenableBuilder(

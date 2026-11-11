@@ -32,6 +32,7 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
   List<Widget> actionsEntete(BuildContext context) {
     final c = ContexteEcran.of(context);
     return [
+      ...actionsImporter(context, 'souscripteurs'),
       BoutonSigh(
           libelle: 'Assurés & cartes',
           icone: LucideIcons.idCard,
