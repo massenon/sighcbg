@@ -118,7 +118,7 @@ class _EtatMereService extends MrcEtatEcran<EcranMereService> {
             valeur: _etatService(),
             icone: LucideIcons.power,
             ton: _etatService() == 'En marche' ? TonSigh.succes : (_etatService() == '…' ? TonSigh.neutre : TonSigh.attention)),
-        mrcKpi('Démarrage automatique', src.demarrageAutomatique(), forme: (s) => s, icone: LucideIcons.rocket),
+        mrcKpi('Démarrage automatique', src.demarrageAutomatique(), forme: (s) => s),
         mrcKpi<int>('Port', port, icone: LucideIcons.network),
       ]),
       const SizedBox(height: 16),
