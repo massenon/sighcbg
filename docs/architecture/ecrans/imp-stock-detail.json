@@ -1,0 +1,52 @@
+{
+ "id": "imp-stock-detail",
+ "module": "IMP",
+ "domaine": "Système",
+ "libelleManifeste": "Importation du stock détail initial",
+ "acces": "ouvert",
+ "titre": "Importation du stock détail initial",
+ "description": "La situation de départ de la pharmacie (stock détail), article par article. Légitime UNE seule fois par article, tant qu’aucun mouvement n’existe au stock détail.",
+ "fil": [
+  "Accueil",
+  "Système",
+  "Importation de données",
+  "Importation du stock détail initial"
+ ],
+ "actions": [
+  "Jeux d’import et historique des lots",
+  "Importation du répertoire patients",
+  "Importation de données"
+ ],
+ "regle": [],
+ "onglets": [],
+ "kpis": [
+  "Lots appliqués",
+  "Fiches importées",
+  "Fichiers refusés",
+  "Statut du jeu"
+ ],
+ "cartes": [
+  "1. Télécharger le modèle",
+  "2. Téléverser et analyser",
+  "Historique des lots de ce jeu"
+ ],
+ "tableaux": [
+  [
+   "Colonne",
+   "Obligatoire",
+   "Type",
+   "Valeurs permises",
+   "Exemple"
+  ]
+ ],
+ "commandes": [
+  "Télécharger le modèle (.xlsx)",
+  "Modèle CSV",
+  "Téléverser un fichier (.xlsx ou .csv)",
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}
