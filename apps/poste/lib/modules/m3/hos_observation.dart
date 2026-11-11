@@ -305,7 +305,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
         taille: TailleModale.lg,
         corps: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           DescListeSigh([
-            ('Motif de surveillance', o['motif']),
+            ('Motif de surveillance', AccesSensible.de(c).masquerSi('notes_consultation', o['motif'])),
             ('Unité', o['uniteLabel']),
             ('Entrée', dateALHeure(o['dateEntree'])),
             ('Relevés de constantes', nombre((o['constantes'] as List? ?? const []).length)),
@@ -466,7 +466,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
         cartouche: [
           ('Patient', '${o['patient']}'),
           ('Dossier', '${o['patientCode']}'),
-          ('Motif de surveillance', '${o['motif']}'),
+          ('Motif de surveillance', AccesSensible.de(c).texteSi('notes_consultation', '${o['motif']}')),
           ('Unité', '${o['uniteLabel']}'),
           ('Entrée', dateALHeure(o['dateEntree'])),
           ('Durée de surveillance', heures(o, c.aujourdhui)),
@@ -506,7 +506,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
             ('Référence', o['reference']),
             ('Patient', o['patient']),
             ('Dossier', o['patientCode']),
-            ('Motif de surveillance', o['motif']),
+            ('Motif de surveillance', AccesSensible.de(c).masquerSi('notes_consultation', o['motif'])),
             ('Unité', o['uniteLabel']),
             ('Place', o['place']),
             ('Entrée', dateALHeure(o['dateEntree'])),
@@ -609,7 +609,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
                           color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w500)),
                   texteMono('${o['patientCode']}', couleur: JetonsShell.slate400),
                 ])),
-        const ColonneTableau(cle: 'motif', libelle: 'Motif de surveillance'),
+        AccesSensible.de(c).colonne('notes_consultation', 'motif', 'Motif de surveillance'),
         ColonneTableau(
             cle: 'uniteLabel',
             libelle: 'Unité',
@@ -682,8 +682,11 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
     );
   }
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('observations');
     return ListenableBuilder(

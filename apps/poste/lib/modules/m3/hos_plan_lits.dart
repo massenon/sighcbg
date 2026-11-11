@@ -96,7 +96,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
             ('Chambre', hosLibelleTypeChambre(adm['typeChambre'])),
             ('Date d’entrée', jourFR(adm['dateEntree'])),
             ('Durée de séjour', '${hosDureeSejour(adm, c.aujourdhui)} jour(s)'),
-            ('Diagnostic d’entrée', adm['diagnosticEntree']),
+            ('Diagnostic d’entrée', AccesSensible.de(c).masquerSi('diagnostic_pathologie', adm['diagnosticEntree'])),
             ('Prise en charge', statutBadge(adm['priseEnCharge'])),
             ('Infirmier référent', adm['infirmier']),
           ]),
@@ -199,8 +199,11 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
     );
   }
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('admissions');
     return ListenableBuilder(

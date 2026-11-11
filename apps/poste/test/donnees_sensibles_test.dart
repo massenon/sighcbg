@@ -10,7 +10,9 @@ import 'package:sigh_poste/donnees/service_droits.dart';
 import 'package:sigh_poste/impression/piece.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
+import 'package:sigh_poste/modules/m1/externe.dart';
 import 'package:sigh_poste/modules/m1/fiche_impression.dart';
+import 'package:sigh_poste/modules/m1/pieces.dart';
 import 'package:sigh_poste/shell/contexte_ecran.dart';
 import 'package:sigh_poste/shell/recherche_globale.dart';
 
@@ -277,6 +279,155 @@ void main() {
     await t.pump(const Duration(seconds: 10));
   });
 
+  // ------------------------------------------------------------------------------------------------------------------------------------------
+  // LOT 2 : patient externe, pièces certifiantes, hospitalisation, KPI du répertoire.
+
+  const ecransHospitalisation = [
+    'm3-admissions', 'm3-plan-lits', 'm3-feuille-temperature', 'm3-observation', 'm3-soins', 'm3-surveillance', 'm3-administrations', 'm3-glasgow',
+    'm3-transfusion', 'm3-rapport', 'm3-visites-patients', 'm3-sorties', 'm3-sortie-avis-medical',
+  ];
+
+  ContexteEcran contexte(Magasin m, String role, String ecran) => ContexteEcran(
+      ecranId: ecran,
+      role: role,
+      droit: const Droit(voir: true, editer: true, annuler: false),
+      magasin: m,
+      donnees: donnees.aChaud(m),
+      aller: (_) {},
+      child: const SizedBox());
+
+  test('LIVRAISON 2 : les profils dont la vue change à la livraison (relevé non nominatif), et ceux qui ouvrent les écrans de référence ne perdent rien', () {
+    final m = jeu();
+    final nav = donnees.aChaud(m);
+    final d = DroitsSensibles(fiches: m.collection('rbac').actives, peutVoirEcran: nav.matrice.peutVoir);
+    final roles = [for (final r in nav.matrice.rolesBruts) '${r['id']}'];
+    final touches = <String>{};
+    for (final r in roles) {
+      for (final e in ecransHospitalisation) {
+        if (nav.matrice.peutVoir(r, e) && !d.peut(r, 'hospitalisation_soins')) touches.add(r);
+      }
+      if (nav.matrice.peutVoir(r, 'm1-pieces') && !d.peut(r, 'notes_consultation')) touches.add(r);
+      if (nav.matrice.peutVoir(r, 'm1-pieces') && !d.peut(r, 'couverture_assurance')) touches.add(r);
+      if (nav.matrice.peutVoir(r, 'm1-externe') && !d.peut(r, 'resultats_analyses')) touches.add(r);
+      if (nav.matrice.peutVoir(r, 'm1-externe') && !d.peut(r, 'coordonnees')) touches.add(r);
+      if (nav.matrice.peutVoir(r, 'm1-patients') && !d.peut(r, 'couverture_assurance')) touches.add(r);
+      // Référence : qui ouvre l'écran dont la catégorie dépend la garde.
+      if (nav.matrice.peutVoir(r, 'm3-admissions')) expect(d.peut(r, 'hospitalisation_soins'), isTrue, reason: r);
+    }
+    final lisent = roles.where((r) => ecransHospitalisation.any((e) => nav.matrice.peutVoir(r, e))).length;
+    stdout.writeln('RELEVÉ 2 — ${touches.length} profil(s) sur ${roles.length} voient une vue changer à la livraison ; $lisent ouvrent au moins un écran d’hospitalisation.');
+    // Hospitalisation : ne perdent que ceux qui ouvrent un écran M3 sans ouvrir les admissions.
+    for (final r in roles) {
+      final ouvreM3 = ecransHospitalisation.any((e) => nav.matrice.peutVoir(r, e));
+      if (ouvreM3 && !nav.matrice.peutVoir(r, 'm3-admissions')) continue;
+      if (ouvreM3) expect(d.peut(r, 'hospitalisation_soins'), isTrue, reason: '$r garde l’hospitalisation');
+    }
+  });
+
+  testWidgets('KPI DU RÉPERTOIRE : assurés et cartes expirées disparaissent sans « couverture d’assurance », reviennent à chaud', (t) async {
+    final m = jeu();
+    final nav = donnees.aChaud(m);
+    final role = [for (final r in nav.matrice.rolesBruts) '${r['id']}'].firstWhere((r) => nav.matrice.peutVoir(r, 'm1-patients'));
+    await ouvrir(t, m, 'm1-patients', role);
+    expect(find.text('Patients assurés'), findsOneWidget, reason: 'sentinelle : le KPI existe par défaut');
+    expect(find.text('Cartes expirées'), findsOneWidget);
+    decider(m, role, {'couverture_assurance': false});
+    await t.pump();
+    await t.pump(const Duration(milliseconds: 200));
+    expect(find.text('Patients assurés'), findsNothing);
+    expect(find.text('Cartes expirées'), findsNothing);
+    expect(find.text('Dossiers actifs'), findsOneWidget, reason: 'les indicateurs sans donnée sensible restent');
+    decider(m, role, {'couverture_assurance': null});
+    await t.pump();
+    await t.pump(const Duration(milliseconds: 200));
+    expect(find.text('Patients assurés'), findsOneWidget, reason: 'droit rendu à chaud (retour au défaut de la matrice)');
+  });
+
+  testWidgets('HOSPITALISATION : chaque écran dit « Information réservée » sans le droit, et s’ouvre à chaud quand il est accordé', (t) async {
+    final m = jeu();
+    final nav = donnees.aChaud(m);
+    final roles = [for (final r in nav.matrice.rolesBruts) '${r['id']}'];
+    var ouverts = 0;
+    for (final e in ecransHospitalisation) {
+      final role = roles.where((r) => r != 'admin' && nav.matrice.peutVoir(r, e) && nav.matrice.peutVoir(r, 'm3-admissions')).firstOrNull;
+      if (role == null) continue;
+      ouverts++;
+      await ouvrir(t, m, e, role);
+      decider(m, role, {'hospitalisation_soins': false});
+      await t.pump();
+      await t.pump(const Duration(milliseconds: 200));
+      expect(find.byKey(const Key('garde-sensible:hospitalisation_soins')), findsOneWidget, reason: '$e refuse sans le droit');
+      decider(m, role, {'hospitalisation_soins': null});
+      await t.pump();
+      await t.pump(const Duration(milliseconds: 200));
+      expect(find.byKey(const Key('garde-sensible:hospitalisation_soins')), findsNothing, reason: '$e s’ouvre à chaud');
+    }
+    expect(ouverts, greaterThan(8));
+  });
+
+  testWidgets('ADMISSIONS : le diagnostic d’entrée suit « diagnostic et pathologie », colonne masquée, non triable, non retrouvée par la recherche', (t) async {
+    final m = jeu();
+    for (final a in m.collection('admissions').actives) {
+      m.collection('admissions').mettreAJour(a['id'], {'diagnosticEntree': 'DIAG-XYZ'});
+    }
+    final nav = donnees.aChaud(m);
+    final role = [for (final r in nav.matrice.rolesBruts) '${r['id']}'].firstWhere((r) => r != 'admin' && nav.matrice.peutVoir(r, 'm3-admissions'));
+    await ouvrir(t, m, 'm3-admissions', role);
+    expect(find.text('DIAG-XYZ'), findsWidgets, reason: 'sentinelle : lu par défaut');
+    decider(m, role, {'diagnostic_pathologie': false});
+    await t.pump();
+    await t.pump(const Duration(milliseconds: 200));
+    expect(find.text('DIAG-XYZ'), findsNothing);
+    expect(find.byKey(const Key('garde-sensible:hospitalisation_soins')), findsNothing, reason: 'l’écran reste ouvert : seule la colonne se masque');
+    expect(find.text(reserve('diagnostic_pathologie')), findsWidgets);
+    await t.enterText(find.byKey(const Key('kit:tableau-recherche')).first, 'DIAG-XYZ');
+    await t.pump(const Duration(milliseconds: 400));
+    expect(find.text(reserve('diagnostic_pathologie')), findsNothing, reason: 'la recherche du tableau ne retrouve aucune ligne par une valeur masquée');
+  });
+
+  test('IMPRESSION 2 : le bulletin du patient externe et la pièce certifiante masquent l’âge, les coordonnées, les mentions et la couverture sans le droit', () {
+    final m = jeu();
+    final nav = donnees.aChaud(m);
+    final role = [for (final r in nav.matrice.rolesBruts) '${r['id']}'].firstWhere((r) => nav.matrice.peutVoir(r, 'm1-externe'));
+    final p = {...patientDe(m), 'age': 41, 'dateNaissance': null, 'telephone': tel, 'adresse': 'RUE-SECRETE', 'prescripteurExterieur': 'Dr X'};
+    String bulletin() {
+      final c = contexte(m, role, 'm1-externe');
+      return EcranExterne.cartoucheBulletin(p, {'numero': 'F1', 'partPatient': 1000}, c, AccesSensible.de(c)).map((e) => '${e.$1}:${e.$2}').join('\n');
+    }
+
+    var s = bulletin();
+    expect(s, contains(tel), reason: 'sentinelle : lu par défaut');
+    expect(s, contains('RUE-SECRETE'));
+    decider(m, role, {'coordonnees': false, 'identite_detaillee': false});
+    s = bulletin();
+    expect(s, isNot(contains(tel)));
+    expect(s, isNot(contains('RUE-SECRETE')));
+    expect(s, isNot(contains('41')));
+    expect(s, contains(reserve('coordonnees')));
+    expect(s, contains(reserve('identite_detaillee')));
+    expect(s, contains('Dr X'), reason: 'ce qui n’est pas une donnée du patient reste');
+    decider(m, role, {'coordonnees': true, 'identite_detaillee': true});
+    expect(bulletin(), contains(tel), reason: 'droit accordé : le papier reprend la valeur');
+
+    final piece = {'contenu': 'MENTION-SECRETE', 'couverture': 'COUV-XYZ'};
+    String papier() {
+      final c = contexte(m, role, 'm1-pieces');
+      return EcranPieces.blocsPiece(piece, AccesSensible.de(c)).map((b) => b is BlocTexte ? b.texte : '').join('\n');
+    }
+
+    expect(papier(), contains('MENTION-SECRETE'));
+    decider(m, role, {'notes_consultation': false, 'couverture_assurance': false});
+    s = papier();
+    expect(s, isNot(contains('MENTION-SECRETE')));
+    expect(s, isNot(contains('COUV-XYZ')));
+    expect(s, contains(reserve('notes_consultation')));
+    // Le formulaire de délivrance ne propose pas non plus de saisir ce qu'on ne peut pas lire.
+    final c = contexte(m, role, 'm1-pieces');
+    expect(EcranPieces.champs(c, null).any((d) => d.nom == 'contenu'), isFalse);
+    decider(m, role, {'notes_consultation': true});
+    expect(EcranPieces.champs(contexte(m, role, 'm1-pieces'), null).any((d) => d.nom == 'contenu'), isTrue, reason: 'relu à chaque appel');
+  });
+
   test('GARDE : aucune comparaison de nom de rôle dans le masquage ajouté', () {
     final roles = [for (final r in donnees.matrice.rolesBruts) '${r['id']}'];
     final fichiers = [
@@ -285,13 +436,32 @@ void main() {
       'lib/modules/m1/fiche_impression.dart',
       'lib/modules/m1/patients.dart',
       'lib/shell/recherche_globale.dart',
+      'lib/modules/m1/externe.dart',
+      'lib/modules/m1/pieces.dart',
+      'lib/modules/m3/hos_admissions.dart',
+      'lib/modules/m3/hos_plan_lits.dart',
+      'lib/modules/m3/hos_temperature.dart',
+      'lib/modules/m3/hos_observation.dart',
+      'lib/modules/m3/hos_soins.dart',
+      'lib/modules/m3/surv_surveillance.dart',
+      'lib/modules/m3/surv_administrations.dart',
+      'lib/modules/m3/surv_glasgow.dart',
+      'lib/modules/m3/surv_transfusion.dart',
+      'lib/modules/m3/surv_rapport.dart',
+      'lib/modules/m3/surv_visites.dart',
+      'lib/modules/m3/bloc_sorties.dart',
+      'lib/modules/m3/bloc_avis_medical.dart',
+      'lib/modules/m2/cs_consultations.dart',
+      'lib/modules/m2/cs_ordonnances.dart',
+      'lib/modules/m2/cs_fiche.dart',
+      'lib/modules/m2/cs_dossiers.dart',
     ];
     for (final f in fichiers) {
       for (final l in File(f).readAsLinesSync()) {
         final u = l.trimLeft();
         if (u.startsWith('//')) continue;
         // Les lignes du masquage : tout appel au point unique, ou à la catégorie.
-        if (!RegExp(r'AccesSensible|\.peut\(|texteSi|masquerSi|MentionReservee|GardeSensible|peutLireChamp').hasMatch(l)) continue;
+        if (!RegExp(r'AccesSensible|\.peut\(|texteSi|masquerSi|MentionReservee|GardeSensible|peutLireChamp|\.colonne\(').hasMatch(l)) continue;
         for (final r in roles) {
           expect(RegExp('[\'"]${RegExp.escape(r)}[\'"]').hasMatch(l), isFalse, reason: '$f nomme le rôle « $r » : $l');
         }

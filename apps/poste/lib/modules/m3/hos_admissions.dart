@@ -91,6 +91,7 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     final solde = soldePatient(c.magasin, a['patientId']);
     final auj = c.aujourdhui;
+    final acces = AccesSensible.de(c);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       DescListeSigh([
         ('Référence', _mono('${a['reference'] ?? a['id']}')),
@@ -101,8 +102,8 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
         ('Date d’entrée', jourFR(a['dateEntree'])),
         ('Date de sortie', a['dateSortie'] != null ? jourFR(a['dateSortie']) : 'En cours'),
         ('Durée', '${hosDureeSejour(a, auj)} jour(s)'),
-        ('Diagnostic d’entrée', a['diagnosticEntree']),
-        ('Symptômes', a['symptomes']),
+        ('Diagnostic d’entrée', acces.masquerSi('diagnostic_pathologie', a['diagnosticEntree'])),
+        ('Symptômes', acces.masquerSi('notes_consultation', a['symptomes'])),
         ('Prise en charge', statutBadge(a['priseEnCharge'])),
         ('Infirmier référent', a['infirmier']),
         ('Statut', statutBadge(a['statut'])),
@@ -129,7 +130,9 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
           color: JetonsShell.slate800));
 
   /// `etatAdmission` : le bon d'admission (A4).
-  static PieceA4 bon(ContexteEcran c, Fiche a) => PieceA4(
+  static PieceA4 bon(ContexteEcran c, Fiche a) => _bon(c, a, AccesSensible.de(c));
+
+  static PieceA4 _bon(ContexteEcran c, Fiche a, AccesSensible acces) => PieceA4(
       titre: 'Bon d’admission',
       sousTitre: 'Référence ${a['reference'] ?? a['id']}',
       cartouche: [
@@ -145,8 +148,8 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
           ColonneEtat(libelle: 'Rubrique', valeur: (r) => r['k']),
           ColonneEtat(libelle: 'Information', valeur: (r) => r['v']),
         ], lignes: [
-          {'k': 'Diagnostic d’entrée', 'v': a['diagnosticEntree']},
-          {'k': 'Symptômes constatés', 'v': a['symptomes']},
+          {'k': 'Diagnostic d’entrée', 'v': acces.masquerSi('diagnostic_pathologie', a['diagnosticEntree'])},
+          {'k': 'Symptômes constatés', 'v': acces.masquerSi('notes_consultation', a['symptomes'])},
           {
             'k': 'Type de prise en charge',
             'v': a['priseEnCharge'] == 'plus_8h'
@@ -168,8 +171,11 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
       utilisateur: acteur(c).nom,
       edite: c.aujourdhui);
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('admissions');
     return ListenableBuilder(
@@ -251,7 +257,7 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
               rendu: (_, a) => Text('${hosDureeSejour(a, c.aujourdhui)} j',
                   style: const TextStyle(
                       color: JetonsShell.slate700, fontSize: 14, height: 20 / 14))),
-          const ColonneTableau(cle: 'diagnosticEntree', libelle: 'Diagnostic'),
+          AccesSensible.de(c).colonne('diagnostic_pathologie', 'diagnosticEntree', 'Diagnostic'),
           ColonneTableau(
               cle: 'priseEnCharge',
               libelle: 'Prise en charge',

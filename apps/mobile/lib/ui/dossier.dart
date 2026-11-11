@@ -134,7 +134,7 @@ class _DossierPatientState extends State<DossierPatient> {
                 key: const Key('nouvelle-note'),
                 icon: const Icon(Icons.edit_note),
                 label: Text(mobLibelleEcran('consultation')),
-                onPressed: () => _ouvrir(SaisieNote(service: s, patientId: widget.patientId, motif: d.rendezVous?.motif ?? '')),
+                onPressed: () => _ouvrir(SaisieNote(service: s, patientId: widget.patientId, motif: d.rendezVous == null || d.rendezVous!.motifMasque ? '' : d.rendezVous!.motif)),
               ),
             ],
             if (natures.isNotEmpty) ...[

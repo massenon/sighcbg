@@ -103,7 +103,7 @@ class EcranSorties extends StatelessWidget with EcranMaquette {
               ColonneEtat(libelle: 'Rubrique', valeur: (r) => r['k']),
               ColonneEtat(libelle: 'Information', valeur: (r) => r['v']),
             ], lignes: [
-              {'k': 'Diagnostic d’entrée', 'v': a['diagnosticEntree']},
+              {'k': 'Diagnostic d’entrée', 'v': AccesSensible.de(c).masquerSi('diagnostic_pathologie', a['diagnosticEntree'])},
               {'k': 'État à la sortie', 'v': ou(v['etatSortie'], '—')},
               {'k': 'Consignes de sortie', 'v': ou(v['consignes'], '—')},
               {
@@ -160,7 +160,7 @@ class EcranSorties extends StatelessWidget with EcranMaquette {
             ('Lit', a['lit']),
             ('Entrée', dateBloc(a['dateEntree'])),
             ('Durée du séjour', '${hosDureeSejour(a, c.aujourdhui)} jour(s)'),
-            ('Diagnostic', a['diagnosticEntree']),
+            ('Diagnostic', AccesSensible.de(c).masquerSi('diagnostic_pathologie', a['diagnosticEntree'])),
           ]),
           const SizedBox(height: 16),
           s > 0
@@ -210,8 +210,11 @@ class EcranSorties extends StatelessWidget with EcranMaquette {
             ]);
   }
 
+  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final adm = c.magasin.collection('admissions');
     final fac = c.magasin.collection('factures');
@@ -306,8 +309,7 @@ class EcranSorties extends StatelessWidget with EcranMaquette {
                       droite: true,
                       valeur: (a) => hosDureeSejour(a, c.aujourdhui),
                       texte: (a) => '${hosDureeSejour(a, c.aujourdhui)} j'),
-                  const ColonneTableau(
-                      cle: 'diagnosticEntree', libelle: 'Diagnostic'),
+                  AccesSensible.de(c).colonne('diagnostic_pathologie', 'diagnosticEntree', 'Diagnostic'),
                   ColonneTableau(
                       cle: 'solde',
                       libelle: 'Solde (RG-06)',
