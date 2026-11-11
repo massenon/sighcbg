@@ -154,7 +154,7 @@ ResultatNormalisation normaliserVente(
       throw StateError('Adaptateur MECeF configuré : l’émission est asynchrone (lot M3), normaliserVente doit le devenir.');
     }
     final refus = ad.refus!;
-    annulations.add(col.mettreAJour(factureId, d.champsEnAttenteCertification(refus, ad.mode)));
+    annulations.add(col.mettreAJour(factureId, {...d.champsEnAttenteCertification(refus, ad.mode), 'aibMontant': prep.montants!.aib}));
     m.journaliser('Normalisation en attente (adaptateur non configuré)', 'MECEF', 'facture', '${fac['numero']}',
         {'statutMecef': fac['statutMecef']},
         {'statutMecef': 'en_attente', 'code': refus.code, 'mode': ad.mode, if (defaut != null) 'aib': '${a.aibTaux} % — ${defaut.motif}'});
