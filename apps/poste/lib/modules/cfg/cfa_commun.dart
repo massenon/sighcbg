@@ -100,6 +100,18 @@ Widget cfaSource(String t) => Padding(
 /// Une valeur de fiche affichée, « — » si vide.
 String cfaOuTiret(Object? v) => cfaVrai(v) ? '$v' : '—';
 
+/// LE TITRE PORTÉ PAR L'AGENT (Direction de Baguidi) : un agent peut porter à l'organigramme un titre autre que son poste (un infirmier surveillant général). Le titre vit sur
+/// la fiche du PERSONNEL (`titreOrganigramme`, douze caractères au plus), rattaché au poste par le nom du titulaire, comme partout ; sans titre, le nom seul.
+String cfaTitulaireAvecTitre(Magasin m, Object? nom) {
+  final n = '${nom ?? ''}';
+  for (final a in m.collection('personnel').actives) {
+    if ('${a['nomComplet']}' != n) continue;
+    final t = '${a['titreOrganigramme'] ?? ''}'.trim();
+    return t.isEmpty ? n : '$n ($t)';
+  }
+  return n;
+}
+
 /// Une saisie en modale — création ou modification — avec le contrôle métier [avant] de l'appelant (il refuse EN LE DISANT, rien n'est écrit).
 /// [fiche] reçoit la saisie et la fiche existante : c'est le `transform` de `K.creer` / `K.actionsLigne`.
 void cfaSaisir(BuildContext ctx,

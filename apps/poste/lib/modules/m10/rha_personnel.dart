@@ -84,6 +84,12 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
         const ChampDef.section('Affectation'),
         ChampDef(nom: 'fonction', libelle: 'Fonction', type: TypeChamp.select, requis: true, options: rhaOptionsFonctions()),
         const ChampDef(nom: 'poste', libelle: 'Poste occupé', col: ColChamp.plein),
+        ChampDef(
+            nom: 'titreOrganigramme',
+            libelle: 'Titre à l’organigramme',
+            indicatif: 'ex. SG',
+            aide: 'Facultatif, douze caractères au plus : le titre que l’agent porte à l’organigramme quand il diffère de son poste (un infirmier surveillant général).',
+            valider: (v, _) => '${v ?? ''}'.trim().length > 12 ? 'Douze caractères au plus.' : null),
         ChampDef(nom: 'service', libelle: 'Service', type: TypeChamp.select, requis: true, options: rhaOptions(rhaServices)),
         const ChampDef(nom: 'categorie', libelle: 'Catégorie / échelon', indicatif: 'ex. E3-1'),
         const ChampDef(nom: 'dateEmbauche', libelle: 'Date d’embauche', type: TypeChamp.date, requis: true),

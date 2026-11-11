@@ -187,7 +187,7 @@ class _OngletOrganigramme extends StatelessWidget {
         if (cfaVrai(n.fiche['titulaire'])) ...[
           const SizedBox(width: 8),
           Flexible(
-              child: Text('${n.fiche['titulaire']}${cfaVrai(n.fiche['chef']) ? ' — chef de service' : ''}',
+              child: Text('${cfaTitulaireAvecTitre(m, n.fiche['titulaire'])}${cfaVrai(n.fiche['chef']) ? ' — chef de service' : ''}',
                   style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate500))),
         ],
         if (cfaVrai(n.fiche['role'])) ...[const Spacer(), _badgeRole(m, n.fiche['role'])],
@@ -205,7 +205,7 @@ class _OngletOrganigramme extends StatelessWidget {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('postes');
     return ListenableBuilder(
-        listenable: Listenable.merge([col, c.magasin.collection(ficheDocCollection)]),
+        listenable: Listenable.merge([col, c.magasin.collection(ficheDocCollection), c.magasin.collection('personnel')]),
         builder: (ctx, _) {
           final plats = col.actives;
           final racines = cfaArbre(plats);
@@ -229,7 +229,7 @@ class _OngletOrganigramme extends StatelessWidget {
                   ColonneEtat(libelle: 'Poste', valeur: (l) => l['poste']),
                   ColonneEtat(libelle: 'Rattaché à', valeur: (l) => nomDe(l['parentId'])),
                   ColonneEtat(libelle: 'Effectif', droite: true, valeur: (l) => l['effectif']),
-                  ColonneEtat(libelle: 'Titulaire / chef de service', valeur: (l) => cfaOuTiret(l['titulaire'])),
+                  ColonneEtat(libelle: 'Titulaire / chef de service', valeur: (l) => cfaVrai(l['titulaire']) ? cfaTitulaireAvecTitre(c.magasin, l['titulaire']) : '—'),
                   ColonneEtat(libelle: 'Rôle dans le système', valeur: (l) => libelleRole(c.magasin, l['role'])),
                 ], lignes: plats)),
               ],
@@ -289,9 +289,9 @@ class _OngletOrganigramme extends StatelessWidget {
                 ColonneTableau(
                     cle: 'titulaire',
                     libelle: 'Titulaire',
-                    texte: (p) => cfaVrai(p['titulaire']) ? '${p['titulaire']}${cfaVrai(p['chef']) ? ' — chef de service' : ''}' : 'vacant',
+                    texte: (p) => cfaVrai(p['titulaire']) ? '${cfaTitulaireAvecTitre(c.magasin, p['titulaire'])}${cfaVrai(p['chef']) ? ' — chef de service' : ''}' : 'vacant',
                     rendu: (_, p) => cfaVrai(p['titulaire'])
-                        ? Text('${p['titulaire']}${cfaVrai(p['chef']) ? ' — chef de service' : ''}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate700))
+                        ? Text('${cfaTitulaireAvecTitre(c.magasin, p['titulaire'])}${cfaVrai(p['chef']) ? ' — chef de service' : ''}', style: const TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate700))
                         : const Text('vacant', style: TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate300))),
                 ColonneTableau(cle: 'role', libelle: 'Rôle RBAC', texte: (p) => libelleRole(c.magasin, p['role']), rendu: (_, p) => _badgeRole(c.magasin, p['role'])),
               ],

@@ -160,6 +160,11 @@ void main() {
       if (reel.where((x) => x == 'M13').length > attendu.where((x) => x == 'M13').length && donneesNav.matrice.droit(role, 'adm-validations').voir) {
         reel.remove('M13');
       }
+      // Quatrième ouverture, du 11/11/2026 : « Mon espace » et « Propositions de planning » (M10) sont des écrans UNIVERSELS, ouverts à tout poste : la rangée M10 qu'ils
+      // ajoutent est retirée de même, seulement quand le droit qui l'explique est celui de la matrice et que le vecteur n'en portait pas.
+      if (reel.where((x) => x == 'M10').length > attendu.where((x) => x == 'M10').length && donneesNav.matrice.droit(role, 'm10-mes').voir) {
+        reel.remove('M10');
+      }
       // Les rangées d'un module se rangent par domaine : l'ajout du centre des validations change la place de M13, non le compte. On compare donc les comptes.
       expect((reel..sort()).join(), (attendu..sort()).join(), reason: '${l[0]} ($role)');
     }
