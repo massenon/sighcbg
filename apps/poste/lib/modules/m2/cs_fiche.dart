@@ -463,7 +463,9 @@ class _EtatFiche extends State<EcranFicheConsultation> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final m = c.magasin;
     return ListenableBuilder(

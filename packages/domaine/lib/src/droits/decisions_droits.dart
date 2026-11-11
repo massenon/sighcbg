@@ -19,6 +19,8 @@ library;
 
 import 'dart:convert';
 
+import 'donnees_sensibles.dart' show categorieSensible;
+
 typedef FicheDr = Map<String, Object?>;
 
 /// La collection des décisions (journal des demandes de modification de droits), diffusée entre les postes comme l'activité.
@@ -66,6 +68,9 @@ Map<String, Object?> drAplatir(FicheDr? f) {
   for (final e in _map(f['droitsEcrans']).entries) {
     out[drCleEcran(e.key)] = e.value;
   }
+  for (final e in _map(f['donneesSensibles']).entries) {
+    if (e.value is bool) out['sensible.${e.key}'] = e.value;
+  }
   for (final n in drChampsDuRole) {
     if (f.containsKey(n) && f[n] != null) out[drCleChamp(n)] = f[n];
   }
@@ -93,6 +98,13 @@ Map<String, Object?> drDiff(FicheDr? avant, Map<String, Object?> valeurs) {
       if (k.startsWith('droitsEcrans.') && !neufs.containsKey(k.substring('droitsEcrans.'.length))) out[k] = null;
     }
   }
+  // Les droits sur les catégories de données sensibles : `{catégorie: true|false|null}` — `null` revient au défaut (la matrice), c'est une clé qui disparaît.
+  if (valeurs['donneesSensibles'] is Map) {
+    for (final e in _map(valeurs['donneesSensibles']).entries) {
+      final k = 'sensible.${e.key}';
+      if (!_egal(a[k], e.value) && !(a[k] == null && e.value == null)) out[k] = e.value;
+    }
+  }
   for (final n in drChampsDuRole) {
     if (!valeurs.containsKey(n)) continue;
     final k = drCleChamp(n);
@@ -118,11 +130,13 @@ String drLibelleCle(String cle) {
   if (cle.startsWith('droits.')) return 'module ${cle.substring(7)}';
   if (cle.startsWith('droitsEcrans.')) return 'écran ${cle.substring(13)}';
   if (cle.startsWith('champ.')) return 'champ ${cle.substring(6)}';
+  if (cle.startsWith('sensible.')) return 'données sensibles : ${categorieSensible(cle.substring(9))?.libelle ?? cle.substring(9)}';
   return cle;
 }
 
 /// Un droit en toutes lettres : « voir, éditer », « fermé », « suit son module » (clé absente).
 String drLibelleValeur(String cle, Object? v) {
+  if (cle.startsWith('sensible.')) return v == null ? 'suit la matrice (défaut)' : (v == true ? 'visible' : 'masqué');
   if (v == null) return cle.startsWith('droits') ? 'suit la matrice d’origine' : '—';
   if (v is Map) {
     if (v['voir'] != true) return 'fermé';
@@ -248,6 +262,7 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
   final base = actuelle == null ? <String, Object?>{'role': role, 'statut': 'actif'} : {for (final e in actuelle.entries) e.key: e.value};
   final droits = {..._map(base['droits'])};
   final ecrans = {..._map(base['droitsEcrans'])};
+  final sensibles = {..._map(base['donneesSensibles'])};
   final cles = {for (final e in _map(base['cles']).entries) e.key: _map(e.value)};
   final courant = drAplatir(actuelle);
   final lignes = <LigneDecisionDroits>[];
@@ -302,6 +317,13 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
       } else {
         ecrans[ec] = e.value;
       }
+    } else if (k.startsWith('sensible.')) {
+      final cat = k.substring(9);
+      if (e.value == null) {
+        sensibles.remove(cat);
+      } else {
+        sensibles[cat] = e.value;
+      }
     } else if (k.startsWith('champ.')) {
       final n = k.substring(6);
       if (e.value == null) {
@@ -320,6 +342,7 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
   }
   base['droits'] = droits;
   base['droitsEcrans'] = ecrans;
+  if (sensibles.isNotEmpty || base.containsKey('donneesSensibles')) base['donneesSensibles'] = sensibles;
   base['cles'] = cles;
   base['version'] = ((base['version'] as num?)?.toInt() ?? 0) + 1;
   final dernier = '${base['decideLe'] ?? ''}';

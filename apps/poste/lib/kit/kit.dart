@@ -18,3 +18,4 @@ export 'crud.dart';
 export 'tableau_de_bord.dart';
 export 'file_attente.dart';
 export 'accord.dart';
+export 'champ_sensible.dart';

@@ -30,7 +30,9 @@ class EcranConsultations extends StatelessWidget with EcranMaquette {
       'Enregistrement des consultations, diagnostics et actes réalisés, avec édition du compte rendu.';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('consultations');
     return ListenableBuilder(

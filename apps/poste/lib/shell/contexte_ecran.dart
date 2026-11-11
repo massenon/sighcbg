@@ -96,7 +96,8 @@ class ContexteEcran extends InheritedWidget {
       o.droit != droit ||
       o.agentConnecte != agentConnecte ||
       o.magasin != magasin ||
-      o.ouvre != ouvre;
+      o.ouvre != ouvre ||
+      !identical(o.donnees, donnees);
 }
 
 /// Un écran qui déclare lui-même son en-tête de page (`SIGH.screen({title, description, regle, actions})`).

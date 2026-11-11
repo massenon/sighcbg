@@ -62,8 +62,12 @@ class AgendaDuJour {
 
 /// Le dossier en lecture : le résumé du domaine, la fiche brute et le rendez-vous du jour (le motif de la visite).
 class DossierLu {
-  const DossierLu({required this.patientId, required this.fiche, required this.resume, this.rendezVous, this.transcriptions = const {}});
+  const DossierLu({required this.patientId, required this.fiche, required this.resume, this.rendezVous, this.transcriptions = const {}, this.masques = const {}});
   final String patientId;
+
+  /// Les catégories de données sensibles que la matrice de l'agent NE lui ouvre PAS (`donnees_sensibles.dart`) : leurs champs ont été retirés de [fiche] et
+  /// [resume] AVANT l'écran, et l'écran dit « Information réservée » à leur place. Vide = rien de masqué.
+  final Set<String> masques;
 
   /// Où en est chaque prescription du dossier au poste de la clinique (clé : identifiant de la pièce) : en attente, transcrite ou refusée (E1559).
   final Map<String, MobTranscription> transcriptions;
@@ -164,13 +168,23 @@ class ServiceSoignant {
   Future<DossierLu> dossier(String patientId) async {
     droits?.exiger('dossier', ecriture: false);
     final p = await _patient(patientId);
+    // LE MASQUAGE SE FAIT ICI, avant que l'écran reçoive quoi que ce soit : une donnée retirée ne peut pas réapparaître par un autre chemin de l'écran.
+    // Évalué à chaque lecture, sur les fiches que la mère a livrées. Sans suivi de droits (tests de service seuls), rien n'est masqué.
+    final masques = <String>{};
+    final ds = droits?.value.matrice.donneesSensibles;
+    final role = droits?.role ?? '';
+    final champs = ds == null ? p.champs : ds.masquer(role, p.champs, masques: masques);
+    final lireNotes = ds?.peut(role, 'notes_consultation') ?? true;
+    final lireDiag = ds?.peut(role, 'diagnostic_pathologie') ?? true;
+    if (!lireNotes) masques.add('notes_consultation');
+    if (!lireDiag) masques.add('diagnostic_pathologie');
     final resume = mobDossier(
-      patient: p.champs,
+      patient: champs,
       patientId: patientId,
       maintenant: maintenant,
       constantes: [for (final l in await _actives('constantes')) l.data],
-      notes: [for (final l in await _actives('notes')) l.data],
-      prescriptions: [for (final l in await _actives('prescriptions')) {...l.data, 'id': l.id}],
+      notes: lireNotes ? [for (final l in await _actives('notes')) lireDiag ? l.data : ({...l.data}..remove('diagnostic'))] : const [],
+      prescriptions: lireNotes ? [for (final l in await _actives('prescriptions')) {...l.data, 'id': l.id}] : const [],
     );
     final comptes = [for (final l in await _actives('transcriptions')) l.data];
     final transcriptions = {for (final p in resume.prescriptions) '${p['id']}': mobTranscriptionDe('${p['id']}', comptes)};
@@ -179,7 +193,7 @@ class ServiceSoignant {
     for (final l in ag.duJour) {
       if (l.patientId == patientId) rdv ??= l;
     }
-    return DossierLu(patientId: patientId, fiche: p.champs, resume: resume, rendezVous: rdv, transcriptions: transcriptions);
+    return DossierLu(patientId: patientId, fiche: champs, masques: masques, resume: resume, rendezVous: rdv, transcriptions: transcriptions);
   }
 
   // --- écriture : un geste = une opération --------------------------------------------------------------------------------------------------

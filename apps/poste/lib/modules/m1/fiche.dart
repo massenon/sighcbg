@@ -74,8 +74,25 @@ class _FichePatientState extends State<FichePatient> {
           if (x['patientId'] == p['id']) x
       ];
 
+  /// Les rubriques de la fiche et la catégorie de données sensibles dont chacune dépend (`categoriesSensibles`, domaine) : une rubrique dont la catégorie est
+  /// refusée au profil dit « Information réservée » et ne montre ni son contenu ni son compte.
+  static const _categorieDeRubrique = {
+    'medical': 'notes_consultation',
+    'specialites': 'notes_consultation',
+    'soins': 'notes_consultation',
+    'ordonnances': 'notes_consultation',
+    'domicile': 'notes_consultation',
+    'hospi': 'hospitalisation_soins',
+    'maternite': 'donnees_obstetricales',
+    'laboratoire': 'resultats_analyses',
+    'imagerie': 'resultats_analyses',
+    'assurance': 'couverture_assurance',
+  };
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => EcouteDroitsSensibles(builder: _construire);
+
+  Widget _construire(BuildContext context, AccesSensible a) {
     final c = ContexteEcran.of(context);
     final m = c.magasin;
     final maintenant = c.aujourdhui;
@@ -131,15 +148,17 @@ class _FichePatientState extends State<FichePatient> {
               ('Sexe', p['sexe'] == 'F' ? 'Féminin' : 'Masculin'),
               (
                 'Date de naissance',
-                patVrai(p['dateNaissance'])
-                    ? '${dateFrM1(p['dateNaissance'])}${age != null ? ' ($age ans)' : ''}'
-                    : 'Inconnue — ${ageTexte(p, maintenant)}'
+                a.masquerSi(
+                    'identite_detaillee',
+                    patVrai(p['dateNaissance'])
+                        ? '${dateFrM1(p['dateNaissance'])}${age != null ? ' ($age ans)' : ''}'
+                        : 'Inconnue — ${ageTexte(p, maintenant)}')
               ),
-              ('Téléphone', p['telephone']),
-              ('Quartier', p['quartier']),
-              ('Adresse', p['adresse']),
-              ('Personne à prévenir', p['personneAPrevenir']),
-              ('Groupe sanguin', p['groupeSanguin']),
+              ('Téléphone', a.lire(p, 'telephone')),
+              ('Quartier', a.lire(p, 'quartier')),
+              ('Adresse', a.lire(p, 'adresse')),
+              ('Personne à prévenir', a.lire(p, 'personneAPrevenir')),
+              ('Groupe sanguin', a.lire(p, 'groupeSanguin')),
               ('Dossier créé le', dateFrM1(p['dateCreation'])),
             ])
       ),
@@ -152,7 +171,7 @@ class _FichePatientState extends State<FichePatient> {
             : mini([
                 ColonneMini('Date', (x) => dateFrM1(x['date'])),
                 ColonneMini('Motif', (x) => _t(x['motif'], '')),
-                ColonneMini('Diagnostic', (x) => _t(x['diagnostic'], '')),
+                ColonneMini('Diagnostic', (x) => a.texteSi('diagnostic_pathologie', _t(x['diagnostic'], ''))),
                 ColonneMini('Médecin', (x) => _t(x['medecin'], '')),
               ], _tri(consultations, 'date').take(15).toList())
       ),
@@ -168,7 +187,7 @@ class _FichePatientState extends State<FichePatient> {
                 ColonneMini('Date', (x) => dateFrM1(x['date'])),
                 ColonneMini('Spécialité', (x) => '${x['specialiteLibelle'] ?? (specDeLaConsultation(x) == specCodeMedecineTravail ? 'Médecine du travail' : specDeLaConsultation(x) ?? '')}'),
                 ColonneMini('Motif', (x) => _t(x['motif'], '')),
-                ColonneMini('Diagnostic', (x) => _t(x['diagnostic'], '')),
+                ColonneMini('Diagnostic', (x) => a.texteSi('diagnostic_pathologie', _t(x['diagnostic'], ''))),
                 ColonneMini('Praticien', (x) => _t(x['medecin'], '')),
               ], _tri(specialisees, 'date').take(15).toList())
       ),
@@ -179,19 +198,23 @@ class _FichePatientState extends State<FichePatient> {
         rendu: () => DescListeSigh([
               (
                 'Antécédents',
-                patListe(p['antecedents']).isNotEmpty
+                !a.peut('antecedents')
+                    ? const MentionReservee('antecedents')
+                    : patListe(p['antecedents']).isNotEmpty
                     ? Wrap(spacing: 4, runSpacing: 4, children: [for (final a in patListe(p['antecedents'])) BadgeSigh(a, ton: TonSigh.attention)])
                     : const BadgeSigh('Aucun antécédent notable', ton: TonSigh.succes)
               ),
-              ('Autres antécédents', _t(p['antecedentsAutres'])),
+              ('Autres antécédents', a.masquerSi('antecedents', _t(p['antecedentsAutres']))),
               (
                 'Allergies connues',
-                patListe(p['allergies']).isNotEmpty
+                !a.peut('allergies_traitements')
+                    ? const MentionReservee('allergies_traitements')
+                    : patListe(p['allergies']).isNotEmpty
                     ? Wrap(spacing: 4, runSpacing: 4, children: [for (final a in patListe(p['allergies'])) BadgeSigh(a, ton: TonSigh.danger)])
                     : const BadgeSigh('Aucune allergie connue', ton: TonSigh.succes)
               ),
-              ('Traitement en cours', _t(p['traitementEnCours'])),
-              ('Groupe sanguin', _t(p['groupeSanguin'])),
+              ('Traitement en cours', a.masquerSi('allergies_traitements', _t(p['traitementEnCours']))),
+              ('Groupe sanguin', a.masquerSi('groupe_serologies', _t(p['groupeSanguin']))),
             ])
       ),
       (
@@ -550,6 +573,14 @@ class _FichePatientState extends State<FichePatient> {
       ),
     ];
 
+    // Une rubrique dont la catégorie est refusée au profil le DIT : ni contenu ni compte (le compte d'une rubrique est déjà une information).
+    for (var i = 0; i < rubriques.length; i++) {
+      final r = rubriques[i];
+      final cat = _categorieDeRubrique[r.id];
+      if (cat != null && !a.peut(cat)) {
+        rubriques[i] = (id: r.id, label: r.label, badge: null, rendu: () => MentionReservee(cat));
+      }
+    }
     final actuelle = rubriques.firstWhere((r) => r.id == _courante, orElse: () => rubriques.first);
 
     final identite = CarteSigh(
@@ -573,9 +604,9 @@ class _FichePatientState extends State<FichePatient> {
               Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                      '${p['sexe'] == 'F' ? 'Femme' : 'Homme'} — ${age != null ? '$age ans' : 'âge inconnu'} — Groupe ${_t(p['groupeSanguin'], '?')}',
+                      '${p['sexe'] == 'F' ? 'Femme' : 'Homme'}${a.peut('identite_detaillee') ? ' — ${age != null ? '$age ans' : 'âge inconnu'}' : ''}${a.peut('groupe_serologies') ? ' — Groupe ${_t(p['groupeSanguin'], '?')}' : ''}',
                       style: styleM1(t: 12, c: JetonsShell.slate500))),
-              Padding(padding: const EdgeInsets.only(top: 8), child: statutAssuranceM1(p, valide)),
+              Padding(padding: const EdgeInsets.only(top: 8), child: a.champ('couverture_assurance', () => statutAssuranceM1(p, valide))),
             ])),
           ]),
         ));
@@ -586,20 +617,20 @@ class _FichePatientState extends State<FichePatient> {
     ];
     final gauche = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       identite,
-      if (histCouv.length > 1) ...[
+      if (a.peut('couverture_assurance') && histCouv.length > 1) ...[
         const SizedBox(height: 16),
         NoteSigh(
             'Ce patient a changé de couverture ${histCouv.length - 1} fois. Les factures antérieures restent rattachées à la compagnie qui couvrait à leur date — l’onglet Assurance en porte le détail.',
             icone: LucideIcons.history),
       ],
-      if (patVrai(p['assureur']) && !valide) ...[
+      if (a.peut('couverture_assurance') && patVrai(p['assureur']) && !valide) ...[
         const SizedBox(height: 16),
         NoteSigh(
             'Carte d’assurance expirée le ${dateFrM1(p['carteExpiration'])}. En application de la règle RG-09, la facturation est intégrale au patient tant que la carte n’est pas renouvelée.',
             ton: TonSigh.danger,
             icone: LucideIcons.shieldAlert),
       ],
-      if (patListe(p['allergies']).isNotEmpty) ...[
+      if (a.peut('allergies_traitements') && patListe(p['allergies']).isNotEmpty) ...[
         const SizedBox(height: 16),
         NoteSigh(
             'Allergie(s) déclarée(s) : ${patTexteListe(p['allergies'])}. Vérifier toute prescription et toute dispensation avant délivrance.',
@@ -607,7 +638,7 @@ class _FichePatientState extends State<FichePatient> {
             icone: LucideIcons.triangleAlert),
       ],
       const SizedBox(height: 16),
-      _carteDossier(context, c),
+      a.peut('notes_consultation') ? _carteDossier(context, c, a) : const CarteSigh(titre: 'Dossier de consultation', child: MentionReservee('notes_consultation')),
       const SizedBox(height: 16),
       CarteSigh(titre: actuelle.label, child: actuelle.rendu()),
     ]);
@@ -686,7 +717,7 @@ class _FichePatientState extends State<FichePatient> {
               color: JetonsShell.slate400, fontSize: 12, height: 16 / 12, fontWeight: FontWeight.w600, letterSpacing: 0.6)));
 
   /// Le dossier de consultation, TOUJOURS visible : le DERNIER dossier ouvert, avec la date de la venue et celle de l'enregistrement.
-  Widget _carteDossier(BuildContext context, ContexteEcran c) {
+  Widget _carteDossier(BuildContext context, ContexteEcran c, AccesSensible a) {
     final dossiers = [
       for (final d in c.magasin.collection('dossiersConsultation').actives)
         if (d['patientId'] == p['id'] || d['patientCode'] == p['code']) d
@@ -720,20 +751,20 @@ class _FichePatientState extends State<FichePatient> {
             ('Motif de consultation', _t(d['motifVenue'])),
             ('Type de venue', _t(d['typeVenue'])),
             ('Histoire de la maladie', _t(d['histoire'])),
-            ('Traitements en cours', _t(d['traitementEnCours'])),
+            ('Traitements en cours', a.masquerSi('allergies_traitements', _t(d['traitementEnCours']))),
           ]),
           const SizedBox(height: 16),
           _titreSec('Antécédents'),
-          DescListeSigh(cats),
+          if (a.peut('antecedents')) DescListeSigh(cats) else const MentionReservee('antecedents'),
           const SizedBox(height: 16),
           _titreSec('Données préalables'),
           DescListeSigh([
-            ('Allergies', _t(d['allergies'] ?? p['allergies'])),
-            ('Allergies médicamenteuses', _t(d['allergiesMedicamenteuses'])),
+            ('Allergies', a.masquerSi('allergies_traitements', _t(d['allergies'] ?? p['allergies']))),
+            ('Allergies médicamenteuses', a.masquerSi('allergies_traitements', _t(d['allergiesMedicamenteuses']))),
             ('Statut vaccinal', _t(d['statutVaccinal'])),
-            ('Groupe sanguin', _t(d['groupeSanguin'] ?? p['groupeSanguin'])),
-            ('Électrophorèse Hb', _t(d['electrophoreseHb'])),
-            ('Dépistage', _t(d['depistage'])),
+            ('Groupe sanguin', a.masquerSi('groupe_serologies', _t(d['groupeSanguin'] ?? p['groupeSanguin']))),
+            ('Électrophorèse Hb', a.masquerSi('groupe_serologies', _t(d['electrophoreseHb']))),
+            ('Dépistage', a.masquerSi('groupe_serologies', _t(d['depistage']))),
           ]),
           if (ca is Map) ...[
             const SizedBox(height: 16),
