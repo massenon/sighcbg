@@ -1,6 +1,8 @@
 // Le module d'importation rejoué sur les vecteurs de la maquette (prototype_html/build/vecteurs-import.js) :
 // quarante-sept fichiers analysés sur un magasin contrôlé, dix lots appliqués puis annulés, un refus d'annulation sous un stock vivant (RG-03),
 // l'atomicité d'une écriture refusée en cours de lot, les modèles téléchargeables et le CSV.
+import 'dart:convert';
+
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
@@ -73,28 +75,58 @@ Map<String, Object?> _net(Map<String, Object?> f, Map<Object?, String> idVersCod
   return c;
 }
 
+/// Décisions du 11/11/2026 : le modèle du répertoire patients ne porte plus le code (RG-01 : généré) ni le groupe sanguin. Les fichiers de la maquette qui les
+/// portent sont rejoués SANS ces deux colonnes ; les deux cas qui testaient le code fourni par le fichier sont remplacés par un test dédié (`import_ecarts_test.dart`).
+const _colonnesRetireesPatients = {'Code dossier', 'Groupe sanguin'};
+const _casCodeFourni = {'pa-code-existant', 'pa-code-invalide'};
+
+List<List<Object?>> adapter(String jeu, List<List<Object?>> lignes) {
+  if (jeu != 'patients' || lignes.isEmpty) return lignes;
+  final garde = [for (var i = 0; i < lignes.first.length; i++) if (!_colonnesRetireesPatients.contains('${lignes.first[i]}')) i];
+  return [
+    for (final l in lignes) [for (final i in garde) if (i < l.length) l[i] else '']
+  ];
+}
+
+/// Le profil des vecteurs de la maquette a le droit paie : la colonne réservée « Salaire de base » est accordée.
+OptionsImport optionsDe(JeuImport j) => OptionsImport(colonnesAccordees: j.colonnesReservees);
+
 void main() {
   sousLeSigleDeLaMaquette();
   final V = lireVecteurs('import');
   final magasinInitial = (V['magasin'] as Map).cast<String, Object?>();
 
   group('analyse : les fichiers de la maquette sur un magasin contrôlé', () {
-    for (final c in liste(V['cas'])) {
+    for (final c in liste(V['cas']).where((c) => !_casCodeFourni.contains(c['id']))) {
       final attendu = (c['attendu'] as Map).cast<String, Object?>();
       test('${c['id']}', () {
         final port = MagasinMemoire(magasinInitial);
         final jeu = jeuImportParId('${c['jeu']}')!;
-        final lignes = [
+        final lignes = adapter(jeu.id, [
           for (final l in (c['lignes'] as List)) [for (final x in (l as List)) x]
-        ];
-        final a = analyserLignes(jeu, lignes, '${c['id']}.xlsx', port);
+        ]);
+        final a = analyserLignes(jeu, lignes, '${c['id']}.xlsx', port, options: optionsDe(jeu));
         expect(a.accepte, attendu['accepte'], reason: 'accepté');
         expect(a.nbLignes, attendu['nbLignes'], reason: 'lignes lues');
         memes(a.compte.versJson(), attendu['compte'], '${c['id']}.compte');
         final obtenus = [
           for (final p in a.problemes) {'n': p.n, 'colonne': p.colonne, 'code': p.code, 'niveau': p.niveau, 'valeur': texteDe(p.valeur)}
         ];
-        memes(obtenus, attendu['problemes'], '${c['id']}.problemes');
+        var problemesAttendus = attendu['problemes'];
+        if (jeu.id == 'patients') {
+          // Le constat de doublon se pose sur la première colonne du modèle : « Code dossier » avant, « Nom » désormais ; la valeur lue suit.
+          final ecart = {for (var i = 0; i < (problemesAttendus as List).length; i++) if ((problemesAttendus[i] as Map)['colonne'] == 'Code dossier') i};
+          problemesAttendus = [
+            for (var i = 0; i < problemesAttendus.length; i++)
+              ecart.contains(i) ? ({...(problemesAttendus[i] as Map)}..remove('colonne')..remove('valeur')) : problemesAttendus[i]
+          ];
+          for (final i in ecart) {
+            obtenus[i]
+              ..remove('colonne')
+              ..remove('valeur');
+          }
+        }
+        memes(obtenus, problemesAttendus, '${c['id']}.problemes');
         expect([for (final l in a.lignes) [l.n, l.etat]], [for (final e in (attendu['etats'] as List)) e]);
         // Un refus se NOMME : motif et geste ne sont jamais vides.
         for (final p in a.problemes) {
@@ -114,16 +146,19 @@ void main() {
         expect(jeu.libelle, m['libelle']);
         expect(jeu.ecran, m['ecran']);
         expect(jeu.statut, m['statut']);
-        expect(jeu.roles, m['roles']);
         expect(jeu.cibles, m['cibles']);
         expect(jeu.fichierModele, m['fichier']);
-        expect([for (final c in jeu.colonnes) c.label], m['entetes']);
-        expect([for (final c in jeu.colonnes) c.cle], m['cles']);
-        expect([for (final c in jeu.colonnes) c.obligatoire], m['obligatoires']);
-        expect([for (final c in jeu.colonnes) c.type], m['types']);
-        final mod = modeleImport(jeu, MagasinMemoire(magasinInitial));
+        // Décisions du 11/11/2026 : le modèle du répertoire patients ne porte plus ni le code (RG-01 : généré) ni le groupe sanguin.
+        final retires = jeu.id == 'patients' ? {'code', 'groupeSanguin'} : <String>{};
+        List<T> sans<T>(List<T> l) => [for (var i = 0; i < l.length; i++) if (!retires.contains((m['cles'] as List)[i])) l[i]];
+        expect([for (final c in jeu.colonnes) c.label], sans((m['entetes'] as List).cast<String>()));
+        expect([for (final c in jeu.colonnes) c.cle], sans((m['cles'] as List).cast<String>()));
+        expect([for (final c in jeu.colonnes) c.obligatoire], sans((m['obligatoires'] as List).cast<bool>()));
+        expect([for (final c in jeu.colonnes) c.type], sans((m['types'] as List).cast<String>()));
+        // Le modèle d'un profil qui a le droit paie porte la colonne réservée ; celui des autres ne la porte pas.
+        final mod = modeleImport(jeu, MagasinMemoire(magasinInitial), colonnesAccordees: jeu.colonnesReservees);
         expect(mod.donnees.length, 2);
-        expect([for (final x in mod.donnees.first) '$x'], m['entetes']);
+        expect([for (final x in mod.donnees.first) '$x'], sans((m['entetes'] as List).cast<String>()));
         // Un classeur ne garde pas les cellules vides de queue : on compare sans elles.
         List<String> sansQueue(Iterable<Object?> l) {
           final t = [for (final x in l) texteDe(x)];
@@ -133,9 +168,9 @@ void main() {
           return t;
         }
 
-        expect(sansQueue(mod.donnees[1]), sansQueue([for (final x in m['exemple'] as List) '$x'.replaceAll('Tchirimina, Natitingou', 'Zongo II, Parakou')]));
-        expect(mod.instructions.length, m['instructions']);
-        expect([for (final x in mod.listes.first) '$x'], m['listes']);
+        expect(sansQueue(mod.donnees[1]), sansQueue([for (final x in sans(m['exemple'] as List)) '$x'.replaceAll('Tchirimina, Natitingou', 'Zongo II, Parakou')]));
+        expect(mod.instructions.length, (m['instructions'] as int) - retires.length);
+        expect([for (final x in mod.listes.first) '$x'], [for (final x in (m['listes'] as List)) if (!(jeu.id == 'patients' && x == 'Groupe sanguin')) x]);
       });
     }
     test('Grand Stock : la ligne d\'exemple, restée telle quelle, est un fichier vide', () {
@@ -170,9 +205,14 @@ void main() {
     AnalyseImport analyseDuCas(String id) {
       final c = liste(V['cas']).firstWhere((x) => x['id'] == id);
       final jeu = jeuImportParId('${c['jeu']}')!;
-      return analyserLignes(jeu, [
-        for (final l in (c['lignes'] as List)) [for (final x in (l as List)) x]
-      ], '$id.xlsx', port);
+      return analyserLignes(
+          jeu,
+          adapter(jeu.id, [
+            for (final l in (c['lignes'] as List)) [for (final x in (l as List)) x]
+          ]),
+          '$id.xlsx',
+          port,
+          options: optionsDe(jeu));
     }
 
     test('un fichier refusé est consigné et n\'écrit rien', () {
@@ -201,8 +241,20 @@ void main() {
         for (final e in (lot['ecrits'] as List).cast<Map>()) {
           (fiches['${e['collection']}'] ??= []).add(_net(port.parId('${e['collection']}', e['id'])!, idVersCode));
         }
-        // Dans la maquette, l'ordre des fiches suit l'ordre d'écriture ; ici de même.
-        memes(fiches, app['fiches'], '${app['cas']}.fiches');
+        // Dans la maquette, l'ordre des fiches suit l'ordre d'écriture ; ici de même. Patients : ni code fourni ni groupe sanguin (décisions du 11/11/2026).
+        if (jeu.id == 'patients') {
+          for (final f in fiches['patients'] ?? const <Map<String, Object?>>[]) {
+            f.remove('code');
+          }
+        }
+        final attenduFiches = jsonDecode(jsonEncode(app['fiches'])) as Map<String, Object?>;
+        if (jeu.id == 'patients') {
+          for (final f in (attenduFiches['patients'] as List).cast<Map>()) {
+            f.remove('code');
+            f.remove('groupeSanguin');
+          }
+        }
+        memes(fiches, attenduFiches, '${app['cas']}.fiches');
         memes({for (final k in ['etat', 'nbLignes', 'nbAvertissements', 'jeu', 'fichier', 'validePar', 'date']) k: lot[k]}, app['lot'], '${app['cas']}.lot');
       });
     }
