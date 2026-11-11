@@ -65,7 +65,9 @@ test('spécialités : les entreprises et conventions se lisent à l\'accueil, au
 
 /* --- Trois rôles créés par la Direction de Baguidi le 10/11/2026 : un rôle propre à chaque responsable de l'organisation (RR, RM, RA). --- */
 const rolesEnModule = (role, mod) => Object.keys(rbac.parRole[role]).filter((id) => (manifeste.ecrans.find((e) => e.id === id) || {}).module === mod);
-const modulesDe = (role) => new Set(Object.keys(rbac.parRole[role]).map((id) => (manifeste.ecrans.find((e) => e.id === id) || {}).module));
+// Les écrans UNIVERSELS (« Mon espace », « Propositions de planning » : un agent exprime son besoin, propose son planning et lit sa paie) sont ouverts à tout poste : ils ne
+// donnent pas accès au module qui les porte, ce que ces tests mesurent.
+const modulesDe = (role) => new Set(Object.keys(rbac.parRole[role]).filter((id) => !(manifeste.ecrans.find((e) => e.id === id) || {}).universel).map((id) => (manifeste.ecrans.find((e) => e.id === id) || {}).module));
 test('les trois rôles du 10/11/2026 sont déclarés, actifs, avec leur tableau de bord pour accueil', () => {
   const attendu = { responsable_radiologie: 'dash-responsable-radiologie', sage_femme: 'dash-sage-femme', responsable_assurance: 'dash-responsable-assurance' };
   for (const [role, home] of Object.entries(attendu)) {
