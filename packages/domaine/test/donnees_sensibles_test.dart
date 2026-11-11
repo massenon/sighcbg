@@ -107,7 +107,7 @@ void main() {
   });
 
   group('le masquage au niveau du champ', () {
-    final p = {'id': 'P1', 'code': 'CNT/1/26', 'nom': 'AGBO', 'prenom': 'Ruth', 'sexe': 'F', 'telephone': '97000001', 'quartier': 'Zongo', 'antecedents': ['HTA'], 'groupeSanguin': 'O+', 'diagnostic': 'Palu'};
+    final p = {'id': 'P1', 'code': 'CNT/1/26', 'nom': 'EXEMPLE', 'prenom': 'Ruth', 'sexe': 'F', 'telephone': '97000001', 'quartier': 'Zongo', 'antecedents': ['HTA'], 'groupeSanguin': 'O+', 'diagnostic': 'Palu'};
     test('les champs des catégories refusées sont retirés, l’identification minimale reste, et les catégories masquées sont rendues', () {
       final masques = <String>{};
       final m = droits(v).masquer('guichet', p, masques: masques);

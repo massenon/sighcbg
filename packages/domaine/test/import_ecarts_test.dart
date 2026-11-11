@@ -103,14 +103,14 @@ void main() {
       final port = magasin();
       final f = [
         [...labels, 'Code dossier'],
-        ['DOSSOU', 'Rose', 'F', '1992-02-02', '', '', '', '', '', '', '', '', 'CNT/999/26'],
+        ['EXEMPLE', 'Rose', 'F', '1992-02-02', '', '', '', '', '', '', '', '', 'CNT/999/26'],
       ];
       final a = analyserLignes(jeuPatients, f, 'p.xlsx', port);
       expect(a.accepte, isTrue);
       expect(a.globaux.map((p) => p.code), contains('COLONNE_IGNOREE'));
       final r = appliquer(jeuPatients, a, port);
       expect(r.ok, isTrue);
-      final fiche = port.toutes('patients').firstWhere((p) => p['nom'] == 'DOSSOU');
+      final fiche = port.toutes('patients').firstWhere((p) => p['nom'] == 'EXEMPLE');
       expect(fiche['code'], isNot('CNT/999/26'));
       expect(fiche['code'], matches(reCodePatient));
       expect(fiche.containsKey('groupeSanguin'), isFalse);
@@ -218,7 +218,7 @@ void main() {
     final entete = ['Matricule', 'Nom', 'Prénom', 'Sexe', 'Fonction', 'Poste', 'Service'];
     List<List<Object?>> f(bool avecSalaire) => [
           [...entete, if (avecSalaire) 'Salaire de base'],
-          ['901', 'AKPO', 'Jean', 'M', 'infirmier', 'Infirmier', 'Soins infirmiers', if (avecSalaire) 150000],
+          ['901', 'EXEMPLE', 'Jean', 'M', 'infirmier', 'Infirmier', 'Soins infirmiers', if (avecSalaire) 150000],
         ];
 
     test('sans le droit : la colonne est rejetée en la NOMMANT, et absente du modèle', () {
