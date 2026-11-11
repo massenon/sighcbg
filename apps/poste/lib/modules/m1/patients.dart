@@ -24,7 +24,7 @@ List<ChampDef> champsPatient(ContexteEcran c, Fiche? r) {
     return d != null && d.isAfter(c.aujourdhui);
   }
 
-  return [
+  final tous = <ChampDef>[
     const ChampDef.section('Identification'),
     const ChampDef(nom: 'nom', libelle: 'Nom', requis: true),
     const ChampDef(nom: 'prenom', libelle: 'Prénom(s)', requis: true),
@@ -98,6 +98,17 @@ List<ChampDef> champsPatient(ContexteEcran c, Fiche? r) {
         libelle: 'Expiration de la carte',
         type: TypeChamp.date,
         aide: 'RG-09 — au-delà de cette date, la facturation est intégrale au patient.'),
+  ];
+  // On ne saisit ni ne modifie ce qu'on n'a pas le droit de lire : un champ dont la catégorie est refusée au profil ne figure pas au formulaire (le papier de la
+  // modale ne doit pas montrer ce que la fiche masque). Une section dont tous les champs ont disparu disparaît aussi.
+  final a = AccesSensible.de(c);
+  final garde = [
+    for (final d in tous)
+      if (d.type == TypeChamp.section || a.peutLireChamp(d.nom)) d
+  ];
+  return [
+    for (var i = 0; i < garde.length; i++)
+      if (garde[i].type != TypeChamp.section || (i + 1 < garde.length && garde[i + 1].type != TypeChamp.section)) garde[i]
   ];
 }
 
@@ -175,7 +186,9 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => EcouteDroitsSensibles(builder: _construire);
+
+  Widget _construire(BuildContext context, AccesSensible a) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('patients');
     final couvertures = c.magasin.collection('couverturesAssurance').actives;
@@ -208,21 +221,42 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                 Text('${r['nom']} ${r['prenom']}',
                     overflow: TextOverflow.ellipsis, style: styleM1(c: JetonsShell.slate800, p: FontWeight.w500)),
-                Text('${r['sexe'] == 'F' ? 'Femme' : 'Homme'} — ${age != null ? '$age ans' : '—'}',
+                Text('${r['sexe'] == 'F' ? 'Femme' : 'Homme'}${a.peut('identite_detaillee') ? ' — ${age != null ? '$age ans' : '—'}' : ''}',
                     style: styleM1(t: 12, c: JetonsShell.slate400)),
               ])),
             ]);
           }),
-      const ColonneTableau(cle: 'telephone', libelle: 'Téléphone', sansCoupure: true),
-      const ColonneTableau(cle: 'quartier', libelle: 'Quartier'),
-      const ColonneTableau(cle: 'groupeSanguin', libelle: 'Groupe', droite: true),
+      // Une colonne dont la catégorie est refusée porte la mention, ne se trie pas et ne s'exporte pas : le texte de colonne est aussi ce que la recherche lit.
+      ColonneTableau(
+          cle: 'telephone',
+          libelle: 'Téléphone',
+          sansCoupure: true,
+          triable: a.peut('coordonnees'),
+          texte: (r) => a.texteSi('coordonnees', '${r['telephone'] ?? ''}'),
+          rendu: (ctx, r) => a.peut('coordonnees') ? Text('${r['telephone'] ?? ''}') : const MentionReservee('coordonnees')),
+      ColonneTableau(
+          cle: 'quartier',
+          libelle: 'Quartier',
+          triable: a.peut('coordonnees'),
+          texte: (r) => a.texteSi('coordonnees', '${r['quartier'] ?? ''}'),
+          rendu: (ctx, r) => a.peut('coordonnees') ? Text('${r['quartier'] ?? ''}') : const MentionReservee('coordonnees')),
+      ColonneTableau(
+          cle: 'groupeSanguin',
+          libelle: 'Groupe',
+          droite: true,
+          triable: a.peut('groupe_serologies'),
+          texte: (r) => a.texteSi('groupe_serologies', '${r['groupeSanguin'] ?? ''}'),
+          rendu: (ctx, r) => a.peut('groupe_serologies') ? Text('${r['groupeSanguin'] ?? ''}') : const MentionReservee('groupe_serologies')),
       ColonneTableau(
           cle: 'assureur',
           libelle: 'Assurance',
-          texte: (r) => !patVrai(r['assureur'])
-              ? 'Non assuré'
-              : '${r['assureurNom'] ?? r['assureur']} — ${valide(r) ? 'carte valide' : 'carte non valide'}',
-          rendu: (ctx, r) => _celluleAssurance(ctx, r, valide(r))),
+          triable: a.peut('couverture_assurance'),
+          texte: (r) => !a.peut('couverture_assurance')
+              ? a.mention('couverture_assurance')
+              : !patVrai(r['assureur'])
+                  ? 'Non assuré'
+                  : '${r['assureurNom'] ?? r['assureur']} — ${valide(r) ? 'carte valide' : 'carte non valide'}',
+          rendu: (ctx, r) => a.peut('couverture_assurance') ? _celluleAssurance(ctx, r, valide(r)) : const MentionReservee('couverture_assurance')),
       ColonneTableau(
           cle: 'dateCreation',
           libelle: 'Créé le',
@@ -238,12 +272,12 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
     final filtres = [
       const FiltreTableau(
           nom: 'sexe', libelle: 'Sexe', options: [OptionChamp('M', 'Masculin'), OptionChamp('F', 'Féminin')]),
-      FiltreTableau(
+      if (a.peut('couverture_assurance')) FiltreTableau(
           nom: 'couverture',
           libelle: 'Couverture',
           options: const [OptionChamp('assure', 'Assurés'), OptionChamp('non', 'Non assurés'), OptionChamp('expiree', 'Carte expirée')],
           correspond: (r, v) => patFiltreCouverture(r, v, couvertures, c.aujourdhui)),
-      FiltreTableau(
+      if (a.peut('coordonnees')) FiltreTableau(
           nom: 'quartier',
           libelle: 'Quartier',
           options: [for (final q in quartiers) OptionChamp(q)],
@@ -295,7 +329,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
                       },
                       detail: (cc, f) => FichePatient(f),
                       titreDetail: (f) => '${f['nom']} ${f['prenom']}',
-                      sousTitreDetail: (f) => '${f['code']} — ${f['quartier'] ?? ''}',
+                      sousTitreDetail: (f) => a.peut('coordonnees') ? '${f['code']} — ${f['quartier'] ?? ''}' : '${f['code']}',
                       etat: (cc, f) => imprimerFichePatient(cc, f),
                       titreModification: 'Modifier l’enregistrement')),
               OngletDef(
@@ -532,13 +566,14 @@ class _EtatProfil extends State<EcranPatientProfil> {
         listenable: col,
         builder: (context, _) {
           final tries = trierPar([...col.actives], (p) => p['code']);
+          final acces = AccesSensible.de(c);
           _sel ??= ControleurFormulaire([
             ChampDef(
                 nom: 'dossier',
                 libelle: 'Sélectionner un dossier patient',
                 type: TypeChamp.select,
                 col: ColChamp.plein,
-                options: [for (final p in tries) OptionChamp('${p['id']}', '${p['nom']} ${p['prenom']} — ${p['code']} — ${p['quartier'] ?? ''}')])
+                options: [for (final p in tries) OptionChamp('${p['id']}', acces.peut('coordonnees') ? '${p['nom']} ${p['prenom']} — ${p['code']} — ${p['quartier'] ?? ''}' : '${p['nom']} ${p['prenom']} — ${p['code']}')])
           ], {
             'dossier': tries.isEmpty ? '' : '${tries.first['id']}'
           });

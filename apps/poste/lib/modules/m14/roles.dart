@@ -280,6 +280,10 @@ class _VueRolesState extends State<_VueRoles> {
               libelle: 'Habilitations métier',
               construire: (ctx) => const _OngletMetier()),
           OngletDef(
+              id: 'sensibles',
+              libelle: 'Données sensibles',
+              construire: (ctx) => _OngletSensibles(x: x)),
+          OngletDef(
               id: 'decisions',
               libelle: 'Décisions de droits',
               compte: x.m.collection(drCollectionDecisions).actives.length,
@@ -688,6 +692,124 @@ class _OngletMetier extends StatelessWidget {
           'Le rôle ouvre les écrans, la fonction décide des données, le secteur en fixe le périmètre. Ces habilitations-ci s’appliquent aux données, indépendamment de l’écran ouvert.',
           ton: TonSigh.info,
           icone: LucideIcons.quote),
+    ]);
+  }
+}
+
+// --- Données sensibles du patient : un droit par catégorie ------------------------------------------------------------------------------------
+
+/// Le droit de lire chaque CATÉGORIE de données sensibles du patient, par rôle. Même mécanisme que les droits de module et d'écran : une décision de la fiche
+/// `rbac` du rôle (`donneesSensibles`), motivée, journalisée, diffusée aux postes, modifiable à tout moment. Sans décision, le défaut suit la matrice (le droit
+/// de voir l'écran dont la catégorie dépend) : l'écran le dit, et « Revenir au défaut » retire la décision.
+class _OngletSensibles extends StatefulWidget {
+  const _OngletSensibles({required this.x});
+  final _Ctx x;
+  @override
+  State<_OngletSensibles> createState() => _OngletSensiblesState();
+}
+
+class _OngletSensiblesState extends State<_OngletSensibles> {
+  String? _role;
+
+  Future<void> _decider(BuildContext ctx, RoleSec r, CategorieSensible cat, bool? valeur) async {
+    final x = widget.x;
+    final intitule = valeur == null ? 'Revenir au défaut' : (valeur ? 'Autoriser' : 'Masquer');
+    final motif = await confirmerAvecMotif(ctx,
+        titre: '$intitule : « ${cat.libelle} » pour « ${r.label} » ?',
+        message: x.diffusion,
+        libelleOk: intitule);
+    if (motif == null || !ctx.mounted) return;
+    final annuler = x.enregistrer(
+        r.id,
+        {
+          'donneesSensibles': {cat.code: valeur},
+        },
+        'Droit sur les données sensibles du patient',
+        motif: motif);
+    _annoncerDecision(ctx, x);
+    ToastsSigh.afficher(ctx, 'Droit enregistré : ${cat.libelle}.',
+        type: TypeToast.succes,
+        detail: valeur == null ? 'Le défaut de la matrice s’applique de nouveau.' : (valeur ? 'Visible pour « ${r.label} ».' : 'Masqué pour « ${r.label} ».'),
+        annuler: annuler);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final x = widget.x;
+    final c = x.c;
+    final roles = x.actifs;
+    if (roles.isEmpty) return const VideSigh('Aucun rôle actif.', icone: LucideIcons.shield);
+    final role = roles.where((r) => r.id == _role).firstOrNull ?? roles.first;
+    final droits = DroitsSensibles(fiches: x.m.collection('rbac').actives, peutVoirEcran: c.donnees?.matrice.peutVoir);
+    final modifiable = c.droit.editer;
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      const NoteSigh(
+          'Un droit par catégorie de données sensibles du patient, par rôle. Une catégorie masquée le dit (« Information réservée ») dans la fiche patient, le tiroir du répertoire, la consultation, les impressions, la recherche globale et l’application mobile. Sans décision, le droit suit celui de l’écran indiqué ; la décision de la clinique l’emporte, à tout moment, sans redémarrage.',
+          key: Key('m14:sensibles:note'),
+          ton: TonSigh.info,
+          icone: LucideIcons.eyeOff),
+      const SizedBox(height: 12),
+      CarteSigh(
+          titre: 'Données sensibles du patient',
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 420),
+                    child: InputDecorator(
+                        decoration: const InputDecoration(labelText: 'Rôle', isDense: true, border: OutlineInputBorder()),
+                        child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                                key: const Key('m14:sensibles:role'),
+                                isDense: true,
+                                isExpanded: true,
+                                value: role.id,
+                                items: [for (final r in roles) DropdownMenuItem(value: r.id, child: Text(r.label))],
+                                onChanged: (v) => setState(() => _role = v)))))),
+            const SizedBox(height: 12),
+            for (final cat in categoriesSensibles)
+              Builder(builder: (ctx) {
+                final visible = droits.peut(role.id, cat.code);
+                final decide = droits.origine(role.id, cat.code) == 'decide';
+                final ref = cat.ecranRef;
+                return Container(
+                    key: Key('m14:sensibles:${cat.code}'),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(border: Border(top: BorderSide(color: JetonsShell.slate200))),
+                    child: Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                      SizedBox(
+                          width: 420,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Text(cat.libelle, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
+                            Text(cat.couvre, style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+                            Text(
+                                decide
+                                    ? 'Décision de la clinique.'
+                                    : (ref == null ? 'Défaut : ouvert tant qu’aucune décision n’est prise.' : 'Défaut : suit le droit de voir « $ref ».'),
+                                style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
+                          ])),
+                      BadgeSigh('Zone ${cat.zone == 0 ? '—' : cat.zone}', ton: TonSigh.neutre),
+                      BadgeSigh(visible ? 'Visible' : 'Masqué', key: Key('m14:sensibles:etat:${cat.code}'), ton: visible ? TonSigh.succes : TonSigh.attention),
+                      if (modifiable) ...[
+                        BoutonSigh(
+                            libelle: visible ? 'Masquer' : 'Autoriser',
+                            key: Key('m14:sensibles:basculer:${cat.code}'),
+                            icone: visible ? LucideIcons.eyeOff : LucideIcons.eye,
+                            taille: TailleBouton.sm,
+                            variante: VarianteBouton.secondaire,
+                            onPressed: () => _decider(ctx, role, cat, !visible)),
+                        if (decide)
+                          BoutonSigh(
+                              libelle: 'Revenir au défaut',
+                              key: Key('m14:sensibles:defaut:${cat.code}'),
+                              icone: LucideIcons.rotateCcw,
+                              taille: TailleBouton.sm,
+                              variante: VarianteBouton.fantome,
+                              onPressed: () => _decider(ctx, role, cat, null)),
+                      ],
+                    ]));
+              }),
+          ])),
     ]);
   }
 }

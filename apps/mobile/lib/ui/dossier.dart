@@ -57,11 +57,14 @@ class _DossierPatientState extends State<DossierPatient> {
           appBar: AppBar(title: Text(r.nom.isEmpty ? r.code : r.nom), bottom: PreferredSize(preferredSize: const Size.fromHeight(24), child: Text(r.code, style: const TextStyle(color: Colors.white)))),
           body: ListView(padding: const EdgeInsets.all(16), children: [
             CarteTitre(titre: 'Identité', enfants: [
-              Text('Âge : ${r.age != null ? '${r.age} ans' : 'non renseigné'}'),
-              Text('Quartier : ${r.quartier ?? 'non renseigné'}'),
-              Text('Téléphone : ${r.telephone ?? 'non renseigné'}'),
+              Text(d.masques.contains('identite_detaillee') ? 'Âge : ${mentionReservee('identite_detaillee')}' : 'Âge : ${r.age != null ? '${r.age} ans' : 'non renseigné'}'),
+              Text(d.masques.contains('coordonnees') ? 'Quartier : ${mentionReservee('coordonnees')}' : 'Quartier : ${r.quartier ?? 'non renseigné'}'),
+              Text(d.masques.contains('coordonnees') ? 'Téléphone : ${mentionReservee('coordonnees')}' : 'Téléphone : ${r.telephone ?? 'non renseigné'}'),
             ]),
             CarteTitre(titre: 'Couverture', enfants: [
+              if (d.masques.contains('couverture_assurance'))
+                Text(mentionReservee('couverture_assurance'), key: const Key('couverture'))
+              else
               Text(mobLibellesCouverture[r.couverture]!,
                   key: const Key('couverture'),
                   style: TextStyle(fontWeight: FontWeight.w700, color: switch (r.couverture) {
@@ -69,10 +72,12 @@ class _DossierPatientState extends State<DossierPatient> {
                     MobCouverture.carteNonValide => ThemeSigh.danger,
                     MobCouverture.nonAssure => null,
                   })),
-              if (r.couverture == MobCouverture.carteNonValide) const Text(mobExplicationCarteNonValide),
+              if (!d.masques.contains('couverture_assurance') && r.couverture == MobCouverture.carteNonValide) const Text(mobExplicationCarteNonValide),
             ]),
             CarteTitre(titre: 'Allergies', enfants: [
-              r.allergies.isEmpty
+              d.masques.contains('allergies_traitements')
+                  ? Text(mentionReservee('allergies_traitements'), key: const Key('allergies'))
+                  : r.allergies.isEmpty
                   ? Text(mobTexte('allergiesAucune'), key: const Key('allergies'))
                   : Text(r.allergies.join(', '), key: const Key('allergies'), style: TextStyle(color: ThemeSigh.danger, fontWeight: FontWeight.w700)),
             ]),
@@ -87,18 +92,22 @@ class _DossierPatientState extends State<DossierPatient> {
               if (r.horsBornes.isNotEmpty) Text('Hors bornes : ${r.horsBornes.join(', ')}', key: const Key('hors-bornes'), style: TextStyle(color: ThemeSigh.attention, fontWeight: FontWeight.w600)),
             ]),
             CarteTitre(titre: 'Notes de consultation', enfants: [
-              if (r.notes.isEmpty) const Text('Aucune note sur ce téléphone.', key: Key('notes-vide')),
+              if (d.masques.contains('notes_consultation'))
+                Text(mentionReservee('notes_consultation'), key: const Key('notes-reservees'))
+              else if (r.notes.isEmpty) const Text('Aucune note sur ce téléphone.', key: Key('notes-vide')),
               for (final n in r.notes)
                 ListTile(
                   key: Key('note-${n['id'] ?? n['date']}'),
                   dense: true,
                   contentPadding: EdgeInsets.zero,
-                  title: Text('${n['motif'] ?? ''} : ${n['diagnostic'] ?? ''}'),
+                  title: Text(d.masques.contains('diagnostic_pathologie') ? '${n['motif'] ?? ''} : ${mentionReservee('diagnostic_pathologie')}' : '${n['motif'] ?? ''} : ${n['diagnostic'] ?? ''}'),
                   subtitle: Text('${_quand(n['date'])} · ${n['redigePar'] ?? ''}'),
                 ),
             ]),
             CarteTitre(titre: 'Prescriptions', enfants: [
-              if (r.prescriptions.isEmpty) const Text('Aucune prescription sur ce téléphone.', key: Key('prescriptions-vide')),
+              if (d.masques.contains('notes_consultation'))
+                Text(mentionReservee('notes_consultation'), key: const Key('prescriptions-reservees'))
+              else if (r.prescriptions.isEmpty) const Text('Aucune prescription sur ce téléphone.', key: Key('prescriptions-vide')),
               for (final p in r.prescriptions)
                 ListTile(
                   key: Key('prescription-${p['id']}'),

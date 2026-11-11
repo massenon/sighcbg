@@ -6,6 +6,7 @@ import '../core/donnees_navigation.dart';
 import '../core/icones.dart';
 import '../core/jetons_shell.dart';
 import '../donnees/magasin.dart';
+import '../kit/champ_sensible.dart' show AccesSensible;
 import '../kit/modale.dart';
 
 /// Un résultat de la recherche globale : où il mène (écran, et onglet si c'est une rubrique).
@@ -92,9 +93,16 @@ List<GroupeRecherche> rechercheGlobale({
     if (l.isNotEmpty) groupes.add(GroupeRecherche(titre, [for (final f in l) vers(f)]));
   }
 
+  // LA RECHERCHE NE FUIT PAS UNE VALEUR MASQUÉE : on ne cherche que dans l'identification minimale (code, nom, prénom — jamais une catégorie sensible) et le
+  // détail d'une ligne n'affiche que ce que le profil a le droit de lire, par le même point que la fiche (`AccesSensible`). Aucun diagnostic, aucun résultat
+  // d'analyse de patient n'est indexé ici ; les « Analyses » plus bas sont le catalogue tarifaire, pas des résultats.
+  final acces = AccesSensible.depuis(role: role, magasin: magasin, donnees: nav.matrice);
   famille('Patients', magasin.collection('patients').actives, (p) => ok('${t(p['nom'])} ${t(p['prenom'])} ${t(p['code'])}'), 5,
       (p) => ResultatRecherche(
-          label: '${t(p['nom'])} ${t(p['prenom'])}', detail: '${t(p['code'])}, ${t(p['quartier'])}', icone: 'user', ecran: 'm1-patients'),
+          label: '${t(p['nom'])} ${t(p['prenom'])}',
+          detail: acces.peut('coordonnees') ? '${t(p['code'])}, ${t(p['quartier'])}' : '${t(p['code'])}',
+          icone: 'user',
+          ecran: 'm1-patients'),
       droit: 'm1-patients');
   famille('Produits', magasin.collection('produits').actives, (p) => ok('${t(p['designation'])} ${t(p['code'])}'), 5,
       (p) => ResultatRecherche(

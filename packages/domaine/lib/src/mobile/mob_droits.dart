@@ -15,6 +15,7 @@ library;
 import 'dart:convert' show JsonCodec;
 
 import '../droits/a_chaud.dart';
+import '../droits/donnees_sensibles.dart';
 import '../droits/matrice.dart';
 import '../navigation/manifeste.dart';
 import 'mob_regles.dart' show RefusMobile, mobLibelleEcran;
@@ -100,14 +101,15 @@ class GraineDroits {
 
 /// La matrice EN FORCE sur le téléphone : la graine, ou la superposition des fiches reçues de la mère.
 class MatriceMobile {
-  MatriceMobile._(this.graine, this.matrice, this.recue);
+  MatriceMobile._(this.graine, this.matrice, this.recue, [this._fiches = const []]);
 
   /// Les droits d'origine : aucune fiche reçue de la mère.
   factory MatriceMobile.graine(GraineDroits g) => MatriceMobile._(
       g,
       superposerDroits(g.base, g.manifeste,
           rbac: g.rbacLivre, modulesActifs: g.modulesLivres, referenceRbac: g.referenceRbac, referenceModules: g.referenceModules),
-      false);
+      false,
+      g.rbacLivre);
 
   final GraineDroits graine;
   final MatriceDroits matrice;
@@ -120,8 +122,18 @@ class MatriceMobile {
     if (rbac.isEmpty && modulesActifs.isEmpty) return MatriceMobile.graine(graine);
     final m = superposerDroits(graine.base, graine.manifeste,
         rbac: rbac, modulesActifs: modulesActifs, referenceRbac: graine.referenceRbac, referenceModules: graine.referenceModules);
-    return MatriceMobile._(graine, m, true);
+    return MatriceMobile._(graine, m, true, [...rbac]);
   }
+
+  /// Les fiches `rbac` en force sur ce téléphone (la graine, ou ce que la mère a livré).
+  final List<MobFicheDroits> _fiches;
+
+  /// Les droits sur les DONNÉES SENSIBLES du patient (`donnees_sensibles.dart`) : le MÊME calcul que le poste, sur les fiches que la mère a livrées. Évalué à
+  /// chaque appel : une décision livrée par la synchronisation s'applique à la lecture suivante, sans réappairage.
+  DroitsSensibles get donneesSensibles => DroitsSensibles(fiches: _fiches, peutVoirEcran: matrice.peutVoir);
+
+  /// Le rôle peut-il lire la catégorie ? Un rôle inconnu (`null`) ne lit rien de sensible.
+  bool peutLireSensible(String? role, String categorie) => role != null && donneesSensibles.peut(role, categorie);
 
   /// Le droit du rôle sur un écran du TÉLÉPHONE. Un écran hors matrice (appareil) est ouvert ; un écran inconnu ou un rôle inconnu : rien.
   Droit droit(String? role, String ecranMobile) {

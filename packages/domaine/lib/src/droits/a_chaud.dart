@@ -35,7 +35,7 @@ Map<String, Map<String, Object?>> surchargesParRole(Iterable<Map<String, Object?
     final fusion = {...deja};
     f.forEach((k, v) {
       if (v == null) return;
-      if (k == 'droits' || k == 'droitsEcrans') {
+      if (k == 'droits' || k == 'droitsEcrans' || k == 'donneesSensibles') {
         fusion[k] = {
           ...((deja[k] as Map?)?.cast<String, Object?>() ?? const {}),
           ...((v as Map?)?.cast<String, Object?>() ?? const {})

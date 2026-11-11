@@ -19,6 +19,7 @@ export 'src/design/jetons.dart';
 export 'src/droits/matrice.dart';
 export 'src/droits/a_chaud.dart';
 export 'src/droits/decisions_droits.dart';
+export 'src/droits/donnees_sensibles.dart';
 export 'src/navigation/manifeste.dart';
 export 'src/caisse/prise_en_charge.dart';
 export 'src/caisse/encaissement.dart';

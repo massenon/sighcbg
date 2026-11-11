@@ -43,7 +43,9 @@ class EcranDossiersConsultation extends StatelessWidget with EcranMaquette {
       'Le dossier s’enregistre AVANT la fiche de consultation : la fiche en fait le récapitulatif, et c’est elle SEULE qui prescrit (médicaments, analyses, imagerie) vers la caisse. Les constantes sont celles de l’accueil, lues et non ressaisies. Le cycle est ordonné — EN ATTENTE → EN CONSULTATION → EN ATTENTE LABO → CLÔTURÉ — et les sauts sont refusés. L’accueil n’y accède pas (RG-13).';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('dossiersConsultation');
     return ListenableBuilder(
@@ -672,7 +674,9 @@ class _EtatDossierNouveau extends State<EcranDossierConsultationNouveau> {
   Widget _grille(ControleurFormulaire f) => FormulaireSigh(controleur: f);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     if (_introuvable) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

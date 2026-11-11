@@ -65,7 +65,9 @@ class EcranOrdonnances extends StatelessWidget with EcranMaquette {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('ordonnances');
     return ListenableBuilder(
@@ -536,7 +538,9 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => GardeSensible(categorie: 'notes_consultation', enfant: Builder(builder: _corps));
+
+  Widget _corps(BuildContext context) {
     final c = ContexteEcran.of(context);
     if (!c.droit.editer) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
