@@ -184,17 +184,39 @@ class Pont {
     });
   }
 
-  /// Ce que la mère publie aux mobiles : les opérations des fiches de LEUR portée. Sous le verrou, sans réseau.
+  /// LES DROITS (10/11/2026) : la fiche de droits d'un rôle (`rbac`) et les activités fermées (`modulesActifs`) sont de la configuration que la mère seule écrit. Un mobile
+  /// les reçoit, hors de toute portée de tournée, pour ÉVALUER la matrice comme le poste (il n'a pas d'autre source) : un instantané complet à la première diffusion (un
+  /// téléphone appairé AVANT cette règle le reçoit aussi), puis chaque opération de ces deux collections. Aucune donnée de santé n'y figure.
+  static const collectionsDroits = {'rbac', 'modulesActifs'};
+
+  Future<void> _publierDroits(String uuid) async {
+    final fiches = <Map<String, Object?>>[];
+    for (final x in await base.select("SELECT collection,id FROM fiches WHERE collection IN ('rbac','modulesActifs') ORDER BY collection,id")) {
+      final f = await mere.lire('${x['collection']}', '${x['id']}');
+      if (f != null) fiches.add({'collection': x['collection'], 'id': x['id'], 'data': f.data, 'fieldseq': f.fieldseq, 'archive': f.archive});
+    }
+    await publier(uuid, {'type': 'droits', 'fiches': fiches});
+  }
+
+  /// Ce que la mère publie aux mobiles : les opérations des fiches de LEUR portée, plus les droits. Sous le verrou, sans réseau.
   Future<void> diffuser() => _sous(() async {
         for (final a in await base.select("SELECT uuid FROM appareils WHERE role='mobile' AND etat='actif'")) {
           final uuid = a['uuid'] as String;
           final brut = await base.meta('sortie_seq:$uuid');
           if (brut == null) continue;
+          if (await base.meta('droits_ok:$uuid') != '1') {
+            await _publierDroits(uuid);
+            await base.poserMeta('droits_ok:$uuid', 1);
+          }
           final ops = await base.select('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>? ORDER BY seq LIMIT 100', [int.parse(brut)]);
           if (ops.isEmpty) continue;
           final siennes = <Map<String, Object?>>[];
           for (final o in ops) {
             final champs = jsonDecode(o['champs'] as String);
+            if (collectionsDroits.contains(o['collection'])) {
+              siennes.add({...o, 'champs': champs});
+              continue;
+            }
             // L0 : de la configuration, un mobile ne reçoit que les paramètres de la LISTE BLANCHE (déclarés `mobile`, non sensibles, famille non réservée : RG-13).
             if (o['collection'] == parCollectionParametres) {
               if (Parametres.autoriseMobile((champs as Map).cast<String, Object?>())) siennes.add({...o, 'champs': champs});

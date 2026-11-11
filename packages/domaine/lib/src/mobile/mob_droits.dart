@@ -17,6 +17,7 @@ import 'dart:convert' show JsonCodec;
 import '../droits/a_chaud.dart';
 import '../droits/matrice.dart';
 import '../navigation/manifeste.dart';
+import 'mob_regles.dart' show RefusMobile, mobLibelleEcran;
 
 typedef MobFicheDroits = Map<String, Object?>;
 
@@ -148,3 +149,13 @@ class MatriceMobile {
 // `dart:convert` seul : le domaine reste du Dart pur.
 dynamic _decoder(String t) => _json.decode(t);
 const _json = JsonCodec();
+
+/// Le refus d'un geste ou d'un écran dont le droit a été retiré par la clinique : il se NOMME (code, motif, geste), il ne s'ouvre pas à moitié. Refait à CHAQUE
+/// geste : une commande absente de l'écran ne protège rien, et un droit retiré pendant que l'écran était ouvert doit refuser le geste suivant.
+RefusMobile mobRefusDroitRetire(String ecranMobile, {required bool ecriture}) {
+  final nom = ecranMobile == 'agenda' ? 'Agenda du jour' : mobLibelleEcran(ecranMobile);
+  return RefusMobile(
+      'DROIT_RETIRE',
+      ecriture ? 'Les droits de votre profil ne permettent plus d’écrire dans « $nom » : la clinique les a modifiés.' : 'Les droits de votre profil ne permettent plus de voir « $nom » : la clinique les a modifiés.',
+      'Revenir à l’accueil ; demander la modification à l’administrateur de la clinique');
+}

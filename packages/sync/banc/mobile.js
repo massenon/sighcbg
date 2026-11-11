@@ -89,13 +89,27 @@ function purgerLotExpire() {
   for (const f of aSuppr) if (!enAttente.has(f.collection + '|' + f.id)) db.prepare('DELETE FROM confirme WHERE collection=? AND id=?').run(f.collection, f.id);
   setMeta('lot_expire', 0); etat.lot_purge_le = Date.now();
 }
+const COLLECTIONS_REGLEES_MERE = ['rbac', 'modulesActifs', 'tarifs', 'chambres', 'produits', 'parametres']; /* les collections de la famille R de la mère */
 function recevoir(p) {
   if (p.type === 'bienvenue') { setMeta('epoch', p.epoch); setMeta('plage_prochain', p.plage.debut); setMeta('plage_fin', p.plage.fin); setMeta('profil', p.profil || ''); setMeta('fonction', p.fonction || ''); setMeta('bienvenu', 1); }
   else if (p.type === 'lot') {
     setMeta('lot_expire', p.expire);
     for (const f of p.fiches) ecrireConfirme(f.collection, f.id, { data: f.data, fieldseq: f.fieldseq, archive: f.archive, dulot: true });
+  } else if (p.type === 'droits') {
+    /* L'instantané des droits de la mère (`rbac`, `modulesActifs`) : jamais du lot, donc jamais purgé à l'expiration de la tournée. Une fiche déjà connue se fusionne
+       champ par champ (le plus récent l'emporte) : une opération reçue avant l'instantané ne régresse pas. */
+    for (const f of p.fiches) {
+      const s = lireConfirme(f.collection, f.id);
+      for (const k of Object.keys(f.data)) { if (!s.existe || (f.fieldseq[k] || 0) >= (s.fieldseq[k] || 0)) { s.data[k] = f.data[k]; s.fieldseq[k] = f.fieldseq[k] || 0; } }
+      s.archive = !!f.archive; s.existe = true; s.dulot = false;
+      ecrireConfirme(f.collection, f.id, s);
+    }
+    setMeta('droits_maj_le', Date.now());
   } else if (p.type === 'ops') {
-    for (const op of p.ops) { const s = lireConfirme(op.collection, op.fiche); appliquer(s, op, op.seq); ecrireConfirme(op.collection, op.fiche, s); setMeta('curseur_seq', Math.max(+meta('curseur_seq', 0), op.seq)); }
+    for (const op of p.ops) {
+      const s = lireConfirme(op.collection, op.fiche); appliquer(s, op, op.seq); ecrireConfirme(op.collection, op.fiche, s); setMeta('curseur_seq', Math.max(+meta('curseur_seq', 0), op.seq));
+      if (op.collection === 'rbac' || op.collection === 'modulesActifs') setMeta('droits_maj_le', Date.now());
+    }
   } else if (p.type === 'accuse') {
     if (p.erreur === 'epoch_inconnue') { revoque(); setMeta('suspendu', 0); etat.suspendu = false; setMeta('epoch', p.epoch_mere); return; }
     for (const r of p.resultats) db.prepare('UPDATE file SET etat=?, resultat=? WHERE id=?').run(r.statut, JSON.stringify(r), r.id);
@@ -152,11 +166,15 @@ const commandes = {
     return [200, { uuid: UUID }];
   },
   'GET /secret': () => [200, { jeton: meta('jeton') }],
-  'POST /ecrire': (b) => [200, ecrire(b)],
+  /* Famille R : la configuration (droits, activités fermées, référentiels) est RÉGLÉE SUR LA MÈRE. Le téléphone la reçoit, il ne l'écrit pas : refus nommé, rien n'est
+     mis en file (la mère le refuserait aussi, `droit_refuse`). */
+  'POST /ecrire': (b) => (COLLECTIONS_REGLEES_MERE.includes(b.collection)
+    ? [403, { code: 'regle_sur_la_mere', motif: 'Cette donnée est réglée sur la mère de la clinique : un téléphone la reçoit, il ne l\u2019écrit pas.', geste: 'Demander la modification à l\u2019administrateur, à la console de la mère' }]
+    : [200, ecrire(b)]),
   'GET /vue': (b, q) => [200, vue(q.collection, q.id)],
   'GET /liste': (b, q) => [200, liste(q.collection)],
   'GET /etat': () => [200, Object.assign({}, etat, {
-    uuid: UUID, bienvenu: meta('bienvenu') === '1', profil: meta('profil') || null, fonction: meta('fonction') || null, epoch: +meta('epoch', 1), curseur_n: +meta('curseur_n', 0), lot_expire: +meta('lot_expire', 0),
+    uuid: UUID, bienvenu: meta('bienvenu') === '1', profil: meta('profil') || null, fonction: meta('fonction') || null, epoch: +meta('epoch', 1), curseur_n: +meta('curseur_n', 0), lot_expire: +meta('lot_expire', 0), droits_maj_le: +meta('droits_maj_le', 0),
     en_attente: db.prepare("SELECT COUNT(*) AS n FROM file WHERE etat IN ('en_attente','envoyee')").get().n,
     a_traiter: db.prepare("SELECT resultat FROM file WHERE etat='refusee'").all().map((r) => JSON.parse(r.resultat)),
     resultats: db.prepare('SELECT id,etat,resultat FROM file ORDER BY ordre').all().map((r) => Object.assign({ id: r.id, etat: r.etat }, r.resultat ? JSON.parse(r.resultat) : {})),
