@@ -85,12 +85,14 @@ void main() {
       final m = poste();
       const r = 'responsable_radiologie';
       final v = visibles(m, r);
-      expect(modules(m, v).difference({'AUTH', 'SUP'}), {'M1', 'M2', 'M5', 'M7', 'M13', 'RAP', 'CFG', 'PIL', 'DASH'});
+      // M10 n'entre que par les écrans UNIVERSELS (« Mon espace », « Propositions de planning ») : le module RH lui-même reste fermé à ce rôle.
+      expect({for (final e in v) if (e.startsWith('m10-')) e}, {'m10-mes', 'm10-propositions-planning'}, reason: '$r : seulement les écrans universels du module RH');
+      expect(modules(m, v).difference({'AUTH', 'SUP', 'M10'}), {'M1', 'M2', 'M5', 'M7', 'M13', 'RAP', 'CFG', 'PIL', 'DASH'});
       expect(v, containsAll([
         'dash-responsable-radiologie', 'm2-dashboard-imagerie', 'm2-imagerie-demandes', 'm2-imagerie', 'm2-imagerie-radiographie', 'm2-imagerie-mammographie',
         'm2-imagerie-scanner', 'm2-imagerie-irm', 'm2-echographie-galerie', 'm2-stats-echographie', 'cfg-imagerie-catalogue', 'm1-patients', 'm1-patient-profil'
       ]));
-      expect(editables(m, r).where((e) => !e.startsWith('m7-besoins') && e != 'dash-responsable-radiologie' && !e.startsWith('auth') && e != 'index' && !e.startsWith('error') && e != 'plan-du-site' && !{'aide-apropos', 'parametres-hub', 'contact-editeur'}.contains(e)).toSet(),
+      expect(editables(m, r).where((e) => !e.startsWith('m7-besoins') && e != 'm10-mes' && e != 'm10-propositions-planning' && e != 'dash-responsable-radiologie' && !e.startsWith('auth') && e != 'index' && !e.startsWith('error') && e != 'plan-du-site' && !{'aide-apropos', 'parametres-hub', 'contact-editeur'}.contains(e)).toSet(),
           {'m2-dashboard-imagerie', 'm2-imagerie-demandes', 'm2-imagerie', 'm2-imagerie-radiographie', 'm2-imagerie-mammographie', 'm2-imagerie-scanner', 'm2-imagerie-irm', 'm2-echographie-galerie', 'm2-imagerie-cr'},
           reason: 'il écrit l’imagerie, et rien d’autre');
       final mat = donnees.aChaud(m).matrice;
@@ -99,6 +101,7 @@ void main() {
       }
       expect(mat.peutVoir(r, 'cfg-imagerie-catalogue') && !mat.peutEditer(r, 'cfg-imagerie-catalogue'), isTrue, reason: 'le catalogue se lit');
       for (final e in v) {
+        if (e == 'm10-mes' || e == 'm10-propositions-planning') continue; // écrans universels de M10, ouverts à tout poste
         final mod = donnees.manifeste.ecran(e)!.module;
         expect(['M3', 'M4', 'M6', 'M8', 'M9', 'MECEF', 'M10', 'M11', 'M12', 'GED', 'M14'].contains(mod), isFalse, reason: 'aucun accès financier, RH ni logistique : $e');
       }
@@ -119,7 +122,9 @@ void main() {
       final m = poste();
       const r = 'sage_femme';
       final v = visibles(m, r);
-      expect(modules(m, v).difference({'AUTH', 'SUP'}), {'M1', 'M2', 'M4', 'M5', 'M7', 'RAP', 'PIL', 'DASH'});
+      // M10 n'entre que par les écrans UNIVERSELS (« Mon espace », « Propositions de planning ») : le module RH lui-même reste fermé à ce rôle.
+      expect({for (final e in v) if (e.startsWith('m10-')) e}, {'m10-mes', 'm10-propositions-planning'}, reason: '$r : seulement les écrans universels du module RH');
+      expect(modules(m, v).difference({'AUTH', 'SUP', 'M10'}), {'M1', 'M2', 'M4', 'M5', 'M7', 'RAP', 'PIL', 'DASH'});
       final mat = donnees.aChaud(m).matrice;
       for (final e in v.where((e) => donnees.manifeste.ecran(e)!.module == 'M4')) {
         expect(mat.peutEditer(r, e), isTrue, reason: 'M4 est son module : $e');
@@ -134,6 +139,7 @@ void main() {
         expect(v.contains(e), isFalse, reason: 'fermé : $e');
       }
       for (final e in v) {
+        if (e == 'm10-mes' || e == 'm10-propositions-planning') continue; // écrans universels de M10, ouverts à tout poste
         final mod = donnees.manifeste.ecran(e)!.module;
         expect(['M3', 'M6', 'M8', 'M9', 'MECEF', 'M10', 'M11', 'M12', 'M13', 'GED', 'M14', 'CFG'].contains(mod), isFalse, reason: 'pas de finance, ni administration : $e');
       }
@@ -143,7 +149,9 @@ void main() {
       final m = poste();
       const r = 'responsable_assurance';
       final v = visibles(m, r);
-      expect(modules(m, v).difference({'AUTH', 'SUP'}), {'M1', 'M7', 'M8', 'M9', 'RAP', 'DASH'});
+      // M10 n'entre que par les écrans UNIVERSELS (« Mon espace », « Propositions de planning ») : le module RH lui-même reste fermé à ce rôle.
+      expect({for (final e in v) if (e.startsWith('m10-')) e}, {'m10-mes', 'm10-propositions-planning'}, reason: '$r : seulement les écrans universels du module RH');
+      expect(modules(m, v).difference({'AUTH', 'SUP', 'M10'}), {'M1', 'M7', 'M8', 'M9', 'RAP', 'DASH'});
       final mat = donnees.aChaud(m).matrice;
       for (final e in v.where((e) => donnees.manifeste.ecran(e)!.module == 'M9')) {
         expect(mat.peutEditer(r, e), isTrue, reason: 'M9 est son module : $e');

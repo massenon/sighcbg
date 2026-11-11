@@ -166,7 +166,10 @@ void main() {
         ..utilisateur = 'Caissier';
       encaisserFacture(m, 'F2', montant: 5000, maintenant: auj);
       final f = m.collection('factures').parId('F2')!;
-      expect(f['statutMecef'], 'valide');
+      // Lot L3 : le module rouvert reprend la tenue des champs fiscaux ; sans adaptateur configuré, la vente attend sa certification, SANS numéro fabriqué.
+      expect(f['statutMecef'], 'en_attente');
+      expect(f['codeRetour'], 'MECEF_NON_CONFIGURE');
+      expect(f['numeroMecef'], isNull);
       expect(f['baseMecef'], 5000);
     });
   });
