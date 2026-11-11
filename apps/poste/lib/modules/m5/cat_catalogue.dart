@@ -35,6 +35,7 @@ class EcranCatalogueAnalyses extends StatelessWidget with EcranMaquette {
 
   @override
   List<Widget> actionsEntete(BuildContext context) => [
+        ...actionsImporter(context, 'analyses'),
         BoutonSigh(
             libelle: 'Imprimer le catalogue',
             icone: LucideIcons.printer,
