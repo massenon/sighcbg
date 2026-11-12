@@ -91,6 +91,15 @@ class ServiceFichiers {
   /// Ce poste est la mère : il peut déplacer le dossier. Un fileul n'a pas cette commande.
   Future<Map<String, Object?>> Function(String dossier)? changerDossierMere;
 
+  /// MÈRE : relit tous les fichiers et compare leur empreinte (`verifies`, `alteres`, `manquants`).
+  Future<Map<String, Object?>> Function()? controlerMere;
+
+  /// MÈRE : copie incrémentale et vérifiée du dossier des scans vers [destination] (vide : le dossier de sauvegarde de la mère).
+  Future<Map<String, Object?>> Function(String destination)? sauvegarderMere;
+
+  /// MÈRE : restaure le dossier des scans depuis une sauvegarde (empreintes vérifiées avant copie).
+  Future<Map<String, Object?>> Function(String source)? restaurerMere;
+
   bool get branche => stockagePour != null;
   bool get estMere => changerDossierMere != null;
 

@@ -37,6 +37,18 @@ void brancherFichiers({
     }
     return clientFileul(docFamillePatient).info();
   };
+  Future<Map<String, Object?>> mere(String methode, String chemin, Object? corps) async {
+    if (!estMere()) {
+      throw const DocErreur('REGLAGE_RESERVE_A_LA_MERE', 'Cette opération se fait sur le poste mère : les fichiers y vivent.', 'La faire depuis le poste mère.');
+    }
+    final (st, j) = await admin(methode, chemin, corps);
+    if (st != 200) throw DocErreur('${j['code']}', '${j['motif']}', '${j['geste'] ?? ''}');
+    return j;
+  }
+
+  svc.controlerMere = () => mere('GET', '/admin/fichiers/controle', null);
+  svc.sauvegarderMere = (dest) => mere('POST', '/admin/fichiers/sauvegarder', {'destination': dest});
+  svc.restaurerMere = (src) => mere('POST', '/admin/fichiers/restaurer', {'source': src});
   svc.changerDossierMere = (dossier) async {
     if (!estMere()) {
       throw const DocErreur('REGLAGE_RESERVE_A_LA_MERE', 'Le dossier des scans se règle sur le poste mère.', 'Faire le réglage depuis le poste mère.');

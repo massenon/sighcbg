@@ -421,6 +421,34 @@ void main() {
       await t.pump(const Duration(seconds: 10));
     });
 
+    testWidgets('Paramètres système › Scans numérisés : le chemin chez la mère s’affiche ; la taille maximale se règle avec motif ; un fileul ne règle rien', (t) async {
+      final m = magasin({});
+      final s = brancher(m);
+      s.changerDossierMere = (d) async => {'nouveau': d, 'ancien': stock.dossier, 'copies': 0};
+      await ouvrir(t, m, 'cfg-systeme', 'admin');
+      await toucher(t, find.text('Scans numérisés'));
+      expect(find.byKey(const Key('scans:chemin-mere')), findsOneWidget);
+      expect(tester(t, 'scans:chemin-mere'), stock.dossier);
+      expect(find.textContaining('à valider par la Direction'), findsOneWidget);
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Régler la taille maximale'));
+      await t.enterText(find.byKey(const Key('scans:taille')), '20');
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
+      expect(find.textContaining('Le motif du changement est obligatoire'), findsOneWidget);
+      await t.enterText(find.byKey(const Key('scans:motif')), 'Scans en couleur');
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
+      expect(s.tailleMax(), 20 * 1024 * 1024);
+      expect(m.collection('reglages').parId('documentsBornes')!['motif'], 'Scans en couleur');
+      await t.pump(const Duration(seconds: 10));
+      // un fileul : pas de commande de réglage
+      s.changerDossierMere = null;
+      await ouvrir(t, m, 'cfg-systeme', 'admin');
+      await toucher(t, find.text('Scans numérisés'));
+      expect(find.widgetWithText(BoutonSigh, 'Régler la taille maximale'), findsNothing);
+      expect(find.widgetWithText(BoutonSigh, 'Changer le dossier'), findsNothing);
+      expect(find.textContaining('Se règle sur le poste mère'), findsOneWidget);
+      await t.pump(const Duration(seconds: 10));
+    });
+
     testWidgets('courriers : la recherche lit le texte du PDF ; plage de dates ; filtre « Texte non indexé »', (t) async {
       final m = magasin({'courriers': [courrier('C1', 'ARR-2026-0042'), courrier('C2', 'ARR-2026-0043')]});
       final s = brancher(m);
@@ -435,7 +463,10 @@ void main() {
   });
 }
 
-String tester(WidgetTester t, String cle) => (t.widget(find.byKey(Key(cle))) as Text).data ?? '';
+String tester(WidgetTester t, String cle) {
+  final w = t.widget(find.byKey(Key(cle)));
+  return w is SelectableText ? (w.data ?? '') : ((w as Text).data ?? '');
+}
 
 String sha(File f) => docSha256(f.readAsBytesSync());
 
