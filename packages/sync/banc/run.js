@@ -401,7 +401,7 @@ const scenarios = {
     const p2 = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'Démo DEUX' } });
     await f1.ecrire({ type: 'creer', collection: 'constantes', champs: { patient: 'x', pouls: 80 } });
     await m.mere.admin('POST', '/admin/referentiel', { collection: 'tarifs', fiche: 'CONSULT', champs: { prix: 5000 } });
-    await attendre(async () => (await f2.liste('patients')).length === 2 && (await f2.vue('tarifs', 'CONSULT')).existe, 15000);
+    await attendre(async () => (await f2.liste('patients')).length === 2 && (await f2.liste('constantes')).length === 1 && (await f2.vue('tarifs', 'CONSULT')).existe, 15000);
     const codesAvant = (await f1.liste('patients')).map((x) => x.data.code).sort();
     await m.mere.admin('POST', '/admin/reinit-fenetre', { ouvrir: true });
     const sansMotif = await m.mere.admin('POST', '/admin/reinitialiser', { confirmation: 'BAGUIDI', second: 'daf' });

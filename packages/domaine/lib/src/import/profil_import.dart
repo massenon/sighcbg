@@ -1,4 +1,4 @@
-/// LE PROFIL QUI IMPORTE, tel que le moteur le lit (lot IMP-C, porté de Nassiera et ADAPTÉ à l'architecture de Baguidi).
+/// LE PROFIL QUI IMPORTE, tel que le moteur le lit (lot IMP-C, porté de la clinique sœur et ADAPTÉ à l'architecture de Baguidi).
 ///
 /// Le droit d'importer n'est PAS un axe de plus : à Baguidi il est tiré de la MATRICE (décision de la Direction du 11/11/2026, « pas de masquage d'interface en dur »).
 /// Importer un jeu = VOIR et ÉDITER l'écran du jeu (`imp-produits`, `imp-courriers`…) ; arbitrer les lots = le droit d'ANNULER sur `imp-accueil`. La matrice est celle EN FORCE

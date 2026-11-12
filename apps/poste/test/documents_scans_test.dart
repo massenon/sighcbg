@@ -66,7 +66,7 @@ void main() {
     s.stockagePour = (_) => st ?? stock;
     s.lireInfo = () async => {'dossier': stock.dossier, 'fichiers': stock.nombre};
     m.horloge = () => auj;
-    m.utilisateur = 'Awa KOUASSI';
+    m.utilisateur = 'Awa EXEMPLE';
     return s;
   }
 
@@ -168,7 +168,7 @@ void main() {
       final f = m.collection('courriers').parId('C1')!;
       expect(await s.lire(famille: docFamilleCourrier, fiche: f), pdf('un'));
       expect(m.collection('audit').toutes.first['action'], 'Consultation d’un scan');
-      expect(m.collection('audit').toutes.first['utilisateur'], 'Awa KOUASSI');
+      expect(m.collection('audit').toutes.first['utilisateur'], 'Awa EXEMPLE');
       File('${stock.dossier}/2026-11-11_ARR_0042.pdf').writeAsBytesSync([...pdf('un'), 1]);
       await expectLater(s.lire(famille: docFamilleCourrier, fiche: f), throwsA(isA<DocErreur>().having((e) => e.code, 'code', 'FICHIER_ALTERE')));
       // sans dossier branché : refus nommé, rien d'écrit

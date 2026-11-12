@@ -1,6 +1,6 @@
 /// LES DOCUMENTS NUMÉRISÉS (courriers M13, dossier patient M1) : les règles, en Dart pur, exécutées au poste, à la mère et dans les tests.
 ///
-/// Portées de la maquette « Nassiera Too » (lot DOCS-1 D0 à D4) vers l'architecture Baguidi, avec les décisions de la Direction de Baguidi :
+/// Portées de la maquette de la clinique sœur (lot DOCS-1 D0 à D4) vers l'architecture Baguidi, avec les décisions de la Direction de Baguidi :
 ///  * le fichier ne vit JAMAIS dans le magasin (ni en base64) ni sur le relais : il est rangé dans un DOSSIER du poste MÈRE, sous un NOM NORMALISÉ strict ;
 ///    la fiche ne garde que les métadonnées (empreinte SHA-256, nom d'origine, nom normalisé, type, taille, pages, version) ;
 ///  * RG-14 : un scan ne se supprime pas. Le remplacer garde l'ancien en version ; le retirer l'archive, annulable ;
