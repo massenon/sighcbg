@@ -9,12 +9,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:sigh_domaine/sigh_domaine.dart' show codePatient;
+import 'package:sigh_domaine/sigh_domaine.dart' show DocErreur, codePatient, docSha256;
 
 import 'commun.dart';
+import 'fichiers.dart';
+import 'pont.dart' show Enveloppes;
 
 class ConfigFileul {
-  ConfigFileul({required this.port, required this.mere, required this.dbChemin, this.nom = 'poste', this.decalageMs = 0, this.intervalleMs = 150, this.cleStockage = ''});
+  ConfigFileul({required this.port, required this.mere, required this.dbChemin, this.nom = 'poste', this.decalageMs = 0, this.intervalleMs = 150, this.cleStockage = '', this.cleClinique = ''});
+
+  /// La clé de clinique (hexadécimale, 256 bits) qui scelle les blocs de scans échangés avec la mère. Vide : le poste ne dépose ni ne lit de scan (refus nommé `CLE_ABSENTE`).
+  final String cleClinique;
 
   /// La clé (hexadécimale, 256 bits) qui chiffre la base du poste au repos ; `''` : base en clair.
   final String cleStockage;
@@ -79,7 +84,7 @@ class Fileul {
   /// Redirige le fileul vers une autre mère (« rejoindre une clinique » : l'adresse n'est connue qu'à l'exécution). Les requêtes suivantes partent vers
   /// la nouvelle adresse ; l'état de synchronisation déjà tenu (jetons, curseur) n'est pas touché, l'appairage qui suit le renouvelle.
   void rediriger(String mere) => cfg = ConfigFileul(
-      port: cfg.port, mere: mere, dbChemin: cfg.dbChemin, nom: cfg.nom, decalageMs: cfg.decalageMs, intervalleMs: cfg.intervalleMs);
+      port: cfg.port, mere: mere, dbChemin: cfg.dbChemin, nom: cfg.nom, decalageMs: cfg.decalageMs, intervalleMs: cfg.intervalleMs, cleStockage: cfg.cleStockage, cleClinique: cfg.cleClinique);
 
   final Etat etat = Etat();
   final HttpClient _client = HttpClient();
@@ -217,6 +222,31 @@ class Fileul {
     return j;
   }
 
+
+  /// LE CLIENT DES SCANS de ce poste : dépose chez la mère et relit chez elle, par blocs scellés AES-256-GCM (clé de clinique). Le relais n'est pas sur ce chemin.
+  /// Refus nommé `CLE_ABSENTE` si le poste n'a pas la clé de clinique.
+  ClientFichiers clientFichiers({String famille = 'patient'}) {
+    if (cfg.cleClinique.length != 64) {
+      throw const DocErreur('CLE_ABSENTE', 'Ce poste n’a pas la clé de clinique : il ne peut ni déposer ni lire de scan chez la mère.', 'Récupérer la clé de clinique (Rejoindre une clinique).');
+    }
+    final env = Enveloppes([for (var i = 0; i < 64; i += 2) int.parse(cfg.cleClinique.substring(i, i + 2), radix: 16)]);
+    return ClientFichiers(
+        famille: famille,
+        prefixe: '/sync/fichier',
+        appeler: (m, c, b) async {
+          try {
+            return (200, await http1(m, c, b is Map<String, Object?> ? b : null));
+          } on _ErrHttp catch (e) {
+            return (e.statut, e.corps);
+          } on SocketException catch (e) {
+            return (503, {'code': 'mere_injoignable', 'motif': 'La mère ne répond pas : ${e.message}.', 'geste': 'Réessayer quand la mère est joignable (un dépôt est refusé, jamais gardé à moitié).'});
+          } on TimeoutException {
+            return (503, {'code': 'mere_injoignable', 'motif': 'La mère n’a pas répondu à temps.', 'geste': 'Réessayer quand la mère est joignable.'});
+          }
+        },
+        scelle: ScelleFichiers((charge, n) => env.chiffrer(charge, id: 'fichier-${charge['sha']}-${charge['index']}', appareil: uuid, dir: 'fichier', n: n), env.dechiffrer));
+  }
+
   Future<void> _renouveler() async {
     final req = await _client.postUrl(Uri.parse('${cfg.mere}/renouveler')).timeout(const Duration(milliseconds: 1500));
     req.headers.contentType = ContentType.json;
@@ -348,6 +378,28 @@ class Fileul {
         return (200, j2);
       case 'POST /ecrire':
         return (200, ecrire(b));
+      case 'POST /fichier/deposer':
+        try {
+          final o = base64.decode('${b['b64']}');
+          await clientFichiers(famille: '${b['famille'] ?? 'patient'}').deposer(octets: o, sha256: '${b['sha']}', nomNormalise: '${b['nom']}', nomOrigine: '${b['nomOrigine'] ?? 'scan'}');
+          return (200, {'ok': true});
+        } on DocErreur catch (e) {
+          return (422, {'code': e.code, 'motif': e.motif, 'geste': e.geste});
+        }
+      case 'GET /fichier/lire':
+        try {
+          final o = await clientFichiers().lire(q['sha'] ?? '');
+          if (o == null) return (404, {'code': 'fichier_absent'});
+          return (200, {'b64': base64.encode(o), 'sha': docSha256(o), 'taille': o.length});
+        } on DocErreur catch (e) {
+          return (422, {'code': e.code, 'motif': e.motif, 'geste': e.geste});
+        }
+      case 'GET /fichier/info':
+        try {
+          return (200, await clientFichiers().info());
+        } on DocErreur catch (e) {
+          return (422, {'code': e.code, 'motif': e.motif, 'geste': e.geste});
+        }
       case 'POST /renouveler-force':
         try {
           await _renouveler();
