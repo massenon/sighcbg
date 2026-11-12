@@ -1,0 +1,6 @@
+[
+{"statut":"actif","date":"2026-10-10","heure":"16:00","admissionId":"ADM0001","patient":"BOURAIMA Djibril","patientCode":"CBG/48/26","lit":"A2 LIT1","type":"Famille","visiteur":"Accompagnant déclaré","observation":"Visite de courtoisie","id":"VIS0001"},
+{"statut":"actif","date":"2026-10-11","heure":"15:00","admissionId":"ADM0001","patient":"BOURAIMA Djibril","patientCode":"CBG/48/26","lit":"A2 LIT1","type":"Famille","visiteur":"Accompagnant déclaré","observation":"Visite de courtoisie","id":"VIS0002"},
+{"statut":"actif","date":"2026-11-06","heure":"16:00","admissionId":"ADM0002","patient":"TOKO Zacharie","patientCode":"CBG/7/26","lit":"A1 LIT2","type":"Famille","visiteur":"Accompagnant déclaré","observation":"Visite de courtoisie","id":"VIS0003"},
+{"statut":"actif","date":"2026-11-07","heure":"15:00","admissionId":"ADM0002","patient":"TOKO Zacharie","patientCode":"CBG/7/26","lit":"A1 LIT2","type":"Famille","visiteur":"Accompagnant déclaré","observation":"Visite de courtoisie","id":"VIS0004"}
+]
