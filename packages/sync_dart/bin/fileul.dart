@@ -9,6 +9,7 @@ Future<void> main(List<String> args) async {
     nom: arg(args, 'nom', 'poste'),
     decalageMs: int.tryParse(arg(args, 'horloge-decalage-ms', '0')) ?? 0,
     intervalleMs: int.tryParse(arg(args, 'intervalle', '150')) ?? 150,
+    cleClinique: arg(args, 'cle-clinique', ''),
   ));
   await f.demarrer();
 }

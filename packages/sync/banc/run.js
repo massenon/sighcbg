@@ -91,6 +91,8 @@ async function monde(opts = {}) {
       if (opts.relais) a.push(`--relais=http://127.0.0.1:${m.portInternet}`, '--secret-relais=secret-mere');
       if (m.mere.opts.cle) a.push(`--cle=${m.mere.opts.cle}`);
       if (m.mere.opts.restaurer) a.push('--restaurer=1');
+      a.push(`--sauvegardes=${path.join(dir, 'sauvegardes')}`);
+      if (m.mere.opts.fichiers) a.push(`--fichiers=${m.mere.opts.fichiers}`); // le dossier des SCANS de la mère (jamais le relais)
       a.push('--droits=' + (m.mere.opts.droits || process.env.SIGH_DROITS || 'banc')); // la mère Dart : droits du banc par défaut ici, la matrice RBAC en production
       m.mere.proc = await lancer('mere.js', a);
     },
@@ -118,7 +120,7 @@ async function monde(opts = {}) {
       nom, port, proc: null, base: `http://127.0.0.1:${port}`,
       async demarrer() {
         fil.proc = await lancer('fileul.js', [`--port=${port}`, `--mere=http://127.0.0.1:${m.portReseau}`, `--db=${path.join(dir, nom + '.sqlite')}`,
-          `--nom=${nom}`, `--horloge-decalage-ms=${o.decalage || 0}`]);
+          `--nom=${nom}`, `--horloge-decalage-ms=${o.decalage || 0}`, ...(o.cleClinique ? [`--cle-clinique=${o.cleClinique}`] : [])]);
       },
       tuer() { if (fil.proc) { fil.proc.kill('SIGKILL'); fil.proc = null; } return dormir(80); },
       get: (chemin) => appel(fil.base, 'GET', chemin).then((r) => r.json),
@@ -1091,6 +1093,7 @@ Object.assign(scenarios, require('./scenarios-droits-mere.js')({ monde, verifier
 Object.assign(scenarios, require('./scenarios-pair-pg.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-parametres.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-import.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
+Object.assign(scenarios, require('./scenarios-fichiers.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-droits-rbac.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 
 /* --- exécution ------------------------------------------------------------------------------ */

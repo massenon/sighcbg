@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../documents/parametres_scans.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/persistance.dart' show CleLocale;
@@ -299,6 +300,7 @@ class _EtatSysteme extends State<EcranSysteme> {
               OngletDef(id: 'bareme', libelle: 'Barème NS 131', construire: (_) => _Bareme(c: c)),
               OngletDef(id: 'reinitialisation', libelle: 'Jeux de test', construire: (_) => _JeuxDeTest(c: c, rafraichir: () => setState(() {}))),
               OngletDef(id: 'relais', libelle: 'Relais en ligne', construire: (_) => _Relais(c: c, estMere: widget.estMere)),
+              OngletDef(id: 'scans', libelle: 'Scans numérisés', construire: (_) => const PanneauScansPoste()),
               OngletDef(id: 'parametres', libelle: 'Paramètres', construire: (_) => PanneauParametres(c: c, estMere: widget.estMere)),
             ]));
   }

@@ -14,6 +14,7 @@ Future<void> main(List<String> args) async {
     restaurer: arg(args, 'restaurer', '0') == '1',
     cleBase64: arg(args, 'cle', ''),
     dossierSauvegardes: arg(args, 'sauvegardes', 'sauvegardes'),
+    dossierFichiers: arg(args, 'fichiers', ''),
     heureSauvegarde: int.tryParse(arg(args, 'sauvegarde-heure', '2')) ?? 2,
     conservation: int.tryParse(arg(args, 'conservation', '7')) ?? 7,
     droits: arg(args, 'droits', 'matrice'),

@@ -10,10 +10,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur;
 
 import 'commun.dart';
 import 'depot.dart';
+import 'fichiers.dart';
 import 'pont.dart';
 import 'pont_pair.dart';
 import 'supervision.dart';
@@ -32,6 +33,9 @@ const familleDeBase = <String, String>{
   'patients': 'A', 'rendezvous': 'A',
   // L'ACTIVITÉ que le pont du poste synchronise (E2130) : des fiches descriptives, sans invariant entre fiches. Factures, stock, écritures et lits en restent
   // exclus tant que leurs règles de fusion (numérotation, RG-03, unicité du lit) ne sont pas posées.
+  // Les fiches des SCANS (courriers M13, documents du dossier patient M1) et leur registre par empreinte : des fiches descriptives. Le FICHIER ne voyage pas ici : il reste
+  // chez la mère et un fileul le lit par `/sync/fichier/*` (blocs scellés).
+  'courriers': 'A', 'documentsPatient': 'A', 'fichiers': 'A',
   'releves': 'A', 'observations': 'A', 'visites': 'A', 'appels': 'A', 'consultations': 'A', 'dossiersConsultation': 'A', 'antecedents': 'A',
   // Les hachés des mots de passe : écrits par le poste où l'agent change son mot de passe, dans les DEUX sens (E2131).
   'identifiants': 'A',
@@ -151,7 +155,16 @@ class ConfigMere {
     this.droits = 'matrice',
     this.matriceChemin = '',
     this.versionApplication = '0.1.0',
+    this.dossierFichiers = '',
   });
+
+  /// LE DOSSIER DES SCANS (courriers, dossier patient) : sur la mère seule, jamais sur le relais. Vide : le service des fichiers est fermé (`fichiers_non_configures`).
+  /// Réglable à chaud par `POST /admin/fichiers/dossier`.
+  final String dossierFichiers;
+
+  /// La taille maximale d'un scan, LUE À CHAQUE DÉPÔT dans le réglage de la clinique (le poste branche son magasin après la construction, comme [droitsPair] ;
+  /// la mère n'en tient pas de copie). `null` : 10 Mo.
+  int Function()? tailleMaxFichier;
 
   /// Numéro de version de l'application, publié dans les indicateurs agrégés (forme imposée : `1.2.3` ou `1.2.3+4`).
   final String versionApplication;
@@ -201,6 +214,15 @@ class Mere {
   HttpServer? _serveur;
   Timer? _sauvegardeur;
 
+  /// Le dossier des scans, ouvert à la création quand [ConfigMere.dossierFichiers] est posé.
+  StockFichiers? stockFichiers;
+
+  /// Le port d'écoute réel (utile quand [ConfigMere.port] vaut 0).
+  int get portEcoute => _serveur!.port;
+
+  /// Le rapport de la dernière sauvegarde des scans (copiés, inchangés, altérés, manquants) ; `null` : service des fichiers fermé.
+  Map<String, Object?>? dernierRapportScans;
+
   static Future<Mere> creer(ConfigMere cfg) async {
     final base = await Depot.ouvrir(cfg.dbChemin, cfg.cleStockage);
     await base.initialiser(_ddl);
@@ -215,6 +237,7 @@ class Mere {
     if (await base.meta('next_patient') == null) await base.poserMeta('next_patient', 1000);
     if (await base.meta('reinit_ouverte') == null) await base.poserMeta('reinit_ouverte', 0);
     final m = Mere._(cfg, base);
+    if (cfg.dossierFichiers.isNotEmpty) m.stockFichiers = StockFichiers(cfg.dossierFichiers);
     await m.pont.initialiser();
     await m.pair.initialiser();
     return m;
@@ -677,7 +700,47 @@ class Mere {
         };
       case 'POST /admin/sauvegarder':
         adminOk(req);
-        return {'fichier': await sauvegarderChiffre(prefixe: 'manuelle')};
+        final chemin = await sauvegarderChiffre(prefixe: 'manuelle');
+        return {'fichier': chemin, 'scans': dernierRapportScans};
+      // --- les scans : la mère les range, un fileul les lit chez elle (blocs scellés). Jamais le relais. ---
+      case 'GET /sync/fichier/info':
+        await _appareilFichiers(req);
+        return _infoFichiers();
+      case 'GET /sync/fichier/etat':
+        await _appareilFichiers(req);
+        return _etatFichier(q['sha'] ?? '');
+      case 'POST /sync/fichier/bloc':
+        final af = await _appareilFichiers(req);
+        return _recevoirFichier(af.uuid, b, scelle: true);
+      case 'GET /sync/fichier/bloc':
+        final ag = await _appareilFichiers(req);
+        return _servirFichier(ag.uuid, q, scelle: true);
+      case 'GET /admin/fichiers/info':
+        adminOk(req);
+        return _infoFichiers();
+      case 'GET /admin/fichiers/etat':
+        adminOk(req);
+        return _etatFichier(q['sha'] ?? '');
+      case 'POST /admin/fichiers/bloc':
+        adminOk(req);
+        return _recevoirFichier('mere', b, scelle: false);
+      case 'GET /admin/fichiers/bloc':
+        adminOk(req);
+        return _servirFichier('mere', q, scelle: false);
+      case 'GET /admin/fichiers/controle':
+        adminOk(req);
+        return _stock().controler();
+      case 'POST /admin/fichiers/sauvegarder':
+        adminOk(req);
+        return _sauvegarderScans(destination: '${b['destination'] ?? ''}');
+      case 'POST /admin/fichiers/restaurer':
+        adminOk(req);
+        return _fichiersErr(() => _stock().restaurer('${b['source'] ?? ''}'));
+      case 'POST /admin/fichiers/dossier':
+        adminOk(req);
+        final r = _fichiersErr(() => _stock().changerDossier('${b['dossier'] ?? ''}'));
+        await evenement('info', 'fichiers', 'Dossier des scans déplacé : ${r['ancien']} vers ${r['nouveau']} (${r['copies']} copié(s), ancien dossier conservé)');
+        return r;
       case 'GET /admin/supervision':
         adminOk(req);
         final controles = await controlesMere(this);
@@ -840,6 +903,98 @@ class Mere {
     return {'mode': 'supprimer', 'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch')};
   }
 
+
+  // --- fichiers numérisés -------------------------------------------------------------------------------------------
+  StockFichiers _stock() {
+    final s = stockFichiers;
+    if (s == null) throw Err(503, 'fichiers_non_configures', 'Le dossier des scans n’est pas configuré sur la mère.', {'geste': 'Régler le dossier des scans dans les paramètres de la mère.'});
+    return s;
+  }
+
+  /// Un téléphone ne reçoit AUCUN scan (RG-13 : le mobile ne porte ni le dossier ni les courriers). Un poste fileul révoqué est refusé par `auth`.
+  Future<Appareil> _appareilFichiers(HttpRequest req) async {
+    final a = await auth(req);
+    if (a.role == 'mobile') throw Err(403, 'mobile_sans_scans', 'Un téléphone ne reçoit ni courrier ni document de dossier patient (RG-13).', {'geste': 'Utiliser un poste.'});
+    return a;
+  }
+
+  T _fichiersErr<T>(T Function() f) {
+    try {
+      return f();
+    } on DocErreur catch (e) {
+      throw Err(e.code == 'FICHIER_ALTERE' ? 409 : 422, e.code, e.motif, {'geste': e.geste});
+    }
+  }
+
+  Map<String, Object?> _infoFichiers() {
+    final s = _stock();
+    return {'dossier': s.dossier, 'fichiers': s.nombre, 'octets': s.octetsTotal, 'tailleMax': (cfg.tailleMaxFichier ?? () => 10 * 1024 * 1024)()};
+  }
+
+  Map<String, Object?> _etatFichier(String sha) {
+    final s = _stock();
+    return {'present': s.existe(sha), 'recus': s.blocsRecus(sha)};
+  }
+
+  Future<Map<String, Object?>> _recevoirFichier(String appareil, Map<String, Object?> b, {required bool scelle}) async {
+    final s = _stock();
+    Map<String, Object?> c;
+    if (scelle) {
+      final e = (b['enveloppe'] as Map?)?.cast<String, Object?>();
+      if (e == null) throw Err(400, 'enveloppe_absente', 'Le bloc doit être scellé avec la clé de clinique.');
+      if (e['appareil'] != appareil || e['dir'] != 'fichier') throw Err(403, 'enveloppe_deplacee', 'Enveloppe émise par un autre appareil ou pour un autre usage.');
+      try {
+        c = await pont.env.dechiffrer(e);
+      } catch (_) {
+        throw Err(400, 'enveloppe_alteree', 'Le bloc ne s’authentifie pas : altéré, ou scellé avec une autre clé.');
+      }
+    } else {
+      c = (b['charge'] as Map?)?.cast<String, Object?>() ?? (throw Err(400, 'charge_absente', 'Charge absente.'));
+    }
+    try {
+      final octets = base64.decode('${c['b64']}');
+      if (c['rattacher'] == true) {
+        // Le fichier est déjà chez la mère : un second NOM normalisé pour les mêmes octets (même contenu, autre fiche).
+        await s.deposer(octets: octets, sha256: '${c['sha']}', nomNormalise: '${c['nom']}');
+        return {'recu': 1, 'complet': true};
+      }
+      return await s.recevoirBloc(
+          sha256: '${c['sha']}',
+          nomNormalise: '${c['nom']}',
+          nomOrigine: '${c['nomOrigine'] ?? ''}',
+          famille: '${c['famille'] ?? ''}',
+          taille: (c['taille'] as num).toInt(),
+          index: (c['index'] as num).toInt(),
+          total: (c['total'] as num).toInt(),
+          octets: octets,
+          tailleMax: (cfg.tailleMaxFichier ?? () => 10 * 1024 * 1024)());
+    } on DocErreur catch (e) {
+      throw Err(422, e.code, e.motif, {'geste': e.geste});
+    }
+  }
+
+  Future<Map<String, Object?>> _servirFichier(String appareil, Map<String, String> q, {required bool scelle}) async {
+    final s = _stock();
+    try {
+      final r = await s.bloc(q['sha'] ?? '', int.tryParse(q['i'] ?? '') ?? 0);
+      if (r == null) throw Err(404, 'fichier_absent', 'La mère ne détient pas ce fichier.', {'geste': 'Vérifier le dossier des scans de la mère (contrôle, restauration).'});
+      final charge = <String, Object?>{'sha': q['sha'], 'nom': r.nomNormalise, 'taille': r.taille, 'index': int.parse(q['i'] ?? '0'), 'total': r.total, 'b64': base64.encode(r.octets)};
+      if (!scelle) return {'charge': charge};
+      final n = int.parse(q['i'] ?? '0');
+      return {'enveloppe': await pont.env.chiffrer(charge, id: 'fichier-${q['sha']}-$n', appareil: appareil, dir: 'fichier', n: n)};
+    } on DocErreur catch (e) {
+      throw Err(e.code == 'FICHIER_ALTERE' ? 409 : 422, e.code, e.motif, {'geste': e.geste});
+    }
+  }
+
+  /// Copie incrémentale et VÉRIFIÉE du dossier des scans, avec la sauvegarde chiffrée de la base (même cadence). `null` : service des fichiers fermé.
+  Map<String, Object?>? _sauvegarderScans({String destination = ''}) {
+    final s = stockFichiers;
+    if (s == null) return null;
+    final dest = destination.isNotEmpty ? destination : '${cfg.dossierSauvegardes}${Platform.pathSeparator}scans';
+    return _fichiersErr(() => s.sauvegarder(dest));
+  }
+
   /// Sauvegarde chiffrée (AES-256-GCM, clé de clinique) : le fichier en clair n'existe que le temps de l'écriture.
   /// Conserve les `conservation` dernières ; rend le chemin du fichier chiffré. Appelée sous le verrou.
   Future<String> sauvegarderChiffre({String prefixe = 'quotidienne'}) async {
@@ -855,6 +1010,16 @@ class Mere {
     }
     await base.poserMeta('derniere_sauvegarde', maintenantMs());
     await evenement('info', 'sauvegarde', 'Sauvegarde chiffrée : ${chiffre.path}');
+    // Les scans sont sauvegardés AVEC la base : sans eux, restaurer la base rendrait des fiches dont les fichiers ont disparu.
+    try {
+      final scans = dernierRapportScans = _sauvegarderScans();
+      if (scans != null) {
+        final anomalies = (scans['alteres'] as List).length + (scans['manquants'] as List).length;
+        await evenement(anomalies == 0 ? 'info' : 'alerte', 'sauvegarde', 'Sauvegarde des scans : ${scans['copies']} copié(s), ${scans['inchanges']} inchangé(s), $anomalies anomalie(s) (${scans['destination']})');
+      }
+    } catch (e) {
+      await evenement('erreur', 'sauvegarde', 'Sauvegarde des scans impossible : $e');
+    }
     return chiffre.path;
   }
 

@@ -26,6 +26,10 @@ class MoteurFileul {
 
   String get uuid => _fileul.uuid;
 
+  /// Le client des scans de ce poste (dépôt et lecture chez la mère, blocs scellés par la clé de clinique). `cleClinique` : la clé en hexadécimal (64 caractères) ; vide, le
+  /// client refuse en le disant (`CLE_ABSENTE`).
+  ClientFichiers clientFichiers(String famille, {String? cleClinique}) => _fileul.clientFichiers(famille: famille, cleClinique: cleClinique);
+
   /// La base de synchronisation du poste, vue par la transcription des prescriptions du mobile (E1559).
   SourcePiecesMobile get pieces => SourcePiecesFileul(_fileul);
 

@@ -1,12 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../documents/panneau_scan.dart';
+import '../../documents/service_fichiers.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -15,11 +13,12 @@ import 'commun_m1.dart';
 
 String _t(Object? v, [String vide = '—']) => patVrai(v) ? '$v' : vide;
 
-/// `m1-documents` — la bibliothèque documentaire du patient. Un document se DÉPOSE (PDF, PNG ou JPEG) et reste rattaché au dossier ; le fichier est
-/// conservé dans le poste, sans requête réseau. RG-14 : retirer un document l'archive, avec son motif.
+/// `m1-documents` — la bibliothèque documentaire du patient. Un document se DÉPOSE (PDF, PNG ou JPEG) et reste rattaché au dossier ; le fichier est rangé
+/// dans le DOSSIER DES SCANS de la poste mère, sous un nom normalisé (jamais dans le magasin, jamais sur le relais) ; la fiche garde l'empreinte SHA-256.
+/// RG-14 : retirer un document l'archive, avec son motif ; remplacer un scan garde l'ancienne version.
 ///
-/// Limite dite : le poste n'a pas de sélecteur natif de fichier (aucune dépendance de plateforme dans le projet) — comme la galerie d'imagerie, le dépôt
-/// demande le CHEMIN du fichier sur le poste.
+/// Deux zones (RG-13) : un type de document se lit selon les CATÉGORIES SENSIBLES de la matrice (jamais un nom de rôle). Les lignes que le profil ne peut pas
+/// lire sont retirées du tableau et ANNONCÉES (« N pièce(s) réservée(s) »), jamais passées sous silence.
 class EcranDocuments extends StatelessWidget with EcranMaquette {
   const EcranDocuments({super.key});
 
@@ -32,7 +31,7 @@ class EcranDocuments extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Un document se dépose depuis cet écran — PDF, PNG ou JPEG — et reste rattaché au dossier du patient. Le fichier est conservé dans le poste, sans requête réseau. RG-14 — retirer un document l’archive : il reste restaurable depuis la corbeille.';
+      'Un document se dépose depuis cet écran — PDF, PNG ou JPEG — et reste rattaché au dossier du patient. Le fichier est rangé chez la mère, sous un nom normalisé, avec son empreinte SHA-256 ; il ne passe jamais par le relais. RG-14 — retirer un document l’archive : il reste restaurable depuis la corbeille.';
 
   @override
   List<Widget> actionsEntete(BuildContext context) {
@@ -79,13 +78,20 @@ class EcranDocuments extends StatelessWidget with EcranMaquette {
       ];
 
   static void _deposer(BuildContext ctx, ContexteEcran c) {
-    final defs = champs(c, null);
+    final acces = AccesSensible.de(c);
+    // Seuls les types que ce profil peut LIRE sont proposés au dépôt : l'accueil dépose une pièce d'identité, pas un compte rendu.
+    final types = [for (final t in patTypesDocument) if (docPeutLire(acces.peut, t)) t];
+    if (types.isEmpty) {
+      ToastsSigh.afficher(ctx, 'Ce profil ne peut déposer aucun type de document.', type: TypeToast.attention, detail: 'Les droits sur les catégories sensibles se règlent dans « Rôles & permissions ».');
+      return;
+    }
+    final defs = [
+      for (final d in champs(c, null))
+        if (d.nom == 'type') ChampDef(nom: 'type', libelle: 'Type de document', type: TypeChamp.select, requis: true, options: [for (final t in types) OptionChamp(t)]) else d
+    ];
     final ctl = ControleurFormulaire(defs, {'date': iso(c.aujourdhui), 'etat': 'en_attente', 'depose': acteur(c).nom});
-    final chemin = TextEditingController();
-    String? data, nom, format;
-    int taille = 0;
-    Uint8List? apercu;
-    String? avertissement;
+    ScanChoisi? choix;
+    String? refus;
     afficherModale<void>(ctx,
         titre: 'Ajouter un document au dossier',
         taille: TailleModale.lg,
@@ -95,135 +101,100 @@ class EcranDocuments extends StatelessWidget with EcranMaquette {
                   const SizedBox(height: 12),
                   const LibelleChamp('Fichier numérisé * — PDF, PNG ou JPEG'),
                   Row(children: [
-                    Expanded(
-                        child: TextField(
-                            key: const Key('doc:chemin'),
-                            controller: chemin,
-                            style: styleSaisie,
-                            decoration: decorationChamp(indicatif: 'Chemin du fichier sur ce poste'))),
-                    const SizedBox(width: 8),
                     BoutonSigh(
-                        libelle: 'Charger',
+                        libelle: choix == null ? 'Choisir le fichier' : 'Changer de fichier',
                         icone: LucideIcons.upload,
                         variante: VarianteBouton.secondaire,
-                        onPressed: () {
-                          final f = File(chemin.text.trim());
-                          final n = f.path.toLowerCase();
-                          final type = n.endsWith('.pdf')
-                              ? 'application/pdf'
-                              : n.endsWith('.png')
-                                  ? 'image/png'
-                                  : (n.endsWith('.jpg') || n.endsWith('.jpeg'))
-                                      ? 'image/jpeg'
-                                      : n.endsWith('.webp')
-                                          ? 'image/webp'
-                                          : null;
-                          if (type == null || !f.existsSync()) {
-                            ToastsSigh.afficher(ctx, type == null ? 'Format non reconnu : PDF, PNG ou JPEG.' : 'Fichier introuvable.',
-                                type: TypeToast.erreur);
-                            return;
-                          }
-                          final octets = f.readAsBytesSync();
+                        onPressed: () async {
+                          final x = await SelecteursScan.choisir(docFamillePatient);
+                          if (x == null) return;
+                          final r = docControlerDepot(octets: x.octets, nomOrigine: x.nom, famille: docFamillePatient, tailleMaxReglee: ServiceFichiers.de(c.magasin).tailleMax());
                           maj(() {
-                            nom = f.path.split(Platform.pathSeparator).last;
-                            taille = octets.length;
-                            format = patFormatDocument(nom);
-                            data = 'data:$type;base64,${base64Encode(octets)}';
-                            apercu = type == 'application/pdf' ? null : octets;
-                            avertissement = octets.length > 2 * 1024 * 1024
-                                ? 'Fichier de ${patPoidsDoc(octets.length)} — au-delà de deux mégaoctets, le stockage local sature vite. Numériser en résolution plus basse.'
-                                : null;
+                            choix = r == null ? x : null;
+                            refus = r == null ? null : '${r.motif} ${r.geste}';
                           });
                         }),
+                    const SizedBox(width: 12),
+                    if (choix != null)
+                      Flexible(child: Text('${choix!.nom} — ${docPoids(choix!.octets.length)}', key: const Key('doc:fichier-choisi'), style: styleM1(t: 12, c: JetonsShell.slate600))),
                   ]),
-                  if (avertissement != null) Padding(padding: const EdgeInsets.only(top: 8), child: NoteSigh(avertissement!, ton: TonSigh.attention, icone: LucideIcons.triangleAlert)),
-                  if (nom != null && apercu == null)
+                  if (refus != null) Padding(padding: const EdgeInsets.only(top: 8), child: NoteSigh(refus!, ton: TonSigh.danger, icone: LucideIcons.triangleAlert)),
+                  if (choix != null && docFormatDesOctets(choix!.octets)?.id != 'pdf')
                     Padding(
                         padding: const EdgeInsets.only(top: 8),
-                        child: Text('$nom — ${patPoidsDoc(taille)} (PDF prêt à être rattaché)', style: styleM1(t: 12, c: JetonsShell.slate500))),
-                  if (apercu != null)
-                    Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: ConstrainedBox(
-                                constraints: const BoxConstraints(maxHeight: 160),
-                                child: Image.memory(apercu!, fit: BoxFit.contain, semanticLabel: 'Aperçu du document', errorBuilder: (_, __, ___) => const SizedBox())))),
+                        child: Align(alignment: Alignment.centerLeft, child: ConstrainedBox(constraints: const BoxConstraints(maxHeight: 160), child: Image.memory(choix!.octets, fit: BoxFit.contain, semanticLabel: 'Aperçu du document', errorBuilder: (_, __, ___) => const SizedBox())))),
                   const SizedBox(height: 12),
-                  const NoteSigh(
-                      'Le fichier est conservé dans le poste, avec le reste des données : aucune requête réseau, même contrainte hors ligne que le reste du logiciel.'),
+                  NoteSigh('Le fichier est rangé chez la mère sous un nom normalisé, jamais dans le magasin ni sur le relais. Taille maximale : ${docPoids(ServiceFichiers.de(c.magasin).tailleMax())}.'),
                 ])),
         pied: (fermer) => [
               BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
               BoutonSigh(
                   libelle: 'Rattacher au dossier',
                   icone: LucideIcons.upload,
-                  onPressed: () {
+                  onPressed: () async {
                     final v = ctl.valider();
                     if (v == null) {
                       ToastsSigh.afficher(ctx, 'Le formulaire comporte des erreurs.', type: TypeToast.erreur);
                       return;
                     }
-                    if (data == null) {
+                    if (choix == null) {
                       ToastsSigh.afficher(ctx, 'Choisir un fichier à déposer.', type: TypeToast.attention);
                       return;
                     }
                     final p = c.magasin.collection('patients').parId(v['patientId']);
                     final col = c.magasin.collection('documentsPatient');
+                    // La fiche naît D'ABORD (le nom normalisé se calcule de sa référence), puis le fichier part ; un refus du dépôt DÉFAIT la fiche — rien d'écrit à moitié.
                     final r = col.inserer({
                       ...v,
                       'statut': 'actif',
                       'reference': patReferenceDocument(col.toutes.length),
                       'code': p?['code'],
                       'patient': p != null ? '${p['nom']} ${p['prenom']}' : '—',
-                      'donnees': data,
-                      'fichier': nom,
-                      'taille': taille,
-                      'format': format,
+                      'fichier': choix!.nom,
                     }, prefixe: 'DOC');
-                    fermer();
-                    ToastsSigh.afficher(ctx, 'Document rattaché au dossier ${r.fiche['code']}.',
-                        type: TypeToast.succes, detail: '${v['type']} — $nom', annuler: r.annuler, messageAnnulation: 'Création annulée — la fiche est archivée.');
+                    try {
+                      final d = await ServiceFichiers.de(c.magasin).deposer(famille: docFamillePatient, ficheId: r.fiche['id'], nomOrigine: choix!.nom, octets: choix!.octets, peutCategorie: acces.peut);
+                      fermer();
+                      if (!ctx.mounted) return;
+                      ToastsSigh.afficher(ctx, 'Document rattaché au dossier ${r.fiche['code']}.',
+                          type: TypeToast.succes,
+                          detail: '${v['type']} — ${d.scan['nomNormalise']}${d.avertissementIndexation != null ? ' — ${d.avertissementIndexation}' : ''}',
+                          annuler: () {
+                            d.annuler();
+                            r.annuler();
+                          },
+                          messageAnnulation: 'Création annulée — la fiche est archivée, le fichier est conservé.');
+                    } on DocAvertissement catch (a) {
+                      r.annuler();
+                      if (ctx.mounted) ToastsSigh.afficher(ctx, a.motif, type: TypeToast.attention, detail: 'Ouvrir la fiche existante, puis « Rattacher quand même » depuis son panneau de scan.');
+                    } catch (e) {
+                      r.annuler();
+                      if (ctx.mounted) annoncerRefus(ctx, e);
+                    }
                   }),
             ]);
   }
 
-  static void _previsualiser(BuildContext ctx, Fiche r) {
-    Widget corps;
-    final d = '${r['donnees'] ?? ''}';
-    if (d.isNotEmpty && r['format'] != 'PDF') {
-      Uint8List? octets;
-      try {
-        octets = base64Decode(d.substring(d.indexOf(',') + 1));
-      } catch (_) {}
-      corps = octets == null
-          ? const SizedBox()
-          : Image.memory(octets, fit: BoxFit.contain, semanticLabel: '${r['type']}', errorBuilder: (_, __, ___) => const SizedBox());
-    } else if (d.isNotEmpty) {
-      corps = Container(
-          height: 160,
-          alignment: Alignment.center,
-          child: Text('Fichier PDF conservé au dossier — ${patPoidsDoc(r['taille'])}', style: styleM1(c: JetonsShell.slate500)));
-    } else {
-      corps = Container(
-          height: 256,
-          decoration: BoxDecoration(
-              color: JetonsShell.slate50, borderRadius: BorderRadius.circular(8), border: Border.all(color: JetonsShell.slate300)),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(LucideIcons.fileText, size: 40, color: JetonsShell.slate300),
-            const SizedBox(height: 8),
-            Text('Document référencé au dossier, fichier non encore déposé', style: styleM1(c: JetonsShell.slate500)),
-            Text('${patPoidsDoc(r['taille'])} — enregistré le ${dateFrM1(r['date'])}', style: styleM1(t: 12, c: JetonsShell.slate400)),
-          ]));
-    }
-    afficherModale<void>(ctx,
+  static void _previsualiser(BuildContext ctx, ContexteEcran c, Fiche r) {
+    final acces = AccesSensible.de(c);
+    afficherTiroir<void>(ctx,
         titre: '${r['type']}',
         sousTitre: '${r['reference']} — ${r['patient']} (${r['code']})',
-        taille: TailleModale.lg,
-        corps: corps,
+        largeurMax: 768,
+        corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          DescListeSigh([
+            ('Patient', '${r['patient']}'),
+            ('Dossier', '${r['code']}'),
+            ('Date du document', dateFrM1(r['date'])),
+            ('Statut', statutsMetier['${r['etat']}']?.$1 ?? '${r['etat']}'),
+            ('Déposé par', _t(r['depose'])),
+          ]),
+          const SizedBox(height: 16),
+          PanneauScan(famille: docFamillePatient, ficheId: r['id'], peutDeposer: c.droit.editer, peutRetirer: c.droit.annuler, peutCategorie: acces.peut),
+        ]),
         pied: (fermer) => [
               BoutonSigh(
-                  libelle: 'Imprimer',
+                  libelle: 'Imprimer la fiche',
                   icone: LucideIcons.printer,
                   variante: VarianteBouton.secondaire,
                   onPressed: () => imprimerM1(ctx,
@@ -233,97 +204,174 @@ class EcranDocuments extends StatelessWidget with EcranMaquette {
                         ('Patient', '${r['patient']}'),
                         ('Dossier', '${r['code']}'),
                         ('Date', dateFrM1(r['date'])),
-                        ('Format', _t(r['format'])),
-                        ('Taille', patPoidsDoc(r['taille'])),
+                        ('Fichier', docNumerise(r) ? '${docScan(r)!['nomNormalise']}' : 'Non déposé'),
+                        ('Empreinte', docNumerise(r) ? docEmpreinteAbregee('${docScan(r)!['sha256']}') : '—'),
+                        ('Taille', docNumerise(r) ? docPoids((docScan(r)!['taille'] as num).toInt()) : patPoidsDoc(r['taille'])),
                         ('Déposé par', _t(r['depose'])),
                       ],
-                      blocs: const [BlocTexte('Reproduction du document numérisé rattaché au dossier patient.')])),
+                      blocs: const [BlocTexte('Fiche du document numérisé rattaché au dossier patient. Le fichier lui-même se télécharge depuis le panneau du scan.')])),
             ]);
+  }
+
+  @override
+  Widget build(BuildContext context) => const _CorpsDocuments();
+}
+
+class _CorpsDocuments extends StatefulWidget {
+  const _CorpsDocuments();
+  @override
+  State<_CorpsDocuments> createState() => _CorpsDocumentsState();
+}
+
+class _CorpsDocumentsState extends State<_CorpsDocuments> {
+  String _du = '', _au = '';
+  bool _migration = false;
+
+  Future<void> _migrer(BuildContext ctx, ContexteEcran c) async {
+    setState(() => _migration = true);
+    try {
+      final r = await ServiceFichiers.de(c.magasin).migrerBase64();
+      if (!ctx.mounted) return;
+      ToastsSigh.afficher(ctx, r.complet ? 'Documents migrés vers le dossier des scans.' : 'Migration terminée avec des refus.',
+          type: r.complet ? TypeToast.succes : TypeToast.attention,
+          detail: '${r.migrees.length} migré(s), ${r.refusees.length} refusé(s)${r.refusees.isEmpty ? '' : ' : ${r.refusees.map((x) => '${x.fiche} ${x.code}').join(', ')}'}. Le contenu n’est retiré du magasin qu’après relecture de l’empreinte.');
+    } catch (e) {
+      if (ctx.mounted) annoncerRefus(ctx, e);
+    } finally {
+      if (mounted) setState(() => _migration = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('documentsPatient');
-    return ListenableBuilder(
-        listenable: col,
-        builder: (context, _) {
-          final rows = col.actives;
-          final k = patKpisDocuments(rows);
-          return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            bandeauLectureSeule(c),
-            KpiGrilleSigh(kpis: [
-              KpiSigh(libelle: 'Documents numérisés', valeur: nombre(k.total), icone: LucideIcons.files),
-              KpiSigh(libelle: 'Validés', valeur: nombre(k.valides), icone: LucideIcons.fileCheck2, ton: TonSigh.succes),
-              KpiSigh(libelle: 'En attente de validation', valeur: nombre(k.enAttente), icone: LucideIcons.fileClock, ton: TonSigh.attention),
-              KpiSigh(libelle: 'Dossiers couverts', valeur: nombre(k.dossiers), icone: LucideIcons.folderOpen, ton: TonSigh.info),
-            ]),
-            const SizedBox(height: 16),
-            CarteSigh(
-                titre: 'Bibliothèque documentaire du patient',
-                sansRemplissage: true,
-                child: RegistreM1(
-                  collection: col,
-                  entite: 'Document',
-                  triInitial: 'date',
-                  sensInitial: 'desc',
-                  taillePage: 15,
-                  messageVide: 'Aucun enregistrement.',
-                  champs: champs,
-                  // Le dossier peut changer à l'édition : `code` et `patient` (posés à la création) suivent `patientId`, sinon les colonnes gardent l'ancien patient.
-                  transformer: (cc, saisie, existante) {
-                    if (existante == null) return saisie;
-                    final p = cc.magasin.collection('patients').parId(saisie['patientId']);
-                    return {
-                      ...saisie,
-                      'code': p?['code'],
-                      'patient': p != null ? '${p['nom']} ${p['prenom']}' : '—',
-                    };
-                  },
-                  libelleArchiver: 'Retirer du dossier',
-                  messageArchive: 'Document retiré du dossier.',
-                  titreArchivage: (f) => 'Retirer « ${f['type']} » du dossier ?',
-                  actionsBarre: [
-                    if (c.droit.editer)
-                      BoutonSigh(
-                          libelle: 'Ajouter un document',
-                          icone: LucideIcons.upload,
-                          taille: TailleBouton.sm,
-                          onPressed: () => _deposer(context, c)),
-                  ],
-                  actionsSup: (ctx, r) => [
-                    BoutonIcone(icone: LucideIcons.eye, libelle: 'Prévisualiser', onPressed: () => _previsualiser(ctx, r)),
-                  ],
-                  filtres: [
-                    FiltreTableau(nom: 'type', libelle: 'Type de document', options: [for (final t in patTypesDocument) OptionChamp(t)]),
-                    FiltreTableau(
-                        nom: 'fichier',
-                        libelle: 'Fichier',
-                        options: const [OptionChamp('oui', 'Fichier déposé'), OptionChamp('non', 'Référencé seulement')],
-                        correspond: (r, v) => v == 'oui' ? patVrai(r['donnees']) : !patVrai(r['donnees'])),
-                  ],
-                  colonnes: [
-                    ColonneTableau(cle: 'reference', libelle: 'Référence', sansCoupure: true, rendu: (_, r) => enMono('${r['reference']}'), texte: (r) => '${r['reference']}'),
-                    const ColonneTableau(cle: 'code', libelle: 'Dossier', sansCoupure: true),
-                    const ColonneTableau(cle: 'patient', libelle: 'Patient'),
-                    ColonneTableau(cle: 'type', libelle: 'Type', texte: (r) => '${r['type']}', rendu: (_, r) => BadgeSigh('${r['type']}', ton: TonSigh.navy)),
-                    ColonneTableau(cle: 'date', libelle: 'Date', sansCoupure: true, texte: (r) => dateFrM1(r['date']), valeur: (r) => r['date']),
-                    ColonneTableau(
-                        cle: 'format',
-                        libelle: 'Fichier',
-                        sansCoupure: true,
-                        texte: (r) => '${r['format'] ?? '—'} · ${patPoidsDoc(r['taille'])} ${patVrai(r['donnees']) ? 'déposé' : 'référencé'}',
-                        rendu: (_, r) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-                              Text('${r['format'] ?? '—'} · ${patPoidsDoc(r['taille'])}', style: styleM1(t: 12, c: JetonsShell.slate600)),
-                              Text(patVrai(r['donnees']) ? 'déposé' : 'référencé',
-                                  style: TextStyle(color: patVrai(r['donnees']) ? JetonsShell.success600 : JetonsShell.slate400, fontSize: 10, height: 15 / 10)),
-                            ])),
-                    const ColonneTableau(cle: 'depose', libelle: 'Déposé par'),
-                    ColonneTableau(cle: 'etat', libelle: 'Statut', texte: (r) => statutsMetier['${r['etat']}']?.$1 ?? '${r['etat']}', rendu: (_, r) => statutBadge(r['etat'])),
-                  ],
-                )),
-          ]);
-        });
+    final svc = ServiceFichiers.de(c.magasin);
+    return EcouteDroitsSensibles(
+        builder: (context, acces) => ListenableBuilder(
+            listenable: Listenable.merge([col, c.magasin.collection('fichiers')]),
+            builder: (context, _) {
+              final toutes = col.actives;
+              // RG-13 : ce que le profil ne peut pas lire est RETIRÉ du tableau, et ANNONCÉ.
+              final rows = [for (final r in toutes) if (docPeutLire(acces.peut, r['type'])) r];
+              final reservees = toutes.length - rows.length;
+              final k = patKpisDocuments(rows);
+              final base64 = svc.enBase64();
+              return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                bandeauLectureSeule(c),
+                if (reservees > 0) ...[
+                  NoteSigh('$reservees pièce(s) de ce registre sont réservées à d’autres profils (droits sur les catégories sensibles : ${{for (final r in toutes) if (!docPeutLire(acces.peut, r['type'])) ...docCategoriesManquantes(acces.peut, r['type']).map((cat) => categorieSensible(cat)?.libelle ?? cat)}.join(', ')}). Elles ne sont ni listées ni cherchées pour vous.',
+                      key: const Key('doc:reservees'), ton: TonSigh.attention, icone: LucideIcons.lock),
+                  const SizedBox(height: 12),
+                ],
+                if (base64 > 0 && c.droit.editer && svc.branche) ...[
+                  NoteSigh('$base64 document(s) portent encore leur fichier dans le magasin (base64). La migration les range chez la mère et ne retire le contenu qu’après avoir relu l’empreinte.', ton: TonSigh.attention, icone: LucideIcons.hardDriveUpload),
+                  const SizedBox(height: 8),
+                  Align(alignment: Alignment.centerLeft, child: BoutonSigh(libelle: _migration ? 'Migration…' : 'Migrer vers le dossier des scans', icone: LucideIcons.hardDriveUpload, onPressed: _migration ? null : () => _migrer(context, c))),
+                  const SizedBox(height: 12),
+                ],
+                KpiGrilleSigh(kpis: [
+                  KpiSigh(libelle: 'Documents numérisés', valeur: nombre(k.total), icone: LucideIcons.files),
+                  KpiSigh(libelle: 'Validés', valeur: nombre(k.valides), icone: LucideIcons.fileCheck2, ton: TonSigh.succes),
+                  KpiSigh(libelle: 'En attente de validation', valeur: nombre(k.enAttente), icone: LucideIcons.fileClock, ton: TonSigh.attention),
+                  KpiSigh(libelle: 'Dossiers couverts', valeur: nombre(k.dossiers), icone: LucideIcons.folderOpen, ton: TonSigh.info),
+                ]),
+                const SizedBox(height: 16),
+                CarteSigh(
+                    titre: 'Bibliothèque documentaire du patient',
+                    sansRemplissage: true,
+                    child: RegistreM1(
+                      collection: col,
+                      entite: 'Document',
+                      triInitial: 'date',
+                      sensInitial: 'desc',
+                      taillePage: 15,
+                      messageVide: 'Aucun enregistrement.',
+                      champs: EcranDocuments.champs,
+                      lignes: (cc, toutes) => [
+                        for (final r in toutes)
+                          if (docPeutLire(acces.peut, r['type']) && docDansPlage(r['date'], du: _du, au: _au)) r
+                      ],
+                      rechercheExtra: (r) => svc.texteDe(r),
+                      // Le dossier peut changer à l'édition : `code` et `patient` (posés à la création) suivent `patientId`, sinon les colonnes gardent l'ancien patient.
+                      transformer: (cc, saisie, existante) {
+                        if (existante == null) return saisie;
+                        final p = cc.magasin.collection('patients').parId(saisie['patientId']);
+                        return {
+                          ...saisie,
+                          'code': p?['code'],
+                          'patient': p != null ? '${p['nom']} ${p['prenom']}' : '—',
+                        };
+                      },
+                      libelleArchiver: 'Retirer du dossier',
+                      messageArchive: 'Document retiré du dossier.',
+                      titreArchivage: (f) => 'Retirer « ${f['type']} » du dossier ?',
+                      actionsBarre: [
+                        if (c.droit.editer)
+                          BoutonSigh(libelle: 'Ajouter un document', icone: LucideIcons.upload, taille: TailleBouton.sm, onPressed: () => EcranDocuments._deposer(context, c)),
+                        SizedBox(
+                            width: 130,
+                            child: TextField(
+                                key: const Key('doc:du'),
+                                style: styleSaisie,
+                                decoration: decorationChamp(indicatif: 'Du (AAAA-MM-JJ)'),
+                                onChanged: (v) => setState(() => _du = v.trim()))),
+                        SizedBox(
+                            width: 130,
+                            child: TextField(
+                                key: const Key('doc:au'),
+                                style: styleSaisie,
+                                decoration: decorationChamp(indicatif: 'Au (AAAA-MM-JJ)'),
+                                onChanged: (v) => setState(() => _au = v.trim()))),
+                      ],
+                      actionsSup: (ctx, r) => [
+                        BoutonIcone(icone: LucideIcons.eye, libelle: 'Prévisualiser', onPressed: () => EcranDocuments._previsualiser(ctx, c, r)),
+                      ],
+                      filtres: [
+                        FiltreTableau(nom: 'type', libelle: 'Type de document', options: [for (final t in patTypesDocument) if (docPeutLire(acces.peut, t)) OptionChamp(t)]),
+                        FiltreTableau(
+                            nom: 'fichier',
+                            libelle: 'Fichier',
+                            options: const [OptionChamp('oui', 'Fichier déposé'), OptionChamp('non', 'Référencé seulement'), OptionChamp('nonindexe', 'Texte non indexé')],
+                            correspond: (r, v) => switch (v) {
+                                  'oui' => docNumerise(r) || patVrai(r['donnees']),
+                                  'non' => !docNumerise(r) && !patVrai(r['donnees']),
+                                  _ => docEtatIndexation(r) == 'non_indexe',
+                                }),
+                      ],
+                      colonnes: [
+                        ColonneTableau(cle: 'reference', libelle: 'Référence', sansCoupure: true, rendu: (_, r) => enMono('${r['reference']}'), texte: (r) => '${r['reference']}'),
+                        const ColonneTableau(cle: 'code', libelle: 'Dossier', sansCoupure: true),
+                        const ColonneTableau(cle: 'patient', libelle: 'Patient'),
+                        ColonneTableau(cle: 'type', libelle: 'Type', texte: (r) => '${r['type']}', rendu: (_, r) => BadgeSigh('${r['type']}', ton: TonSigh.navy)),
+                        ColonneTableau(cle: 'date', libelle: 'Date', sansCoupure: true, texte: (r) => dateFrM1(r['date']), valeur: (r) => r['date']),
+                        ColonneTableau(
+                            cle: 'format',
+                            libelle: 'Fichier',
+                            sansCoupure: true,
+                            texte: (r) => _texteFichier(r),
+                            rendu: (_, r) {
+                              final scan = docScan(r);
+                              final depose = scan != null || patVrai(r['donnees']);
+                              return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                                Text(scan != null ? '${docFormats.firstWhere((f) => f.mime == scan['mime'], orElse: () => docFormats.first).libelle} · ${docPoids((scan['taille'] as num).toInt())}' : '${r['format'] ?? '—'} · ${patPoidsDoc(r['taille'])}',
+                                    style: styleM1(t: 12, c: JetonsShell.slate600)),
+                                Text(scan != null ? 'déposé · ${docLibelleIndexation(r)}' : (depose ? 'déposé' : 'référencé'),
+                                    style: TextStyle(color: depose ? JetonsShell.success600 : JetonsShell.slate400, fontSize: 10, height: 15 / 10)),
+                              ]);
+                            }),
+                        const ColonneTableau(cle: 'depose', libelle: 'Déposé par'),
+                        ColonneTableau(cle: 'etat', libelle: 'Statut', texte: (r) => statutsMetier['${r['etat']}']?.$1 ?? '${r['etat']}', rendu: (_, r) => statutBadge(r['etat'])),
+                      ],
+                    )),
+              ]);
+            }));
+  }
+
+  static String _texteFichier(Fiche r) {
+    final scan = docScan(r);
+    if (scan != null) return '${docFormats.firstWhere((f) => f.mime == scan['mime'], orElse: () => docFormats.first).libelle} · ${docPoids((scan['taille'] as num).toInt())} déposé · ${docLibelleIndexation(r)}';
+    return '${r['format'] ?? '—'} · ${patPoidsDoc(r['taille'])} ${patVrai(r['donnees']) ? 'déposé' : 'référencé'}';
   }
 }
 
