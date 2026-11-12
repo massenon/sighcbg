@@ -130,7 +130,6 @@ void main() {
 
   group('mère et fileul, canal scellé', () {
     late Mere mere;
-    late Fileul fil;
     late String base;
     setUp(() async {
       mere = await Mere.creer(ConfigMere(port: 0, dbChemin: ':memory:', admin: 'adm', dossierFichiers: chemin('mere-scans'), dossierSauvegardes: chemin('sauvegardes')));
