@@ -33,6 +33,7 @@ import 'sync/etat_sync.dart';
 import 'sync/configuration_sync.dart';
 import 'core/plages_codes.dart';
 import 'sync/pont_activite.dart';
+import 'sync/service_demandes_import.dart';
 import 'sync/config_pair.dart';
 import 'sync/config_smtp.dart';
 import 'sync/etat_pair.dart';
@@ -206,6 +207,11 @@ Future<void> main() async {
       // Les décisions de droits que les fileuls habilités ont envoyées : la mère les juge sur SA matrice en force, les applique, les journalise, et la fiche `rbac` repart
       // vers tous les postes avec le reste de la configuration.
       ServiceDroits.de(magasin).demarrerMere(peutEditerEnForce: matriceVive.peutEditer);
+      // Lot IMP-C : les DEMANDES D'IMPORT que les fileuls ont déposées. La mère reste la seule autorité : elle rejoue l'analyse sous le rôle de l'auteur avec SA matrice en force,
+      // applique ou refuse en nommant, journalise (RG-12) et écrit le verdict sur la même fiche, qui revient au fileul par le pont d'activité.
+      ServiceDemandesImport.de(magasin)
+        ..etiquette = 'M'
+        ..demarrerMere(matrice: () => matriceVive.matrice);
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();
@@ -237,6 +243,10 @@ Future<void> main() async {
       ..demarrer();
     void demarrerPontFileul() {
       PlagesCodes.de(magasin).obtenir = (taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum);
+      // Lot IMP-C : le verdict de la mère sur une demande d'import revient ici ; l'écriture locale du fileul est alors réglée (archivée si retenue, marquée « non retenue » sinon).
+      ServiceDemandesImport.de(magasin)
+        ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
+        ..demarrerFileul();
       ReservationStock.de(magasin)
         ..actif = true
         ..installer(magasin);

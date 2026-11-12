@@ -231,7 +231,8 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
         libelleOk: 'Écrire le lot');
     if (!ok || !mounted) return;
     setState(() => _occupe = true);
-    final r = appliquer(_jeu, a, _port(c));
+    final ap = appliquerImportPoste(c, _jeu, a);
+    final r = ap.resultat;
     if (!mounted) return;
     setState(() {
       _occupe = false;
@@ -240,6 +241,7 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
       _resultatOk = r.ok;
       _resultat = r.ok
           ? 'Lot ${r.lot!['reference']} appliqué. ${r.ecrits} fiche(s) écrite(s), journalisées (RG-12).'
+              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : elle seule décide ; vous serez notifié de sa réponse.'}'
           : 'Importation refusée. ${r.motif}. ${r.geste}';
     });
     if (r.ok) {
@@ -404,6 +406,10 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
           ] else if (j.limite != null) ...[
             const SizedBox(height: 16),
             NoteSigh(j.limite!, icone: LucideIcons.info),
+          ],
+          if (voieImportPoste(c, j) != null) ...[
+            const SizedBox(height: 16),
+            NoteSigh(voieImportPoste(c, j)!, icone: LucideIcons.send),
           ],
           const SizedBox(height: 16),
           CarteSigh(

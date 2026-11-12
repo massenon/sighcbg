@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -44,6 +44,9 @@ const familleDeBase = <String, String>{
   // Les DÉCISIONS DE DROITS (10/11/2026) : un poste habilité (ou la mère) y dépose sa demande de modification d'un droit de rôle ; la mère la juge, l'applique à
   // `rbac` (qu'elle seule écrit, famille R) et marque l'issue sur la même fiche. Rien ne s'y supprime.
   'decisionsDroits': 'A',
+  // Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul — il écrit chez lui ET dépose cette fiche ; la mère (le poste qui la porte) rejoue l'analyse sous le rôle de
+  // l'auteur et complète la MÊME fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère (voir `traiter`) ; jamais vers un téléphone.
+  'demandesImport': 'A',
   'constantes': 'B', 'notes': 'B',
   'cpn': 'B', 'cpon': 'B', 'surveillances': 'B', 'orientations': 'B', // suite du mobile (E1650 à E1660)
   'factures': 'C', 'prescriptions': 'C',
@@ -61,7 +64,7 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// Ce qu'un MOBILE ne reçoit JAMAIS : les hachés des mots de passe (`identifiants`). Le téléphone reçoit toute la configuration de la clinique (référentiels,
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
-final Set<String> collectionsPosteSeulement = {'identifiants'};
+final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport'};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -289,6 +292,12 @@ class Mere {
     }
     final ficheId = op['fiche'] as String;
     final champsOp = ((op['champs'] ?? {}) as Map).cast<String, Object?>();
+    // Lot IMP-C : le verdict d'une demande d'import n'appartient qu'à la mère. Un fileul qui dépose une demande « déjà appliquée », ou qui réécrit l'état ou le verdict d'une demande
+    // déposée (pour la remettre en attente et la faire rejouer, ou pour se délivrer son propre verdict), est refusé en le nommant — la règle est celle du domaine, jamais recopiée.
+    if (collection == demandesImportCollection && app.role != 'mere') {
+      final r = refusDemandeImportDuFileul('${type == 'creer' ? 'creer' : 'modifier'}', champsOp);
+      if (r != null) return refus(r[0], r[1], r[2]);
+    }
     final f = await lire(collection, ficheId);
 
     // L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction, domaine) : version croissante, type, date d'effet,

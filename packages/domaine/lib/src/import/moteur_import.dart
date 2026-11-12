@@ -140,6 +140,9 @@ class AnalyseImport {
   /// Le profil n'a pas le droit d'importer ce jeu : le moteur REFUSE (masquer un bouton ne protège rien) et le refus ne se consigne PAS (ce n'est pas un fichier qu'on ait lu).
   bool refusDroit = false;
 
+  /// Le nombre de lignes que l'application écrirait : les lignes valides qui ne sont pas ignorées.
+  int get aEcrire => lignes.where((l) => !l.ignoree).length;
+
   /// Les rangs des lignes ignorées (la fiche existait déjà) : jamais leurs valeurs.
   List<int> get ignorees => [for (final l in lignes) if (l.ignoree) l.n];
 

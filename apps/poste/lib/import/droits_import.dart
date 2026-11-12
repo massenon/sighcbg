@@ -22,8 +22,6 @@ class DroitsImport {
   /// Le profil que le MOTEUR du domaine lit : la même règle des deux côtés (`ProfilImport`, `packages/domaine`), pour que le bouton et le refus ne divergent jamais.
   ProfilImport get profil => profilImportDe(c);
 
-  Droit _de(String ecran) => profil.droitEcran(ecran);
-
   bool peutImporter(JeuImport j) => profil.peutImporterEcran(j.ecran);
 
   /// Le profil détient-il au moins un droit d'importer ? (la rangée « Importation » du ruban n'a de sens que pour lui).

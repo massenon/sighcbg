@@ -48,7 +48,23 @@ class CollectionMagasin extends ChangeNotifier {
   void garder(String? Function(String operation, Fiche fiche) garde) =>
       _gardes.add(garde);
 
+  /// Les gardes sont LEVÉES le temps d'un geste précis ([sansGardes]) : un compteur, pour qu'un geste imbriqué ne les rétablisse pas trop tôt.
+  int _gardesLevees = 0;
+
+  /// Exécute [f] avec les gardes de cette collection levées. RÉSERVÉ à un geste que le domaine a déjà contrôlé de bout en bout et qui a sa propre raison de passer outre :
+  /// l'écriture directe d'un import de configuration à un FILEUL (« option c » de la Direction, lot IMP-C), dont la mère reste l'autorité par la demande qui la double.
+  /// Jamais pour l'écriture d'un agent ordinaire : la garde protège précisément contre elle.
+  T sansGardes<T>(T Function() f) {
+    _gardesLevees++;
+    try {
+      return f();
+    } finally {
+      _gardesLevees--;
+    }
+  }
+
   void _controler(String operation, Fiche fiche) {
+    if (_gardesLevees > 0) return;
     for (final g in _gardes) {
       final motif = g(operation, fiche);
       if (motif != null) {
@@ -519,6 +535,8 @@ class Magasin {
     'identifiants': 'M14',
     'rbac': 'M14',
     'decisionsDroits': 'M14',
+    // Lot IMP-C : les demandes d'import d'un fileul à la mère (fiche descriptive : le fileul dépose, la mère complète du verdict).
+    'demandesImport': 'IMP',
     'tentativesConnexion': 'M14',
     'sessionsUtilisateur': 'M14',
     'politiqueSecurite': 'M14',

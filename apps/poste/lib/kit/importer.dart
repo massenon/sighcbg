@@ -111,7 +111,8 @@ class _EtatAssistantImport extends State<AssistantImport> {
   Future<void> _ecrire(ContexteEcran c) async {
     final a = _analyse!;
     setState(() => _occupe = true);
-    final r = appliquer(_jeu, a, portImport(c));
+    final ap = appliquerImportPoste(c, _jeu, a);
+    final r = ap.resultat;
     if (!mounted) return;
     setState(() {
       _occupe = false;
@@ -119,6 +120,7 @@ class _EtatAssistantImport extends State<AssistantImport> {
       _resultatOk = r.ok;
       _resultat = r.ok
           ? 'Lot ${r.lot!['reference']} appliqué. ${r.ecrits} fiche(s) écrite(s)${a.ignorees.isEmpty ? '' : ', ${a.ignorees.length} ligne(s) ignorée(s)'}, journalisées (RG-12).'
+              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : elle seule décide ; vous serez notifié de sa réponse.'}'
           : 'Importation refusée. ${r.motif}. ${r.geste}';
     });
     if (r.ok) {
@@ -167,6 +169,10 @@ class _EtatAssistantImport extends State<AssistantImport> {
       const Text(
           'Téléchargez le modèle, remplissez l’onglet « Données » sans changer les en-têtes, puis passez à la vérification : rien n’est écrit tant que vous n’avez pas confirmé.',
           style: TextStyle(fontSize: 14, color: JetonsShell.slate600)),
+      if (voieImportPoste(c, _jeu) != null) ...[
+        const SizedBox(height: 12),
+        NoteSigh(voieImportPoste(c, _jeu)!, icone: LucideIcons.send),
+      ],
       const SizedBox(height: 12),
       Wrap(spacing: 8, runSpacing: 8, children: [
         BoutonSigh(key: const Key('import-modele-xlsx'), libelle: 'Télécharger le modèle (.xlsx)', icone: LucideIcons.fileDown, onPressed: () => _modele(c, csv: false)),

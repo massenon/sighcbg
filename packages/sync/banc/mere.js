@@ -41,7 +41,29 @@ const FAMILLES = {
   /* Les DROITS (10/11/2026) : la fiche de chaque rôle et les activités fermées sont de la configuration (R : la mère seule écrit, les fileuls reçoivent) ; les
      DÉCISIONS de droits sont une fiche descriptive (A) qu'un poste habilité dépose à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche. */
   rbac: 'R', modulesActifs: 'R', decisionsDroits: 'A',
+  /* Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul. Il écrit chez lui ET dépose cette fiche ; la mère rejoue l'analyse sous le rôle de l'auteur et complète la MÊME
+     fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère ; jamais vers un téléphone. */
+  demandesImport: 'A',
 };
+/* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
+const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'traitePar', 'traiteLe'];
+/* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
+const MOBILE_JAMAIS = ['demandesImport'];
+/* Miroir de `refusDemandeImportDuFileul` (domaine Dart) : un fileul dépose « en attente », sans verdict, et ne réécrit ni l'état ni le verdict d'une demande déposée. */
+function refusDemandeImportDuFileul(type, champs) {
+  const verdict = CHAMPS_VERDICT_DEMANDE_IMPORT.filter((k) => Object.prototype.hasOwnProperty.call(champs, k));
+  const etat = champs.etat;
+  if (type === 'creer') {
+    if (verdict.length || (etat !== undefined && etat !== null && etat !== 'en_attente')) {
+      return ['verdict_reserve_a_la_mere', 'Le verdict d’une demande d’import n’appartient qu’à la mère : un fileul dépose sa demande « en attente », sans verdict.', 'Déposer la demande à l’état « en attente » et attendre la réponse de la mère'];
+    }
+    return null;
+  }
+  if (verdict.length || Object.prototype.hasOwnProperty.call(champs, 'etat')) {
+    return ['verdict_reserve_a_la_mere', 'Une demande déposée ne se réécrit pas : son état et son verdict ne se modifient que par la mère.', 'Déposer une nouvelle demande si le fichier a changé'];
+  }
+  return null;
+}
 const ESSENTIELLES = new Set(['tarifs', 'chambres']);
 const MOTIF_ARCHIVAGE = 'Jeu de démonstration, mise en production'; /* le même que cfbMotifArchivageJeuDemo (Dart) */
 
@@ -109,6 +131,10 @@ function traiter(op, app) {
   if (!fam) return refus('collection_inconnue', 'Collection inconnue : ' + op.collection, 'Mettre le poste à jour');
   if (op.type === 'supprimer') return refus('suppression_interdite', 'Aucune suppression physique (RG-14).', 'Archiver la fiche');
   if (fam === 'R' && app.role !== 'mere') return refus('droit_refuse', 'Un référentiel ne se modifie qu’à la console de la mère.', 'Demander la modification à l’administrateur');
+  if (op.collection === 'demandesImport' && app.role !== 'mere') {
+    const r = refusDemandeImportDuFileul(op.type === 'creer' ? 'creer' : 'modifier', op.champs || {});
+    if (r) return refus(r[0], r[1], r[2]);
+  }
 
   const f = lire(op.collection, op.fiche);
 
@@ -360,7 +386,10 @@ const routes = {
     const app = auth(req);
     if (+q.epoch !== +meta('epoch')) throw new Err(409, 'epoch_inconnue', 'Époque inconnue de la mère.', { epoch_mere: +meta('epoch') });
     const depuis = +q.depuis || 0; const limite = Math.min(+q.limite || 500, 500);
-    const ops = db.prepare('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>? ORDER BY seq LIMIT ?').all(depuis, limite)
+    /* Un téléphone ne reçoit pas les demandes d'import (le filtre est dans la requête : chaque page est pleine d'opérations visibles, le curseur avance toujours). */
+    const exclues = app.role === 'mobile' ? MOBILE_JAMAIS : [];
+    const filtre = exclues.length ? ` AND collection NOT IN (${exclues.map(() => '?').join(',')})` : '';
+    const ops = db.prepare(`SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>?${filtre} ORDER BY seq LIMIT ?`).all(depuis, ...exclues, limite)
       .map((o) => Object.assign({}, o, { champs: JSON.parse(o.champs) }));
     db.prepare('UPDATE appareils SET dernier_seq=MAX(dernier_seq,?) WHERE uuid=?').run(depuis, app.uuid);
     return { ops, fin: ops.length < limite, epoch: +meta('epoch'), resync: meta('resync') || null };

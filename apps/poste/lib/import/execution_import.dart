@@ -6,6 +6,7 @@ import 'droits_import.dart';
 import 'fichier_import.dart';
 import 'port_magasin.dart';
 import 'selecteurs_import.dart';
+import '../sync/service_demandes_import.dart';
 
 /// Les gestes du module d'importation, UNE fois pour tous ses habillages (la page d'un jeu du module IMP, la fenêtre en trois étapes posée sur les écrans
 /// métier) : les règles ne vivent pas dans une présentation.
@@ -29,4 +30,33 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
       octets: f.octets.length,
       octetsMax: octetsMaxDe(c.magasin, j));
   return (analyse: a, lotRefuse: a.accepte ? null : consigner(j, a, port));
+}
+
+/// L'APPLICATION d'un fichier vérifié, UNE fois pour tous les habillages. Sur un fileul rattaché, un jeu dont les cibles sont de la configuration de la mère s'écrit DIRECTEMENT ici
+/// ET dépose une demande à la mère (décision de la Direction du 12/11/2026, « option c ») ; partout ailleurs, c'est l'import local ordinaire. [demande] est l'identifiant de la demande
+/// déposée, ou `null` quand il n'y en a pas eu.
+({ResultatImport resultat, String? demande}) appliquerImportPoste(ContexteEcran c, JeuImport j, AnalyseImport a) {
+  final svc = ServiceDemandesImport.de(c.magasin);
+  if (svc.reserveALaMere(j)) {
+    return (
+      resultat: ResultatImport.refus('RESERVE_A_LA_MERE', 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
+          'Importez ce jeu au poste de la mère, par un profil qui en détient le droit.'),
+      demande: null
+    );
+  }
+  if (svc.passeParUneDemande(j)) return svc.importerEtDemander(j, a, profil: profilImportDe(c), nomAgent: c.agent.nom);
+  return (resultat: appliquer(j, a, portImport(c)), demande: null);
+}
+
+/// Le texte de la voie que suivra l'import sur CE poste, dit AVANT l'envoi : `null` quand c'est l'import ordinaire.
+String? voieImportPoste(ContexteEcran c, JeuImport j) {
+  final svc = ServiceDemandesImport.de(c.magasin);
+  if (svc.reserveALaMere(j)) {
+    return 'Ce jeu porte des données restreintes que la mère seule écrit : il s’importe au poste de la mère, jamais par une demande.';
+  }
+  if (svc.passeParUneDemande(j)) {
+    return 'Ce référentiel est écrit par la mère. Vos fiches s’enregistrent tout de suite chez vous (marquées provisoires) et une demande vérifiée part automatiquement à la mère, '
+        'qui reste seule autorité : elle l’applique ou la refuse en le disant. En cas de refus, vos fiches restent visibles, marquées « non retenue par la mère ».';
+  }
+  return null;
 }

@@ -30,6 +30,10 @@ const Set<String> collectionsActivite = {
   'antecedents',
   // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
   'decisionsDroits',
+  // Lot IMP-C : les DEMANDES D'IMPORT d'un fileul (décision de la Direction du 12/11/2026, « option c »). Le fileul écrit chez lui ET dépose une demande vérifiée ; la MÈRE rejoue l'analyse
+  // sous le rôle de l'auteur, applique ou refuse en nommant, et écrit le verdict sur la même fiche, qui revient au fileul par ce chemin. Les lignes du fichier sont effacées dès le verdict.
+  // Jamais vers un téléphone (RG-13) : le protocole de la mère l'exclut de sa lecture.
+  'demandesImport',
   // Lot L8 : les présences. Un pointage par badge s'écrit au poste (hors ligne comprise) et voyage comme les autres : une fiche par pointage, le départ et la validation
   // sont des correctifs de champs, que la fusion champ à champ garde tous. Deux postes hors ligne peuvent chacun enregistrer une arrivée : les deux lignes restent
   // visibles au registre, le surveillant régularise ou archive (RG-14), rien n'est corrigé en silence.
