@@ -25,12 +25,15 @@ const JETON_TTL = +arg('jeton-ttl', 24 * 3600 * 1000);
 const CLINIQUE = 'BAGUIDI'; // la même phrase que IdentiteClinique.confirmationReinit (Dart)
 const DERIVE_MAX_MS = 2 * 60 * 1000;
 const RELAIS = arg('relais', ''); const SECRET_RELAIS = arg('secret-relais', 'secret-mere');
+const FICHIERS = arg('fichiers', ''); const DOSSIER_SAUV = arg('sauvegardes', 'sauvegardes');
 const RESTAURER = arg('restaurer', '0') === '1'; const CLE_ARG = arg('cle', '');
 
 /* Une famille par collection (PRD §8) : A fiche descriptive · B journal · C pièce
    émise · D agrégat à invariant · R référentiel (la mère seule écrit). */
 const FAMILLES = {
   patients: 'A', rendezvous: 'A',
+  /* les FICHES des scans (courriers, documents du dossier patient) et leur registre par empreinte : des fiches descriptives ; le FICHIER reste chez la mère (voir fichiers-ref.js) */
+  courriers: 'A', documentsPatient: 'A', fichiers: 'A',
   constantes: 'B', notes: 'B',
   cpn: 'B', cpon: 'B', surveillances: 'B', orientations: 'B', /* suite du mobile (E1650 à E1660) */
   factures: 'C', prescriptions: 'C',
@@ -327,6 +330,19 @@ function pousser(app, b) {
 
 /* --- routes ------------------------------------------------------------------- */
 const routes = {
+  /* --- les scans : la mère les range, un fileul les lit chez elle (blocs scellés). Jamais le relais. --- */
+  'GET /sync/fichier/info': (req) => { fAppareil(req); return fInfo(); },
+  'GET /sync/fichier/etat': (req, b, q) => { fAppareil(req); return fEtat(q.sha || ''); },
+  'POST /sync/fichier/bloc': (req, b) => { const a = fAppareil(req); return fRecevoir(a.uuid, b, true); },
+  'GET /sync/fichier/bloc': (req, b, q) => { const a = fAppareil(req); return fServir(a.uuid, q, true); },
+  'GET /admin/fichiers/info': (req) => { adminOk(req); return fInfo(); },
+  'GET /admin/fichiers/etat': (req, b, q) => { adminOk(req); return fEtat(q.sha || ''); },
+  'POST /admin/fichiers/bloc': (req, b) => { adminOk(req); return fRecevoir('mere', b, false); },
+  'GET /admin/fichiers/bloc': (req, b, q) => { adminOk(req); return fServir('mere', q, false); },
+  'GET /admin/fichiers/controle': (req) => { adminOk(req); return fStock().controler(); },
+  'POST /admin/fichiers/sauvegarder': (req, b) => { adminOk(req); return fSauvegarder(b.destination); },
+  'POST /admin/fichiers/restaurer': (req, b) => { adminOk(req); return fRefus(() => fStock().restaurer(String(b.source || ''))); },
+  'POST /admin/sauvegarder': (req) => { adminOk(req); sauvScans = fSauvegarder(''); return { fichier: null, scans: sauvScans }; },
   'POST /admin/code': (req, b) => {
     adminOk(req);
     const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -541,6 +557,10 @@ const routes = {
 const { chiffrer, dechiffrer, nouvelleCle } = require('./crypto');
 let CLE;
 { const c = CLE_ARG || meta('cle'); CLE = c ? Buffer.from(c, 'base64') : nouvelleCle(); setMeta('cle', CLE.toString('base64')); }
+/* LES SCANS : le dossier de la mère (jamais le relais). Blocs scellés AES-GCM par la clé de clinique ; implémentation de référence : `fichiers-ref.js`. */
+const Fichiers = require('./fichiers-ref');
+const STOCK = FICHIERS ? new Fichiers.Stock(FICHIERS) : null;
+let sauvScans = null;
 const alertes = [];
 const alerter = (a) => { alertes.push(Object.assign({ quand: Date.now() }, a)); };
 async function rel(methode, chemin, corps) {
@@ -774,6 +794,34 @@ function demarrerPont() {
       seq_max: Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS s FROM operations').get().s), retard_replication: Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS s FROM operations').get().s) - +meta('rep_seq', 0) } });
   }, 300);
 }
+
+
+/* --- fichiers numérisés (référence) ---------------------------------------------------- */
+const fStock = () => { if (!STOCK) throw new Err(503, 'fichiers_non_configures', 'Le dossier des scans n’est pas configuré sur la mère.', { geste: 'Régler le dossier des scans dans les paramètres de la mère.' }); return STOCK; };
+function fRefus(f) { try { return f(); } catch (e) { if (e instanceof Fichiers.Refus) throw new Err(e.code === 'FICHIER_ALTERE' ? 409 : 422, e.code, e.motif, { geste: e.geste }); throw e; } }
+function fAppareil(req) { const a = auth(req); if (a.role === 'mobile') throw new Err(403, 'mobile_sans_scans', 'Un téléphone ne reçoit ni courrier ni document de dossier patient (RG-13).', { geste: 'Utiliser un poste.' }); return a; }
+const fInfo = () => { const s = fStock(); return { dossier: s.dossier, fichiers: s.nombre(), octets: s.octets(), tailleMax: Fichiers.TAILLE_DEFAUT }; };
+const fEtat = (h) => { const s = fStock(); return { present: s.existe(h), recus: s.blocsRecus(h) }; };
+function fRecevoir(appareil, b, scelle) {
+  const s = fStock(); let c;
+  if (scelle) {
+    const e = b.enveloppe; if (!e) throw new Err(400, 'enveloppe_absente', 'Le bloc doit être scellé avec la clé de clinique.');
+    if (e.appareil !== appareil || e.dir !== 'fichier') throw new Err(403, 'enveloppe_deplacee', 'Enveloppe émise par un autre appareil ou pour un autre usage.');
+    try { c = dechiffrer(CLE, e); } catch (x) { throw new Err(400, 'enveloppe_alteree', 'Le bloc ne s’authentifie pas : altéré, ou scellé avec une autre clé.'); }
+  } else { c = b.charge; if (!c) throw new Err(400, 'charge_absente', 'Charge absente.'); }
+  return fRefus(() => {
+    if (c.rattacher) { s.deposer(Buffer.from(c.b64, 'base64'), c.sha, c.nom); return { recu: 1, complet: true }; }
+    return s.recevoirBloc(c, Fichiers.TAILLE_DEFAUT);
+  });
+}
+function fServir(appareil, q, scelle) {
+  const s = fStock(); const i = parseInt(q.i || '0', 10) || 0;
+  const r = fRefus(() => s.bloc(q.sha || '', i));
+  if (!r) throw new Err(404, 'fichier_absent', 'La mère ne détient pas ce fichier.', { geste: 'Vérifier le dossier des scans de la mère (contrôle, restauration).' });
+  const charge = { sha: q.sha, nom: r.nom, taille: r.taille, index: i, total: r.total, b64: r.octets.toString('base64') };
+  return scelle ? { enveloppe: chiffrer(CLE, charge, { id: `fichier-${q.sha}-${i}`, appareil, dir: 'fichier', n: i }) } : { charge };
+}
+function fSauvegarder(dest) { if (!STOCK) return null; return fRefus(() => STOCK.sauvegarder(dest || path.join(DOSSIER_SAUV, 'scans'))); }
 
 const serveur = http.createServer((req, res) => {
   const chunks = [];

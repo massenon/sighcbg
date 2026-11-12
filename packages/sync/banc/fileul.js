@@ -17,6 +17,7 @@ const { DatabaseSync } = require('node:sqlite');
 const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith('--' + n + '=')); return a ? a.split('=').slice(1).join('=') : d; };
 const PORT = +arg('port', 0);
 const MERE = arg('mere', 'http://127.0.0.1:9000');
+const CLE_CLINIQUE = arg('cle-clinique', '');
 const DB = arg('db', ':memory:');
 const NOM = arg('nom', 'poste');
 const DECALAGE = +arg('horloge-decalage-ms', 0);
@@ -200,6 +201,36 @@ async function cycle() {
   }
 })();
 
+
+/* --- les scans : dépôt chez la mère et lecture chez elle, par blocs scellés (référence de `ClientFichiers`, Dart) ------------------------------ */
+const FR = require('./fichiers-ref'); const { chiffrer: sceller, dechiffrer: ouvrir } = require('./crypto');
+function cleFichiers() { if (CLE_CLINIQUE.length !== 64) throw new FR.Refus('CLE_ABSENTE', 'Ce poste n’a pas la clé de clinique : il ne peut ni déposer ni lire de scan chez la mère.', 'Récupérer la clé de clinique (Rejoindre une clinique).'); return Buffer.from(CLE_CLINIQUE, 'hex'); }
+async function appelFichiers(methode, chemin, corps) {
+  try { return [200, await http1(methode, chemin, corps)]; }
+  catch (e) { if (e.status) return [e.status, e.corps || { code: e.code }]; return [503, { code: 'mere_injoignable', motif: 'La mère ne répond pas : ' + e.message + '.' }]; }
+}
+const refusDe = (st, j) => new FR.Refus(j.code || 'http_' + st, j.motif || 'La mère a refusé la demande (' + st + ').', j.geste || 'Réessayer.');
+async function deposerFichier(b) {
+  const cle = cleFichiers(); const o = Buffer.from(b.b64, 'base64'); const total = Math.max(1, Math.ceil(o.length / FR.TAILLE_BLOC));
+  const [st0, etat] = await appelFichiers('GET', '/sync/fichier/etat?sha=' + b.sha);
+  let depuis = st0 === 200 ? (etat.recus || 0) : 0; const present = st0 === 200 && etat.present; if (present) depuis = total;
+  const envoyer = async (charge, n) => { const [st, j] = await appelFichiers('POST', '/sync/fichier/bloc', { enveloppe: sceller(cle, charge, { id: `fichier-${charge.sha}-${charge.index}`, appareil: meta('uuid'), dir: 'fichier', n }) }); if (st !== 200) throw refusDe(st, j); };
+  for (let i = depuis; i < total; i++) await envoyer({ sha: b.sha, nom: b.nom, nomOrigine: b.nomOrigine || 'scan', famille: b.famille || 'patient', taille: o.length, index: i, total, b64: o.subarray(i * FR.TAILLE_BLOC, Math.min(o.length, (i + 1) * FR.TAILLE_BLOC)).toString('base64') }, i);
+  if (depuis >= total) await envoyer({ sha: b.sha, nom: b.nom, nomOrigine: b.nomOrigine || 'scan', famille: b.famille || 'patient', taille: o.length, index: 0, total: 1, b64: o.toString('base64'), rattacher: true }, 0);
+}
+async function lireFichier(h) {
+  const cle = cleFichiers(); const parts = []; let total = 1;
+  for (let i = 0; i < total; i++) {
+    const [st, j] = await appelFichiers('GET', `/sync/fichier/bloc?sha=${h}&i=${i}`);
+    if (st === 404) return null; if (st !== 200) throw refusDe(st, j);
+    const c = ouvrir(cle, j.enveloppe); total = c.total; parts.push(Buffer.from(c.b64, 'base64'));
+  }
+  const o = Buffer.concat(parts);
+  if (FR.sha(o) !== h) throw new FR.Refus('EMPREINTE_DIVERGENTE', 'Le fichier reçu de la mère ne porte pas l’empreinte de la fiche : il n’est pas rendu.', 'Réessayer ; si cela persiste, signaler à l’administrateur.');
+  return o;
+}
+const enRefus = (e) => (e instanceof FR.Refus ? [e.code === 'FICHIER_ALTERE' ? 422 : 422, { code: e.code, motif: e.motif, geste: e.geste }] : null);
+
 /* --- API de commande (le « clavier » du banc) ----------------------------------- */
 const commandes = {
   'POST /appairer': async (b) => {
@@ -219,6 +250,10 @@ const commandes = {
     return [200, j];
   },
   'POST /ecrire': (b) => [200, ecrire(b)],
+  'POST /fichier/deposer': async (b) => { try { await deposerFichier(b); return [200, { ok: true }]; } catch (e) { const r = enRefus(e); if (r) return r; throw e; } },
+  'GET /fichier/lire': async (b, q) => { try { const o = await lireFichier(q.sha || ''); return o ? [200, { b64: o.toString('base64'), sha: FR.sha(o), taille: o.length }] : [404, { code: 'fichier_absent' }]; } catch (e) { const r = enRefus(e); if (r) return r; throw e; } },
+  'GET /fichier/info': async () => { try { cleFichiers(); const [st, j] = await appelFichiers('GET', '/sync/fichier/info'); return [st, j]; } catch (e) { const r = enRefus(e); if (r) return r; throw e; } },
+
   'POST /renouveler-force': async () => { try { await renouveler(); return [200, { ok: true }]; } catch (e) { return [401, { code: e.code }]; } },
   'POST /expirer-jeton': () => { setMeta('jeton', 'x.' + 'invalide'); return [200, {}]; },
   'GET /renouv': () => [200, { renouvellement: meta('renouvellement') }],
