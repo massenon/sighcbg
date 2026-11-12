@@ -158,7 +158,10 @@ void main() {
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
-      fichesEgales(col.toutes.first, obj(obj(c['creation'])['arrivee'])['fiche'] as M);
+      // `numerise` n'est plus saisi ni écrit : « Numérisé » est DÉRIVÉ de la présence d'un fichier (le vecteur de la maquette d'avant ce lot le portait encore).
+      fichesEgales(col.toutes.first, obj(obj(c['creation'])['arrivee'])['fiche'] as M, ignores: {'numerise'});
+      expect(col.toutes.first.containsKey('numerise'), isFalse);
+      expect(docNumerise(col.toutes.first), isFalse);
       expect(col.toutes.first['reference'], (obj(obj(c['creation'])['arrivee'])['fiche'] as M)['reference']);
       await t.pump(const Duration(seconds: 10));
     });
@@ -168,11 +171,11 @@ void main() {
       await ouvrir(t, m, 'm13-courriers');
       await chercher(t, 'ARR-2026-0004');
       await cliquer(t, find.byTooltip('Modifier').first);
-      poser(t, {'traitement': 'traite', 'numerise': true});
+      poser(t, {'traitement': 'traite'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
       final f = m.collection('courriers').toutes.firstWhere((x) => x['id'] == 'COU4');
-      fichesEgales(f, obj(obj(obj(c['modification'])['enregistre'])['fiche']));
+      fichesEgales(f, obj(obj(obj(c['modification'])['enregistre'])['fiche']), ignores: {'numerise'});
       expect(f['reference'], 'ARR-2026-0004');
       await t.pump(const Duration(seconds: 10));
     });

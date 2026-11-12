@@ -53,7 +53,15 @@ class CrudMat extends StatefulWidget {
     this.validation,
     this.intro,
     this.actionsSup,
+    this.rechercheExtra,
+    this.detailSup,
   });
+
+  /// Un bloc posé SOUS la fiche détaillée (le panneau du scan d'un courrier) : la fiche par défaut reste, le bloc s'y ajoute.
+  final Widget Function(BuildContext, Fiche)? detailSup;
+
+  /// Un texte cherchable en plus des colonnes (le texte indexé d'un PDF) : transmis au tableau, jamais affiché.
+  final String Function(Fiche)? rechercheExtra;
 
   /// `actionsSup(r, refresh)` du `K.crud` : des commandes propres à l'écran (validation d'un circuit, par exemple), posées après « Consulter ». Une commande
   /// interdite est ABSENTE : c'est à l'appelant de ne pas la rendre.
@@ -361,7 +369,15 @@ class _CrudMatState extends State<CrudMat> {
         titre: widget.titreDetail?.call(f) ?? matTitreDetail(f),
         sousTitre: widget.sousTitreDetail != null ? widget.sousTitreDetail!(f) : matSousTitreDetail(f),
         largeurMax: widget.largeurTiroir,
-        corps: widget.detail != null ? widget.detail!(ctx, f) : _detailDefaut(ctx, f),
+        corps: widget.detailSup == null
+            ? (widget.detail != null ? widget.detail!(ctx, f) : _detailDefaut(ctx, f))
+            : Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                widget.detail != null ? widget.detail!(ctx, f) : _detailDefaut(ctx, f),
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 8),
+                widget.detailSup!(ctx, f),
+              ]),
         pied: (fermer) => [
               if (widget.etat != null)
                 BoutonSigh(
@@ -399,6 +415,7 @@ class _CrudMatState extends State<CrudMat> {
               if (_dansPlage(r) && (widget.filtreBase?.call(r) ?? true)) r
           ];
     return TableauSigh(
+      rechercheExtra: widget.rechercheExtra,
       colonnes: widget.colonnes,
       lignes: lignes,
       filtres: archive ? const [] : widget.filtres,

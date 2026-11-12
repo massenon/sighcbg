@@ -133,7 +133,11 @@ class RegistreM1 extends StatefulWidget {
     this.libelleArchiver = 'Archiver',
     this.messageArchive = 'Enregistrement archivé.',
     this.titreArchivage,
+    this.rechercheExtra,
   });
+
+  /// Un texte cherchable en plus des colonnes (le texte indexé d'un PDF) : transmis au tableau, jamais affiché.
+  final String Function(Fiche)? rechercheExtra;
 
   /// Commandes posées dans la barre d'outils du tableau (à côté de « Nouveau »).
   final List<Widget> actionsBarre;
@@ -300,6 +304,7 @@ class _RegistreM1State extends State<RegistreM1> {
     final lignes = widget.lignes != null ? widget.lignes!(c, toutes) : toutes;
     final peutCreer = !widget.archive && c.droit.editer && (widget.champs != null || widget.creerVers != null) && widget.libelleNouveau != null;
     return TableauSigh(
+      rechercheExtra: widget.rechercheExtra,
       colonnes: widget.colonnes,
       lignes: lignes,
       filtres: widget.filtres,

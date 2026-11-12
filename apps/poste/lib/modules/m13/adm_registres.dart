@@ -3,6 +3,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../documents/panneau_scan.dart';
+import '../../documents/service_fichiers.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -101,11 +103,18 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
               final t = admTraitementCourrier(r['traitement']);
               return BadgeSigh(t.$1, ton: matTon(t.$2));
             }),
+        // « Numérisé » est DÉRIVÉ de la présence d'un fichier (jamais saisi) : un scan déposé, ou « À scanner ». Le texte indexé ou non se dit sur la ligne.
         ColonneTableau(
-            cle: 'numerise',
+            cle: 'scan',
             libelle: 'Numérisé',
-            texte: (r) => matVrai(r['numerise']) ? 'Oui' : 'Non',
-            rendu: (_, r) => matVrai(r['numerise']) ? const BadgeSigh('Oui', ton: TonSigh.succes) : const BadgeSigh('À scanner', ton: TonSigh.attention)),
+            texte: (r) => docNumerise(r) ? 'Oui — ${docLibelleIndexation(r)}' : 'À scanner',
+            valeur: (r) => docNumerise(r) ? 1 : 0,
+            rendu: (_, r) => docNumerise(r)
+                ? Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                    const BadgeSigh('Oui', ton: TonSigh.succes),
+                    Text(docLibelleIndexation(r), style: const TextStyle(color: JetonsShell.slate500, fontSize: 10, height: 15 / 10)),
+                  ])
+                : const BadgeSigh('À scanner', ton: TonSigh.attention)),
       ],
       champs: (m) => [
         const ChampDef(nom: 'sens', libelle: 'Sens', type: TypeChamp.select, requis: true, options: [OptionChamp('arrivee', 'Courrier arrivée'), OptionChamp('depart', 'Courrier départ')]),
@@ -120,14 +129,31 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
           OptionChamp('traite', 'Traité'),
         ]),
         const ChampDef(nom: 'accuseReception', libelle: 'Accusé de réception', type: TypeChamp.case_),
-        const ChampDef(nom: 'numerise', libelle: 'Document numérisé', type: TypeChamp.case_),
         const ChampDef(nom: 'observations', libelle: 'Observations', type: TypeChamp.textarea, lignes: 2, col: ColChamp.plein),
       ],
       valeursInitiales: () => {'date': iso(c.aujourdhui), 'sens': 'arrivee', 'traitement': 'en_attente', 'nature': 'Lettre'},
       transformer: (ctx, v) => fiche(ctx, v, null),
       transformerExistante: fiche,
       referenceToast: (f) => '${f['reference'] ?? ''}',
+      plageChamp: 'date',
+      rechercheExtra: (r) => ServiceFichiers.de(c.magasin).texteDe(r),
+      actionsSup: (ctx, r) => [
+        BoutonIcone(
+            icone: LucideIcons.scanLine,
+            libelle: docNumerise(r) ? 'Voir le scan' : (c.droit.editer ? 'Déposer un scan' : 'Scan du courrier'),
+            onPressed: () => afficherTiroir<void>(ctx,
+                titre: 'Scan du courrier',
+                sousTitre: '${r['reference']} — ${r['objet'] ?? ''}',
+                largeurMax: 768,
+                corps: PanneauScan(famille: docFamilleCourrier, ficheId: r['id'], peutDeposer: c.droit.editer, peutRetirer: c.droit.annuler)))
+      ],
+      detailSup: (ctx, r) => PanneauScan(famille: docFamilleCourrier, ficheId: r['id'], peutDeposer: c.droit.editer, peutRetirer: c.droit.annuler),
       filtres: [
+        FiltreTableau(
+            nom: 'scan',
+            libelle: 'Numérisation',
+            options: const [OptionChamp('oui', 'Numérisé'), OptionChamp('non', 'À scanner'), OptionChamp('nonindexe', 'Texte non indexé')],
+            correspond: (r, v) => switch (v) { 'oui' => docNumerise(r), 'non' => !docNumerise(r), _ => docEtatIndexation(r) == 'non_indexe' }),
         const FiltreTableau(nom: 'sens', libelle: 'Sens', options: [OptionChamp('arrivee', 'Arrivée'), OptionChamp('depart', 'Départ')]),
         const FiltreTableau(nom: 'traitement', libelle: 'Traitement', options: [
           OptionChamp('traite', 'Traité'),
@@ -153,7 +179,9 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
               ('Objet', '${r['objet'] ?? ''}'),
               ('État du traitement', admTraitementCourrier(r['traitement']).$1),
               ('Accusé de réception', matOuiNon(r['accuseReception'])),
-              ('Document numérisé', matOuiNon(r['numerise'])),
+              ('Document numérisé', docNumerise(r) ? 'Oui' : 'Non'),
+              if (docNumerise(r)) ('Fichier (nom normalisé)', '${docScan(r)!['nomNormalise']}'),
+              if (docNumerise(r)) ('Empreinte SHA-256 (8 premiers caractères)', docEmpreinteAbregee('${docScan(r)!['sha256']}')),
               ('Observations', matVrai(r['observations']) ? '${r['observations']}' : '—'),
             ]),
           ],

@@ -225,11 +225,12 @@ class Fileul {
 
   /// LE CLIENT DES SCANS de ce poste : dépose chez la mère et relit chez elle, par blocs scellés AES-256-GCM (clé de clinique). Le relais n'est pas sur ce chemin.
   /// Refus nommé `CLE_ABSENTE` si le poste n'a pas la clé de clinique.
-  ClientFichiers clientFichiers({String famille = 'patient'}) {
-    if (cfg.cleClinique.length != 64) {
+  ClientFichiers clientFichiers({String famille = 'patient', String? cleClinique}) {
+    final cle = cleClinique ?? cfg.cleClinique;
+    if (cle.length != 64) {
       throw const DocErreur('CLE_ABSENTE', 'Ce poste n’a pas la clé de clinique : il ne peut ni déposer ni lire de scan chez la mère.', 'Récupérer la clé de clinique (Rejoindre une clinique).');
     }
-    final env = Enveloppes([for (var i = 0; i < 64; i += 2) int.parse(cfg.cleClinique.substring(i, i + 2), radix: 16)]);
+    final env = Enveloppes([for (var i = 0; i < 64; i += 2) int.parse(cle.substring(i, i + 2), radix: 16)]);
     return ClientFichiers(
         famille: famille,
         prefixe: '/sync/fichier',

@@ -8,6 +8,8 @@ import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
 
 
+import 'documents/branchement.dart';
+import 'documents/service_fichiers.dart';
 import 'donnees/magasin.dart';
 import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
@@ -135,6 +137,8 @@ Future<void> main() async {
       admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
       cleStockage: cleSqlite,
       dossierSauvegardes: '$dossierDonnees/sauvegardes',
+      // LE DOSSIER DES SCANS (courriers, dossier patient) : sur la mère seule, sous le dossier des données du poste par défaut ; réglable dans « Paramètres système ».
+      dossierFichiers: '$dossierDonnees/scans',
       versionApplication: const String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0'));
   final activation = ActivationMere(
     stockage: stockage,
@@ -281,6 +285,33 @@ Future<void> main() async {
     }
   }
   ServiceTranscriptionMobile(magasin: magasin, source: moteur.pieces).demarrer();
+  // LES SCANS : la mère range les fichiers (taille maximale lue au réglage de la clinique), un fileul les dépose et les lit chez elle par le canal scellé.
+  configMere.tailleMaxFichier = () => ServiceFichiers.de(magasin).tailleMax();
+  final consoleScans = ClientMere(base: Uri.parse('http://127.0.0.1:9000'), secretAdmin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
+  brancherFichiers(
+      magasin: magasin,
+      estMere: () => controleur.config.estMere,
+      clientMere: consoleScans,
+      clientFileul: (famille) {
+        String cle = '';
+        try {
+          cle = ConfigPairPoste.lire(dossierDonnees)?.cleHex ?? '';
+        } on FormatException {/* clé illisible : refus nommé CLE_ABSENTE à l'usage */}
+        return moteur.clientFichiers(famille, cleClinique: cle);
+      });
+  if (params.mode == ModePoste.mere) {
+    unawaited(() async {
+      final probleme = await appliquerDossierRegle(magasin, consoleScans);
+      if (probleme != null) debugPrint(probleme);
+      // Les documents patient encore en base64 sont rangés chez la mère, l'empreinte relue AVANT retrait (idempotent).
+      try {
+        final svc = ServiceFichiers.de(magasin);
+        if (svc.enBase64() > 0) await svc.migrerBase64();
+      } catch (e) {
+        debugPrint('migration des scans : $e');
+      }
+    }());
+  }
   final session = sessionDemarrage();
   // MODE PAIR (ADR-0006) : seulement si `pair.json` l'active. Les écritures du poste passent par le moteur pair, le relais ne voit que des enveloppes chiffrées.
   MoteurPair? moteurPair;

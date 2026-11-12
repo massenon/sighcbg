@@ -33,6 +33,9 @@ const familleDeBase = <String, String>{
   'patients': 'A', 'rendezvous': 'A',
   // L'ACTIVITÉ que le pont du poste synchronise (E2130) : des fiches descriptives, sans invariant entre fiches. Factures, stock, écritures et lits en restent
   // exclus tant que leurs règles de fusion (numérotation, RG-03, unicité du lit) ne sont pas posées.
+  // Les fiches des SCANS (courriers M13, documents du dossier patient M1) et leur registre par empreinte : des fiches descriptives. Le FICHIER ne voyage pas ici : il reste
+  // chez la mère et un fileul le lit par `/sync/fichier/*` (blocs scellés).
+  'courriers': 'A', 'documentsPatient': 'A', 'fichiers': 'A',
   'releves': 'A', 'observations': 'A', 'visites': 'A', 'appels': 'A', 'consultations': 'A', 'dossiersConsultation': 'A', 'antecedents': 'A',
   // Les hachés des mots de passe : écrits par le poste où l'agent change son mot de passe, dans les DEUX sens (E2131).
   'identifiants': 'A',
@@ -156,6 +159,10 @@ class ConfigMere {
   /// Réglable à chaud par `POST /admin/fichiers/dossier`.
   final String dossierFichiers;
 
+  /// La taille maximale d'un scan, LUE À CHAQUE DÉPÔT dans le réglage de la clinique (le poste branche son magasin après la construction, comme [droitsPair] ;
+  /// la mère n'en tient pas de copie). `null` : 10 Mo.
+  int Function()? tailleMaxFichier;
+
   /// Numéro de version de l'application, publié dans les indicateurs agrégés (forme imposée : `1.2.3` ou `1.2.3+4`).
   final String versionApplication;
 
@@ -212,9 +219,6 @@ class Mere {
 
   /// Le rapport de la dernière sauvegarde des scans (copiés, inchangés, altérés, manquants) ; `null` : service des fichiers fermé.
   Map<String, Object?>? dernierRapportScans;
-
-  /// La taille maximale d'un scan, LUE À CHAQUE DÉPÔT dans le réglage de la clinique (le poste branche le magasin ; la mère n'en tient pas de copie).
-  int Function()? tailleMaxFichier;
 
   static Future<Mere> creer(ConfigMere cfg) async {
     final base = await Depot.ouvrir(cfg.dbChemin, cfg.cleStockage);
@@ -915,7 +919,7 @@ class Mere {
 
   Map<String, Object?> _infoFichiers() {
     final s = _stock();
-    return {'dossier': s.dossier, 'fichiers': s.nombre, 'octets': s.octetsTotal, 'tailleMax': (tailleMaxFichier ?? () => 10 * 1024 * 1024)()};
+    return {'dossier': s.dossier, 'fichiers': s.nombre, 'octets': s.octetsTotal, 'tailleMax': (cfg.tailleMaxFichier ?? () => 10 * 1024 * 1024)()};
   }
 
   Map<String, Object?> _etatFichier(String sha) {
@@ -954,7 +958,7 @@ class Mere {
           index: (c['index'] as num).toInt(),
           total: (c['total'] as num).toInt(),
           octets: octets,
-          tailleMax: (tailleMaxFichier ?? () => 10 * 1024 * 1024)());
+          tailleMax: (cfg.tailleMaxFichier ?? () => 10 * 1024 * 1024)());
     } on DocErreur catch (e) {
       throw Err(422, e.code, e.motif, {'geste': e.geste});
     }

@@ -28,6 +28,11 @@ const Set<String> collectionsActivite = {
   'consultations',
   'dossiersConsultation',
   'antecedents',
+  // Les fiches des SCANS (métadonnées : empreinte, nom normalisé, version) et leur registre par empreinte : un fileul voit le courrier ou le document déposé sur un autre
+  // poste. Le fichier lui-même reste chez la mère (`/sync/fichier/*`).
+  'courriers',
+  'documentsPatient',
+  'fichiers',
   // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
   'decisionsDroits',
   // Lot L8 : les présences. Un pointage par badge s'écrit au poste (hors ligne comprise) et voyage comme les autres : une fiche par pointage, le départ et la validation

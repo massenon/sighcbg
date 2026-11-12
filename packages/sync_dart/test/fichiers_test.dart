@@ -190,10 +190,10 @@ void main() {
       final a = await poste(cle: cleHex);
       final faux = [...latin1.encode('MZ pas un pdf'), ...List.filled(300, 1)];
       await expectLater(a.clientFichiers(famille: 'courrier').deposer(octets: faux, sha256: docSha256(faux), nomNormalise: '2026-11-11_ARR_0044.pdf'), throwsA(isA<DocErreur>().having((e) => e.code, 'code', 'FORMAT_REFUSE')));
-      mere.tailleMaxFichier = () => 100 * 1024;
+      mere.cfg.tailleMaxFichier = () => 100 * 1024;
       final gros = pdfDe(200 * 1024, 9);
       await expectLater(a.clientFichiers().deposer(octets: gros, sha256: docSha256(gros), nomNormalise: '2026-11-11_ARR_0045.pdf'), throwsA(isA<DocErreur>().having((e) => e.code, 'code', 'TAILLE_DEPASSEE')));
-      mere.tailleMaxFichier = null;
+      mere.cfg.tailleMaxFichier = null;
       // coupure au milieu : un premier bloc est déjà chez la mère, le client reprend au bloc 1
       final o = pdfDe(tailleBloc * 2 + 5, 11);
       final sha = docSha256(o);

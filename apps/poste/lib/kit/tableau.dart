@@ -72,7 +72,11 @@ class TableauSigh extends StatefulWidget {
     this.actions = const [],
     this.actionsGroupe,
     this.libelleRecherche = 'Rechercher…',
+    this.rechercheExtra,
   });
+
+  /// Un texte cherchable EN PLUS des colonnes, jamais affiché ni exporté (le texte extrait d'un PDF, par exemple) : la recherche le lit, rien d'autre.
+  final String Function(Ligne)? rechercheExtra;
 
   final List<ColonneTableau> colonnes;
   final List<Ligne> lignes;
@@ -130,7 +134,7 @@ class TableauSighState extends State<TableauSigh> {
     if (_q.isNotEmpty)
       l = l
           .where(
-              (r) => widget.colonnes.any((c) => correspond(c.enTexte(r), _q)))
+              (r) => widget.colonnes.any((c) => correspond(c.enTexte(r), _q)) || (widget.rechercheExtra != null && correspond(widget.rechercheExtra!(r), _q)))
           .toList();
     for (final e in _filtres.entries) {
       if (e.value.isEmpty) continue;
