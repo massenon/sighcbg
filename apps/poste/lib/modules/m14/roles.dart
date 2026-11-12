@@ -9,6 +9,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../sync/service_demandes_import.dart';
 import 'commun_m14.dart';
 
 /// `m14-roles` — « Rôles & permissions (RBAC) » : la matrice des droits ADMINISTRABLE (vague 15) : voir, éditer, annuler par rôle et par module, réglage
@@ -283,6 +284,10 @@ class _VueRolesState extends State<_VueRoles> {
               id: 'sensibles',
               libelle: 'Données sensibles',
               construire: (ctx) => _OngletSensibles(x: x)),
+          OngletDef(
+              id: 'import',
+              libelle: 'Droit d’import',
+              construire: (ctx) => _OngletImport(x: x)),
           OngletDef(
               id: 'decisions',
               libelle: 'Décisions de droits',
@@ -805,6 +810,132 @@ class _OngletSensiblesState extends State<_OngletSensibles> {
                               onPressed: () => _decider(ctx, role, cat, null)),
                       ],
                     ]));
+              }),
+          ])),
+    ]);
+  }
+}
+
+// --- Droit d'import : un droit par jeu, par rôle ------------------------------------------------------------------------------------------------
+
+/// Le droit d'IMPORTER chaque jeu de données, par rôle (lot IMP-C, Direction du 12/11/2026). PAS un second système : importer un jeu, c'est VOIR et ÉDITER l'écran du jeu (`imp-*`)
+/// dans la matrice, et arbitrer les lots, c'est ANNULER sur `imp-accueil`. Cet onglet n'est donc qu'une lecture dédiée de la même matrice : chaque réglage est une DÉCISION de droits
+/// d'écran de la fiche `rbac` du rôle, motivée, journalisée (RG-12), jugée par la mère, diffusée aux postes sans redémarrage, annulable, comme dans les autres onglets. Aucun nom de rôle ici.
+///
+/// La voie que suivra l'import est dite : un jeu restreint ne passe jamais par une demande à la mère ; un référentiel de configuration s'écrit chez le fileul ET part en demande à la mère,
+/// qui reste seule autorité.
+class _OngletImport extends StatefulWidget {
+  const _OngletImport({required this.x});
+  final _Ctx x;
+  @override
+  State<_OngletImport> createState() => _OngletImportState();
+}
+
+class _OngletImportState extends State<_OngletImport> {
+  String? _role;
+
+  Future<void> _decider(BuildContext ctx, RoleSec r, String ecran, String intitule, String libelleJeu, {bool? editer, bool? annuler}) async {
+    final x = widget.x;
+    final motif = await confirmerAvecMotif(ctx, titre: '$intitule : « $libelleJeu » pour « ${r.label} » ?', message: x.diffusion, libelleOk: intitule);
+    if (motif == null || !ctx.mounted) return;
+    // `droitsEcrans` s'écrit ENTIER : une clé absente d'une décision est une clé retirée. On repart donc de TOUS les réglages d'écran du rôle et on n'en change qu'un.
+    final actuels = <String, Object?>{...((x.fiche(r.id)?['droitsEcrans'] as Map?)?.cast<String, Object?>() ?? const {})};
+    final d = x.c.donnees?.matrice.droit(r.id, ecran) ?? Droit.aucun;
+    actuels[ecran] = {'voir': editer == true || annuler == true ? true : d.voir, 'editer': editer ?? d.editer, 'annuler': annuler ?? d.annuler};
+    final annulerDecision = x.enregistrer(r.id, {'droitsEcrans': actuels}, 'Droit d’import des données', motif: motif);
+    _annoncerDecision(ctx, x);
+    ToastsSigh.afficher(ctx, 'Droit enregistré : $libelleJeu.', type: TypeToast.succes, detail: '$intitule pour « ${r.label} ».', annuler: annulerDecision);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final x = widget.x;
+    final c = x.c;
+    final roles = x.actifs;
+    if (roles.isEmpty) return const VideSigh('Aucun rôle actif.', icone: LucideIcons.shield);
+    final role = roles.where((r) => r.id == _role).firstOrNull ?? roles.first;
+    final modifiable = c.droit.editer;
+    final regime = ServiceDemandesImport.de(x.m).regime;
+    Droit droitDe(String ecran) => c.donnees?.matrice.droit(role.id, ecran) ?? Droit.aucun;
+    Widget ligne({required Key cle, required String titre, required String detail, required List<Widget> badges, required List<Widget> actions}) => Container(
+        key: cle,
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: const BoxDecoration(border: Border(top: BorderSide(color: JetonsShell.slate200))),
+        child: Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          SizedBox(
+              width: 420,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(titre, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
+                Text(detail, style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+              ])),
+          ...badges,
+          ...actions,
+        ]));
+    final lots = droitDe(ecranLotsImport);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      const NoteSigh(
+          'Importer un jeu de données, c’est voir ET éditer l’écran du jeu dans la matrice : ce n’est pas le droit d’écrire dans l’écran métier. Le droit se règle ici, rôle par rôle, comme tout droit d’écran '
+          '(décision motivée, journalisée, diffusée aux postes sans redémarrage). Un jeu restreint (patients, personnel, soldes, stock vivant, courriers) ne passe jamais par une demande à la mère ; '
+          'un référentiel de configuration importé à un fileul s’écrit chez lui et part en demande à la mère, qui reste la seule autorité.',
+          key: Key('m14:import:note'),
+          ton: TonSigh.info,
+          icone: LucideIcons.upload),
+      const SizedBox(height: 12),
+      CarteSigh(
+          titre: 'Droit d’import des données',
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 420),
+                    child: SelecteurSigh(
+                        key: const Key('m14:import:role'),
+                        libelle: 'Rôle',
+                        indicatif: 'Rôle',
+                        valeur: role.id,
+                        options: [for (final r in roles) OptionChamp(r.id, r.label)],
+                        surChange: (v) => setState(() => _role = v)))),
+            const SizedBox(height: 12),
+            ligne(
+                cle: const Key('m14:import:lots'),
+                titre: 'Arbitrer les lots d’importation',
+                detail: 'Lire tous les lots de l’historique et annuler un lot : le droit d’annuler sur « $ecranLotsImport ». Sans lui, on ne lit que ses propres lots.',
+                badges: [BadgeSigh(lots.voir && lots.annuler ? 'Arbitre' : 'N’arbitre pas', key: const Key('m14:import:etat:lots'), ton: lots.voir && lots.annuler ? TonSigh.succes : TonSigh.neutre)],
+                actions: [
+                  if (modifiable)
+                    BoutonSigh(
+                        libelle: lots.voir && lots.annuler ? 'Retirer l’arbitrage' : 'Accorder l’arbitrage',
+                        key: const Key('m14:import:basculer:lots'),
+                        icone: lots.annuler ? LucideIcons.userMinus : LucideIcons.userCheck,
+                        taille: TailleBouton.sm,
+                        variante: VarianteBouton.secondaire,
+                        onPressed: () => _decider(context, role, ecranLotsImport, lots.voir && lots.annuler ? 'Retirer l’arbitrage' : 'Accorder l’arbitrage', 'Arbitrer les lots', annuler: !(lots.voir && lots.annuler))),
+                ]),
+            for (final j in jeuxImport)
+              Builder(builder: (ctx) {
+                final d = droitDe(j.ecran);
+                final peut = d.voir && d.editer;
+                final voie = j.restreint
+                    ? (regime.reserveALaMere(j) ? 'Restreint, réservé à la mère' : 'Restreint : jamais par une demande')
+                    : (regime.exigeLaMere(j) ? 'Via la mère (demande)' : 'Local au poste');
+                return ligne(
+                    cle: Key('m14:import:${j.id}'),
+                    titre: j.libelle,
+                    detail: 'Écran « ${j.ecran} » · ${j.description}',
+                    badges: [
+                      BadgeSigh(voie, ton: j.restreint ? TonSigh.attention : TonSigh.neutre),
+                      BadgeSigh(peut ? 'Peut importer' : (d.voir ? 'Lecture seule' : 'Fermé'), key: Key('m14:import:etat:${j.id}'), ton: peut ? TonSigh.succes : TonSigh.neutre),
+                    ],
+                    actions: [
+                      if (modifiable)
+                        BoutonSigh(
+                            libelle: peut ? 'Retirer l’import' : 'Autoriser l’import',
+                            key: Key('m14:import:basculer:${j.id}'),
+                            icone: peut ? LucideIcons.ban : LucideIcons.upload,
+                            taille: TailleBouton.sm,
+                            variante: VarianteBouton.secondaire,
+                            onPressed: () => _decider(ctx, role, j.ecran, peut ? 'Retirer l’import' : 'Autoriser l’import', j.libelle, editer: !peut)),
+                    ]);
               }),
           ])),
     ]);
