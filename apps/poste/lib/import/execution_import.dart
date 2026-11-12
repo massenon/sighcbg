@@ -10,7 +10,7 @@ import 'selecteurs_import.dart';
 /// Les gestes du module d'importation, UNE fois pour tous ses habillages (la page d'un jeu du module IMP, la fenêtre en trois étapes posée sur les écrans
 /// métier) : les règles ne vivent pas dans une présentation.
 
-PortMagasin portImport(ContexteEcran c) => PortMagasin(c.magasin, aujourdhui: () => c.aujourdhui, nomAgent: c.agent.nom);
+PortMagasin portImport(ContexteEcran c) => PortMagasin(c.magasin, aujourdhui: () => c.aujourdhui, nomAgent: c.agent.nom, profil: profilImportDe(c));
 
 /// Les choix de l'agent pour une analyse : « ignorer les existants » (ignoré tel quel sur un jeu qui ne l'autorise pas : le moteur refuse alors en le disant)
 /// et les colonnes réservées que sa matrice lui accorde.

@@ -5,8 +5,12 @@ import '../donnees/magasin.dart';
 /// Le PORT d'écriture du moteur d'importation (`PortImport`, packages/domaine) branché sur le magasin du poste. Une écriture refusée par une garde de
 /// collection (exercice clos : `EcritureRefusee`) remonte au moteur, qui défait ce qu'il vient de poser.
 class PortMagasin extends PortImport {
-  PortMagasin(this.magasin, {required this.aujourdhui, required this.nomAgent});
+  PortMagasin(this.magasin, {required this.aujourdhui, required this.nomAgent, required this.profil});
   final Magasin magasin;
+
+  /// Le profil qui importe (droits lus de la matrice en force) : le moteur refuse selon lui. Jamais un nom de rôle ici.
+  @override
+  final ProfilImport profil;
   final DateTime Function() aujourdhui;
   final String nomAgent;
 

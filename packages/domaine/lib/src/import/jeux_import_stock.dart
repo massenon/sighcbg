@@ -112,6 +112,7 @@ final JeuImport jeuProduits = JeuImport(
 
 final JeuImport jeuStockDetail = JeuImport(
   id: 'stock-detail',
+  restreint: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-stock-detail',
   libelle: 'Importation du stock détail initial',
@@ -189,6 +190,7 @@ final JeuImport jeuStockDetail = JeuImport(
 
 final JeuImport jeuTransferts = JeuImport(
   id: 'transferts',
+  restreint: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-transferts',
   libelle: 'Importation d’un transfert gros → détail',
@@ -283,6 +285,7 @@ final JeuImport jeuTransferts = JeuImport(
 
 final JeuImport jeuInventaire = JeuImport(
   id: 'inventaire',
+  restreint: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-inventaire',
   libelle: 'Importation d’un comptage d’inventaire',
@@ -409,6 +412,7 @@ String _cleCourrier(_V v) => '${_n(v['sens'])}|${v['date']}|${_n(v['correspondan
 
 final JeuImport jeuCourriers = JeuImport(
   id: 'courriers',
+  restreint: true,
   ecran: 'imp-courriers',
   libelle: 'Importation du registre des courriers',
   module: 'IMP',

@@ -243,6 +243,7 @@ String _referenceMouvement(List<_V> fiches) {
 
 final JeuImport jeuPersonnel = JeuImport(
   id: 'personnel',
+  restreint: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-personnel',
   libelle: 'Importation du personnel',
@@ -329,6 +330,7 @@ final JeuImport jeuPersonnel = JeuImport(
 
 final JeuImport jeuPatients = JeuImport(
   id: 'patients',
+  restreint: true,
   octetsMaxDefaut: octetsMaxImportPatients,
   ecran: 'imp-patients',
   libelle: 'Importation du répertoire patients',
@@ -839,6 +841,7 @@ final JeuImport jeuPlanComptable = JeuImport(
 
 final JeuImport jeuSoldesOuverture = JeuImport(
   id: 'soldes-ouverture',
+  restreint: true,
   ecran: 'imp-soldes-ouverture',
   libelle: 'Importation des soldes d’ouverture',
   module: 'IMP',

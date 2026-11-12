@@ -24,7 +24,7 @@ Magasin magasinVecteurs() => Magasin({
       'audit': const [],
     });
 
-PortMagasin portVecteurs(Magasin m) => PortMagasin(m, aujourdhui: () => DateTime(2026, 11, 1), nomAgent: 'ADMIN TEST');
+PortMagasin portVecteurs(Magasin m) => PortMagasin(m, aujourdhui: () => DateTime(2026, 11, 1), nomAgent: 'ADMIN TEST', profil: const ProfilImport.accordeTout());
 
 /// Décisions du 11/11/2026 : le modèle du répertoire patients ne porte plus le code (RG-01 : généré) ni le groupe sanguin ; le modèle du personnel ne porte la colonne
 /// « Salaire de base » que pour le profil qui a le droit paie. Les classeurs de la maquette, écrits avant, sont relus tels quels puis ADAPTÉS avant l'analyse.

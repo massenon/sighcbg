@@ -247,7 +247,7 @@ void main() {
       final port = magasin();
       final a = analyserLignes(jeuProduits, fichier(jeuProduits, [['SECRET-ZZ', 'Désignation secrète', 'pas une catégorie', '', 'abc', '', '', '', '']]), 'p.xlsx', port);
       expect(a.accepte, isFalse);
-      final lot = consigner(jeuProduits, a, port);
+      final lot = consigner(jeuProduits, a, port)!;
       final erreurs = (lot['erreurs'] as List).cast<Map>();
       expect(erreurs, isNotEmpty);
       for (final e in erreurs) {

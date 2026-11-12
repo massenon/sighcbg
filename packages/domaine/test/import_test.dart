@@ -10,12 +10,15 @@ import 'aide_vecteurs.dart';
 
 /// Un magasin en mémoire qui se comporte comme celui de la maquette : insertion EN TÊTE, archivage logique, gardes d'écriture.
 class MagasinMemoire extends PortImport {
-  MagasinMemoire(Map<String, Object?> jeu, {this.jourFixe = '2026-11-01', this.utilisateurFixe = 'ADMIN TEST'}) {
+  MagasinMemoire(Map<String, Object?> jeu, {this.jourFixe = '2026-11-01', this.utilisateurFixe = 'ADMIN TEST', this.profilFixe = const ProfilImport.accordeTout()}) {
     for (final e in jeu.entries) {
       _c[e.key] = [for (final f in (e.value as List).cast<Map>()) {...f.cast<String, Object?>()}];
     }
   }
   final String jourFixe, utilisateurFixe;
+  final ProfilImport profilFixe;
+  @override
+  ProfilImport get profil => profilFixe;
   final Map<String, List<FicheImport>> _c = {};
   final Map<String, String? Function(String op, FicheImport f)> gardes = {};
   int _rang = 0;
@@ -218,7 +221,7 @@ void main() {
     test('un fichier refusé est consigné et n\'écrit rien', () {
       final avant = {for (final n in ['produits', 'lots', 'mouvements']) n: port.toutes(n).length};
       final a = analyseDuCas('gs-quantite-negative');
-      final lot = consigner(jeuGrandStock, a, port);
+      final lot = consigner(jeuGrandStock, a, port)!;
       memes({for (final k in ['reference', 'etat', 'nbLignes', 'nbAvertissements', 'nbRefus', 'erreursTotal', 'jeu', 'fichier']) k: lot[k]}, V['lotRefus'], 'lotRefus');
       expect({for (final n in ['produits', 'lots', 'mouvements']) n: port.toutes(n).length}, avant);
     });

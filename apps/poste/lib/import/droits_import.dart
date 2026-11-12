@@ -15,37 +15,40 @@ class DroitsImport {
   const DroitsImport(this.c);
   final ContexteEcran c;
 
-  /// L'écran dont le droit d'ÉDITER vaut « avoir le droit paie » : la colonne « Salaire de base » du personnel est une donnée de paie.
-  static const ecranDroitPaie = 'm11-calcul';
+  /// Les écrans dont la matrice décide (définis au domaine, avec la règle : `ProfilImport`).
+  static const ecranDroitPaie = ecranDroitPaieImport;
+  static const ecranLots = ecranLotsImport;
 
-  /// L'écran dont le droit d'ANNULER vaut « arbitrer les lots » de tout le monde.
-  static const ecranLots = 'imp-accueil';
+  /// Le profil que le MOTEUR du domaine lit : la même règle des deux côtés (`ProfilImport`, `packages/domaine`), pour que le bouton et le refus ne divergent jamais.
+  ProfilImport get profil => profilImportDe(c);
 
-  Droit _de(String ecran) => c.donnees?.matrice.droit(c.role, ecran) ?? Droit.aucun;
+  Droit _de(String ecran) => profil.droitEcran(ecran);
 
-  bool peutImporter(JeuImport j) {
-    final d = _de(j.ecran);
-    return d.voir && d.editer;
-  }
+  bool peutImporter(JeuImport j) => profil.peutImporterEcran(j.ecran);
 
   /// Le profil détient-il au moins un droit d'importer ? (la rangée « Importation » du ruban n'a de sens que pour lui).
   bool get detientUnDroit => jeuxImport.any(peutImporter);
 
   /// L'historique complet des lots (et l'annulation d'un lot) : DAF et administrateur dans la matrice d'origine ; les autres ne lisent que leurs lots.
-  bool get arbitreLesLots {
-    final d = _de(ecranLots);
-    return d.voir && d.annuler;
-  }
+  bool get arbitreLesLots => profil.arbitreLesLots;
 
   /// Les colonnes réservées de [j] que ce profil a le droit d'importer.
   Set<String> colonnesAccordees(JeuImport j) {
     if (j.colonnesReservees.isEmpty) return const {};
-    final d = _de(ecranDroitPaie);
-    return d.voir && d.editer ? {...j.colonnesReservees} : const {};
+    return profil.aLeDroitPaie ? {...j.colonnesReservees} : const {};
   }
 
   /// Les lots que le profil a le droit de LIRE : tous s'il arbitre, sinon ceux dont il est l'auteur.
   List<Fiche> lotsVisibles(Iterable<Fiche> lots) => arbitreLesLots ? lots.toList() : [for (final l in lots) if (l['par'] == c.agent.nom) l];
+}
+
+/// Le profil de l'agent connecté : son rôle et ses droits sur chaque écran, lus de la matrice EN FORCE de la coque (graine engendrée + décisions de droits superposées à chaud).
+/// Sans matrice branchée (un écran monté sans coque), le profil n'a AUCUN droit : le moteur refuse.
+ProfilImport profilImportDe(ContexteEcran c) {
+  final m = c.donnees?.matrice;
+  if (m == null) return const ProfilImport.aucunDroit();
+  final role = c.role;
+  return ProfilImport(role: role, libelleRole: m.libelle(role) ?? role, droitEcran: (e) => m.droit(role, e));
 }
 
 /// La clé du réglage (collection `reglages`, la même que `cfbReglage` / `cfbPoserReglage`) qui fixe la borne de taille d'un fichier pour un jeu.
