@@ -549,22 +549,22 @@ void main() {
         final choix = liste(c['choixPossibles']);
         final choisi = (c['choisi'] as Map).cast<String, Object?>();
         final defaut = (c['parDefaut'] as Map).cast<String, Object?>();
-        if (choisi['a'] != defaut['a']) {
-          await choisir(t, 'a', '${choix.firstWhere((x) => x['value'] == choisi['a'])['libelle']}');
-        }
+        // Lot A1 : seule la mesure COMPARÉE se choisit ; ses antériorités (jusqu'à trois) s'en déduisent. Les cas de la maquette d'avant (deux colonnes choisies
+        // à la main) restent lus : la mesure comparée est la colonne droite, l'antériorité choisie figure parmi les colonnes de gauche.
         if (choisi['b'] != defaut['b']) {
           await choisir(t, 'b', '${choix.firstWhere((x) => x['value'] == choisi['b'])['libelle']}');
         }
         for (final e in (c['entetes'] as List).cast<String>().skip(1).take(2)) {
-          expect(find.text(e.toUpperCase() == e ? e : e), findsWidgets, reason: 'en-tête $e');
+          expect(find.text(e), findsWidgets, reason: 'en-tête $e');
         }
         for (final l in liste(c['lignes'])) {
           final cel = (l['cellules'] as List).cast<String>();
-          for (final x in cel) {
+          // Valeur de l'antériorité, valeur de la mesure comparée, références de la mesure comparée (l'« Évolution » est remplacée par la variation à la mesure précédente DE LA VARIABLE : sondée au domaine).
+          for (final x in [cel[0], cel[1], cel[2], cel[4]]) {
             expect(find.text(x), findsWidgets, reason: 'cellule $x');
           }
         }
-        expect(find.textContaining('L’évolution se lit de gauche à droite.'), findsOneWidget);
+        expect(find.textContaining('Les colonnes se lisent de gauche à droite'), findsOneWidget);
       });
     }
     cas('un examen à UNE mesure : aucune antériorité, et le dit', (t) async {

@@ -11,6 +11,7 @@ import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/points_commun.dart' show champUnique, commande;
 import 'cat_commun.dart';
+import 'cat_seuils.dart';
 
 const _noteFermeture =
     'Une variable d’accompagnement — réactif, lot, expiration, commentaire — se ferme sans se supprimer : le jour où un changement de réactif rend l’interprétation inutile, elle disparaît du compte rendu et les résultats déjà rendus la conservent. C’est la demande du biologiste, mot pour mot : « on peut les fermer ».';
@@ -342,6 +343,9 @@ class _EtatValeurs extends State<EcranValeursReference> {
           ),
           const SizedBox(height: 16),
           _tablePlages(context, c, plages),
+          const SizedBox(height: 16),
+          // Lot A2 : les seuils de variation brutale, sous les plages par lot (même écran du paramétrage du modèle des analyses).
+          SectionSeuils(variables: lignes),
         ]);
       },
     );

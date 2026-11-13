@@ -323,6 +323,18 @@ class _EtatResultats extends State<EcranResultats> {
               texte: (r) => '${r['conclusion'] ?? '—'}',
               rendu: (_, r) => badgeConclusion(r['conclusion'])),
           const ColonneTableau(cle: 'valideTechniquePar', libelle: 'Validation technique'),
+          // Lot A2 : la variation brutale SIGNALE (seuils validés seulement), elle ne retient jamais la validation.
+          ColonneTableau(
+              cle: 'variationBrutale',
+              libelle: 'Variation brutale',
+              valeur: (r) => alertesDe(r, jeuLaboDe(c, p.session)).length,
+              texte: (r) => '${alertesDe(r, jeuLaboDe(c, p.session)).length}',
+              rendu: (_, r) {
+                final n = alertesDe(r, jeuLaboDe(c, p.session)).length;
+                return n == 0
+                    ? Text('—', style: styleLabo(12, couleur: JetonsShell.slate300))
+                    : BadgeSigh('${nombre(n)} variable(s) signalée(s)', key: Key('res:alerte-validation:${r['reference']}'), ton: TonSigh.attention);
+              }),
         ],
         lignes: lignes,
         taillePage: 12,
@@ -331,7 +343,11 @@ class _EtatResultats extends State<EcranResultats> {
         alClicLigne: (r) => afficherTiroir<void>(ctx,
             titre: '${r['analyse']}',
             sousTitre: '${r['patient']} — ${r['reference']}',
-            corps: detailDemande(r),
+            corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              if (_noteAlertes(alertesDe(r, jeuLaboDe(c, p.session)))
+                  case final n?) ...[n, const SizedBox(height: 12)],
+              detailDemande(r),
+            ]),
             pied: (_) => [
                   BoutonSigh(
                       libelle: 'Relire et corriger',
@@ -375,6 +391,17 @@ class _EtatResultats extends State<EcranResultats> {
   }
 
   static bool _vrai2(Object? v) => v != null && v != false && v != '' && v != 0;
+
+  /// La note d'alerte de variation brutale d'une mesure (`null` : rien à signaler). Elle SIGNALE : relire avant de signer, jamais un blocage.
+  static Widget? _noteAlertes(List<AlerteDeMesure> al) {
+    if (al.isEmpty) return null;
+    return NoteSigh(
+        'Variation brutale signalée sur ${nombre(al.length)} variable(s) par rapport à la mesure précédente rendue. Ce signalement n’empêche pas la validation : il demande une relecture avant de signer.\n${[
+          for (final x in al) '${x.variable['libelle']} : ${texteVariation(x.variation, x.suffixe)}. ${texteAlerte(x.alerte, x.suffixe)}.'
+        ].join('\n')}',
+        ton: TonSigh.attention,
+        icone: LucideIcons.activity);
+  }
 
   // --- 3. Rendus au prescripteur --------------------------------------------------------------------------------------
 
@@ -490,10 +517,14 @@ class _EtatResultats extends State<EcranResultats> {
       ToastsSigh.afficher(ctx, cont.motif ?? '', type: TypeToast.erreur);
       return;
     }
+    final alertes = alertesDe(r, jeuLaboDe(c, p.session));
+    final avertissement = alertes.isEmpty
+        ? ''
+        : 'Variation brutale signalée (seuils validés) : ${[for (final x in alertes) '${x.variable['libelle']} ${texteVariation(x.variation, x.suffixe)}'].join(' ; ')}. Ce signalement n’empêche pas la validation : relire avant de signer.\n\n';
     confirmerSigh(ctx,
             titre: interim ? 'Valider par intérim ?' : 'Validation biologique',
             message:
-                'Le résultat de ${r['analyse']} pour ${r['patient']} deviendra visible du prescripteur et fera foi.\n\n${interim ? 'Vous portez cette validation en l’absence du biologiste médical : votre qualité d’intérimaire sera portée sur le compte rendu.\n\n' : ''}Au-delà, une correction donnera une version rectificative et le prescripteur sera averti que ce qu’il a lu a changé. Avez-vous relu l’ensemble des valeurs ?',
+                'Le résultat de ${r['analyse']} pour ${r['patient']} deviendra visible du prescripteur et fera foi.\n\n$avertissement${interim ? 'Vous portez cette validation en l’absence du biologiste médical : votre qualité d’intérimaire sera portée sur le compte rendu.\n\n' : ''}Au-delà, une correction donnera une version rectificative et le prescripteur sera averti que ce qu’il a lu a changé. Avez-vous relu l’ensemble des valeurs ?',
             libelleOk: interim ? 'Valider par intérim' : 'Valider biologiquement')
         .then((ok) {
       if (!ok || !ctx.mounted) return;

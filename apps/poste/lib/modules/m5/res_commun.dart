@@ -424,6 +424,9 @@ class ClassementLabo extends StatelessWidget {
 String _reference(ContexteEcran c) =>
     PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero());
 
+/// La référence d'une pièce du laboratoire éditée hors de ce fichier (comparatif des antériorités).
+String referenceLabo(ContexteEcran c) => _reference(c);
+
 /// `etatResultat(r)` : la pièce d'UN résultat.
 Future<void> imprimerResultat(BuildContext ctx, Fiche r) {
   final c = ContexteEcran.of(ctx);
