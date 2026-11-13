@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil;
 
 import 'persistance.dart';
 
@@ -476,6 +476,8 @@ class Magasin {
     'unitesLabo': 'M5',
     'variablesLabo': 'M5',
     'plagesReactif': 'M5',
+    // Lot A2 : une fiche par VERSION de seuil de variation brutale (aucun seuil semé).
+    'seuilsDelta': 'M5',
     'donneurs': 'M5',
     'poches': 'M5',
     'personnel': 'M10',
@@ -606,6 +608,8 @@ class Magasin {
         if (nom == 'parametres' || nom == 'usagesParametres') {
           c.garder((op, f) => op == 'inserer' ? null : 'Une version de paramètre ne se réécrit jamais : ajouter une version avec sa date d’effet (rien n’est supprimé, RG-14).');
         }
+        // Lot A2 : une version de seuil de variation brutale VALIDÉE est immuable (la modifier ajoute une version), tenu AU MOTEUR : masquer un bouton ne protège rien.
+        if (nom == 'seuilsDelta') c.garder((op, f) => gardeSeuil(op, f, collection('seuilsDelta').parId(f['id'])));
         return c;
       });
 

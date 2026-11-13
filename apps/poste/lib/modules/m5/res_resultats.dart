@@ -444,10 +444,14 @@ class _EtatResultats extends State<EcranResultats> {
             key: Key('res:compte-rendu:${r['reference']}'),
             icone: LucideIcons.fileText,
             libelle: 'Compte rendu complet du patient',
-            onPressed: () => imprimerCompteRendu(ctx, r['patientId'], [
+            onPressed: () => imprimerCompteRendu(
+                ctx,
+                r['patientId'],
+                [
                   for (final d in c.magasin.collection('demandesAnalyses').actives)
                     if (d['patientId'] == r['patientId']) d
-                ])),
+                ],
+                profil: p0(c))),
         BoutonIcone(
             key: Key('res:imprimer:${r['reference']}'),
             icone: LucideIcons.printer,

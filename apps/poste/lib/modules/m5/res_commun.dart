@@ -96,10 +96,31 @@ Listenable ecouteLabo(ContexteEcran c) => Listenable.merge([
       c.magasin.collection('demandesAnalyses'),
       c.magasin.collection('factures'),
       c.magasin.collection('plagesReactif'),
+      c.magasin.collection('seuilsDelta'),
+      c.magasin.collection('reglages'),
       c.magasin.collection('variablesLabo'),
       c.magasin.collection('examensLabo'),
       c.magasin.collection('patients'),
     ]);
+
+/// Ce que lisent les antériorités (lot A1) et l'alerte de variation (lot A2) : les collections actives du magasin, la session qui regarde, le nombre
+/// d'antériorités réglé en base (collection `reglages`, défaut 3). Les seuils n'ont aucun défaut : sans fiche validée, aucune alerte.
+JeuLabo jeuLaboDe(ContexteEcran c, SessionLabo session) {
+  final m = c.magasin;
+  return JeuLabo(
+      demandes: m.collection('demandesAnalyses').actives,
+      examens: m.collection('examensLabo').actives,
+      variables: [
+        for (final v in m.collection('variablesLabo').actives)
+          if (v['actif'] != false) v
+      ],
+      plages: m.collection('plagesReactif').actives,
+      unites: m.collection('unitesLabo').actives,
+      seuils: m.collection('seuilsDelta').actives,
+      session: session,
+      aujourdhui: c.aujourdhui,
+      nombre: nbAnterioritesReglees(m.collection('reglages').actives));
+}
 
 List<Fiche> examensLabo(ContexteEcran c) =>
     c.magasin.collection('examensLabo').actives;
@@ -453,11 +474,16 @@ Future<void> imprimerResultat(BuildContext ctx, Fiche r) {
 /// signalées, bornes du lot en service à la date de chaque demande. Porté dans le gabarit A4 du poste : le gras par cellule n'existe pas
 /// dans ce gabarit, une valeur hors bornes est suivie de « * » (écart consigné).
 Future<void> imprimerCompteRendu(
-    BuildContext ctx, Object? patientId, List<Fiche> demandes) async {
+    BuildContext ctx, Object? patientId, List<Fiche> demandes, {ProfilLabo? profil}) async {
   final c = ContexteEcran.of(ctx);
   final pat = patientDe(c, patientId);
+  // LE COMPTE RENDU NE REPREND QUE CE QUE LE PROFIL A LE DROIT DE LIRE (RBAC métier, écart E2511 de la clinique sœur) : le filtre est posé ICI, sur la pièce,
+  // et non chez chaque appelant — l'icône du tableau filtrait ses lignes mais passait TOUTES les demandes du patient à l'impression.
+  final qui = profil ?? profilLabo(c);
+  final jeu = jeuLaboDe(c, qui.session);
+  final lisibles = filtrerResultats(demandes, qui.session);
   final rendus = [
-    for (final d in demandes)
+    for (final d in lisibles)
       if (d['etatAnalyse'] == 'valide' ||
           (d['valeurs'] is Map && (d['valeurs'] as Map).isNotEmpty))
         d
@@ -481,6 +507,7 @@ Future<void> imprimerCompteRendu(
   }
   final ordre = [for (final s in sectionsLabo) s.$1, 'autres'];
   var anormales = 0;
+  var masqueesImprimees = 0;
   final blocs = <BlocPiece>[];
   final premiere = rendus.first;
   blocs.add(BlocTexte(
@@ -504,12 +531,13 @@ Future<void> imprimerCompteRendu(
                 if (v['actif'] != false) v
             ];
       final valeurs = (d['valeurs'] as Map?)?.cast<String, Object?>() ?? const {};
+      if (variables.isNotEmpty) masqueesImprimees += anterieuresDe(d, jeu, toutes: true).masquees;
       if (variables.isEmpty) {
         lignes.add({
           'a': '${d['analyse']}',
           'r': _vrai(d['resultat']) ? '${d['resultat']}' : '—',
           'ref': '',
-          'ant': ''
+          'ant': 'Non comparable (résultat non structuré)'
         });
         continue;
       }
@@ -526,7 +554,8 @@ Future<void> imprimerCompteRendu(
           'r': '${chaineJs(val)}${u == '—' ? '' : ' $u'}${e != null ? ' *' : ''}',
           'ref': referenceALaDate(v, plages, d['dateHeure'],
               aujourdhui: c.aujourdhui),
-          'ant': ''
+          // LA COLONNE « ANTÉRIORITÉS » (lot A1) : la mesure rendue la plus récente du même examen, lisible par ce profil. Jamais un blanc.
+          'ant': texteAnterioriteImprimee(v, d, jeu)
         });
       }
     }
@@ -547,7 +576,7 @@ Future<void> imprimerCompteRendu(
     blocs.add(BlocTexte('Commentaire du laboratoire : ${commentaires.join(' — ')}'));
   }
   blocs.add(BlocTexte(
-      '${anormales > 0 ? '* valeur hors des bornes de référence. ' : ''}Les valeurs en gras sont hors des bornes de référence. Les résultats doivent être interprétés par le clinicien en fonction du contexte. Les valeurs de référence dépendent du réactif et de l’automate employés.',
+      '${anormales > 0 ? '* valeur hors des bornes de référence. ' : ''}Les valeurs en gras sont hors des bornes de référence. Les résultats doivent être interprétés par le clinicien en fonction du contexte. Les valeurs de référence dépendent du réactif et de l’automate employés. La colonne Antériorités reprend la mesure rendue la plus récente du même examen.${masqueesImprimees > 0 ? ' ${nombre(masqueesImprimees)} antériorité(s) hors du périmètre du profil qui édite ne sont pas reprises.' : ''}',
       italique: true));
   final valides = rendus.where((d) => d['etatAnalyse'] == 'valide').length;
   final age = pat != null && pat['dateNaissance'] != null && pat['dateNaissance'] != ''

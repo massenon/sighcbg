@@ -9,3 +9,5 @@ export 'res_reglement.dart';
 export 'res_comparatif.dart';
 export 'res_stats.dart';
 export 'res_saisie.dart';
+export 'res_seuils.dart';
+export 'res_anteriorites.dart';
