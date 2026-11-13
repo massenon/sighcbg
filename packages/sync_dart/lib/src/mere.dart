@@ -69,6 +69,10 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
 final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport'};
+
+/// Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Un fileul ne reçoit ni ne modifie la demande d'un autre.
+/// L'auteur est l'appareil de l'opération `creer` (authentifié par le jeton), jamais un champ de la fiche qu'un fileul pourrait falsifier.
+const _sqlDemandesDuPoste = " AND NOT (collection='demandesImport' AND fiche NOT IN (SELECT fiche FROM operations WHERE collection='demandesImport' AND type='creer' AND appareil=?))";
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -319,6 +323,12 @@ class Mere {
     // déposée (pour la remettre en attente et la faire rejouer, ou pour se délivrer son propre verdict), est refusé en le nommant — la règle est celle du domaine, jamais recopiée.
     final f = await lire(collection, ficheId);
     if (collection == demandesImportCollection && app.role != 'mere') {
+      if (f != null) {
+        final a = await base.select("SELECT appareil FROM operations WHERE collection='demandesImport' AND fiche=? AND type='creer' ORDER BY seq LIMIT 1", [ficheId]);
+        if (a.isNotEmpty && a.first['appareil'] != app.uuid) {
+          return refus('demande_d_un_autre_poste', 'Cette demande d’import appartient à un autre poste : elle n’est ni lisible ni modifiable ici.', 'Déposer sa propre demande');
+        }
+      }
       // L'état que la mère détient : un fileul ne retire sa demande (`retiree`) que tant qu'elle attend.
       final r = refusDemandeImportDuFileul('${type == 'creer' ? 'creer' : 'modifier'}', champsOp, etatActuel: f == null || '${f.data['etat'] ?? ''}'.isEmpty ? null : '${f.data['etat']}');
       if (r != null) return refus(r[0], r[1], r[2]);
@@ -610,7 +620,9 @@ class Mere {
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
         final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
-        final ops = (await base.select('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>?$filtre ORDER BY seq LIMIT ?', [depuis, ...exclues, limite]))
+        // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
+        final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;
+        final ops = (await base.select('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>?$filtre$reserve ORDER BY seq LIMIT ?', [depuis, ...exclues, if (app.role != 'mere') app.uuid, limite]))
             .map((o) => {...o, 'champs': jsonDecode(o['champs'] as String)})
             .toList();
         await base.exec('UPDATE appareils SET dernier_seq = CASE WHEN dernier_seq > ? THEN dernier_seq ELSE ? END WHERE uuid=?', [depuis, depuis, app.uuid]);

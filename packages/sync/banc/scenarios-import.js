@@ -54,10 +54,11 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     await m.mere.demarrer();
     const cleClinique = Buffer.from(m.clePair, 'hex');
     const f1 = await m.fileul('F1');
-    const lecteur = await m.fileul('F2'); /* ce que la mère détient, lu par le protocole (le poste mère lit son journal) */
+    const lecteur = await m.fileul('F2'); /* SECOND fileul : il reçoit la configuration, JAMAIS la demande d'un autre poste (décision du 13/11/2026) */
     const compte = async () => (await m.mere.admin('GET', '/admin/compte?collection=demandesImport')).json.n;
     const verdict = async (id, champs) => (await m.mere.admin('POST', '/admin/referentiel', { collection: 'demandesImport', fiche: id, champs })).json;
-    const chezLaMere = async (id) => { const l = (await lecteur.liste('demandesImport')).find((x) => x.id === id); return l && l.data; };
+    /* Ce que la mère détient : lu à SA console (le journal des demandes n'est plus lu par un autre fileul, décision du 13/11/2026). */
+    const chezLaMere = async (id) => { const r = (await m.mere.admin('GET', '/admin/fiche?collection=demandesImport&id=' + encodeURIComponent(id))).json; return r && !r.absente ? r.data : undefined; };
     const chezLeFileul = async (id) => { const l = (await f1.liste('demandesImport')).find((x) => x.id === id); return l && l.data; };
     const refus = async (code) => (await f1.etat()).a_traiter.some((x) => x.code === code);
 
@@ -75,6 +76,13 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     const r = await f1.ecrire({ type: 'creer', collection: 'demandesImport', fiche: 'DIM-F1-1', champs: o1.demande });
     verifier('la mère accepte la demande d\'un fileul (famille A)', r.fiche === 'DIM-F1-1' && await attendre(async () => (await compte()) === 1, 15000), r);
     verifier('la mère la détient avec ses lignes (elle doit pouvoir rejouer) ET sa série d\'identifiants', await attendre(async () => { const d = await chezLaMere('DIM-F1-1'); return !!d && d.lignes.length === 3 && d.etat === 'en_attente' && d.serieIdentifiants === 'DIM-F1-1'; }, 15000));
+
+    /* 2 bis. DÉCISION DU 13/11/2026 : LE JOURNAL DES DEMANDES EST RÉSERVÉ à la mère et au poste auteur. Les lignes voyagent en clair jusqu'au verdict : un SECOND fileul ne reçoit rien, ne modifie rien. */
+    await dormir(900);
+    verifier('un SECOND fileul ne reçoit JAMAIS la demande du premier (ni ses lignes, ni son état), alors que la mère la détient', (await lecteur.liste('demandesImport')).length === 0 && (await compte()) >= 1, (await lecteur.liste('demandesImport')).length);
+    verifier('le fileul auteur, lui, relit sa propre demande', !!(await chezLeFileul('DIM-F1-1')));
+    await lecteur.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F1-1', champs: { etat: 'retiree', lignes: [] } });
+    verifier('le second fileul ne peut pas modifier la demande d\'un autre poste : refus nommé (demande_d_un_autre_poste), la demande reste intacte à la mère', await attendre(async () => (await lecteur.etat()).a_traiter.some((x) => x.code === 'demande_d_un_autre_poste'), 15000) && (await chezLaMere('DIM-F1-1')).etat === 'en_attente' && (await chezLaMere('DIM-F1-1')).lignes.length === 3, (await lecteur.etat()).a_traiter);
 
     /* 3. LA MÈRE, SEULE AUTORITÉ : elle rejoue sous le rôle de l'auteur, exige le même résultat et applique SOUS LES MÊMES IDENTIFIANTS ; son verdict revient, les lignes sont effacées. */
     const demande1 = await chezLaMere('DIM-F1-1');
@@ -260,9 +268,15 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     await f2.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F2G-1', champs: { restitution: 'partielle', restitutionLe: '2026-11-13', restitutionArchives: 1, restitutionGardees: [{ collection: 'produits', id: 'PRO-DIMG2-1', code: 'STOCK_DEJA_SORTI', motif: 'une pièce émise ne se réécrit jamais' }] } });
     verifier('la restitution PARTIELLE du fileul s\'ajoute au refus de la mère sur la MÊME fiche : la mère garde le verdict ET la liste des fiches gardées',
       await attendre(async () => {
-        const l = (await f1.liste('demandesImport')).find((x) => x.id === 'DIM-F2G-1');
-        return !!l && l.data.etat === 'refusee' && l.data.resultatCode === 'DOUBLON_MAGASIN' && l.data.restitution === 'partielle' && l.data.restitutionGardees.length === 1 && l.data.restitutionGardees[0].code === 'STOCK_DEJA_SORTI';
-      }, 15000), (await f1.liste('demandesImport')).map((x) => x.data));
+        const r = (await m.mere.admin('GET', '/admin/fiche?collection=demandesImport&id=DIM-F2G-1')).json; const d = r && !r.absente ? r.data : null;
+        return !!d && d.etat === 'refusee' && d.resultatCode === 'DOUBLON_MAGASIN' && d.restitution === 'partielle' && d.restitutionGardees.length === 1 && d.restitutionGardees[0].code === 'STOCK_DEJA_SORTI';
+      }, 15000), (await m.mere.admin('GET', '/admin/fiche?collection=demandesImport&id=DIM-F2G-1')).json);
+    verifier('DÉCISION DU 13/11/2026 : chaque fileul ne détient que SA demande — F1 ne reçoit jamais celle de F2 (lignes de l\'inventaire valorisé), F2 ne reçoit jamais celle de F1', await (async () => {
+      await dormir(900);
+      const ids1 = (await f1.liste('demandesImport')).map((x) => x.id), ids2 = (await f2.liste('demandesImport')).map((x) => x.id);
+      return ids1.every((i) => i.startsWith('DIM-F1')) && ids2.length === 1 && ids2[0] === 'DIM-F2G-1' && !ids1.includes('DIM-F2G-1');
+    })(), [(await f1.liste('demandesImport')).map((x) => x.id), (await f2.liste('demandesImport')).map((x) => x.id)]);
+    verifier('aucune ligne de l\'inventaire de F2 n\'est arrivée chez F1, même dans ses fiches restantes', !JSON.stringify(await f1.liste('demandesImport')).includes(STOCK_SECRET));
     verifier('la mère n\'a écrit AUCUN lot pour le refusé : le stock reste celui de la première demande (150, deux lots), la mère l\'emporte', (await compte('lots')) === 2 && (await compte('mouvements')) === 2);
 
     /* 5. LA MÈRE EST INJOIGNABLE : la demande ET la variation du fileul attendent dans sa file (hors ligne d'abord), puis arrivent UNE fois ; la mère est ensuite TUÉE, relancée sur sa base */

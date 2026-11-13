@@ -108,7 +108,8 @@ class ServiceDemandesImport {
   /// Les demandes que CET agent a déposées, de la plus récente à la plus ancienne (le fileul voit l'état de chacune : en attente, appliquée, refusée avec son code, son motif, son geste).
   List<Fiche> sesDemandes(String agent, {String? jeu}) => [
         for (final d in demandes.toutes)
-          if (d['statut'] != 'archive' && '${d['demandePar']}' == agent && (jeu == null || d['jeu'] == jeu)) d
+          // Décision du 13/11/2026 : sur un fileul, jamais la demande d'un autre poste (la synchronisation ne la livre déjà pas ; ce filtre est la seconde porte).
+          if (d['statut'] != 'archive' && '${d['demandePar']}' == agent && (jeu == null || d['jeu'] == jeu) && (!estFileul || '${d['demandePoste'] ?? etiquette}' == etiquette)) d
       ]..sort((a, b) => '${b['demandeLe']}${b['id']}'.compareTo('${a['demandeLe']}${a['id']}'));
 
   Timer? _minuterieFileul;

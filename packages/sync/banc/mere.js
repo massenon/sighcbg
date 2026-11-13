@@ -55,6 +55,13 @@ const FAMILLES = {
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
 const MOBILE_JAMAIS = ['demandesImport'];
+/* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
+   la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
+const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
+function auteurDemandeImport(fiche) {
+  const r = db.prepare("SELECT appareil FROM operations WHERE collection='demandesImport' AND fiche=? AND type='creer' ORDER BY seq LIMIT 1").get(fiche);
+  return r ? r.appareil : null;
+}
 /* Miroir de `refusDemandeImportDuFileul` (domaine Dart) : un fileul dépose « en attente », sans verdict, et ne réécrit ni l'état ni le verdict d'une demande déposée. */
 function refusDemandeImportDuFileul(type, champs, etatActuel) {
   const verdict = CHAMPS_VERDICT_DEMANDE_IMPORT.filter((k) => Object.prototype.hasOwnProperty.call(champs, k));
@@ -141,6 +148,8 @@ function traiter(op, app) {
   if (fam === 'R' && app.role !== 'mere') return refus('droit_refuse', 'Un référentiel ne se modifie qu’à la console de la mère.', 'Demander la modification à l’administrateur');
   const f = lire(op.collection, op.fiche);
   if (op.collection === 'demandesImport' && app.role !== 'mere') {
+    const auteur = f ? auteurDemandeImport(op.fiche) : null;
+    if (auteur && auteur !== app.uuid) return refus('demande_d_un_autre_poste', 'Cette demande d’import appartient à un autre poste : elle n’est ni lisible ni modifiable ici.', 'Déposer sa propre demande');
     const r = refusDemandeImportDuFileul(op.type === 'creer' ? 'creer' : 'modifier', op.champs || {}, f && f.data ? f.data.etat : undefined);
     if (r) return refus(r[0], r[1], r[2]);
   }
@@ -410,7 +419,9 @@ const routes = {
     /* Un téléphone ne reçoit pas les demandes d'import (le filtre est dans la requête : chaque page est pleine d'opérations visibles, le curseur avance toujours). */
     const exclues = app.role === 'mobile' ? MOBILE_JAMAIS : [];
     const filtre = exclues.length ? ` AND collection NOT IN (${exclues.map(() => '?').join(',')})` : '';
-    const ops = db.prepare(`SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>?${filtre} ORDER BY seq LIMIT ?`).all(depuis, ...exclues, limite)
+    /* Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère reçoit tout) : le filtre est dans la requête, comme pour le téléphone. */
+    const reserve = app.role === 'mere' ? '' : ` AND NOT (${PORTEE_DEMANDES_IMPORT} AND fiche NOT IN (SELECT fiche FROM operations WHERE collection='demandesImport' AND type='creer' AND appareil=?))`;
+    const ops = db.prepare(`SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>?${filtre}${reserve} ORDER BY seq LIMIT ?`).all(depuis, ...exclues, ...(app.role === 'mere' ? [] : [app.uuid]), limite)
       .map((o) => Object.assign({}, o, { champs: JSON.parse(o.champs) }));
     db.prepare('UPDATE appareils SET dernier_seq=MAX(dernier_seq,?) WHERE uuid=?').run(depuis, app.uuid);
     return { ops, fin: ops.length < limite, epoch: +meta('epoch'), resync: meta('resync') || null };

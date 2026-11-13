@@ -235,7 +235,7 @@ final JeuImport jeuGrandStock = JeuImport(
 ///    quantité inverse est celle de l'entrée, jamais plus que ce que le stock tient : le stock ne devient jamais négatif (RG-03).
 /// Les mouvements d'entrée et les mouvements inverses restent propres au poste (marqués), ils ne partent pas au journal : la mère n'a jamais tenu ce stock.
 ///
-/// HYPOTHÈSE À VALIDER par la Direction et le gestionnaire de stock : garder l'article entier dès qu'UNE unité en est sortie (au lieu de ne restituer que la part non sortie) est le choix le
+/// DÉCISION ARRÊTÉE par la Direction le 13/11/2026 (comportement conservé) : garder l'article entier dès qu'UNE unité en est sortie (au lieu de ne restituer que la part non sortie) est le choix le
 /// plus prudent — restituer une part supposerait de scinder un lot, donc d'écrire une quantité que ni la mère ni le fichier n'ont jamais portée.
 RestitutionJeu _restituerGrandStock(FicheImport lot, String libelleMotif, String motifMarque, PortImport port) {
   final ecrits = (lot['ecrits'] as List).cast<Map>();
