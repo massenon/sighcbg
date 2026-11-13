@@ -356,7 +356,8 @@ void main() {
 
     cas('première ligne : la notation du document (« 4 - 8 », unité « G/l »), sous-variable en retrait', (t) async {
       await ouvrir(t, jeu(), 'm5-valeurs-reference');
-      expect(find.text('Globules blancs'), findsOneWidget);
+      // Deux fois : le tableau des variables et celui des seuils de variation brutale (lot A2), qui liste les variables numériques.
+      expect(find.text('Globules blancs'), findsNWidgets(2));
       expect(find.text('4 - 8'), findsOneWidget);
       expect(find.text('G/l'), findsWidgets);
       expect(find.text('↳ Lymphocytes'), findsOneWidget);
@@ -368,7 +369,8 @@ void main() {
       await choisir(t, 'section', 'Hématologie');
       expect(find.textContaining('sur 26 enregistrements'), findsOneWidget);
       await choisir(t, 'examen', 'NFS complète (hémogramme)');
-      expect(find.textContaining('sur 13 enregistrements'), findsOneWidget);
+      // Treize variables, toutes numériques : le tableau des seuils (lot A2) porte le même compte.
+      expect(find.textContaining('sur 13 enregistrements'), findsNWidgets(2));
       await choisir(t, 'section', 'Toutes les sections');
       expect(find.textContaining('sur 163 enregistrements'), findsOneWidget,
           reason: 'changer de section repart des examens de la section : « Tous les examens »');

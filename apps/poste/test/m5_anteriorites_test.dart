@@ -302,4 +302,207 @@ void main() {
       expect(find.textContaining('antériorité(s) hors du périmètre du profil qui édite ne sont pas reprises'), findsOneWidget);
     });
   });
+
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // A2 : les seuils de variation brutale
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  group('A2 : seuils de variation brutale', () {
+    const ecran = 'm5-valeurs-reference';
+    Future<void> ouvrir(WidgetTester t, Magasin m, String role, {String? fonction}) async {
+      await monter(t, m, const EcranValeursReference(), role: role, ecranId: ecran, droit: droitMatrice(role, ecran));
+      await choisir(t, 'examen', 'NFS complète (hémogramme)');
+    }
+
+    ContexteEcran contexte(Magasin m, String role, {String? fonction}) => ContexteEcran(
+        ecranId: ecran,
+        role: role,
+        droit: droitMatrice(role, ecran),
+        magasin: m,
+        aller: (_) {},
+        utilisateur: 'Test',
+        agentConnecte: fonction == null ? null : Agent(utilisateurId: 'u-$role', nom: 'Agent Test', role: role, fonction: fonction),
+        horloge: () => auj,
+        child: const SizedBox());
+
+    Magasin vide() => magasin({'demandesAnalyses': const [], 'plagesReactif': const []});
+
+    test('AUCUN seuil par défaut : aucune fiche livrée, aucune semée, aucune alerte', () {
+      expect(File('assets/donnees/jeu/seuilsDelta.json').existsSync(), isFalse);
+      expect(File('test/fixtures/jeu_sobre/seuilsDelta.json').existsSync(), isFalse);
+      expect(Magasin.collectionsDuJeu, isNot(contains('seuilsDelta')));
+      final m = vide();
+      expect(m.collection('seuilsDelta').actives, isEmpty);
+      // Variables candidates : seules les variables numériques du catalogue de Baguidi (hors accompagnement), 72 sur 50 examens.
+      final num = [for (final v in m.collection('variablesLabo').actives) if (v['type'] == 'numerique' && v['accompagnement'] != true && v['actif'] != false) v];
+      expect(num.length, 72);
+      expect({for (final v in num) v['examen']}.length, 50);
+    });
+
+    cas('Valider est PRÉSENT quand la matrice le donne, ABSENT sinon, alors que régler reste ouvert à qui édite l’écran', (t) async {
+      // Un seuil Enregistré en attente sur GB.
+      final m = vide();
+      final bio = SeuilsPoste(contexte(m, 'laborantin'));
+      expect(bio.enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+      await ouvrir(t, m, 'laborantin');
+      expect(find.byKey(const Key('seuils:valider:GB')), findsOneWidget, reason: 'le profil à qui la matrice donne le droit annuler de l’écran voit Valider');
+      expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);
+      expect(find.byKey(const Key('seuils:abandonner:GB')), findsOneWidget);
+    });
+
+    cas('un profil qui édite l’écran sans le droit de valider règle et abandonne, mais NE VOIT PAS Valider', (t) async {
+      final droitDm = droitMatrice('dm', ecran);
+      expect(droitDm.editer, isTrue, reason: 'prémisse : la matrice livrée laisse éditer l’écran à ce profil');
+      expect(droitDm.annuler, isFalse, reason: 'prémisse : mais pas arbitrer');
+      final m = vide();
+      expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+      await ouvrir(t, m, 'dm');
+      expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);
+      expect(find.byKey(const Key('seuils:abandonner:GB')), findsOneWidget);
+      expect(find.byKey(const Key('seuils:valider:GB')), findsNothing, reason: 'commande ABSENTE, non grisée');
+    });
+
+    cas('de bout en bout au geste : régler (Enregistré, sans effet), puis Valider avec motif (Validé, en vigueur)', (t) async {
+      final m = vide();
+      await ouvrir(t, m, 'laborantin');
+      expect(find.text('Aucun seuil'), findsWidgets);
+      await toucher(t, find.byKey(const Key('seuils:regler:GB')));
+      await t.enterText(find.descendant(of: find.byKey(const Key('kit:champ:ecartAbsolu')), matching: find.byType(TextField)), '2');
+      await t.pump();
+      await toucher(t, find.byKey(const Key('seuils:enregistrer')));
+      // Enregistré : sans effet, la commande Valider paraît.
+      expect(find.byKey(const Key('seuils:etat:GB')), findsOneWidget);
+      expect(find.text('Enregistré (sans effet)'), findsWidgets);
+      expect(SeuilsPoste(contexte(m, 'laborantin')).etat('VAR-NFS-GB').enVigueur, isNull);
+      await toucher(t, find.byKey(const Key('seuils:valider:GB')));
+      // Un motif vide : refus nommé du moteur, rien n'est validé.
+      await toucher(t, find.text('Valider le seuil'));
+      expect(find.textContaining('Le motif de la validation est obligatoire'), findsWidgets);
+      expect(SeuilsPoste(contexte(m, 'laborantin')).etat('VAR-NFS-GB').etat, 'enregistre');
+      await toucher(t, find.byKey(const Key('seuils:valider:GB')));
+      await t.enterText(find.byType(TextField).last, 'Notice du réactif');
+      await t.pump();
+      await toucher(t, find.text('Valider le seuil'));
+      final e = SeuilsPoste(contexte(m, 'laborantin')).etat('VAR-NFS-GB');
+      expect(e.etat, 'valide');
+      expect(e.enVigueur!['motifValidation'], 'Notice du réactif');
+      expect(e.enVigueur!['ecartAbsolu'], 2);
+      expect(find.byKey(const Key('seuils:valider:GB')), findsNothing, reason: 'plus rien à valider');
+      expect(find.byKey(const Key('seuils:historique:GB')), findsOneWidget);
+    });
+
+    test('LE MOTEUR REVÉRIFIE : un geste forcé sans le droit est refusé en le nommant, rien n’est écrit', () {
+      final m = vide();
+      expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+      for (final role in ['dm', 'medecin', 'direction', 'infirmier']) {
+        final r = SeuilsPoste(contexte(m, role)).valider('VAR-NFS-GB', motif: 'Je force');
+        expect(r.ok, isFalse, reason: role);
+        expect(r.refus!.code, 'VALIDATION_RESERVEE', reason: role);
+      }
+      expect(SeuilsPoste(contexte(m, 'laborantin')).etat('VAR-NFS-GB').etat, 'enregistre');
+      // Qui n'édite pas l'écran ne règle pas non plus.
+      final r = SeuilsPoste(contexte(m, 'medecin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 9, dateEffet: '2026-11-13');
+      expect(r.refus!.code, 'DROIT_REFUSE');
+    });
+
+    test('le technicien de laboratoire qui valide par intérim ne valide pas un seuil, même sous le profil du laboratoire', () {
+      final m = vide();
+      expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+      final tsl = SeuilsPoste(contexte(m, 'laborantin', fonction: 'tsl'));
+      expect(tsl.peutValider, isFalse);
+      expect(tsl.valider('VAR-NFS-GB', motif: 'Intérim').refus!.code, 'FONCTION_NON_HABILITEE');
+      final bio = SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste'));
+      expect(bio.peutValider, isTrue);
+      expect(bio.valider('VAR-NFS-GB', motif: 'Notice').ok, isTrue);
+    });
+
+    test('versions datées IMMUABLES au magasin : réécrire ou archiver une version validée est refusé d’où qu’arrive l’écriture', () {
+      final m = vide();
+      final bio = SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste'));
+      bio.enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13');
+      bio.valider('VAR-NFS-GB', motif: 'Notice');
+      final col = m.collection('seuilsDelta');
+      final validee = col.actives.single;
+      expect(() => col.mettreAJour(validee['id'], {'ecartAbsolu': 99}), throwsA(isA<EcritureRefusee>()));
+      expect(() => col.archiver(validee['id']), throwsA(isA<EcritureRefusee>()));
+      expect(col.parId(validee['id'])!['ecartAbsolu'], 1);
+      // Modifier = AJOUTER une version Enregistrée ; la validée reste en force.
+      final r = bio.enregistrer('VAR-NFS-GB', ecartAbsolu: 3, dateEffet: '2026-11-20');
+      expect(r.creation, isTrue);
+      expect(col.actives.length, 2);
+      final e = bio.etat('VAR-NFS-GB');
+      expect(e.etat, 'enregistre_sur_valide');
+      expect(e.enVigueur!['ecartAbsolu'], 1);
+    });
+
+    test('une validation écrit UNE ligne de journal (RG-12) ; le seuil validé survit au vidage de l’activité', () {
+      final m = vide();
+      final bio = SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste'));
+      bio.enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13');
+      final avant = m.collection('audit').toutes.length;
+      bio.valider('VAR-NFS-GB', motif: 'Notice');
+      final journal = m.collection('audit').toutes.take(m.collection('audit').toutes.length - avant);
+      expect(journal.where((l) => l['action'] == 'Seuil de variation validé').length, 1);
+      expect(journal.length, 1);
+      cfbViderActivite(m, 'Mise en production');
+      expect(m.collection('seuilsDelta').actives.length, 1);
+    });
+
+    // L'alerte : seuil validé directement posé au magasin (la forme que le moteur écrit).
+    Fiche seuilValide(Map<String, Object?> champs) => {
+          'id': 'SEU00001',
+          'variableId': 'VAR-NFS-GB',
+          'variableCode': 'GB',
+          'version': 1,
+          'etat': 'valide',
+          'dateEffet': '2026-01-01',
+          'retrait': false,
+          'statut': 'actif',
+          'valideLe': '2026-01-01T08:00:00.000Z',
+          'validePar': 'Dr BIO',
+          'valideRole': 'Biologiste médical',
+          'motifValidation': 'Notice',
+          ...champs,
+        };
+    final prec = demande('61', '2026-05-10', patient: 'PXV', valeurs: {'GB': 5});
+    final cible = demande('62', '2026-11-12', patient: 'PXV', etat: 'valide_technique', valeurs: {'GB': 9});
+
+    cas('l’alerte SIGNALE à la validation biologique (colonne, tiroir) et ne bloque JAMAIS : la validation passe', (t) async {
+      final m = magasin({'demandesAnalyses': [prec, cible], 'plagesReactif': const [], 'seuilsDelta': [seuilValide({'ecartAbsolu': 1})]});
+      await monter(t, m, const EcranResultats(fonction: 'biologiste'), role: 'laborantin');
+      await onglet(t, 'relecture');
+      expect(find.byKey(const Key('res:alerte-validation:LAB-00062')), findsOneWidget);
+      expect(find.textContaining('1 variable(s) signalée(s)'), findsOneWidget);
+      await toucher(t, find.byKey(const Key('res:valider-bio:LAB-00062')));
+      expect(find.textContaining('Variation brutale signalée (seuils validés)'), findsOneWidget);
+      expect(find.textContaining('Ce signalement n’empêche pas la validation'), findsOneWidget);
+      await toucher(t, find.text('Valider biologiquement'));
+      expect(m.collection('demandesAnalyses').parId('62')!['etatAnalyse'], 'valide', reason: 'le signalement n’a rien retenu');
+      // Aucune notification d'alerte : la seule notification est celle du résultat disponible.
+      final notifs = m.collection('notifications').actives;
+      expect(notifs.map((n) => n['type']), ['resultat_disponible']);
+      expect('${notifs.single}', isNot(contains('ariation')));
+    });
+
+    final enregistre = seuilValide({'etat': 'enregistre', 'valideLe': null, 'validePar': null, 'valideRole': null, 'motifValidation': null, 'ecartAbsolu': 1});
+    for (final (nom, seuils) in [('sans aucun seuil', <Fiche>[]), ('avec un seuil seulement Enregistré (sans effet)', [enregistre])]) {
+      cas('$nom, aucune alerte ne s’affiche à la validation biologique', (t) async {
+        final m = magasin({'demandesAnalyses': [prec, cible], 'plagesReactif': const [], 'seuilsDelta': seuils});
+        await monter(t, m, const EcranResultats(fonction: 'biologiste'), role: 'laborantin');
+        await onglet(t, 'relecture');
+        expect(find.byKey(const Key('res:valider-bio:LAB-00062')), findsOneWidget, reason: 'la mesure est bien à valider');
+        expect(find.byKey(const Key('res:alerte-validation:LAB-00062')), findsNothing);
+      });
+    }
+
+    cas('l’alerte est signalée au comparatif, avec la version et la date d’effet du seuil ; elle n’est pas sur le résultat du prescripteur', (t) async {
+      final rendu = demande('62', '2026-11-12', patient: 'PXV', valeurs: {'GB': 9}, valideLe: '2026-11-12T15:00:00.000Z');
+      final m = magasin({'demandesAnalyses': [prec, rendu], 'plagesReactif': const [], 'seuilsDelta': [seuilValide({'ecartAbsolu': 1})]});
+      await monter(t, m, const EcranComparatifResultats(fonction: 'biologiste'), role: 'laborantin');
+      await choisir(t, 'patient', 'TEST PXV (CBG/9/26) — 2 résultat(s)');
+      await choisir(t, 'examen', 'NFS complète (hémogramme) (2 mesures)');
+      expect(find.byKey(const Key('res:cmp:alerte:GB')), findsOneWidget);
+      expect(find.textContaining('Variation brutale : seuil de 1 G/l atteint (seuil validé, version 1 du 01/01/2026)'), findsOneWidget);
+      // L'écran du prescripteur (onglet « Rendus au prescripteur ») ne porte aucune alerte.
+    });
+  });
 }
