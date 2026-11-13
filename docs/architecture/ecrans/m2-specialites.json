@@ -1,0 +1,10 @@
+{
+ "id": "m2-specialites",
+ "module": "M2",
+ "domaine": "Soins",
+ "libelleManifeste": "Spécialités",
+ "acces": "ouvert",
+ "titre": "Spécialités",
+ "description": "Les spécialités de la clinique, une fiche chacune : modèle de consultation, praticiens, actes. Une fiche de plus, c’est une spécialité de plus au ruban.",
+ "note": "Fiche rédigée pour le poste Baguidi (PRD P0-12, les quatorze spécialités) : écran sans équivalent à la maquette."
+}

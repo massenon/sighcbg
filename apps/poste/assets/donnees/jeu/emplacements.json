@@ -1,0 +1,17 @@
+[
+{"code":"Rayon A, casier 1","libelle":"Rayon A, casier 1","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP001","statut":"actif"},
+{"code":"Rayon A, casier 2","libelle":"Rayon A, casier 2","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP002","statut":"actif"},
+{"code":"Rayon A, casier 3","libelle":"Rayon A, casier 3","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP003","statut":"actif"},
+{"code":"Rayon A, casier 4","libelle":"Rayon A, casier 4","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP004","statut":"actif"},
+{"code":"Rayon B, casier 1","libelle":"Rayon B, casier 1","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP005","statut":"actif"},
+{"code":"Rayon B, casier 2","libelle":"Rayon B, casier 2","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP006","statut":"actif"},
+{"code":"Rayon B, casier 3","libelle":"Rayon B, casier 3","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP007","statut":"actif"},
+{"code":"Rayon B, casier 4","libelle":"Rayon B, casier 4","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP008","statut":"actif"},
+{"code":"Rayon C, casier 1","libelle":"Rayon C, casier 1","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP009","statut":"actif"},
+{"code":"Rayon C, casier 2","libelle":"Rayon C, casier 2","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP010","statut":"actif"},
+{"code":"Rayon D, casier 1","libelle":"Rayon D, casier 1","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP011","statut":"actif"},
+{"code":"Rayon D, casier 2","libelle":"Rayon D, casier 2","zone":"Rayonnage sec","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP012","statut":"actif"},
+{"code":"Chariot d’urgence","libelle":"Chariot d’urgence","zone":"Salle de soins","temperature":"Ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP013","statut":"actif"},
+{"code":"Armoire sécurisée 1","libelle":"Armoire sécurisée 1","zone":"Armoire sécurisée","temperature":"Sous clé, ambiante","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP014","statut":"actif"},
+{"code":"Réfrigérateur 1","libelle":"Réfrigérateur 1","zone":"Chaîne du froid","temperature":"2 à 8 °C","source":"Plan de rangement de démonstration, à adapter à la clinique","id":"EMP015","statut":"actif"}
+]
