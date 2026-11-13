@@ -5,7 +5,7 @@
  "libelleManifeste": "Comparatif des résultats",
  "acces": "ouvert",
  "titre": "Comparatif des résultats",
- "description": "Deux mesures du même examen côte à côte, variable par variable — la colonne « Antériorités » de la fiche de résultats, à l’écran.",
+ "description": "Une mesure du même examen face à ses dernières antériorités, variable par variable, avec la variation et la courbe de tendance.",
  "fil": [
   "Accueil",
   "Soins",
