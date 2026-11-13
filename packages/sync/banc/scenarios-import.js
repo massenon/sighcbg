@@ -426,6 +426,11 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     }, 15000), await chezLaMere('DIM-F2I-2'));
     verifier('la mère n\'a écrit AUCUN lot de plus pour la tentative 2 : toujours deux lots, deux mouvements', (await compte('lots')) === 2 && (await compte('mouvements')) === 2);
 
+    /* 6 bis. UN FILEUL FALSIFIÉ NE SE DÉLIVRE PAS L'ADOPTION : le drapeau d'adoption et la série rendue sont des champs de verdict, réservés à la mère */
+    await f1.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F1I-1', champs: { resultatAdoptee: true, resultatSerie: SERIE2 } });
+    verifier('un fileul qui s\'écrit « adoptée » (ou une autre série rendue) sur sa demande est refusé, nommé (verdict_reserve_a_la_mere), la fiche de la mère reste intacte', await attendre(async () => (await f1.etat()).a_traiter.some((x) => x.code === 'verdict_reserve_a_la_mere'), 15000)
+      && (await chezLaMere('DIM-F1I-1')).resultatAdoptee === false && (await chezLaMere('DIM-F1I-1')).resultatSerie === SERIE, (await f1.etat()).a_traiter);
+
     /* 7. LE RELAIS ne voit que du chiffré : ni la désignation, ni l'identité de contenu, ni la série, ni le drapeau d'adoption */
     await attendre(async () => { const e = await etatMere(); return e.rep_seq === e.seq_max; }, 20000);
     const brut = (await m.relais.direct('GET', '/banc/tout')).json;

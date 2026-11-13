@@ -100,7 +100,7 @@ void main() {
       final ref = identiteLotImport('grand-stock', inventaire());
       expect(ref, matches(RegExp(r'^[0-9a-f]{64}$')));
       final forme = [for (final r in inventaire()) [...r]];
-      forme[0] = [for (final c in forme[0]) '${c.toString().toUpperCase()} '];
+      forme[0] = [for (final c in forme[0]) '${c.toString().toUpperCase().replaceAll(' ', '  ')} '];
       forme[1][1] = ' ${forme[1][1]} ';
       forme[1][4] = (forme[1][4] as num).toDouble();
       forme[2] = [...forme[2], '', ''];
