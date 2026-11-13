@@ -1,0 +1,3 @@
+[
+{"id":"PRT0001","statut":"actif","employeId":"m-005","nature":"pret_etudes","objet":"Prêt d’études (fictif de démonstration)","montant":120000,"dateAccord":"2026-09-20","premiereEcheance":"2026-10","nbEcheances":6,"autorisePar":"BAGUIDI Rafiou","fictif":true,"source":"Jeu de démonstration Baguidi : valeur d’attente fictive, à remplacer par la Direction","reference":"PRT-0001","agent":"AKONDE Octave","matricule":"m-005","retenues":[]}
+]
