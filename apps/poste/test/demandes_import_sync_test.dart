@@ -17,9 +17,9 @@ import 'package:sigh_sync/sigh_sync.dart';
 /// fileul, vrais ponts d'activité, vraie configuration diffusée. RIEN n'est traité à la main : c'est `ServiceDemandesImport.demarrerMere` — le même appel que `main.dart` — qui écoute
 /// les demandes arrivées par le pont et rend le verdict. (Le défaut de Nassiera, `appliquerDemandes()` jamais branchée, n'est pas reproduit : le dernier test garde le câblage.)
 ///
-///  - le fileul écrit chez lui TOUT DE SUITE malgré la garde « réglé sur la mère » (fiches provisoires), et dépose la demande ;
-///  - la mère la TRAITE seule, applique au nom de l'auteur, journalise ; sa copie descend au fileul, qui archive l'écriture provisoire et est notifié ;
-///  - une fiche créée à la mère entre-temps : refus NOMMÉ, l'écriture du fileul RESTE, marquée « non retenue par la mère », avec notification ;
+///  - le fileul écrit chez lui TOUT DE SUITE malgré la garde « réglé sur la mère » (identité de la demande, « en attente de la mère »), et dépose la demande ;
+///  - la mère la TRAITE seule, applique au nom de l'auteur sous les MÊMES identifiants, journalise ; sa copie remplace celle du fileul (une fiche par code) et le fileul est notifié ;
+///  - une fiche créée à la mère entre-temps : refus NOMMÉ, le fileul RESTITUE son écriture (archivée), avec notification ;
 ///  - un rôle sans le droit : refus de la mère, nommé ;
 ///  - jamais vers un téléphone.
 typedef M = Map<String, Object?>;
@@ -41,7 +41,7 @@ AnalyseImport verifier(Magasin m, List<String> codes, ProfilImport profil) {
 }
 
 void main() {
-  test('BOUT EN BOUT : le fileul écrit chez lui et dépose ; la mère traite SEULE ; copie retenue → écriture provisoire archivée ; refus nommé → écriture « non retenue » ; rôle sans droit refusé ; rien vers un mobile', () async {
+  test('BOUT EN BOUT : le fileul écrit chez lui et dépose ; la mère traite SEULE ; mêmes identifiants, une fiche par code ; refus nommé → restitution ; rôle sans droit refusé ; rien vers un mobile', () async {
     const port = 19473;
     final d = Directory.systemTemp.createTempSync('demandes-import');
     addTearDown(() => d.deleteSync(recursive: true));
@@ -108,54 +108,64 @@ void main() {
     // La garde « réglé sur la mère » joue bien sur le fileul : l'écriture ORDINAIRE d'un agent y est refusée.
     expect(() => mf.collection('fournisseurs').inserer({'id': 'X', 'code': 'X', 'nom': 'X', 'statut': 'actif'}), throwsA(isA<EcritureRefusee>()));
 
-    // 1. LE FILEUL IMPORTE : visible chez lui aussitôt, malgré la garde, et la demande est déposée.
+    // 1. LE FILEUL IMPORTE : visible chez lui aussitôt, malgré la garde, sous l'identité de la demande, et la demande est déposée.
     expect(svcF.passeParUneDemande(jeuFournisseurs), isTrue);
     expect(svcF.passeParUneDemande(jeuPatients), isFalse, reason: 'un jeu restreint ne passe jamais par une demande');
     final r1 = svcF.importerEtDemander(jeuFournisseurs, verifier(mf, ['IMPA', 'IMPB'], profilComptable), profil: profilComptable, nomAgent: 'LE COMPTABLE');
     expect(r1.resultat.ok, isTrue, reason: '${r1.resultat.code} ${r1.resultat.motif}');
     final locales = mf.collection('fournisseurs').actives.where((f) => f['code'] == 'IMPA' || f['code'] == 'IMPB').toList();
     expect(locales, hasLength(2), reason: 'visible chez le fileul AVANT toute réponse de la mère');
-    expect(locales.every((f) => f['provisoireMere'] == true), isTrue);
+    expect(locales.every((f) => f[champEnAttenteMere] == r1.demande && '${f['id']}'.startsWith('FOU-')), isTrue, reason: 'identité de la demande, marquage « en attente de la mère »');
+    final idsFileul = {for (final f in locales) f['id']};
     expect(mf.collection(demandesImportCollection).parId(r1.demande)?['etat'], demandeImportEnAttente);
 
-    // 2. LA MÈRE TRAITE SEULE (aucun appel manuel) : le verdict revient, sa copie descend, l'écriture provisoire du fileul est archivée, le fileul est notifié.
+    // 2. LA MÈRE TRAITE SEULE (aucun appel manuel) : le verdict revient, ses fiches portent LES MÊMES identifiants et REMPLACENT celles du fileul (aucun doublon, rien d'archivé), notification.
     await converger(() => mf.collection(demandesImportCollection).parId(r1.demande)?['etat'] == demandeImportAppliquee, 'verdict de la mère');
     expect(svcM.traitees, greaterThanOrEqualTo(1), reason: 'c\'est le service branché de la mère qui a traité');
     final v1 = mf.collection(demandesImportCollection).parId(r1.demande)!;
     expect(v1['lignes'], isEmpty, reason: 'les lignes du fichier sont effacées au verdict');
     expect(v1['traitePar'], 'Mère');
-    final surMere = mm.collection('fournisseurs').actives.where((f) => f['lotImport'] == v1['resultatLot'] && f['demandeImport'] == null).toList();
+    final surMere = mm.collection('fournisseurs').actives.where((f) => f['lotImport'] == v1['resultatLot']).toList();
     expect(surMere.map((f) => f['code']).toSet(), {'IMPA', 'IMPB'});
+    expect({for (final f in surMere) f['id']}, idsFileul, reason: 'la mère écrit sous les MÊMES identifiants que le fileul');
     expect(surMere.every((f) => f['validePar'] == 'LE COMPTABLE'), isTrue, reason: 'écrit au nom de l\'auteur (RG-12)');
     expect(mm.collection('audit').toutes.any((a) => a['action'] == 'Demande d’import appliquée'), isTrue, reason: 'journal RG-12 côté mère');
     expect(mf.collection('audit').toutes.any((a) => a['action'] == 'Demande d’import déposée à la mère'), isTrue, reason: 'journal RG-12 côté fileul');
-    await converger(() => mf.collection('fournisseurs').actives.where((f) => f['code'] == 'IMPA').length == 1 && mf.collection('fournisseurs').actives.where((f) => f['code'] == 'IMPA').single['provisoireMere'] == null, 'copie de la mère');
-    expect(mf.collection('fournisseurs').archivees.where((f) => f['provisoireMere'] == true).length, 2, reason: 'l\'écriture provisoire est ARCHIVÉE (RG-14), jamais supprimée');
+    await converger(() => mf.collection(demandesImportCollection).parId(r1.demande)?['marquageLeve'] == true, 'marquage levé');
+    final chezLeFileul = mf.collection('fournisseurs').toutes.where((f) => f['code'] == 'IMPA' || f['code'] == 'IMPB').toList();
+    expect(chezLeFileul, hasLength(2), reason: 'UNE fiche par code chez le fileul : jamais « provisoire + archivée »');
+    expect(chezLeFileul.every((f) => f['statut'] != 'archive' && f[champEnAttenteMere] == null), isTrue);
     expect(mf.collection('notifications').toutes.any((n) => n['type'] == 'import_retenu' && n['destinataire'] == 'LE COMPTABLE'), isTrue);
+    expect(libelleEtatDemandeImport(mf.collection(demandesImportCollection).parId(r1.demande)!).libelle, 'Appliquée par la mère');
 
-    // 3. REFUS NOMMÉ : la mère crée la même fiche entre-temps ; l'écriture du fileul RESTE, marquée « non retenue par la mère ».
+    // 3. REFUS NOMMÉ : la mère crée la même fiche entre-temps ; le fileul RESTITUE son écriture (archivée, RG-14), le verdict et la restitution se lisent sur la demande.
     final a2 = verifier(mf, ['IMPC'], profilComptable);
     mm.collection('fournisseurs').inserer({'id': 'F-AILLEURS', 'code': 'IMPC', 'nom': 'créée par un autre poste', 'statut': 'actif'}, prefixe: 'F');
     final avant = mm.collection('fournisseurs').toutes.length;
     final r2 = svcF.importerEtDemander(jeuFournisseurs, a2, profil: profilComptable, nomAgent: 'LE COMPTABLE');
     expect(r2.resultat.ok, isTrue);
-    await converger(() => mf.collection(demandesImportCollection).parId(r2.demande)?['etat'] == demandeImportRefusee, 'refus nommé de la mère');
+    await converger(() => mf.collection(demandesImportCollection).parId(r2.demande)?['restitution'] == restitutionFaite, 'refus nommé puis restitution');
     final v2 = mf.collection(demandesImportCollection).parId(r2.demande)!;
+    expect(v2['etat'], demandeImportRefusee);
     expect(v2['resultatCode'], 'DOUBLON_MAGASIN');
     expect(v2['resultatMotif'], contains('rejoué à la mère'));
     expect(mm.collection('fournisseurs').toutes.length, avant, reason: 'rien n\'a été écrit à la mère');
-    await converger(() => mf.collection('fournisseurs').actives.any((f) => f['code'] == 'IMPC' && f['nonRetenueMere'] == true), 'marquage non retenue');
-    final marquee = mf.collection('fournisseurs').actives.firstWhere((f) => f['code'] == 'IMPC' && f['nonRetenueMere'] == true);
-    expect(marquee['motifNonRetenue'], contains('DOUBLON_MAGASIN'));
-    expect(mf.collection('notifications').toutes.any((n) => n['type'] == 'import_non_retenu' && '${n['detail']}'.contains('non retenue')), isTrue);
+    final idsLot = [for (final e in (r2.resultat.lot!['ecrits'] as List).cast<Map>()) e['id']];
+    expect(mf.collection('fournisseurs').actives.where((f) => idsLot.contains(f['id'])), isEmpty, reason: 'l\'écriture du fileul est restituée (la fiche que la mère détient sous ce code, elle, est celle de la mère)');
+    final restituee = mf.collection('fournisseurs').archivees.where((f) => idsLot.contains(f['id'])).single;
+    expect('${restituee['_motifArchivage']}', contains('refusé par la mère'), reason: 'archivée avec son motif, jamais supprimée (RG-14)');
+    expect(mf.collection(collectionLots).toutes.any((l) => l['id'] == r2.resultat.lot!['id'] && l['etat'] == 'restitue'), isTrue);
+    expect(libelleEtatDemandeImport(v2).libelle, 'Refusée par la mère, écriture restituée');
+    expect(mf.collection('notifications').toutes.any((n) => n['type'] == 'import_non_retenu' && '${n['detail']}'.contains('restituée')), isTrue);
 
     // 4. UN RÔLE SANS LE DROIT : la mère REJOUE sous le rôle déclaré avec SA matrice et refuse en nommant (la fiche du fileul ne prête aucun droit).
     final profilForge = ProfilImport.accordeTout(role: 'medecin');
     final a3 = verifier(mf, ['IMPD'], profilForge);
     final r3 = svcF.importerEtDemander(jeuFournisseurs, a3, profil: profilForge, nomAgent: 'FAUX COMPTABLE');
     expect(r3.resultat.ok, isTrue, reason: 'le fileul falsifié a écrit chez lui (il ne contrôle que lui-même)');
-    await converger(() => mf.collection(demandesImportCollection).parId(r3.demande)?['etat'] == demandeImportRefusee, 'refus du rôle sans droit');
+    await converger(() => mf.collection(demandesImportCollection).parId(r3.demande)?['restitution'] == restitutionFaite, 'refus du rôle sans droit puis restitution');
     expect(mf.collection(demandesImportCollection).parId(r3.demande)!['resultatCode'], 'DROIT_IMPORT_REFUSE');
+    expect(mf.collection('fournisseurs').actives.any((f) => f['code'] == 'IMPD'), isFalse, reason: 'la fiche du fileul falsifié est restituée');
     expect(mm.collection('fournisseurs').toutes.any((f) => f['code'] == 'IMPD'), isFalse);
 
     // 5. JAMAIS VERS UN TÉLÉPHONE.

@@ -47,13 +47,16 @@ const FAMILLES = {
   /* Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul. Il écrit chez lui ET dépose cette fiche ; la mère rejoue l'analyse sous le rôle de l'auteur et complète la MÊME
      fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère ; jamais vers un téléphone. */
   demandesImport: 'A',
+  /* Lot IMP-E : le stock que le pont du poste synchronise comme la mère Dart (`sync_dart/lib/src/mere.dart`) : les lots et les mouvements sont des fiches descriptives (A, une identité par fiche,
+     jamais dédoublée), les variations de stock sont des fiches AJOUTÉES (une par variation, jamais modifiées : `fiche_existe` à la seconde création du même identifiant). */
+  lots: 'A', mouvements: 'A', deltasCompteurs: 'A',
 };
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
 const MOBILE_JAMAIS = ['demandesImport'];
 /* Miroir de `refusDemandeImportDuFileul` (domaine Dart) : un fileul dépose « en attente », sans verdict, et ne réécrit ni l'état ni le verdict d'une demande déposée. */
-function refusDemandeImportDuFileul(type, champs) {
+function refusDemandeImportDuFileul(type, champs, etatActuel) {
   const verdict = CHAMPS_VERDICT_DEMANDE_IMPORT.filter((k) => Object.prototype.hasOwnProperty.call(champs, k));
   const etat = champs.etat;
   if (type === 'creer') {
@@ -62,8 +65,10 @@ function refusDemandeImportDuFileul(type, champs) {
     }
     return null;
   }
+  /* Le fileul RETIRE sa propre demande tant que la mère n'a pas statué (état inconnu : permis, la mère ne traite que les demandes en attente) ; jamais avec un verdict. */
+  if (!verdict.length && etat === 'retiree' && (!etatActuel || etatActuel === 'en_attente' || etatActuel === 'retiree')) return null;
   if (verdict.length || Object.prototype.hasOwnProperty.call(champs, 'etat')) {
-    return ['verdict_reserve_a_la_mere', 'Une demande déposée ne se réécrit pas : son état et son verdict ne se modifient que par la mère.', 'Déposer une nouvelle demande si le fichier a changé'];
+    return ['verdict_reserve_a_la_mere', 'Une demande déposée ne se réécrit pas : son état et son verdict ne se modifient que par la mère (le fileul peut seulement la RETIRER tant qu’elle attend).', 'Déposer une nouvelle demande si le fichier a changé'];
   }
   return null;
 }
@@ -134,12 +139,12 @@ function traiter(op, app) {
   if (!fam) return refus('collection_inconnue', 'Collection inconnue : ' + op.collection, 'Mettre le poste à jour');
   if (op.type === 'supprimer') return refus('suppression_interdite', 'Aucune suppression physique (RG-14).', 'Archiver la fiche');
   if (fam === 'R' && app.role !== 'mere') return refus('droit_refuse', 'Un référentiel ne se modifie qu’à la console de la mère.', 'Demander la modification à l’administrateur');
+  const f = lire(op.collection, op.fiche);
   if (op.collection === 'demandesImport' && app.role !== 'mere') {
-    const r = refusDemandeImportDuFileul(op.type === 'creer' ? 'creer' : 'modifier', op.champs || {});
+    const r = refusDemandeImportDuFileul(op.type === 'creer' ? 'creer' : 'modifier', op.champs || {}, f && f.data ? f.data.etat : undefined);
     if (r) return refus(r[0], r[1], r[2]);
   }
 
-  const f = lire(op.collection, op.fiche);
 
   /* L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction que l'émission) : version croissante, type, date d'effet,
      valeur déjà utilisée par une pièce (usages relevés des postes), téléphone interdit pour un paramètre réservé. Un refus est nommé, jamais avalé. */

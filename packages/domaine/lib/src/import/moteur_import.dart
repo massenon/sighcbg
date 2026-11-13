@@ -200,6 +200,9 @@ class ResultatImport {
   final AnalyseImport? analyse;
 }
 
+/// LOT IMP-E : ce que la restitution propre à un jeu a fait : les fiches archivées et celles qu'il a GARDÉES (`{collection, id, code, motif}`, une pièce émise ne se réécrit jamais).
+typedef RestitutionJeu = ({int archives, List<Map<String, Object?>> gardees});
+
 /// Une dépendance qui interdit l'annulation d'un lot (un acte s'appuie déjà sur ses fiches).
 class DependanceImport {
   const DependanceImport(this.code, this.motif, this.geste);
@@ -234,6 +237,7 @@ class JeuImport {
     this.restreint = false,
     this.colonnesReservees = const {},
     this.octetsMaxDefaut = octetsMaxImportDefaut,
+    this.restituer,
   });
   final String id, ecran, libelle, module, statut, description, source, fichierModele;
   final String? limite, gesteExiste;
@@ -265,6 +269,11 @@ class JeuImport {
   final List<ProblemeImport> Function(List<LigneImport> lignes, dynamic ctx)? reglesLot;
   final void Function(List<LigneImport> lignes, EcrireFiche ecrire, FicheImport lot, dynamic ctx, PortImport port) ecrire;
   final DependanceImport? Function(FicheImport lot, PortImport port) dependances;
+
+  /// LOT IMP-E : une écriture de fileul que la mère REFUSE se restitue par l'archivage de ses fiches (RG-14) ; un jeu qui porte des QUANTITÉS (le Grand Stock) ne peut pas s'en tenir là :
+  /// un mouvement écrit ne se réécrit pas (il se contre-passe par un mouvement inverse nommé), un stock ne devient jamais négatif (RG-03) et un article déjà sorti ne se restitue pas.
+  /// [libelleMotif] : le motif d'archivage ; [motifMarque] : le motif de la mère, posé sur les fiches gardées.
+  final RestitutionJeu Function(FicheImport lot, String libelleMotif, String motifMarque, PortImport port)? restituer;
 
   bool get supporte => statut == 'supporte';
 }
