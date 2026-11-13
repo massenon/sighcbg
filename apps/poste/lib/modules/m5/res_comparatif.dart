@@ -311,7 +311,7 @@ class _EtatComparatif extends State<EcranComparatifResultats> {
                               textAlign: TextAlign.right, style: styleLabo(10, couleur: JetonsShell.warning700, poids: FontWeight.w600))),
                     ])),
               if (alerte != null && alerte.nonEvaluable)
-                Text('Seuil relatif non évalué : valeur précédente nulle.', style: styleLabo(10, couleur: JetonsShell.slate400)),
+                Text(alerte.seuil['ecartAbsolu'] != null ? 'Seuil relatif non évalué (valeur précédente nulle ou proche de zéro) : seul le seuil absolu juge.' : 'Seuil relatif non évalué : valeur précédente nulle ou proche de zéro.', style: styleLabo(10, couleur: JetonsShell.slate400)),
             ]),
             droite: true),
         _cellule(Text(refB.isEmpty ? '—' : refB, style: styleLabo(12, couleur: JetonsShell.slate500)), droite: true),

@@ -456,6 +456,36 @@ void main() {
       expect(alerteVariation(gb, variationEntre(gb, 0, 9), '2026-11-13', deux, aujourdhui: auj)!.alerte, isTrue);
     });
 
+    test('décision du 13/11/2026 : valeur précédente proche de zéro, le pourcentage n’est pas calculé et seul l’absolu juge', () {
+      final v = variationEntre(gb, 1e-12, 3)!;
+      expect(v.divisionParZero, isTrue);
+      expect(v.pourcent, isNull);
+      expect(texteVariation(v, ' G/l'), contains('valeur précédente proche de zéro'));
+      final rel = seuilValide({'ecartRelatif': 20});
+      final ar = alerteVariation(gb, v, '2026-11-13', rel, aujourdhui: auj)!;
+      expect(ar.alerte, isFalse, reason: 'jamais un pourcentage énorme sur une quasi-zéro');
+      expect(ar.nonEvaluable, isTrue);
+      final deux = alerteVariation(gb, v, '2026-11-13', seuilValide({'ecartRelatif': 20, 'ecartAbsolu': 2}), aujourdhui: auj)!;
+      expect(deux.alerte, isTrue);
+      expect(deux.raisons.map((r) => r.type), ['absolu']);
+      expect(deux.nonEvaluable, isTrue, reason: 'le relatif non évalué se dit même quand l’absolu juge');
+      // Une valeur réellement mesurée, même petite, se divise.
+      expect(variationEntre(gb, 0.01, 3)!.pourcent, isNotNull);
+    });
+
+    test('décision du 13/11/2026 : valider est un geste réservé à la matrice, l’accès complet de l’administrateur ne le satisfait pas', () {
+      final base = appliquer(const [], enreg(const [], abs: 1));
+      VerdictSeuil v(String role) => validerSeuil(
+          variableId: '${gb['id']}', seuilsActifs: actifs(base), droitValider: true, fonctionHabilitee: true, profil: 'P', role: role, motif: 'm', acteur: 'a', libelleRole: 'L', maintenant: auj);
+      expect(v('admin').refus!.code, 'VALIDATION_HORS_MATRICE');
+      expect(v('laborantin').ok, isTrue);
+      expect(accesCompletSuffit('seuil.valider', 'admin'), isFalse);
+      expect(accesCompletSuffit('seuil.valider', 'laborantin'), isTrue);
+      expect(accesCompletSuffit('autre.geste', 'admin'), isTrue, reason: 'rien d’autre ne change pour l’administrateur');
+      // L'administrateur enregistre toujours (éditer).
+      expect(enreg(const [], abs: 1).ok, isTrue);
+    });
+
     test('pas d’alerte sur une variable qualitative', () {
       expect(alerteVariation(qual, variationEntre(qual, 'Négatif', 'Positif'), '2026-11-13', seuilValide({'ecartAbsolu': 1}), aujourdhui: auj), isNull);
     });

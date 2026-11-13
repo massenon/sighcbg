@@ -9,17 +9,31 @@
 ///     valider ; Valider est un second geste, motivé, qui fait passer de Enregistré à Validé (demande explicite de la Direction).
 ///  3. VALIDER est réservé par la MATRICE DES DROITS (le droit « annuler » de l'écran des valeurs de référence : l'arbitrage, comme l'arbitrage des lots
 ///     d'import à `imp-accueil`), jamais par un nom de rôle écrit ici. Le moteur REVÉRIFIE : masquer un bouton ne protège rien. La fonction du
-///     technicien de laboratoire qui valide par intérim est exclue (hypothèse à faire valider par la Direction, DECISIONS-A-VALIDER).
+///     technicien de laboratoire qui valide par intérim est exclue (décidé par la Direction le 13/11/2026).
+///     L'ADMINISTRATEUR SYSTÈME est exclu lui aussi (décidé le 13/11/2026) : son accès complet vient de l'ABSENCE de fiche rbac, pas d'une décision de la
+///     matrice ; Valider est donc un « geste réservé à la matrice » ([gestesReservesALaMatrice]) que l'accès complet par doctrine ne satisfait pas.
+///     Il garde ENREGISTRER (éditer) : régler un seuil sans effet n'engage personne, seule la validation rend le seuil opposable.
 ///  4. Une version VALIDÉE est IMMUABLE : la modifier AJOUTE une version datée, l'ancienne reste lisible. Une mesure se juge au seuil EN VIGUEUR À LA
 ///     DATE de sa validation biologique (à aujourd'hui tant qu'elle n'est pas rendue) : une alerte déjà levée garde le seuil sous lequel elle l'a été.
 ///     La date d'effet ne peut pas être passée.
 ///  5. L'alerte SIGNALE, elle ne bloque jamais et ne crée aucune notification (donc aucune donnée médicale hors de l'écran). Aucune fenêtre de temps
 ///     entre deux mesures : aucun document ne la fixe.
-/// FORME DU SEUIL (hypothèse, à valider) : une variation ABSOLUE (unité de la variable) et/ou RELATIVE (%) ; l'alerte part dès que l'une des deux est
-/// atteinte (« au moins »).
+/// FORME DU SEUIL (décidée par la Direction le 13/11/2026, « l'une ou l'autre ») : une variation ABSOLUE (unité de la variable) et/ou RELATIVE (%) ;
+/// l'alerte part dès que l'UNE des deux est atteinte. Si la valeur précédente est nulle ou proche de zéro ([epsilonValeurPrecedente]), le pourcentage
+/// n'est PAS calculé (un pourcentage est trompeur près de zéro) : seul le seuil absolu juge, et l'écran dit que le relatif n'a pas pu s'évaluer.
 library;
 
 import 'res_habilitations.dart';
+
+/// Les gestes que SEULE la matrice des droits accorde : l'accès complet d'un rôle sans fiche ne les satisfait pas.
+const Set<String> gestesReservesALaMatrice = {'seuil.valider'};
+
+/// Les rôles dont l'accès complet vient de l'ABSENCE de fiche rbac (doctrine du projet : leur poste EST l'accès complet). Déclaré ICI, dans le domaine,
+/// et nulle part dans un widget.
+const Set<String> rolesAccesCompletParDoctrine = {'admin'};
+
+/// Le droit de la matrice suffit-il à [role] pour [geste] ? Faux pour un geste réservé à la matrice quand le droit ne vient que de l'accès complet.
+bool accesCompletSuffit(String geste, String role) => !(gestesReservesALaMatrice.contains(geste) && rolesAccesCompletParDoctrine.contains(role));
 
 /// Un refus NOMMÉ : le code, ce qui s'est passé, et le geste qui débloque. Rien n'est écrit.
 class RefusSeuil {
@@ -289,6 +303,7 @@ VerdictSeuil validerSeuil({
   required bool droitValider,
   required bool fonctionHabilitee,
   required String profil,
+  String role = '',
   String? motif,
   required String acteur,
   required String libelleRole,
@@ -299,6 +314,12 @@ VerdictSeuil validerSeuil({
         'VALIDATION_RESERVEE',
         'La validation d’un seuil de variation brutale est réservée au profil auquel la matrice des droits accorde cette décision (droit « annuler » de l’écran « Valeurs de référence »). Profil : $profil.',
         'Demander au Biologiste médical de valider depuis son poste, ou à l’administrateur de régler la matrice.'));
+  }
+  if (!accesCompletSuffit('seuil.valider', role)) {
+    return VerdictSeuil.refus(RefusSeuil(
+        'VALIDATION_HORS_MATRICE',
+        'Valider un seuil de variation est un geste réservé à la matrice : l’accès complet du profil $profil, qui ne vient d’aucune fiche de droits, ne vaut pas validation (décision de la Direction du 13/11/2026).',
+        'Demander au Biologiste médical de valider depuis son poste.'));
   }
   if (!fonctionHabilitee) {
     return VerdictSeuil.refus(RefusSeuil(

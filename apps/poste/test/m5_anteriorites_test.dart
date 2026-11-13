@@ -415,6 +415,24 @@ void main() {
       expect(bio.valider('VAR-NFS-GB', motif: 'Notice').ok, isTrue);
     });
 
+    cas('décision du 13/11/2026 : l’administrateur système enregistre un seuil mais ne le valide pas (pas de bouton, geste forcé refusé)', (t) async {
+      expect(droitMatrice('admin', ecran).annuler, isTrue, reason: 'prémisse : l’accès complet lui donne annuler à la matrice');
+      final m = vide();
+      final admin = SeuilsPoste(contexte(m, 'admin'));
+      expect(admin.peutEnregistrer, isTrue);
+      expect(admin.enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+      expect(admin.peutValider, isFalse);
+      final r = admin.valider('VAR-NFS-GB', motif: 'Je force');
+      expect(r.ok, isFalse);
+      expect(r.refus!.code, 'VALIDATION_HORS_MATRICE');
+      expect(admin.etat('VAR-NFS-GB').etat, 'enregistre');
+      await ouvrir(t, m, 'admin');
+      expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);
+      expect(find.byKey(const Key('seuils:valider:GB')), findsNothing);
+      // Le Biologiste médical valide ce que l'administrateur a enregistré.
+      expect(SeuilsPoste(contexte(m, 'laborantin')).valider('VAR-NFS-GB', motif: 'Notice').ok, isTrue);
+    });
+
     test('versions datées IMMUABLES au magasin : réécrire ou archiver une version validée est refusé d’où qu’arrive l’écriture', () {
       final m = vide();
       final bio = SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste'));

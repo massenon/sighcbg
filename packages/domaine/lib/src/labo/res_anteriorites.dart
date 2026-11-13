@@ -161,6 +161,11 @@ class VariationLabo {
   double? get ecartAbsolu => ecart?.abs();
 }
 
+/// En deçà de cette valeur absolue, la valeur précédente est tenue pour NULLE : un pourcentage calculé sur une quasi-zéro est trompeur (décision de la
+/// Direction du 13/11/2026). Aucun document ne fixe de seuil de proximité propre à une variable : la borne n'écarte que le bruit de virgule flottante,
+/// toute valeur réellement mesurée (même 0,01) se divise.
+const double epsilonValeurPrecedente = 1e-9;
+
 double? _nombreJs(Object? v) {
   if (v is num) return v.toDouble();
   if (v is String) return double.tryParse(v.trim());
@@ -179,8 +184,8 @@ VariationLabo? variationEntre(FicheLabo? variable, Object? avant, Object? apres)
         apres: b,
         ecart: ecart,
         sens: ecart > 0 ? 'hausse' : (ecart < 0 ? 'baisse' : 'egal'),
-        divisionParZero: a == 0,
-        pourcent: a == 0 ? null : arrondiJs(ecart / a.abs() * 10000) / 100);
+        divisionParZero: a.abs() < epsilonValeurPrecedente,
+        pourcent: a.abs() < epsilonValeurPrecedente ? null : arrondiJs(ecart / a.abs() * 10000) / 100);
   }
   if (qualitative || variable['type'] == 'numerique') {
     final ta = '$avant'.trim(), tb = '$apres'.trim();
@@ -198,7 +203,7 @@ String texteVariation(VariationLabo? v, [String suffixe = '']) {
   final ecart = v.ecart!;
   final signe = v.sens == 'hausse' ? '↑ +' : (v.sens == 'baisse' ? '↓ ' : '= ');
   final t = '$signe${chaineJs(arrondiJs(ecart * 100) / 100)}$suffixe';
-  if (v.divisionParZero) return '$t (écart relatif non calculable : valeur précédente nulle)';
+  if (v.divisionParZero) return '$t (écart relatif non calculable : valeur précédente ${v.avant == 0 ? 'nulle' : 'proche de zéro'})';
   final p = v.pourcent!;
   return '$t (${p > 0 ? '+' : ''}${nombre(p, 1)} %)';
 }
@@ -213,7 +218,7 @@ AlerteVariation? alerteVariation(FicheLabo? variable, VariationLabo? variation, 
   final abs = _nombreJs(s['ecartAbsolu']), rel = _nombreJs(s['ecartRelatif']);
   if (abs != null && variation.ecartAbsolu! >= abs) raisons.add(RaisonAlerte('absolu', abs, variation.ecartAbsolu!));
   if (rel != null && variation.pourcent != null && variation.pourcent!.abs() >= rel) raisons.add(RaisonAlerte('relatif', rel, variation.pourcent!.abs()));
-  return AlerteVariation(raisons.isNotEmpty, s, raisons, rel != null && abs == null && variation.pourcent == null);
+  return AlerteVariation(raisons.isNotEmpty, s, raisons, rel != null && variation.pourcent == null);
 }
 
 /// La date à laquelle une mesure se juge : celle de sa validation biologique si elle est rendue, aujourd'hui sinon.

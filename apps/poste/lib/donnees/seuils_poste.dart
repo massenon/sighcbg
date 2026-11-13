@@ -9,8 +9,8 @@ import 'magasin.dart';
 /// rend ce qu'il faut écrire ; c'est ICI que l'on écrit et journalise (RG-12, UNE ligne par geste).
 ///
 /// LES DROITS SONT LUS À LA MATRICE, JAMAIS À UN NOM DE RÔLE : enregistrer = ÉDITER l'écran des valeurs de référence ; valider = le droit ANNULER de ce même
-/// écran (l'arbitrage, comme l'arbitrage des lots d'import à `imp-accueil`). Par défaut seul le Biologiste médical l'a, avec l'administrateur système (qui a
-/// toute la matrice). Le moteur REVÉRIFIE à chaque geste, à chaud : la commande absente de l'écran ne protège rien, un geste forcé reçoit un refus nommé. La
+/// écran (l'arbitrage, comme l'arbitrage des lots d'import à `imp-accueil`). Par défaut seul le Biologiste médical l'a. L'administrateur système a toute la matrice mais n'est PAS validateur
+/// (décision du 13/11/2026, `accesCompletSuffit`) : il enregistre, il ne valide pas. Le moteur REVÉRIFIE à chaque geste, à chaud : la commande absente de l'écran ne protège rien, un geste forcé reçoit un refus nommé. La
 /// fonction du technicien de laboratoire (validation par intérim) est exclue en plus de la matrice.
 ///
 /// Aucun seuil n'est semé : la collection `seuilsDelta` naît vide. Elle ne figure pas à `collectionsDuJeu` (aucun fichier de jeu à livrer, ni vidage ni
@@ -37,7 +37,7 @@ class SeuilsPoste {
   bool get peutEnregistrer => droit.editer;
 
   /// Valider : le droit de la matrice ET une fonction qui porte la validation biologique.
-  bool get peutValider => droit.annuler && fonctionPeutValiderSeuil(profilLabo(c).session);
+  bool get peutValider => droit.annuler && accesCompletSuffit('seuil.valider', c.role) && fonctionPeutValiderSeuil(profilLabo(c).session);
 
   String get _profil => c.donnees?.matrice.libelle(c.role) ?? c.role;
 
@@ -71,6 +71,7 @@ class SeuilsPoste {
         droitValider: droit.annuler,
         fonctionHabilitee: fonctionPeutValiderSeuil(profilLabo(c).session),
         profil: _profil,
+        role: c.role,
         motif: motif,
         acteur: a.nom,
         libelleRole: c.donnees?.matrice.libelle(c.role) ?? c.role,
