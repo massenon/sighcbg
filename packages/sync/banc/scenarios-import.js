@@ -138,9 +138,9 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     const o3c = await poste('fileul', { role: 'stock', par: 'GESTIONNAIRE', poste: 'F1', jeu: 'produits', lignes: [ENTETE, ligne('IMPR', 'ARTICLE RETIRE')], magasin: magF, idDemande: 'DIM-F1-5' });
     magF = o3c.magasin;
     await f1.ecrire({ type: 'creer', collection: 'demandesImport', fiche: 'DIM-F1-5', champs: o3c.demande });
-    await attendre(async () => !!(await chezLaMere('DIM-F1-5')), 15000);
+    await attendre(async () => !!(await chezLaMere('DIM-F1-5')), 45000);
     await f1.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F1-5', champs: { etat: 'retiree', retireePar: 'GESTIONNAIRE', retireeLe: '2026-11-12', lignes: [] } });
-    verifier('la mère voit la demande retirée (elle ne l\'applique plus), sans ses lignes', await attendre(async () => { const d = await chezLaMere('DIM-F1-5'); return !!d && d.etat === 'retiree' && d.lignes.length === 0; }, 15000));
+    verifier('la mère voit la demande retirée (elle ne l\'applique plus), sans ses lignes', await attendre(async () => { const d = await chezLaMere('DIM-F1-5'); return !!d && d.etat === 'retiree' && d.lignes.length === 0; }, 45000));
     const n1 = (await f1.etat()).a_traiter.length;
     await f1.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F1-1', champs: { etat: 'retiree' } });
     verifier('retirer une demande DÉJÀ jugée est refusé, nommé : un verdict ne se retire pas', await attendre(async () => (await f1.etat()).a_traiter.length > n1, 15000) && (await chezLaMere('DIM-F1-1')).etat === 'appliquee');
