@@ -12,7 +12,8 @@ import 'aide_grand_stock.dart';
 ///  1. la mère APPLIQUE : une fiche, un lot, un mouvement par identité chez le fileul, chez la mère et chez un second fileul ; rien de doublé après des tours supplémentaires ni après
 ///     le redémarrage du pont ;
 ///  2. la mère est INJOIGNABLE : le fileul garde son stock et en sort ; à son retour la demande est rejouée UNE fois, les sorties ne sont ni perdues ni comptées deux fois ;
-///  3. DEUX fileuls importent le même inventaire : la seconde demande est refusée en nommant, son fileul restitue (mouvements inverses, archivage), le stock n'est jamais doublé ;
+///  3. DEUX fileuls importent deux inventaires qui se recouvrent sans être le même (une cellule change) : la seconde demande est refusée en nommant, son fileul restitue (mouvements inverses,
+///     archivage), le stock n'est jamais doublé (le MÊME inventaire est adopté : `import_idempotence_direct_sync_test.dart`) ;
 ///  4. une SORTIE déjà faite sur un lot en attente : l'article ne se restitue pas, la restitution est PARTIELLE, rien n'est négatif ni compté deux fois ;
 ///  5. un REJEU de la demande à la mère et un REDÉMARRAGE du pont ne comptent rien deux fois.
 const total = {'fichesProduit': 1, 'stockGros': stockMed1, 'fichesLot': 2, 'sommeLots': 150, 'mouvementsEntree': 2, 'sommeEntrees': 150};
@@ -47,10 +48,11 @@ void main() {
       }
       expect(f1.m.collection('lots').toutes.where((f) => f.containsKey(champEnAttenteMere)), isEmpty, reason: 'plus rien « en attente »');
       expect(f1.m.collection('mouvements').toutes.where((f) => f.containsKey(champEnAttenteMere)), isEmpty);
-      // Une identité par fiche : celle de la demande, sur tous les postes.
+      // Une identité par fiche : celle de la SÉRIE du lot (tirée du contenu depuis le lot IDEM), sur tous les postes.
+      final serie = '${f1.demande(id)!['serieIdentifiants']}';
       for (final m in [f1.m, c.mm, f2.m]) {
-        expect(m.collection('lots').toutes.where((f) => f['serieDemande'] == id).every((f) => f['idSync'] == f['id']), isTrue);
-        expect({for (final f in m.collection('produits').actives) if (f['code'] == 'MED1') f['id']}, {'PRO-$id-1'});
+        expect(m.collection('lots').toutes.where((f) => f['serieDemande'] == serie).every((f) => f['idSync'] == f['id']), isTrue);
+        expect({for (final f in m.collection('produits').actives) if (f['code'] == 'MED1') f['id']}, {'PRO-$serie-1'});
       }
       // JAMAIS VERS UN TÉLÉPHONE (RG-13) : ni la demande (ses lignes), ni les variations de stock.
       final mobile = await collectionsRecuesParUnMobile(c.port);
@@ -103,7 +105,7 @@ void main() {
     }
   }, timeout: const Timeout(Duration(seconds: 240)));
 
-  test('CAS 3, DEUX FILEULS IMPORTENT LE MÊME INVENTAIRE : la seconde demande est refusée en nommant, le second fileul restitue (mouvements inverses, archivage), le stock n\'est jamais doublé', () async {
+  test('CAS 3, DEUX FILEULS IMPORTENT DEUX INVENTAIRES QUI SE RECOUVRENT (une cellule change) : la seconde demande est refusée en nommant, le second fileul restitue (mouvements inverses, archivage), le stock n\'est jamais doublé', () async {
     final c = Clinique(9423, ':memory:');
     await c.demarrer();
     try {
@@ -111,7 +113,7 @@ void main() {
       final f2 = await c.fileul('F2', 'stock', 'GESTIONNAIRE DEUX');
       await c.tour();
       final r1 = f1.importer('gs-valide');
-      final r2 = f2.importer('gs-valide');
+      final r2 = f2.importerLignes(lignesModifiees(), 'modifie.xlsx');
       final id1 = '${r1.demande}', id2 = '${r2.demande}';
       expect(r1.resultat.ok && r2.resultat.ok, isTrue, reason: 'chacun écrit chez lui');
       await c.converger(() => f1.demande(id1)?['etat'] == demandeImportAppliquee && f2.demande(id2)?['etat'] == demandeImportRefusee && f2.demande(id2)?['restitution'] != null, 'la mère tranche', apres: 8);
@@ -142,8 +144,9 @@ void main() {
       await c.tour();
       await c.mere.arreter();
       final r1 = f1.importer('gs-valide');
-      final r2 = f2.importer('gs-valide');
+      final r2 = f2.importerLignes(lignesModifiees(), 'modifie.xlsx');
       final id1 = '${r1.demande}', id2 = '${r2.demande}';
+      final serie2 = '${f2.demande(id2)!['serieIdentifiants']}';
       f2.sortir('MED1', 'L1', 10);
       for (var i = 0; i < 3; i++) {
         await f1.tour();
@@ -159,16 +162,16 @@ void main() {
       expect({for (final g in gardees) '${g['code']}'}, {'STOCK_DEJA_SORTI'});
       expect(gardees.map((g) => g['collection']).toSet(), {'produits', 'lots', 'mouvements'});
       // GANT1, jamais sorti, est restitué ; MED1 reste chez F2 seul, marqué « refusée par la mère ».
-      final gant = f2.m.collection('produits').toutes.firstWhere((f) => f['code'] == 'GANT1' && f['id'] == 'PRO-$id2-2');
+      final gant = f2.m.collection('produits').toutes.firstWhere((f) => f['code'] == 'GANT1' && f['id'] == 'PRO-$serie2-2');
       expect(gant['statut'], 'archive');
-      final med = f2.m.collection('produits').toutes.firstWhere((f) => f['id'] == 'PRO-$id2-1');
+      final med = f2.m.collection('produits').toutes.firstWhere((f) => f['id'] == 'PRO-$serie2-1');
       expect(med['statut'], isNot('archive'));
       expect('${med[champRefuseeParMere]}', contains('DOUBLON_MAGASIN'));
-      expect(med['stockGros'], 140, reason: 'la sortie déjà faite est conservée, jamais réécrite');
+      expect(med['stockGros'], 141, reason: 'la sortie déjà faite est conservée, jamais réécrite');
       // La mère : 150 une fois, aucun stock négatif, ni la sortie de F2 ni son stock gardé ne lui sont parvenus.
       expect(c.comptesMere('MED1'), total);
       expect((await c.pontM.transport.liste('deltasCompteurs')).where((d) => '${d.data['cle']}'.contains(id2)), isEmpty, reason: 'aucune variation d\'un stock refusé n\'est jamais publiée');
-      expect(c.mm.collection('produits').toutes.any((f) => f['id'] == 'PRO-$id2-1'), isFalse);
+      expect(c.mm.collection('produits').toutes.any((f) => f['id'] == 'PRO-$serie2-1'), isFalse);
       expect([for (final x in c.mm.collection('mouvements').actives) if (x['type'] == 'sortie') x], isEmpty, reason: 'la sortie faite sur un stock que la mère a refusé ne part pas');
       for (final m in [c.mm, f1.m, f2.m]) {
         expect([for (final l in m.collection('lots').actives) if (((l['quantiteRestante'] as num?) ?? 0) < 0) l], isEmpty);

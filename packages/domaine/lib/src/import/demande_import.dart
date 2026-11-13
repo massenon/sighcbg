@@ -299,6 +299,9 @@ ImportDirectEtDemande importerDirectEtDemander({
     return ImportDirectEtDemande.refuse(ResultatImport.refus(
         'JEU_NON_DEMANDABLE', 'le jeu « ${jeu.libelle} » ne passe pas par une demande à la mère', 'Importez-le par la voie ordinaire du poste, ou au poste de la mère s’il est réservé.'));
   }
+  // LOT IDEM : un fichier DÉJÀ TENU (même contenu) n'écrit rien et ne dépose rien : le refus le dit sous son code, il n'est pas confondu avec une analyse refusée.
+  final dejaTenu = analyse.accepte && analyse.aEcrire == 0 ? analyse.problemes.where((p) => p.code == 'LOT_DEJA_IMPORTE').firstOrNull : null;
+  if (dejaTenu != null) return ImportDirectEtDemande.refuse(ResultatImport.refus('LOT_DEJA_IMPORTE', dejaTenu.motif, dejaTenu.geste));
   if (!analyse.accepte || analyse.aEcrire == 0) {
     return ImportDirectEtDemande.refuse(
         const ResultatImport.refus('ANALYSE_REFUSEE', 'le fichier n’a pas passé l’analyse, ou n’a rien à écrire', 'Corrigez les refus listés, puis téléversez de nouveau.'));

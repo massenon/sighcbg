@@ -226,6 +226,8 @@ void main() {
       expect([analyse.accepte, analyse.aEcrire, analyse.ignorees.length, analyse.compte.refus], [true, 0, 3, 0]);
       expect({for (final p in analyse.problemes) p.code}, {'LOT_DEJA_IMPORTE'});
       expect(analyse.problemes.first.motif, allOf(contains('déjà importé'), contains('${a.demande['serieIdentifiants']}')));
+      final depot = importerDirectEtDemander(jeu: jeuGrandStock, analyse: analyse, port: a.fileul, regime: regime, idDemande: 'DIMA16b', poste: 'F', compteurs: compteurs);
+      expect([depot.ok, depot.refus?.code], [false, 'LOT_DEJA_IMPORTE'], reason: 'un second dépôt du même fichier ne dépose rien et le dit');
       final r = appliquer(jeuGrandStock, analyse, a.fileul);
       expect([r.ok, r.code], [false, 'LOT_DEJA_IMPORTE']);
       expect(fiches(a.fileul), avant, reason: 'ni fiche, ni lot consigné');

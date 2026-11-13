@@ -57,6 +57,12 @@ Map<String, Object?> comptes(Magasin m, String code) {
   };
 }
 
+/// Le cas `gs-valide` dont UNE seule cellule change (la quantité du premier lot de MED1) : un AUTRE lot, jamais le même inventaire.
+List<List<Object?>> lignesModifiees() {
+  final l = lignesDuCas('gs-valide');
+  return [for (final r in l) [...r]]..[1][4] = ((l[1][4] as num) + 1);
+}
+
 class Poste {
   Poste(this.nom, this.port, this.role, this.par) {
     moteur = MoteurFileul.creer(dbChemin: ':memory:', mere: 'http://127.0.0.1:$port', nom: nom);
@@ -95,6 +101,12 @@ class Poste {
 
   /// Importe le cas [cas] par le geste de l'écran (le service du poste : écriture directe sous la garde ET demande à la mère).
   ({ResultatImport resultat, String? demande}) importer(String cas) => service.importerEtDemander(jeuImportParId('grand-stock')!, analyser(cas), profil: profilDe(role), nomAgent: par);
+
+  /// Importe des lignes quelconques (par exemple celles d'un cas dont UNE cellule change) : l'analyse est celle de ce poste, l'identité du lot dérive du contenu.
+  ({ResultatImport resultat, String? demande}) importerLignes(List<List<Object?>> lignes, String nomFichier) {
+    final a = analyserLignes(jeuImportParId('grand-stock')!, lignes, nomFichier, PortMagasin(m, aujourdhui: () => jourTest, nomAgent: par, profil: profilDe(role)))..empreinte = 'e-$nomFichier';
+    return service.importerEtDemander(jeuImportParId('grand-stock')!, a, profil: profilDe(role), nomAgent: par);
+  }
 
   /// Une SORTIE de stock du poste (dispensation) : le lot, le produit et un mouvement de sortie, comme le geste réel.
   void sortir(String code, String numeroLot, int q) {

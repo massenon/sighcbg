@@ -77,6 +77,13 @@ String _typeLisible(ColonneImport c) =>
 String _reponseDeLaMere(Fiche d) {
   switch (d['etat']) {
     case demandeImportAppliquee:
+      if (d['resultatAdoptee'] == true) {
+        final r = d['restitution'];
+        final rebase = r == restitutionFaite || r == restitutionPartielle
+            ? ' Votre écriture locale, sous une autre série, a été remplacée par celle de la mère${r == restitutionPartielle ? ' (restitution partielle : un article déjà sorti reste, marqué)' : ''}.'
+            : ' Vos fiches portent les mêmes identifiants que les siennes.';
+        return 'Ce fichier est déjà confirmé par la mère (lot ${d['resultatLot']}) : elle n’a rien réécrit et rien n’est compté deux fois.$rebase';
+      }
       return 'Lot ${d['resultatLot']} : ${d['resultatEcrits']} fiche(s) écrite(s) à la mère, sous les mêmes identifiants que chez vous.';
     case demandeImportRefusee:
       final r = d['restitution'];

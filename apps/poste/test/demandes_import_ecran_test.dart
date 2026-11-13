@@ -78,7 +78,7 @@ void main() {
     final f = m.collection('fournisseurs').actives.single;
     expect(f['code'], 'FIMP');
     expect(f[champEnAttenteMere], isNotNull, reason: 'visible tout de suite, marqué « en attente de la mère »');
-    expect(f['id'], startsWith('FOU-DIM'), reason: 'identité de la demande, jamais préfixée de l\'étiquette du poste');
+    expect(f['id'], startsWith('FOU-IMP'), reason: 'identité de la série du lot (tirée du contenu), jamais préfixée de l\'étiquette du poste');
     final d = m.collection(demandesImportCollection).toutes.single;
     expect(f[champSerieDemande], d['id']);
     expect(d['etat'], demandeImportEnAttente);

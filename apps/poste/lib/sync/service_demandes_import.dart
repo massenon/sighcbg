@@ -139,6 +139,8 @@ class ServiceDemandesImport {
         final lot = magasin.collection(collectionLots).parId(d['lotLocalId']);
         if (lot == null) continue;
         final ecrits = ((lot['ecrits'] as List?) ?? const []).cast<Map>();
+        // LOT IDEM : une restitution REJOUÉE (drapeau de la demande perdu) rend ce qu'elle avait fait et ne notifie pas une seconde fois.
+        final etaitApplique = lot['etat'] == 'applique';
         switch (suiteDuVerdict(d)) {
           case SuiteDuVerdict.aucune:
             break;
@@ -154,9 +156,34 @@ class ServiceDemandesImport {
                 'restitutionArchives': r.archives,
                 'restitutionGardees': [for (final g in r.gardees) {'collection': g['collection'], 'id': g['id'], 'code': g['code'], 'motif': g['motif']}],
               }, journaliser: false);
-              _notifier(d, 'import_non_retenu', 'Import refusé par la mère, écriture restituée',
+              if (etaitApplique) {
+                _notifier(d, 'import_non_retenu', 'Import refusé par la mère, écriture restituée',
                   'La mère a refusé « ${d['jeuLibelle'] ?? d['jeu']} » (${d['fichier'] ?? ''}) : ${d['resultatCode']} : ${d['resultatMotif']}. ${r.archives} fiche(s) restituée(s) (archivées, RG-14)'
                   '${r.gardees.isEmpty ? '' : ', ${r.gardees.length} gardée(s) parce qu’une pièce émise s’appuie dessus (marquées « refusée par la mère »)'}. ${d['resultatGeste'] ?? ''}');
+              }
+              n++;
+            }
+          case SuiteDuVerdict.rebaser:
+            // LOT IDEM : la mère tient déjà ce contenu sous une autre série (ce fileul l'avait réimporté après une annulation) : son écriture locale est RESTITUÉE (archivage, contre-passations
+            // nommées, un article déjà sorti reste, marqué) ; les fiches de la mère lui arrivent par la configuration. Ce n'est pas un refus : la demande reste « appliquée, adoptée ».
+            final port = PortMagasin(magasin, aujourdhui: () => _maintenant, nomAgent: '${d['demandePar']}', profil: const ProfilImport.aucunDroit(), gardesLevees: true, etiquette: etiquette);
+            final r = restituerLotDirect(jeuImportParId, d['lotLocalId'],
+                codeRefus: 'LOT_ADOPTE',
+                motifRefus: 'la mère tient déjà ce contenu sous la série ${d['resultatSerie']} : votre écriture locale (série ${d['serieIdentifiants']}) est remplacée par la sienne',
+                port: port);
+            final dejaFait = !r.ok && r.code == 'LOT_NON_APPLIQUE';
+            if (r.ok || dejaFait) {
+              demandes.mettreAJour(d['id'], {
+                'restitution': dejaFait ? restitutionFaite : r.etat,
+                'restitutionLe': _jour,
+                'restitutionArchives': r.archives,
+                'restitutionGardees': [for (final g in r.gardees) {'collection': g['collection'], 'id': g['id'], 'code': g['code'], 'motif': g['motif']}],
+                'marquageLeve': true,
+              }, journaliser: false);
+              if (etaitApplique) {
+                _notifier(d, 'import_retenu', 'Import déjà confirmé par la mère, adopté',
+                  'La mère détient déjà « ${d['jeuLibelle'] ?? d['jeu']} » (même contenu, lot ${d['resultatLot']}) : elle n’a rien réécrit et rien n’est compté deux fois. Votre écriture locale, sous une autre série, a été remplacée par la sienne.');
+              }
               n++;
             }
           case SuiteDuVerdict.leverLeMarquage:
@@ -173,8 +200,8 @@ class ServiceDemandesImport {
             }
             if (attendues == 0) {
               demandes.mettreAJour(d['id'], {'marquageLeve': true}, journaliser: false);
-              _notifier(d, 'import_retenu', 'Import confirmé par la mère',
-                  'La mère a appliqué « ${d['jeuLibelle'] ?? d['jeu']} » (${d['fichier'] ?? ''}, lot ${d['resultatLot']}) : ses fiches portent les mêmes identifiants que les vôtres et les ont remplacées, sans doublon.');
+              _notifier(d, 'import_retenu', d['resultatAdoptee'] == true ? 'Import déjà confirmé par la mère, adopté' : 'Import confirmé par la mère',
+                  '${d['resultatAdoptee'] == true ? 'La mère détenait déjà ce contenu (adopté, rien réécrit) :' : 'La mère a appliqué'} « ${d['jeuLibelle'] ?? d['jeu']} » (${d['fichier'] ?? ''}, lot ${d['resultatLot']}) : ses fiches portent les mêmes identifiants que les vôtres et les ont remplacées, sans doublon.');
               n++;
             }
         }
@@ -251,9 +278,13 @@ class ServiceDemandesImport {
           // Jamais muet : une exception se nomme aussi, et la demande reste lisible du fileul.
           v = VerdictDemandeImport.refusee('ECRITURE_REFUSEE', '$e', 'Rien n’a été écrit. Corrigez la cause puis refaites la demande.');
         }
+        // LOT IDEM : une demande déjà traitée une fois (`traitePar`) que la mère rejoue (verdict perdu, demande reçue deux fois) rend le même verdict SANS le journaliser de nouveau.
+        final dejaTraitee = '${d['traitePar'] ?? ''}'.isNotEmpty;
         demandes.mettreAJour(d['id'], v.versChamps(traitePar: 'Mère', traiteLe: _jour), journaliser: false);
-        magasin.journaliser(v.appliquee ? 'Demande d’import appliquée' : 'Demande d’import refusée', 'IMP', 'DemandeImport', '${d['id']}', {'etat': demandeImportEnAttente},
-            {'jeu': d['jeu'], 'par': auteur, 'role': role, 'code': v.code, 'lot': v.lot, 'poste': d['demandePoste']});
+        if (!dejaTraitee) {
+          magasin.journaliser(v.appliquee ? (v.adoptee ? 'Demande d’import adoptée (déjà confirmée)' : 'Demande d’import appliquée') : 'Demande d’import refusée', 'IMP', 'DemandeImport', '${d['id']}',
+              {'etat': demandeImportEnAttente}, {'jeu': d['jeu'], 'par': auteur, 'role': role, 'code': v.code, 'lot': v.lot, 'poste': d['demandePoste']});
+        }
         n++;
       }
       derniereErreur = null;
