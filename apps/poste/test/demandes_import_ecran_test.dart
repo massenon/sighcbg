@@ -77,14 +77,18 @@ void main() {
     expect(find.textContaining('Une demande est partie à la mère'), findsWidgets);
     final f = m.collection('fournisseurs').actives.single;
     expect(f['code'], 'FIMP');
-    expect(f['provisoireMere'], true, reason: 'visible tout de suite, marqué provisoire');
+    expect(f[champEnAttenteMere], isNotNull, reason: 'visible tout de suite, marqué « en attente de la mère »');
+    expect(f['id'], startsWith('FOU-DIM'), reason: 'identité de la demande, jamais préfixée de l\'étiquette du poste');
     final d = m.collection(demandesImportCollection).toutes.single;
+    expect(f[champSerieDemande], d['id']);
     expect(d['etat'], demandeImportEnAttente);
+    expect(d['ecritureDirecte'], isTrue);
+    expect(libelleEtatDemandeImport(d).libelle, 'Écrit chez vous, en attente de la mère');
     expect(d['demandeRole'], 'comptable');
     expect(d['jeu'], 'fournisseurs');
   });
 
-  cas('MÈRE : l\'import reste local et direct, aucune demande, aucune note de double voie, aucune fiche provisoire', (t) async {
+  cas('MÈRE : l\'import reste local et direct, aucune demande, aucune note de double voie, aucun marquage', (t) async {
     final m = Magasin({'fournisseurs': const [], collectionLots: const [], 'audit': const []});
     await ouvrir(t, m, 'm7-fournisseurs', role: 'comptable', fileul: false);
     await toucher(t, find.byKey(const Key('importer-fournisseurs')));
@@ -95,7 +99,7 @@ void main() {
     await t.pump(const Duration(milliseconds: 300));
     await toucher(t, find.byKey(const Key('import-vers-import')));
     await toucher(t, find.byKey(const Key('import-ecrire')));
-    expect(m.collection('fournisseurs').actives.single['provisoireMere'], isNull);
+    expect(m.collection('fournisseurs').actives.single[champEnAttenteMere], isNull);
     expect(m.collection(demandesImportCollection).toutes, isEmpty);
   });
 

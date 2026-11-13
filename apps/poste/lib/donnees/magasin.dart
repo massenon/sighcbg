@@ -179,6 +179,15 @@ class CollectionMagasin extends ChangeNotifier {
     };
   }
 
+  /// Retire un CHAMP d'une fiche sans passer par les gardes ni le journal : l'entretien d'un marquage posé par le poste lui-même (le « en attente de la mère » de l'import d'un fileul,
+  /// lots IMP-D et IMP-E). Jamais pour une donnée métier : [mettreAJour] est le geste qui se journalise.
+  void retirerChamp(Object? id, String champ) {
+    final f = parId(id);
+    if (f == null || !f.containsKey(champ)) return;
+    f.remove(champ);
+    notifyListeners();
+  }
+
   /// Archive la fiche (`statut: 'archive'`, ancien statut conservé) et rend la fonction qui ANNULE — une annulation doit être possible
   /// et visible (CLAUDE.md, « quatre pièges »).
   VoidCallback archiver(Object? id) {

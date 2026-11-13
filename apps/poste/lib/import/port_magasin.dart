@@ -88,7 +88,12 @@ class PortMagasin extends PortImport {
   @override
   bool archiver(String collection, Object? id, String motif) {
     try {
-      _garde(collection, () => magasin.collection(collection).archiver(id));
+      _garde(collection, () {
+        final col = magasin.collection(collection);
+        col.archiver(id);
+        // Le motif accompagne l'archivage (Corbeille, fil du dossier) : une restitution ou une annulation de lot se lit sur la fiche archivée, sans fouiller le journal.
+        if (motif.isNotEmpty) col.mettreAJour(id, {'_motifArchivage': motif}, journaliser: false);
+      });
       return true;
     } on EcritureRefusee {
       return false;

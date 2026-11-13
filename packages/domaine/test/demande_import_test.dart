@@ -1,5 +1,6 @@
-// LA DEMANDE D'IMPORT D'UN FILEUL À LA MÈRE (lot IMP-C, « option c » de la Direction du 12/11/2026), rejouée sur deux magasins en mémoire : le fileul écrit chez lui ET dépose
-// une demande ; la mère rejoue sous le rôle de l'auteur et reste la seule autorité ; le verdict revient, l'écriture locale est réglée sans rien perdre en silence.
+// LA DEMANDE D'IMPORT D'UN FILEUL À LA MÈRE (lot IMP-C, « option c » de la Direction du 12/11/2026, reprise du lot IMP-D de la clinique sœur), rejouée sur deux magasins en mémoire :
+// le fileul écrit chez lui ET dépose une demande ; la mère rejoue sous le rôle de l'auteur, exige le même résultat et reste la seule autorité ; les fiches ont UNE identité commune ;
+// sur refus le fileul RESTITUE (archivage RG-14), sans jamais réécrire une pièce émise.
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,7 +22,7 @@ void main() {
       ];
   // Le fileul : comptable (droit d'importer les fournisseurs dans la matrice d'origine), identifiants propres au poste.
   PortImportMemoire fileul({String role = 'comptable', Map<String, Object?> jeu = const {}}) =>
-      PortImportMemoire(jeu, profilFixe: profilDe(base, role), utilisateurFixe: 'COMPTABLE F1', prefixeId: 'FOURF1-');
+      PortImportMemoire(jeu, profilFixe: profilDe(base, role), utilisateurFixe: 'COMPTABLE F1', prefixeId: 'FOURF1-', jourFixe: '2026-11-12');
   PortImportMemoire mere(ProfilImport p, {Map<String, Object?> jeu = const {}}) => PortImportMemoire(jeu, profilFixe: p, utilisateurFixe: 'COMPTABLE F1', prefixeId: 'FOUR', jourFixe: '2026-11-12');
 
   ImportDirectEtDemande deposer(PortImportMemoire f, List<String> codes, {String id = 'DIM1'}) {
@@ -44,22 +45,27 @@ void main() {
   });
 
   group('le fileul : écriture directe ET demande', () {
-    test('il voit son import tout de suite (fiches provisoires, identifiants propres au poste) et la demande part vérifiée', () {
+    test('il voit son import tout de suite (identité de la demande, « en attente de la mère ») et la demande part vérifiée avec ce que la mère doit reproduire', () {
       final f = fileul();
       final r = deposer(f, ['SOBAPS', 'NSIA']);
       expect(r.ok, isTrue);
       final fiches = f.actives('fournisseurs');
       expect(fiches, hasLength(2), reason: 'visible chez le fileul immédiatement');
-      expect(fiches.every((x) => x['provisoireMere'] == true && x['demandeImport'] == 'DIM1' && '${x['id']}'.startsWith('FOURF1-')), isTrue);
+      expect([for (final x in fiches) x['id']].toSet(), {'FOU-DIM1-1', 'FOU-DIM1-2'}, reason: 'identité de la demande, jamais l\'étiquette du poste');
+      expect(fiches.every((x) => x[champEnAttenteMere] == 'DIM1' && x[champSerieDemande] == 'DIM1' && x['provisoireMere'] == null), isTrue);
       final d = r.demande!;
       expect(d['etat'], demandeImportEnAttente);
       expect(d['demandeRole'], 'comptable');
       expect(d['demandePar'], 'COMPTABLE F1');
       expect((d['lignes'] as List), hasLength(3), reason: 'l\'en-tête et deux lignes : la mère doit pouvoir rejouer');
-      expect(d['lotLocal'], isNotNull);
+      expect(d['ecritureDirecte'], isTrue);
+      expect(d['serieIdentifiants'], 'DIM1');
+      expect(d['rangsEcrits'], [2, 3]);
       final lot = f.toutes(collectionLots).single;
-      expect(lot['etatMere'], 'en_attente');
+      expect(d['lotLocal'], lot['reference']);
+      expect(d['lotLocalId'], lot['id']);
       expect(f.journal.any((l) => l.startsWith('Demande d’import déposée à la mère')), isTrue, reason: 'RG-12 : journal côté fileul');
+      expect(libelleEtatDemandeImport(d).libelle, 'Écrit chez vous, en attente de la mère', reason: 'jamais « appliquée » avant la confirmation');
     });
 
     test('sans le droit du rôle : refus nommé du moteur, RIEN d\'écrit, RIEN de déposé', () {
@@ -89,7 +95,8 @@ void main() {
       expect(v.appliquee, isTrue, reason: '${v.code} ${v.motif}');
       expect(v.ecrits, 2);
       expect(m.actives('fournisseurs'), hasLength(2));
-      expect(m.actives('fournisseurs').every((x) => x['provisoireMere'] == null && x['lotImport'] == v.lot), isTrue, reason: 'les fiches de la mère ne portent aucun marquage provisoire');
+      expect([for (final x in m.actives('fournisseurs')) x['id']].toSet(), {'FOU-DIM1-1', 'FOU-DIM1-2'}, reason: 'MÊMES identifiants que chez le fileul : une fiche par code, jamais deux');
+      expect(m.actives('fournisseurs').every((x) => x[champEnAttenteMere] == null && x['lotImport'] == v.lot), isTrue, reason: 'les fiches de la mère ne portent aucun marquage « en attente »');
       expect(m.journal.any((l) => l.startsWith('Import|')), isTrue);
       final champs = v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12');
       expect(champs['etat'], demandeImportAppliquee);
@@ -128,7 +135,7 @@ void main() {
       expect(m.toutes('patients'), isEmpty);
     });
 
-    test('FORGÉE : un jeu qui touche l\'activité (stock) ou un jeu inconnu ne passe pas', () {
+    test('FORGÉE : un jeu qui touche l\'activité (stock, avant le lot IMP-E) ou un jeu inconnu ne passe pas', () {
       final m = mere(profilDe(base, 'admin'));
       expect(traiterDemandeImport({...demandeValide(), 'jeu': 'grand-stock'}, m, jeuImportParId, regime: regime).code, 'JEU_NON_DEMANDABLE');
       expect(traiterDemandeImport({...demandeValide(), 'jeu': 'inconnu'}, m, jeuImportParId, regime: regime).code, 'JEU_INCONNU');
@@ -153,64 +160,121 @@ void main() {
     });
   });
 
-  group('le fileul règle son écriture locale quand le verdict revient', () {
-    test('APPLIQUÉE : l\'écriture provisoire reste tant que la copie de la mère n\'est pas visible, puis elle est ARCHIVÉE (jamais supprimée)', () {
-      final f = fileul();
-      final d = deposer(f, ['SOBAPS']).demande!;
-      final v = traiterDemandeImport(d, mere(profilDe(base, 'comptable')), jeuImportParId, regime: regime);
-      final avecVerdict = {...d, ...v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')};
-      var copie = false;
-      final r1 = reconcilierEcrituresLocales(avecVerdict, f, copieDeLaMereVisible: (c, lot) => copie);
-      expect(r1.issue, 'attente_copie');
-      expect(f.actives('fournisseurs'), hasLength(1), reason: 'toujours visible : le fileul ne se retrouve pas sans rien');
-      copie = true;
-      final r2 = reconcilierEcrituresLocales(avecVerdict, f, copieDeLaMereVisible: (c, lot) => lot == v.lot);
-      expect(r2.issue, 'retenue');
-      expect(r2.archivees, 1);
-      expect(f.actives('fournisseurs'), isEmpty);
-      expect(f.toutes('fournisseurs').single['statut'], 'archive');
-      expect(f.toutes('fournisseurs').single['_motifArchivage'], contains('Retenue par la mère'));
-      expect(r2.aNotifier, isTrue);
-      expect(reconcilierEcrituresLocales(avecVerdict, f, copieDeLaMereVisible: (c, lot) => true).issue, 'sans_objet', reason: 'idempotent');
-    });
-
-    test('REFUSÉE : l\'écriture locale RESTE, marquée « non retenue par la mère » avec le code, le motif et le geste ; une notification le dit', () {
-      final f = fileul();
-      final d = deposer(f, ['SOBAPS']).demande!;
-      final m = mere(profilDe(base, 'comptable'), jeu: {
-        'fournisseurs': [
-          {'id': 'F1', 'code': 'SOBAPS', 'nom': 'Existant', 'statut': 'actif'}
-        ]
-      });
-      final v = traiterDemandeImport(d, m, jeuImportParId, regime: regime);
-      final avecVerdict = {...d, ...v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')};
-      final r = reconcilierEcrituresLocales(avecVerdict, f, copieDeLaMereVisible: (c, lot) => false);
-      expect(r.issue, 'non_retenue');
-      expect(r.marquees, 1);
-      final fiche = f.actives('fournisseurs').single;
-      expect(fiche['nonRetenueMere'], isTrue);
-      expect(fiche['provisoireMere'], isFalse);
-      expect(fiche['motifNonRetenue'], contains('DOUBLON_MAGASIN'));
-      expect(r.detail, contains('non retenue par la mère'));
-      expect(f.toutes(collectionLots).single['etatMere'], 'non_retenue');
-    });
-
-    test('ÉCRASÉE par la synchronisation : la fiche locale a disparu avant le verdict, c\'est compté et DIT', () {
+  group('la mère exige le MÊME résultat, et une demande rejouée ne compte qu\'une fois', () {
+    test('une ligne que la mère n\'écrirait pas (déjà tenue chez elle) : RESULTAT_DIFFERENT ou doublon nommé, rien d\'écrit', () {
       final f = fileul();
       final d = deposer(f, ['SOBAPS', 'NSIA']).demande!;
-      f.toutes('fournisseurs').removeAt(0); // la synchronisation a remplacé une des deux fiches
-      final v = traiterDemandeImport(d, mere(profilDe(base, 'comptable')), jeuImportParId, regime: regime);
-      final r = reconcilierEcrituresLocales({...d, ...v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')}, f, copieDeLaMereVisible: (c, lot) => true);
-      expect(r.issue, 'retenue');
-      expect(r.ecrasees, 1);
-      expect(r.detail, contains('remplacées par la synchronisation'));
+      // la demande dit que le fileul a écrit deux lignes ; la mère n'en écrirait qu'une : elle refuse en le nommant
+      final m = mere(profilDe(base, 'comptable'));
+      final v = traiterDemandeImport({...d, 'rangsEcrits': [2, 3, 4]}, m, jeuImportParId, regime: regime);
+      expect(v.appliquee, isFalse);
+      expect(v.code, 'RESULTAT_DIFFERENT');
+      expect(v.motif, contains('ligne 4'));
+      expect(m.toutes('fournisseurs'), isEmpty, reason: 'rien n\'est écrit');
     });
 
-    test('sans verdict, rien ne bouge', () {
+    test('REJEU : la même demande reçue deux fois rend le MÊME verdict sans rien réécrire (ni fiche, ni lot, ni ligne de journal de plus)', () {
+      final d = deposer(fileul(), ['SOBAPS', 'NSIA']).demande!;
+      final m = mere(profilDe(base, 'comptable'));
+      final v1 = traiterDemandeImport(d, m, jeuImportParId, regime: regime);
+      final journal = m.journal.length, lots = m.toutes(collectionLots).length;
+      final v2 = traiterDemandeImport(d, m, jeuImportParId, regime: regime);
+      expect(v2.appliquee, isTrue, reason: 'et non un doublon refusé de ce que la mère vient d\'écrire elle-même');
+      expect(v2.lot, v1.lot);
+      expect(m.actives('fournisseurs'), hasLength(2));
+      expect(m.toutes(collectionLots), hasLength(lots));
+      expect(m.journal, hasLength(journal));
+    });
+
+    test('appliquerDemande est un NO-OP sur le lot déjà écrit par la demande (idempotence du port)', () {
       final f = fileul();
-      final d = deposer(f, ['SOBAPS']).demande!;
-      expect(reconcilierEcrituresLocales(d, f, copieDeLaMereVisible: (c, l) => true).issue, 'en_attente');
-      expect(f.actives('fournisseurs').single['provisoireMere'], isTrue);
+      final a = analyserFichier(jeuFournisseurs, fichier(['SOBAPS']), 'f.xlsx', f);
+      final p = PortDemandeImport(f, demandeId: 'DIMX');
+      final r1 = appliquerDemande(jeuFournisseurs, a, p);
+      final r2 = appliquerDemande(jeuFournisseurs, a, PortDemandeImport(f, demandeId: 'DIMX'));
+      expect(r1.ok && r2.ok, isTrue);
+      expect(f.actives('fournisseurs'), hasLength(1));
+      expect(f.toutes(collectionLots), hasLength(1));
+      // et une insertion qui retombe sur une fiche de cette demande à ce rang la rend telle quelle
+      final meme = PortDemandeImport(f, demandeId: 'DIMX').inserer('fournisseurs', {'code': 'ZZ', 'nom': 'ZZ'});
+      expect(meme['code'], 'SOBAPS', reason: 'la fiche du rang 1 existe déjà : aucune écriture');
+      expect(f.actives('fournisseurs'), hasLength(1));
+    });
+
+    test('les compteurs : la valeur d\'écriture est la valeur de DÉPART commune (jamais une variation à publier)', () {
+      final f = fileul();
+      final p = PortDemandeImport(f, demandeId: 'DIMC', compteurs: const {'produits': {'stockGros', 'stock'}});
+      final fiche = p.inserer('produits', {'code': 'A', 'stockGros': 40, 'stock': 40, 'designation': 'A'});
+      expect(fiche[champDepartCompteurs], {'stockGros': 40, 'stock': 40});
+      expect(fiche['id'], 'PRO-DIMC-1');
+    });
+  });
+
+  group('le fileul restitue quand la mère refuse (archivage RG-14, jamais une suppression)', () {
+    Map<String, Object?> refusee(Map<String, Object?> d, String code, String motif) =>
+        {...d, ...VerdictDemandeImport.refusee(code, motif, 'Corrigez.').versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')};
+
+    test('RESTITUTION : les fiches du lot sont ARCHIVÉES (motif nommé), le lot passe « restitué », le droit d\'annuler n\'est pas relu', () {
+      final f = fileul();
+      final d = deposer(f, ['SOBAPS', 'NSIA']).demande!;
+      final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'DOUBLON_MAGASIN', motifRefus: 'déjà tenue', port: f);
+      expect(r.ok, isTrue);
+      expect(r.archives, 2);
+      expect(r.etat, restitutionFaite);
+      expect(f.actives('fournisseurs'), isEmpty);
+      expect(f.toutes('fournisseurs'), hasLength(2), reason: 'archivées, jamais supprimées');
+      expect(f.toutes('fournisseurs').every((x) => x['statut'] == 'archive' && '${x['_motifArchivage']}'.contains('refusé par la mère')), isTrue);
+      expect(f.toutes(collectionLots).single['etat'], 'restitue');
+      expect(f.toutes(collectionLots).single['motifRestitution'], contains('DOUBLON_MAGASIN'));
+      expect(restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'X', motifRefus: 'x', port: f).archives, 0, reason: 'idempotent : un lot restitué ne se restitue pas deux fois');
+    });
+
+    test('PIÈCE ÉMISE : une fiche sur laquelle une commande s\'appuie reste, marquée « refusée par la mère » ; le verdict dit restitution PARTIELLE', () {
+      final f = fileul(jeu: {
+        'commandes': [
+          {'id': 'C1', 'fournisseurCode': 'SOBAPS', 'statut': 'actif'}
+        ]
+      });
+      final d = deposer(f, ['SOBAPS', 'NSIA']).demande!;
+      final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'DOUBLON_MAGASIN', motifRefus: 'déjà tenue', port: f);
+      expect(r.ok, isTrue);
+      expect(r.etat, restitutionPartielle);
+      expect(r.gardees, hasLength(1), reason: 'la dépendance du jeu est relue FICHE PAR FICHE : seul SOBAPS porte une commande');
+      expect(r.archives, 1, reason: 'NSIA, que rien n\'utilise, est restituée');
+      final reste = f.actives('fournisseurs').single;
+      expect(reste['code'], 'SOBAPS');
+      expect('${reste[champRefuseeParMere]}', contains('DOUBLON_MAGASIN'));
+      expect(ficheLocaleAuPoste(reste), isTrue, reason: 'une fiche gardée reste PROPRE AU POSTE : elle ne part pas au journal');
+      final libelle = libelleEtatDemandeImport({...refusee(d, 'DOUBLON_MAGASIN', 'm'), 'restitution': r.etat}).libelle;
+      expect(libelle, 'Refusée par la mère, restitution partielle');
+    });
+
+    test('suite du verdict : refusée → restituer ; appliquée → lever le marquage ; une fois fait, plus rien', () {
+      final d = deposer(fileul(), ['SOBAPS']).demande!;
+      expect(suiteDuVerdict(d), SuiteDuVerdict.aucune, reason: 'en attente');
+      expect(suiteDuVerdict(refusee(d, 'X', 'x')), SuiteDuVerdict.restituer);
+      expect(suiteDuVerdict({...refusee(d, 'X', 'x'), 'restitution': restitutionFaite}), SuiteDuVerdict.aucune);
+      final ok = {...d, ...const VerdictDemandeImport.appliquee(lot: 'IMP-1', ecrits: 1).versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')};
+      expect(suiteDuVerdict(ok), SuiteDuVerdict.leverLeMarquage);
+      expect(suiteDuVerdict({...ok, 'marquageLeve': true}), SuiteDuVerdict.aucune);
+    });
+
+    test('annulation du lot : permise tant que la mère n\'a pas statué ; refusée en nommant après confirmation ou refus', () {
+      final d = deposer(fileul(), ['SOBAPS']).demande!;
+      expect(refusAnnulationLotDirect(d), isNull);
+      expect(refusAnnulationLotDirect(null), isNull, reason: 'un lot sans demande s\'annule comme avant');
+      expect(refusAnnulationLotDirect({...d, 'etat': demandeImportAppliquee, 'resultatLot': 'IMP-2026-009'})!.code, 'LOT_CONFIRME_PAR_LA_MERE');
+      expect(refusAnnulationLotDirect({...d, 'etat': demandeImportRefusee})!.code, 'RESTITUTION_PAR_LA_MERE');
+      expect(champsRetraitDemande(par: 'A', jour: '2026-11-12')['etat'], demandeImportRetiree);
+    });
+
+    test('les LIBELLÉS : jamais « appliquée » avant la confirmation ; chaque état se lit', () {
+      final d = deposer(fileul(), ['SOBAPS']).demande!;
+      expect(libelleEtatDemandeImport(d), (libelle: 'Écrit chez vous, en attente de la mère', ton: 'attention'));
+      expect(libelleEtatDemandeImport({...d, 'etat': demandeImportAppliquee}).libelle, 'Appliquée par la mère');
+      expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRefusee}).libelle, 'Refusée par la mère, restitution en cours');
+      expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRefusee, 'restitution': restitutionFaite}).libelle, 'Refusée par la mère, écriture restituée');
+      expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRetiree}).libelle, 'Retirée par vous');
     });
   });
 
@@ -222,10 +286,19 @@ void main() {
       expect(refusDemandeImportDuFileul('creer', {'etat': 'en_attente', 'resultatCode': 'X'}), isNotNull);
       expect(refusDemandeImportDuFileul('creer', {'traitePar': 'Mère'}), isNotNull);
     });
-    test('modification : ni l\'état ni le verdict ne se réécrivent', () {
+    test('modification : ni l\'état ni le verdict ne se réécrivent ; le suivi du fileul (restitution, marquage levé) s\'écrit à côté', () {
       expect(refusDemandeImportDuFileul('modifier', {'etat': 'en_attente'}), isNotNull, reason: 'remettre en attente une demande traitée la ferait rejouer');
       expect(refusDemandeImportDuFileul('modifier', {'resultatMotif': 'ok'}), isNotNull);
       expect(refusDemandeImportDuFileul('modifier', {'fichier': 'autre.xlsx'}), isNull);
+      expect(refusDemandeImportDuFileul('modifier', {'restitution': 'faite', 'restitutionArchives': 2, 'marquageLeve': true}), isNull);
+    });
+    test('le fileul RETIRE sa demande tant que la mère n\'a pas statué — jamais après un verdict, jamais avec un verdict', () {
+      final retrait = champsRetraitDemande(par: 'A', jour: '2026-11-12');
+      expect(refusDemandeImportDuFileul('modifier', retrait, etatActuel: demandeImportEnAttente), isNull);
+      expect(refusDemandeImportDuFileul('modifier', retrait), isNull, reason: 'état inconnu du contrôle : le retrait reste permis, la mère ne traite plus que les demandes en attente');
+      expect(refusDemandeImportDuFileul('modifier', retrait, etatActuel: demandeImportAppliquee), isNotNull, reason: 'un verdict ne se retire pas');
+      expect(refusDemandeImportDuFileul('modifier', retrait, etatActuel: demandeImportRefusee), isNotNull);
+      expect(refusDemandeImportDuFileul('modifier', {...retrait, 'resultatCode': 'X'}, etatActuel: demandeImportEnAttente), isNotNull);
     });
   });
 }

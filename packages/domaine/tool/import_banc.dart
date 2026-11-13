@@ -8,7 +8,7 @@
 // Usage : `dart run tool/import_banc.dart <fileul|mere|reconcilier>` ; JSON sur l'entrée standard, JSON sur la sortie standard.
 //   fileul      {role, par, poste, jeu, lignes, magasin, idDemande}             → {ok, refus?, demande?, magasin}
 //   mere        {demande, magasin, octetsMax?}                                   → {appliquee, code?, motif?, geste?, lot?, champs, magasin}
-//   reconcilier {demande, magasin, copies: ["collection|lot", …]}                → {issue, archivees, marquees, ecrasees, detail, magasin}
+//   suite       {demande, magasin}                                               → {suite, restitution?, archives?, gardees?, marques?, magasin}   (lot IMP-D : ce que le verdict commande au fileul)
 import 'dart:convert';
 import 'dart:io';
 
@@ -74,20 +74,31 @@ void main(List<String> args) {
         ..['lot'] = v.lot
         ..['champs'] = v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12')
         ..['magasin'] = port.instantane();
-    case 'reconcilier':
+    case 'suite':
+      // Ce que le verdict commande au FILEUL (lot IMP-D) : restituer le lot sur refus (archivage RG-14, une pièce émise reste), lever le marquage « en attente de la mère » sur confirmation.
       final d = (entree['demande'] as Map).cast<String, Object?>();
-      final copies = {for (final c in (entree['copies'] as List? ?? const [])) '$c'};
       final port = PortImportMemoire(_magasin(entree['magasin']), profilFixe: const ProfilImport.aucunDroit(), utilisateurFixe: 'Poste', jourFixe: '2026-11-12');
-      final r = reconcilierEcrituresLocales(d, port, copieDeLaMereVisible: (c, lot) => copies.contains('$c|$lot'));
-      sortie
-        ..['issue'] = r.issue
-        ..['archivees'] = r.archivees
-        ..['marquees'] = r.marquees
-        ..['ecrasees'] = r.ecrasees
-        ..['detail'] = r.detail
-        ..['magasin'] = port.instantane();
+      final suite = suiteDuVerdict(d);
+      sortie['suite'] = suite.name;
+      if (suite == SuiteDuVerdict.restituer) {
+        final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: '${d['resultatCode']}', motifRefus: '${d['resultatMotif']}', port: port);
+        sortie
+          ..['ok'] = r.ok
+          ..['restitution'] = r.etat
+          ..['archives'] = r.archives
+          ..['gardees'] = r.gardees.length;
+      } else if (suite == SuiteDuVerdict.leverLeMarquage) {
+        final lot = port.parId(collectionLots, d['lotLocalId']);
+        var marques = 0;
+        for (final e in ((lot?['ecrits'] as List?) ?? const []).cast<Map>()) {
+          final f = port.parId('${e['collection']}', e['id']);
+          if (f != null && f.remove(champEnAttenteMere) != null) marques++;
+        }
+        sortie['marques'] = marques;
+      }
+      sortie['magasin'] = port.instantane();
     default:
-      stderr.writeln('commande inconnue : fileul, mere ou reconcilier');
+      stderr.writeln('commande inconnue : fileul, mere ou suite');
       exit(2);
   }
   stdout.writeln(jsonEncode(sortie));

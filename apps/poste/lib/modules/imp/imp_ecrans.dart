@@ -15,6 +15,7 @@ import '../../import/selecteurs_import.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../sync/service_demandes_import.dart';
 import '../cfg/cfb_commun.dart' show cfbFicheReglage, cfbPoserReglage;
 import '../m6/flux_commun.dart' show modaleSaisie;
 import '../m6/flux_reprise.dart';
@@ -33,6 +34,7 @@ const _tonsEtat = {
   'applique': ('Appliqué', TonSigh.succes),
   'refuse': ('Refusé, rien écrit', TonSigh.danger),
   'annule': ('Annulé', TonSigh.neutre),
+  'restitue': ('Restitué (refusé par la mère)', TonSigh.danger),
 };
 const _tonsLigne = {
   'valide': ('Valide', TonSigh.succes),
@@ -65,6 +67,73 @@ String _typeLisible(ColonneImport c) =>
     }[c.type] ??
     c.type;
 
+/// L'état d'une demande tel qu'on le lit : le libellé vient du domaine (`libelleEtatDemandeImport`) — un lot écrit chez un fileul n'est JAMAIS dit « appliqué » avant que la mère l'ait confirmé.
+(String, TonSigh) _etatDemande(Fiche d) {
+  final e = libelleEtatDemandeImport(d);
+  return (e.libelle, const {'succes': TonSigh.succes, 'danger': TonSigh.danger, 'attention': TonSigh.attention}[e.ton] ?? TonSigh.neutre);
+}
+
+/// La réponse de la mère et la suite chez le fileul, en une phrase sans valeur de cellule.
+String _reponseDeLaMere(Fiche d) {
+  switch (d['etat']) {
+    case demandeImportAppliquee:
+      return 'Lot ${d['resultatLot']} : ${d['resultatEcrits']} fiche(s) écrite(s) à la mère, sous les mêmes identifiants que chez vous.';
+    case demandeImportRefusee:
+      final r = d['restitution'];
+      final restit = r == restitutionFaite
+          ? ' Votre écriture locale a été restituée (${d['restitutionArchives'] ?? 0} fiche(s) archivée(s)).'
+          : r == restitutionPartielle
+              ? ' Votre écriture locale a été restituée, sauf ${((d['restitutionGardees'] as List?) ?? const []).length} fiche(s) qu’une pièce émise utilise : elles restent, marquées.'
+              : ' La restitution de votre écriture locale est en cours.';
+      return '${d['resultatCode']} : ${d['resultatMotif']}. ${d['resultatGeste']}$restit';
+    case demandeImportEnAttente:
+      return 'Les fiches sont écrites chez vous et marquées « en attente de la mère ». Elle confirmera ou refusera ; si elle est injoignable, la demande attend dans votre file.';
+    case demandeImportRetiree:
+      return 'Vous avez annulé le lot avant la réponse de la mère : la demande est retirée.';
+  }
+  return '';
+}
+
+/// Le tableau des demandes que CET agent a envoyées à la mère, pour un jeu : la réponse nommée, jamais les lignes de son fichier.
+Widget tableauDemandes(List<Fiche> demandes) => TableauSigh(
+      lignes: [for (final d in demandes) {...d, '_etat': _etatDemande(d).$1}],
+      taillePage: 10,
+      triInitial: 'demandeLe',
+      sensInitial: 'desc',
+      nomExport: 'demandes-import',
+      messageVide: 'Aucune demande envoyée.',
+      colonnes: [
+        ColonneTableau(cle: 'demandeLe', libelle: 'Envoyée le', texte: (l) => _dateJour(l['demandeLe']), valeur: (l) => l['demandeLe']),
+        const ColonneTableau(cle: 'fichier', libelle: 'Fichier'),
+        ColonneTableau(cle: 'aEcrire', libelle: 'Lignes', droite: true, texte: (l) => '${l['aEcrire'] ?? l['nbLignes'] ?? ''}'),
+        ColonneTableau(
+            cle: 'etat',
+            libelle: 'État',
+            texte: (l) => '${l['_etat']}',
+            rendu: (_, l) {
+              final t = _etatDemande(l);
+              return BadgeSigh(t.$1, ton: t.$2, key: Key('imp-demande-etat-${l['etat']}'));
+            }),
+        ColonneTableau(
+            cle: 'resultatMotif',
+            libelle: 'Réponse de la mère',
+            triable: false,
+            texte: _reponseDeLaMere,
+            rendu: (_, l) => Text(_reponseDeLaMere(l),
+                key: Key('imp-demande-${l['etat']}'),
+                style: TextStyle(fontSize: 12, color: l['etat'] == demandeImportAppliquee ? JetonsShell.success700 : (l['etat'] == demandeImportRefusee ? JetonsShell.danger700 : JetonsShell.slate600)))),
+      ],
+    );
+
+/// L'état d'un lot tel qu'on le lit. Un lot écrit chez un fileul que la mère n'a pas confirmé n'est PAS « appliqué » tout court : il est écrit chez soi, en attente de la mère.
+(String, TonSigh) _etatLot(ContexteEcran c, Fiche l) {
+  if (l['etat'] == 'applique') {
+    final d = ServiceDemandesImport.de(c.magasin).demandeDuLot(l['id']);
+    if (d != null && d['ecritureDirecte'] == true && d['etat'] != demandeImportAppliquee) return _etatDemande(d);
+  }
+  return _tonsEtat[l['etat']] ?? ('${l['etat']}', TonSigh.neutre);
+}
+
 /// L'historique des lots : un tableau filtrable ; « Rapport » pour tout lot qui porte des constats, « Annuler le lot » (droit d'annuler) pour un lot appliqué.
 ///
 /// L'historique ne montre JAMAIS les valeurs des cellules : le jeu, l'auteur, la date, le résultat, le compte de lignes et les erreurs nommées par numéro de
@@ -76,7 +145,7 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
       for (final l in droits.lotsVisibles(lots))
         {
           ...l,
-          '_etat': (_tonsEtat[l['etat']]?.$1 ?? '${l['etat']}'),
+          '_etat': _etatLot(c, l).$1,
           '_valide': '${l['validePar'] ?? l['par'] ?? ''}',
         }
     ],
@@ -88,7 +157,7 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
       FiltreTableau(
           nom: 'etat',
           libelle: 'État',
-          options: const [OptionChamp('applique', 'Appliqué'), OptionChamp('refuse', 'Refusé'), OptionChamp('annule', 'Annulé')],
+          options: const [OptionChamp('applique', 'Appliqué'), OptionChamp('refuse', 'Refusé'), OptionChamp('annule', 'Annulé'), OptionChamp('restitue', 'Restitué')],
           correspond: (l, v) => l['etat'] == v),
     ],
     messageVide: 'Aucun lot.',
@@ -112,8 +181,8 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
           libelle: 'État',
           texte: (l) => '${l['_etat']}',
           rendu: (_, l) {
-            final t = _tonsEtat[l['etat']] ?? ('${l['etat']}', TonSigh.neutre);
-            return BadgeSigh(t.$1, ton: t.$2);
+            final t = _etatLot(c, l);
+            return BadgeSigh(t.$1, ton: t.$2, key: Key('imp-lot-etat-${l['reference']}'));
           }),
     ],
     actionsLigne: (ctx, l) => [
@@ -122,7 +191,8 @@ Widget tableauLots(BuildContext contexte, ContexteEcran c, List<Fiche> lots, Voi
             icone: LucideIcons.fileDown,
             libelle: 'Rapport d’erreurs (.xlsx)',
             onPressed: () => _telechargerRapport(contexte, c, l)),
-      if (l['etat'] == 'applique' && droits.arbitreLesLots)
+      // Une commande interdite est ABSENTE : un lot écrit chez un fileul que la mère a déjà confirmé ou refusé ne s'annule plus ici (refusAnnulationLotDirect).
+      if (l['etat'] == 'applique' && droits.arbitreLesLots && refusAnnulationLotDirect(ServiceDemandesImport.de(c.magasin).demandeDuLot(l['id'])) == null)
         BoutonIcone(
             icone: LucideIcons.undo2,
             libelle: 'Annuler le lot',
@@ -146,14 +216,19 @@ Future<void> _enregistrer(BuildContext contexte, String nom, Uint8List octets) a
 
 Future<void> _annulerLot(BuildContext contexte, ContexteEcran c, Fiche lot, VoidCallback rafraichir) async {
   final nb = (lot['ecrits'] as List).length;
+  final svc = ServiceDemandesImport.de(c.magasin);
+  final direct = svc.demandeDuLot(lot['id']) != null;
   final ok = await confirmerSigh(contexte,
       titre: 'Annuler le lot ${lot['reference']} ?',
       message:
-          'Les $nb fiches écrites par ce lot seront archivées (RG-14), jamais supprimées. L’annulation est refusée si un acte s’appuie déjà sur elles.',
+          'Les $nb fiches écrites par ce lot seront archivées (RG-14), jamais supprimées. L’annulation est refusée si un acte s’appuie déjà sur elles.${direct ? ' La demande envoyée à la mère est retirée : elle ne la traitera plus.' : ''}',
       libelleOk: 'Annuler le lot',
       dangereux: true);
   if (!ok || !contexte.mounted) return;
-  final r = annulerLot(jeuImportParId, lot['id'], 'annulation demandée par ${c.agent.nom}', _port(c));
+  // Un lot écrit chez un fileul s'annule par son propre geste : tant que la mère n'a pas statué (la demande est alors retirée), refusé en nommant une fois qu'elle a confirmé.
+  final r = direct
+      ? svc.annulerLotDuFileul(lot['id'], profil: profilImportDe(c), nomAgent: c.agent.nom, motif: 'annulation demandée par ${c.agent.nom}')
+      : annulerLot(jeuImportParId, lot['id'], 'annulation demandée par ${c.agent.nom}', _port(c));
   if (r.ok) {
     ToastsSigh.afficher(contexte, 'Lot annulé.', type: TypeToast.succes, detail: '${r.archives} fiche(s) archivée(s).');
   } else {
@@ -241,7 +316,7 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
       _resultatOk = r.ok;
       _resultat = r.ok
           ? 'Lot ${r.lot!['reference']} appliqué. ${r.ecrits} fiche(s) écrite(s), journalisées (RG-12).'
-              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : elle seule décide ; vous serez notifié de sa réponse.'}'
+              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : les fiches sont écrites chez vous, marquées « en attente de la mère » ; elle seule décide et vous serez notifié de sa réponse.'}'
           : 'Importation refusée. ${r.motif}. ${r.geste}';
     });
     if (r.ok) {
@@ -469,6 +544,10 @@ class _EtatEcranImportJeu extends State<EcranImportJeu> {
             NoteSigh(_resultat!, ton: _resultatOk ? TonSigh.succes : TonSigh.danger, icone: _resultatOk ? LucideIcons.circleCheck : LucideIcons.octagonAlert),
           ],
           if (_analyse != null) ...[const SizedBox(height: 16), _apercu(c, _analyse!)],
+          if (ServiceDemandesImport.de(c.magasin).passeParUneDemande(j)) ...[
+            const SizedBox(height: 16),
+            CarteSigh(titre: 'Demandes envoyées à la mère', sansRemplissage: true, child: tableauDemandes(ServiceDemandesImport.de(c.magasin).sesDemandes(c.agent.nom, jeu: j.id))),
+          ],
           const SizedBox(height: 16),
           CarteSigh(
               titre: 'Historique des lots de ce jeu',

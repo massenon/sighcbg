@@ -317,11 +317,12 @@ class Mere {
     final champsOp = ((op['champs'] ?? {}) as Map).cast<String, Object?>();
     // Lot IMP-C : le verdict d'une demande d'import n'appartient qu'à la mère. Un fileul qui dépose une demande « déjà appliquée », ou qui réécrit l'état ou le verdict d'une demande
     // déposée (pour la remettre en attente et la faire rejouer, ou pour se délivrer son propre verdict), est refusé en le nommant — la règle est celle du domaine, jamais recopiée.
+    final f = await lire(collection, ficheId);
     if (collection == demandesImportCollection && app.role != 'mere') {
-      final r = refusDemandeImportDuFileul('${type == 'creer' ? 'creer' : 'modifier'}', champsOp);
+      // L'état que la mère détient : un fileul ne retire sa demande (`retiree`) que tant qu'elle attend.
+      final r = refusDemandeImportDuFileul('${type == 'creer' ? 'creer' : 'modifier'}', champsOp, etatActuel: f == null || '${f.data['etat'] ?? ''}'.isEmpty ? null : '${f.data['etat']}');
       if (r != null) return refus(r[0], r[1], r[2]);
     }
-    final f = await lire(collection, ficheId);
 
     // L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction, domaine) : version croissante, type, date d'effet,
     // valeur déjà utilisée par une pièce (usages relevés des postes), téléphone interdit pour un paramètre réservé. Un refus est nommé, jamais avalé.

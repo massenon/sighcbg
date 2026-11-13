@@ -120,7 +120,7 @@ class _EtatAssistantImport extends State<AssistantImport> {
       _resultatOk = r.ok;
       _resultat = r.ok
           ? 'Lot ${r.lot!['reference']} appliqué. ${r.ecrits} fiche(s) écrite(s)${a.ignorees.isEmpty ? '' : ', ${a.ignorees.length} ligne(s) ignorée(s)'}, journalisées (RG-12).'
-              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : elle seule décide ; vous serez notifié de sa réponse.'}'
+              '${ap.demande == null ? '' : ' Une demande est partie à la mère (${ap.demande}) : les fiches sont écrites chez vous, marquées « en attente de la mère » ; elle seule décide et vous serez notifié de sa réponse.'}'
           : 'Importation refusée. ${r.motif}. ${r.geste}';
     });
     if (r.ok) {

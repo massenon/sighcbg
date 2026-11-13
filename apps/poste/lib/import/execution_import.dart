@@ -55,8 +55,9 @@ String? voieImportPoste(ContexteEcran c, JeuImport j) {
     return 'Ce jeu porte des données restreintes que la mère seule écrit : il s’importe au poste de la mère, jamais par une demande.';
   }
   if (svc.passeParUneDemande(j)) {
-    return 'Ce référentiel est écrit par la mère. Vos fiches s’enregistrent tout de suite chez vous (marquées provisoires) et une demande vérifiée part automatiquement à la mère, '
-        'qui reste seule autorité : elle l’applique ou la refuse en le disant. En cas de refus, vos fiches restent visibles, marquées « non retenue par la mère ».';
+    return 'Ce référentiel est écrit par la mère. Vos fiches s’enregistrent tout de suite chez vous (marquées « en attente de la mère ») et une demande vérifiée part automatiquement à la mère, '
+        'qui reste seule autorité : elle l’applique sous les mêmes identifiants que les vôtres (une fiche par code, jamais deux) ou la refuse en le disant. En cas de refus, votre écriture est '
+        'restituée (archivée, RG-14, sauf ce qu’une pièce émise utilise). Si la mère est injoignable, la demande attend dans votre file : rien n’est dit « appliqué » avant sa confirmation.';
   }
   return null;
 }
