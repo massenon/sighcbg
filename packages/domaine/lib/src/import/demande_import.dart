@@ -50,6 +50,28 @@ class RegimeDemandesImport {
   bool reserveALaMere(JeuImport j) => j.restreint && j.cibles.any(collectionsDeLaMere.contains);
 }
 
+/// LOT IMP-E (reprise de la clinique sœur, décision de la Direction du 13/11/2026) : la demande dont une fiche est née. Une fiche écrite par une demande porte `serieDemande` (la série des
+/// identifiants, la même chez le fileul et chez la mère) : c'est ce qui lui donne une IDENTITÉ COMMUNE à tous les postes (son identifiant, jamais préfixé par l'étiquette du poste) et qui
+/// permet de reconnaître un rejeu.
+const String champSerieDemande = 'serieDemande';
+
+/// LOT IMP-E : la valeur de DÉPART de chaque compteur d'une fiche écrite par une demande (stock d'un produit, quantité restante d'un lot), posée à l'écriture. C'est le point de départ
+/// COMMUN du compteur : le fileul et la mère écrivent la même valeur, aucun des deux ne la publie comme une variation (sinon elle s'additionnerait à celle de l'autre). Seules les sorties
+/// et les entrées POSTÉRIEURES voyagent, comptées depuis ce départ.
+const String champDepartCompteurs = 'departCompteurs';
+
+/// LOT IMP-D/E : le marquage d'une fiche écrite chez un fileul que la mère n'a pas encore confirmée (valeur : l'identifiant de la demande). La fiche de la mère, qui la remplace à l'arrivée de
+/// la configuration, ne le porte pas : le marquage tombe donc de lui-même à la confirmation.
+const String champEnAttenteMere = 'enAttenteMere';
+
+/// LOT IMP-D/E : une fiche que la mère a refusée mais qu'une pièce émise utilise déjà (valeur : le motif nommé). Elle reste en place, marquée, jamais réécrite.
+const String champRefuseeParMere = 'refuseeParMere';
+
+/// LOT IMP-E : une fiche écrite chez un fileul que la mère n'a pas confirmée (en attente) ou a refusée (gardée parce qu'une pièce s'appuie dessus) est PROPRE À CE POSTE : elle ne part
+/// pas au journal, aucun autre poste ne la voit. Un stock ne se rend visible aux autres postes qu'une fois la mère d'accord (jamais de stock doublé par deux fileuls, jamais une
+/// quantité que la mère refuserait ensuite).
+bool ficheLocaleAuPoste(Map<String, Object?> f) => '${f[champEnAttenteMere] ?? ''}'.isNotEmpty || '${f[champRefuseeParMere] ?? ''}'.isNotEmpty;
+
 /// Les identifiants d'une demande et d'une écriture provisoire portent l'étiquette du poste : deux postes ne se rencontrent jamais.
 String identifiantDemandeImport(String etiquette, DateTime maintenant, int rang) => 'DIM$etiquette${maintenant.microsecondsSinceEpoch.toRadixString(36)}$rang';
 
