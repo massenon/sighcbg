@@ -80,7 +80,7 @@ void main() {
     expect(f[champEnAttenteMere], isNotNull, reason: 'visible tout de suite, marqué « en attente de la mère »');
     expect(f['id'], startsWith('FOU-IMP'), reason: 'identité de la série du lot (tirée du contenu), jamais préfixée de l\'étiquette du poste');
     final d = m.collection(demandesImportCollection).toutes.single;
-    expect(f[champSerieDemande], d['id']);
+    expect(f[champSerieDemande], d['serieIdentifiants'], reason: 'la série est celle du contenu, plus l\'identifiant de la demande');
     expect(d['etat'], demandeImportEnAttente);
     expect(d['ecritureDirecte'], isTrue);
     expect(libelleEtatDemandeImport(d).libelle, 'Écrit chez vous, en attente de la mère');
