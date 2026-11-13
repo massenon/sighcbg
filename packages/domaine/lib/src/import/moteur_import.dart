@@ -13,6 +13,7 @@
 library;
 
 import '../format/recherche.dart' show normaliser;
+import 'identite_lot.dart';
 import 'profil_import.dart';
 
 typedef FicheImport = Map<String, Object?>;
@@ -180,6 +181,40 @@ abstract class PortImport {
   void restaurer(String collection, Object? id);
   void mettreAJour(String collection, Object? id, FicheImport patch);
   void journaliser(String action, String module, String entite, String reference, Object? avant, Object? apres);
+}
+
+/// LOT IDEM : ce que le moteur LIT pour dire « cette fiche est déjà tenue » : les fiches nées d'une demande, archivées parce que leur lot a été DÉFAIT (annulé, ou restitué après le refus de
+/// la mère), ne comptent plus. Sans cela le même fichier ne se réimporterait jamais après une annulation légitime (l'article archivé existerait encore). Une fiche archivée à la main, ou celle
+/// d'un lot que personne n'a défait, continue de compter : seule la défaite d'un lot libère ses fiches. Lecture seule : toute écriture va au port d'origine.
+class _VueSansLotsDefaits extends PortImport {
+  _VueSansLotsDefaits(this.base) : _defaits = {for (final l in base.toutes(collectionLots)) if (l['etat'] == 'annule' || l['etat'] == 'restitue') l['reference']};
+  final PortImport base;
+  final Set<Object?> _defaits;
+  @override
+  ProfilImport get profil => base.profil;
+  @override
+  String get jour => base.jour;
+  @override
+  String get utilisateur => base.utilisateur;
+  @override
+  List<FicheImport> toutes(String collection) => collection == collectionLots
+      ? base.toutes(collection)
+      : [
+          for (final f in base.toutes(collection))
+            if (!(f['statut'] == 'archive' && f[champSerieDemande] != null && _defaits.contains(f['lotImport']))) f
+        ];
+  @override
+  FicheImport inserer(String collection, FicheImport fiche) => base.inserer(collection, fiche);
+  @override
+  void retirer(String collection, Object? id) => base.retirer(collection, id);
+  @override
+  bool archiver(String collection, Object? id, String motif) => base.archiver(collection, id, motif);
+  @override
+  void restaurer(String collection, Object? id) => base.restaurer(collection, id);
+  @override
+  void mettreAJour(String collection, Object? id, FicheImport patch) => base.mettreAJour(collection, id, patch);
+  @override
+  void journaliser(String action, String module, String entite, String reference, Object? avant, Object? apres) => base.journaliser(action, module, entite, reference, avant, apres);
 }
 
 /// Refus nommé d'une annulation ou d'une application : code stable, motif et geste.
@@ -502,10 +537,23 @@ AnalyseImport analyserLignes(JeuImport j, List<List<Object?>> lignes, String fic
       globalement('COLONNE_IGNOREE', texteDe(h), 'colonne « ${texteDe(h)} » inconnue : elle est ignorée', 'Retirez-la du fichier si elle est inutile.', importAvertissement);
     }
   }
-  final ctx = j.contexte(port);
+  final ctx = j.contexte(_VueSansLotsDefaits(port));
   final sc = <String, Object?>{'articles': <String, Map<String, Object?>>{}};
   final exemple = [for (final x in ligneExemple(j, cols)) texteDe(x).trim()];
   final vus = <String, int>{};
+  // LOT IDEM : ce fichier est-il DÉJÀ tenu ? Une fiche active écrite par une demande porte l'identité de CONTENU de son lot : le même inventaire (peu importe le fileul, le moment ou le
+  // format) est reconnu comme le même lot. Ses lignes ne sont alors ni refusées ni réécrites : elles sont IGNORÉES et NOMMÉES, jamais comptées deux fois.
+  final identiteDuFichier = identiteLotImport(j.id, lignes);
+  String? lotTenu;
+  for (final c in j.cibles) {
+    for (final f in port.toutes(c)) {
+      if (f[champIdentiteLot] == identiteDuFichier && f['statut'] != 'archive') {
+        lotTenu = '${f[champSerieDemande] ?? ''}';
+        break;
+      }
+    }
+    if (lotTenu != null) break;
+  }
   for (var r = 1; r < lignes.length; r++) {
     final brute = lignes[r];
     if (brute.every(_vide)) continue;
@@ -554,7 +602,17 @@ AnalyseImport analyserLignes(JeuImport j, List<List<Object?>> lignes, String fic
         }
       }
       final existe = j.existe(ligne.v, ctx);
-      if (existe != null && options.ignorerExistants) {
+      if (existe != null && lotTenu != null && doublon == null) {
+        ligne.ignoree = true;
+        ligne.problemes.add(ProblemeImport(
+            n: n,
+            colonne: cols.first.label,
+            valeur: lecture.first,
+            code: 'LOT_DEJA_IMPORTE',
+            niveau: importAvertissement,
+            motif: 'ce fichier est déjà importé : la fiche existe par le lot de série $lotTenu (même contenu)',
+            geste: 'Rien à faire : le fichier est déjà dans le magasin, il n’est ni réécrit ni compté deux fois.'));
+      } else if (existe != null && options.ignorerExistants) {
         // « Ignorer les existants » : la ligne est listée, comptée, et n'écrit rien. La fiche existante n'est JAMAIS modifiée.
         ligne.ignoree = true;
         ligne.problemes.add(ProblemeImport(
@@ -698,7 +756,11 @@ ResultatImport appliquer(JeuImport j, AnalyseImport analyse, PortImport port) {
         'Relisez le rapport du lot ${c['reference']} et téléversez de nouveau.',
         lot: c, analyse: rejeu);
   }
-  final ctx = j.contexte(port);
+  if (rejeu.aEcrire == 0 && rejeu.lignes.isNotEmpty && rejeu.lignes.every((l) => l.ignoree) && rejeu.problemes.any((p) => p.code == 'LOT_DEJA_IMPORTE')) {
+    final p = rejeu.problemes.firstWhere((p) => p.code == 'LOT_DEJA_IMPORTE');
+    return ResultatImport.refus('LOT_DEJA_IMPORTE', p.motif, p.geste);
+  }
+  final ctx = j.contexte(_VueSansLotsDefaits(port));
   final reference = referenceLot(port);
   final lot = <String, Object?>{'reference': reference};
   final ecrits = <Map<String, Object?>>[];

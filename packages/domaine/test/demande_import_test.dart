@@ -50,15 +50,18 @@ void main() {
       expect(r.ok, isTrue);
       final fiches = f.actives('fournisseurs');
       expect(fiches, hasLength(2), reason: 'visible chez le fileul immédiatement');
-      expect([for (final x in fiches) x['id']].toSet(), {'FOU-DIM1-1', 'FOU-DIM1-2'}, reason: 'identité de la demande, jamais l\'étiquette du poste');
-      expect(fiches.every((x) => x[champEnAttenteMere] == 'DIM1' && x[champSerieDemande] == 'DIM1' && x['provisoireMere'] == null), isTrue);
+      expect([for (final x in fiches) x['id']].toSet(), {'FOU-${r.demande!['serieIdentifiants']}-1', 'FOU-${r.demande!['serieIdentifiants']}-2'}, reason: 'identité de la série de la demande (tirée du contenu), jamais l\'étiquette du poste');
+      final serie = '${r.demande!['serieIdentifiants']}';
+      expect(serie, startsWith('IMP'), reason: 'la série dérive du CONTENU du fichier (lot IDEM), plus de l\'identifiant de la demande');
+      expect(fiches.every((x) => x[champEnAttenteMere] == 'DIM1' && x[champSerieDemande] == serie && x[champIdentiteLot] == r.demande!['identiteLot'] && x['provisoireMere'] == null), isTrue,
+          reason: 'le marquage est celui de la DEMANDE, la série est celle du contenu');
       final d = r.demande!;
       expect(d['etat'], demandeImportEnAttente);
       expect(d['demandeRole'], 'comptable');
       expect(d['demandePar'], 'COMPTABLE F1');
       expect((d['lignes'] as List), hasLength(3), reason: 'l\'en-tête et deux lignes : la mère doit pouvoir rejouer');
       expect(d['ecritureDirecte'], isTrue);
-      expect(d['serieIdentifiants'], 'DIM1');
+      expect(d['serieIdentifiants'], serie);
       expect(d['rangsEcrits'], [2, 3]);
       final lot = f.toutes(collectionLots).single;
       expect(d['lotLocal'], lot['reference']);
@@ -94,7 +97,7 @@ void main() {
       expect(v.appliquee, isTrue, reason: '${v.code} ${v.motif}');
       expect(v.ecrits, 2);
       expect(m.actives('fournisseurs'), hasLength(2));
-      expect([for (final x in m.actives('fournisseurs')) x['id']].toSet(), {'FOU-DIM1-1', 'FOU-DIM1-2'}, reason: 'MÊMES identifiants que chez le fileul : une fiche par code, jamais deux');
+      expect([for (final x in m.actives('fournisseurs')) x['id']].toSet(), {for (final i in [1, 2]) 'FOU-${demandeValide()['serieIdentifiants']}-$i'}, reason: 'MÊMES identifiants que chez le fileul : une fiche par code, jamais deux');
       expect(m.actives('fournisseurs').every((x) => x[champEnAttenteMere] == null && x['lotImport'] == v.lot), isTrue, reason: 'les fiches de la mère ne portent aucun marquage « en attente »');
       expect(m.journal.any((l) => l.startsWith('Import|')), isTrue);
       final champs = v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-12');
@@ -225,7 +228,9 @@ void main() {
       expect(f.toutes('fournisseurs').every((x) => x['statut'] == 'archive' && '${x['_motifArchivage']}'.contains('refusé par la mère')), isTrue);
       expect(f.toutes(collectionLots).single['etat'], 'restitue');
       expect(f.toutes(collectionLots).single['motifRestitution'], contains('DOUBLON_MAGASIN'));
-      expect(restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'X', motifRefus: 'x', port: f).archives, 0, reason: 'idempotent : un lot restitué ne se restitue pas deux fois');
+      final rejeu = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'X', motifRefus: 'x', port: f);
+      expect([rejeu.ok, rejeu.archives, rejeu.etat], [true, 2, restitutionFaite], reason: 'idempotent : un lot restitué ne se restitue pas deux fois, la restitution rejouée rend ce qu\'elle avait fait');
+      expect(f.journal.where((l) => l.startsWith('Import restitué')), hasLength(1), reason: 'une seule ligne de journal');
     });
 
     test('PIÈCE ÉMISE : une fiche sur laquelle une commande s\'appuie reste, marquée « refusée par la mère » ; le verdict dit restitution PARTIELLE', () {
@@ -302,8 +307,9 @@ void main() {
       final r = deposerGs(f);
       expect(r.ok, isTrue, reason: '${r.refus?.code} ${r.refus?.motif}');
       final med1 = f.actives('produits').firstWhere((x) => x['code'] == 'MED1');
-      expect(med1['id'], matches(RegExp(r'^PRO-DIMGS-\d$')));
-      expect(med1[champSerieDemande], 'DIMGS');
+      final serie = '${r.demande!['serieIdentifiants']}';
+      expect(med1['id'], matches(RegExp('^PRO-${serie}-[0-9]\$')));
+      expect(med1[champSerieDemande], serie);
       expect(med1[champEnAttenteMere], 'DIMGS');
       expect(med1[champDepartCompteurs], {'stockGros': 150, 'stockDetail': 0, 'stock': 150});
       final lot = f.actives('lots').firstWhere((x) => x['numeroLot'] == 'L1');
@@ -342,23 +348,31 @@ void main() {
       expect(total(m, 'MED1', 'stockGros'), 150, reason: 'rejoué, le stock ne double pas');
       // et chez le fileul : rejouer l'application locale est aussi sans effet
       final a = analyserFichier(jeuGrandStock, lignesGs, 'grand-stock.xlsx', f);
-      expect(appliquerDemande(jeuGrandStock, a, PortDemandeImport(f, demandeId: 'DIMGS', compteurs: compteurs)).ok, isTrue);
+      expect(appliquerDemande(jeuGrandStock, a, PortDemandeImport(f, demandeId: '${d['serieIdentifiants']}', compteurs: compteurs, identiteLot: '${d['identiteLot']}')).ok, isTrue);
       expect(f.actives('mouvements'), hasLength(3));
       expect(total(f, 'MED1', 'stockGros'), 150);
     });
 
-    test('DEUX FILEULS importent le même inventaire : la mère applique la première demande, refuse la seconde en nommant ; le second restitue, il ne reste qu\'un stock', () {
+    test('DEUX FILEULS importent le même inventaire : la mère applique la première demande et ADOPTE la seconde (lot IDEM), il ne reste qu\'un stock et rien à restituer', () {
       final f1 = stock(), f2 = stock();
       final d1 = deposerGs(f1, id: 'DIMGS1').demande!, d2 = deposerGs(f2, id: 'DIMGS2').demande!;
       final m = mere(profilDe(base, 'stock'));
       expect(traiterDemandeImport(d1, m, jeuImportParId, regime: regime, compteurs: compteurs).appliquee, isTrue);
       final v2 = traiterDemandeImport(d2, m, jeuImportParId, regime: regime, compteurs: compteurs);
-      expect(v2.appliquee, isFalse);
-      expect(v2.code, 'DOUBLON_MAGASIN');
+      expect([v2.appliquee, v2.adoptee, v2.code], [true, true, null], reason: '${v2.motif}');
       expect(total(m, 'MED1', 'stockGros'), 150);
-      final r = restituerLotDirect(jeuImportParId, d2['lotLocalId'], codeRefus: v2.code!, motifRefus: v2.motif!, port: f2);
+      expect(suiteDuVerdict({...d2, ...v2.versChamps(traitePar: 'Mère', traiteLe: '2026-11-13')}), SuiteDuVerdict.leverLeMarquage, reason: 'même série : aucune restitution');
+      expect(total(f2, 'MED1', 'stockGros'), 150, reason: 'le second fileul garde son écriture, identique à celle de la mère');
+      // Un fichier DIFFÉRENT (une cellule change) n'est pas le même lot : la mère le refuse en nommant, le fileul restitue.
+      final autre = [for (final r in lignesGs) [...r]]..[1][4] = ((lignesGs[1][4] as num) + 1);
+      final f3 = stock();
+      final a3 = analyserFichier(jeuGrandStock, autre, 'autre.xlsx', f3);
+      final d3 = importerDirectEtDemander(jeu: jeuGrandStock, analyse: a3, port: f3, regime: regime, idDemande: 'DIMGS3', poste: 'F3', compteurs: compteurs).demande!;
+      final v3 = traiterDemandeImport(d3, m, jeuImportParId, regime: regime, compteurs: compteurs);
+      expect([v3.appliquee, v3.adoptee, v3.code], [false, false, 'DOUBLON_MAGASIN']);
+      final r = restituerLotDirect(jeuImportParId, d3['lotLocalId'], codeRefus: v3.code!, motifRefus: v3.motif!, port: f3);
       expect(r.etat, restitutionFaite);
-      expect(f2.actives('produits'), isEmpty);
+      expect(f3.actives('produits'), isEmpty);
     });
 
     test('RESTITUTION : rien n\'est sorti, chaque entrée est contre-passée par un mouvement inverse NOMMÉ, lots et articles sont archivés (RG-14), le stock n\'est jamais négatif', () {

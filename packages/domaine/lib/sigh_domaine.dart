@@ -146,6 +146,7 @@ export 'src/mobile/mob_transcription.dart';
 export 'src/import/donnees_import.dart';
 export 'src/import/profil_import.dart';
 export 'src/import/port_memoire.dart';
+export 'src/import/identite_lot.dart';
 export 'src/import/demande_import.dart';
 export 'src/import/moteur_import.dart';
 export 'src/import/jeux_import.dart';
