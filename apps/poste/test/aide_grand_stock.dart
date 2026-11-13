@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/matrice_vive.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/import/port_magasin.dart';
 import 'package:sigh_poste/mere/client_mere.dart';
@@ -39,8 +40,6 @@ final jourTest = DateTime(2026, 11, 13, 9);
 
 ProfilImport profilDe(String role) => ProfilImport(role: role, libelleRole: role, droitEcran: (e) => donnees.matrice.droit(role, e));
 
-/// Le régime de la mère SANS l'exclusion de l'activité : ce que l'on obtiendrait en levant simplement l'exclusion du Grand Stock (la mesure de l'étape 1).
-RegimeDemandesImport regimeLeve() => RegimeDemandesImport(collectionsDeLaMere: collectionsConfiguration(), collectionsActivite: const {});
 
 /// Les comptes d'un article tel qu'un poste le tient : fiches actives, compteur, lots, mouvements d'entrée de l'import.
 Map<String, Object?> comptes(Magasin m, String code) {
@@ -62,7 +61,7 @@ class Poste {
   Poste(this.nom, this.port, this.role, this.par) {
     moteur = MoteurFileul.creer(dbChemin: ':memory:', mere: 'http://127.0.0.1:$port', nom: nom);
     m.horloge = () => jourTest;
-    appl = ApplicateurConfiguration(m, moteur.liste);
+    appl = ApplicateurConfiguration(m, moteur.liste)..poserGardes();
     pont = PontActivite(m, TransportFileul(lire: moteur.liste, ecrireFiche: (c, f, {required existe, required champs}) => moteur.ecrire(c, f, existe: existe, champs: champs), restaurerFiche: moteur.restaurer),
         etiquette: nom, enLectureSeule: collectionsDeLaMereSeule);
     service = ServiceDemandesImport.de(m)
@@ -93,6 +92,20 @@ class Poste {
 
   Map<String, Object?> comptesDe(String code) => comptes(m, code);
   Fiche? demande(Object? id) => m.collection(demandesImportCollection).parId(id);
+
+  /// Importe le cas [cas] par le geste de l'écran (le service du poste : écriture directe sous la garde ET demande à la mère).
+  ({ResultatImport resultat, String? demande}) importer(String cas) => service.importerEtDemander(jeuImportParId('grand-stock')!, analyser(cas), profil: profilDe(role), nomAgent: par);
+
+  /// Une SORTIE de stock du poste (dispensation) : le lot, le produit et un mouvement de sortie, comme le geste réel.
+  void sortir(String code, String numeroLot, int q) {
+    final p = m.collection('produits').actives.firstWhere((x) => x['code'] == code);
+    final l = m.collection('lots').actives.firstWhere((x) => x['produitId'] == p['id'] && x['numeroLot'] == numeroLot);
+    m.collection('lots').mettreAJour(l['id'], {'quantiteRestante': (l['quantiteRestante'] as num) - q});
+    m.collection('produits').mettreAJour(p['id'], {'stockGros': (p['stockGros'] as num) - q, 'stock': (p['stock'] as num) - q});
+    m.collection('mouvements').inserer({'reference': 'S-${m.collection('mouvements').toutes.length}', 'produitId': p['id'], 'produit': p['designation'], 'type': 'sortie', 'typeLabel': 'Sortie', 'quantite': q, 'stockType': 'gros', 'justificatif': 'ORD-test'});
+  }
+
+  List<Fiche> produits(String code) => [for (final f in m.collection('produits').actives) if (f['code'] == code) f];
 }
 
 class Clinique {
@@ -104,8 +117,8 @@ class Clinique {
   final Magasin mm = vide();
   late final PublicateurConfiguration pub;
   late final PontActivite pontM;
+  late final ServiceDemandesImport service;
   final fileuls = <Poste>[];
-  int traitees = 0;
 
   Future<void> demarrerMere() async {
     mere = await Mere.creer(ConfigMere(port: port, dbChemin: dbChemin, admin: 'secret-test', dossierSauvegardes: '${Directory.systemTemp.path}/sauv-grand-stock-$port'));
@@ -118,6 +131,12 @@ class Clinique {
     mm.horloge = () => jourTest;
     pub = PublicateurConfiguration(mm, publierVersMereLocale(port: port, admin: 'secret-test'), delai: Duration.zero);
     pontM = PontActivite(mm, TransportMereLocale(port: port, admin: 'secret-test'), etiquette: 'M');
+    // LA MÈRE : exactement l'appel de main.dart — le service des demandes branché, la matrice EN FORCE de la mère relue à chaque demande.
+    final vive = MatriceVive(donnees, mm);
+    service = ServiceDemandesImport.de(mm)
+      ..fileulRattache = (() => false)
+      ..etiquette = 'M'
+      ..demarrerMere(matrice: () => vive.matrice);
   }
 
   Future<Poste> fileul(String nom, String role, String par) async {
@@ -125,44 +144,30 @@ class Clinique {
     final code = await console.codeAppareil(nom).timeout(const Duration(seconds: 20));
     await p.moteur.rattacher('http://127.0.0.1:$port', code).timeout(const Duration(seconds: 20));
     p.moteur.demarrer();
-    p.appl.demarrer(intervalle: const Duration(hours: 1)); // pose les gardes « réglé sur la mère » du fileul
-    p.appl.arreter();
     fileuls.add(p);
     return p;
   }
 
-  /// LA MÈRE REJOUE les demandes en attente (le service branché de `main.dart`, avec le régime donné par [regime]).
-  void traiter(RegimeDemandesImport Function() regime) {
-    final col = mm.collection(demandesImportCollection);
-    for (final d in [for (final d in col.toutes) if (d['etat'] == demandeImportEnAttente && '${d['traiteLe'] ?? ''}'.isEmpty) d]) {
-      final role = '${d['demandeRole']}', auteur = '${d['demandePar']}';
-      final port = PortMagasin(mm, aujourdhui: () => jourTest, nomAgent: auteur, profil: profilDe(role));
-      final v = traiterDemandeImport({...d}, port, jeuImportParId, regime: regime());
-      col.mettreAJour(d['id'], v.versChamps(traitePar: 'Mère', traiteLe: '2026-11-13'), journaliser: false);
-      traitees++;
-    }
-  }
-
-  /// Un tour de toute la clinique, MÈRE JOIGNABLE : configuration, pont de la mère, demandes, puis chaque fileul.
-  Future<void> tour(RegimeDemandesImport Function() regime) async {
+  /// Un tour de toute la clinique, MÈRE JOIGNABLE : configuration, pont de la mère, demandes (le service branché les traite), puis chaque fileul.
+  Future<void> tour() async {
     await pub.pousser();
     await pontM.cycle();
-    traiter(regime);
+    service.traiterEnAttente();
     for (final f in fileuls) {
       await f.tour();
     }
   }
 
   /// Des tours jusqu'à ce que [fini] soit vrai, puis [apres] tours de plus (une mesure qui s'arrête à la première convergence ne verrait jamais un compte doublé par un second passage).
-  Future<void> converger(RegimeDemandesImport Function() regime, bool Function() fini, String quoi, {int apres = 3}) async {
+  Future<void> converger(bool Function() fini, String quoi, {int apres = 3}) async {
     final fin = DateTime.now().add(const Duration(seconds: 60));
     while (!fini()) {
-      await tour(regime);
-      if (DateTime.now().isAfter(fin)) fail('$quoi : pas de convergence (pub ${pub.erreur.value}, pontM ${pontM.erreur.value}, fileuls ${[for (final f in fileuls) '${f.nom}: ${f.appl.erreur.value}/${f.pont.erreur.value}']})');
+      await tour();
+      if (DateTime.now().isAfter(fin)) fail('$quoi : pas de convergence (pub ${pub.erreur.value}, pontM ${pontM.erreur.value}, service ${service.derniereErreur}, fileuls ${[for (final f in fileuls) '${f.nom}: ${f.appl.erreur.value}/${f.pont.erreur.value}']})');
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
     for (var i = 0; i < apres; i++) {
-      await tour(regime);
+      await tour();
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
   }
@@ -174,8 +179,43 @@ class Clinique {
       f.appl.arreter();
     }
     pub.arreter();
+    service.arreter();
     try {
       await mere.arreter();
     } catch (_) {}
+  }
+}
+
+/// Les collections qu'un téléphone du profil soignant reçoit de la mère (RG-13) : lues pour de vrai, jamais déduites.
+Future<List<({String collection, String fiche})>> collectionsRecuesParUnMobile(int port) async {
+  final http0 = HttpClient();
+  Future<Map<String, Object?>> appel(String methode, String chemin, {Map<String, Object?>? corps, Map<String, String> entetes = const {}}) async {
+    final req = await http0.openUrl(methode, Uri.parse('http://127.0.0.1:$port$chemin'));
+    req.headers.contentType = ContentType.json;
+    entetes.forEach(req.headers.set);
+    if (corps != null) req.add(utf8.encode(jsonEncode(corps)));
+    final rep = await req.close();
+    return (jsonDecode(await utf8.decoder.bind(rep).join()) as Map).cast<String, Object?>();
+  }
+
+  try {
+    final c = (await appel('POST', '/admin/code', corps: {'etiquette': 'mobile', 'role': 'mobile', 'profil': 'soignant', 'fonction': 'infirmier'}, entetes: {'x-admin': 'secret-test'}))['code'];
+    final jetons = await appel('POST', '/appairage', corps: {'code': c, 'uuid': 'dev-mobile-$port-${DateTime.now().microsecondsSinceEpoch}', 'plateforme': 'test'});
+    final noms = <({String collection, String fiche})>[];
+    var depuis = 0;
+    while (true) {
+      final pull = await appel('GET', '/sync/pull?depuis=$depuis&limite=500&epoch=${jetons['epoch']}', entetes: {'authorization': 'Bearer ${jetons['jeton']}'});
+      if (pull['ops'] == null) fail('pull du mobile à $depuis : $pull');
+      final ops = (pull['ops'] as List).cast<Map>();
+      for (final o in ops) {
+        noms.add((collection: '${o['collection']}', fiche: '${o['fiche']}'));
+        depuis = (o['seq'] as num).toInt();
+      }
+      if (pull['fin'] == true || ops.isEmpty) break;
+    }
+    expect(noms, isNotEmpty, reason: 'le téléphone lit bien le journal : l\'absence est une EXCLUSION, pas un journal vide');
+    return noms;
+  } finally {
+    http0.close(force: true);
   }
 }

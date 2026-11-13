@@ -11,10 +11,9 @@ ProfilImport profilDe(MatriceDroits m, String role) => ProfilImport(role: role, 
 
 void main() {
   final base = MatriceDroits.depuisJson((jsonDecode(File('../rbac/data/rbac.json').readAsStringSync()) as Map).cast<String, Object?>());
-  // Les collections que la mère seule écrit (comme `collectionsConfiguration()` du poste) et celles de l'activité que le pont synchronise.
+  // Les collections que la mère seule écrit (comme `collectionsConfiguration()` du poste).
   final deLaMere = {...cfbEssentielles, 'utilisateurs', valCollectionValidations, parCollectionParametres}.difference({'rolesBase', 'modulesManifeste', 'reglages', 'audit'});
-  const activite = {'patients', 'rendezvous', 'factures', 'avoirs', 'ecritures', 'mouvements', 'lots', 'admissions'};
-  final regime = RegimeDemandesImport(collectionsDeLaMere: deLaMere, collectionsActivite: activite);
+  final regime = RegimeDemandesImport(collectionsDeLaMere: deLaMere);
 
   List<List<Object?>> fichier(List<String> codes) => [
         [for (final c in jeuFournisseurs.colonnes) c.label],
@@ -32,11 +31,11 @@ void main() {
   }
 
   group('quels jeux passent par une demande', () {
-    test('seuls les référentiels que la mère seule écrit, non restreints, sans cible d\'activité', () {
+    test('les jeux non restreints dont une cible est de la configuration de la mère — le Grand Stock y compris (lot IMP-E) ; jamais un jeu restreint', () {
       final demandables = {for (final j in jeuxImport) if (regime.exigeLaMere(j)) j.id};
-      expect(demandables, {'actes', 'analyses', 'fournisseurs', 'assureurs', 'souscripteurs', 'plan-comptable', 'produits', 'emplacements'},
-          reason: 'mesuré : les jeux dont toutes les cibles sont de la configuration de la mère');
-      for (final jamais in ['personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers', 'grand-stock']) {
+      expect(demandables, {'actes', 'analyses', 'fournisseurs', 'assureurs', 'souscripteurs', 'plan-comptable', 'produits', 'emplacements', 'grand-stock'},
+          reason: 'mesuré : les jeux non restreints dont une cible est de la configuration de la mère');
+      for (final jamais in ['personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers']) {
         expect(demandables.contains(jamais), isFalse, reason: '$jamais ne passe jamais par une demande');
       }
       expect({for (final j in jeuxImport) if (j.restreint) j.id}.intersection(demandables), isEmpty, reason: 'un jeu restreint ne passe JAMAIS par une demande');
@@ -135,9 +134,9 @@ void main() {
       expect(m.toutes('patients'), isEmpty);
     });
 
-    test('FORGÉE : un jeu qui touche l\'activité (stock, avant le lot IMP-E) ou un jeu inconnu ne passe pas', () {
+    test('FORGÉE : un jeu que la mère n\'écrit pas seule (courriers restreints, stock vivant) ou un jeu inconnu ne passe pas', () {
       final m = mere(profilDe(base, 'admin'));
-      expect(traiterDemandeImport({...demandeValide(), 'jeu': 'grand-stock'}, m, jeuImportParId, regime: regime).code, 'JEU_NON_DEMANDABLE');
+      expect(traiterDemandeImport({...demandeValide(), 'jeu': 'stock-detail'}, m, jeuImportParId, regime: regime).code, 'JEU_RESTREINT');
       expect(traiterDemandeImport({...demandeValide(), 'jeu': 'inconnu'}, m, jeuImportParId, regime: regime).code, 'JEU_INCONNU');
     });
 
@@ -275,6 +274,145 @@ void main() {
       expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRefusee}).libelle, 'Refusée par la mère, restitution en cours');
       expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRefusee, 'restitution': restitutionFaite}).libelle, 'Refusée par la mère, écriture restituée');
       expect(libelleEtatDemandeImport({...d, 'etat': demandeImportRetiree}).libelle, 'Retirée par vous');
+    });
+  });
+
+  group('LE GRAND STOCK chez le fileul (lot IMP-E) : identité commune, départ des compteurs, rejeu sans effet, restitution par mouvements inverses', () {
+    final vecteurs = (jsonDecode(File('test/vecteurs/import.json').readAsStringSync()) as Map).cast<String, Object?>();
+    final lignesGs = [
+      for (final l in ((vecteurs['cas'] as List).cast<Map>().firstWhere((x) => x['id'] == 'gs-valide')['lignes'] as List)) [for (final c in (l as List)) c]
+    ];
+    const compteurs = {
+      'produits': {'stockGros', 'stockDetail', 'stock'},
+      'lots': {'quantiteRestante'},
+    };
+    PortImportMemoire stock({String role = 'stock', String id = 'DIMGS'}) =>
+        PortImportMemoire({}, profilFixe: profilDe(base, role), utilisateurFixe: 'GESTIONNAIRE F1', prefixeId: 'F1-', jourFixe: '2026-11-13');
+    ImportDirectEtDemande deposerGs(PortImportMemoire f, {String id = 'DIMGS'}) {
+      final a = analyserFichier(jeuGrandStock, lignesGs, 'grand-stock.xlsx', f);
+      expect(a.accepte, isTrue, reason: a.problemes.map((p) => p.motif).join(' / '));
+      return importerDirectEtDemander(jeu: jeuGrandStock, analyse: a, port: f, regime: regime, idDemande: id, poste: 'F1', compteurs: compteurs);
+    }
+
+    num total(PortImportMemoire p, String code, String champ) => p.actives('produits').where((x) => x['code'] == code).fold<num>(0, (t, x) => t + ((x[champ] as num?) ?? 0));
+
+    test('le Grand Stock passe par la demande ; chaque fiche porte sa série, son identifiant de demande et, pour un compteur, sa valeur de DÉPART', () {
+      expect(regime.exigeLaMere(jeuGrandStock), isTrue);
+      final f = stock();
+      final r = deposerGs(f);
+      expect(r.ok, isTrue, reason: '${r.refus?.code} ${r.refus?.motif}');
+      final med1 = f.actives('produits').firstWhere((x) => x['code'] == 'MED1');
+      expect(med1['id'], matches(RegExp(r'^PRO-DIMGS-\d$')));
+      expect(med1[champSerieDemande], 'DIMGS');
+      expect(med1[champEnAttenteMere], 'DIMGS');
+      expect(med1[champDepartCompteurs], {'stockGros': 150, 'stockDetail': 0, 'stock': 150});
+      final lot = f.actives('lots').firstWhere((x) => x['numeroLot'] == 'L1');
+      expect(lot[champDepartCompteurs], {'quantiteRestante': 100});
+      expect(f.actives('mouvements'), hasLength(3), reason: 'trois entrées : MED1 L1, MED1 L2, GANT1');
+      expect(ficheLocaleAuPoste(med1), isTrue, reason: 'propre au poste : aucun autre poste ne voit ce stock avant la confirmation de la mère');
+    });
+
+    test('LA MÈRE applique sous les MÊMES identifiants, avec la MÊME valeur de départ : une fiche par article, 150 pour 150 importées, jamais 300', () {
+      final f = stock();
+      final d = deposerGs(f).demande!;
+      final m = mere(profilDe(base, 'stock'));
+      final v = traiterDemandeImport(d, m, jeuImportParId, regime: regime, compteurs: compteurs);
+      expect(v.appliquee, isTrue, reason: '${v.code} ${v.motif}');
+      expect({for (final x in m.actives('produits')) x['id']}, {for (final x in f.actives('produits')) x['id']});
+      expect({for (final x in m.actives('lots')) x['id']}, {for (final x in f.actives('lots')) x['id']});
+      expect({for (final x in m.actives('mouvements')) x['id']}, {for (final x in f.actives('mouvements')) x['id']});
+      expect(total(m, 'MED1', 'stockGros'), 150);
+      expect(total(f, 'MED1', 'stockGros'), 150);
+      expect(m.actives('produits').every((x) => x[champEnAttenteMere] == null), isTrue);
+      expect(m.actives('produits').firstWhere((x) => x['code'] == 'MED1')[champDepartCompteurs], {'stockGros': 150, 'stockDetail': 0, 'stock': 150}, reason: 'le départ est commun aux deux postes');
+    });
+
+    test('REJEU : appliquer la même demande une seconde fois n\'écrit rien (ni fiche, ni lot, ni ligne de journal) ; la mère qui revient rend le même verdict', () {
+      final f = stock();
+      final d = deposerGs(f).demande!;
+      final m = mere(profilDe(base, 'stock'));
+      final v1 = traiterDemandeImport(d, m, jeuImportParId, regime: regime, compteurs: compteurs);
+      final journal = m.journal.length;
+      final fiches = (m.toutes('produits').length, m.toutes('lots').length, m.toutes('mouvements').length, m.toutes(collectionLots).length);
+      final v2 = traiterDemandeImport(d, m, jeuImportParId, regime: regime, compteurs: compteurs);
+      expect(v2.appliquee, isTrue);
+      expect(v2.lot, v1.lot);
+      expect((m.toutes('produits').length, m.toutes('lots').length, m.toutes('mouvements').length, m.toutes(collectionLots).length), fiches);
+      expect(m.journal, hasLength(journal));
+      expect(total(m, 'MED1', 'stockGros'), 150, reason: 'rejoué, le stock ne double pas');
+      // et chez le fileul : rejouer l'application locale est aussi sans effet
+      final a = analyserFichier(jeuGrandStock, lignesGs, 'grand-stock.xlsx', f);
+      expect(appliquerDemande(jeuGrandStock, a, PortDemandeImport(f, demandeId: 'DIMGS', compteurs: compteurs)).ok, isTrue);
+      expect(f.actives('mouvements'), hasLength(3));
+      expect(total(f, 'MED1', 'stockGros'), 150);
+    });
+
+    test('DEUX FILEULS importent le même inventaire : la mère applique la première demande, refuse la seconde en nommant ; le second restitue, il ne reste qu\'un stock', () {
+      final f1 = stock(), f2 = stock();
+      final d1 = deposerGs(f1, id: 'DIMGS1').demande!, d2 = deposerGs(f2, id: 'DIMGS2').demande!;
+      final m = mere(profilDe(base, 'stock'));
+      expect(traiterDemandeImport(d1, m, jeuImportParId, regime: regime, compteurs: compteurs).appliquee, isTrue);
+      final v2 = traiterDemandeImport(d2, m, jeuImportParId, regime: regime, compteurs: compteurs);
+      expect(v2.appliquee, isFalse);
+      expect(v2.code, 'DOUBLON_MAGASIN');
+      expect(total(m, 'MED1', 'stockGros'), 150);
+      final r = restituerLotDirect(jeuImportParId, d2['lotLocalId'], codeRefus: v2.code!, motifRefus: v2.motif!, port: f2);
+      expect(r.etat, restitutionFaite);
+      expect(f2.actives('produits'), isEmpty);
+    });
+
+    test('RESTITUTION : rien n\'est sorti, chaque entrée est contre-passée par un mouvement inverse NOMMÉ, lots et articles sont archivés (RG-14), le stock n\'est jamais négatif', () {
+      final f = stock();
+      final d = deposerGs(f).demande!;
+      final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'DOUBLON_MAGASIN', motifRefus: 'déjà tenue', port: f);
+      expect(r.ok, isTrue);
+      expect(r.etat, restitutionFaite);
+      expect(f.actives('produits'), isEmpty);
+      expect(f.actives('lots'), isEmpty);
+      expect(f.toutes('produits'), hasLength(2), reason: 'archivés, jamais supprimés');
+      final inverses = f.toutes('mouvements').where((x) => x['restitutionDe'] != null).toList();
+      expect(inverses, hasLength(3), reason: 'une contre-passation par entrée');
+      expect(inverses.every((x) => x['type'] == 'sortie' && '${x['justificatif']}'.contains('Restitution du lot') && '${x['justificatif']}'.contains('contre-passation de')), isTrue);
+      final entrees = f.toutes('mouvements').where((x) => x['type'] == 'entree');
+      for (final e in entrees) {
+        final somme = inverses.where((x) => x['restitutionDe'] == e['id']).fold<num>(0, (t, x) => t + (x['quantite'] as num));
+        expect(somme, e['quantite'], reason: 'la quantité inverse est celle de l\'entrée, ni plus (RG-03), ni moins');
+      }
+      expect(ficheLocaleAuPoste(inverses.first), isTrue, reason: 'les mouvements de restitution restent propres au poste : la mère n\'a jamais tenu ce stock');
+      expect(f.toutes(collectionLots).single['etat'], 'restitue');
+    });
+
+    test('UNE SORTIE DÉJÀ FAITE sur un lot importé en attente : jamais de contre-passation d\'une pièce émise ; l\'article reste « refusée par la mère » (restitution PARTIELLE) ; les autres articles sont restitués', () {
+      final f = stock();
+      final d = deposerGs(f).demande!;
+      // une dispensation de 10 boîtes de MED1 (lot L1) : les compteurs passent sous leur valeur de départ
+      final med1 = f.actives('produits').firstWhere((x) => x['code'] == 'MED1');
+      final l1 = f.actives('lots').firstWhere((x) => x['produitId'] == med1['id'] && x['numeroLot'] == 'L1');
+      med1['stockGros'] = 140;
+      med1['stock'] = 140;
+      l1['quantiteRestante'] = 90;
+      final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'DOUBLON_MAGASIN', motifRefus: 'déjà tenue', port: f);
+      expect(r.ok, isTrue);
+      expect(r.etat, restitutionPartielle);
+      expect(r.gardees.map((g) => g['collection']).toSet(), {'produits', 'lots', 'mouvements'});
+      expect(r.gardees.every((g) => g['code'] == 'STOCK_DEJA_SORTI'), isTrue);
+      final reste = f.actives('produits').firstWhere((x) => x['code'] == 'MED1');
+      expect('${reste[champRefuseeParMere]}', contains('DOUBLON_MAGASIN'), reason: 'l\'article reste marqué « refusée par la mère »');
+      expect(reste['stockGros'], 140, reason: 'jamais de stock négatif ni réécrit : le stock réel reste ce qu\'il est');
+      expect(f.toutes('mouvements').where((x) => x['restitutionDe'] != null && x['produitId'] == med1['id']), isEmpty, reason: 'aucune contre-passation sur l\'article déjà sorti');
+      expect(f.actives('produits').where((x) => x['code'] == 'GANT1'), isEmpty, reason: 'GANT1, que rien n\'a sorti, est restitué');
+      expect(r.archives, 1, reason: 'GANT1 n\'a pas de lot : seul son article est archivé (son entrée est contre-passée, non archivée)');
+    });
+
+    test('UN AUTRE MOUVEMENT sur l\'article (une perte dont le compteur n\'a pas bougé) suffit aussi à le garder', () {
+      final f = stock();
+      final d = deposerGs(f).demande!;
+      final gant = f.actives('produits').firstWhere((x) => x['code'] == 'GANT1');
+      f.inserer('mouvements', {'reference': 'M000099', 'produitId': gant['id'], 'produit': gant['designation'], 'type': 'perte', 'typeLabel': 'Perte', 'quantite': 1, 'statut': 'actif'});
+      final r = restituerLotDirect(jeuImportParId, d['lotLocalId'], codeRefus: 'X', motifRefus: 'x', port: f);
+      expect(r.etat, restitutionPartielle);
+      expect(f.actives('produits').where((x) => x['code'] == 'GANT1'), hasLength(1));
+      expect(f.actives('produits').where((x) => x['code'] == 'MED1'), isEmpty, reason: 'MED1, intact, est restitué');
     });
   });
 

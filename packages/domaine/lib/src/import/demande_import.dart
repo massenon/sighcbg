@@ -17,7 +17,7 @@
 ///  * la mère est INJOIGNABLE : la demande reste dans la file du fileul (famille A, hors ligne d'abord), ses fiches portent « en attente de la mère » et le libellé de la demande ne dit
 ///    JAMAIS « appliquée » avant la confirmation ([libelleEtatDemandeImport]). En cas de conflit, la MÈRE gagne, toujours.
 ///
-/// LE GRAND STOCK (produits, lots, mouvements) passera par cette voie (le gestionnaire de stock est un FILEUL). Le double comptage que l'on craignait est MESURÉ
+/// LE GRAND STOCK (produits, lots, mouvements) passe par cette voie (le gestionnaire de stock est un FILEUL). Le double comptage que l'on craignait est MESURÉ
 /// (`apps/poste/test/grand_stock_mesure_test.dart` à l'arbre d'avant) et levé : identité commune, valeur de DÉPART des compteurs ([champDepartCompteurs]), fiche PROPRE AU POSTE tant que la
 /// mère n'a pas confirmé ([ficheLocaleAuPoste]), rejeu SANS EFFET ([appliquerDemande]).
 ///
@@ -74,13 +74,16 @@ bool ficheLocaleAuPoste(Map<String, Object?> f) => '${f[champEnAttenteMere] ?? '
 /// compressé), les lignes déployées en JSON pèsent beaucoup plus. Un fileul falsifié ne peut ainsi pas faire avaler à la mère plus que ce que le jeu accepte à un poste.
 const int facteurDeploiementLignesImport = 12;
 
-/// Les deux familles de collections qui décident d'une demande : celles que la mère SEULE écrit (configuration), et celles de l'ACTIVITÉ que le pont synchronise.
+/// Les collections qui décident d'une demande : celles que la mère SEULE écrit (configuration).
+///
+/// LOT IMP-E : une cible d'ACTIVITÉ (lots, mouvements) n'EXCLUT plus un jeu de la voie de la demande — c'est ce qui laissait le Grand Stock refusé à un fileul. Il suffit qu'une cible soit
+/// de la configuration de la mère (le catalogue `produits`) : le Grand Stock passe alors par la même voie, avec identité commune, valeur de départ des compteurs et rejeu sans effet.
 class RegimeDemandesImport {
-  const RegimeDemandesImport({required this.collectionsDeLaMere, required this.collectionsActivite});
-  final Set<String> collectionsDeLaMere, collectionsActivite;
+  const RegimeDemandesImport({required this.collectionsDeLaMere});
+  final Set<String> collectionsDeLaMere;
 
-  /// Le jeu passe-t-il par une demande sur un fileul rattaché ? Non restreint, une collection cible que la mère seule écrit, aucune cible d'activité synchronisée.
-  bool exigeLaMere(JeuImport j) => !j.restreint && j.cibles.any(collectionsDeLaMere.contains) && !j.cibles.any(collectionsActivite.contains);
+  /// Le jeu passe-t-il par une demande sur un fileul rattaché ? Non restreint, et une collection cible que la mère seule écrit.
+  bool exigeLaMere(JeuImport j) => !j.restreint && j.cibles.any(collectionsDeLaMere.contains);
 
   /// Un jeu RESTREINT qui écrit de la configuration ne s'importe qu'au poste de la mère : le fileul le dit au lieu de proposer un envoi.
   bool reserveALaMere(JeuImport j) => j.restreint && j.cibles.any(collectionsDeLaMere.contains);

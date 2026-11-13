@@ -14,15 +14,8 @@ import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
-/// Miroir de `collectionsActivite` du poste (`apps/poste/lib/sync/pont_activite.dart`) PRIVÉ des collections que la mère seule écrit (`produits`) : ce qu'un fileul peut pousser par le pont.
-const _activite = {
-  'patients', 'rendezvous', 'constantes', 'releves', 'observations', 'visites', 'appels', 'consultations', 'dossiersConsultation', 'antecedents', 'decisionsDroits', 'demandesImport', 'presences',
-  'usagesParametres', 'factures', 'avoirs', 'ecritures', 'mouvements', 'lots', 'admissions',
-};
-
 final _regime = RegimeDemandesImport(
   collectionsDeLaMere: {...cfbEssentielles, 'utilisateurs', valCollectionValidations, parCollectionParametres}.difference({'rolesBase', 'modulesManifeste', 'reglages', 'audit'}),
-  collectionsActivite: _activite,
 );
 
 MatriceDroits _matrice() => MatriceDroits.depuisJson((jsonDecode(File('../rbac/data/rbac.json').readAsStringSync()) as Map).cast<String, Object?>());
@@ -43,7 +36,7 @@ void main(List<String> args) {
       final lignes = [for (final l in (entree['lignes'] as List)) [for (final c in (l as List)) c]];
       final a = analyserLignes(jeu, lignes, 'fichier.xlsx', port);
       if (!_regime.exigeLaMere(jeu)) {
-        // Un jeu restreint (ou qui touche l'activité) ne se dépose JAMAIS : refus avant même de regarder le fichier.
+        // Un jeu restreint ne se dépose JAMAIS : refus avant même de regarder le fichier.
         sortie
           ..['ok'] = false
           ..['refus'] = {'code': 'JEU_NON_DEMANDABLE', 'motif': 'le jeu « ${jeu.libelle} » ne passe pas par une demande à la mère'};

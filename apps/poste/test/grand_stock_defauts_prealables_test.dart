@@ -13,7 +13,7 @@ void main() {
     try {
       final f1 = await c.fileul('F1', 'stock', 'GESTIONNAIRE UN');
       c.mm.collection('produits').inserer(article('ZZ1', 100));
-      await c.converger(regimeLeve, () => f1.m.collection('produits').parId('ZZ1') != null, 'l\'article de la mère arrive au fileul');
+      await c.converger(() => f1.m.collection('produits').parId('ZZ1') != null, 'l\'article de la mère arrive au fileul');
       expect(f1.m.collection('produits').parId('ZZ1')!['stockGros'], 100);
       // Le fileul DISPENSE 10 : sa sortie n'est pas encore partie (le pont n'a pas tourné), la mère publie la fiche de nouveau (elle change le seuil d'alerte).
       f1.m.collection('produits').mettreAJour('ZZ1', {'stockGros': 90, 'stock': 90});
@@ -39,8 +39,8 @@ void main() {
     try {
       final f1 = await c.fileul('F1', 'stock', 'GESTIONNAIRE UN');
       c.mm.collection('produits').inserer(article('ZZ2', 100));
-      await c.converger(regimeLeve, () => f1.m.collection('produits').parId('ZZ2') != null, 'l\'article de la mère arrive au fileul');
-      await c.tour(regimeLeve);
+      await c.converger(() => f1.m.collection('produits').parId('ZZ2') != null, 'l\'article de la mère arrive au fileul');
+      await c.tour();
       final fiches = [for (final p in f1.m.collection('produits').actives) if (p['code'] == 'ARTZZ2') '${p['id']}'];
       expect(fiches, ['ZZ2'], reason: 'une seule fiche chez le fileul');
       final surMere = [for (final p in c.mm.collection('produits').actives) if (p['code'] == 'ARTZZ2') '${p['id']}'];
@@ -56,7 +56,7 @@ void main() {
     try {
       final f1 = await c.fileul('F1', 'stock', 'GESTIONNAIRE UN');
       c.mm.collection('produits').inserer(article('ZZ3', 100));
-      await c.converger(regimeLeve, () => f1.m.collection('produits').parId('ZZ3') != null, 'l\'article de la mère arrive au fileul');
+      await c.converger(() => f1.m.collection('produits').parId('ZZ3') != null, 'l\'article de la mère arrive au fileul');
       expect(() => f1.m.collection('produits').mettreAJour('ZZ3', {'stockGros': 95, 'stock': 95}), returnsNormally, reason: 'un compteur est de l\'activité, pas de la configuration');
       expect(() => f1.m.collection('produits').mettreAJour('ZZ3', {'designation': 'AUTRE NOM'}), throwsA(isA<Object>()), reason: 'le reste de la fiche reste réglé sur la mère');
     } finally {

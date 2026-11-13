@@ -44,11 +44,8 @@ class ServiceDemandesImport {
   /// La matrice EN FORCE chez celui qui juge : la mère la pose au démarrage (graine engendrée + décisions de droits superposées à chaud).
   MatriceDroits Function()? matriceEnForce;
 
-  /// Les collections que la mère seule écrit, et celles de l'activité qu'un fileul peut pousser (celles que la mère seule écrit dans le pont en sont retirées : un fileul n'y envoie rien).
-  RegimeDemandesImport get regime => RegimeDemandesImport(
-        collectionsDeLaMere: collectionsConfiguration(),
-        collectionsActivite: collectionsActivite.difference(collectionsDeLaMereSeule),
-      );
+  /// Les collections que la mère seule écrit. Une cible d'ACTIVITÉ (lots, mouvements) n'exclut plus un jeu : le Grand Stock passe par la demande (lot IMP-E).
+  RegimeDemandesImport get regime => RegimeDemandesImport(collectionsDeLaMere: collectionsConfiguration());
 
   CollectionMagasin get demandes => magasin.collection(demandesImportCollection);
 
