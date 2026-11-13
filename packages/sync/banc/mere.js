@@ -47,6 +47,9 @@ const FAMILLES = {
   /* Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul. Il écrit chez lui ET dépose cette fiche ; la mère rejoue l'analyse sous le rôle de l'auteur et complète la MÊME
      fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère ; jamais vers un téléphone. */
   demandesImport: 'A',
+  /* Lot IMP-E : le stock que le pont du poste synchronise comme la mère Dart (`sync_dart/lib/src/mere.dart`) : les lots et les mouvements sont des fiches descriptives (A, une identité par fiche,
+     jamais dédoublée), les variations de stock sont des fiches AJOUTÉES (une par variation, jamais modifiées : `fiche_existe` à la seconde création du même identifiant). */
+  lots: 'A', mouvements: 'A', deltasCompteurs: 'A',
 };
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'traitePar', 'traiteLe'];
