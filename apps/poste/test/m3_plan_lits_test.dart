@@ -16,11 +16,22 @@ import 'parite/extracteur.dart';
 Map<String, Object?> adm() => carte(vecteurs['admissions']);
 Map<String, Object?> plan() => carte(adm()['plan']);
 
+
+/// Le RÉFÉRENTIEL de prix du jeu livré (la journée d'hospitalisation est une prestation, `HO01` à `HO03`) et la nomenclature des types de chambre : sans eux, la journée n'a PAS de prix
+/// (« à valider »), le domaine n'en portant plus aucun (lot TFIN, T7).
+Map<String, Iterable<Fiche>> prixDuJeu() => {
+      for (final n in const ['tarifs', 'versionsTarif'])
+        n: [for (final x in (jsonDecode(File('assets/donnees/jeu/$n.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()]
+    };
+Map<String, Object?> nomenclatureChambres() =>
+    {'typesChambre': (jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map)['typesChambre']};
+
 Magasin magasinEssai({List<Fiche> factures = const []}) => Magasin({
+      ...prixDuJeu(),
       'admissions': [for (final x in liste(adm()['etatFinal'])) {...x}],
       'factures': factures,
       'audit': const [],
-    }, 'POSTE');
+    }, 'POSTE', nomenclatureChambres());
 
 Color? couleurDuPoint(WidgetTester t, String lit) {
   final c = t.widget<Container>(find.byKey(Key('plan:point:$lit')));

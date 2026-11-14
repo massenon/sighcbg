@@ -316,7 +316,7 @@ class _EtatStatsHospitalisations extends State<EcranStatsHospitalisations> {
           blocs: [
             BlocTableau(TableauEtat(colonnes: [
               ColonneEtat(libelle: 'Type de chambre', valeur: (r) => '${r['type']}'),
-              ColonneEtat(libelle: 'Prix de journée', valeur: (r) => money(r['tarif'], avecDevise: false), droite: true),
+              ColonneEtat(libelle: 'Prix de journée', valeur: (r) => moneyOu(r['tarif'], '—', false), droite: true),
               n('Séjours', (r) => r['sejours'] as num),
               n('Journées', (r) => r['journees'] as num),
               ColonneEtat(libelle: 'Durée moyenne', valeur: (r) => '${pilTexteNombre(r['dms'] as num)} j', droite: true),

@@ -30,7 +30,7 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
         for (final l in hosTousLits())
           () {
             final adm = hosLitOccupePar(l.label, admissions);
-            final tarif = tarifs[l.chambre.type] ?? hosTypesChambre.firstWhere((t) => t.id == l.chambre.type).tarif;
+            final tarif = tarifs[l.chambre.type];
             return <String, Object?>{
               'id': l.label.replaceAll(' ', '_'),
               'code': l.label,
@@ -102,7 +102,7 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
                     ton: t.id == 'vvip'
                         ? TonSigh.navy
                         : (t.id == 'vip' ? TonSigh.info : TonSigh.neutre),
-                    indice: '${money(tarifs[t.id] ?? t.tarif)} / jour — $occ occupé(s)');
+                    indice: '${tarifs[t.id] == null ? 'Prix de journée à valider' : '${money(tarifs[t.id])} / jour'} — $occ occupé(s)');
               }(),
             KpiSigh(
                 libelle: 'Capacité totale',
@@ -144,8 +144,8 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
                   cle: 'tarif',
                   libelle: 'Tarif / jour',
                   droite: true,
-                  texte: (r) => money(r['tarif'], avecDevise: false),
-                  rendu: (_, r) => cellule(money(r['tarif'], avecDevise: false),
+                  texte: (r) => moneyOu(r['tarif'], '—', false),
+                  rendu: (_, r) => cellule(moneyOu(r['tarif'], '—', false),
                       droite: true)),
               ColonneTableau(
                   cle: 'statut',

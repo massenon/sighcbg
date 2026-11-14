@@ -179,23 +179,25 @@ void main() {
     });
   });
 
+  // La journée vient du RÉFÉRENTIEL de prix (lue par l'appelant) : le domaine n'en porte plus aucune. Valeurs du référentiel au jour des vecteurs.
+  const journeeReferentiel = {'standard': 5000, 'vip': 15000, 'vvip': 25000};
   group('m3-stats-hospitalisations : durée moyenne sur les séjours TERMINÉS seulement', () {
-    parPlage('hospitalisations', (du, au) => pilStatsHospitalisations(col('admissions'), du, au, auj, refMois: aout).vue, pagines: []);
+    parPlage('hospitalisations', (du, au) => pilStatsHospitalisations(col('admissions'), du, au, auj, refMois: aout, tarifsJournee: journeeReferentiel).vue, pagines: []);
     test('un séjour en cours n’abaisse pas la durée moyenne', () {
       final base = pilStatsHospitalisations([
         {'dateEntree': '2026-10-01', 'dateSortie': '2026-10-11', 'typeChambre': 'standard'},
-      ], '', '', auj, refMois: aout);
+      ], '', '', auj, refMois: aout, tarifsJournee: journeeReferentiel);
       final avec = pilStatsHospitalisations([
         {'dateEntree': '2026-10-01', 'dateSortie': '2026-10-11', 'typeChambre': 'standard'},
         {'dateEntree': '2026-10-28', 'typeChambre': 'standard'},
-      ], '', '', auj, refMois: aout);
+      ], '', '', auj, refMois: aout, tarifsJournee: journeeReferentiel);
       expect(base.dms, 10);
       expect(avec.dms, 10, reason: 'le séjour en cours est exclu de la moyenne');
       expect(avec.enCours, 1);
       expect(avec.terminees, 1);
     });
     test('l’état imprimé : cartouche et tableau avec TOTAL', () {
-      final h = pilStatsHospitalisations(col('admissions'), '', '', auj, refMois: aout);
+      final h = pilStatsHospitalisations(col('admissions'), '', '', auj, refMois: aout, tarifsJournee: journeeReferentiel);
       final p = carte(carte(v['hospitalisations'])['piece']);
       expect([for (final c in pilCartoucheHospitalisations(h, '', '')) [c.$1, nt(c.$2)]], [for (final c in (p['cartouche'] as List)) [(c as List)[0], nt(c[1])]]);
       expect(h.parType.fold<int>(0, (a, r) => a + r.sejours), 91);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/parametres_poste.dart';
 import 'package:sigh_poste/core/service_installation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';

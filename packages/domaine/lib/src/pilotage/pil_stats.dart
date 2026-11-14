@@ -324,7 +324,7 @@ class PilHospitalisations {
 
   /// La durée moyenne de séjour (arrondie au dixième), sur les séjours TERMINÉS seulement.
   final num dms;
-  final List<({String type, int tarif, int sejours, int journees, num dms, int produit})> parType;
+  final List<({String type, int? tarif, int sejours, int journees, num dms, int produit})> parType;
 }
 
 num _dixieme(num x) => arrondiJs(x * 10) / 10;
@@ -333,9 +333,10 @@ num _dixieme(num x) => arrondiJs(x * 10) / 10;
 int pilTotalLits() => hosChambres.fold(0, (a, c) => a + c.lits.length);
 
 /// [refMois] : l'ancre du graphique « Séjours par mois » (la maquette l'ancre au 1ᵉʳ août 2026 — E20 ; le poste passe son horloge).
-/// [tarifsJournee] : la journée par type de chambre au prix du RÉFÉRENTIEL (T12, lue par l'appelant) ; sans entrée, la nomenclature livrée.
+/// [tarifsJournee] : la journée par type de chambre au prix du RÉFÉRENTIEL (T12, lue par l'appelant, à la date voulue) ; un type SANS entrée n'a pas de prix (« — », produit nul), jamais un
+/// prix d'origine recopié dans le domaine (lot TFIN, T7).
 PilHospitalisations pilStatsHospitalisations(Iterable<PilFiche> admissions, String du, String au, DateTime auj,
-    {required DateTime refMois, Map<String, num> tarifsJournee = const {}}) {
+    {required DateTime refMois, required Map<String, num> tarifsJournee}) {
   final toutes = [for (final a in admissions) if (pilDansPlage(a['dateEntree'], du, au)) a];
   final terminees = toutes.where((a) => pilVrai(a['dateSortie'])).toList();
   final enCours = toutes.where((a) => !pilVrai(a['dateSortie'])).toList();
@@ -357,16 +358,16 @@ PilHospitalisations pilStatsHospitalisations(Iterable<PilFiche> admissions, Stri
     PilKpi('Taux d’occupation', lits > 0 ? pourcent(occupes / lits * 100) : '—',
         indice: '${nombre(occupes)} lit(s) occupé(s) sur ${nombre(lits)} — à ce jour', ton: occupes / (lits == 0 ? 1 : lits) > 0.8 ? 'danger' : 'succes'),
   ]);
-  final parType = <({String type, int tarif, int sejours, int journees, num dms, int produit})>[];
+  final parType = <({String type, int? tarif, int sejours, int journees, num dms, int produit})>[];
   for (final t in hosTypesChambre) {
     final sel = toutes.where((a) => a['typeChambre'] == t.id).toList();
     final fin = sel.where((a) => pilVrai(a['dateSortie'])).toList();
     final j = fin.fold(0, (s, a) => s + duree(a));
-    final tarif = (tarifsJournee[t.id] ?? t.tarif).toInt();
-    parType.add((type: t.label, tarif: tarif, sejours: sel.length, journees: j, dms: fin.isNotEmpty ? _dixieme(j / fin.length) : 0, produit: j * tarif));
+    final tarif = tarifsJournee[t.id]?.toInt();
+    parType.add((type: t.label, tarif: tarif, sejours: sel.length, journees: j, dms: fin.isNotEmpty ? _dixieme(j / fin.length) : 0, produit: j * (tarif ?? 0)));
   }
   v.tables.add(PilTable('Par type de chambre', ['TYPE', 'PRIX DE JOURNÉE', 'SÉJOURS', 'JOURNÉES', 'DURÉE MOYENNE', 'PRODUIT THÉORIQUE'], [
-    for (final r in parType) [r.type, money(r.tarif, avecDevise: false), nombre(r.sejours), nombre(r.journees), '${pilTexteNombre(r.dms)} j', money(r.produit, avecDevise: false)]
+    for (final r in parType) [r.type, r.tarif == null ? '—' : money(r.tarif, avecDevise: false), nombre(r.sejours), nombre(r.journees), '${pilTexteNombre(r.dms)} j', money(r.produit, avecDevise: false)]
   ]));
   final g = pilGrouper(toutes, (a) => pilVrai(a['diagnosticEntree']) ? '${a['diagnosticEntree']}' : 'Non renseigné');
   final rangs = pilTriDesc([
