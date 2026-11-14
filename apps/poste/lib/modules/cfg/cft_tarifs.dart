@@ -8,7 +8,6 @@ import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
-import '../../core/service_installation.dart';
 import 'cfa_commun.dart';
 import 'tarifs_ecran.dart';
 
@@ -429,21 +428,33 @@ class _OngletProduits extends StatelessWidget {
           ColonneTableau(cle: 'code', libelle: 'Code', sansCoupure: true, texte: (p) => '${p['code'] ?? ''}', rendu: (_, p) => cfaCode(p['code'])),
           const ColonneTableau(cle: 'designation', libelle: 'Désignation'),
           ColonneTableau(cle: 'categorie', libelle: 'Catégorie', texte: (p) => categorie(p['categorie'])),
-          ColonneTableau(cle: 'prixAchat', libelle: 'Prix d’achat', droite: true, texte: (p) => _argent(p['prixAchat'])),
+          ColonneTableau(
+              cle: 'prixAchat',
+              libelle: 'Prix d’achat',
+              droite: true,
+              valeur: (p) => achatDuJour(c, p),
+              texte: (p) => aValoriser(c, p) ? 'À valoriser' : _argent(achatDuJour(c, p))),
           ColonneTableau(
               cle: 'prixVente',
               libelle: 'Prix de vente',
               droite: true,
-              texte: (p) => _argent(p['prixVente']),
-              rendu: (_, p) => Text(_argent(p['prixVente']), style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate700))),
+              valeur: (p) => venteDuJour(c, p),
+              texte: (p) => aValoriser(c, p) ? 'À valoriser' : _argent(venteDuJour(c, p)),
+              rendu: (_, p) => Text(aValoriser(c, p) ? 'À valoriser' : _argent(venteDuJour(c, p)),
+                  style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.slate700))),
           ColonneTableau(
               cle: 'marge',
               libelle: 'Marge',
               droite: true,
-              valeur: (p) => nombreOuZero(p['prixVente']) - nombreOuZero(p['prixAchat']),
-              texte: (p) => nombreOuZero(p['prixVente']) - nombreOuZero(p['prixAchat']) == 0 ? 'Sans marge' : money(nombreOuZero(p['prixVente']) - nombreOuZero(p['prixAchat']), avecDevise: false),
+              valeur: (p) => aValoriser(c, p) ? null : nombreOuZero(venteDuJour(c, p)) - nombreOuZero(achatDuJour(c, p)),
+              texte: (p) => aValoriser(c, p)
+                  ? '—'
+                  : nombreOuZero(venteDuJour(c, p)) - nombreOuZero(achatDuJour(c, p)) == 0
+                      ? 'Sans marge'
+                      : money(nombreOuZero(venteDuJour(c, p)) - nombreOuZero(achatDuJour(c, p)), avecDevise: false),
               rendu: (_, p) {
-                final mg = nombreOuZero(p['prixVente']) - nombreOuZero(p['prixAchat']);
+                if (aValoriser(c, p)) return Text('—', style: TextStyle(fontSize: 14, height: 20 / 14, color: JetonsShell.slate300));
+                final mg = nombreOuZero(venteDuJour(c, p)) - nombreOuZero(achatDuJour(c, p));
                 return mg == 0
                     ? const BadgeSigh('Sans marge', ton: TonSigh.succes)
                     : Text(money(mg, avecDevise: false), style: const TextStyle(fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600, color: JetonsShell.warning600));

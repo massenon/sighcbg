@@ -28,3 +28,24 @@ TarifsPoste tarifsDeLEcran(ContexteEcran c, {String droitProduit = 'm6-produits'
       horloge: () => c.aujourdhui,
       etiquette: m.poste.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase());
 }
+
+/// Le prix d'achat EN VIGUEUR aujourd'hui d'un produit (jamais la fiche). Source unique de la colonne de « Référentiel produits », de celle de l'onglet Produits de « Tarifs et prix » et du filtre.
+PrixProduit prixDuJour(ContexteEcran c, Map<String, Object?> produit) => TarifsPoste.prixProduit(c.magasin, produit, aujourdhui: c.aujourdhui, date: tarIso(c.aujourdhui));
+
+/// Un article « à valoriser » : doté d'une prestation de prix mais sans prix d'achat en vigueur aujourd'hui (prix absent, jamais zéro : l'article ne se facture pas).
+bool aValoriser(ContexteEcran c, Map<String, Object?> produit) => TarifsPoste.lire(c.magasin).parCode['${produit['code']}'] != null && prixDuJour(c, produit).absent;
+
+/// Le prix d'achat en vigueur aujourd'hui (la version), `null` quand il est absent. Un article qui n'a PAS ENCORE de prestation de prix (avant la reprise de la mère, ou sur un fileul qui ne l'a pas encore
+/// reçue) montre le prix que sa fiche tient : c'est le seul cas où la fiche est lue.
+num? achatDuJour(ContexteEcran c, Map<String, Object?> p) {
+  if (TarifsPoste.lire(c.magasin).parCode['${p['code']}'] == null) return p['prixAchat'] as num?;
+  final r = prixDuJour(c, p);
+  return r.absent ? null : r.achat;
+}
+
+/// Le prix de vente DÉRIVÉ (RG-02) en vigueur aujourd'hui ; même repli que [achatDuJour].
+num? venteDuJour(ContexteEcran c, Map<String, Object?> p) {
+  if (TarifsPoste.lire(c.magasin).parCode['${p['code']}'] == null) return p['prixVente'] as num?;
+  final r = prixDuJour(c, p);
+  return r.absent ? null : r.vente;
+}
