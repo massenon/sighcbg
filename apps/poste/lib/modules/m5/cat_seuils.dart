@@ -63,7 +63,8 @@ class _EtatSeuils extends State<SectionSeuils> {
     final c = ContexteEcran.of(context);
     final sp = SeuilsPoste(c);
     return ListenableBuilder(
-      listenable: Listenable.merge([c.magasin.collection('seuilsDelta'), c.magasin.collection('variablesLabo')]),
+      // `rbac` : un droit accordé ou retiré se répercute sur l'écran ouvert (la commande Valider paraît ou disparaît), sans le rouvrir.
+      listenable: Listenable.merge([c.magasin.collection('seuilsDelta'), c.magasin.collection('variablesLabo'), c.magasin.collection('rbac')]),
       builder: (context, _) {
         final tous = [for (final v in c.magasin.collection('variablesLabo').actives) if (_numerique(v)) v];
         final etats = [for (final v in tous) sp.etat(v['id']).etat];
