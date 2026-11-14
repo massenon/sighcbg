@@ -5115,6 +5115,16 @@
     1,
     1,
     1
+   ],
+   "imp-garanties": [
+    1,
+    1,
+    1
+   ],
+   "imp-couvertures-assurance": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -8531,6 +8541,16 @@
     1,
     1,
     1
+   ],
+   "imp-garanties": [
+    1,
+    1,
+    1
+   ],
+   "imp-couvertures-assurance": [
+    1,
+    1,
+    1
    ]
   },
   "medecin": {
@@ -11126,6 +11146,16 @@
     1
    ],
    "imp-budgets": [
+    1,
+    1,
+    1
+   ],
+   "imp-garanties": [
+    1,
+    1,
+    1
+   ],
+   "imp-couvertures-assurance": [
     1,
     1,
     1

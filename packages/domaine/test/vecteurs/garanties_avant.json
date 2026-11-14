@@ -1,0 +1,2445 @@
+{
+ "moteur": "avant garanties datées (2197feda)",
+ "pieces": 56,
+ "lignes": 196,
+ "partAssureurTotale": 1274550.0,
+ "partPatientTotale": 5367450.0,
+ "releve": [
+  {
+   "patientId": "PA1",
+   "date": "2026-01-15",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 40000.0,
+   "partAssureur": 31000.0,
+   "partPatient": 9000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 4000.0,
+     "partPatient": 1000.0,
+     "taux": 80,
+     "plafond": 5000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 80 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 12000.0,
+     "partPatient": 3000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 15000.0,
+     "partPatient": 5000.0,
+     "taux": 80,
+     "plafond": 15000,
+     "garantie": "Hospitalisation — frais de chambre",
+     "motif": "Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-03-02",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 257000.0,
+   "partAssureur": 171600.0,
+   "partPatient": 85400.0,
+   "lignes": [
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 7200.0,
+     "partPatient": 1800.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 80 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Check-up et bilan de santé"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 14400.0,
+     "partPatient": 3600.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 80 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 150000.0,
+     "partPatient": 50000.0,
+     "taux": 80,
+     "plafond": 150000,
+     "garantie": "Accouchement normal",
+     "motif": "Garantie Accouchement normal — 80 %, plafonnée à 150 000 par acte"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-05-31",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 80000.0,
+   "partAssureur": 16000.0,
+   "partPatient": 64000.0,
+   "lignes": [
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Accord préalable requis et non obtenu : Scanner"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 4000.0,
+     "partPatient": 1000.0,
+     "taux": 80,
+     "plafond": 5000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 80 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 12000.0,
+     "partPatient": 3000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-06-01",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 58500.0,
+   "partAssureur": 21600.0,
+   "partPatient": 36900.0,
+   "lignes": [
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Gants"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 7200.0,
+     "partPatient": 1800.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 80 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Check-up et bilan de santé"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 14400.0,
+     "partPatient": 3600.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-06-20",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 77000.0,
+   "partAssureur": 13600.0,
+   "partPatient": 63400.0,
+   "lignes": [
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 9600.0,
+     "partPatient": 2400.0,
+     "taux": 80,
+     "plafond": 10000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 80 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Accord préalable requis et non obtenu : Scanner"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 4000.0,
+     "partPatient": 1000.0,
+     "taux": 80,
+     "plafond": 5000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-08-10",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 43000.0,
+   "partAssureur": 7200.0,
+   "partPatient": 35800.0,
+   "lignes": [
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Gants"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 7200.0,
+     "partPatient": 1800.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 80 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Check-up et bilan de santé"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-11-14",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 272000.0,
+   "partAssureur": 207600.0,
+   "partPatient": 64400.0,
+   "lignes": [
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 150000.0,
+     "partPatient": 50000.0,
+     "taux": 80,
+     "plafond": 150000,
+     "garantie": "Accouchement normal",
+     "motif": "Garantie Accouchement normal — 80 %, plafonnée à 150 000 par acte"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 9600.0,
+     "partPatient": 2400.0,
+     "taux": 80,
+     "plafond": 10000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 80 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 48000.0,
+     "partPatient": 12000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA1",
+   "date": "2026-12-31",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 33000.0,
+   "partAssureur": 22200.0,
+   "partPatient": 10800.0,
+   "lignes": [
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 15000.0,
+     "partPatient": 5000.0,
+     "taux": 80,
+     "plafond": 15000,
+     "garantie": "Hospitalisation — frais de chambre",
+     "motif": "Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Gants"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 7200.0,
+     "partPatient": 1800.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-01-15",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 230000.0,
+   "partAssureur": 19200.0,
+   "partPatient": 210800.0,
+   "lignes": [
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 8400.0,
+     "partPatient": 3600.0,
+     "taux": 70,
+     "plafond": 9000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 70 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-03-02",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 39000.0,
+   "partAssureur": 750.0,
+   "partPatient": 38250.0,
+   "lignes": [
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 750.0,
+     "partPatient": 750.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-05-31",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 248000.0,
+   "partAssureur": 14800.0,
+   "partPatient": 233200.0,
+   "lignes": [
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-06-01",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 42500.0,
+   "partAssureur": 3500.0,
+   "partPatient": 39000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 3500.0,
+     "partPatient": 1500.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-06-20",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 57000.0,
+   "partAssureur": 19300.0,
+   "partPatient": 37700.0,
+   "lignes": [
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 4500.0,
+     "partPatient": 4500.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-08-10",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 100000.0,
+   "partAssureur": 3500.0,
+   "partPatient": 96500.0,
+   "lignes": [
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 3500.0,
+     "partPatient": 1500.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-11-14",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 40500.0,
+   "partAssureur": 9250.0,
+   "partPatient": 31250.0,
+   "lignes": [
+    {
+     "libelle": "Gants",
+     "partAssureur": 750.0,
+     "partPatient": 750.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 4500.0,
+     "partPatient": 4500.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    }
+   ]
+  },
+  {
+   "patientId": "PA2",
+   "date": "2026-12-31",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 92000.0,
+   "partAssureur": 11900.0,
+   "partPatient": 80100.0,
+   "lignes": [
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 8400.0,
+     "partPatient": 3600.0,
+     "taux": 70,
+     "plafond": 9000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 70 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 3500.0,
+     "partPatient": 1500.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-01-15",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 13000.0,
+   "partAssureur": 0.0,
+   "partPatient": 13000.0,
+   "lignes": [
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « medicament »"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « medicament »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-03-02",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 277000.0,
+   "partAssureur": 17000.0,
+   "partPatient": 260000.0,
+   "lignes": [
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 12000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 5000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-05-31",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 24000.0,
+   "partAssureur": 0.0,
+   "partPatient": 24000.0,
+   "lignes": [
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « medicament »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-06-01",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 290000.0,
+   "partAssureur": 27000.0,
+   "partPatient": 263000.0,
+   "lignes": [
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 15000.0,
+     "partPatient": 3000.0,
+     "taux": 90,
+     "plafond": 15000,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 90 %, plafonnée à 15 000 par acte"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 12000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-06-20",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 37500.0,
+   "partAssureur": 0.0,
+   "partPatient": 37500.0,
+   "lignes": [
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-08-10",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 260000.0,
+   "partAssureur": 57000.0,
+   "partPatient": 203000.0,
+   "lignes": [
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 30000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 15000.0,
+     "partPatient": 3000.0,
+     "taux": 90,
+     "plafond": 15000,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 90 %, plafonnée à 15 000 par acte"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 12000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-11-14",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 40000.0,
+   "partAssureur": 5000.0,
+   "partPatient": 35000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 5000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA3",
+   "date": "2026-12-31",
+   "souscripteurId": "S3",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 257000.0,
+   "partAssureur": 45000.0,
+   "partPatient": 212000.0,
+   "lignes": [
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « medicament »"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 30000.0,
+     "partPatient": 0.0,
+     "taux": 100,
+     "plafond": null,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 100 %"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 15000.0,
+     "partPatient": 3000.0,
+     "taux": 90,
+     "plafond": 15000,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 90 %, plafonnée à 15 000 par acte"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-01-15",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 80000.0,
+   "partAssureur": 0.0,
+   "partPatient": 80000.0,
+   "lignes": [
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-03-02",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 58500.0,
+   "partAssureur": 0.0,
+   "partPatient": 58500.0,
+   "lignes": [
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 0,
+     "partPatient": 18000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-05-31",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 77000.0,
+   "partAssureur": 0.0,
+   "partPatient": 77000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-06-01",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 43000.0,
+   "partAssureur": 0.0,
+   "partPatient": 43000.0,
+   "lignes": [
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-06-20",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 272000.0,
+   "partAssureur": 0.0,
+   "partPatient": 272000.0,
+   "lignes": [
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-08-10",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 33000.0,
+   "partAssureur": 0.0,
+   "partPatient": 33000.0,
+   "lignes": [
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-11-14",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 230000.0,
+   "partAssureur": 0.0,
+   "partPatient": 230000.0,
+   "lignes": [
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 0,
+     "partPatient": 18000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA4",
+   "date": "2026-12-31",
+   "souscripteurId": "S4",
+   "carteValide": true,
+   "grilleSaisie": false,
+   "total": 39000.0,
+   "partAssureur": 0.0,
+   "partPatient": 39000.0,
+   "lignes": [
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Convention non saisie pour Employeur quatre"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-01-15",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 248000.0,
+   "partAssureur": 164400.0,
+   "partPatient": 83600.0,
+   "lignes": [
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Check-up et bilan de santé"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 14400.0,
+     "partPatient": 3600.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 80 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 150000.0,
+     "partPatient": 50000.0,
+     "taux": 80,
+     "plafond": 150000,
+     "garantie": "Accouchement normal",
+     "motif": "Garantie Accouchement normal — 80 %, plafonnée à 150 000 par acte"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-03-02",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 42500.0,
+   "partAssureur": 31000.0,
+   "partPatient": 11500.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 4000.0,
+     "partPatient": 1000.0,
+     "taux": 80,
+     "plafond": 5000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 80 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 12000.0,
+     "partPatient": 3000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 15000.0,
+     "partPatient": 5000.0,
+     "taux": 80,
+     "plafond": 15000,
+     "garantie": "Hospitalisation — frais de chambre",
+     "motif": "Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-05-31",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 57000.0,
+   "partAssureur": 21600.0,
+   "partPatient": 35400.0,
+   "lignes": [
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 7200.0,
+     "partPatient": 1800.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 80 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Check-up et bilan de santé"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 14400.0,
+     "partPatient": 3600.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-06-01",
+   "souscripteurId": "S1",
+   "carteValide": false,
+   "grilleSaisie": true,
+   "total": 100000.0,
+   "partAssureur": 0.0,
+   "partPatient": 100000.0,
+   "lignes": [
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-06-20",
+   "souscripteurId": "S1",
+   "carteValide": false,
+   "grilleSaisie": true,
+   "total": 40500.0,
+   "partAssureur": 0.0,
+   "partPatient": 40500.0,
+   "lignes": [
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-08-10",
+   "souscripteurId": "S1",
+   "carteValide": false,
+   "grilleSaisie": true,
+   "total": 92000.0,
+   "partAssureur": 0.0,
+   "partPatient": 92000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-11-14",
+   "souscripteurId": "S1",
+   "carteValide": false,
+   "grilleSaisie": true,
+   "total": 13000.0,
+   "partAssureur": 0.0,
+   "partPatient": 13000.0,
+   "lignes": [
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    }
+   ]
+  },
+  {
+   "patientId": "PA5",
+   "date": "2026-12-31",
+   "souscripteurId": "S1",
+   "carteValide": false,
+   "grilleSaisie": true,
+   "total": 277000.0,
+   "partAssureur": 0.0,
+   "partPatient": 277000.0,
+   "lignes": [
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Carte non valide à la date de facturation (RG-09)"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-01-15",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 24000.0,
+   "partAssureur": 15000.0,
+   "partPatient": 9000.0,
+   "lignes": [
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 15000.0,
+     "partPatient": 5000.0,
+     "taux": 80,
+     "plafond": 15000,
+     "garantie": "Hospitalisation — frais de chambre",
+     "motif": "Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Exclu de la convention : Gants"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-03-02",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 290000.0,
+   "partAssureur": 222000.0,
+   "partPatient": 68000.0,
+   "lignes": [
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 14400.0,
+     "partPatient": 3600.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 80 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 150000.0,
+     "partPatient": 50000.0,
+     "taux": 80,
+     "plafond": 150000,
+     "garantie": "Accouchement normal",
+     "motif": "Garantie Accouchement normal — 80 %, plafonnée à 150 000 par acte"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 9600.0,
+     "partPatient": 2400.0,
+     "taux": 80,
+     "plafond": 10000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 80 %"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 48000.0,
+     "partPatient": 12000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-05-31",
+   "souscripteurId": "S1",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 37500.0,
+   "partAssureur": 27000.0,
+   "partPatient": 10500.0,
+   "lignes": [
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 12000.0,
+     "partPatient": 3000.0,
+     "taux": 80,
+     "plafond": null,
+     "garantie": "Radiographie, échographie, scanner, IRM",
+     "motif": "Garantie Radiographie, échographie, scanner, IRM — 80 %"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 15000.0,
+     "partPatient": 5000.0,
+     "taux": 80,
+     "plafond": 15000,
+     "garantie": "Hospitalisation — frais de chambre",
+     "motif": "Garantie Hospitalisation — frais de chambre — 80 %, plafonnée à 15 000 par jour"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « soin »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-06-01",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 260000.0,
+   "partAssureur": 23200.0,
+   "partPatient": 236800.0,
+   "lignes": [
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 8400.0,
+     "partPatient": 3600.0,
+     "taux": 70,
+     "plafond": 9000,
+     "garantie": "Consultation spécialiste ou professeur",
+     "motif": "Garantie Consultation spécialiste ou professeur — 70 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-06-20",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 40000.0,
+   "partAssureur": 3500.0,
+   "partPatient": 36500.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 3500.0,
+     "partPatient": 1500.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « hospitalisation »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-08-10",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 257000.0,
+   "partAssureur": 19300.0,
+   "partPatient": 237700.0,
+   "lignes": [
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 4500.0,
+     "partPatient": 4500.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « maternite »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-11-14",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 80000.0,
+   "partAssureur": 3500.0,
+   "partPatient": 76500.0,
+   "lignes": [
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 3500.0,
+     "partPatient": 1500.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Aucune garantie pour la catégorie « imagerie »"
+    }
+   ]
+  },
+  {
+   "patientId": "PA6",
+   "date": "2026-12-31",
+   "souscripteurId": "S2",
+   "carteValide": true,
+   "grilleSaisie": true,
+   "total": 58500.0,
+   "partAssureur": 20050.0,
+   "partPatient": 38450.0,
+   "lignes": [
+    {
+     "libelle": "Gants",
+     "partAssureur": 750.0,
+     "partPatient": 750.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 4500.0,
+     "partPatient": 4500.0,
+     "taux": 50,
+     "plafond": 20000,
+     "garantie": "Frais pharmaceutiques",
+     "motif": "Garantie Frais pharmaceutiques — 50 %"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 4000.0,
+     "partPatient": 26000.0,
+     "taux": 70,
+     "plafond": 4000,
+     "garantie": "Consultation généraliste",
+     "motif": "Garantie Consultation généraliste — 70 %, plafonnée à 4 000 par acte"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 10800.0,
+     "partPatient": 7200.0,
+     "taux": 60,
+     "plafond": null,
+     "garantie": "Analyses et travaux de laboratoire",
+     "motif": "Garantie Analyses et travaux de laboratoire — 60 %"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-01-15",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 77000.0,
+   "partAssureur": 0.0,
+   "partPatient": 77000.0,
+   "lignes": [
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-03-02",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 43000.0,
+   "partAssureur": 0.0,
+   "partPatient": 43000.0,
+   "lignes": [
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-05-31",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 272000.0,
+   "partAssureur": 0.0,
+   "partPatient": 272000.0,
+   "lignes": [
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Scanner",
+     "partAssureur": 0,
+     "partPatient": 60000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-06-01",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 33000.0,
+   "partAssureur": 0.0,
+   "partPatient": 33000.0,
+   "lignes": [
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Amoxicilline",
+     "partAssureur": 0,
+     "partPatient": 9000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-06-20",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 230000.0,
+   "partAssureur": 0.0,
+   "partPatient": 230000.0,
+   "lignes": [
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 0,
+     "partPatient": 18000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Consultation spécialiste",
+     "partAssureur": 0,
+     "partPatient": 12000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-08-10",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 39000.0,
+   "partAssureur": 0.0,
+   "partPatient": 39000.0,
+   "lignes": [
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Gants",
+     "partAssureur": 0,
+     "partPatient": 1500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-11-14",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 248000.0,
+   "partAssureur": 0.0,
+   "partPatient": 248000.0,
+   "lignes": [
+    {
+     "libelle": "Check-up et bilan de santé",
+     "partAssureur": 0,
+     "partPatient": 30000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Bilan sanguin",
+     "partAssureur": 0,
+     "partPatient": 18000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Accouchement normal",
+     "partAssureur": 0,
+     "partPatient": 200000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  },
+  {
+   "patientId": "PA7",
+   "date": "2026-12-31",
+   "souscripteurId": null,
+   "carteValide": false,
+   "grilleSaisie": false,
+   "total": 42500.0,
+   "partAssureur": 0.0,
+   "partPatient": 42500.0,
+   "lignes": [
+    {
+     "libelle": "Consultation généraliste",
+     "partAssureur": 0,
+     "partPatient": 5000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Échographie pelvienne",
+     "partAssureur": 0,
+     "partPatient": 15000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Journée d’hospitalisation",
+     "partAssureur": 0,
+     "partPatient": 20000.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    },
+    {
+     "libelle": "Pansement",
+     "partAssureur": 0,
+     "partPatient": 2500.0,
+     "taux": 0,
+     "plafond": null,
+     "garantie": null,
+     "motif": "Patient non assuré"
+    }
+   ]
+  }
+ ]
+}

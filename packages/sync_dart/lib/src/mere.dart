@@ -68,6 +68,9 @@ const familleDeBase = <String, String>{
   // mère seule écrit, un fileul reçoit. Les DEMANDES de prix d'un fileul (proposition, décision, retrait) sont des fiches descriptives que le fileul dépose et que la mère
   // complète du verdict : famille A, champ à champ, dans les deux sens.
   'versionsTarif': 'R', 'propositionsTarif': 'A',
+  // T13 : la COUVERTURE d'assurance d'un assuré (datée, close la veille) suit la famille des fiches patient : une fiche descriptive, champ à champ, dans les deux sens. La garantie, elle, est de
+  // la configuration (`garanties` est dans `cfbEssentielles` : famille R, la mère seule écrit, une fiche par version immuable).
+  'couverturesAssurance': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -93,6 +96,10 @@ const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'pro
 /// Les PRESTATAIRES externes (tarif par acte = rémunération, IFU) voyagent de la mère aux postes fileuls (décision du 14/11/2026, jeu d'import « direct et demande ») mais ne partent
 /// JAMAIS vers un téléphone : aucun écran du mobile ne les lit, et la rémunération n'est publiée à aucun appareil qui n'en a pas l'usage (RG-13). Même exclusion que le prix.
 const Set<String> collectionsRemunerationJamaisMobile = {'prestataires'};
+
+/// T13 : ce qu'un téléphone ne reçoit JAMAIS de l'assurance : les GARANTIES (taux et plafonds conventionnés avec chaque compagnie) et les COUVERTURES (quelle compagnie couvre quel patient, sous quelle
+/// police : donnée nominative, RG-13). Aucun écran du mobile ne les lit ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des prix.
+const Set<String> collectionsAssuranceJamaisMobile = {'garanties', 'couverturesAssurance'};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -645,7 +652,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;

@@ -15,6 +15,28 @@ import 'commun.dart';
 /// Le taux de couverture n'est PAS unique par patient : il varie d'une convention à l'autre et, pour un même assuré, selon la nature de la
 /// prestation. Trois niveaux, tels que les pièces réelles les montrent : compagnie → souscripteur (n° de police) → assuré, et c'est le SOUSCRIPTEUR
 /// qui porte la grille. Tant qu'une convention n'est pas saisie, la facturation reste intégralement à la charge du patient — et l'écran le dit.
+/// T13 : les garanties d'un souscripteur telles que l'écran les COMPTE et les liste : UNE version par série, celle EN VIGUEUR au [jour] (comme la prise en charge, RG-09). Lister toutes
+/// les versions ferait dire « six garanties » pour trois séries dont deux ont changé de taux. Une série qui ne prend effet que plus tard n'y figure pas encore.
+List<Fiche> garantiesEnVigueurDe(Iterable<Fiche> garanties, Object? souscripteurId, String jour) =>
+    [for (final s in assSeriesGarantie(garanties, jour, souscripteurId: souscripteurId)) if (s.enVigueur != null) s.enVigueur!];
+
+/// « depuis l'ouverture » : la version sans date d'effet est celle d'avant le mécanisme ; aucune date n'est inventée à sa place.
+String depuisLe(Fiche g) {
+  final d = g['dateEffet'];
+  return d == null || '$d'.isEmpty ? 'l’ouverture' : dateDe(d);
+}
+
+String _plafondTexte(Fiche g) => g['plafond'] == null ? 'sans plafond' : '${m(g['plafond'])} ${assLibelleUnite(g['unitePlafond'])}';
+
+/// Pose UNE version par le moteur du domaine (`assPoserGarantie`) avec les fiches du magasin : c'est le même chemin pour l'écran, la grille d'un bloc et l'import.
+AssPoseGarantie poserGarantie(ContexteEcran c, Map<String, Object?> spec, {bool essai = false}) => assPoserGarantie(spec,
+    souscripteurs: actives(c, 'souscripteurs'),
+    garanties: actives(c, 'garanties'),
+    factures: actives(c, 'factures'),
+    patients: actives(c, 'patients'),
+    couvertures: actives(c, 'couverturesAssurance'),
+    essai: essai);
+
 class EcranConventions extends StatelessWidget with EcranMaquette {
   const EcranConventions({super.key});
 
@@ -66,9 +88,10 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
       builder: (context, _) {
         final sous = actives(c, 'souscripteurs');
         final garanties = actives(c, 'garanties');
-        final avecGrille = sous
-            .where((s) => garanties.any((g) => g['souscripteurId'] == s['id']))
-            .length;
+        final jour = iso(c.aujourdhui);
+        final series = assSeriesGarantie(garanties, jour);
+        final enVigueur = series.where((x) => x.enVigueur != null).length;
+        final avecGrille = sous.where((s) => series.any((x) => x.souscripteurId == s['id'] && x.enVigueur != null)).length;
         final aCollecter = sous.length - avecGrille;
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -92,7 +115,8 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
                     ton: TonSigh.attention),
                 KpiSigh(
                     libelle: 'Lignes de garantie',
-                    valeur: nombre(garanties.length),
+                    valeur: nombre(enVigueur),
+                    indice: garanties.length > series.length ? '${nombre(garanties.length)} versions écrites, ${nombre(series.length)} séries' : null,
                     icone: LucideIcons.percent,
                     ton: TonSigh.info),
               ]),
@@ -113,8 +137,8 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
                 OngletDef(
                     id: 'garanties',
                     libelle: 'Grilles de garanties',
-                    compte: garanties.length,
-                    construire: (ctx) => _ongletGaranties(c, garanties, sous)),
+                    compte: series.length,
+                    construire: (ctx) => _ongletGaranties(ctx, c, series, sous)),
                 OngletDef(
                     id: 'simulateur',
                     libelle: 'Simulateur de répartition',
@@ -125,76 +149,194 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
     );
   }
 
-  Widget _ongletGaranties(ContexteEcran c, List<Fiche> garanties, List<Fiche> sous) {
-    if (garanties.isEmpty) {
+  Widget _ongletGaranties(BuildContext ctx0, ContexteEcran c, List<AssSerieGarantie> series, List<Fiche> sous) {
+    if (series.isEmpty) {
       return const VideSigh(
           'Aucune convention saisie. Ouvrir un souscripteur pour saisir sa grille.',
           icone: LucideIcons.percent);
     }
     final rows = [
-      for (final g in garanties)
+      for (final x in series)
         () {
-          final s = sous.where((x) => x['id'] == g['souscripteurId']).firstOrNull;
-          return {
+          final s = sous.where((y) => y['id'] == x.souscripteurId).firstOrNull;
+          final g = x.enVigueur ?? x.aVenir!;
+          return <String, Object?>{
             ...g,
+            'id': x.cle,
             'souscripteur': s != null ? s['nom'] : '—',
-            'compagnie': s != null ? s['assureurNom'] : g['assureur']
+            'compagnie': s != null ? s['assureurNom'] : g['assureur'],
+            'versions': x.versions.length,
+            'aVenir': x.aVenir?['dateEffet'],
+            'pasEncore': x.enVigueur == null,
+            '_serie': x,
           };
         }()
     ];
     final noms = ({for (final r in rows) '${r['souscripteur']}'}.toList()..sort());
-    return TableauSigh(
-      lignes: rows,
-      taillePage: 20,
-      nomExport: 'garanties',
-      triInitial: 'souscripteur',
-      filtres: [
-        FiltreTableau(
-            nom: 'souscripteur',
-            libelle: 'Souscripteur',
-            options: [for (final x in noms) OptionChamp(x)]),
-        FiltreTableau(nom: 'categorie', libelle: 'Catégorie', options: [
-          for (final x in assCategoriesGarantie) OptionChamp(x.$1, x.$2)
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      // Le bouton « Importer » des garanties vit dans l'onglet qu'il alimente : l'en-tête de la page porte déjà quatre commandes.
+      if (actionsImporter(ctx0, 'garanties').isNotEmpty) Align(alignment: Alignment.centerRight, child: Padding(padding: const EdgeInsets.only(bottom: 8), child: Wrap(spacing: 8, children: actionsImporter(ctx0, 'garanties')))),
+      const NoteSigh(
+          'Une ligne par garantie : la version en vigueur aujourd’hui. Une garantie ne se réécrit jamais — un changement de taux ou de plafond AJOUTE une version avec sa date d’effet, et chaque pièce garde la garantie sous laquelle elle a été émise (RG-09). Cliquer une ligne pour lire son historique.',
+          icone: LucideIcons.history),
+      const SizedBox(height: 12),
+      TableauSigh(
+        lignes: rows,
+        taillePage: 20,
+        nomExport: 'garanties',
+        triInitial: 'souscripteur',
+        alClicLigne: (r) => _historique(ctx0, c, r['_serie'] as AssSerieGarantie, sous),
+        filtres: [
+          FiltreTableau(nom: 'souscripteur', libelle: 'Souscripteur', options: [for (final x in noms) OptionChamp(x)]),
+          FiltreTableau(nom: 'categorie', libelle: 'Catégorie', options: [for (final x in assCategoriesGarantie) OptionChamp(x.$1, x.$2)]),
+        ],
+        colonnes: [
+          const ColonneTableau(cle: 'souscripteur', libelle: 'Souscripteur'),
+          ColonneTableau(
+              cle: 'compagnie',
+              libelle: 'Compagnie',
+              texte: (g) => '${g['compagnie']}',
+              rendu: (_, g) => BadgeSigh('${g['compagnie']}', ton: TonSigh.navy)),
+          const ColonneTableau(cle: 'libelle', libelle: 'Garantie'),
+          ColonneTableau(cle: 'categorie', libelle: 'Catégorie', texte: (g) => assLibelleCategorie(g['categorie'])),
+          ColonneTableau(
+              cle: 'taux',
+              libelle: 'Taux',
+              droite: true,
+              texte: (g) => g['pasEncore'] == true ? 'pas encore' : '${g['taux']} %',
+              rendu: (_, g) => g['pasEncore'] == true
+                  ? const Text('pas encore', style: TextStyle(color: JetonsShell.slate300, fontSize: 12, height: 16 / 12))
+                  : Text('${g['taux']} %', style: const TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600))),
+          ColonneTableau(
+              cle: 'plafond',
+              libelle: 'Plafond',
+              droite: true,
+              texte: (g) => g['plafond'] == null ? '' : '${g['plafond']}',
+              rendu: (_, g) => g['plafond'] == null
+                  ? const Text('sans plafond', style: TextStyle(color: JetonsShell.slate300, fontSize: 12, height: 16 / 12))
+                  : Text(_plafondTexte(g), style: const TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14))),
+          ColonneTableau(
+              cle: 'dateEffet',
+              libelle: 'En vigueur depuis',
+              texte: (g) => depuisLe(g),
+              rendu: (_, g) => Text(depuisLe(g), style: const TextStyle(color: JetonsShell.slate600, fontSize: 13, height: 18 / 13))),
+          ColonneTableau(
+              cle: 'versions',
+              libelle: 'Versions',
+              droite: true,
+              valeur: (g) => g['versions'] as int,
+              texte: (g) => '${g['versions']}',
+              rendu: (_, g) => Row(mainAxisSize: MainAxisSize.min, children: [
+                    BadgeSigh('${g['versions']}', ton: (g['versions'] as int) > 1 ? TonSigh.info : TonSigh.neutre),
+                    if (g['aVenir'] != null) ...[const SizedBox(width: 4), BadgeSigh('à venir ${dateDe(g['aVenir'])}', ton: TonSigh.attention)],
+                  ])),
+        ],
+      ),
+    ]);
+  }
+
+  /// L'historique d'une série : toutes ses versions, la plus ancienne d'abord, celle EN VIGUEUR marquée. Une version n'a ni « Modifier » ni « Archiver » : elle s'AJOUTE.
+  void _historique(BuildContext ctx, ContexteEcran c, AssSerieGarantie serie, List<Fiche> sous) {
+    final s = sous.where((y) => y['id'] == serie.souscripteurId).firstOrNull;
+    afficherTiroir<void>(ctx,
+        titre: serie.libelle,
+        sousTitre: '${s?['nom'] ?? '—'} — ${assLibelleCategorie(serie.categorie)}',
+        largeurMax: 768,
+        corps: ListenableBuilder(
+            listenable: ecoute(c, ['garanties']),
+            builder: (context, _) {
+              final jour = iso(c.aujourdhui);
+              final courante = assSeriesGarantie(actives(c, 'garanties'), jour, souscripteurId: serie.souscripteurId).where((x) => x.cle == serie.cle).firstOrNull ?? serie;
+              final v = courante.versions;
+              return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                NoteSigh(
+                    courante.enVigueur != null
+                        ? 'Version en vigueur aujourd’hui : v${assRangGarantie(courante.enVigueur!, v)}, depuis ${depuisLe(courante.enVigueur!)} (${courante.enVigueur!['taux']} %, ${_plafondTexte(courante.enVigueur!)}). Une pièce datée avant une version garde la précédente.'
+                        : 'Aucune version n’est encore en vigueur : la première prend effet le ${dateDe(courante.aVenir!['dateEffet'])}.',
+                    icone: LucideIcons.history),
+                const SizedBox(height: 12),
+                CarteSigh(
+                    titre: 'Versions (${v.length})',
+                    child: MiniTableauSigh(colonnes: [
+                      ColonneMini('Version', (x) => 'v${assRangGarantie(x, v)}'),
+                      ColonneMini('Prend effet', (x) => depuisLe(x)),
+                      ColonneMini('Taux', (x) => '${x['taux']} %', droite: true),
+                      ColonneMini('Plafond', (x) => _plafondTexte(x), droite: true),
+                      ColonneMini('État', (x) {
+                        if (courante.enVigueur != null && x['id'] == courante.enVigueur!['id']) return 'En vigueur';
+                        if ('${x['dateEffet'] ?? ''}'.compareTo(jour) > 0) return 'À venir';
+                        return 'Remplacée';
+                      }),
+                      ColonneMini('Motif', (x) => '${x['motif'] ?? x['source'] ?? '—'}'),
+                    ], lignes: v)),
+              ]);
+            }),
+        pied: (fermer) => [
+              if (c.droit.editer)
+                BoutonSigh(
+                    libelle: 'Nouvelle version datée',
+                    icone: LucideIcons.plus,
+                    onPressed: () {
+                      fermer();
+                      _nouvelleVersion(ctx, c, serie);
+                    }),
+            ]);
+  }
+
+  /// Pose UNE version : tous les contrôles du domaine (`assPoserGarantie`) sont refaits, un refus se nomme avec son geste, rien n'est écrit en cas de refus.
+  void _nouvelleVersion(BuildContext ctx, ContexteEcran c, AssSerieGarantie serie) {
+    final base = serie.enVigueur ?? serie.aVenir!;
+    final ctl = ControleurFormulaire([
+      const ChampDef(nom: 'dateEffet', libelle: 'Date d’effet', type: TypeChamp.date, requis: true, aide: 'Le jour où les nouvelles valeurs s’appliquent. Les pièces antérieures gardent les valeurs de leur date.'),
+      const ChampDef(nom: 'taux', libelle: 'Taux (%)', type: TypeChamp.nombre, requis: true),
+      const ChampDef(nom: 'plafond', libelle: 'Plafond (FCFA)', type: TypeChamp.nombre, aide: 'Vide : sans plafond.'),
+      ChampDef(nom: 'unitePlafond', libelle: 'Unité du plafond', type: TypeChamp.select, indicatif: '— Sans plafond —', options: [for (final u in assUnitesPlafond.entries) OptionChamp(u.key, u.value)]),
+      const ChampDef(nom: 'motif', libelle: 'Motif', col: ColChamp.plein, aide: 'Par exemple : avenant du 01/12/2026.'),
+    ], {
+      'taux': '${base['taux']}',
+      'plafond': base['plafond'] == null ? '' : '${base['plafond']}',
+      'unitePlafond': base['unitePlafond'] ?? '',
+      'dateEffet': '',
+      'motif': '',
+    });
+    afficherModale<void>(ctx,
+        titre: 'Nouvelle version — ${serie.libelle}',
+        taille: TailleModale.lg,
+        corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          NoteSigh(
+              'La version actuelle (${base['taux']} %, ${_plafondTexte(base)}) reste écrite : une pièce émise garde son taux. La date d’effet doit être postérieure à la dernière version et à la dernière facture émise sous cette grille.',
+              icone: LucideIcons.history),
+          const SizedBox(height: 12),
+          FormulaireSigh(controleur: ctl),
         ]),
-      ],
-      colonnes: [
-        const ColonneTableau(cle: 'souscripteur', libelle: 'Souscripteur'),
-        ColonneTableau(
-            cle: 'compagnie',
-            libelle: 'Compagnie',
-            texte: (g) => '${g['compagnie']}',
-            rendu: (_, g) => BadgeSigh('${g['compagnie']}', ton: TonSigh.navy)),
-        const ColonneTableau(cle: 'libelle', libelle: 'Garantie'),
-        ColonneTableau(
-            cle: 'categorie',
-            libelle: 'Catégorie',
-            texte: (g) => assLibelleCategorie(g['categorie'])),
-        ColonneTableau(
-            cle: 'taux',
-            libelle: 'Taux',
-            droite: true,
-            texte: (g) => '${g['taux']} %',
-            rendu: (_, g) => Text('${g['taux']} %',
-                style: const TextStyle(
-                    color: JetonsShell.slate700,
-                    fontSize: 14,
-                    height: 20 / 14,
-                    fontWeight: FontWeight.w600))),
-        ColonneTableau(
-            cle: 'plafond',
-            libelle: 'Plafond',
-            droite: true,
-            texte: (g) => g['plafond'] == null ? '' : '${g['plafond']}',
-            rendu: (_, g) => g['plafond'] == null
-                ? const Text('sans plafond',
-                    style: TextStyle(
-                        color: JetonsShell.slate300, fontSize: 12, height: 16 / 12))
-                : Text(
-                    '${m(g['plafond'])} ${assLibelleUnite(g['unitePlafond'])}',
-                    style: const TextStyle(
-                        color: JetonsShell.slate700, fontSize: 14, height: 20 / 14))),
-      ],
-    );
+        pied: (fermer) => [
+              BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
+              BoutonSigh(
+                  libelle: 'Poser la version',
+                  icone: LucideIcons.save,
+                  onPressed: () {
+                    final v = ctl.valider();
+                    if (v == null) return;
+                    final r = poserGarantie(c, {
+                      'souscripteurId': serie.souscripteurId,
+                      'categorie': serie.categorie,
+                      'libelle': serie.libelle,
+                      'taux': v['taux'],
+                      'plafond': v['plafond'],
+                      'unitePlafond': v['unitePlafond'],
+                      'dateEffet': v['dateEffet'],
+                      'motif': '${v['motif'] ?? ''}'.trim().isEmpty ? null : '${v['motif']}'.trim(),
+                      'source': 'Saisie à l’écran « Conventions & garanties »',
+                    });
+                    if (!r.ok) {
+                      ToastsSigh.afficher(ctx, r.motif!, type: TypeToast.erreur, detail: r.geste);
+                      return;
+                    }
+                    final f = c.magasin.collection('garanties').inserer(r.fiche!, prefixe: 'GAR').fiche;
+                    fermer();
+                    ToastsSigh.afficher(ctx, 'Version v${f['version']} posée.', type: TypeToast.succes, detail: '${serie.libelle} : ${f['taux']} % à partir du ${dateDe(f['dateEffet'])}.');
+                  }),
+            ]);
   }
 }
 
@@ -253,8 +395,8 @@ class _OngletSouscripteurs extends StatelessWidget {
   const _OngletSouscripteurs({required this.c});
   final ContexteEcran c;
 
-  List<Fiche> _garantiesDe(Object? id) =>
-      actives(c, 'garanties').where((g) => g['souscripteurId'] == id).toList();
+  /// La grille LUE (une version par série, celle en vigueur aujourd'hui) : ce que l'écran compte, liste et imprime est ce que la prise en charge applique.
+  List<Fiche> _garantiesDe(Object? id) => garantiesEnVigueurDe(actives(c, 'garanties'), id, iso(c.aujourdhui));
   List<Fiche> _assuresDe(Object? id) => actives(c, 'patients')
       .where((p) => p['souscripteurId'] == id)
       .toList();
@@ -462,6 +604,7 @@ class _OngletSouscripteurs extends StatelessWidget {
                                         ? '—'
                                         : '${m(x['plafond'])} ${assLibelleUnite(x['unitePlafond'])}',
                                     droite: true),
+                                ColonneMini('Depuis', (x) => depuisLe(x)),
                               ], lignes: g)
                             : Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -504,7 +647,7 @@ class _OngletSouscripteurs extends StatelessWidget {
         pied: (fermer) => [
               if (c.droit.editer)
                 BoutonSigh(
-                    libelle: 'Modifier la grille',
+                    libelle: 'Nouvelle version de la grille',
                     icone: LucideIcons.percent,
                     variante: VarianteBouton.secondaire,
                     onPressed: () {
@@ -567,8 +710,19 @@ class _OngletSouscripteurs extends StatelessWidget {
                         taux: [for (var i = 0; i < g.length; i++) v['taux_$i']],
                         plafonds: [for (var i = 0; i < g.length; i++) v['plafond_$i']]);
                     final cg = c.magasin.collection('garanties');
+                    // Chaque ligne est la VERSION 1 de sa série, « depuis l'ouverture » : aucune date n'est inventée (T13).
+                    final posees = <Fiche>[];
                     for (final l in lignes) {
-                      cg.inserer(l, prefixe: 'GAR');
+                      final r = poserGarantie(c, {...l, 'sansDate': true, 'unitePlafond': l['unitePlafond']});
+                      if (!r.ok) {
+                        ToastsSigh.afficher(ctx, r.motif!, type: TypeToast.erreur, detail: r.geste);
+                        return;
+                      }
+                      // Le barème garde l'unité de chaque ligne même quand la clinique supprime le plafond : la fiche reste celle que la saisie d'un bloc écrivait avant les versions.
+                      posees.add({...r.fiche!, 'unitePlafond': l['unitePlafond'], if (l['source'] != null) 'source': l['source']});
+                    }
+                    for (final f in posees) {
+                      cg.inserer(f, prefixe: 'GAR');
                     }
                     c.magasin
                         .collection('souscripteurs')
@@ -582,20 +736,32 @@ class _OngletSouscripteurs extends StatelessWidget {
             ]);
   }
 
+  /// MODIFIER LA GRILLE = POSER UNE NOUVELLE VERSION DATÉE de chaque ligne qui change (T13) : une garantie ne se réécrit jamais, la version remplacée reste écrite et les pièces émises
+  /// gardent leur taux. Toutes les lignes sont contrôlées AVANT la première écriture : un refus (date dépassée par une facture, plafond sans unité…) nomme la ligne et n'écrit rien.
   void _editerGrille(BuildContext ctx, Fiche s) {
     final g = _garantiesDe(s['id']);
     if (g.isEmpty) {
       _proposerBareme(ctx, s);
       return;
     }
-    final ctl = ControleurFormulaire(_champsGrille([for (final x in g) x['libelle']!]), {
+    final ctl = ControleurFormulaire([
+      const ChampDef(
+          nom: 'dateEffet',
+          libelle: 'Date d’effet de la nouvelle grille',
+          type: TypeChamp.date,
+          requis: true,
+          col: ColChamp.plein,
+          aide: 'Les pièces antérieures gardent les taux de leur date. Seules les lignes modifiées reçoivent une nouvelle version.'),
+      ..._champsGrille([for (final x in g) x['libelle']!]),
+    ], {
+      'dateEffet': '',
       for (var i = 0; i < g.length; i++) ...{
         'taux_$i': '${g[i]['taux']}',
         'plafond_$i': g[i]['plafond'] == null ? '' : '${g[i]['plafond']}',
       }
     });
     afficherModale<void>(ctx,
-        titre: 'Grille de ${s['nom']}',
+        titre: 'Nouvelle version de la grille de ${s['nom']}',
         taille: TailleModale.xl,
         corps: FormulaireSigh(controleur: ctl),
         pied: (fermer) => [
@@ -604,22 +770,49 @@ class _OngletSouscripteurs extends StatelessWidget {
                   variante: VarianteBouton.secondaire,
                   onPressed: fermer),
               BoutonSigh(
-                  libelle: 'Enregistrer',
+                  libelle: 'Poser la nouvelle version',
                   icone: LucideIcons.save,
                   onPressed: () {
                     final v = ctl.valider();
                     if (v == null) return;
-                    final cg = c.magasin.collection('garanties');
+                    final aPoser = <Map<String, Object?>>[];
                     for (var i = 0; i < g.length; i++) {
                       final p = '${v['plafond_$i'] ?? ''}'.trim();
-                      cg.mettreAJour(g[i]['id'], {
-                        'taux': num.tryParse('${v['taux_$i']}'.trim()) ?? 0,
-                        'plafond': p.isEmpty ? null : (num.tryParse(p) ?? 0),
+                      final taux = num.tryParse('${v['taux_$i']}'.trim()) ?? 0;
+                      final plafond = p.isEmpty ? null : (num.tryParse(p) ?? 0);
+                      final avant = g[i];
+                      if (taux == avant['taux'] && plafond == avant['plafond']) continue;
+                      aPoser.add({
+                        'souscripteurId': s['id'],
+                        'categorie': avant['categorie'],
+                        'libelle': avant['libelle'],
+                        'taux': taux,
+                        'plafond': plafond,
+                        'unitePlafond': avant['unitePlafond'],
+                        'dateEffet': v['dateEffet'],
+                        'source': 'Saisie à l’écran « Conventions & garanties »',
                       });
                     }
+                    if (aPoser.isEmpty) {
+                      ToastsSigh.afficher(ctx, 'Aucune ligne n’a changé : aucune version n’est posée.', type: TypeToast.info);
+                      return;
+                    }
+                    final posees = <Fiche>[];
+                    for (final spec in aPoser) {
+                      final r = poserGarantie(c, spec, essai: true);
+                      if (!r.ok) {
+                        ToastsSigh.afficher(ctx, '« ${spec['libelle']} » : ${r.motif}', type: TypeToast.erreur, detail: '${r.geste} Rien n’a été écrit.');
+                        return;
+                      }
+                    }
+                    final cg = c.magasin.collection('garanties');
+                    for (final spec in aPoser) {
+                      final r = poserGarantie(c, spec);
+                      posees.add(cg.inserer(r.fiche!, prefixe: 'GAR').fiche);
+                    }
                     fermer();
-                    ToastsSigh.afficher(ctx, 'Grille mise à jour.',
-                        type: TypeToast.succes);
+                    ToastsSigh.afficher(ctx, 'Nouvelle grille posée.',
+                        type: TypeToast.succes, detail: '${posees.length} version(s) à partir du ${dateDe(v['dateEffet'])} ; les versions précédentes restent écrites.');
                   }),
             ]);
   }
@@ -765,9 +958,16 @@ class _EtatSimulateur extends State<_Simulateur> {
           options: [
             for (final p in _assures)
               OptionChamp('${p['id']}', '${p['nom']} ${p['prenom']}')
-          ])
+          ]),
+      const ChampDef(
+          nom: 'date',
+          libelle: 'Date de la pièce',
+          type: TypeChamp.date,
+          col: ColChamp.plein,
+          aide: 'La grille et la couverture se lisent À CETTE DATE (RG-09) : une version de garantie datée après elle ne compte pas.')
     ], {
-      'assure': _assures.isEmpty ? '' : '${_assures.first['id']}'
+      'assure': _assures.isEmpty ? '' : '${_assures.first['id']}',
+      'date': iso(c.aujourdhui),
     });
     _montants = ControleurFormulaire([
       for (var i = 0; i < assLignesSimulateur.length; i++)
@@ -826,7 +1026,7 @@ class _EtatSimulateur extends State<_Simulateur> {
       final r = repartir(
           patient: p,
           lignes: lignes,
-          date: iso(c.aujourdhui),
+          date: '${_patient['date']}'.isEmpty ? iso(c.aujourdhui) : '${_patient['date']}',
           couvertures: actives(c, 'couverturesAssurance'),
           souscripteurs: actives(c, 'souscripteurs'),
           garanties: actives(c, 'garanties'));

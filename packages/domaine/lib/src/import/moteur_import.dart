@@ -780,7 +780,10 @@ ResultatImport appliquer(JeuImport j, AnalyseImport analyse, PortImport port) {
   }
   final ctx = j.contexte(_VueSansLotsDefaits(port));
   final reference = referenceLot(port);
-  final lot = <String, Object?>{'reference': reference};
+  // `restaurations` : ce qu'un jeu a MODIFIÉ sur des fiches tenues (la fin d'une couverture close la veille, la fiche du dossier) avec la valeur d'AVANT : `{collection, id, avant}`. Une fiche
+  // qu'un lot a modifiée ne s'archive pas à l'annulation, elle REPREND sa valeur. Le jeu l'ajoute à cette liste (par `lot['restaurations']`) juste après chaque modification.
+  final restaurations = <Map<String, Object?>>[];
+  final lot = <String, Object?>{'reference': reference, 'restaurations': restaurations};
   final ecrits = <Map<String, Object?>>[];
   final par = port.utilisateur, jour = port.jour;
   FicheImport ecrireFiche(String collection, FicheImport fiche) {
@@ -799,6 +802,9 @@ ResultatImport appliquer(JeuImport j, AnalyseImport analyse, PortImport port) {
   try {
     j.ecrire([for (final l in rejeu.lignes) if (!l.ignoree) l], ecrireFiche, lot, ctx, port);
   } catch (e) {
+    for (final x in restaurations.reversed) {
+      port.mettreAJour('${x['collection']}', x['id'], (x['avant'] as Map).cast<String, Object?>());
+    }
     for (final x in ecrits.reversed) {
       port.retirer('${x['collection']}', x['id']);
     }
@@ -823,6 +829,7 @@ ResultatImport appliquer(JeuImport j, AnalyseImport analyse, PortImport port) {
     'nbAvertissements': rejeu.compte.avertissements,
     'nbRefus': 0,
     'ecrits': ecrits,
+    if (restaurations.isNotEmpty) 'restaurations': restaurations,
     'erreurs': _erreursPlafonnees(ps),
     'erreursTotal': ps.length,
     'ignores': rejeu.ignorees,
@@ -866,6 +873,10 @@ ResultatImport annulerLot(JeuImport? Function(String id) jeu, Object? lotId, Str
     }
     return ResultatImport.refus('ARCHIVAGE_REFUSE', 'le moteur a refusé d’archiver une fiche de « ${echec['collection']} » (exercice clos ou fiche verrouillée)',
         'Rien n’a été annulé. Rouvrez l’exercice ou traitez la fiche à la main.');
+  }
+  // Les fiches que le lot avait MODIFIÉES reprennent leur valeur d'avant (la fin d'une couverture, la fiche du dossier) : rien n'est écrasé en silence, rien n'est supprimé.
+  for (final r in ((lot['restaurations'] as List?) ?? const []).cast<Map>()) {
+    if (port.parId('${r['collection']}', r['id']) != null) port.mettreAJour('${r['collection']}', r['id'], (r['avant'] as Map).cast<String, Object?>());
   }
   port.mettreAJour(collectionLots, lot['id'], {'etat': 'annule', 'annulePar': port.utilisateur, 'annuleLe': port.jour, 'motifAnnulation': motif});
   port.journaliser('Import annulé', 'IMP', 'LotImport', '${lot['reference']}', {'etat': 'applique'}, {'etat': 'annule', 'fiches': faits.length});

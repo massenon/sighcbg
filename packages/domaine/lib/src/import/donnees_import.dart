@@ -45,3 +45,14 @@ const importSectionsLabo = <List<String>>[
   ['bacteriologie', 'Bactériologie'],
   ['hormonologie', 'Hormonologie'],
 ];
+
+/// Motifs d'un changement de couverture d'un assuré (écran « Assurés & cartes », `D.MOTIFS_COUVERTURE`).
+const importMotifsCouverture = <String>[
+  'Changement d’employeur',
+  'Changement de compagnie par l’assuré',
+  'Convention non reconduite',
+  'Renouvellement de carte',
+  'Changement de police',
+  'Fin de couverture — patient redevenu non assuré',
+  'Correction d’une saisie erronée',
+];

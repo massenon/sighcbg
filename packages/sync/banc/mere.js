@@ -46,6 +46,8 @@ const FAMILLES = {
   parametres: 'R', usagesParametres: 'B',
   /* Lot T6 : le référentiel de prix unique (versions immuables, R) et les demandes de prix d'un fileul (A : le fileul dépose, la mère complète du verdict). */
   versionsTarif: 'R', propositionsTarif: 'A',
+  /* T13 : la couverture d'assurance datée suit les fiches patient (A) ; miroir de `sync_dart/lib/src/mere.dart`. */
+  couverturesAssurance: 'A',
   /* Les DROITS (10/11/2026) : la fiche de chaque rôle et les activités fermées sont de la configuration (R : la mère seule écrit, les fileuls reçoivent) ; les
      DÉCISIONS de droits sont une fiche descriptive (A) qu'un poste habilité dépose à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche. */
   rbac: 'R', modulesActifs: 'R', decisionsDroits: 'A',
@@ -61,7 +63,7 @@ const FAMILLES = {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['demandesImport', 'lecturesOcr', 'reglagesOcr', 'prestataires']; /* prestataires : la rémunération (tarif par acte) ne part jamais vers un téléphone */
+const MOBILE_JAMAIS = ['demandesImport', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";

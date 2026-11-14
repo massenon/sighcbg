@@ -29,6 +29,8 @@ const Set<String> collectionsActivite = {
   'consultations',
   'dossiersConsultation',
   'antecedents',
+  // T13 : la couverture d'assurance datée de l'assuré suit les fiches patient (famille A de la mère), jamais vers un téléphone. La GARANTIE n'est pas ici : c'est de la configuration, la mère seule l'écrit.
+  'couverturesAssurance',
   // Les fiches des SCANS (métadonnées : empreinte, nom normalisé, version) et leur registre par empreinte : un fileul voit le courrier ou le document déposé sur un autre
   // poste. Le fichier lui-même reste chez la mère (`/sync/fichier/*`).
   'courriers',

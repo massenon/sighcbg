@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, RapportMigrationConstantes, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeVersion, cpcGardeBudgets;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeVersion, cpcGardeBudgets;
 
 import 'persistance.dart';
 
@@ -643,8 +643,25 @@ class Magasin {
         col.archiver(d.$1);
       }
     }
+    // T13 : MIGRATION D'UN POSTE DÉJÀ PEUPLÉ. Chaque garantie qui ne porte pas de rang devient la version 1 de sa série, « depuis l'ouverture » : sa date d'effet RESTE vide (une date que personne n'a
+    // saisie ne s'invente pas), aucun taux ni plafond ne change. Faite une fois à la création de la collection, idempotente et déterministe : la mère et chaque fileul aboutissent au même état
+    // sans que la migration voyage (aucune opération n'est émise : `appliquerDistante` ne passe pas ici).
+    if (neuve && nom == 'garanties') {
+      final m = assMigrerGaranties(col.toutes);
+      if (m.aFait) {
+        for (final f in m.fiches) {
+          col.mettreAJour(f['id'], {'version': f['version']}, journaliser: false);
+        }
+        migrationGaranties = m;
+        journaliser('Migration', 'M9', 'Garantie', 'rang de version', null,
+            {'series': m.series, 'versionsPosees': m.versionsPosees, 'doublonsSansDate': m.doublons, 'dateEffet': 'inchangée : depuis l’ouverture'});
+      }
+    }
     return col;
   }
+
+  /// Ce que la migration des garanties a fait à l'ouverture de la collection (`null` : rien à faire, poste neuf ou déjà migré) : le poste le DIT, il ne change pas la donnée en silence.
+  AssMigrationGaranties? migrationGaranties;
 
   CollectionMagasin _collection(String nom) => _c.putIfAbsent(nom, () {
         final c = CollectionMagasin(nom, _jeux[nom] ?? const [],
@@ -680,6 +697,18 @@ class Magasin {
         if (nom == 'seuilsDelta') c.garder((op, f) => gardeSeuil(op, f, collection('seuilsDelta').parId(f['id'])));
         // Lot T6 (PRD-TARIFS) : une version de prix est IMMUABLE (une correction AJOUTE une version) et `actes`, `analyses`, `catalogueTarifs` ne s'éditent plus pour un prix :
         // elles reflètent le référentiel (la projection les réécrit par `appliquerDistante`, qui ne passe pas par les gardes). Tenu AU MOTEUR : masquer un bouton ne protège rien.
+        // T13 : une version de garantie est IMMUABLE (une correction AJOUTE une version avec sa date d'effet) ; une version ne s'ajoute qu'à la fin de sa série, à une date que ni une version ni une
+        // facture émise n'a dépassée ; elle ne s'archive pas sous la suivante ni sous une pièce émise. Tenu AU MOTEUR : masquer un bouton ne protège rien.
+        if (nom == 'garanties') {
+          c.garder((op, f) => assGardeGarantie(op, f, c.parId(f['id']),
+              garanties: c.toutes,
+              souscripteur: (id) => collection('souscripteurs').parId(id),
+              factureSousGrille: (s, jour) => assFactureSousGrille(s, jour,
+                  factures: collection('factures').actives,
+                  patients: collection('patients').actives,
+                  couvertures: collection('couverturesAssurance').actives,
+                  souscripteurs: collection('souscripteurs').actives)));
+        }
         if (nom == 'versionsTarif') c.garder((op, f) => tarGardeVersion(op, f, c.parId(f['id'])));
         if (tarChampsPrixLecture.containsKey(nom)) {
           c.garder((op, f) => tarGardeLecture(nom, op, f, c.parId(f['id']), referentielPresent: collection('versionsTarif').toutes.isNotEmpty));

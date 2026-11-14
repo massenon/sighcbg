@@ -393,6 +393,14 @@
    "titre": "Importation des budgets",
    "description": "Budget prévisionnel par exercice, centre de coûts et nature budgétaire."
   },
+  "imp-garanties": {
+   "titre": "Importation des garanties des souscripteurs",
+   "description": "Taux et plafonds par souscripteur et par garantie, avec une date d’effet : chaque ligne qui change crée une NOUVELLE VERSION datée, jamais un écrasement."
+  },
+  "imp-couvertures-assurance": {
+   "titre": "Importation des couvertures d’assurance",
+   "description": "Changement de couverture d’un assuré à une date d’effet : compagnie, police, motif, expiration de la carte. La couverture en cours est close la veille."
+  },
   "imp-souscripteurs": {
    "titre": "Importation des souscripteurs",
    "description": "Souscripteurs rattachés à une compagnie : n° de police, catégorie, effectif, période."
