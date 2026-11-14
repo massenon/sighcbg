@@ -51,9 +51,13 @@ const List<String> _motsVides = [
   'quel', 'quelle', 'quels', 'quelles', 'pour', 'par', 'sur', 'dans', 'avec', 'mon', 'ma', 'mes', 'il', 'elle', 'ils', 'elles', 't', 'y', 'on', 'nous', 'vous', 'je',
   'tu', 'me', 'moi', 'toi', 'se', 's', 'qu', 'c', 'n', 'ne', 'pas', 'ont', 'as', 'es', 'si', 'ok', 'merci', 'svp', 'plus', 'moins', 'tout', 'tous', 'toute', 'toutes',
   'montre', 'donne', 'voir', 'fait', 'faire', 'dis', 'dire', 'liste', 'quand', 'combien', 'soir', 'depuis', 'jusqu', 'bonjour', 'stp', 'moi', 'encore', 'deja', 'aussi',
-  'boite', 'boites', 'unite', 'unites', 'article', 'articles', 'produit', 'produits', 'medicament', 'medicaments', 'son', 'sa', 'ses', 'leur', 'leurs', 'du', 'est ce',
+  'boite', 'boites', 'unite', 'unites', 'son', 'sa', 'ses', 'leur', 'leurs', 'est ce',
   'veux', 'voudrais', 'puis', 'peux', 'sais', 'savoir', 'connaitre', 'quelqu', 'chez', 'cest',
 ];
+
+/// Les mots génériques qui DÉSIGNENT un article sans le nommer : retirés quand ils précèdent le nom (« le stock de l'article X »), conservés derrière (« EXEMPLE/Article » est
+/// un nom dont le dernier mot est « article »).
+const List<String> _motsGeneriques = ['article', 'articles', 'produit', 'produits', 'medicament', 'medicaments', 'reference', 'references'];
 
 const List<String> _motsPeriode = [
   'aujourd', 'hui', 'hier', 'demain', 'cette', 'semaine', 'mois', 'dernier', 'derniere', 'derniers', 'dernieres', 'passe', 'passee', 'annee', 'jour', 'jours',
@@ -431,6 +435,7 @@ class ReconnaisseurAst {
       if (m.isEmpty || _motsVides.contains(m) || _motsPeriode.contains(m) || entitesTexte.contains(m) || couverts.contains(k) || chiffresPeriode.contains(m)) continue;
       if (indicesIntention.any((x) => x == m || (x.length >= 5 && _egal(m, x)))) continue;
       if (const ['assure', 'non', 'avant', 'quelle', 'valeur', 'montant', 'reste', 'devons', 'doit'].contains(m)) continue;
+      if (reste.isEmpty && _motsGeneriques.contains(m)) continue;
       reste.add(m);
     }
     return reste.join(' ').trim();
