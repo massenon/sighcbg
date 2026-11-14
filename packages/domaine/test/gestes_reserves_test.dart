@@ -92,6 +92,14 @@ void main() {
     }
 
     expect(en(fiches).peut('laborantin', g), isTrue);
+    // Une fiche créée pour l'administrateur système (qui n'en avait pas) ne porte que le geste : ses droits d'ÉCRAN ne bougent pas d'une case.
+    final avant = superposerDroits(base, manifeste);
+    final apres = superposerDroits(base, manifeste, rbac: [fiche('admin', {g: true}, id: 'RBADM')..['libelleOrigine'] = 'Administrateur système']);
+    expect(apres.ecransVisibles('admin'), avant.ecransVisibles('admin'));
+    for (final e in avant.ecransVisibles('admin')) {
+      expect(apres.droit('admin', e), avant.droit('admin', e), reason: e);
+    }
+    expect(en([fiche('admin', {g: true}, id: 'RBADM')]).peut('admin', g), isTrue);
     expect(en([fiche('laborantin', {g: true}, id: 'RB8')..['statut'] = 'archive']).peut('laborantin', g), isFalse);
     expect(en([...fiches, {'id': 'RB9', 'role': 'laborantin', 'statut': 'archive'}]).peut('laborantin', g), isFalse);
   });
