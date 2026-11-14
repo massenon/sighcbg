@@ -1,0 +1,58 @@
+{
+ "id": "m3-surveillance",
+ "module": "M3",
+ "domaine": "Soins",
+ "libelleManifeste": "Fiche de surveillance",
+ "acces": "ouvert",
+ "titre": "Fiche de surveillance",
+ "description": "Relevé horodaté des constantes et courbe de surveillance à cinq échelles.",
+ "fil": [
+  "Accueil",
+  "Soins",
+  "Hospitalisation",
+  "Fiche de surveillance"
+ ],
+ "actions": [
+  "Admissions",
+  "Mise en observation",
+  "Hospitalisation"
+ ],
+ "regle": [
+  "CBG/1109/26 — SOUVOLOUR AzomouCNT/5/26 — TACHEDI GedurCNT/11/26 — TOUZA SigbudjaCNT/13/26 — GEVAMIAN AmachimCNT/14/25 — BIAREL AnapouziaCNT/20/26 — SEMIA BouboliCNT/23/26 — N’ACHOU ArialuCNT/27/26 — SOUDER BodjeCNT/32/26 — BUKE MudovurCNT/34/26 — SEMIA GedurCNT/41/26 — BIAREL SaliagelCNT/43/26 — BUKE JiakpuneCNT/50/26 — TIGECHE CichinCNT/54/26 — TIAMOU CoufiCNT/57/26 — KALOU FoulumiCNT/59/26 — ACHOUBE EdjukavomCNT/63/26 — HOULUKE TavapiCNT/64/26 — HOULUKE EdjukavomCNT/67/26 — BIALI SunokpuCNT/68/26 — METIAVI YeliaCNT/71/26 — TOGA AmachimCNT/74/26 — HOULUKE SazoCNT/75/26 — N’ACHOU HiabidjoCBG/77/26 — SEMIA JiakpuneCNT/80/26 — AKPOMER ZapetoCNT/86/26 — BUKE NoupiCNT/88/26 — ODJIPIAR YUDJOUVOU GedurCNT/90/26 — N’ACHOU SazoCNT/92/25 — YIAKI RiadifeCNT/95/25 — KIAVUMU RiadifeCNT/97/26 — SOUDER NadègeCNT/100/25 — BIALI CichinCNT/101/26 — ZIAVEL AbebiaCNT/109/26 — PENU CoufiCNT/115/26 — KALOU AfaguCNT/116/25 — BUKE FoulumiCNT/119/26 — WEDIA BukeCNT/121/25 — YIAKI BioCNT/126/25 — BICHIASI HiabidjoCBG/128/25 — ISIASIABU AzomouCNT/131/26 — PENU BodjeCNT/138/26 — YIAKI EdjukavomCNT/141/25 — KIAVUMU MibuCNT/143/26 — SOUDER AfaguCNT/144/26 — GEVAMIAN TavapiCNT/158/26 — TIGECHE OrouCNT/167/26 — BICHIASI BioCNT/174/26 — SIACHOU NadègeCNT/177/25 — PENU RafiakpeCNT/180/25 — TOUZA KedjopouCNT900/25 — BICHIASI Cezoune SichovianCNT901/25 — TACHEDI ArialuCNT904/25 — YORO M’ABEKPIA FoulumiCNT907/25 — KELE A. GedurCNT909/25 — GEVAMIAN YeliaCNT913/25 — PENU Abebia"
+ ],
+ "onglets": [],
+ "kpis": [
+  "Patients suivis",
+  "Relevés enregistrés",
+  "Relevés du jour",
+  "Échelles suivies"
+ ],
+ "cartes": [
+  "Patient suivi",
+  "Feuille de température — SOUVOLOUR Azomou",
+  "Relevés horodatés"
+ ],
+ "tableaux": [
+  [
+   "Date",
+   "Heure",
+   "Moment",
+   "Température",
+   "TA",
+   "FR",
+   "Pouls",
+   "Diurèse",
+   "Relevé par",
+   "Source"
+  ]
+ ],
+ "commandes": [
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [
+  "Sélectionner un patient"
+ ],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}

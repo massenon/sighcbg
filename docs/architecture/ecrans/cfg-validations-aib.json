@@ -1,0 +1,10 @@
+{
+  "id": "cfg-validations-aib",
+  "module": "CFG",
+  "domaine": "Système",
+  "libelleManifeste": "Validations de l’AIB",
+  "acces": "ouvert",
+  "titre": "Validations de l’AIB",
+  "description": "Quatre formulaires de validation : le barème de l’AIB, la base de la retenue sur les factures fournisseurs, le branchement de l’IFU de l’acheteur, les comptes de l’AIB.",
+  "note": "Fiche rédigée pour le poste Baguidi (décisions D4, D7 et D8 du 09/11/2026 ; position AIB du 09/11/2026) : quatre formulaires de validation versionnés aux Paramètres (barème, base, branchement IFU, comptes)."
+}
