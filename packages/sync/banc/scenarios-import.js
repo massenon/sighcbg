@@ -242,8 +242,11 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
       verifier('la mère écrit le lot et le mouvement ' + (i + 1) + ' de la demande sous leurs identifiants communs', rl.statut === 'acceptee' && rm.statut === 'acceptee', [rl, rm]);
     }
     /* Le fileul PUBLIE à son tour (la mère a confirmé : sa fiche cesse d'être propre au poste) la fiche qu'il tient sous le MÊME identifiant : un seul lot, jamais deux. */
+    const lotsAvantRejeu = await compte('lots');
     await f1.ecrire({ type: 'creer', collection: 'lots', fiche: 'LOT-DIMG1-1', champs: lot('DIMG1', 1, 100) });
-    verifier('la même identité écrite une seconde fois est refusée (fiche_existe) : un lot n\'existe jamais en double', await attendre(() => refus(f1, 'fiche_existe'), 15000), (await f1.etat()).a_traiter);
+    /* Une création STRICTEMENT identique à ce que la mère détient est un rejeu accepté sans effet (parité Dart et référence) : ce qui compte, c'est qu'un lot n'existe jamais en double. */
+    await dormir(1500);
+    verifier('la même identité écrite une seconde fois ne double jamais le lot (rejeu sans effet)', (await compte('lots')) === lotsAvantRejeu, await compte('lots'));
     verifier('la mère tient exactement DEUX lots et DEUX mouvements pour la demande (pas quatre)', (await compte('lots')) === 2 && (await compte('mouvements')) === 2, [await compte('lots'), await compte('mouvements')]);
     /* ... et corrige un champ d'une fiche tenue : champ à champ, jamais une seconde fiche. */
     await f1.ecrire({ type: 'modifier', collection: 'lots', fiche: 'LOT-DIMG1-1', champs: { emplacement: 'Rayon A' } });
@@ -257,8 +260,10 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     /* 3. LES VARIATIONS s'ajoutent UNE fois : une fiche par variation, jamais modifiée ; la même variation rejouée est refusée, elle ne compte pas deux fois */
     await f1.ecrire({ type: 'creer', collection: 'deltasCompteurs', fiche: 'F1~1~0', champs: { cle: 'lots/LOT-DIMG1-1/quantiteRestante', delta: -10, poste: 'F1' } });
     verifier('la variation de sortie du fileul est acceptée par la mère (une fiche ajoutée)', await attendre(async () => (await compte('deltasCompteurs')) === 1, 15000));
+    const deltasAvantRejeu = await compte('deltasCompteurs');
     await f1.ecrire({ type: 'creer', collection: 'deltasCompteurs', fiche: 'F1~1~0', champs: { cle: 'lots/LOT-DIMG1-1/quantiteRestante', delta: -10, poste: 'F1' } });
-    verifier('la même variation rejouée est refusée (fiche_existe) : une sortie ne se compte jamais deux fois', await attendre(async () => (await f1.etat()).a_traiter.filter((x) => x.code === 'fiche_existe').length >= 2, 15000), (await f1.etat()).a_traiter);
+    await dormir(1500);
+    verifier('la même variation rejouée ne se compte jamais deux fois (rejeu sans effet)', (await compte('deltasCompteurs')) === deltasAvantRejeu, await compte('deltasCompteurs'));
     verifier('la mère ne détient qu\'UNE variation', (await compte('deltasCompteurs')) === 1);
 
     /* 4. DEUX FILEULS IMPORTENT LE MÊME INVENTAIRE : la mère refuse la seconde demande en nommant ; le second fileul ajoute SA restitution PARTIELLE (un article déjà sorti reste) sur la même fiche */
@@ -372,8 +377,10 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
       const rm = await mereEcrit('mouvements', 'MOU-' + SERIE + '-' + (i + 1), mouvement(i + 1, q));
       verifier('la mère écrit le lot et le mouvement ' + (i + 1) + ' sous les identifiants communs', rl.statut === 'acceptee' && rm.statut === 'acceptee', [rl, rm]);
     }
+    const lotsAvantSecond = await compte('lots');
     await f2.ecrire({ type: 'creer', collection: 'lots', fiche: 'LOT-' + SERIE + '-1', champs: lot(1, 100) });
-    verifier('le second fileul, qui tient la même identité, ne peut pas écrire une seconde fiche : refusée (fiche_existe), aucun lot doublé', await attendre(async () => (await f2.etat()).a_traiter.some((x) => x.code === 'fiche_existe'), 15000), (await f2.etat()).a_traiter);
+    await dormir(1500);
+    verifier('le second fileul, qui tient la même identité, ne double jamais le lot (rejeu sans effet)', (await compte('lots')) === lotsAvantSecond, await compte('lots'));
     verifier('la mère tient exactement DEUX lots et DEUX mouvements (pas quatre)', (await compte('lots')) === 2 && (await compte('mouvements')) === 2, [await compte('lots'), await compte('mouvements')]);
 
     /* 3. LES VERDICTS : confirmation pour la première demande, ADOPTION pour la seconde (jamais un refus) ; chaque fileul reçoit le sien sur la même fiche */
@@ -390,8 +397,10 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     await f1.ecrire({ type: 'creer', collection: 'deltasCompteurs', fiche: 'F1~1~0', champs: { cle: 'lots/LOT-' + SERIE + '-1/quantiteRestante', delta: -10, poste: 'F1' } });
     await f2.ecrire({ type: 'creer', collection: 'deltasCompteurs', fiche: 'F2~1~0', champs: { cle: 'lots/LOT-' + SERIE + '-1/quantiteRestante', delta: -10, poste: 'F2' } });
     verifier('la mère reçoit UNE variation par fileul (deux sorties, deux fiches)', await attendre(async () => (await compte('deltasCompteurs')) === 2, 15000), await compte('deltasCompteurs'));
+    const deltasAvantRejeu2 = await compte('deltasCompteurs');
     await f1.ecrire({ type: 'creer', collection: 'deltasCompteurs', fiche: 'F1~1~0', champs: { cle: 'lots/LOT-' + SERIE + '-1/quantiteRestante', delta: -10, poste: 'F1' } });
-    verifier('la même variation rejouée est refusée (fiche_existe) : une sortie ne se compte jamais deux fois', await attendre(async () => (await f1.etat()).a_traiter.filter((x) => x.code === 'fiche_existe').length >= 1, 15000), (await f1.etat()).a_traiter);
+    await dormir(1500);
+    verifier('la même variation rejouée ne se compte jamais deux fois (rejeu sans effet)', (await compte('deltasCompteurs')) === deltasAvantRejeu2, await compte('deltasCompteurs'));
     verifier('la mère ne détient que DEUX variations', (await compte('deltasCompteurs')) === 2);
 
     /* 5. LE VERDICT EST RE-ÉCRIT (rejeu) PUIS LA MÈRE EST TUÉE ET RELANCÉE : l'état final est identique, rien n'est ajouté */
