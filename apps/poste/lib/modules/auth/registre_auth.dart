@@ -7,6 +7,7 @@ import '../cfg/cfb_commun.dart' show cfbPlanDuSiteActif;
 import 'acc_ecrans.dart';
 import 'ins_ecrans.dart';
 import 'acc_support.dart';
+import 'ast_ecran.dart';
 
 typedef ConstruireEcran = Widget Function(BuildContext contexte, ConfigPoste config);
 
@@ -30,4 +31,6 @@ final Map<String, ConstruireEcran> ecransAUTH = {
   'aide-apropos': (c, cfg) => const EcranAide(),
   'parametres-hub': (c, cfg) => EcranParametresHub(estMere: cfg.estMere),
   'contact-editeur': (c, cfg) => const EcranContactEditeur(),
+  // L'assistant (lot AST-1) : module SUP, hors ruban, écran universel — tout agent authentifié l'ouvre, chaque réponse est filtrée par ses droits.
+  'sup-assistant': (c, cfg) => const EcranAssistant(),
 };
