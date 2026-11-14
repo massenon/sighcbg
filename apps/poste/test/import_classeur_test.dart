@@ -41,7 +41,8 @@ List<List<Object?>> adapter(String jeu, List<List<Object?>> lignes) {
 
 void main() {
   group('lecture des classeurs écrits par la maquette', () {
-    for (final c in (vecteurs['cas'] as List).cast<Map>()) {
+    // Les classeurs `ac-*` rejouent l'ancien jeu « catalogue des actes » de la maquette, REMPLACÉ par « Tarifs et prix » (lot TAR, E2582) : rejoués par `tarifs_import_test.dart`.
+    for (final c in (vecteurs['cas'] as List).cast<Map>().where((c) => c['jeu'] != 'actes')) {
       test('${c['id']} : mêmes lignes, même verdict que la maquette', () {
         final feuilles = lireClasseur(fixture('${c['id']}'));
         expect(feuilles.map((f) => f.nom), ['Données']);
