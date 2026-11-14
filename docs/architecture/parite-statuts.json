@@ -374,5 +374,12 @@
  "imp-inventaire": "porté",
  "imp-emplacements": "porté",
  "imp-courriers": "porté",
+ "imp-natures-facture": "porté",
+ "imp-centres-couts": "porté",
+ "imp-unites-labo": "porté",
+ "imp-catalogue-imagerie": "porté",
+ "imp-prestataires": "porté",
+ "imp-immobilisations": "porté",
+ "imp-budgets": "porté",
  "m6-import-grand-stock": "porté"
 }

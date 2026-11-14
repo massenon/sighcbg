@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, RapportMigrationConstantes, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, RapportMigrationConstantes, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeBudgets, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil;
 
 import 'persistance.dart';
 
@@ -650,6 +650,8 @@ class Magasin {
           c.garder((op, f) => cpcGardeEcritures(collection('exercices').toutes, f['date'],
               op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? ''));
         }
+        // Un budget d'un exercice CLÔTURÉ est en lecture seule, d'où que l'écriture vienne (écran, importation) : la garde est au moteur, l'écran la subit comme le fichier.
+        if (nom == 'budgets') c.garder((op, f) => cpcGardeBudgets(collection('exercices').toutes, f['exercice']));
         // L'archive d'une clôture est IMMUABLE et le registre des clôtures est une piste d'audit (arbitrage du 05/11/2026).
         if (nom == 'archivesExercice') c.garder((op, f) => cpcGardeArchives(collection('archivesExercice').toutes, op, f['reference']));
         if (nom == 'clotures') c.garder((op, f) => cpcGardeClotures(op));

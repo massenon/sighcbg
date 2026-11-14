@@ -33,6 +33,9 @@ class EcranUnitesLabo extends StatelessWidget with EcranMaquette {
       'Les symboles sont ceux de la fiche de résultats de la clinique — « G/l », « T/l », « g/dl » — et non les notations normalisées 10⁹/L ou g/L. Le laboratoire lit ce qu’il écrit : lui imposer une autre notation, plus « correcte », l’obligerait à traduire à chaque lecture.';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'unites-labo')];
+
+  @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [

@@ -27,7 +27,10 @@ class EcranBudgets extends StatelessWidget with EcranMaquette {
   @override
   String get description => 'Budgétisation par centre de coûts et suivi du réalisé par rapport au prévisionnel.';
 
-  static const naturesBudget = ['Charges de fonctionnement', 'Investissements', 'Charges de personnel', 'Achats de marchandises'];
+  static const naturesBudget = cpbNaturesBudget;
+
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'budgets')];
 
   @override
   Widget build(BuildContext context) {
