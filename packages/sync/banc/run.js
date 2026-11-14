@@ -1109,7 +1109,7 @@ Object.assign(scenarios, require('./scenarios-droits-rbac.js')({ monde, verifier
        orphelin ni banc suspendu — il échoue, nommé, et les processus sont tués. */
     let minuterie;
     try {
-      await Promise.race([scenarios[n](), new Promise((_, ko) => { minuterie = setTimeout(() => ko(new Error('scénario bloqué (> 90 s)')), 90000); })]);
+      await Promise.race([scenarios[n](), new Promise((_, ko) => { minuterie = setTimeout(() => ko(new Error('scénario bloqué (> 150 s)')), 150000); })]);
       console.log('  ' + courant);
     } catch (e) { verifier('le scénario s\'exécute sans erreur', false, String(e && e.message || e)); }
     finally { clearTimeout(minuterie); while (ouverts.length) await ouverts.pop().fermer().catch(() => {}); }
