@@ -19,6 +19,7 @@ const { spawnSync } = require('node:child_process');
 const { DatabaseSync } = require('node:sqlite');
 const { DestRelais, Chiffreur } = require('./sauvegarde-hs');
 const { DestDossier } = require('./sauvegarde-dossier');
+const R = require('./sauvegarde-regles');
 
 const sha = (b) => crypto.createHash('sha256').update(b).digest('hex');
 const MOT = 'Hyperglycemie-Secrete-BAK1';
@@ -220,6 +221,21 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
       r9.status === 507 && r9.json.code === 'ESPACE_RELAIS_INSUFFISANT' && !!r9.json.geste && Object.entries(e9).filter(([, s]) => s === 'complete').map(([i]) => i).sort().join() === courantes.sort().join(), [r9.status, r9.json, e9]);
     const e10 = await etat();
     verifier('l\'erreur est enregistrée à l\'état avec son geste ; la dernière copie réussie reste affichée (jamais un faux « à jour »)', e10.types.magasin.erreur && e10.types.magasin.erreur.code === 'ESPACE_RELAIS_INSUFFISANT' && !!e10.types.magasin.erreur.geste && e10.types.magasin.dernier && e10.types.magasin.dernier.ok === true, e10.types.magasin);
+    /* 8. LES RÈGLES DE RÉFÉRENCE ET LES VECTEURS PARTAGÉS NE DIVERGENT PAS : ce que Dart et PHP rejouent est ce que ce banc applique (un vecteur périmé ferait tester Dart contre une règle qui n'est plus la nôtre) */
+    const vecteurs = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'domaine', 'test', 'vecteurs', 'sauvegarde_horssite.json'), 'utf8')).cas;
+    const rejoue = (c) => {
+      const e = c.entree;
+      switch (c.op) {
+        case 'ordrePurge': return R.ordrePurge(e.copies, e.plancher);
+        case 'rotation': return R.rotation(e.copies, e.garder, e.plancher, e.plafond);
+        case 'verifierReglage': return R.verifierReglage(e);
+        case 'verifierPlan': return R.verifierPlan(e);
+        case 'blocSuspect': return R.blocSuspect(Buffer.from(e.base64, 'base64'));
+        default: return undefined;
+      }
+    };
+    const ecarts = vecteurs.filter((c) => rejoue(c) !== undefined && JSON.stringify(rejoue(c)) !== JSON.stringify(c.attendu)).map((c) => c.nom);
+    verifier(`les ${vecteurs.length} vecteurs partagés (purge à plancher, rotation, réglage, plan, bloc non chiffré) donnent à la règle de référence du banc exactement l'attendu`, ecarts.length === 0, ecarts);
     await m.fermer();
   },
 });
