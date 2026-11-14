@@ -159,7 +159,8 @@ bool roleALeDroit(Map<String, Object?> rbac, IntentionAst i, String role) {
 }
 
 List<Map<String, Object?>> matriceDroits(Map<String, Object?> rbac, CatalogueAst cat, Map<String, String> profils) => [
-      for (final i in cat.intentions.values)
+      // les intentions NON livrées n'ont pas de droit à mesurer : leur exécuteur n'existe pas
+      for (final i in cat.actives)
         {
           'intention': i.id,
           'ecrans': i.ecransLecture,

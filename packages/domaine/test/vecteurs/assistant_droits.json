@@ -543,42 +543,6 @@
     "sage_femme": false,
     "agent_administratif": false
    }
-  },
-  {
-   "intention": "I26",
-   "ecrans": [],
-   "profils": {
-    "reception": true,
-    "caisse": true,
-    "stock": true,
-    "comptabilite": true,
-    "laboratoire": true,
-    "medecin": true,
-    "daf": true,
-    "direction": true,
-    "administrateur": true,
-    "infirmier": true,
-    "sage_femme": true,
-    "agent_administratif": true
-   }
-  },
-  {
-   "intention": "I27",
-   "ecrans": [],
-   "profils": {
-    "reception": true,
-    "caisse": true,
-    "stock": true,
-    "comptabilite": true,
-    "laboratoire": true,
-    "medecin": true,
-    "daf": true,
-    "direction": true,
-    "administrateur": true,
-    "infirmier": true,
-    "sage_femme": true,
-    "agent_administratif": true
-   }
   }
  ]
 }

@@ -92,7 +92,7 @@ void main() {
         'dash-responsable-radiologie', 'm2-dashboard-imagerie', 'm2-imagerie-demandes', 'm2-imagerie', 'm2-imagerie-radiographie', 'm2-imagerie-mammographie',
         'm2-imagerie-scanner', 'm2-imagerie-irm', 'm2-echographie-galerie', 'm2-stats-echographie', 'cfg-imagerie-catalogue', 'm1-patients', 'm1-patient-profil'
       ]));
-      expect(editables(m, r).where((e) => !e.startsWith('m7-besoins') && e != 'm10-mes' && e != 'm10-propositions-planning' && e != 'dash-responsable-radiologie' && !e.startsWith('auth') && e != 'index' && !e.startsWith('error') && e != 'plan-du-site' && !{'aide-apropos', 'parametres-hub', 'contact-editeur'}.contains(e)).toSet(),
+      expect(editables(m, r).where((e) => !e.startsWith('m7-besoins') && e != 'm10-mes' && e != 'm10-propositions-planning' && e != 'dash-responsable-radiologie' && !e.startsWith('auth') && e != 'index' && !e.startsWith('error') && e != 'plan-du-site' && !{'aide-apropos', 'parametres-hub', 'contact-editeur', 'sup-assistant'}.contains(e)).toSet(),
           {'m2-dashboard-imagerie', 'm2-imagerie-demandes', 'm2-imagerie', 'm2-imagerie-radiographie', 'm2-imagerie-mammographie', 'm2-imagerie-scanner', 'm2-imagerie-irm', 'm2-echographie-galerie', 'm2-imagerie-cr'},
           reason: 'il écrit l’imagerie, et rien d’autre');
       final mat = donnees.aChaud(m).matrice;
