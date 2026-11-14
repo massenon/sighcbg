@@ -116,7 +116,11 @@ void main() {
 
     test('le journal n\'est PAS vidé : une entrée par collection (compte archivé) et une synthèse', () {
       final a = m.collection('audit').toutes;
-      expect(a.length, auditAvant + bilan.tables + 2, reason: 'les entrées antérieures restent ; + une par collection ; + échéances ; + synthèse');
+      // La migration des garanties (T13 : chaque garantie devient version 1) s'exécute à la première lecture de la collection, que l'archivage touche : elle écrit UNE ligne
+      // « Migration » au journal, qui n'est pas un geste d'archivage. On la compte à part au lieu d'assouplir le compte.
+      final migrations = a.where((l) => l['action'] == 'Migration').length;
+      expect(migrations, lessThanOrEqualTo(1), reason: 'au plus une ligne de migration des garanties');
+      expect(a.length - migrations, auditAvant + bilan.tables + 2, reason: 'les entrées antérieures restent ; + une par collection ; + échéances ; + synthèse (hors migration)');
       expect(a.any((l) => l['action'] == 'Geste antérieur à l’archivage'), isTrue);
       final parTable = a.where((l) => l['action'] == 'Archivage du jeu de démonstration').toList();
       expect(parTable.length, bilan.tables);
