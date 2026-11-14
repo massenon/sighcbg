@@ -366,6 +366,8 @@ class HorsSiteMere {
       'frequenceMinutes': r.frequenceMinutes,
       'heureControle': r.heureControle,
       'relaisRelie': relais.isNotEmpty,
+      // l'ADRESSE du relais (jamais son secret) : c'est celle de la synchronisation, un seul relais et un seul secret ; l'écran la montre pour que la Direction sache OÙ part la copie
+      'relaisUrl': relais,
       'types': types,
       'controle': await _lireEtat('controle'),
     };

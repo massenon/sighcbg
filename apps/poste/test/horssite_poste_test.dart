@@ -16,7 +16,7 @@ class SourceFausse implements SourceHorsSite {
     'relaisRelie': true,
     'controle': {'quand': 1760000000000},
     'types': {
-      'magasin': {'destination': 'relais', 'dernier': {'quand': 1760000000000, 'deposes': 7}, 'erreur': null, 'enRetard': false},
+      'magasin': {'destination': 'relais', 'dernier': {'quand': 1760000000000, 'deposes': 7, 'octets': 5242880}, 'erreur': null, 'enRetard': false},
       'fichiers': {'destination': 'aucune', 'dernier': null, 'erreur': {'code': 'DOSSIER_INTROUVABLE', 'motif': 'le dossier n\'est pas monté', 'geste': 'Brancher le dossier.'}},
     },
   };
@@ -200,6 +200,9 @@ void main() {
       await t.pump();
       expect(find.textContaining('ACTIVE'), findsOneWidget);
       expect(find.textContaining('dernière copie le'), findsOneWidget);
+      expect(find.byKey(const Key('horssite:meme-disque')), findsOneWidget, reason: 'une copie sur le même disque n\'est pas une copie hors site : dit en tête de la carte');
+      expect(find.textContaining('5.0 Mio sauvegardés'), findsOneWidget, reason: 'la dernière copie dit sa date, sa taille et son résultat');
+      expect(find.textContaining('résultat : réussie'), findsOneWidget);
       expect(find.textContaining('DOSSIER_INTROUVABLE'), findsWidgets);
       expect(find.textContaining('Brancher le dossier.'), findsOneWidget);
       expect(find.byKey(const Key('horssite:regler')), findsOneWidget);

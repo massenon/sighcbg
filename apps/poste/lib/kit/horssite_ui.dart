@@ -74,6 +74,7 @@ class _EtatCarteHorsSite extends State<CarteHorsSite> {
       ('État', s.reglageRecu ? (r.actif ? 'ACTIVE' : 'Désactivée') : 'Réglage non encore reçu de la poste mère'),
       _ligneType(s, 'magasin', 'Magasin (base de la mère)'),
       _ligneType(s, 'fichiers', 'Fichiers numérisés'),
+      if (etat != null) ('Relais web', etat['relaisRelie'] == true ? '${etat['relaisUrl']}' : 'non relié : la poste mère n\'a pas d\'adresse de relais'),
       ('Fréquence des fichiers', 'toutes les ${r.frequenceMinutes} minutes ; copie et contrôle de nuit après ${r.heureControle} h'),
       if (controle != null && controle['quand'] != null) ('Dernier contrôle', _quand(controle['quand'])),
       ('Conservation', 'Les anciennes copies sont ARCHIVÉES (restaurables) ; elles ne sont purgées que si l\'espace manque, jamais l\'une des copies courantes.'),

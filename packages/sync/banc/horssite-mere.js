@@ -104,7 +104,7 @@ module.exports = ({ db, stock, cle, relais, secretRelais, evenement, Err }) => {
       if (refusT) evenement('erreur', 'sauvegarde', `Contrôle de la copie hors site ${t} : ${refusT.code}`); else evenement('info', 'sauvegarde', `Contrôle de la copie hors site ${t} : sain`);
     }
     poser('horssite.controle', { quand: Date.now(), types: sortie });
-    return { ok: Object.values(sortie).every((c) => c.ok), types: sortie };
+    return sortie;
   }
 
   async function restaurerCopie({ type, copie, cible }) {
