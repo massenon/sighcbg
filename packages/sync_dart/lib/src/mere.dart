@@ -89,6 +89,10 @@ const _sqlDemandesDuPoste = " AND NOT (collection='demandesImport' AND fiche NOT
 /// Le PRIX ne part JAMAIS vers un téléphone (lot T6, RG-13) : ni le référentiel (`tarifs`, `versionsTarif`), ni les demandes d'un fileul (`propositionsTarif`) avec leurs
 /// refus et leurs motifs. Aucun lecteur de prix n'existe à `apps/mobile` ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des hachés.
 const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'propositionsTarif'};
+
+/// Les PRESTATAIRES externes (tarif par acte = rémunération, IFU) voyagent de la mère aux postes fileuls (décision du 14/11/2026, jeu d'import « direct et demande ») mais ne partent
+/// JAMAIS vers un téléphone : aucun écran du mobile ne les lit, et la rémunération n'est publiée à aucun appareil qui n'en a pas l'usage (RG-13). Même exclusion que le prix.
+const Set<String> collectionsRemunerationJamaisMobile = {'prestataires'};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -641,7 +645,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;

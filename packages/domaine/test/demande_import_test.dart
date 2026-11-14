@@ -33,12 +33,15 @@ void main() {
   group('quels jeux passent par une demande', () {
     test('les jeux non restreints dont une cible est de la configuration de la mère — le Grand Stock y compris (lot IMP-E) ; jamais un jeu restreint', () {
       final demandables = {for (final j in jeuxImport) if (regime.exigeLaMere(j)) j.id};
-      expect(demandables, {'analyses', 'fournisseurs', 'assureurs', 'souscripteurs', 'plan-comptable', 'produits', 'emplacements', 'grand-stock', 'natures-facture', 'centres-couts', 'unites-labo', 'catalogue-imagerie'},
+      expect(demandables, {'analyses', 'fournisseurs', 'assureurs', 'souscripteurs', 'plan-comptable', 'produits', 'emplacements', 'grand-stock', 'natures-facture', 'centres-couts', 'unites-labo', 'catalogue-imagerie', 'prestataires'},
           reason: 'mesuré : les jeux non restreints dont une cible est de la configuration de la mère');
-      for (final jamais in ['personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers', 'tarifs', 'prestataires', 'immobilisations', 'budgets']) {
+      for (final jamais in ['personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers', 'tarifs', 'immobilisations', 'budgets']) {
         expect(demandables.contains(jamais), isFalse, reason: '$jamais ne passe jamais par une demande');
       }
       expect({for (final j in jeuxImport) if (j.restreint) j.id}.intersection(demandables), isEmpty, reason: 'un jeu restreint ne passe JAMAIS par une demande');
+      // Décision de la Direction du 14/11/2026 (option 2, qui remplace E2588) : les prestataires externes ne sont plus restreints ; leur tarif par acte voyage dans la demande.
+      expect(jeuPrestataires.restreint, isFalse);
+      expect(demandables, contains('prestataires'));
       expect(regime.reserveALaMere(jeuPersonnel), isTrue, reason: 'le personnel se règle à la mère : le fileul le dit');
     });
   });
