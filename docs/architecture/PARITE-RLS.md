@@ -98,3 +98,7 @@ const servisParWeb = {'rls-tableau', 'rls-appareils', 'rls-boites', 'rls-codes',
 ```
 
 et, dans la boucle sur `statuts`, un test supplémentaire qui vérifie que tout identifiant de `servisParWeb` déclaré « porté » est bien absent de `ecransPortes()` (un écran ne peut pas être mesuré des deux côtés) et que `rapport-parite-rls.json` donne `taux == 1.0` pour chacun.
+
+## Treizième écran : « Synchronisation » (lot RLS-SYNC)
+
+`/panneau/synchronisation` (`Synchronisation`) n'existe pas à la maquette (ni mère, ni fileul, ni relais) : aucune fiche de parité, `ParitePanneauTest` reste à douze écrans. Lecture seule, superadmin seul. Voir `ECARTS-MAQUETTE.md` E2561 à E2565.
