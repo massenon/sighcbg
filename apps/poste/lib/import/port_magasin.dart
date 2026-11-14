@@ -37,6 +37,13 @@ class PortMagasin extends PortImport {
     'souscripteurs': 'SOU',
     'comptes': 'CPT',
     'ecritures': 'ECR',
+    'naturesFacture': 'NAT',
+    'centresCouts': 'CC',
+    'unitesLabo': 'UNI',
+    'examensImagerie': 'EXI',
+    'prestataires': 'PRE',
+    'immobilisations': 'IMM',
+    'budgets': 'BUD',
     collectionLots: 'LIM',
   };
 

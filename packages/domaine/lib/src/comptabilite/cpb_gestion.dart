@@ -75,6 +75,20 @@ const int cpbMoisSemestre = 6;
 
 DateTime? _jour(Object? d) => DateTime.tryParse('${d ?? ''}');
 
+/// Les catégories, états et motifs de sortie d'une immobilisation, et les natures budgétaires : UNE liste, lue par l'écran ET par le jeu d'import (une liste écrite des deux côtés divergerait au
+/// premier ajout : l'écran proposerait une catégorie que le fichier refuserait).
+const List<String> cpbCategoriesImmobilisation = [
+  'Matériel médical',
+  'Matériel de laboratoire',
+  'Matériel technique',
+  'Matériel de transport',
+  'Mobilier médical',
+  'Matériel informatique',
+  'Installations'
+];
+const List<String> cpbEtatsImmobilisation = ['En service', 'En maintenance', 'Hors service', 'Cédé'];
+const List<String> cpbNaturesBudget = ['Charges de fonctionnement', 'Investissements', 'Charges de personnel', 'Achats de marchandises'];
+
 /// Les comptes d'immobilisation proposés à la saisie : ceux de la classe 2 du plan STATIQUE (`D.PLAN_COMPTABLE`), (numéro, intitulé).
 List<(String, String)> cpbComptesImmobilisation() => [
       for (final p in cpaPlanComptable)

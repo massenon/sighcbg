@@ -65,6 +65,13 @@ class SousMinImport {
   final String code, motif, geste;
 }
 
+/// Une colonne que le modèle NE PORTE PAS et qu'un fichier ne doit pas apporter : une donnée qui se CALCULE (l'amortissement), se déclare à l'écran (une cession) ou est attribuée par le
+/// logiciel (un numéro de série). Présente dans le fichier, elle est REFUSÉE en la nommant, jamais ignorée en silence : un bien déjà cédé importé comme s'il était en service serait faux.
+class ColonneRetiree {
+  const ColonneRetiree(this.label, this.motif);
+  final String label, motif;
+}
+
 class ColonneImport {
   const ColonneImport(
     this.cle,
@@ -273,7 +280,11 @@ class JeuImport {
     this.colonnesReservees = const {},
     this.octetsMaxDefaut = octetsMaxImportDefaut,
     this.restituer,
+    this.colonnesRetirees = const [],
   });
+
+  /// Les colonnes refusées en les nommant si le fichier les porte (voir [ColonneRetiree]).
+  final List<ColonneRetiree> colonnesRetirees;
   final String id, ecran, libelle, module, statut, description, source, fichierModele;
   final String? limite, gesteExiste;
   final List<String> cibles;
@@ -509,6 +520,11 @@ AnalyseImport analyserLignes(JeuImport j, List<List<Object?>> lignes, String fic
     if (entete.contains(_clefEntete(c.label))) {
       globalement('COLONNE_RESERVEE', c.label, 'la colonne « ${c.label} » est réservée à un profil qui en a le droit : elle est rejetée',
           'Retirez la colonne « ${c.label} » du fichier (le modèle de votre profil ne la porte pas), puis recommencez.');
+    }
+  }
+  for (final c in j.colonnesRetirees) {
+    if (entete.contains(_clefEntete(c.label))) {
+      globalement('COLONNE_RETIREE', c.label, c.motif, 'Retirez la colonne « ${c.label} » du fichier (le modèle ne la porte pas), puis recommencez.');
     }
   }
   if (res.globaux.isNotEmpty) return res;

@@ -22,6 +22,9 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
   String get description => 'Intervenants extérieurs rémunérés à l’acte : circoncision, hydrotubation, accouchement, analyses, hospitalisation.';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'prestataires')];
+
+  @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('prestataires');

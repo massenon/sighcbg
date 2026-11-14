@@ -5080,6 +5080,41 @@
     1,
     1,
     1
+   ],
+   "imp-natures-facture": [
+    1,
+    1,
+    1
+   ],
+   "imp-centres-couts": [
+    1,
+    1,
+    1
+   ],
+   "imp-unites-labo": [
+    1,
+    1,
+    1
+   ],
+   "imp-catalogue-imagerie": [
+    1,
+    1,
+    1
+   ],
+   "imp-prestataires": [
+    1,
+    1,
+    1
+   ],
+   "imp-immobilisations": [
+    1,
+    1,
+    1
+   ],
+   "imp-budgets": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -6492,6 +6527,21 @@
     1,
     1,
     0
+   ],
+   "imp-natures-facture": [
+    1,
+    1,
+    1
+   ],
+   "imp-centres-couts": [
+    1,
+    1,
+    1
+   ],
+   "imp-catalogue-imagerie": [
+    1,
+    1,
+    1
    ]
   },
   "dm": {
@@ -8446,6 +8496,41 @@
     1,
     1,
     1
+   ],
+   "imp-natures-facture": [
+    1,
+    1,
+    1
+   ],
+   "imp-centres-couts": [
+    1,
+    1,
+    1
+   ],
+   "imp-unites-labo": [
+    1,
+    1,
+    1
+   ],
+   "imp-catalogue-imagerie": [
+    1,
+    1,
+    1
+   ],
+   "imp-prestataires": [
+    1,
+    1,
+    1
+   ],
+   "imp-immobilisations": [
+    1,
+    1,
+    1
+   ],
+   "imp-budgets": [
+    1,
+    1,
+    1
    ]
   },
   "medecin": {
@@ -9813,6 +9898,11 @@
     1,
     1,
     0
+   ],
+   "imp-unites-labo": [
+    1,
+    1,
+    1
    ]
   },
   "stock": {
@@ -11029,6 +11119,16 @@
     1,
     1,
     0
+   ],
+   "imp-immobilisations": [
+    1,
+    1,
+    1
+   ],
+   "imp-budgets": [
+    1,
+    1,
+    1
    ]
   },
   "rh": {},

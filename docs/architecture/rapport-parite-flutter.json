@@ -1,7 +1,7 @@
 {
  "_doc": "ENGENDRÉ par apps/poste/test/parite_ecrans_test.dart — ne pas éditer. Parité N1 (contenu) des écrans Flutter portés contre la maquette.",
- "ecrans_du_manifeste": 352,
- "ecrans_portes": 375,
+ "ecrans_du_manifeste": 359,
+ "ecrans_portes": 382,
  "ecrans": [
   {
    "id": "adm-enquetes",
@@ -711,6 +711,30 @@
    "manquants": []
   },
   {
+   "id": "imp-budgets",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-catalogue-imagerie",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-centres-couts",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
    "id": "imp-courriers",
    "mesure": true,
    "attendus": 19,
@@ -735,7 +759,23 @@
    "manquants": []
   },
   {
+   "id": "imp-immobilisations",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
    "id": "imp-inventaire",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-natures-facture",
    "mesure": true,
    "attendus": 19,
    "presents": 19,
@@ -760,6 +800,14 @@
   },
   {
    "id": "imp-plan-comptable",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-prestataires",
    "mesure": true,
    "attendus": 19,
    "presents": 19,
@@ -800,6 +848,14 @@
   },
   {
    "id": "imp-transferts",
+   "mesure": true,
+   "attendus": 19,
+   "presents": 19,
+   "taux": 1.0,
+   "manquants": []
+  },
+  {
+   "id": "imp-unites-labo",
    "mesure": true,
    "attendus": 19,
    "presents": 19,

@@ -678,7 +678,8 @@ class EcranImportAccueil extends StatelessWidget with EcranMaquette {
                 'origine': cfbFicheReglage(c.magasin, cleReglageOctetsMax(j.id)) == null ? 'Valeur par défaut' : 'Réglée par la clinique',
               }
           ],
-          taillePage: 20,
+          // Une ligne par jeu, toutes sur une page : la borne d'un jeu ne se range pas à la page 2 (vingt-trois jeux dépassaient les vingt lignes d'avant).
+          taillePage: jeux.length < 20 ? 20 : jeux.length,
           triInitial: 'jeu',
           messageVide: 'Aucun jeu.',
           colonnes: [

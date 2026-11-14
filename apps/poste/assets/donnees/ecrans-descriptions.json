@@ -365,6 +365,34 @@
    "titre": "Importation du registre des courriers",
    "description": "Le registre du courrier départ et arrivée : sens, date, correspondant, objet, nature, service destinataire. Le numéro d’ordre est attribué par le logiciel (série annuelle)."
   },
+  "imp-natures-facture": {
+   "titre": "Importation des natures de facture",
+   "description": "Natures proposées à l’émission d’une facture : code, nature, secteur émetteur."
+  },
+  "imp-centres-couts": {
+   "titre": "Importation des centres de coûts",
+   "description": "Axes d’imputation analytique : code, intitulé, type, responsable."
+  },
+  "imp-unites-labo": {
+   "titre": "Importation des unités de mesure",
+   "description": "Unités dans lesquelles les résultats s’expriment : symbole tel que le laboratoire l’écrit, intitulé, domaine."
+  },
+  "imp-catalogue-imagerie": {
+   "titre": "Importation du catalogue de l’imagerie",
+   "description": "Examens d’imagerie : code, libellé, modalité (échographie, radiographie, mammographie, scanner, IRM), voie d’abord, code tarifaire."
+  },
+  "imp-prestataires": {
+   "titre": "Importation des prestataires externes",
+   "description": "Intervenants extérieurs rémunérés à l’acte : nom, spécialité, téléphone, tarif par acte, IFU, facture normalisée."
+  },
+  "imp-immobilisations": {
+   "titre": "Importation des immobilisations",
+   "description": "Registre des biens : désignation, catégorie, date d’acquisition, valeur, durée d’amortissement, compte SYSCOHADA."
+  },
+  "imp-budgets": {
+   "titre": "Importation des budgets",
+   "description": "Budget prévisionnel par exercice, centre de coûts et nature budgétaire."
+  },
   "imp-souscripteurs": {
    "titre": "Importation des souscripteurs",
    "description": "Souscripteurs rattachés à une compagnie : n° de police, catégorie, effectif, période."

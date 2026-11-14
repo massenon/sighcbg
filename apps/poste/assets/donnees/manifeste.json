@@ -750,7 +750,14 @@
     "imp-transferts",
     "imp-inventaire",
     "imp-emplacements",
-    "imp-courriers"
+    "imp-courriers",
+    "imp-natures-facture",
+    "imp-centres-couts",
+    "imp-unites-labo",
+    "imp-catalogue-imagerie",
+    "imp-prestataires",
+    "imp-immobilisations",
+    "imp-budgets"
    ]
   },
   {
@@ -6067,6 +6074,124 @@
    "servant": null,
    "roles": [
     "agentadmin",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-natures-facture",
+   "label": "Importation des natures de facture",
+   "icone": "receipt-text",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "imp-centres-couts",
+   "label": "Importation des centres de coûts",
+   "icone": "target",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "imp-unites-labo",
+   "label": "Importation des unités de mesure",
+   "icone": "ruler",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "laborantin",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-catalogue-imagerie",
+   "label": "Importation du catalogue de l’imagerie",
+   "icone": "scan-line",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ]
+  },
+  {
+   "id": "imp-prestataires",
+   "label": "Importation des prestataires externes",
+   "icone": "handshake",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-immobilisations",
+   "label": "Importation des immobilisations",
+   "icone": "building",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "comptable",
+    "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-budgets",
+   "label": "Importation des budgets",
+   "icone": "target",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "comptable",
     "da",
     "admin"
    ]

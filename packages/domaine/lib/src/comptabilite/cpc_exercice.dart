@@ -124,6 +124,16 @@ String? cpcGardeEcritures(Iterable<CpaFiche> exercices, Object? date, {String op
   return null;
 }
 
+/// La GARDE posée sur la collection `budgets` : un budget d'un exercice CLÔTURÉ est en lecture seule, d'où que l'écriture vienne (écran ou importation). Un budget n'est pas une écriture
+/// comptable, mais un exercice clos est un exercice arrêté et lui ajouter une ligne prévue le contredit. Seul `clos` est refusé ici (un exercice en clôture reste ouvert à la budgétisation de
+/// l'écran ; l'IMPORTATION, elle, n'admet que les exercices ouverts). Limite connue : la garde lit l'exercice de la fiche telle qu'elle sera ; un budget que l'on ferait passer d'un exercice clos à un
+/// exercice ouvert en changeant son année échappe à la garde de modification.
+String? cpcGardeBudgets(Iterable<CpaFiche> exercices, Object? exercice) {
+  final a = int.tryParse('${exercice ?? ''}'.split('.').first);
+  if (a == null || a == 0 || cpcEtatExercice(exercices, a) != 'clos') return null;
+  return 'Exercice $a clôturé : le budget d’un exercice clos ne s’écrit plus. La correction passe par la réouverture de l’exercice par le comptable (motif obligatoire), ou par un budget de l’exercice ouvert.';
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 // LECTURES D'UN EXERCICE
 // ---------------------------------------------------------------------------------------------------------------------------------------------------

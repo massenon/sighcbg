@@ -988,7 +988,7 @@ class _OngletImportState extends State<_OngletImport> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       const NoteSigh(
           'Importer un jeu de données, c’est voir ET éditer l’écran du jeu dans la matrice : ce n’est pas le droit d’écrire dans l’écran métier. Le droit se règle ici, rôle par rôle, comme tout droit d’écran '
-          '(décision motivée, journalisée, diffusée aux postes sans redémarrage). Un jeu restreint (patients, personnel, soldes, stock vivant, courriers) ne passe jamais par une demande à la mère ; '
+          '(décision motivée, journalisée, diffusée aux postes sans redémarrage). Un jeu restreint (patients, personnel, soldes, stock vivant, courriers, prestataires, immobilisations, budgets) ne passe jamais par une demande à la mère ; '
           'un référentiel de configuration importé à un fileul s’écrit chez lui et part en demande à la mère, qui reste la seule autorité.',
           key: Key('m14:import:note'),
           ton: TonSigh.info,

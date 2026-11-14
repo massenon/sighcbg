@@ -24,6 +24,9 @@ class EcranImagerieCatalogue extends StatelessWidget with EcranMaquette {
       'Les listes pré-insérées viennent du brouillon manuscrit de l’échographiste et des cinq comptes rendus réels. Une variable se ferme sans se supprimer : les comptes rendus déjà rendus la conservent. « Annexes » et « Conclusion » ne se paramètrent pas : elles restent en texte libre — « à remplir par moi-même », écrit de sa main.';
 
   @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'catalogue-imagerie')];
+
+  @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final examens = c.magasin.collection('examensImagerie');

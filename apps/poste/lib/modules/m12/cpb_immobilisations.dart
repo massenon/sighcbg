@@ -33,16 +33,8 @@ class EcranImmobilisations extends StatelessWidget with EcranMaquette {
   String get regle =>
       'L’amortissement court de la date d’acquisition à aujourd’hui, par pas de six mois : l’annuité ne se constate qu’à la clôture et donnait le même amortissement à un bien acquis en février et à un bien acquis en novembre. Un bien cédé cesse de s’amortir à sa date de sortie et quitte le bilan — sa fiche, elle, reste au registre. Les totaux du registre SONT les colonnes BRUT / AMORT. / NET de l’actif immobilisé du bilan.';
 
-  static const categories = [
-    'Matériel médical',
-    'Matériel de laboratoire',
-    'Matériel technique',
-    'Matériel de transport',
-    'Mobilier médical',
-    'Matériel informatique',
-    'Installations'
-  ];
-  static const etats = ['En service', 'En maintenance', 'Hors service', 'Cédé'];
+  static const categories = cpbCategoriesImmobilisation;
+  static const etats = cpbEtatsImmobilisation;
   static const motifs = ['Cession', 'Réforme', 'Destruction', 'Vol ou perte', 'Don'];
 
   static String _cessionLibre(Fiche i) => ('${i['dateCession'] ?? ''}').isEmpty
@@ -151,6 +143,9 @@ class EcranImmobilisations extends StatelessWidget with EcranMaquette {
       ]),
     ], ecart: 12);
   }
+
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'immobilisations')];
 
   @override
   Widget build(BuildContext context) {

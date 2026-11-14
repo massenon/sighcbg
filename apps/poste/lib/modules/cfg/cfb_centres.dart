@@ -23,6 +23,7 @@ class EcranCentresCouts extends StatelessWidget with EcranMaquette {
   List<Widget> actionsEntete(BuildContext context) {
     final c = ContexteEcran.of(context);
     return [
+      ...actionsImporter(context, 'centres-couts'),
       BoutonSigh(libelle: 'Saisie des écritures', icone: LucideIcons.pencilLine, onPressed: () => c.aller('m12-ecritures')),
       BoutonSigh(libelle: 'Comptabilité analytique', icone: LucideIcons.chartPie, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m12-analytique')),
     ];

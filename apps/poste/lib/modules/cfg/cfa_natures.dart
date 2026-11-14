@@ -23,6 +23,7 @@ class EcranNaturesFacture extends StatelessWidget with EcranMaquette {
   List<Widget> actionsEntete(BuildContext context) {
     final c = ContexteEcran.of(context);
     return [
+      ...actionsImporter(context, 'natures-facture'),
       BoutonSigh(libelle: 'Émettre une facture', icone: LucideIcons.receipt, onPressed: () => c.aller('m8-facturation')),
       BoutonSigh(libelle: 'Tarifs et prix', icone: LucideIcons.tag, variante: VarianteBouton.secondaire, onPressed: () => c.aller('cfg-tarifs')),
     ];
