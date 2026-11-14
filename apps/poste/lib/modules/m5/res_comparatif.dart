@@ -300,6 +300,14 @@ class _EtatComparatif extends State<EcranComparatifResultats> {
               if (l.variation != null && l.precedente != null && !identical(l.precedente, derniereAnt))
                 Text('à la mesure du ${dateFrJs(l.precedente!['dateHeure'])}', style: styleLabo(10, couleur: JetonsShell.slate400)),
               // L'ALERTE SIGNALE, ELLE NE BLOQUE RIEN (lot A2) : seuil VALIDÉ franchi, version et date d'effet nommées.
+              // L'ÂGE de la mesure précédente s'affiche TOUJOURS (avec ou sans délai réglé) ; au-delà du délai réglé, le comparatif DIT que la variation n'est pas évaluée.
+              if (l.variation != null && l.ageJours != null)
+                Text(texteAge(l.ageJours)!, key: Key('res:cmp:age:$code'), style: styleLabo(10, couleur: JetonsShell.slate400)),
+              if (alerte != null && alerte.nonEvalue == 'delai')
+                Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(texteNonEvalue(alerte),
+                        key: Key('res:cmp:non-evaluee:$code'), textAlign: TextAlign.right, style: styleLabo(10, couleur: JetonsShell.slate600, poids: FontWeight.w500))),
               if (alerte != null && alerte.alerte)
                 Padding(
                     padding: const EdgeInsets.only(top: 4),
@@ -457,7 +465,7 @@ class _EtatComparatif extends State<EcranComparatifResultats> {
         <String, Object?>{
           'variable': '${l.variable['libelle']}',
           for (var i = 0; i < nb; i++) 'c$i': texteCellule(l, l.cellules[i]),
-          'variation': '${texteVariation(l.variation, l.suffixe)}${l.alerte != null && l.alerte!.alerte ? ' — ${texteAlerte(l.alerte!, l.suffixe)}' : ''}',
+          'variation': '${texteVariation(l.variation, l.suffixe)}${l.alerte != null && l.alerte!.alerte ? ' — ${texteAlerte(l.alerte!, l.suffixe)}' : ''}${l.alerte != null && l.alerte!.nonEvalue == 'delai' ? ' — ${texteNonEvalue(l.alerte!)}' : ''}',
           'ref': l.cellules.last.reference.isEmpty ? '—' : l.cellules.last.reference,
         }
     ];

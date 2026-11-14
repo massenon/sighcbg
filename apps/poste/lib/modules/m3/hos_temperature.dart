@@ -44,7 +44,9 @@ class EcranFeuilleTemperature extends StatefulWidget with EcranMaquette {
         'date': v['date'],
         'heure': v['heure'],
         'temperature': nombreSaisi(v['temperature']),
-        'tension': v['tension'],
+        // LA TENSION EN DEUX NOMBRES (cmHg), comme à l'accueil : « 12/8 » n'est qu'une mise en forme, jamais une saisie.
+        'tensionSys': nombreSaisi(v['tensionSys']),
+        'tensionDia': nombreSaisi(v['tensionDia']),
         'fc': nombreSaisi(v['fc']),
         'spo2': nombreSaisi(v['spo2']),
         'fr': nombreSaisi(v['fr']),
@@ -99,15 +101,15 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
   void _saisie(BuildContext ctx, Fiche courant) {
     final c = ContexteEcran.of(ctx);
     final col = c.magasin.collection('releves');
-    final ctl = ControleurFormulaire(const [
+    final ctl = ControleurFormulaire([
       ChampDef(nom: 'date', libelle: 'Date', type: TypeChamp.date, requis: true),
       ChampDef(nom: 'heure', libelle: 'Heure', requis: true, indicatif: 'HH:mm', valider: validerHeure),
       ChampDef(nom: 'temperature', libelle: 'Température (°C)', type: TypeChamp.nombre, requis: true, valider: _validerTemperature),
-      ChampDef(nom: 'tension', libelle: 'Tension artérielle', requis: true, indicatif: '12/8'),
+      ...champsTension(requis: true),
       ChampDef(nom: 'fc', libelle: 'Fréquence cardiaque (bpm)', type: TypeChamp.nombre, requis: true),
       ChampDef(nom: 'spo2', libelle: 'Saturation SpO₂ (%)', type: TypeChamp.nombre, requis: true),
       ChampDef(nom: 'fr', libelle: 'Fréquence respiratoire', type: TypeChamp.nombre),
-      ChampDef(nom: 'diurese', libelle: 'Diurèse (ml)', type: TypeChamp.nombre),
+      champDiurese(),
       ChampDef(nom: 'poids', libelle: 'Poids (kg)', type: TypeChamp.nombre),
       ChampDef(nom: 'taille', libelle: 'Taille (cm)', type: TypeChamp.nombre),
       ChampDef(nom: 'traitement', libelle: 'Traitement administré', col: ColChamp.plein),
@@ -169,11 +171,11 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
                       ColonneEtat(libelle: 'Date', valeur: (r) => jourFR(r['date'])),
                       ColonneEtat(libelle: 'Heure', valeur: (r) => r['heure']),
                       ColonneEtat(libelle: 'T° (°C)', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['temperature'])),
-                      ColonneEtat(libelle: 'TA', droite: true, valeur: (r) => r['tension']),
+                      ColonneEtat(libelle: 'TA ($hosUniteTension)', droite: true, valeur: (r) => hosTensionAffichee(r) ?? '—'),
                       ColonneEtat(libelle: 'FC', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['fc'])),
                       ColonneEtat(libelle: 'SpO₂', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['spo2'])),
                       ColonneEtat(libelle: 'FR', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['fr'])),
-                      ColonneEtat(libelle: 'Diurèse', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['diurese'])),
+                      ColonneEtat(libelle: 'Diurèse ($hosUniteDiurese)', droite: true, valeur: (r) => EcranFeuilleTemperature._n(r['diurese'])),
                       ColonneEtat(libelle: 'Traitement', valeur: (r) => r['traitement']),
                     ], lignes: asc))
                   ],
@@ -314,7 +316,7 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
                                   color: _couleurTemperature(t),
                                   fontWeight: t != null && (t >= 38 || t < 36) ? FontWeight.w600 : FontWeight.w400));
                         }),
-                    const ColonneTableau(cle: 'tension', libelle: 'TA', droite: true),
+                    ColonneTableau(cle: 'tension', libelle: 'TA ($hosUniteTension)', droite: true, texte: (r) => hosTensionAffichee(r) ?? '—'),
                     ColonneTableau(cle: 'fc', libelle: 'FC', droite: true, texte: (r) => EcranFeuilleTemperature._n(r['fc'])),
                     ColonneTableau(
                         cle: 'spo2',
@@ -332,7 +334,7 @@ class _EtatTemperature extends State<EcranFeuilleTemperature> {
                         }),
                     ColonneTableau(cle: 'fr', libelle: 'FR', droite: true, texte: (r) => EcranFeuilleTemperature._n(r['fr'])),
                     ColonneTableau(
-                        cle: 'diurese', libelle: 'Diurèse (ml)', droite: true, texte: (r) => EcranFeuilleTemperature._n(r['diurese'])),
+                        cle: 'diurese', libelle: 'Diurèse ($hosUniteDiurese)', droite: true, texte: (r) => EcranFeuilleTemperature._n(r['diurese'])),
                     ColonneTableau(
                         cle: 'poids', libelle: 'Poids (kg)', droite: true, texte: (r) => EcranFeuilleTemperature._n(r['poids'])),
                     const ColonneTableau(cle: 'traitement', libelle: 'Traitement'),

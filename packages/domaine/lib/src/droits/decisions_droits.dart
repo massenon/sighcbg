@@ -20,6 +20,7 @@ library;
 import 'dart:convert';
 
 import 'donnees_sensibles.dart' show categorieSensible;
+import 'gestes_reserves.dart' show gesteReserve;
 
 typedef FicheDr = Map<String, Object?>;
 
@@ -71,6 +72,9 @@ Map<String, Object?> drAplatir(FicheDr? f) {
   for (final e in _map(f['donneesSensibles']).entries) {
     if (e.value is bool) out['sensible.${e.key}'] = e.value;
   }
+  for (final e in _map(f['droitsGestes']).entries) {
+    if (e.value is bool) out['geste.${e.key}'] = e.value;
+  }
   for (final n in drChampsDuRole) {
     if (f.containsKey(n) && f[n] != null) out[drCleChamp(n)] = f[n];
   }
@@ -105,6 +109,13 @@ Map<String, Object?> drDiff(FicheDr? avant, Map<String, Object?> valeurs) {
       if (!_egal(a[k], e.value) && !(a[k] == null && e.value == null)) out[k] = e.value;
     }
   }
+  // Les gestes réservés : `{geste: true|false|null}` — `null` revient à l'origine du référentiel, c'est une clé qui disparaît.
+  if (valeurs['droitsGestes'] is Map) {
+    for (final e in _map(valeurs['droitsGestes']).entries) {
+      final k = 'geste.${e.key}';
+      if (!_egal(a[k], e.value) && !(a[k] == null && e.value == null)) out[k] = e.value;
+    }
+  }
   for (final n in drChampsDuRole) {
     if (!valeurs.containsKey(n)) continue;
     final k = drCleChamp(n);
@@ -130,6 +141,7 @@ String drLibelleCle(String cle) {
   if (cle.startsWith('droits.')) return 'module ${cle.substring(7)}';
   if (cle.startsWith('droitsEcrans.')) return 'écran ${cle.substring(13)}';
   if (cle.startsWith('champ.')) return 'champ ${cle.substring(6)}';
+  if (cle.startsWith('geste.')) return 'geste réservé : ${gesteReserve(cle.substring(6))?.libelle ?? cle.substring(6)}';
   if (cle.startsWith('sensible.')) return 'données sensibles : ${categorieSensible(cle.substring(9))?.libelle ?? cle.substring(9)}';
   return cle;
 }
@@ -137,6 +149,7 @@ String drLibelleCle(String cle) {
 /// Un droit en toutes lettres : « voir, éditer », « fermé », « suit son module » (clé absente).
 String drLibelleValeur(String cle, Object? v) {
   if (cle.startsWith('sensible.')) return v == null ? 'suit la matrice (défaut)' : (v == true ? 'visible' : 'masqué');
+  if (cle.startsWith('geste.')) return v == null ? 'suit l’origine du référentiel' : (v == true ? 'accordé' : 'retiré');
   if (v == null) return cle.startsWith('droits') ? 'suit la matrice d’origine' : '—';
   if (v is Map) {
     if (v['voir'] != true) return 'fermé';
@@ -263,6 +276,7 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
   final droits = {..._map(base['droits'])};
   final ecrans = {..._map(base['droitsEcrans'])};
   final sensibles = {..._map(base['donneesSensibles'])};
+  final gestes = {..._map(base['droitsGestes'])};
   final cles = {for (final e in _map(base['cles']).entries) e.key: _map(e.value)};
   final courant = drAplatir(actuelle);
   final lignes = <LigneDecisionDroits>[];
@@ -324,6 +338,13 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
       } else {
         sensibles[cat] = e.value;
       }
+    } else if (k.startsWith('geste.')) {
+      final g = k.substring(6);
+      if (e.value == null) {
+        gestes.remove(g);
+      } else {
+        gestes[g] = e.value;
+      }
     } else if (k.startsWith('champ.')) {
       final n = k.substring(6);
       if (e.value == null) {
@@ -343,6 +364,7 @@ ResultatDecisionDroits drAppliquer(FicheDr? actuelle, FicheDr decision) {
   base['droits'] = droits;
   base['droitsEcrans'] = ecrans;
   if (sensibles.isNotEmpty || base.containsKey('donneesSensibles')) base['donneesSensibles'] = sensibles;
+  if (gestes.isNotEmpty || base.containsKey('droitsGestes')) base['droitsGestes'] = gestes;
   base['cles'] = cles;
   base['version'] = ((base['version'] as num?)?.toInt() ?? 0) + 1;
   final dernier = '${base['decideLe'] ?? ''}';

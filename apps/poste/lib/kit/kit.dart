@@ -7,6 +7,7 @@ export 'badge.dart';
 export 'bouton.dart';
 export 'carte.dart';
 export 'formulaire.dart';
+export 'champs_constantes.dart';
 export 'graphiques.dart';
 export 'modale.dart';
 export 'onglets.dart';

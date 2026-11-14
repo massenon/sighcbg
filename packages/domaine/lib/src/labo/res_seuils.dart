@@ -7,33 +7,25 @@
 ///     vide veut dire « pas d'alerte configurée », jamais zéro (zéro et négatif sont refusés en le disant).
 ///  2. DEUX états. « Enregistré » : saisi, SANS EFFET. « Validé » : en vigueur. Enregistrer garde l'état Enregistré, même pour le profil qui peut
 ///     valider ; Valider est un second geste, motivé, qui fait passer de Enregistré à Validé (demande explicite de la Direction).
-///  3. VALIDER est réservé par la MATRICE DES DROITS (le droit « annuler » de l'écran des valeurs de référence : l'arbitrage, comme l'arbitrage des lots
-///     d'import à `imp-accueil`), jamais par un nom de rôle écrit ici. Le moteur REVÉRIFIE : masquer un bouton ne protège rien. La fonction du
-///     technicien de laboratoire qui valide par intérim est exclue (décidé par la Direction le 13/11/2026).
-///     L'ADMINISTRATEUR SYSTÈME est exclu lui aussi (décidé le 13/11/2026) : son accès complet vient de l'ABSENCE de fiche rbac, pas d'une décision de la
-///     matrice ; Valider est donc un « geste réservé à la matrice » ([gestesReservesALaMatrice]) que l'accès complet par doctrine ne satisfait pas.
-///     Il garde ENREGISTRER (éditer) : régler un seuil sans effet n'engage personne, seule la validation rend le seuil opposable.
+///  3. VALIDER est un GESTE RÉSERVÉ, un DROIT DE LA FICHE de rôle (`droitsGestes`, lot B : [gesteValiderSeuil] du référentiel des gestes réservés,
+///     `gestes_reserves.dart`), jamais un nom de rôle écrit ici ni un droit d'écran. Le Biologiste médical le détient d'origine ; une fiche l'accorde ou le
+///     retire à un rôle, à chaud. Le moteur REVÉRIFIE : masquer un bouton ne protège rien. Décisions de la Direction du 13/11/2026, inchangées : l'administrateur
+///     système ne valide pas par défaut (il n'est pas dans l'origine, et « sans fiche, tous les droits » ne vaut pas pour un geste réservé : aucune exception de
+///     nom de rôle n'est donc nécessaire) mais la Direction peut le lui accorder ; la fonction du technicien de laboratoire qui valide par intérim est exclue
+///     par défaut, et accordable par le geste [gesteValiderSeuilInterim] sur la fiche du rôle sous lequel il se connecte.
+///     L'administrateur garde ENREGISTRER (éditer) : régler un seuil sans effet n'engage personne, seule la validation rend le seuil opposable.
 ///  4. Une version VALIDÉE est IMMUABLE : la modifier AJOUTE une version datée, l'ancienne reste lisible. Une mesure se juge au seuil EN VIGUEUR À LA
 ///     DATE de sa validation biologique (à aujourd'hui tant qu'elle n'est pas rendue) : une alerte déjà levée garde le seuil sous lequel elle l'a été.
 ///     La date d'effet ne peut pas être passée.
-///  5. L'alerte SIGNALE, elle ne bloque jamais et ne crée aucune notification (donc aucune donnée médicale hors de l'écran). Aucune fenêtre de temps
-///     entre deux mesures : aucun document ne la fixe.
+///  5. L'alerte SIGNALE, elle ne bloque jamais et ne crée aucune notification (donc aucune donnée médicale hors de l'écran). DÉLAI MAXIMAL entre deux
+///     mesures (lot B) : un nombre entier de jours, VIDE par défaut (aucun document ne le fixe, aucune valeur n'est proposée), porté par la fiche du seuil
+///     (même version, même validation). Au-delà, la variation n'est PAS ÉVALUÉE et le verdict le dit (« non évalué » n'est pas « pas d'alerte »).
 /// FORME DU SEUIL (décidée par la Direction le 13/11/2026, « l'une ou l'autre ») : une variation ABSOLUE (unité de la variable) et/ou RELATIVE (%) ;
 /// l'alerte part dès que l'UNE des deux est atteinte. Si la valeur précédente est nulle ou proche de zéro ([epsilonValeurPrecedente]), le pourcentage
 /// n'est PAS calculé (un pourcentage est trompeur près de zéro) : seul le seuil absolu juge, et l'écran dit que le relatif n'a pas pu s'évaluer.
 library;
 
 import 'res_habilitations.dart';
-
-/// Les gestes que SEULE la matrice des droits accorde : l'accès complet d'un rôle sans fiche ne les satisfait pas.
-const Set<String> gestesReservesALaMatrice = {'seuil.valider'};
-
-/// Les rôles dont l'accès complet vient de l'ABSENCE de fiche rbac (doctrine du projet : leur poste EST l'accès complet). Déclaré ICI, dans le domaine,
-/// et nulle part dans un widget.
-const Set<String> rolesAccesCompletParDoctrine = {'admin'};
-
-/// Le droit de la matrice suffit-il à [role] pour [geste] ? Faux pour un geste réservé à la matrice quand le droit ne vient que de l'accès complet.
-bool accesCompletSuffit(String geste, String role) => !(gestesReservesALaMatrice.contains(geste) && rolesAccesCompletParDoctrine.contains(role));
 
 /// Un refus NOMMÉ : le code, ce qui s'est passé, et le geste qui débloque. Rien n'est écrit.
 class RefusSeuil {
@@ -171,6 +163,12 @@ String texteSeuil(FicheLabo s, [String suffixe = '']) {
   return t.join(' ou ');
 }
 
+/// Le délai d'un seuil, pour l'écran de réglage (vide quand aucun délai n'est réglé).
+String texteDelai(FicheLabo s) {
+  final n = _nombre(s['delaiMaxJours']);
+  return n == null ? '' : 'délai entre deux mesures : ${n.toInt()} jour${n > 1 ? 's' : ''}';
+}
+
 /// Le contrôle de date d'effet : jamais passée, jamais antérieure à une version déjà validée.
 RefusSeuil? controleDatesSeuil(String variableId, String d, Iterable<FicheLabo> seuilsActifs, {required DateTime aujourdhui}) {
   final auj = _iso(aujourdhui);
@@ -205,6 +203,7 @@ VerdictSeuil enregistrerSeuil({
   Object? ecartAbsolu,
   Object? ecartRelatif,
   bool retrait = false,
+  Object? delaiMaxJours,
   Object? dateEffet,
   String? note,
   required String acteur,
@@ -231,7 +230,16 @@ VerdictSeuil enregistrerSeuil({
     return const VerdictSeuil.refus(RefusSeuil('SEUIL_INVALIDE', 'Un seuil est un nombre strictement positif : zéro alerterait à chaque mesure.',
         'Saisir un nombre supérieur à zéro, ou laisser vide pour ne pas alerter.'));
   }
+  // LE DÉLAI MAXIMAL ENTRE DEUX MESURES : un nombre ENTIER de jours, au moins 1, VIDE par défaut. Il se pose AVEC le seuil : même version, même validation.
+  final delai = _nombre(delaiMaxJours);
+  if (delai != null && !(delai == delai.truncateToDouble() && delai >= 1)) {
+    return const VerdictSeuil.refus(RefusSeuil('DELAI_INVALIDE', 'Le délai maximal entre deux mesures est un nombre entier de jours, au moins 1 : zéro refuserait d’évaluer toute variation.',
+        'Saisir un nombre entier de jours supérieur à zéro, ou laisser vide pour n’imposer aucun délai.'));
+  }
   if (retrait) {
+    if (delai != null) {
+      return const VerdictSeuil.refus(RefusSeuil('RETRAIT_AVEC_VALEURS', 'Retirer le seuil ne porte aucun délai.', 'Vider le délai, ou décocher le retrait.'));
+    }
     if (abs != null || rel != null) {
       return const VerdictSeuil.refus(RefusSeuil('RETRAIT_AVEC_VALEURS', 'Retirer le seuil ne porte aucune valeur.', 'Vider les deux champs, ou décocher le retrait.'));
     }
@@ -249,6 +257,7 @@ VerdictSeuil enregistrerSeuil({
   final champs = <String, Object?>{
     'ecartAbsolu': abs,
     'ecartRelatif': rel,
+    'delaiMaxJours': delai?.toInt(),
     'retrait': retrait,
     'dateEffet': d,
     'note': (note ?? '').trim().isEmpty ? null : note!.trim(),
@@ -257,7 +266,7 @@ VerdictSeuil enregistrerSeuil({
     'enregistreRole': role,
   };
   final derniere = versionsSeuil(variableId, seuilsActifs).fold<int>(0, (m, x) => _version(x) > m ? _version(x) : m);
-  final apres = {'v': b != null ? _version(b) : derniere + 1, 'du': d, 'abs': abs, 'rel': rel, 'retrait': retrait};
+  final apres = {'v': b != null ? _version(b) : derniere + 1, 'du': d, 'abs': abs, 'rel': rel, 'delai': delai?.toInt(), 'retrait': retrait};
   if (b != null) {
     return VerdictSeuil.ok(
         id: '${b['id']}',
@@ -285,8 +294,9 @@ VerdictSeuil enregistrerSeuil({
       journal: JournalSeuil('Seuil de variation enregistré (sans effet)', '${variable['code']}', null, apres));
 }
 
-/// Peut-on valider avec CETTE fonction de session ? Le droit de la matrice est la première porte ; la fonction exclut le technicien de laboratoire qui
-/// signe par intérim (il ne valide pas un seuil, Direction à confirmer). Une fonction non déclarée (ou inconnue) laisse la matrice décider.
+/// Peut-on valider avec CETTE fonction de session ? Le droit du geste est la première porte ; la fonction exclut PAR DÉFAUT le technicien de laboratoire qui
+/// signe par intérim (il ne valide pas un seuil) — sauf si la fiche accorde [gesteValiderSeuilInterim] (l'appelant le lit et passe `true`). Une fonction non
+/// déclarée (ou inconnue) laisse le droit du geste décider.
 bool fonctionPeutValiderSeuil(SessionLabo? session) {
   final f = (session?.fonction ?? '').trim();
   if (f.isEmpty) return true;
@@ -295,15 +305,14 @@ bool fonctionPeutValiderSeuil(SessionLabo? session) {
   return cap.validerBiologique == true;
 }
 
-/// VALIDER : le brouillon devient la version en vigueur à sa date d'effet. Deux droits revérifiés ICI : [droitValider] (la matrice, lue par l'appelant) et
-/// [fonctionHabilitee] ([fonctionPeutValiderSeuil]). Motif obligatoire.
+/// VALIDER : le brouillon devient la version en vigueur à sa date d'effet. Deux droits revérifiés ICI : [droitValider] (le geste réservé de la fiche, lu par
+/// l'appelant) et [fonctionHabilitee] ([fonctionPeutValiderSeuil], ou l'intérim accordé par la fiche). Motif obligatoire.
 VerdictSeuil validerSeuil({
   required String variableId,
   required Iterable<FicheLabo> seuilsActifs,
   required bool droitValider,
   required bool fonctionHabilitee,
   required String profil,
-  String role = '',
   String? motif,
   required String acteur,
   required String libelleRole,
@@ -312,20 +321,14 @@ VerdictSeuil validerSeuil({
   if (!droitValider) {
     return VerdictSeuil.refus(RefusSeuil(
         'VALIDATION_RESERVEE',
-        'La validation d’un seuil de variation brutale est réservée au profil auquel la matrice des droits accorde cette décision (droit « annuler » de l’écran « Valeurs de référence »). Profil : $profil.',
-        'Demander au Biologiste médical de valider depuis son poste, ou à l’administrateur de régler la matrice.'));
-  }
-  if (!accesCompletSuffit('seuil.valider', role)) {
-    return VerdictSeuil.refus(RefusSeuil(
-        'VALIDATION_HORS_MATRICE',
-        'Valider un seuil de variation est un geste réservé à la matrice : l’accès complet du profil $profil, qui ne vient d’aucune fiche de droits, ne vaut pas validation (décision de la Direction du 13/11/2026).',
-        'Demander au Biologiste médical de valider depuis son poste.'));
+        'Valider un seuil de variation brutale est un droit réservé (geste « Valider un seuil » de la fiche de rôle) : le profil $profil ne le détient pas.',
+        'Demander au Biologiste médical de valider depuis son poste, ou faire accorder le geste « Valider un seuil » à ce rôle par un administrateur (Rôles et permissions, gestes réservés).'));
   }
   if (!fonctionHabilitee) {
     return VerdictSeuil.refus(RefusSeuil(
         'FONCTION_NON_HABILITEE',
-        'La fonction exercée par $acteur ne porte pas la validation biologique : le technicien de laboratoire, même par intérim, ne valide pas un seuil de variation.',
-        'Demander au Biologiste médical de valider depuis son poste.'));
+        'La fonction exercée par $acteur ne porte pas la validation biologique : le technicien de laboratoire, même par intérim, ne valide pas un seuil de variation, sauf si la fiche de son rôle l’y autorise.',
+        'Demander au Biologiste médical de valider depuis son poste, ou faire accorder le geste « Valider un seuil par intérim » à ce rôle (Rôles et permissions, gestes réservés).'));
   }
   final b = brouillonSeuil(variableId, seuilsActifs);
   if (b == null) {
@@ -406,9 +409,27 @@ class RaisonAlerte {
 /// L'alerte d'une variation. [alerte] est vrai quand le seuil est atteint ; [nonEvaluable] quand un seuil purement relatif ne peut s'évaluer (valeur
 /// précédente nulle : pas de pourcentage inventé).
 class AlerteVariation {
-  const AlerteVariation(this.alerte, this.seuil, this.raisons, this.nonEvaluable);
+  const AlerteVariation(this.alerte, this.seuil, this.raisons, this.nonEvaluable,
+      {this.nonEvalue, this.ageJours, this.delaiMaxJours, this.ageInconnu = false});
   final bool alerte;
   final FicheLabo seuil;
   final List<RaisonAlerte> raisons;
   final bool nonEvaluable;
+
+  /// `'delai'` quand la mesure précédente est plus ancienne que le délai réglé : la variation n'est PAS évaluée (« non évalué » n'est pas « pas d'alerte »).
+  final String? nonEvalue;
+
+  /// L'âge de la mesure précédente en jours de calendrier (`null` : incalculable), et le délai réglé sur le seuil (`null` : aucun).
+  final int? ageJours;
+  final int? delaiMaxJours;
+
+  /// Un délai est réglé mais l'âge est incalculable : ni zéro ni dépassé, la variation s'évalue et l'écran le dit.
+  final bool ageInconnu;
+}
+
+/// Les versions de seuil à l'état Enregistré (sans effet), toutes variables : ce que le centre des validations compte. [seuilsActifs] : les fiches
+/// `seuilsDelta` NON archivées. Lu à chaque appel, jamais écrit.
+({int total, List<String> variables}) seuilsEnAttente(Iterable<FicheLabo> seuilsActifs) {
+  final l = [for (final x in seuilsActifs) if (x['etat'] == 'enregistre') x];
+  return (total: l.length, variables: [for (final x in l) '${x['variableId']}']);
 }

@@ -53,7 +53,7 @@ Map<String, FicheSec> secSurcharges(Iterable<FicheSec> fiches) {
     final fusion = {...deja};
     for (final e in f.entries) {
       if (e.value == null) continue;
-      if (e.key == 'droits' || e.key == 'droitsEcrans' || e.key == 'donneesSensibles') {
+      if (e.key == 'droits' || e.key == 'droitsEcrans' || e.key == 'donneesSensibles' || e.key == 'droitsGestes') {
         fusion[e.key] = {
           ...((deja[e.key] as Map?)?.cast<String, Object?>() ?? const {}),
           ...((e.value as Map?)?.cast<String, Object?>() ?? const {}),

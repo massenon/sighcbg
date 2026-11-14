@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, RapportMigrationConstantes, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil;
 
 import 'persistance.dart';
 
@@ -313,6 +313,41 @@ class Magasin {
     // UN JEU D'ORIGINE QUI CHANGE NE SE PERD PAS (Direction, 03/11/2026) : quand le jeu livré avec le poste a changé depuis le dernier lancement, les fiches
     // des collections de [fusionnables] (référentiels, paramétrage) qui MANQUENT au magasin enregistré y sont ajoutées. On n'écrase rien, on ne retire rien :
     // ce que l'agent a saisi ou modifié reste, ce que la nouvelle version apporte arrive. L'activité de démonstration, elle, n'est jamais rajoutée.
+    // LES CONSTANTES D'AVANT LE LOT B (13/11/2026) se MIGRENT une fois, avant toute lecture : tension « 12/8 » en deux nombres (relevés d'hospitalisation, feuilles
+    // d'observation), diurèse d'accueil des litres aux millilitres. La marque `formeConstantes` du poste dit où il en est : sans marque sur un poste déjà peuplé, il
+    // date d'avant le lot (la conversion de la diurèse se fait ALORS, une seule fois : sans marque, 2 mL et 2 L se confondent) ; un poste neuf n'a rien à convertir.
+    var metaMigree = meta;
+    if (meta['formeConstantes'] != formeConstantes) {
+      if (ecrit.isNotEmpty) {
+        final r = hosMigrerConstantes(
+            releves: ecrit['releves'] ?? const [],
+            observations: ecrit['observations'] ?? const [],
+            constantes: ecrit['constantes'] ?? const [],
+            diureseAccueilEnLitres: meta['formeConstantes'] == null);
+        for (final e in r.modifiees.entries) {
+          ecrit[e.key] = e.value;
+          await p.ecrire(e.key, e.value);
+        }
+        migrationConstantes = r;
+        if (r.aFait || r.tensionsIllisibles > 0) {
+          metaMigree = {
+            ...meta,
+            'migrations': [
+              ...((meta['migrations'] as List?) ?? const []),
+              {
+                'nom': 'constantes-lot-b',
+                'le': horloge().toUtc().toIso8601String(),
+                'tensionsScindees': r.tensionsScindees,
+                'tensionsIllisibles': r.tensionsIllisibles,
+                'diuresesConverties': r.diuresesConverties,
+              }
+            ],
+          };
+        }
+      }
+      metaMigree = {...metaMigree, 'formeConstantes': formeConstantes};
+      await p.ecrireMeta(metaMigree);
+    }
     final empreinte = _empreinteJeu(fusionnables);
     final fusionnees = <String, List<Fiche>>{};
     if (ecrit.isNotEmpty && meta['jeu'] != empreinte) {
@@ -333,10 +368,16 @@ class Magasin {
     for (final e in fusionnees.entries) {
       await p.ecrire(e.key, e.value);
     }
-    if (meta['jeu'] != empreinte) await p.ecrireMeta({...meta, 'jeu': empreinte});
+    if (meta['jeu'] != empreinte) await p.ecrireMeta({...metaMigree, 'jeu': empreinte});
     jeuxFusionnes = fusionnees.map((k, v) => MapEntry(k, v.length - (ecrit[k]?.length ?? 0)));
     _persistance = p;
   }
+
+  /// La forme des constantes que ce poste écrit : 2 = tension en deux nombres (cmHg), diurèse en millilitres (lot B). À incrémenter si cette forme change encore.
+  static const int formeConstantes = 2;
+
+  /// Ce que la migration des constantes a fait au dernier démarrage (`null` : poste neuf ou déjà à la bonne forme) : le poste le DIT, il ne change pas la donnée en silence.
+  RapportMigrationConstantes? migrationConstantes;
 
   /// Les collections dont des fiches nouvelles du jeu d'origine ont été ajoutées au démarrage, et combien (vide si le jeu n'a pas changé).
   Map<String, int> jeuxFusionnes = const {};

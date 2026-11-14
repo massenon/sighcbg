@@ -8,6 +8,8 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/donnees/seuils_poste.dart';
+import 'package:sigh_poste/donnees/service_droits.dart';
+import 'package:sigh_poste/modules/m13/qual_validations.dart';
 import 'package:sigh_poste/modules/cfg/cfb_systeme.dart';
 import 'package:sigh_poste/modules/m5/cat_valeurs.dart';
 import 'package:sigh_poste/modules/m5/res_comparatif.dart';
@@ -416,7 +418,9 @@ void main() {
     });
 
     cas('décision du 13/11/2026 : l’administrateur système enregistre un seuil mais ne le valide pas (pas de bouton, geste forcé refusé)', (t) async {
-      expect(droitMatrice('admin', ecran).annuler, isTrue, reason: 'prémisse : l’accès complet lui donne annuler à la matrice');
+      // ADAPTÉ (lot B) : le refus n'est plus `VALIDATION_HORS_MATRICE` (exception de nom de rôle du lot A2) mais `VALIDATION_RESERVEE` : valider est un GESTE RÉSERVÉ de la
+      // fiche de rôle, que l'administrateur n'a pas d'origine. La décision de la Direction est la même ; seule la mécanique change (voir `gestes_reserves_test.dart`).
+      expect(droitMatrice('admin', ecran).annuler, isTrue, reason: 'prémisse : l’accès complet lui donne annuler à la matrice, et ce droit-là ne vaut plus validation');
       final m = vide();
       final admin = SeuilsPoste(contexte(m, 'admin'));
       expect(admin.peutEnregistrer, isTrue);
@@ -424,7 +428,7 @@ void main() {
       expect(admin.peutValider, isFalse);
       final r = admin.valider('VAR-NFS-GB', motif: 'Je force');
       expect(r.ok, isFalse);
-      expect(r.refus!.code, 'VALIDATION_HORS_MATRICE');
+      expect(r.refus!.code, 'VALIDATION_RESERVEE');
       expect(admin.etat('VAR-NFS-GB').etat, 'enregistre');
       await ouvrir(t, m, 'admin');
       expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);
@@ -521,6 +525,212 @@ void main() {
       expect(find.byKey(const Key('res:cmp:alerte:GB')), findsOneWidget);
       expect(find.textContaining('Variation brutale : seuil de 1 G/l atteint (seuil validé, version 1 du 01/01/2026)'), findsOneWidget);
       // L'écran du prescripteur (onglet « Rendus au prescripteur ») ne porte aucune alerte.
+    });
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    // LOT B : le droit de valider est un GESTE RÉSERVÉ de la fiche de rôle
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    const g = gesteValiderSeuil;
+    int rang = 0;
+    /// Pose (ou remplace) la fiche `rbac` d'un rôle : la forme que la superposition à chaud relit.
+    void poserGestes(Magasin m, String role, Map<String, bool> gestes) {
+      final col = m.collection('rbac');
+      final existante = col.toutes.where((f) => f['role'] == role).firstOrNull;
+      if (existante != null) {
+        col.mettreAJour(existante['id'], {'droitsGestes': gestes});
+      } else {
+        col.inserer({'id': 'RBACGESTE${rang++}', 'role': role, 'statut': 'actif', 'droitsGestes': gestes});
+      }
+    }
+
+    void enregistrerPourValider(Magasin m) => expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 1, dateEffet: '2026-11-13').ok, isTrue);
+
+    test('lot B : le droit n’est plus celui de l’écran — le droit « annuler » ne suffit plus, le geste de la fiche décide', () {
+      final m = vide();
+      enregistrerPourValider(m);
+      // `direction` et `admin` ont « annuler » sur l'écran (accès large) mais pas le geste ; `dm` n'a ni l'un ni l'autre.
+      for (final role in ['admin', 'direction', 'dm']) {
+        expect(SeuilsPoste(contexte(m, role)).droitValider, isFalse, reason: role);
+      }
+      expect(SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste')).droitValider, isTrue, reason: 'le Biologiste médical l’a d’origine, sans aucune fiche');
+    });
+
+    test('lot B : la Direction peut ACCORDER le geste à l’administrateur système (matrice), à chaud ; le retrait le lui reprend ; le moteur revérifie à chaque appel', () {
+      final m = vide();
+      enregistrerPourValider(m);
+      final admin = SeuilsPoste(contexte(m, 'admin'));
+      expect(admin.valider('VAR-NFS-GB', motif: 'avant').refus!.code, 'VALIDATION_RESERVEE');
+      poserGestes(m, 'admin', {g: true});
+      expect(admin.peutValider, isTrue, reason: 'même objet, aucune relecture à faire : le droit est lu des fiches à chaque appel');
+      final r = admin.valider('VAR-NFS-GB', motif: 'Accordé par la Direction');
+      expect(r.ok, isTrue, reason: r.refus?.motif);
+      expect(admin.etat('VAR-NFS-GB').etat, 'valide');
+      // Retiré : un second seuil enregistré ne peut plus être validé par lui.
+      expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-GB', ecartAbsolu: 3, dateEffet: '2026-11-20').ok, isTrue);
+      poserGestes(m, 'admin', {g: false});
+      expect(admin.peutValider, isFalse);
+      final refus = admin.valider('VAR-NFS-GB', motif: 'Je force');
+      expect(refus.refus!.code, 'VALIDATION_RESERVEE');
+      expect(admin.etat('VAR-NFS-GB').etat, 'enregistre_sur_valide', reason: 'rien n’a été écrit');
+    });
+
+    test('lot B : une surcharge RETIRE aussi au Biologiste médical d’origine (pas de nom de rôle protégé)', () {
+      final m = vide();
+      enregistrerPourValider(m);
+      poserGestes(m, 'laborantin', {g: false});
+      final bio = SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste'));
+      expect(bio.peutValider, isFalse);
+      expect(bio.valider('VAR-NFS-GB', motif: 'x').refus!.code, 'VALIDATION_RESERVEE');
+      expect(bio.peutEnregistrer, isTrue, reason: 'régler un seuil reste le droit d’éditer l’écran : le geste ne retire pas ce qui est sans effet');
+      poserGestes(m, 'laborantin', {});
+      expect(bio.peutValider, isTrue, reason: 'décision retirée : l’origine suit');
+    });
+
+    test('lot B : le technicien (intérim) reste exclu par défaut ; accorder l’intérim sur la fiche du rôle l’admet, et le retirer le réexclut', () {
+      final m = vide();
+      enregistrerPourValider(m);
+      final tsl = SeuilsPoste(contexte(m, 'laborantin', fonction: 'tsl'));
+      expect(tsl.droitValider, isTrue, reason: 'le geste est celui du rôle qu’il endosse');
+      expect(tsl.fonctionHabilitee, isFalse);
+      expect(tsl.valider('VAR-NFS-GB', motif: 'Intérim').refus!.code, 'FONCTION_NON_HABILITEE');
+      poserGestes(m, 'laborantin', {gesteValiderSeuilInterim: true});
+      expect(tsl.peutValider, isTrue, reason: 'accordable sur la fiche, comme le dit la clinique sœur');
+      expect(tsl.valider('VAR-NFS-GB', motif: 'Intérim accordé').ok, isTrue);
+      expect(SeuilsPoste(contexte(m, 'laborantin', fonction: 'biologiste')).peutValider, isTrue);
+    });
+
+    test('lot B : la décision passe par le service de droits (clé « geste.… », motif obligatoire, journal) et vaut à chaud', () {
+      final m = vide();
+      enregistrerPourValider(m);
+      final s = ServiceDroits.de(m);
+      s.fileulRattache = () => false;
+      final r = s.decider(
+          role: 'direction',
+          valeurs: {'libelleOrigine': 'Direction / Gérance', 'droitsGestes': {g: true}},
+          journal: 'Geste réservé',
+          motif: 'La Direction valide les seuils',
+          auteurRole: 'admin');
+      expect(r.annuler, isNotNull);
+      expect(SeuilsPoste(contexte(m, 'direction')).valider('VAR-NFS-GB', motif: 'Décision de la Direction').ok, isTrue);
+      expect(m.collection('decisionsDroits').actives.any((d) => '${d['changements']}'.contains('geste.$g')), isTrue, reason: 'la décision est consignée, la fiche n’a pas été réécrite en silence');
+      r.annuler();
+      expect(SeuilsPoste(contexte(m, 'direction')).droitValider, isFalse, reason: 'l’annulation est une décision de plus, aussi à chaud');
+    });
+
+    cas('lot B : la commande Valider est ABSENTE hors droit, PRÉSENTE avec le droit accordé, et suit à chaud un retrait sans rouvrir l’écran', (t) async {
+      final m = vide();
+      enregistrerPourValider(m);
+      await ouvrir(t, m, 'admin');
+      expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);
+      expect(find.byKey(const Key('seuils:valider:GB')), findsNothing, reason: 'l’administrateur système n’a pas le geste d’origine : commande absente, non grisée');
+      poserGestes(m, 'admin', {g: true});
+      await t.pump();
+      expect(find.byKey(const Key('seuils:valider:GB')), findsOneWidget, reason: 'accordé par la fiche : la commande paraît');
+      poserGestes(m, 'admin', {g: false});
+      await t.pump();
+      expect(find.byKey(const Key('seuils:valider:GB')), findsNothing);
+    });
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    // LOT B : le délai maximal entre deux mesures
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    cas('lot B : la fiche de seuil porte le champ « Délai maximal », vide par défaut, enregistré et affiché avec le seuil en vigueur', (t) async {
+      final m = vide();
+      await ouvrir(t, m, 'laborantin');
+      await toucher(t, find.byKey(const Key('seuils:regler:GB')));
+      expect(find.text('Délai maximal entre deux mesures (jours)'), findsOneWidget);
+      final champ = find.descendant(of: find.byKey(const Key('kit:champ:delaiMaxJours')), matching: find.byType(TextField));
+      expect(t.widget<TextField>(champ).controller!.text, '', reason: 'aucune valeur par défaut');
+      await t.enterText(find.descendant(of: find.byKey(const Key('kit:champ:ecartAbsolu')), matching: find.byType(TextField)), '2');
+      await t.enterText(champ, '30');
+      await t.pump();
+      await toucher(t, find.byKey(const Key('seuils:enregistrer')));
+      final b = m.collection('seuilsDelta').actives.single;
+      expect(b['delaiMaxJours'], 30);
+      expect(SeuilsPoste(contexte(m, 'laborantin')).valider('VAR-NFS-GB', motif: 'Notice').ok, isTrue);
+      await t.pump();
+      expect(find.byKey(const Key('seuils:delai:GB')), findsOneWidget);
+      expect(find.text('délai entre deux mesures : 30 jours'), findsOneWidget);
+    });
+
+    test('lot B : un délai non entier ou nul est refusé en le nommant, jamais écrit', () {
+      final m = vide();
+      final sp = SeuilsPoste(contexte(m, 'laborantin'));
+      for (final d in [0, 2.5, -1]) {
+        expect(sp.enregistrer('VAR-NFS-GB', ecartAbsolu: 1, delaiMaxJours: d, dateEffet: '2026-11-13').refus!.code, 'DELAI_INVALIDE', reason: '$d');
+      }
+      expect(m.collection('seuilsDelta').actives, isEmpty);
+    });
+
+    Future<void> comparatif(WidgetTester t, Magasin m) async {
+      await monter(t, m, const EcranComparatifResultats(fonction: 'biologiste'), role: 'laborantin');
+      await choisir(t, 'patient', 'TEST PXV (CBG/9/26) — 2 résultat(s)');
+      await choisir(t, 'examen', 'NFS complète (hémogramme) (2 mesures)');
+    }
+
+    final precD = demande('61', '2026-05-10', patient: 'PXV', valeurs: {'GB': 5});
+    final renduD = demande('62', '2026-11-12', patient: 'PXV', valeurs: {'GB': 9}, valideLe: '2026-11-12T15:00:00.000Z');
+
+    cas('lot B : au-delà du délai, le comparatif DIT « variation non évaluée » (âge et délai nommés), ne lève aucune alerte, et affiche l’âge de la mesure précédente', (t) async {
+      final m = magasin({'demandesAnalyses': [precD, renduD], 'plagesReactif': const [], 'seuilsDelta': [seuilValide({'ecartAbsolu': 1, 'delaiMaxJours': 30})]});
+      await comparatif(t, m);
+      expect(find.byKey(const Key('res:cmp:alerte:GB')), findsNothing);
+      expect(find.byKey(const Key('res:cmp:non-evaluee:GB')), findsOneWidget);
+      expect(find.text('Variation non évaluée : mesure précédente trop ancienne (186 jours, délai réglé 30 jours)'), findsOneWidget);
+      expect(find.text('mesure précédente il y a 186 jours'), findsOneWidget);
+    });
+
+    cas('lot B : dans le délai, l’alerte part comme avant ; sans délai, de même ; l’âge s’affiche dans les deux cas', (t) async {
+      for (final champs in [
+        {'ecartAbsolu': 1, 'delaiMaxJours': 186},
+        {'ecartAbsolu': 1},
+      ]) {
+        final m = magasin({'demandesAnalyses': [precD, renduD], 'plagesReactif': const [], 'seuilsDelta': [seuilValide(champs)]});
+        await comparatif(t, m);
+        expect(find.byKey(const Key('res:cmp:alerte:GB')), findsOneWidget, reason: '$champs');
+        expect(find.byKey(const Key('res:cmp:non-evaluee:GB')), findsNothing, reason: '$champs');
+        expect(find.text('mesure précédente il y a 186 jours'), findsOneWidget, reason: '$champs');
+      }
+    });
+
+    cas('lot B : le délai ne BLOQUE rien : la validation biologique passe, et la fenêtre dit que la variation n’a pas été évaluée', (t) async {
+      final cibleD = demande('62', '2026-11-12', patient: 'PXV', etat: 'valide_technique', valeurs: {'GB': 9});
+      final m = magasin({'demandesAnalyses': [precD, cibleD], 'plagesReactif': const [], 'seuilsDelta': [seuilValide({'ecartAbsolu': 1, 'delaiMaxJours': 30})]});
+      await monter(t, m, const EcranResultats(fonction: 'biologiste'), role: 'laborantin');
+      await onglet(t, 'relecture');
+      expect(find.byKey(const Key('res:alerte-validation:LAB-00062')), findsNothing, reason: 'non évalué : aucune alerte levée');
+      await toucher(t, find.byKey(const Key('res:valider-bio:LAB-00062')));
+      expect(find.textContaining('Variation non évaluée (« non évalué » ne veut pas dire « pas d’alerte »)'), findsOneWidget);
+      await toucher(t, find.text('Valider biologiquement'));
+      expect(m.collection('demandesAnalyses').parId('62')!['etatAnalyse'], 'valide');
+    });
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    // LOT B : la ligne « Seuils enregistrés à valider » du centre des validations
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    Future<void> centre(WidgetTester t, Magasin m, String role) =>
+        monter(t, m, const EcranValidations(), role: role, ecranId: 'adm-validations', droit: const Droit(voir: true, editer: false, annuler: false));
+
+    cas('lot B : la ligne n’est visible que du PORTEUR du droit, avec son compte ; ni la Direction ni l’administrateur ne la voient sans le geste', (t) async {
+      final m = vide();
+      enregistrerPourValider(m);
+      expect(SeuilsPoste(contexte(m, 'laborantin')).enregistrer('VAR-NFS-HB', ecartAbsolu: 2, dateEffet: '2026-11-13').ok, isTrue);
+      await centre(t, m, 'laborantin');
+      expect(find.byKey(const Key('qual:seuils-a-valider')), findsOneWidget);
+      expect(t.widget<Text>(find.byKey(const Key('qual:seuils-a-valider:compte'))).data, '2', reason: 'deux versions Enregistrées, sans effet');
+      expect(find.textContaining('un seuil à la fois, avec son motif'), findsOneWidget);
+      for (final role in ['direction', 'admin']) {
+        await centre(t, m, role);
+        expect(find.byKey(const Key('qual:seuils-a-valider')), findsNothing, reason: '$role n’a pas le droit : le centre lui reste ouvert pour le reste, pas pour cette ligne');
+      }
+      poserGestes(m, 'direction', {g: true});
+      await centre(t, m, 'direction');
+      expect(find.byKey(const Key('qual:seuils-a-valider')), findsOneWidget, reason: 'le droit accordé ouvre la ligne : jamais une liste de rôles');
+      // Validé : le compte tombe (1), il ne compte que ce qui attend.
+      expect(SeuilsPoste(contexte(m, 'laborantin')).valider('VAR-NFS-GB', motif: 'Notice').ok, isTrue);
+      await centre(t, m, 'direction');
+      expect(t.widget<Text>(find.byKey(const Key('qual:seuils-a-valider:compte'))).data, '1');
+      expect(find.widgetWithText(BoutonSigh, 'Valider'), findsNothing, reason: 'le centre oriente, il ne valide jamais en lot');
     });
   });
 }

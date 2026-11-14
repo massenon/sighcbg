@@ -209,7 +209,8 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
     return {
       'heure': versHorodatage(v['date'], v['heure'])!.toUtc().toIso8601String(),
       'temperature': n(v['temperature']),
-      'tension': v['tension'],
+      'tensionSys': n(v['tensionSys']),
+      'tensionDia': n(v['tensionDia']),
       'pouls': n(v['pouls']),
       'spo2': (n(v['spo2']) == null || n(v['spo2']) == 0) ? null : n(v['spo2']),
       'observation': v['observation'] ?? '',
@@ -221,11 +222,11 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(ctx);
     final col = c.magasin.collection('observations');
     final maintenant = c.aujourdhui;
-    final ctl = ControleurFormulaire(const [
+    final ctl = ControleurFormulaire([
       ChampDef(nom: 'date', libelle: 'Date du relevé', type: TypeChamp.date, requis: true),
       ChampDef(nom: 'heure', libelle: 'Heure du relevé', requis: true, indicatif: 'HH:mm', valider: validerHeure),
       ChampDef(nom: 'temperature', libelle: 'Température (°C)', type: TypeChamp.nombre, requis: true),
-      ChampDef(nom: 'tension', libelle: 'Tension artérielle', requis: true, indicatif: '12/8'),
+      ...champsTension(requis: true),
       ChampDef(nom: 'pouls', libelle: 'Pouls (bpm)', type: TypeChamp.nombre, requis: true),
       ChampDef(nom: 'spo2', libelle: 'Saturation SpO₂ (%)', type: TypeChamp.nombre),
       ChampDef(
@@ -259,7 +260,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
                     final annuler = col.mettreAJour(o['id'], {'constantes': suite});
                     ToastsSigh.afficher(ctx, 'Constantes relevées à ${heureDe(releve['heure'])}.',
                         type: TypeToast.succes,
-                        detail: '${_num(releve['temperature'])} °C · ${releve['tension']} · ${_num(releve['pouls'])} bpm',
+                        detail: '${_num(releve['temperature'])} °C · ${hosTensionAffichee(releve) ?? '—'} · ${_num(releve['pouls'])} bpm',
                         annuler: annuler);
                   }),
             ]);
@@ -448,7 +449,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
   static List<ColonneEtat> _colonnesReleve() => [
         ColonneEtat(libelle: 'Heure', valeur: (x) => dateHeureCourte(x['heure'])),
         ColonneEtat(libelle: 'Température', droite: true, valeur: (x) => '${_num(x['temperature'])} °C'),
-        ColonneEtat(libelle: 'Tension', droite: true, valeur: (x) => x['tension']),
+        ColonneEtat(libelle: 'Tension ($hosUniteTension)', droite: true, valeur: (x) => hosTensionAffichee(x) ?? '—'),
         ColonneEtat(libelle: 'Pouls', droite: true, valeur: (x) => '${_num(x['pouls'])} bpm'),
         ColonneEtat(
             libelle: 'SpO₂',
@@ -531,7 +532,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
                   ? MiniTableauSigh(colonnes: [
                       ColonneMini('Heure', (x) => dateHeureCourte(x['heure'])),
                       ColonneMini('T°', (x) => '${_num(x['temperature'])} °C', droite: true),
-                      ColonneMini('TA', (x) => '${x['tension'] ?? ''}', droite: true),
+                      ColonneMini('TA', (x) => hosTensionAffichee(x) ?? '', droite: true),
                       ColonneMini('Pouls', (x) => '${_num(x['pouls'])} bpm', droite: true),
                       ColonneMini(
                           'SpO₂', (x) => (x['spo2'] == null || x['spo2'] == 0) ? '—' : '${_num(x['spo2'])} %',

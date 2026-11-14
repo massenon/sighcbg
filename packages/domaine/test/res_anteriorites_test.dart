@@ -473,16 +473,19 @@ void main() {
       expect(variationEntre(gb, 0.01, 3)!.pourcent, isNotNull);
     });
 
-    test('décision du 13/11/2026 : valider est un geste réservé à la matrice, l’accès complet de l’administrateur ne le satisfait pas', () {
+    test('lot B : valider est un GESTE RÉSERVÉ de la fiche de rôle (plus une exception de nom de rôle), le moteur revérifie le droit lu par l’appelant', () {
+      // ADAPTÉ : le lot A2 écrivait `accesCompletSuffit('seuil.valider', 'admin')` (liste de rôles dans le domaine, `VALIDATION_HORS_MATRICE`) ; le droit est maintenant lu
+      // aux fiches (`DroitsGestes`, `gestes_reserves_test.dart`) et passé au moteur, qui refuse `VALIDATION_RESERVEE` quand il manque.
       final base = appliquer(const [], enreg(const [], abs: 1));
-      VerdictSeuil v(String role) => validerSeuil(
-          variableId: '${gb['id']}', seuilsActifs: actifs(base), droitValider: true, fonctionHabilitee: true, profil: 'P', role: role, motif: 'm', acteur: 'a', libelleRole: 'L', maintenant: auj);
-      expect(v('admin').refus!.code, 'VALIDATION_HORS_MATRICE');
-      expect(v('laborantin').ok, isTrue);
-      expect(accesCompletSuffit('seuil.valider', 'admin'), isFalse);
-      expect(accesCompletSuffit('seuil.valider', 'laborantin'), isTrue);
-      expect(accesCompletSuffit('autre.geste', 'admin'), isTrue, reason: 'rien d’autre ne change pour l’administrateur');
-      // L'administrateur enregistre toujours (éditer).
+      VerdictSeuil v(bool droit) => validerSeuil(
+          variableId: '${gb['id']}', seuilsActifs: actifs(base), droitValider: droit, fonctionHabilitee: true, profil: 'P', motif: 'm', acteur: 'a', libelleRole: 'L', maintenant: auj);
+      expect(v(false).refus!.code, 'VALIDATION_RESERVEE');
+      expect(v(true).ok, isTrue);
+      // La fonction exclut le technicien par défaut, quel que soit le droit du geste.
+      final f = validerSeuil(
+          variableId: '${gb['id']}', seuilsActifs: actifs(base), droitValider: true, fonctionHabilitee: false, profil: 'P', motif: 'm', acteur: 'a', libelleRole: 'L', maintenant: auj);
+      expect(f.refus!.code, 'FONCTION_NON_HABILITEE');
+      // L'administrateur garde ENREGISTRER (éditer).
       expect(enreg(const [], abs: 1).ok, isTrue);
     });
 

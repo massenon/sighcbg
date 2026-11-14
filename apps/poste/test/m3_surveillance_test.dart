@@ -26,7 +26,8 @@ Magasin magasin({bool vide = false}) {
         : [
             for (var i = 0; i < 2; i++) {'id': 'ADM${i + 1}', 'statut': 'en_cours', 'patientId': pats[i]['id']}
           ],
-    'constantes': vide ? const [] : [for (final x in liste(v['constantes'])) {...x}],
+    // ADAPTÉ (lot B) : les constantes d'accueil du vecteur (clinique sœur d'alors) portent la diurèse en LITRES ; le poste les tient en MILLILITRES, comme le lit du patient.
+    'constantes': vide ? const [] : [for (final x in liste(v['constantes'])) {...x, if (x['diurese'] != null) 'diurese': ((x['diurese'] as num) * 1000).round()}],
     'releves': vide ? const [] : [for (final x in liste(v['releves'])) {...x}],
     'audit': const [],
   }, 'POSTE');
@@ -34,6 +35,12 @@ Magasin magasin({bool vide = false}) {
 
 HosCourbe courbe(WidgetTester t) =>
     (t.widget<CustomPaint>(find.byKey(const Key('m3:courbe'))).painter as PeintreCourbe).courbe;
+
+/// ADAPTÉ (lot B) : le vecteur écrit la diurèse « 1.2 L » ; le poste l'écrit « 1200 mL » (millilitres partout, aucune conversion à l'affichage).
+String enMillilitres(Object? attendu) {
+  final m = RegExp(r'^([\d.]+) L$').firstMatch('$attendu');
+  return m == null ? '$attendu' : '${(double.parse(m[1]!) * 1000).round()} mL';
+}
 
 void verifierTable(WidgetTester t, Map<String, Object?> groupe) {
   final lignes = (dico((groupe['tableaux'] as List).single)['lignes'] as List).cast<List>();
@@ -43,7 +50,7 @@ void verifierTable(WidgetTester t, Map<String, Object?> groupe) {
     for (var j = 0; j < 10; j++) {
       final col = tab.colonnes[j];
       final texte = col.texte != null ? col.texte!(tab.lignes[i]) : '${tab.lignes[i][col.cle] ?? ''}';
-      expect(texte, lignes[i][j], reason: 'ligne $i, colonne ${col.libelle}');
+      expect(texte, col.libelle == 'Diurèse' ? enMillilitres(lignes[i][j]) : lignes[i][j], reason: 'ligne $i, colonne ${col.libelle}');
     }
   }
 }
@@ -101,8 +108,8 @@ void main() {
     verifierDessin(t, dico(dico(v['premier'])['dessin']));
     final c = courbe(t);
     // six lignes de grille partagées par les cinq échelles
-    expect(c.graduations, ['5 60 36 10 0', '10 80 37 20 0.5', '15 100 38 30 1', '20 120 39 40 1.5', '25 140 40 50 2', '30 180 41 60 2.5']);
-    for (final leg in ['TA (cmHg) — 5 à 30', 'Pouls (bpm) — 60 à 180', 'T° (°C) — 36 à 41', 'FR (/min) — 10 à 60', 'Diurèse (L) — 0 à 2.5']) {
+    expect(c.graduations, ['5 60 36 10 0', '10 80 37 20 500', '15 100 38 30 1000', '20 120 39 40 1500', '25 140 40 50 2000', '30 180 41 60 2500']);
+    for (final leg in ['TA (cmHg) — 5 à 30', 'Pouls (bpm) — 60 à 180', 'T° (°C) — 36 à 41', 'FR (/min) — 10 à 60', 'Diurèse (mL) — 0 à 2500']) {
       expect(find.text(leg), findsOneWidget, reason: leg);
     }
     // E365 : la fréquence respiratoire non relevée (REL2, REL7) n'est pas tracée à zéro — 7 jours affichés, 9 colonnes remplies, 7 FR présentes

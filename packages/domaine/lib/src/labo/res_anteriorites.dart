@@ -210,16 +210,48 @@ String texteVariation(VariationLabo? v, [String suffixe = '']) {
 
 /// L'alerte d'une variation (lot A2) : `null` quand aucun seuil Validé n'est en vigueur à [date] (pas d'alerte configurée), ou que la variation n'est pas
 /// numérique ; sinon l'alerte, qui SIGNALE et ne bloque jamais.
-AlerteVariation? alerteVariation(FicheLabo? variable, VariationLabo? variation, Object? date, Iterable<FicheLabo> seuilsActifs, {required DateTime aujourdhui}) {
+AlerteVariation? alerteVariation(FicheLabo? variable, VariationLabo? variation, Object? date, Iterable<FicheLabo> seuilsActifs,
+    {required DateTime aujourdhui, int? ageJours}) {
   if (variable == null || variation == null || variation.mode != 'numerique') return null;
   final s = seuilEnVigueur('${variable['id']}', date, seuilsActifs, aujourdhui: aujourdhui);
   if (s == null || s['retrait'] == true) return null;
+  // LE DÉLAI (lot B) : au-delà du délai réglé entre la mesure précédente et la mesure jugée, la variation N'EST PAS ÉVALUÉE — et le verdict le dit. Un âge
+  // incalculable n'est ni zéro ni dépassé : la variation s'évalue et le verdict porte `ageInconnu`. Le délai ne bloque jamais rien.
+  final delai = (_nombreJs(s['delaiMaxJours']))?.toInt();
+  if (delai != null && ageJours != null && ageJours > delai) {
+    return AlerteVariation(false, s, const [], false, nonEvalue: 'delai', ageJours: ageJours, delaiMaxJours: delai);
+  }
   final raisons = <RaisonAlerte>[];
   final abs = _nombreJs(s['ecartAbsolu']), rel = _nombreJs(s['ecartRelatif']);
   if (abs != null && variation.ecartAbsolu! >= abs) raisons.add(RaisonAlerte('absolu', abs, variation.ecartAbsolu!));
   if (rel != null && variation.pourcent != null && variation.pourcent!.abs() >= rel) raisons.add(RaisonAlerte('relatif', rel, variation.pourcent!.abs()));
-  return AlerteVariation(raisons.isNotEmpty, s, raisons, rel != null && variation.pourcent == null);
+  return AlerteVariation(raisons.isNotEmpty, s, raisons, rel != null && variation.pourcent == null,
+      ageJours: ageJours, delaiMaxJours: delai, ageInconnu: delai != null && ageJours == null);
 }
+
+/// L'ÂGE de la mesure précédente : jours entiers de calendrier entre sa date et celle de la mesure jugée (jamais négatif) ; `null` quand une des deux dates
+/// manque ou est illisible. Toujours affiché au comparatif, avec ou sans délai réglé.
+int? ageEntreMesures(FicheLabo? precedente, FicheLabo? courante) {
+  DateTime? jour(FicheLabo? d) {
+    final t = '${d?['dateHeure'] ?? d?['date'] ?? ''}';
+    final m = RegExp(r'^(\d{4})-(\d{2})-(\d{2})').firstMatch(t);
+    return m == null ? null : DateTime.utc(int.parse(m[1]!), int.parse(m[2]!), int.parse(m[3]!));
+  }
+
+  final a = jour(precedente), b = jour(courante);
+  if (a == null || b == null) return null;
+  final n = b.difference(a).inDays;
+  return n < 0 ? 0 : n;
+}
+
+String _pluriel(int n, String mot) => '${nombre(n.toDouble(), 0)} $mot${n > 1 ? 's' : ''}';
+
+/// « mesure précédente il y a 12 jours » : l'âge de la mesure précédente, avec ou sans délai réglé.
+String? texteAge(int? age) => age == null ? null : (age == 0 ? 'mesure précédente le même jour' : 'mesure précédente il y a ${_pluriel(age, 'jour')}');
+
+/// Le message d'une variation NON ÉVALUÉE faute de délai : le verdict nomme l'âge et le délai réglé.
+String texteNonEvalue(AlerteVariation a) =>
+    'Variation non évaluée : mesure précédente trop ancienne (${_pluriel(a.ageJours ?? 0, 'jour')}, délai réglé ${_pluriel(a.delaiMaxJours ?? 0, 'jour')})';
 
 /// La date à laquelle une mesure se juge : celle de sa validation biologique si elle est rendue, aujourd'hui sinon.
 String dateJugementMesure(FicheLabo d, DateTime aujourdhui) =>
@@ -242,13 +274,16 @@ class CelluleComparatif {
 /// Une ligne du comparatif : une variable, ses cellules (une par colonne), la mesure précédente DE LA VARIABLE (pas forcément la colonne voisine), la
 /// variation et l'alerte éventuelle.
 class LigneModele {
-  const LigneModele(this.variable, this.suffixe, this.cellules, this.precedente, this.variation, this.alerte);
+  const LigneModele(this.variable, this.suffixe, this.cellules, this.precedente, this.variation, this.alerte, [this.ageJours]);
   final FicheLabo variable;
   final String suffixe;
   final List<CelluleComparatif> cellules;
   final FicheLabo? precedente;
   final VariationLabo? variation;
   final AlerteVariation? alerte;
+
+  /// L'âge de la mesure précédente DE LA VARIABLE, en jours (`null` : pas de mesure précédente ou date illisible).
+  final int? ageJours;
 }
 
 class ModeleComparatif {
@@ -281,8 +316,9 @@ ModeleComparatif modeleComparatif(String code, FicheLabo b, JeuLabo j) {
     final vb = valeurs.last;
     final prec = _vide(vb) ? null : derniereValeurAnterieure(b, '${v['code']}', j);
     final variation = prec == null ? null : variationEntre(v, prec.valeur, vb);
+    final age = prec == null ? null : ageEntreMesures(prec.demande, b);
     lignes.add(LigneModele(v, _suffixe(v['unite'], j), cellules, prec?.demande, variation,
-        alerteVariation(v, variation, dateJugementMesure(b, j.aujourdhui), j.seuils, aujourdhui: j.aujourdhui)));
+        alerteVariation(v, variation, dateJugementMesure(b, j.aujourdhui), j.seuils, aujourdhui: j.aujourdhui, ageJours: age), age));
   }
   return ModeleComparatif(colonnes, lignes, ant, b);
 }
@@ -309,7 +345,13 @@ class AlerteDeMesure {
   final String suffixe;
 }
 
-List<AlerteDeMesure> alertesDe(FicheLabo demande, JeuLabo j) {
+List<AlerteDeMesure> alertesDe(FicheLabo demande, JeuLabo j) => [
+      for (final x in evaluationsDe(demande, j))
+        if (x.alerte.alerte) x
+    ];
+
+/// Les variations d'UNE mesure que le seuil a ÉVALUÉES ou DÉCLARÉES NON ÉVALUÉES faute de délai : alerte levée, ou `nonEvalue == 'delai'`.
+List<AlerteDeMesure> evaluationsDe(FicheLabo demande, JeuLabo j) {
   final code = codeExamenDe(demande, j.examens);
   if (code == null || j.seuils.isEmpty) return const [];
   final out = <AlerteDeMesure>[];
@@ -320,8 +362,9 @@ List<AlerteDeMesure> alertesDe(FicheLabo demande, JeuLabo j) {
     final prec = derniereValeurAnterieure(demande, '${v['code']}', j);
     if (prec == null) continue;
     final variation = variationEntre(v, prec.valeur, val);
-    final a = alerteVariation(v, variation, dateJugementMesure(demande, j.aujourdhui), j.seuils, aujourdhui: j.aujourdhui);
-    if (a != null && a.alerte) out.add(AlerteDeMesure(v, variation!, a, prec.demande, _suffixe(v['unite'], j)));
+    final a = alerteVariation(v, variation, dateJugementMesure(demande, j.aujourdhui), j.seuils,
+        aujourdhui: j.aujourdhui, ageJours: ageEntreMesures(prec.demande, demande));
+    if (a != null && (a.alerte || a.nonEvalue != null)) out.add(AlerteDeMesure(v, variation!, a, prec.demande, _suffixe(v['unite'], j)));
   }
   return out;
 }
