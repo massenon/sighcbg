@@ -1,0 +1,52 @@
+{
+ "id": "imp-courriers",
+ "module": "IMP",
+ "domaine": "Système",
+ "libelleManifeste": "Importation du registre des courriers",
+ "acces": "ouvert",
+ "titre": "Importation du registre des courriers",
+ "description": "Le registre du courrier départ et arrivée : sens, date, correspondant, objet, nature, service destinataire. Le numéro d’ordre est attribué par le logiciel (série annuelle).",
+ "fil": [
+  "Accueil",
+  "Système",
+  "Importation de données",
+  "Importation du registre des courriers"
+ ],
+ "actions": [
+  "Jeux d’import et historique des lots",
+  "Importation du répertoire patients",
+  "Importation de données"
+ ],
+ "regle": [],
+ "onglets": [],
+ "kpis": [
+  "Lots appliqués",
+  "Fiches importées",
+  "Fichiers refusés",
+  "Statut du jeu"
+ ],
+ "cartes": [
+  "1. Télécharger le modèle",
+  "2. Téléverser et analyser",
+  "Historique des lots de ce jeu"
+ ],
+ "tableaux": [
+  [
+   "Colonne",
+   "Obligatoire",
+   "Type",
+   "Valeurs permises",
+   "Exemple"
+  ]
+ ],
+ "commandes": [
+  "Télécharger le modèle (.xlsx)",
+  "Modèle CSV",
+  "Téléverser un fichier (.xlsx ou .csv)",
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}

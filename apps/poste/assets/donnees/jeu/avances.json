@@ -1,0 +1,3 @@
+[
+{"id":"AVA0001","statut":"actif","employeId":"m-007","date":"2026-09-03","montant":60000,"nbMensualites":3,"motif":"Besoin personnel","statutAvance":"en_cours","fictif":true,"source":"Jeu de démonstration Baguidi : valeur d’attente fictive, à remplacer par la Direction","employe":"ZIME Nadège","matricule":"m-007","service":"Comptabilité","mensualite":20000,"rembourse":20000.0,"reference":"AVS-0001"}
+]

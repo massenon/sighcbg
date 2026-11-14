@@ -1,0 +1,52 @@
+{
+ "id": "imp-transferts",
+ "module": "IMP",
+ "domaine": "Système",
+ "libelleManifeste": "Importation d’un transfert gros → détail",
+ "acces": "ouvert",
+ "titre": "Importation d’un transfert gros → détail",
+ "description": "Un bon de transfert du magasin vers la pharmacie, article par article. RG-03 est contrôlé ligne par ligne (le stock du magasin ne devient jamais négatif) ; un seul justificatif pour tout le fichier.",
+ "fil": [
+  "Accueil",
+  "Système",
+  "Importation de données",
+  "Importation d’un transfert gros → détail"
+ ],
+ "actions": [
+  "Jeux d’import et historique des lots",
+  "Importation du répertoire patients",
+  "Importation de données"
+ ],
+ "regle": [],
+ "onglets": [],
+ "kpis": [
+  "Lots appliqués",
+  "Fiches importées",
+  "Fichiers refusés",
+  "Statut du jeu"
+ ],
+ "cartes": [
+  "1. Télécharger le modèle",
+  "2. Téléverser et analyser",
+  "Historique des lots de ce jeu"
+ ],
+ "tableaux": [
+  [
+   "Colonne",
+   "Obligatoire",
+   "Type",
+   "Valeurs permises",
+   "Exemple"
+  ]
+ ],
+ "commandes": [
+  "Télécharger le modèle (.xlsx)",
+  "Modèle CSV",
+  "Téléverser un fichier (.xlsx ou .csv)",
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}

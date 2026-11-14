@@ -1,0 +1,13 @@
+{
+  "apps/poste/windows/runner/resources/app_icon.ico": "d224e276db853230448422546d7ad24efc8f59fa65f41f8bd6471b2a8860e495",
+  "apps/poste/assets/img/icone-poste.png": "437cbf02ea475b4b77d2ae8e20da2a63c34721d4427819cdfbc385188d2f8ba8",
+  "apps/mobile/android/app/src/main/res/mipmap-mdpi/ic_launcher.png": "520b4803802a94dadeff8ae5454c3dd23cfe169dfb5ae2b206f6e6249871d45f",
+  "apps/mobile/android/app/src/main/res/mipmap-hdpi/ic_launcher.png": "614fc5fa356e6df9b65c4453d45750a07f5a99ba1bd4fc6ca553f0398c9ef1d8",
+  "apps/mobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": "292a82de988c53ce40700c0a72beab4966702d42dca9aa1703f811e46734bd3c",
+  "apps/mobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": "fb1a9ec71264ac0cc7cc89ee76630776449cbf194393fe5c41aec59e44499151",
+  "apps/mobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": "e674672e7b6d1e0cc0ef97c522a15608578874ca56bd870ba1cddc38721ac6b9",
+  "apps/web/public/favicon.ico": "180e81df963a8679ef62347c27fda0960fdd89be3ace79c9e579543dd7160d68",
+  "apps/web/public/apple-touch-icon.png": "900ae407be186efcf820a423f0a609f1c53c8fc99517eb699bb4ad34e4467a8a",
+  "apps/web/public/icon-192.png": "e674672e7b6d1e0cc0ef97c522a15608578874ca56bd870ba1cddc38721ac6b9",
+  "apps/web/public/icon-512.png": "edb75f440292be9f703dffb7edc6f2c0266286773730ddc892a7e0f5fa940e72"
+}

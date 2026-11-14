@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ $titre ?? 'Panneau du relais' }} · SIGH-CBG</title>
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="16x16 32x32 48x48">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/panneau.css') }}">
+    @livewireStyles
+</head>
+<body>
+@php
+    $menu = [
+        'panneau.tableau' => 'Tableau de bord du relais',
+        'panneau.clinique' => 'Tableau de bord de la clinique',
+        'panneau.appareils' => 'Appareils',
+        'panneau.boites' => 'Boîtes aux lettres',
+        'panneau.codes' => 'Codes d’appairage',
+        'panneau.indicateurs' => 'Indicateurs reçus',
+        'panneau.synchronisation' => 'Synchronisation',
+        'panneau.alertes' => 'Alertes et notifications',
+        'panneau.journal' => 'Journal d’audit du relais',
+        'panneau.superadmin' => 'Comptes superadmin',
+        'panneau.parametres' => 'Paramètres du relais',
+        'panneau.hebergement' => 'Hébergement',
+        'panneau.sauvegarde' => 'Sauvegarde du relais',
+        'panneau.opacite' => 'Preuve d’opacité',
+        'panneau.consultation' => 'Consultation des copies',
+    ];
+@endphp
+<header class="entete">
+    <strong>SIGH-CBG · Relais en ligne (apps/web)</strong>
+    <nav aria-label="Navigation du panneau">
+        {{-- Réservé au superadmin : un compte qui ne l'est pas ne voit aucune entrée (et n'ouvre aucune route). --}}
+        @foreach(auth()->user()?->superadmin === true ? $menu : [] as $route => $libelle)
+            <a href="{{ route($route) }}" @if(request()->routeIs($route)) aria-current="page" @endif>{{ $libelle }}</a>
+        @endforeach
+    </nav>
+    <form method="post" action="{{ route('panneau.deconnexion') }}">@csrf <button type="submit">Se déconnecter</button></form>
+</header>
+<main>
+    {{ $slot }}
+</main>
+@livewireScripts
+</body>
+</html>

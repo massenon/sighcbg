@@ -1,0 +1,52 @@
+{
+ "id": "imp-inventaire",
+ "module": "IMP",
+ "domaine": "Système",
+ "libelleManifeste": "Importation d’un comptage d’inventaire",
+ "acces": "ouvert",
+ "titre": "Importation d’un comptage d’inventaire",
+ "description": "La feuille de comptage (jusqu’à 200 articles) : la quantité comptée par article pour UN magasin. Le comptage est une saisie ; la régularisation du stock reste un geste humain, à la feuille d’inventaire.",
+ "fil": [
+  "Accueil",
+  "Système",
+  "Importation de données",
+  "Importation d’un comptage d’inventaire"
+ ],
+ "actions": [
+  "Jeux d’import et historique des lots",
+  "Importation du répertoire patients",
+  "Importation de données"
+ ],
+ "regle": [],
+ "onglets": [],
+ "kpis": [
+  "Lots appliqués",
+  "Fiches importées",
+  "Fichiers refusés",
+  "Statut du jeu"
+ ],
+ "cartes": [
+  "1. Télécharger le modèle",
+  "2. Téléverser et analyser",
+  "Historique des lots de ce jeu"
+ ],
+ "tableaux": [
+  [
+   "Colonne",
+   "Obligatoire",
+   "Type",
+   "Valeurs permises",
+   "Exemple"
+  ]
+ ],
+ "commandes": [
+  "Télécharger le modèle (.xlsx)",
+  "Modèle CSV",
+  "Téléverser un fichier (.xlsx ou .csv)",
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}
