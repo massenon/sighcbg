@@ -58,7 +58,9 @@ class PageStandard extends StatelessWidget {
         ],
       ]),
       const SizedBox(height: 8),
-      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      // Les commandes de l'en-tête passent à la ligne au-delà de 60 % de la largeur : un écran qui porte cinq commandes écrasait le titre (lot TFIN, relevé chez la clinique sœur).
+      LayoutBuilder(
+          builder: (context, k) => Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -109,8 +111,11 @@ class PageStandard extends StatelessWidget {
                           fontFamilyFallback: JetonsSigh.policeSlogan.skip(1).toList()))),
           ]),
         ),
-        if (actions.isNotEmpty) Wrap(spacing: 8, children: actions),
-      ]),
+        if (actions.isNotEmpty)
+          ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: k.maxWidth.isFinite ? k.maxWidth * 0.6 : double.infinity),
+              child: Wrap(spacing: 8, runSpacing: 8, alignment: WrapAlignment.end, children: actions)),
+      ])),
       if (regle != null) ...[
         const SizedBox(height: 14),
         NoteSigh(regle!),
