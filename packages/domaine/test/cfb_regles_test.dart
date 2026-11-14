@@ -109,7 +109,9 @@ void main() {
       }
       expect(cfbProfilsAudio.map((p) => [p.$1, p.$2, p.$5]).toList(), liste(c['profilsAudio']).map((p) => [p['id'], p['label'], p['note']]).toList());
       expect(cfbParamsNotifDefaut, {...obj(c['defautsNotif']), 'volume': 0.8});
-      expect(cfbEssentielles, c['essentielles']);
+      // Le vecteur date de la maquette. Décision de la Direction du 14/11/2026 : les prestataires externes voyagent comme les natures de facture (jeu d'import « direct et demande »),
+      // donc de la configuration de la mère, donc essentielles : le vidage les conserve. Seul écart avec le vecteur, nommé ici.
+      expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires']));
       final lib = obj(c['libelles']);
       for (final k in lib.keys) {
         expect(cfbLibelleCollection(k), (obj(lib[k])['module'], obj(lib[k])['entite']), reason: k);
@@ -400,15 +402,20 @@ void main() {
         expect([x.total + plus, x.actifs + plus, x.archives], [att[x.nom]![1], att[x.nom]![2], att[x.nom]![3]], reason: x.nom);
       }
     });
-    test('bilan d’un vidage : 104 tables d’activité, 9 523 fiches ; 43 tables de paramétrage préservées (les fiches de poste ne le sont plus)', () {
+    test('bilan d’un vidage : 103 tables d’activité, les fiches de la maquette moins les prestataires ; 44 tables de paramétrage préservées (les fiches de poste ne le sont plus)', () {
       final conservees = {...cfbEssentielles, ...techniques};
       final plan = cfbPlanVidage({for (final n in fiches.keys) n: fiches[n]!.length}, conservees);
       final vd = obj(obj(sy['reinit'])['vider']);
-      expect(plan.tables, vd['attenduTables']);
-      expect(plan.enregistrements, vd['attenduLignes']);
-      expect(plan.collections.toSet(), (vd['videes'] as List).cast<String>().toSet().difference(techniques));
-      expect(cfbToastVidage(plan), ((vd['toasts'] as List).first as List).first);
-      expect(fiches.length - plan.tables, 43);
+      // Le vecteur vidait les prestataires ; ils sont désormais essentiels (décision du 14/11/2026) : une table et leurs fiches de moins au bilan.
+      const devenuesEssentielles = {'prestataires'};
+      expect(plan.tables, (vd['attenduTables'] as int) - devenuesEssentielles.length);
+      expect(plan.enregistrements, (vd['attenduLignes'] as int) - devenuesEssentielles.fold<int>(0, (a, n) => a + fiches[n]!.length));
+      expect(plan.collections.toSet(), (vd['videes'] as List).cast<String>().toSet().difference(techniques).difference(devenuesEssentielles));
+      // Le message du vecteur disait 104 tables et 9 523 enregistrements : mêmes mots, deux nombres de moins (les prestataires sont conservés).
+      final toast = cfbToastVidage(plan);
+      expect(toast.replaceAll(RegExp(r'[^0-9a-zé() —.]'), ''), '${plan.tables} table(s) vidée(s) — ${plan.enregistrements} enregistrements retirés.');
+      expect(toast.replaceAll(RegExp(r'\d+'), '#'), (((vd['toasts'] as List).first as List).first as String).replaceAll(RegExp(r'\d+'), '#').replaceAll(RegExp(r'(?<=#)[  ](?=#)'), ''));
+      expect(fiches.length - plan.tables, 44);
       expect(plan.collections, contains('fichesPoste'), reason: 'retour de la Direction du 01/11/2026 : les fiches de poste de démonstration partent');
       expect(cfbEssentielles, isNot(contains('fichesPoste')));
     });

@@ -5,9 +5,10 @@ part of 'jeux_import.dart';
 /// à l'écran écrit, jamais à côté, et ne modifie JAMAIS une fiche tenue.
 ///
 /// CLASSEMENT (voir `docs/architecture/ECARTS-MAQUETTE.md`) :
-///  * DIRECT ET DEMANDE (non restreints, cible de configuration de la mère) : natures de facture, centres de coûts, unités du laboratoire, catalogue de l'imagerie. Sur un fileul rattaché, l'agent
-///    voit son import aussitôt et une demande vérifiée part à la mère, qui reste l'autorité (`demande_import.dart`) ;
-///  * DIRECT SEUL, RESTREINT : prestataires (tarif par acte = rémunération), immobilisations (patrimoine), budgets (prévisionnel financier). Leurs lignes ne voyagent jamais dans une demande (RG-13) ;
+///  * DIRECT ET DEMANDE (non restreints, cible de configuration de la mère) : natures de facture, centres de coûts, unités du laboratoire, catalogue de l'imagerie, et — décision de la Direction
+///    du 14/11/2026, option 2, qui REMPLACE le classement « restreint » de E2588 — les prestataires externes (le tarif par acte est leur rémunération : il voyage dans la demande, la Direction
+///    l'accepte ; jamais vers un téléphone). Sur un fileul rattaché, l'agent voit son import aussitôt et une demande vérifiée part à la mère, qui reste l'autorité (`demande_import.dart`) ;
+///  * DIRECT SEUL, RESTREINT : immobilisations (patrimoine), budgets (prévisionnel financier). Leurs lignes ne voyagent jamais dans une demande (RG-13) ;
 ///  * RÉSERVÉ À LA MÈRE : aucun (il faudrait un jeu restreint qui écrive de la configuration).
 ///
 /// « Ignorer les existants » reste réservé aux quatre jeux de la Direction (produits, fournisseurs, emplacements, courriers) : aucun de ces sept ne l'accorde, chacun étant le SUPPORT d'une pièce
@@ -244,11 +245,10 @@ final JeuImport jeuCatalogueImagerie = JeuImport(
   },
 );
 
-// --- 21. PRESTATAIRES EXTERNES (RESTREINT) ------------------------------------------------------------------------------------------
+// --- 21. PRESTATAIRES EXTERNES (DIRECT ET DEMANDE) ------------------------------------------------------------------------------------------
 
 final JeuImport jeuPrestataires = JeuImport(
   id: 'prestataires',
-  restreint: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-prestataires',
   libelle: 'Importation des prestataires externes',

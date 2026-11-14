@@ -223,7 +223,7 @@ void main() {
     });
 
     test(
-        'le classement : quatre référentiels de configuration (direct et demande), trois jeux restreints (direct seul), aucun réservé à la mère',
+        'le classement : cinq référentiels de configuration (direct et demande, prestataires compris depuis le 14/11/2026), deux jeux restreints (direct seul), aucun réservé à la mère',
         () {
       final deLaMere = {
         ...cfbEssentielles,
@@ -239,13 +239,13 @@ void main() {
         'natures-facture',
         'centres-couts',
         'unites-labo',
-        'catalogue-imagerie'
+        'catalogue-imagerie',
+        'prestataires'
       });
       expect({
         for (final j in sept)
           if (j.restreint) j.id
       }, {
-        'prestataires',
         'immobilisations',
         'budgets'
       });
@@ -1139,6 +1139,8 @@ void main() {
       ('centres-couts', jeuCentresCouts, 'da', 'centresCouts'),
       ('unites-labo', jeuUnitesLabo, 'laborantin', 'unitesLabo'),
       ('catalogue-imagerie', jeuCatalogueImagerie, 'da', 'examensImagerie'),
+      // Décision de la Direction du 14/11/2026 (option 2) : les prestataires voyagent comme les natures de facture, tarif par acte compris.
+      ('prestataires', jeuPrestataires, 'da', 'prestataires'),
     ]) {
       final (id, j, role, col) = cas;
       test('$id : le fileul écrit chez lui sous l\'identité de la demande, la mère rejoue sous le rôle de l\'auteur et écrit sous les MÊMES identifiants', () {
@@ -1180,7 +1182,7 @@ void main() {
       expect(m.actives('naturesFacture').where((x) => x['lotImport'] != null), isEmpty);
     });
 
-    for (final j in [jeuPrestataires, jeuImmobilisations, jeuBudgets]) {
+    for (final j in [jeuImmobilisations, jeuBudgets]) {
       test('${j.id} (restreint) : ne se dépose JAMAIS, et la mère refuse une demande forgée en le nommant ; l\'import à la mère reste local et direct', () {
         final f = poste('da', 'F1-');
         final a = analyserFichier(j, fich(j, [valide[j.id]!]), 'f.xlsx', f);

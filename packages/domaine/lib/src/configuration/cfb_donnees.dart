@@ -211,6 +211,7 @@ const cfbEssentielles = <String>[
   'valorisationsSage',
   'ambulances',
   'materiel',
+  'prestataires',
   'comptesResultat',
   'utilisateurs',
   'rbac',

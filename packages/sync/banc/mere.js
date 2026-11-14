@@ -55,11 +55,13 @@ const FAMILLES = {
   /* Lot IMP-E : le stock que le pont du poste synchronise comme la mère Dart (`sync_dart/lib/src/mere.dart`) : les lots et les mouvements sont des fiches descriptives (A, une identité par fiche,
      jamais dédoublée), les variations de stock sont des fiches AJOUTÉES (une par variation, jamais modifiées : `fiche_existe` à la seconde création du même identifiant). */
   lots: 'A', mouvements: 'A', deltasCompteurs: 'A',
+  /* Décision du 14/11/2026 : les PRESTATAIRES externes (jeu d'import « direct et demande », comme les natures de facture) sont de la configuration : la mère seule écrit, les fileuls reçoivent. */
+  prestataires: 'R',
 };
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['demandesImport', 'lecturesOcr', 'reglagesOcr'];
+const MOBILE_JAMAIS = ['demandesImport', 'lecturesOcr', 'reglagesOcr', 'prestataires']; /* prestataires : la rémunération (tarif par acte) ne part jamais vers un téléphone */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";

@@ -468,4 +468,36 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     verifier('la mère n\'a pas écrit la demande du téléphone', (await compte('demandesImport')) === 4);
     await m.fermer();
   },
+  async IMP3() {
+    titre('IMPORT-IMP3 · les prestataires (jeu « direct et demande », décision du 14/11/2026) : la mère seule écrit, DEUX fileuls reçoivent, un fileul n\'écrit pas directement, la rémunération ne part JAMAIS vers un téléphone');
+    const m = await monde({ relais: true });
+    const f1 = await m.fileul('F1');
+    const f2 = await m.fileul('F2');
+    const mereEcrit = (collection, fiche, champs) => m.mere.admin('POST', '/admin/referentiel', { collection, fiche, champs }).then((x) => x.json);
+    const PRESTATAIRE = { id: 'PRE-DIM-F1-1-1', reference: 'PE-0001', nom: 'Dr BANC Prestataire', specialite: 'Chirurgie', tarifActe: 25000, actesRealises: 0, statut: 'actif', lotImport: 'IMP-MERE-PRE' };
+
+    /* 1. La mère applique l'import d'un fileul : elle écrit la fiche (famille R), avec le tarif par acte. */
+    verifier('la mère accepte la fiche du prestataire (famille R : la mère seule écrit)', (await mereEcrit('prestataires', PRESTATAIRE.id, PRESTATAIRE)).statut === 'acceptee');
+
+    /* 2. LES DEUX FILEULS la reçoivent, tarif compris. */
+    const recu = (f) => attendre(async () => { const l = (await f.liste('prestataires')).find((x) => x.id === PRESTATAIRE.id); return !!l && l.data.tarifActe === 25000 && l.data.nom === PRESTATAIRE.nom; }, 15000);
+    verifier('le premier fileul reçoit le prestataire, tarif par acte compris', await recu(f1));
+    verifier('le SECOND fileul le reçoit aussi (la liste se partage entre les postes)', await recu(f2));
+
+    /* 3. Un fileul n'écrit pas la collection directement : seule la demande d'import passe par la mère. */
+    await f1.ecrire({ type: 'creer', collection: 'prestataires', fiche: 'PRE-FAUX', champs: { nom: 'Écrit sans passer par la mère', tarifActe: 1, statut: 'actif' } });
+    verifier('écrire directement un prestataire (famille R) est refusé : droit_refuse', await attendre(async () => (await f1.etat()).a_traiter.some((x) => x.code === 'droit_refuse'), 15000));
+    await dormir(600);
+    verifier('aucune fiche forgée chez la mère ni chez l\'autre fileul', !(await f2.liste('prestataires')).some((x) => x.id === 'PRE-FAUX') && (await m.mere.admin('GET', '/admin/fiche?collection=prestataires&id=PRE-FAUX')).json.absente === true);
+
+    /* 4. JAMAIS vers un téléphone. Dans le banc, un téléphone ne reçoit que SON lot et l'instantané des droits (il ne tire pas le journal de configuration) : `prestataires` n'est dans aucun des
+       deux. Le chemin de lecture du journal (`GET /sync/pull`, d'où la mère exclut `prestataires` pour un mobile) est éprouvé contre la VRAIE mère Dart par
+       `apps/poste/test/demandes_import_prestataires_sync_test.dart` (un fileul le reçoit, un mobile non, journal non vide). */
+    const mob = await m.mobile('M1', { profil: 'soignant' });
+    await mereEcrit('prestataires', 'PRE-BANC-2', { ...PRESTATAIRE, id: 'PRE-BANC-2', reference: 'PE-0002', nom: 'Dr BANC Second', tarifActe: 30000 });
+    verifier('un prestataire publié APRÈS l\'appairage du téléphone parvient au fileul, tarif compris', await attendre(async () => (await f1.liste('prestataires')).some((x) => x.id === 'PRE-BANC-2' && x.data.tarifActe === 30000), 15000));
+    await dormir(900);
+    verifier('le téléphone ne reçoit AUCUN prestataire (ni nom, ni tarif par acte)', (await mob.liste('prestataires')).length === 0, (await mob.liste('prestataires')).length);
+    await m.fermer();
+  },
 });
