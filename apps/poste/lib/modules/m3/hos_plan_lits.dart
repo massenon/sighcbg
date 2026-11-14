@@ -60,7 +60,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
   void _ouvrirLit(BuildContext context, HosChambre ch, String lit, Fiche? adm) {
     final c = ContexteEcran.of(context);
     if (adm == null) {
-      final tarif = TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui)[ch.type] ?? hosTypesChambre.firstWhere((t) => t.id == ch.type).tarif;
+      final tarif = TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui)[ch.type];
       afficherTiroir<void>(context,
           titre: 'Lit $lit',
           sousTitre: '${ch.aile} — ${hosLibelleTypeChambre(ch.type)}',
@@ -69,7 +69,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
               ('Chambre', ch.code),
               ('Lit', lit),
               ('Type', hosLibelleTypeChambre(ch.type)),
-              ('Tarif journalier', money(tarif)),
+              ('Tarif journalier', tarif == null ? 'à valider' : money(tarif)),
               ('État', statutBadge('libre')),
             ]),
             const SizedBox(height: 16),

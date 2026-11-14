@@ -11,17 +11,19 @@ import 'dart:math' as math;
 
 typedef HosFiche = Map<String, Object?>;
 
+/// La NOMENCLATURE des types de chambre : un identifiant et un libellé, JAMAIS un prix. La journée facturée est une prestation du référentiel de prix unique (`HO01` à `HO03`) :
+/// elle se lit à la date de la pièce par `TarifsPoste.tarifsJournee`. Le champ `tarif` a été RETIRÉ (lot TFIN, T7) : une constante de domaine qui porte un prix est une ancienne
+/// liste de prix, et son prix d'origine, figé, se serait affiché sans que rien ne le dise le jour où le référentiel change.
 class HosTypeChambre {
-  const HosTypeChambre(this.id, this.label, this.tarif);
+  const HosTypeChambre(this.id, this.label);
   final String id;
   final String label;
-  final int tarif;
 }
 
 const hosTypesChambre = [
-  HosTypeChambre('standard', 'Standard', 5000),
-  HosTypeChambre('vip', 'VIP', 15000),
-  HosTypeChambre('vvip', 'VVIP', 25000),
+  HosTypeChambre('standard', 'Standard'),
+  HosTypeChambre('vip', 'VIP'),
+  HosTypeChambre('vvip', 'VVIP'),
 ];
 
 String hosLibelleTypeChambre(Object? id) {

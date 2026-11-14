@@ -21,7 +21,8 @@ void main() {
       expect(hosChambres[i].aile, ch[i]['aile']);
       expect(hosChambres[i].lits, [for (final l in liste(ch[i]['lits'])) l['label']]);
     }
-    expect([for (final t in hosTypesChambre) {'id': t.id, 'label': t.label, 'tarif': t.tarif}], liste(r['typesChambre']));
+    // Le domaine ne porte que la NOMENCLATURE (id, libellé) : le prix de la journée est au référentiel de prix (lot TFIN, T7).
+    expect([for (final t in hosTypesChambre) {'id': t.id, 'label': t.label}], [for (final t in liste(r['typesChambre'])) {'id': t['id'], 'label': t['label']}]);
     expect([for (final u in hosUnitesObservation) '${u.id}|${u.label}|${u.places}'],
         [for (final u in liste(r['unitesObservation'])) '${u['id']}|${u['label']}|${u['places']}']);
     expect([for (final o in hosOrientations) '${o.id}|${o.label}|${o.ton}'],

@@ -9,6 +9,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
+import 'package:sigh_poste/modules/m3/hos_chambres.dart';
 
 import 'aide_polices.dart';
 import 'parite/extracteur.dart';
@@ -19,6 +20,15 @@ final donnees = DonneesNavigation.depuisDossier();
 final vecteurs = (jsonDecode(File('../../packages/domaine/test/vecteurs/hospitalisation.json').readAsStringSync()) as Map).cast<String, Object?>();
 List<Fiche> liste(Object? v) => [for (final x in (v as List)) (x as Map).cast<String, Object?>()];
 String _s(Object? v) => '${v ?? ''}'.replaceAll(RegExp(r'[\s  ]'), '');
+
+/// Le RÉFÉRENTIEL de prix du jeu livré (la journée d'hospitalisation est une prestation, `HO01` à `HO03`) et la nomenclature des types de chambre : sans eux, la journée n'a PAS de prix
+/// (« à valider »), le domaine n'en portant plus aucun (lot TFIN, T7).
+Map<String, Iterable<Fiche>> prixDuJeu() => {
+      for (final n in const ['tarifs', 'versionsTarif'])
+        n: [for (final x in (jsonDecode(File('assets/donnees/jeu/$n.json').readAsStringSync()) as List)) (x as Map).cast<String, Object?>()]
+    };
+Map<String, Object?> nomenclatureChambres() =>
+    {'typesChambre': (jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map)['typesChambre']};
 
 Future<void> ouvrir(WidgetTester t, Magasin m, String ecran) async {
   t.view.physicalSize = const Size(1600, 1100);
@@ -41,9 +51,15 @@ void main() {
   setUp(() => ImpressionPoste.enregistrer = (pdf, nom) async => '/faux/$nom.pdf');
   tearDown(ToastsSigh.viderPourTests);
 
+  test('sans prix de journée au référentiel, le lit n\'a PAS de tarif (null, « à valider »), jamais un prix d\'origine recopié (T7)', () {
+    final lignes = EcranChambres.lignes(const []);
+    expect(lignes, isNotEmpty);
+    expect(lignes.every((l) => l['tarif'] == null), isTrue);
+  });
+
   testWidgets('m3-chambres : KPI et lignes identiques à la maquette sur son registre d’admissions', (t) async {
     final a = (vecteurs['admissions'] as Map).cast<String, Object?>();
-    final m = Magasin({'admissions': [for (final x in liste(a['etatFinal'])) {...x}], 'audit': const []}, 'POSTE');
+    final m = Magasin({...prixDuJeu(), 'admissions': [for (final x in liste(a['etatFinal'])) {...x}], 'audit': const []}, 'POSTE', nomenclatureChambres());
     await ouvrir(t, m, 'm3-chambres');
     final ch = (a['chambres'] as Map).cast<String, Object?>();
     for (final k in liste(ch['kpis'])) {
