@@ -1307,7 +1307,8 @@
         "imp-actes",
         "imp-natures-facture",
         "imp-centres-couts",
-        "imp-catalogue-imagerie"
+        "imp-catalogue-imagerie",
+        "imp-garanties"
        ]
       }
      ]
@@ -4988,6 +4989,14 @@
        "hub": "hub-cfg",
        "ecrans": [
         "cfg-validations-aib"
+       ]
+      },
+      {
+       "code": "IMP",
+       "label": "Importation de données",
+       "hub": "hub-imp",
+       "ecrans": [
+        "imp-garanties"
        ]
       }
      ]
