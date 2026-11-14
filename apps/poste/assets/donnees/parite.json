@@ -5560,6 +5560,22 @@
    "statut": "porté"
   },
   {
+   "id": "imp-tarifs-produits",
+   "label": "Importation des prix d’achat",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "stock",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-supervision",
    "label": "Supervision",
    "module": "MERE",

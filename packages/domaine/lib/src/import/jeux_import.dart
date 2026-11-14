@@ -27,6 +27,7 @@ import 'moteur_import.dart';
 
 part 'jeux_import_stock.dart';
 part 'jeux_import_tarifs.dart';
+part 'jeux_import_prix_produits.dart';
 part 'jeux_import_referentiels.dart';
 part 'jeux_import_assurance.dart';
 
@@ -1001,6 +1002,8 @@ final List<JeuImport> jeuxImport = [
   // T13 : les garanties datées (direct et demande, configuration de la mère) et les couvertures datées des assurés (direct seul, restreint).
   jeuGaranties,
   jeuCouverturesAssurance,
+  // Le prix d'achat des produits par proposition (même fabrique, même chemin que l'écran « Changer le prix d'achat »), restreint à la mère.
+  jeuTarifsProduits,
 ];
 
 /// Les anciens identifiants de jeu qui survivent à une refonte (un fichier ou une demande d'avant : `actes` devient `tarifs`).

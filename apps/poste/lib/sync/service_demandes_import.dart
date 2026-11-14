@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/service_installation.dart';
 import '../donnees/magasin.dart';
+import '../donnees/tarifs_poste.dart';
 import '../import/droits_import.dart' show octetsMaxDe;
 import '../import/port_magasin.dart';
 import 'configuration_sync.dart' show collectionsConfiguration;
@@ -291,6 +292,8 @@ class ServiceDemandesImport {
         }
         n++;
       }
+      // Les articles que ces demandes viennent de créer (référentiel produits, Grand Stock) reçoivent AUSSITÔT leur version 1 de prix d'achat : la mère seule l'écrit, sans date d'effet inventée.
+      if (n > 0) TarifsPoste.assurerProduits(magasin);
       derniereErreur = null;
     } catch (e) {
       derniereErreur = e;

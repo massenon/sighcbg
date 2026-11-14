@@ -490,7 +490,8 @@
         "imp-immobilisations",
         "imp-budgets",
         "imp-garanties",
-        "imp-couvertures-assurance"
+        "imp-couvertures-assurance",
+        "imp-tarifs-produits"
        ]
       }
      ]
@@ -699,7 +700,8 @@
         "imp-immobilisations",
         "imp-budgets",
         "imp-garanties",
-        "imp-couvertures-assurance"
+        "imp-couvertures-assurance",
+        "imp-tarifs-produits"
        ]
       }
      ]
@@ -1988,7 +1990,8 @@
         "imp-immobilisations",
         "imp-budgets",
         "imp-garanties",
-        "imp-couvertures-assurance"
+        "imp-couvertures-assurance",
+        "imp-tarifs-produits"
        ]
       }
      ]
@@ -2182,7 +2185,8 @@
         "imp-immobilisations",
         "imp-budgets",
         "imp-garanties",
-        "imp-couvertures-assurance"
+        "imp-couvertures-assurance",
+        "imp-tarifs-produits"
        ]
       }
      ]
@@ -3030,7 +3034,8 @@
         "imp-stock-detail",
         "imp-transferts",
         "imp-inventaire",
-        "imp-emplacements"
+        "imp-emplacements",
+        "imp-tarifs-produits"
        ]
       }
      ]

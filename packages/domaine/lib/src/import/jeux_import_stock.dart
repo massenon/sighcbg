@@ -42,9 +42,9 @@ final JeuImport jeuProduits = JeuImport(
     _oblig('designation', 'Désignation', 'texte', longueurMax: 160, exemple: 'PARACETAMOL 500 MG CP B/100'),
     _oblig('categorie', 'Catégorie', 'liste', liste: _categoriesProduit(), exemple: 'Médicaments'),
     _col('unite', 'Unité', 'texte', longueurMax: 30, exemple: 'Boîte', aide: 'Vide : « Unité ».'),
-    _col('prixAchat', 'Prix d’achat unitaire', 'entier', min: 0, exemple: 350, aide: 'En francs CFA. Vide : l’article est créé « à valoriser » et le dit (aucun prix n’est inventé).'),
+    _col('prixAchat', 'Prix d’achat unitaire', 'entier', min: 0, exemple: 350, aide: 'En francs CFA, strictement positif : obligatoire (un article sans prix d’achat ne se crée pas ; la reprise d’un stock existant passe par « Importation Grand Stock », qui crée l’article « à valoriser »). Il pose la version 1 du prix d’achat.'),
     _col('prixVente', 'Prix de vente unitaire', 'entier',
-        min: 0, exemple: 350, aide: 'En francs CFA. Vide : égal au prix d’achat. RG-02 : un médicament ne se vend pas au-dessus de son prix d’achat sans validation de la Direction.'),
+        min: 0, exemple: 350, aide: 'En francs CFA. Vide : égal au prix d’achat. RG-02 : un médicament ne se vend ni au-dessus ni au-dessous de son prix d’achat sans validation de la Direction.'),
     _col('seuil', 'Seuil d’alerte', 'entier', min: 0, exemple: 20, aide: 'Vide : proposé à 5, marqué « à valider ».'),
     _col('emplacement', 'Emplacement', 'texte', longueurMax: 60, exemple: 'Rayon A, Casier 3'),
     _col('fournisseur', 'Code fournisseur', 'texte', longueurMax: 24, exemple: 'SOBAPS', aide: 'Code d’un fournisseur connu. Un code inconnu est signalé, jamais refusé.'),
@@ -61,12 +61,15 @@ final JeuImport jeuProduits = JeuImport(
   regles: (v, ctx, sc, n) {
     final pb = <ProblemeImport>[];
     final achat = v['prixAchat'] as num?, vente = v['prixVente'] as num?;
-    if (v['categorie'] == 'medicament' && achat != null && vente != null && vente > achat) {
-      pb.add(_p('Prix de vente unitaire', vente, 'RG02_MARGE', importRefus, 'prix de vente ${vente} supérieur au prix d’achat $achat : un médicament se facture au prix d’achat, sans marge (RG-02)',
-          'Alignez le prix de vente sur le prix d’achat, ou obtenez la validation tracée de la Direction avant l’import.'));
+    // RG-02 : un médicament se facture au prix d'achat, SANS marge : un prix de vente différent est refusé, au-dessus comme au-dessous.
+    if (v['categorie'] == 'medicament' && achat != null && vente != null && vente != achat) {
+      pb.add(_p('Prix de vente unitaire', vente, 'RG02_MARGE', importRefus, 'prix de vente ${nombre(vente)} différent du prix d’achat ${nombre(achat)} : un médicament se facture au prix d’achat, sans marge (RG-02)',
+          'Laissez le prix de vente vide (il vaut le prix d’achat), ou obtenez la validation tracée de la Direction avant l’import.'));
     }
-    if (achat == null) {
-      pb.add(_p('Prix d’achat unitaire', '', 'A_VALORISER', importAvertissement, 'prix d’achat absent : l’article sera créé « à valoriser »', 'Valorisez-le ensuite avec sa source ; aucun prix n’est inventé.'));
+    // Un article sans prix d'achat ne se crée pas (absent, tiret ou nul) : le seul cas où un article naît sans prix est la reprise du Grand Stock, qui le marque « à valoriser ».
+    if (achat == null || achat <= 0) {
+      final r = tarRefusPrixAchatAbsent(v['code'], v['designation']);
+      pb.add(_p('Prix d’achat unitaire', '', r.code, importRefus, r.motif, r.geste));
     }
     final f = v['fournisseur'];
     if (f != null && (ctx['fournisseurs'] as Map)[_n(f)] == null) {
