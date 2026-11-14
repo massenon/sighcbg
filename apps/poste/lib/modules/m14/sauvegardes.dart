@@ -9,6 +9,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
+import '../../kit/horssite_ui.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'commun_m14.dart';
@@ -400,6 +401,9 @@ class _VueSauvegardesState extends State<_VueSauvegardes> {
             variante: VarianteBouton.secondaire,
             onPressed: () => _imprimerJournal(context, c, rows)),
       ]),
+      const SizedBox(height: 16),
+      // Lot BAK (ADR-0008) : la copie chiffrée hors site (relais web ou dossier distant) du magasin et des scans ; réglage de la clinique, désactivée par défaut.
+      CarteHorsSite(role: c.role),
       const SizedBox(height: 16),
       TableauSigh(
         titre: 'Historique des sauvegardes',

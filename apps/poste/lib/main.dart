@@ -12,6 +12,7 @@ import 'documents/branchement.dart';
 import 'documents/ocr_poste.dart';
 import 'kit/champ_sensible.dart' show AccesSensible;
 import 'documents/service_fichiers.dart';
+import 'donnees/horssite_poste.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
 import 'sync/service_demandes_tarif.dart';
@@ -322,6 +323,13 @@ Future<void> main() async {
         } on FormatException {/* clé illisible : refus nommé CLE_ABSENTE à l'usage */}
         return moteur.clientFichiers(famille, cleClinique: cle);
       });
+  // Lot BAK (ADR-0008) : la copie chiffrée hors site (relais web ou dossier distant). Le réglage est un paramètre de clinique en base (désactivée par défaut) ; l'état et les gestes passent par le
+  // service de la mère de cette machine (un fileul n'en a pas : il lit le réglage, sans commande).
+  HorsSitePoste(magasin,
+          estFileul: () => params.rejoint && params.mode != ModePoste.mere,
+          estMere: () => controleur.config.estMere,
+          source: SourceHorsSiteHttp(base: Uri.parse('http://127.0.0.1:9000'), admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
+      .installer();
   // LA LECTURE OCR DES SCANS (lots OCR-prep et OCR-C) : AUCUN moteur n'est branché ici (aucun n'est choisi : décision de la Direction après un essai sur trois vrais scans). Le service dit
   // « aucun moteur d'OCR installé sur ce poste » ; le réglage se décide à la mère et descend aux fileuls ; la file reste locale. Un moteur s'enregistre par `ocr.enregistrer(...)`.
   final ocr = OcrPoste(magasin, estMere: () => controleur.config.estMere)
