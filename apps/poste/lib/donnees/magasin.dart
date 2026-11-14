@@ -604,6 +604,7 @@ class Magasin {
     'identifiants': 'M14',
     'rbac': 'M14',
     'decisionsDroits': 'M14',
+    'validationsDeposees': 'M13',
     // Lot IMP-C : les demandes d'import d'un fileul à la mère (fiche descriptive : le fileul dépose, la mère complète du verdict).
     'demandesImport': 'IMP',
     'tentativesConnexion': 'M14',

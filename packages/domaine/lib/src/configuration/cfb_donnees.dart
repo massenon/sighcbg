@@ -376,6 +376,7 @@ const cfbLibellesCollections = <String, (String, String)>{
   'rapprochements': ('M12', 'Rapprochements bancaires'),
   'rbac': ('M14', 'Rôles et permissions'),
   'decisionsDroits': ('M14', 'Décisions de droits'),
+  'validationsDeposees': ('M13', 'Validations déposées par un fileul'),
   'regimesTravail': ('M10', 'Régimes de travail par catégorie'),
   'registreSONU': ('M4', 'Registre SONUB / SONUC'),
   'relances': ('M9', 'Relances'),

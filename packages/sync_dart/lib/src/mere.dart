@@ -56,6 +56,8 @@ const familleDeBase = <String, String>{
   // Les DÉCISIONS DE DROITS (10/11/2026) : un poste habilité (ou la mère) y dépose sa demande de modification d'un droit de rôle ; la mère la juge, l'applique à
   // `rbac` (qu'elle seule écrit, famille R) et marque l'issue sur la même fiche. Rien ne s'y supprime.
   'decisionsDroits': 'A',
+  // CONTINUITÉ DES VALIDATIONS (15/11/2026) : la validation d'un référentiel qu'un fileul dépose ; la mère l'applique sous le rôle de l'auteur et écrit le verdict sur la même fiche. Jamais vers un téléphone.
+  'validationsDeposees': 'A',
   // Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul — il écrit chez lui ET dépose cette fiche ; la mère (le poste qui la porte) rejoue l'analyse sous le rôle de
   // l'auteur et complète la MÊME fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère (voir `traiter`) ; jamais vers un téléphone.
   'demandesImport': 'A',
@@ -83,7 +85,7 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// Ce qu'un MOBILE ne reçoit JAMAIS : les hachés des mots de passe (`identifiants`). Le téléphone reçoit toute la configuration de la clinique (référentiels,
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
-final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport', 'lecturesOcr', 'reglagesOcr'};
+final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport', 'lecturesOcr', 'reglagesOcr', 'validationsDeposees'};
 
 /// Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Un fileul ne reçoit ni ne modifie la demande d'un autre.
 /// L'auteur est l'appareil de l'opération `creer` (authentifié par le jeton), jamais un champ de la fiche qu'un fileul pourrait falsifier.

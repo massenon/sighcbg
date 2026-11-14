@@ -318,7 +318,21 @@ class VerdictValidation {
         collection = null,
         patch = const {},
         creation = null,
-        journal = null;
+        journal = null,
+        depose = false,
+        depotId = null;
+
+  /// Le geste d'un fileul rattaché : il n'écrit rien, il a DÉPOSÉ la validation (la mère l'applique, `valDeposer`). Ce n'est PAS une validation : `valideLe` reste nul.
+  const VerdictValidation.deposee({required String this.famille, required String this.id, required String this.depotId})
+      : refus = null,
+        valideLe = null,
+        validePar = null,
+        valideRole = null,
+        collection = null,
+        patch = const {},
+        creation = null,
+        journal = null,
+        depose = true;
   const VerdictValidation.ok({
     required this.famille,
     required this.id,
@@ -329,9 +343,15 @@ class VerdictValidation {
     required this.patch,
     required this.creation,
     required this.journal,
-  }) : refus = null;
+  })  : refus = null,
+        depose = false,
+        depotId = null;
   final RefusValidation? refus;
   bool get ok => refus == null;
+
+  /// Vrai : déposée à la mère, pas encore validée. Faux : écrite ici.
+  final bool depose;
+  final String? depotId;
   final String? famille;
   final String? id;
   final String? valideLe;

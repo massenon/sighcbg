@@ -15,6 +15,7 @@ import 'documents/service_fichiers.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
 import 'sync/service_demandes_tarif.dart';
+import 'sync/service_validations_deposees.dart';
 import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
 import 'donnees/persistance.dart';
@@ -229,6 +230,11 @@ Future<void> main() async {
         ..etiquette = 'M'
         ..matrice = matriceVive
         ..demarrer();
+      // CONTINUITÉ DES VALIDATIONS (15/11/2026) : les validations de référentiels que les validateurs ont DÉPOSÉES depuis un fileul. La mère les applique sous le rôle et le nom de leur auteur,
+      // tous les contrôles refaits avec SES données ; personne n'a à s'asseoir devant elle. Le verdict revient au fileul par le pont d'activité.
+      ServiceValidationsDeposees.de(magasin)
+        ..etiquette = 'M'
+        ..demarrerMere();
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();
@@ -262,6 +268,10 @@ Future<void> main() async {
       PlagesCodes.de(magasin).obtenir = (taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum);
       // Lot IMP-C : le verdict de la mère sur une demande d'import revient ici ; l'écriture locale du fileul est alors réglée (archivée si retenue, marquée « non retenue » sinon).
       ServiceDemandesImport.de(magasin)
+        ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
+        ..demarrerFileul();
+      // Le verdict de la mère sur une validation déposée revient ici : une notification dit à l'auteur ce qui a été appliqué, sans effet ou refusé.
+      ServiceValidationsDeposees.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
         ..demarrerFileul();
       ReservationStock.de(magasin)

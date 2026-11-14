@@ -41,6 +41,9 @@ const Set<String> collectionsActivite = {
   'lecturesOcr',
   // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
   'decisionsDroits',
+  // CONTINUITÉ DES VALIDATIONS (Direction, 15/11/2026) : la validation d'un référentiel déposée par un fileul (le validateur valide depuis N'IMPORTE QUEL poste). La MÈRE l'applique sous le rôle de
+  // l'auteur, tous les contrôles refaits, et écrit le verdict sur la même fiche, qui revient au fileul par ce chemin. Jamais vers un téléphone.
+  'validationsDeposees',
   // Lot IMP-C : les DEMANDES D'IMPORT d'un fileul (décision de la Direction du 12/11/2026, « option c »). Le fileul écrit chez lui ET dépose une demande vérifiée ; la MÈRE rejoue l'analyse
   // sous le rôle de l'auteur, applique ou refuse en nommant, et écrit le verdict sur la même fiche, qui revient au fileul par ce chemin. Les lignes du fichier sont effacées dès le verdict.
   // Jamais vers un téléphone (RG-13) : le protocole de la mère l'exclut de sa lecture.

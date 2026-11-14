@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/service_installation.dart';
 import '../donnees/magasin.dart';
 import '../modules/m14/commun_m14.dart' show rolesDe;
+import '../sync/service_validations_deposees.dart';
 import '../shell/contexte_ecran.dart';
 import 'acteur.dart';
 import 'badge.dart';
@@ -21,9 +22,10 @@ import 'ton.dart';
 /// contrôle. La validation écrit le marquage et ses trois traces, rien d'autre ; toute modification d'un élément validé le remet « à valider »
 /// ([remettre], appelé par l'écran qui modifie).
 ///
-/// Sur un FILEUL rattaché, la configuration est tenue par la mère : ces collections sont gardées « réglé sur la mère », donc la commande est absente et le
-/// geste refusé en le nommant (code `CONFIGURATION_DE_LA_MERE`). La validation écrite sur la mère voyage aux fileuls avec la collection `validationsReferentiels`
-/// (famille R) ; un fileul ne l'écrit jamais, donc deux postes ne peuvent pas se contredire : aucune règle de fusion n'est nécessaire.
+/// CONTINUITÉ DE SERVICE (Direction, 15/11/2026) : sur un FILEUL rattaché, la configuration est tenue par la mère (famille R) : le VALIDATEUR ne se voit pourtant pas refuser
+/// son geste, il le DÉPOSE (`ServiceValidationsDeposees`, collection `validationsDeposees`) ; la mère l'applique sous son rôle en refaisant tous les contrôles, et personne n'a à
+/// s'asseoir devant elle. Tant qu'elle n'a pas confirmé, l'élément reste « à valider » et le badge dit « transmise à la mère, en attente » — jamais « validé ». La validation
+/// écrite sur la mère voyage aux fileuls avec la collection `validationsReferentiels` (famille R) ; un fileul ne l'écrit jamais, donc deux postes ne peuvent pas se contredire.
 class ValidationPoste {
   ValidationPoste(this.c);
   final ContexteEcran c;
@@ -53,11 +55,16 @@ class ValidationPoste {
   /// Le poste est-il un fileul rattaché à une mère ? La configuration y est en lecture seule.
   bool get fileul => ServiceInstallation.de(m).rattache;
 
-  /// `K.peutValider(famille)` : le rôle de la SESSION est un des rôles de la famille, et le poste tient sa configuration.
-  bool peutValider(String famille) {
-    final f = valFamille(famille);
-    return f != null && !(fileul && valVoyageDeLaMere(f)) && valPeutValider(famille, c.role);
-  }
+  /// `K.peutValider(famille)` : le rôle de la SESSION est un des rôles de la famille. Sur un fileul rattaché, le geste est déposé à la mère au lieu d'être refusé.
+  bool peutValider(String famille) => valFamille(famille) != null && valPeutValider(famille, c.role);
+
+  /// Le geste de ce poste se DÉPOSE-t-il à la mère ? Un fileul rattaché, pour une famille dont les données voyagent de la mère.
+  bool _seDepose(FamilleValidation f) => fileul && valVoyageDeLaMere(f);
+
+  ServiceValidationsDeposees get _depots => ServiceValidationsDeposees.de(m);
+
+  /// L'état d'attente d'un élément dont la validation est déposée (ou refusée par la mère) ; `null` si aucun dépôt n'est à dire.
+  EtatDepot? etatDepot(String famille, Object? id) => _depots.etatDepot(famille, id);
 
   EtatValidation? etat(String famille, Object? id) => valEtatValidation(famille, '$id', lire, libelles);
 
@@ -65,6 +72,12 @@ class ValidationPoste {
   Widget? badge(String famille, Object? id) {
     final e = etat(famille, id);
     if (e == null) return null;
+    final d = e.enAttente ? etatDepot(famille, id) : null;
+    if (d != null) {
+      return d.enAttente
+          ? BadgeSigh('Transmise à la mère, en attente', key: Key('val:badge:$famille:$id'), ton: TonSigh.info)
+          : BadgeSigh('Refusée par la mère', key: Key('val:badge:$famille:$id'), ton: TonSigh.danger);
+    }
     if (e.enAttente) return BadgeSigh('À valider', key: Key('val:badge:$famille:$id'), ton: TonSigh.attention);
     final morceaux = [
       if (e.valideRole != null) e.valideRole!,
@@ -83,13 +96,23 @@ class ValidationPoste {
   String texteBadge(String famille, Object? id) {
     final e = etat(famille, id);
     if (e == null) return '';
-    if (e.enAttente) return 'À valider';
+    if (e.enAttente) {
+      final d = etatDepot(famille, id);
+      if (d != null) return d.enAttente ? 'Transmise à la mère, en attente' : 'Refusée par la mère';
+      return 'À valider';
+    }
     return e.valideLe == null ? 'Validé' : 'Validé (${[if (e.valideRole != null) e.valideRole!, _dateCourte(e.valideLe!)].join(', ')})';
   }
 
   /// Le geste : refus nommé, ou écriture du marquage et de ses trois traces, UNE ligne de journal (RG-12).
   VerdictValidation valider(String famille, Object? id, {String? motif}) {
-    // Sur un fileul, le domaine refuse en nommant la mère (`CONFIGURATION_DE_LA_MERE`, même texte que la garde « réglé sur la mère »).
+    final fam = valFamille(famille);
+    if (fam != null && _seDepose(fam)) {
+      // Continuité de service : le validateur d'un fileul ne se voit pas refuser son geste, il le dépose ; la mère l'applique sous son rôle, tous les contrôles refaits.
+      final d = _depots.deposer(famille, id, role: c.role, acteur: acteur(c).nom, motif: motif);
+      if (!d.ok) return VerdictValidation.refus(d.refus!);
+      return VerdictValidation.deposee(famille: famille, id: '$id', depotId: '${d.fiche!['id']}');
+    }
     final r = valValiderReferentiel(famille, '$id',
         role: c.role, acteur: acteur(c).nom, maintenant: c.aujourdhui, lire: lire, libelles: libelles, fileul: fileul, motif: motif);
     if (!r.ok) return r;
@@ -244,6 +267,9 @@ class ValidationPoste {
     return r;
   }
 
+  void _toastDepose(BuildContext ctx, String libelle) => ToastsSigh.afficher(ctx, 'Validation de « $libelle » transmise à la mère.',
+      type: TypeToast.info, detail: 'Elle s\'applique dès que la mère la reçoit ; l\'élément reste « à valider » d\'ici là, et le poste continue de travailler.');
+
   /// `K.boutonValiderModale` : le choix « Valider » du pied de modale, ABSENT hors famille, pour un élément déjà validé et sur un fileul.
   /// Il valide sans enregistrer les valeurs saisies. [fermer] referme la modale ; [apres] repeint l'écran.
   Widget? boutonModale(BuildContext ctx, ValidationCrud v, Fiche existante, VoidCallback fermer, {VoidCallback? apres}) {
@@ -252,6 +278,7 @@ class ValidationPoste {
     if (!peutValider(v.famille)) return null;
     final e = etat(v.famille, cible);
     if (e == null || !e.enAttente) return null;
+    if (etatDepot(v.famille, cible)?.enAttente ?? false) return null;
     return Tooltip(
         message: 'Valider « ${e.libelle} » sans modifier ses valeurs',
         child: BoutonSigh(
@@ -266,6 +293,16 @@ class ValidationPoste {
                 return;
               }
               fermer();
+              if (r.depose) {
+                _toastDepose(ctx, e.libelle);
+                apres?.call();
+                return;
+              }
+              if (r.depose) {
+                _toastDepose(ctx, e.libelle);
+                apres?.call();
+                return;
+              }
               final quand = DateTime.tryParse(r.valideLe!);
               ToastsSigh.afficher(ctx, '« ${e.libelle} » validé.',
                   type: TypeToast.succes, detail: 'Le ${quand == null ? r.valideLe : dateHeure(quand.toLocal())} par ${r.validePar}.');
@@ -306,6 +343,7 @@ class ValidationPoste {
     if (!peutValider(famille)) return null;
     final e = etat(famille, id);
     if (e == null || !e.enAttente) return null;
+    if (etatDepot(famille, id)?.enAttente ?? false) return null;
     return Tooltip(
         message: 'Valider « ${e.libelle} »',
         child: BoutonSigh(
