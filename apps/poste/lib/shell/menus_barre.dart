@@ -94,6 +94,7 @@ Future<void> ouvrirMenuProfil(
     ('Paramètres système', rolesRubanSysteme.contains(role) ? 'cfg-systeme' : 'parametres-hub', LucideIcons.settings),
     ('Mon compte', 'cfg-compte', LucideIcons.userCog),
     ('Notifications', 'cfg-notifications', LucideIcons.bell),
+    ('Assistant', 'sup-assistant', LucideIcons.sparkles),
     ('Aide & À propos', 'aide-apropos', LucideIcons.lifeBuoy),
     ('Contactez l’éditeur', 'contact-editeur', LucideIcons.mail),
     ('Journal d’audit', 'm14-audit', LucideIcons.scrollText),

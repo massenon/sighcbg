@@ -7533,6 +7533,42 @@
    ],
    "scenarios": [],
    "statut": "porté"
+  },
+  {
+   "id": "sup-assistant",
+   "label": "Assistant",
+   "module": "SUP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": true,
+   "roles": [
+    "admin",
+    "direction",
+    "dm",
+    "da",
+    "medecin",
+    "infirmier",
+    "laborantin",
+    "stock",
+    "caissier",
+    "comptable",
+    "reception",
+    "agentadmin",
+    "ambulancier",
+    "aide_soignant",
+    "echographiste",
+    "surveillant",
+    "assistant_comptable",
+    "chirurgien",
+    "anesthesiste",
+    "aide_comptable",
+    "responsable_radiologie",
+    "sage_femme",
+    "responsable_assurance"
+   ],
+   "scenarios": [],
+   "statut": "porté"
   }
  ]
 }

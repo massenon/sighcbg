@@ -7670,6 +7670,19 @@
    "roles": "*"
   },
   {
+   "id": "sup-assistant",
+   "label": "Assistant",
+   "icone": "sparkles",
+   "module": "SUP",
+   "moduleLabel": "Aide & assistance",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": true,
+   "servant": null,
+   "roles": "*"
+  },
+  {
    "id": "m1-dossier-medical",
    "label": "Dossier médical informatisé",
    "icone": "file-text",

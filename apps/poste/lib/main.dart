@@ -28,6 +28,7 @@ import 'core/controleur_poste.dart';
 import 'core/donnees_navigation.dart';
 import 'core/matrice_vive.dart';
 import 'core/identifiants.dart';
+import 'core/service_assistant.dart';
 import 'core/service_installation.dart';
 import 'core/parametres_poste.dart';
 import 'core/theme.dart';
@@ -182,11 +183,17 @@ Future<void> main() async {
     // La même clé locale protège la clé de la clinique dans `pair.json` (jamais en clair sur le disque).
     ConfigPairPoste.cleLocale = await CleLocale.courante!.obtenir();
   }
+  // L'assistant : ses conversations sont propres à ce poste, chiffrées par la même clé locale, hors du magasin (donc jamais synchronisées).
+  ServiceAssistant.stockageDuPoste = StockageFichierAssistant('$dossierDonnees/assistant', cle: ConfigPairPoste.cleLocale);
   final persistance = PersistanceFichiers('$dossierDonnees/magasin', cle: cle);
   if (repartirAZero == 'oui') await persistance.mettreDeCote();
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
+  // (la purge des conversations de l'assistant qui ont dépassé la durée de conservation suit, plus bas, une fois le magasin lu)
   await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
+  // L'assistant : les conversations qui ont dépassé la durée de conservation (réglage en base, 30 jours par défaut, bornée) sont retirées au démarrage du poste.
+  final maintenantAssistant = DateTime.now();
+  unawaited(ServiceAssistant.stockageDuPoste?.purgerPerimes(maintenantAssistant, ServiceAssistant.retentionDepuis(magasin, maintenantAssistant)) ?? Future<int>.value(0));
   // LA REPRISE DES PRIX (lot T6) : un poste qui avait enregistré ses actes avant le référentiel de prix le garde, le prix facturé hier devient la version 1. Seule la MÈRE
   // (ou un poste autonome) reconstruit les collections de lecture ; un fileul les reçoit avec la configuration.
   TarifsPoste.reprendre(magasin, fileul: params.rejoint && params.mode != ModePoste.mere);

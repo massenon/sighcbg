@@ -3055,6 +3055,14 @@
    "presents": 10,
    "taux": 1.0,
    "manquants": []
+  },
+  {
+   "id": "sup-assistant",
+   "mesure": true,
+   "attendus": 2,
+   "presents": 2,
+   "taux": 1.0,
+   "manquants": []
   }
  ]
 }

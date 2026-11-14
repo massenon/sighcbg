@@ -105,6 +105,10 @@
    "titre": "Contactez l’éditeur",
    "description": "Assistance technique, suggestions d’amélioration et signalement d’anomalies."
   },
+  "sup-assistant": {
+   "titre": "Assistant",
+   "description": "Poser une question en français sur les données que votre profil peut lire : la réponse cite sa source, ne modifie rien et dit quand elle ne sait pas."
+  },
   "dash-admin-agent": {
    "titre": "Tableau de bord — Agent administratif",
    "description": "Courriers, réunions, événements, notes de service et gestion documentaire."
