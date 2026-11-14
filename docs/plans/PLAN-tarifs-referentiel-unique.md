@@ -1,6 +1,6 @@
 # PLAN (Baguidi) : référentiel de prix unique, écran « Tarifs et prix », changement de prix validé et jamais rétroactif
 
-Source : le chantier livré et vérifié par la clinique sœur (lots T0 à T6) et les réponses de la Direction T1 à T15, valables pour Baguidi. Écarts : `docs/architecture/ECARTS-MAQUETTE.md` E2575 à E2586. Baguidi n'a pas de maquette JavaScript : le comportement est porté en Dart pur (domaine) puis en écrans Flutter, adapté à l'architecture de Baguidi (famille de synchronisation, mère et fileuls, droits par la matrice, gestes réservés, sélecteur du kit, `K.importer`).
+Source : le chantier livré et vérifié par la clinique sœur (lots T0 à T6) et les réponses de la Direction T1 à T15, valables pour Baguidi. Écarts : `docs/architecture/ECARTS-MAQUETTE.md` E2575 à E2587. Baguidi n'a pas de maquette JavaScript : le comportement est porté en Dart pur (domaine) puis en écrans Flutter, adapté à l'architecture de Baguidi (famille de synchronisation, mère et fileuls, droits par la matrice, gestes réservés, sélecteur du kit, `K.importer`).
 
 ## Résultat attendu
 - UNE liste de prix lue par la caisse, la prescription, les soins, l'imagerie, les certificats, la consultation spécialisée et la caisse manuelle, au prix EN VIGUEUR à la DATE de la pièce ; UN écran « Tarifs et prix » pour proposer, décider (Oui ou Non) et lire l'historique.
