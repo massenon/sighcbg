@@ -6,7 +6,13 @@
 library;
 
 import '../administration/adm_regles.dart' show admNaturesCourrier, admReferenceCourrier, admServicesCourrier, admTraitementsCourrier;
+import '../administration/adm_regles.dart' show admReferenceSuivante;
+import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget, cpbReferenceSuivante;
+import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice;
 import '../format/recherche.dart' show normaliser;
+import '../imagerie/cr_modalites.dart' show modaliteImagerie, modalitesImagerie;
+import '../labo/cat_regles.dart' show catDomainesUnite;
+import '../rh/rha_regles.dart' show rhaSpecialitesPrestataire;
 import '../stock/emplacements.dart' show temperaturesConservation, zonesEmplacement;
 import '../stock/mouvements_stock.dart' show controlerBonAvantEcriture, emettreTransfert;
 import '../referentiels/regles.dart' show codePatient, reCodePatient;
@@ -15,6 +21,7 @@ import 'donnees_import.dart';
 import 'moteur_import.dart';
 
 part 'jeux_import_stock.dart';
+part 'jeux_import_referentiels.dart';
 
 typedef _V = Map<String, Object?>;
 
@@ -1036,7 +1043,7 @@ final JeuImport jeuSoldesOuverture = JeuImport(
   dependances: (lot, port) => null,
 );
 
-/// Les dix jeux de la maquette, puis les six du 11/11/2026 (produits, stock détail, transferts, inventaire, emplacements, courriers).
+/// Les dix jeux de la maquette, les six du 11/11/2026 (produits, stock détail, transferts, inventaire, emplacements, courriers), puis les sept référentiels du lot « jeux supplémentaires ».
 final List<JeuImport> jeuxImport = [
   jeuGrandStock,
   jeuPersonnel,
@@ -1054,6 +1061,14 @@ final List<JeuImport> jeuxImport = [
   jeuInventaire,
   jeuEmplacements,
   jeuCourriers,
+  // Lot « jeux supplémentaires » : quatre référentiels de configuration (direct et demande), trois jeux restreints (direct seul).
+  jeuNaturesFacture,
+  jeuCentresCouts,
+  jeuUnitesLabo,
+  jeuCatalogueImagerie,
+  jeuPrestataires,
+  jeuImmobilisations,
+  jeuBudgets,
 ];
 
 JeuImport? jeuImportParId(String id) => jeuxImport.where((j) => j.id == id).firstOrNull;

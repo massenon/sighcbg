@@ -481,7 +481,14 @@
         "imp-transferts",
         "imp-inventaire",
         "imp-emplacements",
-        "imp-courriers"
+        "imp-courriers",
+        "imp-natures-facture",
+        "imp-centres-couts",
+        "imp-unites-labo",
+        "imp-catalogue-imagerie",
+        "imp-prestataires",
+        "imp-immobilisations",
+        "imp-budgets"
        ]
       }
      ]
@@ -681,7 +688,14 @@
         "imp-transferts",
         "imp-inventaire",
         "imp-emplacements",
-        "imp-courriers"
+        "imp-courriers",
+        "imp-natures-facture",
+        "imp-centres-couts",
+        "imp-unites-labo",
+        "imp-catalogue-imagerie",
+        "imp-prestataires",
+        "imp-immobilisations",
+        "imp-budgets"
        ]
       }
      ]
@@ -1286,7 +1300,10 @@
        "hub": "hub-imp",
        "ecrans": [
         "imp-accueil",
-        "imp-actes"
+        "imp-actes",
+        "imp-natures-facture",
+        "imp-centres-couts",
+        "imp-catalogue-imagerie"
        ]
       }
      ]
@@ -1958,7 +1975,14 @@
         "imp-transferts",
         "imp-inventaire",
         "imp-emplacements",
-        "imp-courriers"
+        "imp-courriers",
+        "imp-natures-facture",
+        "imp-centres-couts",
+        "imp-unites-labo",
+        "imp-catalogue-imagerie",
+        "imp-prestataires",
+        "imp-immobilisations",
+        "imp-budgets"
        ]
       }
      ]
@@ -2143,7 +2167,14 @@
         "imp-transferts",
         "imp-inventaire",
         "imp-emplacements",
-        "imp-courriers"
+        "imp-courriers",
+        "imp-natures-facture",
+        "imp-centres-couts",
+        "imp-unites-labo",
+        "imp-catalogue-imagerie",
+        "imp-prestataires",
+        "imp-immobilisations",
+        "imp-budgets"
        ]
       }
      ]
@@ -2855,7 +2886,8 @@
        "hub": "hub-imp",
        "ecrans": [
         "imp-accueil",
-        "imp-analyses"
+        "imp-analyses",
+        "imp-unites-labo"
        ]
       }
      ]
@@ -3431,7 +3463,9 @@
         "imp-assureurs",
         "imp-souscripteurs",
         "imp-plan-comptable",
-        "imp-soldes-ouverture"
+        "imp-soldes-ouverture",
+        "imp-immobilisations",
+        "imp-budgets"
        ]
       }
      ]

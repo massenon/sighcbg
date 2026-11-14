@@ -5417,6 +5417,117 @@
    "statut": "porté"
   },
   {
+   "id": "imp-natures-facture",
+   "label": "Importation des natures de facture",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-centres-couts",
+   "label": "Importation des centres de coûts",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-unites-labo",
+   "label": "Importation des unités de mesure",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "laborantin",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-catalogue-imagerie",
+   "label": "Importation du catalogue de l’imagerie",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "admin",
+    "direction"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-prestataires",
+   "label": "Importation des prestataires externes",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-immobilisations",
+   "label": "Importation des immobilisations",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "comptable",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-budgets",
+   "label": "Importation des budgets",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "comptable",
+    "da",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-supervision",
    "label": "Supervision",
    "module": "MERE",
