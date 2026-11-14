@@ -161,7 +161,7 @@ void main() {
 
     m9.cas('cinq versions écrites, deux séries : l’écran compte et liste DEUX garanties, la version en vigueur au 16/08, et dit la version à venir', (t) async {
       await m9.ouvrir(t, jeu(), 'm9-conventions');
-      expect(find.text('Garanties en vigueur'), findsOneWidget);
+      expect(find.text('Lignes de garantie'), findsOneWidget, reason: 'le libellé de la maquette ; la valeur compte les séries en vigueur');
       expect(m9.kpis(t), ['9', '1', '8', '2']);
       expect(find.textContaining('5 versions écrites, 2 séries'), findsOneWidget);
       await m9.toucher(t, find.text('Grilles de garanties').first);

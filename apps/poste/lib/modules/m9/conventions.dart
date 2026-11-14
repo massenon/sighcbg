@@ -114,7 +114,7 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.circleHelp,
                     ton: TonSigh.attention),
                 KpiSigh(
-                    libelle: 'Garanties en vigueur',
+                    libelle: 'Lignes de garantie',
                     valeur: nombre(enVigueur),
                     indice: garanties.length > series.length ? '${nombre(garanties.length)} versions écrites, ${nombre(series.length)} séries' : null,
                     icone: LucideIcons.percent,

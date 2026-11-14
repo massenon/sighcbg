@@ -233,14 +233,14 @@ void main() {
     expect(find.widgetWithText(BoutonSigh, 'Téléverser un fichier (.xlsx ou .csv)'), findsNothing);
   });
 
-  cas('l\'accueil du module : vingt-trois jeux marqués supporté ou proposition à valider, source et dernier lot, historique général', (t) async {
+  cas('l\'accueil du module : vingt-cinq jeux marqués supporté ou proposition à valider, source et dernier lot, historique général', (t) async {
     final m = magasin();
     await ouvrir(t, m, 'imp-accueil');
     expect(find.text('Jeux d’import'), findsWidgets);
     expect(find.widgetWithText(BoutonSigh, 'Ouvrir'), findsNWidgets(jeuxImport.length));
-    expect(jeuxImport.length, 23);
+    expect(jeuxImport.length, 25);
     expect(find.text('Proposition à valider'), findsOneWidget);
-    expect(find.text('Supporté'), findsNWidgets(22));
+    expect(find.text('Supporté'), findsNWidgets(24));
     expect(find.textContaining('Source : Inventaire SAGE 100'), findsOneWidget);
     expect(find.textContaining('Écrit dans : produits, lots, mouvements. Aucun lot à ce jour.'), findsOneWidget);
     await toucher(t, find.text('Historique des lots'));

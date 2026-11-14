@@ -5,7 +5,7 @@
  "libelleManifeste": "Importation des garanties des souscripteurs",
  "acces": "ouvert",
  "titre": "Importation des garanties des souscripteurs",
- "description": "Taux et plafonds par souscripteur et par garantie, avec une date d’effet : chaque ligne qui change crée une nouvelle version datée, jamais un écrasement.",
+ "description": "Taux et plafonds par souscripteur et par garantie, avec une date d’effet : chaque ligne qui change crée une NOUVELLE VERSION datée, jamais un écrasement.",
  "fil": [
   "Accueil",
   "Système",

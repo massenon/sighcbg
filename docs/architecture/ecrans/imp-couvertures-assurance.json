@@ -5,7 +5,7 @@
  "libelleManifeste": "Importation des couvertures d’assurance",
  "acces": "ouvert",
  "titre": "Importation des couvertures d’assurance",
- "description": "Changement de couverture d’un assuré à une date d’effet : compagnie, police, motif, expiration de la carte ; la couverture en cours est close la veille.",
+ "description": "Changement de couverture d’un assuré à une date d’effet : compagnie, police, motif, expiration de la carte. La couverture en cours est close la veille.",
  "fil": [
   "Accueil",
   "Système",
