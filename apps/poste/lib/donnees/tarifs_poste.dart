@@ -49,6 +49,8 @@ class TarifsPoste {
     this.peutEditerPour,
     this.peutProposerPrixAchat = false,
     this.peutProposerPrixAchatPour,
+    this.peutProposerReception = false,
+    this.peutProposerReceptionPour,
     DroitsGestes Function()? gestes,
     DateTime Function()? horloge,
     this.etiquette = 'P',
@@ -73,6 +75,12 @@ class TarifsPoste {
 
   /// Le même droit pour un AUTRE rôle (la mère qui applique la demande d'un fileul sous le rôle de son auteur). `null` : seuls les rôles qui détiennent le geste de décider.
   final bool Function(String role)? peutProposerPrixAchatPour;
+
+  /// Le droit de MODIFIER l'écran des réceptions d'achats (`m7-receptions`), qui est l'autorité de la proposition née d'une réception : jamais celui de modifier « Référentiel produits ».
+  final bool peutProposerReception;
+
+  /// Le même droit pour un AUTRE rôle (la mère qui applique la demande d'un fileul). `null` : seuls les rôles qui détiennent le geste de décider.
+  final bool Function(String role)? peutProposerReceptionPour;
   final DateTime Function() _horloge;
   final DroitsGestes Function()? _gestes;
 
@@ -255,7 +263,7 @@ class TarifsPoste {
 
   ReferentielTarifs get h => lire(m);
 
-  ContexteTarif contexte({String? pourRole, String? pourAuteur, bool? pourFileul}) {
+  ContexteTarif contexte({String? pourRole, String? pourAuteur, bool? pourFileul, bool reception = false}) {
     final r = pourRole ?? role;
     return ContexteTarif(
       referentiel: lire(m),
@@ -263,7 +271,9 @@ class TarifsPoste {
       role: r,
       auteur: pourAuteur ?? auteur(),
       peutEditerEcran: pourRole == null ? peutEditerEcran : (peutEditerPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix)),
-      peutProposerProduit: pourRole == null ? peutProposerPrixAchat : (peutProposerPrixAchatPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix)),
+      peutProposerProduit: reception
+          ? (pourRole == null ? peutProposerReception : (peutProposerReceptionPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix)))
+          : (pourRole == null ? peutProposerPrixAchat : (peutProposerPrixAchatPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix))),
       produits: m.collection('produits').toutes,
       peutDecider: gestes.peut(r, gesteDeciderPrix),
       peutDatePassee: gestes.peut(r, gesteDaterPrixPasse),
@@ -341,6 +351,30 @@ class TarifsPoste {
     final r = tarProposerProduit(contexte(), d, produits: produits);
     if (!r.ok) return IssueTarif(refus: r.refus);
     return IssueTarif(version: _ecrireProposition(r.valeur!), valideeEnUnGeste: r.valeur!.valideeEnUnGeste);
+  }
+
+  /// LA PROPOSITION NÉE D'UNE RÉCEPTION D'ACHAT : une réception à un autre prix que celui en vigueur à sa date OUVRE une proposition de changement du prix d'achat (date d'effet = date de réception,
+  /// motif « prix constaté à la réception n° … »), une seule par produit, JAMAIS bloquante : la réception, le stock et le CUMP sont écrits par l'écran avant, un refus du moteur se DIT sans rien
+  /// défaire, et jamais une écriture directe du prix. Aucun prix ne change avant le Oui. Sur la MÈRE : écrit la version. Sur un FILEUL : même vérification, puis DÉPÔT d'une demande
+  /// (`reception: true`) que la mère applique sous l'autorité de MODIFIER les réceptions. Rend l'issue du moteur et, pour un fileul, la demande déposée.
+  ({IssuePrixReception issue, Map<String, Object?>? version, Map<String, Object?>? demande}) proposerPrixReception(
+      {required Map<String, Object?> produit, required Object? prixRecu, Object? date, required String reference}) {
+    final i = tarProposerPrixReception(contexte(pourFileul: false, reception: true),
+        produit: produit, prixRecu: prixRecu, date: date, reference: reference, produits: m.collection('produits').toutes);
+    if (i.etat != 'ouverte') return (issue: i, version: null, demande: null);
+    if (fileul) {
+      final dem = _deposer('propositionProduit', {
+        'code': i.code,
+        'prixAchat': i.prix,
+        'dateEffet': i.dateEffet,
+        'motif': i.proposition!.version['motif'],
+        if (i.proposition!.version['datePassee'] == true) 'datePassee': true,
+        'source': i.proposition!.version['source'],
+        'reception': true,
+      });
+      return (issue: i, version: i.proposition!.version, demande: dem);
+    }
+    return (issue: i, version: _ecrireProposition(i.proposition!), demande: null);
   }
 
   /// LA CRÉATION D'UNE FICHE PRODUIT pose la version 1 de son prix d'achat par la MÊME voie, jamais « à plat sur la fiche ». Un prix absent ou nul pose un `manquant` : l'article se crée « à
@@ -471,7 +505,7 @@ class TarifsPoste {
       ..sort((a, b) => '${a['demandeLe']}${a['id']}'.compareTo('${b['demandeLe']}${b['id']}'));
     for (final d in enAttente) {
       final role = '${d['demandeRole']}', par = '${d['demandePar']}';
-      final cx = contexte(pourRole: role, pourAuteur: par, pourFileul: false);
+      final cx = contexte(pourRole: role, pourAuteur: par, pourFileul: false, reception: d['reception'] == true);
       RefusTarif? refus;
       Object? versionId;
       switch ('${d['genre']}') {

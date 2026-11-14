@@ -51,6 +51,7 @@ class ApplicateurDemandesTarif {
         peutEditerEcran: false,
         peutEditerPour: mat == null ? null : (r) => mat.peutEditer(r, 'cfg-tarifs'),
         peutProposerPrixAchatPour: mat == null ? null : (r) => mat.peutEditer(r, 'm6-produits'),
+        peutProposerReceptionPour: mat == null ? null : (r) => mat.peutEditer(r, 'm7-receptions'),
         gestes: () => DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif),
         horloge: horloge,
         etiquette: etiquette);

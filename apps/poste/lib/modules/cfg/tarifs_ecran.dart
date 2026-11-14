@@ -24,6 +24,8 @@ TarifsPoste tarifsDeLEcran(ContexteEcran c, {String droitProduit = 'm6-produits'
       peutEditerPour: matrice == null ? null : (r) => matrice.peutEditer(r, 'cfg-tarifs'),
       peutProposerPrixAchat: peutProposerPrixAchat ?? (matrice?.peutEditer(c.role, droitProduit) ?? false),
       peutProposerPrixAchatPour: matrice == null ? null : (r) => matrice.peutEditer(r, droitProduit),
+      peutProposerReception: matrice?.peutEditer(c.role, 'm7-receptions') ?? false,
+      peutProposerReceptionPour: matrice == null ? null : (r) => matrice.peutEditer(r, 'm7-receptions'),
       gestes: () => DroitsGestes(fiches: m.collection('rbac').actives, estArchive: matrice?.estArchive, ecranActif: matrice?.ecranActif),
       horloge: () => c.aujourdhui,
       etiquette: m.poste.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase());
