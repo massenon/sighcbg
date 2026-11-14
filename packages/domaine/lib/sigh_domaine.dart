@@ -135,6 +135,7 @@ export 'src/mere/indicateurs_clinique.dart';
 export 'src/mere/mra_regles.dart';
 export 'src/mere/mrb_regles.dart';
 export 'src/mere/mrc_regles.dart';
+export 'src/mere/synchro_fileuls.dart';
 export 'src/mobile/mob_droits.dart';
 export 'src/mobile/mob_pin.dart';
 export 'src/mobile/mob_regles.dart';
