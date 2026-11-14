@@ -24,7 +24,7 @@ class EcranNaturesFacture extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     return [
       BoutonSigh(libelle: 'Émettre une facture', icone: LucideIcons.receipt, onPressed: () => c.aller('m8-facturation')),
-      BoutonSigh(libelle: 'Référentiel tarifaire', icone: LucideIcons.tag, variante: VarianteBouton.secondaire, onPressed: () => c.aller('cfg-tarifs')),
+      BoutonSigh(libelle: 'Tarifs et prix', icone: LucideIcons.tag, variante: VarianteBouton.secondaire, onPressed: () => c.aller('cfg-tarifs')),
     ];
   }
 

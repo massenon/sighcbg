@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, valCollectionValidations;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
@@ -13,6 +13,8 @@ import 'documents/ocr_poste.dart';
 import 'kit/champ_sensible.dart' show AccesSensible;
 import 'documents/service_fichiers.dart';
 import 'donnees/magasin.dart';
+import 'donnees/tarifs_poste.dart';
+import 'sync/service_demandes_tarif.dart';
 import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
 import 'donnees/persistance.dart';
@@ -181,8 +183,11 @@ Future<void> main() async {
   final persistance = PersistanceFichiers('$dossierDonnees/magasin', cle: cle);
   if (repartirAZero == 'oui') await persistance.mettreDeCote();
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
-  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations}.difference({'utilisateurs', 'identifiants'}));
+  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
+  // LA REPRISE DES PRIX (lot T6) : un poste qui avait enregistré ses actes avant le référentiel de prix le garde, le prix facturé hier devient la version 1. Seule la MÈRE
+  // (ou un poste autonome) reconstruit les collections de lecture ; un fileul les reçoit avec la configuration.
+  TarifsPoste.reprendre(magasin, fileul: params.rejoint && params.mode != ModePoste.mere);
   // LA MATRICE EN FORCE, lue à chaque évaluation : la graine engendrée plus les décisions de droits du magasin. Ni l'échange entre pairs ni le jugement des décisions
   // par la mère ne capturent une matrice au démarrage (une capture serait figée au jour du lancement).
   final navigation = await DonneesNavigation.chargerAssets();
@@ -218,6 +223,12 @@ Future<void> main() async {
       ServiceDemandesImport.de(magasin)
         ..etiquette = 'M'
         ..demarrerMere(matrice: () => matriceVive.matrice);
+      // Lot TAR : les DEMANDES DE PRIX que les fileuls ont déposées (proposition, décision, retrait). La mère les applique sous le rôle de leur auteur avec SA matrice en force
+      // (gestes réservés compris) et écrit le verdict sur la même fiche, qui revient au fileul par le pont d'activité. BRANCHÉ ici : un test le prouve contre la vraie mère.
+      ApplicateurDemandesTarif.de(magasin)
+        ..etiquette = 'M'
+        ..matrice = matriceVive
+        ..demarrer();
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();

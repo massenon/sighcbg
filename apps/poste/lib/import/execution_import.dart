@@ -1,6 +1,7 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import '../donnees/tarifs_poste.dart';
 import '../shell/contexte_ecran.dart';
 import 'droits_import.dart';
 import 'fichier_import.dart';
@@ -39,19 +40,29 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
   final svc = ServiceDemandesImport.de(c.magasin);
   if (svc.reserveALaMere(j)) {
     return (
-      resultat: ResultatImport.refus('RESERVE_A_LA_MERE', 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
-          'Importez ce jeu au poste de la mère, par un profil qui en détient le droit.'),
+      resultat: ResultatImport.refus(
+          'RESERVE_A_LA_MERE',
+          j.id == 'tarifs'
+              ? 'le référentiel de prix est écrit par la mère seule (famille R) : un fichier de prix ne passe pas par une demande'
+              : 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
+          j.id == 'tarifs'
+              ? 'Importez ce fichier au poste principal, ou proposez le changement à l’écran « Tarifs et prix » : la demande part à la mère, qui la décide.'
+              : 'Importez ce jeu au poste de la mère, par un profil qui en détient le droit.'),
       demande: null
     );
   }
   if (svc.passeParUneDemande(j)) return svc.importerEtDemander(j, a, profil: profilImportDe(c), nomAgent: c.agent.nom);
-  return (resultat: appliquer(j, a, portImport(c)), demande: null);
+  final r = appliquer(j, a, portImport(c));
+  // Une version validée à l'import prend effet à sa date : les listes de lecture (projection) sont refaites aussitôt, comme après une décision à l'écran.
+  if (r.ok && j.id == 'tarifs') TarifsPoste.projeter(c.magasin, c.aujourdhui);
+  return (resultat: r, demande: null);
 }
 
 /// Le texte de la voie que suivra l'import sur CE poste, dit AVANT l'envoi : `null` quand c'est l'import ordinaire.
 String? voieImportPoste(ContexteEcran c, JeuImport j) {
   final svc = ServiceDemandesImport.de(c.magasin);
   if (svc.reserveALaMere(j)) {
+    if (j.id == 'tarifs') return 'Le référentiel de prix est écrit par la mère seule : ce fichier s’importe au poste principal, ou le changement se propose à l’écran « Tarifs et prix ».';
     return 'Ce jeu porte des données restreintes que la mère seule écrit : il s’importe au poste de la mère, jamais par une demande.';
   }
   if (svc.passeParUneDemande(j)) {

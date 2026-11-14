@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -28,6 +28,10 @@ final familles = <String, String>{
   // L0 : les paramètres versionnés par date (une fiche = une version immuable, la mère seule écrit) et leurs usages par les pièces (ajout seul, écrits par les postes).
   parCollectionParametres: 'R',
   parCollectionUsages: 'B',
+  // Les validations écrites des artefacts du code (lot V) : le publicateur du poste mère les pousse avec la configuration, donc la mère DOIT les connaître. Sans cette
+  // ligne, la première fiche refusée (`collection_inconnue`) arrêtait la publication (`pousser` s'interrompt à la première erreur) et rien de ce qui suit, prix compris,
+  // n'atteignait les fileuls (lot T6).
+  valCollectionValidations: 'R',
 };
 const familleDeBase = <String, String>{
   'patients': 'A', 'rendezvous': 'A',
@@ -60,8 +64,12 @@ const familleDeBase = <String, String>{
   'factures': 'C', 'prescriptions': 'C',
   'stock': 'D',
   'tarifs': 'R', 'chambres': 'R', 'produits': 'R', 'transcriptions': 'B',
+  // Lot T6 (PRD-TARIFS) : le référentiel de prix unique. `tarifs` (l'identité d'une prestation) est déjà R ; `versionsTarif` (une fiche immuable par version) l'est aussi : la
+  // mère seule écrit, un fileul reçoit. Les DEMANDES de prix d'un fileul (proposition, décision, retrait) sont des fiches descriptives que le fileul dépose et que la mère
+  // complète du verdict : famille A, champ à champ, dans les deux sens.
+  'versionsTarif': 'R', 'propositionsTarif': 'A',
 };
-const essentielles = {'tarifs', 'chambres'};
+const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
 /// Les collections de CONFIGURATION que la mère diffuse aux POSTES : les essentielles du paramétrage plus les comptes. Les noms viennent du domaine (la même
 /// liste que le vidage des jeux de test conserve), jamais recopiés ici. Le poste en choisit l'usage ; la mère ne fait que les accepter et les journaliser.
@@ -77,6 +85,10 @@ final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport',
 /// Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Un fileul ne reçoit ni ne modifie la demande d'un autre.
 /// L'auteur est l'appareil de l'opération `creer` (authentifié par le jeton), jamais un champ de la fiche qu'un fileul pourrait falsifier.
 const _sqlDemandesDuPoste = " AND NOT (collection='demandesImport' AND fiche NOT IN (SELECT fiche FROM operations WHERE collection='demandesImport' AND type='creer' AND appareil=?))";
+
+/// Le PRIX ne part JAMAIS vers un téléphone (lot T6, RG-13) : ni le référentiel (`tarifs`, `versionsTarif`), ni les demandes d'un fileul (`propositionsTarif`) avec leurs
+/// refus et leurs motifs. Aucun lecteur de prix n'existe à `apps/mobile` ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des hachés.
+const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'propositionsTarif'};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -629,7 +641,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;

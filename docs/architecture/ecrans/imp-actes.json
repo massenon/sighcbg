@@ -5,7 +5,7 @@
  "libelleManifeste": "Importation du catalogue des actes",
  "acces": "ouvert",
  "titre": "Importation du catalogue des actes",
- "description": "Actes et tarifs à deux prix (non assuré, assuré) avec les trois états de la colonne assurée : montant, NC (non couvert), tiret (valeur manquante).",
+ "description": "Prix des prestations (consultations, actes, soins, analyses, imagerie, certificats) à deux colonnes, avec les trois états de la colonne assurée, une date d’effet et la décision Oui ou Non : chaque ligne qui change un prix devient une proposition, jamais une réécriture.",
  "fil": [
   "Accueil",
   "Système",

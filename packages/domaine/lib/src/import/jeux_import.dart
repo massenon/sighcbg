@@ -9,12 +9,15 @@ import '../administration/adm_regles.dart' show admNaturesCourrier, admReference
 import '../format/recherche.dart' show normaliser;
 import '../stock/emplacements.dart' show temperaturesConservation, zonesEmplacement;
 import '../stock/mouvements_stock.dart' show controlerBonAvantEcriture, emettreTransfert;
+import '../droits/gestes_reserves.dart' show gesteDeciderPrix;
 import '../referentiels/regles.dart' show codePatient, reCodePatient;
+import '../tarifs/tarifs.dart';
 import 'demande_import.dart' show champDepartCompteurs, champRefuseeParMere;
 import 'donnees_import.dart';
 import 'moteur_import.dart';
 
 part 'jeux_import_stock.dart';
+part 'jeux_import_tarifs.dart';
 
 typedef _V = Map<String, Object?>;
 
@@ -562,85 +565,7 @@ final JeuImport jeuPatients = JeuImport(
   },
 );
 
-// --- 4. ACTES ET TARIFS ------------------------------------------------------------------------------------------------------------
-
-final JeuImport jeuActes = JeuImport(
-  id: 'actes',
-  ecran: 'imp-actes',
-  libelle: 'Importation du catalogue des actes',
-  module: 'IMP',
-  statut: 'supporte',
-  description: 'Actes et tarifs à deux prix (non assuré, assuré) avec les trois états de la colonne assurée : montant, NC (non couvert), tiret (valeur manquante).',
-  source: 'Six grilles tarifaires imprimées et « Répartition des activités » (docs/) ; les prix du fichier font foi, aucun n’est complété par le logiciel.',
-  cibles: const ['actes'],
-  fichierModele: 'modele-import-actes',
-  gesteExiste: 'Retirez la ligne : un tarif en vigueur se modifie à l’écran Catalogue des actes, versionné, jamais écrasé par un import.',
-  colonnes: [
-    _oblig('code', 'Code acte', 'texte', longueurMax: 20, exemple: 'MG01'),
-    _oblig('libelle', 'Libellé', 'texte', longueurMax: 160, exemple: 'Consultation généraliste'),
-    _oblig('secteur', 'Secteur', 'liste', liste: (ctx) => [for (final s in ctx['secteurs'] as List<String>) ValeurListe(s)], exemple: 'Médecine générale'),
-    _oblig('prixNonAssure', 'Prix non assuré', 'tarif', exemple: 5000, aide: 'Montant entier en FCFA, ou un tiret si le prix manque. Un tiret n’est pas un zéro : l’acte ne se facture pas.'),
-    _oblig('prixAssure', 'Prix assuré', 'tarif', exemple: 3000, aide: 'Montant, NC (aucune compagnie ne couvre l’acte : l’assuré paie le prix non assuré) ou un tiret (valeur manquante).'),
-    _col('codeTarif', 'Code tarif', 'texte', longueurMax: 30, exemple: 'CONS-GEN'),
-  ],
-  contexte: (port) {
-    final c = <String, _V>{};
-    final sec = <String>{...importSecteursActes};
-    for (final a in port.toutes('actes')) {
-      c[_n(a['code'])] = a;
-      if (a['statut'] != 'archive' && a['secteur'] != null && '${a['secteur']}'.isNotEmpty) sec.add('${a['secteur']}');
-    }
-    return {'actes': c, 'secteurs': sec.toList()..sort()};
-  },
-  cle: (v) => [_n(v['code'])],
-  existe: (v, ctx) {
-    final a = (ctx['actes'] as Map)[_n(v['code'])];
-    return a != null ? 'l’acte « ${a['code']} » existe déjà (${a['libelle']})' : null;
-  },
-  regles: (v, ctx, sc, n) {
-    final pb = <ProblemeImport>[];
-    final na = (v['prixNonAssure'] as Map)['etat'], as = (v['prixAssure'] as Map)['etat'];
-    if (na == 'nc') {
-      pb.add(_p('Prix non assuré', 'NC', 'NC_INTERDIT', importRefus, 'NC n’a de sens que dans la colonne assurée', 'Saisissez le prix de guichet, ou un tiret s’il manque.'));
-    }
-    if (na == 'manquant') {
-      pb.add(_p('Prix non assuré', '-', 'PRIX_MANQUANT', importAvertissement, 'prix non assuré manquant : l’acte ne se facturera pas (un tiret n’est pas un zéro)', 'Saisissez le prix au catalogue dès qu’il est arrêté.'));
-    }
-    if (as == 'manquant') {
-      pb.add(_p('Prix assuré', '-', 'PRIX_MANQUANT', importAvertissement, 'prix assuré manquant : l’acte ne se facturera pas aux assurés', 'Saisissez le prix assuré, ou NC si aucune compagnie ne couvre l’acte.'));
-    }
-    return pb;
-  },
-  ecrire: (lignes, ecrireFiche, lot, ctx, port) {
-    for (final l in lignes) {
-      final v = l.v;
-      final na = v['prixNonAssure'] as Map, as = v['prixAssure'] as Map;
-      ecrireFiche('actes', {
-        'code': v['code'],
-        'libelle': v['libelle'],
-        'secteur': v['secteur'],
-        'codeTarif': v['codeTarif'],
-        'prixNonAssure': na['etat'] == 'montant' ? na['montant'] : null,
-        'prixAssure': as['etat'] == 'montant' ? as['montant'] : null,
-        'nonCouvert': as['etat'] == 'nc',
-        'assurable': as['etat'] != 'nc',
-        'prix': na['etat'] == 'montant' ? na['montant'] : null,
-        'tarifProvisoire': false,
-        if (na['etat'] == 'manquant' || as['etat'] == 'manquant')
-          'motifPrix': 'Valeur manquante à l’import ${lot['reference']} : l’acte ne se facture pas tant que le prix n’est pas saisi.',
-      });
-    }
-  },
-  dependances: (lot, port) {
-    final codes = <Object?>{};
-    for (final e in (lot['ecrits'] as List).cast<Map>()) {
-      final a = port.parId('${e['collection']}', e['id']);
-      if (a != null) codes.add(a['code']);
-    }
-    final u = port.actives('prescriptions').where((x) => codes.contains(x['acteCode'])).firstOrNull;
-    return u != null ? DependanceImport('ACTE_UTILISE', 'l’acte « ${u['acteCode']} » est déjà prescrit', 'Archivez l’acte au catalogue plutôt que d’annuler son lot.') : null;
-  },
-);
+// --- 4. TARIFS ET PRIX : voir `jeux_import_tarifs.dart` (le jeu « catalogue des actes » d'avant écrivait des prix dans une liste devenue projection de lecture) ----------
 
 // --- 5. ANALYSES (proposition à valider) ---------------------------------------------------------------------------------------------
 
@@ -1041,7 +966,7 @@ final List<JeuImport> jeuxImport = [
   jeuGrandStock,
   jeuPersonnel,
   jeuPatients,
-  jeuActes,
+  jeuTarifs,
   jeuAnalyses,
   jeuFournisseurs,
   jeuAssureurs,
@@ -1056,5 +981,11 @@ final List<JeuImport> jeuxImport = [
   jeuCourriers,
 ];
 
-JeuImport? jeuImportParId(String id) => jeuxImport.where((j) => j.id == id).firstOrNull;
+/// Les anciens identifiants de jeu qui survivent à une refonte (un fichier ou une demande d'avant : `actes` devient `tarifs`).
+const Map<String, String> _anciensJeux = {'actes': 'tarifs'};
+
+JeuImport? jeuImportParId(String id) {
+  final cible = _anciensJeux[id] ?? id;
+  return jeuxImport.where((j) => j.id == cible).firstOrNull;
+}
 JeuImport? jeuImportParEcran(String ecran) => jeuxImport.where((j) => j.ecran == ecran).firstOrNull;

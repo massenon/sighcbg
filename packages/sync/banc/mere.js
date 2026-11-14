@@ -44,6 +44,8 @@ const FAMILLES = {
   tarifs: 'R', chambres: 'R', produits: 'R', transcriptions: 'B',
   /* L0 : les paramètres versionnés par date (R : la mère seule écrit, une fiche = une version immuable) et leurs usages par les pièces (B : ajout seul). */
   parametres: 'R', usagesParametres: 'B',
+  /* Lot T6 : le référentiel de prix unique (versions immuables, R) et les demandes de prix d'un fileul (A : le fileul dépose, la mère complète du verdict). */
+  versionsTarif: 'R', propositionsTarif: 'A',
   /* Les DROITS (10/11/2026) : la fiche de chaque rôle et les activités fermées sont de la configuration (R : la mère seule écrit, les fileuls reçoivent) ; les
      DÉCISIONS de droits sont une fiche descriptive (A) qu'un poste habilité dépose à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche. */
   rbac: 'R', modulesActifs: 'R', decisionsDroits: 'A',
@@ -82,7 +84,7 @@ function refusDemandeImportDuFileul(type, champs, etatActuel) {
   }
   return null;
 }
-const ESSENTIELLES = new Set(['tarifs', 'chambres']);
+const ESSENTIELLES = new Set(['tarifs', 'versionsTarif', 'chambres']);
 const MOTIF_ARCHIVAGE = 'Jeu de démonstration, mise en production'; /* le même que cfbMotifArchivageJeuDemo (Dart) */
 
 const PARAMETRES = require('./parametres');

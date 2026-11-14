@@ -18,18 +18,29 @@ const String ecranLotsImport = 'imp-accueil';
 const String ecranDroitPaieImport = 'm11-calcul';
 
 class ProfilImport {
-  const ProfilImport({required this.role, required this.droitEcran, this.libelleRole = ''});
+  const ProfilImport({required this.role, required this.droitEcran, this.libelleRole = '', this.gesteDroit = _aucunGeste});
 
   /// Le profil des TESTS et des traitements déjà contrôlés : accorde tout. Jamais construit par un écran ni par la mère (qui prend toujours le rôle de l'auteur de la demande).
-  const ProfilImport.accordeTout({this.role = 'test', this.libelleRole = 'test'}) : droitEcran = _tout;
+  const ProfilImport.accordeTout({this.role = 'test', this.libelleRole = 'test'})
+      : droitEcran = _tout,
+        gesteDroit = _tousGestes;
 
   /// Aucun droit : un écran monté sans coque, un rôle inconnu. Le moteur refuse.
-  const ProfilImport.aucunDroit({this.role = '', this.libelleRole = ''}) : droitEcran = _rien;
+  const ProfilImport.aucunDroit({this.role = '', this.libelleRole = ''})
+      : droitEcran = _rien,
+        gesteDroit = _aucunGeste;
 
   final String role, libelleRole;
 
   /// Les droits du rôle sur un écran, lus de la matrice en force.
   final Droit Function(String ecran) droitEcran;
+
+  /// Les GESTES RÉSERVÉS du rôle, lus de la matrice en force (`DroitsGestes`) : décider un prix est un geste, pas un droit d'écran. Sans lecture branchée : aucun.
+  final bool Function(String geste) gesteDroit;
+  bool geste(String id) => gesteDroit(id);
+
+  static bool _aucunGeste(String geste) => false;
+  static bool _tousGestes(String geste) => true;
 
   static Droit _tout(String ecran) => const Droit(voir: true, editer: true, annuler: true);
   static Droit _rien(String ecran) => Droit.aucun;

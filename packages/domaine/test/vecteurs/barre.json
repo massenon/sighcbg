@@ -1956,7 +1956,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -2090,7 +2090,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -2506,7 +2506,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -2551,7 +2551,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -3344,7 +3344,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -3464,7 +3464,7 @@
      "resultats": [
       {
        "label": "Actes & hospitalisation",
-       "detail": "Référentiel tarifaire, onglet",
+       "detail": "Tarifs et prix, onglet",
        "icone": "tag",
        "ecran": "cfg-tarifs",
        "onglet": "actes"
@@ -3768,7 +3768,7 @@
    "Accueil",
    "Système",
    "Configuration Clinique",
-   "Référentiel tarifaire"
+   "Tarifs et prix"
   ],
   "m14-roles": [
    "Accueil",

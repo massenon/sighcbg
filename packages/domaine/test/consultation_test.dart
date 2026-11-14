@@ -106,6 +106,10 @@ void main() {
   final cat = (v['catalogues'] as Map).cast<String, Object?>();
   final jour = DateTime.parse('${v['jourCourant']}T12:00:00');
 
+  // Le prix vient du RÉFÉRENTIEL (lot T6). Les vecteurs ont été tirés AVANT lui, des listes `actes`, `catalogueTarifs` et des analyses : la migration les reprend SANS changer un
+  // prix (c'est sa règle), donc chaque sortie attendue reste vraie : c'est la preuve que l'accesseur daté donne ce que les trois listes donnaient.
+  final migration = tarMigrer(actes: liste(cat['actes']), grille: liste(cat['catalogueTarifs']), analyses: liste(cat['analyses']));
+
   Memoire memoire(Map<String, Object?> entree) {
     final m = Memoire({
       'patients': liste(cat['patients']),
@@ -115,6 +119,8 @@ void main() {
       'produits': liste(cat['produits']),
       'actes': liste(cat['actes']),
       'catalogueTarifs': liste(cat['catalogueTarifs']),
+      tarCollectionTarifs: migration.tarifs,
+      tarCollectionVersions: migration.versions,
       'examensImagerie': [...liste(cat['examens']), (cat['examenSansTarif'] as Map).cast<String, Object?>()],
       'couverturesAssurance': [],
       'dossiersConsultation': liste(entree['dossiers']),
@@ -259,6 +265,32 @@ void main() {
         compare(m, avant, s);
       });
     }
+
+    test('le prix est celui de la DATE de la prescription, jamais celui du jour de l\'horloge : analyse, acte et imagerie (sonde de la mutation « prix d\'aujourd\'hui »)', () {
+      final c = liste((v['cas'] as Map)['prescrire']).firstWhere((x) => '${x['nom']}'.startsWith('patient non assuré'));
+      final entree = (c['entree'] as Map).cast<String, Object?>();
+      final params = (c['params'] as Map).cast<String, Object?>();
+      // Chaque voie de prix reçoit une version VALIDÉE du 15/09/2026, entre la date de la prescription du cas (20/08) et le jour courant (31/10).
+      final hausses = {'L01': 1000, 'MG01': 100, 'IMG-ECHO-PEL': 10};
+      expect(((params['analyses'] as List).contains('L01'), (params['actes'] as List).contains('MG01'), (params['imagerie'] as List).contains('IMG-ECHO-PEL')), (true, true, true));
+      num total(String date) {
+        final m = memoire(entree);
+        for (final e in hausses.entries) {
+          final t = m.toutes(tarCollectionTarifs).firstWhere((x) => [x['code'], x['codeActe'], x['codeGrille'], x['codeAnalyse']].contains(e.key));
+          final v1 = m.toutes(tarCollectionVersions).firstWhere((x) => x['code'] == t['code']);
+          m.inserer(tarCollectionVersions, {
+            'id': '${t['code']}@2026-09-15@2', 'code': t['code'], 'version': 2, 'dateEffet': '2026-09-15', 'statut': 'valide', 'etatAssure': 'unique',
+            'prixNonAssure': (v1['prixNonAssure'] as num) + e.value, 'origine': 'test',
+          });
+        }
+        csPrescrire(m, {...params, 'date': date}, const SessionCs(role: 'admin', fonction: 'direction'));
+        return m.toutes('factures').first['montantTTC'] as num;
+      }
+
+      final avant = total('2026-08-20T09:00:00.000Z');
+      final apres = total('2026-10-01T09:00:00.000Z');
+      expect(apres - avant, 1110, reason: 'la prescription du 20/08 garde les anciens prix, celle du 01/10 prend les versions du 15/09, alors que le jour courant est le 31/10');
+    });
 
     test('RG-09 : carte expirée → aucune part assureur, imagerie et reste au tarif non assuré (E340)', () {
       final c = liste((v['cas'] as Map)['prescrire'])[2];

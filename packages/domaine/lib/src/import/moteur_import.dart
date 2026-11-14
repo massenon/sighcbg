@@ -625,6 +625,8 @@ AnalyseImport analyserLignes(JeuImport j, List<List<Object?>> lignes, String fic
         for (final p in j.regles(ligne.v, ctx, sc, n)) {
           ligne.problemes.add(p.avecLigne(n));
         }
+        // Une règle peut décider que la ligne n'écrit RIEN sans être un refus (un « Non » de l'importateur, un prix inchangé) : elle est listée, comptée, jamais écrite.
+        if (sc.remove('sansEcritureLigne') != null) ligne.ignoree = true;
       }
     }
     ligne.etat = ligne.problemes.any((p) => p.estRefus) ? 'refus' : (ligne.problemes.isNotEmpty ? 'avertissement' : 'valide');

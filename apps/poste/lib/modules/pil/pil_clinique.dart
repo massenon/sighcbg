@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -338,7 +339,8 @@ class _EtatStatsHospitalisations extends State<EcranStatsHospitalisations> {
     return ListenableBuilder(
       listenable: Listenable.merge([pilEcoute(c, ['admissions']), _f]),
       builder: (context, _) {
-        final h = pilStatsHospitalisations(pilActives(c, 'admissions'), pilBorne(_f, 'du'), pilBorne(_f, 'au'), c.aujourdhui, refMois: c.aujourdhui);
+        final h = pilStatsHospitalisations(pilActives(c, 'admissions'), pilBorne(_f, 'du'), pilBorne(_f, 'au'), c.aujourdhui,
+            refMois: c.aujourdhui, tarifsJournee: TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui));
         final v = h.vue;
         return pilPile([
           pilBandeauPlage(_f),

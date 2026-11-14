@@ -270,7 +270,11 @@ class ServiceDemandesImport {
         final port = PortMagasin(magasin,
             aujourdhui: () => _maintenant,
             nomAgent: auteur,
-            profil: ProfilImport(role: role, libelleRole: m.libelle(role) ?? role, droitEcran: (e) => m.droit(role, e)));
+            profil: ProfilImport(
+                role: role,
+                libelleRole: m.libelle(role) ?? role,
+                droitEcran: (e) => m.droit(role, e),
+                gesteDroit: (g) => DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: m.estArchive, ecranActif: m.ecranActif).peut(role, g)));
         VerdictDemandeImport v;
         try {
           v = traiterDemandeImport({...d}, port, jeuImportParId, regime: regime, octetsMax: _borne('${d['jeu']}'), compteurs: champsCompteurs);

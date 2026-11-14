@@ -36,6 +36,13 @@ const String gesteValiderSeuil = 'valider_seuil_labo';
 /// à ses techniciens. Il s'ajoute à [gesteValiderSeuil] : il ne le remplace pas.
 const String gesteValiderSeuilInterim = 'valider_seuil_labo_interim';
 
+/// Décider un changement de prix (Oui ou Non) à « Tarifs et prix » : un geste de la matrice (lot TAR, PRD-TARIFS). Origine : l'administrateur, la DAF et la Direction ;
+/// une fiche de rôle accorde ou retire. Proposer reste le droit d'ÉDITER l'écran.
+const String gesteDeciderPrix = 'tarif_decider';
+
+/// Dater un prix dans le PASSÉ (T6, Direction) : la DAF et la Direction seulement d'origine, avec motif ; refusé dès qu'une pièce a utilisé la prestation depuis la date.
+const String gesteDaterPrixPasse = 'tarif_dater_passe';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -52,6 +59,20 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'm5-valeurs-reference',
       rolesDefaut: [],
       aide: 'Le technicien de laboratoire est exclu par défaut. Accordé à un rôle, ses agents de fonction technicien peuvent valider un seuil (en plus du droit précédent).'),
+  GesteReserve(
+      id: gesteDeciderPrix,
+      libelle: 'Décider un changement de prix (Oui ou Non)',
+      module: 'CFG',
+      ecran: 'cfg-tarifs',
+      rolesDefaut: ['admin', 'da', 'direction'],
+      aide: 'Une proposition de prix ne change rien avant le Oui. Proposer est le droit d’éditer l’écran « Tarifs et prix » ; décider est celui-ci. Origine : l’administrateur, la DAF, la Direction.'),
+  GesteReserve(
+      id: gesteDaterPrixPasse,
+      libelle: 'Dater un prix dans le passé',
+      module: 'CFG',
+      ecran: 'cfg-tarifs',
+      rolesDefaut: ['da', 'direction'],
+      aide: 'Une date d’effet antérieure à aujourd’hui, avec motif, tant qu’aucune pièce n’a utilisé la prestation depuis cette date. Origine : la DAF et la Direction.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

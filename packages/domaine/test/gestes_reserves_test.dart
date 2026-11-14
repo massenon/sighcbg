@@ -24,7 +24,9 @@ void main() {
       expect(d.peut(r, interim), isFalse, reason: 'l’intérim n’est accordé à personne d’origine : $r');
     }
     expect(d.origine('laborantin', g), 'origine');
-    expect(gestesReserves.map((x) => x.id), [g, interim]);
+    expect(gestesReserves.map((x) => x.id), [g, interim, gesteDeciderPrix, gesteDaterPrixPasse]);
+    expect(DroitsGestes(fiches: const []).rolesAvec(gesteDeciderPrix, const ['admin', 'da', 'direction', 'caissier', 'stock']), ['admin', 'da', 'direction'], reason: 'décider un prix : origine de la matrice');
+    expect(DroitsGestes(fiches: const []).rolesAvec(gesteDaterPrixPasse, const ['admin', 'da', 'direction']), ['da', 'direction'], reason: 'dater dans le passé : la DAF et la Direction, pas l\'administrateur');
   });
 
   test('une fiche ACCORDE (même à l’administrateur système, sans fiche d’origine) et RETIRE (même au Biologiste médical) ; absente, l’origine suit', () {

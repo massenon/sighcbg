@@ -333,7 +333,9 @@ num _dixieme(num x) => arrondiJs(x * 10) / 10;
 int pilTotalLits() => hosChambres.fold(0, (a, c) => a + c.lits.length);
 
 /// [refMois] : l'ancre du graphique « Séjours par mois » (la maquette l'ancre au 1ᵉʳ août 2026 — E20 ; le poste passe son horloge).
-PilHospitalisations pilStatsHospitalisations(Iterable<PilFiche> admissions, String du, String au, DateTime auj, {required DateTime refMois}) {
+/// [tarifsJournee] : la journée par type de chambre au prix du RÉFÉRENTIEL (T12, lue par l'appelant) ; sans entrée, la nomenclature livrée.
+PilHospitalisations pilStatsHospitalisations(Iterable<PilFiche> admissions, String du, String au, DateTime auj,
+    {required DateTime refMois, Map<String, num> tarifsJournee = const {}}) {
   final toutes = [for (final a in admissions) if (pilDansPlage(a['dateEntree'], du, au)) a];
   final terminees = toutes.where((a) => pilVrai(a['dateSortie'])).toList();
   final enCours = toutes.where((a) => !pilVrai(a['dateSortie'])).toList();
@@ -360,7 +362,8 @@ PilHospitalisations pilStatsHospitalisations(Iterable<PilFiche> admissions, Stri
     final sel = toutes.where((a) => a['typeChambre'] == t.id).toList();
     final fin = sel.where((a) => pilVrai(a['dateSortie'])).toList();
     final j = fin.fold(0, (s, a) => s + duree(a));
-    parType.add((type: t.label, tarif: t.tarif.toInt(), sejours: sel.length, journees: j, dms: fin.isNotEmpty ? _dixieme(j / fin.length) : 0, produit: j * t.tarif.toInt()));
+    final tarif = (tarifsJournee[t.id] ?? t.tarif).toInt();
+    parType.add((type: t.label, tarif: tarif, sejours: sel.length, journees: j, dms: fin.isNotEmpty ? _dixieme(j / fin.length) : 0, produit: j * tarif));
   }
   v.tables.add(PilTable('Par type de chambre', ['TYPE', 'PRIX DE JOURNÉE', 'SÉJOURS', 'JOURNÉES', 'DURÉE MOYENNE', 'PRODUIT THÉORIQUE'], [
     for (final r in parType) [r.type, money(r.tarif, avecDevise: false), nombre(r.sejours), nombre(r.journees), '${pilTexteNombre(r.dms)} j', money(r.produit, avecDevise: false)]

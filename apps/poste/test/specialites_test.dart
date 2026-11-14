@@ -25,6 +25,9 @@ Magasin magasin({int? patients, bool consultations = true, String? seulement}) {
     'personnel': livre('personnel'),
     'actes': livre('actes'),
     'catalogueTarifs': livre('catalogueTarifs'),
+    // Le prix se lit au référentiel de prix (lot TAR) : le jeu livré le porte.
+    'tarifs': livre('tarifs'),
+    'versionsTarif': livre('versionsTarif'),
     'couverturesAssurance': livre('couverturesAssurance'),
     'souscripteurs': livre('souscripteurs'),
     'garanties': livre('garanties'),

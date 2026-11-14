@@ -100,7 +100,7 @@ void main() {
   final magasinInitial = (V['magasin'] as Map).cast<String, Object?>();
 
   group('analyse : les fichiers de la maquette sur un magasin contrôlé', () {
-    for (final c in liste(V['cas']).where((c) => !_casCodeFourni.contains(c['id']))) {
+    for (final c in liste(V['cas']).where((c) => !_casCodeFourni.contains(c['id']) && c['jeu'] != 'actes')) {
       final attendu = (c['attendu'] as Map).cast<String, Object?>();
       test('${c['id']}', () {
         final port = MagasinMemoire(magasinInitial);
@@ -142,7 +142,8 @@ void main() {
 
   group('modèles téléchargeables', () {
     final modeles = (V['modeles'] as Map).cast<String, Object?>();
-    for (final e in modeles.entries) {
+    // Le modèle « actes » de la maquette d'avant est remplacé par celui de « Tarifs et prix » (rejoué dans `tarifs_import_test.dart`).
+    for (final e in modeles.entries.where((e) => e.key != 'actes')) {
       test(e.key, () {
         final m = (e.value as Map).cast<String, Object?>();
         final jeu = jeuImportParId(e.key)!;
@@ -208,6 +209,24 @@ void main() {
     AnalyseImport analyseDuCas(String id) {
       final c = liste(V['cas']).firstWhere((x) => x['id'] == id);
       final jeu = jeuImportParId('${c['jeu']}')!;
+      // Le jeu « catalogue des actes » de la maquette d'avant est REMPLACÉ par « Tarifs et prix » (lot TAR) : le cas `ac-valide` tient sa place dans la série des lots (numérotation)
+      // par un fichier du nouveau jeu, deux propositions sans « Oui ». Ses propres règles sont rejouées par `tarifs_import_test.dart`.
+      if (id == 'ac-valide') {
+        if (port.toutes('versionsTarif').isEmpty) {
+          port.toutes('tarifs').add({'id': 'Z0', 'code': 'Z0', 'codeActe': 'Z0', 'libelle': 'Prestation de départ', 'famille': 'ACTE', 'statut': 'actif'});
+          port.toutes('versionsTarif').add({'id': 'Z0@origine@1', 'code': 'Z0', 'version': 1, 'prixNonAssure': 1000, 'etatAssure': 'unique', 'origine': 'migration', 'statut': 'valide'});
+        }
+        return analyserLignes(
+            jeu,
+            [
+              ['Code', 'Désignation', 'Famille', 'Secteur', 'Prix non assuré', 'Prix assuré', 'Prix unique', 'Couverture', 'Date d’effet', 'Valider (Oui/Non)', 'Motif', 'Source'],
+              ['X1', 'Acte A', 'ACTE', 'Médecine générale', 5000, 3000, 'non', '', '2026-12-01', '', 'Création', ''],
+              ['X2', 'Acte B', 'ACTE', 'Chirurgie', 8000, 'NC', 'non', '', '2026-12-01', '', 'Création', ''],
+            ],
+            '$id.xlsx',
+            port,
+            options: optionsDe(jeu));
+      }
       return analyserLignes(
           jeu,
           adapter(jeu.id, [
@@ -238,6 +257,10 @@ void main() {
         final lot = r.lot!;
         lots[id] = lot;
         expect(lot['reference'], app['reference']);
+        if (id == 'ac-valide') {
+          expect(jeu.id, 'tarifs');
+          return;
+        }
         expect((lot['ecrits'] as List).length, app['ecrits']);
         final idVersCode = {for (final p in port.toutes('produits')) p['id']: '${p['code']}'};
         final fiches = <String, List<Map<String, Object?>>>{};
@@ -285,6 +308,10 @@ void main() {
         final att = annulations[k++];
         expect(att['cas'], id);
         expect(r.ok, att['ok'], reason: '$id : ${r.motif}');
+        if (id == 'ac-valide') {
+          expect(port.parId(collectionLots, lots[id]!['id'])!['etat'], att['etatLot']);
+          continue;
+        }
         expect(r.archives, att['archives'], reason: id);
         final ecrits = (lots[id]!['ecrits'] as List).cast<Map>();
         expect(ecrits.where((e) => port.parId('${e['collection']}', e['id'])!['statut'] == 'archive').length, att['archivesVerifiees']);

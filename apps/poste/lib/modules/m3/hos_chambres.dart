@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../donnees/magasin.dart';
+import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -23,13 +24,13 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Écran en lecture seule. La nomenclature des lits et les tarifs par catégorie sont un référentiel : ils se modifient dans « Référentiel tarifaire » (Configuration). L’occupation, elle, découle des admissions.';
+      'Écran en lecture seule. La nomenclature des lits et les tarifs par catégorie sont un référentiel : ils se modifient dans « Tarifs et prix » (Configuration). L’occupation, elle, découle des admissions.';
 
-  static List<Fiche> lignes(Iterable<Fiche> admissions) => [
+  static List<Fiche> lignes(Iterable<Fiche> admissions, {Map<String, num> tarifs = const {}}) => [
         for (final l in hosTousLits())
           () {
             final adm = hosLitOccupePar(l.label, admissions);
-            final tarif = hosTypesChambre.firstWhere((t) => t.id == l.chambre.type).tarif;
+            final tarif = tarifs[l.chambre.type] ?? hosTypesChambre.firstWhere((t) => t.id == l.chambre.type).tarif;
             return <String, Object?>{
               'id': l.label.replaceAll(' ', '_'),
               'code': l.label,
@@ -85,7 +86,9 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
     return ListenableBuilder(
       listenable: col,
       builder: (context, _) {
-        final rows = lignes(col.actives);
+        // T12 : la journée vient du référentiel de prix, au prix en vigueur aujourd'hui.
+        final tarifs = TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui);
+        final rows = lignes(col.actives, tarifs: tarifs);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           KpiGrilleSigh(kpis: [
             for (final t in hosTypesChambre)
@@ -99,7 +102,7 @@ class EcranChambres extends StatelessWidget with EcranMaquette {
                     ton: t.id == 'vvip'
                         ? TonSigh.navy
                         : (t.id == 'vip' ? TonSigh.info : TonSigh.neutre),
-                    indice: '${money(t.tarif)} / jour — $occ occupé(s)');
+                    indice: '${money(tarifs[t.id] ?? t.tarif)} / jour — $occ occupé(s)');
               }(),
             KpiSigh(
                 libelle: 'Capacité totale',

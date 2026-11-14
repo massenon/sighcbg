@@ -240,6 +240,11 @@ void _actesEtTarifs(Contexte ctx) {
     for (final t in (ctx.referentiels['typesChambre'] as List).cast<Map>())
       {...t.cast<String, Object?>(), 'tarifProvisoire': true, 'motifPrix': motifTarifHerite}
   ];
+  // LE RÉFÉRENTIEL DE PRIX UNIQUE (lot TAR) : la valeur facturée AUJOURD'HUI devient la version 1, sans changer un franc (décision T1/T2 de la Direction). Baguidi n'a remis
+  // aucune grille imprimée des analyses : aucune proposition n'est inventée (`proposerGrilleAnalyses: false`).
+  final migration = d.tarMigrer(actes: actes, grille: tarifs, analyses: analyses, proposerGrilleAnalyses: false);
+  ctx.remplacer('tarifs', migration.tarifs);
+  ctx.remplacer('versionsTarif', migration.versions);
   ctx.note('socle : ${actes.length} actes (dont 5 de médecine du travail), ${tarifs.length} tarifs de catalogue, ${analyses.length} analyses, tous marqués tarifProvisoire');
 }
 

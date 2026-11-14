@@ -122,7 +122,8 @@ class EmissionSpec {
   if (acte == null) return (ligne: null, note: 'L’acte $codeActe n’est pas au catalogue : rien à facturer.');
   final jour = iso(date ?? c.aujourdhui);
   final assure = carteValide(patient, m.collection('couverturesAssurance').actives, jour);
-  final pr = csTarifPrix(stockDe(c), acte['codeTarif'], assure);
+  // Le prix est celui de la version EN VIGUEUR à la date de la PIÈCE (lot TAR), jamais celui d'aujourd'hui quand la pièce est datée d'un autre jour.
+  final pr = csTarifPrix(stockDe(c), acte['codeTarif'], assure, date: jour);
   if (pr.montant == null) {
     return (ligne: null, note: 'L’acte « ${acte['libelle']} » n’a pas de tarif à la grille : rien n’a été facturé (un tiret n’est pas un zéro).');
   }

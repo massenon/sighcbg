@@ -4605,7 +4605,7 @@
   },
   {
    "id": "cfg-tarifs",
-   "label": "Référentiel tarifaire",
+   "label": "Tarifs et prix",
    "module": "CFG",
    "domaine": "Système",
    "tranche": 6,

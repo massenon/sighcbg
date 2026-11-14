@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/tarifs_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'hos_commun.dart';
@@ -59,7 +60,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
   void _ouvrirLit(BuildContext context, HosChambre ch, String lit, Fiche? adm) {
     final c = ContexteEcran.of(context);
     if (adm == null) {
-      final tarif = hosTypesChambre.firstWhere((t) => t.id == ch.type).tarif;
+      final tarif = TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui)[ch.type] ?? hosTypesChambre.firstWhere((t) => t.id == ch.type).tarif;
       afficherTiroir<void>(context,
           titre: 'Lit $lit',
           sousTitre: '${ch.aile} — ${hosLibelleTypeChambre(ch.type)}',

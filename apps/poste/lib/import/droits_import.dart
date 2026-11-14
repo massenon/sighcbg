@@ -46,7 +46,12 @@ ProfilImport profilImportDe(ContexteEcran c) {
   final m = c.donnees?.matrice;
   if (m == null) return const ProfilImport.aucunDroit();
   final role = c.role;
-  return ProfilImport(role: role, libelleRole: m.libelle(role) ?? role, droitEcran: (e) => m.droit(role, e));
+  // Les GESTES RÉSERVÉS (décider un prix) se lisent de la matrice en force à chaque appel : aucun nom de rôle ici.
+  return ProfilImport(
+      role: role,
+      libelleRole: m.libelle(role) ?? role,
+      droitEcran: (e) => m.droit(role, e),
+      gesteDroit: (g) => DroitsGestes(fiches: c.magasin.collection('rbac').actives, estArchive: m.estArchive, ecranActif: m.ecranActif).peut(role, g));
 }
 
 /// La clé du réglage (collection `reglages`, la même que `cfbReglage` / `cfbPoserReglage`) qui fixe la borne de taille d'un fichier pour un jeu.
