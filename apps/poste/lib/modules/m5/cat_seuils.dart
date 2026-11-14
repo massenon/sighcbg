@@ -99,7 +99,7 @@ class _EtatSeuils extends State<SectionSeuils> {
           ]),
           const SizedBox(height: 16),
           const NoteSigh(
-              'Seuils de variation brutale. Aucun seuil n’est proposé : un seuil vide veut dire « pas d’alerte configurée », jamais zéro. Un seuil Enregistré est sans effet ; seul un seuil Validé par le profil à qui la matrice des droits en donne le pouvoir (par défaut le Biologiste médical ; l’administrateur système, dont l’accès complet ne vient d’aucune fiche, n’en fait pas partie) alerte, au comparatif et à l’écran de validation biologique, jamais sur le résultat que lit le prescripteur. Modifier un seuil validé ajoute une version datée : l’ancienne reste lisible et les alertes déjà levées gardent leur seuil. Forme du seuil (décidée par la Direction le 13/11/2026) : une variation absolue et/ou relative, l’alerte part dès que l’UNE des deux est atteinte ; sur une valeur précédente nulle ou proche de zéro, le pourcentage n’est pas calculé et seul le seuil absolu juge.',
+              'Seuils de variation brutale. Aucun seuil n’est proposé : un seuil vide veut dire « pas d’alerte configurée », jamais zéro. Un seuil Enregistré est sans effet ; seul un seuil Validé par un rôle auquel la fiche de rôle accorde le geste « Valider un seuil » (par défaut le Biologiste médical ; l’administrateur système n’en fait pas partie par défaut, la Direction peut le lui accorder) alerte, au comparatif et à l’écran de validation biologique, jamais sur le résultat que lit le prescripteur. Modifier un seuil validé ajoute une version datée : l’ancienne reste lisible et les alertes déjà levées gardent leur seuil. Délai maximal entre deux mesures (facultatif, vide par défaut, jamais bloquant) : au-delà, la variation n’est pas évaluée et le comparatif le dit. Forme du seuil (décidée par la Direction le 13/11/2026) : une variation absolue et/ou relative, l’alerte part dès que l’UNE des deux est atteinte ; sur une valeur précédente nulle ou proche de zéro, le pourcentage n’est pas calculé et seul le seuil absolu juge.',
               icone: LucideIcons.activity),
           const SizedBox(height: 16),
           CarteSigh(child: commande(_filtre, largeur: 260)),
@@ -134,6 +134,9 @@ class _EtatSeuils extends State<SectionSeuils> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(texteSeuil(e.enVigueur!, _suffixe(c, v)), style: styleCat()),
+                          if (e.enVigueur!['delaiMaxJours'] != null)
+                            Text(texteDelai(e.enVigueur!),
+                                key: Key('seuils:delai:${v['code']}'), style: styleCat(taille: 10, couleur: JetonsShell.slate500)),
                           Text('version ${e.enVigueur!['version']}, depuis le ${dateFrJs(e.enVigueur!['dateEffet'])}', style: styleCat(taille: 10, couleur: JetonsShell.slate400)),
                         ]);
                   }),
@@ -216,6 +219,11 @@ class _EtatSeuils extends State<SectionSeuils> {
           aide: 'Vide : pas d’alerte sur l’écart absolu'),
       const ChampDef(nom: 'ecartRelatif', libelle: 'Variation relative d’au moins (%)', type: TypeChamp.nombre, aide: 'Vide : pas d’alerte sur le pourcentage'),
       const ChampDef(
+          nom: 'delaiMaxJours',
+          libelle: 'Délai maximal entre deux mesures (jours)',
+          type: TypeChamp.nombre,
+          aide: 'Vide : aucun délai. Au-delà, la variation n’est pas évaluée et le comparatif le dit ; rien n’est bloqué.'),
+      const ChampDef(
           nom: 'dateEffet',
           libelle: 'Date d’effet',
           type: TypeChamp.date,
@@ -226,6 +234,7 @@ class _EtatSeuils extends State<SectionSeuils> {
     ], {
       'ecartAbsolu': t(base?['ecartAbsolu']),
       'ecartRelatif': t(base?['ecartRelatif']),
+      'delaiMaxJours': base?['retrait'] == true ? '' : t(base?['delaiMaxJours']),
       'dateEffet': iso(DateTime(c.aujourdhui.year, c.aujourdhui.month, c.aujourdhui.day)),
       'note': base?['note'] ?? '',
     });
@@ -254,6 +263,7 @@ class _EtatSeuils extends State<SectionSeuils> {
                     final r = SeuilsPoste(c).enregistrer('${v['id']}',
                         ecartAbsolu: saisie['ecartAbsolu'],
                         ecartRelatif: saisie['ecartRelatif'],
+                        delaiMaxJours: saisie['delaiMaxJours'],
                         retrait: saisie['retrait'] == true,
                         dateEffet: saisie['dateEffet'],
                         note: '${saisie['note'] ?? ''}');
@@ -339,7 +349,7 @@ class _EtatSeuils extends State<SectionSeuils> {
                           TableRow(decoration: const BoxDecoration(border: Border(top: BorderSide(color: JetonsShell.slate100))), children: [
                             _c(Text('v${x['version']}', style: styleLabo(14))),
                             _c(Text(x['etat'] == 'valide' ? 'Validé' : 'Enregistré (sans effet)', style: styleLabo(14))),
-                            _c(Text(x['retrait'] == true ? 'Retrait de l’alerte' : texteSeuil(x, suffixe), style: styleLabo(14))),
+                            _c(Text(x['retrait'] == true ? 'Retrait de l’alerte' : texteSeuil(x, suffixe) + (x['delaiMaxJours'] != null ? ' (${texteDelai(x)})' : ''), style: styleLabo(14))),
                             _c(Text(dateFrJs(x['dateEffet']), style: styleLabo(14))),
                             _c(Text('${x['enregistrePar'] ?? ''}${x['enregistreLe'] != null ? ', le ${dateFrJs(x['enregistreLe'])}' : ''}', style: styleLabo(12))),
                             _c(Text(x['etat'] == 'valide' ? '${x['validePar']} (${x['valideRole']}), le ${dateFrJs(x['valideLe'])}' : '', style: styleLabo(12))),

@@ -279,7 +279,7 @@ class _FichePatientState extends State<FichePatient> {
                     : mini([
                         ColonneMini('Date', (x) => '${dateFrM1(x['date'])}${patVrai(x['heure']) ? ' ${x['heure']}' : ''}'),
                         ColonneMini('Température', (x) => '${patVrai(x['temperature']) ? x['temperature'] : _t(x['matin'])} °C', droite: true),
-                        ColonneMini('Tension', (x) => _t(x['tension'])),
+                        ColonneMini('Tension', (x) => hosTensionAffichee(x) ?? '—'),
                         ColonneMini('Pouls', (x) {
                           final v = x['fc'] ?? x['pouls'];
                           return patVrai(v) ? '$v bpm' : '—';

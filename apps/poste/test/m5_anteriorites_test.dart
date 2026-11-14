@@ -416,7 +416,9 @@ void main() {
     });
 
     cas('décision du 13/11/2026 : l’administrateur système enregistre un seuil mais ne le valide pas (pas de bouton, geste forcé refusé)', (t) async {
-      expect(droitMatrice('admin', ecran).annuler, isTrue, reason: 'prémisse : l’accès complet lui donne annuler à la matrice');
+      // ADAPTÉ (lot B) : le refus n'est plus `VALIDATION_HORS_MATRICE` (exception de nom de rôle du lot A2) mais `VALIDATION_RESERVEE` : valider est un GESTE RÉSERVÉ de la
+      // fiche de rôle, que l'administrateur n'a pas d'origine. La décision de la Direction est la même ; seule la mécanique change (voir `gestes_reserves_test.dart`).
+      expect(droitMatrice('admin', ecran).annuler, isTrue, reason: 'prémisse : l’accès complet lui donne annuler à la matrice, et ce droit-là ne vaut plus validation');
       final m = vide();
       final admin = SeuilsPoste(contexte(m, 'admin'));
       expect(admin.peutEnregistrer, isTrue);
@@ -424,7 +426,7 @@ void main() {
       expect(admin.peutValider, isFalse);
       final r = admin.valider('VAR-NFS-GB', motif: 'Je force');
       expect(r.ok, isFalse);
-      expect(r.refus!.code, 'VALIDATION_HORS_MATRICE');
+      expect(r.refus!.code, 'VALIDATION_RESERVEE');
       expect(admin.etat('VAR-NFS-GB').etat, 'enregistre');
       await ouvrir(t, m, 'admin');
       expect(find.byKey(const Key('seuils:regler:GB')), findsOneWidget);

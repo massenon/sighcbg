@@ -194,22 +194,31 @@ void main() {
     await toucher(t, find.byTooltip('Relever les constantes').at(2)); // ligne OBS-2026-0003
     final r = carte(obs()['releve']);
     for (final lib in (r['champs'] as List).cast<String>()) {
-      expect(affiche(t, lib.replaceAll(' *', '')), isTrue, reason: lib);
+      final l = lib.replaceAll(' *', '');
+      // ADAPTÉ (lot B) : « Tension artérielle » devient deux champs, systolique et diastolique, en cmHg.
+      expect(affiche(t, l == 'Tension artérielle' ? 'Tension systolique (cmHg)' : l), isTrue, reason: lib);
     }
+    expect(affiche(t, 'Tension diastolique (cmHg)'), isTrue);
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer le relevé'));
     expect((col.parId('OBS0003')!['constantes'] as List).length, 3, reason: 'champs obligatoires vides : rien n\'est écrit');
     await saisir(t, 'heure', '09:45');
     await saisir(t, 'temperature', '38.2');
-    await saisir(t, 'tension', '11/7');
+    await saisir(t, 'tensionSys', '11');
+    await saisir(t, 'tensionDia', '7');
     await saisir(t, 'pouls', '90');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer le relevé'));
     final cs = (col.parId('OBS0003')!['constantes'] as List).cast<Map>();
     expect(cs.length, 4);
     final att = ((carte(r['enregistre'])['constantes'] as List).last as Map);
     final n = cs.last;
-    for (final k in ['heure', 'temperature', 'tension', 'pouls', 'spo2', 'observation']) {
+    for (final k in ['heure', 'temperature', 'pouls', 'spo2', 'observation']) {
       expect(n[k], att[k], reason: k);
     }
+    // ADAPTÉ (lot B) : la maquette écrivait `tension: '11/7'` ; le poste écrit DEUX nombres (cmHg), « 11/7 » n'étant qu'une mise en forme.
+    expect(att['tension'], '11/7');
+    expect(n['tensionSys'], 11);
+    expect(n['tensionDia'], 7);
+    expect(n.containsKey('tension'), isFalse);
     for (final ligne in ((carte(r['enregistre'])['toasts'] as List).single as List).cast<String>()) {
       expect(find.text(ligne), findsOneWidget);
     }

@@ -285,6 +285,10 @@ class _VueRolesState extends State<_VueRoles> {
               libelle: 'Données sensibles',
               construire: (ctx) => _OngletSensibles(x: x)),
           OngletDef(
+              id: 'gestes',
+              libelle: 'Gestes réservés',
+              construire: (ctx) => _OngletGestes(x: x)),
+          OngletDef(
               id: 'import',
               libelle: 'Droit d’import',
               construire: (ctx) => _OngletImport(x: x)),
@@ -808,6 +812,115 @@ class _OngletSensiblesState extends State<_OngletSensibles> {
                               taille: TailleBouton.sm,
                               variante: VarianteBouton.fantome,
                               onPressed: () => _decider(ctx, role, cat, null)),
+                      ],
+                    ]));
+              }),
+          ])),
+    ]);
+  }
+}
+
+// --- Gestes réservés : un droit par geste, par rôle ---------------------------------------------------------------------------------------------
+
+/// Les GESTES RÉSERVÉS (lot B, Direction du 13/11/2026) : un geste qui engage un professionnel nommé (valider un seuil de variation brutale du laboratoire) est un droit de
+/// la fiche `rbac` du rôle (`droitsGestes`), accordé PAR RÔLE, jamais par agent. Même mécanisme que les données sensibles : une DÉCISION motivée, journalisée (RG-12), jugée par la
+/// mère, diffusée sans redémarrage, annulable. Une décision accorde ou retire, dans les deux sens ; « Revenir à l'origine » la retire. Le droit n'ouvre pas l'écran du geste.
+class _OngletGestes extends StatefulWidget {
+  const _OngletGestes({required this.x});
+  final _Ctx x;
+  @override
+  State<_OngletGestes> createState() => _OngletGestesState();
+}
+
+class _OngletGestesState extends State<_OngletGestes> {
+  String? _role;
+
+  Future<void> _decider(BuildContext ctx, RoleSec r, GesteReserve g, bool? valeur) async {
+    final x = widget.x;
+    final intitule = valeur == null ? 'Revenir à l’origine' : (valeur ? 'Accorder' : 'Retirer');
+    final motif = await confirmerAvecMotif(ctx, titre: '$intitule : « ${g.libelle} » pour « ${r.label} » ?', message: x.diffusion, libelleOk: intitule);
+    if (motif == null || !ctx.mounted) return;
+    final annuler = x.enregistrer(
+        r.id,
+        {
+          'droitsGestes': {g.id: valeur},
+        },
+        'Geste réservé',
+        motif: motif);
+    _annoncerDecision(ctx, x);
+    ToastsSigh.afficher(ctx, 'Droit enregistré : ${g.libelle}.',
+        type: TypeToast.succes,
+        detail: valeur == null ? 'L’origine du référentiel s’applique de nouveau.' : (valeur ? 'Accordé à « ${r.label} ».' : 'Retiré à « ${r.label} ».'),
+        annuler: annuler);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final x = widget.x;
+    final c = x.c;
+    final roles = x.actifs;
+    if (roles.isEmpty) return const VideSigh('Aucun rôle actif.', icone: LucideIcons.shield);
+    final role = roles.where((r) => r.id == _role).firstOrNull ?? roles.first;
+    final mat = c.donnees?.matrice;
+    final droits = DroitsGestes(fiches: x.m.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif);
+    final modifiable = c.droit.editer;
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      const NoteSigh(
+          'Un geste réservé engage un professionnel nommé : il ne se déduit d’aucun droit d’écran. Le droit s’accorde au rôle, jamais à un agent, et l’emporte sur l’origine dans les deux sens (accorder à un rôle qui ne l’a pas, retirer à celui qui l’a). Il n’ouvre pas l’écran du geste : l’écran se règle à part. Un rôle sans fiche n’a pas pour autant tous les gestes : l’administrateur système ne valide pas un seuil tant qu’aucune décision ne le lui accorde.',
+          key: Key('m14:gestes:note'),
+          ton: TonSigh.info,
+          icone: LucideIcons.stamp),
+      const SizedBox(height: 12),
+      CarteSigh(
+          titre: 'Gestes réservés',
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 420),
+                    child: SelecteurSigh(
+                        key: const Key('m14:gestes:role'),
+                        libelle: 'Rôle',
+                        indicatif: 'Rôle',
+                        valeur: role.id,
+                        options: [for (final r in roles) OptionChamp(r.id, r.label)],
+                        surChange: (v) => setState(() => _role = v)))),
+            const SizedBox(height: 12),
+            for (final g in gestesReserves)
+              Builder(builder: (ctx) {
+                final accorde = droits.peut(role.id, g.id);
+                final decide = droits.origine(role.id, g.id) == 'decide';
+                return Container(
+                    key: Key('m14:gestes:${g.id}'),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: const BoxDecoration(border: Border(top: BorderSide(color: JetonsShell.slate200))),
+                    child: Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                      SizedBox(
+                          width: 420,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                            Text(g.libelle, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
+                            Text(g.aide, style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+                            Text(
+                                '${decide ? 'Décision de la clinique.' : 'Origine : ${g.rolesDefaut.isEmpty ? 'aucun rôle' : g.rolesDefaut.map(x.libelle).join(', ')}.'} Écran du geste : ${g.ecran}.',
+                                style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
+                          ])),
+                      BadgeSigh(accorde ? 'Accordé' : 'Non accordé', key: Key('m14:gestes:etat:${g.id}'), ton: accorde ? TonSigh.succes : TonSigh.neutre),
+                      if (modifiable) ...[
+                        BoutonSigh(
+                            libelle: accorde ? 'Retirer' : 'Accorder',
+                            key: Key('m14:gestes:basculer:${g.id}'),
+                            icone: accorde ? LucideIcons.ban : LucideIcons.stamp,
+                            taille: TailleBouton.sm,
+                            variante: VarianteBouton.secondaire,
+                            onPressed: () => _decider(ctx, role, g, !accorde)),
+                        if (decide)
+                          BoutonSigh(
+                              libelle: 'Revenir à l’origine',
+                              key: Key('m14:gestes:origine:${g.id}'),
+                              icone: LucideIcons.rotateCcw,
+                              taille: TailleBouton.sm,
+                              variante: VarianteBouton.fantome,
+                              onPressed: () => _decider(ctx, role, g, null)),
                       ],
                     ]));
               }),

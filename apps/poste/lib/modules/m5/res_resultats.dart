@@ -344,7 +344,7 @@ class _EtatResultats extends State<EcranResultats> {
             titre: '${r['analyse']}',
             sousTitre: '${r['patient']} — ${r['reference']}',
             corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              if (_noteAlertes(alertesDe(r, jeuLaboDe(c, p.session)))
+              if (_noteAlertes(evaluationsDe(r, jeuLaboDe(c, p.session)))
                   case final n?) ...[n, const SizedBox(height: 12)],
               detailDemande(r),
             ]),
@@ -393,14 +393,22 @@ class _EtatResultats extends State<EcranResultats> {
   static bool _vrai2(Object? v) => v != null && v != false && v != '' && v != 0;
 
   /// La note d'alerte de variation brutale d'une mesure (`null` : rien à signaler). Elle SIGNALE : relire avant de signer, jamais un blocage.
-  static Widget? _noteAlertes(List<AlerteDeMesure> al) {
-    if (al.isEmpty) return null;
-    return NoteSigh(
+  /// [ev] : les évaluations d'une mesure (`evaluationsDe`) — l'alerte levée ET la variation non évaluée faute de délai, que l'on ne confond pas avec « pas d'alerte ».
+  static Widget? _noteAlertes(List<AlerteDeMesure> ev) {
+    final al = [for (final x in ev) if (x.alerte.alerte) x];
+    final non = [for (final x in ev) if (x.alerte.nonEvalue == 'delai') x];
+    if (al.isEmpty && non.isEmpty) return null;
+    final blocs = <String>[
+      if (al.isNotEmpty)
         'Variation brutale signalée sur ${nombre(al.length)} variable(s) par rapport à la mesure précédente rendue. Ce signalement n’empêche pas la validation : il demande une relecture avant de signer.\n${[
           for (final x in al) '${x.variable['libelle']} : ${texteVariation(x.variation, x.suffixe)}. ${texteAlerte(x.alerte, x.suffixe)}.'
         ].join('\n')}',
-        ton: TonSigh.attention,
-        icone: LucideIcons.activity);
+      if (non.isNotEmpty)
+        'Variation non évaluée sur ${nombre(non.length)} variable(s) : « non évalué » ne veut pas dire « pas d’alerte ».\n${[
+          for (final x in non) '${x.variable['libelle']} : ${texteNonEvalue(x.alerte)}.'
+        ].join('\n')}',
+    ];
+    return NoteSigh(blocs.join('\n'), key: const Key('res:validation:note-alertes'), ton: al.isNotEmpty ? TonSigh.attention : TonSigh.info, icone: LucideIcons.activity);
   }
 
   // --- 3. Rendus au prescripteur --------------------------------------------------------------------------------------
@@ -517,10 +525,15 @@ class _EtatResultats extends State<EcranResultats> {
       ToastsSigh.afficher(ctx, cont.motif ?? '', type: TypeToast.erreur);
       return;
     }
-    final alertes = alertesDe(r, jeuLaboDe(c, p.session));
-    final avertissement = alertes.isEmpty
-        ? ''
-        : 'Variation brutale signalée (seuils validés) : ${[for (final x in alertes) '${x.variable['libelle']} ${texteVariation(x.variation, x.suffixe)}'].join(' ; ')}. Ce signalement n’empêche pas la validation : relire avant de signer.\n\n';
+    final evals = evaluationsDe(r, jeuLaboDe(c, p.session));
+    final alertes = [for (final x in evals) if (x.alerte.alerte) x];
+    final nonEvalues = [for (final x in evals) if (x.alerte.nonEvalue == 'delai') x];
+    final avertissement = (alertes.isEmpty
+            ? ''
+            : 'Variation brutale signalée (seuils validés) : ${[for (final x in alertes) '${x.variable['libelle']} ${texteVariation(x.variation, x.suffixe)}'].join(' ; ')}. Ce signalement n’empêche pas la validation : relire avant de signer.\n\n') +
+        (nonEvalues.isEmpty
+            ? ''
+            : 'Variation non évaluée (« non évalué » ne veut pas dire « pas d’alerte ») : ${[for (final x in nonEvalues) '${x.variable['libelle']} (${texteNonEvalue(x.alerte).replaceFirst('Variation non évaluée : ', '')})'].join(' ; ')}. Cela n’empêche pas la validation.\n\n');
     confirmerSigh(ctx,
             titre: interim ? 'Valider par intérim ?' : 'Validation biologique',
             message:

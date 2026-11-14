@@ -161,7 +161,7 @@ class _EtatSurveillance extends State<EcranSurveillance> {
                       cle: 'tension',
                       libelle: 'TA',
                       droite: true,
-                      texte: (r) => vrai(r['tension']) ? '${r['tension']}' : '—'),
+                      texte: (r) => hosTensionAffichee(r) ?? '—'),
                   ColonneTableau(cle: 'fr', libelle: 'FR', droite: true, texte: (r) => r['fr'] == null ? '—' : _n(r['fr'])),
                   ColonneTableau(
                       cle: 'pouls', libelle: 'Pouls', droite: true, texte: (r) => r['pouls'] == null ? '—' : _n(r['pouls'])),
@@ -169,7 +169,7 @@ class _EtatSurveillance extends State<EcranSurveillance> {
                       cle: 'diurese',
                       libelle: 'Diurèse',
                       droite: true,
-                      texte: (r) => r['diurese'] == null ? '—' : '${_n(r['diurese'])} L'),
+                      texte: (r) => r['diurese'] == null ? '—' : hosDiureseTexte(r['diurese'])),
                   const ColonneTableau(cle: 'par', libelle: 'Relevé par'),
                   ColonneTableau(
                       cle: 'origine',

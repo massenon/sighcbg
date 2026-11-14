@@ -212,7 +212,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
       : tab('Feuilles de température', [
           ('Date', (x) => '${dateFrM1(x['date'])}${patVrai(x['heure']) ? ' ${x['heure']}' : ''}'),
           ('Température', (x) => '${patVrai(x['temperature']) ? x['temperature'] : t(x['matin'])} °C'),
-          ('Tension', (x) => t(x['tension'])),
+          ('Tension', (x) => hosTensionAffichee(x) ?? '—'),
           ('Pouls', (x) {
             final v = x['fc'] ?? x['pouls'];
             return patVrai(v) ? '$v bpm' : '—';

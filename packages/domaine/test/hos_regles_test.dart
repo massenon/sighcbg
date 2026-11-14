@@ -118,7 +118,16 @@ void main() {
     final c = hosCourbe(rel);
     expect(c.largeurTotale, dessin['largeur']);
     expect(c.hauteurTotale, dessin['hauteur']);
-    expect(c.graduations, [for (final t in liste(dessin['textes']).take(6)) t['t']]);
+    // ADAPTÉ (lot B) : le vecteur vient de la clinique sœur, où l'échelle de diurèse était graduée en LITRES (0, 0.5 … 2.5) ; elle est ici graduée en MILLILITRES
+    // (0, 500 … 2500). Les cinq premières graduations de chaque ligne sont celles du vecteur, la dernière est la sienne ×1000 ; les points de la courbe, eux, ne changent pas
+    // (les relevés du vecteur sont en mL, l'échelle aussi : plus aucune conversion, même position).
+    String enMl(String ligne) {
+      final j = ligne.split(' ');
+      final l = num.parse(j.removeLast());
+      return [...j, '${(l * 1000).round()}'].join(' ');
+    }
+
+    expect(c.graduations, [for (final t in liste(dessin['textes']).take(6)) enMl('${t['t']}')]);
     final pl = liste(dessin['polylignes']);
     for (var i = 0; i < pl.length; i++) {
       final pts = c.polylignes[hosEchelles[i].code]!;

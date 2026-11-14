@@ -5,6 +5,7 @@
 /// est CALCULÉ ; l'échelle du pouls n'est pas linéaire (interpolation entre graduations) ; le RANG décide du secteur d'administration.
 library;
 
+import 'hos_constantes.dart';
 import '../format/js.dart';
 import 'dart:math' as math;
 
@@ -263,7 +264,8 @@ const hosEchelles = [
   HosEchelle('pouls', 'Pouls', 'bpm', [60, 80, 100, 120, 140, 180], '#dc2626'),
   HosEchelle('temperature', 'T°', '°C', [36, 37, 38, 39, 40, 41], '#0f766e'),
   HosEchelle('fr', 'FR', '/min', [10, 20, 30, 40, 50, 60], '#2563eb'),
-  HosEchelle('diurese', 'Diurèse', 'L', [0, 0.5, 1, 1.5, 2, 2.5], '#ca8a04'),
+  // DIURÈSE EN MILLILITRES PARTOUT (lot B) : l'échelle est graduée en mL, comme la saisie ; plus aucune conversion à l'affichage.
+  HosEchelle('diurese', 'Diurèse', 'mL', [0, 500, 1000, 1500, 2000, 2500], '#ca8a04'),
 ];
 
 const hosMoments = [
@@ -295,6 +297,7 @@ String hosMomentDe(Object? heure) {
   return 'soir';
 }
 
+/// Ancienne lecture de la tension en TEXTE (« 12/8 ») : ne sert plus qu'au repli d'une fiche d'avant le lot B ([hosTensionDe]).
 double? hosSystoliqueDe(Object? tension) {
   final m = RegExp(r'^\s*(\d+(?:[.,]\d+)?)').firstMatch('${tension ?? ''}');
   return m == null ? null : double.parse(m[1]!.replaceAll(',', '.'));
@@ -313,14 +316,15 @@ List<HosFiche> hosRelevesDe(String patientId,
     if (c['patientId'] != patientId) continue;
     final dh = hosVersDate(c['dateHeure']);
     final h = dh == null ? '' : _hm(dh);
-    final sys = c['tensionSys'];
+    final t = hosTensionDe(c);
     out.add({
       'date': '${c['dateHeure'] ?? ''}'.substring(0, math.min(10, '${c['dateHeure'] ?? ''}'.length)),
       'moment': c['moment'] ?? hosMomentDe(h),
       'heure': h,
       'temperature': c['temperature'],
-      'ta': sys != null ? sys : hosSystoliqueDe(c['tension']),
-      'tension': c['tension'],
+      'ta': t.sys,
+      'tensionSys': t.sys,
+      'tensionDia': t.dia,
       'pouls': c['pouls'],
       'fr': c['fr'],
       'spo2': c['spo2'],
@@ -336,7 +340,7 @@ List<HosFiche> hosRelevesDe(String patientId,
   if (ids.isNotEmpty) {
     for (final r in releves) {
       if (!ids.contains(r['admissionId'])) continue;
-      final d = r['diurese'];
+      final t = hosTensionDe(r);
       out.add({
         'date': r['date'],
         'moment': hosMomentDe(r['heure']),
@@ -344,13 +348,14 @@ List<HosFiche> hosRelevesDe(String patientId,
         'temperature': r['temperature'] is num
             ? r['temperature']
             : (r['temperature'] == null ? null : num.tryParse('${r['temperature']}')),
-        'ta': hosSystoliqueDe(r['tension']),
-        'tension': r['tension'],
+        'ta': t.sys,
+        'tensionSys': t.sys,
+        'tensionDia': t.dia,
         'pouls': r['fc'],
         'fr': r['fr'],
         'spo2': r['spo2'],
-        // saisie en millilitres, échelle graduée en litres
-        'diurese': d != null ? arrondiJs((d as num) / 1000 * 100) / 100 : null,
+        // saisie et échelle en millilitres : aucune conversion
+        'diurese': r['diurese'],
         'par': r['saisiPar'],
         'origine': 'Hospitalisation',
       });

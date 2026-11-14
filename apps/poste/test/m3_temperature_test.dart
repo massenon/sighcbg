@@ -104,15 +104,24 @@ void main() {
     final avant = col.toutes.length;
     await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau relevé'));
     final s = carte(tmp()['saisie']);
+    // ADAPTÉ (lot B) : la maquette de la clinique sœur d'alors saisissait « Tension artérielle » en texte et « Diurèse (ml) » ; le poste saisit la tension en DEUX
+    // nombres (cmHg) et la diurèse en « mL » — les mêmes champs qu'à l'accueil (`champsTension`, `champDiurese`).
+    final adaptes = {
+      'Tension artérielle': 'Tension systolique (cmHg)',
+      'Diurèse (ml)': 'Diurèse (mL)',
+    };
     for (final lib in (s['champs'] as List).cast<String>()) {
-      expect(affiche(t, lib.replaceAll(' *', '')), isTrue, reason: lib);
+      final l = lib.replaceAll(' *', '');
+      expect(affiche(t, adaptes[l] ?? l), isTrue, reason: lib);
     }
+    expect(affiche(t, 'Tension diastolique (cmHg)'), isTrue);
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     expect(find.text(((carte(s['refusVide'])['toasts'] as List).single as List).single as String), findsOneWidget);
     expect(col.toutes.length, avant);
     await t.pump(const Duration(seconds: 10));
     await saisir(t, 'temperature', '99');
-    await saisir(t, 'tension', '12/8');
+    await saisir(t, 'tensionSys', '12');
+    await saisir(t, 'tensionDia', '8');
     await saisir(t, 'fc', '80');
     await saisir(t, 'spo2', '97');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
@@ -130,7 +139,8 @@ void main() {
     final col = m.collection('releves');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Nouveau relevé'));
     await saisir(t, 'temperature', '37.8');
-    await saisir(t, 'tension', '12/8');
+    await saisir(t, 'tensionSys', '12');
+    await saisir(t, 'tensionDia', '8');
     await saisir(t, 'fc', '80');
     await saisir(t, 'spo2', '97');
     await saisir(t, 'fr', '20');
@@ -139,9 +149,14 @@ void main() {
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
     final f = col.actives.first;
     final att = carte(carte(carte(tmp()['saisie'])['cree'])['fiche']);
-    for (final k in ['statut', 'date', 'heure', 'temperature', 'tension', 'fc', 'spo2', 'fr', 'diurese', 'poids', 'taille', 'traitement', 'admissionId']) {
+    for (final k in ['statut', 'date', 'heure', 'temperature', 'fc', 'spo2', 'fr', 'diurese', 'poids', 'taille', 'traitement', 'admissionId']) {
       expect(f[k], att[k], reason: k);
     }
+    // ADAPTÉ (lot B) : la maquette écrivait `tension: '12/8'` ; le poste écrit DEUX nombres, et plus aucun texte.
+    expect(att['tension'], '12/8');
+    expect(f['tensionSys'], 12);
+    expect(f['tensionDia'], 8);
+    expect(f.containsKey('tension'), isFalse, reason: '« 12/8 » n\'est qu\'une mise en forme');
     expect('${f['saisiPar']}', isNotEmpty, reason: 'RG-12 : le relevé porte l\'agent connecté');
     expect(find.text('Relevé enregistré.'), findsOneWidget);
     final apres = carte(tmp()['apresCreation']);

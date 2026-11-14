@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../donnees/seuils_poste.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
@@ -52,6 +53,9 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
       'identiteLegale',
       'obligationsFiscales',
       'historiqueObligations',
+      // LA LIGNE DES SEUILS (lot B) : le compte des versions Enregistrées, et le droit de les valider (fiches `rbac`), relus à chaque changement.
+      'seuilsDelta',
+      'rbac',
       // Le compte d'une famille est LU dans le magasin : toute collection qu'elle lit rafraîchit le centre.
       ...valCollectionsLues(),
     ];
@@ -129,6 +133,13 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
                           _famille(c, x, ouvrable(ecranDeFamille(x.ecran))),
                         ]
                       ])),
+            // LIGNE « SEUILS ENREGISTRÉS À VALIDER » (lot B) : visible du SEUL porteur du droit de les valider — le geste réservé de la fiche de rôle, jamais une liste de rôles :
+            // ni l'administrateur ni la Direction, qui ouvrent pourtant le centre, ne la voient sans lui. Le centre ORIENTE : le geste (avec son motif) reste à l'écran
+            // « Valeurs de référence », un seuil à la fois, aucune validation en lot.
+            if (SeuilsPoste(c).droitValider) ...[
+              const SizedBox(height: 16),
+              _ligneSeuils(c, seuilsEnAttente(m.collection('seuilsDelta').actives).total, ouvrable(SeuilsPoste.ecran)),
+            ],
             if (!restreint) ...[
               const SizedBox(height: 16),
               CarteSigh(
@@ -156,6 +167,40 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
             sourceQual('Compté à chaque affichage depuis les registres du magasin, rien n’est fourni.'),
           ]);
         });
+  }
+
+  Widget _ligneSeuils(ContexteEcran c, int attente, bool ouvrable) {
+    final porteurs = [for (final r in SeuilsPoste(c).gestes.rolesAvec(gesteValiderSeuil, c.donnees?.matrice.rolesBruts.map((r) => '${r['id']}') ?? const <String>[])) c.donnees?.matrice.libelle(r) ?? r];
+    return CarteSigh(
+        titre: 'Seuils de variation à valider : la validation reste à son poste, au porteur du droit',
+        child: Container(
+            key: const Key('qual:seuils-a-valider'),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: JetonsShell.slate200)),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('Seuils enregistrés à valider',
+                    style: TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w500)),
+                Text(
+                    'Seuils de variation brutale du laboratoire, sans effet tant qu’ils ne sont pas validés · valide : ${porteurs.isEmpty ? 'aucun rôle' : porteurs.join(', ')} · la validation se fait à l’écran « Valeurs de référence », un seuil à la fois, avec son motif.',
+                    style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+              ])),
+              const SizedBox(width: 12),
+              Text(nombre(attente),
+                  key: const Key('qual:seuils-a-valider:compte'),
+                  style: TextStyle(color: attente > 0 ? JetonsShell.warning700 : JetonsShell.slate300, fontSize: 18, height: 28 / 18, fontWeight: FontWeight.w600)),
+              if (ouvrable) ...[
+                const SizedBox(width: 12),
+                BoutonSigh(
+                    key: const Key('qual:seuils-a-valider:ouvrir'),
+                    libelle: 'Ouvrir',
+                    icone: LucideIcons.arrowRight,
+                    taille: TailleBouton.sm,
+                    variante: VarianteBouton.secondaire,
+                    onPressed: () => c.aller(SeuilsPoste.ecran)),
+              ],
+            ])));
   }
 
   /// Une famille : libellé, profil qui valide, compte réel (« — » tant qu'elle n'est pas amorcée), « sur N », et « Ouvrir » quand l'écran est ouvert au profil.
