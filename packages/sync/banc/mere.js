@@ -209,6 +209,10 @@ function traiter(op, app) {
 
   /* A, C et R : fusion par champ */
   if (op.type === 'creer') {
+    /* REJEU IDEMPOTENT (parité avec la mère Dart) : le jeu d'origine existe à l'identique sur tous les postes ; une seconde création STRICTEMENT identique à ce que la mère détient (fiche non archivée) est acceptée sans effet. Un contenu qui diffère reste refusé. */
+    if (f && !f.archive && Object.entries(op.champs || {}).every(([k, v]) => JSON.stringify(f.data[k]) === JSON.stringify(v))) {
+      return { id: op.id, statut: 'acceptee', seq: Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS s FROM operations').get().s), rejeu: true };
+    }
     if (f) return refus('fiche_existe', 'Cette fiche existe déjà.', 'Aucun');
     const champs = Object.assign({}, op.champs);
     let numero;
