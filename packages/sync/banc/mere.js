@@ -399,6 +399,13 @@ const routes = {
   'GET /admin/fichiers/controle': (req) => { adminOk(req); return fStock().controler(); },
   'POST /admin/fichiers/sauvegarder': (req, b) => { adminOk(req); return fSauvegarder(b.destination); },
   'POST /admin/fichiers/restaurer': (req, b) => { adminOk(req); return fRefus(() => fStock().restaurer(String(b.source || ''))); },
+  /* Lot BAK (ADR-0008) : la copie chiffrée hors site (relais web ou dossier distant), désactivée par défaut ; mêmes routes que la mère Dart. */
+  'GET /admin/horssite/etat': (req) => { adminOk(req); return HORSSITE.etat(); },
+  'GET /admin/horssite/copies': (req, b, q) => { adminOk(req); return HORSSITE.copies(q.type); },
+  'GET /admin/horssite/journal': (req) => { adminOk(req); return { lignes: db.prepare("SELECT niveau, message FROM evenements WHERE source='sauvegarde' ORDER BY id").all() }; },
+  'POST /admin/horssite/lancer': (req, b) => { adminOk(req); return HORSSITE.lancer(b); },
+  'POST /admin/horssite/controler': (req) => { adminOk(req); return HORSSITE.controler(); },
+  'POST /admin/horssite/restaurer': (req, b) => { adminOk(req); return HORSSITE.restaurer(b); },
   'POST /admin/sauvegarder': (req) => { adminOk(req); sauvScans = fSauvegarder(''); return { fichier: null, scans: sauvScans }; },
   'POST /admin/code': (req, b) => {
     adminOk(req);
@@ -623,6 +630,10 @@ let CLE;
 const Fichiers = require('./fichiers-ref');
 const STOCK = FICHIERS ? new Fichiers.Stock(FICHIERS) : null;
 let sauvScans = null;
+db.exec('CREATE TABLE IF NOT EXISTS evenements (id INTEGER PRIMARY KEY AUTOINCREMENT, quand INTEGER, niveau TEXT, source TEXT, message TEXT)');
+function journalEvenement(niveau, source, message) { db.prepare('INSERT INTO evenements(quand,niveau,source,message) VALUES(?,?,?,?)').run(Date.now(), niveau, source, message); }
+const HORSSITE = require('./horssite-mere')({ db, stock: () => STOCK, cle: () => CLE, relais: RELAIS, secretRelais: SECRET_RELAIS, Err,
+  evenement: (niveau, source, message) => { try { journalEvenement(niveau, source, message); } catch (e) { /* le journal technique ne bloque jamais la copie */ } } });
 const alertes = [];
 const alerter = (a) => { alertes.push(Object.assign({ quand: Date.now() }, a)); };
 async function rel(methode, chemin, corps) {

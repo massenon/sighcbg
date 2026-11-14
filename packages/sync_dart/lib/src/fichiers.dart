@@ -207,6 +207,21 @@ class StockFichiers implements DocStockage {
     return (octets: o.sublist(index * tailleBloc, min(o.length, (index + 1) * tailleBloc)), total: total, taille: o.length, nomNormalise: nomsDe(sha256).first);
   }
 
+  /// Les fichiers du dossier, un par NOM normalisé : empreinte, taille. Lecture seule (copie hors site : le moteur ne touche jamais l'index).
+  List<({String nom, String sha, int taille})> entrees() => [
+        for (final e in _index.entries)
+          for (final n in (e.value['noms'] as List)) (nom: '$n', sha: e.key, taille: (e.value['taille'] as num?)?.toInt() ?? 0),
+      ];
+
+  /// Lit un fichier du dossier par son nom normalisé ; `null` s'il manque ou si son contenu ne correspond plus à son empreinte (jamais servi altéré).
+  List<int>? lireParNom(String nom) {
+    final f = File(_sep(dossier, nom));
+    if (!f.existsSync()) return null;
+    final o = f.readAsBytesSync();
+    final sha = [for (final e in entrees()) if (e.nom == nom) e.sha];
+    return sha.isNotEmpty && docSha256(o) == sha.first ? o : null;
+  }
+
   // --- contrôle, sauvegarde, restauration -------------------------------------------------------------------------
   /// Relit TOUS les fichiers et compare leur empreinte : `{verifies, alteres: [...], manquants: [...]}`. Rien n'est modifié.
   Map<String, Object?> controler() {

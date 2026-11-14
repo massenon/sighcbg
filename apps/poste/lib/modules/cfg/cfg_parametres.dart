@@ -40,6 +40,8 @@ class PanneauParametres extends StatelessWidget {
                 ton: TonSigh.info,
                 icone: LucideIcons.history),
             for (final e in familles.entries)
+              // une famille qui a son PROPRE écran (copie hors site : droit, motif, refus nommés) n'est pas montrée ici : le panneau générique contournerait ses règles
+              if (!parFamillesReglageDedie.contains(e.key))
               cfaSection(libellesFamillesParametres[e.key] ?? e.key, cfaPile([for (final p in e.value) _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler)], espace: 12)),
             cfaSource('Défauts : décisions de la Direction du 09/11/2026 (DECISIONS-A-VALIDER, section D). Rien n’est codé dans l’écran : valeurs et versions sont en base.'),
           ]);
