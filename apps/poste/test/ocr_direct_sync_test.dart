@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -103,6 +102,8 @@ void main() {
       expect(f1.pont.motifsRefus, isEmpty);
       expect(f2.pont.motifsRefus, isEmpty);
       expect(f1.pont.erreur.value, isNull);
+      expect(await f1.moteur.refusees(), isEmpty, reason: 'rien à « traiter » chez F1');
+      expect(await f2.moteur.refusees(), isEmpty, reason: 'ni chez F2 : le pont ne renvoie jamais une « modification » d’une version déjà au journal (ajout seul)');
     } finally {
       await c.arreter();
     }

@@ -129,9 +129,9 @@ void main() {
     test('corriger encore chaîne les versions : la plus récente humaine est courante, l’historique garde tout', () {
       final m = lecture();
       final c1 = corrige([m], 'Premier texte corrigé.', le: t1);
-      final c2 = corrige([m, c1], 'Second texte corrigé, plus complet.', auteur: 'Koffi Dossou', le: t2);
+      final c2 = corrige([m, c1], 'Second texte corrigé, plus complet.', auteur: 'Marcel Gbaguidi', le: t2);
       expect(c2['corrigeDe'], c1['id']);
-      expect(ocrVersionCourante([m, c1, c2])!['corrigePar'], 'Koffi Dossou');
+      expect(ocrVersionCourante([m, c1, c2])!['corrigePar'], 'Marcel Gbaguidi');
       final h = ocrHistorique([m, c1, c2]);
       expect(h.length, 3);
       expect(h.where((x) => x['courante'] == true).length, 1);
