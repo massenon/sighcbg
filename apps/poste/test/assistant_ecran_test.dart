@@ -272,6 +272,23 @@ void main() {
       expect(autre.tours, isEmpty);
     });
 
+    test('la purge des fichiers : une conversation dont la dernière question a plus de 30 jours est supprimée, sans que son agent revienne', () async {
+      final dossier = Directory.systemTemp.createTempSync('ast');
+      addTearDown(() => dossier.deleteSync(recursive: true));
+      final s = StockageFichierAssistant(dossier.path, cle: List<int>.filled(32, 3));
+      await s.ecrire('AGENT-ANCIEN', '[]');
+      await s.ecrire('AGENT-RECENT', '[]');
+      final ancien = dossier.listSync().whereType<File>().firstWhere((f) => f.path.contains('assistant-'));
+      // on vieillit UN des deux fichiers de 45 jours
+      final fichiers = dossier.listSync().whereType<File>().toList()..sort((a, b) => a.path.compareTo(b.path));
+      fichiers.first.setLastModifiedSync(auj.subtract(const Duration(days: 45)));
+      expect(ancien.existsSync(), isTrue);
+      final n = await s.purgerPerimes(auj, 30);
+      expect(n, 1);
+      expect(dossier.listSync().whereType<File>().length, 1);
+      expect(await s.purgerPerimes(auj, 30), 0);
+    });
+
     test('la durée de conservation vient de la base : 30 par défaut, réglable, bornée', () {
       final m = magasinJeu();
       expect(ServiceAssistant.retentionDepuis(m, auj), 30);
@@ -299,6 +316,8 @@ class _Illisible implements StockageConversation {
   Future<void> ecrire(String agent, String contenu) async => ecritures++;
   @override
   Future<void> effacer(String agent) async {}
+  @override
+  Future<int> purgerPerimes(DateTime maintenant, int jours) async => 0;
 }
 
 class _Lent implements StockageConversation {
@@ -310,4 +329,6 @@ class _Lent implements StockageConversation {
   Future<void> ecrire(String agent, String contenu) async {}
   @override
   Future<void> effacer(String agent) async {}
+  @override
+  Future<int> purgerPerimes(DateTime maintenant, int jours) async => 0;
 }

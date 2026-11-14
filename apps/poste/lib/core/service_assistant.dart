@@ -28,6 +28,10 @@ abstract class StockageConversation {
   Future<String?> lire(String agent);
   Future<void> ecrire(String agent, String contenu);
   Future<void> effacer(String agent);
+
+  /// Supprime les conversations dont la DERNIÈRE question a plus de [jours] jours (le fichier est réécrit à chaque question : sa date est celle de la dernière). Rend le
+  /// nombre de fichiers retirés. Une conversation d'un agent qui ne revient jamais ne doit pas survivre à la durée de conservation.
+  Future<int> purgerPerimes(DateTime maintenant, int jours);
 }
 
 class StockageMemoire implements StockageConversation {
@@ -38,6 +42,8 @@ class StockageMemoire implements StockageConversation {
   Future<void> ecrire(String agent, String contenu) async => fichiers[agent] = contenu;
   @override
   Future<void> effacer(String agent) async => fichiers.remove(agent);
+  @override
+  Future<int> purgerPerimes(DateTime maintenant, int jours) async => 0;
 }
 
 /// Le dossier `assistant/` du poste. Le nom de fichier ne porte pas l'identifiant de l'agent en clair (un hachage court), et le contenu est chiffré si [cle] existe.
@@ -96,6 +102,22 @@ class StockageFichierAssistant implements StockageConversation {
     final f = _fichier(agent);
     if (f.existsSync()) f.deleteSync();
   }
+
+  @override
+  Future<int> purgerPerimes(DateTime maintenant, int jours) async {
+    final d = Directory(dossier);
+    if (!d.existsSync()) return 0;
+    final limite = maintenant.subtract(Duration(days: astRetentionJours(jours)));
+    var n = 0;
+    for (final f in d.listSync().whereType<File>()) {
+      if (!RegExp(r'assistant-[0-9a-f]{8}\.json$').hasMatch(f.path)) continue;
+      if (f.lastModifiedSync().isBefore(limite)) {
+        f.deleteSync();
+        n++;
+      }
+    }
+    return n;
+  }
 }
 
 /// La conversation d'UN agent sur CE poste.
@@ -133,6 +155,8 @@ class ServiceAssistant extends ChangeNotifier {
     _tours.clear();
     erreur = null;
     try {
+      // Les conversations des AUTRES agents de ce poste, qui n'ont pas posé de question depuis la durée de conservation, sont retirées au passage.
+      await stockage.purgerPerimes(_maintenant(), joursConservation);
       final brut = await stockage.lire(agent);
       if (brut != null) {
         for (final t in (jsonDecode(brut) as List)) {
