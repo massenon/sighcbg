@@ -179,6 +179,17 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot ORG2 (verrou d\'un poste de secours)',
   ),
+  DefinitionParametre(
+    cle: 'assistant.retentionJours',
+    famille: 'assistant',
+    type: TypeParametre.entier,
+    defaut: 30,
+    libelle: 'Conservation des conversations de l\'assistant (jours)',
+    aide: 'Les conversations avec l\'assistant sont propres au poste et à l\'agent, chiffrées, jamais synchronisées ; elles sont purgées après ce nombre de jours. Entier de 1 à 90 : une valeur hors bornes retombe sur 30. Décision de la Direction du 15/11/2026 (30 jours).',
+    source: 'Décision de la Direction du 15/11/2026 (conversations conservées 30 jours, réglable, borné)',
+    branche: true,
+    appliquePar: 'Lot AST-1 (assistant)',
+  ),
 ];
 
 /// Le libellé d'une famille de paramètres, pour les onglets de l'écran des paramètres. Une famille absente de la table s'affiche sous son identifiant.
@@ -189,6 +200,7 @@ const Map<String, String> libellesFamillesParametres = {
   'paie': 'Paie',
   'fiscal': 'Calendrier fiscal',
   'securite': 'Sécurité',
+  'assistant': 'Assistant',
 };
 
 /// La définition d'une clé, ou `null`.
