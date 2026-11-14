@@ -107,12 +107,12 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
         ColonneTableau(
             cle: 'scan',
             libelle: 'Numérisé',
-            texte: (r) => docNumerise(r) ? 'Oui — ${docLibelleIndexation(r)}' : 'À scanner',
+            texte: (r) => docNumerise(r) ? 'Oui — ${ServiceFichiers.de(c.magasin).libelleIndexation(r)}' : 'À scanner',
             valeur: (r) => docNumerise(r) ? 1 : 0,
             rendu: (_, r) => docNumerise(r)
                 ? Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                     const BadgeSigh('Oui', ton: TonSigh.succes),
-                    Text(docLibelleIndexation(r), style: const TextStyle(color: JetonsShell.slate500, fontSize: 10, height: 15 / 10)),
+                    Text(ServiceFichiers.de(c.magasin).libelleIndexation(r), style: const TextStyle(color: JetonsShell.slate500, fontSize: 10, height: 15 / 10)),
                   ])
                 : const BadgeSigh('À scanner', ton: TonSigh.attention)),
       ],
@@ -136,7 +136,7 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
       transformerExistante: fiche,
       referenceToast: (f) => '${f['reference'] ?? ''}',
       plageChamp: 'date',
-      rechercheExtra: (r) => ServiceFichiers.de(c.magasin).texteDe(r),
+      rechercheExtra: (r) => ServiceFichiers.de(c.magasin).texteDe(r, famille: docFamilleCourrier),
       actionsSup: (ctx, r) => [
         BoutonIcone(
             icone: LucideIcons.scanLine,
@@ -153,7 +153,7 @@ class EcranCourriers extends StatelessWidget with EcranMaquette {
             nom: 'scan',
             libelle: 'Numérisation',
             options: const [OptionChamp('oui', 'Numérisé'), OptionChamp('non', 'À scanner'), OptionChamp('nonindexe', 'Texte non indexé')],
-            correspond: (r, v) => switch (v) { 'oui' => docNumerise(r), 'non' => !docNumerise(r), _ => docEtatIndexation(r) == 'non_indexe' }),
+            correspond: (r, v) => switch (v) { 'oui' => docNumerise(r), 'non' => !docNumerise(r), _ => ServiceFichiers.de(c.magasin).sansTexte(r) }),
         const FiltreTableau(nom: 'sens', libelle: 'Sens', options: [OptionChamp('arrivee', 'Arrivée'), OptionChamp('depart', 'Départ')]),
         const FiltreTableau(nom: 'traitement', libelle: 'Traitement', options: [
           OptionChamp('traite', 'Traité'),

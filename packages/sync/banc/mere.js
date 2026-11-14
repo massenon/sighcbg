@@ -34,6 +34,9 @@ const FAMILLES = {
   patients: 'A', rendezvous: 'A',
   /* les FICHES des scans (courriers, documents du dossier patient) et leur registre par empreinte : des fiches descriptives ; le FICHIER reste chez la mère (voir fichiers-ref.js) */
   courriers: 'A', documentsPatient: 'A', fichiers: 'A',
+  /* Lot OCR-C : les LECTURES du texte des scans (lecture machine, correction signée d'une personne) : ajout seul, identité commune, jamais vers un téléphone. Le RÉGLAGE de la lecture est un
+     référentiel (R : la mère seule l'écrit, les fileuls le reçoivent). La file de lecture (`fileOcr`) reste locale au poste. */
+  lecturesOcr: 'B', reglagesOcr: 'R',
   constantes: 'B', notes: 'B',
   cpn: 'B', cpon: 'B', surveillances: 'B', orientations: 'B', /* suite du mobile (E1650 à E1660) */
   factures: 'C', prescriptions: 'C',
@@ -54,7 +57,7 @@ const FAMILLES = {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['demandesImport'];
+const MOBILE_JAMAIS = ['demandesImport', 'lecturesOcr', 'reglagesOcr'];
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -196,6 +199,8 @@ function traiter(op, app) {
 
   if (fam === 'B') {
     if (op.type !== 'creer') return refus('journal_immuable', 'Un journal ne se modifie pas : on ajoute une ligne.', 'Ajouter une nouvelle ligne');
+    /* Lot OCR-C : deux postes qui lisent le même scan avec le même moteur créent la même version (identifiant déterministe) : la seconde création est ACCEPTÉE SANS EFFET. */
+    if (f && op.collection === 'lecturesOcr') return { id: op.id, statut: 'acceptee', seq: Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS s FROM operations').get().s), rejeu: true };
     if (f) return refus('fiche_existe', 'Cette ligne existe déjà.', 'Aucun');
     const seq = journaliser(op, op.champs, app.uuid);
     ecrire(op.collection, op.fiche, { data: op.champs, fieldseq: Object.fromEntries(Object.keys(op.champs).map((k) => [k, seq])), archive: false });

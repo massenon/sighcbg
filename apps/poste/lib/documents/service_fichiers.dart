@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import 'ocr_poste.dart';
 
 /// LE SERVICE DES SCANS DU POSTE : ce que les écrans (courriers M13, documents du dossier patient M1) appellent pour déposer, lire, remplacer, retirer, migrer.
 ///
@@ -79,6 +80,9 @@ class ResultatDepot {
 class ServiceFichiers {
   ServiceFichiers._(this.magasin);
   final Magasin magasin;
+
+  /// Le service de lecture OCR, quand il est installé (`OcrPoste`) : sans lui, le poste ne dit que la couche texte native ou « texte non indexé ».
+  OcrPoste? ocr;
   static final Expando<ServiceFichiers> _par = Expando('ServiceFichiers');
   static ServiceFichiers de(Magasin m) => _par[m] ??= ServiceFichiers._(m);
 
@@ -178,11 +182,33 @@ class ServiceFichiers {
   // --- registre par empreinte ------------------------------------------------------------------------------------
   CollectionMagasin get _registre => magasin.collection('fichiers');
 
-  /// Le texte extrait d'une pièce PDF à couche texte (mots normalisés), ou `''`.
-  String texteDe(Map<String, Object?> fiche) {
+  /// Le texte cherchable d'une pièce (mots normalisés), ou `''` : la couche texte d'un PDF PRIME ; sinon, quand [famille] est donnée, le texte lu par machine OU corrigé par une personne (la
+  /// version courante), seulement si le profil lit la zone du document ([peutCategorie] : la matrice, jamais un nom de rôle).
+  String texteDe(Map<String, Object?> fiche, {String? famille, bool Function(String categorie)? peutCategorie}) {
     final sha = docScan(fiche)?['sha256'];
-    return sha == null ? '' : '${_registre.parId(sha)?['texte'] ?? ''}';
+    if (sha == null) return '';
+    final natif = '${_registre.parId(sha)?['texte'] ?? ''}';
+    if (natif.isNotEmpty || famille == null || ocr == null) return natif;
+    return ocr!.texteOcr('$sha', famille: famille, type: famille == docFamillePatient ? '${fiche['type']}' : null, peutCategorie: peutCategorie);
   }
+
+  /// Le petit mot d'indexation d'une pièce : « Texte indexé », « Texte lu par machine, à vérifier », « Texte corrigé par … », « Lecture OCR en attente », « Texte non indexé »…
+  String libelleIndexation(Map<String, Object?> fiche) {
+    final s = docScan(fiche);
+    if (s == null || ocr == null) return docLibelleIndexation(fiche);
+    final c = ocr!.etatDe(s).court;
+    return c.isEmpty ? c : c[0].toUpperCase() + c.substring(1);
+  }
+
+  /// La pièce est-elle SANS texte disponible pour la recherche (scan image jamais lu) ? C'est le filtre « Texte non indexé ».
+  bool sansTexte(Map<String, Object?> fiche) {
+    final s = docScan(fiche);
+    if (s == null) return false;
+    return ocr == null ? docEtatIndexation(fiche) == 'non_indexe' : !ocr!.etatDe(s).disponible;
+  }
+
+  /// Les octets d'un fichier par son empreinte, vérifiés par le stockage (la file de lecture OCR s'en sert) ; `null` s'ils manquent.
+  Future<List<int>?> lireOctets({required String famille, required String sha}) => _stockage(famille).lire(sha);
 
   void _enregistrerEmpreinte(String sha, {required int taille, required String mime, int? pages, required String texte, required String famille}) {
     final f = _registre.parId(sha);
@@ -241,6 +267,7 @@ class ServiceFichiers {
     final patch = docPatchDepot(fiche, meta, par: magasin.utilisateur, le: maintenant);
     final remplacement = docScan(fiche) != null;
     final annuler = col.mettreAJour(ficheId, patch, journaliser: false);
+    ocr?.apresDepot(sha, famille: famille, type: famille == docFamillePatient ? '${fiche['type']}' : null);
     magasin.journaliser(remplacement ? 'Remplacement d’un scan' : 'Dépôt d’un scan', fam.module, fam.entite, '${fiche['reference'] ?? fiche['id']}',
         remplacement ? {'sha256': docScan({'scan': patch['scansAnterieurs'] is List ? (patch['scansAnterieurs'] as List).last : null})?['sha256']} : null,
         {'sha256': sha, 'nom': nom, 'taille': octets.length, 'version': version});
@@ -249,7 +276,7 @@ class ServiceFichiers {
         scan: meta,
         annuler: annuler,
         remplacement: remplacement,
-        avertissementIndexation: fmt.id == 'pdf' && texte != null && !texte.indexe ? texte.raison : (fmt.id != 'pdf' ? 'Image : texte non indexé (l’OCR est une phase ultérieure).' : null));
+        avertissementIndexation: fmt.id == 'pdf' && texte != null && !texte.indexe ? texte.raison : (fmt.id != 'pdf' ? (ocr?.pret == true ? 'Image : lecture OCR en attente.' : 'Image : texte non indexé (aucune lecture OCR n’est disponible sur ce poste).') : null));
   }
 
   /// RETIRE la pièce d'une fiche : motif obligatoire, la pièce passe aux versions antérieures, le fichier RESTE chez la mère (RG-14). Rend la fonction qui annule.

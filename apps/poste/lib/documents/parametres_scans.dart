@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/jetons_shell.dart';
 import '../kit/kit.dart';
 import '../shell/contexte_ecran.dart';
+import 'ocr_ui.dart';
 import 'panneau_scan.dart';
 import 'service_fichiers.dart';
 
@@ -146,6 +147,8 @@ class _PanneauScansPosteState extends State<PanneauScansPoste> {
               if (peutRegler) BoutonSigh(libelle: 'Régler la taille maximale', icone: LucideIcons.slidersHorizontal, variante: VarianteBouton.secondaire, onPressed: () => _tailleMax(ctx, s))
               else const Text('Se règle sur le poste mère (la mère lit ce réglage à chaque dépôt).', style: TextStyle(color: JetonsShell.slate500, fontSize: 12)),
             ])),
+            const SizedBox(height: 12),
+            CarteReglageOcr(peutRegler: c.droit.editer),
             const SizedBox(height: 12),
             CarteSigh(titre: 'Intégrité, sauvegarde et restauration', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text('Chaque fiche porte l’empreinte SHA-256 de son fichier, recalculée à chaque dépôt et à chaque lecture. Conservation illimitée : rien ne se purge, rien ne se supprime (RG-14).', style: TextStyle(fontSize: 12, color: JetonsShell.slate600)),

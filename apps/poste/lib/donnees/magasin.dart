@@ -439,6 +439,10 @@ class Magasin {
     'contreReferences': 'M1',
     'documentsPatient': 'M1',
     'fichiers': 'M1',
+    // Lots OCR-prep et OCR-C : les versions du texte des scans (lecture machine, correction signée), leur file locale, le réglage décidé à la mère.
+    'lecturesOcr': 'M1',
+    'fileOcr': 'M1',
+    'reglagesOcr': 'CFG',
     'fichesReference': 'M1',
     'pieces': 'M1',
     'secteurs': 'CFG',

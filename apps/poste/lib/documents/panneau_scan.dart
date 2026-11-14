@@ -9,6 +9,7 @@ import '../core/jetons_shell.dart';
 import '../donnees/magasin.dart';
 import '../kit/kit.dart';
 import '../shell/contexte_ecran.dart';
+import 'ocr_ui.dart';
 import 'service_fichiers.dart';
 
 /// Un fichier choisi par l'agent : son nom et son contenu.
@@ -250,7 +251,7 @@ class _PanneauScanState extends State<PanneauScan> {
               const Text('Numérisé', style: TextStyle(fontWeight: FontWeight.w600)),
               const SizedBox(width: 8),
               scan != null ? const BadgeSigh('Oui', ton: TonSigh.succes) : const BadgeSigh('À scanner', ton: TonSigh.attention),
-              if (scan != null) ...[const SizedBox(width: 8), BadgeSigh(docLibelleIndexation(f), ton: docEtatIndexation(f) == 'indexe' ? TonSigh.info : TonSigh.neutre)],
+              if (scan != null) ...[const SizedBox(width: 8), BadgeSigh(svc.libelleIndexation(f), key: const Key('scan:indexation'), ton: docEtatIndexation(f) == 'indexe' ? TonSigh.info : TonSigh.neutre)],
               if (scan != null) ...[const SizedBox(width: 8), BadgeSigh('Version ${scan['version']}', ton: TonSigh.navy)],
             ]),
             const SizedBox(height: 10),
@@ -285,6 +286,12 @@ class _PanneauScanState extends State<PanneauScan> {
                         : VisionneuseImage(octets: s.data!);
                   }),
               const SizedBox(height: 10),
+              BlocOcrPiece(
+                  famille: widget.famille,
+                  scan: scan,
+                  type: widget.famille == docFamillePatient ? '${f['type']}' : null,
+                  peutEditer: widget.peutDeposer,
+                  peutCategorie: widget.peutCategorie),
             ] else
               const NoteSigh('Aucun fichier n’est rattaché à cette fiche. « Numérisé » se coche seul dès qu’un scan est déposé.', icone: LucideIcons.scanLine),
             Wrap(spacing: 8, runSpacing: 8, children: [

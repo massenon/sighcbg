@@ -292,7 +292,7 @@ class _CorpsDocumentsState extends State<_CorpsDocuments> {
                         for (final r in toutes)
                           if (docPeutLire(acces.peut, r['type']) && docDansPlage(r['date'], du: _du, au: _au)) r
                       ],
-                      rechercheExtra: (r) => svc.texteDe(r),
+                      rechercheExtra: (r) => svc.texteDe(r, famille: docFamillePatient, peutCategorie: acces.peut),
                       // Le dossier peut changer à l'édition : `code` et `patient` (posés à la création) suivent `patientId`, sinon les colonnes gardent l'ancien patient.
                       transformer: (cc, saisie, existante) {
                         if (existante == null) return saisie;
@@ -336,7 +336,7 @@ class _CorpsDocumentsState extends State<_CorpsDocuments> {
                             correspond: (r, v) => switch (v) {
                                   'oui' => docNumerise(r) || patVrai(r['donnees']),
                                   'non' => !docNumerise(r) && !patVrai(r['donnees']),
-                                  _ => docEtatIndexation(r) == 'non_indexe',
+                                  _ => ServiceFichiers.de(c.magasin).sansTexte(r),
                                 }),
                       ],
                       colonnes: [
@@ -356,7 +356,7 @@ class _CorpsDocumentsState extends State<_CorpsDocuments> {
                               return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                                 Text(scan != null ? '${docFormats.firstWhere((f) => f.mime == scan['mime'], orElse: () => docFormats.first).libelle} · ${docPoids((scan['taille'] as num).toInt())}' : '${r['format'] ?? '—'} · ${patPoidsDoc(r['taille'])}',
                                     style: styleM1(t: 12, c: JetonsShell.slate600)),
-                                Text(scan != null ? 'déposé · ${docLibelleIndexation(r)}' : (depose ? 'déposé' : 'référencé'),
+                                Text(scan != null ? 'déposé · ${ServiceFichiers.de(c.magasin).libelleIndexation(r)}' : (depose ? 'déposé' : 'référencé'),
                                     style: TextStyle(color: depose ? JetonsShell.success600 : JetonsShell.slate400, fontSize: 10, height: 15 / 10)),
                               ]);
                             }),

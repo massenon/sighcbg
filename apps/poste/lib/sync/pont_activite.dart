@@ -34,6 +34,9 @@ const Set<String> collectionsActivite = {
   'courriers',
   'documentsPatient',
   'fichiers',
+  // Lot OCR-C : les LECTURES du texte des scans (versions lues par machine, corrections signées d'une personne) : une fiche par version, identité commune (`OCR-…` / `COR-…`, déterministe),
+  // AJOUT SEUL, jamais vers un téléphone (RG-13). La FILE de lecture (`fileOcr`) reste locale au poste ; le RÉGLAGE descend de la mère avec la configuration.
+  'lecturesOcr',
   // Les DÉCISIONS DE DROITS (10/11/2026) : un fileul habilité y dépose sa demande à la mère, qui la juge, l'applique à `rbac` et marque l'issue sur la même fiche.
   'decisionsDroits',
   // Lot IMP-C : les DEMANDES D'IMPORT d'un fileul (décision de la Direction du 12/11/2026, « option c »). Le fileul écrit chez lui ET dépose une demande vérifiée ; la MÈRE rejoue l'analyse
@@ -56,6 +59,10 @@ const Set<String> collectionsActivite = {
   'produits',
   'admissions',
 };
+
+/// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
+/// de ce poste, de contenu différent (même version lue à une autre seconde), ne devient pas une « modification » que la mère refuserait.
+const Set<String> collectionsAjoutSeul = {'lecturesOcr'};
 
 /// Les référentiels d'ACTIVITÉ que la mère seule écrit (famille R de la mère) : un fileul les reçoit, il ne les envoie pas.
 const Set<String> collectionsDeLaMereSeule = {'produits'};
@@ -281,7 +288,7 @@ class PontActivite {
         // d'origine. Préfixée de l'étiquette du poste, la fiche du fileul et celle que la mère réécrit seraient DEUX fiches (mesuré : lots, mouvements et articles comptés deux fois).
         // Même règle pour un référentiel d'activité que la mère seule écrit (le catalogue des produits) : la configuration le publie sous son identifiant, le pont sous son identité de synchronisation ;
         // préfixée, elle faisait de chaque article créé après le jeu d'origine DEUX fiches chez un fileul (mesuré avec un import de la mère).
-        final identiteCommune = magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c);
+        final identiteCommune = magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
         f['idSync'] = identiteCommune ? '${f['id']}' : '$etiquette-${f['id']}';
       }
     }
@@ -320,6 +327,11 @@ class PontActivite {
         distant ??= await transport.liste(c);
         final cible = distant.where((p) => p.id == cle).firstOrNull;
         final existe = cible != null;
+        // Ajout seul : la fiche est déjà au journal, sous la même identité commune : rien à envoyer, jamais une modification.
+        if (existe && collectionsAjoutSeul.contains(c)) {
+          _base['$c/$cle'] = champs;
+          continue;
+        }
         // UN ARCHIVAGE N'EST PAS ÉCRASÉ PAR UN POSTE QUI NE L'A PAS VU (RG-14, D6) : si le journal porte cette fiche archivée (par la mère ou par un autre poste) et que ce
         // poste n'a jamais vu l'archivage, son changement de statut est une modification concurrente — elle ne remplace pas `archive`. Le reste de ses champs part.
         if (cible != null && !_atomique(c) && diff.containsKey('statut') && diff['statut'] != 'archive') {

@@ -36,6 +36,10 @@ const familleDeBase = <String, String>{
   // Les fiches des SCANS (courriers M13, documents du dossier patient M1) et leur registre par empreinte : des fiches descriptives. Le FICHIER ne voyage pas ici : il reste
   // chez la mère et un fileul le lit par `/sync/fichier/*` (blocs scellés).
   'courriers': 'A', 'documentsPatient': 'A', 'fichiers': 'A',
+  // Lot OCR-C : les LECTURES du texte des scans (versions de texte lu par machine et CORRECTIONS signées d'une personne) sont des lignes de journal : ajout seul, identité commune
+  // (deux postes qui lisent le même scan avec le même moteur ne font qu'une version : la seconde création est acceptée sans effet), jamais vers un téléphone. Le RÉGLAGE de la lecture
+  // (moteur actif, délai, activation) est un référentiel : la MÈRE seule l'écrit, les fileuls le reçoivent. La FILE de lecture (`fileOcr`) reste locale à chaque poste : elle n'est pas ici.
+  'lecturesOcr': 'B', 'reglagesOcr': 'R',
   'releves': 'A', 'observations': 'A', 'visites': 'A', 'appels': 'A', 'consultations': 'A', 'dossiersConsultation': 'A', 'antecedents': 'A',
   // Les hachés des mots de passe : écrits par le poste où l'agent change son mot de passe, dans les DEUX sens (E2131).
   'identifiants': 'A',
@@ -68,7 +72,7 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// Ce qu'un MOBILE ne reçoit JAMAIS : les hachés des mots de passe (`identifiants`). Le téléphone reçoit toute la configuration de la clinique (référentiels,
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
-final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport'};
+final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport', 'lecturesOcr', 'reglagesOcr'};
 
 /// Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Un fileul ne reçoit ni ne modifie la demande d'un autre.
 /// L'auteur est l'appareil de l'opération `creer` (authentifié par le jeton), jamais un champ de la fiche qu'un fileul pourrait falsifier.
@@ -383,6 +387,8 @@ class Mere {
 
     if (fam == 'B') {
       if (type != 'creer') return refus('journal_immuable', 'Un journal ne se modifie pas : on ajoute une ligne.', 'Ajouter une nouvelle ligne');
+      // Lot OCR-C : deux postes qui lisent le même scan avec le même moteur créent la même version (identifiant déterministe) : la seconde création est ACCEPTÉE SANS EFFET.
+      if (f != null && collection == 'lecturesOcr') return {'id': id, 'statut': 'acceptee', 'seq': await seqMax(), 'rejeu': true};
       if (f != null) return refus('fiche_existe', 'Cette ligne existe déjà.', 'Aucun');
       final seq = await journaliser(op, champsOp, app.uuid);
       await ecrire(collection, ficheId, Fiche({...champsOp}, {for (final k in champsOp.keys) k: seq}, false));

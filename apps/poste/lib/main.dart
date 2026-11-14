@@ -9,6 +9,8 @@ import 'package:window_manager/window_manager.dart';
 
 
 import 'documents/branchement.dart';
+import 'documents/ocr_poste.dart';
+import 'kit/champ_sensible.dart' show AccesSensible;
 import 'documents/service_fichiers.dart';
 import 'donnees/magasin.dart';
 import 'donnees/service_droits.dart';
@@ -309,6 +311,19 @@ Future<void> main() async {
         } on FormatException {/* clé illisible : refus nommé CLE_ABSENTE à l'usage */}
         return moteur.clientFichiers(famille, cleClinique: cle);
       });
+  // LA LECTURE OCR DES SCANS (lots OCR-prep et OCR-C) : AUCUN moteur n'est branché ici (aucun n'est choisi : décision de la Direction après un essai sur trois vrais scans). Le service dit
+  // « aucun moteur d'OCR installé sur ce poste » ; le réglage se décide à la mère et descend aux fileuls ; la file reste locale. Un moteur s'enregistre par `ocr.enregistrer(...)`.
+  final ocr = OcrPoste(magasin, estMere: () => controleur.config.estMere)
+    ..accesCourant = () {
+      final role = magasin.acteur?.role ?? '';
+      return role.isEmpty ? null : AccesSensible.depuis(role: role, magasin: magasin, donnees: matriceVive.matrice).peut;
+    }
+    ..installer();
+  if (ocr.pret) {
+    ocr.reprendre();
+    ocr.balayer();
+    ocr.demarrer();
+  }
   if (params.mode == ModePoste.mere) {
     unawaited(() async {
       final probleme = await appliquerDossierRegle(magasin, consoleScans);
