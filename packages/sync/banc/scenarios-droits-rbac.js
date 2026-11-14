@@ -29,7 +29,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     await poser('RBAC26', fiche(2, { voir: true, editer: false, annuler: false }));
     verifier('la version 2 (M9 ouvert en lecture) arrive aux deux fileuls', await attendre(async () => (await v(f1)) === 2 && (await v(f2)) === 2, 15000), [await v(f1), await v(f2)]);
     verifier('le contenu arrivé est le droit décidé, champ pour champ', ((await droitsDe(f2)).droits.M9.voir === true) && ((await droitsDe(f2)).droits.M9.editer === false));
-    verifier('aucun fileul n\'a redémarré : même processus, ses cycles ont continué', f1.proc.pid === pid1 && f2.proc.pid === pid2 && (await f1.etat()).cycles > cyclesAvant);
+    verifier('aucun fileul n\'a redémarré : même processus, ses cycles ont continué', f1.proc.pid === pid1 && f2.proc.pid === pid2 && await attendre(async () => (await f1.etat()).cycles > cyclesAvant, 15000));
 
     /* 3. un fileul n'écrit pas la fiche de droits : refus nommé, la fiche ne bouge pas */
     await f1.ecrire({ type: 'modifier', collection: 'rbac', fiche: 'RBAC26', champs: { droits: { M9: { voir: true, editer: true, annuler: true } } } });
