@@ -278,12 +278,19 @@ Future<void> _ouvrirReglage(BuildContext context, OcrPoste o, bool peutRegler) a
                       const Expanded(child: Text('Activer la lecture automatique des scans', style: TextStyle(fontSize: 14))),
                     ]),
                     const Text('Moteur d’OCR', style: TextStyle(color: JetonsShell.slate600, fontSize: 12)),
-                    DropdownButtonFormField<String>(
-                        key: const Key('ocr:moteur'),
-                        initialValue: moteur,
-                        hint: Text(o.moteurInstalle ? 'Choisir un moteur' : 'Aucun moteur installé'),
-                        items: [for (final m in o.moteurs.values) DropdownMenuItem(value: m.id, child: Text('${m.libelle}${m.version.isEmpty ? '' : ' ${m.version}'}'))],
-                        onChanged: o.moteurInstalle ? (v) => setS(() => moteur = v) : null),
+                    if (o.moteurInstalle)
+                      SelecteurSigh(
+                          key: const Key('ocr:moteur'),
+                          libelle: 'Moteur d’OCR',
+                          indicatif: 'Choisir un moteur',
+                          valeur: moteur ?? '',
+                          options: [const OptionChamp('', '— Choisir un moteur —'), for (final m in o.moteurs.values) OptionChamp(m.id, '${m.libelle}${m.version.isEmpty ? '' : ' ${m.version}'}')],
+                          surChange: (v) => setS(() => moteur = v.isEmpty ? null : v))
+                    else
+                      const Padding(
+                          key: Key('ocr:moteur'),
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text('Aucun moteur installé', style: TextStyle(color: JetonsShell.slate500, fontSize: 14))),
                     const SizedBox(height: 12),
                     const Text('Langue (code du moteur, « fra » pour le français)', style: TextStyle(color: JetonsShell.slate600, fontSize: 12)),
                     TextField(key: const Key('ocr:langue'), controller: langue),
