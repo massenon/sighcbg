@@ -164,6 +164,7 @@ void main() {
       expect(find.text('Lignes de garantie'), findsOneWidget, reason: 'le libellé de la maquette ; la valeur compte les séries en vigueur');
       expect(m9.kpis(t), ['9', '1', '8', '2']);
       expect(find.textContaining('5 versions écrites, 2 séries'), findsOneWidget);
+      expect(find.text('2 garanties'), findsOneWidget, reason: 'l’onglet des souscripteurs compte les séries en vigueur : deux, pas cinq lignes');
       await m9.toucher(t, find.text('Grilles de garanties').first);
       await t.pumpAndSettle();
       expect(find.text('80 %'), findsOneWidget, reason: 'la consultation : v2 (01/07), pas la v3 de décembre');
