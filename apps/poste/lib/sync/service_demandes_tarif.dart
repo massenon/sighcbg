@@ -50,6 +50,7 @@ class ApplicateurDemandesTarif {
         libelles: {for (final r in rolesDe(magasin)) r.id: r.label},
         peutEditerEcran: false,
         peutEditerPour: mat == null ? null : (r) => mat.peutEditer(r, 'cfg-tarifs'),
+        peutProposerPrixAchatPour: mat == null ? null : (r) => mat.peutEditer(r, 'm6-produits'),
         gestes: () => DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif),
         horloge: horloge,
         etiquette: etiquette);

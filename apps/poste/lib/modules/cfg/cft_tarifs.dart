@@ -10,6 +10,7 @@ import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../core/service_installation.dart';
 import 'cfa_commun.dart';
+import 'tarifs_ecran.dart';
 
 /// `cfg-tarifs` — « Tarifs et prix » (PRD-TARIFS, lot T6) : l'écran UNIQUE du référentiel de prix. Il remplace `cfa_tarifs.dart` (référentiel tarifaire) et
 /// `cfa_catalogue.dart` (catalogue à deux prix) : la caisse, la prescription, les soins, l'imagerie et les certificats lisent UNE liste, au prix EN VIGUEUR à la date de
@@ -70,20 +71,7 @@ const _libelleOrigine = {
   'import': 'Importation',
 };
 
-TarifsPoste _tarifs(ContexteEcran c) {
-  final m = c.magasin;
-  final matrice = c.donnees?.matrice;
-  return TarifsPoste(m,
-      role: c.role,
-      auteur: () => c.agent.nom.isEmpty ? 'Utilisateur' : c.agent.nom,
-      fileul: ServiceInstallation.de(m).rattache,
-      libelles: ValidationPoste(c).libelles,
-      peutEditerEcran: c.droit.editer,
-      peutEditerPour: matrice == null ? null : (r) => matrice.peutEditer(r, 'cfg-tarifs'),
-      gestes: () => DroitsGestes(fiches: m.collection('rbac').actives, estArchive: matrice?.estArchive, ecranActif: matrice?.ecranActif),
-      horloge: () => c.aujourdhui,
-      etiquette: m.poste.replaceAll(RegExp(r'[^A-Za-z0-9]'), '').toUpperCase());
-}
+TarifsPoste _tarifs(ContexteEcran c) => tarifsDeLEcran(c);
 
 String _jour(ContexteEcran c) => tarIso(c.aujourdhui);
 String _argent(Object? x) => x == null ? 'Non renseigné' : money(x, avecDevise: false);

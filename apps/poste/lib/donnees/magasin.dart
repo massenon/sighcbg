@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeVersion, cpcGardeBudgets;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets;
 
 import 'persistance.dart';
 
@@ -710,6 +710,8 @@ class Magasin {
                   souscripteurs: collection('souscripteurs').actives)));
         }
         if (nom == 'versionsTarif') c.garder((op, f) => tarGardeVersion(op, f, c.parId(f['id'])));
+        // RG-02 : un médicament ne naît ni ne devient jamais avec une marge, tenu AU MOTEUR (import, outil, écran) ; la réception d'une fiche de la mère ne passe pas par les gardes.
+        if (nom == 'produits') c.garder((op, f) => tarGardeProduitRg02(op, f, c.parId(f['id'])));
         if (tarChampsPrixLecture.containsKey(nom)) {
           c.garder((op, f) => tarGardeLecture(nom, op, f, c.parId(f['id']), referentielPresent: collection('versionsTarif').toutes.isNotEmpty));
         }
