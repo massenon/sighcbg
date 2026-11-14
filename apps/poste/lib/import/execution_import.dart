@@ -1,5 +1,6 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/service_installation.dart';
 import '../donnees/magasin.dart';
 import '../donnees/tarifs_poste.dart';
 import '../shell/contexte_ecran.dart';
@@ -42,11 +43,11 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
     return (
       resultat: ResultatImport.refus(
           'RESERVE_A_LA_MERE',
-          j.id == 'tarifs'
+          (j.id == 'tarifs' || j.id == 'tarifs-produits')
               ? 'le référentiel de prix est écrit par la mère seule (famille R) : un fichier de prix ne passe pas par une demande'
               : 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
-          j.id == 'tarifs'
-              ? 'Importez ce fichier au poste principal, ou proposez le changement à l’écran « Tarifs et prix » : la demande part à la mère, qui la décide.'
+          (j.id == 'tarifs' || j.id == 'tarifs-produits')
+              ? 'Importez ce fichier au poste principal, ou proposez le changement à l’écran « ${j.id == 'tarifs' ? 'Tarifs et prix' : 'Référentiel produits'} » : la demande part à la mère, qui la décide.'
               : 'Importez ce jeu au poste de la mère, par un profil qui en détient le droit.'),
       demande: null
     );
@@ -54,7 +55,12 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
   if (svc.passeParUneDemande(j)) return svc.importerEtDemander(j, a, profil: profilImportDe(c), nomAgent: c.agent.nom);
   final r = appliquer(j, a, portImport(c));
   // Une version validée à l'import prend effet à sa date : les listes de lecture (projection) sont refaites aussitôt, comme après une décision à l'écran.
-  if (r.ok && j.id == 'tarifs') TarifsPoste.projeter(c.magasin, c.aujourdhui);
+  if (r.ok && (j.id == 'tarifs' || j.id == 'tarifs-produits')) TarifsPoste.projeter(c.magasin, c.aujourdhui);
+  // Un article créé par un import (référentiel produits, Grand Stock) reçoit sa version 1 de prix d'achat par la MÈRE, aussitôt : la reprise ne pose jamais de date d'effet inventée.
+  if (r.ok && j.cibles.contains('produits') && !ServiceInstallation.de(c.magasin).rattache) {
+    TarifsPoste.assurerProduits(c.magasin);
+    TarifsPoste.projeterProduits(c.magasin, c.aujourdhui);
+  }
   return (resultat: r, demande: null);
 }
 
@@ -62,7 +68,7 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
 String? voieImportPoste(ContexteEcran c, JeuImport j) {
   final svc = ServiceDemandesImport.de(c.magasin);
   if (svc.reserveALaMere(j)) {
-    if (j.id == 'tarifs') return 'Le référentiel de prix est écrit par la mère seule : ce fichier s’importe au poste principal, ou le changement se propose à l’écran « Tarifs et prix ».';
+    if (j.id == 'tarifs' || j.id == 'tarifs-produits') return 'Le référentiel de prix est écrit par la mère seule : ce fichier s’importe au poste principal, ou le changement se propose à l’écran « ${j.id == 'tarifs' ? 'Tarifs et prix' : 'Référentiel produits'} ».';
     return 'Ce jeu porte des données restreintes que la mère seule écrit : il s’importe au poste de la mère, jamais par une demande.';
   }
   if (svc.passeParUneDemande(j)) {

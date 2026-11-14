@@ -401,6 +401,10 @@
    "titre": "Importation des couvertures d’assurance",
    "description": "Changement de couverture d’un assuré à une date d’effet : compagnie, police, motif, expiration de la carte. La couverture en cours est close la veille."
   },
+  "imp-tarifs-produits": {
+   "titre": "Importation des prix d’achat",
+   "description": "Le prix d’achat des articles du référentiel produits, avec une date d’effet et la décision Oui ou Non : chaque ligne qui change un prix devient une proposition (version ajoutée), jamais une réécriture de la fiche. Le prix de vente d’un médicament suit son prix d’achat (RG-02)."
+  },
   "imp-souscripteurs": {
    "titre": "Importation des souscripteurs",
    "description": "Souscripteurs rattachés à une compagnie : n° de police, catégorie, effectif, période."

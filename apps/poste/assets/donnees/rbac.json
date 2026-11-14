@@ -5125,6 +5125,11 @@
     1,
     1,
     1
+   ],
+   "imp-tarifs-produits": [
+    1,
+    1,
+    1
    ]
   },
   "direction": {
@@ -8556,6 +8561,11 @@
     1,
     1,
     1
+   ],
+   "imp-tarifs-produits": [
+    1,
+    1,
+    1
    ]
   },
   "medecin": {
@@ -10230,6 +10240,11 @@
     1,
     1,
     0
+   ],
+   "imp-tarifs-produits": [
+    1,
+    1,
+    1
    ]
   },
   "caissier": {

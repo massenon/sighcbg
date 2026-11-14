@@ -759,7 +759,8 @@
     "imp-immobilisations",
     "imp-budgets",
     "imp-garanties",
-    "imp-couvertures-assurance"
+    "imp-couvertures-assurance",
+    "imp-tarifs-produits"
    ]
   },
   {
@@ -6229,6 +6230,23 @@
    "roles": [
     "da",
     "comptable",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-tarifs-produits",
+   "label": "Importation des prix d’achat",
+   "icone": "banknote",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "stock",
     "admin"
    ]
   },

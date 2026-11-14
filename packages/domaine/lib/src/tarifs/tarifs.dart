@@ -14,6 +14,8 @@
 
 import '../referentiels/regles.dart' show joursEntre;
 
+part 'tarifs_produits.dart';
+
 typedef FicheTarif = Map<String, Object?>;
 
 /// Les collections du référentiel (famille R : la mère seule écrit) et celle des demandes d'un fileul (famille B : ajout seul, la mère applique).
@@ -669,6 +671,8 @@ class ContexteTarif {
     required this.role,
     required this.auteur,
     this.peutEditerEcran = false,
+    this.peutProposerProduit = false,
+    this.produits = const [],
     this.peutDecider = false,
     this.peutDatePassee = false,
     this.profilsDatePassee = const [],
@@ -697,6 +701,12 @@ class ContexteTarif {
   /// Les LIBELLÉS des rôles qui détiennent le geste de date passée (dérivés de la matrice par l'appelant, pour l'info-bulle et les refus).
   final List<String> profilsDatePassee;
 
+  /// Le droit de PROPOSER le prix d'achat d'un produit : modifier « Référentiel produits », importer le jeu `tarifs-produits` ou modifier les réceptions d'achats ; jamais le droit d'éditer « Tarifs et prix ».
+  final bool peutProposerProduit;
+
+  /// Les fiches `produits` : le contrôle d'usage d'un prix d'achat lit les lignes de pièces qui portent `produitId`, à la proposition comme au Oui.
+  final Iterable<FicheTarif> produits;
+
   /// Le poste est un fileul : il ne peut pas ÉCRIRE une version ni la décider (famille R, la mère seule écrit).
   final bool fileul;
 
@@ -718,7 +728,7 @@ RefusTarif tarRefusFileul() => const RefusTarif('CONFIGURATION_DE_LA_MERE', 'Ré
 
 /// Les pièces de VENTE non archivées qui portent déjà une ligne de cette prestation à la date d'effet ou après : un prix qui prendrait effet à cette date changerait après
 /// coup la réponse à « quel prix s'appliquait », alors que la ligne dit autre chose. Le contrôle se lit SUR LES LIGNES ; une pro-forma n'est pas une pièce émise.
-List<Map<String, Object?>> tarUsages(FicheTarif p, String dateEffet, PiecesTarif pieces, {required String aujourdhui}) {
+List<Map<String, Object?>> tarUsages(FicheTarif p, String dateEffet, PiecesTarif pieces, {required String aujourdhui, Set<String> produitsIds = const {}}) {
   final codes = <String>{
     for (final c in [p['code'], p['codeActe'], p['codeGrille'], p['codeAnalyse'], ...(p['codesAlias'] as List? ?? const [])])
       if (c != null) '$c'
@@ -740,7 +750,9 @@ List<Map<String, Object?>> tarUsages(FicheTarif p, String dateEffet, PiecesTarif
       final x = (l as Map).cast<String, Object?>();
       return (x['acteCode'] != null && codes.contains('${x['acteCode']}')) ||
           (x['demandeId'] != null && codes.contains(analyses['${x['demandeId']}'])) ||
-          (x['demandeImagerieId'] != null && codes.contains(imageries['${x['demandeImagerieId']}']));
+          (x['demandeImagerieId'] != null && codes.contains(imageries['${x['demandeImagerieId']}'])) ||
+          // Une ligne de PRODUIT porte `produitId` : le contrôle d'usage d'un prix d'achat lit les mêmes lignes.
+          (x['produitId'] != null && produitsIds.contains('${x['produitId']}'));
     });
     if (porte) out.add({'id': f['id'], 'numero': f['numero'], 'date': jour});
   }
@@ -854,6 +866,36 @@ RefusTarif? _controleProposition(DemandeProposition o) {
   return null;
 }
 
+/// LE CONTRÔLE DE LA DATE D'EFFET, UN SEUL EXEMPLAIRE (prestations et produits) : une date valide ; une date passée n'est permise qu'aux profils qui détiennent le geste de date passée,
+/// avec la case explicite (jamais silencieuse) et le motif déjà exigé.
+({RefusTarif? refus, bool passee}) _controleDateEffet(ContexteTarif cx, String? dateEffet, bool datePassee) {
+  if (!tarJourValide(dateEffet)) {
+    return (refus: const RefusTarif('DATE_EFFET_REQUISE', 'Un changement de prix prend effet à une date : sans date d’effet, on ne sait pas à partir de quand il s’applique.', 'Saisir la date d’effet.'), passee: false);
+  }
+  final passee = dateEffet!.compareTo(cx.aujourdhui) < 0;
+  if (passee) {
+    if (!datePassee) {
+      return (
+        refus: RefusTarif(
+            'DATE_PASSEE',
+            'La date d’effet ($dateEffet) est antérieure à aujourd’hui (${cx.aujourdhui}) : un prix ne se change pas dans le passé sans une décision expresse.',
+            cx.peutDatePassee
+                ? 'Cocher « Date antérieure à aujourd’hui » et motiver, ou choisir aujourd’hui ou une date future.'
+                : 'Choisir aujourd’hui ou une date future : une date antérieure est une autorité de ${tarProfilsDatePassee(cx.profilsDatePassee)}.'),
+        passee: true
+      );
+    }
+    if (!cx.peutDatePassee) {
+      return (
+        refus: RefusTarif('DATE_PASSEE_RESERVEE', 'Une date d’effet antérieure à aujourd’hui est une autorité de ${tarProfilsDatePassee(cx.profilsDatePassee)}.',
+            'Choisir aujourd’hui ou une date future, ou demander cette date à l’un de ces profils.'),
+        passee: true
+      );
+    }
+  }
+  return (refus: null, passee: passee);
+}
+
 /// Propose une version de prix pour une prestation existante (ou, avec `creation`, crée la prestation et sa première version). Ne CHANGE RIEN au prix en vigueur : la
 /// proposition ne prend effet qu'au Oui, à sa date d'effet. Rend ce qu'il faut écrire, ou un refus nommé.
 ResultatTarif<PropositionTarif> tarProposer(ContexteTarif cx, DemandeProposition o) {
@@ -884,26 +926,10 @@ ResultatTarif<PropositionTarif> tarProposer(ContexteTarif cx, DemandeProposition
   }
   final refus = _controleProposition(o);
   if (refus != null) return non(refus);
-  if (!tarJourValide(o.dateEffet)) {
-    return non(const RefusTarif('DATE_EFFET_REQUISE', 'Un changement de prix prend effet à une date : sans date d’effet, on ne sait pas à partir de quand il s’applique.', 'Saisir la date d’effet.'));
-  }
+  final cd = _controleDateEffet(cx, o.dateEffet, o.datePassee);
+  if (cd.refus != null) return non(cd.refus!);
   final dateEffet = o.dateEffet!;
-  final passee = dateEffet.compareTo(cx.aujourdhui) < 0;
-  if (passee) {
-    // T6 : la date passée est PERMISE à la DAF et à la Direction, avec une case explicite (jamais silencieuse) et le motif déjà exigé ; refusée aux autres.
-    if (!o.datePassee) {
-      return non(RefusTarif(
-          'DATE_PASSEE',
-          'La date d’effet ($dateEffet) est antérieure à aujourd’hui (${cx.aujourdhui}) : un prix ne se change pas dans le passé sans une décision expresse.',
-          cx.peutDatePassee
-              ? 'Cocher « Date antérieure à aujourd’hui » et motiver, ou choisir aujourd’hui ou une date future.'
-              : 'Choisir aujourd’hui ou une date future : une date antérieure est une autorité de ${tarProfilsDatePassee(cx.profilsDatePassee)}.'));
-    }
-    if (!cx.peutDatePassee) {
-      return non(RefusTarif('DATE_PASSEE_RESERVEE', 'Une date d’effet antérieure à aujourd’hui est une autorité de ${tarProfilsDatePassee(cx.profilsDatePassee)}.',
-          'Choisir aujourd’hui ou une date future, ou demander cette date à l’un de ces profils.'));
-    }
-  }
+  final passee = cd.passee;
   final code = o.creation != null ? o.code.trim() : '${p!['code']}';
   final existantes = h.versionsDe(code);
   final enAttente = existantes.where((v) => v['statut'] == 'propose').firstOrNull;
@@ -1046,7 +1072,8 @@ ResultatTarif<DecisionTarif> tarDecider(ContexteTarif cx, String versionId, Stri
     // Le contrôle d'usage est REJOUÉ au Oui : une pièce a pu être émise pendant l'attente.
     final pp = cx.referentiel.parCode['${v['code']}'];
     if (pp != null) {
-      final us = tarUsages(pp, date, cx.pieces, aujourdhui: cx.aujourdhui);
+      final ids = pp['famille'] == tarFamilleProduit ? _idsProduit(cx.produits, '${v['code']}') : const <String>{};
+      final us = tarUsages(pp, date, cx.pieces, aujourdhui: cx.aujourdhui, produitsIds: ids);
       if (us.isNotEmpty) return non(_refusUsage('${v['code']}', date, us, decision: true));
     }
     patch['statut'] = 'valide';

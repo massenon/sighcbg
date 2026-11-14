@@ -190,6 +190,11 @@ Future<void> main() async {
   // LA REPRISE DES PRIX (lot T6) : un poste qui avait enregistré ses actes avant le référentiel de prix le garde, le prix facturé hier devient la version 1. Seule la MÈRE
   // (ou un poste autonome) reconstruit les collections de lecture ; un fileul les reçoit avec la configuration.
   TarifsPoste.reprendre(magasin, fileul: params.rejoint && params.mode != ModePoste.mere);
+  // LE PRIX D'ACHAT DES PRODUITS (circuit des produits) : chaque article actif reçoit sa version 1 (« reprise », sans date inventée) ; la fiche suit ensuite la version en vigueur. La mère seule écrit.
+  if (!(params.rejoint && params.mode != ModePoste.mere)) {
+    TarifsPoste.assurerProduits(magasin);
+    TarifsPoste.projeterProduits(magasin, DateTime.now());
+  }
   // LA MATRICE EN FORCE, lue à chaque évaluation : la graine engendrée plus les décisions de droits du magasin. Ni l'échange entre pairs ni le jugement des décisions
   // par la mère ne capturent une matrice au démarrage (une capture serait figée au jour du lancement).
   final navigation = await DonneesNavigation.chargerAssets();

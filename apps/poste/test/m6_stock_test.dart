@@ -302,6 +302,11 @@ void main() {
       await saisir(t, 'stockGros', '3');
       await saisir(t, 'stockDetail', '4');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
+      // RG-02 s'écrit désormais : un prix de vente différent est REFUSÉ en le nommant (il ne s'aligne plus en silence) ; rien n'est écrit.
+      expect(find.textContaining('RG-02 : un médicament se facture au prix d’achat'), findsOneWidget);
+      expect(col.actives.length, avant);
+      await saisir(t, 'prixVente', '');
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       expect(col.actives.length, avant + 1);
       final p = col.actives.first;
       expect(p['code'], 'NOUV');
@@ -312,7 +317,8 @@ void main() {
       expect(p['seuilAlerte'], 10);
       expect(p['statut'], 'actif');
       expect(find.text('Nouveau produit créé.'), findsOneWidget);
-      await t.tap(find.text('Annuler'));
+      // Le toast de refus RG-02 (et son « Annuler » d'erreur) peut encore être à l'écran : on vise l'annulation du toast de création.
+      await t.tap(find.byWidgetPredicate((w) => w is Text && w.data == 'Annuler' && w.style?.fontSize == 12));
       await t.pump(const Duration(milliseconds: 300));
       expect(col.actives.length, avant);
       expect(col.parId(p['id']), isNotNull,

@@ -208,9 +208,9 @@ void main() {
   group('déclaration', () {
     test('sept jeux de plus, identifiants et écrans uniques, tous au manifeste',
         () {
-      expect(jeuxImport, hasLength(25));
-      expect({for (final j in jeuxImport) j.id}, hasLength(25));
-      expect({for (final j in jeuxImport) j.ecran}, hasLength(25));
+      expect(jeuxImport, hasLength(26));
+      expect({for (final j in jeuxImport) j.id}, hasLength(26));
+      expect({for (final j in jeuxImport) j.ecran}, hasLength(26));
       final manifeste = (jsonDecode(
               File('../referentiels/data/manifeste.json').readAsStringSync())
           as Map)['ecrans'] as List;
