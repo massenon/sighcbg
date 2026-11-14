@@ -718,7 +718,8 @@ class _OngletSouscripteurs extends StatelessWidget {
                         ToastsSigh.afficher(ctx, r.motif!, type: TypeToast.erreur, detail: r.geste);
                         return;
                       }
-                      posees.add({...r.fiche!, if (l['source'] != null) 'source': l['source']});
+                      // Le barème garde l'unité de chaque ligne même quand la clinique supprime le plafond : la fiche reste celle que la saisie d'un bloc écrivait avant les versions.
+                      posees.add({...r.fiche!, 'unitePlafond': l['unitePlafond'], if (l['source'] != null) 'source': l['source']});
                     }
                     for (final f in posees) {
                       cg.inserer(f, prefixe: 'GAR');

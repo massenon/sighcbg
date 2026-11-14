@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_poste/donnees/magasin.dart' show EcritureRefusee;
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
@@ -79,23 +80,42 @@ void main() {
     expect((s['accordPrealable'] as List).length, 15);
     expect(find.text('Convention de CNSS Atacora enregistrée.'), findsOneWidget);
     expect(find.text('20 garanties, exclusions et accords préalables repris.'), findsOneWidget);
-    expect(kpis(t), ['9', '1', '8', '20']);
+    expect(kpis(t), ['9', '1', '8', '20'], reason: 'vingt garanties en vigueur, vingt séries');
   });
 
-  cas('« Modifier la grille » ne change que les taux et plafonds saisis', (t) async {
+  cas('« Nouvelle version de la grille » (T13) : seules les lignes saisies reçoivent une version datée, la version remplacée reste écrite', (t) async {
     final m = magasin();
     await ouvrir(t, m, 'm9-conventions');
     await saisirBareme(t);
-    final avant = m.collection('garanties').actives.map((g) => g['taux']).toList();
-    await toucher(t, find.text('Modifier la grille'));
+    final avant = {for (final g in m.collection('garanties').actives) g['id']: g['taux']};
+    expect(avant.length, 20);
+    await toucher(t, find.text('Nouvelle version de la grille'));
     await t.pumpAndSettle();
+    await dater(t, 'dateEffet', 28);
     await saisir(t, 'taux_2', '55');
-    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));
+    await toucher(t, find.widgetWithText(BoutonSigh, 'Poser la nouvelle version'));
     await t.pumpAndSettle();
-    final apres = m.collection('garanties').actives.map((g) => g['taux']).toList();
-    expect([for (var i = 0; i < avant.length; i++) if (avant[i] != apres[i]) i], [2]);
-    expect(apres[2], 55);
-    expect(find.text('Grille mise à jour.'), findsOneWidget);
+    final toutes = m.collection('garanties').actives;
+    expect(toutes.length, 21, reason: 'une version de plus : rien n’est réécrit');
+    for (final e in avant.entries) {
+      expect(m.collection('garanties').parId(e.key)!['taux'], e.value, reason: 'la version remplacée ${e.key} reste telle quelle');
+    }
+    final v2 = toutes.where((g) => g['version'] == 2).single;
+    expect(v2['taux'], 55);
+    expect(v2['dateEffet'], isNotNull);
+    expect(v2['libelle'], m.collection('garanties').parId(avant.keys.elementAt(2))!['libelle']);
+    expect(find.text('Nouvelle grille posée.'), findsOneWidget);
+  });
+
+  cas('une version de garantie ne se modifie pas : le magasin refuse (immuable), jamais le bouton seul', (t) async {
+    final m = magasin();
+    await ouvrir(t, m, 'm9-conventions');
+    await saisirBareme(t);
+    final g = m.collection('garanties').actives.first;
+    expect(() => m.collection('garanties').mettreAJour(g['id'], {'taux': 10}), throwsA(isA<EcritureRefusee>()));
+    expect(m.collection('garanties').parId(g['id'])!['taux'], g['taux']);
+    // une seconde fois « depuis l'ouverture » : refusée aussi
+    expect(() => m.collection('garanties').inserer({...g, 'id': 'GARX', 'taux': 10}, prefixe: 'GAR'), throwsA(isA<EcritureRefusee>()));
   });
 
   cas('simulateur : la convention saisie s’applique ligne par ligne, avec plafond et motif (écran réel)', (t) async {
