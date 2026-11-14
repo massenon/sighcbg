@@ -185,7 +185,7 @@ void main() {
   group('garde du magasin (immutabilité)', () {
     String? garde(String op, F apres, F? avant, {List<F>? garanties, F? facture}) => assGardeGarantie(op, apres, avant,
         garanties: garanties ?? garantiesJeu(), souscripteur: (id) => souscripteursJeu().where((s) => s['id'] == id).firstOrNull, factureSousGrille: (s, j) => facture);
-    final c = garantiesJeu().firstWhere((x) => x['id'] == 'GAR-S2-C');
+    final c = {...garantiesJeu().firstWhere((x) => x['id'] == 'GAR-S2-C'), 'version': 1};
 
     test('aucun champ d’une version posée ne se modifie : taux, plafond, unité, libellé, catégorie, date, rang', () {
       for (final k in assChampsImmuablesGarantie) {
@@ -193,6 +193,10 @@ void main() {
         expect(garde('modifier', apres, c), contains('IMMUABLE'), reason: k);
       }
       expect(garde('modifier', {...c, 'source': 'autre pièce'}, c), isNull, reason: 'un champ de provenance reste libre');
+      // Le rang d'une version qui n'en portait pas (migration) se pose une fois, jamais deux.
+      final sansRang = {...c}..remove('version');
+      expect(garde('modifier', {...sansRang, 'version': 1}, sansRang), isNull, reason: 'migration : le rang se pose une fois');
+      expect(garde('modifier', {...sansRang, 'version': 1, 'taux': 1}, sansRang), contains('IMMUABLE'));
     });
 
     test('une version se pose sur la série à une date postérieure ; sans date, ou à une date déjà prise, ou dans le passé : refus', () {
