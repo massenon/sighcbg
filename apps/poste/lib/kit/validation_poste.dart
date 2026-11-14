@@ -298,11 +298,6 @@ class ValidationPoste {
                 apres?.call();
                 return;
               }
-              if (r.depose) {
-                _toastDepose(ctx, e.libelle);
-                apres?.call();
-                return;
-              }
               final quand = DateTime.tryParse(r.valideLe!);
               ToastsSigh.afficher(ctx, '« ${e.libelle} » validé.',
                   type: TypeToast.succes, detail: 'Le ${quand == null ? r.valideLe : dateHeure(quand.toLocal())} par ${r.validePar}.');
@@ -362,6 +357,11 @@ class ValidationPoste {
               final r = valider(famille, id);
               if (!r.ok) {
                 ToastsSigh.afficher(ctx, r.refus!.motif, type: TypeToast.erreur, detail: r.refus!.geste);
+                return;
+              }
+              if (r.depose) {
+                _toastDepose(ctx, e.libelle);
+                apres?.call();
                 return;
               }
               final quand = DateTime.tryParse(r.valideLe!);

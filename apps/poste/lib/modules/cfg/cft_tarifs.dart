@@ -207,7 +207,8 @@ class _EtatTarifs extends State<EcranTarifsEtPrix> {
     final c = ContexteEcran.of(context);
     final m = c.magasin;
     return ListenableBuilder(
-        listenable: Listenable.merge([m.collection('tarifs'), m.collection('versionsTarif'), m.collection('produits')]),
+        // `actes` et `analyses` : la commande « Valider » et le badge d'attente se lisent sur la fiche de la prestation (un dépôt les signale, `ServiceValidationsDeposees`).
+        listenable: Listenable.merge([m.collection('tarifs'), m.collection('versionsTarif'), m.collection('produits'), m.collection('actes'), m.collection('analyses')]),
         builder: (ctx, _) {
           final tous = _lignes(c, (_) => true);
           final h = TarifsPoste.lire(m);

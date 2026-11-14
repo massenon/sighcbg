@@ -56,8 +56,19 @@ class ServiceValidationsDeposees {
       return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
     }
     final f = valFamille(famille)!;
+    _signaler(famille);
     magasin.journaliser('Validation transmise à la mère', f.module, f.libelle, '$id', null, {'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], if (motif != null && motif.trim().isNotEmpty) 'motif': motif.trim()});
     return r;
+  }
+
+  /// Les écrans lisent l'ÉLÉMENT (l'acte, la variable, le barème), pas le registre des dépôts : un dépôt ou un verdict doit les repeindre, faute de quoi la commande « Valider » resterait
+  /// offerte après le dépôt et le badge « en attente de la mère » n'apparaîtrait qu'au prochain geste.
+  void _signaler(String famille) {
+    final f = valFamille(famille);
+    if (f == null) return;
+    for (final c in {...f.collections, valCollectionValidations}) {
+      magasin.collection(c).signaler();
+    }
   }
 
   /// L'état d'attente d'un élément (le dernier dépôt non résolu par une validation visible).
@@ -90,6 +101,7 @@ class ServiceValidationsDeposees {
         'statut': 'actif',
       }, prefixe: 'NOT');
       depots.mettreAJour(d['id'], {'notifieLe': _maintenant.toUtc().toIso8601String()}, journaliser: false);
+      _signaler('${d['famille']}');
       n++;
     }
     return n;
