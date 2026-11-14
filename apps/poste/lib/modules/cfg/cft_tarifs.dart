@@ -42,7 +42,7 @@ class EcranTarifsEtPrix extends StatefulWidget with EcranMaquette {
           libelle: 'Imprimer la grille',
           icone: LucideIcons.printer,
           variante: VarianteBouton.secondaire,
-          onPressed: () => _imprimerGrille(context, c, [for (final l in _lignes(c, (_) => true)) if (l['etat'] != 'Sans prix en vigueur') l], 'Grille tarifaire')),
+          onPressed: () => _imprimerGrille(context, c, _lignes(c, (_) => true), 'Grille tarifaire')),
     ];
   }
 
@@ -343,10 +343,16 @@ class _OngletPrestations extends StatelessWidget {
   final String vide;
 
   @override
-  Widget build(BuildContext context) => cfaPile([
-        NoteSigh(note),
-        _TableauPrestations(c: c, lignes: _lignes(c, (p) => familles.contains(p['famille'])), vide: vide),
-      ], espace: 12);
+  Widget build(BuildContext context) {
+    // Les certificats sont une famille de ce tableau (couverture « SOS seule » lue de la grille) ; les types de pièce qui n'ont AUCUNE prestation tarifée sont NOMMÉS : une
+    // pièce non tarifée se délivre, elle ne se facture pas (note reprise de l'ancien onglet « Certificats et Attestations »).
+    final sansTarif = familles.contains('CERTIFICAT') ? cfaNoteSansTarif(c.magasin.collection('typesPiece').actives) : null;
+    return cfaPile([
+      NoteSigh(note),
+      if (sansTarif != null) NoteSigh(sansTarif, ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
+      _TableauPrestations(c: c, lignes: _lignes(c, (p) => familles.contains(p['famille'])), vide: vide),
+    ], espace: 12);
+  }
 }
 
 class _OngletAnalyses extends StatelessWidget {
@@ -804,19 +810,32 @@ void _tiroirPrestation(BuildContext ctx, ContexteEcran c, Map<String, Object?> r
       _BlocHistorique(c: c, code: '${r['code']}'),
     ]));
 
-void _imprimerGrille(BuildContext ctx, ContexteEcran c, List<Map<String, Object?>> lignes, String titre) => cfaImprimer(ctx,
-    titre: titre,
-    sousTitre: 'Prix en vigueur au ${dateFR(c.aujourdhui)} : ${lignes.length} prestations',
-    blocs: [
-      BlocTableau(TableauEtat(colonnes: [
-        ColonneEtat(libelle: 'Code', valeur: (r) => r['code']),
-        ColonneEtat(libelle: 'Libellé', valeur: (r) => r['libelle']),
-        ColonneEtat(libelle: 'Non assuré', droite: true, valeur: (r) => _argent(r['na'])),
-        ColonneEtat(libelle: 'Assuré', droite: true, valeur: (r) => r['etatAssure'] == 'nc' ? 'NON COUVERT' : (r['etatAssure'] == 'unique' ? 'prix unique' : _argent(r['pa']))),
-        ColonneEtat(libelle: 'Version', droite: true, valeur: (r) => r['version'] == null ? '' : '${r['version']}'),
-      ], lignes: lignes)),
-    ],
-    signatures: const [cfaSignDa, Signature('La Direction')]);
+/// La grille imprimée porte les prestations AU PRIX EN VIGUEUR ; celles qui n'en ont pas ne s'impriment pas (jamais un zéro), mais le cartouche les COMPTE : une grille qui
+/// se tait sur ce qui manque se lirait comme complète. Les prix « provisoires » (valeurs d'attente) sont comptés de même.
+void _imprimerGrille(BuildContext ctx, ContexteEcran c, List<Map<String, Object?>> toutes, String titre) {
+  final lignes = [for (final l in toutes) if (l['etat'] != 'Sans prix en vigueur') l];
+  final sansPrix = toutes.length - lignes.length;
+  final provisoires = lignes.where((l) => l['etat'] == 'Provisoire').length;
+  cfaImprimer(ctx,
+      titre: titre,
+      sousTitre: 'Prix en vigueur au ${dateFR(c.aujourdhui)} : ${lignes.length} prestations',
+      cartouche: [
+        ('Prestations imprimées', nombre(lignes.length)),
+        if (provisoires > 0) ('Prix à valider (provisoires)', nombre(provisoires)),
+        if (sansPrix > 0) ('Sans prix en vigueur (non imprimées)', nombre(sansPrix)),
+        ('Date d’édition', dateFR(c.aujourdhui)),
+      ],
+      blocs: [
+        BlocTableau(TableauEtat(colonnes: [
+          ColonneEtat(libelle: 'Code', valeur: (r) => r['code']),
+          ColonneEtat(libelle: 'Libellé', valeur: (r) => r['libelle']),
+          ColonneEtat(libelle: 'Non assuré', droite: true, valeur: (r) => _argent(r['na'])),
+          ColonneEtat(libelle: 'Assuré', droite: true, valeur: (r) => r['etatAssure'] == 'nc' ? 'NON COUVERT' : (r['etatAssure'] == 'unique' ? 'prix unique' : _argent(r['pa']))),
+          ColonneEtat(libelle: 'Version', droite: true, valeur: (r) => r['version'] == null ? '' : '${r['version']}'),
+        ], lignes: lignes)),
+      ],
+      signatures: const [cfaSignDa, Signature('La Direction')]);
+}
 
 /// La modale de proposition d'un changement de prix (ou, sans [ligne], d'une nouvelle prestation).
 void _modaleProposition(BuildContext ctx, ContexteEcran c, Map<String, Object?>? ligne) {
