@@ -219,14 +219,14 @@ void main() {
       }
     });
 
-    test('l\'administrateur et la DAF importent tout ; l\'assistant comptable n\'importe rien', () {
+    test('l\'administrateur et la DAF importent tout ; l\'assistant comptable n\'importe QUE les garanties (décision de la Direction du 15/11/2026)', () {
       for (final role in ['admin', 'da']) {
         for (final j in jeuxImport) {
           expect(importe(role, j), isTrue, reason: '$role / ${j.id}');
         }
       }
       for (final j in jeuxImport) {
-        expect(importe('aide_comptable', j), isFalse, reason: 'aide_comptable / ${j.id}');
+        expect(importe('aide_comptable', j), j.id == 'garanties', reason: 'aide_comptable / ${j.id}');
       }
     });
 

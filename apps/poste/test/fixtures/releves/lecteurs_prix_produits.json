@@ -3,6 +3,10 @@
   "lectures": 2,
   "ecritures": 1
  },
+ "domaine/lib/src/assistant/ast_executeurs.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
  "domaine/lib/src/comptabilite/cpc_bfr.dart": {
   "lectures": 1,
   "ecritures": 0
