@@ -101,7 +101,7 @@ void main() {
     expect(analyserFichier(jeuFournisseurs, fichier, 'f.xlsx', MagasinMemoire({}, profilFixe: profilDe(retire, 'comptable'))).refusDroit, isTrue);
   });
 
-  test('la sensibilité est portée par le jeu : les onze jeux restreints, jamais déduits d\'un nom', () {
-    expect({for (final j in jeuxImport) if (j.restreint) j.id}, {'personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers', 'tarifs', 'prestataires', 'immobilisations', 'budgets'});
+  test('la sensibilité est portée par le jeu : les douze jeux restreints, jamais déduits d\'un nom', () {
+    expect({for (final j in jeuxImport) if (j.restreint) j.id}, {'personnel', 'patients', 'soldes-ouverture', 'stock-detail', 'transferts', 'inventaire', 'courriers', 'tarifs', 'prestataires', 'immobilisations', 'budgets', 'couvertures-assurance'});
   });
 }

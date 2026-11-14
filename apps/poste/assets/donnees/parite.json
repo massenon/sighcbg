@@ -5528,6 +5528,38 @@
    "statut": "porté"
   },
   {
+   "id": "imp-garanties",
+   "label": "Importation des garanties des souscripteurs",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "comptable",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "imp-couvertures-assurance",
+   "label": "Importation des couvertures d’assurance",
+   "module": "IMP",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "da",
+    "comptable",
+    "admin"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-supervision",
    "label": "Supervision",
    "module": "MERE",

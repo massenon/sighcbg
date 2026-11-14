@@ -35,6 +35,8 @@ class PortMagasin extends PortImport {
     'fournisseurs': 'F',
     'assureurs': 'ASS',
     'souscripteurs': 'SOU',
+    'garanties': 'GAR',
+    'couverturesAssurance': 'COU',
     'comptes': 'CPT',
     'ecritures': 'ECR',
     'naturesFacture': 'NAT',

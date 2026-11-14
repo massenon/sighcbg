@@ -488,7 +488,9 @@
         "imp-catalogue-imagerie",
         "imp-prestataires",
         "imp-immobilisations",
-        "imp-budgets"
+        "imp-budgets",
+        "imp-garanties",
+        "imp-couvertures-assurance"
        ]
       }
      ]
@@ -695,7 +697,9 @@
         "imp-catalogue-imagerie",
         "imp-prestataires",
         "imp-immobilisations",
-        "imp-budgets"
+        "imp-budgets",
+        "imp-garanties",
+        "imp-couvertures-assurance"
        ]
       }
      ]
@@ -1982,7 +1986,9 @@
         "imp-catalogue-imagerie",
         "imp-prestataires",
         "imp-immobilisations",
-        "imp-budgets"
+        "imp-budgets",
+        "imp-garanties",
+        "imp-couvertures-assurance"
        ]
       }
      ]
@@ -2174,7 +2180,9 @@
         "imp-catalogue-imagerie",
         "imp-prestataires",
         "imp-immobilisations",
-        "imp-budgets"
+        "imp-budgets",
+        "imp-garanties",
+        "imp-couvertures-assurance"
        ]
       }
      ]
@@ -3465,7 +3473,9 @@
         "imp-plan-comptable",
         "imp-soldes-ouverture",
         "imp-immobilisations",
-        "imp-budgets"
+        "imp-budgets",
+        "imp-garanties",
+        "imp-couvertures-assurance"
        ]
       }
      ]

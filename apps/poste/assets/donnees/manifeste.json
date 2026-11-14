@@ -757,7 +757,9 @@
     "imp-catalogue-imagerie",
     "imp-prestataires",
     "imp-immobilisations",
-    "imp-budgets"
+    "imp-budgets",
+    "imp-garanties",
+    "imp-couvertures-assurance"
    ]
   },
   {
@@ -6193,6 +6195,40 @@
    "roles": [
     "comptable",
     "da",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-garanties",
+   "label": "Importation des garanties des souscripteurs",
+   "icone": "percent",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "comptable",
+    "admin"
+   ]
+  },
+  {
+   "id": "imp-couvertures-assurance",
+   "label": "Importation des couvertures d’assurance",
+   "icone": "id-card",
+   "module": "IMP",
+   "moduleLabel": "Importation de données",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "da",
+    "comptable",
     "admin"
    ]
   },

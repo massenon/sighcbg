@@ -201,6 +201,10 @@ class EcranAssures extends StatelessWidget with EcranMaquette {
   String get regle =>
       'RG-09 — la prise en charge n’est appliquée que si la carte est valide au moment de la facturation. À défaut, la facturation est intégrale au patient.';
 
+  /// T13 : les changements de couverture d'un fichier (jeu RESTREINT : données de patients assurés, direct seul).
+  @override
+  List<Widget> actionsEntete(BuildContext context) => [...actionsImporter(context, 'couvertures-assurance')];
+
   @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);

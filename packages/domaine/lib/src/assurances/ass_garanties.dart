@@ -188,6 +188,8 @@ String? assGardeGarantie(
   if (operation == 'modifier') {
     if (avant == null) return null;
     for (final k in assChampsImmuablesGarantie) {
+      // Le rang d'une version qui n'en portait pas encore (migration d'un poste d'avant le mécanisme) se pose UNE fois ; il ne se change plus.
+      if (k == 'version' && (avant[k] == null || avant[k] == '')) continue;
       if (!_meme(avant[k], apres[k])) {
         return 'Une version de garantie est IMMUABLE (champ « $k ») : elle explique des pièces déjà émises. Une correction AJOUTE une version avec sa date d’effet (écran « Conventions & garanties »).';
       }

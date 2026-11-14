@@ -9,6 +9,9 @@ import '../administration/adm_regles.dart' show admNaturesCourrier, admReference
 import '../administration/adm_regles.dart' show admReferenceSuivante;
 import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget, cpbReferenceSuivante;
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice;
+import '../assurances/ass_garanties.dart';
+import '../assurances/ass_regles.dart' show assCategoriesGarantie, assChangerCouverture, assDate, assLibelleUnite, assUnitesPlafond;
+import '../format/format_fr.dart' show dateFR, nombre;
 import '../format/recherche.dart' show normaliser;
 import '../imagerie/cr_modalites.dart' show modaliteImagerie, modalitesImagerie;
 import '../labo/cat_regles.dart' show catDomainesUnite;
@@ -25,6 +28,7 @@ import 'moteur_import.dart';
 part 'jeux_import_stock.dart';
 part 'jeux_import_tarifs.dart';
 part 'jeux_import_referentiels.dart';
+part 'jeux_import_assurance.dart';
 
 typedef _V = Map<String, Object?>;
 
@@ -994,6 +998,9 @@ final List<JeuImport> jeuxImport = [
   jeuPrestataires,
   jeuImmobilisations,
   jeuBudgets,
+  // T13 : les garanties datées (direct et demande, configuration de la mère) et les couvertures datées des assurés (direct seul, restreint).
+  jeuGaranties,
+  jeuCouverturesAssurance,
 ];
 
 /// Les anciens identifiants de jeu qui survivent à une refonte (un fichier ou une demande d'avant : `actes` devient `tarifs`).
