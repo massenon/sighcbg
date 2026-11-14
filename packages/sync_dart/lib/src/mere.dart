@@ -397,6 +397,11 @@ class Mere {
 
     // A, C et R : fusion par champ
     if (type == 'creer') {
+      // REJEU IDEMPOTENT : le jeu d'origine existe à l'identique sur tous les postes (mère comprise, mêmes identifiants). Deux postes qui le créent avant de s'être parlé font UNE fiche :
+      // la seconde création, STRICTEMENT identique à ce que la mère détient (chaque champ proposé y est déjà, fiche non archivée), est acceptée sans effet. Un contenu qui diffère reste refusé.
+      if (f != null && !f.archive && champsOp.entries.every((e) => enJson(f.data[e.key]) == enJson(e.value))) {
+        return {'id': id, 'statut': 'acceptee', 'seq': await seqMax(), 'rejeu': true};
+      }
       if (f != null) return refus('fiche_existe', 'Cette fiche existe déjà.', 'Aucun');
       final champs = {...champsOp};
       String? numero;
