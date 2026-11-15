@@ -180,12 +180,12 @@ void main() {
       final m = magasinJeu();
       await monter(t, m, role: 'caissier');
       await calmer(t);
-      await demander(t, 'Combien doit encore Zoumarou Kassifa EXEMPLE/Patient ?');
-      await demander(t, 'Retrouve le patient Zoumarou');
+      await demander(t, 'Combien doit encore Nomtest Prenomtest EXEMPLE/Patient ?');
+      await demander(t, 'Retrouve le patient Nomtest');
       await t.pumpWidget(const SizedBox());
       await t.pump();
       final journal = jsonEncode([for (final a in m.collection('audit').toutes) a]).toLowerCase();
-      for (final mot in ['zoumarou', 'kassifa', 'exemple/patient', 'combien doit', 'retrouve le patient']) {
+      for (final mot in ['nomtest', 'prenomtest', 'exemple/patient', 'combien doit', 'retrouve le patient']) {
         expect(journal.contains(mot), isFalse, reason: mot);
       }
       final f = m.collection('audit').toutes.where((a) => a['action'] == 'Fermeture de l’assistant').toList();
