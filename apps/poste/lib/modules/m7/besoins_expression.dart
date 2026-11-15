@@ -5,7 +5,10 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
+import '../../core/plages_codes.dart';
+import '../../core/service_installation.dart';
 import '../../kit/kit.dart';
+import '../../sync/service_validations_deposees.dart';
 import '../../shell/contexte_ecran.dart';
 import 'besoins_commun.dart';
 
@@ -341,7 +344,9 @@ class _TableauBesoins extends StatelessWidget {
             libelle: 'Imprimer le bon',
             onPressed: () => _imprimer(contexteEcran, b)),
         // L'ARBITRAGE N'APPARAÎT QU'À SA VUE : proposer « Valider » sur un bon déjà accordé ferait douter de ce qui a été décidé.
-        if (vue == 'arbitrage') ...[
+        if (vue == 'arbitrage' && ServiceValidationsDeposees.de(c.magasin).depotCircuitEnAttente(circuitBesoinArbitrage, b) != null)
+          const BadgeSigh('Transmis à la mère, en attente', ton: TonSigh.info)
+        else if (vue == 'arbitrage') ...[
           BoutonIcone(
               icone: LucideIcons.check,
               libelle: 'Valider le besoin',
@@ -536,6 +541,21 @@ class _EtatModaleArbitrage extends State<_ModaleArbitrage> {
       dire(widget.ecran, 'Le motif est obligatoire.', type: TypeToast.erreur);
       return;
     }
+    // CONTINUITÉ DES VALIDATIONS (16/11/2026) : sur un fileul rattaché, l'arbitrage se DÉPOSE ; la mère l'applique sous le rôle de son auteur, contrôles refaits, et le verdict revient.
+    // Le poste continue de travailler : le bon reste dans son état jusqu'à la confirmation, jamais « accordé » avant elle.
+    if (ServiceInstallation.de(c.magasin).rattache) {
+      final decision = switch (widget.quoi) { Arbitrage.valider => 'valider', Arbitrage.rejeter => 'rejeter', Arbitrage.complement => 'complement' };
+      final d = ServiceValidationsDeposees.de(c.magasin)
+          .deposerCircuit(circuitBesoinArbitrage, widget.bon, decision: decision, motif: '${v['motif'] ?? ''}', role: c.role, acteur: acteur(c).nom);
+      if (!d.ok) {
+        dire(widget.ecran, d.refus!.motif, type: TypeToast.erreur);
+        return;
+      }
+      fermer();
+      dire(widget.ecran, 'Arbitrage du besoin ${widget.bon['reference']} transmis à la mère, en attente de confirmation : le bon reste « ${etatBesoin(widget.bon['etape']).libelle.toLowerCase()} » jusque-là.',
+          type: TypeToast.info, duree: const Duration(seconds: 8));
+      return;
+    }
     final ArbitrageEnregistre r;
     try {
       r = arbitrerBon(
@@ -697,7 +717,9 @@ class _EtatModaleBon extends State<_ModaleBon> {
             type: TypeChamp.select,
             requis: true,
             options: [
-              for (final e in etapesBesoin) OptionChamp(e.id, e.libelle)
+              // Sur un fileul rattaché, les états décidés par la DAF ne se choisissent pas : ils arrivent par le dépôt appliqué par la mère.
+              for (final e in etapesBesoin)
+                if (!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['besoins']!.contains(e.id) || r?['etape'] == e.id) OptionChamp(e.id, e.libelle)
             ]),
       const ChampDef(
           nom: 'motif',
@@ -731,7 +753,11 @@ class _EtatModaleBon extends State<_ModaleBon> {
     final Fiche res;
     try {
       res = bonEnregistre(
-          saisie: v, lignes: _lignes, existant: widget.record, bons: col.toutes);
+          saisie: v,
+          lignes: _lignes,
+          existant: widget.record,
+          bons: col.toutes,
+          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('besoins', 'BEB-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
       return;

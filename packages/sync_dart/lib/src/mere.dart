@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -75,6 +75,9 @@ const familleDeBase = <String, String>{
   // T13 : la COUVERTURE d'assurance d'un assuré (datée, close la veille) suit la famille des fiches patient : une fiche descriptive, champ à champ, dans les deux sens. La garantie, elle, est de
   // la configuration (`garanties` est dans `cfbEssentielles` : famille R, la mère seule écrit, une fiche par version immuable).
   'couverturesAssurance': 'A',
+  // CIRCUITS D'ACHAT QUI TRAVERSENT LES POSTES (Direction, 16/11/2026) : le bon d'expression de besoins et la commande sont des fiches complétées par plusieurs postes, fusionnées champ à champ ;
+  // l'ÉTAT d'un bon ne régresse jamais et l'arbitrage n'est écrit que par la mère (dépôt du validateur, genre `circuit_achat`) : voir `refusCircuitAchat` du domaine, appliqué dans `traiter`.
+  'besoins': 'A', 'commandes': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -95,7 +98,7 @@ const _sqlDemandesDuPoste = " AND NOT (collection='demandesImport' AND fiche NOT
 
 /// Le PRIX ne part JAMAIS vers un téléphone (lot T6, RG-13) : ni le référentiel (`tarifs`, `versionsTarif`), ni les demandes d'un fileul (`propositionsTarif`) avec leurs
 /// refus et leurs motifs. Aucun lecteur de prix n'existe à `apps/mobile` ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des hachés.
-const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'propositionsTarif'};
+const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'propositionsTarif', 'besoins', 'commandes'}; // besoins et commandes portent le prix d'achat des lignes (16/11/2026)
 
 /// Les PRESTATAIRES externes (tarif par acte = rémunération, IFU) voyagent de la mère aux postes fileuls (décision du 14/11/2026, jeu d'import « direct et demande ») mais ne partent
 /// JAMAIS vers un téléphone : aucun écran du mobile ne les lit, et la rémunération n'est publiée à aucun appareil qui n'en a pas l'usage (RG-13). Même exclusion que le prix.
@@ -333,11 +336,15 @@ class Mere {
 
   /// Alloue une plage de numéros de dossier à [appareil] (RG-01). [minimum] : le plus petit rang acceptable (le poste demandeur connaît ses propres dossiers ;
   /// une plage qui commencerait en dessous réattribuerait un code déjà donné).
+  /// Un carnet de numéros PAR NOM : les dossiers patients gardent `next_patient` (inchangé) ; chaque autre série (bons de besoins, commandes : 16/11/2026) a son propre compteur,
+  /// de sorte qu'une plage de bons ne brûle aucun numéro de dossier.
   Future<Map<String, Object?>> allouerPlage(String appareil, Object nom, int taille, int minimum) => base.tx(() async {
-        var debut = await base.metaInt('next_patient');
+        final cle = '$nom' == 'patients' ? 'next_patient' : 'next_plage_$nom';
+        var debut = await base.metaInt(cle);
+        if ('$nom' != 'patients' && debut < 1) debut = 1;
         if (minimum > debut) debut = minimum;
         final fin = debut + taille - 1;
-        await base.poserMeta('next_patient', fin + 1);
+        await base.poserMeta(cle, fin + 1);
         await base.exec('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)', [appareil, nom, debut, fin]);
         return {'debut': debut, 'fin': fin};
       });
@@ -375,6 +382,14 @@ class Mere {
       // L'état que la mère détient : un fileul ne retire sa demande (`retiree`) que tant qu'elle attend.
       final r = refusDemandeImportDuFileul('${type == 'creer' ? 'creer' : 'modifier'}', champsOp, etatActuel: f == null || '${f.data['etat'] ?? ''}'.isEmpty ? null : '${f.data['etat']}');
       if (r != null) return refus(r[0], r[1], r[2]);
+    }
+
+    // CIRCUITS D'ACHAT (16/11/2026) : la mère REFAIT le contrôle de l'état d'un bon. Un poste ne régresse jamais un état, n'écrit jamais un arbitrage (il le dépose) et n'écrit pas
+    // l'aval d'un arbitrage que la mère ne détient pas. La règle est celle du domaine, jamais recopiée.
+    if (collectionsCircuitAchat.contains(collection) && app.role != 'mere' && ((type == 'creer' && f == null) || type == 'modifier')) {
+      final etatActuel = f?.data[champEtatCircuit(collection)];
+      final r = refusCircuitAchat(collection, '$type', champsOp, etatActuel: etatActuel);
+      if (r != null) return refus(r.code, r.motif, r.geste);
     }
 
     // L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction, domaine) : version croissante, type, date d'effet,

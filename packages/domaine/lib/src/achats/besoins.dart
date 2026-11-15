@@ -220,7 +220,8 @@ _Bon bonEnregistre(
     {required _Bon saisie,
     required List<_Bon> lignes,
     _Bon? existant,
-    required Iterable<_Bon> bons}) {
+    required Iterable<_Bon> bons,
+    String Function()? referenceSuivante}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
   final v = {...saisie};
   v['lignes'] = lignes;
@@ -231,7 +232,8 @@ _Bon bonEnregistre(
   v['montantEstime'] = montantEstimeLignes(lignes);
   // E75 : la référence est posée à la création, jamais à la modification.
   if (existant == null) {
-    v['reference'] = referenceAchatSuivante('BEB-2026-', 4, bons);
+    // 16/11/2026 : un poste rattaché prend son numéro dans SA PLAGE (deux fileuls hors ligne ne produisent plus le même BEB) ; sans plage, la règle historique (plus grand rang + 1).
+    v['reference'] = referenceSuivante != null ? referenceSuivante() : referenceAchatSuivante('BEB-2026-', 4, bons);
   }
   // E74 : un validateur déjà connu n'est jamais écrasé. E73/E77 : sinon la DAF est portée validatrice.
   const validantes = ['validation_da', 'accorde', 'prepare', 'livre', 'cloture'];

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, champSerieDemande, ficheLocaleAuPoste;
+import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, champSerieDemande, collectionsCircuitAchat, ficheLocaleAuPoste, fusionnerCircuitAchat;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -66,6 +66,10 @@ const Set<String> collectionsActivite = {
   'lots',
   'produits',
   'admissions',
+  // CIRCUITS D'ACHAT (Direction, 16/11/2026) : le bon d'expression de besoins et la commande traversent les postes (fusion champ à champ ; l'ÉTAT ne régresse jamais, l'arbitrage et la
+  // validation DA se DÉPOSENT et la mère les applique : `refusCircuitAchat`, `fusionnerCircuitAchat` du domaine). Jamais vers un téléphone (prix d'achat des lignes).
+  'besoins',
+  'commandes',
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
@@ -137,10 +141,10 @@ class TransportMereLocale implements TransportPont {
   }
 
   /// Une plage de numéros de dossier pour la mère elle-même (`POST /admin/plage`) : le même carnet que celui des fileuls.
-  Future<(int, int)> plage(int taille, int minimum) async {
+  Future<(int, int)> plage(int taille, int minimum, {String nom = 'patients'}) async {
     final r = await _c
         .post(Uri.parse('http://127.0.0.1:$port/admin/plage'),
-            headers: {'content-type': 'application/json', 'x-admin': admin}, body: jsonEncode({'nom': 'patients', 'taille': taille, 'minimum': minimum}))
+            headers: {'content-type': 'application/json', 'x-admin': admin}, body: jsonEncode({'nom': nom, 'taille': taille, 'minimum': minimum}))
         .timeout(const Duration(seconds: 8));
     if (r.statusCode != 200) throw StateError('la mère a répondu ${r.statusCode}');
     final c = jsonDecode(r.body) as Map;
@@ -179,6 +183,7 @@ class PontActivite {
       this.enLectureSeule = const {},
       this.liaison,
       this.surveillerLesAutres = false,
+      this.reservesAuMere = false,
       this.delai = const Duration(seconds: 1)})
       : collections = collections ?? {...collectionsActivite, ...collectionsAtomiques};
   final Magasin magasin;
@@ -198,6 +203,9 @@ class PontActivite {
 
   /// La MÈRE ne se sait pas coupée d'un fileul : elle le déduit de son battement. Vrai : elle n'est « en liaison » que si TOUS les postes connus ont battu récemment.
   final bool surveillerLesAutres;
+
+  /// Ce poste est un FILEUL : il ne pose jamais lui-même un arbitrage (circuits d'achat) ; ce qu'il en lit vient du journal de la mère (voir `fusionnerCircuitAchat`).
+  final bool reservesAuMere;
   final Duration delai;
 
   /// La dernière version SYNCHRONISÉE de chaque fiche (clé `collection/idSync`) : sert de base à la fusion champ à champ.
@@ -496,6 +504,10 @@ class PontActivite {
           fusion
             ..clear()
             ..addAll(regle);
+        }
+        // CIRCUITS D'ACHAT : l'ÉTAT d'un bon ne régresse jamais par une fusion tardive (un bon accordé ne repasse pas soumis) ; une écriture que la mère a refusée ne l'emporte pas.
+        if (collectionsCircuitAchat.contains(c)) {
+          fusionnerCircuitAchat(c, fusion, local, recu, refusLocal: motifsRefus.containsKey('$c/$cle'), posteFileul: reservesAuMere);
         }
         if (_j(fusion) != _j(local)) {
           col.appliquerDistante(fusion);
