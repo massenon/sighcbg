@@ -33,7 +33,8 @@ Légende des preuves : **T** test contre la vraie mère Dart · **C** code lu ·
 | Corrections de la lecture OCR (`lecturesOcr`) | A | non | oui (ajout seul, signé) | personne | idem | T `ocr_direct_sync_test` |
 | Configuration fiscale : identité légale, obligations (`identiteLegale`, `obligationsFiscales`) | R | non | **NON, reste à faire** : bouton absent sur un fileul (et le droit d'édition de CFG y est forcé à lecture seule) | — | — | K, C (`cfb_configuration_fiscale.dart`) |
 | Décisions de l'AIB : arrêt du barème, base, branchement IFU, comptes (`parametresAib`) | R | **oui, pour la vente** à un acheteur dont le taux n'est pas arrêté (dépendance de nature, refus nommé) | **NON, reste à faire** (écran en lecture seule sur un fileul) | — | — | K, C |
-| Bons de besoins (`besoins`) et commandes, validation DAF RG-04 (`commandes`) | **L** | non ; la TRANSMISSION au fournisseur attend la DAF (dépendance de nature, RG-04) | **NON** : la commande d'un fileul n'arrive jamais chez la DAF de la mère | — | — | K, C |
+| Bons de besoins (`besoins`) : expression, arbitrage DAF (valider, rejeter ou compléter avec motif), tâches du comptable et du stock | ~~L~~ **A** (16/11/2026) | non ; le bon reste « soumis » chez son auteur jusqu'à la confirmation | **OUI, POSSIBLE (E2850-E2853)** : la DAF arbitre depuis N'IMPORTE QUEL poste, par DÉPÔT (`validationsDeposees`, genre `circuit_achat`) | la mère, sous le rôle et le nom de l'auteur, contrôles refaits (premier dépôt = décision, rejeu sans effet) | dépôt en file, « transmis à la mère, en attente », jamais « accordé » avant ; reprise au retour | T `circuit_achats_sync_test`, T banc `CIR1` (référence et Dart), T `circuit_synchro_test` |
+| Commandes, validation DAF RG-04 (`commandes`) | ~~L~~ **A** (16/11/2026) | non ; la TRANSMISSION au fournisseur attend la validation que la mère détient (refusée sinon) | **OUI, POSSIBLE (E2853, E2854)** : même dépôt, famille `commande_validation` | la mère | idem | T idem |
 | Factures fournisseurs, livraisons, PV de réception | L | non | non (même cause) | — | — | K |
 | Paie : validation de la Direction, « autre que le générateur » (`bulletins`) | L | non (le bulletin se génère ; la DIFFUSION attend) | NON ; **par nature** exige une AUTRE personne | — | — | K, C |
 | Dépenses (`depenses`), clôture (`clotures`) | L | non ; la clôture refuse les brouillons (dépendance de nature) | non | — | — | K, C |
@@ -58,11 +59,23 @@ Lecture de la classe L : ce n'est pas une règle de validation qui manque, ce so
 
 ## Ce qui n'a PAS été fait, faute de décision ou par nature
 
-1. **Collections de classe L** (besoins, commandes, paie, labo, imagerie, GED…) : les faire rejoindre le pont est un chantier par collection (fusion, numérotation, RBAC, quota). Décision à prendre : lesquelles d'abord ? Proposition : `besoins` et `commandes` (la DAF de la mère doit voir ce que le fileul demande), puis `bulletins`.
+1. **Collections de classe L** (paie, labo, imagerie, GED, livraisons, factures fournisseurs…) : les faire rejoindre le pont est un chantier par collection (fusion, numérotation, RBAC, quota). **`besoins` et `commandes` ont rejoint le pont le 16/11/2026** (décision de la Direction ; voir la section suivante) ; reste, dans l'ordre proposé, `bulletins` (hors lot, consigne de la Direction).
 2. **Configuration fiscale et décisions de l'AIB** (classe R) : même fabrique, un genre de dépôt de plus chacun ; l'écran fiscal doit en plus cesser d'être en lecture seule pour le seul geste de validation. Non fait pour ne pas élargir sans décision ; à noter que le barème AIB (famille `bareme_aib`) est, lui, couvert.
 3. **Présence humaine par nature** : la signature de la GED (signature électronique nominative), la validation de la paie par une AUTRE personne que le générateur, la validation biologique (engage le biologiste). La continuité proposée, sans l'implémenter : suppléance déclarée (le TSL pour le biologiste est déjà prévu), délégation datée et motivée de la Direction à l'Assistant de Direction pour la paie ; à décider.
 4. **Les écritures (classe A) ne sont pas « appliquées par la mère »** : le geste s'écrit à son poste et voyage ; aucun recontrôle RG-10 par la mère à l'arrivée. Décision : faut-il que la mère refuse une pièce validée déséquilibrée ?
 5. **Un fileul déconnecté valide « en local »** pour la classe A (la ligne passe « validée » chez lui avant que la mère l'ait reçue). Pour la classe R le principe (c) est tenu ; pour A, l'état local n'est pas encore marqué « non confirmé par la mère ».
+
+## Les circuits d'achat traversent les postes (Direction, 16/11/2026)
+
+Décision de la Direction : faire traverser, dans l'ordre, `besoins` puis `commandes`. Fait, par les mêmes mécanismes que ci-dessus (aucun second mécanisme) :
+
+* **Famille A** + règle de fusion de l'ÉTAT : rang par état, jamais de régression, deux décisions concurrentes → la plus ancienne, la perdante nommée (E2851).
+* **La mère refait le contrôle de l'état** de tout bon écrit par un poste : pas de création « accordé », pas d'arbitrage écrit par un fileul (il se DÉPOSE), pas de régression, pas d'aval sans arbitrage détenu (E2852).
+* **L'arbitrage et la validation DA sont des dépôts** `validationsDeposees` (genre `circuit_achat`), appliqués par la mère sous le rôle de l'auteur, contrôles refaits ; le verdict revient à l'auteur avec notification ; le poste n'est jamais bloqué (E2853).
+* **Numérotation par plages** de la mère, un carnet par série : plus de `BEB` en double entre deux fileuls hors ligne (E2855).
+* **Tâches du comptable et du stock** nées de l'état du bon sur chaque poste (E2856). **Jamais vers un téléphone** (E2857).
+
+Preuve : `apps/poste/test/circuit_achats_sync_test.dart` (vraie mère Dart, deux fileuls, mère arrêtée puis relancée), `packages/domaine/test/circuit_synchro_test.dart`, banc `CIR1` (référence et Dart), treize mutations rouges (E2861). **Limite ouverte** : un fileul reçoit tous les bons (le filtre de la mère est par appareil, pas par agent) — E2857.
 
 ## Hypothèses
 
