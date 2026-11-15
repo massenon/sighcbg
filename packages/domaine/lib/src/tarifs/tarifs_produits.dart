@@ -169,7 +169,7 @@ ResultatTarif<PropositionTarif> tarProposerProduit(ContexteTarif cx, DemandeProd
     return non(o.viaImport
         ? const RefusTarif('PROPOSITION_RESERVEE', 'Proposer un prix d’achat par un fichier revient aux profils qui détiennent le droit d’importer le jeu « Importation des prix d’achat ».',
             'Demander ce droit à l’administrateur (« Rôles & permissions », section Importation).')
-        : const RefusTarif('PROPOSITION_RESERVEE', 'Changer le prix d’achat d’un produit se fait au « Référentiel produits », par un profil qui peut modifier cet écran.',
+        : const RefusTarif('PROPOSITION_RESERVEE', 'Changer le prix d’achat d’un produit se fait au « Référentiel produits », par un profil qui peut modifier cet écran ET détient le geste « proposer un prix d’achat » (décision du 16/11/2026).',
             'Demander le changement au gestionnaire de stock, à la Directrice Administrative ou à l’administrateur.'));
   }
   if (o.valider && !cx.peutDecider) {

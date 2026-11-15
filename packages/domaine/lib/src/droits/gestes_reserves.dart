@@ -43,6 +43,11 @@ const String gesteDeciderPrix = 'tarif_decider';
 /// Dater un prix dans le PASSÉ (T6, Direction) : la DAF et la Direction seulement d'origine, avec motif ; refusé dès qu'une pièce a utilisé la prestation depuis la date.
 const String gesteDaterPrixPasse = 'tarif_dater_passe';
 
+/// Proposer un changement de PRIX D'ACHAT d'un produit à « Référentiel produits » (bouton « Changer le prix d'achat », Direction du 16/11/2026) : ce n'est plus le simple droit
+/// d'éditer l'écran. Le caissier modifie la fiche d'un produit (stock détail) mais n'a aucune raison métier de proposer un prix d'achat. Origine : le gestionnaire de stock, la DAF et
+/// l'administrateur. S'ajoute au droit d'éditer l'écran (il ne l'ouvre pas) ; ne touche ni la réception d'achat ni l'importation des prix d'achat, qui ont leur propre droit.
+const String gesteProposerPrixAchat = 'tarif_proposer_achat';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -73,6 +78,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'cfg-tarifs',
       rolesDefaut: ['da', 'direction'],
       aide: 'Une date d’effet antérieure à aujourd’hui, avec motif, tant qu’aucune pièce n’a utilisé la prestation depuis cette date. Origine : la DAF et la Direction.'),
+  GesteReserve(
+      id: gesteProposerPrixAchat,
+      libelle: 'Proposer un changement de prix d’achat d’un produit',
+      module: 'M6',
+      ecran: 'm6-produits',
+      rolesDefaut: ['admin', 'da', 'stock'],
+      aide: 'La commande « Changer le prix d’achat » du Référentiel produits. Modifier la fiche d’un produit ne suffit plus. Origine : le gestionnaire de stock, la DAF, l’administrateur.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

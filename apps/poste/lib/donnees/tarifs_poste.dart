@@ -273,7 +273,7 @@ class TarifsPoste {
       peutEditerEcran: pourRole == null ? peutEditerEcran : (peutEditerPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix)),
       peutProposerProduit: reception
           ? (pourRole == null ? peutProposerReception : (peutProposerReceptionPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix)))
-          : (pourRole == null ? peutProposerPrixAchat : (peutProposerPrixAchatPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix))),
+          : ((pourRole == null ? peutProposerPrixAchat : (peutProposerPrixAchatPour?.call(r) ?? gestes.peut(r, gesteDeciderPrix))) && gestes.peut(r, gesteProposerPrixAchat)),
       produits: m.collection('produits').toutes,
       peutDecider: gestes.peut(r, gesteDeciderPrix),
       peutDatePassee: gestes.peut(r, gesteDaterPrixPasse),
@@ -285,6 +285,8 @@ class TarifsPoste {
   }
 
   bool get peutDecider => gestes.peut(role, gesteDeciderPrix);
+  /// Proposer un prix d'achat depuis « Référentiel produits » : le droit d'éditer l'écran ET le geste réservé `tarif_proposer_achat` (décision du 16/11/2026). Le moteur le refait.
+  bool get peutProposerPrixAchatEcran => peutProposerPrixAchat && gestes.peut(role, gesteProposerPrixAchat);
   bool get peutDaterPasse => gestes.peut(role, gesteDaterPrixPasse);
   bool get peutProposer => peutEditerEcran;
 

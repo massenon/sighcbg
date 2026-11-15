@@ -176,10 +176,10 @@ class EcranProduitsStock extends StatelessWidget with EcranMaquette {
           final r = tarifsDeLEcran(c).creerPrixProduit(fiche, source: 'Saisi à l’écran « Référentiel produits »');
           return r.ok ? null : 'attention, le prix d’achat n’a pas pu être versionné (${r.refus!.motif})';
         },
-        // Deux gestes de ligne : l'HISTORIQUE (une lecture) et le CHANGEMENT du prix d'achat (une écriture, ABSENTE sans le droit de modifier l'écran).
+        // Deux gestes de ligne : l'HISTORIQUE (une lecture) et le CHANGEMENT du prix d'achat (une écriture, ABSENTE sans le droit de modifier l'écran ET sans le geste réservé « proposer un prix d'achat »).
         actionsLigneSup: (context, p) => [
           BoutonIcone(icone: LucideIcons.history, libelle: 'Historique de prix', onPressed: () => modaleHistoriquePrixAchat(context, c, p)),
-          if (c.droit.editer) BoutonIcone(icone: LucideIcons.banknote, libelle: 'Changer le prix d’achat', onPressed: () => modaleChangerPrixAchat(context, c, p)),
+          if (c.droit.editer && tarifsDeLEcran(c).peutProposerPrixAchatEcran) BoutonIcone(icone: LucideIcons.banknote, libelle: 'Changer le prix d’achat', onPressed: () => modaleChangerPrixAchat(context, c, p)),
         ],
         detail: detailProduit,
         titreDetail: (p) => '${p['designation']}',

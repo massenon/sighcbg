@@ -90,6 +90,15 @@ void main() {
     expect(find.textContaining('depuis l’origine'), findsOneWidget, reason: 'la version 1 de reprise n\'a pas de date d\'effet inventée');
   });
 
+  casM14('DÉCISION DU 16/11/2026 : le caissier modifie toujours les produits (stock détail) mais ne voit plus « Changer le prix d\'achat » : proposer un prix d\'achat est un geste réservé', (t) async {
+    final m = monde();
+    await ouvrirM14(t, m, 'm6-produits', role: 'caissier');
+    await chercher(t, _code);
+    expect(find.byTooltip('Modifier'), findsWidgets, reason: 'le droit d\'éditer l\'écran est conservé');
+    expect(find.byTooltip('Changer le prix d’achat'), findsNothing);
+    expect(find.byTooltip('Historique de prix'), findsWidgets, reason: 'la lecture de l\'historique reste offerte');
+  });
+
   casM14('la MODIFICATION de la fiche ne porte plus le prix : le formulaire n\'a ni prix d\'achat ni prix de vente, et enregistrer ne le touche pas', (t) async {
     final m = monde();
     final avant = fiche(m)['prixAchat'] as num;

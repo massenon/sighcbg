@@ -116,6 +116,38 @@ void main() {
     });
   });
 
+  group('le geste réservé « proposer un prix d\'achat » (Direction, 16/11/2026)', () {
+    DemandeProduit d(Magasin m) {
+      final p = article(m, 'medicament');
+      return DemandeProduit(code: '${p['code']}', prixAchat: (p['prixAchat'] as num) + 3, dateEffet: plus(0), motif: 'Hausse');
+    }
+
+    test('origine : gestionnaire de stock, DAF, administrateur ; le caissier a le droit d\'éditer l\'écran mais pas le geste : refus NOMMÉ, rien n\'est écrit', () {
+      final m = jeu();
+      expect(gesteReserve(gesteProposerPrixAchat)!.rolesDefaut, ['admin', 'da', 'stock']);
+      // Le caissier garde le droit d'ÉDITER l'écran (peutProposerPrixAchat: true) : c'est le geste qui lui manque.
+      final r = poste(m, 'caissier').proposerPrixAchat(d(m));
+      expect(r.refus!.code, 'PROPOSITION_RESERVEE');
+      expect(TarifsPoste.lire(m).versionsDe('${article(m, 'medicament')['code']}').length, 1);
+      expect(poste(m, 'caissier').peutProposerPrixAchatEcran, isFalse);
+      for (final role in ['stock', 'da', 'admin']) {
+        expect(poste(jeu(), role).peutProposerPrixAchatEcran, isTrue, reason: role);
+      }
+      expect(poste(m, 'stock').proposerPrixAchat(d(m)).ok, isTrue);
+    });
+
+    test('c\'est la FICHE du rôle qui décide, à chaud : accordé au caissier il propose, retiré au gestionnaire de stock il est refusé', () {
+      final m = jeu();
+      DroitsGestes avec(String role, bool v) => DroitsGestes(fiches: [
+            {'role': role, 'droitsGestes': {gesteProposerPrixAchat: v}}
+          ]);
+      expect(TarifsPoste(m, role: 'caissier', auteur: () => 'C', peutProposerPrixAchat: true, gestes: () => avec('caissier', true), horloge: () => auj, etiquette: 'P').proposerPrixAchat(d(m)).ok, isTrue);
+      final m2 = jeu();
+      expect(TarifsPoste(m2, role: 'stock', auteur: () => 'S', peutProposerPrixAchat: true, gestes: () => avec('stock', false), horloge: () => auj, etiquette: 'P').proposerPrixAchat(d(m2)).refus!.code,
+          'PROPOSITION_RESERVEE');
+    });
+  });
+
   group('les gardes du magasin', () {
     test('une version posée ne se modifie plus (elle se corrige par une version AJOUTÉE)', () {
       final m = jeu();
