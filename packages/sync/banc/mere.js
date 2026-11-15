@@ -61,11 +61,39 @@ const FAMILLES = {
   lots: 'A', mouvements: 'A', deltasCompteurs: 'A',
   /* Décision du 14/11/2026 : les PRESTATAIRES externes (jeu d'import « direct et demande », comme les natures de facture) sont de la configuration : la mère seule écrit, les fileuls reçoivent. */
   prestataires: 'R',
+  /* CIRCUITS D'ACHAT (16/11/2026) : miroir de `sync_dart/lib/src/mere.dart` — fiches complétées par plusieurs postes, état protégé (voir `refusCircuitAchat`). */
+  besoins: 'A', commandes: 'A',
 };
+/* Miroir de `packages/domaine/lib/src/achats/circuit_synchro.dart` (`refusCircuitAchat`) : la mère REFAIT le contrôle de l'état d'un bon écrit par un poste. */
+const RANG_BESOIN = { brouillon: 0, soumis: 1, controle_stock: 2, validation_da: 3, accorde: 4, rejete: 4, complement: 4, prepare: 5, livre: 6, distribue: 6, cloture: 7 };
+const RANG_COMMANDE = { brouillon: 0, attente_validation: 1, validee: 2, transmise: 3, livree: 4, soldee: 5 };
+const CIRCUIT = {
+  besoins: { champ: 'etape', rang: RANG_BESOIN, reserves: ['accorde', 'rejete', 'complement'], aval: ['prepare', 'livre', 'distribue', 'cloture'], detenu: ['accorde', 'prepare', 'livre', 'distribue', 'cloture'], maxCreation: 3, quoi: 'un bon de besoins' },
+  commandes: { champ: 'statutCommande', rang: RANG_COMMANDE, reserves: ['validee'], aval: ['transmise', 'livree', 'soldee'], detenu: ['validee', 'transmise', 'livree', 'soldee'], maxCreation: 1, quoi: 'une commande' },
+};
+function refusCircuitAchat(collection, type, champs, etatActuel) {
+  const c = CIRCUIT[collection];
+  if (!c) return null;
+  const nouveau = champs[c.champ];
+  if (type === 'creer') {
+    if (nouveau == null) return null;
+    const r = c.rang[nouveau];
+    if (r === undefined) return ['etat_inconnu', 'État inconnu : ' + nouveau + '.', 'Choisir un état du circuit'];
+    if (r > c.maxCreation) return ['arbitrage_requis', 'Un poste ne crée pas ' + c.quoi + ' déjà décidé (« ' + nouveau + ' ») : l’arbitrage ne s’écrit que par le dépôt du validateur, appliqué par la mère.', 'Créer le bon, puis le soumettre à l’arbitrage'];
+    return null;
+  }
+  if (nouveau == null || String(nouveau) === String(etatActuel)) return null;
+  const rn = c.rang[nouveau], ra = c.rang[etatActuel];
+  if (rn === undefined) return ['etat_inconnu', 'État inconnu : ' + nouveau + '.', 'Choisir un état du circuit'];
+  if (ra !== undefined && rn < ra) return ['etat_regressif', c.quoi + ' ne revient jamais en arrière : il est « ' + etatActuel + ' », il ne repasse pas à « ' + nouveau + ' ».', 'Établir un nouveau bon plutôt que de faire reculer celui-ci'];
+  if (c.reserves.includes(nouveau)) return ['arbitrage_reserve', 'L’état « ' + nouveau + ' » est le fait du validateur : il se DÉPOSE depuis son poste et la mère l’applique sous son rôle ; un poste ne l’écrit pas lui-même.', 'Déposer l’arbitrage depuis l’écran du circuit'];
+  if (c.aval.includes(nouveau) && !c.detenu.includes(etatActuel)) return ['arbitrage_requis', 'L’état « ' + nouveau + ' » suppose l’arbitrage, que la mère ne détient pas encore (état actuel : « ' + etatActuel + ' »).', 'Attendre la confirmation de la mère, puis reprendre'];
+  return null;
+}
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -158,6 +186,11 @@ function traiter(op, app) {
   if (op.type === 'supprimer') return refus('suppression_interdite', 'Aucune suppression physique (RG-14).', 'Archiver la fiche');
   if (fam === 'R' && app.role !== 'mere') return refus('droit_refuse', 'Un référentiel ne se modifie qu’à la console de la mère.', 'Demander la modification à l’administrateur');
   const f = lire(op.collection, op.fiche);
+  /* CIRCUITS D'ACHAT : la mère refait le contrôle de l'état d'un bon (jamais de régression, arbitrage réservé, aval qui suppose l'arbitrage). */
+  if (CIRCUIT[op.collection] && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
+    const r = refusCircuitAchat(op.collection, op.type, op.champs || {}, f && f.data ? f.data[CIRCUIT[op.collection].champ] : undefined);
+    if (r) return refus(r[0], r[1], r[2]);
+  }
   if (op.collection === 'demandesImport' && app.role !== 'mere') {
     const auteur = f ? auteurDemandeImport(op.fiche) : null;
     if (auteur && auteur !== app.uuid) return refus('demande_d_un_autre_poste', 'Cette demande d’import appartient à un autre poste : elle n’est ni lisible ni modifiable ici.', 'Déposer sa propre demande');
@@ -454,8 +487,10 @@ const routes = {
     const app = auth(req);
     const taille = Math.max(1, Math.min(+b.taille || 50, 1000));
     return tx(() => {
-      const debut = +meta('next_patient'); const fin = debut + taille - 1; setMeta('next_patient', fin + 1);
-      db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(app.uuid, b.nom || 'patients', debut, fin);
+      /* Un carnet PAR NOM (16/11/2026) : les dossiers gardent `next_patient`, les bons ont leur propre compteur. */
+      const nom = b.nom || 'patients'; const cle = nom === 'patients' ? 'next_patient' : 'next_plage_' + nom;
+      const debut = nom === 'patients' ? +meta(cle) : Math.max(1, +meta(cle) || 1, +b.minimum || 0); const fin = debut + taille - 1; setMeta(cle, fin + 1);
+      db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(app.uuid, nom, debut, fin);
       return { debut, fin };
     });
   },
