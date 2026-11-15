@@ -57,6 +57,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     verifier('la transmission suppose la validation DA : refusée tant que la mère ne la détient pas', await attendre(() => refus(f1, 'arbitrage_requis'), 15000));
     await admin('commandes', c.fiche, { statutCommande: 'validee', valideePar: 'La DAF', dateValidation: '2026-11-16' });
     await attendre(async () => ((await chez(f1, 'commandes', c.fiche)) || {}).statutCommande === 'validee', 15000);
+    await dormir(1200); /* le fileul écrit sa modification sur la VERSION VUE confirmée : lui laisser le temps de confirmer l'arbitrage qu'il vient de lire, sinon sa modification est lue comme concurrente */
     const tr = await f1.ecrire({ type: 'modifier', collection: 'commandes', fiche: c.fiche, champs: { statutCommande: 'transmise' } });
     verifier('validée par la mère, la commande part chez le fournisseur : la transmission voyage', tr.refus === undefined && await attendre(async () => ((await chezMere('commandes', c.fiche)) || {}).statutCommande === 'transmise', 15000), { tr, mere: await chezMere('commandes', c.fiche), f1: await chez(f1, 'commandes', c.fiche), etat: await f1.etat() });
 
