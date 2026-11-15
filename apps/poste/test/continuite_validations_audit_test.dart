@@ -34,8 +34,10 @@ void main() {
       'identiteLegale': 'R', 'obligationsFiscales': 'R', 'parametresAib': 'R',
       // activité synchronisée : le validateur écrit depuis n'importe quel poste
       'ecritures': 'A', 'presences': 'A', 'avoirs': 'A', 'factures': 'A', 'lecturesOcr': 'A',
+      // CIRCUITS D'ACHAT (16/11/2026) : le bon de besoins et la commande ont rejoint le pont ; l'arbitrage et la validation DA se déposent (genre `circuit_achat`) — preuve : `circuit_achats_sync_test.dart`
+      'besoins': 'A', 'commandes': 'A',
       // locale au poste : la validation ne traverse pas les postes tant que la collection ne rejoint pas le pont
-      'besoins': 'L', 'commandes': 'L', 'facturesFournisseurs': 'L', 'bulletins': 'L', 'depenses': 'L', 'clotures': 'L', 'planning': 'L',
+      'facturesFournisseurs': 'L', 'bulletins': 'L', 'depenses': 'L', 'clotures': 'L', 'planning': 'L',
       'demandesAnalyses': 'L', 'resultatsImagerie': 'L', 'demandesImagerie': 'L', 'pieces': 'L', 'documents': 'L', 'badges': 'L', 'seuilsDelta': 'L', 'cpa': 'L', 'crAnesthesie': 'L',
     };
     for (final e in attendu.entries) {

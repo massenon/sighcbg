@@ -240,8 +240,9 @@ const commandes = {
     return [200, { uuid: meta('uuid') }];
   },
   'POST /plage': async (b) => {
-    const j = await http1('POST', '/sync/plage', { nom: 'patients', taille: b.taille || 50 });
-    db.prepare("INSERT INTO plage(nom,prochain,fin) VALUES('patients',?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin").run(j.debut, j.fin);
+    const nom = b.nom || 'patients';
+    const j = await http1('POST', '/sync/plage', { nom, taille: b.taille || 50, minimum: b.minimum || 0 });
+    db.prepare("INSERT INTO plage(nom,prochain,fin) VALUES(?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin").run(nom, j.debut, j.fin);
     return [200, j];
   },
   'POST /bail': async (b) => {

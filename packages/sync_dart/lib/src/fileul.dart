@@ -370,8 +370,9 @@ class Fileul {
         etat.suspendu = false;
         return (200, {'uuid': uuid});
       case 'POST /plage':
-        final j = await http1('POST', '/sync/plage', {'nom': 'patients', 'taille': b['taille'] ?? 50, 'minimum': b['minimum'] ?? 0});
-        base.exec("INSERT INTO plage(nom,prochain,fin) VALUES('patients',?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin", [j['debut'], j['fin']]);
+        final nomPlage = '${b['nom'] ?? 'patients'}';
+        final j = await http1('POST', '/sync/plage', {'nom': nomPlage, 'taille': b['taille'] ?? 50, 'minimum': b['minimum'] ?? 0});
+        base.exec("INSERT INTO plage(nom,prochain,fin) VALUES(?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin", [nomPlage, j['debut'], j['fin']]);
         return (200, j);
       case 'POST /bail':
         final j2 = await http1('POST', '/sync/bail', {'article': b['article'], 'qte': b['qte']});

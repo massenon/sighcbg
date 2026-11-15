@@ -61,6 +61,54 @@ class ServiceValidationsDeposees {
     return r;
   }
 
+  /// CIRCUITS D'ACHAT (16/11/2026) : DÉPOSE l'arbitrage d'un besoin (`besoin_arbitrage`) ou la validation d'une commande (`commande_validation`). Même collection, même cycle de verdict,
+  /// même notification de l'auteur que la validation d'un référentiel : un seul mécanisme. Refus nommé (mêmes contrôles que l'application) ou le dépôt écrit.
+  VerdictDepot deposerCircuit(String famille, Fiche bon, {String decision = 'valider', String motif = '', required String role, required String acteur}) {
+    final r = circuitDeposer(
+        famille: famille,
+        bon: bon,
+        decision: decision,
+        motif: motif,
+        role: role,
+        acteur: acteur,
+        poste: etiquette,
+        maintenant: _maintenant,
+        besoins: magasin.collection('besoins').toutes,
+        commandes: magasin.collection('commandes').toutes,
+        depots: depots.toutes,
+        nouvelId: _nouvelId);
+    if (!r.ok || r.dejaDepose) return r;
+    try {
+      depots.ajouterSansJournal(r.fiche!, enTete: true);
+    } on EcritureRefusee catch (e) {
+      return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
+    }
+    magasin.collection(famille == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
+    magasin.journaliser('Validation transmise à la mère', famille == circuitBesoinArbitrage ? 'M7' : 'M7', r.fiche!['libelle'] as String, '${bon['reference']}', null,
+        {'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], 'décision': decision, if (motif.trim().isNotEmpty) 'motif': motif.trim()});
+    return r;
+  }
+
+  /// Le dépôt de circuit d'un bon qui attend encore la mère (`null` : aucun) : l'écran dit « transmis à la mère, en attente » et n'offre pas de second geste.
+  Fiche? depotCircuitEnAttente(String famille, Fiche bon) {
+    final cible = cleCircuit(bon);
+    for (final d in depots.toutes) {
+      if (d['statut'] != 'archive' && d['genre'] == valGenreCircuitAchat && d['famille'] == famille && d['cible'] == cible && d['etat'] == valDepotDeposee) return d;
+    }
+    return null;
+  }
+
+  /// Le dernier dépôt de circuit REFUSÉ par la mère pour ce bon (le motif nommé revient à l'auteur) ; `null` si aucun.
+  Fiche? depotCircuitRefuse(String famille, Fiche bon) {
+    final cible = cleCircuit(bon);
+    Fiche? dernier;
+    for (final d in depots.toutes) {
+      if (d['statut'] == 'archive' || d['genre'] != valGenreCircuitAchat || d['famille'] != famille || d['cible'] != cible) continue;
+      if (dernier == null || '${d['demandeLe']}'.compareTo('${dernier['demandeLe']}') >= 0) dernier = d;
+    }
+    return dernier != null && dernier['etat'] == valDepotRefusee ? dernier : null;
+  }
+
   /// Les écrans lisent l'ÉLÉMENT (l'acte, la variable, le barème), pas le registre des dépôts : un dépôt ou un verdict doit les repeindre, faute de quoi la commande « Valider » resterait
   /// offerte après le dépôt et le badge « en attente de la mère » n'apparaîtrait qu'au prochain geste.
   void _signaler(String famille) {
@@ -102,6 +150,7 @@ class ServiceValidationsDeposees {
       }, prefixe: 'NOT');
       depots.mettreAJour(d['id'], {'notifieLe': _maintenant.toUtc().toIso8601String()}, journaliser: false);
       _signaler('${d['famille']}');
+      if (d['genre'] == valGenreCircuitAchat) magasin.collection(d['famille'] == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
       n++;
     }
     return n;
@@ -150,6 +199,35 @@ class ServiceValidationsDeposees {
     _minuterieFileul = null;
   }
 
+  /// Applique UN dépôt de circuit sur la mère : sous le rôle et le nom de l'auteur, contrôles refaits avec les données de la mère (`circuitAppliquer`), date du geste, journal (RG-12).
+  /// Le bon écrit voyage aux fileuls par le pont d'activité ; les notifications du comptable et du gestionnaire de stock naissent de l'état du bon sur chaque poste (`ServiceCircuitAchats`).
+  bool _appliquerCircuit(Fiche d) {
+    final a = circuitAppliquer(d, besoins: magasin.collection('besoins').toutes, commandes: magasin.collection('commandes').toutes, maintenant: _maintenant);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    final e = a.ecriture;
+    if (e != null) {
+      try {
+        magasin.collection(e.collection).mettreAJour(e.ficheId, e.patch, journaliser: false);
+        magasin.journaliser(e.action, 'M7', e.entite, e.reference, null, {...e.apres, 'déposée par': d['demandePar'], 'appliquée par': auteurMere(), 'dépôt': d['id']});
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire le geste depuis l’écran du circuit.';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    return true;
+  }
+
   /// Traite, dans l'ordre des gestes, chaque dépôt `deposee`. Rend le nombre de dépôts traités. Ré-entrance refusée : le verdict que l'on écrit rappelle l'écoute.
   int traiter() {
     if (_traitement) return 0;
@@ -159,6 +237,10 @@ class ServiceValidationsDeposees {
       final attente = [for (final d in depots.toutes) if (d['etat'] == valDepotDeposee && d['statut'] != 'archive') d]
         ..sort((a, b) => '${a['demandeLe']}${a['id']}'.compareTo('${b['demandeLe']}${b['id']}'));
       for (final d in attente) {
+        if (d['genre'] == valGenreCircuitAchat) {
+          if (_appliquerCircuit(d)) n++;
+          continue;
+        }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);
         if (a == null) continue;
         var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;

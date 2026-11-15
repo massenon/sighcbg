@@ -4,3 +4,4 @@ library;
 export 'besoins.dart';
 export 'commandes.dart';
 export 'reception.dart';
+export 'circuit_synchro.dart';

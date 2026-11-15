@@ -35,7 +35,7 @@ class PlagesCodes {
   /// Les plages détenues par ce poste, la plus ancienne d'abord.
   List<Fiche> get plages => [
         for (final f in magasin.collection(collection).toutes)
-          if (f['statut'] != 'archive') f
+          if (f['statut'] != 'archive' && f['nom'] == null) f
       ]..sort((a, b) => (a['debut'] as num).compareTo(b['debut'] as num));
 
   /// Le numéro restant dans les plages détenues.
@@ -86,4 +86,76 @@ class PlagesCodes {
     unawaited(recharger(maintenant: maintenant));
     return 'PROV-${maintenant.millisecondsSinceEpoch.toRadixString(36).toUpperCase()}';
   }
+}
+
+
+/// LES NUMÉROS DE BONS NE SE CHEVAUCHENT JAMAIS ENTRE POSTES (Direction, 16/11/2026) : même mécanisme que les codes de dossier (plages reçues de la mère, un carnet PAR SÉRIE : `besoins`,
+/// `commandes`), mêmes règles. Deux fileuls hors ligne qui exprimaient chacun « le plus grand rang + 1 » produisaient deux `BEB-2026-0004` : avec une plage, chacun tire dans la sienne.
+/// Plage épuisée hors ligne : une référence PROVISOIRE (`BEB-2026-PROV-…`), unique par poste et par instant, qui ne ressemble à aucun numéro de série et que personne ne confondra ;
+/// elle n'est PAS renumérotée par la mère (un bon n'est pas une pièce certifiante ; la renuméroter romprait le lien avec le papier déjà remis au service). Les plages vivent dans la
+/// même collection locale que celles des dossiers, distinguées par le champ `nom`.
+class PlagesNumeros {
+  PlagesNumeros._(this.magasin);
+  final Magasin magasin;
+  static final Expando<PlagesNumeros> _par = Expando<PlagesNumeros>();
+  static PlagesNumeros de(Magasin m) => _par[m] ??= PlagesNumeros._(m);
+
+  /// Demande une plage à la mère : `(nom, taille, minimum) -> (début, fin)`. Posée par `main` quand le poste est rattaché ou mère ; absente sinon.
+  Future<(int, int)> Function(String nom, int taille, int minimum)? obtenir;
+
+  static const int seuilRecharge = 10;
+  static const int taillePlage = 50;
+  final Set<String> _enCours = {};
+
+  bool get actif => obtenir != null;
+
+  List<Fiche> plages(String nom) => [
+        for (final f in magasin.collection(PlagesCodes.collection).toutes)
+          if (f['statut'] != 'archive' && f['nom'] == nom) f
+      ]..sort((a, b) => (a['debut'] as num).compareTo(b['debut'] as num));
+
+  int restants(String nom) => plages(nom).fold(0, (n, f) => n + ((f['fin'] as num).toInt() - (f['prochain'] as num).toInt() + 1).clamp(0, 1 << 30));
+
+  static int _plusGrandRang(String prefixe, Iterable<Fiche> fiches) {
+    var max = 0;
+    for (final f in fiches) {
+      final r = '${f['reference'] ?? ''}';
+      if (!r.startsWith(prefixe)) continue;
+      final k = int.tryParse(r.substring(prefixe.length));
+      if (k != null && k > max) max = k;
+    }
+    return max;
+  }
+
+  Future<void> recharger(String nom, String prefixe, Iterable<Fiche> Function() fiches) async {
+    final demander = obtenir;
+    if (demander == null || _enCours.contains(nom) || restants(nom) > seuilRecharge) return;
+    _enCours.add(nom);
+    try {
+      final (debut, fin) = await demander(nom, taillePlage, _plusGrandRang(prefixe, fiches()) + 1);
+      magasin.collection(PlagesCodes.collection).ajouterSansJournal({'id': 'PLG-$nom-$debut', 'nom': nom, 'debut': debut, 'fin': fin, 'prochain': debut});
+    } catch (_) {
+      // Hors ligne ou mère arrêtée : on garde ce qu'on a.
+    } finally {
+      _enCours.remove(nom);
+    }
+  }
+
+  /// La prochaine référence de la série `nom` : le numéro suivant de la plage détenue, sinon (plage épuisée) une référence provisoire ; sans service de plage, la règle historique.
+  String reference(String nom, String prefixe, int largeur, Iterable<Fiche> existantes, {DateTime? maintenant}) {
+    if (!actif) return _historique(prefixe, largeur, existantes);
+    final col = magasin.collection(PlagesCodes.collection);
+    for (final p in plages(nom)) {
+      final n = (p['prochain'] as num).toInt();
+      if (n <= (p['fin'] as num).toInt()) {
+        col.appliquerDistante({...p, 'prochain': n + 1});
+        unawaited(recharger(nom, prefixe, () => magasin.collection(nom).toutes));
+        return '$prefixe${'$n'.padLeft(largeur, '0')}';
+      }
+    }
+    unawaited(recharger(nom, prefixe, () => magasin.collection(nom).toutes));
+    return '${prefixe}PROV-${(maintenant ?? DateTime.now()).millisecondsSinceEpoch.toRadixString(36).toUpperCase()}';
+  }
+
+  static String _historique(String prefixe, int largeur, Iterable<Fiche> existantes) => referenceAchatSuivante(prefixe, largeur, existantes);
 }

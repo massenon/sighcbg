@@ -16,6 +16,7 @@ import 'donnees/horssite_poste.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
 import 'sync/service_demandes_tarif.dart';
+import 'sync/service_circuit_achats.dart';
 import 'sync/service_validations_deposees.dart';
 import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
@@ -250,6 +251,8 @@ Future<void> main() async {
       ServiceValidationsDeposees.de(magasin)
         ..etiquette = 'M'
         ..demarrerMere();
+      // CIRCUITS D'ACHAT (16/11/2026) : les tâches du comptable et du gestionnaire de stock, et le verdict à l'auteur, naissent de l'ÉTAT du bon que ce poste détient.
+      ServiceCircuitAchats.de(magasin).demarrer();
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();
@@ -260,6 +263,7 @@ Future<void> main() async {
       final transport = TransportMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
       // La mère prend ses numéros de dossier dans le même carnet que les fileuls (RG-01).
       PlagesCodes.de(magasin).obtenir = transport.plage;
+      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => transport.plage(taille, minimum, nom: nom);
       ReservationStock.de(magasin)
         ..actif = true
         ..installer(magasin);
@@ -273,6 +277,7 @@ Future<void> main() async {
             ecrireFiche: (c, f, {required existe, required champs}) => moteur.ecrire(c, f, existe: existe, champs: champs),
             restaurerFiche: moteur.restaurer),
         enLectureSeule: collectionsDeLaMereSeule,
+        reservesAuMere: true,
         liaison: () async {
           final i = await moteur.instantane();
           return !i.horsLigne && !i.suspendu;
@@ -281,6 +286,7 @@ Future<void> main() async {
       ..demarrer();
     void demarrerPontFileul() {
       PlagesCodes.de(magasin).obtenir = (taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum);
+      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum, nom: nom);
       // Lot IMP-C : le verdict de la mère sur une demande d'import revient ici ; l'écriture locale du fileul est alors réglée (archivée si retenue, marquée « non retenue » sinon).
       ServiceDemandesImport.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
@@ -289,6 +295,7 @@ Future<void> main() async {
       ServiceValidationsDeposees.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
         ..demarrerFileul();
+      ServiceCircuitAchats.de(magasin).demarrer();
       ReservationStock.de(magasin)
         ..actif = true
         ..installer(magasin);

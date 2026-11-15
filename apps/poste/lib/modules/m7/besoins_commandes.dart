@@ -5,7 +5,10 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
+import '../../core/plages_codes.dart';
+import '../../core/service_installation.dart';
 import '../../kit/kit.dart';
+import '../../sync/service_validations_deposees.dart';
 import '../../shell/contexte_ecran.dart';
 import 'besoins_commun.dart';
 
@@ -192,7 +195,9 @@ class EcranCommandes extends StatelessWidget with EcranMaquette {
                       libelle: 'Consulter',
                       onPressed: () => _consulter(context, x)),
                   // LA VALIDATION RG-04 EST L'ACTE DE LA DIRECTRICE ADMINISTRATIVE — mais la maquette l'offre à tout profil qui écrit dans M7 (E72).
-                  if (x['statutCommande'] == 'attente_validation' && c.droit.editer)
+                  if (x['statutCommande'] == 'attente_validation' && c.droit.editer && ServiceValidationsDeposees.de(c.magasin).depotCircuitEnAttente(circuitCommandeValidation, x) != null)
+                    const BadgeSigh('Transmise à la mère, en attente', ton: TonSigh.info)
+                  else if (x['statutCommande'] == 'attente_validation' && c.droit.editer)
                     BoutonIcone(
                         icone: LucideIcons.shieldCheck,
                         libelle: 'Valider (DA)',
@@ -227,9 +232,20 @@ Future<void> _valider(BuildContext ecran, Fiche cm) async {
           'En application de la règle RG-04, cette validation autorise la transmission au fournisseur ${cm['fournisseurNom']} pour un montant de ${money(cm['montant'])}. L’opération est journalisée.',
       libelleOk: 'Valider la commande');
   if (!ok || !ecran.mounted) return;
+  // CONTINUITÉ DES VALIDATIONS (16/11/2026) : sur un fileul rattaché, la validation DA (RG-04) se DÉPOSE ; la mère l'applique sous le rôle de son auteur, contrôles refaits. La commande
+  // reste « en attente de validation » jusqu'à la confirmation : elle ne part jamais chez le fournisseur sur un dépôt seul.
+  if (ServiceInstallation.de(c.magasin).rattache) {
+    final d = ServiceValidationsDeposees.de(c.magasin).deposerCircuit(circuitCommandeValidation, cm, role: c.role, acteur: acteur(c).nom);
+    if (!d.ok) {
+      dire(ecran, d.refus!.motif, type: TypeToast.erreur);
+      return;
+    }
+    dire(ecran, 'Validation de la commande ${cm['reference']} transmise à la mère, en attente : la commande ne part pas chez le fournisseur avant la confirmation.', type: TypeToast.info, duree: const Duration(seconds: 8));
+    return;
+  }
   final annuler = c.magasin
       .collection('commandes')
-      .mettreAJour(cm['id'], validationCommande(jour: iso(c.aujourdhui)));
+      .mettreAJour(cm['id'], {...validationCommande(jour: iso(c.aujourdhui)), 'valideeParAgent': acteur(c).nom});
   dire(ecran, 'Commande validée par la Directrice Administrative.',
       type: TypeToast.succes, annuler: annuler);
 }
@@ -344,7 +360,9 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           type: TypeChamp.select,
           requis: true,
           options: [
-            for (final s in statutsCommande) OptionChamp(s.valeur, s.libelle)
+            // Sur un fileul rattaché, « Validée » ne se choisit pas (RG-04) : elle arrive par le dépôt appliqué par la mère.
+            for (final s in statutsCommande)
+              if (!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['commandes']!.contains(s.valeur) || widget.record?['statutCommande'] == s.valeur) OptionChamp(s.valeur, s.libelle)
           ]),
       const ChampDef(
           nom: 'observations',
@@ -378,7 +396,8 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           existante: widget.record,
           fournisseurs: c.magasin.collection('fournisseurs').actives,
           commandes: col.toutes,
-          jour: iso(c.aujourdhui));
+          jour: iso(c.aujourdhui),
+          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('commandes', 'BC-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
       return;

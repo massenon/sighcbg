@@ -95,7 +95,8 @@ _Commande commandeEnregistree(
     _Commande? existante,
     required Iterable<_Commande> fournisseurs,
     required Iterable<_Commande> commandes,
-    required String jour}) {
+    required String jour,
+    String Function()? referenceSuivante}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
   final v = {...saisie};
   final four =
@@ -105,7 +106,7 @@ _Commande commandeEnregistree(
   v['lignes'] = lignes;
   v['montant'] = montantCommande(lignes);
   if (existante == null) {
-    v['reference'] = referenceAchatSuivante('BC-2026-', 4, commandes);
+    v['reference'] = referenceSuivante != null ? referenceSuivante() : referenceAchatSuivante('BC-2026-', 4, commandes);
   }
   // E72/E74 : le statut choisi pose la validation de la DAF d'office, sauf si un validateur est déjà connu.
   final dejaValidee = existante != null &&

@@ -57,8 +57,8 @@ class MoteurFileul {
   }
 
   /// Demande à la mère une PLAGE de numéros de dossier (RG-01) ; rend `(début, fin)`. Refus nommé (`StateError`) si la mère ne répond pas ou refuse.
-  Future<(int, int)> demanderPlage({int taille = 50, int minimum = 0}) async {
-    final (statut, corps) = await _fileul.commande('POST /plage', {'taille': taille, 'minimum': minimum}, const {});
+  Future<(int, int)> demanderPlage({int taille = 50, int minimum = 0, String nom = 'patients'}) async {
+    final (statut, corps) = await _fileul.commande('POST /plage', {'nom': nom, 'taille': taille, 'minimum': minimum}, const {});
     if (statut >= 400 || corps is! Map) throw StateError('la mère n’a pas alloué de plage (réponse $statut)');
     return ((corps['debut'] as num).toInt(), (corps['fin'] as num).toInt());
   }
