@@ -309,6 +309,7 @@ class CentreNotifications extends ChangeNotifier {
     'patients',
     'avoirs',
     'admissions',
+    'couverturesAssurance',
     'notifications',
     'reglages',
   ];

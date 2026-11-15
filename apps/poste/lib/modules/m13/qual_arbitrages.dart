@@ -7,10 +7,8 @@ import '../../donnees/arbitrages_poste.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/tarifs_poste.dart';
 import '../../kit/kit.dart';
-import '../../kit/modale.dart' show confirmerAvecMotif;
 import '../../shell/contexte_ecran.dart';
 import '../cfg/tarifs_ecran.dart';
-import 'qual_commun.dart';
 
 /// LES ARBITRAGES À RENDRE du centre des validations (décisions du 16/11/2026). Deux sortes de lignes, aucune ne bloque personne :
 ///  * un PRIX EN DOUBLON (« Prix en doublon à arbitrer : CERT-APT ») : les deux candidats, « Garder celui-ci » archive l'autre avec motif (RG-14) — geste réservé de la matrice « décider un prix » ;
