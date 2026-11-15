@@ -239,6 +239,12 @@ final List<_Source> _sources = [
       ...par('avoirs', 'numeroEnDoublon', 'dbl-avo', 'Avoir au numéro en double', 'Une pièce émise ne se réécrit pas : la Direction tranche.', 'm8-facture-avoir', (f) => ou(f['numero'], f['id'])),
       ...par('ecritures', 'numeroEnDoublon', 'dbl-ecr', 'Écriture au numéro en double', 'Une pièce comptable ne se renumérote pas : le comptable tranche.', 'm12-ecritures', (f) => ou(f['numero'], f['id'])),
       ...par('admissions', 'litEnConflit', 'dbl-lit', 'Lit en conflit', 'Deux admissions actives sur le même lit : transférer l’un des patients.', 'm3-admissions', (f) => ou(f['lit'], f['id']), 'critique'),
+      // 16/11/2026 : deux couvertures OUVERTES pour un même patient (deux fileuls hors ligne). La DAF arbitre (clore l'une des deux, avec motif) ; en attendant, la prise en charge lit celle
+      // dont le début est le plus récent. Une ligne par patient, jamais bloquante.
+      for (final g in assCouverturesEnConflit([for (final f in m.collection('couverturesAssurance').actives) if (f['couvertureEnConflit'] == true) f]))
+        _Ligne('dbl-cov:${g.first['patientId']}', 'important', 'Conflit de couverture à arbitrer : ${ou(g.first['patientCode'], g.first['patient'])}',
+            'Deux couvertures sont ouvertes pour le même patient (${assLibelleConflitCouverture(g)}). La plus récente s’applique en attendant ; la DAF clôt l’une des deux, avec un motif, au centre des validations.',
+            'adm-validations', const ['da', 'direction', 'admin']),
       ...par('produits', 'stockNegatifDetecte', 'dbl-stk', 'Stock négatif détecté', 'Deux postes ont sorti le dernier exemplaire hors ligne (RG-03) : régulariser par un inventaire.', 'm6-stock-detail', (f) => ou(f['designation'], f['id']), 'critique'),
     ];
   }),
@@ -303,6 +309,7 @@ class CentreNotifications extends ChangeNotifier {
     'patients',
     'avoirs',
     'admissions',
+    'couverturesAssurance',
     'notifications',
     'reglages',
   ];

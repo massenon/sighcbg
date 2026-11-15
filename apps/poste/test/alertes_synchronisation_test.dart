@@ -26,6 +26,30 @@ void main() {
     expect(a.every((n) => n.lien == null || donnees.matrice.peutVoir('direction', n.lien!)), isTrue);
   });
 
+  test('16/11/2026 : deux couvertures ouvertes pour un même patient sont annoncées à la DAF, à la Direction et à l’administrateur — pas au caissier ; une seule ou une close : rien', () {
+    Magasin avec(List<Map<String, Object?>> couvertures) {
+      final m = Magasin({}, 'POSTE', {});
+      for (final c in couvertures) {
+        m.collection('couverturesAssurance').inserer({'statut': 'actif', 'patientId': 'P1', 'patientCode': 'CBG/7/26', 'assureurNom': 'NSIA', ...c});
+      }
+      return m;
+    }
+
+    List<AlerteNotif> lues(Magasin m, String role) => pour(m, role).where((n) => n.titre.startsWith('Conflit de couverture')).toList();
+    // Le marqueur est DÉDUIT par le pont d'activité à chaque application d'opérations ; la source ne lit que le marqueur ET revérifie le conflit.
+    final conflit = avec([
+      {'debut': '2026-10-01', 'couvertureEnConflit': true},
+      {'debut': '2026-11-01', 'couvertureEnConflit': true},
+    ]);
+    for (final r in ['da', 'direction', 'admin']) {
+      expect(lues(conflit, r).single.titre, 'Conflit de couverture à arbitrer : CBG/7/26', reason: r);
+      expect(lues(conflit, r).single.lien, 'adm-validations');
+    }
+    expect(lues(conflit, 'caissier'), isEmpty);
+    expect(lues(avec([{'debut': '2026-10-01', 'couvertureEnConflit': true}]), 'da'), isEmpty, reason: 'une seule couverture ouverte : pas de conflit');
+    expect(lues(avec([{'debut': '2026-10-01', 'fin': '2026-10-31', 'couvertureEnConflit': true}, {'debut': '2026-11-01', 'couvertureEnConflit': true}]), 'da'), isEmpty, reason: 'une couverture close n’est pas un conflit');
+  });
+
   test('le caissier ne reçoit rien : il ne tranche pas', () => expect(pour(avecMarqueurs(), 'caissier'), isEmpty));
 
   test('sans marqueur, aucune alerte (jamais un doublon inventé)', () => expect(pour(Magasin({}, 'POSTE', {}), 'direction'), isEmpty));

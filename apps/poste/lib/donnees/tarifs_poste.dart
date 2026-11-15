@@ -407,6 +407,96 @@ class TarifsPoste {
     return r.tarifs.length;
   }
 
+  /// DÉCISION DU 16/11/2026 : une analyse CRÉÉE au catalogue du laboratoire OUVRE aussitôt son identité de prix au référentiel unique (famille LABO, code d'analyse = code de la prestation), SANS AUCUNE
+  /// version : état « sans prix en vigueur, à valider ». Elle n'est donc pas facturable (refus nommé `TARIF_A_VALIDER`, jamais un zéro) jusqu'au Oui de la DAF, qui la tarife par le circuit
+  /// habituel (proposition, puis Oui ou Non). La DAF est PRÉVENUE (une notification de poste, une seule par analyse). La mère seule écrit (famille R) ; l'opération est rejouable : une analyse déjà
+  /// dotée d'une prestation (code d'analyse ou alias) n'est pas touchée. Rend les codes ouverts.
+  static List<String> assurerAnalyses(Magasin m, {DateTime Function()? horloge}) {
+    final h = lire(m);
+    // Référentiel absent (poste neuf, avant la reprise) : on n'invente rien, la reprise des prix s'en chargera avec ses propres règles.
+    if (h.vide) return const [];
+    final ouverts = <String>[];
+    for (final a in m.collection('analyses').actives) {
+      final code = '${a['code'] ?? ''}'.trim();
+      if (code.isEmpty || h.parAnalyse[code] != null || h.parCode[code] != null) continue;
+      final libelle = '${a['designation'] ?? a['libelle'] ?? code}';
+      m.collection(tarCollectionTarifs).inserer({
+        'id': code,
+        'code': code,
+        'codeAnalyse': code,
+        'libelle': libelle,
+        'famille': 'LABO',
+        'statut': 'actif',
+        'source': 'Ouverte à la création de l’analyse au catalogue du laboratoire, sans prix (décision du 16/11/2026)',
+      });
+      m.journaliser('Analyse créée sans prix : prestation ouverte', 'CFG', 'prix', code, null, {'libelle': libelle, 'état': 'sans prix en vigueur, à valider'});
+      final dejaPrevenue = m.collection('notifications').toutes.any((n) => n['type'] == 'prix_a_tarifer' && n['reference'] == code && n['statut'] != 'archive');
+      if (!dejaPrevenue) {
+        m.collection('notifications').inserer({
+          'type': 'prix_a_tarifer',
+          'poste': 'da',
+          'destinataire': null,
+          'libelle': 'Analyse sans prix à tarifer : $libelle',
+          'detail': 'L’analyse « $libelle » ($code) vient d’être créée au catalogue du laboratoire. Elle n’est pas facturable tant que son prix n’est pas arrêté : « Tarifs et prix », onglet Sans prix (proposition, puis Oui).',
+          'priorite': 'normale',
+          'reference': code,
+          'lue': false,
+          'creeLe': (horloge ?? DateTime.now)().toUtc().toIso8601String(),
+          'statut': 'actif',
+        }, prefixe: 'NOT');
+      }
+      ouverts.add(code);
+    }
+    return ouverts;
+  }
+
+  // --- Les prix EN DOUBLON : l'arbitrage de la Direction (16/11/2026) -------------------------------------------------------------------------------------
+
+  /// Les codes de prestation portés deux fois, aux prix différents, par une liste de départ (`catalogueTarifs`, `actes`) : à arbitrer. La caisse lit, tant que rien n'est arbitré, la première ligne.
+  static List<TarDoublonPrix> doublonsPrix(Magasin m) => [
+        for (final c in tarListesDeDepart.keys) ...tarDoublonsPrix(c, m.collection(c).toutes),
+      ];
+
+  /// « Garder celui-ci » : ARCHIVE les autres lignes du code (RG-14, motif, auteur et date portés sur la fiche, une ligne de journal) ; si le prix gardé n'est pas celui que le référentiel lit, il est
+  /// proposé par le circuit ordinaire (date d'effet aujourd'hui, validé en un geste par celui qui arbitre : il détient le geste de décider) AVANT toute archive — un refus du moteur (pièce émise,
+  /// proposition en attente…) ne laisse rien d'écrit. La MÈRE seule écrit (famille R) ; un fileul reçoit le refus nommé.
+  IssueTarif arbitrerDoublon(TarDoublonPrix d, Object? gardeId, String motif) {
+    if (fileul) return IssueTarif(refus: tarRefusFileul());
+    final p = d.collection == 'catalogueTarifs' ? h.parGrille[d.code] : h.parActe[d.code];
+    final s = p == null ? null : h.instantane(p, aujourdhui);
+    final r = tarArbitrerDoublon(d,
+        gardeId: gardeId, motif: motif, peutDecider: peutDecider, prixEnVigueurNA: s?.na, prixEnVigueurA: s?.pa, assureEnVigueurMontant: s?.etatAssure == 'montant');
+    if (!r.ok) return IssueTarif(refus: RefusTarif(r.code!, r.motif!, r.geste!));
+    Map<String, Object?>? version;
+    final prix = r.prixAProposer;
+    if (prix != null && p != null) {
+      final i = proposer(DemandeProposition(
+          code: '${p['code']}',
+          prixNonAssure: prix['prixNonAssure'],
+          prixAssure: prix['prixAssure'],
+          etatAssure: '${prix['etatAssure']}',
+          dateEffet: aujourdhui,
+          motif: 'Arbitrage de la Direction (prix en doublon) : ${motif.trim()}',
+          valider: true));
+      if (!i.ok) return i;
+      version = i.version;
+    }
+    final col = m.collection(d.collection);
+    for (final f in r.aArchiver) {
+      col.mettreAJour(f['id'], {'motifArchivage': motif.trim(), 'archivePar': auteur(), 'archiveLe': aujourdhui, 'arbitrageDoublonGarde': r.garde!['id']}, journaliser: false);
+      col.archiver(f['id']);
+    }
+    m.journaliser('Arbitrage d’un prix en doublon', 'CFG', 'prix', d.code, null, {
+      'gardé': r.garde!['id'],
+      'archivées': [for (final f in r.aArchiver) f['id']].join(', '),
+      'par': auteur(),
+      'motif': motif.trim().length > 60 ? motif.trim().substring(0, 60) : motif.trim(),
+      if (version != null) 'version': version['id'],
+    });
+    projeter(m, (_horloge)());
+    return IssueTarif(version: version);
+  }
+
   /// Le prix d'achat (et le prix de vente DÉRIVÉ, RG-02) d'un produit à la date de la PIÈCE : jamais la fiche, jamais l'horloge au moment du calcul. Un prix absent n'est pas zéro.
   static PrixProduit prixProduit(Magasin m, Map<String, Object?> produit, {required DateTime aujourdhui, Object? date}) => tarPrixProduit(lire(m), produit, date, aujourdhui: tarIso(aujourdhui));
 

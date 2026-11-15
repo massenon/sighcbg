@@ -23,7 +23,6 @@ const _colonneDuRefusGarantie = {
   'PLAFOND_INVALIDE': 'Plafond (FCFA)',
   'UNITE_PLAFOND_REQUISE': 'Unité du plafond',
   'DATE_EFFET_REQUISE': 'Date d’effet',
-  'VERSION_MEME_DATE': 'Date d’effet',
   'VERSION_ANTERIEURE': 'Date d’effet',
   'FACTURE_DEJA_EMISE': 'Date d’effet',
   'SERIE_EXISTANTE': 'Date d’effet',

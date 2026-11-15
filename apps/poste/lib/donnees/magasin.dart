@@ -655,7 +655,7 @@ class Magasin {
         }
         migrationGaranties = m;
         journaliser('Migration', 'M9', 'Garantie', 'rang de version', null,
-            {'series': m.series, 'versionsPosees': m.versionsPosees, 'doublonsSansDate': m.doublons, 'dateEffet': 'inchangée : depuis l’ouverture'});
+            {'series': m.series, 'versionsPosees': m.versionsPosees, 'doublonsSansDate': m.doublons, 'doublonsALecturePlusRecente': m.doublonsChangeant, 'dateEffet': 'inchangée : depuis l’ouverture'});
       }
     }
     return col;

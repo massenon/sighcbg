@@ -201,6 +201,8 @@ Future<void> main() async {
   if (!(params.rejoint && params.mode != ModePoste.mere)) {
     TarifsPoste.assurerProduits(magasin);
     TarifsPoste.projeterProduits(magasin, DateTime.now());
+    // Une analyse créée au catalogue sans identité de prix l'obtient (« sans prix, à valider ») et la DAF en est prévenue.
+    TarifsPoste.assurerAnalyses(magasin);
   }
   // LA MATRICE EN FORCE, lue à chaque évaluation : la graine engendrée plus les décisions de droits du magasin. Ni l'échange entre pairs ni le jugement des décisions
   // par la mère ne capturent une matrice au démarrage (une capture serait figée au jour du lancement).

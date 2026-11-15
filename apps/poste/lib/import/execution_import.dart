@@ -61,6 +61,8 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
     TarifsPoste.assurerProduits(c.magasin);
     TarifsPoste.projeterProduits(c.magasin, c.aujourdhui);
   }
+  // Une analyse créée par un import ouvre son identité de prix « sans prix, à valider » (mère seule) et prévient la DAF.
+  if (r.ok && j.cibles.contains('analyses') && !ServiceInstallation.de(c.magasin).rattache) TarifsPoste.assurerAnalyses(c.magasin);
   return (resultat: r, demande: null);
 }
 

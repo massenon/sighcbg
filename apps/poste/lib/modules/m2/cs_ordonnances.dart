@@ -526,12 +526,15 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
       return;
     }
     final envois = [
+      if (res.refus.isNotEmpty)
+        // 16/11/2026 : une ligne sans prix en vigueur n'est jamais écrite à 0 ; elle est refusée en le nommant, le reste de l'ordonnance passe.
+        'NON PRESCRIT (tarif à valider) : ${res.refus.map((r) => r['libelle']).join(', ')}',
       if (res.demandes.isNotEmpty) '${res.demandes.length} demande(s) au laboratoire',
       if (med.isNotEmpty) 'pharmacie informée',
       'facture ${res.facture['numero']} en attente à la caisse',
     ];
     ToastsSigh.afficher(context, 'Ordonnance ${res.ordonnance['numero']} transmise.',
-        type: TypeToast.succes, detail: envois.join(' · '), duree: const Duration(seconds: 9));
+        type: res.refus.isEmpty ? TypeToast.succes : TypeToast.attention, detail: envois.join(' · '), duree: const Duration(seconds: 12));
     CsNav.vider();
     c.aller(_retour);
   }

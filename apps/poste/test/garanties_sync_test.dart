@@ -136,6 +136,22 @@ void main() {
     expect(garantiesEnVigueur(versions, '2027-06-01').single['taux'], 60);
     await converger(() => mf.collection('garanties').actives.where((g) => g['souscripteurId'] == sous['id'] && g['version'] == 2).isNotEmpty && mf.collection(demandesImportCollection).parId(r2.demande)?['marquageLeve'] == true, 'le fileul reçoit la v2');
 
+    // 2b. DÉCISION DU 16/11/2026 : une seconde saisie à la MÊME date d'effet est une correction de la première. La mère la pose (v3, `corrige` = la v2), la v2 reste écrite telle quelle, et
+    // la lecture à cette date — chez la mère comme chez le fileul — rend la DERNIÈRE ligne saisie. (Avant la décision : refus `VERSION_MEME_DATE`.)
+    final r3 = svcF.importerEtDemander(jeuGaranties, verifier([ligne('2027-06-01', 55, 3500)]), profil: profilDaf, nomAgent: 'LA DAF');
+    expect(r3.resultat.ok, isTrue, reason: '${r3.resultat.code} ${r3.resultat.motif}');
+    await converger(() => mf.collection(demandesImportCollection).parId(r3.demande)?['etat'] == demandeImportAppliquee, 'verdict de la mère (correction à la même date)');
+    final apresCorrection = assVersionsGarantie(mm.collection('garanties').actives, sous['id'], 'consultation', 'Consultation généraliste');
+    expect(apresCorrection.map((g) => g['version']), [1, 2, 3]);
+    expect(apresCorrection[1]['taux'], 60, reason: 'la version corrigée reste écrite telle quelle');
+    expect(apresCorrection[2]['corrige'], apresCorrection[1]['id']);
+    expect(garantiesEnVigueur(apresCorrection, '2027-06-01').single['taux'], 55, reason: 'à date égale, la dernière saisie l’emporte (mère)');
+    expect(garantiesEnVigueur(apresCorrection, '2027-03-01').single['taux'], 80, reason: 'la v1 reste lue avant la date');
+    await converger(() => mf.collection('garanties').actives.where((g) => g['souscripteurId'] == sous['id'] && g['version'] == 3).isNotEmpty, 'le fileul reçoit la correction');
+    final cheFileul = assVersionsGarantie(mf.collection('garanties').actives, sous['id'], 'consultation', 'Consultation généraliste');
+    expect(garantiesEnVigueur(cheFileul, '2027-06-01').single['taux'], 55, reason: 'à date égale, la dernière saisie l’emporte (fileul : même lecture, mêmes identifiants)');
+    // Le même jour qu'une pièce émise sous la grille : le refus nommé reste (on ne réécrit jamais la garantie sous laquelle une pièce a été émise) — éprouvé au domaine (`FACTURE_DEJA_EMISE`).
+
     // 3. Une version datée ne se réécrit pas, même à la mère.
     expect(() => mm.collection('garanties').mettreAJour(versions.first['id'], {'taux': 10}), throwsA(isA<EcritureRefusee>()));
 

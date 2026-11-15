@@ -287,7 +287,7 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
   void _nouvelleVersion(BuildContext ctx, ContexteEcran c, AssSerieGarantie serie) {
     final base = serie.enVigueur ?? serie.aVenir!;
     final ctl = ControleurFormulaire([
-      const ChampDef(nom: 'dateEffet', libelle: 'Date d’effet', type: TypeChamp.date, requis: true, aide: 'Le jour où les nouvelles valeurs s’appliquent. Les pièces antérieures gardent les valeurs de leur date.'),
+      const ChampDef(nom: 'dateEffet', libelle: 'Date d’effet', type: TypeChamp.date, requis: true, aide: 'Le jour où les nouvelles valeurs s’appliquent. Les pièces antérieures gardent les valeurs de leur date. Une seconde saisie à la même date corrige la première (la dernière l’emporte ; la première reste écrite), tant qu’aucune facture n’a été émise sous cette date.'),
       const ChampDef(nom: 'taux', libelle: 'Taux (%)', type: TypeChamp.nombre, requis: true),
       const ChampDef(nom: 'plafond', libelle: 'Plafond (FCFA)', type: TypeChamp.nombre, aide: 'Vide : sans plafond.'),
       ChampDef(nom: 'unitePlafond', libelle: 'Unité du plafond', type: TypeChamp.select, indicatif: '— Sans plafond —', options: [for (final u in assUnitesPlafond.entries) OptionChamp(u.key, u.value)]),
@@ -304,7 +304,7 @@ class EcranConventions extends StatelessWidget with EcranMaquette {
         taille: TailleModale.lg,
         corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           NoteSigh(
-              'La version actuelle (${base['taux']} %, ${_plafondTexte(base)}) reste écrite : une pièce émise garde son taux. La date d’effet doit être postérieure à la dernière version et à la dernière facture émise sous cette grille.',
+              'La version actuelle (${base['taux']} %, ${_plafondTexte(base)}) reste écrite : une pièce émise garde son taux. La date d’effet ne peut pas précéder la dernière version (la même date la corrige) ni la dernière facture émise sous cette grille.',
               icone: LucideIcons.history),
           const SizedBox(height: 12),
           FormulaireSigh(controleur: ctl),

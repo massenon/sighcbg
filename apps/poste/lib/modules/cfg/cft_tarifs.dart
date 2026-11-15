@@ -235,6 +235,8 @@ class _EtatTarifs extends State<EcranTarifsEtPrix> {
                     construire: (_) => _OngletPrestations(c: c, familles: [for (final f in _famillesPrestations) f.$1], note: _notePrestations, vide: 'Aucune prestation dans cette famille.')),
                 OngletDef(id: 'analyses', libelle: 'Analyses', compte: nb(const ['LABO']), construire: (_) => _OngletAnalyses(c: c)),
                 OngletDef(id: 'imagerie', libelle: 'Imagerie', compte: nb(const ['IMAGERIE']), construire: (_) => _OngletImagerie(c: c)),
+                // 16/11/2026 : « prestations sans prix » : toute prestation (acte, analyse créée au catalogue, imagerie, certificat…) sans prix en vigueur, avec son circuit : proposer, puis Oui ou Non.
+                OngletDef(id: 'sansprix', libelle: 'Sans prix', compte: sansPrix, construire: (_) => _OngletSansPrix(c: c)),
                 OngletDef(id: 'produits', libelle: 'Produits', compte: produits.length, construire: (_) => _OngletProduits(c: c)),
                 OngletDef(id: 'alertes', libelle: 'Alertes', compte: enAttente.length, construire: (_) => _OngletAlertes(c: c, peutDecider: peutDecider)),
                 OngletDef(id: 'historique', libelle: 'Historique', construire: (_) => _OngletHistorique(c: c)),
@@ -370,6 +372,25 @@ class _OngletAnalyses extends StatelessWidget {
       _TableauPrestations(c: c, lignes: _lignes(c, (p) => p['famille'] == 'LABO'), vide: 'Aucune analyse.'),
     ], espace: 12);
   }
+}
+
+/// L'onglet « Sans prix » : les prestations dont AUCUN prix n'est en vigueur (une analyse créée au catalogue y arrive d'elle-même). Elles ne se facturent pas (refus nommé « tarif à valider »,
+/// jamais un zéro) ; la DAF les tarife ici par le circuit ordinaire : « Proposer un changement », puis Oui ou Non.
+class _OngletSansPrix extends StatelessWidget {
+  const _OngletSansPrix({required this.c});
+  final ContexteEcran c;
+
+  @override
+  Widget build(BuildContext context) => cfaPile([
+        const NoteSigh(
+            'Prestations sans prix en vigueur : une ligne de ce genre n’est jamais écrite à 0, elle est refusée à la prescription avec le message « tarif à valider », sans bloquer le reste de l’ordonnance. Pour la rendre facturable : « Proposer un changement » (prix et date d’effet), puis le Oui de la personne qui décide les prix. Une analyse créée au catalogue du laboratoire arrive ici toute seule.',
+            ton: TonSigh.attention,
+            icone: LucideIcons.triangleAlert),
+        _TableauPrestations(
+            c: c,
+            lignes: _lignes(c, (p) => TarifsPoste.lire(c.magasin).instantane(p, _jour(c)) == null),
+            vide: 'Aucune prestation sans prix : tout ce qui se prescrit a un prix en vigueur.'),
+      ], espace: 12);
 }
 
 class _OngletImagerie extends StatelessWidget {
