@@ -220,7 +220,7 @@
      }
     ],
     "montantEstime": 19200,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0002",
@@ -243,7 +243,7 @@
      }
     ],
     "montantEstime": 33000,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0003",
@@ -266,7 +266,7 @@
      }
     ],
     "montantEstime": 1984,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0004",
@@ -330,7 +330,7 @@
      }
     ],
     "montantEstime": 177126,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0006",
@@ -353,7 +353,7 @@
      }
     ],
     "montantEstime": 15849,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0007",
@@ -458,7 +458,7 @@
      }
     ],
     "montantEstime": 9900,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0010",
@@ -558,7 +558,7 @@
      }
     ],
     "montantEstime": 42346,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0012",
@@ -722,7 +722,7 @@
      }
     ],
     "montantEstime": 55622,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0016",
@@ -772,7 +772,7 @@
      }
     ],
     "montantEstime": 350700,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0017",
@@ -822,7 +822,7 @@
      }
     ],
     "montantEstime": 290286,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0018",
@@ -845,7 +845,7 @@
      }
     ],
     "montantEstime": 11250,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0019",
@@ -895,7 +895,7 @@
      }
     ],
     "montantEstime": 68606,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    {
     "id": "BEB0020",
@@ -2302,9 +2302,9 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TACHEDI Arialu",
+     "arbitrePar": "Directrice administrative",
      "motifArbitrage": null,
-     "valideePar": "TACHEDI Arialu"
+     "valideePar": "Directrice administrative"
     },
     "notifications": [
      {
@@ -2403,9 +2403,9 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TACHEDI Arialu",
+     "arbitrePar": "Directrice administrative",
      "motifArbitrage": "Budget disponible",
-     "valideePar": "TACHEDI Arialu"
+     "valideePar": "Directrice administrative"
     },
     "notifications": [
      {
@@ -2504,7 +2504,7 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TACHEDI Arialu",
+     "arbitrePar": "Directrice administrative",
      "motifArbitrage": "Déjà en stock",
      "valideePar": null
     },
@@ -2669,7 +2669,7 @@
       }
      ],
      "montantEstime": 11500,
-     "arbitrePar": "TACHEDI Arialu",
+     "arbitrePar": "Directrice administrative",
      "motifArbitrage": "Préciser la marque",
      "valideePar": null
     },
@@ -3198,7 +3198,7 @@
      ],
      "montantEstime": 6500,
      "reference": "BEB-2026-0024",
-     "valideePar": "TACHEDI Arialu"
+     "valideePar": "Directrice administrative"
     },
     "ouverte": false,
     "toasts": [
@@ -3279,7 +3279,7 @@
      ],
      "montantEstime": 4000,
      "reference": "BEB-2026-0025",
-     "valideePar": "TACHEDI Arialu"
+     "valideePar": "Directrice administrative"
     },
     "ouverte": false,
     "toasts": [
@@ -3520,7 +3520,7 @@
     ],
     "montantEstime": 6500,
     "urgent": false,
-    "valideePar": "TACHEDI Arialu"
+    "valideePar": "Directrice administrative"
    },
    "toasts": [
     {

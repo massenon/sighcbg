@@ -65,6 +65,23 @@ const RACINES_NOMS = ['apps', 'packages', 'docs', 'tools'];
 const BLANCHE_NOMS = new Set(['tools/baguidi/pseudonymiser.mjs', 'tools/baguidi/noms-origine.json']);
 // Le jeu LIVRÉ ne porte aucun pseudonyme de test.
 const JEU_LIVRE = 'apps/poste/assets/donnees/jeu';
+// CLIQUET « aucune personne en dur dans le code » (17/11/2026) : ces fichiers portent encore un NOM D'EXEMPLE (aide à la saisie, profils de démonstration du mobile,
+// coordonnées de l'éditeur), pas une règle métier. La liste ne peut que DÉCROÎTRE ; tout autre fichier de lib qui porte un nom de personne fait échouer le contrôle.
+const EXEMPLES_TOLERES = new Set([
+  'apps/poste/lib/mere/console.dart',
+  'apps/poste/lib/modules/m10/rhc_evenements.dart',
+  'apps/poste/lib/modules/m2/cr_saisie.dart',
+  'apps/poste/lib/modules/m2/img_demandes.dart',
+  'apps/poste/lib/modules/m3/bloc_demande_examen.dart',
+  'apps/poste/lib/modules/m5/dem_registre.dart',
+  'apps/poste/lib/modules/mere/mra_affectation.dart',
+  'apps/poste/lib/modules/mere/mra_supervision.dart',
+  'packages/domaine/lib/src/acces/acc_support.dart',
+  'packages/domaine/lib/src/configuration/cfa_regles.dart',
+  'packages/domaine/lib/src/format/recherche.dart',
+  'packages/domaine/lib/src/import/jeux_import.dart',
+  'packages/domaine/lib/src/mobile/mob_suite_donnees.dart',
+]);
 
 const AVEC_NOMS = (p) => p.startsWith('apps/poste/lib') || p.startsWith('packages/domaine/lib') || p.startsWith('apps/mobile') || p.startsWith('apps/web');
 let trouvailles = 0, ignores = 0;
@@ -92,9 +109,9 @@ function passeNoms(p) {
   lignes.forEach((l, i) => {
     const nom = nomDOrigine(l);
     if (nom) { nomsTrouves++; console.log(`${p}:${i + 1}: nom d'origine « ${nom} »`); return; }
-    if (p.startsWith(JEU_LIVRE)) {
+    if (p.startsWith(JEU_LIVRE) || (/^(apps|packages)\/[^\/]+\/lib\//.test(p) && !EXEMPLES_TOLERES.has(p))) {   // aucune PERSONNE en dur dans le code (jeu livré ou lib) : l'agent vient de la session, du personnel ou du rôle
       const ps = pseudonyme(l);
-      if (ps) { nomsTrouves++; console.log(`${p}:${i + 1}: pseudonyme de test « ${ps} » dans le jeu livré`); }
+      if (ps) { nomsTrouves++; console.log(`${p}:${i + 1}: pseudonyme de test « ${ps} » dans le code ou le jeu livré`); }
     }
   });
 }

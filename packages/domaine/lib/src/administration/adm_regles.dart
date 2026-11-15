@@ -307,7 +307,7 @@ List<AdmFiche> admAmorcerPlan() {
         'trimestreDebut': a.$3,
         'trimestreFin': a.$4,
         'avancement': a.$5,
-        'responsable': a.$2 == 'Finance' ? 'KALOU Avolutu' : (a.$2 == 'Logistique' ? 'METIAVI Zobo' : 'TACHEDI Arialu'),
+        'responsable': a.$2 == 'Finance' ? 'Responsable financier' : (a.$2 == 'Logistique' ? 'Responsable logistique' : 'Directrice administrative'),
       }
   ];
 }

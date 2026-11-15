@@ -387,7 +387,7 @@ void main() {
       await toucher(t, bouton('Valider la commande'));
       final c = m.collection('commandes').toutes.firstWhere((x) => x['reference'] == 'BC-TEST-1');
       expect(c['statutCommande'], 'validee');
-      expect(c['valideePar'], 'TACHEDI Arialu');
+      expect(c['valideePar'], 'Directrice administrative');
       expect(c['dateValidation'], '2026-10-30');
       await toucher(t, find.text('Annuler').last);
       final apres = m.collection('commandes').toutes.firstWhere((x) => x['reference'] == 'BC-TEST-1');
@@ -437,7 +437,7 @@ void main() {
         (t) async {
       final m = magasin();
       commande(m, 'BC-TEST-ATTENTE', 'attente_validation');
-      commande(m, 'BC-TEST-VALIDEE', 'validee', valideePar: 'TACHEDI Arialu');
+      commande(m, 'BC-TEST-VALIDEE', 'validee', valideePar: 'Directrice administrative');
       await ouvrir(t, m, 'm7-receptions', role: 'stock');
       expect(find.text('BC-TEST-VALIDEE'), findsOneWidget);
       expect(find.text('BC-TEST-ATTENTE'), findsNothing);
@@ -452,7 +452,7 @@ void main() {
           'fournisseurNom': 'CAME — Centrale d’Achat des Médicaments Essentiels',
           'delaiLivraison': 7,
           'statutCommande': 'validee',
-          'valideePar': 'TACHEDI Arialu',
+          'valideePar': 'Directrice administrative',
           'statut': 'actif',
           'lignes': [
             {

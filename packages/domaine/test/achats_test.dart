@@ -119,7 +119,7 @@ void main() {
         if (exige && '${a['motif']}'.isEmpty) {
           expect(
               () => arbitrerBon(
-                  bon: avant, quoi: quoi, utilisateur: 'TACHEDI Arialu', maintenant: 'X'),
+                  bon: avant, quoi: quoi, utilisateur: 'Directrice administrative', maintenant: 'X'),
               throwsA(isA<RefusAchat>().having((e) => e.motif, 'motif', toast['message'])));
           // rien n'est écrit : le bon d'avant est le bon d'après
           memes(apres, avant, 'refus');
@@ -130,7 +130,7 @@ void main() {
             bon: avant,
             quoi: quoi,
             motif: '${a['motif']}',
-            utilisateur: 'TACHEDI Arialu',
+            utilisateur: 'Directrice administrative',
             maintenant: '2026-10-30T10:00:00.000Z');
         final obtenu = {...avant, ...r.patch}..remove('arbitreLe');
         memes(obtenu, apres, 'bon');

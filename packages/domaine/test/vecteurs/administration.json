@@ -2233,7 +2233,7 @@
     "date": "2026-10-30",
     "heure": "09:00",
     "lieu": "Clinique",
-    "responsable": "KALOU Avolutu",
+    "responsable": "Responsable financier",
     "notifier": true,
     "canaux": [
      "In-app"
@@ -2924,7 +2924,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 4,
     "avancement": "En cours",
-    "responsable": "TACHEDI Arialu"
+    "responsable": "Directrice administrative"
    },
    {
     "id": "PAT002",
@@ -2935,7 +2935,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 1,
     "avancement": "Réalisée",
-    "responsable": "METIAVI Zobo"
+    "responsable": "Responsable logistique"
    },
    {
     "id": "PAT003",
@@ -2946,7 +2946,7 @@
     "trimestreDebut": 3,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "TACHEDI Arialu"
+    "responsable": "Directrice administrative"
    },
    {
     "id": "PAT004",
@@ -2957,7 +2957,7 @@
     "trimestreDebut": 4,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "KALOU Avolutu"
+    "responsable": "Responsable financier"
    },
    {
     "id": "PAT005",
@@ -2968,7 +2968,7 @@
     "trimestreDebut": 1,
     "trimestreFin": 2,
     "avancement": "Réalisée",
-    "responsable": "TACHEDI Arialu"
+    "responsable": "Directrice administrative"
    },
    {
     "id": "PAT006",
@@ -2979,7 +2979,7 @@
     "trimestreDebut": 2,
     "trimestreFin": 3,
     "avancement": "En cours",
-    "responsable": "TACHEDI Arialu"
+    "responsable": "Directrice administrative"
    },
    {
     "id": "PAT007",
@@ -2990,7 +2990,7 @@
     "trimestreDebut": 4,
     "trimestreFin": 4,
     "avancement": "Planifiée",
-    "responsable": "TACHEDI Arialu"
+    "responsable": "Directrice administrative"
    }
   ],
   "ecran": {
@@ -3415,7 +3415,7 @@
      "trimestreDebut": 2,
      "trimestreFin": 3,
      "avancement": "En cours",
-     "responsable": "TACHEDI Arialu",
+     "responsable": "Directrice administrative",
      "echeance": "2026-12-15",
      "tauxAvancement": null,
      "observations": ""
@@ -3456,7 +3456,7 @@
     "trimestreDebut": 2,
     "trimestreFin": 3,
     "avancement": "Réalisée",
-    "responsable": "TACHEDI Arialu",
+    "responsable": "Directrice administrative",
     "echeance": "2026-12-15",
     "tauxAvancement": 60,
     "observations": ""
@@ -6601,7 +6601,7 @@
      "date": "2026-10-30",
      "heure": "09:00",
      "lieu": "Clinique",
-     "responsable": "KALOU Avolutu",
+     "responsable": "Responsable financier",
      "notifier": true,
      "canaux": [
       "In-app"
