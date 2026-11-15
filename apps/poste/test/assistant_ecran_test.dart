@@ -165,7 +165,49 @@ void main() {
       expect(empreinte(m), avant);
       expect(stockage.fichiers.length, 1);
       expect(stockage.fichiers.values.single, contains('Quels articles sont en rupture'));
-      expect(m.collection('audit').toutes.where((a) => '${a['action']}'.toLowerCase().contains('assistant')), isEmpty);
+      // DÉCISION DU 16/11/2026 : le FAIT d'ouvrir l'assistant est journalisé (RG-12) — une seule ligne d'ouverture, posée par le service de poste ; les questions, elles, ne laissent
+      // aucune ligne (l'empreinte ci-dessus, journal compris, n'a pas bougé entre les deux questions).
+      final lignes = m.collection('audit').toutes.where((a) => '${a['action']}'.toLowerCase().contains('assistant')).toList();
+      expect(lignes.length, 1);
+      expect(lignes.single['action'], 'Ouverture de l’assistant');
+      expect(lignes.single['module'], 'SUP');
+      expect(lignes.single['utilisateur'], isNotEmpty);
+      expect(lignes.single['poste'], isNotNull);
+      expect(lignes.single['dateHeure'], isNotNull);
+    });
+
+    cas('le journal ne contient JAMAIS un mot de la question (ni de la réponse) : une question qui porte un nom de patient', (t) async {
+      final m = magasinJeu();
+      await monter(t, m, role: 'caissier');
+      await calmer(t);
+      await demander(t, 'Combien doit encore Zoumarou Kassifa EXEMPLE/Patient ?');
+      await demander(t, 'Retrouve le patient Zoumarou');
+      await t.pumpWidget(const SizedBox());
+      await t.pump();
+      final journal = jsonEncode([for (final a in m.collection('audit').toutes) a]).toLowerCase();
+      for (final mot in ['zoumarou', 'kassifa', 'exemple/patient', 'combien doit', 'retrouve le patient']) {
+        expect(journal.contains(mot), isFalse, reason: mot);
+      }
+      final f = m.collection('audit').toutes.where((a) => a['action'] == 'Fermeture de l’assistant').toList();
+      expect(f.length, 1, reason: 'la fermeture porte le nombre de questions');
+      expect((f.single['apres'] as Map)['questions'], 2);
+      expect((f.single['apres'] as Map).keys.toList(), ['questions'], reason: 'un compte, rien d\'autre');
+    });
+
+    cas('le service seul : l\'ouverture se trace une fois, la fermeture porte le compte, sans question aucune ligne de fermeture', (t) async {
+      final lignes = <(String, Map<String, Object?>?)>[];
+      ServiceAssistant s() => ServiceAssistant(stockage: StockageMemoire(), agent: 'u', retention: () => 30, maintenant: () => auj)
+        ..journal = (a, r, d) => lignes.add((a, d));
+      final a = s()..tracerOuverture()..tracerOuverture();
+      a.tracerFermeture();
+      expect(lignes.map((l) => l.$1), ['Ouverture de l’assistant'], reason: 'ouverture unique ; aucune question, aucune fermeture');
+      final b = s()..tracerOuverture();
+      await b.charger();
+      await b.poser('une question', ContexteAst(role: 'x', lire: (_) => const [], peutVoirEcran: (_) => false, sensibles: DroitsSensibles(fiches: const [], peutVoirEcran: (_, __) => false), maintenant: auj, session: const SessionLabo(role: 'x')));
+      b.tracerFermeture();
+      expect(lignes.last.$1, 'Fermeture de l’assistant');
+      expect(lignes.last.$2, {'questions': 1});
+      expect(lignes.every((l) => !'${l.$2}'.contains('une question')), isTrue);
     });
 
     cas('aucune collection du magasin ne porte la conversation : le nom n’existe pas parmi celles du jeu ni de la synchronisation', (t) async {

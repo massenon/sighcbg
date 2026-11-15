@@ -51,6 +51,7 @@ class _EcranAssistantState extends State<EcranAssistant> {
   final _champ = TextEditingController();
   final _focus = FocusNode();
   bool _init = false;
+  Magasin? _journal;
 
   @override
   void didChangeDependencies() {
@@ -65,6 +66,12 @@ class _EcranAssistantState extends State<EcranAssistant> {
           retention: () => ServiceAssistant.retentionDepuis(c.magasin, c.aujourdhui),
           maintenant: () => c.aujourdhui,
         );
+    // RG-12 (décision du 16/11/2026) : le FAIT d'ouvrir l'assistant est journalisé, JAMAIS le texte d'une question ni d'une réponse. La ligne est écrite par le service de poste,
+    // pas par un exécuteur : le contexte de lecture des exécuteurs reste sans écrivain.
+    final mag = c.magasin;
+    _journal = mag;
+    _service!.journal ??= (action, ref, detail) => mag.journaliser(action, 'SUP', 'Assistant', ref, null, detail);
+    _service!.tracerOuverture();
     _service!.addListener(_changement);
     _service!.charger();
   }
@@ -76,6 +83,9 @@ class _EcranAssistantState extends State<EcranAssistant> {
   @override
   void dispose() {
     _service?.removeListener(_changement);
+    // La fermeture ne s'écrit pas pendant le démontage (le magasin notifie ses écouteurs) : une micro-tâche, après la fin de l'image.
+    final s = _service;
+    if (s != null && _journal != null) Future.microtask(s.tracerFermeture);
     _champ.dispose();
     _focus.dispose();
     super.dispose();

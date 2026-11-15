@@ -19,8 +19,10 @@ import 'service_parametres.dart';
 ///  * elle est PURGÉE à chaque ouverture et à chaque question : 30 jours par défaut, réglable en base (`assistant.retentionJours`), borné de 1 à 90 jours ;
 ///  * un fichier illisible n'est JAMAIS écrasé : l'erreur est dite, la conversation repart vide en mémoire et le fichier reste pour qu'on le regarde.
 ///
-/// L'assistant n'écrit RIEN au magasin : ni donnée métier, ni journal d'audit (écart E2788 : une lecture n'est pas une écriture, et une trace de chaque question
-/// dans un journal synchronisé annulerait la purge à 30 jours).
+/// L'assistant n'écrit RIEN au magasin : aucune donnée métier, jamais. Le SEUL écrit est une ligne du journal d'audit (RG-12, décision du 16/11/2026, écart E2910), posée
+/// par CE service et jamais par un exécuteur : le FAIT d'avoir ouvert l'assistant (qui, quel poste, quand) et, à la fermeture, le NOMBRE de questions posées. Ni le texte d'une
+/// question ni celui d'une réponse n'y entre jamais (ils peuvent porter un nom de patient) : le journal est synchronisé, la conversation reste sur le poste et s'efface à 30 jours
+/// (écart E2788 : tracer chaque question dans le journal annulerait la purge).
 
 /// Où se range le fichier d'un agent : un contrat minimal, pour que les tests posent une mémoire et le poste un dossier.
 abstract class StockageConversation {
@@ -137,6 +139,26 @@ class ServiceAssistant extends ChangeNotifier {
   final DateTime Function() _maintenant;
   final AssistantAst moteur;
 
+  /// Le journal d'audit du poste, posé par l'écran : `(action, référence, détail)`. Le détail ne porte que des COMPTES, jamais un texte de la conversation.
+  void Function(String action, String reference, Map<String, Object?>? detail)? journal;
+  bool _ouverte = false;
+  int _questionsSession = 0;
+
+  /// Journalise l'OUVERTURE (une seule fois par session de l'écran). Aucun texte.
+  void tracerOuverture() {
+    if (_ouverte) return;
+    _ouverte = true;
+    journal?.call('Ouverture de l’assistant', 'sup-assistant', null);
+  }
+
+  /// Journalise la FERMETURE avec le nombre de questions posées pendant la session (rien si aucune question : l'ouverture suffit). Aucun texte.
+  void tracerFermeture() {
+    if (!_ouverte) return;
+    _ouverte = false;
+    if (_questionsSession > 0) journal?.call('Fermeture de l’assistant', 'sup-assistant', {'questions': _questionsSession});
+    _questionsSession = 0;
+  }
+
   final List<TourAst> _tours = [];
   bool charge = false;
 
@@ -190,6 +212,7 @@ class ServiceAssistant extends ChangeNotifier {
       patientContexte: cx.patientContexte ?? dernierPatient, libelleEcran: cx.libelleEcran, etatSynchro: cx.etatSynchro,
     );
     final r = moteur.repondre(q, cxAvecContexte);
+    _questionsSession++;
     final now = _maintenant().toUtc();
     _tours.add(TourAst(id: '${now.microsecondsSinceEpoch}-${_n++}', quand: now.toIso8601String(), question: q, reponse: r));
     final gardes = astPurger(_tours, now, joursConservation);
