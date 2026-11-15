@@ -117,13 +117,30 @@ void main() {
       expect(garantiesEnVigueur(g.take(3), '2026-10-01').map((x) => x['id']), ['B', 'C']);
     });
 
-    test('un doublon d’avant le mécanisme (même garantie deux fois, sans date) : la première garde la main, comme avant', () {
+    // CHANGÉ le 16/11/2026 (décision de la Direction) : ce test figeait « la première garde la main » ; à date égale, la DERNIÈRE ligne saisie l'emporte.
+    test('à date égale, la DERNIÈRE ligne saisie l’emporte (doublon sans date comme deux saisies au même jour)', () {
       final g = <F>[
         {'id': 'A', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 70},
         {'id': 'B', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 99},
       ];
-      expect(garantiesEnVigueur(g, '2026-01-01').map((x) => x['id']), ['A']);
+      expect(garantiesEnVigueur(g, '2026-01-01').map((x) => x['id']), ['B']);
+      final h = <F>[
+        {'id': 'A', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 70, 'dateEffet': '2026-06-01', 'version': 1},
+        {'id': 'B', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 99, 'dateEffet': '2026-06-01', 'version': 2},
+      ];
+      expect(garantiesEnVigueur(h, '2026-06-01').map((x) => x['id']), ['B']);
+      expect(garantiesEnVigueur(h.reversed, '2026-06-01').map((x) => x['id']), ['B'], reason: 'le rang décide, non l’ordre de lecture');
+      expect(garantiesEnVigueur(h, '2026-05-31'), isEmpty, reason: 'avant la date d’effet, rien (ligne datée)');
     });
+  });
+
+  test('assVersionsGarantie : à date égale le RANG départage, non l’ordre de lecture (une fiche insérée l’est en tête de la collection)', () {
+    final g = <F>[
+      {'id': 'v3', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 55, 'dateEffet': '2027-06-01', 'version': 3},
+      {'id': 'v2', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 60, 'dateEffet': '2027-06-01', 'version': 2},
+      {'id': 'v1', 'souscripteurId': 'S1', 'categorie': 'analyse', 'libelle': 'Bilan', 'taux': 80, 'version': 1},
+    ];
+    expect(assVersionsGarantie(g, 'S1', 'analyse', 'Bilan').map((x) => x['id']), ['v1', 'v2', 'v3']);
   });
 
   group('assPoserGarantie : une version, jamais un écrasement', () {
@@ -148,10 +165,10 @@ void main() {
       expect(r.ancienne!['taux'], 60, reason: 'la version remplacée reste écrite telle quelle');
     });
 
-    test('refus nommés : date absente, même date, version dans le passé, taux, plafond, unité, souscripteur, catégorie, libellé', () {
+    test('refus nommés : date absente, version dans le passé, taux, plafond, unité, souscripteur, catégorie, libellé', () {
       expect(poser({'dateEffet': ''}).code, 'DATE_EFFET_REQUISE');
       final g1 = [...garantiesJeu(), {...garantiesJeu().firstWhere((x) => x['id'] == 'GAR-S2-C'), 'id': 'v2', 'taux': 70, 'dateEffet': '2026-09-01', 'version': 2}];
-      expect(poser({'taux': 75}, garanties: g1).code, 'VERSION_MEME_DATE');
+      // CHANGÉ le 16/11/2026 : une seconde saisie à la même date n'est plus refusée, c'est une correction (la dernière l'emporte).
       expect(poser({'taux': 75, 'dateEffet': '2026-08-01'}, garanties: g1).code, 'VERSION_ANTERIEURE');
       expect(poser({'taux': 70}, garanties: g1).code, 'GARANTIE_INCHANGEE');
       expect(poser({'taux': 120}).code, 'TAUX_INVALIDE');
@@ -160,6 +177,22 @@ void main() {
       expect(poser({'souscripteurId': 'ZZ'}).code, 'SOUSCRIPTEUR_INCONNU');
       expect(poser({'categorie': 'inconnue'}).code, 'CATEGORIE_INCONNUE');
       expect(poser({'libelle': '  '}).code, 'GARANTIE_SANS_LIBELLE');
+    });
+
+    test('une seconde saisie à la même date d’effet est une CORRECTION : posée, la dernière l’emporte, la première reste écrite ; une facture émise sous cette date la refuse encore', () {
+      final g1 = [...garantiesJeu(), {...garantiesJeu().firstWhere((x) => x['id'] == 'GAR-S2-C'), 'id': 'v2', 'taux': 70, 'dateEffet': '2026-09-01', 'version': 2}];
+      final r = poser({'taux': 75}, garanties: g1);
+      expect(r.ok, isTrue);
+      expect(r.version, 3);
+      expect(r.fiche!['corrige'], 'v2');
+      expect(r.ancienne!['id'], 'v2');
+      final apres = [...g1, r.fiche!];
+      final lu = garantiesEnVigueur(apres.where((x) => x['souscripteurId'] == 'S2' && x['categorie'] == 'analyse'), '2026-09-01');
+      expect(lu.single['taux'], 75, reason: 'la dernière saisie à date égale l’emporte à la lecture');
+      expect(g1.last['taux'], 70, reason: 'la ligne corrigée n’est pas modifiée');
+      expect(poser({'taux': 70}, garanties: g1).code, 'GARANTIE_INCHANGEE');
+      final f = [fac('F-2026-9', '2026-09-01', pat: 'PA2')];
+      expect(poser({'taux': 75}, garanties: g1, factures: f).code, 'FACTURE_DEJA_EMISE', reason: 'le refus nommé reste : on ne réécrit pas la garantie sous laquelle une pièce a été émise');
     });
 
     test('une date d’effet qu’une facture émise a déjà dépassée est refusée en nommant la pièce ; la veille de la facture passe', () {
@@ -199,12 +232,14 @@ void main() {
       expect(garde('modifier', {...sansRang, 'version': 1, 'taux': 1}, sansRang), contains('IMMUABLE'));
     });
 
-    test('une version se pose sur la série à une date postérieure ; sans date, ou à une date déjà prise, ou dans le passé : refus', () {
+    test('une version se pose sur la série à une date postérieure ; sans date ou dans le passé : refus ; à une date déjà prise : admis (correction, 16/11/2026), sauf sous une facture émise', () {
       final v = {...c, 'id': 'nouvelle', 'taux': 65, 'dateEffet': '2026-09-01', 'version': 2};
       expect(garde('inserer', v, null), isNull);
       expect(garde('inserer', {...v, 'dateEffet': null}, null), contains('depuis l’ouverture'));
       final g2 = [...garantiesJeu(), {...v, 'id': 'v2'}];
-      expect(garde('inserer', {...v, 'id': 'v3', 'taux': 66}, null, garanties: g2), contains('déjà effet'));
+      // CHANGÉ le 16/11/2026 : « à une date déjà prise » n'est plus refusé, la seconde saisie corrige la première.
+      expect(garde('inserer', {...v, 'id': 'v3', 'taux': 66, 'version': 3}, null, garanties: g2), isNull);
+      expect(garde('inserer', {...v, 'id': 'v3', 'taux': 66, 'version': 3}, null, garanties: g2, facture: {'numero': 'F8', 'date': '2026-09-01'}), contains('F8'));
       expect(garde('inserer', {...v, 'id': 'v3', 'dateEffet': '2026-08-01'}, null, garanties: g2), contains('plus récente'));
       expect(garde('inserer', v, null, facture: {'numero': 'F9', 'date': '2026-09-05'}), contains('F9'));
     });
@@ -232,7 +267,9 @@ void main() {
       expect(m.fiches.every((f) => f.keys.length == 2 && f.containsKey('id') && f.containsKey('version')), isTrue, reason: 'ni taux, ni plafond, ni date : seul le rang est posé');
       expect(m.series, 2);
       expect(m.doublons, 1, reason: 'le doublon sans date de S2 est compté, pas archivé');
+      expect(m.doublonsChangeant, 1, reason: '16/11/2026 : la dernière saisie l’emporte, S2 passe de 40 à 41 — la migration le COMPTE (valeurs différentes), elle ne l’archive pas');
       final ecrit = [for (final x in g) {...x, ...?m.fiches.where((f) => f['id'] == x['id']).firstOrNull}];
+      expect(garantiesEnVigueur(ecrit.where((x) => x['souscripteurId'] == 'S2'), '2026-01-01').single['taux'], 41);
       expect(assMigrerGaranties(ecrit).aFait, isFalse, reason: 'rejouée, elle ne change plus rien');
     });
   });

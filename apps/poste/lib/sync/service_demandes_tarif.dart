@@ -62,12 +62,16 @@ class ApplicateurDemandesTarif {
     if (_ecoute != null) return;
     _ecoute = () => scheduleMicrotask(traiter);
     demandes.addListener(_ecoute!);
+    magasin.collection('analyses').addListener(_ecoute!);
     _minuterie = Timer.periodic(intervalle, (_) => traiter());
     traiter();
   }
 
   void arreter() {
-    if (_ecoute != null) demandes.removeListener(_ecoute!);
+    if (_ecoute != null) {
+      demandes.removeListener(_ecoute!);
+      magasin.collection('analyses').removeListener(_ecoute!);
+    }
     _ecoute = null;
     _minuterie?.cancel();
     _minuterie = null;
@@ -78,7 +82,10 @@ class ApplicateurDemandesTarif {
     if (_traitement) return 0;
     _traitement = true;
     try {
-      return _poste().appliquerDemandes();
+      final n = _poste().appliquerDemandes();
+      // 16/11/2026 : une analyse créée au catalogue (ici ou chez un fileul, arrivée par le pont) ouvre son identité de prix « sans prix, à valider » et prévient la DAF.
+      TarifsPoste.assurerAnalyses(magasin, horloge: horloge);
+      return n;
     } finally {
       _traitement = false;
     }

@@ -101,15 +101,18 @@ void main() {
       gar('G1', 'S1', 'Consultation', 'consultation', 80, plafond: 5000, unite: 'acte', version: 1),
       gar('G2', 'S1', 'Consultation', 'consultation', 60, plafond: 4000, unite: 'acte', dateEffet: '2026-09-01', version: 2),
     ];
-    test('une version est immuable ; la série ne se redéfinit pas « depuis l’ouverture » ; une version ne s’insère pas dans le passé de sa série ni à une date prise', () {
+    test('une version est immuable ; la série ne se redéfinit pas « depuis l’ouverture » ; une version ne s’insère pas dans le passé de sa série ; à une date prise elle CORRIGE la première (16/11/2026)', () {
       final col = avec(base).collection('garanties');
       expect(() => col.mettreAJour('G1', {'taux': 10}), throwsA(isA<EcritureRefusee>()));
       expect(() => col.mettreAJour('G2', {'dateEffet': '2026-10-01'}), throwsA(isA<EcritureRefusee>()));
       expect(() => col.inserer({...base[0], 'id': 'G9', 'taux': 1}, prefixe: 'GAR'), throwsA(isA<EcritureRefusee>()), reason: 'depuis l’ouverture : la série existe');
-      expect(() => col.inserer({...base[1], 'id': 'G9', 'taux': 1, 'dateEffet': '2026-09-01'}, prefixe: 'GAR'), throwsA(isA<EcritureRefusee>()), reason: 'date déjà prise');
       expect(() => col.inserer({...base[1], 'id': 'G9', 'taux': 1, 'dateEffet': '2026-08-01'}, prefixe: 'GAR'), throwsA(isA<EcritureRefusee>()), reason: 'dans le passé de la série');
       expect(col.parId('G1')!['taux'], 80);
-      final ok = col.inserer({...base[1], 'id': 'G9', 'taux': 50, 'dateEffet': '2026-12-01', 'version': 3}, prefixe: 'GAR');
+      // CHANGÉ le 16/11/2026 : ce test refusait « date déjà prise » ; la seconde saisie à la même date est admise, la première n'est pas touchée.
+      final corr = col.inserer({...base[1], 'id': 'G8', 'taux': 55, 'dateEffet': '2026-09-01', 'version': 3}, prefixe: 'GAR');
+      expect(corr.fiche['id'], 'G8');
+      expect(col.parId('G2')!['taux'], 60, reason: 'la ligne corrigée reste écrite telle quelle');
+      final ok = col.inserer({...base[1], 'id': 'G9', 'taux': 50, 'dateEffet': '2026-12-01', 'version': 4}, prefixe: 'GAR');
       expect(ok.fiche['id'], 'G9');
     });
 

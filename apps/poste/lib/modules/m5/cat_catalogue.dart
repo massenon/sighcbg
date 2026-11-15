@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_installation.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
@@ -185,6 +186,12 @@ class EcranCatalogueAnalyses extends StatelessWidget with EcranMaquette {
           // Le TARIF n'est plus saisi ici : il se propose à « Tarifs et prix » (Oui ou Non, date d'effet) ; cet écran garde la désignation, la catégorie, l'échantillon et le délai.
         ],
         valeursInitiales: () => {},
+        // 16/11/2026 : l'analyse créée ouvre son identité de prix « sans prix, à valider » et la DAF est prévenue ; elle ne se facture pas avant le Oui.
+        apresCreation: (ctx, fiche) {
+          if (ServiceInstallation.de(c.magasin).rattache) return 'sans prix : la DAF le tarife à « Tarifs et prix » dès que la mère a reçu l’analyse';
+          final ouverts = TarifsPoste.assurerAnalyses(c.magasin, horloge: () => c.aujourdhui);
+          return ouverts.isEmpty ? null : 'sans prix, non facturable : la DAF est prévenue (« Tarifs et prix », onglet Sans prix)';
+        },
         transformer: (_, v) => catTransformAnalyse(v),
         detail: (ctx, a) => DescListeSigh([
           ('N°', '${a['n'] ?? ''}'),

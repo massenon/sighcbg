@@ -350,7 +350,9 @@ List<CorrectifProjection> tarProjection(
   void passe(String nom, List<FicheTarif> docs, Map<String, FicheTarif> index, Map<String, Object?>? Function(FicheTarif, FicheTarif, InstantaneTarif) correctif,
       FicheTarif Function(FicheTarif, InstantaneTarif, int) creer) {
     final vus = <String>{};
-    for (final doc in docs) {
+    // Les fiches ACTIVES d'abord (16/11/2026) : un doublon arbitré archive une ligne ; celle qui reste doit porter le prix du référentiel, l'archivée garde ce qu'elle portait (RG-14).
+    final ordre = [...docs.where((d) => d['statut'] != 'archive'), ...docs.where((d) => d['statut'] == 'archive')];
+    for (final doc in ordre) {
       // Deux fiches de MÊME code (le doublon de grille `CERT-APT`) : seule la première, celle que la migration a retenue, reflète le référentiel ; la seconde garde ce qu'elle porte.
       if (vus.contains('${doc['code']}')) continue;
       vus.add('${doc['code']}');

@@ -460,10 +460,21 @@ FicheCs csNotifier(StockCs s, Map<String, Object?> o) =>
 /// Ce que `PR.prescrire` écrit.
 class ResultatPrescription {
   const ResultatPrescription(this.ordonnance, this.demandes,
-      this.demandesImagerie, this.facture, this.taches);
+      this.demandesImagerie, this.facture, this.taches, [this.refus = const []]);
   final FicheCs ordonnance, facture;
   final List<FicheCs> demandes, demandesImagerie, taches;
+
+  /// Les lignes REFUSÉES faute de prix en vigueur (décision du 16/11/2026, code [csCodeTarifAValider]) : jamais une ligne à 0, jamais un blocage du reste de l'ordonnance. Chaque entrée :
+  /// `{categorie, code, libelle, codeErreur, motif}`.
+  final List<FicheCs> refus;
 }
+
+/// Le code d'erreur nommé d'une ligne dont le prix n'est pas arrêté : « un montant à 0 est interdit, un tiret n'est pas un zéro ».
+const String csCodeTarifAValider = 'TARIF_A_VALIDER';
+
+String _motifTarifAValider(String libelle, String jour, {required bool connu}) => connu
+    ? 'tarif à valider : « $libelle » n’a aucun prix en vigueur au $jour. La DAF le tarife à l’écran « Tarifs et prix » (Oui ou Non) ; la ligne n’est pas prescrite, le reste de l’ordonnance passe.'
+    : 'tarif à valider : « $libelle » n’existe pas dans le référentiel de prix pour cette voie. La DAF l’y ouvre à l’écran « Tarifs et prix » ; la ligne n’est pas prescrite, le reste de l’ordonnance passe.';
 
 /// Les tâches d'aval (`TACHES` de `parcours.js`) : poste, module, écran, titre, pictogramme.
 const _tachesDef = <String, ({String role, String module, String ecran, String titre, String icon})>{
@@ -658,7 +669,7 @@ ResultatPrescription csPrescrire(
   final jourPiece = tarJourDe(date, tarIso(s.maintenant));
   final referentielAnalyses = s.referentiel('analyses');
   final assureAnalyses = csVrai(p['assureur']) && _carteValide(s, p, date);
-  final analyses = <FicheCs>[
+  final analysesDemandees = <FicheCs>[
     for (final code in (v['analyses'] as List? ?? const []))
       () {
         final a = referentielAnalyses.where((x) => x['code'] == code).firstOrNull ??
@@ -671,6 +682,8 @@ ResultatPrescription csPrescrire(
           'echantillon': _ou(a['echantillon'], ''),
           'delai': _ou(a['delai'], ''),
           'prix': _ou(pr.montant, 0),
+          '_connu': pr.connu,
+          '_prixAbsent': pr.montant == null || (pr.montant as num) <= 0,
         };
       }()
   ];
@@ -679,7 +692,7 @@ ResultatPrescription csPrescrire(
   // s'applique réellement quand la carte est valide à la date (RG-09). Seule la colonne assurée change le prix (`prixAssure` de l'acte du catalogue) :
   // sans carte valide, ou pour un acte que la grille exclut de l'assurance, le catalogue administrable reste la référence.
   final assureActes = assureAnalyses;
-  final actes = <FicheCs>[
+  final actesDemandes = <FicheCs>[
     for (final code in (v['actes'] as List? ?? const []))
       () {
         // Le libellé et le secteur sont ceux de la prestation ; la colonne ASSURÉE ne s'applique que si l'acte est assurable ET porte un montant assuré (la règle historique).
@@ -692,9 +705,38 @@ ResultatPrescription csPrescrire(
           'secteur': _ou(a['secteur'], ''),
           'prix': csVrai(prixActe) ? prixActe : 0,
           'tarifValide': prixActe != null,
+          '_connu': pr.connu,
+          '_prixAbsent': prixActe == null || (prixActe as num) <= 0,
         };
       }()
   ];
+
+  // DÉCISION DU 16/11/2026 : un montant à 0 est interdit (« un tiret n'est pas un zéro »). Une analyse ou un acte SANS PRIX EN VIGUEUR à la date de la pièce est REFUSÉ en le nommant
+  // (`TARIF_A_VALIDER`), sans bloquer le reste de l'ordonnance ; aucun prix valide ne change. Si plus aucune ligne ne reste, le refus est celui de la prescription.
+  final refus = <FicheCs>[];
+  List<FicheCs> sansPrixAbsent(List<FicheCs> lignes, String categorie, String libelle) {
+    final gardees = <FicheCs>[];
+    for (final l in lignes) {
+      if (l['_prixAbsent'] == true) {
+        refus.add({
+          'categorie': categorie,
+          'code': l['code'],
+          'libelle': l[libelle],
+          'codeErreur': csCodeTarifAValider,
+          'motif': _motifTarifAValider('${l[libelle]}', jourPiece, connu: l['_connu'] == true),
+        });
+      } else {
+        gardees.add({...l}..remove('_prixAbsent')..remove('_connu'));
+      }
+    }
+    return gardees;
+  }
+
+  final analyses = sansPrixAbsent(analysesDemandees, 'analyse', 'designation');
+  final actes = sansPrixAbsent(actesDemandes, 'acte', 'libelle');
+  if (refus.isNotEmpty && medicaments.isEmpty && analyses.isEmpty && actes.isEmpty && (v['imagerie'] as List? ?? const []).isEmpty) {
+    throw RefusCs(refus.map((r) => '${r['motif']}').join(' '), csCodeTarifAValider);
+  }
 
   final mMed = _somme(medicaments, 'total');
   final mAna = _somme(analyses, 'prix');
@@ -940,7 +982,8 @@ ResultatPrescription csPrescrire(
       demandes,
       [for (final d in demandesImagerie) s.parId('demandesImagerie', d['id'])!],
       facture,
-      taches);
+      taches,
+      refus);
 }
 
 /// `creerDemandesImagerie(p, codes, date, v)` : une demande par examen, BLOQUÉE par le paiement ; un examen sans tarif est refusé en le nommant

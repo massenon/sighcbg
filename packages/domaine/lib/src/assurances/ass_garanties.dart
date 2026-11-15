@@ -19,14 +19,18 @@ typedef _Fiche = Map<String, Object?>;
 final _jourIso = RegExp(r'^\d{4}-\d{2}-\d{2}$');
 
 /// Les versions d'une série (souscripteur, catégorie, libellé), de la plus ancienne à la plus récente (une ligne sans date vaut « depuis l'ouverture » : elle passe la première).
-/// [garanties] : les fiches actives. Le tri est STABLE : à date égale, l'ordre de pose est conservé.
+/// [garanties] : les fiches actives. À date égale, le RANG `version` départage (une fiche insérée l'est en TÊTE de la collection : l'ordre de lecture n'est pas l'ordre de pose) ; sans rang,
+/// l'ordre des fiches est conservé.
 List<_Fiche> assVersionsGarantie(Iterable<_Fiche> garanties, Object? souscripteurId, Object? categorie, Object? libelle, {Object? assureur}) {
   final cle = cleSerieGarantie({'souscripteurId': souscripteurId, 'assureur': assureur, 'categorie': categorie, 'libelle': libelle});
   final rows = <_Fiche>[for (final g in garanties) if (g['statut'] != 'archive' && cleSerieGarantie(g) == cle) g];
   final avecRang = [for (var i = 0; i < rows.length; i++) (i, rows[i])]
     ..sort((a, b) {
       final c = '${a.$2['dateEffet'] ?? ''}'.compareTo('${b.$2['dateEffet'] ?? ''}');
-      return c != 0 ? c : a.$1.compareTo(b.$1);
+      if (c != 0) return c;
+      final ra = a.$2['version'], rb = b.$2['version'];
+      if (ra is num && rb is num && ra != rb) return ra.compareTo(rb);
+      return a.$1.compareTo(b.$1);
     });
   return [for (final x in avecRang) x.$2];
 }
@@ -115,7 +119,6 @@ AssPoseGarantie assPoserGarantie(
     }
   } else {
     final j = jour!;
-    final meme = rows.where((g) => '${g['dateEffet'] ?? ''}' == j).firstOrNull;
     final enForce = garantiesEnVigueur(rows, j).firstOrNull;
     final identique = enForce != null &&
         (enForce['taux'] as num?)?.toDouble() == taux &&
@@ -123,9 +126,6 @@ AssPoseGarantie assPoserGarantie(
         (plafond == null || enForce['unitePlafond'] == unite);
     if (identique) {
       return refus('GARANTIE_INCHANGEE', 'la garantie « $libelle » porte déjà ce taux et ce plafond à cette date', 'Rien à faire : aucune version n’est créée.');
-    }
-    if (meme != null) {
-      return refus('VERSION_MEME_DATE', 'une version de « $libelle » prend déjà effet le ${dateFR(assDate(j))} avec d’autres valeurs : une version ne se réécrit pas', 'Choisissez une autre date d’effet.');
     }
     final plusRecente = rows.where((g) => '${g['dateEffet'] ?? ''}'.compareTo(j) > 0).firstOrNull;
     if (plusRecente != null) {
@@ -152,6 +152,8 @@ AssPoseGarantie assPoserGarantie(
     'zone': (rows.isNotEmpty ? rows.first['zone'] : null) ?? spec['zone'],
     'dateEffet': sansDate ? null : jour,
     'version': rows.length + 1,
+    // Une seconde saisie à la MÊME date d'effet corrige la première (décision du 16/11/2026) : la ligne corrigée reste écrite, la nouvelle prend la main à la lecture.
+    if (ancienne != null && '${ancienne['dateEffet'] ?? ''}' == jour && jour != null) 'corrige': ancienne['id'],
     'motif': spec['motif'],
     'source': spec['source'],
     ...champs,
@@ -219,9 +221,6 @@ String? assGardeGarantie(
   if (d.isEmpty) {
     return 'La garantie « ${apres['libelle']} » existe déjà pour ce souscripteur : elle ne se redéfinit pas « depuis l’ouverture ». Poser une nouvelle version avec sa date d’effet.';
   }
-  if (rows.any((g) => '${g['dateEffet'] ?? ''}' == d)) {
-    return 'Une version de « ${apres['libelle']} » prend déjà effet le ${dateFR(assDate(d))} : une version ne se réécrit pas. Choisir une autre date d’effet.';
-  }
   final plus = rows.where((g) => '${g['dateEffet'] ?? ''}'.compareTo(d) > 0).firstOrNull;
   if (plus != null) {
     return 'Une version plus récente de « ${apres['libelle']} » prend effet le ${dateFR(assDate(plus['dateEffet']))} : on ne glisse pas une version dans le passé d’une série.';
@@ -238,18 +237,21 @@ String? assGardeGarantie(
 
 /// Ce que la migration a fait : les fiches à réécrire (rang de version posé) et le compte.
 class AssMigrationGaranties {
-  const AssMigrationGaranties(this.fiches, this.series, this.versionsPosees, this.doublons);
+  const AssMigrationGaranties(this.fiches, this.series, this.versionsPosees, this.doublons, [this.doublonsChangeant = 0]);
 
   /// Les fiches dont le rang `version` vient d'être posé (toute la collection n'est pas réécrite : seules celles-ci changent).
   final List<_Fiche> fiches;
   final int series, versionsPosees, doublons;
+
+  /// Les doublons dont les valeurs DIFFÈRENT : depuis la décision du 16/11/2026 (la dernière saisie l'emporte à date égale) la lecture de ces séries change ; on les COMPTE, on ne les archive pas.
+  final int doublonsChangeant;
   bool get aFait => versionsPosees > 0;
 }
 
 /// MIGRATION D'UN POSTE DÉJÀ PEUPLÉ : chaque garantie existante qui ne porte pas de rang devient la version 1 de sa série, « depuis l'ouverture » : sa date d'effet RESTE vide (la date que
-/// personne n'a saisie ne s'invente pas : même doctrine que `debut: null` des couvertures). Aucun taux, plafond ni libellé ne change : ce que la prise en charge lisait avant, elle le lit après.
-/// Une série qui portait deux fois la même garantie sans date (doublon d'avant le mécanisme) reçoit les rangs 1 et 2 dans l'ordre des fiches ; la lecture garde la première (voir
-/// `garantiesEnVigueur`), et le doublon est COMPTÉ, jamais archivé en silence. Idempotente : une fiche qui porte déjà son rang n'est pas touchée.
+/// personne n'a saisie ne s'invente pas : même doctrine que `debut: null` des couvertures). Aucun taux, plafond ni libellé ne change ; seule exception, dite : un doublon sans date aux valeurs différentes se lit désormais à sa DERNIÈRE ligne (voir `doublonsChangeant`).
+/// Une série qui portait deux fois la même garantie sans date (doublon d'avant le mécanisme) reçoit les rangs 1 et 2 dans l'ordre des fiches ; la lecture garde la DERNIÈRE saisie
+/// (voir `garantiesEnVigueur`, décision du 16/11/2026), et le doublon est COMPTÉ — avec, à part, ceux dont les valeurs diffèrent —, jamais archivé en silence. Idempotente : une fiche qui porte déjà son rang n'est pas touchée.
 AssMigrationGaranties assMigrerGaranties(Iterable<_Fiche> garanties) {
   final parSerie = <String, List<_Fiche>>{};
   for (final g in garanties) {
@@ -257,7 +259,7 @@ AssMigrationGaranties assMigrerGaranties(Iterable<_Fiche> garanties) {
     (parSerie[cleSerieGarantie(g)] ??= []).add(g);
   }
   final aEcrire = <_Fiche>[];
-  var doublons = 0;
+  var doublons = 0, changeant = 0;
   for (final rows in parSerie.values) {
     final tries = [for (var i = 0; i < rows.length; i++) (i, rows[i])]
       ..sort((a, b) {
@@ -268,10 +270,15 @@ AssMigrationGaranties assMigrerGaranties(Iterable<_Fiche> garanties) {
       final g = tries[k].$2;
       if (g['version'] == null) aEcrire.add({'id': g['id'], 'version': k + 1});
     }
-    final sansDate = rows.where((g) => '${g['dateEffet'] ?? ''}'.isEmpty).length;
-    if (sansDate > 1) doublons += sansDate - 1;
+    final sansDate = rows.where((g) => '${g['dateEffet'] ?? ''}'.isEmpty).toList();
+    if (sansDate.length > 1) {
+      doublons += sansDate.length - 1;
+      // La dernière de la série prend la main : le doublon qui change ce qui se lit est celui dont taux ou plafond diffèrent de la dernière.
+      final derniere = sansDate.last;
+      if (sansDate.any((g) => !_meme(g['taux'], derniere['taux']) || !_meme(g['plafond'], derniere['plafond']) || !_meme(g['unitePlafond'], derniere['unitePlafond']))) changeant++;
+    }
   }
-  return AssMigrationGaranties(aEcrire, parSerie.length, aEcrire.length, doublons);
+  return AssMigrationGaranties(aEcrire, parSerie.length, aEcrire.length, doublons, changeant);
 }
 
 // --- la vue « une ligne par série » -------------------------------------------------------------------------------------------

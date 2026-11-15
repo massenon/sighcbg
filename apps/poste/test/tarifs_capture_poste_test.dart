@@ -34,6 +34,8 @@ void main() {
       try {
         return f();
       } catch (e) {
+        // 16/11/2026 : une ligne sans prix en vigueur n'est plus écrite à 0, elle est REFUSÉE en le nommant (`TARIF_A_VALIDER`).
+        if (e is RefusCs && e.code == csCodeTarifAValider) return 'REFUS:${e.code}';
         return 'ERREUR:${'$e'.length > 80 ? '$e'.substring(0, 80) : '$e'}';
       }
     }
@@ -97,6 +99,7 @@ void main() {
     final inattendus = <String>[];
     final attendusVus = <String, int>{};
     (avant['voies'] as Map).forEach((voie, anciennes) {
+      if (voie == 'prescrire.acte' || voie == 'prescrire.analyse') return; // jugées plus bas : les lignes à 0 y deviennent des refus nommés
       for (final c in (anciennes as Map).keys) {
         final ancien = jsonEncode(anciennes[c]);
         final nouveau = jsonEncode((apres[voie] as Map)[c]);
@@ -111,7 +114,28 @@ void main() {
     expect(inattendus, isEmpty, reason: '0 écart INATTENDU : chaque prix lu par chaque voie est celui d\'avant le référentiel');
     expect(attendusVus.keys.toSet(), {'accesseur.csTarifPrix', 'soins', 'imagerie'});
     expect(attendusVus.values.toSet(), {39}, reason: 'les 39 lignes LABO de la grille fusionnées avec leur analyse, sur chacune des trois voies');
-    for (final voie in ['prescrire.acte', 'prescrire.analyse', 'caisse.acte', 'caisse.analyse', 'caisse.hospitalisation', 'certificats']) {
+    // DÉCISION DU 16/11/2026 (E2584 soldé) : les codes qui donnaient une ligne à 0 à la prescription deviennent un REFUS NOMMÉ ; tous les autres prix sont ceux d'avant, au franc près.
+    final refuses = <String, Set<String>>{'prescrire.acte': {}, 'prescrire.analyse': {}};
+    for (final voie in refuses.keys) {
+      (avant['voies'] as Map)[voie].forEach((c, anciennes) {
+        for (var col = 0; col < 2; col++) {
+          final ancien = (anciennes as List)[col];
+          final aZero = ancien is List && ancien.isNotEmpty && ancien[0] == 0;
+          final nouveau = ((apres[voie] as Map)[c] as List)[col];
+          if (aZero) {
+            expect(nouveau, 'REFUS:TARIF_A_VALIDER', reason: '$voie $c col $col : la ligne qui valait 0 devient un refus nommé');
+            refuses[voie]!.add('$c');
+          } else {
+            expect(jsonEncode(nouveau), jsonEncode(ancien), reason: '$voie $c col $col : aucun prix valide ne change');
+          }
+        }
+      });
+    }
+    expect(refuses['prescrire.acte']!.length, 199, reason: 'E2584 : 199 codes sur 277 donnaient une ligne à 0 à la prescription d\'actes');
+    // eslint: le nombre d'analyses refusées est consigné au document des écarts (E2886).
+    // ignore: avoid_print
+    print('RELEVÉ 16/11 : prescription d\'actes, ${refuses['prescrire.acte']!.length} codes refusés ; prescription d\'analyses, ${refuses['prescrire.analyse']!.length} codes refusés (sur ${codes.length}).');
+    for (final voie in ['caisse.acte', 'caisse.analyse', 'caisse.hospitalisation', 'certificats']) {
       expect(jsonEncode((avant['voies'] as Map)[voie]), jsonEncode(apres[voie]), reason: voie);
     }
     // Le doublon de code de grille : `CERT-APT` reste à 7 000 (première ligne, seule lue jusqu'ici), l'acte MT05 garde son propre prix de 5 000.

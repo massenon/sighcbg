@@ -68,11 +68,15 @@ Map<String, Object?>? couvertureALaDate(Map<String, Object?>? patient,
     List<Map<String, Object?>> couvertures, String date) {
   if (patient == null) return null;
   final d = _jourLocal(date);
-  final hist = couvertures
-      .where((c) => _actif(c) && c['patientId'] == patient['id'])
-      .toList()
-    ..sort((a, b) => '${b['debut'] ?? '0000-00-00'}'
-        .compareTo('${a['debut'] ?? '0000-00-00'}'));
+  // Plusieurs couvertures ouvertes (conflit hors ligne, décision du 16/11/2026) : celle dont le DÉBUT est le plus récent prend la main, jamais deux en même temps ; à début égal, la
+  // dernière dans l'ordre des fiches (le tri de Dart n'est pas stable : le rang est départagé explicitement).
+  final propres = couvertures.where((c) => _actif(c) && c['patientId'] == patient['id']).toList();
+  final rang = {for (var i = 0; i < propres.length; i++) propres[i]: i};
+  final hist = propres
+    ..sort((a, b) {
+      final c = '${b['debut'] ?? '0000-00-00'}'.compareTo('${a['debut'] ?? '0000-00-00'}');
+      return c != 0 ? c : rang[b]!.compareTo(rang[a]!);
+    });
   for (final c in hist) {
     final debut = c['debut'] as String?;
     final fin = c['fin'] as String?;
@@ -138,17 +142,24 @@ String cleSerieGarantie(Map<String, Object?> g) =>
     [_vrai(g['souscripteurId']) ? '${g['souscripteurId']}' : '~${g['assureur'] ?? ''}', '${g['categorie'] ?? ''}', normaliser(g['libelle'] ?? '').trim()].join('|');
 
 /// UNE version par série : la plus récente dont la date d'effet est atteinte au [jour] dit (une ligne sans date vaut « depuis l'ouverture ») ; l'ordre d'origine est conservé.
-/// À date égale (deux lignes sans date : un jeu d'avant le mécanisme qui portait deux fois la même garantie), la PREMIÈRE posée garde la main, comme avant la migration : le moteur
-/// retenait alors la première des deux à proximité égale, et un montant déjà facturé ne se relit pas autrement.
+/// À date égale, la DERNIÈRE ligne saisie l'emporte (décision de la Direction du 16/11/2026) : une seconde saisie à la même date d'effet est une correction de la première, qui reste écrite.
+/// « La dernière » se lit au rang `version` quand les deux le portent, sinon à l'ordre des fiches (un jeu d'avant le mécanisme qui portait deux fois la même garantie sans date).
 List<Map<String, Object?>> garantiesEnVigueur(Iterable<Map<String, Object?>> lignes, String jour) {
   final parSerie = <String, ({Map<String, Object?> g, int i})>{};
   var i = -1;
+  num rang(Map<String, Object?> g) => g['version'] is num ? g['version'] as num : -1;
   for (final g in lignes) {
     i++;
     final d = '${g['dateEffet'] ?? ''}';
     if (d.isNotEmpty && d.compareTo(jour) > 0) continue;
     final k = cleSerieGarantie(g), cur = parSerie[k];
-    if (cur == null || d.compareTo('${cur.g['dateEffet'] ?? ''}') > 0) parSerie[k] = (g: g, i: i);
+    if (cur == null) {
+      parSerie[k] = (g: g, i: i);
+      continue;
+    }
+    final c = d.compareTo('${cur.g['dateEffet'] ?? ''}');
+    // Date égale : la dernière saisie (rang le plus haut, à défaut la dernière dans l'ordre des fiches) prend la main.
+    if (c > 0 || (c == 0 && rang(g) >= rang(cur.g))) parSerie[k] = (g: g, i: i);
   }
   final out = parSerie.values.toList()..sort((a, b) => a.i.compareTo(b.i));
   return [for (final x in out) x.g];

@@ -12,7 +12,7 @@ import '../../shell/contexte_ecran.dart';
 /// le prix d'ACHAT d'un produit). Le premier n'emporte jamais le second.
 ///
 /// [droitProduit] : l'écran dont le droit d'ÉDITER vaut droit de proposer un prix d'achat (par défaut le référentiel des produits ; la réception d'achat passe le sien).
-TarifsPoste tarifsDeLEcran(ContexteEcran c, {String droitProduit = 'm6-produits', bool? peutProposerPrixAchat}) {
+TarifsPoste tarifsDeLEcran(ContexteEcran c, {String droitProduit = 'm6-produits', bool? peutProposerPrixAchat, String? droitPrix}) {
   final m = c.magasin;
   final matrice = c.donnees?.matrice;
   return TarifsPoste(m,
@@ -20,7 +20,8 @@ TarifsPoste tarifsDeLEcran(ContexteEcran c, {String droitProduit = 'm6-produits'
       auteur: () => c.agent.nom.isEmpty ? 'Utilisateur' : c.agent.nom,
       fileul: ServiceInstallation.de(m).rattache,
       libelles: ValidationPoste(c).libelles,
-      peutEditerEcran: c.droit.editer,
+      // `droitPrix` : l'écran dont le droit d'ÉDITER vaut droit de proposer un prix quand l'appelant n'est pas « Tarifs et prix » lui-même (le centre des validations arbitre un doublon de prix).
+      peutEditerEcran: droitPrix == null ? c.droit.editer : (matrice?.peutEditer(c.role, droitPrix) ?? false),
       peutEditerPour: matrice == null ? null : (r) => matrice.peutEditer(r, 'cfg-tarifs'),
       peutProposerPrixAchat: peutProposerPrixAchat ?? (matrice?.peutEditer(c.role, droitProduit) ?? false),
       peutProposerPrixAchatPour: matrice == null ? null : (r) => matrice.peutEditer(r, droitProduit),

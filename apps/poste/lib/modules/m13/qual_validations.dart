@@ -9,6 +9,7 @@ import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import '../cfg/cfb_configuration_fiscale.dart';
 import '../m2/cr_commun.dart' show dateHeureDe;
+import 'qual_arbitrages.dart';
 import 'qual_commun.dart';
 
 /// `adm-validations` — « Validations en attente » : le centre qui répond à « qu'est-ce qui attend une validation, et de QUI ? ». Il ORIENTE, il ne valide
@@ -17,7 +18,7 @@ import 'qual_commun.dart';
 /// attend un ARBITRAGE de la Direction, et ce que la Direction a déjà validé le 01/09.
 ///
 /// Une file amorcée par un écran d'un autre module (bons de besoins, commandes) s'annonce « non amorcée » plutôt que d'afficher un 0 faux. L'écran ne
-/// porte AUCUNE commande d'écriture : « Y aller » et « Ouvrir » naviguent, rien ne se valide ici. Les règles sont dans `qual_validations.dart`.
+/// porte AUCUNE commande de validation : « Y aller » et « Ouvrir » naviguent, rien ne se valide ici. SEULE exception (décisions du 16/11/2026) : les ARBITRAGES À RENDRE (prix en doublon, conflit de couverture), dont les commandes (« Garder celui-ci », « Clore celle-ci ») sont absentes sans le droit. Les règles sont dans `qual_validations.dart`.
 class EcranValidations extends StatelessWidget with EcranMaquette {
   const EcranValidations({super.key});
 
@@ -56,6 +57,12 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
       // LA LIGNE DES SEUILS (lot B) : le compte des versions Enregistrées, et le droit de les valider (fiches `rbac`), relus à chaque changement.
       'seuilsDelta',
       'rbac',
+      // Les arbitrages (16/11/2026) : prix en doublon (listes de départ et référentiel) et conflits de couverture.
+      'catalogueTarifs',
+      'actes',
+      'tarifs',
+      'versionsTarif',
+      'couverturesAssurance',
       // Le compte d'une famille est LU dans le magasin : toute collection qu'elle lit rafraîchit le centre.
       ...valCollectionsLues(),
     ];
@@ -133,6 +140,8 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
                           _famille(c, x, ouvrable(ecranDeFamille(x.ecran))),
                         ]
                       ])),
+            // LES ARBITRAGES À RENDRE (16/11/2026) : prix en doublon et conflits de couverture, jamais bloquants.
+            if (!restreint) ...arbitragesARendre(context, c),
             // LIGNE « SEUILS ENREGISTRÉS À VALIDER » (lot B) : visible du SEUL porteur du droit de les valider — le geste réservé de la fiche de rôle, jamais une liste de rôles :
             // ni l'administrateur ni la Direction, qui ouvrent pourtant le centre, ne la voient sans lui. Le centre ORIENTE : le geste (avec son motif) reste à l'écran
             // « Valeurs de référence », un seuil à la fois, aucune validation en lot.

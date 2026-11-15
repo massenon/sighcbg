@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, champSerieDemande, ficheLocaleAuPoste;
+import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -79,7 +79,7 @@ const Set<String> collectionsDeLaMereSeule = {'produits'};
 const String collectionDeltas = 'deltasCompteurs';
 
 /// Les marqueurs que chaque poste DÉDUIT lui-même des mêmes données : ils ne voyagent pas (un marqueur synchronisé ferait des allers-retours sans fin).
-const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon'};
+const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon', 'couvertureEnConflit'};
 
 /// Les fiches qui voyagent EN UN BLOC : un haché et son sel ne se mélangent jamais champ à champ entre deux postes.
 const Set<String> collectionsAtomiques = {'identifiants'};
@@ -729,6 +729,14 @@ class PontActivite {
       _marquer(col, col.toutes, conflits, 'litEnConflit');
       litsEnConflitCompte.value = conflits.length;
     }
+    // CONFLIT DE COUVERTURE (décision du 16/11/2026) : deux couvertures ouvertes pour un même patient (deux fileuls hors ligne) ne restent plus en silence. Marqueur LOCAL, déduit à chaque
+    // application d'opérations ; il retombe tout seul quand l'arbitrage clôt l'une des deux. Il ne bloque personne : la prise en charge lit la couverture au début le plus récent.
+    if (collections.contains('couverturesAssurance')) {
+      final col = magasin.collection('couverturesAssurance');
+      final conflits = {for (final g in assCouverturesEnConflit(col.toutes)) ...g};
+      _marquer(col, col.toutes, conflits, 'couvertureEnConflit');
+      couverturesEnConflitCompte.value = conflits.length;
+    }
     var neg = 0;
     for (final e in champsCompteurs.entries) {
       if (!collections.contains(e.key)) continue;
@@ -749,6 +757,9 @@ class PontActivite {
       }
     }
   }
+
+  /// Les couvertures ouvertes en conflit (plusieurs pour un même patient) : à arbitrer par la DAF.
+  final ValueNotifier<int> couverturesEnConflitCompte = ValueNotifier<int>(0);
 
   /// Les admissions actives dont le lit est aussi pris par une autre admission active (un lit, une admission active).
   final ValueNotifier<int> litsEnConflitCompte = ValueNotifier<int>(0);
