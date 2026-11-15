@@ -1,0 +1,8 @@
+[
+{"id":"SEC01","statut":"actif","ordre":1,"code":"DIR","libelle":"DIRECTION","responsable":"BAGUIDI Rafiou","qualification":"Directeur Général","role":"direction","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"SEC02","statut":"actif","ordre":2,"code":"CPT","libelle":"COMPTABILITÉ","responsable":"","qualification":"Comptable","role":"comptable","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"SEC03","statut":"actif","ordre":3,"code":"RHU","libelle":"RESSOURCES HUMAINES","responsable":"","qualification":"Responsable des ressources humaines","role":"rh","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"SEC04","statut":"actif","ordre":4,"code":"MGE","libelle":"MÉDECINE GÉNÉRALE","responsable":"IDOHOU Abraham","qualification":"Médecin","role":"medecin","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"SEC05","statut":"actif","ordre":5,"code":"SOI","libelle":"SOINS INFIRMIERS","responsable":"AKONDE Octave","qualification":"Infirmier","role":"infirmier","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"},
+{"id":"SEC06","statut":"actif","ordre":6,"code":"ADM","libelle":"ADMINISTRATION","responsable":"","qualification":"Direction","role":"direction","source":"Organisation de la Clinique Baguidi limitée aux neuf personnes de la démonstration : à compléter par la Direction"}
+]
