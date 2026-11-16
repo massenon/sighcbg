@@ -14,6 +14,9 @@
 //   2. PAGINATION — premier rendu, lecture du numéro de page de chaque titre (marqueurs invisibles `§P<id>§` relus par `pdftotext`), puis second rendu
 //      avec les numéros dans la table des matières (liens internes dans les deux cas). Sans `pdftotext`, la table garde ses liens sans numéros.
 //   3. SIGNETS — le plan du PDF suit les titres h1/h2 (option `outline` de Chromium) ; pied de page « page X / Y ».
+//   4. INCLUSIONS — une ligne `<!-- INCLURE fichier.html -->` est remplacée par le contenu du fichier (chemin relatif au dossier source ; s'il est un
+//      document complet, seul le contenu de son <body>, ou de son <main>, est repris). Fichier ABSENT : la directive disparaît sans erreur (l'annexe
+//      « Catalogue de tous les écrans » n'existe pas toujours). Les captures des fichiers inclus suivent les mêmes règles que celles du manuel.
 import { createRequire } from 'node:module';
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { resolve, join, dirname, basename } from 'node:path';
@@ -46,8 +49,26 @@ if (existsSync(dossierCaptures)) {
   }
 }
 
-// Titre du pied de page : <meta name="pied" content="…">.
-const html = readFileSync(page_html, 'utf8');
+// Les inclusions : le document assemblé est écrit à côté du manuel (même dossier, donc mêmes chemins relatifs pour les images et la feuille de style),
+// sous un nom temporaire supprimé à la fin.
+function inclure(texte) {
+  return texte.replace(/<!--\s*INCLURE\s+([^\s>]+)\s*-->/g, (_, nom) => {
+    const f = join(src, nom);
+    if (!existsSync(f)) {
+      console.warn(`Inclusion absente (ignorée) : ${nom}`);
+      return '';
+    }
+    let contenu = readFileSync(f, 'utf8');
+    const corps = contenu.match(/<main[^>]*>([\s\S]*)<\/main>/i) || contenu.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    if (corps) contenu = corps[1];
+    console.log(`Inclusion : ${nom} (${(contenu.length / 1024).toFixed(0)} Ko)`);
+    return contenu;
+  });
+}
+const html = inclure(readFileSync(page_html, 'utf8'));
+const page_assemblee = join(src, `.manuel-assemble-${process.pid}.html`);
+writeFileSync(page_assemblee, html);
+process.on('exit', () => rmSync(page_assemblee, { force: true }));
 const pied = (html.match(/<meta name="pied" content="([^"]*)"/) || [])[1] || 'SIGH-CBG';
 
 const piedTemplate = `<div style="width:100%;font-family:'Liberation Sans',Arial,sans-serif;font-size:8.5px;color:#64748b;padding:0 18mm;display:flex;justify-content:space-between;">
@@ -81,7 +102,7 @@ function preparer({ reperes }) {
     const img = el('image', { href: `${nom}.png`, x: 0, y: 0, width: W, height: H, preserveAspectRatio: 'none' });
     svg.append(img);
     // Échelle de dessin : épaisseurs et pastilles constantes à l'impression, quelle que soit la largeur recadrée.
-    const k = (cw / 1440) * 1.35;
+    const k = (cw / (r.largeurReference || 1440)) * 1.35;
     cibles.forEach((c, i) => {
       let rect = null;
       const n = c.n || 0;
@@ -190,7 +211,7 @@ function preparer({ reperes }) {
 
 async function rendre(navigateur, numeros, masquer = false) {
   const page = await navigateur.newPage();
-  await page.goto(pathToFileURL(page_html).href, { waitUntil: 'load' });
+  await page.goto(pathToFileURL(page_assemblee).href, { waitUntil: 'load' });
   const erreurs = await page.evaluate(preparer, { reperes });
   if (erreurs.length) {
     console.error(erreurs.join('\n'));

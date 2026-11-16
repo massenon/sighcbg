@@ -41,10 +41,10 @@
 <h2 id="public">À qui s’adresse ce manuel</h2>
 <p>Ce manuel s’adresse à tous les agents de la Clinique Baguidi qui utilisent le logiciel SIGH-CBG : accueil, médecins, sages-femmes, infirmiers, laboratoire, pharmacie, caisse, comptabilité, ressources humaines et Direction.</p>
 <p>Vous n’avez besoin d’aucune connaissance en informatique. Chaque tâche est expliquée pas à pas, avec une image de l’écran.</p>
-<p>Ce manuel décrit le <strong>poste de travail</strong> : le logiciel installé sur les ordinateurs de la clinique. Un chapitre présente aussi l’<strong>application mobile</strong>. L’administration technique (installation, comptes, synchronisation, relais en ligne) fait l’objet d’un manuel séparé : le <em>Manuel administrateur</em>.</p>
+<p>Ce manuel décrit le <strong>poste de travail</strong> : le logiciel installé sur les ordinateurs de la clinique. Des chapitres présentent aussi l’<strong>installation du poste</strong>, la <strong>sauvegarde</strong> et l’<strong>application mobile</strong>. L’administration technique (installation, comptes, synchronisation, relais en ligne) fait l’objet d’un manuel séparé : le <em>Manuel administrateur</em>.</p>
 
 <h2 id="comment-lire">Comment lire ce manuel</h2>
-<p>Les chapitres suivent l’ordre du menu du logiciel, de gauche à droite : Accueil, Soins, Logistique, Financier, RH, Pilotage. Lisez d’abord le chapitre 2, <strong>Prendre en main le poste</strong>, et le chapitre 3, <strong>Travailler avec les tableaux</strong>. Allez ensuite directement au chapitre de votre service.</p>
+<p>Les chapitres suivent l’ordre du menu du logiciel, de gauche à droite : Accueil, Soins, Logistique, Financier, RH, Pilotage. Lisez d’abord le chapitre 3, <strong>Prendre en main le poste</strong>, et le chapitre 4, <strong>Travailler avec les tableaux</strong>. Allez ensuite directement au chapitre de votre service.</p>
 <p>Chaque tâche est présentée de la même façon :</p>
 <ul>
   <li><strong>le but</strong>, en une phrase ;</li>
@@ -85,7 +85,85 @@
 <div class="encadre info"><span class="titre">Information</span><p>Toutes vos actions sont enregistrées au <strong>journal d’audit</strong> avec votre nom, la date et l’heure. Aucune action n’est anonyme. Ne prêtez jamais votre compte.</p></div>
 
 <!-- ============================================================== 2. PRISE EN MAIN -->
-<h1 id="prise-en-main"><span class="num">2</span> Prendre en main le poste</h1>
+<!-- ============================================================== INSTALLER LE POSTE -->
+<h1 id="installation"><span class="num">2</span> Installer le poste</h1>
+<p>Au <strong>premier lancement</strong>, un poste neuf n’a encore aucun compte. Il ne propose donc pas la connexion : il ouvre l’<strong>assistant d’installation</strong>. Ce chapitre concerne la personne qui installe le poste (en général l’administrateur). Les autres agents peuvent passer directement au chapitre suivant.</p>
+
+<h2 id="ins-premier-lancement">Le premier lancement : deux chemins</h2>
+<div class="tache">
+<p class="but">Vous choisissez le rôle de ce poste dans la clinique.</p>
+<p class="prerequis">un poste neuf, sans aucun compte.</p>
+<ol class="etapes">
+  <li>Cliquez sur <strong>Première installation de la clinique</strong> si la clinique n’est installée sur aucun autre poste. Ce poste devient le <strong>poste principal</strong> (la <strong>mère</strong>).</li>
+  <li>Cliquez sur <strong>Rejoindre une clinique existante</strong> si la clinique est déjà installée sur un autre poste. Ce poste devient un <strong>fileul</strong> : il reprend la configuration de la mère, sans rien refaire.</li>
+</ol>
+<figure class="capture" data-capture="captures/100-ins-accueil" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"ins:premiere","de":"bas","long":70},{"cle":"ins:rejoindre","de":"bas","long":70}]'>
+  <figcaption>L’écran <strong>Installation du poste</strong> : la mère ou un fileul.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Une clinique n’a qu’<strong>une seule mère</strong>. En cas de doute, ne faites pas une première installation : demandez à l’administrateur si la clinique existe déjà sur un autre poste.</p></div>
+</div>
+
+<h2 id="ins-premiere">Première installation : créer l’administrateur</h2>
+<div class="tache">
+<p class="but">Vous créez le premier compte du poste, celui de l’administrateur.</p>
+<p class="chemin">Installation du poste ➔ Première installation de la clinique</p>
+<ol class="etapes">
+  <li>Saisissez le <strong>Nom complet</strong> et l’<strong>Identifiant</strong> de l’administrateur.</li>
+  <li>Choisissez le <strong>Mot de passe</strong>, puis saisissez-le une seconde fois dans <strong>Confirmer le mot de passe</strong>. Vous choisissez vous-même ce mot de passe : il n’est écrit nulle part.</li>
+  <li>Cliquez sur <strong>Créer le compte</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/101-ins-premiere" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"ins:nom","de":"gauche","long":60,"num":1},{"cle":"ins:motdepasse","de":"gauche","long":60,"num":2},{"cle":"ins:creer","de":"bas","long":60,"num":3}]'>
+  <figcaption>L’écran <strong>Créer l’administrateur</strong>.</figcaption>
+</figure>
+</div>
+
+<h2 id="ins-secours">Ranger le code de secours</h2>
+<div class="tache">
+<p class="but">Vous gardez le moyen de retrouver l’accès administrateur si le mot de passe est perdu.</p>
+<ol class="etapes">
+  <li>L’écran <strong>Votre code de secours</strong> affiche un code. Cliquez sur <strong>Copier</strong> ou sur <strong>Imprimer</strong>.</li>
+  <li>Rangez ce code en lieu sûr (une enveloppe fermée, un coffre), puis cochez <strong>J’ai rangé ce code en lieu sûr.</strong></li>
+  <li>Cliquez sur <strong>Ouvrir le tableau de bord</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/102-ins-secours" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"ins:range","de":"bas","long":60,"num":2},{"cle":"ins:suite","de":"bas","long":60,"num":3}]'>
+  <figcaption>Le code de secours ne s’affiche qu’une fois (le code de la capture est un exemple).</figcaption>
+</figure>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Le code de secours ne s’affiche <strong>qu’une seule fois</strong>. Sans lui, si le mot de passe est perdu et qu’aucun autre administrateur n’existe, la seule issue est de réinstaller le poste : les saisies non synchronisées seraient perdues.</p></div>
+</div>
+
+<h2 id="ins-configurations">Faire les « Configurations à faire »</h2>
+<div class="tache">
+<p class="but">Vous terminez la mise en service de la clinique, étape par étape.</p>
+<p class="prerequis">le compte administrateur, sur la mère.</p>
+<ol class="etapes">
+  <li>À l’ouverture du tableau de bord, la fenêtre <strong>Configurations à faire avant l’utilisation</strong> s’ouvre seule. Elle compte les étapes faites (par exemple « 0 étape(s) faite(s) sur 4 »).</li>
+  <li>Faites les étapes <strong>dans l’ordre</strong> : <strong>1. Activer la mère</strong> (bouton <strong>Activer la mère</strong>), <strong>2. Configurer la clinique</strong>, <strong>3. Créer les comptes des agents</strong>, <strong>4. Appairer les postes et les mobiles</strong>. Une étape reste verrouillée tant que la précédente n’est pas faite ; son motif est affiché.</li>
+  <li>Créez au moins un <strong>second administrateur</strong>, puis cliquez sur <strong>Clore l’assistant</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/103-ins-configurations" data-recadrage="270,40,910,720" data-cibles='[{"bouton":"Activer la mère","de":"droite","long":70,"num":2},{"bouton":"Clore l’assistant","de":"bas","long":50,"num":3}]'>
+  <figcaption>La fenêtre <strong>Configurations à faire avant l’utilisation</strong>.</figcaption>
+</figure>
+<div class="encadre astuce"><span class="titre">Astuce</span><p>Vous pouvez fermer la fenêtre et y revenir plus tard : tant que l’assistant n’est pas clos, l’icône <strong>Configurations à faire avant l’utilisation</strong> de la barre supérieure la rouvre. Ce qui est réglé sur la mère est repris par les autres postes et par les mobiles.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>La clôture exige les quatre étapes <strong>et</strong> deux administrateurs actifs. Une fois l’assistant clos, le dernier administrateur ne peut plus être archivé : la clinique garde toujours deux administrateurs.</p></div>
+</div>
+
+<h2 id="ins-rejoindre">Rejoindre une clinique existante</h2>
+<div class="tache">
+<p class="but">Vous reliez ce poste à la mère de la clinique.</p>
+<p class="prerequis">l’adresse de la mère et un <strong>code d’appairage</strong> affiché sur la console de la mère (il vaut 15 minutes et ne sert qu’une fois).</p>
+<p class="chemin">Installation du poste ➔ Rejoindre une clinique existante</p>
+<ol class="etapes">
+  <li>Saisissez l’<strong>Adresse de la mère</strong>, sous la forme http://adresse:port (par exemple http://192.168.1.10:9000).</li>
+  <li>Saisissez le <strong>Code d’appairage</strong>.</li>
+  <li>Cliquez sur <strong>Rejoindre</strong>. Le poste attend ensuite les comptes de la mère : connectez-vous avec votre compte habituel.</li>
+</ol>
+<figure class="capture" data-capture="captures/104-ins-rejoindre" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"rej:adresse","de":"gauche","long":60,"num":1},{"cle":"rej:code","de":"gauche","long":60,"num":2},{"cle":"rej:valider","de":"bas","long":60,"num":3}]'>
+  <figcaption>L’écran <strong>Rejoindre une clinique</strong>.</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p>Un refus est toujours nommé : « Ce code d’appairage a expiré (15 minutes) », « Ce code d’appairage a déjà servi », « Code d’appairage inconnu », ou « La mère n’a pas répondu ». Demandez alors un nouveau code sur la mère, ou vérifiez le réseau et que la mère est démarrée.</p></div>
+</div>
+
+<h1 id="prise-en-main"><span class="num">3</span> Prendre en main le poste</h1>
 
 <h2 id="connexion">Ouvrir une session</h2>
 <div class="tache">
@@ -211,7 +289,7 @@
 <div class="encadre info"><span class="titre">Information</span><p>Un compteur <strong>à traiter</strong> signale une opération que la mère a refusée. La cause est nommée et le geste de correction est indiqué. Prévenez votre responsable ou l’administrateur.</p></div>
 
 <!-- ============================================================== 3. TABLEAUX -->
-<h1 id="tableaux"><span class="num">3</span> Travailler avec les tableaux</h1>
+<h1 id="tableaux"><span class="num">4</span> Travailler avec les tableaux</h1>
 <p>La plupart des écrans présentent leurs données dans un <strong>tableau</strong>. Tous les tableaux fonctionnent de la même façon.</p>
 
 <h2 id="tab-chercher">Rechercher, filtrer et trier</h2>
@@ -254,16 +332,29 @@
 <figure class="capture" data-capture="captures/18-export" data-recadrage="240,0,960,560" data-cibles='[{"rect":[505,150,430,26],"de":"gauche","long":60},{"bouton":"Excel (.xlsx)","de":"bas","long":60}]'>
   <figcaption>La fenêtre <strong>Exporter les données</strong>.</figcaption>
 </figure>
-<div class="encadre info"><span class="titre">Information</span><p>Le fichier reprend les <strong>colonnes affichées</strong> du tableau, avec les valeurs telles que l’écran les montre. Masquez d’abord les colonnes inutiles avec <strong>Colonnes</strong>. Chaque export est enregistré au journal.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Le fichier reprend les <strong>colonnes affichées</strong> du tableau et suit vos filtres. Un montant ou une date sort en <strong>vrai nombre</strong> ou en <strong>vraie date</strong> (décimales comprises), utilisable dans le tableur ; un texte masqué à l’écran sort masqué. Masquez d’abord les colonnes inutiles avec <strong>Colonnes</strong>. Chaque export est enregistré au journal, avec les références des fiches exportées et leur nombre.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Deux droits distincts</strong> : <strong>exporter</strong> (Excel, CSV) et <strong>imprimer depuis un tableau</strong>. Vous pouvez avoir l’un sans l’autre : le bouton que votre rôle n’a pas n’apparaît pas. La limite du nombre de lignes exportées est un réglage réservé. Les grilles de saisie en cours (un panier, des lignes en composition) et les documents imprimés n’ont ni cases ni bouton <strong>Exporter</strong>.</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Un fichier exporté sort du logiciel : il n’est plus protégé par les droits. Ne le copiez pas sur une clé ou un téléphone personnel s’il contient des données de patients.</p></div>
 </div>
 
 <h2 id="tab-imprimer">Imprimer la sélection</h2>
-<p>Cliquez sur <strong>Imprimer la sélection</strong> dans la barre bleue. Le logiciel prépare un document à l’en-tête officiel de la clinique, avec les lignes cochées. Quand une ligne a sa propre pièce (un bon, une fiche, un reçu), il propose d’imprimer une pièce par ligne.</p>
+<div class="tache">
+<p class="but">Vous imprimez les lignes cochées d’un tableau, ou la pièce complète de chacune.</p>
+<p class="prerequis">le droit d’imprimer depuis un tableau.</p>
+<ol class="etapes">
+  <li>Cochez les lignes, puis cliquez sur <strong>Imprimer la sélection</strong> dans la barre bleue.</li>
+  <li>Quand chaque ligne a sa propre pièce (une facture, un bon, une fiche), une fenêtre <strong>Imprimer la sélection</strong> vous propose <strong>Une pièce par ligne</strong> : chaque pièce complète sort sur sa propre page. Sinon, un seul tableau réunit les lignes cochées.</li>
+  <li>L’aperçu s’ouvre : cliquez sur <strong>Enregistrer en PDF</strong>, ou fermez.</li>
+</ol>
+<figure class="capture" data-capture="captures/19b-imprimer-selection" data-recadrage="280,40,880,740" data-cibles='[{"bouton":"Enregistrer en PDF","de":"haut","long":60,"num":3}]'>
+  <figcaption>L’aperçu des <strong>Lignes sélectionnées</strong> : les filtres appliqués sont rappelés sur la pièce.</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p>Le nombre de pièces imprimées en une fois est limité par un réglage de la clinique. Au-delà, le logiciel le dit et indique la limite.</p></div>
+</div>
 <div class="encadre info"><span class="titre">Information</span><p>Tous les documents imprimés portent automatiquement l’en-tête de la clinique (logo, dénomination, coordonnées, IFU, RCCM) et un pied de page avec la date, l’utilisateur et une référence unique.</p></div>
 
 <!-- ============================================================== 4. ACCUEIL -->
-<h1 id="accueil"><span class="num">4</span> Accueil</h1>
+<h1 id="accueil"><span class="num">5</span> Accueil</h1>
 <p>Le domaine <strong>Accueil</strong> regroupe le travail de réception : rendez-vous et visites, files d’attente, patients et constantes, courriers, tarifs publics. Le tableau de bord de l’accueil rappelle les parcours courants : <em>Nouveau patient</em>, <em>Rendez-vous de consultation</em>, <em>Rendez-vous de contrôle</em>.</p>
 
 <h2 id="nouveau-patient">Ouvrir un dossier patient</h2>
@@ -386,7 +477,7 @@
 </div>
 
 <!-- ============================================================== 5. SOINS -->
-<h1 id="soins"><span class="num">5</span> Soins</h1>
+<h1 id="soins"><span class="num">6</span> Soins</h1>
 <p>Le domaine <strong>Soins</strong> couvre le travail clinique : dossier et fiche de consultation, ordonnances, imagerie médicale, hospitalisation et bloc, maternité, laboratoire. L’ordre est toujours le même : <strong>dossier ➔ fiche ➔ prescription ➔ caisse</strong>.</p>
 
 <h2 id="dossier-consultation">Ouvrir le dossier de consultation</h2>
@@ -523,7 +614,7 @@
 <p>L’<strong>Impression des résultats</strong> ne sort le compte rendu que pour un examen réglé. Le <strong>Comparatif des résultats</strong> montre les résultats antérieurs du patient, côte à côte.</p>
 
 <!-- ============================================================== 6. PHARMACIE ET STOCK -->
-<h1 id="stock"><span class="num">6</span> Pharmacie et stock</h1>
+<h1 id="stock"><span class="num">7</span> Pharmacie et stock</h1>
 <p>Le module <strong>Pharmacie &amp; Stocks</strong> se trouve dans le domaine <strong>Logistique</strong>. Deux règles le gouvernent : <strong>le stock ne devient jamais négatif</strong>, et <strong>toute sortie a un justificatif</strong>.</p>
 
 <h2 id="dispensation">Délivrer une ordonnance, ligne par ligne</h2>
@@ -600,7 +691,7 @@
 </div>
 
 <!-- ============================================================== 7. ACHATS -->
-<h1 id="achats"><span class="num">7</span> Achats</h1>
+<h1 id="achats"><span class="num">8</span> Achats</h1>
 <p>Le module <strong>Achats &amp; Fournisseurs</strong> (domaine <strong>Logistique</strong>) suit le circuit complet : <strong>besoin ➔ commande ➔ livraison ➔ facture fournisseur</strong>.</p>
 
 <h2 id="besoins">Exprimer un besoin</h2>
@@ -647,7 +738,7 @@
 </figure>
 
 <!-- ============================================================== 8. CAISSE ET FACTURATION -->
-<h1 id="caisse"><span class="num">8</span> Caisse et facturation</h1>
+<h1 id="caisse"><span class="num">9</span> Caisse et facturation</h1>
 <p>Le module <strong>Facturation &amp; Caisse</strong> se trouve dans le domaine <strong>Financier</strong>. La caisse <strong>encaisse</strong> les factures produites par les prescriptions ; elle ne crée jamais une demande d’examen.</p>
 
 <h2 id="encaisser">Encaisser une prescription, ligne par ligne</h2>
@@ -662,13 +753,22 @@
   <li>La facture d’un patient est normalisée MECeF <strong>sans acheteur ni AIB</strong> : il n’y a ni IFU ni nom d’acheteur à saisir, le patient paie le total.</li>
   <li>Cliquez sur <strong>Valider l’encaissement</strong>, puis imprimez le reçu.</li>
 </ol>
-<figure class="capture" data-capture="captures/57-encaisser" data-cibles='[{"rect":[176,407,40,18],"de":"bas","long":60,"num":2},{"rect":[165,465,280,45],"de":"droite","long":60,"num":3},{"bouton":"Tout cocher","de":"haut","long":60,"num":2},{"bouton":"Valider l’encaissement","de":"haut","long":60,"num":5}]'>
+<figure class="capture" data-capture="captures/57-encaisser" data-recadrage="150,40,1140,720" data-cibles='[{"bouton":"Tout cocher","de":"haut","long":60,"num":2},{"rect":[173,555,540,36],"de":"bas","long":50,"num":3},{"rect":[173,605,1100,28],"de":"gauche","long":40,"num":4},{"bouton":"Valider l’encaissement","de":"haut","long":60,"num":5}]'>
   <figcaption>La fenêtre <strong>Encaisser</strong> : une case par prestation.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Seules les prestations <strong>réglées</strong> passent au laboratoire, à l’imagerie et à la pharmacie. Une prestation non payée reste en attente, nommément : le patient peut revenir l’acquitter plus tard. Pour reprendre un règlement, utilisez <strong>Encaisser le reste</strong> dans le registre des pièces du jour.</p></div>
-<div class="encadre attention"><span class="titre">Attention</span><p>Une ligne <strong>au prix à valoriser</strong> ne s’encaisse pas : son prix d’achat n’est pas encore fixé. Les autres prestations s’encaissent normalement, et la personne qui fixe les prix est prévenue. Ne remplacez jamais ce prix par un montant de votre choix.</p></div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Une ligne <strong>au prix à valoriser</strong> ne s’encaisse pas : son prix n’est pas en vigueur à la date de la pièce. Par défaut, <strong>rien de la facture ne s’encaisse</strong> tant qu’une ligne attend son prix (voir « Une facture en attente de prix »). Ne remplacez jamais ce prix par un montant de votre choix.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>La prise en charge de l’assurance ne s’applique que si la carte est <strong>valide à la date</strong> de la facture. Sinon, la facture est entièrement à la charge du patient. La fenêtre affiche la <strong>Part assureur</strong> et la part <strong>À PAYER</strong> par le patient.</p></div>
 </div>
+
+<h2 id="attente-prix">Une facture en attente de prix</h2>
+<p>Quand une ligne n’a pas de prix à la date de la pièce, la fenêtre <strong>Encaisser</strong> l’annonce : « prestation(s) au prix à valoriser … la ligne ne s’encaisse pas … La facture attend ce prix ». Pour un acte sans prix assuré dans la grille, elle annonce « acte(s) au prix assuré à définir » : la ligne n’est jamais facturée au prix non assuré.</p>
+<ol class="etapes">
+  <li>N’encaissez rien : dites au patient que la facture attend un prix. Une ligne sans prix n’entre dans aucun total, jamais pour zéro.</li>
+  <li>La personne qui fixe les prix (le rôle qui peut modifier <strong>Tarifs et prix</strong> ou le <strong>Référentiel produits</strong>) reçoit une alerte « prix manquant », sans nom de patient.</li>
+  <li>Dès que le prix daté de ce jour est posé, la facture est <strong>complétée</strong> : encaissez-la normalement.</li>
+</ol>
+<div class="encadre info"><span class="titre">Information</span><p>Un <strong>réglage de clinique</strong>, réservé par la matrice des droits, permet d’encaisser les autres lignes en attendant. Le message dit alors « Les autres prestations s’encaissent (réglage de clinique ouvert) ». Ce réglage se fait sur n’importe quel poste et se propage par la synchronisation.</p></div>
 
 <h2 id="nouvelle-facture">Établir une nouvelle facture</h2>
 <div class="tache">
@@ -679,8 +779,8 @@
   <li>Dans <strong>Prestations facturées</strong>, choisissez chaque prestation, la quantité et la remise éventuelle avec son motif, puis cliquez sur <strong>Ajouter</strong>.</li>
   <li>Vérifiez le <strong>Récapitulatif</strong>, choisissez le <strong>Mode de règlement</strong> et le <strong>Montant réglé (FCFA)</strong>, puis enregistrez.</li>
 </ol>
-<figure class="capture" data-capture="captures/50-facturation" data-recadrage="0,120,1440,780" data-cibles='[{"bouton":"Ajouter","de":"bas","long":60,"num":2}]'>
-  <figcaption>L’écran <strong>Nouvelle facture</strong>.</figcaption>
+<figure class="capture" data-capture="captures/50-facturation" data-recadrage="0,120,1440,780" data-cibles='[{"bouton":"Ajouter","de":"bas","long":60,"num":2},{"rect":[978,775,415,60],"de":"gauche","long":60,"num":3}]'>
+  <figcaption>L’écran <strong>Nouvelle facture</strong> : la note rappelle qu’une facture de patient n’a ni acheteur ni AIB.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Pour un assuré, les lignes couvertes et les lignes non couvertes font deux factures distinctes. Les médicaments sont facturés au prix d’achat, sans marge : ils ne portent pas de remise.</p></div>
 </div>
@@ -695,7 +795,8 @@
 
 <h2 id="recu">Imprimer le reçu et le ticket 80 mm</h2>
 <p>Après l’encaissement, cliquez sur <strong>Imprimer le reçu</strong>. Le reçu détaille chaque prestation payée, la part de l’assureur, la part du patient et le reste dû. Sur l’imprimante de caisse, le reçu sort au format <strong>ticket 80 mm</strong>.</p>
-<p>Pour réimprimer un reçu plus tard, ouvrez le registre des pièces du jour de l’<strong>État de caisse journalier</strong> et cliquez sur <strong>Réimprimer le reçu détaillé</strong>.</p>
+<p>Pour réimprimer un reçu plus tard, ouvrez le registre des pièces du jour de l’<strong>État de caisse journalier</strong> et cliquez sur l’icône <strong>Réimprimer le reçu détaillé</strong>. Dans la fenêtre d’une facture, le bouton <strong>Réimprimer le reçu</strong> fait de même.</p>
+<p>Sur l’écran <strong>Nouvelle facture</strong>, le bouton <strong>Ticket de caisse</strong> ouvre l’aperçu du ticket des prestations ajoutées (il faut au moins une prestation : sinon le logiciel affiche « Ajouter au moins une prestation. »). Le ticket s’ouvre en <strong>aperçu</strong> et s’enregistre en PDF, à la largeur réglée dans <strong>Imprimante de caisse</strong> (80 mm par défaut) : aucun pilote d’imprimante n’est branché dans cette version.</p>
 <figure class="schema">
   <img src="../../../rendu/12-ticket-80mm-apercu.png" alt="Aperçu du ticket de caisse 80 mm" style="max-height:120mm;max-width:100%;border:1px solid #e2e8f0;border-radius:6px">
   <figcaption>Aperçu d’un ticket de caisse 80 mm (capture reprise de la documentation du poste).</figcaption>
@@ -721,21 +822,36 @@
 <p>En fin de journée, ouvrez <strong>Financier</strong> ➔ <strong>État de caisse journalier</strong>. Choisissez la <strong>Journée de caisse</strong>, vérifiez les indicateurs (<strong>Factures émises</strong>, <strong>Chiffre d’affaires</strong>, <strong>Total encaissé</strong>, <strong>Reliquats du jour</strong>) puis cliquez sur <strong>Éditer l’arrêté de caisse</strong>. Comptez la caisse physique et comparez-la au total par mode de règlement.</p>
 
 <h2 id="mecef">La facture normalisée MECeF</h2>
-<p>Toute vente est normalisée : la facture doit être certifiée par un dispositif fiscal MECeF. La clinique utilise un <strong>boîtier physique ELTRADE CC300</strong>.</p>
+<p>Toute vente est normalisée : la facture doit être certifiée par un dispositif fiscal MECeF. La clinique utilise un <strong>boîtier physique ELTRADE CC300</strong>. La <strong>facture d’un patient</strong> est normalisée <strong>sans acheteur ni AIB</strong> : ni IFU, ni nom d’acheteur, ni taux d’AIB ; le patient paie le total. La saisie de l’acheteur et de l’AIB ne reste que pour un assureur, une entreprise ou les achats.</p>
 <ul>
   <li><strong>Factures normalisées</strong> : le registre fiscal de toutes les factures, avec leur <strong>STATUT FISCAL</strong> (par exemple <em>En attente de transmission</em>).</li>
   <li><strong>Transmission &amp; réponses</strong> : les échanges avec le dispositif.</li>
   <li><strong>Avoirs &amp; annulations</strong> et <strong>Journal des transactions</strong>.</li>
   <li><strong>Configuration fiscale</strong> : le mode de certification et les mentions légales (réservée aux profils habilités).</li>
 </ul>
-<figure class="capture" data-capture="captures/56-mecef-config" data-recadrage="0,280,1440,330" data-cibles='[{"cle":"kit:champ:mode","de":"droite","long":70},{"cle":"kit:champ:modele","de":"droite","long":70}]'>
-  <figcaption>Le mode de certification dans <strong>Configuration fiscale</strong> : <strong>Boîtier physique</strong>, modèle ELTRADE CC300.</figcaption>
+<h3>L’écran des modes MECeF</h3>
+<div class="tache">
+<p class="but">Vous lisez, ou vous réglez, le mode de certification et l’imprimante de caisse.</p>
+<p class="prerequis">le droit « configuration MECeF » pour modifier (d’origine : l’administrateur et la Directrice Administrative) ; les autres rôles lisent.</p>
+<p class="chemin">Financier ➔ Configuration fiscale</p>
+<ol class="etapes">
+  <li>Dans la carte <strong>Mode de certification</strong>, choisissez le <strong>Mode de certification des factures</strong> : le boîtier physique ou l’e-MECeF. Le <strong>Modèle du boîtier MECeF</strong> nomme l’appareil (ELTRADE CC300).</li>
+  <li>Lisez, pour chaque mode, ce qui est <strong>Prêt au poste</strong> et <strong>Ce qui manque</strong>. Cliquez sur <strong>Enregistrer le mode</strong>.</li>
+  <li>Dans la carte <strong>Imprimante de caisse</strong>, renseignez le <strong>Modèle de l’imprimante</strong>, la <strong>Largeur du papier (mm)</strong> (de 40 à 120 mm) et l’<strong>Interface</strong>, puis cliquez sur <strong>Enregistrer l’imprimante</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/56-mecef-config" data-recadrage="0,300,730,1000" data-cibles='[{"cle":"kit:champ:mode","de":"droite","long":60,"num":1},{"cle":"mecef:etat-mode:emecef","de":"droite","long":40,"num":2},{"bouton":"Enregistrer le mode","de":"droite","long":60,"num":2}]'>
+  <figcaption>La carte <strong>Mode de certification</strong> : boîtier ELTRADE CC300 ou e-MECeF, ce qui est prêt et ce qui manque.</figcaption>
 </figure>
-<div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier ELTRADE CC300 n’est <strong>pas encore branché</strong> au logiciel : une vente reste <strong>en attente de certification</strong>. Le logiciel ne fabrique jamais de numéro fiscal. Les factures se certifieront dès que l’adaptateur fourni par l’éditeur du boîtier sera installé.</p></div>
-<div class="encadre info"><span class="titre">Information</span><p>Seule la part réglée par le patient entre dans la base MECeF : ni la part de l’assureur ni les remises. L’IFU de l’acheteur, s’il est saisi, compte 13 chiffres ; il est facultatif pour un particulier.</p></div>
+<figure class="capture" data-capture="captures/56-mecef-config" data-recadrage="0,1330,730,450" data-cibles='[{"cle":"kit:champ:imprimanteModele","de":"bas","long":50,"num":3},{"bouton":"Enregistrer l’imprimante","de":"droite","long":60,"num":3}]'>
+  <figcaption>La carte <strong>Imprimante de caisse</strong> : le modèle est « à renseigner » par la clinique.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Aucun modèle d’imprimante n’est fourni pour Baguidi : la carte affiche « à renseigner » et le badge « À valider : à renseigner par la clinique ». Ce réglage <strong>décrit</strong> l’appareil ; la largeur règle l’aperçu du ticket.</p></div>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier ELTRADE CC300 n’est <strong>pas encore branché</strong> au logiciel, et l’e-MECeF est « Non configuré » (le dossier d’interface de la DGI n’est pas remis) : une vente reste <strong>en attente de certification</strong>. Le logiciel ne fabrique <strong>jamais</strong> de numéro fiscal, ni ne le simule. Les factures se certifieront dès que l’adaptateur fourni par l’éditeur du boîtier sera installé.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Seule la part réglée par le patient entre dans la base MECeF : ni la part de l’assureur ni les remises. L’IFU d’un acheteur (assureur, entreprise), quand il se saisit, compte 13 chiffres.</p></div>
 
 <!-- ============================================================== 9. ASSURANCES -->
-<h1 id="assurances"><span class="num">9</span> Assurances</h1>
+<h1 id="assurances"><span class="num">10</span> Assurances</h1>
 <p>Le module <strong>Assurances &amp; Créances</strong> (domaine <strong>Financier</strong>) gère les compagnies partenaires, les cartes des assurés et les créances sur les compagnies.</p>
 
 <h2 id="verifier-carte">Vérifier la carte d’un assuré</h2>
@@ -764,7 +880,7 @@
 </figure>
 
 <!-- ============================================================== 10. RH ET PAIE -->
-<h1 id="rh"><span class="num">10</span> Ressources humaines et paie</h1>
+<h1 id="rh"><span class="num">11</span> Ressources humaines et paie</h1>
 <p>Le domaine <strong>RH</strong> regroupe deux modules : <strong>Ressources humaines</strong> et <strong>Paie &amp; Primes</strong>. Leurs écrans sont réservés aux profils RH, à la Direction et à la comptabilité, sauf <strong>Mon espace</strong>.</p>
 
 <h2 id="mon-espace">Mon espace</h2>
@@ -792,6 +908,25 @@
   <figcaption>L’écran <strong>Congés</strong>.</figcaption>
 </figure>
 
+<h2 id="planning-individuel">Le planning individuel d’un agent</h2>
+<div class="tache">
+<p class="but">Vous lisez le planning d’un agent, et vous adaptez son régime de travail quand il diffère de celui de sa catégorie.</p>
+<p class="prerequis">le droit de modifier le personnel pour <strong>Déroger</strong>, <strong>Remplacer le régime</strong> ou <strong>Revenir à la catégorie</strong> ; les autres rôles autorisés lisent.</p>
+<p class="chemin">RH ➔ Personnel ➔ fiche de l’agent ➔ onglet Planning individuel</p>
+<ol class="etapes">
+  <li>Ouvrez la fiche de l’agent, puis l’onglet <strong>Planning individuel</strong>. La carte <strong>Régime de travail en vigueur</strong> montre chaque champ (vacations, repos, cycle, honoraire, horaires) et sa <strong>Provenance</strong> : la catégorie ou le régime individuel.</li>
+  <li>Pour changer seulement quelques champs, cliquez sur <strong>Déroger</strong>. Dans <strong>Dérogation champ par champ</strong>, choisissez la <strong>Date d’effet</strong>, remplissez les seuls champs qui changent (un champ vide suit la catégorie), puis le <strong>Motif</strong>, et cliquez sur <strong>Enregistrer la version</strong>. Pour un régime entièrement propre à l’agent, cliquez sur <strong>Remplacer le régime</strong>.</li>
+  <li>Pour annuler la dérogation, cliquez sur <strong>Revenir à la catégorie</strong>. Le calendrier en bas de l’onglet se lit par <strong>Semaine</strong> ou par <strong>Mois</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/130-planning-individuel" data-recadrage="0,380,1440,1100" data-cibles='[{"cle":"kit:onglet:planning-individuel:actif","de":"bas","long":50,"num":1},{"bouton":"Déroger","de":"bas","long":50,"num":2},{"bouton":"Semaine","de":"gauche","long":60,"num":3}]'>
+  <figcaption>L’onglet <strong>Planning individuel</strong> de la fiche du personnel (agent fictif).</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/131-planning-deroger" data-recadrage="280,40,880,1080" data-cibles='[{"bouton":"Enregistrer la version","de":"haut","long":50,"num":2}]'>
+  <figcaption>La fenêtre <strong>Dérogation champ par champ</strong>.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Une version datée ne se réécrit pas : la date d’effet est aujourd’hui ou à venir, et les vacations passées gardent le régime sous lequel elles ont été posées. Une valeur sans document d’origine est marquée « à valider ». L’onglet <strong>Historique</strong> garde toutes les versions.</p></div>
+</div>
+
 <h2 id="paie">Calculer la paie et éditer les bulletins</h2>
 <div class="tache">
 <p class="but">Vous calculez les salaires du mois et vous produisez les bulletins de paie.</p>
@@ -811,7 +946,7 @@
 </div>
 
 <!-- ============================================================== 11. COMPTABILITÉ -->
-<h1 id="compta"><span class="num">11</span> Comptabilité</h1>
+<h1 id="compta"><span class="num">12</span> Comptabilité</h1>
 <p>Le module <strong>Comptabilité SYSCOHADA</strong> (domaine <strong>Financier</strong>) tient les écritures, les journaux, le grand livre, la balance et les états financiers. Beaucoup d’écritures naissent toutes seules : un encaissement, une dépense ou une paie produit son écriture en brouillon.</p>
 
 <h2 id="ecritures">Saisir et valider une écriture</h2>
@@ -860,7 +995,7 @@
 <p>Les obligations fiscales se suivent dans <strong>Échéances fiscales &amp; paiements</strong>, et la retenue sur les ventes dans <strong>Acompte sur impôt (AIB)</strong>.</p>
 
 <!-- ============================================================== 12. PILOTAGE -->
-<h1 id="pilotage"><span class="num">12</span> Pilotage et tableaux de bord</h1>
+<h1 id="pilotage"><span class="num">13</span> Pilotage et tableaux de bord</h1>
 <p>Le domaine <strong>Pilotage</strong> regroupe les <strong>Tableaux de bord par poste</strong>, les statistiques et les tableaux de la Direction. Chaque rôle arrive sur son propre tableau de bord après la connexion.</p>
 
 <h2 id="tableau-poste">Lire votre tableau de bord</h2>
@@ -885,7 +1020,7 @@
 <div class="encadre info"><span class="titre">Information</span><p>Tous les indicateurs sont <strong>calculés</strong> à partir des registres du logiciel, jamais saisis. Une période se choisit et se nomme : un mois calendaire, un trimestre, une année. « Non calculable » n’est pas « zéro » : il manque une donnée.</p></div>
 
 <!-- ============================================================== 13. ASSISTANT -->
-<h1 id="assistant"><span class="num">13</span> L’Assistant</h1>
+<h1 id="assistant"><span class="num">14</span> L’Assistant</h1>
 <div class="tache">
 <p class="but">Vous posez une question en français sur les données que votre profil peut lire.</p>
 <p class="prerequis">aucun : tout agent connecté peut utiliser l’Assistant.</p>
@@ -903,50 +1038,282 @@
 <div class="encadre astuce"><span class="titre">Astuce</span><p>La conversation reste sur votre poste. Le bouton <strong>Effacer la conversation</strong> la supprime ; aucune donnée de la clinique n’est touchée.</p></div>
 </div>
 
-<!-- ============================================================== 14. MOBILE -->
-<h1 id="mobile"><span class="num">14</span> L’application mobile</h1>
-<p>L’application mobile SIGH-CBG est volontairement simple. Elle sert aux soignants en tournée (visites à domicile, consultations hors du poste) et à la <strong>réception de secours</strong>. Elle échange avec la clinique par le relais en ligne, de façon chiffrée.</p>
+<!-- ============================================================== SATISFACTION EN LIGNE -->
+<h1 id="satisfaction"><span class="num">15</span> La satisfaction des patients</h1>
+<p>Le module <strong>Enquêtes &amp; questionnaires</strong> (domaine <strong>Administration</strong>) recueille l’avis des patients. Le questionnaire est un modèle : le formulaire naît du modèle, ajouter une question suffit à la faire paraître.</p>
+
+<h2 id="enquetes-partager">Partager un questionnaire sur Internet</h2>
+<div class="tache">
+<p class="but">Vous permettez à un patient de répondre depuis chez lui, par un lien ou un QR code.</p>
+<p class="prerequis">le droit de modifier les enquêtes.</p>
+<p class="chemin">Administration ➔ Enquêtes &amp; questionnaires</p>
+<ol class="etapes">
+  <li>Sur la ligne du modèle (par exemple <strong>Satisfaction des patients</strong>), cliquez sur l’icône <strong>Partager à un tiers</strong>.</li>
+  <li>Dans <strong>Où le tiers répond-il ?</strong>, choisissez <strong>Sur Internet, par le relais — depuis chez soi (anonyme, chiffré)</strong>. Vérifiez <strong>Le lien expire le</strong> (30 jours par défaut) ; le <strong>Recueil</strong> reste <strong>Anonyme</strong>.</li>
+  <li>Cliquez sur <strong>Ouvrir le lien</strong>. Le lien est créé ; le poste mère le <strong>publie au relais</strong> au tour suivant de la synchronisation.</li>
+</ol>
+<figure class="capture" data-capture="captures/121-enquete-partager" data-recadrage="320,20,880,600" data-cibles='[{"cle":"kit:champ:usage","de":"bas","long":50,"num":2},{"bouton":"Ouvrir le lien","de":"bas","long":50,"num":3}]'>
+  <figcaption>La fenêtre <strong>Partager</strong> : usage « Sur Internet, par le relais ».</figcaption>
+</figure>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Aucune donnée médicale sur une page publique. Une enquête interroge l’accueil, l’attente, la propreté, la clarté des explications — jamais le diagnostic ni le motif de venue. Un lien en ligne est toujours anonyme : aucun nom ni numéro de dossier n’est demandé.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Les réponses sont <strong>chiffrées dans le navigateur</strong> du patient : le relais ne peut pas les lire. Elles redescendent à la mère et aux postes pour les statistiques.</p></div>
+</div>
+
+<h2 id="enquetes-qr">Afficher le QR, imprimer l’affiche, révoquer</h2>
+<ol class="etapes">
+  <li>Ouvrez l’onglet <strong>Liens de partage</strong>. Sur la ligne du lien, cliquez sur l’icône <strong>Afficher le lien et le QR</strong>.</li>
+  <li>Tant que la mère n’a pas publié le lien, le panneau <strong>Lien en ligne</strong> l’indique (« En attente du poste mère ») : il n’affiche ni adresse ni QR tant que le lien ne mène nulle part. Une fois publié, il affiche le <strong>Code QR du questionnaire en ligne</strong>, le bouton <strong>Copier l’adresse</strong> et le bouton <strong>Imprimer l’affiche (QR)</strong>, qui produit une affiche A4 à poser en salle d’attente.</li>
+  <li>Pour fermer un lien avant son expiration, cliquez sur l’icône <strong>Révoquer le lien</strong>. Le lien cesse de recueillir ; les réponses déjà reçues restent.</li>
+</ol>
+<figure class="capture" data-capture="captures/123b-enquete-liens" data-recadrage="0,640,1440,260" data-cibles='[{"bouton":"Afficher le lien et le QR","de":"gauche","long":70,"num":1},{"bouton":"Révoquer le lien","de":"haut","long":50,"num":3}]'>
+  <figcaption>L’onglet <strong>Liens de partage</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/123-enquete-qr" data-recadrage="960,0,480,560">
+  <figcaption>Le panneau <strong>Lien en ligne</strong>, avant la publication par la mère.</figcaption>
+</figure>
+
+<h2 id="satisfaction-lire">Lire les résultats</h2>
+<p class="chemin">Administration ➔ Satisfaction des patients</p>
+<p>L’écran <strong>Satisfaction des patients</strong> calcule, à partir des réponses recueillies : les <strong>Réponses recueillies</strong>, la <strong>Note moyenne globale</strong>, la part qui <strong>recommanderait la clinique</strong>, les commentaires libres et la <strong>Note moyenne par question</strong>. Rien n’y est saisi.</p>
+<figure class="capture" data-capture="captures/124-satisfaction" data-recadrage="0,120,1440,620">
+  <figcaption>L’écran <strong>Satisfaction des patients</strong>.</figcaption>
+</figure>
+
+<!-- ============================================================== SAUVEGARDE ET SMS -->
+<h1 id="sauvegarde"><span class="num">16</span> Sauvegarde et SMS (profils autorisés)</h1>
+<p>Ce chapitre concerne les profils qui ont ces droits (en général l’administrateur et la Directrice Administrative). Les autres agents n’ont rien à faire : la sauvegarde quotidienne est automatique.</p>
+
+<h2 id="sauvegarde-locale">Sauvegarder et restaurer</h2>
+<div class="tache">
+<p class="but">Vous vérifiez les sauvegardes, en lancez une à la demande et restaurez si besoin.</p>
+<p class="chemin">Système ➔ Sauvegardes &amp; restauration</p>
+<ol class="etapes">
+  <li>Lisez les indicateurs : <strong>Sauvegardes conservées</strong>, <strong>Dernière sauvegarde</strong>, <strong>Échecs constatés</strong>, <strong>Volume moyen</strong>. Un échec est signalé en rouge.</li>
+  <li>Pour sauvegarder tout de suite, cliquez sur <strong>Lancer une sauvegarde manuelle</strong> (ou <strong>Générer une sauvegarde</strong> dans <strong>Fichiers de sauvegarde disponibles</strong>). L’icône <strong>Télécharger</strong> d’un fichier en fait une copie sur un support externe.</li>
+  <li>Pour vérifier que la procédure fonctionne, cliquez sur <strong>Tester une restauration</strong>. Pour revenir à une sauvegarde, cliquez sur <strong>Restaurer</strong> sur sa ligne dans <strong>Historique des sauvegardes</strong>, puis confirmez.</li>
+</ol>
+<figure class="capture" data-capture="captures/110-sauvegardes" data-recadrage="0,120,1440,1180" data-cibles='[{"bouton":"Lancer une sauvegarde manuelle","de":"bas","long":60,"num":2},{"bouton":"Tester une restauration","de":"bas","long":80,"num":3},{"bouton":"Restaurer","de":"gauche","long":60,"num":3}]'>
+  <figcaption>L’écran <strong>Sauvegardes &amp; restauration</strong>.</figcaption>
+</figure>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Restaurer remplace les données actuelles par celles de la sauvegarde. Faites d’abord une sauvegarde manuelle, prévenez les postes, et ne restaurez qu’après avoir vérifié la date de la sauvegarde choisie.</p></div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Une sauvegarde qui reste sur le poste ne le protège de rien (vol, incendie, panne du disque). La sauvegarde hebdomadaire vous invite à télécharger une copie sur un support externe : rangez-la hors de la clinique.</p></div>
+</div>
+
+<h2 id="sauvegarde-hors-site">La copie hors site</h2>
+<p>Quand la copie hors site est disponible sur le poste, la carte <strong>Sauvegarde hors site</strong> apparaît sur le même écran. Elle offre <strong>Régler la copie hors site</strong>, <strong>Copier le magasin maintenant</strong> (ou <strong>Copier les fichiers maintenant</strong>), <strong>Contrôler les copies</strong> et, sur la mère, <strong>Restaurer une copie</strong>. Le réglage technique (destination, identifiants) est décrit dans le <em>Manuel administrateur</em>.</p>
+
+<h2 id="sms">La passerelle SMS et le journal des envois</h2>
+<div class="tache">
+<p class="but">Vous vérifiez que les SMS (rappels de rendez-vous) partent, et vous testez l’envoi.</p>
+<p class="prerequis">le geste réservé « Régler la passerelle SMS » pour modifier et tester ; sur le poste mère.</p>
+<p class="chemin">Poste mère ➔ Passerelle SMS / Journal des envois SMS</p>
+<ol class="etapes">
+  <li>Ouvrez <strong>Passerelle SMS</strong> : la carte <strong>Réglage</strong> montre la passerelle et le plafond quotidien lu au relais ; la carte <strong>Mots interdits dans un SMS</strong> liste ce qui ne peut jamais partir.</li>
+  <li>Cliquez sur <strong>Tester l’envoi</strong> pour envoyer un SMS d’essai.</li>
+  <li>Ouvrez <strong>Journal des envois SMS</strong> : chaque envoi avec <strong>Déposé le</strong>, <strong>Numéro (masqué)</strong>, <strong>Modèle</strong>, <strong>Caractères</strong>, <strong>Statut</strong>, <strong>Tentatives</strong> et <strong>Refus</strong>. Cliquez sur <strong>Relever les statuts</strong> pour les mettre à jour, ou sur <strong>Composer un SMS</strong> pour un message à partir d’un modèle.</li>
+</ol>
+<figure class="capture" data-capture="captures/141-sms-journal" data-recadrage="0,120,1440,780">
+  <figcaption>Le <strong>Journal des envois SMS</strong>. Ici, le service de la mère ne répond pas : l’écran affiche « non disponible » au lieu d’un chiffre.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Les SMS partent <strong>par le relais</strong>. Le relais ne voit que le numéro et le texte d’un message déjà composé par la mère, et l’efface une fois envoyé. Aucun contenu médical dans un SMS : un rappel dit le jour, l’heure et la clinique.</p></div>
+</div>
+
+<!-- ============================================================== MOBILE -->
+<h1 id="mobile"><span class="num">17</span> L’application mobile</h1>
+<p>L’application mobile SIGH-CBG est volontairement simple. Elle sert aux soignants en tournée (visites à domicile, consultations hors du poste) et à la <strong>réception de secours</strong>. Elle échange avec la clinique par le relais en ligne, de façon chiffrée. Les captures de ce chapitre viennent de l’application, ouverte sur des dossiers de démonstration aux noms fictifs.</p>
 
 <h2 id="mobile-fait">Ce que fait l’application</h2>
-<ul>
-  <li><strong>Ma tournée</strong> : l’<strong>Agenda du jour</strong> et les <strong>Dossiers du lot</strong> confiés au téléphone pour la journée.</li>
-  <li>Le <strong>Dossier du patient</strong> : identité, couverture, allergies, dernières constantes.</li>
-  <li>La saisie : <strong>Saisir les constantes</strong>, notes de consultation, ordonnance, demande d’examens.</li>
-  <li><strong>Réception de secours</strong> : enregistrer une personne quand le poste de l’accueil n’est pas disponible.</li>
-  <li><strong>À traiter</strong> : les saisies que la clinique a refusées, avec le geste à faire.</li>
-</ul>
-<div class="encadre astuce"><span class="titre">Astuce</span><p>Sans réseau, l’application continue de fonctionner. Une saisie est <strong>enregistrée sur le téléphone</strong> et part dès que le réseau revient.</p></div>
-<div class="encadre info"><span class="titre">Information</span><p>Comme sur le poste, chacun ne voit que ce que son profil permet. Si aucun écran n’est ouvert à votre profil, l’application le dit : demandez à l’administrateur de modifier vos droits.</p></div>
+<table class="simple">
+  <tr><th style="width:30%">Profil fixé par la clinique</th><th>Ce que vous trouvez sur le téléphone</th></tr>
+  <tr><td><strong>Médecin</strong>, <strong>Infirmier</strong>, <strong>Aide-soignant</strong></td><td><strong>Ma tournée</strong> : l’<strong>Agenda du jour</strong> et les <strong>Dossiers du lot</strong> ; dans un dossier : <strong>Saisir les constantes</strong>, la <strong>Consultation à domicile</strong>, la <strong>Prescription</strong> (ordonnance ou demande d’analyses), selon ce que votre fonction permet.</td></tr>
+  <tr><td><strong>Sage-femme</strong></td><td>La même tournée, plus trois écrans dans le dossier : <strong>Visite prénatale (CPN)</strong>, <strong>Visite post-natale (CPoN)</strong> et <strong>Surveillance mère-bébé</strong>.</td></tr>
+  <tr><td><strong>Réception de secours</strong></td><td>Ouvrir un dossier quand le poste de l’accueil n’est pas disponible, et <strong>Orienter un patient</strong>.</td></tr>
+</table>
+<p>Pour tous les profils : le <strong>Lot de tournée</strong> (icône en haut à droite, soignants), les <strong>Réglages</strong> (icône d’engrenage) et <strong>À traiter</strong> (les saisies que la clinique a refusées).</p>
+<div class="encadre astuce"><span class="titre">Astuce</span><p>Sans réseau, l’application continue de fonctionner. Une saisie est <strong>enregistrée sur le téléphone</strong> et part dès que le réseau revient. Le bandeau sous le titre dit <strong>Hors ligne</strong> ou <strong>Connecté</strong>, et combien de saisies attendent.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>Comme sur le poste, chacun ne voit que ce que son profil et la matrice des droits permettent. Une commande interdite n’est pas affichée. Si aucun écran n’est ouvert à votre profil, l’application le dit : demandez à l’administrateur de modifier vos droits ; ils se mettent à jour à la prochaine synchronisation.</p></div>
 
 <h2 id="appairage">Appairer le téléphone</h2>
 <div class="tache">
 <p class="but">Vous reliez votre téléphone à la clinique. Cette opération se fait une seule fois.</p>
-<p class="prerequis">un <strong>code d’appairage</strong> à usage unique, remis par l’administrateur ou la DAF, et la <strong>clé de clinique</strong> (QR code).</p>
+<p class="prerequis">un <strong>code d’appairage</strong> à usage unique, demandé à la mère (DAF ou administrateur), et la <strong>clé de clinique</strong> (QR code).</p>
 <ol class="etapes">
   <li>Ouvrez l’application. Saisissez le <strong>Code d’appairage</strong>.</li>
-  <li>Scannez la <strong>Clé de clinique (QR)</strong>.</li>
+  <li>Scannez ou saisissez la <strong>Clé de clinique (QR)</strong>.</li>
   <li>Saisissez votre nom dans <strong>Nom de l’agent</strong> : aucune action n’est anonyme.</li>
   <li>Appuyez sur <strong>Appairer ce téléphone</strong>.</li>
 </ol>
-<div class="encadre info"><span class="titre">Information</span><p>Le profil du téléphone et votre fonction sont fixés par le code : ils ne se choisissent pas sur le téléphone. Après l’appairage, le téléphone attend que la clinique lui attribue son profil.</p></div>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m01-appairage" data-recadrage="0,0,412,420" data-cibles='[{"cle":"code","de":"bas","long":50,"num":1},{"cle":"cle","de":"bas","long":50,"num":2}]'>
+  <figcaption>L’écran d’appairage, vide.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m01b-appairage-saisi" data-recadrage="0,0,412,420" data-cibles='[{"cle":"agent","de":"haut","long":40,"num":3},{"cle":"appairer","de":"bas","long":50,"num":4}]'>
+  <figcaption>Les trois champs remplis.</figcaption>
+</figure>
+</div>
+<div class="encadre info"><span class="titre">Information</span><p>Le <strong>profil</strong> du téléphone et votre <strong>fonction</strong> sont fixés par le code : ils ne se choisissent pas sur le téléphone. Si la mère refuse le code, la cause s’affiche sous le bouton (code expiré, déjà utilisé, inconnu) et vous restez sur l’écran.</p></div>
 </div>
 
 <h2 id="pin">Protéger l’application par un code PIN</h2>
+<div class="tache">
+<p class="but">Vous protégez les données de santé du téléphone. Le code PIN est obligatoire.</p>
 <ol class="etapes">
-  <li>Ouvrez les réglages de l’application et activez le <strong>Verrouillage automatique</strong>.</li>
-  <li>Choisissez un code à 4 chiffres, puis saisissez le même code une seconde fois.</li>
-  <li>À chaque ouverture, l’application demande ce code.</li>
+  <li>À la première ouverture après l’appairage, l’application affiche « Choisissez un code à 4 chiffres. » : tapez quatre chiffres sur le clavier.</li>
+  <li>Elle affiche « Saisissez le même code une seconde fois. » : tapez le même code. Si les deux codes ne sont pas identiques, recommencez.</li>
+  <li>Ensuite, à chaque ouverture et après 5 minutes d’inactivité, l’application affiche « Saisissez votre code à 4 chiffres. ».</li>
 </ol>
-<div class="encadre attention"><span class="titre">Attention</span><p>Ne communiquez jamais votre code PIN. En cas de perte ou de vol du téléphone, prévenez immédiatement l’administrateur : il peut suspendre le téléphone. L’application affiche alors « Téléphone suspendu — contactez la clinique ».</p></div>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m02-pin-choix" data-recadrage="0,0,412,640" data-cibles='[{"cle":"touche-1","de":"gauche","long":40,"num":1}]'>
+  <figcaption>Premier choix du code.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m03-pin" data-recadrage="0,0,412,640" data-cibles='[{"cle":"identite-agent","de":"haut","long":40,"num":3}]'>
+  <figcaption>Le verrou nomme l’agent et son profil.</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Après plusieurs codes faux, l’application affiche « Trop d’essais — réessayez dans 30 s. ». Ne communiquez jamais votre code PIN. En cas de perte ou de vol du téléphone, prévenez immédiatement l’administrateur : il peut suspendre le téléphone, dont les dossiers s’effacent au prochain contact.</p></div>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Si l’application affiche <strong>Stockage sécurisé indisponible</strong>, elle reste fermée : le téléphone ne peut pas protéger le code et les données. Vérifiez que le téléphone a un verrouillage d’écran, puis appuyez sur <strong>Réessayer</strong> ou contactez la clinique.</p></div>
+</div>
+
+<h2 id="mobile-tournee">Ma tournée : l’agenda et les dossiers du lot</h2>
+<div class="tache">
+<p class="but">Vous voyez les visites du jour et ouvrez le dossier d’un patient.</p>
+<p class="prerequis">un profil soignant, et un <strong>lot de tournée</strong> confié au téléphone par la clinique.</p>
+<ol class="etapes">
+  <li>L’onglet <strong>Agenda du jour</strong> s’ouvre en premier : l’heure, le patient et le motif de chaque visite. Les visites d’un jour passé restent sous « Planifiés d’un jour passé, à confirmer ».</li>
+  <li>Touchez l’onglet <strong>Dossiers du lot</strong>, puis le nom du patient.</li>
+  <li>Le dossier affiche l’<strong>Identité</strong>, la <strong>Couverture</strong> (carte valide ou non), les <strong>Allergies</strong> en rouge, le <strong>Motif de la visite</strong>, les <strong>Dernières constantes</strong> (une valeur hors bornes est signalée), les <strong>Notes de consultation</strong> et les <strong>Prescriptions</strong>. Les commandes sont en bas.</li>
+</ol>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m04-accueil-agenda" data-recadrage="0,0,412,420" data-cibles='[{"onglet":"Dossiers du lot","de":"bas","long":50,"num":2},{"info":"Réglages","de":"bas","long":40,"num":4}]'>
+  <figcaption><strong>Ma tournée</strong>, onglet <strong>Agenda du jour</strong>.</figcaption>
+</figure>
+<figure class="capture telephone haut" data-capture="captures/m06-dossier" data-recadrage="0,0,412,900" data-cibles='[{"cle":"allergies","de":"droite","long":30,"num":3},{"cle":"saisir-constantes","de":"haut","long":40,"num":3}]'>
+  <figcaption>Le dossier du patient et ses commandes.</figcaption>
+</figure>
+</div>
+<div class="encadre info"><span class="titre">Information</span><p>Le lot est chiffré et <strong>expire</strong> : passé le délai, les dossiers s’effacent du téléphone, sauf ce qui n’est pas encore parti. Une information que votre profil ne peut pas lire est remplacée par une mention « réservé ».</p></div>
+</div>
+
+<h2 id="mobile-constantes">Saisir les constantes</h2>
+<ol class="etapes">
+  <li>Dans le dossier, appuyez sur <strong>Saisir les constantes</strong>.</li>
+  <li>Remplissez la <strong>Température (°C)</strong> (obligatoire) et les autres valeurs : tension systolique et diastolique, pouls, fréquence respiratoire, SpO₂, poids.</li>
+  <li>Appuyez sur <strong>Enregistrer</strong>. Une valeur improbable est refusée en nommant le champ et la plage admise.</li>
+</ol>
+<figure class="capture telephone" data-capture="captures/m07-constantes" data-recadrage="0,0,412,560" data-cibles='[{"cle":"champ-temperature","de":"bas","long":40,"num":2},{"cle":"enregistrer","de":"bas","long":40,"num":3}]'>
+  <figcaption>La saisie des constantes.</figcaption>
+</figure>
+
+<h2 id="mobile-consultation">Rédiger la consultation à domicile</h2>
+<ol class="etapes">
+  <li>Dans le dossier, appuyez sur <strong>Consultation à domicile</strong>. Le <strong>Motif</strong> reprend celui du rendez-vous.</li>
+  <li>Remplissez l’<strong>Anamnèse</strong> et l’examen dans l’ordre : <strong>Inspection</strong>, <strong>Palpation</strong>, <strong>Percussion</strong>, <strong>Auscultation</strong>.</li>
+  <li>Choisissez le <strong>Diagnostic</strong> (obligatoire) et l’<strong>Orientation</strong>, puis enregistrez en bas de l’écran.</li>
+</ol>
+<figure class="capture telephone haut" data-capture="captures/m08-consultation" data-recadrage="0,0,412,1150" data-cibles='[{"cle":"champ-diagnostic","de":"haut","long":40,"num":3}]'>
+  <figcaption>La consultation à domicile.</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Les constantes relevées ce jour sont reprises dans la fiche, jamais ressaisies. Le dossier vous confirme ce que la clinique a fait de la saisie, ou vous dit pourquoi elle est refusée.</p></div>
+
+<h2 id="mobile-prescription">Prescrire : ordonnance ou demande d’analyses</h2>
+<div class="tache">
+<p class="but">Vous envoyez une prescription à la clinique, qui la transcrit : l’ordonnance et la facture de la caisse naissent au poste.</p>
+<p class="prerequis">une fonction qui prescrit (médecin, sage-femme). L’infirmier et l’aide-soignant ne voient pas cette commande.</p>
+<ol class="etapes">
+  <li>Dans le dossier, appuyez sur <strong>Prescription</strong>. Choisissez <strong>Médicaments</strong> ou <strong>Analyses de laboratoire</strong> en haut de l’écran.</li>
+  <li>Pour une ordonnance : choisissez le <strong>Médicament du catalogue</strong> (le stock est affiché), puis la <strong>Quantité (boîtes, unités)</strong>, la <strong>Posologie</strong> et la <strong>Durée (jours)</strong>. Appuyez sur <strong>Enregistrer l’ordonnance</strong>.</li>
+  <li>Pour des analyses : cochez les <strong>Examens demandés</strong>, choisissez l’<strong>Urgence</strong>, puis appuyez sur <strong>Envoyer la demande</strong>.</li>
+</ol>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m09-prescription" data-recadrage="0,0,412,560" data-cibles='[{"cle":"nature","de":"bas","long":40,"num":1},{"cle":"champ-med","de":"bas","long":40,"num":2}]'>
+  <figcaption>L’ordonnance.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m10-demande-analyse" data-recadrage="0,0,412,560" data-cibles='[{"cle":"examen-NFS","de":"gauche","long":40,"num":3}]'>
+  <figcaption>La demande d’analyses.</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Rien ne se prélève avant le paiement : la demande part par le relais, le patient règle à la caisse, puis passe à la salle de prélèvement.</p></div>
+</div>
+
+<h2 id="mobile-sage-femme">Sage-femme : CPN, CPoN et surveillance mère-bébé</h2>
+<div class="tache">
+<p class="but">Vous enregistrez une visite prénatale, une visite post-natale ou une surveillance mère-bébé.</p>
+<p class="prerequis">le profil sage-femme. Les trois commandes n’existent que pour lui.</p>
+<ol class="etapes">
+  <li>Ouvrez le dossier de la patiente, puis appuyez sur <strong>Visite prénatale (CPN)</strong>, <strong>Visite post-natale (CPoN)</strong> ou <strong>Surveillance mère-bébé</strong>.</li>
+  <li>Remplissez les champs. Les champs obligatoires et les bornes sont contrôlés : une valeur improbable est refusée en nommant la plage (par exemple « Le terme : valeur improbable (4 à 45). »).</li>
+  <li>Appuyez sur <strong>Enregistrer</strong>. L’écran se referme et le dossier signale, s’il y a lieu, une grossesse à risque.</li>
+</ol>
+<div class="paire">
+<figure class="capture telephone haut" data-capture="captures/m12-dossier-sagefemme" data-recadrage="0,300,412,1000" data-cibles='[{"cle":"ouvrir-cpn","de":"gauche","long":30,"num":1},{"cle":"ouvrir-surveillance","de":"gauche","long":30,"num":1}]'>
+  <figcaption>Les trois commandes de la sage-femme.</figcaption>
+</figure>
+<figure class="capture telephone haut" data-capture="captures/m13-cpn" data-recadrage="0,0,412,1100" data-cibles='[{"cle":"enregistrer","de":"haut","long":40,"num":3}]'>
+  <figcaption>La visite prénatale (CPN).</figcaption>
+</figure>
+</div>
+<div class="paire">
+<figure class="capture telephone haut" data-capture="captures/m14-cpon" data-recadrage="0,0,412,1000">
+  <figcaption>La visite post-natale (CPoN).</figcaption>
+</figure>
+<figure class="capture telephone haut" data-capture="captures/m15-surveillance" data-recadrage="0,0,412,1000">
+  <figcaption>La surveillance mère-bébé.</figcaption>
+</figure>
+</div>
+<div class="encadre info"><span class="titre">Information</span><p>Un âge à risque (moins de 18 ans ou plus de 35 ans) est signalé en tête de la CPN, sans bloquer la saisie.</p></div>
+</div>
+
+<h2 id="mobile-reception">Réception de secours : ouvrir un dossier et orienter</h2>
+<div class="tache">
+<p class="but">Vous enregistrez une personne quand le poste de l’accueil n’est pas disponible, puis vous l’orientez.</p>
+<p class="prerequis">le profil <strong>Réception de secours</strong>.</p>
+<ol class="etapes">
+  <li>Saisissez le <strong>Nom</strong>, le <strong>Prénom</strong> et l’<strong>Âge déclaré</strong> (obligatoires), puis le <strong>Téléphone</strong> et le <strong>Quartier</strong>.</li>
+  <li>Appuyez sur <strong>Ouvrir le dossier</strong>. Le dossier apparaît aussitôt sous <strong>Dossiers ouverts depuis ce téléphone</strong>, « en attente de numéro » : le code dossier est attribué par la clinique.</li>
+  <li>Appuyez sur <strong>Orienter un patient</strong> : choisissez le <strong>Patient</strong>, <strong>Orienter vers</strong> et le <strong>Degré</strong>, puis appuyez sur <strong>Envoyer l’orientation</strong>.</li>
+</ol>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m16b-reception-cree" data-recadrage="0,0,412,640" data-cibles='[{"cle":"nom","de":"bas","long":30,"num":1},{"cle":"creer","de":"droite","long":30,"num":2},{"cle":"orienter","de":"bas","long":40,"num":3}]'>
+  <figcaption><strong>Réception de secours</strong> : un dossier vient d’être ouvert.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m17-orientation" data-recadrage="0,0,412,640" data-cibles='[{"cle":"envoyer-orientation","de":"bas","long":40,"num":3}]'>
+  <figcaption><strong>Orienter un patient</strong>.</figcaption>
+</figure>
+</div>
+</div>
+
+<h2 id="mobile-lot-reglages">Le lot de tournée, les réglages et « À traiter »</h2>
+<ul>
+  <li><strong>Lot de tournée</strong> (icône de boîte en haut à droite) : le nombre de dossiers, la validité restante, l’état du lot et la liste des dossiers. Appuyez sur <strong>Rafraîchir</strong> pour relire le lot.</li>
+  <li><strong>Réglages</strong> (icône d’engrenage) : le profil, l’agent et l’appareil, les <strong>Droits de la clinique</strong> (rôle et date de mise à jour), le <strong>Verrouillage automatique</strong>, l’<strong>Effacement à distance</strong> et les <strong>Notifications</strong>. Le bouton <strong>Réinitialiser l’appairage</strong> délie le téléphone (une confirmation est demandée).</li>
+  <li><strong>À traiter</strong> : quand le bandeau affiche « 1 à traiter », touchez-le. Chaque refus de la clinique donne sa cause, le geste à faire (« À faire : … ») et son code.</li>
+</ul>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m18-lot" data-recadrage="0,0,412,560" data-cibles='[{"cle":"rafraichir-lot","de":"bas","long":40}]'>
+  <figcaption>Le <strong>Lot de tournée</strong>.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m19-reglages" data-recadrage="0,0,412,560" data-cibles='[{"cle":"reinitialiser-appairage","de":"bas","long":40}]'>
+  <figcaption>Les <strong>Réglages</strong>.</figcaption>
+</figure>
+</div>
+<div class="paire">
+<figure class="capture telephone" data-capture="captures/m20-a-traiter" data-recadrage="0,0,412,420" data-cibles='[{"cle":"bandeau","de":"bas","long":40}]'>
+  <figcaption>Le bandeau annonce un refus à traiter.</figcaption>
+</figure>
+<figure class="capture telephone" data-capture="captures/m20b-bandeau" data-recadrage="0,0,412,420">
+  <figcaption>L’écran <strong>À traiter</strong> : cause, geste et code.</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Réinitialiser l’appairage efface le lien du téléphone avec la clinique. Ne le faites qu’à la demande de l’administrateur, après avoir vérifié que plus rien n’est en attente d’envoi.</p></div>
 
 <!-- ============================================================== 15. RELAIS -->
-<h1 id="relais"><span class="num">15</span> Le relais en ligne</h1>
+<h1 id="relais"><span class="num">18</span> Le relais en ligne</h1>
 <p>Le <strong>relais en ligne</strong> est un service hébergé sur Internet. Il transporte, de façon chiffrée, les échanges entre la clinique et les téléphones. Il ne lit pas les données : il ne contient aucune donnée de patient en clair.</p>
 <p>En tant qu’agent, <strong>vous n’utilisez pas le relais</strong>. Il n’a aucun écran de travail : ni patient, ni caisse, ni stock. Son panneau est réservé au superadministrateur.</p>
 <div class="encadre info"><span class="titre">Information</span><p>Les écrans <strong>Poste mère</strong> et <strong>Relais en ligne</strong> du ruban ne sont visibles que des administrateurs. Leur usage est décrit dans le <em>Manuel administrateur</em>.</p></div>
 
 <!-- ============================================================== 16. GLOSSAIRE -->
-<h1 id="glossaire"><span class="num">16</span> Glossaire</h1>
+<h1 id="glossaire"><span class="num">19</span> Glossaire</h1>
 <table class="simple">
   <tr><th style="width:28%">Terme</th><th>Définition</th></tr>
   <tr><td><strong>Acquitter</strong></td><td>Indiquer qu’on a pris connaissance d’une alerte. L’alerte cesse de sonner, mais reste visible tant que sa cause existe.</td></tr>
@@ -973,7 +1340,7 @@
 </table>
 
 <!-- ============================================================== 17. DÉPANNAGE -->
-<h1 id="depannage"><span class="num">17</span> Que faire si…</h1>
+<h1 id="depannage"><span class="num">20</span> Que faire si…</h1>
 <table class="simple">
   <tr><th style="width:36%">Situation</th><th>Que faire</th></tr>
   <tr><td>Mon compte est verrouillé après plusieurs essais.</td><td>Attendez 15 minutes, puis réessayez. Si vous avez oublié votre mot de passe, cliquez sur <strong>Mot de passe oublié ?</strong> ou adressez-vous à l’administrateur.</td></tr>
@@ -983,7 +1350,7 @@
   <tr><td>La pastille affiche <strong>Hors ligne</strong>.</td><td>Continuez à travailler. Vos saisies partiront dès le retour de la liaison. Si la situation dure, prévenez l’administrateur.</td></tr>
   <tr><td>La pastille des décisions en attente de la mère passe au rouge.</td><td>Une décision attend depuis plus longtemps que prévu. Le validateur et l’administrateur sont prévenus. Rien n’est bloqué de votre côté.</td></tr>
   <tr><td>Le compteur <strong>à traiter</strong> s’affiche.</td><td>La mère a refusé une de vos opérations. La cause et le geste de correction sont indiqués. Prévenez votre responsable.</td></tr>
-  <tr><td>Une ligne affiche « prix à valoriser » à la caisse.</td><td>Encaissez les autres lignes. Le prix manquant sera fixé par la personne responsable des prix, qui est prévenue automatiquement.</td></tr>
+  <tr><td>Une ligne affiche « prix à valoriser » à la caisse.</td><td>Par défaut, rien de la facture ne s’encaisse. La personne responsable des prix est prévenue automatiquement ; encaissez dès que le prix est posé.</td></tr>
   <tr><td>Une demande d’analyse ou d’imagerie reste bloquée.</td><td>Elle attend le paiement à la caisse. Vérifiez que le patient a réglé cette prestation.</td></tr>
   <tr><td>Le laboratoire ne peut pas saisir un résultat.</td><td>L’échantillon n’a pas encore été reçu. Le bouton verrouillé indique à quel poste se trouve la demande.</td></tr>
   <tr><td>La pharmacie ne peut pas délivrer toute l’ordonnance.</td><td>Le stock de la pharmacie ne couvre pas toutes les lignes. Délivrez les lignes couvertes ; demandez un transfert depuis le magasin pour les autres.</td></tr>
@@ -993,6 +1360,9 @@
   <tr><td>J’ai perdu mon téléphone appairé.</td><td>Prévenez immédiatement l’administrateur pour qu’il suspende le téléphone.</td></tr>
 </table>
 <div class="encadre info"><span class="titre">Information</span><p>Pour toute autre difficulté, ouvrez le menu du profil : <strong>Aide &amp; À propos</strong> ou <strong>Contactez l’éditeur</strong>. Notez l’écran concerné, l’heure et le message affiché : cela aide à comprendre ce qui s’est passé.</p></div>
+
+<!-- Annexe : le catalogue de tous les écrans (fichier catalogue.html, inclus par le générateur s’il existe). -->
+<!-- INCLURE catalogue.html -->
 
 </main>
 </body>

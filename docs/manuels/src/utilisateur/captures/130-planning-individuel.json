@@ -1,0 +1,580 @@
+{
+ "nom": "130-planning-individuel",
+ "ecran": "m10-employe-profil",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Fiches de poste",
+   "rect": [
+    840.9,
+    141.0,
+    163.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tableau de bord RH",
+   "rect": [
+    1012.6,
+    141.0,
+    190.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Ressources humaines",
+   "rect": [
+    1210.5,
+    141.0,
+    205.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Retour à la liste",
+   "rect": [
+    569.0,
+    276.0,
+    160.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Déroger",
+   "rect": [
+    1113.7,
+    559.0,
+    92.2,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Remplacer le régime",
+   "rect": [
+    1206.0,
+    558.0,
+    168.0,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Semaine",
+   "rect": [
+    1252.0,
+    1235.0,
+    71.3,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Mois",
+   "rect": [
+    1323.3,
+    1234.0,
+    50.7,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Semaine précédente",
+   "icone": true,
+   "rect": [
+    1180.0,
+    1231.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Semaine suivante",
+   "icone": true,
+   "rect": [
+    1216.0,
+    1231.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.1,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.0,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.7,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   792.6,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   919.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1020.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.1,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.0,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m10-employe-profil|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   132.8,
+   116.0,
+   128.9,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   154.3,
+   28.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   234.0,
+   1390.0,
+   100.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   254.0,
+   512.0,
+   60.0
+  ],
+  "kit:champ:agent": [
+   45.0,
+   254.0,
+   512.0,
+   60.0
+  ],
+  "kit:onglets-barre": [
+   45.0,
+   468.0,
+   1350.0,
+   43.0
+  ],
+  "kit:onglet:infos": [
+   45.0,
+   468.0,
+   115.3,
+   42.0
+  ],
+  "kit:onglet:planning": [
+   160.3,
+   468.0,
+   146.4,
+   42.0
+  ],
+  "kit:onglet:planning-individuel:actif": [
+   306.7,
+   468.0,
+   158.9,
+   42.0
+  ],
+  "kit:onglet:primes": [
+   465.7,
+   468.0,
+   138.7,
+   42.0
+  ],
+  "kit:onglet:presences": [
+   604.4,
+   468.0,
+   168.9,
+   42.0
+  ],
+  "kit:onglet:evaluations": [
+   773.3,
+   468.0,
+   192.0,
+   42.0
+  ],
+  "kit:onglet:assurances": [
+   965.3,
+   468.0,
+   109.4,
+   42.0
+  ],
+  "pli:regime": [
+   45.0,
+   543.0,
+   1350.0,
+   535.0
+  ],
+  "kit:carte-entete": [
+   46.0,
+   544.0,
+   1348.0,
+   59.0
+  ],
+  "kit:carte-titre": [
+   66.0,
+   563.0,
+   1047.7,
+   20.0
+  ],
+  "pli:valeur:vacations": [
+   405.0,
+   749.0,
+   196.8,
+   16.0
+  ],
+  "pli:valeur:repos": [
+   405.0,
+   789.0,
+   63.3,
+   16.0
+  ],
+  "pli:valeur:cycle": [
+   405.0,
+   829.0,
+   40.5,
+   16.0
+  ],
+  "pli:valeur:honoraire": [
+   405.0,
+   869.0,
+   37.7,
+   16.0
+  ],
+  "pli:valeur:heureDebut": [
+   405.0,
+   909.0,
+   174.0,
+   16.0
+  ],
+  "pli:valeur:heureFin": [
+   405.0,
+   949.0,
+   174.0,
+   16.0
+  ],
+  "pli:valeur:dureeHeures": [
+   405.0,
+   989.0,
+   174.0,
+   16.0
+  ],
+  "pli:valeur:jours": [
+   405.0,
+   1029.0,
+   239.0,
+   16.0
+  ],
+  "kit:kpi": [
+   45.0,
+   1094.0,
+   328.5,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   62.0,
+   1111.0,
+   123.6,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   62.0,
+   1131.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   320.5,
+   1111.0,
+   36.0,
+   36.0
+  ],
+  "pli:precedent": [
+   1180.0,
+   1231.0,
+   36.0,
+   36.0
+  ],
+  "pli:suivant": [
+   1216.0,
+   1231.0,
+   36.0,
+   36.0
+  ],
+  "pli:vue:semaine": [
+   1252.0,
+   1235.0,
+   71.3,
+   28.0
+  ],
+  "pli:vue:mois": [
+   1323.3,
+   1234.0,
+   50.7,
+   30.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Semaine précédente",
+   "rect": [
+    1180.0,
+    1231.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Semaine suivante",
+   "rect": [
+    1216.0,
+    1231.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

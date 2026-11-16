@@ -373,23 +373,11 @@
    416.7,
    60.0
   ],
-  "mecef:acheteur": [
+  "mecef:facture-patient": [
    978.3,
    777.0,
    416.7,
-   392.0
-  ],
-  "kit:champ:acheteurIfu": [
-   991.3,
-   815.0,
-   390.7,
-   60.0
-  ],
-  "kit:champ:acheteurNom": [
-   991.3,
-   891.0,
-   390.7,
-   60.0
+   66.0
   ],
   "pied-legal": [
    0.0,

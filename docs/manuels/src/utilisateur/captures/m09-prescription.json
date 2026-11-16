@@ -1,0 +1,94 @@
+{
+ "nom": "m09-prescription",
+ "taille": [
+  412.0,
+  900.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Médicaments",
+   "rect": [
+    16.0,
+    72.0,
+    190.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Analyses de laboratoire",
+   "rect": [
+    206.0,
+    72.0,
+    190.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Enregistrer l’ordonnance",
+   "rect": [
+    16.0,
+    552.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "nature": [
+   16.0,
+   72.0,
+   380.0,
+   48.0
+  ],
+  "champ-med": [
+   16.0,
+   268.0,
+   380.0,
+   56.0
+  ],
+  "champ-quantite": [
+   16.0,
+   336.0,
+   380.0,
+   56.0
+  ],
+  "champ-poso": [
+   16.0,
+   404.0,
+   380.0,
+   56.0
+  ],
+  "champ-duree": [
+   16.0,
+   472.0,
+   380.0,
+   56.0
+  ],
+  "envoyer-prescription": [
+   16.0,
+   552.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

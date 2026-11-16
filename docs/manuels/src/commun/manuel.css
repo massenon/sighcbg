@@ -120,3 +120,9 @@ a { color: var(--sante); }
 .renvoi { font-style: italic; color: var(--gris-600); }
 .colonnes2 { columns: 2; column-gap: 8mm; }
 .colonnes2 > * { break-inside: avoid; }
+
+/* Les écrans du TÉLÉPHONE : une capture étroite, centrée, à la taille d'un téléphone tenu en main ; deux côte à côte dans une `.paire`. */
+figure.capture.telephone { width: 62mm; margin-left: auto; margin-right: auto; }
+figure.capture.telephone.haut { width: 58mm; }
+.paire { display: flex; gap: 8mm; justify-content: center; align-items: flex-start; break-inside: avoid; }
+.paire figure.capture.telephone { margin-left: 0; margin-right: 0; }

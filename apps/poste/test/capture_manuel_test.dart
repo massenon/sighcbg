@@ -4,9 +4,14 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/identifiants.dart';
+import 'package:sigh_poste/core/parametres_poste.dart';
+import 'package:sigh_poste/core/service_installation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
@@ -26,7 +31,15 @@ const _taille = Size(1440, 900);
 typedef Geste = Future<void> Function(WidgetTester t);
 
 class _Cap {
-  const _Cap(this.nom, this.ecran, {this.role = 'admin', this.gestes = const [], this.session, this.jeuDeTest = false});
+  const _Cap(this.nom, this.ecran,
+      {this.role = 'admin', this.gestes = const [], this.session, this.jeuDeTest = false, this.taille = _taille, this.mode = ModePoste.fileul, this.posteNeuf = false});
+
+  /// Taille logique de la fenêtre (les écrans longs — configuration fiscale, planning individuel — se photographient en hauteur).
+  final Size taille;
+  final ModePoste mode;
+
+  /// Un poste NEUF (aucun compte) dont l'assistant d'installation est attaché : premier lancement, première installation, rejoindre une clinique.
+  final bool posteNeuf;
 
   /// Quelques files (dispensation, file d'attente, comptes rendus en cours) sont vides dans le jeu livré : ces captures lisent le jeu de test.
   final bool jeuDeTest;
@@ -74,6 +87,63 @@ Geste toucherIcone(String libelle) => (t) async {
       await t.tap(f.first, warnIfMissed: false);
       await _pomper(t, 6);
     };
+
+/// Laisse tourner les calculs asynchrones (hachage du mot de passe à la création du premier compte).
+Geste attendre([int n = 8]) => (t) async {
+      for (var i = 0; i < n; i++) {
+        await t.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 40)));
+        await t.pump(const Duration(milliseconds: 50));
+      }
+      await _pomper(t, 4);
+    };
+
+/// Un bouton du kit OU une icône d'action, désigné par son libellé.
+Geste toucherLibelle(String libelle) => (t) async {
+      if (find.widgetWithText(BoutonSigh, libelle).evaluate().isNotEmpty) return toucherBouton(libelle)(t);
+      return toucherIcone(libelle)(t);
+    };
+
+/// Remplit un champ du kit (`kit:champ:<nom>`).
+Geste champ(String nom, String texte) => (t) async {
+      final f = find.descendant(of: find.byKey(Key('kit:champ:$nom')), matching: find.byType(TextField));
+      if (f.evaluate().isEmpty) return;
+      await t.enterText(f.first, texte);
+      await _pomper(t, 2);
+    };
+
+/// Choisit une option d'une liste du kit (`kit:champ:<nom>`) : ouvre la liste puis touche le libellé.
+Geste choisir(String nom, String libelle) => (t) async {
+      final f = find.byKey(Key('kit:champ:$nom'));
+      if (f.evaluate().isEmpty) return;
+      final cible = find.descendant(of: f, matching: find.byWidgetPredicate((w) => w is DropdownButton || w is InkWell || w is GestureDetector));
+      await t.tap(cible.evaluate().isEmpty ? f.first : cible.first, warnIfMissed: false);
+      await _pomper(t, 6);
+      final o = find.text(libelle);
+      if (o.evaluate().isEmpty) return;
+      await t.tap(o.last, warnIfMissed: false);
+      await _pomper(t, 6);
+    };
+
+/// Ferme les modales ouvertes (touche Échap).
+Geste fermerModales() => (t) async {
+      for (var i = 0; i < 2; i++) {
+        await t.sendKeyEvent(LogicalKeyboardKey.escape);
+        await _pomper(t, 4);
+      }
+    };
+
+const _secretDemo = 'Demonstration#Parakou26';
+
+/// La création du premier administrateur sur un poste neuf (nom fictif), jusqu'à l'affichage du code de secours.
+final _premierCompte = <Geste>[
+  toucherCle('ins:premiere'),
+  saisir('ins:nom', 'ADMINISTRATEUR Démonstration'),
+  saisir('ins:identifiant', 'admin.demo'),
+  saisir('ins:motdepasse', _secretDemo),
+  saisir('ins:confirmation', _secretDemo),
+  toucherCle('ins:creer'),
+  attendre(),
+];
 
 /// Coche les [n] premières lignes d'un tableau du kit (case « Sélectionner la ligne »).
 Geste cocherLignes(int n) => (t) async {
@@ -134,7 +204,7 @@ final _captures = <_Cap>[
   _Cap('50-facturation', 'm8-facturation'),
   _Cap('52-paiements', 'm8-paiements'),
   _Cap('53-avoirs', 'm8-facture-avoir'),
-  _Cap('56-mecef-config', 'mecef-config'),
+  _Cap('56-mecef-config', 'mecef-config', taille: Size(1440, 2600)),
   _Cap('60-assures', 'm9-assures'),
   _Cap('62-factures-assureur', 'm9-factures-assureur'),
   _Cap('70-personnel', 'm10-personnel'),
@@ -145,11 +215,55 @@ final _captures = <_Cap>[
   _Cap('83-cloture', 'm12-cloture'),
   _Cap('90-direction', 'dash-direction'),
   _Cap('91-dash-caissier', 'dash-caissier', role: 'caissier'),
+  // ---- Assistant d'installation du poste (poste neuf, aucun compte).
+  _Cap('100-ins-accueil', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
+  _Cap('101-ins-premiere', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le), gestes: [toucherCle('ins:premiere')]),
+  _Cap('102-ins-secours', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le), gestes: _premierCompte),
+  _Cap('103-ins-configurations', 'index',
+      posteNeuf: true,
+      session: () => SessionPoste(exigeConnexion: true, horloge: () => _le),
+      gestes: [..._premierCompte, toucherCle('ins:range'), toucherCle('ins:suite'), attendre(4)]),
+  _Cap('104-ins-rejoindre', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le), gestes: [toucherCle('ins:rejoindre')]),
+  // ---- Sauvegarde.
+  _Cap('110-sauvegardes', 'm14-sauvegardes', taille: Size(1440, 1700)),
+  _Cap('111-hors-site', 'm14-sauvegardes', taille: Size(1440, 2800)),
+  // ---- Caisse : reçu, ticket, impression de la sélection.
+  _Cap('58-recu', 'm8-caisse', gestes: [toucherIcone('Réimprimer le reçu détaillé')]),
+  _Cap('59-ticket', 'm8-facturation', gestes: [toucherBouton('Ticket de caisse')]),
+  _Cap('19b-imprimer-selection', 'm8-paiements', gestes: [cocherLignes(2), toucherBouton('Imprimer la sélection')]),
+  // ---- Satisfaction en ligne.
+  _Cap('120-enquetes', 'adm-enquetes'),
+  _Cap('121-enquete-partager', 'adm-enquetes', gestes: [toucherLibelle('Partager à un tiers'), choisir('usage', 'Sur Internet, par le relais — depuis chez soi (anonyme, chiffré)')]),
+  _Cap('122-enquete-liens', 'adm-enquetes', gestes: [toucherTexte('Liens de partage')]),
+  _Cap('123-enquete-qr', 'adm-enquetes', taille: Size(1440, 1100), gestes: [
+    toucherLibelle('Partager à un tiers'),
+    choisir('usage', 'Sur Internet, par le relais — depuis chez soi (anonyme, chiffré)'),
+    toucherBouton('Ouvrir le lien'),
+    attendre(4),
+  ]),
+  _Cap('123b-enquete-liens', 'adm-enquetes', gestes: [
+    toucherLibelle('Partager à un tiers'),
+    choisir('usage', 'Sur Internet, par le relais — depuis chez soi (anonyme, chiffré)'),
+    toucherBouton('Ouvrir le lien'),
+    attendre(4),
+    fermerModales(),
+    toucherTexte('Liens de partage (1)'),
+  ]),
+  _Cap('124-satisfaction', 'adm-satisfaction'),
+  // ---- Planning individuel (fiche du personnel).
+  // Jeu de TEST : le personnel du jeu livré porte les vrais agents de la clinique, le jeu de test des noms fictifs.
+  _Cap('130-planning-individuel', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel')]),
+  _Cap('131-planning-deroger', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel'), toucherBouton('Déroger')]),
+  // ---- SMS (poste mère).
+  _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, taille: Size(1440, 1200)),
+  _Cap('141-sms-journal', 'mere-sms-journal', mode: ModePoste.mere),
 ];
 
 List<double> _rect(Rect r) => [r.left, r.top, r.width, r.height].map((v) => (v * 10).roundToDouble() / 10).toList();
 
-bool _visible(Rect r) => r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 && r.left < _taille.width && r.top < _taille.height;
+Size _tailleCourante = _taille;
+
+bool _visible(Rect r) => r.width > 0 && r.height > 0 && r.right > 0 && r.bottom > 0 && r.left < _tailleCourante.width && r.top < _tailleCourante.height;
 
 /// Les repères de l'écran : boutons du kit (libellé), clés textuelles, infobulles, onglets.
 Map<String, Object?> _reperes(WidgetTester t) {
@@ -204,24 +318,34 @@ Map<String, Object?> _reperes(WidgetTester t) {
 }
 
 void main() {
-  setUpAll(chargerPolices);
+  setUpAll(() async {
+    await chargerPolices();
+    // Le hachage d'essai (rapide) : la création du premier compte de l'assistant d'installation ne prend pas de longues secondes.
+    ServiceIdentifiants.parametres = AccParametresHachage.tests;
+  });
   setUp(() => CoquePoste.panneauOuvertAuDemarrage = false);
   tearDown(ToastsSigh.viderPourTests);
 
   for (final c in _captures) {
     testWidgets('capture manuel : ${c.nom}', skip: _sortie == null, (t) async {
-      t.view.physicalSize = _taille;
+      _tailleCourante = c.taille;
+      t.view.physicalSize = c.taille;
       t.view.devicePixelRatio = 1;
       addTearDown(t.view.resetPhysicalSize);
+      Magasin? neuf;
+      if (c.posteNeuf) {
+        neuf = Magasin.depuisDossier(const ['audit', 'utilisateurs', 'rbac', 'tentativesConnexion', 'personnel', 'soignants', 'rolesBase', 'support'], 'assets/donnees/jeu');
+        await t.runAsync(() => ServiceInstallation.de(neuf!).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'poste-demo')));
+      }
       await t.pumpWidget(RepaintBoundary(
           key: const Key('cap-manuel'),
           child: SighPoste(
               key: UniqueKey(),
               donnees: _donnees,
-              config: ConfigPoste(mode: ModePoste.fileul, role: c.role),
+              config: ConfigPoste(mode: c.mode, role: c.role),
               ecranInitial: c.ecran,
               // Le jeu de démonstration LIVRÉ avec le poste (assets/donnees/jeu) : noms fictifs de Baguidi, jamais le jeu de test.
-              magasin: Magasin.depuisDossier(Magasin.collectionsDuJeu, c.jeuDeTest ? null : 'assets/donnees/jeu'),
+              magasin: neuf ?? Magasin.depuisDossier(Magasin.collectionsDuJeu, c.jeuDeTest ? null : 'assets/donnees/jeu'),
               session: c.session?.call(),
               horloge: () => _le)));
       await _pomper(t, 6);
@@ -241,7 +365,7 @@ void main() {
           'nom': c.nom,
           'ecran': c.ecran,
           'role': c.role,
-          'taille': [_taille.width, _taille.height],
+          'taille': [c.taille.width, c.taille.height],
           'echelle': 1.25,
           ...reperes,
         }));

@@ -4,7 +4,7 @@
  "role": "admin",
  "taille": [
   1440.0,
-  900.0
+  2600.0
  ],
  "echelle": 1.25,
  "boutons": [
@@ -39,8 +39,17 @@
    "libelle": "Enregistrer le mode",
    "rect": [
     45.0,
-    677.0,
+    1275.0,
     187.3,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Enregistrer l’imprimante",
+   "rect": [
+    45.0,
+    1708.0,
+    218.1,
     36.0
    ]
   }
@@ -50,13 +59,13 @@
    0.0,
    0.0,
    1440.0,
-   900.0
+   2600.0
   ],
   "actualisation-0": [
    0.0,
    0.0,
    1440.0,
-   900.0
+   2600.0
   ],
   "barre-superieure": [
    0.0,
@@ -236,7 +245,7 @@
    0.0,
    100.0,
    1440.0,
-   771.0
+   2471.0
   ],
   "fil-ariane": [
    24.0,
@@ -284,7 +293,7 @@
    25.0,
    331.0,
    686.0,
-   402.0
+   1000.0
   ],
   "kit:formulaire": [
    45.0,
@@ -304,33 +313,147 @@
    646.0,
    96.0
   ],
+  "mecef:etat-mode:boitier": [
+   45.0,
+   629.0,
+   646.0,
+   314.0
+  ],
+  "mecef:etat-mode:emecef": [
+   45.0,
+   943.0,
+   646.0,
+   272.0
+  ],
   "mecef-adaptateur-boitier": [
    45.0,
-   625.0,
+   1223.0,
    646.0,
    40.0
   ],
+  "mecef:imprimante": [
+   24.0,
+   1348.0,
+   688.0,
+   417.0
+  ],
+  "kit:champ:imprimanteModele": [
+   45.0,
+   1620.0,
+   204.7,
+   60.0
+  ],
+  "kit:champ:imprimanteLargeur": [
+   265.7,
+   1620.0,
+   204.7,
+   80.0
+  ],
+  "kit:champ:imprimanteInterface": [
+   486.3,
+   1620.0,
+   204.7,
+   60.0
+  ],
   "kit:section": [
    45.0,
-   882.0,
+   1913.0,
    646.0,
    16.0
+  ],
+  "kit:champ:raisonSociale": [
+   45.0,
+   1945.0,
+   646.0,
+   60.0
+  ],
+  "kit:champ:ifu": [
+   45.0,
+   2021.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:rccm": [
+   376.0,
+   2021.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:autorisation": [
+   45.0,
+   2097.0,
+   646.0,
+   60.0
+  ],
+  "kit:champ:adresse": [
+   45.0,
+   2173.0,
+   646.0,
+   60.0
+  ],
+  "kit:champ:telephone": [
+   45.0,
+   2249.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:email": [
+   376.0,
+   2249.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:prefixeFacture": [
+   45.0,
+   2370.0,
+   315.0,
+   80.0
+  ],
+  "kit:champ:prefixeAvoir": [
+   376.0,
+   2370.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:prefixeProforma": [
+   45.0,
+   2466.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:prochainNumero": [
+   376.0,
+   2466.0,
+   315.0,
+   60.0
+  ],
+  "kit:champ:regimeTva": [
+   45.0,
+   2542.0,
+   315.0,
+   96.0
+  ],
+  "kit:champ:devise": [
+   376.0,
+   2542.0,
+   315.0,
+   60.0
   ],
   "mecef:config-aib": [
    728.0,
    696.0,
    688.0,
-   50.0
+   114.0
   ],
   "pied-legal": [
    0.0,
-   871.0,
+   2571.0,
    1440.0,
    29.0
   ],
   "pied-legal:texte": [
    24.0,
-   878.0,
+   2578.0,
    1392.0,
    16.0
   ]

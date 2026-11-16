@@ -1,0 +1,54 @@
+{
+ "nom": "m01b-appairage-saisi",
+ "taille": [
+  412.0,
+  900.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Appairer ce téléphone",
+   "rect": [
+    16.0,
+    372.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "code": [
+   16.0,
+   164.0,
+   380.0,
+   56.0
+  ],
+  "cle": [
+   16.0,
+   232.0,
+   380.0,
+   56.0
+  ],
+  "agent": [
+   16.0,
+   300.0,
+   380.0,
+   56.0
+  ],
+  "appairer": [
+   16.0,
+   372.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [],
+ "onglets": []
+}
