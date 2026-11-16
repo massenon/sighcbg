@@ -19,6 +19,7 @@
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
 import '../sauvegarde/sauvegarde_horssite.dart';
+import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport;
 import 'parametres.dart';
 import 'reglages_roles.dart';
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
@@ -394,6 +395,8 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Décision de la Direction du 16/11/2026 (AK) : pas de limite de lignes par défaut, seul le droit d\'export compte (remplace la valeur d\'attente de Q40, « à fixer sur la plus grande table réelle »)',
     branche: true,
     appliquePar: 'Chantier TABLEAUX (export)',
+    // Section 7 (16/11/2026) : la limite se règle par un GESTE RÉSERVÉ, pas par le seul droit d'éditer l'écran des paramètres.
+    geste: gesteReglerLimiteExport,
   ),
   DefinitionParametre(
     cle: 'export.seuilProgression',

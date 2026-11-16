@@ -3,14 +3,17 @@
 ///  * le FORMAT : un classeur .xlsx (cellules typées, en-tête figé, largeurs) ET le CSV, les deux ;
 ///  * la PORTÉE : la sélection cochée, ou tout le tableau (toutes les pages), avec ou sans le filtre actif ;
 ///  * la LIMITE : un réglage de clinique ([ReglagesExport], lu de la base, jamais d'ici) ; au-delà, un REFUS NOMMÉ, jamais une troncature silencieuse ;
-///  * le DROIT : un geste réservé, réglable par rôle ([gesteExporter]) ; sans décision, les rôles qui LISENT l'écran ;
-///  * le JOURNAL (RG-12) : qui, quel écran, combien de lignes, avec ou sans filtre. JAMAIS le contenu.
+///  * le DROIT : DEUX gestes réservés, réglables par rôle ([gesteExporter] pour le fichier, [gesteImprimerTableau] pour l'impression) ; sans décision, les rôles qui
+///    LISENT l'écran ; la LIMITE elle-même se règle par le geste [gesteReglerLimiteExport] ;
+///  * le JOURNAL (RG-12) : qui, quel écran, combien de lignes, avec ou sans filtre, les IDENTIFIANTS des fiches (au plus 50) et leur nombre. JAMAIS le contenu.
 ///
-/// Ce que le fichier contient est ce que l'écran montre : les colonnes visibles, avec leurs valeurs affichées (donc masquées comme à l'écran).
+/// Ce que le fichier contient est ce que l'écran montre : les colonnes visibles ; une colonne qui DÉCLARE sa valeur d'export part en vrai nombre ou vraie date, les
+/// autres partent du texte affiché (donc masqué comme à l'écran).
 library;
 
 import 'dart:convert';
 
+import '../droits/gestes_reserves.dart' show gesteExporter, gesteImprimerTableau, gesteReglerLimiteExport;
 import '../parametres/definitions.dart';
 import 'xlsx.dart';
 
@@ -156,12 +159,57 @@ class SelectionLignes {
 // Les cellules.
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// Une colonne exportée : son libellé, le texte que l'écran affiche, et la valeur brute (facultative) quand elle est plus précise que le texte.
+/// Une colonne exportée : son libellé, le texte que l'écran affiche, la VALEUR d'export déclarée par la colonne (prioritaire : un montant, une date) et la valeur brute de
+/// repli (prise seulement quand la colonne n'a pas de texte).
 class ColonneExport {
-  const ColonneExport({required this.libelle, required this.texte, this.brut});
+  const ColonneExport({required this.libelle, required this.texte, this.brut, this.valeur});
   final String libelle;
   final String Function(Map<String, Object?>) texte;
   final Object? Function(Map<String, Object?>)? brut;
+
+  /// La valeur d'EXPORT déclarée par la colonne (Direction, 16/11/2026, section 7) : un nombre part en VRAI nombre (décimales comprises, pas le texte arrondi), une date
+  /// en VRAIE date. Toute autre valeur (une chaîne) est IGNORÉE et la cellule part du TEXTE affiché : un texte masqué sort donc masqué, jamais la valeur en clair.
+  final Object? Function(Map<String, Object?>)? valeur;
+}
+
+/// La date qu'une VALEUR d'export désigne : un `DateTime`, ou une chaîne ISO stricte (`AAAA-MM-JJ`, avec ou sans heure). Toute autre chaîne : `null`.
+DateTime? dateDeValeurExport(Object? v) {
+  if (v is DateTime) return v;
+  if (v is! String) return null;
+  final m = _dateIso.firstMatch(v.trim());
+  if (m == null) return null;
+  return _dateValide(int.parse(m[1]!), int.parse(m[2]!), int.parse(m[3]!), int.tryParse(m[4] ?? '') ?? 0, int.tryParse(m[5] ?? '') ?? 0, int.tryParse(m[6] ?? '') ?? 0);
+}
+
+bool _avecHeure(Object? v, DateTime d) => v is String ? RegExp(r'[ T]\d{2}:\d{2}').hasMatch(v) : (d.hour != 0 || d.minute != 0 || d.second != 0);
+
+/// La cellule .xlsx d'une colonne : depuis sa VALEUR d'export quand elle est un nombre ou une date (vrai nombre, décimales comprises ; vraie date), sinon depuis le
+/// TEXTE affiché ([celluleDepuis]). Une chaîne non-date passée en valeur est ignorée : le texte (éventuellement masqué) fait foi.
+CelluleXlsx celluleDepuisValeur(String texte, Object? valeur, [Object? brut]) {
+  if (valeur is num && valeur.isFinite) {
+    final entier = valeur == valeur.truncate();
+    return CelluleNombre(valeur, entier ? FormatNombre.entierMilliers : FormatNombre.decimalMilliers);
+  }
+  final d = dateDeValeurExport(valeur);
+  if (d != null) return CelluleDate(d, avecHeure: _avecHeure(valeur, d));
+  return celluleDepuis(texte, brut);
+}
+
+String _deux(int n) => n.toString().padLeft(2, '0');
+
+/// Le texte CSV d'une colonne : un nombre en VRAI nombre (toutes ses décimales, virgule décimale, sans séparateur de milliers ni unité : Excel en français le relit en
+/// nombre), une date en `jj/mm/aaaa` (avec l'heure si la valeur en porte une) ; sinon le TEXTE affiché, neutralisé ([garderTexteCsv]).
+String texteCsvDepuisValeur(String texte, Object? valeur) {
+  if (valeur is num && valeur.isFinite) {
+    final s = valeur == valeur.truncate() ? valeur.toInt().toString() : valeur.toString();
+    return s.replaceAll('.', ',');
+  }
+  final d = dateDeValeurExport(valeur);
+  if (d != null) {
+    final j = '${_deux(d.day)}/${_deux(d.month)}/${d.year.toString().padLeft(4, '0')}';
+    return _avecHeure(valeur, d) ? '$j ${_deux(d.hour)}:${_deux(d.minute)}' : j;
+  }
+  return garderTexteCsv(texte);
 }
 
 final RegExp _nombreGroupe = RegExp(r'^-?\d{1,3}(?:[   ]\d{3})+(?:,\d+)?$');
@@ -297,10 +345,10 @@ Future<ResultatExport> produireExport({
     final r = lignes[i];
     if (format == FormatExport.xlsx) {
       cellules.add([
-        for (final c in colonnes) celluleDepuis(c.texte(r), c.brut?.call(r)),
+        for (final c in colonnes) celluleDepuisValeur(c.texte(r), c.valeur?.call(r), c.brut?.call(r)),
       ]);
     } else {
-      textes.add([for (final c in colonnes) garderTexteCsv(c.texte(r))]);
+      textes.add([for (final c in colonnes) texteCsvDepuisValeur(c.texte(r), c.valeur?.call(r))]);
     }
     if (parLots && (i + 1) % lot == 0) {
       progression?.call(i + 1, total);
@@ -332,8 +380,19 @@ List<int> _utf8(String s) => utf8.encode(s);
 // Le journal (RG-12).
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
+/// Le nombre maximal d'IDENTIFIANTS de fiches écrits dans UNE entrée du journal (Direction, 16/11/2026, section 7 : « au plus 50 par entrée »). Le nombre TOTAL est
+/// toujours écrit à côté : un export de 10 000 lignes ne gonfle pas le journal, mais il dit combien de fiches sont sorties.
+const int maxIdentifiantsJournalExport = 50;
+
+/// Les identifiants des lignes (champ `id`, la clé technique de la fiche ; jamais une valeur de cellule) : les lignes sans identifiant sont comptées dans `lignes`, pas ici.
+List<String> identifiantsDesLignes(Iterable<Map<String, Object?>> lignes) => [
+      for (final l in lignes)
+        if (l['id'] != null && '${l['id']}'.isNotEmpty) '${l['id']}'
+    ];
+
 /// Ce que le journal d'audit retient d'un export ou d'une impression de lignes : le GESTE, l'écran, le nombre de lignes, la portée, le filtre en force ou non,
-/// le format, le nombre de colonnes. JAMAIS une valeur de cellule, ni un nom de patient, ni le texte d'une recherche (qui peut être un nom).
+/// le format, le nombre de colonnes, et les IDENTIFIANTS des fiches (au plus [maxIdentifiantsJournalExport], `fiches`) avec leur nombre total (`nbFiches`). JAMAIS une
+/// valeur de cellule, ni un nom de patient, ni le texte d'une recherche (qui peut être un nom).
 Map<String, Object?> detailJournalExport({
   required PorteeExport portee,
   required int lignes,
@@ -342,6 +401,7 @@ Map<String, Object?> detailJournalExport({
   FormatExport? format,
   String? mode,
   RefusExport? refus,
+  List<String>? identifiants,
 }) =>
     {
       'portee': portee.code,
@@ -351,6 +411,11 @@ Map<String, Object?> detailJournalExport({
       if (format != null) 'format': format.extension,
       if (mode != null) 'mode': mode,
       if (refus != null) 'refus': refus.code,
+      if (identifiants != null) ...{
+        'fiches': identifiants.take(maxIdentifiantsJournalExport).toList(),
+        'nbFiches': identifiants.length,
+        if (identifiants.length > maxIdentifiantsJournalExport) 'fichesTronquees': true,
+      },
     };
 
 /// L'action écrite au journal.

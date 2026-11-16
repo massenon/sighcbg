@@ -72,7 +72,7 @@ class EcranMouvements extends StatelessWidget with EcranMaquette {
 
   List<ColonneTableau> _colonnes() => [
         ColonneTableau(cle: 'reference', libelle: 'N°', sansCoupure: true, texte: (r) => '${r['reference']}', rendu: (_, r) => reference(r['reference'])),
-        ColonneTableau(cle: 'date', libelle: 'Date', sansCoupure: true, texte: (r) => dateDe(r['date'])),
+        ColonneTableau(cle: 'date', libelle: 'Date', sansCoupure: true, texte: (r) => dateDe(r['date']), valeurExport: (r) => valeurExportDate(r['date'])),
         const ColonneTableau(cle: 'produit', libelle: 'Produit'),
         ColonneTableau(
             cle: 'type',
@@ -84,6 +84,11 @@ class EcranMouvements extends StatelessWidget with EcranMaquette {
             libelle: 'Quantité',
             droite: true,
             texte: (r) => '${_signe(r)}${nombre(r['quantite'])}',
+            // Un VRAI nombre signé (une sortie est négative) : le texte affiché porte un signe moins typographique qu'un tableur ne relit pas.
+            valeurExport: (r) {
+              final q = valeurExportNombre(r['quantite']);
+              return q == null ? null : ((typeMouvement(r['type'])?.sens ?? 0) < 0 ? -q : q);
+            },
             rendu: (_, r) {
               final s = typeMouvement(r['type'])?.sens ?? 0;
               return Text('${_signe(r)}${nombre(r['quantite'])}',
@@ -129,15 +134,11 @@ class EcranMouvements extends StatelessWidget with EcranMaquette {
         if (!archive && c.droit.editer)
           BoutonSigh(libelle: 'Nouveau', icone: LucideIcons.plus, taille: TailleBouton.sm, onPressed: () => _formulaire(ctx, c, null)),
       ],
+      // « Imprimer la sélection » : celle du tableau commun (geste réservé, journal) ; la pièce de sélection propre à l'écran est conservée (E3503).
+      imprimerSelectionTableau: (_, sel) => afficherApercu(ctx, _pieceSelection(c, sel)),
       actionsGroupe: archive
           ? null
           : (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () => afficherApercu(ctx, _pieceSelection(c, sel))),
                 if (c.droit.annuler)
                   BoutonSigh(
                       libelle: 'Archiver',

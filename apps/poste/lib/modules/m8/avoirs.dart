@@ -74,17 +74,18 @@ PieceA4 pieceAvoir(Fiche a,
   );
 }
 
-Future<void> imprimerAvoir(BuildContext ctx, Fiche a) {
+Future<void> imprimerAvoir(BuildContext ctx, Fiche a) => afficherApercu(ctx, pieceAvoirDe(ctx, a));
+
+/// L'avoir complet, tel qu'[imprimerAvoir] le produit (extrait pour « Imprimer la sélection », un avoir par page, sans rien y changer).
+PieceA4 pieceAvoirDe(BuildContext ctx, Fiche a) {
   final c = ContexteEcran.of(ctx);
-  return afficherApercu(
-      ctx,
-      pieceAvoir(a,
+  return pieceAvoir(a,
           utilisateur: acteur(c).nom,
           edite: c.aujourdhui,
           reference:
               PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
           // L'avoir imprime l'identité en force À SA DATE (Direction, 06/11/2026).
-          identite: identiteImprimeeDe(c.magasin, datePiece(a, c.aujourdhui))));
+          identite: identiteImprimeeDe(c.magasin, datePiece(a, c.aujourdhui)));
 }
 
 /// Le détail d'un avoir, tel que le tiroir de la maquette le lit.
@@ -182,6 +183,7 @@ class EcranFactureAvoir extends StatelessWidget with EcranMaquette {
               const SizedBox(height: 16),
               TableauSigh(
                 titre: 'Registre des avoirs',
+                documentLigne: (ctx, x) => pieceAvoirDe(ctx, x),
                 taillePage: 12,
                 triInitial: 'date',
                 sensInitial: 'desc',

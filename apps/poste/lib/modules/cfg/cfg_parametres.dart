@@ -29,6 +29,10 @@ class PanneauParametres extends StatelessWidget {
         _ => true,
       };
 
+  /// Un paramètre qui déclare SON geste réservé (`DefinitionParametre.geste` : la limite de lignes par export, Direction du 16/11/2026) ne se règle pas par le seul droit
+  /// d'éditer l'écran ; le geste est relu de la matrice à chaque affichage.
+  bool _gesteDuParametre(DefinitionParametre d) => d.geste == null || gestePeutEcran(c, d.geste!);
+
   ServiceParametres _service() => serviceParametres(c.magasin, auteur: () => acteurNom(c), horloge: () => c.aujourdhui);
 
   @override
@@ -50,7 +54,18 @@ class PanneauParametres extends StatelessWidget {
             for (final e in familles.entries)
               // une famille qui a son PROPRE écran (copie hors site : droit, motif, refus nommés) n'est pas montrée ici : le panneau générique contournerait ses règles
               if (!parFamillesReglageDedie.contains(e.key))
-              cfaSection(libellesFamillesParametres[e.key] ?? e.key, cfaPile([for (final p in e.value) _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler && _geste(e.key))], espace: 12)),
+              cfaSection(
+                  libellesFamillesParametres[e.key] ?? e.key,
+                  cfaPile([
+                    for (final p in e.value)
+                      _Carte(
+                          c: c,
+                          service: service,
+                          p: p,
+                          aujourdhui: aujourdhui,
+                          peutRegler: peutRegler && _geste(e.key) && _gesteDuParametre(p.definition),
+                          refusGeste: peutRegler && _geste(e.key) && !_gesteDuParametre(p.definition) ? p.definition.geste : null)
+                  ], espace: 12)),
             cfaSource('Défauts : décisions de la Direction du 09/11/2026 (DECISIONS-A-VALIDER, section D). Rien n’est codé dans l’écran : valeurs et versions sont en base.'),
           ]);
         });
@@ -64,12 +79,15 @@ String _libelleValeur(DefinitionParametre d, Object? v) {
 }
 
 class _Carte extends StatelessWidget {
-  const _Carte({required this.c, required this.service, required this.p, required this.aujourdhui, required this.peutRegler});
+  const _Carte({required this.c, required this.service, required this.p, required this.aujourdhui, required this.peutRegler, this.refusGeste});
   final ContexteEcran c;
   final ServiceParametres service;
   final ParametreAffiche p;
   final String aujourdhui;
   final bool peutRegler;
+
+  /// Le geste réservé que le profil (qui édite l'écran) ne détient pas : la commande est absente et le refus est NOMMÉ sur la carte.
+  final String? refusGeste;
 
   DefinitionParametre get d => p.definition;
 
@@ -93,6 +111,12 @@ class _Carte extends StatelessWidget {
           if (!d.branche)
             BadgeSigh('Enregistré, pas encore appliqué par l’écran concerné (${d.appliquePar ?? 'lot à venir'})', ton: TonSigh.attention),
           if (d.source != null) cfaDiscret('Source : ${d.source}'),
+          if (refusGeste != null)
+            NoteSigh(
+                'Réglage réservé : il se règle par le geste réservé « ${gesteReserve(refusGeste!)?.libelle ?? refusGeste} », que votre profil ne détient pas. Le droit d’éditer cet écran ne suffit pas (Rôles et permissions › Gestes réservés).',
+                key: Key('parametre:reserve:${d.cle}'),
+                ton: TonSigh.attention,
+                icone: LucideIcons.lock),
           Row(children: [
             if (peutRegler)
               BoutonSigh(libelle: 'Régler à partir d’une date', icone: LucideIcons.slidersHorizontal, taille: TailleBouton.sm, onPressed: () => _regler(context)),
@@ -170,7 +194,8 @@ class _Carte extends StatelessWidget {
                       ToastsSigh.afficher(ctx, 'La valeur saisie n’est pas du bon type.', type: TypeToast.erreur, detail: 'Saisir ${_typeLisible(d.type)}.');
                       return;
                     }
-                    final r = service.regler(d.cle, valeur.$1, '${saisie['dateEffet']}', motif: '${saisie['motif'] ?? ''}');
+                    // Le geste réservé du paramètre est RELU au moteur (un bouton absent ne protège rien) : refus nommé `reglage_reserve` sinon.
+                    final r = service.regler(d.cle, valeur.$1, '${saisie['dateEffet']}', motif: '${saisie['motif'] ?? ''}', detientGeste: (g) => gestePeutEcran(c, g));
                     if (!r.ok) {
                       // Un refus se NOMME : le motif dit pourquoi, le geste dit quoi faire.
                       ToastsSigh.afficher(ctx, r.refus!.motif, type: TypeToast.erreur, detail: r.refus!.geste, duree: const Duration(seconds: 10));

@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/tarifs_poste.dart';
+import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -182,9 +183,12 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
         BlocTexte(acces.texteSi('couverture_assurance', _t(r['couverture'], '')), italique: true),
       ];
 
-  static void _imprimer(BuildContext ctx, Fiche r) {
+  static void _imprimer(BuildContext ctx, Fiche r) => afficherApercu(ctx, piece(ctx, r));
+
+  /// La pièce certifiante complète (celle de « Imprimer ») : « Imprimer la sélection » en pose une par page.
+  static PieceA4 piece(BuildContext ctx, Fiche r) {
     final acces = AccesSensible.de(ContexteEcran.of(ctx));
-    imprimerM1(ctx,
+    return pieceM1(ctx,
         titre: '${r['libelle'] ?? ''}'.toUpperCase(),
         sousTitre: 'N°/Réf : ${r['reference']}',
         cartouche: [
@@ -225,6 +229,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
                 refuser: _refuser,
                 transformer: transformerPiece,
                 etat: _imprimer,
+                documentLigne: piece,
                 titreDetail: (x) => '${x['libelle']}',
                 actionsSup: (ctx, r) => [
                   if (st(r).code == 'a_encaisser')

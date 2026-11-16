@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../donnees/magasin.dart';
+import '../impression/piece.dart';
 import 'accord.dart';
 import '../shell/contexte_ecran.dart';
 import 'bouton.dart';
@@ -32,6 +33,7 @@ class CrudSigh extends StatefulWidget {
     this.titreDetail,
     this.sousTitreDetail,
     this.etat,
+    this.documentLigne,
     this.triInitial,
     this.sensInitial = 'asc',
     this.taillePage = 12,
@@ -62,6 +64,9 @@ class CrudSigh extends StatefulWidget {
 
   /// Impression de la pièce (`cfg.etat`).
   final void Function(BuildContext, Fiche)? etat;
+
+  /// La PIÈCE COMPLÈTE d'une fiche (la même que [etat] imprime) : transmise au tableau, « Imprimer la sélection » propose alors une pièce par ligne, chacune sur sa page.
+  final PieceA4 Function(BuildContext, Fiche)? documentLigne;
   final String? triInitial;
   final String sensInitial;
   final int taillePage;
@@ -148,7 +153,9 @@ class _CrudSighState extends State<CrudSigh> {
       lignes: lignes,
       filtres: widget.filtres,
       taillePage: widget.taillePage,
-      selectionnable: !archive,
+      // Cases : toujours là où l'écran ARCHIVE en groupe (droit d'annuler) ; ailleurs elles suivent les deux gestes réservés (exporter, imprimer depuis un tableau).
+      selectionnable: archive ? false : (c.droit.annuler && !widget.readonly ? true : null),
+      documentLigne: widget.documentLigne,
       nomExport: widget.collection.nom,
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,
@@ -170,13 +177,8 @@ class _CrudSighState extends State<CrudSigh> {
       ],
       actionsGroupe: archive
           ? null
+          // « Imprimer la sélection » est celle du tableau commun (geste réservé, journal) : le doublon inerte qui vivait ici est retiré (E3503).
           : (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () {}),
                 if (c.droit.annuler && !widget.readonly)
                   BoutonSigh(
                       libelle: 'Archiver',

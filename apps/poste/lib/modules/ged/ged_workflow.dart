@@ -119,7 +119,8 @@ class EcranWorkflowGed extends StatelessWidget with EcranMaquette {
       nomExport: 'ged-a-valider',
       triInitial: 'date',
       sensInitial: 'desc',
-      selectionnable: false,
+      // Section 7 (Direction, 16/11/2026) : les cases servent SEULEMENT à exporter et à imprimer (les deux gestes réservés du tableau commun). Aucune action de groupe
+      // (`actionsGroupe` absent) : jamais de validation ni de rejet en masse — la validation reste le geste unitaire de la ligne (défaut 7 du 08/11/2026).
       messageVide: 'Aucun document en attente de validation.',
       colonnes: [
         colonneReference(),
@@ -147,8 +148,8 @@ class EcranWorkflowGed extends StatelessWidget with EcranMaquette {
                       fontWeight: j > 15 ? FontWeight.w600 : FontWeight.w400));
             }),
       ],
-      // Défaut 7 (Direction, 08/11/2026) : plus de validation en MASSE. Une validation est un geste humain, un document à la fois : ni case de sélection,
-      // ni « Valider la sélection ». Le geste unitaire, de la ligne, reste le seul.
+      // Défaut 7 (Direction, 08/11/2026) : plus de validation en MASSE. Une validation est un geste humain, un document à la fois : jamais de « Valider la sélection ».
+      // Le geste unitaire, de la ligne, reste le seul.
       actionsLigne: (ctx, d) => [
         if (peutEcrire) ...[
           BoutonSigh(

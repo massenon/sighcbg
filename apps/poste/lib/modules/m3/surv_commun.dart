@@ -320,12 +320,6 @@ class _EtatRegistre extends State<RegistreFormulaire> {
       ],
       actionsGroupe: widget.groupe
           ? (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () {}),
                 if (c.droit.annuler)
                   BoutonSigh(
                       libelle: 'Archiver',

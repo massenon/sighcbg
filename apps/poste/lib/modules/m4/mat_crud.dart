@@ -443,15 +443,11 @@ class _CrudMatState extends State<CrudMat> {
               taille: TailleBouton.sm,
               onPressed: () => widget.creerVers != null ? c.aller(widget.creerVers!) : _saisir(ctx)),
       ],
+      // « Imprimer la sélection » : celle du tableau commun (geste réservé, journal) ; la pièce de sélection propre à l'écran est conservée (E3503).
+      imprimerSelectionTableau: (_, sel) => _imprimerSelection(ctx, sel),
       actionsGroupe: archive
           ? null
           : (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () => _imprimerSelection(ctx, sel)),
                 if (c.droit.annuler)
                   BoutonSigh(
                     libelle: 'Archiver',

@@ -62,6 +62,15 @@ bool peutExporterTableau(ContexteEcran? c) {
   return droits.peutSurEcran(c.role, gesteExporter, c.ecranId, peutVoirEcran: mat?.peutVoir);
 }
 
+/// Le profil de l'écran peut-il IMPRIMER depuis un tableau (la sélection ou tout le filtre, tableau unique ou pièces complètes) ? Le geste réservé [gesteImprimerTableau],
+/// DISTINCT de l'export (Direction, 16/11/2026, section 7), même mécanique : relu à chaque appel, sans décision il suit la lecture de l'écran.
+bool peutImprimerTableau(ContexteEcran? c) {
+  if (c == null) return true;
+  final mat = c.donnees?.matrice;
+  final droits = DroitsGestes(fiches: c.magasin.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif);
+  return droits.peutSurEcran(c.role, gesteImprimerTableau, c.ecranId, peutVoirEcran: mat?.peutVoir);
+}
+
 /// Les réglages d'export EN VIGUEUR, lus de la base (défaut de la définition à défaut de fiche).
 ReglagesExport reglagesExport(ContexteEcran? c) {
   if (c == null) return ReglagesExport.depuisParametres((_) => null);
@@ -74,8 +83,9 @@ ReglagesExport reglagesExport(ContexteEcran? c) {
   });
 }
 
-/// Les colonnes qu'écrit le fichier : celles que l'écran montre, avec le TEXTE qu'il affiche. En plus de la colonne que l'écran a déjà masquée, un champ sensible
-/// que le profil n'a pas le droit de lire est remplacé par la mention, jamais exporté en clair (champ_sensible.dart).
+/// Les colonnes qu'écrit le fichier : celles que l'écran montre, avec le TEXTE qu'il affiche, et la VALEUR d'export quand la colonne la déclare
+/// ([ColonneTableau.valeurExport] : un montant part en vrai nombre, une date en vraie date). En plus de la colonne que l'écran a déjà masquée, un champ sensible que le
+/// profil n'a pas le droit de lire est remplacé par la mention, jamais exporté en clair (champ_sensible.dart) : ni texte ni valeur.
 List<ColonneExport> colonnesExportDe(List<ColonneTableau> colonnes, ContexteEcran? c) {
   final acces = c == null ? null : AccesSensible.de(c);
   return [
@@ -86,10 +96,22 @@ List<ColonneExport> colonnesExportDe(List<ColonneTableau> colonnes, ContexteEcra
         return ColonneExport(
             libelle: col.libelle,
             texte: refuse ? (_) => acces.mention(cat.code) : col.enTexte,
-            brut: refuse ? null : col.lire);
+            brut: refuse ? null : col.lire,
+            valeur: refuse ? null : col.valeurExport);
       }(),
   ];
 }
+
+/// La valeur d'export d'un MONTANT ou d'une quantité ([ColonneTableau.valeurExport]) : le nombre lui-même, décimales comprises, ou une chaîne numérique stricte
+/// (`12500.75`) ; sinon `null` (la cellule part alors du texte affiché).
+num? valeurExportNombre(Object? v) {
+  if (v is num) return v.isFinite ? v : null;
+  if (v is String) return num.tryParse(v.trim());
+  return null;
+}
+
+/// La valeur d'export d'une DATE ([ColonneTableau.valeurExport]) : un `DateTime`, ou la chaîne ISO telle qu'en base (`2026-11-15`, `2026-11-15T10:30`) ; sinon `null`.
+Object? valeurExportDate(Object? v) => dateDeValeurExport(v) == null ? null : v;
 
 /// Le module d'un écran pour le journal : le préfixe de son identifiant (`m6-transferts` → `M6`).
 String moduleDeEcran(String ecranId) => ecranId.split('-').first.toUpperCase();
@@ -141,7 +163,18 @@ Future<void> ouvrirExport(BuildContext context, SourceExport s, {PorteeExport? p
   if (!peutExporterTableau(c)) {
     ToastsSigh.afficher(context, 'Export refusé : votre profil n’a pas le droit d’exporter ce tableau.',
         type: TypeToast.erreur, detail: 'Le droit d’exporter se règle par rôle (Rôles et permissions › Gestes réservés).');
-    journaliserSortie(c, action: actionJournalExport, reference: s.nom, succes: false, detail: detailJournalExport(portee: PorteeExport.toutAvecFiltre, lignes: 0, filtreActif: false, colonnes: 0, refus: const RefusExport('EXPORT_RESERVE', 'droit retiré', '')));
+    final visees = s.lignes(s.nbSelection > 0 ? PorteeExport.selection : PorteeExport.toutAvecFiltre);
+    journaliserSortie(c,
+        action: actionJournalExport,
+        reference: s.nom,
+        succes: false,
+        detail: detailJournalExport(
+            portee: s.nbSelection > 0 ? PorteeExport.selection : PorteeExport.toutAvecFiltre,
+            lignes: visees.length,
+            filtreActif: s.nbSelection == 0 && s.filtreActif,
+            colonnes: 0,
+            refus: const RefusExport('EXPORT_RESERVE', 'droit retiré', ''),
+            identifiants: identifiantsDesLignes(visees)));
     return Future.value();
   }
   final reglages = reglagesExport(c);
@@ -236,15 +269,17 @@ class _OptionPortee extends StatelessWidget {
 Future<void> executerExport(BuildContext context, SourceExport s, PorteeExport portee, FormatExport format) async {
   final c = ContexteEcran.capturer(context);
   final cols = s.colonnes();
-  final detailRefus = (RefusExport r, int n) => detailJournalExport(portee: portee, lignes: n, filtreActif: portee == PorteeExport.toutAvecFiltre && s.filtreActif, colonnes: cols.length, format: format, refus: r);
+  final lignes = s.lignes(portee);
+  final ids = identifiantsDesLignes(lignes);
+  final detailRefus = (RefusExport r, int n) =>
+      detailJournalExport(portee: portee, lignes: n, filtreActif: portee == PorteeExport.toutAvecFiltre && s.filtreActif, colonnes: cols.length, format: format, refus: r, identifiants: ids);
   if (!peutExporterTableau(c)) {
     const r = RefusExport('EXPORT_RESERVE', 'le droit d\'exporter a été retiré à ce profil', 'Demander à l\'administrateur (Rôles et permissions › Gestes réservés).');
     ToastsSigh.afficher(context, 'Export refusé : ${r.motif}.', type: TypeToast.erreur, detail: r.geste);
-    journaliserSortie(c, action: actionJournalExport, reference: s.nom, succes: false, detail: detailRefus(r, 0));
+    journaliserSortie(c, action: actionJournalExport, reference: s.nom, succes: false, detail: detailRefus(r, lignes.length));
     return;
   }
   final reglages = reglagesExport(c);
-  final lignes = s.lignes(portee);
   final refus = reglages.verifier(lignes.length);
   if (refus != null) {
     ToastsSigh.afficher(context, 'Export refusé : ${refus.motif}.', type: TypeToast.erreur, detail: refus.geste);
@@ -310,7 +345,8 @@ Future<void> executerExport(BuildContext context, SourceExport s, PorteeExport p
     journaliserSortie(c,
         action: actionJournalExport,
         reference: nom,
-        detail: detailJournalExport(portee: portee, lignes: r.lignes, filtreActif: portee == PorteeExport.toutAvecFiltre && s.filtreActif, colonnes: cols.length, format: format));
+        detail: detailJournalExport(
+            portee: portee, lignes: r.lignes, filtreActif: portee == PorteeExport.toutAvecFiltre && s.filtreActif, colonnes: cols.length, format: format, identifiants: ids));
     if (context.mounted && !(format == FormatExport.csv && s.alCsv != null)) {
       ToastsSigh.afficher(context, 'Export enregistré : ${nombre(r.lignes)} ligne${r.lignes > 1 ? 's' : ''}.', type: TypeToast.succes, detail: chemin);
     }
@@ -325,7 +361,8 @@ Future<void> executerExport(BuildContext context, SourceExport s, PorteeExport p
 
 /// Ce qu'un tableau offre à l'impression de sa sélection.
 class SourceImpression {
-  const SourceImpression({required this.titre, required this.colonnes, required this.lignes, required this.filtres, this.documentLigne});
+  const SourceImpression(
+      {required this.titre, required this.colonnes, required this.lignes, required this.filtres, this.documentLigne, this.filtreActif = false, this.imprimerTableau});
   final String titre;
   final List<ColonneTableau> Function() colonnes;
   final List<Ligne> lignes;
@@ -333,8 +370,15 @@ class SourceImpression {
   /// Les filtres EN FORCE, (libellé, valeur) : une impression de lignes cochées dit ce qui l'a bornée.
   final List<(String, String)> filtres;
 
-  /// Le document unitaire de la ligne (un bon, une fiche, un reçu), là où il existe déjà : permet « un état par ligne ».
+  /// Un filtre ou une recherche était-il en force au moment de l'impression ? (journal).
+  final bool filtreActif;
+
+  /// La PIÈCE COMPLÈTE de la ligne (une facture, un bon, une ordonnance, un certificat), là où elle existe déjà : permet « une pièce par ligne », chacune sur sa page.
   final PieceA4 Function(BuildContext, Ligne)? documentLigne;
+
+  /// Le TABLEAU UNIQUE propre à l'écran (sa pièce de sélection, ses colonnes) quand il en a une : appelé APRÈS le contrôle du geste et l'écriture au journal, à la place
+  /// du tableau générique. Un écran ne pose donc plus son propre bouton « Imprimer la sélection » (doublon homonyme qui échappait au droit et au journal).
+  final void Function(BuildContext, List<Ligne>)? imprimerTableau;
 }
 
 /// La pièce A4 d'un SEUL tableau des lignes cochées, au gabarit d'impression commun (en-tête légal unique, pied normalisé).
@@ -358,13 +402,22 @@ PieceA4 pieceTableauSelection(ContexteEcran? c, SourceImpression s) {
   );
 }
 
-/// Imprime la sélection : un seul tableau par défaut ; un état par ligne là où un document unitaire existe et que l'agent le choisit. Le droit d'exporter vaut pour
-/// l'impression (même sortie des mêmes données) ; la limite des états par impression est réglée par la clinique et REFUSE en le disant.
+/// Imprime la sélection : un seul tableau par défaut ; une PIÈCE COMPLÈTE par ligne (chacune sur sa page) là où le document unitaire existe et que l'agent le choisit.
+/// Le droit est le geste réservé [gesteImprimerTableau], DISTINCT de l'export (Direction, 16/11/2026) ; la limite des pièces par impression est réglée par la clinique et
+/// REFUSE en le disant. Chaque impression et chaque refus vont au journal avec les identifiants des fiches (au plus 50) et leur nombre.
 Future<void> ouvrirImpressionSelection(BuildContext context, SourceImpression s) async {
   final c = ContexteEcran.capturer(context);
-  if (!peutExporterTableau(c)) {
-    ToastsSigh.afficher(context, 'Impression refusée : votre profil n’a pas le droit d’exporter ce tableau.', type: TypeToast.erreur, detail: 'Le droit se règle par rôle (Rôles et permissions › Gestes réservés).');
-    journaliserSortie(c, action: actionJournalImpression, reference: s.titre, succes: false, detail: detailJournalExport(portee: PorteeExport.selection, lignes: 0, filtreActif: false, colonnes: 0, mode: 'tableau', refus: const RefusExport('EXPORT_RESERVE', 'droit retiré', '')));
+  final ids = identifiantsDesLignes(s.lignes);
+  Map<String, Object?> detail(String mode, {int colonnes = 0, RefusExport? refus}) => detailJournalExport(
+      portee: PorteeExport.selection, lignes: s.lignes.length, filtreActif: s.filtreActif, colonnes: colonnes, mode: mode, refus: refus, identifiants: ids);
+  if (!peutImprimerTableau(c)) {
+    ToastsSigh.afficher(context, 'Impression refusée : votre profil n’a pas le droit d’imprimer depuis ce tableau.',
+        type: TypeToast.erreur, detail: 'Le droit se règle par rôle (Rôles et permissions › Gestes réservés).');
+    journaliserSortie(c,
+        action: actionJournalImpression,
+        reference: s.titre,
+        succes: false,
+        detail: detail('tableau', refus: const RefusExport('IMPRESSION_RESERVEE', 'droit retiré', '')));
     return;
   }
   var unEtatParLigne = false;
@@ -379,25 +432,19 @@ Future<void> ouvrirImpressionSelection(BuildContext context, SourceImpression s)
     final refus = reglagesExport(c).verifierEtats(s.lignes.length);
     if (refus != null) {
       ToastsSigh.afficher(context, 'Impression refusée : ${refus.motif}.', type: TypeToast.erreur, detail: refus.geste);
-      journaliserSortie(c,
-          action: actionJournalImpression,
-          reference: s.titre,
-          succes: false,
-          detail: detailJournalExport(portee: PorteeExport.selection, lignes: s.lignes.length, filtreActif: false, colonnes: cols.length, mode: 'etat_par_ligne', refus: refus));
+      journaliserSortie(c, action: actionJournalImpression, reference: s.titre, succes: false, detail: detail('etat_par_ligne', colonnes: cols.length, refus: refus));
       return;
     }
     final pieces = [for (final l in s.lignes) s.documentLigne!(context, l)];
-    journaliserSortie(c,
-        action: actionJournalImpression,
-        reference: s.titre,
-        detail: detailJournalExport(portee: PorteeExport.selection, lignes: s.lignes.length, filtreActif: false, colonnes: cols.length, mode: 'etat_par_ligne'));
+    journaliserSortie(c, action: actionJournalImpression, reference: s.titre, detail: detail('etat_par_ligne', colonnes: cols.length));
     await afficherApercuLot(context, pieces);
     return;
   }
-  journaliserSortie(c,
-      action: actionJournalImpression,
-      reference: s.titre,
-      detail: detailJournalExport(portee: PorteeExport.selection, lignes: s.lignes.length, filtreActif: false, colonnes: cols.length, mode: 'tableau'));
+  journaliserSortie(c, action: actionJournalImpression, reference: s.titre, detail: detail('tableau', colonnes: cols.length));
+  if (s.imprimerTableau != null) {
+    s.imprimerTableau!(context, s.lignes);
+    return;
+  }
   await afficherApercu(context, pieceTableauSelection(c, s));
 }
 
@@ -407,7 +454,7 @@ Future<bool?> _choisirModeImpression(BuildContext context, int n, ReglagesExport
       titre: 'Imprimer la sélection',
       taille: TailleModale.sm,
       corps: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-        Text('$n ligne${n > 1 ? 's' : ''} cochée${n > 1 ? 's' : ''}. Un seul tableau les réunit au gabarit d’impression ; pour ce tableau, chaque ligne a aussi son document : un état par ligne.', style: _styleCorps),
+        Text('$n ligne${n > 1 ? 's' : ''} cochée${n > 1 ? 's' : ''}. Un seul tableau les réunit au gabarit d’impression ; pour ce tableau, chaque ligne a aussi sa pièce complète : une pièce par ligne, chacune sur sa page.', style: _styleCorps),
         if (reglages.verifierEtats(n) != null) ...[
           const SizedBox(height: 8),
           NoteSigh('Un état par ligne est limité à ${reglages.limiteEtatsParLigne} états par impression : ici ${reglages.verifierEtats(n)!.motif}.', ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
@@ -417,7 +464,7 @@ Future<bool?> _choisirModeImpression(BuildContext context, int n, ReglagesExport
             BoutonSigh(libelle: 'Fermer', variante: VarianteBouton.fantome, onPressed: fermer),
             BoutonSigh(
                 key: const Key('impression:etats'),
-                libelle: 'Un état par ligne',
+                libelle: 'Une pièce par ligne',
                 icone: LucideIcons.files,
                 variante: VarianteBouton.secondaire,
                 onPressed: () {

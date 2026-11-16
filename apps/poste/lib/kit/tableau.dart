@@ -22,7 +22,8 @@ class ColonneTableau {
       this.valeur,
       this.rendu,
       this.sansCoupure = false,
-      this.texte});
+      this.texte,
+      this.valeurExport});
   final String cle;
   final String libelle;
   final bool droite;
@@ -33,6 +34,12 @@ class ColonneTableau {
 
   /// Texte exporté / recherché quand la cellule est un widget.
   final String Function(Ligne)? texte;
+
+  /// La VALEUR que l'export écrit (Direction, 16/11/2026, section 7) quand le texte affiché l'arrondit ou la met en forme : un montant (`num`, décimales comprises),
+  /// une date (`DateTime` ou chaîne ISO `AAAA-MM-JJ`). Seuls un nombre et une date sont pris ; toute autre valeur est ignorée et la cellule part du TEXTE affiché — un texte
+  /// masqué sort donc masqué. Ne JAMAIS la déclarer sur une colonne que l'écran masque (numéro, champ sensible) : le texte affiché est alors la seule sortie. Absente :
+  /// la cellule part du texte affiché (un « 12 500 F » redevient le nombre 12500, un « 15/11/2026 » une date).
+  final Object? Function(Ligne)? valeurExport;
 
   Object? lire(Ligne l) => valeur != null ? valeur!(l) : l[cle];
   String enTexte(Ligne l) => texte != null ? texte!(l) : '${lire(l) ?? ''}';
@@ -56,8 +63,9 @@ class FiltreTableau {
 ///
 /// CHANTIER TABLEAUX (Q38 à Q42, Direction du 15/11/2026) : sous une coque d'écran, CHAQUE tableau porte des cases à cocher (une, plusieurs, toutes les lignes de la page ou du
 /// filtre), la sélection survit au changement de page jusqu'à ce que l'agent la vide, un compteur la dit, et « Exporter » écrit un classeur .xlsx ou un CSV de la sélection ou de
-/// TOUT le tableau (avec ou sans le filtre). Le droit est un geste réservé réglable par rôle, la limite de lignes un réglage de la clinique (refus nommé), l'export est journalisé
-/// (RG-12, sans contenu). « Imprimer la sélection » reprend le gabarit d'impression : un seul tableau, ou un état par ligne quand [documentLigne] existe.
+/// TOUT le tableau (avec ou sans le filtre). Exporter et imprimer sont DEUX gestes réservés réglables par rôle (16/11/2026), la limite de lignes un réglage de la clinique
+/// réglé par son propre geste (refus nommé) ; export et impression sont journalisés (RG-12 : identifiants des fiches et nombre, jamais le contenu). « Imprimer la sélection »
+/// reprend le gabarit d'impression : un seul tableau, ou une pièce complète par ligne (chacune sur sa page) quand [documentLigne] existe.
 class TableauSigh extends StatefulWidget {
   const TableauSigh({
     super.key,
@@ -68,7 +76,9 @@ class TableauSigh extends StatefulWidget {
     this.recherche = true,
     this.filtres = const [],
     this.selectionnable,
+    this.exportable = true,
     this.documentLigne,
+    this.imprimerSelectionTableau,
     this.actionsLigne,
     this.colonnesMasquees = const [],
     this.alClicLigne,
@@ -94,12 +104,22 @@ class TableauSigh extends StatefulWidget {
   final bool recherche;
   final List<FiltreTableau> filtres;
 
-  /// Les cases à cocher. `null` (défaut) : présentes sous une coque d'écran dont le profil peut exporter (rien à cocher pour qui ne peut ni exporter ni agir en groupe) ;
-  /// `true` : toujours (un écran qui agit en groupe) ; `false` : jamais (un petit tableau de détail où cocher n'aurait pas d'objet).
+  /// Les cases à cocher. `null` (défaut) : présentes sous une coque d'écran dont le profil peut exporter OU imprimer depuis un tableau (deux gestes réservés distincts ;
+  /// rien à cocher pour qui n'a ni l'un ni l'autre) ; `true` : toujours (un écran qui agit en groupe) ; `false` : jamais (un petit tableau de détail où cocher n'aurait pas
+  /// d'objet, une grille de saisie en cours).
   final bool? selectionnable;
 
-  /// Le document unitaire d'une ligne (un bon, une fiche, un reçu) quand il existe déjà : « Imprimer la sélection » propose alors un état par ligne.
+  /// Faux : ni « Exporter » ni impression de la sélection (une grille de SAISIE en cours ou un tableau de DOCUMENT : Direction du 16/11/2026, section 7 ; liste avec motifs
+  /// dans `docs/architecture/EXPORT-exclusions.md`). Les cases tombent avec, sauf `selectionnable: true` explicite.
+  final bool exportable;
+
+  /// La PIÈCE COMPLÈTE d'une ligne (une facture, un bon, une ordonnance, un certificat) quand elle existe déjà : « Imprimer la sélection » propose alors une pièce par ligne,
+  /// chacune sur sa page, identique à celle qu'imprime la ligne seule.
   final PieceA4 Function(BuildContext, Ligne)? documentLigne;
+
+  /// Le tableau unique PROPRE à l'écran pour « Imprimer la sélection » (sa pièce, ses colonnes) : appelé par le kit après le geste réservé et le journal. Sans lui, le
+  /// tableau générique des colonnes affichées. Jamais un second bouton « Imprimer la sélection » dans [actionsGroupe].
+  final void Function(BuildContext, List<Ligne>)? imprimerSelectionTableau;
   final List<Widget> Function(BuildContext, Ligne)? actionsLigne;
 
   /// Colonnes (par `cle`) masquées à l'ouverture, remises par le menu « Colonnes » : sur un tableau de douze colonnes, les commandes de ligne sortaient du cadre.
@@ -163,9 +183,12 @@ class TableauSighState extends State<TableauSigh> {
   /// Tout le tableau, sans la recherche ni les filtres, dans l'ordre de tri en cours.
   List<Ligne> get _toutesLesLignes => _trier([...widget.lignes]);
 
-  /// Le profil peut-il exporter ? Hors coque (test de widget nu) : l'export reste offert comme avant, mais sans cases à cocher par défaut.
-  bool _droitExport(BuildContext context) => peutExporterTableau(ContexteEcran.maybeOf(context));
-  bool _cases(BuildContext context) => widget.selectionnable ?? (ContexteEcran.maybeOf(context) != null && _droitExport(context));
+  /// Le profil peut-il exporter ? imprimer depuis le tableau ? Deux gestes réservés DISTINCTS (Direction, 16/11/2026). Hors coque (test de widget nu) : l'export reste offert
+  /// comme avant, mais sans cases à cocher par défaut. Un tableau non [TableauSigh.exportable] n'offre ni l'un ni l'autre.
+  bool _droitExport(BuildContext context) => widget.exportable && peutExporterTableau(ContexteEcran.maybeOf(context));
+  bool _droitImpression(BuildContext context) => widget.exportable && peutImprimerTableau(ContexteEcran.maybeOf(context));
+  bool _cases(BuildContext context) =>
+      widget.selectionnable ?? (ContexteEcran.maybeOf(context) != null && (_droitExport(context) || _droitImpression(context)));
 
   @override
   void initState() {
@@ -236,7 +259,9 @@ class TableauSighState extends State<TableauSigh> {
             colonnes: () => _visibles,
             lignes: lignesSelectionnees,
             filtres: _filtresEnForce,
-            documentLigne: widget.documentLigne));
+            filtreActif: _filtreActif,
+            documentLigne: widget.documentLigne,
+            imprimerTableau: widget.imprimerSelectionTableau));
   }
 
   void _colonnes() {
@@ -402,7 +427,8 @@ class TableauSighState extends State<TableauSigh> {
     final n = _selection.taille;
     final dansFiltre = filtrees.where((r) => _selection.contient(_cle(r))).length;
     final masquees = n - dansFiltre;
-    final peut = _droitExport(context);
+    final peutExporter = _droitExport(context);
+    final peutImprimer = _droitImpression(context);
     return Container(
       key: const Key('kit:tableau-selection'),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -421,7 +447,7 @@ class TableauSighState extends State<TableauSigh> {
               variante: VarianteBouton.fantome,
               taille: TailleBouton.sm,
               onPressed: () => setState(() => _selection.definir([for (final r in filtrees) _cle(r)], true))),
-        if (peut) ...[
+        if (peutExporter)
           BoutonSigh(
               key: const Key('kit:tableau-exporter-selection'),
               libelle: 'Exporter la sélection',
@@ -429,6 +455,7 @@ class TableauSighState extends State<TableauSigh> {
               variante: VarianteBouton.secondaire,
               taille: TailleBouton.sm,
               onPressed: () => _exporter(portee: PorteeExport.selection)),
+        if (peutImprimer)
           BoutonSigh(
               key: const Key('kit:tableau-imprimer-selection'),
               libelle: 'Imprimer la sélection',
@@ -436,7 +463,6 @@ class TableauSighState extends State<TableauSigh> {
               variante: VarianteBouton.secondaire,
               taille: TailleBouton.sm,
               onPressed: _imprimerSelection),
-        ],
         if (widget.actionsGroupe != null)
           for (final a in widget.actionsGroupe!(context, [for (final r in filtrees) if (_selection.contient(_cle(r))) r], () => setState(_selection.vider))) a,
         BoutonSigh(

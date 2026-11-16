@@ -91,7 +91,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                         cle: 'montantPaye',
                         libelle: 'Déjà réglé',
                         droite: true,
-                        texte: (f) => m(f['montantPaye'])),
+                        texte: (f) => m(f['montantPaye']),
+                        valeurExport: (f) => valeurExportNombre(f['montantPaye'])),
                     colReliquat,
                     colStatutPaiement,
                   ],
@@ -129,6 +130,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                         libelle: 'Montant réglé',
                         droite: true,
                         texte: (f) => m(f['montantPaye']),
+                        valeurExport: (f) => valeurExportNombre(f['montantPaye']),
                         rendu: (_, f) => Text(m(f['montantPaye']),
                             style: const TextStyle(
                                 color: JetonsShell.success700,
@@ -146,6 +148,8 @@ class _EcranPaiementsState extends State<EcranPaiements> {
                   triInitial: 'date',
                   sensInitial: 'desc',
                   nomExport: 'paiements',
+                  // « Imprimer la sélection » : le reçu COMPLET de chaque règlement coché, un par page (le même que « Reçu de paiement »).
+                  documentLigne: (ctx, f) => pieceRecuDe(ctx, f),
                   filtres: [
                     FiltreTableau(
                         nom: 'modePaiement',

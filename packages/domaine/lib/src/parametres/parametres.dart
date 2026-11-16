@@ -62,6 +62,7 @@ class DefinitionParametre {
     this.source,
     this.branche = true,
     this.appliquePar,
+    this.geste,
   });
   final String cle;
   final String famille;
@@ -84,6 +85,10 @@ class DefinitionParametre {
   /// Faux : le réglage s'enregistre mais l'écran qu'il commande ne le lit pas encore (lot à venir). L'écran des paramètres le dit.
   final bool branche;
   final String? appliquePar;
+
+  /// Le GESTE RÉSERVÉ qui règle ce paramètre (identifiant de `gestesReserves`), quand le seul droit d'éditer l'écran des paramètres ne suffit pas (la limite d'export,
+  /// Direction du 16/11/2026). `null` : le droit d'éditer l'écran suffit.
+  final String? geste;
 
   factory DefinitionParametre.fromJson(Map<String, Object?> j) => DefinitionParametre(
         cle: '${j['cle']}',
