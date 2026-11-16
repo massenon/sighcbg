@@ -1,0 +1,110 @@
+{
+ "domaine/lib/src/achats/besoins.dart": {
+  "lectures": 2,
+  "ecritures": 1
+ },
+ "domaine/lib/src/assistant/ast_executeurs.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "domaine/lib/src/comptabilite/cpc_bfr.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "domaine/lib/src/configuration/cfa_regles.dart": {
+  "lectures": 3,
+  "ecritures": 3
+ },
+ "domaine/lib/src/configuration/cfb_regles.dart": {
+  "lectures": 4,
+  "ecritures": 0
+ },
+ "domaine/lib/src/consultation/cs_moteur.dart": {
+  "lectures": 3,
+  "ecritures": 0
+ },
+ "domaine/lib/src/import/jeux_import.dart": {
+  "lectures": 0,
+  "ecritures": 2
+ },
+ "domaine/lib/src/import/jeux_import_prix_produits.dart": {
+  "lectures": 2,
+  "ecritures": 0
+ },
+ "domaine/lib/src/import/jeux_import_stock.dart": {
+  "lectures": 4,
+  "ecritures": 2
+ },
+ "domaine/lib/src/labo/sang_regles.dart": {
+  "lectures": 2,
+  "ecritures": 0
+ },
+ "domaine/lib/src/mere/mrc_regles.dart": {
+  "lectures": 0,
+  "ecritures": 2
+ },
+ "domaine/lib/src/mobile/mob_regles.dart": {
+  "lectures": 2,
+  "ecritures": 0
+ },
+ "domaine/lib/src/stock/delivrance.dart": {
+  "lectures": 4,
+  "ecritures": 0
+ },
+ "domaine/lib/src/stock/emplacements.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "domaine/lib/src/stock/points.dart": {
+  "lectures": 3,
+  "ecritures": 0
+ },
+ "domaine/lib/src/stock/stock.dart": {
+  "lectures": 3,
+  "ecritures": 1
+ },
+ "domaine/lib/src/tarifs/tarifs_produits.dart": {
+  "lectures": 16,
+  "ecritures": 4
+ },
+ "lib/donnees/tarifs_poste.dart": {
+  "lectures": 2,
+  "ecritures": 3
+ },
+ "lib/modules/cfg/tarifs_ecran.dart": {
+  "lectures": 2,
+  "ecritures": 0
+ },
+ "lib/modules/m2/cs_commun.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "lib/modules/m2/cs_fiche.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "lib/modules/m2/cs_ordonnances.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
+ "lib/modules/m6/stock_commun.dart": {
+  "lectures": 4,
+  "ecritures": 0
+ },
+ "lib/modules/m6/stock_prix_achat.dart": {
+  "lectures": 4,
+  "ecritures": 0
+ },
+ "lib/modules/m6/stock_produits.dart": {
+  "lectures": 6,
+  "ecritures": 2
+ },
+ "lib/modules/m7/besoins_commun.dart": {
+  "lectures": 3,
+  "ecritures": 0
+ },
+ "lib/modules/m8/facturation.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ }
+}
