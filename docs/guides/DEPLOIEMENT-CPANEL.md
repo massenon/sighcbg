@@ -22,6 +22,17 @@ Téléverser le dossier `apps/web` sur l'hébergeur. La racine web du domaine do
    ```
 4. Ajouter la tâche cron chaque minute : `php /chemin/vers/apps/web/artisan schedule:run`. Les files de tâches (pilote `database`) se vident par `php /chemin/vers/apps/web/artisan queue:work --stop-when-empty`, lancé aussi par cron.
 
+   Une seule ligne cron suffit : `schedule:run` déclenche **toutes** les tâches planifiées du relais (`routes/console.php`). Aucun démon n'est lancé.
+
+   | Tâche planifiée | Fréquence | Rôle |
+   |---|---|---|
+   | `relais:surveiller` | chaque minute | marque le passage du cron (écran Hébergement), lève ou résout les alertes, purge l'historique des indicateurs |
+   | `relais:sms-envoyer` | chaque minute (sans chevauchement) | envoie les SMS déposés par la mère (plafond du jour, cinq tentatives au plus), puis **efface** leur numéro et leur texte ; purge les lignes terminées (ADR-0009) |
+   | `relais:exporter` | chaque jour à 03:00 | export de la base du relais |
+   | `relais:purger --oui` | chaque jour à 03:10 | purge du journal d'audit au-delà de la conservation (jamais des enveloppes) |
+
+5. **SMS (facultatif, ADR-0009)** : tant que `RELAIS_SMS_PILOTE=journal` (défaut), rien ne part réellement. Pour un fournisseur, renseigner dans le `.env` **du serveur seulement** `RELAIS_SMS_PILOTE=http`, `RELAIS_SMS_HTTP_URL`, `RELAIS_SMS_HTTP_CLE` (et, selon le fournisseur, `RELAIS_SMS_HTTP_ENTETE_CLE`, `RELAIS_SMS_HTTP_PREFIXE_CLE`, `RELAIS_SMS_EXPEDITEUR`, `RELAIS_SMS_HTTP_CHAMP_*`) et le plafond `RELAIS_SMS_PLAFOND_JOUR`. Ces identifiants ne vont jamais dans le dépôt. Côté poste, la passerelle s'ouvre à l'écran « Passerelle SMS » de la mère (fermée par défaut), qui affiche le plafond lu au relais et propose « Tester l'envoi ».
+
 ## Côté poste mère
 
 Écran « Activer la mère » : adresse du relais, secret de la mère (même texte que `RELAIS_SECRET_MERE`) et clé de clinique.

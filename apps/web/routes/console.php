@@ -15,3 +15,6 @@ Illuminate\Support\Facades\Schedule::command('relais:surveiller')->everyMinute()
 
 /* Export quotidien de la base du relais. */
 Illuminate\Support\Facades\Schedule::command('relais:exporter')->dailyAt('03:00');
+
+/* ADR-0009 : envoi des SMS déposés par la mère, chaque minute (plafond du jour, cinq tentatives, effacement après envoi). Aucun démon : le cron `schedule:run`. */
+Illuminate\Support\Facades\Schedule::command('relais:sms-envoyer')->everyMinute()->withoutOverlapping();

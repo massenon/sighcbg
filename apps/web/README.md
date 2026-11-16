@@ -25,6 +25,21 @@ Le relais reste opaque pour tout dossier. Il accepte en plus de la mère un **in
 - **Droits** : réservé aux comptes du panneau (tous superadmin, ADR-0005). **Lecture seule** : la page n'a aucune route d'écriture et aucune action ; un test le prouve.
 - **Tests** : `php artisan test` (SQLite en mémoire) ; une copie de `.env.example` en `.env` avec `php artisan key:generate` est nécessaire à un poste neuf.
 
+## SMS par le relais (ADR-0009, décision de la Direction du 16/11/2026)
+
+Le relais transporte des SMS **déjà composés par la mère** : il ne voit qu'un numéro au format international et un texte (320 caractères au plus), le temps de l'envoi.
+
+- **Ce que le relais ne voit jamais** : le dossier, le nom du patient (la mère ne remplace jamais `{{nom}}` dans un SMS), son code, le motif, le diagnostic, l'occasion du message. Le contrôle « aucun contenu médical » (liste de mots interdits, à valider par un médecin) est fait **par la mère**, deux fois ; le relais ne contrôle que la forme.
+- **Routes** (`routes/relais-sms.php`, `App\Http\Controllers\SmsController`) : `POST /mere/sms` (dépôt `{"sms":{"id","numero","texte"}}`), `POST /mere/sms/statuts` (`{"ids":[…]}`), `GET /mere/sms/etat` (plafond, envoyés du jour, en attente, nom du pilote). Mêmes barrières que `/mere/indicateurs-clinique` : `x-mere`, puis `x-signature: sha256=<HMAC-SHA256 du corps exact, clé = RELAIS_SECRET_MERE>` (routes POST), puis un schéma fermé (422 `sms_invalide`), corps borné (413). Un dépôt rejoué (même `id`) rend la même ligne.
+- **File** : table `sms_sortants` (migration `2026_11_16_000000`). Statuts `en_attente`, `envoye`, `echec`. **Le numéro et le texte sont effacés (NULL)** dès que le fournisseur accepte, ou au cinquième échec. Les lignes terminées sont purgées au-delà de `RELAIS_SMS_CONSERVATION_JOURS` (30). La table n'est **pas** incluse dans l'export de sauvegarde du relais (`App\Relais\Exporteur::TABLES`) : une file transitoire n'a rien à restaurer.
+- **Envoi** : commande `php artisan relais:sms-envoyer`, inscrite au planificateur **chaque minute** (`routes/console.php`, `withoutOverlapping`) ; sur cPanel, le cron `schedule:run` la déclenche. **Aucun démon.**
+- **Plafond quotidien** : `RELAIS_SMS_PLAFOND_JOUR` (100), jour civil d'`Africa/Porto-Novo`. Un dépôt qui le dépasserait (envoyés du jour + en attente) est refusé `429 plafond_atteint` ; l'envoi s'arrête aussi au plafond.
+- **Tentatives** : cinq au plus (`RELAIS_SMS_TENTATIVES_MAX`, ramené à 5 s'il est plus grand), délais croissants (1 min, 5 min, 15 min, 1 h).
+- **Pilote du fournisseur** (`App\Relais\Sms\Pilote`) : `RELAIS_SMS_PILOTE=journal` (défaut) n'envoie **rien** (essai, banc) ; `RELAIS_SMS_PILOTE=http` est un pilote HTTP **générique** dont l'adresse, la clé, l'en-tête, le préfixe, l'expéditeur et les noms des champs JSON viennent du `.env` (`RELAIS_SMS_HTTP_URL`, `RELAIS_SMS_HTTP_CLE`, `RELAIS_SMS_HTTP_ENTETE_CLE`, `RELAIS_SMS_HTTP_PREFIXE_CLE`, `RELAIS_SMS_EXPEDITEUR`, `RELAIS_SMS_HTTP_CHAMP_*`). Aucune API de fournisseur réel ni aucun identifiant n'est écrit dans le dépôt. Un fournisseur dont l'API ne tient pas dans ce moule aura son pilote derrière la même interface.
+- **Journal technique** : `relais_audit`, acteur `sms`, actions `sms_depose`, `sms_envoye`, `sms_echec`, `sms_refuse` ; le détail porte l'identifiant, un code et une longueur, **jamais un numéro ni un texte**.
+- **Crochets du banc** (`RELAIS_BANC=true` seulement, 404 sinon) : `POST /banc/sms/tourner` (simule le cron, pilote `journal` ou `echec`, `avance_ms`), `GET /banc/sms/tout`.
+- **Tests** : `tests/Feature/SmsRelaisTest.php` (`php artisan test --filter=SmsRelaisTest`).
+
 ## Essai local sur un poste de développement (PostgreSQL)
 
 Le relais tourne sur PostgreSQL, comme en production : un essai local sur SQLite ne prouverait rien sur ce que l'hébergeur servira.

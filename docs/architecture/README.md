@@ -16,5 +16,6 @@
 | ADR-0004 | Moteur de synchronisation (PowerSync / ElectricSQL / maison) — après le banc de validation d'ADR-0003 | à écrire |
 | [ADR-0005](adr/ADR-0005-laravel-api-flutter-poste-pwa.md) | Poste mère Flutter, relais en ligne opaque (Laravel, cPanel), mobile minimal par le relais, accès distant par indicateurs ; **réévalue ADR-0003** | proposé |
 | [ADR-0007](adr/ADR-0007-indicateurs-agreges-non-nominatifs-au-relais.md) | Le relais voit désormais des agrégats non nominatifs, publiés sur interrupteur ouvert, jamais de détail ; précise ADR-0005 | accepté |
+| [ADR-0009](adr/ADR-0009-sms-par-le-relais.md) | Les SMS partent par le relais, composés par la mère (aucun contenu médical), effacés après envoi, plafond quotidien, tâche planifiée ; précise ADR-0005 et ADR-0007 | proposé |
 
 Nouvelle décision : `/adr`.

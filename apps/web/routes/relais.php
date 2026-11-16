@@ -44,3 +44,6 @@ Route::post('/banc/sauvegarde/reglage', [SauvegardeController::class, 'bancRegla
 Route::post('/banc/sauvegarde/alterer', [SauvegardeController::class, 'bancAlterer']);
 Route::post('/banc/sauvegarde/vieillir', [SauvegardeController::class, 'bancVieillir']);
 Route::get('/banc/sauvegarde/tout', [SauvegardeController::class, 'bancTout']);
+
+/* ADR-0009 : les SMS par le relais (fichier à part). */
+require __DIR__.'/relais-sms.php';

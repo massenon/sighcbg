@@ -110,6 +110,10 @@ const routes = {
 };
 /* Lot BAK (ADR-0008) : la famille de routes de SAUVEGARDE HORS SITE (blocs opaques, réservée à la mère). */
 const SAUV = require('./relais-sauvegarde')({ db, dossier: SAUVEGARDES, Err, mereOk, getMeta, setMeta });
+/* ADR-0009 : la famille de routes des SMS (numéro et texte déjà composés par la mère, effacés après envoi). Les routes reçoivent le corps BRUT : la signature porte sur lui. */
+const SMS = require('./relais-sms')({ db, Err, mereOk, secretMere: SECRET_MERE, plafondJour: +arg('sms-plafond', 100) });
+for (const [k, f] of Object.entries(SMS.routes)) routes[k] = f;
+if (BANC) for (const [k, f] of Object.entries(SMS.banc)) routes[k] = f;
 if (BANC) { /* crochets réservés au banc : altérer ou retirer une enveloppe, vider le relais pour inspection */
   routes['POST /banc/alterer'] = (req, b) => { const r = db.prepare('SELECT ct FROM env WHERE id=?').get(b.id); const x = Buffer.from(r.ct, 'base64'); x[0] ^= 1; db.prepare('UPDATE env SET ct=? WHERE id=?').run(x.toString('base64'), b.id); return { ok: true }; };
   routes['POST /banc/retirer'] = (req, b) => { db.prepare('DELETE FROM env WHERE id=?').run(b.id); return { ok: true }; };
@@ -124,7 +128,7 @@ http.createServer((req, res) => {
     const brut = Buffer.concat(ch);
     let b = {}; if (!u.pathname.startsWith('/sauvegarde/')) { try { b = brut.length ? JSON.parse(brut.toString()) : {}; } catch (e) { /* vide */ } }
     let st = 200; let out;
-    try { const s = SAUV.traiter(req, u, q, brut); if (s !== undefined) out = s; else { const h = routes[req.method + ' ' + u.pathname]; if (!h) throw new Err(404, 'route_inconnue'); out = h(req, b, q); } }
+    try { const s = SAUV.traiter(req, u, q, brut); if (s !== undefined) out = s; else { const h = routes[req.method + ' ' + u.pathname]; if (!h) throw new Err(404, 'route_inconnue'); out = h(req, b, q, brut); } }
     catch (e) { if (e instanceof Err) { st = e.s; out = e.b; } else { st = 500; out = { code: 'erreur_interne', motif: String(e.message) }; } }
     if (out && out.__octets) { res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': out.__octets.length }); res.end(out.__octets); return; }
     const t = JSON.stringify(out); res.writeHead(st, { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(t) }); res.end(t);

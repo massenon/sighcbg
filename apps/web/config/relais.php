@@ -33,6 +33,36 @@ return [
     // Taille maximale du corps d'un instantané (octets) : un instantané est petit, un corps volumineux est refusé sans être lu.
     'indicateurs_clinique_octets_max' => (int) env('RELAIS_INDICATEURS_CLINIQUE_OCTETS_MAX', 16384),
 
+    // ADR-0009 : les SMS par le relais. Le relais transporte un SMS déjà composé par la mère (un numéro, un texte), l'envoie par la tâche planifiée
+    // `relais:sms-envoyer` (cron `schedule:run`), puis EFFACE le numéro et le texte. Les identifiants du fournisseur ne vivent QUE dans le .env du relais.
+    'sms' => [
+        // `journal` (défaut) n'envoie rien : pilote de l'essai. `http` : pilote HTTP générique, entièrement réglé par les variables RELAIS_SMS_HTTP_*.
+        'pilote' => env('RELAIS_SMS_PILOTE', 'journal'),
+        // Nombre maximal de SMS envoyés par jour (jour civil d'Africa/Porto-Novo) ; un dépôt qui le dépasserait est refusé (429 plafond_atteint).
+        'plafond_jour' => (int) env('RELAIS_SMS_PLAFOND_JOUR', 100),
+        // Tentatives avant abandon : cinq au plus (une valeur supérieure est ramenée à cinq).
+        'tentatives_max' => (int) env('RELAIS_SMS_TENTATIVES_MAX', 5),
+        // Conservation des lignes TERMINÉES (déjà effacées : statut, tentatives, horodatages), en jours.
+        'conservation_jours' => (int) env('RELAIS_SMS_CONSERVATION_JOURS', 30),
+        // SMS envoyés au plus par passage du cron.
+        'lot' => (int) env('RELAIS_SMS_LOT', 20),
+        // Longueur maximale d'un texte (caractères, 320 au plus) et taille maximale d'un corps de dépôt (octets).
+        'longueur_max' => (int) env('RELAIS_SMS_LONGUEUR_MAX', 320),
+        'octets_max' => (int) env('RELAIS_SMS_OCTETS_MAX', 4096),
+        // Pilote HTTP GÉNÉRIQUE : aucune API de fournisseur n'est écrite dans le dépôt ; adresse, clé, en-tête, expéditeur et noms des champs viennent du .env.
+        'http' => [
+            'url' => env('RELAIS_SMS_HTTP_URL', ''),
+            'cle' => env('RELAIS_SMS_HTTP_CLE', ''),
+            'entete_cle' => env('RELAIS_SMS_HTTP_ENTETE_CLE', 'Authorization'),
+            'prefixe_cle' => env('RELAIS_SMS_HTTP_PREFIXE_CLE', 'Bearer '),
+            'expediteur' => env('RELAIS_SMS_EXPEDITEUR', ''),
+            'champ_numero' => env('RELAIS_SMS_HTTP_CHAMP_NUMERO', 'to'),
+            'champ_texte' => env('RELAIS_SMS_HTTP_CHAMP_TEXTE', 'text'),
+            'champ_expediteur' => env('RELAIS_SMS_HTTP_CHAMP_EXPEDITEUR', 'from'),
+            'delai_s' => (int) env('RELAIS_SMS_HTTP_DELAI_S', 10),
+        ],
+    ],
+
     // Règles d'alerte du relais. Une alerte porte un type, une heure, un détail technique : jamais un contenu métier.
     'alertes' => [
         ['type' => 'battement', 'libelle' => 'Battement manquant', 'canal' => 'Courriel + panneau', 'active' => true],
