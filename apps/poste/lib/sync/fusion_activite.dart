@@ -69,6 +69,9 @@ const Map<String, ({String champ, String marqueur})> champsNumero = {
   'factures': (champ: 'numero', marqueur: 'numeroEnDoublon'),
   'avoirs': (champ: 'reference', marqueur: 'numeroEnDoublon'),
   'ecritures': (champ: 'numero', marqueur: 'numeroEnDoublon'),
+  // PLANNING (17/11/2026) : la référence humaine d'un congé ou d'un ordre de mission (`CG-…`, `OM-…`) se prend dans la série du poste ; deux postes hors ligne peuvent en donner la même : jamais corrigée en silence.
+  'conges': (champ: 'reference', marqueur: 'numeroEnDoublon'),
+  'missions': (champ: 'reference', marqueur: 'numeroEnDoublon'),
 };
 
 String _j(Object? o) => jsonEncode(o);

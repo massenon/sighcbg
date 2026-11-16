@@ -136,7 +136,7 @@ class EcranPropositionsPlanning extends StatelessWidget with EcranMaquette {
       return;
     }
     // Une validation a modifié le planning : elle ne s'annule pas d'un clic, une nouvelle proposition corrige.
-    ToastsSigh.afficher(ctx, decision == 'valider' ? 'Proposition validée : planning modifié.' : 'Proposition refusée.', type: TypeToast.succes);
+    rhbToastSuite(ctx, r, decision == 'valider' ? 'Proposition validée : planning modifié.' : 'Proposition refusée.');
   }
 
   void _proposer(BuildContext ctx, ContexteEcran c, PlanningRhPoste p, Fiche moi) {

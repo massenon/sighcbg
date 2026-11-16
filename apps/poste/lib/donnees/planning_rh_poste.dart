@@ -13,13 +13,51 @@ import 'magasin.dart';
 /// Les écrans (carte des régimes individuels, filtres avancés, commandes de validation, écran des propositions) sont portés au lot Y (E2339 et suivants) : ils
 /// n'appellent que ce fichier et le domaine, jamais une règle écrite à l'écran.
 class PlanningRhPoste {
-  PlanningRhPoste(this.m, {required this.auteur, required this.role, DateTime Function()? horloge}) : _horloge = horloge ?? DateTime.now;
+  PlanningRhPoste(this.m, {required this.auteur, required this.role, DateTime Function()? horloge, this.deposer, this.appliqueDepot = false, this.gestesEnForce}) : _horloge = horloge ?? DateTime.now;
   final Magasin m;
   final String Function() auteur;
   final String role;
 
+  /// POSTE RATTACHÉ (fileul, décision 12 du 17/11/2026) : un fileul ne valide pas à la place du validateur. Quand ce rappel est posé, une VALIDATION (trancher une pièce ou une proposition, poser une
+  /// vacation, la remplacer, la retirer) se DÉPOSE au lieu de s'écrire : mêmes contrôles à blanc, puis un dépôt `validationsDeposees` (genre `planning_rh`) que la mère applique sous le rôle de
+  /// l'auteur, avec sa matrice et son planning. Le rappel rend `{ok, depot, dejaDepose}` ou le refus nommé. Absent (poste mère, poste seul) : le geste s'écrit directement.
+  final Map<String, Object?> Function(Map<String, Object?> demande)? deposer;
+
+  /// Vrai quand c'est la MÈRE qui applique un dépôt : le planning qu'elle tient est celui de tous les postes ; seules les vacations VALIDÉES (et celles en attente, mises à part par id) comptent
+  /// pour la double affectation (deux vacations en attente sur le même jour ne se refusent pas l'une l'autre : la première appliquée gagne, la seconde est refusée en le disant).
+  final bool appliqueDepot;
+
+  /// Les gestes réservés EN FORCE (matrice vive : rôle archivé, activité fermée) quand l'appelant les connaît ; sinon les fiches `rbac` du magasin.
+  final DroitsGestes Function()? gestesEnForce;
+
+  /// La clé d'une fiche à travers les postes : son identité de synchronisation (identique partout). Avant le premier tour du pont, elle se DÉDUIT comme lui : l'identifiant s'il est du jeu d'origine ou
+  /// déjà préfixé par ce poste, sinon l'identifiant préfixé de l'étiquette du poste.
+  String cleDe(String collection, Fiche f) {
+    final sync = '${f['idSync'] ?? ''}';
+    if (sync.isNotEmpty) return sync;
+    final id = '${f['id']}', e = m.etiquettePoste;
+    if (e.isEmpty || id.startsWith('$e-') || m.idsOrigine(collection).contains(id)) return id;
+    return '$e-$id';
+  }
+
+  /// La fiche de la collection désignée par une clé de synchronisation ou un identifiant local.
+  Fiche? parCle(String collection, Object? cible) {
+    for (final f in m.collection(collection).toutes) {
+      if (f['id'] == cible || f['idSync'] == cible) return f;
+    }
+    return null;
+  }
+
+  /// Le résultat d'un geste déposé : rien n'est écrit tant que la mère n'a pas appliqué. `annuler` est présent (les écrans l'appellent) mais sans effet.
+  Map<String, Object?> _transmis(Map<String, Object?> dep, Map<String, Object?> extra) =>
+      {'ok': true, 'enAttenteMere': true, 'depot': dep['depot'] is Map ? (dep['depot'] as Map)['id'] : null, 'dejaDepose': dep['dejaDepose'] == true, 'annuler': () {}, ...extra};
+
+  Map<String, Object?> _deposer(String action, String collection, Fiche cible, String libelle, {String? decision, String? motif, Map<String, Object?>? valeurs}) => deposer!({
+        'action': action, 'collection': collection, 'cible': cleDe(collection, cible), 'libelle': libelle, 'decision': decision, 'motif': motif, 'valeurs': valeurs,
+      });
+
   /// Les gestes réservés en force (fiches `rbac`), relus à chaque appel.
-  DroitsGestes get _gestes => gestesDuMagasin(m);
+  DroitsGestes get _gestes => gestesEnForce?.call() ?? gestesDuMagasin(m);
   final DateTime Function() _horloge;
 
   String get aujourdhui => parametreDateIso(_horloge());
@@ -53,6 +91,9 @@ class PlanningRhPoste {
         date: date,
       );
 
+  /// Le planning contre lequel on contrôle : tout le planning actif, sauf quand la mère applique un dépôt (seules les vacations VALIDÉES comptent).
+  List<Fiche> _planningControle() => appliqueDepot ? [for (final v in m.collection('planning').actives) if (planningVacationValidee(v)) v] : m.collection('planning').actives;
+
   /// Le contrôle d'incompatibilité d'une vacation (repos, double affectation), refait à TOUTE saisie quelle que soit la voie. `null` : acceptable.
   RefusRh? controlerVacation(Object? employeId, String date, String type, {String? ignoreId}) {
     Fiche? agent;
@@ -62,7 +103,7 @@ class PlanningRhPoste {
     final d = date.length >= 10 ? date.substring(0, 10) : date;
     return controlerVacationRh(
       agent: agent,
-      planningActif: m.collection('planning').actives,
+      planningActif: _planningControle(),
       regime: agent == null || !RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(d) ? null : regimeALaDate(agent, d),
       date: date,
       type: type,
@@ -195,6 +236,11 @@ class PlanningRhPoste {
       moiNom: me == null ? null : '${me['nomComplet']}',
     );
     if (r.refus != null) return r.refus!.toJson();
+    if (deposer != null) {
+      final dep = _deposer(planningActionTrancher, collection, rec!, '${piecesRh[collection]?.nom ?? collection} ${rec['reference'] ?? rec['id']}', decision: decision, motif: motif);
+      if (dep['ok'] != true) return dep;
+      return _transmis(dep, {'etat': r.etat, 'etape': r.etape, 'complet': false, 'circuit': circuit()});
+    }
     final annuler = col.mettreAJour(id, r.patch!);
     return {'ok': true, 'etat': r.etat, 'etape': r.etape, 'complet': r.complet, 'circuit': circuit(), 'annuler': annuler};
   }
@@ -209,7 +255,7 @@ class PlanningRhPoste {
     final personnel = {for (final e in m.collection('personnel').actives) '${e['id']}': e};
     return controlerPropositionRh(
       proposition: p,
-      planningActif: m.collection('planning').actives,
+      planningActif: _planningControle(),
       personnel: personnel,
       regimeDe: (agent, date) => regimeALaDate(agent, date),
     );
@@ -258,7 +304,8 @@ class PlanningRhPoste {
     }
     final refus = _controlerProposition(p);
     if (refus != null) return refus.toJson();
-    if (agentModifieDirectement() && type != 'echange') {
+    // Sur un poste rattaché l'application directe ne s'écrit pas (elle validerait sans le validateur) : la proposition part « à valider » (écart nommé E4026).
+    if (deposer == null && agentModifieDirectement() && type != 'echange') {
       if (type == 'retrait') {
         return {'ok': true, 'direct': true, 'vacationId': vacationId, 'annuler': plan.archiver(vacationId)};
       }
@@ -286,12 +333,22 @@ class PlanningRhPoste {
     final refus = peutTrancherPropositionRh(gestes: _gestes, proposition: p, role: role, decision: decision, motif: motif, moiId: me == null ? null : '${me['id']}');
     if (refus != null) return refus.toJson();
     if (decision == 'refuser') {
+      if (deposer != null) {
+        final dep = _deposer(planningActionProposition, 'propositionsPlanning', p!, 'Proposition de planning ${p['id']}', decision: decision, motif: motif);
+        if (dep['ok'] != true) return dep;
+        return _transmis(dep, {'etat': 'refusee'});
+      }
       col.mettreAJour(id, {'etat': 'refusee', 'motifRefus': (motif ?? '').trim(), 'tranchePar': auteur(), 'trancheLe': aujourdhui});
       return {'ok': true, 'etat': 'refusee'};
     }
     final ctrl = _controlerProposition(p!);
     if (ctrl != null) {
       return {...ctrl.toJson(), 'cause': ctrl.code, 'code': 'CONTROLE_ECHOUE', 'motif': 'Le planning a changé depuis la proposition : ${ctrl.motif}'};
+    }
+    if (deposer != null) {
+      final dep = _deposer(planningActionProposition, 'propositionsPlanning', p, 'Proposition de planning ${p['id']}', decision: decision, motif: motif);
+      if (dep['ok'] != true) return dep;
+      return _transmis(dep, {'etat': 'validee'});
     }
     final plan = m.collection('planning');
     final marque = <String, Object?>{'validationEtat': 'validee', 'validePar': auteur(), 'valideLe': aujourdhui, 'origine': 'proposition', 'propositionId': p['id']};
@@ -393,6 +450,30 @@ class PlanningRhPoste {
       'derogations': [...regime.derogations], 'validationEtat': 'validee', 'validePar': auteur(), 'valideLe': aujourdhui, 'origine': 'poste',
     };
     final plan = m.collection('planning');
+    if (deposer != null) {
+      // POSTE RATTACHÉ : poser ou remplacer une vacation est une VALIDATION (celui qui pose valide) : elle se dépose. Une vacation neuve naît « à valider » (visible, elle ne compte pas : RG-11) ;
+      // une vacation déjà validée n'est pas réécrite ici, le remplacement se dépose avec ses valeurs.
+      final ex = existantId == null ? null : parCle('planning', existantId);
+      if (ex != null && planningVacationValidee(ex)) {
+        final dep = _deposer(planningActionRemplacer, 'planning', ex, 'Vacation de ${ex['employe']} du ${ex['date']}',
+            valeurs: {'employeId': e['id'], 'date': d, 'type': type, if ((observation ?? '').isNotEmpty) 'observation': observation});
+        if (dep['ok'] != true) return dep;
+        return _transmis(dep, {'id': ex['id']});
+      }
+      final attente = {...rec, 'statut': 'a_valider', 'validationEtat': 'a_valider'}..remove('validePar')..remove('valideLe');
+      if (ex != null) {
+        // La vacation en attente de son auteur se corrige sur place (elle attend toujours la mère ; le dépôt existant la désigne).
+        final annuler = plan.mettreAJour(ex['id'], attente);
+        return {'ok': true, 'id': ex['id'], 'enAttenteMere': true, 'annuler': annuler};
+      }
+      final res = plan.inserer(attente, prefixe: 'PLN');
+      final dep = _deposer(planningActionPoser, 'planning', res.fiche, 'Vacation de ${e['nomComplet']} du $d');
+      if (dep['ok'] != true) {
+        res.annuler();
+        return dep;
+      }
+      return _transmis(dep, {'id': res.fiche['id'], 'annuler': res.annuler});
+    }
     if (existantId != null) {
       final annuler = plan.mettreAJour(existantId, rec);
       return {'ok': true, 'id': existantId, 'annuler': annuler};
@@ -406,6 +487,13 @@ class PlanningRhPoste {
     final plan = m.collection('planning');
     final refus = controlerRetraitVacationRh(gestes: _gestes, role: role, vacation: plan.parId(id), id: id);
     if (refus != null) return refus.toJson();
+    // POSTE RATTACHÉ : retirer une vacation VALIDÉE se dépose (le retrait défait une décision de la mère) ; une vacation encore en attente se retire sur place.
+    final v = plan.parId(id);
+    if (deposer != null && v != null && planningVacationValidee(v)) {
+      final dep = _deposer(planningActionRetirer, 'planning', v, 'Vacation de ${v['employe']} du ${v['date']}');
+      if (dep['ok'] != true) return dep;
+      return _transmis(dep, {'id': id});
+    }
     return {'ok': true, 'id': id, 'annuler': plan.archiver(id)};
   }
 

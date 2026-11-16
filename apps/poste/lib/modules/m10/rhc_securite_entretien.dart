@@ -212,7 +212,7 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
                         return;
                       }
                       fermer();
-                      ToastsSigh.afficher(ctx, 'Vacation retirée.', type: TypeToast.succes, annuler: r['annuler'] as VoidCallback);
+                      rhbToastSuite(ctx, r, 'Vacation retirée.', annuler: r['annuler'] as VoidCallback);
                     }),
               BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
               BoutonSigh(
@@ -228,8 +228,8 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
                       return;
                     }
                     fermer();
-                    ToastsSigh.afficher(ctx, 'Rotation enregistrée.',
-                        type: TypeToast.succes, detail: '${agent['nomComplet']} — ${rhbTypePlanningLabel(v['type'])} le ${dateFR(jour)}', annuler: r['annuler'] as VoidCallback);
+                    rhbToastSuite(ctx, r, 'Rotation enregistrée.',
+                        detail: '${agent['nomComplet']} — ${rhbTypePlanningLabel(v['type'])} le ${dateFR(jour)}', annuler: r['annuler'] as VoidCallback);
                   }),
             ]);
   }

@@ -510,7 +510,7 @@ void affecter(BuildContext ctx, ContexteEcran c, Fiche e, DateTime jour, Fiche? 
                       return;
                     }
                     fermer();
-                    ToastsSigh.afficher(ctx, 'Vacation retirée.', type: TypeToast.succes, annuler: r['annuler'] as VoidCallback);
+                    rhbToastSuite(ctx, r, 'Vacation retirée.', annuler: r['annuler'] as VoidCallback);
                   }),
             BoutonSigh(libelle: 'Annuler', variante: VarianteBouton.secondaire, onPressed: fermer),
             BoutonSigh(
@@ -526,7 +526,7 @@ void affecter(BuildContext ctx, ContexteEcran c, Fiche e, DateTime jour, Fiche? 
                     return;
                   }
                   fermer();
-                  ToastsSigh.afficher(ctx, 'Vacation enregistrée.', type: TypeToast.succes, annuler: r['annuler'] as VoidCallback);
+                  rhbToastSuite(ctx, r, 'Vacation enregistrée.', annuler: r['annuler'] as VoidCallback);
                 }),
           ]);
 }

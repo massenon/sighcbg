@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -96,6 +96,11 @@ const familleDeBase = <String, String>{
   // appliqué par la mère ; un plan adopté ne se réécrit pas (programme figé) : voir `refusPlanTravail` et `refusActionPta` du domaine, appliqués dans `traiter`. Une action porte un budget :
   // jamais vers un téléphone (`collectionsPlanTravailJamaisMobile`).
   'planAnnuel': 'A', 'plansTravail': 'A', 'ptaAxes': 'A', 'ptaEtats': 'A', 'ptaFinancements': 'A',
+  // LE PLANNING À TRAVERS LES POSTES (Direction de Baguidi, 17/11/2026, décision 12) : les vacations, leurs propositions, les congés, les ordres de mission et les présences (pointage par badge compris)
+  // sont des fiches modifiables champ par champ : famille A. `presences` était poussée par le pont mais ABSENTE de cette table : la mère la refusait `collection_inconnue`. La VALIDATION ne s'écrit
+  // pas par un poste : elle se dépose (`validationsDeposees`, genre `planning_rh`) et la mère l'applique sous le rôle de l'auteur ; un poste ne crée pas une pièce déjà validée, ne défait pas une
+  // validation et ne réécrit pas une vacation validée : `refusPlanningRh` du domaine, appliqué dans `traiter`. Jamais vers un téléphone (`collectionsPlanningJamaisMobile`).
+  'planning': 'A', 'propositionsPlanning': 'A', 'conges': 'A', 'missions': 'A', 'presences': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -130,6 +135,9 @@ const Set<String> collectionsAssuranceJamaisMobile = {'garanties', 'couverturesA
 const Set<String> collectionsFinanceJamaisMobile = {'budgets', 'immobilisations'};
 /// Lot PTA (17/11/2026) : le plan de travail annuel porte des budgets prévus et des liens vers les budgets : il ne part JAMAIS vers un téléphone (RG-13) ; aucun écran du mobile ne le lit.
 final Set<String> collectionsPlanTravailJamaisMobile = {...ptaCollections};
+/// Décision 12 du 17/11/2026 : le planning (vacations, propositions, congés, missions, présences) porte des honoraires, des motifs d'absence et des horaires nominatifs : il ne part JAMAIS vers un téléphone
+/// (RG-13) ; aucun écran du mobile ne le lit. Même exclusion que la rémunération.
+final Set<String> collectionsPlanningJamaisMobile = {...planningCollectionsSync};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -496,6 +504,13 @@ class Mere {
       }
     }
 
+    // LE PLANNING (décision 12 du 17/11/2026) : la mère REFAIT le contrôle d'un poste. Une pièce ou une vacation ne naît pas déjà validée, la validation ne s'écrit pas (elle se dépose : la mère
+    // l'applique sous le rôle de l'auteur), une validation ne se défait pas, une vacation validée ne se réécrit pas. La règle est celle du domaine, jamais recopiée.
+    if (planningCollectionsSync.contains(collection) && app.role != 'mere' && ((type == 'creer' && f == null) || type == 'modifier')) {
+      final r = refusPlanningRh(collection, '$type', champsOp, actuelle: f?.data);
+      if (r != null) return refus(r.code, r.motif, r.geste);
+    }
+
     // L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction, domaine) : version croissante, type, date d'effet,
     // valeur déjà utilisée par une pièce (usages relevés des postes), téléphone interdit pour un paramètre réservé. Un refus est nommé, jamais avalé.
     if (collection == parCollectionParametres) {
@@ -795,7 +810,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, ...collectionsPlanTravailJamaisMobile, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, ...collectionsPlanTravailJamaisMobile, ...collectionsPlanningJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;
