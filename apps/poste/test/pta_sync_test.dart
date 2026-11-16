@@ -7,6 +7,9 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_validations_deposees.dart';
 import 'package:sigh_poste/sync/transcription_mobile.dart' show PieceSync;
+import 'package:sigh_sync/sigh_sync.dart';
+// ignore: implementation_imports
+import 'package:sigh_sync/src/mere.dart' show Appareil;
 
 /// LE PLAN DE TRAVAIL ANNUEL À TRAVERS LES POSTES (lot PTA, 17/11/2026) : les cinq collections du PTA voyagent (famille A à la mère Dart, au banc Node, au pont du poste) et jamais vers
 /// un téléphone ; une action et un plan écrits chez un fileul arrivent à la mère et à l'autre fileul ; l'ADOPTION déposée par un fileul est appliquée par la mère sous le rôle de son
@@ -120,5 +123,31 @@ void main() {
     expect(clos['etat'], 'cloture');
     final bilan = (clos['bilan'] as Map).cast<String, Object?>();
     expect([bilan['texte'], bilan['programmees'], bilan['realisees'], bilan['enRetard']], ['Bilan de fin d’exercice', 1, 0, 1]);
+  });
+
+  test('la VRAIE mère Dart refait le contrôle : adoption et champ réservés, recul refusé, programme figé, suivi ouvert', () async {
+    final d = Directory.systemTemp.createTempSync('pta-mere');
+    addTearDown(() => d.deleteSync(recursive: true));
+    final mere = await Mere.creer(ConfigMere(port: 19593, dbChemin: '${d.path}/mere.db', admin: 'secret-test', dossierSauvegardes: '${d.path}/sauvegardes'));
+    final fileul = Appareil('F1', 'fileul'), laMere = Appareil('mere', 'mere');
+    var n = 0;
+    // Chaque écriture porte la VERSION VUE de ses champs (ce que le poste a lu de la mère) : sans elle, elle serait concurrente de la précédente.
+    Future<Map<String, Object?>> op(Appareil a, String type, String c, String fiche, Map<String, Object?> champs) async {
+      final f = await mere.lire(c, fiche);
+      final vu = <String, Object?>{for (final k in champs.keys) if (f != null && f.fieldseq[k] != null) k: f.fieldseq[k]};
+      return mere.traiter({'id': 'op${n++}', 'type': type, 'collection': c, 'fiche': fiche, 'champs': champs, 'hlc': 1000 + n, 'vu': vu}, a);
+    }
+    String? code(Map<String, Object?> r) => r['statut'] == 'refusee' ? '${r['code']}' : null;
+    expect(code(await op(fileul, 'creer', ptaCollectionPlans, 'P1', {'exercice': 2031, 'version': 1, 'etat': 'adopte'})), 'adoption_requise');
+    expect(code(await op(fileul, 'creer', ptaCollectionPlans, 'P1', {'exercice': 2031, 'version': 1, 'etat': 'soumis'})), isNull);
+    expect(code(await op(fileul, 'creer', ptaCollectionActions, 'A1', {'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-001', 'cibleValeur': 10})), isNull);
+    expect(code(await op(fileul, 'modifier', ptaCollectionPlans, 'P1', {'etat': 'adopte'})), 'adoption_reservee');
+    expect(code(await op(fileul, 'modifier', ptaCollectionPlans, 'P1', {'adoptePar': 'Moi'})), 'champ_reserve');
+    expect(code(await op(laMere, 'modifier', ptaCollectionPlans, 'P1', {'etat': 'adopte', 'adoptePar': 'Le Directeur'})), isNull, reason: 'la mère applique le dépôt');
+    expect(code(await op(fileul, 'modifier', ptaCollectionPlans, 'P1', {'etat': 'brouillon'})), 'etat_regressif');
+    expect(code(await op(fileul, 'modifier', ptaCollectionActions, 'A1', {'cibleValeur': 3})), 'plan_adopte');
+    expect(code(await op(fileul, 'creer', ptaCollectionActions, 'A2', {'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-002'})), 'plan_adopte');
+    expect(code(await op(fileul, 'modifier', ptaCollectionActions, 'A1', {'realiseValeur': 4})), isNull, reason: 'le suivi reste ouvert');
+    expect(code(await op(fileul, 'modifier', ptaCollectionPlans, 'P1', {'etat': 'execution'})), isNull);
   });
 }
