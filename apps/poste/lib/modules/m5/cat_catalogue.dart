@@ -20,7 +20,8 @@ const _delais = ['Immédiat', '1 h', '2 h', '4 h', '6 h', '24 h', '48 h', '72 h'
 num? _prixDe(ContexteEcran c, Fiche a) => TarifsPoste.prixAnalyse(c.magasin, a['code'], aujourdhui: c.aujourdhui);
 String _tarif(ContexteEcran c, Fiche a) {
   final p = _prixDe(c, a);
-  return p == null ? 'à valider' : money(p, avecDevise: false);
+  // AJ (16/11/2026) : l'indication « sans prix » est vue de tous ; le prix se décide à « Tarifs et prix » (commande « Tarifer », réservée au geste de décider un prix).
+  return p == null ? 'Sans prix' : money(p, avecDevise: false);
 }
 
 /// `m5-catalogue` — « Catalogue des analyses » : le référentiel des 48 analyses de la clinique (catégorie, échantillon, délai, tarif). Création et

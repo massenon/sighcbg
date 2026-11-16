@@ -171,4 +171,32 @@ void main() {
     expect(find.widgetWithText(BoutonSigh, 'Oui'), findsNothing);
     expect(find.widgetWithText(BoutonSigh, 'Non'), findsNothing);
   });
+
+  casM14('AJ (16/11/2026) : « sans prix » est VU DE TOUS ; « Tarifer » n’est offert qu’au geste de décider un prix', (t) async {
+    Magasin avecSansPrix() {
+      final m = magasinM14();
+      m.collection(tarCollectionTarifs).ajouterSansJournal({'id': 'ACT-SANS', 'code': 'ACT-SANS', 'codeActe': 'ACT-SANS', 'libelle': 'Acte sans prix', 'famille': 'ACTE', 'statut': 'actif'});
+      return m;
+    }
+
+    await ouvrirM14(t, avecSansPrix(), 'cfg-tarifs', role: 'da');
+    await onglet(t, 'sansprix');
+    await chercher(t, 'ACT-SANS');
+    expect(find.text('Acte sans prix'), findsWidgets);
+    expect(find.byKey(const Key('cft:tarifer:ACT-SANS')), findsOneWidget, reason: 'la DAF détient le geste de décider un prix');
+
+    await ouvrirM14(t, avecSansPrix(), 'cfg-tarifs', role: 'admin', donnees: donneesLectureSeule('admin', 'cfg-tarifs'));
+    await onglet(t, 'sansprix');
+    await chercher(t, 'ACT-SANS');
+    expect(find.text('Acte sans prix'), findsWidgets, reason: 'l’indication « sans prix » ne dépend d’aucun droit');
+    expect(find.text('Sans prix en vigueur'), findsWidgets);
+  });
+
+  test('AJ : « Tarifer » suit le geste réservé de la matrice, jamais un rôle écrit en dur', () {
+    final m = magasinM14();
+    final sans = TarifsPoste(m, role: 'caissier', auteur: () => 'x', fileul: false, peutEditerEcran: true, horloge: () => aujourdhui);
+    final avec = TarifsPoste(m, role: 'da', auteur: () => 'x', fileul: false, peutEditerEcran: true, horloge: () => aujourdhui);
+    expect(sans.peutDecider, isFalse);
+    expect(avec.peutDecider, isTrue);
+  });
 }

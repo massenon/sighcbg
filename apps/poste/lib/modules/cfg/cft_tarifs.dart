@@ -311,12 +311,19 @@ class _TableauPrestations extends StatelessWidget {
           ColonneTableau(cle: 'etat', libelle: 'État', texte: (r) => '${r['etat']}', rendu: (_, r) => _badgeEtat(r)),
           if (avecCause) ColonneTableau(cle: 'cause', libelle: 'Cause', texte: (r) => '${r['cause'] ?? ''}'),
         ],
-        actionsLigne: (ctx, r) => [
-          BoutonIcone(icone: LucideIcons.eye, libelle: 'Consulter', onPressed: () => _tiroirPrestation(ctx, c, r)),
-          // « Proposer » est une commande d'ÉCRITURE : absente sans le droit d'éditer.
-          if (c.droit.editer) BoutonIcone(icone: LucideIcons.pencil, libelle: 'Proposer un changement', onPressed: () => _modaleProposition(ctx, c, r)),
-          ..._boutonValider(ctx, c, '${r['code']}'),
-        ],
+        actionsLigne: (ctx, r) {
+          // AJ (16/11/2026) : l'indication « sans prix » est vue de TOUS (colonne, badge d'état, onglet, relevé : aucune n'est gardée par un droit) ; la commande « Tarifer »
+          // d'une prestation SANS PRIX est réservée au GESTE de décider un prix (matrice, jamais un rôle en dur) : absente sans lui.
+          final sansPrix = r['etat'] == 'Sans prix en vigueur';
+          final peutTarifer = sansPrix && _tarifs(c).peutDecider;
+          return [
+            BoutonIcone(icone: LucideIcons.eye, libelle: 'Consulter', onPressed: () => _tiroirPrestation(ctx, c, r)),
+            if (peutTarifer) BoutonIcone(key: Key('cft:tarifer:${r['code']}'), icone: LucideIcons.tag, libelle: 'Tarifer', onPressed: () => _modaleProposition(ctx, c, r)),
+            // « Proposer » est une commande d'ÉCRITURE : absente sans le droit d'éditer.
+            if (c.droit.editer && !peutTarifer) BoutonIcone(icone: LucideIcons.pencil, libelle: 'Proposer un changement', onPressed: () => _modaleProposition(ctx, c, r)),
+            ..._boutonValider(ctx, c, '${r['code']}'),
+          ];
+        },
       );
 }
 
