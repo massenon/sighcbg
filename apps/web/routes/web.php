@@ -20,7 +20,7 @@ use App\Livewire\Panneau\TableauClinique;
 use App\Livewire\Panneau\Tableau;
 use Illuminate\Support\Facades\Route;
 
-// L'accueil renvoie au panneau : le relais n'a aucune page publique.
+// L'accueil renvoie au panneau. La seule page publique du relais est le questionnaire de satisfaction par jeton (routes/satisfaction.php), sans lien vers le panneau.
 Route::redirect('/', '/panneau');
 
 Route::prefix('panneau')->group(function () {

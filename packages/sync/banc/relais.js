@@ -110,11 +110,14 @@ const routes = {
 };
 /* Lot BAK (ADR-0008) : la famille de routes de SAUVEGARDE HORS SITE (blocs opaques, réservée à la mère). */
 const SAUV = require('./relais-sauvegarde')({ db, dossier: SAUVEGARDES, Err, mereOk, getMeta, setMeta });
+/* Satisfaction en ligne (décision du 16/11/2026) : questionnaire public par jeton, enveloppes chiffrées dans le navigateur, relève signée par la mère. */
+const SAT = require('./relais-satisfaction')({ db, Err, secretMere: SECRET_MERE, reglages: { debitDepot: +arg('satisfaction-debit', 10), plafondJour: +arg('satisfaction-plafond', 500) } });
 if (BANC) { /* crochets réservés au banc : altérer ou retirer une enveloppe, vider le relais pour inspection */
   routes['POST /banc/alterer'] = (req, b) => { const r = db.prepare('SELECT ct FROM env WHERE id=?').get(b.id); const x = Buffer.from(r.ct, 'base64'); x[0] ^= 1; db.prepare('UPDATE env SET ct=? WHERE id=?').run(x.toString('base64'), b.id); return { ok: true }; };
   routes['POST /banc/retirer'] = (req, b) => { db.prepare('DELETE FROM env WHERE id=?').run(b.id); return { ok: true }; };
   routes['GET /banc/tout'] = () => ({ lignes: db.prepare('SELECT * FROM env').all(), codes: db.prepare('SELECT * FROM codes').all(), appareils: db.prepare('SELECT uuid FROM appareils').all(), meta: db.prepare('SELECT * FROM meta').all() });
   for (const [k, f] of Object.entries(SAUV.banc)) routes[k] = f;
+  for (const [k, f] of Object.entries(SAT.banc)) routes[k] = f;
   routes['GET /banc/ids'] = (req, b, q) => ({ ids: db.prepare('SELECT id,appareil,dir,n FROM env WHERE dir=? ORDER BY rid').all(q.dir) });
 }
 http.createServer((req, res) => {
@@ -124,8 +127,10 @@ http.createServer((req, res) => {
     const brut = Buffer.concat(ch);
     let b = {}; if (!u.pathname.startsWith('/sauvegarde/')) { try { b = brut.length ? JSON.parse(brut.toString()) : {}; } catch (e) { /* vide */ } }
     let st = 200; let out;
-    try { const s = SAUV.traiter(req, u, q, brut); if (s !== undefined) out = s; else { const h = routes[req.method + ' ' + u.pathname]; if (!h) throw new Err(404, 'route_inconnue'); out = h(req, b, q); } }
+    try { const s = SAUV.traiter(req, u, q, brut) ?? SAT.traiter(req, u, q, brut); if (s !== undefined) out = s; else { const h = routes[req.method + ' ' + u.pathname]; if (!h) throw new Err(404, 'route_inconnue'); out = h(req, b, q); } }
     catch (e) { if (e instanceof Err) { st = e.s; out = e.b; } else { st = 500; out = { code: 'erreur_interne', motif: String(e.message) }; } }
+    if (out && out.__html !== undefined) { const h = Buffer.from(out.__html); res.writeHead(out.statut, { 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': h.length, 'Referrer-Policy': 'no-referrer', 'Cache-Control': 'no-store' }); res.end(h); return; }
+    if (out && out.__statut) { st = out.__statut; delete out.__statut; }
     if (out && out.__octets) { res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': out.__octets.length }); res.end(out.__octets); return; }
     const t = JSON.stringify(out); res.writeHead(st, { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(t) }); res.end(t);
   });

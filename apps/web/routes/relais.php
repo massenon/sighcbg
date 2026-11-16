@@ -44,3 +44,6 @@ Route::post('/banc/sauvegarde/reglage', [SauvegardeController::class, 'bancRegla
 Route::post('/banc/sauvegarde/alterer', [SauvegardeController::class, 'bancAlterer']);
 Route::post('/banc/sauvegarde/vieillir', [SauvegardeController::class, 'bancVieillir']);
 Route::get('/banc/sauvegarde/tout', [SauvegardeController::class, 'bancTout']);
+
+/* Satisfaction en ligne (décision du 16/11/2026) : questionnaire public par jeton, enveloppes chiffrées dans le navigateur. */
+require __DIR__.'/satisfaction.php';
