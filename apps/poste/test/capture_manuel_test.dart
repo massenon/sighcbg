@@ -19,6 +19,7 @@ import 'package:sigh_poste/modules/auth/acc_session.dart';
 import 'package:sigh_poste/shell/coque.dart';
 
 import 'aide_polices.dart';
+import 'controle_noms_manuel_test.dart' show nomsReels, trouves;
 
 /// CAPTURES DU MANUEL D'UTILISATION (docs/manuels/src/utilisateur) : ouvre les écrans clés du poste sur le jeu de démonstration et écrit, pour chacun,
 /// un PNG et un JSON des repères (rectangles des boutons, des clés et des onglets) qui servent à placer les flèches automatiquement.
@@ -26,9 +27,46 @@ import 'aide_polices.dart';
 final String? _sortie = Platform.environment['SIGH_CAPTURES'];
 final _donnees = DonneesNavigation.depuisDossier();
 final _le = DateTime(2026, 11, 16, 10);
+final _nomsReels = nomsReels();
 const _taille = Size(1440, 900);
 
 typedef Geste = Future<void> Function(WidgetTester t);
+
+/// AUCUNE personne réelle à l'image (même remplacement que capture_admin_test.dart) : le jeu LIVRÉ porte les vrais agents de la clinique ; leurs noms et
+/// prénoms sont remplacés PARTOUT (personnel, comptes, planning, présences, signatures, auteurs de pièces, journal…) par « AGENTnn Démo » avant le rendu.
+/// La dénomination de la clinique, elle, reste. Le contrôle `controle_noms_manuel_test.dart` vérifie qu'aucun nom ne subsiste dans les repères ni le manuel.
+Magasin anonymiser(Magasin m, List<String> collections) {
+  final remplacements = <String, String>{};
+  var i = 0;
+  for (final p in m.collection('personnel').toutes) {
+    i++;
+    final nom = '${p['nom'] ?? ''}', prenom = '${p['prenom'] ?? ''}';
+    final n = 'AGENT${i.toString().padLeft(2, '0')}';
+    if ('${p['nomComplet'] ?? ''}'.isNotEmpty) remplacements['${p['nomComplet']}'] = '$n Démo';
+    if (nom.isNotEmpty && prenom.isNotEmpty) {
+      remplacements['$prenom $nom'] = 'Démo $n';
+      remplacements['$nom $prenom'] = '$n Démo';
+    }
+    if (prenom.length >= 3) remplacements[prenom] = 'Démo';
+    if (nom.length >= 3 && nom != 'BAGUIDI') remplacements[nom] = n;
+  }
+  final cles = remplacements.keys.toList()..sort((a, b) => b.length.compareTo(a.length));
+  String neutre(String s) {
+    for (final k in cles) {
+      s = s.replaceAll(k, remplacements[k]!);
+    }
+    return s;
+  }
+
+  for (final nom in collections) {
+    final c = m.collection(nom);
+    if (c.toutes.isEmpty) continue;
+    final avant = jsonEncode(c.toutes);
+    final apres = neutre(avant);
+    if (apres != avant) c.remplacerContenu([for (final f in (jsonDecode(apres) as List)) (f as Map).cast<String, Object?>()]);
+  }
+  return m;
+}
 
 class _Cap {
   const _Cap(this.nom, this.ecran,
@@ -334,7 +372,8 @@ void main() {
       addTearDown(t.view.resetPhysicalSize);
       Magasin? neuf;
       if (c.posteNeuf) {
-        neuf = Magasin.depuisDossier(const ['audit', 'utilisateurs', 'rbac', 'tentativesConnexion', 'personnel', 'soignants', 'rolesBase', 'support'], 'assets/donnees/jeu');
+        const noms = ['audit', 'utilisateurs', 'rbac', 'tentativesConnexion', 'personnel', 'soignants', 'rolesBase', 'support'];
+        neuf = anonymiser(Magasin.depuisDossier(noms, 'assets/donnees/jeu'), noms);
         await t.runAsync(() => ServiceInstallation.de(neuf!).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'poste-demo')));
       }
       await t.pumpWidget(RepaintBoundary(
@@ -345,7 +384,10 @@ void main() {
               config: ConfigPoste(mode: c.mode, role: c.role),
               ecranInitial: c.ecran,
               // Le jeu de démonstration LIVRÉ avec le poste (assets/donnees/jeu) : noms fictifs de Baguidi, jamais le jeu de test.
-              magasin: neuf ?? Magasin.depuisDossier(Magasin.collectionsDuJeu, c.jeuDeTest ? null : 'assets/donnees/jeu'),
+              magasin: neuf ??
+                  (c.jeuDeTest
+                      ? Magasin.depuisDossier(Magasin.collectionsDuJeu)
+                      : anonymiser(Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu'), Magasin.collectionsDuJeu)),
               session: c.session?.call(),
               horloge: () => _le)));
       await _pomper(t, 6);
@@ -354,6 +396,13 @@ void main() {
       }
       await t.runAsync(() => Future.delayed(const Duration(milliseconds: 200)));
       await _pomper(t, 2);
+      // GARDE : aucun texte de l'écran ne porte le nom d'un agent réel (le jeu livré est anonymisé ; un oubli ferait échouer la capture, sans image).
+      final textes = [
+        for (final e in find.byWidgetPredicate((w) => w is RichText).evaluate()) (e.widget as RichText).text.toPlainText(),
+        for (final e in find.byType(EditableText).evaluate()) (e.widget as EditableText).controller.text,
+      ].join('\n');
+      final reels = trouves(textes, _nomsReels);
+      expect(reels, isEmpty, reason: '${c.nom} : nom(s) d’agent réel à l’écran : ${reels.join(', ')}');
       final reperes = _reperes(t);
       await t.runAsync(() async {
         final RenderRepaintBoundary b = t.renderObject(find.byKey(const Key('cap-manuel')));
