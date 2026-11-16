@@ -144,6 +144,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     magF = o3c.magasin;
     await f1.ecrire({ type: 'creer', collection: 'demandesImport', fiche: 'DIM-F1-5', champs: o3c.demande });
     await attendre(async () => !!(await chezLaMere('DIM-F1-5')), 45000);
+    await dormir(1500); /* le fileul écrit sa modification sur la VERSION VUE confirmée : lui laisser le temps de confirmer la création qu'il vient de faire, sinon sa modification est lue comme concurrente (même course que CIR1) */
     await f1.ecrire({ type: 'modifier', collection: 'demandesImport', fiche: 'DIM-F1-5', champs: { etat: 'retiree', retireePar: 'GESTIONNAIRE', retireeLe: '2026-11-12', lignes: [] } });
     verifier('la mère voit la demande retirée (elle ne l\'applique plus), sans ses lignes', await attendre(async () => { const d = await chezLaMere('DIM-F1-5'); return !!d && d.etat === 'retiree' && d.lignes.length === 0; }, 45000));
     const n1 = (await f1.etat()).a_traiter.length;
