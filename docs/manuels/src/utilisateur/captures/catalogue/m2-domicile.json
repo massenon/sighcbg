@@ -1,0 +1,17 @@
+{
+ "id": "m2-domicile",
+ "titre": "Consultations & soins à domicile",
+ "libelle": "Consultations & soins à domicile",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-domicile"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1307
+}

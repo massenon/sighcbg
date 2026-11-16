@@ -1,0 +1,17 @@
+{
+ "id": "imp-emplacements",
+ "titre": "Importation des emplacements",
+ "libelle": "Importation des emplacements",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-emplacements"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 947
+}

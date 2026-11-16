@@ -1,0 +1,112 @@
+{
+ "nom": "m10-demande-analyse",
+ "taille": [
+  412.0,
+  1100.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Médicaments",
+   "rect": [
+    16.0,
+    72.0,
+    190.0,
+    56.0
+   ]
+  },
+  {
+   "libelle": "Analyses de laboratoire",
+   "rect": [
+    206.0,
+    72.0,
+    190.0,
+    56.0
+   ]
+  },
+  {
+   "libelle": "Envoyer la demande",
+   "rect": [
+    16.0,
+    620.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   1100.0
+  ],
+  "nature": [
+   16.0,
+   72.0,
+   380.0,
+   56.0
+  ],
+  "examen-NFS": [
+   16.0,
+   256.0,
+   380.0,
+   48.0
+  ],
+  "examen-Glycémie": [
+   16.0,
+   304.0,
+   380.0,
+   48.0
+  ],
+  "examen-Goutte épaisse / TDR paludisme": [
+   16.0,
+   352.0,
+   380.0,
+   48.0
+  ],
+  "examen-CRP": [
+   16.0,
+   400.0,
+   380.0,
+   48.0
+  ],
+  "examen-Test de grossesse (TBG)": [
+   16.0,
+   448.0,
+   380.0,
+   48.0
+  ],
+  "examen-Créatininémie": [
+   16.0,
+   496.0,
+   380.0,
+   48.0
+  ],
+  "champ-urgence": [
+   16.0,
+   552.0,
+   380.0,
+   56.0
+  ],
+  "envoyer-prescription": [
+   16.0,
+   620.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

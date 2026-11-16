@@ -1,0 +1,17 @@
+{
+ "id": "m1-dossier-medical",
+ "titre": "Dossier médical informatisé",
+ "libelle": "Dossier médical informatisé",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-dossier-medical"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 532
+}

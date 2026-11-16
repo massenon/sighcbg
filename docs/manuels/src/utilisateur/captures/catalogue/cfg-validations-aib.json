@@ -1,0 +1,17 @@
+{
+ "id": "cfg-validations-aib",
+ "titre": "Validations de l’AIB",
+ "libelle": "Validations de l’AIB",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-validations-aib"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1140
+}

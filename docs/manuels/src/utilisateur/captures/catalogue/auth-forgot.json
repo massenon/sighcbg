@@ -1,0 +1,15 @@
+{
+ "id": "auth-forgot",
+ "titre": "Mot de passe oublié",
+ "libelle": "Mot de passe oublié",
+ "domaine": "Système",
+ "module": "AUTH",
+ "moduleLibelle": "Accès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1215
+}

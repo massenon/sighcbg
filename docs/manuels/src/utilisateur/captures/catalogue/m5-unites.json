@@ -1,0 +1,17 @@
+{
+ "id": "m5-unites",
+ "titre": "Unités de mesure",
+ "libelle": "Unités de mesure",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-unites"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1177
+}

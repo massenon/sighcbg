@@ -1,0 +1,17 @@
+{
+ "id": "m10-sanctions",
+ "titre": "Sanctions",
+ "libelle": "Sanctions",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-sanctions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 640
+}

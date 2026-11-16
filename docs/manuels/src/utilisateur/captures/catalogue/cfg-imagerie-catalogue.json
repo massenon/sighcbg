@@ -1,0 +1,17 @@
+{
+ "id": "cfg-imagerie-catalogue",
+ "titre": "Catalogue de l’imagerie",
+ "libelle": "Catalogue de l’imagerie",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-imagerie-catalogue"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 789
+}

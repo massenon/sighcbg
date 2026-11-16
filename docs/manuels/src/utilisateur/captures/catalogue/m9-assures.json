@@ -1,0 +1,17 @@
+{
+ "id": "m9-assures",
+ "titre": "Assurés & cartes",
+ "libelle": "Assurés & cartes",
+ "domaine": "Financier",
+ "module": "M9",
+ "moduleLibelle": "Assurances & Créances",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m9-assures"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 797
+}

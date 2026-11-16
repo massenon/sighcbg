@@ -1,0 +1,112 @@
+{
+ "nom": "m06-dossier",
+ "taille": [
+  412.0,
+  1500.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Saisir les constantes",
+   "rect": [
+    16.0,
+    784.0,
+    380.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Consultation à domicile",
+   "rect": [
+    16.0,
+    840.0,
+    380.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Prescription",
+   "rect": [
+    16.0,
+    896.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   1500.0
+  ],
+  "couverture": [
+   28.0,
+   260.0,
+   85.2,
+   20.0
+  ],
+  "allergies": [
+   28.0,
+   344.0,
+   73.0,
+   20.0
+  ],
+  "constantes-derniere": [
+   28.0,
+   532.0,
+   204.4,
+   40.0
+  ],
+  "hors-bornes": [
+   28.0,
+   572.0,
+   184.2,
+   20.0
+  ],
+  "notes-vide": [
+   28.0,
+   656.0,
+   209.9,
+   20.0
+  ],
+  "prescriptions-vide": [
+   28.0,
+   740.0,
+   261.9,
+   20.0
+  ],
+  "saisir-constantes": [
+   16.0,
+   784.0,
+   380.0,
+   48.0
+  ],
+  "nouvelle-note": [
+   16.0,
+   840.0,
+   380.0,
+   48.0
+  ],
+  "prescrire": [
+   16.0,
+   896.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

@@ -1,0 +1,17 @@
+{
+ "id": "contact-editeur",
+ "titre": "Contactez l’éditeur",
+ "libelle": "Contactez l’éditeur",
+ "domaine": "Système",
+ "module": "SUP",
+ "moduleLibelle": "Aide & assistance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "contact-editeur"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 626
+}

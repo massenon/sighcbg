@@ -1,0 +1,17 @@
+{
+ "id": "m2-file-attente",
+ "titre": "File d’attente",
+ "libelle": "File d’attente",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-file-attente"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1625
+}

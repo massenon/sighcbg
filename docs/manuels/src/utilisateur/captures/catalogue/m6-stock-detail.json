@@ -1,0 +1,17 @@
+{
+ "id": "m6-stock-detail",
+ "titre": "Stock détail (pharmacie d’urgence)",
+ "libelle": "Stock détail (pharmacie)",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-stock-detail"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1466
+}

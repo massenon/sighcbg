@@ -1,0 +1,17 @@
+{
+ "id": "m11-heures-sup",
+ "titre": "Heures supplémentaires",
+ "libelle": "Heures supplémentaires",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m11-heures-sup"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 682
+}

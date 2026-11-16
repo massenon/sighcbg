@@ -1,0 +1,10 @@
+{
+ "id": "m2-mdt-entreprises",
+ "module": "M2",
+ "domaine": "Soins",
+ "libelleManifeste": "Entreprises clientes et salariés",
+ "acces": "ouvert",
+ "titre": "Entreprises clientes et salariés",
+ "description": "Les entreprises qui confient leurs salariés à la clinique, leur convention de visites, et l’échéance de chaque salarié.",
+ "note": "Fiche rédigée pour le poste Baguidi (PRD P0-12, les quatorze spécialités) : écran sans équivalent à la maquette."
+}

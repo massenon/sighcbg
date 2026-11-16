@@ -1,0 +1,17 @@
+{
+ "id": "hub-m9",
+ "titre": "Assurances & Créances",
+ "libelle": "Assurances & Créances",
+ "domaine": "Financier",
+ "module": "M9",
+ "moduleLibelle": "Assurances & Créances",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m9"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 573
+}

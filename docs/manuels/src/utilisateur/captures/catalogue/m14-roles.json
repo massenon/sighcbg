@@ -1,0 +1,17 @@
+{
+ "id": "m14-roles",
+ "titre": "Rôles & permissions (RBAC)",
+ "libelle": "Rôles & permissions (RBAC)",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m14-roles"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 2071
+}

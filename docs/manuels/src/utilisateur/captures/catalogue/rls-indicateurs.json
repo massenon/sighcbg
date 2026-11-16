@@ -1,0 +1,17 @@
+{
+ "id": "rls-indicateurs",
+ "titre": "Indicateurs reçus",
+ "libelle": "Indicateurs reçus",
+ "domaine": "Relais en ligne",
+ "module": "RLS",
+ "moduleLibelle": "Relais en ligne (apps/web)",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "rls-indicateurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1022
+}

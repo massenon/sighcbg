@@ -1,0 +1,17 @@
+{
+ "id": "m2-mdt-entreprises",
+ "titre": "Entreprises clientes et salariés",
+ "libelle": "Entreprises clientes et salariés",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Médecine du travail",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-mdt-entreprises"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1350
+}
