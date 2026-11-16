@@ -106,10 +106,16 @@ PatDemandeExterne patOuvrirDemandeExterne({
           'categorie': a['categorie'] ?? '',
           'echantillon': a['echantillon'] ?? '',
           'delai': a['delai'] ?? '',
-          'prix': a['prix'] ?? 0,
+          'prix': a['prix'],
         };
       }()
   ];
+  // DÉCISION DU 16/11/2026 (« plus aucun montant nul ») : un examen SANS PRIX en vigueur n'est jamais une ligne à 0. Le prix absent se dit « prix à définir » et la demande est refusée en nommant l'examen :
+  // rien n'est écrit (ni dossier, ni demande, ni facture), la Direction le tarife par « Tarifs et prix » (Proposer un changement, puis le Oui).
+  final sansPrix = [for (final a in analyses) if (a['prix'] == null || nombreOuZero(a['prix']) <= 0) '${a['designation']}'];
+  if (sansPrix.isNotEmpty) {
+    throw PatRefus('Tarif à valider : prix à définir pour ${sansPrix.join(', ')}. Cet examen ne se facture pas à 0 : le prix se propose à « Tarifs et prix », puis la Direction le valide.');
+  }
   final montant = analyses.fold<num>(0, (s, a) => s + nombreOuZero(a['prix']));
   final jour = date.toUtc().toIso8601String();
 

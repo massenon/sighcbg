@@ -8,6 +8,8 @@
 /// deux lignes de même code ET de même prix ne sont pas un conflit (rien à choisir). Les fiches sont passées en argument : aucune lecture d'une base, aucune horloge.
 library;
 
+import 'tarifs.dart' show RefusTarif, tarNormaliserLibelle;
+
 typedef FicheDoublon = Map<String, Object?>;
 
 /// Les listes de départ où un code ne devrait paraître qu'une fois : (collection, espace de code du référentiel : `grille` ou `acte`).
@@ -99,4 +101,177 @@ TarArbitrageDoublon tarArbitrerDoublon(
         ? null
         : {'prixNonAssure': na, if (pa != null) 'prixAssure': pa, 'etatAssure': pa != null ? 'montant' : 'unique'},
   );
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// LA TROISIÈME ISSUE (décision Q18 de la Direction) : « ce sont deux prestations DISTINCTES »
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+//
+// Deux lignes de même code aux prix différents sont parfois DEUX prestations (« Certificat médical d'aptitude » 7 000 et « Certificat d'aptitude » 5 000). Ni « garder celui-ci » (qui archive l'autre,
+// donc efface une prestation réelle) ni un prix à corriger : le code RESTE à la ligne que la caisse lit déjà (la première) ; chaque AUTRE ligne reçoit un NOUVEL identifiant, construit sur la convention
+// des codes de la même famille et jamais réutilisé. Aucun prix ne change, aucune pièce émise n'est réécrite (elle garde son prix et son libellé). Le nouveau code naît « proposition à valider » :
+// sa prestation est ouverte au référentiel avec le prix PROPRE de la ligne comme version PROPOSÉE (jamais validée ici), que la Direction décide par le circuit ordinaire.
+
+/// Les mots de liaison qu'une désignation porte sans qu'ils distinguent une prestation d'une autre.
+const Set<String> _motsVides = {'de', 'du', 'des', 'd', 'la', 'le', 'les', 'l', 'a', 'au', 'aux', 'et', 'ou', 'en', 'pour', 'un', 'une'};
+
+/// Le préfixe de famille d'un code : tout ce qui précède le premier tiret, tiret compris (`CERT-APT` : `CERT-`) ; vide quand le code n'en porte pas.
+String tarPrefixeDeCode(String code) {
+  final i = code.indexOf('-');
+  return i <= 0 ? '' : code.substring(0, i + 1);
+}
+
+/// La longueur de suffixe la plus FRÉQUENTE parmi les codes de la famille qui portent ce préfixe (la convention LUE, jamais supposée) ; [parDefaut] quand aucun ne le porte.
+int tarLongueurSuffixeUsuelle(Iterable<String> codesFamille, String prefixe, {int parDefaut = 3}) {
+  final nb = <int, int>{};
+  for (final c in codesFamille) {
+    if (prefixe.isEmpty || !c.startsWith(prefixe) || c.length == prefixe.length) continue;
+    final n = c.length - prefixe.length;
+    nb[n] = (nb[n] ?? 0) + 1;
+  }
+  if (nb.isEmpty) return parDefaut;
+  final tri = nb.entries.toList()..sort((a, b) => b.value != a.value ? b.value.compareTo(a.value) : b.key.compareTo(a.key));
+  return tri.first.key;
+}
+
+/// Les mots distinctifs d'une désignation : normalisés, sans mot vide, sans mot que la majorité des désignations de la famille porte déjà (« certificat », « médical »).
+List<String> tarMotsDistinctifs(String libelle, Iterable<String> libellesFamille) {
+  List<String> mots(String x) => [for (final w in tarNormaliserLibelle(x).split(RegExp(r"[ ']+"))) if (w.isNotEmpty && !_motsVides.contains(w)) w];
+  final famille = [for (final l in libellesFamille) mots(l).toSet()];
+  final seuil = famille.length / 2;
+  final communs = <String>{
+    for (final w in famille.expand((s) => s)) if (famille.where((s) => s.contains(w)).length > seuil) w
+  };
+  final propres = [for (final w in mots(libelle)) if (!communs.contains(w)) w];
+  return propres.isEmpty ? mots(libelle) : propres;
+}
+
+/// Le NOUVEL identifiant d'une prestation distincte : préfixe de la famille (lu du code qu'elle quitte), puis les premières lettres de son mot distinctif, à la longueur usuelle des codes de la famille.
+/// Quand le code obtenu est déjà pris (par un code, un alias ou une ligne de départ, archivés compris), il se DIFFÉRENCIE par un rang (`APT2`, `APT3`…) : c'est la seule règle ajoutée à la convention.
+String tarCodeDistinct({
+  required String codeActuel,
+  required String libelle,
+  required Iterable<String> codesFamille,
+  required Iterable<String> libellesFamille,
+  required Iterable<String> codesPris,
+}) {
+  final pris = {for (final c in codesPris) c.toUpperCase()};
+  final prefixe = tarPrefixeDeCode(codeActuel);
+  final n = tarLongueurSuffixeUsuelle(codesFamille, prefixe);
+  final mots = tarMotsDistinctifs(libelle, libellesFamille);
+  final mot = (mots.isEmpty ? 'x' : mots.last).toUpperCase().replaceAll(RegExp(r'[^A-Z0-9]'), '');
+  final base = mot.length >= n ? mot.substring(0, n) : mot.padRight(n, 'X');
+  var candidat = '$prefixe$base';
+  var rang = 1;
+  while (pris.contains(candidat.toUpperCase())) {
+    rang++;
+    candidat = '$prefixe$base$rang';
+  }
+  return candidat;
+}
+
+/// Une ligne qui reçoit un nouveau code : ce que le poste doit écrire (la prestation proposée, le code porté par la fiche de départ). Jamais une archive, jamais un prix modifié.
+class TarNouvelleIdentite {
+  const TarNouvelleIdentite({
+    required this.ficheId,
+    required this.ancienCode,
+    required this.nouveauCode,
+    required this.libelle,
+    required this.famille,
+    required this.prixNonAssure,
+    required this.prixAssure,
+    required this.etatAssure,
+    this.secteur,
+    this.assurable,
+  });
+  final Object? ficheId;
+  final String ancienCode;
+  final String nouveauCode;
+  final String libelle;
+  final String famille;
+  final num? prixNonAssure;
+  final num? prixAssure;
+
+  /// `montant` ou `unique` quand la ligne porte un prix ; `manquant` quand elle n'en porte pas (la prestation naît sans prix : « prix à définir », jamais un zéro).
+  final String etatAssure;
+  final String? secteur;
+  final Object? assurable;
+}
+
+class TarArbitrageDistincts {
+  const TarArbitrageDistincts.refus(RefusTarif this.refus)
+      : ok = false,
+        gardeId = null,
+        identites = const [];
+  const TarArbitrageDistincts.ok({required this.gardeId, required this.identites})
+      : ok = true,
+        refus = null;
+  final bool ok;
+  final RefusTarif? refus;
+
+  /// La ligne qui GARDE le code (celle que la caisse lisait).
+  final Object? gardeId;
+  final List<TarNouvelleIdentite> identites;
+}
+
+/// ARBITRE « deux prestations distinctes » : le code reste à la première ligne ([doublon] : de celle que la caisse lit à la dernière) ; chacune des autres reçoit un nouveau code. [famille] : la famille de
+/// la prestation de départ (`CERTIFICAT`…). [codesFamille] / [libellesFamille] : les codes et désignations de la MÊME famille au référentiel (la convention se lit là). [codesPris] : TOUS les codes
+/// existants (référentiel, alias, listes de départ, archivés compris). [codesDemandes] : un code que l'appelant propose pour une ligne (`ficheId` vers code) ; le moteur le REFUSE s'il est déjà pris.
+/// Refus nommés : `ARBITRAGE_RESERVE` (le geste manque), `MOTIF_REQUIS` (RG-12), `CODE_EXISTANT` (un code ne se réutilise pas), `CODE_VIDE`.
+TarArbitrageDistincts tarArbitrerDistincts(
+  TarDoublonPrix doublon, {
+  required String motif,
+  required bool peutDecider,
+  required String famille,
+  required Iterable<String> codesFamille,
+  required Iterable<String> libellesFamille,
+  required Iterable<String> codesPris,
+  Map<Object?, String> codesDemandes = const {},
+}) {
+  if (!peutDecider) {
+    return const TarArbitrageDistincts.refus(RefusTarif('ARBITRAGE_RESERVE',
+        'dire que deux lignes sont deux prestations distinctes revient au profil qui décide les prix (geste réservé de la matrice) : ce n’est pas une modification de fiche',
+        'Demander l’arbitrage à la Direction ou à la Directrice Administrative.'));
+  }
+  if (motif.trim().isEmpty) {
+    return const TarArbitrageDistincts.refus(RefusTarif('MOTIF_REQUIS', 'le motif de l’arbitrage est obligatoire (RG-12) : il explique pourquoi ce sont deux prestations', 'Dites en quoi les deux lignes diffèrent.'));
+  }
+  final pris = {for (final c in codesPris) c.toUpperCase()};
+  final garde = doublon.candidats.first;
+  final autres = doublon.candidats.skip(1).toList();
+  final nouveaux = <String>{};
+  final identites = <TarNouvelleIdentite>[];
+  for (final f in autres) {
+    final demande = codesDemandes[f['id']]?.trim();
+    String code;
+    if (demande != null) {
+      if (demande.isEmpty) return const TarArbitrageDistincts.refus(RefusTarif('CODE_VIDE', 'le nouveau code est vide', 'Saisir un code.'));
+      if (pris.contains(demande.toUpperCase()) || nouveaux.contains(demande.toUpperCase())) {
+        return TarArbitrageDistincts.refus(RefusTarif('CODE_EXISTANT', 'le code « $demande » existe déjà (code, alias ou ligne de départ) : un code ne se réutilise jamais',
+            'Choisir un autre code, ou laisser le logiciel le construire sur la convention de la famille.'));
+      }
+      code = demande;
+    } else {
+      code = tarCodeDistinct(
+          codeActuel: doublon.code,
+          libelle: '${f['libelle'] ?? doublon.code}',
+          codesFamille: codesFamille,
+          libellesFamille: libellesFamille,
+          codesPris: [...pris, ...nouveaux]);
+    }
+    nouveaux.add(code.toUpperCase());
+    final na = tarPrixNADe(f), pa = tarPrixADe(f);
+    identites.add(TarNouvelleIdentite(
+        ficheId: f['id'],
+        ancienCode: doublon.code,
+        nouveauCode: code,
+        libelle: '${f['libelle'] ?? doublon.code}',
+        famille: famille,
+        prixNonAssure: na,
+        prixAssure: pa,
+        etatAssure: na == null ? 'manquant' : (pa != null ? 'montant' : 'unique'),
+        secteur: f['secteur'] as String?,
+        assurable: f['assurable']));
+  }
+  return TarArbitrageDistincts.ok(gardeId: garde['id'], identites: identites);
 }

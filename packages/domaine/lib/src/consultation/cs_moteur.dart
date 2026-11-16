@@ -651,6 +651,8 @@ ResultatPrescription csPrescrire(
         final pu = prod['prixAchat'] != null ? prod['prixAchat'] as num : 0;
         final q = _n(l['quantite']);
         return <String, Object?>{
+          // Un article connu mais SANS prix d'achat (« à valoriser ») n'est jamais une ligne à 0 (décision du 16/11/2026) : il est refusé plus bas, nommé.
+          '_prixAbsent': prod.isNotEmpty && (prod['prixAchat'] == null || pu <= 0),
           'produitId': l['produitId'],
           'produit': _ou(prod['designation'], _ou(l['produit'], '—')),
           'unite': _ou(prod['unite'], ''),
@@ -662,6 +664,20 @@ ResultatPrescription csPrescrire(
         };
       }()
   ].where((l) => _n(l['quantite']) > 0).toList();
+  final refus = <FicheCs>[];
+  final medicamentsSansPrix = [for (final l in medicaments) if (l['_prixAbsent'] == true) l];
+  for (final l in medicamentsSansPrix) {
+    refus.add({
+      'categorie': 'medicament',
+      'code': l['produitId'],
+      'libelle': l['produit'],
+      'codeErreur': csCodeTarifAValider,
+      'motif': 'tarif à valider : « ${l['produit']} » n’a pas de prix d’achat en vigueur (article à valoriser). Son prix se propose à « Tarifs et prix » ; rien n’est prescrit à 0.',
+    });
+  }
+  medicaments
+    ..removeWhere((l) => l['_prixAbsent'] == true)
+    ..forEach((l) => l.remove('_prixAbsent'));
 
   // PRD-TARIFS (lot T6) : le prix vient du RÉFÉRENTIEL, à la date de la prescription ; le référentiel statique des analyses ne porte plus que le modèle (désignation,
   // catégorie, échantillon, délai). RG-09 décide la colonne, comme pour les actes : carte valide à CETTE date.
@@ -713,7 +729,6 @@ ResultatPrescription csPrescrire(
 
   // DÉCISION DU 16/11/2026 : un montant à 0 est interdit (« un tiret n'est pas un zéro »). Une analyse ou un acte SANS PRIX EN VIGUEUR à la date de la pièce est REFUSÉ en le nommant
   // (`TARIF_A_VALIDER`), sans bloquer le reste de l'ordonnance ; aucun prix valide ne change. Si plus aucune ligne ne reste, le refus est celui de la prescription.
-  final refus = <FicheCs>[];
   List<FicheCs> sansPrixAbsent(List<FicheCs> lignes, String categorie, String libelle) {
     final gardees = <FicheCs>[];
     for (final l in lignes) {

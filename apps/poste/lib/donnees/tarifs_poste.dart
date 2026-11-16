@@ -497,6 +497,165 @@ class TarifsPoste {
     return IssueTarif(version: version);
   }
 
+  // --- La TROISIÈME issue de l'arbitrage : « ce sont deux prestations distinctes » (décision Q18) ------------------------------------------------------
+
+  /// TOUS les codes déjà pris : codes et alias du référentiel (archivés compris), espaces de codes des prestations, lignes des listes de départ (archivées comprises). Un code ne se réutilise jamais.
+  static Set<String> codesPris(Magasin m) {
+    final h = lire(m);
+    final pris = <String>{...h.parCode.keys};
+    for (final p in h.tarifs) {
+      for (final k in const ['code', 'codeActe', 'codeGrille', 'codeAnalyse']) {
+        if (p[k] != null) pris.add('${p[k]}');
+      }
+      for (final a in (p['codesAlias'] as List? ?? const [])) {
+        pris.add('$a');
+      }
+    }
+    for (final c in tarListesDeDepart.keys) {
+      for (final f in m.collection(c).toutes) {
+        if ('${f['code'] ?? ''}'.isNotEmpty) pris.add('${f['code']}');
+      }
+    }
+    return pris;
+  }
+
+  /// La famille (`CERTIFICAT`, `ACTE`…) de la prestation d'un doublon : celle de la ligne de départ, à défaut celle de la prestation que la caisse lit.
+  String _familleDe(TarDoublonPrix d) {
+    final p = d.collection == 'catalogueTarifs' ? h.parGrille[d.code] : h.parActe[d.code];
+    return '${d.candidats.first['famille'] ?? p?['famille'] ?? (d.collection == 'actes' ? 'ACTE' : 'GRILLE')}';
+  }
+
+  TarArbitrageDistincts _moteurDistincts(TarDoublonPrix d, String motif, bool peutDecider, Map<Object?, String> codesDemandes) {
+    final famille = _familleDe(d);
+    final siens = [for (final p in h.tarifs) if (p['statut'] != 'archive' && p['famille'] == famille) p];
+    return tarArbitrerDistincts(d,
+        motif: motif,
+        peutDecider: peutDecider,
+        famille: famille,
+        codesFamille: [for (final p in siens) '${p['code']}'],
+        libellesFamille: [for (final p in siens) '${p['libelle'] ?? p['code']}'],
+        codesPris: codesPris(m),
+        codesDemandes: codesDemandes);
+  }
+
+  /// L'APERÇU de ce que le geste ferait (nouveaux codes proposés), sans rien écrire : la modale de confirmation le montre avant le motif.
+  List<TarNouvelleIdentite> apercuDistincts(TarDoublonPrix d) {
+    final r = _moteurDistincts(d, 'aperçu', true, const {});
+    return r.identites;
+  }
+
+  /// « Ce sont deux prestations distinctes » : le code reste à la ligne que la caisse lit ; chaque autre ligne reçoit un NOUVEL identifiant (convention de la famille, jamais réutilisé), sa prestation
+  /// est ouverte au référentiel avec le prix PROPRE de la ligne comme version PROPOSÉE (« proposition à valider » : la Direction la décide par le circuit ordinaire, jamais validée ici). Aucun prix
+  /// en vigueur ne change, aucune pièce émise n'est réécrite, rien n'est archivé. La MÈRE écrit ; un FILEUL DÉPOSE la demande (`propositionsTarif`, genre `distincts`) et la mère l'applique en
+  /// refaisant les mêmes contrôles sous le rôle de l'auteur. [codesDemandes] : un code que l'appelant impose pour une ligne (refusé s'il est déjà pris).
+  IssueTarif arbitrerDistincts(TarDoublonPrix d, String motif, {Map<Object?, String> codesDemandes = const {}}) {
+    final controle = _moteurDistincts(d, motif, peutDecider, codesDemandes);
+    if (!controle.ok) return IssueTarif(refus: controle.refus);
+    if (fileul) {
+      final dem = _deposer('distincts', {
+        'code': d.code,
+        'collection': d.collection,
+        'motif': motif.trim(),
+        if (codesDemandes.isNotEmpty) 'codesDemandes': {for (final e in codesDemandes.entries) '${e.key}': e.value},
+      });
+      return IssueTarif(demande: dem);
+    }
+    final refus = _ecrireDistincts(contexte(), d, motif, codesDemandes);
+    return IssueTarif(refus: refus);
+  }
+
+  /// L'écriture (mère seule, rejouable : un doublon déjà résolu se refuse en le nommant). Rend le refus nommé, ou `null`.
+  RefusTarif? _ecrireDistincts(ContexteTarif cx, TarDoublonPrix d, String motif, Map<Object?, String> codesDemandes) {
+    // Le doublon est RELU : entre le dépôt et l'application, il peut avoir été résolu.
+    final reste = doublonsPrix(m).where((x) => x.cle == d.cle).firstOrNull;
+    if (reste == null) {
+      return RefusTarif('DOUBLON_RESOLU', 'le code « ${d.code} » n’est plus porté deux fois à des prix différents : rien à distinguer', 'Rien à faire : le doublon est déjà résolu.');
+    }
+    final r = _moteurDistincts(reste, motif, cx.peutDecider, codesDemandes);
+    if (!r.ok) return r.refus;
+    final col = m.collection(d.collection);
+    final ecrits = <String>[];
+    for (final i in r.identites) {
+      final creation = <String, Object?>{
+        'libelle': i.libelle,
+        'famille': i.famille,
+        if (i.secteur != null && i.secteur!.isNotEmpty) 'secteur': i.secteur,
+        'source': 'Prestation distincte de « ${i.ancienCode} » (arbitrage de la Direction, décision Q18) : code proposé, à valider',
+      };
+      final marques = <String, Object?>{
+        'distinctDe': i.ancienCode,
+        'propositionAValider': true,
+        'distinctPar': cx.auteur,
+        'distinctLe': aujourdhui,
+      };
+      if (i.prixNonAssure == null) {
+        // Aucun prix propre : la prestation naît SANS prix (« prix à définir »), jamais à zéro ; elle rejoint l'onglet « Sans prix ».
+        final famille = i.famille;
+        m.collection(tarCollectionTarifs).inserer({
+          'id': i.nouveauCode,
+          'code': i.nouveauCode,
+          'libelle': i.libelle,
+          'famille': famille,
+          'statut': 'actif',
+          if (famille == 'ACTE' || famille == 'HOSPITALISATION') 'codeActe': i.nouveauCode else if (famille == 'LABO') 'codeAnalyse': i.nouveauCode else 'codeGrille': i.nouveauCode,
+          if (i.secteur != null && i.secteur!.isNotEmpty) 'secteur': i.secteur,
+          if (i.assurable != null) 'assurable': i.assurable,
+          'source': creation['source'],
+          ...marques,
+        });
+      } else {
+        final prop = tarProposer(
+            cx,
+            DemandeProposition(
+                code: i.nouveauCode,
+                prixNonAssure: i.prixNonAssure,
+                prixAssure: i.prixAssure,
+                etatAssure: i.etatAssure,
+                dateEffet: aujourdhui,
+                motif: 'Prestation distincte de ${i.ancienCode} : prix propre de la ligne « ${i.libelle} », à valider (${motif.trim()})',
+                creation: creation,
+                assurable: i.assurable));
+        if (!prop.ok) return prop.refus;
+        prop.valeur!.identite!.addAll(marques);
+        _ecrireProposition(prop.valeur!);
+      }
+      col.mettreAJour(i.ficheId, {
+        'code': i.nouveauCode,
+        'codeAnterieur': i.ancienCode,
+        'motifDistinct': motif.trim(),
+        ...marques,
+      }, journaliser: false);
+      ecrits.add('${i.ancienCode} vers ${i.nouveauCode}');
+    }
+    m.journaliser('Arbitrage d’un prix en doublon : deux prestations distinctes', 'CFG', 'prix', d.code, null, {
+      'gardé': r.gardeId,
+      'nouveaux': ecrits.join(', '),
+      'par': cx.auteur,
+      'motif': motif.trim().length > 60 ? motif.trim().substring(0, 60) : motif.trim(),
+    });
+    projeter(m, _horloge());
+    return null;
+  }
+
+  /// Les prestations NÉES de cette issue et qui attendent la Direction : celles dont une version est `propose` (le Oui ou le Non reste à rendre) et celles restées sans aucun prix. Visible au centre
+  /// des validations. Une fois la version décidée (Oui : en vigueur ; Non : refusée), la prestation quitte la liste ; le marquage reste sur sa fiche (traçabilité).
+  static List<({Map<String, Object?> prestation, String etat, Map<String, Object?>? version})> distinctsAValider(Magasin m) {
+    final h = lire(m);
+    final out = <({Map<String, Object?> prestation, String etat, Map<String, Object?>? version})>[];
+    for (final p in h.tarifs) {
+      if (p['statut'] == 'archive' || p['distinctDe'] == null) continue;
+      final vs = h.versionsDe('${p['code']}');
+      if (vs.any((v) => v['statut'] == 'valide')) continue;
+      final enAttente = vs.where((v) => v['statut'] == 'propose').lastOrNull;
+      if (enAttente != null) {
+        out.add((prestation: p, etat: 'propose', version: enAttente));
+      } else {
+        out.add((prestation: p, etat: 'sans_prix', version: null));
+      }
+    }
+    return out;
+  }
+
   /// Le prix d'achat (et le prix de vente DÉRIVÉ, RG-02) d'un produit à la date de la PIÈCE : jamais la fiche, jamais l'horloge au moment du calcul. Un prix absent n'est pas zéro.
   static PrixProduit prixProduit(Magasin m, Map<String, Object?> produit, {required DateTime aujourdhui, Object? date}) => tarPrixProduit(lire(m), produit, date, aujourdhui: tarIso(aujourdhui));
 
@@ -641,6 +800,13 @@ class TarifsPoste {
             versionId = _ecrireProposition(r.valeur!)['id'];
           } else {
             refus = r.refus;
+          }
+        case 'distincts':
+          final cible = doublonsPrix(m).where((x) => x.cle == '${d['collection']}/${d['code']}').firstOrNull;
+          if (cible == null) {
+            refus = RefusTarif('DOUBLON_RESOLU', 'le code « ${d['code']} » n’est plus porté deux fois à des prix différents : rien à distinguer', 'Rien à faire : le doublon est déjà résolu.');
+          } else {
+            refus = _ecrireDistincts(cx, cible, '${d['motif'] ?? ''}', {for (final e in ((d['codesDemandes'] as Map?) ?? const {}).entries) '${e.key}': '${e.value}'});
           }
         case 'decision':
           final r = tarDecider(cx, '${d['versionId']}', '${d['decision']}', motif: d['motifDecision'] as String?, dateEffet: d['dateEffet'] as String?);

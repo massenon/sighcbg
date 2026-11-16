@@ -247,7 +247,8 @@ class _Corps extends StatelessWidget {
             cle: 'montant',
             libelle: 'Montant',
             droite: true,
-            texte: (r) => money(r['montant'] ?? 0)),
+            // Une prescription dont AUCUNE ligne n'a de prix ne vaut pas « 0 F » : elle dit « prix à définir ».
+            texte: (r) => _toutesSansPrix(r) ? 'Prix à définir' : money(r['montant'] ?? 0)),
         ColonneTableau(
             cle: 'statutPaiement',
             libelle: 'Règlement',
@@ -526,4 +527,9 @@ class _Salle extends StatelessWidget {
       ),
     ]);
   }
+}
+
+bool _toutesSansPrix(Map<String, Object?> r) {
+  final l = r['lignes'];
+  return l is List && l.isNotEmpty && l.every((x) => x is Map && x['prix'] == null);
 }
