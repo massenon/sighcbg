@@ -3,6 +3,7 @@ import 'package:test/test.dart';
 
 /// « Les codes à 0 » (Direction, 16/11/2026) : le relevé classe par cause ; aucune voie ne valorise un prix à la place de la Direction.
 void main() {
+  _q19();
   Map<String, Object?> p(String code, {Object? variantes, Object? distinctDe}) =>
       {'id': code, 'code': code, 'libelle': code, 'famille': 'ACTE', 'statut': 'actif', 'codeActe': code, if (variantes != null) 'variantesGrille': variantes, if (distinctDe != null) 'distinctDe': distinctDe};
   Map<String, Object?> v(String code, String statut, {String? date = '2026-01-01', Object? na = 1000, int rang = 1}) =>
@@ -59,5 +60,15 @@ void main() {
             nouvelId: (q) => q,
             date: DateTime(2026, 11, 16)),
         throwsA(isA<PatRefus>().having((e) => e.message, 'message', allOf(contains('prix à définir'), contains('Examen sans prix')))));
+  });
+}
+
+void _q19() {
+  test('Q19 : les certificats à prix unique et couverture SOS seule sont listés ; un prix distinct ou une autre couverture, non', () {
+    Map<String, Object?> c(String code, Object? assurable) => {'id': code, 'code': code, 'libelle': code, 'famille': 'CERTIFICAT', 'statut': 'actif', 'codeGrille': code, 'assurable': assurable};
+    Map<String, Object?> v(String code, int na, int pa) =>
+        {'id': '$code@1', 'code': code, 'version': 1, 'dateEffet': '2026-01-01', 'prixNonAssure': na, 'prixAssure': pa, 'etatAssure': 'montant', 'statut': 'valide'};
+    final h = ReferentielTarifs([c('A', 'sos'), c('B', 'sos'), c('C', true), c('D', 'sos')], [v('A', 5000, 5000), v('B', 5000, 6000), v('C', 5000, 5000)]);
+    expect([for (final p in tarCertificatsPrixUniqueSos(h, '2026-11-16')) p['code']], ['A']);
   });
 }

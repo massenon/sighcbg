@@ -71,3 +71,11 @@ TarReleveSansPrix tarMesurerSansPrix(ReferentielTarifs h, String jour, {Map<Stri
   }
   return TarReleveSansPrix(parCause: par, prestations: n, sansPrix: par.values.fold(0, (a, l) => a + l.length));
 }
+
+/// Q19 (Direction, 16/11/2026) : les certificats « PRIX UNIQUE, COUVERTURE SOS SEULE » : une prestation de la famille `CERTIFICAT`, couverte par SOS seule, dont la colonne assurée vaut la colonne non assurée (le
+/// même prix pour tous). Le relevé les LISTE pour relecture ; chaque ligne est marquée « à valider par la Direction » : rien n'est confirmé à sa place. Aucune écriture, aucun prix valorisé.
+List<FicheTarif> tarCertificatsPrixUniqueSos(ReferentielTarifs h, String jour) => [
+      for (final p in h.tarifs)
+        if (p['statut'] != 'archive' && p['famille'] == 'CERTIFICAT' && p['assurable'] == 'sos')
+          if (h.instantane(p, jour) case final s? when s.na != null && (s.etatAssure == 'unique' || (s.etatAssure == 'montant' && s.pa == s.na))) p
+    ];

@@ -240,6 +240,12 @@ class _EtatTarifs extends State<EcranTarifsEtPrix> {
                 OngletDef(id: 'imagerie', libelle: 'Imagerie', compte: nb(const ['IMAGERIE']), construire: (_) => _OngletImagerie(c: c)),
                 // 16/11/2026 : « prestations sans prix » : toute prestation (acte, analyse créée au catalogue, imagerie, certificat…) sans prix en vigueur, avec son circuit : proposer, puis Oui ou Non.
                 OngletDef(id: 'sansprix', libelle: 'Sans prix', compte: sansPrix, construire: (_) => _OngletSansPrix(c: c)),
+                // Q19 (16/11/2026) : les certificats « prix unique, couverture SOS seule » à relire par la Direction.
+                OngletDef(
+                    id: 'certconfirm',
+                    libelle: 'Certificats à confirmer',
+                    compte: tarCertificatsPrixUniqueSos(TarifsPoste.lire(c.magasin), _jour(c)).length,
+                    construire: (_) => _OngletCertificatsAConfirmer(c: c)),
                 OngletDef(id: 'produits', libelle: 'Produits', compte: produits.length, construire: (_) => _OngletProduits(c: c)),
                 OngletDef(id: 'alertes', libelle: 'Alertes', compte: enAttente.length, construire: (_) => _OngletAlertes(c: c, peutDecider: peutDecider)),
                 OngletDef(id: 'historique', libelle: 'Historique', construire: (_) => _OngletHistorique(c: c)),
@@ -426,6 +432,24 @@ class _ReleveCauses extends StatelessWidget {
                 child: Text('${r.nombre(e.key)} · ${e.value}',
                     style: TextStyle(fontSize: 13, height: 18 / 13, color: r.nombre(e.key) > 0 ? JetonsShell.slate700 : JetonsShell.slate400))),
         ]));
+  }
+}
+
+/// Q19 : les certificats à PRIX UNIQUE couverts par SOS seule, listés pour relecture. Chaque ligne porte la mention « à valider par la Direction » : l'écran ne confirme rien, il montre ce qui reste à confirmer.
+class _OngletCertificatsAConfirmer extends StatelessWidget {
+  const _OngletCertificatsAConfirmer({required this.c});
+  final ContexteEcran c;
+
+  @override
+  Widget build(BuildContext context) {
+    final codes = {for (final p in tarCertificatsPrixUniqueSos(TarifsPoste.lire(c.magasin), _jour(c))) '${p['code']}'};
+    return cfaPile([
+      const NoteSigh(
+          'Certificats dont le prix est le même pour tous et que SOS seule couvre : à relire ligne par ligne et À VALIDER PAR LA DIRECTION. La liste ne confirme rien et ne change aucun prix ; une correction se propose par « Proposer un changement » (Oui ou Non).',
+          ton: TonSigh.attention,
+          icone: LucideIcons.triangleAlert),
+      _TableauPrestations(c: c, lignes: _lignes(c, (p) => codes.contains('${p['code']}')), vide: 'Aucun certificat à prix unique couvert par SOS seule.'),
+    ], espace: 12);
   }
 }
 

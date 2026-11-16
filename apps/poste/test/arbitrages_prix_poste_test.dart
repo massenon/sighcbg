@@ -293,5 +293,15 @@ void main() {
         expect(c == null, s != null && s.na != null && s.na! > 0, reason: '${pr['code']}');
       }
     });
+
+    test('Q19 : les certificats à prix unique couverts par SOS seule sont listés (lecture, rien d’écrit)', () {
+      final m = jeu();
+      final avant = m.collection('versionsTarif').toutes.length;
+      final l = tarCertificatsPrixUniqueSos(TarifsPoste.lire(m), tarIso(jour));
+      expect(l, isNotEmpty);
+      expect(l.every((p) => p['famille'] == 'CERTIFICAT' && p['assurable'] == 'sos'), isTrue);
+      expect([for (final p in l) p['code']], contains('CERT-APT'));
+      expect(m.collection('versionsTarif').toutes.length, avant);
+    });
   });
 }

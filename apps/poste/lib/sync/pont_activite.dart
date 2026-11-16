@@ -70,6 +70,10 @@ const Set<String> collectionsActivite = {
   // validation DA se DÉPOSENT et la mère les applique : `refusCircuitAchat`, `fusionnerCircuitAchat` du domaine). Jamais vers un téléphone (prix d'achat des lignes).
   'besoins',
   'commandes',
+  // Q26 (Direction, 16/11/2026) : le prévisionnel (budgets) et le patrimoine (immobilisations) voyagent comme les fiches descriptives (famille A), jamais vers un téléphone : un import fait chez un
+  // fileul ne reste plus local au poste.
+  'budgets',
+  'immobilisations',
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
