@@ -91,7 +91,8 @@ ResultatCaisse encaisserFacture(
     var courante = fac;
     for (final l in attente) {
       final prod = m.collection('produits').parId(l['produitId']);
-      final prix = d.tarPrixValorisation(h, prod, jourPiece, aujourdhui: aujourdhui);
+      // AJ (16/11/2026) : la cause dit quel prix valorise la ligne (prix ASSURÉ d'un acte, ou prix d'achat d'un article) ; jamais le prix non assuré.
+      final prix = d.tarPrixValorisationLigne(h, l, prod, jourPiece, aujourdhui: aujourdhui);
       if (prix == null) continue;
       final r = d.valoriserLigne(courante, '${l['id']}', prix,
           utilisateur: m.utilisateur, maintenant: maintenant.toIso8601String(), aujourdhui: aujourdhui, ecritures: [...ecrituresAvant, ...complement]);
@@ -99,7 +100,7 @@ ResultatCaisse encaisserFacture(
       courante = r.facture!;
       complement.addAll(r.ecritures);
       valorisees.add('${l['id']}');
-      m.journaliser('Valorisation d’une ligne au prix d’achat', 'M8', 'facture', '${fac['numero']}', {'ligne': l['designation'], 'montant': 'prix à valoriser'},
+      m.journaliser(d.ligneAssureADefinir(l) ? 'Valorisation d’une ligne au prix assuré' : 'Valorisation d’une ligne au prix d’achat', 'M8', 'facture', '${fac['numero']}', {'ligne': l['designation'], 'montant': 'prix à valoriser'},
           {'ligne': l['designation'], 'prixUnitaire': prix.prixUnitaire, 'version': prix.version, 'dateEffet': prix.dateEffet, 'regle': prix.regle});
     }
     if (valorisees.isNotEmpty) {

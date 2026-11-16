@@ -40,6 +40,42 @@ String motifPrixAValoriser(Object? designation) =>
     'Le prix d’achat se fixe au « Référentiel produits » (« Changer le prix d’achat », puis Oui à « Tarifs et prix ») ; la ligne s’encaisse ensuite au prix d’achat retenu (RG-02). '
     'Les autres prestations de la facture s’encaissent normalement.';
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// PRIX ASSURÉ À DÉFINIR (section AJ, Direction du 16/11/2026) : MÊME mécanique que « prix à valoriser ».
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+//
+// Un acte ASSURABLE dont la colonne « prix assuré » de la grille est VIDE, prescrit à un ASSURÉ (carte valide à la date, RG-09) : la ligne existe, porte « prix assuré à définir »
+// et AUCUN montant ; le prix NON ASSURÉ est affiché pour information, il n'est JAMAIS facturé à sa place. La ligne porte les deux marques (`prixAValoriser` : la mécanique commune
+// des lignes sans montant — hors totaux, encaissement et normalisation refusés en le nommant ; `prixAssureADefinir` : la cause). Elle se valorise à l'encaissement, en place, dès
+// qu'un prix assuré validé est en vigueur ([tarPrixValorisationLigne]).
+
+/// Le code nommé du refus d'encaissement d'une ligne dont le prix assuré manque (stable : écrans, tests, journal).
+const String codePrixAssureADefinir = 'PRIX_ASSURE_A_DEFINIR';
+
+/// Le libellé affiché à la place du montant : jamais « 0 », jamais le prix non assuré.
+const String libellePrixAssureADefinir = 'Prix assuré à définir';
+
+/// La ligne attend-elle son PRIX ASSURÉ (cause particulière d'une ligne sans montant) ?
+bool ligneAssureADefinir(Map<String, Object?> l) => l['prixAssureADefinir'] == true && ligneAValoriser(l);
+
+/// Le libellé d'une ligne sans montant, selon sa cause. Le prix non assuré, quand la ligne le porte (`prixNonAssureInfo`), est dit POUR INFORMATION.
+String libelleLigneSansMontant(Map<String, Object?> l, {String Function(Object?)? montant}) {
+  if (!ligneAssureADefinir(l)) return libellePrixAValoriser;
+  final info = l['prixNonAssureInfo'];
+  if (info is! num) return libellePrixAssureADefinir;
+  return '$libellePrixAssureADefinir (non assuré : ${montant == null ? '$info' : montant(info)}, pour information)';
+}
+
+/// Le code nommé du refus d'encaissement d'une ligne sans montant.
+String codeLigneSansMontant(Map<String, Object?> l) => ligneAssureADefinir(l) ? codePrixAssureADefinir : codePrixAValoriser;
+
+/// Le motif nommé du refus d'encaissement d'une ligne sans montant.
+String motifLigneSansMontant(Map<String, Object?> l) => ligneAssureADefinir(l)
+    ? '« ${l['designation'] ?? 'Acte'} » est un acte assurable dont la grille ne porte pas de prix ASSURÉ : la ligne de l’assuré porte « prix assuré à définir » et ne s’encaisse pas. '
+        'Elle n’est jamais facturée au prix non assuré (${l['prixNonAssureInfo'] ?? '—'}, pour information). Le prix assuré se propose à « Tarifs et prix », puis Oui ; la ligne s’encaisse ensuite. '
+        'Les autres prestations de la facture s’encaissent normalement.'
+    : motifPrixAValoriser(l['designation']);
+
 /// Le prix retenu pour valoriser une ligne.
 class PrixValorisation {
   const PrixValorisation({required this.prixUnitaire, this.version, this.dateEffet, required this.regle});
@@ -84,6 +120,35 @@ PrixValorisation? tarPrixValorisation(ReferentielTarifs h, Map<String, Object?>?
       prixUnitaire: vente, version: ((premiere['version'] as num?) ?? 0).toInt(), dateEffet: premiere['dateEffet'] as String?, regle: 'premiere_valorisation');
 }
 
+/// Le prix ASSURÉ de valorisation d'une ligne d'acte (même règle que [tarPrixValorisation]) : le prix assuré EN VIGUEUR à la date de la pièce, sinon le PREMIER prix assuré validé entré
+/// en vigueur après elle (et déjà en vigueur aujourd'hui). `null` tant qu'aucun prix assuré n'est validé : jamais le prix non assuré.
+PrixValorisation? tarPrixValorisationAssure(ReferentielTarifs h, Object? acteCode, String jourPiece, {required String aujourdhui}) {
+  final p = h.parActe['$acteCode'] ?? h.parCode['$acteCode'];
+  if (p == null) return null;
+  final code = '${p['code']}';
+  final aLaDate = h.enVigueur(code, jourPiece);
+  if (aLaDate != null && aLaDate['etatAssure'] == 'montant' && aLaDate['prixAssure'] is num && (aLaDate['prixAssure'] as num) > 0) {
+    return PrixValorisation(
+        prixUnitaire: aLaDate['prixAssure'] as num, version: ((aLaDate['version'] as num?) ?? 0).toInt(), dateEffet: aLaDate['dateEffet'] as String?, regle: 'a_la_date');
+  }
+  Map<String, Object?>? premiere;
+  for (final v in h.versionsDe(code)) {
+    if (v['statut'] != 'valide' || v['etatAssure'] != 'montant' || v['prixAssure'] is! num || (v['prixAssure'] as num) <= 0) continue;
+    final de = v['dateEffet'];
+    if (de == null) continue;
+    final d = '$de';
+    if (d.compareTo(jourPiece) <= 0 || d.compareTo(aujourdhui) > 0) continue;
+    if (premiere == null || d.compareTo('${premiere['dateEffet']}') < 0) premiere = v;
+  }
+  if (premiere == null) return null;
+  return PrixValorisation(
+      prixUnitaire: premiere['prixAssure'] as num, version: ((premiere['version'] as num?) ?? 0).toInt(), dateEffet: premiere['dateEffet'] as String?, regle: 'premiere_valorisation');
+}
+
+/// Le prix de valorisation d'une ligne SANS MONTANT, selon sa cause : prix assuré d'un acte ([tarPrixValorisationAssure]) ou prix d'achat d'un article ([tarPrixValorisation]).
+PrixValorisation? tarPrixValorisationLigne(ReferentielTarifs h, Map<String, Object?> ligne, Map<String, Object?>? produit, String jourPiece, {required String aujourdhui}) =>
+    ligneAssureADefinir(ligne) ? tarPrixValorisationAssure(h, ligne['acteCode'], jourPiece, aujourdhui: aujourdhui) : tarPrixValorisation(h, produit, jourPiece, aujourdhui: aujourdhui);
+
 /// Le résultat d'une valorisation : la facture APRÈS (copie), l'écriture complémentaire éventuelle, ou le refus nommé (rien n'est écrit).
 class ResultatValorisation {
   const ResultatValorisation({this.facture, this.ecritures = const [], this.refusCode, this.refus});
@@ -117,7 +182,7 @@ ResultatValorisation valoriserLigne(Map<String, Object?> facture, String ligneId
   final l = lignes[i];
   if (!ligneAValoriser(l)) return ResultatValorisation(refusCode: 'DEJA_VALORISEE', refus: 'La ligne « ${l['designation']} » porte déjà son montant.');
   if (!(prix.prixUnitaire > 0)) {
-    return ResultatValorisation(refusCode: codePrixAValoriser, refus: motifPrixAValoriser(l['designation']));
+    return ResultatValorisation(refusCode: codeLigneSansMontant(l), refus: motifLigneSansMontant(l));
   }
   final q = _n(l['quantite'] ?? 1);
   final brut = arrondiJs(prix.prixUnitaire * q).toInt();
@@ -137,6 +202,7 @@ ResultatValorisation valoriserLigne(Map<String, Object?> facture, String ligneId
     'partPersonnel': pp,
     'partPatient': pat,
     'prixAValoriser': false,
+    if (l['prixAssureADefinir'] == true) 'prixAssureADefinir': false,
     'valorisation': {...prix.versJson(), 'valoriseLe': maintenant, 'valorisePar': utilisateur},
   };
   final apresLignes = [...lignes]..[i] = ligne;

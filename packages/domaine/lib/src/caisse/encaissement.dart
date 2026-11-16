@@ -15,7 +15,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../mecef/montants.dart';
-import 'valorisation.dart' show codePrixAValoriser, ligneAValoriser, motifPrixAValoriser;
+import 'valorisation.dart' show codePrixAValoriser, codePrixAssureADefinir, codeLigneSansMontant, ligneAValoriser, motifLigneSansMontant;
 
 const compteCaisse = '571000';
 const compteClientsAssurance = '411110';
@@ -124,8 +124,10 @@ ResultatEncaissement encaisser(
   final reglees = <Map<String, Object?>>[];
   // Une ligne « prix à valoriser » n'a pas de montant : elle ne s'encaisse JAMAIS (ni pour 0, ni au jugé). Refusée nommément, elle n'empêche pas les autres.
   final refusees = <Map<String, Object?>>[];
+  // La cause est NOMMÉE ligne par ligne : prix d'achat à valoriser, ou prix ASSURÉ à définir (AJ, 16/11/2026 : jamais facturée au prix non assuré).
   void refuser(Map<String, Object?> l) =>
-      refusees.add({'id': l['id'], 'designation': l['designation'], 'code': codePrixAValoriser, 'motif': motifPrixAValoriser(l['designation'])});
+      refusees.add({'id': l['id'], 'designation': l['designation'], 'code': codeLigneSansMontant(l), 'motif': motifLigneSansMontant(l)});
+  String codeRefus() => refusees.every((r) => r['code'] == codePrixAssureADefinir) ? codePrixAssureADefinir : codePrixAValoriser;
   ResultatEncaissement refusPrix() => ResultatEncaissement(
           facture: facture,
           deja: false,
@@ -133,8 +135,8 @@ ResultatEncaissement encaisser(
           montantRegle: 0,
           restantDu: toutes.where((l) => l['statutPaiement'] != 'paye').fold<double>(0, (n, l) => n + _n(l['partPatient'])),
           ecritures: const [],
-          refus: '$codePrixAValoriser : ${refusees.map((r) => r['motif']).join(' ')}',
-          refusCode: codePrixAValoriser,
+          refus: '${codeRefus()} : ${refusees.map((r) => r['motif']).join(' ')}',
+          refusCode: codeRefus(),
           lignesRefusees: refusees);
   var paye = 0.0;
   if (lignes != null && lignes.isNotEmpty) {

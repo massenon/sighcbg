@@ -204,7 +204,9 @@ class _Registre extends StatelessWidget {
                   ColonneMini('Acte', (l) => '${l['libelle']}'),
                   ColonneMini('Secteur', (l) => '${l['secteur'] ?? ''}'),
                   ColonneMini('Tarif',
-                      (l) => vrai(l['prix']) ? money(l['prix'], avecDevise: false) : 'à valider',
+                      (l) => l['prixAssureADefinir'] == true
+                          ? libelleLigneSansMontant({...l, 'prixAValoriser': true, 'montant': null}, montant: (v) => money(v, avecDevise: false))
+                          : (vrai(l['prix']) ? money(l['prix'], avecDevise: false) : 'à valider'),
                       droite: true),
                 ], lignes: act)),
           ],
