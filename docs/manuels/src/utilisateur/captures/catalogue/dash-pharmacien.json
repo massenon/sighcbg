@@ -1,0 +1,17 @@
+{
+ "id": "dash-pharmacien",
+ "titre": "Tableau de bord — Pharmacie",
+ "libelle": "Pharmacie",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-pharmacien"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 776
+}

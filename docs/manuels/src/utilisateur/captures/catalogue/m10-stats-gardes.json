@@ -1,0 +1,17 @@
+{
+ "id": "m10-stats-gardes",
+ "titre": "Statistiques de garde",
+ "libelle": "Statistiques de garde",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-stats-gardes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1290
+}

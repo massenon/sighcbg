@@ -1,0 +1,17 @@
+{
+ "id": "m4-dossier-bebe",
+ "titre": "Dossier bébé & soins du nouveau-né",
+ "libelle": "Dossier bébé & soins du nouveau-né",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-dossier-bebe"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 732
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m2-mdt-conventions",
+ "titre": "Conventions de visites",
+ "libelle": "Conventions de visites",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Médecine du travail",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-mdt-conventions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 758
+}

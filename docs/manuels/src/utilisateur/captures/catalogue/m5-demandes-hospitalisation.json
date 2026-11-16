@@ -1,0 +1,17 @@
+{
+ "id": "m5-demandes-hospitalisation",
+ "titre": "Demandes — hospitalisation",
+ "libelle": "Demandes — hospitalisation",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-demandes-hospitalisation"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 717
+}

@@ -1,0 +1,438 @@
+{
+ "nom": "06-notifications",
+ "ecran": "dash-receptionniste",
+ "role": "reception",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Espace patient",
+   "rect": [
+    1007.6,
+    141.0,
+    156.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tableaux de bord par poste",
+   "rect": [
+    1172.3,
+    141.0,
+    243.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Voir",
+   "rect": [
+    931.0,
+    174.0,
+    92.0,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Acquitter",
+   "rect": [
+    931.0,
+    208.0,
+    92.0,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "rect": [
+    956.9,
+    344.0,
+    79.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1000.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   324.1,
+   36.0
+  ],
+  "barre-actions": [
+   944.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1047.7,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1197.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1217.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1243.0,
+   0.0,
+   185.0,
+   56.0
+  ],
+  "nom-courant": [
+   1289.0,
+   14.5,
+   117.0,
+   14.0
+  ],
+  "role-courant": [
+   1289.0,
+   28.5,
+   100.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   331.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   405.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   560.5,
+   60.0,
+   111.0,
+   36.0
+  ],
+  "raccourci-Patients": [
+   688.5,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   789.6,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "dash-receptionniste|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   163.4,
+   116.0,
+   162.3,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   279.8,
+   28.0
+  ],
+  "tba:premier-regard": [
+   24.0,
+   233.0,
+   1392.0,
+   116.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   370.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   384.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   419.0,
+   1390.0,
+   192.0
+  ],
+  "tba:parcours:Nouveau patient": [
+   45.0,
+   702.0,
+   667.0,
+   260.0
+  ],
+  "tba:etape:m1-patients": [
+   90.0,
+   767.0,
+   162.0,
+   20.0
+  ],
+  "tba:etape:m1-constantes": [
+   90.0,
+   811.0,
+   156.4,
+   20.0
+  ],
+  "tba:etape:m2-file-attente": [
+   90.0,
+   855.0,
+   170.5,
+   20.0
+  ],
+  "tba:parcours:Rendez-vous de consultation": [
+   728.0,
+   702.0,
+   667.0,
+   272.0
+  ],
+  "tba:etape:m2-rendezvous": [
+   773.0,
+   767.0,
+   162.5,
+   20.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ],
+  "kit:modale-panneau": [
+   384.0,
+   48.0,
+   672.0,
+   346.0
+  ],
+  "kit:modale-entete": [
+   384.0,
+   48.0,
+   672.0,
+   69.0
+  ],
+  "kit:modale-titre": [
+   404.0,
+   64.0,
+   102.3,
+   24.0
+  ],
+  "kit:modale-corps": [
+   384.0,
+   117.0,
+   672.0,
+   214.0
+  ],
+  "notif-ligne:sys:audio": [
+   404.0,
+   161.0,
+   632.0,
+   112.0
+  ],
+  "notif-voir:sys:audio": [
+   931.0,
+   174.0,
+   92.0,
+   30.0
+  ],
+  "notif-acquitter:sys:audio": [
+   931.0,
+   208.0,
+   92.0,
+   28.0
+  ],
+  "kit:modale-pied": [
+   384.0,
+   331.0,
+   672.0,
+   63.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    944.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1047.7,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1197.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1243.0,
+    0.0,
+    185.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1000.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

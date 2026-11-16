@@ -1,0 +1,17 @@
+{
+ "id": "rls-alertes",
+ "titre": "Alertes et notifications",
+ "libelle": "Alertes et notifications",
+ "domaine": "Relais en ligne",
+ "module": "RLS",
+ "moduleLibelle": "Relais en ligne (apps/web)",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "rls-alertes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 624
+}

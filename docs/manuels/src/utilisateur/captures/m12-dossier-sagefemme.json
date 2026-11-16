@@ -1,0 +1,121 @@
+{
+ "nom": "m12-dossier-sagefemme",
+ "taille": [
+  412.0,
+  1600.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Saisir les constantes",
+   "rect": [
+    16.0,
+    744.0,
+    380.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Visite prénatale (CPN)",
+   "rect": [
+    16.0,
+    800.0,
+    380.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Visite post-natale (CPoN)",
+   "rect": [
+    16.0,
+    856.0,
+    380.0,
+    48.0
+   ]
+  },
+  {
+   "libelle": "Surveillance mère-bébé",
+   "rect": [
+    16.0,
+    912.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   1600.0
+  ],
+  "couverture": [
+   28.0,
+   260.0,
+   80.0,
+   20.0
+  ],
+  "allergies": [
+   28.0,
+   344.0,
+   111.5,
+   20.0
+  ],
+  "constantes-vide": [
+   28.0,
+   532.0,
+   218.7,
+   20.0
+  ],
+  "notes-vide": [
+   28.0,
+   616.0,
+   209.9,
+   20.0
+  ],
+  "prescriptions-vide": [
+   28.0,
+   700.0,
+   261.9,
+   20.0
+  ],
+  "saisir-constantes": [
+   16.0,
+   744.0,
+   380.0,
+   48.0
+  ],
+  "ouvrir-cpn": [
+   16.0,
+   800.0,
+   380.0,
+   48.0
+  ],
+  "ouvrir-cpon": [
+   16.0,
+   856.0,
+   380.0,
+   48.0
+  ],
+  "ouvrir-surveillance": [
+   16.0,
+   912.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m7-factures-fournisseurs",
+ "titre": "Factures fournisseurs",
+ "libelle": "Factures fournisseurs",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-factures-fournisseurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 819
+}

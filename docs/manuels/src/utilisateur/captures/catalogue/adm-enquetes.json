@@ -1,0 +1,17 @@
+{
+ "id": "adm-enquetes",
+ "titre": "Enquêtes & questionnaires",
+ "libelle": "Enquêtes & questionnaires",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "adm-enquetes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1304
+}

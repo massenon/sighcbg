@@ -1,0 +1,17 @@
+{
+ "id": "m9-conventions",
+ "titre": "Conventions & garanties",
+ "libelle": "Conventions & garanties",
+ "domaine": "Financier",
+ "module": "M9",
+ "moduleLibelle": "Assurances & Créances",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m9-conventions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1011
+}

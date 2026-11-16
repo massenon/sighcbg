@@ -1,0 +1,17 @@
+{
+ "id": "m6-inventaire-feuille",
+ "titre": "Feuille d’inventaire",
+ "libelle": "Feuille d’inventaire — comptage",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-inventaire-feuille"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 983
+}

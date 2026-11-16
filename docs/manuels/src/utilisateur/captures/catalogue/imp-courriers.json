@@ -1,0 +1,17 @@
+{
+ "id": "imp-courriers",
+ "titre": "Importation du registre des courriers",
+ "libelle": "Importation du registre des courriers",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-courriers"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1020
+}

@@ -1,0 +1,17 @@
+{
+ "id": "cfg-fiscalite",
+ "titre": "Paramètres fiscaux (IFU / RCCM)",
+ "libelle": "Paramètres fiscaux (IFU / RCCM)",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-fiscalite"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1239
+}

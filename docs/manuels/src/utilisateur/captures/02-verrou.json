@@ -1,0 +1,103 @@
+{
+ "nom": "02-verrou",
+ "ecran": "auth-lock",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Déverrouiller",
+   "rect": [
+    817.6,
+    420.5,
+    438.4,
+    44.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "autonome|auth-lock": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "acces:lisere-coeur": [
+   144.0,
+   112.5,
+   1152.0,
+   3.0
+  ],
+  "acces:lisere-sante": [
+   144.0,
+   115.5,
+   1152.0,
+   3.0
+  ],
+  "logo-clinique": [
+   189.0,
+   163.5,
+   54.0,
+   54.0
+  ],
+  "acces:nom-clinique": [
+   262.0,
+   162.5,
+   362.6,
+   24.0
+  ],
+  "acces:carte": [
+   817.6,
+   158.5,
+   438.4,
+   416.0
+  ],
+  "acces:motdepasse": [
+   817.6,
+   366.5,
+   438.4,
+   38.0
+  ],
+  "acces:securite": [
+   817.6,
+   480.5,
+   438.4,
+   50.0
+  ],
+  "kit:note": [
+   817.6,
+   480.5,
+   438.4,
+   50.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [],
+ "onglets": []
+}

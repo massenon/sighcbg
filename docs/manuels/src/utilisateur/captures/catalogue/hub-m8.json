@@ -1,0 +1,17 @@
+{
+ "id": "hub-m8",
+ "titre": "Facturation & Caisse",
+ "libelle": "Facturation & Caisse",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m8"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 516
+}

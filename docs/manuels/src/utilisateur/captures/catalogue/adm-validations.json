@@ -1,0 +1,17 @@
+{
+ "id": "adm-validations",
+ "titre": "Validations en attente",
+ "libelle": "Validations en attente",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "adm-validations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 813
+}

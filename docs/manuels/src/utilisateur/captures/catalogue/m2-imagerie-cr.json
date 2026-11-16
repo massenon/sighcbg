@@ -1,0 +1,17 @@
+{
+ "id": "m2-imagerie-cr",
+ "titre": "Compte rendu d’imagerie",
+ "libelle": "Compte rendu d’imagerie — saisie",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Imagerie médicale",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-imagerie-cr"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 618
+}
