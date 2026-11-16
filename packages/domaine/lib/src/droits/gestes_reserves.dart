@@ -184,7 +184,7 @@ const List<GesteReserve> gestesReserves = [
       module: 'MECEF',
       ecran: 'mecef-config',
       rolesDefaut: ['admin', 'da'],
-      aide: 'Le mode de certification des factures (boîtier ou e-MECeF). Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
+      aide: 'Le mode de certification des factures (boîtier ou e-MECeF) et le modèle du boîtier. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
   GesteReserve(
       id: gesteAlertesCaisse,
       libelle: 'Recevoir les notifications du poste de caisse',

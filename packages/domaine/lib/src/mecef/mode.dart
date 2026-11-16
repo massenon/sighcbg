@@ -3,7 +3,8 @@
 /// Décision de la Direction du 09/11/2026 : AUCUN numéro simulé ne se présente comme fiscal. Le mode se règle dans les paramètres du poste (clé
 /// [mecefCleMode], défaut [mecefModeDefaut], versionné par date par le registre du lot L0) ; la valeur se LIT en base, jamais ici.
 ///
-/// Rien n'est inventé : aucun document remis ne donne le modèle du boîtier, son interface ni son protocole, ni le dossier d'interface e-MECeF de la DGI
+/// Rien n'est inventé : le MODÈLE du boîtier est désormais connu (ELTRADE CC300, Direction de Baguidi, 16/11/2026, réglage [mecefCleModeleBoitier]), mais aucun
+/// document du dépôt ne donne son interface ni son protocole, ni le dossier d'interface e-MECeF de la DGI
 /// (voir les questions ouvertes du plan, section L3). Ce fichier ne contient donc ni adresse, ni jeton, ni format de message : seulement l'interface
 /// [AdaptateurMecef] que l'adaptateur réel du lot M3 implémentera, et l'implémentation [AdaptateurNonConfigure] qui REFUSE en nommant (code, motif, geste).
 /// Sans adaptateur configuré, la vente est encaissée et reste EN ATTENTE de certification : elle ne reçoit aucun numéro, et la retransmission ne consomme
@@ -25,6 +26,22 @@ const String mecefModeDefaut = 'boitier';
 
 /// Le libellé affiché de chaque mode.
 const Map<String, String> mecefLibellesModes = {'boitier': 'Boîtier physique', 'emecef': 'e-MECeF'};
+
+/// LE MODÈLE DU BOÎTIER (décision de la Direction de Baguidi du 16/11/2026 : un ELTRADE CC300) : un réglage de clinique du registre (clé [mecefCleModeleBoitier],
+/// famille `mecef`, défaut semé [mecefModeleBoitierDefaut]), lu en base, réglé sous le geste `reglage_mecef`. Il NOMME l'appareil ; il ne fournit aucun protocole.
+const String mecefCleModeleBoitier = 'mecef.modeleBoitier';
+const String mecefModeleBoitierDefaut = 'ELTRADE CC300';
+
+/// Le modèle en vigueur d'une valeur lue en base : le texte nettoyé, ou `null` quand il n'est pas renseigné (jamais un modèle supposé).
+String? mecefModeleBoitierEnVigueur(Object? valeur) {
+  final t = valeur is String ? valeur.trim() : '';
+  return t.isEmpty ? null : t;
+}
+
+/// La mention de l'adaptateur du boîtier, telle que l'écran et le refus la portent : l'intégration n'est documentée nulle part dans le dépôt.
+String mecefMentionAdaptateurBoitier(String? modele) => modele == null
+    ? 'adaptateur du boîtier : modèle non renseigné, intégration à fournir par l’éditeur du boîtier'
+    : 'adaptateur $modele : intégration à fournir par l’éditeur du boîtier';
 
 /// Le code du refus nommé quand aucun adaptateur n'est configuré.
 const String mecefCodeNonConfigure = 'MECEF_NON_CONFIGURE';
@@ -84,9 +101,12 @@ abstract class AdaptateurMecef {
 /// L'adaptateur « non configuré » : il REFUSE en nommant (code, motif, geste) et ne fabrique rien. Le motif de l'e-MECeF est celui que la Direction a arrêté
 /// (« non configuré : dossier d'interface DGI requis ») ; celui du boîtier dit que son adaptateur n'est pas livré.
 class AdaptateurNonConfigure implements AdaptateurMecef {
-  const AdaptateurNonConfigure(this.mode);
+  const AdaptateurNonConfigure(this.mode, {this.modeleBoitier});
   @override
   final String mode;
+
+  /// Le modèle du boîtier réglé pour la clinique ([mecefCleModeleBoitier]), ou `null` s'il n'est pas renseigné. Nommé dans le refus du mode boîtier.
+  final String? modeleBoitier;
 
   @override
   bool get configure => false;
@@ -97,9 +117,11 @@ class AdaptateurNonConfigure implements AdaptateurMecef {
           mecefCodeNonConfigure,
           'e-MECeF non configuré : dossier d’interface DGI requis.',
           'La vente reste en attente de certification. Choisir le mode « Boîtier physique », ou fournir le dossier d’interface de la DGI.')
-      : const RefusMecef(
+      : RefusMecef(
           mecefCodeNonConfigure,
-          'Boîtier non configuré : aucun adaptateur n’est branché à ce poste (modèle, interface et protocole du boîtier non documentés).',
+          modeleBoitier == null
+              ? 'Boîtier non configuré : aucun adaptateur n’est branché à ce poste (modèle, interface et protocole du boîtier non documentés).'
+              : 'Boîtier non configuré : aucun adaptateur n’est branché à ce poste (${mecefMentionAdaptateurBoitier(modeleBoitier)} ; interface et protocole non documentés).',
           'La vente reste en attente de certification. Elle se retransmettra quand l’adaptateur du boîtier sera livré (lot M3).');
 
   @override
@@ -107,7 +129,14 @@ class AdaptateurNonConfigure implements AdaptateurMecef {
 }
 
 /// L'adaptateur du mode en vigueur. Tant qu'aucun adaptateur réel n'existe (lot M3), les deux modes rendent un [AdaptateurNonConfigure].
-AdaptateurMecef adaptateurPourMode(Object? valeurMode) => AdaptateurNonConfigure(mecefModeEnVigueur(valeurMode));
+/// [modeleBoitier] : la valeur lue du réglage [mecefCleModeleBoitier] (nommée dans le refus du mode boîtier).
+AdaptateurMecef adaptateurPourMode(Object? valeurMode, {Object? modeleBoitier}) =>
+    AdaptateurNonConfigure(mecefModeEnVigueur(valeurMode), modeleBoitier: mecefModeleBoitierEnVigueur(modeleBoitier));
+
+/// Les champs que la pièce porte sur l'APPAREIL quand la tentative a eu lieu en mode boîtier : le modèle réglé (`modeleBoitierMecef`). Vide en mode e-MECeF ou quand le
+/// modèle n'est pas renseigné. Distinct de [champsEnAttenteCertification], qui reste le contenu de la maquette (vecteurs).
+Map<String, Object?> champsAppareilMecef(String mode, String? modeleBoitier) =>
+    mode == 'boitier' && modeleBoitier != null ? {'modeleBoitierMecef': modeleBoitier} : const {};
 
 /// Les champs que le refus laisse sur la pièce : elle reste EN ATTENTE de certification (état stocké `en_attente`), sans numéro, avec le code et le motif du
 /// refus, et le mode sous lequel la tentative a eu lieu. Même contenu que la maquette (vecteurs `mecef_mode.json`).
