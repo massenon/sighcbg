@@ -17,7 +17,8 @@ import 'a_chaud.dart' show surchargesParRole;
 
 /// Un geste réservé : son identifiant (clé du droit), ce qu'il autorise, l'écran qui le porte et les rôles qui le détiennent d'origine.
 class GesteReserve {
-  const GesteReserve({required this.id, required this.libelle, required this.module, required this.ecran, required this.rolesDefaut, this.aide = ''});
+  const GesteReserve(
+      {required this.id, required this.libelle, required this.module, required this.ecran, required this.rolesDefaut, this.aide = '', this.suitEcran = false});
   final String id;
   final String libelle;
   final String module;
@@ -26,6 +27,10 @@ class GesteReserve {
   /// Les rôles qui détiennent le geste sans aucune décision. Un rôle créé en exploitation n'y figure pas : il part de zéro.
   final List<String> rolesDefaut;
   final String aide;
+
+  /// Un geste TRANSVERSE, sans écran propre (`ecran` vide) : sans décision, il suit la LECTURE de l'écran où il s'exerce (`DroitsGestes.peutSurEcran`). Une décision de la
+  /// clinique l'accorde ou le retire au rôle pour TOUS les écrans.
+  final bool suitEcran;
 }
 
 /// Valider un seuil de variation brutale du laboratoire : au Biologiste médical d'origine (réponse de la Direction du 13/11/2026).
@@ -47,6 +52,10 @@ const String gesteDaterPrixPasse = 'tarif_dater_passe';
 /// d'éditer l'écran. Le caissier modifie la fiche d'un produit (stock détail) mais n'a aucune raison métier de proposer un prix d'achat. Origine : le gestionnaire de stock, la DAF et
 /// l'administrateur. S'ajoute au droit d'éditer l'écran (il ne l'ouvre pas) ; ne touche ni la réception d'achat ni l'importation des prix d'achat, qui ont leur propre droit.
 const String gesteProposerPrixAchat = 'tarif_proposer_achat';
+
+/// Exporter ou imprimer les lignes d'un tableau (Q39, Direction du 15/11/2026) : un droit réglable PAR RÔLE. Sans décision, il suit la lecture de l'écran (les rôles qui
+/// LISENT l'écran exportent) ; une décision l'accorde ou le retire au rôle pour tous les écrans. Il s'applique à la SORTIE : le fichier ne porte que ce que l'écran montre.
+const String gesteExporter = 'export_tableau';
 
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
@@ -85,6 +94,14 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'm6-produits',
       rolesDefaut: ['admin', 'da', 'stock'],
       aide: 'La commande « Changer le prix d’achat » du Référentiel produits. Modifier la fiche d’un produit ne suffit plus. Origine : le gestionnaire de stock, la DAF, l’administrateur.'),
+  GesteReserve(
+      id: gesteExporter,
+      libelle: 'Exporter et imprimer les lignes d’un tableau',
+      module: '*',
+      ecran: '',
+      rolesDefaut: [],
+      suitEcran: true,
+      aide: 'Excel, CSV et impression de la sélection. Sans décision, le droit suit la lecture de l’écran : qui lit le tableau peut l’exporter. Accordé ou retiré à un rôle, il vaut pour tous les écrans. Le fichier ne porte que les colonnes et les lignes que l’écran montre, champs sensibles masqués comme à l’écran.'),
 ];
 
 GesteReserve? gesteReserve(String id) {
@@ -126,8 +143,20 @@ class DroitsGestes {
     final g = gesteReserve(geste);
     if (g == null || role.isEmpty) return false;
     if (_archive?.call(role) ?? false) return false;
-    if (!(_actif?.call(g.ecran, g.module) ?? true)) return false;
+    if (g.ecran.isNotEmpty && !(_actif?.call(g.ecran, g.module) ?? true)) return false;
+    // Un geste transverse sans décision ne se juge pas sans écran : voir [peutSurEcran].
+    if (g.suitEcran) return decision(role, geste) ?? false;
     return decision(role, geste) ?? defaut(role, geste);
+  }
+
+  /// Le rôle détient-il le geste TRANSVERSE [geste] sur l'écran [ecran] ? La décision de la clinique l'emporte dans les deux sens ; sans décision, le rôle doit LIRE
+  /// l'écran ([peutVoirEcran], la matrice en force ; `null` = matrice non branchée, un test nu : écran réputé ouvert). Rôle vide, geste inconnu ou non transverse,
+  /// rôle archivé : non.
+  bool peutSurEcran(String role, String geste, String ecran, {bool Function(String role, String ecran)? peutVoirEcran}) {
+    final g = gesteReserve(geste);
+    if (g == null || !g.suitEcran || role.isEmpty) return false;
+    if (_archive?.call(role) ?? false) return false;
+    return decision(role, geste) ?? (peutVoirEcran?.call(role, ecran) ?? true);
   }
 
   /// `origine` ou `decide` : d'où vient le droit (écran d'administration).

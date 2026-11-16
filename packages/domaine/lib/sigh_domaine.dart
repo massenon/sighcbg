@@ -25,6 +25,8 @@ export 'src/droits/a_chaud.dart';
 export 'src/droits/decisions_droits.dart';
 export 'src/droits/donnees_sensibles.dart';
 export 'src/droits/gestes_reserves.dart';
+export 'src/tableaux/export_tableau.dart';
+export 'src/tableaux/xlsx.dart';
 export 'src/documents/doc_sha256.dart';
 export 'src/documents/doc_regles.dart';
 export 'src/documents/doc_pdf_texte.dart';

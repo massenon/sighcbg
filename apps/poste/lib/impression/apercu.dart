@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/jetons_shell.dart';
 import '../kit/kit.dart';
 import '../shell/contexte_ecran.dart';
 import 'feuilles.dart';
@@ -198,6 +199,79 @@ Future<void> afficherApercuFiche(BuildContext context, FichePaysage fiche) {
             final chemin = await ImpressionPoste.enregistrer(octets, fiche.reference);
             magasin?.journaliser('Impression', 'RAP', 'Document', fiche.reference, null, {'titre': fiche.titre, 'pages': fiche.pages.length});
             if (context.mounted) ToastsSigh.afficher(context, 'PDF enregistré.', type: TypeToast.succes, detail: chemin);
+          }),
+    ],
+  );
+}
+
+/// Aperçu d'un LOT de pièces (« un état par ligne » d'une impression de sélection) : une feuille à la fois, « Précédent » / « Suivant », et l'enregistrement de TOUS les PDF
+/// d'un geste (un fichier par état). Même résolution de l'identité légale et des signataires qu'[afficherApercu].
+Future<void> afficherApercuLot(BuildContext context, List<PieceA4> pieces0) {
+  final magasin = ContexteEcran.maybeOf(context)?.magasin;
+  final pieces = [
+    for (final p0 in pieces0)
+      () {
+        final identifiee = p0.identite != null || magasin == null ? p0 : p0.avecIdentite(identiteImprimeeDe(magasin, p0.edite));
+        return magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives);
+      }(),
+  ];
+  var i = 0;
+  return afficherModale<void>(
+    context,
+    titre: 'Impression de la sélection',
+    sousTitre: '${pieces.length} état${pieces.length > 1 ? 's' : ''}',
+    taille: TailleModale.xl,
+    corps: StatefulBuilder(
+        builder: (ctx, maj) => Column(mainAxisSize: MainAxisSize.min, children: [
+              Container(
+                  key: const Key('impression:lot:position'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  color: JetonsShell.slate50,
+                  child: Row(children: [
+                    BoutonSigh(
+                        key: const Key('impression:lot:precedent'),
+                        libelle: 'Précédent',
+                        icone: LucideIcons.chevronLeft,
+                        taille: TailleBouton.sm,
+                        variante: VarianteBouton.secondaire,
+                        onPressed: i == 0 ? null : () => maj(() => i--)),
+                    const SizedBox(width: 8),
+                    BoutonSigh(
+                        key: const Key('impression:lot:suivant'),
+                        libelle: 'Suivant',
+                        icone: LucideIcons.chevronRight,
+                        taille: TailleBouton.sm,
+                        variante: VarianteBouton.secondaire,
+                        onPressed: i >= pieces.length - 1 ? null : () => maj(() => i++)),
+                    const SizedBox(width: 12),
+                    Text('État ${i + 1} sur ${pieces.length} — ${pieces[i].reference}',
+                        style: const TextStyle(color: JetonsShell.slate600, fontSize: 12, height: 16 / 12)),
+                  ])),
+              Container(
+                color: JetonsShell.slate200,
+                padding: const EdgeInsets.all(16),
+                child: LayoutBuilder(
+                    builder: (context, c) => SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: ConstrainedBox(constraints: BoxConstraints(minWidth: c.maxWidth), child: Center(child: FeuilleA4(piece: pieces[i]))))),
+              ),
+            ])),
+    pied: (fermer) => [
+      BoutonSigh(libelle: 'Fermer', variante: VarianteBouton.secondaire, onPressed: fermer),
+      BoutonSigh(
+          key: const Key('impression:lot:pdf'),
+          libelle: 'Enregistrer les ${pieces.length} PDF',
+          icone: LucideIcons.fileDown,
+          variante: VarianteBouton.secondaire,
+          onPressed: () async {
+            final p = await PolicesPdf.charger();
+            var dernier = '';
+            for (final piece in pieces) {
+              dernier = await ImpressionPoste.enregistrer(await pdfA4(piece, p), piece.reference);
+            }
+            if (context.mounted) {
+              ToastsSigh.afficher(context, '${pieces.length} PDF enregistrés.', type: TypeToast.succes, detail: dernier);
+            }
           }),
     ],
   );

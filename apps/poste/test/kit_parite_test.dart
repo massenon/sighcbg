@@ -436,7 +436,7 @@ void main() {
         findsOneWidget);
     await t.tap(find.text('Exporter'));
     await t.pumpAndSettle();
-    await t.tap(find.text('CSV / Excel'));
+    await t.tap(find.text('CSV'));
     await t.pumpAndSettle();
     expect(csv, startsWith('﻿"Nom";"N"\r\n'));
     expect(csv!.split('\r\n').length, 31);
