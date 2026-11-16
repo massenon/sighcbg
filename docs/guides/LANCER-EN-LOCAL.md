@@ -7,7 +7,7 @@ Prérequis : Git, Flutter (avec Windows Desktop et Visual Studio 2022 C++ sous W
 ```bash
 git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v19
+git checkout livraison/baguidi-v29
 ```
 
 ## 2. Vérifier avant de lancer
