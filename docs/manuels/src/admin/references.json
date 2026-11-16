@@ -777,6 +777,19 @@
       "aide": "Le pointage par badge à l’écran de vérification, quand le réglage est actif. Origine : le surveillant, la DAF, l’administrateur, la Direction et le compte RH."
     },
     {
+      "id": "rh_confirmer_valeur",
+      "libelle": "Confirmer une valeur d’attente du dossier d’un agent",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Lever le marquage « provisoire » du salaire, de la catégorie, de la date d’embauche ou du numéro CNSS d’un agent, sur motif journalisé. Origine : la DAF, la Direction et l’administrateur."
+    },
+    {
       "id": "imagerie_executer",
       "libelle": "Exécuter l’imagerie sans la prescrire",
       "module": "*",
@@ -1586,6 +1599,19 @@
       "sensible": false,
       "aide": "Les actions se numérotent « <préfixe>-<exercice>-NNN », série annuelle. Majuscules et chiffres, 1 à 12 caractères ; une valeur illisible retombe sur le défaut. Changer le préfixe ne renumérote aucune action et ne redonne jamais un rang déjà attribué dans l'exercice.",
       "source": "Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.signataires",
+      "famille": "pta",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Postes signataires du plan de travail annuel et de son bilan",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les POSTES de l'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur le plan et sur son bilan imprimés ; leur titulaire est lu à l'organigramme, jamais saisi ici. Vide : le poste qui coiffe l'organigramme signe. Un poste absent de l'organigramme s'imprime tel qu'écrit, sans nom.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l'organigramme"
     },
     {
       "cle": "ambulance.forfaitCourse",

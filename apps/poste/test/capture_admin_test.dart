@@ -505,6 +505,69 @@ void main() {
     });
   });
 
+  cas('Fiscalité : numérotation des pièces', 1440, 1300, (t) async {
+    await _posteMere(t, 'cfg-fiscalite');
+    await _voir(t, find.byKey(const Key('cfb:numerotation')));
+    await _png(t, 'admin-31-numerotation', {
+      'Carte': find.byKey(const Key('cfb:numerotation')),
+      'Rendez-vous': _texte('Lit aussi : C'),
+    });
+  });
+
+  cas('Fiscalité : série des factures à une entreprise', 1440, 800, (t) async {
+    await _posteMere(t, 'cfg-fiscalite');
+    await _voir(t, find.byKey(const Key('cfb:numerotation')));
+    final champ = find.descendant(of: find.byKey(const Key('cfb:numerotation')), matching: find.byType(TextField));
+    if (champ.evaluate().isNotEmpty) {
+      await t.enterText(champ.first, 'entreprise');
+      await _pomper(t, 6);
+    }
+    await _png(t, 'admin-36-numerotation-ft', {
+      'Série FT': find.byKey(const Key('cfb:numerotation:modifier:caisse.factures-tiers')),
+    });
+  });
+
+  cas('Fiscal : taux de la paie en barèmes datés', 1440, 1300, (t) async {
+    await _posteMere(t, 'cfg-comptabilite', role: 'da');
+    await _voir(t, find.byKey(const Key('fco:vps')));
+    await _png(t, 'admin-32-taux-paie', {
+      'Taux du VPS': find.byKey(const Key('fco:vps')),
+      'Confirmer': find.byKey(const Key('fco:vps:confirmer')),
+      'Nouvelle version': find.byKey(const Key('fco:vps:nouvelle')),
+    });
+  });
+
+  cas('Paramètres : plan de travail annuel', 1440, 1300, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Découpage du plan de travail annuel');
+    await _voir(t, carte);
+    await _png(t, 'admin-33-param-pta', {
+      'Découpage': carte,
+      'Seuil de retard': _texte('Seuil d’alerte de retard d’une action du plan (jours)'),
+    });
+  });
+
+  cas('RH : registre du personnel vu par le Surveillant', 1440, 900, (t) async {
+    await _poste(t, 'm10-personnel', role: 'surveillant');
+    await _png(t, 'admin-37-personnel-surveillant', {'Réservé': _texte('réservé')});
+  });
+
+  cas('Facture à une entreprise (tiers payeur)', 1440, 1000, (t) async {
+    await _posteMere(t, 'm9-facture-mere', role: 'comptable');
+    await _toucher(t, _onglet('tiers'));
+    await _png(t, 'admin-34-facture-tiers', {
+      'Onglet': _onglet('tiers'),
+      'Émettre': find.byKey(const Key('tiers:emettre')),
+    });
+  });
+
+  cas('PTA : référentiels du plan', 1440, 1300, (t) async {
+    await _posteMere(t, 'm13-plan-annuel');
+    await _voir(t, _texte('Référentiels du plan'));
+    await _png(t, 'admin-35-pta-referentiels', {'Référentiels du plan': _texte('Référentiels du plan')});
+  });
+
   cas('Barre : décisions en attente de la mère', 1440, 700, (t) async {
     await _poste(t, 'cfg-systeme', magasin: _jeuAvecAttente());
     await _png(t, 'admin-30-pastille-decisions', {'Pastille': find.byKey(const Key('barre-decisions-mere'))});

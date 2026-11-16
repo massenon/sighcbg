@@ -382,13 +382,13 @@
     "cibles": {
       "Encaisser le reste": [
         56.0,
-        829.0,
+        145.0,
         1688.0,
         25.0
       ],
       "Régler à partir d’une date": [
         56.0,
-        -11568.0,
+        -12251.0,
         244.0,
         35.0
       ]
@@ -402,11 +402,11 @@
         30.0,
         145.0,
         1740.0,
-        249.0
+        274.0
       ],
       "Confirmer": [
         56.0,
-        320.0,
+        345.0,
         155.0,
         48.0
       ]
@@ -451,6 +451,101 @@
         19.0,
         388.0,
         31.0
+      ]
+    }
+  },
+  "admin-31-numerotation": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        1323.0
+      ],
+      "Rendez-vous": [
+        657.0,
+        1130.0,
+        86.0,
+        21.0
+      ]
+    }
+  },
+  "admin-36-numerotation-ft": {
+    "largeur": 1800,
+    "hauteur": 1000,
+    "cibles": {
+      "Série FT": [
+        1608.0,
+        310.0,
+        120.0,
+        38.0
+      ]
+    }
+  },
+  "admin-32-taux-paie": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Taux du VPS": [
+        30.0,
+        145.0,
+        1740.0,
+        274.0
+      ],
+      "Confirmer": [
+        56.0,
+        345.0,
+        155.0,
+        48.0
+      ],
+      "Nouvelle version": [
+        221.0,
+        345.0,
+        212.0,
+        48.0
+      ]
+    }
+  },
+  "admin-33-param-pta": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Découpage": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-37-personnel-surveillant": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {
+      "Réservé": [
+        1295.0,
+        726.0,
+        55.0,
+        21.0
+      ]
+    }
+  },
+  "admin-34-facture-tiers": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-35-pta-referentiels": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Référentiels du plan": [
+        56.0,
+        861.0,
+        1688.0,
+        25.0
       ]
     }
   }
