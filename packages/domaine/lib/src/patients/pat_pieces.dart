@@ -45,6 +45,37 @@ const patTypesPiece = <PatTypePiece>[
   PatTypePiece('TPC14', 'SCAM', 'Sortie contre avis médical', 'CN', null, null, null),
 ];
 
+/// LE SECOND CERTIFICAT D'APTITUDE (note de la Direction du 16/11/2026, section AJ) : un type de pièce numérotée de plus, rattaché au MÊME générateur ([patNumeroter] : série
+/// annuelle par sigle). Son sigle doit être LIBRE : `CMA` est déjà porté deux fois (accouchement et aptitude, collision conservée), `CMD` aussi ; `CAP` (« Certificat d'APtitude »)
+/// n'est porté par aucun type existant ([patSigleLibre]). Sigle et direction sont des PROPOSITIONS : la fiche amorcée porte « à valider » ([patMotifTypePieceAValider]).
+/// La prestation qui le tarife est `CERT-APT-2` (5 000, SOS seule).
+const patTypePieceCertificatAptitude2 = PatTypePiece('TPC16', 'CAP', 'Certificat d’aptitude', 'DG/DE', 'CERT-APT-2', null, null);
+
+/// Le motif porté par la fiche amorcée du type de pièce : ce qui reste à valider.
+const String patMotifTypePieceAValider =
+    'Type de pièce créé par la note de la Direction du 16/11/2026 (second certificat d’aptitude, prestation CERT-APT-2) : sigle « CAP » et direction « DG/DE » proposés, à valider par la Direction.';
+
+/// Un sigle est-il libre parmi les types de pièce existants (actifs ou archivés : un sigle ne se réutilise pas, la série du registre papier lui appartient) ?
+bool patSigleLibre(String sigle, Iterable<Map<String, Object?>> typesPiece) =>
+    !typesPiece.any((t) => '${t['sigle'] ?? ''}'.trim().toUpperCase() == sigle.trim().toUpperCase());
+
+/// La fiche `typesPiece` à amorcer pour [t], ou `null` si elle existe déjà (même identifiant ou même prestation) ou si son sigle est pris par un autre type (aucune collision créée).
+Map<String, Object?>? patFicheTypePieceAAmorcer(PatTypePiece t, Iterable<Map<String, Object?>> typesPiece, {String motifAValider = patMotifTypePieceAValider}) {
+  if (typesPiece.any((x) => x['id'] == t.id || (t.tarifCode != null && x['tarifCode'] == t.tarifCode))) return null;
+  if (!patSigleLibre(t.sigle, typesPiece)) return null;
+  return {
+    'id': t.id,
+    'sigle': t.sigle,
+    'libelle': t.libelle,
+    'direction': t.direction,
+    if (t.tarifCode != null) 'tarifCode': t.tarifCode,
+    'aValider': true,
+    'motifAValider': motifAValider,
+    'source': 'Note de la Direction du 16/11/2026 (section AJ)',
+    'statut': 'actif',
+  };
+}
+
 String _pad(int n, int l) => n.toString().padLeft(l, '0');
 
 /// `numeroter(t)` : le numéro d'ordre est propre au sigle ET à l'année (la série repart à 1 chaque 1er janvier, comme le registre papier) ; il

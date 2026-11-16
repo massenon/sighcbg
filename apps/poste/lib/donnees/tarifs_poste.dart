@@ -450,6 +450,45 @@ class TarifsPoste {
     return ouverts;
   }
 
+  /// AJ (note de la Direction du 16/11/2026) : la MÈRE amorce les prestations DÉCIDÉES (`tarPrestationsDecidees` : `CERT-APT-2`, « Certificat d'aptitude », 5 000, SOS seule) et
+  /// le type de pièce numérotée qui les délivre (`patTypePieceCertificatAptitude2`, sigle libre proposé « à valider »). Rejouable, n'écrase rien : une prestation déjà au référentiel
+  /// n'est ni recréée ni réécrite, `CERT-APT` (7 000) n'est pas touché, aucune facture n'est relue. La ligne de départ qui portait encore `CERT-APT` avec ce libellé et ce prix est
+  /// rattachée au nouveau code (le doublon se résout comme par l'arbitrage « deux prestations distinctes »). Rend le nombre de fiches écrites.
+  static int amorcerDecisionsDirection(Magasin m, {DateTime Function()? horloge}) {
+    final h = lire(m);
+    if (h.vide) return 0;
+    final a = tarAmorcerDecisions(h, catalogue: m.collection('catalogueTarifs').toutes);
+    var n = 0;
+    for (final t in a.tarifs) {
+      m.collection(tarCollectionTarifs).ajouterSansJournal(t);
+      n++;
+    }
+    for (final v in a.versions) {
+      m.collection(tarCollectionVersions).ajouterSansJournal(v);
+      n++;
+    }
+    for (final r in a.rattachements) {
+      m.collection(r.collection).mettreAJour(r.id, r.patch, journaliser: false);
+      n++;
+    }
+    final types = m.collection('typesPiece');
+    final fiche = patFicheTypePieceAAmorcer(patTypePieceCertificatAptitude2, types.toutes);
+    if (fiche != null) {
+      types.ajouterSansJournal(fiche);
+      n++;
+    }
+    if (n > 0) {
+      m.journaliser('Prestation décidée par la Direction : amorce', 'CFG', 'prix', tarCodeCertificatAptitude2, null, {
+        'prestations': [for (final t in a.tarifs) t['code']].join(', '),
+        'lignesRattachées': [for (final r in a.rattachements) r.id].join(', '),
+        if (fiche != null) 'typeDePièce': '${fiche['id']} (${fiche['sigle']}, à valider)',
+        'source': 'Note de la Direction du 16/11/2026',
+      });
+      projeter(m, (horloge ?? m.horloge)());
+    }
+    return n;
+  }
+
   // --- Les prix EN DOUBLON : l'arbitrage de la Direction (16/11/2026) -------------------------------------------------------------------------------------
 
   /// Les codes de prestation portés deux fois, aux prix différents, par une liste de départ (`catalogueTarifs`, `actes`) : à arbitrer. La caisse lit, tant que rien n'est arbitré, la première ligne.
@@ -535,7 +574,12 @@ class TarifsPoste {
         codesFamille: [for (final p in siens) '${p['code']}'],
         libellesFamille: [for (final p in siens) '${p['libelle'] ?? p['code']}'],
         codesPris: codesPris(m),
-        codesDemandes: codesDemandes);
+        codesDemandes: codesDemandes,
+        // AJ (16/11/2026) : une prestation que la Direction a DÉCIDÉE (CERT-APT-2) et qui est au référentiel : la ligne qui lui correspond s'y rattache, jamais un rang de plus.
+        codesDecides: {
+          for (final e in tarCodesDecides().entries)
+            if (h.parCode[e.value] != null) e.key: e.value
+        });
   }
 
   /// L'APERÇU de ce que le geste ferait (nouveaux codes proposés), sans rien écrire : la modale de confirmation le montre avant le motif.
@@ -576,6 +620,19 @@ class TarifsPoste {
     final col = m.collection(d.collection);
     final ecrits = <String>[];
     for (final i in r.identites) {
+      if (i.prestationDecidee) {
+        // La prestation existe déjà, décidée par la Direction avec son prix : la ligne de départ s'y rattache, sans création ni proposition.
+        col.mettreAJour(i.ficheId, {
+          'code': i.nouveauCode,
+          'codeAnterieur': i.ancienCode,
+          'motifDistinct': motif.trim(),
+          'distinctDe': i.ancienCode,
+          'distinctPar': cx.auteur,
+          'distinctLe': aujourdhui,
+        }, journaliser: false);
+        ecrits.add('${i.ancienCode} vers ${i.nouveauCode} (prestation décidée)');
+        continue;
+      }
       final creation = <String, Object?>{
         'libelle': i.libelle,
         'famille': i.famille,
@@ -739,6 +796,10 @@ class TarifsPoste {
       'demandePar': auteur(),
       'demandeRole': role,
       'demandeLe': aujourdhui,
+      // AI (16/11/2026) : le COMPTE qui signe (vérifié par la mère avant de rejouer), l'instant exact du geste (âge de la décision en attente) et le poste qui dépose.
+      if (m.compteSignataire != null) champCompteDecision: m.compteSignataire,
+      'demandeInstant': _horloge().toUtc().toIso8601String(),
+      'demandePoste': etiquette,
       ...contenu,
     };
     m.journaliser('Changement de prix : demande déposée à la mère ($genre)', 'CFG', 'prix', '${contenu['code'] ?? contenu['versionId'] ?? ''}', null, {'role': role});
@@ -748,13 +809,32 @@ class TarifsPoste {
 
   /// MÈRE : applique les demandes déposées par les fileuls. Chacune refait les MÊMES contrôles sous le rôle et le nom de son auteur (un bouton absent sur le fileul
   /// ne protège rien) ; le verdict est écrit sur la demande et revient au fileul par le pont. Rend le nombre de demandes traitées.
-  int appliquerDemandes() {
+  ///
+  /// AI (16/11/2026) : [verifierCompte] (la mère en production, `ApplicateurDemandesTarif`) vérifie le compte inscrit sur la demande AVANT de la rejouer ; un refus nommé est écrit
+  /// comme verdict (code stable : `COMPTE_NON_INSCRIT`, `COMPTE_INCONNU`, `COMPTE_ROLE_DIFFERENT`, `COMPTE_ARCHIVE`), rien n'est appliqué.
+  int appliquerDemandes({RefusCompte? Function(Map<String, Object?> demande)? verifierCompte}) {
     if (fileul) return 0;
     var n = 0;
     final col = m.collection(tarCollectionDemandes);
     final enAttente = [for (final d in col.toutes) if (d['etat'] == 'deposee') d]
       ..sort((a, b) => '${a['demandeLe']}${a['id']}'.compareTo('${b['demandeLe']}${b['id']}'));
     for (final d in enAttente) {
+      final rc = verifierCompte?.call(d);
+      if (rc != null) {
+        col.mettreAJour(d['id'], {
+          'etat': 'refusee',
+          'traiteLe': aujourdhui,
+          'traitePar': auteur(),
+          'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+          'resultatCode': rc.code,
+          'resultatMotif': rc.motif,
+          'resultatGeste': rc.geste,
+        }, journaliser: false);
+        m.journaliser('Demande de prix refusée par la mère (compte signataire)', 'CFG', 'prix', '${d['code'] ?? d['versionId'] ?? ''}', null,
+            {'par': d['demandePar'], 'rôle': d['demandeRole'], 'compte': d[champCompteDecision] ?? '—', 'code': rc.code});
+        n++;
+        continue;
+      }
       final role = '${d['demandeRole']}', par = '${d['demandePar']}';
       final cx = contexte(pourRole: role, pourAuteur: par, pourFileul: false, reception: d['reception'] == true);
       RefusTarif? refus;
@@ -831,6 +911,9 @@ class TarifsPoste {
         'etat': refus == null ? 'appliquee' : 'refusee',
         'traiteLe': aujourdhui,
         'traitePar': auteur(),
+        // AI : la date de SIGNATURE (le geste au fileul) et, à côté, la date d'APPLICATION par la mère.
+        'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+        if (refus == null) 'appliqueLe': _horloge().toUtc().toIso8601String(),
         if (versionId != null) 'versionId': versionId,
         if (refus != null) ...{'resultatCode': refus.code, 'resultatMotif': refus.motif, 'resultatGeste': refus.geste},
       }, journaliser: false);
@@ -950,8 +1033,30 @@ class TarifsPoste {
     return n;
   }
 
-  /// Le changement de jour sans tâche de minuit : à appeler à l'ouverture d'un écran ; ne fait rien si la projection de ce jour est déjà faite.
+  /// Le changement de jour sans tâche de minuit : à appeler à l'ouverture d'un écran ; ne fait rien si la projection de ce jour est déjà faite. AJ (16/11/2026) : appelé AUSSI
+  /// sur un FILEUL (coque, applicateur de configuration) : les listes de prix affichées (actes, analyses, catalogue) passent au prix du jour même quand la mère est coupée. Les prix
+  /// des PIÈCES restent lus à la date de la pièce (accesseur daté) : la projection ne touche que les listes de lecture.
   static int projeterSiNouveauJour(Magasin m, DateTime maintenant) => _dernierJour[m] == tarIso(maintenant) ? 0 : projeter(m, maintenant);
+
+  /// Les trois listes de LECTURE que la projection tient au prix du jour.
+  static const Set<String> collectionsProjetees = {'actes', 'analyses', 'catalogueTarifs'};
+
+  /// AJ (16/11/2026) : une fiche de liste de prix REÇUE de la mère par un fileul, ramenée au prix EN VIGUEUR AUJOURD'HUI selon le référentiel que le fileul détient (seuls les champs
+  /// de prix ; le reste est celui de la mère). Sans cela, la mère coupée (ou pas encore passée au jour) renverrait au fileul les prix de la veille, qui effaceraient sa projection
+  /// du jour à chaque tour de synchronisation. Une fiche archivée, hors des trois listes, ou seconde ligne active d'un même code (doublon non arbitré : seule la première reflète
+  /// le référentiel) est rendue telle quelle.
+  static Map<String, Object?> auPrixDuJour(Magasin m, String collection, Map<String, Object?> f, DateTime maintenant) {
+    if (!collectionsProjetees.contains(collection) || f['statut'] == 'archive') return f;
+    final h = lire(m);
+    if (h.vide) return f;
+    final locales = m.collection(collection).toutes;
+    final rang = locales.indexWhere((x) => x['id'] == f['id']);
+    final avant = rang < 0 ? locales : locales.sublist(0, rang);
+    if (avant.any((x) => x['statut'] != 'archive' && x['id'] != f['id'] && '${x['code']}' == '${f['code']}')) return f;
+    final c = tarProjection(h, tarIso(maintenant),
+        actes: collection == 'actes' ? [f] : const [], analyses: collection == 'analyses' ? [f] : const [], catalogue: collection == 'catalogueTarifs' ? [f] : const []);
+    return c.isEmpty ? f : {...f, ...c.first.patch};
+  }
 
   /// La GARDE DE PARITÉ : chaque fiche des trois collections de lecture doit dire ce que le référentiel dit aujourd'hui. Un écart est une ERREUR nommée, jamais un
   /// affichage différent. Rend la liste des écarts (vide quand tout concorde).

@@ -32,7 +32,8 @@ class BarreSuperieure extends StatelessWidget {
       this.surProfil,
       this.installation,
       this.surInstallation,
-      this.selecteurExercice});
+      this.selecteurExercice,
+      this.decisionsMere});
   final ConfigPoste config;
   final SourceEtatSync etatSync;
   final String nomRole;
@@ -54,6 +55,9 @@ class BarreSuperieure extends StatelessWidget {
 
   /// Le sélecteur d'exercice, posé SEULEMENT sur les écrans qui ont une notion d'année (règle `cpcAExercice`).
   final Widget? selecteurExercice;
+
+  /// AI (16/11/2026) : la pastille « N décisions en attente de la mère » (validations, demandes de prix, demandes d'import), absente à zéro.
+  final Widget? decisionsMere;
 
   /// L'état réel du plein écran (suit F11 et la sortie par le système) ; absent = fenêtre.
   final ValueListenable<bool>? pleinEcran;
@@ -159,6 +163,7 @@ class BarreSuperieure extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 6),
                       child: _Outil(cle: 'barre-installation', icone: LucideIcons.listChecks, info: 'Configurations à faire avant l’utilisation', surTap: surInstallation))
                   : const SizedBox.shrink()),
+        if (decisionsMere != null) decisionsMere!,
         PastilleSync(source: etatSync),
         const SizedBox(width: 6),
         _Cloche(centre: centre, repli: nombreAlertes, surTap: surNotifications),

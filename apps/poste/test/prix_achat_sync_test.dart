@@ -11,6 +11,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_tarif.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LE PRIX D'ACHAT D'UN PRODUIT ENTRE LA MÈRE ET DEUX FILEULS, contre la VRAIE mère Dart et de VRAIS moteurs de fileul : un fileul (gestionnaire de stock) PROPOSE un changement de prix d'achat,
 /// la mère l'applique sous le rôle de son auteur (une seule version AJOUTÉE, jamais d'écriture de la fiche), le verdict revient, un SECOND fileul reçoit la version ; la décision de la mère
 /// met la version en vigueur et la fiche des deux fileuls suit ; une demande forgée (médicament avec une marge) est REFUSÉE par la mère en nommant RG-02, et le refus revient au fileul.
@@ -47,6 +49,9 @@ void main() {
     final pub = PublicateurConfiguration(mm, publierVersMereLocale(port: port, admin: 'secret-test'), delai: Duration.zero, collections: {...collectionsConfiguration()});
     final pontM = PontActivite(mm, TransportMereLocale(port: port, admin: 'secret-test'), etiquette: 'M');
     final f1 = Fileul('F1', port, 'stock'), f2 = Fileul('F2', port, 'stock');
+    // AI (16/11/2026) : les demandes portent le compte nominatif qui les signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    final agent1 = signerAvec(f1.m, mm, 'stock', nom: 'Gestionnaire F1');
+    signerAvec(f2.m, mm, 'stock', nom: 'Gestionnaire F2');
     final applicateur = ApplicateurDemandesTarif.de(mm)
       ..etiquette = 'M'
       ..matrice = MatriceVive(donnees, mm)
@@ -125,6 +130,8 @@ void main() {
         'etat': 'deposee',
         'demandePar': 'Gestionnaire F1',
         'demandeRole': 'stock',
+        // Forgée par un compte VALIDE : c'est RG-02 qui doit la refuser, pas le contrôle du compte.
+        champCompteDecision: agent1.utilisateurId,
         'demandeLe': tarIso(auj),
         'code': '${autre['code']}',
         'prixAchat': (autre['prixAchat'] as num) + 10,

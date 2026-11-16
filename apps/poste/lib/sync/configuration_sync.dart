@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import '../donnees/tarifs_poste.dart';
 import 'fusion_activite.dart' show champsCompteurs;
 import 'transcription_mobile.dart' show PieceSync;
 
@@ -176,6 +177,9 @@ class ApplicateurConfiguration {
     _applique = true;
     var n = 0;
     try {
+      // AJ (16/11/2026) : au changement de jour, le FILEUL projette lui aussi ses listes de prix au prix du jour (mère coupée comprise).
+      final maintenant = magasin.horloge();
+      TarifsPoste.projeterSiNouveauJour(magasin, maintenant);
       for (final nom in collections) {
         final col = magasin.collection(nom);
         for (final p in await liste(nom)) {
@@ -213,7 +217,8 @@ class ApplicateurConfiguration {
               }
             }
           }
-          if (col.appliquerDistante(f)) n++;
+          // Une liste de prix reçue garde le prix DU JOUR que ce poste a projeté (la mère peut n'avoir pas encore changé de jour) : aucun va-et-vient d'un tour à l'autre.
+          if (col.appliquerDistante(TarifsPoste.auPrixDuJour(magasin, nom, f, maintenant))) n++;
         }
       }
       erreur.value = null;

@@ -100,40 +100,40 @@ void main() {
   group('(Q18) la troisième issue : « ce sont deux prestations distinctes »', () {
     TarDoublonPrix cert(Magasin m) => TarifsPoste.doublonsPrix(m).firstWhere((x) => x.code == 'CERT-APT');
 
-    test('le code reste à la ligne que la caisse lit, l’autre reçoit CERT-APT2 en PROPOSITION À VALIDER ; aucun prix, aucune pièce, aucune archive ne bouge', () {
+    test('le code reste à la ligne que la caisse lit, l’autre reçoit CERT-APT-2 en PROPOSITION À VALIDER ; aucun prix, aucune pièce, aucune archive ne bouge', () {
       final m = jeu();
       final factures = [for (final f in m.collection('factures').toutes) '$f'];
       final versionsAvant = m.collection('versionsTarif').toutes.length;
       final apercu = poste(m).apercuDistincts(cert(m));
-      expect(apercu.single.nouveauCode, 'CERT-APT2');
+      expect(apercu.single.nouveauCode, 'CERT-APT-2');
       final r = poste(m).arbitrerDistincts(cert(m), 'Médecine du travail : autre prestation');
       expect(r.ok, isTrue, reason: '${r.refus?.code} ${r.refus?.motif}');
       expect(caisse(m, 'CERT-APT'), 7000, reason: 'le code reste à la prestation que la caisse lisait, au même prix');
-      expect(TarifsPoste.prixGrille(m, 'CERT-APT2', aujourdhui: jour).facturable, isFalse, reason: 'proposition à valider : la caisse ne le lit pas, jamais un zéro');
-      final p = TarifsPoste.lire(m).parCode['CERT-APT2']!;
-      expect([p['distinctDe'], p['propositionAValider'], p['famille'], p['codeGrille']], ['CERT-APT', true, 'CERTIFICAT', 'CERT-APT2']);
-      final v = TarifsPoste.lire(m).versionsDe('CERT-APT2').single;
+      expect(TarifsPoste.prixGrille(m, 'CERT-APT-2', aujourdhui: jour).facturable, isFalse, reason: 'proposition à valider : la caisse ne le lit pas, jamais un zéro');
+      final p = TarifsPoste.lire(m).parCode['CERT-APT-2']!;
+      expect([p['distinctDe'], p['propositionAValider'], p['famille'], p['codeGrille']], ['CERT-APT', true, 'CERTIFICAT', 'CERT-APT-2']);
+      final v = TarifsPoste.lire(m).versionsDe('CERT-APT-2').single;
       expect([v['statut'], v['prixNonAssure'], v['prixAssure']], ['propose', 5000, 5000], reason: 'le prix PROPRE de la ligne, proposé, jamais validé par ce geste');
       expect(m.collection('versionsTarif').toutes.length, versionsAvant + 1);
       expect(TarifsPoste.lire(m).versionsDe('CERT-APT').map((x) => x['prixNonAssure']).toSet(), {7000});
       expect(m.collection('catalogueTarifs').toutes.where((x) => x['statut'] == 'archive' && '${x['code']}'.startsWith('CERT-')), isEmpty, reason: 'rien n’est archivé');
-      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT2');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT-2');
       expect(m.collection('catalogueTarifs').parId('TAR152')!['codeAnterieur'], 'CERT-APT');
       expect(TarifsPoste.doublonsPrix(m).where((x) => x.code == 'CERT-APT'), isEmpty);
       expect([for (final f in m.collection('factures').toutes) '$f'], factures, reason: 'aucune facture déjà émise n’est réécrite');
       expect(m.collection('audit').toutes.any((x) => '${x['action']}'.contains('deux prestations distinctes')), isTrue);
       final a = TarifsPoste.distinctsAValider(m);
-      expect([a.single.prestation['code'], a.single.etat], ['CERT-APT2', 'propose'], reason: 'visible au centre des validations');
+      expect([a.single.prestation['code'], a.single.etat], ['CERT-APT-2', 'propose'], reason: 'visible au centre des validations');
       expect(TarifsPoste.parites(m, jour), isEmpty);
     });
 
     test('le Oui de la Direction (circuit ordinaire) met le nouveau code en vigueur ; la ligne quitte la liste à valider', () {
       final m = jeu();
       expect(poste(m).arbitrerDistincts(cert(m), 'Deux prestations').ok, isTrue);
-      final vid = '${TarifsPoste.lire(m).versionsDe('CERT-APT2').single['id']}';
+      final vid = '${TarifsPoste.lire(m).versionsDe('CERT-APT-2').single['id']}';
       final d = poste(m).decider(vid, 'oui');
       expect(d.ok, isTrue, reason: '${d.refus?.code} ${d.refus?.motif}');
-      expect(caisse(m, 'CERT-APT2'), 5000);
+      expect(caisse(m, 'CERT-APT-2'), 5000);
       expect(caisse(m, 'CERT-APT'), 7000);
       expect(TarifsPoste.distinctsAValider(m), isEmpty);
     });
@@ -149,7 +149,7 @@ void main() {
       expect(poste(m).arbitrerDistincts(d, 'Deux prestations').ok, isTrue);
       expect(poste(m).arbitrerDistincts(d, 'Deux prestations').refus!.code, 'DOUBLON_RESOLU');
       // Un code déjà donné ne se redonne pas : une seconde clinique de la famille prend le rang suivant.
-      expect(TarifsPoste.codesPris(m), contains('CERT-APT2'));
+      expect(TarifsPoste.codesPris(m), contains('CERT-APT-2'));
     });
 
     test('un FILEUL ne décide pas : il DÉPOSE ; la mère applique sous le rôle de l’auteur, avec les mêmes contrôles', () {
@@ -162,10 +162,55 @@ void main() {
       expect(poste(m).appliquerDemandes(), 1);
       final verdict = m.collection('propositionsTarif').toutes.firstWhere((x) => x['genre'] == 'distincts');
       expect(verdict['etat'], 'appliquee', reason: '${verdict['resultatCode']}');
-      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT2');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT-2');
       expect(TarifsPoste.distinctsAValider(m), hasLength(1));
       // Rejoué : la demande appliquée ne s'applique pas deux fois.
       expect(poste(m).appliquerDemandes(), 0);
+    });
+  });
+
+  group('AJ (note de la Direction du 16/11/2026) : CERT-APT-2 amorcé, type de pièce relié', () {
+    test('la mère amorce CERT-APT-2 (5 000, SOS seule, version datée « à confirmer ») ; CERT-APT reste à 7 000 ; aucune facture réécrite ; rejouée, rien de plus', () {
+      final m = jeu();
+      final factures = [for (final f in m.collection('factures').toutes) '$f'];
+      final n = TarifsPoste.amorcerDecisionsDirection(m, horloge: () => jour);
+      expect(n, greaterThan(0));
+      expect(caisse(m, 'CERT-APT'), 7000);
+      expect(caisse(m, 'CERT-APT-2'), 5000);
+      final assure = TarifsPoste.prixGrille(m, 'CERT-APT-2', aujourdhui: jour, assure: true);
+      expect([assure.montant, assure.reserveSos], [5000, true], reason: 'couverture SOS seule');
+      final v = TarifsPoste.lire(m).versionsDe('CERT-APT-2').single;
+      expect([v['statut'], v['dateEffet'], v['provisoire'], v['origine']], ['valide', '2026-11-16', true, 'note-direction']);
+      expect('${v['motif']}', contains('à confirmer'));
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT-2', reason: 'la ligne « Certificat d’aptitude » à 5 000 est rattachée');
+      expect(m.collection('catalogueTarifs').parId('TAR147')!['code'], 'CERT-APT');
+      expect(TarifsPoste.doublonsPrix(m).where((x) => x.code == 'CERT-APT'), isEmpty, reason: 'le doublon est résolu par la décision');
+      expect([for (final f in m.collection('factures').toutes) '$f'], factures, reason: 'aucune pièce émise n’est relue ni réécrite');
+      final tp = m.collection('typesPiece').parId('TPC16')!;
+      expect([tp['sigle'], tp['tarifCode'], tp['aValider']], ['CAP', 'CERT-APT-2', true]);
+      expect(m.collection('typesPiece').toutes.where((t) => t['sigle'] == 'CAP'), hasLength(1), reason: 'sigle libre, sans collision');
+      expect(TarifsPoste.parites(m, jour), isEmpty);
+      expect(TarifsPoste.amorcerDecisionsDirection(m, horloge: () => jour), 0, reason: 'rejouable : rien n’est écrasé');
+    });
+
+    test('après l’amorce, l’arbitrage « deux prestations distinctes » d’une ligne restée en doublon se RATTACHE à CERT-APT-2 (jamais CERT-APT-3)', () {
+      final m = jeu();
+      // L'amorce SANS la ligne de départ (déjà rattachée ailleurs) : la prestation existe, la ligne TAR152 porte encore CERT-APT.
+      final h = TarifsPoste.lire(m);
+      final a = tarAmorcerDecisions(h, catalogue: const []);
+      for (final t in a.tarifs) {
+        m.collection(tarCollectionTarifs).ajouterSansJournal(t);
+      }
+      for (final v in a.versions) {
+        m.collection(tarCollectionVersions).ajouterSansJournal(v);
+      }
+      final d = TarifsPoste.doublonsPrix(m).firstWhere((x) => x.code == 'CERT-APT');
+      expect(poste(m).apercuDistincts(d).single.nouveauCode, 'CERT-APT-2');
+      final versions = m.collection('versionsTarif').toutes.length;
+      expect(poste(m).arbitrerDistincts(d, 'Note de la Direction').ok, isTrue);
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT-2');
+      expect(m.collection('versionsTarif').toutes.length, versions, reason: 'aucune proposition : le prix décidé est déjà en vigueur');
+      expect(caisse(m, 'CERT-APT-2'), 5000);
     });
   });
 

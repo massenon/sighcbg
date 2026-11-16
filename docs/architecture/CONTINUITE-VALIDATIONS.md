@@ -93,7 +93,7 @@ Relus contre ce document et contre le code (E3079). Statut : **tenu**, ou **non 
 
 ## Hypothèses
 
-* Le rôle d'un dépôt est celui de la session du poste, que la mère croit (même confiance que les décisions de droits et les demandes de prix).
+* ~~Le rôle d'un dépôt est celui de la session du poste, que la mère croit~~ **Remplacé le 16/11/2026 (section AI, E3411)** : la mère VÉRIFIE le compte inscrit sur la décision (`demandeCompte`) dans SES `utilisateurs` — il existe, porte ce rôle, n'est pas archivé — pour les validations déposées, les demandes de prix et les demandes d'import ; sinon refus nommé (`COMPTE_NON_INSCRIT`, `COMPTE_INCONNU`, `COMPTE_ROLE_DIFFERENT`, `COMPTE_ARCHIVE`) rendu au fileul. Les décisions de droits (`ServiceDroits`) ne sont pas concernées par ce lot.
 * « Mère injoignable » est simulé par l'arrêt des cycles du pont du fileul (le dépôt reste dans sa file) ; l'arrêt réel du service n'a pas été rejoué.
 * Les boutons « Valider » des écrans de CFG autres que « Tarifs et prix » sont offerts au validateur par leur composant commun (indépendant du droit d'édition) : vérifié à l'écran sur « Tarifs et prix » seulement.
 
@@ -106,3 +106,12 @@ Relus contre ce document et contre le code (E3079). Statut : **tenu**, ou **non 
 * **Prestation distincte (Q18)** : la troisième issue de l'arbitrage de doublon de prix suit le circuit des demandes de prix : sur un fileul, le geste se DÉPOSE (`propositionsTarif`, genre `distincts`) et la mère l'applique sous le rôle de l'auteur ; le nouveau code reste « proposition à valider » (Oui ou Non par le circuit ordinaire).
 * **Budgets et immobilisations (Q26)** passent de la classe L à la classe A (pont d'activité, mère Dart, banc Node), jamais vers un téléphone ; les couvertures d'assurance étaient déjà en A. Les lignes du tableau ci-dessus qui les rangeaient en L sont périmées.
 * **Stock détail initial et bon de transfert (Q25)** : imports réservés à la mère (un seul stock, RG-03).
+
+## Section AI (Direction, 16/11/2026) : alerte, compte signataire, date de signature, pastille
+
+* **Alerte réglable (P5, la partie « validation en attente de la mère » est désormais tenue)** : réglage de clinique `validations.delaiAlerteMereHeures` (famille R `parametres`, 4 h semées). Au-delà, `AlerteDecisionsMere` écrit une notification de poste au validateur concerné (rôles de la famille au registre ; `geste:achats_valider` ; `geste:tarif_decider` ; arbitres des lots lus dans la matrice) et à l'administrateur. Aucun blocage, aucune auto-validation (E3410).
+* **Compte signataire vérifié par la mère** (E3411), voir l'hypothèse corrigée plus haut.
+* **Date de signature** : la validation appliquée depuis un dépôt porte `signeLe` (le geste) et `appliqueLe` (la mère) ; les verdicts des trois files aussi (E3412).
+* **Pastille** « N décisions en attente de la mère » : validations, demandes de prix et demandes d'import, âge de la plus ancienne (E3413).
+
+Preuves : `packages/domaine/test/decisions_mere_test.dart`, `apps/poste/test/decisions_mere_poste_test.dart`, et les tests de synchronisation contre la vraie mère, mis à jour pour signer par un compte nominatif (`aide_comptes.dart`).

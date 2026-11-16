@@ -7,13 +7,18 @@ import '../../impression/piece.dart';
 num n(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
 String m(Object? v) => money(v, avecDevise: false);
 
-/// Le montant [cle] d'une ligne, ou « Prix à valoriser » quand elle attend son prix d'achat : JAMAIS « 0 » (Direction, 16/11/2026).
-String mLigne(Fiche l, String cle) => ligneAValoriser(l) ? libellePrixAValoriser : m(l[cle]);
+/// Le montant [cle] d'une ligne, ou « Prix à valoriser » quand elle attend son prix d'achat : JAMAIS « 0 » (Direction, 16/11/2026). Un acte assurable sans prix assuré dit
+/// « Prix assuré à définir », le prix non assuré pour information (AJ, 16/11/2026).
+String mLigne(Fiche l, String cle) => ligneAValoriser(l) ? libelleLigneSansMontant(l, montant: m) : m(l[cle]);
 
 /// La mention à porter près d'un total quand la pièce a des lignes « prix à valoriser » (elles n'y entrent pas, ni pour 0), sinon vide.
 String mentionAValoriser(Fiche f) {
   final k = lignesAValoriserDe(f).length;
-  return k == 0 ? '' : ' (hors ${nombre(k)} ligne(s) au prix à valoriser)';
+  final assure = [for (final l in lignesAValoriserDe(f)) if (ligneAssureADefinir(l)) l].length;
+  if (k == 0) return '';
+  if (assure == 0) return ' (hors ${nombre(k)} ligne(s) au prix à valoriser)';
+  if (assure == k) return ' (hors ${nombre(k)} ligne(s) au prix assuré à définir)';
+  return ' (hors ${nombre(k - assure)} ligne(s) au prix à valoriser et ${nombre(assure)} au prix assuré à définir)';
 }
 String dateDe(Object? v) {
   final d = DateTime.tryParse('${v ?? ''}');
@@ -99,18 +104,18 @@ PieceA4 pieceFacture(Fiche f,
     if (avecAssurance)
       ColonneEtat(
           libelle: 'Part ass.',
-          valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(l['partAssureur'] ?? 0),
+          valeur: (l) => ligneAValoriser(l) ? libelleLigneSansMontant(l, montant: m) : m(l['partAssureur'] ?? 0),
           droite: true,
           somme: (l) => n(l['partAssureur'])),
     if (avecAssurance)
       ColonneEtat(
           libelle: 'Part pat.',
-          valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(partPat(l)),
+          valeur: (l) => ligneAValoriser(l) ? libelleLigneSansMontant(l, montant: m) : m(partPat(l)),
           droite: true,
           somme: (l) => ligneAValoriser(l) ? 0 : partPat(l)),
     ColonneEtat(
         libelle: 'Montant',
-        valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(montantLigne(l)),
+        valeur: (l) => ligneAValoriser(l) ? libelleLigneSansMontant(l, montant: m) : m(montantLigne(l)),
         droite: true,
         somme: (l) => ligneAValoriser(l) ? 0 : montantLigne(l)),
   ];
@@ -241,7 +246,7 @@ PieceA4 pieceRecu(Fiche f,
         ColonneEtat(
             libelle: 'Part assureur',
             valeur: (l) => ligneAValoriser(l)
-                ? libellePrixAValoriser
+                ? libelleLigneSansMontant(l, montant: m)
                 : (n(l['partAssureur']) > 0 ? m(l['partAssureur']) : '—'),
             droite: true,
             somme: (l) => n(l['partAssureur'])),

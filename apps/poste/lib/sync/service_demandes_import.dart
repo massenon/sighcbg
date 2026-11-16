@@ -75,8 +75,11 @@ class ServiceDemandesImport {
     final id = identifiantDemandeImport(etiquette, _maintenant, ++_serie);
     final r = importerDirectEtDemander(jeu: jeu, analyse: analyse, port: port, regime: regime, idDemande: id, poste: etiquette, compteurs: champsCompteurs);
     if (!r.ok) return (resultat: r.refus!, demande: null);
+    // AI (16/11/2026) : la demande porte le COMPTE qui la signe (vérifié par la mère avant de rejouer) et l'instant exact du geste (âge de la décision en attente).
+    final compte = magasin.compteSignataire;
+    final demande = {...r.demande!, if (compte != null) champCompteDecision: compte, 'demandeInstant': _maintenant.toUtc().toIso8601String()};
     try {
-      demandes.inserer(r.demande!);
+      demandes.inserer(demande);
     } catch (e) {
       // Jamais une écriture sans demande : si le dépôt échoue, l'écriture est restituée.
       restituerLotDirect(jeuImportParId, r.resultat!.lot!['id'], codeRefus: 'DEMANDE_NON_DEPOSEE', motifRefus: '$e', port: port);
@@ -233,6 +236,9 @@ class ServiceDemandesImport {
   bool _traitement = false;
   VoidCallback? _ecoute;
 
+  /// AI (16/11/2026) : la mère vérifie le compte signataire de chaque demande avant de la rejouer (toujours en production ; un banc sans comptes peut le lever).
+  bool exigerCompteInscrit = true;
+
   /// Nombre de demandes traitées depuis le démarrage, et la dernière erreur d'un tour.
   int traitees = 0;
   Object? derniereErreur;
@@ -277,15 +283,25 @@ class ServiceDemandesImport {
                 droitEcran: (e) => m.droit(role, e),
                 gesteDroit: (g) => DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: m.estArchive, ecranActif: m.ecranActif).peut(role, g)));
         VerdictDemandeImport v;
+        final rc = exigerCompteInscrit
+            ? verifierCompteSignataire(compte: d[champCompteDecision], role: role, par: auteur, comptes: magasin.collection('utilisateurs').toutes)
+            : null;
         try {
-          v = traiterDemandeImport({...d}, port, jeuImportParId, regime: regime, octetsMax: _borne('${d['jeu']}'), compteurs: champsCompteurs);
+          v = rc != null
+              ? VerdictDemandeImport.refusee(rc.code, rc.motif, rc.geste)
+              : traiterDemandeImport({...d}, port, jeuImportParId, regime: regime, octetsMax: _borne('${d['jeu']}'), compteurs: champsCompteurs);
         } catch (e) {
           // Jamais muet : une exception se nomme aussi, et la demande reste lisible du fileul.
           v = VerdictDemandeImport.refusee('ECRITURE_REFUSEE', '$e', 'Rien n’a été écrit. Corrigez la cause puis refaites la demande.');
         }
         // LOT IDEM : une demande déjà traitée une fois (`traitePar`) que la mère rejoue (verdict perdu, demande reçue deux fois) rend le même verdict SANS le journaliser de nouveau.
         final dejaTraitee = '${d['traitePar'] ?? ''}'.isNotEmpty;
-        demandes.mettreAJour(d['id'], v.versChamps(traitePar: 'Mère', traiteLe: _jour), journaliser: false);
+        demandes.mettreAJour(d['id'], {
+          ...v.versChamps(traitePar: 'Mère', traiteLe: _jour),
+          // AI : la date de SIGNATURE (le geste au fileul) et, à côté, la date d'APPLICATION par la mère.
+          'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+          if (v.appliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+        }, journaliser: false);
         if (!dejaTraitee) {
           magasin.journaliser(v.appliquee ? (v.adoptee ? 'Demande d’import adoptée (déjà confirmée)' : 'Demande d’import appliquée') : 'Demande d’import refusée', 'IMP', 'DemandeImport', '${d['id']}',
               {'etat': demandeImportEnAttente}, {'jeu': d['jeu'], 'par': auteur, 'role': role, 'code': v.code, 'lot': v.lot, 'poste': d['demandePoste']});

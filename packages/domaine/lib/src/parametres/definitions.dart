@@ -21,6 +21,7 @@
 import '../sauvegarde/sauvegarde_horssite.dart';
 import 'parametres.dart';
 import 'reglages_roles.dart';
+import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
 const String _decisions = 'Valeur d\'attente reprise de la réplique d\'origine : à confirmer par la Direction de Baguidi';
@@ -381,16 +382,16 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot AST-1 (assistant)',
   ),
-  // --- Export des tableaux (Q40, Direction du 15/11/2026) : AUCUNE valeur codée en dur dans l'export ; les trois réglages vivent en base. Les valeurs d'attente sont LARGES
-  // et marquées « à fixer sur la plus grande table réelle » : aucun document ne donne la taille de la plus grande table de la clinique.
+  // --- Export des tableaux (Q40, Direction du 15/11/2026) : AUCUNE valeur codée en dur dans l'export ; les trois réglages vivent en base. AK (16/11/2026) : la limite de
+  // lignes par export n'existe plus par défaut (0 = aucune limite) ; les deux autres valeurs d'attente restent « à fixer sur la plus grande table réelle ».
   DefinitionParametre(
     cle: 'export.limiteLignes',
     famille: 'export',
     type: TypeParametre.entier,
-    defaut: 200000,
-    libelle: 'Nombre maximal de lignes par export',
-    aide: 'Au-delà, l\'export est REFUSÉ en le disant (jamais tronqué en silence) : il faut cocher ou filtrer moins de lignes. Entier d\'au moins 1. Valeur d\'attente large : à fixer sur la plus grande table réelle de la clinique.',
-    source: 'Valeur d\'attente (décision Q40 du 15/11/2026) : à fixer sur la plus grande table réelle',
+    defaut: 0,
+    libelle: 'Nombre maximal de lignes par export (0 = aucune limite)',
+    aide: 'Par défaut AUCUNE limite : seul le droit d\'exporter compte (décision AK du 16/11/2026). Si la clinique fixe une limite (entier d\'au moins 1), un export au-delà est REFUSÉ en le disant, jamais tronqué en silence. 0 ou vide : aucune limite.',
+    source: 'Décision de la Direction du 16/11/2026 (AK) : pas de limite de lignes par défaut, seul le droit d\'export compte (remplace la valeur d\'attente de Q40, « à fixer sur la plus grande table réelle »)',
     branche: true,
     appliquePar: 'Chantier TABLEAUX (export)',
   ),
@@ -415,6 +416,20 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Valeur d\'attente (décision Q42 du 15/11/2026) : à fixer à l\'usage',
     branche: true,
     appliquePar: 'Chantier TABLEAUX (impression de la sélection)',
+  ),
+
+  // Section AI (Direction, 16/11/2026) : une décision prise sur un fileul et non appliquée par la mère au-delà de ce délai s'ALERTE (notification de poste au validateur concerné et à
+  // l'administrateur). Aucun blocage, aucune validation automatique. BRANCHÉ : lu à chaque vérification par `AlerteDecisionsMere` et par la pastille.
+  DefinitionParametre(
+    cle: cleDelaiAlerteMere,
+    famille: 'validations',
+    type: TypeParametre.entier,
+    defaut: 4,
+    libelle: 'Décision en attente de la mère : délai d’alerte (heures)',
+    aide: 'Une validation, une demande de prix ou une demande d’import déposée sur un fileul et que la mère n’a pas appliquée au-delà de ce délai déclenche une alerte vers le validateur concerné (rôles qui détiennent le geste, lus dans la matrice) et l’administrateur. Rien n’est bloqué, rien n’est validé à la place de la mère. Entier d’au moins 1.',
+    source: 'Décision de la Direction du 16/11/2026 (section AI) : 4 heures',
+    branche: true,
+    appliquePar: 'Continuité des validations (pastille et alerte des décisions en attente de la mère)',
   ),
 
   // Q3 et Q4 de la Direction de Baguidi (17/11/2026). Q3 : une liste de rôles BRANCHÉE (clôture). Q4 : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste
@@ -458,6 +473,7 @@ const Map<String, String> libellesFamillesParametres = {
   'export': 'Export des tableaux',
   'cloture': 'Clôture comptable',
   'achats': 'Achats',
+  'validations': 'Validations et continuité',
 };
 
 /// La définition d'une clé, ou `null`.

@@ -30,7 +30,7 @@ const String valDepotSansEffet = 'sans_effet';
 const String valDepotRefusee = 'refusee';
 
 /// Les champs que SEULE la mère écrit sur un dépôt (le verdict).
-const List<String> valChampsVerdictDepot = ['etat', 'resultatCode', 'resultatMotif', 'resultatGeste', 'traiteLe', 'traitePar'];
+const List<String> valChampsVerdictDepot = ['etat', 'resultatCode', 'resultatMotif', 'resultatGeste', 'traiteLe', 'traitePar', 'signeLe', 'appliqueLe'];
 
 /// Ce que le dépôt rend : un refus nommé (rien n'est déposé), ou la fiche à écrire. [dejaDepose] : un dépôt identique attend déjà la mère, il n'y en a pas de second.
 class VerdictDepot {
@@ -118,7 +118,7 @@ ApplicationDepot? valAppliquerDepot(
   final quand = DateTime.tryParse('${depot['demandeLe'] ?? ''}') ?? maintenant;
   final motif = depot['motif'] as String?;
   final v = valValiderReferentiel('${depot['famille']}', '${depot['cible']}',
-      role: '${depot['demandeRole']}', acteur: '${depot['demandePar']}', maintenant: quand, lire: lire, libelles: libelles, fileul: false, motif: motif);
+      role: '${depot['demandeRole']}', acteur: '${depot['demandePar']}', maintenant: quand, lire: lire, libelles: libelles, fileul: false, motif: motif, appliqueLe: maintenant);
   if (v.ok) return ApplicationDepot(etat: valDepotAppliquee, validation: v);
   final r = v.refus!;
   if (r.code == 'DEJA_VALIDE') return ApplicationDepot(etat: valDepotSansEffet, code: r.code, motif: r.motif, geste: r.geste);

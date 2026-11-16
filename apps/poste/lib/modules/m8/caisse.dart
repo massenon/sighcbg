@@ -325,12 +325,12 @@ class _EcranCaisseState extends State<EcranCaisse> {
             ColonneMini(
                 'Part assureur',
                 (x) => ligneAValoriser(x)
-                    ? libellePrixAValoriser
+                    ? libelleLigneSansMontant(x, montant: money)
                     : (n(x['partAssureur']) > 0 ? money(x['partAssureur']) : '—'),
                 droite: true),
             ColonneMini(
                 'À la charge du patient',
-                (x) => ligneAValoriser(x) ? libellePrixAValoriser : money(x['partPatient']),
+                (x) => ligneAValoriser(x) ? libelleLigneSansMontant(x, montant: money) : money(x['partPatient']),
                 droite: true),
           ], lignes: rows);
     afficherTiroir<void>(ctx,
@@ -420,7 +420,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
       final jour = tarIso(c.aujourdhui);
       final jourPiece = tarJourDe(fac['date'], jour);
       for (final l in lignes.where(ligneAValoriser)) {
-        final prix = tarPrixValorisation(h, c.magasin.collection('produits').parId(l['produitId']), jourPiece, aujourdhui: jour);
+        final prix = tarPrixValorisationLigne(h, l, c.magasin.collection('produits').parId(l['produitId']), jourPiece, aujourdhui: jour);
         if (prix == null) continue;
         final r = valoriserLigne(fac, '${l['id']}', prix, utilisateur: '', maintenant: c.aujourdhui.toIso8601String());
         if (!r.ok) continue;
@@ -458,7 +458,9 @@ class _EcranCaisseState extends State<EcranCaisse> {
                   final reste =
                       lignes.fold<num>(0, (a, l) => a + n(vue(l)['partPatient'])) -
                           total;
-                  final sansPrix = [for (final l in lignes) if (ligneAValoriser(vue(l))) l];
+                  final sansPrix = [for (final l in lignes) if (ligneAValoriser(vue(l)) && !ligneAssureADefinir(vue(l))) l];
+                  // AJ (16/11/2026) : un acte assurable sans prix ASSURÉ dans la grille : la ligne de l'assuré attend son prix assuré, jamais facturée au prix non assuré.
+                  final sansPrixAssure = [for (final l in lignes) if (ligneAssureADefinir(vue(l))) l];
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
@@ -486,6 +488,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           NoteSigh(
                               '${nombre(sansPrix.length)} prestation(s) au prix à valoriser (${sansPrix.map((l) => l['designation']).join(', ')}) : le prix d’achat n’est pas encore fixé, la ligne ne s’encaisse pas ($codePrixAValoriser). Les autres prestations s’encaissent normalement ; la personne qui fixe les prix d’achat est prévenue.',
                               key: const Key('caisse:a-valoriser'),
+                              ton: TonSigh.attention,
+                              icone: LucideIcons.tag),
+                          const SizedBox(height: 12),
+                        ],
+                        if (sansPrixAssure.isNotEmpty) ...[
+                          NoteSigh(
+                              '${nombre(sansPrixAssure.length)} acte(s) au prix assuré à définir (${sansPrixAssure.map((l) => '${l['designation']}${l['prixNonAssureInfo'] is num ? ' — non assuré : ${money(l['prixNonAssureInfo'])}, pour information' : ''}').join(' ; ')}) : la grille ne porte pas de prix assuré, la ligne ne s’encaisse pas ($codePrixAssureADefinir) et n’est jamais facturée au prix non assuré. Les autres prestations s’encaissent normalement.',
+                              key: const Key('caisse:prix-assure-a-definir'),
                               ton: TonSigh.attention,
                               icone: LucideIcons.tag),
                           const SizedBox(height: 12),
@@ -729,8 +739,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           mode: '${form['mode']}',
                           maintenant: c.aujourdhui);
                     } on RefusCaisse catch (e) {
-                      if (e.code == codePrixAValoriser) {
-                        ToastsSigh.afficher(ctx, 'Encaissement refusé : prix à valoriser.',
+                      if (e.code == codePrixAValoriser || e.code == codePrixAssureADefinir) {
+                        ToastsSigh.afficher(ctx, e.code == codePrixAssureADefinir ? 'Encaissement refusé : prix assuré à définir.' : 'Encaissement refusé : prix à valoriser.',
                             type: TypeToast.erreur,
                             detail: e.motif,
                             duree: const Duration(seconds: 12));
@@ -763,7 +773,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                       if (res.lignesValorisees.isNotEmpty)
                         '${nombre(res.lignesValorisees.length)} ligne(s) valorisée(s) au prix d’achat',
                       if (res.lignesRefusees.isNotEmpty)
-                        'NON ENCAISSÉ ($codePrixAValoriser) : ${res.lignesRefusees.map((x) => x['designation']).join(', ')}',
+                        'NON ENCAISSÉ : ${res.lignesRefusees.map((x) => '${x['designation']} (${x['code'] ?? codePrixAValoriser})').join(', ')}',
                     ];
                     ToastsSigh.afficher(ctx,
                         'Encaissement validé — ${money(res.montantRegle)}.',

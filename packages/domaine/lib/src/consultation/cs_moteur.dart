@@ -579,9 +579,13 @@ List<FicheCs> csConstruireLignes(
         'partPersonnel': null,
         'partPatient': null,
         'prixAValoriser': true,
+        // AJ (16/11/2026) : la même ligne sans montant porte la cause « prix assuré à définir » d'un acte assurable dont la grille n'a pas de prix assuré ; le prix non
+        // assuré n'y est qu'une INFORMATION, jamais facturé.
+        if (o['prixAssureADefinir'] == true) 'prixAssureADefinir': true,
+        if (o['prixAssureADefinir'] == true && o['prixNonAssureInfo'] != null) 'prixNonAssureInfo': o['prixNonAssureInfo'],
         'demandeId': null,
         'produitId': _ou(o['produitId'], null),
-        'acteCode': null,
+        'acteCode': _ou(o['acteCode'], null),
         'demandeImagerieId': null,
         'statutPaiement': 'du',
         'montantRegle': 0,
@@ -647,6 +651,18 @@ List<FicheCs> csConstruireLignes(
     });
   }
   for (final a in actes) {
+    if (a['prixAssureADefinir'] == true) {
+      ajouter({
+        'categorie': 'acte',
+        'designation': a['libelle'],
+        'quantite': 1,
+        'acteCode': a['code'],
+        'prixAValoriser': true,
+        'prixAssureADefinir': true,
+        'prixNonAssureInfo': a['prixNonAssureInfo'],
+      });
+      continue;
+    }
     ajouter({
       'categorie': 'acte',
       'designation': a['libelle'],
@@ -739,6 +755,20 @@ ResultatPrescription csPrescrire(
         final a = h.parActe['$code'] ?? const <String, Object?>{};
         final pr = h.prixActe(code, jourPiece, assureActes, aujourdhui: jourPiece);
         final Object? prixActe = pr.montant;
+        // AJ (16/11/2026) : acte assurable sans prix ASSURÉ dans la grille, pour un assuré : la ligne EXISTE (« prix assuré à définir », aucun montant), jamais au prix non assuré.
+        if (pr.assureADefinir) {
+          return <String, Object?>{
+            'code': code,
+            'libelle': _ou(a['libelle'], code),
+            'secteur': _ou(a['secteur'], ''),
+            'prix': null,
+            'tarifValide': false,
+            'prixAssureADefinir': true,
+            'prixNonAssureInfo': pr.informatif,
+            '_connu': true,
+            '_prixAbsent': false,
+          };
+        }
         return <String, Object?>{
           'code': code,
           'libelle': _ou(a['libelle'], code),
@@ -826,7 +856,9 @@ ResultatPrescription csPrescrire(
     'montantImagerie': mImg,
     'montant': mMed + mAna + mAct + mImg,
     // Les médicaments au « prix à valoriser » ne sont PAS dans ces montants (ni pour 0) : le compte les nomme.
-    if (medicamentsAValoriser.isNotEmpty) 'lignesAValoriser': medicamentsAValoriser.length,
+    if (medicamentsAValoriser.isNotEmpty || actes.any((a) => a['prixAssureADefinir'] == true))
+      'lignesAValoriser': medicamentsAValoriser.length + actes.where((a) => a['prixAssureADefinir'] == true).length,
+    if (actes.any((a) => a['prixAssureADefinir'] == true)) 'actesPrixAssureADefinir': actes.where((a) => a['prixAssureADefinir'] == true).length,
     'urgent': csVrai(v['urgent']),
     'statutPaiement': 'impayee',
     'statutDispensation': medicaments.isNotEmpty ? 'en_attente' : 'sans_objet',
@@ -911,8 +943,8 @@ ResultatPrescription csPrescrire(
     'partPatient': duPatient,
     'montantPaye': 0,
     'reliquat': duPatient,
-    // Les totaux ci-dessus portent les lignes VALORISÉES ; une ligne « prix à valoriser » n'y entre pas (jamais pour 0) et se compte ici.
-    if (medicamentsAValoriser.isNotEmpty) 'lignesAValoriser': medicamentsAValoriser.length,
+    // Les totaux ci-dessus portent les lignes VALORISÉES ; une ligne « prix à valoriser » (ou « prix assuré à définir », AJ) n'y entre pas (jamais pour 0) et se compte ici.
+    if (lignesFacture.any((l) => l['prixAValoriser'] == true)) 'lignesAValoriser': lignesFacture.where((l) => l['prixAValoriser'] == true).length,
     'modePaiement': null,
     'statutPaiement': 'impayee',
     'statutMecef': 'en_attente',

@@ -147,7 +147,9 @@ List<String> tarMotsDistinctifs(String libelle, Iterable<String> libellesFamille
 }
 
 /// Le NOUVEL identifiant d'une prestation distincte : préfixe de la famille (lu du code qu'elle quitte), puis les premières lettres de son mot distinctif, à la longueur usuelle des codes de la famille.
-/// Quand le code obtenu est déjà pris (par un code, un alias ou une ligne de départ, archivés compris), il se DIFFÉRENCIE par un rang (`APT2`, `APT3`…) : c'est la seule règle ajoutée à la convention.
+/// Quand le code obtenu est déjà pris (par un code, un alias ou une ligne de départ, archivés compris), il se DIFFÉRENCIE par un rang SÉPARÉ PAR UN TIRET (`CERT-APT-2`, `CERT-APT-3`…) :
+/// c'est la seule règle ajoutée à la convention. Le tiret est celui que la Direction a fixé le 16/11/2026 pour le second certificat d'aptitude (« CERT-APT-2 ») : la règle de
+/// construction suit la décision, pour toutes les familles (un rang se lit comme tel, il ne se confond pas avec le suffixe de la famille).
 String tarCodeDistinct({
   required String codeActuel,
   required String libelle,
@@ -165,7 +167,7 @@ String tarCodeDistinct({
   var rang = 1;
   while (pris.contains(candidat.toUpperCase())) {
     rang++;
-    candidat = '$prefixe$base$rang';
+    candidat = '$prefixe$base-$rang';
   }
   return candidat;
 }
@@ -183,6 +185,7 @@ class TarNouvelleIdentite {
     required this.etatAssure,
     this.secteur,
     this.assurable,
+    this.prestationDecidee = false,
   });
   final Object? ficheId;
   final String ancienCode;
@@ -196,6 +199,10 @@ class TarNouvelleIdentite {
   final String etatAssure;
   final String? secteur;
   final Object? assurable;
+
+  /// Le nouveau code est celui d'une prestation DÉJÀ DÉCIDÉE par la Direction ([tarPrestationsDecidees], par exemple `CERT-APT-2`) : la ligne de départ s'y RATTACHE, aucune
+  /// prestation ni proposition de prix n'est créée (le prix décidé est déjà en vigueur).
+  final bool prestationDecidee;
 }
 
 class TarArbitrageDistincts {
@@ -217,6 +224,8 @@ class TarArbitrageDistincts {
 /// ARBITRE « deux prestations distinctes » : le code reste à la première ligne ([doublon] : de celle que la caisse lit à la dernière) ; chacune des autres reçoit un nouveau code. [famille] : la famille de
 /// la prestation de départ (`CERTIFICAT`…). [codesFamille] / [libellesFamille] : les codes et désignations de la MÊME famille au référentiel (la convention se lit là). [codesPris] : TOUS les codes
 /// existants (référentiel, alias, listes de départ, archivés compris). [codesDemandes] : un code que l'appelant propose pour une ligne (`ficheId` vers code) ; le moteur le REFUSE s'il est déjà pris.
+/// [codesDecides] : les prestations que la Direction a déjà décidées, clé [tarCleDecision] (code quitté et libellé normalisé) vers le code décidé : une ligne qui y correspond reçoit CE code
+/// (déjà pris, par construction), rattachée à la prestation décidée, sans création.
 /// Refus nommés : `ARBITRAGE_RESERVE` (le geste manque), `MOTIF_REQUIS` (RG-12), `CODE_EXISTANT` (un code ne se réutilise pas), `CODE_VIDE`.
 TarArbitrageDistincts tarArbitrerDistincts(
   TarDoublonPrix doublon, {
@@ -227,6 +236,7 @@ TarArbitrageDistincts tarArbitrerDistincts(
   required Iterable<String> libellesFamille,
   required Iterable<String> codesPris,
   Map<Object?, String> codesDemandes = const {},
+  Map<String, String> codesDecides = const {},
 }) {
   if (!peutDecider) {
     return const TarArbitrageDistincts.refus(RefusTarif('ARBITRAGE_RESERVE',
@@ -243,8 +253,11 @@ TarArbitrageDistincts tarArbitrerDistincts(
   final identites = <TarNouvelleIdentite>[];
   for (final f in autres) {
     final demande = codesDemandes[f['id']]?.trim();
+    final decide = codesDecides[tarCleDecision(doublon.code, f['libelle'])];
     String code;
-    if (demande != null) {
+    if (demande == null && decide != null) {
+      code = decide;
+    } else if (demande != null) {
       if (demande.isEmpty) return const TarArbitrageDistincts.refus(RefusTarif('CODE_VIDE', 'le nouveau code est vide', 'Saisir un code.'));
       if (pris.contains(demande.toUpperCase()) || nouveaux.contains(demande.toUpperCase())) {
         return TarArbitrageDistincts.refus(RefusTarif('CODE_EXISTANT', 'le code « $demande » existe déjà (code, alias ou ligne de départ) : un code ne se réutilise jamais',
@@ -271,7 +284,11 @@ TarArbitrageDistincts tarArbitrerDistincts(
         prixAssure: pa,
         etatAssure: na == null ? 'manquant' : (pa != null ? 'montant' : 'unique'),
         secteur: f['secteur'] as String?,
-        assurable: f['assurable']));
+        assurable: f['assurable'],
+        prestationDecidee: demande == null && decide != null));
   }
   return TarArbitrageDistincts.ok(gardeId: garde['id'], identites: identites);
 }
+
+/// La clé d'une prestation décidée par la Direction pour l'arbitrage « deux prestations distinctes » : le code quitté et la désignation normalisée de la ligne.
+String tarCleDecision(Object? ancienCode, Object? libelle) => '${'$ancienCode'.toUpperCase()}|${tarNormaliserLibelle(libelle)}';

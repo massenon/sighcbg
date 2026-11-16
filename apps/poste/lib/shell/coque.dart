@@ -11,6 +11,7 @@ import '../modules/registre.dart';
 import '../modules/m2/sp_registre.dart' show ecranSpecialitePour;
 import '../sync/etat_sync.dart';
 import 'barre_superieure.dart';
+import 'pastille_decisions_mere.dart';
 import 'ecran_a_porter.dart';
 import 'page_standard.dart';
 import 'pied_legal.dart';
@@ -22,6 +23,7 @@ import '../modules/auth/acc_session.dart';
 import 'acces_rapides.dart';
 import 'activite_fermee.dart';
 import '../donnees/magasin.dart';
+import '../donnees/tarifs_poste.dart';
 import '../kit/toast.dart';
 import '../modules/cfg/cfb_notifications.dart' show CfbAudio;
 import 'centre_notifications.dart';
@@ -477,6 +479,13 @@ class _CoquePosteState extends State<CoquePoste> {
   }
 
   void _ouvrir(String id) {
+    // AJ (16/11/2026) : le changement de jour, sans tâche de minuit : à l'ouverture d'un écran, les listes de prix passent au prix du jour, sur la mère comme sur un fileul.
+    final m = widget.magasin;
+    // Différé d'une micro-tâche : un écran-renvoi peut naviguer pendant sa construction, la projection prévient alors ses écouteurs après l'image.
+    if (m != null) {
+      final quand = _maintenant();
+      scheduleMicrotask(() => TarifsPoste.projeterSiNouveauJour(m, quand));
+    }
     if (_estAutonome(id)) {
       setState(() => _autonome = id);
       return;
@@ -721,7 +730,8 @@ class _CoquePosteState extends State<CoquePoste> {
       surInstallation: _ouvrirInstallation,
       selecteurExercice: _aExercice(_courantAffiche)
           ? SelecteurExercice(magasin: widget.magasin ?? _magasinVide, aujourdhui: _maintenant())
-          : null);
+          : null,
+      decisionsMere: widget.magasin == null ? null : PastilleDecisionsMere(magasin: widget.magasin!, horloge: _maintenant));
 
   /// Les maillons cliquables du fil (comme la maquette) : « Accueil » ramène à la page d'accueil du rôle ; l'intitulé du module ouvre la page d'accueil du module
   /// (sauf sur cette page elle-même), s'il est ouvert au profil.

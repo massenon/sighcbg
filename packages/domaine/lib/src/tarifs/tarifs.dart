@@ -264,12 +264,18 @@ class ReferentielTarifs {
 
   /// Le prix d'un ACTE (espace des codes d'acte) selon la règle historique de la prescription : la colonne assurée ne s'applique que si l'acte est assurable ET porte un
   /// montant assuré ; sinon le prix non assuré. `connu` faux : l'acte n'est pas au référentiel.
-  ({bool connu, num? montant}) prixActe(Object? code, Object? date, bool assure, {required String aujourdhui}) {
+  ///
+  /// AJ (Direction, 16/11/2026) : un acte ASSURABLE dont la colonne assurée est VIDE (`manquant`), lu pour un ASSURÉ, n'a PAS de montant (jamais le prix non assuré à sa place) :
+  /// `assureADefinir` vrai, et le prix non assuré est rendu POUR INFORMATION dans `informatif`.
+  ({bool connu, num? montant, bool assureADefinir, num? informatif}) prixActe(Object? code, Object? date, bool assure, {required String aujourdhui}) {
     final p = parActe['$code'];
-    if (p == null) return (connu: false, montant: null);
+    if (p == null) return (connu: false, montant: null, assureADefinir: false, informatif: null);
     final s = instantane(p, tarJourDe(date, aujourdhui));
-    if (s == null) return (connu: true, montant: null);
-    return (connu: true, montant: (assure && p['assurable'] == true && s.etatAssure == 'montant') ? s.pa : s.na);
+    if (s == null) return (connu: true, montant: null, assureADefinir: false, informatif: null);
+    if (assure && p['assurable'] == true && s.etatAssure == 'manquant' && s.na != null) {
+      return (connu: true, montant: null, assureADefinir: true, informatif: s.na);
+    }
+    return (connu: true, montant: (assure && p['assurable'] == true && s.etatAssure == 'montant') ? s.pa : s.na, assureADefinir: false, informatif: null);
   }
 
   /// Le prix d'une ANALYSE (espace des codes d'analyse) : la colonne assurée vaut le prix unique tant qu'aucune version ne porte un montant assuré.

@@ -14,6 +14,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_import.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// OUTILS DES TESTS DU GRAND STOCK AU FILEUL (décision de la Direction du 13/11/2026) : la VRAIE mère Dart, de VRAIS moteurs de fileul, de VRAIS ponts d'activité, la vraie configuration
 /// diffusée, et le câblage de `main.dart` (un fileul n'écrit jamais le catalogue `produits` par le pont : `enLectureSeule: collectionsDeLaMereSeule`).
 typedef M = Map<String, Object?>;
@@ -153,6 +155,8 @@ class Clinique {
 
   Future<Poste> fileul(String nom, String role, String par) async {
     final p = Poste(nom, port, role, par);
+    // AI (16/11/2026) : les demandes du fileul portent le compte nominatif qui les signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(p.m, mm, role, nom: par);
     final code = await console.codeAppareil(nom).timeout(const Duration(seconds: 20));
     await p.moteur.rattacher('http://127.0.0.1:$port', code).timeout(const Duration(seconds: 20));
     p.moteur.demarrer();

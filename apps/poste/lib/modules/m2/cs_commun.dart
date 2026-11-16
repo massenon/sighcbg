@@ -589,7 +589,10 @@ PieceA4 pieceOrdonnance(ContexteEcran c, Fiche r) {
           ColonneEtat(
               libelle: 'Tarif',
               droite: true,
-              valeur: (l) => vrai(l['prix']) ? money(l['prix'], avecDevise: false) : 'à valider',
+              // AJ (16/11/2026) : un acte assurable sans prix assuré dans la grille, prescrit à un assuré : « prix assuré à définir », le non assuré pour information.
+              valeur: (l) => l['prixAssureADefinir'] == true
+                  ? libelleLigneSansMontant({...l, 'prixAValoriser': true, 'montant': null}, montant: (v) => money(v, avecDevise: false))
+                  : (vrai(l['prix']) ? money(l['prix'], avecDevise: false) : 'à valider'),
               somme: (l) => nombreOuZero(l['prix'])),
         ], lignes: act)),
       ],

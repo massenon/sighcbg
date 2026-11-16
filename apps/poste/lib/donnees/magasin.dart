@@ -291,6 +291,14 @@ class Magasin {
     utilisateur = a.nom;
   }
 
+  /// Le COMPTE qui signe une décision déposée (section AI, 16/11/2026) : l'identifiant `utilisateurs.id` de l'agent NOMINATIF de la session ; `null` pour une session de
+  /// démonstration ou sans agent (la mère refuse alors la décision, `COMPTE_NON_INSCRIT`).
+  String? get compteSignataire {
+    final a = acteur;
+    if (a == null || a.demonstration || a.utilisateurId.isEmpty) return null;
+    return a.utilisateurId;
+  }
+
   // --- Persistance -------------------------------------------------------------------------------------------------------------------------------
   Persistance? _persistance;
   final Set<String> _sales = {};

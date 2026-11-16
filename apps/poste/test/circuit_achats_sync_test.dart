@@ -15,6 +15,8 @@ import 'package:sigh_poste/sync/service_circuit_achats.dart';
 import 'package:sigh_poste/sync/service_validations_deposees.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LA CONTINUITÉ DES VALIDATIONS TRAVERSE LES POSTES (Direction, 16/11/2026) : un BESOIN exprimé sur un fileul arrive à la DAF, qui arbitre depuis SON poste ; sa COMMANDE part à la DAF de la
 /// même façon (RG-04). Contre la VRAIE mère Dart et DEUX vrais moteurs de fileul : numérotation sans collision, arbitrage déposé puis appliqué par la mère, verdict et tâches revenus,
 /// état qui ne régresse jamais, mère coupée puis relancée, aucun prix vers un téléphone.
@@ -43,6 +45,10 @@ void main() {
       'notifications': <M>[],
       'validationsDeposees': <M>[],
       'rbac': <M>[],
+      // AI (16/11/2026) : la mère vérifie le compte signataire ; chaque auteur a son compte, ce test sonde le GESTE de la matrice.
+      'utilisateurs': <M>[
+        for (final r in ['da', 'admin', 'direction']) {'id': 'U-$r', 'statut': 'actif', 'role': r, 'actif': true}
+      ],
     })
       ..horloge = () => auj;
     final svc = ServiceValidationsDeposees.de(m)
@@ -56,7 +62,8 @@ void main() {
     M depot(String id, String role) => circuitDeposer(
             famille: circuitCommandeValidation, bon: bon(id), role: role, acteur: 'Agent $role', poste: 'F', maintenant: auj, besoins: const [], commandes: [bon(id)], depots: const [],
             nouvelId: () => 'D$id', gestes: chezLeFileul)
-        .fiche!;
+        .fiche!
+      ..[champCompteDecision] = 'U-$role';
     for (final d in [depot('1', 'da'), depot('2', 'admin'), depot('3', 'direction')]) {
       m.collection('validationsDeposees').ajouterSansJournal(d);
     }
@@ -122,6 +129,8 @@ void main() {
     Fiche? cmd(Magasin m, String ref) => m.collection('commandes').toutes.where((b) => b['reference'] == ref).firstOrNull;
     int notes(Magasin m, String type, {String? poste}) => m.collection('notifications').toutes.where((n) => n['type'] == type && (poste == null || n['poste'] == poste)).length;
 
+    // AI (16/11/2026) : les dépôts de F2 portent le compte nominatif de la DAF ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(m2, mm, 'da', nom: 'La DAF');
     try {
       svcMere.demarrerMere(intervalle: const Duration(milliseconds: 150));
       svc1.demarrerFileul(intervalle: const Duration(milliseconds: 150));
@@ -200,6 +209,8 @@ void main() {
       m2.collection('validationsDeposees').ajouterSansJournal({
         'id': 'VDP-F2-faux', 'statut': 'actif', 'genre': valGenreCircuitAchat, 'famille': circuitBesoinArbitrage, 'cible': cleCircuit(autre), 'decision': 'valider',
         'libelle': 'faux', 'etat': 'deposee', 'demandeRole': 'caissier', 'demandePar': 'Un caissier', 'demandePoste': 'F2', 'demandeLe': valInstant(auj),
+        // Signé par un compte caissier VALIDE (le contrôle du compte passe) : c'est le geste réservé, rejoué par la mère, qui refuse.
+        champCompteDecision: compteDuRole(mm, 'caissier').utilisateurId,
       });
       await converger(() => svc2.depots.parId('VDP-F2-faux')?['etat'] == 'refusee', 'la mère refuse le dépôt falsifié');
       expect(svc2.depots.parId('VDP-F2-faux')!['resultatCode'], 'VALIDATION_RESERVEE');
