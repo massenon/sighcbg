@@ -1,0 +1,17 @@
+{
+ "id": "cfg-tarifs",
+ "titre": "Tarifs et prix",
+ "libelle": "Tarifs et prix",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-tarifs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 897
+}

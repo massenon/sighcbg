@@ -1,0 +1,17 @@
+{
+ "id": "hub-ged",
+ "titre": "Gestion documentaire",
+ "libelle": "Gestion documentaire",
+ "domaine": "Administration",
+ "module": "GED",
+ "moduleLibelle": "Gestion documentaire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-ged"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1029
+}

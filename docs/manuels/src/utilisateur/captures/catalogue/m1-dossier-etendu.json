@@ -1,0 +1,17 @@
+{
+ "id": "m1-dossier-etendu",
+ "titre": "Dossier de consultation étendu",
+ "libelle": "Dossier de consultation étendu",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-dossier-etendu"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 555
+}

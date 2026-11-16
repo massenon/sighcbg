@@ -1,0 +1,17 @@
+{
+ "id": "ged-archives",
+ "titre": "Archivage & conservation",
+ "libelle": "Archivage & conservation",
+ "domaine": "Administration",
+ "module": "GED",
+ "moduleLibelle": "Gestion documentaire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "ged-archives"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 911
+}

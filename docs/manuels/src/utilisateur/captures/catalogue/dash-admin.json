@@ -1,0 +1,17 @@
+{
+ "id": "dash-admin",
+ "titre": "Tableau de bord — Administration système",
+ "libelle": "Administrateur",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-admin"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1451
+}

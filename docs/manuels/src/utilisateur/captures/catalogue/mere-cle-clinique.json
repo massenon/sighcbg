@@ -1,0 +1,17 @@
+{
+ "id": "mere-cle-clinique",
+ "titre": "Clé de clinique",
+ "libelle": "Clé de clinique",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Sécurité et continuité",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-cle-clinique"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 804
+}

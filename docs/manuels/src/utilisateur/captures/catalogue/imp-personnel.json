@@ -1,0 +1,17 @@
+{
+ "id": "imp-personnel",
+ "titre": "Importation du personnel",
+ "libelle": "Importation du personnel",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-personnel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 970
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m10-propositions-planning",
+ "titre": "Propositions de planning",
+ "libelle": "Propositions de planning",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-propositions-planning"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 616
+}

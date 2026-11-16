@@ -1,0 +1,17 @@
+{
+ "id": "m3-bloc-cro",
+ "titre": "Comptes rendus opératoires",
+ "libelle": "Comptes rendus opératoires",
+ "domaine": "Soins",
+ "module": "M3",
+ "moduleLibelle": "Hospitalisation",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-bloc-cro"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1392
+}

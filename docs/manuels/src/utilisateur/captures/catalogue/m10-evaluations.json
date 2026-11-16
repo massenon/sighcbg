@@ -1,0 +1,17 @@
+{
+ "id": "m10-evaluations",
+ "titre": "Évaluations mensuelles (NS 131)",
+ "libelle": "Évaluations (NS 131)",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-evaluations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 910
+}

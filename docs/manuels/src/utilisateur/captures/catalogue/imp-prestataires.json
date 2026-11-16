@@ -1,0 +1,17 @@
+{
+ "id": "imp-prestataires",
+ "titre": "Importation des prestataires externes",
+ "libelle": "Importation des prestataires externes",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-prestataires"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1317
+}

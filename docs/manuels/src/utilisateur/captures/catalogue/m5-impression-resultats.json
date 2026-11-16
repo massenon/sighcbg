@@ -1,0 +1,17 @@
+{
+ "id": "m5-impression-resultats",
+ "titre": "Impression des résultats",
+ "libelle": "Impression des résultats",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-impression-resultats"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 828
+}

@@ -1,0 +1,17 @@
+{
+ "id": "imp-tarifs-produits",
+ "titre": "Importation des prix d’achat",
+ "libelle": "Importation des prix d’achat",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-tarifs-produits"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 715
+}

@@ -1,0 +1,17 @@
+{
+ "id": "cfg-centres-couts",
+ "titre": "Centres de coûts",
+ "libelle": "Centres de coûts",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-centres-couts"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 974
+}

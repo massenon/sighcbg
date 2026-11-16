@@ -1,0 +1,17 @@
+{
+ "id": "mere-a-traiter",
+ "titre": "« À traiter » consolidé",
+ "libelle": "« À traiter » consolidé",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-a-traiter"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 829
+}

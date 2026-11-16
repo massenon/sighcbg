@@ -1,0 +1,17 @@
+{
+ "id": "m2-imagerie-irm",
+ "titre": "Tableau IRM — imagerie par résonance magnétique",
+ "libelle": "Tableau IRM",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Imagerie médicale",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-imagerie-irm"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1080
+}

@@ -1,0 +1,17 @@
+{
+ "id": "imp-actes",
+ "titre": "Importation du catalogue des actes",
+ "libelle": "Importation du catalogue des actes",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-actes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1159
+}

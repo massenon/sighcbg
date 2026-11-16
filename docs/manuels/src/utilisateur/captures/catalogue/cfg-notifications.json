@@ -1,0 +1,17 @@
+{
+ "id": "cfg-notifications",
+ "titre": "Notifications",
+ "libelle": "Notifications",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-notifications"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1241
+}

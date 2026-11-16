@@ -1,0 +1,17 @@
+{
+ "id": "imp-garanties",
+ "titre": "Importation des garanties des souscripteurs",
+ "libelle": "Importation des garanties des souscripteurs",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-garanties"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1220
+}

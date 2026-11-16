@@ -1,0 +1,17 @@
+{
+ "id": "m7-besoins",
+ "titre": "Bons d’expression de besoins",
+ "libelle": "Bons d’expression de besoins",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-besoins"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 674
+}
