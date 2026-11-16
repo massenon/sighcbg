@@ -756,6 +756,19 @@ class Mere {
       case 'POST /admin/indicateurs-clinique/publier':
         adminOk(req);
         return pont.indicateurs.publier();
+      // ADR-0009 : la passerelle SMS (état et journal, réglage, dépôt d'un SMS composé par le poste, suivi des statuts).
+      case 'GET /admin/sms':
+        adminOk(req);
+        return pont.sms.etat();
+      case 'POST /admin/sms/reglages':
+        adminOk(req);
+        return pont.sms.regler(b);
+      case 'POST /admin/sms/envoyer':
+        adminOk(req);
+        return pont.sms.envoyer(b);
+      case 'POST /admin/sms/suivre':
+        adminOk(req);
+        return {'changes': await pont.sms.suivre()};
       case 'GET /admin/pair/etat':
         adminOk(req);
         return pair.etat();

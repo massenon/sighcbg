@@ -47,3 +47,5 @@ Route::get('/banc/sauvegarde/tout', [SauvegardeController::class, 'bancTout']);
 
 /* Satisfaction en ligne (décision du 16/11/2026) : questionnaire public par jeton, enveloppes chiffrées dans le navigateur. */
 require __DIR__.'/satisfaction.php';
+/* ADR-0009 : les SMS par le relais (fichier à part). */
+require __DIR__.'/relais-sms.php';

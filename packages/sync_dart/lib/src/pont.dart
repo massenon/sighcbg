@@ -19,6 +19,7 @@ import 'mere.dart';
 import 'copie_mere.dart';
 import 'indicateurs_clinique.dart';
 import 'satisfaction_en_ligne.dart';
+import 'sms_mere.dart';
 
 /// Chiffrement des enveloppes : même format que le banc Node (`crypto.js`) — nonce de 12 octets, `ct = chiffré ‖ tag`,
 /// métadonnées authentifiées (AAD = `id|appareil|dir|n`). Une enveloppe déplacée, rejouée sous un autre rang ou altérée
@@ -67,6 +68,8 @@ class Pont {
   late final PublicationIndicateurs indicateurs = PublicationIndicateurs(mere);
   /// Satisfaction en ligne (décision du 16/11/2026) : publication des liens, relève et déchiffrement des réponses ; la clé privée reste dans cette base.
   late final SatisfactionEnLigne satisfaction = SatisfactionEnLigne(mere);
+  /// ADR-0009 : la passerelle SMS (fermée par défaut) : dépôt au relais d'un SMS déjà composé, suivi de son statut.
+  late final PasserelleSms sms = PasserelleSms(mere);
 
   String get cleBase64 => base64.encode(_cleOctets);
   bool get actif => mere.cfg.relais.isNotEmpty;
@@ -402,6 +405,7 @@ class Pont {
     tour(indicateurs.tour, 5000);
     // Satisfaction en ligne : rien sans relais configuré ; publication à chaque tour, relève au plus chaque minute.
     tour(satisfaction.tour, 5000);
+    tour(sms.tour, 5000);
     tour(() async {
       await mere.verrou.executer(() => base.poserMeta('relais_dernier_ok', _dernierOk));
       await rel('POST', '/mere/battement', {});

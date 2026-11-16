@@ -34,6 +34,8 @@ void main() {
       gesteAlertesComptable, gesteAlertesDirection, gesteAlertesImagerie, gesteAlertesLaboratoire, gesteAlertesPrescripteur, gesteAlertesSalleSoins, gesteAlertesHospitalisation,
       gesteAlertesEcheancesFiscales, gesteAlertesCreances, gesteAlertesBesoinsAValider, gesteAlertesEcrituresBrouillon, gesteAlertesDoublonsSync, gesteConflitsTrancher, gesteSyncValiderFlux,
       gesteSystemeAdministrer, gesteInstallationConduire, gesteDoubleFacteurImpose, gesteComptesReinitialiser, gesteReglageVerrouSecours, gesteReglageHorsSite,
+      // SMS par le relais (ADR-0009, 16/11/2026) : régler la passerelle et tester l'envoi.
+      gesteReglageSms,
       gesteFiscalValiderConfiguration, gesteAibTenir, gesteFiscalConfirmer, gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
       gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhEncadrer,
       gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,

@@ -816,7 +816,9 @@
    ],
    "ecrans": [
     "mere-relais",
-    "mere-indicateurs"
+    "mere-indicateurs",
+    "mere-sms-passerelle",
+    "mere-sms-journal"
    ]
   },
   {
@@ -6478,6 +6480,38 @@
    "id": "mere-indicateurs",
    "label": "Indicateurs publiés",
    "icone": "eye-off",
+   "module": "MERE",
+   "moduleLabel": "Liaison avec le relais",
+   "domaine": "Poste mère",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da"
+   ]
+  },
+  {
+   "id": "mere-sms-passerelle",
+   "label": "Passerelle SMS",
+   "icone": "send",
+   "module": "MERE",
+   "moduleLabel": "Liaison avec le relais",
+   "domaine": "Poste mère",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da"
+   ]
+  },
+  {
+   "id": "mere-sms-journal",
+   "label": "Journal des envois SMS",
+   "icone": "scroll-text",
    "module": "MERE",
    "moduleLabel": "Liaison avec le relais",
    "domaine": "Poste mère",

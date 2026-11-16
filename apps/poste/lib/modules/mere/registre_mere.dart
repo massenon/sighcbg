@@ -12,6 +12,7 @@ import 'mrb_journal.dart';
 import 'mrb_reinit.dart';
 import 'mrb_relais.dart';
 import 'mrb_sauvegardes.dart';
+import 'mrb_sms.dart';
 import 'mrc_cycle.dart';
 import 'mrc_exploitation.dart';
 import 'mrc_plateforme.dart';
@@ -36,6 +37,8 @@ final Map<String, ConstruireEcran> ecransMERE = {
   'mere-reinit': (c, cfg) => const EcranReinitialisation(),
   'mere-relais': (c, cfg) => const EcranRelais(),
   'mere-indicateurs': (c, cfg) => const EcranIndicateursPublies(),
+  'mere-sms-passerelle': (c, cfg) => const EcranSmsPasserelle(),
+  'mere-sms-journal': (c, cfg) => const EcranSmsJournal(),
   'mere-service': (c, cfg) => EcranMereService(config: cfg),
   'mere-base': (c, cfg) => const EcranMereBase(),
   'mere-reseau': (c, cfg) => const EcranMereReseau(),
@@ -64,6 +67,8 @@ Map<String, ConstruireEcran> ecransMEREPour(ClientMere client) {
   'mere-reinit': (c, cfg) => const EcranReinitialisation(),
   'mere-relais': (c, cfg) => const EcranRelais(),
   'mere-indicateurs': (c, cfg) => const EcranIndicateursPublies(),
+  'mere-sms-passerelle': (c, cfg) => const EcranSmsPasserelle(),
+  'mere-sms-journal': (c, cfg) => const EcranSmsJournal(),
   'mere-service': (c, cfg) => EcranMereService(config: cfg),
   'mere-base': (c, cfg) => const EcranMereBase(),
   'mere-reseau': (c, cfg) => const EcranMereReseau(),

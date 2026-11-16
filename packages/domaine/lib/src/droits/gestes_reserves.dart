@@ -191,6 +191,10 @@ const String gesteReglageVerrouSecours = 'reglage_verrou_secours';
 /// Régler la COPIE HORS SITE des sauvegardes. Origine : l'administrateur et la DAF.
 const String gesteReglageHorsSite = 'reglage_horssite';
 
+/// RÉGLER LA PASSERELLE SMS et TESTER L'ENVOI (ADR-0009, Direction de Baguidi, 16/11/2026) : ouvrir ou fermer la passerelle, envoyer un SMS d'essai, composer et
+/// déposer un SMS au relais. Origine PROPOSÉE, à valider par la Direction : l'administrateur et la DAF. Se règle sur la poste mère.
+const String gesteReglageSms = 'reglage_sms';
+
 /// VALIDER LA CONFIGURATION FISCALE (identité légale, obligations, paramètres ORTB datés). Origine : la Direction, la DAF et l'administrateur (`cfbRolesValidation`).
 const String gesteFiscalValiderConfiguration = 'fiscal_valider_configuration';
 
@@ -551,6 +555,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['admin', 'da'],
       aide: 'Destination, chiffrement et contrôle de la copie hors site. Origine : l’administrateur et la DAF.'),
+  GesteReserve(
+      id: gesteReglageSms,
+      libelle: 'Régler la passerelle SMS et tester l’envoi',
+      module: 'MERE',
+      ecran: 'mere-sms-passerelle',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Ouvrir ou fermer la passerelle SMS (fermée par défaut), envoyer un SMS d’essai, composer et déposer un SMS au relais depuis un modèle de message. Le journal des envois se lit avec le seul droit de l’écran. Origine PROPOSÉE, à valider par la Direction : l’administrateur et la DAF.'),
   GesteReserve(
       id: gesteFiscalValiderConfiguration,
       libelle: 'Valider la configuration fiscale',

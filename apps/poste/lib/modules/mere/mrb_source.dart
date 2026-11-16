@@ -163,6 +163,25 @@ class MrbIndicateursClinique {
   final String? erreur;
 }
 
+/// La passerelle SMS (ADR-0009) telle que le service de la mère l'annonce : l'interrupteur (fermé par défaut), l'état lu au relais (plafond du jour, envoyés,
+/// attente, nom du pilote ; `null` quand le relais ne répond pas ou n'est pas configuré) et le journal des envois (numéro MASQUÉ, longueur, modèle, statut).
+class MrbSms {
+  const MrbSms({required this.actif, required this.relaisConfigure, this.relais, this.erreurRelais, this.journal = const [], this.statutMotsInterdits = ''});
+  final bool actif;
+  final bool relaisConfigure;
+  final Map<String, Object?>? relais;
+  final String? erreurRelais;
+
+  /// Du plus récent au plus ancien.
+  final List<Map<String, Object?>> journal;
+  final String statutMotsInterdits;
+
+  int? get plafondJour => relais?['plafond_jour'] is num ? (relais!['plafond_jour'] as num).toInt() : null;
+  int? get envoyesAujourdhui => relais?['envoyes_aujourdhui'] is num ? (relais!['envoyes_aujourdhui'] as num).toInt() : null;
+  int? get enAttenteRelais => relais?['en_attente'] is num ? (relais!['en_attente'] as num).toInt() : null;
+  String? get pilote => relais?['pilote'] as String?;
+}
+
 abstract class MrbSource {
   const MrbSource();
 
@@ -221,6 +240,17 @@ abstract class MrbSource {
   /// Publie les liens en attente et relève les réponses MAINTENANT (sans attendre le tour du pont). Rend le bilan du service.
   Future<Map<String, Object?>> synchroniserSatisfaction() async =>
       throw MrbIndisponible('Le service de la mère ne propose pas la satisfaction en ligne.');
+  /// La passerelle SMS (ADR-0009). `null` : le service ne la propose pas.
+  Future<MrbSms?> sms() async => null;
+
+  Future<void> reglerSms({required bool actif}) async => throw MrbIndisponible('Le service de la mère ne propose pas la passerelle SMS.');
+
+  /// Dépose au relais un SMS DÉJÀ COMPOSÉ (le service de la mère le recontrôle). Rend l'identifiant du SMS.
+  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false}) async =>
+      throw MrbIndisponible('Le service de la mère ne propose pas la passerelle SMS.');
+
+  /// Relève au relais le statut des SMS en attente ; rend le nombre de statuts changés.
+  Future<int> suivreSms() async => throw MrbIndisponible('Le service de la mère ne propose pas la passerelle SMS.');
 
   Future<void> verifierDerniereSauvegarde() async =>
       throw MrbIndisponible('La vérification de restauration (test à blanc) n’est pas proposée par le service de la mère : '
@@ -360,6 +390,39 @@ class MrbSourceClient extends MrbSource {
 
   @override
   Future<Map<String, Object?>> synchroniserSatisfaction() => client.brut('POST', '/admin/satisfaction/synchroniser');
+  Future<MrbSms?> sms() async {
+    final j = await _get('/admin/sms');
+    final r = j['reglages'];
+    if (r is! Map || r['actif'] is! bool) {
+      throw ErreurMere(502, 'reponse_inattendue', 'Le service de la mère a répondu sans réglage de la passerelle SMS : réponse ignorée.');
+    }
+    return MrbSms(
+      actif: r['actif'] as bool,
+      relaisConfigure: j['relais_configure'] == true,
+      relais: j['relais'] is Map ? (j['relais'] as Map).cast<String, Object?>() : null,
+      erreurRelais: j['erreur_relais'] as String?,
+      journal: [for (final x in (j['journal'] as List? ?? const [])) (x as Map).cast<String, Object?>()],
+      statutMotsInterdits: '${j['mots_interdits_statut'] ?? ''}',
+    );
+  }
+
+  @override
+  Future<void> reglerSms({required bool actif}) async => client.brut('POST', '/admin/sms/reglages', {'actif': actif});
+
+  @override
+  Future<String> envoyerSms({required String numero, required String texte, String? modele, String? auteur, bool essai = false}) async {
+    final j = await client.brut('POST', '/admin/sms/envoyer', {
+      'numero': numero,
+      'texte': texte,
+      if (modele != null) 'modele': modele,
+      if (auteur != null) 'auteur': auteur,
+      if (essai) 'essai': true,
+    });
+    return '${j['id']}';
+  }
+
+  @override
+  Future<int> suivreSms() async => _entier((await client.brut('POST', '/admin/sms/suivre'))['changes']);
 
   @override
   Future<String> sauvegarderMaintenant() async => '${(await client.brut('POST', '/admin/sauvegarder'))['fichier']}';

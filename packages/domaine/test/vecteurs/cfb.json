@@ -7197,7 +7197,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     },
     {
@@ -7212,7 +7212,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "338",
+     "valeur": "340",
      "indice": null
     }
    ],
@@ -7476,7 +7476,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 340,
+  "tousEcrans": 342,
   "modulesListe": [
    [
     "M2",
@@ -7675,7 +7675,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     },
     {
@@ -7690,7 +7690,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "329",
+     "valeur": "331",
      "indice": null
     }
    ],
@@ -7932,7 +7932,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     },
     {
@@ -7947,7 +7947,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "338",
+     "valeur": "340",
      "indice": null
     }
    ],
@@ -8151,7 +8151,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "338",
+     "valeur": "340",
      "indice": null
     },
     {
@@ -8166,7 +8166,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "327",
+     "valeur": "329",
      "indice": null
     }
    ],
