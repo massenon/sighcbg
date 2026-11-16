@@ -1134,9 +1134,9 @@
    "cas": "historique non conservé",
    "reaction": {
     "statut": "comprise",
-    "intention": "I07",
-    "alerte": "NON_CALCULABLE_HISTORIQUE"
-   }
+    "intention": "I07"
+   },
+   "revise": "16/11/2026 : le stock à une date passée se RECONSTITUE depuis les mouvements (décision du 16/11/2026, écart E3333) ; l’alerte « non calculable » n’est plus posée à la reconnaissance."
   },
   {
    "n": 96,

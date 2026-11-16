@@ -43,10 +43,10 @@ void main() {
   });
 
   group('catalogue et couverture, tirés du code', () {
-    test('27 lignes : 25 intentions livrées, 2 candidates non disponibles, statuts fermés, refus nommés connus, sources non vides', () {
-      expect(cat.intentions.length, 27);
-      expect(cat.actives.length, 25);
-      expect(cat.actives.map((i) => i.id).toList(), [for (var i = 1; i <= 25; i++) 'I${i.toString().padLeft(2, '0')}']);
+    test('35 lignes, toutes livrées (I26 et I27 disent « pas de fiche », I28 à I35 viennent de la relecture du 16/11/2026), statuts fermés, refus nommés connus, sources non vides', () {
+      expect(cat.intentions.length, 35);
+      expect(cat.actives.length, 35);
+      expect(cat.actives.map((i) => i.id).toList(), [for (var i = 1; i <= 35; i++) 'I${i.toString().padLeft(2, '0')}']);
       for (final i in cat.intentions.values) {
         expect(['calculable', 'petit_lot', 'non_disponible'], contains(i.statut), reason: i.id);
         expect(i.sources, isNotEmpty, reason: '${i.id} sans source');
@@ -62,7 +62,9 @@ void main() {
           expect(i.indices, isNotEmpty);
         }
       }
-      expect(decompteStatuts(cat), {'calculable': 20, 'petit_lot': 5, 'non_disponible': 2});
+      expect(decompteStatuts(cat), {'calculable': 28, 'petit_lot': 7, 'non_disponible': 0});
+      expect(cat['I26']!.refus, ['PAS_DE_FICHE']);
+      expect(cat['I27']!.refus, ['PAS_DE_FICHE']);
     });
 
     test('chaque source citée existe, et chaque fonction nommée figure dans son fichier (jamais devinée)', () {
@@ -149,9 +151,10 @@ void main() {
       expect(p('Recettes de la semaine dernière', '2026-11-14')['debut'], '2026-11-02');
       expect(p('impayés de plus de 30 jours', '2026-11-14'), {'type': 'anciennete_jours', 'n': 30});
     });
-    test('une date future est signalée, une date passée sans historique aussi', () {
+    test('une date future est signalée, une date passée sans historique aussi ; le stock daté se reconstitue (16/11/2026), il n’est plus alerté', () {
       expect(r('Recettes de demain').alertes, contains('PERIODE_FUTURE'));
-      expect(r('Stock de EXEMPLE/Article le 12 octobre').alertes, contains('NON_CALCULABLE_HISTORIQUE'));
+      expect(r('Qui était hospitalisé hier ?').alertes, contains('NON_CALCULABLE_HISTORIQUE'));
+      expect(r('Stock de EXEMPLE/Article le 12 octobre').alertes, isNot(contains('NON_CALCULABLE_HISTORIQUE')));
       expect(r('Recettes du 12 octobre').alertes, isNot(contains('NON_CALCULABLE_HISTORIQUE')), reason: 'les factures sont datées : l’historique se lit');
     });
   });
@@ -179,10 +182,10 @@ void main() {
 
   group('mesure sur les jeux de questions', () {
     final m = mesurer(questions, moteur);
-    test('100 questions : 75 de lecture (trois par intention) et 25 cas limites, jeux réglage et contrôle disjoints', () {
+    test('100 questions : 75 de lecture (trois par intention d’AST-0) et 25 cas limites, jeux réglage et contrôle disjoints', () {
       expect(questions.length, 100);
       expect(questions.where((q) => q['limite'] != true).length, 75);
-      for (final id in cat.actives.map((i) => i.id)) {
+      for (final id in [for (var i = 1; i <= 25; i++) 'I${i.toString().padLeft(2, '0')}']) {
         expect(questions.where((q) => q['intentionVisee'] == id).length, 3, reason: id);
       }
       expect({for (final q in questions) q['n']}.length, 100);
@@ -228,14 +231,53 @@ void main() {
         {'id': 'I20', 'synonymes': [{'indice': 'qui veille', 'poids': 99}, {'indice': 'ronde de nuit', 'poids': 3}]},
         {'id': 'I99', 'synonymes': [{'indice': 'x', 'poids': 3}]},
         {'id': 'I22', 'actif': false},
-        {'id': 'I26', 'actif': true},
+        {'id': 'I26', 'actif': false},
       ]);
       expect(etendu['I20']!.indices.any((x) => x.$1 == 'qui veille' && x.$2 == CatalogueAst.synonymePoidsMax), isTrue, reason: 'le poids est plafonné');
       expect(ReconnaisseurAst(etendu).reconnaitre('qui assure la ronde de nuit ?', aujourdhui: '2026-11-14').intention, 'I20');
       expect(etendu.actif('I22'), isFalse);
       expect(ReconnaisseurAst(etendu).reconnaitre('Quelles alertes sont ouvertes ?', aujourdhui: '2026-11-14').intention, isNot('I22'));
-      expect(etendu.actif('I26'), isFalse, reason: 'une intention non disponible ne se réactive pas par une ligne : son exécuteur n’existe pas');
+      expect(etendu.actif('I26'), isFalse, reason: 'une ligne de la base désactive aussi une intention « pas de fiche »');
       expect(etendu['I99'], isNull);
+    });
+  });
+
+  group('le jeu des 100 questions d’agents (relecture du 16/11/2026) : le moteur COMPLET sous le rôle de chaque question', () {
+    final agents = _questions('test/vecteurs/assistant_questions_agents.json');
+    final magasin = _json('test/vecteurs/assistant_magasin_agents.json');
+    final manifeste = Manifeste.depuisJson(_json('../referentiels/data/manifeste.json'));
+    test('100 questions, trois catégories, chaque intention ajoutée couverte au moins deux fois, des rôles réels', () {
+      expect(agents.length, 100);
+      expect({for (final q in agents) q['n']}.length, 100);
+      expect(agents.every((q) => categoriesAgents.contains(q['categorie'])), isTrue);
+      for (final c in categoriesAgents) {
+        expect(agents.where((q) => q['categorie'] == c), isNotEmpty, reason: c);
+      }
+      for (final id in [for (var i = 26; i <= 35; i++) 'I$i']) {
+        expect(agents.where((q) => (q['reaction'] as Map)['intention'] == id).length, greaterThanOrEqualTo(2), reason: id);
+      }
+      final m = MatriceDroits.depuisJson(rbac);
+      for (final q in agents) {
+        expect(m.roleConnu('${q['role']}'), isTrue, reason: '${q['n']} : rôle ${q['role']}');
+      }
+    });
+    test('les quatre seuils sont tenus sur le jeu des agents (réponse du moteur, pas seulement l’intention)', () {
+      final v = verifierSeuilsAgents(agents, magasin, rbac, manifeste);
+      expect(v.echecs, isEmpty, reason: v.mesures.toString());
+    });
+    test('« selonMatrice » : la réaction attendue se lit dans rbac.json — un rôle qui n’ouvre pas l’écran attend un refus nommé', () {
+      final q = {'n': 1, 'question': 'Quelle est la valeur du stock ?', 'role': 'reception', 'categorie': 'bonne_intention', 'reaction': {'intention': 'I10'}, 'selonMatrice': true};
+      final rep = AssistantAst().repondre('${q['question']}', contexteMesure(magasin, rbac, manifeste, 'reception'));
+      final j = jugerAgent(q, rep, droit: droitAgent(rbac, cat, 'I10', 'reception'));
+      expect([j.ok, j.categorie, rep.code], [true, 'refus_attendu', 'LECTURE_NON_AUTORISEE']);
+      // un moteur qui répondrait quand même serait une mauvaise intention répondue
+      final faux = jugerAgent(q, const ReponseAst(statut: 'reponse', titre: 'x', intention: 'I10'), droit: false);
+      expect([faux.ok, faux.mauvaise], [false, true]);
+    });
+    test('un moteur qui ne refuserait pas l’écriture ferait échouer le seuil des écritures', () {
+      final laxiste = AssistantAst(reglage: const ReglageAst(refuserEcriture: false));
+      final v = verifierSeuilsAgents(agents, magasin, rbac, manifeste, assistant: laxiste);
+      expect(v.echecs.join(' '), contains('écritures refusées'));
     });
   });
 
@@ -244,7 +286,7 @@ void main() {
     final sources = {for (final f in dossier.listSync().whereType<File>().where((f) => f.path.endsWith('.dart'))) f.path: f.readAsStringSync()};
 
     test('toutes les sources de l’assistant sont étanches (dart:core et dart:convert seulement, aucun jeton de réseau)', () {
-      expect(sources.length, greaterThanOrEqualTo(7));
+      expect(sources.length, greaterThanOrEqualTo(8));
       for (final e in sources.entries) {
         // les importations relatives vers le domaine sont permises ; dart: est borné
         expect(controleEtancheite(e.value), isEmpty, reason: e.key);

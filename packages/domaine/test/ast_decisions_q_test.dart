@@ -49,18 +49,19 @@ void main() {
       },
       {'id': 'F2', 'numero': 'F2', 'date': '2026-11-11', 'type': 'analyse', 'montantTTC': 6000, 'lignes': []},
     ];
-    test('« recettes » ne lit que l’encaissé', () {
-      final r = a.repondre('Quelles sont les recettes de ce mois ?', cx({'factures': factures}, jour: '2026-11-30'));
-      expect(r.titre, contains('Recettes'));
-      expect(tout(r), contains('4'));
-      expect(tout(r), isNot(contains('16')));
-    });
-    test('« chiffre d’affaires » ne lit que le facturé, et renvoie aux recettes pour l’encaissé', () {
-      final r = a.repondre('Quel est le chiffre d’affaires de ce mois ?', cx({'factures': factures}, jour: '2026-11-30'));
-      expect(r.titre, contains('Chiffre d’affaires (facturé)'));
-      expect(r.titre.replaceAll(RegExp('[   ]'), ''), contains('16000'));
-      expect(tout(r), contains('recettes'));
-    });
+    // Relecture du 16/11/2026 : les DEUX chiffres sont donnés dans la même réponse, chacun nommé — jamais additionnés, jamais confondus.
+    for (final question in ['Quelles sont les recettes de ce mois ?', 'Quel est le chiffre d’affaires de ce mois ?']) {
+      test('« $question » donne l’encaissé ET le facturé, nommés séparément', () {
+        final r = a.repondre(question, cx({'factures': factures}, jour: '2026-11-30'));
+        final t = r.titre.replaceAll(RegExp('[   ]'), '');
+        expect(t, contains('Recettes(encaissé)'));
+        expect(t, contains('4000'));
+        expect(t, contains('Chiffred’affaires(facturé)'));
+        expect(t, contains('16000'));
+        expect(t, isNot(contains('20000')), reason: 'les deux grandeurs ne s’additionnent pas');
+        expect(tout(r), contains('ENSEMBLE'));
+      });
+    }
   });
 
   group('Q10 : le préavis de péremption est un réglage de clinique versionné par date', () {
@@ -104,14 +105,27 @@ void main() {
     });
   });
 
-  test('Q11 : le stock à une date passée est « non calculable », jamais une valeur inventée', () {
-    final r = a.repondre('Quel était le stock de paracétamol le 1er octobre 2026 ?', cx({
-      'produits': [
-        {'id': 'PR1', 'designation': 'Paracetamol', 'stock': 50}
+  test('Q11 révisée (16/11/2026) : le stock à une date passée se reconstitue ; dès que la reconstitution ne tient pas, « non calculable », jamais zéro', () {
+    final produits = [
+      {'id': 'PR1', 'designation': 'Paracetamol', 'stock': 50, 'stockGros': 50, 'stockDetail': 0}
+    ];
+    final ok = a.repondre('Quel était le stock de paracétamol le 1er octobre 2026 ?', cx({
+      'produits': produits,
+      'mouvements': [
+        {'id': 'M', 'produitId': 'PR1', 'type': 'entree', 'stockType': 'gros', 'date': '2026-10-05', 'quantite': 30}
       ]
     }));
-    expect(r.statut, 'non_calculable');
-    expect(r.code, 'NON_CALCULABLE_HISTORIQUE');
+    expect([ok.statut, ok.intention], ['reponse', 'I07']);
+    expect(ok.titre, contains('20 en stock au 01/10/2026'));
+    // une entrée postérieure plus grande que le stock actuel : le stock d'alors serait négatif — un mouvement manque, la réponse le dit
+    final neg = a.repondre('Quel était le stock de paracétamol le 1er octobre 2026 ?', cx({
+      'produits': produits,
+      'mouvements': [
+        {'id': 'M', 'produitId': 'PR1', 'type': 'entree', 'stockType': 'gros', 'date': '2026-10-05', 'quantite': 80}
+      ]
+    }));
+    expect([neg.statut, neg.code], ['non_calculable', 'NON_CALCULABLE']);
+    expect(neg.lignes.join(' '), contains('négatif'));
   });
 
   group('Q12 : un article NON COMPTÉ n’est pas un écart de moins-stock', () {
@@ -152,7 +166,7 @@ void main() {
     });
   });
 
-  test('Q13 : une seule définition de la dette fournisseur (hors payée et soldée), marquée à valider', () {
+  test('Q13 (écran M7 inchangé) et relecture du 16/11/2026 (assistant : deux chiffres et l’écart) : la définition des factures non payées reste la plus prudente, marquée à valider', () {
     final rows = [
       {'statutPaiement': 'impayee', 'montantFacture': 100},
       {'statutPaiement': 'partielle', 'montantFacture': 50},
@@ -171,6 +185,8 @@ void main() {
     }));
     expect(tout(r).replaceAll(RegExp('[   ]'), ''), contains('150'));
     expect(tout(r), contains('À valider par le Comptable'));
+    expect(tout(r), contains('Solde comptable'), reason: 'le second chiffre est TOUJOURS nommé, même quand il ne se calcule pas pour ce fournisseur');
+    expect(tout(r), contains('Écart : non calculable'));
   });
 
   test('Q14 : les bornes de la balance âgée des patients sont un réglage (30 et 90 semés)', () {
@@ -197,13 +213,15 @@ void main() {
     expect(tout(regle), contains('plus de 40 jours'));
   });
 
-  test('Q16 : AUCUNE intention de paie — toute question de paie reçoit un refus nommé', () {
+  test('Q16, assoupli le 16/11/2026 : toute question de paie reste refusée SAUF la masse salariale agrégée et les rôles qui ouvrent la paie', () {
     for (final question in [
       'Quel est le salaire de CBG/101/26 ?',
       'Montre-moi les bulletins de paie',
       'Génère le bulletin de paie de novembre',
       'Combien de primes de garde ce mois ?',
-      'Quelle est la masse salariale ?',
+      'Quelle est la masse salariale de Mme EXEMPLE ?',
+      'La masse salariale par agent',
+      'Le net à percevoir de la masse salariale',
       'Valide la paie du mois',
       'Envoie les fiches de paie par mail',
       'Quelles sont les cotisations salariales ?',
@@ -212,7 +230,10 @@ void main() {
       final r = a.repondre(question, cx({}));
       expect([r.statut, r.code], ['refus', 'PAIE_HORS_ASSISTANT'], reason: question);
     }
-    expect(a.catalogue.actives.any((i) => i.libelle.toLowerCase().contains('paie')), isFalse);
+    expect([for (final i in a.catalogue.actives) if (i.libelle.toLowerCase().contains('paie') || i.libelle.toLowerCase().contains('salari')) i.id], ['I28', 'I29'],
+        reason: 'deux intentions seulement touchent à la paie : les rôles (matrice) et la masse salariale agrégée');
+    expect(a.repondre('Quelle est la masse salariale ?', cx({})).intention, 'I29');
+    expect(a.repondre('Quels rôles ouvrent les écrans de la paie ?', cx({})).intention, 'I28');
     // le paiement de la caisse et les lots périmés ne sont PAS de la paie
     expect(a.repondre('Y a-t-il des produits périmés ou presque ?', cx({})).code, isNot('PAIE_HORS_ASSISTANT'));
     expect(a.repondre('Dernier paiement de CBG/101/26', cx({'patients': patients})).code, isNot('PAIE_HORS_ASSISTANT'));

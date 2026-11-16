@@ -335,6 +335,18 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot AST-2 (péremption, assistant)',
   ),
+  // Relecture des 100 questions d'agents (Direction, 16/11/2026) : la durée sans sortie qui fait d'un article un « article immobile » était un littéral de l'assistant (30 jours).
+  DefinitionParametre(
+    cle: 'stock.joursArticlesImmobiles',
+    famille: 'stock',
+    type: TypeParametre.entier,
+    defaut: 30,
+    libelle: 'Articles immobiles : durée sans sortie (jours)',
+    aide: 'Un article en stock est « immobile » (ne tourne plus) quand il n\'a eu aucune sortie depuis ce nombre de jours. Entier de 1 à 730 ; une valeur hors bornes retombe sur 30. Lu par l\'assistant quand la question ne dit pas la durée ; versionné par date. Valeur d\'attente, à valider.',
+    source: 'Décision de la Direction du 16/11/2026 (relecture des questions d\'agents, DECISIONS-16-11) : 30 jours d\'attente, à valider',
+    branche: true,
+    appliquePar: 'Lot assistant (articles immobiles)',
+  ),
   // Q14 : les bornes de la balance âgée des patients (30 et 90 jours) sont un réglage de clinique, plus un littéral d'écran ni d'assistant.
   DefinitionParametre(
     cle: 'comptabilite.balanceAgeePatientBorne1Jours',

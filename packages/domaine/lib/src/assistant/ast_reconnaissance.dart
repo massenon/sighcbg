@@ -53,11 +53,15 @@ const List<String> _motsVides = [
   'montre', 'donne', 'voir', 'fait', 'faire', 'dis', 'dire', 'liste', 'quand', 'combien', 'soir', 'depuis', 'jusqu', 'bonjour', 'stp', 'moi', 'encore', 'deja', 'aussi',
   'boite', 'boites', 'unite', 'unites', 'son', 'sa', 'ses', 'leur', 'leurs', 'est ce',
   'veux', 'voudrais', 'puis', 'peux', 'sais', 'savoir', 'connaitre', 'quelqu', 'chez', 'cest',
+  'etait', 'etaient', 'avait', 'avions', 'aviez', 'toujours', 'quelque', 'ya', 'notre', 'nos', 'votre', 'vos',
 ];
 
 /// Les mots génériques qui DÉSIGNENT un article sans le nommer : retirés quand ils précèdent le nom (« le stock de l'article X »), conservés derrière (« EXEMPLE/Article » est
 /// un nom dont le dernier mot est « article »).
 const List<String> _motsGeneriques = ['article', 'articles', 'produit', 'produits', 'medicament', 'medicaments', 'reference', 'references'];
+
+/// Les mots qui suivent « fournisseur(s) » sans être un nom : « la dette fournisseurs au total » est une question GLOBALE, pas un fournisseur nommé « total ».
+const Set<String> _motsNonNom = {'total', 'globale', 'global', 'ensemble', 'comptable', 'comptables', 'non', 'payees', 'payee', 'impayees', 'dette', 'dettes', 'solde', 'ecart', 'compte', '401'};
 
 const List<String> _motsPeriode = [
   'aujourd', 'hui', 'hier', 'demain', 'cette', 'semaine', 'mois', 'dernier', 'derniere', 'derniers', 'dernieres', 'passe', 'passee', 'annee', 'jour', 'jours',
@@ -199,14 +203,26 @@ class ReconnaisseurAst {
     }
 
     if (iNA >= 0) plus('I05', 3);
+    // I28 ne lit que les écrans de la PAIE : sans le mot, une question d'accès n'est pas la sienne.
+    if (!mots.any(const {'paie', 'paies'}.contains)) scores.remove('I28');
     if (params.containsKey('codePatient') || params.containsKey('nomPatient')) plus('I01', 1);
     if (nomSeul) plus('I01', 3);
+    // « Cherche / retrouve » suivi d'un nom ou d'un code : c'est le DOSSIER qu'on cherche, même si la phrase parle du rendez-vous pour lequel la personne vient.
+    if ((_a(mots, 'cherche') || _a(mots, 'retrouve') || _a(mots, 'trouve')) && (params.containsKey('codePatient') || params.containsKey('nomPatient')) &&
+        !const ['I02', 'I03', 'I17', 'I19'].any((x) => (scores[x] ?? 0) >= 4)) {
+      plus('I01', 3);
+    }
     if (params.containsKey('anneeNaissance')) plus('I01', 1);
     if (params.containsKey('codeAnalyse')) plus('I19', 3);
     if (params.containsKey('numeroFacture')) plus('I03', 2);
     final certif = _a(mots, 'certificat*') || _a(mots, 'attestation*');
     final prix = _a(mots, 'prix') || _a(mots, 'tarif') || _a(mots, 'coute') || _a(mots, 'combien');
     if (certif && prix) plus('I18', 8);
+    // Une question qui demande COMMENT faire, ou CE QUE VEUT DIRE un mot, vise l'aide ou le glossaire (« pas de fiche » tant qu'aucune n'est validée) avant le registre qu'elle cite.
+    if (_a(mots, 'comment faire') || _a(mots, 'comment on') || _a(mots, 'comment je') || _a(mots, 'comment enregistrer') || _a(mots, 'comment saisir') || _a(mots, 'ou saisir') || _a(mots, 'ou je saisis')) plus('I26', 5);
+    if (_a(mots, 'c est quoi') || _a(mots, 'c quoi') || _a(mots, 'que veut dire') || _a(mots, 'veut dire quoi') || _a(mots, 'qu est ce qu une') || _a(mots, 'qu est ce qu un') || _a(mots, 'definition*') || _a(mots, 'signifie')) plus('I27', 5);
+    // « Échographies du jour » compte les examens : une question de PRIX, de RÉSULTAT ou sur UN patient n'est pas la sienne.
+    if (_a(mots, 'prix') || _a(mots, 'tarif*') || _a(mots, 'coute') || _a(mots, 'resultat*') || _a(mots, 'historique') || params.containsKey('codePatient') || params.containsKey('nomPatient')) scores.remove('I34');
     final stats = _a(mots, 'consultation*') || _a(mots, 'admission*') || _a(mots, 'analyse*') || _a(mots, 'examen*');
     if ((_a(mots, 'combien de') || _a(mots, 'nombre de') || _a(mots, 'nombre d')) && stats) plus('I21', 5);
 
@@ -282,8 +298,11 @@ class ReconnaisseurAst {
         texte.contains('fais comme si')) {
       return const ReconnaissanceAst(statut: 'refus', code: 'INJONCTION_REFUSEE');
     }
-    // Paie (Q16) : aucune intention de paie, sans exception — refusée avant tout le reste, écriture et envoi compris.
-    if (mots.any(_termesPaieExacts.contains) || _termesPaie.any((t) => _a(mots, t))) return const ReconnaissanceAst(statut: 'refus', code: 'PAIE_HORS_ASSISTANT');
+    // Paie (Q16) : refusée avant tout le reste, écriture et envoi compris — SAUF les deux questions que la Direction a ouvertes le 16/11/2026 (E3336) : la masse salariale
+    // AGRÉGÉE du mois, et les rôles qui ouvrent les écrans de la paie. Une seule trace d'un salaire individuel, d'un bulletin, d'une prime ou d'un nom les fait retomber au refus.
+    if ((mots.any(_termesPaieExacts.contains) || _termesPaie.any((t) => _a(mots, t))) && !_paieOuverte(mots, entites)) {
+      return const ReconnaissanceAst(statut: 'refus', code: 'PAIE_HORS_ASSISTANT');
+    }
     // Envoi hors de la clinique.
     if (reglage.refuserEnvoi &&
         (_a(mots, 'envoie') || _a(mots, 'envoyer') || _a(mots, 'transmets') || _a(mots, 'partage') || _a(mots, 'transfere') || _a(mots, 'exporte')) &&
@@ -291,8 +310,9 @@ class ReconnaisseurAst {
             _a(mots, 'dehors') || _a(mots, 'usb') || _a(mots, 'telegram') || _a(mots, 'dropbox') || _a(mots, 'facebook') || _a(mots, 'disque externe'))) {
       return const ReconnaissanceAst(statut: 'refus', code: 'ENVOI_EXTERNE_REFUSE');
     }
-    // Avis médical.
-    if (reglage.refuserAvis && _termesAvis.any((t) => _a(mots, t))) {
+    // Avis médical. « Sortie contre avis médical » est une PROCÉDURE (RG-07), pas une demande d'avis : le terme est retiré avant le contrôle.
+    final motsAvis = texte.contains('contre avis medical') ? texte.replaceAll('contre avis medical', ' ').split(' ').where((m) => m.isNotEmpty).toList() : mots;
+    if (reglage.refuserAvis && _termesAvis.any((t) => _a(motsAvis, t))) {
       return const ReconnaissanceAst(statut: 'refus', code: 'AVIS_MEDICAL_REFUSE');
     }
     // Écriture : une commande à l'impératif en tête d'énoncé (après une formule de politesse éventuelle).
@@ -322,6 +342,18 @@ class ReconnaisseurAst {
       }
     }
     return null;
+  }
+
+  /// Les deux questions de paie ouvertes par la Direction (16/11/2026) : la masse salariale agrégée (I29) et les rôles qui ouvrent les écrans de la paie (I28). Rien d'individuel.
+  bool _paieOuverte(List<String> mots, Map<String, Object?> entites) {
+    if (entites.containsKey('codePatient') || entites.containsKey('nomPatient')) return false;
+    const individuel = ['bulletin*', 'fiche de paie', 'fiches de paie', 'net', 'net a percevoir', 'retenue*', 'cotisation*', 'par agent', 'par employe', 'de chaque', 'individuel*', 'detail*', 'remuneration*', 'emolument*'];
+    if (individuel.any((t) => _a(mots, t)) || mots.any(const {'prime', 'primes', 'treizieme'}.contains)) return false;
+    final masse = _a(mots, 'masse salariale') || _a(mots, 'total des salaires');
+    if (masse) return true;
+    final salaire = _a(mots, 'salaire*') || _a(mots, 'salarial*') || _a(mots, 'conges payes');
+    final roles = _a(mots, 'rol*') || _a(mots, 'acces') || _a(mots, 'droit*') || _a(mots, 'profil*') || _a(mots, 'ouvre*') || _a(mots, 'qui voit');
+    return roles && !salaire && mots.any(const {'paie', 'paies'}.contains);
   }
 
   // --- entités ---------------------------------------------------------------------------------------------------------------------------------
@@ -369,7 +401,7 @@ class ReconnaisseurAst {
   String? _nomApresDeclencheur(List<String> lettres) {
     for (var i = 0; i < lettres.length - 1; i++) {
       final d = _norm(lettres[i]);
-      if (!const ['patient', 'patiente', 'dossier', 'de', 'du', 'pour', 'chez', 'pr', 'a'].contains(d)) continue;
+      if (!const ['patient', 'patiente', 'dossier', 'de', 'du', 'pour', 'chez', 'pr', 'a', 'dame', 'monsieur', 'madame', 'enfant', 'bebe'].contains(d)) continue;
       final cand = <String>[];
       for (var j = i + 1; j < lettres.length && cand.length < 2; j++) {
         final t = lettres[j];
@@ -396,7 +428,7 @@ class ReconnaisseurAst {
   void _parametresPropres(String id, List<String> mots, Set<int> couverts, Map<String, Object?> p) {
     final texte = mots.join(' ');
     // Un nom en majuscule initiale n'est un PATIENT que pour une question qui en cherche un : ailleurs (un article, un acte, un fournisseur) il fait partie du libellé.
-    final cherchePatient = id == 'I01' || (catalogue[id]?.requis.any((r) => r.startsWith('patient')) ?? false);
+    final cherchePatient = id == 'I01' || id == 'I19' || (catalogue[id]?.requis.any((r) => r.startsWith('patient')) ?? false);
     if (!cherchePatient) p.remove('nomPatient');
     for (final d in domainesAst.keys) {
       if (d != 'patient' && d != 'fournisseur' && mots.any((m) => m == d || _egal(m, d))) {
@@ -414,7 +446,7 @@ class ReconnaisseurAst {
     if (iF >= 0 && iF + 1 < mots.length) {
       final reste = [
         for (var k = iF + 1; k < mots.length; k++)
-          if (!_motsVides.contains(mots[k]) && !_motsPeriode.contains(mots[k]) && !RegExp(r'^\d+$').hasMatch(mots[k])) mots[k]
+          if (!_motsVides.contains(mots[k]) && !_motsPeriode.contains(mots[k]) && !RegExp(r'^\d+$').hasMatch(mots[k]) && !_motsNonNom.contains(mots[k])) mots[k]
       ];
       if (reste.isNotEmpty) p['fournisseur'] = reste.join(' ');
     }
@@ -437,14 +469,20 @@ class ReconnaisseurAst {
         if (v != null) ..._norm('$v').split(' '),
     };
     final per = p['periode'] as Map<String, Object?>?;
-    final chiffresPeriode = per == null ? const <String>{} : {if (per['n'] != null) '${per['n']}', ...mots.where((m) => RegExp(r'^\d{1,2}$').hasMatch(m) && per['type'] == 'date')};
+    final chiffresPeriode = per == null
+        ? const <String>{}
+        : {if (per['n'] != null) '${per['n']}', ...mots.where((m) => RegExp(r'^(\d{1,2}|1er|20\d\d)$').hasMatch(m) && (per['type'] == 'date' || RegExp(r'^20\d\d$').hasMatch(m)))};
     final reste = <String>[];
     for (var k = 0; k < mots.length; k++) {
       final m = mots[k];
       if (m.isEmpty || _motsVides.contains(m) || _motsPeriode.contains(m) || entitesTexte.contains(m) || couverts.contains(k) || chiffresPeriode.contains(m)) continue;
       if (indicesIntention.any((x) => x == m || (x.length >= 5 && _egal(m, x)))) continue;
       if (const ['assure', 'non', 'avant', 'quelle', 'valeur', 'montant', 'reste', 'devons', 'doit'].contains(m)) continue;
+      if (id == 'I12' && _motsNonNom.contains(m)) continue;
+      // Le magasin nommé (« au détail », « en salle de soins ») n'est pas une partie de la désignation de l'article.
+      if (id == 'I07' && const {'detail', 'gros', 'magasin', 'pharmacie', 'salle', 'soins'}.contains(m)) continue;
       if (reste.isEmpty && _motsGeneriques.contains(m)) continue;
+      if (m == '1') continue; // « 1 consult » : l'article indéfini écrit en chiffre, jamais une partie du libellé
       reste.add(m);
     }
     return reste.join(' ').trim();
@@ -463,10 +501,10 @@ class ReconnaisseurAst {
     final moisPrecFin = DateTime.utc(jour.year, jour.month, 0);
     bool a(String s) => texte.contains(' $s ');
 
-    final plusDe = RegExp(r' plus de (\d{1,4}) jours? ').firstMatch(texte);
+    final plusDe = RegExp(r' (?:plus de|au dela de|au moins) (\d{1,4}) jours? ').firstMatch(texte) ?? RegExp(r' (\d{1,4}) jours? et plus ').firstMatch(texte);
     final njours = RegExp(r' (\d{1,4}) (?:derniers )?jours? ').firstMatch(texte);
     final nmois = RegExp(r' (\d{1,3}) mois ').firstMatch(texte);
-    final dateExplicite = RegExp(r' (\d{1,2}) (janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)( dernier)? ').firstMatch(texte);
+    final dateExplicite = RegExp(r' (\d{1,2})(?:er)? (janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)( dernier)?(?: (20\d\d))? ').firstMatch(texte);
     final moisNomme = RegExp(r' (janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre) ').firstMatch(texte);
 
     if (plusDe != null) {
@@ -474,8 +512,9 @@ class ReconnaisseurAst {
     } else if (dateExplicite != null) {
       final jj = int.parse(dateExplicite.group(1)!);
       final mm = int.parse(_mois[dateExplicite.group(2)]!);
-      var d = DateTime.utc(jour.year, mm, jj);
-      if (dateExplicite.group(3) != null && !d.isBefore(jour)) d = DateTime.utc(jour.year - 1, mm, jj);
+      final an = dateExplicite.group(4) == null ? jour.year : int.parse(dateExplicite.group(4)!);
+      var d = DateTime.utc(an, mm, jj);
+      if (dateExplicite.group(4) == null && dateExplicite.group(3) != null && !d.isBefore(jour)) d = DateTime.utc(jour.year - 1, mm, jj);
       principale = j('date', d, d);
     } else if (a('aujourd hui') || a('ce soir') || a('ce matin') || a('du jour') || a('ce jour')) {
       principale = j('aujourdhui', jour, jour);

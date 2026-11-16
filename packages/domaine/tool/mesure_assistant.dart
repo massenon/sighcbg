@@ -6,7 +6,8 @@
 ///   dart run tool/mesure_assistant.dart --tableau             le bloc engendré du tableau de couverture, sur la sortie standard
 ///   dart run tool/mesure_assistant.dart --matrice             le bloc engendré de la matrice de droits, sur la sortie standard
 ///   dart run tool/mesure_assistant.dart --droits <fichier>    (re)engendre les vecteurs de droits depuis rbac.json
-///   dart run tool/mesure_assistant.dart --seuils              les quatre seuils de la Direction (Q17) ; code de sortie 1 si l'un n'est pas tenu
+///   dart run tool/mesure_assistant.dart --seuils              les quatre seuils de la Direction (Q17), sur le jeu de l'équipe ET le jeu des 100 questions d'agents ; code de sortie 1 si l'un n'est pas tenu
+///   dart run tool/mesure_assistant.dart --agents              le jeu des questions d'agents (moteur complet sous le rôle de chaque question) : taux par catégorie et échecs
 ///   dart run tool/mesure_assistant.dart --reglage             n'affiche que les échecs du jeu de RÉGLAGE (le contrôle reste caché pendant le réglage)
 library;
 
@@ -52,16 +53,32 @@ void main(List<String> args) {
 
   final moteur = ReconnaisseurAst(cat);
   final m = mesurer(questions, moteur);
+  // Le jeu des 100 questions d'AGENTS (16/11/2026) : le moteur COMPLET sous le rôle de chaque question, sur un magasin de mesure.
+  final agents = [for (final q in (_json(valeur('agents') ?? 'test/vecteurs/assistant_questions_agents.json')['questions'] as List)) (q as Map).cast<String, Object?>()];
+  final magasinAgents = _json('test/vecteurs/assistant_magasin_agents.json');
+  final manifeste = Manifeste.depuisJson(_json(valeur('manifeste') ?? '../referentiels/data/manifeste.json'));
+  if (args.contains('--agents')) {
+    final r = mesurerAgents(agents, magasinAgents, rbac, manifeste);
+    stdout.writeln('AGENTS : ${pct(r.global)} (${r.jugements.where((j) => j.ok).length}/${r.jugements.length}) ; mauvaises ${r.mauvaises} ; inventées ${r.inventees}');
+    r.parCategorie.forEach((c, v) => stdout.writeln('  $c : ${v.$1}/${v.$2}'));
+    for (final j in r.echecs) {
+      final q = agents.firstWhere((x) => x['n'] == j.n);
+      stdout.writeln('  ${j.n} [${q['role']}] « ${q['question']} » : ${j.raison} — ${j.reponse.titre}');
+    }
+    return;
+  }
   if (args.contains('--seuils')) {
     final v = verifierSeuils(questions, moteur);
+    final va = verifierSeuilsAgents(agents, magasinAgents, rbac, manifeste);
     v.mesures.forEach((k, x) => stdout.writeln('$k : $x'));
-    if (!v.ok) {
-      for (final e in v.echecs) {
+    va.mesures.forEach((k, x) => stdout.writeln('$k : $x'));
+    if (!v.ok || !va.ok) {
+      for (final e in [...v.echecs, ...va.echecs]) {
         stderr.writeln('SEUIL NON TENU : $e');
       }
       exit(1);
     }
-    stdout.writeln('Tous les seuils sont tenus.');
+    stdout.writeln('Tous les seuils sont tenus (jeu de l’équipe et jeu des agents).');
     return;
   }
   if (args.contains('--reglage')) {
@@ -87,10 +104,12 @@ void main(List<String> args) {
   stdout.writeln(rapport);
   // Q17 : les seuils de la Direction. Un seuil non tenu est un ÉCHEC explicite (code de sortie 1), pas une ligne de plus dans le rapport.
   final v = verifierSeuils(questions, moteur);
+  final va = verifierSeuilsAgents(agents, magasinAgents, rbac, manifeste);
   stdout.writeln('\n## Seuils de la Direction (Q17)\n');
   v.mesures.forEach((k, x) => stdout.writeln('- $k : $x'));
-  if (!v.ok) {
-    for (final e in v.echecs) {
+  va.mesures.forEach((k, x) => stdout.writeln('- $k : $x'));
+  if (!v.ok || !va.ok) {
+    for (final e in [...v.echecs, ...va.echecs]) {
       stderr.writeln('SEUIL NON TENU : $e');
     }
     exit(1);

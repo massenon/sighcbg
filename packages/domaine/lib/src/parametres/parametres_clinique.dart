@@ -11,6 +11,10 @@ import 'parametres.dart';
 const String cleDelaiPreavisPeremption = 'stock.delaiPreavisPeremptionJours';
 const String cleBalanceAgeePatientBorne1 = 'comptabilite.balanceAgeePatientBorne1Jours';
 const String cleBalanceAgeePatientBorne2 = 'comptabilite.balanceAgeePatientBorne2Jours';
+const String cleJoursArticlesImmobiles = 'stock.joursArticlesImmobiles';
+
+/// La durée sans sortie d'un « article immobile » (jours) : 30 semés, bornée de 1 à 730 (décision du 16/11/2026).
+const int joursArticlesImmobilesSeme = 30;
 
 /// Les valeurs SEMÉES (repli d'un poste jamais semé ou d'une valeur hors bornes) : elles sont aussi les défauts des définitions, un seul endroit les dit.
 const int preavisPeremptionSeme = 90;
@@ -39,6 +43,12 @@ int delaiPreavisPeremptionA(Iterable<Map<String, Object?>> fichesParametres, Str
 int delaiPreavisPeremptionDe(Object? valeur) {
   final n = _entier(valeur);
   return n != null && n >= preavisPeremptionMin && n <= preavisPeremptionMax ? n : preavisPeremptionSeme;
+}
+
+/// La durée sans sortie qui fait d'un article un « article immobile », EN VIGUEUR à [date] : la version datée qui s'applique, sinon 30. Hors bornes (1 à 730) : 30.
+int joursArticlesImmobilesA(Iterable<Map<String, Object?>> fichesParametres, String date) {
+  final n = _entier(_valeurA(fichesParametres, cleJoursArticlesImmobiles, date));
+  return n != null && n >= 1 && n <= 730 ? n : joursArticlesImmobilesSeme;
 }
 
 /// Les deux bornes de la balance âgée des patients EN VIGUEUR à [date] : (30, 90) semées. Une paire incohérente (première borne >= seconde, hors 1 à 730) retombe sur les valeurs semées

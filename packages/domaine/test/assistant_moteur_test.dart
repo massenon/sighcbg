@@ -88,6 +88,15 @@ Map<String, List<Map<String, Object?>>> magasin() => {
       'consultations': [
         {'id': 'CO1', 'patientId': 'P1', 'patientCode': 'CBG/101/26', 'date': '2026-11-11T08:00:00.000Z'},
       ],
+      // Relecture des questions d'agents (16/11/2026) : les collections que lisent la dette en deux chiffres, la vue élargie du dossier et les intentions ajoutées.
+      'ecritures': [],
+      'fichesReference': [],
+      'contreReferences': [],
+      'crOperatoires': [],
+      'crAnesthesie': [],
+      'cpa': [],
+      'demandesImagerie': [],
+      'examensImagerie': [],
     };
 
 /// Un contexte pour [role] : la matrice EN FORCE de rbac.json (la même que celle du poste), jamais un nom de rôle comparé.
@@ -242,9 +251,14 @@ void main() {
       final g = q('Stock de gants chirurgicaux', 'stock');
       expect(tout(g), contains('non fixé'));
     });
-    test('l’historique non conservé est « non calculable », la date future est refusée', () {
+    test('le stock à une date passée se RECONSTITUE (16/11/2026), l’historique non conservé reste « non calculable », la date future est refusée', () {
+      // M1 : sortie de 12 le 05/11, sans magasin — le total se rejoue (40 + 12), la répartition gros / détail non.
       final h = q('Quel était le stock de EXEMPLE/Article le 12 octobre ?', 'stock');
-      expect([h.statut, h.code], ['non_calculable', 'NON_CALCULABLE_HISTORIQUE']);
+      expect([h.statut, h.intention], ['reponse', 'I07']);
+      expect(tout(h), contains('52 en stock au 12/10/2026'));
+      expect(tout(h), contains('non reconstituable'));
+      final hosp = q('Qui était hospitalisé hier ?', 'medecin');
+      expect([hosp.statut, hosp.code], ['non_calculable', 'NON_CALCULABLE_HISTORIQUE']);
       final f = q('Recettes de demain', 'caissier');
       expect([f.statut, f.code], ['refus', 'PERIODE_FUTURE']);
       final hist = q('Quel est le prix de la consultation généraliste le 5 novembre ?', 'reception');

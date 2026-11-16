@@ -43,6 +43,19 @@ ContexteAst contexteAssistant(ContexteEcran c) {
     maintenant: c.aujourdhui,
     session: SessionLabo(role: c.role, fonction: a.fonction, secteur: a.secteur, id: a.utilisateurId, nom: a.nom),
     libelleEcran: (e) => c.donnees?.manifeste.ecran(e)?.label ?? e,
+    // La matrice AU-DELÀ de la session (lecture seule) : qui détient un geste réservé, qui voit un écran. Sans matrice chargée, rien n'est supposé.
+    matrice: matrice == null
+        ? null
+        : () {
+            final gestes = DroitsGestes(fiches: m.collection('rbac').actives, estArchive: matrice.estArchive, ecranActif: matrice.ecranActif);
+            return MatriceAst(
+              roles: () => [for (final r in matrice.rolesBruts) if (!matrice.estArchive('${r['id']}')) '${r['id']}'],
+              libelleRole: (r) => matrice.libelle(r) ?? r,
+              roleVoit: (r, e) => r == c.role ? voit(e) : matrice.peutVoir(r, e),
+              roleDetient: gestes.peut,
+              ecransDuModule: (mod) => [for (final e in c.donnees?.manifeste.tousLesEcrans ?? const <EcranNav>[]) if (e.module == mod) e.id],
+            );
+          }(),
   );
 }
 
