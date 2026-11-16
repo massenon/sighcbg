@@ -25,7 +25,7 @@ List<M> jeu(String nom) => [for (final x in (jsonDecode(File('test/fixtures/jeu_
 
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 11, 2, 9);
-const secret = 'Clinique#Natitingou26';
+const secret = 'Clinique#Parakou26';
 
 Magasin poste() => Magasin({
       'audit': const <M>[],

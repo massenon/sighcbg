@@ -1,38 +1,29 @@
 #!/usr/bin/env node
-// CONTRÔLE DE L'IDENTITÉ : échoue (code 1) si une trace de la clinique d'origine (Nassiera Too) subsiste dans le code et les petits jeux.
-// Périmètre : apps/*/lib, packages/*/lib, apps/web (sans vendor), apps/poste/assets/donnees. Les tests et les vecteurs sont hors périmètre (ils
-// portent des données d'essai), de même que les jeux de données que le lot suivant remplacera : LISTE BLANCHE EXPLICITE ci-dessous.
-// Deux familles de motifs : l'IDENTITÉ de la clinique (partout) et les NOMS de personnes d'origine (voir plus bas : par empreintes).
-// TROISIÈME FAMILLE (décision J11, 08/11/2026) : les NOMS DE PERSONNES de la clinique d'origine, cherchés PARTOUT (code, tests, fixtures, vecteurs, documents,
-// jeu livré). La liste n'est PAS écrite ici : elle est lue sous forme d'EMPREINTES (SHA-256 tronqué) dans `noms-origine.json`, produit par `pseudonymiser.mjs`,
-// seul fichier du dépôt à porter les noms en clair (liste blanche). Les fixtures de test portent les PSEUDONYMES de la table, jamais les noms d'origine ; le
-// jeu LIVRÉ avec le poste ne porte NI les uns NI les autres (un pseudonyme est une donnée de test, pas une donnée de Baguidi).
+// CONTRÔLE DE L'IDENTITÉ : échoue (code 1) si une trace de la clinique sœur (clinique d'origine) subsiste dans le dépôt.
+// DEUX FAMILLES de motifs, cherchées sur TOUT LE DÉPÔT UTILE (code, jeu livré, tests, fixtures, vecteurs, banc, outils, documents, présentation, classeurs
+// .xlsx compris) :
+//  - l'IDENTITÉ de l'établissement (dénomination, IFU, RCCM, autorisation, adresse, téléphones, courriel, devise, ville, quartier, département). Décision de la
+//    Direction de Baguidi du 16/11/2026 (DECISIONS-16-11 §8) : aucune trace NULLE PART, les données de test comprises. La liste des motifs n'est PAS écrite
+//    ici : elle est IMPORTÉE de `neutraliser-identite.mjs`, le script qui a remplacé ces motifs par l'identité de Baguidi et SEUL fichier du dépôt à les
+//    porter en clair — c'est l'UNIQUE liste blanche de cette famille ;
+//  - les NOMS DE PERSONNES de la clinique d'origine (décision J11, 08/11/2026). La liste n'est PAS écrite ici : elle est lue sous forme d'EMPREINTES (SHA-256
+//    tronqué) dans `noms-origine.json`, produit par `pseudonymiser.mjs`, seul fichier du dépôt à porter les noms en clair (liste blanche). Les fixtures de test
+//    portent les PSEUDONYMES de la table, jamais les noms d'origine ; le jeu LIVRÉ avec le poste ne porte NI les uns NI les autres (un pseudonyme est une
+//    donnée de test, pas une donnée de Baguidi).
+// Les PDF du dossier `presentation/` sont contrôlés à part (apps/poste/tool/specimens/controler.py), sur la même liste de motifs.
 // Usage depuis la racine :  node tools/baguidi/controle-identite.mjs
 import { readFileSync, statSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { inflateRawSync } from 'node:zlib';
+import { IDENTITE_ORIGINE, CE_FICHIER, PERIMETRE, SAUF, EXT } from './neutraliser-identite.mjs';
+import { lireZip } from './pseudonymiser.mjs';
 
-const IDENTITE = /NASSIERA|Nassiera|Natitingou|NATITINGOU|Tchirimina|TOO SARL|3201642748214|RB\/NAT|raison de vivre|QUE DIEU VOUS GU|cliniquenassiera|01 95 44 51 51|01 66 43 28 20|60 33 92 92|NS 145\/08\/DA\/C[N]T|Clinique NASSIERA/;
-const RACINES = ['apps/poste/lib', 'apps/poste/assets/donnees', 'apps/mobile/lib', 'apps/web', 'apps/sync/lib', 'packages/domaine/lib', 'packages/sync_dart/lib'];
-const SAUF = /(^|\/)(node_modules|\.git|build|vendor|\.dart_tool|\.claude|storage|bootstrap\/cache)(\/|$)|composer\.lock|package-lock\.json/;
-const EXT = /\.(dart|json|js|cjs|mjs|ts|vue|php|yaml|yml|txt|xml|sql|html|css|blade\.php|md)$/;
-
-// Liste blanche EXPLICITE : ce que le lot suivant (générateur de données Baguidi) remplacera.
-const JEUX = [];   // le jeu livré est celui de Baguidi (générateur) : plus de jeu en liste blanche
-const BLANCHE = new Set([
-  ...JEUX.map((j) => `apps/poste/assets/donnees/jeu/${j}.json`),
-  // personnel, paie, primes : sources documentaires de la clinique d'origine (notes de service NS 131/132 et barèmes)
-  'packages/domaine/lib/src/administration/adm_notes_donnees.dart',
-  'packages/domaine/lib/src/rh/rhb_regles.dart',
-  'packages/domaine/lib/src/administration/adm_regles.dart',   // responsables du plan annuel (personnel)
-  'packages/domaine/lib/src/configuration/cfb_fiscal_date.dart', // validation des échéances par un comptable du personnel d'origine
-  // la liasse et le classeur 2025 sont désormais des données de DÉMONSTRATION Baguidi (tools/baguidi/demo-liasse.mjs, 08/11/2026) : plus d'exception
-  // hors périmètre de ce lot (autres agents) : identité imprimée, règles de configuration
-  'packages/domaine/lib/src/impression/identite.dart',
-  'packages/domaine/lib/src/configuration/cfa_regles.dart',
-]);
-// Mentions de commentaires d'une règle de configuration appartenant à d'autres agents
-const BLANCHE_PREFIXES = ['apps/poste/lib/modules/cfg/cfa_organisation.dart'];
+// Le texte d'un fichier : ses lignes, ou, pour un classeur .xlsx, les lignes de ses parties XML (chaînes partagées, feuilles).
+function lignesDe(p) {
+  if (!p.endsWith('.xlsx')) return readFileSync(p, 'utf8').split('\n');
+  return lireZip(readFileSync(p)).filter((x) => /\.xml$/.test(x.nom)).flatMap((x) => (x.methode === 8 ? inflateRawSync(x.donnees) : x.donnees).toString('utf8').split('\n'));
+}
 
 // Noms de personnes d'origine : empreintes. Un nom de famille est cherché en MAJUSCULES et en casse de titre, un prénom en MAJUSCULES.
 const EMPREINTES = JSON.parse(readFileSync(new URL('./noms-origine.json', import.meta.url), 'utf8'));
@@ -83,30 +74,26 @@ const EXEMPLES_TOLERES = new Set([
   'packages/domaine/lib/src/mobile/mob_suite_donnees.dart',
 ]);
 
-const AVEC_NOMS = (p) => p.startsWith('apps/poste/lib') || p.startsWith('packages/domaine/lib') || p.startsWith('apps/mobile') || p.startsWith('apps/web');
-let trouvailles = 0, ignores = 0;
+let trouvailles = 0;
 function passe(p) {
   if (SAUF.test(p) || !existsSync(p)) return;
   const st = statSync(p);
-  if (st.isDirectory()) { for (const f of readdirSync(p)) passe(join(p, f)); return; }
-  if (!EXT.test(p) || st.size > 8e6) return;
-  if (BLANCHE.has(p) || BLANCHE_PREFIXES.some((x) => p.startsWith(x))) { ignores++; return; }
-  const lignes = readFileSync(p, 'utf8').split('\n');
-  lignes.forEach((l, i) => {
-    const m = l.match(IDENTITE);
-    if (m) { trouvailles++; console.log(`${p}:${i + 1}: « ${m[0]} »`); }
+  if (st.isDirectory()) { for (const f of readdirSync(p).sort()) passe(join(p, f)); return; }
+  if (!EXT.test(p) || st.size > 16e6 || p === CE_FICHIER) return;
+  lignesDe(p).forEach((l, i) => {
+    const m = l.match(IDENTITE_ORIGINE);
+    if (m) { trouvailles++; console.log(`${p}:${i + 1}: identité de la clinique sœur « ${m[0]} »`); }
   });
 }
-RACINES.forEach(passe);
+PERIMETRE.forEach(passe);
 // Famille « noms de personnes » : passe distincte, sur un périmètre plus large, sans liste blanche de jeux (les fixtures sont pseudonymisées).
 let nomsTrouves = 0;
 function passeNoms(p) {
   if (SAUF.test(p) || !existsSync(p)) return;
   const st = statSync(p);
   if (st.isDirectory()) { for (const f of readdirSync(p)) passeNoms(join(p, f)); return; }
-  if (!EXT.test(p) || st.size > 12e6 || BLANCHE_NOMS.has(p)) return;
-  const lignes = readFileSync(p, 'utf8').split('\n');
-  lignes.forEach((l, i) => {
+  if (!EXT.test(p) || st.size > 16e6 || BLANCHE_NOMS.has(p)) return;
+  lignesDe(p).forEach((l, i) => {
     const nom = nomDOrigine(l);
     if (nom) { nomsTrouves++; console.log(`${p}:${i + 1}: nom d'origine « ${nom} »`); return; }
     if (p.startsWith(JEU_LIVRE) || (/^(apps|packages)\/[^\/]+\/lib\//.test(p) && !EXEMPLES_TOLERES.has(p))) {   // aucune PERSONNE en dur dans le code (jeu livré ou lib) : l'agent vient de la session, du personnel ou du rôle
@@ -117,5 +104,5 @@ function passeNoms(p) {
 }
 RACINES_NOMS.forEach(passeNoms);
 trouvailles += nomsTrouves;
-console.log(`${trouvailles} trace(s) hors liste blanche (${ignores} fichier(s) en liste blanche).`);
+console.log(`${trouvailles} trace(s) hors liste blanche (liste blanche : ${CE_FICHIER} pour l'identité ; ${[...BLANCHE_NOMS].join(', ')} pour les noms).`);
 process.exit(trouvailles ? 1 : 0);

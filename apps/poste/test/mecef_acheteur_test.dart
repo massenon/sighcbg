@@ -105,7 +105,7 @@ void main() {
     final ecrAvant = m.collection('ecritures').actives.length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
+    await saisir(t, 'acheteurIfu', '3201001996110');
     await saisir(t, 'acheteurNom', 'Clinique X');
     expect(find.textContaining('aucun taux applicable'), findsOneWidget);
     expect(find.textContaining('1 % — non arrêté, à valider'), findsWidgets);
@@ -143,12 +143,12 @@ void main() {
     final m = magasin();
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
+    await saisir(t, 'acheteurIfu', '3201001996110');
     await saisir(t, 'acheteurNom', 'Clinique X');
     await choisir(t, 'Automatique — d’après l’IFU saisi', 'Prestation de service retenue par le payeur — 3 % non arrêté, à valider');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
-    expect(m.collection('factures').actives.where((f) => f['ifuClient'] == '3201642748214'), isEmpty);
+    expect(m.collection('factures').actives.where((f) => f['ifuClient'] == '3201001996110'), isEmpty);
   });
 
   cas('MECeF fermé (bascule mecefActif) : la fenêtre est absente, la pièce ne porte aucun champ fiscal ni acheteur, le barème n\'est pas lu', (t) async {
@@ -185,7 +185,7 @@ void main() {
     final avant = m.collection('factures').actives.length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
+    await saisir(t, 'acheteurIfu', '3201001996110');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     expect(find.textContaining('NOM_ACHETEUR_ABSENT'), findsWidgets);
     expect(m.collection('factures').actives.length, avant);
@@ -196,14 +196,14 @@ void main() {
     final numeros0 = numerosPris(m).length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201 6427 48214');
+    await saisir(t, 'acheteurIfu', '3201 0019 96110');
     await saisir(t, 'acheteurNom', 'Clinique X');
     await choisir(t, 'Automatique — d’après l’IFU saisi', 'Acheteur sans IFU actif — 5 % arrêté');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     final f = m.collection('factures').actives.first;
     expect(f['statutPaiement'], 'soldee');
     expect(f['aibSituation'], 'ifu_inactif_ou_absent');
-    expect(f['ifuClient'], '3201642748214');
+    expect(f['ifuClient'], '3201001996110');
     expect(f['acheteurNom'], 'Clinique X');
     expect(f['aibTaux'], 5);
     expect(f['statutMecef'], 'en_attente');
@@ -378,14 +378,14 @@ void main() {
 
     test('D1 acheteur avec IFU actif, 1 % non arrêté : la retransmission applique 0 % (jamais le 1 %), D8 : la fenêtre, elle, refuse ce même acheteur', () {
       final m = magasin();
-      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
       expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibRepli']], [0, true]);
       expect(p['aibMotif'], contains('0 %'));
       // D8 : la fenêtre « Facture normalisée » GARDE son refus nommé pour le même acheteur tant que le 1 % n'est pas arrêté.
-      final ctl = ControleurFormulaire(champsAcheteurNormalise(m, aujourdhui), {...valeursAcheteur(null), 'acheteurIfu': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final ctl = ControleurFormulaire(champsAcheteurNormalise(m, aujourdhui), {...valeursAcheteur(null), 'acheteurIfu': '3201001996110', 'acheteurNom': 'Clinique X'});
       final refus = controlerAcheteur(ctl, m, aujourdhui);
       expect(refus!.code, 'AIB_SANS_BAREME');
     });
@@ -396,7 +396,7 @@ void main() {
         'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif',
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
-      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibMontant']], [3, 300]);
@@ -418,7 +418,7 @@ void main() {
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 0, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
       final f = vente(m, {'date': '2026-10-30'});
-      final r = normaliserVente(m, '${f['id']}', acheteur: {'ifu': '3201642748214', 'nom': 'X'}, maintenant: aujourdhui);
+      final r = normaliserVente(m, '${f['id']}', acheteur: {'ifu': '3201001996110', 'nom': 'X'}, maintenant: aujourdhui);
       expect(r.code, 'IFU_INVALIDE');
       expect(r.motif, contains('10 chiffres'));
     });

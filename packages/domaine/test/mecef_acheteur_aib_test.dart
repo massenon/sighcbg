@@ -30,7 +30,7 @@ void main() {
     v('B3', 'prestation_service', 3, arrete: false),
   ];
   final jour = DateTime(2026, 11, 9);
-  const ifu = '3201642748214';
+  const ifu = '3201001996110';
 
   AibAcheteur aib({Object? i, Object? choix, DateTime? date, List<CpdFiche>? versions}) =>
       aibPourAcheteur(ifu: i, situationChoisie: choix, date: date ?? jour, situations: situations, versions: versions ?? bareme);
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('IFU de 13 chiffres (espaces tolérés) : « IFU actif » présumé ; son 1 % n\'est PAS arrêté : refus nommé, jamais appliqué', () {
-      final r = aib(i: '3201 6427 48214');
+      final r = aib(i: '3201 0019 96110');
       expect(r.situation, 'ifu_actif');
       expect(r.presomption, isTrue);
       expect(r.avertissement, contains('présumé actif'));

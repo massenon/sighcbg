@@ -9,6 +9,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/identite_poste.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
+import 'aide_identite_origine.dart';
 import 'aide_polices.dart';
 import 'm14_aide.dart';
 
@@ -47,7 +48,7 @@ void main() {
     await toucherM14(t, valider('identite'));
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Valider').last);
     await t.pump(const Duration(seconds: 10));
-    await saisir(t, 'rccm', 'RB/NAT/2016-B-269');
+    await saisir(t, 'rccm', 'RB/PKO/2016-B-269');
     await toucherM14(t, find.byKey(const Key('cfb:fiscalite:enregistrer')));
     expect(find.text('Portée de la modification'), findsOneWidget);
     // Sans motif : refusé, rien n'est écrit.
@@ -61,7 +62,7 @@ void main() {
     expect(versions.length, 2);
     expect(versions[0]['rccm'], rccm1, reason: 'la version sortante reste telle qu’elle a été validée');
     expect(versions[0]['valideLe'], isNotNull);
-    expect(versions[1]['rccm'], 'RB/NAT/2016-B-269');
+    expect(versions[1]['rccm'], 'RB/PKO/2016-B-269');
     expect(versions[1]['valideLe'], isNull);
     expect(versions[1]['motif'], 'Nouveau RCCM après transfert');
     expect(find.byKey(const Key('cfb:etat:identite:modifie_depuis')), findsOneWidget);
@@ -73,9 +74,9 @@ void main() {
     final v1 = col.actives.first;
     final rccm1 = '${v1['rccm']}';
     col.mettreAJour('${v1['id']}', {'fin': '2026-08-31'});
-    col.inserer({...Map<String, Object?>.of(v1)..remove('id'), 'version': 2, 'debut': '2026-09-01', 'fin': null, 'rccm': 'RB/NAT/2016-B-269'}, prefixe: 'IDL');
+    col.inserer({...Map<String, Object?>.of(v1)..remove('id'), 'version': 2, 'debut': '2026-09-01', 'fin': null, 'rccm': 'RB/PKO/2016-B-269'}, prefixe: 'IDL');
     expect(identiteImprimeeDe(m, DateTime(2026, 8, 16)).rccm, rccm1);
-    expect(identiteImprimeeDe(m, DateTime(2026, 9, 1)).rccm, 'RB/NAT/2016-B-269');
+    expect(identiteImprimeeDe(m, DateTime(2026, 9, 1)).rccm, 'RB/PKO/2016-B-269');
     expect(identiteImprimeeDe(m, DateTime(2020, 1, 1)).rccm, rccm1, reason: 'la v1 couvre depuis l’ouverture');
   });
 
@@ -145,7 +146,7 @@ void main() {
       expect(s.lignesConfiguration()['cfg-comptabilite']!.ecrit, isFalse);
       // Une écriture (correction de la version non validée) ne suffit pas.
       final f = m.collection('identiteLegale').actives.first;
-      m.collection('identiteLegale').mettreAJour('${f['id']}', {'slogan': 'Votre santé, notre raison de vivre'});
+      m.collection('identiteLegale').mettreAJour('${f['id']}', {'slogan': 'Votre santé, notre engagement'});
       expect(s.lignesConfiguration()['cfg-fiscalite']!.ecrit, isFalse, reason: 'MUTATION : une écriture sans validation ne coche pas');
       expect(s.lignesConfiguration()['cfg-fiscalite']!.verifie, isFalse);
       // Validation de l'identité seule : la ligne fiscalité est faite, la comptabilité non.
@@ -166,8 +167,9 @@ void main() {
     final fichiers = Directory('lib').listSync(recursive: true).whereType<File>().where((f) => f.path.endsWith('.dart'));
     for (final f in fichiers) {
       final t = f.readAsStringSync();
-      expect(t.contains('3201642748214'), isFalse, reason: '${f.path} porte l’IFU en dur');
-      expect(t.contains('RB/NAT/2016'), isFalse, reason: '${f.path} porte le RCCM en dur');
+      expect(t.contains('${IdentiteClinique.defauts['ifu']}'), isFalse, reason: '${f.path} porte l’IFU en dur');
+      expect(t.contains('${IdentiteClinique.defauts['rccm']}'), isFalse, reason: '${f.path} porte le RCCM en dur');
+      expect(traceOrigine(t), isNull, reason: '${f.path} porte une identité de la clinique sœur');
     }
     // Les états imprimés (facture mère, relevé assureur, cotisations, ticket) lisent la version en force, plus la constante de semence.
     for (final p in ['lib/modules/m9/releve.dart', 'lib/modules/m9/facture_mere.dart', 'lib/modules/m11/pai_cotisations.dart', 'lib/modules/m8/facturation.dart']) {

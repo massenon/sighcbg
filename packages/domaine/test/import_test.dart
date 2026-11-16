@@ -172,7 +172,7 @@ void main() {
           return t;
         }
 
-        expect(sansQueue(mod.donnees[1]), sansQueue([for (final x in sans(m['exemple'] as List)) '$x'.replaceAll('Tchirimina, Natitingou', 'Zongo II, Parakou')]));
+        expect(sansQueue(mod.donnees[1]), sansQueue([for (final x in sans(m['exemple'] as List)) '$x']));
         expect(mod.instructions.length, (m['instructions'] as int) - retires.length);
         expect([for (final x in mod.listes.first) '$x'], [for (final x in (m['listes'] as List)) if (!(jeu.id == 'patients' && x == 'Groupe sanguin')) x]);
       });

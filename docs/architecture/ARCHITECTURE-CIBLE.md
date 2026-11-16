@@ -23,7 +23,7 @@ couche de persistance change.
 | Contrainte | Source | Conséquence architecturale |
 |---|---|---|
 | ~30 agents, ~15 postes, un seul bâtiment, LAN câblé/Wi-Fi | rapport de cadrage | une étoile suffit ; pas de multi-site |
-| Coupures d'électricité et d'Internet fréquentes | terrain (Natitingou) | le poste ne dépend ni du hub ni d'Internet pour le geste courant |
+| Coupures d'électricité et d'Internet fréquentes | terrain (Parakou) | le poste ne dépend ni du hub ni d'Internet pour le geste courant |
 | « Architecture Web/API ou cloud pour l'usage courant » hors périmètre | CDCT §4.3 | pas de SaaS, pas de serveur distant sur le chemin d'un geste |
 | Zéro action anonyme, journalisation ancienne/nouvelle valeur | RG-12 | le journal d'opérations EST le journal d'audit |
 | Stock jamais négatif, écritures équilibrées, codes uniques | RG-03, RG-10, RG-01 | invariants vérifiés par une autorité unique (le hub) |
@@ -292,8 +292,8 @@ La file sortante reste visible dans `mecef-*` (combien en attente, depuis quand,
 
 ## 9. Impression et états
 
-Les gabarits (A4, rouleau 80 mm, carte CR80) et l'en-tête légal unique (IFU 3201642748214,
-RCCM RB/NAT/2016-B-268) vivent dans `packages/impression`, consommés par le poste ; les états
+Les gabarits (A4, rouleau 80 mm, carte CR80) et l'en-tête légal unique (IFU 3201001996110,
+RCCM RB/PKO/17 A 4240) vivent dans `packages/impression`, consommés par le poste ; les états
 portent les filtres en force, le pied normalisé et des totaux calculés. Une imprimante réseau
 partagée est possible, mais chaque poste de caisse garde **sa** ticket 80 mm en direct.
 

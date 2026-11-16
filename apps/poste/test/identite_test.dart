@@ -28,7 +28,7 @@ List<M> jeu(String nom) => [
 
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 10, 31, 10);
-const secret = 'Clinique#Natitingou26';
+const secret = 'Clinique#Parakou26';
 
 Magasin magasin() => Magasin.depuisDossier([...Magasin.collectionsDuJeu]);
 
@@ -250,10 +250,10 @@ void main() {
       final m = magasin();
       final s = ServiceIdentifiants.de(m);
       await s.definir('USR001', secret, par: 'test', doitChanger: true, maintenant: auj);
-      await s.definir('USR001', 'Autre#Natitingou2027', par: 'test', doitChanger: false, maintenant: auj);
+      await s.definir('USR001', 'Autre#Parakou2027', par: 'test', doitChanger: false, maintenant: auj);
       final journal = jsonEncode(m.collection('audit').toutes);
       expect(journal.contains(secret), isFalse);
-      expect(journal.contains('Autre#Natitingou'), isFalse);
+      expect(journal.contains('Autre#Parakou'), isFalse);
       final h = '${s.fiche('USR001')!['hash']}';
       expect(journal.contains(h), isFalse, reason: 'ni le haché, ni le sel : le journal ne porte aucune valeur de la collection identifiants');
       expect(m.collection('audit').toutes.any((e) => e['action'] == 'Mot de passe défini'), isTrue);
@@ -307,9 +307,9 @@ void main() {
         await s.verifier(identifiant: 'a.kalou', motDePasse: 'x$i', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       }
       expect(accVerrouJusqua(s.fiche('USR003')!, auj), isNotNull);
-      await s.definir('USR003', 'Nouveau#Natitingou28', par: 'Administrateur', doitChanger: true, maintenant: auj);
+      await s.definir('USR003', 'Nouveau#Parakou28', par: 'Administrateur', doitChanger: true, maintenant: auj);
       expect(accVerrouJusqua(s.fiche('USR003')!, auj), isNull);
-      final r = await s.verifier(identifiant: 'a.kalou', motDePasse: 'Nouveau#Natitingou28', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
+      final r = await s.verifier(identifiant: 'a.kalou', motDePasse: 'Nouveau#Parakou28', rolesArchives: const {}, libelleRole: (r) => r, maintenant: auj);
       expect(r.accepte, isTrue);
       expect(r.doitChanger, isTrue, reason: 'mot de passe défini par l\'administrateur : changement obligatoire');
     });

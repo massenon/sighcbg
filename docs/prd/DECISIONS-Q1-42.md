@@ -1,4 +1,4 @@
-# Décisions Q1 à Q42 (reprises de Nassiera Too, validées pour Baguidi le 17/11/2026)
+# Décisions Q1 à Q42 (reprises de la clinique sœur, validées pour Baguidi le 17/11/2026)
 
 La Direction de Baguidi a validé : « elles valent pour Baguidi, c'est une clinique, mêmes fonctionnalités ». Chaque ligne est donc une DÉCISION. Là où une valeur est « semée » ou « d'attente », elle est réglable et marquée « à valider ».
 Quand une question suppose un mécanisme que Baguidi n'a pas (clôture annuelle, OCR…), l'agent MESURE d'abord ce qui existe (grep, lecture), applique ce qui manque, et dit dans son rapport ce qui n'était pas applicable et pourquoi.
@@ -25,7 +25,7 @@ Quand une question suppose un mécanisme que Baguidi n'a pas (clôture annuelle,
 17. Seuils de l'assistant sur de vraies questions : bonne intention ≥ 90 %, mauvaise intention répondue ≤ 2 %, zéro réponse inventée, 100 % des écritures refusées.
 
 ## C. Prix, import, clôture
-18. Doublon CERT-APT : DEUX certificats DISTINCTS (« Certificat médical d'aptitude » 7 000 et « Certificat d'aptitude » 5 000 chez Nassiera). Le code reste au certificat que la caisse lit déjà ; l'autre reçoit un NOUVEL identifiant unique construit sur la convention des codes de certificats existants (lu dans le référentiel, jamais inventé) ; le moteur refuse de le réutiliser (refus nommé) ; aucun prix ne change ; aucune facture émise n'est réécrite ; le nouveau code est « proposition à valider ». Pour Baguidi : le mécanisme d'arbitrage de doublon gagne une TROISIÈME issue « ce sont deux prestations distinctes » qui fait exactement cela.
+18. Doublon CERT-APT : DEUX certificats DISTINCTS (« Certificat médical d'aptitude » 7 000 et « Certificat d'aptitude » 5 000 chez la clinique sœur). Le code reste au certificat que la caisse lit déjà ; l'autre reçoit un NOUVEL identifiant unique construit sur la convention des codes de certificats existants (lu dans le référentiel, jamais inventé) ; le moteur refuse de le réutiliser (refus nommé) ; aucun prix ne change ; aucune facture émise n'est réécrite ; le nouveau code est « proposition à valider ». Pour Baguidi : le mécanisme d'arbitrage de doublon gagne une TROISIÈME issue « ce sont deux prestations distinctes » qui fait exactement cela.
 19. Certificats « prix unique, couverture SOS seule » : à confirmer par la Direction après relecture des lignes (afficher les lignes concernées, marquer à valider).
 20. « Une demande par ligne » pour les prix : lue comme la demande d'import vérifiée, rejouée ligne à ligne par la mère.
 21. Le Oui d'un fileul vaut proposition (même la Direction) : OUI.

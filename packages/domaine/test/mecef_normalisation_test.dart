@@ -29,10 +29,10 @@ void main() {
       expect(p.acheteur!.aibTaux, 2);
     });
     test('l\'acheteur de la pièce, sinon celui de la fenêtre', () {
-      final p = preparerNormalisation(vente({'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X', 'aibTaux': 5}));
-      expect(p.acheteur!.ifu, '3201642748214');
+      final p = preparerNormalisation(vente({'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X', 'aibTaux': 5}));
+      expect(p.acheteur!.ifu, '3201001996110');
       expect(p.acheteur!.aibTaux, 5);
-      final q = preparerNormalisation(vente({'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'}),
+      final q = preparerNormalisation(vente({'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X'}),
           acheteurSaisi: {'ifu': '', 'nom': 'Particulier', 'aibTaux': 0});
       expect(q.acheteur!.ifu, isNull);
       expect(q.acheteur!.aibTaux, 0);

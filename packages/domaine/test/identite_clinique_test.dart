@@ -2,6 +2,8 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
+import 'aide_identite_origine.dart';
+
 void main() {
   tearDown(IdentiteClinique.reinitialiser);
 
@@ -42,13 +44,13 @@ void main() {
           'CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.');
     });
 
-    test('aucune trace de l’identité de Nassiera Too', () {
+    test('aucune trace de l’identité de la clinique sœur', () {
       final tout = [
         for (final k in IdentiteClinique.champs) k == 'telephones' ? IdentiteClinique.telephones.join(' ') : '${IdentiteClinique.defauts[k]}',
         IdentiteClinique.mentionLegale,
         ...IdentiteClinique.lignesEnTete,
       ].join(' ');
-      for (final interdit in ['NASSIERA', 'Natitingou', 'NATITINGOU', '3201642748214', 'RB/NAT', 'raison de vivre', 'cliniquenassiera', 'DIEU', 'CN' 'T']) {
+      for (final interdit in [...motifsOrigine(), 'DIEU', 'CN' 'T']) {
         expect(tout.contains(interdit), isFalse, reason: interdit);
       }
     });

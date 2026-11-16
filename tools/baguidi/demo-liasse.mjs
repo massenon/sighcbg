@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// DONNÉES DE DÉMONSTRATION BAGUIDI pour la liasse fiscale et le classeur 2025 (décision de la Direction du 08/11/2026 : aucune donnée de Nassiera Too).
+// DONNÉES DE DÉMONSTRATION BAGUIDI pour la liasse fiscale et le classeur 2025 (décision de la Direction du 08/11/2026 : aucune donnée de la clinique sœur).
 //
 // Les trois constantes Dart `cpb_liasse.dart`, `cpc_liasse.dart` (liasse déposée) et `cpc_donnees.dart` (classeur 2025) portaient les chiffres d'une AUTRE clinique.
 // Ce script les remplace par un jeu de DÉMONSTRATION : dénomination et IFU lus de l'identité Baguidi, code de dépôt « DEMO », date de dépôt au 30/04/2026
@@ -11,6 +11,8 @@
 // REJOUABLE à vide : `node tools/baguidi/demo-liasse.mjs --verifier` ne modifie rien et dit 0 si tout est déjà transformé (exit 1 sinon).
 // Les fichiers de test (vecteurs et attentes) qui citent ces valeurs sont réécrits par la MÊME transformation (voir CIBLES_TEXTE).
 import { readFileSync, writeFileSync } from 'node:fs';
+// La dénomination et l'IFU de la clinique sœur (dans les données remplacées ici) ne s'écrivent qu'à UN endroit du dépôt : le script de neutralisation.
+import { ORIGINE } from './neutraliser-identite.mjs';
 
 const FACTEUR = 3;
 const MARQUEUR = `// DÉMONSTRATION BAGUIDI (tools/baguidi/demo-liasse.mjs) : montants d’origine multipliés par ${FACTEUR}, code de dépôt DEMO. Ne pas rejouer à la main : le script est idempotent.`;
@@ -324,7 +326,7 @@ for (const [p, zones] of VECTEURS) {
     parent[cle] = cle === 'baseline' ? transformeBaseline(parent[cle]) : transformeFeuille(parent[cle], { pct: p.endsWith('comptabilite_b.json') });
   }
   const marque = { _demoLiasse: `Montants de la liasse et du classeur 2025 multipliés par ${FACTEUR} dans ${zones.map((z) => z.join('.')).join(', ')} (tools/baguidi/demo-liasse.mjs) : données de démonstration Baguidi`, ...j };
-  ecrire(p, JSON.stringify(marque, null, 1).replace(/BK505416/g, 'DEMO').replace(/15\/05\/2026/g, '30/04/2026').replace(/2026-05-15/g, '2026-04-30').replace(/CLINIQUE NASSIERA SARL/g, DEPOT.denomination).replace(/3201642748214/g, DEPOT.ifu).replace(/— 450 F d’écart/g, '— 1 350 F d’écart') + '\n');
+  ecrire(p, JSON.stringify(marque, null, 1).replace(/BK505416/g, 'DEMO').replace(/15\/05\/2026/g, '30/04/2026').replace(/2026-05-15/g, '2026-04-30').split(ORIGINE.denominationLiasse).join(DEPOT.denomination).split(ORIGINE.ifu).join(DEPOT.ifu).replace(/— 450 F d’écart/g, '— 1 350 F d’écart') + '\n');
 }
 
 
@@ -339,7 +341,7 @@ for (const p of ['packages/domaine/test/vecteurs/exercice.json']) {
 // 5. Tests Dart qui CITENT des valeurs de la liasse ou du classeur : remplacements littéraux, donc naturellement idempotents (l'ancien texte n'existe plus).
 const REMPLACEMENTS = [
   ['BK505416', 'DEMO'], ['15/05/2026', '30/04/2026'], ['2026-05-15', '2026-04-30'],
-  ['CLINIQUE NASSIERA SARL', DEPOT.denomination], ['3201642748214', DEPOT.ifu],
+  [ORIGINE.denominationLiasse, DEPOT.denomination], [ORIGINE.ifu, DEPOT.ifu],
   ['190830994', String(x3(190830994))], ['190 830 994', '572 492 982'], ['160 264 063', '480 792 188'],
   ['450 F d’écart', '1 350 F d’écart'], ['-18108317', '-54324951'], ['−18 108 317', '−54 324 951'], ['18108317', '54324951'],
   ['141667', '425001'], ['141 667', '425 001'],
@@ -375,7 +377,7 @@ for (const f of ['m12-etats-financiers', 'm12-compte-resultat', 'm12-flux-tresor
   // fiches d'écran de la documentation : la note de source cite le dépôt
   const p = `docs/architecture/ecrans/${f}.json`;
   const s = lire(p);
-  const t = s.replace(/BK505416/g, DEPOT.code).replace(/CLINIQUE NASSIERA SARL/g, DEPOT.denomination).replace(/3201642748214/g, DEPOT.ifu).replace(/déposée le 15\/05\/2026/g, `déposée le 30/04/2026`);
+  const t = s.replace(/BK505416/g, DEPOT.code).split(ORIGINE.denominationLiasse).join(DEPOT.denomination).split(ORIGINE.ifu).join(DEPOT.ifu).replace(/déposée le 15\/05\/2026/g, `déposée le 30/04/2026`);
   if (t !== s) ecrire(p, t);
 }
 console.log(modifies === 0 ? '0 : déjà transformé (marqueur présent).' : `${modifies} fichier(s) ${verifier ? 'à transformer' : 'transformé(s)'}.`);

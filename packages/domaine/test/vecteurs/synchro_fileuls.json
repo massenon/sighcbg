@@ -4,7 +4,7 @@
   "cles": ["poste", "dernierContact", "retardJournal", "conflitsOuverts", "demandesImportEnAttente"],
   "poste": {
     "valides": ["F1", "Poste caisse 1", "Poste-accueil_2", "Réception.RDC", "Salle de soins: nuit", "A"],
-    "invalides": ["", " debut", "CNT/12/26", "Awa <awa@exemple.bj>", "F1\n", "poste\ttab", "P(1)", "x;y", "123456789012345678901234567890123456789012"]
+    "invalides": ["", " debut", "CBG/12/26", "Awa <awa@exemple.bj>", "F1\n", "poste\ttab", "P(1)", "x;y", "123456789012345678901234567890123456789012"]
   },
   "valider": [
     {"nom": "des indicateurs anciens seuls passent (aucun tableau fileuls)", "charge": {"patients_actifs": 12, "seq_max": 5, "retard_replication": 0}, "ok": true},
@@ -14,7 +14,7 @@
     {"nom": "un contact inconnu et un retard non calculable sont des null, pas des zeros", "charge": {"fileuls": [{"poste": "F1", "dernierContact": null, "retardJournal": null, "conflitsOuverts": 0, "demandesImportEnAttente": 0}]}, "ok": true},
     {"nom": "la version du protocole passe quand elle est publiee", "charge": {"protocole": 3, "fileuls": []}, "ok": true},
     {"nom": "une cle inconnue (nom) est refusee et nommee", "charge": {"fileuls": [{"poste": "F1", "nom": "PATIENT Fictive"}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[0].nom"},
-    {"nom": "un identifiant de patient est refuse", "charge": {"fileuls": [{"poste": "F1"}, {"poste": "F2", "patientId": "CNT/12/26"}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[1].patientId"},
+    {"nom": "un identifiant de patient est refuse", "charge": {"fileuls": [{"poste": "F1"}, {"poste": "F2", "patientId": "CBG/12/26"}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[1].patientId"},
     {"nom": "un motif est refuse", "charge": {"fileuls": [{"poste": "F1", "motif": "doublon"}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[0].motif"},
     {"nom": "un libelle de piece est refuse", "charge": {"fileuls": [{"poste": "F1", "libelle": "Facture 123"}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[0].libelle"},
     {"nom": "une cle de forme douteuse est refusee SANS etre recopiee", "charge": {"fileuls": [{"poste": "F1", "PATIENT Fictive": 1}]}, "ok": false, "code": "indicateur_cle_inconnue", "chemin": "fileuls[0].(cle non conforme)"},
@@ -24,7 +24,7 @@
     {"nom": "un compteur negatif est refuse", "charge": {"fileuls": [{"poste": "F1", "conflitsOuverts": -1}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].conflitsOuverts"},
     {"nom": "un compteur de conflits non null ne peut pas etre null", "charge": {"fileuls": [{"poste": "F1", "conflitsOuverts": null}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].conflitsOuverts"},
     {"nom": "un dernier contact textuel est refuse", "charge": {"fileuls": [{"poste": "F1", "dernierContact": "2026-11-13"}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].dernierContact"},
-    {"nom": "un nom de poste qui ressemble a un dossier est refuse", "charge": {"fileuls": [{"poste": "CNT/12/26"}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].poste"},
+    {"nom": "un nom de poste qui ressemble a un dossier est refuse", "charge": {"fileuls": [{"poste": "CBG/12/26"}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].poste"},
     {"nom": "un nom de poste absent est refuse", "charge": {"fileuls": [{"dernierContact": 5}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].poste"},
     {"nom": "un nom de poste numerique est refuse", "charge": {"fileuls": [{"poste": 12}]}, "ok": false, "code": "indicateur_valeur_invalide", "chemin": "fileuls[0].poste"},
     {"nom": "fileuls doit etre une liste", "charge": {"fileuls": {"F1": {"poste": "F1"}}}, "ok": false, "code": "indicateur_forme_invalide", "chemin": "fileuls"},
@@ -58,7 +58,7 @@
      "sortie": [{"poste": "F1", "dernierContact": 5, "retardJournal": 1, "conflitsOuverts": 0, "demandesImportEnAttente": 0}]},
     {"nom": "une cle hors liste est OMISE", "entree": [{"poste": "F1", "nom": "PATIENT Fictive", "conflitsOuverts": 1}], "sortie": [{"poste": "F1", "conflitsOuverts": 1}]},
     {"nom": "une valeur invalide est omise, le reste est garde", "entree": [{"poste": "F1", "conflitsOuverts": "3", "retardJournal": 4}], "sortie": [{"poste": "F1", "retardJournal": 4}]},
-    {"nom": "un fileul sans nom technique valide est ecarte", "entree": [{"poste": "CNT/12/26", "conflitsOuverts": 1}, {"poste": "F2"}], "sortie": [{"poste": "F2"}]},
+    {"nom": "un fileul sans nom technique valide est ecarte", "entree": [{"poste": "CBG/12/26", "conflitsOuverts": 1}, {"poste": "F2"}], "sortie": [{"poste": "F2"}]},
     {"nom": "un element qui n'est pas un objet est ecarte", "entree": ["F1", null, {"poste": "F3"}], "sortie": [{"poste": "F3"}]},
     {"nom": "ce qui n'est pas une liste donne une liste vide", "entree": {"poste": "F1"}, "sortie": []},
     {"nom": "plus de 200 elements : les 200 premiers", "entree": "GENERER_201", "longueur": 200}

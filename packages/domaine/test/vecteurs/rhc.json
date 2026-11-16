@@ -1090,7 +1090,7 @@
      "qr": true
     },
     "mentionsVerso": [
-     "Ce badge est la propriété de la Clinique NASSIERA TOO SARL.",
+     "Ce badge est la propriété de la CLINIQUE BAGUIDI « L’AS DU CŒUR ».",
      "Il doit être porté visiblement pendant le service.",
      "En cas de perte, prévenir immédiatement la Direction Administrative.",
      "Toute perte est à signaler dans les 24 heures.",
@@ -1129,7 +1129,7 @@
      "service",
      "qr"
     ],
-    "mentionsVerso": "Ce badge est la propriété de la Clinique NASSIERA TOO SARL.\nIl doit être porté visiblement pendant le service.\nEn cas de perte, prévenir immédiatement la Direction Administrative.\nToute perte est à signaler dans les 24 heures.\nÀ restituer au départ de l’agent.",
+    "mentionsVerso": "Ce badge est la propriété de la CLINIQUE BAGUIDI « L’AS DU CŒUR ».\nIl doit être porté visiblement pendant le service.\nEn cas de perte, prévenir immédiatement la Direction Administrative.\nToute perte est à signaler dans les 24 heures.\nÀ restituer au départ de l’agent.",
     "aValider": true,
     "source": "Proposition — aucun document de cadrage ne décrit le badge de la clinique. Format CR80 retenu : c’est celui des imprimantes à cartes et des porte-badges du commerce."
    }
@@ -1200,7 +1200,7 @@
    "Archiver"
   ],
   "detail": {
-   "texte": "Badge agent — CR80 paysage Aperçu à l’échelle : le badge est composé en millimètres, pas en pixels — c’est ce qui permet de l’imprimer tel quel sur une carte. CLINIQUE NASSIERA TOO Votre santé, notre raison de vivre PHOTO À COLLER SPÉCIMEN — APERÇU Fonction de l’agent Service : Service Matricule 00 BDG-00000-2026 Contrôle SIGH CLINIQUE NASSIERA TOO SARL Ce badge est la propriété de la Clinique NASSIERA TOO SARL. Il doit être porté visiblement pendant le service. En cas de perte, prévenir immédiatement la Direction Administrative. Toute perte est à signaler dans les 24 heures. À restituer au départ de l’agent. N° de série BDG-00000-2026 Valable jusqu’au 30/10/2028 Votre santé, notre raison de vivre Mentions du verso 5 ligne(s) Source Proposition — aucun document de cadrage ne décrit le badge de la clinique. Format CR80 retenu : c’est celui des imprimantes à cartes et des porte-badges du commerce. Modifier Archiver",
+   "texte": "Badge agent — CR80 paysage Aperçu à l’échelle : le badge est composé en millimètres, pas en pixels — c’est ce qui permet de l’imprimer tel quel sur une carte. CLINIQUE BAGUIDI « L’AS DU CŒUR » Votre bien-être est notre raison d’être. PHOTO À COLLER SPÉCIMEN — APERÇU Fonction de l’agent Service : Service Matricule 00 BDG-00000-2026 Contrôle SIGH CLINIQUE BAGUIDI « L’AS DU CŒUR » Ce badge est la propriété de la CLINIQUE BAGUIDI « L’AS DU CŒUR ». Il doit être porté visiblement pendant le service. En cas de perte, prévenir immédiatement la Direction Administrative. Toute perte est à signaler dans les 24 heures. À restituer au départ de l’agent. N° de série BDG-00000-2026 Valable jusqu’au 30/10/2028 Votre bien-être est notre raison d’être. Mentions du verso 5 ligne(s) Source Proposition — aucun document de cadrage ne décrit le badge de la clinique. Format CR80 retenu : c’est celui des imprimantes à cartes et des porte-badges du commerce. Modifier Archiver",
    "boutons": [
     "Fermer",
     "Modifier",
@@ -1322,7 +1322,7 @@
     ]
    },
    "detail": {
-    "texte": "Badge visiteur — portrait Aperçu à l’échelle : le badge est composé en millimètres, pas en pixels — c’est ce qui permet de l’imprimer tel quel sur une carte. CLINIQUE NASSIERA TOO Votre santé, notre raison de vivre PHOTO À COLLER SPÉCIMEN — APERÇU Matricule 00 BDG-00000-2026 Contrôle SIGH CLINIQUE NASSIERA TOO SARL Badge à restituer en sortant. À porter visiblement. N° de série BDG-00000-2026 Valable jusqu’au 30/10/2028 Votre santé, notre raison de vivre Mentions du verso 2 ligne(s) Source — Modifier Archiver",
+    "texte": "Badge visiteur — portrait Aperçu à l’échelle : le badge est composé en millimètres, pas en pixels — c’est ce qui permet de l’imprimer tel quel sur une carte. CLINIQUE BAGUIDI « L’AS DU CŒUR » Votre bien-être est notre raison d’être. PHOTO À COLLER SPÉCIMEN — APERÇU Matricule 00 BDG-00000-2026 Contrôle SIGH CLINIQUE BAGUIDI « L’AS DU CŒUR » Badge à restituer en sortant. À porter visiblement. N° de série BDG-00000-2026 Valable jusqu’au 30/10/2028 Votre bien-être est notre raison d’être. Mentions du verso 2 ligne(s) Source — Modifier Archiver",
     "boutons": [
      "Fermer",
      "Modifier",
@@ -2141,7 +2141,7 @@
      "qr": true
     },
     "mentionsVerso": [
-     "Ce badge est la propriété de la Clinique NASSIERA TOO SARL.",
+     "Ce badge est la propriété de la CLINIQUE BAGUIDI « L’AS DU CŒUR ».",
      "Il doit être porté visiblement pendant le service.",
      "En cas de perte, prévenir immédiatement la Direction Administrative.",
      "Toute perte est à signaler dans les 24 heures.",

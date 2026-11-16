@@ -121,7 +121,7 @@ void main() {
     expect(m.collection('ecritures').actives.length, ecrAvant);
     expect(m.collection('factures').parId(f['id'])!['reliquat'], f['reliquat'],
         reason: 'rien n’est écrit');
-    await saisir('acheteurIfu', '3201642748214');
+    await saisir('acheteurIfu', '3201001996110');
     // IFU présenté : situation « IFU actif », dont le 1 % n'est pas arrêté — refus nommé, rien n'est écrit.
     await toucher(t, find.text('Valider l’encaissement'));
     expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
@@ -131,7 +131,7 @@ void main() {
     await toucher(t, find.textContaining('Acheteur sans IFU actif — 5 % arrêté').last);
     await toucher(t, find.text('Valider l’encaissement'));
     final apres = m.collection('factures').actives
-        .firstWhere((x) => x['ifuClient'] == '3201642748214');
+        .firstWhere((x) => x['ifuClient'] == '3201001996110');
     expect(apres['acheteurNom'], 'Clinique X');
     expect(apres['aibTaux'], 5);
     expect(apres['aibSituation'], 'ifu_inactif_ou_absent');

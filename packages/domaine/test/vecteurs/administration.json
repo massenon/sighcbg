@@ -602,7 +602,7 @@
     "reference": "ARR-2026-0006",
     "sens": "arrivee",
     "date": "2026-10-27",
-    "correspondant": "CHD Atacora",
+    "correspondant": "CHD Borgou",
     "objet": "Demande de transfert de dossier",
     "nature": "Lettre",
     "affecteA": "Direction Médicale",
@@ -645,7 +645,7 @@
     "reference": "DEP-2026-0009",
     "sens": "depart",
     "date": "2026-07-22",
-    "correspondant": "Mairie de Natitingou",
+    "correspondant": "Mairie de Parakou",
     "objet": "Autorisation d’affichage",
     "nature": "Lettre",
     "affecteA": "Direction Administrative",
@@ -728,7 +728,7 @@
        "ARR-2026-0006",
        "Arrivée",
        "27/10/2026",
-       "CHD Atacora",
+       "CHD Borgou",
        "Demande de transfert de dossier",
        "Lettre",
        "Direction Médicale",
@@ -1058,7 +1058,7 @@
      "nom": "TACHEDI Arialu"
     }
    ],
-   "texte": "N° d’ordreSensDateCorrespondantObjetAffecté àTraitementDEP-2026-0007Départ30/10/2026Zone sanitaireRapport mensuel d’activitéDirection AdministrativeEn coursARR-2026-0008Arrivée30/10/2026Fournisseur DIPHARMLivraison annoncéeGestion des stocksTraitéARR-2026-0006Arrivée27/10/2026CHD AtacoraDemande de transfert de dossierDirection MédicaleEn attenteDEP-2026-0005Départ21/10/2026NSIA AssurancesFacture mensuelleComptabilitéEn attenteARR-2026-0004Arrivée18/10/2026Ministère de la SantéCirculaire sur la vaccinationDirection MédicaleEn attenteARR-2026-0003Arrivée30/09/2026CNSSAppel de cotisationsRessources humainesEn coursDEP-2026-0002Départ25/09/2026SoBAPS SABon de commande de médicamentsComptabilitéTraitéARR-2026-0001Arrivée20/09/2026DGI — Centre des impôtsNotification de contrôle fiscalDirection AdministrativeTraité",
+   "texte": "N° d’ordreSensDateCorrespondantObjetAffecté àTraitementDEP-2026-0007Départ30/10/2026Zone sanitaireRapport mensuel d’activitéDirection AdministrativeEn coursARR-2026-0008Arrivée30/10/2026Fournisseur DIPHARMLivraison annoncéeGestion des stocksTraitéARR-2026-0006Arrivée27/10/2026CHD BorgouDemande de transfert de dossierDirection MédicaleEn attenteDEP-2026-0005Départ21/10/2026NSIA AssurancesFacture mensuelleComptabilitéEn attenteARR-2026-0004Arrivée18/10/2026Ministère de la SantéCirculaire sur la vaccinationDirection MédicaleEn attenteARR-2026-0003Arrivée30/09/2026CNSSAppel de cotisationsRessources humainesEn coursDEP-2026-0002Départ25/09/2026SoBAPS SABon de commande de médicamentsComptabilitéTraitéARR-2026-0001Arrivée20/09/2026DGI — Centre des impôtsNotification de contrôle fiscalDirection AdministrativeTraité",
    "tableaux": []
   },
   "creation": {
@@ -1189,7 +1189,7 @@
      "statut": "actif",
      "sens": "arrivee",
      "date": "2026-10-30",
-     "correspondant": "DGI Natitingou",
+     "correspondant": "DGI Parakou",
      "objet": "Déclaration TVM",
      "nature": "Lettre",
      "affecteA": "Comptabilité",
@@ -1284,7 +1284,7 @@
         "ARR-2026-0009",
         "Arrivée",
         "30/10/2026",
-        "DGI Natitingou",
+        "DGI Parakou",
         "Déclaration TVM",
         "Lettre",
         "Comptabilité",
@@ -1320,7 +1320,7 @@
         "ARR-2026-0006",
         "Arrivée",
         "27/10/2026",
-        "CHD Atacora",
+        "CHD Borgou",
         "Demande de transfert de dossier",
         "Lettre",
         "Direction Médicale",
@@ -3504,7 +3504,7 @@
     "reference": "AM-2026-0001",
     "dateHeure": "2026-09-10T08:15:00.000Z",
     "motif": "Urgence médicale",
-    "destination": "CHD Atacora",
+    "destination": "CHD Borgou",
     "kilometrage": 12,
     "chauffeur": "TIAMOU Noupi",
     "accompagnant": "TACHEDI Arialu",
@@ -3538,7 +3538,7 @@
     "reference": "AM-2026-0003",
     "dateHeure": "2026-10-01T14:15:00.000Z",
     "motif": "Retour à domicile",
-    "destination": "Domicile — Tchirimina",
+    "destination": "Domicile — Tikpanou",
     "kilometrage": 7,
     "chauffeur": "TIAMOU Noupi",
     "accompagnant": "TACHEDI Arialu",
@@ -3572,7 +3572,7 @@
     "reference": "AM-2026-0005",
     "dateHeure": "2026-10-30T07:15:00.000Z",
     "motif": "Évacuation sanitaire",
-    "destination": "CHD Atacora",
+    "destination": "CHD Borgou",
     "kilometrage": 15,
     "chauffeur": "TIAMOU Noupi",
     "accompagnant": "TACHEDI Arialu",
@@ -3606,7 +3606,7 @@
     "reference": "AM-2026-0007",
     "dateHeure": "2026-10-25T18:15:00.000Z",
     "motif": "Urgence médicale",
-    "destination": "CHD Atacora",
+    "destination": "CHD Borgou",
     "kilometrage": 10,
     "chauffeur": "TIAMOU Noupi",
     "accompagnant": "TACHEDI Arialu",
@@ -3704,7 +3704,7 @@
        "30/10/2026 à 07h15",
        "TACHEDI Gedur CBG/5/26",
        "Évacuation sanitaire",
-       "CHD Atacora",
+       "CHD Borgou",
        "15",
        "TIAMOU Noupi",
        "TACHEDI Arialu",
@@ -3732,7 +3732,7 @@
        "25/10/2026 à 18h15",
        "ODJIPIAR YUDJOUVOU Afagu CBG/7/25",
        "Urgence médicale",
-       "CHD Atacora",
+       "CHD Borgou",
        "10",
        "TIAMOU Noupi",
        "TACHEDI Arialu",
@@ -3760,7 +3760,7 @@
        "01/10/2026 à 14h15",
        "N’ACHOU Yacha CBG/3/26",
        "Retour à domicile",
-       "Domicile — Tchirimina",
+       "Domicile — Tikpanou",
        "7",
        "TIAMOU Noupi",
        "TACHEDI Arialu",
@@ -3774,7 +3774,7 @@
        "10/09/2026 à 08h15",
        "TIAMOU Bodje CBG/1/25",
        "Urgence médicale",
-       "CHD Atacora",
+       "CHD Borgou",
        "12",
        "TIAMOU Noupi",
        "TACHEDI Arialu",
@@ -4188,7 +4188,7 @@
      "patientCode": "CBG/9/26",
      "dateHeure": "2026-11-02T16:00",
      "motif": "Urgence médicale",
-     "destination": "CHD Atacora",
+     "destination": "CHD Borgou",
      "kilometrage": 5,
      "etat": "terminee",
      "chauffeur": "TIAMOU Noupi",
@@ -4228,7 +4228,7 @@
     "patientCode": "CBG/3/26",
     "dateHeure": "2026-10-01T14:15",
     "motif": "Retour à domicile",
-    "destination": "Domicile — Tchirimina",
+    "destination": "Domicile — Tikpanou",
     "kilometrage": "7",
     "etat": "terminee",
     "chauffeur": "TIAMOU Noupi",
@@ -4243,7 +4243,7 @@
      "reference": "AM-2026-0003",
      "dateHeure": "2026-10-01T14:15",
      "motif": "Retour à domicile",
-     "destination": "Domicile — Tchirimina",
+     "destination": "Domicile — Tikpanou",
      "kilometrage": 7,
      "chauffeur": "TIAMOU Noupi",
      "accompagnant": "TACHEDI Arialu",
@@ -4264,8 +4264,9 @@
  },
  "repertoire": {
   "brand": [
-   "01 95 44 51 51",
-   "01 66 43 28 20"
+   "95 74 69 56",
+   "95 95 99 14",
+   "97 09 34 99"
   ],
   "amorcage": {
    "fiches": [
@@ -4276,7 +4277,7 @@
      "type": "publique",
      "telephone": null,
      "contact": "Poste de commandement",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "indisponible",
      "verifieLe": null,
      "aCompleter": true,
@@ -4285,11 +4286,11 @@
     {
      "id": "AMBxmvuswn406pppu",
      "statut": "actif",
-     "libelle": "Zone sanitaire de Natitingou",
+     "libelle": "Zone sanitaire de Parakou",
      "type": "publique",
      "telephone": null,
      "contact": "Bureau de la zone",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "indisponible",
      "verifieLe": null,
      "aCompleter": true,
@@ -4298,11 +4299,11 @@
     {
      "id": "AMBxmvuswn40ffd33",
      "statut": "actif",
-     "libelle": "CHD Atacora — ambulance",
+     "libelle": "CHD Borgou — ambulance",
      "type": "publique",
      "telephone": null,
      "contact": "Régulation du CHD",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "indisponible",
      "verifieLe": null,
      "aCompleter": true,
@@ -4313,9 +4314,9 @@
      "statut": "actif",
      "libelle": "Ambulance CBG 02",
      "type": "clinique",
-     "telephone": "01 66 43 28 20",
+     "telephone": "95 95 99 14",
      "contact": "Chauffeur de garde",
-     "base": "Natitingou — clinique",
+     "base": "Parakou — clinique",
      "disponibilite": "disponible",
      "verifieLe": "2026-10-30",
      "aCompleter": false,
@@ -4326,9 +4327,9 @@
      "statut": "actif",
      "libelle": "Ambulance CBG 01",
      "type": "clinique",
-     "telephone": "01 95 44 51 51",
+     "telephone": "95 74 69 56",
      "contact": "TIAMOU Noupi",
-     "base": "Natitingou — clinique",
+     "base": "Parakou — clinique",
      "disponibilite": "disponible",
      "verifieLe": "2026-10-30",
      "aCompleter": false,
@@ -4378,9 +4379,9 @@
        [
         "Ambulance CBG 01",
         "Ambulance de la clinique",
-        "01 95 44 51 51",
+        "95 74 69 56",
         "TIAMOU Noupi",
-        "Natitingou — clinique",
+        "Parakou — clinique",
         "Disponible",
         "30/10/2026 (0 j)",
         ""
@@ -4388,19 +4389,19 @@
        [
         "Ambulance CBG 02",
         "Ambulance de la clinique",
-        "01 66 43 28 20",
+        "95 95 99 14",
         "Chauffeur de garde",
-        "Natitingou — clinique",
+        "Parakou — clinique",
         "Disponible",
         "30/10/2026 (0 j)",
         ""
        ],
        [
-        "CHD Atacora — ambulance",
+        "CHD Borgou — ambulance",
         "Service public",
         "à renseigner",
         "Régulation du CHD",
-        "Natitingou",
+        "Parakou",
         "Indisponible",
         "jamais",
         ""
@@ -4410,17 +4411,17 @@
         "Service public",
         "à renseigner",
         "Poste de commandement",
-        "Natitingou",
+        "Parakou",
         "Indisponible",
         "jamais",
         ""
        ],
        [
-        "Zone sanitaire de Natitingou",
+        "Zone sanitaire de Parakou",
         "Service public",
         "à renseigner",
         "Bureau de la zone",
-        "Natitingou",
+        "Parakou",
         "Indisponible",
         "jamais",
         ""
@@ -4429,7 +4430,7 @@
      }
     ],
     "notes": [
-     "3 fiche(s) sans numéro : Sapeurs-pompiers · Zone sanitaire de Natitingou · CHD Atacora — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
+     "3 fiche(s) sans numéro : Sapeurs-pompiers · Zone sanitaire de Parakou · CHD Borgou — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
      "Les moyens disponibles remontent en tête, ceux de la clinique avant l’extérieur. Un numéro qu’on appelle pour s’entendre dire « nous sommes en course » a coûté deux minutes qu’une urgence n’a pas."
     ],
     "boutons": [
@@ -4458,7 +4459,7 @@
     "type": "clinique",
     "telephone": "+229 01 23 45 67",
     "contact": "Chauffeur de garde",
-    "base": "Natitingou — clinique",
+    "base": "Parakou — clinique",
     "disponibilite": "en_course",
     "verifieLe": "2026-10-28",
     "aCompleter": false
@@ -4471,7 +4472,7 @@
     "telephone": "+229 01 23 45 68",
     "telephone2": "+229 97 00 00 02",
     "contact": "Chauffeur de garde",
-    "base": "Natitingou — clinique",
+    "base": "Parakou — clinique",
     "disponibilite": "disponible",
     "verifieLe": "2026-10-30",
     "aCompleter": false
@@ -4479,10 +4480,10 @@
    {
     "id": "AMBR3",
     "statut": "actif",
-    "libelle": "CHD Atacora — ambulance",
+    "libelle": "CHD Borgou — ambulance",
     "type": "publique",
     "contact": "Régulation du CHD",
-    "base": "Natitingou",
+    "base": "Parakou",
     "disponibilite": "indisponible",
     "aCompleter": true
    },
@@ -4519,7 +4520,7 @@
     "type": "prive",
     "telephone": "+229 96 00 00 06",
     "contact": "M. Bravo",
-    "base": "Natitingou",
+    "base": "Parakou",
     "disponibilite": "disponible",
     "verifieLe": "2026-08-01",
     "aCompleter": false
@@ -4531,7 +4532,7 @@
     "type": "prive",
     "telephone": "+229 96 00 00 07",
     "contact": "",
-    "base": "Natitingou",
+    "base": "Parakou",
     "disponibilite": "disponible",
     "verifieLe": "2026-07-31",
     "aCompleter": false
@@ -4603,7 +4604,7 @@
        "Transporteur privé",
        "+229 96 00 00 06",
        "M. Bravo",
-       "Natitingou",
+       "Parakou",
        "Disponible",
        "01/08/2026 (90 j)",
        ""
@@ -4613,7 +4614,7 @@
        "Transporteur privé",
        "+229 96 00 00 07",
        "—",
-       "Natitingou",
+       "Parakou",
        "Disponible",
        "31/07/2026 (91 j)",
        ""
@@ -4623,7 +4624,7 @@
        "Ambulance de la clinique",
        "+229 01 23 45 67",
        "Chauffeur de garde",
-       "Natitingou — clinique",
+       "Parakou — clinique",
        "En course",
        "28/10/2026 (2 j)",
        ""
@@ -4633,7 +4634,7 @@
        "Ambulance de la clinique",
        "+229 01 23 45 68",
        "Chauffeur de garde",
-       "Natitingou — clinique",
+       "Parakou — clinique",
        "Disponible",
        "30/10/2026 (0 j)",
        ""
@@ -4649,11 +4650,11 @@
        ""
       ],
       [
-       "CHD Atacora — ambulance",
+       "CHD Borgou — ambulance",
        "Service public",
        "à renseigner",
        "Régulation du CHD",
-       "Natitingou",
+       "Parakou",
        "Indisponible",
        "jamais",
        ""
@@ -4672,7 +4673,7 @@
     }
    ],
    "notes": [
-    "1 fiche(s) sans numéro : CHD Atacora — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
+    "1 fiche(s) sans numéro : CHD Borgou — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
     "Les moyens disponibles remontent en tête, ceux de la clinique avant l’extérieur. Un numéro qu’on appelle pour s’entendre dire « nous sommes en course » a coûté deux minutes qu’une urgence n’a pas."
    ],
    "boutons": [
@@ -4694,7 +4695,7 @@
   },
   "cartes": [
    {
-    "texte": "Ambulance CBG 02 Disponible Ambulance de la clinique — Natitingou — clinique +229 01 23 45 68 +229 97 00 00 02 Demander : Chauffeur de garde",
+    "texte": "Ambulance CBG 02 Disponible Ambulance de la clinique — Parakou — clinique +229 01 23 45 68 +229 97 00 00 02 Demander : Chauffeur de garde",
     "classe": "vert",
     "liens": [
      [
@@ -4721,7 +4722,7 @@
     ]
    },
    {
-    "texte": "Ambulance Bravo Disponible Transporteur privé — Natitingou +229 96 00 00 06 Demander : M. Bravo",
+    "texte": "Ambulance Bravo Disponible Transporteur privé — Parakou +229 96 00 00 06 Demander : M. Bravo",
     "classe": "vert",
     "liens": [
      [
@@ -4732,7 +4733,7 @@
     ]
    },
    {
-    "texte": "Ambulance Charlie Disponible Transporteur privé — Natitingou +229 96 00 00 07 Non vérifié depuis 91 jours",
+    "texte": "Ambulance Charlie Disponible Transporteur privé — Parakou +229 96 00 00 07 Non vérifié depuis 91 jours",
     "classe": "vert",
     "liens": [
      [
@@ -4754,7 +4755,7 @@
     ]
    },
    {
-    "texte": "Ambulance CBG 01 En course Ambulance de la clinique — Natitingou — clinique +229 01 23 45 67 Demander : Chauffeur de garde",
+    "texte": "Ambulance CBG 01 En course Ambulance de la clinique — Parakou — clinique +229 01 23 45 67 Demander : Chauffeur de garde",
     "classe": "blanc",
     "liens": [
      [
@@ -4776,13 +4777,13 @@
     ]
    },
    {
-    "texte": "CHD Atacora — ambulance Indisponible Service public — Natitingou Numéro à renseigner Demander : Régulation du CHD",
+    "texte": "CHD Borgou — ambulance Indisponible Service public — Parakou Numéro à renseigner Demander : Régulation du CHD",
     "classe": "blanc",
     "liens": []
    }
   ],
   "notesDit": [
-   "1 fiche(s) sans numéro : CHD Atacora — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
+   "1 fiche(s) sans numéro : CHD Borgou — ambulance. Ces structures sont connues de la clinique mais leur numéro n’a pas été relevé. Inventer un numéro d’urgence serait la faute la plus grave de tout ce prototype — la fiche reste donc vide et le dit.",
    "Les moyens disponibles remontent en tête, ceux de la clinique avant l’extérieur. Un numéro qu’on appelle pour s’entendre dire « nous sommes en course » a coûté deux minutes qu’une urgence n’a pas."
   ],
   "tableau": {
@@ -4812,7 +4813,7 @@
      "Transporteur privé",
      "+229 96 00 00 06",
      "M. Bravo",
-     "Natitingou",
+     "Parakou",
      "Disponible",
      "01/08/2026 (90 j)",
      ""
@@ -4822,7 +4823,7 @@
      "Ambulance de la clinique",
      "+229 01 23 45 67",
      "Chauffeur de garde",
-     "Natitingou — clinique",
+     "Parakou — clinique",
      "En course",
      "28/10/2026 (2 j)",
      ""
@@ -4832,7 +4833,7 @@
      "Ambulance de la clinique",
      "+229 01 23 45 68",
      "Chauffeur de garde",
-     "Natitingou — clinique",
+     "Parakou — clinique",
      "Disponible",
      "30/10/2026 (0 j)",
      ""
@@ -4842,7 +4843,7 @@
      "Transporteur privé",
      "+229 96 00 00 07",
      "—",
-     "Natitingou",
+     "Parakou",
      "Disponible",
      "31/07/2026 (91 j)",
      ""
@@ -4858,11 +4859,11 @@
      ""
     ],
     [
-     "CHD Atacora — ambulance",
+     "CHD Borgou — ambulance",
      "Service public",
      "à renseigner",
      "Régulation du CHD",
-     "Natitingou",
+     "Parakou",
      "Indisponible",
      "jamais",
      ""
@@ -4900,7 +4901,7 @@
    ]
   },
   "detailSansNumero": {
-   "texte": "CHD Atacora — ambulance DÉSIGNATION CHD Atacora — ambulance TYPE Service public TÉLÉPHONE à renseigner SECOND NUMÉRO — PERSONNE À DEMANDER Régulation du CHD BASE Natitingou DISPONIBILITÉ Indisponible CAPACITÉ — VÉRIFIÉ LE jamais ORIGINE DE LA FICHE — Le numéro de cette structure n’a pas été relevé. La fiche reste vide plutôt que de porter une valeur inventée.",
+   "texte": "CHD Borgou — ambulance DÉSIGNATION CHD Borgou — ambulance TYPE Service public TÉLÉPHONE à renseigner SECOND NUMÉRO — PERSONNE À DEMANDER Régulation du CHD BASE Parakou DISPONIBILITÉ Indisponible CAPACITÉ — VÉRIFIÉ LE jamais ORIGINE DE LA FICHE — Le numéro de cette structure n’a pas été relevé. La fiche reste vide plutôt que de porter une valeur inventée.",
    "boutons": [
     "Fermer"
    ]
@@ -4975,7 +4976,7 @@
      "telephone": "+229 01 23 45 68",
      "telephone2": "+229 97 00 00 02",
      "contact": "Chauffeur de garde",
-     "base": "Natitingou — clinique",
+     "base": "Parakou — clinique",
      "disponibilite": "en_course",
      "verifieLe": "2026-10-30",
      "aCompleter": false,
@@ -5017,7 +5018,7 @@
      "Ambulance CBG 01",
      "Ambulance CBG 02",
      "Ambulance Delta",
-     "CHD Atacora — ambulance"
+     "CHD Borgou — ambulance"
     ]
    }
   },
@@ -5131,7 +5132,7 @@
      "telephone": "+229 90 00 00 09",
      "telephone2": "",
      "contact": "",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "disponible",
      "capacite": "",
      "observations": ""
@@ -5167,7 +5168,7 @@
     "telephone": "+229 96 00 00 06",
     "telephone2": "",
     "contact": "M. Bravo",
-    "base": "Natitingou",
+    "base": "Parakou",
     "disponibilite": "disponible",
     "capacite": "",
     "observations": ""
@@ -5181,7 +5182,7 @@
      "telephone": "+229 96 11 11 11",
      "telephone2": "",
      "contact": "M. Bravo",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "disponible",
      "verifieLe": "2026-08-01",
      "aCompleter": false,
@@ -5203,7 +5204,7 @@
     "type": "prive",
     "telephone": "+229 96 00 00 07",
     "contact": "",
-    "base": "Natitingou",
+    "base": "Parakou",
     "disponibilite": "disponible",
     "verifieLe": "2026-07-31",
     "aCompleter": false,
@@ -7048,7 +7049,7 @@
      "telephone": "+229 90 00 00 09",
      "telephone2": "",
      "contact": "",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "disponible",
      "capacite": "",
      "observations": "",
@@ -7080,7 +7081,7 @@
      "type": "clinique",
      "telephone": "+229 01 23 45 67",
      "contact": "Chauffeur de garde",
-     "base": "Natitingou — clinique",
+     "base": "Parakou — clinique",
      "disponibilite": "en_course",
      "verifieLe": "2026-10-28",
      "aCompleter": false
@@ -7093,7 +7094,7 @@
      "telephone": "+229 01 23 45 68",
      "telephone2": "+229 97 00 00 02",
      "contact": "Chauffeur de garde",
-     "base": "Natitingou — clinique",
+     "base": "Parakou — clinique",
      "disponibilite": "en_course",
      "verifieLe": "2026-10-30",
      "aCompleter": false,
@@ -7104,10 +7105,10 @@
     {
      "id": "AMBR3",
      "statut": "actif",
-     "libelle": "CHD Atacora — ambulance",
+     "libelle": "CHD Borgou — ambulance",
      "type": "publique",
      "contact": "Régulation du CHD",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "indisponible",
      "aCompleter": true
     },
@@ -7148,7 +7149,7 @@
      "telephone": "+229 96 11 11 11",
      "telephone2": "",
      "contact": "M. Bravo",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "disponible",
      "verifieLe": "2026-08-01",
      "aCompleter": false,
@@ -7164,7 +7165,7 @@
      "type": "prive",
      "telephone": "+229 96 00 00 07",
      "contact": "",
-     "base": "Natitingou",
+     "base": "Parakou",
      "disponibilite": "disponible",
      "verifieLe": "2026-07-31",
      "aCompleter": false,
@@ -7233,7 +7234,7 @@
       "Transporteur privé",
       "+229 96 11 11 11",
       "M. Bravo",
-      "Natitingou",
+      "Parakou",
       "Disponible",
       "01/08/2026 (90 j)",
       ""
@@ -7243,7 +7244,7 @@
       "Ambulance de la clinique",
       "+229 01 23 45 67",
       "Chauffeur de garde",
-      "Natitingou — clinique",
+      "Parakou — clinique",
       "En course",
       "28/10/2026 (2 j)",
       ""
@@ -7253,7 +7254,7 @@
       "Ambulance de la clinique",
       "+229 01 23 45 68",
       "Chauffeur de garde",
-      "Natitingou — clinique",
+      "Parakou — clinique",
       "En course",
       "30/10/2026 (0 j)",
       ""
@@ -7269,11 +7270,11 @@
       ""
      ],
      [
-      "CHD Atacora — ambulance",
+      "CHD Borgou — ambulance",
       "Service public",
       "à renseigner",
       "Régulation du CHD",
-      "Natitingou",
+      "Parakou",
       "Indisponible",
       "jamais",
       ""
@@ -7303,7 +7304,7 @@
       "Service public",
       "+229 90 00 00 09",
       "—",
-      "Natitingou",
+      "Parakou",
       "Disponible",
       "30/10/2026 (0 j)",
       ""

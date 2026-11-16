@@ -985,7 +985,7 @@
     "extSexe": "M",
     "extAge": 33,
     "extTelephone": "96000000",
-    "extResidence": "Natitingou"
+    "extResidence": "Parakou"
    },
    "pieces": [
     {
@@ -1022,8 +1022,8 @@
      "age": 33,
      "ageReferenceLe": "2026-10-30",
      "telephone": "96000000",
-     "adresse": "Natitingou",
-     "quartier": "Natitingou",
+     "adresse": "Parakou",
+     "quartier": "Parakou",
      "dateCreation": "2026-10-30",
      "externe": true,
      "origineDossier": "Patient externe — délivrance d’une pièce certifiante",

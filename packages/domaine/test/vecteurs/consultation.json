@@ -4380,7 +4380,7 @@
     "secteur": "Médecine générale",
     "prix": 5000,
     "tarifProvisoire": false,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif",
     "prixNonAssure": 5000,
     "prixAssure": 3000,
@@ -4644,7 +4644,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4662,7 +4662,7 @@
     "motifPrix": null,
     "aArbitrer": "La Direction a énoncé 15 000 F ; le document tarifaire porte 1 500 / 5 000.",
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4680,7 +4680,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4698,7 +4698,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4716,7 +4716,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4734,7 +4734,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des consultations NASSIERA TOO",
+    "source": "Tarifs des consultations BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4752,7 +4752,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4770,7 +4770,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4788,7 +4788,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4806,7 +4806,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4824,7 +4824,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4842,7 +4842,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -4860,7 +4860,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des imageries médicales de NASSIERA TOO",
+    "source": "Tarifs des imageries médicales de BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5182,7 +5182,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5200,7 +5200,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5218,7 +5218,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5236,7 +5236,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5254,7 +5254,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5272,7 +5272,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5290,7 +5290,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5308,7 +5308,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5326,7 +5326,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5344,7 +5344,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5362,7 +5362,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5380,7 +5380,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5398,7 +5398,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5416,7 +5416,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5434,7 +5434,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5452,7 +5452,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5470,7 +5470,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5488,7 +5488,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5506,7 +5506,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5524,7 +5524,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": "Prix arrêté par la Direction le 26/08/2026 — la grille ne le portait pas. Aligné sur les sérologies voisines : hépatite B et TPHA, 2 500 / 3 500.",
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5542,7 +5542,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5560,7 +5560,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5578,7 +5578,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5596,7 +5596,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5614,7 +5614,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5632,7 +5632,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5650,7 +5650,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5668,7 +5668,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": "Tarif assuré arrêté par la Direction le 26/08/2026 — la grille ne le portait pas. Déduit du rapport moyen assuré / non assuré du laboratoire (1,47).",
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5686,7 +5686,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5704,7 +5704,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5722,7 +5722,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5740,7 +5740,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5758,7 +5758,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5776,7 +5776,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5794,7 +5794,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5812,7 +5812,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5830,7 +5830,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5848,7 +5848,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5866,7 +5866,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5884,7 +5884,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5902,7 +5902,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "source": "Tarifs des analyses de laboratoire BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5920,7 +5920,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5938,7 +5938,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5956,7 +5956,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5974,7 +5974,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -5992,7 +5992,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6010,7 +6010,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6028,7 +6028,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6046,7 +6046,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6064,7 +6064,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6082,7 +6082,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6100,7 +6100,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6118,7 +6118,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6136,7 +6136,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6154,7 +6154,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6172,7 +6172,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6190,7 +6190,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6208,7 +6208,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6226,7 +6226,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6244,7 +6244,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6262,7 +6262,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6280,7 +6280,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6298,7 +6298,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6316,7 +6316,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6334,7 +6334,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6352,7 +6352,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6370,7 +6370,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6388,7 +6388,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6406,7 +6406,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6424,7 +6424,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6442,7 +6442,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6460,7 +6460,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6478,7 +6478,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": "Prix arrêté par la Direction le 26/08/2026 — la grille ne le portait pas. Aligné sur les poses voisines : prise de voie veineuse et pose de transfusion.",
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6496,7 +6496,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6514,7 +6514,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6532,7 +6532,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6550,7 +6550,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6568,7 +6568,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6586,7 +6586,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6604,7 +6604,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6622,7 +6622,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+    "source": "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6640,7 +6640,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6658,7 +6658,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6676,7 +6676,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6694,7 +6694,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6712,7 +6712,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6730,7 +6730,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6748,7 +6748,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6766,7 +6766,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6784,7 +6784,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6802,7 +6802,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6820,7 +6820,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6838,7 +6838,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6856,7 +6856,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6874,7 +6874,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6892,7 +6892,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6910,7 +6910,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6928,7 +6928,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6946,7 +6946,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6964,7 +6964,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -6982,7 +6982,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7000,7 +7000,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7018,7 +7018,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7036,7 +7036,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7054,7 +7054,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7072,7 +7072,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7090,7 +7090,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7108,7 +7108,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7126,7 +7126,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7144,7 +7144,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7162,7 +7162,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7180,7 +7180,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "source": "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7198,7 +7198,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des certificats NASSIERA TOO",
+    "source": "Tarifs des certificats BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7216,7 +7216,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des certificats NASSIERA TOO",
+    "source": "Tarifs des certificats BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7234,7 +7234,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des certificats NASSIERA TOO",
+    "source": "Tarifs des certificats BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7252,7 +7252,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des certificats NASSIERA TOO",
+    "source": "Tarifs des certificats BAGUIDI",
     "statut": "actif"
    },
    {
@@ -7288,7 +7288,7 @@
     "motifPrix": null,
     "aArbitrer": null,
     "arbitrage": null,
-    "source": "Tarifs des certificats NASSIERA TOO",
+    "source": "Tarifs des certificats BAGUIDI",
     "statut": "actif"
    }
   ],

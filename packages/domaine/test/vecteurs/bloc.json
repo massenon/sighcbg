@@ -3234,7 +3234,7 @@
      ],
      [
       "Résidence",
-      "Natitingou"
+      "Parakou"
      ],
      [
       "Service demandeur",
@@ -3388,8 +3388,8 @@
    ]
   },
   "reprise": {
-   "residence": "Santa, Natitingou",
-   "adresse": "Santa, Natitingou",
+   "residence": "Santa, Parakou",
+   "adresse": "Santa, Parakou",
    "quartier": "Kotopounga"
   }
  },
@@ -4840,7 +4840,7 @@
      "mention": "Visa"
     }
    ],
-   "texte": "RubriqueInformationMotif invoqué par le patientRaisons familialesRisques exposés au patientAggravationAvis du ProcureurConsigné — PR-12Décharge signéeOuiJe soussigné(e), patient(e) ou représentant légal, déclare quitter la CLINIQUE NASSIERA TOO SARL contre l’avis du médecin traitant. J’ai été pleinement informé(e) des risques encourus pour ma santé et je décharge l’établissement ainsi que son personnel de toute responsabilité quant aux conséquences de cette décision.",
+   "texte": "RubriqueInformationMotif invoqué par le patientRaisons familialesRisques exposés au patientAggravationAvis du ProcureurConsigné — PR-12Décharge signéeOuiJe soussigné(e), patient(e) ou représentant légal, déclare quitter la CLINIQUE BAGUIDI « L’AS DU CŒUR » contre l’avis du médecin traitant. J’ai été pleinement informé(e) des risques encourus pour ma santé et je décharge l’établissement ainsi que son personnel de toute responsabilité quant aux conséquences de cette décision.",
    "tableaux": [
     {
      "entetes": [

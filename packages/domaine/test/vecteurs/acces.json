@@ -1,18 +1,18 @@
 {
  "connexion": {
   "textes": [
-   "CLINIQUE NASSIERA TOO",
-   "Natitingou — République du Bénin",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Parakou, République du Bénin",
    "Système Intégré de Gestion Hospitalière",
    "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
    "Traçabilité intégrale des actions (journal d’audit)",
    "Alertes de rupture et de péremption automatiques (FEFO)",
    "Facture normalisée conforme au dispositif MECeF",
    "Comptabilité SYSCOHADA alimentée automatiquement",
-   "« Votre santé, notre raison de vivre »",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-   "CLINIQUE NASSIERA TOO",
-   "Votre santé, notre raison de vivre",
+   "« Votre bien-être est notre raison d’être. »",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Votre bien-être est notre raison d’être.",
    "Connexion",
    "Authentification individuelle obligatoire — aucun compte partagé (CDCT §12.2).",
    "Identifiant",
@@ -20,7 +20,7 @@
    "Mot de passe oublié ?",
    "Identifiant ou mot de passe incorrect.",
    "Se connecter",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
   ],
   "essaisVides": [
    {
@@ -70,38 +70,38 @@
    "apres": "text"
   },
   "mentions": [
-   "CLINIQUE NASSIERA TOO",
-   "Natitingou — République du Bénin",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Parakou, République du Bénin",
    "Système Intégré de Gestion Hospitalière",
    "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
    "Traçabilité intégrale des actions (journal d’audit)",
    "Alertes de rupture et de péremption automatiques (FEFO)",
    "Facture normalisée conforme au dispositif MECeF",
    "Comptabilité SYSCOHADA alimentée automatiquement",
-   "« Votre santé, notre raison de vivre »",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268"
+   "« Votre bien-être est notre raison d’être. »",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240"
   ]
  },
  "oubli": {
   "textes": [
-   "CLINIQUE NASSIERA TOO",
-   "Natitingou — République du Bénin",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Parakou, République du Bénin",
    "Système Intégré de Gestion Hospitalière",
    "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
    "Traçabilité intégrale des actions (journal d’audit)",
    "Alertes de rupture et de péremption automatiques (FEFO)",
    "Facture normalisée conforme au dispositif MECeF",
    "Comptabilité SYSCOHADA alimentée automatiquement",
-   "« Votre santé, notre raison de vivre »",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-   "CLINIQUE NASSIERA TOO",
-   "Votre santé, notre raison de vivre",
+   "« Votre bien-être est notre raison d’être. »",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Votre bien-être est notre raison d’être.",
    "Mot de passe oublié",
    "La réinitialisation est faite par l’Administrateur système. Cette page n’enregistre aucune demande : contactez-le directement.",
    "Identifiant ou adresse électronique",
    "Envoyer les instructions",
    "← Retour à la connexion",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
   ],
   "champ": {
    "requis": true,
@@ -117,25 +117,25 @@
  },
  "reinit": {
   "textes": [
-   "CLINIQUE NASSIERA TOO",
-   "Natitingou — République du Bénin",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Parakou, République du Bénin",
    "Système Intégré de Gestion Hospitalière",
    "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
    "Traçabilité intégrale des actions (journal d’audit)",
    "Alertes de rupture et de péremption automatiques (FEFO)",
    "Facture normalisée conforme au dispositif MECeF",
    "Comptabilité SYSCOHADA alimentée automatiquement",
-   "« Votre santé, notre raison de vivre »",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-   "CLINIQUE NASSIERA TOO",
-   "Votre santé, notre raison de vivre",
+   "« Votre bien-être est notre raison d’être. »",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Votre bien-être est notre raison d’être.",
    "Réinitialiser le mot de passe",
    "Politique de mot de passe de la clinique (CDCT §12.2). Maquette : cette page ne modifie aucun mot de passe.",
    "Nouveau mot de passe",
    "Confirmer le mot de passe",
    "Définir le mot de passe",
    "← Retour à la connexion",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
   ],
   "discordance": [
    {
@@ -162,24 +162,24 @@
  },
  "doubleFacteur": {
   "textes": [
-   "CLINIQUE NASSIERA TOO",
-   "Natitingou — République du Bénin",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Parakou, République du Bénin",
    "Système Intégré de Gestion Hospitalière",
    "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
    "Traçabilité intégrale des actions (journal d’audit)",
    "Alertes de rupture et de péremption automatiques (FEFO)",
    "Facture normalisée conforme au dispositif MECeF",
    "Comptabilité SYSCOHADA alimentée automatiquement",
-   "« Votre santé, notre raison de vivre »",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-   "CLINIQUE NASSIERA TOO",
-   "Votre santé, notre raison de vivre",
+   "« Votre bien-être est notre raison d’être. »",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+   "Votre bien-être est notre raison d’être.",
    "Vérification en 2 étapes",
    "Prévue pour les profils à privilèges élevés : Administrateur et Direction (CDCT §12.2). Maquette non branchée : aucun code n’est vérifié.",
    "Vérifier",
    "Code non reçu ? Un nouvel envoi est possible dans 30 secondes.",
    "← Utiliser un autre compte",
-   "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+   "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
   ],
   "nbCases": 6,
   "maxlength": 1,
@@ -210,7 +210,7 @@
     "L’écran demandé n’existe pas ou a été déplacé. Utiliser le plan du site pour retrouver le module recherché.",
     "Retour à l’accueil",
     "Plan du site",
-    "CLINIQUE NASSIERA TOO SARL — SIGH-CBG"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — SIGH-CBG"
    ],
    "liensConnecte": [
     {
@@ -241,7 +241,7 @@
     "Votre profil ne dispose pas des habilitations requises pour cet écran. L’accès est régi par la matrice RBAC (CDCT §12.1) et toute tentative est journalisée.",
     "Retour à l’accueil",
     "Plan du site",
-    "CLINIQUE NASSIERA TOO SARL — SIGH-CBG"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — SIGH-CBG"
    ],
    "liensConnecte": [
     {
@@ -269,18 +269,18 @@
  "verrou": {
   "avecRetour": {
    "textes": [
-    "CLINIQUE NASSIERA TOO",
-    "Natitingou — République du Bénin",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Parakou, République du Bénin",
     "Système Intégré de Gestion Hospitalière",
     "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
     "Traçabilité intégrale des actions (journal d’audit)",
     "Alertes de rupture et de péremption automatiques (FEFO)",
     "Facture normalisée conforme au dispositif MECeF",
     "Comptabilité SYSCOHADA alimentée automatiquement",
-    "« Votre santé, notre raison de vivre »",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-    "CLINIQUE NASSIERA TOO",
-    "Votre santé, notre raison de vivre",
+    "« Votre bien-être est notre raison d’être. »",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Votre bien-être est notre raison d’être.",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
     "ESEDJOR Odjipiar",
@@ -290,7 +290,7 @@
     "Mot de passe",
     "Déverrouiller",
     "Se connecter avec un autre compte",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
    ],
    "retourPresentAvant": true,
    "navigation": [
@@ -307,18 +307,18 @@
   },
   "sansRetour": {
    "textes": [
-    "CLINIQUE NASSIERA TOO",
-    "Natitingou — République du Bénin",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Parakou, République du Bénin",
     "Système Intégré de Gestion Hospitalière",
     "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
     "Traçabilité intégrale des actions (journal d’audit)",
     "Alertes de rupture et de péremption automatiques (FEFO)",
     "Facture normalisée conforme au dispositif MECeF",
     "Comptabilité SYSCOHADA alimentée automatiquement",
-    "« Votre santé, notre raison de vivre »",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-    "CLINIQUE NASSIERA TOO",
-    "Votre santé, notre raison de vivre",
+    "« Votre bien-être est notre raison d’être. »",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Votre bien-être est notre raison d’être.",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
     "ESEDJOR Odjipiar",
@@ -326,7 +326,7 @@
     "Mot de passe",
     "Déverrouiller",
     "Se connecter avec un autre compte",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
    ],
    "navigation": [
     "pages/dash-receptionniste.php"
@@ -334,18 +334,18 @@
   },
   "retourInconnu": {
    "textes": [
-    "CLINIQUE NASSIERA TOO",
-    "Natitingou — République du Bénin",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Parakou, République du Bénin",
     "Système Intégré de Gestion Hospitalière",
     "Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.",
     "Traçabilité intégrale des actions (journal d’audit)",
     "Alertes de rupture et de péremption automatiques (FEFO)",
     "Facture normalisée conforme au dispositif MECeF",
     "Comptabilité SYSCOHADA alimentée automatiquement",
-    "« Votre santé, notre raison de vivre »",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268",
-    "CLINIQUE NASSIERA TOO",
-    "Votre santé, notre raison de vivre",
+    "« Votre bien-être est notre raison d’être. »",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240",
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+    "Votre bien-être est notre raison d’être.",
     "Session verrouillée",
     "Verrouillage automatique après 15 minutes d’inactivité, sur les postes partagés — accueil et caisse (CDCT §12.2).",
     "ESEDJOR Odjipiar",
@@ -353,7 +353,7 @@
     "Mot de passe",
     "Déverrouiller",
     "Se connecter avec un autre compte",
-    "CLINIQUE NASSIERA TOO SARL — IFU 3201642748214"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110"
    ]
   },
   "sansSession": {
@@ -2468,19 +2468,19 @@
    ],
    [
     "Établissement",
-    "CLINIQUE NASSIERA TOO SARL"
+    "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
    ],
    [
     "IFU",
-    "3201642748214"
+    "3201001996110"
    ],
    [
     "RCCM",
-    "RB/NAT/2016-B-268"
+    "RB/PKO/17 A 4240"
    ]
   ],
   "textes": [
-   "Le SIGH-CBG est le Système Intégré de Gestion Hospitalière de la CLINIQUE NASSIERA TOO SARL. Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.",
+   "Le SIGH-CBG est le Système Intégré de Gestion Hospitalière de la CLINIQUE BAGUIDI « L’AS DU CŒUR ». Il réunit en une seule application des activités jusqu’ici réparties entre plusieurs logiciels cloisonnés et de nombreux registres papier : dossier patient, consultations, hospitalisation, laboratoire, pharmacie, achats, facturation, assurances, ressources humaines, paie et comptabilité.",
    "Une donnée saisie une fois circule ensuite d’un module à l’autre : une prescription alimente la facturation, une dispensation décrémente le stock, un planning validé nourrit le calcul des primes.",
    "Les quatorze règles de gestion du cahier des charges sont appliquées et rappelées à l’écran là où elles s’imposent : identifiant patient, marge nulle sur les médicaments, stock jamais négatif, signatures de sortie, validité des cartes d’assurance, équilibre des écritures, journalisation et archivage logique.",
    "À propos",

@@ -227,7 +227,7 @@
     "saisie": {
      "sens": "sortante",
      "patientCode": "CBG/2/26",
-     "formationSanitaire": "CLINIQUE NASSIERA TOO",
+     "formationSanitaire": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
      "symptomes": "Détresse respiratoire",
      "motifs": [
       "Absence de personnel qualifié"
@@ -242,7 +242,7 @@
       "sens": "sortante",
       "urgent": false,
       "patientCode": "CBG/2/26",
-      "formationSanitaire": "CLINIQUE NASSIERA TOO",
+      "formationSanitaire": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
       "centreAlerte": false,
       "dateAdmission": "",
       "heureAdmission": "",
@@ -285,7 +285,7 @@
     "saisie": {
      "sens": "entrante",
      "patientCode": "CBG/3/26",
-     "formationSanitaire": "CLINIQUE NASSIERA TOO",
+     "formationSanitaire": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
      "symptomes": "Détresse respiratoire",
      "motifs": [
       "Autre (à préciser)"
@@ -309,7 +309,7 @@
       "sens": "entrante",
       "urgent": true,
       "patientCode": "CBG/3/26",
-      "formationSanitaire": "CLINIQUE NASSIERA TOO",
+      "formationSanitaire": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
       "centreAlerte": true,
       "dateAdmission": "",
       "heureAdmission": "",
@@ -352,7 +352,7 @@
     "saisie": {
      "sens": "sortante",
      "patientCode": "CBG/2/26",
-     "formationSanitaire": "CLINIQUE NASSIERA TOO",
+     "formationSanitaire": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
      "symptomes": "Détresse respiratoire",
      "motifs": [],
      "centreDestination": "CNHU Parakou",

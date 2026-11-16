@@ -514,7 +514,7 @@
    }
   },
   {
-   "ifu": "3201642748214",
+   "ifu": "3201001996110",
    "date": "2026-08-16",
    "sortie": {
     "ok": true,
@@ -533,7 +533,7 @@
    }
   },
   {
-   "ifu": "3201642748214",
+   "ifu": "3201001996110",
    "date": "2026-09-07",
    "sortie": {
     "ok": true,
@@ -572,7 +572,7 @@
    }
   },
   {
-   "ifu": " 3201 6427 48214 ",
+   "ifu": " 3201 0019 96110 ",
    "date": "2026-08-16",
    "sortie": {
     "ok": true,
@@ -591,7 +591,7 @@
    }
   },
   {
-   "ifu": " 3201 6427 48214 ",
+   "ifu": " 3201 0019 96110 ",
    "date": "2026-09-07",
    "sortie": {
     "ok": true,
@@ -610,22 +610,22 @@
    }
   },
   {
-   "ifu": "320164274821x",
+   "ifu": "320100199611x",
    "date": "2026-08-16",
    "sortie": {
     "ok": false,
     "code": "IFU_INVALIDE",
-    "motif": "L’IFU de l’acheteur (« 320164274821x ») doit comporter exactement 13 chiffres.",
+    "motif": "L’IFU de l’acheteur (« 320100199611x ») doit comporter exactement 13 chiffres.",
     "geste": "Corriger l’IFU, ou le laisser vide pour un particulier."
    }
   },
   {
-   "ifu": "320164274821x",
+   "ifu": "320100199611x",
    "date": "2026-09-07",
    "sortie": {
     "ok": false,
     "code": "IFU_INVALIDE",
-    "motif": "L’IFU de l’acheteur (« 320164274821x ») doit comporter exactement 13 chiffres.",
+    "motif": "L’IFU de l’acheteur (« 320100199611x ») doit comporter exactement 13 chiffres.",
     "geste": "Corriger l’IFU, ou le laisser vide pour un particulier."
    }
   }
@@ -685,7 +685,7 @@
    }
   },
   {
-   "ifu": "3201642748214",
+   "ifu": "3201001996110",
    "date": "2026-08-16",
    "sortie": {
     "ok": true,
@@ -2230,7 +2230,7 @@
       "reference": "FF-A",
       "date": "2026-06-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 100000,
       "ecriteSous": null,
       "supporte": "clinique",
@@ -2275,7 +2275,7 @@
       "reference": "FF-G",
       "date": "2026-07-01",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 0,
       "ecriteSous": null,
       "supporte": "clinique",
@@ -2323,7 +2323,7 @@
       "reference": "FF-D",
       "date": "2026-10-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 250050,
       "ecriteSous": null,
       "supporte": "acheteur",
@@ -2414,7 +2414,7 @@
       "reference": "FF-A",
       "date": "2026-06-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 100000,
       "ecriteSous": null,
       "supporte": "clinique",
@@ -2459,7 +2459,7 @@
       "reference": "FF-G",
       "date": "2026-07-01",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 0,
       "ecriteSous": null,
       "supporte": "clinique",
@@ -2507,7 +2507,7 @@
       "reference": "FF-D",
       "date": "2026-10-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 250050,
       "ecriteSous": null,
       "supporte": "acheteur",
@@ -2831,7 +2831,7 @@
       "reference": "FF-A",
       "date": "2026-06-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 100000,
       "ecriteSous": "AIB-FF-A",
       "supporte": "clinique",
@@ -2876,7 +2876,7 @@
       "reference": "FF-G",
       "date": "2026-07-01",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 0,
       "ecriteSous": null,
       "supporte": "clinique",
@@ -2924,7 +2924,7 @@
       "reference": "FF-D",
       "date": "2026-10-10",
       "fournisseur": "Fournisseur avec IFU",
-      "ifu": "3201642748214",
+      "ifu": "3201001996110",
       "base": 250050,
       "ecriteSous": "AIB-FF-D",
       "supporte": "acheteur",

@@ -7,7 +7,6 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
-import 'aide_vecteurs.dart' show identiteBaguidi;
 
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
@@ -198,9 +197,7 @@ void main() {
       expect(a.length, jeu.length);
       for (var i = 0; i < a.length; i++) {
         for (final k in ['id', 'reference', 'action', 'axe', 'trimestreDebut', 'trimestreFin', 'avancement', 'responsable']) {
-          // Le jeu livré est encore celui de Nassiera Too : le nom du logiciel (« Déploiement du SIGH-… ») passe par la substitution d'identité.
-          final attendu = jeu[i][k] is String ? identiteBaguidi(jeu[i][k] as String) : jeu[i][k];
-          expect(a[i][k], attendu, reason: '${jeu[i]['reference']} $k');
+          expect(a[i][k], jeu[i][k], reason: '${jeu[i]['reference']} $k');
         }
       }
     });
@@ -297,7 +294,7 @@ void main() {
       expect(admFicheAmbulance({'telephone': '+229 90 00 00 09'}, maintenant)['aCompleter'], false);
     });
     test('amorçage à froid = JEU DE DÉMONSTRATION (08/11/2026) : numéros fictifs 00 00 00 00 0N, mention portée, une fiche sans numéro, une vérification périmée', () {
-      // La maquette de Nassiera Too n'a plus d'objet ici : ses numéros d'en-tête ne sont plus ceux d'une ambulance.
+      // La maquette d'origine n'a plus d'objet ici : ses numéros d'en-tête ne sont plus ceux d'une ambulance.
       final a = admAmorcerRepertoire(maintenant, 'Chauffeur de garde');
       expect(a.length, inInclusiveRange(8, 10));
       final numeros = [for (final f in a) ...[if (f['telephone'] != null) '${f['telephone']}', if (f['telephone2'] != null) '${f['telephone2']}']];

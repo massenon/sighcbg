@@ -1,6 +1,6 @@
 @echo off
 rem =============================================================================
-rem  SIGH-CNT Poste : construit l'installateur Windows.
+rem  SIGH-CBG Poste : construit l'installateur Windows.
 rem  Usage :  build_windows.bat
 rem  Resultat : build\installer\SIGH_Poste_Setup_<version>.exe  (+ .sha256)
 rem  S'arrete a la PREMIERE etape qui echoue, en la nommant.

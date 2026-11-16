@@ -6,7 +6,7 @@
  "acces": "ouvert",
  "autonome": true,
  "titre": "Accès refusé",
- "titreOnglet": "Accès refusé — SIGH Clinique NASSIERA TOO",
+ "titreOnglet": "Accès refusé — SIGH Clinique BAGUIDI",
  "description": [
   "403",
   "Votre profil ne dispose pas des habilitations requises pour cet écran. L’accès est régi par la matrice RBAC (CDCT §12.1) et toute tentative est journalisée.",

@@ -137,7 +137,7 @@ void main() {
       expect((celluleDepuis('42') as CelluleNombre).format, FormatNombre.general);
     });
     test('un identifiant ou un téléphone n\'est jamais un nombre', () {
-      for (final t in ['00123', '0612345678', '+22997000000', '12345678901234567', 'CNT/12/26', '12 kg', '37 %']) {
+      for (final t in ['00123', '0612345678', '+22997000000', '12345678901234567', 'CBG/12/26', '12 kg', '37 %']) {
         expect(celluleDepuis(t), isA<CelluleTexte>(), reason: t);
       }
     });

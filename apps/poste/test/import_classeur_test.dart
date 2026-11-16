@@ -120,7 +120,7 @@ void main() {
 
         for (var i = 0; i < 3; i++) {
           // La maquette décrit le code patient sous le sigle CBG ; le poste, sous le sigle de la clinique en vigueur.
-          String sigle(String x) => x.replaceAll('${IdentiteClinique.sigle}/n/AA', 'CBG/n/AA').replaceAll('Zongo II, Parakou', 'Tchirimina, Natitingou');
+          String sigle(String x) => x.replaceAll('${IdentiteClinique.sigle}/n/AA', 'CBG/n/AA');
           final obtenu = [for (final l in poste[i].lignes) sansQueue(l).map(sigle).toList()];
           while (obtenu.isNotEmpty && obtenu.last.isEmpty && j.id == 'patients') {
             obtenu.removeLast();

@@ -281,7 +281,7 @@ void testsCorrections() {
       final n = encaisser(f,
           aujourdhui: '2026-11-09',
           maintenant: 'x',
-          acheteur: {'ifu': '3201642748214', 'nom': ''});
+          acheteur: {'ifu': '3201001996110', 'nom': ''});
       expect(n.refusCode, 'NOM_ACHETEUR_ABSENT');
       final a = encaisser(f,
           aujourdhui: '2026-11-09',
@@ -294,9 +294,9 @@ void testsCorrections() {
       final r = encaisser(piece(),
           aujourdhui: '2026-11-09',
           maintenant: 'x',
-          acheteur: {'ifu': '3201 6427 48214', 'nom': 'Clinique X', 'aibTaux': 5});
+          acheteur: {'ifu': '3201 0019 96110', 'nom': 'Clinique X', 'aibTaux': 5});
       expect(r.refus, isNull);
-      expect(r.facture['ifuClient'], '3201642748214');
+      expect(r.facture['ifuClient'], '3201001996110');
       expect(r.facture['acheteurNom'], 'Clinique X');
       expect(r.facture['aibTaux'], 5);
       expect(r.facture['baseMecef'], 12000);

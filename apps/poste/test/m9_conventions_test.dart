@@ -15,7 +15,7 @@ void main() {
   final conv = m9(m9(v['ecrans'])['m9-conventions']);
 
   Future<void> saisirBareme(WidgetTester t, {bool modifier = true}) async {
-    await toucher(t, find.text('CNSS Atacora').first);
+    await toucher(t, find.text('CNSS Borgou').first);
     await t.pumpAndSettle();
     await toucher(t, find.text('Saisir la grille depuis le barème de référence'));
     await t.pumpAndSettle();
@@ -47,12 +47,12 @@ void main() {
     expect(find.text('Souscripteurs particuliers'), findsNothing);
     await filtrer(t, 'Catégorie', 'Catégorie');
     await filtrer(t, 'Convention', 'Saisie');
-    expect(find.text('CNSS Atacora'), findsNothing);
+    expect(find.text('CNSS Borgou'), findsNothing);
   });
 
   cas('la fiche d’un souscripteur sans grille dit que ses assurés sont facturés intégralement', (t) async {
     await ouvrir(t, magasin(), 'm9-conventions');
-    await toucher(t, find.text('CNSS Atacora').first);
+    await toucher(t, find.text('CNSS Borgou').first);
     await t.pumpAndSettle();
     expect(find.text('Convention non saisie — les assurés de ce souscripteur sont facturés intégralement.'), findsOneWidget);
     expect(find.text('Aucune — tout est couvert dans cette catégorie.'), findsNWidgets(3));
@@ -78,7 +78,7 @@ void main() {
     expect((s['actesExclus'] as List).length, 14);
     expect((s['produitsExclus'] as List).length, 23);
     expect((s['accordPrealable'] as List).length, 15);
-    expect(find.text('Convention de CNSS Atacora enregistrée.'), findsOneWidget);
+    expect(find.text('Convention de CNSS Borgou enregistrée.'), findsOneWidget);
     expect(find.text('20 garanties, exclusions et accords préalables repris.'), findsOneWidget);
     expect(kpis(t), ['9', '1', '8', '20'], reason: 'vingt garanties en vigueur, vingt séries');
   });
@@ -127,7 +127,7 @@ void main() {
     await toucher(t, find.text('Simulateur de répartition'));
     await t.pumpAndSettle();
     final sim = lm(conv['simulations']);
-    // Carte valide, souscripteur CNSS Atacora : 75 % plafonné à 6 000, hospitalisation plafonnée à 15 000 par jour.
+    // Carte valide, souscripteur CNSS Borgou : 75 % plafonné à 6 000, hospitalisation plafonnée à 15 000 par jour.
     await choisir(t, 'assure', 'ACHOUBE Sazo');
     final tt = textes(t);
     expect(tt, contains('Part assureur 23 130 FCFA'.replaceAll('Part assureur ', '')));
@@ -190,7 +190,7 @@ void main() {
     await ouvrir(t, magasin(), 'm9-conventions', role: 'direction');
     expect(find.text('Nouveau'), findsNothing);
     expect(find.byTooltip('Modifier'), findsNothing);
-    await toucher(t, find.text('CNSS Atacora').first);
+    await toucher(t, find.text('CNSS Borgou').first);
     await t.pumpAndSettle();
     expect(find.text('Saisir la grille depuis le barème de référence'), findsNothing);
     expect(find.text('Modifier la grille'), findsNothing);

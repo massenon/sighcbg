@@ -8,7 +8,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 
 /// PLAN étapes 3 et 4 : le premier compte, son code de secours et la récupération, au niveau du SERVICE (sans écran). Les écrans : `installation_ecrans_test.dart`.
 final auj = DateTime(2026, 11, 2, 9);
-const bon = 'Clinique#Natitingou26';
+const bon = 'Clinique#Parakou26';
 
 Magasin magasin() => Magasin({
       'utilisateurs': [

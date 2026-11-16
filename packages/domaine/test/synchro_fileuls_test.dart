@@ -55,10 +55,10 @@ void main() {
       expect('${r.motif} ${r.chemin} ${r.geste}', isNot(contains('PATIENT')));
       final r2 = synchroVerifierIndicateurs({
         'fileuls': [
-          {'poste': 'CNT/12/26'}
+          {'poste': 'CBG/12/26'}
         ]
       })!;
-      expect('${r2.motif} ${r2.chemin} ${r2.geste}', isNot(contains('CNT/12')));
+      expect('${r2.motif} ${r2.chemin} ${r2.geste}', isNot(contains('CBG/12')));
     });
   });
 

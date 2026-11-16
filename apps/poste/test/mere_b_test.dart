@@ -625,7 +625,7 @@ void main() {
       expect(find.textContaining('Saisir le nom de la clinique'), findsOneWidget);
       await t.pump(const Duration(seconds: 10));
 
-      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'nassiera too');
+      await t.enterText(find.byKey(const Key('mrb:confirmation')), 'baguidi');
       await t.tap(bouton('Archiver le jeu de démonstration'));
       await pomper(t);
       expect(find.textContaining('Saisir le nom de la clinique'), findsOneWidget, reason: 'le nom se saisit à l’identique');

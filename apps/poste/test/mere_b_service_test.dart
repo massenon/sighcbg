@@ -135,7 +135,7 @@ void main() {
     expect(relais.chemins, contains('POST /mere/code'), reason: 'seul le HACHÉ du code est déclaré au relais');
 
     // 8. Réinitialisation : fermée par défaut, gardes nommées par le moteur, trace au journal.
-    await expectLater(s.reinitialiser(confirmation: 'NASSIERA TOO', second: 'Mme TACHEDI'),
+    await expectLater(s.reinitialiser(confirmation: 'BAGUIDI', second: 'Mme TACHEDI'),
         throwsA(isA<ErreurMere>().having((e) => e.code, 'code', 'reinit_fermee')));
     await s.ouvrirFenetreReinit(true);
     expect((await s.etat()).reinitOuverte, isTrue);

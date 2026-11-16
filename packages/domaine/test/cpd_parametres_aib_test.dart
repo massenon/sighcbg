@@ -39,7 +39,7 @@ void main() {
   ];
   final avant = DateTime(2026, 8, 1);
   final apres = DateTime(2026, 11, 9);
-  const ifu = '3201642748214';
+  const ifu = '3201001996110';
 
   group('la graine et les versions datées', () {
     test('la graine : hors taxes, IFU de 13 chiffres présumé actif, repli à 0 %', () {
@@ -250,12 +250,12 @@ void main() {
     test('la longueur de l\'IFU vient des Paramètres : 10 chiffres acceptés, 13 refusés avec le bon nombre dans le message', () {
       const dix = CpdParametresAib(
           base: 'ht', longueurIfu: 10, situationIfuRenseigne: 'ifu_actif', situationIfuAbsent: 'ifu_inactif_ou_absent', tauxRepli: 0);
-      expect(aibPourAcheteur(ifu: '3201642748', date: apres, situations: situations, versions: bareme, parametres: dix).situation, 'ifu_actif');
+      expect(aibPourAcheteur(ifu: '3201001996', date: apres, situations: situations, versions: bareme, parametres: dix).situation, 'ifu_actif');
       final refus = aibPourAcheteur(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: dix).refus!;
       expect(refus.code, 'IFU_INVALIDE');
       expect(refus.motif, contains('10 chiffres'));
       expect(validerAcheteurMecef(ifu: ifu, nom: 'X', longueurIfu: 10).refus!.motif, contains('10 chiffres'));
-      expect(validerAcheteurMecef(ifu: '3201642748', nom: 'X', longueurIfu: 10).acheteur!.ifu, '3201642748');
+      expect(validerAcheteurMecef(ifu: '3201001996', nom: 'X', longueurIfu: 10).acheteur!.ifu, '3201001996');
     });
 
     test('un taux de repli de la vente sans acheteur est accepté de 0 à 100 et marqué `aibRepli`', () {
