@@ -457,6 +457,7 @@ class _FichePatientState extends State<FichePatient> {
                 }, rendu: (x) {
                   const mm = {
                     'servie': ('Servie', TonSigh.succes),
+                    'partielle': ('Partiellement délivrée', TonSigh.info),
                     'en_attente': ('À délivrer', TonSigh.attention),
                   };
                   final r = mm['${x['statutDispensation']}'] ?? ('—', TonSigh.neutre);

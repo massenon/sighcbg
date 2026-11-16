@@ -50,6 +50,17 @@ void main() {
     expect(lues(avec([{'debut': '2026-10-01', 'fin': '2026-10-31', 'couvertureEnConflit': true}, {'debut': '2026-11-01', 'couvertureEnConflit': true}]), 'da'), isEmpty, reason: 'une couverture close n’est pas un conflit');
   });
 
+  test('16/11/2026 : une ligne d’ordonnance délivrée par deux postes, une ligne encaissée par deux guichets (marqueurs en LISTE) sont annoncées', () {
+    final m = Magasin({}, 'POSTE', {});
+    m.collection('ordonnances').inserer({'statut': 'actif', 'numero': 'ORD-2026-00007', 'delivranceEnDoublon': [0]});
+    m.collection('factures').inserer({'statut': 'actif', 'numero': 'FP-2026-00007', 'encaissementEnDoublon': ['L001']});
+    m.collection('ordonnances').inserer({'statut': 'actif', 'numero': 'ORD-2026-00008', 'delivranceEnDoublon': <Object?>[]});
+    final a = pour(m, 'direction').map((n) => n.titre).toList();
+    expect(a, containsAll(['Délivrance en double : ORD-2026-00007', 'Encaissement en double : FP-2026-00007']));
+    expect(a.where((t) => t.contains('ORD-2026-00008')), isEmpty, reason: 'une liste vide n’alerte pas');
+    expect(pour(m, 'caissier'), isEmpty);
+  });
+
   test('le caissier ne reçoit rien : il ne tranche pas', () => expect(pour(avecMarqueurs(), 'caissier'), isEmpty));
 
   test('sans marqueur, aucune alerte (jamais un doublon inventé)', () => expect(pour(Magasin({}, 'POSTE', {}), 'direction'), isEmpty));

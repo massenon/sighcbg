@@ -77,7 +77,8 @@ bool csDansPeriode(FicheCs r, String valeur, DateTime maintenant) {
   return (
     emises: actives.length,
     enAttente: actives.where((r) => r['statutPaiement'] != 'soldee').length,
-    aDelivrer: actives.where((r) => r['statutDispensation'] == 'en_attente').length,
+    // Délivrance ligne par ligne (16/11/2026) : une ordonnance PARTIELLEMENT délivrée a encore des lignes à servir.
+    aDelivrer: actives.where((r) => r['statutDispensation'] == 'en_attente' || r['statutDispensation'] == 'partielle').length,
     valeur: v,
   );
 }

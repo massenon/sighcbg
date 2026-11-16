@@ -34,6 +34,54 @@ void appliquerAlertes(Magasin magasin, ResultatAlertes r) {
   }
 }
 
+/// DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026) : le geste commun aux deux pharmacies et à la file de la dispensation. Le moteur `delivrerLignes`
+/// décide (lignes réglées seulement, RG-03 nommé, FEFO, idempotence par ligne) ; ici on ÉCRIT ce qu'il rend : stock, mouvements (justificatif = n° d'ordonnance),
+/// marques des lignes et état de l'ordonnance, registre des dispensations, tâches, alertes de stock, journal (RG-12). Un refus est DIT (toast) et rien n'est
+/// écrit : rend null. [lignes] : les rangs à servir (null : toutes les lignes délivrables) ; [voie] : la pharmacie (null : toutes).
+DelivranceLignes? ecrireDelivrance(BuildContext ecran, ContexteEcran c, Fiche ordonnance, {List<int>? lignes, String? voie}) {
+  final mag = c.magasin;
+  final DelivranceLignes r;
+  try {
+    r = delivrerLignes(
+      ordonnance: ordonnance,
+      facture: factureDeLOrdonnance(ordonnance, mag.collection('factures').toutes),
+      produits: mag.collection('produits').actives,
+      taches: mag.collection('taches').actives,
+      mouvementsExistants: mag.collection('mouvements').toutes,
+      lots: mag.collection('lots').actives,
+      dispensationsExistantes: mag.collection('dispensations').toutes,
+      lignes: lignes,
+      voie: voie,
+      // La méthode de valorisation des sorties est un réglage d'exploitation de la Direction ; le jeu du poste n'en porte pas : prix de vente (= prix d'achat, RG-02).
+      methode: 'prixVente',
+      utilisateur: acteur(c).nom,
+      instant: c.aujourdhui.toIso8601String(),
+    );
+  } on RefusDelivrance catch (e) {
+    ToastsSigh.afficher(ecran, e.motif, type: TypeToast.erreur, duree: const Duration(seconds: 9));
+    return null;
+  }
+  if (r.deja) {
+    ToastsSigh.afficher(ecran, 'Déjà délivrée — la ligne ne sort pas une seconde fois du stock.', type: TypeToast.info);
+    return r;
+  }
+  for (final p in r.produits) {
+    mag.collection('produits').mettreAJour(p.id, p.patch);
+  }
+  for (final mv in r.mouvements) {
+    mag.collection('mouvements').inserer(mv, prefixe: 'MVT');
+  }
+  mag.collection('ordonnances').mettreAJour(ordonnance['id'], r.ordonnancePatch);
+  if (r.dispensation != null) mag.collection('dispensations').inserer(r.dispensation!, prefixe: 'DSP');
+  for (final t in r.tachesFermees) {
+    mag.collection('taches').mettreAJour(t.id, t.patch);
+  }
+  appliquerAlertes(mag, ResultatAlertes(r.alertes, [...r.tachesCreees], [...r.tachesMisesAJour]));
+  final j = r.journal;
+  mag.journaliser('${j['action']}', '${j['module']}', '${j['entite']}', '${j['reference']}', j['avant'], j['apres']);
+  return r;
+}
+
 /// Les produits ACTIFS indexés par identifiant (la forme que lit `alerterStock`).
 Map<Object?, Map<String, Object?>> produitsParId(Magasin magasin) =>
     {for (final p in magasin.collection('produits').actives) p['id']: p};

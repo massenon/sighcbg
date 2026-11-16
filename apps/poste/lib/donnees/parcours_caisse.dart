@@ -28,7 +28,8 @@ class ResultatCaisse {
     this.normalisation,
     this.lignesRefusees = const [],
     this.lignesValorisees = const [],
-  });
+    String? Function()? refusAnnulationLu,
+  }) : _refusAnnulation = refusAnnulationLu;
   final Fiche facture;
   final bool deja;
   final List<String> lignesReglees;
@@ -42,8 +43,14 @@ class ResultatCaisse {
   final List<String> demandesLiberees;
   final List<Fiche> ecritures;
 
-  /// Restitue TOUT ce que l'encaissement a écrit (facture, tâches, demandes, écritures) — une annulation visible, jamais partielle.
+  /// Restitue TOUT ce que l'encaissement a écrit (facture, tâches, demandes, écritures) — une annulation visible, jamais partielle. Lève [RefusCaisse]
+  /// (`ANNULATION_LIGNE_DELIVREE`) sans rien défaire si une ligne qu'il avait libérée a déjà été délivrée (voir [refusAnnulation]).
   final VoidCallback annuler;
+
+  final String? Function()? _refusAnnulation;
+
+  /// Le motif pour lequel l'annulation serait refusée À CET INSTANT (une ligne de médicament libérée par ce versement a été délivrée depuis), ou null.
+  String? refusAnnulation() => _refusAnnulation?.call();
 
   /// La normalisation de la vente SOLDÉE (null tant que la pièce n'est pas soldée, ou qu'il n'y a rien à normaliser). Son refus ne défait pas
   /// l'encaissement : l'argent est reçu, la pièce devient `refusee` en le disant.
@@ -243,6 +250,16 @@ ResultatCaisse encaisserFacture(
   }
 
   final debloquees = <String>[];
+  // DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026) : la pharmacie n'attend plus le SOLDE. Dès qu'une ligne de MÉDICAMENT est réglée, la tâche de
+  // dispensation de l'ordonnance s'ouvre : la pharmacie délivre les lignes réglées, les autres restent en attente, nommées (`delivrerLignes`).
+  if (f['statutPaiement'] != 'soldee' && f['ordonnanceId'] != null && reglees.any((l) => l['categorie'] == 'medicament')) {
+    final taches = m.collection('taches');
+    for (final t in taches.actives.where((t) =>
+        t['type'] == 'dispensation' && t['statut'] == 'bloque' && (t['factureId'] == factureId || t['ordonnanceId'] == f['ordonnanceId']))) {
+      annulations.add(taches.mettreAJour(t['id'], {'statut': 'en_attente'}));
+      if (!debloquees.contains('dispensation')) debloquees.add('dispensation');
+    }
+  }
   if (f['statutPaiement'] == 'soldee') {
     final taches = m.collection('taches');
     for (final t in taches.actives.where((t) => t['factureId'] == factureId)) {
@@ -251,7 +268,7 @@ ResultatCaisse encaisserFacture(
             {'statut': 'fait', 'faitLe': iso, 'faitPar': m.utilisateur}));
       } else if (t['statut'] == 'bloque') {
         annulations.add(taches.mettreAJour(t['id'], {'statut': 'en_attente'}));
-        debloquees.add('${t['type']}');
+        if (!debloquees.contains('${t['type']}')) debloquees.add('${t['type']}');
       }
     }
     // Pièces antérieures au modèle par lignes : ce qui resterait bloqué faute de ligne est libéré au solde.
@@ -314,6 +331,14 @@ ResultatCaisse encaisserFacture(
     annulations.add(normalisation.annuler);
   }
 
+  final lignesLiberees = [...r.lignesReglees];
+  String? refusAnnulation() {
+    final fa = m.collection('factures').parId(factureId);
+    final ordId = fa?['ordonnanceId'] ?? f['ordonnanceId'];
+    return d.refusAnnulationEncaissement(
+        ordId == null ? null : m.collection('ordonnances').parId(ordId), fa, lignesLiberees);
+  }
+
   return ResultatCaisse(
     facture: m.collection('factures').parId(factureId)!,
     normalisation: normalisation,
@@ -326,7 +351,14 @@ ResultatCaisse encaisserFacture(
     ecritures: ecr,
     lignesRefusees: r.lignesRefusees,
     lignesValorisees: valorisees,
-    annuler: defaire,
+    // L'annulation d'un encaissement dont une ligne libérée a DÉJÀ été délivrée est REFUSÉE, nommée (E3304) : le produit est sorti du stock et remis ; défaire
+    // la caisse le laisserait sorti sans pièce réglée. La voie prudente du projet : l'avoir pour la caisse, un mouvement d'entrée justifié pour le retour.
+    annuler: () {
+      final motif = refusAnnulation();
+      if (motif != null) throw RefusCaisse('ANNULATION_LIGNE_DELIVREE', motif);
+      defaire();
+    },
+    refusAnnulationLu: refusAnnulation,
   );
 }
 
