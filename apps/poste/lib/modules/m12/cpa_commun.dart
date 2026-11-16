@@ -112,3 +112,99 @@ Widget noteEquilibre(num debit, num credit, {bool saisie = false}) {
           ton: TonSigh.danger,
           icone: LucideIcons.scale3d);
 }
+
+// --- Bandeau de l'exercice (lot CLO, décision du 16/11/2026, § 6, point e) -------------------------------------------------------------------------
+
+/// LE BANDEAU DE L'EXERCICE sur les écrans M12 à année : l'ÉTAT de l'exercice affiché (ouvert · en clôture · clos · non amorcé), ce que cet état veut dire pour les
+/// chiffres de l'écran, et les boutons « Exercice N-1 » / « Exercice N+1 » — ABSENTS aux bornes (pas d'exercice voisin), jamais grisés, comme les flèches de la barre
+/// supérieure. Il ne change PAS la règle du défaut : l'exercice affiché reste celui du choix de session, à défaut celui qui contient la date du jour (v21, E3260).
+/// [voisins] : les années voisines imposées par l'écran (un écran qui n'offre qu'une partie des exercices) ; absent, les exercices de la collection font foi.
+/// [surChoix] : ce que fait un bouton ; absent, il pose le choix d'exercice de la session (la coque repeint l'écran).
+class BandeauExercice extends StatelessWidget {
+  const BandeauExercice({super.key, required this.annee, this.voisins, this.surChoix, this.precision});
+  final int annee;
+  final (int?, int?)? voisins;
+  final void Function(int annee)? surChoix;
+
+  /// Une phrase propre à l'écran, ajoutée à l'explication de l'état (par exemple : « les colonnes N-1 sont calculées au même filtre »).
+  final String? precision;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = ContexteEcran.of(context);
+    final exos = c.magasin.collection('exercices');
+    final fiche = cpcExercice(exos.toutes, annee);
+    final amorce = fiche != null;
+    final etat = cpcEtatExercice(exos.toutes, annee);
+    final prec = voisins != null ? voisins!.$1 : cpcExerciceVoisin(exos.actives, annee, -1);
+    final suiv = voisins != null ? voisins!.$2 : cpcExerciceVoisin(exos.actives, annee, 1);
+    final valideLe = DateTime.tryParse('${fiche?['valideLe'] ?? ''}')?.toLocal();
+    final (String libelle, String texte, TonSigh ton, Color fond, Color bord) = !amorce
+        ? (
+            'non amorcé',
+            'Exercice $annee non amorcé : aucune fiche d’exercice pour cette année. Les chiffres affichés sont ceux du journal, sans état d’exercice.',
+            TonSigh.neutre,
+            JetonsShell.slate50,
+            JetonsShell.slate200
+          )
+        : switch (etat) {
+            'clos' => (
+                'clos',
+                fiche['source'] == 'liasse'
+                    ? 'Exercice $annee clos d’office : il est fait par la liasse déposée. Lecture seule.'
+                    : 'Exercice $annee clôturé${valideLe != null ? ' le ${dateFR(valideLe)}' : ''} : lecture seule, les états sont définitifs. Une correction passe par la réouverture (circuit de clôture, motif obligatoire) ou par une écriture de l’exercice ouvert.',
+                TonSigh.navy,
+                JetonsShell.navy50,
+                JetonsShell.navy200
+              ),
+            'en_cloture' => (
+                'en clôture',
+                'Exercice $annee en clôture : les modules n’y écrivent plus ; seules les écritures d’inventaire des rôles réglés y passent. Les états sont en cours d’arrêt.',
+                TonSigh.attention,
+                JetonsShell.warning50,
+                JetonsShell.warning200
+              ),
+            _ => (
+                'ouvert',
+                'Exercice $annee ouvert : les écritures y entrent encore ; les états sont provisoires tant qu’il n’est pas clôturé.',
+                TonSigh.succes,
+                JetonsShell.success50,
+                JetonsShell.success200
+              ),
+          };
+    void choisir(int a) => surChoix != null ? surChoix!(a) : ChoixExercice.valeur.value = a;
+    return Semantics(
+      label: 'Exercice $annee, $libelle',
+      container: true,
+      child: Container(
+        key: const Key('bandeau-exercice'),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(color: fond, border: Border.all(color: bord), borderRadius: BorderRadius.circular(8)),
+        child: Wrap(spacing: 12, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          if (prec != null)
+            BoutonSigh(
+                key: const Key('bandeau-exercice-precedent'),
+                libelle: 'Exercice $prec',
+                icone: LucideIcons.chevronLeft,
+                variante: VarianteBouton.secondaire,
+                taille: TailleBouton.sm,
+                onPressed: () => choisir(prec)),
+          // Le badge porte l'ÉTAT seul : « Exercice N · état » est le libellé du sélecteur de la barre supérieure, le répéter ferait deux fois la même ligne.
+          BadgeSigh('${libelle[0].toUpperCase()}${libelle.substring(1)}', key: const Key('bandeau-exercice-etat'), ton: ton, icone: LucideIcons.calendarRange),
+          ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 820),
+              child: Text('$texte${precision == null ? '' : ' $precision'}',
+                  key: const Key('bandeau-exercice-texte'), style: const TextStyle(color: JetonsShell.slate700, fontSize: 13, height: 18 / 13))),
+          if (suiv != null)
+            BoutonSigh(
+                key: const Key('bandeau-exercice-suivant'),
+                libelle: 'Exercice $suiv',
+                icone: LucideIcons.chevronRight,
+                variante: VarianteBouton.secondaire,
+                taille: TailleBouton.sm,
+                onPressed: () => choisir(suiv)),
+        ]),
+      ),
+    );
+  }
+}

@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
+import '../../shell/choix_exercice.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/points_commun.dart' show champUnique, commande;
 import 'cpb_commun.dart';
@@ -16,8 +17,10 @@ import 'cpb_commun.dart';
 /// l'écran du dépôt ligne à ligne. DEUX sources, JAMAIS dans la même colonne : « déposé » CITE `cpbLiasse` ; « calculé » vient des écritures
 /// VALIDÉES (préfixe de compte le plus long), et reste « — » là où le journal ne porte rien. Les règles sont dans le domaine (`cpb_feuillets.dart`).
 ///
-/// Écart E770 : le sélecteur d'exercice de la coque (`SIGH.exercice`) n'est pas porté (E717) ; les écrans gardent le leur, comme la maquette, et la
-/// liste d'exercices est celle du journal (année de l'horloge comprise) plus l'exercice déposé.
+/// Écart E770 : les écrans gardent leur propre liste d'exercices, comme la maquette : celle du journal (année de l'horloge comprise), les exercices amorcés hors
+/// liasse, plus l'exercice déposé. Lot CLO (16/11/2026) : la valeur de départ est l'exercice CHOISI à la barre supérieure (à défaut celui du jour — règle v21
+/// inchangée), le bandeau de l'exercice donne son état et ses voisins, et quand l'exercice précédent est CITÉ du dépôt, sa colonne CALCULÉE au même filtre de
+/// statut que N paraît à côté (trois colonnes : N calculé, N-1 calculé, N-1 déposé) — E3450.
 /// Écart E779 : la pièce A4 du poste n'a qu'UNE rangée d'en-tête de colonnes (la maquette en imprime deux, avec fusions) : la source de chaque colonne
 /// (« calculé — arrêté au … » / « déposé — liasse … ») est portée par l'intitulé de colonne et par le cartouche.
 abstract class _EcranFeuillet extends StatefulWidget with EcranMaquette {
@@ -103,6 +106,7 @@ class EcranFluxTresorerie extends _EcranFeuillet {
 class _EtatFeuillet extends State<_EcranFeuillet> {
   ControleurFormulaire? _exercice, _arrete;
   String _dernierExercice = '';
+  List<int> _annees = const [];
 
   bool get _resultat => widget.genre == 'resultat';
 
@@ -112,14 +116,33 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
     if (_exercice != null) return;
     final c = ContexteEcran.of(context);
     final annees = cpbExercicesDuJournal(ecrituresToutes(c), c.aujourdhui);
+    for (final x in c.magasin.collection('exercices').actives) {
+      final a = x['annee'];
+      if (a is int && x['source'] != 'liasse' && !annees.contains(a)) annees.add(a);
+    }
+    // La valeur de départ : l'exercice CHOISI à la barre supérieure, à défaut celui du jour (règle v21 inchangée). L'exercice de la liasse se lit « déposé ».
+    final choisi = exerciceChoisi(c);
+    final String initial;
+    if (annees.contains(choisi)) {
+      initial = '$choisi';
+    } else if (choisi == cpbExerciceN) {
+      initial = 'depose';
+    } else {
+      annees.add(choisi);
+      initial = '$choisi';
+    }
+    annees.sort((a, b) => b.compareTo(a));
+    _annees = annees;
     _exercice = champUnique(
         ChampDef(nom: 'exercice', libelle: 'Exercice', type: TypeChamp.select, col: ColChamp.plein, requis: true, options: [
           for (final a in annees) OptionChamp('$a', 'Exercice $a — calculé depuis le journal'),
           OptionChamp('depose', 'Exercice $cpbExerciceN — liasse déposée (${cpbDepot['code']})'),
         ]),
-        '${c.aujourdhui.year}');
-    _dernierExercice = '${c.aujourdhui.year}';
-    _arrete = champUnique(ChampDef(nom: 'arrete', libelle: 'Arrêté au', type: TypeChamp.date, col: ColChamp.plein), iso(c.aujourdhui));
+        initial);
+    _dernierExercice = initial;
+    final a0 = int.tryParse(initial);
+    _arrete = champUnique(ChampDef(nom: 'arrete', libelle: 'Arrêté au', type: TypeChamp.date, col: ColChamp.plein),
+        a0 == null || a0 == c.aujourdhui.year ? iso(c.aujourdhui) : '$a0-12-31');
     _exercice!.addListener(_surExercice);
     _arrete!.addListener(_rafraichir);
   }
@@ -153,7 +176,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
   List<CpbColonne> _colonnes(ContexteEcran c) {
     final choix = '${_exercice!['exercice']}';
     final arrete = choix == 'depose' ? null : DateTime.tryParse('${_arrete!['arrete'] ?? ''}');
-    return cpbColonnesFeuillet(widget.genre, choix, arrete, ecrituresToutes(c));
+    return cpbColonnesFeuilletEcran(widget.genre, choix, arrete, ecrituresToutes(c));
   }
 
   List<CpbLigneFormulaire> get _lignes => _resultat ? cpbLignesResultat : cpbLignesFlux;
@@ -193,8 +216,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
       2: const FixedColumnWidth(40),
       if (_resultat) 3: const FixedColumnWidth(48),
       nbFixes - 1: const FixedColumnWidth(56),
-      nbFixes: const FixedColumnWidth(190),
-      nbFixes + 1: const FixedColumnWidth(190),
+      for (var i = 0; i < cols.length; i++) nbFixes + i: const FixedColumnWidth(190),
     };
     TableRow tete1() => TableRow(decoration: const BoxDecoration(color: JetonsShell.slate100), children: [
           _cel(_txt('RÉF', gras: true, couleur: JetonsShell.slate700), al: Alignment.center),
@@ -216,7 +238,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
         rows.add(TableRow(children: [
           _cel(const SizedBox.shrink()),
           _cel(_txt(l.section!, gras: true)),
-          for (var i = 2; i < nbFixes + 2; i++) _cel(const SizedBox.shrink()),
+          for (var i = 2; i < nbFixes + cols.length; i++) _cel(const SizedBox.shrink()),
         ]));
         continue;
       }
@@ -271,7 +293,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
       }
     }
     return LayoutBuilder(builder: (_, k) {
-      final minW = 56.0 + 40 + 48 + 56 + 380 + 380 + 120;
+      final minW = 56.0 + 40 + 48 + 56 + 380 + 190.0 * cols.length + 120;
       final t = Table(
           border: const TableBorder(
               top: _bord, bottom: _bord, left: _bord, right: _bord, horizontalInside: _bord, verticalInside: _bord),
@@ -333,6 +355,14 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
     final lignes = _lignes;
     final formules = _resultat ? cpbFormulesResultat : cpbFormulesFlux;
     for (final c in cols) {
+      // Lot CLO : la colonne N-1 CALCULÉE posée à côté de la colonne citée, quand le journal ne porte rien de cet exercice — une note, pas des contrôles vides.
+      if (!c.depose && cols.length > 2 && c != cols.first && c.nbLignes == 0) {
+        notes.add(NoteSigh(
+            '${c.titre} (calculé, même filtre que N) — le journal ne porte aucune écriture validée de ${c.annee} : la colonne reste vide (—) et la colonne citée du dépôt fait foi.',
+            ton: TonSigh.info,
+            icone: LucideIcons.info));
+        continue;
+      }
       if (c.depose) {
         final ctl = cpbControleSousTotaux(lignes, formules, c.annee);
         final faux = ctl.where((x) => x.ecart.abs() > 0.5).toList();
@@ -384,7 +414,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
     final lignes = <Map<String, Object?>>[];
     for (final l in _lignes) {
       if (l.section != null) {
-        lignes.add({'ref': '', 'lib': l.section, 'repere': '', 'signe': '', 'note': '', 'n': '', 'n1': ''});
+        lignes.add({'ref': '', 'lib': l.section, 'repere': '', 'signe': '', 'note': '', for (var i = 0; i < cols.length; i++) 'v$i': ''});
         continue;
       }
       lignes.add({
@@ -393,8 +423,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
         'repere': l.repere ?? '',
         'signe': l.signe ?? '',
         'note': l.note ?? '',
-        'n': cpbMontantFeuillet(cols[0], l) ?? '',
-        'n1': cpbMontantFeuillet(cols[1], l) ?? '',
+        for (var i = 0; i < cols.length; i++) 'v$i': cpbMontantFeuillet(cols[i], l) ?? '',
       });
       if (!_resultat && l.ref == 'ZH') {
         lignes.add({
@@ -403,8 +432,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
           'repere': '',
           'signe': '',
           'note': '',
-          'n': cols[0].depose ? '' : money(cols[0].controle, avecDevise: false),
-          'n1': cols[1].depose ? '' : money(cols[1].controle, avecDevise: false),
+          for (var i = 0; i < cols.length; i++) 'v$i': cols[i].depose ? '' : money(cols[i].controle, avecDevise: false),
         });
       }
     }
@@ -420,7 +448,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
               ('Date de dépôt', depose ? dateFR(DateTime.parse('${cpbDepot['dateDepot']}')) : 'Non déposé'),
               ('Code de dépôt', depose ? '${cpbDepot['code']}' : '—'),
               ('Colonne N', '${cols[0].titre} — ${cols[0].sous}'),
-              ('Colonne N-1', '${cols[1].titre} — ${cols[1].sous}'),
+              for (final cn in cols.skip(1)) ('Colonne N-1${cols.length > 2 ? (cn.depose ? ' (déposée)' : ' (calculée, même filtre que N)') : ''}', '${cn.titre} — ${cn.sous}'),
             ],
             blocs: [
               BlocTableau(TableauEtat(colonnes: [
@@ -429,8 +457,8 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
                 ColonneEtat(libelle: 'Repère', valeur: (x) => x['repere']),
                 if (_resultat) ColonneEtat(libelle: '(2)', valeur: (x) => x['signe']),
                 ColonneEtat(libelle: 'NOTE', valeur: (x) => x['note']),
-                ColonneEtat(libelle: '${cols[0].titre} (N)', droite: true, valeur: (x) => x['n']),
-                ColonneEtat(libelle: '${cols[1].titre} (N-1)', droite: true, valeur: (x) => x['n1']),
+                for (var i = 0; i < cols.length; i++)
+                  ColonneEtat(libelle: '${cols[i].titre} (${i == 0 ? 'N' : 'N-1'})', droite: true, valeur: (x) => x['v$i']),
               ], lignes: lignes),),
               BlocTexte(
                   _resultat
@@ -450,12 +478,17 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
       listenable: ecouteCompta(c),
       builder: (context, _) {
         final cc = _colonnes(c);
-        final n = cc[0], n1 = cc[1];
+        // La colonne N-1 de COMPARAISON : la calculée au même filtre quand le journal porte l'exercice précédent, sinon la citée du dépôt (lot CLO).
+        final n = cc[0], n1 = cpbColonneN1Reference(cc);
         final depose = '${_exercice!['exercice']}' == 'depose';
+        final anneeAffichee = depose ? cpbExerciceN : int.parse('${_exercice!['exercice']}');
+        final precs = [for (final a in _annees) if (a < anneeAffichee) a];
+        final suivs = [for (final a in _annees) if (a > anneeAffichee) a];
+        final prefixeN1 = cc.length > 2 ? 'N-1 (${n1.depose ? 'déposé' : 'calculé'})' : 'N-1';
 
         String evolution(String ref) {
           final a = n.val(ref), b = n1.val(ref);
-          return b != 0 ? 'N-1 : ${money(b)} (${a - b >= 0 ? '+' : ''}${pourcent((a - b) / b.abs() * 100)})' : 'N-1 : ${money(b)}';
+          return b != 0 ? '$prefixeN1 : ${money(b)} (${a - b >= 0 ? '+' : ''}${pourcent((a - b) / b.abs() * 100)})' : '$prefixeN1 : ${money(b)}';
         }
 
         final kpis = _resultat
@@ -549,6 +582,18 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
                     ]));
 
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Lot CLO (16/11/2026, § 6, point e) : l'état de l'exercice affiché et ses voisins (parmi ceux que l'écran propose).
+          BandeauExercice(
+              annee: anneeAffichee,
+              voisins: (precs.isEmpty ? null : precs.reduce((a, b) => a > b ? a : b), suivs.isEmpty ? null : suivs.reduce((a, b) => a < b ? a : b)),
+              surChoix: (a) {
+                _exercice!.poser('exercice', '$a');
+                if (cpcExerciceAmorce(c.magasin.collection('exercices').actives, a)) ChoixExercice.valeur.value = a;
+              },
+              precision: cc.length > 2
+                  ? 'La colonne N-1 calculée suit le MÊME filtre que la colonne N (écritures validées, pièce de clôture écartée) ; la colonne N-1 citée du dépôt reste à côté.'
+                  : null),
+          const SizedBox(height: 16),
           CarteSigh(
               child: Wrap(spacing: 12, runSpacing: 12, crossAxisAlignment: WrapCrossAlignment.end, children: [
             commande(_exercice!, largeur: 360),

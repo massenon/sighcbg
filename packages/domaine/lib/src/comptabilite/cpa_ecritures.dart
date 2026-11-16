@@ -156,14 +156,20 @@ class CpaLigneJournal {
   double get ecart => (debit - credit).abs();
 }
 
-/// La vue des écritures d'une nature donnée : un journal ne se saisit pas.
-List<CpaLigneJournal> cpaLignesJournaux(List<CpaFiche> e) => [
-      for (final j in cpaJournaux)
-        () {
-          final sel = [for (final x in e) if (x['journal'] == j.$1) x];
-          return CpaLigneJournal(j.$1, j.$2, j.$3, sel.length, _som(sel, 'debit'), _som(sel, 'credit'));
-        }()
-    ];
+/// La vue des écritures d'une nature donnée : un journal ne se saisit pas. Le journal CL (clôture, réservé au moteur) n'est pas au référentiel de la maquette : il
+/// paraît ICI dès que l'exercice en porte une pièce (une clôture prononcée, ou contre-passée) — sinon les lignes de la clôture manqueraient à la vue des journaux.
+List<CpaLigneJournal> cpaLignesJournaux(List<CpaFiche> e) {
+  CpaLigneJournal ligne(String code, String libelle, String? contrepartie) {
+    final sel = [for (final x in e) if (x['journal'] == code) x];
+    return CpaLigneJournal(code, libelle, contrepartie, sel.length, _som(sel, 'debit'), _som(sel, 'credit'));
+  }
+
+  return [
+    for (final j in cpaJournaux) ligne(j.$1, j.$2, j.$3),
+    for (final j in cpaJournauxReserves)
+      if (!cpaJournaux.any((x) => x.$1 == j.$1) && e.any((x) => x['journal'] == j.$1)) ligne(j.$1, j.$2, null),
+  ];
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 // BALANCE
@@ -299,6 +305,14 @@ void cpaControlerEquilibre(Iterable<CpaFiche> lignes, {String? piece}) {
   }
 }
 
+/// Le refus NOMMÉ d'une écriture manuelle (ou importée) dans un journal réservé au moteur (CL, AN), ou `null`. Le texte dit QUEL geste écrit ce journal.
+String? cpaRefusJournalReserve(Object? journal) {
+  if (!cpaJournalReserve(journal)) return null;
+  return '$journal' == 'CL'
+      ? 'Le journal CL (clôture) est réservé au moteur : seule la clôture définitive (et sa réouverture par contre-passation) l’écrit, depuis « Clôture de l’exercice ». Une correction de l’exercice passe par une écriture d’un autre journal (OD, par exemple).'
+      : 'Le journal AN (à-nouveaux) est réservé au moteur : seuls la clôture définitive, le report du bilan d’ouverture et l’importation des soldes d’ouverture l’écrivent. Une correction de l’ouverture passe par une écriture d’un autre journal (OD, par exemple).';
+}
+
 /// Les lignes plates d'une écriture saisie (une par ligne : même numéro, même date, un compte et un sens chacune), prêtes à insérer. [lignes] :
 /// `{compte, debit, credit}` ; [toutes] : les écritures déjà écrites (archivées comprises, pour la numérotation) ; [exercice] : l'exercice choisi.
 /// Refus nommés : aucune ligne, déséquilibre d'une écriture qu'on VALIDE (un brouillon déséquilibré est accepté), exercice clos.
@@ -313,6 +327,8 @@ List<CpaFiche> cpaEcrituresDeSaisie({
   required int exercice,
   required Iterable<CpaFiche> toutes,
 }) {
+  final reserve = cpaRefusJournalReserve(journal);
+  if (reserve != null) throw CpaRefus('Écriture refusée.', reserve);
   if (lignes.isEmpty) throw const CpaRefus('Ajouter au moins une ligne.');
   if (statut == 'validee') cpaControlerEquilibre(lignes);
   final motif = cpaGardeEcriture(date);

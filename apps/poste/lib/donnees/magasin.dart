@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets;
 
 import 'persistance.dart';
 import 'reglages_clinique_poste.dart';
@@ -680,6 +680,9 @@ class Magasin {
         if (nom == 'ecritures') {
           c.garder((op, f) => cpcGardeEcritures(collection('exercices').toutes, f['date'],
               op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? '', rolesInventaire: ReglagesClinique.rolesInventaire(this, horloge())));
+          // Lot CLO (décision du 16/11/2026, § 6) : les journaux CL et AN sont RÉSERVÉS AU MOTEUR — seuls les gestes de clôture et d'ouverture les écrivent, quelle que
+          // soit la voie (saisie, import, script) : la garde est sur la collection, la liste des journaux de la saisie ne fait que ne pas les proposer.
+          c.garder(cpcGardeJournalReserve);
         }
         // Un budget d'un exercice CLÔTURÉ est en lecture seule, d'où que l'écriture vienne (écran, importation) : la garde est au moteur, l'écran la subit comme le fichier.
         if (nom == 'budgets') c.garder((op, f) => cpcGardeBudgets(collection('exercices').toutes, f['exercice']));

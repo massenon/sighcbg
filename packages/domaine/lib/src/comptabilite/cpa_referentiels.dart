@@ -23,6 +23,22 @@ const List<(String, String, String?)> cpaJournaux = [
   ('AN', 'Journal des à-nouveaux', null),
 ];
 
+/// LES JOURNAUX RÉSERVÉS AU MOTEUR (lot CLO de la clinique sœur, vérifié pour Baguidi le 16/11/2026, `docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md` § 6) : la pièce de
+/// CLÔTURE (CL, détermination du résultat) et les À-NOUVEAUX (AN, report des classes 1 à 5) ne s'écrivent que par les gestes de clôture et d'ouverture — la clôture
+/// définitive (`cpcValiderCloture`), sa réouverture par contre-passation (`cpcRouvrirExercice`), le report du bilan d'ouverture (`cpcReporterANouveaux`) et
+/// l'importation des soldes d'ouverture. Ils ne sont NI proposés à la saisie manuelle d'une écriture, NI acceptés d'une autre voie : la garde de la collection
+/// `ecritures` ([cpcGardeJournalReserve]) refuse en nommant. CL ne figure pas à [cpaJournaux] (référentiel de la maquette, comparé par les vecteurs).
+const List<(String, String)> cpaJournauxReserves = [
+  ('CL', 'Journal de clôture'),
+  ('AN', 'Journal des à-nouveaux'),
+];
+
+/// Le code [code] désigne-t-il un journal réservé au moteur (CL, AN) ?
+bool cpaJournalReserve(Object? code) => cpaJournauxReserves.any((j) => j.$1 == '$code');
+
+/// Les journaux PROPOSÉS à la saisie manuelle d'une écriture : le référentiel sans les journaux réservés au moteur.
+List<(String, String, String?)> get cpaJournauxSaisissables => [for (final j in cpaJournaux) if (!cpaJournalReserve(j.$1)) j];
+
 /// `D.CATEGORIES_DEPENSE` : (identifiant, libellé) — la lecture de GESTION, distincte du compte SYSCOHADA.
 const List<(String, String)> cpaCategoriesDepense = [
   ('medical', 'Consommables et produits médicaux'),
@@ -74,6 +90,9 @@ String cpaCompteLibelle(Object? num, {Iterable<CpaFiche> comptes = const []}) {
 /// `journalLibelle(code)`.
 String cpaJournalLibelle(Object? code) {
   for (final j in cpaJournaux) {
+    if (j.$1 == '$code') return j.$2;
+  }
+  for (final j in cpaJournauxReserves) {
     if (j.$1 == '$code') return j.$2;
   }
   return '$code';
