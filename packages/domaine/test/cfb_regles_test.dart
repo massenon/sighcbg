@@ -113,8 +113,9 @@ void main() {
       // donc de la configuration de la mère, donc essentielles : le vidage les conserve. Seul écart avec le vecteur, nommé ici.
       expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires', 'confirmationsFiscales']));
       final lib = obj(c['libelles']);
+      // Lot PTA (Direction de Baguidi, 17/11/2026) : `planAnnuel` porte désormais les ACTIONS du plan de travail annuel ; son libellé le dit. Seul écart avec le vecteur, nommé ici.
       for (final k in lib.keys) {
-        expect(cfbLibelleCollection(k), (obj(lib[k])['module'], obj(lib[k])['entite']), reason: k);
+        expect(cfbLibelleCollection(k), k == 'planAnnuel' ? ('M13', 'Plan de travail annuel — actions') : (obj(lib[k])['module'], obj(lib[k])['entite']), reason: k);
       }
     });
   });

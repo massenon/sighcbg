@@ -728,7 +728,7 @@ const List<GesteReserve> gestesReserves = [
       module: 'M13',
       ecran: 'm13-plan-annuel',
       rolesDefaut: ['admin', 'da'],
-      aide: 'Axes, états d’avancement et sources de financement du plan (écran du plan, onglet « Référentiels »), périodicité, seuil d’alerte de retard et préfixe de numérotation (Paramètres, famille « Plan de travail annuel »). Origine proposée, à valider : l’administrateur et la DAF.'),
+      aide: 'Axes, états d’avancement et sources de financement du plan (écran du plan, carte « Référentiels du plan »), périodicité, seuil d’alerte de retard et préfixe de numérotation (Paramètres, famille « Plan de travail annuel »). Origine proposée, à valider : l’administrateur et la DAF.'),
   GesteReserve(
       id: gesteAlertesPtaRetard,
       libelle: 'Recevoir l’alerte « action du plan de travail annuel en retard »',
