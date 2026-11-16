@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan;
 
 import 'persistance.dart';
 import 'reglages_clinique_poste.dart';
@@ -495,6 +495,10 @@ class Magasin {
     'courriers': 'M13',
     'evenementsEtablissement': 'M13',
     'planAnnuel': 'M13',
+    'plansTravail': 'M13',
+    'ptaAxes': 'M13',
+    'ptaEtats': 'M13',
+    'ptaFinancements': 'M13',
     'ambulance': 'M13',
     'ambulances': 'M13',
     'materiel': 'M13',
@@ -695,6 +699,11 @@ class Magasin {
         }
         // Un budget d'un exercice CLÔTURÉ est en lecture seule, d'où que l'écriture vienne (écran, importation) : la garde est au moteur, l'écran la subit comme le fichier.
         if (nom == 'budgets') c.garder((op, f) => cpcGardeBudgets(collection('exercices').toutes, f['exercice']));
+        // LE PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : un plan adopté ne se réécrit pas (programme figé, ni ajout ni retrait d'action ; le suivi reste ouvert), un plan clôturé ou
+        // remplacé ne bouge plus, l'état d'un plan n'avance que dans son cycle. Tenu AU MOTEUR : masquer un bouton ne protège rien. La réception d'une fiche d'un autre poste
+        // (`appliquerDistante`) ne passe pas par les gardes : c'est la mère qui refait le contrôle (`refusPlanTravail`, `refusActionPta`).
+        if (nom == ptaCollectionActions) c.garder((op, f) => ptaGardeAction(op, f, c.parId(f['id']), collection(ptaCollectionPlans).toutes));
+        if (nom == ptaCollectionPlans) c.garder((op, f) => ptaGardePlan(op, f, c.parId(f['id'])));
         // L'archive d'une clôture est IMMUABLE et le registre des clôtures est une piste d'audit (arbitrage du 05/11/2026).
         if (nom == 'archivesExercice') c.garder((op, f) => cpcGardeArchives(collection('archivesExercice').toutes, op, f['reference']));
         if (nom == 'clotures') c.garder((op, f) => cpcGardeClotures(op));
@@ -865,6 +874,11 @@ class Magasin {
     'courriers',
     'evenementsEtablissement',
     'planAnnuel',
+    // Le plan de travail annuel (lot PTA, 17/11/2026) : en-têtes de plan (par exercice et version) et référentiels semés « à valider ».
+    'plansTravail',
+    'ptaAxes',
+    'ptaEtats',
+    'ptaFinancements',
     'ambulance',
     'ambulances',
     'materiel',

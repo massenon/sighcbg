@@ -263,6 +263,19 @@ const String gesteRubriquesChirurgicales = 'rubriques_chirurgicales';
 /// l'Assistant Comptable (`rolesAchat`).
 const String gesteAchatsRegistre = 'achats_registre';
 
+/// LE PLAN DE TRAVAIL ANNUEL (lot PTA, Direction de Baguidi, 17/11/2026 : « RIEN NE DOIT ÊTRE EN DUR ») : ADOPTER le plan (et le renvoyer en brouillon, et le CLÔTURER
+/// avec son bilan) est un geste de la fiche de rôle, pas le droit d'écrire l'écran. Origine PROPOSÉE (à valider par la Direction) : la Direction et la DAF. Depuis un poste
+/// rattaché, le geste se DÉPOSE et la mère l'applique sous le rôle de son auteur, avec SA matrice. Celui qui a soumis le plan ne l'adopte pas.
+const String gestePtaAdopter = 'pta_adopter';
+
+/// Régler les RÉFÉRENTIELS du plan de travail annuel : axes, états d'avancement (collections), découpage en périodes et seuil d'alerte de retard (paramètres de clinique
+/// versionnés par date). Origine PROPOSÉE (à valider par la Direction) : l'administrateur et la DAF.
+const String gestePtaRegler = 'pta_regler';
+
+/// Recevoir l'alerte « action du plan de travail annuel en retard » (une ligne par action, routée vers les responsables du suivi). Origine PROPOSÉE (à valider par la
+/// Direction) : la Direction et la DAF.
+const String gesteAlertesPtaRetard = 'alertes_pta_retard';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -702,6 +715,27 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['comptable', 'stock', 'da', 'direction', 'admin', 'aide_comptable'],
       aide: 'Les vues « Besoins validés » et « Tous les bons » de l’expression des besoins. Origine : le Comptable, le gestionnaire de stock, la DAF, la Direction, l’administrateur et l’Assistant Comptable.'),
+  GesteReserve(
+      id: gestePtaAdopter,
+      libelle: 'Adopter, renvoyer ou clôturer le plan de travail annuel',
+      module: 'M13',
+      ecran: 'm13-plan-annuel',
+      rolesDefaut: ['direction', 'da'],
+      aide: 'Adopter un plan soumis (motif et date, jamais par celui qui l’a soumis), le renvoyer en brouillon, le clôturer avec son bilan. Depuis un poste rattaché, le geste est transmis à la mère, qui l’applique. Origine : Modèle proposé le 16/11/2026, à valider (la Direction et la DAF).'),
+  GesteReserve(
+      id: gestePtaRegler,
+      libelle: 'Régler les référentiels du plan de travail annuel',
+      module: 'M13',
+      ecran: 'm13-plan-annuel',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Axes, états d’avancement et sources de financement du plan (écran du plan, carte « Référentiels du plan »), périodicité, seuil d’alerte de retard et préfixe de numérotation (Paramètres, famille « Plan de travail annuel »). Origine proposée, à valider : l’administrateur et la DAF.'),
+  GesteReserve(
+      id: gesteAlertesPtaRetard,
+      libelle: 'Recevoir l’alerte « action du plan de travail annuel en retard »',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['direction', 'da'],
+      aide: 'Une ligne par action non terminée dont la période est échue depuis plus que le seuil réglé. Origine proposée, à valider : la Direction et la DAF.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

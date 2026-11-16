@@ -150,7 +150,8 @@ void matImprimer(BuildContext ctx,
     String? filigrane,
     List<(String, String)> cartouche = const [],
     List<BlocPiece> blocs = const [],
-    List<Signature> signatures = const []}) {
+    List<Signature> signatures = const [],
+    bool paysage = false}) {
   final c = ContexteEcran.of(ctx);
   afficherApercu(
       ctx,
@@ -161,6 +162,7 @@ void matImprimer(BuildContext ctx,
           cartouche: cartouche,
           blocs: blocs,
           signatures: signatures,
+          paysage: paysage,
           reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
           utilisateur: acteur(c).nom,
           edite: c.aujourdhui));

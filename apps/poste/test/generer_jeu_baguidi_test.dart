@@ -21,13 +21,22 @@ void main() {
     }
   });
 
-  test('le jeu livré est celui que produit le générateur, avec les 163 noms de fichier de la référence', () {
+  test('le jeu livré est celui que produit le générateur, avec les 167 noms de fichier de la référence', () {
     final reference = Directory('test/fixtures/jeu_reference').listSync().map((f) => f.uri.pathSegments.last).toSet();
-    expect(reference.length, 163); // 160 + « fichiers » (le registre des scans par empreinte) + « tarifs » et « versionsTarif » (lot TAR)
+    expect(reference.length, 167); // 160 + « fichiers » (le registre des scans par empreinte) + « tarifs » et « versionsTarif » (lot TAR) + « plansTravail », « ptaAxes », « ptaEtats », « ptaFinancements » (lot PTA)
     expect(a.keys.toSet(), reference);
     for (final e in a.entries) {
       expect(File('assets/donnees/jeu/${e.key}').readAsStringSync(), e.value, reason: '${e.key} : relancer flutter test tool/generer_jeu_baguidi.dart');
     }
+  });
+
+  test('plan de travail annuel : référentiels SEMÉS « à valider », plan VIDE (la clinique saisit le sien)', () {
+    expect(lire(a, 'ptaAxes').length, greaterThan(0));
+    expect(lire(a, 'ptaEtats').length, greaterThan(0));
+    expect(lire(a, 'ptaFinancements').length, greaterThan(0));
+    expect([...lire(a, 'ptaAxes'), ...lire(a, 'ptaEtats'), ...lire(a, 'ptaFinancements')].every((x) => x['aValider'] == true && x['source'] == 'Modèle proposé le 16/11/2026, à valider'), isTrue);
+    expect(a['plansTravail.json'], '[]\n');
+    expect(a['planAnnuel.json'], '[]\n');
   });
 
   test('aucun champ nul n\'est écrit, une collection vide s\'écrit []', () {

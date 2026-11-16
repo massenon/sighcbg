@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat;
+import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -82,6 +82,14 @@ const Set<String> collectionsActivite = {
   // PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : la version de régime individuel posée sur un poste (immuable, datée : famille B de la mère) rejoint la mère et les autres postes,
   // qui calculent primes et paie sur le régime EFFECTIF de l'agent. Jamais vers un téléphone (elle porte l'honoraire de l'agent).
   'regimesIndividuels',
+  // LE PLAN DE TRAVAIL ANNUEL (lot PTA, Direction de Baguidi, 17/11/2026) : les actions, les en-têtes de plan (par exercice et version) et les trois référentiels administrables (axes, états,
+  // sources de financement) voyagent comme des fiches descriptives (famille A de la mère). L'ADOPTION et la CLÔTURE se DÉPOSENT et la mère les applique ; l'état d'un plan ne régresse pas par une
+  // fusion tardive (`fusionnerPlanTravail` du domaine). Jamais vers un téléphone (une action porte un budget).
+  'planAnnuel',
+  'plansTravail',
+  'ptaAxes',
+  'ptaEtats',
+  'ptaFinancements',
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
@@ -536,6 +544,10 @@ class PontActivite {
         // CIRCUITS D'ACHAT : l'ÉTAT d'un bon ne régresse jamais par une fusion tardive (un bon accordé ne repasse pas soumis) ; une écriture que la mère a refusée ne l'emporte pas.
         if (collectionsCircuitAchat.contains(c)) {
           fusionnerCircuitAchat(c, fusion, local, recu, refusLocal: motifsRefus.containsKey('$c/$cle'), posteFileul: reservesAuMere);
+        }
+        // PLAN DE TRAVAIL ANNUEL : une adoption, une clôture ou un remplacement que le journal porte n'est jamais défait ; un état réservé que le journal ne porte pas cède.
+        if (c == ptaCollectionPlans) {
+          fusionnerPlanTravail(fusion, local, recu, refusLocal: motifsRefus.containsKey('$c/$cle'), posteFileul: reservesAuMere);
         }
         if (_j(fusion) != _j(local)) {
           col.appliquerDistante(fusion);

@@ -581,6 +581,20 @@ build_windows.bat</pre>
   <p>Écrire exige le droit d’écrire <b>Planning</b> ET le geste <code>rh_regler</code>. Les montants d’honoraire ne se lisent qu’avec le planning en écriture ou le droit de lire les primes. Le planning lui-même ne se synchronise pas encore entre postes : tenir le planning et calculer la paie sur le même poste.</p>
 </div>
 
+<h2 id="param-pta">6.8 Plan de travail annuel : référentiels, réglages et adoption</h2>
+<p>La clinique n’a aucun modèle officiel de plan de travail annuel. Le logiciel sème le <b>modèle proposé le 16/11/2026</b> : chaque élément porte la mention <b>Proposition à valider par la Direction</b>, et tout se règle. Rien n’est écrit dans le code.</p>
+<ul>
+  <li><b>Référentiels</b> (écran <span class="ch">Administration ➔ Administration &amp; Ambulance ➔ Plan annuel de travail</span>, carte <b>Référentiels du plan</b>) : les huit <b>axes</b>, les cinq <b>états d’avancement</b> (Planifiée, En cours, Réalisée, Reportée, Abandonnée ; chaque état dit son ton et son sens : compte comme réalisée, terminée, exclue du taux, état d’une action nouvelle) et les cinq <b>sources de financement</b> (Fonds propres, Assurances, Partenaire, État, Autre). <b>Ajouter</b>, cliquer une fiche pour la modifier, la croix pour l’archiver, « restaurer » pour la rendre. Le <b>code</b> d’une fiche ne change pas : les actions le citent sur tous les postes. Une fiche réglée perd la mention « à valider » et porte son auteur et sa date.</li>
+  <li><b>Réglages</b> (<span class="ch">Paramètres système ➔ Paramètres</span>, famille <b>Plan de travail annuel</b>) : la <b>périodicité</b> (trimestre par défaut, ou mois, ou semestre), le <b>seuil d’alerte de retard</b> (15 jours après la fin de la période) et le <b>préfixe de numérotation</b> (PTA). Ce sont des paramètres de clinique <b>versionnés par date</b> ; un exercice se lit avec la valeur en vigueur à son jour courant (un exercice clos, à son dernier jour). Changer la périodicité ne réécrit aucune action ; changer le préfixe ne redonne jamais un numéro déjà attribué.</li>
+  <li>Référentiels et réglages relèvent du geste réservé <code>pta_regler</code> (d’origine, proposée à valider : l’administrateur et la DAF). Les réglages se posent depuis n’importe quel poste : un poste rattaché transmet la demande à la mère (voir 5.9).</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : le geste d’adoption">
+  <p>Adopter un plan soumis, le renvoyer en brouillon et le clôturer relèvent du geste réservé <code>pta_adopter</code> (origine : la Direction et la DAF, proposition à valider ; se règle en 5.7). Sans ce geste, les boutons sont <b>absents</b>. Celui qui a soumis le plan ne l’adopte pas. Depuis un fileul, le geste est déposé et la mère l’applique sous le rôle de son auteur, avec sa propre matrice : une décision refusée revient avec son motif. Un plan adopté ne se réécrit pas, ni au poste ni à la mère : seul le suivi reste ouvert, une révision ouvre une nouvelle version.</p>
+</div>
+<div class="encadre observer" data-titre="Où observer : l’alerte de retard">
+  <p>Les actions en retard d’un plan en vigueur lèvent une ligne par action au centre de notifications, routée par le geste <code>alertes_pta_retard</code> (d’origine : la Direction et la DAF, proposition à valider). Le plan, ses versions et ses référentiels passent entre les postes ; ils ne vont jamais sur un téléphone.</p>
+</div>
+
 <!-- ============================================================ 7. MODULES -->
 <h1 id="modules"><span class="no">7.</span> Activité des modules</h1>
 <p class="chapo">Un module que la clinique n’exerce pas se ferme. Il disparaît du menu sans rien perdre.</p>

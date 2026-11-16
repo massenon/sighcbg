@@ -10,6 +10,7 @@
 // Fonctions PURES : le poste y branche ses collections, sa matrice et son journal.
 library;
 
+import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard;
 import '../droits/gestes_reserves.dart';
 import '../parametres/definitions.dart';
 import '../parametres/parametres.dart';
@@ -22,6 +23,10 @@ const String valGenreReglage = 'reglage_clinique';
 /// Les réglages qui se posent sous un GESTE RÉSERVÉ (clé du paramètre → geste). Une donnée : ajouter un réglage ici suffit à le rendre déposable depuis un fileul.
 const Map<String, String> reglagesSousGeste = {
   cleEncaisserResteSansPrix: gesteReglageEncaissementSansPrix,
+  // Le plan de travail annuel (lot PTA, 17/11/2026) : découpage, seuil de retard et préfixe de numérotation.
+  ptaCleDecoupage: gestePtaRegler,
+  ptaCleSeuilRetard: gestePtaRegler,
+  ptaClePrefixe: gestePtaRegler,
 };
 
 /// Le geste réservé qui pose ce réglage (`null` : le réglage suit le droit d'éditer l'écran des paramètres, sur la mère).

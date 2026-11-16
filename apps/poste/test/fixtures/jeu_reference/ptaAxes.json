@@ -1,0 +1,82 @@
+[
+ {
+  "id": "PTAX-qualite_securite_soins",
+  "statut": "actif",
+  "code": "qualite_securite_soins",
+  "libelle": "Qualité et sécurité des soins",
+  "ordre": 1,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-sante_mere_enfant",
+  "statut": "actif",
+  "code": "sante_mere_enfant",
+  "libelle": "Santé de la mère et de l’enfant (CPN, accouchements, PF, vaccination)",
+  "ordre": 2,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-medicaments_consommables",
+  "statut": "actif",
+  "code": "medicaments_consommables",
+  "libelle": "Disponibilité des médicaments et consommables",
+  "ordre": 3,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-ressources_humaines_formation",
+  "statut": "actif",
+  "code": "ressources_humaines_formation",
+  "libelle": "Ressources humaines et formation",
+  "ordre": 4,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-infrastructures_equipements",
+  "statut": "actif",
+  "code": "infrastructures_equipements",
+  "libelle": "Infrastructures, équipements et maintenance",
+  "ordre": 5,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-finances_recouvrement",
+  "statut": "actif",
+  "code": "finances_recouvrement",
+  "libelle": "Gestion financière et recouvrement (assurances, créances)",
+  "ordre": 6,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-systeme_information",
+  "statut": "actif",
+  "code": "systeme_information",
+  "libelle": "Système d’information et numérique (SIGH, statistiques, rapports)",
+  "ordre": 7,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ },
+ {
+  "id": "PTAX-gouvernance_partenariats",
+  "statut": "actif",
+  "code": "gouvernance_partenariats",
+  "libelle": "Gouvernance, partenariats et communication",
+  "ordre": 8,
+  "aValider": true,
+  "mention": "Proposition à valider par la Direction",
+  "source": "Modèle proposé le 16/11/2026, à valider"
+ }
+]

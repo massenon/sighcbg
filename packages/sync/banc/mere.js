@@ -69,6 +69,9 @@ const FAMILLES = {
   budgets: 'A', immobilisations: 'A',
   /* PLANNING INDIVIDUEL (16/11/2026) : une version de régime individuel est immuable et datée (B, ajout seul), jamais vers un téléphone (honoraire de l'agent). Miroir de `mere.dart`. */
   regimesIndividuels: 'B',
+  /* PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : actions, en-têtes de plan et trois référentiels administrables, fiches descriptives (A). Miroir de `mere.dart` ; l'adoption et la clôture
+     ne s'écrivent que par le dépôt du détenteur du geste (voir `refusPlanTravail`), jamais vers un téléphone (une action porte un budget). */
+  planAnnuel: 'A', plansTravail: 'A', ptaAxes: 'A', ptaEtats: 'A', ptaFinancements: 'A',
 };
 /* Miroir de `packages/domaine/lib/src/achats/circuit_synchro.dart` (`refusCircuitAchat`) : la mère REFAIT le contrôle de l'état d'un bon écrit par un poste. */
 const RANG_BESOIN = { brouillon: 0, soumis: 1, controle_stock: 2, validation_da: 3, accorde: 4, rejete: 4, complement: 4, prepare: 5, livre: 6, distribue: 6, cloture: 7 };
@@ -96,10 +99,54 @@ function refusCircuitAchat(collection, type, champs, etatActuel) {
   if (c.aval.includes(nouveau) && !c.detenu.includes(etatActuel)) return ['arbitrage_requis', 'L’état « ' + nouveau + ' » suppose l’arbitrage, que la mère ne détient pas encore (état actuel : « ' + etatActuel + ' »).', 'Attendre la confirmation de la mère, puis reprendre'];
   return null;
 }
+/* Miroir de `packages/domaine/lib/src/administration/pta.dart` (`refusPlanTravail`, `refusActionPta`) : la mère REFAIT le contrôle d'un en-tête de plan et d'une action écrits par un poste. */
+const RANG_PLAN = { brouillon: 0, soumis: 1, adopte: 2, execution: 3, cloture: 4, remplace: 5 };
+const LIBELLE_PLAN = { brouillon: 'Brouillon', soumis: 'Soumis à l’adoption', adopte: 'Adopté', execution: 'En exécution', cloture: 'Clôturé', remplace: 'Remplacé par une révision' };
+const PLAN_RESERVES = ['adopte', 'cloture', 'remplace'];
+const PLAN_FIGES = ['adopte', 'execution', 'cloture', 'remplace'];
+const PLAN_CHAMPS_RESERVES = ['adopteLe', 'adoptePar', 'adopteRole', 'motifAdoption', 'renvoyeLe', 'renvoyePar', 'motifRenvoi', 'clotureLe', 'cloturePar', 'bilan', 'remplaceLe', 'remplaceParVersion'];
+const PTA_CHAMPS_PROGRAMME = ['action', 'axe', 'objectif', 'resultatAttendu', 'indicateur', 'valeurDepart', 'cibleValeur', 'cibleUnite', 'calendrier', 'debut', 'fin',
+  'responsableType', 'responsableId', 'responsable', 'service', 'partenaires', 'budgetPrevu', 'sourceFinancement', 'budgetReference', 'avancementMode', 'exercice', 'planVersion', 'reference'];
+const libPlan = (e) => LIBELLE_PLAN[e] || String(e);
+function refusPlanTravail(type, champs, etatActuel) {
+  for (const k of PLAN_CHAMPS_RESERVES) if (Object.prototype.hasOwnProperty.call(champs, k)) return ['champ_reserve', 'Le champ « ' + k + ' » d’un plan de travail n’est écrit que par la décision réservée, appliquée par la mère.', 'Déposer la décision depuis l’écran du plan'];
+  const nouveau = champs.etat;
+  if (type === 'creer') {
+    if (nouveau == null || nouveau === 'brouillon' || nouveau === 'soumis') return null;
+    return ['adoption_requise', 'Un poste ne crée pas un plan déjà « ' + libPlan(nouveau) + ' » : l’adoption ne s’écrit que par le dépôt du détenteur du geste, appliqué par la mère.', 'Créer le plan en brouillon, puis le soumettre'];
+  }
+  if (nouveau == null || String(nouveau) === String(etatActuel)) return null;
+  const rn = RANG_PLAN[nouveau], ra = RANG_PLAN[etatActuel];
+  if (rn === undefined) return ['etat_inconnu', 'État de plan inconnu : ' + nouveau + '.', 'Choisir un état du cycle'];
+  if (PLAN_RESERVES.includes(String(nouveau))) return ['adoption_reservee', 'L’état « ' + libPlan(nouveau) + ' » est le fait du détenteur du geste : il se DÉPOSE depuis son poste et la mère l’applique sous son rôle.', 'Déposer la décision depuis l’écran du plan'];
+  if (ra !== undefined && rn < ra && !(String(etatActuel) === 'soumis' && nouveau === 'brouillon')) return ['etat_regressif', 'Le plan ne revient jamais en arrière : il est « ' + libPlan(etatActuel) + ' », il ne repasse pas « ' + libPlan(nouveau) + ' ».', 'Réviser le plan (nouvelle version)'];
+  if (nouveau === 'execution' && String(etatActuel) !== 'adopte') return ['adoption_requise', 'Mettre en exécution suppose l’adoption, que la mère ne détient pas (état actuel : « ' + libPlan(etatActuel) + ' »).', 'Attendre la confirmation de la mère, puis reprendre'];
+  return null;
+}
+/* L'en-tête que la mère détient pour (exercice, version) : le plus avancé dans le cycle, puis le plus ancien (même choix que `ptaPlansExercice`). */
+function planDe(annee, version) {
+  let r = null;
+  for (const x of db.prepare("SELECT id,data FROM fiches WHERE collection='plansTravail' AND archive=0").all()) {
+    const d = JSON.parse(x.data);
+    if (String(d.exercice) !== String(annee) || Number(d.version) !== Number(version) || d.statut === 'archive') continue;
+    const rd = RANG_PLAN[d.etat] ?? -1, rr = r ? (RANG_PLAN[r.etat] ?? -1) : -2;
+    if (!r || rd > rr || (rd === rr && String(d.creeLe || '') + x.id < String(r.creeLe || '') + r._id)) r = { ...d, _id: x.id };
+  }
+  return r;
+}
+function refusActionPta(type, champs, actuelle, plan) {
+  if (!plan || !PLAN_FIGES.includes(String(plan.etat))) return null;
+  if (plan.etat === 'cloture' || plan.etat === 'remplace') return ['plan_arrete', 'Le plan est ' + libPlan(plan.etat).toLowerCase() + ' : ses actions ne se modifient plus.', 'Aucun : l’historique reste tel qu’il a été arrêté'];
+  if (type === 'creer') return ['plan_adopte', 'Le plan est adopté : une action ne s’y ajoute pas.', 'Réviser le plan (nouvelle version)'];
+  for (const k of PTA_CHAMPS_PROGRAMME) {
+    if (Object.prototype.hasOwnProperty.call(champs, k) && (!actuelle || JSON.stringify(actuelle[k]) !== JSON.stringify(champs[k]))) return ['plan_adopte', 'Le plan est adopté : le programme (« ' + k + ' ») ne se réécrit pas, seul le suivi reste ouvert.', 'Réviser le plan (nouvelle version)'];
+  }
+  return null;
+}
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -196,6 +243,18 @@ function traiter(op, app) {
   if (CIRCUIT[op.collection] && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
     const r = refusCircuitAchat(op.collection, op.type, op.champs || {}, f && f.data ? f.data[CIRCUIT[op.collection].champ] : undefined);
     if (r) return refus(r[0], r[1], r[2]);
+  }
+  /* PLAN DE TRAVAIL ANNUEL : la mère refait le contrôle d'un en-tête (états et champs réservés, pas de recul) et d'une action (programme figé d'un plan adopté). */
+  if (op.collection === 'plansTravail' && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
+    const r = refusPlanTravail(op.type, op.champs || {}, f && f.data ? f.data.etat : undefined);
+    if (r) return refus(r[0], r[1], r[2]);
+  }
+  if (op.collection === 'planAnnuel' && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
+    const source = (f && f.data) || op.champs || {};
+    if (source.exercice != null && source.planVersion != null) {
+      const r = refusActionPta(op.type, op.champs || {}, f && f.data, planDe(source.exercice, source.planVersion));
+      if (r) return refus(r[0], r[1], r[2]);
+    }
   }
   if (op.collection === 'demandesImport' && app.role !== 'mere') {
     const auteur = f ? auteurDemandeImport(op.fiche) : null;

@@ -1,0 +1,7 @@
+[
+{"id":"PTAF-fonds_propres","statut":"actif","code":"fonds_propres","libelle":"Fonds propres","ordre":1,"aValider":true,"mention":"Proposition à valider par la Direction","source":"Modèle proposé le 16/11/2026, à valider"},
+{"id":"PTAF-assurances","statut":"actif","code":"assurances","libelle":"Assurances","ordre":2,"aValider":true,"mention":"Proposition à valider par la Direction","source":"Modèle proposé le 16/11/2026, à valider"},
+{"id":"PTAF-partenaire","statut":"actif","code":"partenaire","libelle":"Partenaire","ordre":3,"aValider":true,"mention":"Proposition à valider par la Direction","source":"Modèle proposé le 16/11/2026, à valider"},
+{"id":"PTAF-etat","statut":"actif","code":"etat","libelle":"État","ordre":4,"aValider":true,"mention":"Proposition à valider par la Direction","source":"Modèle proposé le 16/11/2026, à valider"},
+{"id":"PTAF-autre","statut":"actif","code":"autre","libelle":"Autre","ordre":5,"aValider":true,"mention":"Proposition à valider par la Direction","source":"Modèle proposé le 16/11/2026, à valider"}
+]

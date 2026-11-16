@@ -63,6 +63,7 @@ void generer(Contexte ctx) {
   _organisation(ctx);
   _calendrierFiscal(ctx);
   _caisse(ctx);
+  _planTravail(ctx);
 }
 
 // --- Génériques --------------------------------------------------------------------------------------------------------------------------------
@@ -475,4 +476,17 @@ void _caisse(Contexte ctx) {
     for (final b in ctx.reference('banques'))
       if (b['nature'] == 'caisse') b
   ]);
+}
+
+// --- Plan de travail annuel (lot PTA, Direction de Baguidi, 17/11/2026) ------------------------------------------------------------------------------
+
+/// Les RÉFÉRENTIELS du plan de travail annuel (axes, états d'avancement, sources de financement) sont SEMÉS depuis le domaine : le MODÈLE PROPOSÉ par la Direction
+/// (« Modèle proposé le 16/11/2026, à valider », chaque élément marqué « proposition à valider par la Direction ») ; le PLAN lui-même reste VIDE : la clinique saisit le sien. Les identifiants semés sont déterministes : livrés avec le jeu, ils ont la même identité
+/// sur tous les postes (pas de doublon à la synchronisation).
+void _planTravail(Contexte ctx) {
+  ctx.remplacer(d.ptaCollectionAxes, d.ptaSemenceAxes());
+  ctx.remplacer(d.ptaCollectionEtats, d.ptaSemenceEtats());
+  ctx.remplacer(d.ptaCollectionFinancements, d.ptaSemenceFinancements());
+  ctx.remplacer(d.ptaCollectionPlans, const []);
+  ctx.remplacer(d.ptaCollectionActions, const []);
 }

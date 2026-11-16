@@ -206,7 +206,7 @@ Future<Uint8List> pdfA4(PieceA4 x, PolicesPdf p,
     // Le moteur refuse par défaut un état de plus de 20 pages (PdfTooBigPageException) : un grand livre d'exploitation réelle les dépasse. 500 pages couvrent
     // largement l'usage ; au-delà, c'est une erreur de mise en page qui doit se voir, pas un état qu'on imprime.
     maxPages: 500,
-    pageFormat: PdfPageFormat.a4.copyWith(
+    pageFormat: (x.paysage ? PdfPageFormat.a4.landscape : PdfPageFormat.a4).copyWith(
         marginLeft: 12 * _mm,
         marginRight: 12 * _mm,
         marginTop: 12 * _mm,

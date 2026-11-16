@@ -778,6 +778,42 @@
       ],
       "suitEcran": false,
       "aide": "Les vues « Besoins validés » et « Tous les bons » de l’expression des besoins. Origine : le Comptable, le gestionnaire de stock, la DAF, la Direction, l’administrateur et l’Assistant Comptable."
+    },
+    {
+      "id": "pta_adopter",
+      "libelle": "Adopter, renvoyer ou clôturer le plan de travail annuel",
+      "module": "M13",
+      "ecran": "m13-plan-annuel",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Adopter un plan soumis (motif et date, jamais par celui qui l’a soumis), le renvoyer en brouillon, le clôturer avec son bilan. Depuis un poste rattaché, le geste est transmis à la mère, qui l’applique. Origine : Modèle proposé le 16/11/2026, à valider (la Direction et la DAF)."
+    },
+    {
+      "id": "pta_regler",
+      "libelle": "Régler les référentiels du plan de travail annuel",
+      "module": "M13",
+      "ecran": "m13-plan-annuel",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Axes, états d’avancement et sources de financement du plan (écran du plan, carte « Référentiels du plan »), périodicité, seuil d’alerte de retard et préfixe de numérotation (Paramètres, famille « Plan de travail annuel »). Origine proposée, à valider : l’administrateur et la DAF."
+    },
+    {
+      "id": "alertes_pta_retard",
+      "libelle": "Recevoir l’alerte « action du plan de travail annuel en retard »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Une ligne par action non terminée dont la période est échue depuis plus que le seuil réglé. Origine proposée, à valider : la Direction et la DAF."
     }
   ],
   "familles": {
@@ -795,7 +831,8 @@
     "cloture": "Clôture comptable",
     "achats": "Achats",
     "validations": "Validations et continuité",
-    "caisse": "Caisse et encaissement"
+    "caisse": "Caisse et encaissement",
+    "pta": "Plan de travail annuel"
   },
   "parametres": [
     {
@@ -1372,6 +1409,53 @@
       "sensible": false,
       "aide": "Non (par défaut) : tant qu'une ligne de la facture attend son prix (prix à valoriser, prix assuré à définir), RIEN de la facture ne s'encaisse et la pharmacie ne délivre rien. Oui : les autres lignes s'encaissent, la ligne sans prix reste en attente, nommée, et la pharmacie délivre les lignes réglées.",
       "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §7) : rien ne s'encaisse par défaut"
+    },
+    {
+      "cle": "pta.decoupage",
+      "famille": "pta",
+      "type": "choix",
+      "defaut": "trimestre",
+      "libelle": "Découpage du plan de travail annuel",
+      "choix": [
+        "trimestre",
+        "mois",
+        "semestre"
+      ],
+      "libellesChoix": {
+        "trimestre": "Par trimestre",
+        "mois": "Par mois",
+        "semestre": "Par semestre"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Les périodes de la frise du plan et du choix des périodes d'une action. Un exercice se lit avec le découpage en vigueur à son jour courant (un exercice clos, à son dernier jour) : changer le découpage ne réécrit aucune action, qui garde ses dates.",
+      "source": "Modèle proposé le 16/11/2026, à valider : périodicité trimestrielle (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.seuilRetardJours",
+      "famille": "pta",
+      "type": "entier",
+      "defaut": 15,
+      "libelle": "Seuil d'alerte de retard d'une action du plan (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une action non terminée dont la période est échue depuis PLUS que ce nombre de jours est en retard : elle est comptée à l'écran et lève une alerte vers les détenteurs du geste « alerte de retard du plan ». Entier positif ou nul.",
+      "source": "Modèle proposé le 16/11/2026, à valider : 15 jours après la fin de la période (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.prefixeNumero",
+      "famille": "pta",
+      "type": "texte",
+      "defaut": "PTA",
+      "libelle": "Préfixe de la numérotation des actions du plan",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les actions se numérotent « <préfixe>-<exercice>-NNN », série annuelle. Majuscules et chiffres, 1 à 12 caractères ; une valeur illisible retombe sur le défaut. Changer le préfixe ne renumérote aucune action et ne redonne jamais un rang déjà attribué dans l'exercice.",
+      "source": "Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)"
     }
   ]
 }
