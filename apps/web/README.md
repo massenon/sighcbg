@@ -25,6 +25,19 @@ Le relais reste opaque pour tout dossier. Il accepte en plus de la mère un **in
 - **Droits** : réservé aux comptes du panneau (tous superadmin, ADR-0005). **Lecture seule** : la page n'a aucune route d'écriture et aucune action ; un test le prouve.
 - **Tests** : `php artisan test` (SQLite en mémoire) ; une copie de `.env.example` en `.env` avec `php artisan key:generate` est nécessaire à un poste neuf.
 
+## Satisfaction en ligne (décision de la Direction du 16/11/2026, section 8)
+
+Un patient répond au questionnaire de satisfaction **depuis chez lui**, par un lien ou un QR servi par le relais. C'est la **seule page publique** du relais ; elle ne porte aucun lien vers le panneau ni vers le logiciel, aucune ressource externe, aucun cookie (`Content-Security-Policy` fermée, `Referrer-Policy: no-referrer`, `Cache-Control: no-store`, `noindex`).
+
+- **Chiffrée dans le navigateur** (`public/js/satisfaction.js`) avec la clé **publique** de la clinique : X25519 éphémère, HKDF-SHA256, AES-256-GCM, données authentifiées liées au lien (`sat1|kid|jeton`), clair bourré à 256 octets. La clé **privée** ne quitte jamais le poste mère : le relais stocke une enveloppe qu'il ne peut pas lire. Web Crypto X25519 si le navigateur le connaît, sinon une échelle de Montgomery en BigInt incluse dans le script (aucune dépendance réseau).
+- **Aucun nom, aucun numéro de dossier, aucune question médicale** : un lien en ligne est toujours anonyme ; aucune adresse réseau n'est enregistrée avec une réponse, seul le **jour** de réception l'est.
+- **Le lien porte un JETON** (24 caractères tirés au poste), daté et révocable, jamais l'identifiant de l'enquête ; le relais ne le garde que **haché**. Jeton inconnu, mal formé, expiré ou révoqué : **la même réponse neutre** (page, modèle, dépôt).
+- **Le questionnaire naît du modèle** : la mère publie les champs engendrés par le générateur du domaine (le même que la saisie au guichet) ; une question ajoutée au modèle est republiée et paraît sur le lien. Le relais ne fait que **rendre** ces champs.
+- **Routes publiques** (`routes/satisfaction.php`, chargées par `routes/relais.php`) : `GET /satisfaction/{jeton}` (page), `GET /satisfaction/{jeton}/modele` (JSON), `POST /satisfaction/{jeton}/reponse` (dépôt d'une enveloppe ; débit par adresse `RELAIS_SATISFACTION_DEBIT_DEPOT`, plafond par lien et par jour `RELAIS_SATISFACTION_PLAFOND_JOUR`, taille `RELAIS_SATISFACTION_ENVELOPPE_OCTETS_MAX`).
+- **Routes de la mère, signées** (`x-mere` puis `x-signature: sha256=<HMAC-SHA256 du corps exact>`) : `POST /mere/satisfaction/publier` (lien, modèle, clé publique ; schéma FERMÉ `App\Relais\Satisfaction\Publication`), `revoquer` (la porte se ferme, les enveloppes déjà déposées restent à relever ; un lien révoqué ne se republie pas), `relever`, `acquitter` (les enveloppes acquittées sont **effacées** du relais). Un lien expiré ou révoqué depuis `RELAIS_SATISFACTION_CONSERVATION_JOURS` (30), sans enveloppe en attente, quitte le relais à la relève suivante.
+- **Tables** : `satisfaction_liens`, `satisfaction_enveloppes` (migration `2026_11_16_120000`). Réglages : `config/satisfaction.php`.
+- **Contrat de référence** : `packages/sync/banc/relais-satisfaction.js`, scénario `SAT1` du banc. **Tests** : `tests/Feature/SatisfactionEnLigneTest.php` (le chiffrement réel est produit par Node exécutant le script du navigateur) et `node --test tests/js/satisfaction.test.mjs`.
+
 ## Essai local sur un poste de développement (PostgreSQL)
 
 Le relais tourne sur PostgreSQL, comme en production : un essai local sur SQLite ne prouverait rien sur ce que l'hébergeur servira.

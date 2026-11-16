@@ -18,6 +18,7 @@ import 'depot.dart';
 import 'mere.dart';
 import 'copie_mere.dart';
 import 'indicateurs_clinique.dart';
+import 'satisfaction_en_ligne.dart';
 
 /// Chiffrement des enveloppes : même format que le banc Node (`crypto.js`) — nonce de 12 octets, `ct = chiffré ‖ tag`,
 /// métadonnées authentifiées (AAD = `id|appareil|dir|n`). Une enveloppe déplacée, rejouée sous un autre rang ou altérée
@@ -64,6 +65,8 @@ class Pont {
   final HttpClient _http = HttpClient()..connectionTimeout = const Duration(milliseconds: 1500);
   final List<Timer> _minuteries = [];
   late final PublicationIndicateurs indicateurs = PublicationIndicateurs(mere);
+  /// Satisfaction en ligne (décision du 16/11/2026) : publication des liens, relève et déchiffrement des réponses ; la clé privée reste dans cette base.
+  late final SatisfactionEnLigne satisfaction = SatisfactionEnLigne(mere);
 
   String get cleBase64 => base64.encode(_cleOctets);
   bool get actif => mere.cfg.relais.isNotEmpty;
@@ -397,6 +400,8 @@ class Pont {
     tour(copie.tour, 500);
     // Indicateurs agrégés non nominatifs (ADR-0007) : interrupteur OUVERT par défaut (10/11/2026), fermable ; le tour ne fait rien quand la Direction l'a fermé ou sans relais configuré.
     tour(indicateurs.tour, 5000);
+    // Satisfaction en ligne : rien sans relais configuré ; publication à chaque tour, relève au plus chaque minute.
+    tour(satisfaction.tour, 5000);
     tour(() async {
       await mere.verrou.executer(() => base.poserMeta('relais_dernier_ok', _dernierOk));
       await rel('POST', '/mere/battement', {});

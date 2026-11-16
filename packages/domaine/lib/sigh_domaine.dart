@@ -105,6 +105,7 @@ export 'src/configuration/cfb_fiscal_date.dart';
 export 'src/configuration/confirmations_fiscales.dart';
 export 'src/referentiels/versions_datees.dart';
 export 'src/qualite/qual_enquetes.dart';
+export 'src/qualite/qual_en_ligne.dart';
 export 'src/qualite/qual_validations.dart';
 export 'src/qualite/qual_ged.dart';
 // Moteur de validation commun des référentiels (Direction, 07/11/2026) : registre des 14 familles, compte lu, geste unitaire, remise à valider.

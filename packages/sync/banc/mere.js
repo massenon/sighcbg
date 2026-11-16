@@ -53,6 +53,8 @@ const FAMILLES = {
   rbac: 'R', modulesActifs: 'R', decisionsDroits: 'A',
   /* CONTINUITÉ DES VALIDATIONS (15/11/2026) : la validation d'un référentiel déposée par un fileul ; la mère l'applique sous le rôle de l'auteur et écrit le verdict sur la même fiche. Miroir de `mere.dart`. */
   validationsDeposees: 'A',
+  /* SATISFACTION EN LIGNE (16/11/2026) : les liens de partage d'une enquête et les réponses (guichet ou relevées du relais et déchiffrées par la mère), fiches descriptives (A). Miroir de `mere.dart`. */
+  jetonsEnquete: 'A', reponsesEnquetes: 'A',
   /* Lot IMP-C (Direction, 12/11/2026) : la DEMANDE D'IMPORT d'un fileul. Il écrit chez lui ET dépose cette fiche ; la mère rejoue l'analyse sous le rôle de l'auteur et complète la MÊME
      fiche de son verdict. Famille A, champ à champ, dans les deux sens ; le verdict n'est écrit que par la mère ; jamais vers un téléphone. */
   demandesImport: 'A',
@@ -95,7 +97,7 @@ function refusCircuitAchat(collection, type, champs, etatActuel) {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";

@@ -7,10 +7,15 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../impression/apercu.dart' show ImpressionPoste;
+import '../../impression/pdf.dart' show PolicesPdf;
+import '../../impression/piece.dart' show PieceA4;
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/flux_commun.dart' show modaleSaisie;
+import '../mere/mrb_source.dart' show mrbSourceCourante;
+import 'qual_affiche_pdf.dart';
 import 'qual_commun.dart';
 import 'qual_publique.dart';
 import 'qual_qr.dart';
@@ -26,8 +31,10 @@ String lienDuJeton(String code) => '$adresseDesLiens/enquete-publique.php?jeton=
 /// saisie naît du modèle (comme sur KoboCollect), ajouter une question au modèle suffit à la faire paraître à la prochaine saisie ; les réponses déjà
 /// recueillies gardent leur forme. Le modèle de satisfaction amorcé est une proposition validée par la Direction le 01/09/2026.
 ///
-/// Le partage à un tiers : un lien suppose d'être JOIGNABLE — le serveur de la clinique n'a aucun port ouvert sur Internet ; le lien et le QR couvrent le
-/// tiers DANS la clinique et la tablette en mode kiosque. L'adresse porte un JETON daté et révocable, jamais l'identifiant de l'enquête. Les commandes
+/// Le partage à un tiers : un lien suppose d'être JOIGNABLE — le serveur de la clinique n'a aucun port ouvert sur Internet ; le lien interne et son QR
+/// couvrent le tiers DANS la clinique et la tablette en mode kiosque. Depuis le 16/11/2026, un lien « Sur Internet, par le relais » fait répondre le
+/// patient depuis chez lui : toujours anonyme, chiffré dans son navigateur avec la clé publique de la clinique, publié et relevé par le poste mère
+/// (`packages/sync_dart/lib/src/satisfaction_en_ligne.dart`), les réponses redescendant par la synchronisation (E3700 à E3710). L'adresse porte un JETON daté et révocable, jamais l'identifiant de l'enquête. Les commandes
 /// d'écriture (Nouveau modèle, Recueillir, Modifier, Partager) sont ABSENTES sans le droit d'écrire ; Révoquer sans le droit d'annuler.
 class EcranEnquetes extends StatelessWidget with EcranMaquette {
   const EcranEnquetes({super.key});
@@ -320,12 +327,15 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
     final tries = trierPar(liens, (j) => j['creeLe']).reversed.toList();
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       const NoteSigh(
-          'Un lien suppose d’être joignable. Le serveur de la clinique est local, sans port ouvert sur Internet : un lien fonctionne pour qui est dans la clinique — salle d’attente, Wi-Fi, ou tablette posée à la sortie, qui ne demande même pas de lien. Faire répondre un patient depuis chez lui exige une surface publique sur Internet : c’est un ré-arbitrage d’architecture, pas une option à cocher — et surtout pas l’ouverture du serveur de la clinique.',
-          ton: TonSigh.attention,
+          'Un lien interne ne fonctionne que pour qui est dans la clinique (salle d’attente, Wi-Fi, tablette posée à la sortie) : le serveur de la clinique n’a aucun port ouvert sur Internet, et ne l’aura pas. Pour qu’un patient réponde DEPUIS CHEZ LUI, choisir « Sur Internet, par le relais » : le questionnaire est servi par le relais de la clinique, la réponse y est CHIFFRÉE dans le téléphone du patient avec la clé publique de la clinique, et seul le poste mère peut la lire.',
+          ton: TonSigh.info,
           icone: LucideIcons.wifi),
       const SizedBox(height: 12),
       const NoteSigh(
-          'Dans le prototype, chaque poste a son propre stockage : un lien ouvert sur une autre machine y afficherait bien le formulaire, mais ses réponses ne reviendraient jamais ici. Le geste se maquette — jeton, page publique, QR — la collecte réelle appartient à la version web.'),
+          'Un lien en ligne est toujours ANONYME : ni nom, ni numéro de dossier, aucune question sur la santé. Le poste mère le publie au relais au tour suivant (avec les questions du modèle : une question ajoutée y paraît), relève les réponses, les déchiffre et les enregistre au canal « Lien public » ; elles arrivent sur chaque poste par la synchronisation et entrent dans les statistiques de satisfaction.',
+          icone: LucideIcons.shieldCheck),
+      const SizedBox(height: 12),
+      _CarteSatisfactionEnLigne(peutRelever: c.droit.editer),
       const SizedBox(height: 12),
       TableauSigh(
         titre: 'Liens de partage',
@@ -347,6 +357,15 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
               rendu: (_, j) => j['anonyme'] == true
                   ? const BadgeSigh('Anonyme', ton: TonSigh.info)
                   : const BadgeSigh('Nominatif', ton: TonSigh.attention)),
+          ColonneTableau(
+              cle: 'publication',
+              libelle: 'Canal',
+              texte: (j) => qualLienEnLigne(j) ? qualEtatPublication(j).libelle : 'Interne',
+              rendu: (_, j) {
+                if (!qualLienEnLigne(j)) return const BadgeSigh('Interne', ton: TonSigh.neutre);
+                final e = qualEtatPublication(j);
+                return BadgeSigh(e.libelle, ton: tonQual(e.ton));
+              }),
           ColonneTableau(cle: 'expireLe', libelle: 'Expire le', texte: (j) => dateJj(j['expireLe'])),
           ColonneTableau(
               cle: 'reponses',
@@ -394,6 +413,7 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
         OptionChamp('salle', 'Dans la clinique — QR affiché ou imprimé'),
         OptionChamp('tablette', 'Sur une tablette de la clinique (mode kiosque)'),
         OptionChamp('reseau', 'Sur le réseau local — lien communiqué'),
+        OptionChamp(qualUsageRelais, 'Sur Internet, par le relais — depuis chez soi (anonyme, chiffré)'),
       ]),
       ChampDef(
           nom: 'expireLe',
@@ -431,17 +451,33 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
                   onPressed: () {
                     final v = ctl.valider();
                     if (v == null) return;
+                    final enLigne = v['usage'] == qualUsageRelais;
+                    // Un lien en ligne est toujours anonyme (décision du 16/11/2026) : un choix « nominatif » est refusé en le nommant, jamais corrigé en silence.
+                    if (enLigne && v['anonyme'] != 'oui') {
+                      ToastsSigh.afficher(ecran, 'Un lien en ligne est toujours anonyme : aucun nom ni numéro de dossier n’est demandé. Choisir « Anonyme ».',
+                          type: TypeToast.erreur);
+                      return;
+                    }
                     final alea = Random.secure();
+                    final code = qualGenererJeton(alea.nextInt);
                     final res = colJetons(c.magasin).inserer(
-                        qualNouveauJeton(
-                            enquete: enq,
-                            jeton: qualGenererJeton(alea.nextInt),
-                            anonyme: '${v['anonyme']}',
-                            usage: '${v['usage']}',
-                            expireLe: '${v['expireLe']}',
-                            note: '${v['note'] ?? ''}',
-                            aujourdhui: c.aujourdhui,
-                            ouvertPar: acteur(c).nom),
+                        enLigne
+                            ? qualNouveauJetonEnLigne(
+                                enquete: enq,
+                                jeton: code,
+                                expireLe: '${v['expireLe']}',
+                                note: '${v['note'] ?? ''}',
+                                aujourdhui: c.aujourdhui,
+                                ouvertPar: acteur(c).nom)
+                            : qualNouveauJeton(
+                                enquete: enq,
+                                jeton: code,
+                                anonyme: '${v['anonyme']}',
+                                usage: '${v['usage']}',
+                                expireLe: '${v['expireLe']}',
+                                note: '${v['note'] ?? ''}',
+                                aujourdhui: c.aujourdhui,
+                                ouvertPar: acteur(c).nom),
                         prefixe: 'JET');
                     fermer();
                     _montrerLien(ecran, res.fiche);
@@ -450,6 +486,10 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
   }
 
   void _montrerLien(BuildContext ecran, Fiche j) {
+    if (qualLienEnLigne(j)) {
+      _montrerLienEnLigne(ecran, j);
+      return;
+    }
     final c = ContexteEcran.of(ecran);
     final lien = lienDuJeton('${j['jeton']}');
     final e = qualEtatJeton(j, aLaDate: jourIso(c));
@@ -520,12 +560,101 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
             ]);
   }
 
+  /// Le lien EN LIGNE : son adresse est celle que le poste mère a publiée au relais (`lienPublic`, écrite sur la fiche et revenue par la synchronisation).
+  /// Tant qu'elle n'est pas publiée, ni QR ni adresse : on ne distribue pas un lien qui ne mène encore nulle part.
+  void _montrerLienEnLigne(BuildContext ecran, Fiche j0) {
+    final c = ContexteEcran.of(ecran);
+    final j = colJetons(c.magasin).parId(j0['id']) ?? j0;
+    final lien = '${j['lienPublic'] ?? ''}';
+    final pub = qualEtatPublication(j);
+    final e = qualEtatJeton(j, aLaDate: jourIso(c));
+    final nb = colReponses(c.magasin).actives.where((x) => x['jetonId'] == j['id']).length;
+    afficherTiroir<void>(ecran,
+        titre: 'Lien en ligne',
+        sousTitre: '${j['enqueteTitre']}',
+        largeurMax: 672,
+        corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Wrap(spacing: 8, runSpacing: 8, children: [BadgeSigh(e.libelle, ton: tonQual(e.ton)), BadgeSigh(pub.libelle, ton: tonQual(pub.ton))]),
+          const SizedBox(height: 12),
+          if (lien.isEmpty)
+            const NoteSigh(
+                'Le poste mère n’a pas encore publié ce lien au relais (il le fait au tour suivant de la synchronisation). Ni adresse ni QR tant que le lien ne mène nulle part.',
+                ton: TonSigh.attention,
+                icone: LucideIcons.hourglass)
+          else ...[
+            const LibelleChamp('Adresse publiée sur le relais'),
+            TextField(
+                key: const Key('qual:adresse-en-ligne'),
+                controller: TextEditingController(text: lien),
+                readOnly: true,
+                style: const TextStyle(fontFamily: 'LiberationMono', fontSize: 12, color: JetonsShell.slate900),
+                decoration: decorationChamp()),
+            const SizedBox(height: 12),
+            CarteSigh(
+                titre: 'À afficher ou à remettre au patient',
+                child: Wrap(spacing: 16, runSpacing: 12, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                  QrSigh(lien, libelle: 'Code QR du questionnaire en ligne'),
+                  ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 360),
+                      child: const Text(
+                          'Le patient scanne avec son téléphone et répond quand il veut, depuis chez lui. Sa réponse est chiffrée sur son téléphone : le relais la garde sans pouvoir la lire, le poste mère seul la déchiffre.',
+                          style: TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14))),
+                ])),
+          ],
+          const SizedBox(height: 12),
+          DescListeSigh([
+            ('Enquête', '${j['enqueteTitre']}'),
+            ('Ouvert le', '${dateJj(j['creeLe'])} par ${j['ouvertPar'] ?? '—'}'),
+            ('Expire le', dateJj(j['expireLe'])),
+            ('Publié le', '${j['publieLe'] ?? ''}'.isEmpty ? '—' : dateJj(j['publieLe'])),
+            ('Réponses reçues', nombre(nb)),
+            ('Note interne', j['note'] == null ? '—' : '${j['note']}'),
+          ]),
+        ]),
+        pied: (fermer) => [
+              if (lien.isNotEmpty)
+                BoutonSigh(
+                    libelle: 'Imprimer l’affiche (QR)',
+                    icone: LucideIcons.printer,
+                    variante: VarianteBouton.secondaire,
+                    onPressed: () => _imprimerAffiche(ecran, j, lien)),
+              if (lien.isNotEmpty)
+                BoutonSigh(
+                    libelle: 'Copier l’adresse',
+                    icone: LucideIcons.copy,
+                    onPressed: () async {
+                      await Clipboard.setData(ClipboardData(text: lien));
+                      if (ecran.mounted) ToastsSigh.afficher(ecran, 'Adresse copiée.', type: TypeToast.succes);
+                    }),
+            ]);
+  }
+
+  /// L'affiche A4 du QR : enregistrée en PDF puis envoyée à l'imprimante par défaut ; un refus de l'imprimante est nommé, le chemin du PDF reste donné.
+  Future<void> _imprimerAffiche(BuildContext ecran, Fiche j, String lien) async {
+    final c = ContexteEcran.of(ecran);
+    final ref = PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero());
+    final octets = await pdfAfficheSatisfaction(
+        titre: '${j['enqueteTitre'] ?? ''}',
+        lien: lien,
+        expireLe: '${j['expireLe'] ?? ''}',
+        reference: ref,
+        utilisateur: acteur(c).nom,
+        edite: c.aujourdhui,
+        polices: await PolicesPdf.charger());
+    final chemin = await ImpressionPoste.enregistrer(octets, ref);
+    final refus = await ImpressionPoste.imprimer(chemin);
+    if (!ecran.mounted) return;
+    ToastsSigh.afficher(ecran, refus ?? 'Affiche envoyée à l’imprimante.',
+        type: refus == null ? TypeToast.succes : TypeToast.attention, detail: chemin);
+  }
+
   Future<void> _revoquer(BuildContext ecran, Fiche j) async {
     final c = ContexteEcran.of(ecran);
     final ok = await confirmerSigh(ecran,
         titre: 'Révoquer ce lien ?',
-        message:
-            'Le formulaire cessera immédiatement de s’ouvrir. Les réponses déjà recueillies sont conservées : révoquer ferme la porte, cela n’efface rien.',
+        message: qualLienEnLigne(j)
+            ? 'Le poste mère retirera le questionnaire du relais au tour suivant : le lien cessera de s’ouvrir et ne pourra pas être republié. Les réponses déjà déposées sont relevées quand même : révoquer ferme la porte, cela n’efface rien.'
+            : 'Le formulaire cessera immédiatement de s’ouvrir. Les réponses déjà recueillies sont conservées : révoquer ferme la porte, cela n’efface rien.',
         libelleOk: 'Révoquer',
         dangereux: true);
     if (!ok || !ecran.mounted) return;
@@ -655,5 +784,101 @@ class _EtatEditeur extends State<_EditeurQuestions> {
       n++;
     }
     return code();
+  }
+}
+
+/// L'état de la satisfaction en ligne, lu au service du poste MÈRE (seul à détenir la clé privée et à parler au relais). Sur un fileul, la carte le dit :
+/// la publication et la relève se font là-bas, automatiquement, et les réponses arrivent ici par la synchronisation.
+class _CarteSatisfactionEnLigne extends StatefulWidget {
+  const _CarteSatisfactionEnLigne({required this.peutRelever});
+  final bool peutRelever;
+
+  @override
+  State<_CarteSatisfactionEnLigne> createState() => _EtatCarteSatisfaction();
+}
+
+class _EtatCarteSatisfaction extends State<_CarteSatisfactionEnLigne> {
+  Future<Map<String, Object?>?>? _etat;
+  bool _enCours = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _etat = mrbSourceCourante()?.etatSatisfaction();
+  }
+
+  Future<void> _relever() async {
+    final s = mrbSourceCourante();
+    if (s == null) return;
+    setState(() => _enCours = true);
+    try {
+      final r = await s.synchroniserSatisfaction();
+      if (!mounted) return;
+      final raison = r['raison'];
+      ToastsSigh.afficher(
+          context,
+          raison == null
+              ? 'Relève faite : ${r['recues'] ?? 0} réponse(s) reçue(s), ${r['illisibles'] ?? 0} écartée(s) ; ${r['publies'] ?? 0} lien(s) publié(s).'
+              : raison == 'relais_non_configure'
+                  ? 'Aucun relais n’est configuré sur le poste mère : rien n’est publié ni relevé.'
+                  : 'Relève impossible pour l’instant (${r['code'] ?? raison}) : le prochain essai suit la synchronisation.',
+          type: raison == null ? TypeToast.succes : TypeToast.attention);
+    } catch (e) {
+      if (mounted) ToastsSigh.afficher(context, '$e', type: TypeToast.erreur);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _enCours = false;
+          _etat = mrbSourceCourante()?.etatSatisfaction();
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (mrbSourceCourante() == null) {
+      return const NoteSigh(
+          'Ce poste n’est pas le poste mère : la publication des liens en ligne et la relève des réponses se font au poste mère, automatiquement. Les réponses relevées arrivent ici par la synchronisation.',
+          icone: LucideIcons.server);
+    }
+    return CarteSigh(
+        titre: 'Satisfaction en ligne (poste mère)',
+        child: FutureBuilder<Map<String, Object?>?>(
+            future: _etat,
+            builder: (context, snap) {
+              final e = snap.data;
+              final Widget corps;
+              if (snap.connectionState != ConnectionState.done) {
+                corps = const Text('Lecture de l’état…', style: TextStyle(color: JetonsShell.slate500, fontSize: 13));
+              } else if (snap.hasError || e == null) {
+                corps = Text(snap.hasError ? '${snap.error}' : 'Le service de la mère ne propose pas la satisfaction en ligne.',
+                    style: const TextStyle(color: JetonsShell.slate500, fontSize: 13));
+              } else {
+                final derniere = e['derniere_releve_ms'] is num ? DateTime.fromMillisecondsSinceEpoch((e['derniere_releve_ms'] as num).toInt()) : null;
+                corps = DescListeSigh([
+                  ('Relais', e['relais_configure'] == true ? 'Configuré' : 'Non configuré : rien n’est publié ni relevé'),
+                  ('Clé publique de la clinique', 'Identifiant ${e['kid'] ?? '—'} (la clé privée ne quitte pas le poste mère)'),
+                  ('Liens en ligne', nombre(e['liens_en_ligne'] is num ? e['liens_en_ligne'] as num : 0)),
+                  ('Dernière relève', derniere == null ? 'Jamais' : dateHeure(derniere)),
+                  ('Réponses reçues', nombre(e['recues'] is num ? e['recues'] as num : 0)),
+                  ('Réponses écartées (illisibles)', nombre(e['illisibles'] is num ? e['illisibles'] as num : 0)),
+                  if (e['erreur'] != null) ('Dernière erreur', '${e['erreur']}'),
+                ]);
+              }
+              return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                corps,
+                if (widget.peutRelever) ...[
+                  const SizedBox(height: 12),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: BoutonSigh(
+                          libelle: _enCours ? 'Relève en cours…' : 'Publier et relever maintenant',
+                          icone: LucideIcons.refreshCw,
+                          taille: TailleBouton.sm,
+                          onPressed: _enCours ? null : _relever)),
+                ],
+              ]);
+            }));
   }
 }

@@ -214,6 +214,14 @@ abstract class MrbSource {
   Future<String?> publierIndicateursClinique() async =>
       throw MrbIndisponible('Le service de la mère ne propose pas la publication des indicateurs agrégés.');
 
+  /// Satisfaction en ligne (16/11/2026) : l'état de la publication et de la relève (identifiant de la clé publique, compteurs, dernière erreur ; jamais la
+  /// clé privée). `null` : le service de la mère ne la propose pas.
+  Future<Map<String, Object?>?> etatSatisfaction() async => null;
+
+  /// Publie les liens en attente et relève les réponses MAINTENANT (sans attendre le tour du pont). Rend le bilan du service.
+  Future<Map<String, Object?>> synchroniserSatisfaction() async =>
+      throw MrbIndisponible('Le service de la mère ne propose pas la satisfaction en ligne.');
+
   Future<void> verifierDerniereSauvegarde() async =>
       throw MrbIndisponible('La vérification de restauration (test à blanc) n’est pas proposée par le service de la mère : '
           'elle exige le fichier chiffré et la clé de clinique, que la console n’a pas.');
@@ -346,6 +354,12 @@ class MrbSourceClient extends MrbSource {
     final j = await client.brut('POST', '/admin/indicateurs-clinique/publier');
     return j['publie'] == true ? null : '${j['raison'] ?? 'inconnue'}';
   }
+
+  @override
+  Future<Map<String, Object?>?> etatSatisfaction() => _get('/admin/satisfaction/etat');
+
+  @override
+  Future<Map<String, Object?>> synchroniserSatisfaction() => client.brut('POST', '/admin/satisfaction/synchroniser');
 
   @override
   Future<String> sauvegarderMaintenant() async => '${(await client.brut('POST', '/admin/sauvegarder'))['fichier']}';

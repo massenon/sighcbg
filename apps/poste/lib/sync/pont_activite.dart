@@ -74,6 +74,11 @@ const Set<String> collectionsActivite = {
   // fileul ne reste plus local au poste.
   'budgets',
   'immobilisations',
+  // SATISFACTION EN LIGNE (Direction, 16/11/2026) : les LIENS de partage d'une enquête (un poste ouvre un lien « en ligne », la mère le publie au relais et écrit l'issue sur la même
+  // fiche) et les RÉPONSES (recueillies au guichet d'un poste, ou relevées du relais et déchiffrées par la mère) : les statistiques de satisfaction comptent partout les mêmes réponses.
+  // Jamais vers un téléphone (exclusion posée par la mère, `collectionsPosteSeulement`).
+  'jetonsEnquete',
+  'reponsesEnquetes',
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie

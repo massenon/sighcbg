@@ -81,6 +81,10 @@ const familleDeBase = <String, String>{
   // Q26 (Direction, 16/11/2026) : budgets et immobilisations rejoignent la synchronisation (sinon un import fait chez un fileul resterait local au poste, contre la continuité de service). Fiches
   // descriptives sans invariant entre fiches : famille A, champ à champ, dans les deux sens ; les numéros de référence en doublon sont des marqueurs que chaque poste déduit (`numeroEnDoublon`).
   'budgets': 'A', 'immobilisations': 'A',
+  // SATISFACTION EN LIGNE (Direction, 16/11/2026) : les LIENS de partage d'une enquête (le poste en ouvre un, la mère le publie au relais et écrit l'issue sur la même fiche) et les
+  // RÉPONSES (recueillies au guichet d'un poste, ou relevées du relais et déchiffrées par la mère) : des fiches descriptives, champ à champ, dans les deux sens, pour que les statistiques
+  // comptent partout les mêmes réponses. Jamais vers un téléphone (voir `collectionsPosteSeulement`).
+  'jetonsEnquete': 'A', 'reponsesEnquetes': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -93,7 +97,7 @@ final Set<String> collectionsConfigurationPoste = {...cfbEssentielles, 'utilisat
 /// Ce qu'un MOBILE ne reçoit JAMAIS : les hachés des mots de passe (`identifiants`). Le téléphone reçoit toute la configuration de la clinique (référentiels,
 /// droits, modules, comptes sans secret : Direction, 03/11/2026) mais il ne vérifie pas les mots de passe du poste, il a son code PIN ; un téléphone perdu ne
 /// doit pas emporter les empreintes de tous les comptes (RG-13). La rémunération du personnel n'est publiée à personne.
-final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport', 'lecturesOcr', 'reglagesOcr', 'validationsDeposees'};
+final Set<String> collectionsPosteSeulement = {'identifiants', 'demandesImport', 'lecturesOcr', 'reglagesOcr', 'validationsDeposees', 'jetonsEnquete', 'reponsesEnquetes'};
 
 /// Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Un fileul ne reçoit ni ne modifie la demande d'un autre.
 /// L'auteur est l'appareil de l'opération `creer` (authentifié par le jeton), jamais un champ de la fiche qu'un fileul pourrait falsifier.
@@ -1179,7 +1183,9 @@ class Mere {
             ? await codeMobile(req, b)
             : req.uri.path.startsWith('/admin/horssite/')
                 ? await routeHorsSite(cle, req, b, q) // réseau et disque : jamais sous le verrou de la base
-                : await verrou.executer(() => route(cle, req, b, q));
+                : req.uri.path.startsWith('/admin/satisfaction/')
+                    ? await pont.satisfaction.route(cle, req, b) // réseau (relais) : jamais sous le verrou de la base
+                    : await verrou.executer(() => route(cle, req, b, q));
       } on Err catch (e) {
         statut = e.statut;
         out = e.corps;
