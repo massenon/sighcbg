@@ -81,6 +81,9 @@ const familleDeBase = <String, String>{
   // Q26 (Direction, 16/11/2026) : budgets et immobilisations rejoignent la synchronisation (sinon un import fait chez un fileul resterait local au poste, contre la continuité de service). Fiches
   // descriptives sans invariant entre fiches : famille A, champ à champ, dans les deux sens ; les numéros de référence en doublon sont des marqueurs que chaque poste déduit (`numeroEnDoublon`).
   'budgets': 'A', 'immobilisations': 'A',
+  // PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : une version de régime individuel est IMMUABLE et datée (elle explique des vacations déjà posées) : famille B, ajout seul ;
+  // la poser chez un fileul la fait connaître de la mère et des autres postes (primes, paie). Elle porte l'honoraire de l'agent : jamais vers un téléphone.
+  'regimesIndividuels': 'B',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -105,7 +108,8 @@ const Set<String> collectionsPrixJamaisMobile = {'tarifs', 'versionsTarif', 'pro
 
 /// Les PRESTATAIRES externes (tarif par acte = rémunération, IFU) voyagent de la mère aux postes fileuls (décision du 14/11/2026, jeu d'import « direct et demande ») mais ne partent
 /// JAMAIS vers un téléphone : aucun écran du mobile ne les lit, et la rémunération n'est publiée à aucun appareil qui n'en a pas l'usage (RG-13). Même exclusion que le prix.
-const Set<String> collectionsRemunerationJamaisMobile = {'prestataires'};
+/// PLANNING INDIVIDUEL (16/11/2026) : le régime individuel d'un agent porte son honoraire propre : même exclusion.
+const Set<String> collectionsRemunerationJamaisMobile = {'prestataires', 'regimesIndividuels'};
 
 /// T13 : ce qu'un téléphone ne reçoit JAMAIS de l'assurance : les GARANTIES (taux et plafonds conventionnés avec chaque compagnie) et les COUVERTURES (quelle compagnie couvre quel patient, sous quelle
 /// police : donnée nominative, RG-13). Aucun écran du mobile ne les lit ; l'exclusion est posée ici, au chemin de lecture du mobile, comme celle des prix.

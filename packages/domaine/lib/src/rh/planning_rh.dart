@@ -22,6 +22,42 @@ typedef FichePlanning = Map<String, Object?>;
 /// Les champs d'un régime qu'une dérogation individuelle peut changer.
 const List<String> champsDerogeablesRh = ['vacations', 'repos', 'cycle', 'honoraire', 'honorairePeriodicite'];
 
+/// PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : les champs que le régime individuel ajoute à ceux de la maquette — les HORAIRES (début, fin), la DURÉE d'une
+/// vacation et les JOURS de la semaine travaillés. Absents du régime de la catégorie, ils ne valent rien : les horaires et la durée sont alors ceux du type de
+/// vacation (`rhbTypesPlanning`, transcrits des plannings réels), et l'absence de jours veut dire « tous les jours » (aucune restriction écrite).
+const List<String> champsHorairesRh = ['heureDebut', 'heureFin', 'dureeHeures', 'jours'];
+
+/// Tous les champs qu'un régime individuel (dérogation ou remplacement) peut porter, dans l'ordre d'affichage.
+const List<String> champsRegimeIndividuelRh = [...champsDerogeablesRh, ...champsHorairesRh];
+
+/// Les libellés des champs d'un régime (écran, historique, refus).
+const Map<String, String> libellesChampsRegimeRh = {
+  'vacations': 'Vacations',
+  'repos': 'Repos',
+  'cycle': 'Cycle',
+  'honoraire': 'Honoraire',
+  'honorairePeriodicite': 'Périodicité de l’honoraire',
+  'heureDebut': 'Heure de début',
+  'heureFin': 'Heure de fin',
+  'dureeHeures': 'Durée (heures)',
+  'jours': 'Jours travaillés',
+};
+
+/// Les jours de la semaine (identifiants STOCKÉS), du lundi au dimanche : l'indice + 1 est le `weekday` de Dart.
+const List<({String id, String libelle})> joursSemaineRh = [
+  (id: 'lun', libelle: 'Lundi'),
+  (id: 'mar', libelle: 'Mardi'),
+  (id: 'mer', libelle: 'Mercredi'),
+  (id: 'jeu', libelle: 'Jeudi'),
+  (id: 'ven', libelle: 'Vendredi'),
+  (id: 'sam', libelle: 'Samedi'),
+  (id: 'dim', libelle: 'Dimanche'),
+];
+
+/// Les trois provenances d'un champ du régime en vigueur : la CATÉGORIE (régime administré, avec son document source), le REMPLACEMENT (un autre régime adopté
+/// en bloc) et l'INDIVIDUEL (la valeur portée par la version de l'agent). Un champ sans provenance n'a pas de valeur.
+const String provenanceCategorieRh = 'categorie', provenanceRemplacementRh = 'remplacement', provenanceIndividuelleRh = 'individuel';
+
 const List<String> vacationsGardeRh = ['garde', 'garde_hospi'];
 
 /// Un refus nommé : code, motif, geste (et le détail utile à l'écran).
@@ -48,7 +84,11 @@ bool _renseigne(Object? x) => x != null && x != '' && !(x is List && x.isEmpty);
 
 List<String> _liste(Object? v) => [for (final x in (v as List? ?? const [])) '$x'];
 
-/// Le régime en vigueur pour un agent à une date : la catégorie, puis les champs dérogés de la dernière version à date d'effet atteinte.
+/// Le régime en vigueur pour un agent à une date : la catégorie, puis les champs dérogés de la dernière version à date d'effet atteinte — ou, pour une version
+/// de REMPLACEMENT, le régime qu'elle adopte en bloc, complété de ses propres champs.
+///
+/// `toJson` est la forme de la MAQUETTE (vecteurs `planning_rh.json`) : elle n'est pas étendue. Ce que le planning individuel ajoute (horaires, durée, jours,
+/// mode, provenance et valeurs d'attente champ par champ) se lit dans les propriétés et dans [toJsonComplet].
 class RegimeRhResolu {
   RegimeRhResolu({
     required this.date,
@@ -66,17 +106,70 @@ class RegimeRhResolu {
     this.derogations = const [],
     this.versionId,
     this.dateEffet,
-  });
+    this.heureDebut,
+    this.heureFin,
+    this.dureeHeures,
+    this.jours,
+    this.mode = 'categorie',
+    this.baseRemplacement,
+    this.motif,
+    this.sourceDocument,
+    List<String>? aValider,
+    Map<String, String>? provenances,
+  })  : aValider = aValider ?? [],
+        provenances = provenances ?? {};
   final String date;
   String? categorie, libelle, repos, honorairePeriodicite, source, mention, versionId, dateEffet;
   List<String> fonctions, vacations, derogations;
   num? cycle, honoraire;
   bool individuel;
 
+  /// Les horaires (« HH:MM ») et la durée PROPRES au régime ; `null` : ceux du type de vacation (voir [horairesVacationRh]).
+  String? heureDebut, heureFin;
+  num? dureeHeures;
+
+  /// Les jours de la semaine travaillés (identifiants de [joursSemaineRh]) ; `null` : tous les jours, aucune restriction écrite.
+  List<String>? jours;
+
+  /// `categorie` (aucune version, ou retour à la catégorie), `derogation` (champ par champ) ou `remplacement` (le régime est remplacé entièrement).
+  String mode;
+
+  /// Le libellé du régime ADOPTÉ par un remplacement (`null` : un remplacement composé champ par champ, sans régime de base).
+  String? baseRemplacement;
+
+  /// Le motif et le document d'origine de la version en vigueur (l'arrêté, l'avenant, la note…) ; `null` sans version.
+  String? motif, sourceDocument;
+
+  /// Les champs dont la valeur est une VALEUR D'ATTENTE (« à valider ») : elle ne vient d'aucun document.
+  List<String> aValider;
+
+  /// D'où vient chaque champ renseigné : [provenanceCategorieRh], [provenanceRemplacementRh] ou [provenanceIndividuelleRh].
+  Map<String, String> provenances;
+
+  /// La valeur d'un champ du régime, par son nom (`champsRegimeIndividuelRh`).
+  Object? valeur(String champ) => switch (champ) {
+        'vacations' => vacations,
+        'repos' => repos,
+        'cycle' => cycle,
+        'honoraire' => honoraire,
+        'honorairePeriodicite' => honorairePeriodicite,
+        'heureDebut' => heureDebut,
+        'heureFin' => heureFin,
+        'dureeHeures' => dureeHeures,
+        'jours' => jours,
+        _ => null,
+      };
+
   Map<String, Object?> toJson() => {
         'date': date, 'categorie': categorie, 'libelle': libelle, 'fonctions': fonctions, 'vacations': vacations, 'repos': repos, 'cycle': cycle,
         'honoraire': honoraire, 'honorairePeriodicite': honorairePeriodicite, 'source': source, 'mention': mention, 'individuel': individuel,
         'derogations': derogations, 'versionId': versionId, 'dateEffet': dateEffet,
+      };
+
+  Map<String, Object?> toJsonComplet() => {
+        ...toJson(),
+        'heureDebut': heureDebut, 'heureFin': heureFin, 'dureeHeures': dureeHeures, 'jours': jours, 'mode': mode, 'baseRemplacement': baseRemplacement,
+        'motif': motif, 'sourceDocument': sourceDocument, 'aValider': aValider, 'provenances': provenances,
       };
 }
 
@@ -93,7 +186,56 @@ Map<String, Object?>? regimeCategorieRh(List<FichePlanning> regimesActifs, Strin
   };
 }
 
-/// `regimeALaDate` : [versions] sont les fiches ACTIVES de l'agent (collection `regimesIndividuels`).
+/// Le régime nommé [libelle] (base d'un REMPLACEMENT) : un régime ACTIF du magasin, à défaut une règle relevée sur les plannings. `null` s'il n'existe pas.
+Map<String, Object?>? regimeParLibelleRh(List<FichePlanning> regimesActifs, String? libelle) {
+  if (libelle == null || libelle.isEmpty) return null;
+  for (final r in regimesActifs) {
+    if (r['libelle'] == libelle) return r;
+  }
+  for (final d in rhbReglesPlanning) {
+    if (d.libelle == libelle) {
+      return {
+        'libelle': d.libelle, 'fonctions': d.fonctions, 'vacations': d.vacations, 'repos': d.repos, 'cycle': d.cycle, 'honoraire': d.honoraire,
+        'honorairePeriodicite': d.honorairePeriodicite, 'source': d.source, 'mention': d.mention,
+      };
+    }
+  }
+  return null;
+}
+
+/// Les libellés des régimes qu'un remplacement peut adopter : ceux du magasin (actifs), puis les règles relevées qui n'y figurent pas.
+List<String> libellesRegimesRh(List<FichePlanning> regimesActifs) {
+  final out = <String>[for (final r in regimesActifs) if ('${r['libelle'] ?? ''}'.isNotEmpty) '${r['libelle']}'];
+  for (final d in rhbReglesPlanning) {
+    if (!out.contains(d.libelle)) out.add(d.libelle);
+  }
+  return out;
+}
+
+/// Pose sur [out] les champs d'un régime [r] (catégorie ou base d'un remplacement), avec leur provenance et ses valeurs d'attente (`aValider` de la fiche).
+void _appliquerRegime(RegimeRhResolu out, Map<String, Object?> r, String provenance) {
+  out.vacations = _liste(r['vacations']);
+  out.repos = r['repos'] == null || r['repos'] == '' ? null : '${r['repos']}';
+  out.cycle = r['cycle'] is num ? r['cycle'] as num : null;
+  out.honoraire = r['honoraire'] == null || r['honoraire'] == 0 || r['honoraire'] is! num ? null : r['honoraire'] as num;
+  out.honorairePeriodicite = r['honorairePeriodicite'] == null || r['honorairePeriodicite'] == '' ? null : '${r['honorairePeriodicite']}';
+  out.heureDebut = _renseigne(r['heureDebut']) ? '${r['heureDebut']}' : null;
+  out.heureFin = _renseigne(r['heureFin']) ? '${r['heureFin']}' : null;
+  out.dureeHeures = r['dureeHeures'] is num ? r['dureeHeures'] as num : null;
+  out.jours = _renseigne(r['jours']) ? _liste(r['jours']) : null;
+  out.source = r['source'] as String?;
+  out.mention = r['mention'] as String?;
+  out.provenances = {for (final c in champsRegimeIndividuelRh) if (_renseigne(out.valeur(c))) c: provenance};
+  final av = _liste(r['aValider']);
+  out.aValider = [for (final c in champsRegimeIndividuelRh) if (av.contains(c) && out.provenances.containsKey(c)) c];
+}
+
+/// `regimeALaDate` : [versions] sont les fiches ACTIVES de l'agent (collection `regimesIndividuels`). C'est LA résolution du régime effectif d'un agent à une date :
+/// le planning (types autorisés, contrôle de repos), les primes (honoraire du régime, RG-11), la paie et « Mon espace » la lisent, aucun ne la refait.
+///
+/// Une version porte `mode` : absent ou `derogation`, seuls les champs renseignés changent (le reste suit la catégorie) ; `remplacement`, le régime de la catégorie
+/// est REMPLACÉ entièrement — par le régime `baseRemplacement` s'il est nommé, complété des champs de la version ; aucun champ de la catégorie n'est hérité.
+/// `retourCategorie` ramène à la catégorie. Les valeurs d'attente de la version (`aValider`) sont portées champ par champ.
 RegimeRhResolu regimeRhALaDate({
   required List<FichePlanning> regimesActifs,
   required List<FichePlanning> versions,
@@ -106,14 +248,8 @@ RegimeRhResolu regimeRhALaDate({
     categorie: base == null ? null : '${base['libelle']}',
     libelle: base == null ? null : '${base['libelle']}',
     fonctions: base == null ? [] : _liste(base['fonctions']),
-    vacations: base == null ? [] : _liste(base['vacations']),
-    repos: base == null || base['repos'] == null || base['repos'] == '' ? null : '${base['repos']}',
-    cycle: base == null ? null : base['cycle'] as num?,
-    honoraire: base == null || base['honoraire'] == null || base['honoraire'] == 0 ? null : base['honoraire'] as num,
-    honorairePeriodicite: base == null || base['honorairePeriodicite'] == null || base['honorairePeriodicite'] == '' ? null : '${base['honorairePeriodicite']}',
-    source: base == null ? null : base['source'] as String?,
-    mention: base == null ? null : base['mention'] as String?,
   );
+  if (base != null) _appliquerRegime(out, base, provenanceCategorieRh);
   final triees = [...versions]..sort((a, b) => '${a['dateEffet']}'.compareTo('${b['dateEffet']}'));
   FichePlanning? v;
   for (final x in triees) {
@@ -122,10 +258,24 @@ RegimeRhResolu regimeRhALaDate({
   if (v == null) return out;
   out.versionId = v['id'] as String?;
   out.dateEffet = '${v['dateEffet']}';
+  out.motif = _renseigne(v['motif']) ? '${v['motif']}' : null;
+  out.sourceDocument = _renseigne(v['sourceDocument']) ? '${v['sourceDocument']}' : null;
   if (v['retourCategorie'] == true) return out;
   final champs = (v['champs'] as Map?)?.cast<String, Object?>() ?? const {};
+  final remplacement = v['mode'] == 'remplacement';
+  if (remplacement) {
+    final adopte = regimeParLibelleRh(regimesActifs, v['baseRemplacement'] as String?);
+    _appliquerRegime(out, adopte ?? const {}, provenanceRemplacementRh);
+    if (adopte == null) {
+      out.source = null;
+      out.mention = null;
+    }
+    out.baseRemplacement = adopte == null ? null : '${adopte['libelle']}';
+    out.libelle = _renseigne(champs['libelle']) ? '${champs['libelle']}' : (adopte == null ? 'Régime individuel' : '${adopte['libelle']}');
+    out.mode = 'remplacement';
+  }
   final derog = <String>[];
-  for (final c in champsDerogeablesRh) {
+  for (final c in champsRegimeIndividuelRh) {
     final x = champs[c];
     if (!_renseigne(x)) continue;
     switch (c) {
@@ -139,11 +289,30 @@ RegimeRhResolu regimeRhALaDate({
         out.honoraire = x as num;
       case 'honorairePeriodicite':
         out.honorairePeriodicite = '$x';
+      case 'heureDebut':
+        out.heureDebut = '$x';
+      case 'heureFin':
+        out.heureFin = '$x';
+      case 'dureeHeures':
+        out.dureeHeures = x as num;
+      case 'jours':
+        out.jours = _liste(x);
     }
     derog.add(c);
+    if (_renseigne(out.valeur(c)) || c == 'repos') {
+      out.provenances[c] = provenanceIndividuelleRh;
+    }
+    out.aValider.remove(c);
   }
+  if (out.repos == null) out.provenances.remove('repos');
+  final av = _liste(v['aValider']);
+  for (final c in derog) {
+    if (av.contains(c) && !out.aValider.contains(c)) out.aValider.add(c);
+  }
+  out.aValider = [for (final c in champsRegimeIndividuelRh) if (out.aValider.contains(c)) c];
   out.derogations = derog;
-  out.individuel = derog.isNotEmpty;
+  out.individuel = remplacement || derog.isNotEmpty;
+  if (out.individuel && !remplacement) out.mode = 'derogation';
   return out;
 }
 
@@ -283,6 +452,18 @@ RefusRh? controlerVacationRh({
               'Choisir un autre jour, ou retirer l’autre garde.', {'date': d, 'autre': p['id'], 'reposHeures': jours * 24, 'individuel': regime?.individuel ?? false});
         }
       }
+    }
+  }
+  // PLANNING INDIVIDUEL : un régime qui ÉCRIT ses jours travaillés refuse une vacation travaillée un autre jour (repos, congé, absence et remplacement restent
+  // possibles). Sans jours écrits, aucune restriction : rien n'est déduit d'une mention en texte libre.
+  final jr = regime?.jours;
+  if (jr != null && jr.isNotEmpty && (rhbTypePlanning(type)?.duree ?? 0) > 0) {
+    final p = d.split('-').map(int.parse).toList();
+    final j = joursSemaineRh[DateTime.utc(p[0], p[1], p[2]).weekday - 1];
+    if (!jr.contains(j.id)) {
+      return RefusRh('JOUR_HORS_REGIME', 'Le ${_dateFr(d)} est un ${j.libelle.toLowerCase()} : le régime en vigueur de $nom ne compte pas ce jour parmi ses jours travaillés.',
+          'Choisir un jour travaillé du régime (${[for (final x in joursSemaineRh) if (jr.contains(x.id)) x.libelle.toLowerCase()].join(', ')}), ou poser un repos, un congé ou une absence.',
+          {'date': d, 'jour': j.id, 'individuel': regime?.individuel ?? false});
     }
   }
   return null;

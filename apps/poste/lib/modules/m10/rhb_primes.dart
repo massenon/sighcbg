@@ -8,6 +8,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import 'rhb_circuit.dart' show rhbPlanningPoste;
 import 'rhb_commun.dart';
 
 /// `m10-primes` — « Primes diverses (NS 132) » : la grille des primes par fonction et les primes ACQUISES du mois, calculées depuis le planning validé (RG-11).
@@ -27,7 +28,7 @@ class EcranPrimes extends StatelessWidget with EcranMaquette {
 
   @override
   Widget build(BuildContext context) =>
-      RhbEcoute(collections: const ['grillePrimes', 'historiquePrimes', 'beneficiairesPrimes', 'planning', 'personnel'], construire: _corps);
+      RhbEcoute(collections: const ['grillePrimes', 'historiquePrimes', 'beneficiairesPrimes', 'planning', 'personnel', 'regimesTravail', 'regimesIndividuels'], construire: _corps);
 
   Widget _corps(BuildContext context, ContexteEcran c) => rhbEspace([
         _Grille(contexte: context),
@@ -453,6 +454,7 @@ class _Acquises extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
+    final planning = rhbPlanningPoste(c);
     final lignes = rhbPrimesAcquises(
         personnelActif: rhbActives(c, 'personnel'),
         planningActif: rhbActives(c, 'planning'),
@@ -461,13 +463,18 @@ class _Acquises extends StatelessWidget {
         designations: rhbActives(c, 'beneficiairesPrimes'),
         date: iso(c.aujourdhui),
         annee: c.aujourdhui.year,
-        mois: c.aujourdhui.month);
+        mois: c.aujourdhui.month,
+        // PLANNING INDIVIDUEL (16/11/2026) : l'honoraire du régime EFFECTIF de l'agent, la même résolution que la paie (RG-11).
+        honoraireRegimeDe: (e) => planning.honoraireMois(e, c.aujourdhui.year, c.aujourdhui.month).montant);
     num s(num Function(RhbPrimeAcquise) f) => lignes.fold<num>(0, (a, x) => a + f(x));
+    // La colonne n'apparaît que si un agent perçoit un honoraire de régime : sans elle, l'état reste celui de la maquette.
+    final avecHonoraire = lignes.any((x) => x.honoraireRegime != 0);
     final rows = <Fiche>[
       for (final x in lignes)
         {
           'id': x.id, 'matricule': x.matricule, 'employe': x.employe, 'fonction': x.fonction, 'service': x.service, 'gardes': x.gardes,
-          'primeGarde': x.primeGarde, 'permanences': x.permanences, 'primePermanence': x.primePermanence, 'primesFixes': x.primesFixes, 'total': x.total
+          'primeGarde': x.primeGarde, 'permanences': x.permanences, 'primePermanence': x.primePermanence, 'primesFixes': x.primesFixes, 'total': x.total,
+          'honoraireRegime': x.honoraireRegime,
         }
     ];
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -502,6 +509,13 @@ class _Acquises extends StatelessWidget {
           const ColonneTableau(cle: 'permanences', libelle: 'Perm.', droite: true),
           ColonneTableau(cle: 'primePermanence', libelle: 'Prime de permanence', droite: true, texte: (l) => money(l['primePermanence'], avecDevise: false), rendu: (_, l) => Text(money(l['primePermanence'], avecDevise: false))),
           ColonneTableau(cle: 'primesFixes', libelle: 'Primes fixes', droite: true, texte: (l) => money(l['primesFixes'], avecDevise: false), rendu: (_, l) => Text(money(l['primesFixes'], avecDevise: false))),
+          if (avecHonoraire)
+            ColonneTableau(
+                cle: 'honoraireRegime',
+                libelle: 'Honoraire de régime',
+                droite: true,
+                texte: (l) => money(l['honoraireRegime'], avecDevise: false),
+                rendu: (_, l) => Text(money(l['honoraireRegime'], avecDevise: false))),
           ColonneTableau(
               cle: 'total',
               libelle: 'Total',
@@ -537,12 +551,14 @@ class _Acquises extends StatelessWidget {
                 ColonneEtat(libelle: 'Perm.', droite: true, valeur: (r) => r['permanences']),
                 m('Prime perm.', (r) => (r['primePermanence'] as num?) ?? 0),
                 m('Primes fixes', (r) => (r['primesFixes'] as num?) ?? 0),
+                if (lignes.any((x) => x.honoraireRegime != 0)) m('Honoraire de régime', (r) => (r['honoraireRegime'] as num?) ?? 0),
                 m('Total', (r) => (r['total'] as num?) ?? 0),
               ], lignes: [
                 for (final x in tri)
                   {
                     'matricule': x.matricule, 'employe': x.employe, 'fonction': x.fonction, 'gardes': x.gardes, 'primeGarde': x.primeGarde,
-                    'permanences': x.permanences, 'primePermanence': x.primePermanence, 'primesFixes': x.primesFixes, 'total': x.total
+                    'permanences': x.permanences, 'primePermanence': x.primePermanence, 'primesFixes': x.primesFixes, 'total': x.total,
+                    'honoraireRegime': x.honoraireRegime,
                   }
               ])
             ],

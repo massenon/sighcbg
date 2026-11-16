@@ -14,6 +14,8 @@ import '../referentiels/regles.dart' show joursEntre;
 import '../configuration/cfb_regles.dart' show CfbFermetures;
 import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
+import '../rh/planning_rh.dart' show regimeRhALaDate;
+import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
 
 typedef PaiFiche = Map<String, Object?>;
 
@@ -454,8 +456,17 @@ class PaiEntrees {
       this.primesNs132 = true,
       this.sanctionsNs131 = true,
       this.obligationsFiscales = const [],
-      this.historiqueObligations = const []});
+      this.historiqueObligations = const [],
+      this.regimesTravail = const [],
+      this.regimesIndividuels});
   final List<PaiFiche> planning, evaluations, avances, participations, grille, historique, heuresSup, prets;
+
+  /// PLANNING INDIVIDUEL (16/11/2026) : les régimes de la catégorie (`regimesTravail`, actifs) et les versions de régime individuel (`regimesIndividuels`, actives).
+  /// Avec elles, le bulletin porte l'HONORAIRE DU RÉGIME EFFECTIF de l'agent (`honoraireRegimeMoisRh`, une seule résolution : `regimeRhALaDate`). [regimesIndividuels]
+  /// absent (`null`) : aucun honoraire de régime, la forme de la maquette (vecteurs de paie inchangés). Comme les lignes de la note NS 132, l'honoraire suit la
+  /// bascule [primesNs132] : la seule source d'honoraire de régime documentée est la prime d'incinération de cette note.
+  final List<PaiFiche> regimesTravail;
+  final List<PaiFiche>? regimesIndividuels;
 
   /// Les deux activités pilotées depuis Paramètres système (PRD P0-5), lues dans `modulesActifs` par [paiActivites] : OUVERTES par défaut (décision de
   /// la Direction du 06/11/2026). [primesNs132] fermée : aucune prime de la note NS 132 n'entre au brut (garde et permanence comprises, ce sont deux
@@ -670,6 +681,28 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
     final nb = pr.mode == 'fixe' ? 1 : (pr.id == 'garde' ? gardes : (pr.id == 'permanence' ? permanences : 0));
     if (nb == 0) continue;
     lignesPrimes.add(PaiLignePrime(pr.id, pr.libelle, montant, nb, montant * nb));
+  }
+  final versionsAgent = e.regimesIndividuels;
+  if (e.primesNs132 && versionsAgent != null) {
+    final mesVersions = [for (final v in versionsAgent) if (v['employeId'] == id) v];
+    final hr = honoraireRegimeMoisRh(
+        vacations: e.planning.where(_actif).toList(),
+        employeId: id,
+        annee: annee,
+        mois: mois + 1,
+        regimeDe: (d) => regimeRhALaDate(regimesActifs: e.regimesTravail, versions: mesVersions, fonction: employe['fonction'] as String?, date: d));
+    // Une ligne par périodicité et par montant : un honoraire relevé en cours de mois se lit à son montant, sans moyenne.
+    final groupes = <String, (String, num, int)>{};
+    for (final l in hr.lignes) {
+      final per = '${l['periodicite']}';
+      final k = '$per/${l['montant']}';
+      final g = groupes[k];
+      groupes[k] = (per, l['montant'] as num, (g?.$3 ?? 0) + 1);
+    }
+    for (final g in groupes.values) {
+      lignesPrimes.add(PaiLignePrime(g.$1 == 'occurrence' ? 'honoraire_regime_occurrence' : 'honoraire_regime_mensuel',
+          g.$1 == 'occurrence' ? 'Honoraire du régime de travail (par occurrence)' : 'Honoraire du régime de travail (mensuel)', g.$2, g.$3, g.$2 * g.$3));
+    }
   }
   final totalPrimes = lignesPrimes.fold<num>(0, (a, l) => a + l.total);
 

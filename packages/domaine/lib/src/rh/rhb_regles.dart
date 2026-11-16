@@ -714,14 +714,18 @@ RhbSolde rhbSolde(
 
 class RhbPrimeAcquise {
   const RhbPrimeAcquise(this.id, this.matricule, this.employe, this.fonction, this.service, this.gardes, this.permanences, this.primeGarde,
-      this.primePermanence, this.primesFixes, this.total);
+      this.primePermanence, this.primesFixes, this.total, {this.honoraireRegime = 0});
   final String id, matricule, employe, service;
   final String? fonction;
   final int gardes, permanences;
   final num primeGarde, primePermanence, primesFixes, total;
+
+  /// PLANNING INDIVIDUEL (16/11/2026) : l'honoraire du régime EFFECTIF de l'agent (catégorie, dérogation ou remplacement), compris dans [total].
+  final num honoraireRegime;
 }
 
-/// RG-11 : les primes du mois calculées depuis le planning et la grille en vigueur. Les primes FIXES sont celles du barème d'origine PLUS les primes
+/// RG-11 : les primes du mois calculées depuis le planning et la grille en vigueur. [honoraireRegimeDe] (planning individuel) rend l'honoraire du régime EFFECTIF
+/// de l'agent pour le mois (`honoraireRegimeMoisRh`) ; absent, aucun honoraire de régime (la forme de la maquette). Les primes FIXES sont celles du barème d'origine PLUS les primes
 /// créées à l'écran (E651), retirées exclues après leur date de fin, et un forfait désigné ne revient qu'à ses [designations] (E654) à la date [date].
 List<RhbPrimeAcquise> rhbPrimesAcquises(
     {required List<FicheRhb> personnelActif,
@@ -731,7 +735,8 @@ List<RhbPrimeAcquise> rhbPrimesAcquises(
     List<FicheRhb> designations = const [],
     String? date,
     required int annee,
-    required int mois}) {
+    required int mois,
+    num Function(FicheRhb agent)? honoraireRegimeDe}) {
   final out = <RhbPrimeAcquise>[];
   for (final e in personnelActif) {
     final f = '${e['fonction']}';
@@ -742,9 +747,11 @@ List<RhbPrimeAcquise> rhbPrimesAcquises(
     final fixes = rhbPrimesALaDate(grille, historique)
         .where((p) => p.mode == 'fixe')
         .fold<num>(0, (s, p) => s + rhbMontantAgent(grille, historique, designations, p.id, e['id'], f, date));
-    final total = pg + pp + fixes;
+    final hr = honoraireRegimeDe == null ? 0 : honoraireRegimeDe(e);
+    final total = pg + pp + fixes + hr;
     if (total > 0) {
-      out.add(RhbPrimeAcquise('${e['id']}', '${e['matricule']}', '${e['nomComplet']}', e['fonction'] as String?, '${e['service']}', gardes, perm, pg, pp, fixes, total));
+      out.add(RhbPrimeAcquise('${e['id']}', '${e['matricule']}', '${e['nomComplet']}', e['fonction'] as String?, '${e['service']}', gardes, perm, pg, pp, fixes, total,
+          honoraireRegime: hr));
     }
   }
   return out;

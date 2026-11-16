@@ -74,6 +74,9 @@ const Set<String> collectionsActivite = {
   // fileul ne reste plus local au poste.
   'budgets',
   'immobilisations',
+  // PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : la version de régime individuel posée sur un poste (immuable, datée : famille B de la mère) rejoint la mère et les autres postes,
+  // qui calculent primes et paie sur le régime EFFECTIF de l'agent. Jamais vers un téléphone (elle porte l'honoraire de l'agent).
+  'regimesIndividuels',
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
