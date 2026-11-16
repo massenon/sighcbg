@@ -24,8 +24,9 @@ void main() {
     for (final p in m.collection('produits').actives.toList()) {
       m.collection('produits').mettreAJour(p['id'], {'stock': 100000});
     }
+    // Le statut d'un lot se RECALCULE depuis sa date et le préavis en vigueur (Q10) : pour le taire, on éloigne la date.
     for (final l in m.collection('lots').actives.toList()) {
-      m.collection('lots').mettreAJour(l['id'], {'statut': 'actif'});
+      m.collection('lots').mettreAJour(l['id'], {'statut': 'actif', 'datePeremption': '2099-12-31'});
     }
     await ouvrir(t, m, 'dash-stock', role: 'stock');
     expect(find.byKey(const Key('tba:alerte:m6-alertes')), findsNothing);
