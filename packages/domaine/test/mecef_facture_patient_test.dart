@@ -34,7 +34,7 @@ void main() {
     });
 
     test('porté puis corrigé : la règle d’avant (acheteur et AIB lus) reste celle d’une vente à un tiers payeur', () {
-      final tiers = preparerNormalisation(vente, acheteurSaisi: {'ifu': '3201642748214', 'nom': 'Entreprise X', 'aibTaux': 5});
+      final tiers = preparerNormalisation(vente, acheteurSaisi: {'ifu': '3201001996110', 'nom': 'Entreprise X', 'aibTaux': 5});
       expect(tiers.montants!.aib, 500);
       expect(preparerNormalisation(vente, acheteurSaisi: {'ifu': '12', 'nom': 'X'}).refus!.code, 'IFU_INVALIDE');
     });

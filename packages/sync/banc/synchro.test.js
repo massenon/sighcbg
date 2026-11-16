@@ -37,8 +37,8 @@ for (const c of V.valider) {
 test('un refus ne recopie jamais la valeur ni une clé de forme douteuse', () => {
   const r = S.valider({ fileuls: [{ poste: 'F1', 'PATIENT Fictive': 1 }] });
   assert.ok(!JSON.stringify(r).includes('PATIENT'));
-  const r2 = S.valider({ fileuls: [{ poste: 'CNT/12/26' }] });
-  assert.ok(!JSON.stringify(r2).includes('CNT/12'));
+  const r2 = S.valider({ fileuls: [{ poste: 'CBG/12/26' }] });
+  assert.ok(!JSON.stringify(r2).includes('CBG/12'));
 });
 
 for (const c of V.construire) {

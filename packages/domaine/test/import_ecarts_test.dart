@@ -25,7 +25,7 @@ MagasinMemoire magasin() => MagasinMemoire({
         {'id': 'F1', 'code': 'SOBAPS', 'nom': 'SoBAPS', 'statut': 'actif'}
       ],
       'patients': [
-        {'id': 'PAT1', 'code': 'CNT/7/26', 'nom': 'ALI', 'prenom': 'Sika', 'dateNaissance': '1990-01-01', 'statut': 'actif'}
+        {'id': 'PAT1', 'code': 'CBG/7/26', 'nom': 'ALI', 'prenom': 'Sika', 'dateNaissance': '1990-01-01', 'statut': 'actif'}
       ],
     });
 
@@ -103,7 +103,7 @@ void main() {
       final port = magasin();
       final f = [
         [...labels, 'Code dossier'],
-        ['EXEMPLE', 'Rose', 'F', '1992-02-02', '', '', '', '', '', '', '', '', 'CNT/999/26'],
+        ['EXEMPLE', 'Rose', 'F', '1992-02-02', '', '', '', '', '', '', '', '', 'CBG/999/26'],
       ];
       final a = analyserLignes(jeuPatients, f, 'p.xlsx', port);
       expect(a.accepte, isTrue);
@@ -111,7 +111,7 @@ void main() {
       final r = appliquer(jeuPatients, a, port);
       expect(r.ok, isTrue);
       final fiche = port.toutes('patients').firstWhere((p) => p['nom'] == 'EXEMPLE');
-      expect(fiche['code'], isNot('CNT/999/26'));
+      expect(fiche['code'], isNot('CBG/999/26'));
       expect(fiche['code'], matches(reCodePatient));
       expect(fiche.containsKey('groupeSanguin'), isFalse);
     });

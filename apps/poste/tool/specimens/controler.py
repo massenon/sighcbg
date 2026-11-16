@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contrôle du dossier `presentation/` : (1) aucune trace de l'autre clinique (Nassiera Too, sigle CNT) dans le TEXTE des PDF ni dans les fichiers texte ;
+"""Contrôle du dossier `presentation/` : (1) aucune trace de l'autre clinique (motifs de tools/baguidi/neutraliser-identite.mjs, sigle CNT) dans le TEXTE des PDF ni dans les fichiers texte ;
 (2) chaque PDF s'ouvre et compte au moins une page ; (3) taille totale. Sort avec un code non nul au moindre manquement.
 
 Usage : python3 tool/specimens/controler.py ../../presentation   (dépendance : PyMuPDF)
@@ -13,7 +13,18 @@ try:
 except ImportError:
     import fitz
 
-INTERDIT = re.compile(r"nassi[eè]ra|\bCNT\b|CNT/|natitingou", re.IGNORECASE)
+def _motifs_origine() -> list:
+    """Les motifs d'identité de la clinique sœur : la ligne `MOTIFS` de tools/baguidi/neutraliser-identite.mjs, seul fichier du dépôt à les porter."""
+    racine = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..")
+    with open(os.path.join(racine, "tools", "baguidi", "neutraliser-identite.mjs"), encoding="utf-8") as f:
+        ligne = next(l for l in f if l.startswith("export const MOTIFS = ["))
+    motifs = re.findall(r"'([^']*)'", ligne)
+    if len(motifs) < 10:
+        raise SystemExit("liste MOTIFS illisible dans neutraliser-identite.mjs")
+    return motifs
+
+
+INTERDIT = re.compile("|".join(re.escape(m) for m in _motifs_origine()) + r"|\bCNT\b|CNT/", re.IGNORECASE)
 
 
 def main() -> int:

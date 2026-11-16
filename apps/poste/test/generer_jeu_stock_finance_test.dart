@@ -12,6 +12,7 @@ import 'package:sigh_domaine/sigh_domaine.dart' as d;
 import '../tool/generer_jeu_baguidi.dart';
 import '../tool/jeu_baguidi/contexte.dart';
 import '../tool/jeu_baguidi/stock_base.dart' show comptableCaisse, comptableStock, direction1, direction2;
+import 'aide_identite_origine.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -662,7 +663,7 @@ void main() {
 
   test('hygiène : aucun nom réel hors les neuf agents, aucun nom de l\'éditeur d\'origine, aucune marque, aucun numéro inventé', () {
     final texte = [for (final nom in ['produits', 'fournisseurs', 'besoins', 'commandes', 'livraisons', 'pvReceptions', 'facturesFournisseurs', 'depenses', 'relances', 'echeancesFiscales', 'lots']) jeu['$nom.json']!].join('\n');
-    for (final interdit in ['SOBAPS', 'UBIPHARM', 'LABOTECH', 'MEDIPLUS', 'NATIFOURN', 'CAME ', 'Nassiera', 'NASSIERA']) {
+    for (final interdit in ['SOBAPS', 'UBIPHARM', 'LABOTECH', 'MEDIPLUS', 'NATIFOURN', 'CAME ', ...motifsOrigine()]) {
       expect(texte.contains(interdit), isFalse, reason: interdit);
     }
     for (final f in c('fournisseurs')) {

@@ -173,7 +173,7 @@ void main() {
         expect(sp(accTexteSansBalises(accFaq[i].r)), sp(faq[i]['r']));
       }
       expect([for (final l in a['apropos'] as List) (l as List)[1]],
-          ['Prototype v1.0 — août 2026', 'Dr MOGBO Rhodes', 'CLINIQUE NASSIERA TOO SARL', '3201642748214', 'RB/NAT/2016-B-268']);
+          ['Prototype v1.0 — août 2026', 'Dr MOGBO Rhodes', 'CLINIQUE BAGUIDI « L’AS DU CŒUR »', '3201001996110', 'RB/PKO/17 A 4240']);
       expect(accEditeur['version'], 'Prototype v1.0 — août 2026');
     });
 

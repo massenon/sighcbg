@@ -173,9 +173,9 @@ Fiche _provisoire(Fiche f) {
   r.remove('arbitrage');
   if (r.containsKey('prixAValider')) r['prixAValider'] = true;
   // Un motif propre à la fiche (acte décliné par la grille : « choisir une variante à la place de la clinique facturerait le mauvais tarif ») est gardé
-  // quand il ne parle ni d'un arrêté ni de la clinique d'origine.
+  // quand il ne parle ni d'un arrêté ni de la Direction d'origine (le jeu de référence ne porte plus le nom de la clinique d'origine : neutraliser-identite.mjs).
   final ancien = '${f['motifPrix'] ?? ''}';
-  final propre = ancien.isNotEmpty && !RegExp('arrêté|Direction|NASSIERA|Nassiera').hasMatch(ancien);
+  final propre = ancien.isNotEmpty && !RegExp('arrêté|Direction').hasMatch(ancien);
   r['motifPrix'] = propre ? '$motifTarifHerite $ancien' : motifTarifHerite;
   r['source'] = sourceTarifHerite;
   r['marqueLe'] = dateMarquage;

@@ -79,7 +79,7 @@ void main() {
     });
 
     test('une version 2 au 01/09/2026 (RCCM et adresse fiscale) : l’ancienne se ferme au 31/08 et reste, la nouvelle n’est pas en force aujourd’hui', () {
-      final r = cfbNouvelleVersionIdentite(versions, {'rccm': 'RB/NAT/2026-B-999', 'bp': 'BP : 999 NATITINGOU (Rép. du Bénin)'},
+      final r = cfbNouvelleVersionIdentite(versions, {'rccm': 'RB/PKO/2026-B-999', 'bp': 'BP : 999 PARAKOU (Rép. du Bénin)'},
           dateEffet: '2026-09-01', motif: 'Vecteur : nouveau RCCM et nouvelle adresse fiscale', acteur: acteur, maintenant: maintenant, aujourdhui: aujourdhui);
       final att = obj(vi['creation']);
       expect(r.ok, att['ok']);
@@ -123,8 +123,8 @@ void main() {
       final hier = lignesTicket(entree(DateTime(2026, 8, 15, 9)), identite: cfbIdentiteImprimee(versions, DateTime(2026, 8, 15))).map((l) => l.brut).toList();
       final apres = lignesTicket(entree(DateTime(2026, 12, 31, 9)), identite: cfbIdentiteImprimee(versions, DateTime(2026, 12, 31))).map((l) => l.brut).toList();
       expect(hier, contains('RCCM ${IdentiteClinique.rccm}'));
-      expect(apres, contains('RCCM RB/NAT/2026-B-999'));
-      expect(apres, contains('BP : 999 NATITINGOU (Rép. du Bénin)'));
+      expect(apres, contains('RCCM RB/PKO/2026-B-999'));
+      expect(apres, contains('BP : 999 PARAKOU (Rép. du Bénin)'));
       expect(apres.first, IdentiteClinique.nomCourt, reason: 'la version copie le nom court de la version couvrante');
       expect(lignesTicket(entree(DateTime(2026, 8, 15, 9))).map((l) => l.brut), hier, reason: 'sans identité passée : la semence, soit la version 1');
     });

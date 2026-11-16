@@ -1,6 +1,6 @@
 # Passer en production : archiver le jeu de démonstration
 
-Décision de la Direction du 08/11/2026 : aucune donnée de Nassiera Too dans SIGH-CBG. Les données livrées sont des **données de démonstration**, marquées comme telles, à mettre hors service puis à remplacer par les vraies.
+Décision de la Direction du 08/11/2026 : aucune donnée de la clinique sœur dans SIGH-CBG. Les données livrées sont des **données de démonstration**, marquées comme telles, à mettre hors service puis à remplacer par les vraies.
 
 **Décision D6 de la Direction du 09/11/2026 : « remise du jeu de démonstration : les ARCHIVER, les brouillons, etc. »** (RG-14, archivage logique, jamais de suppression physique). Le geste par défaut de mise en production est donc **l'archivage** (section 2) ; le vidage destructif d'origine subsiste, mais derrière une seconde porte nommée « suppression physique » (section 2, décision de maintien). Ce fichier garde son nom : les liens existants (`docs/baguidi/PRODUCTION-VIDER-LE-JEU.md`) continuent de mener ici.
 
@@ -73,7 +73,7 @@ Mêmes garde-fous qu'avant : fenêtre d'ouverture de 30 minutes, saisie du nom d
    - produits et valorisation de stock, tarifs (actes, analyses, grille), barèmes et grille des primes : import validé par la Direction ;
    - matrice des droits : la relire.
 5. **Remplacer les constantes Dart (C)** par la liasse réellement déposée et le vrai classeur : elles se compilent, donc il faut une livraison (voir la procédure de livraison). `node tools/baguidi/demo-liasse.mjs --verifier` dit 0 tant que la liasse reste celle de démonstration, 1 si le fichier n'a pas été transformé ; une fois remplacée par la vraie liasse, retirer le script et le marqueur `DÉMONSTRATION BAGUIDI` des trois fichiers, et ôter la mention `cpbMentionDemonstration` des écrans.
-6. **Contrôler** : `node tools/baguidi/controle-identite.mjs`, `node tools/baguidi/cnt-vers-cbg.mjs --verifier` et `node tools/baguidi/substitution-identite.mjs --verifier` doivent dire 0 ; lancer `dart test` (domaine) et `flutter test` (poste).
+6. **Contrôler** : `node tools/baguidi/controle-identite.mjs`, `node tools/baguidi/cnt-vers-cbg.mjs --verifier` et `node tools/baguidi/neutraliser-identite.mjs --verifier` doivent dire 0 ; lancer `dart test` (domaine) et `flutter test` (poste).
 
 ## 4. Limites connues
 

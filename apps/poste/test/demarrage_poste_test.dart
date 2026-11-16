@@ -12,6 +12,7 @@ import 'package:sigh_poste/main.dart';
 import 'package:sigh_poste/modules/auth/acc_session.dart';
 import 'package:sigh_poste/shell/fenetre_poste.dart';
 
+import 'aide_identite_origine.dart';
 import 'aide_polices.dart';
 
 /// La mention légale de la Clinique Baguidi (PRD §4), dérivée de la dénomination, de l'IFU et du RCCM. Le pied ne porte rien d'autre : ni « prototype »,
@@ -154,7 +155,7 @@ void main() {
         final lignes = f.readAsLinesSync();
         for (var i = 0; i < lignes.length; i++) {
           final l = lignes[i];
-          if ((l.contains('3201001996110') || l.contains('3201642748214')) && !l.trimLeft().startsWith('//')) fautes.add('${f.path}:${i + 1}');
+          if ((l.contains('${IdentiteClinique.defauts['ifu']}') || traceOrigine(l) != null) && !l.trimLeft().startsWith('//')) fautes.add('${f.path}:${i + 1}');
         }
       }
       expect(fautes, isEmpty, reason: 'l\'IFU se lit de IdentiteClinique : $fautes');

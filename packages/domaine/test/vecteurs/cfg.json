@@ -226,13 +226,14 @@
    "sigle": "CBG",
    "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
    "slogan": "Votre bien-être est notre raison d’être.",
-   "forme": "Société à Responsabilité Limitée",
+   "forme": "",
    "adresse": "Quartier Zongo II, Parakou",
    "bp": "02 BP : 105 PARAKOU (Rép. du Bénin)",
    "pays": "République du Bénin",
    "telephones": [
-    "01 95 44 51 51",
-    "01 66 43 28 20"
+    "95 74 69 56",
+    "95 95 99 14",
+    "97 09 34 99"
    ],
    "telephoneRdv": "95 74 69 56",
    "email": "cliniquebaguidi@yahoo.fr",
@@ -243,7 +244,7 @@
    "devise": "FCFA",
    "formuleArrete": "Arrêtée la présente facture à la somme de",
    "formulePolitesse": "",
-   "autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020",
+   "autorisation": "",
    "logo": "assets/img/logo.jpeg",
    "codeDevise": "XOF"
   },
@@ -825,7 +826,7 @@
    "Aide-Soignantes(08)TOGA Sigbudja — chef de serviceAide-soignante"
   ],
   "impressionOrganigramme": {
-   "titre": "Organigramme de la Clinique NASSIERA TOO",
+   "titre": "Organigramme de la Clinique BAGUIDI",
    "sousTitre": "Structure organisationnelle et correspondance des rôles",
    "cartouche": [
     [
@@ -1059,7 +1060,7 @@
   "champs": {
    "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
    "sigle": "CBG",
-   "forme": "Société à Responsabilité Limitée",
+   "forme": "",
    "slogan": "Votre bien-être est notre raison d’être.",
    "adresse": "Quartier Zongo II, Parakou",
    "bp": "02 BP : 105 PARAKOU (Rép. du Bénin)",
@@ -1067,7 +1068,7 @@
    "email": "cliniquebaguidi@yahoo.fr",
    "ifu": "3201001996110",
    "rccm": "RB/PKO/17 A 4240",
-   "autorisation": "N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020",
+   "autorisation": "",
    "doubleLogo": true,
    "piedPage": true,
    "filigrane": ""
@@ -1088,7 +1089,7 @@
   "notes": [
    "Les états produits par le prototype reprennent déjà fidèlement l’entête réelle relevée sur les documents de la clinique."
   ],
-  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99AUTORISATION D’OUVERTURE N° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 · Document généré par BICHIASI Cezoune Sichovian le 01/11/2026 à 18h32 · Réf. CBG-XXXXXXXX-0001",
+  "apercu": "CLINIQUE BAGUIDI02 BP : 105 PARAKOU (Rép. du Bénin) TÉL. : 95 74 69 56 / 95 95 99 14 / 97 09 34 99N° D’ENREGISTREMENT 0416/ONMB/ATL/2002IFU : 3201001996110 RCCM : RB/PKO/17 A 4240E-mail : cliniquebaguidi@yahoo.fr— corps du document —CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 · Document généré par BICHIASI Cezoune Sichovian le 01/11/2026 à 18h32 · Réf. CBG-XXXXXXXX-0001",
   "ressources": [
    "Logo principalUtilisé sur tous les états et dans l’applicationÀ fournir",
    "Logo monochromePour les impressions en noir et blancÀ fournir",
@@ -1106,7 +1107,7 @@
      "nom": "TACHEDI Arialu"
     }
    ],
-   "texte": "Ce document illustre le gabarit officiel appliqué automatiquement à l’ensemble des états produits par le système : factures normalisées, ordonnances, bulletins de paie, bons de commande et de sortie, résultats de laboratoire, états comptables et rapports de direction.MentionValeurDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR »Adresse postale02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Adresse électroniquecliniquebaguidi@yahoo.frAutorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020IFU3201001996110RCCMRB/PKO/17 A 4240"
+   "texte": "Ce document illustre le gabarit officiel appliqué automatiquement à l’ensemble des états produits par le système : factures normalisées, ordonnances, bulletins de paie, bons de commande et de sortie, résultats de laboratoire, états comptables et rapports de direction.MentionValeurDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR »Adresse postale02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Adresse électroniquecliniquebaguidi@yahoo.frAutorisation d’ouvertureIFU3201001996110RCCMRB/PKO/17 A 4240"
   },
   "enregistrement": {
    "toasts": [
@@ -1125,7 +1126,7 @@
     "entite": "BrandConfiguration",
     "reference": "BRAND",
     "ancienneValeur": null,
-    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DU CŒUR »\",\"sigle\":\"CBG\",\"forme\":\"Société à Responsabilité Limitée\",\"slogan",
+    "nouvelleValeur": "{\"nom\":\"CLINIQUE BAGUIDI « L’AS DU CŒUR »\",\"sigle\":\"CBG\",\"forme\":\"\",\"slogan",
     "poste": "POSTE-LOCAL",
     "succes": true
    },
@@ -1507,7 +1508,7 @@
      "Chirurgie",
      "10 000",
      "10 000",
-     "Tarifs des consultations NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des consultations BAGUIDIrapproché par libellé identique",
      ""
     ],
     [
@@ -1552,7 +1553,7 @@
      "Chirurgie",
      "15 000",
      "non couvert",
-     "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des actes gynéco-obstétricaux et kits BAGUIDIrapproché par libellé identique",
      ""
     ],
     [
@@ -1651,7 +1652,7 @@
      "Imagerie médicale",
      "9 000",
      "5 000− 4 000",
-     "Tarifs des imageries médicales de NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des imageries médicales de BAGUIDIrapproché par libellé identique",
      ""
     ],
     [
@@ -1660,7 +1661,7 @@
      "Imagerie médicale",
      "9 000",
      "5 000− 4 000",
-     "Tarifs des imageries médicales de NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des imageries médicales de BAGUIDIrapproché par libellé identique",
      ""
     ],
     [
@@ -1669,7 +1670,7 @@
      "Imagerie médicale",
      "12 000",
      "8 000− 4 000",
-     "Tarifs des imageries médicales de NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des imageries médicales de BAGUIDIrapproché par libellé identique",
      ""
     ],
     [
@@ -1678,7 +1679,7 @@
      "Imagerie médicale",
      "20 000",
      "11 000− 9 000",
-     "Tarifs des imageries médicales de NASSIERA TOOrapproché par libellé identique",
+     "Tarifs des imageries médicales de BAGUIDIrapproché par libellé identique",
      ""
     ]
    ]
@@ -1968,7 +1969,7 @@
        "25 000 FCFA",
        "20 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ],
       [
@@ -1977,7 +1978,7 @@
        "30 000 FCFA",
        "25 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ],
       [
@@ -1986,7 +1987,7 @@
        "5 000 FCFA",
        "3 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ],
       [
@@ -1995,7 +1996,7 @@
        "5 000 FCFA",
        "1 500 FCFA",
        "-3 500 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ],
       [
@@ -2004,7 +2005,7 @@
        "10 000 FCFA",
        "10 000 FCFA",
        "0 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ],
       [
@@ -2013,7 +2014,7 @@
        "15 000 FCFA",
        "10 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des consultations NASSIERA TOO",
+       "Tarifs des consultations BAGUIDI",
        ""
       ]
      ]
@@ -2039,7 +2040,7 @@
        "15 000 FCFA",
        "10 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2048,7 +2049,7 @@
        "12 000 FCFA",
        "8 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2057,7 +2058,7 @@
        "20 000 FCFA",
        "11 000 FCFA",
        "-9 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2066,7 +2067,7 @@
        "9 000 FCFA",
        "5 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2075,7 +2076,7 @@
        "9 000 FCFA",
        "5 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2084,7 +2085,7 @@
        "12 000 FCFA",
        "8 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des imageries médicales de NASSIERA TOO",
+       "Tarifs des imageries médicales de BAGUIDI",
        ""
       ],
       [
@@ -2164,7 +2165,7 @@
        "2 500 FCFA",
        "2 000 FCFA",
        "-500 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2173,7 +2174,7 @@
        "3 800 FCFA",
        "2 800 FCFA",
        "-1 000 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2182,7 +2183,7 @@
        "2 500 FCFA",
        "1 800 FCFA",
        "-700 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2191,7 +2192,7 @@
        "4 800 FCFA",
        "3 400 FCFA",
        "-1 400 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2200,7 +2201,7 @@
        "1 000 FCFA",
        "500 FCFA",
        "-500 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2209,7 +2210,7 @@
        "3 200 FCFA",
        "2 200 FCFA",
        "-1 000 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2218,7 +2219,7 @@
        "4 500 FCFA",
        "3 200 FCFA",
        "-1 300 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2227,7 +2228,7 @@
        "4 500 FCFA",
        "3 200 FCFA",
        "-1 300 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2236,7 +2237,7 @@
        "2 500 FCFA",
        "1 800 FCFA",
        "-700 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2245,7 +2246,7 @@
        "4 000 FCFA",
        "3 000 FCFA",
        "-1 000 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2254,7 +2255,7 @@
        "3 500 FCFA",
        "2 500 FCFA",
        "-1 000 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ],
       [
@@ -2263,7 +2264,7 @@
        "2 000 FCFA",
        "1 000 FCFA",
        "-1 000 FCFA",
-       "Tarifs des analyses de laboratoire NASSIERA TOO",
+       "Tarifs des analyses de laboratoire BAGUIDI",
        ""
       ]
      ]
@@ -2289,7 +2290,7 @@
        "14 000 FCFA",
        "10 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2298,7 +2299,7 @@
        "12 000 FCFA",
        "8 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2307,7 +2308,7 @@
        "8 000 FCFA",
        "5 000 FCFA",
        "-3 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2316,7 +2317,7 @@
        "5 000 FCFA",
        "3 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2325,7 +2326,7 @@
        "2 500 FCFA",
        "2 000 FCFA",
        "-500 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2334,7 +2335,7 @@
        "5 000 FCFA",
        "5 000 FCFA",
        "0 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2343,7 +2344,7 @@
        "7 000 FCFA",
        "5 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2352,7 +2353,7 @@
        "8 000 FCFA",
        "6 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2361,7 +2362,7 @@
        "12 000 FCFA",
        "10 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2370,7 +2371,7 @@
        "10 000 FCFA",
        "7 000 FCFA",
        "-3 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2379,7 +2380,7 @@
        "7 000 FCFA",
        "5 000 FCFA",
        "-2 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ],
       [
@@ -2388,7 +2389,7 @@
        "4 000 FCFA",
        "3 000 FCFA",
        "-1 000 FCFA",
-       "Tarifs des actes médico-infirmiers (AMI) NASSIERA TOO",
+       "Tarifs des actes médico-infirmiers (AMI) BAGUIDI",
        ""
       ]
      ]
@@ -2414,7 +2415,7 @@
        "20 000 FCFA",
        "15 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2423,7 +2424,7 @@
        "18 000 FCFA",
        "12 000 FCFA",
        "-6 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2432,7 +2433,7 @@
        "25 000 FCFA",
        "20 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2441,7 +2442,7 @@
        "20 000 FCFA",
        "15 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2450,7 +2451,7 @@
        "15 000 FCFA",
        "10 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2459,7 +2460,7 @@
        "60 000 FCFA",
        "45 000 FCFA",
        "-15 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2468,7 +2469,7 @@
        "75 000 FCFA",
        "60 000 FCFA",
        "-15 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2477,7 +2478,7 @@
        "20 000 FCFA",
        "15 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2486,7 +2487,7 @@
        "15 000 FCFA",
        "10 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2495,7 +2496,7 @@
        "8 000 FCFA",
        "5 000 FCFA",
        "-3 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2504,7 +2505,7 @@
        "15 000 FCFA",
        "10 000 FCFA",
        "-5 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ],
       [
@@ -2513,7 +2514,7 @@
        "10 000 FCFA",
        "6 000 FCFA",
        "-4 000 FCFA",
-       "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+       "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
        ""
       ]
      ]
@@ -2539,7 +2540,7 @@
        "7 000 FCFA",
        "SOS seule — 7 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
       [
@@ -2548,7 +2549,7 @@
        "7 000 FCFA",
        "SOS seule — 7 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
       [
@@ -2557,7 +2558,7 @@
        "20 000 FCFA",
        "SOS seule — 20 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
       [
@@ -2566,7 +2567,7 @@
        "10 000 FCFA",
        "SOS seule — 10 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
       [
@@ -2575,7 +2576,7 @@
        "5 000 FCFA",
        "SOS seule — 5 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
       [
@@ -2597,10 +2598,10 @@
        "7 000 FCFA",
        "SOS seule — 7 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
-      "tiroir": "CERT-APT — Certificat médical d’aptitudeCodeCERT-APTDésignationCertificat médical d’aptitudeFamilleCERTIFICATPrix non assuré7 000 FCFAPrix assuré7 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+      "tiroir": "CERT-APT — Certificat médical d’aptitudeCodeCERT-APTDésignationCertificat médical d’aptitudeFamilleCERTIFICATPrix non assuré7 000 FCFAPrix assuré7 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
      },
      {
       "ligne": [
@@ -2609,10 +2610,10 @@
        "7 000 FCFA",
        "SOS seule — 7 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
-      "tiroir": "CERT-ATG — Attestation de grossesseCodeCERT-ATGDésignationAttestation de grossesseFamilleCERTIFICATPrix non assuré7 000 FCFAPrix assuré7 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+      "tiroir": "CERT-ATG — Attestation de grossesseCodeCERT-ATGDésignationAttestation de grossesseFamilleCERTIFICATPrix non assuré7 000 FCFAPrix assuré7 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
      },
      {
       "ligne": [
@@ -2621,10 +2622,10 @@
        "20 000 FCFA",
        "SOS seule — 20 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
-      "tiroir": "CERT-CBV — Certificat médical initial / de coups et blessures volontairesCodeCERT-CBVDésignationCertificat médical initial / de coups et blessures volontairesFamilleCERTIFICATPrix non assuré20 000 FCFAPrix assuré20 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+      "tiroir": "CERT-CBV — Certificat médical initial / de coups et blessures volontairesCodeCERT-CBVDésignationCertificat médical initial / de coups et blessures volontairesFamilleCERTIFICATPrix non assuré20 000 FCFAPrix assuré20 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
      },
      {
       "ligne": [
@@ -2633,10 +2634,10 @@
        "10 000 FCFA",
        "SOS seule — 10 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
-      "tiroir": "CERT-DEC — Certificat médical de décèsCodeCERT-DECDésignationCertificat médical de décèsFamilleCERTIFICATPrix non assuré10 000 FCFAPrix assuré10 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+      "tiroir": "CERT-DEC — Certificat médical de décèsCodeCERT-DECDésignationCertificat médical de décèsFamilleCERTIFICATPrix non assuré10 000 FCFAPrix assuré10 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
      },
      {
       "ligne": [
@@ -2645,10 +2646,10 @@
        "5 000 FCFA",
        "SOS seule — 5 000 FCFA",
        "0 FCFA",
-       "Tarifs des certificats NASSIERA TOO",
+       "Tarifs des certificats BAGUIDI",
        ""
       ],
-      "tiroir": "CERT-DPS — Certificat médical de dispense aux activités physiques et sportivesCodeCERT-DPSDésignationCertificat médical de dispense aux activités physiques et sportivesFamilleCERTIFICATPrix non assuré5 000 FCFAPrix assuré5 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+      "tiroir": "CERT-DPS — Certificat médical de dispense aux activités physiques et sportivesCodeCERT-DPSDésignationCertificat médical de dispense aux activités physiques et sportivesFamilleCERTIFICATPrix non assuré5 000 FCFAPrix assuré5 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
      },
      {
       "ligne": [
@@ -2682,10 +2683,10 @@
     "3 500 FCFA",
     "2 500 FCFAarbitré",
     "-1 000 FCFA",
-    "Tarifs des analyses de laboratoire NASSIERA TOO",
+    "Tarifs des analyses de laboratoire BAGUIDI",
     ""
    ],
-   "tiroir": "LAB-HIV — HIVCodeLAB-HIVDésignationHIVFamilleLABOPrix non assuré3 500 FCFAPrix assuré2 500 FCFACouvertureToutes compagniesDocument d’origineTarifs des analyses de laboratoire NASSIERA TOOPrix arrêté par la Direction le 26/08/2026 — la grille ne le portait pas. Aligné sur les sérologies voisines : hépatite B et TPHA, 2 500 / 3 500."
+   "tiroir": "LAB-HIV — HIVCodeLAB-HIVDésignationHIVFamilleLABOPrix non assuré3 500 FCFAPrix assuré2 500 FCFACouvertureToutes compagniesDocument d’origineTarifs des analyses de laboratoire BAGUIDIPrix arrêté par la Direction le 26/08/2026 — la grille ne le portait pas. Aligné sur les sérologies voisines : hépatite B et TPHA, 2 500 / 3 500."
   },
   {
    "code": "HYD",
@@ -2702,10 +2703,10 @@
     "15 000 FCFA",
     "NON COUVERT",
     "—",
-    "Tarifs des actes gynéco-obstétricaux et kits NASSIERA TOO",
+    "Tarifs des actes gynéco-obstétricaux et kits BAGUIDI",
     ""
    ],
-   "tiroir": "HYD — HydrotubationCodeHYDDésignationHydrotubationFamilleGYNECOPrix non assuré15 000 FCFAPrix assuréNON COUVERTCouvertureAucuneDocument d’origineTarifs des actes gynéco-obstétricaux et kits NASSIERA TOOCet acte est NON COUVERT : l’assuré le règle au tarif non assuré, et la facture en porte le motif. Tous les actes de planification familiale sont dans ce cas."
+   "tiroir": "HYD — HydrotubationCodeHYDDésignationHydrotubationFamilleGYNECOPrix non assuré15 000 FCFAPrix assuréNON COUVERTCouvertureAucuneDocument d’origineTarifs des actes gynéco-obstétricaux et kits BAGUIDICet acte est NON COUVERT : l’assuré le règle au tarif non assuré, et la facture en porte le motif. Tous les actes de planification familiale sont dans ce cas."
   },
   {
    "code": "CONS-PRE",
@@ -2722,10 +2723,10 @@
     "5 000 FCFA",
     "1 500 FCFA",
     "-3 500 FCFA",
-    "Tarifs des consultations NASSIERA TOO",
+    "Tarifs des consultations BAGUIDI",
     ""
    ],
-   "tiroir": "CONS-PRE — Consultation prénataleCodeCONS-PREDésignationConsultation prénataleFamilleCONSULTATIONPrix non assuré5 000 FCFAPrix assuré1 500 FCFACouvertureToutes compagniesDocument d’origineTarifs des consultations NASSIERA TOOLa Direction a énoncé 15 000 F ; le document tarifaire porte 1 500 / 5 000."
+   "tiroir": "CONS-PRE — Consultation prénataleCodeCONS-PREDésignationConsultation prénataleFamilleCONSULTATIONPrix non assuré5 000 FCFAPrix assuré1 500 FCFACouvertureToutes compagniesDocument d’origineTarifs des consultations BAGUIDILa Direction a énoncé 15 000 F ; le document tarifaire porte 1 500 / 5 000."
   },
   {
    "code": "IMG-RX-THO",
@@ -2762,10 +2763,10 @@
     "5 000 FCFA",
     "SOS seule — 5 000 FCFA",
     "0 FCFA",
-    "Tarifs des certificats NASSIERA TOO",
+    "Tarifs des certificats BAGUIDI",
     ""
    ],
-   "tiroir": "CERT-DPS — Certificat médical de dispense aux activités physiques et sportivesCodeCERT-DPSDésignationCertificat médical de dispense aux activités physiques et sportivesFamilleCERTIFICATPrix non assuré5 000 FCFAPrix assuré5 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats NASSIERA TOO"
+   "tiroir": "CERT-DPS — Certificat médical de dispense aux activités physiques et sportivesCodeCERT-DPSDésignationCertificat médical de dispense aux activités physiques et sportivesFamilleCERTIFICATPrix non assuré5 000 FCFAPrix assuré5 000 FCFACouvertureSOS seuleDocument d’origineTarifs des certificats BAGUIDI"
   }
  ],
  "catalogueCreations": {
@@ -2902,7 +2903,7 @@
    "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240Autorisation d’ouverture1États alimentésTous",
    ""
   ],
-  "texte": "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240Autorisation d’ouverture1États alimentésTousIdentité légale imprimée sur chaque étatDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR » — Société à Responsabilité LimitéeDevise de l’établissementVotre bien-être est notre raison d’être.AdresseQuartier Zongo II, Parakou · 02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Ligne rendez-vous95 74 69 56Courrielcliniquebaguidi@yahoo.frIFU3201001996110RCCMRB/PKO/17 A 4240Autorisation d’ouvertureN° 066/MS/DC/SGM/CJ/DNSP/SRS/SA/058SGG20/N°20 du 02/07/2020Autorisation d’exerciceNon imprimée — Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux."
+  "texte": "IFU imprimé13201001996110RCCM imprimé1RB/PKO/17 A 4240Autorisation d’ouverture1États alimentésTousIdentité légale imprimée sur chaque étatDénominationCLINIQUE BAGUIDI « L’AS DU CŒUR » — Devise de l’établissementVotre bien-être est notre raison d’être.AdresseQuartier Zongo II, Parakou · 02 BP : 105 PARAKOU (Rép. du Bénin)Téléphones95 74 69 56 / 95 95 99 14 / 97 09 34 99Ligne rendez-vous95 74 69 56Courrielcliniquebaguidi@yahoo.frIFU3201001996110RCCMRB/PKO/17 A 4240Autorisation d’ouvertureAutorisation d’exerciceNon imprimée — Non applicable — l’inscription à l’ordre suffit depuis la loi 2025-1 de juin 2026. L’autorisation d’exercice n’est plus imprimée sur les états.Les pièces émises AVANT l’unification portent d’autres identités — trois IFU, trois RCCM et deux autorisations relevés sur les 37 documents collectés (certificats médico-légaux, rapport médical, comptes rendus de laboratoire et d’imagerie). Ces pièces restent valables et documentées par leurs scans dans docs/ ; elles ne sont simplement plus reproduites. Un document ancien qui diverge du présent en-tête n’est donc pas un faux."
  },
  "typesPiece": {
   "kpis": [

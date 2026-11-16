@@ -55,14 +55,14 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     const refus = async (fileuls, motifAttendu, chemin) => {
       const r = await m.relais.direct('POST', '/mere/indicateurs', { indicateurs: { fileuls } });
       const corps = JSON.stringify(r.json);
-      return r.status === 422 && r.json.code === motifAttendu && r.json.chemin === chemin && !!r.json.motif && !!r.json.geste && !corps.includes(NOM_SECRET) && !corps.includes('CNT/');
+      return r.status === 422 && r.json.code === motifAttendu && r.json.chemin === chemin && !!r.json.motif && !!r.json.geste && !corps.includes(NOM_SECRET) && !corps.includes('CBG/');
     };
     verifier('une clé inconnue (un nom de personne) est refusée en la nommant, sans recopier la valeur', await refus([{ poste: 'F1', nom: NOM_SECRET }], 'indicateur_cle_inconnue', 'fileuls[0].nom'));
-    verifier('un identifiant de patient est refusé de même', await refus([{ poste: 'F1', patientId: 'CNT/12/26' }], 'indicateur_cle_inconnue', 'fileuls[0].patientId'));
+    verifier('un identifiant de patient est refusé de même', await refus([{ poste: 'F1', patientId: 'CBG/12/26' }], 'indicateur_cle_inconnue', 'fileuls[0].patientId'));
     verifier('un motif et un libellé de pièce sont refusés de même', await refus([{ poste: 'F1', motif: 'doublon' }], 'indicateur_cle_inconnue', 'fileuls[0].motif') && await refus([{ poste: 'F1', libelle: 'Facture 123' }], 'indicateur_cle_inconnue', 'fileuls[0].libelle'));
-    verifier('un nom de poste qui ressemble à un dossier est refusé', await refus([{ poste: 'CNT/12/26' }], 'indicateur_valeur_invalide', 'fileuls[0].poste'));
+    verifier('un nom de poste qui ressemble à un dossier est refusé', await refus([{ poste: 'CBG/12/26' }], 'indicateur_valeur_invalide', 'fileuls[0].poste'));
     verifier('un compteur qui n\'est pas un nombre est refusé', await refus([{ poste: 'F1', conflitsOuverts: NOM_SECRET }], 'indicateur_valeur_invalide', 'fileuls[0].conflitsOuverts') && await refus([{ poste: 'F1', retardJournal: '4' }], 'indicateur_valeur_invalide', 'fileuls[0].retardJournal'));
-    const sansSecret = async () => { const t = (await m.relais.direct('GET', '/banc/tout')).json; return !JSON.stringify(t.meta).includes(NOM_SECRET) && !JSON.stringify(t.meta).includes('CNT/12/26'); };
+    const sansSecret = async () => { const t = (await m.relais.direct('GET', '/banc/tout')).json; return !JSON.stringify(t.meta).includes(NOM_SECRET) && !JSON.stringify(t.meta).includes('CBG/12/26'); };
     verifier('rien d\'un envoi refusé n\'est enregistré : les indicateurs du relais ne portent ni le nom ni l\'identifiant refusés', await sansSecret());
     const refusSansMere = await m.relais.brut('POST', '/mere/indicateurs', { indicateurs: { fileuls: [{ poste: 'F1', nom: 'x' }] } });
     verifier('l\'autorisation PRÉCÈDE la validation : sans le secret de la mère, 403 quelle que soit la forme', refusSansMere.status === 403 && refusSansMere.json.code === 'mere_requise', refusSansMere);
@@ -71,7 +71,7 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     await attendre(async () => { const e = (await m.mere.admin('GET', '/admin/etat')).json; return e.rep_seq === e.seq_max; }, 15000);
     const brut = (await m.relais.direct('GET', '/banc/tout')).json;
     const tout = JSON.stringify({ lignes: brut.lignes.map((l) => ({ ...l, ct: '', nonce: '' })), codes: brut.codes, appareils: brut.appareils, meta: brut.meta });
-    verifier('le relais détient le journal chiffré de la mère mais AUCUN nom de patient ni code de dossier, ni dans ses lignes ni dans ses indicateurs', brut.lignes.length >= 1 && !tout.includes(NOM_SECRET) && !tout.includes('Awa') && !/CNT\/\d+\/\d+/.test(tout), brut.lignes.length);
+    verifier('le relais détient le journal chiffré de la mère mais AUCUN nom de patient ni code de dossier, ni dans ses lignes ni dans ses indicateurs', brut.lignes.length >= 1 && !tout.includes(NOM_SECRET) && !tout.includes('Awa') && !/CBG\/\d+\/\d+/.test(tout), brut.lignes.length);
 
     /* 5. UN TÉLÉPHONE N'EN LIT RIEN. */
     const mob = await m.mobile('Tel', { profil: 'reception' });

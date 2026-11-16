@@ -69,10 +69,10 @@ void main() {
     expect(IdentiteImprimee.semence.nomCourt, IdentiteClinique.nomCourt);
     expect(IdentiteImprimee.semence.mentionLegale, IdentiteClinique.mentionLegale);
     expect(IdentiteImprimee.semence.fiche.keys.toList(), champsIdentiteLegale);
-    final v2 = IdentiteImprimee.depuisFiche({'nom': 'CLINIQUE TEST SA', 'rccm': 'RB/NAT/2027-B-1', 'telephones': '01 00 00 00 00 / 01 11 11 11 11', 'version': 2, 'debut': '2027-01-01'});
+    final v2 = IdentiteImprimee.depuisFiche({'nom': 'CLINIQUE TEST SA', 'rccm': 'RB/PKO/2027-B-1', 'telephones': '01 00 00 00 00 / 01 11 11 11 11', 'version': 2, 'debut': '2027-01-01'});
     final datee = lignesTicket(e, identite: v2).map((l) => l.brut).toList();
     expect(datee.first, 'CLINIQUE TEST');
-    expect(datee, contains('RCCM RB/NAT/2027-B-1'));
+    expect(datee, contains('RCCM RB/PKO/2027-B-1'));
     expect(datee, contains('TÉL. 01 00 00 00 00 / 01 11 11 11 11'));
     expect(datee, contains('IFU ${IdentiteClinique.ifu}'), reason: 'un champ absent de la version retombe sur la semence');
     expect(v2.version, 2);

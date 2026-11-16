@@ -104,8 +104,8 @@ void main() {
   });
 
   test('l’adresse du relais se tape sans https:// : le poste l’ajoute ; une adresse complète est gardée telle quelle', () {
-    expect(normaliserAdresseRelais('sighcnt.nassieratoo.com'), 'https://sighcnt.nassieratoo.com');
-    expect(normaliserAdresseRelais('  sighcnt.nassieratoo.com/  '), 'https://sighcnt.nassieratoo.com');
+    expect(normaliserAdresseRelais('relais.exemple.bj'), 'https://relais.exemple.bj');
+    expect(normaliserAdresseRelais('  relais.exemple.bj/  '), 'https://relais.exemple.bj');
     expect(normaliserAdresseRelais('https://relais.exemple.bj'), 'https://relais.exemple.bj');
     expect(normaliserAdresseRelais('http://192.168.1.20:8000'), 'http://192.168.1.20:8000');
     expect(normaliserAdresseRelais('   '), '');

@@ -9,6 +9,8 @@ import 'package:sigh_poste/donnees/parcours_caisse.dart';
 import 'package:sigh_poste/impression/piece.dart';
 import 'package:sigh_poste/modules/m8/commun.dart';
 
+import 'aide_identite_origine.dart';
+
 typedef F = Map<String, Object?>;
 
 /// La fiche `modulesActifs` que pose la bascule « Activité des modules » pour le module MECEF entier.
@@ -180,7 +182,7 @@ void main() {
           utilisateur: 'Caissier', edite: auj, reference: 'REF-1');
       final t = textes(p).join(' ');
       expect(t, contains(IdentiteClinique.nom));
-      expect(t.toUpperCase().contains('NASSIERA'), isFalse);
+      expect(traceOrigine(t), isNull);
     });
 
     test('l’engagement de paiement nomme la clinique en vigueur', () {
@@ -191,7 +193,7 @@ void main() {
       }, utilisateur: 'Comptable', edite: auj, reference: 'REF-2');
       final t = textes(p).join(' ');
       expect(t, contains(IdentiteClinique.nom));
-      expect(t.toUpperCase().contains('NASSIERA'), isFalse);
+      expect(traceOrigine(t), isNull);
     });
   });
 }

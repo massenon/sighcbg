@@ -17,7 +17,7 @@ import 'aide_comptes.dart';
 
 /// LA DEMANDE D'IMPORT ENTRE UN FILEUL ET LA MÈRE (lot IMP-C, « option c » de la Direction du 12/11/2026), à travers le VRAI poste : vraie mère (service de synchronisation), vrai moteur de
 /// fileul, vrais ponts d'activité, vraie configuration diffusée. RIEN n'est traité à la main : c'est `ServiceDemandesImport.demarrerMere` — le même appel que `main.dart` — qui écoute
-/// les demandes arrivées par le pont et rend le verdict. (Le défaut de Nassiera, `appliquerDemandes()` jamais branchée, n'est pas reproduit : le dernier test garde le câblage.)
+/// les demandes arrivées par le pont et rend le verdict. (Le défaut de la clinique sœur, `appliquerDemandes()` jamais branchée, n'est pas reproduit : le dernier test garde le câblage.)
 ///
 ///  - le fileul écrit chez lui TOUT DE SUITE malgré la garde « réglé sur la mère » (identité de la demande, « en attente de la mère »), et dépose la demande ;
 ///  - la mère la TRAITE seule, applique au nom de l'auteur sous les MÊMES identifiants, journalise ; sa copie remplace celle du fileul (une fiche par code) et le fileul est notifié ;
@@ -205,7 +205,7 @@ void main() {
     appl.arreter();
   }, timeout: const Timeout(Duration(seconds: 240)));
 
-  test('GARDE DE CÂBLAGE : main.dart branche réellement le traitement de la mère ET la lecture des verdicts du fileul (le défaut de Nassiera : un moteur écrit, jamais appelé)', () {
+  test('GARDE DE CÂBLAGE : main.dart branche réellement le traitement de la mère ET la lecture des verdicts du fileul (le défaut de la clinique sœur : un moteur écrit, jamais appelé)', () {
     final main = File('lib/main.dart').readAsStringSync();
     expect(main, contains('ServiceDemandesImport.de(magasin)'));
     expect(RegExp(r'ServiceDemandesImport\.de\(magasin\)[\s\S]{0,200}\.demarrerMere\(').hasMatch(main), isTrue, reason: 'la mère doit traiter les demandes qui lui arrivent');

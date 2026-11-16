@@ -1,6 +1,6 @@
 # Documents numérisés : courriers (M13) et dossier patient (M1)
 
-Portage du lot DOCS-1 de la clinique « Nassiera Too » (D0 à D4, sauvegarde SAUV-F) vers l'architecture de Baguidi, sur les décisions de la Direction de Baguidi du 12/11/2026. On a porté le COMPORTEMENT et les règles, pas le code PHP/JS.
+Portage du lot DOCS-1 de la clinique sœur (D0 à D4, sauvegarde SAUV-F) vers l'architecture de Baguidi, sur les décisions de la Direction de Baguidi du 12/11/2026. On a porté le COMPORTEMENT et les règles, pas le code PHP/JS.
 
 ## Ce que fait le lot
 - **Le fichier ne vit jamais dans le magasin ni sur le relais.** Il est rangé dans un DOSSIER du poste mère (`<dossier des données>/scans` par défaut, réglable dans Paramètres système › Scans numérisés, « où sont mes scans » y est affiché) sous un NOM NORMALISÉ strict : courrier `2026-11-11_ARR_0042.pdf`, dossier patient `2026-11-05_CBG-12-26_compte-rendu-medical_007.pdf` (date du document, code patient sans barre, type sans accent, rang de la référence `GED-00007`). Un remplacement ajoute `_v2`, `_v3` : l'ancienne version reste sur disque.
@@ -14,8 +14,8 @@ Portage du lot DOCS-1 de la clinique « Nassiera Too » (D0 à D4, sauvegarde SA
 - **Migration du base64** de `documentsPatient` : dépôt, RELECTURE du fichier rangé, comparaison d'empreinte, ET SEULEMENT ALORS retrait du base64 (`docMigrerBase64`). Bouton sur `m1-documents` et lancement automatique à l'ouverture d'une mère ; idempotente.
 - **Sauvegarde** : `sauvegarderChiffre` de la mère copie aussi le dossier des scans (incrémental, chaque fichier relu et comparé, `MANIFESTE.json`) vers `<sauvegardes>/scans`. **Restauration** : `POST /admin/fichiers/restaurer` vérifie chaque empreinte AVANT copie, refuse et nomme un fichier corrompu, n'écrase rien. Contrôle d'intégrité : `GET /admin/fichiers/controle`.
 
-## Ce qui a changé par rapport à Nassiera, et pourquoi
-| Nassiera | Baguidi | Motif |
+## Ce qui a changé par rapport à la clinique sœur, et pourquoi
+| Clinique sœur | Baguidi | Motif |
 |---|---|---|
 | `api/fichiers.php` sur le serveur web, dossier `api/fichiers/` | dossier de la poste MÈRE (`StockFichiers`), canal de synchronisation scellé | décision de la Direction : le relais ne lit rien |
 | Fichier servi derrière la session PHP | blocs AES-GCM par la clé de clinique, jeton d'appareil, refus des mobiles | pas de serveur web au poste ; RG-13 |

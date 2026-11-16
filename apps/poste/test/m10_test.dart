@@ -642,7 +642,7 @@ void main() {
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
-      // La structure de prise en charge est la clinique en vigueur (la maquette écrit celle de Nassiera Too).
+      // La structure de prise en charge est la clinique en vigueur (la maquette écrit celle de la clinique sœur).
       fichesEgales(col.toutes.first, {...obj(obj(obj(o['creation'])['creee'])['fiche']), 'structurePrise': IdentiteClinique.nom}, ignores: {'saisiPar'});
       expect([col.toutes.first['statutMission'], col.toutes.first['validationEtat']], ['a_valider', 'a_valider']);
       expect('${col.toutes.first['saisiPar']}'.isNotEmpty, isTrue, reason: 'RG-12');

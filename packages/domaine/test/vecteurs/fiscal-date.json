@@ -47,8 +47,8 @@
     "version": 2,
     "debut": "2026-09-01",
     "fin": null,
-    "rccm": "RB/NAT/2026-B-999",
-    "bp": "BP : 999 NATITINGOU (Rép. du Bénin)",
+    "rccm": "RB/PKO/2026-B-999",
+    "bp": "BP : 999 PARAKOU (Rép. du Bénin)",
     "ifu": "3201001996110",
     "valideLe": null
    },
@@ -90,16 +90,16 @@
    {
     "date": "2026-09-01",
     "version": 2,
-    "rccm": "RB/NAT/2026-B-999",
-    "bp": "BP : 999 NATITINGOU (Rép. du Bénin)",
+    "rccm": "RB/PKO/2026-B-999",
+    "bp": "BP : 999 PARAKOU (Rép. du Bénin)",
     "ifu": "3201001996110",
     "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
    },
    {
     "date": "2026-12-31",
     "version": 2,
-    "rccm": "RB/NAT/2026-B-999",
-    "bp": "BP : 999 NATITINGOU (Rép. du Bénin)",
+    "rccm": "RB/PKO/2026-B-999",
+    "bp": "BP : 999 PARAKOU (Rép. du Bénin)",
     "ifu": "3201001996110",
     "nom": "CLINIQUE BAGUIDI « L’AS DU CŒUR »"
    }

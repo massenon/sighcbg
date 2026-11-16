@@ -33,26 +33,16 @@ final donnees = DonneesNavigation.depuisDossier();
 final v = obj(jsonDecode(File('../../packages/domaine/test/vecteurs/acces.json').readAsStringSync()));
 final auj = DateTime(2026, 10, 30, 10);
 
-/// Les textes d'IDENTITÉ des écrans d'accès, tels que la maquette de Nassiera Too les affiche, et ce que l'écran de la Clinique Baguidi affiche à leur
-/// place (PRD P1-2 : dénomination complète, activité, ville, présentation du logiciel, devise, mention légale, toutes lues de l'identité en vigueur).
-/// Tout autre texte de la maquette est attendu tel quel.
+/// Les fiches de l'écran d'accès portent l'identité de la Clinique Baguidi (tools/baguidi/neutraliser-identite.mjs). Deux textes seulement diffèrent
+/// de l'écran de Baguidi par leur COMPOSITION, non par l'identité (PRD P1-2) : la présentation du logiciel, et la mention légale que la maquette
+/// coupait après l'IFU quand l'écran de Baguidi l'imprime entière. Tout autre texte de la fiche est attendu tel quel.
 String baguidi(String texte) {
   final mention = IdentiteClinique.mentionLegale.replaceFirst(RegExp(r'\.$'), '');
-  return switch (texte) {
-    'CLINIQUE NASSIERA TOO' => IdentiteClinique.nom,
-    'Natitingou — République du Bénin' => IdentiteClinique.localisation,
-    'Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.' =>
-      presentationLogiciel,
-    '« Votre santé, notre raison de vivre »' => '« ${IdentiteClinique.slogan} »',
-    'Votre santé, notre raison de vivre' => IdentiteClinique.slogan,
-    'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214 — RCCM RB/NAT/2016-B-268' => mention,
-    'CLINIQUE NASSIERA TOO SARL — IFU 3201642748214' => mention,
-    'CLINIQUE NASSIERA TOO SARL — SIGH-CBG' => '${IdentiteClinique.nom} — ${IdentiteClinique.logiciel}',
-    'CLINIQUE NASSIERA TOO SARL' => IdentiteClinique.nom,
-    '3201642748214' => IdentiteClinique.ifu,
-    'RB/NAT/2016-B-268' => IdentiteClinique.rccm,
-    _ => texte,
-  };
+  if (texte == 'Dossier patient, hospitalisation, laboratoire, pharmacie et stocks, facturation normalisée, ressources humaines, paie et comptabilité SYSCOHADA.') {
+    return presentationLogiciel;
+  }
+  if (texte == '${IdentiteClinique.nom} — IFU ${IdentiteClinique.ifu}') return mention;
+  return texte;
 }
 
 List<M> jeu(String nom) => fl(jsonDecode(File('test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
@@ -145,7 +135,7 @@ Future<void> calculer(WidgetTester t, {int ms = 500}) async {
   await t.pump(Duration(milliseconds: ms));
 }
 
-const secret = 'Clinique#Natitingou26';
+const secret = 'Clinique#Parakou26';
 
 void main() {
   setUpAll(() async {
@@ -405,13 +395,13 @@ void main() {
       await bouton(t, 'Définir le mot de passe et se connecter');
       expect(find.text('Le nouveau mot de passe doit être différent de l’actuel.'), findsOneWidget);
       // Conforme : la session s'ouvre, le nouveau mot de passe remplace le provisoire.
-      await saisir(t, 'acces:nouveau', 'Definitif#Natitingou27');
-      await saisir(t, 'acces:confirmation', 'Definitif#Natitingou27');
+      await saisir(t, 'acces:nouveau', 'Definitif#Parakou27');
+      await saisir(t, 'acces:confirmation', 'Definitif#Parakou27');
       await bouton(t, 'Définir le mot de passe et se connecter');
       await calculer(t, ms: 600);
       expect(s.etat, EtatSession.connectee);
       expect(ServiceIdentifiants.de(m).fiche('${compte['id']}')!['doitChanger'], false);
-      expect(await t.runAsync(() => ServiceIdentifiants.de(m).motDePasseActuel('${compte['id']}', 'Definitif#Natitingou27')), isTrue);
+      expect(await t.runAsync(() => ServiceIdentifiants.de(m).motDePasseActuel('${compte['id']}', 'Definitif#Parakou27')), isTrue);
       expect(await t.runAsync(() => ServiceIdentifiants.de(m).motDePasseActuel('${compte['id']}', 'Provisoire#2026ab')), isFalse);
       await fin(t);
     });

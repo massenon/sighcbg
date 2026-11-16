@@ -8,6 +8,7 @@ import 'package:sigh_poste/impression/feuilles.dart';
 import 'package:sigh_poste/impression/pdf.dart';
 import 'package:sigh_poste/impression/piece.dart';
 
+import 'aide_identite_origine.dart';
 import 'aide_polices.dart';
 
 /// Impression : géométrie des gabarits contre la maquette (`references/kit/impression.json`), contenu du ticket identique (vecteurs, test du
@@ -92,10 +93,12 @@ void main() {
     expect(find.text('CLINIQUE BAGUIDI'), findsOneWidget);
   });
 
-  testWidgets('ticket sans formule de politesse (identité initiale) : aucune ligne de formule, aucune trace de Nassiera Too', (t) async {
+  testWidgets('ticket sans formule de politesse (identité initiale) : aucune ligne de formule, aucune trace de la clinique sœur', (t) async {
     await monter(t, FeuilleTicket(entree: entree, reference: 'CBG-1'));
     expect(find.textContaining('DIEU'), findsNothing);
-    expect(find.textContaining('NASSIERA'), findsNothing);
+    for (final m in motifsOrigine()) {
+      expect(find.textContaining(m), findsNothing, reason: m);
+    }
     expect(find.text('IFU ${IdentiteClinique.ifu}'), findsOneWidget);
   });
 
@@ -110,7 +113,7 @@ void main() {
     expect(a4.width, closeTo((ref['a4']['l'] as num).toDouble(), 0.5));
     expect(a4.height, greaterThanOrEqualTo(mm(297) - 0.5));
     final e = t.getRect(find.byKey(const Key('impression:entete')));
-    // L'en-tête n'a plus la hauteur de la maquette Nassiera Too (titre centré) : il suit le papier en trois zones de Baguidi (P0-13).
+    // L'en-tête n'a plus la hauteur de l'en-tête de la maquette d'origine (titre centré) : il suit le papier en trois zones de Baguidi (P0-13).
     expect(e.height, greaterThan(mm(24)), reason: 'au moins la hauteur du logo de 2,4 cm');
     expect(e.width, closeTo((ref['entete']['l'] as num).toDouble(), 1));
     final ti = t.getRect(find.byKey(const Key('impression:titre')));
@@ -132,7 +135,7 @@ void main() {
     expect(find.text('Réf. document : CBG-20261030-0001'), findsOneWidget);
     expect(find.text('Autorisation d’ouverture : N° 012/MS/DNSP/2009'), findsOneWidget);
     expect(find.text('Édité depuis le SIGH-CBG'), findsOneWidget);
-    expect(find.textContaining('Fait à Parakou, le '), findsOneWidget, reason: 'la ville de l’adresse de la clinique, jamais Natitingou');
+    expect(find.textContaining('Fait à Parakou, le '), findsOneWidget, reason: 'la ville de l’adresse de la clinique, jamais celle de la clinique sœur');
   });
 
   testWidgets('A4, identité initiale : l’autorisation d’ouverture VIDE n’imprime ni sa ligne ni son libellé ; l’en-tête raccourcit d’autant', (t) async {
@@ -141,8 +144,9 @@ void main() {
     expect(find.text(EnteteTroisZones.denominationInsecable(IdentiteClinique.nom)), findsOneWidget);
     expect(find.text(IdentiteClinique.bp), findsOneWidget);
     expect(find.text(IdentiteClinique.slogan), findsOneWidget);
-    expect(find.textContaining('NASSIERA'), findsNothing);
-    expect(find.textContaining('Natitingou'), findsNothing);
+    for (final m in motifsOrigine()) {
+      expect(find.textContaining(m), findsNothing, reason: m);
+    }
   });
 
   test('référence de pièce <SIGLE>-AAAAMMJJ-NNNN : le sigle de la clinique (CBG), jamais écrit en dur', () {

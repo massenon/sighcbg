@@ -24,7 +24,7 @@ final List<M> _comptes = [
 ];
 
 final List<M> _fournisseurs = [
-  {'id': 'FO1', 'statut': 'actif', 'code': 'F-IFU', 'nom': 'Fournisseur avec IFU', 'ifu': '3201642748214'},
+  {'id': 'FO1', 'statut': 'actif', 'code': 'F-IFU', 'nom': 'Fournisseur avec IFU', 'ifu': '3201001996110'},
   {'id': 'FO2', 'statut': 'actif', 'code': 'F-SANS', 'nom': 'Fournisseur sans IFU'},
   {'id': 'FO3', 'statut': 'actif', 'code': 'F-FAUX', 'nom': 'Fournisseur IFU illisible', 'ifu': '123'},
 ];

@@ -154,7 +154,7 @@ void main() {
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsWidgets);
       expect(col.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      poser(t, {'correspondant': 'DGI Natitingou', 'objet': 'Déclaration TVM', 'affecteA': 'Comptabilité'});
+      poser(t, {'correspondant': 'DGI Parakou', 'objet': 'Déclaration TVM', 'affecteA': 'Comptabilité'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
@@ -480,7 +480,7 @@ void main() {
       final m = poste({'ambulances': liste(r['jeu'])});
       await ouvrir(t, m, 'm13-repertoire-ambulances');
       kpisIdentiques(t, obj(r['ecran'])['kpis']);
-      expect(find.textContaining('1 fiche(s) sans numéro : CHD Atacora — ambulance'), findsOneWidget);
+      expect(find.textContaining('1 fiche(s) sans numéro : CHD Borgou — ambulance'), findsOneWidget);
       final fiches = liste(r['jeu']).where((x) => x['statut'] != 'archive').toList();
       final ordre = admOrdreAppelRapide(fiches);
       final y = {for (final f in ordre) '${f['id']}': t.getTopLeft(find.byKey(Key('adm:appel:${f['id']}'))).dy};

@@ -375,7 +375,7 @@ class SynchronisationTest extends TestCase
     {
         DB::table('relais_synchro_historique')->insert(['quand' => 1, 'nature' => 'fileul', 'ref' => 'F1']);
         $this->assertSame(['lignes' => 1, 'colonnes_hors_liste' => [], 'refs_hors_liste' => 0], Opacite::historiqueSynchro());
-        DB::table('relais_synchro_historique')->insert(['quand' => 2, 'nature' => 'fileul', 'ref' => 'CNT/12/26']);
+        DB::table('relais_synchro_historique')->insert(['quand' => 2, 'nature' => 'fileul', 'ref' => 'CBG/12/26']);
         $this->assertSame(1, Opacite::historiqueSynchro()['refs_hors_liste']);
         Schema::table('relais_synchro_historique', fn ($t) => $t->string('motif')->nullable());
         $this->assertSame(['motif'], Opacite::historiqueSynchro()['colonnes_hors_liste']);

@@ -91,7 +91,7 @@ void main() {
     MrbRefus? refus({
       bool droit = true,
       bool fenetre = true,
-      String confirmation = 'NASSIERA TOO',
+      String confirmation = 'BAGUIDI',
       String second = 'Mme DAF',
       String auteur = 'Admin',
       String mode = mrbModeArchiver,
@@ -102,7 +102,7 @@ void main() {
             droitAnnuler: droit,
             fenetreOuverte: fenetre,
             confirmation: confirmation,
-            nomClinique: 'NASSIERA TOO',
+            nomClinique: 'BAGUIDI',
             second: second,
             auteur: auteur,
             mode: mode,
@@ -112,7 +112,7 @@ void main() {
     test('chaque garde refuse en se nommant, dans l’ordre', () {
       expect(refus(droit: false)!.code, 'droit_refuse');
       expect(refus(fenetre: false)!.code, 'reinit_fermee');
-      expect(refus(confirmation: 'nassiera')!.code, 'confirmation_invalide');
+      expect(refus(confirmation: 'bagui')!.code, 'confirmation_invalide');
       expect(refus(confirmation: '')!.code, 'confirmation_invalide');
       expect(refus(second: '  ')!.code, 'second_profil_requis');
       expect(refus(second: 'admin')!.code, 'second_profil_identique');

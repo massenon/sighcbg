@@ -17,7 +17,7 @@ import 'package:sigh_sync/sigh_sync.dart';
 /// fileul, magasins).
 typedef M = Map<String, Object?>;
 final auj = DateTime(2026, 11, 2, 9);
-const secret = 'Clinique#Natitingou26';
+const secret = 'Clinique#Parakou26';
 
 Magasin mere() => Magasin({
       'utilisateurs': [

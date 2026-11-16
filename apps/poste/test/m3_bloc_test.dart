@@ -48,7 +48,7 @@ List<Fiche> patients() => [
           'sexe': i % 2 == 0 ? 'F' : 'M',
           if (i == 1) ...{'assureur': 'SUNU', 'tauxPriseEnCharge': 70},
           'dateNaissance': '1970-01-01',
-          'adresse': 'Santa, Natitingou',
+          'adresse': 'Santa, Parakou',
           'quartier': 'Kotopounga',
         }
     ];
@@ -606,7 +606,7 @@ void main() {
 
     Future<void> remplir(WidgetTester t, {String prescripteur = 'BICHIASI Cezoune Sichovian — Directeur Médical'}) async {
       await choisir(t, 'patientCode', 'CBG/2/26 — BIALI Buke');
-      await saisir(t, 'residence', 'Natitingou');
+      await saisir(t, 'residence', 'Parakou');
       await choisir(t, 'prescripteur', prescripteur);
       await saisir(t, 'indication', 'Anémie');
       await cocherExamens(t, ['L01 — AKOP', 'L02 — ASLO']);
@@ -673,7 +673,7 @@ void main() {
       await ouvrir(t, m, 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
       await choisir(t, 'patientCode', 'CBG/3/26 — N’ACHOU Yacha');
-      await saisir(t, 'residence', 'Natitingou');
+      await saisir(t, 'residence', 'Parakou');
       await choisir(t, 'serviceDemandeur', 'Médecine');
       await saisir(t, 'indication', 'Anémie');
       await cocherExamens(t, ['L03 — AZOTEMIE (UREMIE)']);
@@ -705,7 +705,7 @@ void main() {
       await ouvrir(t, base(), 'm3-demande-examen');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Nouvelle fiche de demande'));
       await choisir(t, 'patientCode', 'CBG/6/25 — DATU Bouboli');
-      expect(find.text('Santa, Natitingou'), findsOneWidget);
+      expect(find.text('Santa, Parakou'), findsOneWidget);
       await saisir(t, 'residence', 'Boriyoure');
       await choisir(t, 'patientCode', 'CBG/7/25 — ODJIPIAR YUDJOUVOU Afagu');
       expect(find.text('Boriyoure'), findsOneWidget);

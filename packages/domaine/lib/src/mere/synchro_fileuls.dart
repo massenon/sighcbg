@@ -7,7 +7,7 @@
 /// (`test/vecteurs/synchro_fileuls.json`, lus aussi par le banc Node et par les tests du relais Laravel).
 ///
 /// Le seul texte permis est le NOM TECHNIQUE du poste (l'étiquette de l'appairage) : 40 caractères au plus, lettres, chiffres, espace, point, deux-points, tiret et tiret bas. Ce jeu de
-/// caractères exclut l'identifiant d'un dossier (`CNT/12/26`) et tout ce qui ressemble à une adresse ou à une phrase ponctuée ; il ne peut pas distinguer le nom d'une personne d'un nom de
+/// caractères exclut l'identifiant d'un dossier (`CBG/12/26`) et tout ce qui ressemble à une adresse ou à une phrase ponctuée ; il ne peut pas distinguer le nom d'une personne d'un nom de
 /// poste, et l'étiquette est choisie par l'administrateur à l'appairage (hypothèse à confirmer, `ECARTS-MAQUETTE.md` E2558).
 library;
 

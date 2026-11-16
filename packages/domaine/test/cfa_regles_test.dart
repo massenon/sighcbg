@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
-import 'aide_vecteurs.dart' show identiteBaguidi, sousLeSigleDeLaMaquette;
+import 'aide_vecteurs.dart' show sousLeSigleDeLaMaquette;
 
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
@@ -15,10 +15,8 @@ M lire(String nom) => obj(jsonDecode(File('test/vecteurs/$nom.json').readAsStrin
 List<M> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 List<M> actives(String nom) => [for (final f in jeu(nom)) if (f['statut'] != 'archive') f];
 
-/// Le jeu livré est encore celui de Nassiera Too (un autre lot le remplace) : ses textes passent par la substitution d'identité avant comparaison.
-List<M> jeuIdentite(String nom) => [
-      for (final f in jeu(nom)) {for (final e in f.entries) e.key: e.value is String ? identiteBaguidi(e.value as String) : e.value}
-    ];
+/// Le jeu de référence porte l'identité de la Clinique Baguidi (tools/baguidi/neutraliser-identite.mjs) : ses textes se comparent tels quels.
+List<M> jeuIdentite(String nom) => jeu(nom);
 
 /// Les espaces (ordinaires, fines, insécables) ne comptent pas dans une comparaison de libellés.
 String s(Object? v) => '$v'.replaceAll(RegExp(r'[\s  ]'), '');
@@ -78,7 +76,7 @@ void main() {
       // Forme juridique et adresse VIVENT dans IdentiteClinique (surchargeables) : CfaIdentite les relit, jamais une seconde vérité.
       expect(CfaIdentite.forme, '');
       expect(CfaIdentite.forme, IdentiteClinique.forme);
-      expect(CfaIdentite.adresse, b['adresse'], reason: 'vecteur passé par tools/baguidi/substitution-identite.mjs');
+      expect(CfaIdentite.adresse, b['adresse'], reason: 'vecteur passé par tools/baguidi/neutraliser-identite.mjs');
       expect(CfaIdentite.adresse, IdentiteClinique.adresse);
       expect(CfaIdentite.telephoneRdv, b['telephoneRdv']);
       expect(CfaIdentite.telephoneRdv, IdentiteClinique.telephones.first);

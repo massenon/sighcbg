@@ -28,15 +28,15 @@ PortImportMemoire magasin({List<Fiche> factures = const [], String jour = '2026-
         {'id': 'G2', 'souscripteurId': 'S1', 'assureur': 'ASS1', 'libelle': 'Analyses', 'categorie': 'analyse', 'taux': 70, 'plafond': null, 'version': 1, 'statut': 'actif'},
       ],
       'patients': [
-        {'id': 'P1', 'code': 'CNT/1/26', 'nom': 'DUPONT', 'prenom': 'Aline', 'assureur': 'ASS1', 'assureurNom': 'Compagnie un', 'numeroPolice': 'POL/1', 'souscripteurId': 'S1', 'categorieAssurance': 'entreprise', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31', 'statut': 'actif'},
-        {'id': 'P2', 'code': 'CNT/2/26', 'nom': 'DURAND', 'prenom': 'Paul', 'statut': 'actif'},
+        {'id': 'P1', 'code': 'CBG/1/26', 'nom': 'DUPONT', 'prenom': 'Aline', 'assureur': 'ASS1', 'assureurNom': 'Compagnie un', 'numeroPolice': 'POL/1', 'souscripteurId': 'S1', 'categorieAssurance': 'entreprise', 'tauxPriseEnCharge': 80, 'carteExpiration': '2027-12-31', 'statut': 'actif'},
+        {'id': 'P2', 'code': 'CBG/2/26', 'nom': 'DURAND', 'prenom': 'Paul', 'statut': 'actif'},
       ],
       'couverturesAssurance': <Object?>[],
       'factures': factures,
     }, jourFixe: jour);
 
 const _ga = {'police': 'POL/1', 'categorie': 'Consultations', 'garantie': 'Consultation généraliste', 'taux': 60, 'plafond': 4000, 'unite': 'par acte', 'dateEffet': '2026-12-01', 'motif': 'Avenant'};
-const _cv = {'patient': 'CNT/2/26', 'assureur': 'ASS2', 'police': 'POL/2', 'dateEffet': '2026-12-01', 'motif': 'Changement d’employeur', 'carteExpiration': '2027-12-31', 'taux': 70};
+const _cv = {'patient': 'CBG/2/26', 'assureur': 'ASS2', 'police': 'POL/2', 'dateEffet': '2026-12-01', 'motif': 'Changement d’employeur', 'carteExpiration': '2027-12-31', 'taux': 70};
 
 void main() {
   group('classement', () {
@@ -152,7 +152,7 @@ void main() {
       final j = jeuCouverturesAssurance;
       final port = magasin();
       final a = analyserLignes(j, fich(j, [
-        {..._cv, 'patient': 'CNT/1/26', 'assureur': 'ASS2', 'police': 'POL/2', 'dateEffet': '2026-11-01'}
+        {..._cv, 'patient': 'CBG/1/26', 'assureur': 'ASS2', 'police': 'POL/2', 'dateEffet': '2026-11-01'}
       ]), 'c.xlsx', port);
       expect(a.accepte, isTrue, reason: '${[for (final p in a.problemes) '${p.code} ${p.motif}']}');
       expect(port.toutes('couverturesAssurance'), isEmpty);
@@ -198,7 +198,7 @@ void main() {
         final a = analyserLignes(j, fich(j, [{..._cv, ...m}]), 'c.xlsx', p ?? magasin());
         return [for (final x in a.problemes) if (x.niveau == importRefus) x.code].join(',');
       }
-      expect(refus({'patient': 'CNT/9/26'}), 'PATIENT_INCONNU');
+      expect(refus({'patient': 'CBG/9/26'}), 'PATIENT_INCONNU');
       expect(refus({'police': 'NOPE'}), 'POLICE_INCONNUE');
       expect(refus({'assureur': 'ASS1'}), 'POLICE_AUTRE_COMPAGNIE');
       expect(refus({'motif': ''}), 'CHAMP_OBLIGATOIRE');

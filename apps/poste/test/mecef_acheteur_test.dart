@@ -113,7 +113,7 @@ void main() {
     expect(find.textContaining('5 % arrêté'), findsNothing);
     // Ce que l'ancien test prouvait (les taux viennent du barème, un taux non arrêté est « à valider ») reste vrai au moteur de l'acheteur.
     final r = aibPourAcheteur(
-        ifu: '3201642748214', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+        ifu: '3201001996110', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
     expect(r.refus!.code, 'AIB_SANS_BAREME');
     expect(r.nonArretes, contains('1 % — non arrêté, à valider'));
     final sans = aibPourAcheteur(date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
@@ -132,7 +132,7 @@ void main() {
     expect([f['ifuClient'], f['acheteurNom'], f['aibSituation'], f['aibTaux'], f['aibMontant']], [null, null, null, 0, 0]);
     // D8 tient toujours au moteur : un acheteur tiers avec IFU actif (1 % non arrêté) est refusé en le nommant.
     final tiers = acheteurNormaliseAuBareme(
-        ifu: '3201642748214', nom: 'Entreprise X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+        ifu: '3201001996110', nom: 'Entreprise X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
     expect(tiers.refus!.code, 'AIB_SANS_BAREME');
   });
 
@@ -169,10 +169,10 @@ void main() {
     Iterable<Map<String, Object?>> s() => m.collection('situationsAib').actives;
     Iterable<Map<String, Object?>> v() => m.collection('baremeAib').actives;
     final cinq = acheteurNormaliseAuBareme(
-        ifu: '3201642748214', nom: 'Entreprise X', situationChoisie: 'ifu_inactif_ou_absent', date: aujourdhui, situations: s(), versions: v());
+        ifu: '3201001996110', nom: 'Entreprise X', situationChoisie: 'ifu_inactif_ou_absent', date: aujourdhui, situations: s(), versions: v());
     expect([cinq.acheteur!.aibTaux, cinq.acheteur!.aibSituation], [5, 'ifu_inactif_ou_absent']);
     final trois = acheteurNormaliseAuBareme(
-        ifu: '3201642748214', nom: 'Entreprise X', situationChoisie: 'prestation_service', date: aujourdhui, situations: s(), versions: v());
+        ifu: '3201001996110', nom: 'Entreprise X', situationChoisie: 'prestation_service', date: aujourdhui, situations: s(), versions: v());
     expect(trois.refus!.code, 'AIB_SANS_BAREME');
   });
 
@@ -206,7 +206,7 @@ void main() {
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
     await blocAbsent(t);
-    expect(validerAcheteurMecef(ifu: '3201642748214', aibTaux: 0).refus!.code, 'NOM_ACHETEUR_ABSENT');
+    expect(validerAcheteurMecef(ifu: '3201001996110', aibTaux: 0).refus!.code, 'NOM_ACHETEUR_ABSENT');
   });
 
   cas('vente soldée : AUCUN acheteur dans la pièce ni AIB (E3770), la vente reste EN ATTENTE de certification et ne reçoit AUCUN numéro (lot L3)', (t) async {
@@ -395,14 +395,14 @@ void main() {
 
     test('D1 corrigé : une pièce qui porte encore un acheteur avec IFU actif est normalisée sans acheteur ni AIB ; D8 : le moteur de l\'acheteur tiers refuse toujours ce même acheteur', () {
       final m = magasin();
-      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
       expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibRepli'], p['ifuClient'], p['acheteurNom']], [0, null, null, null]);
       // D8 : la fenêtre a disparu ; son refus nommé reste celui du moteur pour une vente à un tiers, tant que le 1 % n'est pas arrêté.
       final tiers = acheteurNormaliseAuBareme(
-          ifu: '3201642748214', nom: 'Clinique X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+          ifu: '3201001996110', nom: 'Clinique X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
       expect(tiers.refus!.code, 'AIB_SANS_BAREME');
     });
 
@@ -412,7 +412,7 @@ void main() {
         'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif',
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
-      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201001996110', 'acheteurNom': 'Clinique X'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
       expect([p['aibTaux'], p['aibMontant']], [0, 0]);
@@ -435,10 +435,10 @@ void main() {
         'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 10, 'situationIfuRenseigne': 'ifu_actif',
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 0, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
-      final r = validerAcheteurMecef(ifu: '3201642748214', nom: 'X', aibTaux: 0, longueurIfu: parametresAib(m, aujourdhui).longueurIfu);
+      final r = validerAcheteurMecef(ifu: '3201001996110', nom: 'X', aibTaux: 0, longueurIfu: parametresAib(m, aujourdhui).longueurIfu);
       expect(r.refus!.code, 'IFU_INVALIDE');
       expect(r.refus!.motif, contains('10 chiffres'));
-      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'X'});
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201001996110', 'acheteurNom': 'X'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
     });
   });

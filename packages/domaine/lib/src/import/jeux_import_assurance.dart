@@ -184,7 +184,7 @@ final JeuImport jeuCouverturesAssurance = JeuImport(
   fichierModele: 'modele-import-couvertures-assurance',
   gesteExiste: 'Une couverture tenue se change par une nouvelle couverture datée.',
   colonnes: [
-    _oblig('patient', 'Code patient', 'texte', longueurMax: 24, exemple: 'CNT/1/26', aide: 'Le code d’un dossier connu. Un code attribué ne se modifie jamais (RG-01).'),
+    _oblig('patient', 'Code patient', 'texte', longueurMax: 24, exemple: 'CBG/1/26', aide: 'Le code d’un dossier connu. Un code attribué ne se modifie jamais (RG-01).'),
     _oblig('assureur', 'Code compagnie', 'liste', liste: (ctx) => [for (final a in ((ctx as Map)['assureursListe'] as List)) ValeurListe('$a')], exemple: 'NSIA', aide: 'Une compagnie connue du magasin.'),
     _oblig('police', 'N° de police', 'texte', longueurMax: 40, exemple: 'POL/2026/0100', aide: 'La police d’un souscripteur connu de cette compagnie.'),
     _oblig('dateEffet', 'Date d’effet', 'date', exemple: '2027-01-01', aide: 'La couverture précédente est close la veille. Obligatoire : une date d’effet ne s’invente pas.'),

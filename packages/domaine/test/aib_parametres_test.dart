@@ -92,7 +92,7 @@ void main() {
         situations: [for (final s in aibSituationsSemees) {...s, 'statut': 'actif'}], bareme: [for (final b in aibBaremeSeme) {...b, 'statut': 'actif', 'aValider': true}]);
     expect(aibTauxPourAcheteur(d, ifu: '', date: '2026-09-06')['taux'], 1);
     expect(aibTauxPourAcheteur(d, ifu: '', date: '2026-09-07')['taux'], 5);
-    expect(aibTauxPourAcheteur(d, ifu: '3201642748214', date: '2026-11-09')['taux'], 1);
+    expect(aibTauxPourAcheteur(d, ifu: '3201001996110', date: '2026-11-09')['taux'], 1);
     expect(aibTauxALaDate(d, 'prestation_service', '2026-11-09')['taux'], 3);
     expect(aibTauxALaDate(d, 'ifu_actif', '2025-12-31')['code'], 'AIB_SANS_BAREME');
   });

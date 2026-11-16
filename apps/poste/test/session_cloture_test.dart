@@ -26,7 +26,7 @@ List<M> jeu(String nom) => fl(jsonDecode(File('test/fixtures/jeu_reference/$nom.
 
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 10, 30, 10);
-const secret = 'Clinique#Natitingou26';
+const secret = 'Clinique#Parakou26';
 
 Magasin poste() => Magasin({
       'audit': const <M>[],

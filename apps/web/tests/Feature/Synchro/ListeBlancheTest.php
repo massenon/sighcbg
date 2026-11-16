@@ -99,7 +99,7 @@ class ListeBlancheTest extends TestCase
         $this->assertSame(1, DB::table('relais_indicateurs_historique')->count());
         $releves = DB::table('relais_synchro_historique')->count();
 
-        foreach ([['nom', 'PATIENT Fictive'], ['patientId', 'CNT/12/26'], ['motif', 'doublon'], ['libelle', 'Facture 123']] as [$cle, $valeur]) {
+        foreach ([['nom', 'PATIENT Fictive'], ['patientId', 'CBG/12/26'], ['motif', 'doublon'], ['libelle', 'Facture 123']] as [$cle, $valeur]) {
             $r = $this->mere(['seq_max' => 2, 'fileuls' => [['poste' => 'F1', $cle => $valeur]]]);
             $r->assertStatus(422)->assertJsonPath('code', 'indicateur_cle_inconnue')->assertJsonPath('chemin', "fileuls[0].$cle");
             $this->assertNotEmpty($r->json('motif'));
@@ -113,7 +113,7 @@ class ListeBlancheTest extends TestCase
 
     public function test_un_nom_de_dossier_et_un_compteur_non_numerique_sont_refuses(): void
     {
-        $this->mere(['fileuls' => [['poste' => 'CNT/12/26']]])->assertStatus(422)->assertJsonPath('code', 'indicateur_valeur_invalide')->assertJsonPath('chemin', 'fileuls[0].poste');
+        $this->mere(['fileuls' => [['poste' => 'CBG/12/26']]])->assertStatus(422)->assertJsonPath('code', 'indicateur_valeur_invalide')->assertJsonPath('chemin', 'fileuls[0].poste');
         $this->mere(['fileuls' => [['poste' => 'F1', 'conflitsOuverts' => 'trois']]])->assertStatus(422)->assertJsonPath('chemin', 'fileuls[0].conflitsOuverts');
         $this->mere(['fileuls' => [['poste' => 'F1', 'retardJournal' => 'PATIENT Fictive']]])->assertStatus(422)->assertJsonPath('chemin', 'fileuls[0].retardJournal');
         $this->mere(['fileuls' => [['poste' => 'F1', 'demandesImportEnAttente' => true]]])->assertStatus(422);

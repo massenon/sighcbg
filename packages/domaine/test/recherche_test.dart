@@ -8,7 +8,7 @@ void main() {
   test('recherche sans accents ni casse', () {
     expect(correspond('Hémoglobine', 'hemo'), isTrue);
     expect(correspond('Hémoglobine', 'HÉMO'), isTrue);
-    expect(correspond('Natitingou', 'xyz'), isFalse);
+    expect(correspond('Parakou', 'xyz'), isFalse);
     expect(correspond(null, 'a'), isFalse);
     expect(correspond('Zoé', 'zoe'), isTrue);
   });

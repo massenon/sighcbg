@@ -124,7 +124,7 @@ void main() {
 
   group('la situation d\'un acheteur, choisie d\'office d\'après son IFU', () {
     test('13 chiffres (espaces tolérés) : « IFU actif », PRÉSUMÉ actif et le dit ; sans IFU : « sans IFU actif », aucune présomption', () {
-      final a = cpdSituationPourAcheteur(situations, ifu: '3201 6427 48214');
+      final a = cpdSituationPourAcheteur(situations, ifu: '3201 0019 96110');
       expect(a.situation!['code'], 'ifu_actif');
       expect(a.presomption, isTrue);
       expect(a.avertissement, contains('présumé'));

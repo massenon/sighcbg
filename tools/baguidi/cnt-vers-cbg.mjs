@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Le sigle CNT (Clinique Nassiera Too) devient CBG (Clinique Baguidi) partout où il est un MOT : codes patient CNT/n/AA, références de pièces,
+// Le sigle CNT (celui de la clinique sœur) devient CBG (Clinique Baguidi) partout où il est un MOT : codes patient CNT/n/AA, références de pièces,
 // références de notes de service, noms de fichiers d'export, nom du logiciel. Décision de la Direction du 08/11/2026 (« tout mot clé CNT en CBG »).
 //
 // CE QU'IL TOUCHE : le mot CNT en majuscules, isolé (ni lettre, ni chiffre, ni soulignement avant ; pas de lettre après), et les formes minuscules
@@ -10,9 +10,9 @@
 import { readFileSync, writeFileSync, statSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const RACINES = ['apps', 'packages', 'tools', 'docs/architecture/ecrans', 'docs/design', 'package.json'];
-const EXT = /\.(dart|json|js|mjs|php|yaml|yml|iss|rc|kts|kt|txt|xml|sql|html|css|example|exemple|gradle|cmake|cc|h|plist)$|\.env/i;
-const SAUF = /(^|\/)(node_modules|\.git|build|vendor|\.dart_tool|\.claude)(\/|$)|pubspec\.lock|composer\.lock|package-lock\.json|cnt-vers-cbg\.mjs$/;
+const RACINES = ['apps', 'packages', 'tools', 'docs/architecture/ecrans', 'docs/architecture/ecrans-mobile', 'docs/design', 'package.json'];
+const EXT = /\.(dart|json|js|mjs|php|yaml|yml|iss|rc|bat|kts|kt|txt|xml|sql|html|css|example|exemple|gradle|cmake|cc|h|plist)$|\.env/i;
+const SAUF = /(^|\/)(node_modules|\.git|build|vendor|\.dart_tool|\.claude)(\/|$)|pubspec\.lock|composer\.lock|package-lock\.json|cnt-vers-cbg\.mjs$|neutraliser-identite\.mjs$/;
 const MOT = /(?<![A-Za-z0-9_])CNT(?![A-Za-z])/g;
 const MIN = /sigh([-_])cnt(?![A-Za-z])/g;
 const verifier = process.argv.includes('--verifier');

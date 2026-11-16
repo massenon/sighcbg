@@ -2,7 +2,7 @@
 // PSEUDONYMISATION DES NOMS DE PERSONNES de la clinique d'origine (décision J11 de la Direction, 08/11/2026).
 //
 // Les jeux d'essai du dépôt (jeu de référence copié du jeu livré, fixture sobre, vecteurs du domaine, fiches de parité des écrans, tests Dart et code
-// qui citent un nom) ont été engendrés par la maquette de la Clinique Nassiera Too : ils portent les noms de SON personnel et de SES patients.
+// qui citent un nom) ont été engendrés par la maquette de la clinique sœur : ils portent les noms de SON personnel et de SES patients.
 // Ce script remplace chaque nom par un pseudonyme, avec UNE SEULE TABLE appliquée partout : la parité entre un test et un vecteur tient, puisque les
 // deux côtés reçoivent le même remplacement, et plus aucun nom réel de l'autre clinique ne figure dans le dépôt.
 //
@@ -342,7 +342,7 @@ const COLLES_RE = Object.entries(TABLE).filter(([k]) => (k.length >= 5 || k === 
 ]);
 
 // --- Classeurs .xlsx : archives ZIP dont les parties XML portent les chaînes (noms de patients et d'agents des fichiers d'import d'essai) ---------------------
-function lireZip(buf) {
+export function lireZip(buf) {
   let e = buf.length - 22;
   while (e >= 0 && buf.readUInt32LE(e) !== 0x06054b50) e--;
   if (e < 0) throw new Error('archive ZIP illisible');
@@ -359,7 +359,7 @@ function lireZip(buf) {
   }
   return entrees;
 }
-function ecrireZip(entrees) {
+export function ecrireZip(entrees) {
   const locaux = [], centraux = [];
   let decalage = 0;
   for (const x of entrees) {
