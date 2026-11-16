@@ -22,6 +22,7 @@ import '../modules/auth/acc_session.dart';
 import 'acces_rapides.dart';
 import 'activite_fermee.dart';
 import '../donnees/magasin.dart';
+import '../donnees/tarifs_poste.dart';
 import '../kit/toast.dart';
 import '../modules/cfg/cfb_notifications.dart' show CfbAudio;
 import 'centre_notifications.dart';
@@ -477,6 +478,13 @@ class _CoquePosteState extends State<CoquePoste> {
   }
 
   void _ouvrir(String id) {
+    // AJ (16/11/2026) : le changement de jour, sans tâche de minuit : à l'ouverture d'un écran, les listes de prix passent au prix du jour, sur la mère comme sur un fileul.
+    final m = widget.magasin;
+    // Différé d'une micro-tâche : un écran-renvoi peut naviguer pendant sa construction, la projection prévient alors ses écouteurs après l'image.
+    if (m != null) {
+      final quand = _maintenant();
+      scheduleMicrotask(() => TarifsPoste.projeterSiNouveauJour(m, quand));
+    }
     if (_estAutonome(id)) {
       setState(() => _autonome = id);
       return;

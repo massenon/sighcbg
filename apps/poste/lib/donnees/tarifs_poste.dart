@@ -1007,8 +1007,30 @@ class TarifsPoste {
     return n;
   }
 
-  /// Le changement de jour sans tâche de minuit : à appeler à l'ouverture d'un écran ; ne fait rien si la projection de ce jour est déjà faite.
+  /// Le changement de jour sans tâche de minuit : à appeler à l'ouverture d'un écran ; ne fait rien si la projection de ce jour est déjà faite. AJ (16/11/2026) : appelé AUSSI
+  /// sur un FILEUL (coque, applicateur de configuration) : les listes de prix affichées (actes, analyses, catalogue) passent au prix du jour même quand la mère est coupée. Les prix
+  /// des PIÈCES restent lus à la date de la pièce (accesseur daté) : la projection ne touche que les listes de lecture.
   static int projeterSiNouveauJour(Magasin m, DateTime maintenant) => _dernierJour[m] == tarIso(maintenant) ? 0 : projeter(m, maintenant);
+
+  /// Les trois listes de LECTURE que la projection tient au prix du jour.
+  static const Set<String> collectionsProjetees = {'actes', 'analyses', 'catalogueTarifs'};
+
+  /// AJ (16/11/2026) : une fiche de liste de prix REÇUE de la mère par un fileul, ramenée au prix EN VIGUEUR AUJOURD'HUI selon le référentiel que le fileul détient (seuls les champs
+  /// de prix ; le reste est celui de la mère). Sans cela, la mère coupée (ou pas encore passée au jour) renverrait au fileul les prix de la veille, qui effaceraient sa projection
+  /// du jour à chaque tour de synchronisation. Une fiche archivée, hors des trois listes, ou seconde ligne active d'un même code (doublon non arbitré : seule la première reflète
+  /// le référentiel) est rendue telle quelle.
+  static Map<String, Object?> auPrixDuJour(Magasin m, String collection, Map<String, Object?> f, DateTime maintenant) {
+    if (!collectionsProjetees.contains(collection) || f['statut'] == 'archive') return f;
+    final h = lire(m);
+    if (h.vide) return f;
+    final locales = m.collection(collection).toutes;
+    final rang = locales.indexWhere((x) => x['id'] == f['id']);
+    final avant = rang < 0 ? locales : locales.sublist(0, rang);
+    if (avant.any((x) => x['statut'] != 'archive' && x['id'] != f['id'] && '${x['code']}' == '${f['code']}')) return f;
+    final c = tarProjection(h, tarIso(maintenant),
+        actes: collection == 'actes' ? [f] : const [], analyses: collection == 'analyses' ? [f] : const [], catalogue: collection == 'catalogueTarifs' ? [f] : const []);
+    return c.isEmpty ? f : {...f, ...c.first.patch};
+  }
 
   /// La GARDE DE PARITÉ : chaque fiche des trois collections de lecture doit dire ce que le référentiel dit aujourd'hui. Un écart est une ERREUR nommée, jamais un
   /// affichage différent. Rend la liste des écarts (vide quand tout concorde).
