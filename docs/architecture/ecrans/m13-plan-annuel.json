@@ -2,7 +2,7 @@
  "id": "m13-plan-annuel",
  "module": "M13",
  "domaine": "Administration",
- "libelleManifeste": "Plan annuel de travail",
+ "libelleManifeste": "Plan de travail annuel (PTA)",
  "acces": "ouvert",
  "titre": "Plan de travail annuel (PTA)",
  "description": "Programmation des actions de la clinique pour l’exercice choisi : axes, objectifs, indicateurs et cibles, calendrier, responsables, budget, adoption par la Direction et suivi.",
@@ -10,7 +10,7 @@
   "Accueil",
   "Administration",
   "Administration & Ambulance",
-  "Plan annuel de travail"
+  "Plan de travail annuel (PTA)"
  ],
  "actions": [
   "Courriers (départ / arrivée)",

@@ -555,7 +555,7 @@ const rapCatalogueEtats = <(String, List<String>)>[
   ('Administration', [
     'Registre des courriers',
     'Compte rendu de réunion',
-    'Plan annuel de travail',
+    'Plan de travail annuel (PTA)',
     'Note de service',
   ]),
   ('Pilotage', [
@@ -640,7 +640,7 @@ const rapEcransProducteurs = <(String, String)>[
   ('Tableau des flux de trésorerie', 'm12-flux-tresorerie'),
   ('Registre des courriers', 'm13-courriers'),
   ('Compte rendu de réunion', 'm13-reunions'),
-  ('Plan annuel de travail', 'm13-plan-annuel'),
+  ('Plan de travail annuel (PTA)', 'm13-plan-annuel'),
   ('Note de service', 'm13-notes-service'),
   ('Tableau de bord financier', 'dash-direction'),
   ('Tableau de bord stock', 'm6-dashboard'),

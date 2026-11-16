@@ -260,7 +260,7 @@ List<AdmFiche> admAmorcerEvenements(DateTime maintenant, List<String> personnel)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
-// Plan annuel de travail : remplacé par le PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026), voir `pta.dart`. Les trois états, les quatre trimestres et les
+// Plan de travail annuel (PTA) : remplacé par le PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026), voir `pta.dart`. Les trois états, les quatre trimestres et les
 // douze actions semées sur une année écrite en dur de la maquette sont retirés (écarts E3790 à E3829).
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 

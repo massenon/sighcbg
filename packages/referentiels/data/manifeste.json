@@ -4914,7 +4914,7 @@
   },
   {
    "id": "m13-plan-annuel",
-   "label": "Plan annuel de travail",
+   "label": "Plan de travail annuel (PTA)",
    "icone": "calendar-range",
    "module": "M13",
    "moduleLabel": "Administration & Ambulance",

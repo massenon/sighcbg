@@ -41,7 +41,7 @@ class EcranEvenements extends StatefulWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     return [
       BoutonSigh(libelle: 'Réunions', icone: LucideIcons.usersRound, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-reunions')),
-      BoutonSigh(libelle: 'Plan annuel', icone: LucideIcons.calendarRange, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-plan-annuel')),
+      BoutonSigh(libelle: 'Plan de travail annuel (PTA)', icone: LucideIcons.calendarRange, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-plan-annuel')),
     ];
   }
 
