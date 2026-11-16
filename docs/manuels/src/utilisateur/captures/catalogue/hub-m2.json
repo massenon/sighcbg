@@ -1,0 +1,17 @@
+{
+ "id": "hub-m2",
+ "titre": "RDV, Visites & Consultations",
+ "libelle": "RDV, Visites & Consultations",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m2"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 4040
+}

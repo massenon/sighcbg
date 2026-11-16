@@ -1,0 +1,17 @@
+{
+ "id": "mere-journal-technique",
+ "titre": "Journal technique",
+ "libelle": "Journal technique",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Sécurité et continuité",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-journal-technique"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1900
+}

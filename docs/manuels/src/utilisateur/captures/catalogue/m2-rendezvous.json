@@ -1,0 +1,17 @@
+{
+ "id": "m2-rendezvous",
+ "titre": "Rendez-vous & visites",
+ "libelle": "Rendez-vous & visites",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-rendezvous"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 4609
+}

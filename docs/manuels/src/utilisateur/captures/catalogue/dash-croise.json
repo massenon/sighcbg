@@ -1,0 +1,17 @@
+{
+ "id": "dash-croise",
+ "titre": "Tableau de bord dynamique croisé",
+ "libelle": "Tableau de bord dynamique croisé",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-croise"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1439
+}

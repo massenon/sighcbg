@@ -1,0 +1,17 @@
+{
+ "id": "m10-primes",
+ "titre": "Primes diverses (NS 132)",
+ "libelle": "Primes (NS 132)",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-primes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 776
+}

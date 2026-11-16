@@ -1,0 +1,15 @@
+{
+ "id": "auth-lock",
+ "titre": "Écran verrouillé",
+ "libelle": "Écran verrouillé",
+ "domaine": "Système",
+ "module": "AUTH",
+ "moduleLibelle": "Accès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1253
+}

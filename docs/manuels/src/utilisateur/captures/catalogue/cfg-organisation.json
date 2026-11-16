@@ -1,0 +1,17 @@
+{
+ "id": "cfg-organisation",
+ "titre": "Organisation & organigramme",
+ "libelle": "Organisation & organigramme",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-organisation"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1230
+}

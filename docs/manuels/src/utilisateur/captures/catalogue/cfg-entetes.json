@@ -1,0 +1,17 @@
+{
+ "id": "cfg-entetes",
+ "titre": "Papier à en-tête officiel",
+ "libelle": "Papier à en-tête officiel",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-entetes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 497
+}

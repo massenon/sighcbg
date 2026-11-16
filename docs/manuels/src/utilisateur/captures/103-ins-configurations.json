@@ -1,0 +1,459 @@
+{
+ "nom": "103-ins-configurations",
+ "ecran": "index",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Activer la mère",
+   "rect": [
+    309.0,
+    252.0,
+    156.3,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Clore l’assistant",
+   "rect": [
+    292.0,
+    637.0,
+    856.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "rect": [
+    1068.9,
+    702.0,
+    79.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1112.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   279.6,
+   36.0
+  ],
+  "barre-actions": [
+   855.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   958.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-installation": [
+   1004.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1154.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1174.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1200.0,
+   0.0,
+   228.0,
+   56.0
+  ],
+  "nom-courant": [
+   1246.0,
+   14.5,
+   160.0,
+   14.0
+  ],
+  "role-courant": [
+   1246.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.6,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   792.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   919.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1020.7,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.0,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1277.9,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "index|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   112.5,
+   28.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ],
+  "kit:modale-panneau": [
+   272.0,
+   48.0,
+   896.0,
+   704.0
+  ],
+  "kit:modale-entete": [
+   272.0,
+   48.0,
+   896.0,
+   75.0
+  ],
+  "kit:modale-titre": [
+   292.0,
+   64.0,
+   312.2,
+   24.0
+  ],
+  "kit:modale-corps": [
+   272.0,
+   123.0,
+   896.0,
+   566.0
+  ],
+  "ins:progression": [
+   292.0,
+   139.0,
+   856.0,
+   16.0
+  ],
+  "ins:etape-mere": [
+   292.0,
+   167.0,
+   856.0,
+   150.0
+  ],
+  "ins:motif-mere": [
+   309.0,
+   208.0,
+   822.0,
+   32.0
+  ],
+  "ins:activer": [
+   309.0,
+   252.0,
+   156.3,
+   36.0
+  ],
+  "ins:etape-configurations": [
+   292.0,
+   317.0,
+   856.0,
+   86.0
+  ],
+  "ins:motif-configurations": [
+   309.0,
+   358.0,
+   482.0,
+   16.0
+  ],
+  "ins:etape-comptes": [
+   292.0,
+   403.0,
+   856.0,
+   86.0
+  ],
+  "ins:motif-comptes": [
+   309.0,
+   444.0,
+   482.0,
+   16.0
+  ],
+  "ins:etape-appairages": [
+   292.0,
+   489.0,
+   856.0,
+   86.0
+  ],
+  "ins:motif-appairages": [
+   309.0,
+   530.0,
+   482.0,
+   16.0
+  ],
+  "ins:refus-cloture": [
+   292.0,
+   579.0,
+   856.0,
+   50.0
+  ],
+  "kit:note": [
+   292.0,
+   579.0,
+   856.0,
+   50.0
+  ],
+  "ins:cloturer": [
+   292.0,
+   637.0,
+   856.0,
+   36.0
+  ],
+  "kit:modale-pied": [
+   272.0,
+   689.0,
+   896.0,
+   63.0
+  ],
+  "ins:modale-fermer": [
+   1068.9,
+   702.0,
+   79.1,
+   38.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    855.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    958.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Configurations à faire avant l’utilisation",
+   "rect": [
+    1004.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1154.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1200.0,
+    0.0,
+    228.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1112.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m2-stats-echographie",
+ "titre": "Statistiques de l’imagerie médicale",
+ "libelle": "Statistiques de l’imagerie médicale",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-stats-echographie"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 809
+}

@@ -1,0 +1,17 @@
+{
+ "id": "mere-journal-operations",
+ "titre": "Journal des opérations",
+ "libelle": "Journal des opérations",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-journal-operations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 2410
+}

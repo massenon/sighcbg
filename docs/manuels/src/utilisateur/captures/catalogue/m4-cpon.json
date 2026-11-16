@@ -1,0 +1,17 @@
+{
+ "id": "m4-cpon",
+ "titre": "Consultations post-natales (CPoN)",
+ "libelle": "Consultations post-natales (CPoN)",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-cpon"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1736
+}

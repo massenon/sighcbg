@@ -1,0 +1,17 @@
+{
+ "id": "imp-plan-comptable",
+ "titre": "Importation du plan comptable",
+ "libelle": "Importation du plan comptable",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-plan-comptable"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 959
+}

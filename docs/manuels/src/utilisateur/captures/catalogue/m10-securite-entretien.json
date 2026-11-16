@@ -1,0 +1,17 @@
+{
+ "id": "m10-securite-entretien",
+ "titre": "Sécurité & entretien",
+ "libelle": "Sécurité & entretien",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-securite-entretien"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 576
+}

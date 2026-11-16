@@ -1,0 +1,17 @@
+{
+ "id": "hub-m5",
+ "titre": "Laboratoire",
+ "libelle": "Laboratoire",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m5"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 835
+}

@@ -1,0 +1,17 @@
+{
+ "id": "cfg-certificats",
+ "titre": "Certificats médicaux",
+ "libelle": "Certificats médicaux",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-certificats"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 578
+}

@@ -1,0 +1,17 @@
+{
+ "id": "mere-lots-tournee",
+ "titre": "Lots de tournée (mobiles)",
+ "libelle": "Lots de tournée (mobiles)",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-lots-tournee"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 885
+}

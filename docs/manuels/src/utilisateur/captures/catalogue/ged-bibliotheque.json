@@ -1,0 +1,17 @@
+{
+ "id": "ged-bibliotheque",
+ "titre": "Bibliothèque documentaire",
+ "libelle": "Bibliothèque documentaire",
+ "domaine": "Administration",
+ "module": "GED",
+ "moduleLibelle": "Gestion documentaire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "ged-bibliotheque"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 662
+}

@@ -1,0 +1,753 @@
+{
+ "_doc": "ENGENDRÉ par `dart run tool/mesure_assistant.dart --droits` depuis packages/rbac/data/rbac.json et le catalogue de l'assistant : ne pas éditer. Pour chaque intention, les écrans de lecture (un parmi) et, par profil type, le droit de lecture.",
+ "profils": {
+  "reception": "reception",
+  "caisse": "caissier",
+  "stock": "stock",
+  "comptabilite": "comptable",
+  "laboratoire": "laborantin",
+  "medecin": "medecin",
+  "daf": "da",
+  "direction": "direction",
+  "administrateur": "admin",
+  "infirmier": "infirmier",
+  "sage_femme": "sage_femme",
+  "agent_administratif": "agentadmin"
+ },
+ "matrice": [
+  {
+   "intention": "I01",
+   "ecrans": [
+    "m1-patients"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I02",
+   "ecrans": [
+    "m1-patients",
+    "m9-assures",
+    "m8-facturation"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I03",
+   "ecrans": [
+    "m8-factures",
+    "m8-reliquats",
+    "m8-caisse"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I04",
+   "ecrans": [
+    "m3-admissions",
+    "m3-plan-lits"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": false,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": false,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I05",
+   "ecrans": [
+    "cfg-tarifs",
+    "m8-facturation",
+    "m6-produits"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I06",
+   "ecrans": [
+    "cfg-tarifs"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I07",
+   "ecrans": [
+    "m6-produits",
+    "m6-stock-gros",
+    "m6-stock-detail",
+    "m6-lots"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I08",
+   "ecrans": [
+    "m6-alertes",
+    "m6-produits",
+    "m6-lots"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I09",
+   "ecrans": [
+    "m6-mouvements",
+    "m6-point-ventes"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I10",
+   "ecrans": [
+    "m6-point-stock",
+    "m6-produits",
+    "m6-stock-gros"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I11",
+   "ecrans": [
+    "m6-inventaire"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I12",
+   "ecrans": [
+    "m7-fournisseurs",
+    "m7-commandes",
+    "m7-factures-fournisseurs",
+    "m12-grand-livre",
+    "m12-balance"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I13",
+   "ecrans": [
+    "m7-commandes"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I14",
+   "ecrans": [
+    "m8-recettes",
+    "m8-operations",
+    "m8-caisse"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I15",
+   "ecrans": [
+    "m8-factures",
+    "mecef-factures",
+    "m8-facture-avoir"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I16",
+   "ecrans": [
+    "m9-creances",
+    "m8-reliquats"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I17",
+   "ecrans": [
+    "m2-ordonnances",
+    "m1-pieces",
+    "m1-reference",
+    "m1-contre-reference",
+    "m3-bloc-cro",
+    "m3-cr-anesthesie",
+    "m3-cpa"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I18",
+   "ecrans": [
+    "cfg-types-piece",
+    "m1-pieces",
+    "cfg-tarifs"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I19",
+   "ecrans": [
+    "m5-demandes",
+    "m5-resultats"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": false,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I20",
+   "ecrans": [
+    "m10-planning",
+    "m10-stats-gardes"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I21",
+   "ecrans": [
+    "m2-consultations",
+    "m3-admissions",
+    "m5-demandes",
+    "m8-factures"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I22",
+   "ecrans": [],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I23",
+   "ecrans": [
+    "rapports-bibliotheque"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I24",
+   "ecrans": [
+    "m2-agenda",
+    "m2-file-attente"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": false,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I25",
+   "ecrans": [
+    "m12-echeances"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I26",
+   "ecrans": [],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I27",
+   "ecrans": [],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I28",
+   "ecrans": [
+    "m14-roles"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I29",
+   "ecrans": [
+    "m11-calcul"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I30",
+   "ecrans": [
+    "m12-balance"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": true,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I31",
+   "ecrans": [
+    "m13-reunions"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I32",
+   "ecrans": [
+    "m13-repertoire-ambulances"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I33",
+   "ecrans": [
+    "m10-mes"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": true,
+    "stock": true,
+    "comptabilite": true,
+    "laboratoire": true,
+    "medecin": true,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": true,
+    "agent_administratif": true
+   }
+  },
+  {
+   "intention": "I34",
+   "ecrans": [
+    "m2-imagerie",
+    "m2-imagerie-demandes",
+    "m2-dashboard-imagerie"
+   ],
+   "profils": {
+    "reception": true,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": true,
+    "daf": false,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": true,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I35",
+   "ecrans": [
+    "m10-conges"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  }
+ ]
+}

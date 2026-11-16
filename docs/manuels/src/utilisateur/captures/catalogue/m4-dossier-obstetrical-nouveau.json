@@ -1,0 +1,17 @@
+{
+ "id": "m4-dossier-obstetrical-nouveau",
+ "titre": "Ouvrir un dossier obstétrical",
+ "libelle": "Ouvrir un dossier obstétrical",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-dossier-obstetrical-nouveau"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1046
+}

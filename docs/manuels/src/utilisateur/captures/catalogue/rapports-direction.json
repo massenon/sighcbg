@@ -1,0 +1,17 @@
+{
+ "id": "rapports-direction",
+ "titre": "États de la Direction",
+ "libelle": "États de la Direction",
+ "domaine": "Administration",
+ "module": "RAP",
+ "moduleLibelle": "Rapports & Impression",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "rapports-direction"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1170
+}

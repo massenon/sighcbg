@@ -1,0 +1,17 @@
+{
+ "id": "m13-plan-annuel",
+ "titre": "Plan annuel de travail",
+ "libelle": "Plan annuel de travail",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-plan-annuel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 710
+}

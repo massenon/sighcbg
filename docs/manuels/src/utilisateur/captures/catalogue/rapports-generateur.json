@@ -1,0 +1,17 @@
+{
+ "id": "rapports-generateur",
+ "titre": "Générateur de rapports",
+ "libelle": "Générateur de rapports",
+ "domaine": "Administration",
+ "module": "RAP",
+ "moduleLibelle": "Rapports & Impression",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "rapports-generateur"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 804
+}

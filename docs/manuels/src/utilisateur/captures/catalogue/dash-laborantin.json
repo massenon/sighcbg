@@ -1,0 +1,17 @@
+{
+ "id": "dash-laborantin",
+ "titre": "Tableau de bord — Laboratoire",
+ "libelle": "Biologiste médical",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-laborantin"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1015
+}

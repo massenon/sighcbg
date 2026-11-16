@@ -1,0 +1,17 @@
+{
+ "id": "m12-bfr",
+ "titre": "Besoin en fonds de roulement",
+ "libelle": "Besoin en fonds de roulement",
+ "domaine": "Pilotage",
+ "module": "M12",
+ "moduleLibelle": "Gestion & trésorerie",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m12-bfr"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1588
+}

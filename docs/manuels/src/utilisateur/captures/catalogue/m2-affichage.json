@@ -1,0 +1,17 @@
+{
+ "id": "m2-affichage",
+ "titre": "Écran d’appel des patients",
+ "libelle": "Écran d’appel des patients",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-affichage"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 2404
+}

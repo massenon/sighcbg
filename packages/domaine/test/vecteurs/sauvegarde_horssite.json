@@ -1,0 +1,2022 @@
+{
+ "engendre": "packages/sync/banc/vecteurs-sauvegarde.js",
+ "cas": [
+  {
+   "nom": "découper 0 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 0,
+    "tailleBloc": 512
+   },
+   "attendu": []
+  },
+  {
+   "nom": "découper 1 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 1,
+    "tailleBloc": 512
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 1
+    }
+   ]
+  },
+  {
+   "nom": "découper 511 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 511,
+    "tailleBloc": 512
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 511
+    }
+   ]
+  },
+  {
+   "nom": "découper 512 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 512,
+    "tailleBloc": 512
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 512
+    }
+   ]
+  },
+  {
+   "nom": "découper 513 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 513,
+    "tailleBloc": 512
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 512
+    },
+    {
+     "debut": 512,
+     "longueur": 1
+    }
+   ]
+  },
+  {
+   "nom": "découper 1024 octets par blocs de 512",
+   "op": "decouper",
+   "entree": {
+    "longueur": 1024,
+    "tailleBloc": 512
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 512
+    },
+    {
+     "debut": 512,
+     "longueur": 512
+    }
+   ]
+  },
+  {
+   "nom": "découper 3145745 octets par blocs de 1048576",
+   "op": "decouper",
+   "entree": {
+    "longueur": 3145745,
+    "tailleBloc": 1048576
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 1048576
+    },
+    {
+     "debut": 1048576,
+     "longueur": 1048576
+    },
+    {
+     "debut": 2097152,
+     "longueur": 1048576
+    },
+    {
+     "debut": 3145728,
+     "longueur": 17
+    }
+   ]
+  },
+  {
+   "nom": "découper 5 octets par blocs de 2",
+   "op": "decouper",
+   "entree": {
+    "longueur": 5,
+    "tailleBloc": 2
+   },
+   "attendu": [
+    {
+     "debut": 0,
+     "longueur": 2
+    },
+    {
+     "debut": 2,
+     "longueur": 2
+    },
+    {
+     "debut": 4,
+     "longueur": 1
+    }
+   ]
+  },
+  {
+   "nom": "taille chiffrée de 0 octets par blocs de 512",
+   "op": "tailleChiffree",
+   "entree": {
+    "longueur": 0,
+    "tailleBloc": 512
+   },
+   "attendu": 0
+  },
+  {
+   "nom": "taille chiffrée de 513 octets par blocs de 512",
+   "op": "tailleChiffree",
+   "entree": {
+    "longueur": 513,
+    "tailleBloc": 512
+   },
+   "attendu": 569
+  },
+  {
+   "nom": "taille chiffrée de 3145728 octets par blocs de 1048576",
+   "op": "tailleChiffree",
+   "entree": {
+    "longueur": 3145728,
+    "tailleBloc": 1048576
+   },
+   "attendu": 3145812
+  },
+  {
+   "nom": "réglage : valide",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : activer sans destination",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "aucune",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "DESTINATION_ABSENTE",
+    "motif": "la copie hors site ne peut pas être activée sans destination",
+    "geste": "Choisir le relais ou un dossier distant, puis activer."
+   }
+  },
+  {
+   "nom": "réglage : désactivé sans destination",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": false,
+    "destination": "aucune",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : destination inconnue",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "sftp",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "DESTINATION_INCONNUE",
+    "motif": "la destination « sftp » n'existe pas",
+    "geste": "Choisir : aucune, relais ou dossier distant."
+   }
+  },
+  {
+   "nom": "réglage : dossier sans chemin",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "dossier",
+    "dossier": "  ",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "DOSSIER_ABSENT",
+    "motif": "la destination « dossier distant » n'a aucun chemin",
+    "geste": "Saisir le chemin complet du dossier monté."
+   }
+  },
+  {
+   "nom": "réglage : dossier avec chemin",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "dossier",
+    "dossier": "/mnt/sauvegardes",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : bloc trop petit",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1000,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "TAILLE_BLOC_HORS_BORNES",
+    "motif": "la taille d'un bloc doit être de 64 Kio à 4.0 Mio",
+    "geste": "Choisir une taille dans ces bornes (1 Mio par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : bloc trop gros",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 5242880,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "TAILLE_BLOC_HORS_BORNES",
+    "motif": "la taille d'un bloc doit être de 64 Kio à 4.0 Mio",
+    "geste": "Choisir une taille dans ces bornes (1 Mio par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : bloc à la borne basse",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 65536,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : bloc à la borne haute",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 4194304,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : une seule copie (sous le plancher)",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 1,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "le nombre de copies gardées doit être de 2 à 60",
+    "geste": "Choisir un nombre dans ces bornes : le plancher protège la reprise, le plafond protège l'espace."
+   }
+  },
+  {
+   "nom": "réglage : deux copies (plancher)",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 2,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : soixante copies (plafond)",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 60,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : soixante et une copies",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 61,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "le nombre de copies gardées doit être de 2 à 60",
+    "geste": "Choisir un nombre dans ces bornes : le plancher protège la reprise, le plafond protège l'espace."
+   }
+  },
+  {
+   "nom": "réglage : copies non entières",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7.5,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "le nombre de copies gardées doit être de 2 à 60",
+    "geste": "Choisir un nombre dans ces bornes : le plancher protège la reprise, le plafond protège l'espace."
+   }
+  },
+  {
+   "nom": "réglage : fréquence trop courte",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 5,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "FREQUENCE_HORS_BORNES",
+    "motif": "la fréquence doit être de 15 à 1440 minutes",
+    "geste": "Choisir une fréquence dans ces bornes (60 minutes par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : fréquence à la borne",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 15,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : fréquence trop longue",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 2000,
+    "heureControle": 2,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "FREQUENCE_HORS_BORNES",
+    "motif": "la fréquence doit être de 15 à 1440 minutes",
+    "geste": "Choisir une fréquence dans ces bornes (60 minutes par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : heure 24",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 24,
+    "blocsControles": 10
+   },
+   "attendu": {
+    "ok": false,
+    "code": "HEURE_HORS_BORNES",
+    "motif": "l'heure du contrôle nocturne est un entier de 0 à 23",
+    "geste": "Choisir une heure de nuit (2 par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : heure 0",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 0,
+    "blocsControles": 10
+   },
+   "attendu": null
+  },
+  {
+   "nom": "réglage : blocs contrôlés négatifs",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": -1
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOCS_CONTROLES_HORS_BORNES",
+    "motif": "le nombre de blocs contrôlés chaque nuit est un entier de 0 à 200",
+    "geste": "Choisir un nombre dans ces bornes (10 par défaut)."
+   }
+  },
+  {
+   "nom": "réglage : blocs contrôlés 200",
+   "op": "verifierReglage",
+   "entree": {
+    "actif": true,
+    "destination": "relais",
+    "dossier": "",
+    "tailleBloc": 1048576,
+    "copies": 7,
+    "frequenceMinutes": 60,
+    "heureControle": 2,
+    "blocsControles": 200
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : tient",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 80,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 500,
+     "liberable": 0
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : trop grosse pour une copie",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 101,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 0,
+     "liberable": 0
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "SAUVEGARDE_TROP_GROSSE",
+    "motif": "la copie pèse 101 o chiffrée, le maximum accepté par la destination est 100 o",
+    "geste": "Relever la limite par copie du relais (panneau), ou choisir un dossier distant pour ce type de copie.",
+    "octetsCopie": 101,
+    "limite": 100
+   }
+  },
+  {
+   "nom": "plan : à la limite de la copie",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 100,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 0,
+     "liberable": 0
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : manque de place",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 90,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 950,
+     "liberable": 0
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ESPACE_RELAIS_INSUFFISANT",
+    "motif": "la copie demande 90 o, il reste 50 o sur le relais (anciennes copies libérables comprises)",
+    "geste": "Relever le quota du relais, réduire le nombre de copies gardées, ou choisir un dossier distant.",
+    "octetsCopie": 90,
+    "libre": 50
+   }
+  },
+  {
+   "nom": "plan : manque de place mais archive libérable",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 90,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 950,
+     "liberable": 60
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : à la place exacte",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 100,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 900,
+     "liberable": 0
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : un octet de trop",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 101,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 200,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "utilise": 900,
+     "liberable": 0
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ESPACE_RELAIS_INSUFFISANT",
+    "motif": "la copie demande 101 o, il reste 100 o sur le relais (anciennes copies libérables comprises)",
+    "geste": "Relever le quota du relais, réduire le nombre de copies gardées, ou choisir un dossier distant.",
+    "octetsCopie": 101,
+    "libre": 100
+   }
+  },
+  {
+   "nom": "plan : quota inconnu : la limite ne s'applique pas (jamais zéro)",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 10000,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100000
+     },
+     "utilise": 0
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : état absent",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 10,
+    "etat": null
+   },
+   "attendu": null
+  },
+  {
+   "nom": "plan : espace utilisé inconnu : pas de refus d'espace",
+   "op": "verifierPlan",
+   "entree": {
+    "octetsCopie": 900,
+    "etat": {
+     "limites": {
+      "tailleMaxCopie": 100,
+      "quotaOctets": 1000,
+      "tailleBlocMax": 50
+     },
+     "liberable": 0
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "SAUVEGARDE_TROP_GROSSE",
+    "motif": "la copie pèse 900 o chiffrée, le maximum accepté par la destination est 100 o",
+    "geste": "Relever la limite par copie du relais (panneau), ou choisir un dossier distant pour ce type de copie.",
+    "octetsCopie": 900,
+    "limite": 100
+   }
+  },
+  {
+   "nom": "rotation : cinq copies, garder trois",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 3,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "e",
+     "d",
+     "c"
+    ],
+    "archiver": [
+     "b",
+     "a"
+    ]
+   }
+  },
+  {
+   "nom": "rotation : garder autant que de copies",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 5,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "e",
+     "d",
+     "c",
+     "b",
+     "a"
+    ],
+    "archiver": []
+   }
+  },
+  {
+   "nom": "rotation : garder plus que de copies",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 9,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "e",
+     "d",
+     "c",
+     "b",
+     "a"
+    ],
+    "archiver": []
+   }
+  },
+  {
+   "nom": "rotation : sous le plancher",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 1,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "garder 1 copie(s) est hors des bornes du relais (2 à 60)",
+    "geste": "Choisir un nombre de copies dans les bornes du relais.",
+    "plancher": 2,
+    "plafond": 60
+   }
+  },
+  {
+   "nom": "rotation : au plancher",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 2,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "e",
+     "d"
+    ],
+    "archiver": [
+     "c",
+     "b",
+     "a"
+    ]
+   }
+  },
+  {
+   "nom": "rotation : au-dessus du plafond",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 61,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "garder 61 copie(s) est hors des bornes du relais (2 à 60)",
+    "geste": "Choisir un nombre de copies dans les bornes du relais.",
+    "plancher": 2,
+    "plafond": 60
+   }
+  },
+  {
+   "nom": "rotation : garder non entier",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "garder": 2.5,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": false,
+    "code": "ROTATION_HORS_BORNES",
+    "motif": "garder 2.5 copie(s) est hors des bornes du relais (2 à 60)",
+    "geste": "Choisir un nombre de copies dans les bornes du relais.",
+    "plancher": 2,
+    "plafond": 60
+   }
+  },
+  {
+   "nom": "rotation : une copie ouverte ou purgée ne compte pas",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     },
+     {
+      "id": "f",
+      "type": "magasin",
+      "etat": "ouverte",
+      "date": 9
+     },
+     {
+      "id": "g",
+      "type": "magasin",
+      "etat": "purgee",
+      "date": 8
+     },
+     {
+      "id": "h",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 0
+     }
+    ],
+    "garder": 3,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "e",
+     "d",
+     "c"
+    ],
+    "archiver": [
+     "b",
+     "a"
+    ]
+   }
+  },
+  {
+   "nom": "rotation : dates égales : l'identifiant départage",
+   "op": "rotation",
+   "entree": {
+    "copies": [
+     {
+      "id": "x",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 7
+     },
+     {
+      "id": "y",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 7
+     },
+     {
+      "id": "z",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 7
+     }
+    ],
+    "garder": 2,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [
+     "z",
+     "y"
+    ],
+    "archiver": [
+     "x"
+    ]
+   }
+  },
+  {
+   "nom": "rotation : aucune copie",
+   "op": "rotation",
+   "entree": {
+    "copies": [],
+    "garder": 7,
+    "plancher": 2,
+    "plafond": 60
+   },
+   "attendu": {
+    "ok": true,
+    "gardees": [],
+    "archiver": []
+   }
+  },
+  {
+   "nom": "purge : l'archive la plus ancienne d'abord",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "a",
+    "b",
+    "c"
+   ]
+  },
+  {
+   "nom": "purge : jamais une copie courante ni une copie ouverte",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     },
+     {
+      "id": "f",
+      "type": "magasin",
+      "etat": "ouverte",
+      "date": 6
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": []
+  },
+  {
+   "nom": "purge : le plancher protège les plus récentes même archivées",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 3
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "a"
+   ]
+  },
+  {
+   "nom": "purge : une copie abandonnée est candidate",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "abandonnee",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "a"
+   ]
+  },
+  {
+   "nom": "purge : le plancher se compte par type",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "fichiers",
+      "etat": "archivee",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "fichiers",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "a"
+   ]
+  },
+  {
+   "nom": "purge : une copie courante au-delà du plancher n'est jamais candidate (le plancher n'est pas la seule garde)",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     },
+     {
+      "id": "e",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 5
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "a"
+   ]
+  },
+  {
+   "nom": "purge : une copie en cours (ouverte) n'est jamais candidate",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [
+     {
+      "id": "a",
+      "type": "magasin",
+      "etat": "ouverte",
+      "date": 1
+     },
+     {
+      "id": "b",
+      "type": "magasin",
+      "etat": "archivee",
+      "date": 2
+     },
+     {
+      "id": "c",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 3
+     },
+     {
+      "id": "d",
+      "type": "magasin",
+      "etat": "complete",
+      "date": 4
+     }
+    ],
+    "plancher": 2
+   },
+   "attendu": [
+    "b"
+   ]
+  },
+  {
+   "nom": "purge : aucune copie",
+   "op": "ordrePurge",
+   "entree": {
+    "copies": [],
+    "plancher": 2
+   },
+   "attendu": []
+  },
+  {
+   "nom": "manifeste : éléments triés par référence, total calculé, sans date",
+   "op": "manifeste",
+   "entree": {
+    "type": "fichiers",
+    "tailleBloc": 512,
+    "elements": [
+     {
+      "ref": "zz.pdf",
+      "taille": 3,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "meta": {
+       "ext": "pdf"
+      },
+      "blocs": [
+       {
+        "id": "3333333333333333333333333333333333333333333333333333333333333333",
+        "taille": 31,
+        "clair": 3
+       }
+      ]
+     },
+     {
+      "ref": "magasin",
+      "taille": 10,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "blocs": [
+       {
+        "id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "taille": 38,
+        "clair": 6
+       },
+       {
+        "id": "2222222222222222222222222222222222222222222222222222222222222222",
+        "taille": 32,
+        "clair": 4
+       }
+      ]
+     }
+    ]
+   },
+   "attendu": {
+    "format": 1,
+    "type": "fichiers",
+    "tailleBloc": 512,
+    "total": 13,
+    "elements": [
+     {
+      "ref": "magasin",
+      "taille": 10,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "blocs": [
+       {
+        "id": "1111111111111111111111111111111111111111111111111111111111111111",
+        "taille": 38,
+        "clair": 6
+       },
+       {
+        "id": "2222222222222222222222222222222222222222222222222222222222222222",
+        "taille": 32,
+        "clair": 4
+       }
+      ]
+     },
+     {
+      "ref": "zz.pdf",
+      "taille": 3,
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "meta": {
+       "ext": "pdf"
+      },
+      "blocs": [
+       {
+        "id": "3333333333333333333333333333333333333333333333333333333333333333",
+        "taille": 31,
+        "clair": 3
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "nom": "manifeste lu : valide",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "fichiers",
+     "tailleBloc": 512,
+     "total": 13,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 10,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": null
+  },
+  {
+   "nom": "manifeste lu : format inconnu",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 9,
+     "type": "fichiers",
+     "tailleBloc": 512,
+     "total": 13,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 10,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_ILLISIBLE",
+    "motif": "le manifeste n'a pas le format attendu",
+    "geste": "Utiliser un logiciel de la même version que celui qui a fait la copie."
+   }
+  },
+  {
+   "nom": "manifeste lu : type inconnu",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "autre",
+     "tailleBloc": 512,
+     "total": 13,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 10,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_ILLISIBLE",
+    "motif": "le manifeste est incomplet",
+    "geste": "Choisir une autre copie."
+   }
+  },
+  {
+   "nom": "manifeste lu : pas de liste d'éléments",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "magasin"
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_ILLISIBLE",
+    "motif": "le manifeste est incomplet",
+    "geste": "Choisir une autre copie."
+   }
+  },
+  {
+   "nom": "manifeste lu : somme des blocs incohérente",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "fichiers",
+     "tailleBloc": 512,
+     "total": 13,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 11,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_INCOHERENT",
+    "motif": "un élément annonce 11 octets et ses blocs en portent 10",
+    "geste": "Choisir une autre copie : celle-ci est incohérente."
+   }
+  },
+  {
+   "nom": "manifeste lu : total incohérent",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "fichiers",
+     "tailleBloc": 512,
+     "total": 99,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 10,
+       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_INCOHERENT",
+    "motif": "le manifeste annonce 99 octets et ses éléments en portent 13",
+    "geste": "Choisir une autre copie : celle-ci est incohérente."
+   }
+  },
+  {
+   "nom": "manifeste lu : empreinte du clair mal formée",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": {
+     "format": 1,
+     "type": "fichiers",
+     "tailleBloc": 512,
+     "total": 13,
+     "elements": [
+      {
+       "ref": "magasin",
+       "taille": 10,
+       "sha256": "xyz",
+       "blocs": [
+        {
+         "id": "1111111111111111111111111111111111111111111111111111111111111111",
+         "taille": 38,
+         "clair": 6
+        },
+        {
+         "id": "2222222222222222222222222222222222222222222222222222222222222222",
+         "taille": 32,
+         "clair": 4
+        }
+       ]
+      },
+      {
+       "ref": "zz.pdf",
+       "taille": 3,
+       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+       "meta": {
+        "ext": "pdf"
+       },
+       "blocs": [
+        {
+         "id": "3333333333333333333333333333333333333333333333333333333333333333",
+         "taille": 31,
+         "clair": 3
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_ILLISIBLE",
+    "motif": "un élément du manifeste est incomplet",
+    "geste": "Choisir une autre copie."
+   }
+  },
+  {
+   "nom": "manifeste lu : rien",
+   "op": "verifierManifeste",
+   "entree": {
+    "manifeste": null
+   },
+   "attendu": {
+    "ok": false,
+    "code": "MANIFESTE_ILLISIBLE",
+    "motif": "le manifeste n'a pas le format attendu",
+    "geste": "Utiliser un logiciel de la même version que celui qui a fait la copie."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : du hasard de 8 Kio (un chiffrement) est accepté",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": null
+  },
+  {
+   "nom": "bloc non chiffré : du texte de 8 Kio est refusé (entropie)",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "cGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCBIeXBlcmdseWNlbWllIG9yZG9ubmFuY2UgcGF0aWVudCA="
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "l'entropie de ce bloc est celle d'un texte ou d'une base, pas d'un chiffrement",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : une base SQLite de 8 Kio est refusée (signature et entropie)",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "U1FMaXRlIGZvcm1hdCAzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "ce bloc commence par une signature de fichier : il n'a pas été chiffré",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : un PDF dont le début est lisible est refusé (signature)",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "ce bloc commence par une signature de fichier : il n'a pas été chiffré",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : un PNG est refusé (signature de huit octets)",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "ce bloc commence par une signature de fichier : il n'a pas été chiffré",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : un JPEG JFIF est refusé",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "ce bloc commence par une signature de fichier : il n'a pas été chiffré",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : trois octets de JPEG au début d'un chiffré ne suffisent pas (probabilité 1 sur 16 millions) : accepté",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": null
+  },
+  {
+   "nom": "bloc non chiffré : un texte court (moins de 4 Kio, manifeste court) n'est pas mesurable : accepté",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "bWFuaWZlc3RlIGNvdXJ0"
+   },
+   "attendu": null
+  },
+  {
+   "nom": "bloc non chiffré : 4095 octets à zéro : trop court pour la mesure, accepté",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+   },
+   "attendu": null
+  },
+  {
+   "nom": "bloc non chiffré : 4096 octets à zéro : refusé (entropie nulle)",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+   },
+   "attendu": {
+    "ok": false,
+    "code": "BLOC_NON_CHIFFRE",
+    "motif": "l'entropie de ce bloc est celle d'un texte ou d'une base, pas d'un chiffrement",
+    "geste": "Chiffrer le bloc par la clé de la clinique AVANT de le déposer : un relais ou un dossier distant ne reçoit que des blocs opaques."
+   }
+  },
+  {
+   "nom": "bloc non chiffré : du hasard de 4096 octets : accepté",
+   "op": "blocSuspect",
+   "entree": {
+    "base64": "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"
+   },
+   "attendu": null
+  }
+ ]
+}

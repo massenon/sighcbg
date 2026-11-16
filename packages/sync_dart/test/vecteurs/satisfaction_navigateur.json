@@ -1,0 +1,54 @@
+{
+ "source": "apps/web/public/js/satisfaction.js (exécuté par Node, Web Crypto)",
+ "schema": "sat1",
+ "paire": {
+  "privee": "IMkU1n06zfiTEAwrzDeQ5U-4frye9VOhFuFlOu3DGFE",
+  "publique": "wee24V2C8MJQlxfF8NoGRWz6yQRPWoN-jLlTh2NX8no",
+  "kid": "e0ee5c4188f229eb"
+ },
+ "jeton": "mnpqrstuvwxyzabcdefghijk",
+ "cas": [
+  {
+   "voie": "webcrypto",
+   "reponses": {
+    "Q_ACCUEIL": "5",
+    "Q_RECO": "Oui",
+    "Q_COM": "Accueil chaleureux, merci à l’équipe."
+   },
+   "enveloppe": {
+    "v": "sat1",
+    "kid": "e0ee5c4188f229eb",
+    "epk": "mNKzX69e1NikCQReAY0wfjDHmN09-0pF40THkClEQBA",
+    "iv": "jNf7FHBFn3X1MXUm",
+    "ct": "sYofCeUEMxIUYPMupdTmSa5okuDhOffnFa2_gce97N4hPV88NXeXVzQEAssml9mJofBDLnUh-n4joj5ltqDMGb1yo4pVkyjKFobGvGG4ZZpStxWxyJ7YsdFoXJH50GuiXfdIhjJBlo4S66O1MN4vF-X-JJv-GNKmq9s5y-hO9k9ZOFj3GubjKWQkPQD7vMYYrJATWoYviIyCsPIoEi6QI8px9Yn7HY46R6zQZrKadGfxQhrkRL-6zVjC892eFT5MFGkFEn4xdDKcMFEmdUV6UoYEpBl5_7aqQvuVBVxHVDnG96MQK6PIeiaZOZbUFXaAPBFOSu9U4E97xlMzURrEs0HSsjjAwdmtIGNdWIrc6nA"
+   }
+  },
+  {
+   "voie": "repli",
+   "reponses": {
+    "Q_ACCUEIL": "2",
+    "Q_RECO": "Plutôt non"
+   },
+   "enveloppe": {
+    "v": "sat1",
+    "kid": "e0ee5c4188f229eb",
+    "epk": "OPEuFGDb_w8RHYmgOY_5jzEjShtO5101HvOXyrkqEXA",
+    "iv": "SvR5DKeqrPHXegkU",
+    "ct": "etOcjkD3vczo-0HjBVEIIYrbKtvVW6IVW5STme_hglo_Ja5CF8K0t2Mrlx0MEu5fylSYSQD1kDmtj4MQjkmPJ26grTOxvF8gHBzwsSU0zPktJok_QlKtpn_nH8fS4rzimyEpdWPc3fLjHACb-0FksyDdGWOOetn1ihh5lffHde1VOPQpy3g_dAp0fzSZnLGcOZOgRwZ4ZIbmf4JQDO7706n9p973ikUQ0iY7Z8drp7P1YoUjXI12B-yHB3mS7p_Bfzyz3m7gRIyueu8kRWfL5cQxrjSClAr6K1Lb_i-f7eYxxHlughWrB-p8F8PnC9aWvG7HS0QyE9CYlnVn3lozo6VFfV2HT7SQlA_M0TMVkKQ"
+   }
+  },
+  {
+   "voie": "repli",
+   "reponses": {
+    "Q_COM": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+   },
+   "enveloppe": {
+    "v": "sat1",
+    "kid": "e0ee5c4188f229eb",
+    "epk": "BzRQVcJkxuhDV7Xix097ibd_N8yUmCvla1Lf2KbRHW4",
+    "iv": "tTv_qMP-4SbEYppL",
+    "ct": "9XT6hlf-ShKfaZEu-IGpahNdd5QzlCKMiTrd9yJLJElJYKoD7TfbqhwSOplTLdPu7oGhl0zzab4RigRNKvpm4UPHOm0kuitaBI3DB_FegkLhF0D-i_EVChYsqMTSULYGB3OL2WUJqZaacz3oO38HdwixCrdqBOOhIwT32C-iYy1nCqeXtLnxNfUmZtEsqhzmMrgrggptkFEQpxIq3B2xyK4pqVPRqlhotYVPwSUyPiTX6H_wW__rgA3MXgC-1d3Uq7f1Tu0hFryYcA1-eWyDTb8fjqGChmpj67XFBMbW7YEPliF5ntOmVJ50c0bzmsFN5vY9d1ec0Vv_xC1W27pm7WWHvCGwicWqQEWAP2qjeXaeYQJYTzpeMoVT4TZUFvIjYdebY36fd17Jd1ja9PcBtk1v4gXP3BTFWrlURG_SiFE4BLEDK2GiAIG551xyvlGoKsohInquoWhBN8A76HUHG4IZ-ug-iI9e_JXAtq2xW7UvNfUkZXoNvNIcxRiQfvQ8Cn_nU6mIe-qmDbgHCkxpTUcl0UDJaz6DQCTvNmOzXeSr4r7HnrYDa53ppGg7jOLYjHCjRqE1wiphoFEcGeLw922dkQQmxVNgME9ER3kWLRi2Z41vOmLBdNqKHiYrq1TU2bnjcaztsmY6LEOVqRYRnHighP1KHgiT0ZPVzRmCKg6EDEblVYyQmFm1VezYL4hqxA0mhwvPaiiOD1l5TbzikDJz72cGwKkvY5TXUr0pq9MPgkPRRP8mjoGlqEkUF93RQa0lRcZq36CUIUnFq5aQK0DszKIjsfgJIlJsX7RCSj1gONMI1S8lfxoNklsKHk7ed1ndgO6oaU5ZQLg-SEEGURh-usrxPfWcJVtyVxJUsMka9RMi5Ihvd8Dp7fwgPD-PhKJOuSypuZ_uub-gBEkQphRzcULx5gIDsCbT6iKIq7O57t6hfK7pKmzFZwShOmD-M83Y4Jq0mUYADrsj_GDxOQRd5o7jBnIs5Pwc7vk7kB3cpuRojRRRRLAxbReeV4bAYEwvCDYO4i8zyubf0jiDmg"
+   }
+  }
+ ]
+}
