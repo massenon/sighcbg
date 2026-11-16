@@ -1,0 +1,17 @@
+{
+ "id": "m6-produits",
+ "titre": "Référentiel produits",
+ "libelle": "Référentiel produits",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-produits"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1176
+}

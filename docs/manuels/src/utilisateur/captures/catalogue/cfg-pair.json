@@ -1,0 +1,17 @@
+{
+ "id": "cfg-pair",
+ "titre": "Échanges entre postes (mode pair)",
+ "libelle": "Échanges entre postes (mode pair)",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-pair"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 784
+}

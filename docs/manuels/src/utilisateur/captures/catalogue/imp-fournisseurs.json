@@ -1,0 +1,17 @@
+{
+ "id": "imp-fournisseurs",
+ "titre": "Importation des fournisseurs",
+ "libelle": "Importation des fournisseurs",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-fournisseurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 974
+}

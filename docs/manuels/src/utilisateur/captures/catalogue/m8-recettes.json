@@ -1,0 +1,17 @@
+{
+ "id": "m8-recettes",
+ "titre": "Recettes par période",
+ "libelle": "Recettes par période",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m8-recettes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1382
+}

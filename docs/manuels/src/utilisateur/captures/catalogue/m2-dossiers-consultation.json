@@ -1,0 +1,17 @@
+{
+ "id": "m2-dossiers-consultation",
+ "titre": "Dossiers de consultation",
+ "libelle": "Dossiers de consultation",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-dossiers-consultation"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1355
+}

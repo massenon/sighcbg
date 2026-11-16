@@ -1,0 +1,17 @@
+{
+ "id": "adm-satisfaction",
+ "titre": "Satisfaction des patients",
+ "libelle": "Satisfaction des patients",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "adm-satisfaction"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 454
+}

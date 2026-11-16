@@ -1,0 +1,17 @@
+{
+ "id": "m10-personnel",
+ "titre": "Personnel",
+ "libelle": "Personnel",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-personnel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1224
+}

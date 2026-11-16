@@ -1,0 +1,17 @@
+{
+ "id": "mecef-config",
+ "titre": "Configuration fiscale",
+ "libelle": "Configuration fiscale",
+ "domaine": "Financier",
+ "module": "MECEF",
+ "moduleLibelle": "MECeF — Facture normalisée",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "mecef-config"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 988
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m6-etiquetage",
+ "titre": "Étiquetage & emplacements",
+ "libelle": "Étiquetage & emplacements",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-etiquetage"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1388
+}

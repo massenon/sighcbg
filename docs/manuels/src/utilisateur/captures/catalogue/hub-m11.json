@@ -1,0 +1,17 @@
+{
+ "id": "hub-m11",
+ "titre": "Paie & Primes",
+ "libelle": "Paie & Primes",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m11"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 506
+}

@@ -1,0 +1,17 @@
+{
+ "id": "imp-stock-detail",
+ "titre": "Importation du stock détail initial",
+ "libelle": "Importation du stock détail initial",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-stock-detail"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1160
+}

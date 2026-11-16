@@ -1,0 +1,17 @@
+{
+ "id": "mere-indicateurs",
+ "titre": "Indicateurs publiés",
+ "libelle": "Indicateurs publiés",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Liaison avec le relais",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-indicateurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 996
+}

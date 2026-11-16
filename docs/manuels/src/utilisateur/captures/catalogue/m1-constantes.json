@@ -1,0 +1,17 @@
+{
+ "id": "m1-constantes",
+ "titre": "Constantes à l’accueil",
+ "libelle": "Constantes à l’accueil",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-constantes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1579
+}

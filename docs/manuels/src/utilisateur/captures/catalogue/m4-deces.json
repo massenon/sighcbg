@@ -1,0 +1,17 @@
+{
+ "id": "m4-deces",
+ "titre": "Registre des décès",
+ "libelle": "Registre des décès",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-deces"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1099
+}

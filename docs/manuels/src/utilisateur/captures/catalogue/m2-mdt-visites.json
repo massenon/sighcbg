@@ -1,0 +1,17 @@
+{
+ "id": "m2-mdt-visites",
+ "titre": "Visites de médecine du travail",
+ "libelle": "Visites de médecine du travail",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Médecine du travail",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-mdt-visites"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1204
+}

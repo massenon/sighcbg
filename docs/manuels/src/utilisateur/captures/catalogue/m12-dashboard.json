@@ -1,0 +1,17 @@
+{
+ "id": "m12-dashboard",
+ "titre": "Tableau de bord — Comptabilité SYSCOHADA",
+ "libelle": "Tableau de bord comptable",
+ "domaine": "Financier",
+ "module": "M12",
+ "moduleLibelle": "Comptabilité SYSCOHADA",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m12-dashboard"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1028
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m8-caisse",
+ "titre": "État de caisse journalier",
+ "libelle": "État de caisse journalier",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m8-caisse"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 607
+}

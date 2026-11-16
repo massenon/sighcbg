@@ -1,0 +1,17 @@
+{
+ "id": "m7-pv-reception-reactifs",
+ "titre": "PV de réception — réactifs",
+ "libelle": "PV de réception — réactifs",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-pv-reception-reactifs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 582
+}
