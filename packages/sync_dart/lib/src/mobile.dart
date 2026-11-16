@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:sigh_domaine/sigh_domaine.dart' show codePatient;
+import 'package:sigh_domaine/sigh_domaine.dart' show anneeCreationDossier, codePatient;
 
 import 'commun.dart';
 import 'mere.dart' show collectionsConfigurationPoste, familles;
@@ -144,12 +144,14 @@ class Mobile {
     return ids.map((id) => {'id': id, ...vue(c, id).json()}).where((x) => x['existe'] == true).toList();
   }
 
-  String prochainNumero() {
+  /// Le code d'un dossier créé en [annee] (RG-01) : le rang suivant de la plage reçue à l'appairage SI elle est de cette année ; sinon (plage d'une autre année,
+  /// ou plage d'avant le lot 0, sans année) un code provisoire, que la mère remplace par un code de la série de l'année de création (E3830).
+  String prochainNumero(int annee) {
     final d = base.metaInt('plage_prochain');
     final f = base.metaInt('plage_fin', -1);
-    if (d != 0 && d <= f) {
+    if (d != 0 && d <= f && base.metaInt('plage_annee') == annee) {
       base.poserMeta('plage_prochain', d + 1);
-      return codePatient(d, 2026);
+      return codePatient(d, annee);
     }
     return 'PROV-${hexAlea(4)}';
   }
@@ -164,7 +166,9 @@ class Mobile {
       final b = lireConfirme(op['collection'] as String, op['fiche'] as String);
       op['vu'] = <String, Object?>{for (final k in champs.keys) k: b.fieldseq[k] ?? 0};
     }
-    if (op['type'] == 'creer' && op['collection'] == 'patients' && (champs['code'] == null || '${champs['code']}'.isEmpty)) champs['code'] = prochainNumero();
+    if (op['type'] == 'creer' && op['collection'] == 'patients' && (champs['code'] == null || '${champs['code']}'.isEmpty)) {
+      champs['code'] = prochainNumero(anneeCreationDossier(champs['dateCreation'], op['hlc'] as int));
+    }
     base.exec("INSERT INTO file(id,op,etat) VALUES(?,?,'en_attente')", [op['id'], enJson(op)]);
     return {'id': op['id'], 'fiche': op['fiche'], 'champs': champs};
   }
@@ -223,6 +227,7 @@ class Mobile {
         final plage = (p['plage'] as Map);
         base.poserMeta('plage_prochain', plage['debut']);
         base.poserMeta('plage_fin', plage['fin']);
+        base.poserMeta('plage_annee', plage['annee'] ?? 0);
         base.poserMeta('profil', p['profil'] ?? '');
         base.poserMeta('fonction', p['fonction'] ?? '');
         base.poserMeta('bienvenu', 1);
@@ -387,7 +392,7 @@ class Mobile {
           'resultats': base.select('SELECT id,etat,resultat FROM file ORDER BY ordre').map((r) => {
                 'id': r['id'], 'etat': r['etat'], ...(r['resultat'] == null ? {} : (jsonDecode(r['resultat'] as String) as Map).cast<String, Object?>()),
               }).toList(),
-          'plage': {'prochain': base.metaInt('plage_prochain'), 'fin': base.metaInt('plage_fin', -1)},
+          'plage': {'prochain': base.metaInt('plage_prochain'), 'fin': base.metaInt('plage_fin', -1), 'annee': base.metaInt('plage_annee')},
           if (lotPurgeLe != null) 'lot_purge_le': lotPurgeLe,
         });
     }

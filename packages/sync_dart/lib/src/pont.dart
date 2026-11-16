@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cryptography/cryptography.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show Parametres, mobPeutPrescrire, parCollectionParametres, synchroAssainirFileuls, synchroFileulPublie;
+import 'package:sigh_domaine/sigh_domaine.dart' show Parametres, anneeDeSerie, lireCodePatient, mobPeutPrescrire, parCollectionParametres, synchroAssainirFileuls, synchroFileulPublie;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -251,12 +251,13 @@ class Pont {
       // Le profil et la fonction viennent du CODE (table de la mère), jamais du `hello` : un profil déclaré différent est signalé.
       if (p['profil'] != null && p['profil'] != c['profil']) alerter({'type': 'profil_declare_different', 'appareil': uuid, 'declare': '${p['profil']}', 'code': c['profil']});
       await base.exec("INSERT INTO appareils(uuid,etiquette,role,etat,profil,fonction) VALUES(?,?,'mobile','actif',?,?)", [uuid, c['etiquette'], c['profil'] ?? 'soignant', c['fonction']]);
-      final debut = await base.metaInt('next_patient');
+      // La plage du téléphone est de l'année en cours (séries annuelles, E3830) : elle ne code que les dossiers créés cette année-là.
+      final annee = DateTime.now().year;
+      final debut = await mere.reserverRangsPatients(annee, 20, 0);
       final fin = debut + 19;
-      await base.poserMeta('next_patient', fin + 1);
-      await base.exec('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)', [uuid, 'patients', debut, fin]);
+      await base.exec('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)', [uuid, 'patients', debut, fin, annee]);
       await base.poserMeta('sortie_seq:$uuid', await mere.seqMax());
-      await publier(uuid, {'type': 'bienvenue', 'epoch': await base.metaInt('epoch'), 'plage': {'debut': debut, 'fin': fin}, 'profil': c['profil'] ?? 'soignant', 'fonction': c['fonction']});
+      await publier(uuid, {'type': 'bienvenue', 'epoch': await base.metaInt('epoch'), 'plage': {'debut': debut, 'fin': fin, 'annee': annee}, 'profil': c['profil'] ?? 'soignant', 'fonction': c['fonction']});
       return;
     }
     final r = await base.select('SELECT * FROM appareils WHERE uuid=?', [uuid]);
@@ -358,11 +359,20 @@ class Pont {
                 if ((op['epoch'] as int) > maxEpoch) maxEpoch = op['epoch'] as int;
               }
             }
-            final nums = (await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'"))
-                .map((r) => int.tryParse(RegExp(r'^[A-Z]{2,6}/(\d+)/26$').firstMatch('${r['c'] ?? ''}')?.group(1) ?? '') ?? 0)
-                .toList();
-            final plusGrand = nums.fold<int>(1000, (a, b) => a > b ? a : b);
-            await base.poserMeta('next_patient', plusGrand + 1);
+            // Les séries ANNUELLES se reconstruisent depuis les codes rejoués : chaque année reprend au-dessus de son plus grand rang (E3830) ; l'année
+            // courante garde le plancher de 1000 d'une base neuve.
+            final aujourdhui = DateTime.now();
+            final series = <int, int>{aujourdhui.year: 1000};
+            for (final r in await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'")) {
+              final c = lireCodePatient(r['c']);
+              if (c == null) continue;
+              final a = anneeDeSerie(c.annee, aujourdhui);
+              if (c.rang > (series[a] ?? 0)) series[a] = c.rang;
+            }
+            await base.exec("DELETE FROM meta WHERE k LIKE 'next_patient%'");
+            for (final e in series.entries) {
+              await base.poserMeta(Mere.cleSeriePatients(e.key), e.value + 1);
+            }
             await base.poserMeta('rep_seq', maxSeq);
             await base.poserMeta('rep_n', n);
             await base.poserMeta('epoch', maxEpoch + 1);

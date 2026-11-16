@@ -35,6 +35,8 @@ db.exec(`
 `);
 const meta = (k, d) => { const r = db.prepare('SELECT v FROM meta WHERE k=?').get(k); return r ? r.v : d; };
 const setMeta = (k, v) => db.prepare('INSERT INTO meta(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').run(k, String(v));
+try { db.exec('ALTER TABLE plage ADD COLUMN annee INTEGER'); } catch (e) { /* déjà présente : une plage d'avant le lot 0 (sans année) n'est plus utilisée */ }
+const anneeCreation = (dateCreation, hlc) => { const m = /^(\d{4})-\d{2}-\d{2}/.exec(String(dateCreation || '').trim()); return m ? +m[1] : new Date(+hlc || Date.now()).getFullYear(); };
 if (meta('uuid') === undefined) setMeta('uuid', uuid7());
 if (meta('curseur') === undefined) setMeta('curseur', 0);
 if (meta('epoch') === undefined) setMeta('epoch', 1);
@@ -95,9 +97,10 @@ function liste(c) {
 }
 
 /* --- numéros : plage réservée, sinon provisoire ---------------------------- */
-function prochainNumero() {
+/* Séries annuelles (E3830) : la plage sert les dossiers créés l'année de la plage ; sinon un numéro provisoire, que la mère remplace en lisant la date de création. */
+function prochainNumero(annee) {
   const p = db.prepare("SELECT * FROM plage WHERE nom='patients'").get();
-  if (p && p.prochain <= p.fin) { db.prepare("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'").run(); return `CBG/${p.prochain}/26`; }
+  if (p && p.annee === annee && p.prochain <= p.fin) { db.prepare("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'").run(); return `CBG/${p.prochain}/${String(annee).slice(-2)}`; }
   return 'PROV-' + crypto.randomBytes(4).toString('hex');
 }
 
@@ -107,7 +110,7 @@ function ecrire(cmd) {
     type: cmd.type, champs: Object.assign({}, cmd.champs || {}), vu: {} };
   if (cmd.bail) op.bail = true;
   if (op.type === 'modifier') { const base = lireConfirme(op.collection, op.fiche); for (const k of Object.keys(op.champs)) op.vu[k] = base.fieldseq[k] || 0; }
-  if (op.type === 'creer' && op.collection === 'patients' && !op.champs.code) op.champs.code = prochainNumero();
+  if (op.type === 'creer' && op.collection === 'patients' && !op.champs.code) op.champs.code = prochainNumero(anneeCreation(op.champs.dateCreation, op.hlc));
   if (op.type === 'sortie' && op.bail) {
     const b = db.prepare('SELECT reste FROM baux WHERE article=?').get(op.fiche);
     if (!b || b.reste < +op.champs.qte) return { refus: 'bail_insuffisant', motif: `Quota local insuffisant pour ${op.fiche} (reste ${b ? b.reste : 0}).` };
@@ -241,8 +244,11 @@ const commandes = {
   },
   'POST /plage': async (b) => {
     const nom = b.nom || 'patients';
-    const j = await http1('POST', '/sync/plage', { nom, taille: b.taille || 50, minimum: b.minimum || 0 });
-    db.prepare("INSERT INTO plage(nom,prochain,fin) VALUES(?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin").run(nom, j.debut, j.fin);
+    /* Une plage de dossiers est demandée POUR UNE ANNÉE (celle donnée, l'année en cours à défaut) et garde l'année que la mère a retenue (E3830). */
+    const corps = { nom, taille: b.taille || 50, minimum: b.minimum || 0 };
+    if (nom === 'patients') corps.annee = b.annee || new Date(maintenant()).getFullYear();
+    const j = await http1('POST', '/sync/plage', corps);
+    db.prepare("INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee").run(nom, j.debut, j.fin, j.annee ?? null);
     return [200, j];
   },
   'POST /bail': async (b) => {

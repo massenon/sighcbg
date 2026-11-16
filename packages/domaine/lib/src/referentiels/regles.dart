@@ -13,6 +13,20 @@ String codePatient(Object ordre, Object annee) {
   return '${IdentiteClinique.sigle}/${_texte(ordre)}/$yy';
 }
 
+/// RG-01 — L'ANNÉE D'UN CODE DE DOSSIER EST CELLE DE LA CRÉATION DU DOSSIER (lot 0, E3830), jamais celle du jour où la synchronisation l'attribue : un dossier
+/// ouvert le 31/12/2026 et synchronisé le 2 janvier reste de la série 2026. [dateCreation] : le champ `dateCreation` de la fiche (`AAAA-MM-JJ…`, lu sur ses
+/// quatre premiers chiffres, sans conversion de fuseau : c'est l'année que le guichet a écrite) ; à défaut, [horodatageMs] — l'horloge de l'appareil au
+/// moment du geste (le `hlc` de l'opération), lue en heure LOCALE (le 1er janvier à 00 h 30 à Parakou est encore le 31 décembre en temps universel).
+int anneeCreationDossier(Object? dateCreation, int horodatageMs) {
+  final m = RegExp(r'^(\d{4})-\d{2}-\d{2}').firstMatch('${dateCreation ?? ''}'.trim());
+  if (m != null) return int.parse(m.group(1)!);
+  return DateTime.fromMillisecondsSinceEpoch(horodatageMs).year;
+}
+
+/// L'année (quatre chiffres) d'une série de codes à partir des deux chiffres du code (`26` → 2026). Les codes ne portent que deux chiffres : le siècle est
+/// celui du calendrier en cours ([reference]), ce qui reste juste jusqu'en 2099.
+int anneeDeSerie(String deuxChiffres, DateTime reference) => (reference.year ~/ 100) * 100 + int.parse(deuxChiffres);
+
 /// La forme d'un code patient : un sigle en capitales (celui de la clinique, ou un sigle antérieur comme `CBG`), la barre facultative de l'ancien
 /// format (`CBG530/25`), le rang, l'année sur deux chiffres. Groupe 1 : le rang ; groupe 2 : l'année. Le sigle n'est PAS imposé à la lecture : un code
 /// déjà attribué reste compté (RG-01, jamais réutilisé), même si le sigle a changé depuis.

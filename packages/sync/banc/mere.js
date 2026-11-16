@@ -155,7 +155,33 @@ for (const [t, c] of [['codes', 'profil'], ['codes', 'fonction'], ['appareils', 
 const meta = (k, d) => { const r = db.prepare('SELECT v FROM meta WHERE k=?').get(k); return r ? r.v : d; };
 const setMeta = (k, v) => db.prepare('INSERT INTO meta(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').run(k, String(v));
 if (meta('epoch') === undefined) setMeta('epoch', 1);
-if (meta('next_patient') === undefined) setMeta('next_patient', 1000);
+/* SÉRIES ANNUELLES DES CODES DE DOSSIER (lot 0, E3830) — miroir de `migrerSeriesPatients` (mere.dart) : un compteur PAR ANNÉE (`next_patient_<AAAA>`), des
+   plages qui portent leur année. L'ancien compteur unique devient celui de l'année courante ; une base neuve ouvre l'année à 1000 ; les années suivantes repartent à 1. */
+try { db.exec('ALTER TABLE plages ADD COLUMN annee INTEGER'); } catch (e) { /* déjà présente */ }
+const cleSerie = (annee) => 'next_patient_' + annee;
+if (meta('series_patients_depuis') === undefined) {
+  const an = new Date().getFullYear();
+  const herite = meta('next_patient');
+  if (meta(cleSerie(an)) === undefined) setMeta(cleSerie(an), herite === undefined ? 1000 : +herite);
+  db.prepare("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL").run(an);
+  db.prepare("DELETE FROM meta WHERE k='next_patient'").run();
+  setMeta('series_patients_depuis', an);
+}
+/* L'année d'un code de dossier est celle de la CRÉATION du dossier (`dateCreation`, sinon l'horloge du geste en heure locale), jamais celle de la synchronisation. */
+const anneeCreation = (dateCreation, hlc) => { const m = /^(\d{4})-\d{2}-\d{2}/.exec(String(dateCreation || '').trim()); return m ? +m[1] : new Date(+hlc || Date.now()).getFullYear(); };
+const codePatientDe = (n, annee) => `CBG/${n}/${String(annee).slice(-2)}`; // le sigle de la Clinique Baguidi
+/* Le premier rang libre d'une série : son compteur, sinon au-dessus des codes de l'année détenus et des plages de l'année allouées (donc 1 pour une année neuve). */
+function debutSerie(annee) {
+  const v = meta(cleSerie(annee)); if (v !== undefined) return +v;
+  let max = 0;
+  for (const r of db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all()) {
+    const m = /^[A-Z]{2,6}\/?(\d+)\/(\d{2})$/.exec(r.c || ''); if (m && +m[2] === annee % 100 && +m[1] > max) max = +m[1];
+  }
+  const f = +db.prepare("SELECT COALESCE(MAX(fin),0) AS f FROM plages WHERE nom='patients' AND annee=?").get(annee).f;
+  return Math.max(f, max) + 1;
+}
+function reserverRangs(annee, taille, minimum) { const debut = Math.max(debutSerie(annee), +minimum || 0); setMeta(cleSerie(annee), debut + taille); return debut; }
+const anneePlage = (a) => { const n = parseInt(String(a ?? ''), 10); return n >= 2000 && n <= 2099 ? n : new Date().getFullYear(); };
 if (meta('reinit_ouverte') === undefined) setMeta('reinit_ouverte', 0);
 
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
@@ -264,15 +290,19 @@ function traiter(op, app) {
     const champs = Object.assign({}, op.champs);
     let numero;
     if (op.collection === 'patients') {
-      const m = /^[A-Z]{2,6}\/(\d+)\/26$/.exec(String(champs.code || '')); // tout sigle se relit (CBG, CBG…)
+      const m = /^[A-Z]{2,6}\/?(\d+)\/(\d{2})$/.exec(String(champs.code || '')); // tout sigle se relit (CBG, CBG…)
       if (!champs.code || String(champs.code).startsWith('PROV-')) {
-        const n = +meta('next_patient'); setMeta('next_patient', n + 1);
-        champs.code = `CBG/${n}/26`; numero = champs.code; // le sigle de la Clinique Baguidi
+        /* L'année est celle de la CRÉATION du dossier, pas celle de la synchronisation (E3830) ; un rang déjà pris n'entraîne jamais de refus. */
+        const annee = anneeCreation(champs.dateCreation, op.hlc);
+        let n = reserverRangs(annee, 1, 0);
+        while (db.prepare("SELECT 1 FROM fiches WHERE collection='patients' AND json_extract(data,'$.code')=?").get(codePatientDe(n, annee))) n = reserverRangs(annee, 1, n + 1);
+        champs.code = codePatientDe(n, annee); numero = champs.code;
       } else if (!m) {
         return refus('numero_invalide', 'Code patient mal formé : ' + champs.code, 'Laisser le poste attribuer le code');
       } else {
         const n = +m[1];
-        const ok = db.prepare('SELECT 1 FROM plages WHERE appareil=? AND nom=? AND debut<=? AND fin>=?').get(app.uuid, 'patients', n, n);
+        /* La plage doit être de la MÊME ANNÉE que le code. */
+        const ok = app.role === 'mere' || db.prepare('SELECT 1 FROM plages WHERE appareil=? AND nom=? AND debut<=? AND fin>=? AND annee % 100 = ?').get(app.uuid, 'patients', n, n, +m[2]);
         if (!ok) return refus('numero_hors_plage', `Le code ${champs.code} n’appartient pas à la plage de ce poste.`, 'Demander une nouvelle plage');
       }
       const dup = db.prepare("SELECT 1 FROM fiches WHERE collection='patients' AND json_extract(data,'$.code')=?").get(champs.code);
@@ -494,8 +524,15 @@ const routes = {
     const taille = Math.max(1, Math.min(+b.taille || 50, 1000));
     return tx(() => {
       /* Un carnet PAR NOM (16/11/2026) : les dossiers gardent `next_patient`, les bons ont leur propre compteur. */
-      const nom = b.nom || 'patients'; const cle = nom === 'patients' ? 'next_patient' : 'next_plage_' + nom;
-      const debut = nom === 'patients' ? +meta(cle) : Math.max(1, +meta(cle) || 1, +b.minimum || 0); const fin = debut + taille - 1; setMeta(cle, fin + 1);
+      const nom = b.nom || 'patients';
+      if (nom === 'patients') {
+        /* Une plage de dossiers appartient à UNE année (celle demandée, l'année courante à défaut) — séries annuelles, E3830. */
+        const annee = anneePlage(b.annee); const debut = reserverRangs(annee, taille, b.minimum); const fin = debut + taille - 1;
+        db.prepare('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)').run(app.uuid, nom, debut, fin, annee);
+        return { debut, fin, annee };
+      }
+      const cle = 'next_plage_' + nom;
+      const debut = Math.max(1, +meta(cle) || 1, +b.minimum || 0); const fin = debut + taille - 1; setMeta(cle, fin + 1);
       db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(app.uuid, nom, debut, fin);
       return { debut, fin };
     });
@@ -653,7 +690,7 @@ const routes = {
                DELETE FROM fiches WHERE collection NOT IN (${liste});
                DELETE FROM resultats; DELETE FROM conflits; DELETE FROM plages; DELETE FROM baux; DELETE FROM acks;`);
       db.exec('DELETE FROM portee;');
-      setMeta('epoch', +meta('epoch') + 1); setMeta('reinit_ouverte', 0); setMeta('next_patient', 1000); setMeta('marqueur_epoch', 1);
+      setMeta('epoch', +meta('epoch') + 1); setMeta('reinit_ouverte', 0); db.prepare("DELETE FROM meta WHERE k LIKE 'next_patient%'").run(); setMeta(cleSerie(new Date().getFullYear()), 1000); setMeta('marqueur_epoch', 1);
     });
     return { mode, sauvegarde, epoch: +meta('epoch') };
   },
@@ -740,10 +777,10 @@ function traiterEnveloppe(uuid, p) {
     // Le profil et la fonction viennent du CODE (table de la mère), jamais du `hello` : un profil déclaré différent est signalé.
     if (p.profil && p.profil !== c.profil) alerter({ type: 'profil_declare_different', appareil: uuid, declare: String(p.profil), code: c.profil });
     db.prepare("INSERT INTO appareils(uuid,etiquette,role,etat,profil,fonction) VALUES(?,?,'mobile','actif',?,?)").run(uuid, c.etiquette, c.profil || 'soignant', c.fonction || null);
-    const debut = +meta('next_patient'); const fin = debut + 19; setMeta('next_patient', fin + 1);
-    db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(uuid, 'patients', debut, fin);
+    const annee = new Date().getFullYear(); const debut = reserverRangs(annee, 20, 0); const fin = debut + 19;
+    db.prepare('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)').run(uuid, 'patients', debut, fin, annee);
     setMeta('sortie_seq:' + uuid, Number(db.prepare('SELECT COALESCE(MAX(seq),0) AS s FROM operations').get().s));
-    publier(uuid, { type: 'bienvenue', epoch: +meta('epoch'), plage: { debut, fin }, profil: c.profil || 'soignant', fonction: c.fonction || null });
+    publier(uuid, { type: 'bienvenue', epoch: +meta('epoch'), plage: { debut, fin, annee }, profil: c.profil || 'soignant', fonction: c.fonction || null });
     return;
   }
   const app = db.prepare('SELECT * FROM appareils WHERE uuid=?').get(uuid);
@@ -799,8 +836,14 @@ async function restaurer() {
           maxSeq = Math.max(maxSeq, op.seq); maxEpoch = Math.max(maxEpoch, op.epoch);
         }
       }
-      const nums = db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all().map((r) => +((/^[A-Z]{2,6}\/(\d+)\/26$/.exec(r.c || '') || [])[1] || 0));
-      setMeta('next_patient', Math.max(1000, ...nums) + 1);
+      /* Les séries annuelles se reconstruisent depuis les codes rejoués ; l'année courante garde le plancher de 1000. */
+      const an = new Date().getFullYear(); const series = { [an]: 1000 };
+      for (const r of db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all()) {
+        const m = /^[A-Z]{2,6}\/?(\d+)\/(\d{2})$/.exec(r.c || ''); if (!m) continue;
+        const a = Math.floor(an / 100) * 100 + +m[2]; series[a] = Math.max(series[a] || 0, +m[1]);
+      }
+      db.prepare("DELETE FROM meta WHERE k LIKE 'next_patient%'").run();
+      for (const [a, r] of Object.entries(series)) setMeta(cleSerie(a), r + 1);
       setMeta('rep_seq', maxSeq); setMeta('rep_n', n); setMeta('epoch', maxEpoch + 1);
       db.exec(`INSERT OR REPLACE INTO sqlite_sequence(name,seq) VALUES('operations',${maxSeq})`);
     });

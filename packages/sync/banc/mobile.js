@@ -52,15 +52,19 @@ function liste(c) {
   for (const op of enVol()) if (op.collection === c) ids.add(op.fiche);
   return Array.from(ids).map((id) => Object.assign({ id }, vue(c, id))).filter((x) => x.existe);
 }
-function prochainNumero() {
+/* Séries annuelles (E3830) : la plage de l'appairage ne code que les dossiers de SON année ; sinon un numéro provisoire, que la mère remplace. */
+function prochainNumero(annee) {
   const d = +meta('plage_prochain', 0); const f = +meta('plage_fin', -1);
-  if (d && d <= f) { setMeta('plage_prochain', d + 1); return `CBG/${d}/26`; }
+  if (d && d <= f && +meta('plage_annee', 0) === annee) { setMeta('plage_prochain', d + 1); return `CBG/${d}/${String(annee).slice(-2)}`; }
   return 'PROV-' + crypto.randomBytes(4).toString('hex');
 }
 function ecrire(cmd) {
   const op = { id: uuid7(), appareil: UUID, epoch: +meta('epoch', 1), hlc: Date.now(), collection: cmd.collection, fiche: cmd.fiche || uuid7(), type: cmd.type, champs: Object.assign({}, cmd.champs || {}), vu: {} };
   if (op.type === 'modifier') { const b = lireConfirme(op.collection, op.fiche); for (const k of Object.keys(op.champs)) op.vu[k] = b.fieldseq[k] || 0; }
-  if (op.type === 'creer' && op.collection === 'patients' && !op.champs.code) op.champs.code = prochainNumero();
+  if (op.type === 'creer' && op.collection === 'patients' && !op.champs.code) {
+    const m = /^(\d{4})-\d{2}-\d{2}/.exec(String(op.champs.dateCreation || '').trim());
+    op.champs.code = prochainNumero(m ? +m[1] : new Date(op.hlc || Date.now()).getFullYear());
+  }
   db.prepare("INSERT INTO file(id,op,etat) VALUES(?,?,'en_attente')").run(op.id, JSON.stringify(op));
   return { id: op.id, fiche: op.fiche, champs: op.champs };
 }
@@ -91,7 +95,7 @@ function purgerLotExpire() {
 }
 const COLLECTIONS_REGLEES_MERE = ['rbac', 'modulesActifs', 'tarifs', 'chambres', 'produits', 'parametres']; /* les collections de la famille R de la mère */
 function recevoir(p) {
-  if (p.type === 'bienvenue') { setMeta('epoch', p.epoch); setMeta('plage_prochain', p.plage.debut); setMeta('plage_fin', p.plage.fin); setMeta('profil', p.profil || ''); setMeta('fonction', p.fonction || ''); setMeta('bienvenu', 1); }
+  if (p.type === 'bienvenue') { setMeta('epoch', p.epoch); setMeta('plage_prochain', p.plage.debut); setMeta('plage_fin', p.plage.fin); setMeta('plage_annee', p.plage.annee || 0); setMeta('profil', p.profil || ''); setMeta('fonction', p.fonction || ''); setMeta('bienvenu', 1); }
   else if (p.type === 'lot') {
     setMeta('lot_expire', p.expire);
     for (const f of p.fiches) ecrireConfirme(f.collection, f.id, { data: f.data, fieldseq: f.fieldseq, archive: f.archive, dulot: true });
@@ -178,7 +182,7 @@ const commandes = {
     en_attente: db.prepare("SELECT COUNT(*) AS n FROM file WHERE etat IN ('en_attente','envoyee')").get().n,
     a_traiter: db.prepare("SELECT resultat FROM file WHERE etat='refusee'").all().map((r) => JSON.parse(r.resultat)),
     resultats: db.prepare('SELECT id,etat,resultat FROM file ORDER BY ordre').all().map((r) => Object.assign({ id: r.id, etat: r.etat }, r.resultat ? JSON.parse(r.resultat) : {})),
-    plage: { prochain: +meta('plage_prochain', 0), fin: +meta('plage_fin', -1) },
+    plage: { prochain: +meta('plage_prochain', 0), fin: +meta('plage_fin', -1), annee: +meta('plage_annee', 0) },
   })],
 };
 http.createServer((req, res) => {
