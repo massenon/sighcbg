@@ -33,6 +33,9 @@ class ApplicateurDemandesTarif {
 
   DateTime Function()? horloge;
 
+  /// AI (16/11/2026) : la mère vérifie le compte signataire de chaque demande (toujours en production ; un banc sans comptes peut le lever).
+  bool exigerCompteInscrit = true;
+
   VoidCallback? _ecoute;
   Timer? _minuterie;
   bool _traitement = false;
@@ -82,7 +85,12 @@ class ApplicateurDemandesTarif {
     if (_traitement) return 0;
     _traitement = true;
     try {
-      final n = _poste().appliquerDemandes();
+      // AI (16/11/2026) : le compte inscrit sur chaque demande est VÉRIFIÉ (existe, porte ce rôle, non archivé) avant le rejeu.
+      final n = _poste().appliquerDemandes(
+          verifierCompte: exigerCompteInscrit
+              ? (d) => verifierCompteSignataire(
+                  compte: d[champCompteDecision], role: '${d['demandeRole'] ?? ''}', par: '${d['demandePar'] ?? ''}', comptes: magasin.collection('utilisateurs').toutes)
+              : null);
       // 16/11/2026 : une analyse créée au catalogue (ici ou chez un fileul, arrivée par le pont) ouvre son identité de prix « sans prix, à valider » et prévient la DAF.
       TarifsPoste.assurerAnalyses(magasin, horloge: horloge);
       return n;

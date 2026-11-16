@@ -15,6 +15,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_validations_deposees.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LA CONTINUITÉ DES VALIDATIONS, CONTRE LA VRAIE MÈRE DART (Direction, 15/11/2026) : « une validation à faire ne doit JAMAIS empêcher le fileul de travailler ; le poste de la mère
 /// n'est pas fait pour valider ». Un VALIDATEUR d'un FILEUL rattaché (la Direction n'est jamais la mère) valide un référentiel : son geste se DÉPOSE, la mère l'APPLIQUE sous son rôle en
 /// refaisant tous les contrôles, le verdict revient. Aucun humain devant la mère ; mère coupée, l'état dit « en attente de la mère » (jamais « validé ») et le poste travaille.
@@ -76,6 +78,8 @@ void main() {
       await moteur.rattacher('http://127.0.0.1:$port', code).timeout(const Duration(seconds: 20));
       moteur.demarrer();
       await converger(() => mf.collection('actes').toutes.length >= 78 && mf.collection('objectifsPilotage').toutes.length >= 8, 'réception du référentiel par le fileul');
+      // AI (16/11/2026) : le dépôt porte le compte nominatif qui le signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+      signerAvec(mf, mm, 'direction', nom: 'La Direction');
       final vpDir = ValidationPoste(contexte(mf, 'direction', 'La Direction'));
       final nom = acteur(contexte(mf, 'direction', 'La Direction')).nom;
       expect(vpDir.fileul, isTrue);
@@ -118,6 +122,7 @@ void main() {
 
       // 7. MÈRE INJOIGNABLE : le validateur dépose, le poste continue de travailler, l'état dit « en attente de la mère » — jamais « validé ».
       mereJoignable = false;
+      signerAvec(mf, mm, 'da', nom: 'La DAF');
       final hors = ValidationPoste(contexte(mf, 'da', 'La DAF')).valider('objectifs_pilotage', 'dso');
       expect(hors.depose, isTrue, reason: '${hors.refus?.code} ${hors.refus?.motif}');
       mf.collection('notifications').inserer({'type': 'travail', 'libelle': 'le fileul continue', 'statut': 'actif'}, prefixe: 'NOT');
@@ -133,6 +138,7 @@ void main() {
       await converger(() => mf.collection('validationsDeposees').toutes.any((x) => x['cible'] == 'dso' && x['etat'] == 'appliquee') && mf.collection('objectifsPilotage').parId('dso')!['aValider'] == false, 'à son retour, la mère applique le dépôt');
 
       // 8. REFUS NOMMÉ QUI REVIENT : l'élément a disparu chez la mère (archivé) entre le geste et l'application.
+      signerAvec(mf, mm, 'direction', nom: 'La Direction');
       final refus = ValidationPoste(contexte(mf, 'direction', 'La Direction')).valider('actes', 'ACT002');
       expect(refus.depose, isTrue);
       mm.collection('actes').archiver('ACT002');

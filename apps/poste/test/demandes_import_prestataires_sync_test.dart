@@ -13,6 +13,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_import.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LES PRESTATAIRES EXTERNES, JEU « DIRECT ET DEMANDE » (décision de la Direction du 14/11/2026, option 2 : traités comme les natures de facture, tarif par acte compris), à travers le
 /// VRAI poste : vraie mère, DEUX vrais moteurs de fileul, vrais ponts, vraie configuration diffusée.
 ///
@@ -117,6 +119,8 @@ void main() {
 
     // 1. DIRECT ET DEMANDE.
     expect(svc1.passeParUneDemande(jeuPrestataires), isTrue);
+    // AI (16/11/2026) : la demande porte le compte nominatif qui la signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(mf1, mm, 'da', nom: 'LA DAF');
     final r1 = svc1.importerEtDemander(jeuPrestataires, verifier(mf1, ['Dr DEMANDE Alpha', 'Dr DEMANDE Bravo'], profilDaf), profil: profilDaf, nomAgent: 'LA DAF');
     expect(r1.resultat.ok, isTrue, reason: '${r1.resultat.code} ${r1.resultat.motif}');
     final locales = mf1.collection('prestataires').actives.where((f) => '${f['nom']}'.startsWith('Dr DEMANDE')).toList();

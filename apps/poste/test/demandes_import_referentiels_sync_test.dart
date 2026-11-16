@@ -13,6 +13,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_import.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LA DEMANDE D'IMPORT ENTRE UN FILEUL ET LA MÈRE (lot IMP-C, « option c » de la Direction du 12/11/2026), à travers le VRAI poste : vraie mère (service de synchronisation), vrai moteur de
 /// fileul, vrais ponts d'activité, vraie configuration diffusée. RIEN n'est traité à la main : c'est `ServiceDemandesImport.demarrerMere` — le même appel que `main.dart` — qui écoute
 /// les demandes arrivées par le pont et rend le verdict. (Le défaut de Nassiera, `appliquerDemandes()` jamais branchée, n'est pas reproduit : le dernier test garde le câblage.)
@@ -110,6 +112,8 @@ void main() {
 
     // 1. GROUPE DIRECT ET DEMANDE : natures de facture.
     expect(svcF.passeParUneDemande(jeuNaturesFacture), isTrue);
+    // AI (16/11/2026) : la demande porte le compte nominatif qui la signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(mf, mm, 'da', nom: 'LA DAF');
     final r1 = svcF.importerEtDemander(jeuNaturesFacture, verifier(mf, ['IMPA', 'IMPB'], profilDaf), profil: profilDaf, nomAgent: 'LA DAF');
     expect(r1.resultat.ok, isTrue, reason: '${r1.resultat.code} ${r1.resultat.motif}');
     final locales = mf.collection('naturesFacture').actives.where((f) => f['code'] == 'IMPA' || f['code'] == 'IMPB').toList();
@@ -161,6 +165,8 @@ void main() {
       'demandeRole': 'da',
       'demandePoste': 'F1',
       'demandeLe': '2026-11-12',
+      // Forgée sous un compte VALIDE (le contrôle du compte passe) : c'est la nature du jeu qui la fait refuser.
+      champCompteDecision: compteDuRole(mm, 'da').utilisateurId,
     };
     mf.collection(demandesImportCollection).inserer({...fausse, 'id': 'DIMFORGEE1'}, prefixe: 'DIM');
     await converger(() => mf.collection(demandesImportCollection).parId('DIMFORGEE1')?['etat'] == demandeImportRefusee, 'refus de la demande forgée');

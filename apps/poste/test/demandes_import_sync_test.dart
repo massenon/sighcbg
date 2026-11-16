@@ -13,6 +13,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_import.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LA DEMANDE D'IMPORT ENTRE UN FILEUL ET LA MÈRE (lot IMP-C, « option c » de la Direction du 12/11/2026), à travers le VRAI poste : vraie mère (service de synchronisation), vrai moteur de
 /// fileul, vrais ponts d'activité, vraie configuration diffusée. RIEN n'est traité à la main : c'est `ServiceDemandesImport.demarrerMere` — le même appel que `main.dart` — qui écoute
 /// les demandes arrivées par le pont et rend le verdict. (Le défaut de Nassiera, `appliquerDemandes()` jamais branchée, n'est pas reproduit : le dernier test garde le câblage.)
@@ -111,6 +113,8 @@ void main() {
     // 1. LE FILEUL IMPORTE : visible chez lui aussitôt, malgré la garde, sous l'identité de la demande, et la demande est déposée.
     expect(svcF.passeParUneDemande(jeuFournisseurs), isTrue);
     expect(svcF.passeParUneDemande(jeuPatients), isFalse, reason: 'un jeu restreint ne passe jamais par une demande');
+    // AI (16/11/2026) : la demande porte le compte nominatif qui la signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(mf, mm, 'comptable', nom: 'LE COMPTABLE');
     final r1 = svcF.importerEtDemander(jeuFournisseurs, verifier(mf, ['IMPA', 'IMPB'], profilComptable), profil: profilComptable, nomAgent: 'LE COMPTABLE');
     expect(r1.resultat.ok, isTrue, reason: '${r1.resultat.code} ${r1.resultat.motif}');
     final locales = mf.collection('fournisseurs').actives.where((f) => f['code'] == 'IMPA' || f['code'] == 'IMPB').toList();
@@ -161,6 +165,8 @@ void main() {
     // 4. UN RÔLE SANS LE DROIT : la mère REJOUE sous le rôle déclaré avec SA matrice et refuse en nommant (la fiche du fileul ne prête aucun droit).
     final profilForge = ProfilImport.accordeTout(role: 'medecin');
     final a3 = verifier(mf, ['IMPD'], profilForge);
+    // Le compte EXISTE avec ce rôle (le contrôle du compte passe) : c'est le DROIT du rôle, rejoué par la mère, qui refuse.
+    signerAvec(mf, mm, 'medecin', nom: 'FAUX COMPTABLE');
     final r3 = svcF.importerEtDemander(jeuFournisseurs, a3, profil: profilForge, nomAgent: 'FAUX COMPTABLE');
     expect(r3.resultat.ok, isTrue, reason: 'le fileul falsifié a écrit chez lui (il ne contrôle que lui-même)');
     await converger(() => mf.collection(demandesImportCollection).parId(r3.demande)?['restitution'] == restitutionFaite, 'refus du rôle sans droit puis restitution');

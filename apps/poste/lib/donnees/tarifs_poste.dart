@@ -796,6 +796,10 @@ class TarifsPoste {
       'demandePar': auteur(),
       'demandeRole': role,
       'demandeLe': aujourdhui,
+      // AI (16/11/2026) : le COMPTE qui signe (vérifié par la mère avant de rejouer), l'instant exact du geste (âge de la décision en attente) et le poste qui dépose.
+      if (m.compteSignataire != null) champCompteDecision: m.compteSignataire,
+      'demandeInstant': _horloge().toUtc().toIso8601String(),
+      'demandePoste': etiquette,
       ...contenu,
     };
     m.journaliser('Changement de prix : demande déposée à la mère ($genre)', 'CFG', 'prix', '${contenu['code'] ?? contenu['versionId'] ?? ''}', null, {'role': role});
@@ -805,13 +809,32 @@ class TarifsPoste {
 
   /// MÈRE : applique les demandes déposées par les fileuls. Chacune refait les MÊMES contrôles sous le rôle et le nom de son auteur (un bouton absent sur le fileul
   /// ne protège rien) ; le verdict est écrit sur la demande et revient au fileul par le pont. Rend le nombre de demandes traitées.
-  int appliquerDemandes() {
+  ///
+  /// AI (16/11/2026) : [verifierCompte] (la mère en production, `ApplicateurDemandesTarif`) vérifie le compte inscrit sur la demande AVANT de la rejouer ; un refus nommé est écrit
+  /// comme verdict (code stable : `COMPTE_NON_INSCRIT`, `COMPTE_INCONNU`, `COMPTE_ROLE_DIFFERENT`, `COMPTE_ARCHIVE`), rien n'est appliqué.
+  int appliquerDemandes({RefusCompte? Function(Map<String, Object?> demande)? verifierCompte}) {
     if (fileul) return 0;
     var n = 0;
     final col = m.collection(tarCollectionDemandes);
     final enAttente = [for (final d in col.toutes) if (d['etat'] == 'deposee') d]
       ..sort((a, b) => '${a['demandeLe']}${a['id']}'.compareTo('${b['demandeLe']}${b['id']}'));
     for (final d in enAttente) {
+      final rc = verifierCompte?.call(d);
+      if (rc != null) {
+        col.mettreAJour(d['id'], {
+          'etat': 'refusee',
+          'traiteLe': aujourdhui,
+          'traitePar': auteur(),
+          'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+          'resultatCode': rc.code,
+          'resultatMotif': rc.motif,
+          'resultatGeste': rc.geste,
+        }, journaliser: false);
+        m.journaliser('Demande de prix refusée par la mère (compte signataire)', 'CFG', 'prix', '${d['code'] ?? d['versionId'] ?? ''}', null,
+            {'par': d['demandePar'], 'rôle': d['demandeRole'], 'compte': d[champCompteDecision] ?? '—', 'code': rc.code});
+        n++;
+        continue;
+      }
       final role = '${d['demandeRole']}', par = '${d['demandePar']}';
       final cx = contexte(pourRole: role, pourAuteur: par, pourFileul: false, reception: d['reception'] == true);
       RefusTarif? refus;
@@ -888,6 +911,9 @@ class TarifsPoste {
         'etat': refus == null ? 'appliquee' : 'refusee',
         'traiteLe': aujourdhui,
         'traitePar': auteur(),
+        // AI : la date de SIGNATURE (le geste au fileul) et, à côté, la date d'APPLICATION par la mère.
+        'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+        if (refus == null) 'appliqueLe': _horloge().toUtc().toIso8601String(),
         if (versionId != null) 'versionId': versionId,
         if (refus != null) ...{'resultatCode': refus.code, 'resultatMotif': refus.motif, 'resultatGeste': refus.geste},
       }, journaliser: false);

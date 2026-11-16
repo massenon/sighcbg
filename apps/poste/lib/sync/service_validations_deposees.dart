@@ -61,6 +61,7 @@ class ServiceValidationsDeposees {
     final r = valDeposer(famille, '$id',
         role: role, acteur: acteur, poste: etiquette, maintenant: _maintenant, lire: _lire, libelles: _libelles, depots: depots.toutes, nouvelId: _nouvelId, motif: motif);
     if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
     try {
       depots.ajouterSansJournal(r.fiche!, enTete: true);
     } on EcritureRefusee catch (e) {
@@ -91,6 +92,7 @@ class ServiceValidationsDeposees {
         gestes: gestes ?? this.gestes,
         nouvelId: _nouvelId);
     if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
     try {
       depots.ajouterSansJournal(r.fiche!, enTete: true);
     } on EcritureRefusee catch (e) {
@@ -100,6 +102,13 @@ class ServiceValidationsDeposees {
     magasin.journaliser('Validation transmise à la mère', famille == circuitBesoinArbitrage ? 'M7' : 'M7', r.fiche!['libelle'] as String, '${bon['reference']}', null,
         {'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], 'décision': decision, if (motif.trim().isNotEmpty) 'motif': motif.trim()});
     return r;
+  }
+
+  /// AI (16/11/2026) : le dépôt porte le COMPTE qui le signe (la mère le vérifie avant de rejouer) et l'instant exact du geste (l'âge de la décision en attente se mesure dessus).
+  void _signer(Fiche f) {
+    final compte = magasin.compteSignataire;
+    if (compte != null) f[champCompteDecision] = compte;
+    f['demandeInstant'] ??= _maintenant.toUtc().toIso8601String();
   }
 
   /// Le dépôt de circuit d'un bon qui attend encore la mère (`null` : aucun) : l'écran dit « transmis à la mère, en attente » et n'offre pas de second geste.
@@ -212,6 +221,33 @@ class ServiceValidationsDeposees {
     _minuterieFileul = null;
   }
 
+  /// AI (16/11/2026) : la mère VÉRIFIE le compte inscrit sur la décision (existe dans `utilisateurs`, porte ce rôle, n'est pas archivé) AVANT de la rejouer. Désactivable pour un
+  /// banc qui ne porte aucun compte ; en production toujours actif.
+  bool exigerCompteInscrit = true;
+
+  /// Les comptes de la clinique que la mère détient (relus à chaque dépôt).
+  Iterable<Fiche> Function()? comptes;
+
+  RefusCompte? _refusCompte(Fiche d) => !exigerCompteInscrit
+      ? null
+      : verifierCompteSignataire(
+          compte: d[champCompteDecision], role: '${d['demandeRole'] ?? ''}', par: '${d['demandePar'] ?? ''}', comptes: (comptes ?? () => magasin.collection('utilisateurs').toutes)());
+
+  /// Le verdict d'un dépôt refusé AVANT tout rejeu (compte signataire) : rien n'est appliqué, le code revient au fileul.
+  void _refuserDepot(Fiche d, RefusCompte r) {
+    depots.mettreAJour(d['id'], {
+      'etat': valDepotRefusee,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'resultatCode': r.code,
+      'resultatMotif': r.motif,
+      'resultatGeste': r.geste,
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+    }, journaliser: false);
+    magasin.journaliser('Validation refusée par la mère (compte signataire)', 'CFG', '${d['libelle'] ?? d['famille'] ?? ''}', '${d['cible'] ?? d['id']}', null,
+        {'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'compte': d[champCompteDecision] ?? '—', 'code': r.code, 'dépôt': d['id']});
+  }
+
   /// Applique UN dépôt de circuit sur la mère : sous le rôle et le nom de l'auteur, contrôles refaits avec les données de la mère (`circuitAppliquer`), date du geste, journal (RG-12).
   /// Le bon écrit voyage aux fileuls par le pont d'activité ; les notifications du comptable et du gestionnaire de stock naissent de l'état du bon sur chaque poste (`ServiceCircuitAchats`).
   bool _appliquerCircuit(Fiche d) {
@@ -235,6 +271,9 @@ class ServiceValidationsDeposees {
       'etat': etat,
       'traiteLe': _maintenant.toUtc().toIso8601String(),
       'traitePar': auteurMere(),
+      // AI : la date de SIGNATURE (le geste de l'auteur) et la date d'APPLICATION par la mère, côte à côte.
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
       if (code != null) 'resultatCode': code,
       if (motif != null) 'resultatMotif': motif,
       if (geste != null) 'resultatGeste': geste,
@@ -251,6 +290,12 @@ class ServiceValidationsDeposees {
       final attente = [for (final d in depots.toutes) if (d['etat'] == valDepotDeposee && d['statut'] != 'archive') d]
         ..sort((a, b) => '${a['demandeLe']}${a['id']}'.compareTo('${b['demandeLe']}${b['id']}'));
       for (final d in attente) {
+        final refusCompte = _refusCompte(d);
+        if (refusCompte != null) {
+          _refuserDepot(d, refusCompte);
+          n++;
+          continue;
+        }
         if (d['genre'] == valGenreCircuitAchat) {
           if (_appliquerCircuit(d)) n++;
           continue;
@@ -280,6 +325,8 @@ class ServiceValidationsDeposees {
           'etat': etat,
           'traiteLe': _maintenant.toUtc().toIso8601String(),
           'traitePar': auteurMere(),
+          'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+          if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
           if (code != null) 'resultatCode': code,
           if (motif != null) 'resultatMotif': motif,
           if (geste != null) 'resultatGeste': geste,

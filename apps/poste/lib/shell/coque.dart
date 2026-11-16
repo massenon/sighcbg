@@ -11,6 +11,7 @@ import '../modules/registre.dart';
 import '../modules/m2/sp_registre.dart' show ecranSpecialitePour;
 import '../sync/etat_sync.dart';
 import 'barre_superieure.dart';
+import 'pastille_decisions_mere.dart';
 import 'ecran_a_porter.dart';
 import 'page_standard.dart';
 import 'pied_legal.dart';
@@ -729,7 +730,8 @@ class _CoquePosteState extends State<CoquePoste> {
       surInstallation: _ouvrirInstallation,
       selecteurExercice: _aExercice(_courantAffiche)
           ? SelecteurExercice(magasin: widget.magasin ?? _magasinVide, aujourdhui: _maintenant())
-          : null);
+          : null,
+      decisionsMere: widget.magasin == null ? null : PastilleDecisionsMere(magasin: widget.magasin!, horloge: _maintenant));
 
   /// Les maillons cliquables du fil (comme la maquette) : « Accueil » ramène à la page d'accueil du rôle ; l'intitulé du module ouvre la page d'accueil du module
   /// (sauf sur cette page elle-même), s'il est ouvert au profil.

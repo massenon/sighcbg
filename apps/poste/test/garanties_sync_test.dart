@@ -14,6 +14,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_import.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// T13, À TRAVERS LE VRAI POSTE : vraie mère Dart, vrai moteur de fileul, vrais ponts, vraie configuration diffusée.
 ///  - GARANTIES (configuration de la mère, famille R) : le fileul importe (écriture chez lui ET demande), la mère rejoue les contrôles sous le rôle de l'auteur, pose la version sous les MÊMES
 ///    identifiants, et la version remplacée reste écrite ; un fileul ne peut pas écrire une garantie à la main ; une version datée ne se réécrit pas à la mère ;
@@ -113,6 +115,8 @@ void main() {
       return a;
     }
 
+    // AI (16/11/2026) : la demande porte le compte nominatif qui la signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+    signerAvec(mf, mm, 'da', nom: 'LA DAF');
     final r1 = svcF.importerEtDemander(jeuGaranties, verifier([ligne('2027-01-01', 80, 5000)]), profil: profilDaf, nomAgent: 'LA DAF');
     expect(r1.resultat.ok, isTrue, reason: '${r1.resultat.code} ${r1.resultat.motif}');
     final locales = mf.collection('garanties').actives.where((g) => g[champEnAttenteMere] == r1.demande).toList();

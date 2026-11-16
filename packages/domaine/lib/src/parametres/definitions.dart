@@ -21,6 +21,7 @@
 import '../sauvegarde/sauvegarde_horssite.dart';
 import 'parametres.dart';
 import 'reglages_roles.dart';
+import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
 const String _decisions = 'Valeur d\'attente reprise de la réplique d\'origine : à confirmer par la Direction de Baguidi';
@@ -391,6 +392,20 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Chantier TABLEAUX (impression de la sélection)',
   ),
 
+  // Section AI (Direction, 16/11/2026) : une décision prise sur un fileul et non appliquée par la mère au-delà de ce délai s'ALERTE (notification de poste au validateur concerné et à
+  // l'administrateur). Aucun blocage, aucune validation automatique. BRANCHÉ : lu à chaque vérification par `AlerteDecisionsMere` et par la pastille.
+  DefinitionParametre(
+    cle: cleDelaiAlerteMere,
+    famille: 'validations',
+    type: TypeParametre.entier,
+    defaut: 4,
+    libelle: 'Décision en attente de la mère : délai d’alerte (heures)',
+    aide: 'Une validation, une demande de prix ou une demande d’import déposée sur un fileul et que la mère n’a pas appliquée au-delà de ce délai déclenche une alerte vers le validateur concerné (rôles qui détiennent le geste, lus dans la matrice) et l’administrateur. Rien n’est bloqué, rien n’est validé à la place de la mère. Entier d’au moins 1.',
+    source: 'Décision de la Direction du 16/11/2026 (section AI) : 4 heures',
+    branche: true,
+    appliquePar: 'Continuité des validations (pastille et alerte des décisions en attente de la mère)',
+  ),
+
   // Q3 et Q4 de la Direction de Baguidi (17/11/2026). Q3 : une liste de rôles BRANCHÉE (clôture). Q4 : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste
   // réservé `achats_valider` de la fiche RBAC (Direction du 16/11/2026) — l'ancienne clé `achats.rolesValidateurs` est retirée du registre (voir `reglages_roles.dart`).
   DefinitionParametre(
@@ -432,6 +447,7 @@ const Map<String, String> libellesFamillesParametres = {
   'export': 'Export des tableaux',
   'cloture': 'Clôture comptable',
   'achats': 'Achats',
+  'validations': 'Validations et continuité',
 };
 
 /// La définition d'une clé, ou `null`.

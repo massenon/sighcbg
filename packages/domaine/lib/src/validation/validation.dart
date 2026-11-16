@@ -534,6 +534,7 @@ VerdictValidation valValiderReferentiel(
   required Map<String, String> libelles,
   bool fileul = false,
   String? motif,
+  DateTime? appliqueLe,
 }) {
   final f = valFamille(familleId);
   if (f == null) {
@@ -574,7 +575,14 @@ VerdictValidation valValiderReferentiel(
   }
   final quand = valInstant(maintenant);
   final libRole = valLibelleRole(role, libelles);
-  final traces = <String, Object?>{'valideLe': quand, 'validePar': acteur, 'valideRole': libRole};
+  // AI (16/11/2026) : une validation DÉPOSÉE sur un fileul puis appliquée par la mère porte la DATE DE SIGNATURE (`signeLe`, le geste de l'auteur, celle de `valideLe`) et, à côté, la
+  // date d'APPLICATION par la mère (`appliqueLe`). Le geste direct n'a qu'une date : il ne porte ni l'une ni l'autre.
+  final traces = <String, Object?>{
+    'valideLe': quand,
+    'validePar': acteur,
+    'valideRole': libRole,
+    if (appliqueLe != null) ...{'signeLe': quand, 'appliqueLe': valInstant(appliqueLe)},
+  };
   if (f.mode == 'fiche') {
     final fiche = cible.rec;
     final avant = <String, Object?>{if (fiche != null && fiche.containsKey('valideLe')) 'valideLe': fiche['valideLe']};

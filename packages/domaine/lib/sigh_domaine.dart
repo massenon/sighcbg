@@ -109,6 +109,9 @@ export 'src/qualite/qual_ged.dart';
 export 'src/validation/validation.dart';
 // La validation déposée par un fileul et appliquée par la mère (continuité de service, 15/11/2026).
 export 'src/validation/validation_deposee.dart';
+// Section AI (16/11/2026) : le compte signataire vérifié par la mère, et les décisions en attente de la mère (pastille, alerte au-delà du délai réglé).
+export 'src/validation/compte_signataire.dart';
+export 'src/validation/decisions_en_attente.dart';
 export 'src/assurances/ass_regles.dart';
 export 'src/assurances/ass_garanties.dart';
 export 'src/assurances/ass_conflit_couverture.dart';

@@ -19,6 +19,7 @@ import 'sync/pieces_mises_de_cote.dart';
 import 'sync/service_demandes_tarif.dart';
 import 'sync/service_circuit_achats.dart';
 import 'sync/service_validations_deposees.dart';
+import 'sync/alerte_decisions_mere.dart';
 import 'donnees/service_droits.dart';
 import 'donnees/migration_cnss_vers.dart';
 import 'donnees/persistance.dart';
@@ -258,6 +259,10 @@ Future<void> main() async {
         ..demarrerMere();
       // CIRCUITS D'ACHAT (16/11/2026) : les tâches du comptable et du gestionnaire de stock, et le verdict à l'auteur, naissent de l'ÉTAT du bon que ce poste détient.
       ServiceCircuitAchats.de(magasin).demarrer();
+      // AI (16/11/2026) : une décision reçue et non appliquée au-delà du délai réglé s'alerte (validateur concerné et administrateur), sans rien bloquer.
+      AlerteDecisionsMere.de(magasin)
+        ..matrice = (() => matriceVive.matrice)
+        ..demarrer();
       publicateur ??= PublicateurConfiguration(
           magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
         ..demarrer();
@@ -296,6 +301,10 @@ Future<void> main() async {
       ServiceDemandesImport.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
         ..demarrerFileul();
+      // AI (16/11/2026) : une décision déposée ici et que la mère n'a pas appliquée au-delà du délai réglé (4 h semées) s'alerte au validateur et à l'administrateur, sans rien bloquer.
+      AlerteDecisionsMere.de(magasin)
+        ..matrice = (() => matriceVive.matrice)
+        ..demarrer();
       // Le verdict de la mère sur une validation déposée revient ici : une notification dit à l'auteur ce qui a été appliqué, sans effet ou refusé.
       ServiceValidationsDeposees.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)

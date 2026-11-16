@@ -12,6 +12,8 @@ import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_demandes_tarif.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 
+import 'aide_comptes.dart';
+
 /// LE RÉFÉRENTIEL DE PRIX ENTRE LA MÈRE ET UN FILEUL (lot T6, étape 5), contre la VRAIE mère et un VRAI moteur de fileul :
 ///  - `tarifs` et `versionsTarif` voyagent de la mère au fileul par le journal de configuration (famille R) ;
 ///  - un fileul ne peut PAS écrire une version (garde « réglé sur la mère », et `TarifsPoste` dépose une demande au lieu d'écrire) ;
@@ -86,6 +88,8 @@ void main() {
       expect(() => mf.collection('versionsTarif').inserer({'id': 'MG01@2026-11-01@9', 'code': 'MG01', 'version': 9, 'statut': 'valide'}), throwsA(isA<EcritureRefusee>()));
       expect(() => mf.collection('versionsTarif').mettreAJour('MG01@origine@1', {'statut': 'retire'}), throwsA(isA<EcritureRefusee>()));
       // 2. Sa proposition est une DEMANDE (famille B) : rien n'est écrit chez lui, la mère l'applique après avoir refait les contrôles sous le rôle de son auteur.
+      // AI (16/11/2026) : la demande porte le compte nominatif qui la signe ; la mère vérifie qu'il existe chez elle, avec ce rôle.
+      signerAvec(mf, mm, 'direction', nom: 'La Direction');
       final f = poste(mf, 'direction', 'La Direction', fileul: true, etiquette: 'F');
       final avantF = mf.collection('versionsTarif').toutes.length;
       final dem = f.proposer(prop('MG01', 5300));
