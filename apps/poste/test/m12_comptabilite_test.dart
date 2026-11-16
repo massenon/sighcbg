@@ -489,7 +489,7 @@ void main() {
       final m = magasinComplet();
       m.collection('exercices').inserer({'annee': 2027, 'etat': 'ouvert', 'statut': 'actif'});
       await ouvrir(t, m, 'm12-grand-livre', horloge: DateTime(2027, 3, 1, 10));
-      expect(find.text('Exercice 2027 · ouvert'), findsOneWidget, reason: 'l\'exercice le plus récent ouvert est affiché');
+      expect(find.text('Exercice 2027 · ouvert'), findsOneWidget, reason: 'l\'exercice du jour (2027) est affiché');
       expect(find.text('Aucun mouvement sur ce compte.'), findsOneWidget);
     });
 

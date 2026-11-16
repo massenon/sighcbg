@@ -53,7 +53,7 @@ bool _estDeLiasse(int annee) => cpcDepot['exerciceN'] == annee || cpcDepot['exer
 /// [exercices] : TOUTES les fiches de la collection (archivées comprises) ; [ecritures] : TOUTES les écritures (archivées comprises).
 ///
 /// [moisOuvertureSuivant] (Q29, Direction, 16/11/2026) : à partir de ce mois (1 à 12), l'exercice SUIVANT est ouvert d'avance (sa fiche est amorcée) pour que la préparation de l'année à venir (budgets,
-/// à-nouveaux de l'exercice qui se termine) ait déjà son exercice ; `null` : aucune ouverture anticipée (le comportement de la maquette). La règle du choix par défaut ne change pas (l'exercice OUVERT le plus récent) : ouvert d'avance, l'exercice suivant devient donc le choix par défaut des écrans, l'exercice en cours restant à un clic.
+/// à-nouveaux de l'exercice qui se termine) ait déjà son exercice ; `null` : aucune ouverture anticipée (le comportement de la maquette). Ouvert d'avance, l'exercice suivant reste CHOISISSABLE ; le défaut des écrans est l'exercice qui contient la date du jour ([cpcExerciceParDefaut], Direction du 16/11/2026).
 List<CpaFiche> cpcExercicesAAmorcer(Iterable<CpaFiche> exercices, Iterable<CpaFiche> ecritures, DateTime auj, {int? moisOuvertureSuivant}) {
   final annees = <int>{};
   for (final e in ecritures) {
@@ -787,14 +787,16 @@ CpcReouverture cpcRouvrirExercice(Iterable<CpaFiche> exercices, Iterable<CpaFich
   }, [nCL, nAN]);
 }
 
-/// Le choix d'exercice par DÉFAUT : l'exercice OUVERT le plus récent, sinon le plus récent tout court.
-int cpcExerciceParDefaut(Iterable<CpaFiche> exercices, DateTime auj) {
-  final liste = cpcListeExercices(exercices);
-  for (final x in liste) {
-    if (cpcEtatExercice(exercices, x['annee'] as int) == 'ouvert') return x['annee'] as int;
-  }
-  return liste.isNotEmpty ? liste.first['annee'] as int : auj.year;
-}
+/// Le choix d'exercice par DÉFAUT (Direction de Baguidi, 16/11/2026, qui REMPLACE la règle « ouvert le plus récent » de la maquette, E2167) : l'exercice qui CONTIENT LA DATE DU JOUR [auj].
+/// Les pièces de décembre sont de l'année N : l'exercice N+1, ouvert d'avance en décembre (Q29), reste CHOISISSABLE mais n'est jamais le défaut.
+///
+/// L'exercice du jour non amorcé (aucune fiche active pour l'année) : le défaut RESTE l'année du jour, sans basculer en silence sur un autre exercice — l'écran le dit
+/// ([cpcExerciceAmorce] faux, le sélecteur affiche « non amorcé ») et les voisins mènent aux exercices qui existent. Afficher un autre exercice à sa place ferait lire les chiffres
+/// d'une autre année comme ceux de l'année en cours.
+int cpcExerciceParDefaut(Iterable<CpaFiche> exercices, DateTime auj) => auj.year;
+
+/// L'exercice [annee] a-t-il sa fiche active (amorcée, non archivée) ?
+bool cpcExerciceAmorce(Iterable<CpaFiche> exercices, int annee) => cpcExercice(exercices, annee) != null;
 
 /// Le choix mémorisé s'il désigne un exercice qui existe, sinon le défaut.
 int cpcExerciceChoisi(Iterable<CpaFiche> exercices, int? memorise, DateTime auj) =>
@@ -803,8 +805,18 @@ int cpcExerciceChoisi(Iterable<CpaFiche> exercices, int? memorise, DateTime auj)
 /// La date de référence des périodes relatives (« ce mois », « ce trimestre ») : aujourd'hui si l'exercice consulté le contient, sinon son dernier jour.
 DateTime cpcDateReference(int exerciceChoisi, DateTime auj) => auj.year == exerciceChoisi ? auj : DateTime(exerciceChoisi, 12, 31);
 
-/// L'exercice voisin (sens -1 ou +1), ou `null` aux bornes : le bouton est ABSENT, pas grisé.
-int? cpcExerciceVoisin(Iterable<CpaFiche> exercices, int choisi, int sens) => cpcExercice(exercices, choisi + sens) != null ? choisi + sens : null;
+/// L'exercice voisin (sens -1 ou +1), ou `null` aux bornes : le bouton est ABSENT, pas grisé. Depuis un exercice NON AMORCÉ (le défaut quand l'exercice du jour n'a pas de fiche),
+/// le voisin est l'exercice existant le plus PROCHE dans ce sens : l'agent choisit lui-même l'exercice à consulter.
+int? cpcExerciceVoisin(Iterable<CpaFiche> exercices, int choisi, int sens) {
+  if (cpcExercice(exercices, choisi) != null) return cpcExercice(exercices, choisi + sens) != null ? choisi + sens : null;
+  int? proche;
+  for (final x in cpcListeExercices(exercices)) {
+    final a = x['annee'];
+    if (a is! int || (a - choisi).sign != sens.sign) continue;
+    if (proche == null || (a - choisi).abs() < (proche - choisi).abs()) proche = a;
+  }
+  return proche;
+}
 
 String _js(Object? v) {
   if (v == null) return '';

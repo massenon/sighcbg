@@ -53,7 +53,7 @@ void main() {
       final arch = [for (final x in exo) {...x, if (x['annee'] == 2026) 'statut': 'archive'}];
       expect(cpcExercicesAAmorcer(arch, ecr, auj), isEmpty);
     });
-    test('Q29 : l\u2019exercice suivant s\u2019ouvre d\u2019avance à partir du mois réglé (décembre) ; sans réglage, comme avant ; la règle du choix par défaut est inchangée', () {
+    test('Q29 : l\u2019exercice suivant s\u2019ouvre d\u2019avance à partir du mois réglé (décembre) ; sans réglage, comme avant ; il reste CHOISISSABLE sans devenir le défaut', () {
       final sans = [for (final x in exo) if (x['annee'] != auj.year + 1) x];
       expect(cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 11, 30), moisOuvertureSuivant: 12), isEmpty, reason: 'novembre : trop tôt');
       final dec = cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 12, 1), moisOuvertureSuivant: 12);
@@ -62,8 +62,12 @@ void main() {
       expect(cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 12, 15)).where((x) => x['annee'] == 2027), isEmpty, reason: 'sans réglage : aucune ouverture anticipée (maquette)');
       expect([for (final x in cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 11, 30), moisOuvertureSuivant: 11)) x['annee']], contains(2027), reason: 'réglable : novembre');
       final avecSuivant = [...sans, ...dec];
-      expect(cpcExerciceParDefaut(avecSuivant, DateTime(2026, 12, 2)), 2027, reason: 'la règle du choix par défaut ne change pas : l\u2019exercice OUVERT le plus récent');
-      expect(cpcExerciceChoisi(avecSuivant, 2026, DateTime(2026, 12, 2)), 2026, reason: 'l\u2019exercice en cours reste à un clic (choix mémorisé)');
+      // Direction de Baguidi, 16/11/2026 : le défaut est l'exercice qui CONTIENT LA DATE DU JOUR (les pièces de décembre sont de l'année N), plus « l'ouvert le plus récent » (E3260).
+      expect(cpcExerciceParDefaut(avecSuivant, DateTime(2026, 12, 2)), 2026, reason: 'en décembre, l\u2019exercice N+1 ouvert d\u2019avance n\u2019est PAS le défaut : l\u2019exercice du jour l\u2019est');
+      expect(cpcExerciceChoisi(avecSuivant, null, DateTime(2026, 12, 2)), 2026);
+      expect(cpcExerciceChoisi(avecSuivant, 2027, DateTime(2026, 12, 2)), 2027, reason: 'l\u2019exercice suivant reste CHOISISSABLE (choix mémorisé)');
+      expect(cpcExerciceVoisin(avecSuivant, 2026, 1), 2027, reason: 'la flèche suivante mène à l\u2019exercice ouvert d\u2019avance');
+      expect(cpcExerciceParDefaut(avecSuivant, DateTime(2027, 1, 2)), 2027, reason: 'au 1er janvier, le défaut passe à la nouvelle année');
     });
     test('Q29 : le réglage vaut décembre par défaut ; un mois hors 1-12 est refusé en le disant et ne se lit jamais', () {
       expect(cpcMoisOuvertureSuivant(null), 12);
@@ -476,17 +480,27 @@ void main() {
       expect(cpcReferenceArchive(2030, 2), 'ARC-2030-02');
     });
 
-    test('le choix d\'exercice : défaut = ouvert le plus récent ; voisins absents aux bornes ; dates relatives depuis le dernier jour de l\'exercice consulté', () {
+    // ÉCART E3260 : la maquette (`SIGH.exercice.choisi()`, E2167) prend l'exercice OUVERT le plus récent ; ce cas la portait fidèlement (2027 attendu un 16 août 2026) et la v20 l'avait
+    // conservé. La Direction de Baguidi l'a CORRIGÉE le 16/11/2026 : le défaut est l'exercice qui contient la date du jour. Le cas est gardé, son attendu suit la décision.
+    test('le choix d\'exercice : défaut = exercice du jour (E3260, corrige la maquette) ; voisins absents aux bornes ; dates relatives depuis le dernier jour de l\'exercice consulté', () {
       final exos = [
         {'annee': 2025, 'etat': 'clos', 'statut': 'actif', 'source': 'liasse'},
         {'annee': 2026, 'etat': 'ouvert', 'statut': 'actif'},
         {'annee': 2027, 'etat': 'ouvert', 'statut': 'actif'}
       ];
       final auj = DateTime(2026, 8, 16);
-      expect(cpcExerciceParDefaut(exos, auj), 2027);
-      expect(cpcExerciceParDefaut([exos.first], auj), 2025, reason: 'aucun ouvert : le plus récent tout court');
+      expect(cpcExerciceParDefaut(exos, auj), 2026, reason: 'la maquette rendait 2027 (ouvert le plus récent) : décision du 16/11/2026, l\u2019exercice du jour');
+      expect(cpcExerciceParDefaut([exos.first], auj), 2026,
+          reason: 'exercice du jour NON AMORCÉ : le défaut reste l\u2019année du jour (la maquette basculait sur 2025, le plus récent) ; l\u2019écran le dit');
+      expect(cpcExerciceAmorce([exos.first], 2026), isFalse);
+      expect(cpcExerciceAmorce(exos, 2026), isTrue);
+      expect(cpcExerciceAmorce([{...exos[1], 'statut': 'archive'}], 2026), isFalse, reason: 'une fiche archivée n\u2019amorce rien');
+      expect(cpcExerciceVoisin([exos.first], 2026, -1), 2025, reason: 'depuis un exercice non amorcé : l\u2019exercice existant le plus proche');
+      expect(cpcExerciceVoisin([exos.first], 2026, 1), isNull);
+      expect(cpcExerciceVoisin([exos.first, exos.last], 2026, 1), 2027);
       expect(cpcExerciceChoisi(exos, 2025, auj), 2025);
-      expect(cpcExerciceChoisi(exos, 1999, auj), 2027, reason: 'un choix inconnu retombe sur le défaut');
+      expect(cpcExerciceChoisi(exos, 2027, auj), 2027, reason: 'l\u2019exercice suivant reste choisissable');
+      expect(cpcExerciceChoisi(exos, 1999, auj), 2026, reason: 'un choix inconnu retombe sur le défaut');
       expect(cpcExerciceVoisin(exos, 2025, -1), isNull);
       expect(cpcExerciceVoisin(exos, 2025, 1), 2026);
       expect(cpcExerciceVoisin(exos, 2027, 1), isNull);

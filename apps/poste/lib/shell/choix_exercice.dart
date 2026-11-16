@@ -7,14 +7,16 @@ import '../core/jetons_shell.dart';
 import '../donnees/magasin.dart';
 
 /// LE CHOIX D'EXERCICE DE LA SESSION (arbitrage du 05/11/2026), miroir de `sigh-cbg:exercice` de la maquette : tenu EN MÉMOIRE pour la session du poste, jamais
-/// écrit dans le magasin. Absent, l'exercice affiché est le plus récent encore ouvert ([cpcExerciceParDefaut]). Une nouvelle session repart du défaut.
+/// écrit dans le magasin. Absent, l'exercice affiché est celui qui CONTIENT LA DATE DU JOUR ([cpcExerciceParDefaut], Direction de Baguidi du 16/11/2026, qui remplace « le plus récent
+/// encore ouvert » de la maquette, E3260) : l'exercice suivant ouvert d'avance en décembre reste choisissable. Une nouvelle session repart du défaut.
 class ChoixExercice {
   ChoixExercice._();
   static final ValueNotifier<int?> valeur = ValueNotifier<int?>(null);
 
   static void reinitialiser() => valeur.value = null;
 
-  /// L'exercice effectivement affiché, d'après la liste des exercices du magasin (vide : l'année de l'horloge).
+  /// L'exercice effectivement affiché, d'après la liste des exercices du magasin (vide : l'année de l'horloge). Jamais un autre exercice en silence : l'exercice du jour NON AMORCÉ
+  /// reste affiché et le sélecteur le dit (« non amorcé »).
   static int courant(Magasin m, DateTime aujourdhui) {
     final exos = m.collection('exercices').actives;
     if (exos.isEmpty) return aujourdhui.year;
@@ -39,16 +41,22 @@ class SelecteurExercice extends StatelessWidget {
         final etat = cpcEtatExercice(magasin.collection('exercices').toutes, annee);
         final prec = cpcExerciceVoisin(exos, annee, -1);
         final suiv = cpcExerciceVoisin(exos, annee, 1);
-        final libelleEtat = switch (etat) { 'clos' => 'clos', 'en_cloture' => 'en clôture', _ => 'ouvert' };
-        Widget fleche(String cle, IconData i, String info, int? vers) => vers == null
+        // L'exercice du jour sans fiche : le dire plutôt que montrer un autre exercice à sa place (E3261).
+        final amorce = cpcExerciceAmorce(exos, annee);
+        final libelleEtat = !amorce ? 'non amorcé' : switch (etat) { 'clos' => 'clos', 'en_cloture' => 'en clôture', _ => 'ouvert' };
+        Widget fleche(String cle, IconData i, int? vers) => vers == null
             ? const SizedBox(width: 4)
             : Tooltip(
-                message: info,
+                message: 'Exercice $vers',
                 child: InkWell(
                     key: Key(cle),
                     borderRadius: BorderRadius.circular(6),
                     onTap: () => ChoixExercice.valeur.value = vers,
                     child: Padding(padding: const EdgeInsets.all(4), child: Icon(i, size: 16, color: JetonsShell.navy200))));
+        final libelle = Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text('Exercice $annee · $libelleEtat',
+                key: const Key('exercice-affiche'), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)));
         return Semantics(
           label: 'Exercice comptable $annee, $libelleEtat',
           child: Container(
@@ -58,12 +66,9 @@ class SelecteurExercice extends StatelessWidget {
             decoration: BoxDecoration(
                 color: const Color(0x1AFFFFFF), border: Border.all(color: const Color(0x26FFFFFF)), borderRadius: BorderRadius.circular(8)),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              fleche('exercice-precedent', LucideIcons.chevronLeft, 'Exercice ${annee - 1}', prec),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text('Exercice $annee · $libelleEtat',
-                      key: const Key('exercice-affiche'), style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600))),
-              fleche('exercice-suivant', LucideIcons.chevronRight, 'Exercice ${annee + 1}', suiv),
+              fleche('exercice-precedent', LucideIcons.chevronLeft, prec),
+              if (amorce) libelle else Tooltip(message: 'L’exercice $annee (celui de la date du jour) n’est pas encore amorcé : aucun autre exercice n’est affiché à sa place. Choisir un exercice existant avec les flèches.', child: libelle),
+              fleche('exercice-suivant', LucideIcons.chevronRight, suiv),
             ]),
           ),
         );

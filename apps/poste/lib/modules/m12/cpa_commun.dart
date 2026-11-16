@@ -16,7 +16,7 @@ export '../m9/commun.dart'
 /// Briques communes à la comptabilité de base de M12 (tableau de bord, plan comptable, journaux, écritures, grand livre, balance, dépenses).
 /// Les règles chiffrées vivent dans `packages/domaine/lib/src/comptabilite/` ; ce fichier ne porte que de la mise en page et de la lecture du magasin.
 
-/// `exo()` : l'exercice choisi au sélecteur de la barre supérieure (en mémoire pour la session) ; à défaut, le plus récent encore ouvert.
+/// `exo()` : l'exercice choisi au sélecteur de la barre supérieure (en mémoire pour la session) ; à défaut, celui qui contient la date du jour (Direction du 16/11/2026, E3260).
 int exerciceChoisi(ContexteEcran c) => ChoixExercice.courant(c.magasin, c.aujourdhui);
 
 /// `ecritures()` : les écritures ACTIVES de l'exercice choisi.
