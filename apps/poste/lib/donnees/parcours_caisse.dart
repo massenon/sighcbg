@@ -3,6 +3,7 @@ import 'package:sigh_domaine/sigh_domaine.dart' as d;
 
 import 'magasin.dart';
 import 'normalisation_mecef.dart';
+import 'tarifs_poste.dart';
 
 /// Refus NOMMÉ d'une opération de caisse : un code, un motif lisible (jamais un échec muet).
 class RefusCaisse implements Exception {
@@ -25,6 +26,8 @@ class ResultatCaisse {
     required this.ecritures,
     required this.annuler,
     this.normalisation,
+    this.lignesRefusees = const [],
+    this.lignesValorisees = const [],
   });
   final Fiche facture;
   final bool deja;
@@ -45,6 +48,12 @@ class ResultatCaisse {
   /// La normalisation de la vente SOLDÉE (null tant que la pièce n'est pas soldée, ou qu'il n'y a rien à normaliser). Son refus ne défait pas
   /// l'encaissement : l'argent est reçu, la pièce devient `refusee` en le disant.
   final ResultatNormalisation? normalisation;
+
+  /// Les lignes visées NON encaissées faute de prix d'achat (« prix à valoriser », code `PRIX_A_VALORISER`) : `{id, designation, code, motif}`. Les autres sont encaissées.
+  final List<Map<String, Object?>> lignesRefusees;
+
+  /// Les lignes « prix à valoriser » que ce geste a VALORISÉES (prix d'achat désormais fixé) avant de les encaisser.
+  final List<String> lignesValorisees;
 }
 
 /// `PR.encaisser` côté poste : le cœur arithmétique est celui du domaine (vecteurs de la maquette) ; ici l'ORCHESTRATION — le laboratoire et
@@ -61,10 +70,88 @@ ResultatCaisse encaisserFacture(
   /// La fenêtre « Facture normalisée » : `ifu`, `nom`, `aibTaux`. Contrôlée AVANT toute écriture (E2299).
   Map<String, Object?>? acheteur,
 }) {
-  final fac = m.collection('factures').parId(factureId);
+  var fac = m.collection('factures').parId(factureId);
   if (fac == null)
     throw const RefusCaisse('FACTURE_INTROUVABLE', 'Facture introuvable.');
   final aujourdhui = d.iso(maintenant);
+  final annulations = <VoidCallback>[];
+  // « PRIX À VALORISER » (Direction, 16/11/2026) : une ligne visée dont l'article a DÉSORMAIS un prix d'achat se valorise ICI, en place, au prix retenu à la date de la
+  // pièce (RG-02, `tarPrixValorisation`) ; la pièce n'est ni soldée ni normalisée tant qu'elle attend, aucune valeur émise n'est réécrite. Une ligne encore sans prix reste
+  // « prix à valoriser » : le moteur refuse SON encaissement en le nommant, les autres lignes passent.
+  final valorisees = <String>[];
+  final attente = [
+    for (final l in d.lignesAValoriserDe(fac))
+      if (lignes == null || lignes.isEmpty || lignes.contains('${l['id']}')) l
+  ];
+  if (attente.isNotEmpty) {
+    final h = TarifsPoste.lire(m);
+    final jourPiece = d.tarJourDe(fac['date'], aujourdhui);
+    final ecrituresAvant = m.collection('ecritures').actives;
+    final complement = <Fiche>[];
+    var courante = fac;
+    for (final l in attente) {
+      final prod = m.collection('produits').parId(l['produitId']);
+      final prix = d.tarPrixValorisation(h, prod, jourPiece, aujourdhui: aujourdhui);
+      if (prix == null) continue;
+      final r = d.valoriserLigne(courante, '${l['id']}', prix,
+          utilisateur: m.utilisateur, maintenant: maintenant.toIso8601String(), aujourdhui: aujourdhui, ecritures: [...ecrituresAvant, ...complement]);
+      if (!r.ok) continue;
+      courante = r.facture!;
+      complement.addAll(r.ecritures);
+      valorisees.add('${l['id']}');
+      m.journaliser('Valorisation d’une ligne au prix d’achat', 'M8', 'facture', '${fac['numero']}', {'ligne': l['designation'], 'montant': 'prix à valoriser'},
+          {'ligne': l['designation'], 'prixUnitaire': prix.prixUnitaire, 'version': prix.version, 'dateEffet': prix.dateEffet, 'regle': prix.regle});
+    }
+    if (valorisees.isNotEmpty) {
+      annulations.add(m.collection('factures').mettreAJour(factureId, {
+        for (final k in ['lignes', 'montantHT', 'montantTTC', 'montantBrut', 'partAssurance', 'partPersonnel', 'partPatient', 'reliquat', 'lignesAValoriser'])
+          if (courante.containsKey(k)) k: courante[k],
+      }));
+      for (final e in complement) {
+        final ins = m.collection('ecritures').inserer(e, prefixe: 'ECR');
+        annulations.add(ins.annuler);
+      }
+      // L'ordonnance (pièce de prescription, non fiscale) reçoit le même prix sur ses lignes en attente : la pharmacie délivre et imprime le bon de sortie au prix retenu,
+      // jamais à 0. Seules les lignes encore « prix à valoriser » du même article sont complétées ; rien d'autre ne bouge.
+      final ordonnances = m.collection('ordonnances');
+      final ord = fac['ordonnanceId'] == null ? null : ordonnances.parId(fac['ordonnanceId']);
+      if (ord != null) {
+        final prixParProduit = <String, Map<String, Object?>>{
+          for (final l in (courante['lignes'] as List).cast<Map>())
+            if (valorisees.contains('${l['id']}') && l['produitId'] != null) '${l['produitId']}': l.cast<String, Object?>()
+        };
+        var change = false;
+        final meds = [
+          for (final x in (ord['medicaments'] as List? ?? const []).cast<Map>())
+            () {
+              final l = x.cast<String, Object?>();
+              final v = prixParProduit['${l['produitId']}'];
+              if (v == null || l['prixAValoriser'] != true || l['total'] != null) return l;
+              change = true;
+              final pu = v['prixUnitaire'] as num;
+              return {...l, 'prix': pu, 'total': pu * d.nombreOuZero(l['quantite']), 'prixAValoriser': false, 'valorisation': v['valorisation']};
+            }()
+        ];
+        if (change) {
+          final mMed = meds.fold<num>(0, (a, l) => a + d.nombreOuZero(l['total']));
+          final reste = meds.where((l) => l['prixAValoriser'] == true && l['total'] == null).length;
+          annulations.add(ordonnances.mettreAJour(ord['id'], {
+            'medicaments': meds,
+            'montantMedicaments': mMed,
+            'montant': mMed + d.nombreOuZero(ord['montantAnalyses']) + d.nombreOuZero(ord['montantActes']) + d.nombreOuZero(ord['montantImagerie']),
+            'lignesAValoriser': reste,
+          }));
+        }
+      }
+      fac = m.collection('factures').parId(factureId)!;
+    }
+  }
+  void defaire() {
+    for (final u in annulations.reversed) {
+      u();
+    }
+  }
+
   // L'état du module MECEF, lu dans les fermetures en vigueur et PASSÉ au moteur (P0-5) : fermé, le versement ne pose ni statutMecef ni baseMecef,
   // et une pièce émise pendant que MECeF était ouvert garde les siens.
   final mecefActif = d
@@ -84,6 +171,8 @@ ResultatCaisse encaisserFacture(
   );
   // E2 (corrigé le 31/10/2026) : un versement au-delà du dû d'une pièce sans lignes est REFUSÉ en nommant le défaut ; rien n'est écrit.
   if (r.refus != null) {
+    // Une valorisation faite pour ce versement se défait avec lui : rien n'est écrit sur un refus (la ligne se revalorisera au geste suivant, au même prix).
+    defaire();
     throw RefusCaisse(r.refusCode ?? 'VERSEMENT_REFUSE', r.refus!);
   }
   if (r.deja) {
@@ -98,13 +187,13 @@ ResultatCaisse encaisserFacture(
         ecritures: const [],
         annuler: () {});
   }
-  final annulations = <VoidCallback>[];
   final f = r.facture;
   annulations.add(m.collection('factures').mettreAJour(factureId, {
     for (final k in [
       'lignes',
       'montantPaye',
       'reliquat',
+      'lignesAValoriser',
       'modePaiement',
       'statutPaiement',
       'statutMecef',
@@ -210,7 +299,8 @@ ResultatCaisse encaisserFacture(
     'montantPaye': f['montantPaye'],
     'verse': r.montantRegle,
     'lignes': r.lignesReglees.length,
-    'restantDu': r.restantDu
+    'restantDu': r.restantDu,
+    if (r.lignesRefusees.isNotEmpty) 'lignesAValoriser': [for (final x in r.lignesRefusees) x['designation']],
   });
 
   // TOUTE VENTE SOLDÉE EST NORMALISÉE (Direction, 07/11/2026) ; un règlement partiel attend le solde, et une pièce à la charge de l'assureur seul
@@ -234,11 +324,9 @@ ResultatCaisse encaisserFacture(
     debloquees: debloquees,
     demandesLiberees: liberees,
     ecritures: ecr,
-    annuler: () {
-      for (final u in annulations.reversed) {
-        u();
-      }
-    },
+    lignesRefusees: r.lignesRefusees,
+    lignesValorisees: valorisees,
+    annuler: defaire,
   );
 }
 

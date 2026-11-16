@@ -182,14 +182,14 @@ Widget detailFacture(Fiche f) {
       ),
       ('Nature', f['type']),
       ('Montant HT', money(f['montantHT'])),
-      ('Montant TTC', money(f['montantTTC'])),
+      ('Montant TTC', '${money(f['montantTTC'])}${mentionAValoriser(f)}'),
       (
         'Part assurance',
         assure
             ? '${money(f['partAssurance'])} (${f['tauxPriseEnCharge']} %)'
             : 'Sans objet'
       ),
-      ('Part patient', money(f['partPatient'])),
+      ('Part patient', '${money(f['partPatient'])}${mentionAValoriser(f)}'),
       ('Montant réglé', money(f['montantPaye'])),
       ('Mode de règlement', modeLabel(f['modePaiement'])),
       ('Statut', statutBadge(f['statutPaiement'])),

@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/parcours_caisse.dart';
+import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -323,11 +324,13 @@ class _EcranCaisseState extends State<EcranCaisse> {
             ColonneMini('Qté', (x) => nombre(x['quantite'] ?? 1), droite: true),
             ColonneMini(
                 'Part assureur',
-                (x) =>
-                    n(x['partAssureur']) > 0 ? money(x['partAssureur']) : '—',
+                (x) => ligneAValoriser(x)
+                    ? libellePrixAValoriser
+                    : (n(x['partAssureur']) > 0 ? money(x['partAssureur']) : '—'),
                 droite: true),
             ColonneMini(
-                'À la charge du patient', (x) => money(x['partPatient']),
+                'À la charge du patient',
+                (x) => ligneAValoriser(x) ? libellePrixAValoriser : money(x['partPatient']),
                 droite: true),
           ], lignes: rows);
     afficherTiroir<void>(ctx,
@@ -338,14 +341,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
           DescListeSigh([
             ('Pièce', f['numero']),
             ('Patient', '${f['patient']} — ${f['patientCode']}'),
-            ('Total de la pièce', money(f['montantTTC'])),
+            ('Total de la pièce', '${money(f['montantTTC'])}${mentionAValoriser(f)}'),
             (
               'Part assureur',
               n(f['partAssurance']) > 0 ? money(f['partAssurance']) : '—'
             ),
             ('Part patient', money(f['partPatient'])),
             ('Encaissé', money(f['montantPaye'])),
-            ('Reste dû', money(f['reliquat'])),
+            ('Reste dû', '${money(f['reliquat'])}${mentionAValoriser(f)}'),
             // La rubrique fiscale ne se montre que sur une pièce qui en porte : une pièce émise MECeF fermé n'a ni baseMecef ni statutMecef (P0-5).
             if (f['baseMecef'] != null || f['statutMecef'] != null)
               (
@@ -409,6 +412,22 @@ class _EcranCaisseState extends State<EcranCaisse> {
       for (final l in toutes)
         if (l['statutPaiement'] == 'paye') l
     ];
+    // « PRIX À VALORISER » (Direction, 16/11/2026) : une ligne sans prix d'achat ne compte pour RIEN (jamais 0) ; si le prix est désormais fixé, la ligne PROJETÉE dit ce qu'elle
+    // vaudra — c'est l'encaissement qui la valorise en place, au même prix (`tarPrixValorisation`). Sans prix : visible, nommée, et refusée à l'encaissement.
+    final projetees = <String, Fiche>{};
+    if (lignes.any(ligneAValoriser)) {
+      final h = TarifsPoste.lire(c.magasin);
+      final jour = tarIso(c.aujourdhui);
+      final jourPiece = tarJourDe(fac['date'], jour);
+      for (final l in lignes.where(ligneAValoriser)) {
+        final prix = tarPrixValorisation(h, c.magasin.collection('produits').parId(l['produitId']), jourPiece, aujourdhui: jour);
+        if (prix == null) continue;
+        final r = valoriserLigne(fac, '${l['id']}', prix, utilisateur: '', maintenant: c.aujourdhui.toIso8601String());
+        if (!r.ok) continue;
+        projetees['${l['id']}'] = ((r.facture!['lignes'] as List).cast<Map>()).map((x) => x.cast<String, Object?>()).firstWhere((x) => '${x['id']}' == '${l['id']}');
+      }
+    }
+    Fiche vue(Fiche l) => projetees['${l['id']}'] ?? l;
     final choisies = {for (final l in lignes) '${l['id']}'};
     final version = ValueNotifier(0);
     final acheteur = ControleurFormulaire(champsAcheteurNormalise(c.magasin, c.aujourdhui), valeursAcheteur(fac));
@@ -435,10 +454,11 @@ class _EcranCaisseState extends State<EcranCaisse> {
                 StatefulBuilder(builder: (context, maj) {
                   final total = lignes
                       .where((l) => choisies.contains('${l['id']}'))
-                      .fold<num>(0, (a, l) => a + n(l['partPatient']));
+                      .fold<num>(0, (a, l) => a + n(vue(l)['partPatient']));
                   final reste =
-                      lignes.fold<num>(0, (a, l) => a + n(l['partPatient'])) -
+                      lignes.fold<num>(0, (a, l) => a + n(vue(l)['partPatient'])) -
                           total;
+                  final sansPrix = [for (final l in lignes) if (ligneAValoriser(vue(l))) l];
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
@@ -447,7 +467,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           ('Patient', fac['patient']),
                           ('Dossier', fac['patientCode']),
                           ('Prescription', tache['reference']),
-                          ('Montant total', money(fac['montantTTC'])),
+                          ('Montant total', '${money(fac['montantTTC'])}${mentionAValoriser(fac)}'),
                           (
                             'Part assureur',
                             fac['assureur'] != null
@@ -462,6 +482,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           ),
                         ]),
                         const SizedBox(height: 12),
+                        if (sansPrix.isNotEmpty) ...[
+                          NoteSigh(
+                              '${nombre(sansPrix.length)} prestation(s) au prix à valoriser (${sansPrix.map((l) => l['designation']).join(', ')}) : le prix d’achat n’est pas encore fixé, la ligne ne s’encaisse pas ($codePrixAValoriser). Les autres prestations s’encaissent normalement ; la personne qui fixe les prix d’achat est prévenue.',
+                              key: const Key('caisse:a-valoriser'),
+                              ton: TonSigh.attention,
+                              icone: LucideIcons.tag),
+                          const SizedBox(height: 12),
+                        ],
                         if (lignes.isNotEmpty) ...[
                           const NoteSigh(
                               'Cocher les prestations que le patient règle. Seules les prestations réglées passent au laboratoire et à la pharmacie — un examen non payé reste en attente, nommément, et le patient pourra revenir l’acquitter.',
@@ -572,7 +600,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                                                           fontWeight:
                                                               FontWeight.w500)),
                                                   Text(
-                                                      '${_categories['${l['categorie']}'] ?? l['categorie']}${n(l['quantite']) > 1 ? ' · ${nombre(l['quantite'])} × ${m(l['prixUnitaire'])}' : ''}',
+                                                      '${_categories['${l['categorie']}'] ?? l['categorie']}${n(l['quantite']) > 1 ? ' · ${nombre(l['quantite'])} × ${mLigne(vue(l), 'prixUnitaire')}' : ''}${projetees.containsKey('${l['id']}') ? ' · prix d’achat fixé, valorisé à l’encaissement' : ''}',
                                                       style: const TextStyle(
                                                           color: JetonsShell
                                                               .slate400,
@@ -581,9 +609,11 @@ class _EcranCaisseState extends State<EcranCaisse> {
                                             SizedBox(
                                                 width: 110,
                                                 child: Text(
-                                                    n(l['partAssureur']) > 0
-                                                        ? m(l['partAssureur'])
-                                                        : '—',
+                                                    ligneAValoriser(vue(l))
+                                                        ? '—'
+                                                        : n(vue(l)['partAssureur']) > 0
+                                                            ? m(vue(l)['partAssureur'])
+                                                            : '—',
                                                     textAlign: TextAlign.right,
                                                     style: const TextStyle(
                                                         color: JetonsShell
@@ -591,7 +621,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                                                         fontSize: 12))),
                                             SizedBox(
                                                 width: 110,
-                                                child: Text(m(l['partPatient']),
+                                                child: Text(mLigne(vue(l), 'partPatient'),
+                                                    key: Key('caisse:ligne:${l['id']}:montant'),
                                                     textAlign: TextAlign.right,
                                                     style: const TextStyle(
                                                         color: JetonsShell
@@ -639,8 +670,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                             const Spacer(),
                             Flexible(
                                 child: Text(
-                                    reste > 0
-                                        ? 'Reste dû après ce règlement : ${money(reste)} — ${nombre(lignes.length - choisies.length)} prestation(s) non réglée(s), non exécutable(s).'
+                                    reste > 0 || sansPrix.isNotEmpty
+                                        ? 'Reste dû après ce règlement : ${money(reste)}${sansPrix.isEmpty ? '' : ' + ${nombre(sansPrix.length)} ligne(s) au prix à valoriser'} — ${nombre(lignes.length - choisies.length + lignes.where((l) => choisies.contains('${l['id']}') && sansPrix.contains(l)).length)} prestation(s) non réglée(s), non exécutable(s).'
                                         : 'La facture sera intégralement soldée.',
                                     key: const Key('caisse:reste'),
                                     textAlign: TextAlign.right,
@@ -698,6 +729,13 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           mode: '${form['mode']}',
                           maintenant: c.aujourdhui);
                     } on RefusCaisse catch (e) {
+                      if (e.code == codePrixAValoriser) {
+                        ToastsSigh.afficher(ctx, 'Encaissement refusé : prix à valoriser.',
+                            type: TypeToast.erreur,
+                            detail: e.motif,
+                            duree: const Duration(seconds: 12));
+                        return;
+                      }
                       if (e.code == 'VERSEMENT_REFUSE') {
                         ToastsSigh.afficher(ctx, 'Encaissement refusé.',
                             type: TypeToast.erreur,
@@ -722,10 +760,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
                         'pharmacie débloquée',
                       if (res.restantDu > 0)
                         'reste ${money(res.restantDu)} à régler',
+                      if (res.lignesValorisees.isNotEmpty)
+                        '${nombre(res.lignesValorisees.length)} ligne(s) valorisée(s) au prix d’achat',
+                      if (res.lignesRefusees.isNotEmpty)
+                        'NON ENCAISSÉ ($codePrixAValoriser) : ${res.lignesRefusees.map((x) => x['designation']).join(', ')}',
                     ];
                     ToastsSigh.afficher(ctx,
                         'Encaissement validé — ${money(res.montantRegle)}.',
-                        type: TypeToast.succes,
+                        type: res.lignesRefusees.isEmpty ? TypeToast.succes : TypeToast.attention,
                         detail: detail.isEmpty
                             ? 'Aucune suite à débloquer.'
                             : detail.join(' · '),

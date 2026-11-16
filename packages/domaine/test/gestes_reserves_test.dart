@@ -24,7 +24,11 @@ void main() {
       expect(d.peut(r, interim), isFalse, reason: 'l’intérim n’est accordé à personne d’origine : $r');
     }
     expect(d.origine('laborantin', g), 'origine');
-    expect(gestesReserves.map((x) => x.id), [g, interim, gesteDeciderPrix, gesteDaterPrixPasse, gesteProposerPrixAchat, gesteExporter, gesteCircuitCloture, gesteValiderAchats, gesteReglageFichiers, gesteReglageOcr, gesteReglageMecef]);
+    expect(gestesReserves.map((x) => x.id), [
+      g, interim, gesteDeciderPrix, gesteDaterPrixPasse, gesteProposerPrixAchat, gesteExporter, gesteCircuitCloture, gesteValiderAchats, gesteReglageFichiers, gesteReglageOcr, gesteReglageMecef,
+      // Pharmacie et caisse séparables (Direction de Baguidi, 16/11/2026) : le routage des alertes et la retransmission MECeF ne sont plus des listes de rôles en dur.
+      gesteAlertesCaisse, gesteAlertesStock, gesteAlertesSeuilStock, gesteAlertesPeremption, gesteAlertesMecefRejet, gesteMecefRetransmettre, gesteMecefRetransmettreSansLimite,
+    ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteDeciderPrix, const ['admin', 'da', 'direction', 'caissier', 'stock']), ['admin', 'da', 'direction'], reason: 'décider un prix : origine de la matrice');

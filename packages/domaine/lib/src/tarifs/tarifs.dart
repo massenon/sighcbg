@@ -750,6 +750,9 @@ List<Map<String, Object?>> tarUsages(FicheTarif p, String dateEffet, PiecesTarif
     if (jour == null || jour.compareTo(dateEffet) < 0) continue;
     final porte = ((f['lignes'] as List?) ?? const []).any((l) {
       final x = (l as Map).cast<String, Object?>();
+      // Une ligne « prix à valoriser » (Direction du 16/11/2026) n'a utilisé AUCUN prix : la pièce ne dit pas de montant, un prix daté avant elle ne change rien de ce
+      // qu'elle dit. La compter interdirait de dater le premier prix d'achat à la date de la pièce.
+      if (x['prixAValoriser'] == true && x['montant'] == null) return false;
       return (x['acteCode'] != null && codes.contains('${x['acteCode']}')) ||
           (x['demandeId'] != null && codes.contains(analyses['${x['demandeId']}'])) ||
           (x['demandeImagerieId'] != null && codes.contains(imageries['${x['demandeImagerieId']}'])) ||

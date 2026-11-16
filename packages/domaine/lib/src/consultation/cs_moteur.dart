@@ -19,6 +19,7 @@ import '../imagerie/img_demandes_ouverture.dart' show referenceSerie;
 import '../labo/dem_regles.dart' show demCodeAnalyse;
 import '../referentiels/regles.dart' show joursEntre;
 import '../tarifs/tarifs.dart';
+import '../droits/gestes_reserves.dart' show gesteProposerPrixAchat;
 import 'cs_referentiels.dart';
 
 /// Refus NOMMÉ : [message] s'affiche tel quel ; [code] distingue `SANS_DOSSIER`.
@@ -460,9 +461,13 @@ FicheCs csNotifier(StockCs s, Map<String, Object?> o) =>
 /// Ce que `PR.prescrire` écrit.
 class ResultatPrescription {
   const ResultatPrescription(this.ordonnance, this.demandes,
-      this.demandesImagerie, this.facture, this.taches, [this.refus = const []]);
+      this.demandesImagerie, this.facture, this.taches, [this.refus = const [], this.aValoriser = const []]);
   final FicheCs ordonnance, facture;
   final List<FicheCs> demandes, demandesImagerie, taches;
+
+  /// Les médicaments PRESCRITS sans prix d'achat en vigueur (Direction du 16/11/2026) : la ligne existe, porte « prix à valoriser » et aucun montant ; seule son
+  /// encaissement attend. Chaque entrée : `{produitId, produit, quantite}`.
+  final List<FicheCs> aValoriser;
 
   /// Les lignes REFUSÉES faute de prix en vigueur (décision du 16/11/2026, code [csCodeTarifAValider]) : jamais une ligne à 0, jamais un blocage du reste de l'ordonnance. Chaque entrée :
   /// `{categorie, code, libelle, codeErreur, motif}`.
@@ -557,6 +562,34 @@ List<FicheCs> csConstruireLignes(
   var n = 0;
   void ajouter(FicheCs o) {
     n++;
+    // « Prix à valoriser » (Direction du 16/11/2026) : la ligne PAYABLE existe, sans AUCUN montant (jamais 0) ; elle se valorise à l'encaissement (`valoriserLigne`).
+    if (o['prixAValoriser'] == true) {
+      lignes.add({
+        'id': 'L${_pad(n, 3)}',
+        'categorie': o['categorie'],
+        'designation': o['designation'],
+        'quantite': o['quantite'] ?? 1,
+        'prixUnitaire': null,
+        'prixUnitaireNet': null,
+        'montantBrut': null,
+        'remise': 0,
+        'motifRemise': null,
+        'montant': null,
+        'partAssureur': null,
+        'partPersonnel': null,
+        'partPatient': null,
+        'prixAValoriser': true,
+        'demandeId': null,
+        'produitId': _ou(o['produitId'], null),
+        'acteCode': null,
+        'demandeImagerieId': null,
+        'statutPaiement': 'du',
+        'montantRegle': 0,
+        'payeLe': null,
+        'payePar': null,
+      });
+      return;
+    }
     final brut = arrondiJs(_n(o['montant'])).toInt();
     var remise = arrondiJs(_n(o['remise'])).toInt();
     if (o['categorie'] == 'medicament') remise = 0;
@@ -599,6 +632,7 @@ List<FicheCs> csConstruireLignes(
       'prixUnitaire': m['prix'],
       'montant': m['total'],
       'produitId': m['produitId'],
+      if (m['prixAValoriser'] == true) 'prixAValoriser': true,
     });
   }
   for (var i = 0; i < analyses.length; i++) {
@@ -650,34 +684,24 @@ ResultatPrescription csPrescrire(
             const <String, Object?>{};
         final pu = prod['prixAchat'] != null ? prod['prixAchat'] as num : 0;
         final q = _n(l['quantite']);
+        // Un article connu mais SANS prix d'achat (« à valoriser ») : le médecin PRESCRIT toujours (Direction du 16/11/2026, revient sur le refus de la v20) ; la ligne porte
+        // « prix à valoriser » et AUCUN montant — jamais 0. Seul son encaissement attendra le prix d'achat.
+        final aValoriser = prod.isNotEmpty && (prod['prixAchat'] == null || pu <= 0);
         return <String, Object?>{
-          // Un article connu mais SANS prix d'achat (« à valoriser ») n'est jamais une ligne à 0 (décision du 16/11/2026) : il est refusé plus bas, nommé.
-          '_prixAbsent': prod.isNotEmpty && (prod['prixAchat'] == null || pu <= 0),
           'produitId': l['produitId'],
           'produit': _ou(prod['designation'], _ou(l['produit'], '—')),
           'unite': _ou(prod['unite'], ''),
           'quantite': q == q.truncateToDouble() ? q.toInt() : q,
           'posologie': _ou(l['posologie'], ''),
           'duree': _ou(l['duree'], ''),
-          'prix': pu,
-          'total': pu * q == (pu * q).truncateToDouble() ? (pu * q).toInt() : pu * q,
+          'prix': aValoriser ? null : pu,
+          'total': aValoriser ? null : (pu * q == (pu * q).truncateToDouble() ? (pu * q).toInt() : pu * q),
+          if (aValoriser) 'prixAValoriser': true,
         };
       }()
   ].where((l) => _n(l['quantite']) > 0).toList();
   final refus = <FicheCs>[];
-  final medicamentsSansPrix = [for (final l in medicaments) if (l['_prixAbsent'] == true) l];
-  for (final l in medicamentsSansPrix) {
-    refus.add({
-      'categorie': 'medicament',
-      'code': l['produitId'],
-      'libelle': l['produit'],
-      'codeErreur': csCodeTarifAValider,
-      'motif': 'tarif à valider : « ${l['produit']} » n’a pas de prix d’achat en vigueur (article à valoriser). Son prix se propose à « Tarifs et prix » ; rien n’est prescrit à 0.',
-    });
-  }
-  medicaments
-    ..removeWhere((l) => l['_prixAbsent'] == true)
-    ..forEach((l) => l.remove('_prixAbsent'));
+  final medicamentsAValoriser = [for (final l in medicaments) if (l['prixAValoriser'] == true) l];
 
   // PRD-TARIFS (lot T6) : le prix vient du RÉFÉRENTIEL, à la date de la prescription ; le référentiel statique des analyses ne porte plus que le modèle (désignation,
   // catégorie, échantillon, délai). RG-09 décide la colonne, comme pour les actes : carte valide à CETTE date.
@@ -801,6 +825,8 @@ ResultatPrescription csPrescrire(
     'montantActes': mAct,
     'montantImagerie': mImg,
     'montant': mMed + mAna + mAct + mImg,
+    // Les médicaments au « prix à valoriser » ne sont PAS dans ces montants (ni pour 0) : le compte les nomme.
+    if (medicamentsAValoriser.isNotEmpty) 'lignesAValoriser': medicamentsAValoriser.length,
     'urgent': csVrai(v['urgent']),
     'statutPaiement': 'impayee',
     'statutDispensation': medicaments.isNotEmpty ? 'en_attente' : 'sans_objet',
@@ -885,6 +911,8 @@ ResultatPrescription csPrescrire(
     'partPatient': duPatient,
     'montantPaye': 0,
     'reliquat': duPatient,
+    // Les totaux ci-dessus portent les lignes VALORISÉES ; une ligne « prix à valoriser » n'y entre pas (jamais pour 0) et se compte ici.
+    if (medicamentsAValoriser.isNotEmpty) 'lignesAValoriser': medicamentsAValoriser.length,
     'modePaiement': null,
     'statutPaiement': 'impayee',
     'statutMecef': 'en_attente',
@@ -933,7 +961,8 @@ ResultatPrescription csPrescrire(
   }
   if (medicaments.isNotEmpty) {
     taches.add(_creerTache(s, 'dispensation', ordFiche, facture, {
-      'detail': '${medicaments.length} médicament(s) — ${money(mMed, avecDevise: false)}',
+      'detail': '${medicaments.length} médicament(s) — ${money(mMed, avecDevise: false)}'
+          '${medicamentsAValoriser.isEmpty ? '' : ' (dont ${medicamentsAValoriser.length} au prix à valoriser, hors montant)'}',
       'montant': mMed,
       'statut': 'bloque',
     }));
@@ -992,14 +1021,50 @@ ResultatPrescription csPrescrire(
     });
   }
 
+  // L'ALERTE vers qui fixe le prix d'achat : les rôles qui détiennent le geste « proposer un prix d'achat » (`tarif_proposer_achat`), lus dans la matrice par le centre de
+  // notifications (poste `geste:…`), jamais une liste de rôles. UNE SEULE alerte OUVERTE (non lue, non archivée) par article : un second patient ne la double pas.
+  final aValoriser = <FicheCs>[];
+  final dejaAlertes = {
+    for (final n in s.actives('notifications'))
+      if (n['type'] == csTypeNotifPrixAValoriser && n['lue'] != true && n['produitId'] != null) '${n['produitId']}'
+  };
+  for (final l in medicamentsAValoriser) {
+    aValoriser.add({'produitId': l['produitId'], 'produit': l['produit'], 'quantite': l['quantite']});
+    final id = '${l['produitId']}';
+    if (!dejaAlertes.add(id)) continue;
+    final prod = s.parId('produits', l['produitId']);
+    s.inserer('notifications', {
+      'type': csTypeNotifPrixAValoriser,
+      'poste': 'geste:$gesteProposerPrixAchat',
+      'destinataire': null,
+      'libelle': 'Prix d’achat à fixer : ${l['produit']}',
+      // Aucune donnée médicale ni nom de patient : l'article, la pièce, et le geste qui débloque.
+      'detail': '« ${l['produit']} » vient d’être prescrit sans prix d’achat en vigueur (facture ${facture['numero']}) : la ligne porte « prix à valoriser » et ne s’encaisse pas. '
+          'Fixer le prix d’achat au « Référentiel produits » (« Changer le prix d’achat »), puis Oui à « Tarifs et prix ».',
+      'priorite': 'haute',
+      'produitId': l['produitId'],
+      'produitCode': prod?['code'],
+      'reference': prod?['code'] ?? l['produitId'],
+      'factureId': facture['id'],
+      'ecran': 'm6-produits',
+      'lue': false,
+      'creeLe': _iso(s.maintenant),
+      'statut': 'actif',
+    });
+  }
+
   return ResultatPrescription(
       ordFiche,
       demandes,
       [for (final d in demandesImagerie) s.parId('demandesImagerie', d['id'])!],
       facture,
       taches,
-      refus);
+      refus,
+      aValoriser);
 }
+
+/// Le type de la notification de poste « prix d'achat à fixer » (une par article tant qu'elle est ouverte).
+const String csTypeNotifPrixAValoriser = 'prix_a_valoriser';
 
 /// `creerDemandesImagerie(p, codes, date, v)` : une demande par examen, BLOQUÉE par le paiement ; un examen sans tarif est refusé en le nommant
 /// (les demandes déjà créées sont ARCHIVÉES — RG-14, le numéro qu'elles ont consommé ne se réutilise pas).

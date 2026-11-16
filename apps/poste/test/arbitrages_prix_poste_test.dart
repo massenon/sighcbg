@@ -256,7 +256,9 @@ void main() {
   });
 
   group('(Q18 bis) les voies : jamais une ligne à 0', () {
-    test('un médicament connu mais sans prix d’achat est refusé « tarif à valider », le reste de l’ordonnance passe', () {
+    // Direction de Baguidi, 16/11/2026 : revient sur le refus de la v20. Le médicament sans prix d'achat est PRESCRIT (le soin n'attend pas la pharmacie) ; sa ligne porte
+    // « prix à valoriser », jamais 0, et seul son encaissement attend (voir `prix_a_valoriser_poste_test.dart`).
+    test('un médicament connu mais sans prix d’achat est PRESCRIT au « prix à valoriser », jamais à 0 ; le reste de l’ordonnance passe', () {
       final m = jeu();
       final s = StockMagasin(m, () => jour);
       final pt = m.collection('patients').actives.firstWhere((p) => p['externe'] != true);
@@ -267,10 +269,11 @@ void main() {
         {'produitId': prods[0]['id'], 'quantite': 1, 'posologie': 'x', 'duree': '1 j'},
         {'produitId': prods[1]['id'], 'quantite': 1, 'posologie': 'x', 'duree': '1 j'},
       ]}, session);
-      expect(r.refus.single['categorie'], 'medicament');
-      expect(r.refus.single['codeErreur'], csCodeTarifAValider);
-      expect((r.ordonnance['medicaments'] as List).length, 1);
+      expect(r.refus, isEmpty);
+      expect(r.aValoriser.single['produitId'], prods[1]['id']);
+      expect((r.ordonnance['medicaments'] as List).length, 2);
       expect([for (final l in (r.facture['lignes'] as List).cast<M>()) l['montant']].where((x) => x == 0), isEmpty);
+      expect([for (final l in (r.facture['lignes'] as List).cast<M>()) ligneAValoriser(l)], [false, true]);
     });
 
     test('le relevé du jeu : chaque code sans prix a une cause, aucun code d’un référentiel tarifé n’est à 0', () {

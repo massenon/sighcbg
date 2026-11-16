@@ -9,5 +9,8 @@ DroitsGestes droitsGestesEcran(ContexteEcran c) {
   return DroitsGestes(fiches: c.magasin.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif);
 }
 
+/// Même lecture, nom employé par le centre de notifications et la caisse.
+DroitsGestes gestesEcran(ContexteEcran c) => droitsGestesEcran(c);
+
 /// Le rôle de la SESSION détient-il ce GESTE RÉSERVÉ ? (voir [droitsGestesEcran]).
 bool gestePeutEcran(ContexteEcran c, String geste) => droitsGestesEcran(c).peut(c.role, geste);

@@ -488,7 +488,14 @@ class _EtatModaleAvoir extends State<_ModaleAvoir> {
                   icone: LucideIcons.fileQuestion)
             else ...[
               const LibelleChamp('Lignes à contre-passer *'),
+              // Une ligne « prix à valoriser » n'a aucun montant à contre-passer (Direction, 16/11/2026) : visible, nommée, non cochable.
               for (final (i, l) in detail.indexed)
+                if (ligneAValoriser(l))
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Text('${l['designation']} — $libellePrixAValoriser : aucun montant à contre-passer',
+                          style: const TextStyle(color: JetonsShell.slate400, fontSize: 14, fontStyle: FontStyle.italic)))
+                else
                 InkWell(
                   onTap: () => setState(() =>
                       _cochees.contains(i) ? _cochees.remove(i) : _cochees.add(i)),

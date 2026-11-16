@@ -6,6 +6,7 @@
 /// Les fonctions de montants et d'acheteur sont rejouées sur `mecef_montants.json` ; celles-ci sont éprouvées par `mecef_normalisation_test.dart`.
 library;
 
+import '../droits/gestes_reserves.dart';
 import 'etats.dart';
 import 'montants.dart';
 
@@ -98,6 +99,17 @@ PreparationNormalisation preparerNormalisation(
         'La facture $num_ est déjà normalisée (${fac['numeroMecef']}) : elle ne se renormalise jamais.',
         'La corriger par un avoir.'));
   }
+  // Une ligne « prix à valoriser » n'a pas de montant : la pièce ne se normalise pas tant qu'elle attend (elle n'est d'ailleurs jamais soldée). Refus nommé, rien n'est écrit.
+  final enAttente = [
+    for (final l in (fac['lignes'] as List? ?? const []))
+      if (l is Map && l['prixAValoriser'] == true && l['montant'] == null) l['designation']
+  ];
+  if (enAttente.isNotEmpty) {
+    return PreparationNormalisation.refus(RefusMecef(
+        'PRIX_A_VALORISER',
+        'La facture $num_ porte ${enAttente.length} ligne(s) au prix à valoriser (${enAttente.join(', ')}) : une vente ne se normalise qu’avec tous ses montants.',
+        'Fixer le prix d’achat de l’article, encaisser la ligne, puis normaliser.'));
+  }
   final ach = acheteurDePiece(fac, saisi: acheteurSaisi, aibParDefaut: aibParDefaut, longueurIfu: longueurIfu);
   if (ach.refus != null) return PreparationNormalisation.refus(ach.refus!);
   final m = mecefMontants(
@@ -119,9 +131,12 @@ String numeroMecefLibre(int tire, Set<String> pris) {
   return 'MECEF$n';
 }
 
-/// Qui peut retransmettre une pièce (PRD section 7, Q7) : le caissier UNE fois, puis la Directrice Administrative et l'administrateur ; jamais une
-/// vente normalisée ; une vente « à vérifier » se reprend, elle ne se retransmet pas. Null quand c'est permis.
-RefusMecef? refusRetransmission(Map<String, Object?> fac, String role) {
+/// Qui peut retransmettre une pièce (PRD section 7, Q7) : le geste réservé [gesteMecefRetransmettre] (une fois), puis [gesteMecefRetransmettreSansLimite] ; jamais une
+/// vente normalisée ; une vente « à vérifier » se reprend, elle ne se retransmet pas. Null quand c'est permis. AUCUN nom de rôle ici (Direction, 16/11/2026) : l'origine des deux gestes
+/// reprend la règle d'avant (le caissier une fois, la DAF et l'administrateur sans limite), et une fiche de rôle accorde ou retire. [gestes] : les droits EN FORCE (fiches `rbac`,
+/// matrice) ; absent, l'origine du référentiel s'applique (un test nu).
+RefusMecef? refusRetransmission(Map<String, Object?> fac, String role, {DroitsGestes? gestes}) {
+  final g = gestes ?? DroitsGestes(fiches: const []);
   final num_ = '${fac['numero'] ?? fac['id']}';
   final etat = etatMecefDe(fac)?.id;
   if (etat == 'normalisee') {
@@ -137,17 +152,18 @@ RefusMecef? refusRetransmission(Map<String, Object?> fac, String role) {
         'Utiliser « Reprendre sans doubler ».');
   }
   final deja = _num(fac['retransmissions']).toInt();
-  if (role == 'caissier' && deja >= 1) {
-    return RefusMecef(
-        'RETRANSMISSION_RESERVEE',
-        'Le caissier ne retransmet qu’une fois : la facture $num_ l’a déjà été.',
-        'Demander la retransmission à la Directrice Administrative.');
-  }
-  if (!const ['caissier', 'da', 'admin'].contains(role)) {
+  final unePremiere = g.peut(role, gesteMecefRetransmettre), sansLimite = g.peut(role, gesteMecefRetransmettreSansLimite);
+  if (!unePremiere && !sansLimite) {
     return const RefusMecef(
         'RETRANSMISSION_INTERDITE',
-        'La retransmission est réservée au caissier (une fois) et à la Directrice Administrative.',
-        'Demander à la caisse ou à la DA.');
+        'La retransmission est un geste réservé de la matrice des droits (« retransmettre une pièce à la MECeF ») : votre profil ne le détient pas.',
+        'Demander à un profil qui le détient (d’origine : la caisse, une fois, et la Directrice Administrative).');
+  }
+  if (!sansLimite && deja >= 1) {
+    return RefusMecef(
+        'RETRANSMISSION_RESERVEE',
+        'Votre profil ne retransmet qu’une fois : la facture $num_ l’a déjà été.',
+        'Demander la retransmission à un profil qui détient « retransmettre sans limite » (d’origine : la Directrice Administrative).');
   }
   return null;
 }

@@ -15,6 +15,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../mecef/montants.dart';
+import 'valorisation.dart' show codePrixAValoriser, ligneAValoriser, motifPrixAValoriser;
 
 const compteCaisse = '571000';
 const compteClientsAssurance = '411110';
@@ -29,7 +30,8 @@ class ResultatEncaissement {
       required this.restantDu,
       required this.ecritures,
       this.refus,
-      this.refusCode});
+      this.refusCode,
+      this.lignesRefusees = const []});
 
   /// La facture APRÈS versement (copie ; l'entrée n'est jamais modifiée).
   final Map<String, Object?> facture;
@@ -44,8 +46,13 @@ class ResultatEncaissement {
   /// Versement REFUSÉ (E2) : le motif nomme le défaut, rien n'est écrit ; `facture` est inchangée.
   final String? refus;
 
-  /// Le code nommé du refus de la fenêtre « Facture normalisée » (`IFU_INVALIDE`, `NOM_ACHETEUR_ABSENT`, `AIB_TAUX_INVALIDE`), sinon null.
+  /// Le code nommé du refus de la fenêtre « Facture normalisée » (`IFU_INVALIDE`, `NOM_ACHETEUR_ABSENT`, `AIB_TAUX_INVALIDE`), ou [codePrixAValoriser] quand TOUTES
+  /// les lignes visées attendent leur prix ; sinon null.
   final String? refusCode;
+
+  /// Les lignes visées que ce versement N'A PAS encaissées parce qu'elles attendent leur prix (« prix à valoriser », Direction du 16/11/2026) : `{id, designation, code, motif}`.
+  /// Les autres lignes du même versement s'encaissent normalement.
+  final List<Map<String, Object?>> lignesRefusees;
 }
 
 bool _vrai(Object? v) => v != null && v != '' && v != 0 && v != false;
@@ -115,19 +122,42 @@ ResultatEncaissement encaisser(
       : _n(facture['montantTTC']);
 
   final reglees = <Map<String, Object?>>[];
+  // Une ligne « prix à valoriser » n'a pas de montant : elle ne s'encaisse JAMAIS (ni pour 0, ni au jugé). Refusée nommément, elle n'empêche pas les autres.
+  final refusees = <Map<String, Object?>>[];
+  void refuser(Map<String, Object?> l) =>
+      refusees.add({'id': l['id'], 'designation': l['designation'], 'code': codePrixAValoriser, 'motif': motifPrixAValoriser(l['designation'])});
+  ResultatEncaissement refusPrix() => ResultatEncaissement(
+          facture: facture,
+          deja: false,
+          lignesReglees: const [],
+          montantRegle: 0,
+          restantDu: toutes.where((l) => l['statutPaiement'] != 'paye').fold<double>(0, (n, l) => n + _n(l['partPatient'])),
+          ecritures: const [],
+          refus: '$codePrixAValoriser : ${refusees.map((r) => r['motif']).join(' ')}',
+          refusCode: codePrixAValoriser,
+          lignesRefusees: refusees);
   var paye = 0.0;
   if (lignes != null && lignes.isNotEmpty) {
     final vises = lignes.toSet();
     for (final l in toutes) {
       if (l['statutPaiement'] == 'paye' || !vises.contains(l['id'])) continue;
+      if (ligneAValoriser(l)) {
+        refuser(l);
+        continue;
+      }
       reglees.add(l);
       paye += _n(l['partPatient']);
     }
+    if (reglees.isEmpty && refusees.isNotEmpty) return refusPrix();
   } else if (toutes.isNotEmpty) {
     // Allocation d'un montant global : les lignes dues, dans l'ordre, tant que la somme versée les couvre ENTIÈREMENT.
     var reste = montant != null ? montant.toDouble() : duTotal;
     for (final l in toutes) {
       if (l['statutPaiement'] == 'paye') continue;
+      if (ligneAValoriser(l)) {
+        refuser(l);
+        continue;
+      }
       final part = _n(l['partPatient']);
       if (part <= reste) {
         reglees.add(l);
@@ -135,6 +165,8 @@ ResultatEncaissement encaisser(
         paye += part;
       }
     }
+    // Il ne restait que des lignes « prix à valoriser » : rien à encaisser, refus nommé (rien n'est écrit).
+    if (reglees.isEmpty && refusees.isNotEmpty && !toutes.any((l) => l['statutPaiement'] != 'paye' && !ligneAValoriser(l))) return refusPrix();
   } else {
     // Pièce antérieure au modèle par lignes : on conserve le comportement par montant, mais JAMAIS au-delà du dû (E2, corrigé le 31/10/2026).
     final restantPiece = (duTotal - _n(facture['montantPaye'])) > 0
@@ -175,7 +207,9 @@ ResultatEncaissement encaisser(
       : (duTotal - totalPaye) > 0
           ? duTotal - totalPaye
           : 0.0;
-  final solde = restantDu <= 0;
+  // Une ligne qui attend son prix laisse la pièce OUVERTE : jamais « soldée » (ni normalisée) avec une prestation qui n'a pas encore de montant.
+  final enAttenteDePrix = lignesMaj.where((l) => l['statutPaiement'] != 'paye' && ligneAValoriser(l)).length;
+  final solde = restantDu <= 0 && enAttenteDePrix == 0;
   // La base MECeF naît de la fonction unique des montants : seule la part PATIENT des lignes réglées par ce versement s'ajoute (ni part assureur,
   // ni remise). Une ligne que la fonction refuse (prix décimal d'une pièce ancienne) ne bloque pas l'encaissement : la base reste le total réglé,
   // et c'est la NORMALISATION qui refuse en nommant la ligne.
@@ -194,6 +228,7 @@ ResultatEncaissement encaisser(
     'lignes': lignesMaj,
     'montantPaye': totalPaye,
     'reliquat': restantDu,
+    if (enAttenteDePrix > 0 || facture.containsKey('lignesAValoriser')) 'lignesAValoriser': enAttenteDePrix,
     'modePaiement': modeRetenu,
     'statutPaiement':
         solde ? 'soldee' : (totalPaye > 0 ? 'partielle' : 'impayee'),
@@ -229,6 +264,7 @@ ResultatEncaissement encaisser(
     montantRegle: paye,
     restantDu: restantDu,
     ecritures: posees,
+    lignesRefusees: refusees,
   );
 }
 

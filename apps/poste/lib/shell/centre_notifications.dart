@@ -66,23 +66,38 @@ String libellePriorite(String p) => switch (p) { 'critique' => 'Critique', 'impo
 const seuilRegroupement = 3;
 
 /// Quels rôles tiennent un POSTE de notification (`POSTES_NOTIF`). `null` = tout le monde (« tous » ou poste non précisé) ; un poste inconnu est lu comme un rôle.
+/// La CAISSE et le STOCK n'y sont plus (Direction de Baguidi, 16/11/2026) : ce sont des gestes réservés de la fiche de rôle ([_gestesPostes]), parce qu'une clinique
+/// peut séparer le pharmacien de la caisse — aucune liste de rôles ne doit supposer « pharmacie = caissier ».
 const _postesNotif = <String, List<String>?>{
   'tous': null,
-  'caisse': ['caissier'],
   'comptable': ['comptable', 'assistant_comptable', 'aide_comptable', 'da'],
   'direction': ['direction', 'da', 'dm'],
   'imagerie': ['echographiste', 'responsable_radiologie'],
   'laboratoire': ['laborantin'],
   'prescripteur': ['medecin', 'chirurgien', 'anesthesiste', 'dm'],
-  'stock': ['stock', 'pharmacien', 'da'],
   'salle_soins': ['infirmier', 'aide_soignant', 'surveillant'],
   'hospitalisation': ['infirmier', 'aide_soignant', 'surveillant', 'medecin'],
+};
+
+/// Les postes tenus par un GESTE RÉSERVÉ (origine = la liste d'avant, une fiche de rôle accorde ou retire). Un poste écrit `geste:<id>` est routé vers les rôles qui détiennent ce
+/// geste : c'est ainsi que l'alerte « prix d'achat à fixer » va à qui fixe le prix d'achat (`tarif_proposer_achat`), lu dans la matrice, jamais en dur.
+const _gestesPostes = <String, String>{
+  'caisse': gesteAlertesCaisse,
+  'stock': gesteAlertesStock,
 };
 
 List<String>? _rolesDuPoste(Object? poste) {
   if (!_v(poste) || poste == 'tous') return null;
   final p = '$poste';
+  if (_gesteDuPoste(p) != null) return null;
   return _postesNotif.containsKey(p) ? _postesNotif[p] : [p];
+}
+
+/// Le geste réservé qui tient ce poste (`null` : le poste se route par [_postesNotif]).
+String? _gesteDuPoste(Object? poste) {
+  final p = '${poste ?? ''}';
+  if (p.startsWith('geste:')) return p.substring(6);
+  return _gestesPostes[p];
 }
 
 /// L'écran où se traite chaque type de notification de poste (`LIENS_NOTIF`).
@@ -123,10 +138,13 @@ num? _num(Object? x) => x is num ? x : (x is String ? num.tryParse(x) : null);
 String _entier(num x) => x == x.roundToDouble() ? '${x.toInt()}' : '$x';
 
 class _Ligne {
-  const _Ligne(this.cle, this.priorite, this.titre, this.detail, this.lien, this.postes);
+  const _Ligne(this.cle, this.priorite, this.titre, this.detail, this.lien, this.postes, {this.geste});
   final String cle, priorite, titre, detail;
   final String? lien;
   final List<String>? postes;
+
+  /// Le GESTE RÉSERVÉ qui route la ligne (en plus des postes et de l'écran) : seuls les rôles qui le détiennent, dans la matrice en force, la reçoivent.
+  final String? geste;
 }
 
 class _Source {
@@ -145,7 +163,8 @@ final List<_Source> _sources = [
                 '${p['designation']} : ${nombre(p['stock'])} en stock',
                 'Seuil d’alerte fixé à ${nombre(p['seuilAlerte'])}. Établir un bon de commande, validation de la Direction requise (RG-04).',
                 'm6-alertes',
-                const ['stock', 'pharmacien', 'caissier', 'da']),
+                null,
+                geste: gesteAlertesSeuilStock),
       ]),
   _Source('lots_peremption', 'metier', 'Pharmacie', (m, auj) => [
         for (final l in lotsAvecStatutAJour(m, auj))
@@ -156,13 +175,15 @@ final List<_Source> _sources = [
                 l['statut'] == 'perime' ? 'Lot périmé : ${_ou(l['produit'], l['numero'])}' : 'Péremption proche : ${_ou(l['produit'], l['numero'])}',
                 l['statut'] == 'perime' ? 'À sortir du rayon et à déclarer en perte.' : 'Appliquer le principe FEFO (RG-05).',
                 'm6-lots',
-                const ['stock', 'pharmacien', 'caissier', 'laborantin']),
+                null,
+                geste: gesteAlertesPeremption),
       ]),
   _Source('mecef_rejet', 'metier', 'Facturation', (m, auj) => [
         for (final f in m.collection('factures').actives)
           if (f['statutMecef'] == 'rejete')
             _Ligne('mecef:${f['id']}', 'important', 'Facture ${_ou(f['numero'], f['id'])} rejetée par la MECeF',
-                'Corriger puis réémettre auprès de l’administration fiscale.', 'mecef-transmission', const ['caissier', 'comptable', 'da', 'assistant_comptable']),
+                'Corriger puis réémettre auprès de l’administration fiscale.', 'mecef-transmission', null,
+                geste: gesteAlertesMecefRejet),
       ]),
   _Source('echeance_fiscale', 'metier', 'Comptabilité', (m, auj) {
     // Le calendrier fiscal est un référentiel : le moteur ne recalcule aucune date, il lit ce qui est déjà dépassé.
@@ -268,7 +289,8 @@ final List<_Source> _sources = [
                 _ou(n['titre'], _ou(n['libelle'], _ou(n['message'], 'Notification'))),
                 _ou(n['detail'], _v(n['message']) ? n['message'] : ''),
                 _v(n['ecran']) ? '${n['ecran']}' : _liensNotif['${n['type']}'],
-                _rolesDuPoste(n['poste'])),
+                _rolesDuPoste(n['poste']),
+                geste: _gesteDuPoste(n['poste'])),
       ]),
 ];
 
@@ -313,6 +335,7 @@ class CentreNotifications extends ChangeNotifier {
     'couverturesAssurance',
     'notifications',
     'reglages',
+    'rbac',
   ];
 
   final Magasin magasin;
@@ -366,8 +389,9 @@ class CentreNotifications extends ChangeNotifier {
     _ecrireAcquittees(a);
   }
 
-  bool _pourMoi(_Ligne n, String r, DonneesNavigation nav) {
+  bool _pourMoi(_Ligne n, String r, DonneesNavigation nav, DroitsGestes gestes) {
     if (n.postes != null && !n.postes!.contains(r)) return false;
+    if (n.geste != null && !gestes.peut(r, n.geste!)) return false;
     if (n.lien != null) {
       final e = nav.manifeste.ecran(n.lien!);
       if (e != null && !ecranOuvertAuRole(nav, r, e.id)) return false;
@@ -381,6 +405,8 @@ class CentreNotifications extends ChangeNotifier {
     final nav = donnees();
     final auj = _horloge();
     final acq = acquittees();
+    // Les gestes réservés EN FORCE (fiches `rbac`, rôle archivé, activité fermée) : relus à chaque collecte, une décision de la clinique vaut au repeint suivant.
+    final gestes = DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: nav.matrice.estArchive, ecranActif: nav.matrice.ecranActif);
     final out = <AlerteNotif>[];
     for (final src in _sources) {
       List<_Ligne> lues;
@@ -390,7 +416,7 @@ class CentreNotifications extends ChangeNotifier {
         lues = const [];
       }
       for (final n in lues) {
-        if (!_pourMoi(n, r, nav)) continue;
+        if (!_pourMoi(n, r, nav, gestes)) continue;
         // Le serveur et le poste calculent parfois la MÊME alerte (même clé) : celle du poste l'emporte, l'autre ne double pas la cloche.
         if (out.any((x) => x.cle == n.cle)) continue;
         out.add(AlerteNotif(

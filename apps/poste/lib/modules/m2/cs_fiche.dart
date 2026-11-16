@@ -310,8 +310,11 @@ class _EtatFiche extends State<EcranFicheConsultation> {
     final assure = p != null &&
         carteValide(p, m.collection('couverturesAssurance').toutes, c.aujourdhui.toIso8601String());
     double mMed = 0, mAna = 0, mImg = 0;
+    // Un médicament SANS prix d'achat se prescrit (Direction, 16/11/2026) mais ne compte pour RIEN dans l'estimation (jamais pour 0) : il est NOMMÉ « prix à valoriser ».
+    final aValoriser = <String>[];
     for (final l in _editeur.currentState?.collecter() ?? const <Map<String, Object?>>[]) {
       final pr = m.collection('produits').parId(l['produitId']);
+      if (pr != null && nombreOuZero(pr['prixAchat']) <= 0) aValoriser.add('${pr['designation'] ?? pr['code']}');
       mMed += nombreOuZero(pr?['prixAchat']) * nombreOuZero(l['quantite']);
     }
     final sansTarif = <String>[];
@@ -327,7 +330,7 @@ class _EtatFiche extends State<EcranFicheConsultation> {
       if (pr.montant == null) sansTarif.add('${ex?['label'] ?? code}');
       mImg += nombreOuZero(pr.montant);
     }
-    return '${money(mMed + mAna + mImg)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · imagerie ${money(mImg, avecDevise: false)})${sansTarif.isNotEmpty ? ' — prix à définir : ${sansTarif.join(', ')}' : ''}';
+    return '${money(mMed + mAna + mImg)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · imagerie ${money(mImg, avecDevise: false)})${sansTarif.isNotEmpty ? ' — prix à définir : ${sansTarif.join(', ')}' : ''}${aValoriser.isEmpty ? '' : ' — prix à valoriser (prescrit, réglé quand le prix d’achat sera fixé) : ${aValoriser.join(', ')}'}';
   }
 
   Fiche? _exigerOrdonnance(ContexteEcran c, String quoi) {
