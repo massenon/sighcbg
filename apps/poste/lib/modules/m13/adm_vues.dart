@@ -41,7 +41,7 @@ class EcranEvenements extends StatefulWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     return [
       BoutonSigh(libelle: 'Réunions', icone: LucideIcons.usersRound, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-reunions')),
-      BoutonSigh(libelle: 'Plan annuel', icone: LucideIcons.calendarRange, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-plan-annuel')),
+      BoutonSigh(libelle: 'Plan de travail annuel (PTA)', icone: LucideIcons.calendarRange, variante: VarianteBouton.secondaire, onPressed: () => c.aller('m13-plan-annuel')),
     ];
   }
 
@@ -78,7 +78,7 @@ class _EcranEvenementsState extends State<EcranEvenements> {
         v['heure'] = admHeure(v['heure']);
         if (e == null) {
           // Création : référence EVT-NNNN (le préfixe diffère de celui du jeu, E532 porté fidèlement) et canal « In-app » si l'événement est annoncé.
-          v['reference'] = admReferenceEvenement(col.toutes.length, date: v['date']);
+          v['reference'] = admReferenceEvenement(col.toutes, date: v['date']);
           v['canaux'] = v['notifier'] == true ? ['In-app'] : <String>[];
         } else {
           // E532 : cocher « Notifier le personnel » pose un canal, le décocher les retire.

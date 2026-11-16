@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 
@@ -74,7 +75,8 @@ void main() {
     test('référence : série annuelle ARR/DEP-AAAA-NNNN, millésime = année de la date, rang par sens et par année (E538 levé)', () {
       final arr = obj(obj(c['creation'])['arrivee'])['fiche'] as M, dep = obj(obj(c['creation'])['depart'])['fiche'] as M;
       expect(admReferenceCourrier('arrivee', arr['date'], liste(jeu)), arr['reference']);
-      expect(admReferenceCourrier('depart', dep['date'], liste(jeu)), dep['reference']);
+      // La maquette numérotait les courriers départ « DEP-… » comme les dépenses ; Baguidi : « COU-… » (préfixe propre, 17/11/2026) ; le rang suit, les « DEP- » déjà émis restent lus.
+      expect(admReferenceCourrier('depart', dep['date'], liste(jeu)), '${dep['reference']}'.replaceFirst('DEP-', 'COU-'));
       final serie = [
         {'reference': 'ARR-2026-0007', 'statut': 'archive'},
         {'reference': 'ARR-2027-0002'},
@@ -82,8 +84,8 @@ void main() {
       ];
       expect(admReferenceCourrier('arrivee', '2026-12-31', serie), 'ARR-2026-0008');
       expect(admReferenceCourrier('arrivee', '2027-01-02', serie), 'ARR-2027-0003');
-      expect(admReferenceCourrier('depart', '2026-05-05', serie), 'DEP-2026-0004');
-      expect(admReferenceCourrier('depart', '2028-01-01', serie), 'DEP-2028-0001');
+      expect(admReferenceCourrier('depart', '2026-05-05', serie), 'COU-2026-0004', reason: 'le rang 3 de « DEP-2026-0003 » est lu');
+      expect(admReferenceCourrier('depart', '2028-01-01', serie), 'COU-2028-0001');
       expect(admExercicesCourriers(serie.map((x) => {...x, 'date': '2026-01-01'}), 2030), '2026');
       expect(admExercicesCourriers(const [], 2030), '2030');
     });
@@ -141,9 +143,10 @@ void main() {
       final opts = [for (final o in (f[1] as List).skip(1)) (o as List)[0]];
       expect(admCategoriesPresentes(rows), opts);
     });
-    test('référence de création : EVT- + effectif + 1', () {
-      expect(admReferenceEvenement(10), (obj(obj(e['creation'])['avecNotif'])['fiche'] as M)['reference']);
-      expect(admReferenceEvenement(11), (obj(obj(e['creation'])['sansNotif'])['fiche'] as M)['reference']);
+    test('référence de création : EVE- (préfixe propre aux événements de l\'établissement, 17/11/2026) + plus grand rang + 1', () {
+      String evt(M f) => '${f['reference']}'.replaceFirst('EVT-', 'EVE-');
+      expect(admReferenceEvenement(piecesAuRang('adm.evenements', 10)), evt(obj(obj(e['creation'])['avecNotif'])['fiche'] as M));
+      expect(admReferenceEvenement(piecesAuRang('adm.evenements', 11)), evt(obj(obj(e['creation'])['sansNotif'])['fiche'] as M));
     });
     test('canaux à la modification (E532) : cocher pose « In-app », décocher les retire', () {
       expect(admCanauxEvenement(true, <Object?>[]), ['In-app']);

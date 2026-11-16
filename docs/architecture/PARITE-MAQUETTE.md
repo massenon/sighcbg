@@ -329,7 +329,7 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `m13-evenements` | Événements & notifications | M13 | 5 | 13, 22 | porté |
 | `m13-maintenance` | Parc technique & maintenance | M13 | 4 | 37, 40 | porté |
 | `m13-notes-service` | Notes de service | M13 | 5 | — | porté |
-| `m13-plan-annuel` | Plan annuel de travail | M13 | 5 | — | porté |
+| `m13-plan-annuel` | Plan de travail annuel (PTA) | M13 | 5 | — | porté |
 | `m13-repertoire-ambulances` | Répertoire des ambulances | M13 | 8 | 35, 43 | porté |
 | `m13-reunions` | Réunions | M13 | 5 | — | porté |
 | `m14-audit` | Journal d’audit | M14 | 3 | — | porté |

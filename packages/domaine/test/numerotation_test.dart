@@ -4,6 +4,7 @@
 //  2. l'année vient de la DATE DE LA PIÈCE : au 1ᵉʳ janvier 2027, une série annuelle repart à 1 sous « 2027 », une série sans remise continue son rang ;
 //  3. une modification est une VERSION DATÉE sous geste réservé, qui ne s'applique qu'aux pièces à venir, et qu'un fileul dépose.
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 /// L'ANCIEN format de chaque série, rang 12, pièce du 04/03/2026 : la chaîne que le code construisait EN DUR avant le lot (pour une série dérivée : le
@@ -17,7 +18,8 @@ const Map<String, (String base, String attendu)> ancien = {
   'patients.factures-externes': ('', 'FE-2026-00012'),
   'consultation.dossiers': ('', 'DOS-00012'),
   'consultation.consultations': ('', 'C00012'),
-  'agenda.rendezvous': ('', 'C00012'),
+  'agenda.rendezvous': ('', 'RDV-00012'), // préfixe PROPRE depuis le 17/11/2026 (il partageait « C » avec les consultations) ; l'ancien reste lu
+
   'agenda.appels': ('', 'A00012'),
   'consultation.ordonnances': ('', 'ORD-2026-00012'),
   'consultation.factures': ('', 'FP-2026-00012'),
@@ -48,7 +50,7 @@ const Map<String, (String base, String attendu)> ancien = {
   'maternite.soins-curatifs': ('', 'SCM-0012'),
   'maternite.comptes-rendus': ('', 'CRM-0012'),
   'labo.demandes': ('', 'LAB-00012'),
-  'labo.reactifs': ('', 'LAB-0012'),
+  'labo.reactifs': ('', 'REA-0012'), // idem (partageait « LAB- » avec les demandes d'analyses)
   'labo.donneurs': ('', 'DON-0012'),
   'stock.produits': ('', 'PRD-0012'),
   'stock.dispensations': ('', 'DISP-00012'),
@@ -63,6 +65,7 @@ const Map<String, (String base, String attendu)> ancien = {
   'achats.pv-reactifs': ('', 'PV-REA-2026-0012'),
   'caisse.factures': ('', 'FN-2026-00012'),
   'caisse.proformas': ('', 'PRO-2026-00012'),
+  'caisse.factures-tiers': ('', 'FT-2026-00012'), // série créée le 17/11/2026 : la facture à une entreprise (tiers payeur)
   'caisse.avoirs': ('', 'AV-2026-0012'),
   'caisse.pieces': ('', 'CAI-2026-00012'),
   'caisse.remboursements': ('', 'RB-00012'),
@@ -79,7 +82,7 @@ const Map<String, (String base, String attendu)> ancien = {
   'rh.securite-entretien': ('', 'SE-012'),
   'rh.ordres-mission': ('', 'OM-2026-0012'),
   'rh.badges': ('', 'BDG-00012-2026'),
-  'paie.bulletins': ('', 'BP-00012'),
+  'paie.bulletins': ('', 'BUL-00012'), // idem (partageait « BP- » avec la référence d'un bulletin d'agent)
   'paie.bulletins-agent': ('MAT-007-03', 'BP-MAT-007-03'),
   'paie.prets': ('', 'PRT-0012'),
   'paie.heures-sup': ('', 'HS-0012'),
@@ -97,8 +100,8 @@ const Map<String, (String base, String attendu)> ancien = {
   'compta.budgets': ('', 'BG-2026-012'),
   'compta.immobilisations': ('', 'IM-012'),
   'adm.courriers-arrivee': ('', 'ARR-2026-0012'),
-  'adm.courriers-depart': ('', 'DEP-2026-0012'),
-  'adm.evenements': ('', 'EVT-0012'),
+  'adm.courriers-depart': ('', 'COU-2026-0012'), // idem (partageait « DEP- » avec les dépenses)
+  'adm.evenements': ('', 'EVE-0012'), // idem (partageait « EVT- » avec les événements du personnel)
   'adm.reunions': ('', 'RU-2026-012'),
   'adm.ambulance': ('', 'AM-2026-0012'),
   'adm.materiel': ('', 'EQ-012'),
@@ -187,7 +190,7 @@ void main() {
       expect(prefixeSerieFacture(proforma: true, dateFacture: '2027-01-01'), 'PRO-2027-');
       expect(cpaReferenceDepense('2026-04-10', [{'reference': 'DEP-2026-0009'}]), 'DEP-2026-0010');
       expect(cpcReferenceArchive(2026, 1), 'ARC-2026-01');
-      expect(cfaNumeroCertificat(6, date: '2026-01-05'), 'CERT-2026-0007');
+      expect(cfaNumeroCertificat(piecesAuRang('cfg.certificats', 6), date: '2026-01-05'), 'CERT-2026-0007');
       expect(admReferenceCourrier('arrivee', '2027-02-01', [{'reference': 'ARR-2026-0040'}]), 'ARR-2027-0001');
       expect(rhaReferenceMission('2026-08-01', [{'reference': 'OM-2026-0002'}]), 'OM-2026-0003');
       expect(accReferenceSupport(2026, ['SUP-2026-0001']), 'SUP-2026-0002');

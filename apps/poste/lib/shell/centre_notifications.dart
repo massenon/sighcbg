@@ -93,7 +93,7 @@ List<String>? _rolesDuPoste(Object? poste) {
 /// Le geste réservé qui tient ce poste (`null` : le poste se route par [_postesNotif]).
 String? _gesteDuPoste(Object? poste) {
   final p = '${poste ?? ''}';
-  if (p.startsWith('geste:')) return p.substring(6);
+  if (p.startsWith(prefixePosteGeste)) return p.substring(prefixePosteGeste.length);
   return _gestesPostes[p];
 }
 

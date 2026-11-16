@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../impression/piece.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
+import '../../shell/contexte_ecran.dart';
 import '../m4/mat_commun.dart';
 
 /// Briques communes aux écrans RH du premier lot (M10) : mise en page seulement — les règles chiffrées vivent dans
 /// `packages/domaine/lib/src/rh/rha_regles.dart`.
+
+/// LA RÉMUNÉRATION D'UN AGENT (décision de la Direction du 17/11/2026, point 1) : salaire, numéro CNSS, primes, retenues d'évaluation, couvertures et honoraires de régime ne se lisent
+/// qu'avec le droit d'ÉCRIRE l'écran ou de VOIR l'écran des primes (`m10-primes`). Le critère est la MATRICE, jamais un nom de rôle : le Surveillant ouvre la fiche du personnel en
+/// lecture seule (surcharge d'écran de sa fiche) sans que rien de ce qui se paie ni de ce qui se soigne ne s'affiche. Hors coque (matrice non branchée), rien n'est masqué.
+bool voitRemunerationAgent(ContexteEcran c) => c.droit.editer || (c.donnees?.matrice.peutVoir(c.role, 'm10-primes') ?? true);
+
+/// Ce qui remplace une valeur masquée : il le DIT (un champ vide se lirait comme une donnée absente).
+const String remunerationReservee = 'Information réservée — droit requis : lire la rémunération du personnel';
+
+/// La mention d'une rubrique masquée de la fiche d'un agent.
+class MentionRemunerationReservee extends StatelessWidget {
+  const MentionRemunerationReservee({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Padding(
+      padding: EdgeInsets.only(top: 16),
+      child: Row(mainAxisSize: MainAxisSize.min, key: Key('rha:remuneration-reservee'), children: [
+        Icon(LucideIcons.lock, size: 13, color: JetonsShell.slate400),
+        SizedBox(width: 6),
+        Flexible(child: Text(remunerationReservee, style: TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic))),
+      ]));
+}
 
 const Signature rhaSignDa = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 

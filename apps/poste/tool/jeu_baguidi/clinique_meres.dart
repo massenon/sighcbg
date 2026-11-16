@@ -31,7 +31,7 @@ void planifierMeres(Jeu j) {
           rap: rap,
           depuis: depuis,
           auj: j.horloge,
-          nbExistantes: j.ctx.collection('facturesMere').toutes.length,
+          existantes: j.ctx.collection('facturesMere').toutes,
           emisePar: caissierDuJeu,
         );
         j.ajouter('facturesMere', {...fiche, 'fin': Contexte.date(fin.subtract(const Duration(days: 1)))}, 'FMR');

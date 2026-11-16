@@ -29,6 +29,7 @@ class FicheEmploye extends StatelessWidget {
   Widget build(BuildContext context) {
     final e = agent;
     final auj = c.aujourdhui;
+    final remuneration = voitRemunerationAgent(c);
     final vac = trierPar(rhaVacations(c.magasin.collection('planning').actives, e['id'], auj.year, auj.month), (p) => p['date']);
     final gardes = rhaCompter(vac, 'garde'), permanences = rhaCompter(vac, 'permanence');
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -56,26 +57,26 @@ class FicheEmploye extends StatelessWidget {
       ),
       const SizedBox(height: 16),
       OngletsSigh(onglets: [
-        OngletDef(id: 'infos', libelle: 'Informations', construire: (_) => _infosVivantes(e, auj)),
+        OngletDef(id: 'infos', libelle: 'Informations', construire: (_) => _infosVivantes(e, auj, remuneration)),
         OngletDef(id: 'planning', libelle: 'Planning du mois', construire: (_) => _planning(vac, gardes, permanences)),
         // PLANNING INDIVIDUEL (16/11/2026) : le régime effectif de l'agent, son calendrier (semaine ou mois) et l'édition de son régime individuel.
         OngletDef(id: 'planning-individuel', libelle: 'Planning individuel', construire: (_) => OngletPlanningIndividuel(agent: e, c: c, ctx: ctx)),
-        OngletDef(id: 'primes', libelle: 'Primes (NS 132)', construire: (_) => _primes(e, gardes, permanences)),
+        OngletDef(id: 'primes', libelle: 'Primes (NS 132)', construire: (_) => remuneration ? _primes(e, gardes, permanences) : const MentionRemunerationReservee()),
         OngletDef(id: 'presences', libelle: 'Présences & congés', construire: (_) => _presences(e)),
-        OngletDef(id: 'evaluations', libelle: 'Évaluations & sanctions', construire: (_) => _evaluations(e)),
-        OngletDef(id: 'assurances', libelle: 'Assurances', construire: (_) => _assurances(e)),
+        OngletDef(id: 'evaluations', libelle: 'Évaluations & sanctions', construire: (_) => remuneration ? _evaluations(e) : const MentionRemunerationReservee()),
+        OngletDef(id: 'assurances', libelle: 'Assurances', construire: (_) => remuneration ? _assurances(e) : const MentionRemunerationReservee()),
       ]),
     ]);
   }
 
   /// L'onglet se relit au magasin : confirmer une valeur d'attente (ou la saisir au registre) se voit sans fermer la fiche.
-  Widget _infosVivantes(Fiche e, DateTime auj) {
+  Widget _infosVivantes(Fiche e, DateTime auj, bool remuneration) {
     final col = c.magasin.collection('personnel');
     return ListenableBuilder(
         listenable: col,
         builder: (context, _) {
           final frais = col.parId(e['id']) ?? e;
-          return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_infos(frais, auj), _valeursAttente(frais)]);
+          return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_infos(frais, auj, remuneration), if (remuneration) _valeursAttente(frais)]);
         });
   }
 
@@ -125,7 +126,7 @@ class FicheEmploye extends StatelessWidget {
     if (ctx.mounted) ToastsSigh.afficher(ctx, 'Valeur confirmée.', type: TypeToast.succes, detail: 'Le $libelle de ${e['nomComplet']} est retenu ; motif journalisé.', annuler: annuler);
   }
 
-  Widget _infos(Fiche e, DateTime auj) => Padding(
+  Widget _infos(Fiche e, DateTime auj, bool remuneration) => Padding(
         padding: const EdgeInsets.only(top: 16),
         child: DescListeSigh([
           ('Matricule', '${e['matricule']}'),
@@ -137,10 +138,10 @@ class FicheEmploye extends StatelessWidget {
           ('Catégorie / échelon', '${e['categorie'] ?? ''}${e['categorieProvisoire'] == true ? ' (à renseigner : valeur d’attente à confirmer)' : ''}'),
           ('Date d’embauche', rhaDateFR(e['dateEmbauche']) + (e['dateEmbaucheProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
           ('Ancienneté', rhaAncienneteLongue(e['dateEmbauche'], auj)),
-          ('Numéro CNSS', '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner : valeur d’attente à confirmer)' : ''}'),
+          ('Numéro CNSS', remuneration ? '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner : valeur d’attente à confirmer)' : ''}' : remunerationReservee),
           ('Téléphone', e['telephone'] as String?),
           ('Situation matrimoniale', e['situation'] as String?),
-          ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
+          ('Salaire de base', remuneration ? moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '') : remunerationReservee),
         ]),
       );
 

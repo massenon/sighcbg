@@ -27,6 +27,8 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('personnel');
+    // La rémunération (salaire, CNSS) se lit avec le droit d'écrire l'écran ou de voir l'écran des primes ; sinon la colonne le DIT (décision du 17/11/2026).
+    final remuneration = voitRemunerationAgent(c);
     return CrudMat(
       collection: col,
       entite: 'agent',
@@ -76,18 +78,22 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
             cle: 'cnss',
             libelle: 'N° CNSS',
             sansCoupure: true,
-            texte: (r) => '${r['cnss'] ?? ''}${r['cnssProvisoire'] == true ? ' (à renseigner)' : ''}',
-            rendu: (_, r) => Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, children: [
-                  if (r['cnssProvisoire'] == true) const BadgeSigh('à renseigner', ton: TonSigh.attention, icone: LucideIcons.hourglass),
-                  Text('${r['cnss'] ?? ''}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 12, color: JetonsShell.slate500)),
-                ])),
+            texte: (r) => remuneration ? '${r['cnss'] ?? ''}${r['cnssProvisoire'] == true ? ' (à renseigner)' : ''}' : 'réservé',
+            rendu: (_, r) => remuneration
+                ? Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, children: [
+                    if (r['cnssProvisoire'] == true) const BadgeSigh('à renseigner', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+                    Text('${r['cnss'] ?? ''}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 12, color: JetonsShell.slate500)),
+                  ])
+                : const Text('réservé', style: TextStyle(color: JetonsShell.slate400, fontSize: 12, fontStyle: FontStyle.italic))),
         ColonneTableau(
             cle: 'salaireBase',
             libelle: 'Salaire de base',
             droite: true,
-            texte: (r) => '${moneyOu(r['salaireBase'], 'Non renseigné', false)}${r['salaireProvisoire'] == true ? ' (provisoire)' : ''}',
+            texte: (r) => remuneration ? '${moneyOu(r['salaireBase'], 'Non renseigné', false)}${r['salaireProvisoire'] == true ? ' (provisoire)' : ''}' : 'réservé',
             // Le marquage « provisoire » reste VISIBLE tant que la valeur n'est pas arrêtée : l'icône ET le libellé, jamais la couleur seule.
-            rendu: (_, r) => Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, runSpacing: 2, children: [
+            rendu: (_, r) => !remuneration
+                ? const Text('réservé', style: TextStyle(color: JetonsShell.slate400, fontSize: 12, fontStyle: FontStyle.italic))
+                : Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, runSpacing: 2, children: [
                   if (r['salaireProvisoire'] == true) const BadgeSigh('provisoire', ton: TonSigh.attention, icone: LucideIcons.hourglass),
                   Text(moneyOu(r['salaireBase'], 'Non renseigné', false), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: JetonsShell.slate800)),
                 ])),
@@ -135,7 +141,7 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
         final dates = actifs.where((a) => a['dateEmbaucheProvisoire'] == true).length;
         final categories = actifs.where((a) => a['categorieProvisoire'] == true).length;
         final cnss = actifs.where((a) => a['cnssProvisoire'] == true).length;
-        if (salaires + dates + categories + cnss == 0) return const SizedBox.shrink();
+        if (!remuneration || salaires + dates + categories + cnss == 0) return const SizedBox.shrink();
         return Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: NoteSigh(
@@ -148,7 +154,11 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
         FiltreTableau(nom: 'service', libelle: 'Service', options: rhaOptions(rhaServices)),
         const FiltreTableau(nom: 'sexe', libelle: 'Sexe', options: [OptionChamp('M', 'Masculin'), OptionChamp('F', 'Féminin')]),
       ],
-      kpis: (ctx, rows) => rhaKpisW(rhaKpisPersonnel(rows), const [LucideIcons.usersRound, LucideIcons.banknote, LucideIcons.calculator, LucideIcons.users]),
+      // Masse salariale et salaire moyen sont des données de rémunération : sans le droit, restent l'effectif et la répartition.
+      kpis: (ctx, rows) {
+        final tous = rhaKpisW(rhaKpisPersonnel(rows), const [LucideIcons.usersRound, LucideIcons.banknote, LucideIcons.calculator, LucideIcons.users]);
+        return remuneration ? tous : [tous[0], tous[3]];
+      },
       detail: (ctx, f) => FicheEmploye(agent: f, c: ContexteEcran.of(ctx), ctx: ctx),
       etat: (ctx, e) => matImprimer(ctx,
           titre: 'Fiche individuelle de l’agent',
@@ -168,8 +178,8 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
               ('Téléphone', '${e['telephone'] ?? ''}'),
               ('Date d’embauche', rhaDateFR(e['dateEmbauche']) + (e['dateEmbaucheProvisoire'] == true ? ' (provisoire : valeur d’attente)' : '')),
               ('Poste occupé', '${e['poste'] ?? ''}'),
-              ('Numéro CNSS', '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner)' : ''}'),
-              ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente)' : '')),
+              if (remuneration) ('Numéro CNSS', '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner)' : ''}'),
+              if (remuneration) ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente)' : '')),
             ]),
           ],
           signatures: [Signature('L’Agent', nom: '${e['nomComplet']}'), rhaSignDa]),

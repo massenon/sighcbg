@@ -32,7 +32,8 @@ const ouvertures = <String, List<String>>{
   'anesthesiste': ['m6-stock-detail', 'm6-lots'],
   // Plan des lits (qui est dans quel lit), sans les admissions ni le dossier.
   'agentadmin': ['m3-plan-lits'],
-  'surveillant': ['m3-plan-lits'],
+  // Fiche du personnel (17/11/2026, point 1) : en lecture, rémunération masquée au poste ; seul l'onglet « Planning individuel » s'écrit (geste « Régler le personnel »).
+  'surveillant': ['m3-plan-lits', 'm10-personnel', 'm10-employe-profil'],
   'aide_soignant': ['m3-plan-lits'],
   // Activité (consultations, admissions) et état des ventes : l'Assistant de Direction (identifiant technique `assistant_comptable`).
   'assistant_comptable': ['m2-stats-consultations', 'm3-stats-hospitalisations', 'm6-point-ventes'],
@@ -50,7 +51,7 @@ const fermesAvec = <String, List<String>>{
   'comptable': ['cfg-modules'],
   'anesthesiste': ['m6-mouvements', 'm6-inventaire', 'm6-transferts', 'm6-dispensation', 'm6-stock-gros', 'm6-pertes', 'm6-produits'],
   'agentadmin': ['m3-admissions', 'm3-surveillance', 'm1-dossier-medical', 'm2-dossiers-consultation'],
-  'surveillant': ['m3-admissions', 'm3-surveillance', 'm1-dossier-medical', 'm2-dossiers-consultation'],
+  'surveillant': ['m3-admissions', 'm3-surveillance', 'm1-dossier-medical', 'm2-dossiers-consultation', 'm10-primes', 'm10-evaluations', 'm10-sanctions', 'm10-contrats', 'm10-assurance-personnel', 'm11-calcul'],
   'aide_soignant': ['m3-admissions', 'm1-dossier-medical', 'm2-dossiers-consultation'],
   'assistant_comptable': ['m6-mouvements', 'm6-inventaire', 'm8-caisse', 'm5-resultats', 'dash-croise', 'dash-da'],
 };

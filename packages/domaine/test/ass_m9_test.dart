@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart';
@@ -470,7 +471,7 @@ void main() {
           rap: rap,
           depuis: depuis('${em['periode']}'),
           auj: DateTime(2026, 8, 16),
-          nbExistantes: charger('facturesMere').length,
+          existantes: piecesAuRang('assurances.factures-meres', charger('facturesMere').length),
           emisePar: 'BICHIASI Cezoune Sichovian');
       for (final k in attendu.keys) {
         if (k == 'id' || k == 'statut') continue;

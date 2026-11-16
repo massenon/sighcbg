@@ -56,7 +56,7 @@ void main() {
             ],
             patients: [],
             demandesExistantes: [],
-            nbFactures: 0,
+            facturesExistantes: const [],
             nouvelId: (q) => q,
             date: DateTime(2026, 11, 16)),
         throwsA(isA<PatRefus>().having((e) => e.message, 'message', allOf(contains('prix à définir'), contains('Examen sans prix')))));

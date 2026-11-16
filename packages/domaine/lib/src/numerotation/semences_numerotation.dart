@@ -15,6 +15,10 @@ import 'numerotation.dart';
 
 const _n = 'Format repris du code au 16/11/2026 (proposition à valider).';
 
+/// Les cinq séries qui PARTAGEAIENT leur préfixe avec un autre registre (E3874) : décision du 17/11/2026, un préfixe PAR registre. Le préfixe retenu est une PROPOSITION à valider ; les pièces
+/// déjà émises sous l'ancien gardent leur numéro, et leurs rangs restent lus (`prefixesAnterieurs`) pour que le registre ne redonne jamais un rang déjà pris.
+const _nSepare = 'Préfixe PROPRE à ce registre depuis le 17/11/2026 (il partageait l’ancien avec une autre série) : proposition à valider ; les numéros déjà émis ne changent pas.';
+
 /// Les semences, dans l'ordre des modules.
 const List<SerieNumerotation> seriesNumerotationSemence = [
   // M1 Patients & DMI
@@ -27,7 +31,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   // M2 Consultations, imagerie
   SerieNumerotation(code: 'consultation.dossiers', libelle: 'Dossiers de consultation', module: 'M2', prefixe: 'DOS', largeur: 5, note: _n),
   SerieNumerotation(code: 'consultation.consultations', libelle: 'Consultations', module: 'M2', prefixe: 'C', separateur: '', largeur: 5, note: _n),
-  SerieNumerotation(code: 'agenda.rendezvous', libelle: 'Rendez-vous et venues', module: 'M2', prefixe: 'C', separateur: '', largeur: 5, note: _n),
+  SerieNumerotation(code: 'agenda.rendezvous', libelle: 'Rendez-vous et venues', module: 'M2', prefixe: 'RDV', largeur: 5, prefixesAnterieurs: ['C'], note: _nSepare),
   SerieNumerotation(code: 'agenda.appels', libelle: 'Registre des appels', module: 'M2', prefixe: 'A', separateur: '', largeur: 5, note: _n),
   SerieNumerotation(code: 'consultation.ordonnances', libelle: 'Ordonnances', module: 'M2', prefixe: 'ORD', annee: anneeLongue, largeur: 5, champ: 'numero', note: _n),
   SerieNumerotation(code: 'consultation.factures', libelle: 'Factures de la prescription (consultation)', module: 'M2', prefixe: 'FP', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
@@ -61,7 +65,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   SerieNumerotation(code: 'maternite.comptes-rendus', libelle: 'Comptes rendus de la maternité', module: 'M4', prefixe: 'CRM', largeur: 4, note: _n),
   // M5 Laboratoire & sang
   SerieNumerotation(code: 'labo.demandes', libelle: 'Demandes d’analyses', module: 'M5', prefixe: 'LAB', largeur: 5, note: _n),
-  SerieNumerotation(code: 'labo.reactifs', libelle: 'Codes des réactifs du laboratoire', module: 'M5', prefixe: 'LAB', largeur: 4, champ: 'code', note: _n),
+  SerieNumerotation(code: 'labo.reactifs', libelle: 'Codes des réactifs du laboratoire', module: 'M5', prefixe: 'REA', largeur: 4, champ: 'code', prefixesAnterieurs: ['LAB-'], note: _nSepare),
   SerieNumerotation(code: 'labo.donneurs', libelle: 'Donneurs de sang', module: 'M5', prefixe: 'DON', largeur: 4, note: _n),
   // M6 Pharmacie & stocks
   SerieNumerotation(code: 'stock.produits', libelle: 'Codes des produits', module: 'M6', prefixe: 'PRD', largeur: 4, champ: 'code', note: _n),
@@ -79,6 +83,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   // M8 Facturation & caisse
   SerieNumerotation(code: 'caisse.factures', libelle: 'Factures normalisées', module: 'M8', prefixe: 'FN', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
   SerieNumerotation(code: 'caisse.proformas', libelle: 'Factures pro-forma', module: 'M8', prefixe: 'PRO', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
+  SerieNumerotation(code: 'caisse.factures-tiers', libelle: 'Factures à une entreprise (tiers payeur)', module: 'M8', prefixe: 'FT', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: 'Série créée le 17/11/2026 pour la facture à une entreprise (proposition à valider) : distincte de la facture du patient (FN).'),
   SerieNumerotation(code: 'caisse.avoirs', libelle: 'Avoirs', module: 'M8', prefixe: 'AV', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'caisse.pieces', libelle: 'Pièces de caisse (journal CAI)', module: 'M8', prefixe: 'CAI', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
   SerieNumerotation(code: 'caisse.remboursements', libelle: 'Remboursements', module: 'M8', prefixe: 'RB', largeur: 5, note: _n),
@@ -98,7 +103,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   SerieNumerotation(code: 'rh.ordres-mission', libelle: 'Ordres de mission', module: 'M10', prefixe: 'OM', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'rh.badges', libelle: 'Badges du personnel', module: 'M10', prefixe: 'BDG', annee: anneeLongue, positionAnnee: anneeApres, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
   // M11 Paie
-  SerieNumerotation(code: 'paie.bulletins', libelle: 'Bulletins de paie (registre)', module: 'M11', prefixe: 'BP', largeur: 5, note: _n),
+  SerieNumerotation(code: 'paie.bulletins', libelle: 'Bulletins de paie (registre)', module: 'M11', prefixe: 'BUL', largeur: 5, prefixesAnterieurs: ['BP-'], note: _nSepare),
   SerieNumerotation(code: 'paie.bulletins-agent', libelle: 'Bulletin d’un agent (matricule et mois)', module: 'M11', prefixe: 'BP', genre: genreDerive, note: _n),
   SerieNumerotation(code: 'paie.prets', libelle: 'Prêts', module: 'M11', prefixe: 'PRT', largeur: 4, note: _n),
   SerieNumerotation(code: 'paie.heures-sup', libelle: 'Heures supplémentaires', module: 'M11', prefixe: 'HS', largeur: 4, note: _n),
@@ -118,8 +123,8 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   SerieNumerotation(code: 'compta.immobilisations', libelle: 'Immobilisations', module: 'M12', prefixe: 'IM', largeur: 3, note: _n),
   // M13 Administration, qualité
   SerieNumerotation(code: 'adm.courriers-arrivee', libelle: 'Courriers arrivée', module: 'M13', prefixe: 'ARR', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
-  SerieNumerotation(code: 'adm.courriers-depart', libelle: 'Courriers départ', module: 'M13', prefixe: 'DEP', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
-  SerieNumerotation(code: 'adm.evenements', libelle: 'Événements de l’établissement', module: 'M13', prefixe: 'EVT', largeur: 4, note: _n),
+  SerieNumerotation(code: 'adm.courriers-depart', libelle: 'Courriers départ', module: 'M13', prefixe: 'COU', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, prefixesAnterieurs: ['DEP-'], note: _nSepare),
+  SerieNumerotation(code: 'adm.evenements', libelle: 'Événements de l’établissement', module: 'M13', prefixe: 'EVE', largeur: 4, prefixesAnterieurs: ['EVT-'], note: _nSepare),
   SerieNumerotation(code: 'adm.reunions', libelle: 'Réunions', module: 'M13', prefixe: 'RU', annee: anneeLongue, largeur: 3, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'adm.ambulance', libelle: 'Missions d’ambulance', module: 'M13', prefixe: 'AM', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'adm.materiel', libelle: 'Parc technique (équipements)', module: 'M13', prefixe: 'EQ', largeur: 3, note: _n),
@@ -130,7 +135,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   // CFG Configuration
   SerieNumerotation(code: 'cfg.rappels', libelle: 'Rappels (messages)', module: 'CFG', prefixe: 'RPL', largeur: 5, note: _n),
   SerieNumerotation(code: 'cfg.actes', libelle: 'Codes des actes', module: 'CFG', prefixe: 'ACT', largeur: 3, champ: 'code', note: _n),
-  SerieNumerotation(code: 'cfg.certificats', libelle: 'Certificats', module: 'CFG', prefixe: 'CERT', annee: anneeLongue, largeur: 4, note: _n),
+  SerieNumerotation(code: 'cfg.certificats', libelle: 'Certificats', module: 'CFG', prefixe: 'CERT', annee: anneeLongue, largeur: 4, champ: 'numero', note: _n),
   SerieNumerotation(code: 'fiscal.quittances', libelle: 'Quittances d’échéances fiscales', module: 'CFG', prefixe: 'QUIT', genre: genreDerive, note: _n),
   // Import / reprise
   SerieNumerotation(code: 'import.lots', libelle: 'Lots d’import', module: 'CFG', prefixe: 'IMP', annee: anneeLongue, largeur: 3, remiseAnnuelle: true, note: _n),

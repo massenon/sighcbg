@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/donnees/service_droits.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
@@ -85,6 +86,30 @@ void main() {
       expect(find.byKey(const Key('aib:valider:bareme')), findsNothing);
     });
 
+    // ARRÊTER UN BARÈME = LE GESTE « CONFIRMER » (17/11/2026, point 6) : l'écran ne s'arrête plus par le seul droit d'écrire l'écran.
+    casM14('sans le geste, le formulaire du barème est ABSENT même pour qui écrit l\'écran (administrateur) ; les autres formulaires restent offerts', (t) async {
+      final m = magasinAib();
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'admin');
+      expect(donneesNav.matrice.peutEditer('admin', 'cfg-validations-aib'), isTrue);
+      expect(find.byKey(const Key('aib:arret:reserve')), findsOneWidget, reason: 'la note nomme le geste');
+      expect(find.byKey(const Key('aib:valider:bareme')), findsNothing, reason: 'commande absente, jamais grisée');
+      expect(find.text('Validation du barème AIB'), findsNothing);
+      await ongletAib(t, 'Base des factures fournisseurs');
+      expect(find.byKey(const Key('aib:valider:base')), findsOneWidget, reason: 'le geste ne ferme rien d\'autre');
+    });
+
+    casM14('le geste accordé à un rôle (fiche de rôle) lui rend le formulaire ; retiré au comptable, il le perd', (t) async {
+      final m = magasinAib();
+      final droits = ServiceDroits.de(m);
+      droits.decider(role: 'admin', valeurs: {'droitsGestes': {gesteFiscalConfirmer: true}}, journal: 'Geste réservé', motif: 'Décision de la Direction', auteurRole: 'admin');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'admin');
+      expect(find.byKey(const Key('aib:valider:bareme')), findsOneWidget);
+      droits.decider(role: 'comptable', valeurs: {'droitsGestes': {gesteFiscalConfirmer: false}}, journal: 'Geste réservé', motif: 'Décision de la Direction', auteurRole: 'admin');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'comptable');
+      expect(find.byKey(const Key('aib:valider:bareme')), findsNothing);
+      expect(find.byKey(const Key('aib:arret:reserve')), findsOneWidget);
+    });
+
     casM14('le comptable écrit : les formulaires sont offerts', (t) async {
       await ouvrirM14(t, magasinAib(), 'cfg-validations-aib', role: 'comptable');
       expect(find.textContaining('Lecture seule'), findsNothing);
@@ -96,7 +121,7 @@ void main() {
   group('1. Validation du barème AIB — pilote la mécanique d\'arrêt de m12-aib', () {
     casM14('arrêter le 1 % de l\'IFU actif au 01/12/2026 : le barème est arrêté, la décision est une version datée, journalisée', (t) async {
       final m = magasinAib();
-      await ouvrirM14(t, m, 'cfg-validations-aib');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'comptable');
       expect(find.textContaining('À REVOIR : 1 % (Acheteur avec IFU actif)'), findsOneWidget);
       await choisirM14(t, 'version', 'Acheteur avec IFU actif — 1 % — non arrêtée');
       await choisirDate(t, 'dateEffet', '12/01/2026');
@@ -118,7 +143,7 @@ void main() {
 
     casM14('maintenir non arrêtée : la décision est consignée, le barème ne bouge pas, le motif est obligatoire', (t) async {
       final m = magasinAib();
-      await ouvrirM14(t, m, 'cfg-validations-aib');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'comptable');
       await choisirM14(t, 'choix', 'Maintenir non arrêtée');
       await saisir(t, 'decideur', 'Direction');
       await choisirDate(t, 'dateDecision', '10/30/2026');
@@ -136,7 +161,7 @@ void main() {
 
     casM14('décideur et date de la décision OBLIGATOIRES : sans eux, rien n\'est écrit', (t) async {
       final m = magasinAib();
-      await ouvrirM14(t, m, 'cfg-validations-aib');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'comptable');
       await choisirDate(t, 'dateEffet', '12/01/2026');
       await saisir(t, 'motif', 'Test');
       await toucherM14(t, find.byKey(const Key('aib:valider:bareme')));
@@ -147,7 +172,7 @@ void main() {
 
     casM14('une date de décision future est refusée en le nommant', (t) async {
       final m = magasinAib();
-      await ouvrirM14(t, m, 'cfg-validations-aib');
+      await ouvrirM14(t, m, 'cfg-validations-aib', role: 'comptable');
       await choisirDate(t, 'dateEffet', '12/01/2026');
       await saisir(t, 'decideur', 'Direction');
       await choisirDate(t, 'dateDecision', '12/31/2026');

@@ -187,7 +187,7 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
         catalogue: TarifsPoste.analyses(m, aujourdhui: c.aujourdhui),
         patients: m.collection('patients').toutes,
         demandesExistantes: m.collection('demandesAnalyses').toutes,
-        nbFactures: m.collection('factures').toutes.length,
+        facturesExistantes: m.collection('factures').toutes,
         nouvelId: nouvelIdImagerie,
         date: c.aujourdhui);
     if (r.dossierCree) m.collection('patients').inserer(r.patient, prefixe: 'PAT');
@@ -210,7 +210,7 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
         patients: m.collection('patients').toutes,
         couvertures: m.collection('couverturesAssurance').actives,
         demandesExistantes: m.collection('demandesImagerie').toutes,
-        nbFactures: m.collection('factures').toutes.length,
+        facturesExistantes: m.collection('factures').toutes,
         prixDe: prixDepuisMagasin(m, c.aujourdhui),
         nouvelId: nouvelIdImagerie,
         date: maintenant,

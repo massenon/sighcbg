@@ -1,7 +1,6 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
-import '../donnees/reglages_clinique_poste.dart';
 import '../modules/m7/besoins_commun.dart' show notifierPoste;
 
 /// LA MÈRE MET DE CÔTÉ la pièce d'un fileul datée d'un exercice clos ou en clôture (Q1, continuité de service). Le fileul n'est jamais bloqué : il garde sa pièce et continue ; la mère ne
@@ -11,7 +10,7 @@ import '../modules/m7/besoins_commun.dart' show notifierPoste;
 /// Branché au pont de la MÈRE (`PontActivite.gardeEntrante`) : rend `true` quand la pièce est écartée. Limite connue : le verdict ne revient pas au fileul par le pont ; il le lit au registre de la mère.
 bool miseDeCotePieceFileul(Magasin m, String collection, Map<String, Object?> fiche) {
   if (collection != 'ecritures') return false;
-  final refus = cpcRefusPieceFileul(m.collection('exercices').toutes, fiche, rolesInventaire: ReglagesClinique.rolesInventaire(m, m.horloge()));
+  final refus = cpcRefusPieceFileul(m.collection('exercices').toutes, fiche, gestes: DroitsGestes(fiches: m.collection('rbac').actives));
   if (refus == null) return false;
   final cle = '${fiche['idSync'] ?? fiche['id']}';
   final col = m.collection('piecesMisesDeCote');

@@ -7,7 +7,9 @@ import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m8/commun.dart' show dateDe;
+import '../../donnees/gestes_magasin.dart';
 import 'cfa_commun.dart';
+import 'cfb_confirmations.dart' show peutConfirmerFiscal;
 
 /// `cfg-validations-aib` — « Validations de l’AIB » : TROIS FORMULAIRES DE VALIDATION aux Paramètres (Direction, 09/11/2026, décisions D4, D7 et D8).
 ///
@@ -50,7 +52,7 @@ class EcranValidationsAib extends StatelessWidget with EcranMaquette {
           NoteSigh(
               _fileul(c)
                   ? 'Réglé sur la mère : ces validations se font sur le poste principal, puis elles sont reprises ici.'
-                  : 'Lecture seule : les validations sont réservées à la DAF, au comptable et à l’administrateur.',
+                  : 'Lecture seule : les validations (base, branchement de l’IFU, comptes) sont réservées à la DAF, au comptable et à l’administrateur ; l’arrêt d’une version du barème relève du geste « Confirmer un taux fiscal et arrêter un barème de l’AIB ».',
               ton: TonSigh.info,
               icone: LucideIcons.lock),
         OngletsSigh(ancre: ancre, onglets: [
@@ -72,6 +74,10 @@ bool _fileul(ContexteEcran c) => ServiceInstallation.de(c.magasin).rattache;
 
 /// Le droit d'écrire : celui de l'écran (matrice : Direction, DAF, comptable, administrateur ; lecture : aide-comptable, assistant de direction) ET un poste qui tient sa configuration.
 bool _peutEcrire(ContexteEcran c) => c.droit.editer && !_fileul(c);
+
+/// ARRÊTER une version du barème : le geste réservé « Confirmer un taux fiscal et arrêter un barème de l'AIB » (`fiscal_confirmer`, décision du 17/11/2026, point 6), et un poste qui
+/// tient sa configuration — plus le simple droit d'écrire l'écran. Sans lui, le formulaire du barème est ABSENT (jamais grisé) et le moteur refuserait.
+bool _peutArreter(ContexteEcran c) => peutConfirmerFiscal(c);
 
 String _d(Object? v) => v == null || '$v'.isEmpty ? '—' : dateDe(v);
 
@@ -245,7 +251,7 @@ class _EtatBareme extends State<_OngletBareme> {
         'dateArret': isoJour(v['dateDecision']),
         'decideurArret': '${v['decideur']}'.trim(),
       };
-      final refus = cpdControlerVersionAib(saisie, record, bareme.actives, c.aujourdhui, situations: situations);
+      final refus = cpdControlerVersionAib(saisie, record, bareme.actives, c.aujourdhui, situations: situations, role: c.role, gestes: gestesDuMagasin(c.magasin));
       if (refus != null) return refuser(refus);
       bareme.mettreAJour(record['id'], {
         'dateEffet': isoJour(v['dateEffet']),
@@ -297,7 +303,15 @@ class _EtatBareme extends State<_OngletBareme> {
                 ColonneMini('Arrêt', (x) => cpdEstArretee(x) ? '${x['decideurArret'] ?? ''} le ${_d(x['dateArret'])}' : '—'),
               ],
               lignes: versions)),
-      if (_peutEcrire(c) && aRevoir.isNotEmpty)
+      if (!_peutArreter(c) && aRevoir.isNotEmpty)
+        NoteSigh(
+            _fileul(c)
+                ? 'Réglé sur la mère : l’arrêt d’une version du barème se fait sur le poste principal.'
+                : 'Arrêter une version du barème est le geste réservé « Confirmer un taux fiscal et arrêter un barème de l’AIB » (origine proposée : le comptable et la DAF) : ce profil consulte.',
+            key: const Key('aib:arret:reserve'),
+            ton: TonSigh.info,
+            icone: LucideIcons.lock),
+      if (_peutArreter(c) && aRevoir.isNotEmpty)
         CarteSigh(
             titre: 'Validation du barème AIB',
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [

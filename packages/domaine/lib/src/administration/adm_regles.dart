@@ -173,7 +173,7 @@ List<String> admCanauxEvenement(Object? notifier, Object? canauxExistants) {
 }
 
 /// Création : référence `EVT-NNNN` (rang = effectif + 1) — le préfixe diffère de celui du jeu (`EV-2026-`), écart E532 porté fidèlement.
-String admReferenceEvenement(int effectif, {Object? date}) => numeroFormate('adm.evenements', date: date, rang: effectif + 1);
+String admReferenceEvenement(Iterable<Object?> fiches, {Object? date}) => numeroSuivant('adm.evenements', date: date, existants: fiches);
 
 List<String> admCategoriesPresentes(List<AdmFiche> rows) {
   final s = {for (final r in rows) '${r['categorie']}'}.toList()..sort();
@@ -260,7 +260,7 @@ List<AdmFiche> admAmorcerEvenements(DateTime maintenant, List<String> personnel)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
-// Plan annuel de travail : remplacé par le PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026), voir `pta.dart`. Les trois états, les quatre trimestres et les
+// Plan de travail annuel (PTA) : remplacé par le PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026), voir `pta.dart`. Les trois états, les quatre trimestres et les
 // douze actions semées sur une année écrite en dur de la maquette sont retirés (écarts E3790 à E3829).
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 

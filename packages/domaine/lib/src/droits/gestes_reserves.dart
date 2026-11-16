@@ -206,8 +206,10 @@ const String gesteFiscalValiderConfiguration = 'fiscal_valider_configuration';
 /// TENIR LE BARÈME DE L'AIB et ses réglages (écrire une version, un réglage). Origine : le Comptable, l'administrateur et la DAF (`aibRolesEcriture`) ; la Direction lit.
 const String gesteAibTenir = 'aib_tenir';
 
-/// CONFIRMER un taux fiscal (taux de la CNSS, version du barème de l'AIB) : motif obligatoire, auteur et date tracés, la valeur reste versionnée par date (compléments du
-/// 16/11/2026). Origine PROPOSÉE (à valider par la Direction) : le Comptable et la DAF.
+/// CONFIRMER un taux fiscal (taux de la CNSS, du VPS, barème de l'ITS, TVA…) ET ARRÊTER une version du barème de l'AIB : UN SEUL geste (Direction de Baguidi, 17/11/2026, point 6 : « plus de
+/// double porte »). Motif obligatoire, auteur et date tracés, la valeur reste versionnée par date (compléments du 16/11/2026). Arrêter une version du barème n'est plus le simple droit
+/// d'ÉCRIRE l'écran « Validations de l'AIB » ou « Acompte sur impôt (AIB) » : l'écran n'offre la commande qu'avec ce geste, et le moteur refuse en le nommant. Origine PROPOSÉE (à valider par la
+/// Direction) : le Comptable et la DAF, réglable par la fiche de rôle.
 const String gesteFiscalConfirmer = 'fiscal_confirmer';
 
 /// Voir TOUTES les familles au centre des validations (les autres profils voient leur ressort). Origine : la Direction, la DAF et l'administrateur (`valVueComplete`).
@@ -284,6 +286,17 @@ const String gestePtaRegler = 'pta_regler';
 /// Recevoir l'alerte « action du plan de travail annuel en retard » (une ligne par action, routée vers les responsables du suivi). Origine PROPOSÉE (à valider par la
 /// Direction) : la Direction et la DAF.
 const String gesteAlertesPtaRetard = 'alertes_pta_retard';
+
+/// PASSER DES ÉCRITURES D'INVENTAIRE PENDANT LA CLÔTURE (Direction de Baguidi, 17/11/2026, point 7 : une CASE de la fiche de rôle, qui REMPLACE le réglage de clinique `cloture.rolesInventaire`,
+/// une liste de rôles). Pendant qu'un exercice est EN CLÔTURE, les modules n'y écrivent plus ; seul un rôle qui détient ce geste y passe ses écritures d'inventaire, en saisie manuelle. Lu par
+/// la garde de la collection des écritures, par la saisie des dépenses et par la mise de côté des pièces d'un fileul (la mère refait le contrôle avec SA matrice). Origine PROPOSÉE (à valider
+/// par la Direction) : le Comptable et la DAF ; une fiche de rôle l'accorde ou le retire. Le droit ne dispense pas du circuit de clôture ni de la séparation des personnes.
+const String gesteClotureInventaire = 'cloture_inventaire';
+
+/// ÉMETTRE UNE FACTURE À UNE ENTREPRISE QUI PREND EN CHARGE UN PATIENT (Direction de Baguidi, 17/11/2026, point 2) : une vente normalisée distincte de la facture du patient, avec l'IFU et le
+/// nom de l'acheteur, la situation d'AIB CHOISIE par le comptable (jamais présumée). Le geste est le plus proche de la comptabilité : il s'exerce sur le relevé de M9 et décide de l'AIB, ce que ne
+/// fait pas la caisse (qui encaisse la facture du patient, sans acheteur ni AIB). Origine PROPOSÉE (à valider par la Direction) : le Comptable et la DAF ; une fiche de rôle l'accorde ou le retire.
+const String gesteFactureTiersEmettre = 'facture_tiers_emettre';
 
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
@@ -607,11 +620,25 @@ const List<GesteReserve> gestesReserves = [
       aide: 'Écrire une version du barème ou d’un réglage de l’AIB. La Direction lit sans écrire. Origine : le Comptable, l’administrateur et la DAF.'),
   GesteReserve(
       id: gesteFiscalConfirmer,
-      libelle: 'Confirmer un taux fiscal (CNSS, barème de l’AIB)',
+      libelle: 'Confirmer un taux fiscal et arrêter un barème de l’AIB',
       module: '*',
       ecran: '',
       rolesDefaut: ['comptable', 'da'],
-      aide: 'Le bouton « Confirmer » des taux de la CNSS et des versions du barème de l’AIB : motif obligatoire, auteur et date tracés ; rien n’est écrasé, la confirmation s’ajoute à une date d’effet. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
+      aide: 'Le bouton « Confirmer » des taux fiscaux (CNSS, VPS, barème de l’ITS, TVA…) ET l’arrêt d’une version du barème de l’AIB (écrans « Validations de l’AIB » et « Acompte sur impôt (AIB) ») : un seul droit, plus de double porte. Motif obligatoire, auteur et date tracés ; rien n’est écrasé, la confirmation s’ajoute à une date d’effet. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
+  GesteReserve(
+      id: gesteFactureTiersEmettre,
+      libelle: 'Émettre une facture à une entreprise (tiers payeur)',
+      module: 'M9',
+      ecran: 'm9-facture-mere',
+      rolesDefaut: ['comptable', 'da'],
+      aide: 'La facture normalisée adressée à une entreprise qui prend un patient en charge : IFU et nom de l’acheteur, situation d’AIB choisie par le comptable. Elle naît d’une ligne du relevé de M9 (jamais saisie à la main) et ne remplace pas la facture du patient, qui reste sans acheteur ni AIB. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
+  GesteReserve(
+      id: gesteClotureInventaire,
+      libelle: 'Passer des écritures d’inventaire pendant la clôture',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['comptable', 'da'],
+      aide: 'Pendant qu’un exercice est EN CLÔTURE, les modules n’y écrivent plus ; seuls les rôles qui détiennent ce droit y passent leurs écritures d’inventaire, en saisie manuelle (la saisie des dépenses, la garde des écritures et la mise de côté des pièces d’un fileul le lisent). Remplace le réglage « liste de rôles » : une case de la fiche de rôle. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
   GesteReserve(
       id: gesteValidationsVueComplete,
       libelle: 'Voir toutes les familles au centre des validations',

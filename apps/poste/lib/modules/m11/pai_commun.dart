@@ -93,6 +93,15 @@ List<Widget> avisPaie(ContexteEcran c) {
   return avis == null ? const [] : [NoteSigh(avis, ton: TonSigh.attention, icone: LucideIcons.wallet), const SizedBox(height: 16)];
 }
 
+/// Les honoraires de régime ÉCARTÉS pour double paiement (`DOUBLE_PAIEMENT_PRIME`, point 3 du 17/11/2026) : une note d'attention PAR message nommé, que le validateur lit avant de
+/// signer. Rien (liste vide) quand aucun honoraire n'a été écarté.
+List<Widget> avisHonorairesExclus(Iterable<Object?> messages) => [
+      for (final (i, t) in messages.where((x) => '${x ?? ''}'.isNotEmpty).indexed) ...[
+        NoteSigh('$t', ton: TonSigh.attention, icone: LucideIcons.copyX, key: Key('pai:honoraire-exclu:$i')),
+        const SizedBox(height: 8),
+      ]
+    ];
+
 /// `String(nombre)` de JavaScript : 10 → « 10 », 3.6 → « 3.6 » (jamais « 10.0 »).
 String paiNum(num v) => v == v.truncate() ? '${v.truncate()}' : '$v';
 

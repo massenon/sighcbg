@@ -218,7 +218,7 @@ Le tableau de **couverture** complet (écran source, rôle, pages, particularit�
 - [Fiche de courrier](m13-administration/fiche-de-courrier.pdf) (1 p.)
 - [Fiche d’intervention — ambulance](m13-administration/fiche-d-intervention-ambulance.pdf) (1 p.)
 - [Fiche d’équipement](m13-administration/fiche-d-equipement.pdf) (1 p.)
-- [Plan annuel de travail](m13-administration/plan-annuel-de-travail.pdf) (1 p.)
+- [Plan de travail annuel (PTA)](m13-administration/plan-annuel-de-travail.pdf) (1 p.)
 - [Registre du courrier](m13-administration/registre-du-courrier.pdf) (1 p.)
 
 ### M14 — Sécurité & utilisateurs

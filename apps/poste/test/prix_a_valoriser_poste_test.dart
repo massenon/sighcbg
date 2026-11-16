@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/donnees/gestes_magasin.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/parcours_caisse.dart';
 import 'package:sigh_poste/donnees/tarifs_poste.dart';
@@ -9,7 +10,7 @@ import 'package:sigh_poste/shell/centre_notifications.dart';
 
 /// MÉDICAMENT SANS PRIX D'ACHAT : PRESCRIRE, BLOQUER LA CAISSE (Direction de Baguidi, 16/11/2026, complément §7), au poste, sur le jeu livré :
 ///  (1) le médecin prescrit toujours ; la ligne porte « prix à valoriser », jamais 0 (ordonnance, facture, totaux) ;
-///  (2) l'alerte « prix manquant » part vers les rôles qui peuvent MODIFIER le « Référentiel produits » (droit `editer` de la matrice), une seule ouverte par article, sans nom de patient ;
+///  (2) l'alerte « prix manquant » d'un médicament part vers les rôles qui détiennent le geste `tarif_proposer_achat` (17/11/2026), une seule ouverte par article, sans nom de patient ;
 ///  (3) PAR DÉFAUT, rien de la facture ne s'encaisse (FACTURE_EN_ATTENTE_DE_PRIX), la pharmacie ne délivre rien ; réglage « encaisser le reste » ouvert, seule cette ligne est refusée ;
 ///  (4) le prix d'achat se lit à la DATE DE LA PIÈCE : un prix daté après elle ne la débloque pas ; une version DATÉE du jour de la pièce (date passée, geste réservé) la valorise
 ///      EN PLACE, la facture s'encaisse en entier ; l'ordonnance suit, rien d'émis n'est réécrit.
@@ -86,34 +87,41 @@ void main() {
     expect(r.ordonnance['lignesAValoriser'], 1);
   });
 
-  test('(2) l’alerte va aux rôles qui peuvent MODIFIER le « Référentiel produits » (matrice), UNE seule ouverte par article, sans nom de patient ; la matrice la reroute', () {
+  test('(2) l’alerte va aux rôles qui détiennent le geste « Proposer un changement de prix d’achat » (et non plus ceux qui modifient l’écran), UNE seule ouverte par article, sans nom de patient ; la matrice la reroute', () {
     final w = monde();
     prescrire(w.m, w.pt, [w.sansPrix]);
     prescrire(w.m, w.pt, [w.connu, w.sansPrix]);
     final notifs = w.m.collection('notifications').actives.where((n) => n['type'] == csTypeNotifPrixAValoriser).toList();
     expect(notifs, hasLength(1), reason: 'pas de doublon pour le même article');
-    expect(notifs.single['poste'], posteEditeursEcran('m6-produits'));
+    expect(notifs.single['poste'], posteGeste(gesteProposerPrixAchat), reason: 'point 8 du 17/11/2026 : le geste, pas le droit de modifier m6-produits');
     expect('${notifs.single['libelle']}', contains('Amoxicilline'));
     expect('${notifs.single['libelle']} ${notifs.single['detail']}', isNot(contains('${w.pt['nom']}')), reason: 'aucun nom de patient');
     bool recoit(String r) => CentreNotifications(magasin: w.m, donnees: () => donnees.aChaud(w.m), role: () => r, horloge: () => jour1)
         .collecter(detaille: true)
         .any((a) => a.cle == 'notif:${notifs.single['id']}');
     final roles = ['stock', 'da', 'caissier', 'medecin', 'comptable', 'admin', 'reception'];
-    // La liste attendue est LUE dans la matrice (droit editer de l'écran), jamais écrite ici.
-    final editeurs = [for (final r in roles) if (donnees.matrice.peutEditer(r, 'm6-produits')) r];
-    expect(editeurs, isNotEmpty);
-    expect([for (final r in roles) if (recoit(r)) r], editeurs);
-    expect(recoit('medecin'), isFalse, reason: 'le médecin ne modifie pas le référentiel produits');
-    // La Direction met le référentiel en lecture seule pour le premier éditeur : l'alerte le quitte, sans une ligne de code.
-    final premier = editeurs.first;
+    // La liste attendue est LUE dans les gestes en force (fiches de rôle), jamais écrite ici.
+    final detenteurs = [for (final r in roles) if (gestesDuMagasin(w.m).peut(r, gesteProposerPrixAchat)) r];
+    expect(detenteurs, isNotEmpty);
+    expect([for (final r in roles) if (recoit(r)) r], detenteurs);
+    // Le caissier modifie la fiche d'un produit (stock détail) mais n'a pas le geste : il ne reçoit plus l'alerte.
+    expect(donnees.matrice.peutEditer('caissier', 'm6-produits'), isTrue, reason: 'il garde le droit d\'écrire l\'écran…');
+    expect(recoit('caissier'), isFalse, reason: '…mais l\'alerte suit le geste');
+    expect(recoit('medecin'), isFalse);
+    // La Direction retire le geste au premier détenteur : l'alerte le quitte, sans une ligne de code ; elle l'accorde au caissier : elle l'atteint.
+    final premier = detenteurs.first;
     w.m.collection('rbac').inserer({
       'role': premier,
       'statut': 'actif',
-      'droitsEcrans': {
-        'm6-produits': {'voir': true, 'editer': false, 'annuler': false}
-      }
+      'droitsGestes': {gesteProposerPrixAchat: false}
     });
     expect(recoit(premier), isFalse);
+    w.m.collection('rbac').inserer({
+      'role': 'caissier',
+      'statut': 'actif',
+      'droitsGestes': {gesteProposerPrixAchat: true}
+    });
+    expect(recoit('caissier'), isTrue);
     // Lue, elle n'est plus ouverte : un nouvel oubli rouvre UNE alerte.
     w.m.collection('notifications').mettreAJour(notifs.single['id'], {'lue': true});
     prescrire(w.m, w.pt, [w.sansPrix]);

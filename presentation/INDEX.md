@@ -244,7 +244,7 @@ Fichier **engendré** par `apps/poste/tool/specimens/finaliser.py` à partir de 
 | Fiche de courrier | [`m13-administration/fiche-de-courrier.pdf`](m13-administration/fiche-de-courrier.pdf) | 1 | `m13-courriers` | agentadmin |  |
 | Fiche d’intervention — ambulance | [`m13-administration/fiche-d-intervention-ambulance.pdf`](m13-administration/fiche-d-intervention-ambulance.pdf) | 1 | `m13-ambulance` | agentadmin |  |
 | Fiche d’équipement | [`m13-administration/fiche-d-equipement.pdf`](m13-administration/fiche-d-equipement.pdf) | 1 | `m13-maintenance` | agentadmin |  |
-| Plan annuel de travail | [`m13-administration/plan-annuel-de-travail.pdf`](m13-administration/plan-annuel-de-travail.pdf) | 1 | `m13-plan-annuel` | agentadmin |  |
+| Plan de travail annuel (PTA) | [`m13-administration/plan-annuel-de-travail.pdf`](m13-administration/plan-annuel-de-travail.pdf) | 1 | `m13-plan-annuel` | agentadmin |  |
 | Registre du courrier | [`m13-administration/registre-du-courrier.pdf`](m13-administration/registre-du-courrier.pdf) | 1 | `m13-courriers` | agentadmin |  |
 
 ## M14 — Sécurité & utilisateurs

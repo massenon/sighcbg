@@ -517,7 +517,9 @@ void main() {
         final c = liste(s['creations'])[0];
         final ecrit = catNouveauReactif(formulaire(c),
             produits: tous, utilisateur: 'BICHIASI Cezoune Sichovian', maintenant: maintenant);
-        egalFiche({'statut': 'actif', 'examensLies': <String>[], ...ecrit}, obj((c['nouvelles'] as List).first), 'complet');
+        // Préfixe propre aux réactifs depuis le 17/11/2026 (« LAB- » est celui des demandes d'analyses) : le code attendu de la maquette est traduit.
+        final attendu = obj((c['nouvelles'] as List).first);
+        egalFiche({'statut': 'actif', 'examensLies': <String>[], ...ecrit}, {...attendu, 'code': '${attendu['code']}'.replaceFirst('LAB-', 'REA-')}, 'complet');
       });
       test('E184 : le seuil critique non saisi reste vide, pas zéro', () {
         final c = liste(s['creations'])[1];
@@ -555,13 +557,13 @@ void main() {
         }
       });
     });
-    test('code d\'un nouveau réactif : le plus grand rang LAB- du registre, archivés compris (E180)', () {
+    test('code d\'un nouveau réactif : le plus grand rang du registre (REA-, et LAB- d\'avant), archivés compris (E180)', () {
       final c = obj(doc['code']);
       final registre = [
         for (final code in (c['codes'] as List)) {'code': code}
       ];
-      expect([catCodeReactif(registre)], c['nouveau']);
-      expect(catCodeReactif(const []), 'LAB-0001');
+      expect([catCodeReactif(registre)], [for (final x in (c['nouveau'] as List)) '$x'.replaceFirst('LAB-', 'REA-')], reason: 'le rang suit les codes « LAB- » déjà émis (lecture double)');
+      expect(catCodeReactif(const []), 'REA-0001');
     });
   });
 }

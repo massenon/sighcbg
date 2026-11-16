@@ -111,6 +111,27 @@ class PlanningRhPoste {
     );
   }
 
+  /// LE DOUBLE PAIEMENT (17/11/2026, point 3) : l'honoraire d'une version qui répète une prime de la note NS 132 déjà versée pour la même vacation est REFUSÉ à la pose. Le régime
+  /// EFFECTIF à la prise d'effet est résolu AVEC la version proposée (une seule résolution, `regimeRhALaDate`), la grille se lit À LA DATE ; la règle est celle du domaine
+  /// (`controlerDoublePaiementPrimeRh`). Les primes de la note fermées dans Paramètres système ne versent rien : rien à répéter.
+  RefusRh? _doublePaiementPrime(Fiche agent, String dateEffet, Map<String, Object?> version) {
+    if (!paiActivites(m.collection('modulesActifs').toutes).primesNs132) return null;
+    final grille = m.collection('grillePrimes').actives, historique = m.collection('historiquePrimes').actives;
+    final fonction = '${agent['fonction'] ?? ''}';
+    final regime = regimeRhALaDate(
+      regimesActifs: m.collection('regimesTravail').actives,
+      versions: [..._versions(agent['id']), {'dateEffet': dateEffet, ...version}],
+      fonction: fonction,
+      date: dateEffet,
+    );
+    return controlerDoublePaiementPrimeRh(
+      regime: regime,
+      jour: dateEffet,
+      primes: rhbPrimesALaDate(grille, historique),
+      montantPrime: (id) => rhbMontantPrime(grille, historique, id, fonction, dateEffet),
+    );
+  }
+
   /// POSER UNE DÉROGATION (ou le retour à la catégorie) : contrôlée par le domaine, écrite comme une version immuable. Réservée à l'administrateur et à la DA.
   /// Rend `{'ok': true, 'id': …}` ou le refus nommé.
   Map<String, Object?> deroger({
@@ -137,6 +158,8 @@ class PlanningRhPoste {
       aujourdhui: aujourdhui,
     );
     if (r.refus != null) return r.refus!.toJson();
+    final doublon = retourCategorie ? null : _doublePaiementPrime(e!, dateEffet!, {'champs': r.champs, 'retourCategorie': false});
+    if (doublon != null) return doublon.toJson();
     final avant = regimeALaDate(e!, dateEffet!);
     // Aucun champ nul (voir `poserRegime`) : la version voyage telle quelle, immuable.
     final res = m.collection('regimesIndividuels').inserer({
@@ -183,6 +206,12 @@ class PlanningRhPoste {
     );
     if (r.refus != null) return r.refus!.toJson();
     final f = r.fiche!;
+    final doublon = f['retourCategorie'] == true
+        ? null
+        : _doublePaiementPrime(e!, dateEffet!, {
+            'champs': f['champs'], 'mode': f['mode'], 'retourCategorie': false, 'baseRemplacement': f['baseRemplacement'], 'aValider': f['aValider'],
+          });
+    if (doublon != null) return doublon.toJson();
     final avant = regimeALaDate(e!, dateEffet!);
     // Aucun champ NUL n'est écrit : la fusion du pont ne garde pas les nuls, et une version reçue qui aurait perdu une clé paraîtrait « modifiée » à son auteur — or
     // une version ne se modifie jamais (famille B de la mère : la réécriture serait refusée à chaque tour).
@@ -202,8 +231,24 @@ class PlanningRhPoste {
 
   /// L'HONORAIRE DE RÉGIME d'un agent pour un mois (1 à 12), sur le régime EFFECTIF à la date de chaque vacation validée (RG-11). Lu par l'écran des primes et la
   /// fiche du personnel ; le moteur de paie fait le même calcul (`PaiEntrees.regimesIndividuels`).
-  HonoraireRegimeRh honoraireMois(Fiche agent, int annee, int mois) => honoraireRegimeMoisRh(
-      vacations: m.collection('planning').actives, employeId: agent['id'], annee: annee, mois: mois, regimeDe: (d) => regimeALaDate(agent, d));
+  ///
+  /// Un honoraire INDIVIDUEL qui répète une prime de la note NS 132 déjà versée pour la même vacation n'est pas compté (`DOUBLE_PAIEMENT_PRIME`, 17/11/2026) : l'écran des primes, la
+  /// fiche du personnel et le bulletin disent la même chose ; [HonoraireRegimeRh.exclus] porte ce qui a été écarté.
+  HonoraireRegimeRh honoraireMois(Fiche agent, int annee, int mois) {
+    final primesVersees = paiActivites(m.collection('modulesActifs').toutes).primesNs132;
+    final grille = m.collection('grillePrimes').actives, historique = m.collection('historiquePrimes').actives;
+    final fonction = '${agent['fonction'] ?? ''}';
+    return honoraireRegimeMoisRh(
+        vacations: m.collection('planning').actives,
+        employeId: agent['id'],
+        annee: annee,
+        mois: mois,
+        regimeDe: (d) => regimeALaDate(agent, d),
+        doublon: primesVersees
+            ? (l) => doublePaiementLigneRh(l,
+                primes: rhbPrimesALaDate(grille, historique), montantPrime: (id, jour) => rhbMontantPrime(grille, historique, id, fonction, jour))
+            : null);
+  }
 
   /// Le CALENDRIER de l'agent pour la vue `semaine` ou `mois` qui contient [jour] : ses vacations, ses congés validés, le régime en vigueur chaque jour.
   List<JourPlanningRh> calendrier(Fiche agent, String vue, DateTime jour) {

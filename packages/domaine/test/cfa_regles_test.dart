@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart' show sousLeSigleDeLaMaquette;
@@ -161,13 +162,13 @@ void main() {
       final c = obj(v['tarifsCreations']);
       M seule(String k) => obj(liste(obj(c[k])['creees']).single);
       final med = seule('medicament');
-      fiche(cfaFicheProduit({'designation': 'Médicament Test A', 'categorie': 'medicament', 'prixAchat': '700', 'prixVente': '900', 'unite': '', 'seuilAlerte': ''}, 184), med, 'médicament');
+      fiche(cfaFicheProduit({'designation': 'Médicament Test A', 'categorie': 'medicament', 'prixAchat': '700', 'prixVente': '900', 'unite': '', 'seuilAlerte': ''}, piecesAuRang('stock.produits', 184)), med, 'médicament');
       expect(med['prixVente'], med['prixAchat']);
       final conso = seule('consommable');
-      fiche(cfaFicheProduit({'designation': 'Consommable Test B', 'categorie': 'conso_medical', 'prixAchat': '300', 'prixVente': '450', 'code': 'CTB-1', 'unite': '', 'seuilAlerte': ''}, 184), conso, 'consommable');
+      fiche(cfaFicheProduit({'designation': 'Consommable Test B', 'categorie': 'conso_medical', 'prixAchat': '300', 'prixVente': '450', 'code': 'CTB-1', 'unite': '', 'seuilAlerte': ''}, piecesAuRang('stock.produits', 184)), conso, 'consommable');
       fiche(cfaFicheAnalyse({'designation': 'Analyse Test', 'categorie': 'Hématologie', 'code': '', 'prix': '2500', 'echantillon': '', 'delai': ''}, 48), seule('analyse'), 'analyse');
-      fiche(cfaFicheActe({'libelle': 'Acte Test Sans Prix', 'secteur': 'Médecine générale', 'code': '', 'prix': '', 'source': ''}, 73), seule('acteSansPrix'), 'acte sans prix');
-      fiche(cfaFicheActe({'libelle': 'Acte Test Prix', 'secteur': 'Médecine générale', 'code': 'TST-9', 'prix': '4000', 'source': ''}, 73), seule('acteAvecPrix'), 'acte avec prix');
+      fiche(cfaFicheActe({'libelle': 'Acte Test Sans Prix', 'secteur': 'Médecine générale', 'code': '', 'prix': '', 'source': ''}, piecesAuRang('cfg.actes', 73)), seule('acteSansPrix'), 'acte sans prix');
+      fiche(cfaFicheActe({'libelle': 'Acte Test Prix', 'secteur': 'Médecine générale', 'code': 'TST-9', 'prix': '4000', 'source': ''}, piecesAuRang('cfg.actes', 73)), seule('acteAvecPrix'), 'acte avec prix');
     });
   });
 
@@ -314,7 +315,7 @@ void main() {
       expect(cfaComposerCertificat('{inconnu}', {}), '……………');
     });
     test('numérotation, indicateurs, ce mois (le numéro du mois seulement)', () {
-      expect(cfaNumeroCertificat(0), obj(liste(obj(c['delivrance'])['fiche']).single)['numero']);
+      expect(cfaNumeroCertificat(const []), obj(liste(obj(c['delivrance'])['fiche']).single)['numero']);
       kpis(cfaKpisCertificats(delivres: 1, types: cfaTypesCertificat.length, ceMois: 0, praticiens: 1), c['kpisApres']);
       expect(cfaDelivresCeMois([{'date': '2025-10-01'}, {'date': '2026-10-31'}, {'date': '2026-08-16'}], DateTime(2026, 10, 30)), 2);
     });

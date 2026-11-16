@@ -325,7 +325,10 @@ void main() {
       expect(g(ouvert, origine: 'Automatique : Caisse'), isNull);
       expect(g(cl, origine: 'Automatique : Caisse', role: 'comptable'), contains('en clôture'));
       expect(g(cl, origine: 'Saisie manuelle', role: 'comptable'), isNull);
-      expect(g(cl, origine: 'Saisie manuelle', role: 'da'), contains('en clôture'));
+      // Point 7 du 17/11/2026 : le geste `cloture_inventaire` (comptable et DAF d'origine) remplace la liste de rôles réglée ; l'administrateur système ne l'a plus d'origine.
+      expect(g(cl, origine: 'Saisie manuelle', role: 'da'), isNull);
+      expect(g(cl, origine: 'Saisie manuelle', role: 'admin'), contains('en clôture'));
+      expect(g(cl, origine: 'Saisie manuelle', role: 'stock'), contains('en clôture'));
       final clos = [{...ouvert.first, 'etat': 'clos', 'valideLe': '2030-12-31T09:00:00Z'}];
       expect(g(clos, origine: 'Saisie manuelle', role: 'comptable'), contains('clôturé'));
       expect(g(clos, cloture: 'cl', role: ''), isNull, reason: 'une pièce de clôture s\'insère');

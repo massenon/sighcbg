@@ -1665,7 +1665,7 @@
    "module": "M13",
    "dossier": "m13-administration",
    "fichier": "m13-administration/plan-annuel-de-travail.pdf",
-   "document": "Plan annuel de travail",
+   "document": "Plan de travail annuel (PTA)",
    "ecran": "m13-plan-annuel",
    "role": "agentadmin",
    "geste": "vue › Imprimer le plan",

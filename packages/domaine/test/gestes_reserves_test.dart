@@ -36,7 +36,10 @@ void main() {
       gesteSystemeAdministrer, gesteInstallationConduire, gesteDoubleFacteurImpose, gesteComptesReinitialiser, gesteReglageVerrouSecours, gesteReglageHorsSite,
       // SMS par le relais (ADR-0009, 16/11/2026) : régler la passerelle et tester l'envoi.
       gesteReglageSms,
-      gesteFiscalValiderConfiguration, gesteAibTenir, gesteFiscalConfirmer, gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
+      gesteFiscalValiderConfiguration, gesteAibTenir, gesteFiscalConfirmer,
+      // 17/11/2026 : la facture à une entreprise (tiers payeur) et les écritures d'inventaire en clôture (une case de la fiche de rôle).
+      gesteFactureTiersEmettre, gesteClotureInventaire,
+      gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
       gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhEncadrer,
       gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteRhConfirmerValeur, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
       // Plan de travail annuel (lot PTA, 17/11/2026) : adopter, régler les référentiels, recevoir l'alerte de retard.

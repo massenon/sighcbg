@@ -18,7 +18,8 @@ import '../imagerie/img_demandes_etats.dart' show modaliteDemandeDeExamen;
 import '../labo/dem_regles.dart' show demCodeAnalyse;
 import '../referentiels/regles.dart' show joursEntre;
 import '../tarifs/tarifs.dart';
-import '../caisse/valorisation.dart' show posteEditeursEcran, ecranReferentielProduits, ecranTarifsEtPrix, guidePrixALaDate;
+import '../caisse/valorisation.dart' show posteEditeursEcran, posteGeste, ecranTarifsEtPrix, guidePrixALaDate;
+import '../droits/gestes_reserves.dart' show gesteProposerPrixAchat;
 import 'cs_referentiels.dart';
 import '../numerotation/numerotation.dart';
 
@@ -688,7 +689,7 @@ ResultatPrescription csPrescrire(
   if (p == null) throw RefusCs('Patient introuvable : ${v['patientCode']}');
   final date = csVrai(v['date']) ? '${v['date']}' : _iso(s.maintenant);
   final annee = DateTime.parse(date).toLocal().year;
-  final numero = numeroFormate('consultation.ordonnances', date: date, annee: annee, rang: s.toutes('ordonnances').length + 1);
+  final numero = numeroSuivant('consultation.ordonnances', date: date, annee: annee, existants: s.toutes('ordonnances'));
 
   final medicaments = <FicheCs>[
     for (final l in _liste(v['medicaments']))
@@ -1062,8 +1063,8 @@ ResultatPrescription csPrescrire(
     });
   }
 
-  // L'ALERTE « PRIX MANQUANT » d'un médicament (16/11/2026, §7) : vers les rôles qui peuvent MODIFIER le « Référentiel produits » (droit `editer` de l'écran `m6-produits`, lu dans la
-  // MATRICE par le centre de notifications : poste `editeurs:m6-produits`), jamais une liste de rôles. UNE SEULE alerte OUVERTE (non lue, non archivée) par article : un second patient
+  // L'ALERTE « PRIX MANQUANT » d'un médicament (16/11/2026, §7) : vers les rôles qui détiennent le geste « Proposer un changement de prix d'achat » (`tarif_proposer_achat`, décision du 17/11/2026,
+  // point 8 — et non plus le droit de modifier l'écran `m6-produits`, que le caissier a), lu dans la MATRICE par le centre de notifications : poste `geste:tarif_proposer_achat`, jamais une liste de rôles. UNE SEULE alerte OUVERTE (non lue, non archivée) par article : un second patient
   // ne la double pas. Aucun nom de patient.
   final aValoriser = <FicheCs>[];
   final dejaAlertes = {
@@ -1077,7 +1078,7 @@ ResultatPrescription csPrescrire(
     final prod = s.parId('produits', l['produitId']);
     s.inserer('notifications', {
       'type': csTypeNotifPrixAValoriser,
-      'poste': posteEditeursEcran(ecranReferentielProduits),
+      'poste': posteGeste(gesteProposerPrixAchat),
       'destinataire': null,
       'libelle': 'Prix d’achat à fixer : ${l['produit']}',
       // Aucune donnée médicale ni nom de patient : l'article, la pièce, et le geste qui débloque.

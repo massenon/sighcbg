@@ -146,7 +146,7 @@ class EcranPieces extends StatelessWidget with EcranMaquette {
           acteCode: t.tarifCode,
           assurable: tarif?['assurable'] ?? false,
           couvertures: m.collection('couverturesAssurance').actives,
-          nbFactures: m.collection('factures').toutes.length,
+          facturesExistantes: m.collection('factures').toutes,
           nouvelId: (p) => '$p${DateTime.now().microsecondsSinceEpoch}',
           date: c.aujourdhui);
       if (fac != null) {

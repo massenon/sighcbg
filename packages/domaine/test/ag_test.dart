@@ -14,6 +14,13 @@ void main() {
       : null;
   const ignorer = {'id', 'patientId', 'creeLe', 'statutAvantArchivage'};
 
+  /// La maquette numérotait les rendez-vous « C00034 », comme les consultations ; Baguidi donne un préfixe PROPRE à chaque registre (17/11/2026, point 5) : les rendez-vous créés
+  /// s'écrivent « RDV-00034 » (le rang suit : les « C000nn » déjà émis restent lus). Les vecteurs de la maquette ne sont pas retouchés, l'attendu est traduit.
+  Map<String, Object?> sousPrefixeRdv(Map<String, Object?> m) {
+    final r = '${m['reference'] ?? ''}';
+    return RegExp(r'^C\d{5}$').hasMatch(r) ? {...m, 'reference': 'RDV-${r.substring(1)}'} : m;
+  }
+
   AgFiche fiche(Map<String, Object?> m) => {...m};
   List<AgFiche> lot(Object? l) => [for (final m in liste(l)) fiche(m)];
   bool archivee(AgFiche f) => f['statut'] == 'archive';
@@ -121,7 +128,7 @@ void main() {
         final creees = liste(c['creees']);
         if (creees.isEmpty) return; // le formulaire en erreur : l'écran refuse avant la fabrique
         final r = agNouveauRendezVous(saisie, patients: patients, existantes: base);
-        memes(r, creees.first, 'rdv', ignorer: ignorer);
+        memes(r, sousPrefixeRdv(creees.first), 'rdv', ignorer: ignorer);
         final p = agFenetreParDefaut(maintenant);
         final f = agEtendreFenetre(p.debut, p.fin, '${r['date']}');
         expect([f.debut, f.fin], liste([c['lu']]).first['dates']);
@@ -275,7 +282,7 @@ void main() {
         }
         expect(refus, isNull);
         final r = agCompleterVenue(saisie, patients: patients, existantes: rf);
-        memes(r, creees.first, 'creation', ignorer: ignorer);
+        memes(r, sousPrefixeRdv(creees.first), 'creation', ignorer: ignorer);
         expect(r['patientCode'] == 'NON-PATIENT' ? r['patientId'] : 'x', r['patientCode'] == 'NON-PATIENT' ? isNull : 'x');
       });
     }
@@ -323,7 +330,7 @@ void main() {
           return;
         }
         final r = agPassage(saisie, patients: patients, existantes: rf);
-        memes(r, creees.first, 'passage', ignorer: ignorer);
+        memes(r, sousPrefixeRdv(creees.first), 'passage', ignorer: ignorer);
         final t = agMessagePassage(r, s['priorite'] == true);
         expect([msg['message'], msg['detail']], [t.message, t.detail]);
       });
@@ -356,7 +363,7 @@ void main() {
         'type': 'Domicile',
       };
       final r = agCompleterPatient(saisie, patients: patients, existantes: df);
-      memes(r, liste(c['creees']).first, 'domicile', ignorer: ignorer);
+      memes(r, sousPrefixeRdv(liste(c['creees']).first), 'domicile', ignorer: ignorer);
     });
   }, skip: horsUtc);
 

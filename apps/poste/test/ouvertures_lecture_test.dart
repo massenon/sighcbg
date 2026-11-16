@@ -7,6 +7,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/service_droits.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
+import 'package:sigh_poste/modules/m10/rha_commun.dart' show remunerationReservee;
 import 'package:sigh_poste/modules/m10/rhb_planning.dart' show honoraireReserve;
 import 'package:sigh_poste/shell/page_standard.dart';
 
@@ -31,7 +32,7 @@ const ouvertures = <String, List<String>>{
   'comptable': ['cfg-tarifs', 'cfg-catalogue'],
   'anesthesiste': ['m6-stock-detail', 'm6-lots'],
   'agentadmin': ['m3-plan-lits'],
-  'surveillant': ['m3-plan-lits'],
+  'surveillant': ['m3-plan-lits', 'm10-personnel', 'm10-employe-profil'],
   'aide_soignant': ['m3-plan-lits'],
   'assistant_comptable': ['m2-stats-consultations', 'm3-stats-hospitalisations', 'm6-point-ventes'],
 };
@@ -167,6 +168,82 @@ void main() {
         expect(find.text(honoraireReserve), findsNothing, reason: role);
         expect(textesSansEspaces(t).contains('5000'), isTrue, reason: '$role lit le montant');
       }
+    });
+  });
+
+  group('fiche du personnel : lecture seule, rémunération masquée (17/11/2026, point 1)', () {
+    // L'onglet de la FICHE (le ruban porte lui aussi des libellés de même nom).
+    Finder onglet(String nom) => find.descendant(of: find.byType(OngletsSigh), matching: find.text(nom));
+
+    Future<void> ouvrirFiche(WidgetTester t, Magasin m, String role) async {
+      await ouvrir(t, m, 'm10-employe-profil', role);
+      expect(find.text('Accès refusé'), findsNothing, reason: role);
+    }
+
+    testWidgets('le Surveillant lit l’identité et le planning, sans salaire, sans CNSS, sans primes, sans évaluations, sans assurances', (t) async {
+      final m = jeu();
+      final agent = m.collection('personnel').actives.reduce((a, b) => '${a['matricule']}'.compareTo('${b['matricule']}') <= 0 ? a : b);
+      // Le premier agent affiché a adopté le régime d'incinération (honoraire de 5 000 F) : le montant est celui qu'on ne doit pas lire.
+      m.collection('regimesIndividuels').inserer({
+        'id': 'RGI-T1',
+        'employeId': agent['id'],
+        'dateEffet': '2026-01-01',
+        'mode': 'remplacement',
+        'baseRemplacement': 'Incinération des déchets de l’hôpital',
+        'champs': <String, Object?>{},
+      });
+      await ouvrirFiche(t, m, 'surveillant');
+      expect(find.text('Matricule'), findsWidgets);
+      expect(find.text(remunerationReservee), findsNWidgets(2), reason: 'salaire et N° CNSS : la mention, jamais un champ vide');
+      final cnss = '${agent['cnss'] ?? ''}';
+      if (cnss.isNotEmpty) expect(textesSansEspaces(t).any((x) => x.contains(cnss.replaceAll(' ', ''))), isFalse, reason: 'aucun numéro CNSS');
+      expect(textesSansEspaces(t).contains(textesSansEspaces(t).firstWhere((x) => x == '${agent['salaireBase']}', orElse: () => '#')), isFalse);
+      for (final nom in ['Primes (NS 132)', 'Évaluations & sanctions', 'Assurances']) {
+        await toucher(t, onglet(nom));
+        expect(find.byKey(const Key('rha:remuneration-reservee')), findsOneWidget, reason: nom);
+      }
+      // Aucune commande d'écriture du dossier : ni « Modifier », ni « Nouveau ».
+      expect(find.widgetWithText(BoutonSigh, 'Nouveau'), findsNothing);
+      // Le planning individuel se lit, sans le montant de l'honoraire (la règle de la fiche s'ajoute à celle du planning), et ne s'écrit pas sans le geste réservé.
+      await toucher(t, onglet('Planning individuel'));
+      expect(find.byKey(const Key('pli:regime')), findsOneWidget);
+      expect(t.widget<Text>(find.byKey(const Key('pli:valeur:honoraire'))).data, honoraireReserve, reason: 'l’honoraire du régime est DIT réservé, jamais vidé ni montré');
+      expect(textesSansEspaces(t).any((x) => x.contains('5000')), isFalse, reason: 'aucun montant d’honoraire à qui ne lit pas la rémunération');
+      expect(find.widgetWithText(BoutonSigh, 'Nouvelle version'), findsNothing, reason: 'écriture réservée au geste « Régler le personnel »');
+    });
+
+    testWidgets('le registre du personnel ouvert au Surveillant : colonnes salaire et CNSS réservées, masse salariale absente', (t) async {
+      final m = jeu();
+      await ouvrir(t, m, 'm10-personnel', 'surveillant');
+      expect(find.text('Accès refusé'), findsNothing);
+      expect(find.text('réservé'), findsWidgets);
+      expect(find.text('Masse salariale'), findsNothing);
+      expect(find.text('Salaire moyen'), findsNothing);
+      expect(find.text('Effectif'), findsWidgets);
+      expect(find.widgetWithText(BoutonSigh, 'Nouvel agent'), findsNothing);
+    });
+
+    testWidgets('la DAF lit tout comme avant (rien ne change pour elle)', (t) async {
+      final m = jeu();
+      final agent = m.collection('personnel').actives.reduce((a, b) => '${a['matricule']}'.compareTo('${b['matricule']}') <= 0 ? a : b);
+      m.collection('regimesIndividuels').inserer({
+        'id': 'RGI-T1',
+        'employeId': agent['id'],
+        'dateEffet': '2026-01-01',
+        'mode': 'remplacement',
+        'baseRemplacement': 'Incinération des déchets de l’hôpital',
+        'champs': <String, Object?>{},
+      });
+      await ouvrirFiche(t, m, 'da');
+      expect(find.text(remunerationReservee), findsNothing);
+      await toucher(t, onglet('Primes (NS 132)'));
+      expect(find.byKey(const Key('rha:remuneration-reservee')), findsNothing);
+      await toucher(t, onglet('Planning individuel'));
+      expect(find.text(honoraireReserve), findsNothing);
+      expect(textesSansEspaces(t).any((x) => x.contains('5000')), isTrue, reason: 'la DAF lit le montant');
+      await ouvrir(t, m, 'm10-personnel', 'da');
+      expect(find.text('réservé'), findsNothing);
+      expect(find.text('Masse salariale'), findsOneWidget);
     });
   });
 }

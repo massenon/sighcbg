@@ -10,6 +10,7 @@
 /// champ absent ne vaut rien (horaires et durée du type de vacation, tous les jours), et une valeur saisie sans document d'origine est marquée « à valider ».
 library;
 
+import 'double_paiement_prime.dart';
 import 'planning_rh.dart';
 import 'rhb_regles.dart';
 import '../droits/gestes_reserves.dart';
@@ -232,7 +233,8 @@ List<JourPlanningRh> calendrierAgentRh({
 /// compris). Une vacation n'ouvre l'honoraire que si son type est une vacation du régime qui le porte. Périodicité « par occurrence » : l'honoraire de chaque
 /// vacation ; « mensuelle » (défaut) : une fois dans le mois, au montant du régime en vigueur à la DERNIÈRE vacation qui l'ouvre.
 class HonoraireRegimeRh {
-  const HonoraireRegimeRh({this.montant = 0, this.occurrences = 0, this.mensuel = 0, this.parOccurrence = 0, this.aValider = false, this.lignes = const []});
+  const HonoraireRegimeRh(
+      {this.montant = 0, this.occurrences = 0, this.mensuel = 0, this.parOccurrence = 0, this.aValider = false, this.lignes = const [], this.exclus = const []});
   final num montant, mensuel, parOccurrence;
   final int occurrences;
 
@@ -241,6 +243,9 @@ class HonoraireRegimeRh {
 
   /// Le détail : date, type, montant retenu, périodicité, version de régime.
   final List<Map<String, Object?>> lignes;
+
+  /// Les lignes ÉCARTÉES parce qu'elles répétaient une prime de la note NS 132 déjà versée (`DOUBLE_PAIEMENT_PRIME`, 17/11/2026) : la ligne et la répétition qui la nomme.
+  final List<Map<String, Object?>> exclus;
 }
 
 HonoraireRegimeRh honoraireRegimeMoisRh({
@@ -249,6 +254,7 @@ HonoraireRegimeRh honoraireRegimeMoisRh({
   required int annee,
   required int mois,
   required RegimeRhResolu Function(String date) regimeDe,
+  DoublePaiementPrime? Function(Map<String, Object?> ligne)? doublon,
 }) {
   final prefixe = '${annee.toString().padLeft(4, '0')}-${mois.toString().padLeft(2, '0')}';
   final miennes = [
@@ -265,13 +271,20 @@ HonoraireRegimeRh honoraireRegimeMoisRh({
   var attente = false;
   Map<String, Object?>? dernierMensuel;
   final lignes = <Map<String, Object?>>[];
+  final exclus = <Map<String, Object?>>[];
   for (final v in miennes) {
     final d = '${v['date']}'.substring(0, 10);
     final r = regimeDe(d);
     final h = r.honoraire;
     if (h == null || h <= 0 || !r.vacations.contains(v['type'])) continue;
     final per = r.honorairePeriodicite == 'occurrence' ? 'occurrence' : 'mensuelle';
-    final l = {'date': d, 'type': v['type'], 'vacationId': v['id'], 'montant': h, 'periodicite': per, 'versionId': r.versionId, 'regime': r.libelle, 'aValider': r.aValider.contains('honoraire')};
+    final l = <String, Object?>{'date': d, 'type': v['type'], 'vacationId': v['id'], 'montant': h, 'periodicite': per, 'versionId': r.versionId, 'regime': r.libelle, 'provenance': r.provenances['honoraire'], 'aValider': r.aValider.contains('honoraire')};
+    // [doublon] : un honoraire INDIVIDUEL qui répète une prime NS 132 déjà versée ne se compte pas ; la ligne est gardée à part, avec la répétition qui la nomme.
+    final dbl = doublon?.call(l);
+    if (dbl != null) {
+      exclus.add({...l, 'doublePaiement': dbl.toJson(), 'phrase': dbl.phrase()});
+      continue;
+    }
     if (per == 'occurrence') {
       occ += h;
       n++;
@@ -287,5 +300,5 @@ HonoraireRegimeRh honoraireRegimeMoisRh({
     lignes.add(dernierMensuel);
     if (dernierMensuel['aValider'] == true) attente = true;
   }
-  return HonoraireRegimeRh(montant: occ + men, occurrences: n, mensuel: men, parOccurrence: occ, aValider: attente, lignes: lignes);
+  return HonoraireRegimeRh(montant: occ + men, occurrences: n, mensuel: men, parOccurrence: occ, aValider: attente, lignes: lignes, exclus: exclus);
 }

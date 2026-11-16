@@ -82,7 +82,7 @@ OuvertureImagerie ouvrirDemandeImagerie({
   required Iterable<FicheImg> patients,
   required Iterable<FicheImg> couvertures,
   required Iterable<FicheImg> demandesExistantes,
-  required int nbFactures,
+  required Iterable<Object?> facturesExistantes,
   required PrixImagerie Function(String code, bool assure) prixDe,
   required String Function(String prefixe) nouvelId,
   required String date,
@@ -222,7 +222,7 @@ OuvertureImagerie ouvrirDemandeImagerie({
     });
   }
   num somme(String k) => lignes.fold<num>(0, (a, l) => a + (l[k] as num));
-  final numero = numeroFormate('imagerie.factures', date: d, rang: nbFactures + 1);
+  final numero = numeroSuivant('imagerie.factures', date: d, existants: facturesExistantes);
   final facture = <String, Object?>{
     'id': nouvelId('FAC'),
     'lignes': lignes,
