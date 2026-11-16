@@ -97,12 +97,83 @@ class PlanningRhPoste {
     );
     if (r.refus != null) return r.refus!.toJson();
     final avant = regimeALaDate(e!, dateEffet!);
+    // Aucun champ nul (voir `poserRegime`) : la version voyage telle quelle, immuable.
     final res = m.collection('regimesIndividuels').inserer({
-      'employeId': e['id'], 'employe': e['nomComplet'], 'matricule': e['matricule'], 'fonction': e['fonction'], 'categorie': avant.categorie,
-      'champs': r.champs, 'retourCategorie': retourCategorie, 'dateEffet': dateEffet, 'motif': (motif ?? '').trim(), 'version': versions.length + 1,
-      'creeLe': aujourdhui, 'creePar': auteur(), 'statut': 'actif',
+      for (final x in {
+        'employeId': e['id'], 'employe': e['nomComplet'], 'matricule': e['matricule'], 'fonction': e['fonction'], 'categorie': avant.categorie,
+        'champs': r.champs, 'retourCategorie': retourCategorie, 'dateEffet': dateEffet, 'motif': (motif ?? '').trim(), 'version': versions.length + 1,
+        'creeLe': aujourdhui, 'creePar': auteur(), 'statut': 'actif',
+      }.entries)
+        if (x.value != null) x.key: x.value,
     }, prefixe: 'RGI');
     return {'ok': true, 'id': res.fiche['id'], 'version': versions.length + 1, 'derogations': (r.champs ?? const {}).keys.toList(), 'retourCategorie': retourCategorie};
+  }
+
+  /// PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : POSER UNE VERSION du régime individuel — dérogation champ par champ (horaires, durée, jours compris),
+  /// REMPLACEMENT entier du régime de la catégorie, ou retour à la catégorie. Contrôlée par le domaine (`validerRegimeIndividuelRh`, refus nommés), écrite comme une
+  /// version IMMUABLE et datée (la garde de collection refuse toute réécriture) ; les vacations déjà posées gardent le régime sous lequel elles l'ont été.
+  /// Les valeurs d'attente sont portées champ par champ (`aValider`). Rend `{'ok': true, 'id': …, 'version': …}` ou le refus nommé.
+  Map<String, Object?> poserRegime({
+    required Object? employeId,
+    required String? dateEffet,
+    required String mode,
+    required Map<String, Object?> champs,
+    required String? motif,
+    String? baseRemplacement,
+    String? sourceDocument,
+    List<String>? aValider,
+  }) {
+    final e = _agent(employeId);
+    final versions = _versions(employeId);
+    final r = validerRegimeIndividuelRh(
+      gestes: _gestes,
+      role: role,
+      agentExiste: e != null,
+      dateEffet: dateEffet,
+      motif: motif,
+      mode: mode,
+      champs: champs,
+      versions: versions,
+      regimesActifs: m.collection('regimesTravail').actives,
+      aujourdhui: aujourdhui,
+      baseRemplacement: baseRemplacement,
+      sourceDocument: sourceDocument,
+      aValider: aValider,
+    );
+    if (r.refus != null) return r.refus!.toJson();
+    final f = r.fiche!;
+    final avant = regimeALaDate(e!, dateEffet!);
+    // Aucun champ NUL n'est écrit : la fusion du pont ne garde pas les nuls, et une version reçue qui aurait perdu une clé paraîtrait « modifiée » à son auteur — or
+    // une version ne se modifie jamais (famille B de la mère : la réécriture serait refusée à chaque tour).
+    final res = m.collection('regimesIndividuels').inserer({
+      for (final x in {
+        'employeId': e['id'], 'employe': e['nomComplet'], 'matricule': e['matricule'], 'fonction': e['fonction'], 'categorie': avant.categorie,
+        'champs': f['champs'], 'mode': f['mode'], 'retourCategorie': f['retourCategorie'], 'baseRemplacement': f['baseRemplacement'], 'aValider': f['aValider'],
+        'sourceDocument': f['sourceDocument'], 'dateEffet': dateEffet, 'motif': (motif ?? '').trim(), 'version': versions.length + 1,
+        'creeLe': aujourdhui, 'creePar': auteur(), 'statut': 'actif',
+      }.entries)
+        if (x.value != null) x.key: x.value,
+    }, prefixe: 'RGI');
+    return {
+      'ok': true, 'id': res.fiche['id'], 'version': versions.length + 1, 'mode': f['mode'], 'champs': (f['champs'] as Map).keys.toList(), 'aValider': f['aValider'],
+    };
+  }
+
+  /// L'HONORAIRE DE RÉGIME d'un agent pour un mois (1 à 12), sur le régime EFFECTIF à la date de chaque vacation validée (RG-11). Lu par l'écran des primes et la
+  /// fiche du personnel ; le moteur de paie fait le même calcul (`PaiEntrees.regimesIndividuels`).
+  HonoraireRegimeRh honoraireMois(Fiche agent, int annee, int mois) => honoraireRegimeMoisRh(
+      vacations: m.collection('planning').actives, employeId: agent['id'], annee: annee, mois: mois, regimeDe: (d) => regimeALaDate(agent, d));
+
+  /// Le CALENDRIER de l'agent pour la vue `semaine` ou `mois` qui contient [jour] : ses vacations, ses congés validés, le régime en vigueur chaque jour.
+  List<JourPlanningRh> calendrier(Fiche agent, String vue, DateTime jour) {
+    final b = bornesVuePlanningRh(vue, jour);
+    return calendrierAgentRh(
+      vacations: [for (final v in m.collection('planning').actives) if (v['employeId'] == agent['id']) v],
+      conges: [for (final x in m.collection('conges').actives) if (x['employeId'] == agent['id']) x],
+      regimeDe: (d) => regimeALaDate(agent, d),
+      du: b.du,
+      au: b.au,
+    );
   }
 
   /// TRANCHER une pièce (pointage, congé, ordre de mission) selon le circuit en vigueur : le patch du domaine est écrit sur la fiche, le circuit consigné.
@@ -194,7 +265,7 @@ class PlanningRhPoste {
       final regime = regimeALaDate(me, '${p['date']}');
       final fiche = <String, Object?>{
         'date': p['date'], 'employeId': me['id'], 'employe': me['nomComplet'], 'fonction': me['fonction'], 'service': me['service'], 'type': typeVacation,
-        'observation': p['motif'], 'statut': 'validee', 'regimeLibelle': regime.categorie, 'regimeIndividuelId': regime.versionId, 'derogations': regime.derogations,
+        'observation': p['motif'], 'statut': 'validee', 'regimeLibelle': regime.libelle ?? regime.categorie, 'regimeIndividuelId': regime.versionId, 'derogations': regime.derogations,
         'validationEtat': 'validee', 'validePar': 'l’agent (réglage « modifie directement »)', 'valideLe': aujourdhui, 'origine': 'agent', 'modifieDirectement': true,
       };
       if (type == 'ajout') {
@@ -228,7 +299,7 @@ class PlanningRhPoste {
       final regime = regimeALaDate(agent, date);
       return {
         'date': date, 'employeId': agent['id'], 'employe': agent['nomComplet'], 'fonction': agent['fonction'], 'service': agent['service'], 'type': type,
-        'observation': p['motif'], 'statut': 'validee', 'regimeLibelle': regime.categorie, 'regimeIndividuelId': regime.versionId, 'derogations': regime.derogations, ...marque,
+        'observation': p['motif'], 'statut': 'validee', 'regimeLibelle': regime.libelle ?? regime.categorie, 'regimeIndividuelId': regime.versionId, 'derogations': regime.derogations, ...marque,
       };
     }
 
@@ -293,6 +364,8 @@ class PlanningRhPoste {
         {
           'id': v['id'], 'version': i + 1, 'dateEffet': v['dateEffet'], 'retourCategorie': v['retourCategorie'] == true,
           'champs': (v['champs'] as Map?)?.cast<String, Object?>() ?? const <String, Object?>{}, 'motif': v['motif'], 'creePar': v['creePar'], 'creeLe': v['creeLe'],
+          'mode': v['retourCategorie'] == true ? modeRetourRh : (v['mode'] == modeRemplacementRh ? modeRemplacementRh : modeDerogationRh),
+          'baseRemplacement': v['baseRemplacement'], 'aValider': [for (final c in (v['aValider'] as List? ?? const [])) '$c'], 'sourceDocument': v['sourceDocument'],
         }
     ];
   }
@@ -316,7 +389,7 @@ class PlanningRhPoste {
     final regime = regimeALaDate(e, d);
     final rec = <String, Object?>{
       'date': d, 'employeId': e['id'], 'employe': e['nomComplet'], 'fonction': e['fonction'], 'service': e['service'], 'type': type,
-      'observation': (observation ?? '').isEmpty ? null : observation, 'statut': 'validee', 'regimeLibelle': regime.categorie, 'regimeIndividuelId': regime.versionId,
+      'observation': (observation ?? '').isEmpty ? null : observation, 'statut': 'validee', 'regimeLibelle': regime.libelle ?? regime.categorie, 'regimeIndividuelId': regime.versionId,
       'derogations': [...regime.derogations], 'validationEtat': 'validee', 'validePar': auteur(), 'valideLe': aujourdhui, 'origine': 'poste',
     };
     final plan = m.collection('planning');

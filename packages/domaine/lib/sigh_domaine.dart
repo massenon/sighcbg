@@ -149,6 +149,7 @@ export 'src/comptabilite/cpd_parametres_aib.dart';
 export 'src/comptabilite/cpd_aib_subi.dart';
 export 'src/rh/espace_mes.dart';
 export 'src/rh/planning_rh.dart';
+export 'src/rh/regime_individuel.dart';
 export 'src/rh/pointage_badge.dart';
 export 'src/rh/rhc_regles.dart';
 export 'src/tableaux_de_bord/tbb_regles.dart';

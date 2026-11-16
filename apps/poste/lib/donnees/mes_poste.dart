@@ -60,6 +60,19 @@ class EspaceMesPoste {
     return [for (final id in lu.ids) if (col.parId(id) != null) col.parId(id)!];
   }
 
+  /// PLANNING INDIVIDUEL (16/11/2026) : le régime EFFECTIF de l'agent de la session à [date] (aujourd'hui par défaut) — la même résolution que le planning, les primes
+  /// et la paie (`regimeRhALaDate`), jamais refaite ici. `null` pour un compte non nominatif.
+  RegimeRhResolu? regime({String? date}) {
+    final a = agent();
+    if (a.agent == null) return null;
+    return regimeRhALaDate(
+      regimesActifs: _actives('regimesTravail'),
+      versions: [for (final v in _actives('regimesIndividuels')) if (v['employeId'] == a.agent!['id']) v],
+      fonction: a.agent!['fonction'] as String?,
+      date: date ?? aujourdhui,
+    );
+  }
+
   /// L'assurance du personnel de l'agent de la session : montants PORTÉS ou « non renseigné », jamais le prix courant (lecture seule, rien ne remonte à la compta).
   AssuranceMes? assurance() {
     final a = agent();

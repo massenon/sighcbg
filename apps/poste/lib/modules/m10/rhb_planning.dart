@@ -429,16 +429,42 @@ bool voitHonorairesPlanning(ContexteEcran c) => c.droit.editer || (c.donnees?.ma
 const String honoraireReserve = 'montant réservé (droit de lire les primes)';
 
 List<String> _textesDerogations(List<String> derog,
-        {List<String> vacations = const [], String? repos, Object? cycle, Object? honoraire, String? periodicite, bool montants = true}) => [
+        {List<String> vacations = const [],
+        String? repos,
+        Object? cycle,
+        Object? honoraire,
+        String? periodicite,
+        bool montants = true,
+        String? heureDebut,
+        String? heureFin,
+        Object? dureeHeures,
+        List<String>? jours}) => [
       if (derog.contains('vacations')) 'Vacations : ${vacations.map(rhbTypePlanningLabel).join(', ')}',
       if (derog.contains('repos')) 'Repos : ${repos != null && repos != '' ? rhbTypePlanningLabel(repos) : 'aucun codifié'}',
       if (derog.contains('cycle')) 'Cycle : $cycle jours',
       if (derog.contains('honoraire')) 'Honoraire : ${montants ? money(honoraire, avecDevise: false) : honoraireReserve}',
       if (derog.contains('honorairePeriodicite')) 'Périodicité : ${_textePeriodicite(periodicite)}',
+      // PLANNING INDIVIDUEL (16/11/2026) : horaires, durée et jours.
+      if (derog.contains('heureDebut') || derog.contains('heureFin')) 'Horaires : ${heureDebut ?? 'selon la vacation'} → ${heureFin ?? 'selon la vacation'}',
+      if (derog.contains('dureeHeures')) 'Durée : ${nombre(dureeHeures)} h',
+      if (derog.contains('jours')) 'Jours : ${[for (final j in joursSemaineRh) if ((jours ?? const []).contains(j.id)) j.libelle.toLowerCase()].join(', ')}',
     ];
 
-List<String> _textesRegime(RegimeRhResolu r, {bool montants = true}) => _textesDerogations(r.derogations,
-    vacations: r.vacations, repos: r.repos, cycle: r.cycle, honoraire: r.honoraire, periodicite: r.honorairePeriodicite, montants: montants);
+List<String> _textesRegime(RegimeRhResolu r, {bool montants = true}) => [
+      if (r.mode == 'remplacement') 'Remplacement : ${r.libelle ?? r.baseRemplacement ?? 'régime individuel'}',
+      ..._textesDerogations(r.derogations,
+          vacations: r.vacations,
+          repos: r.repos,
+          cycle: r.cycle,
+          honoraire: r.honoraire,
+          periodicite: r.honorairePeriodicite,
+          montants: montants,
+          heureDebut: r.heureDebut,
+          heureFin: r.heureFin,
+          dureeHeures: r.dureeHeures,
+          jours: r.jours),
+      if (r.aValider.isNotEmpty) 'À valider : ${r.aValider.map((c) => (libellesChampsRegimeRh[c] ?? c).toLowerCase()).join(', ')}',
+    ];
 
 /// `affecter` : l'affectation d'une vacation à un agent, un jour donné. Les vacations proposées sont celles du régime EN VIGUEUR À LA DATE (dérogation
 /// individuelle comprise) ; le contrôle de repos et de double affectation est celui du domaine (une règle, une voie), refusé EN LE NOMMANT.
@@ -599,7 +625,7 @@ class _Individuels extends StatelessWidget {
       ],
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         const NoteSigh(
-            'Le régime de la catégorie reste la règle. Une dérogation individuelle ne change que les champs renseignés (vacations, repos, cycle, honoraire) : le reste suit la catégorie. Chaque dérogation est une version datée qui ne se réécrit pas ; les vacations déjà posées gardent le régime sous lequel elles l’ont été.'),
+            'Le régime de la catégorie reste la règle. Une dérogation individuelle ne change que les champs renseignés (vacations, repos, cycle, honoraire) : le reste suit la catégorie. Chaque dérogation est une version datée qui ne se réécrit pas ; les vacations déjà posées gardent le régime sous lequel elles l’ont été. Les horaires, la durée, les jours travaillés et le REMPLACEMENT entier du régime se règlent depuis la fiche du personnel, onglet « Planning individuel ».'),
         const SizedBox(height: 12),
         MiniTableauSigh(
             vide: 'Aucun agent n’a de régime individuel : tous suivent le régime de leur catégorie.',
@@ -648,8 +674,20 @@ class _Individuels extends StatelessWidget {
             if (x['retourCategorie'] == true) return const Text('Retour au régime de la catégorie', style: TextStyle(color: JetonsShell.slate500, fontSize: 12));
             final ch = (x['champs'] as Map).cast<String, Object?>();
             final repos = ch['repos'] == 'aucun' ? null : ch['repos'] as String?;
-            final textes = _textesDerogations(ch.keys.toList(),
-                vacations: [for (final v in (ch['vacations'] as List? ?? const [])) '$v'], repos: repos, cycle: ch['cycle'], honoraire: ch['honoraire'], periodicite: ch['honorairePeriodicite'] as String?, montants: montants);
+            final textes = [
+              if (x['mode'] == modeRemplacementRh) 'Remplacement${x['baseRemplacement'] != null ? ' par « ${x['baseRemplacement']} »' : ' composé champ par champ'}',
+              ..._textesDerogations(ch.keys.toList(),
+                  vacations: [for (final v in (ch['vacations'] as List? ?? const [])) '$v'],
+                  repos: repos,
+                  cycle: ch['cycle'],
+                  honoraire: ch['honoraire'],
+                  periodicite: ch['honorairePeriodicite'] as String?,
+                  montants: montants,
+                  heureDebut: ch['heureDebut'] as String?,
+                  heureFin: ch['heureFin'] as String?,
+                  dureeHeures: ch['dureeHeures'],
+                  jours: [for (final j in (ch['jours'] as List? ?? const [])) '$j']),
+            ];
             return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
               for (final t in textes) Text(t, style: const TextStyle(color: JetonsShell.slate700, fontSize: 12, height: 16 / 12)),
             ]);

@@ -9,9 +9,10 @@ import '../../shell/contexte_ecran.dart';
 import '../m13/adm_commun.dart';
 import '../m4/mat_commun.dart';
 import 'rha_commun.dart';
+import 'rha_planning_individuel.dart';
 
 /// `ficheEmploye(e)` de la maquette : le bandeau de l'agent puis SIX onglets — informations, planning du mois, primes NS 132, présences & congés,
-/// évaluations & sanctions, assurances du personnel. Servie par le tiroir de `m10-personnel` ET par la page `m10-employe-profil`.
+/// évaluations & sanctions, assurances du personnel — plus, depuis le 16/11/2026, l'onglet « Planning individuel » (régime effectif, calendrier, régime individuel). Servie par le tiroir de `m10-personnel` ET par la page `m10-employe-profil`.
 /// Le contexte de l'écran est passé explicitement : le tiroir et les modales vivent AU-DESSUS de la coque.
 class FicheEmploye extends StatelessWidget {
   const FicheEmploye({super.key, required this.agent, required this.c, required this.ctx});
@@ -56,6 +57,8 @@ class FicheEmploye extends StatelessWidget {
       OngletsSigh(onglets: [
         OngletDef(id: 'infos', libelle: 'Informations', construire: (_) => _infos(e, auj)),
         OngletDef(id: 'planning', libelle: 'Planning du mois', construire: (_) => _planning(vac, gardes, permanences)),
+        // PLANNING INDIVIDUEL (16/11/2026) : le régime effectif de l'agent, son calendrier (semaine ou mois) et l'édition de son régime individuel.
+        OngletDef(id: 'planning-individuel', libelle: 'Planning individuel', construire: (_) => OngletPlanningIndividuel(agent: e, c: c, ctx: ctx)),
         OngletDef(id: 'primes', libelle: 'Primes (NS 132)', construire: (_) => _primes(e, gardes, permanences)),
         OngletDef(id: 'presences', libelle: 'Présences & congés', construire: (_) => _presences(e)),
         OngletDef(id: 'evaluations', libelle: 'Évaluations & sanctions', construire: (_) => _evaluations(e)),

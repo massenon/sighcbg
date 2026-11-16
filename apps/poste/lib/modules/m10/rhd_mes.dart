@@ -8,6 +8,7 @@ import '../../donnees/mes_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import 'rha_planning_individuel.dart' show CarteRegimeEffectif;
 import 'rhb_commun.dart';
 import 'rhc_commun.dart';
 
@@ -39,7 +40,8 @@ const Map<String, List<(String, String, String?)>> _colonnes = {
   'fiche_poste': [('Intitulé', 'intitule', null), ('Rattachement', 'rattachement', null), ('Résumé', 'resume', null)],
   'fiche_paie': [('Référence', 'reference', null), ('Période', 'periode', null), ('Brut', 'brut', 'money'), ('Retenues', 'totalRetenues', 'money'), ('Net à payer', 'net', 'money'), ('Diffusée le', 'dateDiffusion', 'date')],
   'contrat': [('Référence', 'reference', null), ('Nature', 'nature', null), ('Poste', 'poste', null), ('Début', 'dateDebut', 'date'), ('Fin', 'dateFin', 'date')],
-  'planning': [('Date', 'date', 'date'), ('Vacation', 'type', null), ('Service', 'service', null), ('Régime', 'regime', null)],
+  // La vacation porte le régime sous lequel elle a été posée dans `regimeLibelle` (le champ `regime` n'existe sur aucune vacation : la colonne restait vide).
+  'planning': [('Date', 'date', 'date'), ('Vacation', 'type', null), ('Service', 'service', null), ('Régime', 'regimeLibelle', null)],
   'presences': [('Date', 'date', 'date'), ('État', 'etat', null), ('Arrivée', 'heureArrivee', null), ('Départ', 'heureDepart', null)],
   'conges': [('Référence', 'reference', null), ('Nature', 'nature', null), ('Du', 'dateDebut', 'date'), ('Au', 'dateFin', 'date'), ('Décision', 'statutConge', null)],
   'missions': [('Référence', 'reference', null), ('Objet', 'objet', null), ('Destination', 'destination', null), ('Départ', 'dateDepart', 'date'), ('Retour', 'dateRetour', 'date'), ('Décision', 'statutMission', null)],
@@ -68,7 +70,7 @@ class _EtatMes extends State<EcranMes> {
 
   Widget _ecoute() => RhbEcoute(collections: const [
         'fichesPoste', 'bulletins', 'contrats', 'planning', 'presences', 'conges', 'missions', 'evenements', 'participations', 'patients', 'consultations', 'demandesAnalyses',
-        'admissions', 'personnel', 'parametres'
+        'admissions', 'personnel', 'parametres', 'regimesTravail', 'regimesIndividuels'
       ], construire: _corps);
 
   EspaceMesPoste _mes(ContexteEcran c) => EspaceMesPoste(c.magasin, auteur: () => acteur(c).nom, role: c.role, horloge: () => c.aujourdhui);
@@ -136,6 +138,13 @@ class _EtatMes extends State<EcranMes> {
     if (r.id == 'fiche_paie') {
       corps.add(NoteSigh('Pièce émise (diffusée) : elle n’est jamais recalculée. Copie chiffrée sur le téléphone : ${e.copiePaieActive() ? 'activée' : 'désactivée'} au poste de la mère.',
           ton: TonSigh.info, icone: LucideIcons.smartphone));
+    }
+    if (r.id == 'planning') {
+      final reg = e.regime();
+      // Le montant d'un honoraire se lit avec le droit de voir l'écran des primes (la règle du planning, critère de la MATRICE) ; il est dit réservé, jamais vidé.
+      if (reg != null) {
+        corps.add(CarteRegimeEffectif(regime: reg, titre: 'Mon régime de travail aujourd’hui', montants: c.donnees?.matrice.peutVoir(c.role, 'm10-primes') ?? true));
+      }
     }
     switch (r.calcule) {
       case 'garde':

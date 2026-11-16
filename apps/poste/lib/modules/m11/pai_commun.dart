@@ -54,11 +54,14 @@ PaiEntrees entreesPaie(Magasin mag) {
     // Les paramètres ORTB DATÉS (Direction, 06/11/2026) : le bulletin d'un mois lit la version en vigueur au premier de ce mois.
     obligationsFiscales: mag.collection('obligationsFiscales').toutes,
     historiqueObligations: mag.collection('historiqueObligations').toutes,
+    // PLANNING INDIVIDUEL (16/11/2026) : l'honoraire du régime EFFECTIF de l'agent (catégorie, dérogation ou remplacement), la même résolution que l'écran des primes.
+    regimesTravail: mag.collection('regimesTravail').actives,
+    regimesIndividuels: mag.collection('regimesIndividuels').actives,
   );
 }
 
 /// Les collections que le calcul de la paie lit : un écran se redessine quand l'une d'elles bouge.
-const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes', 'modulesActifs', 'exercices', 'obligationsFiscales', 'historiqueObligations'];
+const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes', 'modulesActifs', 'exercices', 'obligationsFiscales', 'historiqueObligations', 'regimesTravail', 'regimesIndividuels'];
 
 Listenable ecoutePaie(ContexteEcran c, [List<String> enPlus = const []]) => ecoute(c, [...collectionsPaie, ...enPlus]);
 
