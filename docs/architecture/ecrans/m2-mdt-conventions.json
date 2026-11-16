@@ -1,0 +1,10 @@
+{
+ "id": "m2-mdt-conventions",
+ "module": "M2",
+ "domaine": "Soins",
+ "libelleManifeste": "Conventions de visites",
+ "acces": "ouvert",
+ "titre": "Conventions de visites",
+ "description": "Les conventions de visites médicales passées avec les entreprises clientes : période, périodicité, visites prévues.",
+ "note": "Fiche rédigée pour le poste Baguidi (PRD P0-12, les quatorze spécialités) : écran sans équivalent à la maquette."
+}

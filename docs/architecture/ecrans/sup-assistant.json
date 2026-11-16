@@ -1,0 +1,10 @@
+{
+ "id": "sup-assistant",
+ "module": "SUP",
+ "domaine": "Système",
+ "libelleManifeste": "Assistant",
+ "acces": "ouvert",
+ "titre": "Assistant",
+ "description": "Poser une question en français sur les données que votre profil peut lire : la réponse cite sa source, ne modifie rien et dit quand elle ne sait pas.",
+ "note": "Fiche rédigée pour le poste Baguidi (lot AST-1, décision de la Direction du 15/11/2026) : écran sans équivalent à la maquette."
+}

@@ -1,0 +1,39 @@
+{
+ "id": "auth-2fa",
+ "module": "AUTH",
+ "domaine": "Système",
+ "libelleManifeste": "Vérification en 2 étapes",
+ "acces": "ouvert",
+ "autonome": true,
+ "titre": "Système Intégré de Gestion Hospitalière",
+ "titreOnglet": "Vérification en 2 étapes — SIGH Clinique NASSIERA TOO",
+ "description": [
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR »",
+  "Parakou, République du Bénin",
+  "Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord.",
+  "Traçabilité intégrale des actions (journal d’audit)",
+  "Alertes de rupture et de péremption automatiques (FEFO)",
+  "Facture normalisée conforme au dispositif MECeF",
+  "Comptabilité SYSCOHADA alimentée automatiquement",
+  "« Votre bien-être est notre raison d’être. »",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240.",
+  "Exigée pour les profils à privilèges élevés : Administrateur et Direction (CDCT §12.2).",
+  "Code non reçu ? Un nouvel envoi est possible dans 30 secondes.",
+  "CLINIQUE BAGUIDI « L’AS DU CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240."
+ ],
+ "cartes": [
+  "Vérification en 2 étapes"
+ ],
+ "champs": [
+  "Chiffre 1",
+  "Chiffre 2",
+  "Chiffre 3",
+  "Chiffre 4",
+  "Chiffre 5",
+  "Chiffre 6"
+ ],
+ "commandes": [
+  "Vérifier",
+  "← Utiliser un autre compte"
+ ]
+}

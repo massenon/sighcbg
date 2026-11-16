@@ -1,0 +1,17 @@
+{
+ "_doc": "Les profils types de la mesure AST-0 (Baguidi) : un nom de profil, le rôle de rbac.json qui le porte. Aucun nom de rôle ne figure dans le code de l'assistant : cette table n'existe que pour la MESURE. Hypothèse à confirmer : la pharmacie et la caisse sont tenues par le même rôle (caissier) ; le rôle `pharmacien` est archivé.",
+ "profils": {
+  "reception": "reception",
+  "caisse": "caissier",
+  "stock": "stock",
+  "comptabilite": "comptable",
+  "laboratoire": "laborantin",
+  "medecin": "medecin",
+  "daf": "da",
+  "direction": "direction",
+  "administrateur": "admin",
+  "infirmier": "infirmier",
+  "sage_femme": "sage_femme",
+  "agent_administratif": "agentadmin"
+ }
+}

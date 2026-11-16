@@ -1,0 +1,52 @@
+{
+ "id": "imp-produits",
+ "module": "IMP",
+ "domaine": "Système",
+ "libelleManifeste": "Importation du référentiel produits",
+ "acces": "ouvert",
+ "titre": "Importation du référentiel produits",
+ "description": "Le référentiel des articles : code, désignation, famille, unité, prix d’achat et prix de vente. Aucune quantité : le stock s’importe à part (stock initial).",
+ "fil": [
+  "Accueil",
+  "Système",
+  "Importation de données",
+  "Importation du référentiel produits"
+ ],
+ "actions": [
+  "Jeux d’import et historique des lots",
+  "Importation du répertoire patients",
+  "Importation de données"
+ ],
+ "regle": [],
+ "onglets": [],
+ "kpis": [
+  "Lots appliqués",
+  "Fiches importées",
+  "Fichiers refusés",
+  "Statut du jeu"
+ ],
+ "cartes": [
+  "1. Télécharger le modèle",
+  "2. Téléverser et analyser",
+  "Historique des lots de ce jeu"
+ ],
+ "tableaux": [
+  [
+   "Colonne",
+   "Obligatoire",
+   "Type",
+   "Valeurs permises",
+   "Exemple"
+  ]
+ ],
+ "commandes": [
+  "Télécharger le modèle (.xlsx)",
+  "Modèle CSV",
+  "Téléverser un fichier (.xlsx ou .csv)",
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 4
+}
