@@ -112,6 +112,18 @@
       "aide": "Écrans « Expression des besoins » (vue d’arbitrage) et « Commandes ». Accorder, rejeter ou renvoyer en complément un bon d’expression de besoins, et valider une commande de stock avant sa transmission au fournisseur (RG-04). Origine : la Directrice Administrative seule ; l’administrateur système ne l’a pas d’origine. Depuis un poste rattaché, le geste est transmis à la mère, qui le rejoue sous le rôle de son auteur."
     },
     {
+      "id": "numerotation_modifier",
+      "libelle": "Modifier une série de numérotation des pièces",
+      "module": "CFG",
+      "ecran": "cfg-fiscalite",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Préfixe, année, séparateur, longueur du rang et remise à 1 annuelle d’une série (Fiscalité & identité légale › Numérotation des pièces). Une modification est une version datée qui ne s’applique qu’aux pièces à venir. Depuis un poste rattaché, elle est transmise à la mère, qui l’applique. Origine proposée, à valider : l’administrateur et la Directrice Administrative."
+    },
+    {
       "id": "reglage_fichiers",
       "libelle": "Régler la gestion des fichiers numérisés",
       "module": "CFG",
@@ -555,7 +567,31 @@
         "Directrice de l’Administration et des Finances (DAF)"
       ],
       "suitEcran": false,
-      "aide": "Le bouton « Confirmer » des taux de la CNSS et des versions du barème de l’AIB : motif obligatoire, auteur et date tracés ; rien n’est écrasé, la confirmation s’ajoute à une date d’effet. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+      "aide": "Le bouton « Confirmer » des taux fiscaux (CNSS, VPS, barème de l’ITS, TVA…) ET l’arrêt d’une version du barème de l’AIB (écrans « Validations de l’AIB » et « Acompte sur impôt (AIB) ») : un seul droit, plus de double porte. Motif obligatoire, auteur et date tracés ; rien n’est écrasé, la confirmation s’ajoute à une date d’effet. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "facture_tiers_emettre",
+      "libelle": "Émettre une facture à une entreprise (tiers payeur)",
+      "module": "M9",
+      "ecran": "m9-facture-mere",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "La facture normalisée adressée à une entreprise qui prend un patient en charge : IFU et nom de l’acheteur, situation d’AIB choisie par le comptable. Elle naît d’une ligne du relevé de M9 (jamais saisie à la main) et ne remplace pas la facture du patient, qui reste sans acheteur ni AIB. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "cloture_inventaire",
+      "libelle": "Passer des écritures d’inventaire pendant la clôture",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Pendant qu’un exercice est EN CLÔTURE, les modules n’y écrivent plus ; seuls les rôles qui détiennent ce droit y passent leurs écritures d’inventaire, en saisie manuelle (la saisie des dépenses, la garde des écritures et la mise de côté des pièces d’un fileul le lisent). Remplace le réglage « liste de rôles » : une case de la fiche de rôle. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
     },
     {
       "id": "validations_vue_complete",
@@ -832,7 +868,10 @@
     "achats": "Achats",
     "validations": "Validations et continuité",
     "caisse": "Caisse et encaissement",
-    "pta": "Plan de travail annuel"
+    "pta": "Plan de travail annuel",
+    "taux_fiscaux": "Taux et barèmes de la paie",
+    "rh": "Ressources humaines",
+    "ambulance": "Ambulance"
   },
   "parametres": [
     {
@@ -1016,6 +1055,110 @@
       "sensible": false,
       "aide": "Oui : l'agent garde sur son téléphone une copie chiffrée de sa propre fiche de paie ÉMISE (diffusée), jamais celle d'un autre, jamais l'ensemble de la paie, jamais recalculée à l'appareil. Le réglage lui-même ne va PAS au téléphone (famille « paie » réservée) : la mère décide de publier ou de retirer la copie.",
       "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.cnssTauxOuvrier",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 3.6,
+      "libelle": "CNSS — part ouvrière (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Retenue sur le salaire brut après sanction, à chaque bulletin. Une version nouvelle prend effet à une date : un bulletin se calcule au taux en vigueur le premier jour de sa période ; un bulletin déjà généré garde le sien.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 3,6 %, sans plafond"
+    },
+    {
+      "cle": "taux_fiscaux.cnssTauxPatronal",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 16.4,
+      "libelle": "CNSS — part patronale (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Charge de l'employeur, non déduite du net. Versionnée par date comme la part ouvrière.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 16,4 %, sans plafond"
+    },
+    {
+      "cle": "taux_fiscaux.vpsTaux",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 4.0,
+      "libelle": "VPS — versement patronal de solidarité (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Charge de l'employeur, non déduite du net. Versionnée par date.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 4 % du salaire brut"
+    },
+    {
+      "cle": "taux_fiscaux.baremeIts",
+      "famille": "taux_fiscaux",
+      "type": "texte",
+      "defaut": "[[0,60000,0],[60001,150000,10],[150001,250000,15],[250001,500000,19],[500001,null,30]]",
+      "libelle": "Barème progressif de l'ITS",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Tranches [plancher, plafond, taux %], la dernière sans plafond. Le barème semé est celui de la maquette, « à confirmer par le service comptable » : il reste marqué à confirmer tant qu'aucune confirmation ne cite le texte qui le fonde.",
+      "source": "Maquette (D.PARAM_PAIE.its) : à confirmer par le service comptable, aucun texte cité"
+    },
+    {
+      "cle": "taux_fiscaux.primeAncienneteTaux",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 2.0,
+      "libelle": "Prime d'ancienneté — taux par année (% du salaire de base)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le taux appliqué par année d'ancienneté, au salaire de base. Lu à la date du bulletin ; un bulletin déjà généré garde le sien.",
+      "source": "Maquette (m11-paie.js, prime d'ancienneté) : 2 % par année, à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.primeAncienneteSeuilAns",
+      "famille": "taux_fiscaux",
+      "type": "entier",
+      "defaut": 2,
+      "libelle": "Prime d'ancienneté — à partir de (années)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le nombre d'années d'ancienneté à partir duquel la prime est due. Entier de 0 à 40.",
+      "source": "Maquette (m11-paie.js, prime d'ancienneté) : à partir de 2 ans, à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.tvaTauxNormal",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 18.0,
+      "libelle": "TVA — taux du régime normal (%)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Appliqué quand la configuration fiscale retient le régime normal (Baguidi : régime exonéré, produits et actes de santé). Versionné par date.",
+      "source": "Référentiel fiscal de la maquette (D.PARAM_FISCAL.regimesTva) : 18 %"
+    },
+    {
+      "cle": "rh.participationStandardParAgent",
+      "famille": "rh",
+      "type": "entier",
+      "defaut": 1000,
+      "libelle": "Participation standard par agent aux événements du personnel (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Proposée à la création d'un événement (mariage, naissance, décès…) et reprise quand le montant saisi est vide ou nul. Un événement déjà créé garde le montant qu'il porte.",
+      "source": "Usage de la clinique repris de la maquette (vague 21) : 1 000 F, à confirmer par la Direction de Baguidi"
     },
     {
       "cle": "planning.badgeSertDePointage",
@@ -1372,19 +1515,6 @@
       "source": "Décision de la Direction du 16/11/2026 (section AI) : 4 heures"
     },
     {
-      "cle": "cloture.rolesInventaire",
-      "famille": "cloture",
-      "type": "texte",
-      "defaut": "comptable,admin",
-      "libelle": "Écritures d'inventaire en clôture : rôles autorisés",
-      "choix": null,
-      "libellesChoix": {},
-      "branche": true,
-      "sensible": false,
-      "aide": "Identifiants de rôle séparés par des virgules. Pendant qu'un exercice est EN CLÔTURE, les modules n'y écrivent plus ; seuls ces rôles y passent leurs écritures d'inventaire, en saisie manuelle. Une liste vide retombe sur le défaut.",
-      "source": "Décision de la Direction du 17/11/2026 (Q3) : comptable et administrateur semés"
-    },
-    {
       "cle": "achats.libelleValidateur",
       "famille": "achats",
       "type": "texte",
@@ -1456,6 +1586,32 @@
       "sensible": false,
       "aide": "Les actions se numérotent « <préfixe>-<exercice>-NNN », série annuelle. Majuscules et chiffres, 1 à 12 caractères ; une valeur illisible retombe sur le défaut. Changer le préfixe ne renumérote aucune action et ne redonne jamais un rang déjà attribué dans l'exercice.",
       "source": "Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "ambulance.forfaitCourse",
+      "famille": "ambulance",
+      "type": "entier",
+      "defaut": 5000,
+      "libelle": "Course d'ambulance sans montant saisi : forfait (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Proposé quand la course est enregistrée sans montant : forfait + kilomètres × prix au kilomètre. Valeur d'attente, à valider par la Direction.",
+      "source": "Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d'une course"
+    },
+    {
+      "cle": "ambulance.prixKilometre",
+      "famille": "ambulance",
+      "type": "entier",
+      "defaut": 500,
+      "libelle": "Course d'ambulance sans montant saisi : prix au kilomètre (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Ajouté au forfait pour chaque kilomètre parcouru. Valeur d'attente, à valider par la Direction.",
+      "source": "Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d'une course"
     }
   ]
 }

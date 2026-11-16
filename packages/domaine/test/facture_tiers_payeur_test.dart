@@ -29,7 +29,7 @@ void main() {
   final factures = [facture('FP-2026-00001'), facture('FP-2026-00002', part: 8000), facture('FP-2026-00003', souscripteur: 'Mairie de Parakou')];
   final lignes = assFillesMere(factures, 'NSIA', 'NSIA ASSURANCE', '2026-10-17');
   AssFilleMere? giz() => lignes.where((l) => l.souscripteur == 'GIZ Bénin').firstOrNull;
-  const ifu = '3201642748214';
+  const ifu = '1201555000123';
 
   VerdictFactureTiers emettre({
     String role = 'comptable',

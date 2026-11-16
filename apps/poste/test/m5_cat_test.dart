@@ -697,7 +697,7 @@ void main() {
       await saisir(t, 'cump', '1500');
       await toucher(t, find.widgetWithText(BoutonSigh, 'Créer'));
       final f = fiche(m, 'produits', (x) => x['designation'] == 'KIT TEST');
-      expect(f['code'], 'LAB-0008', reason: 'le plus grand rang LAB- du registre (archivés compris) + 1');
+      expect(f['code'], 'REA-0008', reason: 'le plus grand rang du registre (archivés compris) + 1, lu sous « LAB- » (avant le 17/11/2026) comme sous « REA- » : un préfixe propre aux réactifs');
       expect(f['stock'], 12);
       expect(f['seuilAlerte'], 5);
       expect(f['cump'], 1500);

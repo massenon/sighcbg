@@ -517,7 +517,7 @@ Fiche? delivrerPiece(Jeu j, PatientJeu pp, String typeId, DateTime quand,
     acteCode: type.tarifCode,
     assurable: entreeTarif?['assurable'],
     couvertures: j.lire('couverturesAssurance'),
-    nbFactures: j.ctx.collection('factures').toutes.length,
+    facturesExistantes: j.ctx.collection('factures').toutes,
     nouvelId: (prefixe) => prefixe == 'FAC' ? j.nouvelId('factures', 'FAC') : j.nouvelId('taches', 'TCH'),
     date: quand,
   );

@@ -12,7 +12,7 @@ import 'm9_aide.dart';
 /// LA FACTURE À UNE ENTREPRISE, AU POSTE (Direction de Baguidi, 17/11/2026, point 2) : l'onglet « Factures à une entreprise » de `m9-facture-mere`, né d'une ligne du relevé de M9 ; la commande
 /// est ABSENTE sans le geste réservé ; l'IFU, le nom et la situation d'AIB sont saisis (la situation n'est jamais présumée) ; la pièce est numérotée par la série `caisse.factures-tiers`,
 /// mise EN ATTENTE de certification (aucun numéro fabriqué), journalisée ; les factures patients qu'elle réclame ne figurent plus à la facture mère ; la facture du patient n'est pas touchée.
-const ifu = '3201642748214';
+const ifu = '1201555000123';
 
 Magasin monde() {
   final m = magasin();
