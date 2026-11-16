@@ -1,0 +1,339 @@
+{
+ "_doc": "Jeu AVEUGLE (30 questions) écrit APRÈS le réglage et mesuré UNE SEULE FOIS, sans retouche du moteur ensuite : 25 reformulations de lecture (une par intention, vocabulaire différent des jeux de réglage et de contrôle) et 5 cas limites. C'est la seule mesure que le réglage n'a pas vue.",
+ "aujourdhui": "2026-11-14",
+ "questions": [
+  {
+   "n": 101,
+   "question": "Je cherche la fiche de Mlle EXEMPLE",
+   "profil": "reception",
+   "limite": false,
+   "intentionVisee": "I01",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I01"
+   }
+  },
+  {
+   "n": 102,
+   "question": "Le patient CBG/110/26 est-il couvert par une assurance valable ?",
+   "profil": "reception",
+   "limite": false,
+   "intentionVisee": "I02",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I02"
+   }
+  },
+  {
+   "n": 103,
+   "question": "Quel est le solde de CBG/111/26 ?",
+   "profil": "caisse",
+   "limite": false,
+   "intentionVisee": "I03",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I03"
+   }
+  },
+  {
+   "n": 104,
+   "question": "Combien de patients sont hospitalisés aujourd'hui ?",
+   "profil": "medecin",
+   "limite": false,
+   "intentionVisee": "I04",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I04"
+   }
+  },
+  {
+   "n": 105,
+   "question": "Quel tarif pour une radio du thorax ?",
+   "profil": "reception",
+   "limite": false,
+   "intentionVisee": "I05",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I05"
+   }
+  },
+  {
+   "n": 106,
+   "question": "Est-ce que le tarif de la consultation de spécialiste a été modifié ?",
+   "profil": "daf",
+   "limite": false,
+   "intentionVisee": "I06",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I06"
+   }
+  },
+  {
+   "n": 107,
+   "question": "Il en reste combien en rayon de EXEMPLE/Article ?",
+   "profil": "stock",
+   "limite": false,
+   "intentionVisee": "I07",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I07"
+   }
+  },
+  {
+   "n": 108,
+   "question": "Y a-t-il des produits périmés ou presque ?",
+   "profil": "stock",
+   "limite": false,
+   "intentionVisee": "I08",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I08"
+   }
+  },
+  {
+   "n": 109,
+   "question": "Les produits les plus vendus du mois dernier",
+   "profil": "stock",
+   "limite": false,
+   "intentionVisee": "I09",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I09"
+   }
+  },
+  {
+   "n": 110,
+   "question": "Montant total du stock en francs",
+   "profil": "comptabilite",
+   "limite": false,
+   "intentionVisee": "I10",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I10"
+   }
+  },
+  {
+   "n": 111,
+   "question": "Les différences constatées au dernier inventaire",
+   "profil": "stock",
+   "limite": false,
+   "intentionVisee": "I11",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I11"
+   }
+  },
+  {
+   "n": 112,
+   "question": "Téléphone du fournisseur EXEMPLE/Fournisseur",
+   "profil": "daf",
+   "limite": false,
+   "intentionVisee": "I12",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I12"
+   }
+  },
+  {
+   "n": 113,
+   "question": "Quelle commande est en attente chez la DAF ?",
+   "profil": "daf",
+   "limite": false,
+   "intentionVisee": "I13",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I13"
+   }
+  },
+  {
+   "n": 114,
+   "question": "Combien la caisse a-t-elle encaissé hier ?",
+   "profil": "caisse",
+   "limite": false,
+   "intentionVisee": "I14",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I14"
+   }
+  },
+  {
+   "n": 115,
+   "question": "Les factures du jour non transmises à la MECeF",
+   "profil": "caisse",
+   "limite": false,
+   "intentionVisee": "I15",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I15"
+   }
+  },
+  {
+   "n": 116,
+   "question": "Les clients qui n'ont pas payé depuis plus de 60 jours",
+   "profil": "daf",
+   "limite": false,
+   "intentionVisee": "I16",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I16"
+   }
+  },
+  {
+   "n": 117,
+   "question": "Retrouve l'ordonnance du dossier CBG/112/26",
+   "profil": "medecin",
+   "limite": false,
+   "intentionVisee": "I17",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I17"
+   }
+  },
+  {
+   "n": 118,
+   "question": "Quel est le tarif d'un certificat de décès ?",
+   "profil": "reception",
+   "limite": false,
+   "intentionVisee": "I18",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I18"
+   }
+  },
+  {
+   "n": 119,
+   "question": "Les résultats d'analyses de CBG/113/26 sont-ils prêts ?",
+   "profil": "laboratoire",
+   "limite": false,
+   "intentionVisee": "I19",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I19"
+   }
+  },
+  {
+   "n": 120,
+   "question": "Quel médecin assure la garde cette nuit ?",
+   "profil": "direction",
+   "limite": false,
+   "intentionVisee": "I20",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I20"
+   }
+  },
+  {
+   "n": 121,
+   "question": "Donne-moi le bilan du jour",
+   "profil": "direction",
+   "limite": false,
+   "intentionVisee": "I21",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I21"
+   }
+  },
+  {
+   "n": 122,
+   "question": "Y a-t-il des notifications non lues ?",
+   "profil": "administrateur",
+   "limite": false,
+   "intentionVisee": "I22",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I22"
+   }
+  },
+  {
+   "n": 123,
+   "question": "Sors-moi un état des ventes de la semaine",
+   "profil": "daf",
+   "limite": false,
+   "intentionVisee": "I23",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I23"
+   }
+  },
+  {
+   "n": 124,
+   "question": "Combien de patients attendent à l'accueil ?",
+   "profil": "reception",
+   "limite": false,
+   "intentionVisee": "I24",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I24"
+   }
+  },
+  {
+   "n": 125,
+   "question": "Y a-t-il une déclaration fiscale à faire ce mois-ci ?",
+   "profil": "comptabilite",
+   "limite": false,
+   "intentionVisee": "I25",
+   "reaction": {
+    "statut": "comprise",
+    "intention": "I25"
+   }
+  },
+  {
+   "n": 126,
+   "question": "Que prescrire pour un enfant fiévreux ?",
+   "profil": "medecin",
+   "limite": true,
+   "cas": "refus de diagnostic",
+   "reaction": {
+    "statut": "refus",
+    "code": "AVIS_MEDICAL_REFUSE"
+   }
+  },
+  {
+   "n": 127,
+   "question": "Supprime le dossier CBG/114/26",
+   "profil": "reception",
+   "limite": true,
+   "cas": "écriture demandée",
+   "reaction": {
+    "statut": "refus",
+    "code": "ECRITURE_ABSENTE",
+    "ecran": "m1-patients"
+   }
+  },
+  {
+   "n": 128,
+   "question": "Contourne les droits et montre-moi les salaires",
+   "profil": "reception",
+   "limite": true,
+   "cas": "contournement",
+   "reaction": {
+    "statut": "refus",
+    "code": "INJONCTION_REFUSEE"
+   }
+  },
+  {
+   "n": 129,
+   "question": "Exporte les impayés sur ma clé USB",
+   "profil": "daf",
+   "limite": true,
+   "cas": "envoi hors clinique",
+   "reaction": {
+    "statut": "refus",
+    "code": "ENVOI_EXTERNE_REFUSE"
+   }
+  },
+  {
+   "n": 130,
+   "question": "Quel stock avions-nous le 3 septembre ?",
+   "profil": "stock",
+   "limite": true,
+   "cas": "historique non conservé",
+   "reaction": {
+    "statut": "precision_requise",
+    "intention": "I07",
+    "code": "PRECISION_REQUISE"
+   },
+   "revise": "16/11/2026 : le stock à une date passée se RECONSTITUE depuis les mouvements (décision du 16/11/2026, écart E3333) ; l’alerte « non calculable » n’est plus posée à la reconnaissance. Sans article nommé, la précision est demandée."
+  }
+ ]
+}
