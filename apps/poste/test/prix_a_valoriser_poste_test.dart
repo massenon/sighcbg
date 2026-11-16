@@ -140,4 +140,23 @@ void main() {
     c2.annuler();
     expect(ligneAValoriser(lignes(w.m.collection('factures').parId(fid)!)[1]), isTrue);
   });
+  test('SÉPARATION : les notifications de la « caisse » et du « stock » suivent les gestes de la fiche, jamais un nom de rôle', () {
+    final m = jeu();
+    m.collection('notifications').inserer({'type': 'encaissement', 'poste': 'caisse', 'libelle': 'À encaisser', 'lue': false, 'statut': 'actif'});
+    m.collection('notifications').inserer({'type': 'besoin_accorde', 'poste': 'stock', 'libelle': 'Besoin accordé', 'lue': false, 'statut': 'actif'});
+    Set<String> recues(String r) => {
+          for (final a in CentreNotifications(magasin: m, donnees: () => donnees.aChaud(m), role: () => r, horloge: () => jour1).collecter(detaille: true))
+            if (a.source == 'poste' && const {'À encaisser', 'Besoin accordé'}.contains(a.titre)) a.titre
+        };
+    // Aujourd'hui (aucune décision) : la caisse va au Caissier, le stock au gestionnaire, au pharmacien et à la DAF (les listes d'avant).
+    expect(recues('caissier'), {'À encaisser'});
+    expect(recues('stock'), {'Besoin accordé'});
+    expect(recues('pharmacien'), {'Besoin accordé'});
+    expect(recues('da'), {'Besoin accordé'});
+    // La Direction sépare : le pharmacien perd le stock et prend… rien de la caisse ; le caissier prend aussi le stock. Des cases, aucun code.
+    m.collection('rbac').inserer({'role': 'caissier', 'statut': 'actif', 'droitsGestes': {gesteAlertesStock: true}});
+    m.collection('rbac').inserer({'role': 'pharmacien', 'statut': 'actif', 'droitsGestes': {gesteAlertesStock: false}});
+    expect(recues('caissier'), {'À encaisser', 'Besoin accordé'});
+    expect(recues('pharmacien'), isEmpty);
+  });
 }
