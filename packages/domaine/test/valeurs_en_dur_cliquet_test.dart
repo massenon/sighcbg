@@ -33,7 +33,8 @@ void main() {
   Map<String, Object?> copie() => (jsonDecode(jsonEncode(base)) as Map).cast<String, Object?>();
 
   test('la ligne de base surveille B et H, et chaque fichier toléré dit pourquoi', () {
-    expect(familles(base).keys.toSet(), {'B', 'H'});
+    expect(familles(base).keys.toSet(), {'B', 'H', 'E'}, reason: 'E (numérotation, lot 2) est sous cliquet à plafond zéro : aucun fichier toléré');
+    expect((familles(base)['E'] as Map), isEmpty);
     for (final f in familles(base).entries) {
       for (final e in (f.value as Map).entries) {
         final t = (e.value as Map);

@@ -897,8 +897,11 @@ if (args.includes('--cliquet')) {
       const t = tol[fichier];
       const plafond = t ? t.plafond : 0;
       if (n > plafond) {
-        const sites = defauts.filter((c) => c.famille === f && c.fichier === fichier).map((c) => `${c.ligne} (${String(c.valeur).slice(0, 40)})`).join(', ');
-        ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${plafond} — une valeur en dur est APPARUE (lignes ${sites}). La lire dans un paramètre daté, un référentiel ou un barème ; sinon la tolérer avec un motif.`);
+        const sites = defauts.filter((c) => c.famille === f && c.fichier === fichier).map((c) => `    ${c.fichier}:${c.ligne}  « ${String(c.valeur).slice(0, 60)} »`).join('\n');
+        const consigne = f === 'E'
+          ? 'Une référence de pièce se construit par la fabrique du référentiel de numérotation (numeroSuivant / numeroFormate / numeroDerive), jamais par un préfixe écrit dans le code.'
+          : 'La lire dans un paramètre daté, un référentiel ou un barème ; sinon la tolérer avec un motif.';
+        ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${plafond} — une valeur en dur est APPARUE :\n${sites}\n    ${consigne}`);
       }
     }
     for (const [fichier, t] of Object.entries(tol)) {
@@ -914,7 +917,7 @@ if (args.includes('--cliquet')) {
     for (const e of ecarts) console.error(`  - ${e}`);
     process.exit(1);
   }
-  console.log(`Cliquet « valeurs en dur » : conforme à la ligne de base (${resume}).`);
+  console.log(`Cliquet « valeurs en dur » : familles ${familles.join(', ')} conformes à leurs plafonds (${resume}).`);
 //        Famille E (préfixes de numérotation) : plafond ZÉRO partout depuis le lot 2 (fabrique du référentiel de numérotation) ; `--injecter=<chemin fictif>:<fichier>` ajoute un source
 //        au balayage comme s'il vivait au chemin fictif (sonde : le cliquet doit mordre).
 //   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A   échoue si une année en dur qui décide apparaît hors de la liste fermée (annees-tolerees.json)
