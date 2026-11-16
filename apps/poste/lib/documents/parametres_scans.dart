@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../core/jetons_shell.dart';
 import '../kit/kit.dart';
 import '../shell/contexte_ecran.dart';
+import '../shell/gestes_ecran.dart';
 import 'ocr_ui.dart';
 import 'panneau_scan.dart';
 import 'service_fichiers.dart';
@@ -128,7 +129,8 @@ class _PanneauScansPosteState extends State<PanneauScansPoste> {
         builder: (ctx, snap) {
           final info = snap.data;
           final chemin = info?['dossier'];
-          final peutRegler = c.droit.editer && s.estMere;
+          // Q5 (17/11/2026) : un DROIT PAR RÉGLAGE, réglable séparément. La gestion des fichiers (taille maximale, contrôle, sauvegarde) et la lecture des scans (OCR) sont deux gestes distincts.
+          final peutRegler = c.droit.editer && s.estMere && gestePeutEcran(c, gesteReglageFichiers);
           return Column(key: const Key('panneau-scans-poste'), crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             CarteSigh(titre: 'Où sont mes scans ?', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SelectableText(chemin is String ? chemin : (snap.connectionState != ConnectionState.done ? '…' : 'Chemin non connu : la mère ne répond pas ou ce poste n’est pas rattaché.'), key: const Key('scans:chemin-mere'), style: const TextStyle(fontFamily: 'LiberationMono', fontSize: 14)),
@@ -148,7 +150,7 @@ class _PanneauScansPosteState extends State<PanneauScansPoste> {
               else const Text('Se règle sur le poste mère (la mère lit ce réglage à chaque dépôt).', style: TextStyle(color: JetonsShell.slate500, fontSize: 12)),
             ])),
             const SizedBox(height: 12),
-            CarteReglageOcr(peutRegler: c.droit.editer),
+            CarteReglageOcr(peutRegler: c.droit.editer && gestePeutEcran(c, gesteReglageOcr)),
             const SizedBox(height: 12),
             CarteSigh(titre: 'Intégrité, sauvegarde et restauration', child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text('Chaque fiche porte l’empreinte SHA-256 de son fichier, recalculée à chaque dépôt et à chaque lecture. Conservation illimitée : rien ne se purge, rien ne se supprime (RG-14).', style: TextStyle(fontSize: 12, color: JetonsShell.slate600)),

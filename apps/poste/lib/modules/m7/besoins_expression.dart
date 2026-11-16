@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/reglages_clinique_poste.dart';
 import '../../impression/piece.dart';
 import '../../core/plages_codes.dart';
 import '../../core/service_installation.dart';
@@ -95,7 +96,7 @@ class EcranBesoins extends StatelessWidget with EcranMaquette {
         final miennes = bonsMiens(actifs, moi);
         final aArbitrer = bonsAArbitrer(actifs);
         final pourAchat = bonsPourAchat(actifs);
-        final vues = vuesOffertes(role: c.role, droitVoir: c.droit.voir);
+        final vues = vuesOffertes(role: c.role, droitVoir: c.droit.voir, validateurs: ReglagesClinique.validateursAchats(c.magasin, c.aujourdhui));
 
         Widget tableau(String titre, List<Fiche> lignes, String vue) =>
             _TableauBesoins(
@@ -757,6 +758,7 @@ class _EtatModaleBon extends State<_ModaleBon> {
           lignes: _lignes,
           existant: widget.record,
           bons: col.toutes,
+          validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
           referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('besoins', 'BEB-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);

@@ -15,6 +15,7 @@ import 'documents/service_fichiers.dart';
 import 'donnees/horssite_poste.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
+import 'sync/pieces_mises_de_cote.dart';
 import 'sync/service_demandes_tarif.dart';
 import 'sync/service_circuit_achats.dart';
 import 'sync/service_validations_deposees.dart';
@@ -268,7 +269,7 @@ Future<void> main() async {
         ..actif = true
         ..installer(magasin);
       unawaited(PlagesCodes.de(magasin).recharger());
-      pontMere ??= PontActivite(magasin, transport, etiquette: 'M', surveillerLesAutres: true)..demarrer();
+      pontMere ??= PontActivite(magasin, transport, etiquette: 'M', surveillerLesAutres: true, gardeEntrante: (c, f) => miseDeCotePieceFileul(magasin, c, f))..demarrer();
     }
     PontActivite creerPontFileul() => PontActivite(
         magasin,

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets;
 
 import 'persistance.dart';
+import 'reglages_clinique_poste.dart';
 
 typedef Fiche = Map<String, Object?>;
 
@@ -678,7 +679,7 @@ class Magasin {
         // protège rien. La garde relit les exercices À CHAQUE écriture (une clôture validée ferme aussitôt).
         if (nom == 'ecritures') {
           c.garder((op, f) => cpcGardeEcritures(collection('exercices').toutes, f['date'],
-              op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? ''));
+              op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? '', rolesInventaire: ReglagesClinique.rolesInventaire(this, horloge())));
         }
         // Un budget d'un exercice CLÔTURÉ est en lecture seule, d'où que l'écriture vienne (écran, importation) : la garde est au moteur, l'écran la subit comme le fichier.
         if (nom == 'budgets') c.garder((op, f) => cpcGardeBudgets(collection('exercices').toutes, f['exercice']));

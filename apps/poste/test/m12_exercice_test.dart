@@ -59,30 +59,30 @@ void main() {
       expect(find.widgetWithText(BoutonSigh, 'Pré-clôture'), findsOneWidget, reason: 'seul 2026 est ouvert');
     });
 
-    casM14('la pré-clôture NOMME le contrôle en échec et l\'écran où corriger ; elle propose le démarrage — au comptable seulement', (t) async {
+    casM14('la pré-clôture NOMME le contrôle en échec et l\'écran où corriger ; elle propose le démarrage — au détenteur du droit du circuit (DAF), pas au comptable seul', (t) async {
       final m = magasinComplet();
-      await ouvrirM14(t, m, 'm12-cloture', role: 'comptable');
+      await ouvrirM14(t, m, 'm12-cloture', role: 'da');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Pré-clôture'));
       expect(find.text('Pré-clôture — exercice 2026'), findsOneWidget);
       expect(find.text('ÉCHEC'), findsOneWidget);
       expect(find.textContaining('92 ligne(s) en brouillon'), findsOneWidget);
       expect(find.textContaining('→ Écritures comptables'), findsOneWidget);
-      expect(find.widgetWithText(BoutonSigh, 'Démarrer la clôture'), findsOneWidget, reason: 'démarrer ne dépend pas des contrôles : ils bloquent la clôture définitive, et le comptable passe ses inventaires entre-temps');
+      expect(find.widgetWithText(BoutonSigh, 'Démarrer la clôture'), findsOneWidget, reason: 'démarrer ne dépend pas des contrôles : ils bloquent la clôture définitive, et les rôles d\'inventaire passent leurs écritures entre-temps');
     });
 
-    casM14('un rôle qui ne demande pas (la Direction valide, elle ne demande pas) ne voit jamais « Démarrer la clôture », même sans blocage', (t) async {
+    casM14('un rôle sans le droit du circuit (le comptable seul, Q2) ne voit jamais « Démarrer la clôture », même sans blocage', (t) async {
       final m = magasinComplet();
       validerBrouillons(m);
-      await ouvrirM14(t, m, 'm12-cloture', role: 'direction');
+      await ouvrirM14(t, m, 'm12-cloture', role: 'comptable');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Pré-clôture'));
       expect(find.text('Conforme'), findsNWidgets(9));
       expect(find.widgetWithText(BoutonSigh, 'Démarrer la clôture'), findsNothing);
     });
 
-    casM14('LES GESTES : le comptable DÉMARRE (notification à la Direction, journal), une AUTRE personne clôture, l\'exercice se FIGE, CL et AN sont écrites', (t) async {
+    casM14('LES GESTES : la DAF DÉMARRE (notification à la Direction, journal), une AUTRE personne clôture, l\'exercice se FIGE, CL et AN sont écrites', (t) async {
       final m = magasinComplet();
       validerBrouillons(m);
-      await ouvrirM14(t, m, 'm12-cloture', role: 'comptable');
+      await ouvrirM14(t, m, 'm12-cloture', role: 'da');
       expect(find.widgetWithText(BoutonSigh, 'Clôturer définitivement'), findsNothing, reason: 'signer n\'est pas saisir');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Pré-clôture'));
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Démarrer la clôture'));
@@ -97,7 +97,7 @@ void main() {
       await t.pump(const Duration(seconds: 10));
 
       // la Direction rouvre l'écran : l'exercice est en clôture
-      await ouvrirM14(t, m, 'm12-cloture', role: 'direction');
+      await ouvrirM14(t, m, 'm12-cloture', role: 'admin');
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Clôturer définitivement'));
       // sans motif : refusé, nommé, rien n'est écrit
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Clôturer définitivement').last);

@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../core/service_parametres.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
 import 'cfa_commun.dart';
 
@@ -20,6 +21,13 @@ class PanneauParametres extends StatelessWidget {
   const PanneauParametres({super.key, required this.c, required this.estMere});
   final ContexteEcran c;
   final bool estMere;
+
+  /// Un réglage qui a SON droit (Q5 : un droit par réglage ; Q3 : qui passe l'inventaire en clôture se règle par le circuit de clôture) ne se règle pas par le seul droit d'éditer l'écran.
+  bool _geste(String famille) => switch (famille) {
+        'mecef' => gestePeutEcran(c, gesteReglageMecef),
+        'cloture' => gestePeutEcran(c, gesteCircuitCloture),
+        _ => true,
+      };
 
   ServiceParametres _service() => serviceParametres(c.magasin, auteur: () => acteurNom(c), horloge: () => c.aujourdhui);
 
@@ -42,7 +50,7 @@ class PanneauParametres extends StatelessWidget {
             for (final e in familles.entries)
               // une famille qui a son PROPRE écran (copie hors site : droit, motif, refus nommés) n'est pas montrée ici : le panneau générique contournerait ses règles
               if (!parFamillesReglageDedie.contains(e.key))
-              cfaSection(libellesFamillesParametres[e.key] ?? e.key, cfaPile([for (final p in e.value) _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler)], espace: 12)),
+              cfaSection(libellesFamillesParametres[e.key] ?? e.key, cfaPile([for (final p in e.value) _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler && _geste(e.key))], espace: 12)),
             cfaSource('Défauts : décisions de la Direction du 09/11/2026 (DECISIONS-A-VALIDER, section D). Rien n’est codé dans l’écran : valeurs et versions sont en base.'),
           ]);
         });

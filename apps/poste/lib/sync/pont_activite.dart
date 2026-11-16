@@ -184,6 +184,7 @@ class PontActivite {
       this.liaison,
       this.surveillerLesAutres = false,
       this.reservesAuMere = false,
+      this.gardeEntrante,
       this.delai = const Duration(seconds: 1)})
       : collections = collections ?? {...collectionsActivite, ...collectionsAtomiques};
   final Magasin magasin;
@@ -206,6 +207,10 @@ class PontActivite {
 
   /// Ce poste est un FILEUL : il ne pose jamais lui-même un arbitrage (circuits d'achat) ; ce qu'il en lit vient du journal de la mère (voir `fusionnerCircuitAchat`).
   final bool reservesAuMere;
+
+  /// Q1 (17/11/2026) : une garde posée à la RÉCEPTION d'une fiche nouvelle venue d'un autre poste. Rend `true` quand la fiche est écartée (mise de côté par l'appelant, qui le dit) : elle n'est pas
+  /// écrite ici, le poste émetteur n'est jamais bloqué. Utilisée par la mère pour les pièces d'un exercice clos ou en clôture.
+  final bool Function(String collection, Map<String, Object?> fiche)? gardeEntrante;
   final Duration delai;
 
   /// La dernière version SYNCHRONISÉE de chaque fiche (clé `collection/idSync`) : sert de base à la fusion champ à champ.
@@ -458,6 +463,10 @@ class PontActivite {
         if (local == null) {
           // LOT IMP-E : une fiche née d'une demande d'import arrive avec sa valeur de DÉPART : c'est son compteur tant qu'aucune variation n'est venue s'y ajouter.
           final nouvelle = <String, Object?>{...recu, 'id': cle};
+          if (gardeEntrante != null && gardeEntrante!(c, nouvelle)) {
+            _base['$c/$cle'] = recu;
+            continue;
+          }
           for (final k in champsCompteurs[c] ?? const <String>{}) {
             // La valeur d'un compteur publiée par un autre poste n'est jamais adoptée : son départ (demande d'import), sinon rien (les variations qu'il a publiées s'y additionnent à partir de zéro).
             final d = _depart(recu, k);

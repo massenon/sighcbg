@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import '../donnees/reglages_clinique_poste.dart';
 import '../modules/m14/commun_m14.dart' show rolesDe;
 
 /// LA CONTINUITÉ DE SERVICE DES VALIDATIONS AU POSTE (Direction, 15/11/2026) : « une validation à faire ne doit JAMAIS empêcher le fileul de travailler ; le poste de la mère
@@ -76,6 +77,7 @@ class ServiceValidationsDeposees {
         besoins: magasin.collection('besoins').toutes,
         commandes: magasin.collection('commandes').toutes,
         depots: depots.toutes,
+        validateurs: ReglagesClinique.validateursAchats(magasin, _maintenant),
         nouvelId: _nouvelId);
     if (!r.ok || r.dejaDepose) return r;
     try {
@@ -202,7 +204,8 @@ class ServiceValidationsDeposees {
   /// Applique UN dépôt de circuit sur la mère : sous le rôle et le nom de l'auteur, contrôles refaits avec les données de la mère (`circuitAppliquer`), date du geste, journal (RG-12).
   /// Le bon écrit voyage aux fileuls par le pont d'activité ; les notifications du comptable et du gestionnaire de stock naissent de l'état du bon sur chaque poste (`ServiceCircuitAchats`).
   bool _appliquerCircuit(Fiche d) {
-    final a = circuitAppliquer(d, besoins: magasin.collection('besoins').toutes, commandes: magasin.collection('commandes').toutes, maintenant: _maintenant);
+    final a = circuitAppliquer(d, besoins: magasin.collection('besoins').toutes, commandes: magasin.collection('commandes').toutes, maintenant: _maintenant,
+        validateurs: ReglagesClinique.validateursAchats(magasin, _maintenant), libelleValidateur: ReglagesClinique.libelleValidateurAchats(magasin, _maintenant));
     if (a == null) return false;
     var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
     final e = a.ecriture;

@@ -6,7 +6,7 @@ Quatre exigences : (a) aucun état « en attente de validation » ne bloque le p
 
 ## Ce que l'audit a trouvé (par lecture du code, par calcul sur les constantes de la production, par tests contre la vraie mère Dart)
 
-**Aucun état « en attente de validation » ne bloque son auteur** : les gardes trouvées sont des dépendances de nature (une commande ne part pas chez le fournisseur sans la DAF, RG-04 ; la clôture refuse les brouillons ; un résultat non validé n'est pas rendu au prescripteur ; un taux d'AIB non arrêté refuse la vente à l'acheteur concerné). L'auteur saisit, facture, encaisse, délivre pendant ce temps (sondé pour les écritures).
+**Aucun état « en attente de validation » ne bloque son auteur** : les gardes trouvées sont des dépendances de nature (une commande ne part pas chez le fournisseur sans la DAF, RG-04 ; la clôture définitive refuse les brouillons ; un résultat non validé n'est pas rendu au prescripteur ; un taux d'AIB non arrêté refuse la vente à l'acheteur concerné). L'auteur saisit, facture, encaisse, délivre pendant ce temps (sondé pour les écritures).
 
 **Le vrai défaut était ailleurs : trois classes de collections, et seule la première permettait la validation à distance.**
 La classe se calcule sur les constantes de la production (`collectionsConfiguration()`, `collectionsActivite`) ; `continuite_validations_audit_test.dart` fige ce tableau, il ne peut donc pas se périmer en silence.
@@ -37,7 +37,7 @@ Légende des preuves : **T** test contre la vraie mère Dart · **C** code lu ·
 | Commandes, validation DAF RG-04 (`commandes`) | ~~L~~ **A** (16/11/2026) | non ; la TRANSMISSION au fournisseur attend la validation que la mère détient (refusée sinon) | **OUI, POSSIBLE (E2853, E2854)** : même dépôt, famille `commande_validation` | la mère | idem | T idem |
 | Factures fournisseurs, livraisons, PV de réception | L | non | non (même cause) | — | — | K |
 | Paie : validation de la Direction, « autre que le générateur » (`bulletins`) | L | non (le bulletin se génère ; la DIFFUSION attend) | NON ; **par nature** exige une AUTRE personne | — | — | K, C |
-| Dépenses (`depenses`), clôture (`clotures`) | L | non ; la clôture refuse les brouillons (dépendance de nature) | non | — | — | K, C |
+| Dépenses (`depenses`), clôture (`clotures`) | L | non ; la clôture définitive refuse les brouillons (dépendance de nature) | non | — | — | K, C |
 | Planning, propositions (`planning`) | L | non | non | — | — | K |
 | Validation technique puis biologique (`demandesAnalyses`) | L | non ; le prescripteur ne voit rien avant (dépendance de nature) | non ; **par nature** engage le biologiste (intérim TSL déjà prévu) | — | — | K, C |
 | Seuils de variation brutale du laboratoire (`seuilsDelta`) | L | non (« enregistré » sans effet) | non | — | — | K, C |
@@ -76,6 +76,20 @@ Décision de la Direction : faire traverser, dans l'ordre, `besoins` puis `comma
 * **Tâches du comptable et du stock** nées de l'état du bon sur chaque poste (E2856). **Jamais vers un téléphone** (E2857).
 
 Preuve : `apps/poste/test/circuit_achats_sync_test.dart` (vraie mère Dart, deux fileuls, mère arrêtée puis relancée), `packages/domaine/test/circuit_synchro_test.dart`, banc `CIR1` (référence et Dart), treize mutations rouges (E2861). **Limite ouverte** : un fileul reçoit tous les bons (le filtre de la mère est par appareil, pas par agent) — E2857.
+
+## Les cinq principes de continuité (Q36, Direction de Baguidi, 17/11/2026)
+
+Relus contre ce document et contre le code (E3079). Statut : **tenu**, ou **non tenu** avec l'écart nommé.
+
+| Principe | Statut | Preuve ou écart |
+|---|---|---|
+| **P1. Jamais bloquant** : une validation à faire n'arrête jamais le poste qui l'a créée | **Tenu** | Aucun état « en attente » ne bloque son auteur (audit ci-dessus). Clôture : l'avertissement avant « Démarrer la clôture » informe sans bloquer ; la mère met de côté la pièce d'un fileul datée d'un exercice clos (`exercice_clos`) ou en clôture (`exercice_en_cloture`) au lieu de la refuser au fileul, qui garde sa pièce (E3072). Écart nommé : la mère ne le dit pas encore au fileul (aucun verdict ne revient par le pont) ni ne propose de « reprendre » la pièce après réouverture. |
+| **P2. Décision humaine hors de la mère** : le validateur valide depuis n'importe quel poste | **Non tenu en partie** | Tenu : référentiels (15 familles), prix, droits, lots d'import, écritures, besoins et commandes (dépôt appliqué par la mère sous le rôle de l'auteur). **Non tenu** : configuration fiscale et décisions de l'AIB (bouton absent sur un fileul) ; circuit de clôture (les quatre transitions se font sur le poste qui porte les exercices : `exercices` n'est pas synchronisée) ; collections de classe L restantes (paie, labo, imagerie, GED, livraisons, factures fournisseurs). Les présences humaines par nature (signature GED, validation de paie par une autre personne, validation biologique) restent hors principe. |
+| **P3. File qui se rejoue** : un dépôt est rejouable sans effet double, le verdict revient | **Tenu pour les dépôts** | `validationsDeposees` : dépôt identique non doublé, application rejouée = `sans_effet`, verdict sur la même fiche, notification unique. **Non tenu** : (a) la mère ne recontrôle pas l'équilibre d'une écriture validée par un fileul (point 4 plus haut) ; (b) une pièce mise de côté n'a pas de commande de reprise (E3072 c). |
+| **P4. Jamais d'auto-validation** | **Tenu là où il est sondé** | Clôture : l'identifiant de l'agent est comparé (« Signer n'est pas saisir »), sondé avec droit accordé (`drc_decisions_test`, `identite_test`, `m12_exercice_test`) ; paie : par nature une autre personne. **Non vérifié par ce lot** : l'arbitrage d'un bon de besoins par son propre auteur (le circuit ne compare pas l'auteur du bon et l'arbitre). |
+| **P5. Alerte réglable** | **Non tenu en partie** | Réglable : échéances fiscales (`fiscal.delaiAPayerJours`, `fiscal.delaiDeclarationJours`), copie hors site (retard), validateur et rôles d'inventaire (Q3, Q4). **Non tenu** : aucun délai réglable pour signaler une validation restée trop longtemps en attente de la mère (le badge « transmise à la mère, en attente » ne s'alerte pas) ; l'alerte des opérations à envoyer avant clôture ne reçoit pas le compte réel de la file (reste à 0). Ces deux points touchent la synchronisation et sa file : laissés à l'agent qui la porte. |
+
+**Corrigé dans ce lot sans toucher au service de synchronisation** : circuit de clôture en geste réservé (E3070), avertissement non bloquant (E3071), mise de côté à la réception de la mère poste (E3072), inventaire et validateur des achats en réglages (E3073, E3074), contrôle de rôle manquant sur la validation directe d'une commande (E3074).
 
 ## Hypothèses
 

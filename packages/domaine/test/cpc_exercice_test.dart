@@ -71,7 +71,7 @@ void main() {
   group('la garde de lecture seule, posée sur la collection', () {
     test('les refus ont le motif de la maquette ; 2026 et une date absente passent', () {
       String? motif(String d) => cpcGardeEcritures(exo, d);
-      expect(motif('2025-03-01'), allOf(contains('Exercice 2025 clôturé le 30/04/2026'), contains('lecture seule'), contains('réouverture par le comptable')));
+      expect(motif('2025-03-01'), allOf(contains('Exercice 2025 clôturé le 30/04/2026'), contains('lecture seule'), contains('réouverture par le circuit de clôture')));
       expect(motif('2024-12-31'), contains('Exercice 2024 clôturé'));
       expect(motif('2025-06-01'), contains('Exercice 2025 clôturé'));
       expect(motif('2026-03-01'), isNull);
@@ -214,7 +214,7 @@ void main() {
     test('démarrer : mêmes refus nommés, mêmes états', () {
       expect(cpcDemarrerCloture(exo, tout, 2031, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant).motif, carte(cl['inconnue'])['motif']);
       expect(cpcDemarrerCloture(exo, tout, 2025, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant).motif, carte(cl['dejaClos'])['motif']);
-      final d = cpcDemarrerCloture(exo, tout, 2026, acteur: 'KALOU Avolutu', role: 'comptable', maintenant: maintenant);
+      final d = cpcDemarrerCloture(exo, tout, 2026, acteur: 'KALOU Avolutu', role: 'da', maintenant: maintenant);
       expect(d.ok, carte(cl['demande'])['ok']);
       expect(d.patch!['etat'], 'en_cloture');
     });
@@ -222,11 +222,12 @@ void main() {
       final enC = [for (final x in exo) if (x['annee'] == 2026) {...x, 'etat': 'en_cloture', 'demandePar': 'KALOU Avolutu'} else x];
       CpcValidation val(List<F> e, int a, String motif, String role, String acteur) =>
           cpcValiderCloture(e, tout, a, motif: motif, acteur: acteur, role: role, maintenant: maintenant, toutesEcritures: tout);
-      expect(carte(cl['validerRole'])['motif'], val(enC, 2026, 'Conforme', 'comptable', 'KALOU Avolutu').motif);
-      expect(carte(cl['validerDemandeur'])['motif'], val(enC, 2026, 'Conforme', 'direction', 'KALOU Avolutu').motif);
-      expect(carte(cl['validerSansMotif'])['motif'], val(enC, 2026, '', 'direction', 'BICHIASI Cezoune Sichovian').motif);
-      expect(carte(cl['validerInconnue'])['motif'], val(enC, 2030, 'Conforme', 'direction', 'BICHIASI Cezoune Sichovian').motif);
-      final r = val(enC, 2026, 'Exercice 2026 conforme', 'direction', 'BICHIASI Cezoune Sichovian');
+      // Q1 (17/11/2026) : le refus de rôle n'est plus celui de la maquette (« Direction ou Directrice ») : le circuit est un geste réservé de la fiche de rôle.
+      expect(val(enC, 2026, 'Conforme', 'comptable', 'KALOU Avolutu').motif, contains('circuit de clôture'));
+      expect(carte(cl['validerDemandeur'])['motif'], val(enC, 2026, 'Conforme', 'da', 'KALOU Avolutu').motif);
+      expect(carte(cl['validerSansMotif'])['motif'], val(enC, 2026, '', 'da', 'BICHIASI Cezoune Sichovian').motif);
+      expect(carte(cl['validerInconnue'])['motif'], val(enC, 2030, 'Conforme', 'da', 'BICHIASI Cezoune Sichovian').motif);
+      final r = val(enC, 2026, 'Exercice 2026 conforme', 'da', 'BICHIASI Cezoune Sichovian');
       final att = carte(cl['valider']);
       expect(r.ok, true, reason: r.motif);
       expect(r.clNumero, att['clNumero']);
@@ -275,19 +276,21 @@ void main() {
           {...ouvert.first, 'etat': 'en_cloture', 'demandePar': par}
         ];
 
-    test('démarrer : le comptable, la DAF et l\'administrateur ; un autre rôle, un exercice déjà en clôture ou de la liasse sont refusés en le nommant', () {
-      final ok = cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Comptable Sonde', role: 'comptable', maintenant: maintenant);
+    test('démarrer : la DAF et l\'administrateur d\'origine, un comptable SEUL non (sauf droit accordé) ; un exercice déjà en clôture ou de la liasse sont refusés en le nommant', () {
+      final ok = cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Comptable Sonde', role: 'da', maintenant: maintenant);
       expect(ok.ok, true);
       expect(ok.patch!['etat'], 'en_cloture');
       expect(ok.patch!['demandePar'], 'Comptable Sonde');
-      expect(cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Caissier', role: 'caissier', maintenant: maintenant).motif, contains('réservé au comptable'));
-      expect(cpcDemarrerCloture(enCloture(), journal, 2030, acteur: 'X', role: 'comptable', maintenant: maintenant).motif, contains('déjà en clôture'));
-      expect(cpcDemarrerCloture([{...ouvert.first, 'source': 'liasse', 'etat': 'clos'}], journal, 2030, acteur: 'X', role: 'comptable', maintenant: maintenant).motif, contains('liasse'));
+      expect(cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Caissier', role: 'caissier', maintenant: maintenant).motif, contains('réservé aux rôles'));
+      expect(cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Comptable', role: 'comptable', maintenant: maintenant).motif, contains('Un comptable seul'), reason: 'Q2 : un comptable seul ne démarre pas');
+      expect(cpcDemarrerCloture(ouvert, journal, 2030, acteur: 'Comptable', role: 'comptable', maintenant: maintenant, autorise: true).ok, isTrue, reason: 'sauf si la fiche de rôle lui accorde le droit');
+      expect(cpcDemarrerCloture(enCloture(), journal, 2030, acteur: 'X', role: 'da', maintenant: maintenant).motif, contains('déjà en clôture'));
+      expect(cpcDemarrerCloture([{...ouvert.first, 'source': 'liasse', 'etat': 'clos'}], journal, 2030, acteur: 'X', role: 'da', maintenant: maintenant).motif, contains('liasse'));
     });
 
     test('reprendre la saisie : seulement depuis « en clôture », par ceux qui peuvent démarrer', () {
-      expect(cpcReprendreSaisie(enCloture(), 2030, acteur: 'X', role: 'comptable', maintenant: maintenant).patch!['etat'], 'ouvert');
-      expect(cpcReprendreSaisie(ouvert, 2030, acteur: 'X', role: 'comptable', maintenant: maintenant).motif, contains('rien à reprendre'));
+      expect(cpcReprendreSaisie(enCloture(), 2030, acteur: 'X', role: 'da', maintenant: maintenant).patch!['etat'], 'ouvert');
+      expect(cpcReprendreSaisie(ouvert, 2030, acteur: 'X', role: 'da', maintenant: maintenant).motif, contains('rien à reprendre'));
       expect(cpcReprendreSaisie(enCloture(), 2030, acteur: 'X', role: 'caissier', maintenant: maintenant).motif, contains('réservé'));
     });
 
@@ -310,7 +313,7 @@ void main() {
         cpcValiderCloture(exo, ecr, 2030, motif: motif, acteur: acteur, role: role, maintenant: maintenant, toutesEcritures: ecr);
 
     test('clôturer : refus nommés (rôle, motif, même personne, exercice pas en clôture, contrôles bloquants)', () {
-      expect(cloturer(enCloture(), journal, role: 'comptable').motif, contains('Direction ou la Directrice'));
+      expect(cloturer(enCloture(), journal, role: 'comptable').motif, contains('circuit de clôture'));
       expect(cloturer(enCloture(), journal, motif: '').motif, contains('motif'));
       expect(cloturer(enCloture(), journal, acteur: 'Comptable Sonde').motif, contains('autre personne'));
       expect(cloturer(ouvert, journal).motif, contains('n’est pas en clôture'));
@@ -370,16 +373,17 @@ void main() {
       expect(cpcResultatDe(cpcEcrituresDe(apres, 2030, avecCL: true)).abs() < 1, true, reason: 'avec CL, les classes 6 à 8 sont soldées');
     });
 
-    test('rouvrir : le comptable seul, motif de dix caractères, jamais la liasse, jamais si N+1 n\'est plus ouvert ; CL et AN sont CONTRE-PASSÉES', () {
+    test('rouvrir : le détenteur du droit du circuit (administrateur, DAF d\'origine), motif de dix caractères, jamais la liasse, jamais si N+1 n\'est plus ouvert ; CL et AN sont CONTRE-PASSÉES', () {
       final r = cloturer(enCloture(), journal);
       final apres = [...journal, ...r.lignesCL, ...r.lignesAN];
       final clos = [
         {...ouvert.first, ...r.patch!},
         r.exerciceSuivant!
       ];
-      CpcReouverture rouvrir({String role = 'comptable', String motif = 'Erreur de caisse découverte', List<F>? exo}) =>
+      CpcReouverture rouvrir({String role = 'da', String motif = 'Erreur de caisse découverte', List<F>? exo}) =>
           cpcRouvrirExercice(exo ?? clos, apres, 2030, motif: motif, acteur: 'Comptable Sonde', role: role, maintenant: maintenant, toutesEcritures: apres);
-      expect(rouvrir(role: 'da').motif, contains('réservée au comptable'));
+      expect(rouvrir(role: 'comptable').motif, contains('réservée aux rôles'));
+      expect(rouvrir(role: 'comptable').ok, isFalse, reason: 'Q1 : le comptable seul ne rouvre plus d\'office');
       expect(rouvrir(motif: 'trop bref').motif, contains('dix caractères'));
       expect(rouvrir(motif: 'dix carac.').ok, true, reason: 'dix caractères exactement passent');
       expect(rouvrir(exo: [{...clos.first, 'source': 'liasse'}, clos.last]).motif, contains('liasse'));

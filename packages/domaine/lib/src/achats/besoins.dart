@@ -16,6 +16,7 @@
 library;
 
 import '../format/format_fr.dart';
+import '../parametres/reglages_roles.dart' show rolesValidateursAchatsDefaut;
 import 'nombres.dart';
 
 /// Un refus NOMMÉ : le motif est le texte affiché à l'agent, rien n'a été écrit.
@@ -81,8 +82,8 @@ const categoriesBesoin = [
   'Autre — à préciser',
 ];
 
-/// Qui arbitre (valider, rejeter, demander un complément).
-const rolesArbitres = {'da', 'direction', 'admin'};
+/// Qui arbitre (valider, rejeter, demander un complément) : un RÉGLAGE de clinique (Q4, 17/11/2026, `achats.rolesValidateurs`, la Directrice Administrative semée), jamais une liste de rôles écrite
+/// ici. L'appelant lit le réglage en vigueur (`reglageRoles`) et le passe en [validateurs] ; sans lui, le défaut semé s'applique.
 
 /// Qui voit les besoins validés et le registre complet (achat et logistique).
 const rolesAchat = {
@@ -94,7 +95,7 @@ const rolesAchat = {
   'aide_comptable'
 };
 
-bool estArbitre(String role) => rolesArbitres.contains(role);
+bool estArbitre(String role, {Iterable<String>? validateurs}) => (validateurs ?? rolesValidateursAchatsDefaut).contains(role);
 bool estAchat(String role) => rolesAchat.contains(role);
 
 /// Le formulaire s'adapte à qui l'ouvre : seul celui qui tient le circuit (droit d'écrire ET poste d'achat) choisit l'étape. Un agent qui exprime un
@@ -134,9 +135,9 @@ int bonsLivres(Iterable<_Bon> actifs) =>
 
 /// Les onglets offerts à un profil, dans l'ordre : chaque vue est gardée par CE QU'ELLE PERMET, non par un module.
 /// `droitVoir` : le droit de lecture du profil sur l'écran.
-List<String> vuesOffertes({required String role, required bool droitVoir}) => [
+List<String> vuesOffertes({required String role, required bool droitVoir, Iterable<String>? validateurs}) => [
       'miennes',
-      if (estArbitre(role)) 'arbitrage',
+      if (estArbitre(role, validateurs: validateurs)) 'arbitrage',
       if (estAchat(role)) 'achats',
       if (droitVoir && estAchat(role)) 'tous',
     ];
@@ -221,7 +222,8 @@ _Bon bonEnregistre(
     required List<_Bon> lignes,
     _Bon? existant,
     required Iterable<_Bon> bons,
-    String Function()? referenceSuivante}) {
+    String Function()? referenceSuivante,
+    String validateur = directriceAdministrative}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
   final v = {...saisie};
   v['lignes'] = lignes;
@@ -237,11 +239,11 @@ _Bon bonEnregistre(
   }
   // E74 : un validateur déjà connu n'est jamais écrasé. E73/E77 : sinon la DAF est portée validatrice.
   const validantes = ['validation_da', 'accorde', 'prepare', 'livre', 'cloture'];
-  final validateur = v['valideePar'];
+  final deja = v['valideePar'];
   if (validantes.contains(v['etape']) &&
-      (validateur == null || validateur == '') &&
+      (deja == null || deja == '') &&
       !(existant != null && existant['valideePar'] != null && existant['valideePar'] != '')) {
-    v['valideePar'] = directriceAdministrative;
+    v['valideePar'] = validateur;
   }
   return v;
 }

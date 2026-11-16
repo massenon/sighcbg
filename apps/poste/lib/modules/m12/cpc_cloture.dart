@@ -8,6 +8,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart' show Signature;
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m6/points_commun.dart' show champUnique, commande;
 import 'cpc_commun.dart';
 
@@ -33,7 +34,7 @@ class EcranCloture extends StatefulWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Trois états : ouvert, en clôture (les modules n’écrivent plus), clôturé (lecture seule). Le comptable démarre la clôture, la Direction ou la DAF clôture définitivement (une autre personne), et seul le comptable rouvre, avec un motif, par contre-passation. La caisse continue d’encaisser : une pièce s’enregistre toujours dans l’exercice de sa date.';
+      'Trois états : ouvert, en clôture (les modules n’écrivent plus), clôturé (lecture seule). Le circuit (démarrer, clôturer, rouvrir) est un droit réglable de la fiche de rôle (d’origine : l’administrateur et la Directrice Administrative) : la clôture définitive vient d’une autre personne que celle qui a démarré, et la réouverture se fait avec un motif, par contre-passation. La caisse continue d’encaisser : une pièce s’enregistre toujours dans l’exercice de sa date.';
 
   @override
   State<EcranCloture> createState() => _EtatCloture();
@@ -99,14 +100,16 @@ class _EtatCloture extends State<EcranCloture> {
 
   Future<void> _demarrer(BuildContext ctx, ContexteEcran c, Fiche x) async {
     final annee = x['annee'] as int;
+    // Q1 (17/11/2026) : l'AVERTISSEMENT informe, il ne bloque jamais. Les contrôles qui échouent sont nommés ; la règle de continuité l'est toujours.
+    final avertissements = cpcAvertissementsDemarrage(cpcPreCloture(_ecritures(c), annee, exercices: c.magasin.collection('exercices').toutes));
     final ok = await confirmerSigh(ctx,
         titre: 'Démarrer la clôture de l’exercice $annee ?',
         message:
-            'Dès maintenant, les modules n’écrivent plus dans $annee : seul le comptable y passe ses écritures d’inventaire. Rien n’est figé : la saisie peut reprendre tant que la Direction n’a pas clôturé définitivement.',
+            'Dès maintenant, les modules n’écrivent plus dans $annee : seuls les rôles réglés pour l’inventaire y passent leurs écritures d’inventaire. Rien n’est figé : la saisie peut reprendre tant que la clôture n’est pas prononcée par une autre personne que vous.\n\nÀ regarder avant de continuer (cela ne bloque pas) :\n${avertissements.map((a) => '• $a').join('\n')}',
         libelleOk: 'Démarrer la clôture');
     if (!ok || !ctx.mounted) return;
     final r = cpcDemarrerCloture(c.magasin.collection('exercices').toutes, _ecritures(c), annee,
-        acteur: acteurDe(c), acteurId: acteurIdDe(c), role: c.role, maintenant: c.aujourdhui);
+        acteur: acteurDe(c), acteurId: acteurIdDe(c), role: c.role, maintenant: c.aujourdhui, autorise: gestePeutEcran(c, gesteCircuitCloture));
     if (!r.ok) {
       ToastsSigh.afficher(ctx, 'Démarrage refusé.', type: TypeToast.erreur, detail: r.motif);
       return;
@@ -117,7 +120,7 @@ class _EtatCloture extends State<EcranCloture> {
         type: 'cloture',
         poste: 'direction',
         libelle: 'Clôture $annee à valider',
-        detail: 'Le comptable a démarré la clôture de l’exercice $annee : les modules n’y écrivent plus.',
+        detail: '${acteurDe(c)} a démarré la clôture de l’exercice $annee : les modules n’y écrivent plus. Une autre personne doit la prononcer.',
         priorite: 'haute',
         reference: '$annee');
     ToastsSigh.afficher(ctx, 'Clôture $annee démarrée.', type: TypeToast.succes, detail: 'Les modules n’écrivent plus dans cet exercice.');
@@ -130,7 +133,7 @@ class _EtatCloture extends State<EcranCloture> {
         message: 'Les modules écrivent de nouveau dans $annee. Possible tant que rien n’est clôturé.',
         libelleOk: 'Reprendre la saisie');
     if (!ok || !ctx.mounted) return;
-    final r = cpcReprendreSaisie(c.magasin.collection('exercices').toutes, annee, acteur: acteurDe(c), role: c.role, maintenant: c.aujourdhui);
+    final r = cpcReprendreSaisie(c.magasin.collection('exercices').toutes, annee, acteur: acteurDe(c), role: c.role, maintenant: c.aujourdhui, autorise: gestePeutEcran(c, gesteCircuitCloture));
     if (!r.ok) {
       ToastsSigh.afficher(ctx, 'Reprise refusée.', type: TypeToast.erreur, detail: r.motif);
       return;
@@ -176,6 +179,7 @@ class _EtatCloture extends State<EcranCloture> {
                         role: c.role,
                         maintenant: c.aujourdhui,
                         toutesEcritures: ecr.toutes,
+                        autorise: gestePeutEcran(c, gesteCircuitCloture),
                         comptesResultat: c.magasin.collection('comptesResultat').actives);
                     if (!r.ok) {
                       ToastsSigh.afficher(ctx, 'Clôture refusée.', type: TypeToast.erreur, detail: r.motif);
@@ -261,6 +265,7 @@ class _EtatCloture extends State<EcranCloture> {
                         acteurId: acteurIdDe(c),
                         role: c.role,
                         maintenant: c.aujourdhui,
+                        autorise: gestePeutEcran(c, gesteCircuitCloture),
                         toutesEcritures: ecr.toutes);
                     if (!r.ok) {
                       ToastsSigh.afficher(ctx, 'Réouverture refusée.', type: TypeToast.erreur, detail: r.motif);
@@ -408,7 +413,7 @@ class _EtatCloture extends State<EcranCloture> {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       NoteSigh(
           'La clôture solde les classes 6, 7 et 8 vers le compte de bénéfice (131) ou de perte (139) selon le signe du résultat. Ces comptes se paramètrent ici, jamais dans le code. '
-          '${peut ? 'Une modification vaut pour les prochaines clôtures : les pièces CL déjà écrites ne changent pas.' : 'Réservé au comptable, à la Directrice Administrative et à l’administrateur : vous consultez.'}'),
+          '${peut ? 'Une modification vaut pour les prochaines clôtures : les pièces CL déjà écrites ne changent pas.' : 'Réservé aux rôles qui modifient les comptes de résultat : vous consultez.'}'),
       const SizedBox(height: 12),
       TableauSigh(
         titre: 'Comptes du résultat net',
@@ -749,9 +754,11 @@ class _EtatCloture extends State<EcranCloture> {
         final pre = cpcPreCloture(_ecritures(c), annee, exercices: exos);
         final etat = cpcEtatExercice(exos, annee);
         final clos = etat == 'clos';
-        final peutDemander = c.droit.editer && cpcRolesDemande.contains(c.role);
-        final peutValider = cpcRolesValidation.contains(c.role);
-        final peutRouvrir = c.droit.editer && (c.role == 'comptable' || c.role == 'admin');
+        // Q1 et Q2 : le circuit de clôture (démarrer, reprendre, clôturer, rouvrir) est UN geste réservé de la fiche de rôle, jamais une liste de rôles écrite ici.
+        final peutCircuit = gestePeutEcran(c, gesteCircuitCloture);
+        final peutDemander = c.droit.editer && peutCircuit;
+        final peutValider = peutCircuit;
+        final peutRouvrir = c.droit.editer && peutCircuit;
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Exercice affiché', valeur: '$annee', icone: LucideIcons.calendar),
@@ -776,7 +783,7 @@ class _EtatCloture extends State<EcranCloture> {
             OngletDef(id: 'exercices', libelle: 'Exercices', construire: (ctx) => _exercices(context, c, peutDemander, peutValider, peutRouvrir)),
             OngletDef(id: 'periodes', libelle: 'Périodes de l’exercice', construire: (ctx) => _periodes(context, c)),
             OngletDef(id: 'lettrage', libelle: 'Lettrage des tiers', construire: (ctx) => _lettrage(context, c)),
-            OngletDef(id: 'comptes-resultat', libelle: 'Comptes de résultat', construire: (ctx) => _comptesResultat(context, c, c.droit.editer && cpcRolesDemande.contains(c.role))),
+            OngletDef(id: 'comptes-resultat', libelle: 'Comptes de résultat', construire: (ctx) => _comptesResultat(context, c, c.droit.editer)),
           ]),
         ]);
       },

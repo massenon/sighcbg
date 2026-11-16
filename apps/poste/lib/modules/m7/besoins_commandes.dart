@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
+import '../../donnees/reglages_clinique_poste.dart';
 import '../../impression/piece.dart';
 import '../../core/plages_codes.dart';
 import '../../core/service_installation.dart';
@@ -195,9 +196,9 @@ class EcranCommandes extends StatelessWidget with EcranMaquette {
                       libelle: 'Consulter',
                       onPressed: () => _consulter(context, x)),
                   // LA VALIDATION RG-04 EST L'ACTE DE LA DIRECTRICE ADMINISTRATIVE — mais la maquette l'offre à tout profil qui écrit dans M7 (E72).
-                  if (x['statutCommande'] == 'attente_validation' && c.droit.editer && ServiceValidationsDeposees.de(c.magasin).depotCircuitEnAttente(circuitCommandeValidation, x) != null)
+                  if (x['statutCommande'] == 'attente_validation' && c.droit.editer && _estValidateur(c) && ServiceValidationsDeposees.de(c.magasin).depotCircuitEnAttente(circuitCommandeValidation, x) != null)
                     const BadgeSigh('Transmise à la mère, en attente', ton: TonSigh.info)
-                  else if (x['statutCommande'] == 'attente_validation' && c.droit.editer)
+                  else if (x['statutCommande'] == 'attente_validation' && c.droit.editer && _estValidateur(c))
                     BoutonIcone(
                         icone: LucideIcons.shieldCheck,
                         libelle: 'Valider (DA)',
@@ -224,8 +225,15 @@ void _imprimer(BuildContext ctx, Fiche cm) => imprimerPiece(
     (c) => pieceCommande(cm,
         utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c)));
 
+/// Q4 (17/11/2026) : le validateur des commandes est un RÉGLAGE de clinique (la Directrice Administrative semée), pas un rôle écrit ici. Le bouton est absent pour les autres rôles.
+bool _estValidateur(ContexteEcran c) => estArbitre(c.role, validateurs: ReglagesClinique.validateursAchats(c.magasin, c.aujourdhui));
+
 Future<void> _valider(BuildContext ecran, Fiche cm) async {
   final c = ContexteEcran.of(ecran);
+  if (!_estValidateur(c)) {
+    dire(ecran, 'La validation d’une commande (RG-04) revient aux rôles réglés comme validateurs par la clinique : le rôle « ${c.role} » ne le peut pas.', type: TypeToast.erreur);
+    return;
+  }
   final ok = await confirmerSigh(ecran,
       titre: 'Valider la commande ${cm['reference']} ?',
       message:
@@ -245,7 +253,7 @@ Future<void> _valider(BuildContext ecran, Fiche cm) async {
   }
   final annuler = c.magasin
       .collection('commandes')
-      .mettreAJour(cm['id'], {...validationCommande(jour: iso(c.aujourdhui)), 'valideeParAgent': acteur(c).nom});
+      .mettreAJour(cm['id'], {...validationCommande(jour: iso(c.aujourdhui), validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui)), 'valideeParAgent': acteur(c).nom});
   dire(ecran, 'Commande validée par la Directrice Administrative.',
       type: TypeToast.succes, annuler: annuler);
 }
@@ -294,7 +302,7 @@ void _consulter(BuildContext ecran, Fiche cm) {
             ], lignes: lignesDeBonAchat(cm))),
       ]),
       pied: (fermer) => [
-            if (cm['statutCommande'] == 'attente_validation' && c.droit.editer)
+            if (cm['statutCommande'] == 'attente_validation' && c.droit.editer && _estValidateur(c))
               BoutonSigh(
                   libelle: 'Valider (DA)',
                   icone: LucideIcons.shieldCheck,
@@ -397,6 +405,7 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           fournisseurs: c.magasin.collection('fournisseurs').actives,
           commandes: col.toutes,
           jour: iso(c.aujourdhui),
+          validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
           referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('commandes', 'BC-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
