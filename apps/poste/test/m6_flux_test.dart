@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show money;
+import 'package:sigh_domaine/sigh_domaine.dart' show cleEncaisserResteSansPrix, codeFactureEnAttenteDePrix, money, parCollectionParametres;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
@@ -66,6 +66,21 @@ Magasin magasin({
       'valorisationsSage': valorisations,
       'mouvements': const [],
       'audit': const [],
+    });
+
+/// Ouvre le réglage de clinique « encaisser le reste d'une facture qui a une ligne sans prix » (complément du 16/11/2026, §7) : sans lui, une ligne au prix à valoriser suspend
+/// toute la facture et la délivrance ligne par ligne n'a rien à délivrer.
+void ouvrirReste(Magasin m) => m.collection(parCollectionParametres).inserer({
+      'id': '$cleEncaisserResteSansPrix@2026-01-01@1',
+      'statut': 'actif',
+      'cle': cleEncaisserResteSansPrix,
+      'famille': 'caisse',
+      'type': 'booleen',
+      'valeur': true,
+      'defaut': false,
+      'dateEffet': '2026-01-01',
+      'version': 1,
+      'auteur': 'Essai',
     });
 
 Future<void> ouvrir(WidgetTester t, Magasin m, String ecran, {String role = 'admin'}) async {
@@ -440,8 +455,16 @@ void main() {
       expect(find.widgetWithText(BoutonSigh, 'Délivrer'), findsNothing);
     });
 
+    cas('PAR DÉFAUT (16/11/2026, §7) : une ligne au prix à valoriser suspend toute la facture — rien ne s’encaisse, la pharmacie reste bloquée', (t) async {
+      final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP(l1: 'du')], taches: [tacheL('bloque')]);
+      expect(() => encaisserFacture(m, 'F-L', lignes: ['L001'], maintenant: aujourdhui), throwsA(isA<RefusCaisse>().having((e) => e.code, 'code', codeFactureEnAttenteDePrix)));
+      expect(m.collection('taches').parId('T-L')!['statut'], 'bloque');
+      expect(((m.collection('factures').parId('F-L')!['lignes'] as List)[0] as Map)['statutPaiement'], 'du');
+    });
+
     cas('la caisse ouvre la pharmacie dès la première ligne de médicament réglée ; l’encaissement dont la ligne a été DÉLIVRÉE ne s’annule plus', (t) async {
       final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP(l1: 'du')], taches: [tacheL('bloque')]);
+      ouvrirReste(m);
       final res = encaisserFacture(m, 'F-L', lignes: ['L001'], maintenant: aujourdhui);
       expect(res.facture['statutPaiement'], 'partielle');
       expect(res.debloquees, ['dispensation']);
@@ -462,6 +485,7 @@ void main() {
 
     cas('un encaissement dont aucune ligne n’est délivrée s’annule comme avant', (t) async {
       final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP(l1: 'du')], taches: [tacheL('bloque')]);
+      ouvrirReste(m);
       final res = encaisserFacture(m, 'F-L', lignes: ['L001'], maintenant: aujourdhui);
       res.annuler();
       expect(((m.collection('factures').parId('F-L')!['lignes'] as List)[0] as Map)['statutPaiement'], 'du');

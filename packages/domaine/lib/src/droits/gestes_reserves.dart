@@ -79,6 +79,12 @@ const String gesteReglageMecef = 'reglage_mecef';
 /// le rôle de son auteur, avec SA matrice. Le POSTE écrit sur la pièce reste le réglage `achats.libelleValidateur` (un libellé, pas un droit).
 const String gesteValiderAchats = 'achats_valider';
 
+/// RÉGLER L'ENCAISSEMENT D'UNE FACTURE QUI A UNE LIGNE SANS PRIX (Direction de Baguidi, 16/11/2026, complément §7) : par défaut RIEN d'une facture ne s'encaisse tant qu'une de ses
+/// lignes attend son prix ; le réglage de clinique `caisse.encaisserResteLigneSansPrix` rouvre l'encaissement ligne par ligne. Il se pose sous ce geste, depuis N'IMPORTE QUEL poste : sur un
+/// poste rattaché, le geste se DÉPOSE et la mère l'applique sous le rôle de son auteur, avec SA matrice (le réglage revient par la synchronisation, famille R). Origine : l'administrateur et la
+/// Directrice Administrative (à confirmer par la Direction) ; une fiche de rôle accorde ou retire.
+const String gesteReglageEncaissementSansPrix = 'reglage_encaissement_sans_prix';
+
 /// LA PHARMACIE ET LA CAISSE NE SONT PAS UN RÔLE (Direction de Baguidi, 16/11/2026) : aujourd'hui la Caissière-Dispensatrice tient les deux et le rôle pharmacien reste ouvert, mais une
 /// clinique peut séparer un pharmacien de la caisse. Aucune décision de droit n'y suppose donc « pharmacie = caissier » : encaisser et délivrer sont des droits d'ÉCRAN de la matrice
 /// (`m8-caisse`, `m6-dispensation`), et ce qui n'était pas un droit d'écran (le routage des alertes, la retransmission MECeF) est un geste réservé ci-dessous, dont l'origine
@@ -185,6 +191,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'mecef-config',
       rolesDefaut: ['admin', 'da'],
       aide: 'Le mode de certification des factures (boîtier ou e-MECeF) et le modèle du boîtier. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteReglageEncaissementSansPrix,
+      libelle: 'Régler l’encaissement d’une facture qui a une ligne sans prix',
+      module: 'CFG',
+      ecran: 'cfg-systeme',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Le réglage « Encaisser le reste d’une facture qui a une ligne sans prix » (Non par défaut : rien de la facture ne s’encaisse tant qu’une ligne attend son prix). Se règle depuis n’importe quel poste : sur un poste rattaché, la demande est transmise à la mère, qui l’applique. Origine : l’administrateur et la Directrice Administrative (à confirmer par la Direction).'),
   GesteReserve(
       id: gesteAlertesCaisse,
       libelle: 'Recevoir les notifications du poste de caisse',

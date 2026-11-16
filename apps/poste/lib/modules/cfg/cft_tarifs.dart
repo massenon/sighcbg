@@ -1027,6 +1027,11 @@ void _modaleProposition(BuildContext ctx, ContexteEcran c, Map<String, Object?>?
         NoteSigh(
             'Deux états, visibles : « Enregistrer » dépose une proposition (à valider : rien ne change) ; ${peutValider ? '« Valider » la met en vigueur à sa date d’effet, en un geste tracé avec votre rôle.' : '« Valider » est réservé à ${tarProfilsDatePassee(tarifs.profilsDecider)} : leur décision suit votre proposition.'}',
             icone: LucideIcons.gitCompare),
+        // LIGNE SANS PRIX (16/11/2026, §7) : des pièces d'assurés attendent le prix assuré de cet acte ; il se lit à LEUR date, l'écran dit quelle date d'effet les débloque.
+        if (ligne != null &&
+            guidePiecesEnAttenteDePrix(piecesEnAttenteDePrix(c.magasin.collection('factures').actives, acteCode: p?['codeActe'] ?? ligne['code']), _jour(c)) != null)
+          NoteSigh(guidePiecesEnAttenteDePrix(piecesEnAttenteDePrix(c.magasin.collection('factures').actives, acteCode: p?['codeActe'] ?? ligne['code']), _jour(c))!,
+              key: const Key('tarifs:pieces-en-attente'), ton: TonSigh.attention, icone: LucideIcons.calendarClock),
         Tooltip(message: msgInfo, child: FormulaireSigh(controleur: ctl)),
         Row(children: [
           const Icon(LucideIcons.info, size: 14, color: JetonsShell.slate400),

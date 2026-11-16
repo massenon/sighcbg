@@ -89,7 +89,7 @@ const _gestesPostes = <String, String>{
 List<String>? _rolesDuPoste(Object? poste) {
   if (!_v(poste) || poste == 'tous') return null;
   final p = '$poste';
-  if (_gesteDuPoste(p) != null) return null;
+  if (_gesteDuPoste(p) != null || ecranDuPosteEditeurs(p) != null) return null;
   return _postesNotif.containsKey(p) ? _postesNotif[p] : [p];
 }
 
@@ -138,13 +138,17 @@ num? _num(Object? x) => x is num ? x : (x is String ? num.tryParse(x) : null);
 String _entier(num x) => x == x.roundToDouble() ? '${x.toInt()}' : '$x';
 
 class _Ligne {
-  const _Ligne(this.cle, this.priorite, this.titre, this.detail, this.lien, this.postes, {this.geste});
+  const _Ligne(this.cle, this.priorite, this.titre, this.detail, this.lien, this.postes, {this.geste, this.ecranEdite});
   final String cle, priorite, titre, detail;
   final String? lien;
   final List<String>? postes;
 
   /// Le GESTE RÉSERVÉ qui route la ligne (en plus des postes et de l'écran) : seuls les rôles qui le détiennent, dans la matrice en force, la reçoivent.
   final String? geste;
+
+  /// L'écran dont le droit de MODIFIER route la ligne (poste `editeurs:<écran>`, 16/11/2026, §7) : seuls les rôles qui peuvent modifier cet écran dans la matrice en force la
+  /// reçoivent (l'alerte « prix manquant » : « Tarifs et prix » ou « Référentiel produits »), jamais une liste de rôles.
+  final String? ecranEdite;
 }
 
 class _Source {
@@ -295,7 +299,8 @@ final List<_Source> _sources = [
                 _ou(n['detail'], _v(n['message']) ? n['message'] : ''),
                 _v(n['ecran']) ? '${n['ecran']}' : _liensNotif['${n['type']}'],
                 _rolesDuPoste(n['poste']),
-                geste: _gesteDuPoste(n['poste'])),
+                geste: _gesteDuPoste(n['poste']),
+                ecranEdite: ecranDuPosteEditeurs(n['poste'])),
       ]),
 ];
 
@@ -397,6 +402,7 @@ class CentreNotifications extends ChangeNotifier {
   bool _pourMoi(_Ligne n, String r, DonneesNavigation nav, DroitsGestes gestes) {
     if (n.postes != null && !n.postes!.contains(r)) return false;
     if (n.geste != null && !gestes.peut(r, n.geste!)) return false;
+    if (n.ecranEdite != null && !nav.matrice.peutEditer(r, n.ecranEdite!)) return false;
     if (n.lien != null) {
       final e = nav.manifeste.ecran(n.lien!);
       if (e != null && !ecranOuvertAuRole(nav, r, e.id)) return false;

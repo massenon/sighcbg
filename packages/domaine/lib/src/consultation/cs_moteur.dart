@@ -19,7 +19,7 @@ import '../imagerie/img_demandes_ouverture.dart' show referenceSerie;
 import '../labo/dem_regles.dart' show demCodeAnalyse;
 import '../referentiels/regles.dart' show joursEntre;
 import '../tarifs/tarifs.dart';
-import '../droits/gestes_reserves.dart' show gesteProposerPrixAchat;
+import '../caisse/valorisation.dart' show posteEditeursEcran, ecranReferentielProduits, ecranTarifsEtPrix, guidePrixALaDate;
 import 'cs_referentiels.dart';
 
 /// Refus NOMMÉ : [message] s'affiche tel quel ; [code] distingue `SANS_DOSSIER`.
@@ -803,6 +803,15 @@ ResultatPrescription csPrescrire(
 
   final analyses = sansPrixAbsent(analysesDemandees, 'analyse', 'designation');
   final actes = sansPrixAbsent(actesDemandes, 'acte', 'libelle');
+  // L'ALERTE « PRIX MANQUANT » des prestations (16/11/2026, §7) : une par CODE, sans nom de patient, vers les rôles qui peuvent MODIFIER « Tarifs et prix » (lus dans la matrice
+  // par le centre de notifications). Posée AVANT un éventuel refus de toute la prescription : le prescripteur est refusé, la Direction est prévenue quand même.
+  for (final r in refus) {
+    csAlerterPrixManquant(s, code: '${r['code']}', libelle: '${r['libelle']}', categorie: '${r['categorie']}', cause: 'sans prix en vigueur à la date de la prescription : la ligne est refusée ($csCodeTarifAValider)');
+  }
+  for (final a in actes.where((a) => a['prixAssureADefinir'] == true)) {
+    csAlerterPrixManquant(s,
+        code: '${a['code']}', libelle: '${a['libelle']}', categorie: 'acte', cause: 'sans prix ASSURÉ dans la grille : la ligne de l’assuré porte « prix assuré à définir »', jourPiece: jourPiece);
+  }
   if (refus.isNotEmpty && medicaments.isEmpty && analyses.isEmpty && actes.isEmpty && (v['imagerie'] as List? ?? const []).isEmpty) {
     throw RefusCs(refus.map((r) => '${r['motif']}').join(' '), csCodeTarifAValider);
   }
@@ -1053,8 +1062,9 @@ ResultatPrescription csPrescrire(
     });
   }
 
-  // L'ALERTE vers qui fixe le prix d'achat : les rôles qui détiennent le geste « proposer un prix d'achat » (`tarif_proposer_achat`), lus dans la matrice par le centre de
-  // notifications (poste `geste:…`), jamais une liste de rôles. UNE SEULE alerte OUVERTE (non lue, non archivée) par article : un second patient ne la double pas.
+  // L'ALERTE « PRIX MANQUANT » d'un médicament (16/11/2026, §7) : vers les rôles qui peuvent MODIFIER le « Référentiel produits » (droit `editer` de l'écran `m6-produits`, lu dans la
+  // MATRICE par le centre de notifications : poste `editeurs:m6-produits`), jamais une liste de rôles. UNE SEULE alerte OUVERTE (non lue, non archivée) par article : un second patient
+  // ne la double pas. Aucun nom de patient.
   final aValoriser = <FicheCs>[];
   final dejaAlertes = {
     for (final n in s.actives('notifications'))
@@ -1067,12 +1077,12 @@ ResultatPrescription csPrescrire(
     final prod = s.parId('produits', l['produitId']);
     s.inserer('notifications', {
       'type': csTypeNotifPrixAValoriser,
-      'poste': 'geste:$gesteProposerPrixAchat',
+      'poste': posteEditeursEcran(ecranReferentielProduits),
       'destinataire': null,
       'libelle': 'Prix d’achat à fixer : ${l['produit']}',
       // Aucune donnée médicale ni nom de patient : l'article, la pièce, et le geste qui débloque.
-      'detail': '« ${l['produit']} » vient d’être prescrit sans prix d’achat en vigueur (facture ${facture['numero']}) : la ligne porte « prix à valoriser » et ne s’encaisse pas. '
-          'Fixer le prix d’achat au « Référentiel produits » (« Changer le prix d’achat »), puis Oui à « Tarifs et prix ».',
+      'detail': '« ${l['produit']} » vient d’être prescrit sans prix d’achat en vigueur (facture ${facture['numero']}) : la ligne porte « prix à valoriser » et la facture ne s’encaisse pas. '
+          'Fixer le prix d’achat au « Référentiel produits » (« Changer le prix d’achat »), puis Oui. ${guidePrixALaDate(jourPiece, ecran: 'Référentiel produits')}',
       'priorite': 'haute',
       'produitId': l['produitId'],
       'produitCode': prod?['code'],
@@ -1097,6 +1107,35 @@ ResultatPrescription csPrescrire(
 
 /// Le type de la notification de poste « prix d'achat à fixer » (une par article tant qu'elle est ouverte).
 const String csTypeNotifPrixAValoriser = 'prix_a_valoriser';
+
+/// Le type de la notification de poste « prix à fixer » d'une PRESTATION (acte, analyse, imagerie) : une par code tant qu'elle est ouverte.
+const String csTypeNotifPrixManquant = 'prix_manquant';
+
+/// L'ALERTE « PRIX MANQUANT » d'une prestation (16/11/2026, §7) : UNE par CODE tant qu'elle est ouverte (non lue, non archivée), SANS nom de patient, adressée aux rôles qui peuvent
+/// MODIFIER « Tarifs et prix » (poste `editeurs:cfg-tarifs`, lu dans la matrice par le centre de notifications). Rend la notification écrite, ou `null` si une alerte est déjà ouverte.
+FicheCs? csAlerterPrixManquant(StockCs s, {required String code, required String libelle, required String categorie, required String cause, String? jourPiece}) {
+  if (code.isEmpty || code == 'null') return null;
+  for (final n in s.actives('notifications')) {
+    if (n['type'] == csTypeNotifPrixManquant && n['lue'] != true && '${n['prestationCode']}' == code) return null;
+  }
+  final quoi = switch (categorie) { 'analyse' => 'L’analyse', 'imagerie' => 'L’examen d’imagerie', _ => 'L’acte' };
+  return s.inserer('notifications', {
+    'type': csTypeNotifPrixManquant,
+    'poste': posteEditeursEcran(ecranTarifsEtPrix),
+    'destinataire': null,
+    'libelle': 'Prix à fixer : $libelle',
+    'detail': '$quoi « $libelle » ($code) a été demandé $cause. Fixer le prix à « Tarifs et prix », puis Oui.'
+        '${jourPiece == null ? '' : ' ${guidePrixALaDate(jourPiece, ecran: 'Tarifs et prix')}'}',
+    'priorite': 'haute',
+    'prestationCode': code,
+    'categorie': categorie,
+    'reference': code,
+    'ecran': ecranTarifsEtPrix,
+    'lue': false,
+    'creeLe': _iso(s.maintenant),
+    'statut': 'actif',
+  });
+}
 
 /// `creerDemandesImagerie(p, codes, date, v)` : une demande par examen, BLOQUÉE par le paiement ; un examen sans tarif est refusé en le nommant
 /// (les demandes déjà créées sont ARCHIVÉES — RG-14, le numéro qu'elles ont consommé ne se réutilise pas).
@@ -1134,6 +1173,10 @@ const String csTypeNotifPrixAValoriser = 'prix_a_valoriser';
   }
   final sansPrix = demandes.where((d) => d['prix'] == null).toList();
   if (sansPrix.isNotEmpty) {
+    for (final d in sansPrix) {
+      csAlerterPrixManquant(s,
+          code: '${d['examenCode']}', libelle: '${d['examen']}', categorie: 'imagerie', cause: 'sans prix en vigueur à la date de la demande : la demande est refusée');
+    }
     for (final d in demandes) {
       s.archiver('demandesImagerie', d['id']);
     }

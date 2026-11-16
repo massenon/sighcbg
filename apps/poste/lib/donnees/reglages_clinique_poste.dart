@@ -14,6 +14,10 @@ class ReglagesClinique {
   /// Q4 : le POSTE porté sur la pièce validée (jamais une personne).
   static String libelleValidateurAchats(Magasin m, DateTime date) => reglageLibelleValidateur(_lire(m, cleLibelleValidateurAchats, date));
 
+  /// LIGNE SANS PRIX (16/11/2026, §7) : « encaisser le reste d'une facture qui a une ligne sans prix », EN VIGUEUR à [date] (le jour du geste de caisse). Non par défaut : rien de la facture
+  /// ne s'encaisse tant qu'une ligne attend son prix. Sur un fileul, la valeur arrive de la mère par la synchronisation ; en attendant, le défaut (Non) tient.
+  static bool encaisserResteSansPrix(Magasin m, DateTime date) => encaisserResteSansPrixDe(_lire(m, cleEncaisserResteSansPrix, date));
+
   /// Q3 : les rôles qui passent leurs écritures d'inventaire pendant qu'un exercice est en clôture.
   static List<String> rolesInventaire(Magasin m, DateTime date) => reglageRoles(_lire(m, cleRolesInventaireCloture, date), rolesInventaireClotureDefaut);
 }

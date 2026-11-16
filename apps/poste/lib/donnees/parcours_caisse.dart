@@ -3,13 +3,17 @@ import 'package:sigh_domaine/sigh_domaine.dart' as d;
 
 import 'magasin.dart';
 import 'normalisation_mecef.dart';
+import 'reglages_clinique_poste.dart';
 import 'tarifs_poste.dart';
 
 /// Refus NOMMÉ d'une opération de caisse : un code, un motif lisible (jamais un échec muet).
 class RefusCaisse implements Exception {
-  const RefusCaisse(this.code, this.motif);
+  const RefusCaisse(this.code, this.motif, {this.lignes = const []});
   final String code;
   final String motif;
+
+  /// Les lignes en attente de prix que le refus NOMME (`{id, designation, code, motif}`) : la facture en attente de prix (`FACTURE_EN_ATTENTE_DE_PRIX`) ou la ligne seule.
+  final List<Map<String, Object?>> lignes;
   @override
   String toString() => motif;
 }
@@ -56,7 +60,8 @@ class ResultatCaisse {
   /// l'encaissement : l'argent est reçu, la pièce devient `refusee` en le disant.
   final ResultatNormalisation? normalisation;
 
-  /// Les lignes visées NON encaissées faute de prix d'achat (« prix à valoriser », code `PRIX_A_VALORISER`) : `{id, designation, code, motif}`. Les autres sont encaissées.
+  /// Les lignes visées NON encaissées faute de prix (« prix à valoriser » / « prix assuré à définir ») quand le réglage « encaisser le reste » est OUVERT : `{id, designation, code,
+  /// motif}` ; les autres sont encaissées. Réglage fermé (défaut), une ligne en attente suspend la pièce entière : refus [RefusCaisse] `FACTURE_EN_ATTENTE_DE_PRIX`.
   final List<Map<String, Object?>> lignesRefusees;
 
   /// Les lignes « prix à valoriser » que ce geste a VALORISÉES (prix d'achat désormais fixé) avant de les encaisser.
@@ -82,13 +87,17 @@ ResultatCaisse encaisserFacture(
     throw const RefusCaisse('FACTURE_INTROUVABLE', 'Facture introuvable.');
   final aujourdhui = d.iso(maintenant);
   final annulations = <VoidCallback>[];
-  // « PRIX À VALORISER » (Direction, 16/11/2026) : une ligne visée dont l'article a DÉSORMAIS un prix d'achat se valorise ICI, en place, au prix retenu à la date de la
-  // pièce (RG-02, `tarPrixValorisation`) ; la pièce n'est ni soldée ni normalisée tant qu'elle attend, aucune valeur émise n'est réécrite. Une ligne encore sans prix reste
-  // « prix à valoriser » : le moteur refuse SON encaissement en le nommant, les autres lignes passent.
+  // LIGNE SANS PRIX (Direction de Baguidi, 16/11/2026, §7) : le réglage de clinique « encaisser le reste », lu au jour du geste. Non (défaut) : RIEN de la facture ne s'encaisse
+  // tant qu'une ligne attend son prix ; Oui : l'encaissement ligne par ligne de la v21.
+  final resteOuvert = ReglagesClinique.encaisserResteSansPrix(m, maintenant);
+  // « PRIX À VALORISER » (Direction, 16/11/2026) : une ligne dont l'article a DÉSORMAIS un prix EN VIGUEUR À LA DATE DE LA PIÈCE se valorise ICI, en place (RG-02,
+  // `tarPrixValorisation`) ; la pièce n'est ni soldée ni normalisée tant qu'elle attend, aucune valeur émise n'est réécrite. Réglage fermé, TOUTES les lignes en attente de la
+  // facture sont tentées (une seule restée sans prix suspend la pièce entière) ; réglage ouvert, seules les lignes visées. Une ligne encore sans prix reste « prix à valoriser » :
+  // le moteur refuse en le nommant.
   final valorisees = <String>[];
   final attente = [
     for (final l in d.lignesAValoriserDe(fac))
-      if (lignes == null || lignes.isEmpty || lignes.contains('${l['id']}')) l
+      if (!resteOuvert || lignes == null || lignes.isEmpty || lignes.contains('${l['id']}')) l
   ];
   if (attente.isNotEmpty) {
     final h = TarifsPoste.lire(m);
@@ -176,12 +185,13 @@ ResultatCaisse encaisserFacture(
     mecefActif: mecefActif,
     ecritures: m.collection('ecritures').actives,
     acheteur: acheteur,
+    encaisserResteSansPrix: resteOuvert,
   );
   // E2 (corrigé le 31/10/2026) : un versement au-delà du dû d'une pièce sans lignes est REFUSÉ en nommant le défaut ; rien n'est écrit.
   if (r.refus != null) {
     // Une valorisation faite pour ce versement se défait avec lui : rien n'est écrit sur un refus (la ligne se revalorisera au geste suivant, au même prix).
     defaire();
-    throw RefusCaisse(r.refusCode ?? 'VERSEMENT_REFUSE', r.refus!);
+    throw RefusCaisse(r.refusCode ?? 'VERSEMENT_REFUSE', r.refus!, lignes: r.lignesRefusees);
   }
   if (r.deja) {
     return ResultatCaisse(

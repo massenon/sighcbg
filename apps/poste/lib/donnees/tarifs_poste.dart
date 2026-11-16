@@ -410,7 +410,7 @@ class TarifsPoste {
   /// DÉCISION DU 16/11/2026 : une analyse CRÉÉE au catalogue du laboratoire OUVRE aussitôt son identité de prix au référentiel unique (famille LABO, code d'analyse = code de la prestation), SANS AUCUNE
   /// version : état « sans prix en vigueur, à valider ». Elle n'est donc pas facturable (refus nommé `TARIF_A_VALIDER`, jamais un zéro) jusqu'au Oui de la DAF, qui la tarife par le circuit
   /// habituel (proposition, puis Oui ou Non). La DAF est PRÉVENUE (une notification de poste, une seule par analyse). La mère seule écrit (famille R) ; l'opération est rejouable : une analyse déjà
-  /// dotée d'une prestation (code d'analyse ou alias) n'est pas touchée. Rend les codes ouverts.
+  /// dotée d'une prestation (code d'analyse ou alias) n'est pas touchée. Rend les codes ouverts. L'alerte va aux rôles qui peuvent MODIFIER « Tarifs et prix » (matrice), la DAF d'origine.
   static List<String> assurerAnalyses(Magasin m, {DateTime Function()? horloge}) {
     final h = lire(m);
     // Référentiel absent (poste neuf, avant la reprise) : on n'invente rien, la reprise des prix s'en chargera avec ses propres règles.
@@ -434,7 +434,9 @@ class TarifsPoste {
       if (!dejaPrevenue) {
         m.collection('notifications').inserer({
           'type': 'prix_a_tarifer',
-          'poste': 'da',
+          // L'alerte « prix manquant » (16/11/2026, §7) va aux rôles qui peuvent MODIFIER « Tarifs et prix », lus dans la matrice par le centre de notifications — jamais un rôle en dur.
+          'poste': posteEditeursEcran(ecranTarifsEtPrix),
+          'ecran': ecranTarifsEtPrix,
           'destinataire': null,
           'libelle': 'Analyse sans prix à tarifer : $libelle',
           'detail': 'L’analyse « $libelle » ($code) vient d’être créée au catalogue du laboratoire. Elle n’est pas facturable tant que son prix n’est pas arrêté : « Tarifs et prix », onglet Sans prix (proposition, puis Oui).',
