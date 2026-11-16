@@ -12,6 +12,12 @@ import 'hos_commun.dart';
 /// `m3-plan-lits` — « Plan des lits » : l'occupation par aile, chambre et lit (nomenclature A1 LIT1, chambres VIP et VVIP), tirée des admissions en
 /// cours. Un lit se lit d'un coup d'œil : libre (vert), occupé (rouge), sortie à prévoir au-delà de cinq jours (orange). Le clic ouvre la fiche du lit
 /// (tiroir) ; l'occupation par type de chambre et la durée moyenne de séjour sur douze mois complètent la page.
+///
+/// VUE RESTREINTE (décision de la Direction du 16/11/2026, plan des lits ouvert en lecture à des profils qui n'ouvrent pas les admissions) : un profil qui
+/// voit l'écran sans lire la catégorie « Hospitalisation et surveillance » — refus PAR DÉFAUT, la catégorie suivant `m3-admissions` — lit le PLAN : qui
+/// occupe quel lit (identification minimale : nom, code), depuis quand. Le séjour (diagnostic d'entrée, prise en charge, infirmier référent, solde) et les
+/// gestes (admettre, préparer la sortie, feuille de température) ne s'affichent pas ; le tiroir le DIT. Une catégorie refusée par DÉCISION de la clinique
+/// ferme l'écran entier, comme avant.
 class EcranPlanLits extends StatelessWidget with EcranMaquette {
   const EcranPlanLits({super.key});
 
@@ -57,7 +63,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
         Text(texte, style: const TextStyle(fontSize: 12, height: 16 / 12, color: JetonsShell.slate600)),
       ]);
 
-  void _ouvrirLit(BuildContext context, HosChambre ch, String lit, Fiche? adm) {
+  void _ouvrirLit(BuildContext context, HosChambre ch, String lit, Fiche? adm, {bool restreint = false}) {
     final c = ContexteEcran.of(context);
     if (adm == null) {
       final tarif = TarifsPoste.tarifsJournee(c.magasin, aujourdhui: c.aujourdhui)[ch.type];
@@ -75,7 +81,9 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
             const SizedBox(height: 16),
             const VideSigh('Ce lit est disponible pour une nouvelle admission.', icone: LucideIcons.bed),
           ]),
-          pied: (fermer) => [
+          pied: restreint
+              ? null
+              : (fermer) => [
                 BoutonSigh(
                     libelle: 'Créer une admission',
                     icone: LucideIcons.userPlus,
@@ -84,6 +92,24 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
                       c.aller('m3-admissions');
                     }),
               ]);
+      return;
+    }
+    if (restreint) {
+      // Le PLAN, pas le séjour : qui, où, depuis quand. Ni diagnostic, ni prise en charge, ni soins, ni solde, ni geste.
+      afficherTiroir<void>(context,
+          titre: '${adm['patient']}',
+          sousTitre: '${adm['patientCode']} — Lit ${adm['lit']}',
+          corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            DescListeSigh([
+              ('Dossier', texteMono('${adm['patientCode']}', couleur: JetonsShell.slate800)),
+              ('Lit', adm['lit']),
+              ('Chambre', hosLibelleTypeChambre(adm['typeChambre'])),
+              ('Date d’entrée', jourFR(adm['dateEntree'])),
+              ('Durée de séjour', '${hosDureeSejour(adm, c.aujourdhui)} jour(s)'),
+            ]),
+            const SizedBox(height: 16),
+            const MentionReservee('hospitalisation_soins'),
+          ]));
       return;
     }
     final solde = soldePatient(c.magasin, adm['patientId']);
@@ -129,7 +155,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
             ]);
   }
 
-  Widget _chambre(BuildContext context, HosChambre ch, Iterable<Fiche> actives, DateTime auj) {
+  Widget _chambre(BuildContext context, HosChambre ch, Iterable<Fiche> actives, DateTime auj, {bool restreint = false}) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: decorationCarte(),
@@ -161,7 +187,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
                       key: Key('plan:lit:$lit'),
                       borderRadius: BorderRadius.circular(8),
                       hoverColor: JetonsShell.navy50,
-                      onTap: () => _ouvrirLit(context, ch, lit, adm),
+                      onTap: () => _ouvrirLit(context, ch, lit, adm, restreint: restreint),
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
@@ -200,11 +226,16 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
     );
   }
 
-  // Tout l'écran porte des données d'hospitalisation d'un patient : refusée la catégorie, il le dit au lieu de s'ouvrir (point unique `GardeSensible`).
+  // Lue la catégorie « Hospitalisation et surveillance » : l'écran entier. Refusée PAR DÉFAUT (profil qui voit le plan sans ouvrir les admissions) : la
+  // vue restreinte du plan. Refusée par DÉCISION de la clinique : l'écran le dit au lieu de s'ouvrir (point unique `GardeSensible`).
   @override
-  Widget build(BuildContext context) => GardeSensible(categorie: 'hospitalisation_soins', enfant: Builder(builder: _corps));
+  Widget build(BuildContext context) => EcouteDroitsSensibles(builder: (ctx, a) {
+        if (a.peut('hospitalisation_soins')) return _corps(ctx);
+        if (a.refuseeParDecision('hospitalisation_soins')) return const GardeSensible(categorie: 'hospitalisation_soins', enfant: SizedBox.shrink());
+        return _corps(ctx, restreint: true);
+      });
 
-  Widget _corps(BuildContext context) {
+  Widget _corps(BuildContext context, {bool restreint = false}) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('admissions');
     return ListenableBuilder(
@@ -234,6 +265,13 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
             'dateEntree',
             ref: auj);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          if (restreint) ...[
+            NoteSigh(
+                key: const Key('plan:vue-restreinte'),
+                'Lecture du plan seulement : qui occupe quel lit, depuis quand. Le séjour — diagnostic, prise en charge, soins, solde — relève de la catégorie « ${categorieSensible('hospitalisation_soins')?.libelle} », que ce profil ne lit pas (RG-13).',
+                icone: LucideIcons.lock),
+            const SizedBox(height: 16),
+          ],
           KpiGrilleSigh(kpis: [
             KpiSigh(
                 libelle: 'Lits installés',
@@ -280,7 +318,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
                   final n = k.maxWidth >= 1024 ? 4 : (k.maxWidth >= 640 ? 2 : 1);
                   final l = (k.maxWidth - 12 * (n - 1)) / n;
                   return Wrap(spacing: 12, runSpacing: 12, children: [
-                    for (final ch in e.value) SizedBox(width: l, child: _chambre(context, ch, actives, auj))
+                    for (final ch in e.value) SizedBox(width: l, child: _chambre(context, ch, actives, auj, restreint: restreint))
                   ]);
                 })),
           ],

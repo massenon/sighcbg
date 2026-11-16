@@ -1547,6 +1547,7 @@
        "label": "Ressources humaines",
        "hub": "hub-m10",
        "ecrans": [
+        "m10-planning",
         "m10-propositions-planning",
         "m10-mes"
        ]
@@ -2703,6 +2704,7 @@
        "label": "Ressources humaines",
        "hub": "hub-m10",
        "ecrans": [
+        "m10-planning",
         "m10-propositions-planning",
         "m10-mes"
        ]
@@ -2776,6 +2778,15 @@
        "ecrans": [
         "m1-patients",
         "m1-externe"
+       ]
+      },
+      {
+       "code": "CFG",
+       "label": "Tarification & information patient",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue"
        ]
       }
      ]
@@ -2893,6 +2904,15 @@
     {
      "domaine": "Système",
      "rangees": [
+      {
+       "code": "CFG",
+       "label": "Configuration Clinique",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue"
+       ]
+      },
       {
        "code": "IMP",
        "label": "Importation de données",
@@ -3215,6 +3235,15 @@
        "ecrans": [
         "m1-patients"
        ]
+      },
+      {
+       "code": "CFG",
+       "label": "Tarification & information patient",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue"
+       ]
       }
      ]
     },
@@ -3464,6 +3493,8 @@
        "label": "Configuration Clinique",
        "hub": "hub-cfg",
        "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue",
         "cfg-validations-aib"
        ]
       },
@@ -3636,6 +3667,7 @@
        "label": "Ressources humaines",
        "hub": "hub-m10",
        "ecrans": [
+        "m10-planning",
         "m10-propositions-planning",
         "m10-mes"
        ]
@@ -3742,6 +3774,14 @@
        "ecrans": [
         "m1-patients",
         "m1-patient-profil"
+       ]
+      },
+      {
+       "code": "M3",
+       "label": "Hospitalisation",
+       "hub": "hub-m3",
+       "ecrans": [
+        "m3-plan-lits"
        ]
       }
      ]
@@ -3904,6 +3944,7 @@
        "label": "Ressources humaines",
        "hub": "hub-m10",
        "ecrans": [
+        "m10-planning",
         "m10-propositions-planning",
         "m10-mes"
        ]
@@ -4075,6 +4116,15 @@
         "m1-patients",
         "m1-externe"
        ]
+      },
+      {
+       "code": "CFG",
+       "label": "Tarification & information patient",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue"
+       ]
       }
      ]
     },
@@ -4229,6 +4279,8 @@
        "label": "Configuration Clinique",
        "hub": "hub-cfg",
        "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue",
         "cfg-imagerie-catalogue"
        ]
       }
@@ -4240,6 +4292,19 @@
    "role": "surveillant",
    "archive": false,
    "domaines": [
+    {
+     "domaine": "Soins",
+     "rangees": [
+      {
+       "code": "M3",
+       "label": "Hospitalisation",
+       "hub": "hub-m3",
+       "ecrans": [
+        "m3-plan-lits"
+       ]
+      }
+     ]
+    },
     {
      "domaine": "Logistique",
      "rangees": [
@@ -4349,6 +4414,14 @@
      "domaine": "Logistique",
      "rangees": [
       {
+       "code": "M6",
+       "label": "Pharmacie & Stocks",
+       "hub": "hub-m6",
+       "ecrans": [
+        "m6-point-ventes"
+       ]
+      },
+      {
        "code": "M7",
        "label": "Achats & Fournisseurs",
        "hub": "hub-m7",
@@ -4415,6 +4488,15 @@
     {
      "domaine": "Pilotage",
      "rangees": [
+      {
+       "code": "PIL",
+       "label": "Pilotage & analyse",
+       "hub": "hub-pil",
+       "ecrans": [
+        "m2-stats-consultations",
+        "m3-stats-hospitalisations"
+       ]
+      },
       {
        "code": "DASH",
        "label": "Tableaux de bord par poste",
@@ -4611,6 +4693,7 @@
        "label": "Ressources humaines",
        "hub": "hub-m10",
        "ecrans": [
+        "m10-planning",
         "m10-propositions-planning",
         "m10-mes"
        ]
@@ -4755,6 +4838,15 @@
     {
      "domaine": "Logistique",
      "rangees": [
+      {
+       "code": "M6",
+       "label": "Pharmacie & Stocks",
+       "hub": "hub-m6",
+       "ecrans": [
+        "m6-stock-detail",
+        "m6-lots"
+       ]
+      },
       {
        "code": "M7",
        "label": "Achats & Fournisseurs",
@@ -5039,6 +5131,15 @@
         "m1-patients",
         "m1-externe"
        ]
+      },
+      {
+       "code": "CFG",
+       "label": "Tarification & information patient",
+       "hub": "hub-cfg",
+       "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue"
+       ]
       }
      ]
     },
@@ -5193,6 +5294,8 @@
        "label": "Configuration Clinique",
        "hub": "hub-cfg",
        "ecrans": [
+        "cfg-tarifs",
+        "cfg-catalogue",
         "cfg-imagerie-catalogue"
        ]
       }

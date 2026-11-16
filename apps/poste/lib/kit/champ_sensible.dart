@@ -34,6 +34,11 @@ class AccesSensible {
 
   bool peut(String categorie) => _droits.peut(role, categorie);
 
+  /// Le refus vient-il d'une DÉCISION de la clinique (`donneesSensibles.<catégorie>: false` sur la fiche du rôle) et non du défaut, qui suit l'écran de
+  /// référence ? Un écran qui offre une lecture RÉDUITE (le plan des lits sans le séjour) la réserve au refus par défaut : une catégorie fermée
+  /// nommément ferme l'écran entier, comme avant.
+  bool refuseeParDecision(String categorie) => _droits.decision(role, categorie) == false;
+
   /// « Information réservée — droit requis : » suivi du libellé de la catégorie.
   String mention(String categorie) => mentionReservee(categorie);
 

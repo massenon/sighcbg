@@ -56,9 +56,9 @@ Source : `packages/domaine/lib/src/assistant/ast_catalogue.dart`. Statuts : **ca
 | I01 | oui | oui | non | oui | oui | oui | oui | oui | oui | oui | oui | oui |
 | I02 | oui | oui | non | oui | oui | oui | oui | oui | oui | oui | oui | oui |
 | I03 | non | oui | oui | oui | non | non | oui | oui | oui | non | non | non |
-| I04 | oui | non | non | non | non | oui | non | oui | oui | oui | non | non |
-| I05 | oui | oui | oui | oui | non | oui | oui | oui | oui | non | non | non |
-| I06 | oui | non | non | non | non | non | oui | oui | oui | non | non | non |
+| I04 | oui | non | non | non | non | oui | non | oui | oui | oui | non | oui |
+| I05 | oui | oui | oui | oui | oui | oui | oui | oui | oui | non | non | non |
+| I06 | oui | non | non | oui | oui | non | oui | oui | oui | non | non | non |
 | I07 | non | oui | oui | oui | non | oui | oui | oui | oui | non | non | non |
 | I08 | non | oui | oui | oui | non | oui | oui | oui | oui | non | non | non |
 | I09 | non | oui | oui | oui | non | oui | oui | oui | oui | non | non | non |
@@ -70,9 +70,9 @@ Source : `packages/domaine/lib/src/assistant/ast_catalogue.dart`. Statuts : **ca
 | I15 | non | oui | oui | oui | non | non | oui | oui | oui | non | non | non |
 | I16 | non | oui | oui | oui | non | non | oui | oui | oui | non | non | non |
 | I17 | oui | non | non | non | non | oui | oui | oui | oui | oui | oui | non |
-| I18 | oui | non | non | non | non | oui | oui | oui | oui | oui | non | non |
+| I18 | oui | non | non | oui | oui | oui | oui | oui | oui | oui | non | non |
 | I19 | non | non | non | non | oui | oui | non | oui | oui | oui | oui | non |
-| I20 | non | non | non | non | non | non | oui | oui | oui | non | non | non |
+| I20 | oui | non | non | non | non | non | oui | oui | oui | oui | non | non |
 | I21 | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | non |
 | I22 | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui |
 | I23 | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui | oui |

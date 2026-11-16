@@ -97,7 +97,7 @@
     "administrateur": true,
     "infirmier": true,
     "sage_femme": false,
-    "agent_administratif": false
+    "agent_administratif": true
    }
   },
   {
@@ -112,7 +112,7 @@
     "caisse": true,
     "stock": true,
     "comptabilite": true,
-    "laboratoire": false,
+    "laboratoire": true,
     "medecin": true,
     "daf": true,
     "direction": true,
@@ -131,8 +131,8 @@
     "reception": true,
     "caisse": false,
     "stock": false,
-    "comptabilite": false,
-    "laboratoire": false,
+    "comptabilite": true,
+    "laboratoire": true,
     "medecin": false,
     "daf": true,
     "direction": true,
@@ -389,8 +389,8 @@
     "reception": true,
     "caisse": false,
     "stock": false,
-    "comptabilite": false,
-    "laboratoire": false,
+    "comptabilite": true,
+    "laboratoire": true,
     "medecin": true,
     "daf": true,
     "direction": true,
@@ -428,7 +428,7 @@
     "m10-stats-gardes"
    ],
    "profils": {
-    "reception": false,
+    "reception": true,
     "caisse": false,
     "stock": false,
     "comptabilite": false,
@@ -437,7 +437,7 @@
     "daf": true,
     "direction": true,
     "administrateur": true,
-    "infirmier": false,
+    "infirmier": true,
     "sage_femme": false,
     "agent_administratif": false
    }

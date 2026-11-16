@@ -121,3 +121,43 @@ test('un tableau de bord de rôle n\'est ouvert qu\'à son rôle et aux profils 
     for (const r of rbac.roles) assert.equal(!!droit(r.id, dash), r.id === role || ['admin', 'da', 'direction'].includes(r.id), `${dash} sous ${r.id}`);
   }
 });
+
+/* --- Ouvertures de droits en LECTURE (décision de la Direction du 16/11/2026, DECISIONS-16-11 § 2) : une surcharge d'ÉCRAN nommée dans la fiche du rôle,
+ * voir sans éditer ni annuler — jamais un module ouvert. Le détail rôle par rôle (trois lectures de la matrice, catégories sensibles, mobile) est sondé par
+ * packages/domaine/test/ouvertures_lecture_16_11_test.dart. --- */
+const ouvertures16_11 = {
+  dm: ['m10-planning'], infirmier: ['m10-planning'], reception: ['m10-planning'], ambulancier: ['m10-planning'], chirurgien: ['m10-planning'],
+  laborantin: ['cfg-tarifs', 'cfg-catalogue'], echographiste: ['cfg-tarifs', 'cfg-catalogue'], responsable_radiologie: ['cfg-tarifs', 'cfg-catalogue'], comptable: ['cfg-tarifs', 'cfg-catalogue'],
+  anesthesiste: ['m6-stock-detail', 'm6-lots'],
+  agentadmin: ['m3-plan-lits'], surveillant: ['m3-plan-lits'], aide_soignant: ['m3-plan-lits'],
+  assistant_comptable: ['m2-stats-consultations', 'm3-stats-hospitalisations', 'm6-point-ventes'],
+};
+test('16/11/2026 : chaque ouverture est une lecture seule [1, 0, 0] sur un écran du manifeste', () => {
+  for (const [role, ecrans] of Object.entries(ouvertures16_11)) for (const e of ecrans) {
+    assert.ok(ecransConnus.has(e), e);
+    assert.deepEqual(droit(role, e), [1, 0, 0], `${role} → ${e}`);
+  }
+});
+test('16/11/2026 : la fiche nomme l\'écran, le module reste fermé ; ni caisse, ni mouvement, ni inventaire, ni admission', () => {
+  const fiches = require('../../../apps/poste/assets/donnees/jeu/rbac.json');
+  for (const [role, ecrans] of Object.entries(ouvertures16_11)) {
+    const f = fiches.find((x) => x.role === role);
+    for (const e of ecrans) assert.deepEqual(f.droitsEcrans[e], { voir: true, editer: false, annuler: false }, `${role} → ${e}`);
+  }
+  // Les prix sans la caisse : le biologiste et le technicien d'échographie n'ont toujours aucun écran de facturation (le comptable garde la sienne, M8).
+  for (const r of ['laborantin', 'echographiste', 'responsable_radiologie']) for (const id of Object.keys(rbac.parRole[r])) assert.ok(!/^m(8|9|12)-/.test(id) && !id.startsWith('mecef-'), `${r} → ${id}`);
+  for (const e of ['m6-mouvements', 'm6-inventaire', 'm6-transferts', 'm6-dispensation', 'm6-stock-gros']) assert.equal(droit('anesthesiste', e), null, e);
+  for (const r of ['agentadmin', 'surveillant', 'aide_soignant']) for (const e of ['m3-admissions', 'm1-dossier-medical', 'm2-dossiers-consultation']) assert.equal(droit(r, e), null, `${r} → ${e}`);
+  for (const r of ['dm', 'infirmier', 'reception', 'ambulancier', 'chirurgien']) for (const e of ['m10-primes', 'm10-presences', 'm11-calcul']) assert.equal(droit(r, e), null, `${r} → ${e}`);
+});
+test('16/11/2026 : les copies de la matrice et des fiches sont identiques octet pour octet', () => {
+  const fs = require('node:fs'); const path = require('node:path'); const racine = path.join(__dirname, '../../..');
+  const lire = (p) => fs.readFileSync(path.join(racine, p));
+  const egal = (a, b) => assert.ok(lire(a).equals(lire(b)), `${a} ≠ ${b}`);
+  egal('packages/rbac/data/rbac.json', 'apps/poste/assets/donnees/rbac.json');
+  egal('packages/rbac/data/rbac.json', 'apps/mobile/assets/droits/rbac.json');
+  egal('apps/poste/assets/donnees/jeu/rbac.json', 'apps/mobile/assets/droits/rbac.livre.json');
+  egal('apps/poste/assets/donnees/rbac.reference.json', 'apps/mobile/assets/droits/rbac.reference.json');
+  egal('packages/referentiels/data/manifeste.json', 'apps/poste/assets/donnees/manifeste.json');
+  egal('packages/referentiels/data/manifeste.json', 'apps/mobile/assets/droits/manifeste.json');
+});

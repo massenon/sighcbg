@@ -419,16 +419,25 @@ class _Cellule extends StatelessWidget {
 String _textePeriodicite(Object? x) => x == 'occurrence' ? 'par occurrence' : 'mensuelle';
 
 /// Ce que dit une dérogation, champ par champ (`texteDerogations`).
-List<String> _textesDerogations(List<String> derog, {List<String> vacations = const [], String? repos, Object? cycle, Object? honoraire, String? periodicite}) => [
+/// Les MONTANTS des honoraires (régimes et dérogations individuelles) se lisent avec le droit d'écrire le planning ou de voir l'écran des primes : le planning
+/// est ouvert EN LECTURE à des postes qui doivent savoir qui est de garde (décision de la Direction du 16/11/2026), pas ce que chaque agent perçoit. Le
+/// critère est la MATRICE (l'écran `m10-primes`), jamais un nom de rôle ; hors coque (matrice non branchée), rien n'est masqué.
+bool voitHonorairesPlanning(ContexteEcran c) => c.droit.editer || (c.donnees?.matrice.peutVoir(c.role, 'm10-primes') ?? true);
+
+/// Le texte d'un montant d'honoraire que le profil ne lit pas : il le DIT, un champ vide se lirait comme une absence d'honoraire.
+const String honoraireReserve = 'montant réservé (droit de lire les primes)';
+
+List<String> _textesDerogations(List<String> derog,
+        {List<String> vacations = const [], String? repos, Object? cycle, Object? honoraire, String? periodicite, bool montants = true}) => [
       if (derog.contains('vacations')) 'Vacations : ${vacations.map(rhbTypePlanningLabel).join(', ')}',
       if (derog.contains('repos')) 'Repos : ${repos != null && repos != '' ? rhbTypePlanningLabel(repos) : 'aucun codifié'}',
       if (derog.contains('cycle')) 'Cycle : $cycle jours',
-      if (derog.contains('honoraire')) 'Honoraire : ${money(honoraire, avecDevise: false)}',
+      if (derog.contains('honoraire')) 'Honoraire : ${montants ? money(honoraire, avecDevise: false) : honoraireReserve}',
       if (derog.contains('honorairePeriodicite')) 'Périodicité : ${_textePeriodicite(periodicite)}',
     ];
 
-List<String> _textesRegime(RegimeRhResolu r) =>
-    _textesDerogations(r.derogations, vacations: r.vacations, repos: r.repos, cycle: r.cycle, honoraire: r.honoraire, periodicite: r.honorairePeriodicite);
+List<String> _textesRegime(RegimeRhResolu r, {bool montants = true}) => _textesDerogations(r.derogations,
+    vacations: r.vacations, repos: r.repos, cycle: r.cycle, honoraire: r.honoraire, periodicite: r.honorairePeriodicite, montants: montants);
 
 /// `affecter` : l'affectation d'une vacation à un agent, un jour donné. Les vacations proposées sont celles du régime EN VIGUEUR À LA DATE (dérogation
 /// individuelle comprise) ; le contrôle de repos et de double affectation est celui du domaine (une règle, une voie), refusé EN LE NOMMANT.
@@ -603,7 +612,7 @@ class _Individuels extends StatelessWidget {
                 final r = l['r'] as RegimeRhResolu;
                 return r.individuel
                     ? Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-                        for (final t in _textesRegime(r)) Text(t, style: const TextStyle(color: JetonsShell.slate700, fontSize: 12, height: 16 / 12)),
+                        for (final t in _textesRegime(r, montants: voitHonorairesPlanning(c))) Text(t, style: const TextStyle(color: JetonsShell.slate700, fontSize: 12, height: 16 / 12)),
                       ])
                     : const Text('Suit sa catégorie', style: TextStyle(color: JetonsShell.slate400, fontSize: 12));
               }),
@@ -615,7 +624,7 @@ class _Individuels extends StatelessWidget {
               ColonneMini('', (l) => '', droite: true, rendu: (l) {
                 final e = l['e'] as Fiche;
                 return Row(mainAxisSize: MainAxisSize.min, children: [
-                  BoutonIcone(icone: LucideIcons.history, libelle: 'Historique des versions', onPressed: () => _historique(contexte, e)),
+                  BoutonIcone(icone: LucideIcons.history, libelle: 'Historique des versions', onPressed: () => _historique(contexte, e, montants: voitHonorairesPlanning(c))),
                   if (_peutDeroger(c)) BoutonIcone(icone: LucideIcons.pencil, libelle: 'Nouvelle version pour cet agent', onPressed: () => _deroger(contexte, c, e)),
                 ]);
               }),
@@ -625,7 +634,7 @@ class _Individuels extends StatelessWidget {
     );
   }
 
-  void _historique(BuildContext ctx, Fiche e) {
+  void _historique(BuildContext ctx, Fiche e, {bool montants = true}) {
     final h = p.historique(e['id']);
     afficherModale<void>(ctx,
         titre: 'Historique du régime de ${e['nomComplet']}',
@@ -639,7 +648,7 @@ class _Individuels extends StatelessWidget {
             final ch = (x['champs'] as Map).cast<String, Object?>();
             final repos = ch['repos'] == 'aucun' ? null : ch['repos'] as String?;
             final textes = _textesDerogations(ch.keys.toList(),
-                vacations: [for (final v in (ch['vacations'] as List? ?? const [])) '$v'], repos: repos, cycle: ch['cycle'], honoraire: ch['honoraire'], periodicite: ch['honorairePeriodicite'] as String?);
+                vacations: [for (final v in (ch['vacations'] as List? ?? const [])) '$v'], repos: repos, cycle: ch['cycle'], honoraire: ch['honoraire'], periodicite: ch['honorairePeriodicite'] as String?, montants: montants);
             return Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
               for (final t in textes) Text(t, style: const TextStyle(color: JetonsShell.slate700, fontSize: 12, height: 16 / 12)),
             ]);
@@ -753,6 +762,7 @@ class _Regimes extends StatelessWidget {
         ColonneMini('Honoraire', (r) => '', droite: true, rendu: (r) {
           final h = r['honoraire'];
           if (h == null || h == 0 || h == '') return const Text('—', style: TextStyle(color: JetonsShell.slate300, fontSize: 12));
+          if (!voitHonorairesPlanning(c)) return const Text(honoraireReserve, key: Key('rhb:honoraire-reserve'), style: TextStyle(color: JetonsShell.slate500, fontSize: 12, fontStyle: FontStyle.italic));
           return Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisSize: MainAxisSize.min, children: [
             Text(money(h, avecDevise: false), style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, fontWeight: FontWeight.w600)),
             Text('${r['honorairePeriodicite'] == null || r['honorairePeriodicite'] == '' ? 'mensuelle' : r['honorairePeriodicite']}', style: rhbPetit),
