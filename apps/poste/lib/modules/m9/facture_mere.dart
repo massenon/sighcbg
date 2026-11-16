@@ -10,6 +10,7 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/points_commun.dart' show champUnique, commande;
 import 'commun.dart';
+import 'facture_tiers.dart';
 
 /// `m9-facture-mere` — « Facture mère assurance » : la pièce unique adressée à une compagnie, qui consolide ses factures par souscripteur.
 ///
@@ -107,8 +108,26 @@ class _EtatFactureMere extends State<EcranFactureMere> {
 
   String _nom(ContexteEcran c) => assNomAssureur(_code, actives(c, 'assureurs'));
 
-  List<AssFilleMere> _filles(ContexteEcran c) =>
-      assFillesMere(actives(c, 'factures'), _code, _nom(c), _depuis(c));
+  /// Les lignes du relevé pour la facture MÈRE : les factures patients déjà réclamées par une facture à une entreprise n'y figurent plus (une facture patient ne se réclame qu'une fois, point 2
+  /// du 17/11/2026) ; le rapprochement de la mère se refait donc sur ce qui reste.
+  List<AssFilleMere> _filles(ContexteEcran c) {
+    final reclamees = fillesDejaReclamees(facturesTiers: actives(c, colFacturesTiers));
+    final factures = [
+      for (final f in actives(c, 'factures'))
+        if (!reclamees.containsKey('${f['numero'] ?? f['id']}')) f
+    ];
+    return assFillesMere(factures, _code, _nom(c), _depuis(c));
+  }
+
+  /// Les lignes du relevé offertes à la facture à une entreprise : sans les factures déjà réclamées par une autre facture à une entreprise OU par une facture mère émise.
+  List<AssFilleMere> _lignesTiers(ContexteEcran c) {
+    final reclamees = fillesDejaReclamees(facturesTiers: actives(c, colFacturesTiers), facturesMere: actives(c, 'facturesMere'));
+    final factures = [
+      for (final f in actives(c, 'factures'))
+        if (!reclamees.containsKey('${f['numero'] ?? f['id']}')) f
+    ];
+    return assFillesMere(factures, _code, _nom(c), _depuis(c));
+  }
 
   // --- Les actes -----------------------------------------------------------------------------------------------------------
 
@@ -579,7 +598,7 @@ class _EtatFactureMere extends State<EcranFactureMere> {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return ListenableBuilder(
-      listenable: ecoute(c, ['assureurs', 'factures', 'facturesMere']),
+      listenable: ecoute(c, ['assureurs', 'factures', 'facturesMere', colFacturesTiers, 'situationsAib', 'baremeAib']),
       builder: (context, _) {
         final filles = _filles(c);
         final rap = assRapprocher(filles);
@@ -673,6 +692,19 @@ class _EtatFactureMere extends State<EcranFactureMere> {
                     libelle: 'Factures mères émises',
                     compte: emises.length,
                     construire: (ctx) => _emises(ctx, c, emises)),
+                // Point 2 du 17/11/2026 : la facture à une entreprise qui prend un patient en charge (IFU, nom, AIB choisi), née d'une ligne du relevé.
+                OngletDef(
+                    id: 'tiers',
+                    libelle: 'Factures à une entreprise',
+                    compte: actives(c, colFacturesTiers).where((x) => x['compagnieCode'] == _code).length,
+                    construire: (ctx) => OngletFacturesTiers(
+                        c: c,
+                        code: _code,
+                        nom: _nom(c),
+                        periode: _per,
+                        periodeLibelle: assPeriodesMere.firstWhere((p) => p.$1 == _per).$2,
+                        depuis: _depuis(c),
+                        lignes: _lignesTiers(c))),
               ]),
             ]);
       },

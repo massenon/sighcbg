@@ -83,6 +83,7 @@ const List<SerieNumerotation> seriesNumerotationSemence = [
   // M8 Facturation & caisse
   SerieNumerotation(code: 'caisse.factures', libelle: 'Factures normalisées', module: 'M8', prefixe: 'FN', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
   SerieNumerotation(code: 'caisse.proformas', libelle: 'Factures pro-forma', module: 'M8', prefixe: 'PRO', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
+  SerieNumerotation(code: 'caisse.factures-tiers', libelle: 'Factures à une entreprise (tiers payeur)', module: 'M8', prefixe: 'FT', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: 'Série créée le 17/11/2026 pour la facture à une entreprise (proposition à valider) : distincte de la facture du patient (FN).'),
   SerieNumerotation(code: 'caisse.avoirs', libelle: 'Avoirs', module: 'M8', prefixe: 'AV', annee: anneeLongue, largeur: 4, remiseAnnuelle: true, note: _n),
   SerieNumerotation(code: 'caisse.pieces', libelle: 'Pièces de caisse (journal CAI)', module: 'M8', prefixe: 'CAI', annee: anneeLongue, largeur: 5, remiseAnnuelle: true, champ: 'numero', note: _n),
   SerieNumerotation(code: 'caisse.remboursements', libelle: 'Remboursements', module: 'M8', prefixe: 'RB', largeur: 5, note: _n),

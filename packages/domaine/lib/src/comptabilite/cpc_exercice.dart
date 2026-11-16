@@ -19,8 +19,7 @@ import 'dart:convert';
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
-import '../droits/gestes_reserves.dart' show gesteCircuitCloture, gesteReserve;
-import '../parametres/reglages_roles.dart' show rolesInventaireClotureDefaut;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gesteCircuitCloture, gesteClotureInventaire, gesteReserve, gestesOrigine;
 import 'cpa_ecritures.dart' show cpaAnnee, cpaRefusJournalReserve;
 import 'cpa_referentiels.dart';
 import 'cpc_liasse.dart';
@@ -118,9 +117,10 @@ String cpcEtatExercice(Iterable<CpaFiche> exercices, int annee) {
 ///  * exercice EN CLÔTURE : les modules n'écrivent plus ; seul le comptable (ou l'administrateur) y passe ses écritures d'inventaire, en SAISIE MANUELLE ;
 ///  * les pièces de la clôture elle-même (CL, AN, contre-passations : `origineCloture`) passent à l'INSERTION, jamais à la modification ni à l'archivage.
 ///
-/// [rolesInventaire] : les rôles qui passent leurs écritures d'inventaire pendant la clôture (Q3 : réglage de clinique `cloture.rolesInventaire`, comptable et administrateur semés) ; absent : le défaut semé.
+/// [gestes] : les gestes réservés EN FORCE (fiches de rôle) ; absent : l'origine. Un rôle passe ses écritures d'inventaire pendant la clôture s'il détient `cloture_inventaire` (point 7 du
+/// 17/11/2026 : une case de la fiche de rôle, qui remplace le réglage « liste de rôles » `cloture.rolesInventaire`).
 String? cpcGardeEcritures(Iterable<CpaFiche> exercices, Object? date,
-    {String op = 'inserer', Object? origineCloture, Object? origine, String role = '', Iterable<String>? rolesInventaire}) {
+    {String op = 'inserer', Object? origineCloture, Object? origine, String role = '', DroitsGestes? gestes}) {
   final a = cpaAnnee(date);
   if (a == null) return null;
   if (origineCloture != null && '$origineCloture'.isNotEmpty && op == 'inserer') return null;
@@ -132,9 +132,8 @@ String? cpcGardeEcritures(Iterable<CpaFiche> exercices, Object? date,
     return 'Exercice $a clôturé${d != null ? ' le ${dateFR(d)}' : ''} : lecture seule. La correction passe par la réouverture par le circuit de clôture (motif obligatoire), ou par une écriture de l’exercice en cours.';
   }
   if (etat == 'en_cloture') {
-    final inventaire = (rolesInventaire ?? rolesInventaireClotureDefaut).toList();
-    if ('$origine' == 'Saisie manuelle' && inventaire.contains(role)) return null;
-    return 'Exercice $a en clôture : les modules n’y écrivent plus. Seuls les rôles réglés pour l’inventaire (réglage de la clinique) y passent leurs écritures d’inventaire (saisie manuelle) ; sinon dater la pièce de l’exercice ouvert.';
+    if ('$origine' == 'Saisie manuelle' && role.isNotEmpty && (gestes ?? gestesOrigine()).peut(role, gesteClotureInventaire)) return null;
+    return 'Exercice $a en clôture : les modules n’y écrivent plus. Seuls les rôles qui détiennent le droit « Passer des écritures d’inventaire pendant la clôture » (fiche de rôle) y passent leurs écritures d’inventaire (saisie manuelle) ; sinon dater la pièce de l’exercice ouvert.';
   }
   return null;
 }
@@ -596,10 +595,10 @@ List<String> cpcAvertissementsDemarrage(CpcPreCloture pre) {
 /// la mère quand son exercice ne le permet plus : elle est MISE DE CÔTÉ et le dit. Rend le refus NOMMÉ — `exercice_clos` ou `exercice_en_cloture` — ou `null` (la pièce s'applique).
 ///
 ///  * exercice CLÔTURÉ : toujours refusée ; la correction passe par la réouverture, ou par une pièce de l'exercice ouvert ;
-///  * exercice EN CLÔTURE : refusée sauf les pièces de la clôture elle-même (`origineCloture`) et la saisie manuelle d'un rôle réglé pour l'inventaire ([rolesInventaire]).
+///  * exercice EN CLÔTURE : refusée sauf les pièces de la clôture elle-même (`origineCloture`) et la saisie manuelle d'un rôle qui détient le geste `cloture_inventaire` ([gestes], SA matrice).
 ///
 /// [roleAuteur] est le rôle de l'auteur de la pièce quand la mère le connaît (la pièce porte `creePar`/rôle) ; absent, une pièce en clôture n'est jamais présumée d'inventaire.
-({String code, String motif, String geste})? cpcRefusPieceFileul(Iterable<CpaFiche> exercices, Map<String, Object?> piece, {String roleAuteur = '', Iterable<String>? rolesInventaire}) {
+({String code, String motif, String geste})? cpcRefusPieceFileul(Iterable<CpaFiche> exercices, Map<String, Object?> piece, {String roleAuteur = '', DroitsGestes? gestes}) {
   final a = cpaAnnee(piece['date']);
   if (a == null) return null;
   final cl = piece['origineCloture'];
@@ -614,8 +613,7 @@ List<String> cpcAvertissementsDemarrage(CpcPreCloture pre) {
     );
   }
   if (etat == 'en_cloture') {
-    final inventaire = (rolesInventaire ?? rolesInventaireClotureDefaut).toList();
-    if ('${piece['origine']}' == 'Saisie manuelle' && roleAuteur.isNotEmpty && inventaire.contains(roleAuteur)) return null;
+    if ('${piece['origine']}' == 'Saisie manuelle' && roleAuteur.isNotEmpty && (gestes ?? gestesOrigine()).peut(roleAuteur, gesteClotureInventaire)) return null;
     return (
       code: 'exercice_en_cloture',
       motif: 'La pièce $ref est datée de l’exercice $a, en cours de clôture : la mère la met de côté, elle ne l’écrit pas aux écritures.',

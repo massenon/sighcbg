@@ -65,6 +65,7 @@ const Map<String, (String base, String attendu)> ancien = {
   'achats.pv-reactifs': ('', 'PV-REA-2026-0012'),
   'caisse.factures': ('', 'FN-2026-00012'),
   'caisse.proformas': ('', 'PRO-2026-00012'),
+  'caisse.factures-tiers': ('', 'FT-2026-00012'), // série créée le 17/11/2026 : la facture à une entreprise (tiers payeur)
   'caisse.avoirs': ('', 'AV-2026-0012'),
   'caisse.pieces': ('', 'CAI-2026-00012'),
   'caisse.remboursements': ('', 'RB-00012'),

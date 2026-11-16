@@ -581,19 +581,9 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Continuité des validations (pastille et alerte des décisions en attente de la mère)',
   ),
 
-  // Q3 et Q4 de la Direction de Baguidi (17/11/2026). Q3 : une liste de rôles BRANCHÉE (clôture). Q4 : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste
-  // réservé `achats_valider` de la fiche RBAC (Direction du 16/11/2026) — l'ancienne clé `achats.rolesValidateurs` est retirée du registre (voir `reglages_roles.dart`).
-  DefinitionParametre(
-    cle: cleRolesInventaireCloture,
-    famille: 'cloture',
-    type: TypeParametre.texte,
-    defaut: 'comptable,admin',
-    libelle: 'Écritures d\'inventaire en clôture : rôles autorisés',
-    aide: 'Identifiants de rôle séparés par des virgules. Pendant qu\'un exercice est EN CLÔTURE, les modules n\'y écrivent plus ; seuls ces rôles y passent leurs écritures d\'inventaire, en saisie manuelle. Une liste vide retombe sur le défaut.',
-    source: 'Décision de la Direction du 17/11/2026 (Q3) : comptable et administrateur semés',
-    branche: true,
-    appliquePar: 'Circuit de clôture (m12-cloture)',
-  ),
+  // Q4 de la Direction de Baguidi (17/11/2026) : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste réservé `achats_valider` de la fiche RBAC (Direction du 16/11/2026) —
+  // l'ancienne clé `achats.rolesValidateurs` est retirée du registre (voir `reglages_roles.dart`). Q3 (écritures d'inventaire en clôture) n'est plus un réglage non plus : le geste réservé
+  // `cloture_inventaire` (point 7 du 17/11/2026) ; la clé `cloture.rolesInventaire` est retirée de la même façon.
   DefinitionParametre(
     cle: cleLibelleValidateurAchats,
     famille: 'achats',

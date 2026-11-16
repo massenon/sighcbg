@@ -62,22 +62,68 @@ void main() {
     expect(cpcRefusPieceFileul(exo, p), isNull);
     expect(cpcRefusPieceFileul(clos, p)!.code, 'exercice_clos');
     expect(cpcRefusPieceFileul(enC, p)!.code, 'exercice_en_cloture');
-    expect(cpcRefusPieceFileul(enC, p, roleAuteur: 'comptable'), isNull, reason: 'inventaire d\'un rôle réglé');
-    expect(cpcRefusPieceFileul(enC, p, roleAuteur: 'comptable', rolesInventaire: const ['stock'])!.code, 'exercice_en_cloture');
+    expect(cpcRefusPieceFileul(enC, p, roleAuteur: 'comptable'), isNull, reason: 'inventaire d\'un rôle qui détient le geste');
+    final sansGeste = DroitsGestes(fiches: [
+      {'role': 'comptable', 'droitsGestes': {gesteClotureInventaire: false}}
+    ]);
+    expect(cpcRefusPieceFileul(enC, p, roleAuteur: 'comptable', gestes: sansGeste)!.code, 'exercice_en_cloture', reason: 'la mère lit SA matrice : le geste retiré refuse');
     expect(cpcRefusPieceFileul(clos, {...p, 'origineCloture': 'cl'}), isNull);
     expect(cpcRefusPieceFileul(clos, {'numero': 'X'}), isNull);
   });
 
-  test('Q3 : les rôles d\'inventaire en clôture sont un réglage', () {
+  // Direction de Baguidi, 17/11/2026, point 7 : Q3 REMPLACÉE. Les écritures d'inventaire d'un exercice EN CLÔTURE ne sont plus un réglage « liste de rôles » (`cloture.rolesInventaire`) mais le GESTE
+  // RÉSERVÉ `cloture_inventaire` de la fiche de rôle : le Comptable et la DAF d'origine, une case réglable.
+  test('Q3 (remplacée le 17/11/2026) : passer des écritures d\'inventaire en clôture est un geste réservé, le comptable et la DAF d\'origine', () {
+    final g = gesteReserve(gesteClotureInventaire)!;
+    expect(g.rolesDefaut, ['comptable', 'da']);
     final enC = [
       {...exo.first, 'etat': 'en_cloture'}
     ];
-    String? g(String role, [Iterable<String>? r]) => cpcGardeEcritures(enC, '2030-05-01', origine: 'Saisie manuelle', role: role, rolesInventaire: r);
-    expect(g('comptable'), isNull);
-    expect(g('stock'), isNotNull);
-    expect(g('stock', const ['stock']), isNull);
-    expect(g('comptable', const ['stock']), isNotNull);
-    expect(definitionDeParametre(cleRolesInventaireCloture)!.defaut, reglageRolesTexte(rolesInventaireClotureDefaut));
+    final origine = DroitsGestes(fiches: const []);
+    String? garde(String role, {String origine = 'Saisie manuelle', DroitsGestes? gestes}) =>
+        cpcGardeEcritures(enC, '2030-05-01', origine: origine, role: role, gestes: gestes);
+    expect(garde('comptable', gestes: origine), isNull);
+    expect(garde('da', gestes: origine), isNull);
+    expect(garde('admin', gestes: origine), isNotNull, reason: 'l\'administrateur système ne l\'a pas d\'origine');
+    expect(garde('stock', gestes: origine), isNotNull);
+    expect(garde('comptable', origine: 'Facturation', gestes: origine), isNotNull, reason: 'seule la saisie MANUELLE passe, jamais un module');
+    expect(garde('comptable', gestes: origine), isNull);
+    expect(garde('', gestes: origine), isNotNull, reason: 'un acteur sans rôle ne passe pas');
+    // Une case de la fiche de rôle : accordée à un rôle, retirée à un autre.
+    final decide = DroitsGestes(fiches: [
+      {'role': 'stock', 'droitsGestes': {gesteClotureInventaire: true}},
+      {'role': 'comptable', 'droitsGestes': {gesteClotureInventaire: false}},
+    ]);
+    expect(garde('stock', gestes: decide), isNull);
+    expect(garde('comptable', gestes: decide), isNotNull);
+    expect(garde('da', gestes: decide), isNull, reason: 'un droit PAR rôle : retirer le comptable ne touche pas la DAF');
+    // Module M12 fermé / rôle archivé : le geste suit les règles communes de la matrice.
+    expect(DroitsGestes(fiches: const [], estArchive: (r) => r == 'comptable').peut('comptable', gesteClotureInventaire), isFalse);
+    expect(origine.rolesAvec(gesteClotureInventaire, const ['admin', 'da', 'direction', 'comptable', 'stock', 'caissier']), ['da', 'comptable']);
+  });
+
+  test('Q3 : le réglage `cloture.rolesInventaire` est RETIRÉ du registre ; une ancienne fiche en base ne décide plus rien', () {
+    expect(definitionDeParametre(cleRolesInventaireClotureRetiree), isNull, reason: 'plus semé, plus affiché');
+    final versions = <F>[
+      {'id': '$cleRolesInventaireClotureRetiree@1', 'statut': 'actif', 'cle': cleRolesInventaireClotureRetiree, 'valeur': 'stock,caissier', 'version': 1, 'dateEffet': '2026-01-01'}
+    ];
+    final s = ServiceParametres(
+        definitions: definitionsParametres,
+        lireVersions: () => versions,
+        lireUsages: () => const [],
+        ecrireVersion: (id, c) => versions.add({'id': id, ...c}),
+        ecrireUsage: (_, __) {},
+        auteur: () => 'T',
+        maintenant: () => auj);
+    expect(s.parFamille('2030-12-31').values.expand((l) => l).map((p) => p.definition.cle), isNot(contains(cleRolesInventaireClotureRetiree)));
+    expect(s.semerDefauts(), definitionsParametres.length, reason: 'rien n\'est semé pour la clé retirée');
+    // La fiche ancienne qui nommait le stock et le caissier n'ouvre rien : la garde ne lit que la matrice.
+    final enC = [
+      {...exo.first, 'etat': 'en_cloture'}
+    ];
+    for (final r in ['stock', 'caissier']) {
+      expect(cpcGardeEcritures(enC, '2030-05-01', origine: 'Saisie manuelle', role: r, gestes: DroitsGestes(fiches: const [])), isNotNull, reason: r);
+    }
   });
 
   // Direction de Baguidi, 16/11/2026 : Q4 REMPLACÉE. Le validateur des commandes n'est plus un réglage de clinique (`achats.rolesValidateurs`, v20, DAF + Direction + administrateur semés)

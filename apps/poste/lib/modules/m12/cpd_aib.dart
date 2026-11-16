@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../donnees/gestes_magasin.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/parametres_aib.dart';
 import '../../impression/apercu.dart';
@@ -197,7 +198,12 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                   libelle: 'Statut',
                   type: TypeChamp.select,
                   requis: true,
-                  options: [for (final s in cpdStatutsAib) OptionChamp(s.$1, s.$2)]),
+                  // « Arrêté » se propose avec le geste réservé « Confirmer un taux fiscal et arrêter un barème de l'AIB » (17/11/2026, point 6), ou quand la version l'est déjà (on n'en retire pas
+                  // la valeur affichée) : sans lui, la commande est ABSENTE et le moteur refuserait en le nommant.
+                  options: [
+                    for (final s in cpdStatutsAib)
+                      if (s.$1 != cpdStatutArrete || peutConfirmerFiscal(c) || (record != null && cpdEstArretee(record))) OptionChamp(s.$1, s.$2)
+                  ]),
               const ChampDef(
                   nom: 'dateArret',
                   libelle: 'Date de l’arrêt',
@@ -219,7 +225,8 @@ class EcranAib extends StatelessWidget with EcranMaquette {
               const ChampDef(nom: 'motif', libelle: 'Motif', type: TypeChamp.textarea, lignes: 2, col: ColChamp.plein, requis: true, aide: 'Pourquoi cette version : décision, correction, précision.'),
             ],
             // Le contrôle du domaine REFUSE en nommant : version arrêtée non corrigeable sur place, date d'effet en double, arrêt incomplet.
-            avant: (ctx, saisie, record) => cpdControlerVersionAib(saisie, record, col.actives, c.aujourdhui, situations: colSit.actives),
+            avant: (ctx, saisie, record) =>
+                cpdControlerVersionAib(saisie, record, col.actives, c.aujourdhui, situations: colSit.actives, role: c.role, gestes: gestesDuMagasin(c.magasin)),
             transformer: (ctx, s, record) {
               final arrete = '${s['statutArret']}' == cpdStatutArrete;
               final effet = '${s['dateEffet'] ?? ''}';

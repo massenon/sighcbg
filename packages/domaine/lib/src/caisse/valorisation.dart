@@ -38,8 +38,9 @@ List<Map<String, Object?>> lignesAValoriserDe(Map<String, Object?> facture) => [
         if (l is Map && ligneAValoriser(l.cast<String, Object?>())) l.cast<String, Object?>()
     ];
 
-/// L'écran du « Référentiel produits » (prix d'achat des médicaments) et celui de « Tarifs et prix » (actes, analyses, imagerie) : les alertes « prix manquant » vont aux rôles qui
-/// peuvent les MODIFIER (droit `editer` de la matrice), jamais à une liste de rôles.
+/// L'écran du « Référentiel produits » (prix d'achat des médicaments) et celui de « Tarifs et prix » (actes, analyses, imagerie). L'alerte « prix manquant » d'une PRESTATION va aux rôles
+/// qui peuvent MODIFIER « Tarifs et prix » (droit `editer` de la matrice) ; celle d'un MÉDICAMENT va aux rôles qui détiennent le geste « Proposer un changement de prix d'achat »
+/// (`tarif_proposer_achat`, décision du 17/11/2026, point 8) : modifier la fiche d'un produit ne suffit plus, le caissier ne la reçoit plus. Jamais une liste de rôles.
 const String ecranReferentielProduits = 'm6-produits';
 const String ecranTarifsEtPrix = 'cfg-tarifs';
 
@@ -48,6 +49,12 @@ const String prefixePosteEditeurs = 'editeurs:';
 
 /// Le poste de notification « ceux qui peuvent modifier [ecran] ».
 String posteEditeursEcran(String ecran) => '$prefixePosteEditeurs$ecran';
+
+/// Le préfixe d'un poste de notification adressé aux rôles qui DÉTIENNENT un geste réservé (`geste:<id>`), lu dans la matrice en force par le centre de notifications.
+const String prefixePosteGeste = 'geste:';
+
+/// Le poste de notification « ceux qui détiennent [geste] ».
+String posteGeste(String geste) => '$prefixePosteGeste$geste';
 
 /// L'écran d'un poste « editeurs:<écran> » (`null` : un autre poste).
 String? ecranDuPosteEditeurs(Object? poste) {

@@ -24,7 +24,7 @@ typedef Tolerance = ({int sites, String motif});
 /// LES SITES TOLÉRÉS. Liste fermée : elle ne fait que DÉCROÎTRE.
 const Map<String, Tolerance> _tolerances = {
   // --- Le référentiel lui-même : la SEULE liste d'origine admise.
-  'lib/src/droits/gestes_reserves.dart': (sites: 170, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise (+6 le 17/11/2026 : origines des trois gestes du lot PTA, `pta_adopter`, `pta_regler`, `alertes_pta_retard`)'),
+  'lib/src/droits/gestes_reserves.dart': (sites: 174, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise (+6 le 17/11/2026 : origines des trois gestes du lot PTA, `pta_adopter`, `pta_regler`, `alertes_pta_retard` ; +4 le 17/11/2026 : origines des deux gestes `facture_tiers_emettre` et `cloture_inventaire`, comptable et DAF chacun)'),
   // --- Chantier parallèle (caisse et tarifs, 16/11/2026) : non converti ici pour éviter les conflits, à convertir par ce chantier.
   'lib/src/consultation/cs_moteur.dart': (sites: 7, motif: 'chantier parallèle (caisse/tarifs) : `_tachesDef` (champ descriptif `role` des tâches d’aval, porté par les vecteurs, jamais lu pour décider) et `capacite == \'chirurgien\' || session.role == \'chirurgien\'` (à rapprocher du geste `rubriques_chirurgicales`)'),
   // --- Tables et données qui ne décident d'aucun droit de la session.
@@ -72,8 +72,6 @@ const Map<String, Tolerance> _tolerances = {
   '../../apps/poste/lib/core/identifiants.dart': (sites: 1, motif: 'amorçage des identifiants du compte administrateur d’installation (premier démarrage)'),
   '../../apps/poste/lib/core/service_installation.dart': (sites: 4, motif: 'garde du DERNIER compte administrateur actif après la clôture de l’installation (il ne s’archive ni ne se dégrade)'),
   '../../apps/poste/lib/modules/mere/mrc_sources.dart': (sites: 1, motif: 'lecture d’état de la mise en service : y a-t-il un compte administrateur actif'),
-  // --- À ARBITRER (écart E3584) : le défaut SEMÉ d'un réglage de clinique « liste de rôles » décidé par la Direction (Q3 du 17/11/2026).
-  'lib/src/parametres/reglages_roles.dart': (sites: 2, motif: 'défaut semé du réglage `cloture.rolesInventaire` (Q3, Direction du 17/11/2026 : la liste est un PARAMÈTRE en base, versionné) — à arbitrer : le convertir en geste comme `achats_valider`'),
 };
 
 List<String> _fichiers() {

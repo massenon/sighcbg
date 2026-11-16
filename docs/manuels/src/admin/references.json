@@ -547,7 +547,7 @@
     },
     {
       "id": "fiscal_confirmer",
-      "libelle": "Confirmer un taux fiscal (CNSS, barème de l’AIB)",
+      "libelle": "Confirmer un taux fiscal et arrêter un barème de l’AIB",
       "module": "*",
       "ecran": "",
       "rolesDefaut": [

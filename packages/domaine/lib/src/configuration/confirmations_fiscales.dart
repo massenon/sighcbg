@@ -242,7 +242,7 @@ FcoRefus? fcoControleDroit({required String role, bool fileul = false, DroitsGes
     'dateArret': jour,
     'decideurArret': auteur,
   };
-  final refus = cpdControlerVersionAib(saisie, version, versions, maintenant, situations: situations);
+  final refus = cpdControlerVersionAib(saisie, version, versions, maintenant, situations: situations, role: role, gestes: gestes);
   if (refus != null) {
     final code = refus.contains(' : ') ? refus.split(' : ').first : 'AIB_ARRET_REFUSE';
     return non(FcoRefus(code, refus, 'Corriger la date d’effet, ou ajouter une version à l’écran « Acompte sur impôt (AIB) ».'));

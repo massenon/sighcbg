@@ -19,6 +19,7 @@
 library;
 
 import '../referentiels/versions_datees.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteFiscalConfirmer;
 
 typedef CpdFiche = Map<String, Object?>;
 
@@ -293,8 +294,12 @@ int cpdMontantAib(num base, num taux) => (base * taux / 100).round();
 /// * deux versions d'une même situation ne partagent pas la même date d'effet (la seconde serait ambiguë) ; une version arrêtée ne s'insère pas avant la
 ///   plus récente version arrêtée (elle masquerait l'historique) ; la date de l'arrêt peut précéder la date d'effet (décision avant prise d'effet),
 ///   jamais être postérieure à aujourd'hui.
+///
+/// * ARRÊTER une version (une version qui n'était pas arrêtée l'est, ou une version naît arrêtée) est le geste réservé `fiscal_confirmer` (décision du 17/11/2026, point 6 : le même droit que
+///   la confirmation d'un taux, plus de double porte avec le droit d'écrire l'écran). Quand [role] est donné, le contrôle le refuse en le NOMMANT (`AIB_ARRET_RESERVE`) ; [gestes] : les gestes
+///   en force (absent : l'origine). Sans [role] (un appel qui ne connaît pas l'acteur), le droit n'est pas contrôlé ici : le refus reste celui de l'appelant.
 String? cpdControlerVersionAib(Map<String, Object?> saisie, CpdFiche? record, Iterable<CpdFiche> existantes, DateTime aujourdhui,
-    {Iterable<CpdFiche>? situations}) {
+    {Iterable<CpdFiche>? situations, String? role, DroitsGestes? gestes}) {
   final situation = '${saisie['situation'] ?? ''}'.trim();
   final taux = _taux(saisie['taux']);
   if (situation.isEmpty) return 'AIB_SITUATION_INCONNUE : la situation de l\'acheteur est obligatoire.';
@@ -308,6 +313,10 @@ String? cpdControlerVersionAib(Map<String, Object?> saisie, CpdFiche? record, It
   if ('${saisie['motif'] ?? ''}'.trim().isEmpty) return 'AIB_MOTIF_ABSENT : le motif de cette version est obligatoire.';
   final arrete = '${saisie['statutArret'] ?? ''}' == cpdStatutArrete;
   final effet = _jour(saisie['dateEffet']);
+  if (role != null && arrete && !(record != null && cpdEstArretee(record)) && !(gestes ?? gestesOrigine()).peut(role, gesteFiscalConfirmer)) {
+    return 'AIB_ARRET_RESERVE : arrêter une version du barème de l\'AIB est le geste réservé « Confirmer un taux fiscal et arrêter un barème de l\'AIB » que votre rôle ne détient pas — '
+        'le demander au comptable ou à la DAF, ou faire accorder le geste au rôle dans « Rôles et permissions › Gestes réservés ».';
+  }
   if (arrete) {
     if (effet.isEmpty) return 'AIB_DATE_INVALIDE : une version arrêtée exige sa date d\'effet.';
     if (_jour(saisie['dateArret']).isEmpty) return 'Une version arrêtée exige la date de l\'arrêt.';

@@ -4,10 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, DroitsGestes, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan;
 
 import 'persistance.dart';
-import 'reglages_clinique_poste.dart';
 
 typedef Fiche = Map<String, Object?>;
 
@@ -471,6 +470,7 @@ class Magasin {
     'mouvements': 'M6',
     'remboursements': 'M8',
     'facturesMere': 'M9',
+    'facturesTiers': 'M9',
     'dispensations': 'M6',
     'emplacements': 'M6',
     'inventaires': 'M6',
@@ -694,7 +694,7 @@ class Magasin {
         // protège rien. La garde relit les exercices À CHAQUE écriture (une clôture validée ferme aussitôt).
         if (nom == 'ecritures') {
           c.garder((op, f) => cpcGardeEcritures(collection('exercices').toutes, f['date'],
-              op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? '', rolesInventaire: ReglagesClinique.rolesInventaire(this, horloge())));
+              op: op, origineCloture: f['origineCloture'], origine: f['origine'], role: acteur?.role ?? '', gestes: DroitsGestes(fiches: collection('rbac').actives)));
           // Lot CLO (décision du 16/11/2026, § 6) : les journaux CL et AN sont RÉSERVÉS AU MOTEUR — seuls les gestes de clôture et d'ouverture les écrivent, quelle que
           // soit la voie (saisie, import, script) : la garde est sur la collection, la liste des journaux de la saisie ne fait que ne pas les proposer.
           c.garder(cpcGardeJournalReserve);

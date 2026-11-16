@@ -65,7 +65,8 @@ void main() {
 
   casM14('créer une VERSION DATÉE : « sans IFU actif » à 6 % arrêté, à compter du 01/01/2027 — le 5 % reste en vigueur avant (journalisé, RG-12)', (t) async {
     final m = magasinAib();
-    await ouvrirM14(t, m, 'm12-aib');
+    // Arrêter une version est le geste « Confirmer un taux fiscal et arrêter un barème de l'AIB » (origine : le comptable et la DAF, point 6 du 17/11/2026).
+    await ouvrirM14(t, m, 'm12-aib', role: 'comptable');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
     await choisirM14(t, 'situation', 'Barème par situation de l’acheteur — Acheteur sans IFU actif');
     await saisir(t, 'taux', '6');
@@ -191,5 +192,44 @@ void main() {
     expect(find.byTooltip('Modifier'), findsNothing);
     await ouvrirM14(t, m, 'm12-aib', role: 'caissier');
     expect(find.textContaining('ARRÊTÉ : 5 %'), findsNothing);
+  });
+
+  // ARRÊTER UN BARÈME = LE GESTE « CONFIRMER » (17/11/2026, point 6) : un seul droit, plus de double porte avec le droit d'écrire l'écran.
+  casM14('sans le geste, l\'administrateur crée une version NON arrêtée mais la commande « Arrêté » est ABSENTE ; le geste accordé à son rôle la rend', (t) async {
+    final m = magasinAib();
+    await ouvrirM14(t, m, 'm12-aib', role: 'admin');
+    expect(donneesNav.matrice.peutEditer('admin', 'm12-aib'), isTrue, reason: 'il écrit l\'écran : ce n\'est plus ce qui arrête un barème');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
+    await choisirM14(t, 'situation', 'Barème par situation de l’acheteur — Acheteur sans IFU actif');
+    await saisir(t, 'taux', '6');
+    await saisir(t, 'source', 'Projet de loi de finances 2027');
+    await saisir(t, 'motif', 'Taux proposé, à arrêter par le comptable ou la DAF');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Créer'));
+    final v = m.collection('baremeAib').actives.firstWhere((f) => f['taux'] == 6);
+    expect([v['arrete'], v['statutArret']], [false, 'non_arrete'], reason: 'la version naît non arrêtée : seul le geste l\'arrête');
+  });
+
+  test('le moteur refuse l\'arrêt sans le geste, en le nommant ; avec lui, ou sans arrêt, il laisse passer', () {
+    final saisie = {
+      'situation': 'ifu_inactif_ou_absent', 'taux': 6, 'source': 'LF 2027', 'motif': 'Correction', 'statutArret': cpdStatutArrete, 'dateEffet': '2027-01-01',
+      'dateArret': '2026-11-16', 'decideurArret': 'Direction'
+    };
+    String? controler(String role, {Map<String, Object?> sur = const {}, Fiche? record, DroitsGestes? gestes}) =>
+        cpdControlerVersionAib({...saisie, ...sur}, record, const [], DateTime(2026, 11, 16), role: role, gestes: gestes);
+    expect(controler('admin'), startsWith('AIB_ARRET_RESERVE'));
+    expect(controler('caissier'), startsWith('AIB_ARRET_RESERVE'));
+    expect(controler('comptable'), isNull);
+    expect(controler('da'), isNull);
+    expect(controler('admin', sur: {'statutArret': cpdStatutNonArrete, 'dateEffet': null}), isNull, reason: 'une version non arrêtée ne demande pas le geste');
+    // Accordé à un rôle (une décision de la fiche), retiré à un autre : le moteur lit les gestes EN FORCE.
+    final accorde = DroitsGestes(fiches: [
+      {'role': 'admin', 'statut': 'actif', 'droitsGestes': {gesteFiscalConfirmer: true}},
+      {'role': 'comptable', 'statut': 'actif', 'droitsGestes': {gesteFiscalConfirmer: false}},
+    ]);
+    expect(controler('admin', gestes: accorde), isNull);
+    expect(controler('comptable', gestes: accorde), startsWith('AIB_ARRET_RESERVE'));
+    // Une version DÉJÀ arrêtée dont on corrige seulement le motif n'est pas un arrêt : pas de geste.
+    final arretee = {'id': 'X', 'statut': 'actif', ...saisie, 'arrete': true};
+    expect(controler('admin', record: arretee, sur: {'motif': 'Précision'}), isNull);
   });
 }

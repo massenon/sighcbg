@@ -4,7 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
-import '../../donnees/reglages_clinique_poste.dart';
+import '../../donnees/gestes_magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -320,7 +320,7 @@ class _EtatDepenses extends State<EcranDepenses> {
                       return;
                     }
                     // Même garde que celle de la collection (exercices du MAGASIN : en clôture ou clos par validation), contrôlée AVANT toute écriture.
-                    final gardeMagasin = cpcGardeEcritures(c.magasin.collection('exercices').toutes, v['date'], role: acteur(c).role, rolesInventaire: ReglagesClinique.rolesInventaire(c.magasin, c.aujourdhui));
+                    final gardeMagasin = cpcGardeEcritures(c.magasin.collection('exercices').toutes, v['date'], role: acteur(c).role, gestes: gestesDuMagasin(c.magasin));
                     if (gardeMagasin != null) {
                       ToastsSigh.afficher(ctx, 'Écriture refusée.', type: TypeToast.erreur, detail: gardeMagasin);
                       return;
