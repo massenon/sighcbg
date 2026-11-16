@@ -15,10 +15,15 @@
 /// E44 — la délivrance par ligne levait une exception APRÈS l'écriture (alerterStock appelé avec un identifiant nu).
 /// Portés fidèlement et signalés : E43 (une tâche de réapprovisionnement « fait » est mise à jour, jamais recréée), E45 (la pharmacie compte et
 /// décompte le stock TOTAL, `PR.delivrer` le stock de DÉTAIL), E46 (la délivrance par ligne marque l'ordonnance ENTIÈRE servie).
+///
+/// DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026, E3300 et suivants) : le GESTE du poste (les deux pharmacies, la file de la dispensation) passe
+/// désormais par `delivrerLignes` (`delivrance_lignes.dart`) — chaque ligne RÉGLÉE se délivre, une ligne non réglée ou « prix à valoriser » reste en attente, nommée.
+/// `delivrerOrdonnance` et `delivrerLigne` restent ici, ports fidèles de la maquette, rejoués sur ses vecteurs ; E45 et E46 sont levés dans le moteur ligne par ligne.
 library;
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
+import 'delivrance_lignes.dart' show factureDeLOrdonnance, lignesDelivrance;
 
 /// Refus NOMMÉ : un refus se lit, il ne se devine pas. Rien n'est écrit.
 class RefusDelivrance implements Exception {
@@ -76,6 +81,7 @@ class LignePharmacie {
     required this.delivre,
     required this.stock,
     required this.couvert,
+    this.attente,
   });
   final String id;
   final Map<String, Object?> ordonnance;
@@ -89,27 +95,65 @@ class LignePharmacie {
   /// `null` : produit inconnu (la maquette écrit « produit inconnu »).
   final num? stock;
 
-  /// « Non réglée », « Stock insuffisant » ou « Délivrable » : dans CET ordre de priorité.
-  String get etat => !paye ? 'Non réglée' : (!couvert ? 'Stock insuffisant' : 'Délivrable');
+  /// Délivrance ligne par ligne (16/11/2026) : le motif d'attente de la LIGNE — « non réglée à la caisse » ou « prix à valoriser » ; null hors attente, et toujours
+  /// null en lecture « maquette » (sans factures), où l'état reste celui de l'ordonnance entière.
+  final String? attente;
+
+  /// « Non réglée », « Stock insuffisant » ou « Délivrable » : dans CET ordre de priorité. En lecture ligne par ligne, une ligne en attente se NOMME :
+  /// « En attente — non réglée à la caisse » / « En attente — prix à valoriser ».
+  String get etat => attente != null
+      ? 'En attente — $attente'
+      : (!paye ? 'Non réglée' : (!couvert ? 'Stock insuffisant' : 'Délivrable'));
 }
 
 /// `lignes()` de `ecranPharmacie` : les lignes d'ordonnance des ordonnances ACTIVES qui relèvent de [voie] (`parenterale` = pharmacie interne,
 /// `orale` = pharmacie externe), dans l'ordre du magasin.
+///
+/// [factures] (délivrance ligne par ligne, Direction du 16/11/2026) : fournies, chaque ligne est RÉGLÉE selon SA ligne payable (`lignesDelivrance`), DÉLIVRÉE selon
+/// SA marque, et couverte par le stock de DÉTAIL (celui que la délivrance décompte). Absentes, la lecture reste celle de la maquette (rejeu des vecteurs) : l'ordonnance
+/// entière, soldée ou non, servie ou non (E46), et le stock TOTAL (E45).
 List<LignePharmacie> lignesPharmacie({
   required Iterable<Map<String, Object?>> ordonnances,
   required Iterable<Map<String, Object?>> produits,
   required String voie,
+  Iterable<Map<String, Object?>>? factures,
 }) {
   final out = <LignePharmacie>[];
   final liste = produits.toList();
+  final facs = factures?.toList();
   for (final o in ordonnances) {
     final meds = (o['medicaments'] as List?) ?? const [];
+    final etats = facs == null ? null : lignesDelivrance(o, factureDeLOrdonnance(o, facs));
     for (var i = 0; i < meds.length; i++) {
       final l = (meds[i] as Map).cast<String, Object?>();
       final pr = liste.where((x) => x['id'] == l['produitId']).firstOrNull;
       if (voieDe(l, pr) != voie) continue;
-      final stock = pr == null ? null : _num(pr['stock']);
       final q = _num(l['quantite']);
+      if (etats != null) {
+        final e = etats[i];
+        final stockD = pr == null ? null : (pr['stockDetail'] is num ? pr['stockDetail'] as num : _num(pr['stock']));
+        out.add(LignePharmacie(
+          id: '${o['id']}:$i',
+          ordonnance: o,
+          index: i,
+          ligne: l,
+          produit: pr,
+          numero: o['numero'],
+          date: o['date'],
+          patient: o['patient'],
+          patientCode: o['patientCode'],
+          designation: l['produit'],
+          quantite: l['quantite'],
+          posologie: l['posologie'],
+          paye: e.delivrable || e.delivree,
+          delivre: e.delivree,
+          stock: stockD,
+          couvert: pr != null && stockD != null && q != null && stockD >= q,
+          attente: e.motif,
+        ));
+        continue;
+      }
+      final stock = pr == null ? null : _num(pr['stock']);
       out.add(LignePharmacie(
         id: '${o['id']}:$i',
         ordonnance: o,

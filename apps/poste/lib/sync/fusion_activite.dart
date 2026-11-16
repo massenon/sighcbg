@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:sigh_domaine/sigh_domaine.dart' show etatDispensation, ligneMarqueeDelivree;
+
 import '../donnees/magasin.dart';
 
 /// LES RÈGLES DE FUSION DE L'ACTIVITÉ QUI NE SE LAISSE PAS ÉCRASER (limites levées le 03/11/2026).
@@ -15,6 +17,8 @@ import '../donnees/magasin.dart';
 /// * **numéros** (facture, avoir, pièce comptable, dossier) : jamais renumérotés (une pièce émise ne se réécrit jamais, RG-01), deux pièces au même numéro sont
 ///   MARQUÉES et comptées ; la Direction tranche.
 /// * **lits** : une admission active par lit ; deux admissions actives sur le même lit sont marquées `litEnConflit`.
+/// * **ordonnances** (délivrance ligne par ligne, 16/11/2026) : une ligne délivrée ne redevient jamais à délivrer. Les marques de délivrance se fusionnent LIGNE
+///   PAR LIGNE ([fusionnerOrdonnance]) ; une même ligne délivrée par DEUX postes est signalée (`delivranceEnDoublon`).
 
 /// L'ARCHIVAGE L'EMPORTE (RG-14, D6 du 09/11/2026 : la mise en production archive le jeu de démonstration d'un poste ou de la mère). La fusion à trois voies garde
 /// ce que l'agent a changé ICI : un poste qui avait modifié le statut d'une fiche pendant que la mère l'archivait aurait donc ÉCRASÉ l'archivage, et la fiche
@@ -144,4 +148,80 @@ List<List<Fiche>> litsEnConflit(Iterable<Fiche> admissions) {
     for (final g in par.values)
       if (g.length > 1) g
   ];
+}
+
+const _champsDelivrance = ['delivreLe', 'delivrePar', 'delivreMouvement'];
+const _champsValorisation = ['prix', 'total', 'prixAValoriser', 'valorisation'];
+const _ordreDispensation = {'sans_objet': -1, 'en_attente': 0, 'partielle': 1, 'servie': 2};
+
+/// Fusion d'une ORDONNANCE (délivrance ligne par ligne, Direction du 16/11/2026, E3305). La fusion champ à champ traite `medicaments` comme UN champ : quand deux
+/// postes délivrent chacun une ligne différente hors ligne, la liste de l'un écrasait celle de l'autre, la ligne servie là-bas redevenait « délivrable » ici et
+/// pouvait ressortir du stock. Ici les lignes se fusionnent PAR RANG : une ligne marquée délivrée l'emporte sur une ligne non marquée (ses marques sont reprises),
+/// une ligne valorisée l'emporte sur une ligne « prix à valoriser » ; une ligne délivrée par les DEUX postes (marques différentes) garde la plus ancienne et est
+/// SIGNALÉE (`delivranceEnDoublon`, rangs des lignes) — deux sorties de stock ont eu lieu, et les deux variations de stock restent comptées (elles sont réelles) :
+/// la Direction et la pharmacie tranchent (retour de produit ou régularisation), rien n'est corrigé en silence. L'état de dispensation est RECALCULÉ depuis les
+/// lignes fusionnées et ne recule jamais.
+Map<String, Object?> fusionnerOrdonnance(Map<String, Object?> fusion, Fiche local, Map<String, Object?> recu) {
+  final r = {...fusion};
+  final a = [for (final l in (local['medicaments'] as List? ?? const [])) (l as Map).cast<String, Object?>()];
+  final b = [for (final l in (recu['medicaments'] as List? ?? const [])) (l as Map).cast<String, Object?>()];
+  if (a.isEmpty && b.isEmpty) return r;
+  final f = [for (final l in (fusion['medicaments'] as List? ?? const [])) (l as Map).cast<String, Object?>()];
+  final n = [a.length, b.length, f.length].reduce((x, y) => x > y ? x : y);
+  final doublons = <int>[];
+  final lignes = <Map<String, Object?>>[];
+  for (var i = 0; i < n; i++) {
+    final la = i < a.length ? a[i] : null, lb = i < b.length ? b[i] : null;
+    final l = <String, Object?>{...(i < f.length ? f[i] : (la ?? lb ?? const {}))};
+    // Valorisation : une ligne qui porte son prix l'emporte sur une ligne qui l'attend.
+    bool valorisee(Map<String, Object?>? x) => x != null && x['prixAValoriser'] != true && x['total'] != null;
+    if (l['prixAValoriser'] == true && l['total'] == null) {
+      final v = valorisee(la) ? la : (valorisee(lb) ? lb : null);
+      if (v != null) {
+        for (final k in _champsValorisation) {
+          if (v.containsKey(k)) {
+            l[k] = v[k];
+          } else {
+            l.remove(k);
+          }
+        }
+      }
+    }
+    final da = la != null && ligneMarqueeDelivree(la), db = lb != null && ligneMarqueeDelivree(lb);
+    Map<String, Object?>? marque;
+    if (da && db) {
+      if ('${la['delivrePar']}${la['delivreLe']}' != '${lb['delivrePar']}${lb['delivreLe']}') {
+        doublons.add(i);
+        final ta = DateTime.tryParse('${la['delivreLe']}'), tb = DateTime.tryParse('${lb['delivreLe']}');
+        marque = (ta != null && tb != null && tb.isBefore(ta)) ? lb : la;
+      } else {
+        marque = la;
+      }
+    } else if (da) {
+      marque = la;
+    } else if (db) {
+      marque = lb;
+    }
+    if (marque != null) {
+      for (final k in _champsDelivrance) {
+        if (marque.containsKey(k)) l[k] = marque[k];
+      }
+    }
+    lignes.add(l);
+  }
+  r['medicaments'] = lignes;
+  final calcule = etatDispensation(r);
+  final rangs = [local['statutDispensation'], recu['statutDispensation'], calcule]
+      .map((x) => _ordreDispensation['$x'] ?? -2)
+      .toList();
+  // Un état « servie » écrit par l'ANCIEN moteur (sans marque de ligne) reste servi ; sinon l'état suit les lignes.
+  final legacyServie = (local['statutDispensation'] == 'servie' && !a.any(ligneMarqueeDelivree)) ||
+      (recu['statutDispensation'] == 'servie' && !b.any(ligneMarqueeDelivree));
+  r['statutDispensation'] = legacyServie && rangs.reduce((x, y) => x > y ? x : y) == 2 ? 'servie' : calcule;
+  if (r['statutDispensation'] == 'servie') {
+    r['dispenseLe'] ??= local['dispenseLe'] ?? recu['dispenseLe'];
+    r['dispensePar'] ??= local['dispensePar'] ?? recu['dispensePar'];
+  }
+  if (doublons.isNotEmpty) r['delivranceEnDoublon'] = doublons;
+  return r;
 }

@@ -162,7 +162,14 @@ class _Carte extends StatelessWidget {
                 taille: TailleBouton.sm,
                 variante: VarianteBouton.secondaire,
                 onPressed: () {
-                  e.annuler!();
+                  // Une annulation REFUSÉE se dit (son motif), elle n'annonce jamais « Action annulée. » (ex. un encaissement dont une ligne a déjà été délivrée).
+                  try {
+                    e.annuler!();
+                  } catch (refus) {
+                    ToastsSigh._fermer(e);
+                    ToastsSigh.afficher(context, '$refus', type: TypeToast.erreur, duree: const Duration(seconds: 12));
+                    return;
+                  }
                   ToastsSigh._fermer(e);
                   ToastsSigh.afficher(context, e.messageAnnulation);
                 }),

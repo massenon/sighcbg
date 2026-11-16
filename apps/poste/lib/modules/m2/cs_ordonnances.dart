@@ -146,10 +146,13 @@ class _Registre extends StatelessWidget {
       ),
       if (r['statutDispensation'] != 'sans_objet')
         (
-          r['statutDispensation'] == 'servie' ? 'Médicaments délivrés' : 'Délivrance en attente',
           r['statutDispensation'] == 'servie'
+              ? 'Médicaments délivrés'
+              : (r['statutDispensation'] == 'partielle' ? 'Médicaments partiellement délivrés' : 'Délivrance en attente'),
+          r['statutDispensation'] == 'servie' || r['statutDispensation'] == 'partielle'
               ? '${mouvements.length} sortie(s) de stock — justificatif ${r['numero']}'
-              : 'La pharmacie ne peut servir qu’après encaissement (RG-03)',
+                  '${r['statutDispensation'] == 'partielle' ? ' ; chaque ligne réglée se délivre, les autres restent en attente' : ''}'
+              : 'La pharmacie ne sert que les lignes réglées à la caisse (RG-03)',
           vrai(r['dispenseLe']) ? texteDateCs(r['dispenseLe']) : '—',
           r['statutDispensation'] == 'servie' ? TonSigh.succes : TonSigh.attention
         ),
@@ -258,6 +261,7 @@ class _Registre extends StatelessWidget {
         filtres: const [
           FiltreTableau(nom: 'statutDispensation', libelle: 'Dispensation', options: [
             OptionChamp('en_attente', 'À délivrer'),
+            OptionChamp('partielle', 'Partiellement délivrée'),
             OptionChamp('servie', 'Servie'),
             OptionChamp('sans_objet', 'Sans médicament')
           ]),
@@ -323,11 +327,13 @@ class _Registre extends StatelessWidget {
               libelle: 'Pharmacie',
               texte: (r) => switch (r['statutDispensation']) {
                     'servie' => 'Servie',
+                    'partielle' => 'Partiellement délivrée',
                     'en_attente' => 'À délivrer',
                     _ => '—'
                   },
               rendu: (_, r) => switch (r['statutDispensation']) {
                     'servie' => const BadgeSigh('Servie', ton: TonSigh.succes),
+                    'partielle' => const BadgeSigh('Partiellement délivrée', ton: TonSigh.info),
                     'en_attente' => const BadgeSigh('À délivrer', ton: TonSigh.attention),
                     _ => const BadgeSigh('—', ton: TonSigh.neutre),
                   }),

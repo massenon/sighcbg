@@ -13,8 +13,12 @@ import 'flux_commun.dart';
 /// toute sortie porte son justificatif (le n° d'ordonnance) et le stock ne devient jamais négatif — le refus NOMME l'article.
 ///
 /// Aucune création manuelle : la délivrance naît d'une ordonnance du médecin passée en caisse. Corrigés dans la maquette avant le portage : E40 (états
-/// « soldee » / « servie »), E41 (« inj » = injectable), E44 (message de succès jamais affiché). Portés fidèlement : E45 (stock TOTAL compté et décompté),
-/// E46 (l'ordonnance entière passe « servie » dès qu'une ligne est délivrée).
+/// « soldee » / « servie »), E41 (« inj » = injectable), E44 (message de succès jamais affiché).
+///
+/// DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026, E3300 à E3306) : chaque ligne RÉGLÉE à la caisse se délivre, même si le reste de l'ordonnance
+/// ne l'est pas ; une ligne non réglée ou au « prix à valoriser » reste EN ATTENTE, affichée et nommée, sans commande « Délivrer ». Le geste passe par le moteur
+/// unique `delivrerLignes` (le même que la file de la dispensation) : stock de DÉTAIL décompté (E45 levé), seule la LIGNE servie est marquée et l'ordonnance
+/// devient « partiellement délivrée » tant qu'il lui reste des lignes (E46 levé), une ligne marquée ne ressort jamais du stock.
 abstract class EcranPharmacie extends StatelessWidget with EcranMaquette {
   const EcranPharmacie(this.voie, {super.key});
 
@@ -32,12 +36,14 @@ abstract class EcranPharmacie extends StatelessWidget with EcranMaquette {
         m.collection('ordonnances'),
         m.collection('produits'),
         m.collection('taches'),
+        m.collection('factures'),
       ]),
       builder: (context, _) {
         final ls = lignesPharmacie(
             ordonnances: m.collection('ordonnances').actives,
             produits: m.collection('produits').actives,
-            voie: voie);
+            voie: voie,
+            factures: m.collection('factures').toutes);
         final st = statsPharmacie(ls);
         final lignes = aDelivrerTriees(ls);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -134,13 +140,18 @@ abstract class EcranPharmacie extends StatelessWidget with EcranMaquette {
               final l = r['_ligne'] as LignePharmacie;
               if (!c.droit.editer) return const [];
               if (!l.paye) {
+                // La LIGNE attend (la caisse ou son prix) : visible, nommée, jamais délivrable.
+                final motif = l.attente ?? 'non réglée à la caisse';
                 return [
                   BoutonIcone(
                       icone: LucideIcons.lock,
-                      libelle: 'Bloquée : l’ordonnance n’est pas réglée',
+                      libelle: 'En attente : $motif',
                       onPressed: () => ToastsSigh.afficher(ctx,
-                          'Délivrance bloquée — l’ordonnance ${l.numero} n’est pas réglée.',
-                          type: TypeToast.attention))
+                          'Délivrance en attente — « ${l.designation} » : $motif (ordonnance ${l.numero}).',
+                          type: TypeToast.attention,
+                          detail: motif == 'prix à valoriser'
+                              ? 'L’article n’a pas encore de prix d’achat : la ligne s’encaissera, puis se délivrera, une fois le prix fixé. Les autres lignes réglées se délivrent.'
+                              : 'Seule une ligne réglée à la caisse se délivre. Les autres lignes réglées de l’ordonnance se délivrent sans attendre celle-ci.'))
                 ];
               }
               return [
@@ -158,16 +169,11 @@ abstract class EcranPharmacie extends StatelessWidget with EcranMaquette {
   }
 
   Future<void> _delivrer(BuildContext ctx, ContexteEcran c, LignePharmacie l) async {
-    final mag = c.magasin;
-    final jour = iso(c.aujourdhui);
-    final mouvements = mag.collection('mouvements');
     // RG-03 : le refus NOMME l'article. Un refus muet ferait chercher la panne du côté du logiciel.
-    final DelivranceLigne d;
-    try {
-      d = delivrerLigne(l, voie,
-          reference: referenceSuivante('MVT-', 5, mouvements.toutes), jour: jour);
-    } on RefusDelivrance catch (e) {
-      ToastsSigh.afficher(ctx, e.motif, type: TypeToast.erreur);
+    if (!l.couvert) {
+      ToastsSigh.afficher(ctx,
+          'Délivrance refusée — stock insuffisant sur « ${l.designation} » : ${nombre(l.stock)} en rayon pour ${nombre(l.quantite)} demandé(s).',
+          type: TypeToast.erreur);
       return;
     }
     final ok = await confirmerSigh(ctx,
@@ -175,14 +181,17 @@ abstract class EcranPharmacie extends StatelessWidget with EcranMaquette {
         message: messageConfirmation(l, voie),
         libelleOk: 'Délivrer');
     if (!ok || !ctx.mounted) return;
-    mag.collection('produits').mettreAJour(l.produit!['id'], d.produitPatch);
-    mouvements.inserer(d.mouvement, prefixe: 'MVT');
-    mag.collection('ordonnances').mettreAJour(l.ordonnance['id'], d.ordonnancePatch);
-    appliquerAlertes(
-        mag,
-        alerterStock(d.alerteProduitIds, produitsParId(mag),
-            mag.collection('taches').actives, '${l.numero}', c.aujourdhui.toIso8601String()));
-    ToastsSigh.afficher(ctx, d.message, type: TypeToast.succes, detail: d.detail);
+    final mag = c.magasin;
+    // Relue AU MOMENT du geste : une autre caisse, un autre poste ont pu changer la ligne pendant la confirmation.
+    final ord = mag.collection('ordonnances').parId(l.ordonnance['id']) ?? l.ordonnance;
+    final r = ecrireDelivrance(ctx, c, ord, lignes: [l.index], voie: voie);
+    if (r == null || r.deja) return;
+    final p = r.produits.isEmpty ? null : r.produits.last.patch;
+    final reste = p == null ? null : (p['stockDetail'] ?? p['stock']);
+    ToastsSigh.afficher(ctx, 'Délivré — stock ramené à ${nombre(reste)}.',
+        type: TypeToast.succes,
+        detail: '${l.designation} — ${l.patient}'
+            '${r.etat == 'partielle' ? ' · ordonnance ${l.numero} partiellement délivrée' : ''}');
   }
 }
 

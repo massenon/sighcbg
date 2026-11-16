@@ -371,7 +371,7 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
             }
           ),
           ('Montant', (x) => money(x['montant'], avecDevise: false)),
-          ('Dispensation', (x) => const {'servie': 'Servie', 'en_attente': 'À délivrer'}['${x['statutDispensation']}'] ?? '—'),
+          ('Dispensation', (x) => const {'servie': 'Servie', 'partielle': 'Partiellement délivrée', 'en_attente': 'À délivrer'}['${x['statutDispensation']}'] ?? '—'),
         ], tri(ordonnances, 'date')));
 
   garde(debOrd, 'notes_consultation', 'Ordonnances');

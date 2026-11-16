@@ -251,13 +251,18 @@ final List<_Source> _sources = [
     const postes = ['direction', 'da', 'comptable', 'admin'];
     List<_Ligne> par(String col, String marqueur, String prefixe, String titre, String detail, String lien, String Function(Map<String, Object?>) nom, [String priorite = 'important']) => [
           for (final f in m.collection(col).actives)
-            if (f[marqueur] == true) _Ligne('$prefixe:${f['id']}', priorite, '$titre : ${nom(f)}', detail, lien, postes),
+            // Un marqueur vaut vrai OU porte la liste de ce qui est en double (rangs de lignes, identifiants de lignes payables) : une liste vide n'alerte pas.
+            if (f[marqueur] == true || (f[marqueur] is List && (f[marqueur] as List).isNotEmpty))
+              _Ligne('$prefixe:${f['id']}', priorite, '$titre : ${nom(f)}', detail, lien, postes),
         ];
     String ou(Object? a, Object? b) => '${a ?? b ?? ''}';
     return [
       ...par('patients', 'codeEnDoublon', 'dbl-pat', 'Dossier en doublon', 'Deux dossiers portent le même code patient. Le code n’est jamais renuméroté (RG-01) : la Direction décide du dossier à conserver ou à fusionner.', 'm1-patients', (f) => ou(f['code'], f['id'])),
       ...par('factures', 'numeroEnDoublon', 'dbl-fac', 'Facture au numéro en double', 'Une pièce émise ne se réécrit pas : régler par avoir et réémission, ou justifier par écrit.', 'm8-factures', (f) => ou(f['numero'], f['id'])),
       ...par('factures', 'encaissementEnDoublon', 'dbl-enc', 'Encaissement en double', 'La même ligne a été encaissée par deux guichets : vérifier la caisse et rembourser par avoir si besoin.', 'm8-factures', (f) => ou(f['numero'], f['id']), 'critique'),
+      // Délivrance ligne par ligne (16/11/2026) : deux postes HORS LIGNE ont délivré la même ligne d'ordonnance ; les deux sorties de stock ont eu lieu (RG-03 les
+      // compte toutes les deux). Rien n'est corrigé en silence : la pharmacie vérifie la remise (retour de produit ou régularisation par inventaire).
+      ...par('ordonnances', 'delivranceEnDoublon', 'dbl-del', 'Délivrance en double', 'La même ligne d’ordonnance a été délivrée par deux postes hors ligne : deux sorties de stock ont eu lieu. Vérifier la remise au patient (retour du produit par un mouvement d’entrée justifié, ou régularisation par inventaire).', 'm6-dispensation', (f) => ou(f['numero'], f['id']), 'critique'),
       ...par('avoirs', 'numeroEnDoublon', 'dbl-avo', 'Avoir au numéro en double', 'Une pièce émise ne se réécrit pas : la Direction tranche.', 'm8-facture-avoir', (f) => ou(f['numero'], f['id'])),
       ...par('ecritures', 'numeroEnDoublon', 'dbl-ecr', 'Écriture au numéro en double', 'Une pièce comptable ne se renumérote pas : le comptable tranche.', 'm12-ecritures', (f) => ou(f['numero'], f['id'])),
       ...par('admissions', 'litEnConflit', 'dbl-lit', 'Lit en conflit', 'Deux admissions actives sur le même lit : transférer l’un des patients.', 'm3-admissions', (f) => ou(f['lit'], f['id']), 'critique'),

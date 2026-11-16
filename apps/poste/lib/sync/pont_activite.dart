@@ -87,7 +87,7 @@ const Set<String> collectionsDeLaMereSeule = {'produits'};
 const String collectionDeltas = 'deltasCompteurs';
 
 /// Les marqueurs que chaque poste DÉDUIT lui-même des mêmes données : ils ne voyagent pas (un marqueur synchronisé ferait des allers-retours sans fin).
-const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon', 'couvertureEnConflit'};
+const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon', 'couvertureEnConflit', 'delivranceEnDoublon'};
 
 /// Les fiches qui voyagent EN UN BLOC : un haché et son sel ne se mélangent jamais champ à champ entre deux postes.
 const Set<String> collectionsAtomiques = {'identifiants'};
@@ -514,6 +514,13 @@ class PontActivite {
         // Les règles propres à la famille : un règlement ne se perd pas.
         if (c == 'factures') {
           final regle = fusionnerFacture(fusion, local, recu);
+          fusion
+            ..clear()
+            ..addAll(regle);
+        }
+        // Une ligne délivrée ne redevient jamais à délivrer : les marques de délivrance se fusionnent ligne par ligne (16/11/2026).
+        if (c == 'ordonnances') {
+          final regle = fusionnerOrdonnance(fusion, local, recu);
           fusion
             ..clear()
             ..addAll(regle);

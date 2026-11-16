@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart' show money;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/donnees/parcours_caisse.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
@@ -52,8 +53,10 @@ Magasin magasin({
   List<Fiche> emplacements = const [],
   List<Fiche> lots = const [],
   List<Fiche> valorisations = const [],
+  List<Fiche> factures = const [],
 }) =>
     Magasin({
+      'factures': factures,
       'produits': produits,
       'ordonnances': ordonnances,
       'taches': taches,
@@ -108,7 +111,7 @@ void main() {
     final cp = prod('CP', 'PARACETAMOL 500 MG CP', 40);
     final inj = prod('INJ', 'ADRENALINE 1 MG INJ', 10);
 
-    cas('une ordonnance réglée : « Délivrer » décompte le stock, écrit le mouvement justifié par le n° d\'ordonnance et marque l\'ordonnance servie', (t) async {
+    cas('une ordonnance réglée : « Délivrer » décompte le stock, écrit le mouvement justifié par le n° d\'ordonnance et marque LA LIGNE servie (ordonnance partiellement délivrée tant qu\'il reste la ligne injectable)', (t) async {
       final m = magasin(produits: [cp, inj], ordonnances: [
         ordo('ORD-1', 'soldee', [ligne(cp, 10), ligne(inj, 2)])
       ]);
@@ -123,23 +126,30 @@ void main() {
       expect(m.collection('produits').parId('CP')!['stock'], 30);
       final mv = m.collection('mouvements').actives.single;
       expect(mv['justificatif'], 'Ordonnance ORD-1', reason: 'RG-03 : le justificatif est le numéro d\'ordonnance');
-      expect(mv['type'], 'delivrance_externe');
+      // Délivrance ligne par ligne (16/11/2026) : un mouvement de SORTIE (le type que lisent stocks, BFR et tableaux), le circuit de la pharmacie à côté.
+      expect(mv['type'], 'sortie');
+      expect(mv['circuit'], 'delivrance_externe');
       expect(mv['destination'], 'Patient');
-      expect(mv['reference'], 'MVT-00001');
-      expect(m.collection('ordonnances').parId('O-ORD-1')!['statutDispensation'], 'servie');
+      expect(mv['reference'], 'M000001');
+      // E46 levé : seule la ligne servie est marquée ; la ligne injectable reste à la pharmacie interne.
+      final o = m.collection('ordonnances').parId('O-ORD-1')!;
+      expect(o['statutDispensation'], 'partielle');
+      expect(((o['medicaments'] as List)[0] as Map)['delivreLe'], isNotNull);
+      expect(((o['medicaments'] as List)[1] as Map)['delivreLe'], isNull);
+      expect(m.collection('dispensations').actives.single['ordonnanceNumero'], 'ORD-1', reason: 'le registre des dispensations porte le geste');
       expect(find.text('Délivré — stock ramené à 30.'), findsOneWidget);
       expect(m.collection('audit').toutes.any((e) => e['action'] == 'Modification' && e['entite'] == 'ordonnances'), isTrue, reason: 'RG-12');
     });
 
-    cas('une ordonnance non réglée : la ligne est visible, la délivrance bloquée et dite', (t) async {
+    cas('une ordonnance non réglée : la ligne est visible, EN ATTENTE et nommée, jamais délivrable', (t) async {
       final m = magasin(produits: [cp], ordonnances: [
         ordo('ORD-2', 'impayee', [ligne(cp, 5)])
       ]);
       await ouvrir(t, m, 'm6-pharmacie-externe');
-      expect(find.text('Non réglée'), findsOneWidget);
+      expect(find.text('En attente — non réglée à la caisse'), findsOneWidget);
       expect(find.widgetWithText(BoutonSigh, 'Délivrer'), findsNothing);
-      await toucher(t, find.byTooltip('Bloquée : l’ordonnance n’est pas réglée'));
-      expect(find.text('Délivrance bloquée — l’ordonnance ORD-2 n’est pas réglée.'), findsOneWidget);
+      await toucher(t, find.byTooltip('En attente : non réglée à la caisse'));
+      expect(find.text('Délivrance en attente — « PARACETAMOL 500 MG CP » : non réglée à la caisse (ordonnance ORD-2).'), findsOneWidget);
       expect(m.collection('mouvements').actives, isEmpty);
       expect(m.collection('produits').parId('CP')!['stock'], 40);
     });
@@ -170,7 +180,7 @@ void main() {
     });
 
     cas('l’alerte de stock lit le stock de DÉTAIL après la sortie : sous le seuil, une tâche de réapprovisionnement naît (une seule)', (t) async {
-      // E45 : la pharmacie décompte le stock TOTAL (6 → 3) et laisse le stock de détail (4) tel quel ; c'est lui que lit l'alerte.
+      // E45 levé (16/11/2026) : la pharmacie décompte le stock de DÉTAIL (4 → 1), celui que lit l'alerte, et le stock total (6 → 3).
       final bas = prod('BAS', 'ARTESUNATE 60 MG', 6, detail: 4, seuil: 5);
       final m = magasin(produits: [bas], ordonnances: [
         ordo('ORD-5', 'soldee', [ligne(bas, 3)])
@@ -182,6 +192,8 @@ void main() {
       expect(tache['type'], 'reapprovisionnement');
       expect(tache['libelle'], 'Sous le seuil — ARTESUNATE 60 MG');
       expect(tache['justificatif'], 'ORD-5');
+      expect(m.collection('produits').parId('BAS')!['stockDetail'], 1);
+      expect(m.collection('produits').parId('BAS')!['stock'], 3);
     });
   });
 
@@ -200,7 +212,8 @@ void main() {
       expect(find.textContaining('à destination de la salle de soins qui les administrera.'), findsOneWidget);
       await toucher(t, find.widgetWithText(BoutonSigh, 'Délivrer').last);
       final mv = m.collection('mouvements').actives.single;
-      expect(mv['type'], 'delivrance_interne');
+      expect(mv['type'], 'sortie');
+      expect(mv['circuit'], 'delivrance_interne');
       expect(mv['destination'], 'Salle de soins');
       expect(mv['justificatif'], 'Ordonnance ORD-6');
     });
@@ -223,7 +236,7 @@ void main() {
       expect(find.text('ADRENALINE 1 MG INJ'), findsOneWidget);
       expect(find.text('Délivrable'), findsOneWidget);
       expect(find.widgetWithText(BoutonSigh, 'Délivrer'), findsNothing);
-      expect(find.byTooltip('Bloquée : l’ordonnance n’est pas réglée'), findsNothing);
+      expect(find.byTooltip('En attente : non réglée à la caisse'), findsNothing);
     });
   });
 
@@ -336,6 +349,123 @@ void main() {
       await t.pump(const Duration(seconds: 1)); // le tiroir finit de glisser
       await toucher(t, find.widgetWithText(BoutonSigh, 'Imprimer le bon'));
       expect(find.text('Bon de sortie de stock — dispensation'), findsWidgets);
+    });
+  });
+
+  // DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026, E3300 à E3306) : la ligne RÉGLÉE se délivre, la ligne non réglée ou au « prix à valoriser »
+  // reste en attente, nommée ; la caisse ouvre la pharmacie dès la première ligne de médicament réglée ; l'encaissement ne s'annule plus une fois la ligne délivrée.
+  group('délivrance ligne par ligne', () {
+    final cp = prod('CP', 'PARACETAMOL 500 MG CP', 40);
+    final gel = prod('GEL', 'AMOXICILLINE 500 MG GEL', 30);
+    final sirop = prod('SIR', 'NOUVEAU SIROP', 10);
+    Fiche lf(String id, Fiche p, String statut, {bool aValoriser = false}) => {
+          'id': id,
+          'categorie': 'medicament',
+          'designation': p['designation'],
+          'produitId': p['id'],
+          'quantite': 2,
+          'montant': aValoriser ? null : 200,
+          'partPatient': aValoriser ? null : 200,
+          'partAssureur': 0,
+          if (aValoriser) 'prixAValoriser': true,
+          'statutPaiement': statut,
+        };
+    Fiche ordP() => {
+          ...ordo('ORD-L', 'partielle', [
+            {...ligne(cp, 2), 'prix': 100, 'total': 200},
+            {...ligne(gel, 2), 'prix': 100, 'total': 200},
+            {...ligne(sirop, 2), 'prix': null, 'total': null, 'prixAValoriser': true},
+          ]),
+          'factureId': 'F-L',
+        };
+    Fiche facP({String l1 = 'paye', String l2 = 'du'}) => {
+          'id': 'F-L',
+          'numero': 'FP-2026-00009',
+          'patient': 'TEST ORD-L',
+          'ordonnanceId': 'O-ORD-L',
+          'statutPaiement': l1 == 'paye' ? 'partielle' : 'impayee',
+          'partPatient': 400,
+          'montantPaye': l1 == 'paye' ? 200 : 0,
+          'reliquat': l1 == 'paye' ? 200 : 400,
+          'lignes': [lf('L001', cp, l1), lf('L002', gel, l2), lf('L003', sirop, 'du', aValoriser: true)],
+        };
+    Fiche tacheL(String statut) => {
+          'id': 'T-L',
+          'type': 'dispensation',
+          'poste': 'pharmacie',
+          'statut': statut,
+          'ordonnanceId': 'O-ORD-L',
+          'factureId': 'F-L',
+          'reference': 'ORD-L',
+          'patient': 'TEST ORD-L',
+          'patientCode': 'CBG/1/26',
+          'detail': 'Délivrer',
+          'montant': 400,
+          'date': '2026-10-10',
+        };
+
+    cas('la file : les lignes réglées se délivrent, les autres sont NOMMÉES en attente ; l’ordonnance devient partiellement délivrée', (t) async {
+      final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP()], taches: [tacheL('en_attente')]);
+      await ouvrir(t, m, 'm6-dispensation');
+      await toucher(t, find.byTooltip('Délivrer'));
+      expect(find.text('Délivrer ORD-L'), findsOneWidget);
+      expect(find.text('En attente — non réglée à la caisse'), findsOneWidget);
+      expect(find.text('En attente — prix à valoriser'), findsOneWidget);
+      expect(find.textContaining('2 ligne(s) EN ATTENTE'), findsOneWidget);
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Confirmer la délivrance'));
+      final mv = m.collection('mouvements').actives.single;
+      expect(mv['produitId'], 'CP');
+      expect(mv['justificatif'], 'Ordonnance ORD-L');
+      expect(m.collection('produits').parId('CP')!['stockDetail'], 38);
+      expect(m.collection('produits').parId('GEL')!['stockDetail'], 30, reason: 'la ligne non réglée ne sort pas');
+      expect(m.collection('produits').parId('SIR')!['stockDetail'], 10, reason: 'la ligne au prix à valoriser ne sort pas');
+      expect(m.collection('ordonnances').parId('O-ORD-L')!['statutDispensation'], 'partielle');
+      expect(m.collection('taches').parId('T-L')!['statut'], 'bloque', reason: 'plus rien de délivrable : la tâche attend de nouveau la caisse');
+      expect(m.collection('audit').toutes.any((e) => e['action'] == 'Dispensation partielle' && e['reference'] == 'ORD-L'), isTrue, reason: 'RG-12');
+      expect(m.collection('dispensations').actives.single['montant'], 200);
+    });
+
+    cas('les deux pharmacies : une ligne réglée de la pharmacie externe se délivre même si l’ordonnance n’est pas soldée', (t) async {
+      final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP()]);
+      await ouvrir(t, m, 'm6-pharmacie-externe');
+      expect(find.text('Délivrable'), findsOneWidget);
+      expect(find.text('En attente — non réglée à la caisse'), findsOneWidget);
+      expect(find.text('En attente — prix à valoriser'), findsOneWidget);
+      expect(find.widgetWithText(BoutonSigh, 'Délivrer'), findsOneWidget, reason: 'une seule commande : la ligne réglée');
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Délivrer'));
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Délivrer').last);
+      expect(m.collection('mouvements').actives, hasLength(1));
+      expect(m.collection('ordonnances').parId('O-ORD-L')!['statutDispensation'], 'partielle');
+      // La ligne servie quitte « à délivrer » : elle ne peut plus ressortir.
+      expect(find.widgetWithText(BoutonSigh, 'Délivrer'), findsNothing);
+    });
+
+    cas('la caisse ouvre la pharmacie dès la première ligne de médicament réglée ; l’encaissement dont la ligne a été DÉLIVRÉE ne s’annule plus', (t) async {
+      final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP(l1: 'du')], taches: [tacheL('bloque')]);
+      final res = encaisserFacture(m, 'F-L', lignes: ['L001'], maintenant: aujourdhui);
+      expect(res.facture['statutPaiement'], 'partielle');
+      expect(res.debloquees, ['dispensation']);
+      expect(m.collection('taches').parId('T-L')!['statut'], 'en_attente');
+      expect(res.refusAnnulation(), isNull, reason: 'rien n’est encore délivré : l’annulation reste possible');
+      await ouvrir(t, m, 'm6-dispensation');
+      await toucher(t, find.byTooltip('Délivrer'));
+      await toucher(t, find.widgetWithText(BoutonSigh, 'Confirmer la délivrance'));
+      expect(m.collection('produits').parId('CP')!['stockDetail'], 38);
+      final motif = res.refusAnnulation();
+      expect(motif, contains('PARACETAMOL 500 MG CP'));
+      expect(motif, contains('avoir'));
+      expect(() => res.annuler(), throwsA(isA<RefusCaisse>().having((e) => e.code, 'code', 'ANNULATION_LIGNE_DELIVREE')));
+      // Rien n'a été défait : la ligne reste réglée, le stock reste sorti.
+      expect(((m.collection('factures').parId('F-L')!['lignes'] as List)[0] as Map)['statutPaiement'], 'paye');
+      expect(m.collection('produits').parId('CP')!['stockDetail'], 38);
+    });
+
+    cas('un encaissement dont aucune ligne n’est délivrée s’annule comme avant', (t) async {
+      final m = magasin(produits: [cp, gel, sirop], ordonnances: [ordP()], factures: [facP(l1: 'du')], taches: [tacheL('bloque')]);
+      final res = encaisserFacture(m, 'F-L', lignes: ['L001'], maintenant: aujourdhui);
+      res.annuler();
+      expect(((m.collection('factures').parId('F-L')!['lignes'] as List)[0] as Map)['statutPaiement'], 'du');
+      expect(m.collection('taches').parId('T-L')!['statut'], 'bloque');
     });
   });
 

@@ -105,8 +105,12 @@ void main() {
     final f1 = w.m.collection('factures').parId(fid)!;
     expect(f1['statutPaiement'], 'partielle', reason: 'jamais soldée avec une ligne sans montant');
     expect(f1['numeroMecef'], isNull);
-    expect(w.m.collection('taches').actives.firstWhere((t) => t['factureId'] == fid && t['type'] == 'dispensation')['statut'], 'bloque',
-        reason: 'la délivrance suit, comme avant, le règlement de l’ordonnance');
+    // DÉLIVRANCE LIGNE PAR LIGNE (Direction de Baguidi, 16/11/2026, E3300) : la ligne RÉGLÉE ouvre la pharmacie ; la ligne au prix à valoriser reste en attente, nommée.
+    expect(w.m.collection('taches').actives.firstWhere((t) => t['factureId'] == fid && t['type'] == 'dispensation')['statut'], 'en_attente',
+        reason: 'la ligne réglée se délivre sans attendre la ligne au prix à valoriser');
+    expect(c1.debloquees, ['dispensation']);
+    final etats = lignesDelivrance(w.m.collection('ordonnances').parId(r.ordonnance['id'])!, f1);
+    expect(etats.map((e) => e.etat), [EtatLigneDelivrance.delivrable, EtatLigneDelivrance.prixAValoriser]);
     // Seule la ligne sans prix : refus nommé, rien n'est écrit.
     expect(() => encaisserFacture(w.m, fid, lignes: ['${l[1]['id']}'], maintenant: jour1), throwsA(isA<RefusCaisse>().having((e) => e.code, 'code', codePrixAValoriser)));
     final avant = w.m.collection('factures').parId(fid)!;
