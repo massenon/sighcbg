@@ -31,7 +31,10 @@ class EcranEvenements extends StatelessWidget with EcranMaquette {
       'Créer un événement engendre une participation par agent, au montant retenu pour cet événement — 1 000 FCFA par défaut, modifiable. Le bénéficiaire ne cotise pas à son propre événement. Ces sommes transitent : elles ne sont ni une recette de la clinique ni une charge.';
 
   @override
-  Widget build(BuildContext context) => RhbEcoute(collections: const ['evenements', 'participations', 'personnel'], construire: _corps);
+  Widget build(BuildContext context) => RhbEcoute(collections: const ['evenements', 'participations', 'personnel', parCollectionParametres], construire: _corps);
+
+  /// La participation standard par agent EN VIGUEUR aujourd'hui (paramètre de clinique daté `rh.participationStandardParAgent`, lot 1 de l'inventaire des valeurs en dur).
+  static int _standard(ContexteEcran c) => participationStandardA(c.magasin.collection(parCollectionParametres).toutes, iso(c.aujourdhui));
 
   static List<Fiche> participationsDe(ContexteEcran c, Object? evenementId) => [for (final x in rhbActives(c, 'participations')) if (x['evenementId'] == evenementId) x];
 
@@ -117,7 +120,8 @@ class EcranEvenements extends StatelessWidget with EcranMaquette {
         ),
         _lectureGraphique(evts, bilans),
       ],
-      rhcSource('$rhcSourceEvenements — montant standard ${rhcMontant(rhcMontantStandard)} par agent.'),
+      // Le montant standard EN VIGUEUR (paramètre de clinique daté `rh.participationStandardParAgent`, réglé à « Paramètres système »).
+      rhcSource('$rhcSourceEvenements — montant standard ${rhcMontant(_standard(c))} par agent.'),
     ]);
   }
 
@@ -197,7 +201,7 @@ class EcranEvenements extends StatelessWidget with EcranMaquette {
 
   void _creer(BuildContext ctx, ContexteEcran c) {
     final ctl = ControleurFormulaire(_champs(c.magasin), {
-      'montantParAgent': '$rhcMontantStandard',
+      'montantParAgent': '${_standard(c)}',
       'date': iso(c.aujourdhui),
       'periodePaiement': iso(c.aujourdhui).substring(0, 7),
       'modeParDefaut': 'salaire',
@@ -224,7 +228,7 @@ class EcranEvenements extends StatelessWidget with EcranMaquette {
                     if (v == null) return;
                     final evts = c.magasin.collection('evenements'), parts = c.magasin.collection('participations');
                     final ben = rhaAgentPar(c.magasin, v['beneficiaireId']);
-                    final montant = rhcMontantParAgent(v['montantParAgent']);
+                    final montant = rhcMontantParAgent(v['montantParAgent'], null, _standard(c));
                     final res = evts.inserer({
                       'statut': 'actif',
                       'nature': v['nature'],

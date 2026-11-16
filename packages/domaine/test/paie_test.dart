@@ -42,15 +42,15 @@ void main() {
   group('les paramètres sont ceux de la maquette (aucun taux inventé)', () {
     final p = m(v['param']);
     test('CNSS, VPS et barème ITS', () {
-      expect(m(p['cnss'])['ouvriere'], paiCnssOuvriere);
-      expect(m(p['cnss'])['patronale'], paiCnssPatronale);
-      expect(m(p['vps'])['taux'], paiVpsTaux);
+      expect(m(p['cnss'])['ouvriere'], PaiTauxPaie.semence.cnssOuvriere);
+      expect(m(p['cnss'])['patronale'], PaiTauxPaie.semence.cnssPatronale);
+      expect(m(p['vps'])['taux'], PaiTauxPaie.semence.vps);
       final bareme = liste(m(p['its'])['bareme']);
-      expect(bareme.length, paiBaremeIts.length);
+      expect(bareme.length, PaiTauxPaie.semence.baremeIts.length);
       for (var i = 0; i < bareme.length; i++) {
-        expect(bareme[i]['de'], paiBaremeIts[i].de, reason: 'tranche $i');
-        expect(bareme[i]['a'], paiBaremeIts[i].a, reason: 'tranche $i');
-        expect(bareme[i]['taux'], paiBaremeIts[i].taux, reason: 'tranche $i');
+        expect(bareme[i]['de'], PaiTauxPaie.semence.baremeIts[i].de, reason: 'tranche $i');
+        expect(bareme[i]['a'], PaiTauxPaie.semence.baremeIts[i].a, reason: 'tranche $i');
+        expect(bareme[i]['taux'], PaiTauxPaie.semence.baremeIts[i].taux, reason: 'tranche $i');
       }
     });
     test('les deux redevances ORTB : montant, mois, seuils, cumul', () {
@@ -478,7 +478,7 @@ void main() {
         }
         final parEmploye = {for (final b in produits) b['employeId']: b};
         for (final a in attendus) {
-          memes(parEmploye[a['employeId']], a, 'bulletin ${a['reference']}', ignorer: {'id', 'statut'});
+          memes(parEmploye[a['employeId']], a, 'bulletin ${a['reference']}', ignorer: {'id', 'statut', 'tauxPaie'});
         }
         expect({for (final a in attendus) a['reference']}, {for (final b in produits) b['reference']});
       }

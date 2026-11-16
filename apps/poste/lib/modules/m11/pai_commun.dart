@@ -57,11 +57,17 @@ PaiEntrees entreesPaie(Magasin mag) {
     // PLANNING INDIVIDUEL (16/11/2026) : l'honoraire du régime EFFECTIF de l'agent (catégorie, dérogation ou remplacement), la même résolution que l'écran des primes.
     regimesTravail: mag.collection('regimesTravail').actives,
     regimesIndividuels: mag.collection('regimesIndividuels').actives,
+    // LES TAUX ET LE BARÈME DATÉS (lot 1 de l'inventaire des valeurs en dur) : CNSS, VPS et barème de l'ITS en vigueur au premier jour de la période.
+    parametres: mag.collection(parCollectionParametres).toutes,
   );
 }
 
+/// Les taux et le barème de la paie EN VIGUEUR au premier jour du mois [mois] (0 à 11) de l'exercice des écrans : ceux qui calculent les bulletins de ce mois.
+PaiTauxPaie tauxPaieDuMois(ContexteEcran c, int mois) =>
+    PaiTauxPaie.aLaDate(c.magasin.collection(parCollectionParametres).toutes, paiDateTauxBulletin(paiAnnee(c), mois));
+
 /// Les collections que le calcul de la paie lit : un écran se redessine quand l'une d'elles bouge.
-const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes', 'modulesActifs', 'exercices', 'obligationsFiscales', 'historiqueObligations', 'regimesTravail', 'regimesIndividuels'];
+const collectionsPaie = ['personnel', 'planning', 'evaluations', 'avances', 'participations', 'grillePrimes', 'historiquePrimes', 'heuresSup', 'pretsEtudes', 'modulesActifs', 'exercices', 'obligationsFiscales', 'historiqueObligations', 'regimesTravail', 'regimesIndividuels', parCollectionParametres, 'confirmationsFiscales'];
 
 Listenable ecoutePaie(ContexteEcran c, [List<String> enPlus = const []]) => ecoute(c, [...collectionsPaie, ...enPlus]);
 

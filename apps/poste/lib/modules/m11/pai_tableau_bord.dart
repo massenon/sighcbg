@@ -26,6 +26,8 @@ class EcranDashboardPaie extends StatelessWidget with EcranMaquette {
       listenable: ecoutePaie(c),
       builder: (context, _) {
         final calc = calculerTousPaie(c, c.aujourdhui.month - 1);
+        // Les taux EN VIGUEUR pour ce mois (paramètres datés, lot 1) : ceux qui calculent les montants affichés.
+        final taux = tauxPaieDuMois(c, c.aujourdhui.month - 1);
         final parService = <String, List<PaiCalcul>>{};
         for (final x in calc) {
           parService.putIfAbsent('${x.employe['service']}', () => []).add(x);
@@ -63,13 +65,13 @@ class EcranDashboardPaie extends StatelessWidget with EcranMaquette {
                 valeur: paiMontant(calc, (x) => x.cnssOuvriere),
                 icone: LucideIcons.shield,
                 ton: TonSigh.attention,
-                indice: '${paiNum(paiCnssOuvriere)} %'),
+                indice: '${paiNum(taux.cnssOuvriere)} %'),
             KpiSigh(
                 libelle: 'CNSS part patronale',
                 valeur: paiMontant(calc, (x) => x.cnssPatronale),
                 icone: LucideIcons.building2,
                 ton: TonSigh.attention,
-                indice: '${paiNum(paiCnssPatronale)} %'),
+                indice: '${paiNum(taux.cnssPatronale)} %'),
             KpiSigh(libelle: 'ITS retenu', valeur: paiMontant(calc, (x) => x.its), icone: LucideIcons.landmark, ton: TonSigh.info),
             KpiSigh(libelle: 'Coût employeur total', valeur: paiMontant(calc, (x) => x.coutEmployeur), icone: LucideIcons.calculator, ton: TonSigh.neutre),
           ]),

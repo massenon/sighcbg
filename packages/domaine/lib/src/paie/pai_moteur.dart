@@ -12,37 +12,17 @@ import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
 import '../referentiels/regles.dart' show joursEntre;
 import '../configuration/cfb_regles.dart' show CfbFermetures;
-import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference;
+import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
 import '../rh/planning_rh.dart' show regimeRhALaDate;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
+import 'pai_baremes.dart';
 
 typedef PaiFiche = Map<String, Object?>;
 
 // --- les paramètres de la paie (`D.PARAM_PAIE`) — CDCT §10.10 ------------------------------------------------------------------------------
-/// CNSS : part ouvrière 3,6 %, part patronale 16,4 % (sans plafond).
-const double paiCnssOuvriere = 3.6;
-const double paiCnssPatronale = 16.4;
-
-/// VPS : 4 % du salaire brut (versement patronal de solidarité).
-const double paiVpsTaux = 4;
-
-/// Une tranche du barème ITS : de [de] à [a] (`null` = sans plafond), au taux [taux] (%).
-class PaiTranche {
-  const PaiTranche(this.de, this.a, this.taux);
-  final num de;
-  final num? a;
-  final num taux;
-}
-
-/// Barème ITS « à confirmer par le service comptable » (source de la maquette, conservée).
-const List<PaiTranche> paiBaremeIts = [
-  PaiTranche(0, 60000, 0),
-  PaiTranche(60001, 150000, 10),
-  PaiTranche(150001, 250000, 15),
-  PaiTranche(250001, 500000, 19),
-  PaiTranche(500001, null, 30),
-];
+// La CNSS, le VPS et le barème de l'ITS ne sont plus des constantes : ce sont des paramètres DATÉS (`pai_baremes.dart`, [PaiTauxPaie]), lus à la date du
+// bulletin. Leurs semences (3,6 %, 16,4 %, 4 %, barème de la maquette) sont le défaut des définitions : aucun bulletin ne change.
 
 /// Une redevance ORTB annuelle : DEUX redevances qui SE CUMULENT (Direction, 20/08/2026).
 class PaiRedevance {
@@ -187,23 +167,10 @@ class PaiPrime {
   final Map<String, num> montants;
 }
 
-/// `D.NS132.primes` : le barème d'origine de la note (repli quand la grille n'est pas au magasin ; l'ORDRE des primes est celui du bulletin).
-const List<PaiPrime> paiPrimesNs132 = [
-  PaiPrime('permanence', 'Permanence', 'occurrence',
-      {'aide_soignant': 600, 'caissiere': 600, 'accueil': 700, 'infirmier': 800, 'sage_femme': 800, 'tsl': 800}),
-  PaiPrime('garde', 'Garde', 'occurrence',
-      {'aide_soignant': 900, 'caissiere': 900, 'accueil': 900, 'infirmier': 1500, 'sage_femme': 1500, 'tsl': 1500}),
-  PaiPrime('aide_bloc', 'Aide bloc', 'occurrence',
-      {'aide_soignant': 500, 'caissiere': 500, 'accueil': 500, 'infirmier': 500, 'sage_femme': 500}),
-  PaiPrime('bloc_fixe', 'Prime de bloc fixe', 'fixe', {'aide_soignant': 10000, 'infirmier': 10000}),
-  PaiPrime('hydrotubation', 'Hydrotubation', 'occurrence', {'infirmier': 1300}),
-  PaiPrime('accouchement', 'Accouchement', 'occurrence', {'sage_femme': 1000}),
-  PaiPrime('caisse', 'Caisse', 'fixe', {'caissiere': 10000}),
-  PaiPrime('urgence', 'Urgence', 'occurrence', {'tsl': 2500}),
-  PaiPrime('incineration', 'Incinération', 'fixe', {'aide_soignant': 5000}),
-  PaiPrime('accueil', 'Accueil', 'fixe', {'accueil': 7000}),
-  PaiPrime('circoncision', 'Circoncision', 'occurrence', {'sage_femme': 1000}),
-];
+/// `D.NS132.primes` : le barème d'origine de la note (repli quand la grille n'est pas au magasin ; l'ORDRE des primes est celui du bulletin). UNE SEULE GRAINE
+/// (lot 1 de l'inventaire des valeurs en dur) : la liste se LIT dans `rhbPrimesOrigine` (rh), la graine de la collection `grillePrimes` ; elle n'est plus
+/// recopiée ici, une seconde copie aurait divergé à la première correction de la note.
+final List<PaiPrime> paiPrimesNs132 = List.unmodifiable([for (final p in rhbPrimesOrigine) PaiPrime(p.id, p.label, p.mode, p.montants)]);
 
 /// `D.FONCTIONS` (id → libellé) : les colonnes de la grille des primes et les fonctions du personnel.
 const Map<String, String> paiFonctions = {
@@ -282,18 +249,9 @@ DateTime paiDate(Object? v) {
 int paiAnciennete(PaiFiche employe, DateTime aujourdhui) =>
     (joursEntre(paiDate(employe['dateEmbauche']), aujourdhui.toUtc()) / 365.25).floor();
 
-/// `calculITS(base)` : barème progressif par tranches, arrondi au franc. `+ 1` sauf pour la première tranche (qui commence à 0).
-int paiCalculIts(num base) {
-  var impot = 0.0;
-  for (final t in paiBaremeIts) {
-    final plafond = t.a ?? double.infinity;
-    final b = base.toDouble();
-    final tranche = (b < plafond ? b : plafond.toDouble()) - t.de + (t.de == 0 ? 0 : 1);
-    final positive = tranche > 0 ? tranche : 0;
-    if (positive > 0) impot += positive * t.taux / 100;
-  }
-  return arrondiJs(impot).toInt();
-}
+/// `calculITS(base)` : barème progressif par tranches, arrondi au franc. `+ 1` sauf pour la première tranche (qui commence à 0). [bareme] : la version EN
+/// VIGUEUR à la date du bulletin ([PaiTauxPaie.baremeIts]) ; absent, le barème semé (ce que la maquette fait sans magasin).
+int paiCalculIts(num base, [List<PaiTranche>? bareme]) => paiCalculItsSur(base, bareme ?? PaiTauxPaie.semence.baremeIts);
 
 // --- la redevance ORTB ---------------------------------------------------------------------------------------------------------------------
 /// Une ligne de redevance applicable à un brut : [montant] n'est porté que sur le bulletin du mois de prélèvement ([du]), [montantAnnuel] toujours.
@@ -458,7 +416,8 @@ class PaiEntrees {
       this.obligationsFiscales = const [],
       this.historiqueObligations = const [],
       this.regimesTravail = const [],
-      this.regimesIndividuels});
+      this.regimesIndividuels,
+      this.parametres = const []});
   final List<PaiFiche> planning, evaluations, avances, participations, grille, historique, heuresSup, prets;
 
   /// PLANNING INDIVIDUEL (16/11/2026) : les régimes de la catégorie (`regimesTravail`, actifs) et les versions de régime individuel (`regimesIndividuels`, actives).
@@ -476,6 +435,10 @@ class PaiEntrees {
 
   /// Les paramètres ORTB datés : la collection `obligationsFiscales` (fiche `ORTB-PARAMETRES`) et `historiqueObligations`. Vides : la semence.
   final List<PaiFiche> obligationsFiscales, historiqueObligations;
+
+  /// LES TAUX ET LE BARÈME DATÉS (lot 1) : les versions de la collection `parametres` (CNSS, VPS, barème ITS, [PaiTauxPaie.aLaDate]), lues au premier jour
+  /// de la période du bulletin. Vide : les valeurs semées, celles d'avant le lot.
+  final List<PaiFiche> parametres;
 }
 
 // --- les deux activités de la paie pilotées depuis Paramètres système (PRD P0-5) ------------------------------------------------------------
@@ -636,7 +599,8 @@ class PaiCalcul {
       this.heuresSupNb = 0,
       this.heuresSupDetail = const [],
       this.prets = 0,
-      this.pretsDetail = const []});
+      this.pretsDetail = const [],
+      this.tauxApplique});
   final PaiFiche employe;
   final String periode;
   final int annee, mois, gardes, permanences, anciennete;
@@ -650,6 +614,10 @@ class PaiCalcul {
   final num heuresSupMontant, heuresSupNb, prets;
   final List<PaiFiche> heuresSupDetail, pretsDetail;
 
+  /// Les taux et le barème qui ont calculé ce bulletin (en vigueur au premier jour de la période) ; absent : les valeurs semées.
+  final PaiTauxPaie? tauxApplique;
+  PaiTauxPaie get taux => tauxApplique ?? PaiTauxPaie.semence;
+
   String get matricule => '${employe['matricule'] ?? ''}';
   String get nomComplet => '${employe['nomComplet'] ?? ''}';
 }
@@ -662,8 +630,8 @@ int _compter(List<PaiFiche> planning, String employeId, int annee, int mois, Str
 
 /// `calculer(employe, annee, mois)` — UN SEUL point d'entrée : toutes les vues consomment ce calcul.
 ///
-/// La chaîne : planning validé → primes NS 132 (grille lue À LA DATE du bulletin, le 28 du mois) → prime d'ancienneté (2 % du salaire de base par
-/// année, à partir de 2 ans) → sanction NS 131 de la période (pourcentage du BRUT) → cotisations (CNSS, VPS, ITS sur le brut après sanction moins
+/// La chaîne : planning validé → primes NS 132 (grille lue À LA DATE du bulletin, le 28 du mois) → prime d'ancienneté (taux daté du salaire de base par
+/// année, dès le seuil daté — semés à 2 % dès 2 ans) → sanction NS 131 de la période (pourcentage du BRUT) → cotisations (CNSS, VPS, ITS sur le brut après sanction moins
 /// la part ouvrière) → ORTB (sur le brut AVANT sanction, une ligne par catégorie, au seul mois de prélèvement) → avances en cours → participations
 /// imputées sur CE mois seulement. La sanction n'entre PAS dans les retenues : elle diminue le brut.
 PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateTime aujourdhui) {
@@ -706,9 +674,11 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
   }
   final totalPrimes = lignesPrimes.fold<num>(0, (a, l) => a + l.total);
 
+  // Les taux EN VIGUEUR au PREMIER JOUR de la période (paramètres datés, lot 1) : une version datée du 1er janvier ne touche pas le bulletin de décembre.
+  final taux = PaiTauxPaie.aLaDate(e.parametres, paiDateTauxBulletin(annee, mois));
   final ans = paiAnciennete(employe, aujourdhui);
   final salaireBase = _n(employe['salaireBase']);
-  final primeAnciennete = ans >= 2 ? arrondiJs(salaireBase * 0.02 * ans) : 0.0;
+  final primeAnciennete = paiPrimeAnciennete(salaireBase, ans, taux);
 
   final periode = paiPeriodeLibelle(annee, mois);
   final heuresSupDetail = e.heuresSup.where(_actif).where((h) => h['employeId'] == id && _vrai(h['valide']) && h['periode'] == periode).toList();
@@ -722,10 +692,10 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
   final sanction = arrondiJs(brut * pctSanction / 100);
   final brutApresSanction = brut - sanction;
 
-  final cnssOuvriere = arrondiJs(brutApresSanction * paiCnssOuvriere / 100);
-  final cnssPatronale = arrondiJs(brutApresSanction * paiCnssPatronale / 100);
-  final vps = arrondiJs(brutApresSanction * paiVpsTaux / 100);
-  final its = paiCalculIts(brutApresSanction - cnssOuvriere);
+  final cnssOuvriere = arrondiJs(brutApresSanction * taux.cnssOuvriere / 100);
+  final cnssPatronale = arrondiJs(brutApresSanction * taux.cnssPatronale / 100);
+  final vps = arrondiJs(brutApresSanction * taux.vps / 100);
+  final its = paiCalculIts(brutApresSanction - cnssOuvriere, taux.baremeIts);
   // Les paramètres ORTB en vigueur au PREMIER JOUR de la période de paie (`calculer()` de la maquette passe cette date) : un bulletin de juin
   // calculé après un relèvement du seuil en août garde la télé due.
   final detailOrtb = paiCalculOrtbALaDate(brut, mois, DateTime(annee, mois + 1, 1), obligations: e.obligationsFiscales, historique: e.historiqueObligations);
@@ -790,7 +760,8 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
       heuresSupNb: heuresSupNb,
       heuresSupDetail: heuresSupDetail,
       prets: totalPrets,
-      pretsDetail: pretsDetail);
+      pretsDetail: pretsDetail,
+      tauxApplique: taux);
 }
 
 /// Sans salaire de base, un agent ne se calcule pas (`agentPaye`) : le vidage des jeux de test retire les salaires de démonstration et garde l'effectif ;
@@ -868,6 +839,8 @@ PaiFiche paiBulletinDe(PaiCalcul c, String reference, {String? genereePar, Strin
       'totalRetenues': c.totalRetenues,
       'net': c.net,
       'coutEmployeur': c.coutEmployeur,
+      // Les taux qui ont calculé le bulletin (lot 1) : la pièce imprime SES taux, jamais ceux du jour ; un bulletin ne se recalcule pas.
+      'tauxPaie': c.taux.fiche,
       'statutBulletin': 'a_valider',
       'genereePar': genereePar,
       // A1 : l'IDENTIFIANT du compte de l'agent qui génère. Le contrôle de séparation le compare, jamais le seul nom.

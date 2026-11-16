@@ -10,9 +10,10 @@ import '../../shell/contexte_ecran.dart';
 import '../cfg/cfb_confirmations.dart';
 import 'pai_commun.dart';
 
-/// `m11-cotisations` — « Cotisations CNSS / ITS / VPS » : les états exploitables pour les déclarations périodiques. Part patronale 16,4 % et part ouvrière
-/// 3,6 % (CNSS), VPS 4 %, ITS au barème progressif, ORTB Radio et Télé qui SE CUMULENT et ne figurent que sur le mois de leur prélèvement. Le coût
-/// employeur et les retenues de l'agent ne s'additionnent jamais : les KPI les montrent séparément.
+/// `m11-cotisations` — « Cotisations CNSS / ITS / VPS » : les états exploitables pour les déclarations périodiques. CNSS (part patronale, part ouvrière), VPS et
+/// barème de l'ITS aux taux EN VIGUEUR au premier jour de la période (paramètres datés, lot 1 de l'inventaire des valeurs en dur : semés à 16,4 %, 3,6 % et 4 %),
+/// ORTB Radio et Télé qui SE CUMULENT et ne figurent que sur le mois de leur prélèvement. Le coût employeur et les retenues de l'agent ne s'additionnent jamais :
+/// les KPI les montrent séparément.
 class EcranCotisations extends StatefulWidget with EcranMaquette {
   const EcranCotisations({super.key});
 
@@ -24,7 +25,7 @@ class EcranCotisations extends StatefulWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'Part patronale ${paiNum(paiCnssPatronale)} % et part ouvrière ${paiNum(paiCnssOuvriere)} % de la CNSS ; VPS ${paiNum(paiVpsTaux)} % ; ITS au barème progressif ; redevances ORTB forfaitaires et annuelles — Radio 1 000 F pour tous en mars, Télé 3 000 F au-delà de 60 000 F en juin, les deux se cumulant.';
+      'Part patronale et part ouvrière de la CNSS, VPS et barème progressif de l’ITS aux taux EN VIGUEUR au premier jour de la période (paramètres datés, confirmés sous le geste « Confirmer un taux fiscal ») ; redevances ORTB forfaitaires et annuelles lues sur la fiche ORTB-PARAMETRES — Radio pour tous en mars, Télé au-delà du seuil en juin, les deux se cumulant.';
 
   @override
   State<EcranCotisations> createState() => _EtatCotisations();
@@ -58,6 +59,7 @@ class _EtatCotisations extends State<EcranCotisations> {
 
   void _etat(BuildContext ctx, ContexteEcran c, String type) {
     final calc = trierPar(calculerTousPaie(c, _m), (x) => x.nomComplet);
+    final t = tauxPaieDuMois(c, _m);
     final colonnes = <ColonneEtat>[];
     late final String titre;
     late final num total;
@@ -73,8 +75,8 @@ class _EtatCotisations extends State<EcranCotisations> {
           agent(),
           ColonneEtat(libelle: 'N° CNSS', valeur: (r) => calculDe(r).employe['cnss']),
           montant('Salaire brut', (x) => x.brut),
-          montant('Part ouvrière (${paiNum(paiCnssOuvriere)} %)', (x) => x.cnssOuvriere),
-          montant('Part patronale (${paiNum(paiCnssPatronale)} %)', (x) => x.cnssPatronale),
+          montant('Part ouvrière (${paiNum(t.cnssOuvriere)} %)', (x) => x.cnssOuvriere),
+          montant('Part patronale (${paiNum(t.cnssPatronale)} %)', (x) => x.cnssPatronale),
           montant('Total', (x) => x.cnssOuvriere + x.cnssPatronale),
         ]);
         total = paiSomme(calc, (x) => x.cnssOuvriere) + paiSomme(calc, (x) => x.cnssPatronale);
@@ -105,7 +107,7 @@ class _EtatCotisations extends State<EcranCotisations> {
           mat(),
           agent(),
           montant('Salaire brut', (x) => x.brut),
-          montant('VPS (${paiNum(paiVpsTaux)} %)', (x) => x.vps),
+          montant('VPS (${paiNum(t.vps)} %)', (x) => x.vps),
         ]);
         total = paiSomme(calc, (x) => x.vps);
     }
@@ -134,6 +136,8 @@ class _EtatCotisations extends State<EcranCotisations> {
       builder: (context, _) {
         final calc = calculerTousPaie(c, _m);
         final lignes = [for (final x in calc) ligneCalcul(x)];
+        // Les taux EN VIGUEUR au premier jour de la période choisie (paramètres datés, lot 1) : ceux qui calculent les montants affichés.
+        final t = tauxPaieDuMois(c, _m);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           barrePeriode(_mois!, [
             BoutonSigh(libelle: 'État CNSS', icone: LucideIcons.printer, variante: VarianteBouton.secondaire, onPressed: () => _etat(context, c, 'CNSS')),
@@ -144,28 +148,28 @@ class _EtatCotisations extends State<EcranCotisations> {
           const SizedBox(height: 16),
           ...avisPaie(c),
           KpiGrilleSigh(kpis: [
-            KpiSigh(libelle: 'CNSS part ouvrière', valeur: paiMontant(calc, (x) => x.cnssOuvriere), icone: LucideIcons.user, ton: TonSigh.attention, indice: '${paiNum(paiCnssOuvriere)} % du brut'),
+            KpiSigh(libelle: 'CNSS part ouvrière', valeur: paiMontant(calc, (x) => x.cnssOuvriere), icone: LucideIcons.user, ton: TonSigh.attention, indice: '${paiNum(t.cnssOuvriere)} % du brut'),
             KpiSigh(
                 libelle: 'CNSS part patronale',
                 valeur: paiMontant(calc, (x) => x.cnssPatronale),
                 icone: LucideIcons.building2,
                 ton: TonSigh.attention,
-                indice: '${paiNum(paiCnssPatronale)} % du brut'),
+                indice: '${paiNum(t.cnssPatronale)} % du brut'),
             KpiSigh(
                 libelle: 'CNSS totale à verser',
                 valeur: paiMontant(calc, (x) => x.cnssOuvriere + x.cnssPatronale),
                 icone: LucideIcons.landmark,
                 ton: TonSigh.danger),
             KpiSigh(libelle: 'ITS retenu', valeur: paiMontant(calc, (x) => x.its), icone: LucideIcons.receipt, ton: TonSigh.info),
-            KpiSigh(libelle: 'VPS', valeur: paiMontant(calc, (x) => x.vps), icone: LucideIcons.percent, indice: '${paiNum(paiVpsTaux)} % du brut'),
+            KpiSigh(libelle: 'VPS', valeur: paiMontant(calc, (x) => x.vps), icone: LucideIcons.percent, indice: '${paiNum(t.vps)} % du brut'),
             KpiSigh(libelle: 'ORTB Radio', valeur: paiMontant(calc, (x) => x.ortbRadio), icone: LucideIcons.radioTower, ton: TonSigh.neutre, indice: 'Tous les salariés · prélevée en mars'),
             KpiSigh(libelle: 'ORTB Télé', valeur: paiMontant(calc, (x) => x.ortbTele), icone: LucideIcons.tv, ton: TonSigh.neutre, indice: 'Au-delà de 60 000 F · prélevée en juin'),
             KpiSigh(libelle: 'Masse salariale brute', valeur: paiMontant(calc, (x) => x.brut), icone: LucideIcons.banknote, ton: TonSigh.succes),
             KpiSigh(libelle: 'Coût employeur', valeur: paiMontant(calc, (x) => x.coutEmployeur), icone: LucideIcons.calculator, ton: TonSigh.neutre),
           ]),
           const SizedBox(height: 16),
-          // Les taux de la CNSS se CONFIRMENT ici aussi (le comptable n'ouvre pas les paramètres comptables) : la même carte, la même collection, le même geste.
-          CarteConfirmationCnss(c: c),
+          // Les taux de la paie se CONFIRMENT ici aussi (le comptable n'ouvre pas les paramètres comptables) : les mêmes cartes, les mêmes collections, le même geste.
+          CartesTauxPaie(c: c),
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('cotisations:$_m'),
@@ -198,12 +202,17 @@ class _EtatCotisations extends State<EcranCotisations> {
           const SizedBox(height: 16),
           CarteSigh(
               titre: 'Barème ITS appliqué',
-              child: MiniTableauSigh(colonnes: [
-                ColonneMini('Tranche de revenu', (t) => '${t['libelle']}'),
-                ColonneMini('Taux', (t) => '${t['taux']} %', droite: true),
-              ], lignes: [
-                for (final t in paiBaremeIts)
-                  {'libelle': t.a == null ? 'Au-delà de ${money(t.de - 1)}' : '${money(t.de)} à ${money(t.a)}', 'taux': paiNum(t.taux)}
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                Text('${paiMois[_m]} ${paiAnnee(c)} — ${t.version(paiCleBaremeIts).libelle}',
+                    key: const Key('cotisations:bareme:version'), style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
+                const SizedBox(height: 8),
+                MiniTableauSigh(colonnes: [
+                  ColonneMini('Tranche de revenu', (t) => '${t['libelle']}'),
+                  ColonneMini('Taux', (t) => '${t['taux']} %', droite: true),
+                ], lignes: [
+                  for (final x in t.baremeIts)
+                    {'libelle': x.a == null ? 'Au-delà de ${money(x.de - 1)}' : '${money(x.de)} à ${money(x.a)}', 'taux': paiNum(x.taux)}
+                ]),
               ])),
         ]);
       },

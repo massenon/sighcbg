@@ -3,6 +3,7 @@
 /// (engendrés par `prototype_html/build/vecteurs-rh-b.js`, écrans montés dans Chrome).
 library;
 
+import '../paie/pai_baremes.dart' show PaiTauxPaie, paiPrimeAnciennete;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
@@ -61,6 +62,11 @@ class RhbRegle {
   final int? honoraire;
 }
 
+/// L'honoraire mensuel de l'incinération : la prime d'incinération de la note NS 132 (aide-soignant, forfait mensuel). UN SEUL LITTÉRAL (lot 1 de l'inventaire des
+/// valeurs en dur) : la graine de la grille NS 132 ([rhbPrimesOrigine]) et celle du régime « Incinération » ([rhbReglesPlanning]) le lisent ; les valeurs en vigueur
+/// vivent au magasin (`grillePrimes`, `regimesTravail`), versionnées.
+const int rhbIncinerationMensuelleSemence = 5000;
+
 const rhbReglesPlanning = <RhbRegle>[
   RhbRegle(['medecin'], 'Médecins', ['garde'], 'repos48', 2, 'Planning de travail des médecins',
       'Garde de 24 h (08h→08h), suivie d’un repos de 48 h.'),
@@ -79,7 +85,7 @@ const rhbReglesPlanning = <RhbRegle>[
   RhbRegle(['aide_soignant', 'entretien'], 'Incinération des déchets de l’hôpital', ['incineration'], null, 7,
       'NS n° 132/07/DM/DA/CBG/2026 — prime d’incinération',
       'Incinération des déchets hospitaliers, poste hebdomadaire rémunéré 5 000 FCFA par mois au titre de la prime d’incinération (NS 132).',
-      honoraire: 5000, honorairePeriodicite: 'mensuelle'),
+      honoraire: rhbIncinerationMensuelleSemence, honorairePeriodicite: 'mensuelle'),
 ];
 
 RhbRegle? rhbRegleDe(String? fonction) {
@@ -278,7 +284,8 @@ class RhbPrimeOrigine {
   final Map<String, int> montants;
 }
 
-/// Le barème d'ORIGINE de la note (`NS132.primes`) : repli du moteur, indépendant du magasin.
+/// Le barème d'ORIGINE de la note (`NS132.primes`) : repli du moteur, indépendant du magasin. C'est la GRAINE UNIQUE de la grille (lot 1 de l'inventaire des valeurs
+/// en dur) : la paie la lit (`paiPrimesNs132`) au lieu d'en tenir une seconde copie ; la grille en vigueur vit au magasin (`grillePrimes`, semée et versionnée).
 const rhbPrimesOrigine = <RhbPrimeOrigine>[
   RhbPrimeOrigine('permanence', 'Permanence', 'occurrence', {'aide_soignant': 600, 'caissiere': 600, 'accueil': 700, 'infirmier': 800, 'sage_femme': 800, 'tsl': 800}),
   RhbPrimeOrigine('garde', 'Garde', 'occurrence', {'aide_soignant': 900, 'caissiere': 900, 'accueil': 900, 'infirmier': 1500, 'sage_femme': 1500, 'tsl': 1500}),
@@ -288,7 +295,7 @@ const rhbPrimesOrigine = <RhbPrimeOrigine>[
   RhbPrimeOrigine('accouchement', 'Accouchement', 'occurrence', {'sage_femme': 1000}),
   RhbPrimeOrigine('caisse', 'Caisse', 'fixe', {'caissiere': 10000}),
   RhbPrimeOrigine('urgence', 'Urgence', 'occurrence', {'tsl': 2500}),
-  RhbPrimeOrigine('incineration', 'Incinération', 'fixe', {'aide_soignant': 5000}),
+  RhbPrimeOrigine('incineration', 'Incinération', 'fixe', {'aide_soignant': rhbIncinerationMensuelleSemence}),
   RhbPrimeOrigine('accueil', 'Accueil', 'fixe', {'accueil': 7000}),
   RhbPrimeOrigine('circoncision', 'Circoncision', 'occurrence', {'sage_femme': 1000}),
 ];
@@ -676,7 +683,7 @@ List<RhbServicePresence> rhbPresenceParService(List<FicheRhb> pointages) {
 }
 
 /// Le solde d'une fiche d'évaluation : base + primes du mois = brut ; le prélèvement s'applique au brut AINSI RECOMPOSÉ. La prime d'ancienneté
-/// (2 % du salaire par année, à partir de deux ans) figure sur la fiche imprimée mais n'entre PAS dans le brut (écart E652, porté fidèlement).
+/// (taux daté par année dès le seuil daté — semés à 2 % dès deux ans, `paiPrimeAnciennete`) figure sur la fiche imprimée mais n'entre PAS dans le brut (écart E652, porté fidèlement).
 class RhbSolde {
   const RhbSolde(this.primeGarde, this.primePermanence, this.primeAccueil, this.primeAnciennete, this.brut, this.prelevement);
   final num primeGarde, primePermanence, primeAccueil;
@@ -695,7 +702,8 @@ RhbSolde rhbSolde(
     required num montantAccueil,
     required int ans,
     bool primesNs132 = true,
-    bool sanctionsNs131 = true}) {
+    bool sanctionsNs131 = true,
+    PaiTauxPaie? taux}) {
   // Les deux activités de Paramètres système (PRD P0-5), comme au bulletin : primes NS 132 fermées, garde, permanence et accueil valent zéro ;
   // évaluations NS 131 fermées, le prélèvement vaut zéro.
   final pg = primesNs132 ? montantGarde * gardes : 0;
@@ -703,7 +711,8 @@ RhbSolde rhbSolde(
   final pa = primesNs132 ? montantAccueil : 0;
   final sb = nombreOuZero(salaireBrut);
   final brut = sb + pg + pp + pa;
-  final anc = ans >= 2 ? arrondiJs(sb * 0.02 * ans).toInt() : 0;
+  // La prime d'ancienneté : la MÊME règle que le bulletin (`paiPrimeAnciennete`, taux et seuil datés, [taux] en vigueur à la date de l'évaluation).
+  final anc = paiPrimeAnciennete(sb, ans, taux).toInt();
   final pct = sanctionsNs131 ? nombreOuZero(prelevementPct) : 0;
   return RhbSolde(pg, pp, pa, anc, brut, arrondiJs(brut * pct / 100).toInt());
 }

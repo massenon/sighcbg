@@ -350,9 +350,17 @@ const List<String> admMotifsIntervention = [
   'Urgence obstétricale'
 ];
 
-/// `5000 + km × 500` quand aucun montant n'est saisi.
-num admTarifAmbulance(Object? tarif, Object? kilometrage) =>
-    admVrai(nombreOuZero(tarif)) ? nombreOuZero(tarif) : 5000 + nombreOuZero(kilometrage) * 500;
+/// Le tarif d'une course sans montant saisi : deux PARAMÈTRES de clinique « à valider » (famille `ambulance`, versionnés par date, lot 1 de l'inventaire des
+/// valeurs en dur) — aucun document ne fixe ce tarif. Les semences ci-dessous n'en sont que le défaut (lues par `definitions.dart` et en repli).
+const String admCleForfaitAmbulance = 'ambulance.forfaitCourse';
+const String admClePrixKmAmbulance = 'ambulance.prixKilometre';
+const int admForfaitAmbulanceSemence = 5000;
+const int admPrixKmAmbulanceSemence = 500;
+
+/// `forfait + km × prix au km` quand aucun montant n'est saisi ; [forfait] et [parKm] : les valeurs EN VIGUEUR des paramètres (absentes : les semences).
+num admTarifAmbulance(Object? tarif, Object? kilometrage, {num? forfait, num? parKm}) => admVrai(nombreOuZero(tarif))
+    ? nombreOuZero(tarif)
+    : (forfait ?? admForfaitAmbulanceSemence) + nombreOuZero(kilometrage) * (parKm ?? admPrixKmAmbulanceSemence);
 
 List<AdmKpi> admKpisInterventions(List<AdmFiche> rows, DateTime maintenant) {
   final mois = rows.where((a) {

@@ -25,7 +25,12 @@
 //   node tools/baguidi/inventaire-en-dur.mjs --json chemin.json     + l'inventaire complet (candidats, statuts, gravités) en JSON
 //   node tools/baguidi/inventaire-en-dur.mjs --liste B [--module m11] la liste des défauts retenus d'une famille (fichier:ligne, valeur, contexte)
 //   node tools/baguidi/inventaire-en-dur.mjs --echantillon 30 --famille C [--graine 7]   un tirage reproductible pour la vérification à la main
-//   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base d'un futur cliquet « valeurs en dur »)
+//   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base du cliquet « valeurs en dur »)
+//   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H [--plafonds chemin.json] [--proposer]
+//        LE CLIQUET (lot 1, 16/11/2026) : relance le balayage et ÉCHOUE (code 1) si, dans une famille surveillée, un fichier DÉPASSE son plafond (une valeur en dur
+//        est apparue), passe SOUS son plafond sans que la ligne de base soit abaissée (la place libérée ne doit pas resservir), ou si un fichier toléré n'a pas de
+//        MOTIF. Un fichier absent de la ligne de base a un plafond de zéro. Ligne de base : `tools/baguidi/valeurs-en-dur.plafonds.json` (familles → fichier →
+//        {plafond, motif}). `--proposer` imprime la ligne de base mesurée (à recopier en gardant les motifs), sans rien écrire.
 // Lecture seule : le script n'écrit que le fichier demandé par --json.
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -276,6 +281,7 @@ const ECARTES = [
   ['H', /hospitalisation\/hos_regles\.dart$/, /hosEchelles|HosEchelle/, 'graduations d’affichage de la feuille de température'],
   ['H', /m12\/cpb_feuillets\.dart$/, null, 'étiquettes de graphique'],
   ['H', /paie\/pai_moteur\.dart$/, /paiRedevances/, 'semence de la fiche ORTB-PARAMETRES (PaiParametresOrtb.semence, lue en base)'],
+  ['H', /rh\/rhb_regles\.dart$/, /rhbPrimesOrigine/, 'graine UNIQUE de la grille NS 132 (collection `grillePrimes`, semée au jeu livré et versionnée) : repli du moteur et ordre des lignes du bulletin ; la seconde copie `paiPrimesNs132` est retirée (lot 1)'],
   // F — rôles : les entrées descriptives de `_tachesDef` (motif du cliquet : « jamais lu pour décider »)
   ['F', /consultation\/cs_moteur\.dart$/, /\(role: '(caissier|pharmacien|laborantin|infirmier|echographiste)'/, 'champ descriptif `role` des tâches d’aval (toléré au cliquet : jamais lu pour décider)'],
 ];
@@ -799,6 +805,55 @@ if (args.includes('--echantillon')) {
   const pris = new Set();
   while (tir.length < Math.min(n, pool.length)) { const k = Math.floor(alea() * pool.length); if (!pris.has(k)) { pris.add(k); tir.push(pool[k]); } }
   for (const c of tir) console.log(`${c.famille}${c.sous ? '/' + c.sous : ''}\t${c.fichier}:${c.ligne}\t${c.valeur}\t${c.contexte}`);
+  process.exit(0);
+}
+if (args.includes('--cliquet')) {
+  // `--famille=B,H` ou `--famille B,H` : les familles surveillées (défaut : celles de la ligne de base).
+  const brut = (args.find((a) => a.startsWith('--famille=')) || '').slice('--famille='.length) || opt('--famille') || '';
+  const cheminPlafonds = opt('--plafonds') || join(RACINE, 'tools/baguidi/valeurs-en-dur.plafonds.json');
+  let base = { familles: {} };
+  if (existsSync(cheminPlafonds)) base = JSON.parse(readFileSync(cheminPlafonds, 'utf8'));
+  else if (!args.includes('--proposer')) { console.error(`Cliquet : ligne de base absente (${cheminPlafonds}).`); process.exit(1); }
+  const familles = (brut ? brut.split(',') : Object.keys(base.familles || {})).map((f) => f.trim().toUpperCase()).filter(Boolean);
+  const inconnues = familles.filter((f) => !FAMILLES.includes(f));
+  if (!familles.length || inconnues.length) { console.error(`Cliquet : familles à surveiller absentes ou inconnues (${inconnues.join(', ') || 'aucune'}) ; attendu par exemple --famille=B,H.`); process.exit(1); }
+  const mesure = {};
+  for (const f of familles) mesure[f] = {};
+  for (const c of defauts) if (mesure[c.famille]) mesure[c.famille][c.fichier] = (mesure[c.famille][c.fichier] || 0) + 1;
+  if (args.includes('--proposer')) {
+    const out = { familles: {} };
+    for (const f of familles) {
+      out.familles[f] = {};
+      for (const [fichier, n] of Object.entries(mesure[f]).sort()) out.familles[f][fichier] = { plafond: n, motif: base.familles?.[f]?.[fichier]?.motif || '' };
+    }
+    console.log(JSON.stringify(out, null, 2));
+    process.exit(0);
+  }
+  const ecarts = [];
+  for (const f of familles) {
+    const tol = base.familles?.[f] || {};
+    for (const [fichier, n] of Object.entries(mesure[f])) {
+      const t = tol[fichier];
+      const plafond = t ? t.plafond : 0;
+      if (n > plafond) {
+        const sites = defauts.filter((c) => c.famille === f && c.fichier === fichier).map((c) => `${c.ligne} (${String(c.valeur).slice(0, 40)})`).join(', ');
+        ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${plafond} — une valeur en dur est APPARUE (lignes ${sites}). La lire dans un paramètre daté, un référentiel ou un barème ; sinon la tolérer avec un motif.`);
+      }
+    }
+    for (const [fichier, t] of Object.entries(tol)) {
+      const n = mesure[f][fichier] || 0;
+      if (n < t.plafond) ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${t.plafond} — ABAISSER la ligne de base (le cliquet ne remonte jamais : la place libérée ne doit pas resservir).`);
+      if (!String(t.motif || '').trim()) ecarts.push(`${f} ${fichier} : toléré SANS MOTIF — dire pourquoi la valeur reste en dur et quel lot la convertira.`);
+    }
+  }
+  const total = (m) => Object.values(m).reduce((s, n) => s + n, 0);
+  const resume = familles.map((f) => `${f} = ${total(mesure[f])}`).join(', ');
+  if (ecarts.length) {
+    console.error(`Cliquet « valeurs en dur » (${resume}) : ${ecarts.length} écart(s) avec ${relative(RACINE, cheminPlafonds) || cheminPlafonds}`);
+    for (const e of ecarts) console.error(`  - ${e}`);
+    process.exit(1);
+  }
+  console.log(`Cliquet « valeurs en dur » : conforme à la ligne de base (${resume}).`);
   process.exit(0);
 }
 if (args.includes('--par-fichier')) {

@@ -18,6 +18,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../impression/etat.dart';
+import '../paie/pai_baremes.dart';
 import '../mecef/etats.dart';
 import 'avoir.dart';
 
@@ -29,14 +30,18 @@ class RegimeTva {
   final num taux;
 }
 
+/// Les régimes de TVA de la maquette (`D.PARAM_FISCAL.regimesTva`), SEMENCE du référentiel : le taux du régime normal en vigueur se lit au paramètre daté
+/// `taux_fiscaux.tvaTauxNormal` ([ParamFiscal.aLaDate]).
+const List<RegimeTva> regimesTvaSemence = [
+  RegimeTva('exonere', 'Exonéré — produits et actes de santé', 0),
+  RegimeTva('normal', 'Taux normal 18 %', paiTvaNormalSemence),
+];
+
 /// `D.PARAM_FISCAL`, tel que la maquette le déclare (document : facture SoBAPS n° 26FNA00026 certifiée MECeF).
 class ParamFiscal {
   const ParamFiscal({
     this.regimeTva = 'exonere',
-    this.regimes = const [
-      RegimeTva('exonere', 'Exonéré — produits et actes de santé', 0),
-      RegimeTva('normal', 'Taux normal 18 %', 18),
-    ],
+    this.regimes = regimesTvaSemence,
     this.libelleTva = 'TVA 18 %',
     this.tauxAib = 1,
     this.libelleAib = 'AIB 1 %',
@@ -53,6 +58,26 @@ class ParamFiscal {
   final String codeAib;
   final String mentionExoneration;
   final String mentionMontant;
+
+  /// LE TAUX DU RÉGIME NORMAL EST DATÉ (complément du lot 1 de l'inventaire des valeurs en dur) : le référentiel garde le RÉGIME choisi (configuration fiscale) ; le
+  /// taux du régime normal se lit dans le paramètre `taux_fiscaux.tvaTauxNormal` à la date de la pièce ([PaiTauxPaie.aLaDate]). Rend une copie dont le régime normal
+  /// et le libellé de la TVA portent ce taux.
+  ParamFiscal avecTauxNormal(num taux) {
+    final t = '${taux == taux.truncateToDouble() ? taux.toInt() : taux}'.replaceAll('.', ',');
+    return ParamFiscal(
+      regimeTva: regimeTva,
+      regimes: [for (final r in regimes) r.id == 'normal' ? RegimeTva('normal', 'Taux normal $t %', taux) : r],
+      libelleTva: 'TVA $t %',
+      tauxAib: tauxAib,
+      libelleAib: libelleAib,
+      codeAib: codeAib,
+      mentionExoneration: mentionExoneration,
+      mentionMontant: mentionMontant,
+    );
+  }
+
+  /// Le référentiel fiscal avec le taux normal EN VIGUEUR à [date] dans les versions de la collection `parametres`.
+  ParamFiscal aLaDate(Iterable<Map<String, Object?>> parametres, Object? date) => avecTauxNormal(PaiTauxPaie.aLaDate(parametres, date).tvaNormal);
 
   RegimeTva get regime =>
       regimes.where((r) => r.id == regimeTva).firstOrNull ?? regimes.first;

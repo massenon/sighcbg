@@ -206,7 +206,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
               titre: 'Retenues',
               child: mini([col('Rubrique', 'k'), col('Taux / base', 'b', droite: true), col('Montant', 'm', droite: true)], [
                 if (x.sanction != 0) {'k': 'Sanction NS 131', 'b': '${paiNum(x.pctSanction)} %', 'm': money(x.sanction, avecDevise: false)},
-                {'k': 'CNSS part ouvrière', 'b': '${paiNum(paiCnssOuvriere)} %', 'm': money(x.cnssOuvriere, avecDevise: false)},
+                {'k': 'CNSS part ouvrière', 'b': '${paiNum(x.taux.cnssOuvriere)} %', 'm': money(x.cnssOuvriere, avecDevise: false)},
                 {'k': 'ITS', 'b': 'Barème progressif', 'm': money(x.its, avecDevise: false)},
                 for (final l in paiLignesOrtb(x.detailOrtb)) {'k': l.libelle, 'b': l.base, 'm': l.montant},
                 if (x.avances != 0) {'k': 'Remboursement d’avance', 'b': '', 'm': money(x.avances, avecDevise: false)},
@@ -228,8 +228,8 @@ class _EtatCalcul extends State<EcranCalculPaie> {
           CarteSigh(
               titre: 'Charges patronales',
               child: mini([col('Rubrique', 'k'), col('Taux', 'b', droite: true), col('Montant', 'm', droite: true)], [
-                {'k': 'CNSS part patronale', 'b': '${paiNum(paiCnssPatronale)} %', 'm': money(x.cnssPatronale, avecDevise: false)},
-                {'k': 'VPS', 'b': '${paiNum(paiVpsTaux)} %', 'm': money(x.vps, avecDevise: false)},
+                {'k': 'CNSS part patronale', 'b': '${paiNum(x.taux.cnssPatronale)} %', 'm': money(x.cnssPatronale, avecDevise: false)},
+                {'k': 'VPS', 'b': '${paiNum(x.taux.vps)} %', 'm': money(x.vps, avecDevise: false)},
                 {'k': 'COÛT TOTAL EMPLOYEUR', 'b': '', 'm': money(x.coutEmployeur, avecDevise: false)},
               ])),
         ]),

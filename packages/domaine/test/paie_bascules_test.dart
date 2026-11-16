@@ -49,7 +49,7 @@ void main() {
       expect(c.brut, 100000);
       expect([c.gardes, c.permanences], [3, 2], reason: 'le planning existe toujours ; seules les primes tombent');
       expect(c.sanction, 10000, reason: 'la sanction NS 131, ouverte, porte sur le brut sans primes');
-      expect(c.cnssOuvriere, arrondiJs(90000 * paiCnssOuvriere / 100));
+      expect(c.cnssOuvriere, arrondiJs(90000 * PaiTauxPaie.semence.cnssOuvriere / 100));
     });
 
     test('évaluations NS 131 fermées : sanction nulle, le brut après sanction est le brut', () {
@@ -65,7 +65,7 @@ void main() {
       final c = calc(primes: false, sanctions: false);
       expect(c.brut, 100000);
       expect(c.sanction, 0);
-      expect(c.coutEmployeur, 100000 + arrondiJs(100000 * paiCnssPatronale / 100) + arrondiJs(100000 * paiVpsTaux / 100));
+      expect(c.coutEmployeur, 100000 + arrondiJs(100000 * PaiTauxPaie.semence.cnssPatronale / 100) + arrondiJs(100000 * PaiTauxPaie.semence.vps / 100));
     });
 
     test('la prime d’ancienneté et les heures supplémentaires ne relèvent pas de la NS 132 : elles restent', () {
