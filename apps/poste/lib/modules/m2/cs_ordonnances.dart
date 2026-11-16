@@ -176,7 +176,7 @@ class _Registre extends StatelessWidget {
                   ColonneMini('Produit', (l) => '${l['produit']}'),
                   ColonneMini('Posologie', (l) => '${l['posologie'] ?? ''}'),
                   ColonneMini('Quantité', (l) => '${l['quantite']} ${l['unite'] ?? ''}'.trim(), droite: true),
-                  ColonneMini('Montant', (l) => money(l['total'], avecDevise: false), droite: true),
+                  ColonneMini('Montant', (l) => l['prixAValoriser'] == true && l['total'] == null ? libellePrixAValoriser : money(l['total'], avecDevise: false), droite: true),
                 ], lignes: meds)),
           ],
           if (ana.isNotEmpty) ...[
@@ -472,9 +472,12 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
   String _total(ContexteEcran c) {
     final m = c.magasin;
     double mMed = 0, mAna = 0, mAct = 0;
+    // Un médicament SANS prix d'achat se prescrit (Direction, 16/11/2026) mais ne compte pour RIEN dans l'estimation (jamais pour 0) : il est NOMMÉ « prix à valoriser ».
+    final aValoriser = <String>[];
     for (final l in _editeur.currentState?.collecter() ?? const <Map<String, Object?>>[]) {
-      mMed += nombreOuZero(m.collection('produits').parId(l['produitId'])?['prixAchat']) *
-          nombreOuZero(l['quantite']);
+      final pr = m.collection('produits').parId(l['produitId']);
+      if (pr != null && nombreOuZero(pr['prixAchat']) <= 0) aValoriser.add('${pr['designation'] ?? pr['code']}');
+      mMed += nombreOuZero(pr?['prixAchat']) * nombreOuZero(l['quantite']);
     }
     final aDefinir = <String>[];
     for (final code in (_complements['analyses'] as List? ?? const [])) {
@@ -488,7 +491,7 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
       mAct += nombreOuZero(p);
     }
     // Un code sans prix n'est jamais compté pour zéro en silence : il est NOMMÉ « prix à définir » et sera refusé à la prescription (« tarif à valider »).
-    return '${money(mMed + mAna + mAct)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · actes ${money(mAct, avecDevise: false)})${aDefinir.isEmpty ? '' : ' — prix à définir : ${aDefinir.join(', ')}'}';
+    return '${money(mMed + mAna + mAct)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · actes ${money(mAct, avecDevise: false)})${aDefinir.isEmpty ? '' : ' — prix à définir : ${aDefinir.join(', ')}'}${aValoriser.isEmpty ? '' : ' — prix à valoriser (prescrit, réglé quand le prix d’achat sera fixé) : ${aValoriser.join(', ')}'}';
   }
 
   void valider() {
@@ -533,14 +536,17 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
     }
     final envois = [
       if (res.refus.isNotEmpty)
-        // 16/11/2026 : une ligne sans prix en vigueur n'est jamais écrite à 0 ; elle est refusée en le nommant, le reste de l'ordonnance passe.
+        // 16/11/2026 : une analyse ou un acte sans prix en vigueur n'est jamais écrit à 0 ; il est refusé en le nommant, le reste de l'ordonnance passe.
         'NON PRESCRIT (tarif à valider) : ${res.refus.map((r) => r['libelle']).join(', ')}',
+      if (res.aValoriser.isNotEmpty)
+        // Un médicament sans prix d'achat est PRESCRIT ; sa ligne attend son prix à la caisse, la personne qui fixe les prix d'achat est prévenue.
+        'prescrit au prix à valoriser : ${res.aValoriser.map((r) => r['produit']).join(', ')}',
       if (res.demandes.isNotEmpty) '${res.demandes.length} demande(s) au laboratoire',
       if (med.isNotEmpty) 'pharmacie informée',
       'facture ${res.facture['numero']} en attente à la caisse',
     ];
     ToastsSigh.afficher(context, 'Ordonnance ${res.ordonnance['numero']} transmise.',
-        type: res.refus.isEmpty ? TypeToast.succes : TypeToast.attention, detail: envois.join(' · '), duree: const Duration(seconds: 12));
+        type: res.refus.isEmpty && res.aValoriser.isEmpty ? TypeToast.succes : TypeToast.attention, detail: envois.join(' · '), duree: const Duration(seconds: 12));
     CsNav.vider();
     c.aller(_retour);
   }

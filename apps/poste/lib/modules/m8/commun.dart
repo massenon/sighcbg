@@ -6,6 +6,15 @@ import '../../impression/piece.dart';
 
 num n(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
 String m(Object? v) => money(v, avecDevise: false);
+
+/// Le montant [cle] d'une ligne, ou « Prix à valoriser » quand elle attend son prix d'achat : JAMAIS « 0 » (Direction, 16/11/2026).
+String mLigne(Fiche l, String cle) => ligneAValoriser(l) ? libellePrixAValoriser : m(l[cle]);
+
+/// La mention à porter près d'un total quand la pièce a des lignes « prix à valoriser » (elles n'y entrent pas, ni pour 0), sinon vide.
+String mentionAValoriser(Fiche f) {
+  final k = lignesAValoriserDe(f).length;
+  return k == 0 ? '' : ' (hors ${nombre(k)} ligne(s) au prix à valoriser)';
+}
 String dateDe(Object? v) {
   final d = DateTime.tryParse('${v ?? ''}');
   return d == null ? '' : dateFR(d);
@@ -31,7 +40,7 @@ bool mecefEnService(Magasin m) =>
     fermeturesEnVigueur(m.collection('modulesActifs').toutes).mecefEnService;
 
 num partNonAssuree(Iterable<Fiche> lignes) => lignes.fold<num>(0, (a, l) {
-      if (n(l['partAssureur']) > 0) return a;
+      if (n(l['partAssureur']) > 0 || ligneAValoriser(l)) return a;
       final montant = l['montant'] != null
           ? n(l['montant'])
           : n(l['quantite']) *
@@ -86,25 +95,26 @@ PieceA4 pieceFacture(Fiche f,
         droite: true,
         somme: (l) => n(l['quantite'])),
     ColonneEtat(
-        libelle: 'P.U', valeur: (l) => m(l['prixUnitaire']), droite: true),
+        libelle: 'P.U', valeur: (l) => mLigne(l, 'prixUnitaire'), droite: true),
     if (avecAssurance)
       ColonneEtat(
           libelle: 'Part ass.',
-          valeur: (l) => m(l['partAssureur'] ?? 0),
+          valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(l['partAssureur'] ?? 0),
           droite: true,
           somme: (l) => n(l['partAssureur'])),
     if (avecAssurance)
       ColonneEtat(
           libelle: 'Part pat.',
-          valeur: (l) => m(partPat(l)),
+          valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(partPat(l)),
           droite: true,
-          somme: partPat),
+          somme: (l) => ligneAValoriser(l) ? 0 : partPat(l)),
     ColonneEtat(
         libelle: 'Montant',
-        valeur: (l) => m(montantLigne(l)),
+        valeur: (l) => ligneAValoriser(l) ? libellePrixAValoriser : m(montantLigne(l)),
         droite: true,
-        somme: montantLigne),
+        somme: (l) => ligneAValoriser(l) ? 0 : montantLigne(l)),
   ];
+  final horsTotal = mentionAValoriser(f);
   final remises = n(f['montantRemises']);
   final assure = f['assureur'] != null;
   final rep = TableauEtat(colonnes: [
@@ -113,22 +123,22 @@ PieceA4 pieceFacture(Fiche f,
   ], lignes: [
     {'k': 'Montant brut', 'v': m(n(f['montantTTC']) + remises)},
     if (remises > 0) {'k': 'Remises accordées', 'v': '- ${m(remises)}'},
-    {'k': 'Montant total de la facture', 'v': m(f['montantTTC'])},
+    {'k': 'Montant total de la facture$horsTotal', 'v': m(f['montantTTC'])},
     if (assure)
       {
         'k':
             'Part assureur ${f['assureur']}${f['souscripteur'] != null ? ' — ${f['souscripteur']}' : ''}',
         'v': m(f['partAssurance'])
       },
-    {'k': 'Part à la charge du patient', 'v': m(f['partPatient'])},
+    {'k': 'Part à la charge du patient$horsTotal', 'v': m(f['partPatient'])},
     // La part NON ASSURÉE n'est pas le ticket modérateur : elle porte les lignes qu'AUCUNE compagnie ne couvre.
     {
       'k': 'dont part NON ASSURÉE (aucune couverture)',
       'v': m(partNonAssuree(lignes))
     },
-    {'k': 'TOTAL DÛ', 'v': m(f['reliquat'] ?? f['partPatient'])},
+    {'k': 'TOTAL DÛ$horsTotal', 'v': m(f['reliquat'] ?? f['partPatient'])},
     {'k': 'Montant réglé', 'v': m(f['montantPaye'])},
-    {'k': 'Reste à payer', 'v': m(f['reliquat'])},
+    {'k': 'Reste à payer$horsTotal', 'v': m(f['reliquat'])},
     // MECeF fermé, la pièce ne porte pas de rubrique fiscale (P0-5).
     if (mecefActif)
       {'k': 'Base normalisée MECeF', 'v': m(f['baseMecef'] ?? f['montantPaye'])},
@@ -170,6 +180,10 @@ PieceA4 pieceFacture(Fiche f,
             '${f['libelleVolet']}${jumelle != null ? ' — pièce jumelle : ${jumelle['numero']}' : ''}',
             gras: true),
       BlocTableau(TableauEtat(colonnes: colonnes, lignes: lignes)),
+      if (horsTotal.isNotEmpty)
+        const BlocTexte(
+            'Une ligne « prix à valoriser » n’a pas encore de prix d’achat : elle n’entre dans aucun total (jamais pour zéro) et se règle dès que son prix est fixé.',
+            italique: true),
       BlocTableau(rep),
       BlocTexte(
           '${i.formuleArrete} : ${montantEnLettres(f['partPatient'])}.',
@@ -223,16 +237,17 @@ PieceA4 pieceRecu(Fiche f,
             droite: true,
             somme: (l) => n(l['quantite'] ?? 1)),
         ColonneEtat(
-            libelle: 'P.U.', valeur: (l) => m(l['prixUnitaire']), droite: true),
+            libelle: 'P.U.', valeur: (l) => mLigne(l, 'prixUnitaire'), droite: true),
         ColonneEtat(
             libelle: 'Part assureur',
-            valeur: (l) =>
-                n(l['partAssureur']) > 0 ? m(l['partAssureur']) : '—',
+            valeur: (l) => ligneAValoriser(l)
+                ? libellePrixAValoriser
+                : (n(l['partAssureur']) > 0 ? m(l['partAssureur']) : '—'),
             droite: true,
             somme: (l) => n(l['partAssureur'])),
         ColonneEtat(
             libelle: 'À la charge du patient',
-            valeur: (l) => m(l['partPatient']),
+            valeur: (l) => mLigne(l, 'partPatient'),
             droite: true,
             somme: (l) => n(l['partPatient'])),
       ], lignes: rows, libelleTotal: 'TOTAL');
@@ -279,16 +294,16 @@ PieceA4 pieceRecu(Fiche f,
             italique: true),
       ],
       BlocTableau(rub([
-        {'k': 'Montant total de la facture', 'v': m(f['montantTTC'])},
+        {'k': 'Montant total de la facture${mentionAValoriser(f)}', 'v': m(f['montantTTC'])},
         if (n(f['partAssurance']) > 0)
           {
             'k': 'Part assureur — ${f['assureur'] ?? ''}',
             'v': m(f['partAssurance'])
           },
-        {'k': 'Part à la charge du patient', 'v': m(f['partPatient'])},
+        {'k': 'Part à la charge du patient${mentionAValoriser(f)}', 'v': m(f['partPatient'])},
         {'k': 'ENCAISSÉ CE JOUR', 'v': m(encaisse)},
         {'k': 'Total réglé à ce jour', 'v': m(f['montantPaye'])},
-        {'k': 'RESTE À PAYER', 'v': m(f['reliquat'])},
+        {'k': 'RESTE À PAYER${mentionAValoriser(f)}', 'v': m(f['reliquat'])},
       ])),
       BlocTexte(
           '${i.formuleArrete} : ${montantEnLettres(f['montantPaye'] ?? 0)}.'),

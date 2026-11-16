@@ -558,14 +558,15 @@ PieceA4 pieceOrdonnance(ContexteEcran c, Fiche r) {
               droite: true,
               valeur: (l) => '${l['quantite']} ${l['unite'] ?? ''}'.trim()),
           // On ne totalise PAS le prix unitaire : additionner des prix unitaires ne produit aucune grandeur.
+          // « Prix à valoriser » (Direction, 16/11/2026) : un médicament sans prix d'achat est prescrit, jamais imprimé à 0 ni compté dans le total.
           ColonneEtat(
               libelle: 'Prix unitaire',
               droite: true,
-              valeur: (l) => money(l['prix'], avecDevise: false)),
+              valeur: (l) => l['prixAValoriser'] == true && l['prix'] == null ? libellePrixAValoriser : money(l['prix'], avecDevise: false)),
           ColonneEtat(
               libelle: 'Montant',
               droite: true,
-              valeur: (l) => money(l['total'], avecDevise: false),
+              valeur: (l) => l['prixAValoriser'] == true && l['total'] == null ? libellePrixAValoriser : money(l['total'], avecDevise: false),
               somme: (l) => nombreOuZero(l['total'])),
         ], lignes: meds)),
       if (ana.isNotEmpty) ...[

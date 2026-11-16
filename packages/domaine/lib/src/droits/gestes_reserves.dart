@@ -71,6 +71,32 @@ const String gesteReglageOcr = 'reglage_ocr';
 /// Régler la CONFIGURATION MECeF (mode de certification, boîtier ou e-MECeF) : un droit par réglage (Q5), administrateur et Directrice Administrative d'origine. Se règle sur la poste mère.
 const String gesteReglageMecef = 'reglage_mecef';
 
+/// LA PHARMACIE ET LA CAISSE NE SONT PAS UN RÔLE (Direction de Baguidi, 16/11/2026) : aujourd'hui la Caissière-Dispensatrice tient les deux et le rôle pharmacien reste ouvert, mais une
+/// clinique peut séparer un pharmacien de la caisse. Aucune décision de droit n'y suppose donc « pharmacie = caissier » : encaisser et délivrer sont des droits d'ÉCRAN de la matrice
+/// (`m8-caisse`, `m6-dispensation`), et ce qui n'était pas un droit d'écran (le routage des alertes, la retransmission MECeF) est un geste réservé ci-dessous, dont l'origine
+/// reprend À L'IDENTIQUE les listes qui vivaient en dur (aucun changement de comportement le jour de la conversion). Séparer, c'est cocher des cases, jamais toucher au code.
+
+/// Recevoir les notifications du POSTE de caisse (tâche ou notification adressée à la « caisse »). Origine : le Caissier (liste reprise de `_postesNotif['caisse']`).
+const String gesteAlertesCaisse = 'alertes_caisse';
+
+/// Recevoir les notifications du POSTE stock (besoins accordés, réapprovisionnement, notifications adressées au « stock »). Origine : le gestionnaire de stock, le pharmacien et la DAF.
+const String gesteAlertesStock = 'alertes_stock';
+
+/// Recevoir l'alerte « article sous son seuil d'alerte ». Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et la DAF.
+const String gesteAlertesSeuilStock = 'alertes_seuil_stock';
+
+/// Recevoir l'alerte « lot périmé ou proche de la péremption ». Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et le Biologiste médical.
+const String gesteAlertesPeremption = 'alertes_peremption';
+
+/// Recevoir l'alerte « facture rejetée par la MECeF ». Origine : le Caissier, le Comptable, la DAF et l'Assistant de Direction.
+const String gesteAlertesMecefRejet = 'alertes_mecef_rejet';
+
+/// Retransmettre une pièce à la MECeF UNE fois (PRD section 7, Q7). Origine : le Caissier, la DAF et l'administrateur.
+const String gesteMecefRetransmettre = 'mecef_retransmettre';
+
+/// Retransmettre une pièce à la MECeF SANS limite de nombre (après la première retransmission). Origine : la DAF et l'administrateur.
+const String gesteMecefRetransmettreSansLimite = 'mecef_retransmettre_sans_limite';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -144,6 +170,55 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'mecef-config',
       rolesDefaut: ['admin', 'da'],
       aide: 'Le mode de certification des factures (boîtier ou e-MECeF). Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteAlertesCaisse,
+      libelle: 'Recevoir les notifications du poste de caisse',
+      module: 'M8',
+      ecran: '',
+      rolesDefaut: ['caissier'],
+      aide: 'Les notifications adressées à la caisse. Séparer la caisse de la pharmacie : accorder ce droit au rôle qui encaisse, le retirer à celui qui délivre. Origine : le Caissier.'),
+  GesteReserve(
+      id: gesteAlertesStock,
+      libelle: 'Recevoir les notifications du poste stock',
+      module: 'M6',
+      ecran: '',
+      rolesDefaut: ['stock', 'pharmacien', 'da'],
+      aide: 'Besoins accordés, réapprovisionnement et notifications adressées au stock. Origine : le gestionnaire de stock, le pharmacien et la DAF.'),
+  GesteReserve(
+      id: gesteAlertesSeuilStock,
+      libelle: 'Recevoir l’alerte « article sous son seuil »',
+      module: 'M6',
+      ecran: '',
+      rolesDefaut: ['stock', 'pharmacien', 'caissier', 'da'],
+      aide: 'L’alerte d’un article sous son seuil d’alerte (encore filtrée par la lecture de l’écran des alertes). Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et la DAF.'),
+  GesteReserve(
+      id: gesteAlertesPeremption,
+      libelle: 'Recevoir l’alerte « lot périmé ou proche de la péremption »',
+      module: 'M6',
+      ecran: '',
+      rolesDefaut: ['stock', 'pharmacien', 'caissier', 'laborantin'],
+      aide: 'L’alerte de péremption d’un lot (encore filtrée par la lecture de l’écran des lots). Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et le Biologiste médical.'),
+  GesteReserve(
+      id: gesteAlertesMecefRejet,
+      libelle: 'Recevoir l’alerte « facture rejetée par la MECeF »',
+      module: 'MECEF',
+      ecran: '',
+      rolesDefaut: ['caissier', 'comptable', 'da', 'assistant_comptable'],
+      aide: 'Une facture rejetée par l’administration fiscale, à corriger puis retransmettre. Origine : le Caissier, le Comptable, la DAF et l’Assistant de Direction.'),
+  GesteReserve(
+      id: gesteMecefRetransmettre,
+      libelle: 'Retransmettre une pièce à la MECeF (une fois)',
+      module: 'MECEF',
+      ecran: 'mecef-transmission',
+      rolesDefaut: ['caissier', 'da', 'admin'],
+      aide: 'Corriger et retransmettre une pièce refusée, expirée ou en attente : une seule fois sans le droit suivant. Jamais une vente normalisée. Origine : le Caissier, la DAF et l’administrateur.'),
+  GesteReserve(
+      id: gesteMecefRetransmettreSansLimite,
+      libelle: 'Retransmettre une pièce à la MECeF sans limite',
+      module: 'MECEF',
+      ecran: 'mecef-transmission',
+      rolesDefaut: ['da', 'admin'],
+      aide: 'Retransmettre une pièce déjà retransmise une fois (s’ajoute au droit précédent). Origine : la DAF et l’administrateur.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

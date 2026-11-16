@@ -468,7 +468,7 @@ class _EtatTransmission extends State<EcranMecefTransmission> {
   /// `MECEF_NON_CONFIGURE` se dit.
   void _normaliser(ContexteEcran c, Fiche f, {required bool reemission}) {
     final mag = c.magasin;
-    final refus = refusRetransmission(f, c.role);
+    final refus = refusRetransmission(f, c.role, gestes: gestesEcran(c));
     if (refus != null) {
       ToastsSigh.afficher(context, '${refus.code} : ${refus.motif}',
           type: TypeToast.erreur,
