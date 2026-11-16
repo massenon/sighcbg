@@ -1,0 +1,17 @@
+{
+ "id": "mere-import",
+ "titre": "Import de migration",
+ "libelle": "Import de migration",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Cycle de vie",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-import"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 789
+}

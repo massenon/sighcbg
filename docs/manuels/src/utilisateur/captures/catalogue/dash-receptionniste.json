@@ -1,0 +1,17 @@
+{
+ "id": "dash-receptionniste",
+ "titre": "Tableau de bord — Accueil",
+ "libelle": "Accueil",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-receptionniste"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1661
+}

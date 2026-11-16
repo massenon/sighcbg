@@ -1,0 +1,17 @@
+{
+ "id": "m7-commandes",
+ "titre": "Bons de commande",
+ "libelle": "Bons de commande",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-commandes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 774
+}

@@ -1,0 +1,17 @@
+{
+ "id": "cfg-types-piece",
+ "titre": "Types de pièces certifiantes",
+ "libelle": "Types de pièces certifiantes",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-types-piece"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 768
+}

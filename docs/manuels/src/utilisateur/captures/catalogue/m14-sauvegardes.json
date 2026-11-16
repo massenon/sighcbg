@@ -1,0 +1,17 @@
+{
+ "id": "m14-sauvegardes",
+ "titre": "Sauvegardes & restauration",
+ "libelle": "Sauvegardes & restauration",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m14-sauvegardes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1686
+}

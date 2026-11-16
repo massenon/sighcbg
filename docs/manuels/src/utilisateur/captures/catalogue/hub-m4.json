@@ -1,0 +1,17 @@
+{
+ "id": "hub-m4",
+ "titre": "Maternité, Naissances & Décès",
+ "libelle": "Maternité, Naissances & Décès",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m4"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 927
+}

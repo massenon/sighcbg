@@ -1,0 +1,17 @@
+{
+ "id": "hub-m12",
+ "titre": "Comptabilité SYSCOHADA",
+ "libelle": "Comptabilité SYSCOHADA",
+ "domaine": "Financier",
+ "module": "M12",
+ "moduleLibelle": "Comptabilité SYSCOHADA",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m12"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 601
+}

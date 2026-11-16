@@ -1,0 +1,17 @@
+{
+ "id": "m3-stats-bloc",
+ "titre": "Statistiques du bloc & de l’anesthésie",
+ "libelle": "Statistiques du bloc & anesthésie",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-stats-bloc"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 478
+}

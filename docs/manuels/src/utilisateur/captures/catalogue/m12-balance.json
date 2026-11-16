@@ -1,0 +1,17 @@
+{
+ "id": "m12-balance",
+ "titre": "Balance générale & âgée",
+ "libelle": "Balance générale & âgée",
+ "domaine": "Financier",
+ "module": "M12",
+ "moduleLibelle": "Comptabilité SYSCOHADA",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m12-balance"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1176
+}

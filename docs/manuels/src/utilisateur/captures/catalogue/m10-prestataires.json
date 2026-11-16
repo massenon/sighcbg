@@ -1,0 +1,17 @@
+{
+ "id": "m10-prestataires",
+ "titre": "Prestataires externes",
+ "libelle": "Prestataires externes",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-prestataires"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1024
+}
