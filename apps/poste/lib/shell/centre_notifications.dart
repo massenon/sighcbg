@@ -283,6 +283,31 @@ final List<_Source> _sources = [
       ...par('produits', 'stockNegatifDetecte', 'dbl-stk', 'Stock négatif détecté', 'Deux postes ont sorti le dernier exemplaire hors ligne (RG-03) : régulariser par un inventaire.', 'm6-stock-detail', (f) => ou(f['designation'], f['id']), 'critique'),
     ];
   }),
+  // LE PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : une action NON TERMINÉE d'un plan EN VIGUEUR dont la période est échue depuis plus que le seuil réglé (paramètre de clinique, lu à la
+  // date de réglage de son exercice). UNE ligne par action (sa clé est l'action : jamais de doublon), routée par le geste réservé `alertes_pta_retard` (les responsables du suivi, lus
+  // dans la matrice), jamais par une liste de rôles. Elle disparaît d'elle-même quand l'action est terminée ou que le seuil est relevé.
+  _Source('pta_retard', 'metier', 'Plan de travail annuel', (m, auj) {
+    final p = serviceParametres(m, auteur: () => 'lecture');
+    final exos = m.collection('exercices').toutes;
+    final etats = m.collection(ptaCollectionEtats).toutes;
+    final retards = ptaActionsEnRetard(
+        plans: m.collection(ptaCollectionPlans).toutes,
+        actions: m.collection(ptaCollectionActions).toutes,
+        etats: etats,
+        auj: auj,
+        seuil: (annee) => ptaSeuilDe(p.valeur(ptaCleSeuilRetard, parametreDateIso(ptaDateReglage(ptaExercice(exos, annee), auj)))));
+    return [
+      for (final r in retards)
+        _Ligne(
+            'pta:${r.action['idSync'] ?? r.action['id']}',
+            'important',
+            'Action du plan en retard : ${_ou(r.action['reference'], '')} ${_ou(r.action['action'], '')}'.trim(),
+            'Période échue depuis ${r.jours} jours (exercice ${r.annee}), état « ${ptaLibelleEtat(r.action['etat'], etats)} ». Responsable : ${_ou(r.action['responsable'], 'non désigné')}.',
+            'm13-plan-annuel',
+            null,
+            geste: gesteAlertesPtaRetard),
+    ];
+  }),
   // ADR-0006 (D2) : un champ écrit en même temps par deux postes reste MARQUÉ jusqu'à ce que la personne habilitée tranche ; le moteur pair recopie ces
   // conflits dans la collection locale `conflitsPair` (jamais synchronisée) et ils s'annoncent à l'ouverture, avec le son, comme toute alerte importante.
   _Source('pair_conflits', 'metier', 'Échanges entre postes', (m, auj) => [
@@ -351,6 +376,11 @@ class CentreNotifications extends ChangeNotifier {
     'notifications',
     'reglages',
     'rbac',
+    // Lot PTA (17/11/2026) : les alertes de retard du plan de travail annuel.
+    'planAnnuel',
+    'plansTravail',
+    'ptaEtats',
+    'parametres',
   ];
 
   final Magasin magasin;

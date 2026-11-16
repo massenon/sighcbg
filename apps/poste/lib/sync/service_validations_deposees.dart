@@ -105,6 +105,106 @@ class ServiceValidationsDeposees {
   }
 
   // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : adopter, renvoyer, clôturer depuis n'importe quel poste
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  /// Le bilan d'une clôture, calculé sur CE poste au moment du geste (la mère le recalcule sur ses données quand elle applique un dépôt). Branché par l'écran du plan.
+  PtaSynthese Function(int annee, int version)? syntheseBilanPta;
+
+  /// DÉPOSE une décision réservée sur le plan de travail annuel (adopter, renvoyer en brouillon, clôturer). Refus nommé (mêmes contrôles que l'application) ou le dépôt écrit ;
+  /// un dépôt identique qui attend déjà la mère n'est pas doublé. Le plan reste dans son état jusqu'à la confirmation : jamais « adopté » sur un dépôt seul.
+  VerdictDepot deposerPta(String decision, int annee, int version, {required String role, required String acteur, required String motif, DroitsGestes? gestes}) {
+    final r = ptaDeposer(
+        decision: decision,
+        annee: annee,
+        version: version,
+        role: role,
+        acteur: acteur,
+        poste: etiquette,
+        motif: motif,
+        maintenant: _maintenant,
+        gestes: gestes ?? this.gestes,
+        plans: magasin.collection(ptaCollectionPlans).toutes,
+        actions: magasin.collection(ptaCollectionActions).toutes,
+        depots: depots.toutes,
+        nouvelId: _nouvelId);
+    if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
+    try {
+      depots.ajouterSansJournal(r.fiche!, enTete: true);
+    } on EcritureRefusee catch (e) {
+      return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
+    }
+    magasin.collection(ptaCollectionPlans).signaler();
+    magasin.journaliser('Décision du plan transmise à la mère', 'M13', 'Plan de travail annuel', ptaReferencePlan(annee, version), null,
+        {'décision': decision, 'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], 'motif': motif.trim()});
+    return r;
+  }
+
+  /// Le dépôt d'une décision du PTA de CE plan qui attend encore la mère (`null` : aucun) : l'écran dit « transmise à la mère, en attente ».
+  Fiche? depotPtaEnAttente(int annee, int version) {
+    final cible = ptaClePlan(annee, version);
+    for (final d in depots.toutes) {
+      if (d['statut'] != 'archive' && d['genre'] == valGenrePta && d['cible'] == cible && d['etat'] == valDepotDeposee) return d;
+    }
+    return null;
+  }
+
+  /// Le dernier dépôt REFUSÉ par la mère pour ce plan (son motif nommé revient à l'auteur) ; `null` si aucun, ou si un dépôt plus récent l'a suivi.
+  Fiche? depotPtaRefuse(int annee, int version) {
+    final cible = ptaClePlan(annee, version);
+    Fiche? dernier;
+    for (final d in depots.toutes) {
+      if (d['statut'] == 'archive' || d['genre'] != valGenrePta || d['cible'] != cible) continue;
+      if (dernier == null || '${d['demandeLe']}'.compareTo('${dernier['demandeLe']}') >= 0) dernier = d;
+    }
+    return dernier != null && dernier['etat'] == valDepotRefusee ? dernier : null;
+  }
+
+  /// Applique les écritures d'une décision du PTA (sur la mère, ou au poste mère sous le geste) : en-têtes et suivi repris des actions, sans journal par écriture (le geste est
+  /// journalisé une fois par l'appelant).
+  void ecrirePta(List<PtaEcriture> ecritures) {
+    for (final e in ecritures) {
+      magasin.collection(e.collection).mettreAJour(e.id, e.patch, journaliser: false);
+    }
+  }
+
+  /// Applique UN dépôt du PTA sur la mère : sous le rôle et le nom de l'auteur, contrôles refaits avec SA matrice et SES fiches, à la date du geste ; journal (RG-12).
+  bool _appliquerPta(Fiche d) {
+    final a = ptaAppliquerDepot(d,
+        gestes: gestes,
+        plans: magasin.collection(ptaCollectionPlans).toutes,
+        actions: magasin.collection(ptaCollectionActions).toutes,
+        maintenant: _maintenant,
+        synthese: syntheseBilanPta);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    if (a.ecritures.isNotEmpty) {
+      try {
+        ecrirePta(a.ecritures);
+        magasin.journaliser('Décision du plan de travail annuel (geste réservé)', 'M13', 'Plan de travail annuel', ptaReferencePlan(int.parse('${d['exercice']}'), int.parse('${d['version']}')), null,
+            {'décision': d['decision'], 'motif': d['motif'], 'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'appliquée par': auteurMere(), 'dépôt': d['id']});
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire la décision depuis l’écran du plan.';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    return true;
+  }
+
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
   // RÉGLAGE DE CLINIQUE SOUS GESTE RÉSERVÉ (16/11/2026, §7) : depuis n'importe quel poste
   // ---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -270,6 +370,7 @@ class ServiceValidationsDeposees {
       depots.mettreAJour(d['id'], {'notifieLe': _maintenant.toUtc().toIso8601String()}, journaliser: false);
       _signaler('${d['famille']}');
       if (d['genre'] == valGenreCircuitAchat) magasin.collection(d['famille'] == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
+      if (d['genre'] == valGenrePta) magasin.collection(ptaCollectionPlans).signaler();
       n++;
     }
     return n;
@@ -399,6 +500,10 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenreReglage) {
           if (_appliquerReglage(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenrePta) {
+          if (_appliquerPta(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

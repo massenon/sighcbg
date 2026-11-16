@@ -20,7 +20,8 @@
 
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
-import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport;
+import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler;
+import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard;
 import 'parametres.dart';
 import 'reglages_roles.dart';
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
@@ -511,6 +512,47 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Caisse (m8-caisse) et délivrance',
   ),
+  // LE PLAN DE TRAVAIL ANNUEL (lot PTA, Direction de Baguidi, 17/11/2026 : « RIEN NE DOIT ÊTRE EN DUR »). Deux réglages de CLINIQUE (famille R par la collection
+  // `parametres` : la mère seule écrit, chaque version datée), posés sous le geste réservé `pta_regler` depuis n'importe quel poste (un fileul dépose, la mère applique).
+  // La clinique n'a AUCUN modèle officiel de PTA : les trois réglages sont ceux du MODÈLE PROPOSÉ par la Direction (16/11/2026), à valider.
+  DefinitionParametre(
+    cle: ptaCleDecoupage,
+    famille: 'pta',
+    type: TypeParametre.choix,
+    choix: ['trimestre', 'mois', 'semestre'],
+    libellesChoix: {'trimestre': 'Par trimestre', 'mois': 'Par mois', 'semestre': 'Par semestre'},
+    defaut: 'trimestre',
+    libelle: 'Découpage du plan de travail annuel',
+    aide: 'Les périodes de la frise du plan et du choix des périodes d\'une action. Un exercice se lit avec le découpage en vigueur à son jour courant (un exercice clos, à son dernier jour) : changer le découpage ne réécrit aucune action, qui garde ses dates.',
+    source: 'Modèle proposé le 16/11/2026, à valider : périodicité trimestrielle (proposition à valider par la Direction)',
+    branche: true,
+    appliquePar: 'Plan de travail annuel (m13-plan-annuel)',
+    geste: gestePtaRegler,
+  ),
+  DefinitionParametre(
+    cle: ptaCleSeuilRetard,
+    famille: 'pta',
+    type: TypeParametre.entier,
+    defaut: 15,
+    libelle: 'Seuil d\'alerte de retard d\'une action du plan (jours)',
+    aide: 'Une action non terminée dont la période est échue depuis PLUS que ce nombre de jours est en retard : elle est comptée à l\'écran et lève une alerte vers les détenteurs du geste « alerte de retard du plan ». Entier positif ou nul.',
+    source: 'Modèle proposé le 16/11/2026, à valider : 15 jours après la fin de la période (proposition à valider par la Direction)',
+    branche: true,
+    appliquePar: 'Plan de travail annuel (m13-plan-annuel) et centre de notifications',
+    geste: gestePtaRegler,
+  ),
+  DefinitionParametre(
+    cle: ptaClePrefixe,
+    famille: 'pta',
+    type: TypeParametre.texte,
+    defaut: 'PTA',
+    libelle: 'Préfixe de la numérotation des actions du plan',
+    aide: 'Les actions se numérotent « <préfixe>-<exercice>-NNN », série annuelle. Majuscules et chiffres, 1 à 12 caractères ; une valeur illisible retombe sur le défaut. Changer le préfixe ne renumérote aucune action et ne redonne jamais un rang déjà attribué dans l\'exercice.',
+    source: 'Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)',
+    branche: true,
+    appliquePar: 'Plan de travail annuel (m13-plan-annuel)',
+    geste: gestePtaRegler,
+  ),
 ];
 
 /// La clé du réglage « encaisser le reste d'une facture qui a une ligne sans prix » (Non par défaut).
@@ -536,6 +578,7 @@ const Map<String, String> libellesFamillesParametres = {
   'achats': 'Achats',
   'validations': 'Validations et continuité',
   'caisse': 'Caisse et encaissement',
+  'pta': 'Plan de travail annuel',
 };
 
 /// La définition d'une clé, ou `null`.

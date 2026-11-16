@@ -166,7 +166,9 @@ int? cpcAnneeArchive(Object? d) => _anneeDe(d);
 const List<String> cpcModulesAExercice = ['M12'];
 const List<String> cpcEcransAExercice = [
   'mecef-factures', 'mecef-avoirs', 'mecef-transmission', 'mecef-journal', 'm9-factures-assureur', 'm9-historique',
-  'm8-factures', 'm8-facture-avoir', 'm7-commandes', 'm7-factures-fournisseurs', 'm11-bulletins'
+  'm8-factures', 'm8-facture-avoir', 'm7-commandes', 'm7-factures-fournisseurs', 'm11-bulletins',
+  // Le plan de travail annuel (lot PTA, 17/11/2026) : un plan PAR EXERCICE, lu de l'exercice du sélecteur.
+  'm13-plan-annuel',
 ];
 final RegExp _sauf = RegExp(r'dashboard|^dash-|^hub-|caisse$|point-ventes|point-stock|^m12-ouverture$');
 

@@ -95,8 +95,8 @@ class FeuilleA4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         key: const Key('impression:a4'),
-        width: mm(210),
-        constraints: BoxConstraints(minHeight: mm(297)),
+        width: mm(piece.paysage ? 297 : 210),
+        constraints: BoxConstraints(minHeight: mm(piece.paysage ? 210 : 297)),
         padding: EdgeInsets.all(mm(12)),
         color: Colors.white,
         child: DefaultTextStyle.merge(

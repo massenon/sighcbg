@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -88,6 +88,11 @@ const familleDeBase = <String, String>{
   // PLANNING INDIVIDUEL (Direction, 16/11/2026, §8) : une version de régime individuel est IMMUABLE et datée (elle explique des vacations déjà posées) : famille B, ajout seul ;
   // la poser chez un fileul la fait connaître de la mère et des autres postes (primes, paie). Elle porte l'honoraire de l'agent : jamais vers un téléphone.
   'regimesIndividuels': 'B',
+  // LE PLAN DE TRAVAIL ANNUEL (lot PTA, Direction de Baguidi, 17/11/2026) : les actions (`planAnnuel`), les en-têtes par exercice et version (`plansTravail`) et les trois référentiels
+  // administrables (axes, états d'avancement, sources de financement) passent entre postes, champ à champ, dans les deux sens. L'ADOPTION et la CLÔTURE ne s'écrivent que par le dépôt du détenteur du geste,
+  // appliqué par la mère ; un plan adopté ne se réécrit pas (programme figé) : voir `refusPlanTravail` et `refusActionPta` du domaine, appliqués dans `traiter`. Une action porte un budget :
+  // jamais vers un téléphone (`collectionsPlanTravailJamaisMobile`).
+  'planAnnuel': 'A', 'plansTravail': 'A', 'ptaAxes': 'A', 'ptaEtats': 'A', 'ptaFinancements': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -120,6 +125,8 @@ const Set<String> collectionsRemunerationJamaisMobile = {'prestataires', 'regime
 const Set<String> collectionsAssuranceJamaisMobile = {'garanties', 'couverturesAssurance'};
 /// Q26 : le prévisionnel financier (budgets) et le patrimoine (immobilisations) ne partent JAMAIS vers un téléphone : donnée financière, réservée aux profils comptables (RG-13) ; aucun écran du mobile ne les lit.
 const Set<String> collectionsFinanceJamaisMobile = {'budgets', 'immobilisations'};
+/// Lot PTA (17/11/2026) : le plan de travail annuel porte des budgets prévus et des liens vers les budgets : il ne part JAMAIS vers un téléphone (RG-13) ; aucun écran du mobile ne le lit.
+final Set<String> collectionsPlanTravailJamaisMobile = {...ptaCollections};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -403,6 +410,26 @@ class Mere {
       final etatActuel = f?.data[champEtatCircuit(collection)];
       final r = refusCircuitAchat(collection, '$type', champsOp, etatActuel: etatActuel);
       if (r != null) return refus(r.code, r.motif, r.geste);
+    }
+
+    // LE PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : la mère REFAIT le contrôle d'un poste. Un en-tête ne naît qu'en brouillon ou soumis, l'adoption et la clôture (états et champs) ne
+    // s'écrivent que par le dépôt du détenteur du geste (appliqué ici sous le rôle de son auteur), un plan ne recule pas ; le programme d'une action d'un plan adopté ne se réécrit pas.
+    // Les règles sont celles du domaine, jamais recopiées.
+    if (collection == ptaCollectionPlans && app.role != 'mere' && ((type == 'creer' && f == null) || type == 'modifier')) {
+      final r = refusPlanTravail('$type', champsOp, etatActuel: f?.data['etat']);
+      if (r != null) return refus(r.code, r.motif, r.geste);
+    }
+    if (collection == ptaCollectionActions && app.role != 'mere' && ((type == 'creer' && f == null) || type == 'modifier')) {
+      final source = f?.data ?? champsOp;
+      final annee = int.tryParse('${source['exercice'] ?? ''}');
+      final version = int.tryParse('${source['planVersion'] ?? ''}');
+      if (annee != null && version != null) {
+        final plans = [
+          for (final r in await base.select("SELECT data FROM fiches WHERE collection=? AND archive=0", [ptaCollectionPlans])) (jsonDecode(r['data'] as String) as Map).cast<String, Object?>()
+        ];
+        final r = refusActionPta('$type', champsOp, actuelle: f?.data, plan: ptaPlanVersion(plans, annee, version));
+        if (r != null) return refus(r.code, r.motif, r.geste);
+      }
     }
 
     // L0 : une version de paramètre est une fiche IMMUABLE. La mère REFAIT le contrôle du poste (même fonction, domaine) : version croissante, type, date d'effet,
@@ -696,7 +723,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, ...collectionsPlanTravailJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;

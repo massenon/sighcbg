@@ -1,0 +1,112 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
+import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/sync/pont_activite.dart';
+import 'package:sigh_poste/sync/service_validations_deposees.dart';
+import 'package:sigh_poste/sync/transcription_mobile.dart' show PieceSync;
+
+/// LE PLAN DE TRAVAIL ANNUEL À TRAVERS LES POSTES (lot PTA, 17/11/2026) : les cinq collections du PTA voyagent (famille A à la mère Dart, au banc Node, au pont du poste) et jamais vers
+/// un téléphone ; une action et un plan écrits chez un fileul arrivent à la mère et à l'autre fileul ; l'ADOPTION déposée par un fileul est appliquée par la mère sous le rôle de son
+/// auteur et revient à tous les postes ; un dépôt d'un rôle sans le geste est refusé, nommé, et rien n'est adopté.
+class _Journal {
+  final Map<String, Map<String, Map<String, Object?>>> fiches = {};
+}
+
+class _Transport implements TransportPont {
+  _Transport(this.j);
+  final _Journal j;
+  @override
+  Future<void> restaurer(String collection, String fiche) async => throw StateError('non porté');
+  @override
+  Future<List<PieceSync>> liste(String c) async => [for (final e in (j.fiches[c] ?? {}).entries) PieceSync(e.key, jsonDecode(jsonEncode(e.value)) as Map<String, Object?>)];
+  @override
+  Future<void> ecrire(String c, String fiche, {required bool existe, required Map<String, Object?> champs}) async {
+    final col = j.fiches.putIfAbsent(c, () => {});
+    col[fiche] = {...?col[fiche], ...jsonDecode(jsonEncode(champs)) as Map<String, Object?>};
+  }
+}
+
+void main() {
+  final auj = DateTime(2031, 2, 10, 9);
+  Magasin poste() => Magasin({for (final n in [...ptaCollections, valCollectionDepots, 'budgets', 'ecritures', 'notifications', 'rbac', 'utilisateurs']) n: <Map<String, Object?>>[]}, 'POSTE')
+    ..horloge = () => auj;
+
+  test('les cinq collections du PTA : famille A à la mère Dart et au banc Node, pont du poste ; jamais vers un téléphone', () {
+    expect(collectionsActivite, containsAll(ptaCollections));
+    final dart = File('../../packages/sync_dart/lib/src/mere.dart').readAsStringSync();
+    expect(dart, contains("'planAnnuel': 'A', 'plansTravail': 'A', 'ptaAxes': 'A', 'ptaEtats': 'A', 'ptaFinancements': 'A'"));
+    expect(dart, contains('...collectionsPlanTravailJamaisMobile'), reason: 'exclues au chemin de lecture du mobile');
+    expect(dart, contains('refusPlanTravail('), reason: 'la mère refait le contrôle de l’adoption');
+    expect(dart, contains('refusActionPta('), reason: 'la mère refait le contrôle du programme figé');
+    final js = File('../../packages/sync/banc/mere.js').readAsStringSync();
+    expect(js, contains("planAnnuel: 'A', plansTravail: 'A', ptaAxes: 'A', ptaEtats: 'A', ptaFinancements: 'A'"));
+    final jamais = RegExp(r'const MOBILE_JAMAIS = \[([^\]]*)\]').firstMatch(js)!.group(1)!;
+    for (final c in ptaCollections) {
+      expect(jamais, contains("'$c'"));
+    }
+  });
+
+  test('deux postes : le plan et l’action d’un fileul arrivent partout ; l’adoption DÉPOSÉE est appliquée par la mère sous le rôle de son auteur et revient au fileul', () async {
+    final j = _Journal();
+    final f1 = poste(), f2 = poste(), mm = poste();
+    final p1 = PontActivite(f1, _Transport(j), etiquette: 'F1', reservesAuMere: true);
+    final p2 = PontActivite(f2, _Transport(j), etiquette: 'F2', reservesAuMere: true);
+    final pm = PontActivite(mm, _Transport(j), etiquette: 'M');
+    Future<void> tour() async {
+      for (var i = 0; i < 3; i++) {
+        for (final p in [p1, p2, pm]) {
+          await p.cycle();
+        }
+      }
+    }
+
+    // F1 rédige et soumet.
+    final creation = ptaCreerPlan(annee: 2031, plans: const [], acteur: 'Rédacteur', maintenant: auj);
+    f1.collection(ptaCollectionActions).inserer({
+      'statut': 'actif', 'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-001', 'action': 'Former', 'axe': 'ressources_humaines_formation', 'etat': 'planifiee', //
+      'cibleValeur': 10, 'calendrier': ['2031-01-01/2031-03-31'],
+    }, prefixe: 'PTA');
+    f1.collection(ptaCollectionPlans).inserer(creation.creation!);
+    final plan1 = f1.collection(ptaCollectionPlans).toutes.single;
+    final s = ptaSoumettre(plan1, f1.collection(ptaCollectionActions).toutes, acteur: 'Rédacteur', maintenant: auj);
+    f1.collection(ptaCollectionPlans).mettreAJour(plan1['id'], s.ecritures.single.patch);
+    await tour();
+    for (final m in [mm, f2]) {
+      expect(ptaPlanCourant(m.collection(ptaCollectionPlans).toutes, 2031)!['etat'], 'soumis');
+      expect(ptaActionsDuPlan(m.collection(ptaCollectionActions).toutes, 2031, 1).single['reference'], 'PTA-2031-001');
+    }
+
+    // F2 : un caissier tente d'adopter → refus NOMMÉ dès le poste, rien de déposé.
+    final sf2 = ServiceValidationsDeposees.de(f2)..etiquette = 'F2';
+    final refus = sf2.deposerPta(ptaDecisionAdopter, 2031, 1, role: 'caissier', acteur: 'Caissier', motif: 'x');
+    expect(refus.refus!.code, 'ADOPTION_RESERVEE');
+    expect(f2.collection(valCollectionDepots).toutes, isEmpty);
+    // F2 : la Direction dépose l'adoption.
+    final d = sf2.deposerPta(ptaDecisionAdopter, 2031, 1, role: 'direction', acteur: 'Le Directeur', motif: 'Comité de direction');
+    expect(d.ok, isTrue);
+    expect(sf2.depotPtaEnAttente(2031, 1), isNotNull, reason: '« transmise à la mère, en attente » : jamais « adopté » sur un dépôt seul');
+    expect(ptaPlanCourant(f2.collection(ptaCollectionPlans).toutes, 2031)!['etat'], 'soumis');
+    await tour();
+    final sm = ServiceValidationsDeposees.de(mm)
+      ..etiquette = 'M'
+      ..exigerCompteInscrit = false;
+    expect(sm.traiter(), 1);
+    final pm2031 = ptaPlanCourant(mm.collection(ptaCollectionPlans).toutes, 2031)!;
+    expect([pm2031['etat'], pm2031['adoptePar'], pm2031['adopteRole']], ['adopte', 'Le Directeur', 'direction']);
+    expect(mm.collection(valCollectionDepots).toutes.single['etat'], valDepotAppliquee);
+    await tour();
+    for (final m in [f1, f2]) {
+      expect(ptaPlanCourant(m.collection(ptaCollectionPlans).toutes, 2031)!['etat'], 'adopte', reason: 'l’adoption de la mère revient aux deux fileuls');
+    }
+    expect(sf2.depotPtaEnAttente(2031, 1), isNull);
+    // Le suivi saisi chez F1 après l'adoption voyage ; le programme, lui, est gardé au moteur.
+    final a1 = ptaActionsDuPlan(f1.collection(ptaCollectionActions).toutes, 2031, 1).single;
+    f1.collection(ptaCollectionActions).mettreAJour(a1['id'], {'realiseValeur': 4, 'etat': 'en_cours'});
+    expect(() => f1.collection(ptaCollectionActions).mettreAJour(a1['id'], {'cibleValeur': 2}), throwsA(isA<EcritureRefusee>()));
+    await tour();
+    expect(ptaActionsDuPlan(mm.collection(ptaCollectionActions).toutes, 2031, 1).single['realiseValeur'], 4);
+  });
+}

@@ -55,7 +55,12 @@ class PieceA4 {
     this.lieuDate = true,
     this.filigrane,
     this.identite,
+    this.paysage = false,
   }) : blocs = [...blocs, for (final t in tableaux) BlocTableau(t)];
+
+  /// A4 en PAYSAGE (297 × 210 mm) pour un état dont les colonnes ne tiennent pas en portrait (le plan de travail annuel, lot PTA, 17/11/2026). Même en-tête légal unique,
+  /// même pied normalisé : seule l'orientation de la feuille change, à l'aperçu comme au PDF.
+  final bool paysage;
 
   /// L'IDENTITÉ LÉGALE que la pièce imprime (en-tête et pied) : la version en force À LA DATE DE LA PIÈCE (`P.etat({date})`, Direction 06/11/2026). Une
   /// facture, un avoir ou un reçu la fixent à leur date ; `null` : l'aperçu la résout à la date d'édition depuis le magasin (sans magasin, la semence).
@@ -74,7 +79,8 @@ class PieceA4 {
       signatures: signatures,
       lieuDate: lieuDate,
       filigrane: filigrane,
-      identite: i);
+      identite: i,
+      paysage: paysage);
 
   /// La même pièce, avec ses signatures lues au personnel (voir [Signature.qualite]) : le nom d'un signataire vient du dossier du personnel, jamais du code.
   PieceA4 avecSignatures(Iterable<Map<String, Object?>> personnel) => !signatures.any((s) => s.aResoudre)
@@ -91,7 +97,8 @@ class PieceA4 {
           signatures: [for (final s in signatures) s.aResoudre ? s.avecNom(paiSignataire(personnel, s.qualite!)) : s],
           lieuDate: lieuDate,
           filigrane: filigrane,
-          identite: identite);
+          identite: identite,
+          paysage: paysage);
 
   /// L'identité effectivement imprimée : celle fixée, sinon la semence.
   IdentiteImprimee get identiteImprimee => identite ?? IdentiteImprimee.semence;

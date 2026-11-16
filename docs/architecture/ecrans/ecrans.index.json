@@ -1849,11 +1849,11 @@
   {
    "id": "m13-plan-annuel",
    "acces": "ouvert",
-   "titre": "Plan annuel de travail",
-   "kpis": 4,
-   "tableaux": 2,
+   "titre": "Plan de travail annuel (PTA)",
+   "kpis": 6,
+   "tableaux": 1,
    "onglets": 0,
-   "commandes": 3
+   "commandes": 2
   },
   {
    "id": "m13-notes-service",
