@@ -177,6 +177,8 @@ class SmsRelaisTest extends TestCase
 
     public function test_la_tache_est_inscrite_au_planificateur_chaque_minute(): void
     {
+        // Les routes de console (routes/console.php) se chargent quand le noyau de console démarre : on le démarre avant de lire le planificateur.
+        Artisan::call('schedule:list');
         $evenements = collect(app(\Illuminate\Console\Scheduling\Schedule::class)->events())->filter(fn ($e) => str_contains((string) $e->command, 'relais:sms-envoyer'));
         $this->assertCount(1, $evenements);
         $this->assertSame('* * * * *', $evenements->first()->expression);
