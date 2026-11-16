@@ -65,32 +65,29 @@ String libellePriorite(String p) => switch (p) { 'critique' => 'Critique', 'impo
 /// Au-delà de trois alertes de même nature et de même priorité, c'est le NOMBRE qui informe : en dessous, nommer l'article rend service.
 const seuilRegroupement = 3;
 
-/// Quels rôles tiennent un POSTE de notification (`POSTES_NOTIF`). `null` = tout le monde (« tous » ou poste non précisé) ; un poste inconnu est lu comme un rôle.
-/// La CAISSE et le STOCK n'y sont plus (Direction de Baguidi, 16/11/2026) : ce sont des gestes réservés de la fiche de rôle ([_gestesPostes]), parce qu'une clinique
-/// peut séparer le pharmacien de la caisse — aucune liste de rôles ne doit supposer « pharmacie = caissier ».
-const _postesNotif = <String, List<String>?>{
-  'tous': null,
-  'comptable': ['comptable', 'assistant_comptable', 'aide_comptable', 'da'],
-  'direction': ['direction', 'da', 'dm'],
-  'imagerie': ['echographiste', 'responsable_radiologie'],
-  'laboratoire': ['laborantin'],
-  'prescripteur': ['medecin', 'chirurgien', 'anesthesiste', 'dm'],
-  'salle_soins': ['infirmier', 'aide_soignant', 'surveillant'],
-  'hospitalisation': ['infirmier', 'aide_soignant', 'surveillant', 'medecin'],
-};
-
-/// Les postes tenus par un GESTE RÉSERVÉ (origine = la liste d'avant, une fiche de rôle accorde ou retire). Un poste écrit `geste:<id>` est routé vers les rôles qui détiennent ce
-/// geste : c'est ainsi que l'alerte « prix d'achat à fixer » va à qui fixe le prix d'achat (`tarif_proposer_achat`), lu dans la matrice, jamais en dur.
+/// Les POSTES de notification (`POSTES_NOTIF`) sont tenus par des GESTES RÉSERVÉS de la fiche de rôle (Direction de Baguidi, 16/11/2026 : la caisse et le stock ; compléments du
+/// 16/11/2026 : tous les autres postes) — l'origine de chaque geste reprend la liste d'avant, une fiche de rôle accorde ou retire, et AUCUNE liste de rôles n'est écrite ici. Un
+/// poste écrit `geste:<id>` est routé vers les rôles qui détiennent ce geste : c'est ainsi que l'alerte « prix d'achat à fixer » va à qui fixe le prix d'achat
+/// (`tarif_proposer_achat`), lu dans la matrice.
 const _gestesPostes = <String, String>{
   'caisse': gesteAlertesCaisse,
   'stock': gesteAlertesStock,
+  'comptable': gesteAlertesComptable,
+  'direction': gesteAlertesDirection,
+  'imagerie': gesteAlertesImagerie,
+  'laboratoire': gesteAlertesLaboratoire,
+  'prescripteur': gesteAlertesPrescripteur,
+  'salle_soins': gesteAlertesSalleSoins,
+  'hospitalisation': gesteAlertesHospitalisation,
 };
 
+/// Les rôles d'un poste qui n'est tenu par aucun geste. `null` = tout le monde (« tous » ou poste non précisé) ; un poste inconnu est lu comme un rôle (le poste EST alors
+/// l'identifiant du rôle destinataire, écrit par le moteur qui notifie — jamais une liste de ce fichier).
 List<String>? _rolesDuPoste(Object? poste) {
   if (!_v(poste) || poste == 'tous') return null;
   final p = '$poste';
   if (_gesteDuPoste(p) != null) return null;
-  return _postesNotif.containsKey(p) ? _postesNotif[p] : [p];
+  return [p];
 }
 
 /// Le geste réservé qui tient ce poste (`null` : le poste se route par [_postesNotif]).
@@ -192,7 +189,8 @@ final List<_Source> _sources = [
       for (final e in m.collection('echeancesFiscales').actives)
         if (!_v(e['paye']) && '${e['echeance']}'.compareTo(j) < 0)
           _Ligne('fisc:${e['id']}', 'critique', '${_ou(e['libelle'], e['obligation'])} : échéance dépassée',
-              'Échéance au ${_dateFr(e['echeance'])}. Une pénalité court.', 'm12-echeances', const ['comptable', 'da', 'assistant_comptable', 'direction']),
+              'Échéance au ${_dateFr(e['echeance'])}. Une pénalité court.', 'm12-echeances', null,
+              geste: gesteAlertesEcheancesFiscales),
     ];
   }),
   _Source('creance_agee', 'metier', 'Recouvrement', (m, auj) {
@@ -206,20 +204,23 @@ final List<_Source> _sources = [
             '${_nomAssureur(a.assureur)} : ${money(a.montant, avecDevise: false)} en souffrance',
             '${nombre(a.nb)} facture(s), jusqu’à ${a.jours} jours d’ancienneté (seuil retenu : ${_entier(a.seuil)} jours). Cette créance pèse sur le besoin en fonds de roulement.',
             'm9-relances',
-            const ['da', 'comptable', 'direction', 'assistant_comptable', 'aide_comptable', 'responsable_assurance']),
+            null,
+            geste: gesteAlertesCreances),
     ];
   }),
   _Source('labo_a_traiter', 'metier', 'Laboratoire', (m, auj) => [
         for (final d in m.collection('demandesAnalyses').actives)
           if (d['etatAnalyse'] == 'attente_prelevement')
             _Ligne('labo-prel:${d['id']}', 'important', 'Analyse réglée, prélèvement à faire',
-                '${_ou(d['analyse'], 'Analyse')} : le patient a payé, il peut être appelé.', 'm5-prelevement', const ['laborantin']),
+                '${_ou(d['analyse'], 'Analyse')} : le patient a payé, il peut être appelé.', 'm5-prelevement', null,
+                geste: gesteAlertesLaboratoire),
       ]),
   _Source('labo_a_saisir', 'metier', 'Laboratoire', (m, auj) => [
         for (final d in m.collection('demandesAnalyses').actives)
           if (_v(d['recuLaboLe']) && d['etatAnalyse'] == 'en_cours')
             _Ligne('labo-saisie:${d['id']}', 'information', 'Échantillon reçu, résultat à saisir',
-                '${_ou(d['analyse'], 'Analyse')} : reçu le ${_dateFr(d['recuLaboLe'])}.', 'm5-resultats', const ['laborantin']),
+                '${_ou(d['analyse'], 'Analyse')} : reçu le ${_dateFr(d['recuLaboLe'])}.', 'm5-resultats', null,
+                geste: gesteAlertesLaboratoire),
       ]),
   _Source('a_valider_besoins', 'metier', 'À valider', (m, auj) => [
         for (final b in m.collection('besoins').actives)
@@ -230,7 +231,8 @@ final List<_Source> _sources = [
                 'Bon de besoins à valider${_v(b['reference']) ? ' : ${b['reference']}' : ''}',
                 '${_ou(b['service'], 'Service')}${_v(b['motif']) ? ' : ${b['motif']}' : ''}. La validation est un geste de la DAF.',
                 'm7-besoins',
-                const ['da', 'direction']),
+                null,
+                geste: gesteAlertesBesoinsAValider),
       ]),
   _Source('a_valider_ecritures', 'metier', 'À valider', (m, auj) {
     // Une PIÈCE comptable en brouillon (deux lignes de même numéro) compte pour une : le comptable valide des pièces, pas des lignes (RG-10).
@@ -241,19 +243,20 @@ final List<_Source> _sources = [
       final k = _ou(e['numero'], _ou(e['pieceNumero'], e['id']));
       if (!vues.add(k)) continue;
       out.add(_Ligne('ecr:$k', 'information', 'Pièce comptable en brouillon : $k', '${_ou(e['libelle'], 'Écriture')}. La validation comptable reste un geste humain.',
-          'm12-ecritures', const ['comptable', 'da', 'aide_comptable']));
+          'm12-ecritures', null,
+          geste: gesteAlertesEcrituresBrouillon));
     }
     return out;
   }),
   // E2143 (arbitrage du 04/11/2026) : un doublon détecté par la synchronisation n'est JAMAIS corrigé en silence (RG-01, pièce émise intouchable) ; il est
   // signalé à ceux qui tranchent, avec le nom de l'objet et l'écran où il se traite.
   _Source('sync_a_arbitrer', 'metier', 'Synchronisation', (m, auj) {
-    const postes = ['direction', 'da', 'comptable', 'admin'];
+    // Routé par le geste réservé `alertes_doublons_sync` (origine : la Direction, la DAF, le Comptable, l'administrateur), jamais par une liste de rôles.
     List<_Ligne> par(String col, String marqueur, String prefixe, String titre, String detail, String lien, String Function(Map<String, Object?>) nom, [String priorite = 'important']) => [
           for (final f in m.collection(col).actives)
             // Un marqueur vaut vrai OU porte la liste de ce qui est en double (rangs de lignes, identifiants de lignes payables) : une liste vide n'alerte pas.
             if (f[marqueur] == true || (f[marqueur] is List && (f[marqueur] as List).isNotEmpty))
-              _Ligne('$prefixe:${f['id']}', priorite, '$titre : ${nom(f)}', detail, lien, postes),
+              _Ligne('$prefixe:${f['id']}', priorite, '$titre : ${nom(f)}', detail, lien, null, geste: gesteAlertesDoublonsSync),
         ];
     String ou(Object? a, Object? b) => '${a ?? b ?? ''}';
     return [
@@ -271,7 +274,8 @@ final List<_Source> _sources = [
       for (final g in assCouverturesEnConflit([for (final f in m.collection('couverturesAssurance').actives) if (f['couvertureEnConflit'] == true) f]))
         _Ligne('dbl-cov:${g.first['patientId']}', 'important', 'Conflit de couverture à arbitrer : ${ou(g.first['patientCode'], g.first['patient'])}',
             'Deux couvertures sont ouvertes pour le même patient (${assLibelleConflitCouverture(g)}). La plus récente s’applique en attendant ; la DAF clôt l’une des deux, avec un motif, au centre des validations.',
-            'adm-validations', const ['da', 'direction', 'admin']),
+            'adm-validations', null,
+            geste: gesteConflitsTrancher),
       ...par('produits', 'stockNegatifDetecte', 'dbl-stk', 'Stock négatif détecté', 'Deux postes ont sorti le dernier exemplaire hors ligne (RG-03) : régulariser par un inventaire.', 'm6-stock-detail', (f) => ou(f['designation'], f['id']), 'critique'),
     ];
   }),
@@ -282,7 +286,8 @@ final List<_Source> _sources = [
           _Ligne('pair:${c['collection']}:${c['fiche']}:${c['champ']}', 'important',
               'Conflit à trancher : ${_ou(c['libelle'], '${c['collection']} / ${c['champ']}')}',
               'Valeurs en présence : ${_ou(c['valeurs'], '')}. Le conflit reste marqué tant que la Direction ou la DAF ne tranche pas.',
-              _v(c['ecran']) ? '${c['ecran']}' : 'pair-trancher', const ['direction', 'da', 'admin']),
+              _v(c['ecran']) ? '${c['ecran']}' : 'pair-trancher', null,
+              geste: gesteConflitsTrancher),
       ]),
   _Source('poste', 'metier', 'Poste', (m, auj) => [
         // Notifications de POSTE, écrites par le moteur transactionnel : elles s'adressent à un poste, pas à une personne.

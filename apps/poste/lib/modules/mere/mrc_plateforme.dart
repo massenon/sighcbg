@@ -8,6 +8,7 @@ import '../../core/parametres_poste.dart';
 import '../../kit/kit.dart';
 import '../../mere/client_mere.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'mrc_commun.dart';
 import 'mrc_sources.dart';
 
@@ -96,7 +97,7 @@ class _EtatMereService extends MrcEtatEcran<EcranMereService> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final cfg = widget.config;
     final port = src.port();
     final lignes = <Map<String, Object?>>[
@@ -199,7 +200,7 @@ class _EtatMereBase extends MrcEtatEcran<EcranMereBase> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final migrations = src.migrations();
     final lignes = migrations.disponible ? migrations.valeur! : const <Map<String, Object?>>[];
     final base = _controleBase;
@@ -300,7 +301,7 @@ class _EtatMereReseau extends MrcEtatEcran<EcranMereReseau> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final port = src.port();
     final postes = _postes;
     final ecoute = src.adresseEcoute();

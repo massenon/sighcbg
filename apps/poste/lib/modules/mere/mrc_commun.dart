@@ -8,6 +8,7 @@ import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../mere/client_mere.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'mrc_sources.dart';
 
 /// Socle des huit écrans de la console du poste mère (lot MERE c). Un écran ne contient AUCUNE règle et ne devine rien : il affiche ce que la
@@ -31,7 +32,7 @@ class Mrc {
 }
 
 /// Les droits d'agir sur la console : réservée à l'administrateur et à la DAF, et aux droits d'écriture de l'écran. Une commande interdite est ABSENTE.
-bool mrcPeutAgir(ContexteEcran c) => mrcRolesAdmin.contains(c.role) && c.droit.editer;
+bool mrcPeutAgir(ContexteEcran c) => gestePeutEcran(c, gesteSystemeAdministrer) && c.droit.editer;
 
 /// Colonne d'un tableau de la console : en-tête et valeur.
 class MrcColonne {
@@ -136,7 +137,7 @@ abstract class MrcEtatEcran<W extends StatefulWidget> extends State<W> {
       _initialise = true;
       src = Mrc.sources(c.magasin);
       // Un rôle qui n'administre pas la mère n'obtient AUCUNE lecture du service (RG-13) : l'écran se contente de refuser.
-      if (mrcRolesAdmin.contains(c.role)) {
+      if (gestePeutEcran(c, gesteSystemeAdministrer)) {
         actualiser();
       } else {
         charge = true;

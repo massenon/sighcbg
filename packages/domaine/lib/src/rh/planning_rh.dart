@@ -12,6 +12,10 @@
 library;
 
 import 'rhb_regles.dart';
+import '../droits/gestes_reserves.dart';
+
+/// Le rôle détient-il le geste réservé [geste] dans la matrice en force ([g]) ? Absente, l'origine du référentiel (ce que valaient les listes d'avant).
+bool _peutRh(DroitsGestes? g, String role, String geste) => (g ?? gestesOrigine()).peut(role, geste);
 
 typedef FichePlanning = Map<String, Object?>;
 
@@ -159,8 +163,9 @@ List<String> typesAutorisesRh(RegimeRhResolu r) {
   required Map<String, Object?> champs,
   required List<FichePlanning> versions,
   required String aujourdhui,
+  DroitsGestes? gestes,
 }) {
-  if (role != 'admin' && role != 'da') {
+  if (!_peutRh(gestes, role, gesteRhRegler)) {
     return (refus: const RefusRh('DEROGATION_RESERVEE', 'Le régime individuel se règle par la Directrice Administrative ou l’administrateur.', 'Demander à la Directrice Administrative de poser la dérogation.'), champs: null);
   }
   if (!agentExiste) {
@@ -299,10 +304,11 @@ const Map<String, String> libellesCircuitsRh = {
   'daf': 'Directrice administrative seule',
   'surveillant_puis_daf': 'Surveillant puis directrice administrative',
 };
-const Map<String, List<String>> rolesEtapeRh = {
-  'surveillant': ['surveillant', 'admin'],
-  'daf': ['da', 'admin'],
-};
+/// Le geste réservé qui tranche chaque ÉTAPE du circuit (origine : surveillant et administrateur ; DAF et administrateur). Jamais une liste de rôles.
+const Map<String, String> gesteEtapeRh = {'surveillant': gesteRhEtapeSurveillant, 'daf': gesteRhEtapeDaf};
+
+/// Les rôles d'ORIGINE de chaque étape (affichage) : DÉRIVÉS du référentiel des gestes, jamais recopiés.
+Map<String, List<String>> get rolesEtapeRh => {for (final e in gesteEtapeRh.entries) e.key: gesteReserve(e.value)?.rolesDefaut ?? const []};
 const Map<String, String> nomEtapeRh = {'surveillant': 'le surveillant', 'daf': 'la directrice administrative'};
 
 /// Les motifs d'absence codés (PRD, addendum du 07/11/2026).
@@ -359,6 +365,7 @@ String? prochaineEtapeRh(FichePlanning rec, String circuit) {
   required String acteur,
   String? moiId,
   String? moiNom,
+  DroitsGestes? gestes,
 }) {
   final def = piecesRh[nom];
   if (def == null) {
@@ -377,7 +384,7 @@ String? prochaineEtapeRh(FichePlanning rec, String circuit) {
   }
   final etapes = circuitsRh[circuit]!;
   final etape = prochaineEtapeRh(rec, circuit) ?? etapes.last;
-  if (!rolesEtapeRh[etape]!.contains(role)) {
+  if (!_peutRh(gestes, role, gesteEtapeRh[etape]!)) {
     return (
       refus: RefusRh('VALIDATION_RESERVEE', 'L’étape en attente est celle de ${nomEtapeRh[etape]} (circuit : ${libellesCircuitsRh[circuit]}).',
           'Demander à ${nomEtapeRh[etape]} de trancher.', {'etape': etape}),
@@ -408,12 +415,13 @@ String? prochaineEtapeRh(FichePlanning rec, String circuit) {
   required String aujourdhui,
   String? moiId,
   String? moiNom,
+  DroitsGestes? gestes,
 }) {
   final def = piecesRh[collection];
   ({RefusRh? refus, Map<String, Object?>? patch, String? etat, String? etape, bool complet}) non(RefusRh r) => (refus: r, patch: null, etat: null, etape: null, complet: false);
   if (def == null) return non(RefusRh('COLLECTION_INCONNUE', 'La collection « $collection » ne passe pas par le circuit de validation.', 'Choisir pointage, congé ou ordre de mission.'));
   if (decision != 'valider' && decision != 'refuser') return non(const RefusRh('DECISION_INCONNUE', 'La décision est « valider » ou « refuser ».', 'Choisir une décision.'));
-  final p = peutTrancherRh(nom: collection, rec: rec, role: role, circuit: circuit, acteur: acteur, moiId: moiId, moiNom: moiNom);
+  final p = peutTrancherRh(nom: collection, rec: rec, role: role, circuit: circuit, acteur: acteur, moiId: moiId, moiNom: moiNom, gestes: gestes);
   if (p.refus != null) return non(p.refus!);
   final m = (motif ?? '').trim();
   if (decision == 'refuser' && m.isEmpty) return non(const RefusRh('MOTIF_OBLIGATOIRE', 'Un refus exige son motif : l’agent doit pouvoir le lire.', 'Écrire le motif du refus.'));
@@ -540,8 +548,8 @@ RefusRh? controlerPropositionRh({
 }
 
 /// Les propositions visibles d'un rôle : l'agent ne voit que les siennes (RG-13), le surveillant, la DAF et l'administrateur voient tout.
-List<FichePlanning> propositionsVisiblesRh(List<FichePlanning> actives, String role, String? moiId) {
-  if (role == 'surveillant' || role == 'da' || role == 'admin') return actives;
+List<FichePlanning> propositionsVisiblesRh(List<FichePlanning> actives, String role, String? moiId, {DroitsGestes? gestes}) {
+  if (_peutRh(gestes, role, gesteRhEncadrer)) return actives;
   if (moiId == null) return const [];
   return [for (final p in actives) if (p['employeId'] == moiId) p];
 }
@@ -553,8 +561,9 @@ RefusRh? peutTrancherPropositionRh({
   required String decision,
   required String? motif,
   String? moiId,
+  DroitsGestes? gestes,
 }) {
-  if (role != 'surveillant' && role != 'da' && role != 'admin') {
+  if (!_peutRh(gestes, role, gesteRhEncadrer)) {
     return const RefusRh('VALIDATION_RESERVEE', 'Le planning se valide par le surveillant (ou la Directrice Administrative).', 'Demander au surveillant.');
   }
   if (proposition == null || proposition['statut'] == 'archive') {
@@ -578,8 +587,8 @@ RefusRh? peutTrancherPropositionRh({
 
 /// Qui règle le circuit de validation et « l'agent modifie directement » : l'administrateur et la Directrice Administrative. [genre] : `circuit` ou `direct`.
 /// Une valeur de circuit hors référentiel est refusée ; pour `direct`, toute valeur autre que vrai vaut non (comme la maquette).
-RefusRh? controlerReglageRh({required String role, required String genre, Object? valeur}) {
-  if (role != 'admin' && role != 'da') {
+RefusRh? controlerReglageRh({required String role, required String genre, Object? valeur, DroitsGestes? gestes}) {
+  if (!_peutRh(gestes, role, gesteRhRegler)) {
     return genre == 'circuit'
         ? const RefusRh('REGLAGE_RESERVE', 'Le circuit de validation se règle par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.')
         : const RefusRh('REGLAGE_RESERVE', 'Ce réglage se fait par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.');
@@ -591,8 +600,8 @@ RefusRh? controlerReglageRh({required String role, required String genre, Object
 }
 
 /// Le planning du personnel se pose et se retire par le surveillant, la Directrice Administrative ou l'administrateur ; un agent PROPOSE.
-RefusRh? peutPoserPlanningRh(String role, {bool retrait = false}) {
-  if (role == 'admin' || role == 'da' || role == 'surveillant') return null;
+RefusRh? peutPoserPlanningRh(String role, {bool retrait = false, DroitsGestes? gestes}) {
+  if (_peutRh(gestes, role, gesteRhEncadrer)) return null;
   return retrait
       ? const RefusRh('PLANNING_RESERVE', 'Le planning du personnel se retire par le surveillant ou la Directrice Administrative.', 'Demander au surveillant.')
       : const RefusRh('PLANNING_RESERVE', 'Le planning du personnel se pose par le surveillant ou la Directrice Administrative.',
@@ -600,8 +609,8 @@ RefusRh? peutPoserPlanningRh(String role, {bool retrait = false}) {
 }
 
 /// Le retrait d'une vacation : le droit, puis l'existence (une vacation archivée n'existe plus).
-RefusRh? controlerRetraitVacationRh({required String role, required FichePlanning? vacation, required Object? id}) {
-  final r = peutPoserPlanningRh(role, retrait: true);
+RefusRh? controlerRetraitVacationRh({required String role, required FichePlanning? vacation, required Object? id, DroitsGestes? gestes}) {
+  final r = peutPoserPlanningRh(role, retrait: true, gestes: gestes);
   if (r != null) return r;
   if (vacation == null || vacation['statut'] == 'archive') {
     return RefusRh('VACATION_INTROUVABLE', 'La vacation $id n’existe pas ou est déjà retirée.', 'Choisir une vacation du registre.');
@@ -620,10 +629,11 @@ String? _texteOuNull(Object? x) => x is String && x.isNotEmpty ? x : null;
   required String aujourdhui,
   required Map<String, Object?> o,
   String? moiId,
+  DroitsGestes? gestes,
 }) {
   ({RefusRh? refus, Map<String, Object?>? patch}) non(RefusRh r) => (refus: r, patch: null);
   if (rec == null || rec['statut'] == 'archive') return non(const RefusRh('PIECE_INTROUVABLE', 'Le pointage n’existe pas ou est archivé.', 'Choisir une ligne du registre.'));
-  if (role != 'surveillant' && role != 'da' && role != 'admin') {
+  if (!_peutRh(gestes, role, gesteRhEncadrer)) {
     return non(const RefusRh('REGULARISATION_RESERVEE', 'La régularisation d’un pointage se fait par le surveillant ou la Directrice Administrative.', 'Demander au surveillant.'));
   }
   final motif = '${o['motif'] ?? ''}'.trim();
@@ -664,10 +674,11 @@ String? _texteOuNull(Object? x) => x is String && x.isNotEmpty ? x : null;
   required String acteur,
   required String aujourdhui,
   required Map<String, Object?> o,
+  DroitsGestes? gestes,
 }) {
   ({RefusRh? refus, Map<String, Object?>? patch}) non(RefusRh r) => (refus: r, patch: null);
   if (rec == null || rec['statut'] == 'archive') return non(const RefusRh('PIECE_INTROUVABLE', 'L’ordre de mission n’existe pas ou est archivé.', 'Choisir une ligne du registre.'));
-  if (role != 'surveillant' && role != 'da' && role != 'admin') {
+  if (!_peutRh(gestes, role, gesteRhEncadrer)) {
     return non(const RefusRh('AVIS_RESERVE', 'L’avis du chef de service se consigne par le surveillant, la Directrice Administrative ou l’administrateur.', 'Demander au surveillant.'));
   }
   final avis = o['avis'];

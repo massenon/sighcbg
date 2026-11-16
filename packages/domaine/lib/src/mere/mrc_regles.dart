@@ -5,8 +5,7 @@
 /// disponible ; « non disponible » n'est jamais un zéro et jamais une absence silencieuse.
 library;
 
-/// Les deux rôles qui administrent la mère (DAF, administrateur système) : le groupe « Poste mère » leur est réservé.
-const mrcRolesAdmin = {'admin', 'da'};
+// Qui administre la mère (le groupe « Poste mère ») : le geste réservé `systeme_administrer` (origine : la DAF et l'administrateur), jamais une liste de rôles.
 
 /// Une valeur lue à une source, ou le motif pour lequel elle ne l'est pas.
 class MrcValeur<T> {

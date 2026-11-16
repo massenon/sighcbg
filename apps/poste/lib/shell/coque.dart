@@ -356,7 +356,11 @@ class _CoquePosteState extends State<CoquePoste> {
   ServiceInstallation? get _service => widget.magasin == null ? null : ServiceInstallation.de(widget.magasin!);
 
   /// L'assistant est-il à proposer à cet agent ? En cours sur ce poste, et l'agent est administrateur.
-  bool get _installationVisible => (_service?.enCours ?? false) && _role == 'admin';
+  bool get _installationVisible => (_service?.enCours ?? false) && _gestes.peut(_role, gesteInstallationConduire);
+
+  /// Les gestes réservés EN FORCE (fiches `rbac`, rôle archivé, activité fermée), relus à chaque appel.
+  DroitsGestes get _gestes =>
+      DroitsGestes(fiches: (widget.magasin ?? _magasinVide).collection('rbac').actives, estArchive: _nav.matrice.estArchive, ecranActif: _nav.matrice.ecranActif);
 
   void _suivreInstallation() {
     final s = _service;
@@ -384,6 +388,7 @@ class _CoquePosteState extends State<CoquePoste> {
       ouvrirCentreNotifications(context, centre: _centre, ouverture: ouverture, aller: (e) => _allerDepuisBarre(e));
 
   Future<void> _ouvrirProfil() => ouvrirMenuProfil(context,
+      gestes: _gestes,
       nav: _nav,
       role: _role,
       nom: _nomAffiche(),
@@ -469,7 +474,7 @@ class _CoquePosteState extends State<CoquePoste> {
 
   List<DomaineRuban> get _ruban =>
       _nav.manifeste.ruban(_nav.matrice, _role,
-          estMere: widget.config.estMere);
+          estMere: widget.config.estMere, gestes: _gestes);
 
   /// Page d'accueil du rôle (`home` de la maquette) si le rôle la voit, sinon le premier écran de son ruban.
   String? _accueil(List<DomaineRuban> ruban) {

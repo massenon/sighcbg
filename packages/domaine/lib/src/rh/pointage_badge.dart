@@ -14,12 +14,14 @@ library;
 
 import 'planning_rh.dart';
 import 'rhc_regles.dart';
+import '../droits/gestes_reserves.dart';
 
 /// Le délai d'attente entre deux pointages, en minutes : valeur d'attente, à valider par la Direction.
 const int delaiPointageBadgeDefaut = 5;
 
 /// Les rôles qui pointent un badge : ceux de l'écran de vérification qui peuvent agir (surveillant, DAF, Direction, administrateur, RH).
-const List<String> rolesPointageBadge = ['surveillant', 'da', 'admin', 'direction', 'rh'];
+/// L'ORIGINE du geste réservé `rh_pointer_badge`, DÉRIVÉE du référentiel (affichage) ; la décision lit la matrice en force.
+List<String> get rolesPointageBadge => gesteReserve(gesteRhPointerBadge)?.rolesDefaut ?? const [];
 
 /// Le résultat d'un pointage : un refus nommé, ou le geste (`arrivee` ou `depart`) avec la fiche à écrire.
 class ResultatPointage {
@@ -56,8 +58,8 @@ class ResultatPointage {
 }
 
 /// Le réglage « délai » est-il admissible ? Un entier de minutes, de 0 à 720 ; sinon le refus nommé `DELAI_INVALIDE`.
-RefusRh? controlerReglagePointageBadge({required String role, Object? delai}) {
-  if (role != 'admin' && role != 'da') {
+RefusRh? controlerReglagePointageBadge({required String role, Object? delai, DroitsGestes? gestes}) {
+  if (!(gestes ?? gestesOrigine()).peut(role, gesteRhRegler)) {
     return const RefusRh('REGLAGE_RESERVE', 'Ce réglage se fait par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.');
   }
   final n = delai is num ? delai : (delai is String && delai.trim().isNotEmpty ? num.tryParse(delai) : null);
@@ -88,10 +90,11 @@ ResultatPointage pointerParBadge({
   required List<Map<String, Object?>> presences,
   required String acteur,
   required String aujourdhui,
+  DroitsGestes? gestes,
 }) {
   ResultatPointage refus(String code, String motif, String geste, [Map<String, Object?> extra = const {}]) => ResultatPointage.refuse(RefusRh(code, motif, geste, extra));
 
-  if (!rolesPointageBadge.contains(role)) {
+  if (!(gestes ?? gestesOrigine()).peut(role, gesteRhPointerBadge)) {
     return refus('POINTAGE_RESERVE', 'Le pointage par badge se fait au poste d’un habilité (surveillant, Directrice Administrative, Direction, administrateur).', 'Présenter le badge à un habilité.');
   }
   if (!actif) {

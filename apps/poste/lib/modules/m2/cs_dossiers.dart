@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'cs_commun.dart';
 import 'cs_modale.dart';
 
@@ -367,7 +368,7 @@ class _EtatDossierNouveau extends State<EcranDossierConsultationNouveau> {
     _record = id == null ? null : m.collection('dossiersConsultation').parId(id);
     _introuvable = id != null && _record == null;
     final r = _record ?? const <String, Object?>{};
-    _chirurgien = c.role == 'chirurgien';
+    _chirurgien = gestePeutEcran(c, gesteRubriquesChirurgicales);
 
     _ident = ControleurFormulaire([
       const ChampDef.section('Patient et venue'),

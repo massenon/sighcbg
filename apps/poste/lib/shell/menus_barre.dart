@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show rolesRubanSysteme;
+import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, gestesOrigine, gesteSystemeAdministrer;
 
 import '../core/donnees_navigation.dart';
 import '../core/icones.dart';
@@ -80,6 +80,7 @@ Future<void> ouvrirMenuProfil(
   required void Function(String ecran) aller,
   VoidCallback? verrouiller,
   required VoidCallback deconnecter,
+  DroitsGestes? gestes,
 }) {
   void fermer() => Navigator.of(context, rootNavigator: true).pop();
   // Un lien vers un écran fermé au profil promet une porte fermée : il est absent. Les écrans d'accès (aide, contact) ne relèvent pas de la matrice.
@@ -88,10 +89,10 @@ Future<void> ouvrirMenuProfil(
     return e != null && (e.standalone || ecranOuvertAuRole(nav, role, id));
   }
 
-  // « Paramètres système » : l'onglet Système du ruban n'est affiché qu'à l'administrateur et à la DA, qui ouvrent l'écran complet ; les autres profils ouvrent la
-  // page de cartes réduite à ce que leurs droits permettent (arbitrage du 05/11/2026).
+  // « Paramètres système » : l'onglet Système du ruban n'est affiché qu'aux rôles qui détiennent le geste `systeme_administrer` (origine : l'administrateur et la DA), qui
+  // ouvrent l'écran complet ; les autres profils ouvrent la page de cartes réduite à ce que leurs droits permettent (arbitrage du 05/11/2026).
   final liens = [
-    ('Paramètres système', rolesRubanSysteme.contains(role) ? 'cfg-systeme' : 'parametres-hub', LucideIcons.settings),
+    ('Paramètres système', (gestes ?? gestesOrigine()).peut(role, gesteSystemeAdministrer) ? 'cfg-systeme' : 'parametres-hub', LucideIcons.settings),
     ('Mon compte', 'cfg-compte', LucideIcons.userCog),
     ('Notifications', 'cfg-notifications', LucideIcons.bell),
     ('Assistant', 'sup-assistant', LucideIcons.sparkles),

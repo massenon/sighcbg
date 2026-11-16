@@ -1,6 +1,7 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/service_parametres.dart';
+import 'gestes_magasin.dart';
 import 'magasin.dart';
 
 /// L'espace « Mes » de l'agent, la copie de la fiche de paie pour le téléphone et le pointage par badge au poste (Direction, 09/11/2026, lots L7 et L8) : la colle
@@ -26,7 +27,7 @@ class EspaceMesPoste {
   /// Règle la copie : une NOUVELLE VERSION du paramètre effective aujourd'hui, journalisée avec l'ancienne et la nouvelle valeur (RG-12). Réservé à l'administrateur
   /// et à la DA : le refus est nommé. Le réglage reste NON mobile (famille « paie » réservée) : la mère publie ou retire la copie, le téléphone ne lit jamais ce réglage.
   Map<String, Object?> definirCopiePaie(Object? oui, {String? motif}) {
-    final refus = controlerReglageCopiePaie(role);
+    final refus = controlerReglageCopiePaie(role, gestes: gestesDuMagasin(m));
     if (refus != null) return refus.toJson();
     final avant = copiePaieActive();
     final r = service.regler('paie.copieFichePaieTelephone', oui == true, aujourdhui, motif: motif);
@@ -101,7 +102,7 @@ class PointageBadgePoste {
   /// Règle le pointage (activation et/ou délai) : deux NOUVELLES VERSIONS effectives aujourd'hui, journalisées (RG-12). Réservé à l'administrateur et à la DA.
   Map<String, Object?> regler({bool? actif, Object? delai, String? motif}) {
     final d = delai == null || delai == '' ? this.delai() : delai;
-    final refus = controlerReglagePointageBadge(role: role, delai: d);
+    final refus = controlerReglagePointageBadge(role: role, delai: d, gestes: gestesDuMagasin(m));
     if (refus != null) return refus.toJson();
     final avant = {'actif': this.actif(), 'delai': this.delai()};
     final a = actif ?? this.actif();
@@ -144,6 +145,7 @@ class PointageBadgePoste {
     final heure = '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
     final badges = m.collection('badges').toutes;
     final r = pointerParBadge(
+        gestes: gestesDuMagasin(m),
         role: role,
         actif: actif(),
         delai: delai(),

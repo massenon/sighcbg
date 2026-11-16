@@ -46,8 +46,7 @@ import 'reglages_poste.dart';
 typedef ConstruireEcran = Widget Function(
     BuildContext contexte, ConfigPoste config);
 
-/// Qui administre la mère (DAF, administrateur système) : la console « DAF/admin » de l'architecture du 29/10/2026.
-const rolesAdminMere = {'admin', 'da'};
+// Qui administre la mère (la console « DAF/admin » du 29/10/2026) : le geste réservé `systeme_administrer` (origine : la DAF et l'administrateur), jamais une liste de rôles.
 
 /// LES ÉCRANS PORTÉS : identifiant d'écran de la maquette → écran Flutter. Tout écran du manifeste qui n'est pas ici
 /// s'affiche comme « à porter » avec sa tranche — la navigation est complète dès le premier jour, et la parité se MESURE

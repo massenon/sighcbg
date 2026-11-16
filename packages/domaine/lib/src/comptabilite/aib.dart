@@ -12,11 +12,11 @@
 
 import '../parametres/definitions.dart' show definitionDeParametre;
 import '../parametres/parametres.dart' show Parametre;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteAibTenir;
 
 typedef AibFiche = Map<String, Object?>;
 
-/// Les rôles qui écrivent le barème et ses réglages (comme `ROLES_ECRITURE_AIB`) : la Direction lit, ne les écrit pas.
-const List<String> aibRolesEcriture = ['comptable', 'admin', 'da'];
+// Qui écrit le barème et ses réglages (`ROLES_ECRITURE_AIB` de la maquette) : le geste réservé `aib_tenir` (origine : le Comptable, l'administrateur et la DAF) ; la Direction lit.
 
 /// Les fiches que les fonctions lisent : une collection chacune, les fiches archivées (`statut == 'archive'`) sont ignorées.
 class AibDonnees {
@@ -371,8 +371,9 @@ String? aibVersionFigee(AibFiche avant, AibFiche apres) {
 }
 
 /// Qui peut écrire : le rôle (libellé fourni pour le motif), et le poste (un fileul lit, la mère écrit). Rend le refus nommé, ou null.
-AibFiche? aibMotifEcriture({required String role, required String libelleRole, bool fileul = false}) {
-  if (!aibRolesEcriture.contains(role)) {
+/// [gestes] : les gestes réservés en force ; absent, l'origine (`aib_tenir`).
+AibFiche? aibMotifEcriture({required String role, required String libelleRole, bool fileul = false, DroitsGestes? gestes}) {
+  if (!(gestes ?? gestesOrigine()).peut(role, gesteAibTenir)) {
     return aibRefus('AIB_ECRITURE_RESERVEE', 'Le barème de l’AIB se tient par le comptable, la Directrice Administrative ou l’administrateur. Profil : $libelleRole.',
         'Demander la modification au comptable ; la Direction consulte le barème sans l’écrire.');
   }
@@ -396,8 +397,9 @@ AibFiche aibDefinirReglage(
   required String creeLe,
   required String auteur,
   Map<String, Object?>? marquage,
+  DroitsGestes? gestes,
 }) {
-  final refus = aibMotifEcriture(role: role, libelleRole: libelleRole, fileul: fileul);
+  final refus = aibMotifEcriture(role: role, libelleRole: libelleRole, fileul: fileul, gestes: gestes);
   if (refus != null) return refus;
   final cle = _s(entree['cle']);
   final def = aibDefinitionReglage(cle);

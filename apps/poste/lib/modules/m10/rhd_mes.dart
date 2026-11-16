@@ -7,6 +7,7 @@ import '../../donnees/magasin.dart';
 import '../../donnees/mes_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'rhb_commun.dart';
 import 'rhc_commun.dart';
 
@@ -75,7 +76,7 @@ class _EtatMes extends State<EcranMes> {
   Widget _corps(BuildContext context, ContexteEcran c) {
     final e = _mes(c);
     final a = e.agent();
-    final peutRegler = c.role == 'admin' || c.role == 'da';
+    final peutRegler = gestePeutEcran(c, gesteRhRegler);
     if (a.refus != null) {
       return rhbEspace([
         if (peutRegler) _carteCopie(context, c, e),

@@ -8,6 +8,7 @@ import '../../donnees/planning_rh_poste.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'rhb_circuit.dart';
 import 'rhb_commun.dart';
 
@@ -179,7 +180,7 @@ class _EtatPlanning extends State<EcranPlanning> {
     final agents = trierPar(
         [for (final e in rhbActives(c, 'personnel')) if (_fonctionsGrille.contains(e['fonction']) && _agentRetenu(c, p, e)) e], (e) => e['nomComplet']);
     final retenues = [for (final v in planning) if (_vacationRetenue(c, p, v, personnel)) v];
-    final modifiable = c.droit.editer && const ['admin', 'da', 'surveillant'].contains(c.role);
+    final modifiable = c.droit.editer && gestePeutEcran(c, gesteRhEncadrer);
     return rhbEspace([
       _Regimes(contexte: context),
       _Individuels(contexte: context, p: p),
@@ -579,7 +580,7 @@ class _Individuels extends StatelessWidget {
   final BuildContext contexte;
   final PlanningRhPoste p;
 
-  bool _peutDeroger(ContexteEcran c) => (c.role == 'admin' || c.role == 'da') && c.droit.editer;
+  bool _peutDeroger(ContexteEcran c) => gestePeutEcran(c, gesteRhRegler) && c.droit.editer;
 
   @override
   Widget build(BuildContext context) {

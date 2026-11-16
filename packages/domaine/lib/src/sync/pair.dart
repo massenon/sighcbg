@@ -14,6 +14,8 @@ library;
 
 import 'dart:convert';
 
+import '../droits/gestes_reserves.dart' show gestesOrigine, gesteConflitsTrancher, gesteSyncValiderFlux;
+
 const Map<String, String> famillesPair = {
   'patients': 'A',
   'rendezvous': 'A',
@@ -547,28 +549,32 @@ const Map<String, String> ecranParCollectionPair = {
 /// collections ne sont pas branchées volontairement.
 const Set<String> collectionsPairSansPontPoste = {'produits', 'admissions'};
 
-/// Ceux qui TRANCHENT un conflit ou VALIDENT un flux : une décision institutionnelle, pas une saisie. `mere` est l'appareil de la mère (ses décisions à son retour).
-const List<String> rolesQuiTranchentPair = ['da', 'direction', 'admin', 'mere'];
-const List<String> rolesQuiValidentPair = ['da', 'admin'];
+/// Ceux qui TRANCHENT un conflit ou VALIDENT un flux : une décision institutionnelle, pas une saisie — les gestes réservés `conflits_trancher` (origine : la DAF, la Direction,
+/// l'administrateur) et `sync_valider_flux` (origine : la DAF, l'administrateur), jamais une liste de rôles. `mere` est l'APPAREIL de la mère (pas un rôle) : ses décisions,
+/// à son retour, tranchent toujours.
+const String appareilMerePair = 'mere';
 
 /// Les droits de la règle de fusion, DÉDUITS de la matrice RBAC (source unique, engendrée par la maquette) au lieu de la table du banc : écrire = éditer l'écran
 /// de la collection ; archiver ou restaurer = annuler ; trancher et valider = rôles institutionnels. Tout ce qui n'est pas listé est refusé.
-/// [peutEditer] et [peutAnnuler] : `(role, ecran) -> bool`, c'est-à-dire `MatriceDroits.peutEditer`.
+/// [peutEditer] et [peutAnnuler] : `(role, ecran) -> bool`, c'est-à-dire `MatriceDroits.peutEditer`. [peutGeste] : `(role, geste) -> bool`, c'est-à-dire
+/// `DroitsGestes.peut` sur les fiches en force ; absent, l'origine du référentiel des gestes.
 DroitsOperation droitsDepuisMatrice({
   required bool Function(String role, String ecran) peutEditer,
   required bool Function(String role, String ecran) peutAnnuler,
+  bool Function(String role, String geste)? peutGeste,
   Map<String, String> ecrans = ecranParCollectionPair,
-}) =>
-    (op) {
+}) {
+  final geste = peutGeste ?? gestesOrigine().peut;
+  return (op) {
       final role = op.role;
       final ecran = ecrans[op.collection];
       if (role == null || ecran == null) return false;
       switch (op.type) {
         case 'trancher':
-          return rolesQuiTranchentPair.contains(role);
+          return role == appareilMerePair || geste(role, gesteConflitsTrancher);
         case 'valider':
         case 'rejeter':
-          return rolesQuiValidentPair.contains(role);
+          return geste(role, gesteSyncValiderFlux);
         case 'archiver':
         case 'restaurer':
           return peutAnnuler(role, ecran);
@@ -576,3 +582,4 @@ DroitsOperation droitsDepuisMatrice({
           return peutEditer(role, ecran);
       }
     };
+}

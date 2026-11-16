@@ -7,6 +7,7 @@ import '../donnees/magasin.dart';
 import '../modules/m14/commun_m14.dart' show rolesDe;
 import '../sync/service_validations_deposees.dart';
 import '../shell/contexte_ecran.dart';
+import '../shell/gestes_ecran.dart';
 import 'acteur.dart';
 import 'badge.dart';
 import 'bouton.dart';
@@ -56,7 +57,10 @@ class ValidationPoste {
   bool get fileul => ServiceInstallation.de(m).rattache;
 
   /// `K.peutValider(famille)` : le rôle de la SESSION est un des rôles de la famille. Sur un fileul rattaché, le geste est déposé à la mère au lieu d'être refusé.
-  bool peutValider(String famille) => valFamille(famille) != null && valPeutValider(famille, c.role);
+  bool peutValider(String famille) => valFamille(famille) != null && valPeutValider(famille, c.role, gestes: _gestes);
+
+  /// Les gestes réservés EN FORCE (les familles se valident par un geste `valider_ref_*`), relus à chaque appel.
+  DroitsGestes get _gestes => gestesEcran(c);
 
   /// Le geste de ce poste se DÉPOSE-t-il à la mère ? Un fileul rattaché, pour une famille dont les données voyagent de la mère.
   bool _seDepose(FamilleValidation f) => fileul && valVoyageDeLaMere(f);
@@ -114,7 +118,7 @@ class ValidationPoste {
       return VerdictValidation.deposee(famille: famille, id: '$id', depotId: '${d.fiche!['id']}');
     }
     final r = valValiderReferentiel(famille, '$id',
-        role: c.role, acteur: acteur(c).nom, maintenant: c.aujourdhui, lire: lire, libelles: libelles, fileul: fileul, motif: motif);
+        role: c.role, acteur: acteur(c).nom, maintenant: c.aujourdhui, lire: lire, libelles: libelles, fileul: fileul, motif: motif, gestes: _gestes);
     if (!r.ok) return r;
     try {
       final col = m.collection(r.collection!);
@@ -173,11 +177,11 @@ class ValidationPoste {
     }
     if (v.cible != null) return _ecrireSepare(v, col, avant: avant, valeurs: valeurs, motif: motif);
     final chiffres = valChiffresModifies(v.famille, avant, valeurs);
-    final refus = valControlerEnregistrement(v.famille, role: role, chiffres: chiffres, motif: motif, fileul: fileul);
+    final refus = valControlerEnregistrement(v.famille, role: role, chiffres: chiffres, motif: motif, fileul: fileul, gestes: _gestes);
     if (refus != null) return EnregistrementValidable.refus(refus);
     final modifie = avant != null && v.siChange != null ? v.siChange!(avant, {...avant, ...valeurs}) : null;
     final m = valMarquageEnregistrement(v.famille,
-        role: role, acteur: acteur(c).nom, maintenant: c.aujourdhui, libelles: libelles, avant: avant, valeurs: valeurs, motif: motif, modifie: modifie);
+        role: role, acteur: acteur(c).nom, maintenant: c.aujourdhui, libelles: libelles, avant: avant, valeurs: valeurs, motif: motif, modifie: modifie, gestes: _gestes);
     final patch = {...valeurs, ...m.patch};
     try {
       if (avant != null) {
@@ -201,7 +205,7 @@ class ValidationPoste {
   EnregistrementValidable _ecrireSepare(ValidationCrud v, CollectionMagasin col, {Fiche? avant, required Fiche valeurs, String? motif}) {
     final modifie = avant != null && (v.siChange == null || v.siChange!(avant, {...avant, ...valeurs}));
     final refus = valControlerEnregistrement(v.famille,
-        role: c.role, chiffres: modifie && v.siChange != null ? const ['valeur'] : const [], motif: motif, fileul: fileul);
+        role: c.role, chiffres: modifie && v.siChange != null ? const ['valeur'] : const [], motif: motif, fileul: fileul, gestes: _gestes);
     if (refus != null) return EnregistrementValidable.refus(refus);
     try {
       final cibleId = avant == null ? null : v.cible!(avant);
@@ -214,12 +218,12 @@ class ValidationPoste {
   }
 
   /// Le contrôle seul, AVANT un geste qui modifie un artefact tenu hors fiche (constante du code) : refus nommé (fileul), ou `null`.
-  RefusValidation? garde(String famille) => valControlerEnregistrement(famille, role: c.role, fileul: fileul);
+  RefusValidation? garde(String famille) => valControlerEnregistrement(famille, role: c.role, fileul: fileul, gestes: _gestes);
 
   /// APRÈS le geste : le profil de la famille valide la pièce si elle attendait ; tout autre profil la remet « à valider » quand elle a changé.
   VerdictSuivi suivre(String famille, Object? cible, {bool? modifie, String? motif}) {
     final r = valSuivreEnregistrement(famille, '$cible',
-        role: c.role, acteur: acteur(c).nom, maintenant: c.aujourdhui, lire: lire, libelles: libelles, modifie: modifie ?? true, motif: motif, fileul: fileul);
+        role: c.role, acteur: acteur(c).nom, maintenant: c.aujourdhui, lire: lire, libelles: libelles, modifie: modifie ?? true, motif: motif, fileul: fileul, gestes: _gestes);
     if (r.refus != null) return r;
     final v = r.validation;
     if (v != null) {

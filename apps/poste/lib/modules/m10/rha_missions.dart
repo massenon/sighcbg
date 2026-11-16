@@ -7,6 +7,7 @@ import '../../donnees/magasin.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m13/adm_commun.dart';
 import '../m4/mat_commun.dart';
 import 'rha_commun.dart';
@@ -151,7 +152,7 @@ class EcranMissions extends StatelessWidget with EcranMaquette {
               ],
               actionsLigne: (ctx, m) => [
                 // L'avis du chef de service se consigne par un habilité du circuit (le chef n'a pas de compte : il donne son avis, un autre le consigne).
-                if (m['statutMission'] == 'a_valider' && const ['surveillant', 'da', 'admin'].contains(c.role) && etatValidationRh('missions', m) != 'valide')
+                if (m['statutMission'] == 'a_valider' && gestePeutEcran(c, gesteRhEncadrer) && etatValidationRh('missions', m) != 'valide')
                   BoutonIcone(icone: LucideIcons.messageSquareQuote, libelle: 'Avis du chef de service', onPressed: () => _avisChef(context, c, m)),
                 ...rhbCommandesValidation(ctx, c, 'missions', m),
                 if (c.droit.editer && rhaGestesMission(m['statutMission']).terminerReporter) ...[

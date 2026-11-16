@@ -8,7 +8,8 @@
 library;
 
 import '../format/format_fr.dart' show dateHeure;
-import 'sec_comptes.dart' show FicheSec, secRolesDoubleFacteur, secVrai;
+import 'sec_comptes.dart' show FicheSec, secVrai;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteDoubleFacteurImpose;
 import 'sec_exploitation.dart' show secSessions;
 
 /// Un refus NOMMÉ : jamais muet.
@@ -248,8 +249,8 @@ bool secAReinitialiser(FicheSec u, Map<String, int> politique, DateTime aujourdh
   return j != null && j < 0;
 }
 
-/// Le double facteur est exigé pour ce rôle ?
-bool secDoubleFacteurExige(String role) => secRolesDoubleFacteur.contains(role);
+/// Le double facteur est exigé pour ce rôle ? Le geste réservé `securite_double_facteur` de la matrice en force ([gestes]) ; absent, l'origine.
+bool secDoubleFacteurExige(String role, {DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteDoubleFacteurImpose);
 
 class SecActeurCompte {
   const SecActeurCompte({required this.identifiant, required this.nom});

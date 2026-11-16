@@ -696,7 +696,7 @@ class _EtatModaleBon extends State<_ModaleBon> {
     _lignes = r == null ? [] : lignesDeBonAchat(r);
     _produits = articlesDuReferentiel(c.magasin);
     // Seul celui qui tient le circuit choisit l'étape ; un agent qui exprime un besoin n'a pas à se placer lui-même en « validation DA ».
-    final pilote = pilotageCircuit(role: c.role, droitEditer: c.droit.editer);
+    final pilote = pilotageCircuit(role: c.role, droitEditer: c.droit.editer, gestes: droitsGestesEcran(c));
     // Les étapes qui supposent l'arbitrage ne s'offrent qu'à qui détient le geste « Valider les achats » (E3263), sauf sur un bon déjà validé.
     final peutValider = estArbitre(c.role, droitsGestesEcran(c)) || bonDejaValide(r);
     _f = ControleurFormulaire([

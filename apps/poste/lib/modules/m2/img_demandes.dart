@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'img_commun.dart';
 
 bool _vrai(Object? v) => v != null && v != '' && v != 0 && v != false;
@@ -147,7 +148,7 @@ class EcranDemandesImagerie extends StatelessWidget with EcranMaquette {
             modaliteDemandeImagerie(modaliteDemandeDeExamen(catalogue, r['examenCode']))
                 .libelle;
         // OUVRIR une demande est un acte de PRESCRIPTION : l'échographiste et le Responsable Radiologie exécutent et saisissent le CR, mais ne prescrit pas.
-        final peutOuvrir = c.droit.editer && !rolesExecutantsImagerie.contains(c.role);
+        final peutOuvrir = c.droit.editer && !gestePeutEcran(c, gesteImagerieExecuter);
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

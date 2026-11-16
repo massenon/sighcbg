@@ -8,6 +8,7 @@ import '../../core/service_installation.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m7/besoins_commun.dart' show notifierPoste;
 
 /// LA CONFIGURATION FISCALE VALIDÉE ET DATÉE AU POSTE (Direction, 06/11/2026 ; spec `SPEC-configuration-fiscale-validee.md`, phase 5 ; écart E2277).
@@ -34,7 +35,7 @@ class ConfigurationFiscalePoste {
   DateTime get maintenant => c.aujourdhui;
 
   /// `peutValiderConfiguration()` : le rôle est de validation, l'agent a le droit d'écrire sur CFG, le poste n'est pas un fileul.
-  bool get peutValider => cfbRolesValidation.contains(c.role) && c.droit.editer && !fileul;
+  bool get peutValider => gestesEcran(c).peut(c.role, gesteFiscalValiderConfiguration) && c.droit.editer && !fileul;
 
   /// Les trois collections doivent exister sur un poste : si le jeu ne les porte pas (ancien jeu, magasin vide), la SEMENCE est posée, sans journal
   /// (ce n'est pas le geste d'un agent). À appeler AVANT le premier rendu, jamais pendant.
@@ -83,7 +84,7 @@ class ConfigurationFiscalePoste {
   }
 
   CfbValidation validerIdentite() {
-    final r = cfbValiderIdentite(versions.toutes, role: c.role, acteur: acteurNomme, maintenant: maintenant, aujourdhui: maintenant, fileul: fileul);
+    final r = cfbValiderIdentite(versions.toutes, role: c.role, acteur: acteurNomme, maintenant: maintenant, aujourdhui: maintenant, fileul: fileul, gestes: gestesEcran(c));
     if (r.ok) _validerFiches(versions, r, 'Identité légale validée');
     return r;
   }
@@ -105,13 +106,13 @@ class ConfigurationFiscalePoste {
   /// ne change pas). Le refus du moteur (rôle, déjà arrêtée, décideur) est rendu tel quel.
   CfbEcritureObligation arreterObligation(Fiche o, {required String decideur, Object? dateArret}) {
     final r = cfbArreterObligation(obligations.toutes,
-        id: '${o['id']}', dateArret: dateArret, decideur: decideur, role: c.role, acteur: acteurNomme, maintenant: maintenant, aujourdhui: maintenant, fileul: fileul);
+        id: '${o['id']}', dateArret: dateArret, decideur: decideur, role: c.role, acteur: acteurNomme, maintenant: maintenant, aujourdhui: maintenant, fileul: fileul, gestes: gestesEcran(c));
     if (r.ok) obligations.mettreAJour(r.id, r.fiche!);
     return r;
   }
 
   CfbValidation validerObligations() {
-    final r = cfbValiderObligations(obligations.toutes, role: c.role, acteur: acteurNomme, maintenant: maintenant, fileul: fileul);
+    final r = cfbValiderObligations(obligations.toutes, role: c.role, acteur: acteurNomme, maintenant: maintenant, fileul: fileul, gestes: gestesEcran(c));
     if (r.ok) _validerFiches(obligations, r, 'Obligations fiscales validées');
     return r;
   }

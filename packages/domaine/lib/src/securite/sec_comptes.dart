@@ -7,14 +7,16 @@ library;
 
 import '../consultation/cs_referentiels.dart' show csSecteursSoins;
 import 'sec_donnees.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteDoubleFacteurImpose;
 
 typedef FicheSec = Map<String, Object?>;
 
 /// Vérité à la manière de JavaScript : ni `null`, ni `''`, ni `false`, ni `0`.
 bool secVrai(Object? v) => v != null && v != '' && v != false && v != 0;
 
-/// Les rôles à privilèges élevés : le double facteur leur est IMPOSÉ, que la case soit cochée ou non.
-const secRolesDoubleFacteur = ['dm', 'da', 'direction', 'admin'];
+/// Les rôles à privilèges élevés D'ORIGINE : le double facteur leur est IMPOSÉ, que la case soit cochée ou non. L'ORIGINE du geste réservé `securite_double_facteur`,
+/// DÉRIVÉE du référentiel (affichage et vecteurs) ; la décision lit la matrice en force ([secDoubleFacteurExige]).
+List<String> get secRolesDoubleFacteur => gesteReserve(gesteDoubleFacteurImpose)?.rolesDefaut ?? const [];
 
 /// Longueur minimale d'un mot de passe saisi à la création.
 const secLongueurMinMotDePasse = 8;
@@ -68,7 +70,8 @@ FicheSec secTransformerCompte(FicheSec saisie,
     FicheSec? agent,
     required String utilisateur,
     required DateTime maintenant,
-    required String jour}) {
+    required String jour,
+    DroitsGestes? gestes}) {
   final v = {...saisie};
   if (secVrai(v['motDePasse'])) {
     final t = maintenant.toUtc();
@@ -90,7 +93,7 @@ FicheSec secTransformerCompte(FicheSec saisie,
     if (!secVrai(v['dernierAcces'])) v['dernierAcces'] = jour;
     v['echecs'] ??= 0;
   }
-  if (secRolesDoubleFacteur.contains(v['role'])) v['mfa'] = true;
+  if ((gestes ?? gestesOrigine()).peut('${v['role'] ?? ''}', gesteDoubleFacteurImpose)) v['mfa'] = true;
   return v;
 }
 

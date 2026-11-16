@@ -10,6 +10,7 @@ library;
 import 'dart:math' as math;
 
 import 'acc_identifiants.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteComptesReinitialiser;
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Code de secours
@@ -153,8 +154,9 @@ RefusReinit? accRefusReinitialisation({
   required String cibleId,
   bool acteurSuper = false,
   bool cibleSuper = false,
+  DroitsGestes? gestes,
 }) {
-  if (acteurRole != 'admin') {
+  if (!(gestes ?? gestesOrigine()).peut(acteurRole, gesteComptesReinitialiser)) {
     return const RefusReinit('reinit_non_admin', 'Seul un administrateur réinitialise un mot de passe.', 'Prévenir un administrateur.');
   }
   if (acteurId == cibleId) {

@@ -3,6 +3,7 @@
 library;
 
 import '../droits/matrice.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteSystemeAdministrer;
 
 class EcranNav {
   const EcranNav(
@@ -100,7 +101,7 @@ const domainesMere = {'Poste mère', 'Relais en ligne'};
 /// des cartes de hub dans « Paramètres système » (on le retire de l'AFFICHAGE, jamais du manifeste ni des droits). L'onglet « Système » n'est affiché qu'à
 /// l'administrateur système et à la Directrice Administrative ; les autres profils retrouvent ce que leurs droits ouvrent par la page de cartes.
 const domainesHorsRuban = {'Relais en ligne'};
-const rolesRubanSysteme = {'admin', 'da'};
+// Qui voit l'onglet « Système » : le geste réservé `systeme_administrer` (origine : l'administrateur et la DAF), jamais une liste de rôles.
 
 /// Raccourci permanent du ruban (`N.RACCOURCIS`) : ouvre la page d'accueil d'un module, si le rôle en voit au moins un écran.
 class RaccourciRuban {
@@ -226,9 +227,10 @@ class Manifeste {
 
   /// Le ruban d'un rôle. `estMere` ouvre les domaines réservés à la mère ; il ne les OUVRE pas aux rôles sans droit :
   /// les droits restent ceux de la matrice.
-  List<DomaineRuban> ruban(MatriceDroits matrice, String role, {required bool estMere}) => _domainesVisibles(matrice, role, estMere, (d) {
+  /// [gestes] : les gestes réservés en force (fiches `rbac`) ; absent, l'origine du référentiel.
+  List<DomaineRuban> ruban(MatriceDroits matrice, String role, {required bool estMere, DroitsGestes? gestes}) => _domainesVisibles(matrice, role, estMere, (d) {
         if (domainesHorsRuban.contains(d)) return false;
-        if (d == 'Système') return rolesRubanSysteme.contains(role);
+        if (d == 'Système') return (gestes ?? gestesOrigine()).peut(role, gesteSystemeAdministrer);
         return true;
       });
 
