@@ -52,3 +52,17 @@ Colonne N-1 du compte de résultat au même filtre de statut ; soldes d'ouvertur
 - Règle : RIEN en dur — toute valeur métier vient d'un référentiel administrable, d'un paramètre de clinique daté, de la matrice/geste réservé ou de l'identité de la clinique.
 - Ordre des lots : 0 années figées (avant le 01/01/2027) ; 1 paie et fiscal datés (CNSS, VPS, ITS, ORTB, prime d'ancienneté, TVA, CCIB) ; 2 numérotation unique ; puis sécurité et droits restants, noms et signataires (organigramme), destinataires des notifications, seuils (dont l'import à 90 jours), listes de référence (un sous-lot par module), coordonnées restantes ; cliquet global « valeurs en dur ».
 - **Liasse fiscale 2025 et chiffres de référence (baseline 2025)** : ce sont des DONNÉES DÉPOSÉES, pas des réglages. Elles quittent le code pour la base, sous forme d'IMPORT DATÉ (source, date de dépôt, auteur), lues par les écrans comme toute donnée ; à faire dans le lot des listes de référence. Décision de la Direction de Baguidi du 16/11/2026.
+
+## 10. Décisions de la Direction de Baguidi du 17/11/2026 (questions 1 à 12, une à une)
+1. **Surveillant et fiche du personnel** : le Surveillant OUVRE la fiche du personnel en lecture, sans les données sensibles (salaire, CNSS, dossier médical masqués) ; seul l'onglet « Planning individuel » lui est modifiable.
+2. **Facture à une entreprise** : il faut pouvoir ÉMETTRE une facture à une entreprise qui prend en charge un patient (employeur, convention) : une vente normalisée distincte « facture à un tiers payeur », avec IFU et nom de l'acheteur, séparée de la facture du patient (qui reste sans acheteur ni AIB). L'AIB y reste au choix du comptable.
+3. **Honoraire de régime et prime NS 132** : un honoraire de régime individuel qui correspond à une prime de la grille NS 132 déjà versée pour la même vacation est REFUSÉ, avec un message au validateur (jamais de double paiement).
+4. **Numéros** : toutes les séries passent au PLUS GRAND numéro + 1 (archives comprises) ; les numéros déjà émis ne changent pas.
+5. **Préfixes partagés** : les cinq (DEP, LAB, C, EVT, BP) sont SÉPARÉS : un préfixe par registre ; les numéros déjà émis ne changent pas.
+6. **Confirmer** : UN SEUL droit pour confirmer un taux (CNSS…) et pour arrêter un barème AIB : comptable + DAF d'origine, réglable dans la fiche de rôle ; plus de double porte (l'écran « Validations de l'AIB » ne s'arrête plus par le seul droit d'écrire l'écran).
+7. **Écritures d'inventaire en clôture** : une CASE de la fiche de rôle (geste réservé), origine comptable + DAF ; le paramètre « liste de rôles » est remplacé.
+8. **Alerte « prix manquant » d'un médicament** : elle suit le droit de PROPOSER un prix d'achat (administrateur, DAF, gestionnaire de stock) ; le caissier ne la reçoit plus.
+9. **Lectures du 16/11 confirmées** : Responsable Radiologie (tarifs en lecture), Assistant de Direction (statistiques et ventes en lecture), montants d'honoraires du planning masqués sans le droit de lire les primes.
+10. **PTA** : le menu, le fil d'Ariane et la recherche disent « Plan de travail annuel (PTA) » ; l'auto-adoption reste interdite (celui qui a soumis ne l'adopte pas).
+11. **Plages de codes patients d'avant la v27** : codes provisoires acceptables pendant la transition (la mère les remplace).
+12. **Synchronisation du planning** : planning, vacations, congés et présences voyagent entre postes (jamais vers le téléphone : ils portent des honoraires), avec les contrôles de la mère.
