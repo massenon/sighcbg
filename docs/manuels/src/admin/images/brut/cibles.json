@@ -1,0 +1,271 @@
+{
+  "admin-14-mere-appareils": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Appairer un poste": [
+        25.0,
+        153.0,
+        220.0,
+        45.0
+      ],
+      "Appairer un mobile": [
+        255.0,
+        153.0,
+        232.0,
+        48.0
+      ],
+      "Révoquer": [
+        1810.0,
+        359.0,
+        98.0,
+        38.0
+      ]
+    }
+  },
+  "admin-01-roles-matrice": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Nouveau rôle": [
+        1145.0,
+        176.0,
+        180.0,
+        45.0
+      ],
+      "Gestes réservés": [
+        818.0,
+        606.0,
+        176.0,
+        53.0
+      ],
+      "Décisions de droits": [
+        1147.0,
+        606.0,
+        232.0,
+        53.0
+      ],
+      "Imprimer la matrice": [
+        1544.0,
+        761.0,
+        200.0,
+        35.0
+      ]
+    }
+  },
+  "admin-02-roles-gestes": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Accorder": [
+        727.0,
+        484.0,
+        126.0,
+        38.0
+      ],
+      "Retirer": [
+        694.0,
+        771.0,
+        107.0,
+        38.0
+      ]
+    }
+  },
+  "admin-03-roles-detail": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-04-utilisateurs": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {
+      "Nouveau": [
+        183.0,
+        653.0,
+        121.0,
+        35.0
+      ]
+    }
+  },
+  "admin-05-utilisateur-nouveau": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Rôle (RBAC)": [
+        365.0,
+        389.0,
+        525.0,
+        75.0
+      ],
+      "Mot de passe": [
+        365.0,
+        610.0,
+        525.0,
+        140.0
+      ],
+      "Changement obligatoire": [
+        365.0,
+        770.0,
+        525.0,
+        50.0
+      ]
+    }
+  },
+  "admin-06-parametres": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Régler à partir d’une date": [
+        56.0,
+        685.0,
+        244.0,
+        35.0
+      ],
+      "Historique": [
+        354.0,
+        693.0,
+        103.0,
+        20.0
+      ]
+    }
+  },
+  "admin-07-jeux-de-test": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-08-corbeille": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {}
+  },
+  "admin-09-modules": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Piloter une activité": [
+        492.0,
+        664.0,
+        194.0,
+        35.0
+      ],
+      "Ouvert": [
+        477.0,
+        1233.0,
+        51.0,
+        20.0
+      ]
+    }
+  },
+  "admin-10-audit": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {}
+  },
+  "admin-11-mecef": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Modèle": [
+        76.0,
+        573.0,
+        768.0,
+        25.0
+      ]
+    }
+  },
+  "admin-12-fiscalite": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "IFU": [
+        76.0,
+        903.0,
+        794.0,
+        25.0
+      ],
+      "RCCM": [
+        930.0,
+        903.0,
+        794.0,
+        25.0
+      ]
+    }
+  },
+  "admin-13-sauvegardes": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-15-mere-appairer": {
+    "largeur": 1950,
+    "hauteur": 1125,
+    "cibles": {
+      "Nom de l’appareil": [
+        720.0,
+        166.0,
+        510.0,
+        75.0
+      ],
+      "Générer le code": [
+        1057.0,
+        278.0,
+        173.0,
+        45.0
+      ]
+    }
+  },
+  "admin-16-mere-supervision": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Sauvegarder maintenant": [
+        25.0,
+        178.0,
+        277.0,
+        45.0
+      ]
+    }
+  },
+  "admin-17-mere-sauvegardes": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Sauvegarder maintenant": [
+        30.0,
+        643.0,
+        277.0,
+        45.0
+      ],
+      "Vérifier la dernière": [
+        317.0,
+        643.0,
+        229.0,
+        48.0
+      ]
+    }
+  },
+  "admin-18-mere-cle": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Faire tourner la clé": [
+        683.0,
+        581.0,
+        229.0,
+        48.0
+      ]
+    }
+  },
+  "admin-19-mere-relais": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-20-mere-reinit": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {}
+  }
+}
