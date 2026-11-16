@@ -286,9 +286,11 @@ void main() {
       });
       final declare = '${statuts[id] ?? 'non commencé'}';
       if (declare == 'porté' || declare == 'recetté') {
-        expect(p.manquants, isEmpty,
+        // Libellés de la maquette RETIRÉS par une décision de la Direction de Baguidi (jamais un oubli) : ils ne sont pas réclamés.
+        final manquants = [for (final x in p.manquants) if (!(_retiresParDecision[id] ?? const <String>{}).contains(x)) x];
+        expect(manquants, isEmpty,
             reason:
-                '$id est déclaré « $declare » mais il manque : ${p.manquants}');
+                '$id est déclaré « $declare » mais il manque : $manquants');
       }
     }
     File('../../docs/architecture/rapport-parite-flutter.json')
@@ -302,3 +304,9 @@ void main() {
     }));
   });
 }
+
+/// Libellés de la maquette retirés d'un écran par DÉCISION de la Direction de Baguidi, écran par écran (le rapport les mesure toujours, il ne les réclame plus).
+const Map<String, Set<String>> _retiresParDecision = {
+  // 16/11/2026 (section 8) : la facture d'un PATIENT est normalisée MECeF sans acheteur ni AIB — le bloc « FACTURE NORMALISÉE » quitte l'écran.
+  'm8-facturation': {'ifu de l’acheteur', 'nom de l’acheteur', 'taux d’aib'},
+};
