@@ -80,6 +80,18 @@ void _conserverLesGeneriques(Contexte ctx) {
         if ('${f['motif'] ?? ''}'.startsWith('Compte demandé par la Direction')) 'motif': 'Compte demandé par la Direction.',
       }
   ]);
+  // Les deux barèmes de l'AIB (compléments du 16/11/2026, section 7 « Fiscal ») : chaque situation dit son BARÈME ; la retenue sur la facture d'un TIERS
+  // (3 % personne physique, 5 % personne morale) s'ajoute, non arrêtée et à confirmer. Le jeu de référence des tests garde le barème d'origine seul.
+  ctx.remplacer('situationsAib', [
+    for (final f in ctx.fiches('situationsAib')) {...f, if (f['bareme'] == null) 'bareme': 'situation_acheteur'},
+    {'id': 'SAI04', 'statut': 'actif', 'code': 'tiers_personne_physique', 'libelle': 'Tiers personne physique', 'bareme': 'retenue_tiers', 'declencheur': 'choix', 'ordre': 4, 'description': 'Retenue sur la facture d’un tiers personne physique. Choisie à la main par le comptable, jamais d’office.'},
+    {'id': 'SAI05', 'statut': 'actif', 'code': 'tiers_personne_morale', 'libelle': 'Tiers personne morale', 'bareme': 'retenue_tiers', 'declencheur': 'choix', 'ordre': 5, 'description': 'Retenue sur la facture d’un tiers personne morale. Choisie à la main par le comptable, jamais d’office.'},
+  ]);
+  ctx.remplacer('baremeAib', [
+    ...ctx.fiches('baremeAib'),
+    {'id': 'BAI04', 'statut': 'actif', 'situation': 'tiers_personne_physique', 'taux': 3, 'statutArret': 'non_arrete', 'arrete': false, 'aValider': true, 'source': 'Décision de la Direction de Baguidi (compléments du 16/11/2026, section 7 « Fiscal ») : barème de la retenue sur la facture d’un tiers. Proposition à valider : la valeur ne vient que de la décision, texte réglementaire à produire.', 'motif': 'Taux de 3 % (tiers personne physique) semé d’après la décision du 16/11/2026 : à confirmer (motif obligatoire, geste réservé « Confirmer un taux fiscal »).'},
+    {'id': 'BAI05', 'statut': 'actif', 'situation': 'tiers_personne_morale', 'taux': 5, 'statutArret': 'non_arrete', 'arrete': false, 'aValider': true, 'source': 'Décision de la Direction de Baguidi (compléments du 16/11/2026, section 7 « Fiscal ») : barème de la retenue sur la facture d’un tiers. Proposition à valider : la valeur ne vient que de la décision, texte réglementaire à produire.', 'motif': 'Taux de 5 % (tiers personne morale) semé d’après la décision du 16/11/2026 : à confirmer (motif obligatoire, geste réservé « Confirmer un taux fiscal »).'},
+  ]);
   ctx.note('socle : ${collectionsGeneriques.length} collections génériques recopiées du jeu de référence');
 }
 
