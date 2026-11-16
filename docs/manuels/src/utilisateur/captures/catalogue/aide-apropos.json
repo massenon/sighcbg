@@ -1,0 +1,17 @@
+{
+ "id": "aide-apropos",
+ "titre": "Aide & À propos",
+ "libelle": "Aide & À propos",
+ "domaine": "Système",
+ "module": "SUP",
+ "moduleLibelle": "Aide & assistance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "aide-apropos"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 815
+}

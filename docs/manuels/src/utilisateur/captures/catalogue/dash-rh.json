@@ -1,0 +1,17 @@
+{
+ "id": "dash-rh",
+ "titre": "Tableau de bord — Ressources humaines",
+ "libelle": "Ressources humaines",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-rh"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 561
+}

@@ -1,0 +1,36 @@
+{
+ "nom": "m20b-bandeau",
+ "taille": [
+  412.0,
+  900.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "refus-op1": [
+   0.0,
+   56.0,
+   412.0,
+   104.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

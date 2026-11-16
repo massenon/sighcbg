@@ -1,0 +1,17 @@
+{
+ "id": "imp-accueil",
+ "titre": "Importation de données",
+ "libelle": "Jeux d’import et historique des lots",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-accueil"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1321
+}

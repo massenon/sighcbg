@@ -1,0 +1,15 @@
+{
+ "id": "enquete-publique",
+ "titre": "Fiche d’enquête (lien partagé)",
+ "libelle": "Fiche d’enquête (lien partagé)",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 392
+}

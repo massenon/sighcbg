@@ -1,0 +1,17 @@
+{
+ "id": "mecef-transmission",
+ "titre": "Transmission & réponses",
+ "libelle": "Transmission & réponses",
+ "domaine": "Financier",
+ "module": "MECEF",
+ "moduleLibelle": "MECeF — Facture normalisée",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "mecef-transmission"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1934
+}

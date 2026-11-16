@@ -1,0 +1,17 @@
+{
+ "id": "dash-stock",
+ "titre": "Tableau de bord — Gestion des stocks",
+ "libelle": "Gestionnaire de stock",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-stock"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1023
+}

@@ -1,0 +1,1397 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Manuel administrateur SIGH-CBG</title>
+<link rel="stylesheet" href="manuel.css">
+</head>
+<body>
+
+<!-- ============================================================ COUVERTURE -->
+<section class="couverture">
+  <div class="bandeau"></div>
+  <div class="contenu">
+    <img class="logo" src="../../../images/logo.png" alt="Logo de la Clinique Baguidi">
+    <div class="surtitre">SIGH-CBG · Système intégré de gestion hospitalière</div>
+    <h1 class="titre">Manuel administrateur</h1>
+    <div class="sous">Installer, mettre en service, sécuriser et faire vivre le logiciel de la Clinique Baguidi « L’As du Cœur » : poste mère, postes fileuls, téléphones et relais web.</div>
+  </div>
+  <div class="meta">
+    <span>Clinique Baguidi « L’As du Cœur » · Parakou, Bénin</span>
+    <span>Édition du 16 novembre 2026</span>
+  </div>
+  <div class="pied"></div>
+</section>
+
+<!-- ============================================================ SOMMAIRE -->
+<nav class="toc" data-auto>
+  <h1 id="sommaire" style="border-bottom-color:#1565C0">Sommaire</h1>
+  <ol></ol>
+</nav>
+
+<!-- ============================================================ PRÉAMBULE -->
+<h1 id="preambule">À qui s’adresse ce manuel</h1>
+<p class="chapo">Ce manuel guide les personnes qui installent, paramètrent et surveillent SIGH-CBG. Il ne décrit pas le travail quotidien des agents : le manuel utilisateur le fait.</p>
+
+<h2 id="roles-admin">Les trois rôles d’administration</h2>
+<div class="deux-colonnes">
+  <div class="carte-role">
+    <h3>Administrateur système</h3>
+    <ul>
+      <li>Installe les postes et active la mère.</li>
+      <li>Crée les comptes et règle la matrice des droits.</li>
+      <li>Surveille la synchronisation, les sauvegardes et le relais.</li>
+    </ul>
+  </div>
+  <div class="carte-role">
+    <h3>Directrice de l’Administration et des Finances (DAF)</h3>
+    <ul>
+      <li>Accède à la console de la mère, comme l’administrateur.</li>
+      <li>Règle la copie hors site, la configuration MECeF et les fichiers numérisés.</li>
+      <li>Confirme la réinitialisation de production en second profil.</li>
+    </ul>
+  </div>
+  <div class="carte-role" style="grid-column: span 2">
+    <h3>Direction / Gérance</h3>
+    <ul>
+      <li>Ouvre <b>Rôles &amp; permissions (RBAC)</b>, <b>Utilisateurs</b>, <b>Paramètres système</b> et <b>Activité des modules</b>.</li>
+      <li>Décide des gestes réservés, par exemple étendre la validation des achats à un autre rôle.</li>
+      <li>N’accède pas à la console de la mère : ses écrans sont réservés à l’administrateur et à la DAF.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="encadre info">
+  <p>Chaque rôle d’administration lit la liste de ses écrans dans le ruban. Un écran absent du ruban est fermé au rôle : il ne s’atteint pas non plus par son adresse.</p>
+</div>
+
+<h2 id="legende">Légende</h2>
+<p>Le manuel suit des conventions constantes.</p>
+<ul>
+  <li>Un élément d’interface s’écrit en gras, exactement comme à l’écran : <b>Nouveau rôle</b>.</li>
+  <li>Un chemin de menu s’écrit avec des flèches : <span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Rôles &amp; permissions (RBAC)</span>.</li>
+  <li>Un enchaînement de gestes s’écrit de même : <span class="flux">Survoler la ligne ➔ Cliquer sur l’icône crayon ➔ Modifier le champ</span>.</li>
+  <li>Les étapes d’une procédure sont numérotées dans des pastilles bleues.</li>
+  <li>Une flèche rouge numérotée désigne une commande sur une capture. Le numéro renvoie à la liste placée sous la figure.</li>
+  <li>Une capture porte l’étiquette <span class="petit"><b style="color:#15803D">CAPTURE RÉELLE</b></span> ; un schéma porte l’étiquette <span class="petit"><b style="color:#1565C0">SCHÉMA</b></span>.</li>
+  <li>La mention <span class="non-verifie">Non vérifié sur l’hébergement réel</span> signale une procédure jamais exécutée sur un poste Windows réel ou chez l’hébergeur.</li>
+</ul>
+<div class="grille-legende">
+  <div class="encadre info"><p>Un fait utile à connaître.</p></div>
+  <div class="encadre attention"><p>Un geste irréversible ou lourd de conséquences.</p></div>
+  <div class="encadre bonne"><p>La manière recommandée de procéder.</p></div>
+  <div class="encadre observer"><p>L’écran où lire une donnée ou vérifier un résultat.</p></div>
+  <div class="encadre param" style="grid-column: span 2"><p>Un réglage, avec sa clé et sa valeur par défaut.</p></div>
+</div>
+
+<div class="encadre info" data-titre="Captures">
+  <p>Les captures sont dessinées par le logiciel lui-même (test <code>apps/poste/test/capture_admin_test.dart</code>), sur le jeu de démonstration livré, sous le rôle administrateur. Les noms du personnel y sont remplacés par des noms neutres (« AGENT01 Démo »). Les écrans de la console de la mère sont dessinés sur une source simulée : les valeurs affichées sont des exemples.</p>
+</div>
+
+<!-- ============================================================ ARCHITECTURE -->
+<h1 id="architecture">Architecture en un coup d’œil</h1>
+<p class="chapo">SIGH-CBG fonctionne hors ligne d’abord. Chaque poste travaille seul ; les données se rejoignent ensuite par une synchronisation chiffrée.</p>
+
+<figure>
+<svg class="schema" viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs>
+    <marker id="fb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1565C0"/></marker>
+    <marker id="fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker>
+  </defs>
+  <rect x="20" y="20" width="560" height="430" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-dasharray="6 5"/>
+  <text x="40" y="48" font-size="15" font-weight="700" fill="#123A6B">Réseau local de la clinique</text>
+  <rect x="210" y="80" width="190" height="120" rx="12" fill="#1565C0"/>
+  <text x="305" y="112" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">POSTE MÈRE</text>
+  <text x="305" y="136" text-anchor="middle" font-size="12" fill="#D9E7F8">service sans session</text>
+  <text x="305" y="154" text-anchor="middle" font-size="12" fill="#D9E7F8">base de référence</text>
+  <text x="305" y="172" text-anchor="middle" font-size="12" fill="#D9E7F8">moteur de synchronisation</text>
+  <text x="305" y="190" text-anchor="middle" font-size="12" fill="#D9E7F8">console d’administration</text>
+  <g font-size="13" font-weight="600" fill="#123A6B" text-anchor="middle">
+    <rect x="45" y="300" width="140" height="70" rx="10" fill="#fff" stroke="#1565C0" stroke-width="2"/><text x="115" y="331">Poste fileul</text><text x="115" y="351" font-size="11" font-weight="400" fill="#64748B">Caisse</text>
+    <rect x="235" y="300" width="140" height="70" rx="10" fill="#fff" stroke="#1565C0" stroke-width="2"/><text x="305" y="331">Poste fileul</text><text x="305" y="351" font-size="11" font-weight="400" fill="#64748B">Réception</text>
+    <rect x="425" y="300" width="140" height="70" rx="10" fill="#fff" stroke="#1565C0" stroke-width="2"/><text x="495" y="331">Poste fileul</text><text x="495" y="351" font-size="11" font-weight="400" fill="#64748B">Laboratoire</text>
+  </g>
+  <g stroke="#1565C0" stroke-width="2.4" fill="none">
+    <path d="M140 298 L250 204" marker-end="url(#fb)" marker-start="url(#fb)"/>
+    <path d="M305 298 L305 204" marker-end="url(#fb)" marker-start="url(#fb)"/>
+    <path d="M470 298 L360 204" marker-end="url(#fb)" marker-start="url(#fb)"/>
+  </g>
+  <text x="305" y="410" text-anchor="middle" font-size="12" fill="#475569">Chaque poste garde sa base chiffrée et sa file d’envoi : il saisit même mère injoignable.</text>
+  <rect x="640" y="80" width="230" height="120" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2.4"/>
+  <text x="755" y="112" text-anchor="middle" font-size="17" font-weight="700" fill="#D32F2F">RELAIS WEB</text>
+  <text x="755" y="136" text-anchor="middle" font-size="12" fill="#475569">hébergement cPanel (Laravel)</text>
+  <text x="755" y="154" text-anchor="middle" font-size="12" fill="#475569">enveloppes chiffrées, opaques</text>
+  <text x="755" y="172" text-anchor="middle" font-size="12" fill="#475569">sauvegarde hors site</text>
+  <text x="755" y="190" text-anchor="middle" font-size="12" fill="#475569">panneau superadmin</text>
+  <path d="M404 140 L636 140" stroke="#D32F2F" stroke-width="2.6" marker-end="url(#fr)" marker-start="url(#fr)"/>
+  <text x="520" y="128" text-anchor="middle" font-size="11.5" fill="#D32F2F" font-weight="600">Internet, chiffré</text>
+  <rect x="660" y="300" width="190" height="70" rx="10" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+  <text x="755" y="331" text-anchor="middle" font-size="13" font-weight="600" fill="#123A6B">Application mobile</text>
+  <text x="755" y="351" text-anchor="middle" font-size="11" fill="#64748B">appairée, protégée par PIN</text>
+  <path d="M755 298 L755 204" stroke="#D32F2F" stroke-width="2.4" marker-end="url(#fr)" marker-start="url(#fr)"/>
+  <rect x="640" y="400" width="230" height="44" rx="8" fill="#FDECEC"/>
+  <text x="755" y="418" text-anchor="middle" font-size="11.5" fill="#B91C1C">Le relais ne lit jamais un dossier :</text>
+  <text x="755" y="434" text-anchor="middle" font-size="11.5" fill="#B91C1C">seule la clé de clinique déchiffre.</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>Les quatre composants et leurs flux. Bleu : réseau local. Rouge : flux chiffrés de bout en bout par la clé de clinique.</figcaption>
+</figure>
+
+<h2 id="composants">Les quatre composants</h2>
+<ul>
+  <li><b>Le poste mère</b> porte la clinique. Il héberge le service de synchronisation, la base de référence, le pont vers le relais et la console d’administration (appareils, codes d’appairage, conflits, supervision, sauvegardes, réinitialisation de production). Une clinique n’a qu’une mère.</li>
+  <li><b>Les postes fileuls</b> sont les postes de travail des agents. Chacun garde une base locale chiffrée et une file d’envoi. Il se rattache à la mère par un code d’appairage.</li>
+  <li><b>L’application mobile</b> sert quelques gestes de terrain. Elle passe par le relais et se protège par un code PIN à 4 chiffres.</li>
+  <li><b>Le relais web</b> est un site Laravel hébergé sur cPanel. Il stocke des enveloppes chiffrées et des indicateurs sans nom de patient. Il porte le panneau superadmin.</li>
+</ul>
+<p>Le poste mère et les postes fileuls sont <b>le même logiciel</b>. Le mode se décide à l’activation de la mère, sur le poste choisi comme serveur.</p>
+
+<div class="encadre info" data-titre="Hors ligne d’abord">
+  <p>Une coupure de réseau n’arrête aucun poste. Les opérations restent en file et repartent au retour de la liaison. Une validation qui revient à la mère s’affiche « en attente de la mère » ; elle ne bloque jamais le poste qui l’a créée.</p>
+</div>
+
+<!-- ============================================================ 1. INSTALLER -->
+<h1 id="installer"><span class="no">1.</span> Installer le logiciel</h1>
+<p class="chapo">Un seul installateur sert la mère et les fileuls. Le mode se choisit après l’installation.</p>
+
+<h2 id="installer-prerequis">1.1 Vérifier les prérequis</h2>
+<ul>
+  <li>Windows 64 bits (l’installateur n’accepte que x64).</li>
+  <li>Un compte administrateur Windows pour installer (privilèges demandés par l’installateur).</li>
+  <li>Le « Microsoft Visual C++ Redistributable 2015-2022 x64 » : sans lui, l’application ne démarre pas.</li>
+  <li>Pour le poste mère : une machine allumée en permanence, sur le réseau local, avec un accès Internet vers le relais.</li>
+</ul>
+
+<h2 id="installer-construire">1.2 Construire l’installateur</h2>
+<p>L’installateur se construit sur un poste de développement Windows qui dispose de Flutter (Desktop Windows), de Visual Studio 2022 (C++) et d’Inno Setup 6.</p>
+<ol class="etapes">
+  <li>Ouvrir une invite de commandes dans <code>apps\poste</code>.</li>
+  <li>Lancer <code>build_windows.bat</code>. Le script enchaîne neuf étapes et s’arrête à la première qui échoue, en la nommant.</li>
+  <li>Récupérer <code>build\installer\SIGH_Poste_Setup_&lt;version&gt;.exe</code> et son fichier <code>.sha256</code>.</li>
+</ol>
+<pre>cd apps\poste
+build_windows.bat</pre>
+<p class="non-verifie">Non vérifié sur un poste Windows réel dans le cadre de ce manuel</p>
+
+<h2 id="installer-empreinte">1.3 Contrôler l’empreinte</h2>
+<ol class="etapes">
+  <li>Copier l’installateur et son fichier <code>.sha256</code> sur le poste cible.</li>
+  <li>Calculer l’empreinte de l’installateur dans PowerShell : <code>Get-FileHash .\SIGH_Poste_Setup_&lt;version&gt;.exe -Algorithm SHA256</code>.</li>
+  <li>Comparer le résultat au contenu du fichier <code>.sha256</code>. Ne pas installer en cas d’écart.</li>
+</ol>
+
+<h2 id="installer-lancer">1.4 Installer sur chaque poste</h2>
+<ol class="etapes">
+  <li>Double-cliquer sur <code>SIGH_Poste_Setup_&lt;version&gt;.exe</code>.</li>
+  <li>Suivre l’assistant en français. Cocher l’icône de bureau si besoin.</li>
+  <li>Lancer l’application à la fin de l’installation.</li>
+</ol>
+<p>Les données du poste vivent dans <code>%LOCALAPPDATA%\SIGHCBG\donnees</code> : base, magasin, clé de chiffrement du poste et, sur la mère, ses sauvegardes.</p>
+
+<div class="encadre attention">
+  <p>La désinstallation supprime aussi <b>toutes les données du poste</b>. L’installateur propose d’abord une sauvegarde, puis demande une confirmation explicite. Les saisies non encore synchronisées sont perdues. Sur la mère, la base est la copie de référence de la clinique : les fileuls ne la reconstituent pas entièrement.</p>
+</div>
+
+<h2 id="installer-premier">1.5 Premier lancement</h2>
+<p>Un poste neuf affiche l’écran <b>Installation du poste</b> avec deux choix.</p>
+<ul>
+  <li><b>Première installation de la clinique</b> : ce poste devient le poste principal. Il servira de mère.</li>
+  <li><b>Rejoindre une clinique existante</b> : ce poste devient un fileul. Voir le chapitre 3.</li>
+</ul>
+<p>Pour une première installation, l’écran <b>Créer l’administrateur</b> demande <b>Nom complet</b>, <b>Identifiant</b>, <b>Mot de passe</b> et <b>Confirmer le mot de passe</b>. Cliquer sur <b>Créer le compte</b>.</p>
+<p>L’écran <b>Votre code de secours</b> affiche ensuite un code de 25 caractères, une seule fois.</p>
+<ol class="etapes">
+  <li>Cliquer sur <b>Imprimer</b> ou recopier le code.</li>
+  <li>Ranger le document au coffre.</li>
+  <li>Cocher <b>J’ai rangé ce code en lieu sûr.</b>, puis cliquer sur <b>Ouvrir le tableau de bord</b>.</li>
+</ol>
+<div class="encadre attention">
+  <p>Sans ce code, il n’existe aucun chemin d’urgence si le mot de passe administrateur est perdu et qu’aucun autre administrateur ne peut le réinitialiser. Ne pas le photographier, ne pas l’envoyer par message.</p>
+</div>
+
+<!-- ============================================================ 2. MÈRE -->
+<h1 id="mere"><span class="no">2.</span> Mettre en service la mère</h1>
+<p class="chapo">La modale <b>Configurations à faire avant l’utilisation</b> guide l’administrateur en quatre étapes : activer la mère, configurer la clinique, créer les comptes, appairer les postes et les mobiles.</p>
+
+<h2 id="mere-preparer">2.1 Réunir les trois informations</h2>
+<ul>
+  <li><b>Adresse du relais web</b> : le nom du site où le relais est installé, sans « https:// » (exemple : <code>sighcbg.exemple.bj</code>). Le poste ajoute https:// lui-même.</li>
+  <li><b>Secret de la mère</b> : le même texte que <code>RELAIS_SECRET_MERE</code> dans le fichier <code>.env</code> du relais. Long et aléatoire, 32 caractères au moins.</li>
+  <li><b>Clé de clinique</b> : 16 caractères au moins. Elle chiffre tout ce qui quitte le serveur.</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : la clé de clinique">
+  <p>Écrire la clé de clinique sur papier et la ranger sous scellé, hors de la mère. Sans elle, rien de ce qui quitte le serveur ne peut être restauré : ni les sauvegardes hors site, ni le relais.</p>
+</div>
+
+<h2 id="mere-activer">2.2 Activer la mère</h2>
+<ol class="etapes">
+  <li>Dans la modale <b>Configurations à faire avant l’utilisation</b>, cliquer sur <b>Activer la mère</b> (étape 1).</li>
+  <li>Saisir l’<b>Adresse du relais web</b>.</li>
+  <li>Saisir le <b>Secret de la mère</b>.</li>
+  <li>Saisir la <b>Clé de clinique (16 caractères au moins)</b>.</li>
+  <li>Saisir au besoin le <b>Nom de ce poste (facultatif)</b> : le panneau du relais l’affichera.</li>
+  <li>Cliquer sur <b>Activer la mère</b>.</li>
+</ol>
+<p>Le poste joint le relais pour réserver la place de mère : une seule mère par clinique. Le relais refuse une seconde activation en nommant la mère déjà déclarée.</p>
+<div class="encadre info">
+  <p>Relais injoignable : cliquer sur <b>Reporter l’activation</b>. L’étape passe à « reportée » et rien n’est diffusé tant que la mère n’est pas activée. Le bouton devient <b>Activer maintenant</b>.</p>
+</div>
+<div class="encadre observer">
+  <p><span class="ch">Poste mère ➔ Plateforme locale ➔ Service et démarrage</span> affiche l’état du service, l’adresse d’écoute, l’adresse d’administration et le secret de la mère (masqué).</p>
+</div>
+
+<h2 id="mere-service">2.3 Le service de la mère</h2>
+<p>Le service de synchronisation démarre à l’activation, puis à chaque lancement du poste mère. Il écoute sur le port <code>9000</code> du réseau local.</p>
+<ul>
+  <li><b>Arrêter</b> le service suspend la synchronisation : les postes gardent leurs gestes en file et les renvoient au redémarrage.</li>
+  <li><b>Désactiver le mode mère</b> arrête le service, libère la place de mère au relais et rend au poste le mode fileul. Les données sont conservées.</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : ce qui n’est pas encore livré">
+  <p>Le démarrage automatique sous forme de <b>service Windows</b> n’est pas encore livré : l’écran <b>Service et démarrage</b> le dit lui-même. Le service tourne tant que l’application est ouverte sur la mère. Laisser la session ouverte et l’application lancée sur la machine mère.</p>
+</div>
+
+<h2 id="mere-base">2.4 La base de données de la mère</h2>
+<p>Le service intégré au poste écrit sa base dans le dossier des données du poste (<code>mere.db</code>). Le moteur de la mère accepte aussi un dépôt PostgreSQL (<code>--db=postgres://…</code>), utilisé par l’exécutable de synchronisation.</p>
+<p class="non-verifie">Non vérifié : la mère sur PostgreSQL dans une installation réelle</p>
+<div class="encadre observer">
+  <p><span class="ch">Poste mère ➔ Plateforme locale ➔ Base de données locale</span> affiche le moteur de la base et son état. <span class="ch">Poste mère ➔ Plateforme locale ➔ Réseau local</span> donne les adresses de la mère à saisir sur les fileuls.</p>
+</div>
+
+<h2 id="mere-configurer">2.5 Configurer la clinique, puis clore l’assistant</h2>
+<ol class="etapes">
+  <li>Ouvrir chaque écran de configuration proposé à l’étape 2 (identité, paramètres fiscaux, activité des modules, tarifs, MECeF, rôles). Un écran sans modification se marque <b>Rien à changer</b>.</li>
+  <li>Créer les comptes des agents (étape 3, chapitre 5). Un <b>second administrateur</b> est obligatoire pour clore l’assistant.</li>
+  <li>Appairer les postes et les mobiles (étape 4, chapitres 3 et 4).</li>
+  <li>Cliquer sur <b>Clore l’assistant</b>.</li>
+</ol>
+<div class="encadre bonne">
+  <p>Configurer la clinique sur la mère avant d’appairer les fileuls. Un fileul qui s’appaire reprend toute la configuration : il n’a rien à refaire.</p>
+</div>
+
+<!-- ============================================================ 3. FILEUL -->
+<h1 id="fileul"><span class="no">3.</span> Rattacher un poste fileul</h1>
+<p class="chapo">Un fileul se rattache par un code d’appairage émis sur la mère. Le code vaut 15 minutes et ne sert qu’une fois.</p>
+
+<h2 id="fileul-code">3.1 Émettre le code sur la mère</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Exploitation de la synchronisation ➔ Appareils et appairage</span>.</li>
+  <li>Cliquer sur <b>Appairer un poste</b> (repère 1).</li>
+  <li>Saisir le <b>Nom de l’appareil</b> : l’étiquette qui le désignera partout (exemple : « Caisse principale »).</li>
+  <li>Cliquer sur <b>Générer le code</b>.</li>
+  <li>Communiquer le code de 8 caractères à la personne qui installe le fileul.</li>
+</ol>
+<figure class="capture" data-capture="admin-14-mere-appareils" data-recadrage="0,0,1950,900" data-cibles='[{"c":"Appairer un poste","de":"bas"},{"c":"Appairer un mobile","de":"bas"},{"c":"Révoquer","de":"gauche"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Appareils et appairage (console de la mère, source simulée).</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Appairer un poste</b> : code pour un poste fileul.</li>
+  <li><span class="num-rouge">2</span><b>Appairer un mobile</b> : code pour un téléphone (chapitre 4).</li>
+  <li><span class="num-rouge">3</span><b>Révoquer</b> : coupe la synchronisation d’un appareil.</li>
+</ul>
+<figure class="capture" data-capture="admin-15-mere-appairer" data-cibles='[{"c":"Nom de l’appareil","de":"gauche"},{"c":"Générer le code","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La fenêtre <b>Appairer un poste</b> : l’étiquette, puis <b>Générer le code</b>.</figcaption>
+</figure>
+
+<h2 id="fileul-rejoindre">3.2 Saisir le code sur le fileul</h2>
+<ol class="etapes">
+  <li>Sur le poste neuf, choisir <b>Rejoindre une clinique existante</b>.</li>
+  <li>Saisir l’<b>Adresse de la mère</b> (exemple : <code>http://192.168.1.10:9000</code>).</li>
+  <li>Saisir le <b>Code d’appairage</b>.</li>
+  <li>Cliquer sur <b>Rejoindre</b>.</li>
+  <li>Attendre l’écran <b>Réception de la configuration</b>, puis cliquer sur <b>Aller à la connexion</b>.</li>
+</ol>
+<p>Les refus se nomment : code inconnu, code déjà servi, code expiré (15 minutes). Dans chaque cas, demander un nouveau code sur la mère.</p>
+<div class="encadre info">
+  <p>« La mère n’a encore rien diffusé » signifie que la mère est éteinte ou que sa configuration n’est pas faite. La reprise est automatique : le fileul peut attendre sur cet écran.</p>
+</div>
+
+<h2 id="fileul-suivre">3.3 Suivre et révoquer un appareil</h2>
+<p>Le tableau des appareils affiche pour chacun : type, fonction, dernier contact, retard, horloge, version et état.</p>
+<ul>
+  <li><b>Révoquer</b> : l’appareil ne synchronise plus. Les données locales d’un poste sont conservées ; celles d’un mobile sont effacées à son prochain contact.</li>
+  <li><b>Renvoyer vers tous</b> : chaque poste refait un tirage complet de son périmètre et l’acquitte. Un poste éteint acquitte à sa reconnexion.</li>
+  <li><b>Débloquer</b> (écran <b>Supervision</b>) : rend la main à un appareil bloqué.</li>
+</ul>
+<div class="encadre attention">
+  <p>La révocation est immédiate. Un poste révoqué doit être appairé de nouveau, avec un nouveau code, pour reprendre la synchronisation.</p>
+</div>
+<div class="encadre observer">
+  <p>« Horloge à vérifier » signale une dérive supérieure à 2 minutes. Corriger l’heure de Windows sur le poste concerné.</p>
+</div>
+
+<!-- ============================================================ 4. TÉLÉPHONE -->
+<h1 id="telephone"><span class="no">4.</span> Appairer un téléphone</h1>
+<p class="chapo">L’application mobile s’appaire par un code émis sur la mère et par la clé de clinique. Le profil et la fonction du soignant sont fixés par le code.</p>
+
+<h2 id="tel-code">4.1 Émettre le code et le QR</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Exploitation de la synchronisation ➔ Appareils et appairage</span>.</li>
+  <li>Cliquer sur <b>Appairer un mobile</b>.</li>
+  <li>Saisir le nom de l’appareil, puis choisir le profil et la fonction.</li>
+  <li>Cliquer sur <b>Générer le code</b>. La fenêtre affiche le code et la clé de clinique à saisir sur le téléphone.</li>
+</ol>
+<p>L’écran <span class="ch">Poste mère ➔ Sécurité et continuité ➔ Clé de clinique</span> propose aussi <b>Afficher le QR d’appairage mobile</b> : le QR contient le code et la clé.</p>
+<div class="encadre attention">
+  <p>Le QR et la clé de clinique ne s’envoient jamais par messagerie et ne se photographient pas. Le téléphone les scanne ou les saisit directement, devant l’administrateur.</p>
+</div>
+
+<h2 id="tel-saisir">4.2 Saisir sur le téléphone</h2>
+<ol class="etapes">
+  <li>Ouvrir l’application mobile.</li>
+  <li>Saisir le <b>Code d’appairage</b>, la <b>Clé de clinique (QR)</b> et le <b>Nom de l’agent</b> (obligatoire : aucune action anonyme, RG-12).</li>
+  <li>Toucher <b>Appairer ce téléphone</b>.</li>
+  <li>Choisir un code PIN à 4 chiffres, puis le saisir une seconde fois.</li>
+</ol>
+<div class="encadre info">
+  <p>Sans verrouillage d’écran sur le téléphone, l’application reste fermée : elle ne peut pas protéger le PIN et les données de santé. Activer le verrouillage du téléphone avant l’appairage.</p>
+</div>
+
+<!-- ============================================================ 5. COMPTES ET RÔLES -->
+<h1 id="comptes"><span class="no">5.</span> Comptes et rôles</h1>
+<p class="chapo">Un compte par agent, jamais de compte partagé. Le rôle ouvre les écrans ; la fiche de rôle décide de ce que l’on peut y faire.</p>
+
+<h2 id="comptes-creer">5.1 Créer un compte</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Utilisateurs</span>.</li>
+  <li>Cliquer sur <b>Nouveau</b> (repère 1).</li>
+  <li>Saisir l’<b>Identifiant de connexion</b> (format usuel : initiale du prénom, point, nom).</li>
+  <li>Choisir l’<b>Agent rattaché</b> et le <b>Service</b>.</li>
+</ol>
+<figure class="capture" data-capture="admin-04-utilisateurs" data-recadrage="0,0,1800,900" data-cibles='[{"c":"Nouveau","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le registre des comptes. Noms remplacés par des noms de démonstration.</figcaption>
+</figure>
+
+<h2 id="comptes-motdepasse">5.2 Définir le mot de passe à la création</h2>
+<ol class="etapes">
+  <li>Saisir le <b>Mot de passe</b> et le <b>Confirmer le mot de passe</b> (repère 2).</li>
+  <li>Laisser cochée la case <b>Changement obligatoire à la première connexion</b> (repère 3).</li>
+  <li>Cliquer sur <b>Créer</b>.</li>
+</ol>
+<figure class="capture" data-capture="admin-05-utilisateur-nouveau" data-recadrage="200,30,1400,630" data-cibles='[{"c":"Rôle (RBAC)","de":"gauche","long":90},{"c":"Mot de passe","de":"gauche","long":90},{"c":"Changement obligatoire","de":"gauche","long":90}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La fenêtre <b>Nouveau compte</b>.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Rôle (RBAC)</b> : le rôle du compte.</li>
+  <li><span class="num-rouge">2</span><b>Mot de passe</b> : 8 caractères au minimum, majuscule, minuscule, chiffre et caractère spécial.</li>
+  <li><span class="num-rouge">3</span><b>Changement obligatoire à la première connexion</b>.</li>
+</ul>
+<div class="encadre info">
+  <p>Le mot de passe n’est conservé que haché (Argon2id). Il n’apparaît pas à la modification : <b>Réinitialiser le mot de passe</b>, dans la fiche du compte, est un geste distinct, journalisé.</p>
+</div>
+
+<h2 id="comptes-role">5.3 Assigner un rôle</h2>
+<ol class="etapes">
+  <li>Dans la fenêtre du compte, ouvrir la liste <b>Rôle (RBAC)</b>.</li>
+  <li>Choisir le rôle. La fiche du compte affiche ensuite le <b>Périmètre d’accès (RBAC)</b> : le nombre de modules accessibles avec ce rôle.</li>
+  <li>Cocher <b>Authentification à deux facteurs</b> pour les profils à privilèges élevés (Administrateur et Direction).</li>
+</ol>
+<div class="encadre attention" data-titre="Attention : modifier un rôle">
+  <p>Changer le rôle d’un compte change aussitôt ses écrans et ses gestes, sur tous les postes. Vérifier le périmètre affiché avant d’enregistrer.</p>
+</div>
+
+<h2 id="comptes-archiver">5.4 Archiver, jamais supprimer (RG-14)</h2>
+<p>Un compte, un rôle, une fiche ne se suppriment jamais : ils s’archivent. L’archivage garde l’historique des actions signées par le compte.</p>
+<ul>
+  <li><b>Un compte</b> : <span class="flux">Survoler la ligne ➔ Cliquer sur l’icône d’archivage ➔ Confirmer</span>. Le compte passe dans l’onglet <b>Archivés</b>.</li>
+  <li><b>Un rôle</b> : <span class="ch">Rôles &amp; permissions (RBAC) ➔ Détail par rôle</span>, bouton <b>Archiver ce rôle</b>. Ses comptes cessent d’ouvrir une session ; chaque tentative est journalisée.</li>
+  <li><b>Restaurer</b> : onglet <b>Rôles archivés</b>, bouton <b>Restaurer ce rôle</b>. L’accès revient immédiatement.</li>
+</ul>
+<div class="encadre observer">
+  <p>Les fiches archivées de tous les modules se retrouvent dans <span class="ch">Paramètres système ➔ Corbeille</span>. Elles s’y restaurent une à une.</p>
+</div>
+
+<h2 id="comptes-matrice">5.5 Lire la matrice des droits</h2>
+<p>Ouvrir <span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Rôles &amp; permissions (RBAC)</span>. L’onglet <b>Matrice des droits</b> résume trois droits par rôle et par module : <b>voir</b>, <b>éditer</b>, <b>annuler</b>.</p>
+<figure class="capture" data-capture="admin-01-roles-matrice" data-cibles='[{"c":"Nouveau rôle","de":"bas","long":80},{"c":"Gestes réservés","de":"haut","long":80},{"c":"Imprimer la matrice","de":"gauche"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Rôles &amp; permissions (RBAC), onglet <b>Matrice des droits</b>.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Nouveau rôle</b> : un rôle créé part de zéro, tous modules fermés.</li>
+  <li><span class="num-rouge">2</span><b>Gestes réservés</b> : les droits par geste (section 5.7).</li>
+  <li><span class="num-rouge">3</span><b>Imprimer la matrice</b> : l’état officiel des droits.</li>
+</ul>
+<p>Lecture des cases : vert plein accès, bleu lecture seule, gris module fermé. La lecture seule est la combinaison « voir sans éditer ni annuler ».</p>
+
+<h2 id="comptes-modifier">5.6 Modifier les droits d’un rôle, écran par écran</h2>
+<ol class="etapes">
+  <li>Ouvrir l’onglet <b>Détail par rôle</b>.</li>
+  <li>Cliquer sur <b>Droits</b> (infobulle <b>Modifier les droits de ce rôle</b>) sur la carte du rôle.</li>
+  <li>Cocher ou décocher <b>Voir</b>, <b>Éditer</b>, <b>Annuler</b> par module ; les boutons <b>Tout ouvrir</b>, <b>Tout en lecture seule</b> et <b>Tout fermer</b> agissent sur toute la grille.</li>
+  <li>Cliquer sur <b>Enregistrer les droits</b>.</li>
+  <li>Saisir le <b>Motif</b> de la décision, puis confirmer.</li>
+</ol>
+<p>Pour un réglage plus fin, <b>Régler écran par écran</b> pose une <b>surcharge d’écran</b> : un écran réglé l’emporte sur son module. Une surcharge accorde autant qu’elle retire.</p>
+<figure class="capture" data-capture="admin-03-roles-detail" data-recadrage="0,60,1800,700">
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Détail par rôle</b> : modules ouverts, boutons <b>Droits</b> et <b>Renommer</b>.</figcaption>
+</figure>
+<div class="encadre attention" data-titre="Attention : modification de rôles">
+  <p>Une décision de droits s’applique tout de suite, sans redémarrage, à tous les postes appairés : le ruban, les accès rapides et les boutons d’écriture se recalculent. Fermer un module le retire du menu, de la recherche et de ses adresses.</p>
+</div>
+<div class="encadre info" data-titre="Décisions tracées">
+  <p>Chaque décision porte son auteur, son motif et sa date. L’onglet <b>Décisions de droits</b> les liste. Sur un fileul, la décision part à la mère, qui la juge et l’applique : le bandeau dit « Décision transmise à la mère. ». Une décision écartée par une décision plus récente le dit aussi.</p>
+</div>
+
+<h2 id="comptes-gestes">5.7 Accorder ou retirer un geste réservé</h2>
+<p>Un geste réservé engage un professionnel nommé : valider un seuil de laboratoire, décider un prix, valider les achats, régler la MECeF. Il ne se déduit d’aucun droit d’écran.</p>
+<ol class="etapes">
+  <li>Ouvrir l’onglet <b>Gestes réservés</b>.</li>
+  <li>Choisir le rôle dans la liste en haut de la carte.</li>
+  <li>Cliquer sur <b>Accorder</b> ou sur <b>Retirer</b> en face du geste.</li>
+  <li>Saisir le motif, puis confirmer. <b>Revenir à l’origine</b> efface la décision.</li>
+</ol>
+<figure class="capture" data-capture="admin-02-roles-gestes" data-recadrage="0,60,1800,960" data-cibles='[{"c":"Accorder","de":"droite"},{"c":"Retirer","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Gestes réservés</b>, rôle « Administrateur système ».</figcaption>
+</figure>
+<ul>
+  <li><b>Origine</b> : chaque geste a des rôles d’origine, fixés par le code (liste complète en annexe B).</li>
+  <li>Le droit s’accorde <b>au rôle</b>, jamais à un agent.</li>
+  <li>Un rôle sans fiche n’a pas pour autant tous les gestes : l’administrateur système ne valide pas les achats tant qu’aucune décision ne le lui accorde.</li>
+  <li>Le geste n’ouvre pas l’écran : l’écran se règle à part.</li>
+</ul>
+<div class="encadre bonne">
+  <p>La validation des achats (RG-04) appartient d’origine à la seule Directrice Administrative. Pour l’étendre, la Direction l’accorde à un autre rôle dans <b>Gestes réservés</b> ; la décision reste tracée.</p>
+</div>
+
+<h2 id="comptes-sans-role-en-dur">5.8 Aucun rôle écrit en dur</h2>
+<p>Aucune décision de droit n’est écrite sur un nom de rôle dans le code. Chaque décision passe par la matrice ou par un geste réservé. Un contrôle automatique, à chaque construction, refuse tout nouveau nom de rôle écrit dans le code.</p>
+<ul>
+  <li>Les anciennes listes de rôles sont devenues des <b>gestes transverses</b> (module « * », libellé « Geste transverse ») : <code>systeme_administrer</code> (ruban <b>Système</b> et groupe <b>Poste mère</b>), <code>conflits_trancher</code>, <code>sync_valider_flux</code>, les treize gestes <code>alertes_*</code> du centre de notifications (<code>alertes_comptable</code>, <code>alertes_direction</code>, <code>alertes_laboratoire</code>, <code>alertes_creances</code>…), et les gestes de validation des référentiels <code>valider_ref_*</code>.</li>
+  <li>Les gestes livrés en dernier : <code>imprimer_tableau</code>, <code>export_regler_limite</code>, <code>reglage_encaissement_sans_prix</code>, <code>reglage_sms</code>, <code>fiscal_confirmer</code>, <code>achats_valider</code>, <code>rh_regler</code>.</li>
+  <li>Leur origine reproduit les listes d’avant : <b>rien ne change à l’écran sans décision</b>. Une alerte n’est plus routée vers une liste figée : elle va aux rôles qui détiennent le geste dans la matrice en force.</li>
+</ul>
+<div class="encadre observer">
+  <p>L’onglet <b>Gestes réservés</b> de <span class="ch">Rôles &amp; permissions (RBAC)</span> les liste tous. L’annexe B donne les <span data-compte="gestes"></span> gestes avec leurs rôles d’origine, extraits du code.</p>
+</div>
+<div class="encadre attention" data-titre="Attention : retirer une alerte">
+  <p>Retirer un geste <code>alertes_*</code> à un rôle coupe les notifications de ce poste. Vérifier qu’un autre rôle détient encore le geste avant de confirmer.</p>
+</div>
+
+<h2 id="comptes-reglage-geste">5.9 Régler sous geste depuis un fileul</h2>
+<p>Certains paramètres ne dépendent pas du droit d’éditer les Paramètres, mais d’un geste réservé. Ils se règlent depuis <b>n’importe quel poste</b>, mère ou fileul.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Paramètres système ➔ Paramètres</span> sur le poste.</li>
+  <li>Repérer la carte du réglage. Elle n’apparaît qu’au détenteur du geste.</li>
+  <li>Cliquer sur <b>Régler à partir d’une date</b>, saisir la valeur, la date et le motif, puis enregistrer.</li>
+</ol>
+<ul>
+  <li><b>Sur la mère</b>, la version datée est écrite et journalisée.</li>
+  <li><b>Sur un fileul</b>, le réglage est <b>déposé</b> : la carte porte le badge « transmis à la mère, en attente ». La mère le rejoue sous le rôle de l’auteur, avec SA matrice, puis la version revient par la synchronisation.</li>
+  <li>Un dépôt rejoué reste <b>sans effet</b> : jamais une seconde version.</li>
+</ul>
+<div class="encadre param">
+  <p>Aujourd’hui : <code>caisse.encaisserResteLigneSansPrix</code> sous le geste <code>reglage_encaissement_sans_prix</code> (section 6.5). La limite d’export <code>export.limiteLignes</code> se règle sous le geste <code>export_regler_limite</code>, sur la mère.</p>
+</div>
+
+<!-- ============================================================ 6. PARAMÈTRES -->
+<h1 id="parametres"><span class="no">6.</span> Paramètres de clinique</h1>
+<p class="chapo">Tout réglage de la clinique est enregistré en base, avec un défaut semé, et versionné par date. Un réglage n’écrase jamais l’ancien.</p>
+
+<h2 id="param-lire">6.1 Lire un paramètre</h2>
+<p>Ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Paramètres système ➔ Paramètres</span>. Chaque carte affiche :</p>
+<ul>
+  <li>la <b>Valeur en vigueur aujourd’hui</b> et son <b>Origine</b> ;</li>
+  <li>le <b>Défaut</b> et la <b>Prochaine version</b> programmée ;</li>
+  <li>la <b>Clé</b> technique, l’aide et la <b>Source</b> de la valeur.</li>
+</ul>
+<figure class="capture" data-capture="admin-06-parametres" data-recadrage="0,90,1800,760" data-cibles='[{"c":"Régler à partir d’une date","de":"droite"},{"c":"Historique","de":"droite","long":160}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Paramètres</b> sur le poste mère.</figcaption>
+</figure>
+
+<h2 id="param-regler">6.2 Régler à partir d’une date</h2>
+<ol class="etapes">
+  <li>Cliquer sur <b>Régler à partir d’une date</b> (repère 1).</li>
+  <li>Saisir la <b>Nouvelle valeur</b>.</li>
+  <li>Choisir la date dans <b>Effective à partir du</b>.</li>
+  <li>Cliquer sur <b>Enregistrer</b>.</li>
+</ol>
+<p>Le message « Nouvelle version enregistrée. » rappelle le numéro de version et sa date. La version part vers les fileuls et le relais, chiffrée. <b>Historique</b> (repère 2) liste les versions.</p>
+<div class="encadre attention">
+  <p>Une valeur déjà utilisée par une pièce ne se réécrit pas. Une date d’effet antérieure à une pièce qui a utilisé la valeur est refusée.</p>
+</div>
+
+<h2 id="param-attente">6.3 Valeurs « à confirmer »</h2>
+<p>Plusieurs défauts sont des valeurs d’attente : la Direction ne les a pas arrêtés. La ligne <b>Source</b> le dit (« à confirmer par la Direction de Baguidi »). Une carte marquée « Enregistré, pas encore appliqué par l’écran concerné » décrit un réglage <b>non branché</b>.</p>
+<div class="encadre bonne">
+  <p>Passer en revue les valeurs d’attente avec la Direction avant la mise en production, puis les régler par une version datée.</p>
+</div>
+
+<h2 id="param-mere">6.4 Seule la mère écrit (famille R)</h2>
+<p>Les paramètres appartiennent à la famille R des collections : la mère seule écrit, les fileuls reçoivent. Sur un fileul, la commande <b>Régler à partir d’une date</b> est absente.</p>
+<ul>
+  <li>Les validations de référentiels (actes, valorisations, barèmes…) faites sur un fileul sont <b>déposées</b> : la mère les rejoue sous le rôle et le nom de leur auteur.</li>
+  <li>Le badge « Transmise à la mère, en attente » reste affiché jusqu’à l’application.</li>
+  <li>Un réglage qui a son droit (MECeF, fichiers numérisés, lecture des scans, circuit de clôture) exige en plus son geste réservé.</li>
+</ul>
+<div class="encadre param">
+  <p>La liste complète des paramètres, avec leur clé et leur défaut semé, figure en annexe C. Elle est extraite du code.</p>
+</div>
+
+<h2 id="param-sans-prix">6.5 Encaisser le reste d’une facture qui a une ligne sans prix</h2>
+<p>Par défaut, <b>rien</b> d’une facture ne s’encaisse tant qu’une ligne attend son prix (« prix à valoriser » ou « prix assuré à définir »). La caisse affiche le refus <code>FACTURE_EN_ATTENTE_DE_PRIX</code>, qui nomme chaque ligne et l’écran qui la débloque. La pharmacie ne délivre rien.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Paramètres système ➔ Paramètres</span>, famille <b>Caisse et encaissement</b>.</li>
+  <li>Sur la carte <b>Encaisser le reste d’une facture qui a une ligne sans prix</b>, cliquer sur <b>Régler à partir d’une date</b> (repère 2).</li>
+  <li>Choisir <b>Oui</b>, la date d’effet et le motif, puis enregistrer.</li>
+</ol>
+<figure class="capture" data-capture="admin-26-param-caisse" data-recadrage="0,760,1800,520" data-cibles='[{"c":"Encaisser le reste","de":"haut","long":70},{"c":"Bouton","rect":[56,1196,244,35],"de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte du réglage, sur le poste mère. Défaut semé : <b>Non</b>.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Encaisser le reste d’une facture qui a une ligne sans prix</b> : la carte, famille <b>Caisse et encaissement</b>.</li>
+  <li><span class="num-rouge">2</span><b>Régler à partir d’une date</b> : une version datée, jamais un écrasement.</li>
+</ul>
+<ul>
+  <li><b>Oui</b> : les autres lignes s’encaissent ; la ligne sans prix reste en attente, nommée ; la pharmacie délivre les lignes réglées.</li>
+  <li>Le geste <code>reglage_encaissement_sans_prix</code> appartient d’origine à l’administrateur et à la DAF, <b>à valider par la Direction</b>.</li>
+  <li>Le prix est lu à la <b>date de la pièce</b>. Pour débloquer une pièce d’hier, il faut une version de prix datée de ce jour : une date passée passe par le geste <code>tarif_dater_passe</code>.</li>
+</ul>
+<div class="encadre info" data-titre="L’alerte « prix manquant »">
+  <p>Une alerte par code, sans nom de patient. Elle va aux rôles qui ont le droit de <b>modifier</b> « Tarifs et prix » (actes, analyses, imagerie) ou le « Référentiel produits » (médicaments), lus dans la matrice.</p>
+</div>
+
+<h2 id="param-export">6.6 Export et impression depuis un tableau</h2>
+<p>Deux droits séparés, tous deux gestes réservés : <code>export_tableau</code> (fichiers .xlsx et CSV) et <code>imprimer_tableau</code> (la sélection ou tout le filtre, en tableau unique ou en pièces complètes, une par page). Sans décision, chacun suit la lecture de l’écran. Retirer l’un ne retire pas l’autre.</p>
+<ul>
+  <li><b>Pas de limite de lignes par défaut</b> : <code>export.limiteLignes</code> vaut 0. Seul le geste <code>export_regler_limite</code> (administrateur et DAF d’origine, à valider) permet d’en fixer une. Le droit d’éditer l’écran ne suffit pas : la carte dit « Réglage réservé… ».</li>
+  <li>Au-delà d’une limite fixée, l’export est <b>refusé</b> (<code>EXPORT_TROP_VOLUMINEUX</code>), jamais tronqué.</li>
+  <li>L’export et l’impression suivent les <b>filtres</b> appliqués. Un texte masqué sort masqué ; un montant ou une date sortent en vrai nombre, en vraie date.</li>
+  <li>Les grilles de saisie en cours et les documents imprimés n’ont ni cases ni <b>Exporter</b>. Dans la GED, les cases servent à exporter et imprimer, jamais à valider en masse.</li>
+</ul>
+<div class="encadre observer" data-titre="Où observer : le journal par identifiants">
+  <p>Chaque export, chaque impression de tableau et chaque refus est écrit au <b>Journal d’audit</b> avec les <b>identifiants</b> des fiches (au plus 50 par entrée), leur <b>nombre total</b> et le filtre. Jamais une valeur de cellule.</p>
+</div>
+
+<h2 id="param-planning">6.7 Régimes de travail et planning individuel</h2>
+<p>Chaque agent suit le régime de sa catégorie. Un <b>régime individuel</b> peut y déroger champ par champ, ou le remplacer entièrement. Il se règle sur la fiche du personnel.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">RH ➔ Ressources humaines ➔ Fiche employé</span> et choisir l’<b>Agent</b>.</li>
+  <li>Ouvrir l’onglet <b>Planning individuel</b>.</li>
+  <li>Cliquer sur <b>Déroger</b> (repère 1) pour changer quelques champs : vacations, horaires, durée, jours, repos, honoraire. Cliquer sur <b>Remplacer le régime</b> (repère 2) pour adopter un autre régime en entier.</li>
+  <li>Saisir la date d’effet, le document d’origine s’il existe, puis enregistrer. <b>Revenir à la catégorie</b> clôt la dérogation à une date.</li>
+</ol>
+<figure class="capture" data-capture="admin-29-planning-individuel" data-recadrage="0,430,1800,800" data-cibles='[{"c":"Déroger","de":"bas"},{"c":"Remplacer le régime","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Planning individuel</b> de la fiche du personnel (agent de démonstration sans régime de catégorie).</figcaption>
+</figure>
+<ul>
+  <li>Les versions sont <b>datées et immuables</b> : jamais rétroactives, jamais deux le même jour. Les vacations déjà posées gardent leur régime.</li>
+  <li>Sans document d’origine, chaque champ posé est marqué <b>À valider</b> : une valeur sans document est une valeur d’attente.</li>
+  <li>Un régime qui écrit ses jours refuse une vacation un autre jour (<code>JOUR_HORS_REGIME</code>). Garde de 24 h et repos de 24/48 h s’appliquent au régime effectif.</li>
+  <li>L’honoraire de régime entre aux primes et au bulletin, depuis le planning validé (RG-11).</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : droits de l’onglet">
+  <p>Écrire exige le droit d’écrire <b>Planning</b> ET le geste <code>rh_regler</code>. Les montants d’honoraire ne se lisent qu’avec le planning en écriture ou le droit de lire les primes. Le planning lui-même ne se synchronise pas encore entre postes : tenir le planning et calculer la paie sur le même poste.</p>
+</div>
+
+<h2 id="param-pta">6.8 Plan de travail annuel : référentiels, réglages et adoption</h2>
+<p>La clinique n’a aucun modèle officiel de plan de travail annuel. Le logiciel sème le <b>modèle proposé le 16/11/2026</b> : chaque élément porte la mention <b>Proposition à valider par la Direction</b>, et tout se règle. Rien n’est écrit dans le code.</p>
+<ul>
+  <li><b>Référentiels</b> (écran <span class="ch">Administration ➔ Administration &amp; Ambulance ➔ Plan de travail annuel (PTA)</span>, carte <b>Référentiels du plan</b>) : les huit <b>axes</b>, les cinq <b>états d’avancement</b> (Planifiée, En cours, Réalisée, Reportée, Abandonnée ; chaque état dit son ton et son sens : compte comme réalisée, terminée, exclue du taux, état d’une action nouvelle) et les cinq <b>sources de financement</b> (Fonds propres, Assurances, Partenaire, État, Autre). <b>Ajouter</b>, cliquer une fiche pour la modifier, la croix pour l’archiver, « restaurer » pour la rendre. Le <b>code</b> d’une fiche ne change pas : les actions le citent sur tous les postes. Une fiche réglée perd la mention « à valider » et porte son auteur et sa date.</li>
+  <li><b>Réglages</b> (<span class="ch">Paramètres système ➔ Paramètres</span>, famille <b>Plan de travail annuel</b>) : la <b>périodicité</b> (trimestre par défaut, ou mois, ou semestre), le <b>seuil d’alerte de retard</b> (15 jours après la fin de la période) et le <b>préfixe de numérotation</b> (PTA). Ce sont des paramètres de clinique <b>versionnés par date</b> ; un exercice se lit avec la valeur en vigueur à son jour courant (un exercice clos, à son dernier jour). Changer la périodicité ne réécrit aucune action ; changer le préfixe ne redonne jamais un numéro déjà attribué.</li>
+  <li>Référentiels et réglages relèvent du geste réservé <code>pta_regler</code> (d’origine, proposée à valider : l’administrateur et la DAF). Les réglages se posent depuis n’importe quel poste : un poste rattaché transmet la demande à la mère (voir 5.9).</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : le geste d’adoption">
+  <p>Adopter un plan soumis, le renvoyer en brouillon et le clôturer relèvent du geste réservé <code>pta_adopter</code> (origine : la Direction et la DAF, proposition à valider ; se règle en 5.7). Sans ce geste, les boutons sont <b>absents</b>. Celui qui a soumis le plan ne l’adopte pas. Depuis un fileul, le geste est déposé et la mère l’applique sous le rôle de son auteur, avec sa propre matrice : une décision refusée revient avec son motif. Un plan adopté ne se réécrit pas, ni au poste ni à la mère : seul le suivi reste ouvert, une révision ouvre une nouvelle version.</p>
+</div>
+<div class="encadre observer" data-titre="Où observer : l’alerte de retard">
+  <p>Les actions en retard d’un plan en vigueur lèvent une ligne par action au centre de notifications, routée par le geste <code>alertes_pta_retard</code> (d’origine : la Direction et la DAF, proposition à valider). Le plan, ses versions et ses référentiels passent entre les postes ; ils ne vont jamais sur un téléphone.</p>
+</div>
+
+<!-- ============================================================ 7. MODULES -->
+<h1 id="modules"><span class="no">7.</span> Activité des modules</h1>
+<p class="chapo">Un module que la clinique n’exerce pas se ferme. Il disparaît du menu sans rien perdre.</p>
+
+<h2 id="modules-fermer">7.1 Fermer ou rouvrir un module</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Activité des modules</span>.</li>
+  <li>Repérer la carte du module dans <b>Modules du logiciel — activer seulement ce que l’établissement exerce</b>.</li>
+  <li>Cliquer sur la bascule à droite du badge <b>Ouvert</b> (repère 2).</li>
+  <li>Saisir le motif, puis confirmer.</li>
+</ol>
+<p>Pour fermer un écran isolé, cliquer sur <b>Piloter une activité</b> (repère 1).</p>
+<figure class="capture" data-capture="admin-09-modules" data-cibles='[{"c":"Piloter une activité","de":"droite"},{"c":"Ouvert","de":"haut","long":80}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Activité des modules.</figcaption>
+</figure>
+<ul>
+  <li>Fermer une activité la retire du ruban, de la recherche et de ses adresses, <b>pour tous les rôles</b>, administrateur compris.</li>
+  <li>Rien n’est supprimé : la réouverture rend les écrans et leurs données en l’état.</li>
+  <li>Fermer un module n’empêche jamais un autre de travailler.</li>
+</ul>
+<div class="encadre info" data-titre="Le noyau ne se ferme pas">
+  <p>Configuration (CFG) et tableaux de bord (DASH) forment le noyau : leurs cartes n’ont pas de bascule. Un interrupteur qui se coupe lui-même ne se rallume plus.</p>
+</div>
+
+<!-- ============================================================ 8. IDENTITÉ -->
+<h1 id="identite"><span class="no">8.</span> Identité et en-tête officiel</h1>
+<p class="chapo">Chaque pièce imprimée reprend un en-tête légal unique : logo, devise, dénomination, coordonnées et identifiants légaux.</p>
+
+<h2 id="identite-verifier">8.1 Vérifier l’identité légale</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Paramètres fiscaux (IFU / RCCM)</span>.</li>
+  <li>Vérifier la <b>Dénomination sociale</b>, l’<b>IFU (13 chiffres)</b>, le <b>RCCM</b> et l’<b>Adresse fiscale</b>.</li>
+  <li>Corriger ce qui doit l’être, puis valider. La validation appartient à la Direction, à la DAF ou à l’administrateur système.</li>
+</ol>
+<figure class="capture" data-capture="admin-12-fiscalite" data-recadrage="0,60,1800,900" data-cibles='[{"c":"IFU","de":"bas","long":80},{"c":"RCCM","de":"bas","long":80}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’identification fiscale de l’établissement.</figcaption>
+</figure>
+<table class="tableau">
+  <thead><tr><th style="width:32%">Mention</th><th>Valeur du jeu livré</th></tr></thead>
+  <tbody>
+    <tr><td>Dénomination</td><td>CLINIQUE BAGUIDI « L’AS DU CŒUR »</td></tr>
+    <tr><td>IFU</td><td>3201001996110</td></tr>
+    <tr><td>RCCM</td><td>RB/PKO/17 A 4240</td></tr>
+    <tr><td>Adresse postale</td><td>02 BP : 105 PARAKOU (Rép. du Bénin)</td></tr>
+    <tr><td>Devise</td><td>Votre bien-être est notre raison d’être.</td></tr>
+  </tbody>
+</table>
+<div class="encadre info" data-titre="Un seul en-tête">
+  <p>L’identité est unique : toutes les pièces impriment la même. Une modification s’applique aux documents émis à partir de sa date d’effet ; les pièces antérieures gardent leur en-tête.</p>
+</div>
+<div class="encadre observer">
+  <p><span class="ch">Système ➔ Configuration Clinique ➔ Identité &amp; papier à en-tête</span> montre l’aperçu du papier à en-tête.</p>
+</div>
+
+<!-- ============================================================ 9. MECEF -->
+<h1 id="mecef"><span class="no">9.</span> MECeF, AIB et taux fiscaux</h1>
+<p class="chapo">Le logiciel nomme le boîtier, mais l’adaptateur qui lui parle reste à fournir par l’éditeur du boîtier. Aucun numéro fiscal n’est simulé.</p>
+
+<h2 id="mecef-config">9.1 Lire la configuration fiscale</h2>
+<p>Ouvrir <span class="ch">Financier ➔ MECeF — Facture normalisée ➔ Configuration fiscale</span>.</p>
+<figure class="capture" data-capture="admin-11-mecef" data-recadrage="0,60,1800,1000" data-cibles='[{"c":"Modèle","de":"droite","long":200}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Configuration fiscale, sur le poste mère.</figcaption>
+</figure>
+<ul>
+  <li><b>Mode de certification des factures</b> : « Boîtier physique » (défaut) ou « e-MECeF ».</li>
+  <li><b>Modèle du boîtier MECeF</b> : « ELTRADE CC300 ». Il est porté sur la pièce et au journal MECeF.</li>
+  <li>Le changement de mode passe par <b>Enregistrer le mode</b> et exige le geste réservé <code>reglage_mecef</code> (administrateur et DAF d’origine).</li>
+</ul>
+
+<h2 id="mecef-modes">9.2 La carte « Mode de certification » : l’état des deux modes</h2>
+<p>Sous le choix du mode, la carte décrit chaque mode en deux colonnes : <b>Prêt au poste</b> et <b>Ce qui manque</b>. Le mode retenu est encadré.</p>
+<figure class="capture" data-capture="admin-24-mecef-modes" data-recadrage="0,120,1150,920" data-cibles='[{"c":"Boîtier","de":"droite","long":120},{"c":"e-MECeF","de":"droite","long":120},{"c":"Enregistrer le mode","de":"droite","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’état des deux modes, sur le poste mère.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Boîtier physique</b> : prêt au poste (vente tenue en attente de certification, retransmission, modèle réglé) ; manque l’adaptateur ELTRADE CC300, à fournir par l’éditeur.</li>
+  <li><span class="num-rouge">2</span><b>e-MECeF</b> : manque le dossier d’interface DGI. Aucun protocole n’est supposé.</li>
+  <li><span class="num-rouge">3</span><b>Enregistrer le mode</b> : geste <code>reglage_mecef</code>.</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : aucune facture n’est encore certifiée">
+  <p>L’écran affiche « Adaptateur ELTRADE CC300 à fournir par l’éditeur du boîtier ». Une vente est encaissée, puis reste <b>en attente de certification</b> avec le refus <code>MECEF_NON_CONFIGURE</code>. Le poste ne fabrique aucun numéro fiscal et n’envoie aucune requête. Le mode e-MECeF reste « non configuré : dossier d’interface DGI requis ».</p>
+</div>
+
+<h2 id="mecef-obtenir">9.3 Ce qu’il faut obtenir du fournisseur du boîtier</h2>
+<ol class="etapes">
+  <li>Le manuel d’intégration du CC300, destiné aux éditeurs de logiciels de caisse.</li>
+  <li>L’interface physique et le pilote Windows : série, USB ou réseau, avec les paramètres de liaison.</li>
+  <li>Le protocole : commandes d’ouverture, de ligne, de totalisation, de clôture, d’avoir et de duplicata ; codes de retour et d’erreur.</li>
+  <li>Un kit de développement et un simulateur, pour éprouver l’adaptateur sans émettre de vraies factures.</li>
+  <li>Le certificat ou l’agrément DGI et la liste des mentions obligatoires (code MECeF, compteurs, signature, QR).</li>
+  <li>Le comportement hors ligne : capacité de la mémoire, transmission à la DGI, mémoire pleine.</li>
+  <li>La conduite en cas d’incident : coupure pendant une émission, papier, reprise sans doublon, horloge.</li>
+  <li>L’organisation : nombre de boîtiers, postes de caisse rattachés, contact technique.</li>
+</ol>
+
+<h2 id="mecef-imprimante">9.4 Imprimante de caisse</h2>
+<p>La carte <b>Imprimante de caisse</b> décrit l’appareil qui imprime le ticket. Aucun modèle n’est fourni pour Baguidi : la clinique le renseigne.</p>
+<ol class="etapes">
+  <li>Sur <b>Configuration fiscale</b>, descendre jusqu’à la carte <b>Imprimante de caisse</b> (repère 1).</li>
+  <li>Saisir le <b>Modèle</b>, la <b>Largeur du papier</b> (de 40 à 120 mm) et l’<b>Interface</b> (USB, série, réseau…).</li>
+  <li>Cliquer sur <b>Enregistrer l’imprimante</b> (repère 2).</li>
+</ol>
+<figure class="capture" data-capture="admin-25-mecef-imprimante" data-recadrage="0,120,1150,600" data-cibles='[{"c":"Imprimante","de":"droite","long":160},{"c":"Enregistrer l’imprimante","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Imprimante de caisse</b> : modèle et interface « à renseigner ».</figcaption>
+</figure>
+<table class="tableau">
+  <thead><tr><th>Réglage</th><th>Clé</th><th>Défaut semé</th></tr></thead>
+  <tbody>
+    <tr><td>Modèle</td><td><code>mecef.imprimanteCaisse.modele</code></td><td><em>vide</em> : à renseigner</td></tr>
+    <tr><td>Largeur du papier</td><td><code>mecef.imprimanteCaisse.largeurPapierMm</code></td><td>80 mm (valeur d’attente, à valider)</td></tr>
+    <tr><td>Interface</td><td><code>mecef.imprimanteCaisse.interface</code></td><td><em>vide</em> : à renseigner</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li>Famille MECeF : réglage sur la mère, sous le geste <code>reglage_mecef</code>, versionné par date.</li>
+  <li>L’aperçu et le PDF du ticket prennent la largeur réglée. Une valeur illisible garde 80 mm, et la carte le dit.</li>
+</ul>
+<div class="encadre info">
+  <p>Ce réglage <b>décrit</b> l’appareil. Aucun pilote d’impression n’est branché : le ticket s’ouvre en aperçu et s’enregistre en PDF.</p>
+</div>
+
+<h2 id="mecef-aib">9.5 Facture d’un patient : sans acheteur ni AIB</h2>
+<p>La facture d’un patient reste <b>normalisée MECeF</b>, mais elle ne porte ni acheteur ni AIB. Le patient paie le total.</p>
+<ul>
+  <li>Le bloc « FACTURE NORMALISÉE » (IFU de l’acheteur, nom de l’acheteur, taux d’AIB) a disparu des trois portes d’encaissement.</li>
+  <li>La pièce imprimée n’a aucune ligne d’AIB : net à payer = TTC.</li>
+  <li>Sur <b>Configuration fiscale</b>, <b>Taux d’AIB (%)</b> affiche « sans objet sur la facture d’un patient ».</li>
+</ul>
+<div class="encadre observer" data-titre="Où l’AIB garde un sens">
+  <ul>
+    <li><b>Factures des fournisseurs</b> (M7) : la retenue d’AIB et l’AIB subi restent saisis par le comptable.</li>
+    <li><b>Tiers payeurs</b> (assureur, entreprise) : leur part est portée par la facture du patient, puis réclamée par le relevé et la facture mère, qui ne sont pas des pièces MECeF.</li>
+  </ul>
+</div>
+
+<h2 id="mecef-confirmer">9.6 Confirmer les taux de la CNSS</h2>
+<p>Le bouton <b>Confirmer</b> atteste qu’un taux en vigueur a été vérifié. La confirmation s’ajoute à l’historique : rien n’est écrasé.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Paramètres comptables &amp; obligations</span>, ou <span class="ch">RH ➔ Paie &amp; Primes ➔ Cotisations CNSS / ITS / VPS</span>.</li>
+  <li>Sur la carte <b>Taux de la CNSS</b> (repère 1), cliquer sur <b>Confirmer</b> (repère 2).</li>
+  <li>Saisir le <b>motif</b> (obligatoire) et la <b>date d’effet</b>, puis valider.</li>
+</ol>
+<figure class="capture" data-capture="admin-27-cnss-confirmer" data-recadrage="0,120,1800,420" data-cibles='[{"c":"Taux de la CNSS","de":"haut","long":60},{"c":"Confirmer","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Taux de la CNSS</b>, vue par la DAF sur le poste mère.</figcaption>
+</figure>
+<ul>
+  <li>Geste réservé <code>fiscal_confirmer</code> : origine <b>proposée</b>, le Comptable et la DAF, à valider par la Direction. Sans le geste, le bouton est absent.</li>
+  <li>La trace porte le compte de la session, le rôle, l’horodatage et la valeur recopiée. Un fileul lit, il ne confirme pas.</li>
+  <li>Refus nommés : <code>CONFIRMATION_EXISTANTE</code>, <code>DATE_EFFET_ANTERIEURE</code>.</li>
+</ul>
+<div class="encadre info">
+  <p>La confirmation atteste la valeur à une date. Elle ne change pas le taux utilisé par la paie : rendre les taux de la CNSS datés reste un chantier nommé.</p>
+</div>
+
+<h2 id="mecef-baremes">9.7 Les deux barèmes de l’AIB</h2>
+<p>Ouvrir <span class="ch">Gestion &amp; trésorerie ➔ Acompte sur impôt (AIB)</span>. Deux barèmes coexistent, en paramètres de clinique versionnés par date :</p>
+<table class="tableau">
+  <thead><tr><th style="width:38%">Barème</th><th>Situations et taux semés</th></tr></thead>
+  <tbody>
+    <tr><td><b>Par situation de l’acheteur</b></td><td>1 % IFU actif · 5 % sans IFU actif · 3 % prestation de service.</td></tr>
+    <tr><td><b>Retenue sur la facture d’un tiers</b></td><td>3 % personne physique · 5 % personne morale. Versions <b>non arrêtées</b>, à valider : elles s’appliquent une fois confirmées.</td></tr>
+  </tbody>
+</table>
+<figure class="capture" data-capture="admin-28-bareme-aib" data-recadrage="0,60,1800,1100" data-cibles='[{"c":"Situations de l’acheteur","de":"haut","long":80}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le registre du barème de l’AIB : statut « Arrêté » ou « Non arrêté, à valider ».</figcaption>
+</figure>
+<ol class="etapes">
+  <li>Ouvrir la version à confirmer dans le registre.</li>
+  <li>Cliquer sur <b>Confirmer</b> (geste <code>fiscal_confirmer</code>).</li>
+  <li>Saisir le motif et la date d’effet. Une version non arrêtée est <b>arrêtée</b> à cette date.</li>
+</ol>
+<div class="encadre bonne">
+  <p>À la retenue, le comptable choisit le <b>barème</b> puis la catégorie : les deux listes partent vides (<code>AIB_BAREME_REQUIS</code>). Aucun barème n’est supposé.</p>
+</div>
+<div class="encadre param">
+  <p><code>mecef.mode</code> (défaut : Boîtier physique) et <code>mecef.modeleBoitier</code> (défaut : ELTRADE CC300), famille MECeF. Seule la mère les écrit. Les situations de l’AIB vivent dans <code>situationsAib</code> et <code>baremeAib</code>.</p>
+</div>
+
+<!-- ============================================================ 10. SYNCHRONISATION -->
+<h1 id="synchro"><span class="no">10.</span> Synchronisation et continuité de service</h1>
+<p class="chapo">Une validation à faire n’empêche jamais un fileul de travailler. Le validateur valide depuis n’importe quel poste ; la mère applique.</p>
+
+<h2 id="synchro-etat">10.1 Lire l’état de synchronisation</h2>
+<p>La barre supérieure de chaque poste affiche une pastille d’état : synchronisé, en cours, en retard, hors ligne ou suspendu.</p>
+<ul>
+  <li>Un poste hors ligne continue de saisir. Ses opérations restent en file.</li>
+  <li>Au retour de la liaison, la file repart sans intervention.</li>
+</ul>
+<figure class="capture" data-capture="admin-16-mere-supervision" data-recadrage="0,0,1950,620" data-cibles='[{"c":"Sauvegarder maintenant","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Supervision de la mère (source simulée) : santé, opérations, retard vers le relais, contrôles.</figcaption>
+</figure>
+
+<h2 id="synchro-attente">10.2 Les décisions en attente de la mère</h2>
+<p>Trois files attendent la mère : les validations déposées, les demandes de prix et les demandes d’import. La pastille « N décisions en attente de la mère » les compte et donne l’âge de la plus ancienne. Elle est absente à zéro.</p>
+<ul>
+  <li>Tant que la mère n’a pas confirmé, l’élément reste « à valider » et porte le badge « Transmise à la mère, en attente ». Jamais « Validé ».</li>
+  <li>Un dépôt rejoué ne produit aucun effet double. Le verdict revient sur la même fiche : appliquée, sans effet ou refusée avec son motif.</li>
+  <li>La mère vérifie le compte signataire et rejoue le geste sous le rôle et le nom de l’auteur, avec tous les contrôles.</li>
+  <li>La pièce porte la date de signature (le geste) et la date d’application (la mère).</li>
+</ul>
+<figure class="capture" data-capture="admin-30-pastille-decisions" data-recadrage="700,0,1100,130" data-cibles='[{"c":"Pastille","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La pastille de la barre supérieure d’un fileul : deux décisions attendent la mère, la plus ancienne depuis plus de 4 heures (ton rouge).</figcaption>
+</figure>
+<p>La pastille passe à l’orange dès la première décision, au rouge au-delà du délai d’alerte. Son info-bulle détaille chaque file.</p>
+<div class="encadre param" data-titre="Paramétrage : l’alerte au bout de 4 heures">
+  <p><code>validations.delaiAlerteMereHeures</code> (défaut : 4, versionné par date). Au-delà, <b>une</b> notification par décision et par destinataire part vers le validateur concerné et vers l’administrateur. Le validateur est lu dans la matrice : rôles qui détiennent le geste (<code>achats_valider</code> pour un circuit d’achat, <code>tarif_decider</code> pour une demande de prix…). Rien n’est bloqué, rien n’est validé à la place de la mère.</p>
+</div>
+<h3>La vérification du compte signataire</h3>
+<p>Chaque décision déposée porte le compte nominatif de l’agent qui l’a prise. Avant tout rejeu, la mère vérifie ce compte dans SES comptes de la clinique. Le verdict revient au fileul sur la même fiche :</p>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Refus</th><th>Cause</th></tr></thead>
+  <tbody>
+    <tr><td><code>COMPTE_NON_INSCRIT</code></td><td>La décision ne porte aucun compte : session de démonstration ou poste d’avant la règle.</td></tr>
+    <tr><td><code>COMPTE_INCONNU</code></td><td>Le compte n’existe pas à la mère.</td></tr>
+    <tr><td><code>COMPTE_ROLE_DIFFERENT</code></td><td>Le compte n’a pas, à la mère, le rôle inscrit sur la décision.</td></tr>
+    <tr><td><code>COMPTE_ARCHIVE</code></td><td>Le compte est archivé ou désactivé.</td></tr>
+  </tbody>
+</table>
+<div class="encadre bonne">
+  <p>Créer chaque compte sur la mère <b>avant</b> que l’agent ne valide sur un fileul, et garder un compte nominatif par agent. Une session de démonstration ne signe aucune décision.</p>
+</div>
+
+<h2 id="synchro-conflits">10.3 Conflits et pièces mises de côté</h2>
+<ul>
+  <li><span class="ch">Poste mère ➔ Exploitation de la synchronisation ➔ Conflits et doublons</span> liste les champs modifiés de deux côtés et les doublons possibles. L’administrateur tranche.</li>
+  <li><span class="ch">Poste mère ➔ Exploitation de la synchronisation ➔ « À traiter » consolidé</span> rassemble les refus et les pièces mises de côté.</li>
+  <li>Une pièce d’un exercice clos ou en clôture est <b>mise de côté</b> (<code>exercice_clos</code>, <code>exercice_en_cloture</code>) : jamais écrite, jamais perdue.</li>
+</ul>
+<div class="encadre observer">
+  <p>Le <b>Journal des opérations</b> et le <b>Journal technique</b> de la mère retracent chaque échange, sans contenu de dossier.</p>
+</div>
+
+<!-- ============================================================ 11. SAUVEGARDES -->
+<h1 id="sauvegardes"><span class="no">11.</span> Sauvegardes</h1>
+<p class="chapo">Deux niveaux : une sauvegarde locale chiffrée sur la mère, et une copie hors site chiffrée, déposée sur le relais ou un dossier distant.</p>
+
+<h2 id="sauv-locale">11.1 Sauvegarde locale de la mère</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Sécurité et continuité ➔ Sauvegardes et restauration</span>.</li>
+  <li>Cliquer sur <b>Sauvegarder maintenant</b> (repère 1).</li>
+  <li>Cliquer sur <b>Vérifier la dernière</b> (repère 2) pour lancer un test à blanc.</li>
+</ol>
+<figure class="capture" data-capture="admin-17-mere-sauvegardes" data-recadrage="0,60,1800,1060" data-cibles='[{"c":"Sauvegarder maintenant","de":"bas"},{"c":"Vérifier la dernière","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Sauvegardes et restauration de la mère (source simulée).</figcaption>
+</figure>
+<p>Toute sauvegarde est chiffrée par la clé de clinique avant d’être écrite. Le moteur conserve 7 sauvegardes chiffrées par défaut.</p>
+
+<h2 id="sauv-horssite">11.2 Copie hors site</h2>
+<p>La copie hors site part, chiffrée, vers le relais ou vers un dossier distant monté. Le relais ne reçoit que des blocs opaques.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Sauvegardes &amp; restauration</span> sur le poste mère.</li>
+  <li>Dans la carte <b>Sauvegarde hors site</b>, cliquer sur <b>Régler la copie hors site</b>.</li>
+  <li>Activer <b>Copie hors site active</b>, choisir les destinations, puis saisir le motif.</li>
+  <li>Enregistrer. <b>Copier le magasin maintenant</b> et <b>Copier les fichiers maintenant</b> lancent une copie immédiate.</li>
+</ol>
+<table class="tableau">
+  <thead><tr><th>Réglage</th><th>Clé</th><th>Défaut</th></tr></thead>
+  <tbody>
+    <tr><td>Copie hors site active</td><td><code>horssite.actif</code></td><td>non</td></tr>
+    <tr><td>Destination du magasin</td><td><code>horssite.destinationMagasin</code></td><td>relais</td></tr>
+    <tr><td>Destination des fichiers numérisés</td><td><code>horssite.destinationFichiers</code></td><td>aucune</td></tr>
+    <tr><td>Taille d’un bloc</td><td><code>horssite.tailleBloc</code></td><td>1 048 576 octets (1 Mio)</td></tr>
+    <tr><td>Copies du magasin gardées</td><td><code>horssite.copiesMagasin</code></td><td>7</td></tr>
+    <tr><td>Copies des fichiers gardées</td><td><code>horssite.copiesFichiers</code></td><td>14</td></tr>
+    <tr><td>Bornes du nombre de copies</td><td>plancher et plafond</td><td>2 à 60</td></tr>
+    <tr><td>Fréquence de la copie des fichiers</td><td><code>horssite.frequenceFichiersMin</code></td><td>60 minutes</td></tr>
+    <tr><td>Heure du contrôle nocturne</td><td><code>horssite.heureControle</code></td><td>2 h</td></tr>
+  </tbody>
+</table>
+<div class="encadre attention">
+  <p>Seuls l’administrateur et la Directrice Administrative règlent et restaurent la copie hors site (refus <code>REGLAGE_RESERVE</code> sinon). Un fileul lit le réglage sans pouvoir le changer.</p>
+</div>
+<div class="encadre bonne">
+  <p>Mesurer le quota réel de l’hébergement avant de choisir « relais » pour les fichiers numérisés (chapitre 14.4). La destination des fichiers reste « Aucune » tant que la mesure n’est pas faite.</p>
+</div>
+
+<h2 id="sauv-cle">11.3 Protéger la clé de clinique</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Sécurité et continuité ➔ Clé de clinique</span>.</li>
+  <li>Cliquer sur <b>Imprimer la copie papier</b>.</li>
+  <li>Remplir <b>Détenteur</b>, <b>Scellé n°</b> et <b>Contrôlé par</b>, puis cliquer sur <b>Enregistrer l’attestation</b>.</li>
+</ol>
+<figure class="capture" data-capture="admin-18-mere-cle" data-recadrage="0,60,1800,900" data-cibles='[{"c":"Faire tourner la clé","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Clé de clinique : empreinte, date de création, copie papier, attestation.</figcaption>
+</figure>
+<div class="encadre attention" data-titre="Attention : faire tourner la clé">
+  <p><b>Faire tourner la clé</b> change la clé qui chiffre le relais, les sauvegardes et les mobiles. Les anciennes sauvegardes ne se déchiffrent qu’avec l’ancienne clé : conserver sa copie papier.</p>
+</div>
+
+<h2 id="sauv-restaurer">11.4 Restaurer la mère</h2>
+<p>La Direction a décidé : pas de promotion d’un fileul en mère de secours. Le chemin est la restauration de la mère depuis la copie hors site.</p>
+<ol class="etapes">
+  <li><b>Constater.</b> Les fileuls affichent « mère injoignable » et continuent de saisir. Ne réinitialiser aucun fileul.</li>
+  <li><b>Préparer une machine</b> avec le poste installé en mode mère, à la même version. Réunir la clé de clinique, l’accès à la destination et le secret d’administration.</li>
+  <li><b>Choisir la copie</b> : lister les copies du type <code>magasin</code> et prendre la plus récente à l’état « valide ».</li>
+  <li><b>Restaurer le magasin</b> vers un dossier neuf (fenêtre <b>Restaurer une copie hors site</b>). Lire le nombre d’éléments et d’octets vérifiés.</li>
+  <li><b>Restaurer les fichiers numérisés</b> de la même façon, vers un second dossier neuf.</li>
+  <li><b>Mettre en service</b>, mère arrêtée : placer la copie du magasin à l’emplacement de la base de la mère et le dossier restauré à celui des scans, puis redémarrer.</li>
+  <li><b>Contrôler</b> la supervision, le compteur de pièces et la date de la dernière écriture.</li>
+  <li><b>Laisser les fileuls se rattacher</b> : ils renvoient leurs opérations en file.</li>
+</ol>
+<div class="encadre info">
+  <p>La restauration écrit toujours dans un dossier neuf et vérifie chaque bloc avant d’écrire. Un bloc altéré ou manquant est refusé et nommé (<code>BLOC_ALTERE</code>, <code>BLOC_MANQUANT</code>, <code>MANIFESTE_ALTERE</code>) : rien n’est restauré à moitié.</p>
+</div>
+<div class="encadre attention" data-titre="Attention : ce qui peut manquer">
+  <p>Tout ce que la mère a écrit depuis la dernière copie du magasin (copie de nuit : jusqu’à 30 heures) et les scans déposés depuis la dernière copie des fichiers.</p>
+</div>
+<p class="non-verifie">Non vérifié : la réouverture de la base restaurée sous la clé de stockage et le rattachement d’un fileul plus avancé que la copie</p>
+<div class="encadre bonne">
+  <p>Faire une restauration à blanc chaque mois sur une machine propre. Elle prouve que la clé, la destination et la procédure fonctionnent avant le jour où l’on en a besoin.</p>
+</div>
+
+<!-- ============================================================ 12. PRODUCTION -->
+<h1 id="production"><span class="no">12.</span> Mise en production</h1>
+<p class="chapo">Les données livrées sont des données de démonstration. Le geste de mise en production les <b>archive</b> (RG-14) : rien n’est supprimé.</p>
+
+<h2 id="prod-poste">12.1 Archiver le jeu de démonstration sur un poste</h2>
+<ol class="etapes">
+  <li>Sauvegarder : copier le dossier des données et cliquer sur <b>Sauvegarder la clé de chiffrement</b> (onglet <b>Installation et données</b>).</li>
+  <li>Ouvrir <span class="ch">Paramètres système ➔ Jeux de test</span>.</li>
+  <li>Cocher <b>Autoriser la réinitialisation des jeux de test sur ce poste</b>, puis confirmer.</li>
+  <li>Cliquer sur <b>Archiver le jeu de démonstration</b>, saisir le motif (« mise en production »), puis confirmer.</li>
+  <li>Relire la carte <b>Bilan de l’archivage</b> : fiches archivées par collection et brouillons.</li>
+  <li>Décocher la bascule.</li>
+</ol>
+<figure class="capture" data-capture="admin-07-jeux-de-test" data-recadrage="0,60,1800,1060">
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Jeux de test</b> : réinitialisation verrouillée, ce qui serait archivé et ce qui serait conservé.</figcaption>
+</figure>
+<div class="encadre info" data-titre="Garde-fous">
+  <ul>
+    <li>Bascule fermée par défaut ; fermée, le bouton est absent et l’archivage est refusé.</li>
+    <li>Ouverture de la bascule confirmée et journalisée.</li>
+    <li>Motif obligatoire et confirmation qui dit que rien n’est supprimé.</li>
+    <li>Les compteurs de numérotation ne reculent pas : un code archivé n’est jamais réattribué (RG-01).</li>
+  </ul>
+</div>
+
+<h2 id="prod-mere">12.2 Archiver à la mère, pour tous les postes</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Sécurité et continuité ➔ Réinitialisation de production</span>.</li>
+  <li>Cliquer sur <b>Ouvrir la fenêtre (30 min)</b>.</li>
+  <li>Saisir le nom de la clinique, à l’identique.</li>
+  <li>Saisir le <b>Second profil confirmant (DAF ou Direction)</b> : une personne différente de l’auteur.</li>
+  <li>Saisir le <b>Motif de l’archivage (obligatoire)</b>.</li>
+  <li>Cliquer sur <b>Archiver le jeu de démonstration</b>, puis confirmer. Une sauvegarde chiffrée est faite avant, sans possibilité de la désactiver.</li>
+</ol>
+<figure class="capture" data-capture="admin-20-mere-reinit" data-recadrage="0,60,1800,1100">
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Réinitialisation de production (source simulée).</figcaption>
+</figure>
+<p>L’archivage de la mère passe par des opérations du journal : les fileuls et les mobiles le reçoivent. Les collections que la synchronisation ne porte pas s’archivent poste par poste, par le geste du 12.1.</p>
+<div class="encadre attention" data-titre="Attention : la suppression physique">
+  <p><b>Suppression physique</b> est une porte distincte, hors RG-14 : elle vide l’activité, la Corbeille et le journal, sans retour possible, et remet la numérotation à zéro. Ne jamais l’utiliser pour une mise en production. <b>Régénérer le jeu de démonstration complet</b> fait l’inverse de la mise en production : ne jamais l’utiliser en production.</p>
+</div>
+
+<h2 id="prod-remplacer">12.3 Remplacer les données essentielles</h2>
+<p>L’archivage ne touche pas les collections essentielles. Les remplacer écran par écran :</p>
+<ul>
+  <li>personnel (salaires, catégories, CNSS), postes, soignants, fournisseurs, assureurs, comptes de trésorerie ;</li>
+  <li>comptes de démonstration : les archiver et créer les vrais comptes avec leur mot de passe ;</li>
+  <li>produits, tarifs, barèmes et grille des primes : import validé par la Direction ;</li>
+  <li>répertoire des ambulances : saisir les vrais numéros à la place des numéros fictifs ;</li>
+  <li>matrice des droits : la relire.</li>
+</ul>
+<pre><span class="c"># contrôles après remplacement, depuis la racine du dépôt</span>
+node tools/baguidi/controle-identite.mjs
+node tools/baguidi/demo-liasse.mjs --verifier</pre>
+
+<!-- ============================================================ 13. AUDIT ET SÉCURITÉ -->
+<h1 id="audit"><span class="no">13.</span> Journal d’audit et sécurité</h1>
+<p class="chapo">Toute action est journalisée : utilisateur, date et heure, entité, ancienne et nouvelle valeur. Aucune action anonyme (RG-12).</p>
+
+<h2 id="audit-lire">13.1 Lire le journal d’audit</h2>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Journal d’audit</span>.</li>
+  <li>Filtrer par <b>Action</b>, <b>Module</b>, <b>Utilisateur</b> ou <b>Résultat</b>.</li>
+  <li>Cliquer sur <b>Imprimer le journal</b> ou sur <b>Exporter</b>.</li>
+</ol>
+<figure class="capture" data-capture="admin-10-audit" data-recadrage="0,60,1800,1000">
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Journal d’audit.</figcaption>
+</figure>
+<div class="encadre info">
+  <p>Le journal du poste est plafonné à 400 entrées. Exporter le journal avant un geste qui en ajoute beaucoup, comme l’archivage du jeu de démonstration.</p>
+</div>
+
+<h2 id="audit-verrou">13.2 Verrouillage de session</h2>
+<ul>
+  <li>Quinze minutes d’inactivité verrouillent l’écran. La session est suspendue, pas fermée ; le verrouillage est journalisé.</li>
+  <li>Un poste désigné « de secours » se verrouille plus vite : <code>securite.delaiVerrouPosteSecours</code>, 5 minutes par défaut (valeur d’attente).</li>
+  <li><span class="ch">Système ➔ Sécurité &amp; Utilisateurs ➔ Sessions actives</span> liste les sessions et permet de les clôturer. <b>Désigner ce poste comme poste de secours</b> se règle sur le poste lui-même.</li>
+</ul>
+
+<h2 id="audit-tentatives">13.3 Tentatives de connexion refusées</h2>
+<p>Un compte rattaché à un rôle archivé ne peut plus se connecter. Chaque tentative est écrite.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Rôles &amp; permissions (RBAC) ➔ Tentatives refusées</span>.</li>
+  <li>Lire le compte, l’horodatage et le <b>Motif du refus</b>.</li>
+  <li>Cliquer sur <b>Marquer comme examinée</b>.</li>
+</ol>
+<div class="encadre observer">
+  <p>L’indicateur <b>Tentatives refusées</b> de l’écran des rôles compte celles qui restent à examiner. L’écran <b>Sécurité des utilisateurs</b> est réservé à l’administrateur système.</p>
+</div>
+
+<h2 id="audit-sec">13.4 Bonnes pratiques de sécurité</h2>
+<div class="encadre bonne">
+  <ul>
+    <li>Deux administrateurs au moins, chacun avec son compte.</li>
+    <li>Double facteur pour l’administrateur et la Direction.</li>
+    <li>Code de secours et clé de clinique au coffre, chacun sous scellé.</li>
+    <li>Revue trimestrielle de la matrice des droits, imprimée et signée.</li>
+  </ul>
+</div>
+
+<!-- ============================================================ 14. RELAIS -->
+<h1 id="relais"><span class="no">14.</span> Relais web : déploiement cPanel</h1>
+<p class="chapo">Le relais est opaque : il stocke des enveloppes chiffrées et des indicateurs sans nom de patient. Il ne porte aucune règle de gestion.</p>
+<div class="encadre info" data-titre="Schémas, pas de captures">
+  <p>Le relais Laravel n’a pas pu être exécuté pour ce manuel. Ce chapitre utilise des schémas, et non de fausses captures. Toute la procédure est <span class="non-verifie">Non vérifiée sur l’hébergement réel</span>.</p>
+</div>
+
+<h2 id="relais-prerequis">14.1 Prérequis de l’hébergement</h2>
+<ul>
+  <li>PHP 8.2 ou plus et PostgreSQL.</li>
+  <li>Une tâche cron chaque minute.</li>
+  <li>Pas de SSH, pas de Redis, pas de WebSocket : le relais n’en a pas besoin.</li>
+</ul>
+<figure>
+<svg class="schema" viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs><marker id="f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
+  <g font-size="13" text-anchor="middle">
+    <rect x="20" y="40" width="190" height="150" rx="12" fill="#EEF4FC" stroke="#1565C0" stroke-width="2"/>
+    <text x="115" y="70" font-weight="700" fill="#123A6B">Poste de développement</text>
+    <text x="115" y="100" font-size="11.5" fill="#334155">composer install</text>
+    <text x="115" y="118" font-size="11.5" fill="#334155">--no-dev</text>
+    <text x="115" y="136" font-size="11.5" fill="#334155">--optimize-autoloader</text>
+    <text x="115" y="166" font-size="11" fill="#64748B">dossier apps/web prêt</text>
+    <rect x="270" y="40" width="190" height="150" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="365" y="70" font-weight="700" fill="#D32F2F">Téléversement</text>
+    <text x="365" y="100" font-size="11.5" fill="#334155">gestionnaire de fichiers</text>
+    <text x="365" y="118" font-size="11.5" fill="#334155">cPanel</text>
+    <text x="365" y="148" font-size="11.5" fill="#334155">racine web du domaine</text>
+    <text x="365" y="166" font-size="11.5" font-weight="700" fill="#123A6B">= public/</text>
+    <rect x="520" y="40" width="190" height="150" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="615" y="70" font-weight="700" fill="#D32F2F">Sur le serveur</text>
+    <text x="615" y="100" font-size="11.5" fill="#334155">.env (production.env.exemple)</text>
+    <text x="615" y="118" font-size="11.5" fill="#334155">php artisan migrate --force</text>
+    <text x="615" y="136" font-size="11.5" fill="#334155">relais:superadmin</text>
+    <text x="615" y="166" font-size="11" fill="#64748B">base PostgreSQL créée</text>
+    <rect x="770" y="40" width="110" height="150" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+    <text x="825" y="70" font-weight="700" fill="#15803D">Cron</text>
+    <text x="825" y="100" font-size="11" fill="#334155">chaque minute</text>
+    <text x="825" y="126" font-size="11" fill="#334155">schedule:run</text>
+    <text x="825" y="146" font-size="11" fill="#334155">queue:work</text>
+  </g>
+  <g stroke="#D32F2F" stroke-width="2.4"><path d="M212 115H266" marker-end="url(#f2)"/><path d="M462 115H516" marker-end="url(#f2)"/><path d="M712 115H766" marker-end="url(#f2)"/></g>
+  <text x="450" y="228" text-anchor="middle" font-size="12" fill="#475569">Rien ne se compile chez l’hébergeur : tout est préparé sur le poste de développement.</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>Les quatre temps du déploiement du relais.</figcaption>
+</figure>
+
+<h2 id="relais-deployer">14.2 Déployer pas à pas</h2>
+<ol class="etapes">
+  <li>Sur le poste de développement, installer les dépendances de production :
+<pre>cd apps/web
+composer install --no-dev --optimize-autoloader</pre></li>
+  <li>Téléverser le dossier <code>apps/web</code> sur l’hébergeur.</li>
+  <li>Faire pointer la racine web du domaine sur le sous-dossier <code>public/</code>.</li>
+  <li>Créer la base PostgreSQL et son utilisateur dans cPanel.</li>
+  <li>Copier <code>production.env.exemple</code> en <code>.env</code> à la racine du dossier téléversé. Renseigner <code>APP_URL</code>, <code>APP_KEY</code>, <code>DB_*</code> et <code>RELAIS_SECRET_MERE</code> (texte long et aléatoire).</li>
+  <li>Migrer la base et créer le compte du panneau (terminal cPanel ou tâche ponctuelle) :
+<pre>php artisan migrate --force
+php artisan relais:superadmin direction@clinique.bj --mot-de-passe='douze-caracteres-minimum'</pre></li>
+  <li>Ajouter les tâches cron, chaque minute (détail des tâches en 14.7) :
+<pre>php /chemin/vers/apps/web/artisan schedule:run
+php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
+  <li>Sur le poste mère, activer la mère avec le même secret (chapitre 2).</li>
+</ol>
+<div class="encadre attention">
+  <p>Le fichier <code>.env</code> ne va jamais dans le dépôt. Le <code>RELAIS_SECRET_MERE</code> du relais et le <b>Secret de la mère</b> saisi sur le poste doivent être identiques au caractère près.</p>
+</div>
+<div class="encadre param" data-titre="Paramétrage du relais (.env)">
+  <p><code>RELAIS_INDICATEURS_CLINIQUE_MAX</code> (500 instantanés gardés), <code>RELAIS_SEUIL_INDICATEURS_CLINIQUE_MS</code> (plancher de l’alerte « trop ancien », 1 h), <code>RELAIS_INDICATEURS_CLINIQUE_OCTETS_MAX</code>. Voir <code>config/relais.php</code>. Les SMS (<code>RELAIS_SMS_*</code>) et la satisfaction en ligne (<code>RELAIS_SATISFACTION_*</code>) sont décrits en 14.5 et 14.6.</p>
+</div>
+<div class="encadre info" data-titre="L’adresse du relais">
+  <p>Dans ce manuel, <code>https://sighcbg.exemple.bj</code> désigne l’<b>adresse du relais de la clinique</b>. Remplacer cet exemple par l’adresse réelle que la clinique aura retenue. L’adresse du relais et celle de la messagerie de la clinique restent <b>à renseigner</b>.</p>
+</div>
+
+<h2 id="relais-panneau">14.3 Le panneau superadmin</h2>
+<p>Le panneau est réservé aux comptes superadmin créés par <code>relais:superadmin</code>. Il ne montre jamais un dossier. Son menu porte quinze entrées :</p>
+<table class="tableau">
+  <thead><tr><th style="width:36%">Entrée du menu</th><th>Usage</th></tr></thead>
+  <tbody>
+    <tr><td><b>Tableau de bord du relais</b></td><td>Le battement de cœur de la mère, les volumes d’enveloppes et les alertes.</td></tr>
+    <tr><td><b>Tableau de bord de la clinique</b></td><td>Les indicateurs agrégés non nominatifs envoyés par la mère, en lecture seule (<code>/panneau/clinique</code>).</td></tr>
+    <tr><td><b>Appareils</b>, <b>Codes d’appairage</b></td><td>Les appareils connus du relais et les codes émis.</td></tr>
+    <tr><td><b>Boîtes aux lettres</b>, <b>Synchronisation</b></td><td>Pour chaque appareil : volumes par sens, rangs et tailles des enveloppes ; état de la synchronisation.</td></tr>
+    <tr><td><b>Indicateurs reçus</b>, <b>Alertes et notifications</b></td><td>Les instantanés reçus et les alertes (instantané trop ancien, refus).</td></tr>
+    <tr><td><b>Journal d’audit du relais</b></td><td>Les échanges, journalisés par leur code, jamais par leur contenu.</td></tr>
+    <tr><td><b>Comptes superadmin</b>, <b>Paramètres du relais</b>, <b>Hébergement</b></td><td>Les comptes du panneau, les réglages, et la santé de l’hébergement : PHP, base, cron, disque, certificat.</td></tr>
+    <tr><td><b>Sauvegarde du relais</b>, <b>Consultation des copies</b></td><td>L’export du relais ; la consultation des copies chiffrées, déchiffrées dans le navigateur avec la clé, qui ne quitte pas le navigateur.</td></tr>
+    <tr><td><b>Preuve d’opacité</b></td><td>Ce que le relais détient et ne détient pas, mesuré sur les enveloppes réellement stockées.</td></tr>
+  </tbody>
+</table>
+<figure>
+<svg class="schema" viewBox="0 0 900 230" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <rect x="20" y="20" width="420" height="190" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+  <text x="40" y="50" font-size="15" font-weight="700" fill="#15803D">Ce que le relais voit</text>
+  <g font-size="12.5" fill="#1F2937">
+    <text x="40" y="80">• patients actifs, consultations du mois (des nombres)</text>
+    <text x="40" y="104">• montants facturé, encaissé, reste dû (FCFA)</text>
+    <text x="40" y="128">• articles sous seuil, lots proches de la péremption</text>
+    <text x="40" y="152">• dernière synchronisation de chaque poste</text>
+    <text x="40" y="176">• version de l’application, état du jeu</text>
+  </g>
+  <rect x="460" y="20" width="420" height="190" rx="12" fill="#FDECEC" stroke="#D32F2F" stroke-width="2"/>
+  <text x="480" y="50" font-size="15" font-weight="700" fill="#D32F2F">Ce que le relais ne voit jamais</text>
+  <g font-size="12.5" fill="#1F2937">
+    <text x="480" y="80">• aucun dossier, aucun nom, aucun code patient</text>
+    <text x="480" y="104">• aucun téléphone, adresse, motif, diagnostic</text>
+    <text x="480" y="128">• aucun fournisseur ni agent</text>
+    <text x="480" y="152">• le contenu des enveloppes : chiffré par la clé</text>
+    <text x="480" y="176">  de clinique, absente du relais</text>
+  </g>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>Le tableau de bord de la clinique au relais : indicateurs agrégés, lecture seule.</figcaption>
+</figure>
+<div class="encadre observer">
+  <p>Le contenu exact du dernier instantané envoyé se lit sur la mère : <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Indicateurs publiés</span>. La publication est ouverte par défaut et se ferme à cet écran.</p>
+</div>
+<figure class="capture" data-capture="admin-19-mere-relais" data-recadrage="0,60,1800,820">
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Côté mère : <b>Relais en ligne</b>, liaison, dernier battement et derniers échanges (source simulée).</figcaption>
+</figure>
+
+<h2 id="relais-quota">14.4 Mesurer le quota avant de s’engager</h2>
+<p>Le quota de l’hébergement n’est pas un fait établi : il se mesure. Aucune constante de quota n’existe dans le code.</p>
+<ol class="etapes">
+  <li>Sur la mère, mesurer le magasin et le dossier des scans.</li>
+  <li>Sur l’hébergement, relever l’espace disponible réel (cPanel, « Utilisation du disque »).</li>
+  <li>Lancer l’outil avec <code>--quota-gio</code> :
+<pre>node tools/baguidi/mesurer-quota-relais.mjs --magasin &lt;fichier ou dossier&gt; --fichiers &lt;dossier des scans&gt; --quota-gio &lt;n&gt;</pre></li>
+  <li>Lire le verdict : <i>tient</i>, <i>tient seulement si les copies partagent leurs blocs</i>, <i>ne tient pas</i>.</li>
+  <li>Choisir ensuite la destination des fichiers aux Paramètres (chapitre 11.2).</li>
+</ol>
+
+<h2 id="relais-sms">14.5 SMS par le relais</h2>
+<p>La décision d’architecture ADR-0009 fixe la règle : la <b>mère compose</b> le SMS, le <b>relais l’envoie</b> par une tâche planifiée, puis l’efface. Le fournisseur de SMS n’est connu que du relais.</p>
+<figure>
+<svg class="schema" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs><marker id="fs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
+  <g font-size="13" text-anchor="middle">
+    <rect x="20" y="30" width="230" height="170" rx="12" fill="#EEF4FC" stroke="#1565C0" stroke-width="2"/>
+    <text x="135" y="58" font-weight="700" fill="#123A6B">Poste mère</text>
+    <text x="135" y="86" font-size="11.5" fill="#334155">modèle de message</text>
+    <text x="135" y="104" font-size="11.5" fill="#334155">+ jour, heure, clinique</text>
+    <text x="135" y="128" font-size="11.5" fill="#334155">contrôle : mots interdits,</text>
+    <text x="135" y="146" font-size="11.5" fill="#334155">longueur, numéro</text>
+    <text x="135" y="178" font-size="11" fill="#64748B">journal : numéro masqué</text>
+    <rect x="335" y="30" width="230" height="170" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="450" y="58" font-weight="700" fill="#D32F2F">Relais (sighcbg.exemple.bj)</text>
+    <text x="450" y="86" font-size="11.5" fill="#334155">file sms_sortants</text>
+    <text x="450" y="104" font-size="11.5" fill="#334155">numéro + texte, rien d’autre</text>
+    <text x="450" y="128" font-size="11.5" fill="#334155">cron : relais:sms-envoyer</text>
+    <text x="450" y="146" font-size="11.5" fill="#334155">plafond du jour, 5 tentatives</text>
+    <text x="450" y="178" font-size="11" font-weight="700" fill="#123A6B">effacé dès l’envoi</text>
+    <rect x="650" y="30" width="230" height="170" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+    <text x="765" y="58" font-weight="700" fill="#15803D">Fournisseur de SMS</text>
+    <text x="765" y="86" font-size="11.5" fill="#334155">pilote « journal » : n’envoie rien</text>
+    <text x="765" y="104" font-size="11.5" fill="#334155">pilote « http » : réglé</text>
+    <text x="765" y="122" font-size="11.5" fill="#334155">dans le .env du relais</text>
+    <text x="765" y="178" font-size="11" fill="#64748B">téléphone du patient</text>
+  </g>
+  <g stroke="#D32F2F" stroke-width="2.4"><path d="M252 115H331" marker-end="url(#fs)"/><path d="M567 115H646" marker-end="url(#fs)"/></g>
+  <text x="291" y="104" text-anchor="middle" font-size="10.5" fill="#475569">dépôt signé</text>
+  <text x="606" y="104" text-anchor="middle" font-size="10.5" fill="#475569">envoi</text>
+  <rect x="20" y="222" width="860" height="60" rx="10" fill="#FDECEC" stroke="#D32F2F" stroke-width="1.5"/>
+  <text x="450" y="246" text-anchor="middle" font-size="12.5" font-weight="700" fill="#D32F2F">Le relais ne voit JAMAIS : dossier, nom, motif, diagnostic, examen, occasion.</text>
+  <text x="450" y="268" text-anchor="middle" font-size="12" fill="#1F2937">Un rappel dit le jour, l’heure et la clinique. Aucun contenu médical dans un SMS.</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>Le trajet d’un SMS : composé par la mère, transporté puis effacé par le relais.</figcaption>
+</figure>
+<h3>Régler le relais</h3>
+<ol class="etapes">
+  <li>Dans le <code>.env</code> du relais, choisir le pilote : <code>RELAIS_SMS_PILOTE=journal</code> (défaut, n’envoie rien) ou <code>http</code>.</li>
+  <li>Pour le pilote <code>http</code>, renseigner les variables du fournisseur retenu : <code>RELAIS_SMS_HTTP_URL</code>, <code>RELAIS_SMS_HTTP_CLE</code>, <code>RELAIS_SMS_HTTP_ENTETE_CLE</code>, <code>RELAIS_SMS_HTTP_PREFIXE_CLE</code>, <code>RELAIS_SMS_EXPEDITEUR</code> et les noms de champs <code>RELAIS_SMS_HTTP_CHAMP_NUMERO</code>, <code>_TEXTE</code>, <code>_EXPEDITEUR</code>.</li>
+  <li>Régler le plafond : <code>RELAIS_SMS_PLAFOND_JOUR</code> (défaut 100, jour civil de Porto-Novo).</li>
+  <li>Migrer la base (<code>php artisan migrate --force</code>) : la table <code>sms_sortants</code> est créée.</li>
+  <li>Vérifier que le cron <code>schedule:run</code> tourne chaque minute (section 14.7).</li>
+</ol>
+<table class="tableau">
+  <thead><tr><th style="width:42%">Variable du .env</th><th>Rôle</th><th style="width:14%">Défaut</th></tr></thead>
+  <tbody>
+    <tr><td><code>RELAIS_SMS_PILOTE</code></td><td><code>journal</code> (essai) ou <code>http</code> (pilote générique)</td><td>journal</td></tr>
+    <tr><td><code>RELAIS_SMS_PLAFOND_JOUR</code></td><td>SMS envoyés au plus par jour ; au-delà, dépôt refusé <code>plafond_atteint</code></td><td>100</td></tr>
+    <tr><td><code>RELAIS_SMS_TENTATIVES_MAX</code></td><td>Tentatives avant échec (1 min, 5 min, 15 min, 1 h)</td><td>5</td></tr>
+    <tr><td><code>RELAIS_SMS_LOT</code></td><td>SMS envoyés au plus par passage du cron</td><td>20</td></tr>
+    <tr><td><code>RELAIS_SMS_LONGUEUR_MAX</code>, <code>RELAIS_SMS_OCTETS_MAX</code></td><td>Longueur du texte, taille du dépôt</td><td>320, 4096</td></tr>
+    <tr><td><code>RELAIS_SMS_CONSERVATION_JOURS</code></td><td>Purge des lignes terminées (déjà sans numéro ni texte)</td><td>30</td></tr>
+    <tr><td><code>RELAIS_SMS_HTTP_*</code>, <code>RELAIS_SMS_EXPEDITEUR</code></td><td>Adresse, clé et champs du fournisseur</td><td><em>vide</em></td></tr>
+  </tbody>
+</table>
+<div class="encadre attention" data-titre="Attention : les identifiants du fournisseur">
+  <p>La clé du fournisseur ne vit que dans le <code>.env</code> du relais. Jamais dans le dépôt, jamais sur un poste, jamais dans ce manuel. Aucun fournisseur réel n’est branché : le pilote propre au fournisseur retenu reste à écrire. <span class="non-verifie">Non vérifié avec un fournisseur SMS réel</span></p>
+</div>
+<h3>La passerelle sur le poste mère</h3>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Passerelle SMS</span>.</li>
+  <li>Cocher la case de la passerelle (repère 1). Elle est <b>fermée par défaut</b>.</li>
+  <li>Cliquer sur <b>Tester l’envoi</b> (repère 2) : composer un SMS d’essai vers un numéro de service.</li>
+  <li>Relire la liste des mots interdits (repère 3).</li>
+</ol>
+<figure class="capture" data-capture="admin-21-sms-passerelle" data-recadrage="0,120,1800,1020" data-cibles='[{"c":"Interrupteur","de":"droite","long":120},{"c":"Tester l’envoi","de":"droite"},{"c":"Mots interdits","rect":[56,925,1000,43],"de":"haut","long":60}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Passerelle SMS (source simulée) : plafond lu au relais, pilote d’essai, mots interdits.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Passerelle SMS</b> : ouverte ou fermée ; réglage en base de la mère.</li>
+  <li><span class="num-rouge">2</span><b>Tester l’envoi</b> : le texte exact qui partira est montré avant le dépôt.</li>
+  <li><span class="num-rouge">3</span><b>Mots interdits dans un SMS</b> : liste proposée, <b>à valider par un médecin</b>. Un texte qui en contient un est refusé (<code>SMS_CONTENU_MEDICAL</code>).</li>
+</ul>
+<div class="encadre param">
+  <p>Le geste réservé <code>reglage_sms</code> (« Régler la passerelle SMS et tester l’envoi ») s’ajoute au droit d’écrire l’écran. Origine <b>proposée</b> : l’administrateur et la DAF, à valider par la Direction. Sans lui, les commandes sont absentes.</p>
+</div>
+<h3>Le journal des envois SMS</h3>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Journal des envois SMS</span>.</li>
+  <li>Cliquer sur <b>Composer un SMS</b> (repère 1) : choisir un modèle, saisir le numéro et la date du rendez-vous.</li>
+  <li>Cliquer sur <b>Relever les statuts</b> (repère 2) pour lire l’état au relais. Le suivi est aussi automatique, chaque minute, tant qu’un SMS attend.</li>
+</ol>
+<figure class="capture" data-capture="admin-22-sms-journal" data-recadrage="0,120,1800,880" data-cibles='[{"c":"Composer un SMS","de":"bas"},{"c":"Relever les statuts","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Journal des envois SMS (source simulée) : numéro masqué, modèle, statut, tentatives. Aucun texte n’est gardé.</figcaption>
+</figure>
+<div class="encadre info" data-titre="Ce qui n’est pas encore fait">
+  <ul>
+    <li>Les envois <b>automatiques</b> (rappel la veille du rendez-vous, anniversaire) ne sont pas branchés : seuls la composition et le dépôt manuels existent.</li>
+    <li>Le dossier patient ne porte pas encore de case « accepte les SMS ». Elle est à ajouter avant tout envoi automatique.</li>
+    <li>Le modèle « Résultat disponible » est refusé : il révèle qu’un examen a eu lieu.</li>
+  </ul>
+</div>
+
+<h2 id="relais-satisfaction">14.6 Satisfaction en ligne</h2>
+<p>Un patient répond au questionnaire de satisfaction depuis son téléphone, par un lien ou un QR. Le relais sert la page ; il ne lit aucune réponse.</p>
+<figure>
+<svg class="schema" viewBox="0 0 900 290" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs><marker id="fq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
+  <g font-size="13" text-anchor="middle">
+    <rect x="20" y="30" width="250" height="180" rx="12" fill="#EEF4FC" stroke="#1565C0" stroke-width="2"/>
+    <text x="145" y="58" font-weight="700" fill="#123A6B">Poste mère</text>
+    <text x="145" y="86" font-size="11.5" fill="#334155">1. publie le lien : modèle</text>
+    <text x="145" y="104" font-size="11.5" fill="#334155">+ clé PUBLIQUE de la clinique</text>
+    <text x="145" y="134" font-size="11.5" fill="#334155">4. relève les enveloppes,</text>
+    <text x="145" y="152" font-size="11.5" fill="#334155">déchiffre avec la clé privée</text>
+    <text x="145" y="186" font-size="11" fill="#64748B">clé privée : jamais publiée</text>
+    <rect x="325" y="30" width="250" height="180" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="450" y="58" font-weight="700" fill="#D32F2F">Relais</text>
+    <text x="450" y="86" font-size="11.5" fill="#334155">sert /satisfaction/{jeton}</text>
+    <text x="450" y="110" font-size="11.5" fill="#334155">stocke des enveloppes</text>
+    <text x="450" y="128" font-size="11.5" fill="#334155">chiffrées, illisibles</text>
+    <text x="450" y="152" font-size="11.5" fill="#334155">date = jour de réception</text>
+    <text x="450" y="186" font-size="11" fill="#64748B">ni heure, ni adresse réseau</text>
+    <rect x="630" y="30" width="250" height="180" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+    <text x="755" y="58" font-weight="700" fill="#15803D">Navigateur du patient</text>
+    <text x="755" y="86" font-size="11.5" fill="#334155">2. affiche le questionnaire</text>
+    <text x="755" y="110" font-size="11.5" fill="#334155">3. CHIFFRE les réponses</text>
+    <text x="755" y="128" font-size="11.5" fill="#334155">avec la clé publique</text>
+    <text x="755" y="152" font-size="11.5" fill="#334155">aucune note présélectionnée</text>
+    <text x="755" y="186" font-size="11" fill="#64748B">ni nom, ni n° de dossier</text>
+  </g>
+  <g stroke="#D32F2F" stroke-width="2.4"><path d="M272 100H321" marker-end="url(#fq)"/><path d="M628 120H579" marker-end="url(#fq)"/><path d="M579 90H628" marker-end="url(#fq)"/><path d="M321 145H272" marker-end="url(#fq)"/></g>
+  <text x="450" y="245" text-anchor="middle" font-size="12.5" fill="#1F2937">Les réponses déchiffrées redescendent de la mère aux fileuls, pour les statistiques de satisfaction.</text>
+  <text x="450" y="268" text-anchor="middle" font-size="12" fill="#475569">Un lien en ligne est toujours anonyme : la mère refuse de publier un lien nominatif (LIEN_NOMINATIF).</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>La satisfaction en ligne : chiffrée dans le navigateur, déchiffrée par la seule mère.</figcaption>
+</figure>
+<ol class="etapes">
+  <li>Sur n’importe quel poste, ouvrir <span class="ch">Administration ➔ Enquêtes &amp; questionnaires</span>, onglet <b>Liens de partage</b>, et ouvrir un lien d’usage « Sur Internet, par le relais — depuis chez soi (anonyme, chiffré) ».</li>
+  <li>Attendre la publication par la mère : l’adresse et le QR n’apparaissent qu’ensuite, de la forme <code>https://sighcbg.exemple.bj/satisfaction/&lt;jeton&gt;</code>.</li>
+  <li>Imprimer l’affiche avec <b>Imprimer l’affiche (QR)</b> et la poser en salle d’attente.</li>
+  <li>Sur le poste mère, la carte <b>Satisfaction en ligne (poste mère)</b> dit l’état. <b>Publier et relever maintenant</b> force une relève ; sinon elle a lieu chaque minute au plus.</li>
+</ol>
+<figure class="capture" data-capture="admin-23-satisfaction" data-recadrage="0,640,1800,560" data-cibles='[{"c":"Carte","rect":[56,729,420,25],"de":"droite"},{"c":"Publier et relever maintenant","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Satisfaction en ligne (poste mère)</b> (source simulée) : relais, clé publique, liens, dernière relève, réponses reçues et écartées.</figcaption>
+</figure>
+<ul>
+  <li>Révoquer le lien sur un poste le retire du relais. Un lien retiré ne se republie pas (<code>lien_revoque</code>) : en ouvrir un nouveau.</li>
+  <li>La mère ne retient que les questions du modèle en vigueur, une note de 1 à 5, un choix de la liste, un texte de 1 000 caractères au plus. Une enveloppe illisible est écartée, comptée et nommée au journal technique, sans contenu.</li>
+</ul>
+<table class="tableau">
+  <thead><tr><th style="width:44%">Route du relais</th><th>Usage</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET /satisfaction/{jeton}</code>, <code>GET /satisfaction/{jeton}/modele</code></td><td>La page publique et son modèle (seule page publique du relais).</td></tr>
+    <tr><td><code>POST /satisfaction/{jeton}/reponse</code></td><td>Le dépôt d’une enveloppe chiffrée.</td></tr>
+    <tr><td><code>POST /mere/satisfaction/publier</code>, <code>/revoquer</code>, <code>/relever</code>, <code>/acquitter</code></td><td>Réservées à la mère (secret partagé).</td></tr>
+  </tbody>
+</table>
+<div class="encadre param" data-titre="Paramétrage : config/satisfaction.php">
+  <p><code>RELAIS_SATISFACTION_DEBIT_PAGE</code> (60 pages par minute et par adresse), <code>RELAIS_SATISFACTION_DEBIT_DEPOT</code> (10 dépôts), <code>RELAIS_SATISFACTION_PLAFOND_JOUR</code> (500 réponses par lien et par jour), <code>RELAIS_SATISFACTION_ENVELOPPE_OCTETS_MAX</code> (16 384), <code>RELAIS_SATISFACTION_PUBLICATION_OCTETS_MAX</code> (65 536), <code>RELAIS_SATISFACTION_CONSERVATION_JOURS</code> (30). Fuseau : Africa/Porto-Novo.</p>
+</div>
+<div class="encadre attention" data-titre="Attention : la clé privée">
+  <p>La clé privée de la satisfaction vit dans la base de la mère et suit ses sauvegardes chiffrées. Elle ne tourne pas encore : protéger les sauvegardes comme la clé de clinique.</p>
+</div>
+<p class="non-verifie">Non vérifié sur l’hébergement réel : tests PHPUnit écrits mais non exécutés, page publique vue dans aucun navigateur réel, aucun déploiement cPanel</p>
+
+<h2 id="relais-taches">14.7 Les tâches planifiées du relais</h2>
+<p>Le relais n’a aucun démon. Une seule ligne cron, chaque minute, déclenche toutes ses tâches :</p>
+<pre>* * * * *  php /chemin/vers/apps/web/artisan schedule:run</pre>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Commande</th><th style="width:22%">Fréquence</th><th>Rôle</th></tr></thead>
+  <tbody>
+    <tr><td><code>relais:surveiller</code></td><td>chaque minute</td><td>Marque le passage du cron (écran <b>Hébergement</b>), lève ou résout les alertes.</td></tr>
+    <tr><td><code>relais:sms-envoyer</code></td><td>chaque minute, sans chevauchement</td><td>Envoie les SMS déposés par la mère, puis efface numéro et texte (14.5).</td></tr>
+    <tr><td><code>relais:exporter</code></td><td>chaque jour à 03 h 00</td><td>Export quotidien de la base du relais.</td></tr>
+    <tr><td><code>relais:purger --oui</code></td><td>chaque jour à 03 h 10</td><td>Purge de l’<b>audit</b> du relais, jamais des enveloppes.</td></tr>
+  </tbody>
+</table>
+<div class="encadre observer">
+  <p>Le panneau superadmin, entrée <b>Hébergement</b>, dit l’heure du dernier passage du cron. Un cron arrêté bloque la surveillance <b>et</b> l’envoi des SMS.</p>
+</div>
+
+<!-- ============================================================ 15. DÉPANNAGE -->
+<h1 id="depannage"><span class="no">15.</span> Dépannage</h1>
+<p class="chapo">Chaque refus du logiciel se nomme. Lire le message : il dit la cause et le geste attendu.</p>
+<table class="tableau">
+  <thead><tr><th style="width:24%">Situation</th><th style="width:36%">Ce que l’on observe</th><th>Que faire</th></tr></thead>
+  <tbody>
+    <tr><td><b>Mère coupée</b></td><td>Les fileuls affichent « mère injoignable » et la pastille « hors ligne ». Les décisions restent « en attente de la mère ».</td><td>Redémarrer l’application sur la mère. Les files repartent seules. Ne réinitialiser aucun fileul.</td></tr>
+    <tr><td><b>Fileul hors ligne</b></td><td>Pastille « hors ligne » sur le poste ; dernier contact ancien sur <b>Appareils et appairage</b>.</td><td>Vérifier le réseau et l’adresse de la mère (<b>Réseau local</b>). Le poste continue de saisir ; sa file repart au retour.</td></tr>
+    <tr><td><b>Horloge décalée</b></td><td>« Horloge à vérifier » sur la supervision.</td><td>Corriger l’heure de Windows du poste concerné.</td></tr>
+    <tr><td><b>Disque plein</b></td><td>Contrôle « Disque » en alerte sur la supervision ; sauvegarde refusée.</td><td>Libérer de la place sur la mère. Ne jamais supprimer le dossier des données ni les sauvegardes récentes.</td></tr>
+    <tr><td><b>Conflit</b></td><td>Compteur de <b>Conflits et doublons</b> non nul.</td><td>Ouvrir l’écran, comparer les deux valeurs et trancher.</td></tr>
+    <tr><td><b>Code d’appairage refusé</b></td><td>« Code inconnu », « déjà servi » ou « expiré ».</td><td>Émettre un nouveau code sur la mère (15 minutes, usage unique).</td></tr>
+    <tr><td><b>Relais injoignable</b></td><td>Retard vers le relais qui grandit ; liaison en erreur sur <b>Relais en ligne</b>.</td><td>Cliquer sur <b>Tester la liaison</b>. Vérifier l’adresse, le secret et l’hébergement. Les opérations attendent, chiffrées.</td></tr>
+    <tr><td><b>Mère perdue</b></td><td>La machine mère ne démarre plus.</td><td>Suivre la restauration du chapitre 11.4.</td></tr>
+    <tr><td><b>Facture bloquée à la caisse</b></td><td>Refus <code>FACTURE_EN_ATTENTE_DE_PRIX</code> : une ligne attend son prix.</td><td>Poser le prix daté du jour de la pièce, ou régler le réglage de la section 6.5.</td></tr>
+    <tr><td><b>Décision refusée par la mère</b></td><td><code>COMPTE_NON_INSCRIT</code>, <code>COMPTE_INCONNU</code>, <code>COMPTE_ROLE_DIFFERENT</code>, <code>COMPTE_ARCHIVE</code>.</td><td>Créer ou corriger le compte de l’agent sur la mère, puis refaire le geste sous son compte (10.2).</td></tr>
+    <tr><td><b>SMS refusé</b></td><td><code>plafond_atteint</code> au journal des envois SMS, ou <code>SMS_CONTENU_MEDICAL</code> à la composition.</td><td>Attendre le jour suivant ou relever <code>RELAIS_SMS_PLAFOND_JOUR</code> ; retirer le mot interdit du modèle.</td></tr>
+    <tr><td><b>Aucune réponse en ligne</b></td><td>Carte <b>Satisfaction en ligne</b> : « Relais non configuré » ou dernière relève ancienne.</td><td>Vérifier la liaison avec le relais, puis cliquer sur <b>Publier et relever maintenant</b>.</td></tr>
+    <tr><td><b>Administrateur bloqué</b></td><td>Mot de passe perdu.</td><td>Un second administrateur réinitialise le mot de passe ; sinon, utiliser le code de secours (« Mot de passe administrateur perdu »).</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ ANNEXES -->
+<h1 id="annexe-a"><span class="no">A.</span> Commandes utiles</h1>
+<p class="chapo">Chaque commande existe dans le dépôt. Elles se lancent depuis la racine du dépôt, sauf mention contraire.</p>
+<h3>Vérifier avant de lancer</h3>
+<pre>cd packages/domaine &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
+cd packages/sync_dart &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
+node tools/baguidi/controle-identite.mjs</pre>
+<h3>Lancer un poste en développement</h3>
+<pre>cd apps/poste
+flutter pub get
+flutter run -d windows --dart-define=SIGH_MODE=fileul
+flutter run -d windows --dart-define=SIGH_MODE=mere</pre>
+<h3>Construire l’installateur Windows</h3>
+<pre>cd apps\poste
+build_windows.bat
+<span class="c">rem résultat : build\installer\SIGH_Poste_Setup_&lt;version&gt;.exe et son .sha256</span></pre>
+<h3>Relais web</h3>
+<pre>cd apps/web
+composer install --no-dev --optimize-autoloader
+php artisan migrate --force
+php artisan relais:superadmin votre@courriel.bj --mot-de-passe='douze-caracteres-minimum'
+php artisan test                      <span class="c"># tests (SQLite en mémoire)</span></pre>
+<h3>Quota et contrôles de production</h3>
+<pre>node tools/baguidi/mesurer-quota-relais.mjs --magasin &lt;chemin&gt; --fichiers &lt;chemin&gt; --quota-gio &lt;n&gt;
+node tools/baguidi/demo-liasse.mjs --verifier</pre>
+<h3>Régénérer ce manuel</h3>
+<pre>cd apps/poste &amp;&amp; SIGH_CAPTURES=../../docs/manuels/src/admin/images/brut flutter test test/capture_admin_test.dart &amp;&amp; cd ../..
+dart --packages=apps/poste/.dart_tool/package_config.json docs/manuels/src/admin/outils/extraire_references.dart &gt; docs/manuels/src/admin/references.json
+node docs/manuels/src/admin/generer.mjs</pre>
+
+<h1 id="annexe-b"><span class="no">B.</span> Gestes réservés</h1>
+<p class="chapo">Les <span data-compte="gestes"></span> gestes réservés déclarés dans <code>packages/domaine/lib/src/droits/gestes_reserves.dart</code>, avec leurs rôles d’origine. Liste extraite du code.</p>
+<table class="tableau ref">
+  <thead><tr><th style="width:17%">Identifiant</th><th>Geste</th><th style="width:14%">Module, écran</th><th style="width:19%">Rôles d’origine</th></tr></thead>
+  <tbody data-ref="gestes"></tbody>
+</table>
+
+<h1 id="annexe-c"><span class="no">C.</span> Paramètres de clinique</h1>
+<p class="chapo">Les <span data-compte="parametres"></span> paramètres déclarés dans <code>packages/domaine/lib/src/parametres/definitions.dart</code>, avec leur défaut semé (version 0). La valeur en vigueur se lit dans <b>Paramètres système ➔ Paramètres</b>. Liste extraite du code.</p>
+<div data-ref="parametres"></div>
+
+<h1 id="glossaire">Glossaire</h1>
+<table class="tableau">
+  <tbody>
+    <tr><td style="width:28%"><b>Appairage</b></td><td>Rattachement d’un poste ou d’un téléphone à la mère par un code à usage unique valable 15 minutes.</td></tr>
+    <tr><td><b>Archivage</b></td><td>Suppression logique : la fiche quitte les listes, reste restaurable depuis la Corbeille (RG-14).</td></tr>
+    <tr><td><b>Clé de clinique</b></td><td>Secret qui chiffre tout ce qui quitte la mère : relais, sauvegardes, mobiles. Jamais envoyée au relais.</td></tr>
+    <tr><td><b>Dépôt</b></td><td>Geste fait sur un fileul et transmis à la mère, qui le rejoue sous le rôle de son auteur.</td></tr>
+    <tr><td><b>Famille R</b></td><td>Collections de configuration : la mère seule écrit, les fileuls reçoivent.</td></tr>
+    <tr><td><b>Fileul</b></td><td>Poste de travail rattaché à la mère, avec sa base locale chiffrée et sa file d’envoi.</td></tr>
+    <tr><td><b>Geste transverse</b></td><td>Geste réservé qui ne dépend d’aucun module (module « * ») : il remplace une ancienne liste de rôles écrite dans le code.</td></tr>
+    <tr><td><b>Geste réservé</b></td><td>Droit accordé par rôle sur un geste qui engage un professionnel nommé.</td></tr>
+    <tr><td><b>MECeF</b></td><td>Mécanisme électronique de certification des factures, par boîtier physique ou e-MECeF.</td></tr>
+    <tr><td><b>Mère</b></td><td>Poste serveur de la clinique : service de synchronisation, base de référence, console d’administration.</td></tr>
+    <tr><td><b>Relais</b></td><td>Site web opaque qui transporte les enveloppes chiffrées et garde la copie hors site.</td></tr>
+    <tr><td><b>Surcharge d’écran</b></td><td>Droit réglé pour un écran précis ; il l’emporte sur le droit du module.</td></tr>
+    <tr><td><b>Version datée</b></td><td>Nouvelle valeur d’un paramètre, effective à partir d’une date ; l’ancienne reste lisible.</td></tr>
+  </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+ "id": "auth-reset",
+ "titre": "Réinitialisation du mot de passe",
+ "libelle": "Réinitialisation du mot de passe",
+ "domaine": "Système",
+ "module": "AUTH",
+ "moduleLibelle": "Accès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 756
+}

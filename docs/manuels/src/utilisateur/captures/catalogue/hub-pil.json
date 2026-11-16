@@ -1,0 +1,17 @@
+{
+ "id": "hub-pil",
+ "titre": "Pilotage & analyse",
+ "libelle": "Pilotage & analyse",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-pil"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 644
+}

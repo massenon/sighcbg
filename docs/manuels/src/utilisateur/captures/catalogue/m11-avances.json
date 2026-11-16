@@ -1,0 +1,17 @@
+{
+ "id": "m11-avances",
+ "titre": "Avances sur salaire",
+ "libelle": "Avances sur salaire",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m11-avances"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1133
+}

@@ -1,0 +1,17 @@
+{
+ "id": "dash-admin-agent",
+ "titre": "Tableau de bord — Agent administratif",
+ "libelle": "Agent administratif",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-admin-agent"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1234
+}

@@ -1,0 +1,17 @@
+{
+ "id": "mere-reseau",
+ "titre": "Réseau local",
+ "libelle": "Réseau local",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Plateforme locale",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-reseau"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 977
+}

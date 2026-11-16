@@ -1,0 +1,17 @@
+{
+ "id": "imp-souscripteurs",
+ "titre": "Importation des souscripteurs",
+ "libelle": "Importation des souscripteurs",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-souscripteurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 930
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m11-ortb",
+ "titre": "Redevance ORTB",
+ "libelle": "Redevance ORTB",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m11-ortb"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1196
+}

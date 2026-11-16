@@ -1,0 +1,17 @@
+{
+ "id": "m8-facturation",
+ "titre": "Nouvelle facture",
+ "libelle": "Nouvelle facture",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m8-facturation"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 704
+}

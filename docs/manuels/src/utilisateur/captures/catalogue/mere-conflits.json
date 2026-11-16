@@ -1,0 +1,17 @@
+{
+ "id": "mere-conflits",
+ "titre": "Conflits et doublons",
+ "libelle": "Conflits et doublons",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-conflits"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1077
+}

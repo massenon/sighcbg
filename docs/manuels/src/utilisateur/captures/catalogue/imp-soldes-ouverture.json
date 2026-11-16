@@ -1,0 +1,17 @@
+{
+ "id": "imp-soldes-ouverture",
+ "titre": "Importation des soldes d’ouverture",
+ "libelle": "Importation des soldes d’ouverture",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-soldes-ouverture"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1417
+}

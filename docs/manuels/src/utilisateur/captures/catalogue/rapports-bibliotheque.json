@@ -1,0 +1,17 @@
+{
+ "id": "rapports-bibliotheque",
+ "titre": "Bibliothèque des états",
+ "libelle": "Bibliothèque des états",
+ "domaine": "Administration",
+ "module": "RAP",
+ "moduleLibelle": "Rapports & Impression",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "rapports-bibliotheque"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1413
+}

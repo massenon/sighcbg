@@ -1,0 +1,17 @@
+{
+ "id": "mere-mise-en-service",
+ "titre": "Assistant de première mise en service",
+ "libelle": "Assistant de première mise en service",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Cycle de vie",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-mise-en-service"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1335
+}
