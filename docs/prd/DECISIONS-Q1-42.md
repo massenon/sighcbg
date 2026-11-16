@@ -20,7 +20,7 @@ Quand une question suppose un mécanisme que Baguidi n'a pas (clôture annuelle,
 12. Articles non comptés à l'inventaire : enregistrer « non compté » sur la ligne (changement du moteur d'inventaire).
 13. Dette fournisseur : définition la plus prudente (hors payée et soldée), à confirmer par le Comptable.
 14. Balance âgée des patients : réglage de clinique, 30 et 90 jours semés.
-15. Pharmacie et caisse : même rôle caissier (rôle pharmacien archivé) : confirmé.
+15. Pharmacie et caisse : même rôle caissier (rôle pharmacien archivé) : confirmé. **Précisé le 16/11/2026** : le rôle pharmacien (rouvert le 06/11/2026) est GARDÉ, et aucun rôle n'est écrit en dur pour décider d'un droit de pharmacie ou de caisse : la Direction peut séparer les deux en cochant des cases (ECARTS-MAQUETTE E3210 à E3214).
 16. Paie dans l'assistant : AUCUNE intention de paie en v1, sans exception.
 17. Seuils de l'assistant sur de vraies questions : bonne intention ≥ 90 %, mauvaise intention répondue ≤ 2 %, zéro réponse inventée, 100 % des écritures refusées.
 
