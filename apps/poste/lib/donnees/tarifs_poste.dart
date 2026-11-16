@@ -450,6 +450,45 @@ class TarifsPoste {
     return ouverts;
   }
 
+  /// AJ (note de la Direction du 16/11/2026) : la MÈRE amorce les prestations DÉCIDÉES (`tarPrestationsDecidees` : `CERT-APT-2`, « Certificat d'aptitude », 5 000, SOS seule) et
+  /// le type de pièce numérotée qui les délivre (`patTypePieceCertificatAptitude2`, sigle libre proposé « à valider »). Rejouable, n'écrase rien : une prestation déjà au référentiel
+  /// n'est ni recréée ni réécrite, `CERT-APT` (7 000) n'est pas touché, aucune facture n'est relue. La ligne de départ qui portait encore `CERT-APT` avec ce libellé et ce prix est
+  /// rattachée au nouveau code (le doublon se résout comme par l'arbitrage « deux prestations distinctes »). Rend le nombre de fiches écrites.
+  static int amorcerDecisionsDirection(Magasin m, {DateTime Function()? horloge}) {
+    final h = lire(m);
+    if (h.vide) return 0;
+    final a = tarAmorcerDecisions(h, catalogue: m.collection('catalogueTarifs').toutes);
+    var n = 0;
+    for (final t in a.tarifs) {
+      m.collection(tarCollectionTarifs).ajouterSansJournal(t);
+      n++;
+    }
+    for (final v in a.versions) {
+      m.collection(tarCollectionVersions).ajouterSansJournal(v);
+      n++;
+    }
+    for (final r in a.rattachements) {
+      m.collection(r.collection).mettreAJour(r.id, r.patch, journaliser: false);
+      n++;
+    }
+    final types = m.collection('typesPiece');
+    final fiche = patFicheTypePieceAAmorcer(patTypePieceCertificatAptitude2, types.toutes);
+    if (fiche != null) {
+      types.ajouterSansJournal(fiche);
+      n++;
+    }
+    if (n > 0) {
+      m.journaliser('Prestation décidée par la Direction : amorce', 'CFG', 'prix', tarCodeCertificatAptitude2, null, {
+        'prestations': [for (final t in a.tarifs) t['code']].join(', '),
+        'lignesRattachées': [for (final r in a.rattachements) r.id].join(', '),
+        if (fiche != null) 'typeDePièce': '${fiche['id']} (${fiche['sigle']}, à valider)',
+        'source': 'Note de la Direction du 16/11/2026',
+      });
+      projeter(m, (horloge ?? m.horloge)());
+    }
+    return n;
+  }
+
   // --- Les prix EN DOUBLON : l'arbitrage de la Direction (16/11/2026) -------------------------------------------------------------------------------------
 
   /// Les codes de prestation portés deux fois, aux prix différents, par une liste de départ (`catalogueTarifs`, `actes`) : à arbitrer. La caisse lit, tant que rien n'est arbitré, la première ligne.
@@ -535,7 +574,12 @@ class TarifsPoste {
         codesFamille: [for (final p in siens) '${p['code']}'],
         libellesFamille: [for (final p in siens) '${p['libelle'] ?? p['code']}'],
         codesPris: codesPris(m),
-        codesDemandes: codesDemandes);
+        codesDemandes: codesDemandes,
+        // AJ (16/11/2026) : une prestation que la Direction a DÉCIDÉE (CERT-APT-2) et qui est au référentiel : la ligne qui lui correspond s'y rattache, jamais un rang de plus.
+        codesDecides: {
+          for (final e in tarCodesDecides().entries)
+            if (h.parCode[e.value] != null) e.key: e.value
+        });
   }
 
   /// L'APERÇU de ce que le geste ferait (nouveaux codes proposés), sans rien écrire : la modale de confirmation le montre avant le motif.
@@ -576,6 +620,19 @@ class TarifsPoste {
     final col = m.collection(d.collection);
     final ecrits = <String>[];
     for (final i in r.identites) {
+      if (i.prestationDecidee) {
+        // La prestation existe déjà, décidée par la Direction avec son prix : la ligne de départ s'y rattache, sans création ni proposition.
+        col.mettreAJour(i.ficheId, {
+          'code': i.nouveauCode,
+          'codeAnterieur': i.ancienCode,
+          'motifDistinct': motif.trim(),
+          'distinctDe': i.ancienCode,
+          'distinctPar': cx.auteur,
+          'distinctLe': aujourdhui,
+        }, journaliser: false);
+        ecrits.add('${i.ancienCode} vers ${i.nouveauCode} (prestation décidée)');
+        continue;
+      }
       final creation = <String, Object?>{
         'libelle': i.libelle,
         'famille': i.famille,
