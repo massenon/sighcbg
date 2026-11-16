@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_poste/core/config_poste.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show adaptateurPourMode, mecefCleMode, parametreDateIso;
+import 'package:sigh_domaine/sigh_domaine.dart'
+    show acheteurNormaliseAuBareme, adaptateurPourMode, aibPourAcheteur, mecefCleMode, mecefMentionFacturePatient, parametreDateIso, validerAcheteurMecef;
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
@@ -9,13 +10,18 @@ import 'package:sigh_poste/donnees/mecef_poste.dart';
 import 'package:sigh_poste/donnees/normalisation_mecef.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/kit/kit.dart';
-import 'package:sigh_poste/modules/m8/acheteur_normalise.dart';
+import 'package:sigh_poste/donnees/parametres_aib.dart';
 import 'package:sigh_poste/main.dart';
 
 import 'aide_polices.dart';
 
-/// La fenêtre « Facture normalisée » à l'émission et la NORMALISATION de la vente soldée (E2299) : toute vente est normalisée, le numéro ne naît
-/// jamais à l'émission, un refus nomme son défaut et n'écrit rien. Aucun boîtier n'est branché : le numéro est celui de l'appareil de démonstration.
+/// La NORMALISATION de la vente soldée (E2299) : toute vente est normalisée, le numéro ne naît jamais à l'émission, un refus nomme son défaut et n'écrit
+/// rien. Aucun boîtier n'est branché : aucun numéro n'est fabriqué.
+///
+/// PORTÉ PUIS CORRIGÉ PAR DÉCISION (Direction de Baguidi, 16/11/2026, E3770 à E3779) : ce fichier éprouvait la fenêtre « Facture normalisée » de l'émission
+/// (IFU de l'acheteur, Nom de l'acheteur, Situation de l'acheteur pour l'AIB) et le taux d'AIB par défaut lu au barème (D1). La facture d'un PATIENT ne porte
+/// plus ni acheteur ni AIB : chaque test est GARDÉ et dit désormais la règle nouvelle (bloc absent, aucun AIB, aucun refus d'acheteur au guichet) ; ce que
+/// l'ancien test prouvait du contrôle de l'acheteur est éprouvé au MOTEUR du domaine, gardé pour une vente à un tiers payeur.
 final donnees = DonneesNavigation.depuisDossier();
 final aujourdhui = DateTime(2026, 10, 30);
 
@@ -77,45 +83,60 @@ void main() {
   setUp(() => ImpressionPoste.enregistrer = (pdf, nom) async => '/faux/$nom.pdf');
   tearDown(ToastsSigh.viderPourTests);
 
-  cas('la fenêtre « Facture normalisée » est à l\'émission : trois champs, la phrase qui dit que ce sont les seuls', (t) async {
+  Future<void> blocAbsent(WidgetTester t) async {
+    expect(find.text('FACTURE NORMALISÉE'), findsNothing);
+    expect(find.text('IFU de l’acheteur'), findsNothing);
+    expect(find.text('Nom de l’acheteur'), findsNothing);
+    expect(find.text('Situation de l’acheteur (AIB)'), findsNothing);
+    for (final k in ['acheteurIfu', 'acheteurNom', 'acheteurAib']) {
+      expect(find.byKey(Key('kit:champ:$k')), findsNothing, reason: k);
+    }
+    expect(find.byKey(const Key('mecef:acheteur')), findsNothing);
+    expect(find.byKey(const Key('mecef:aib-taux')), findsNothing);
+  }
+
+  cas('E3771 (porté puis corrigé) : la fenêtre « Facture normalisée » a DISPARU de l\'émission — ni IFU, ni nom de l\'acheteur, ni taux d\'AIB, ni leurs phrases', (t) async {
     await ouvrir(t, magasin());
-    expect(find.text('FACTURE NORMALISÉE'), findsOneWidget);
-    expect(find.text('IFU de l’acheteur'), findsWidgets);
-    expect(find.text('Nom de l’acheteur'), findsWidgets);
-    expect(find.text('Situation de l’acheteur (AIB)'), findsWidgets);
-    expect(find.textContaining('Toute vente est normalisée'), findsOneWidget);
-    // Le taux affiché vient du BARÈME à la date de la facture (30/10/2026) : sans IFU, 5 % arrêté depuis le 07/09/2026, calculé sur le hors taxes.
-    expect(find.textContaining('AIB au 30/10/2026 : 5 %'), findsOneWidget);
-    expect(find.textContaining('arrêté, en vigueur depuis le 07/09/2026'), findsOneWidget);
-    expect(find.textContaining('hors taxes'), findsWidgets);
+    await blocAbsent(t);
+    expect(find.textContaining('Toute vente est normalisée : l’IFU'), findsNothing);
+    expect(find.textContaining('AIB au '), findsNothing);
+    expect(find.textContaining('Le taux d’AIB vient du barème'), findsNothing);
+    // À la place : la mention de la facture patient, normalisée sans acheteur ni AIB.
+    expect(find.byKey(const Key('mecef:facture-patient')), findsOneWidget);
+    expect(find.text(mecefMentionFacturePatient), findsOneWidget);
   });
 
-  cas('les choix de situation viennent du barème : plus de liste 0 / 1 / 5 % codée, les taux non arrêtés sont dits « à valider »', (t) async {
-    await ouvrir(t, magasin());
-    await toucher(t, find.text('Automatique — d’après l’IFU saisi').first);
-    expect(find.textContaining('Acheteur avec IFU actif — 1 % non arrêté, à valider'), findsWidgets);
-    expect(find.textContaining('Acheteur sans IFU actif — 5 % arrêté'), findsWidgets);
-    expect(find.textContaining('Prestation de service retenue par le payeur — 3 % non arrêté, à valider'), findsWidgets);
-    expect(find.text('1 % (taux de la facture de référence, à confirmer)'), findsNothing);
+  cas('E3771 : plus aucun choix de situation d\'AIB à l\'émission ; le domaine garde les situations du barème pour une vente à un tiers payeur', (t) async {
+    final m = magasin();
+    await ouvrir(t, m);
+    expect(find.text('Automatique — d’après l’IFU saisi'), findsNothing);
+    expect(find.textContaining('5 % arrêté'), findsNothing);
+    // Ce que l'ancien test prouvait (les taux viennent du barème, un taux non arrêté est « à valider ») reste vrai au moteur de l'acheteur.
+    final r = aibPourAcheteur(
+        ifu: '3201642748214', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+    expect(r.refus!.code, 'AIB_SANS_BAREME');
+    expect(r.nonArretes, contains('1 % — non arrêté, à valider'));
+    final sans = aibPourAcheteur(date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+    expect(sans.taux, 5);
   });
 
-  cas('IFU actif : le 1 % n\'est pas arrêté, la vente est refusée en nommant AIB_SANS_BAREME, rien n\'est écrit', (t) async {
+  cas('E3770 : la vente au patient (30/10/2026) est encaissée et normalisée SANS AIB : aucun refus AIB_SANS_BAREME au guichet (la règle reste au moteur de l\'acheteur tiers)', (t) async {
     final m = magasin();
     final avant = m.collection('factures').actives.length;
-    final ecrAvant = m.collection('ecritures').actives.length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
-    await saisir(t, 'acheteurNom', 'Clinique X');
-    expect(find.textContaining('aucun taux applicable'), findsOneWidget);
-    expect(find.textContaining('1 % — non arrêté, à valider'), findsWidgets);
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
-    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
-    expect(m.collection('factures').actives.length, avant);
-    expect(m.collection('ecritures').actives.length, ecrAvant);
+    expect(find.textContaining('AIB_SANS_BAREME'), findsNothing);
+    expect(m.collection('factures').actives.length, avant + 1);
+    final f = m.collection('factures').actives.first;
+    expect([f['ifuClient'], f['acheteurNom'], f['aibSituation'], f['aibTaux'], f['aibMontant']], [null, null, null, 0, 0]);
+    // D8 tient toujours au moteur : un acheteur tiers avec IFU actif (1 % non arrêté) est refusé en le nommant.
+    final tiers = acheteurNormaliseAuBareme(
+        ifu: '3201642748214', nom: 'Entreprise X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+    expect(tiers.refus!.code, 'AIB_SANS_BAREME');
   });
 
-  cas('à une date AVANT le 07/09/2026 aucun taux n\'est arrêté : refus nommé, jamais un taux commode', (t) async {
+  cas('E3770 : avant le 07/09/2026 non plus, aucun taux n\'est cherché : la vente au patient passe, sans AIB ni taux de repli', (t) async {
     final m = magasin();
     final avant = m.collection('factures').actives.length;
     t.view.physicalSize = const Size(1600, 2400);
@@ -132,30 +153,35 @@ void main() {
       await t.pump(const Duration(milliseconds: 100));
     }
     await ajouterLibre(t, 'Carnet de santé', '500');
-    expect(find.textContaining('aucun taux applicable'), findsOneWidget);
+    expect(find.textContaining('aucun taux applicable'), findsNothing);
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
-    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
-    expect(find.textContaining('07/09/2026'), findsWidgets);
-    expect(m.collection('factures').actives.length, avant);
+    expect(find.textContaining('AIB_SANS_BAREME'), findsNothing);
+    expect(m.collection('factures').actives.length, avant + 1);
+    final f = m.collection('factures').actives.first;
+    expect([f['aibTaux'], f['aibRepli'], f['aibMotif']], [0, null, null]);
   });
 
-  cas('l\'agent change la situation : « sans IFU actif » (5 % arrêté) sur un acheteur qui présente un IFU ; une situation non arrêtée reste refusée', (t) async {
+  cas('E3771 : l\'agent n\'a plus de situation à choisir à l\'émission ; au moteur, « sans IFU actif » rend 5 % arrêté et une situation non arrêtée reste refusée', (t) async {
     final m = magasin();
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
-    await saisir(t, 'acheteurNom', 'Clinique X');
-    await choisir(t, 'Automatique — d’après l’IFU saisi', 'Prestation de service retenue par le payeur — 3 % non arrêté, à valider');
-    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
-    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
-    expect(m.collection('factures').actives.where((f) => f['ifuClient'] == '3201642748214'), isEmpty);
+    expect(find.byKey(const Key('kit:champ:acheteurAib')), findsNothing);
+    Iterable<Map<String, Object?>> s() => m.collection('situationsAib').actives;
+    Iterable<Map<String, Object?>> v() => m.collection('baremeAib').actives;
+    final cinq = acheteurNormaliseAuBareme(
+        ifu: '3201642748214', nom: 'Entreprise X', situationChoisie: 'ifu_inactif_ou_absent', date: aujourdhui, situations: s(), versions: v());
+    expect([cinq.acheteur!.aibTaux, cinq.acheteur!.aibSituation], [5, 'ifu_inactif_ou_absent']);
+    final trois = acheteurNormaliseAuBareme(
+        ifu: '3201642748214', nom: 'Entreprise X', situationChoisie: 'prestation_service', date: aujourdhui, situations: s(), versions: v());
+    expect(trois.refus!.code, 'AIB_SANS_BAREME');
   });
 
-  cas('MECeF fermé (bascule mecefActif) : la fenêtre est absente, la pièce ne porte aucun champ fiscal ni acheteur, le barème n\'est pas lu', (t) async {
+  cas('MECeF fermé (bascule mecefActif) : ni bloc ni mention, la pièce ne porte aucun champ fiscal ni acheteur, le barème n\'est pas lu', (t) async {
     final m = magasin();
     m.collection('modulesActifs').inserer({'module': 'MECEF', 'actif': false, 'statut': 'actif'});
     await ouvrir(t, m);
     expect(find.text('FACTURE NORMALISÉE'), findsNothing);
+    expect(find.byKey(const Key('mecef:facture-patient')), findsNothing);
     await ajouterLibre(t, 'Carnet de santé', '500');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     final f = m.collection('factures').actives.first;
@@ -165,47 +191,37 @@ void main() {
     }
   });
 
-  cas('un IFU invalide est refusé en le nommant, AVANT toute écriture', (t) async {
+  cas('E3771 : plus de saisie d\'IFU à l\'émission, donc plus de refus IFU_INVALIDE au guichet ; le contrôle reste au moteur (vente à un tiers)', (t) async {
     final m = magasin();
-    final avant = m.collection('factures').actives.length;
-    final ecrAvant = m.collection('ecritures').actives.length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '123');
-    await saisir(t, 'acheteurNom', 'Clinique X');
-    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
-    expect(find.textContaining('IFU_INVALIDE'), findsWidgets);
-    expect(find.textContaining('13 chiffres'), findsWidgets);
-    expect(m.collection('factures').actives.length, avant);
-    expect(m.collection('ecritures').actives.length, ecrAvant);
+    await blocAbsent(t);
+    final r = validerAcheteurMecef(ifu: '123', nom: 'Entreprise X', aibTaux: 0);
+    expect(r.refus!.code, 'IFU_INVALIDE');
+    expect(r.refus!.motif, contains('13 chiffres'));
   });
 
-  cas('un IFU sans nom est refusé en le nommant', (t) async {
+  cas('E3771 : un IFU sans nom ne se saisit plus au guichet ; au moteur il reste refusé en le nommant', (t) async {
     final m = magasin();
-    final avant = m.collection('factures').actives.length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201642748214');
-    await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
-    expect(find.textContaining('NOM_ACHETEUR_ABSENT'), findsWidgets);
-    expect(m.collection('factures').actives.length, avant);
+    await blocAbsent(t);
+    expect(validerAcheteurMecef(ifu: '3201642748214', aibTaux: 0).refus!.code, 'NOM_ACHETEUR_ABSENT');
   });
 
-  cas('vente soldée : l\'acheteur est rangé dans la pièce, la vente reste EN ATTENTE de certification et ne reçoit AUCUN numéro (lot L3)', (t) async {
+  cas('vente soldée : AUCUN acheteur dans la pièce ni AIB (E3770), la vente reste EN ATTENTE de certification et ne reçoit AUCUN numéro (lot L3)', (t) async {
     final m = magasin();
     final numeros0 = numerosPris(m).length;
     await ouvrir(t, m);
     await ajouterLibre(t, 'Carnet de santé', '500');
-    await saisir(t, 'acheteurIfu', '3201 6427 48214');
-    await saisir(t, 'acheteurNom', 'Clinique X');
-    await choisir(t, 'Automatique — d’après l’IFU saisi', 'Acheteur sans IFU actif — 5 % arrêté');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer et encaisser'));
     final f = m.collection('factures').actives.first;
     expect(f['statutPaiement'], 'soldee');
-    expect(f['aibSituation'], 'ifu_inactif_ou_absent');
-    expect(f['ifuClient'], '3201642748214');
-    expect(f['acheteurNom'], 'Clinique X');
-    expect(f['aibTaux'], 5);
+    expect(f['aibSituation'], isNull);
+    expect(f['ifuClient'], isNull);
+    expect(f['acheteurNom'], isNull);
+    expect(f['aibTaux'], 0);
+    expect(f['aibMontant'], 0);
     expect(f['statutMecef'], 'en_attente');
     expect(f['numeroMecef'], isNull, reason: 'aucun numéro fabriqué');
     expect(f['codeRetour'], 'MECEF_NON_CONFIGURE');
@@ -319,15 +335,18 @@ void main() {
       expect(apres['numeroMecef'], isNull);
     });
 
-    test('un refus d\'acheteur n\'écrit rien', () {
+    test('E3770 (porté puis corrigé) : une pièce qui porte encore un IFU invalide n\'est plus refusée — facture patient, normalisée sans acheteur, le journal dit ce qui est retiré', () {
       final m = magasin();
-      final f = vente(m);
-      final r = normaliserVente(m, '${f['id']}',
-          acheteur: {'ifu': '12', 'nom': 'X'}, maintenant: aujourdhui);
-      expect(r.code, 'IFU_INVALIDE');
+      final f = vente(m, {'ifuClient': '12', 'acheteurNom': 'X'});
+      final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'aucun refus d\'acheteur : il n\'y a pas d\'acheteur');
       final apres = m.collection('factures').parId(f['id'])!;
       expect(apres['statutMecef'], 'en_attente');
       expect(apres['ifuClient'], isNull);
+      expect(apres['acheteurNom'], isNull);
+      final j = m.collection('audit').toutes.lastWhere((a) => '${a['action']}'.startsWith('Normalisation'));
+      expect((j['avant'] as Map)['ifuClient'], '12');
+      expect('${(j['apres'] as Map)['aib']}', contains('retiré : ifuClient 12'));
     });
 
     test('une pro-forma ne se normalise pas', () {
@@ -336,61 +355,58 @@ void main() {
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'PROFORMA');
     });
 
-    // D1 (Direction, 09/11/2026) : vente sans acheteur et retransmission lisent le taux au barème daté ; sans taux arrêté en vigueur, le repli des Paramètres (0 %).
-    test('D1 vente sans acheteur au 30/10/2026 : le taux ARRÊTÉ du barème (5 %), pas un 1 % écrit en dur ; la pièce porte son motif', () {
+    // D1 (Direction, 09/11/2026) : vente sans acheteur et retransmission lisaient le taux au barème daté ; PORTÉ PUIS CORRIGÉ par la décision du 16/11/2026
+    // (E3770) : la facture d'un patient ne porte aucun AIB, aucun taux n'est lu au barème ni au repli. Les tests sont gardés et disent la règle nouvelle.
+    test('D1 corrigé : vente sans acheteur au 30/10/2026 — plus aucun taux lu au barème (le 5 % arrêté ne s\'applique pas), AIB 0, aucun motif ; le journal dit « facture patient »', () {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
-      expect([p['aibTaux'], p['aibSituation'], p['aibMontant'], p['aibRepli']], [5, 'ifu_inactif_ou_absent', 500, null]);
-      expect(p['aibMotif'], 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
-      expect(m.collection('audit').toutes.any((a) => '${a['action']}'.startsWith('Normalisation') && '${(a['apres'] as Map)['aib']}'.contains('5 % — Taux de 5 % arrêté')), isTrue,
-          reason: 'le motif du moteur est journalisé');
+      expect([p['aibTaux'], p['aibSituation'], p['aibMontant'], p['aibRepli'], p['aibMotif']], [0, null, 0, null, null]);
+      expect(m.collection('audit').toutes.any((a) => '${a['action']}'.startsWith('Normalisation') && '${(a['apres'] as Map)['aib']}'.contains('facture patient')), isTrue,
+          reason: 'le journal dit pourquoi aucun AIB n\'est porté');
     });
 
-    test('D1 vente sans acheteur AVANT l\'arrêt du 5 % : aucun taux arrêté → 0 %, repli annoncé avec le motif du moteur, journalisé', () {
+    test('D1 corrigé : vente sans acheteur AVANT l\'arrêt du 5 % — aucun AIB, et pas davantage de « repli » annoncé', () {
       final m = magasin();
       final f = vente(m, {'date': '2026-08-01'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
-      expect([p['aibTaux'], p['aibMontant'], p['aibRepli']], [0, 0, true]);
+      expect([p['aibTaux'], p['aibMontant'], p['aibRepli']], [0, 0, null]);
       expect(p['aibSituation'], isNull);
-      expect(p['aibMotif'], contains('Aucun taux arrêté en vigueur au 01/08/2026 : AIB à 0 %'));
-      expect(p['aibMotif'], contains('Aucun taux arrêté avant le 07/09/2026'));
-      expect(m.collection('audit').toutes.any((a) => '${a['action']}'.startsWith('Normalisation') && '${(a['apres'] as Map)['aib']}'.contains('0 % — Aucun taux arrêté en vigueur')), isTrue);
+      expect(p['aibMotif'], isNull);
+      expect(m.collection('audit').toutes.any((a) => '${(a['apres'] as Map?)?['aib'] ?? ''}'.contains('Aucun taux arrêté')), isFalse);
     });
 
-    test('D1 retransmission d\'une pièce refusée puis corrigée : le taux se lit à la date de la facture, le refus n\'écrit pas un taux périmé', () {
+    test('D1 corrigé : retransmission d\'une pièce refusée puis corrigée — le refus n\'écrit aucun taux, la retransmission normalise sans AIB', () {
       final m = magasin();
       final f = vente(m, {'montantTTC': 10001, 'date': '2026-10-30'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'TOTAL_INCOHERENT');
       final refusee = m.collection('factures').parId(f['id'])!;
       expect(refusee['statutMecef'], 'rejete');
-      expect(refusee.containsKey('aibTaux'), isFalse, reason: 'un taux lu par défaut ne se porte pas sur une pièce refusée');
-      // la correction, puis la retransmission : le taux arrêté est lu à la date de la facture
+      expect(refusee.containsKey('aibTaux'), isFalse, reason: 'un refus ne porte aucun taux');
       m.collection('factures').mettreAJour(f['id'], {'montantTTC': 10000});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
-      expect(m.collection('factures').parId(f['id'])!['aibTaux'], 5);
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le numéro attend l\'adaptateur');
+      expect(m.collection('factures').parId(f['id'])!['aibTaux'], 0);
     });
 
-    test('D1 acheteur avec IFU actif, 1 % non arrêté : la retransmission applique 0 % (jamais le 1 %), D8 : la fenêtre, elle, refuse ce même acheteur', () {
+    test('D1 corrigé : une pièce qui porte encore un acheteur avec IFU actif est normalisée sans acheteur ni AIB ; D8 : le moteur de l\'acheteur tiers refuse toujours ce même acheteur', () {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
       final r = normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
-      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le taux est posé, le numéro attend l\'adaptateur');
+      expect(r.code, 'MECEF_NON_CONFIGURE', reason: 'lot L3 : le numéro attend l\'adaptateur');
       final p = m.collection('factures').parId(f['id'])!;
-      expect([p['aibTaux'], p['aibRepli']], [0, true]);
-      expect(p['aibMotif'], contains('0 %'));
-      // D8 : la fenêtre « Facture normalisée » GARDE son refus nommé pour le même acheteur tant que le 1 % n'est pas arrêté.
-      final ctl = ControleurFormulaire(champsAcheteurNormalise(m, aujourdhui), {...valeursAcheteur(null), 'acheteurIfu': '3201642748214', 'acheteurNom': 'Clinique X'});
-      final refus = controlerAcheteur(ctl, m, aujourdhui);
-      expect(refus!.code, 'AIB_SANS_BAREME');
+      expect([p['aibTaux'], p['aibRepli'], p['ifuClient'], p['acheteurNom']], [0, null, null, null]);
+      // D8 : la fenêtre a disparu ; son refus nommé reste celui du moteur pour une vente à un tiers, tant que le 1 % n'est pas arrêté.
+      final tiers = acheteurNormaliseAuBareme(
+          ifu: '3201642748214', nom: 'Clinique X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+      expect(tiers.refus!.code, 'AIB_SANS_BAREME');
     });
 
-    test('D1 le taux de repli est celui des Paramètres : validé à 3 % pour l\'IFU actif, la retransmission applique 3 %', () {
+    test('D1 corrigé : le taux de repli des Paramètres (validé à 3 %) ne s\'applique pas à une facture patient', () {
       final m = magasin();
       m.collection('parametresAib').ajouterSansJournal({
         'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif',
@@ -399,28 +415,31 @@ void main() {
       final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'Clinique X'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
-      expect([p['aibTaux'], p['aibMontant']], [3, 300]);
+      expect([p['aibTaux'], p['aibMontant']], [0, 0]);
+      expect(parametresAib(m, aujourdhui).tauxRepli, 3, reason: 'le réglage existe, il ne vise pas la facture patient');
     });
 
-    test('une pièce qui porte déjà son taux le GARDE : la fenêtre a décidé, le défaut ne la réécrit pas', () {
+    test('E3770 : une pièce qui porte encore un taux (5 %, encaissée avant la décision) est normalisée SANS AIB : le taux est retiré et le journal le dit', () {
       final m = magasin();
       final f = vente(m, {'date': '2026-10-30', 'aibTaux': 5, 'aibSituation': 'ifu_inactif_ou_absent'});
       expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
       final p = m.collection('factures').parId(f['id'])!;
-      expect(p['aibTaux'], 5);
-      expect(p.containsKey('aibMotif'), isFalse);
+      expect([p['aibTaux'], p['aibSituation'], p['aibMontant']], [0, null, 0]);
+      final j = m.collection('audit').toutes.lastWhere((a) => '${a['action']}'.startsWith('Normalisation'));
+      expect((j['avant'] as Map)['aibTaux'], 5);
     });
 
-    test('la longueur de l\'IFU vient des Paramètres : validée à 10 chiffres, un IFU de 13 est refusé en le disant', () {
+    test('la longueur de l\'IFU vient toujours des Paramètres (10 chiffres) pour le moteur de l\'acheteur tiers ; une facture patient n\'en contrôle aucun', () {
       final m = magasin();
       m.collection('parametresAib').ajouterSansJournal({
         'id': 'PAA-IFU-2', 'statut': 'actif', 'rubrique': 'branchement_ifu', 'version': 2, 'longueurIfu': 10, 'situationIfuRenseigne': 'ifu_actif',
         'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 0, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
       });
-      final f = vente(m, {'date': '2026-10-30'});
-      final r = normaliserVente(m, '${f['id']}', acheteur: {'ifu': '3201642748214', 'nom': 'X'}, maintenant: aujourdhui);
-      expect(r.code, 'IFU_INVALIDE');
-      expect(r.motif, contains('10 chiffres'));
+      final r = validerAcheteurMecef(ifu: '3201642748214', nom: 'X', aibTaux: 0, longueurIfu: parametresAib(m, aujourdhui).longueurIfu);
+      expect(r.refus!.code, 'IFU_INVALIDE');
+      expect(r.refus!.motif, contains('10 chiffres'));
+      final f = vente(m, {'date': '2026-10-30', 'ifuClient': '3201642748214', 'acheteurNom': 'X'});
+      expect(normaliserVente(m, '${f['id']}', maintenant: aujourdhui).code, 'MECEF_NON_CONFIGURE');
     });
   });
 }

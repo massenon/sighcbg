@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/jetons_shell.dart';
+import '../donnees/mecef_poste.dart';
 import '../kit/kit.dart';
 import '../shell/contexte_ecran.dart';
 import 'feuilles.dart';
@@ -125,11 +126,14 @@ Future<void> afficherApercu(BuildContext context, PieceA4 piece0) {
     );
 }
 
-/// Aperçu du ROULEAU de caisse 80 mm (`P.ticket`) : gabarit distinct du A4, même modale, même enregistrement PDF.
+/// Aperçu du ROULEAU de caisse 80 mm (`P.ticket`) : gabarit distinct du A4, même modale, même enregistrement PDF. La largeur est celle du papier de
+/// l'IMPRIMANTE DE CAISSE réglée par la clinique (Direction de Baguidi, 16/11/2026, E3762) ; l'imprimante (modèle, interface, « à renseigner » tant que la
+/// clinique ne les a pas réglés) est dite sous la feuille. Aucun pilote n'est branché : l'aperçu et le PDF sont les seules sorties.
 Future<void> afficherApercuTicket(
         BuildContext context, EntreeTicket entree, String reference) {
   final magasin = ContexteEcran.maybeOf(context)?.magasin;
   final identite = magasin == null ? IdentiteImprimee.semence : identiteImprimeeDe(magasin, entree.date);
+  final imprimante = magasin == null ? imprimanteCaisseEnVigueur(largeur: imprimanteLargeurDefautMm) : imprimanteCaisseDuPoste(magasin, entree.date);
   return afficherModale<void>(
       context,
       titre: 'Ticket de caisse',
@@ -138,13 +142,20 @@ Future<void> afficherApercuTicket(
       corps: Container(
         color: const Color(0xFFE2E8F0),
         padding: const EdgeInsets.all(16),
-        child: LayoutBuilder(
-            builder: (context, c) => SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: c.maxWidth),
-                    child: Center(
-                        child: FeuilleTicket(entree: entree, reference: reference, identite: identite))))),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
+          LayoutBuilder(
+              builder: (context, c) => SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints(minWidth: c.maxWidth),
+                      child: Center(
+                          child: FeuilleTicket(entree: entree, reference: reference, identite: identite, largeurMm: imprimante.largeurMm))))),
+          const SizedBox(height: 8),
+          Text(imprimante.resume,
+              key: const Key('impression:ticket-imprimante'),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: JetonsShell.slate700, fontSize: 12)),
+        ]),
       ),
       pied: (fermer) => [
         BoutonSigh(
@@ -157,7 +168,7 @@ Future<void> afficherApercuTicket(
             variante: VarianteBouton.secondaire,
             onPressed: () async {
               final p = await PolicesPdf.charger();
-              final octets = await pdfTicket(entree, reference, p, identite: identite);
+              final octets = await pdfTicket(entree, reference, p, identite: identite, largeurMm: imprimante.largeurMm);
               final chemin =
                   await ImpressionPoste.enregistrer(octets, reference);
               if (context.mounted) {

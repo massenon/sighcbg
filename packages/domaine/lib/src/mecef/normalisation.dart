@@ -8,6 +8,7 @@ library;
 
 import '../droits/gestes_reserves.dart';
 import 'etats.dart';
+import 'facture_patient.dart';
 import 'montants.dart';
 
 /// Ce que la normalisation retient d'une pièce, ou le refus nommé.
@@ -71,6 +72,10 @@ List<Map<String, Object?>> lignesMontantsPiece(Map<String, Object?> fac) {
 
 /// Les contrôles de la normalisation d'une vente, dans l'ordre de la maquette : pro-forma, règlement, mode, déjà normalisée, acheteur, montants.
 /// Un refus des montants est rendu avec ses données : l'appelant écrit alors la pièce `refusee` en nommant le code.
+///
+/// [facturePatient] (décision de la Direction de Baguidi du 16/11/2026) : la facture d'un patient se normalise SANS acheteur ni AIB ([acheteurFacturePatient]) ;
+/// [acheteurSaisi], [aibParDefaut] et l'acheteur que la pièce porterait ne sont alors pas lus, et aucun refus d'acheteur n'est possible. Faux par défaut : la règle
+/// de la maquette (acheteur et AIB lus), rejouée par les vecteurs, et celle d'une vente à un tiers payeur.
 PreparationNormalisation preparerNormalisation(
   Map<String, Object?> fac, {
   Map<String, Object?>? acheteurSaisi,
@@ -78,6 +83,7 @@ PreparationNormalisation preparerNormalisation(
   int? aibParDefaut,
   int? longueurIfu,
   num tauxTvaCourant = 0,
+  bool facturePatient = false,
 }) {
   final num_ = '${fac['numero'] ?? fac['id']}';
   if (fac['proforma'] == true) {
@@ -110,7 +116,9 @@ PreparationNormalisation preparerNormalisation(
         'La facture $num_ porte ${enAttente.length} ligne(s) au prix à valoriser (${enAttente.join(', ')}) : une vente ne se normalise qu’avec tous ses montants.',
         'Fixer le prix d’achat de l’article, encaisser la ligne, puis normaliser.'));
   }
-  final ach = acheteurDePiece(fac, saisi: acheteurSaisi, aibParDefaut: aibParDefaut, longueurIfu: longueurIfu);
+  final ach = facturePatient
+      ? (acheteur: acheteurFacturePatient, refus: null)
+      : acheteurDePiece(fac, saisi: acheteurSaisi, aibParDefaut: aibParDefaut, longueurIfu: longueurIfu);
   if (ach.refus != null) return PreparationNormalisation.refus(ach.refus!);
   final m = mecefMontants(
     lignes: lignesMontantsPiece(fac),

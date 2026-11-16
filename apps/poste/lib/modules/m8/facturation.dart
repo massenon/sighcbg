@@ -10,7 +10,7 @@ import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../donnees/normalisation_mecef.dart';
-import 'acheteur_normalise.dart';
+import 'annonce_normalisation.dart';
 import 'commun.dart';
 import 'impression.dart';
 
@@ -69,7 +69,6 @@ class _EtatFacturation extends State<EcranFacturation> {
   late ControleurFormulaire _nature;
   late ControleurFormulaire _ajout;
   late ControleurFormulaire _reglement;
-  late ControleurFormulaire _acheteur;
   List<Fiche> _patients = const [];
   List<_Article> _articles = const [];
   String _natureVue = '';
@@ -207,7 +206,6 @@ class _EtatFacturation extends State<EcranFacturation> {
     ], {
       'regle': '0'
     });
-    _acheteur = ControleurFormulaire(champsAcheteurNormalise(m, c.aujourdhui), valeursAcheteur(null));
     _patient.addListener(_majPatient);
     _ajout.addListener(_majAjout);
     _remplirArticles(m);
@@ -452,18 +450,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           type: TypeToast.erreur, detail: 'Le client libre n’a pas de dossier : choisir un patient du répertoire.');
       return;
     }
-    // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien.
-    final saisieAcheteur = !proforma && mecefEnService(m);
-    final refusAcheteur = saisieAcheteur ? controlerAcheteur(_acheteur, m, c.aujourdhui) : null;
-    if (refusAcheteur != null) {
-      ToastsSigh.afficher(
-          context, '${refusAcheteur.code} : ${refusAcheteur.motif}',
-          type: TypeToast.erreur,
-          detail: refusAcheteur.geste,
-          duree: const Duration(seconds: 9));
-      return;
-    }
-    final acheteur = saisieAcheteur ? lireAcheteur(_acheteur, m, c.aujourdhui) : null;
+    // La facture d'un PATIENT ne porte ni acheteur ni AIB (Direction de Baguidi, 16/11/2026, E3770) : plus de fenêtre « Facture normalisée » à contrôler.
     final r = _emettre(proforma);
     final annulations = <VoidCallback>[];
     final creees = <Fiche>[];
@@ -479,26 +466,13 @@ class _EtatFacturation extends State<EcranFacturation> {
         fiche['clientNom'] = '${_client['clientNom'] ?? ''}'.trim();
         fiche['clientTelephone'] = '${_client['clientTelephone'] ?? ''}'.trim();
       }
-      if (acheteur != null) {
-        final v = validerAcheteurMecef(
-            ifu: acheteur['ifu'],
-            nom: acheteur['nom'],
-            aibTaux: acheteur['aibTaux'],
-            aibSituation: acheteur['aibSituation']);
-        final a = v.acheteur!;
-        fiche['ifuClient'] = a.ifu;
-        fiche['acheteurNom'] = a.nom;
-        fiche['aibTaux'] = a.aibTaux;
-        if (a.aibSituation != null) fiche['aibSituation'] = a.aibSituation;
-      }
       fiche['statut'] = 'actif';
       final ins = factures.inserer(fiche, prefixe: 'FAC');
       creees.add(ins.fiche);
       annulations.add(ins.annuler);
       // TOUTE VENTE SOLDÉE EST NORMALISÉE ; le refus de la normalisation ne défait pas l'émission (l'argent est reçu) : la pièce devient refusée.
       if (aNormaliser) {
-        final norm = normaliserVente(m, '${ins.fiche['id']}',
-            acheteur: acheteur, maintenant: c.aujourdhui);
+        final norm = normaliserVente(m, '${ins.fiche['id']}', maintenant: c.aujourdhui);
         annulations.add(norm.annuler);
         normalisations.add(norm);
         creees[creees.length - 1] = factures.parId(ins.fiche['id'])!;
@@ -989,10 +963,13 @@ class _EtatFacturation extends State<EcranFacturation> {
             icone: LucideIcons.landmark),
         const SizedBox(height: 12),
         FormulaireSigh(controleur: _reglement),
-        // TOUTE VENTE EST NORMALISÉE (E2299) : la fenêtre ne sert qu'à saisir l'acheteur et le taux d'AIB. MECeF fermé (bascule P0-5) : absente.
+        // TOUTE VENTE EST NORMALISÉE (E2299), et la facture d'un PATIENT l'est SANS acheteur ni AIB (Direction de Baguidi, 16/11/2026, E3770) : le bloc
+        // « FACTURE NORMALISÉE » (IFU de l'acheteur, Nom de l'acheteur, Taux d'AIB) a disparu ; le patient paie le total. MECeF fermé (bascule P0-5) : rien à dire.
         if (_c != null && mecefEnService(_c!.magasin)) ...[
           const SizedBox(height: 12),
-          SectionAcheteur(controleur: _acheteur, magasin: _c!.magasin, date: _c!.aujourdhui),
+          const KeyedSubtree(
+              key: Key('mecef:facture-patient'),
+              child: NoteSigh(mecefMentionFacturePatient, icone: LucideIcons.receipt)),
         ],
       ]),
     );

@@ -18,6 +18,7 @@
 // Le lot ORG2 a branché `securite.delaiVerrouPosteSecours` (`src/securite/verrou_secours.dart`, lu par le verrou de session d'un poste désigné de secours).
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
+import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport;
 import 'parametres.dart';
@@ -54,6 +55,43 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md) : le boîtier MECeF de Baguidi est un ELTRADE CC300',
     branche: true,
     appliquePar: 'Configuration MECeF, pièce et journal MECeF',
+  ),
+  // L'IMPRIMANTE DE CAISSE (décision de la Direction de Baguidi du 16/11/2026, E3761) : trois réglages de CLINIQUE de la famille `mecef` (réglés sous le geste
+  // `reglage_mecef`, à l'écran « Configuration fiscale »). AUCUN modèle n'est fourni pour Baguidi : modèle et interface sont semés VIDES (« à renseigner », à
+  // valider) ; la largeur est semée à 80 mm, le gabarit du ticket de la maquette, à valider. Ils DÉCRIVENT l'appareil, ils ne branchent aucun pilote d'impression :
+  // seule la largeur est lue, par l'aperçu et le PDF du ticket de caisse (`src/mecef/imprimante_caisse.dart`).
+  DefinitionParametre(
+    cle: cleImprimanteModele,
+    famille: 'mecef',
+    type: TypeParametre.texte,
+    defaut: '',
+    libelle: 'Imprimante de caisse — modèle',
+    aide: 'Le modèle de l\'imprimante du ticket de caisse. Aucun modèle n\'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l\'appareil, il ne branche aucun pilote d\'impression.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucun modèle fourni, valeur à renseigner, à valider',
+    branche: true,
+    appliquePar: 'Configuration fiscale (affiché)',
+  ),
+  DefinitionParametre(
+    cle: cleImprimanteLargeurPapier,
+    famille: 'mecef',
+    type: TypeParametre.entier,
+    defaut: imprimanteLargeurDefautMm,
+    libelle: 'Imprimante de caisse — largeur du papier (mm)',
+    aide: 'La largeur du rouleau, de 40 à 120 mm : l\'aperçu et le PDF du ticket de caisse la prennent. Hors de ces bornes, le ticket garde 80 mm et l\'écran le dit.',
+    source: 'Gabarit du ticket de caisse de la maquette (rouleau 80 mm, P.ticket) ; décision de la Direction de Baguidi du 16/11/2026 : valeur d\'attente, à valider par la clinique',
+    branche: true,
+    appliquePar: 'Ticket de caisse 80 mm (aperçu et PDF)',
+  ),
+  DefinitionParametre(
+    cle: cleImprimanteInterface,
+    famille: 'mecef',
+    type: TypeParametre.texte,
+    defaut: '',
+    libelle: 'Imprimante de caisse — interface',
+    aide: 'Comment l\'imprimante est reliée au poste (par exemple USB, série, réseau), telle que la clinique la décrit. Aucune n\'est fournie pour Baguidi : à renseigner. Aucun pilote n\'est branché.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucune interface fournie, valeur à renseigner, à valider',
+    branche: true,
+    appliquePar: 'Configuration fiscale (affiché)',
   ),
   DefinitionParametre(
     cle: 'bareme_aib.chargePrelevement',

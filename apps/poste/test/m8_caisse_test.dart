@@ -96,46 +96,28 @@ void main() {
     await t.pump(const Duration(seconds: 15));
   });
 
+  // PORTÉ PUIS CORRIGÉ PAR DÉCISION (Direction de Baguidi, 16/11/2026, E3771) : ce test éprouvait la fenêtre « Facture normalisée » du registre des paiements
+  // (refus IFU_INVALIDE puis AIB_SANS_BAREME, acheteur rangé dans la pièce à 5 %). La facture d'un patient ne porte plus ni acheteur ni AIB : il est gardé et
+  // prouve que le bloc a disparu et que la pièce soldée est normalisée sans acheteur ni AIB.
   testWidgets(
-      'encaisser : la fenêtre « Facture normalisée » refuse un IFU invalide en le nommant AVANT toute écriture, et range un acheteur valide dans la pièce (E2299)',
+      'encaisser : la fenêtre « Facture normalisée » a DISPARU (ni IFU, ni nom, ni AIB) ; la pièce soldée est normalisée sans acheteur ni AIB, en attente de certification (E3771)',
       (t) async {
     final m = magasin();
     final f = aRegler(m);
-    final ecrAvant = m.collection('ecritures').actives.length;
     await ouvrir(t, m, 'm8-paiements');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Encaisser').first);
-    expect(find.text('FACTURE NORMALISÉE'), findsOneWidget);
-    Future<void> saisir(String champ, String valeur) async {
-      final c = find.descendant(
-          of: find.byKey(Key('kit:champ:$champ')),
-          matching: find.byType(TextField));
-      await t.ensureVisible(c);
-      await t.enterText(c, valeur);
-      await t.pump();
+    expect(find.text('FACTURE NORMALISÉE'), findsNothing);
+    for (final k in ['acheteurIfu', 'acheteurNom', 'acheteurAib']) {
+      expect(find.byKey(Key('kit:champ:$k')), findsNothing, reason: k);
     }
-
-    await saisir('acheteurIfu', '12');
-    await saisir('acheteurNom', 'Clinique X');
+    expect(find.textContaining('AIB au '), findsNothing);
+    expect(find.text(mecefMentionFacturePatient), findsOneWidget);
     await toucher(t, find.text('Valider l’encaissement'));
-    expect(find.textContaining('IFU_INVALIDE'), findsWidgets);
-    expect(m.collection('ecritures').actives.length, ecrAvant);
-    expect(m.collection('factures').parId(f['id'])!['reliquat'], f['reliquat'],
-        reason: 'rien n’est écrit');
-    await saisir('acheteurIfu', '3201642748214');
-    // IFU présenté : situation « IFU actif », dont le 1 % n'est pas arrêté — refus nommé, rien n'est écrit.
-    await toucher(t, find.text('Valider l’encaissement'));
-    expect(find.textContaining('AIB_SANS_BAREME'), findsWidgets);
-    expect(m.collection('ecritures').actives.length, ecrAvant);
-    // L'agent ramène l'acheteur à la situation « sans IFU actif » (5 % arrêté), choisie parmi celles du barème.
-    await toucher(t, find.text('Automatique — d’après l’IFU saisi').first);
-    await toucher(t, find.textContaining('Acheteur sans IFU actif — 5 % arrêté').last);
-    await toucher(t, find.text('Valider l’encaissement'));
-    final apres = m.collection('factures').actives
-        .firstWhere((x) => x['ifuClient'] == '3201642748214');
-    expect(apres['acheteurNom'], 'Clinique X');
-    expect(apres['aibTaux'], 5);
-    expect(apres['aibSituation'], 'ifu_inactif_ou_absent');
+    expect(find.textContaining('IFU_INVALIDE'), findsNothing);
+    expect(find.textContaining('AIB_SANS_BAREME'), findsNothing);
+    final apres = m.collection('factures').parId(f['id'])!;
     expect(apres['statutPaiement'], 'soldee');
+    expect([apres['ifuClient'], apres['acheteurNom'], apres['aibSituation'], apres['aibTaux'], apres['aibMontant']], [null, null, null, 0, 0]);
     // Lot L3 : le poste ne fabrique aucun numéro ; la vente soldée reste en attente de certification (refus nommé MECEF_NON_CONFIGURE).
     expect(apres['statutMecef'], 'en_attente');
     expect(apres['numeroMecef'], isNull);

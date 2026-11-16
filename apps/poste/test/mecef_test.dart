@@ -103,7 +103,8 @@ void main() {
     expect(find.textContaining('MECeF NIM'), findsNothing);
   });
 
-  test('la pièce imprimée : bloc fiscal seulement si normalisée, nom de l\'acheteur et simulation dits', () {
+  // Porté puis corrigé (E3772, Direction de Baguidi, 16/11/2026) : la pièce imprimait le nom de l'acheteur ; la facture d'un patient n'a plus d'acheteur ni d'AIB.
+  test('la pièce imprimée : bloc fiscal seulement si normalisée, simulation dite ; facture patient SANS acheteur ni AIB (E3772)', () {
     final m = magasin();
     final p = paramFiscal(m);
     final base = norm(m, 'valide').firstWhere((f) => '${f['numeroMecef'] ?? ''}'.isNotEmpty);
@@ -116,7 +117,11 @@ void main() {
     final ok = piece({...base, 'acheteurNom': 'Clinique X', 'mecefSimule': true});
     expect(textes(ok), contains('Code MECeF / DGI'));
     expect(textes(ok).any((x) => x.contains('n’est pas un numéro fiscal')), isTrue);
-    expect(ok.cartouche.any((c) => c.$1 == 'Nom de l’acheteur' && c.$2 == 'Clinique X'), isTrue);
+    expect(ok.cartouche.any((c) => c.$1 == 'Nom de l’acheteur'), isFalse, reason: 'facture patient : aucun acheteur imprimé, même porté par une pièce ancienne');
+    expect(textes(ok), contains(mecefMentionFacturePatient));
+    final taxes = [for (final b in ok.blocs) if (b is BlocTableau) for (final r in b.tableau.lignes) '${r['k'] ?? ''}'];
+    expect(taxes.any((k) => k.contains('AIB')), isFalse, reason: 'aucune ligne d’AIB sur la facture d’un patient');
+    expect(textes(ok).any((x) => x == montantEnLettres(n(base['montantTTC'])).toUpperCase()), isTrue, reason: 'net à payer = TTC');
     for (final statut in ['en_attente', 'a_verifier', 'rejete', 'expiree']) {
       final nok = piece({...base, 'statutMecef': statut});
       expect(textes(nok), isNot(contains('Code MECeF / DGI')), reason: statut);
@@ -293,30 +298,34 @@ void main() {
     expect(find.textContaining('Le prototype simule les échanges avec le dispositif fiscal'), findsOneWidget);
   });
 
-  // D1 (Direction, 09/11/2026) : l'écran dit quel taux ARRÊTÉ est en vigueur aujourd'hui, lu au barème — plus de « 1 % » écrit en dur, plus de taux saisi ici.
-  cas('configuration : l\'AIB est celui du barème arrêté en vigueur (5 % au 30/10/2026), jamais un 1 % écrit en dur', (t) async {
+  // D1 (Direction, 09/11/2026) : l'écran disait quel taux ARRÊTÉ était en vigueur, lu au barème. PORTÉ PUIS CORRIGÉ (E3773, Direction de Baguidi, 16/11/2026) :
+  // la facture d'un patient ne porte pas d'AIB ; l'écran le dit, quel que soit l'état du barème, et nomme où l'acheteur et l'AIB gardent un sens. Tests gardés.
+  cas('configuration : l\'AIB est « sans objet sur la facture d\'un patient » — plus de taux du barème annoncé pour la vente, jamais un 1 % écrit en dur (E3773)', (t) async {
     final m = magasin();
     await ouvrir(t, m, 'mecef-config');
     expect(find.text('Taux d’AIB (%)'), findsOneWidget, reason: 'le libellé de la maquette, en lecture : une ligne, pas un champ');
-    expect(find.textContaining('5 % arrêté au barème, du montant hors taxes'), findsWidgets);
+    expect(find.text('sans objet sur la facture d’un patient (le patient paie le total)'), findsOneWidget);
+    expect(find.textContaining('5 % arrêté au barème, du montant hors taxes'), findsNothing);
     expect(find.byKey(const Key('mecef:config-aib')), findsOneWidget);
-    expect(find.textContaining('Taux de 5 % arrêté, en vigueur depuis le 07/09/2026'), findsOneWidget);
+    expect(find.textContaining('Facture d’un fournisseur (M7)'), findsOneWidget);
+    expect(find.textContaining('Vente à un tiers payeur'), findsOneWidget);
     expect(find.textContaining('AIB 1 %'), findsNothing);
-    expect(find.byKey(const Key('kit:champ:tauxAib')), findsNothing, reason: 'le taux ne se saisit plus ici : il se règle au barème');
+    expect(find.byKey(const Key('kit:champ:tauxAib')), findsNothing, reason: 'le taux ne se saisit pas ici : il se règle au barème');
   });
 
-  cas('configuration : sans taux arrêté en vigueur, l\'écran dit « aucun taux arrêté : 0 % » avec le motif du moteur', (t) async {
+  cas('configuration : sans taux arrêté au barème, l\'écran ne change pas — l\'AIB reste sans objet pour le patient, aucun « repli » annoncé (E3773)', (t) async {
     final m = magasin();
     final b = m.collection('baremeAib');
     for (final f in b.actives.where((f) => f['arrete'] == true)) {
       b.mettreAJour(f['id'], {'arrete': false, 'statutArret': 'non_arrete'});
     }
     await ouvrir(t, m, 'mecef-config');
-    expect(find.textContaining('aucun taux arrêté : 0 % (taux de repli des Paramètres)'), findsWidgets);
-    expect(find.textContaining('Aucun taux arrêté en vigueur au 30/10/2026'), findsOneWidget);
+    expect(find.textContaining('aucun taux arrêté'), findsNothing);
+    expect(find.textContaining('Aucun taux arrêté en vigueur'), findsNothing);
+    expect(find.text('sans objet sur la facture d’un patient (le patient paie le total)'), findsOneWidget);
   });
 
-  cas('configuration : le taux de repli validé aux Paramètres (3 %) est celui que l\'écran annonce sans taux arrêté', (t) async {
+  cas('configuration : un taux de repli validé aux Paramètres (3 %) n\'est pas annoncé pour la facture patient (E3773)', (t) async {
     final m = magasin();
     final b = m.collection('baremeAib');
     for (final f in b.actives.where((f) => f['arrete'] == true)) {
@@ -327,7 +336,8 @@ void main() {
       'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 3, 'dateEffet': '2026-10-01', 'decideur': 'Direction', 'dateDecision': '2026-09-30', 'motif': 'x',
     });
     await ouvrir(t, m, 'mecef-config');
-    expect(find.textContaining('aucun taux arrêté : 3 % (taux de repli des Paramètres)'), findsWidgets);
+    expect(find.textContaining('3 % (taux de repli des Paramètres)'), findsNothing);
+    expect(find.text('sans objet sur la facture d’un patient (le patient paie le total)'), findsOneWidget);
   });
 
   cas('configuration : le mode de certification (boîtier par défaut), la bascule e-MECeF versionnée et « non configuré, dossier d\'interface DGI requis » (lot L3)', (t) async {

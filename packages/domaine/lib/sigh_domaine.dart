@@ -51,6 +51,8 @@ export 'src/mecef/etats.dart';
 export 'src/mecef/normalisation.dart';
 export 'src/mecef/acheteur_aib.dart';
 export 'src/mecef/mode.dart';
+export 'src/mecef/facture_patient.dart';
+export 'src/mecef/imprimante_caisse.dart';
 export 'src/achats/pv_reception.dart';
 export 'src/achats/fournisseurs_m7.dart';
 export 'src/achats/factures_fournisseurs.dart';

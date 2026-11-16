@@ -25,3 +25,15 @@ String? modeleBoitierDuPoste(Magasin m, DateTime maintenant) {
 /// fabrique aucun numéro.
 d.AdaptateurMecef adaptateurDuPoste(Magasin m, DateTime maintenant) =>
     d.adaptateurPourMode(modeMecefDuPoste(m, maintenant), modeleBoitier: modeleBoitierDuPoste(m, maintenant));
+
+/// L'IMPRIMANTE DE CAISSE en vigueur à [maintenant] (décision de la Direction de Baguidi du 16/11/2026, E3761) : les trois réglages de clinique (modèle,
+/// largeur du papier, interface), LUS en base. Aucun modèle n'est fourni pour Baguidi : modèle et interface restent « à renseigner » tant que la clinique ne
+/// les a pas réglés. Seule la largeur est appliquée (aperçu et PDF du ticket de caisse) ; aucun pilote n'est branché.
+d.ImprimanteCaisse imprimanteCaisseDuPoste(Magasin m, DateTime maintenant) {
+  final service = serviceParametres(m, auteur: () => m.utilisateur, horloge: () => maintenant);
+  final date = d.parametreDateIso(maintenant);
+  return d.imprimanteCaisseEnVigueur(
+      modele: service.valeur(d.cleImprimanteModele, date),
+      largeur: service.valeur(d.cleImprimanteLargeurPapier, date),
+      interface: service.valeur(d.cleImprimanteInterface, date));
+}

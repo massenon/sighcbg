@@ -13,11 +13,14 @@ double mm(double v) => v * pxParMm;
 const _mono = 'LiberationMono';
 
 /// Rouleau de caisse 80 mm (`P.ticket`) : largeur 80 mm, marge 4 mm, police chasse fixe, tailles 7–11 px de la maquette.
+///
+/// [largeurMm] : la largeur du papier de l'IMPRIMANTE DE CAISSE réglée par la clinique (Direction de Baguidi, 16/11/2026, E3762), 80 mm par défaut.
 class FeuilleTicket extends StatelessWidget {
   const FeuilleTicket(
-      {super.key, required this.entree, required this.reference, this.identite});
+      {super.key, required this.entree, required this.reference, this.identite, this.largeurMm = imprimanteLargeurDefautMm});
   final EntreeTicket entree;
   final String reference;
+  final int largeurMm;
 
   /// L'identité en force à la date du ticket (`P.ticket({date})`).
   final IdentiteImprimee? identite;
@@ -27,7 +30,7 @@ class FeuilleTicket extends StatelessWidget {
     final lignes = lignesTicket(entree, identite: identite ?? IdentiteImprimee.semence);
     return Container(
       key: const Key('impression:ticket'),
-      width: mm(80),
+      width: mm(largeurMm.toDouble()),
       padding: EdgeInsets.all(mm(4)),
       color: Colors.white,
       child: DefaultTextStyle(

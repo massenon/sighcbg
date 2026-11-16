@@ -35,9 +35,10 @@ class PolicesPdf {
 
 const _mm = PdfPageFormat.mm;
 
-/// Rouleau 80 mm : largeur fixe, hauteur selon le contenu (les imprimantes thermiques coupent au bout).
+/// Rouleau 80 mm : largeur fixe, hauteur selon le contenu (les imprimantes thermiques coupent au bout). [largeurMm] : la largeur du papier de l'imprimante de
+/// caisse réglée par la clinique (E3762), 80 mm par défaut.
 Future<Uint8List> pdfTicket(EntreeTicket e, String reference, PolicesPdf p,
-    {bool compresser = true, IdentiteImprimee? identite}) async {
+    {bool compresser = true, IdentiteImprimee? identite, int largeurMm = imprimanteLargeurDefautMm}) async {
   identite ??= IdentiteImprimee.semence;
   final doc = pw.Document(
       compress: compresser,
@@ -72,7 +73,7 @@ Future<Uint8List> pdfTicket(EntreeTicket e, String reference, PolicesPdf p,
   }
 
   doc.addPage(pw.Page(
-    pageFormat: PdfPageFormat(80 * _mm, double.infinity, marginAll: 4 * _mm),
+    pageFormat: PdfPageFormat(largeurMm * _mm, double.infinity, marginAll: 4 * _mm),
     build: (_) =>
         pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.stretch, children: [
       for (final l in lignes) ligne(l),

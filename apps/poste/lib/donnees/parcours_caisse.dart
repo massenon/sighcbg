@@ -78,10 +78,9 @@ ResultatCaisse encaisserFacture(
   num? montant,
   String? mode,
   required DateTime maintenant,
-
-  /// La fenêtre « Facture normalisée » : `ifu`, `nom`, `aibTaux`. Contrôlée AVANT toute écriture (E2299).
-  Map<String, Object?>? acheteur,
 }) {
+  // La facture de la caisse est celle d'un PATIENT (décision de la Direction de Baguidi du 16/11/2026, E3770) : ni acheteur ni AIB ne se saisissent ni ne
+  // s'appliquent ; l'ancienne fenêtre « Facture normalisée » (IFU, nom de l'acheteur, AIB) a disparu des trois portes d'encaissement.
   var fac = m.collection('factures').parId(factureId);
   if (fac == null)
     throw const RefusCaisse('FACTURE_INTROUVABLE', 'Facture introuvable.');
@@ -184,7 +183,6 @@ ResultatCaisse encaisserFacture(
     utilisateur: m.utilisateur,
     mecefActif: mecefActif,
     ecritures: m.collection('ecritures').actives,
-    acheteur: acheteur,
     encaisserResteSansPrix: resteOuvert,
   );
   // E2 (corrigé le 31/10/2026) : un versement au-delà du dû d'une pièce sans lignes est REFUSÉ en nommant le défaut ; rien n'est écrit.
@@ -338,7 +336,7 @@ ResultatCaisse encaisserFacture(
   if (apres['statutPaiement'] == 'soldee' &&
       n0(apres['montantPaye']) > 0) {
     normalisation = normaliserVente(m, factureId,
-        acheteur: acheteur, maintenant: maintenant);
+        maintenant: maintenant);
     annulations.add(normalisation.annuler);
   }
 
