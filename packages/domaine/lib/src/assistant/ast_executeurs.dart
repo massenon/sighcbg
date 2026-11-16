@@ -1182,6 +1182,8 @@ ReponseAst _i29(ContexteAst cx, ReconnaissanceAst r, String q) {
     sanctionsNs131: a.sanctionsNs131,
     obligationsFiscales: cx.col('obligationsFiscales'),
     historiqueObligations: cx.col('historiqueObligations'),
+    // Les taux et le barème DATÉS (lot 1) : le même calcul que l'écran, aux taux en vigueur au premier jour du mois.
+    parametres: cx.col('parametres'),
   );
   final calc = paiCalculerTous(cx.col('personnel'), annee, mois, e, cx.maintenant);
   final libMois = '${mois.toString().padLeft(2, '0')}/$annee';

@@ -318,6 +318,8 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
   final grille = rhbActives(c, 'grillePrimes'), hist = rhbActives(c, 'historiquePrimes'), pl = rhbActives(c, 'planning');
   final f = emp != null ? '${emp['fonction']}' : '';
   final activites = paiActivites(rhbActives(c, 'modulesActifs'));
+  // La prime d'ancienneté au taux et au seuil DATÉS (complément du lot 1) : la même règle que le bulletin, à la date où la fiche de solde se compose.
+  final taux = PaiTauxPaie.aLaDate(c.magasin.collection(parCollectionParametres).toutes, c.aujourdhui);
   final s = rhbSolde(
       salaireBrut: e['salaireBrut'],
       prelevementPct: e['prelevementPct'],
@@ -329,7 +331,8 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
       ans: a.ans,
       // Les deux activités de Paramètres système (PRD P0-5) : la fiche de solde recompose le brut comme le bulletin.
       primesNs132: activites.primesNs132,
-      sanctionsNs131: activites.sanctionsNs131);
+      sanctionsNs131: activites.sanctionsNs131,
+      taux: taux);
   String m(num x) => money(x, avecDevise: false);
   final cr = (e['criteres'] as Map?) ?? const {};
   String lib(Object? n) => switch (n) { 'bonne' => 'Bonne', 'moyenne' => 'Moyenne', 'faible' => 'Faible à mauvaise', _ => '' };
@@ -343,7 +346,7 @@ void imprimerFiche(BuildContext ctx, ContexteEcran c, Fiche e) {
   ];
   final droite = <Fiche>[
     {'n': '01', 'l': 'SALAIRE DE BASE', 'm': m((e['salaireBrut'] as num?) ?? 0)},
-    {'n': '02', 'l': 'PRIME D’ANCIENNETÉ', 'm': a.ans >= 2 ? m(s.primeAnciennete) : ''},
+    {'n': '02', 'l': 'PRIME D’ANCIENNETÉ', 'm': a.ans >= taux.ancienneteSeuilAns ? m(s.primeAnciennete) : ''},
     {'n': '03', 'l': 'PRIME DE GARDE', 'm': s.primeGarde > 0 ? m(s.primeGarde) : ''},
     {'n': '04', 'l': 'PRIME DE PERMANENCE', 'm': s.primePermanence > 0 ? m(s.primePermanence) : ''},
     {'n': '05', 'l': 'PRIME D’ACCUEIL', 'm': s.primeAccueil > 0 ? m(s.primeAccueil) : ''},

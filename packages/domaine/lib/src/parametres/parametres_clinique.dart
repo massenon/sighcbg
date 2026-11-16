@@ -7,6 +7,8 @@ library;
 
 import 'definitions.dart';
 import 'parametres.dart';
+import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSemence;
+import '../administration/adm_regles.dart' show admCleForfaitAmbulance, admClePrixKmAmbulance, admForfaitAmbulanceSemence, admPrixKmAmbulanceSemence;
 
 const String cleDelaiPreavisPeremption = 'stock.delaiPreavisPeremptionJours';
 const String cleBalanceAgeePatientBorne1 = 'comptabilite.balanceAgeePatientBorne1Jours';
@@ -72,4 +74,19 @@ List<({String libelle, int min, int? max})> tranchesBalanceAgeePatient(int borne
     (libelle: '${milieu + 1} à $borne2 jours', min: milieu, max: borne2),
     (libelle: 'plus de $borne2 jours', min: borne2, max: null),
   ];
+}
+
+/// La participation standard par agent aux événements du personnel EN VIGUEUR à [date] (paramètre `rh.participationStandardParAgent`, lot 1 de l'inventaire des valeurs
+/// en dur) : la version datée qui s'applique, sinon la graine (1 000 F). Une valeur illisible ou négative retombe sur la graine.
+int participationStandardA(Iterable<Map<String, Object?>> fichesParametres, String date) {
+  final n = _entier(_valeurA(fichesParametres, rhcCleMontantStandard, date));
+  return n != null && n >= 0 ? n : rhcMontantStandardSemence;
+}
+
+/// Le tarif d'une course d'ambulance sans montant saisi EN VIGUEUR à [date] (paramètres `ambulance.forfaitCourse` et `ambulance.prixKilometre`, propositions à valider, lot 1) :
+/// les versions datées qui s'appliquent, sinon les graines (5 000 F + 500 F par kilomètre). Une valeur illisible ou négative retombe sur sa graine.
+({int forfait, int parKm}) tarifAmbulanceA(Iterable<Map<String, Object?>> fichesParametres, String date) {
+  final f = _entier(_valeurA(fichesParametres, admCleForfaitAmbulance, date));
+  final k = _entier(_valeurA(fichesParametres, admClePrixKmAmbulance, date));
+  return (forfait: f != null && f >= 0 ? f : admForfaitAmbulanceSemence, parKm: k != null && k >= 0 ? k : admPrixKmAmbulanceSemence);
 }

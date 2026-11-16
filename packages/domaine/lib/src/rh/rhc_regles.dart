@@ -226,7 +226,10 @@ RhcModele rhcModeleNormalise(FicheRhc? m, List<FicheRhc> actifs) {
 // ÉVÉNEMENTS DU PERSONNEL ET PARTICIPATIONS (vague 21) — ces sommes TRANSITENT : ni recette ni charge.
 // ---------------------------------------------------------------------------------------------------------------------
 
-const rhcMontantStandard = 1000;
+/// La participation standard par agent : un PARAMÈTRE de clinique ([rhcCleMontantStandard], famille `rh`, versionné par date, lot 1 de l'inventaire des valeurs
+/// en dur). [rhcMontantStandardSemence] n'en est que la graine (le défaut de la définition), lue par `definitions.dart` et en repli.
+const String rhcCleMontantStandard = 'rh.participationStandardParAgent';
+const int rhcMontantStandardSemence = 1000;
 const rhcSourceEvenements = 'Usage de la clinique — participation du personnel aux événements';
 
 class RhcNatureEvenement {
@@ -293,11 +296,12 @@ List<FicheRhc> rhcParticipationsAEngendrer(FicheRhc evenement, List<FicheRhc> ag
   ];
 }
 
-/// `Number(v) || standard` : un montant vide OU NUL retombe sur le montant standard (zéro n'est pas un montant de participation).
-int rhcMontantParAgent(Object? saisi, [Object? repli]) {
+/// `Number(v) || standard` : un montant vide OU NUL retombe sur le montant standard (zéro n'est pas un montant de participation). [standard] : la valeur EN
+/// VIGUEUR du paramètre [rhcCleMontantStandard] (absente : la graine).
+int rhcMontantParAgent(Object? saisi, [Object? repli, num? standard]) {
   final n = nombreOuZero(saisi);
   if (n != 0) return n.round();
-  final r = repli == null ? rhcMontantStandard : nombreOuZero(repli);
+  final r = repli == null ? (standard ?? rhcMontantStandardSemence) : nombreOuZero(repli);
   return r == 0 ? 0 : r.round();
 }
 

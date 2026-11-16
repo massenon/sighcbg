@@ -275,7 +275,7 @@ const cfbLibellesCollections = <String, (String, String)>{
   'parametresAib': ('CFG', 'Paramètres de l’AIB (base, branchement IFU, validations)'),
   'fichesDocumentaires': ('CFG', 'Fiches documentaires (cartouche et grille de l’organigramme)'),
   'situationsAib': ('M12', 'Situations de l’acheteur (AIB)'),
-  'confirmationsFiscales': ('CFG', 'Confirmations des taux fiscaux (CNSS, barème de l’AIB)'),
+  'confirmationsFiscales': ('CFG', 'Confirmations des taux fiscaux (CNSS, VPS, barèmes de l’ITS et de l’AIB)'),
   'baremeNS131': ('M10', 'Barème d’évaluation NS 131'),
   'besoins': ('M7', 'Bons de besoins'),
   'budgets': ('M12', 'Budgets'),

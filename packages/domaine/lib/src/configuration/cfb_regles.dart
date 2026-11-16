@@ -1,7 +1,8 @@
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
-import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCnssOuvriere, paiCnssPatronale, paiVpsTaux;
+import '../paie/pai_moteur.dart' show PaiParametresOrtb;
+import '../paie/pai_baremes.dart' show PaiTauxPaie;
 import 'cfa_regles.dart' show CfaKpi, CfaFiche, cfaVrai, cfaTexte;
 import 'cfb_donnees.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteDoubleFacteurImpose;
@@ -222,10 +223,13 @@ List<CfaKpi> cfbKpisComptabilite({Iterable<CfbObligation> obligations = cfbCalen
   ];
 }
 
-/// « CNSS : part patronale 16.4 %, part ouvrière 3.6 %. VPS : 4 % … » : les taux s'écrivent comme JavaScript les écrit (16.4, 4). Ces assiettes
-/// restent arrêtées par le CDCT §10.10 (lecture seule) ; les rendre datées est un chantier nommé.
-String cfbTexteAssiettes() => 'CNSS : part patronale ${cfaTexte(paiCnssPatronale)} %, part ouvrière ${cfaTexte(paiCnssOuvriere)} %. '
-    'VPS : ${cfaTexte(paiVpsTaux)} % du salaire brut. ITS : barème progressif par tranches. AIB : acompte assis sur les bénéfices.';
+/// « CNSS : part patronale 16.4 %, part ouvrière 3.6 %. VPS : 4 % … » : les taux s'écrivent comme JavaScript les écrit (16.4, 4). [t] : les taux EN VIGUEUR (paramètres
+/// datés, lot 1 de l'inventaire des valeurs en dur, [PaiTauxPaie.aLaDate]) ; absent, les valeurs semées (CDCT §10.10).
+String cfbTexteAssiettes([PaiTauxPaie? t]) {
+  final x = t ?? PaiTauxPaie.semence;
+  return 'CNSS : part patronale ${cfaTexte(x.cnssPatronale)} %, part ouvrière ${cfaTexte(x.cnssOuvriere)} %. '
+      'VPS : ${cfaTexte(x.vps)} % du salaire brut. ITS : barème progressif par tranches. AIB : acompte assis sur les bénéfices.';
+}
 
 /// Les acomptes de l'impôt sur les sociétés (IS-1 … IS-4) des obligations en vigueur (par défaut la semence).
 List<CfbObligation> cfbAcomptesIs({Iterable<CfbObligation> obligations = cfbCalendrierFiscal}) => [for (final e in obligations) if (RegExp(r'^IS-\d$').hasMatch(e.code)) e];

@@ -90,7 +90,10 @@ class _EtatCoutAgent extends State<EcranCoutAgent> {
 
   List<Widget> _corps(ContexteEcran c, Fiche a, String du, String au) {
     if (!pilCoutAgentCalculable(a)) return [pilNote(pilCoutAgentNonCalculable(a), icone: LucideIcons.wallet)];
-    final r = pilCoutAgent(a, pilActives(c, 'bulletins'), du, au);
+    // UNE SEULE SOURCE (lot 1) : les taux datés de la paie et la fiche ORTB-PARAMETRES EN VIGUEUR aujourd'hui, celles que lit le moteur de paie.
+    final r = pilCoutAgent(a, pilActives(c, 'bulletins'), du, au,
+        taux: PaiTauxPaie.aLaDate(c.magasin.collection(parCollectionParametres).toutes, c.aujourdhui),
+        ortb: PaiParametresOrtb.aLaDate(c.aujourdhui, obligations: c.magasin.collection('obligationsFiscales').toutes, historique: c.magasin.collection('historiqueObligations').toutes));
     final note = pilNoteAvances(pilActives(c, 'avances'), a);
     return [
       pilKpis(r.vue.kpis, const [LucideIcons.wallet, LucideIcons.building2, LucideIcons.calendar, LucideIcons.radio]),

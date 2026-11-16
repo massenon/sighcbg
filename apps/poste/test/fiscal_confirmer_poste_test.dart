@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
+import 'package:sigh_poste/modules/m11/pai_commun.dart' show entreesPaie;
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
@@ -27,6 +28,10 @@ void main() {
     await ouvrirM14(t, m, 'cfg-comptabilite', role: 'direction');
     expect(find.byKey(const Key('fco:cnss')), findsOneWidget, reason: 'la carte de la CNSS se lit par tous ceux qui ouvrent l’écran');
     expect(find.byKey(const Key('fco:cnss:confirmer')), findsNothing, reason: 'une commande refusée est absente, pas grisée');
+    // Lot 1 : les taux datés de la paie et la TVA du régime normal ont chacun leur carte à la configuration fiscale.
+    for (final o in [fcoObjetVps, fcoObjetBaremeIts, fcoObjetAnciennete, fcoObjetTva]) {
+      expect(find.byKey(Key('fco:$o')), findsOneWidget, reason: o);
+    }
     // Le comptable n'ouvre pas « Paramètres comptables » : la même carte est à « Cotisations CNSS / ITS / VPS ».
     await ouvrirM14(t, m, 'm11-cotisations', role: 'comptable');
     expect(find.textContaining('Non confirmé'), findsWidgets);
@@ -64,5 +69,49 @@ void main() {
     final c = m.collection(fcoCollection).actives.single;
     expect([c['objet'], c['cible'], c['confirmeRole']], [fcoObjetBaremeAib, '${v0['id']}', 'comptable']);
     expect(v['confirmationId'], c['id']);
+  });
+
+  // LOT 1 DE L'INVENTAIRE DES VALEURS EN DUR : la CNSS, le VPS et le barème de l'ITS sont des PARAMÈTRES DATÉS ; la confirmation fiscale agit sur eux.
+  casM14('VPS : « Nouvelle version » sous le geste — la version datée s’ajoute à `parametres`, la confirmation l’atteste ; novembre la lit, octobre garde 4 %', (t) async {
+    final m = _magasin();
+    await ouvrirM14(t, m, 'm11-cotisations', role: 'direction');
+    expect(find.byKey(const Key('fco:vps')), findsOneWidget, reason: 'la carte du VPS se lit par tous ceux qui ouvrent l’écran');
+    expect(find.byKey(const Key('fco:vps:nouvelle')), findsNothing, reason: 'sans le geste, la commande est absente');
+    await ouvrirM14(t, m, 'm11-cotisations', role: 'comptable');
+    await toucherM14(t, find.byKey(const Key('fco:vps:nouvelle')));
+    await saisir(t, 'taux', '5');
+    await toucherM14(t, find.byKey(const Key('fco:version:valider')));
+    expect(m.collection(parCollectionParametres).toutes.where((f) => f['cle'] == paiCleVps), isEmpty, reason: 'sans motif, rien n’est écrit');
+    await saisir(t, 'motif', 'Loi de finances 2027');
+    await toucherM14(t, find.byKey(const Key('fco:version:valider')));
+    await t.pump(const Duration(milliseconds: 300));
+    final v = m.collection(parCollectionParametres).toutes.singleWhere((f) => f['cle'] == paiCleVps);
+    expect([v['valeur'], v['dateEffet'], v['motif'], v['famille']], [5.0, '2026-10-30', 'Loi de finances 2027', paiFamilleBaremes]);
+    final c = m.collection(fcoCollection).actives.single;
+    expect([c['objet'], c['valeur'], c['confirmeRole']], [fcoObjetVps, {'taux': 5.0}, 'comptable']);
+    // Le moteur lit le taux à la DATE DU BULLETIN : octobre (01/10) garde 4 %, novembre (01/11) prend 5 %.
+    final oct = paiCalculerTous(m.collection('personnel').actives, 2026, 9, entreesPaie(m), aujourdhui);
+    final nov = paiCalculerTous(m.collection('personnel').actives, 2026, 10, entreesPaie(m), aujourdhui);
+    expect(oct, isNotEmpty);
+    expect(oct.first.taux.vps, 4);
+    expect(nov.first.taux.vps, 5);
+    expect(oct.first.vps, arrondiJs(oct.first.brutApresSanction * 4 / 100));
+    expect(m.collection('audit').toutes.first['action'], startsWith('Confirmation fiscale'), reason: 'RG-12');
+  });
+
+  casM14('barème de l’ITS : marqué « à confirmer » tant qu’aucun texte n’est cité ; la confirmation exige le texte cité', (t) async {
+    final m = _magasin();
+    await ouvrirM14(t, m, 'm11-cotisations', role: 'comptable');
+    expect(find.byKey(const Key('fco:bareme_its:aconfirmer')), findsOneWidget);
+    await toucherM14(t, find.byKey(const Key('fco:bareme_its:confirmer')));
+    await saisir(t, 'motif', 'Vérifié avec le cabinet comptable');
+    await toucherM14(t, find.byKey(const Key('fco:confirmer:valider')));
+    expect(m.collection(fcoCollection).actives, isEmpty, reason: 'sans texte cité, rien n’est écrit');
+    await saisir(t, 'texte', 'Code général des impôts, article 179');
+    await toucherM14(t, find.byKey(const Key('fco:confirmer:valider')));
+    await t.pump(const Duration(milliseconds: 300));
+    final f = m.collection(fcoCollection).actives.single;
+    expect([f['objet'], f['texte']], [fcoObjetBaremeIts, 'Code général des impôts, article 179']);
+    expect(find.byKey(const Key('fco:bareme_its:aconfirmer')), findsNothing);
   });
 }

@@ -91,9 +91,9 @@ void main() {
       }
       expect(cfbCcibTotal, obj(obj(c['montantsFiscaux'])['ccib'])['total']);
       final pp = obj(c['paramPaie']);
-      expect(paiCnssPatronale, obj(pp['cnss'])['patronale']);
-      expect(paiCnssOuvriere, obj(pp['cnss'])['ouvriere']);
-      expect(paiVpsTaux, obj(pp['vps'])['taux']);
+      expect(PaiTauxPaie.semence.cnssPatronale, obj(pp['cnss'])['patronale']);
+      expect(PaiTauxPaie.semence.cnssOuvriere, obj(pp['cnss'])['ouvriere']);
+      expect(PaiTauxPaie.semence.vps, obj(pp['vps'])['taux']);
       final ortb = obj(pp['ortb']);
       expect(paiSeuilTele, ortb['seuilTele']);
       expect(cfbCumulOrtbMaximum(), ortb['cumulMaximum']);

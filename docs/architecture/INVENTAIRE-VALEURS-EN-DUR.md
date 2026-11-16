@@ -723,6 +723,8 @@ Les lots sont regroupés par thème. Ils sont ordonnés par **urgence**, puis pa
 
 ### 4.2 Le cliquet global « valeurs en dur »
 
+> **Branché pour les familles B et H (lot 1, livré le 16/11/2026, écarts E3900 à E3912).** `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H`, ligne de base `tools/baguidi/valeurs-en-dur.plafonds.json`, rejoué par `packages/domaine/test/valeurs_en_dur_cliquet_test.dart`. Après le lot : **B 10 → 2 sites, H 6 → 3 sites**, tous tolérés avec motif (plan de numérisation, barème de référence des garanties, tranches d'âge). La CNSS, le VPS, le barème de l'ITS, la prime d'ancienneté et la TVA du régime normal sont des paramètres datés (famille `taux_fiscaux`, confirmés sous `fiscal_confirmer`) ; l'ORTB du pilotage lit la fiche `ORTB-PARAMETRES` ; la grille NS 132 n'a plus qu'une graine ; la participation aux événements et le tarif d'ambulance sont des paramètres de clinique. Les autres familles restent à brancher, lot par lot.
+
 **Proposition** : on adopte la même mécanique que pour les rôles, en réutilisant ce script.
 
 1. On engendre la ligne de base une fois avec `node tools/baguidi/inventaire-en-dur.mjs --par-fichier`. Elle donne, pour chaque fichier et chaque famille, le nombre de défauts actuels. On la verse dans `tools/baguidi/valeurs-en-dur.plafonds.json`, avec un **motif** par fichier toléré.

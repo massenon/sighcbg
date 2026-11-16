@@ -312,7 +312,8 @@ class EcranAmbulance extends StatelessWidget with EcranMaquette {
         v['patient'] = '${p['nom']} ${p['prenom']}';
       }
       v['kilometrage'] = admNombre(v['kilometrage']);
-      v['tarif'] = _entier(admTarifAmbulance(v['tarif'], v['kilometrage']));
+      final ta = tarifAmbulanceA(c.magasin.collection(parCollectionParametres).toutes, '${v['dateHeure'] ?? ''}'.length >= 10 ? '${v['dateHeure']}'.substring(0, 10) : iso(c.aujourdhui));
+      v['tarif'] = _entier(admTarifAmbulance(v['tarif'], v['kilometrage'], forfait: ta.forfait, parKm: ta.parKm));
       // E534 : série du registre (archivés compris), gardée à la modification.
       v['reference'] = e?['reference'] ?? numeroSuivant('adm.ambulance', date: v['dateHeure'], existants: col.toutes);
       return matSansNuls(v);

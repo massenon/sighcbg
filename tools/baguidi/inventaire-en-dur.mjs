@@ -25,12 +25,14 @@
 //   node tools/baguidi/inventaire-en-dur.mjs --json chemin.json     + l'inventaire complet (candidats, statuts, gravités) en JSON
 //   node tools/baguidi/inventaire-en-dur.mjs --liste B [--module m11] la liste des défauts retenus d'une famille (fichier:ligne, valeur, contexte)
 //   node tools/baguidi/inventaire-en-dur.mjs --echantillon 30 --famille C [--graine 7]   un tirage reproductible pour la vérification à la main
-//   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base d'un futur cliquet « valeurs en dur »)
-//   node tools/baguidi/inventaire-en-dur.mjs --cliquet [--famille=E] LE CLIQUET (§ 4.2) : échoue (code 1) si un fichier dépasse son plafond dans une famille
-//        sous cliquet, ou passe SOUS son plafond sans que la ligne de base soit abaissée. Plafonds : tools/baguidi/valeurs-en-dur.plafonds.json (un fichier
-//        absent d'une famille a un plafond de ZÉRO). Famille E (préfixes de numérotation) : plafond zéro partout depuis le lot 2 — toute référence de pièce
-//        passe par la fabrique du référentiel de numérotation (`numeroSuivant`, packages/domaine/lib/src/numerotation/).
-//        --injecter=<chemin fictif>:<fichier> ajoute un source au balayage comme s'il vivait au chemin fictif (sonde du cliquet : il doit mordre).
+//   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base du cliquet « valeurs en dur »)
+//   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H [--plafonds chemin.json] [--proposer]
+//        LE CLIQUET (lot 1, 16/11/2026) : relance le balayage et ÉCHOUE (code 1) si, dans une famille surveillée, un fichier DÉPASSE son plafond (une valeur en dur
+//        est apparue), passe SOUS son plafond sans que la ligne de base soit abaissée (la place libérée ne doit pas resservir), ou si un fichier toléré n'a pas de
+//        MOTIF. Un fichier absent de la ligne de base a un plafond de zéro. Ligne de base : `tools/baguidi/valeurs-en-dur.plafonds.json` (familles → fichier →
+//        {plafond, motif}). `--proposer` imprime la ligne de base mesurée (à recopier en gardant les motifs), sans rien écrire.
+//        Famille E (préfixes de numérotation) : plafond ZÉRO partout depuis le lot 2 (fabrique du référentiel de numérotation) ; `--injecter=<chemin fictif>:<fichier>` ajoute un source
+//        au balayage comme s'il vivait au chemin fictif (sonde : le cliquet doit mordre).
 //   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A   échoue si une année en dur qui décide apparaît hors de la liste fermée (annees-tolerees.json)
 // Lecture seule : le script n'écrit que le fichier demandé par --json. Importable (node --test) : `analyser`, `cliquet`, `lireToleres`.
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from 'node:fs';
@@ -284,6 +286,7 @@ const ECARTES = [
   ['H', /hospitalisation\/hos_regles\.dart$/, /hosEchelles|HosEchelle/, 'graduations d’affichage de la feuille de température'],
   ['H', /m12\/cpb_feuillets\.dart$/, null, 'étiquettes de graphique'],
   ['H', /paie\/pai_moteur\.dart$/, /paiRedevances/, 'semence de la fiche ORTB-PARAMETRES (PaiParametresOrtb.semence, lue en base)'],
+  ['H', /rh\/rhb_regles\.dart$/, /rhbPrimesOrigine/, 'graine UNIQUE de la grille NS 132 (collection `grillePrimes`, semée au jeu livré et versionnée) : repli du moteur et ordre des lignes du bulletin ; la seconde copie `paiPrimesNs132` est retirée (lot 1)'],
   // F — rôles : les entrées descriptives de `_tachesDef` (motif du cliquet : « jamais lu pour décider »)
   ['F', /consultation\/cs_moteur\.dart$/, /\(role: '(caissier|pharmacien|laborantin|infirmier|echographiste)'/, 'champ descriptif `role` des tâches d’aval (toléré au cliquet : jamais lu pour décider)'],
 ];
@@ -866,34 +869,56 @@ if (args.includes('--echantillon')) {
   process.exit(0);
 }
 if (args.includes('--cliquet')) {
-  // LE CLIQUET « VALEURS EN DUR » (§ 4.2 du rapport) : une famille sous cliquet ne peut que DÉCROÎTRE, fichier par fichier.
-  const cheminPlafonds = join(RACINE, 'tools/baguidi/valeurs-en-dur.plafonds.json');
-  const plafonds = existsSync(cheminPlafonds) ? JSON.parse(readFileSync(cheminPlafonds, 'utf8')) : {};
-  const demandee = opt('--famille');
-  const familles = demandee ? [demandee] : Object.keys(plafonds).filter((k) => FAMILLES.includes(k));
-  if (!familles.length) { console.error('Cliquet : aucune famille sous cliquet (valeurs-en-dur.plafonds.json).'); process.exit(2); }
+  // `--famille=B,H` ou `--famille B,H` : les familles surveillées (défaut : celles de la ligne de base).
+  const brut = (args.find((a) => a.startsWith('--famille=')) || '').slice('--famille='.length) || opt('--famille') || '';
+  const cheminPlafonds = opt('--plafonds') || join(RACINE, 'tools/baguidi/valeurs-en-dur.plafonds.json');
+  let base = { familles: {} };
+  if (existsSync(cheminPlafonds)) base = JSON.parse(readFileSync(cheminPlafonds, 'utf8'));
+  else if (!args.includes('--proposer')) { console.error(`Cliquet : ligne de base absente (${cheminPlafonds}).`); process.exit(1); }
+  const familles = (brut ? brut.split(',') : Object.keys(base.familles || {})).map((f) => f.trim().toUpperCase()).filter(Boolean);
+  const inconnues = familles.filter((f) => !FAMILLES.includes(f));
+  if (!familles.length || inconnues.length) { console.error(`Cliquet : familles à surveiller absentes ou inconnues (${inconnues.join(', ') || 'aucune'}) ; attendu par exemple --famille=B,H.`); process.exit(1); }
+  const mesure = {};
+  for (const f of familles) mesure[f] = {};
+  for (const c of defauts) if (mesure[c.famille]) mesure[c.famille][c.fichier] = (mesure[c.famille][c.fichier] || 0) + 1;
+  if (args.includes('--proposer')) {
+    const out = { familles: {} };
+    for (const f of familles) {
+      out.familles[f] = {};
+      for (const [fichier, n] of Object.entries(mesure[f]).sort()) out.familles[f][fichier] = { plafond: n, motif: base.familles?.[f]?.[fichier]?.motif || '' };
+    }
+    console.log(JSON.stringify(out, null, 2));
+    process.exit(0);
+  }
   const ecarts = [];
   for (const f of familles) {
-    if (!FAMILLES.includes(f)) { console.error(`Cliquet : famille inconnue « ${f} ».`); process.exit(2); }
-    const base = (plafonds[f] && typeof plafonds[f] === 'object') ? plafonds[f] : {};
-    const parFichier = new Map();
-    for (const c of defauts.filter((x) => x.famille === f)) { const a = parFichier.get(c.fichier) || []; a.push(c); parFichier.set(c.fichier, a); }
-    for (const [fichier, cs] of parFichier) {
-      const plafond = Number.isInteger(base[fichier]?.sites) ? base[fichier].sites : 0;
-      if (cs.length > plafond) ecarts.push(`${f} — ${fichier} : ${cs.length} défaut(s) pour un plafond de ${plafond} :\n` + cs.map((c) => `    ${c.fichier}:${c.ligne}  « ${c.valeur} »  ${c.contexte}`).join('\n'));
+    const tol = base.familles?.[f] || {};
+    for (const [fichier, n] of Object.entries(mesure[f])) {
+      const t = tol[fichier];
+      const plafond = t ? t.plafond : 0;
+      if (n > plafond) {
+        const sites = defauts.filter((c) => c.famille === f && c.fichier === fichier).map((c) => `${c.ligne} (${String(c.valeur).slice(0, 40)})`).join(', ');
+        ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${plafond} — une valeur en dur est APPARUE (lignes ${sites}). La lire dans un paramètre daté, un référentiel ou un barème ; sinon la tolérer avec un motif.`);
+      }
     }
-    for (const [fichier, b] of Object.entries(base)) {
-      if (fichier.startsWith('_')) continue;
-      const n = (parFichier.get(fichier) || []).length;
-      if (n < b.sites) ecarts.push(`${f} — ${fichier} : ${n} défaut(s) pour un plafond de ${b.sites} — abaisser la ligne de base (le cliquet ne remonte jamais).`);
+    for (const [fichier, t] of Object.entries(tol)) {
+      const n = mesure[f][fichier] || 0;
+      if (n < t.plafond) ecarts.push(`${f} ${fichier} : ${n} valeur(s) en dur pour un plafond de ${t.plafond} — ABAISSER la ligne de base (le cliquet ne remonte jamais : la place libérée ne doit pas resservir).`);
+      if (!String(t.motif || '').trim()) ecarts.push(`${f} ${fichier} : toléré SANS MOTIF — dire pourquoi la valeur reste en dur et quel lot la convertira.`);
     }
   }
+  const total = (m) => Object.values(m).reduce((s, n) => s + n, 0);
+  const resume = familles.map((f) => `${f} = ${total(mesure[f])}`).join(', ');
   if (ecarts.length) {
-    console.error(`Cliquet « valeurs en dur » : ${ecarts.length} écart(s).\n` + ecarts.join('\n') +
-      '\nUne référence de pièce se construit par la fabrique du référentiel de numérotation (numeroSuivant / numeroFormate / numeroDerive), jamais par un préfixe écrit dans le code.');
+    console.error(`Cliquet « valeurs en dur » (${resume}) : ${ecarts.length} écart(s) avec ${relative(RACINE, cheminPlafonds) || cheminPlafonds}`);
+    for (const e of ecarts) console.error(`  - ${e}`);
     process.exit(1);
   }
-  console.log(`Cliquet « valeurs en dur » : familles ${familles.join(', ')} conformes à leurs plafonds.`);
+  console.log(`Cliquet « valeurs en dur » : conforme à la ligne de base (${resume}).`);
+//        Famille E (préfixes de numérotation) : plafond ZÉRO partout depuis le lot 2 (fabrique du référentiel de numérotation) ; `--injecter=<chemin fictif>:<fichier>` ajoute un source
+//        au balayage comme s'il vivait au chemin fictif (sonde : le cliquet doit mordre).
+//   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A   échoue si une année en dur qui décide apparaît hors de la liste fermée (annees-tolerees.json)
+// Lecture seule : le script n'écrit que le fichier demandé par --json. Importable (node --test) : `analyser`, `cliquet`, `lireToleres`.
   process.exit(0);
 }
 if (args.includes('--par-fichier')) {

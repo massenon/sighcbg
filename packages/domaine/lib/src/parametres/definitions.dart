@@ -20,8 +20,12 @@
 
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
-import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler;
+import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard;
+import '../paie/pai_baremes.dart';
+import '../configuration/cfb_donnees.dart' show cfbCcibTotal;
+import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSemence;
+import '../administration/adm_regles.dart' show admCleForfaitAmbulance, admClePrixKmAmbulance, admForfaitAmbulanceSemence, admPrixKmAmbulanceSemence;
 import 'parametres.dart';
 import 'reglages_roles.dart';
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
@@ -173,6 +177,109 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot L7 (espace « Mes »)',
   ),
+
+  // LES TAUX ET LE BARÈME DE LA PAIE (lot 1 de l'inventaire des valeurs en dur, 16/11/2026) : la CNSS, le VPS et le barème de l'ITS quittent les constantes du moteur de
+  // paie. Défaut SEMÉ = la valeur d'avant (aucun bulletin ne change) ; le moteur les lit À LA DATE DU BULLETIN (`pai_baremes.dart`). Famille RÉSERVÉE (jamais vers un
+  // téléphone) et à réglage DÉDIÉ : une version nouvelle se pose par la confirmation fiscale, sous le geste `fiscal_confirmer`, avec un motif — jamais par le panneau générique.
+  DefinitionParametre(
+    cle: paiCleCnssOuvriere,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.nombre,
+    defaut: paiCnssOuvriereSemence,
+    libelle: 'CNSS — part ouvrière (% du brut)',
+    aide: 'Retenue sur le salaire brut après sanction, à chaque bulletin. Une version nouvelle prend effet à une date : un bulletin se calcule au taux en vigueur le premier jour de sa période ; un bulletin déjà généré garde le sien.',
+    source: 'CDCT §10.10 (D.PARAM_PAIE de la maquette) : 3,6 %, sans plafond',
+    branche: true,
+    appliquePar: 'Moteur de paie (bulletin, cotisations, pilotage)',
+    geste: gesteFiscalConfirmer,
+  ),
+  DefinitionParametre(
+    cle: paiCleCnssPatronale,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.nombre,
+    defaut: paiCnssPatronaleSemence,
+    libelle: 'CNSS — part patronale (% du brut)',
+    aide: 'Charge de l\'employeur, non déduite du net. Versionnée par date comme la part ouvrière.',
+    source: 'CDCT §10.10 (D.PARAM_PAIE de la maquette) : 16,4 %, sans plafond',
+    branche: true,
+    appliquePar: 'Moteur de paie (bulletin, cotisations, pilotage)',
+    geste: gesteFiscalConfirmer,
+  ),
+  DefinitionParametre(
+    cle: paiCleVps,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.nombre,
+    defaut: paiVpsTauxSemence,
+    libelle: 'VPS — versement patronal de solidarité (% du brut)',
+    aide: 'Charge de l\'employeur, non déduite du net. Versionnée par date.',
+    source: 'CDCT §10.10 (D.PARAM_PAIE de la maquette) : 4 % du salaire brut',
+    branche: true,
+    appliquePar: 'Moteur de paie (bulletin, cotisations, pilotage)',
+    geste: gesteFiscalConfirmer,
+  ),
+  DefinitionParametre(
+    cle: paiCleBaremeIts,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.texte,
+    defaut: paiBaremeItsSemence,
+    libelle: 'Barème progressif de l\'ITS',
+    aide: 'Tranches [plancher, plafond, taux %], la dernière sans plafond. Le barème semé est celui de la maquette, « à confirmer par le service comptable » : il reste marqué à confirmer tant qu\'aucune confirmation ne cite le texte qui le fonde.',
+    source: 'Maquette (D.PARAM_PAIE.its) : à confirmer par le service comptable, aucun texte cité',
+    branche: true,
+    appliquePar: 'Moteur de paie (ITS de chaque bulletin)',
+    geste: gesteFiscalConfirmer,
+  ),
+  // LA PRIME D'ANCIENNETÉ (complément du lot 1) : deux copies en dur (moteur de paie, fiche d'évaluation NS 131) remplacées par deux paramètres datés, lus par une règle.
+  DefinitionParametre(
+    cle: paiCleAncienneteTaux,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.nombre,
+    defaut: paiAncienneteTauxSemence,
+    libelle: 'Prime d\'ancienneté — taux par année (% du salaire de base)',
+    aide: 'Le taux appliqué par année d\'ancienneté, au salaire de base. Lu à la date du bulletin ; un bulletin déjà généré garde le sien.',
+    source: 'Maquette (m11-paie.js, prime d\'ancienneté) : 2 % par année, à confirmer par la Direction de Baguidi',
+    branche: true,
+    appliquePar: 'Moteur de paie et fiche d\'évaluation NS 131',
+    geste: gesteFiscalConfirmer,
+  ),
+  DefinitionParametre(
+    cle: paiCleAncienneteSeuil,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.entier,
+    defaut: paiAncienneteSeuilAnsSemence,
+    libelle: 'Prime d\'ancienneté — à partir de (années)',
+    aide: 'Le nombre d\'années d\'ancienneté à partir duquel la prime est due. Entier de 0 à 40.',
+    source: 'Maquette (m11-paie.js, prime d\'ancienneté) : à partir de 2 ans, à confirmer par la Direction de Baguidi',
+    branche: true,
+    appliquePar: 'Moteur de paie et fiche d\'évaluation NS 131',
+    geste: gesteFiscalConfirmer,
+  ),
+  // LA TVA DU RÉGIME NORMAL (complément du lot 1) : 18 % écrits dans le référentiel fiscal. Le RÉGIME se choisit à la configuration fiscale (exonéré à Baguidi) ; son taux
+  // normal est daté, lu à la date de la pièce.
+  DefinitionParametre(
+    cle: paiCleTvaNormal,
+    famille: paiFamilleBaremes,
+    type: TypeParametre.nombre,
+    defaut: paiTvaNormalSemence,
+    libelle: 'TVA — taux du régime normal (%)',
+    aide: 'Appliqué quand la configuration fiscale retient le régime normal (Baguidi : régime exonéré, produits et actes de santé). Versionné par date.',
+    source: 'Référentiel fiscal de la maquette (D.PARAM_FISCAL.regimesTva) : 18 %',
+    branche: true,
+    appliquePar: 'Facturation normalisée (MECeF) au régime normal',
+    geste: gesteFiscalConfirmer,
+  ),
+  // LA PARTICIPATION STANDARD AUX ÉVÉNEMENTS DU PERSONNEL (lot 1) : le montant proposé par agent quand l'événement n'en porte pas. Elle transite (ni recette ni charge).
+  DefinitionParametre(
+    cle: rhcCleMontantStandard,
+    famille: 'rh',
+    type: TypeParametre.entier,
+    defaut: rhcMontantStandardSemence,
+    libelle: 'Participation standard par agent aux événements du personnel (FCFA)',
+    aide: 'Proposée à la création d\'un événement (mariage, naissance, décès…) et reprise quand le montant saisi est vide ou nul. Un événement déjà créé garde le montant qu\'il porte.',
+    source: 'Usage de la clinique repris de la maquette (vague 21) : 1 000 F, à confirmer par la Direction de Baguidi',
+    branche: true,
+    appliquePar: 'Événements du personnel (m10-evenements)',
+  ),
   DefinitionParametre(
     cle: 'planning.badgeSertDePointage',
     famille: 'planning',
@@ -209,7 +316,7 @@ const List<DefinitionParametre> definitionsParametres = [
     cle: 'fiscal.ccibMontant',
     famille: 'fiscal',
     type: TypeParametre.entier,
-    defaut: 300000,
+    defaut: cfbCcibTotal,
     libelle: 'CCIB : contribution annuelle (FCFA)',
     aide: 'Réglée en deux tranches égales (mars et juin). Montant à confirmer par le cabinet comptable ; il s\'affiche aux indicateurs de la fiscalité et à la configuration fiscale.',
     source: _reprise,
@@ -553,6 +660,31 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Plan de travail annuel (m13-plan-annuel)',
     geste: gestePtaRegler,
   ),
+
+  // LE TARIF D'UNE COURSE D'AMBULANCE SANS MONTANT SAISI (lot 1 de l'inventaire des valeurs en dur) : 5 000 F + 500 F par kilomètre vivaient en dur dans le moteur. Aucun
+  // document ne fixe ce tarif (il n'est pas au catalogue) : ce sont des PROPOSITIONS À VALIDER, réglables par une version datée. Une course saisie avec son montant le garde.
+  DefinitionParametre(
+    cle: admCleForfaitAmbulance,
+    famille: 'ambulance',
+    type: TypeParametre.entier,
+    defaut: admForfaitAmbulanceSemence,
+    libelle: 'Course d\'ambulance sans montant saisi : forfait (FCFA)',
+    aide: 'Proposé quand la course est enregistrée sans montant : forfait + kilomètres × prix au kilomètre. Valeur d\'attente, à valider par la Direction.',
+    source: 'Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d\'une course',
+    branche: true,
+    appliquePar: 'Interventions de l\'ambulance (m13)',
+  ),
+  DefinitionParametre(
+    cle: admClePrixKmAmbulance,
+    famille: 'ambulance',
+    type: TypeParametre.entier,
+    defaut: admPrixKmAmbulanceSemence,
+    libelle: 'Course d\'ambulance sans montant saisi : prix au kilomètre (FCFA)',
+    aide: 'Ajouté au forfait pour chaque kilomètre parcouru. Valeur d\'attente, à valider par la Direction.',
+    source: 'Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d\'une course',
+    branche: true,
+    appliquePar: 'Interventions de l\'ambulance (m13)',
+  ),
 ];
 
 /// La clé du réglage « encaisser le reste d'une facture qui a une ligne sans prix » (Non par défaut).
@@ -579,6 +711,9 @@ const Map<String, String> libellesFamillesParametres = {
   'validations': 'Validations et continuité',
   'caisse': 'Caisse et encaissement',
   'pta': 'Plan de travail annuel',
+  paiFamilleBaremes: 'Taux et barèmes de la paie',
+  'rh': 'Ressources humaines',
+  'ambulance': 'Ambulance',
 };
 
 /// La définition d'une clé, ou `null`.

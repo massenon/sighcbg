@@ -1,6 +1,26 @@
 {
-  "_note": "Plafonds du cliquet « valeurs en dur » (node tools/baguidi/inventaire-en-dur.mjs --cliquet). Une famille par clé ; pour chaque fichier toléré : {\"sites\": n, \"motif\": \"…\"}. Un fichier absent a un plafond de ZÉRO. Le cliquet ne remonte jamais : un plafond ne s’abaisse que lorsqu’un site est converti.",
-  "E": {
-    "_motif": "Lot 2 (16/11/2026) : toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Plafond ZÉRO partout."
+  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (lot 1 de docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=B,H` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, un référentiel ou un barème. Familles B (taux et montants) et H (barèmes figés) : 10 + 6 sites au 16/11/2026, 1 + 3 fichiers (4 sites) après le lot 1. Famille E (lot 2) : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/).",
+  "familles": {
+    "B": {
+      "apps/poste/lib/modules/m1/documents.dart": {
+        "plafond": 2,
+        "motif": "Plan de numérisation : écran de maquette aux chiffres STATIQUES (fonds de 18 000 dossiers, 4 230 numérisés, 6 200 prioritaires, lots de reprise). Le 6 200 n'est ni un taux ni un montant : c'est un compte qui doit se CALCULER depuis les dossiers vus en 24 mois. Hors du lot 1 (paie et fiscal) : lot 7 de l'inventaire."
+      }
+    },
+    "H": {
+      "packages/domaine/lib/src/assurances/ass_regles.dart": {
+        "plafond": 1,
+        "motif": "AssBareme.garanties : le barème de référence du régime employeur versé au dossier le 18/06/2026, transcrit tel quel et seulement PROPOSÉ à la création d'une convention (recopié dans la collection `garanties`, puis ajusté). Le porter au référentiel des garanties par convention relève du lot 7 de l'inventaire."
+      },
+      "packages/domaine/lib/src/labo/res_stats.dart": {
+        "plafond": 1,
+        "motif": "Tranches d'âge des statistiques du laboratoire (0-5, 6-15…), copie DIVERGENTE de celles du pilotage (0-4, 5-14…). Les unifier change les sorties d'un des deux écrans (vecteurs de la maquette) : décision du format DHIS2 attendue, lot 6 de l'inventaire (bornes cliniques)."
+      },
+      "packages/domaine/lib/src/pilotage/pil_stats.dart": {
+        "plafond": 1,
+        "motif": "pilTranchesAgeExamens (0-4, 5-14…) : seconde copie des tranches d'âge statistiques, à unifier avec res_stats.dart au lot 6 (même motif). L'ORTB et les taux de la CNSS/VPS que ce fichier recalculait sont, eux, convertis (lot 1 : fiche ORTB-PARAMETRES et paramètres datés)."
+      }
+    },
+    "E": {}
   }
 }

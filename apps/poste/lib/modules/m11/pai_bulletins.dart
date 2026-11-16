@@ -139,7 +139,7 @@ class EcranBulletins extends StatelessWidget with EcranMaquette {
       detail: _detail,
       titreDetail: (b) => '${b['reference']}',
       sousTitreDetail: (b) => '${b['reference']}',
-      etat: (ctx, b) => imprimerBulletin(ctx, vueDeFiche(b)),
+      etat: (ctx, b) => imprimerBulletin(ctx, vueDeFiche(b, parametres: c.magasin.collection(parCollectionParametres).toutes)),
     );
   }
 }

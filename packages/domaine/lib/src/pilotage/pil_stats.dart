@@ -10,7 +10,8 @@ import '../comptabilite/cpc_bfr.dart' show cpcJoursEntre;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../hospitalisation/hos_regles.dart' show hosChambres, hosTypesChambre;
-import '../paie/pai_moteur.dart' show paiCnssOuvriere, paiCnssPatronale, paiVpsTaux, paiSeuilTele;
+import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCalculOrtb;
+import '../paie/pai_baremes.dart' show PaiTauxPaie;
 import '../referentiels/regles.dart' show resultatRendu, secteurNormalise;
 import '../stock/points.dart' show groupePrestation, groupesPrestation;
 import 'pil_vue.dart';
@@ -433,25 +434,39 @@ String pilCoutAgentNonCalculable(PilFiche a) =>
 
 /// Le coût global d'un agent : le coût EMPLOYEUR (brut + CNSS patronale + VPS) et, à part, les retenues de l'AGENT (CNSS ouvrière, ORTB). L'ITS,
 /// progressif, se lit sur le bulletin — le recalculer ici créerait une seconde vérité.
-PilCoutAgent pilCoutAgent(PilFiche a, Iterable<PilFiche> bulletins, String du, String au) {
+///
+/// UNE SEULE SOURCE (lot 1 de l'inventaire des valeurs en dur) : [taux] sont les taux de la paie EN VIGUEUR (paramètres datés, [PaiTauxPaie.aLaDate]) et [ortb] la
+/// fiche `ORTB-PARAMETRES` en vigueur ([PaiParametresOrtb.aLaDate]) — celles que lit le moteur de paie, à la même date. Absents : les semences. Le pilotage ne
+/// recalcule plus l'ORTB avec ses propres montants : si la Direction change la fiche, le pilotage et la paie suivent ensemble.
+PilCoutAgent pilCoutAgent(PilFiche a, Iterable<PilFiche> bulletins, String du, String au, {PaiTauxPaie? taux, PaiParametresOrtb ortb = PaiParametresOrtb.semence}) {
+  final t = taux ?? PaiTauxPaie.semence;
   final brut = pilN(a['salaireBase']);
-  final patronale = arrondiJs(brut * paiCnssPatronale / 100);
-  final vps = arrondiJs(brut * paiVpsTaux / 100);
+  final patronale = arrondiJs(brut * t.cnssPatronale / 100);
+  final vps = arrondiJs(brut * t.vps / 100);
   final cout = brut + patronale + vps;
-  final ouvriere = arrondiJs(brut * paiCnssOuvriere / 100);
-  final ortb = 1000 + (brut > paiSeuilTele ? 3000 : 0);
+  final ouvriere = arrondiJs(brut * t.cnssOuvriere / 100);
+  // Le montant ANNUEL des redevances applicables au brut, lu sur la fiche (les redevances se cumulent ; chacune n'est prélevée qu'au mois de son prélèvement).
+  final lignesOrtb = paiCalculOrtb(brut, 0, parametres: ortb).lignes;
+  final ortbMontant = lignesOrtb.fold<num>(0, (s, l) => s + l.montantAnnuel);
+  // L'indice s'écrit comme l'écran réel l'écrivait (« Radio 1 000 + Télé 3 000 », espace ordinaire entre les milliers) : les montants sont ceux de la fiche.
+  String n(num v) => money(v, avecDevise: false).replaceAll('\u202F', ' ').replaceAll('\u00A0', ' ');
+  final indiceOrtb = lignesOrtb.length > 1
+      ? '${lignesOrtb.map((l) => '${l.categorie} ${n(l.montantAnnuel)}').join(' + ')} — elles se CUMULENT'
+      : lignesOrtb.length == 1
+          ? '${lignesOrtb.first.categorie} seule (brut ≤ ${n(ortb.seuilTele)})'
+          : 'Aucune redevance applicable';
   final v = PilVue(kpis: [
     PilKpi('Salaire brut mensuel', money(brut), ton: 'navy'),
     PilKpi('Coût employeur mensuel', money(cout), indice: 'Brut + CNSS patronale + VPS', ton: 'info'),
     PilKpi('Coût employeur annuel', money(cout * 12)),
-    PilKpi('ORTB annuel (retenue agent)', money(ortb), indice: brut > 60000 ? 'Radio 1 000 + Télé 3 000 — elles se CUMULENT' : 'Radio seule (brut ≤ 60 000)'),
+    PilKpi('ORTB annuel (retenue agent)', money(ortbMontant), indice: indiceOrtb),
   ]);
   v.tables.add(PilTable('Composition mensuelle', ['POSTE', 'QUI LE SUPPORTE', 'MONTANT'], [
     ['Salaire brut', 'Employeur', money(brut, avecDevise: false)],
-    ['CNSS — part patronale ${pilTexteNombre(paiCnssPatronale)} %', 'Employeur', money(patronale, avecDevise: false)],
-    ['VPS ${pilTexteNombre(paiVpsTaux)} %', 'Employeur', money(vps, avecDevise: false)],
+    ['CNSS — part patronale ${pilTexteNombre(t.cnssPatronale)} %', 'Employeur', money(patronale, avecDevise: false)],
+    ['VPS ${pilTexteNombre(t.vps)} %', 'Employeur', money(vps, avecDevise: false)],
     ['COÛT EMPLOYEUR', '', money(cout, avecDevise: false)],
-    ['CNSS — part ouvrière ${pilTexteNombre(paiCnssOuvriere)} %', 'Retenue à l’agent', money(ouvriere, avecDevise: false)],
+    ['CNSS — part ouvrière ${pilTexteNombre(t.cnssOuvriere)} %', 'Retenue à l’agent', money(ouvriere, avecDevise: false)],
   ]));
   final lignes = <(String, num, num)>[];
   for (final b in bulletins) {
@@ -475,7 +490,7 @@ PilCoutAgent pilCoutAgent(PilFiche a, Iterable<PilFiche> bulletins, String du, S
     lignes.add((periode, pilN(b['brut']), pilN(b['net'])));
   }
   v.tables.add(PilTable(null, ['PÉRIODE', 'BRUT', 'NET PAYÉ'], [for (final l in lignes) [l.$1, money(l.$2, avecDevise: false), money(l.$3, avecDevise: false)]]));
-  return PilCoutAgent(brut, patronale, vps, cout, ouvriere, ortb, v, lignes);
+  return PilCoutAgent(brut, patronale, vps, cout, ouvriere, ortbMontant, v, lignes);
 }
 
 /// La note « N avance(s) sur salaire au dossier » (elles transitent : ni recette ni charge), ou `null`.

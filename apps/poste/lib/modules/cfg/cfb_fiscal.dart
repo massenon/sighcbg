@@ -722,24 +722,14 @@ class _EtatComptabilite extends State<EcranComptabilite> {
                         rendu: _celluleArret),
                     ColonneMini('', (e) => '', droite: true, rendu: (e) => _commandes(context, c, cf, e)),
                   ], lignes: mensuelles),
-                  _encart('Assiettes arrêtées par le CDCT §10.10 (lecture seule)',
-                      '${cfbTexteAssiettes()} Ces taux ne se modifient pas ici : ils sont arrêtés par le cahier des charges ; les rendre datés est un chantier nommé.'),
+                  _encart('Assiettes en vigueur aujourd’hui (paramètres datés)',
+                      '${cfbTexteAssiettes(tauxPaieA(c, c.aujourdhui))} Ces taux sont versionnés par date d’effet (semés aux valeurs du CDCT §10.10) : ils se confirment, ou reçoivent une version nouvelle datée, dans les cartes ci-dessous, sous le geste « Confirmer un taux fiscal ». Un bulletin se calcule au taux en vigueur le premier jour de sa période.'),
                 ], espace: 12)),
-            // Les taux de la CNSS : « Confirmer » (motif obligatoire, tracé, geste réservé `fiscal_confirmer`), compléments du 16/11/2026.
-            CarteConfirmationCnss(c: c),
-            // Barème de l'ITS : une pièce à valider (constante du code, validation au moteur commun).
-            CarteSigh(
-                titre: 'Barème de l’ITS',
-                child: cfaPile([
-                  ValidationPoste(c).bandeau(context, 'bareme_its', 'bareme-its', titre: 'Barème ITS Bénin, à confirmer par le service comptable'),
-                  MiniTableauSigh(colonnes: [
-                    ColonneMini('Tranche de salaire', (t) => '${t['tranche']}'),
-                    ColonneMini('Taux', (t) => '${t['taux']} %', droite: true),
-                  ], lignes: [
-                    for (final t in paiBaremeIts)
-                      {'tranche': '${money(t.de, avecDevise: false)}${t.a == null ? ' et plus' : ' à ${money(t.a, avecDevise: false)}'}', 'taux': t.taux}
-                  ]),
-                ], espace: 12)),
+            // Les taux de la paie DATÉS (lot 1 de l'inventaire des valeurs en dur) : CNSS, VPS et barème de l'ITS, « Confirmer » et « Nouvelle version » (motif obligatoire,
+            // tracés, geste réservé `fiscal_confirmer`). Le barème de l'ITS garde le bandeau de validation de la Direction (pièce `bareme-its`).
+            CartesTauxPaie(c: c, avecTva: true, enteteIts: [
+              ValidationPoste(c).bandeau(context, 'bareme_its', 'bareme-its', titre: 'Barème ITS Bénin, à confirmer par le service comptable'),
+            ]),
             CarteSigh(
                 titre: 'Impôt sur les sociétés : quatre acomptes et une liquidation',
                 child: cfaPile([

@@ -12,9 +12,10 @@ import '../m8/commun.dart' show n, m, dateDe;
 
 export '../m8/commun.dart' show n, m, dateDe;
 
-/// Le référentiel fiscal de la maquette (`D.PARAM_FISCAL`), tel que le poste l'embarque.
-ParamFiscal paramFiscal(Magasin mag) =>
-    ParamFiscal.depuis((mag.referentiels['paramFiscal'] as Map).cast());
+/// Le référentiel fiscal de la maquette (`D.PARAM_FISCAL`), tel que le poste l'embarque — le RÉGIME choisi y reste ; le taux du régime NORMAL est le paramètre daté
+/// `taux_fiscaux.tvaTauxNormal` EN VIGUEUR à [date] (absente : l'horloge du poste), complément du lot 1 de l'inventaire des valeurs en dur.
+ParamFiscal paramFiscal(Magasin mag, [DateTime? date]) =>
+    ParamFiscal.depuis((mag.referentiels['paramFiscal'] as Map).cast()).aLaDate(mag.collection(parCollectionParametres).toutes, date ?? mag.horloge());
 
 /// Les factures NORMALISÉES : tout sauf les pro-forma. La maquette les filtre aussi par exercice (sélecteur de l'en-tête M12) : ce sélecteur n'est
 /// pas encore porté, le registre montre donc tous les exercices — limite dite dans le plan.
