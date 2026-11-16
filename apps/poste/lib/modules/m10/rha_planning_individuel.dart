@@ -8,6 +8,7 @@ import '../../donnees/planning_rh_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import 'rha_commun.dart' show voitRemunerationAgent;
 import 'rhb_circuit.dart' show rhbPlanningPoste, rhbToastRefus;
 import 'rhb_commun.dart';
 import 'rhb_planning.dart' show honoraireReserve;
@@ -27,7 +28,9 @@ import 'rhb_planning.dart' show honoraireReserve;
   return (
     lire: lire,
     ecrire: lire && ecrireEcran && gestePeutEcran(c, gesteRhRegler),
-    montants: mat == null || ecrireEcran || mat.peutVoir(c.role, 'm10-primes'),
+    // Dans la FICHE du personnel, la règle de la fiche s'ajoute (point 1 du 17/11/2026) : un profil qui y entre en lecture seule (le Surveillant) ne lit aucune rémunération, même s'il
+    // écrit le planning.
+    montants: voitRemunerationAgent(c) && (mat == null || ecrireEcran || mat.peutVoir(c.role, 'm10-primes')),
   );
 }
 

@@ -129,7 +129,7 @@ const ouvertures16_11 = {
   dm: ['m10-planning'], infirmier: ['m10-planning'], reception: ['m10-planning'], ambulancier: ['m10-planning'], chirurgien: ['m10-planning'],
   laborantin: ['cfg-tarifs', 'cfg-catalogue'], echographiste: ['cfg-tarifs', 'cfg-catalogue'], responsable_radiologie: ['cfg-tarifs', 'cfg-catalogue'], comptable: ['cfg-tarifs', 'cfg-catalogue'],
   anesthesiste: ['m6-stock-detail', 'm6-lots'],
-  agentadmin: ['m3-plan-lits'], surveillant: ['m3-plan-lits'], aide_soignant: ['m3-plan-lits'],
+  agentadmin: ['m3-plan-lits'], surveillant: ['m3-plan-lits', 'm10-personnel', 'm10-employe-profil'], aide_soignant: ['m3-plan-lits'],
   assistant_comptable: ['m2-stats-consultations', 'm3-stats-hospitalisations', 'm6-point-ventes'],
 };
 test('16/11/2026 : chaque ouverture est une lecture seule [1, 0, 0] sur un écran du manifeste', () => {
