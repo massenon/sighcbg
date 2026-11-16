@@ -67,7 +67,11 @@ ReglagesExport reglagesExport(ContexteEcran? c) {
   if (c == null) return ReglagesExport.depuisParametres((_) => null);
   final s = serviceParametres(c.magasin, auteur: () => 'lecture', horloge: () => c.aujourdhui);
   final jour = parametreDateIso(c.aujourdhui);
-  return ReglagesExport.depuisParametres((cle) => s.valeur(cle, jour));
+  // La VERSION en vigueur est lue avec la valeur : la version 0 est le défaut semé (AK, 16/11/2026 : une base semée avec l'ancienne limite d'attente n'en garde aucune).
+  return ReglagesExport.depuisParametres((cle) => s.valeur(cle, jour), version: (cle) {
+    final r = s.valeurA(cle, jour);
+    return r.ok ? r.valeur!.version : null;
+  });
 }
 
 /// Les colonnes qu'écrit le fichier : celles que l'écran montre, avec le TEXTE qu'il affiche. En plus de la colonne que l'écran a déjà masquée, un champ sensible
@@ -129,8 +133,9 @@ class SourceExport {
 const TextStyle _styleCorps = TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14);
 const TextStyle _styleDiscret = TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12);
 
-/// La fenêtre « Exporter les données » : la portée (la sélection, tout avec le filtre, tout sans le filtre), puis le format. Un volume au-delà de la limite de la
-/// clinique est REFUSÉ en le disant, les boutons restent éteints. [porteeInitiale] : la portée proposée (la sélection quand elle existe).
+/// La fenêtre « Exporter les données » : la portée (la sélection, tout avec le filtre, tout sans le filtre), puis le format. Par défaut la portée SUIT LES FILTRES
+/// appliqués (AK, 16/11/2026) : « tout avec le filtre » est proposé d'office, « sans le filtre » n'est qu'un choix explicite de l'agent. AUCUNE limite de lignes par
+/// défaut : seul le droit d'export compte ; si la clinique en fixe une, un volume au-delà est REFUSÉ en le disant, les boutons restent éteints. [porteeInitiale] : la portée proposée (la sélection quand elle existe).
 Future<void> ouvrirExport(BuildContext context, SourceExport s, {PorteeExport? porteeInitiale}) {
   final c = ContexteEcran.capturer(context);
   if (!peutExporterTableau(c)) {

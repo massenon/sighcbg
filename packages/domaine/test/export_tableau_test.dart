@@ -225,10 +225,10 @@ void main() {
   group('les réglages viennent du registre, jamais du code', () {
     test('à défaut de fiche : le défaut de la DÉFINITION, marqué « à fixer sur la plus grande table réelle »', () {
       final r = ReglagesExport.depuisParametres((_) => null);
-      expect(r.limiteLignes, definitionDeParametre(cleExportLimiteLignes)!.defaut);
+      expect(r.limiteLignes, isNull, reason: 'AK (16/11/2026) : aucune limite de lignes par défaut');
       expect(r.seuilProgression, definitionDeParametre(cleExportSeuilProgression)!.defaut);
       expect(r.limiteEtatsParLigne, definitionDeParametre(cleExportLimiteEtats)!.defaut);
-      for (final c in [cleExportLimiteLignes, cleExportSeuilProgression]) {
+      for (final c in [cleExportSeuilProgression]) {
         expect(definitionDeParametre(c)!.source, contains('à fixer sur la plus grande table réelle'));
         expect(definitionDeParametre(c)!.mobile, isFalse, reason: 'un réglage d\'export ne part jamais au téléphone');
       }
@@ -242,6 +242,43 @@ void main() {
       expect(r.verifier(50), isNull);
       expect(const ReglagesExport(limiteLignes: 10, seuilProgression: 8, limiteEtatsParLigne: 3).verifierEtats(4)!.code, 'IMPRESSION_TROP_D_ETATS');
       expect(const ReglagesExport(limiteLignes: 10, seuilProgression: 8, limiteEtatsParLigne: 3).verifierEtats(3), isNull);
+    });
+  });
+
+  group('AK (Direction, 16/11/2026) : aucune limite de lignes par défaut, seul le droit compte', () {
+    test('le défaut de la définition est 0 = aucune limite, sourcé par la décision', () {
+      final d = definitionDeParametre(cleExportLimiteLignes)!;
+      expect(d.defaut, 0);
+      expect(d.source, contains('16/11/2026'));
+      expect(d.mobile, isFalse);
+    });
+    test('sans limite fixée : dix millions de lignes ne sont jamais refusées', () {
+      final r = ReglagesExport.depuisParametres((_) => null);
+      expect(r.verifier(10000000), isNull);
+      for (final v in [0, '', null, -5, 'abc']) {
+        expect(ReglagesExport.depuisParametres((c) => c == cleExportLimiteLignes ? v : null).limiteLignes, isNull, reason: '« $v » : aucune limite');
+      }
+    });
+    test('l’ancien semis (version 0 à 200 000) ne fixe AUCUNE limite : seule une version datée de la clinique en pose une', () {
+      final semis = ReglagesExport.depuisParametres((c) => c == cleExportLimiteLignes ? 200000 : null, version: (c) => c == cleExportLimiteLignes ? 0 : null);
+      expect(semis.limiteLignes, isNull);
+      expect(semis.verifier(250000), isNull);
+      final fixee = ReglagesExport.depuisParametres((c) => c == cleExportLimiteLignes ? 500 : null, version: (c) => c == cleExportLimiteLignes ? 1 : null);
+      expect(fixee.limiteLignes, 500);
+      expect(fixee.verifier(501)!.code, 'EXPORT_TROP_VOLUMINEUX');
+      expect(fixee.verifier(500), isNull);
+    });
+    test('la production sans limite écrit toutes les lignes', () async {
+      const sansLimite = ReglagesExport(limiteLignes: null, seuilProgression: 100000, limiteEtatsParLigne: 5);
+      final r = await produireExport(
+          colonnes: [ColonneExport(libelle: 'N', texte: (r) => '${r['n']}')],
+          lignes: [for (var i = 0; i < 3000; i++) {'n': i}],
+          format: FormatExport.csv,
+          feuille: 'T',
+          maintenant: instant,
+          reglages: sansLimite);
+      expect(r.ok, isTrue);
+      expect(r.lignes, 3000);
     });
   });
 

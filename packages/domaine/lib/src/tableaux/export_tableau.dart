@@ -52,11 +52,16 @@ const String cleExportLimiteEtats = 'export.limiteEtatsParLigne';
 
 /// Les réglages d'export EN VIGUEUR. Ils viennent de la base ([depuisParametres] reçoit la lecture) ; à défaut de fiche (poste jamais semé), le défaut de la
 /// DÉFINITION du registre : aucune valeur n'est écrite ici.
+///
+/// AK (Direction, 16/11/2026) : PAS DE LIMITE de lignes par défaut, seul le droit d'export compte. [limiteLignes] vaut `null` (« aucune limite ») tant que la clinique
+/// n'en a pas FIXÉ une : valeur vide ou 0 = illimité ; le refus `EXPORT_TROP_VOLUMINEUX` ne s'applique qu'à une limite d'au moins une ligne réglée par une version
+/// datée. La version 0 d'un réglage est le DÉFAUT SEMÉ, pas une décision de la clinique : une base semée avant le 16/11/2026 porte encore l'ancienne valeur d'attente
+/// (200 000) en version 0 ; elle suit le défaut de la définition en vigueur (aucune limite), jamais l'ancien semis.
 class ReglagesExport {
   const ReglagesExport({required this.limiteLignes, required this.seuilProgression, required this.limiteEtatsParLigne});
 
-  /// Le nombre de lignes au-delà duquel un export est REFUSÉ.
-  final int limiteLignes;
+  /// Le nombre de lignes au-delà duquel un export est REFUSÉ ; `null` : aucune limite (le défaut).
+  final int? limiteLignes;
 
   /// Le nombre de lignes à partir duquel l'export se déroule par lots, avec un compteur de progression.
   final int seuilProgression;
@@ -64,7 +69,8 @@ class ReglagesExport {
   /// Le nombre d'états au-delà duquel « un état par ligne » est refusé (chaque état est une pièce complète).
   final int limiteEtatsParLigne;
 
-  factory ReglagesExport.depuisParametres(Object? Function(String cle) valeur) {
+  /// [valeur] : la valeur EN VIGUEUR d'une clé ; [version] (facultatif) : le numéro de la version qui la porte (0 = défaut semé).
+  factory ReglagesExport.depuisParametres(Object? Function(String cle) valeur, {int? Function(String cle)? version}) {
     int lire(String cle) {
       final v = valeur(cle);
       if (v is num && v.isFinite && v >= 1) return v.toInt();
@@ -72,14 +78,17 @@ class ReglagesExport {
       return (d as num).toInt();
     }
 
-    return ReglagesExport(limiteLignes: lire(cleExportLimiteLignes), seuilProgression: lire(cleExportSeuilProgression), limiteEtatsParLigne: lire(cleExportLimiteEtats));
+    return ReglagesExport(
+        limiteLignes: limiteExportDepuis(valeur(cleExportLimiteLignes), version: version?.call(cleExportLimiteLignes)),
+        seuilProgression: lire(cleExportSeuilProgression),
+        limiteEtatsParLigne: lire(cleExportLimiteEtats));
   }
 
   /// La taille d'un lot : le quart du seuil, au moins une ligne. DÉRIVÉE du réglage, jamais une constante.
   int get tailleLot => (seuilProgression ~/ 4).clamp(1, 1 << 30);
 
   /// Le refus nommé si [n] lignes dépassent la limite, sinon `null`.
-  RefusExport? verifier(int n) => n <= limiteLignes
+  RefusExport? verifier(int n) => limiteLignes == null || n <= limiteLignes!
       ? null
       : RefusExport(
           'EXPORT_TROP_VOLUMINEUX',
@@ -93,6 +102,21 @@ class ReglagesExport {
           'IMPRESSION_TROP_D_ETATS',
           '$n états à imprimer : la limite réglée par la clinique est de $limiteEtatsParLigne états par impression',
           'Cocher moins de lignes, ou imprimer la sélection en un seul tableau (Paramètres › Export des tableaux pour la limite).');
+}
+
+/// La limite de lignes EN VIGUEUR lue d'une valeur du registre : `null` (aucune limite) pour une valeur vide, nulle, négative ou illisible, et pour la version 0
+/// (le défaut semé, qui n'est pas une décision de la clinique : voir [ReglagesExport]) ; sinon l'entier fixé par la clinique.
+int? limiteExportDepuis(Object? valeur, {int? version}) {
+  if (version == 0) {
+    final d = definitionDeParametre(cleExportLimiteLignes)?.defaut;
+    return d is num && d >= 1 ? d.toInt() : null;
+  }
+  if (valeur is num && valeur.isFinite && valeur >= 1) return valeur.toInt();
+  if (valeur is String) {
+    final n = int.tryParse(valeur.trim());
+    if (n != null && n >= 1) return n;
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------

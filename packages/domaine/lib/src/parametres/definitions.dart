@@ -355,16 +355,16 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot AST-1 (assistant)',
   ),
-  // --- Export des tableaux (Q40, Direction du 15/11/2026) : AUCUNE valeur codée en dur dans l'export ; les trois réglages vivent en base. Les valeurs d'attente sont LARGES
-  // et marquées « à fixer sur la plus grande table réelle » : aucun document ne donne la taille de la plus grande table de la clinique.
+  // --- Export des tableaux (Q40, Direction du 15/11/2026) : AUCUNE valeur codée en dur dans l'export ; les trois réglages vivent en base. AK (16/11/2026) : la limite de
+  // lignes par export n'existe plus par défaut (0 = aucune limite) ; les deux autres valeurs d'attente restent « à fixer sur la plus grande table réelle ».
   DefinitionParametre(
     cle: 'export.limiteLignes',
     famille: 'export',
     type: TypeParametre.entier,
-    defaut: 200000,
-    libelle: 'Nombre maximal de lignes par export',
-    aide: 'Au-delà, l\'export est REFUSÉ en le disant (jamais tronqué en silence) : il faut cocher ou filtrer moins de lignes. Entier d\'au moins 1. Valeur d\'attente large : à fixer sur la plus grande table réelle de la clinique.',
-    source: 'Valeur d\'attente (décision Q40 du 15/11/2026) : à fixer sur la plus grande table réelle',
+    defaut: 0,
+    libelle: 'Nombre maximal de lignes par export (0 = aucune limite)',
+    aide: 'Par défaut AUCUNE limite : seul le droit d\'exporter compte (décision AK du 16/11/2026). Si la clinique fixe une limite (entier d\'au moins 1), un export au-delà est REFUSÉ en le disant, jamais tronqué en silence. 0 ou vide : aucune limite.',
+    source: 'Décision de la Direction du 16/11/2026 (AK) : pas de limite de lignes par défaut, seul le droit d\'export compte (remplace la valeur d\'attente de Q40, « à fixer sur la plus grande table réelle »)',
     branche: true,
     appliquePar: 'Chantier TABLEAUX (export)',
   ),

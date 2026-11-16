@@ -190,6 +190,42 @@ void main() {
     await t.pump(const Duration(seconds: 10));
   });
 
+  testWidgets('AK (16/11/2026) : sans limite fixée par la clinique, tout s\'exporte ; l\'ancien semis (version 0) ne limite rien', (t) async {
+    final m = magasin();
+    // Une base semée AVANT la décision : la version 0 porte une petite limite d'attente (simulée à 3) ; elle n'est pas une décision de la clinique.
+    final semis = Parametres.semer(definitionDeParametre(cleExportLimiteLignes)!).toJson();
+    m.collection(parCollectionParametres).ajouterSansJournal({...semis, 'id': '$cleExportLimiteLignes@defaut@0', 'valeur': 3, 'defaut': 3});
+    await monter(t, tableau(), m: m);
+    await t.tap(find.text('Exporter'));
+    await pomper(t);
+    expect(find.byKey(const Key('export:refus')), findsNothing, reason: 'aucune limite tant que la clinique n’en a pas fixé une');
+    await t.tap(find.byKey(const Key('export:format:csv')));
+    await pomper(t);
+    expect(utf8.decode(ecrits.values.single).split('\r\n').length, 31, reason: 'en-tête + les 30 lignes, jamais tronqué');
+    await t.pump(const Duration(seconds: 10));
+  });
+
+  testWidgets('AK : l\'impression de la sélection suit le FILTRE appliqué et le porte sur la pièce', (t) async {
+    await chargerPolices();
+    final m = magasin();
+    await monter(t, tableau(), m: m);
+    await t.tap(find.byType(PopupMenuButton<String>));
+    await pomper(t);
+    await t.tap(find.text('Pair').last);
+    await pomper(t);
+    await t.tap(find.bySemanticsLabel('Tout sélectionner'));
+    await t.pump();
+    await t.tap(find.byKey(const Key('kit:tableau-tout-cocher')));
+    await t.pump();
+    expect(find.text('15 lignes sélectionnées'), findsOneWidget, reason: '« tout cocher » prend le filtre, pas tout le tableau');
+    await t.tap(find.byKey(const Key('kit:tableau-imprimer-selection')));
+    await pomper(t);
+    final apres = m.collection('audit').toutes.first['apres'] as Map;
+    expect(apres['lignes'], 15);
+    expect(find.textContaining('Pair'), findsWidgets, reason: 'le filtre en force est écrit sur la pièce');
+    await t.pump(const Duration(seconds: 10));
+  });
+
   testWidgets('droit retiré par une décision de la clinique : la commande est ABSENTE, rien ne s\'exporte', (t) async {
     final m = Magasin({
       'audit': const <Fiche>[],
