@@ -1,6 +1,7 @@
 // Rejoue les vecteurs du poste d'imagerie engendrés par la maquette (prototype_html/build/vecteurs-img-demandes.js) :
 // les trois écrans RÉELS (registre des demandes, poste, galerie) lus comme l'agent les lit, la fabrique d'ouverture d'une demande et « Rendre ».
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart';
@@ -132,7 +133,7 @@ void main() {
               ],
               couvertures: const [],
               demandesExistantes: [for (final r in (e['referencesExistantes']! as List)) {'reference': r}],
-              nbFactures: e['rangFactures']! as int,
+              facturesExistantes: piecesAuRang('imagerie.factures', e['rangFactures']! as int),
               prixDe: prix,
               nouvelId: (pre) => '$pre${++n}',
               date: p['date']! as String,

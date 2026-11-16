@@ -819,7 +819,8 @@ AssRapprochement assRapprocher(List<AssFilleMere> filles) {
       nbFactures: toutes.length);
 }
 
-/// La fiche d'une facture mère ÉMISE. [nbExistantes] : le nombre de fiches de la collection, ARCHIVÉES COMPRISES (le numéro ne se réutilise jamais) ;
+/// La fiche d'une facture mère ÉMISE. [existantes] : les fiches de la collection, ARCHIVÉES COMPRISES (le numéro ne se réutilise jamais : le PLUS GRAND rang porté + 1,
+/// décision du 17/11/2026, et non plus leur nombre) ;
 /// [annee] : l'année de l'horloge réelle. Les numéros des filles sont FIGÉS : ils permettront, dans six mois, de refaire le rapprochement.
 AssFiche assEmettreMere({
   required String code,
@@ -829,12 +830,12 @@ AssFiche assEmettreMere({
   required AssRapprochement rap,
   required String depuis,
   required DateTime auj,
-  required int nbExistantes,
+  required Iterable<Object?> existantes,
   required String emisePar,
 }) {
   final label = assPeriodesMere.firstWhere((p) => p.$1 == periode).$2;
   return {
-    'numero': numeroFormate('assurances.factures-meres', date: auj, rang: nbExistantes + 1),
+    'numero': numeroSuivant('assurances.factures-meres', date: auj, existants: existantes),
     'compagnieCode': code,
     'compagnie': nom,
     'periode': periode,

@@ -553,7 +553,9 @@ class _EtatFacturation extends State<EcranFacturation> {
     final c = _c!;
     final t = _totaux();
     final p = _patientCourant!;
-    final nbFactures = _liste('factures').length;
+    // Le ticket est un APERÇU de la pièce à venir : il porte le rang de la prochaine facture normalisée (le PLUS GRAND rang de la série de l'année + 1, archives
+    // comprises), jamais le nombre de toutes les factures (point 4 du 17/11/2026).
+    final rangSuivant = rangMaximal('caisse.factures', date: c.aujourdhui, existants: _c!.magasin.collection('factures').toutes) + 1;
     final assure = t.partAssureur > 0;
     // MECeF fermé (bascule P0-5) : le ticket ne porte ni bloc de certification ni base normalisée.
     final mecefActif = mecefEnService(c.magasin);
@@ -566,7 +568,7 @@ class _EtatFacturation extends State<EcranFacturation> {
         context,
         EntreeTicket(
           operateur: acteur(c).nom,
-          numero: numeroFormate('caisse.tickets', date: c.aujourdhui, rang: nbFactures + 1),
+          numero: numeroFormate('caisse.tickets', date: c.aujourdhui, rang: rangSuivant),
           typeVente: assure ? 'ASSURANCE' : 'COMPTANT',
           assureur: assure ? '${p['assureurNom']}' : null,
           assure: assure ? '${p['nom']} ${p['prenom']}' : null,
@@ -576,7 +578,7 @@ class _EtatFacturation extends State<EcranFacturation> {
               ? BlocMecef(
                   nim: 'NIM${identiteImprimeeDe(c.magasin, c.aujourdhui).ifu.substring(identiteImprimeeDe(c.magasin, c.aujourdhui).ifu.length - 8)}',
                   code: 'CODE-DGI-EN-ATTENTE',
-                  compteurs: '${nbFactures + 1}/$nbFactures FN')
+                  compteurs: '$rangSuivant/${rangSuivant - 1} FN')
               : null,
           lignes: [
             for (final l in _lignes)
@@ -594,7 +596,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           regle: nombreOuZero(_reglement['regle']),
           baseMecef: mecefActif ? t.partPatient : null,
         ),
-        numeroFormate('caisse.tickets', date: c.aujourdhui, rang: nbFactures + 1));
+        numeroFormate('caisse.tickets', date: c.aujourdhui, rang: rangSuivant));
   }
 
   Future<void> _nouvelleNature() async {

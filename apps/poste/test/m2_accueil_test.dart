@@ -173,7 +173,7 @@ void main() {
       await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer le rendez-vous'));
       final cree = m.collection('consultations').actives.first;
       expect(cree['statut'], 'planifiee');
-      expect(cree['reference'], 'C00283', reason: 'la série se lit sur les fiches existantes, archivées comprises');
+      expect(cree['reference'], 'RDV-00283', reason: 'la série se lit sur les fiches existantes, archivées comprises');
       expect(cree['patientCode'], p['code']);
       expect(cree['date'], '2026-08-16T12:00:00.000Z');
       await fin(t);
@@ -248,7 +248,7 @@ void main() {
       expect(r['patientId'], isNull);
       expect(r['nonPatient'], true);
       expect(r['visiteurQuartier'], 'Péporiyakou');
-      expect(r['reference'], 'C00283');
+      expect(r['reference'], 'RDV-00283');
       expect(m.collection('patients').toutes.length, patients, reason: 'aucun dossier ouvert');
       await fin(t);
     });

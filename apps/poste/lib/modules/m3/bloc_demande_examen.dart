@@ -127,7 +127,7 @@ class EcranDemandeExamen extends StatelessWidget with EcranMaquette {
         catalogue: TarifsPoste.analyses(m, aujourdhui: c.aujourdhui),
         patients: m.collection('patients').toutes,
         demandesExistantes: m.collection('demandesAnalyses').toutes,
-        nbFactures: m.collection('factures').toutes.length,
+        facturesExistantes: m.collection('factures').toutes,
         nouvelId: nouvelIdImagerie,
         date: c.aujourdhui,
         patientRepertoire: pt);

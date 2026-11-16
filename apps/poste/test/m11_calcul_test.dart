@@ -144,22 +144,24 @@ void main() {
       expect(find.text('44 bulletin(s) généré(s).'), findsOneWidget);
       expect(find.text('En attente de validation par la Direction.'), findsOneWidget);
       expect(col.actives.every((b) => b['statutBulletin'] == 'a_valider' && b['periode'] == 'Octobre 2026'), true);
-      expect(col.actives.first['reference'], 'BP-00044', reason: 'le dernier inséré est en tête (comme la maquette)');
+      expect(col.actives.first['reference'], 'BUL-00044', reason: 'le dernier inséré est en tête (comme la maquette)');
       final attendus = {for (final b in lm(mm(mm(g['ecart'])['inserts'])['bulletins'])) b['employeId']: b};
       for (final b in col.actives) {
         final a = attendus[b['employeId']]!;
         for (final cle in ['reference', 'periode', 'brut', 'net', 'its', 'cnssOuvriere', 'cnssPatronale', 'vps', 'totalRetenues', 'coutEmployeur', 'primeAnciennete', 'salaireBase']) {
-          expect(b[cle], a[cle], reason: '${b['employe']} · $cle');
+          // Le registre des bulletins a son préfixe PROPRE depuis le 17/11/2026 (« BUL- » ; « BP- » est la référence d'un bulletin d'agent) : l'attendu de la maquette est traduit.
+          final attendu = cle == 'reference' ? '${a[cle]}'.replaceFirst('BP-', 'BUL-') : a[cle];
+          expect(b[cle], attendu, reason: '${b['employe']} · $cle');
         }
       }
-      // une seconde génération CONTINUE la série (BP-00045…), jamais un doublon
+      // une seconde génération CONTINUE la série (BUL-00045…), jamais un doublon
       await toucher(t, find.text('Générer les bulletins'));
       await t.pumpAndSettle();
       await toucher(t, find.text('Générer').last);
       await t.pumpAndSettle();
       expect(col.actives.length, 88);
       expect({for (final b in col.actives) b['reference']}.length, 88, reason: 'aucune référence en double');
-      expect(col.actives.first['reference'], 'BP-00088');
+      expect(col.actives.first['reference'], 'BUL-00088');
       // « Annuler » du message : les 44 derniers sont ARCHIVÉS, jamais supprimés
       await toucher(t, find.text('Annuler').last);
       expect(col.actives.length, 44);

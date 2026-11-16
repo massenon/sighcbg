@@ -305,13 +305,13 @@ int cfaTarifsAConfirmer(Iterable<CfaFiche> analyses, Iterable<CfaFiche> actes) =
     analyses.where((a) => cfaVrai(a['tarifProvisoire'])).length + actes.where((a) => a['prix'] == null).length;
 
 /// RG-02 à la création d'un produit : pour un médicament le prix de vente SUIT le prix d'achat ; code `PRD-NNNN` ; trois stocks à zéro.
-CfaFiche cfaFicheProduit(Map<String, Object?> saisie, int nbToutes) {
+CfaFiche cfaFicheProduit(Map<String, Object?> saisie, Iterable<Object?> toutes) {
   final v = {...saisie};
   v['prixAchat'] = cfaNombre(v['prixAchat']);
   v['prixVente'] = cfaNombre(v['prixVente']);
   v['seuilAlerte'] = cfaNombre(v['seuilAlerte']);
   if (v['categorie'] == 'medicament') v['prixVente'] = v['prixAchat'];
-  if (!cfaVrai(v['code'])) v['code'] = numeroFormate('stock.produits', rang: nbToutes + 1);
+  if (!cfaVrai(v['code'])) v['code'] = numeroSuivant('stock.produits', existants: toutes);
   v['stock'] = cfaVrai(v['stock']) ? v['stock'] : 0;
   v['stockGros'] = cfaVrai(v['stockGros']) ? v['stockGros'] : 0;
   v['stockDetail'] = cfaVrai(v['stockDetail']) ? v['stockDetail'] : 0;
@@ -330,9 +330,9 @@ CfaFiche cfaFicheAnalyse(Map<String, Object?> saisie, int nbToutes) {
 }
 
 /// Création d'un acte : code `ACT-NNN`, prix vide = absent (à valider), jamais zéro.
-CfaFiche cfaFicheActe(Map<String, Object?> saisie, int nbToutes) {
+CfaFiche cfaFicheActe(Map<String, Object?> saisie, Iterable<Object?> toutes) {
   final v = {...saisie};
-  if (!cfaVrai(v['code'])) v['code'] = numeroFormate('cfg.actes', rang: nbToutes + 1);
+  if (!cfaVrai(v['code'])) v['code'] = numeroSuivant('cfg.actes', existants: toutes);
   v['prix'] = cfaNombre(v['prix']);
   return v;
 }
@@ -675,7 +675,7 @@ const cfaChampsCertificat = <String, CfaChampCertificat>{
 };
 
 /// Numéro d'un certificat : « CERT-2026-NNNN » — l'année est ÉCRITE EN DUR par la maquette (écart E842), le rang compte les fiches (archivées comprises).
-String cfaNumeroCertificat(int nbToutes, {Object? date}) => numeroFormate('cfg.certificats', date: date, rang: nbToutes + 1);
+String cfaNumeroCertificat(Iterable<Object?> toutes, {Object? date}) => numeroSuivant('cfg.certificats', date: date, existants: toutes);
 
 /// « Délivrés ce mois » : la maquette ne compare que le NUMÉRO DU MOIS (écart E843 : le mois d'octobre d'une autre année compte aussi).
 int cfaDelivresCeMois(Iterable<CfaFiche> rows, DateTime auj) =>

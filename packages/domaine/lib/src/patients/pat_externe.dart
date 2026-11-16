@@ -76,7 +76,7 @@ PatDemandeExterne patOuvrirDemandeExterne({
   required Iterable<FichePat> catalogue,
   required Iterable<FichePat> patients,
   required Iterable<FichePat> demandesExistantes,
-  required int nbFactures,
+  required Iterable<Object?> facturesExistantes,
   required String Function(String prefixe) nouvelId,
   required DateTime date,
   FichePat? patientRepertoire,
@@ -190,7 +190,7 @@ PatDemandeExterne patOuvrirDemandeExterne({
     });
   }
   num somme(String k) => lignes.fold<num>(0, (s, l) => s + (l[k] as num));
-  final numero = numeroFormate('patients.factures-externes', date: date, rang: nbFactures + 1);
+  final numero = numeroSuivant('patients.factures-externes', date: date, existants: facturesExistantes);
   final idFacture = nouvelId('FAC');
   final facture = <String, Object?>{
     'id': idFacture,

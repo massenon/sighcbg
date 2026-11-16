@@ -282,7 +282,7 @@ void main() {
       await t.pump(const Duration(seconds: 10));
     });
 
-    testWidgets('création : EVT-0011, canal In-app, annonce sonore de la maquette en message', (t) async {
+    testWidgets('création : EVE-0001, canal In-app, annonce sonore de la maquette en message', (t) async {
       final m = poste({'evenementsEtablissement': liste(e['jeu'])});
       await ouvrir(t, m, 'm13-evenements');
       final col = m.collection('evenementsEtablissement');
@@ -295,8 +295,10 @@ void main() {
       poser(t, {'libelle': 'Dépistage du cancer du sein', 'lieu': 'Salle de réunion'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(seconds: 1));
-      fichesEgales(col.toutes.first, obj(obj(e['creation'])['avecNotif'])['fiche'] as M);
-      expect(col.toutes.first['reference'], 'EVT-0011');
+      // Préfixe PROPRE aux événements de l'établissement depuis le 17/11/2026 et rang = PLUS GRAND rang porté + 1 : le jeu de la maquette numérote « EV-2026-NNN » (autre format, E532),
+      // aucun numéro de la série n'y figure encore : la série démarre à 1 (la maquette comptait les fiches : EVT-0011).
+      fichesEgales(col.toutes.first, {...(obj(obj(e['creation'])['avecNotif'])['fiche'] as M), 'reference': 'EVE-0001'});
+      expect(col.toutes.first['reference'], 'EVE-0001');
       expect(find.text('Événement inscrit au calendrier de la clinique.'), findsWidgets);
       await t.pump(const Duration(seconds: 10));
     });

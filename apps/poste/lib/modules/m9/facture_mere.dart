@@ -137,7 +137,7 @@ class _EtatFactureMere extends State<EcranFactureMere> {
             rap: rap,
             depuis: _depuis(c),
             auj: c.aujourdhui,
-            nbExistantes: col.toutes.length,
+            existantes: col.toutes,
             emisePar: acteur(c).nom),
         prefixe: 'FM');
     ToastsSigh.afficher(ctx, 'Facture mère ${r.fiche['numero']} émise.',

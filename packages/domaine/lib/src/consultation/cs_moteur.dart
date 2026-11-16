@@ -688,7 +688,7 @@ ResultatPrescription csPrescrire(
   if (p == null) throw RefusCs('Patient introuvable : ${v['patientCode']}');
   final date = csVrai(v['date']) ? '${v['date']}' : _iso(s.maintenant);
   final annee = DateTime.parse(date).toLocal().year;
-  final numero = numeroFormate('consultation.ordonnances', date: date, annee: annee, rang: s.toutes('ordonnances').length + 1);
+  final numero = numeroSuivant('consultation.ordonnances', date: date, annee: annee, existants: s.toutes('ordonnances'));
 
   final medicaments = <FicheCs>[
     for (final l in _liste(v['medicaments']))

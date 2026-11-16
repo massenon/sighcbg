@@ -949,9 +949,8 @@ final JeuImport jeuSoldesOuverture = JeuImport(
   },
   ecrire: (lignes, ecrireFiche, lot, ctx, port) {
     final dateAn = lignes.first.v['date'];
-    final serieAn = Numerotation.serie('compta.a-nouveaux', date: dateAn);
-    final existants = port.toutes('ecritures').where((e) => e['journal'] == 'AN' && serieAn.rangDe('${e['numero']}', an: anneeDePiece(dateAn)) != null).length;
-    final numero = numeroFormate('compta.a-nouveaux', date: dateAn, rang: existants + 1);
+    // Le PLUS GRAND rang déjà porté par les pièces d'à-nouveau de l'année + 1 (archivées comprises), et non le nombre de LIGNES du journal AN.
+    final numero = numeroSuivant('compta.a-nouveaux', date: dateAn, existants: [for (final e in port.toutes('ecritures')) if (e['journal'] == 'AN') e]);
     final libJ = importJournaux.where((j) => j[0] == 'AN').map((j) => j[1]).firstOrNull ?? 'À-nouveaux';
     for (final l in lignes) {
       final v = l.v;

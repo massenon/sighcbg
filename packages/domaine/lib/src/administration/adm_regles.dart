@@ -173,7 +173,7 @@ List<String> admCanauxEvenement(Object? notifier, Object? canauxExistants) {
 }
 
 /// Création : référence `EVT-NNNN` (rang = effectif + 1) — le préfixe diffère de celui du jeu (`EV-2026-`), écart E532 porté fidèlement.
-String admReferenceEvenement(int effectif, {Object? date}) => numeroFormate('adm.evenements', date: date, rang: effectif + 1);
+String admReferenceEvenement(Iterable<Object?> fiches, {Object? date}) => numeroSuivant('adm.evenements', date: date, existants: fiches);
 
 List<String> admCategoriesPresentes(List<AdmFiche> rows) {
   final s = {for (final r in rows) '${r['categorie']}'}.toList()..sort();

@@ -120,7 +120,7 @@ PatFacturePiece? patFacturerPiece({
   required String? acteCode,
   required Object? assurable,
   required Iterable<FichePat> couvertures,
-  required int nbFactures,
+  required Iterable<Object?> facturesExistantes,
   required String Function(String prefixe) nouvelId,
   required DateTime date,
 }) {
@@ -160,7 +160,7 @@ PatFacturePiece? patFacturerPiece({
     'payePar': null,
     'pieceRef': reference,
   };
-  final numero = numeroFormate('patients.factures-certificats', date: date, rang: nbFactures + 1);
+  final numero = numeroSuivant('patients.factures-certificats', date: date, existants: facturesExistantes);
   final id = nouvelId('FAC');
   final facture = <String, Object?>{
     'id': id,

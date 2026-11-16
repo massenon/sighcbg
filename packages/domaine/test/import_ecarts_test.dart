@@ -78,7 +78,7 @@ void main() {
       expect(c.ignorees, [2]);
       final r = appliquer(jeuCourriers, c, port);
       expect(r.ok, isTrue);
-      expect(port.toutes('courriers').firstWhere((x) => x['sens'] == 'depart')['reference'], 'DEP-2026-0001');
+      expect(port.toutes('courriers').firstWhere((x) => x['sens'] == 'depart')['reference'], 'COU-2026-0001');
     });
 
     test('JAMAIS sur les patients, les comptes, les pièces : le fichier est refusé en le disant', () {

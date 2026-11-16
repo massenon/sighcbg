@@ -50,6 +50,8 @@ class CarteNumerotation extends StatelessWidget {
                   'libelle': v.libelle,
                   'module': v.module,
                   'format': v.formatLisible,
+                  // Les têtes d'AVANT que la série relit pour ses rangs (un préfixe propre à chaque registre, 17/11/2026) : les pièces émises gardent leur numéro.
+                  'lit': v.prefixesAnterieurs.join(' '),
                   'exemple': v.genre == genreDerive ? numeroDerive(s.code, '…', date: aujourdhui) : numeroFormate(s.code, date: aujourdhui, rang: 1),
                   'remise': v.genre == genreDerive ? 'Dérivée d’une autre pièce' : (v.remiseAnnuelle ? 'Repart à 1 chaque année' : 'Continue d’une année à l’autre'),
                   'etat': v.aValider ? 'À valider' : 'Arrêtée',
@@ -90,7 +92,15 @@ class CarteNumerotation extends StatelessWidget {
                   colonnes: [
                     ColonneTableau(cle: 'libelle', libelle: 'Type de document'),
                     ColonneTableau(cle: 'module', libelle: 'Module', sansCoupure: true),
-                    ColonneTableau(cle: 'format', libelle: 'Format', sansCoupure: true, rendu: (_, l) => _mono('${l['format']}')),
+                    ColonneTableau(
+                        cle: 'format',
+                        libelle: 'Format',
+                        sansCoupure: true,
+                        texte: (l) => '${l['format']}${'${l['lit']}'.isEmpty ? '' : ' (lit aussi ${l['lit']})'}',
+                        rendu: (_, l) => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                              _mono('${l['format']}'),
+                              if ('${l['lit']}'.isNotEmpty) Text('Lit aussi : ${l['lit']}', style: const TextStyle(fontSize: 12, color: JetonsShell.slate500)),
+                            ])),
                     ColonneTableau(cle: 'exemple', libelle: 'Premier numéro de l’année', sansCoupure: true, rendu: (_, l) => _mono('${l['exemple']}')),
                     ColonneTableau(cle: 'remise', libelle: 'Séquence'),
                     ColonneTableau(

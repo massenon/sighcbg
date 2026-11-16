@@ -64,6 +64,7 @@ class SerieNumerotation {
     this.dateEffet,
     this.aValider = true,
     this.note = '',
+    this.prefixesAnterieurs = const [],
   });
 
   /// L'identifiant STABLE de la série (jamais affiché sur une pièce) : c'est lui que le code nomme, jamais le préfixe.
@@ -104,6 +105,11 @@ class SerieNumerotation {
   final bool aValider;
   final String note;
 
+  /// LES TÊTES D'AVANT (décision du 17/11/2026 : un préfixe PAR registre), chacune telle qu'elle s'écrivait devant le rang ou l'année, SÉPARATEUR COMPRIS (`DEP-`, `C`) : une série qui change de préfixe garde la LECTURE DES RANGS de ses pièces déjà émises sous l'ancien. Sans cela, le
+  /// rang repartirait à 1 sous le nouveau préfixe alors que le registre porte déjà ces rangs (`DEP-2026-0010` puis `COU-2026-0001` : deux numéros pour un même rang de registre). Les pièces
+  /// émises ne changent JAMAIS de numéro ; seule la lecture est double. Reprend la semence : une version datée du préfixe ne l'efface pas.
+  final List<String> prefixesAnterieurs;
+
   String get sepAnnee => separateurAnnee ?? separateur;
   bool get avecAnnee => annee != anneeAucune;
 
@@ -128,14 +134,16 @@ class SerieNumerotation {
   /// Le rang porté par [numero] s'il appartient à la série ; `null` sinon. [an] : seules les pièces de cette année comptent (série à remise annuelle).
   /// Le rang est lu sur les chiffres de tête (`FN-2026-00237-A` → 237) ; une référence provisoire (`…-PROV-…`) n'a pas de rang.
   int? rangDe(String numero, {int? an}) {
-    final m = _motif(an).firstMatch(numero);
-    if (m == null) return null;
-    return int.tryParse(m.group(1)!);
+    for (final t in [_tete, ...prefixesAnterieurs]) {
+      final m = _motif(an, t).firstMatch(numero);
+      if (m != null) return int.tryParse(m.group(1)!);
+    }
+    return null;
   }
 
-  RegExp _motif(int? an) {
+  RegExp _motif(int? an, [String? teteLue]) {
     final yp = !avecAnnee ? '' : (an != null && remiseAnnuelle) ? RegExp.escape(anneeTexte(an)) : (annee == anneeCourte ? r'\d{2}' : r'\d{4}');
-    final tete = RegExp.escape(_tete);
+    final tete = RegExp.escape(teteLue ?? _tete);
     final pr = RegExp.escape(prefixeRang);
     if (!avecAnnee) return RegExp('^$tete$pr(\\d+)');
     if (positionAnnee == anneeApres) return RegExp('^$tete$pr(\\d+)${RegExp.escape(sepAnnee)}$yp\$');
@@ -147,8 +155,11 @@ class SerieNumerotation {
     final s = '${numero ?? ''}';
     if (s.isEmpty) return false;
     if (genre == genreDerive) return prefixe.isEmpty ? false : s.startsWith(_tete);
-    if (_motif(null).hasMatch(s)) return true;
-    return prefixe.isNotEmpty && s.startsWith(_tete) && s.contains('PROV-');
+    for (final t in [_tete, ...prefixesAnterieurs]) {
+      if (_motif(null, t).hasMatch(s)) return true;
+      if (t.isNotEmpty && s.startsWith(t) && s.contains('PROV-')) return true;
+    }
+    return false;
   }
 
   /// Le format lisible (`BEB-AAAA-NNNN`), pour l'écran d'administration.
@@ -177,6 +188,7 @@ class SerieNumerotation {
         if (dateEffet != null) 'dateEffet': dateEffet,
         'aValider': aValider,
         if (note.isNotEmpty) 'note': note,
+        if (prefixesAnterieurs.isNotEmpty) 'prefixesAnterieurs': prefixesAnterieurs,
       };
 
   /// Une fiche de la collection, complétée par la [base] (la semence) pour ce qu'elle ne dit pas. `null` si la fiche est illisible.
@@ -201,6 +213,7 @@ class SerieNumerotation {
       dateEffet: f['dateEffet'] is String ? _jour(f['dateEffet']) : null,
       aValider: f['aValider'] == true,
       note: t('note', base.note),
+      prefixesAnterieurs: base.prefixesAnterieurs,
     );
     return serieInvalide(s) == null ? s : null;
   }

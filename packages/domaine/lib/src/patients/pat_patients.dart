@@ -244,7 +244,7 @@ PatKpisDocuments patKpisDocuments(List<FichePat> rows) => PatKpisDocuments(
     {for (final r in rows) '${r['code']}'}.length);
 
 /// « GED-00005 » : le rang suit le NOMBRE de fiches du registre (archivées comprises), comme la maquette.
-String patReferenceDocument(int nbFiches, {Object? date}) => numeroFormate('patients.documents', date: date, rang: nbFiches + 1);
+String patReferenceDocument(Iterable<Object?> fiches, {Object? date}) => numeroSuivant('patients.documents', date: date, existants: fiches);
 
 /// Fichier d'un document : « PDF · 2 Ko » et la mention déposé / référencé.
 String patFormatDocument(String? nomFichier) {

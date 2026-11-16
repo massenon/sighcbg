@@ -1,5 +1,6 @@
 // Rejoue les vecteurs M1 (prototype_html/build/vecteurs-m1.js) : écrans RÉELS pilotés dans Chrome.
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart';
@@ -270,7 +271,7 @@ void main() {
               acteCode: t.tarifCode,
               assurable: 'sos',
               couvertures: const [],
-              nbFactures: int.parse('${f.first['numero']}'.split('-').last) - 1,
+              facturesExistantes: piecesAuRang('patients.factures-certificats', int.parse('${f.first['numero']}'.split('-').last) - 1),
               nouvelId: (x) => '$x-1',
               date: DateTime(2026, 10, 30, 12))!;
           for (final k in ['numero', 'montantTTC', 'partAssurance', 'partPatient', 'reliquat', 'tauxPriseEnCharge', 'motifCouverture', 'type', 'pieceRef']) {
@@ -331,7 +332,7 @@ void main() {
                   'reference': 'LAB-${(j + 1).toString().padLeft(5, '0')}',
                   'codeAnalyse': '${(j + 1).toString().padLeft(5, '0')}-2026'
                 }),
-            nbFactures: int.parse('${fact['numero']}'.split('-').last) - 1,
+            facturesExistantes: piecesAuRang('patients.factures-externes', int.parse('${fact['numero']}'.split('-').last) - 1),
             nouvelId: (p) => '$p${seq++}',
             date: DateTime(2026, 10, 30, 12));
         expect(r.patient['code'], liste(c['patients']).first['code']);
@@ -347,9 +348,9 @@ void main() {
       });
     }
     test('refus nommés', () {
-      expect(() => patOuvrirDemandeExterne(saisie: {'nom': 'A', 'prenom': 'B'}, codesAnalyses: [], catalogue: [], patients: [], demandesExistantes: [], nbFactures: 0, nouvelId: (p) => p, date: maintenant),
+      expect(() => patOuvrirDemandeExterne(saisie: {'nom': 'A', 'prenom': 'B'}, codesAnalyses: [], catalogue: [], patients: [], demandesExistantes: [], facturesExistantes: const [], nouvelId: (p) => p, date: maintenant),
           throwsA(isA<PatRefus>().having((e) => e.message, 'message', 'Cocher au moins un examen au catalogue.')));
-      expect(() => patOuvrirDemandeExterne(saisie: {}, codesAnalyses: ['L01'], catalogue: [], patients: [], demandesExistantes: [], nbFactures: 0, nouvelId: (p) => p, date: maintenant),
+      expect(() => patOuvrirDemandeExterne(saisie: {}, codesAnalyses: ['L01'], catalogue: [], patients: [], demandesExistantes: [], facturesExistantes: const [], nouvelId: (p) => p, date: maintenant),
           throwsA(isA<PatRefus>()));
     });
   });
