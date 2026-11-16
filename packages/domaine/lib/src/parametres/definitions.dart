@@ -39,6 +39,20 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot L3 (MECeF)',
   ),
+  // Le MODÈLE du boîtier MECeF (décision de la Direction de Baguidi du 16/11/2026) : un réglage de CLINIQUE (famille R par la collection `parametres`, la mère seule
+  // écrit, jamais vers un téléphone), réglé sous le geste `reglage_mecef`. Il NOMME l'appareil sur l'écran de configuration, sur la pièce et au journal MECeF ; il ne
+  // branche AUCUN protocole : l'intégration (interface, commandes, certificat) n'est documentée nulle part dans le dépôt (docs/guides/MECEF-BOITIER-ELTRADE-CC300.md).
+  DefinitionParametre(
+    cle: 'mecef.modeleBoitier',
+    famille: 'mecef',
+    type: TypeParametre.texte,
+    defaut: 'ELTRADE CC300',
+    libelle: 'Modèle du boîtier MECeF',
+    aide: 'Le modèle de l\'appareil de certification (mode « Boîtier physique »). Il nomme l\'appareil à l\'écran, sur la pièce et au journal MECeF ; il ne branche aucun protocole : l\'adaptateur reste non configuré tant que l\'éditeur du boîtier n\'a pas fourni son intégration.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md) : le boîtier MECeF de Baguidi est un ELTRADE CC300',
+    branche: true,
+    appliquePar: 'Configuration MECeF, pièce et journal MECeF',
+  ),
   DefinitionParametre(
     cle: 'bareme_aib.chargePrelevement',
     famille: 'bareme_aib',

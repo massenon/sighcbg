@@ -109,6 +109,11 @@ class EcranJournaux extends StatelessWidget with EcranMaquette {
         final e = ecrituresExercice(c);
         final lignes = [for (final j in cpaLignesJournaux(e)) _ligne(j)];
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Lot CLO (16/11/2026, § 6, points c et e) : l'état de l'exercice affiché, et les journaux réservés au moteur.
+          BandeauExercice(
+              annee: exerciceChoisi(c),
+              precision: 'Les journaux CL (clôture) et AN (à-nouveaux) sont réservés au moteur : seuls les gestes de clôture et d’ouverture les écrivent, ils ne se saisissent pas.'),
+          const SizedBox(height: 16),
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Journaux ouverts', valeur: nombre(lignes.length), icone: LucideIcons.book),
             KpiSigh(libelle: 'Écritures totales', valeur: nombre(e.length), icone: LucideIcons.fileText, ton: TonSigh.info),

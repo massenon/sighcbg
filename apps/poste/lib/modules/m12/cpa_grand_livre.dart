@@ -15,6 +15,10 @@ import 'cpa_commun.dart';
 /// livre est reconstitué depuis les écritures de l'exercice ; toute correction passe par l'écriture d'origine, qui doit rester équilibrée (RG-10).
 ///
 /// Écart E724 (corrigé dans la maquette d'abord) : le plan du jeu porte deux fiches au même numéro (631810) ; la liste ne propose qu'UNE entrée par numéro.
+///
+/// Lot CLO (décision du 16/11/2026, § 6, point b) : chaque compte porte son SOLDE D'OUVERTURE au 1er janvier — ÉCRIT (à-nouveaux validés), PROVISOIRE (calculé depuis
+/// l'exercice précédent non clos) ou INCONNU (« Inconnu » à l'écran et sur l'état imprimé, JAMAIS zéro) — et son SOLDE DE CLÔTURE (ouverture + mouvements validés).
+/// Les règles sont au domaine (`cpcOuvertureCompte`, `cpcClotureCompte`).
 class EcranGrandLivre extends StatefulWidget with EcranMaquette {
   const EcranGrandLivre({super.key});
 
@@ -67,8 +71,22 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
     super.dispose();
   }
 
+  /// L'ouverture et la clôture du compte [compte] pour l'exercice choisi.
+  static ({CpcOuvertureCompte ouverture, ({double? solde, double mouvements, int brouillons}) cloture}) soldesExtremes(ContexteEcran c, String compte) {
+    final annee = exerciceChoisi(c);
+    final actives = c.magasin.collection('ecritures').actives;
+    final o = cpcOuvertureCompte(c.magasin.collection('exercices').toutes, actives, annee, compte,
+        comptesResultat: c.magasin.collection('comptesResultat').actives);
+    return (ouverture: o, cloture: cpcClotureCompte(o, actives, annee, compte));
+  }
+
+  /// Un solde CONNU (montant et sens) ou « Inconnu » — jamais zéro à la place d'une donnée qui manque.
+  static String texteSolde(double? solde) => solde == null ? 'Inconnu' : '${money(solde)}${solde == 0 ? '' : (solde > 0 ? ' (débiteur)' : ' (créditeur)')}';
+
   void _imprimer(BuildContext ctx, ContexteEcran c, String compte, List<Fiche> rows) {
     final s = cpaSoldeCompte(ecrituresExercice(c), compte);
+    final x = soldesExtremes(c, compte);
+    final annee = exerciceChoisi(c);
     final lib = cpaCompteLibelle(compte, comptes: c.magasin.collection('comptes').toutes);
     afficherApercu(
         ctx,
@@ -82,6 +100,9 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
               ('Total débit', money(s.debit)),
               ('Total crédit', money(s.credit)),
               ('Solde', money(s.solde)),
+              ('Solde d’ouverture au 01/01/$annee', texteSolde(x.ouverture.solde)),
+              ('Ouverture', x.ouverture.libelleStatut),
+              ('Solde de clôture', texteSolde(x.cloture.solde)),
             ],
             tableaux: [
               TableauEtat(colonnes: [
@@ -93,6 +114,11 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
                 ColonneEtat(libelle: 'Crédit', droite: true, valeur: (e) => n(e['credit']) != 0 ? m(e['credit']) : '', somme: (e) => n(e['credit'])),
                 ColonneEtat(libelle: 'Solde', droite: true, valeur: (e) => m(e['soldeProgressif'])),
               ], lignes: rows)
+            ],
+            blocs: [
+              BlocTexte(
+                  'Solde d’ouverture : ${texteSolde(x.ouverture.solde)} — ${x.ouverture.motif} Solde de clôture : ${texteSolde(x.cloture.solde)} (ouverture + mouvements validés de l’exercice${x.cloture.brouillons > 0 ? ' ; ${nombre(x.cloture.brouillons)} ligne(s) en brouillon non retenue(s)' : ''}).',
+                  italique: true),
             ],
             signatures: [signComptable]));
   }
@@ -114,7 +140,7 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
             blocs: [
               for (final cp in mouv) ...[
                 BlocTexte(
-                    '${cp['num']} — ${cp['libelle']}  (solde : ${m(cpaSoldeCompte(e, '${cp['num']}').solde)})',
+                    '${cp['num']} — ${cp['libelle']}  (solde : ${m(cpaSoldeCompte(e, '${cp['num']}').solde)} · ouverture : ${texteSolde(soldesExtremes(c, '${cp['num']}').ouverture.solde)} · clôture : ${texteSolde(soldesExtremes(c, '${cp['num']}').cloture.solde)})',
                     gras: true),
                 BlocTableau(TableauEtat(colonnes: [
                   ColonneEtat(libelle: 'Date', valeur: (x) => dateDe(x['date'])),
@@ -138,7 +164,18 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
         final compte = '${_compte!['compte'] ?? ''}';
         final rows = cpaGrandLivre(e, compte);
         final s = cpaSoldeCompte(e, compte);
+        final annee = exerciceChoisi(c);
+        final x = soldesExtremes(c, compte);
+        final o = x.ouverture;
+        final tonOuverture = switch (o.statut) {
+          CpcStatutOuverture.ecrite => TonSigh.succes,
+          CpcStatutOuverture.provisoire => TonSigh.attention,
+          CpcStatutOuverture.inconnue => TonSigh.danger,
+          CpcStatutOuverture.gestion => TonSigh.neutre,
+        };
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          BandeauExercice(annee: annee),
+          const SizedBox(height: 16),
           CarteSigh(
               child: Wrap(spacing: 12, runSpacing: 12, crossAxisAlignment: WrapCrossAlignment.end, children: [
             commande(_compte!, largeur: 512),
@@ -161,6 +198,35 @@ class _EtatGrandLivre extends State<EcranGrandLivre> {
                 icone: LucideIcons.scale,
                 ton: s.solde >= 0 ? TonSigh.navy : TonSigh.danger),
           ]),
+          const SizedBox(height: 16),
+          CarteSigh(
+              key: const Key('gl-ouverture-cloture'),
+              titre: 'Ouverture et clôture du compte — exercice $annee',
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                KpiGrilleSigh(colonnes: 3, kpis: [
+                  KpiSigh(
+                      libelle: 'Solde d’ouverture au 01/01/$annee',
+                      valeur: o.solde == null ? 'Inconnu' : money(o.solde!),
+                      indice: o.libelleStatut,
+                      icone: LucideIcons.calendarPlus,
+                      ton: tonOuverture),
+                  KpiSigh(
+                      libelle: 'Mouvements validés de l’exercice',
+                      valeur: money(x.cloture.mouvements),
+                      indice: x.cloture.brouillons > 0 ? '${nombre(x.cloture.brouillons)} ligne(s) en brouillon non retenue(s)' : 'Hors à-nouveaux de l’ouverture',
+                      icone: LucideIcons.arrowLeftRight,
+                      ton: TonSigh.info),
+                  KpiSigh(
+                      libelle: annee == c.aujourdhui.year ? 'Solde de clôture (à date)' : 'Solde de clôture au 31/12/$annee',
+                      valeur: x.cloture.solde == null ? 'Inconnu' : money(x.cloture.solde!),
+                      indice: x.cloture.solde == null ? 'L’ouverture est inconnue' : (x.cloture.solde! >= 0 ? 'Débiteur' : 'Créditeur'),
+                      icone: LucideIcons.calendarCheck,
+                      ton: x.cloture.solde == null ? TonSigh.danger : TonSigh.navy),
+                ]),
+                const SizedBox(height: 8),
+                Text('${o.motif}${o.brouillonsAN > 0 ? ' ${nombre(o.brouillonsAN)} ligne(s) d’à-nouveaux en brouillon ne sont pas retenues : un brouillon n’est pas un fait comptable.' : ''}',
+                    key: const Key('gl-ouverture-motif'), style: const TextStyle(color: JetonsShell.slate600, fontSize: 13, height: 18 / 13)),
+              ])),
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('gl-$compte'),

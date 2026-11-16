@@ -154,10 +154,13 @@ ResultatNormalisation normaliserVente(
       throw StateError('Adaptateur MECeF configuré : l’émission est asynchrone (lot M3), normaliserVente doit le devenir.');
     }
     final refus = ad.refus!;
-    annulations.add(col.mettreAJour(factureId, {...d.champsEnAttenteCertification(refus, ad.mode), 'aibMontant': prep.montants!.aib}));
+    // Le MODÈLE du boîtier (réglage de clinique) est porté là où le mode l'est : sur la pièce et au journal MECeF (mode boîtier seulement).
+    final modele = ad is d.AdaptateurNonConfigure ? ad.modeleBoitier : null;
+    final appareil = d.champsAppareilMecef(ad.mode, modele);
+    annulations.add(col.mettreAJour(factureId, {...d.champsEnAttenteCertification(refus, ad.mode), ...appareil, 'aibMontant': prep.montants!.aib}));
     m.journaliser('Normalisation en attente (adaptateur non configuré)', 'MECEF', 'facture', '${fac['numero']}',
         {'statutMecef': fac['statutMecef']},
-        {'statutMecef': 'en_attente', 'code': refus.code, 'mode': ad.mode, if (defaut != null) 'aib': '${a.aibTaux} % — ${defaut.motif}'});
+        {'statutMecef': 'en_attente', 'code': refus.code, 'mode': ad.mode, if (appareil.isNotEmpty) 'boitier': modele, if (defaut != null) 'aib': '${a.aibTaux} % — ${defaut.motif}'});
     return ResultatNormalisation.refus(refus.code, refus.motif, refus.geste, annuler: undo);
   }
   // Un numéro déjà porté (pièce ancienne, ou réponse réconciliée) n'est JAMAIS réécrit : on ne rappelle pas l'appareil.

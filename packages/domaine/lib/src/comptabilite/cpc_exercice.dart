@@ -11,7 +11,8 @@
 ///  * La garde de lecture seule se pose SUR LA COLLECTION `ecritures` (voir `CollectionMagasin.garder`) : masquer un bouton ne protège rien.
 ///
 /// HORS DU POSTE (ce que ce fichier ne porte pas) : l'archive de clôture dans la GED (`SIGH.exercice.archiver`), l'export CSV, le sélecteur d'exercice de
-/// la coque (le poste lit l'exercice de l'horloge — E717) et les colonnes N-1 tirées du journal sur les états.
+/// la coque (le poste lit l'exercice de l'horloge — E717). Les colonnes N-1 tirées du journal sont portées au compte de résultat et au tableau des flux (lot CLO,
+/// E3450, `cpbColonnesFeuilletEcran`) ; l'ouverture et la clôture d'un compte au grand livre le sont ici (`cpcOuvertureCompte`, E3451).
 library;
 
 import 'dart:convert';
@@ -20,7 +21,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../droits/gestes_reserves.dart' show gesteCircuitCloture, gesteReserve;
 import '../parametres/reglages_roles.dart' show rolesInventaireClotureDefaut;
-import 'cpa_ecritures.dart' show cpaAnnee;
+import 'cpa_ecritures.dart' show cpaAnnee, cpaRefusJournalReserve;
 import 'cpa_referentiels.dart';
 import 'cpc_liasse.dart';
 
@@ -267,6 +268,193 @@ List<CpaFiche> cpcANouveauxProvisoires(Iterable<CpaFiche> exercices, Iterable<Cp
         ...l,
       }
   ];
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// JOURNAUX RÉSERVÉS AU MOTEUR — CL et AN ne s'écrivent que par les gestes de clôture et d'ouverture (lot CLO, décision du 16/11/2026, § 6)
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// L'origine portée par les à-nouveaux du report de `m12-ouverture` ([cpcReporterANouveaux]).
+const String cpcOrigineReportOuverture = 'Automatique — report d’exercice';
+
+/// L'origine portée par les à-nouveaux de l'importation des soldes d'ouverture (jeu `soldes-ouverture`).
+const String cpcOrigineImportOuverture = 'Import des soldes d’ouverture';
+
+/// Les origines des GESTES D'OUVERTURE admis à écrire au journal AN (la clôture, elle, se reconnaît à `origineCloture`).
+const List<String> cpcOriginesOuverture = [cpcOrigineReportOuverture, cpcOrigineImportOuverture];
+
+/// LA GARDE posée sur la collection `ecritures` pour les journaux RÉSERVÉS (CL, AN) : le motif du refus (nommé) ou `null`. Une ligne d'un journal réservé ne
+/// s'insère ni ne se modifie que si elle vient d'un geste de clôture (`origineCloture` : pièce CL, à-nouveaux définitifs, contre-passations) ou d'un geste
+/// d'ouverture ([cpcOriginesOuverture] : report du bilan d'ouverture, importation des soldes d'ouverture). L'archivage n'est pas concerné (la pré-clôture
+/// demande d'archiver des à-nouveaux antérieurs). Masquer le journal dans la liste ne protège rien : la garde est AU MOTEUR, comme celle de l'exercice clos.
+String? cpcGardeJournalReserve(String op, Map<String, Object?> fiche) {
+  if (op == 'archiver') return null;
+  final journal = fiche['journal'];
+  if (!cpaJournalReserve(journal)) return null;
+  final cl = fiche['origineCloture'];
+  if (cl != null && '$cl'.isNotEmpty) return null;
+  if ('$journal' == 'AN' && cpcOriginesOuverture.contains('${fiche['origine'] ?? ''}')) return null;
+  return cpaRefusJournalReserve(journal);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// SOLDE D'OUVERTURE ET SOLDE DE CLÔTURE D'UN COMPTE (grand livre) — l'ouverture est ÉCRITE, PROVISOIRE ou INCONNUE, jamais un zéro par défaut
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// D'où vient le solde d'ouverture d'un compte au 1er janvier de l'exercice.
+enum CpcStatutOuverture {
+  /// Les à-nouveaux de l'exercice sont ÉCRITS et VALIDÉS (journal AN, ni contre-passés ni contre-passation) : le solde est le leur (zéro si le compte n'y figure pas,
+  /// puisque les à-nouveaux reportent tous les soldes non nuls des classes 1 à 5).
+  ecrite,
+
+  /// Aucun à-nouveau écrit, mais l'exercice précédent est OUVERT (ou en clôture) dans le journal : le solde est CALCULÉ depuis ses écritures validées (et sa
+  /// propre ouverture), recalculé à chaque lecture, jamais stocké.
+  provisoire,
+
+  /// Rien ne permet de le dire : pas d'exercice précédent au journal, exercice précédent clos sans à-nouveaux retrouvés (la liasse déposée, par exemple, donne
+  /// le bilan par rubrique et non par compte), ou ouverture de l'exercice précédent elle-même inconnue. L'écran et l'état imprimé disent « Inconnu », JAMAIS zéro.
+  inconnue,
+
+  /// Compte de GESTION (classes 6 à 9) : il ne se reporte jamais, il est soldé chaque année par le résultat. Son ouverture est nulle PAR NATURE (ce n'est pas un
+  /// zéro par défaut).
+  gestion,
+}
+
+class CpcOuvertureCompte {
+  const CpcOuvertureCompte(this.statut, this.solde, this.motif, {this.pieces = const [], this.brouillonsAN = 0});
+  final CpcStatutOuverture statut;
+
+  /// Le solde (débit − crédit) au 1er janvier, ou `null` quand il est INCONNU.
+  final double? solde;
+
+  /// D'où vient le solde, en clair (affiché sous le montant et sur l'état imprimé).
+  final String motif;
+
+  /// Les numéros des pièces d'à-nouveaux qui forment l'ouverture écrite.
+  final List<String> pieces;
+
+  /// Les lignes d'à-nouveaux de l'exercice encore EN BROUILLON (non retenues : un brouillon n'est pas un fait comptable).
+  final int brouillonsAN;
+
+  bool get connue => solde != null;
+
+  /// Le libellé court du statut (badge).
+  String get libelleStatut => switch (statut) {
+        CpcStatutOuverture.ecrite => 'Écrit (à-nouveaux validés)',
+        CpcStatutOuverture.provisoire => 'Provisoire (exercice précédent non clos)',
+        CpcStatutOuverture.inconnue => 'Inconnu',
+        CpcStatutOuverture.gestion => 'Néant (compte de gestion)',
+      };
+}
+
+/// Les lignes d'à-nouveaux EFFECTIVES de l'exercice [annee] : journal AN, datées de [annee], VALIDÉES, ni contre-passation ni contre-passées, jamais provisoires.
+List<CpaFiche> cpcANouveauxEcrits(Iterable<CpaFiche> actives, int annee) {
+  final contrePassees = <String>{for (final e in actives) if (e['contrePasseDe'] != null) '${e['contrePasseDe']}'};
+  return [
+    for (final e in actives)
+      if (e['journal'] == 'AN' &&
+          cpaAnnee(e['date']) == annee &&
+          e['statut'] == 'validee' &&
+          e['contrePasseDe'] == null &&
+          e['provisoire'] != true &&
+          !contrePassees.contains('${e['numero']}'))
+        e
+  ];
+}
+
+/// LE SOLDE D'OUVERTURE du compte [compte] au 1er janvier de [annee] (débit − crédit), avec son STATUT ([CpcStatutOuverture]). [exercices] : TOUTES les fiches
+/// d'exercice ; [actives] : les écritures non archivées ; [comptesResultat] : la table paramétrable 131 / 139 (le résultat d'un exercice précédent non clos y est
+/// porté, comme aux à-nouveaux provisoires).
+CpcOuvertureCompte cpcOuvertureCompte(Iterable<CpaFiche> exercices, Iterable<CpaFiche> actives, int annee, String compte,
+    {Iterable<CpaFiche> comptesResultat = const [], int profondeur = 0}) {
+  final classe = compte.isEmpty ? '' : compte[0];
+  if (classe.isNotEmpty && '6789'.contains(classe)) {
+    return const CpcOuvertureCompte(CpcStatutOuverture.gestion, 0, 'Compte de gestion : il ne se reporte jamais, il est soldé chaque année par le résultat.');
+  }
+  final brouillonsAN = [
+    for (final e in actives)
+      if (e['journal'] == 'AN' && cpaAnnee(e['date']) == annee && e['statut'] == 'brouillon') e
+  ].length;
+  final an = cpcANouveauxEcrits(actives, annee);
+  if (an.isNotEmpty) {
+    final lignes = [for (final e in an) if ('${e['compte']}' == compte) e];
+    final pieces = <String>[];
+    for (final e in an) {
+      final n = '${e['numero']}';
+      if (!pieces.contains(n)) pieces.add(n);
+    }
+    return CpcOuvertureCompte(
+        CpcStatutOuverture.ecrite,
+        _som(lignes, 'debit') - _som(lignes, 'credit'),
+        lignes.isEmpty
+            ? 'À-nouveaux validés au 1er janvier $annee (${pieces.join(', ')}) : le compte n’y figure pas, son solde reporté est nul.'
+            : 'À-nouveaux validés au 1er janvier $annee (${pieces.join(', ')}).',
+        pieces: pieces,
+        brouillonsAN: brouillonsAN);
+  }
+  final prec = annee - 1;
+  final ex = cpcExercice(exercices, prec);
+  final etatPrec = cpcEtatExercice(exercices, prec);
+  // L'exercice de la liasse déposée se reconnaît même sans fiche amorcée (il est clos d'office, comme le dit `cpcEtatExercice`).
+  if (ex == null && !_estDeLiasse(prec)) {
+    return CpcOuvertureCompte(CpcStatutOuverture.inconnue, null,
+        'Aucun à-nouveau validé au 1er janvier $annee, et l’exercice $prec ne figure pas au journal : le solde d’ouverture est inconnu (reporter les soldes par le bilan d’ouverture ou l’importation des soldes d’ouverture).',
+        brouillonsAN: brouillonsAN);
+  }
+  if (ex == null || ex['source'] == 'liasse') {
+    return CpcOuvertureCompte(CpcStatutOuverture.inconnue, null,
+        'Aucun à-nouveau validé au 1er janvier $annee. L’exercice $prec est celui de la liasse déposée : elle donne le bilan par rubrique, pas le solde de chaque compte. Le solde d’ouverture est inconnu tant que les soldes ne sont pas reportés (bilan d’ouverture ou importation des soldes d’ouverture).',
+        brouillonsAN: brouillonsAN);
+  }
+  if (etatPrec == 'clos') {
+    return CpcOuvertureCompte(CpcStatutOuverture.inconnue, null,
+        'L’exercice $prec est clôturé mais aucun à-nouveau validé n’est retrouvé au 1er janvier $annee : le solde d’ouverture est inconnu (vérifier les pièces AN de la clôture).',
+        brouillonsAN: brouillonsAN);
+  }
+  // Exercice précédent ouvert ou en clôture : l'ouverture se CALCULE, à condition que celle de l'exercice précédent soit elle-même connue.
+  var base = 0.0;
+  if (cpcANouveauxEcrits(actives, prec).isEmpty) {
+    if (profondeur > 50) {
+      return CpcOuvertureCompte(CpcStatutOuverture.inconnue, null, 'Chaîne d’exercices non clos trop longue : le solde d’ouverture n’est pas calculé.', brouillonsAN: brouillonsAN);
+    }
+    final o = cpcOuvertureCompte(exercices, actives, prec, compte, comptesResultat: comptesResultat, profondeur: profondeur + 1);
+    if (o.solde == null) {
+      return CpcOuvertureCompte(CpcStatutOuverture.inconnue, null,
+          'Aucun à-nouveau validé au 1er janvier $annee, et l’ouverture de l’exercice $prec (non clos) est elle-même inconnue : le solde d’ouverture ne peut pas être calculé.',
+          brouillonsAN: brouillonsAN);
+    }
+    base = o.solde!;
+  }
+  // Les à-nouveaux écrits de l'exercice précédent sont DANS ses écritures validées (datés du 1er janvier) : ils forment déjà sa propre ouverture.
+  final lignesPrec = cpcEcrituresDe(actives, prec);
+  final duCompte = [for (final e in lignesPrec) if ('${e['compte']}' == compte) e];
+  var solde = base + _som(duCompte, 'debit') - _som(duCompte, 'credit');
+  final res = cpcResultatDe(lignesPrec);
+  if (res.abs() >= 1 && cpcCompteResultatDe(res, comptesResultat).compte == compte) solde -= res; // bénéfice au crédit
+  return CpcOuvertureCompte(CpcStatutOuverture.provisoire, solde,
+      'Provisoire : calculé depuis les écritures validées de l’exercice $prec, ${etatPrec == 'en_cloture' ? 'en clôture' : 'ouvert'} (recalculé à chaque lecture, jamais écrit). Il deviendra écrit à la clôture de $prec.',
+      brouillonsAN: brouillonsAN);
+}
+
+/// LE SOLDE DE CLÔTURE du compte [compte] pour l'exercice [annee] : l'ouverture, plus les mouvements VALIDÉS de l'exercice hors les à-nouveaux qui forment déjà
+/// l'ouverture (la pièce CL comprise : un compte de gestion d'un exercice clôturé finit soldé). `solde == null` quand l'ouverture est inconnue — jamais zéro.
+({double? solde, double mouvements, int brouillons}) cpcClotureCompte(CpcOuvertureCompte ouverture, Iterable<CpaFiche> actives, int annee, String compte) {
+  final dejaOuverture = <Object?>{
+    if (ouverture.statut == CpcStatutOuverture.ecrite)
+      for (final e in cpcANouveauxEcrits(actives, annee)) e['id'] ?? '${e['numero']}|${e['compte']}|${e['debit']}|${e['credit']}'
+  };
+  var mouvements = 0.0;
+  var brouillons = 0;
+  for (final e in actives) {
+    if (cpaAnnee(e['date']) != annee || '${e['compte']}' != compte) continue;
+    if (e['statut'] != 'validee') {
+      if (e['statut'] == 'brouillon') brouillons++;
+      continue;
+    }
+    if (dejaOuverture.contains(e['id'] ?? '${e['numero']}|${e['compte']}|${e['debit']}|${e['credit']}')) continue;
+    mouvements += _n(e['debit']) - _n(e['credit']);
+  }
+  return (solde: ouverture.solde == null ? null : ouverture.solde! + mouvements, mouvements: mouvements, brouillons: brouillons);
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -956,7 +1144,7 @@ CpcReport cpcReporterANouveaux(CpcSoldesCloture s, int annee, {required int deja
     'journal': 'AN',
     'journalLibelle': 'Journal des à-nouveaux',
     'libelle': 'À-nouveaux au 1er janvier ${annee + 1}',
-    'origine': 'Automatique — report d’exercice',
+    'origine': cpcOrigineReportOuverture,
     'statut': 'brouillon',
     'centreCout': null,
   };

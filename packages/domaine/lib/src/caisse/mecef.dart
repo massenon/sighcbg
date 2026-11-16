@@ -2,8 +2,9 @@
 ///
 /// Ce qui est porté, c'est le COMPORTEMENT DE LA MAQUETTE : décomposition fiscale d'un montant selon le régime de TVA, facture normalisée imprimée,
 /// code de certification, synchronisation avec le dispositif, avoir MECeF. Les échanges avec le dispositif fiscal y sont un tirage pseudo-aléatoire
-/// GRAINÉ — le boîtier physique (modèle, interface, protocole) n'est dans aucun document du dépôt : son intégration attend la Direction
-/// (ADR-0003, dix questions posées au fournisseur et à la DGI). Aucune de ces fonctions ne prétend certifier quoi que ce soit.
+/// GRAINÉ — le MODÈLE du boîtier physique est connu (ELTRADE CC300, décision de la Direction de Baguidi du 16/11/2026, réglage de clinique `mecef.modeleBoitier`), mais
+/// son interface et son protocole ne sont dans aucun document du dépôt : son intégration attend l'éditeur du boîtier (ADR-0003, questions au fournisseur et à la
+/// DGI ; docs/guides/MECEF-BOITIER-ELTRADE-CC300.md). Aucune de ces fonctions ne prétend certifier quoi que ce soit.
 ///
 /// Rejoué sur `test/vecteurs/mecef.json`, engendré en pilotant le module réel de la maquette pour chaque régime de TVA.
 ///

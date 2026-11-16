@@ -8,7 +8,7 @@ library;
 import '../administration/adm_regles.dart' show admNaturesCourrier, admReferenceCourrier, admServicesCourrier, admTraitementsCourrier;
 import '../administration/adm_regles.dart' show admReferenceSuivante;
 import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget, cpbReferenceSuivante;
-import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice;
+import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice, cpcOrigineImportOuverture;
 import '../assurances/ass_garanties.dart';
 import '../assurances/ass_regles.dart' show assCategoriesGarantie, assChangerCouverture, assDate, assLibelleUnite, assUnitesPlafond;
 import '../format/format_fr.dart' show dateFR, nombre;
@@ -965,7 +965,7 @@ final JeuImport jeuSoldesOuverture = JeuImport(
         'compteLibelle': c['libelle'] ?? '',
         'debit': v['debit'] ?? 0,
         'credit': v['credit'] ?? 0,
-        'origine': 'Import des soldes d’ouverture',
+        'origine': cpcOrigineImportOuverture,
         'statut': 'brouillon',
       });
     }

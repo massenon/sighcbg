@@ -140,7 +140,11 @@ class EcranEcritures extends StatelessWidget with EcranMaquette {
             sensInitial: 'desc',
             alClicLigne: (e) => _consulter(context, c, e),
             filtres: [
-              FiltreTableau(nom: 'journal', libelle: 'Journal', options: [for (final j in cpaJournaux) OptionChamp(j.$1, j.$2)]),
+              FiltreTableau(nom: 'journal', libelle: 'Journal', options: [
+                for (final j in cpaJournaux) OptionChamp(j.$1, j.$2),
+                for (final j in cpaJournauxReserves)
+                  if (!cpaJournaux.any((x) => x.$1 == j.$1)) OptionChamp(j.$1, j.$2),
+              ]),
               const FiltreTableau(nom: 'statut', libelle: 'Statut', options: [
                 OptionChamp('validee', 'Validée'),
                 OptionChamp('brouillon', 'Brouillon'),
@@ -212,7 +216,9 @@ class EcranEcritures extends StatelessWidget with EcranMaquette {
             libelle: 'Journal',
             type: TypeChamp.select,
             requis: true,
-            options: [for (final j in cpaJournaux) OptionChamp(j.$1, '${j.$1} — ${j.$2}')]),
+            // Lot CLO (16/11/2026, § 6) : CL et AN sont réservés au moteur (clôture, ouverture) — ni proposés ici, ni acceptés par la garde de la collection.
+            options: [for (final j in cpaJournauxSaisissables) OptionChamp(j.$1, '${j.$1} — ${j.$2}')],
+            aide: 'Les journaux CL (clôture) et AN (à-nouveaux) ne se saisissent pas : seuls les gestes de clôture et d’ouverture les écrivent.'),
         const ChampDef(nom: 'libelle', libelle: 'Libellé de l’opération', requis: true, col: ColChamp.plein),
         ChampDef(
             nom: 'centreCout',

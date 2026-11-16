@@ -1225,6 +1225,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
         listenable: mag.collection(parCollectionParametres),
         builder: (ctx, _) {
           final actuel = modeMecefDuPoste(mag, c.aujourdhui);
+          // Le MODÈLE du boîtier (Direction de Baguidi, 16/11/2026 : un ELTRADE CC300) : réglage de clinique `mecef.modeleBoitier`, réglé sous le même droit.
+          final modele = modeleBoitierDuPoste(mag, c.aujourdhui);
           _mode ??= ControleurFormulaire([
             ChampDef(
                 nom: 'mode',
@@ -1233,7 +1235,12 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 requis: true,
                 col: ColChamp.plein,
                 options: [for (final k in mecefModes) OptionChamp(k, mecefLibellesModes[k])]),
-          ], {'mode': actuel});
+            const ChampDef(
+                nom: 'modele',
+                libelle: 'Modèle du boîtier MECeF',
+                col: ColChamp.plein,
+                aide: 'Nomme l’appareil (écran, pièce, journal MECeF). Ne branche aucun protocole : l’intégration est à fournir par l’éditeur du boîtier.'),
+          ], {'mode': actuel, 'modele': modele ?? ''});
           return CarteSigh(
               titre: 'Mode de certification',
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -1245,8 +1252,16 @@ class _EtatConfig extends State<EcranMecefConfig> {
                       ton: TonSigh.attention,
                       icone: LucideIcons.plugZap)
                 else
-                  const NoteSigh(
-                      'Boîtier physique. Le modèle, l’interface et le protocole du boîtier ne figurent dans aucun document remis (dix questions au fournisseur et à la DGI restent à poser). Aucun numéro n’est fabriqué comme s’il était fiscal : tant que l’adaptateur du boîtier n’est pas branché, une vente reste en attente de certification.'),
+                  NoteSigh(
+                      'Boîtier physique : ${modele ?? 'modèle non renseigné'}. L’interface, les commandes et le certificat du boîtier ne figurent dans aucun document du dépôt (liste de ce qu’il faut obtenir du fournisseur : docs/guides/MECEF-BOITIER-ELTRADE-CC300.md). Aucun numéro n’est fabriqué comme s’il était fiscal : tant que l’adaptateur du boîtier n’est pas branché, une vente reste en attente de certification.'),
+                const SizedBox(height: 8),
+                Row(key: const Key('mecef-adaptateur-boitier'), children: [
+                  const Icon(LucideIcons.plugZap, size: 16, color: JetonsShell.warning600),
+                  const SizedBox(width: 8),
+                  Expanded(
+                      child: Text('${mecefMentionAdaptateurBoitier(modele)[0].toUpperCase()}${mecefMentionAdaptateurBoitier(modele).substring(1)} (adaptateur non configuré).',
+                          style: const TextStyle(color: JetonsShell.slate700, fontSize: 14))),
+                ]),
                 const SizedBox(height: 12),
                 if (fileul)
                   const NoteSigh(ApplicateurConfiguration.motifGarde, icone: LucideIcons.lock)
@@ -1261,13 +1276,26 @@ class _EtatConfig extends State<EcranMecefConfig> {
                           onPressed: () {
                             final v = _mode!.valider();
                             if (v == null) return;
-                            final r = service.regler(mecefCleMode, v['mode'], parametreDateIso(c.aujourdhui), motif: 'Réglé à « Configuration fiscale ».');
-                            if (!r.ok) {
+                            final r = v['mode'] == actuel
+                                ? null
+                                : service.regler(mecefCleMode, v['mode'], parametreDateIso(c.aujourdhui), motif: 'Réglé à « Configuration fiscale ».');
+                            if (r != null && !r.ok) {
                               ToastsSigh.afficher(context, '${r.refus!.code} : ${r.refus!.motif}',
                                   type: TypeToast.erreur, detail: r.refus!.geste, duree: const Duration(seconds: 9));
                               return;
                             }
-                            ToastsSigh.afficher(context, 'Mode enregistré : ${mecefLibellesModes[v['mode']] ?? v['mode']}.', type: TypeToast.succes);
+                            final nouveauModele = '${v['modele'] ?? ''}'.trim();
+                            if (nouveauModele != (modele ?? '')) {
+                              final rm = service.regler(mecefCleModeleBoitier, nouveauModele, parametreDateIso(c.aujourdhui), motif: 'Réglé à « Configuration fiscale ».');
+                              if (!rm.ok) {
+                                ToastsSigh.afficher(context, '${rm.refus!.code} : ${rm.refus!.motif}',
+                                    type: TypeToast.erreur, detail: rm.refus!.geste, duree: const Duration(seconds: 9));
+                                return;
+                              }
+                            }
+                            ToastsSigh.afficher(context,
+                                'Mode enregistré : ${mecefLibellesModes[v['mode']] ?? v['mode']}${nouveauModele.isEmpty ? '' : ' — boîtier $nouveauModele'}.',
+                                type: TypeToast.succes);
                           })),
               ]));
         });

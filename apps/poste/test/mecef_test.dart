@@ -334,7 +334,8 @@ void main() {
     final m = magasin();
     await ouvrir(t, m, 'mecef-config');
     expect(find.text('Mode de certification'), findsWidgets);
-    expect(find.textContaining('Boîtier physique. Le modèle, l’interface et le protocole du boîtier ne figurent dans aucun document remis'), findsOneWidget);
+    // Décision du 16/11/2026 : le MODÈLE du boîtier est connu (ELTRADE CC300, réglage de clinique semé) ; l'interface et le protocole, non.
+    expect(find.textContaining('Boîtier physique : ELTRADE CC300. L’interface, les commandes et le certificat du boîtier ne figurent dans aucun document du dépôt'), findsOneWidget);
     expect(modeMecefDuPoste(m, aujourdhui), 'boitier');
     await toucher(t, find.text('Boîtier physique').first);
     await toucher(t, find.text('e-MECeF').last);

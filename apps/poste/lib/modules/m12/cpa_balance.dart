@@ -131,6 +131,9 @@ class _EtatBalance extends State<EcranBalance> {
             }
         ];
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Lot CLO (16/11/2026, § 6, point e) : l'état de l'exercice affiché et ses voisins.
+          BandeauExercice(annee: exerciceChoisi(c)),
+          const SizedBox(height: 16),
           Align(alignment: Alignment.centerLeft, child: commande(_mode, largeur: 280)),
           const SizedBox(height: 12),
           toutes

@@ -169,6 +169,10 @@ Bornes cpbBornesExercice(int annee, DateTime? arrete) {
 
 /// `ecrituresRetenues(bornes)` : on ne retient QUE les écritures VALIDÉES. Un brouillon n'est pas un fait comptable : le compter donnerait un résultat
 /// qui change quand le comptable rectifie une saisie. Le nombre de brouillons écartés est ANNONCÉ.
+///
+/// LE MÊME FILTRE POUR N ET N-1 (lot CLO, décision du 16/11/2026, § 6) : statut VALIDÉ, et la pièce de CLÔTURE (journal CL) écartée — elle solde les classes 6 et 7
+/// au compte de résultat, si bien qu'un exercice clôturé se lirait à zéro dans sa propre colonne alors que l'exercice ouvert voisin montre son activité
+/// (`cpcEcrituresDe` applique la même règle). Une écriture d'un statut inconnu n'est ni retenue ni comptée comme brouillon.
 ({List<CpaFiche> lignes, int brouillons}) cpbEcrituresRetenues(Iterable<CpaFiche> toutes, [Bornes? b]) {
   var brouillons = 0;
   final retenues = <CpaFiche>[];
@@ -177,10 +181,11 @@ Bornes cpbBornesExercice(int annee, DateTime? arrete) {
       final d = _date(e['date']);
       if (d == null || !dansBornes(d, b)) continue;
     }
-    if (e['statut'] == 'brouillon') {
-      brouillons++;
+    if (e['statut'] != 'validee') {
+      if (e['statut'] == 'brouillon') brouillons++;
       continue;
     }
+    if (e['journal'] == 'CL') continue;
     retenues.add(e);
   }
   return (lignes: retenues, brouillons: brouillons);
@@ -422,10 +427,13 @@ CpbFluxCalcule cpbFluxCalcule(Iterable<CpaFiche> toutes, Bornes b) {
     final t = d.millisecondsSinceEpoch;
     if (t > tFin) continue;
     final aNouveau = e['journal'] == 'AN' && d.year == annee;
-    if (e['statut'] == 'brouillon') {
-      if (t >= tDebut) brouillons++;
+    if (e['statut'] != 'validee') {
+      if (e['statut'] == 'brouillon' && t >= tDebut) brouillons++;
       continue;
     }
+    // La pièce de CLÔTURE (journal CL) solde les classes 6 et 7 au compte de résultat : ce n'est pas un flux, et la compter ramènerait la CAFG d'un exercice clos
+    // à zéro. Même filtre que le compte de résultat ([cpbEcrituresRetenues]).
+    if (e['journal'] == 'CL' && t >= tDebut) continue;
     final num = '${e['compte'] ?? ''}';
     final dd = _n(e['debit']), cc = _n(e['credit']);
     if (t < tDebut || aNouveau) {
@@ -580,6 +588,25 @@ List<CpbColonne> cpbColonnesFeuillet(String genre, String choix, DateTime? arret
       ? cpbSourceColonne(genre, precedent, null, ecritures)
       : cpbSourceColonne(genre, precedent, cpbBornesExercice(precedent, null), ecritures);
   return [n, n1];
+}
+
+/// LES COLONNES DE L'ÉCRAN (lot CLO, § 6) : celles de [cpbColonnesFeuillet], plus — quand l'exercice précédent est CITÉ du dépôt — sa colonne CALCULÉE depuis le
+/// journal, AU MÊME FILTRE DE STATUT que la colonne N (écritures validées, pièce CL écartée), placée À CÔTÉ de la colonne citée : [N calculé, N-1 calculé,
+/// N-1 déposé]. Deux sources, jamais dans la même colonne. Sans exercice précédent déposé, ce sont les deux colonnes habituelles (N-1 déjà calculé).
+List<CpbColonne> cpbColonnesFeuilletEcran(String genre, String choix, DateTime? arrete, Iterable<CpaFiche> ecritures) {
+  final cols = cpbColonnesFeuillet(genre, choix, arrete, ecritures);
+  if (choix == 'depose' || !cols[1].depose) return cols;
+  final precedent = cols[1].annee;
+  return [cols[0], cpbSourceColonne(genre, precedent, cpbBornesExercice(precedent, null), ecritures), cols[1]];
+}
+
+/// La colonne N-1 de RÉFÉRENCE pour les comparaisons (évolution, graphique) : la colonne calculée au même filtre quand le journal porte des écritures validées de
+/// l'exercice précédent, sinon la colonne citée du dépôt (s'il y en a une), sinon la colonne calculée (vide).
+CpbColonne cpbColonneN1Reference(List<CpbColonne> cols) {
+  final calculee = cols.skip(1).where((c) => !c.depose).firstOrNull;
+  final deposee = cols.skip(1).where((c) => c.depose).firstOrNull;
+  if (calculee != null && calculee.nbLignes > 0) return calculee;
+  return deposee ?? calculee ?? cols.last;
 }
 
 /// `montantFeuillet` : le texte d'une cellule — `null` (« — ») pour une valeur absente OU pour une ligne de détail que le journal n'alimente pas (un zéro y
