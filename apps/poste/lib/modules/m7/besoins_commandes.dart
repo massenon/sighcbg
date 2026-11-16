@@ -11,6 +11,7 @@ import '../../core/service_installation.dart';
 import '../../kit/kit.dart';
 import '../../sync/service_validations_deposees.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'besoins_commun.dart';
 
 /// Le bon de commande imprimé : le total est celui de SES lignes, refait à l'impression — la commande engage la clinique.
@@ -225,13 +226,14 @@ void _imprimer(BuildContext ctx, Fiche cm) => imprimerPiece(
     (c) => pieceCommande(cm,
         utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c)));
 
-/// Q4 (17/11/2026) : le validateur des commandes est un RÉGLAGE de clinique (la Directrice Administrative semée), pas un rôle écrit ici. Le bouton est absent pour les autres rôles.
-bool _estValidateur(ContexteEcran c) => estArbitre(c.role, validateurs: ReglagesClinique.validateursAchats(c.magasin, c.aujourdhui));
+/// RG-04 : valider une commande est le GESTE RÉSERVÉ « Valider les achats » de la fiche RBAC (Direction de Baguidi du 16/11/2026, la Directrice Administrative seule d'origine), jamais un rôle
+/// écrit ici. Le bouton est absent pour les autres rôles.
+bool _estValidateur(ContexteEcran c) => estArbitre(c.role, droitsGestesEcran(c));
 
 Future<void> _valider(BuildContext ecran, Fiche cm) async {
   final c = ContexteEcran.of(ecran);
   if (!_estValidateur(c)) {
-    dire(ecran, 'La validation d’une commande (RG-04) revient aux rôles réglés comme validateurs par la clinique : le rôle « ${c.role} » ne le peut pas.', type: TypeToast.erreur);
+    dire(ecran, 'La validation d’une commande (RG-04) est le geste réservé « Valider les achats » (d’origine : la Directrice Administrative) : le rôle « ${c.role} » ne le détient pas.', type: TypeToast.erreur);
     return;
   }
   final ok = await confirmerSigh(ecran,
@@ -243,7 +245,7 @@ Future<void> _valider(BuildContext ecran, Fiche cm) async {
   // CONTINUITÉ DES VALIDATIONS (16/11/2026) : sur un fileul rattaché, la validation DA (RG-04) se DÉPOSE ; la mère l'applique sous le rôle de son auteur, contrôles refaits. La commande
   // reste « en attente de validation » jusqu'à la confirmation : elle ne part jamais chez le fournisseur sur un dépôt seul.
   if (ServiceInstallation.de(c.magasin).rattache) {
-    final d = ServiceValidationsDeposees.de(c.magasin).deposerCircuit(circuitCommandeValidation, cm, role: c.role, acteur: acteur(c).nom);
+    final d = ServiceValidationsDeposees.de(c.magasin).deposerCircuit(circuitCommandeValidation, cm, role: c.role, acteur: acteur(c).nom, gestes: droitsGestesEcran(c));
     if (!d.ok) {
       dire(ecran, d.refus!.motif, type: TypeToast.erreur);
       return;
@@ -350,6 +352,7 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
     final c = widget.contexte;
     _lignes = widget.record == null ? [] : lignesDeBonAchat(widget.record!);
     _produits = articlesDuReferentiel(c.magasin);
+    final peutValider = _estValidateur(c) || (widget.record?['valideePar'] ?? '') != '';
     _f = ControleurFormulaire([
       const ChampDef(
           nom: 'date',
@@ -370,7 +373,10 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           options: [
             // Sur un fileul rattaché, « Validée » ne se choisit pas (RG-04) : elle arrive par le dépôt appliqué par la mère.
             for (final s in statutsCommande)
-              if (!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['commandes']!.contains(s.valeur) || widget.record?['statutCommande'] == s.valeur) OptionChamp(s.valeur, s.libelle)
+              if ((!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['commandes']!.contains(s.valeur) || widget.record?['statutCommande'] == s.valeur) &&
+                  // RG-04 (E3263) : sans le geste « Valider les achats », un statut qui pose la validation ne se choisit pas sur une commande non encore validée.
+                  (peutValider || !statutsCommandeApresValidation.contains(s.valeur) || widget.record?['statutCommande'] == s.valeur))
+                OptionChamp(s.valeur, s.libelle)
           ]),
       const ChampDef(
           nom: 'observations',
@@ -406,6 +412,7 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           commandes: col.toutes,
           jour: iso(c.aujourdhui),
           validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
+          peutValider: _estValidateur(c),
           referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('commandes', 'BC-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);

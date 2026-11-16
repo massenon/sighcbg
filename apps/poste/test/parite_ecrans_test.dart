@@ -213,6 +213,11 @@ void main() {
     return mesure;
   }
 
+  // RÔLE DE MESURE (Direction de Baguidi, 16/11/2026, E3262) : la fiche de la maquette est relevée sous l'administrateur, qui arbitrait les besoins. Arbitrer est devenu le geste réservé
+  // « Valider les achats », la Directrice Administrative SEULE d'origine : l'administrateur n'a plus l'onglet « Arbitrage & validation DAF ». La parité se mesure donc sous le rôle qui
+  // DÉTIENT le droit (la DAF), sans masquer l'onglet ni accorder le geste à l'administrateur pour la mesure.
+  const rolesDeMesure = {'m7-besoins': 'da'};
+
   // Écrans de la CIBLE sans équivalent à la maquette (assistant de première installation, récupération administrateur) : hors manifeste, donc hors de la
   // parité N1 ; ils sont couverts par `installation_ecrans_test.dart`. Le test ci-dessous vérifie qu'ils sont bien absents du manifeste.
   const ecransDeLaCible = {'ins-premiere', 'ins-rejoindre', 'auth-secours'};
@@ -262,7 +267,7 @@ void main() {
       (t) async {
     final rapport = <Map<String, Object?>>[];
     for (final id in portes) {
-      final p = await mesurer(t, id, 'admin', activiteRouverte: fermes.contains(id), fixture: fixtures[id] ?? const {});
+      final p = await mesurer(t, id, rolesDeMesure[id] ?? 'admin', activiteRouverte: fermes.contains(id), fixture: fixtures[id] ?? const {});
       if (p == null) {
         rapport.add({
           'id': id,

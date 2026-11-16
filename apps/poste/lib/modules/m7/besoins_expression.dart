@@ -11,6 +11,7 @@ import '../../core/service_installation.dart';
 import '../../kit/kit.dart';
 import '../../sync/service_validations_deposees.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'besoins_commun.dart';
 
 const _libellesVues = {
@@ -96,7 +97,8 @@ class EcranBesoins extends StatelessWidget with EcranMaquette {
         final miennes = bonsMiens(actifs, moi);
         final aArbitrer = bonsAArbitrer(actifs);
         final pourAchat = bonsPourAchat(actifs);
-        final vues = vuesOffertes(role: c.role, droitVoir: c.droit.voir, validateurs: ReglagesClinique.validateursAchats(c.magasin, c.aujourdhui));
+        // La vue d'arbitrage suit le GESTE RÉSERVÉ « Valider les achats » de la fiche RBAC (Direction du 16/11/2026), jamais une liste de rôles.
+        final vues = vuesOffertes(role: c.role, droitVoir: c.droit.voir, gestes: droitsGestesEcran(c));
 
         Widget tableau(String titre, List<Fiche> lignes, String vue) =>
             _TableauBesoins(
@@ -547,7 +549,7 @@ class _EtatModaleArbitrage extends State<_ModaleArbitrage> {
     if (ServiceInstallation.de(c.magasin).rattache) {
       final decision = switch (widget.quoi) { Arbitrage.valider => 'valider', Arbitrage.rejeter => 'rejeter', Arbitrage.complement => 'complement' };
       final d = ServiceValidationsDeposees.de(c.magasin)
-          .deposerCircuit(circuitBesoinArbitrage, widget.bon, decision: decision, motif: '${v['motif'] ?? ''}', role: c.role, acteur: acteur(c).nom);
+          .deposerCircuit(circuitBesoinArbitrage, widget.bon, decision: decision, motif: '${v['motif'] ?? ''}', role: c.role, acteur: acteur(c).nom, gestes: droitsGestesEcran(c));
       if (!d.ok) {
         dire(widget.ecran, d.refus!.motif, type: TypeToast.erreur);
         return;
@@ -695,6 +697,8 @@ class _EtatModaleBon extends State<_ModaleBon> {
     _produits = articlesDuReferentiel(c.magasin);
     // Seul celui qui tient le circuit choisit l'étape ; un agent qui exprime un besoin n'a pas à se placer lui-même en « validation DA ».
     final pilote = pilotageCircuit(role: c.role, droitEditer: c.droit.editer);
+    // Les étapes qui supposent l'arbitrage ne s'offrent qu'à qui détient le geste « Valider les achats » (E3263), sauf sur un bon déjà validé.
+    final peutValider = estArbitre(c.role, droitsGestesEcran(c)) || bonDejaValide(r);
     _f = ControleurFormulaire([
       const ChampDef(nom: 'date', libelle: 'Date', type: TypeChamp.date, requis: true),
       ChampDef(
@@ -720,7 +724,9 @@ class _EtatModaleBon extends State<_ModaleBon> {
             options: [
               // Sur un fileul rattaché, les états décidés par la DAF ne se choisissent pas : ils arrivent par le dépôt appliqué par la mère.
               for (final e in etapesBesoin)
-                if (!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['besoins']!.contains(e.id) || r?['etape'] == e.id) OptionChamp(e.id, e.libelle)
+                if ((!ServiceInstallation.de(c.magasin).rattache || !circuitEtatsReserves['besoins']!.contains(e.id) || r?['etape'] == e.id) &&
+                    (peutValider || !etapesBesoinApresArbitrage.contains(e.id) || r?['etape'] == e.id))
+                  OptionChamp(e.id, e.libelle)
             ]),
       const ChampDef(
           nom: 'motif',
@@ -759,6 +765,7 @@ class _EtatModaleBon extends State<_ModaleBon> {
           existant: widget.record,
           bons: col.toutes,
           validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
+          peutValider: estArbitre(c.role, droitsGestesEcran(c)),
           referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('besoins', 'BEB-2026-', 4, col.toutes, maintenant: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);

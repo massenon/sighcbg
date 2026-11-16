@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show money;
+import 'package:sigh_domaine/sigh_domaine.dart' show gesteValiderAchats, money;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
@@ -405,6 +405,40 @@ void main() {
       expect(find.byTooltip('Modifier'), findsNothing);
       expect(bouton('Nouvelle commande'), findsNothing);
       expect(find.byTooltip('Consulter'), findsWidgets);
+    });
+
+    // Direction de Baguidi, 16/11/2026 : valider les achats est le GESTE RÉSERVÉ « Valider les achats », la Directrice Administrative SEULE d'origine (RG-04). L'administrateur système
+    // ne l'a plus ; la Direction l'étend par une décision de la fiche RBAC (« Rôles et permissions › Gestes réservés »).
+    cas('l\'administrateur système n\'a plus le geste : ni « Valider (DA) », ni la vue d\'arbitrage', (t) async {
+      final m = magasin();
+      commande(m, 'BC-TEST-ADM', 'attente_validation');
+      poserBon(m, 'BEB-TEST-ADM', 'validation_da');
+      await ouvrir(t, m, 'm7-commandes', role: 'admin');
+      expect(find.text('BC-TEST-ADM'), findsOneWidget);
+      expect(find.byTooltip('Valider (DA)'), findsNothing);
+      await ouvrir(t, m, 'm7-besoins', role: 'admin');
+      expect(ong('arbitrage'), findsNothing);
+      expect(ong('tous'), findsOneWidget, reason: 'il garde le registre : seul le geste lui est retiré');
+    });
+
+    cas('la Direction étend le geste à un rôle par la fiche RBAC : le droit suit la décision, sans liste en dur', (t) async {
+      final m = magasin();
+      commande(m, 'BC-TEST-DIR', 'attente_validation');
+      final rbac = m.collection('rbac');
+      final fiche = rbac.toutes.where((f) => f['role'] == 'admin' && f['statut'] != 'archive').firstOrNull;
+      if (fiche == null) {
+        rbac.inserer({'role': 'admin', 'statut': 'actif', 'droitsGestes': {gesteValiderAchats: true}});
+      } else {
+        rbac.mettreAJour(fiche['id'], {'droitsGestes': {...((fiche['droitsGestes'] as Map?) ?? const {}), gesteValiderAchats: true}});
+      }
+      await ouvrir(t, m, 'm7-commandes', role: 'admin');
+      expect(find.byTooltip('Valider (DA)'), findsWidgets, reason: 'accordé par décision');
+      await ouvrir(t, m, 'm7-besoins', role: 'admin');
+      expect(ong('arbitrage'), findsOneWidget);
+      // Retiré à la DAF : elle ne valide plus (la décision l'emporte sur l'origine).
+      rbac.inserer({'role': 'da', 'statut': 'actif', 'droitsGestes': {gesteValiderAchats: false}});
+      await ouvrir(t, m, 'm7-commandes', role: 'da');
+      expect(find.byTooltip('Valider (DA)'), findsNothing);
     });
 
     cas('une commande créée porte la série BC-2026 à la suite de l\'existante et son montant est la somme de ses lignes',

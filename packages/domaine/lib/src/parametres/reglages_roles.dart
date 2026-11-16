@@ -1,22 +1,26 @@
-/// LES RÉGLAGES DE CLINIQUE QUI NOMMENT DES RÔLES (Direction de Baguidi, 17/11/2026, Q3 et Q4).
+/// LES RÉGLAGES DE CLINIQUE QUI NOMMENT DES RÔLES OU DES POSTES (Direction de Baguidi, 17/11/2026, Q3 et Q4).
 ///
-/// Deux listes de rôles qui vivaient en dur dans le code deviennent des PARAMÈTRES du registre (en base, versionnés par date, reçus des fileuls) :
+/// Des valeurs qui vivaient en dur dans le code deviennent des PARAMÈTRES du registre (en base, versionnés par date, reçus des fileuls) :
 ///
 ///  * Q3 `cloture.rolesInventaire` : qui passe les écritures d'inventaire d'un exercice EN CLÔTURE (comptable et administrateur semés) ;
-///  * Q4 `achats.rolesValidateurs` : qui arbitre un bon de besoins et valide une commande de stock (RG-04) — la Directrice Administrative semée — et `achats.libelleValidateur`, le POSTE
-///    porté sur la pièce validée (jamais le nom d'une personne : l'agent réel est porté à part).
+///  * Q4 `achats.libelleValidateur` : le POSTE porté sur une pièce d'achat validée (jamais le nom d'une personne : l'agent réel est porté à part). Un LIBELLÉ, pas un droit.
+///
+/// QUI valide les achats n'est PLUS un réglage (Direction de Baguidi, 16/11/2026) : c'est le geste réservé `achats_valider` de la fiche RBAC (`gestes_reserves.dart`), la Directrice
+/// Administrative seule d'origine. La clé `achats.rolesValidateurs` de la v20 est RETIRÉE du registre : plus semée, plus affichée, plus lue — une fiche déjà en base reste dans l'historique
+/// (rien n'est effacé, RG-14) mais ne décide plus rien.
 ///
 /// Une liste est écrite en TEXTE, identifiants de rôle séparés par des virgules. Une liste VIDE ou illisible retombe sur le défaut : un réglage mal saisi ne doit jamais verrouiller la clinique
 /// (plus personne ne validerait une commande), il se corrige par une nouvelle version datée.
 library;
 
 const String cleRolesInventaireCloture = 'cloture.rolesInventaire';
-const String cleRolesValidateursAchats = 'achats.rolesValidateurs';
+
+/// La clé RETIRÉE du réglage v20 « validateur des commandes » (remplacée par le geste `achats_valider`). Nommée ici pour que les tests prouvent qu'aucun lecteur ne la consulte plus.
+const String cleRolesValidateursAchatsRetiree = 'achats.rolesValidateurs';
 const String cleLibelleValidateurAchats = 'achats.libelleValidateur';
 
-/// Les défauts SEMÉS : ce sont ceux que le code portait avant le réglage (Q3 : comptable et administrateur ; Q4 : la Directrice Administrative).
+/// Les défauts SEMÉS : ceux que le code portait avant le réglage (Q3 : comptable et administrateur).
 const List<String> rolesInventaireClotureDefaut = ['comptable', 'admin'];
-const List<String> rolesValidateursAchatsDefaut = ['da', 'direction', 'admin']; // la DAF semée en tête ; Direction et administrateur gardent l'arbitrage qu'ils avaient (aucune régression), réglable
 const String libelleValidateurAchatsDefaut = 'Directrice administrative';
 
 /// Les identifiants de rôle d'un réglage « liste de rôles » : séparés par des virgules ou des points-virgules, espaces ôtés, doublons retirés, ordre conservé. [defaut] quand la valeur

@@ -903,7 +903,7 @@ class _OngletGestesState extends State<_OngletGestes> {
                             Text(g.libelle, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
                             Text(g.aide, style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
                             Text(
-                                '${decide ? 'Décision de la clinique.' : (g.suitEcran ? 'Origine : les rôles qui lisent l’écran.' : 'Origine : ${g.rolesDefaut.isEmpty ? 'aucun rôle' : g.rolesDefaut.map(x.libelle).join(', ')}.')} ${g.suitEcran ? 'Tous les écrans.' : 'Écran du geste : ${g.ecran}.'}',
+                                '${decide ? 'Décision de la clinique.' : (g.suitEcran ? 'Origine : les rôles qui lisent l’écran.' : 'Origine : ${g.rolesDefaut.isEmpty ? 'aucun rôle' : g.rolesDefaut.map(x.libelle).join(', ')}.')} ${g.suitEcran ? 'Tous les écrans.' : (g.ecran.isEmpty ? 'Écrans du module ${g.module}.' : 'Écran du geste : ${g.ecran}.')}',
                                 style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
                           ])),
                       BadgeSigh(suit ? 'Suit l’écran' : (accorde ? 'Accordé' : 'Non accordé'), key: Key('m14:gestes:etat:${g.id}'), ton: suit ? TonSigh.info : (accorde ? TonSigh.succes : TonSigh.neutre)),

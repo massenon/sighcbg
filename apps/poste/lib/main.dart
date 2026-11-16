@@ -251,6 +251,8 @@ Future<void> main() async {
       // tous les contrôles refaits avec SES données ; personne n'a à s'asseoir devant elle. Le verdict revient au fileul par le pont d'activité.
       ServiceValidationsDeposees.de(magasin)
         ..etiquette = 'M'
+        // Un dépôt de circuit d'achat se rejoue sous le rôle de son auteur avec SA matrice en force (geste réservé « Valider les achats »).
+        ..matrice = (() => matriceVive.matrice)
         ..demarrerMere();
       // CIRCUITS D'ACHAT (16/11/2026) : les tâches du comptable et du gestionnaire de stock, et le verdict à l'auteur, naissent de l'ÉTAT du bon que ce poste détient.
       ServiceCircuitAchats.de(magasin).demarrer();
@@ -295,6 +297,7 @@ Future<void> main() async {
       // Le verdict de la mère sur une validation déposée revient ici : une notification dit à l'auteur ce qui a été appliqué, sans effet ou refusé.
       ServiceValidationsDeposees.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)
+        ..matrice = (() => matriceVive.matrice)
         ..demarrerFileul();
       ServiceCircuitAchats.de(magasin).demarrer();
       ReservationStock.de(magasin)

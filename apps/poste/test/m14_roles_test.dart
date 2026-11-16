@@ -390,6 +390,32 @@ void main() {
     }
     expect(find.text('Imprimer la matrice'), findsOneWidget);
   });
+
+  // Direction de Baguidi, 16/11/2026 : valider les achats (RG-04) est un GESTE RÉSERVÉ de la fiche de rôle, la Directrice Administrative SEULE d'origine. Il se décide dans « Rôles et
+  // permissions › Gestes réservés », décision motivée et tracée, comme les autres gestes : aucune liste de rôles en dur.
+  casM14('Gestes réservés : « Valider les achats » figure, la DAF seule d\'origine ; l\'accorder à l\'administrateur est une décision tracée', (t) async {
+    final m = magasinM14();
+    await ouvrirM14(t, m, 'm14-roles');
+    await toucherM14(t, find.text('Gestes réservés'));
+    final cle = 'm14:gestes:$gesteValiderAchats';
+    expect(find.byKey(Key(cle)), findsOneWidget);
+    final labelDa = '${m.collection('rolesBase').toutes.firstWhere((r) => r['id'] == 'da')['label']}';
+    expect(find.descendant(of: find.byKey(Key(cle)), matching: find.textContaining('Origine : $labelDa. Écrans du module M7.')), findsOneWidget,
+        reason: 'l\'origine affichée est la seule Directrice Administrative');
+    // Le premier rôle affiché est l'administrateur : il n'a PAS le geste d'origine.
+    expect(find.descendant(of: find.byKey(Key('m14:gestes:etat:$gesteValiderAchats')), matching: find.text('Non accordé')), findsOneWidget);
+    await toucherM14(t, find.byKey(Key('m14:gestes:basculer:$gesteValiderAchats')));
+    await t.enterText(find.byType(TextField).last, 'Décision de la Direction du 16/11/2026');
+    await t.pump();
+    await t.tap(find.widgetWithText(BoutonSigh, 'Accorder').last);
+    await t.pump(const Duration(milliseconds: 400));
+    final f = m.collection('rbac').actives.firstWhere((x) => x['role'] == 'admin' && x['droitsGestes'] is Map);
+    expect((f['droitsGestes'] as Map)[gesteValiderAchats], isTrue, reason: 'la décision est écrite dans la fiche rbac du rôle');
+    expect(DroitsGestes(fiches: m.collection('rbac').actives).peut('admin', gesteValiderAchats), isTrue);
+    expect(DroitsGestes(fiches: m.collection('rbac').actives).peut('da', gesteValiderAchats), isTrue, reason: 'la DAF garde son origine');
+    expect(m.collection('audit').toutes.where((a) => a['action'] == 'Geste réservé'), isNotEmpty, reason: 'RG-12 : la décision est journalisée');
+    await t.pump(const Duration(seconds: 10));
+  });
 }
 
 Object liste0(Object? l) => (l as List).first as Object;

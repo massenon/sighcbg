@@ -10,6 +10,7 @@
 // Écarts de la maquette : docs/architecture/ECARTS-MAQUETTE.md, E2850 à E2879.
 library;
 
+import '../droits/gestes_reserves.dart' show DroitsGestes;
 import '../validation/validation.dart' show RefusValidation, valInstant;
 import '../validation/validation_deposee.dart';
 import 'besoins.dart';
@@ -206,15 +207,17 @@ Map<String, Object?>? _trouver(Iterable<Map<String, Object?>> fiches, String cib
   required String role,
   required Iterable<Map<String, Object?>> besoins,
   required Iterable<Map<String, Object?>> commandes,
-  Iterable<String>? validateurs,
+  required DroitsGestes gestes,
 }) {
   RefusValidation r(String c, String m, String? g) => RefusValidation(c, m, g);
   if (famille != circuitBesoinArbitrage && famille != circuitCommandeValidation) {
     return (refus: r('FAMILLE_INCONNUE', 'Circuit inconnu : $famille.', null), sansEffet: false, bon: null);
   }
-  if (!estArbitre(role, validateurs: validateurs)) {
+  if (!estArbitre(role, gestes)) {
     return (
-      refus: r('VALIDATION_RESERVEE', 'Arbitrer un besoin ou valider une commande (RG-04) revient aux rôles réglés comme validateurs par la clinique (d’origine : la Directrice Administrative) : le rôle « $role » ne le peut pas.', 'Demander au validateur des commandes de la clinique'),
+      refus: r('VALIDATION_RESERVEE',
+          'Arbitrer un besoin ou valider une commande (RG-04) est un geste réservé de la fiche de rôle (« Valider les achats », d’origine : la Directrice Administrative) : le rôle « $role » ne le détient pas.',
+          'Demander à un rôle qui détient le geste, ou à la Direction de l’accorder dans Rôles et permissions › Gestes réservés'),
       sansEffet: false,
       bon: null
     );
@@ -270,10 +273,10 @@ VerdictDepot circuitDeposer({
   required Iterable<Map<String, Object?>> commandes,
   required List<Map<String, Object?>> depots,
   required String Function() nouvelId,
-  Iterable<String>? validateurs,
+  required DroitsGestes gestes,
 }) {
   final cible = cleCircuit(bon);
-  final c = _controler(famille: famille, cible: cible, decision: decision, motif: motif, role: role, besoins: besoins, commandes: commandes, validateurs: validateurs);
+  final c = _controler(famille: famille, cible: cible, decision: decision, motif: motif, role: role, besoins: besoins, commandes: commandes, gestes: gestes);
   if (c.refus != null) return VerdictDepot.refus(c.refus!);
   for (final d in depots) {
     if (d['statut'] != 'archive' && d['etat'] == valDepotDeposee && d['genre'] == valGenreCircuitAchat && d['famille'] == famille && d['cible'] == cible) {
@@ -321,13 +324,14 @@ class ApplicationCircuit {
 }
 
 /// APPLIQUE un dépôt de circuit sur la mère, sous le RÔLE et le NOM de son auteur, tous les contrôles refaits avec les données de la mère. La date est celle du GESTE (`demandeLe`).
-/// `null` : rien à faire (déjà traité, ou autre genre). Rejouable : un bon déjà dans l'état voulu rend `sans_effet`.
+/// `null` : rien à faire (déjà traité, ou autre genre). Rejouable : un bon déjà dans l'état voulu rend `sans_effet`. [gestes] : la MATRICE en force de la mère (geste `achats_valider`
+/// évalué pour le rôle de l'auteur, rôle archivé ou module fermé compris), jamais une liste de rôles.
 ApplicationCircuit? circuitAppliquer(
   Map<String, Object?> depot, {
   required Iterable<Map<String, Object?>> besoins,
   required Iterable<Map<String, Object?>> commandes,
   required DateTime maintenant,
-  Iterable<String>? validateurs,
+  required DroitsGestes gestes,
   String libelleValidateur = directriceAdministrative,
 }) {
   if (depot['genre'] != valGenreCircuitAchat || depot['etat'] != valDepotDeposee || depot['statut'] == 'archive') return null;
@@ -336,7 +340,7 @@ ApplicationCircuit? circuitAppliquer(
   final motif = '${depot['motif'] ?? ''}';
   final quand = DateTime.tryParse('${depot['demandeLe'] ?? ''}') ?? maintenant;
   final c = _controler(
-      famille: famille, cible: '${depot['cible']}', decision: decision, motif: motif, role: '${depot['demandeRole']}', besoins: besoins, commandes: commandes, validateurs: validateurs);
+      famille: famille, cible: '${depot['cible']}', decision: decision, motif: motif, role: '${depot['demandeRole']}', besoins: besoins, commandes: commandes, gestes: gestes);
   if (c.refus != null) {
     return ApplicationCircuit(etat: valDepotRefusee, code: c.refus!.code, motif: c.refus!.motif, geste: c.refus!.geste);
   }

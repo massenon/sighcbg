@@ -89,6 +89,11 @@ num montantCommande(Iterable<_Commande> lignes) =>
 
 /// Enregistre une commande (création ou modification) : ce que la modale de la maquette écrit.
 /// [fournisseurs] = les fiches du référentiel (code, nom, délai) ; [commandes] = TOUTES les commandes (archivées comprises, pour la série).
+/// Les statuts qui POSENT la validation (RG-04) quand la commande n'en porte pas encore : validée et tout ce qui suit.
+const Set<String> statutsCommandeApresValidation = {'validee', 'transmise', 'livree', 'soldee'};
+
+/// [peutValider] : le rôle détient-il le geste `achats_valider` ? `null` (les vecteurs de la maquette) : la règle de la maquette (E72, la validation posée d'office par le statut). `false` :
+/// un statut de [statutsCommandeApresValidation] sur une commande non encore validée est REFUSÉ en le nommant (E3263) — RG-04 n'est plus contournable par le formulaire.
 _Commande commandeEnregistree(
     {required _Commande saisie,
     required List<_Commande> lignes,
@@ -97,8 +102,17 @@ _Commande commandeEnregistree(
     required Iterable<_Commande> commandes,
     required String jour,
     String Function()? referenceSuivante,
-    String validateur = directriceAdministrative}) {
+    String validateur = directriceAdministrative,
+    bool? peutValider}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
+  final dejaValideeAvant = existante != null && existante['valideePar'] != null && existante['valideePar'] != '';
+  if (peutValider == false &&
+      statutsCommandeApresValidation.contains(saisie['statutCommande']) &&
+      saisie['statutCommande'] != existante?['statutCommande'] &&
+      !dejaValideeAvant) {
+    throw RefusAchat(
+        'Le statut « ${libelleCommande(saisie['statutCommande'])} » suppose la validation de la commande (RG-04), geste réservé « Valider les achats » (d’origine : la Directrice Administrative) que ce rôle ne détient pas. Laisser la commande « En attente de validation DA ».');
+  }
   final v = {...saisie};
   final four =
       fournisseurs.where((x) => x['code'] == v['fournisseur']).firstOrNull;

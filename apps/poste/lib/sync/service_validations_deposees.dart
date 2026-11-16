@@ -30,6 +30,16 @@ class ServiceValidationsDeposees {
   /// Qui signe l'application (la mère) ; jamais anonyme (RG-12).
   String Function() auteurMere = () => 'Poste mère';
 
+  /// La MATRICE EN FORCE (graine et décisions superposées), relue à chaque appel : la mère rejoue un dépôt de circuit d'achat sous le rôle de son auteur en interrogeant le geste réservé
+  /// `achats_valider` (rôle archivé et module fermé compris). Non branchée (test nu) : les seules fiches `rbac` décident, l'origine du référentiel pour le reste.
+  MatriceDroits Function()? matrice;
+
+  /// Les gestes réservés en force sur CE poste, lus à chaque appel (jamais une liste de rôles).
+  DroitsGestes get gestes {
+    final mat = matrice?.call();
+    return DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: mat?.estArchive, ecranActif: mat?.ecranActif);
+  }
+
   DateTime Function()? horloge;
   DateTime get _maintenant => (horloge ?? magasin.horloge)();
 
@@ -64,7 +74,8 @@ class ServiceValidationsDeposees {
 
   /// CIRCUITS D'ACHAT (16/11/2026) : DÉPOSE l'arbitrage d'un besoin (`besoin_arbitrage`) ou la validation d'une commande (`commande_validation`). Même collection, même cycle de verdict,
   /// même notification de l'auteur que la validation d'un référentiel : un seul mécanisme. Refus nommé (mêmes contrôles que l'application) ou le dépôt écrit.
-  VerdictDepot deposerCircuit(String famille, Fiche bon, {String decision = 'valider', String motif = '', required String role, required String acteur}) {
+  /// [gestes] : les gestes réservés de l'écran qui dépose (fiches et matrice en force) ; à défaut, ceux du service ([gestes]).
+  VerdictDepot deposerCircuit(String famille, Fiche bon, {String decision = 'valider', String motif = '', required String role, required String acteur, DroitsGestes? gestes}) {
     final r = circuitDeposer(
         famille: famille,
         bon: bon,
@@ -77,7 +88,7 @@ class ServiceValidationsDeposees {
         besoins: magasin.collection('besoins').toutes,
         commandes: magasin.collection('commandes').toutes,
         depots: depots.toutes,
-        validateurs: ReglagesClinique.validateursAchats(magasin, _maintenant),
+        gestes: gestes ?? this.gestes,
         nouvelId: _nouvelId);
     if (!r.ok || r.dejaDepose) return r;
     try {
@@ -205,7 +216,7 @@ class ServiceValidationsDeposees {
   /// Le bon écrit voyage aux fileuls par le pont d'activité ; les notifications du comptable et du gestionnaire de stock naissent de l'état du bon sur chaque poste (`ServiceCircuitAchats`).
   bool _appliquerCircuit(Fiche d) {
     final a = circuitAppliquer(d, besoins: magasin.collection('besoins').toutes, commandes: magasin.collection('commandes').toutes, maintenant: _maintenant,
-        validateurs: ReglagesClinique.validateursAchats(magasin, _maintenant), libelleValidateur: ReglagesClinique.libelleValidateurAchats(magasin, _maintenant));
+        gestes: gestes, libelleValidateur: ReglagesClinique.libelleValidateurAchats(magasin, _maintenant));
     if (a == null) return false;
     var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
     final e = a.ecriture;

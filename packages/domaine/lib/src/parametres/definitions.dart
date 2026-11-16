@@ -391,7 +391,8 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Chantier TABLEAUX (impression de la sélection)',
   ),
 
-  // Q3 et Q4 de la Direction de Baguidi (17/11/2026) : deux listes de rôles qui vivaient en dur. Elles sont BRANCHÉES (clôture, besoins, commandes, circuit déposé à la mère).
+  // Q3 et Q4 de la Direction de Baguidi (17/11/2026). Q3 : une liste de rôles BRANCHÉE (clôture). Q4 : le POSTE porté sur la pièce ; QUI valide n'est plus un réglage mais le geste
+  // réservé `achats_valider` de la fiche RBAC (Direction du 16/11/2026) — l'ancienne clé `achats.rolesValidateurs` est retirée du registre (voir `reglages_roles.dart`).
   DefinitionParametre(
     cle: cleRolesInventaireCloture,
     famille: 'cloture',
@@ -404,24 +405,13 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Circuit de clôture (m12-cloture)',
   ),
   DefinitionParametre(
-    cle: cleRolesValidateursAchats,
-    famille: 'achats',
-    type: TypeParametre.texte,
-    defaut: 'da,direction,admin',
-    libelle: 'Validateur des commandes de stock (RG-04) : rôles autorisés',
-    aide: 'Identifiants de rôle séparés par des virgules. Ces rôles arbitrent un bon de besoins et valident une commande de stock avant sa transmission au fournisseur ; depuis un poste rattaché, le geste se dépose et la mère l\'applique sous le rôle de son auteur. Une liste vide retombe sur le défaut (la Directrice Administrative).',
-    source: 'Décision de la Direction du 17/11/2026 (Q4) : la Directrice Administrative semée en tête ; Direction et administrateur conservent l\'arbitrage qu\'ils avaient',
-    branche: true,
-    appliquePar: 'Circuit d\'achats (m7-besoins, m7-commandes)',
-  ),
-  DefinitionParametre(
     cle: cleLibelleValidateurAchats,
     famille: 'achats',
     type: TypeParametre.texte,
     defaut: 'Directrice administrative',
     libelle: 'Poste validateur porté sur les pièces d\'achat',
     aide: 'Le POSTE (jamais le nom d\'une personne) écrit sur un bon arbitré ou une commande validée. L\'agent réel qui a validé est porté à part.',
-    source: 'Décision de la Direction du 17/11/2026 (Q4) : la Directrice Administrative semée en tête ; Direction et administrateur conservent l\'arbitrage qu\'ils avaient',
+    source: 'Décision de la Direction du 17/11/2026 (Q4) : le poste de la Directrice Administrative',
     branche: true,
     appliquePar: 'Circuit d\'achats (m7-besoins, m7-commandes)',
   ),

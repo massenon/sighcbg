@@ -22,6 +22,8 @@ class GesteReserve {
   final String id;
   final String libelle;
   final String module;
+
+  /// L'écran qui porte le geste ; vide quand il s'exerce sur plusieurs écrans du module (le geste suit alors l'activité du MODULE) ou sur tous ([suitEcran]).
   final String ecran;
 
   /// Les rôles qui détiennent le geste sans aucune décision. Un rôle créé en exploitation n'y figure pas : il part de zéro.
@@ -70,6 +72,12 @@ const String gesteReglageOcr = 'reglage_ocr';
 
 /// Régler la CONFIGURATION MECeF (mode de certification, boîtier ou e-MECeF) : un droit par réglage (Q5), administrateur et Directrice Administrative d'origine. Se règle sur la poste mère.
 const String gesteReglageMecef = 'reglage_mecef';
+
+/// VALIDER LES ACHATS (RG-04, Direction de Baguidi du 16/11/2026, qui remplace le réglage de clinique `achats.rolesValidateurs` de la v20) : arbitrer un bon d'expression de besoins (accorder,
+/// rejeter, demander un complément) et valider une commande de stock avant sa transmission au fournisseur. Origine : la Directrice Administrative SEULE (RG-04) ; la Direction l'étend à un autre
+/// rôle dans « Rôles et permissions › Gestes réservés », décision tracée. L'administrateur système ne l'a PAS d'origine. Depuis un poste rattaché, le geste se DÉPOSE et la mère le rejoue sous
+/// le rôle de son auteur, avec SA matrice. Le POSTE écrit sur la pièce reste le réglage `achats.libelleValidateur` (un libellé, pas un droit).
+const String gesteValiderAchats = 'achats_valider';
 
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
@@ -123,6 +131,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: 'm12-cloture',
       rolesDefaut: ['admin', 'da'],
       aide: 'Démarrer la clôture, la prononcer, reprendre la saisie et rouvrir un exercice clos. Ne dispense pas de la séparation des personnes : celui qui a démarré ne clôture jamais. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteValiderAchats,
+      libelle: 'Valider les achats : arbitrer un besoin, valider une commande de stock (RG-04)',
+      module: 'M7',
+      ecran: '',
+      rolesDefaut: ['da'],
+      aide: 'Écrans « Expression des besoins » (vue d’arbitrage) et « Commandes ». Accorder, rejeter ou renvoyer en complément un bon d’expression de besoins, et valider une commande de stock avant sa transmission au fournisseur (RG-04). Origine : la Directrice Administrative seule ; l’administrateur système ne l’a pas d’origine. Depuis un poste rattaché, le geste est transmis à la mère, qui le rejoue sous le rôle de son auteur.'),
   GesteReserve(
       id: gesteReglageFichiers,
       libelle: 'Régler la gestion des fichiers numérisés',
@@ -185,7 +200,8 @@ class DroitsGestes {
     final g = gesteReserve(geste);
     if (g == null || role.isEmpty) return false;
     if (_archive?.call(role) ?? false) return false;
-    if (g.ecran.isNotEmpty && !(_actif?.call(g.ecran, g.module) ?? true)) return false;
+    // Un geste porté par PLUSIEURS écrans d'un module (`ecran` vide, module nommé : valider les achats) tombe avec son MODULE fermé.
+    if ((g.ecran.isNotEmpty || g.module != '*') && !(_actif?.call(g.ecran, g.module) ?? true)) return false;
     // Un geste transverse sans décision ne se juge pas sans écran : voir [peutSurEcran].
     if (g.suitEcran) return decision(role, geste) ?? false;
     return decision(role, geste) ?? defaut(role, geste);

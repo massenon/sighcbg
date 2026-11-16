@@ -16,7 +16,7 @@
 library;
 
 import '../format/format_fr.dart';
-import '../parametres/reglages_roles.dart' show rolesValidateursAchatsDefaut;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gesteValiderAchats;
 import 'nombres.dart';
 
 /// Un refus NOMMÉ : le motif est le texte affiché à l'agent, rien n'a été écrit.
@@ -82,8 +82,6 @@ const categoriesBesoin = [
   'Autre — à préciser',
 ];
 
-/// Qui arbitre (valider, rejeter, demander un complément) : un RÉGLAGE de clinique (Q4, 17/11/2026, `achats.rolesValidateurs`, la Directrice Administrative semée), jamais une liste de rôles écrite
-/// ici. L'appelant lit le réglage en vigueur (`reglageRoles`) et le passe en [validateurs] ; sans lui, le défaut semé s'applique.
 
 /// Qui voit les besoins validés et le registre complet (achat et logistique).
 const rolesAchat = {
@@ -95,7 +93,10 @@ const rolesAchat = {
   'aide_comptable'
 };
 
-bool estArbitre(String role, {Iterable<String>? validateurs}) => (validateurs ?? rolesValidateursAchatsDefaut).contains(role);
+/// Qui arbitre (valider, rejeter, demander un complément) et valide une commande (RG-04) : le GESTE RÉSERVÉ `achats_valider` de la fiche RBAC (Direction de Baguidi du 16/11/2026, qui remplace
+/// le réglage `achats.rolesValidateurs` de la v20). Origine : la Directrice Administrative seule ; la Direction l'étend ou le retire par rôle, décision tracée. Aucune liste de rôles ici :
+/// l'appelant passe la MATRICE en force ([gestes], `DroitsGestes` lu des fiches `rbac`, rôle archivé et module fermé compris).
+bool estArbitre(String role, DroitsGestes gestes) => gestes.peut(role, gesteValiderAchats);
 bool estAchat(String role) => rolesAchat.contains(role);
 
 /// Le formulaire s'adapte à qui l'ouvre : seul celui qui tient le circuit (droit d'écrire ET poste d'achat) choisit l'étape. Un agent qui exprime un
@@ -135,9 +136,10 @@ int bonsLivres(Iterable<_Bon> actifs) =>
 
 /// Les onglets offerts à un profil, dans l'ordre : chaque vue est gardée par CE QU'ELLE PERMET, non par un module.
 /// `droitVoir` : le droit de lecture du profil sur l'écran.
-List<String> vuesOffertes({required String role, required bool droitVoir, Iterable<String>? validateurs}) => [
+/// `gestes` : la matrice des gestes réservés en force (la vue d'arbitrage suit le geste `achats_valider`).
+List<String> vuesOffertes({required String role, required bool droitVoir, required DroitsGestes gestes}) => [
       'miennes',
-      if (estArbitre(role, validateurs: validateurs)) 'arbitrage',
+      if (estArbitre(role, gestes)) 'arbitrage',
       if (estAchat(role)) 'achats',
       if (droitVoir && estAchat(role)) 'tous',
     ];
@@ -217,14 +219,31 @@ int _entierJs(String s) {
 /// Enregistre un bon (création ou modification) : ce que la modale de la maquette écrit.
 /// [saisie] = valeurs du formulaire ; [existant] = le bon modifié (`null` en création) ; [bons] = TOUS les bons (archivés compris, pour la série).
 /// Renvoie la fiche à insérer (création) ou le correctif à appliquer (modification).
+/// Les étapes qui SUPPOSENT l'arbitrage (accordé et ce qui le suit). Un rôle sans le geste `achats_valider` ne les pose pas lui-même au formulaire (E3263) : sinon la Directrice
+/// Administrative serait portée validatrice d'un bon qu'elle n'a jamais arbitré (E73 de la maquette).
+const Set<String> etapesBesoinApresArbitrage = {'accorde', 'prepare', 'livre', 'cloture'};
+
+/// Le bon porte-t-il déjà un validateur ?
+bool bonDejaValide(_Bon? b) => b != null && b['valideePar'] != null && b['valideePar'] != '';
+
+/// [peutValider] : le rôle détient-il le geste `achats_valider` ? `null` (les vecteurs de la maquette) : la règle de la maquette, la DAF est portée validatrice d'office (E73). `false` :
+/// une étape de [etapesBesoinApresArbitrage] est REFUSÉE en le nommant (sauf bon déjà validé ou étape inchangée), et « Validation DA » ne porte plus personne validateur.
 _Bon bonEnregistre(
     {required _Bon saisie,
     required List<_Bon> lignes,
     _Bon? existant,
     required Iterable<_Bon> bons,
     String Function()? referenceSuivante,
-    String validateur = directriceAdministrative}) {
+    String validateur = directriceAdministrative,
+    bool? peutValider}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
+  if (peutValider == false &&
+      etapesBesoinApresArbitrage.contains(saisie['etape']) &&
+      saisie['etape'] != existant?['etape'] &&
+      !bonDejaValide(existant)) {
+    throw RefusAchat(
+        'L’étape « ${etatBesoin(saisie['etape']).libelle} » suppose l’arbitrage du bon, geste réservé « Valider les achats » (d’origine : la Directrice Administrative) que ce rôle ne détient pas. Laisser le bon en « Validation DA » : il s’arbitre depuis la vue d’arbitrage.');
+  }
   final v = {...saisie};
   v['lignes'] = lignes;
   // E71 : le champ « étape » n'est pas offert à qui ne pilote pas le circuit — le bon part SOUMIS.
@@ -241,6 +260,7 @@ _Bon bonEnregistre(
   const validantes = ['validation_da', 'accorde', 'prepare', 'livre', 'cloture'];
   final deja = v['valideePar'];
   if (validantes.contains(v['etape']) &&
+      peutValider != false &&
       (deja == null || deja == '') &&
       !(existant != null && existant['valideePar'] != null && existant['valideePar'] != '')) {
     v['valideePar'] = validateur;

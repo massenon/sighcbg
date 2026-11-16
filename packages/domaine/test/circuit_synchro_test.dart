@@ -6,6 +6,9 @@ final auj = DateTime.utc(2026, 11, 16, 9);
 
 M bon(String etape, {String ref = 'BEB-2026-0001', String id = 'BES1'}) => {'id': id, 'idSync': 'F1-$id', 'reference': ref, 'etape': etape, 'service': 'Labo', 'montantEstime': 1000, 'lignes': <M>[]};
 
+/// Les gestes réservés d'ORIGINE (aucune fiche) : « Valider les achats » à la Directrice Administrative seule (Direction du 16/11/2026).
+final _origine = DroitsGestes(fiches: const []);
+
 void main() {
   group('rangs et refus de la mère', () {
     test('un état ne régresse jamais, un arbitrage ne s\'écrit pas depuis un poste, l\'aval suppose l\'arbitrage', () {
@@ -63,6 +66,7 @@ void main() {
   group('dépôt et application', () {
     List<M> nouveau(M b, {String decision = 'valider', String motif = '', String role = 'da'}) {
       final r = circuitDeposer(
+          gestes: _origine,
           famille: circuitBesoinArbitrage, bon: b, decision: decision, motif: motif, role: role, acteur: 'La DAF', poste: 'F2', maintenant: auj, besoins: [b], commandes: const [], depots: const [], nouvelId: () => 'D1');
       return [if (r.ok) r.fiche! else {'refus': r.refus!.code}];
     }
@@ -77,24 +81,24 @@ void main() {
     test('application sous le rôle et le nom de l\'auteur, à la date de son geste ; rejouée : sans effet', () {
       final b = bon('soumis');
       final d = nouveau(b, decision: 'rejeter', motif: 'Stock suffisant').single;
-      final a = circuitAppliquer(d, besoins: [b], commandes: const [], maintenant: DateTime.utc(2030))!;
+      final a = circuitAppliquer(gestes: _origine, d, besoins: [b], commandes: const [], maintenant: DateTime.utc(2030))!;
       expect(a.etat, valDepotAppliquee);
       expect(a.ecriture!.patch['etape'], 'rejete');
       expect(a.ecriture!.patch['arbitrePar'], 'La DAF');
       expect(a.ecriture!.patch['arbitreLe'], valInstant(auj), reason: 'la date est celle du geste, pas celle de l\'application');
       expect(a.ecriture!.patch['motifArbitrage'], 'Stock suffisant');
-      final deja = circuitAppliquer(d, besoins: [bon('rejete')], commandes: const [], maintenant: auj)!;
+      final deja = circuitAppliquer(gestes: _origine, d, besoins: [bon('rejete')], commandes: const [], maintenant: auj)!;
       expect(deja.etat, valDepotSansEffet);
-      final autre = circuitAppliquer(d, besoins: [bon('accorde')], commandes: const [], maintenant: auj)!;
+      final autre = circuitAppliquer(gestes: _origine, d, besoins: [bon('accorde')], commandes: const [], maintenant: auj)!;
       expect(autre.etat, valDepotRefusee);
       expect(autre.code, 'DEJA_ARBITRE');
-      expect(circuitAppliquer({...d, 'etat': valDepotAppliquee}, besoins: [b], commandes: const [], maintenant: auj), isNull);
-      expect(circuitAppliquer({...d, 'genre': valGenreReferentiel}, besoins: [b], commandes: const [], maintenant: auj), isNull);
+      expect(circuitAppliquer(gestes: _origine, {...d, 'etat': valDepotAppliquee}, besoins: [b], commandes: const [], maintenant: auj), isNull);
+      expect(circuitAppliquer(gestes: _origine, {...d, 'genre': valGenreReferentiel}, besoins: [b], commandes: const [], maintenant: auj), isNull);
     });
     test('un dépôt dont le rôle a été falsifié est refusé par la mère', () {
       final b = bon('soumis');
       final d = {...nouveau(b).single, 'demandeRole': 'caissier'};
-      expect(circuitAppliquer(d, besoins: [b], commandes: const [], maintenant: auj)!.code, 'VALIDATION_RESERVEE');
+      expect(circuitAppliquer(gestes: _origine, d, besoins: [b], commandes: const [], maintenant: auj)!.code, 'VALIDATION_RESERVEE');
     });
     test('un bon accordé fait naître les deux tâches (comptable, stock), un rejeté aucune', () {
       final accorde = {...bon('accorde'), 'arbitrePar': 'La DAF', 'arbitreLe': valInstant(auj)};
@@ -105,14 +109,16 @@ void main() {
     test('la commande : validation par la DAF, contrôle de l\'état', () {
       final c = {'id': 'C1', 'idSync': 'F1-C1', 'reference': 'BC-2026-0001', 'statutCommande': 'attente_validation'};
       final r = circuitDeposer(
+          gestes: _origine,
           famille: circuitCommandeValidation, bon: c, role: 'da', acteur: 'La DAF', poste: 'F2', maintenant: auj, besoins: const [], commandes: [c], depots: const [], nouvelId: () => 'D2');
       expect(r.ok, isTrue);
-      final a = circuitAppliquer(r.fiche!, besoins: const [], commandes: [c], maintenant: auj)!;
+      final a = circuitAppliquer(gestes: _origine, r.fiche!, besoins: const [], commandes: [c], maintenant: auj)!;
       expect(a.ecriture!.patch['statutCommande'], 'validee');
       expect(a.ecriture!.patch['valideeParAgent'], 'La DAF');
       expect(a.ecriture!.patch['dateValidation'], '2026-11-16');
-      expect(circuitAppliquer(r.fiche!, besoins: const [], commandes: [{...c, 'statutCommande': 'transmise'}], maintenant: auj)!.etat, valDepotSansEffet);
+      expect(circuitAppliquer(gestes: _origine, r.fiche!, besoins: const [], commandes: [{...c, 'statutCommande': 'transmise'}], maintenant: auj)!.etat, valDepotSansEffet);
       final brouillon = circuitDeposer(
+          gestes: _origine,
           famille: circuitCommandeValidation, bon: {...c, 'statutCommande': 'brouillon'}, role: 'da', acteur: 'La DAF', poste: 'F2', maintenant: auj, besoins: const [], commandes: [{...c, 'statutCommande': 'brouillon'}], depots: const [], nouvelId: () => 'D3');
       expect(brouillon.refus!.code, 'PAS_SOUMISE');
     });

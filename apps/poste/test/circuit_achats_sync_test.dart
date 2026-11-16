@@ -33,6 +33,43 @@ Magasin poste() => Magasin({
 M ligne(String produit, num q) => {'produitId': 'P', 'produit': produit, 'unite': 'boîte', 'quantiteDemandee': q, 'prixAchat': 500};
 
 void main() {
+  // Direction de Baguidi, 16/11/2026 : « Valider les achats » est un GESTE RÉSERVÉ de la fiche RBAC (la DAF seule d'origine). La mère rejoue le dépôt sous le rôle de son auteur avec SA
+  // matrice : la décision en force CHEZ ELLE fait foi, jamais une liste de rôles ni ce que le fileul croyait au moment du dépôt.
+  test('CIR2 — la mère refait le contrôle avec SA matrice (geste d\'origine, geste accordé chez elle, accord du fileul seul)', () {
+    M bon(String id) => {'id': id, 'idSync': 'F-$id', 'reference': 'BC-$id', 'statutCommande': 'attente_validation', 'statut': 'actif'};
+    final m = Magasin({
+      'besoins': <M>[],
+      'commandes': <M>[bon('1'), bon('2'), bon('3')],
+      'notifications': <M>[],
+      'validationsDeposees': <M>[],
+      'rbac': <M>[],
+    })
+      ..horloge = () => auj;
+    final svc = ServiceValidationsDeposees.de(m)
+      ..etiquette = 'M'
+      ..horloge = () => auj;
+    // Les dépôts faits sur un fileul : la DAF (origine), l'administrateur et la Direction à qui la clinique l'avait accordé chez le fileul.
+    final chezLeFileul = DroitsGestes(fiches: [
+      for (final r in ['admin', 'direction'])
+        {'role': r, 'droitsGestes': {gesteValiderAchats: true}}
+    ]);
+    M depot(String id, String role) => circuitDeposer(
+            famille: circuitCommandeValidation, bon: bon(id), role: role, acteur: 'Agent $role', poste: 'F', maintenant: auj, besoins: const [], commandes: [bon(id)], depots: const [],
+            nouvelId: () => 'D$id', gestes: chezLeFileul)
+        .fiche!;
+    for (final d in [depot('1', 'da'), depot('2', 'admin'), depot('3', 'direction')]) {
+      m.collection('validationsDeposees').ajouterSansJournal(d);
+    }
+    // Chez la mère : la décision accorde le geste à l'administrateur seulement ; la DAF garde son origine ; la Direction n'a aucune décision.
+    m.collection('rbac').inserer({'role': 'admin', 'statut': 'actif', 'droitsGestes': {gesteValiderAchats: true}});
+    expect(svc.traiter(), greaterThan(0));
+    String verdict(String id) => '${m.collection('validationsDeposees').toutes.firstWhere((d) => d['cible'] == 'F-$id')['etat']}';
+    expect(verdict('1'), valDepotAppliquee, reason: 'la DAF : origine du geste');
+    expect(verdict('2'), valDepotAppliquee, reason: 'l\'administrateur : décision de la mère');
+    expect(verdict('3'), valDepotRefusee, reason: 'la Direction : aucune décision chez la mère, l\'accord du fileul ne vaut rien');
+    expect(m.collection('commandes').toutes.firstWhere((c) => c['id'] == '3')['statutCommande'], 'attente_validation');
+  });
+
   test('CIR1 — du besoin à la commande, à travers deux fileuls et la vraie mère', () async {
     const port = 19591;
     final d = Directory.systemTemp.createTempSync('cir1');
@@ -127,6 +164,8 @@ void main() {
       final chez2 = bon(m2, r0)!;
       expect(chez2['demandeur'], 'Agent F1', reason: 'la DAF voit ce que le service de F1 a exprimé');
       expect(svc2.deposerCircuit(circuitBesoinArbitrage, chez2, role: 'caissier', acteur: 'Un caissier').refus!.code, 'VALIDATION_RESERVEE');
+      // Direction de Baguidi, 16/11/2026 : « Valider les achats » est un geste réservé, la DAF SEULE d'origine — l'administrateur système ne dépose pas sans décision de la fiche RBAC.
+      expect(svc2.deposerCircuit(circuitBesoinArbitrage, chez2, role: 'admin', acteur: 'L’administrateur').refus!.code, 'VALIDATION_RESERVEE');
       expect(svc2.deposerCircuit(circuitBesoinArbitrage, chez2, decision: 'rejeter', role: 'da', acteur: 'La DAF').refus!.code, 'MOTIF_OBLIGATOIRE');
       expect(svc2.depots.toutes, isEmpty, reason: 'aucun dépôt tant que le geste est refusé');
       final dep = svc2.deposerCircuit(circuitBesoinArbitrage, chez2, role: 'da', acteur: 'La DAF');

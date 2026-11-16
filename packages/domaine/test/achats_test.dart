@@ -60,11 +60,21 @@ void main() {
       'achats': 'Besoins validés — achats & logistique',
       'tous': 'Tous les bons',
     };
+    final commeLaMaquette = DroitsGestes(fiches: [
+      for (final r in ['direction', 'admin'])
+        {'role': r, 'droitsGestes': {gesteValiderAchats: true}}
+    ]);
+    test('sans décision, l\'administrateur et la Direction n\'ont plus la vue d\'arbitrage (E3262)', () {
+      expect(vuesOffertes(role: 'admin', droitVoir: true, gestes: DroitsGestes(fiches: const [])), isNot(contains('arbitrage')));
+      expect(vuesOffertes(role: 'direction', droitVoir: true, gestes: DroitsGestes(fiches: const [])), isNot(contains('arbitrage')));
+      expect(vuesOffertes(role: 'da', droitVoir: true, gestes: DroitsGestes(fiches: const [])), contains('arbitrage'));
+    });
     for (final c in liste(vues['cas'])) {
       final role = '${c['role']}', moi = '${c['nom']}';
       test('$role (agent $moi)', () {
-        // Le vecteur est celui de la maquette, où Direction et administrateur arbitrent : on rejoue ce RÉGLAGE (Q4 : la clinique sème la seule DAF).
-        final offertes = vuesOffertes(role: role, droitVoir: true, validateurs: const ['da', 'direction', 'admin']);
+        // Le vecteur est celui de la maquette, où Direction et administrateur arbitrent. Depuis le 16/11/2026, arbitrer est le geste réservé « Valider les achats », la DAF seule
+        // d'origine : on rejoue la configuration de la maquette par des DÉCISIONS de fiche RBAC (accordé à la Direction et à l'administrateur), le vecteur reste intact (E3262).
+        final offertes = vuesOffertes(role: role, droitVoir: true, gestes: commeLaMaquette);
         final onglets = liste(c['onglets']);
         expect([for (final o in onglets) o['libelle']],
             [for (final v in offertes) libelles[v]]);
@@ -98,12 +108,12 @@ void main() {
       });
     }
     test('un profil qui n\'achète ni n\'arbitre ne voit que ses demandes', () {
-      expect(vuesOffertes(role: 'medecin', droitVoir: true), ['miennes']);
-      expect(vuesOffertes(role: 'comptable', droitVoir: true),
+      expect(vuesOffertes(role: 'medecin', droitVoir: true, gestes: DroitsGestes(fiches: const [])), ['miennes']);
+      expect(vuesOffertes(role: 'comptable', droitVoir: true, gestes: DroitsGestes(fiches: const [])),
           ['miennes', 'achats', 'tous']);
-      expect(vuesOffertes(role: 'da', droitVoir: true),
+      expect(vuesOffertes(role: 'da', droitVoir: true, gestes: DroitsGestes(fiches: const [])),
           ['miennes', 'arbitrage', 'achats', 'tous']);
-      expect(vuesOffertes(role: 'comptable', droitVoir: false),
+      expect(vuesOffertes(role: 'comptable', droitVoir: false, gestes: DroitsGestes(fiches: const [])),
           ['miennes', 'achats']);
     });
   });
