@@ -48,3 +48,11 @@ Les options 3 et 4 sont livrées derrière **une même interface de destination*
 ## Comment on vérifiera que c’était la bonne décision
 
 Scénarios `SAUVHS1` à `SAUVHS4` (protocole) et `BAK1` (mère de bout en bout, deux destinations) ; `dart test` du domaine, du moteur et du poste ; l’écran « Opacité » du panneau ; une **restauration à blanc mensuelle** par l’administrateur sur une machine propre (à planifier) ; revue de cette ADR après la première mesure sur l’hébergement cPanel réel (espace, `post_max_size`, temps d’exécution).
+
+
+## Note du 16/11/2026 (décisions Q31 à Q34)
+
+- **Q31 confirmé** : blocs de 1 Mio, copies 7 (magasin) et 14 (fichiers), plancher 2, plafond 60 — des réglages de clinique, plus des « propositions ».
+- **Q32** : le quota du relais (5 Gio évoqué) n'est **pas codé** ; il se mesure sur l'hébergement réel avec `tools/baguidi/mesurer-quota-relais.mjs` (guide `docs/guides/MESURER-LE-QUOTA-DU-RELAIS.md`).
+- **Q33** : destination des fichiers par défaut « Aucune » tant que le volume n'est pas mesuré.
+- **Q34** : SFTP **reporté** ; rien à faire, rien d'inventé.

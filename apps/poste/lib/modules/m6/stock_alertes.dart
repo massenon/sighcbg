@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -83,6 +84,7 @@ class EcranAlertesStock extends StatelessWidget with EcranMaquette {
           [c.magasin.collection('produits'), c.magasin.collection('lots')]),
       builder: (context, _) {
         final auj = c.aujourdhui;
+        final preavis = preavisPeremption(c.magasin, auj);
         final prods = produitsActifs(c.magasin);
         final lots = lotsActifs(c.magasin);
         final ruptures = [
@@ -95,11 +97,11 @@ class EcranAlertesStock extends StatelessWidget with EcranMaquette {
         ];
         final perimes = [
           for (final l in lots)
-            if (statutDuLot(l, auj) == 'perime') l
+            if (statutDuLot(l, auj, preavis: preavis) == 'perime') l
         ];
         final proches = [
           for (final l in lots)
-            if (statutDuLot(l, auj) == 'alerte') l
+            if (statutDuLot(l, auj, preavis: preavis) == 'alerte') l
         ];
         final peremptions =
             trierStable([...perimes, ...proches], (l) => l['datePeremption']);
@@ -125,7 +127,7 @@ class EcranAlertesStock extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.calendarX,
                     ton: TonSigh.danger),
                 KpiSigh(
-                    libelle: 'Péremption sous $delaiPreavisPeremption j',
+                    libelle: 'Péremption sous $preavis j',
                     valeur: nombre(proches.length),
                     icone: LucideIcons.clock,
                     ton: TonSigh.attention),
@@ -213,8 +215,8 @@ class EcranAlertesStock extends StatelessWidget with EcranMaquette {
                         )),
               ]),
               const SizedBox(height: 16),
-              const NoteSigh(
-                  'Le seuil d’alerte est paramétrable par article dans le référentiel produits. Le délai de préavis de péremption est de $delaiPreavisPeremption jours et se règle dans la configuration du module (RG-05).'),
+              NoteSigh(
+                  'Le seuil d’alerte est paramétrable par article dans le référentiel produits. Le délai de préavis de péremption est de $preavis jours : réglage de clinique (Paramètres, stock), versionné par date (RG-05).'),
             ]);
       },
     );

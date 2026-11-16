@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
+import '../core/service_parametres.dart';
 
 import '../core/donnees_navigation.dart';
 import '../donnees/magasin.dart';
@@ -147,7 +148,7 @@ final List<_Source> _sources = [
                 const ['stock', 'pharmacien', 'caissier', 'da']),
       ]),
   _Source('lots_peremption', 'metier', 'Pharmacie', (m, auj) => [
-        for (final l in m.collection('lots').actives)
+        for (final l in lotsAvecStatutAJour(m, auj))
           if (l['statut'] == 'perime' || l['statut'] == 'alerte')
             _Ligne(
                 'lot:${l['id']}',

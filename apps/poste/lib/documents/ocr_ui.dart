@@ -235,6 +235,7 @@ class CarteReglageOcr extends StatelessWidget {
             const SizedBox(height: 4),
             Text('Moteur : ${choisi ?? 'aucun choisi'} · langue ${r.langue} · délai ${r.delaiMs ~/ 1000} s${r.regleLe == null ? '' : ' · réglé le ${_dateFr(r.regleLe)} par ${r.reglePar ?? 'auteur inconnu'}'}${(r.motif ?? '').isEmpty ? '' : ' (« ${r.motif} »)'}',
                 key: const Key('ocr:reglage-detail'), style: const TextStyle(color: JetonsShell.slate600, fontSize: 12)),
+            if (r.delaiMs == ocrDelaiDefautMs) const Text(ocrDelaiAValider, key: Key('ocr:delai-a-valider'), style: TextStyle(color: JetonsShell.slate500, fontSize: 12)),
             const SizedBox(height: 6),
             if (r.actif && dispo == false)
               NoteSigh('Le moteur « $choisi », choisi au réglage de la mère, n’est pas installé sur ce poste : ce poste ne lit aucun scan et le dit (« texte non indexé »). Il reçoit pourtant les textes lus par les autres postes.',

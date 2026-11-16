@@ -372,9 +372,17 @@ List<FicheStock> ciblesInventaire(List<FicheStock> produits, String perimetre) {
   return trierPar(cible, (p) => p['designation']);
 }
 
-/// Une ligne de la feuille : théorique, physique compté, écart, valeur (écart × CUMP).
-FicheStock ligneComptage(FicheStock produit, String magasin, Object? physique) {
+/// Le texte que l'écran, la fiche et l'état imprimé portent pour une ligne NON COMPTÉE (Q12) : jamais un zéro, jamais un écart.
+const String libelleNonCompte = 'Non compté';
+
+/// La phrase qui dit ce qu'un article non compté devient : il n'est PAS un écart de moins-stock, il ne génère aucune régularisation.
+const String noteNonCompte = 'Un article « non compté » n’a pas été dénombré : ce n’est pas un écart (le stock n’est pas supposé nul), aucune régularisation n’est générée et son stock reste celui du système.';
+
+/// Une ligne de la feuille : théorique, physique compté, écart, valeur (écart × CUMP). [nonCompte] (Q12, décision du 15/11/2026) : l'agent n'a PAS compté l'article — la ligne le dit
+/// (`nonCompte: true`), sans physique, sans écart et sans valeur : un article non compté n'est pas un écart de moins-stock.
+FicheStock ligneComptage(FicheStock produit, String magasin, Object? physique, {bool nonCompte = false}) {
   final th = stockTheorique(produit, magasin);
+  if (nonCompte) return {'produit': produit, 'theorique': th, 'nonCompte': true, 'ecart': 0.0, 'valeur': 0.0};
   final phys = _n(physique);
   final e = phys - th;
   return {'produit': produit, 'theorique': th, 'physique': phys, 'ecart': e, 'valeur': e * _n(produit['cump'])};
@@ -395,18 +403,26 @@ class InventaireValide {
   final List<({String id, FicheStock patch})> avant;
 }
 
-/// « Valider l'inventaire ». [physiques] : le stock compté par identifiant de produit (un article non saisi garde son théorique, écart nul).
+/// « Valider l'inventaire ». [physiques] : le stock compté par identifiant de produit (un article ABSENT de la table garde son théorique, écart nul — comportement historique).
+/// [nonComptes] (Q12) : les identifiants d'articles que l'agent déclare « non comptés » ; une valeur `null` dans [physiques] vaut la même déclaration. Une ligne non comptée est ENREGISTRÉE
+/// comme telle, ne compte pas parmi les écarts et ne génère AUCUNE régularisation.
 InventaireValide validerInventaire({
   required Map<String, Object?> entete,
   required List<FicheStock> cible,
   required Map<String, Object?> physiques,
   required List<FicheStock> inventaires,
   required List<FicheStock> mouvements,
+  Set<String> nonComptes = const {},
 }) {
   final magasin = '${entete['magasin']}' == 'detail' ? 'detail' : 'gros';
   final label = magasinLabelInventaire(magasin);
-  final vals = [for (final p in cible) ligneComptage(p, magasin, physiques.containsKey('${p['id']}') ? physiques['${p['id']}'] : stockTheorique(p, magasin))];
-  final ecarts = [for (final x in vals) if (_n(x['ecart']) != 0) x];
+  bool nc(FicheStock p) => nonComptes.contains('${p['id']}') || (physiques.containsKey('${p['id']}') && physiques['${p['id']}'] == null);
+  final vals = [
+    for (final p in cible)
+      if (nc(p)) ligneComptage(p, magasin, null, nonCompte: true) else ligneComptage(p, magasin, physiques.containsKey('${p['id']}') ? physiques['${p['id']}'] : stockTheorique(p, magasin))
+  ];
+  final nbNonComptes = vals.where((x) => x['nonCompte'] == true).length;
+  final ecarts = [for (final x in vals) if (x['nonCompte'] != true && _n(x['ecart']) != 0) x];
   final valeurEcart = ecarts.fold(0.0, (n, x) => n + _n(x['valeur']));
   final inventaire = <String, Object?>{
     'reference': referenceSuivante('INV-', 4, inventaires),
@@ -419,6 +435,7 @@ InventaireValide validerInventaire({
     'statutInv': 'valide',
     'nbArticles': vals.length,
     'nbEcarts': ecarts.length,
+    if (nbNonComptes > 0) 'nbNonComptes': nbNonComptes,
     'valeurEcart': valeurEcart,
     'lignes': [
       for (final x in vals)
@@ -427,10 +444,9 @@ InventaireValide validerInventaire({
           'designation': (x['produit'] as Map)['designation'],
           'unite': (x['produit'] as Map)['unite'],
           'theorique': x['theorique'],
-          'physique': x['physique'],
-          'ecart': x['ecart'],
+          if (x['nonCompte'] == true) 'nonCompte': true else ...{'physique': x['physique'], 'ecart': x['ecart']},
           'cump': (x['produit'] as Map)['cump'],
-          'valeur': x['valeur'],
+          if (x['nonCompte'] != true) 'valeur': x['valeur'],
         }
     ],
   };

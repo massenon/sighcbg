@@ -60,11 +60,10 @@ void main() {
         expect(detteFournisseurs(rows), (bfr['dettes']! as num).toDouble());
         expect(nbDettesFournisseurs(rows), bfr['nbDettes']);
         if (rendu['erreur'] != null) {
-          // Pièce « soldee » : la maquette ne sait pas peindre le tableau (E21). Le Dart l'affiche tel quel ; l'indicateur de l'écran compte
-          // la pièce comme impayée alors que le BFR ne la compte pas.
+          // Pièce « soldee » : la maquette ne sait pas peindre le tableau (E21). Le Dart l'affiche tel quel. Depuis la décision Q13 (15/11/2026, écart E3140)
+          // l'indicateur de l'écran et le BFR comptent la MÊME dette : la pièce soldée n'est impayée nulle part.
           expect(rows.any((r) => r['statutPaiement'] == 'soldee'), isTrue);
-          expect(kpisFacturesFournisseurs(rows).impayees,
-              isNot(detteFournisseurs(rows)));
+          expect(kpisFacturesFournisseurs(rows).impayees, detteFournisseurs(rows));
           return;
         }
         final etat = (rendu['etat']! as Map).cast<String, Object?>();

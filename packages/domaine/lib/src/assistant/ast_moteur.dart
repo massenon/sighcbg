@@ -102,6 +102,7 @@ class AssistantAst {
         'AVIS_MEDICAL_REFUSE' => 'Je ne donne ni diagnostic ni avis thérapeutique',
         'ENVOI_EXTERNE_REFUSE' => 'Rien ne quitte la clinique',
         'INJONCTION_REFUSEE' => 'Les règles et les droits ne se contournent pas',
+        'PAIE_HORS_ASSISTANT' => 'La paie n’est pas traitée par l’assistant',
         _ => 'Refusé',
       };
 

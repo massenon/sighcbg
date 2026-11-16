@@ -17,7 +17,8 @@ import 'referentiels_stock.dart';
 /// Une fiche du magasin (produit, lot, mouvement).
 typedef FicheStock = Map<String, Object?>;
 
-/// RG-05 : préavis de péremption, en jours (paramétrable dans la configuration du module).
+/// RG-05 : préavis de péremption, en jours. VALEUR SEMÉE et repli seulement (Q10, décision du 15/11/2026) : le délai en vigueur est un PARAMÈTRE de clinique versionné par date
+/// (`stock.delaiPreavisPeremptionJours`, lu par `delaiPreavisPeremptionA`), passé à chaque règle ci-dessous par `preavis`. Aucun écran ni l'assistant ne lit plus cette constante pour décider.
 const int delaiPreavisPeremption = 90;
 
 /// En deçà, l'échéance s'affiche en rouge (le lot doit être servi sans attendre).
@@ -136,10 +137,10 @@ String teinteEcheance(int? jours, {int preavis = delaiPreavisPeremption}) {
 }
 
 /// Texte de la colonne « Échéance » du registre des lots : « Périmé depuis 10 j », « Dans 29 j », « 91 j ».
-String texteEcheance(int? jours) {
+String texteEcheance(int? jours, {int preavis = delaiPreavisPeremption}) {
   if (jours == null) return '—';
   if (jours < 0) return 'Périmé depuis ${jours.abs()} j';
-  if (jours <= delaiPreavisPeremption) return 'Dans $jours j';
+  if (jours <= preavis) return 'Dans $jours j';
   return '$jours j';
 }
 
@@ -150,10 +151,10 @@ String texteEcheanceAlerte(int? jours) {
 }
 
 /// Texte de l'onglet « Lots (FEFO) » de la fiche produit : « Périmé », « Dans N j » (dans le préavis) ou « Valide ».
-String texteEtatLotFiche(int? jours) {
+String texteEtatLotFiche(int? jours, {int preavis = delaiPreavisPeremption}) {
   if (jours == null) return 'Valide';
   if (jours < 0) return 'Périmé';
-  if (jours <= delaiPreavisPeremption) return 'Dans $jours j';
+  if (jours <= preavis) return 'Dans $jours j';
   return 'Valide';
 }
 
@@ -258,7 +259,7 @@ double _nombreSaisiOuZero(Object? v) {
 
 /// `transform` du registre des lots : le produit est libellé sur le lot, le statut se déduit de l'échéance.
 FicheStock transformerLot(
-    Map<String, Object?> saisie, DateTime auj, Iterable<FicheStock> produits) {
+    Map<String, Object?> saisie, DateTime auj, Iterable<FicheStock> produits, {int preavis = delaiPreavisPeremption}) {
   final v = {...saisie};
   final q = _nombreSaisi(v['quantiteRestante']);
   if (q != null) v['quantiteRestante'] = q;
@@ -268,6 +269,13 @@ FicheStock transformerLot(
       break;
     }
   }
-  v['statut'] = statutLot(joursAvantPeremption(auj, v['datePeremption']));
+  v['statut'] = statutLot(joursAvantPeremption(auj, v['datePeremption']), preavis: preavis);
   return v;
 }
+
+/// Les lots avec leur `statut` RECALCULÉ à [auj] pour le préavis [preavis] (copies : rien n'est réécrit). Le statut écrit à la saisie d'un lot date de ce jour-là et de l'ancien délai ;
+/// les tableaux de bord, le pilotage et le centre de notifications lisent CETTE vue pour suivre le réglage en vigueur (Q10).
+List<FicheStock> lotsAvecStatutRecalcule(Iterable<FicheStock> lots, DateTime auj, int preavis) => [
+      for (final l in lots)
+        if (joursAvantPeremption(auj, l['datePeremption']) case final j?) {...l, 'statut': statutLot(j, preavis: preavis)} else l
+    ];

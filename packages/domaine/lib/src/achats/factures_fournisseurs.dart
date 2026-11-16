@@ -24,6 +24,18 @@ const reglementsFournisseur = <String, (String, String)>{
 
 double _n(Object? v) => nombreOuZero(v);
 
+/// LA définition de la dette fournisseur (décision de la Direction, Q13 du 15/11/2026) : la plus PRUDENTE — une pièce reste due tant qu'elle n'est ni `payee` NI `soldee`
+/// (« payée » et « soldée » désignent la même chose selon l'écran par lequel la pièce est passée). Une seule définition, lue par TOUS : l'écran des factures fournisseurs,
+/// le BFR, les tableaux de pilotage, l'assistant. Une pièce partiellement réglée compte pour son montant facturé entier.
+const List<String> statutsDetteFournisseurSoldee = ['payee', 'soldee'];
+
+/// MARQUAGE « à valider » : la Direction a arrêté la définition ; le Comptable doit encore la confirmer. Affiché partout où la dette est montrée.
+const String detteFournisseurAValider =
+    'Définition de la dette fournisseur : toute facture ni payée ni soldée, pour son montant facturé entier (la plus prudente). À valider par le Comptable.';
+
+/// La pièce [r] pèse-t-elle encore sur la dette fournisseur ?
+bool detteFournisseurOuverte(Map<String, Object?> r) => !statutsDetteFournisseurSoldee.contains('${r['statutPaiement'] ?? ''}');
+
 /// Les quatre indicateurs de l'écran. « Impayées » somme le MONTANT FACTURÉ de toute pièce qui n'est pas `payee` — une pièce partiellement
 /// réglée compte donc pour son montant entier.
 class KpisFacturesFournisseurs {
@@ -43,7 +55,7 @@ KpisFacturesFournisseurs kpisFacturesFournisseurs(Iterable<FicheFacture> rows) {
     rapprochees: l.where((r) => r['statutRappro'] == 'rapproche').length,
     anomalies: l.where((r) => r['statutRappro'] == 'anomalie').length,
     impayees: l
-        .where((r) => r['statutPaiement'] != reglementPayee)
+        .where(detteFournisseurOuverte)
         .fold<double>(0, (a, r) => a + _n(r['montantFacture'])),
   );
 }
@@ -55,15 +67,13 @@ String? noteAnomalies(Iterable<FicheFacture> rows) {
   return '$n anomalie(s) de rapprochement détectée(s) : le montant facturé diffère du montant livré. Vérification requise avant règlement.';
 }
 
-/// Les dettes fournisseurs que lit le BFR (`PR.bfr`, composante « dettes ») : montant facturé de toute pièce ni `payee` NI `soldee`. L'écran,
-/// lui, ne retire que `payee` : sur une pièce « soldee » les deux divergent (écart E21).
+/// Les dettes fournisseurs (BFR, écran, assistant) : montant facturé de toute pièce ni `payee` NI `soldee` — UNE définition depuis la décision Q13 (l'écran ne retirait que
+/// `payee` : sur une pièce « soldee » les deux divergeaient, écart E21 ; E3140 les aligne).
 double detteFournisseurs(Iterable<FicheFacture> rows) => rows
-    .where((r) => !const ['payee', 'soldee'].contains('${r['statutPaiement'] ?? ''}'))
+    .where(detteFournisseurOuverte)
     .fold<double>(0, (a, r) => a + _n(r['montantFacture']));
 
-int nbDettesFournisseurs(Iterable<FicheFacture> rows) => rows
-    .where((r) => !const ['payee', 'soldee'].contains('${r['statutPaiement'] ?? ''}'))
-    .length;
+int nbDettesFournisseurs(Iterable<FicheFacture> rows) => rows.where(detteFournisseurOuverte).length;
 
 /// Un écart nul se lit « Conforme » ; sinon le montant signé (`+` explicite au-dessus de zéro).
 bool ecartConforme(FicheFacture r) => _n(r['ecart']) == 0;

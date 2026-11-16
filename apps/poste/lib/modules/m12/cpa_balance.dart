@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
@@ -115,7 +116,8 @@ class _EtatBalance extends State<EcranBalance> {
         final td = b.fold<double>(0, (a, x) => a + x.debit);
         final tc = b.fold<double>(0, (a, x) => a + x.credit);
         final eq = td == tc;
-        final tranches = cpaBalanceAgee(c.magasin.collection('factures').actives, c.aujourdhui);
+        final bornes = bornesBalanceAgeePatient(c.magasin, c.aujourdhui);
+        final tranches = cpaBalanceAgee(c.magasin.collection('factures').actives, c.aujourdhui, borne1: bornes.borne1, borne2: bornes.borne2);
         final agees = [
           for (final t in tranches)
             {

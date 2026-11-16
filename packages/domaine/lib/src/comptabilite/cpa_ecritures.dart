@@ -215,12 +215,15 @@ int cpaJoursEntre(Object? a, DateTime b) {
 
 /// La balance âgée des comptes de tiers, lue sur les FACTURES : patients (reliquat > 0) et assureurs (toute facture assurée, part assureur) par tranche
 /// d'ancienneté. [auj] : l'horloge du poste.
-List<CpaTrancheAgee> cpaBalanceAgee(Iterable<CpaFiche> factures, DateTime auj) {
-  const tranches = [
-    ('Moins de 30 jours', 0, 30),
-    ('30 à 60 jours', 30, 60),
-    ('60 à 90 jours', 60, 90),
-    ('Plus de 90 jours', 90, 99999),
+///
+/// Les BORNES sont un réglage de clinique (Q14, 15/11/2026 : 30 et 90 jours semés, `bornesBalanceAgeePatientA`) ; la tranche du milieu est coupée à leur médiane (60 avec les bornes semées).
+List<CpaTrancheAgee> cpaBalanceAgee(Iterable<CpaFiche> factures, DateTime auj, {int borne1 = 30, int borne2 = 90}) {
+  final milieu = ((borne1 + borne2) / 2).round();
+  final tranches = [
+    ('Moins de $borne1 jours', 0, borne1),
+    ('$borne1 à $milieu jours', borne1, milieu),
+    ('$milieu à $borne2 jours', milieu, borne2),
+    ('Plus de $borne2 jours', borne2, 99999),
   ];
   return [
     for (final t in tranches)

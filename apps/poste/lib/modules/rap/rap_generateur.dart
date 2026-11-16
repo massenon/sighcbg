@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
+import '../../core/service_parametres.dart';
 
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
@@ -111,7 +112,7 @@ class _VueGenerateurState extends State<_VueGenerateur> {
         admissions: m.collection('admissions').actives,
         factures: m.collection('factures').actives,
         produits: m.collection('produits').actives,
-        lots: m.collection('lots').actives,
+        lots: lotsAvecStatutAJour(m, DateTime.now()),
         personnel: m.collection('personnel').actives,
         ecritures: m.collection('ecritures').actives,
         demandesAnalyses: m.collection('demandesAnalyses').actives,

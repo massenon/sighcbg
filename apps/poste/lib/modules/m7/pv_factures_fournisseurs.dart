@@ -322,6 +322,8 @@ class EcranFacturesFournisseurs extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.wallet,
                     ton: TonSigh.attention),
               ]),
+              const SizedBox(height: 8),
+              const NoteSigh(detteFournisseurAValider, icone: LucideIcons.info),
               const SizedBox(height: 16),
               TableauSigh(
                 titre: 'Factures fournisseurs',

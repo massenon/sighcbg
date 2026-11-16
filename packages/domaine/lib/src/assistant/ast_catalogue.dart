@@ -82,6 +82,8 @@ const Map<String, RefusAst> refusAst = {
   'HOMONYMES': RefusAst('HOMONYMES', 'plusieurs correspondances', 'choisir dans la liste, jamais la première'),
   'NON_CALCULABLE': RefusAst('NON_CALCULABLE', 'la donnée nécessaire n’est pas renseignée', 'la saisir à l’écran indiqué'),
   'ERREUR_INTERNE': RefusAst('ERREUR_INTERNE', 'le calcul a échoué', 'réessayer, ou ouvrir l’écran concerné'),
+  // Q16 (décision du 15/11/2026) : AUCUNE intention de paie en v1, sans exception — salaires, bulletins, primes, retenues et cotisations salariales ne se lisent PAS par l'assistant. Le refus se nomme.
+  'PAIE_HORS_ASSISTANT': RefusAst('PAIE_HORS_ASSISTANT', 'la paie n’est pas du ressort de l’assistant : aucune question de paie n’est traitée, sans exception', 'ouvrir l’écran de la paie si votre profil y a droit, ou demander à la personne habilitée'),
   'ASSISTANT_INDISPONIBLE': RefusAst('ASSISTANT_INDISPONIBLE', 'l’assistant est désactivé ou le profil n’a pas de poste', 'demander à l’administrateur'),
 };
 
@@ -292,9 +294,9 @@ const List<IntentionAst> catalogueAstDefaut = [
     groupe: 'Facturation (M8)',
     libelle: 'Recettes d’un jour, d’une semaine, d’un mois, ventilées',
     ecransLecture: ['m8-recettes', 'm8-operations', 'm8-caisse'],
-    sources: ['collection `factures` : lignes (montantRegle, payeLe), type'],
+    sources: ['collection `factures` : lignes (montantRegle, payeLe), montantTTC, date, type'],
     statut: 'calculable',
-    raison: 'Une recette est une ligne réglée : la somme des `montantRegle` dont la date de règlement tombe dans la période, ventilée par type de facture.',
+    raison: 'DEUX grandeurs, jamais confondues (décision du 15/11/2026) : les « recettes » sont l’ENCAISSÉ (somme des `montantRegle` dont la date de règlement tombe dans la période) ; le « chiffre d’affaires » est le FACTURÉ (montant TTC des factures datées de la période). Ventilation par type de facture.',
     indices: [('recette*', 5), ('chiffre d affaires', 5), ('encaisse', 3), ('encaisses', 3), ('ventes', 1), ('par secteur', 1), ('mode de paiement', 1), ('combien a t on fait', 3)],
     historique: true,
     refus: ['LECTURE_NON_AUTORISEE', 'PERIODE_FUTURE', 'AUCUN_RESULTAT'],

@@ -14,6 +14,7 @@ import 'dart:convert';
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
+import '../achats/factures_fournisseurs.dart' show detteFournisseurOuverte;
 import 'cpa_referentiels.dart' show CpaFiche;
 import '../format/recherche.dart' show trierPar;
 import '../stock/points.dart' show MethodeValorisation, groupePrestation, valeurUnitaire;
@@ -94,7 +95,7 @@ class CpcBfr {
   double get bfr => creances + stocks - dettes;
 }
 
-bool _dettePayee(CpaFiche x) => const ['payee', 'soldee'].contains('${x['statutPaiement'] ?? ''}');
+bool _dettePayee(CpaFiche x) => !detteFournisseurOuverte(x);
 
 /// `PR.bfr({fin, jours})` : les trois composantes et leur somme algébrique. [factures], [produits] et [facturesFournisseurs] sont les fiches ACTIVES.
 CpcBfr cpcBfr({

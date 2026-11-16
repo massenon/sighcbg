@@ -6,6 +6,7 @@
 ///   dart run tool/mesure_assistant.dart --tableau             le bloc engendré du tableau de couverture, sur la sortie standard
 ///   dart run tool/mesure_assistant.dart --matrice             le bloc engendré de la matrice de droits, sur la sortie standard
 ///   dart run tool/mesure_assistant.dart --droits <fichier>    (re)engendre les vecteurs de droits depuis rbac.json
+///   dart run tool/mesure_assistant.dart --seuils              les quatre seuils de la Direction (Q17) ; code de sortie 1 si l'un n'est pas tenu
 ///   dart run tool/mesure_assistant.dart --reglage             n'affiche que les échecs du jeu de RÉGLAGE (le contrôle reste caché pendant le réglage)
 library;
 
@@ -51,6 +52,18 @@ void main(List<String> args) {
 
   final moteur = ReconnaisseurAst(cat);
   final m = mesurer(questions, moteur);
+  if (args.contains('--seuils')) {
+    final v = verifierSeuils(questions, moteur);
+    v.mesures.forEach((k, x) => stdout.writeln('$k : $x'));
+    if (!v.ok) {
+      for (final e in v.echecs) {
+        stderr.writeln('SEUIL NON TENU : $e');
+      }
+      exit(1);
+    }
+    stdout.writeln('Tous les seuils sont tenus.');
+    return;
+  }
   if (args.contains('--reglage')) {
     stdout.writeln('RÉGLAGE : ${pct(m.reglage)} (${m.compte((q) => jeuDe(q['n'] as int) == 'reglage', seulementOk: true)}/${m.compte((q) => jeuDe(q['n'] as int) == 'reglage')})');
     for (final (q, j) in m.echecs) {
@@ -72,6 +85,17 @@ void main(List<String> args) {
     'echecs': [for (final e in m.echecs) {'n': e.$1['n'], 'question': e.$1['question'], 'raison': e.$2.raison}],
   }));
   stdout.writeln(rapport);
+  // Q17 : les seuils de la Direction. Un seuil non tenu est un ÉCHEC explicite (code de sortie 1), pas une ligne de plus dans le rapport.
+  final v = verifierSeuils(questions, moteur);
+  stdout.writeln('\n## Seuils de la Direction (Q17)\n');
+  v.mesures.forEach((k, x) => stdout.writeln('- $k : $x'));
+  if (!v.ok) {
+    for (final e in v.echecs) {
+      stderr.writeln('SEUIL NON TENU : $e');
+    }
+    exit(1);
+  }
+  stdout.writeln('Tous les seuils sont tenus.');
 }
 
 String rapportMarkdown(ResultatMesure m, ({double moyenneUs, int pireUs, String pireQuestion}) temps, CatalogueAst cat, Map<String, Object?> rbac, List<Map<String, Object?>> matrice,

@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -45,11 +46,13 @@ class EcranReliquats extends StatelessWidget with EcranMaquette {
         ];
         final total = rows.fold<num>(0, (a, r) => a + n(r['reliquat']));
         final patients = {for (final r in rows) r['patientId']}.length;
-        const tranches = [
-          ('Moins de 30 jours', 0, 30),
-          ('30 à 60 jours', 30, 60),
-          ('60 à 90 jours', 60, 90),
-          ('Plus de 90 jours', 90, 99999)
+        final bornes = bornesBalanceAgeePatient(c.magasin, c.aujourdhui);
+        final milieu = ((bornes.borne1 + bornes.borne2) / 2).round();
+        final tranches = [
+          ('Moins de ${bornes.borne1} jours', 0, bornes.borne1),
+          ('${bornes.borne1} à $milieu jours', bornes.borne1, milieu),
+          ('$milieu à ${bornes.borne2} jours', milieu, bornes.borne2),
+          ('Plus de ${bornes.borne2} jours', bornes.borne2, 99999)
         ];
         final parNature = <String, num>{};
         for (final r in rows) {
@@ -108,10 +111,10 @@ class EcranReliquats extends StatelessWidget with EcranMaquette {
                               fontSize: 14,
                               height: 20 / 14,
                               fontWeight:
-                                  j > 60 ? FontWeight.w600 : FontWeight.w400,
-                              color: j > 60
+                                  j > milieu ? FontWeight.w600 : FontWeight.w400,
+                              color: j > milieu
                                   ? JetonsShell.danger600
-                                  : (j > 30
+                                  : (j > bornes.borne1
                                       ? JetonsShell.warning600
                                       : JetonsShell.slate600),
                               fontFeatures: const [

@@ -10,6 +10,7 @@ import 'package:test/test.dart';
 Map<String, Object?> _json(String chemin) => (jsonDecode(File(chemin).readAsStringSync()) as Map).cast<String, Object?>();
 
 Map<String, List<Map<String, Object?>>> magasin() => {
+      'parametres': [],
       'patients': [
         {'id': 'P1', 'code': 'CBG/101/26', 'nom': 'EXEMPLE', 'prenom': 'Alpha', 'sexe': 'F', 'dateNaissance': '1980-03-01', 'assure': true, 'assureur': 'ASSUREUR-A', 'assureurNom': 'Assureur A', 'numeroPolice': 'POL-1', 'tauxPriseEnCharge': 70, 'carteExpiration': '2027-01-31'},
         {'id': 'P2', 'code': 'CBG/102/26', 'nom': 'EXEMPLE', 'prenom': 'Beta', 'sexe': 'M', 'dateNaissance': '1975-06-12'},
@@ -330,7 +331,9 @@ void main() {
       }
       final lues = lectures.toSet();
       expect(lues, isNotEmpty);
-      expect(lues.intersection({'comptes', 'garanties', 'identifiants', 'utilisateurs', 'audit', 'parametres'}), isEmpty);
+      expect(lues.intersection({'comptes', 'garanties', 'identifiants', 'utilisateurs', 'audit'}), isEmpty);
+      // `parametres` est LUE (jamais écrite) : le préavis de péremption et les bornes de la balance âgée sont des réglages de clinique (Q10, Q14).
+      expect(lues.contains('parametres'), isTrue);
       expect(lues.difference({...magasin().keys}), isEmpty, reason: 'une collection lue que le jeu de test ne connaît pas');
     });
     test('diagnostic, envoi hors clinique, injonction : refusés sans lire une seule donnée', () {

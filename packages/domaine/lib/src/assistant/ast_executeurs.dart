@@ -8,14 +8,17 @@
 ///  * les sous-sources (un second écran, une seconde collection) ne sont lues que si l'agent voit leur écran, et la réponse nomme ce qu'elle n'a pas lu.
 library;
 
+import '../achats/factures_fournisseurs.dart' show detteFournisseurAValider, detteFournisseurOuverte;
 import '../droits/donnees_sensibles.dart' show mentionReservee;
+import '../pilotage/pil_stats.dart' show statutsRdvAVenir;
+import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, tranchesBalanceAgeePatient;
 import '../format/format_fr.dart' show money, nombreOuNul;
 import '../format/js.dart' show nombreOuZero;
 import '../labo/res_etats.dart' show etatResultat;
 import '../labo/res_habilitations.dart' show peutVoirResultat;
 import '../caisse/prise_en_charge.dart' show carteValide, couvertureALaDate;
 import '../referentiels/regles.dart' show lireCodePatient, resultatRendu;
-import '../stock/stock.dart' show delaiPreavisPeremption, etatStock, joursAvantPeremption, libelleCategorie, ordreFefo, seuilFixe, sousSeuil, valeurStock;
+import '../stock/stock.dart' show etatStock, joursAvantPeremption, libelleCategorie, ordreFefo, seuilFixe, sousSeuil, valeurStock;
 import '../tarifs/tarifs.dart' show ReferentielTarifs;
 import 'ast_contexte.dart';
 import 'ast_reconnaissance.dart';
@@ -178,7 +181,7 @@ ReponseAst _i01(ContexteAst cx, ReconnaissanceAst r, String q) {
     'Nom : ${_nomPatient(p)}${p['sexe'] != null && '${p['sexe']}'.isNotEmpty ? ' (${p['sexe']})' : ''}',
     if (cx.sensible('identite_detaillee')) 'Né(e) le : ${_d(p['dateNaissance'])}' else mentionReservee('identite_detaillee'),
   ];
-  // Dernière venue : définition PROPOSÉE, sur les seules sources que l'agent lit.
+  // Dernière visite (Q8, décision du 15/11/2026) : le MAXIMUM des dates de consultation, d'admission et de facture, sur les seules sources que l'agent lit.
   final dates = <(String, String)>[];
   final nonLus = <String>[];
   final src = <SourceAst>[_srcPatients];
@@ -189,6 +192,8 @@ ReponseAst _i01(ContexteAst cx, ReconnaissanceAst r, String q) {
     }
     src.add(SourceAst(ecran, col));
     for (final f in cx.col(col)) {
+      // Un rendez-vous planifié, reporté ou non honoré n'est pas une visite (le registre des consultations les porte aussi) : seule une consultation TENUE compte.
+      if (col == 'consultations' && (statutsRdvAVenir.contains(f['statut']) || f['statut'] == 'non_honore')) continue;
       if (_duPatient(f, p) && '${f[champ] ?? ''}'.isNotEmpty) dates.add((_jour10(f[champ]), nom));
     }
   }
@@ -198,8 +203,8 @@ ReponseAst _i01(ContexteAst cx, ReconnaissanceAst r, String q) {
   vue('m8-factures', 'factures', 'date', 'facture');
   dates.sort((a, b) => b.$1.compareTo(a.$1));
   lignes.add(dates.isEmpty
-      ? 'Dernière venue : aucune trace dans les sources que vous lisez.'
-      : 'Dernière venue connue : ${_d(dates.first.$1)} (${dates.first.$2}). Définition proposée : la date la plus récente parmi les consultations, admissions et factures que vous pouvez lire.');
+      ? 'Dernière visite : aucune trace dans les sources que vous lisez.'
+      : 'Dernière visite connue : ${_d(dates.first.$1)} (${dates.first.$2}). Définition arrêtée par la Direction : la plus récente des dates de consultation, d’admission et de facture que vous pouvez lire.');
   if (nonLus.isNotEmpty) lignes.add(_nonLu(nonLus, cx));
   if (u.note != null) lignes.add(u.note!);
   return _rep('I01', 'Dossier ${p['code']}', lignes, src);
@@ -251,9 +256,14 @@ ReponseAst _i03(ContexteAst cx, ReconnaissanceAst r, String q) {
   ], src);
 }
 
+/// Q9 (décision du 15/11/2026) : DEUX réponses distinctes, jamais confondues. « Recettes » = ce qui a été ENCAISSÉ (lignes réglées, date de règlement) ; « chiffre d'affaires » = ce qui a
+/// été FACTURÉ (montant TTC des factures, date de facture). Une question qui nomme l'une répond l'autre en une phrase de renvoi ; une question qui nomme les deux reçoit les deux.
 ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final t = astNormaliser(q);
+  final veutCa = t.contains('chiffre d affaires');
+  final veutRecettes = t.contains('recette') || t.contains('encaisse') || !veutCa;
   final pl = _plage(_periodeDe(r), cx, joursParDefaut: 0);
-  num somme(String debut, String fin, Map<String, num> parType, Set<Object?> factures) {
+  num encaisse(String debut, String fin, Map<String, num> parType, Set<Object?> factures) {
     var t = 0.0;
     for (final f in cx.col('factures')) {
       for (final l in ((f['lignes'] as List?) ?? const [])) {
@@ -268,25 +278,58 @@ ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
     return t;
   }
 
-  final parType = <String, num>{};
-  final facts = <Object?>{};
-  final total = somme(pl.debut, pl.fin, parType, facts);
+  num facture(String debut, String fin, Map<String, num> parType, Set<Object?> factures) {
+    var t = 0.0;
+    for (final f in cx.col('factures')) {
+      if (!_dans(f['date'], debut, fin)) continue;
+      final m = nombreOuZero(f['montantTTC']);
+      t += m;
+      parType['${f['type'] ?? 'Autre'}'] = (parType['${f['type'] ?? 'Autre'}'] ?? 0) + m;
+      factures.add(f['numero']);
+    }
+    return t;
+  }
+
   const src = [SourceAst('m8-recettes', 'factures')];
-  final lignes = <String>[];
   final cmp = _periodeDe(r, 'periodeComparee');
-  if (cmp != null) {
-    final t2 = somme('${cmp['debut']}', '${cmp['fin']}', <String, num>{}, <Object?>{});
-    lignes.add('Période comparée (du ${_d(cmp['debut'])} au ${_d(cmp['fin'])}) : ${money(t2)} — écart ${money(total - t2)}.');
+  final lignes = <String>[];
+  TableauAst? tableau;
+  final titres = <String>[];
+  var rien = true;
+
+  void bloc(String nom, num Function(String, String, Map<String, num>, Set<Object?>) calc, String definition, String autre, String vide) {
+    final parType = <String, num>{};
+    final facts = <Object?>{};
+    final total = calc(pl.debut, pl.fin, parType, facts);
+    if (facts.isEmpty && total == 0) {
+      lignes.add(vide);
+      return;
+    }
+    rien = false;
+    titres.add('$nom ${pl.libelle} : ${money(total)}');
+    lignes.add('$nom : ${money(total)} sur ${facts.length} facture(s).');
+    if (cmp != null) {
+      final t2 = calc('${cmp['debut']}', '${cmp['fin']}', <String, num>{}, <Object?>{});
+      lignes.add('$nom, période comparée (du ${_d(cmp['debut'])} au ${_d(cmp['fin'])}) : ${money(t2)} — écart ${money(total - t2)}.');
+    }
+    lignes.add('Définition : $definition');
+    lignes.add(autre);
+    final types = parType.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+    tableau ??= TableauAst(['Type de facture', nom], [for (final e in types) [e.key, money(e.value)]]);
   }
-  if (facts.isEmpty && total == 0) {
-    return _vide('I14', 'Aucune recette ${pl.libelle}', ['Aucune ligne de facture n’a été réglée sur cette période.', ...lignes], src);
+
+  if (veutRecettes) {
+    bloc('Recettes (encaissé)', encaisse, 'somme des lignes réglées (`montantRegle`) dont la date de règlement tombe dans la période.',
+        veutCa ? 'Le chiffre d’affaires (facturé) est une AUTRE grandeur, donnée ci-dessus à part.' : 'Pour ce qui a été FACTURÉ sur la période, demandez le chiffre d’affaires : ce n’est pas la même chose.',
+        'Aucune recette (encaissé) ${pl.libelle} : aucune ligne de facture n’a été réglée sur cette période.');
   }
-  final types = parType.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-  return _rep('I14', 'Recettes ${pl.libelle} : ${money(total)}', [
-    '${facts.length} facture(s) concernée(s) par au moins un règlement sur la période.',
-    ...lignes,
-    'Définition : somme des lignes réglées (`montantRegle`) dont la date de règlement tombe dans la période.',
-  ], src, tableau: TableauAst(['Type de facture', 'Montant réglé'], [for (final e in types) [e.key, money(e.value)]]));
+  if (veutCa) {
+    bloc('Chiffre d’affaires (facturé)', facture, 'somme du montant TTC des factures dont la date de facture tombe dans la période, réglées ou non (les avoirs se lisent à l’écran des factures).',
+        veutRecettes ? 'Les recettes (encaissé) sont une AUTRE grandeur, données ci-dessus à part.' : 'Pour ce qui a été ENCAISSÉ sur la période, demandez les recettes : ce n’est pas la même chose.',
+        'Aucun chiffre d’affaires (facturé) ${pl.libelle} : aucune facture n’est datée de cette période.');
+  }
+  if (rien) return _vide('I14', veutRecettes && veutCa ? 'Ni recettes ni chiffre d’affaires ${pl.libelle}' : (veutCa ? 'Aucun chiffre d’affaires ${pl.libelle}' : 'Aucune recette ${pl.libelle}'), lignes, src);
+  return _rep('I14', titres.join(' ; '), lignes, src, tableau: tableau);
 }
 
 ReponseAst _i15(ContexteAst cx, ReconnaissanceAst r, String q) {
@@ -316,14 +359,23 @@ ReponseAst _i16(ContexteAst cx, ReconnaissanceAst r, String q) {
   final seuil = _periodeDe(r)?['type'] == 'anciennete_jours' ? (_periodeDe(r)!['n'] as int) : null;
   final retenues = seuil == null ? dues : [for (final f in dues) if (age(f) > seuil) f];
   if (retenues.isEmpty) return _vide('I16', seuil == null ? 'Aucun impayé patient' : 'Aucun impayé de plus de $seuil jours', const ['La part des assureurs se lit à l’écran Créances.'], src);
-  final tranches = <String, List<Map<String, Object?>>>{'0 à 30 jours': [], '31 à 60 jours': [], '61 à 90 jours': [], 'plus de 90 jours': []};
+  // Q14 (décision du 15/11/2026) : les bornes de la balance âgée des patients sont un réglage de clinique (30 et 90 jours semés), jamais un littéral.
+  final bornes = bornesBalanceAgeePatientA(cx.col('parametres'), cx.jour);
+  final defTranches = tranchesBalanceAgeePatient(bornes.borne1, bornes.borne2);
+  final tranches = <String, List<Map<String, Object?>>>{for (final t in defTranches) t.libelle: []};
   for (final f in retenues) {
     final a = age(f);
-    tranches[a <= 30 ? '0 à 30 jours' : a <= 60 ? '31 à 60 jours' : a <= 90 ? '61 à 90 jours' : 'plus de 90 jours']!.add(f);
+    for (final t in defTranches) {
+      if (a > t.min && (t.max == null || a <= t.max!)) {
+        tranches[t.libelle]!.add(f);
+        break;
+      }
+    }
   }
   final total = retenues.fold<num>(0, (a, f) => a + nombreOuZero(f['reliquat']));
   return _rep('I16', '${retenues.length} facture(s) impayée(s) : ${money(total)}', [
     'Impayés de la PART PATIENT (reliquat), classés par ancienneté de la facture${seuil == null ? '' : ' (plus de $seuil jours)'}.',
+    'Bornes de la balance âgée : ${bornes.borne1} et ${bornes.borne2} jours (réglage de clinique, valeur d’attente à valider).',
     'La part de l’assureur est la créance de l’écran Créances : elle n’est pas recalculée ici.',
   ], src, tableau: TableauAst(['Ancienneté', 'Factures', 'Montant'], [for (final e in tranches.entries) [e.key, '${e.value.length}', money(e.value.fold<num>(0, (a, f) => a + nombreOuZero(f['reliquat'])))]]));
 }
@@ -500,7 +552,7 @@ ReponseAst _i08(ContexteAst cx, ReconnaissanceAst r, String q) {
   final sous = [for (final p in produits) if (nombreOuZero(p['stock']) > 0 && seuilFixe(p['seuilAlerte']) && sousSeuil(p['stock'], p['seuilAlerte'])) p];
   final sansSeuil = [for (final p in produits) if (!seuilFixe(p['seuilAlerte'])) p];
   final src = [const SourceAst('m6-alertes', 'produits'), if (cx.peutVoirEcran('m6-lots')) const SourceAst('m6-lots', 'lots')];
-  final horizon = (_periodeDe(r)?['type'] == 'horizon_mois') ? (_periodeDe(r)!['n'] as int) * 30 : delaiPreavisPeremption;
+  final horizon = (_periodeDe(r)?['type'] == 'horizon_mois') ? (_periodeDe(r)!['n'] as int) * 30 : delaiPreavisPeremptionA(cx.col('parametres'), cx.jour);
   final lignes = <String>[
     '${ruptures.length} article(s) en rupture (stock nul)${ruptures.isEmpty ? '.' : ' : ${ruptures.take(6).map((p) => p['designation']).join(', ')}${ruptures.length > 6 ? '…' : ''}.'}',
     '${sous.length} article(s) sous leur seuil d’alerte, hors rupture${sous.isEmpty ? '.' : ' : ${sous.take(6).map((p) => '${p['designation']} (${p['stock']}/${p['seuilAlerte']})').join(', ')}${sous.length > 6 ? '…' : ''}.'}',
@@ -574,10 +626,12 @@ ReponseAst _i11(ContexteAst cx, ReconnaissanceAst r, String q) {
   const src = [SourceAst('m6-inventaire', 'inventaires')];
   if (inv.isEmpty) return _vide('I11', 'Aucun inventaire enregistré', const [], src);
   final d = inv.first;
-  final ecarts = [for (final l in ((d['lignes'] as List?) ?? const [])) if (l is Map && nombreOuZero(l['ecart']) != 0) l];
+  final ecarts = [for (final l in ((d['lignes'] as List?) ?? const [])) if (l is Map && l['nonCompte'] != true && nombreOuZero(l['ecart']) != 0) l];
+  final nonComptes = [for (final l in ((d['lignes'] as List?) ?? const [])) if (l is Map && l['nonCompte'] == true) l].length;
   return _rep('I11', 'Dernier inventaire : ${d['reference']} du ${_d(d['date'])}', [
     'Type : ${d['type'] ?? '—'} ; magasin : ${d['magasinLabel'] ?? d['magasin'] ?? '—'} ; état : ${d['statutInv'] ?? '—'}.',
-    '${d['nbArticles'] ?? '—'} article(s) comptés, ${d['nbEcarts'] ?? ecarts.length} écart(s), valeur des écarts : ${money(d['valeurEcart'])}.',
+    '${d['nbArticles'] ?? '—'} article(s) enregistrés, ${d['nbEcarts'] ?? ecarts.length} écart(s), valeur des écarts : ${money(d['valeurEcart'])}.',
+    if (nonComptes > 0) '$nonComptes article(s) non compté(s) : ce ne sont pas des écarts, aucune régularisation n’a été générée pour eux.',
   ], src,
       tableau: ecarts.isEmpty
           ? null
@@ -618,9 +672,10 @@ ReponseAst _i12(ContexteAst cx, ReconnaissanceAst r, String q) {
   }
   if (cx.peutVoirEcran('m7-factures-fournisseurs')) {
     sources.add(const SourceAst('m7-factures-fournisseurs', 'facturesFournisseurs'));
-    final due = [for (final x in cx.col('facturesFournisseurs')) if (x['fournisseur'] == f['code'] && x['statutPaiement'] != 'payee') x];
+    final due = [for (final x in cx.col('facturesFournisseurs')) if (x['fournisseur'] == f['code'] && detteFournisseurOuverte(x)) x];
     final dette = due.fold<num>(0, (a, x) => a + nombreOuZero(x['montantFacture']));
     lignes.add(due.isEmpty ? 'Dette ouverte : aucune facture fournisseur non soldée.' : 'Dette ouverte : ${money(dette)} sur ${due.length} facture(s) non soldée(s).');
+    lignes.add(detteFournisseurAValider);
   } else {
     non.add('m7-factures-fournisseurs');
   }
@@ -789,7 +844,6 @@ ReponseAst _i23(ContexteAst cx, ReconnaissanceAst r, String q) {
     (['creance', 'impaye'], 'm9-creances', 'Créances'),
     (['inventaire'], 'm6-inventaire', 'Inventaires'),
     (['balance', 'grand livre'], 'm12-balance', 'Balance générale'),
-    (['bulletin', 'paie'], 'm11-bulletins', 'Bulletins de paie'),
     (['bilan', 'compte de resultat'], 'm12-compte-resultat', 'Compte de résultat'),
     (['facture'], 'm8-factures', 'Factures'),
   ];

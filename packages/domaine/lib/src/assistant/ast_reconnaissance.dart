@@ -91,6 +91,13 @@ const List<String> _termesMaladie = [
   'infection*', 'maladie*', 'covid', 'cholera', 'rougeole', 'fievre*',
 ];
 
+/// Les termes de PAIE (Q16) : toute question qui en porte un est refusée en la nommant. Formes exactes ou préfixes (`*`) : « paie » ne couvre pas « paiement » (la caisse), et « cnss » ou « its »
+/// restent au calendrier fiscal (échéances), qui n'est pas la paie d'un agent.
+const List<String> _termesPaie = ['salaire*', 'salarial*', 'remuneration*', 'emolument*', 'cotisation*', 'masse salariale', 'conges payes', 'net a percevoir'];
+
+/// Les termes de paie courts, comparés EXACTEMENT : la tolérance aux fautes confondrait « primes » avec « périmés » (une lettre d'écart) et « paie » avec d'autres mots courts.
+const Set<String> _termesPaieExacts = {'paie', 'paies', 'prime', 'primes', 'treizieme'};
+
 const Map<String, String> _mois = {
   'janvier': '01', 'fevrier': '02', 'mars': '03', 'avril': '04', 'mai': '05', 'juin': '06', 'juillet': '07', 'aout': '08', 'septembre': '09', 'octobre': '10',
   'novembre': '11', 'decembre': '12',
@@ -275,6 +282,8 @@ class ReconnaisseurAst {
         texte.contains('fais comme si')) {
       return const ReconnaissanceAst(statut: 'refus', code: 'INJONCTION_REFUSEE');
     }
+    // Paie (Q16) : aucune intention de paie, sans exception — refusée avant tout le reste, écriture et envoi compris.
+    if (mots.any(_termesPaieExacts.contains) || _termesPaie.any((t) => _a(mots, t))) return const ReconnaissanceAst(statut: 'refus', code: 'PAIE_HORS_ASSISTANT');
     // Envoi hors de la clinique.
     if (reglage.refuserEnvoi &&
         (_a(mots, 'envoie') || _a(mots, 'envoyer') || _a(mots, 'transmets') || _a(mots, 'partage') || _a(mots, 'transfere') || _a(mots, 'exporte')) &&

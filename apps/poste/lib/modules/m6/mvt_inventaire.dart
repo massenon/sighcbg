@@ -158,7 +158,8 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
   }
 
   void _consulter(BuildContext ctx, Fiche i) {
-    final ecarts = [for (final l in (i['lignes'] as List? ?? const [])) if (n((l as Map)['ecart']) != 0) l.cast<String, Object?>()];
+    final ecarts = [for (final l in (i['lignes'] as List? ?? const [])) if ((l as Map)['nonCompte'] != true && n(l['ecart']) != 0) l.cast<String, Object?>()];
+    final nonComptes = [for (final l in (i['lignes'] as List? ?? const [])) if ((l as Map)['nonCompte'] == true) l.cast<String, Object?>()];
     afficherTiroir<void>(ctx,
         titre: 'Inventaire ${i['reference']}',
         sousTitre: '${i['type']} — ${dateDe(i['date'])}',
@@ -172,9 +173,24 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
             ('Réalisé par', i['operateur']),
             ('Articles inventoriés', nombre(i['nbArticles'])),
             ('Écarts', nombre(i['nbEcarts'])),
+            ('Articles non comptés', nombre(nonComptes.length)),
             ('Valeur des écarts', money(i['valeurEcart'] ?? 0)),
           ]),
           const SizedBox(height: 16),
+          if (nonComptes.isNotEmpty) ...[
+            CarteSigh(
+                titre: 'Articles non comptés',
+                sansRemplissage: true,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  Padding(padding: const EdgeInsets.all(12), child: const NoteSigh(noteNonCompte, icone: LucideIcons.circleHelp)),
+                  MiniTableauSigh(colonnes: [
+                    ColonneMini('Article', (l) => '${l['designation']}'),
+                    ColonneMini('Théorique', (l) => nombre(l['theorique']), droite: true),
+                    ColonneMini('Physique', (l) => libelleNonCompte, droite: true),
+                  ], lignes: nonComptes),
+                ])),
+            const SizedBox(height: 16),
+          ],
           ecarts.isNotEmpty
               ? CarteSigh(
                   titre: 'Écarts constatés',
@@ -212,6 +228,10 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
             ('Date', dateDe(i['date'])),
             ('Réalisé par', '${i['operateur']}'),
             ('Valeur des écarts', money(i['valeurEcart'] ?? 0)),
+            if (n(i['nbNonComptes']) > 0) ('Articles non comptés', '${nombre(i['nbNonComptes'])} (pas des écarts)'),
+          ],
+          blocs: [
+            if (n(i['nbNonComptes']) > 0) const BlocTexte(noteNonCompte, italique: true),
           ],
           tableaux: [
             TableauEtat(colonnes: [
@@ -219,9 +239,9 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
               ColonneEtat(libelle: 'Désignation', valeur: (l) => l['designation']),
               ColonneEtat(libelle: 'Unité', valeur: (l) => l['unite']),
               ColonneEtat(libelle: 'Stock théorique', valeur: (l) => nombre(l['theorique']), droite: true),
-              ColonneEtat(libelle: 'Stock physique', valeur: (l) => nombre(l['physique']), droite: true),
-              ColonneEtat(libelle: 'Écart', valeur: (l) => '${n(l['ecart']) > 0 ? '+' : ''}${nombre(l['ecart'])}', droite: true),
-              ColonneEtat(libelle: 'Valeur écart', valeur: (l) => m(l['valeur']), droite: true, somme: (l) => n(l['valeur'])),
+              ColonneEtat(libelle: 'Stock physique', valeur: (l) => l['nonCompte'] == true ? libelleNonCompte : nombre(l['physique']), droite: true),
+              ColonneEtat(libelle: 'Écart', valeur: (l) => l['nonCompte'] == true ? libelleNonCompte : '${n(l['ecart']) > 0 ? '+' : ''}${nombre(l['ecart'])}', droite: true),
+              ColonneEtat(libelle: 'Valeur écart', valeur: (l) => l['nonCompte'] == true ? '—' : m(l['valeur']), droite: true, somme: (l) => n(l['valeur'])),
             ], lignes: [for (final l in (i['lignes'] as List? ?? const [])) (l as Map).cast<String, Object?>()])
           ],
           signatures: const [

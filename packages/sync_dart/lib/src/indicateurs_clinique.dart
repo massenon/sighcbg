@@ -40,7 +40,7 @@ class PublicationIndicateurs {
   Future<Map<String, Object?>> reglages() async => {
         'publier': await mere.base.metaInt(cleActif, ikPublierDefaut ? 1 : 0) == 1,
         'intervalle_s': await mere.base.metaInt(cleIntervalle, ikIntervalleDefautSecondes),
-        'jours_peremption': await mere.base.metaInt(cleJours, ikJoursPeremptionDefaut),
+        'jours_peremption': await joursPeremptionEnVigueur(),
         'defauts': {'publier': ikPublierDefaut, 'intervalle_s': ikIntervalleDefautSecondes, 'jours_peremption': ikJoursPeremptionDefaut},
         'bornes': {'intervalle_min_s': ikIntervalleMinSecondes, 'intervalle_max_s': ikIntervalleMaxSecondes},
       };
@@ -67,9 +67,20 @@ class PublicationIndicateurs {
     return reglages();
   }
 
+  /// Le préavis de péremption de l'instantané : le réglage PROPRE de la publication s'il a été posé aux Paramètres, sinon le PARAMÈTRE DE CLINIQUE `stock.delaiPreavisPeremptionJours`
+  /// (Q10, versionné par date, 90 semés) — la constante n'est plus qu'un repli ultime. Ainsi l'instantané publié et les écrans du poste comptent les mêmes lots.
+  Future<int> joursPeremptionEnVigueur() async {
+    if (await mere.base.meta(cleJours) != null) return mere.base.metaInt(cleJours, ikJoursPeremptionDefaut);
+    final fiches = [
+      for (final r in await mere.base.select("SELECT data FROM fiches WHERE collection='parametres' AND archive=0")) (jsonDecode(r['data'] as String) as Map).cast<String, Object?>()
+    ];
+    final n = DateTime.now();
+    return delaiPreavisPeremptionA(fiches, '${n.year.toString().padLeft(4, '0')}-${n.month.toString().padLeft(2, '0')}-${n.day.toString().padLeft(2, '0')}');
+  }
+
   /// Calcule l'instantané à partir des fiches que la mère détient. Rien n'est envoyé.
   Future<Map<String, Object?>> instantane() async {
-    final jours = await mere.base.metaInt(cleJours, ikJoursPeremptionDefaut);
+    final jours = await joursPeremptionEnVigueur();
     final collections = <String, List<Map<String, Object?>>>{};
     List<IkAppareil> postes = [];
     await mere.verrou.executer(() async {

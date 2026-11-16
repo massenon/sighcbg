@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
+import '../../core/service_parametres.dart';
 
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -25,7 +26,7 @@ class EcranDashStock extends StatelessWidget with EcranMaquette {
       builder: (context, _) {
         final d = tbaStock(
             produits: tbaActives(c, 'produits'),
-            lots: tbaActives(c, 'lots'),
+            lots: lotsAvecStatutAJour(c.magasin, c.aujourdhui),
             mouvements: tbaActives(c, 'mouvements'),
             categories: {for (final k in categoriesProduit) k.id: k.label},
             auj: c.aujourdhui);

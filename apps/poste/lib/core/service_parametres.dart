@@ -37,3 +37,19 @@ int ccibMontant(Magasin m, DateTime date) {
   final v = serviceParametres(m, auteur: () => 'lecture').valeur('fiscal.ccibMontant', parametreDateIso(date));
   return v is num && v.isFinite && v >= 0 ? v.toInt() : cfbCcibTotal;
 }
+
+/// Le préavis de péremption (jours) EN VIGUEUR à [date] (paramètre `stock.delaiPreavisPeremptionJours`, Q10) : lots, alertes, tableaux de bord. Poste jamais semé : 90, la valeur semée.
+int preavisPeremption(Magasin m, DateTime date) =>
+    delaiPreavisPeremptionDe(serviceParametres(m, auteur: () => 'lecture').valeur(cleDelaiPreavisPeremption, parametreDateIso(date)));
+
+/// Les bornes de la balance âgée des patients EN VIGUEUR à [date] (paramètres `comptabilite.balanceAgeePatientBorne1Jours` et `…2Jours`, Q14) : 30 et 90 jours semés.
+({int borne1, int borne2}) bornesBalanceAgeePatient(Magasin m, DateTime date) {
+  final s = serviceParametres(m, auteur: () => 'lecture');
+  final iso = parametreDateIso(date);
+  return bornesBalanceAgeePatientDe(s.valeur(cleBalanceAgeePatientBorne1, iso), s.valeur(cleBalanceAgeePatientBorne2, iso));
+}
+
+/// Les lots actifs avec leur statut de péremption RECALCULÉ à [auj] pour le préavis en vigueur (Q10) : les tableaux de bord, le pilotage, les états et le centre de notifications lisent
+/// cette vue, jamais le `statut` écrit à la saisie du lot (il date de ce jour-là et de l'ancien délai).
+List<Map<String, Object?>> lotsAvecStatutAJour(Magasin m, DateTime auj) =>
+    lotsAvecStatutRecalcule(m.collection('lots').actives, auj, preavisPeremption(m, auj));

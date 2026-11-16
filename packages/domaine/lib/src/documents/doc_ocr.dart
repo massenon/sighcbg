@@ -30,6 +30,9 @@ typedef RefusFichier = DocErreur;
 /// La raison dite quand aucun moteur n'est installé : la même phrase partout (écran, journal, message sous « Aucun résultat »).
 const String ocrRaisonSansMoteur = 'aucun moteur d’OCR installé sur ce poste';
 const int ocrDelaiDefautMs = 120000;
+
+/// Le marquage de ce délai (Q30, décision du 15/11/2026) : 120 s PAR PAGE, valeur d'attente ; la Direction la fixera après l'essai sur de vrais scans. Affiché au réglage tant qu'elle n'a pas été changée.
+const String ocrDelaiAValider = 'Délai par page de 120 s : valeur d’attente, à valider par la Direction après l’essai sur de vrais scans.';
 const int ocrEssaisMax = 3;
 const int ocrBrutMax = 20000;
 const int ocrMotsMax = 4000;

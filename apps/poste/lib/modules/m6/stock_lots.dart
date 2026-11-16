@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -31,7 +32,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
 
   @override
   String get regle =>
-      'RG-05 — le rangement applique le principe FEFO (premier périmé, premier sorti). Les alertes sont déclenchées automatiquement $delaiPreavisPeremption jours avant échéance. Les produits périmés sont retournés aux fournisseurs habilités (CAME, SoBAPS) et la perte est valorisée en comptabilité.';
+      'RG-05 — le rangement applique le principe FEFO (premier périmé, premier sorti). Les alertes sont déclenchées automatiquement dans le préavis de péremption réglé aux Paramètres (90 jours semés, versionné par date). Les produits périmés sont retournés aux fournisseurs habilités (CAME, SoBAPS) et la perte est valorisée en comptabilité.';
 
   @override
   List<Widget> actionsEntete(BuildContext context) => [
@@ -44,10 +45,11 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
   static void _imprimerPerimes(BuildContext ctx) {
     final c = ContexteEcran.of(ctx);
     final auj = c.aujourdhui;
+    final preavis = preavisPeremption(c.magasin, auj);
     final prods = produitsActifs(c.magasin);
     final perimes = trierStable([
       for (final l in lotsActifs(c.magasin))
-        if (statutDuLot(l, auj) == 'perime') l
+        if (statutDuLot(l, auj, preavis: preavis) == 'perime') l
     ], (l) => l['datePeremption']);
     afficherApercu(
         ctx,
@@ -99,7 +101,8 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
   static void _imprimerLot(BuildContext ctx, Fiche l) {
     final c = ContexteEcran.of(ctx);
     final auj = c.aujourdhui;
-    final st = statutDuLot(l, auj);
+    final preavis = preavisPeremption(c.magasin, auj);
+    final st = statutDuLot(l, auj, preavis: preavis);
     afficherApercu(
         ctx,
         PieceA4(
@@ -134,16 +137,18 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
   }
 
   Widget _detail(BuildContext ctx, Fiche l) {
-    final auj = ContexteEcran.of(ctx).aujourdhui;
+    final cc = ContexteEcran.of(ctx);
+    final auj = cc.aujourdhui;
+    final preavis = preavisPeremption(cc.magasin, auj);
     final j = joursAvantPeremption(auj, l['datePeremption']);
     return DescListeSigh([
       ('N° lot', Text('${l['numeroLot'] ?? ''}', style: typographieMono)),
       ('Produit', '${l['produit'] ?? ''}'),
       ('Péremption', dateFiche(l['datePeremption'])),
-      ('Échéance', texteEcheance(j)),
+      ('Échéance', texteEcheance(j, preavis: preavis)),
       ('Quantité', nombre(l['quantiteRestante'])),
       ('Emplacement', '${l['emplacement'] ?? ''}'),
-      ('État FEFO', _libellesStatutLot[statutDuLot(l, auj)]),
+      ('État FEFO', _libellesStatutLot[statutDuLot(l, auj, preavis: preavis)]),
     ]);
   }
 
@@ -151,6 +156,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final auj = c.aujourdhui;
+    final preavis = preavisPeremption(c.magasin, auj);
     final cl = c.magasin.collection('lots');
     return ListenableBuilder(
       listenable: c.magasin.collection('produits'),
@@ -186,7 +192,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
               },
               rendu: (_, l) {
                 final j = joursAvantPeremption(auj, l['datePeremption']);
-                return badgeEcheance(j, texteEcheance(j));
+                return badgeEcheance(j, texteEcheance(j, preavis: preavis), preavis: preavis);
               }),
           ColonneTableau(
               cle: 'quantiteRestante',
@@ -198,10 +204,10 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
           ColonneTableau(
               cle: 'statut2',
               libelle: 'État FEFO',
-              valeur: (l) => statutDuLot(l, auj),
-              texte: (l) => _libellesStatutLot[statutDuLot(l, auj)]!,
+              valeur: (l) => statutDuLot(l, auj, preavis: preavis),
+              texte: (l) => _libellesStatutLot[statutDuLot(l, auj, preavis: preavis)]!,
               rendu: (_, l) {
-                final s = statutDuLot(l, auj);
+                final s = statutDuLot(l, auj, preavis: preavis);
                 return badgeEtat(s == 'actif' ? 'normal' : s);
               }),
         ],
@@ -214,10 +220,10 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
                 OptionChamp('alerte', 'Péremption proche'),
                 OptionChamp('actif', 'Valides'),
               ],
-              correspond: (l, v) => statutDuLot(l, auj) == v),
+              correspond: (l, v) => statutDuLot(l, auj, preavis: preavis) == v),
         ],
         kpis: (ctx, rows) {
-          final st = {for (final l in rows) l: statutDuLot(l, auj)};
+          final st = {for (final l in rows) l: statutDuLot(l, auj, preavis: preavis)};
           final perimes = rows.where((l) => st[l] == 'perime').toList();
           return [
             KpiSigh(
@@ -232,7 +238,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
                 indice:
                     '${nombre(sommeChamp(perimes, 'quantiteRestante'))} unités à retourner'),
             KpiSigh(
-                libelle: 'Péremption sous $delaiPreavisPeremption j',
+                libelle: 'Péremption sous $preavis j',
                 valeur: nombre(rows.where((l) => st[l] == 'alerte').length),
                 icone: LucideIcons.clock,
                 ton: TonSigh.attention,
@@ -275,7 +281,8 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
         ],
         valeursInitiales: () => const {},
         transformer: (ctx, v) => transformerLot(
-            v, ContexteEcran.of(ctx).aujourdhui, produitsActifs(c.magasin)),
+            v, ContexteEcran.of(ctx).aujourdhui, produitsActifs(c.magasin),
+            preavis: preavisPeremption(c.magasin, ContexteEcran.of(ctx).aujourdhui)),
         detail: _detail,
         titreDetail: (l) => '${l['numeroLot']}',
         sousTitreDetail: (l) => '${l['produit']}',

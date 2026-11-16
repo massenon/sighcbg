@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'stock_commun.dart';
@@ -29,8 +30,9 @@ class EcranDashboardStock extends StatelessWidget with EcranMaquette {
       listenable: Listenable.merge([cp, cl, cm]),
       builder: (context, _) {
         final auj = c.aujourdhui;
+        final preavis = preavisPeremption(c.magasin, auj);
         final p = cp.actives, l = cl.actives, m = cm.actives;
-        final statuts = [for (final x in l) statutDuLot(x, auj)];
+        final statuts = [for (final x in l) statutDuLot(x, auj, preavis: preavis)];
         final perimes = statuts.where((s) => s == 'perime').length;
         final proches = statuts.where((s) => s == 'alerte').length;
         final critiques =
@@ -153,7 +155,7 @@ class EcranDashboardStock extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.arrowLeftRight,
                     ton: TonSigh.succes),
                 KpiSigh(
-                    libelle: 'Péremption sous $delaiPreavisPeremption j',
+                    libelle: 'Péremption sous $preavis j',
                     valeur: nombre(proches),
                     icone: LucideIcons.clock,
                     ton: TonSigh.attention,

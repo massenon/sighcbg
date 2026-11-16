@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -154,8 +155,8 @@ List<Fiche> lotsActifs(Magasin m) => m.collection('lots').actives;
 List<Fiche> mouvementsActifs(Magasin m) => m.collection('mouvements').actives;
 
 /// Statut d'un lot À LA DATE DU JOUR (écart E19) : `perime`, `alerte` ou `actif`.
-String statutDuLot(Fiche l, DateTime auj) =>
-    statutLot(joursAvantPeremption(auj, l['datePeremption']));
+String statutDuLot(Fiche l, DateTime auj, {int preavis = delaiPreavisPeremption}) =>
+    statutLot(joursAvantPeremption(auj, l['datePeremption']), preavis: preavis);
 
 TonSigh tonDeBadge(String badge) => switch (badge) {
       'success' => TonSigh.succes,
@@ -166,8 +167,8 @@ TonSigh tonDeBadge(String badge) => switch (badge) {
       _ => TonSigh.neutre,
     };
 
-Widget badgeEcheance(int? jours, String texte) {
-  final teinte = teinteEcheance(jours);
+Widget badgeEcheance(int? jours, String texte, {int preavis = delaiPreavisPeremption}) {
+  final teinte = teinteEcheance(jours, preavis: preavis);
   if (teinte == 'neutre') {
     return cellule(texte, couleur: JetonsShell.slate600, droite: true);
   }
@@ -277,6 +278,7 @@ Future<void> imprimerFicheArticle(BuildContext ctx, Fiche p) {
 Widget detailProduit(BuildContext ctx, Fiche p) {
   final c = ContexteEcran.of(ctx);
   final auj = c.aujourdhui;
+  final preavis = preavisPeremption(c.magasin, auj);
   final lots = trierStable([
     for (final l in lotsActifs(c.magasin))
       if (l['produitId'] == p['id']) l
@@ -359,15 +361,15 @@ Widget detailProduit(BuildContext ctx, Fiche p) {
                       droite: true),
                   ColonneMini('État', (l) => '', rendu: (l) {
                     final j = joursAvantPeremption(auj, l['datePeremption']);
-                    return BadgeSigh(texteEtatLotFiche(j),
+                    return BadgeSigh(texteEtatLotFiche(j, preavis: preavis),
                         ton: j != null && j < 0
                             ? TonSigh.danger
-                            : (j != null && j <= delaiPreavisPeremption
+                            : (j != null && j <= preavis
                                 ? TonSigh.attention
                                 : TonSigh.succes),
                         icone: j != null && j < 0
                             ? LucideIcons.calendarX
-                            : (j != null && j <= delaiPreavisPeremption
+                            : (j != null && j <= preavis
                                 ? LucideIcons.clock
                                 : LucideIcons.circleCheck));
                   }),

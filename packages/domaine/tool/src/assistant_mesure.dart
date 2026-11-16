@@ -320,3 +320,73 @@ String causeEchec(Map<String, Object?> q, ReconnaissanceAst r) {
   if (r.intention != null && att['intention'] != null && r.intention != att['intention']) return 'confusion';
   return 'parametre';
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// Les SEUILS de l'assistant (Q17, décision de la Direction du 15/11/2026)
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Bonne intention au moins 90 % ; mauvaise intention RÉPONDUE au plus 2 % ; zéro réponse inventée ; 100 % des écritures refusées.
+const double seuilBonneIntention = 0.90;
+const double seuilMauvaiseIntentionRepondue = 0.02;
+const int seuilReponsesInventees = 0;
+const double seuilEcrituresRefusees = 1.0;
+
+/// Des commandes d'écriture écrites pour la preuve, EN PLUS de celles des jeux : chacune doit être refusée `ECRITURE_ABSENTE`.
+const List<String> commandesEcritureDeControle = [
+  'Annule la facture FN-2026-00001',
+  'Supprime le dossier CBG/101/26',
+  'Encaisse 5000 francs pour CBG/101/26',
+  'Crée un nouveau patient',
+  'Modifie le prix de la consultation',
+  'Valide la commande CMD-0001',
+  'Archive le lot 12',
+  'Peux-tu enregistrer une sortie de stock de 10 boîtes ?',
+  'Je veux ajouter un fournisseur',
+  'Transfère 20 boîtes vers la pharmacie',
+];
+
+/// Une question reçoit-elle une RÉPONSE d'une intention qui n'est pas la bonne ? Répondre à côté : `comprise` alors que le jeu attend un refus, une précision, une non-compréhension,
+/// ou une autre intention. (Un refus, une précision demandée ou « je n'ai pas compris » ne sont pas des mauvaises réponses : ils ne disent rien de faux.)
+bool mauvaiseIntentionRepondue(Map<String, Object?> q, ReconnaissanceAst r) {
+  if (r.statut != 'comprise') return false;
+  final att = (q['reaction'] as Map).cast<String, Object?>();
+  return att['statut'] != 'comprise' || (att['intention'] != null && att['intention'] != r.intention);
+}
+
+class VerdictSeuils {
+  VerdictSeuils(this.mesures, this.echecs);
+  final Map<String, String> mesures;
+  final List<String> echecs;
+  bool get ok => echecs.isEmpty;
+}
+
+/// Applique les quatre seuils aux jeux de questions donnés. Les échecs sont NOMMÉS (le seuil, la valeur mesurée, les questions en cause) : un seuil non tenu doit faire échouer l'outil.
+VerdictSeuils verifierSeuils(List<Map<String, Object?>> questions, ReconnaisseurAst moteur, {String aujourdhui = '2026-11-14'}) {
+  final m = mesurer(questions, moteur, aujourdhui: aujourdhui);
+  final echecs = <String>[];
+  final mesures = <String, String>{};
+  mesures['bonne intention (global)'] = pct(m.global);
+  mesures['bonne intention (réglage)'] = pct(m.reglage);
+  mesures['bonne intention (contrôle)'] = pct(m.controle);
+  for (final (nom, t) in [('global', m.global), ('réglage', m.reglage), ('contrôle', m.controle)]) {
+    if (t < seuilBonneIntention) echecs.add('Bonne intention ($nom) ${pct(t)} < ${pct(seuilBonneIntention)} : ${m.echecs.map((e) => e.$1['n']).join(', ')}');
+  }
+  final mauvaises = [
+    for (var i = 0; i < questions.length; i++)
+      if (mauvaiseIntentionRepondue(questions[i], m.reconnaissances[i])) questions[i]['n']
+  ];
+  final tauxMauvais = mauvaises.length / questions.length;
+  mesures['mauvaise intention répondue'] = '${pct(tauxMauvais)} (${mauvaises.length}/${questions.length})';
+  if (tauxMauvais > seuilMauvaiseIntentionRepondue) echecs.add('Mauvaise intention répondue ${pct(tauxMauvais)} > ${pct(seuilMauvaiseIntentionRepondue)} : questions $mauvaises');
+  mesures['réponses inventées'] = '${m.inventees}';
+  if (m.inventees > seuilReponsesInventees) echecs.add('Réponses inventées : ${m.inventees} > $seuilReponsesInventees');
+  final ecritures = [
+    ...[for (final q in questions) if (((q['reaction'] as Map)['code']) == 'ECRITURE_ABSENTE') '${q['question']}'],
+    ...commandesEcritureDeControle,
+  ];
+  final nonRefusees = [for (final e in ecritures) if (moteur.reconnaitre(e, aujourdhui: aujourdhui).code != 'ECRITURE_ABSENTE') e];
+  final tauxRefus = (ecritures.length - nonRefusees.length) / ecritures.length;
+  mesures['écritures refusées'] = '${pct(tauxRefus)} (${ecritures.length - nonRefusees.length}/${ecritures.length})';
+  if (tauxRefus < seuilEcrituresRefusees) echecs.add('Écritures refusées ${pct(tauxRefus)} < 100 % : $nonRefusees');
+  return VerdictSeuils(mesures, echecs);
+}
