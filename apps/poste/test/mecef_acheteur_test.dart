@@ -113,11 +113,14 @@ void main() {
     expect(find.textContaining('5 % arrêté'), findsNothing);
     // Ce que l'ancien test prouvait (les taux viennent du barème, un taux non arrêté est « à valider ») reste vrai au moteur de l'acheteur.
     final r = aibPourAcheteur(
-        ifu: '3201001996110', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+        ifu: '3201001996110', situationChoisie: 'ifu_actif', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
     expect(r.refus!.code, 'AIB_SANS_BAREME');
     expect(r.nonArretes, contains('1 % — non arrêté, à valider'));
-    final sans = aibPourAcheteur(date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+    final sans = aibPourAcheteur(situationChoisie: 'ifu_inactif_ou_absent', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
     expect(sans.taux, 5);
+    // Direction de Baguidi, 16/11/2026 : l'IFU (saisi ou absent) ne choisit JAMAIS la situation d'office.
+    final dOffice = aibPourAcheteur(ifu: '3201001996110', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+    expect(dOffice.refus!.code, 'AIB_SITUATION_REQUISE');
   });
 
   cas('E3770 : la vente au patient (30/10/2026) est encaissée et normalisée SANS AIB : aucun refus AIB_SANS_BAREME au guichet (la règle reste au moteur de l\'acheteur tiers)', (t) async {
@@ -132,7 +135,7 @@ void main() {
     expect([f['ifuClient'], f['acheteurNom'], f['aibSituation'], f['aibTaux'], f['aibMontant']], [null, null, null, 0, 0]);
     // D8 tient toujours au moteur : un acheteur tiers avec IFU actif (1 % non arrêté) est refusé en le nommant.
     final tiers = acheteurNormaliseAuBareme(
-        ifu: '3201001996110', nom: 'Entreprise X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+        ifu: '3201001996110', nom: 'Entreprise X', situationChoisie: 'ifu_actif', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
     expect(tiers.refus!.code, 'AIB_SANS_BAREME');
   });
 
@@ -402,7 +405,7 @@ void main() {
       expect([p['aibTaux'], p['aibRepli'], p['ifuClient'], p['acheteurNom']], [0, null, null, null]);
       // D8 : la fenêtre a disparu ; son refus nommé reste celui du moteur pour une vente à un tiers, tant que le 1 % n'est pas arrêté.
       final tiers = acheteurNormaliseAuBareme(
-          ifu: '3201001996110', nom: 'Clinique X', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
+          ifu: '3201001996110', nom: 'Clinique X', situationChoisie: 'ifu_actif', date: aujourdhui, situations: m.collection('situationsAib').actives, versions: m.collection('baremeAib').actives);
       expect(tiers.refus!.code, 'AIB_SANS_BAREME');
     });
 

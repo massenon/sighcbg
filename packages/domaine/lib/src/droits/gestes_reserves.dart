@@ -256,6 +256,10 @@ const String gesteRhEtapeDaf = 'rh_etape_daf';
 /// POINTER UN BADGE à l'écran de vérification. Origine : le surveillant, la DAF, l'administrateur, la Direction et le compte RH.
 const String gesteRhPointerBadge = 'rh_pointer_badge';
 
+/// CONFIRMER UNE VALEUR D'ATTENTE du dossier d'un agent (salaire, catégorie, date d'embauche, numéro CNSS) : lever son marquage « provisoire » sur motif, journalisé
+/// (RG-12). Saisir la valeur remise l'arrête déjà ; ce geste confirme une valeur d'attente TELLE QUELLE. Origine : la DAF, la Direction et l'administrateur.
+const String gesteRhConfirmerValeur = 'rh_confirmer_valeur';
+
 /// EXÉCUTER L'IMAGERIE sans la prescrire : lire tous les comptes rendus, ouvrir celui d'un examen payé, ne jamais créer de demande. Origine : le technicien d'échographie et le
 /// Responsable Radiologie (`rolesExecutantsImagerie`).
 const String gesteImagerieExecuter = 'imagerie_executer';
@@ -706,6 +710,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['surveillant', 'da', 'admin', 'direction', 'rh'],
       aide: 'Le pointage par badge à l’écran de vérification, quand le réglage est actif. Origine : le surveillant, la DAF, l’administrateur, la Direction et le compte RH.'),
+  GesteReserve(
+      id: gesteRhConfirmerValeur,
+      libelle: 'Confirmer une valeur d’attente du dossier d’un agent',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['da', 'direction', 'admin'],
+      aide: 'Lever le marquage « provisoire » du salaire, de la catégorie, de la date d’embauche ou du numéro CNSS d’un agent, sur motif journalisé. Origine : la DAF, la Direction et l’administrateur.'),
   GesteReserve(
       id: gesteImagerieExecuter,
       libelle: 'Exécuter l’imagerie sans la prescrire',

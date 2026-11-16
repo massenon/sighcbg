@@ -604,21 +604,22 @@ void main() {
       final c = obj(s['creation']);
       await appuyer(t, 'Nouvel agent');
       final d = obj(c['defauts']);
+      // RIEN EN DUR (Direction, 16/11/2026) : ni fonction, ni date d'embauche, ni salaire pré-remplis (la maquette en posait).
       for (final k in ['fonction', 'dateEmbauche', 'salaireBase']) {
-        expect('${formulaire(t)[k]}', '${d[k]}', reason: 'défaut $k');
+        expect('${formulaire(t)[k] ?? ''}', '', reason: 'aucune valeur inventée pour $k');
       }
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsOneWidget);
       await fermerToasts(t);
-      poser(t, {'nomComplet': 'ACHOUBE Ibaze', 'fonction': 'entretien', 'salaireBase': '45000', 'telephone': '0190000000'});
+      poser(t, {'nomComplet': 'ACHOUBE Ibaze', 'fonction': 'entretien', 'salaireBase': '45000', 'telephone': '0190000000', 'dateEmbauche': d['dateEmbauche']});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['creee'])['fiche']), ignores: {'id'});
       expect(find.text('Agent créé.'), findsOneWidget);
       await fermerToasts(t);
       await appuyer(t, 'Nouvel agent');
-      poser(t, {'nomComplet': 'BIO Maful'});
+      poser(t, {'nomComplet': 'BIO Maful', 'fonction': d['fonction'], 'dateEmbauche': d['dateEmbauche'], 'salaireBase': d['salaireBase']});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       fichesEgales(col.toutes.first, obj(obj(c['seconde'])['fiche']), ignores: {'id'});

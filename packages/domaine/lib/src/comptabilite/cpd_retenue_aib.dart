@@ -79,8 +79,9 @@ class CpdRetenueAib {
 CpdRetenueAib cpdCalculerRetenueAib(Iterable<CpdFiche> bareme, String situation, num base, DateTime date,
     {Iterable<CpdFiche>? situations, String? baseSource, String? baseMotif, String? baremeChoisi}) {
   if (base <= 0) throw const RefusRetenueAib('La base de la retenue doit être positive.');
-  // Le barème CHOISI (compléments du 16/11/2026) : contrôlé quand il est fourni et que les situations sont connues ; le poste le fournit toujours (sélecteur obligatoire).
-  if (baremeChoisi != null && situations != null) {
+  // Le barème CHOISI (compléments du 16/11/2026) : OBLIGATOIRE dès que les situations sont connues (le poste les fournit toujours) — aucun défaut silencieux : ni l'IFU du fournisseur
+  // ni le barème « le plus probable » ne tiennent lieu de choix du comptable. Sans les situations (calcul de taux seul, sans pièce), le choix n'est pas contrôlé ici.
+  if (situations != null) {
     final refus = cpdRefusChoixBareme(baremeChoisi, situation, situations);
     if (refus != null) throw RefusRetenueAib(refus);
   }

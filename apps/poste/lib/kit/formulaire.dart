@@ -54,6 +54,7 @@ class ChampDef {
     this.condition,
     this.valider,
     this.recherche,
+    this.sansPreselection = false,
   });
 
   /// Séparateur de section : `col-span-6 border-t pt-3`, libellé 12/16 en 600, majuscules, interlettrage large.
@@ -68,7 +69,8 @@ class ChampDef {
         lignes = 3,
         condition = null,
         valider = null,
-        recherche = null;
+        recherche = null,
+        sansPreselection = false;
 
   final String nom;
   final String libelle;
@@ -86,6 +88,10 @@ class ChampDef {
 
   /// `null` : automatique (panneau à recherche dès 9 entrées, comme `U.combo`).
   final bool? recherche;
+
+  /// RIEN EN DUR : un champ obligatoire à liste ne présélectionne PAS sa première entrée (le logiciel n'invente pas une valeur que l'agent n'a pas choisie : sexe,
+  /// catégorie…) ; la saisie reste vide et le formulaire l'exige.
+  final bool sansPreselection;
 }
 
 /// État d'un formulaire. Les valeurs sont des chaînes (texte, date ISO, nombre saisi), des `bool` (case) ou des `List<String>`.
@@ -97,6 +103,7 @@ class ControleurFormulaire extends ChangeNotifier {
       // Une liste native sélectionne d'office sa première entrée : conservé pour les champs obligatoires.
       if (c.type == TypeChamp.select &&
           c.requis &&
+          !c.sansPreselection &&
           (v == null || v == '') &&
           c.options.isNotEmpty) v = c.options.first.valeur;
       _valeurs[c.nom] = v ??

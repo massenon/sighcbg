@@ -38,8 +38,19 @@ void main() {
     final situations = [
       {'id': 'S1', 'code': sans, 'libelle': 'Sans IFU actif', 'declencheur': 'ifu_absent', 'ordre': 1, 'statut': 'actif'}
     ];
-    expect(() => cpdCalculerRetenueAib(bareme, actif, 1000, DateTime(2026, 10, 1), situations: situations),
-        throwsA(isA<RefusRetenueAib>().having((e) => e.motif, 'motif', contains('n\'est pas active'))));
+    expect(() => cpdCalculerRetenueAib(bareme, actif, 1000, DateTime(2026, 10, 1), situations: situations, baremeChoisi: cpdBaremeSituationAcheteur),
+        throwsA(isA<RefusRetenueAib>().having((e) => e.motif, 'motif', contains('AIB_SITUATION_INCONNUE'))));
+  });
+
+  test('AUCUN DÉFAUT SILENCIEUX (Direction de Baguidi, 16/11/2026) : sans barème choisi, la retenue est refusée (AIB_BAREME_REQUIS) — l\'IFU du fournisseur ne choisit rien', () {
+    final situations = [
+      {'id': 'S1', 'code': sans, 'libelle': 'Sans IFU actif', 'declencheur': 'ifu_absent', 'ordre': 1, 'statut': 'actif'}
+    ];
+    expect(() => cpdCalculerRetenueAib(bareme, sans, 1000, DateTime(2026, 10, 1), situations: situations),
+        throwsA(isA<RefusRetenueAib>().having((e) => e.motif, 'motif', contains('AIB_BAREME_REQUIS'))));
+    expect(() => cpdCalculerRetenueAib(bareme, sans, 1000, DateTime(2026, 10, 1), situations: situations, baremeChoisi: ' '),
+        throwsA(isA<RefusRetenueAib>().having((e) => e.motif, 'motif', contains('AIB_BAREME_REQUIS'))));
+    expect(() => cpdCalculerRetenueAib(bareme, sans, 1000, DateTime(2026, 10, 1), situations: situations, baremeChoisi: cpdBaremeSituationAcheteur), returnsNormally);
   });
 
   test('la pièce est plate, en brouillon, équilibrée : débit 401000, crédit 4478', () {

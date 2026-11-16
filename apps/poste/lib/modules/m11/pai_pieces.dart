@@ -46,12 +46,16 @@ class PaiBulletinVue {
       this.heuresSupNb = 0,
       this.prets = 0,
       this.pretsDetail = const [],
+      this.valeursAttente = const [],
       this.tauxApplique});
   final String reference, periode, employe, matricule, fonction, service, categorie, cnss, situation, telephone;
   final num salaireBase, primeAnciennete, totalPrimes, brut, pctSanction, sanction, cnssOuvriere, cnssPatronale, vps, its, ortb, avances, participations, totalRetenues, net;
   final List<PaiLignePrime> lignesPrimes;
   final PaiOrtb? detailOrtb;
   final List<String> participationsDetail;
+
+  /// Les valeurs d'ATTENTE sur lesquelles le bulletin s'appuie (salaire, catégorie, date d'embauche, CNSS non confirmés) : la pièce le dit.
+  final List<String> valeursAttente;
 
   /// Heures supplémentaires validées (comprises dans le brut) et échéances de prêt retenues ce mois ; [pretsDetail] : « PRT-0001 2/3 ».
   final num heuresSupMontant, heuresSupNb, prets;
@@ -98,6 +102,7 @@ PaiBulletinVue vueDeCalcul(PaiCalcul c) => PaiBulletinVue(
     heuresSupNb: c.heuresSupNb,
     prets: c.prets,
     pretsDetail: [for (final x in c.pretsDetail) '${x['reference']} ${x['rang']}/${x['nbEcheances']}'],
+    valeursAttente: rhaLibellesEnAttente(c.employe),
     tauxApplique: c.taux);
 
 /// Un bulletin STOCKÉ : le détail ORTB et les participations voyagent avec la pièce (E682) ; un bulletin antérieur n'en porte pas — il retombe sur
@@ -141,6 +146,7 @@ PaiBulletinVue vueDeFiche(Fiche b, {Iterable<Fiche> parametres = const []}) {
       heuresSupNb: v('heuresSupNb'),
       prets: v('prets'),
       pretsDetail: [for (final x in (b['pretsDetail'] as List? ?? const []).whereType<Map>()) '${x['reference']} ${x['rang']}/${x['nbEcheances']}'],
+      valeursAttente: [for (final x in (b['valeursAttente'] as List? ?? (b['salaireProvisoire'] == true ? const ['salaire de base'] : const [])).cast<Object?>()) '$x'],
       tauxApplique: paiTauxDuBulletin(b, parametres));
 }
 
@@ -222,6 +228,8 @@ PieceA4 pieceBulletin(ContexteEcran c, PaiBulletinVue b) {
         ])),
         BlocTexte(
             'Charges patronales (non déduites du net) : CNSS ${paiNum(b.taux.cnssPatronale)} % — ${money(b.cnssPatronale)} ; VPS ${paiNum(b.taux.vps)} % — ${money(b.vps)}.'),
+        if (b.valeursAttente.isNotEmpty)
+          BlocTexte('Valeur(s) d’attente : ${b.valeursAttente.join(', ')} — provisoire(s), non confirmée(s) par la Direction ; le bulletin se recalcule à la confirmation d’une valeur différente.'),
       ],
       signatures: [Signature('L’Employé(e)', nom: b.employe, mention: 'Signature'), signDaf(c.magasin)]);
 }

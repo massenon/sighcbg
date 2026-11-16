@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show gesteRhConfirmerValeur;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
@@ -79,5 +80,72 @@ void main() {
     expect(p['tarifActe'], 15000);
     expect(p['tarifAFournir'], false);
     expect('${m.collection('audit').toutes.first['apres']}', contains('15000'));
+  });
+
+  // --- Création sans valeur inventée, marquage champ par champ, confirmation motivée (Direction, 16/11/2026) ---------------------------------------------------
+  Future<void> ouvrirFiche(WidgetTester t, String nom) async {
+    await toucherM14(t, find.text(nom).first);
+    await t.pump(const Duration(milliseconds: 400));
+  }
+
+  casM14('création d\'un agent : salaire, date d\'embauche, catégorie, CNSS et sexe VIDES ; catégorie et CNSS laissés vides sont marqués « à renseigner »', (t) async {
+    final m = magasinLivre();
+    await ouvrirM14(t, m, 'm10-personnel');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau').first);
+    final ctl = t.widget<FormulaireSigh>(find.byType(FormulaireSigh).last).controleur;
+    for (final k in ['salaireBase', 'dateEmbauche', 'categorie', 'cnss', 'sexe']) {
+      expect('${ctl[k] ?? ''}', '', reason: 'aucune valeur inventée pour $k');
+    }
+    // Salaire et date d'embauche sont EXIGÉS : sans eux, rien n'est écrit.
+    final n0 = m.collection('personnel').toutes.length;
+    await saisir(t, 'matricule', 'T-1');
+    await saisir(t, 'nom', 'TESTEUR');
+    await saisir(t, 'prenom', 'Anne');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Créer'));
+    expect(m.collection('personnel').toutes.length, n0, reason: 'refus : salaire et date manquent');
+    ctl.poser('fonction', 'infirmier');
+    ctl.poser('service', ctl['service']);
+    await saisir(t, 'salaireBase', '95000');
+    ctl.poser('dateEmbauche', '2026-11-02');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Créer'));
+    final a = m.collection('personnel').toutes.firstWhere((x) => x['matricule'] == 'T-1');
+    expect(a['salaireBase'], 95000);
+    expect(a['dateEmbauche'], '2026-11-02');
+    expect(a['categorieProvisoire'], true, reason: 'catégorie laissée vide : marquée à renseigner');
+    expect(a['cnssProvisoire'], true);
+    expect(a['salaireProvisoire'], isNot(true), reason: 'salaire saisi : aucune attente');
+    expect(a['dateEmbaucheProvisoire'], isNot(true));
+  });
+
+  casM14('confirmer une valeur d\'attente : motif obligatoire (refus nommé sans), puis marquage levé et motif journalisé', (t) async {
+    final m = magasinLivre();
+    await ouvrirM14(t, m, 'm10-personnel');
+    await ouvrirFiche(t, 'BAGUIDI Rafiou');
+    expect(find.widgetWithText(BoutonSigh, 'Confirmer'), findsWidgets);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Confirmer').first);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Confirmer').last);
+    var a = m.collection('personnel').actives.firstWhere((x) => x['matricule'] == 'm-001');
+    expect(a['salaireProvisoire'], true, reason: 'sans motif : refusé');
+    expect(find.text('Confirmation refusée.'), findsWidgets);
+    await t.pump(const Duration(seconds: 10));
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Confirmer').first);
+    await motifM14(t, 'Confirmer', 'Salaire arrêté par la Direction le 16/11');
+    a = m.collection('personnel').actives.firstWhere((x) => x['matricule'] == 'm-001');
+    expect(a['salaireProvisoire'], false);
+    expect(a['salaireBase'], 250000, reason: 'la valeur est retenue telle quelle');
+    expect('${a['confirmationsValeurs']}', allOf(contains('salaireBase'), contains('Salaire arrêté par la Direction le 16/11')));
+    final j = m.collection('audit').toutes.first;
+    expect('${j['avant']}', contains('true'));
+    expect('${j['apres']}', allOf(contains('false'), contains('Salaire arrêté par la Direction le 16/11')));
+  });
+
+  casM14('sans le geste « rh_confirmer_valeur », aucun bouton « Confirmer » n\'est offert', (t) async {
+    final m = magasinLivre();
+    // La clinique retire le geste à la DAF : l'écran reste lisible, la commande disparaît (absente, jamais grisée).
+    m.collection('rbac').inserer({'role': 'da', 'statut': 'actif', 'droitsGestes': {gesteRhConfirmerValeur: false}});
+    await ouvrirM14(t, m, 'm10-personnel', role: 'da');
+    await ouvrirFiche(t, 'BAGUIDI Rafiou');
+    expect(find.textContaining('Valeurs d’attente de cet agent'), findsOneWidget, reason: 'l\'attente reste VISIBLE');
+    expect(find.widgetWithText(BoutonSigh, 'Confirmer'), findsNothing);
   });
 }

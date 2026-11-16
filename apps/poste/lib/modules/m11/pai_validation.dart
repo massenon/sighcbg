@@ -35,14 +35,19 @@ class EcranValidationPaie extends StatelessWidget with EcranMaquette {
   static PaiLot _lot(Map<String, Object?> l) => l['_l'] as PaiLot;
 
   Future<void> _valider(BuildContext ctx, ContexteEcran c, PaiLot l) async {
+    final col = c.magasin.collection('bulletins');
+    final lot = col.actives.where((b) => b['periode'] == l.periode && b['statutBulletin'] == 'a_valider').toList();
+    // Un agent à valeur d'attente n'entre pas dans une paie validée SANS signalement nommé : la confirmation les nomme, le journal les retient.
+    final attente = paiSignalementValeursAttente(lot);
     final ok = await confirmerSigh(ctx,
         titre: 'Valider la paie de ${l.periode} ?',
         message:
-            'Cette validation autorise la diffusion de ${l.nb} bulletin(s) pour un net à payer total de ${money(l.net)}. L’opération est journalisée au nom de l’agent connecté, et l’écriture de paie est posée en brouillon.',
+            'Cette validation autorise la diffusion de ${l.nb} bulletin(s) pour un net à payer total de ${money(l.net)}. L’opération est journalisée au nom de l’agent connecté, et l’écriture de paie est posée en brouillon.${attente == null ? '' : '\n\nATTENTION — $attente'}',
         libelleOk: 'Valider la paie');
     if (!ok || !ctx.mounted) return;
-    final col = c.magasin.collection('bulletins');
-    final lot = col.actives.where((b) => b['periode'] == l.periode && b['statutBulletin'] == 'a_valider').toList();
+    if (attente != null) {
+      c.magasin.journaliser('Paie validée sur valeurs d’attente', 'M11', 'BulletinPaie', l.periode, null, {'signalement': attente, 'agents': paiValeursAttenteDuLot(lot).length});
+    }
     // A2 : le validateur est l'agent connecté, jamais celui qui a généré.
     final validateur = acteur(c).nom.isEmpty ? 'Utilisateur non identifié' : acteur(c).nom;
     final refus = paiControleSeparation(lot, validateur, validateurId: acteur(c).utilisateurId);

@@ -83,6 +83,20 @@ void main() {
     expect(c['code'], 'AIB_COMPTE_INCONNU');
   });
 
+  test('AUCUNE modification d\'un réglage fiscal de l\'AIB sans MOTIF (refus nommé AIB_MOTIF_ABSENT), et la version précédente reste à l\'historique', () {
+    final v = _semees();
+    for (final motif in ['', '   ']) {
+      final r = aibDefinirReglage(_d(v), {'cle': 'chargePrelevement', 'valeur': 'acheteur', 'dateEffet': '2026-08-16', 'motif': motif},
+          role: 'comptable', libelleRole: 'Comptable', id: 'x', creeLe: '2026-08-16', auteur: 'Comptable');
+      expect(r['ok'], isNot(true));
+      expect(r['code'], 'AIB_MOTIF_ABSENT');
+    }
+    final ok = aibDefinirReglage(_d(v), {'cle': 'chargePrelevement', 'valeur': 'acheteur', 'dateEffet': '2026-08-16', 'motif': 'Note de la Direction'},
+        role: 'comptable', libelleRole: 'Comptable', id: 'x', creeLe: '2026-08-16', auteur: 'Comptable');
+    expect(ok['ok'], isTrue);
+    expect(v.where((f) => f.cle.endsWith('chargePrelevement')).single.valeur, 'clinique', reason: 'la version précédente n\'est pas réécrite : la nouvelle s\'AJOUTE (aucune écriture ici)');
+  });
+
   test('les semences du barème sont celles de la maquette (trois situations, quatre versions, toutes « à valider » : texte réglementaire à produire)', () {
     final sem = obj2(lireVecteurs('aib')['semences']);
     memes(aibSituationsSemees, liste(sem['situations']).map((f) => {for (final k in const ['id', 'code', 'libelle', 'declencheur', 'ordre', 'description']) k: f[k]}).toList(), 'situations');

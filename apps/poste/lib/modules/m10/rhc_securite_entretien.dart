@@ -238,7 +238,7 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
 
   static List<ChampDef> _champsAgent() => const [
         ChampDef(nom: 'nomComplet', libelle: 'Nom et prénoms', requis: true, col: ColChamp.plein),
-        ChampDef(nom: 'fonction', libelle: 'Fonction', type: TypeChamp.select, requis: true, options: [OptionChamp('securite', 'Agent de sécurité'), OptionChamp('entretien', 'Agent d’entretien')]),
+        ChampDef(nom: 'fonction', libelle: 'Fonction', type: TypeChamp.select, requis: true, sansPreselection: true, options: [OptionChamp('securite', 'Agent de sécurité'), OptionChamp('entretien', 'Agent d’entretien')]),
         ChampDef(nom: 'poste', libelle: 'Poste occupé'),
         ChampDef(nom: 'dateEmbauche', libelle: 'Date d’embauche', type: TypeChamp.date, requis: true),
         ChampDef(nom: 'salaireBase', libelle: 'Salaire de base (FCFA)', type: TypeChamp.nombre, requis: true),
@@ -281,7 +281,7 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
 
   void _saisir(BuildContext ctx, ContexteEcran c, Fiche? existant) {
     final col = c.magasin.collection('personnel');
-    final ctl = ControleurFormulaire(_champsAgent(), existant != null ? rhcEnTexte(existant) : {'fonction': 'securite', 'dateEmbauche': iso(c.aujourdhui), 'salaireBase': '40000'});
+    final ctl = ControleurFormulaire(_champsAgent(), existant != null ? rhcEnTexte(existant) : const <String, Object?>{}); // RIEN EN DUR : ni fonction, ni date d'embauche, ni salaire pré-remplis
     afficherModale<void>(ctx,
         titre: existant == null ? 'Nouvel agent de sécurité ou d’entretien' : 'Modifier l’enregistrement',
         sousTitre: existant == null ? 'Les champs marqués d’un astérisque sont obligatoires.' : '${existant['matricule'] ?? existant['id']}',
@@ -315,7 +315,8 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
                       }, prefixe: 'PER');
                       ToastsSigh.afficher(ctx, 'Agent créé.', type: TypeToast.succes, annuler: r.annuler);
                     } else {
-                      final annuler = col.mettreAJour(existant['id'], fiche);
+                      // Saisir la valeur remise ARRÊTE l'attente (salaire, date d'embauche) dans la même écriture, donc au même journal.
+                      final annuler = col.mettreAJour(existant['id'], {...fiche, ...rhaValeursArretees(existant, fiche, rhaAttentePersonnel)});
                       ToastsSigh.afficher(ctx, 'Modifications enregistrées.', type: TypeToast.succes, annuler: annuler);
                     }
                   }),

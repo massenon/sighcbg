@@ -13,6 +13,7 @@ import '../format/recherche.dart' show trierPar;
 import '../hospitalisation/hos_regles.dart' show hosTousLits;
 import '../referentiels/regles.dart' show joursEntre, resultatRendu;
 import '../rh/rha_regles.dart' show rhaFonctionLabel, rhaTypePlanningLabel;
+import '../rh/rhb_regles.dart' show vacationCompteRh;
 import '../comptabilite/cpa_referentiels.dart' show cpaCentresCout;
 import '../administration/adm_notes_donnees.dart' show admNs131, admNs132, AdmNoteService;
 
@@ -628,9 +629,9 @@ class TbaRh {
 TbaRh tbaRh({required Iterable<FicheTba> personnel, required Iterable<FicheTba> planning, required DateTime auj}) {
   final p = personnel.toList();
   final jour = iso(auj);
-  final gardes = planning.where((x) => x['date'] == jour && x['type'] == 'garde').length;
+  final gardes = planning.where((x) => x['date'] == jour && x['type'] == 'garde' && vacationCompteRh(x)).length;
   final g = tbaGrouper(p, (x) => x['fonction']);
-  final pj = planning.where((x) => x['date'] == jour).toList();
+  final pj = planning.where((x) => x['date'] == jour && vacationCompteRh(x)).toList();
   final gt = tbaGrouper(pj, (x) => x['type']);
   return TbaRh(
     premier: const TbaPremierRegard(

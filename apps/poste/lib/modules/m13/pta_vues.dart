@@ -38,7 +38,6 @@ class EcranPlanAnnuel extends StatefulWidget with EcranMaquette {
   State<EcranPlanAnnuel> createState() => _EcranPlanAnnuelState();
 }
 
-const _signDa = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 const TextStyle _petit = TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12);
 
 /// Ce que l'écran lit, une fois par construction.
@@ -52,6 +51,8 @@ class _Contexte {
     decoupage = ptaDecoupageDe(p.valeur(ptaCleDecoupage, dateReglage));
     seuil = ptaSeuilDe(p.valeur(ptaCleSeuilRetard, dateReglage));
     prefixe = ptaPrefixeDe(p.valeur(ptaClePrefixe, dateReglage));
+    // RIEN EN DUR : les signataires du plan et du bilan se lisent à l'organigramme (réglage « signataires du plan », sinon le poste qui coiffe l'organigramme).
+    signataires = [for (final s in ptaSignataires(postes: m.collection('postes').actives, reglage: p.valeur(ptaCleSignataires, dateReglage))) Signature(s.intitule, nom: s.titulaire)];
     periodes = ptaPeriodes(exercice, decoupage);
     axes = m.collection(ptaCollectionAxes).toutes;
     etats = m.collection(ptaCollectionEtats).toutes;
@@ -69,6 +70,7 @@ class _Contexte {
   late final String decoupage;
   late final int seuil;
   late final String prefixe;
+  late final List<Signature> signataires;
   late final List<PtaPeriode> periodes;
   late final List<Fiche> axes, etats, financements, plans, toutesActions, budgets, ecritures;
 
@@ -96,7 +98,7 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
     final m = c.magasin;
     return ListenableBuilder(
         listenable: Listenable.merge([
-          for (final n in [...ptaCollections, 'budgets', 'ecritures', 'exercices', parCollectionParametres, valCollectionDepots, 'rbac']) m.collection(n)
+          for (final n in [...ptaCollections, 'budgets', 'ecritures', 'exercices', 'postes', parCollectionParametres, valCollectionDepots, 'rbac']) m.collection(n)
         ]),
         builder: (context, _) {
           final x = _Contexte(c);
@@ -201,6 +203,15 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
           }
         }
       }
+      // RECONDUCTION : de l'exercice affiché vers le suivant, jamais l'inverse ; sous le droit d'écrire le plan.
+      if (c.droit.editer) {
+        commandes.add(BoutonSigh(
+            key: const Key('pta:reconduire'),
+            libelle: 'Reconduire les actions non réalisées vers l’exercice ${x.annee + 1}',
+            icone: LucideIcons.copyPlus,
+            variante: VarianteBouton.secondaire,
+            onPressed: () => _reconduire(context, x)));
+      }
       final infos = <String>[
         if (plan['reviseDe'] != null) 'Révision de la version ${plan['reviseDe']} : ${plan['motifRevision'] ?? ''}',
         if (plan['soumisPar'] != null && etat == ptaPlanSoumis) 'Soumis par ${plan['soumisPar']} le ${_date(plan['soumisLe'])}',
@@ -275,6 +286,69 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
     if (!r.ok) return _toast(ctx, r.refus!);
     _ecrire(ctx, x.c, r.ecritures, 'Mise en exécution du plan de travail annuel', '${plan['reference']}', const {});
     ToastsSigh.afficher(ctx, 'Plan en exécution.', type: TypeToast.succes);
+  }
+
+  /// Reconduit vers l'exercice suivant les actions ni réalisées ni abandonnées (règle du domaine : `ptaReconduire`). Le plan suivant naît en brouillon s'il n'existe pas ; relancer ne
+  /// double rien ; chaque copie porte son lien d'origine ; le geste est journalisé (RG-12) et annulable d'un bloc.
+  Future<void> _reconduire(BuildContext ctx, _Contexte x) async {
+    final c = x.c;
+    final cible = x.annee + 1;
+    final apercu = ptaReconduire(
+        annee: x.annee,
+        plans: x.plans,
+        actions: x.toutesActions,
+        etats: x.etats,
+        acteur: acteurNom(c),
+        maintenant: c.aujourdhui,
+        prefixe: x.prefixe,
+        etatExerciceSuivant: cpcEtatExercice(c.magasin.collection('exercices').toutes, cible));
+    if (!apercu.ok) return _toast(ctx, apercu.refus!);
+    final ok = await confirmerSigh(ctx,
+        titre: 'Reconduire vers l’exercice $cible ?',
+        message:
+            '${apercu.actions.length} action(s) non réalisée(s) et non abandonnée(s) du plan ${x.annee} seront recopiées dans le plan $cible (${apercu.planACreer != null ? 'créé en brouillon' : 'brouillon existant'}), avec leur lien d’origine. Les dates, le réalisé et la ligne de budget repartent de zéro ; les actions d’origine ne sont pas modifiées.${apercu.dejaReconduites.isEmpty ? '' : ' ${apercu.dejaReconduites.length} déjà reconduite(s) : ignorée(s).'}',
+        libelleOk: 'Reconduire');
+    if (!ok || !ctx.mounted) return;
+    // Les données ont pu changer pendant la confirmation : le verdict est REFAIT sur le magasin courant.
+    final y = _Contexte(c);
+    final r = ptaReconduire(
+        annee: y.annee,
+        plans: y.plans,
+        actions: y.toutesActions,
+        etats: y.etats,
+        acteur: acteurNom(c),
+        maintenant: c.aujourdhui,
+        prefixe: y.prefixe,
+        etatExerciceSuivant: cpcEtatExercice(c.magasin.collection('exercices').toutes, cible));
+    if (!r.ok) return _toast(ctx, r.refus!);
+    final annulations = <VoidCallback>[];
+    try {
+      if (r.planACreer != null) annulations.add(c.magasin.collection(ptaCollectionPlans).inserer(r.planACreer!).annuler);
+      for (final a in r.actions) {
+        annulations.add(c.magasin.collection(ptaCollectionActions).inserer({...a, '_creePar': acteurNom(c), '_creeLe': c.aujourdhui.toIso8601String()}, prefixe: 'PTA').annuler);
+      }
+    } on EcritureRefusee catch (e) {
+      for (final u in annulations.reversed) {
+        u();
+      }
+      ToastsSigh.afficher(ctx, 'Reconduction refusée.', type: TypeToast.erreur, detail: e.motif);
+      return;
+    }
+    c.magasin.journaliser('Reconduction du plan de travail annuel', 'M13', 'Plan de travail annuel', ptaReferencePlan(cible, r.version), null, {
+      'de': ptaReferencePlan(y.annee, ptaVersionDe(ptaPlanCourant(y.plans, y.annee)!)),
+      'actions recopiées': r.actions.length,
+      'déjà reconduites': r.dejaReconduites.length,
+      'par': acteurNom(c),
+      'rôle': c.role
+    });
+    ToastsSigh.afficher(ctx, '${r.actions.length} action(s) reconduite(s) vers l’exercice $cible.',
+        type: TypeToast.succes,
+        detail: 'Dans le plan ${ptaReferencePlan(cible, r.version)} (brouillon) : les dates sont à replanifier.',
+        annuler: () {
+          for (final u in annulations.reversed) {
+            u();
+          }
+        });
   }
 
   Future<void> _reviser(BuildContext ctx, _Contexte x) async {
@@ -846,7 +920,7 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
           if (ptaSemenceAxes().isNotEmpty && [...x.axes, ...x.etats, ...x.financements].any((f) => f['aValider'] == true))
             const BlocTexte('Référentiels du plan : certains éléments sont des propositions à valider par la Direction (modèle proposé le 16/11/2026).', italique: true),
         ],
-        signatures: const [_signDa, Signature('La Direction')]);
+        signatures: x.signataires);
   }
 
   void _imprimerBilan(BuildContext ctx, _Contexte x, Fiche plan, List<Fiche> actions, PtaSynthese s) {
@@ -886,7 +960,7 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
           ], lignes: actions)),
           const BlocTexte('Le budget réalisé est lu au module Budgets (une ligne liée comptée une fois au total du cartouche) ; « Non calculable » n’est pas zéro.', italique: true),
         ],
-        signatures: const [_signDa, Signature('La Direction')]);
+        signatures: x.signataires);
   }
 }
 

@@ -182,7 +182,7 @@ class JourPlanningRh {
   bool get travailleParRegime => jourTravailleRh(regime, date);
 
   /// La vacation est-elle validée (une vacation d'avant le circuit, sans état, l'est) ?
-  bool get validee => vacation != null && (vacation!['validationEtat'] == null || vacation!['validationEtat'] == '' || vacation!['validationEtat'] == 'validee');
+  bool get validee => vacation != null && vacationCompteRh(vacation!);
 }
 
 String _iso(DateTime d) => '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
@@ -256,7 +256,7 @@ HonoraireRegimeRh honoraireRegimeMoisRh({
       if (v['employeId'] == employeId &&
           '${v['date']}'.startsWith(prefixe) &&
           v['statut'] != 'archive' &&
-          (v['validationEtat'] == null || v['validationEtat'] == '' || v['validationEtat'] == 'validee') &&
+          vacationCompteRh(v) &&
           (rhbTypePlanning(v['type'])?.duree ?? 0) > 0)
         v
   ]..sort((a, b) => '${a['date']}'.compareTo('${b['date']}'));

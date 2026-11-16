@@ -947,6 +947,169 @@ PtaVerdict ptaDecider({
   return (refus: null, plan: plan, actions: copies);
 }
 
+/// Les champs du SUIVI et du CALENDRIER qu'une action RECONDUITE ne reporte PAS : l'exercice suivant repart de zéro sur les faits (état par défaut, réalisé, avancement,
+/// observations) et sur les dates (celles de l'exercice écoulé ne diraient rien du suivant, et l'action paraîtrait en retard d'un an), ni la ligne de budget de l'exercice
+/// écoulé (le réalisé budgétaire d'un autre exercice ne se compte pas deux fois).
+const List<String> ptaChampsNonReportes = [
+  'id', 'idSync', 'statut', '_creePar', '_creeLe', '_modifiePar', '_modifieLe', //
+  'reference', 'exercice', 'planVersion', //
+  'etat', 'realiseValeur', 'tauxAvancement', 'observations', //
+  'calendrier', 'debut', 'fin', 'budgetReference',
+];
+
+/// Le résultat d'une RECONDUCTION : le refus nommé, ou le plan suivant à créer (s'il n'existe pas), les actions à copier et celles déjà reconduites.
+class PtaReconduction {
+  const PtaReconduction({this.refus, this.sansEffet = false, this.planACreer, this.version = 0, this.actions = const [], this.dejaReconduites = const [], this.anneeCible = 0});
+  final RefusValidation? refus;
+
+  /// Rien à copier (tout est terminé, ou déjà reconduit) : dit, jamais silencieux.
+  final bool sansEffet;
+  final PtaFiche? planACreer;
+
+  /// La version du plan suivant qui reçoit les actions (1 quand il est créé par la reconduction).
+  final int version;
+  final List<PtaFiche> actions;
+
+  /// Les références d'origine déjà reconduites (relancer ne double rien).
+  final List<String> dejaReconduites;
+  final int anneeCible;
+  bool get ok => refus == null;
+}
+
+/// RECONDUIT vers l'exercice SUIVANT les actions du plan de [annee] qui ne sont NI réalisées NI abandonnées — « terminé » se lit au RÉFÉRENTIEL des états
+/// ([ptaEtatTermine]), jamais à des codes écrits ici. Le sens est UNIQUE : de l'exercice écoulé vers le suivant, jamais l'inverse. Les copies vont dans le plan de l'exercice
+/// suivant, en BROUILLON, créé s'il n'existe pas (version 1) ; un plan suivant déjà soumis ou adopté refuse la reconduction en le nommant (un programme figé ne reçoit pas
+/// d'action). Chaque copie garde son LIEN D'ORIGINE (`reconduiteDe` : la référence de l'action, stable d'une version à l'autre ; `reconduiteDeExercice`, `reconduiteLe`,
+/// `reconduitePar`) : c'est aussi ce qui évite le DOUBLON quand on relance — une action déjà reconduite, même archivée depuis, n'est pas recopiée. L'action d'origine n'est
+/// JAMAIS modifiée. Les champs de [ptaChampsNonReportes] repartent de zéro (état par défaut, réalisé, dates, ligne de budget) : les dates se replanifient.
+PtaReconduction ptaReconduire({
+  required int annee,
+  required Iterable<PtaFiche> plans,
+  required Iterable<PtaFiche> actions,
+  required Iterable<PtaFiche> etats,
+  required String acteur,
+  required DateTime maintenant,
+  String? prefixe,
+  String? etatExerciceSuivant,
+}) {
+  final cible = annee + 1;
+  final source = ptaPlanCourant(plans, annee);
+  if (source == null) {
+    return PtaReconduction(refus: RefusValidation('PAS_DE_PLAN_SOURCE', 'L’exercice $annee n’a pas de plan : il n’y a rien à reconduire.', 'Ouvrir le plan de l’exercice $annee'));
+  }
+  final aReconduire = [
+    for (final a in ptaActionsDuPlan(actions, annee, ptaVersionDe(source)))
+      if (!ptaEtatTermine(a['etat'], etats)) a
+  ];
+  if (aReconduire.isEmpty) {
+    return PtaReconduction(
+        sansEffet: true,
+        refus: RefusValidation('RIEN_A_RECONDUIRE', 'Toutes les actions du plan $annee sont réalisées ou abandonnées : rien à reconduire vers $cible.', 'Aucun'),
+        anneeCible: cible);
+  }
+  PtaFiche? planACreer;
+  var version = 1;
+  final existants = ptaPlansExercice(plans, cible);
+  if (existants.isEmpty) {
+    if (etatExerciceSuivant == 'clos') {
+      return PtaReconduction(refus: RefusValidation('EXERCICE_CLOS', 'L’exercice $cible est clos : on n’y ouvre pas de plan de travail.', 'Choisir un exercice ouvert'));
+    }
+    final v = ptaCreerPlan(annee: cible, plans: plans, acteur: acteur, maintenant: maintenant, etatExercice: etatExerciceSuivant);
+    if (!v.ok) return PtaReconduction(refus: v.refus);
+    planACreer = v.creation;
+  } else {
+    final dernier = existants.last;
+    version = ptaVersionDe(dernier);
+    if (dernier['etat'] != ptaPlanBrouillon) {
+      return PtaReconduction(
+          refus: RefusValidation('PLAN_SUIVANT_FIGE',
+              'Le plan ${ptaReferencePlan(cible, version)} de l’exercice $cible est ${ptaLibelleEtatPlan(dernier['etat']).toLowerCase()} : une action ne s’y ajoute pas.',
+              dernier['etat'] == ptaPlanSoumis ? 'Retirer la soumission, puis reconduire' : 'Réviser le plan $cible (nouvelle version en brouillon), puis reconduire'));
+    }
+  }
+  // Les actions DÉJÀ reconduites : par leur lien d'origine, dans tout l'exercice suivant (toutes versions, archivées comprises).
+  final dejaFaites = <String>{
+    for (final a in actions)
+      if ('${a['exercice']}' == '$cible' && '${a['reconduiteDe'] ?? ''}'.isNotEmpty) '${a['reconduiteDe']}'
+  };
+  final etatDefaut = ptaEtatParDefaut(etats);
+  final pool = [...actions];
+  final copies = <PtaFiche>[];
+  final deja = <String>[];
+  for (final a in aReconduire) {
+    final ref = '${a['reference'] ?? ''}';
+    if (ref.isNotEmpty && dejaFaites.contains(ref)) {
+      deja.add(ref);
+      continue;
+    }
+    final copie = <String, Object?>{
+      for (final e in a.entries)
+        if (!ptaChampsNonReportes.contains(e.key)) e.key: e.value,
+      'statut': 'actif',
+      'exercice': cible,
+      'planVersion': version,
+      'reference': ptaReferenceSuivante(cible, pool, prefixe: prefixe),
+      if (etatDefaut != null) 'etat': etatDefaut,
+      'reconduiteDe': ref,
+      'reconduiteDeExercice': annee,
+      'reconduiteLe': valInstant(maintenant),
+      'reconduitePar': acteur,
+    };
+    pool.add(copie);
+    copies.add(copie);
+  }
+  if (copies.isEmpty) {
+    return PtaReconduction(
+        sansEffet: true,
+        refus: RefusValidation('DEJA_RECONDUIT', 'Les ${deja.length} action(s) non terminée(s) du plan $annee sont déjà reconduites vers $cible : rien n’est recopié deux fois.', 'Aucun'),
+        dejaReconduites: deja,
+        anneeCible: cible);
+  }
+  return PtaReconduction(planACreer: planACreer, version: version, actions: copies, dejaReconduites: deja, anneeCible: cible);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// Signataires des pièces du plan : lus à l'ORGANIGRAMME
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// La clé du réglage de clinique « signataires du plan » : la liste des POSTES (intitulé ou code de l'organigramme, séparés par un point-virgule) qui signent le plan et son
+/// bilan. Vide : le poste qui coiffe l'organigramme signe. Versionné par date, réglé sous le geste `pta_regler`.
+const String ptaCleSignataires = 'pta.signataires';
+
+/// Un signataire d'une pièce du plan : l'INTITULÉ du poste à l'organigramme, et son titulaire quand l'organigramme le désigne (`null` : la ligne reste sans nom, à signer à la main).
+class PtaSignataire {
+  const PtaSignataire(this.intitule, this.titulaire);
+  final String intitule;
+  final String? titulaire;
+}
+
+String _norm(Object? v) => '$v'.trim().toLowerCase();
+
+/// Les signataires du plan et du bilan, lus à l'ORGANIGRAMME ([postes], collection `postes`) : les postes que le réglage [reglage] liste (par intitulé ou code), dans l'ordre
+/// du réglage ; sans réglage, le poste qui COIFFE l'organigramme (sans rattachement). Le titulaire est celui que le poste désigne (jamais un nom écrit dans le code, jamais
+/// deviné) ; un poste du réglage absent de l'organigramme garde son intitulé tel qu'écrit, sans nom. Aucun poste lisible : une ligne qui dit qu'il reste à désigner.
+List<PtaSignataire> ptaSignataires({required Iterable<PtaFiche> postes, Object? reglage}) {
+  final actifs = [for (final p in postes) if (p['statut'] != 'archive') p];
+  PtaSignataire deposte(PtaFiche p) {
+    final t = '${p['titulaire'] ?? ''}'.trim();
+    return PtaSignataire('${p['poste'] ?? ''}'.trim(), t.isEmpty ? null : t);
+  }
+
+  final voulus = [for (final s in '${reglage ?? ''}'.split(';')) if (s.trim().isNotEmpty) s.trim()];
+  if (voulus.isNotEmpty) {
+    return [
+      for (final v in voulus)
+        () {
+          final p = actifs.where((p) => _norm(p['poste']) == _norm(v) || _norm(p['code']) == _norm(v) || _norm(p['codeLegende']) == _norm(v)).firstOrNull;
+          return p == null ? PtaSignataire(v, null) : deposte(p);
+        }()
+    ];
+  }
+  final racines = [for (final p in actifs) if ('${p['parentId'] ?? ''}'.isEmpty) p];
+  if (racines.isNotEmpty) return [deposte(racines.first)];
+  return const [PtaSignataire('Signataire à désigner (réglage « signataires du plan »)', null)];
+}
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // Gardes au moteur (le poste) et contrôle à la mère
 // ---------------------------------------------------------------------------------------------------------------------------------------------

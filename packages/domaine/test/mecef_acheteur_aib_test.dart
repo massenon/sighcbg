@@ -1,5 +1,5 @@
-// L'AIB de la fenêtre « Facture normalisée » lu au barème daté (lot A5) : situation d'office d'après l'IFU ou choisie à la main, taux arrêté en vigueur
-// à la date de la facture, refus nommé AIB_SANS_BAREME sans version arrêtée, montants entiers sur le HORS TAXES, MECeF fermé = rien.
+// L'AIB de la fenêtre « Facture normalisée » lu au barème daté (lot A5) : situation CHOISIE à la main (l'IFU ne choisit JAMAIS d'office : Direction de Baguidi, 16/11/2026),
+// taux arrêté en vigueur à la date de la facture, refus nommé AIB_SANS_BAREME sans version arrêtée, montants entiers sur le HORS TAXES, MECeF fermé = rien.
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
@@ -35,30 +35,35 @@ void main() {
   AibAcheteur aib({Object? i, Object? choix, DateTime? date, List<CpdFiche>? versions}) =>
       aibPourAcheteur(ifu: i, situationChoisie: choix, date: date ?? jour, situations: situations, versions: versions ?? bareme);
 
-  group('la situation se choisit d\'office d\'après l\'IFU', () {
-    test('aucun IFU : « IFU absent », 5 % arrêté appliqué, motif du moteur', () {
-      final r = aib();
-      expect(r.ok, isTrue);
-      expect(r.situation, 'ifu_inactif_ou_absent');
-      expect(r.taux, 5);
-      expect(r.choixManuel, isFalse);
-      expect(r.motif, 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
+  group('l\'IFU ne choisit RIEN d\'office : sans situation choisie, refus nommé AIB_SITUATION_REQUISE', () {
+    test('aucun IFU, IFU de 13 chiffres (espaces tolérés) ou IFU invalide : la situation et le taux ne se déduisent jamais', () {
+      for (final i in [null, '', ifu, '3201 0019 96110', '123']) {
+        final r = aib(i: i);
+        expect(r.ok, isFalse, reason: 'IFU « $i »');
+        expect(r.refus!.code, 'AIB_SITUATION_REQUISE', reason: 'IFU « $i »');
+        expect(r.taux, isNull);
+        expect(r.situation, isNull);
+      }
     });
 
-    test('IFU de 13 chiffres (espaces tolérés) : « IFU actif » présumé ; son 1 % n\'est PAS arrêté : refus nommé, jamais appliqué', () {
-      final r = aib(i: '3201 0019 96110');
+    test('la situation « IFU actif » CHOISIE à la main : présumée active, dit ; son 1 % n\'est PAS arrêté : refus nommé, jamais appliqué', () {
+      final r = aib(i: '3201 0019 96110', choix: 'ifu_actif');
       expect(r.situation, 'ifu_actif');
+      expect(r.choixManuel, isTrue);
       expect(r.presomption, isTrue);
       expect(r.avertissement, contains('présumé actif'));
       expect(r.taux, isNull);
-      expect(r.ok, isFalse);
       expect(r.refus!.code, cpdCodeAibSansBareme);
       expect(r.nonArretes, ['1 % — non arrêté, à valider']);
       expect(r.refus!.motif, contains('1 % — non arrêté, à valider'));
     });
 
-    test('IFU invalide : IFU_INVALIDE', () {
-      expect(aib(i: '123').refus!.code, 'IFU_INVALIDE');
+    test('« sans IFU actif » CHOISIE : 5 % arrêté appliqué, motif du moteur, aucune présomption', () {
+      final r = aib(choix: 'ifu_inactif_ou_absent');
+      expect(r.ok, isTrue);
+      expect(r.taux, 5);
+      expect(r.presomption, isFalse);
+      expect(r.motif, 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
     });
   });
 
@@ -87,28 +92,29 @@ void main() {
 
   group('le taux est celui EN VIGUEUR À LA DATE', () {
     test('avant le 07/09/2026 : aucun taux arrêté, refus nommé qui cite la date de prise d\'effet', () {
-      final r = aib(date: DateTime(2026, 9, 6));
+      final r = aib(choix: 'ifu_inactif_ou_absent', date: DateTime(2026, 9, 6));
       expect(r.taux, isNull);
       expect(r.refus!.code, cpdCodeAibSansBareme);
       expect(r.refus!.motif, contains('07/09/2026'));
-      expect(aib(date: DateTime(2026, 9, 7)).taux, 5);
+      expect(aib(choix: 'ifu_inactif_ou_absent', date: DateTime(2026, 9, 7)).taux, 5);
     });
 
     test('une version arrêtée datée dans le FUTUR ne s\'applique pas : le taux d\'aujourd\'hui reste celui d\'hier', () {
       final avecFutur = [...bareme, v('B4', 'ifu_inactif_ou_absent', 6, effet: '2027-01-01')];
-      expect(aib(versions: avecFutur).taux, 5);
-      expect(aib(versions: avecFutur, date: DateTime(2027, 1, 1)).taux, 6);
-      expect(aib(versions: avecFutur, date: DateTime(2026, 12, 31)).taux, 5);
+      const c = 'ifu_inactif_ou_absent';
+      expect(aib(choix: c, versions: avecFutur).taux, 5);
+      expect(aib(choix: c, versions: avecFutur, date: DateTime(2027, 1, 1)).taux, 6);
+      expect(aib(choix: c, versions: avecFutur, date: DateTime(2026, 12, 31)).taux, 5);
     });
 
     test('quand la Direction arrête le 1 % (IFU actif), il s\'applique à partir de sa date d\'effet', () {
       final arrete = [...bareme.where((f) => f['id'] != 'B2'), v('B2b', 'ifu_actif', 1, effet: '2026-11-01')];
-      expect(aib(i: ifu, versions: arrete).taux, 1);
-      expect(aib(i: ifu, versions: arrete, date: DateTime(2026, 10, 31)).refus!.code, cpdCodeAibSansBareme);
+      expect(aib(i: ifu, choix: 'ifu_actif', versions: arrete).taux, 1);
+      expect(aib(i: ifu, choix: 'ifu_actif', versions: arrete, date: DateTime(2026, 10, 31)).refus!.code, cpdCodeAibSansBareme);
     });
 
     test('une version archivée ne s\'applique pas', () {
-      final r = aib(versions: [v('B1', 'ifu_inactif_ou_absent', 5, effet: '2026-09-07', statut: 'archive')]);
+      final r = aib(choix: 'ifu_inactif_ou_absent', versions: [v('B1', 'ifu_inactif_ou_absent', 5, effet: '2026-09-07', statut: 'archive')]);
       expect(r.refus!.code, cpdCodeAibSansBareme);
     });
   });
@@ -118,16 +124,18 @@ void main() {
             {Object? i, Object? nom = 'Clinique X', Object? choix, DateTime? date, List<CpdFiche>? versions}) =>
         acheteurNormaliseAuBareme(ifu: i, nom: nom, situationChoisie: choix, date: date ?? jour, situations: situations, versions: versions ?? bareme);
 
-    test('sans IFU : l\'acheteur porte 5 % et sa situation', () {
-      final x = r(i: '', nom: '');
+    test('sans IFU, avec la situation « sans IFU actif » CHOISIE : l\'acheteur porte 5 % et sa situation ; sans choix, refus nommé', () {
+      expect(r(i: '', nom: '').refus!.code, 'AIB_SITUATION_REQUISE', reason: 'l\'absence d\'IFU ne choisit rien');
+      final x = r(i: '', nom: '', choix: 'ifu_inactif_ou_absent');
       expect(x.refus, isNull);
       expect(x.acheteur!.aibTaux, 5);
       expect(x.acheteur!.aibSituation, 'ifu_inactif_ou_absent');
       expect(x.acheteur!.toJson()['aibSituation'], 'ifu_inactif_ou_absent');
     });
 
-    test('IFU actif : refus AIB_SANS_BAREME (1 % non arrêté), aucun acheteur', () {
-      final x = r(i: ifu);
+    test('IFU actif CHOISI : refus AIB_SANS_BAREME (1 % non arrêté), aucun acheteur ; IFU saisi sans choix : AIB_SITUATION_REQUISE', () {
+      expect(r(i: ifu).refus!.code, 'AIB_SITUATION_REQUISE');
+      final x = r(i: ifu, choix: 'ifu_actif');
       expect(x.acheteur, isNull);
       expect(x.refus!.code, cpdCodeAibSansBareme);
     });
@@ -147,7 +155,7 @@ void main() {
     });
 
     test('un taux du barème décimal est refusé : le poste calcule en montants entiers', () {
-      final x = r(versions: [v('B1', 'ifu_inactif_ou_absent', 2.5, effet: '2026-09-07')]);
+      final x = r(choix: 'ifu_inactif_ou_absent', versions: [v('B1', 'ifu_inactif_ou_absent', 2.5, effet: '2026-09-07')]);
       expect(x.refus!.code, 'AIB_TAUX_INVALIDE');
     });
   });
@@ -163,7 +171,7 @@ void main() {
             {'id': 'L1', 'designation': 'Consultation', 'quantite': 1, 'prixUnitaire': 10000, 'partAssureur': 0, 'partPatient': 10000, 'statutPaiement': 'impaye'}
           ],
         };
-    final acheteur5 = acheteurNormaliseAuBareme(ifu: '', nom: '', date: jour, situations: situations, versions: bareme).acheteur!;
+    final acheteur5 = acheteurNormaliseAuBareme(ifu: '', nom: '', situationChoisie: 'ifu_inactif_ou_absent', date: jour, situations: situations, versions: bareme).acheteur!;
 
     test('l\'acheteur du barème est rangé dans la pièce avec sa situation ; l\'AIB se calcule sur le HORS TAXES en montants entiers', () {
       final e = encaisser(piece(),

@@ -10,6 +10,9 @@ import 'm10_aide.dart';
 
 /// M10 — RH (premier lot) : les écrans rejouent les vecteurs `rh.json`, tirés des écrans RÉELS de la maquette (Chrome, horloge 30/10/2026 10 h, jeu du
 /// poste) : indicateurs, ordre des lignes, saisies (création, refus nommé, modification), archivage, droits, impressions.
+/// Ce que la maquette pré-remplissait à la création d'un agent : le logiciel ne l'invente plus, la saisie le fournit.
+Map<String, Object?> _saisieAgent(Map<String, Object?> defauts) => {for (final k in ['sexe', 'categorie', 'dateEmbauche', 'salaireBase']) k: defauts[k]};
+
 void main() {
   setUpAll(chargerPolices);
   setUp(() => ImpressionPoste.enregistrer = (pdf, nom) async => '/faux/$nom.pdf');
@@ -40,18 +43,25 @@ void main() {
       await cliquer(t, find.widgetWithText(BoutonSigh, 'Nouveau').first);
       final ctl = formulaire(t);
       final defauts = obj(obj(p['creation'])['defauts']);
-      for (final k in ['sexe', 'fonction', 'service', 'categorie', 'dateEmbauche', 'salaireBase']) {
+      // RIEN EN DUR (Direction, 16/11/2026) : la maquette pré-remplissait sexe (facultatif désormais), catégorie, date d'embauche et salaire ; le logiciel n'invente plus aucune de ces valeurs.
+      for (final k in ['sexe', 'categorie', 'dateEmbauche', 'salaireBase', 'cnss']) {
+        expect('${ctl[k] ?? ''}', '', reason: 'aucune valeur inventée pour $k à la création');
+      }
+      for (final k in ['fonction', 'service']) {
         expect('${ctl[k]}', '${defauts[k]}', reason: 'défaut $k');
       }
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 300));
       expect(find.text('Le formulaire comporte des erreurs.'), findsWidgets);
       expect(col.toutes.length, n0, reason: 'refus : rien n’est écrit');
-      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
+      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', ..._saisieAgent(defauts), 'salaireBase': '120000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       expect(col.toutes.length, n0 + 1);
-      fichesEgales(col.toutes.first, obj(obj(p['creation'])['creee'])['fiche'] as M);
+      // Le numéro CNSS laissé vide est MARQUÉ « à renseigner » : le seul écart avec la fiche de la maquette.
+      fichesEgales(col.toutes.first, obj(obj(p['creation'])['creee'])['fiche'] as M, ignores: {'cnssProvisoire'});
+      expect(col.toutes.first['cnssProvisoire'], true);
+      expect(col.toutes.first['categorieProvisoire'], isNot(true), reason: 'catégorie saisie : aucune attente');
       expect(find.text('Nouveau agent créé.'), findsWidgets, reason: 'le message de la maquette');
       kpisIdentiques(t, obj(obj(p['creation'])['apres'])['kpis']);
       await t.pump(const Duration(seconds: 10));
@@ -62,7 +72,7 @@ void main() {
       await ouvrir(t, m, 'm10-personnel');
       final col = m.collection('personnel');
       await cliquer(t, find.widgetWithText(BoutonSigh, 'Nouveau').first);
-      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', 'salaireBase': '120000'});
+      poser(t, {'matricule': '99', 'nom': 'AGORO', 'prenom': 'Routoun', 'fonction': 'infirmier', 'service': 'Soins infirmiers', 'poste': 'Infirmière', ..._saisieAgent(obj(obj(p['creation'])['defauts'])), 'salaireBase': '120000'});
       await t.tap(find.widgetWithText(BoutonSigh, 'Créer'));
       await t.pump(const Duration(milliseconds: 400));
       await chercher(t, 'AGORO');
@@ -76,7 +86,7 @@ void main() {
       await t.tap(find.widgetWithText(BoutonSigh, 'Enregistrer'));
       await t.pump(const Duration(milliseconds: 400));
       final f = col.toutes.firstWhere((x) => x['matricule'] == '99');
-      fichesEgales(f, obj(obj(obj(p['modification'])['enregistre'])['fiche']));
+      fichesEgales(f, obj(obj(obj(p['modification'])['enregistre'])['fiche']), ignores: {'cnssProvisoire'});
       expect(f['nomComplet'], 'AGORO Routoun-Marie');
       await archiverLigne(t, 'Départ');
       expect(col.toutes.firstWhere((x) => x['matricule'] == '99')['statut'], 'archive');

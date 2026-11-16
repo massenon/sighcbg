@@ -38,7 +38,7 @@ void main() {
       gesteReglageSms,
       gesteFiscalValiderConfiguration, gesteAibTenir, gesteFiscalConfirmer, gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
       gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhEncadrer,
-      gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
+      gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteRhConfirmerValeur, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
       // Plan de travail annuel (lot PTA, 17/11/2026) : adopter, régler les référentiels, recevoir l'alerte de retard.
       gestePtaAdopter, gestePtaRegler, gesteAlertesPtaRetard,
     ]);
