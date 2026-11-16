@@ -19,6 +19,21 @@ Object? astGeler(Object? v) {
   return v;
 }
 
+/// Ce que l'assistant lit de la MATRICE au-delà du rôle de la session — en LECTURE SEULE, jamais un nom de rôle comparé : les rôles en force (archivés écartés), leur
+/// libellé, qui voit un écran, qui détient un geste réservé (`DroitsGestes`), les écrans d'un module (manifeste). Sert à dire « en attente de la validation de <poste> »
+/// sans nommer un poste en dur, et à répondre « quels rôles ouvrent les écrans de la paie ». `null` (test nu, poste sans matrice) : les réponses qui en dépendent le DISENT.
+class MatriceAst {
+  const MatriceAst({required this.roles, required this.libelleRole, required this.roleVoit, required this.roleDetient, required this.ecransDuModule});
+  final List<String> Function() roles;
+  final String Function(String role) libelleRole;
+  final bool Function(String role, String ecran) roleVoit;
+  final bool Function(String role, String geste) roleDetient;
+  final List<String> Function(String module) ecransDuModule;
+
+  /// Les libellés des rôles qui détiennent [geste] (matrice en force, décisions de la clinique comprises).
+  List<String> titulaires(String geste) => [for (final r in roles()) if (roleDetient(r, geste)) libelleRole(r)];
+}
+
 class ContexteAst {
   ContexteAst({
     required this.role,
@@ -30,6 +45,7 @@ class ContexteAst {
     this.patientContexte,
     this.libelleEcran,
     this.etatSynchro,
+    this.matrice,
   });
 
   /// Le rôle de la session : transmis aux moteurs de droits, JAMAIS comparé à un nom.
@@ -50,6 +66,12 @@ class ContexteAst {
 
   /// L'état de la synchronisation du poste, s'il le sait. `null` : l'assistant ne le lit pas.
   final String? Function()? etatSynchro;
+
+  /// La matrice au-delà de la session (gestes réservés, autres rôles) : lue, jamais écrite. `null` : non branchée, dit dans la réponse.
+  final MatriceAst? matrice;
+
+  /// Le rôle de la session détient-il le geste réservé [geste] ? Sans matrice : `null` (on ne sait pas, et la réponse le dit — jamais « oui » par défaut).
+  bool? detient(String geste) => matrice?.roleDetient(role, geste);
 
   String get jour => astIso(maintenant);
 

@@ -53,6 +53,9 @@ int astTolerance(int longueur) => longueur < 5 ? 0 : (longueur < 8 ? 1 : 2);
 const Map<String, String> astAbreviations = {
   'stk': 'stock', 'cb': 'combien', 'qte': 'quantite', 'fact': 'facture', 'factu': 'facture', 'ordo': 'ordonnance', 'compta': 'comptabilite', 'nb': 'nombre',
   'pat': 'patient', 'assu': 'assurance', 'inv': 'inventaire', 'fourn': 'fournisseur', 'lab': 'laboratoire', 'mvt': 'mouvement', 'peremp': 'peremption',
+  // Relecture des questions d'agents (16/11/2026) : les abréviations de la messagerie, écrites telles quelles par les agents.
+  'koi': 'quoi', 'pr': 'pour', 'tjrs': 'toujours', 'tjr': 'toujours', 'qqch': 'quelque', 'consult': 'consultation', 'ds': 'dans', 'stp': 'stp', 'echos': 'echographies',
+  'reu': 'reunion', 'amb': 'ambulance', 'compta.': 'comptabilite',
 };
 
 /// `AAAA-MM-JJ`.

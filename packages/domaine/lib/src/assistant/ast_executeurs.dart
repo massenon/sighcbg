@@ -9,9 +9,16 @@
 library;
 
 import '../achats/factures_fournisseurs.dart' show detteFournisseurAValider, detteFournisseurOuverte;
+import '../administration/adm_regles.dart' show admDisponibilite, admOrdreAppelRapide, admPerime;
+import '../comptabilite/cpa_plan.dart' show cpaPlanComptable;
+import '../droits/gestes_reserves.dart' show gesteReserve, gesteValiderAchats;
+import '../imagerie/cr_moteur.dart' show modaliteDeCodeExamen;
+import '../imagerie/img_demandes_etats.dart' show etatImagerie;
+import '../paie/pai_moteur.dart' show PaiEntrees, paiActivites, paiCalculerTous;
+import '../rh/espace_mes.dart' show agentDeMes;
 import '../droits/donnees_sensibles.dart' show mentionReservee;
 import '../pilotage/pil_stats.dart' show statutsRdvAVenir;
-import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, tranchesBalanceAgeePatient;
+import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, joursArticlesImmobilesA, tranchesBalanceAgeePatient;
 import '../format/format_fr.dart' show money, nombreOuNul;
 import '../format/js.dart' show nombreOuZero;
 import '../labo/res_etats.dart' show etatResultat;
@@ -20,8 +27,10 @@ import '../caisse/prise_en_charge.dart' show carteValide, couvertureALaDate;
 import '../referentiels/regles.dart' show lireCodePatient, resultatRendu;
 import '../stock/stock.dart' show etatStock, joursAvantPeremption, libelleCategorie, ordreFefo, seuilFixe, sousSeuil, valeurStock;
 import '../tarifs/tarifs.dart' show ReferentielTarifs;
+import 'ast_catalogue.dart' show refusAst;
 import 'ast_contexte.dart';
 import 'ast_reconnaissance.dart';
+import 'ast_stock_date.dart';
 import 'ast_texte.dart';
 
 typedef ExecuteurAst = ReponseAst Function(ContexteAst cx, ReconnaissanceAst r, String question);
@@ -89,6 +98,34 @@ String _jourVise(ReconnaissanceAst r, ContexteAst cx) {
 }
 
 Map<String, Object?>? _periodeDe(ReconnaissanceAst r, [String cle = 'periode']) => (r.parametres[cle] as Map?)?.cast<String, Object?>();
+
+/// La date d'un ÉTAT (un stock) : le jour visé, ou la FIN d'une période passée (« fin septembre », « le mois dernier ») ; sinon aujourd'hui.
+String _dateEtat(ReconnaissanceAst r, ContexteAst cx) {
+  final p = _periodeDe(r);
+  if (p == null || p['debut'] == null || p['type'] == 'anciennete_jours') return cx.jour;
+  final fin = '${p['fin'] ?? p['debut']}';
+  return fin.compareTo(cx.jour) < 0 ? fin : cx.jour;
+}
+
+/// La période dite, sinon la SEMAINE en cours (lundi au dimanche) : réunions, congés.
+({String debut, String fin, String libelle}) _plageSemaine(ReconnaissanceAst r, ContexteAst cx) {
+  final p = _periodeDe(r);
+  if (p != null && p['debut'] != null && p['type'] != 'anciennete_jours') return _plage(p, cx, joursParDefaut: 0);
+  final j = DateTime.utc(cx.maintenant.year, cx.maintenant.month, cx.maintenant.day);
+  final lundi = j.subtract(Duration(days: j.weekday - 1));
+  final d = astIso(lundi), f = astIso(lundi.add(const Duration(days: 6)));
+  return (debut: d, fin: f, libelle: 'la semaine du ${_d(d)} au ${_d(f)}');
+}
+
+/// La période dite, sinon le MOIS en cours : balance des comptes, masse salariale.
+({String debut, String fin, String libelle}) _plageMois(ReconnaissanceAst r, ContexteAst cx) {
+  final p = _periodeDe(r);
+  if (p != null && p['debut'] != null && p['type'] != 'anciennete_jours') return _plage(p, cx, joursParDefaut: 0);
+  final d = astIso(DateTime.utc(cx.maintenant.year, cx.maintenant.month, 1)), f = astIso(DateTime.utc(cx.maintenant.year, cx.maintenant.month + 1, 0));
+  return (debut: d, fin: f, libelle: 'le mois du ${_d(d)} au ${_d(f)}');
+}
+
+String _q(num? v) => v == null ? '—' : (v == v.truncate() ? '${v.toInt()}' : '$v');
 
 bool _dans(Object? date, String debut, String fin) {
   final j = _jour10(date);
@@ -256,12 +293,9 @@ ReponseAst _i03(ContexteAst cx, ReconnaissanceAst r, String q) {
   ], src);
 }
 
-/// Q9 (décision du 15/11/2026) : DEUX réponses distinctes, jamais confondues. « Recettes » = ce qui a été ENCAISSÉ (lignes réglées, date de règlement) ; « chiffre d'affaires » = ce qui a
-/// été FACTURÉ (montant TTC des factures, date de facture). Une question qui nomme l'une répond l'autre en une phrase de renvoi ; une question qui nomme les deux reçoit les deux.
+/// Q9 (15/11/2026) puis relecture des questions d'agents (16/11/2026) : DEUX grandeurs, jamais confondues ni additionnées, et TOUJOURS données ensemble — l'ENCAISSÉ (lignes réglées,
+/// date de règlement) et le FACTURÉ (montant TTC des factures, date de facture). Chacune est nommée et porte sa définition ; une grandeur vide le dit sans effacer l'autre.
 ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
-  final t = astNormaliser(q);
-  final veutCa = t.contains('chiffre d affaires');
-  final veutRecettes = t.contains('recette') || t.contains('encaisse') || !veutCa;
   final pl = _plage(_periodeDe(r), cx, joursParDefaut: 0);
   num encaisse(String debut, String fin, Map<String, num> parType, Set<Object?> factures) {
     var t = 0.0;
@@ -293,43 +327,40 @@ ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
   const src = [SourceAst('m8-recettes', 'factures')];
   final cmp = _periodeDe(r, 'periodeComparee');
   final lignes = <String>[];
-  TableauAst? tableau;
   final titres = <String>[];
+  final parTypes = <String, Map<String, num>>{};
   var rien = true;
 
-  void bloc(String nom, num Function(String, String, Map<String, num>, Set<Object?>) calc, String definition, String autre, String vide) {
+  void bloc(String nom, num Function(String, String, Map<String, num>, Set<Object?>) calc, String definition, String vide) {
     final parType = <String, num>{};
     final facts = <Object?>{};
     final total = calc(pl.debut, pl.fin, parType, facts);
     if (facts.isEmpty && total == 0) {
       lignes.add(vide);
+      titres.add('$nom : aucun');
       return;
     }
     rien = false;
     titres.add('$nom ${pl.libelle} : ${money(total)}');
-    lignes.add('$nom : ${money(total)} sur ${facts.length} facture(s).');
+    lignes.add('$nom : ${money(total)} sur ${facts.length} facture(s). Définition : $definition');
     if (cmp != null) {
       final t2 = calc('${cmp['debut']}', '${cmp['fin']}', <String, num>{}, <Object?>{});
       lignes.add('$nom, période comparée (du ${_d(cmp['debut'])} au ${_d(cmp['fin'])}) : ${money(t2)} — écart ${money(total - t2)}.');
     }
-    lignes.add('Définition : $definition');
-    lignes.add(autre);
-    final types = parType.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-    tableau ??= TableauAst(['Type de facture', nom], [for (final e in types) [e.key, money(e.value)]]);
+    parTypes[nom] = parType;
   }
 
-  if (veutRecettes) {
-    bloc('Recettes (encaissé)', encaisse, 'somme des lignes réglées (`montantRegle`) dont la date de règlement tombe dans la période.',
-        veutCa ? 'Le chiffre d’affaires (facturé) est une AUTRE grandeur, donnée ci-dessus à part.' : 'Pour ce qui a été FACTURÉ sur la période, demandez le chiffre d’affaires : ce n’est pas la même chose.',
-        'Aucune recette (encaissé) ${pl.libelle} : aucune ligne de facture n’a été réglée sur cette période.');
-  }
-  if (veutCa) {
-    bloc('Chiffre d’affaires (facturé)', facture, 'somme du montant TTC des factures dont la date de facture tombe dans la période, réglées ou non (les avoirs se lisent à l’écran des factures).',
-        veutRecettes ? 'Les recettes (encaissé) sont une AUTRE grandeur, données ci-dessus à part.' : 'Pour ce qui a été ENCAISSÉ sur la période, demandez les recettes : ce n’est pas la même chose.',
-        'Aucun chiffre d’affaires (facturé) ${pl.libelle} : aucune facture n’est datée de cette période.');
-  }
-  if (rien) return _vide('I14', veutRecettes && veutCa ? 'Ni recettes ni chiffre d’affaires ${pl.libelle}' : (veutCa ? 'Aucun chiffre d’affaires ${pl.libelle}' : 'Aucune recette ${pl.libelle}'), lignes, src);
-  return _rep('I14', titres.join(' ; '), lignes, src, tableau: tableau);
+  bloc('Recettes (encaissé)', encaisse, 'somme des lignes réglées (`montantRegle`) dont la date de règlement tombe dans la période.',
+      'Recettes (encaissé) ${pl.libelle} : aucune ligne de facture n’a été réglée sur cette période.');
+  bloc('Chiffre d’affaires (facturé)', facture, 'somme du montant TTC des factures dont la date de facture tombe dans la période, réglées ou non (les avoirs se lisent à l’écran des factures).',
+      'Chiffre d’affaires (facturé) ${pl.libelle} : aucune facture n’est datée de cette période.');
+  lignes.add('Les deux chiffres sont donnés ENSEMBLE (décision du 16/11/2026) : ce sont deux grandeurs différentes, qui ne s’additionnent pas.');
+  if (rien) return _vide('I14', 'Ni recettes ni chiffre d’affaires ${pl.libelle}', lignes, src);
+  final types = <String>{for (final m in parTypes.values) ...m.keys}.toList()..sort();
+  final enc = parTypes['Recettes (encaissé)'] ?? const <String, num>{};
+  final fac = parTypes['Chiffre d’affaires (facturé)'] ?? const <String, num>{};
+  return _rep('I14', titres.join(' ; '), lignes, src,
+      tableau: TableauAst(['Type de facture', 'Encaissé', 'Facturé'], [for (final t in types) [t, enc.containsKey(t) ? money(enc[t]) : '—', fac.containsKey(t) ? money(fac[t]) : '—']]));
 }
 
 ReponseAst _i15(ContexteAst cx, ReconnaissanceAst r, String q) {
@@ -524,6 +555,8 @@ ReponseAst _i07(ContexteAst cx, ReconnaissanceAst r, String q) {
         lignes: ['Précisez lequel : ${cands.take(6).map((p) => p['designation']).join(' ; ')}${cands.length > 6 ? ' …' : ''}.'], sources: src);
   }
   final p = cands.first;
+  final dateEtat = _dateEtat(r, cx);
+  if (dateEtat.compareTo(cx.jour) < 0) return _i07ALaDate(cx, p, dateEtat);
   final seuil = p['seuilAlerte'];
   final lignes = <String>[
     'Stock total : ${p['stock'] ?? 0} ${p['unite'] ?? ''}'.trim(),
@@ -544,6 +577,27 @@ ReponseAst _i07(ContexteAst cx, ReconnaissanceAst r, String q) {
     lignes.add(_nonLu(['m6-lots'], cx));
   }
   return _rep('I07', '${p['designation']} — ${p['stock'] ?? 0} en stock', lignes, src, tableau: tableau);
+}
+
+/// Le stock d'UN article à une date passée, RECONSTITUÉ depuis les mouvements (décision du 16/11/2026) : sous le droit de l'écran des mouvements, qu'elle lit ; « non calculable »
+/// dès que la reconstitution ne tient pas, jamais zéro.
+ReponseAst _i07ALaDate(ContexteAst cx, Map<String, Object?> p, String date) {
+  if (!cx.peutVoirEcran('m6-mouvements')) {
+    return _refusLecture('I07', 'Le stock à une date passée lit les mouvements de stock', ['La reconstitution lit l’écran ${cx.ecran('m6-mouvements')}, hors de votre périmètre. Le stock d’aujourd’hui reste lisible.']);
+  }
+  const src = [SourceAst('m6-produits', 'produits'), SourceAst('m6-mouvements', 'mouvements')];
+  final rec = reconstituerStockA([p], cx.col('mouvements'), date)['${p['id']}']!;
+  if (!rec.fiable) {
+    return ReponseAst(statut: 'non_calculable', code: 'NON_CALCULABLE', intention: 'I07', titre: '${p['designation']} — stock au ${_d(date)} : non calculable', lignes: [
+      'La reconstitution depuis les mouvements ne tient pas : ${rec.motifs.take(3).join(' ; ')}${rec.motifs.length > 3 ? ' …' : ''}.',
+      'Je ne donne ni zéro ni un chiffre approché. Le stock d’aujourd’hui reste lisible : ${p['stock'] ?? '—'}.',
+    ], sources: src);
+  }
+  return _rep('I07', '${p['designation']} — ${_q(rec.total)} en stock au ${_d(date)} (reconstitué)', [
+    'Stock reconstitué au ${_d(date)} au soir : stock d’aujourd’hui (${_q(nombreOuZero(p['stock']))}) moins l’effet de ${rec.mouvementsPosterieurs} mouvement(s) postérieur(s).',
+    rec.gros != null ? 'Magasin (gros) : ${_q(rec.gros)} ; détail : ${_q(rec.detail)}.' : 'Répartition gros / détail : non reconstituable (un mouvement ne dit pas son magasin, ou la fiche ne porte pas la répartition) ; seul le total l’est.',
+    'Méthode (décision du 16/11/2026) : stock actuel moins les mouvements postérieurs, par magasin ; un mouvement illisible, un stock incohérent ou un résultat négatif rendent la réponse « non calculable ».',
+  ], src);
 }
 
 ReponseAst _i08(ContexteAst cx, ReconnaissanceAst r, String q) {
@@ -576,7 +630,12 @@ ReponseAst _i08(ContexteAst cx, ReconnaissanceAst r, String q) {
 }
 
 ReponseAst _i09(ContexteAst cx, ReconnaissanceAst r, String q) {
-  final pl = _plage(_periodeDe(r), cx, joursParDefaut: 30);
+  final texte = astNormaliser(q);
+  final dormants = texte.contains('bouge') || texte.contains('sans sortie') || texte.contains('ne sortent plus') || texte.contains('dormants') || texte.contains('tourne pas') || texte.contains('tournent pas') ||
+      texte.contains('immobile');
+  // La durée d'un article « immobile » est un RÉGLAGE de clinique quand la question ne la dit pas (décision du 16/11/2026) ; le classement des sorties garde ses 30 jours.
+  final dureeImmobile = joursArticlesImmobilesA(cx.col('parametres'), cx.jour);
+  final pl = _plage(_periodeDe(r), cx, joursParDefaut: dormants ? dureeImmobile : 30);
   final sorties = [for (final m in cx.col('mouvements')) if (m['type'] == 'sortie' && _dans(m['date'], pl.debut, pl.fin)) m];
   const src = [SourceAst('m6-mouvements', 'mouvements')];
   final parProduit = <String, num>{};
@@ -586,14 +645,12 @@ ReponseAst _i09(ContexteAst cx, ReconnaissanceAst r, String q) {
     parProduit[k] = (parProduit[k] ?? 0) + nombreOuZero(m['quantite']);
     noms[k] = '${m['produit'] ?? k}';
   }
-  final texte = astNormaliser(q);
-  final dormants = texte.contains('bouge') || texte.contains('sans sortie') || texte.contains('ne sortent plus') || texte.contains('dormants') || texte.contains('tourne pas') || texte.contains('tournent pas');
   if (dormants) {
     final ids = parProduit.keys.toSet();
     final fixes = [for (final p in cx.col('produits')) if (nombreOuZero(p['stock']) > 0 && !ids.contains('${p['id']}')) p];
     if (fixes.isEmpty) return _vide('I09', 'Aucun article immobile ${pl.libelle}', const ['Tous les articles en stock ont eu au moins une sortie sur la période.'], src);
     return _rep('I09', '${fixes.length} article(s) en stock sans aucune sortie ${pl.libelle}', [
-      'Définition PROPOSÉE : « ne tourne plus » = du stock et aucune sortie sur la période (aucun document ne la fixe).',
+      'Définition : « ne tourne plus » = du stock et aucune sortie sur la période${_periodeDe(r) == null ? ' — durée réglée par la clinique ($dureeImmobile jours, réglage « Articles immobiles », valeur d’attente à valider)' : ' demandée'}.',
       fixes.take(10).map((p) => '${p['designation']}').join(' ; ') + (fixes.length > 10 ? ' …' : ''),
     ], src);
   }
@@ -608,6 +665,8 @@ ReponseAst _i10(ContexteAst cx, ReconnaissanceAst r, String q) {
   final produits = cx.col('produits');
   const src = [SourceAst('m6-point-stock', 'produits')];
   if (produits.isEmpty) return _vide('I10', 'Aucun article au stock', const [], src);
+  final dateEtat = _dateEtat(r, cx);
+  if (dateEtat.compareTo(cx.jour) < 0) return _i10ALaDate(cx, produits, dateEtat);
   final par = <String, List<Map<String, Object?>>>{};
   for (final p in produits) {
     (par['${p['categorie'] ?? 'autre'}'] ??= []).add(p);
@@ -619,6 +678,35 @@ ReponseAst _i10(ContexteAst cx, ReconnaissanceAst r, String q) {
     if (prov > 0) '$prov référence(s) valorisée(s) à titre PROVISOIRE (valeur d’attente à confirmer par la Direction).',
     'Aucun axe de secteur n’existe au magasin : la ventilation est par catégorie d’article.',
   ], src, tableau: TableauAst(['Catégorie', 'Références', 'Valeur'], [for (final e in par.entries) [libelleCategorie(e.key), '${e.value.length}', money(valeurStock(e.value))]]));
+}
+
+/// La valeur du stock à une date passée : les QUANTITÉS se reconstituent depuis les mouvements, la VALEUR non — le CUMP n'est conservé qu'à aujourd'hui, et valoriser une
+/// quantité d'hier au CUMP du jour donnerait un chiffre qui a l'air juste et ne l'est pas. La réponse est donc « non calculable », quantités à l'appui quand elles tiennent.
+ReponseAst _i10ALaDate(ContexteAst cx, List<Map<String, Object?>> produits, String date) {
+  if (!cx.peutVoirEcran('m6-mouvements')) {
+    return _refusLecture('I10', 'Le stock à une date passée lit les mouvements de stock', ['La reconstitution lit l’écran ${cx.ecran('m6-mouvements')}, hors de votre périmètre. La valeur d’aujourd’hui reste lisible.']);
+  }
+  const src = [SourceAst('m6-point-stock', 'produits'), SourceAst('m6-mouvements', 'mouvements')];
+  final rec = reconstituerStockA(produits, cx.col('mouvements'), date);
+  final non = [for (final p in produits) if (!(rec['${p['id']}']?.fiable ?? false)) p];
+  final lignes = <String>[
+    'La VALEUR au ${_d(date)} n’est pas calculable : le CUMP n’est conservé qu’à aujourd’hui, et valoriser une quantité d’une autre date au CUMP du jour serait un chiffre approché.',
+  ];
+  TableauAst? tableau;
+  if (non.isEmpty) {
+    final par = <String, num>{};
+    final refs = <String, int>{};
+    for (final p in produits) {
+      final c = '${p['categorie'] ?? 'autre'}';
+      par[c] = (par[c] ?? 0) + rec['${p['id']}']!.total!;
+      refs[c] = (refs[c] ?? 0) + 1;
+    }
+    lignes.add('Les QUANTITÉS, elles, se reconstituent depuis les mouvements (stock actuel moins mouvements postérieurs) : ci-dessous, par catégorie.');
+    tableau = TableauAst(['Catégorie', 'Références', 'Quantité au ${_d(date)}'], [for (final e in par.entries) [libelleCategorie(e.key), '${refs[e.key]}', _q(e.value)]]);
+  } else {
+    lignes.add('Même les quantités ne se reconstituent pas pour ${non.length} référence(s) : ${non.take(3).map((p) => '${p['designation']} (${rec['${p['id']}']?.motifs.first ?? 'non reconstituable'})').join(' ; ')}${non.length > 3 ? ' …' : ''}.');
+  }
+  return ReponseAst(statut: 'non_calculable', code: 'NON_CALCULABLE', intention: 'I10', titre: 'Valeur du stock au ${_d(date)} : non calculable', lignes: lignes, tableau: tableau, sources: src);
 }
 
 ReponseAst _i11(ContexteAst cx, ReconnaissanceAst r, String q) {
@@ -642,10 +730,98 @@ ReponseAst _i11(ContexteAst cx, ReconnaissanceAst r, String q) {
 // Achats
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
+/// Le solde comptable (crédit − débit) des comptes fournisseurs 401… sur les écritures VALIDÉES (un brouillon n'est pas un fait comptable : compté et dit). [compte] : un sous-compte
+/// précis ; sinon toute la classe 401.
+({double solde, int nb, int brouillons}) _solde401(ContexteAst cx, {String? compte}) {
+  var d = 0.0, c = 0.0;
+  var nb = 0, br = 0;
+  for (final e in cx.col('ecritures')) {
+    final n = '${e['compte'] ?? ''}';
+    if (!(compte == null ? n.startsWith('401') : n == compte)) continue;
+    if (e['statut'] != 'validee') {
+      br++;
+      continue;
+    }
+    d += nombreOuZero(e['debit']);
+    c += nombreOuZero(e['credit']);
+    nb++;
+  }
+  return (solde: c - d, nb: nb, brouillons: br);
+}
+
+/// L'écran comptable qui porte le solde, parmi ceux que l'agent voit (grand livre d'abord) ; `null` : aucun.
+String? _ecranCompta(ContexteAst cx) => cx.peutVoirEcran('m12-grand-livre') ? 'm12-grand-livre' : (cx.peutVoirEcran('m12-balance') ? 'm12-balance' : null);
+
+/// LA DETTE FOURNISSEUR EN DEUX CHIFFRES ET UN ÉCART (décision du 16/11/2026, qui remplace « une seule définition » de Q13 pour l'assistant ; l'écran M7 garde la sienne) : les factures
+/// fournisseurs non payées (définition prudente, inchangée) et le solde comptable 401, chacun sous le droit de SON écran ; sans les deux, l'écart est « non calculable ».
+void _detteDeuxChiffres(ContexteAst cx, List<String> lignes, List<SourceAst> sources, List<String> non, {Map<String, Object?>? fournisseur}) {
+  num? factures;
+  if (cx.peutVoirEcran('m7-factures-fournisseurs')) {
+    sources.add(const SourceAst('m7-factures-fournisseurs', 'facturesFournisseurs'));
+    final due = [
+      for (final x in cx.col('facturesFournisseurs'))
+        if ((fournisseur == null || x['fournisseur'] == fournisseur['code']) && detteFournisseurOuverte(x)) x
+    ];
+    factures = due.fold<num>(0, (a, x) => a + nombreOuZero(x['montantFacture']));
+    lignes.add('1. Factures fournisseurs non payées : ${money(factures)} sur ${due.length} facture(s). $detteFournisseurAValider');
+  } else {
+    non.add('m7-factures-fournisseurs');
+    lignes.add('1. Factures fournisseurs non payées : non lues (écran hors de votre périmètre).');
+  }
+  num? compta;
+  final ec = _ecranCompta(cx);
+  if (ec != null) {
+    sources.add(SourceAst(ec, 'ecritures'));
+    String? sousCompte;
+    if (fournisseur != null) {
+      // Le sous-compte 401 du fournisseur : au plan comptable (statique), par son NOM ; plusieurs ou aucun : on ne choisit pas.
+      final c = <String>{
+        for (final x in cpaPlanComptable)
+          if (x.$1.startsWith('401') && x.$1 != '401000' && _correspond(x.$2, '${fournisseur['nom'] ?? ''}')) x.$1
+      };
+      if (c.length == 1) sousCompte = c.first;
+    }
+    if (fournisseur != null && sousCompte == null) {
+      final g = _solde401(cx);
+      lignes.add('2. Solde comptable : aucun sous-compte 401 au nom de ce fournisseur au plan comptable — non calculable pour lui (le solde de l’ensemble des comptes 401 est ${money(g.solde)}).');
+    } else {
+      final s = _solde401(cx, compte: sousCompte);
+      compta = s.solde;
+      lignes.add('2. Solde comptable du compte fournisseur ${sousCompte ?? '(classe 401)'} : ${money(compta)} — écritures VALIDÉES, crédit moins débit, ${s.nb} ligne(s)${s.brouillons > 0 ? ' ; ${s.brouillons} écriture(s) en brouillon non comptée(s)' : ''}.');
+    }
+  } else {
+    non.addAll(['m12-grand-livre', 'm12-balance']);
+    lignes.add('2. Solde comptable du compte fournisseur (401) : non lu (écrans comptables hors de votre périmètre).');
+  }
+  if (factures != null && compta != null) {
+    final e = factures - compta;
+    lignes.add(e == 0
+        ? 'Écart (factures non payées − solde comptable) : nul, les deux chiffres concordent.'
+        : 'Écart (factures non payées − solde comptable) : ${money(e)}. Les deux chiffres ne disent pas la même chose : une facture réglée en partie compte entière côté factures, une facture non encore comptabilisée ou un règlement saisi d’un seul côté le creusent ; il se lève pièce par pièce, jamais en choisissant un chiffre.');
+  } else {
+    lignes.add('Écart : non calculable — il faut les deux chiffres.');
+  }
+}
+
 ReponseAst _i12(ContexteAst cx, ReconnaissanceAst r, String q) {
-  final requete = '${r.parametres['fournisseur']}';
-  final fs = [for (final f in cx.col('fournisseurs')) if (_correspond('${f['nom'] ?? ''} ${f['code'] ?? ''}', requete)) f];
+  final requete = '${r.parametres['fournisseur'] ?? ''}'.trim();
   const src = [SourceAst('m7-fournisseurs', 'fournisseurs')];
+  final t = astNormaliser(q);
+  if (requete.isEmpty && RegExp(r'\b(coordonnees|telephone|tel|contact|livraisons?|commandes?|adresse)\b').hasMatch(t)) {
+    // Les coordonnées, les livraisons ou les commandes sont celles d'UN fournisseur : on ne devine pas lequel.
+    return ReponseAst(statut: 'precision', code: 'PRECISION_REQUISE', intention: 'I12', titre: 'De quel fournisseur parlez-vous ?', lignes: const ['Donnez le nom ou le code du fournisseur.'], geste: refusAst['PRECISION_REQUISE']!.geste);
+  }
+  if (requete.isEmpty) {
+    // Sans nom : la dette GLOBALE envers les fournisseurs, en deux chiffres et un écart.
+    final lignes = <String>[];
+    final sources = <SourceAst>[];
+    final non = <String>[];
+    _detteDeuxChiffres(cx, lignes, sources, non);
+    if (sources.isEmpty) return _refusLecture('I12', 'Ni les factures fournisseurs ni la comptabilité ne sont dans votre périmètre', [_nonLu(non.toSet().toList(), cx)]);
+    if (non.isNotEmpty) lignes.add(_nonLu(non.toSet().toList(), cx));
+    return _rep('I12', 'Dette envers les fournisseurs : deux chiffres et leur écart', lignes, sources);
+  }
+  final fs = [for (final f in cx.col('fournisseurs')) if (_correspond('${f['nom'] ?? ''} ${f['code'] ?? ''}', requete)) f];
   if (fs.isEmpty) return _vide('I12', 'Aucun fournisseur « $requete »', const [], src);
   if (fs.length > 1) {
     return ReponseAst(statut: 'ambigue', code: 'HOMONYMES', intention: 'I12', titre: '${fs.length} fournisseurs correspondent à « $requete »',
@@ -670,29 +846,40 @@ ReponseAst _i12(ContexteAst cx, ReconnaissanceAst r, String q) {
   } else {
     non.add('m7-commandes');
   }
-  if (cx.peutVoirEcran('m7-factures-fournisseurs')) {
-    sources.add(const SourceAst('m7-factures-fournisseurs', 'facturesFournisseurs'));
-    final due = [for (final x in cx.col('facturesFournisseurs')) if (x['fournisseur'] == f['code'] && detteFournisseurOuverte(x)) x];
-    final dette = due.fold<num>(0, (a, x) => a + nombreOuZero(x['montantFacture']));
-    lignes.add(due.isEmpty ? 'Dette ouverte : aucune facture fournisseur non soldée.' : 'Dette ouverte : ${money(dette)} sur ${due.length} facture(s) non soldée(s).');
-    lignes.add(detteFournisseurAValider);
+  if (cx.peutVoirEcran('m7-factures-fournisseurs') || _ecranCompta(cx) != null) {
+    lignes.add('Dette envers ce fournisseur — deux chiffres et leur écart :');
+    _detteDeuxChiffres(cx, lignes, sources, non, fournisseur: f);
   } else {
-    non.add('m7-factures-fournisseurs');
+    non.addAll(['m7-factures-fournisseurs', 'm12-grand-livre']);
   }
-  if (non.isNotEmpty) lignes.add(_nonLu(non, cx));
+  if (non.isNotEmpty) lignes.add(_nonLu(non.toSet().toList(), cx));
   return _rep('I12', '${f['nom']}', lignes, sources);
 }
 
+/// RG-04 : la validation d'une commande appartient au titulaire du geste réservé « Valider les achats », LU dans la matrice. Un rôle qui ne le détient pas reçoit un SUIVI
+/// (« en attente de la validation de <poste> »), jamais « à valider par vous » (décision du 16/11/2026) — aucun poste n'est écrit en dur.
 ReponseAst _i13(ContexteAst cx, ReconnaissanceAst r, String q) {
   final cmds = cx.col('commandes');
   const src = [SourceAst('m7-commandes', 'commandes')];
   final att = [for (final c in cmds) if (c['statutCommande'] == 'attente_validation') c];
   final val = [for (final c in cmds) if (c['valideePar'] != null && '${c['valideePar']}'.isNotEmpty) c]..sort((a, b) => '${b['dateValidation']}'.compareTo('${a['dateValidation']}'));
+  final geste = (gesteReserve(gesteValiderAchats)?.libelle ?? gesteValiderAchats).split(' :').first;
+  final titulaires = cx.matrice?.titulaires(gesteValiderAchats);
+  final qui = titulaires == null
+      ? 'du titulaire du geste « $geste » (la matrice des gestes n’est pas lue ici)'
+      : (titulaires.isEmpty ? 'd’aucun poste : personne ne détient aujourd’hui le geste « $geste » (à régler dans Rôles & permissions)' : 'de : ${titulaires.join(', ')}');
+  final moi = cx.detient(gesteValiderAchats) == true;
   final lignes = [
-    if (val.isNotEmpty) 'Dernières validations (RG-04, Directrice Administrative) : ${val.take(3).map((c) => '${c['reference']} par ${c['valideePar']} le ${_d(c['dateValidation'])}').join(' ; ')}.',
+    moi
+        ? 'Vous détenez le geste réservé « $geste » (RG-04) : ces commandes attendent VOTRE validation, à poser vous-même à l’écran des commandes.'
+        : 'SUIVI : vous ne détenez pas le geste réservé « $geste » ; ces commandes attendent la validation $qui. Elles ne sont pas à valider par vous.',
+    if (val.isNotEmpty) 'Dernières validations (RG-04) : ${val.take(3).map((c) => '${c['reference']} par ${c['valideePar']} le ${_d(c['dateValidation'])}').join(' ; ')}.',
   ];
   if (att.isEmpty) return _vide('I13', 'Aucune commande n’attend de validation', lignes, src);
-  return _rep('I13', '${att.length} commande(s) en attente de validation', lignes, src,
+  final titre = moi
+      ? '${att.length} commande(s) attendent votre validation'
+      : '${att.length} commande(s) en attente de la validation ${titulaires == null || titulaires.isEmpty ? 'du titulaire du geste' : 'de ${titulaires.join(', ')}'} (suivi)';
+  return _rep('I13', titre, lignes, src,
       tableau: TableauAst(['Commande', 'Fournisseur', 'Date', 'Montant'], [for (final c in att.take(10)) ['${c['reference'] ?? '—'}', '${c['fournisseurNom'] ?? c['fournisseur']}', _d(c['date']), money(c['montant'])]]));
 }
 
@@ -728,10 +915,31 @@ ReponseAst _i17(ContexteAst cx, ReconnaissanceAst r, String q) {
   } else {
     non.add('m1-pieces');
   }
+  // Vue unifiée élargie (décision du 16/11/2026) : courriers de référence, comptes rendus du bloc — chacun sous le droit de SON écran, référence et date seulement.
+  void nature(String ecran, String col, String libelle, {bool soins = false}) {
+    if (!cx.peutVoirEcran(ecran)) {
+      non.add(ecran);
+      return;
+    }
+    src.add(SourceAst(ecran, col));
+    if (soins && !cx.sensible('hospitalisation_soins')) {
+      if (cx.col(col).any((o) => _duPatient(o, p))) lignes.add('$libelle : ${mentionReservee('hospitalisation_soins')}');
+      return;
+    }
+    for (final o in cx.col(col)) {
+      if (_duPatient(o, p)) rows.add([libelle, '${o['numero'] ?? o['reference'] ?? '—'}', _d(o['date'] ?? o['dateOperation'] ?? o['dateReference'] ?? o['dateHeure'])]);
+    }
+  }
+
+  nature('m1-reference', 'fichesReference', 'Courrier — fiche de référence');
+  nature('m1-contre-reference', 'contreReferences', 'Courrier — contre-référence');
+  nature('m3-bloc-cro', 'crOperatoires', 'Compte rendu opératoire', soins: true);
+  nature('m3-cr-anesthesie', 'crAnesthesie', 'Fiche d’anesthésie (compte rendu)', soins: true);
+  nature('m3-cpa', 'cpa', 'Consultation pré-anesthésique', soins: true);
   if (non.isNotEmpty) lignes.add(_nonLu(non, cx));
   rows.sort((a, b) => b[2].split('/').reversed.join().compareTo(a[2].split('/').reversed.join()));
-  if (rows.isEmpty) return _vide('I17', '${p['code']} — aucune ordonnance ni pièce', lignes, src);
-  return _rep('I17', '${p['code']} — ${rows.length} document(s)', ['Les documents numérisés du dossier suivent leur propre droit et ne sont pas lus ici.', ...lignes], src,
+  if (rows.isEmpty) return _vide('I17', '${p['code']} — aucun document du dossier dans votre périmètre', lignes, src);
+  return _rep('I17', '${p['code']} — ${rows.length} document(s)', ['Références et dates seulement : le contenu se lit à l’écran de chaque document. Les documents numérisés du dossier suivent leur propre droit et ne sont pas lus ici.', ...lignes], src,
       tableau: TableauAst(['Nature', 'Référence', 'Date'], rows.take(12).toList()));
 }
 
@@ -744,6 +952,21 @@ ReponseAst _i19(ContexteAst cx, ReconnaissanceAst r, String q) {
     demandes = [for (final d in cx.col('demandesAnalyses')) if (d['codeAnalyse'] == codeAn) d];
     titre = 'Demande $codeAn';
     if (demandes.isEmpty) return _vide('I19', 'Aucune demande portant le code $codeAn', const [], src);
+  } else if (codeAn == null && !r.parametres.containsKey('codePatient') && !r.parametres.containsKey('nomPatient') && r.parametres['patient'] == null) {
+    // Sans patient ni code : les demandes NON RENDUES comptées par état — aucun patient, aucun résultat (relecture des questions d'agents, 16/11/2026).
+    final toutes = cx.col('demandesAnalyses');
+    final attente = [for (final d in toutes) if (!resultatRendu('${d['etatAnalyse']}')) d];
+    final jour = _jourVise(r, cx);
+    if (attente.isEmpty) return _vide('I19', 'Aucune demande d’analyse en attente de rendu', const ['Toutes les demandes enregistrées sont rendues.'], src);
+    final par = <String, int>{};
+    for (final d in attente) {
+      final e = etatResultat(d['etatAnalyse']).label;
+      par[e] = (par[e] ?? 0) + 1;
+    }
+    return _rep('I19', '${attente.length} demande(s) d’analyse non encore rendue(s)', [
+      'Comptées par état ; aucun patient ni résultat n’est cité ici : la liste se lit à l’écran des demandes.',
+      '${toutes.where((d) => _jour10(d['dateHeure']) == jour).length} demande(s) enregistrée(s) le ${_d(jour)}.',
+    ], src, tableau: TableauAst(['État', 'Demandes'], [for (final e in par.entries) [e.key, '${e.value}']]));
   } else {
     final u = _unPatient(cx, r, 'I19');
     if (u.reponse != null) return u.reponse!;
@@ -902,8 +1125,222 @@ ReponseAst _i25(ContexteAst cx, ReconnaissanceAst r, String q) {
   ], src, tableau: TableauAst(['Échéance', 'Période', 'Date', 'État'], rows));
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
+// Relecture des 100 questions d'agents (Direction, 16/11/2026) : aide, glossaire, et huit lectures d'écrans existants, chacune sous le droit de SON écran.
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// I26 et I27 : reconnues pour dire « pas de fiche » — aucune fiche d'aide ni de glossaire n'est écrite et validée par la Direction. Improviser un mode d'emploi ou une définition
+/// serait précisément ce que l'assistant s'interdit.
+ReponseAst _pasDeFiche(String id, String quoi) => ReponseAst(
+    statut: 'non_calculable', code: 'PAS_DE_FICHE', intention: id, titre: 'Pas de fiche validée pour cette question',
+    lignes: ['Aucune fiche $quoi n’a été écrite et validée par la Direction : je ne réponds pas de mémoire.', 'Geste : ${refusAst['PAS_DE_FICHE']!.geste}.'], geste: refusAst['PAS_DE_FICHE']!.geste);
+
+ReponseAst _i26(ContexteAst cx, ReconnaissanceAst r, String q) => _pasDeFiche('I26', 'd’aide (procédure, « comment faire »)');
+ReponseAst _i27(ContexteAst cx, ReconnaissanceAst r, String q) => _pasDeFiche('I27', 'de définition (glossaire, règle de gestion)');
+
+/// I28 : les rôles qui ouvrent les écrans de la paie, lus dans la matrice en force comme l'écran « Rôles & permissions ». Aucune donnée de paie n'est lue.
+ReponseAst _i28(ContexteAst cx, ReconnaissanceAst r, String q) {
+  const src = [SourceAst('m14-roles', 'rbac')];
+  final m = cx.matrice;
+  if (m == null) {
+    return const ReponseAst(statut: 'non_calculable', code: 'NON_CALCULABLE', intention: 'I28', titre: 'Les rôles de la paie : non calculable ici',
+        lignes: ['La matrice des droits n’est pas branchée à l’assistant sur ce poste : ouvrez « Rôles & permissions ».'], sources: src);
+  }
+  final ecrans = m.ecransDuModule('M11');
+  if (ecrans.isEmpty) {
+    return const ReponseAst(statut: 'non_calculable', code: 'NON_CALCULABLE', intention: 'I28', titre: 'Aucun écran de paie au manifeste lu', lignes: ['Le manifeste ne porte aucun écran du module de la paie : je ne compte rien.'], sources: src);
+  }
+  final rows = <List<String>>[];
+  for (final x in m.roles()) {
+    final vus = [for (final e in ecrans) if (m.roleVoit(x, e)) e];
+    if (vus.isNotEmpty) rows.add([m.libelleRole(x), '${vus.length} / ${ecrans.length}', vus.length == ecrans.length ? 'tous' : vus.map(cx.ecran).join(', ')]);
+  }
+  if (rows.isEmpty) return _vide('I28', 'Aucun rôle n’ouvre les écrans de la paie', const ['La matrice en force ne donne la paie à aucun rôle actif.'], src);
+  return _rep('I28', '${rows.length} rôle(s) ouvrent au moins un écran de la paie', [
+    'Lu dans la matrice EN FORCE (décisions de la clinique comprises), comme l’écran « Rôles & permissions ». Ouvrir un écran ne veut pas dire pouvoir y écrire.',
+    'Aucune donnée de paie n’est lue pour répondre, aucun nom de personne n’est donné.',
+  ], src, tableau: TableauAst(['Rôle', 'Écrans de la paie ouverts', 'Lesquels'], rows));
+}
+
+/// I29 : la masse salariale BRUTE du mois, calculée comme l'écran « Calcul de la paie » (même moteur, mêmes entrées). L'assouplissement de Q16 ne va pas plus loin : aucun nom,
+/// aucun salaire individuel, aucun bulletin.
+ReponseAst _i29(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final pl = _plageMois(r, cx);
+  final annee = int.parse(pl.debut.substring(0, 4)), mois = int.parse(pl.debut.substring(5, 7));
+  const src = [SourceAst('m11-calcul', 'personnel')];
+  final a = paiActivites(cx.col('modulesActifs'));
+  final e = PaiEntrees(
+    planning: cx.col('planning'),
+    evaluations: cx.col('evaluations'),
+    avances: cx.col('avances'),
+    participations: cx.col('participations'),
+    grille: cx.col('grillePrimes'),
+    historique: cx.col('historiquePrimes'),
+    heuresSup: cx.col('heuresSup'),
+    prets: cx.col('pretsEtudes'),
+    primesNs132: a.primesNs132,
+    sanctionsNs131: a.sanctionsNs131,
+    obligationsFiscales: cx.col('obligationsFiscales'),
+    historiqueObligations: cx.col('historiqueObligations'),
+  );
+  final calc = paiCalculerTous(cx.col('personnel'), annee, mois, e, cx.maintenant);
+  final libMois = '${mois.toString().padLeft(2, '0')}/$annee';
+  if (calc.isEmpty) {
+    return _vide('I29', 'Aucun agent payé pour $libMois', const ['Aucun agent du personnel ne porte de salaire de base : la masse salariale ne se calcule pas (elle n’est pas « nulle »).'], src);
+  }
+  final brut = calc.fold<num>(0, (s, x) => s + x.brut);
+  final lignes = <String>[
+    'Masse salariale BRUTE de $libMois : ${money(brut)} pour ${calc.length} agent(s).',
+    'Calculée comme l’écran « Calcul de la paie » (planning validé → primes → sanctions). Aucun nom, aucun salaire individuel, aucun bulletin n’est donné par l’assistant.',
+    if (!a.primesNs132 || !a.sanctionsNs131) 'Une activité de la paie est fermée dans Paramètres système : le brut en tient compte, comme à l’écran.',
+  ];
+  final src2 = [...src];
+  if (cx.peutVoirEcran('m11-bulletins')) {
+    final bul = [for (final b in cx.col('bulletins')) if ('${b['annee']}' == '$annee' && '${b['mois']}' == '$mois') b];
+    src2.add(const SourceAst('m11-bulletins', 'bulletins'));
+    lignes.add(bul.isEmpty
+        ? 'Aucun bulletin généré pour ce mois : le chiffre ci-dessus est le calcul du jour.'
+        : '${bul.length} bulletin(s) déjà généré(s) pour ce mois, brut total ${money(bul.fold<num>(0, (s, b) => s + nombreOuZero(b['brut'])))} : les bulletins validés font foi.');
+  }
+  return _rep('I29', 'Masse salariale brute de $libMois : ${money(brut)}', lignes, src2);
+}
+
+/// I30 : la balance des comptes d'une période (le mois par défaut), sur les écritures VALIDÉES ; les libellés viennent du plan comptable STATIQUE (lire la collection `comptes`
+/// la ferait semer au premier accès : l'assistant ne provoque aucune écriture).
+ReponseAst _i30(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final pl = _plageMois(r, cx);
+  const src = [SourceAst('m12-balance', 'ecritures')];
+  final e = [for (final x in cx.col('ecritures')) if (_dans(x['date'], pl.debut, pl.fin)) x];
+  final val = [for (final x in e) if (x['statut'] == 'validee') x];
+  final br = e.where((x) => x['statut'] != 'validee').length;
+  if (val.isEmpty) {
+    return _vide('I30', 'Aucune écriture validée sur ${pl.libelle}', [if (br > 0) '$br écriture(s) en brouillon : non comptées (un brouillon n’est pas un fait comptable).'], src);
+  }
+  final comptes = <String, ({double d, double c})>{};
+  for (final x in val) {
+    final n = '${x['compte'] ?? '?'}';
+    final v = comptes[n] ?? (d: 0.0, c: 0.0);
+    comptes[n] = (d: v.d + nombreOuZero(x['debit']), c: v.c + nombreOuZero(x['credit']));
+  }
+  final parClasse = <String, ({double d, double c})>{};
+  for (final k in comptes.entries) {
+    final cl = k.key.isEmpty ? '?' : k.key[0];
+    final v = parClasse[cl] ?? (d: 0.0, c: 0.0);
+    parClasse[cl] = (d: v.d + k.value.d, c: v.c + k.value.c);
+  }
+  final td = comptes.values.fold<double>(0, (a, v) => a + v.d), tc = comptes.values.fold<double>(0, (a, v) => a + v.c);
+  final equilibre = (td - tc).abs() < 0.005;
+  final classes = parClasse.keys.toList()..sort();
+  String libelle(String n) => cpaPlanComptable.where((x) => x.$1 == n).map((x) => x.$2).firstOrNull ?? 'compte hors plan statique';
+  final gros = comptes.entries.toList()..sort((a, b) => (b.value.d + b.value.c).compareTo(a.value.d + a.value.c));
+  return _rep('I30', 'Balance des comptes, ${pl.libelle} : ${comptes.length} compte(s) mouvementé(s)', [
+    'Total débit : ${money(td)} ; total crédit : ${money(tc)} — ${equilibre ? 'balance équilibrée (RG-10).' : 'DÉSÉQUILIBRÉE de ${money((td - tc).abs())} : une écriture validée ne s’équilibre pas, à corriger à l’écran des écritures (RG-10).'}',
+    'Seules les écritures VALIDÉES datées de la période sont comptées${br > 0 ? ' ; $br brouillon(s) écarté(s)' : ''}.',
+    'Les plus mouvementés : ${gros.take(3).map((x) => '${x.key} ${libelle(x.key)}').join(' ; ')}. Le détail compte par compte se lit à l’écran de la balance.',
+  ], src, tableau: TableauAst(['Classe', 'Débit', 'Crédit', 'Solde'], [for (final c in classes) ['Classe $c', money(parClasse[c]!.d), money(parClasse[c]!.c), money(parClasse[c]!.d - parClasse[c]!.c)]]));
+}
+
+/// I31 : les réunions de la période (la semaine par défaut), lues au registre.
+ReponseAst _i31(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final pl = _plageSemaine(r, cx);
+  const src = [SourceAst('m13-reunions', 'reunions')];
+  final l = [for (final x in cx.col('reunions')) if (_dans(x['date'], pl.debut, pl.fin)) x]..sort((a, b) => '${a['date']} ${a['heure'] ?? ''}'.compareTo('${b['date']} ${b['heure'] ?? ''}'));
+  if (l.isEmpty) return _vide('I31', 'Aucune réunion enregistrée sur ${pl.libelle}', const ['Le registre ne porte aucune réunion à ces dates : ce n’est pas « aucune réunion n’a lieu », c’est « aucune n’est enregistrée ».'], src);
+  return _rep('I31', '${l.length} réunion(s) sur ${pl.libelle}', const ['Le compte rendu de chaque réunion se lit à l’écran des réunions.'], src,
+      tableau: TableauAst(['Date', 'Heure', 'Type', 'Lieu', 'Présidée par'], [for (final x in l.take(12)) [_d(x['date']), '${x['heure'] ?? '—'}', '${x['type'] ?? '—'}', '${x['lieu'] ?? '—'}', '${x['president'] ?? '—'}']]));
+}
+
+/// I32 : l'ambulance disponible, dans l'ordre d'appel rapide du répertoire (disponibles d'abord). Un numéro absent se dit, un numéro ancien est signalé, rien n'est déduit.
+ReponseAst _i32(ContexteAst cx, ReconnaissanceAst r, String q) {
+  const src = [SourceAst('m13-repertoire-ambulances', 'ambulances')];
+  final l = admOrdreAppelRapide(cx.col('ambulances'));
+  if (l.isEmpty) return _vide('I32', 'Aucune ambulance répertoriée', const ['Le répertoire des ambulances est vide : aucun numéro n’est inventé.'], src);
+  final dispo = [for (final x in l) if (x['disponibilite'] == 'disponible') x];
+  String tel(Map<String, Object?> x) => '${x['telephone'] ?? ''}'.trim().isEmpty ? 'numéro à renseigner' : '${x['telephone']}';
+  final lignes = <String>[
+    if (dispo.isEmpty) 'Aucun moyen n’est marqué « disponible » au répertoire : ${l.length} moyen(s), ${l.where((x) => x['disponibilite'] == 'en_course').length} en course.',
+    'La disponibilité est celle portée au répertoire (mise à jour par l’accueil) : appeler pour confirmer.',
+    if (l.any((x) => '${x['telephone'] ?? ''}'.trim().isNotEmpty && admPerime(x, cx.maintenant))) 'Au moins un numéro n’a pas été vérifié depuis longtemps : il est signalé, pas masqué.',
+  ];
+  return _rep('I32', dispo.isEmpty ? 'Aucune ambulance disponible au répertoire' : '${dispo.length} ambulance(s) disponible(s)', lignes, src,
+      tableau: TableauAst(['Moyen', 'Disponibilité', 'Téléphone', 'Vérifié'], [
+        for (final x in l.take(8)) ['${x['libelle'] ?? '—'}', admDisponibilite(x['disponibilite']).libelle, tel(x), '${x['verifieLe'] ?? ''}'.isEmpty ? 'jamais' : '${_d(x['verifieLe'])}${admPerime(x, cx.maintenant) ? ' (ancien)' : ''}']
+      ]));
+}
+
+/// I33 : la prochaine garde de l'agent CONNECTÉ (espace « Mes ») : ses seules lignes du planning, à partir d'aujourd'hui. Une ligne non validée est dite à part.
+ReponseAst _i33(ContexteAst cx, ReconnaissanceAst r, String q) {
+  const src = [SourceAst('m10-mes', 'planning')];
+  final nom = cx.session?.nom;
+  if (nom == null || nom.isEmpty) {
+    return const ReponseAst(statut: 'non_calculable', code: 'NON_CALCULABLE', intention: 'I33', titre: 'Je ne sais pas qui vous êtes sur ce poste',
+        lignes: ['La session ne porte pas de nom d’agent : « ma garde » ne se lit que pour un compte nominatif.'], sources: src);
+  }
+  final a = agentDeMes(acteur: nom, personnelActif: cx.col('personnel'));
+  if (a.agent == null) {
+    return ReponseAst(statut: 'refus', code: a.refus?.code ?? 'NON_CALCULABLE', intention: 'I33', titre: 'Votre compte n’est rattaché à aucun agent du personnel', lignes: [a.refus?.motif ?? '', a.refus?.geste ?? ''].where((x) => x.isNotEmpty).toList(), sources: src);
+  }
+  final id = a.agent!['id'];
+  bool valide(Map<String, Object?> x) => x['statut'] == 'validee' || x['validationEtat'] == 'valide' || x['validationEtat'] == 'validee';
+  final miennes = [
+    for (final x in cx.col('planning'))
+      if (x['employeId'] == id && const ['garde', 'garde_hospi', 'garde_soins', 'permanence'].contains(x['type']) && _jour10(x['date']).compareTo(cx.jour) >= 0) x
+  ]..sort((x, y) => _jour10(x['date']).compareTo(_jour10(y['date'])));
+  final validees = [for (final x in miennes) if (valide(x)) x];
+  final proposees = [for (final x in miennes) if (!valide(x)) x];
+  final lignes = [
+    if (proposees.isNotEmpty) '${proposees.length} ligne(s) proposée(s) non encore validée(s) (la première le ${_d(proposees.first['date'])}) : pas acquise(s).',
+    'Seules VOS lignes du planning sont lues (espace « Mes »).',
+  ];
+  if (validees.isEmpty) return _vide('I33', 'Aucune garde ni permanence validée à venir à votre nom', lignes, src);
+  final p = validees.first;
+  return _rep('I33', 'Votre prochaine ${p['type'] == 'permanence' ? 'permanence' : 'garde'} : le ${_d(p['date'])}', lignes, src,
+      tableau: TableauAst(['Date', 'Type', 'Service'], [for (final x in validees.take(5)) [_d(x['date']), '${x['type']}', '${x['service'] ?? '—'}']]));
+}
+
+/// I34 : les échographies de la journée (aujourd'hui par défaut) : demandes d'imagerie dont l'examen est de modalité échographie, comptées par état. Aucun patient nommé.
+ReponseAst _i34(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final jour = _jourVise(r, cx);
+  final ecran = cx.peutVoirEcran('m2-imagerie-demandes') ? 'm2-imagerie-demandes' : (cx.peutVoirEcran('m2-dashboard-imagerie') ? 'm2-dashboard-imagerie' : 'm2-imagerie');
+  final src = [SourceAst(ecran, 'demandesImagerie')];
+  final examens = cx.col('examensImagerie');
+  final l = [
+    for (final d in cx.col('demandesImagerie'))
+      if (_jour10(d['dateHeure'] ?? d['date']) == jour && '${d['modalite'] ?? modaliteDeCodeExamen(examens, d['examenCode'])}' == 'echographie') d
+  ];
+  if (l.isEmpty) return _vide('I34', 'Aucune échographie enregistrée le ${_d(jour)}', const ['Aucune demande d’échographie n’est datée de ce jour au registre de l’imagerie.'], src);
+  final par = <String, int>{};
+  for (final d in l) {
+    final e = etatImagerie(d['statut']).libelle;
+    par[e] = (par[e] ?? 0) + 1;
+  }
+  return _rep('I34', '${l.length} échographie(s) le ${_d(jour)}', [
+    'Par état : ${par.entries.map((e) => '${e.value} ${e.key.toLowerCase()}').join(' ; ')}.',
+    'Les patients et les comptes rendus se lisent à l’écran de l’imagerie : ils ne sont pas recopiés ici.',
+  ], src, tableau: TableauAst(['Heure', 'Examen', 'État'], [for (final d in l.take(12)) [_heure(d), '${d['examen'] ?? d['examenCode'] ?? '—'}', etatImagerie(d['statut']).libelle]]));
+}
+
+/// I35 : les congés ACCORDÉS qui chevauchent la période (la semaine par défaut) ; les demandes en attente sont comptées à part, jamais présentées comme des absences.
+ReponseAst _i35(ContexteAst cx, ReconnaissanceAst r, String q) {
+  final pl = _plageSemaine(r, cx);
+  const src = [SourceAst('m10-conges', 'conges')];
+  bool chevauche(Map<String, Object?> c) {
+    final d = _jour10(c['dateDebut']), f = _jour10(c['dateFin']);
+    return d.isNotEmpty && f.isNotEmpty && d.compareTo(pl.fin) <= 0 && f.compareTo(pl.debut) >= 0;
+  }
+
+  final tous = [for (final c in cx.col('conges')) if (chevauche(c)) c];
+  final accordes = [for (final c in tous) if (c['statutConge'] == 'valide') c]..sort((a, b) => _jour10(a['dateDebut']).compareTo(_jour10(b['dateDebut'])));
+  final attente = tous.where((c) => c['statutConge'] == 'en_attente').length;
+  final lignes = [if (attente > 0) '$attente demande(s) en attente de décision sur la période : ce ne sont pas des absences acquises.'];
+  if (accordes.isEmpty) return _vide('I35', 'Aucun congé accordé sur ${pl.libelle}', lignes, src);
+  return _rep('I35', '${accordes.length} congé(s) accordé(s) sur ${pl.libelle}', lignes, src,
+      tableau: TableauAst(['Agent', 'Service', 'Du', 'Au'], [for (final c in accordes.take(15)) ['${c['employe'] ?? '—'}', '${c['service'] ?? '—'}', _d(c['dateDebut']), _d(c['dateFin'])]]));
+}
+
 /// Les exécuteurs, par identifiant d'intention. Une intention du catalogue sans exécuteur ici n'est PAS livrée (le moteur la dit « indisponible »).
 const Map<String, ExecuteurAst> executeursAst = {
   'I01': _i01, 'I02': _i02, 'I03': _i03, 'I04': _i04, 'I05': _i05, 'I06': _i06, 'I07': _i07, 'I08': _i08, 'I09': _i09, 'I10': _i10, 'I11': _i11, 'I12': _i12,
   'I13': _i13, 'I14': _i14, 'I15': _i15, 'I16': _i16, 'I17': _i17, 'I18': _i18, 'I19': _i19, 'I20': _i20, 'I21': _i21, 'I22': _i22, 'I23': _i23, 'I24': _i24, 'I25': _i25,
+  'I26': _i26, 'I27': _i27, 'I28': _i28, 'I29': _i29, 'I30': _i30, 'I31': _i31, 'I32': _i32, 'I33': _i33, 'I34': _i34, 'I35': _i35,
 };

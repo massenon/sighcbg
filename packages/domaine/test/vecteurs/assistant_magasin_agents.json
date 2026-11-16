@@ -1,0 +1,691 @@
+{
+ "_doc": "Le MAGASIN DE MESURE du jeu des questions d'agents (relecture du 16/11/2026) : des fiches d'EXEMPLE neutres, aucune identité réelle. L'outil `tool/mesure_assistant.dart` y fait répondre le MOTEUR COMPLET (reconnaissance, droits de la matrice rbac.json, exécuteur) sous le rôle de chaque question : un refus de droit ou un « non calculable » ne se juge qu'à la réponse, pas à la reconnaissance. Date de référence : 2026-11-14. Les mouvements de stock sont écrits pour que EXEMPLE/Article se reconstitue au 12 octobre (25 au total, 20 au gros, 5 au détail) et que EXEMPLE/Incertain ne se reconstitue PAS (régularisation d'inventaire sans sens).",
+ "aujourdhui": "2026-11-14",
+ "agent": "AGENT Exemple",
+ "collections": {
+  "parametres": [],
+  "patients": [
+   {
+    "id": "P1",
+    "code": "CBG/101/26",
+    "nom": "EXEMPLE",
+    "prenom": "Alpha",
+    "sexe": "F",
+    "dateNaissance": "1980-03-01"
+   },
+   {
+    "id": "P2",
+    "code": "CBG/102/26",
+    "nom": "EXEMPLE",
+    "prenom": "Beta",
+    "sexe": "M",
+    "dateNaissance": "1975-06-12"
+   },
+   {
+    "id": "P3",
+    "code": "CBG/103/26",
+    "nom": "TEMOIN",
+    "prenom": "Gamma",
+    "sexe": "F",
+    "dateNaissance": "1990-01-01"
+   },
+   {
+    "id": "P4",
+    "code": "CBG/104/26",
+    "nom": "EXEMPLE/Patient",
+    "prenom": "Delta",
+    "sexe": "F",
+    "dateNaissance": "1985-02-02"
+   }
+  ],
+  "couverturesAssurance": [],
+  "factures": [
+   {
+    "id": "F1",
+    "numero": "FN-2026-00001",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26",
+    "date": "2026-11-10",
+    "type": "Consultation",
+    "montantTTC": 5000,
+    "reliquat": 1500,
+    "statutPaiement": "partielle",
+    "statutMecef": "valide",
+    "lignes": [
+     {
+      "montantRegle": 3500,
+      "payeLe": "2026-11-13T09:00:00.000Z"
+     }
+    ]
+   },
+   {
+    "id": "F2",
+    "numero": "FN-2026-00002",
+    "patientId": "P2",
+    "patientCode": "CBG/102/26",
+    "date": "2026-09-01",
+    "type": "Pharmacie",
+    "montantTTC": 2000,
+    "reliquat": 2000,
+    "statutPaiement": "impayee",
+    "statutMecef": "en_attente",
+    "lignes": [
+     {
+      "montantRegle": 0
+     }
+    ]
+   },
+   {
+    "id": "F3",
+    "numero": "FN-2026-00003",
+    "patientId": "P3",
+    "patientCode": "CBG/103/26",
+    "date": "2026-11-04",
+    "type": "Laboratoire",
+    "montantTTC": 8000,
+    "reliquat": 0,
+    "statutPaiement": "soldee",
+    "statutMecef": "valide",
+    "lignes": [
+     {
+      "montantRegle": 8000,
+      "payeLe": "2026-11-04T10:00:00.000Z"
+     }
+    ]
+   }
+  ],
+  "avoirs": [],
+  "tarifs": [
+   {
+    "code": "MG01",
+    "libelle": "Consultation généraliste",
+    "statut": "actif",
+    "assurable": true
+   },
+   {
+    "code": "LB01",
+    "libelle": "Glycémie",
+    "statut": "actif",
+    "assurable": true
+   },
+   {
+    "code": "IM01",
+    "libelle": "Échographie pelvienne",
+    "statut": "actif",
+    "assurable": true
+   }
+  ],
+  "versionsTarif": [
+   {
+    "code": "MG01",
+    "version": 1,
+    "prixNonAssure": 5000,
+    "etatAssure": "montant",
+    "prixAssure": 3000,
+    "statut": "valide"
+   },
+   {
+    "code": "LB01",
+    "version": 1,
+    "prixNonAssure": 2000,
+    "etatAssure": "montant",
+    "prixAssure": 1500,
+    "statut": "valide"
+   },
+   {
+    "code": "IM01",
+    "version": 1,
+    "prixNonAssure": 12000,
+    "etatAssure": "montant",
+    "prixAssure": 9000,
+    "statut": "valide"
+   }
+  ],
+  "typesPiece": [
+   {
+    "id": "T1",
+    "sigle": "CMA",
+    "libelle": "Certificat médical d’aptitude",
+    "tarifCode": "MG01"
+   }
+  ],
+  "produits": [
+   {
+    "id": "A1",
+    "designation": "EXEMPLE/Article",
+    "unite": "Boîte",
+    "categorie": "medicament",
+    "stock": 40,
+    "stockGros": 30,
+    "stockDetail": 10,
+    "seuilAlerte": 50,
+    "cump": 100,
+    "prixVente": 100
+   },
+   {
+    "id": "A2",
+    "designation": "Gants chirurgicaux",
+    "unite": "Paire",
+    "categorie": "conso_medical",
+    "stock": 500,
+    "stockGros": 500,
+    "stockDetail": 0,
+    "cump": 50
+   },
+   {
+    "id": "A3",
+    "designation": "EXEMPLE/Incertain",
+    "unite": "Flacon",
+    "categorie": "reactif",
+    "stock": 20,
+    "stockGros": 20,
+    "stockDetail": 0,
+    "seuilAlerte": 5,
+    "cump": 300
+   },
+   {
+    "id": "A4",
+    "designation": "Amoxicilline 500 mg",
+    "unite": "Boîte",
+    "categorie": "medicament",
+    "stock": 12,
+    "stockGros": 0,
+    "stockDetail": 12,
+    "seuilAlerte": 10,
+    "cump": 800
+   },
+   {
+    "id": "A5",
+    "designation": "Paracétamol 500 mg",
+    "unite": "Boîte",
+    "categorie": "medicament",
+    "stock": 0,
+    "stockGros": 0,
+    "stockDetail": 0,
+    "seuilAlerte": 20,
+    "cump": 150
+   },
+   {
+    "id": "A6",
+    "designation": "Réactif NFS",
+    "unite": "Kit",
+    "categorie": "reactif",
+    "stock": 3,
+    "stockGros": 3,
+    "stockDetail": 0,
+    "seuilAlerte": 2,
+    "cump": 15000
+   }
+  ],
+  "lots": [
+   {
+    "id": "L1",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "numeroLot": "LOT-B",
+    "datePeremption": "2027-05-01",
+    "quantiteRestante": 25
+   },
+   {
+    "id": "L2",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "numeroLot": "LOT-A",
+    "datePeremption": "2026-12-01",
+    "quantiteRestante": 15
+   }
+  ],
+  "mouvements": [
+   {
+    "id": "M1",
+    "reference": "M000001",
+    "type": "entree",
+    "stockType": "gros",
+    "date": "2026-10-20",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "quantite": 20
+   },
+   {
+    "id": "M2",
+    "reference": "TR-0001",
+    "type": "transfert",
+    "stockType": "gros",
+    "date": "2026-11-01",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "quantite": 10
+   },
+   {
+    "id": "M3",
+    "reference": "TR-0001",
+    "type": "transfert",
+    "stockType": "detail",
+    "date": "2026-11-01",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "quantite": 10
+   },
+   {
+    "id": "M4",
+    "reference": "M000002",
+    "type": "sortie",
+    "stockType": "detail",
+    "date": "2026-11-05",
+    "produitId": "A1",
+    "produit": "EXEMPLE/Article",
+    "quantite": 5
+   },
+   {
+    "id": "M5",
+    "reference": "M000003",
+    "type": "inventaire",
+    "stockType": "gros",
+    "date": "2026-11-03",
+    "produitId": "A3",
+    "produit": "EXEMPLE/Incertain",
+    "quantite": 4
+   },
+   {
+    "id": "M6",
+    "reference": "M000004",
+    "type": "sortie",
+    "stockType": "gros",
+    "date": "2026-11-08",
+    "produitId": "A2",
+    "produit": "Gants chirurgicaux",
+    "quantite": 100
+   }
+  ],
+  "inventaires": [],
+  "admissions": [
+   {
+    "id": "AD1",
+    "statut": "en_cours",
+    "lit": "A2",
+    "patient": "EXEMPLE Alpha",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26",
+    "dateEntree": "2026-11-12",
+    "diagnosticEntree": "Motif d’exemple"
+   }
+  ],
+  "lits": [
+   {
+    "id": "LT1",
+    "numero": "A1"
+   },
+   {
+    "id": "LT2",
+    "numero": "A2"
+   },
+   {
+    "id": "LT3",
+    "numero": "A3"
+   }
+  ],
+  "demandesAnalyses": [
+   {
+    "id": "D1",
+    "reference": "LAB-00001",
+    "codeAnalyse": "00012-2026",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26",
+    "analyse": "NFS",
+    "etatAnalyse": "valide",
+    "dateHeure": "2026-11-13T08:00:00.000Z"
+   },
+   {
+    "id": "D2",
+    "reference": "LAB-00002",
+    "codeAnalyse": "00013-2026",
+    "patientId": "P2",
+    "patientCode": "CBG/102/26",
+    "analyse": "Glycémie",
+    "etatAnalyse": "valide_technique",
+    "dateHeure": "2026-11-14T08:00:00.000Z"
+   },
+   {
+    "id": "D3",
+    "reference": "LAB-00003",
+    "codeAnalyse": "00014-2026",
+    "patientId": "P3",
+    "patientCode": "CBG/103/26",
+    "analyse": "NFS",
+    "etatAnalyse": "en_attente",
+    "dateHeure": "2026-11-14T09:00:00.000Z"
+   }
+  ],
+  "consultations": [
+   {
+    "id": "CO1",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26",
+    "date": "2026-11-11T08:00:00.000Z"
+   }
+  ],
+  "rendezvous": [
+   {
+    "id": "R1",
+    "date": "2026-11-14",
+    "heure": "09:00",
+    "patient": "EXEMPLE Alpha",
+    "statut": "planifie"
+   }
+  ],
+  "fileAttente": [],
+  "ordonnances": [
+   {
+    "id": "O1",
+    "numero": "ORD-2026-00001",
+    "date": "2026-11-10T08:00:00.000Z",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26"
+   }
+  ],
+  "pieces": [],
+  "fichesReference": [
+   {
+    "id": "FR1",
+    "numero": "REF-2026-001",
+    "date": "2026-11-11",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26"
+   }
+  ],
+  "contreReferences": [],
+  "crOperatoires": [
+   {
+    "id": "CRO1",
+    "reference": "CRO-2026-001",
+    "dateOperation": "2026-11-12",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26"
+   }
+  ],
+  "crAnesthesie": [
+   {
+    "id": "CRA1",
+    "reference": "CRA-2026-001",
+    "dateOperation": "2026-11-12",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26"
+   }
+  ],
+  "cpa": [],
+  "personnel": [
+   {
+    "id": "E1",
+    "nomComplet": "AGENT Exemple",
+    "matricule": "MAT-001",
+    "fonction": "Infirmier",
+    "service": "Soins",
+    "salaireBase": 150000,
+    "statut": "actif"
+   },
+   {
+    "id": "E2",
+    "nomComplet": "AGENT Temoin",
+    "matricule": "MAT-002",
+    "fonction": "Secrétaire",
+    "service": "Administration",
+    "salaireBase": 120000,
+    "statut": "actif"
+   }
+  ],
+  "planning": [
+   {
+    "id": "G1",
+    "statut": "validee",
+    "date": "2026-11-14",
+    "type": "garde",
+    "employeId": "E2",
+    "employe": "AGENT Temoin",
+    "service": "Soins"
+   },
+   {
+    "id": "G2",
+    "statut": "validee",
+    "date": "2026-11-20",
+    "type": "garde",
+    "employeId": "E1",
+    "employe": "AGENT Exemple",
+    "service": "Soins"
+   },
+   {
+    "id": "G3",
+    "statut": "brouillon",
+    "date": "2026-11-17",
+    "type": "garde",
+    "employeId": "E1",
+    "employe": "AGENT Exemple",
+    "service": "Soins"
+   },
+   {
+    "id": "G4",
+    "statut": "validee",
+    "date": "2026-11-15",
+    "type": "garde",
+    "employeId": "E2",
+    "employe": "AGENT Temoin",
+    "service": "Soins"
+   }
+  ],
+  "evaluations": [],
+  "avances": [],
+  "participations": [],
+  "grillePrimes": [],
+  "historiquePrimes": [],
+  "heuresSup": [],
+  "pretsEtudes": [],
+  "modulesActifs": [],
+  "obligationsFiscales": [],
+  "historiqueObligations": [],
+  "bulletins": [],
+  "conges": [
+   {
+    "id": "CG1",
+    "employeId": "E2",
+    "employe": "AGENT Temoin",
+    "service": "Administration",
+    "dateDebut": "2026-11-10",
+    "dateFin": "2026-11-21",
+    "statutConge": "valide"
+   },
+   {
+    "id": "CG2",
+    "employeId": "E1",
+    "employe": "AGENT Exemple",
+    "service": "Soins",
+    "dateDebut": "2026-11-13",
+    "dateFin": "2026-11-14",
+    "statutConge": "en_attente"
+   }
+  ],
+  "reunions": [
+   {
+    "id": "RU1",
+    "reference": "RU-2026-001",
+    "date": "2026-11-12",
+    "heure": "10:00",
+    "type": "Comité de direction",
+    "lieu": "Salle de réunion",
+    "president": "Direction"
+   }
+  ],
+  "ambulances": [
+   {
+    "id": "AMB1",
+    "libelle": "Ambulance de la clinique",
+    "type": "clinique",
+    "telephone": "",
+    "disponibilite": "disponible"
+   },
+   {
+    "id": "AMB2",
+    "libelle": "Transporteur EXEMPLE",
+    "type": "prive",
+    "telephone": "",
+    "disponibilite": "en_course"
+   }
+  ],
+  "demandesImagerie": [
+   {
+    "id": "IM1",
+    "reference": "IME-00001",
+    "dateHeure": "2026-11-14T08:30:00.000Z",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26",
+    "examenCode": "IMG-ECHO-PELV",
+    "examen": "Échographie pelvienne",
+    "modalite": "echographie",
+    "statut": "payee"
+   },
+   {
+    "id": "IM2",
+    "reference": "IME-00002",
+    "dateHeure": "2026-11-14T10:00:00.000Z",
+    "patientId": "P2",
+    "patientCode": "CBG/102/26",
+    "examenCode": "IMG-ECHO-PELV",
+    "examen": "Échographie pelvienne",
+    "statut": "demandee"
+   }
+  ],
+  "examensImagerie": [
+   {
+    "id": "X1",
+    "code": "IMG-ECHO-PELV",
+    "label": "Échographie pelvienne",
+    "modalite": "echographie"
+   }
+  ],
+  "commandes": [
+   {
+    "id": "C1",
+    "reference": "BC-1",
+    "fournisseur": "FRN",
+    "fournisseurNom": "EXEMPLE/Fournisseur",
+    "statutCommande": "attente_validation",
+    "date": "2026-11-10",
+    "montant": 90000
+   }
+  ],
+  "fournisseurs": [
+   {
+    "id": "FR1",
+    "code": "FRN",
+    "nom": "EXEMPLE/Fournisseur",
+    "type": "Grossiste",
+    "ville": "Ville",
+    "tel": ""
+   }
+  ],
+  "facturesFournisseurs": [
+   {
+    "id": "FF1",
+    "fournisseur": "FRN",
+    "montantFacture": 40000,
+    "statutPaiement": "impayee"
+   }
+  ],
+  "ecritures": [
+   {
+    "id": "EC1",
+    "numero": "P-1",
+    "date": "2026-11-02",
+    "compte": "601000",
+    "debit": 40000,
+    "credit": 0,
+    "statut": "validee"
+   },
+   {
+    "id": "EC2",
+    "numero": "P-1",
+    "date": "2026-11-02",
+    "compte": "401000",
+    "debit": 0,
+    "credit": 40000,
+    "statut": "validee"
+   },
+   {
+    "id": "EC3",
+    "numero": "P-2",
+    "date": "2026-11-06",
+    "compte": "401000",
+    "debit": 10000,
+    "credit": 0,
+    "statut": "validee"
+   },
+   {
+    "id": "EC4",
+    "numero": "P-2",
+    "date": "2026-11-06",
+    "compte": "571000",
+    "debit": 0,
+    "credit": 10000,
+    "statut": "validee"
+   },
+   {
+    "id": "EC5",
+    "numero": "P-3",
+    "date": "2026-11-09",
+    "compte": "571000",
+    "debit": 5000,
+    "credit": 0,
+    "statut": "brouillon"
+   },
+   {
+    "id": "EC6",
+    "numero": "P-3",
+    "date": "2026-11-09",
+    "compte": "706000",
+    "debit": 0,
+    "credit": 5000,
+    "statut": "brouillon"
+   },
+   {
+    "id": "EC7",
+    "numero": "P-4",
+    "date": "2026-10-15",
+    "compte": "571000",
+    "debit": 12000,
+    "credit": 0,
+    "statut": "validee"
+   },
+   {
+    "id": "EC8",
+    "numero": "P-4",
+    "date": "2026-10-15",
+    "compte": "706000",
+    "debit": 0,
+    "credit": 12000,
+    "statut": "validee"
+   }
+  ],
+  "echeancesFiscales": [
+   {
+    "id": "EF1",
+    "libelle": "ITS",
+    "periode": "octobre 2026",
+    "echeance": "2026-11-10",
+    "paye": false
+   },
+   {
+    "id": "EF2",
+    "libelle": "CNSS",
+    "periode": "novembre 2026",
+    "echeance": "2026-12-10",
+    "paye": false
+   }
+  ],
+  "notifications": [
+   {
+    "id": "N1",
+    "poste": "caisse",
+    "lue": false,
+    "libelle": "Détail à ne pas recopier"
+   }
+  ]
+ }
+}

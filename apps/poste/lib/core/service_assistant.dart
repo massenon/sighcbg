@@ -209,7 +209,7 @@ class ServiceAssistant extends ChangeNotifier {
     final dernierPatient = _tours.reversed.map((t) => t.reponse.patientCode).whereType<String>().firstOrNull;
     final cxAvecContexte = ContexteAst(
       role: cx.role, lire: cx.lire, peutVoirEcran: cx.peutVoirEcran, sensibles: cx.sensibles, maintenant: cx.maintenant, session: cx.session,
-      patientContexte: cx.patientContexte ?? dernierPatient, libelleEcran: cx.libelleEcran, etatSynchro: cx.etatSynchro,
+      patientContexte: cx.patientContexte ?? dernierPatient, libelleEcran: cx.libelleEcran, etatSynchro: cx.etatSynchro, matrice: cx.matrice,
     );
     final r = moteur.repondre(q, cxAvecContexte);
     _questionsSession++;

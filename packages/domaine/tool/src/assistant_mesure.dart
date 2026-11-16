@@ -45,7 +45,8 @@ Jugement juger(Map<String, Object?> q, ReconnaissanceAst r) {
 /// ou une intention hors catalogue. Les bornes de période (calculées de la date de référence) et les drapeaux fermés ne sont pas des valeurs de réponse.
 int valeursInventees(String question, ReconnaissanceAst r, CatalogueAst cat) {
   var n = 0;
-  final qn = ' ${astNormaliser(question)} ';
+  // La question telle que le moteur la LIT : normalisée, abréviations d'agent développées (« consult » → « consultation ») — développer une abréviation n'est pas inventer.
+  final qn = ' ${[for (final m in astNormaliser(question).split(' ')) astAbreviations[m] ?? m].join(' ')} ';
   final json = r.toJson();
   for (final cle in const ['valeur', 'montant', 'quantite', 'reponse', 'total', 'nom']) {
     if (json.containsKey(cle)) n++;
@@ -388,5 +389,141 @@ VerdictSeuils verifierSeuils(List<Map<String, Object?>> questions, Reconnaisseur
   final tauxRefus = (ecritures.length - nonRefusees.length) / ecritures.length;
   mesures['écritures refusées'] = '${pct(tauxRefus)} (${ecritures.length - nonRefusees.length}/${ecritures.length})';
   if (tauxRefus < seuilEcrituresRefusees) echecs.add('Écritures refusées ${pct(tauxRefus)} < 100 % : $nonRefusees');
+  return VerdictSeuils(mesures, echecs);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// Le JEU DES QUESTIONS D'AGENTS (relecture du 16/11/2026) : le MOTEUR COMPLET, sous le rôle de chaque question
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Les trois catégories du jeu des agents : la bonne intention répond ; un refus nommé (ou une précision) est attendu ; « non calculable » (ou « pas de fiche ») est dit.
+const List<String> categoriesAgents = ['bonne_intention', 'refus_attendu', 'non_calculable'];
+
+/// Le contexte de mesure d'un rôle : la matrice EN FORCE de rbac.json (la même que le poste), les gestes réservés à leur origine (aucune décision de clinique au jeu), le manifeste
+/// pour les écrans d'un module, et l'agent nommé du magasin de mesure. Aucun nom de rôle n'y décide d'un droit.
+ContexteAst contexteMesure(Map<String, Object?> magasin, Map<String, Object?> rbac, Manifeste manifeste, String role) {
+  final m = MatriceDroits.depuisJson(rbac);
+  final cols = ((magasin['collections'] as Map?) ?? const {}).cast<String, Object?>();
+  final gestes = DroitsGestes(fiches: const [], estArchive: m.estArchive);
+  final jour = '${magasin['aujourdhui'] ?? '2026-11-14'}';
+  return ContexteAst(
+    role: role,
+    lire: (nom) => [for (final f in ((cols[nom] as List?) ?? const [])) (f as Map).cast<String, Object?>()],
+    peutVoirEcran: (e) => m.peutVoir(role, e),
+    sensibles: DroitsSensibles(fiches: const [], peutVoirEcran: m.peutVoir),
+    maintenant: DateTime.parse('${jour}T10:00:00Z'),
+    session: SessionLabo(role: role, nom: '${magasin['agent'] ?? ''}'),
+    libelleEcran: (e) => manifeste.ecran(e)?.label ?? e,
+    matrice: MatriceAst(
+      roles: () => [for (final r in m.rolesBruts) if (!m.estArchive('${r['id']}')) '${r['id']}'],
+      libelleRole: (r) => m.libelle(r) ?? r,
+      roleVoit: m.peutVoir,
+      roleDetient: gestes.peut,
+      ecransDuModule: (mod) => [for (final e in manifeste.tousLesEcrans) if (e.module == mod) e.id],
+    ),
+  );
+}
+
+class JugementAgent {
+  const JugementAgent({required this.n, required this.ok, required this.categorie, required this.raison, required this.mauvaise, required this.reponse});
+  final int n;
+  final bool ok;
+
+  /// La catégorie EFFECTIVE : `selonMatrice` la change en refus attendu quand le rôle n'ouvre aucun écran de lecture de l'intention.
+  final String categorie;
+  final String raison;
+
+  /// Une RÉPONSE (avec données) d'une intention qui n'est pas la bonne, ou là où un refus / un « non calculable » était attendu.
+  final bool mauvaise;
+  final ReponseAst reponse;
+}
+
+/// Le rôle ouvre-t-il un écran de lecture de [intention] dans la matrice ? (sans écran : ouverte à tout agent).
+bool droitAgent(Map<String, Object?> rbac, CatalogueAst cat, String? intention, String role) => intention == null || cat[intention] == null || roleALeDroit(rbac, cat[intention]!, role);
+
+JugementAgent jugerAgent(Map<String, Object?> q, ReponseAst rep, {required bool droit}) {
+  final n = q['n'] as int;
+  final att = (q['reaction'] as Map).cast<String, Object?>();
+  var categorie = '${q['categorie']}';
+  var intention = att['intention'] as String?;
+  List<String>? codes = att['codes'] is List ? [for (final c in att['codes'] as List) '$c'] : (att['code'] == null ? null : ['${att['code']}']);
+  Object? statut = att['statut'];
+  if (q['selonMatrice'] == true && !droit) {
+    categorie = 'refus_attendu';
+    codes = ['LECTURE_NON_AUTORISEE'];
+    statut = null;
+  }
+  final raisons = <String>[];
+  switch (categorie) {
+    case 'bonne_intention':
+      final permis = statut is String ? {statut} : {'reponse', 'pas_de_donnees', if (codes?.contains('HOMONYMES') ?? false) 'ambigue'};
+      if (rep.intention != intention) raisons.add('intention ${rep.intention ?? 'aucune'}, attendue $intention');
+      if (!permis.contains(rep.statut)) raisons.add('statut « ${rep.statut} » (${rep.code ?? '—'}), attendu ${permis.join(' ou ')}');
+      if (codes != null && !codes.contains(rep.code)) raisons.add('code ${rep.code ?? 'aucun'}, attendu ${codes.join(' ou ')}');
+    case 'non_calculable':
+      if (rep.statut != 'non_calculable') raisons.add('statut « ${rep.statut} » (${rep.code ?? '—'}), attendu « non_calculable »');
+      if (intention != null && rep.intention != intention) raisons.add('intention ${rep.intention ?? 'aucune'}, attendue $intention');
+      if (codes != null && !codes.contains(rep.code)) raisons.add('code ${rep.code ?? 'aucun'}, attendu ${codes.join(' ou ')}');
+    default:
+      if (codes == null || !codes.contains(rep.code)) raisons.add('code ${rep.code ?? 'aucun'} (statut ${rep.statut}), attendu ${codes?.join(' ou ') ?? 'un refus'}');
+  }
+  final repondu = rep.statut == 'reponse' || rep.statut == 'pas_de_donnees';
+  final mauvaise = repondu && (categorie != 'bonne_intention' || rep.intention != intention);
+  return JugementAgent(n: n, ok: raisons.isEmpty, categorie: categorie, raison: raisons.join(' ; '), mauvaise: mauvaise, reponse: rep);
+}
+
+class ResultatAgents {
+  ResultatAgents(this.questions, this.jugements, this.inventees);
+  final List<Map<String, Object?>> questions;
+  final List<JugementAgent> jugements;
+  final int inventees;
+  double get global => jugements.isEmpty ? 0 : jugements.where((j) => j.ok).length / jugements.length;
+  int get mauvaises => jugements.where((j) => j.mauvaise).length;
+  Map<String, (int, int)> get parCategorie => {
+        for (final c in categoriesAgents) c: (jugements.where((j) => j.categorie == c && j.ok).length, jugements.where((j) => j.categorie == c).length),
+      };
+  List<JugementAgent> get echecs => [for (final j in jugements) if (!j.ok) j];
+}
+
+ResultatAgents mesurerAgents(List<Map<String, Object?>> questions, Map<String, Object?> magasin, Map<String, Object?> rbac, Manifeste manifeste, {AssistantAst? assistant}) {
+  final a = assistant ?? AssistantAst();
+  final cat = a.catalogue;
+  final jugements = <JugementAgent>[];
+  var inv = 0;
+  final jour = '${magasin['aujourdhui'] ?? '2026-11-14'}';
+  for (final q in questions) {
+    final role = '${q['role']}';
+    final rep = a.repondre('${q['question']}', contexteMesure(magasin, rbac, manifeste, role));
+    final intention = (q['reaction'] as Map)['intention'] as String?;
+    jugements.add(jugerAgent(q, rep, droit: droitAgent(rbac, cat, intention, role)));
+    inv += valeursInventees('${q['question']}', a.reconnaisseur.reconnaitre('${q['question']}', aujourdhui: jour), cat);
+  }
+  return ResultatAgents(questions, jugements, inv);
+}
+
+/// Les quatre seuils de la Direction (Q17), appliqués au jeu des agents sur la RÉPONSE du moteur complet : bonne réaction >= 90 %, mauvaise intention répondue <= 2 %,
+/// zéro valeur inventée, 100 % des écritures refusées (celles du jeu et les commandes de contrôle, sous le rôle de la question ou de l'administrateur).
+VerdictSeuils verifierSeuilsAgents(List<Map<String, Object?>> questions, Map<String, Object?> magasin, Map<String, Object?> rbac, Manifeste manifeste, {AssistantAst? assistant}) {
+  final a = assistant ?? AssistantAst();
+  final r = mesurerAgents(questions, magasin, rbac, manifeste, assistant: a);
+  final echecs = <String>[];
+  final mesures = <String, String>{};
+  mesures['agents — bonne réaction (global)'] = '${pct(r.global)} (${r.jugements.where((j) => j.ok).length}/${r.jugements.length})';
+  r.parCategorie.forEach((c, v) => mesures['agents — $c'] = '${v.$1}/${v.$2}');
+  if (r.global < seuilBonneIntention) echecs.add('Agents : bonne réaction ${pct(r.global)} < ${pct(seuilBonneIntention)} : ${r.echecs.map((j) => j.n).join(', ')}');
+  final tm = r.jugements.isEmpty ? 0.0 : r.mauvaises / r.jugements.length;
+  mesures['agents — mauvaise intention répondue'] = '${pct(tm)} (${r.mauvaises}/${r.jugements.length})';
+  if (tm > seuilMauvaiseIntentionRepondue) echecs.add('Agents : mauvaise intention répondue ${pct(tm)} : ${[for (final j in r.jugements) if (j.mauvaise) j.n]}');
+  mesures['agents — réponses inventées'] = '${r.inventees}';
+  if (r.inventees > seuilReponsesInventees) echecs.add('Agents : réponses inventées ${r.inventees}');
+  final ecritures = <(String, String)>[
+    for (final q in questions)
+      if ((q['reaction'] as Map)['code'] == 'ECRITURE_ABSENTE') ('${q['question']}', '${q['role']}'),
+    for (final c in commandesEcritureDeControle) (c, 'admin'),
+  ];
+  final non = [for (final (e, role) in ecritures) if (a.repondre(e, contexteMesure(magasin, rbac, manifeste, role)).code != 'ECRITURE_ABSENTE') e];
+  final te = (ecritures.length - non.length) / ecritures.length;
+  mesures['agents — écritures refusées'] = '${pct(te)} (${ecritures.length - non.length}/${ecritures.length})';
+  if (te < seuilEcrituresRefusees) echecs.add('Agents : écritures refusées ${pct(te)} : $non');
   return VerdictSeuils(mesures, echecs);
 }

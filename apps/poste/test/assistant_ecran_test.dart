@@ -112,6 +112,17 @@ void main() {
       expect(find.textContaining('Source :'), findsNothing);
     });
 
+    cas('« en attente de ma validation » (16/11/2026) : la Direction reçoit un SUIVI, la DAF qui détient le geste « vous » — lu dans la matrice du poste', (t) async {
+      await monter(t, magasinJeu(), role: 'direction');
+      await demander(t, 'les commandes qui attendent ma validation');
+      expect(textes(t), contains('SUIVI'));
+      expect(textes(t), isNot(contains('Vous détenez le geste')));
+      await t.pumpWidget(const SizedBox());
+      await monter(t, magasinJeu(), role: 'da');
+      await demander(t, 'les commandes qui attendent ma validation');
+      expect(textes(t), contains('Vous détenez le geste'));
+    });
+
     cas('le même texte, un autre profil : le stock répond à qui le lit', (t) async {
       await monter(t, magasinJeu(), role: 'stock');
       await demander(t, 'Quelle est la valeur du stock ?');
