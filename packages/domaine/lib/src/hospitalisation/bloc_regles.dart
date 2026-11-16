@@ -13,6 +13,7 @@ import '../format/format_fr.dart' show iso;
 import '../referentiels/regles.dart' show resultatRendu;
 import '../stock/delivrance.dart' show referenceSuivante;
 import 'hos_regles.dart';
+import '../numerotation/numerotation.dart';
 
 typedef BlocFiche = Map<String, Object?>;
 
@@ -208,7 +209,7 @@ BlocFiche blocConstruireCro(Map<String, Object?> v,
     required Iterable<BlocFiche> toutes}) {
   return {
     ...v,
-    if (existante == null) 'reference': blocReferenceSuivante('CRO-', 4, toutes),
+    if (existante == null) 'reference': numeroSuivant('bloc.cro', date: v['date'], existants: toutes),
     'patientId': patient?['id'],
     'patient': patient != null ? '${patient['nom']} ${patient['prenom']}' : v['patientCode'],
     'operateur': nomSoignant(v['operateurId']),
@@ -232,14 +233,14 @@ bool blocIncidentNomme(Object? incidents) =>
     );
 
 /// `transform` commun de la CPA et du compte rendu d'anesthésie : le patient (identifiant et nom) suit le code choisi — à la création comme à la
-/// modification (E411). [prefixeReference] : `CPA-2026-` / `CRA-2026-` (création seule).
+/// modification (E411). [serieReference] : la série du référentiel de numérotation (`bloc.cpa`, `bloc.cra`), à la création seule ; l'année est celle de la DATE de la fiche.
 BlocFiche blocConstruirePatientCode(Map<String, Object?> v,
     {required BlocFiche? patient,
-    String? prefixeReference,
+    String? serieReference,
     Iterable<BlocFiche> toutes = const []}) {
   return {
     ...v,
-    if (prefixeReference != null) 'reference': blocReferenceSuivante(prefixeReference, 4, toutes),
+    if (serieReference != null) 'reference': numeroSuivant(serieReference, date: v['date'], existants: toutes),
     'patientId': patient?['id'],
     'patient': patient != null ? '${patient['nom']} ${patient['prenom']}' : v['patientCode'],
   };
@@ -426,6 +427,6 @@ BlocFiche blocConstruireAvis(Map<String, Object?> v,
   }
   f['reference'] = _vrai(existante?['reference'])
       ? existante!['reference']
-      : blocReferenceSuivante('SAM', 4, toutes);
+      : numeroSuivant('hospitalisation.sorties-contre-avis', date: v['date'], existants: toutes);
   return f;
 }

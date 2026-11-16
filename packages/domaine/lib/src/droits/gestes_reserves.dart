@@ -73,6 +73,11 @@ const String gesteReglerLimiteExport = 'export_regler_limite';
 /// clôture ne la clôture pas (le moteur compare l'identifiant de l'agent), et un comptable seul, sans ce droit, ne démarre ni ne clôture.
 const String gesteCircuitCloture = 'cloture_circuit';
 
+/// MODIFIER UNE SÉRIE DE NUMÉROTATION (lot 2 de l'inventaire des valeurs en dur, 16/11/2026) : préfixe, année, longueur du rang, remise annuelle d'une
+/// série de pièces (`seriesNumerotation`). Une modification est une VERSION DATÉE qui ne s'applique qu'aux pièces à venir. Origine PROPOSÉE (à valider par la
+/// Direction) : l'administrateur et la Directrice Administrative ; depuis un poste rattaché, la modification est déposée et la mère la rejoue.
+const String gesteNumerotationModifier = 'numerotation_modifier';
+
 /// Régler la gestion des FICHIERS NUMÉRISÉS (taille maximale d'un scan, contrôle d'intégrité, sauvegarde du dossier des scans) : un droit PAR RÉGLAGE (Q5), réservé d'origine à l'administrateur
 /// et à la Directrice Administrative. Se règle sur la poste mère.
 const String gesteReglageFichiers = 'reglage_fichiers';
@@ -337,6 +342,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['da'],
       aide: 'Écrans « Expression des besoins » (vue d’arbitrage) et « Commandes ». Accorder, rejeter ou renvoyer en complément un bon d’expression de besoins, et valider une commande de stock avant sa transmission au fournisseur (RG-04). Origine : la Directrice Administrative seule ; l’administrateur système ne l’a pas d’origine. Depuis un poste rattaché, le geste est transmis à la mère, qui le rejoue sous le rôle de son auteur.'),
+  GesteReserve(
+      id: gesteNumerotationModifier,
+      libelle: 'Modifier une série de numérotation des pièces',
+      module: 'CFG',
+      ecran: 'cfg-fiscalite',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Préfixe, année, séparateur, longueur du rang et remise à 1 annuelle d’une série (Fiscalité & identité légale › Numérotation des pièces). Une modification est une version datée qui ne s’applique qu’aux pièces à venir. Depuis un poste rattaché, elle est transmise à la mère, qui l’applique. Origine proposée, à valider : l’administrateur et la Directrice Administrative.'),
   GesteReserve(
       id: gesteReglageFichiers,
       libelle: 'Régler la gestion des fichiers numérisés',

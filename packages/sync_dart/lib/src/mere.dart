@@ -46,6 +46,9 @@ const familleDeBase = <String, String>{
   // (deux postes qui lisent le même scan avec le même moteur ne font qu'une version : la seconde création est acceptée sans effet), jamais vers un téléphone. Le RÉGLAGE de la lecture
   // (moteur actif, délai, activation) est un référentiel : la MÈRE seule l'écrit, les fileuls le reçoivent. La FILE de lecture (`fileOcr`) reste locale à chaque poste : elle n'est pas ici.
   'lecturesOcr': 'B', 'reglagesOcr': 'R',
+  // LOT 2 (16/11/2026) : le RÉFÉRENTIEL DE NUMÉROTATION des pièces (une fiche par version datée de série) : la mère seule l'écrit ; un fileul DÉPOSE sa modification
+  // (`validationsDeposees`, genre `serie_numerotation`) et la mère l'applique sous le rôle de son auteur.
+  'seriesNumerotation': 'R',
   'releves': 'A', 'observations': 'A', 'visites': 'A', 'appels': 'A', 'consultations': 'A', 'dossiersConsultation': 'A', 'antecedents': 'A',
   // Les hachés des mots de passe : écrits par le poste où l'agent change son mot de passe, dans les DEUX sens (E2131).
   'identifiants': 'A',

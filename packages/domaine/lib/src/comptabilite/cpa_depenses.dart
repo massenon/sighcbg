@@ -11,6 +11,7 @@ library;
 import '../format/js.dart';
 import 'cpa_ecritures.dart';
 import 'cpa_referentiels.dart';
+import '../numerotation/numerotation.dart';
 
 double _n(Object? v) => nombreOuZero(v);
 
@@ -41,18 +42,7 @@ CpaTotauxDepense cpaTotauxDepense(String objet, List<CpaFiche> lignes) {
 }
 
 /// `C.referenceSuivante('DEP-AAAA-', 4, dépenses)` : le plus grand rang déjà écrit, plus un (E712 : la maquette lisait un compteur de page).
-String cpaReferenceDepense(String date, Iterable<CpaFiche> toutes) {
-  final prefixe = 'DEP-${cpaAnnee(date)}-';
-  var max = 0;
-  for (final f in toutes) {
-    final r = '${f['reference'] ?? ''}';
-    if (r.startsWith(prefixe)) {
-      final k = int.tryParse(RegExp(r'^[+-]?\d+').firstMatch(r.substring(prefixe.length))?.group(0) ?? '') ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(4, '0')}';
-}
+String cpaReferenceDepense(String date, Iterable<CpaFiche> toutes) => numeroSuivant('compta.depenses', date: date, existants: toutes);
 
 /// `poserEcriture(dep)` : les lignes plates de l'écriture, EN BROUILLON. [tresorerie] : la fiche `banques` du compte de sortie (`null` : caisse 571000).
 /// RG-10 est contrôlé AVANT d'écrire ; la garde de l'exercice clos refuse en nommant l'exercice (E714 : refus dit AVANT toute écriture).

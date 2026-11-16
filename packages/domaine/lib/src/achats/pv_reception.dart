@@ -6,6 +6,7 @@
 library;
 
 import '../format/recherche.dart';
+import '../numerotation/numerotation.dart';
 
 typedef FichePv = Map<String, Object?>;
 
@@ -81,19 +82,8 @@ List<FichePv> livraisonsPourPv(Iterable<FichePv> livraisonsActives,
 
 /// `C.referenceSuivante(prefixe, largeur, fiches)` : le plus grand rang déjà écrit pour ce préfixe, plus un — lu sur les PV EXISTANTS,
 /// archivés compris (jamais sur un compteur de page : écart E17 corrigé dans la maquette le 30/10/2026).
-String referencePvSuivante(
-    String nature, String date, Iterable<String> references) {
-  final annee = date.length >= 4 ? date.substring(0, 4) : date;
-  final prefixe = 'PV-${sigleNature(nature)}-$annee-';
-  var max = 0;
-  for (final r in references) {
-    if (r.startsWith(prefixe)) {
-      final k = int.tryParse(r.substring(prefixe.length)) ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(4, '0')}';
-}
+String referencePvSuivante(String nature, String date, Iterable<String> references) =>
+    numeroSuivant(nature == natureReactifs ? 'achats.pv-reactifs' : 'achats.pv-consommables', date: date, existants: references);
 
 /// La ligne reprise du bon de livraison : commandée = quantité, livrée = quantité livrée, écart tel que le bon le porte (0 s'il manque).
 FichePv lignePv(FichePv l) => {

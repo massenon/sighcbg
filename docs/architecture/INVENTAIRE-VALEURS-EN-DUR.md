@@ -715,6 +715,8 @@ Les lots sont regroupés par thème. Ils sont ordonnés par **urgence**, puis pa
 | 7 | Libellés et barèmes restants | Les décisions prises sur un libellé passent sur le code ; adresse des liens d’enquête ; libellés d’étape du circuit RH (organigramme) ; tarif d’ambulance au catalogue ; barème de référence des garanties vers la collection `garanties` | ≈ 15 | S |
 | 8 | Référentiels compilés (R) | Fichier par fichier, la Direction décide ce qui doit devenir administrable : numérotation et notifications de `cfb_donnees`, bornes de `mat_donnees`, formulaires du mobile. Pour chaque fichier retenu : semis, collection, écran. | 17 fichiers | M à L |
 
+> **Lot 2 livré (branche `agent-num`)** : le référentiel de numérotation unique (`packages/domaine/lib/src/numerotation/`, collection `seriesNumerotation`, section « Numérotation des pièces » de `cfg-fiscalite`, geste `numerotation_modifier`). Famille E : **107 → 0**, plus une vingtaine de sites que le détecteur ne voyait pas. Le cliquet `--cliquet --famille=E` est en service (plafond zéro). Écarts E3860 à E3874 de `ECARTS-MAQUETTE.md` ; les rangs comptés (`FM`, `FI`, `FE`, `FC`, `ORD`…) restent à arbitrer (E3866).
+
 **Ordre de grandeur total** : 6 à 8 semaines-personne. Le lot 0 doit être livré **avant le 1er janvier 2027**. Le lot 5 est le plus long, mais il est surtout mécanique une fois l’écran générique construit.
 
 ### 4.2 Le cliquet global « valeurs en dur »

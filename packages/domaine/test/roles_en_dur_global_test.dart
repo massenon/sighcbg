@@ -24,7 +24,7 @@ typedef Tolerance = ({int sites, String motif});
 /// LES SITES TOLÉRÉS. Liste fermée : elle ne fait que DÉCROÎTRE.
 const Map<String, Tolerance> _tolerances = {
   // --- Le référentiel lui-même : la SEULE liste d'origine admise.
-  'lib/src/droits/gestes_reserves.dart': (sites: 162, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise'),
+  'lib/src/droits/gestes_reserves.dart': (sites: 164, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise'),
   // --- Chantier parallèle (caisse et tarifs, 16/11/2026) : non converti ici pour éviter les conflits, à convertir par ce chantier.
   'lib/src/consultation/cs_moteur.dart': (sites: 7, motif: 'chantier parallèle (caisse/tarifs) : `_tachesDef` (champ descriptif `role` des tâches d’aval, porté par les vecteurs, jamais lu pour décider) et `capacite == \'chirurgien\' || session.role == \'chirurgien\'` (à rapprocher du geste `rubriques_chirurgicales`)'),
   // --- Tables et données qui ne décident d'aucun droit de la session.

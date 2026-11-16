@@ -10,6 +10,8 @@
 
 import '../achats/circuit_synchro.dart' show valGenreCircuitAchat;
 import 'reglage_depose.dart' show gesteDuReglage, valGenreReglage;
+import '../droits/gestes_reserves.dart' show gesteNumerotationModifier;
+import '../numerotation/numerotation_versions.dart' show valGenreNumerotation;
 import 'validation.dart' show valFamille;
 import 'validation_deposee.dart';
 
@@ -205,6 +207,9 @@ List<String> destinatairesAlerteDecision(DecisionEnAttente d, {required String g
     case genreDecisionValidation:
       if (d.sousGenre == valGenreCircuitAchat) {
         ajouter('geste:$gesteCircuit');
+      } else if (d.sousGenre == valGenreNumerotation) {
+        // Une série de numérotation (lot 2) : ceux qui détiennent le geste `numerotation_modifier`, lus dans la matrice.
+        ajouter('geste:$gesteNumerotationModifier');
       } else if (d.sousGenre == valGenreReglage) {
         // Un réglage posé sous un geste réservé (16/11/2026, §7) : ceux qui détiennent CE geste, lus dans la matrice.
         final g = gesteDuReglage('${d.famille}');

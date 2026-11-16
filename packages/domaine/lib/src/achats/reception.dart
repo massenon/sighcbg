@@ -13,7 +13,7 @@ library;
 
 import '../format/js.dart';
 import 'nombres.dart';
-import 'besoins.dart';
+import '../numerotation/numerotation.dart';
 
 typedef _Fiche = Map<String, Object?>;
 
@@ -113,7 +113,7 @@ ReceptionCalculee calculerReception(
       }
     ));
     final mv = <String, Object?>{
-      'reference': referenceAchatSuivante('M', 6, dejaEcrits),
+      'reference': numeroSuivant('stock.mouvements', date: entete['date'], existants: dejaEcrits),
       'date': entete['date'],
       'produitId': p['id'],
       'produit': p['designation'],
@@ -145,7 +145,7 @@ _Fiche livraisonCreee(
     required Iterable<_Fiche> fournisseurs,
     required Iterable<_Fiche> livraisons}) {
   final v = {...saisie};
-  v['reference'] = referenceAchatSuivante('BL-', 5, livraisons);
+  v['reference'] = numeroSuivant('achats.livraisons', date: v['date'], existants: livraisons);
   final f = fournisseurs.where((x) => x['code'] == v['fournisseur']).firstOrNull;
   v['fournisseurNom'] = f != null ? f['nom'] : v['fournisseur'];
   v['lignes'] = v['lignes'] ?? const [];

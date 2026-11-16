@@ -9,6 +9,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../impression/identite.dart';
 import '../referentiels/regles.dart' show joursEntre;
+import '../numerotation/numerotation.dart';
 
 typedef AssFiche = Map<String, Object?>;
 
@@ -708,17 +709,7 @@ const assSuitesRelance = [
 
 /// `REL-0001` : la référence suit le registre (le plus grand numéro existant + 1). La maquette tirait `C.nextRef('REL-', 4)`, un compteur de
 /// SESSION qui repart à 0001 à chaque chargement : voir E500 de `ECARTS-MAQUETTE.md`.
-String assReferenceRelance(Iterable<AssFiche> relances) {
-  var max = 0;
-  for (final r in relances) {
-    final m = RegExp(r'^REL-(\d+)$').firstMatch('${r['reference'] ?? ''}');
-    if (m != null) {
-      final n = int.parse(m.group(1)!);
-      if (n > max) max = n;
-    }
-  }
-  return 'REL-${(max + 1).toString().padLeft(4, '0')}';
-}
+String assReferenceRelance(Iterable<AssFiche> relances) => numeroSuivant('assurances.relances', existants: relances);
 
 /// Les paragraphes de la lettre de relance ou de la mise en demeure (le niveau décide du ton).
 List<String> assLettreRelance(AssFiche r) {
@@ -843,7 +834,7 @@ AssFiche assEmettreMere({
 }) {
   final label = assPeriodesMere.firstWhere((p) => p.$1 == periode).$2;
   return {
-    'numero': 'FM-${auj.year}-${(nbExistantes + 1).toString().padLeft(4, '0')}',
+    'numero': numeroFormate('assurances.factures-meres', date: auj, rang: nbExistantes + 1),
     'compagnieCode': code,
     'compagnie': nom,
     'periode': periode,
@@ -966,16 +957,7 @@ ReglementMere assReglerMere(
         'La référence du virement ou du chèque est obligatoire.');
   }
 
-  final prefixe = 'BQ-${jour.substring(0, 4)}-';
-  var max = 0;
-  for (final e in ecritures) {
-    final n = e['numero'];
-    if (n is String && n.startsWith(prefixe)) {
-      final k = int.tryParse(n.substring(prefixe.length)) ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  final numero = '$prefixe${(max + 1).toString().padLeft(5, '0')}';
+  final numero = numeroSuivant('assurances.reglements', date: jour, existants: ecritures);
   final base = <String, Object?>{
     'numero': numero,
     'date': jour,

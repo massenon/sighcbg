@@ -80,7 +80,7 @@ class _EcranEvenementsState extends State<EcranEvenements> {
         v['heure'] = admHeure(v['heure']);
         if (e == null) {
           // Création : référence EVT-NNNN (le préfixe diffère de celui du jeu, E532 porté fidèlement) et canal « In-app » si l'événement est annoncé.
-          v['reference'] = admReferenceEvenement(col.toutes.length);
+          v['reference'] = admReferenceEvenement(col.toutes.length, date: v['date']);
           v['canaux'] = v['notifier'] == true ? ['In-app'] : <String>[];
         } else {
           // E532 : cocher « Notifier le personnel » pose un canal, le décocher les retire.

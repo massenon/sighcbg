@@ -2543,9 +2543,13 @@
    "id": "m8-facturation",
    "mesure": true,
    "attendus": 28,
-   "presents": 28,
-   "taux": 1.0,
-   "manquants": []
+   "presents": 25,
+   "taux": 0.893,
+   "manquants": [
+    "ifu de l’acheteur",
+    "nom de l’acheteur",
+    "taux d’aib"
+   ]
   },
   {
    "id": "m8-facture-avoir",

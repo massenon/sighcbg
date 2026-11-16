@@ -25,7 +25,7 @@ class EcranContrats extends StatelessWidget with EcranMaquette {
     final col = c.magasin.collection('contrats');
     Fiche fiche(BuildContext ctx, Map<String, Object?> v, Fiche? existante) => rhaContratEnregistrable(
         {...v, 'salaire': rhaNum(v['salaire'])}, rhaAgentPar(c.magasin, v['employeId']),
-        reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : admReferenceSuivante('CT-', 4, col.toutes));
+        reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : numeroSuivant('rh.contrats', date: c.aujourdhui, existants: col.toutes));
 
     return CrudMat(
       collection: col,

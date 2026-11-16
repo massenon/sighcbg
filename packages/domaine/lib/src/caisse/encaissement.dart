@@ -17,6 +17,7 @@ import '../format/js.dart';
 import '../mecef/montants.dart';
 import '../tarifs/tarifs.dart' show tarJourDe;
 import 'valorisation.dart' show codeFactureEnAttenteDePrix, codePrixAValoriser, codePrixAssureADefinir, codeLigneSansMontant, ligneAValoriser, motifFactureEnAttenteDePrix, motifLigneSansMontant;
+import '../numerotation/numerotation.dart';
 
 const compteCaisse = '571000';
 const compteClientsAssurance = '411110';
@@ -322,16 +323,7 @@ String numeroPieceCaisse(Map<String, Object?> facture, String date,
         e['journal'] == 'CAI' &&
         _vrai(e['numero'])) return '${e['numero']}';
   }
-  final prefixe = 'CAI-${date.substring(0, 4)}-';
-  var max = 0;
-  for (final e in ecritures) {
-    final n = e['numero'];
-    if (n is String && n.startsWith(prefixe)) {
-      final rang = int.tryParse(n.substring(prefixe.length)) ?? 0;
-      if (rang > max) max = rang;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(5, '0')}';
+  return numeroSuivant('caisse.pieces', date: date, existants: ecritures);
 }
 
 /// Écriture d'encaissement : débit 571 de la part réglée, débit 411 de la part assureur (au premier versement seulement),

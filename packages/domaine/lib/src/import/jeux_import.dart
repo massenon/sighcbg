@@ -6,8 +6,7 @@
 library;
 
 import '../administration/adm_regles.dart' show admNaturesCourrier, admReferenceCourrier, admServicesCourrier, admTraitementsCourrier;
-import '../administration/adm_regles.dart' show admReferenceSuivante;
-import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget, cpbReferenceSuivante;
+import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget;
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice, cpcOrigineImportOuverture;
 import '../assurances/ass_garanties.dart';
 import '../assurances/ass_regles.dart' show assCategoriesGarantie, assChangerCouverture, assDate, assLibelleUnite, assUnitesPlafond;
@@ -24,6 +23,7 @@ import '../tarifs/tarifs.dart';
 import 'demande_import.dart' show champDepartCompteurs, champRefuseeParMere;
 import 'donnees_import.dart';
 import 'moteur_import.dart';
+import '../numerotation/numerotation.dart';
 
 part 'jeux_import_stock.dart';
 part 'jeux_import_tarifs.dart';
@@ -948,9 +948,10 @@ final JeuImport jeuSoldesOuverture = JeuImport(
     return pb;
   },
   ecrire: (lignes, ecrireFiche, lot, ctx, port) {
-    final an = '${lignes.first.v['date']}'.substring(0, 4);
-    final existants = port.toutes('ecritures').where((e) => e['journal'] == 'AN' && '${e['numero']}'.startsWith('AN-$an-')).length;
-    final numero = 'AN-$an-${(existants + 1).toString().padLeft(5, '0')}';
+    final dateAn = lignes.first.v['date'];
+    final serieAn = Numerotation.serie('compta.a-nouveaux', date: dateAn);
+    final existants = port.toutes('ecritures').where((e) => e['journal'] == 'AN' && serieAn.rangDe('${e['numero']}', an: anneeDePiece(dateAn)) != null).length;
+    final numero = numeroFormate('compta.a-nouveaux', date: dateAn, rang: existants + 1);
     final libJ = importJournaux.where((j) => j[0] == 'AN').map((j) => j[1]).firstOrNull ?? 'À-nouveaux';
     for (final l in lignes) {
       final v = l.v;

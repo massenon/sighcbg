@@ -59,7 +59,7 @@ class EcranAdministrations extends StatelessWidget with EcranMaquette {
         executantId: '${v['executantId']}',
         observation: '${v['observation'] ?? ''}',
         dateHeure: maintenant,
-        reference: referenceSuivante('ADM-', 5, adm.toutes));
+        reference: numeroSuivant('soins.administrations', date: maintenant, existants: adm.toutes));
     if (res.ok) {
       adm.inserer({'statut': 'actif', ...res.fiche!}, prefixe: 'ADM');
       if (res.termine) m.collection('prescriptions').mettreAJour(pres['id'], {'statut': 'termine'});

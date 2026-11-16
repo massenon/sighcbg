@@ -301,7 +301,7 @@ class EcranImmobilisations extends StatelessWidget with EcranMaquette {
             'dateCession': s['dateCession'] ?? '',
             'valeurCession': ('${s['valeurCession'] ?? ''}').isEmpty ? null : num.tryParse('${s['valeurCession']}'.replaceAll(',', '.')),
             'motifSortie': s['motifSortie'] ?? '',
-            if (record == null) 'reference': cpbReferenceSuivante('IM-', 3, col.toutes),
+            if (record == null) 'reference': numeroSuivant('compta.immobilisations', date: c.aujourdhui, existants: col.toutes),
           },
           detail: (ctx, im) {
             final plan = cpbPlanAmortissement(im, auj);

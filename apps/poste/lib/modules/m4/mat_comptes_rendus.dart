@@ -166,7 +166,7 @@ class _Tableau extends StatelessWidget {
                       final fiche = matSansNuls({
                         'statut': 'actif',
                         ...v,
-                        'reference': matReferenceSuivante('CRM-', col.toutes),
+                        'reference': numeroSuivant('maternite.comptes-rendus', date: v['date'], existants: col.toutes),
                         'typeCr': mod['code'],
                         'typeLabel': mod['label'],
                         'patientId': pt?['id'],

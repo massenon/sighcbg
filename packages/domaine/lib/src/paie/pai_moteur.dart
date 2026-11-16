@@ -16,6 +16,7 @@ import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
 import '../rh/planning_rh.dart' show regimeRhALaDate;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
+import '../numerotation/numerotation.dart';
 
 typedef PaiFiche = Map<String, Object?>;
 
@@ -943,18 +944,10 @@ List<PaiLigneEcriture> paiLignesEcriturePaie(Iterable<PaiFiche> lot) {
 }
 
 /// Le prochain numéro de pièce `SAL-AAAA-NNNNN` : le plus grand numéro de l'année sur TOUTES les écritures (archivées comprises) plus un.
-String paiNumeroPiecePaie(String date, Iterable<PaiFiche> ecritures) {
-  final prefixe = 'SAL-${date.substring(0, 4)}-';
-  var max = 0;
-  for (final e in ecritures) {
-    final nu = e['numero'];
-    if (nu is String && nu.startsWith(prefixe)) {
-      final n = int.tryParse(RegExp(r'^\d+').firstMatch(nu.substring(prefixe.length))?.group(0) ?? '') ?? 0;
-      if (n > max) max = n;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(5, '0')}';
-}
+String paiNumeroPiecePaie(String date, Iterable<PaiFiche> ecritures) => numeroSuivant('paie.pieces', date: date, existants: ecritures);
+
+/// L'identifiant de la pièce de paie d'une période (`PAIE-AAAA-MM`) : série dérivée du référentiel de numérotation.
+String paiIdentifiantPiece(Object? periode) => numeroDerive('paie.piece-periode', '$periode');
 
 /// La pièce de paie d'un lot : [fiches] à insérer dans `ecritures` (statut brouillon), ou [refus] nommé (rien n'est à écrire).
 class PaiPiece {
@@ -970,7 +963,7 @@ class PaiPiece {
 /// entre les six secteurs. [date] : `AAAA-MM-JJ`. [montantTexte] formate un montant pour le message de refus (la maquette emploie `C.money`).
 PaiPiece paiPieceDePaie(String periode, Iterable<PaiFiche> lot,
     {required String date, required Iterable<PaiFiche> ecritures, required String Function(num) montantTexte}) {
-  final pieceId = 'PAIE-$periode';
+  final pieceId = paiIdentifiantPiece(periode);
   final existante = ecritures.where(_actif).where((e) => e['pieceId'] == pieceId).firstOrNull;
   if (existante != null) {
     return PaiPiece(

@@ -76,7 +76,7 @@ void main() {
           if (!{'id', 'statut', 'reference', 'patientId', 'patient'}.contains(e.key)) e.key: e.value
       };
       final f = blocConstruirePatientCode(saisie,
-          patient: patientDe(cree), prefixeReference: 'CPA-2026-', toutes: liste(jeu['cpa']));
+          patient: patientDe(cree), serieReference: 'bloc.cpa', toutes: liste(jeu['cpa']));
       memes(f, cree, 'cpa', ignorer: {'id', 'statut'});
     });
 
@@ -144,7 +144,7 @@ void main() {
       for (final x in fiche.entries)
         if (!{'id', 'statut', 'reference', 'patientId', 'patient'}.contains(x.key)) x.key: x.value
     };
-    memes(blocConstruirePatientCode(saisie, patient: {'id': fiche['patientId'], 'nom': 'PENU', 'prenom': 'Sabar'}, prefixeReference: 'CRA-2026-', toutes: rows),
+    memes(blocConstruirePatientCode(saisie, patient: {'id': fiche['patientId'], 'nom': 'PENU', 'prenom': 'Sabar'}, serieReference: 'bloc.cra', toutes: rows),
         fiche, 'cra', ignorer: {'id', 'statut'});
   });
 

@@ -37,6 +37,8 @@ const FAMILLES = {
   /* Lot OCR-C : les LECTURES du texte des scans (lecture machine, correction signée d'une personne) : ajout seul, identité commune, jamais vers un téléphone. Le RÉGLAGE de la lecture est un
      référentiel (R : la mère seule l'écrit, les fileuls le reçoivent). La file de lecture (`fileOcr`) reste locale au poste. */
   lecturesOcr: 'B', reglagesOcr: 'R',
+  /* LOT 2 : le référentiel de numérotation des pièces (une fiche par version datée de série) : la mère seule l'écrit, un fileul dépose (validationsDeposees). */
+  seriesNumerotation: 'R',
   constantes: 'B', notes: 'B',
   cpn: 'B', cpon: 'B', surveillances: 'B', orientations: 'B', /* suite du mobile (E1650 à E1660) */
   factures: 'C', prescriptions: 'C',

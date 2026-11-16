@@ -155,7 +155,7 @@ class EcranPretsEtudes extends StatelessWidget with EcranMaquette {
                         prefixeId: 'PRT',
                         fiche: (v, _) {
                           final a = c.magasin.collection('personnel').actives.where((x) => x['id'] == v['employeId']).firstOrNull;
-                          return paiPretTransform(_chiffres(v), a, reference: paiReferenceSuivante('PRT-', 4, col.toutes));
+                          return paiPretTransform(_chiffres(v), a, reference: numeroSuivant('paie.prets', date: c.aujourdhui, existants: col.toutes));
                         })),
             ],
             colonnes: [

@@ -30,7 +30,7 @@ class EcranConges extends StatelessWidget with EcranMaquette {
     Fiche fiche(BuildContext ctx, Map<String, Object?> v, Fiche? existante) {
       final f = rhaCongeEnregistrable(
           {...v}, rhaAgentPar(c.magasin, v['employeId']),
-          reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : admReferenceSuivante('CG-', 4, col.toutes));
+          reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : numeroSuivant('rh.conges', date: c.aujourdhui, existants: col.toutes));
       // UNE DEMANDE NAÎT À VALIDER (lot L5) : la décision ne se saisit pas à la main, elle se tranche par le circuit réglé au poste.
       if (existante == null) return {...f, 'statutConge': 'en_attente', ...rhbPlanningPoste(c).naissance()};
       return f;

@@ -36,6 +36,7 @@ import '../core/service_installation.dart';
 import '../modules/auth/ins_modale.dart';
 import 'recherche_globale.dart';
 import 'ruban.dart';
+import '../core/numerotation_poste.dart';
 
 /// Coque UNIQUE du poste (fileul et mère) : barre supérieure → ruban à méga-menus → page. Elle reproduit la structure de
 /// la maquette (`#app-menubar`) ; tout ce qu'elle affiche est DÉRIVÉ du manifeste et de la matrice des droits.
@@ -199,7 +200,10 @@ class _CoquePosteState extends State<CoquePoste> {
     _brancherDroits();
     // L'identité enregistrée du magasin (cfg-branding) : appliquée à l'ouverture de la coque, puis suivie (idempotent avec le démarrage du poste).
     final magasinIdentite = widget.magasin;
-    if (magasinIdentite != null) brancherIdentite(magasinIdentite);
+    if (magasinIdentite != null) {
+      brancherIdentite(magasinIdentite);
+      brancherNumerotation(magasinIdentite);
+    }
     _suivreInstallation();
     final demande = widget.ecranInitial;
     if (demande != null && _estAutonome(demande)) _autonome = demande;

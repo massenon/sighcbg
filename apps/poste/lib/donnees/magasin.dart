@@ -505,6 +505,8 @@ class Magasin {
     'lecturesOcr': 'M1',
     'fileOcr': 'M1',
     'reglagesOcr': 'CFG',
+    // Lot 2 : le référentiel de numérotation des pièces (une fiche par version datée de série, famille R).
+    'seriesNumerotation': 'CFG',
     'fichesReference': 'M1',
     'pieces': 'M1',
     'secteurs': 'CFG',

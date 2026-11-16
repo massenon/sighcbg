@@ -566,7 +566,7 @@ class _EtatFacturation extends State<EcranFacturation> {
         context,
         EntreeTicket(
           operateur: acteur(c).nom,
-          numero: 'T-${(nbFactures + 1).toString().padLeft(5, '0')}',
+          numero: numeroFormate('caisse.tickets', date: c.aujourdhui, rang: nbFactures + 1),
           typeVente: assure ? 'ASSURANCE' : 'COMPTANT',
           assureur: assure ? '${p['assureurNom']}' : null,
           assure: assure ? '${p['nom']} ${p['prenom']}' : null,
@@ -594,7 +594,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           regle: nombreOuZero(_reglement['regle']),
           baseMecef: mecefActif ? t.partPatient : null,
         ),
-        'T-${(nbFactures + 1).toString().padLeft(5, '0')}');
+        numeroFormate('caisse.tickets', date: c.aujourdhui, rang: nbFactures + 1));
   }
 
   Future<void> _nouvelleNature() async {

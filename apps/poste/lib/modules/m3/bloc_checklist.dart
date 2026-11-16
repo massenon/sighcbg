@@ -92,7 +92,7 @@ class EcranChecklistBloc extends StatelessWidget with EcranMaquette {
                     final col = m.collection('checklistsBloc');
                     final r = col.inserer({
                       'statut': 'actif',
-                      'reference': blocReferenceSuivante('CKL-', 4, col.toutes),
+                      'reference': numeroSuivant('bloc.checklists', date: c.aujourdhui, existants: col.toutes),
                       'moment': moment,
                       'dateHeure': c.aujourdhui.toUtc().toIso8601String(),
                       'patientId': pt?['id'],

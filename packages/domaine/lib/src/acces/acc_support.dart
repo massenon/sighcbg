@@ -5,6 +5,7 @@ library;
 
 import '../impression/identite.dart';
 import '../navigation/manifeste.dart';
+import '../numerotation/numerotation.dart';
 
 /// Coordonnées de l'éditeur (`EDITEUR` de la maquette).
 const Map<String, Object> accEditeur = {
@@ -140,17 +141,7 @@ String? accControlerAnomalie(String? module, String description) =>
 
 /// La référence suivante d'une demande : `SUP-AAAA-NNNN`. La maquette compte avec un compteur de PAGE (`C.nextRef`) qui repart de 1 à chaque
 /// chargement et écrit « 2026 » en dur ; le poste prend le plus grand numéro DÉJÀ ÉCRIT + 1, de l'année courante (écart consigné).
-String accReferenceSupport(int annee, Iterable<Object?> existantes) {
-  final prefixe = 'SUP-$annee-';
-  var max = 0;
-  for (final r in existantes) {
-    final s = '$r';
-    if (!s.startsWith(prefixe)) continue;
-    final n = int.tryParse(s.substring(prefixe.length));
-    if (n != null && n > max) max = n;
-  }
-  return '$prefixe${(max + 1).toString().padLeft(4, '0')}';
-}
+String accReferenceSupport(int annee, Iterable<Object?> existantes) => numeroSuivant('acces.support', date: annee, annee: annee, existants: existantes);
 
 /// La demande « message » : les champs que la maquette écrit (hors référence, date, auteur et état, posés par l'appelant).
 Map<String, Object?> accDemandeMessage(String objet, String message, {bool courriel = false}) => {

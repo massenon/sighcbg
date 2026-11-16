@@ -16,6 +16,7 @@ library;
 
 import '../format/js.dart';
 import 'avoir.dart';
+import '../numerotation/numerotation.dart';
 
 class RefusOperation implements Exception {
   const RefusOperation(this.motif);
@@ -59,17 +60,7 @@ List<Map<String, Object?>> facturesConcernables(
   return l.take(200).toList();
 }
 
-String _ref(Iterable<Map<String, Object?>> fiches) {
-  var max = 0;
-  for (final f in fiches) {
-    final r = '${f['reference'] ?? ''}';
-    if (r.startsWith('RB-')) {
-      final k = int.tryParse(r.substring(3)) ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  return 'RB-${(max + 1).toString().padLeft(5, '0')}';
-}
+String _ref(Iterable<Map<String, Object?>> fiches) => numeroSuivant('caisse.remboursements', existants: fiches);
 
 /// `Enregistrer`. [saisie] : `factureId, nature, motifAvoir, refacturation, date, montant, motif, autorisePar` (valeurs du formulaire).
 /// Pour la nature « Facture avoir », [avoirs] / [facturesMere] / [idAvoir] / [jour] / [utilisateur] alimentent le moteur unique `emettreAvoir`.

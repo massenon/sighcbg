@@ -2,6 +2,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../format/recherche.dart' show comparerNaturel, trierPar;
 import 'adm_notes_donnees.dart';
+import '../numerotation/numerotation.dart';
 
 export 'adm_notes_donnees.dart';
 
@@ -80,9 +81,7 @@ String admLibelleSens(Object? sens) => sens == 'arrivee' ? 'Arrivée' : 'Départ
 /// Référence d'un nouveau courrier (E538 levé) : série annuelle `ARR-AAAA-NNNN` / `DEP-AAAA-NNNN`. Le millésime est l'année de la DATE du courrier ([date], ISO), le
 /// rang court par sens et par année sur les fiches EXISTANTES ([toutes], archivées comprises).
 String admReferenceCourrier(Object? sens, Object? date, Iterable<AdmFiche> toutes) {
-  final d = '$date';
-  final an = d.length >= 4 ? d.substring(0, 4) : '';
-  return admReferenceSuivante('${sens == 'arrivee' ? 'ARR-' : 'DEP-'}$an-', 4, toutes);
+  return numeroSuivant(sens == 'arrivee' ? 'adm.courriers-arrivee' : 'adm.courriers-depart', date: date, existants: toutes);
 }
 
 /// Les exercices que couvre un registre de courriers (années des dates, triées), à défaut l'année [parDefaut] : le sous-titre de l'état imprimé.
@@ -173,7 +172,7 @@ List<String> admCanauxEvenement(Object? notifier, Object? canauxExistants) {
 }
 
 /// Création : référence `EVT-NNNN` (rang = effectif + 1) — le préfixe diffère de celui du jeu (`EV-2026-`), écart E532 porté fidèlement.
-String admReferenceEvenement(int effectif) => 'EVT-${(effectif + 1).toString().padLeft(4, '0')}';
+String admReferenceEvenement(int effectif, {Object? date}) => numeroFormate('adm.evenements', date: date, rang: effectif + 1);
 
 List<String> admCategoriesPresentes(List<AdmFiche> rows) {
   final s = {for (final r in rows) '${r['categorie']}'}.toList()..sort();

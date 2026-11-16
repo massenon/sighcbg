@@ -101,10 +101,10 @@ class EcranHeuresSup extends StatelessWidget with EcranMaquette {
       valeursInitiales: () => {'majoration': '25', 'valide': false, 'periode': paiPeriodeLibelle(c.aujourdhui.year, c.aujourdhui.month - 1)},
       transformerExistante: (ctx, saisie, existante) {
         final v = <String, Object?>{...saisie, 'heures': _nombre(saisie['heures']), 'majoration': _nombre(saisie['majoration'])};
-        return paiHeuresSupTransform(v, _agent(c, saisie['employeId']), reference: () => (existante?['reference'] as String?) ?? paiReferenceSuivante('HS-', 4, col.toutes));
+        return paiHeuresSupTransform(v, _agent(c, saisie['employeId']), reference: () => (existante?['reference'] as String?) ?? numeroSuivant('paie.heures-sup', date: c.aujourdhui, existants: col.toutes));
       },
       transformer: (ctx, saisie) => paiHeuresSupTransform({...saisie, 'heures': _nombre(saisie['heures']), 'majoration': _nombre(saisie['majoration'])}, _agent(c, saisie['employeId']),
-          reference: () => paiReferenceSuivante('HS-', 4, col.toutes)),
+          reference: () => numeroSuivant('paie.heures-sup', date: c.aujourdhui, existants: col.toutes)),
       referenceToast: (f) => '${f['reference'] ?? ''}',
     );
   }
@@ -223,9 +223,9 @@ class EcranAvances extends StatelessWidget with EcranMaquette {
             if (existante != null) ...{'rembourse': existante['rembourse'], 'reference': existante['reference']},
           },
           _agent(c, saisie['employeId']),
-          reference: () => paiReferenceSuivante('AVS-', 4, col.toutes)),
+          reference: () => numeroSuivant('paie.avances', date: c.aujourdhui, existants: col.toutes)),
       transformer: (ctx, saisie) => paiAvanceTransform({...saisie, 'montant': _nombre(saisie['montant']), 'nbMensualites': _nombre(saisie['nbMensualites'])}, _agent(c, saisie['employeId']),
-          reference: () => paiReferenceSuivante('AVS-', 4, col.toutes)),
+          reference: () => numeroSuivant('paie.avances', date: c.aujourdhui, existants: col.toutes)),
       referenceToast: (f) => '${f['reference'] ?? ''}',
       etat: _imprimer,
     );

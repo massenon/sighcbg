@@ -139,7 +139,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
     final u = hosUnitesObservation.firstWhere((x) => x.id == v['unite'], orElse: () => HosUnite('${v['unite']}', '${v['unite']}', 0));
     final entree = versHorodatage(v['dateEntree'], v['heureEntree'])!;
     return {
-      'reference': 'OBS-2026-${rang.toString().padLeft(4, '0')}',
+      'reference': numeroFormate('hospitalisation.observations', date: entree, rang: rang),
       'patientId': p['id'],
       'patient': '${p['nom']} ${p['prenom']}',
       'patientCode': p['code'],
@@ -345,7 +345,7 @@ class EcranObservation extends StatelessWidget with EcranMaquette {
                       suite = adm.inserer({
                         'statut': 'actif',
                         ...hosAdmissionDepuisObservation(o, sortie, '${v['conclusion']}',
-                            referenceSuivante('H', 5, adm.toutes)),
+                            numeroSuivant('hospitalisation.admissions', date: maintenant, existants: adm.toutes)),
                         '_creePar': acteur(c).nom,
                         '_creeLe': maintenant.toUtc().toIso8601String(),
                       }, prefixe: 'ADM');

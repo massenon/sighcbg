@@ -12,6 +12,7 @@ import 'cfa_commun.dart';
 import 'cfb_commun.dart';
 import 'cfb_confirmations.dart';
 import 'cfb_configuration_fiscale.dart';
+import 'cfb_numerotation.dart';
 
 const _mono = 'LiberationMono';
 
@@ -198,16 +199,8 @@ class _EtatFiscalite extends State<EcranFiscalite> {
                   ]),
                 ])),
             CarteSigh(titre: 'Versions de l’identité légale', child: _tableVersions(cf)),
-            CarteSigh(
-                titre: 'Numérotation des documents',
-                child: MiniTableauSigh(colonnes: [
-                  ColonneMini('Type de document', (x) => '${x['type']}'),
-                  ColonneMini('Préfixe', (x) => '${x['prefixe']}', rendu: (x) => _mono12('${x['prefixe']}')),
-                  ColonneMini('Format', (x) => '${x['format']}'),
-                  ColonneMini('Séquence', (x) => '${x['sequence']}'),
-                ], lignes: [
-                  for (final n in cfbNumerotation) {'type': n.$1, 'prefixe': n.$2, 'format': n.$3, 'sequence': n.$4}
-                ])),
+            // LOT 2 (16/11/2026) : le référentiel de numérotation UNIQUE, administrable sous geste réservé (il remplace le tableau figé de la maquette, `cfbNumerotation`).
+            CarteNumerotation(c: c),
             CarteSigh(
                 titre: 'Obligations déclaratives (dérivées des obligations en vigueur)',
                 child: MiniTableauSigh(colonnes: [

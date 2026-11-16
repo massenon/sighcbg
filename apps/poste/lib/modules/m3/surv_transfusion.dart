@@ -77,7 +77,7 @@ class EcranTransfusion extends StatelessWidget with EcranMaquette {
     final calcul = hosValeursTransfusion(v);
     return {
       'statut': 'actif',
-      'reference': referenceSuivante('TRF-', 4, col.toutes),
+      'reference': numeroSuivant('hospitalisation.transfusions', existants: col.toutes),
       'patientId': pt?['id'],
       'patient': pt != null ? '${pt['nom']} ${pt['prenom']}' : v['patientCode'],
       'patientCode': v['patientCode'],

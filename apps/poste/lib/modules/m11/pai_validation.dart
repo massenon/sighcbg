@@ -62,7 +62,7 @@ class EcranValidationPaie extends StatelessWidget with EcranMaquette {
     final ecritures = c.magasin.collection('ecritures');
     final piece = paiPieceDePaie(l.periode, lot, date: iso(c.aujourdhui), ecritures: ecritures.toutes, montantTexte: money);
     if (!piece.ok) {
-      c.magasin.journaliser('Écriture de paie refusée, déséquilibre', 'M12', 'Ecriture', 'PAIE-${l.periode}', null, {'debit': piece.debit, 'credit': piece.credit});
+      c.magasin.journaliser('Écriture de paie refusée, déséquilibre', 'M12', 'Ecriture', paiIdentifiantPiece(l.periode), null, {'debit': piece.debit, 'credit': piece.credit});
       ToastsSigh.afficher(ctx, 'Validation refusée.', type: TypeToast.erreur, detail: piece.refus);
       return;
     }

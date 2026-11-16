@@ -8,9 +8,9 @@ library;
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
-import '../stock/delivrance.dart' show referenceSuivante;
 import '../stock/stock.dart' show joursAvantPeremption;
 import 'dem_regles.dart' show demExamenDe, demSections;
+import '../numerotation/numerotation.dart';
 
 typedef FicheSang = Map<String, Object?>;
 
@@ -226,7 +226,7 @@ FicheSang sangFicheDonneur(Map<String, Object?> saisie,
   if (!_vrai(f['reference'])) {
     f['reference'] = ancienne != null && _vrai(ancienne['reference'])
         ? ancienne['reference']
-        : referenceSuivante('DON-', 4, existants);
+        : numeroSuivant('labo.donneurs', existants: existants);
   }
   return f;
 }

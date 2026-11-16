@@ -17,6 +17,7 @@ library;
 
 import '../format/js.dart';
 import 'prise_en_charge.dart';
+import '../numerotation/numerotation.dart';
 
 /// Refus NOMMÉ d'une saisie ou d'une émission : `motif` s'affiche tel quel (RG-03, lignes manquantes…).
 class RefusEmission implements Exception {
@@ -198,7 +199,10 @@ class ResultatEmission {
 /// Le préfixe de la SÉRIE ANNUELLE d'une pièce de caisse : `FN-AAAA-` (`PRO-AAAA-` en pro-forma), le millésime étant celui de la DATE de la pièce.
 /// Écart E6, corrigé dans la maquette le 31/10/2026 : il était écrit en dur (`FN-2026-`).
 String prefixeSerieFacture({required bool proforma, required String dateFacture}) =>
-    '${proforma ? 'PRO-' : 'FN-'}${dateFacture.substring(0, 4)}-';
+    racineNumero(serieFacture(proforma), date: dateFacture);
+
+/// La série du référentiel de numérotation d'une pièce de caisse (normalisée ou pro-forma).
+String serieFacture(bool proforma) => proforma ? 'caisse.proformas' : 'caisse.factures';
 
 /// Rang suivant d'une série annuelle (`PR.rangSerieFactures`) : le plus grand rang déjà porté par les factures du même [prefixe]
 /// (archivées comprises : une pièce archivée garde son numéro, RG-14), plus un. Les volets `-A` / `-B` d'une même émission portent deux rangs consécutifs (E6b).
@@ -319,7 +323,7 @@ ResultatEmission emettreFacture({
     final anormaliser = !proforma && patPiece > 0 && statutPiece == 'soldee';
     pieces.add({
       'numero':
-          '${prefixeSerieFacture(proforma: proforma, dateFacture: dateFacture)}${(rangDebut + 1 + rang).toString().padLeft(5, '0')}$suffixe',
+          '${numeroFormate(serieFacture(proforma), date: dateFacture, rang: rangDebut + 1 + rang)}$suffixe',
       // MECeF fermé (bascule P0-5) : aucun champ fiscal n'est posé, ni ici, ni `statutMecef` plus bas.
       if (mecefActif) 'mecef': anormaliser,
       if (mecefActif) 'baseMecef': proforma ? 0.0 : reglePiece,

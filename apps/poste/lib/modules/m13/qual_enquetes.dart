@@ -311,14 +311,7 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
   }
 
   /// `ENQ-NNN` : le numéro suit le registre (le plus grand déjà attribué + 1), non un compteur de page (E573).
-  String _prochaineReference(CollectionMagasin col) {
-    var max = 0;
-    for (final f in col.toutes) {
-      final m = RegExp(r'^ENQ-(\d+)$').firstMatch('${f['reference']}');
-      if (m != null) max = max < int.parse(m.group(1)!) ? int.parse(m.group(1)!) : max;
-    }
-    return 'ENQ-${(max + 1).toString().padLeft(3, '0')}';
-  }
+  String _prochaineReference(CollectionMagasin col) => numeroSuivant('qualite.enquetes', existants: col.toutes);
 
   // ------------------------------------------------------------------------------------------------------------------------------------------
   // Partage à un tiers

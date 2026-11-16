@@ -8,6 +8,7 @@ library;
 import 'hos_constantes.dart';
 import '../format/js.dart';
 import 'dart:math' as math;
+import '../numerotation/numerotation.dart';
 
 typedef HosFiche = Map<String, Object?>;
 
@@ -171,7 +172,7 @@ String? hosRefusAdmission(
 /// (E360) ou lue sur le registre.
 HosFiche hosConstruireAdmission(Map<String, Object?> v, HosFiche? fiche,
     Iterable<HosFiche> patients, Iterable<HosFiche> admissionsToutes,
-    {required String Function(String, int, Iterable<HosFiche>) reference}) {
+    {String Function(String, int, Iterable<HosFiche>)? reference}) {
   final r = {...v};
   for (final p in patients) {
     if (p['code'] == v['patientCode']) {
@@ -189,7 +190,7 @@ HosFiche hosConstruireAdmission(Map<String, Object?> v, HosFiche? fiche,
   }
   if (r['reference'] == null || r['reference'] == '') {
     r['reference'] = fiche?['reference'] ??
-        reference('H', 5, admissionsToutes);
+        numeroSuivant('hospitalisation.admissions', date: v['dateEntree'], existants: admissionsToutes);
   }
   // E370 : une admission existante GARDE son statut (le formulaire n'en porte pas) — sinon corriger une admission sortie la rouvrirait.
   r['statut'] ??= fiche?['statut'] ?? 'en_cours';

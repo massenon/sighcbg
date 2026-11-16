@@ -261,7 +261,7 @@ class _EtatParticipations extends State<EcranParticipations> {
                     if (v == null) return;
                     final col = c.magasin.collection('participations');
                     // Le reçu SUIT la série du registre (E743 — `C.nextRef` repartait de 1 à chaque session : REC-PART-0001 pouvait déjà exister).
-                    final recu = rhbReferenceSuivante('REC-PART-', 4, [for (final p in col.toutes) {'reference': p['recu']}]);
+                    final recu = numeroSuivant('rh.recus-participation', date: c.aujourdhui, existants: col.toutes);
                     final verse = nombreOuZero(v['montantVerse']);
                     final obs = '${v['observation'] ?? ''}';
                     final annuler = col.mettreAJour(x['id'], {

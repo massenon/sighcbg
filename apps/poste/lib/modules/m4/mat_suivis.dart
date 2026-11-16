@@ -104,7 +104,7 @@ class EcranCpn extends StatelessWidget with EcranMaquette {
     final col = c.magasin.collection('grossesses');
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('CPN-', col.toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.cpn', date: v['date'], existants: col.toutes);
       _nombres(v, const ['termeSA']);
       v['sp'] = _liste(v['sp']);
       // Facteur de risque CPN : on SIGNALE, on ne coche pas GAR à la place de la sage-femme.
@@ -293,7 +293,7 @@ class EcranCpon extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('CPO-', c.magasin.collection('cpon').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.cpon', date: v['date'], existants: c.magasin.collection('cpon').toutes);
       final effacer = !matVrai(v['hemorragieAntePartum']);
       if (effacer) v['etiologieAnte'] = null;
       final r = matSansNuls(v);
@@ -416,7 +416,7 @@ class EcranPlanification extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('PF-', c.magasin.collection('planificationFamiliale').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.planification', date: v['date'], existants: c.magasin.collection('planificationFamiliale').toutes);
       v['methodeLabel'] = matMethodePf(v['methode'])?['label'] ?? v['methode'];
       return matSansNuls(v);
     }
@@ -542,7 +542,7 @@ class EcranSonu extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('SONU-', c.magasin.collection('registreSONU').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.sonu', date: v['date'], existants: c.magasin.collection('registreSONU').toutes);
       v['fonctions'] = (_fonctions(v['fonctions'])..sort());
       _nombres(v, const ['gestite', 'parite']);
       matRecomposerDateHeure(v, 'dateHeure');
@@ -679,7 +679,7 @@ class EcranPtme extends StatelessWidget with EcranMaquette {
     final p = matPtme;
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('PTME-', c.magasin.collection('ptme').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.ptme', date: v['date'], existants: c.magasin.collection('ptme').toutes);
       return matSansNuls(v);
     }
 
@@ -803,7 +803,7 @@ class EcranSoinsCuratifs extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('SCM-', c.magasin.collection('soinsCuratifsMaternite').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.soins-curatifs', date: v['date'], existants: c.magasin.collection('soinsCuratifsMaternite').toutes);
       _nombres(v, const ['joursHospitalisation']);
       final effacer = !matVrai(v['femmeHospitalisee']);
       if (effacer) v['joursHospitalisation'] = null;

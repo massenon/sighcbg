@@ -13,6 +13,7 @@
 import '../parametres/definitions.dart' show definitionDeParametre;
 import '../parametres/parametres.dart' show Parametre;
 import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteAibTenir;
+import '../numerotation/numerotation.dart';
 
 typedef AibFiche = Map<String, Object?>;
 
@@ -596,7 +597,7 @@ AibFiche aibEcrireAchats(
   final ecritures = <AibFiche>[];
   for (final l in (ap['lignes'] as List).cast<AibFiche>()) {
     if (l['refus'] != null || l['ecriteSous'] != null || !((l['aib'] as num? ?? 0) > 0)) continue;
-    final numero = 'AIB-${l['reference']}';
+    final numero = numeroDerive('compta.attestations-aib', '${l['reference']}', date: l['date']);
     final base = <String, Object?>{
       'numero': numero,
       'date': l['date'],

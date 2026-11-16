@@ -236,7 +236,7 @@ class EcranConstantes extends StatelessWidget with EcranMaquette {
     final calc = patValeursReleve(v, c.magasin.collection('patients').actives);
     final out = {...v, ...calc};
     if (existante == null) {
-      out['reference'] = patReferenceSuivante('CST-', 5, [for (final f in c.magasin.collection('constantes').toutes) '${f['reference'] ?? ''}']);
+      out['reference'] = numeroSuivant('patients.constantes', date: v['dateHeure'], existants: c.magasin.collection('constantes').toutes);
       out['origine'] = 'accueil';
     }
     return out;

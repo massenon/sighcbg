@@ -146,12 +146,12 @@ void main() {
 
       // 1. NUMÉROTATION SANS COLLISION : chaque poste prend sa plage, puis tire trois numéros ; hors ligne les deux ne se recouvrent pas.
       for (final (m, mo) in [(m1, moteur1), (m2, moteur2)]) {
-        await PlagesNumeros.de(m).recharger('besoins', 'BEB-2026-', () => m.collection('besoins').toutes);
-        await PlagesNumeros.de(m).recharger('commandes', 'BC-2026-', () => m.collection('commandes').toutes);
+        await PlagesNumeros.de(m).recharger('besoins', 'achats.besoins', () => m.collection('besoins').toutes, date: DateTime(2026, 11, 16));
+        await PlagesNumeros.de(m).recharger('commandes', 'achats.commandes', () => m.collection('commandes').toutes, date: DateTime(2026, 11, 16));
         expect(PlagesNumeros.de(m).restants('besoins'), 50, reason: 'plage reçue de la mère');
         expect(mo, isNotNull);
       }
-      String ref1(Magasin m) => PlagesNumeros.de(m).reference('besoins', 'BEB-2026-', 4, m.collection('besoins').toutes);
+      String ref1(Magasin m) => PlagesNumeros.de(m).reference('besoins', 'achats.besoins', m.collection('besoins').toutes, date: DateTime(2026, 11, 16));
       final refs1 = [ref1(m1), ref1(m1), ref1(m1)], refs2 = [ref1(m2), ref1(m2), ref1(m2)];
       expect({...refs1, ...refs2}.length, 6, reason: 'jamais deux fois le même BEB entre deux postes hors ligne : $refs1 / $refs2');
       expect(refs1.first, isNot(refs2.first));
@@ -268,7 +268,7 @@ void main() {
       expect(await moteur2.refusees(), isEmpty);
 
       // 6. COMMANDES : numérotation par plage, validation DA déposée puis appliquée, jamais d'écriture directe de « validée » par un fileul.
-      String refC(Magasin m) => PlagesNumeros.de(m).reference('commandes', 'BC-2026-', 4, m.collection('commandes').toutes);
+      String refC(Magasin m) => PlagesNumeros.de(m).reference('commandes', 'achats.commandes', m.collection('commandes').toutes, date: DateTime(2026, 11, 16));
       final c1 = refC(m1), c2 = refC(m2);
       expect(c1, isNot(c2));
       m1.collection('commandes').inserer({'reference': c1, 'fournisseur': 'F001', 'fournisseurNom': 'Pharma', 'statutCommande': 'attente_validation', 'montant': 5000, 'lignes': [], 'statut': 'actif'}, prefixe: 'COM');

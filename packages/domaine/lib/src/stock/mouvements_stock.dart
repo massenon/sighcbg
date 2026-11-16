@@ -21,6 +21,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
+import '../numerotation/numerotation.dart';
 
 typedef FicheStock = Map<String, Object?>;
 
@@ -235,7 +236,7 @@ void controlerBonAvantEcriture(List<FicheStock> lignes, List<FicheStock> produit
 }
 
 /// `TR-NNNNN` : le numéro suit le REGISTRE (plus grand rang existant + 1, archivés compris), pas un compteur de page.
-String referenceTransfert(Iterable<FicheStock> bons) => referenceSuivante('TR-', 5, bons);
+String referenceTransfert(Iterable<FicheStock> bons, {Object? date}) => numeroSuivant('stock.transferts', date: date, existants: bons);
 
 /// Ce qu'un transfert validé écrit.
 class TransfertEmis {
@@ -351,7 +352,7 @@ FicheStock preparerMouvement(
   if (t != null) v['typeLabel'] = t.libelle;
   v['utilisateur'] = utilisateur;
   final ref = v['reference'];
-  if (ref == null || ref == '') v['reference'] = existant?['reference'] ?? referenceSuivante('M', 6, mouvements);
+  if (ref == null || ref == '') v['reference'] = existant?['reference'] ?? numeroSuivant('stock.mouvements', date: v['date'], existants: mouvements);
   return v;
 }
 
@@ -425,7 +426,7 @@ InventaireValide validerInventaire({
   final ecarts = [for (final x in vals) if (x['nonCompte'] != true && _n(x['ecart']) != 0) x];
   final valeurEcart = ecarts.fold(0.0, (n, x) => n + _n(x['valeur']));
   final inventaire = <String, Object?>{
-    'reference': referenceSuivante('INV-', 4, inventaires),
+    'reference': numeroSuivant('stock.inventaires', date: entete['date'], existants: inventaires),
     'date': entete['date'],
     'type': entete['type'],
     'perimetre': entete['perimetre'],
@@ -462,7 +463,7 @@ InventaireValide validerInventaire({
     final patch = <String, Object?>{'stock': _max0(_n(pr['stock']) + e), cle: _max0(_n(pr[cle]) + e)};
     maj.add((id: '${pr['id']}', patch: patch));
     mvts.add({
-      'reference': referenceSuivante('M', 6, [...mouvements, ...mvts]),
+      'reference': numeroSuivant('stock.mouvements', date: entete['date'], existants: [...mouvements, ...mvts]),
       'date': entete['date'],
       'produitId': pr['id'],
       'produit': pr['designation'],
@@ -533,7 +534,7 @@ PerteDeclaree declarerPerte({
   final valeur = q * _n(produit['cump']);
   final obs = (observation ?? '').isEmpty ? null : observation;
   final mvt = <String, Object?>{
-    'reference': referenceSuivante('MVT-', 5, mouvements),
+    'reference': numeroSuivant('stock.pertes', date: date, existants: mouvements),
     'date': date,
     'type': type,
     'typeLabel': typeMouvement(type)?.libelle,

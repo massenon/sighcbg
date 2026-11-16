@@ -61,7 +61,7 @@ String _t(Object? v) => '${v ?? ''}';
 
 /// Le bulletin d'un calcul : sa référence est `BP-<matricule>-<mois>` (le rang du mois dans l'année, deux chiffres).
 PaiBulletinVue vueDeCalcul(PaiCalcul c) => PaiBulletinVue(
-    reference: 'BP-${c.matricule}-${(c.mois + 1).toString().padLeft(2, '0')}',
+    reference: numeroDerive('paie.bulletins-agent', '${c.matricule}-${(c.mois + 1).toString().padLeft(2, '0')}'),
     periode: c.periode,
     employe: c.nomComplet,
     matricule: c.matricule,

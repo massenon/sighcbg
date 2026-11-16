@@ -5,6 +5,7 @@ library;
 import '../format/format_fr.dart';
 import '../labo/res_saisie.dart' show agePatient;
 import 'pat_patients.dart';
+import '../numerotation/numerotation.dart';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // Constantes
@@ -122,7 +123,7 @@ FichePat patDeduitReference(FichePat saisie, Iterable<FichePat> patients, Iterab
   final pt = patients.where((x) => x['code'] == saisie['patientCode']).firstOrNull;
   return {
     ...saisie,
-    'numero': patReferenceSuivante('REF-', 5, [for (final f in fiches) '${f['numero'] ?? ''}']),
+    'numero': numeroSuivant('patients.fiches-reference', existants: fiches),
     'patientId': pt?['id'],
     'patient': pt != null ? '${pt['nom']} ${pt['prenom']}' : saisie['patientCode'],
     'age': pt != null ? agePatient(pt, maintenant) : null,
@@ -169,7 +170,7 @@ FichePat patDeduitContreReference(FichePat saisie, Iterable<FichePat> fiches, It
       .firstOrNull;
   return {
     ...saisie,
-    'reference': patReferenceSuivante('CRF-', 5, [for (final c in contreReferences) '${c['reference'] ?? ''}']),
+    'reference': numeroSuivant('patients.contre-references', existants: contreReferences),
     'patientId': ref?['patientId'],
     'patient': ref != null ? ref['patient'] : '—',
     'patientCode': ref?['patientCode'],

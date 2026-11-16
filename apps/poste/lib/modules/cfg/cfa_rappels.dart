@@ -151,8 +151,7 @@ class _OngletRappels extends StatelessWidget {
 
   void _preparer(BuildContext ctx, ContexteEcran c) {
     final col = c.magasin.collection('rappels');
-    final depart = RegExp(r'(\d+)$').firstMatch(admReferenceSuivante('RPL-', 5, col.toutes))?.group(1) ?? '1';
-    var rang = int.parse(depart);
+    var rang = rangMaximal('cfg.rappels', date: c.aujourdhui, existants: col.toutes) + 1;
     final r = cfaPreparerAnniversaires(
         modeles: c.magasin.collection('modelesMessage').actives,
         patients: c.magasin.collection('patients').actives,
@@ -160,7 +159,7 @@ class _OngletRappels extends StatelessWidget {
         jour: iso(c.aujourdhui),
         clinique: IdentiteClinique.nom,
         telephone: CfaIdentite.telephoneRdv,
-        prochaineRef: () => 'RPL-${(rang++).toString().padLeft(5, '0')}');
+        prochaineRef: () => numeroFormate('cfg.rappels', date: c.aujourdhui, rang: rang++));
     if (r.erreur != null) {
       ToastsSigh.afficher(ctx, r.erreur!, type: TypeToast.erreur);
       return;
