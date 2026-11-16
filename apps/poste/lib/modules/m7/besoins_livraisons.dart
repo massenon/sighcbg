@@ -107,6 +107,7 @@ class EcranLivraisons extends StatelessWidget with EcranMaquette {
               const SizedBox(height: 16),
               TableauSigh(
                 titre: 'Bons de livraison',
+                documentLigne: (ctx, x) => _piece(ctx, x),
                 lignes: actives,
                 taillePage: 12,
                 triInitial: 'date',
@@ -197,10 +198,13 @@ class EcranLivraisons extends StatelessWidget with EcranMaquette {
   }
 }
 
-void _imprimer(BuildContext ctx, Fiche l) => imprimerPiece(
-    ctx,
-    (c) => pieceLivraison(l,
-        utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c)));
+void _imprimer(BuildContext ctx, Fiche l) => imprimerPiece(ctx, (_) => _piece(ctx, l));
+
+/// Le bon de livraison complet, tel que « Imprimer » le produit (extrait pour « Imprimer la sélection », un bon par page, sans rien y changer).
+PieceA4 _piece(BuildContext ctx, Fiche l) {
+  final c = ContexteEcran.of(ctx);
+  return pieceLivraison(l, utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c));
+}
 
 void _consulter(BuildContext ecran, Fiche l) {
   afficherTiroir<void>(ecran,

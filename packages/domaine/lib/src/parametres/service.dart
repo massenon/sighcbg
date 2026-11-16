@@ -5,6 +5,7 @@
 //
 // Aucune valeur n'est codée ici : le DÉFAUT vient de la définition (donnée du registre), la valeur en vigueur de la base. Un paramètre inconnu se REFUSE en le nommant.
 
+import '../droits/gestes_reserves.dart' show gesteReserve;
 import 'parametres.dart';
 
 typedef LireFichesParametres = List<Map<String, Object?>> Function();
@@ -91,7 +92,16 @@ class ServiceParametres {
 
   /// Règle [cle] : une NOUVELLE VERSION à partir de [dateEffet] (AAAA-MM-JJ). Jamais une réécriture : une valeur déjà utilisée par une pièce se refuse en nommant la
   /// date de la dernière pièce (`parametre_deja_utilise`). Écrit la version si elle est recevable.
-  ResultatParametre<Parametre> regler(String cle, Object? valeur, String dateEffet, {String? motif}) {
+  ///
+  /// Un paramètre dont la définition porte un GESTE RÉSERVÉ (`DefinitionParametre.geste`, la limite d'export) n'est réglé que si [detientGeste] répond oui pour ce geste ;
+  /// sinon refus NOMMÉ `reglage_reserve`, rien n'est écrit. L'écran passe toujours [detientGeste] (le droit relu de la matrice) : le contrôle est refait ici, un bouton
+  /// absent ne protège rien. `null` (moteur appelé sans session : amorçage, tests du registre) : pas de contrôle.
+  ResultatParametre<Parametre> regler(String cle, Object? valeur, String dateEffet, {String? motif, bool Function(String geste)? detientGeste}) {
+    final g = definition(cle)?.geste;
+    if (g != null && detientGeste != null && !detientGeste(g)) {
+      return ResultatParametre.refuse(RefusParametre('reglage_reserve', 'Réglage réservé : « ${definition(cle)!.libelle} » se règle par le geste réservé « ${gesteReserve(g)?.libelle ?? g} », que votre profil ne détient pas.',
+          'Demander à l\'administrateur (Rôles et permissions › Gestes réservés).'));
+    }
     final r = Parametres.proposer(
       definition: definition(cle),
       versions: versions(cle),

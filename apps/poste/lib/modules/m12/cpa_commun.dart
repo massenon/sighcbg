@@ -58,6 +58,7 @@ ColonneTableau colDateEcriture() => ColonneTableau(
     libelle: 'Date',
     sansCoupure: true,
     valeur: (e) => e['date'],
+    valeurExport: (e) => valeurExportDate(e['date']),
     texte: (e) => dateDe(e['date']));
 
 ColonneTableau colJournalEcriture() => ColonneTableau(
@@ -83,6 +84,8 @@ ColonneTableau _sens(String cle, String libelle) => ColonneTableau(
     libelle: libelle,
     droite: true,
     texte: (e) => n(e[cle]) != 0 ? m(e[cle]) : '',
+    // L'export écrit le VRAI montant (décimales comprises) ; un sens vide reste une cellule vide.
+    valeurExport: (e) => n(e[cle]) != 0 ? valeurExportNombre(e[cle]) : null,
     rendu: (_, e) => n(e[cle]) != 0
         ? Text(m(e[cle]),
             style: const TextStyle(color: JetonsShell.slate700, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w500, fontFeatures: [FontFeature.tabularFigures()]))

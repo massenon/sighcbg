@@ -160,11 +160,11 @@ void main() {
       expect(sp(kpi(t, 'Rejetés à corriger')), isNot(sp(m_(liste(c0['kpis'])[1])['valeur'])), reason: 'un rejet de plus');
     });
 
-    cas('plus de validation en masse : ni « Valider la sélection », ni case de sélection, seulement le geste unitaire de la ligne', (t) async {
+    cas('plus de validation en masse : ni « Valider la sélection » ni action de groupe ; les cases ne servent qu’à exporter et imprimer (section 7, 16/11/2026)', (t) async {
       final m = magasin();
       await ouvrir(t, m, 'ged-workflow');
       expect(find.widgetWithText(BoutonSigh, 'Valider la sélection'), findsNothing);
-      expect(find.bySemanticsLabel('Sélectionner la ligne'), findsNothing);
+      expect(t.widget<TableauSigh>(find.byType(TableauSigh)).actionsGroupe, isNull, reason: 'aucune action de groupe, donc aucune validation en masse');
       expect(find.widgetWithText(BoutonSigh, 'Valider'), findsWidgets, reason: 'le geste unitaire reste offert sur chaque ligne');
     });
 

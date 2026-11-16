@@ -284,15 +284,11 @@ class _CrudM14State extends State<CrudM14> {
               taille: TailleBouton.sm,
               onPressed: () => _formulaire(ctx, null)),
       ],
+      // « Imprimer la sélection » : celle du tableau commun (geste réservé, journal) ; la pièce de sélection propre à l'écran est conservée (E3503).
+      imprimerSelectionTableau: (_, sel) => _imprimerSelection(ctx, sel),
       actionsGroupe: archive
           ? null
           : (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () => _imprimerSelection(ctx, sel)),
                 if (c.droit.annuler)
                   BoutonSigh(
                       libelle: 'Archiver',

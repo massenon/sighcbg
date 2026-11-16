@@ -80,13 +80,15 @@ final colDate = ColonneTableau(
     libelle: 'Date',
     sansCoupure: true,
     texte: (f) => _date(f['date']),
-    valeur: (f) => f['date']);
+    valeur: (f) => f['date'],
+    valeurExport: (f) => valeurExportDate(f['date']));
 
 final colMontant = ColonneTableau(
   cle: 'montantTTC',
   libelle: 'Montant',
   droite: true,
   texte: (f) => _m(f['montantTTC']),
+  valeurExport: (f) => valeurExportNombre(f['montantTTC']),
   rendu: (_, f) => Text(_m(f['montantTTC']),
       style: const TextStyle(
           color: JetonsShell.slate700,
@@ -101,6 +103,7 @@ final colReliquat = ColonneTableau(
   libelle: 'Reste dû',
   droite: true,
   texte: (f) => _m(f['reliquat']),
+  valeurExport: (f) => valeurExportNombre(f['reliquat']),
   rendu: (_, f) => _n(f['reliquat']) > 0
       ? Text(_m(f['reliquat']),
           style: const TextStyle(
@@ -334,6 +337,8 @@ class EcranFactures extends StatelessWidget with EcranMaquette {
       ],
       detail: detailFacture,
       etat: (ctx, f) => imprimerFacture(ctx, f),
+      // « Imprimer la sélection » : la facture COMPLÈTE de chaque ligne cochée, une par page (la même pièce qu'« Imprimer »).
+      documentLigne: (ctx, f) => pieceFactureDe(ctx, f),
       titreDetail: (f) => '${f['numero']}',
       sousTitreDetail: (f) => '${f['patient'] ?? ''}',
     );

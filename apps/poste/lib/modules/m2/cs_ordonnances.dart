@@ -255,6 +255,8 @@ class _Registre extends StatelessWidget {
       const SizedBox(height: 16),
       TableauSigh(
         titre: 'Ordonnances',
+        // « Imprimer la sélection » : l'ordonnance COMPLÈTE de chaque ligne cochée, une par page (la même pièce qu'« Imprimer l'ordonnance »).
+        documentLigne: (ctx, r) => pieceOrdonnance(ContexteEcran.of(ctx), r),
         lignes: rows,
         taillePage: 12,
         triInitial: 'date',

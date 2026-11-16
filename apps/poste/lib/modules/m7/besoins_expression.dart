@@ -251,6 +251,7 @@ class _TableauBesoins extends StatelessWidget {
     final col = c.magasin.collection('besoins');
     return TableauSigh(
       titre: titre,
+      documentLigne: (ctx, x) => _piece(ctx, x),
       lignes: lignes,
       taillePage: 12,
       triInitial: 'date',
@@ -395,10 +396,13 @@ class _TableauBesoins extends StatelessWidget {
   }
 }
 
-void _imprimer(BuildContext ctx, Fiche b) => imprimerPiece(
-    ctx,
-    (c) => pieceBon(b,
-        utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c)));
+void _imprimer(BuildContext ctx, Fiche b) => imprimerPiece(ctx, (_) => _piece(ctx, b));
+
+/// La pièce complète, telle que « Imprimer » la produit (extraite pour « Imprimer la sélection », une pièce par page, sans rien y changer).
+PieceA4 _piece(BuildContext ctx, Fiche b) {
+  final c = ContexteEcran.of(ctx);
+  return pieceBon(b, utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c));
+}
 
 void _consulter(BuildContext ctx, Fiche b) {
   final idx = [for (final e in etapesBesoin) e.id].indexOf('${b['etape']}');

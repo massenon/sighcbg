@@ -69,18 +69,27 @@ void imprimerM1(BuildContext ctx,
     List<(String, String)> cartouche = const [],
     List<BlocPiece> blocs = const [],
     List<Signature> signatures = const []}) {
+  afficherApercu(ctx, pieceM1(ctx, titre: titre, sousTitre: sousTitre, cartouche: cartouche, blocs: blocs, signatures: signatures));
+}
+
+/// La pièce A4 d'un registre M1 (certificat, attestation…), établie à l'instant par l'agent connecté : celle qu'imprime [imprimerM1], et celle que « Imprimer la sélection »
+/// pose une par page (extraite pour cela, sans rien changer à la pièce).
+PieceA4 pieceM1(BuildContext ctx,
+    {required String titre,
+    String? sousTitre,
+    List<(String, String)> cartouche = const [],
+    List<BlocPiece> blocs = const [],
+    List<Signature> signatures = const []}) {
   final c = ContexteEcran.of(ctx);
-  afficherApercu(
-      ctx,
-      PieceA4(
-          titre: titre,
-          sousTitre: sousTitre,
-          cartouche: cartouche,
-          blocs: blocs,
-          signatures: signatures,
-          reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
-          utilisateur: acteur(c).nom,
-          edite: c.aujourdhui));
+  return PieceA4(
+      titre: titre,
+      sousTitre: sousTitre,
+      cartouche: cartouche,
+      blocs: blocs,
+      signatures: signatures,
+      reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
+      utilisateur: acteur(c).nom,
+      edite: c.aujourdhui);
 }
 
 /// `K.note` en tête d'écran : lecture seule annoncée (une restriction s'annonce).
@@ -123,7 +132,8 @@ class RegistreM1 extends StatefulWidget {
     this.messageVide = 'Aucun enregistrement.',
     this.taille = TailleModale.lg,
     this.titreModification,
-    this.selectionnable = false,
+    this.selectionnable,
+    this.documentLigne,
     this.archivable = true,
     this.libelleConsulter = 'Consulter',
     this.libelleModifier = 'Modifier',
@@ -183,7 +193,12 @@ class RegistreM1 extends StatefulWidget {
   final String messageVide;
   final TailleModale taille;
   final String? titreModification;
-  final bool selectionnable;
+  /// Les cases à cocher : `null` (défaut) les fait suivre les deux gestes réservés du tableau commun (exporter, imprimer depuis un tableau ; Direction du 16/11/2026) —
+  /// elles étaient éteintes sur tout registre M1, contre la règle du chantier TABLEAUX (E3504).
+  final bool? selectionnable;
+
+  /// La PIÈCE COMPLÈTE d'une ligne (la même que [etat] imprime) : « Imprimer la sélection » propose alors une pièce par ligne, chacune sur sa page.
+  final PieceA4 Function(BuildContext, Fiche)? documentLigne;
   final bool archivable;
   final String libelleConsulter;
   final String libelleModifier;
@@ -310,6 +325,7 @@ class _RegistreM1State extends State<RegistreM1> {
       filtres: widget.filtres,
       taillePage: widget.taillePage,
       selectionnable: widget.selectionnable,
+      documentLigne: widget.archive ? null : widget.documentLigne,
       nomExport: widget.collection.nom,
       triInitial: widget.triInitial,
       sensInitial: widget.sensInitial,

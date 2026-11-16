@@ -354,4 +354,120 @@ void main() {
       expect(nomFichierExport('', DateTime(2026, 1, 2), FormatExport.csv, selection: true), 'export-2026-01-02-selection.csv');
     });
   });
+
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // Section 7 (Direction, 16/11/2026) : deux droits, la limite par geste, le journal par identifiants, les VALEURS.
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  group('section 7 : exporter et imprimer sont DEUX droits séparés', () {
+    Map<String, Object?> fiche(String role, Map<String, Object?> g) => {'id': 'F$role', 'role': role, 'statut': 'actif', 'droitsGestes': g};
+    bool voit(String role, String ecran) => true;
+
+    test('les deux gestes sont transverses, sans rôle d\'origine, et suivent la lecture de l\'écran', () {
+      for (final id in [gesteExporter, gesteImprimerTableau]) {
+        final g = gesteReserve(id)!;
+        expect(g.suitEcran, isTrue, reason: id);
+        expect(g.rolesDefaut, isEmpty, reason: id);
+      }
+      expect(gesteExporter, isNot(gesteImprimerTableau));
+      expect(DroitsGestes(fiches: const []).peutSurEcran('medecin', gesteImprimerTableau, 'm2-ordonnances', peutVoirEcran: voit), isTrue);
+    });
+    test('retirer l\'export ne retire pas l\'impression, et l\'inverse', () {
+      final sansExport = DroitsGestes(fiches: [fiche('caissier', {gesteExporter: false})]);
+      expect(sansExport.peutSurEcran('caissier', gesteExporter, 'm8-caisse', peutVoirEcran: voit), isFalse);
+      expect(sansExport.peutSurEcran('caissier', gesteImprimerTableau, 'm8-caisse', peutVoirEcran: voit), isTrue);
+      final sansImpression = DroitsGestes(fiches: [fiche('caissier', {gesteImprimerTableau: false})]);
+      expect(sansImpression.peutSurEcran('caissier', gesteExporter, 'm8-caisse', peutVoirEcran: voit), isTrue);
+      expect(sansImpression.peutSurEcran('caissier', gesteImprimerTableau, 'm8-caisse', peutVoirEcran: voit), isFalse);
+    });
+  });
+
+  group('section 7 : la LIMITE se règle par un geste réservé', () {
+    test('la définition de la limite nomme son geste ; origine proposée : administrateur et DAF', () {
+      expect(definitionDeParametre(cleExportLimiteLignes)!.geste, gesteReglerLimiteExport);
+      expect(DroitsGestes(fiches: const []).rolesAvec(gesteReglerLimiteExport, const ['admin', 'da', 'direction', 'comptable', 'caissier']), ['admin', 'da']);
+      expect(definitionDeParametre(cleExportSeuilProgression)!.geste, isNull, reason: 'le seuil du compteur reste au droit d\'éditer l\'écran');
+    });
+    test('sans le geste : refus NOMMÉ, rien n\'est écrit ; avec : nouvelle version ; une fiche de rôle accorde', () {
+      final versions = <String, Map<String, Object?>>{};
+      final s = ServiceParametres(
+          definitions: definitionsParametres,
+          lireVersions: () => versions.values.toList(),
+          lireUsages: () => const [],
+          ecrireVersion: (id, v) => versions[id] = v,
+          ecrireUsage: (_, __) {},
+          auteur: () => 'Test',
+          maintenant: () => DateTime(2026, 11, 16));
+      final refus = s.regler(cleExportLimiteLignes, 500, '2026-11-16', motif: 'essai', detientGeste: (g) => DroitsGestes(fiches: const []).peut('comptable', g));
+      expect(refus.ok, isFalse);
+      expect(refus.refus!.code, 'reglage_reserve');
+      expect(refus.refus!.motif, contains('Régler la limite de lignes par export'));
+      expect(versions, isEmpty);
+      final accorde = DroitsGestes(fiches: const [
+        {'id': 'F1', 'role': 'comptable', 'statut': 'actif', 'droitsGestes': {gesteReglerLimiteExport: true}}
+      ]);
+      expect(s.regler(cleExportLimiteLignes, 500, '2026-11-16', motif: 'essai', detientGeste: (g) => accorde.peut('comptable', g)).ok, isTrue);
+      expect(s.regler(cleExportSeuilProgression, 300, '2026-11-16', detientGeste: (_) => false).ok, isTrue, reason: 'un paramètre sans geste ne demande rien de plus');
+    });
+  });
+
+  group('section 7 : le journal porte les IDENTIFIANTS (au plus 50) et le nombre, jamais le contenu', () {
+    test('au plus 50 identifiants, le total à côté, la troncature dite', () {
+      final ids = [for (var i = 1; i <= 120; i++) 'F$i'];
+      final j = detailJournalExport(portee: PorteeExport.toutAvecFiltre, lignes: 120, filtreActif: true, colonnes: 4, format: FormatExport.csv, identifiants: ids);
+      expect((j['fiches'] as List).length, maxIdentifiantsJournalExport);
+      expect(maxIdentifiantsJournalExport, 50);
+      expect((j['fiches'] as List).first, 'F1');
+      expect(j['nbFiches'], 120);
+      expect(j['fichesTronquees'], isTrue);
+      final k = detailJournalExport(portee: PorteeExport.selection, lignes: 2, filtreActif: false, colonnes: 4, identifiants: const ['A', 'B']);
+      expect(k['fiches'], ['A', 'B']);
+      expect(k.containsKey('fichesTronquees'), isFalse);
+    });
+    test('les identifiants viennent du seul champ `id` : jamais une cellule', () {
+      final l = [
+        {'id': 'FAC-1', 'patient': 'Nom Secret', 'montant': 1200},
+        {'patient': 'Sans identifiant'},
+        {'id': 'FAC-2', 'patient': 'Autre'},
+      ];
+      expect(identifiantsDesLignes(l), ['FAC-1', 'FAC-2']);
+    });
+  });
+
+  group('section 7 : la VALEUR d\'une colonne, pas le texte arrondi', () {
+    test('un montant à décimales sort en vrai nombre, une date ISO en vraie date', () {
+      final n = celluleDepuisValeur('12 346 F', 12345.75) as CelluleNombre;
+      expect(n.valeur, 12345.75, reason: 'le texte affiché est arrondi, la cellule garde les décimales');
+      expect(n.format, FormatNombre.decimalMilliers);
+      expect((celluleDepuisValeur('12 000 F', 12000) as CelluleNombre).format, FormatNombre.entierMilliers);
+      final d = celluleDepuisValeur('15/11/2026', '2026-11-15') as CelluleDate;
+      expect(d.date, DateTime(2026, 11, 15));
+      expect(d.avecHeure, isFalse);
+      expect((celluleDepuisValeur('15/11/2026', '2026-11-15T10:30:00') as CelluleDate).avecHeure, isTrue);
+      expect((celluleDepuisValeur('x', DateTime(2026, 1, 2)) as CelluleDate).date, DateTime(2026, 1, 2));
+    });
+    test('un texte MASQUÉ sort masqué : une valeur chaîne (même en clair) est ignorée', () {
+      final c = celluleDepuisValeur('97 •• •• 12', '97456712');
+      expect(c, isA<CelluleTexte>());
+      expect((c as CelluleTexte).texte, '97 •• •• 12');
+      expect(texteCsvDepuisValeur('Information réservée', 'valeur en clair'), 'Information réservée');
+    });
+    test('sans valeur déclarée : la cellule part du texte, comme avant', () {
+      expect((celluleDepuisValeur('12 500 F', null) as CelluleNombre).valeur, 12500);
+    });
+    test('CSV : vrai nombre (virgule décimale, sans milliers), date jj/mm/aaaa', () {
+      expect(texteCsvDepuisValeur('12 346 F', 12345.75), '12345,75');
+      expect(texteCsvDepuisValeur('12 000 F', 12000), '12000');
+      expect(texteCsvDepuisValeur('—', '2026-11-05'), '05/11/2026');
+      expect(texteCsvDepuisValeur('—', '2026-11-05T08:07'), '05/11/2026 08:07');
+    });
+    test('la production écrit la valeur déclarée (xlsx et CSV)', () async {
+      final cols = [ColonneExport(libelle: 'Montant', texte: (r) => '${(r['m'] as num).round()} F', valeur: (r) => r['m'])];
+      final lignes = [
+        {'id': 'a', 'm': 10.5}
+      ];
+      final r = await produireExport(colonnes: cols, lignes: lignes, format: FormatExport.csv, feuille: 'f', maintenant: DateTime(2026, 11, 16), reglages: ReglagesExport.depuisParametres((_) => null));
+      expect(r.texte, contains('"10,5"'));
+      expect(r.texte, isNot(contains('11 F')));
+    });
+  });
 }

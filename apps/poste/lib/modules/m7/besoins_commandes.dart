@@ -118,6 +118,7 @@ class EcranCommandes extends StatelessWidget with EcranMaquette {
               const SizedBox(height: 16),
               TableauSigh(
                 titre: 'Bons de commande',
+                documentLigne: (ctx, x) => _piece(ctx, x),
                 lignes: actives,
                 taillePage: 12,
                 triInitial: 'date',
@@ -221,10 +222,13 @@ class EcranCommandes extends StatelessWidget with EcranMaquette {
   }
 }
 
-void _imprimer(BuildContext ctx, Fiche cm) => imprimerPiece(
-    ctx,
-    (c) => pieceCommande(cm,
-        utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c)));
+void _imprimer(BuildContext ctx, Fiche cm) => imprimerPiece(ctx, (_) => _piece(ctx, cm));
+
+/// La pièce complète, telle que « Imprimer » la produit (extraite pour « Imprimer la sélection », une pièce par page, sans rien y changer).
+PieceA4 _piece(BuildContext ctx, Fiche cm) {
+  final c = ContexteEcran.of(ctx);
+  return pieceCommande(cm, utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: refEtat(c));
+}
 
 /// RG-04 : valider une commande est le GESTE RÉSERVÉ « Valider les achats » de la fiche RBAC (Direction de Baguidi du 16/11/2026, la Directrice Administrative seule d'origine), jamais un rôle
 /// écrit ici. Le bouton est absent pour les autres rôles.

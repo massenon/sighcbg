@@ -90,16 +90,12 @@ PieceA4 piecePv(Fiche r,
   );
 }
 
-Future<void> imprimerPv(BuildContext ctx, Fiche r, String nature) {
+Future<void> imprimerPv(BuildContext ctx, Fiche r, String nature) => afficherApercu(ctx, pieceDuPv(ctx, r, nature));
+
+/// Le PV complet, tel qu'[imprimerPv] le produit (extrait pour « Imprimer la sélection », un PV par page, sans rien y changer).
+PieceA4 pieceDuPv(BuildContext ctx, Fiche r, String nature) {
   final c = ContexteEcran.of(ctx);
-  return afficherApercu(
-      ctx,
-      piecePv(r,
-          nature: nature,
-          utilisateur: acteur(c).nom,
-          edite: c.aujourdhui,
-          reference: PieceA4.reference_(
-              c.aujourdhui, ImpressionPoste.prochainNumero())));
+  return piecePv(r, nature: nature, utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()));
 }
 
 /// Le tiroir d'un PV : la fiche, les lignes contrôlées, puis les réserves (texte SAISI, rendu tel quel).
@@ -199,6 +195,7 @@ class EcranPvReception extends StatelessWidget with EcranMaquette {
               const SizedBox(height: 16),
               TableauSigh(
                 titre: 'Registre des procès-verbaux',
+                documentLigne: (ctx, x) => pieceDuPv(ctx, x, nature),
                 taillePage: 12,
                 triInitial: 'date',
                 sensInitial: 'desc',

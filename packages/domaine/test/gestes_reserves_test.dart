@@ -25,7 +25,7 @@ void main() {
     }
     expect(d.origine('laborantin', g), 'origine');
     expect(gestesReserves.map((x) => x.id), [
-      g, interim, gesteDeciderPrix, gesteDaterPrixPasse, gesteProposerPrixAchat, gesteExporter, gesteCircuitCloture, gesteValiderAchats, gesteReglageFichiers, gesteReglageOcr, gesteReglageMecef,
+      g, interim, gesteDeciderPrix, gesteDaterPrixPasse, gesteProposerPrixAchat, gesteExporter, gesteImprimerTableau, gesteReglerLimiteExport, gesteCircuitCloture, gesteValiderAchats, gesteReglageFichiers, gesteReglageOcr, gesteReglageMecef,
       // Ligne sans prix (16/11/2026, §7) : le réglage « encaisser le reste » se pose sous un geste réservé, jamais sous un rôle en dur.
       gesteReglageEncaissementSansPrix,
       // Pharmacie et caisse séparables (Direction de Baguidi, 16/11/2026) : le routage des alertes et la retransmission MECeF ne sont plus des listes de rôles en dur.

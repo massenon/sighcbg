@@ -182,15 +182,11 @@ class _EtatCrudAg extends State<EcranCrudAg> {
               taille: TailleBouton.sm,
               onPressed: () => widget.ouvrirFormulaire!(ecran, null)),
       ],
+      // « Imprimer la sélection » : celle du tableau commun (geste réservé, journal) ; la pièce de sélection propre à l'écran est conservée (E3503).
+      imprimerSelectionTableau: (_, sel) => _imprimerSelection(ecran, sel),
       actionsGroupe: archive
           ? null
           : (context, sel, effacer) => [
-                BoutonSigh(
-                    libelle: 'Imprimer la sélection',
-                    icone: LucideIcons.printer,
-                    taille: TailleBouton.sm,
-                    variante: VarianteBouton.secondaire,
-                    onPressed: () => _imprimerSelection(ecran, sel)),
                 if (c.droit.annuler)
                   BoutonSigh(
                       libelle: 'Archiver',

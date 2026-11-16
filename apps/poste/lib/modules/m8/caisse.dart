@@ -169,6 +169,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                   child: TableauSigh(
                     lignes: f,
                     messageVide: 'Aucune pièce émise sur cette journée.',
+                    // « Imprimer la sélection » : le reçu détaillé COMPLET de chaque pièce cochée, un par page (le même que « Réimprimer le reçu détaillé »).
+                    documentLigne: (ctx, r) => pieceRecuDe(ctx, r),
                     colonnes: [
                       const ColonneTableau(cle: 'numero', libelle: 'Pièce'),
                       ColonneTableau(
@@ -190,12 +192,14 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           cle: 'montantTTC',
                           libelle: 'Total',
                           droite: true,
-                          texte: (r) => money(r['montantTTC'])),
+                          texte: (r) => money(r['montantTTC']),
+                          valeurExport: (r) => valeurExportNombre(r['montantTTC'])),
                       ColonneTableau(
                           cle: 'montantPaye',
                           libelle: 'Encaissé',
                           droite: true,
-                          texte: (r) => money(r['montantPaye'])),
+                          texte: (r) => money(r['montantPaye']),
+                          valeurExport: (r) => valeurExportNombre(r['montantPaye'])),
                       ColonneTableau(
                           cle: 'reliquat',
                           libelle: 'Reste dû',
@@ -203,6 +207,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           texte: (r) => n(r['reliquat']) > 0
                               ? money(r['reliquat'])
                               : 'soldée',
+                          valeurExport: (r) => valeurExportNombre(r['reliquat']),
                           rendu: (_, r) => n(r['reliquat']) > 0
                               ? Text(money(r['reliquat']),
                                   style: const TextStyle(
@@ -283,7 +288,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                       cle: 'montantPaye',
                       libelle: 'Encaissé',
                       droite: true,
-                      texte: (x) => m(x['montantPaye'])),
+                      texte: (x) => m(x['montantPaye']),
+                      valeurExport: (x) => valeurExportNombre(x['montantPaye'])),
                   ColonneTableau(
                       cle: 'modePaiement',
                       libelle: 'Mode',

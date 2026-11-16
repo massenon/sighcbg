@@ -55,9 +55,19 @@ const String gesteDaterPrixPasse = 'tarif_dater_passe';
 /// l'administrateur. S'ajoute au droit d'éditer l'écran (il ne l'ouvre pas) ; ne touche ni la réception d'achat ni l'importation des prix d'achat, qui ont leur propre droit.
 const String gesteProposerPrixAchat = 'tarif_proposer_achat';
 
-/// Exporter ou imprimer les lignes d'un tableau (Q39, Direction du 15/11/2026) : un droit réglable PAR RÔLE. Sans décision, il suit la lecture de l'écran (les rôles qui
-/// LISENT l'écran exportent) ; une décision l'accorde ou le retire au rôle pour tous les écrans. Il s'applique à la SORTIE : le fichier ne porte que ce que l'écran montre.
+/// EXPORTER les lignes d'un tableau en fichier (.xlsx, CSV) (Q39, Direction du 15/11/2026 ; séparé de l'impression le 16/11/2026, section 7) : un droit réglable PAR RÔLE.
+/// Sans décision, il suit la lecture de l'écran (les rôles qui LISENT l'écran exportent) ; une décision l'accorde ou le retire au rôle pour tous les écrans. Il s'applique à
+/// la SORTIE : le fichier ne porte que ce que l'écran montre.
 const String gesteExporter = 'export_tableau';
+
+/// IMPRIMER depuis un tableau (la sélection cochée ou tout le filtre, en un tableau unique ou en pièces complètes, une par page) : un droit DISTINCT de l'export (Direction,
+/// 16/11/2026, section 7 : « deux droits séparés »). Même mécanique que [gesteExporter] : sans décision, il suit la lecture de l'écran ; une décision de fiche l'accorde ou le
+/// retire au rôle pour tous les écrans. Retirer l'un ne retire pas l'autre.
+const String gesteImprimerTableau = 'imprimer_tableau';
+
+/// RÉGLER LA LIMITE de lignes par export (`export.limiteLignes`, Direction, 16/11/2026, section 7) : un geste réservé réglable, et non le seul droit d'éditer l'écran des
+/// paramètres. Origine PROPOSÉE (à valider par la Direction) : l'administrateur et la Directrice Administrative ; une fiche de rôle l'accorde ou le retire.
+const String gesteReglerLimiteExport = 'export_regler_limite';
 /// LE CIRCUIT DE CLÔTURE (Q1 et Q2 de la Direction de Baguidi, 17/11/2026) : démarrer la clôture, clôturer définitivement, reprendre la saisie et rouvrir un exercice sont UN geste réservé de
 /// la fiche de rôle, accordé par rôle et réglable. Origine : l'administrateur et la Directrice Administrative. Le droit ne dispense JAMAIS de la séparation des personnes : celui qui a démarré la
 /// clôture ne la clôture pas (le moteur compare l'identifiant de l'agent), et un comptable seul, sans ce droit, ne démarre ni ne clôture.
@@ -150,12 +160,27 @@ const List<GesteReserve> gestesReserves = [
       aide: 'La commande « Changer le prix d’achat » du Référentiel produits. Modifier la fiche d’un produit ne suffit plus. Origine : le gestionnaire de stock, la DAF, l’administrateur.'),
   GesteReserve(
       id: gesteExporter,
-      libelle: 'Exporter et imprimer les lignes d’un tableau',
+      libelle: 'Exporter les lignes d’un tableau (Excel, CSV)',
       module: '*',
       ecran: '',
       rolesDefaut: [],
       suitEcran: true,
-      aide: 'Excel, CSV et impression de la sélection. Sans décision, le droit suit la lecture de l’écran : qui lit le tableau peut l’exporter. Accordé ou retiré à un rôle, il vaut pour tous les écrans. Le fichier ne porte que les colonnes et les lignes que l’écran montre, champs sensibles masqués comme à l’écran.'),
+      aide: 'Excel (.xlsx) et CSV. Sans décision, le droit suit la lecture de l’écran : qui lit le tableau peut l’exporter. Accordé ou retiré à un rôle, il vaut pour tous les écrans. Le fichier ne porte que les colonnes et les lignes que l’écran montre, champs sensibles masqués comme à l’écran. L’impression depuis un tableau est un droit distinct.'),
+  GesteReserve(
+      id: gesteImprimerTableau,
+      libelle: 'Imprimer depuis un tableau',
+      module: '*',
+      ecran: '',
+      rolesDefaut: [],
+      suitEcran: true,
+      aide: 'La sélection cochée ou tout le filtre, en un tableau unique ou en pièces complètes (une par page). Sans décision, le droit suit la lecture de l’écran. Accordé ou retiré à un rôle, il vaut pour tous les écrans ; il est distinct du droit d’exporter.'),
+  GesteReserve(
+      id: gesteReglerLimiteExport,
+      libelle: 'Régler la limite de lignes par export',
+      module: 'CFG',
+      ecran: 'cfg-systeme',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Le réglage « Nombre maximal de lignes par export » (Paramètres système › Paramètres). Le droit d’éditer l’écran ne suffit pas. Origine proposée, à valider : l’administrateur et la Directrice Administrative.'),
   GesteReserve(
       id: gesteCircuitCloture,
       libelle: 'Circuit de clôture : démarrer, clôturer, rouvrir un exercice',

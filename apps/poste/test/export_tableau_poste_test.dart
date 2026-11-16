@@ -144,7 +144,8 @@ void main() {
     expect(j['entite'], 'm6-transferts');
     expect(j['utilisateur'], isNotNull);
     final detail = (j['apres'] as Map).cast<String, Object?>();
-    expect(detail, {'portee': 'selection', 'lignes': 2, 'filtre': 'sans', 'colonnes': 3, 'format': 'xlsx'});
+    // Section 7 (16/11/2026) : les IDENTIFIANTS des fiches (au plus 50) et leur nombre, jamais le contenu.
+    expect(detail, {'portee': 'selection', 'lignes': 2, 'filtre': 'sans', 'colonnes': 3, 'format': 'xlsx', 'fiches': ['r2', 'r5'], 'nbFiches': 2});
     expect(jsonEncode(j), isNot(contains('Patient')), reason: 'jamais le contenu');
     await t.pump(const Duration(seconds: 10));
   });
@@ -230,14 +231,15 @@ void main() {
     final m = Magasin({
       'audit': const <Fiche>[],
       'rbac': [
-        {'id': 'F1', 'role': 'medecin', 'statut': 'actif', 'droitsGestes': {gesteExporter: false}}
+        // Section 7 (16/11/2026) : exporter et imprimer sont deux droits ; les cases tombent quand AUCUN des deux ne reste.
+        {'id': 'F1', 'role': 'medecin', 'statut': 'actif', 'droitsGestes': {gesteExporter: false, gesteImprimerTableau: false}}
       ],
       'parametres': const <Fiche>[],
       'usagesParametres': const <Fiche>[],
     }, 'POSTE', const {});
     await monter(t, tableau(), m: m);
     expect(find.text('Exporter'), findsNothing);
-    expect(find.bySemanticsLabel('Sélectionner la ligne'), findsNothing, reason: 'rien à cocher pour qui ne peut pas exporter');
+    expect(find.bySemanticsLabel('Sélectionner la ligne'), findsNothing, reason: 'rien à cocher pour qui ne peut ni exporter ni imprimer');
   });
 
   testWidgets('un champ sensible refusé au profil n\'est jamais exporté en clair', (t) async {
