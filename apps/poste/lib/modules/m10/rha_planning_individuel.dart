@@ -244,6 +244,11 @@ class _EtatOnglet extends State<OngletPlanningIndividuel> {
             ton: TonSigh.succes,
             indice: hon.aValider ? 'Montant d’attente, à valider' : (hon.montant == 0 ? 'Aucun honoraire du régime ce mois' : 'Planning validé seul (RG-11)')),
       ]),
+      // DOUBLE PAIEMENT (17/11/2026) : l'honoraire écarté parce qu'il répète une prime de la note NS 132 déjà versée est DIT, pas seulement absent.
+      if (d.montants && hon.exclus.isNotEmpty) ...[
+        const SizedBox(height: 12),
+        for (final x in hon.exclus.take(1)) NoteSigh('Honoraire non compté : ${x['phrase']}. Seule la prime de la grille est versée.', ton: TonSigh.attention, icone: LucideIcons.copyX, key: const Key('pli:double-paiement')),
+      ],
       const SizedBox(height: 16),
       CarteSigh(
         titre: _vue == 'semaine'

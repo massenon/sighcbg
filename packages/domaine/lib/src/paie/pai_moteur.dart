@@ -12,9 +12,10 @@ import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
 import '../referentiels/regles.dart' show joursEntre;
 import '../configuration/cfb_regles.dart' show CfbFermetures;
-import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine;
+import '../rh/rhb_regles.dart' show RhbPrimeDef, rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
 import '../rh/planning_rh.dart' show regimeRhALaDate;
+import '../rh/double_paiement_prime.dart' show doublePaiementLigneRh;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
 import '../numerotation/numerotation.dart';
 import 'pai_baremes.dart';
@@ -601,6 +602,7 @@ class PaiCalcul {
       this.heuresSupDetail = const [],
       this.prets = 0,
       this.pretsDetail = const [],
+      this.honorairesExclus = const [],
       this.tauxApplique});
   final PaiFiche employe;
   final String periode;
@@ -614,6 +616,10 @@ class PaiCalcul {
   /// Heures supplémentaires validées de la période (montant et nombre d'heures, déjà comprises dans le brut) et échéances de prêt retenues ce mois.
   final num heuresSupMontant, heuresSupNb, prets;
   final List<PaiFiche> heuresSupDetail, pretsDetail;
+
+  /// Les honoraires de régime ÉCARTÉS du bulletin parce qu'ils répétaient une prime NS 132 déjà versée (`DOUBLE_PAIEMENT_PRIME`, point 3 du 17/11/2026) : chaque entrée porte son
+  /// message nommé, lu par le validateur. Vide dans le cas général.
+  final List<PaiFiche> honorairesExclus;
 
   /// Les taux et le barème qui ont calculé ce bulletin (en vigueur au premier jour de la période) ; absent : les valeurs semées.
   final PaiTauxPaie? tauxApplique;
@@ -651,6 +657,7 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
     if (nb == 0) continue;
     lignesPrimes.add(PaiLignePrime(pr.id, pr.libelle, montant, nb, montant * nb));
   }
+  final honorairesExclus = <Map<String, Object?>>[];
   final versionsAgent = e.regimesIndividuels;
   if (e.primesNs132 && versionsAgent != null) {
     final mesVersions = [for (final v in versionsAgent) if (v['employeId'] == id) v];
@@ -659,7 +666,20 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
         employeId: id,
         annee: annee,
         mois: mois + 1,
-        regimeDe: (d) => regimeRhALaDate(regimesActifs: e.regimesTravail, versions: mesVersions, fonction: employe['fonction'] as String?, date: d));
+        regimeDe: (d) => regimeRhALaDate(regimesActifs: e.regimesTravail, versions: mesVersions, fonction: employe['fonction'] as String?, date: d),
+        // DOUBLE PAIEMENT (17/11/2026, point 3) : un honoraire de régime INDIVIDUEL qui répète une prime de la note NS 132 déjà versée sur CE bulletin pour la même vacation est EXCLU ;
+        // le bulletin garde la prime de la grille et DIT ce qu'il a écarté (message nommé, lu par le validateur).
+        doublon: (l) => doublePaiementLigneRh(l,
+            primes: [for (final p in paiPrimesNs132) RhbPrimeDef(p.id, p.libelle, p.mode)],
+            montantPrime: (id, _) => lignesPrimes.where((x) => x.id == id && x.nombre > 0).map((x) => x.unitaire).firstOrNull ?? 0));
+    for (final x in hr.exclus) {
+      final d = (x['doublePaiement'] as Map).cast<String, Object?>();
+      honorairesExclus.add({
+        ...d,
+        'regime': x['regime'],
+        'message': 'Honoraire exclu du bulletin de ${employe['nomComplet'] ?? id} : ${x['phrase']}. Seule la prime de la grille est versée.',
+      });
+    }
     // Une ligne par périodicité et par montant : un honoraire relevé en cours de mois se lit à son montant, sans moyenne.
     final groupes = <String, (String, num, int)>{};
     for (final l in hr.lignes) {
@@ -762,6 +782,7 @@ PaiCalcul paiCalculer(PaiFiche employe, int annee, int mois, PaiEntrees e, DateT
       heuresSupDetail: heuresSupDetail,
       prets: totalPrets,
       pretsDetail: pretsDetail,
+      honorairesExclus: honorairesExclus,
       tauxApplique: taux);
 }
 
@@ -821,6 +842,8 @@ PaiFiche paiBulletinDe(PaiCalcul c, String reference, {String? genereePar, Strin
       'totalPrimes': c.totalPrimes,
       'heuresSupMontant': c.heuresSupMontant,
       'heuresSupNb': c.heuresSupNb,
+      // Les honoraires écartés pour double paiement : le validateur le lit sur la pièce (le champ n'est écrit que s'il y en a, comme tout champ nul).
+      if (c.honorairesExclus.isNotEmpty) 'honorairesExclus': c.honorairesExclus,
       'brut': c.brut,
       'pctSanction': c.pctSanction,
       'sanction': c.sanction,

@@ -162,6 +162,12 @@ class EcranValidationPaie extends StatelessWidget with EcranMaquette {
       builder: (context, _) {
         final lots = paiLots(c.magasin.collection('bulletins').actives);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          // Le validateur lit ce que le calcul a ÉCARTÉ avant de signer (honoraire de régime répétant une prime NS 132).
+          ...avisHonorairesExclus([
+            for (final b in c.magasin.collection('bulletins').actives)
+              if (b['statutBulletin'] == 'a_valider')
+                for (final h in (b['honorairesExclus'] as List? ?? const []).whereType<Map>()) h['message']
+          ]),
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Périodes traitées', valeur: nombre(lots.length), icone: LucideIcons.calendar),
             KpiSigh(libelle: 'Bulletins à valider', valeur: nombre(lots.fold<int>(0, (a, l) => a + l.aValider)), icone: LucideIcons.hourglass, ton: TonSigh.attention),
