@@ -3,11 +3,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_installation.dart';
 import '../../core/service_parametres.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
 import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
+import '../../sync/service_validations_deposees.dart';
 import 'cfa_commun.dart';
 
 /// L'onglet « Paramètres » de « Paramètres système » (lot L0, décision de la Direction du 09/11/2026) : TOUT ce qui est paramétrable se règle ici, est ENREGISTRÉ
@@ -50,7 +52,15 @@ class PanneauParametres extends StatelessWidget {
             for (final e in familles.entries)
               // une famille qui a son PROPRE écran (copie hors site : droit, motif, refus nommés) n'est pas montrée ici : le panneau générique contournerait ses règles
               if (!parFamillesReglageDedie.contains(e.key))
-              cfaSection(libellesFamillesParametres[e.key] ?? e.key, cfaPile([for (final p in e.value) _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler && _geste(e.key))], espace: 12)),
+              cfaSection(
+                  libellesFamillesParametres[e.key] ?? e.key,
+                  cfaPile([
+                    for (final p in e.value)
+                      // Un réglage qui relève d'un GESTE RÉSERVÉ (`reglagesSousGeste`, 16/11/2026, §7) se pose sous ce geste depuis N'IMPORTE QUEL poste : la mère écrit, un fileul dépose.
+                      gesteDuReglage(p.definition.cle) != null
+                          ? _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: gestePeutEcran(c, gesteDuReglage(p.definition.cle)!), sousGeste: true)
+                          : _Carte(c: c, service: service, p: p, aujourdhui: aujourdhui, peutRegler: peutRegler && _geste(e.key))
+                  ], espace: 12)),
             cfaSource('Défauts : décisions de la Direction du 09/11/2026 (DECISIONS-A-VALIDER, section D). Rien n’est codé dans l’écran : valeurs et versions sont en base.'),
           ]);
         });
@@ -64,12 +74,18 @@ String _libelleValeur(DefinitionParametre d, Object? v) {
 }
 
 class _Carte extends StatelessWidget {
-  const _Carte({required this.c, required this.service, required this.p, required this.aujourdhui, required this.peutRegler});
+  const _Carte({required this.c, required this.service, required this.p, required this.aujourdhui, required this.peutRegler, this.sousGeste = false});
   final ContexteEcran c;
   final ServiceParametres service;
   final ParametreAffiche p;
   final String aujourdhui;
   final bool peutRegler;
+
+  /// Le réglage relève d'un geste réservé : il se règle depuis n'importe quel poste (un fileul DÉPOSE, la mère applique).
+  final bool sousGeste;
+
+  /// Ce poste dépose-t-il au lieu d'écrire ? (rattaché à une mère : la configuration est tenue par elle, famille R).
+  bool get _depose => ServiceInstallation.de(c.magasin).rattache;
 
   DefinitionParametre get d => p.definition;
 
@@ -93,6 +109,9 @@ class _Carte extends StatelessWidget {
           if (!d.branche)
             BadgeSigh('Enregistré, pas encore appliqué par l’écran concerné (${d.appliquePar ?? 'lot à venir'})', ton: TonSigh.attention),
           if (d.source != null) cfaDiscret('Source : ${d.source}'),
+          if (sousGeste) cfaDiscret('Se règle sous le geste réservé « ${gesteReserve(gesteDuReglage(d.cle)!)?.libelle ?? gesteDuReglage(d.cle)} », depuis n’importe quel poste : un poste rattaché transmet la demande à la mère, qui l’applique.'),
+          if (sousGeste && ServiceValidationsDeposees.de(c.magasin).depotReglageEnAttente(d.cle) != null)
+            const BadgeSigh('Réglage transmis à la mère, en attente de confirmation', ton: TonSigh.info),
           Row(children: [
             if (peutRegler)
               BoutonSigh(libelle: 'Régler à partir d’une date', icone: LucideIcons.slidersHorizontal, taille: TailleBouton.sm, onPressed: () => _regler(context)),
@@ -168,6 +187,21 @@ class _Carte extends StatelessWidget {
                     final valeur = _convertir(saisie['valeur']);
                     if (valeur == null) {
                       ToastsSigh.afficher(ctx, 'La valeur saisie n’est pas du bon type.', type: TypeToast.erreur, detail: 'Saisir ${_typeLisible(d.type)}.');
+                      return;
+                    }
+                    if (sousGeste) {
+                      final g = ServiceValidationsDeposees.de(c.magasin).reglerSousGeste(d.cle, valeur.$1, '${saisie['dateEffet']}',
+                          role: c.role, acteur: acteurNom(c), estMere: !_depose, motif: '${saisie['motif'] ?? ''}', gestes: droitsGestesEcran(c));
+                      if (g.refus != null) {
+                        ToastsSigh.afficher(ctx, g.refus!.motif, type: TypeToast.erreur, detail: g.refus!.geste, duree: const Duration(seconds: 10));
+                        return;
+                      }
+                      fermer();
+                      ToastsSigh.afficher(ctx, g.version != null ? 'Nouvelle version enregistrée.' : 'Réglage transmis à la mère, en attente de confirmation.',
+                          type: g.version != null ? TypeToast.succes : TypeToast.info,
+                          detail: g.version != null
+                              ? 'Version ${g.version!.version}, effective à partir du ${_dateFr('${saisie['dateEffet']}')}. Elle part vers les fileuls (chiffrée).'
+                              : 'La mère l’applique sous votre rôle, contrôles refaits ; la nouvelle valeur revient ici par la synchronisation. D’ici là, la valeur actuelle s’applique.');
                       return;
                     }
                     final r = service.regler(d.cle, valeur.$1, '${saisie['dateEffet']}', motif: '${saisie['motif'] ?? ''}');

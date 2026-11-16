@@ -110,6 +110,8 @@ export 'src/qualite/qual_ged.dart';
 export 'src/validation/validation.dart';
 // La validation déposée par un fileul et appliquée par la mère (continuité de service, 15/11/2026).
 export 'src/validation/validation_deposee.dart';
+// Un réglage de clinique posé sous un geste réservé, depuis n'importe quel poste (16/11/2026, §7).
+export 'src/validation/reglage_depose.dart';
 // Section AI (16/11/2026) : le compte signataire vérifié par la mère, et les décisions en attente de la mère (pastille, alerte au-delà du délai réglé).
 export 'src/validation/compte_signataire.dart';
 export 'src/validation/decisions_en_attente.dart';

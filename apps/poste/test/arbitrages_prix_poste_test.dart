@@ -229,7 +229,7 @@ void main() {
       expect(TarifsPoste.lire(m).versionsDe('NEO-TEST'), isEmpty, reason: 'aucune version : « sans prix en vigueur », jamais un zéro');
       final n = m.collection('notifications').toutes.where((x) => x['type'] == 'prix_a_tarifer' && x['reference'] == 'NEO-TEST').toList();
       expect(n, hasLength(1));
-      expect(n.single['poste'], 'da');
+      expect(n.single['poste'], posteEditeursEcran('cfg-tarifs'), reason: 'les rôles qui peuvent modifier « Tarifs et prix » (matrice), jamais un rôle en dur');
       expect(TarifsPoste.assurerAnalyses(m, horloge: () => jour), isEmpty);
       expect(m.collection('notifications').toutes.where((x) => x['type'] == 'prix_a_tarifer'), hasLength(1));
       expect(m.collection(tarCollectionTarifs).toutes.where((x) => x['code'] == 'NEO-TEST'), hasLength(1));
@@ -253,6 +253,11 @@ void main() {
       expect(r.refus.single['codeErreur'], csCodeTarifAValider);
       expect(r.refus.single['code'], 'NEO-TEST');
       expect('${r.refus.single['motif']}', startsWith('tarif à valider'));
+      // L'alerte « prix manquant » de la prestation : UNE par code, sans nom de patient, vers les éditeurs de « Tarifs et prix ».
+      final alertes = m.collection('notifications').actives.where((x) => x['type'] == csTypeNotifPrixManquant && x['prestationCode'] == 'NEO-TEST').toList();
+      expect(alertes, hasLength(1));
+      expect(alertes.single['poste'], posteEditeursEcran('cfg-tarifs'));
+      expect('${alertes.single['libelle']} ${alertes.single['detail']}', isNot(contains('${pt['nom']}')));
       expect([for (final a in (r.ordonnance['analyses'] as List).cast<M>()) a['code']], [codeValide], reason: 'la ligne valide passe, aucune ligne à 0');
       expect([for (final l in (r.facture['lignes'] as List).cast<M>()) l['montant']].where((x) => x == 0), isEmpty);
       // Seule à être prescrite : refus de la prescription, nommé, rien d'écrit.
@@ -264,6 +269,7 @@ void main() {
         expect(e.code, csCodeTarifAValider);
       }
       expect(m.collection('ordonnances').toutes.length, ord);
+      expect(m.collection('notifications').actives.where((x) => x['type'] == csTypeNotifPrixManquant && x['prestationCode'] == 'NEO-TEST'), hasLength(1), reason: 'une par code : pas de doublon');
       // Le Oui de la DAF : proposition validée en un geste, l'analyse devient facturable.
       final i = poste(m, role: 'da').proposer(const DemandeProposition(code: 'NEO-TEST', prixNonAssure: 4500, prixAssure: 4500, etatAssure: 'montant', dateEffet: '2026-11-16', motif: 'Tarif arrêté', valider: true));
       expect(i.ok, isTrue, reason: '${i.refus?.code} ${i.refus?.motif}');

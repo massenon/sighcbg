@@ -70,34 +70,51 @@ void main() {
     expect(libelleLigneSansMontant(lignesDe(facture())[0]), libellePrixAValoriser, reason: 'une autre ligne n’est pas concernée');
   });
 
-  test('l’encaissement : la ligne est refusée NOMMÉE (PRIX_ASSURE_A_DEFINIR), la consultation passe ; seule cochée, rien n’est écrit', () {
+  test('l’encaissement PAR DÉFAUT : rien de la facture ne s’encaisse (FACTURE_EN_ATTENTE_DE_PRIX), la ligne nommée avec sa cause PRIX_ASSURE_A_DEFINIR', () {
     final f = facture();
     final r = encaisser(f, lignes: ['L001', 'L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+    expect(r.refusCode, codeFactureEnAttenteDePrix);
+    expect(r.lignesReglees, isEmpty);
+    expect(r.lignesRefusees.single['code'], codePrixAssureADefinir);
+    expect('${r.refus}', allOf(contains('Pansement simple'), contains('prix assuré à définir'), contains('Tarifs et prix')));
+  });
+
+  test('l’encaissement, réglage OUVERT : la ligne est refusée NOMMÉE (PRIX_ASSURE_A_DEFINIR), la consultation passe ; seule cochée, rien n’est écrit', () {
+    final f = facture();
+    final r = encaisser(f, lignes: ['L001', 'L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
     expect(r.refus, isNull);
     expect(r.lignesReglees, ['L001']);
     expect(r.lignesRefusees.single['code'], codePrixAssureADefinir);
     expect('${r.lignesRefusees.single['motif']}', allOf(contains('Pansement simple'), contains('jamais facturée au prix non assuré')));
-    final seule = encaisser(f, lignes: ['L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+    final seule = encaisser(f, lignes: ['L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
     expect(seule.refusCode, codePrixAssureADefinir);
     expect(seule.lignesReglees, isEmpty);
-    final global = encaisser(f, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+    final global = encaisser(f, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
     expect(global.lignesReglees, ['L001'], reason: 'un montant global ne la règle pas non plus');
   });
 
-  test('la valorisation : rien tant qu’aucun prix assuré n’est validé ; le premier prix assuré validé la valorise en place (parts au taux de la pièce)', () {
+  test('la valorisation : seul le prix assuré EN VIGUEUR À LA DATE DE LA PIÈCE la valorise (jamais un prix assuré daté après, jamais le non assuré), en place, parts au taux de la pièce', () {
     final f = facture();
     final l = lignesDe(f)[1];
     expect(tarPrixValorisationLigne(referentiel(), l, null, '2026-11-16', aujourdhui: '2026-11-18'), isNull, reason: 'jamais le prix non assuré');
-    final h = referentiel(autres: [
+    final apres = referentiel(autres: [
       {'id': 'PANS@2026-11-17@2', 'code': 'PANS', 'version': 2, 'prixNonAssure': 9000, 'prixAssure': 6000, 'etatAssure': 'montant', 'statut': 'valide', 'dateEffet': '2026-11-17'},
+    ]);
+    expect(tarPrixValorisationLigne(apres, l, null, '2026-11-16', aujourdhui: '2026-11-21'), isNull, reason: 'le repli « premier prix après la pièce » est retiré (16/11/2026, §7)');
+    final h = referentiel(autres: [
+      {'id': 'PANS@2026-11-16@2', 'code': 'PANS', 'version': 2, 'prixNonAssure': 9000, 'prixAssure': 6000, 'etatAssure': 'montant', 'statut': 'valide', 'dateEffet': '2026-11-16', 'datePassee': true},
       {'id': 'PANS@2026-11-20@3', 'code': 'PANS', 'version': 3, 'prixNonAssure': 9000, 'prixAssure': 6500, 'etatAssure': 'montant', 'statut': 'valide', 'dateEffet': '2026-11-20'},
     ]);
     final p = tarPrixValorisationLigne(h, l, null, '2026-11-16', aujourdhui: '2026-11-21')!;
-    expect([p.prixUnitaire, p.regle, p.version], [6000, 'premiere_valorisation', 2], reason: 'le premier prix qui l’a valorisée, pas une hausse ultérieure');
+    expect([p.prixUnitaire, p.regle, p.version], [6000, 'a_la_date', 2], reason: 'le prix daté du jour de la pièce, pas la hausse ultérieure');
     final v = valoriserLigne(f, 'L002', p, utilisateur: 'Caisse', maintenant: '2026-11-21T08:00:00Z');
     expect(v.ok, isTrue);
-    final apres = lignesDe(v.facture!)[1];
-    expect([apres['montant'], apres['partAssureur'], apres['partPatient'], apres['prixAssureADefinir']], [6000, 4800, 1200, false]);
-    expect(ligneAValoriser(apres), isFalse);
+    final apresLigne = lignesDe(v.facture!)[1];
+    expect([apresLigne['montant'], apresLigne['partAssureur'], apresLigne['partPatient'], apresLigne['prixAssureADefinir']], [6000, 4800, 1200, false]);
+    expect(ligneAValoriser(apresLigne), isFalse);
+    // Valorisée, la facture s'encaisse EN ENTIER, réglage fermé.
+    final e = encaisser(v.facture!, aujourdhui: '2026-11-21', maintenant: '2026-11-21T08:01:00Z');
+    expect(e.refus, isNull);
+    expect(e.facture['statutPaiement'], 'soldee');
   });
 }

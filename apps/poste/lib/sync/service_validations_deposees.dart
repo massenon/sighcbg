@@ -104,6 +104,103 @@ class ServiceValidationsDeposees {
     return r;
   }
 
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // RÉGLAGE DE CLINIQUE SOUS GESTE RÉSERVÉ (16/11/2026, §7) : depuis n'importe quel poste
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  List<Parametre> get _versionsParametres => [
+        for (final f in magasin.collection(parCollectionParametres).toutes)
+          if (f['statut'] != 'archive') Parametre.fromJson(f)
+      ];
+
+  List<Map<String, Object?>> get _usagesParametres => magasin.collection(parCollectionUsages).toutes;
+
+  /// Pose un réglage qui relève d'un GESTE RÉSERVÉ (`reglagesSousGeste`, par exemple « encaisser le reste d'une facture qui a une ligne sans prix »). Sur la MÈRE ([estMere]), le
+  /// geste écrit la version datée (contrôles du domaine : geste en force, valeur, date, usage) ; sur un poste rattaché, il DÉPOSE une demande que la mère applique sous le rôle de
+  /// l'auteur — la version revient ensuite par la synchronisation (famille R). Refus nommé dans les deux cas, rien d'écrit.
+  ({RefusValidation? refus, Parametre? version, Fiche? depot, bool dejaDepose}) reglerSousGeste(String cle, Object? valeur, String dateEffet,
+      {required String role, required String acteur, required bool estMere, String? motif, DroitsGestes? gestes}) {
+    final g = gestes ?? this.gestes;
+    if (!estMere) {
+      final r = reglageDeposer(
+          cle: cle,
+          valeur: valeur,
+          dateEffet: dateEffet,
+          role: role,
+          acteur: acteur,
+          poste: etiquette,
+          maintenant: _maintenant,
+          gestes: g,
+          versions: _versionsParametres,
+          usages: _usagesParametres,
+          depots: depots.toutes,
+          nouvelId: _nouvelId,
+          motif: motif);
+      if (!r.ok) return (refus: r.refus, version: null, depot: null, dejaDepose: false);
+      if (r.dejaDepose) return (refus: null, version: null, depot: r.fiche, dejaDepose: true);
+      _signer(r.fiche!);
+      try {
+        depots.ajouterSansJournal(r.fiche!, enTete: true);
+      } on EcritureRefusee catch (e) {
+        return (refus: RefusValidation('ECRITURE_REFUSEE', e.motif, null), version: null, depot: null, dejaDepose: false);
+      }
+      magasin.journaliser('Réglage transmis à la mère', 'CFG', 'Paramètre', cle, null,
+          {'valeur': valeur, 'à partir du': dateEffet, 'déposé par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], if (motif != null && motif.trim().isNotEmpty) 'motif': motif.trim()});
+      return (refus: null, version: null, depot: r.fiche, dejaDepose: false);
+    }
+    final c = reglageControler(
+        cle: cle, valeur: valeur, dateEffet: dateEffet, role: role, acteur: acteur, gestes: g, versions: _versionsParametres, usages: _usagesParametres, maintenant: _maintenant, motif: motif);
+    if (c.refus != null) return (refus: c.refus, version: null, depot: null, dejaDepose: false);
+    if (c.sansEffet) {
+      return (refus: const RefusValidation('DEJA_REGLE', 'Le réglage a déjà cette valeur à cette date : aucune version n’est écrite.', 'Aucun'), version: null, depot: null, dejaDepose: false);
+    }
+    _ecrireVersion(c.version!);
+    magasin.journaliser('Réglage d’un paramètre (geste réservé)', 'CFG', 'Paramètre', cle, null,
+        {'valeur': valeur, 'à partir du': dateEffet, 'version': c.version!.version, 'par': acteur, 'rôle': role, if (motif != null && motif.trim().isNotEmpty) 'motif': motif.trim()});
+    return (refus: null, version: c.version, depot: null, dejaDepose: false);
+  }
+
+  void _ecrireVersion(Parametre v) => magasin.collection(parCollectionParametres).inserer({'id': v.id, 'statut': 'actif', ...v.toJson()});
+
+  /// Le dernier dépôt de réglage de CE poste pour [cle] qui attend la mère (`null` : aucun) : l'écran dit « transmis à la mère, en attente ».
+  Fiche? depotReglageEnAttente(String cle) {
+    for (final d in depots.toutes) {
+      if (d['statut'] != 'archive' && d['genre'] == valGenreReglage && d['cible'] == cle && d['etat'] == valDepotDeposee) return d;
+    }
+    return null;
+  }
+
+  /// Applique UN dépôt de réglage sur la mère (sous le rôle et le nom de l'auteur, contrôles refaits avec la matrice et les versions de la mère) ; la version écrite voyage aux fileuls.
+  bool _appliquerReglage(Fiche d) {
+    final a = reglageAppliquer(d, gestes: gestes, versions: _versionsParametres, usages: _usagesParametres, maintenant: _maintenant);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    final v = a.version;
+    if (v != null) {
+      try {
+        _ecrireVersion(v);
+        magasin.journaliser('Réglage d’un paramètre (geste réservé)', 'CFG', 'Paramètre', '${d['cible']}', null,
+            {'valeur': v.valeur, 'à partir du': v.dateEffet, 'version': v.version, 'déposé par': d['demandePar'], 'rôle': d['demandeRole'], 'appliqué par': auteurMere(), 'dépôt': d['id']});
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire le réglage depuis les Paramètres.';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    return true;
+  }
+
   /// AI (16/11/2026) : le dépôt porte le COMPTE qui le signe (la mère le vérifie avant de rejouer) et l'instant exact du geste (l'âge de la décision en attente se mesure dessus).
   void _signer(Fiche f) {
     final compte = magasin.compteSignataire;
@@ -298,6 +395,10 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenreCircuitAchat) {
           if (_appliquerCircuit(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenreReglage) {
+          if (_appliquerReglage(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

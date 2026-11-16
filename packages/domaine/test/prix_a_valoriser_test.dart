@@ -1,6 +1,7 @@
-// MÉDICAMENT SANS PRIX D'ACHAT : PRESCRIRE, BLOQUER LA CAISSE (Direction de Baguidi, 16/11/2026). La ligne porte « prix à valoriser », jamais 0 ; seul SON encaissement est
-// refusé (code nommé PRIX_A_VALORISER), les autres lignes s'encaissent ; la ligne se valorise EN PLACE, au prix en vigueur à la date de la pièce (sinon le premier prix qui l'a
-// valorisée), sans réécrire une pièce normalisée.
+// MÉDICAMENT SANS PRIX D'ACHAT : PRESCRIRE, BLOQUER LA CAISSE (Direction de Baguidi, 16/11/2026). La ligne porte « prix à valoriser », jamais 0. Par DÉFAUT (complément §7),
+// RIEN de la facture ne s'encaisse tant qu'elle attend (FACTURE_EN_ATTENTE_DE_PRIX, les lignes nommées) ; le réglage « encaisser le reste » rouvre l'encaissement ligne par ligne
+// (la ligne seule refusée, PRIX_A_VALORISER). La ligne se valorise EN PLACE, au prix en vigueur à la DATE DE LA PIÈCE et à lui seul (le repli « premier prix après la pièce » est
+// retiré), sans réécrire une pièce normalisée.
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
@@ -58,10 +59,41 @@ void main() {
     });
   });
 
-  group('l’encaissement : seule la ligne sans prix est refusée, nommée', () {
+  group('l’encaissement PAR DÉFAUT : rien de la facture ne s’encaisse tant qu’une ligne attend son prix', () {
+    test('toutes les lignes cochées, une seule cochée connue, ou un versement global : refus FACTURE_EN_ATTENTE_DE_PRIX qui nomme la ligne, RIEN n’est écrit', () {
+      final f = facture();
+      for (final r in [
+        encaisser(f, lignes: ['L001', 'L002', 'L003'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z'),
+        encaisser(f, lignes: ['L001'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z'),
+        encaisser(f, lignes: ['L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z'),
+        encaisser(f, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z'),
+        encaisser(f, montant: 200, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z'),
+      ]) {
+        expect(r.refusCode, codeFactureEnAttenteDePrix);
+        expect(r.lignesReglees, isEmpty);
+        expect(r.ecritures, isEmpty);
+        expect(identical(r.facture, f), isTrue, reason: 'la facture est rendue inchangée');
+        expect(r.lignesRefusees.single['id'], 'L002', reason: 'la ligne en attente est NOMMÉE');
+        expect(r.lignesRefusees.single['code'], codePrixAValoriser, reason: 'avec sa cause');
+        expect('${r.refus}', allOf(contains('Amoxicilline'), contains('FP-2026-00001'), contains('16/11/2026'), contains('Encaisser le reste')));
+        expect(r.restantDu, 3200, reason: 'le dû CONNU, la ligne sans prix à part');
+      }
+    });
+
+    test('une ligne déjà réglée (pièce ancienne, réglage ouvert à l’époque) ne compte pas : seule une ligne NON réglée en attente suspend la pièce', () {
+      final f = facture();
+      final lignes = lignesDe(f);
+      final valorisee = {...f, 'lignes': [lignes[0], {...lignes[1], 'prixAValoriser': false, 'montant': 300, 'partPatient': 300, 'statutPaiement': 'paye'}, lignes[2]]};
+      final r = encaisser(valorisee, lignes: ['L001', 'L003'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+      expect(r.refus, isNull);
+      expect(r.lignesReglees, ['L001', 'L003']);
+    });
+  });
+
+  group('l’encaissement, réglage « encaisser le reste » OUVERT : seule la ligne sans prix est refusée, nommée', () {
     test('toutes les lignes cochées : les deux lignes connues passent, la ligne sans prix est refusée PRIX_A_VALORISER ; la pièce reste ouverte', () {
       final f = facture();
-      final r = encaisser(f, lignes: ['L001', 'L002', 'L003'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+      final r = encaisser(f, lignes: ['L001', 'L002', 'L003'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
       expect(r.refus, isNull);
       expect(r.lignesReglees, ['L001', 'L003']);
       expect(r.montantRegle, 3200);
@@ -76,23 +108,25 @@ void main() {
 
     test('seule la ligne sans prix cochée : refus nommé, RIEN n’est écrit', () {
       final f = facture();
-      final r = encaisser(f, lignes: ['L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+      final r = encaisser(f, lignes: ['L002'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
       expect(r.refusCode, codePrixAValoriser);
       expect(r.ecritures, isEmpty);
       expect(identical(r.facture, f), isTrue);
     });
 
     test('un versement global : les lignes connues sont allouées, la ligne sans prix sautée et nommée', () {
-      final r = encaisser(facture(), aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+      final r = encaisser(facture(), aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
       expect(r.lignesReglees, ['L001', 'L003']);
       expect(r.lignesRefusees.single['code'], codePrixAValoriser);
       expect(r.facture['statutPaiement'], 'partielle');
-      final r2 = encaisser(r.facture, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:05:00Z');
+      final r2 = encaisser(r.facture, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:05:00Z', encaisserResteSansPrix: true);
       expect(r2.refusCode, codePrixAValoriser, reason: 'il ne reste que la ligne sans prix');
+      // Le réglage refermé ensuite : la pièce, toujours en attente, ne s'encaisse plus du tout (le reste étant déjà réglé, il n'y a rien d'autre à prendre).
+      expect(encaisser(r.facture, aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:06:00Z').refusCode, codeFactureEnAttenteDePrix);
     });
   });
 
-  group('le prix retenu : à la date de la pièce, sinon le premier prix qui a valorisé l’article', () {
+  group('le prix retenu : celui EN VIGUEUR À LA DATE DE LA PIÈCE, et lui seul', () {
     final produit = {'id': 'P2', 'code': 'AMOX1G', 'designation': 'Amoxicilline 1 g', 'categorie': 'medicament'};
     final tarifs = [
       {'id': 'AMOX1G', 'code': 'AMOX1G', 'famille': tarFamilleProduit, 'statut': 'actif'}
@@ -112,25 +146,38 @@ void main() {
       expect(tarPrixValorisation(h, produit, '2026-11-16', aujourdhui: '2026-11-17'), isNull);
     });
 
-    test('le premier prix validé APRÈS la pièce la valorise ; un prix plus récent ne la suit pas ; une date future ne vaut pas encore ; une proposition non plus', () {
+    test('LE REPLI EST RETIRÉ : un prix validé daté APRÈS la pièce ne la valorise jamais, quel que soit le jour du geste', () {
       final h = ReferentielTarifs(tarifs, [v(1, null, null), v(2, '2026-11-18', 450), v(3, '2026-11-25', 600), v(4, '2026-11-17', 999, statut: 'propose')]);
-      final p = tarPrixValorisation(h, produit, '2026-11-16', aujourdhui: '2026-11-30')!;
-      expect(p.prixUnitaire, 450);
-      expect(p.version, 2);
-      expect(p.regle, 'premiere_valorisation');
-      expect(tarPrixValorisation(h, produit, '2026-11-16', aujourdhui: '2026-11-17'), isNull, reason: 'le prix du 18 n’est pas encore en vigueur');
+      expect(tarPrixValorisation(h, produit, '2026-11-16', aujourdhui: '2026-11-30'), isNull, reason: 'v21 rendait 450 (« premiere_valorisation ») : retiré le 16/11/2026, §7');
+      expect(tarPrixValorisation(h, produit, '2026-11-18', aujourdhui: '2026-11-30')!.prixUnitaire, 450, reason: 'une pièce du 18 lit le prix du 18');
     });
 
-    test('un prix daté à la date de la pièce (ou avant) : le prix EN VIGUEUR à cette date', () {
+    test('un prix daté à la date de la pièce (ou avant, date passée décidée) : le prix EN VIGUEUR à cette date, jamais une hausse ultérieure', () {
       final h = ReferentielTarifs(tarifs, [v(1, null, null), v(2, '2026-11-16', 400), v(3, '2026-11-20', 600)]);
       final p = tarPrixValorisation(h, produit, '2026-11-16', aujourdhui: '2026-11-30')!;
       expect(p.prixUnitaire, 400);
       expect(p.regle, 'a_la_date');
+      final avant = ReferentielTarifs(tarifs, [v(1, null, null), v(2, '2026-11-10', 380)]);
+      expect(tarPrixValorisation(avant, produit, '2026-11-16', aujourdhui: '2026-11-30')!.prixUnitaire, 380);
+    });
+
+    test('le guide du refus dit QUOI faire : une version datée au plus tard du jour de la pièce, la date passée étant réservée', () {
+      final m = motifPrixAValoriser('Amoxicilline 1 g', jourPiece: '2026-11-16');
+      expect(m, allOf(contains('DATE DE LA PIÈCE'), contains('16/11/2026'), contains('Référentiel produits'), contains('Dater un prix dans le passé')));
+    });
+
+    test('les pièces qui attendent un prix sont listées pour guider la date d’effet (la plus ancienne d’abord) ; soldée, normalisée ou archivée : non', () {
+      final f1 = facture();
+      final f2 = {...facture(), 'id': 'FAC2', 'numero': 'FP-2026-00002', 'date': '2026-11-12T08:00:00.000Z'};
+      final pieces = piecesEnAttenteDePrix([f1, f2, {...facture(), 'id': 'FAC3', 'statut': 'archive'}, {...facture(), 'id': 'FAC4', 'numeroMecef': 'M'}], produitId: 'P2');
+      expect(pieces.map((p) => p.numero), ['FP-2026-00002', 'FP-2026-00001']);
+      expect(pieces.first.jour, '2026-11-12');
+      expect(piecesEnAttenteDePrix([f1], produitId: 'P1'), isEmpty, reason: 'la ligne valorisée n’attend rien');
     });
   });
 
   group('valoriser EN PLACE : compléter un montant absent, jamais réécrire une pièce validée', () {
-    const prix = PrixValorisation(prixUnitaire: 450, version: 2, dateEffet: '2026-11-18', regle: 'premiere_valorisation');
+    const prix = PrixValorisation(prixUnitaire: 450, version: 2, dateEffet: '2026-11-16', regle: 'a_la_date');
 
     test('les parts suivent la règle de la pièce (taux arrêté à sa date), aucune remise (RG-02), la trace est portée ; les autres lignes ne bougent pas', () {
       final f = facture(taux: 80);
@@ -166,7 +213,7 @@ void main() {
 
     test('créance de l’assureur DÉJÀ constatée : la part assurée de la ligne entre au journal par une écriture équilibrée (411 / 706, brouillon)', () {
       final f = facture(taux: 80);
-      final premier = encaisser(f, lignes: ['L001'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z');
+      final premier = encaisser(f, lignes: ['L001'], aujourdhui: '2026-11-16', maintenant: '2026-11-16T10:00:00Z', encaisserResteSansPrix: true);
       final r = valoriserLigne(premier.facture, 'L002', prix,
           utilisateur: 'C', maintenant: '2026-11-20T08:00:00Z', aujourdhui: '2026-11-20', ecritures: [for (final (i, e) in premier.ecritures.indexed) {...e, 'id': 'E$i'}]);
       expect(r.ecritures, hasLength(2));

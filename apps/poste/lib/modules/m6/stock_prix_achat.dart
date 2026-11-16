@@ -88,6 +88,11 @@ void modaleChangerPrixAchat(BuildContext ctx, ContexteEcran c, Map<String, Objec
         NoteSigh(
             'Deux états, visibles : « Enregistrer » dépose une proposition (à valider : rien ne change) ; ${peutValider ? '« Valider » la met en vigueur à sa date d’effet, en un geste tracé avec votre rôle.' : '« Valider » est réservé aux profils qui décident ($qui) : leur décision suit votre proposition.'}',
             icone: LucideIcons.gitCompare),
+        // LIGNE SANS PRIX (16/11/2026, §7) : des pièces attendent ce prix d'achat ; il se lit à LEUR date, l'écran dit quelle date d'effet les débloque.
+        if (guidePiecesEnAttenteDePrix(piecesEnAttenteDePrix(c.magasin.collection('factures').actives, produitId: produit['id']), jour) case final g?) ...[
+          const SizedBox(height: 12),
+          NoteSigh(g, key: const Key('prix-achat:pieces-en-attente'), ton: TonSigh.attention, icone: LucideIcons.calendarClock),
+        ],
         const SizedBox(height: 12),
         FormulaireSigh(controleur: ctl),
       ]),

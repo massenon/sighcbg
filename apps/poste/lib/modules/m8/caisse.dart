@@ -5,6 +5,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/parcours_caisse.dart';
+import '../../donnees/reglages_clinique_poste.dart';
 import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -428,6 +429,9 @@ class _EcranCaisseState extends State<EcranCaisse> {
       }
     }
     Fiche vue(Fiche l) => projetees['${l['id']}'] ?? l;
+    // LIGNE SANS PRIX (16/11/2026, §7) : le réglage de clinique, lu au jour du geste. Non (défaut) : une ligne encore sans prix suspend TOUTE la facture.
+    final resteOuvert = ReglagesClinique.encaisserResteSansPrix(c.magasin, c.aujourdhui);
+    final jourPieceCaisse = tarJourDe(fac['date'], tarIso(c.aujourdhui));
     final choisies = {for (final l in lignes) '${l['id']}'};
     final version = ValueNotifier(0);
     final acheteur = ControleurFormulaire(champsAcheteurNormalise(c.magasin, c.aujourdhui), valeursAcheteur(fac));
@@ -484,9 +488,19 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           ),
                         ]),
                         const SizedBox(height: 12),
+                        if (!resteOuvert && (sansPrix.isNotEmpty || sansPrixAssure.isNotEmpty)) ...[
+                          NoteSigh(
+                              'Rien de cette facture ne s’encaisse tant qu’une ligne attend son prix ($codeFactureEnAttenteDePrix) : ${[...sansPrix, ...sansPrixAssure].map((l) => '« ${l['designation']} »').join(', ')}. '
+                              '${guidePrixALaDate(jourPieceCaisse, ecran: [if (sansPrix.isNotEmpty) 'Référentiel produits', if (sansPrixAssure.isNotEmpty) 'Tarifs et prix'].join('» ou à «'))} '
+                              'Les personnes qui fixent ces prix sont prévenues. Le réglage « Encaisser le reste d’une facture qui a une ligne sans prix » (Paramètres système, geste réservé) permet d’encaisser les autres lignes en attendant.',
+                              key: const Key('caisse:facture-en-attente-de-prix'),
+                              ton: TonSigh.danger,
+                              icone: LucideIcons.lock),
+                          const SizedBox(height: 12),
+                        ],
                         if (sansPrix.isNotEmpty) ...[
                           NoteSigh(
-                              '${nombre(sansPrix.length)} prestation(s) au prix à valoriser (${sansPrix.map((l) => l['designation']).join(', ')}) : le prix d’achat n’est pas encore fixé, la ligne ne s’encaisse pas ($codePrixAValoriser). Les autres prestations s’encaissent normalement ; la personne qui fixe les prix d’achat est prévenue.',
+                              '${nombre(sansPrix.length)} prestation(s) au prix à valoriser (${sansPrix.map((l) => l['designation']).join(', ')}) : le prix d’achat n’est pas en vigueur à la date de la pièce, la ligne ne s’encaisse pas ($codePrixAValoriser). ${resteOuvert ? 'Les autres prestations s’encaissent (réglage de clinique ouvert)' : 'La facture attend ce prix'} ; la personne qui fixe les prix d’achat est prévenue.',
                               key: const Key('caisse:a-valoriser'),
                               ton: TonSigh.attention,
                               icone: LucideIcons.tag),
@@ -494,7 +508,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
                         ],
                         if (sansPrixAssure.isNotEmpty) ...[
                           NoteSigh(
-                              '${nombre(sansPrixAssure.length)} acte(s) au prix assuré à définir (${sansPrixAssure.map((l) => '${l['designation']}${l['prixNonAssureInfo'] is num ? ' — non assuré : ${money(l['prixNonAssureInfo'])}, pour information' : ''}').join(' ; ')}) : la grille ne porte pas de prix assuré, la ligne ne s’encaisse pas ($codePrixAssureADefinir) et n’est jamais facturée au prix non assuré. Les autres prestations s’encaissent normalement.',
+                              '${nombre(sansPrixAssure.length)} acte(s) au prix assuré à définir (${sansPrixAssure.map((l) => '${l['designation']}${l['prixNonAssureInfo'] is num ? ' — non assuré : ${money(l['prixNonAssureInfo'])}, pour information' : ''}').join(' ; ')}) : la grille ne porte pas de prix assuré, la ligne ne s’encaisse pas ($codePrixAssureADefinir) et n’est jamais facturée au prix non assuré. ${resteOuvert ? 'Les autres prestations s’encaissent (réglage de clinique ouvert).' : 'La facture attend ce prix.'}',
                               key: const Key('caisse:prix-assure-a-definir'),
                               ton: TonSigh.attention,
                               icone: LucideIcons.tag),
@@ -739,6 +753,11 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           mode: '${form['mode']}',
                           maintenant: c.aujourdhui);
                     } on RefusCaisse catch (e) {
+                      if (e.code == codeFactureEnAttenteDePrix) {
+                        ToastsSigh.afficher(ctx, 'Encaissement refusé : la facture attend le prix d’une ligne.',
+                            type: TypeToast.erreur, detail: e.motif, duree: const Duration(seconds: 14));
+                        return;
+                      }
                       if (e.code == codePrixAValoriser || e.code == codePrixAssureADefinir) {
                         ToastsSigh.afficher(ctx, e.code == codePrixAssureADefinir ? 'Encaissement refusé : prix assuré à définir.' : 'Encaissement refusé : prix à valoriser.',
                             type: TypeToast.erreur,

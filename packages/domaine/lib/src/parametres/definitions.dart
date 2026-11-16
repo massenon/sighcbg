@@ -456,7 +456,27 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Circuit d\'achats (m7-besoins, m7-commandes)',
   ),
+  // LIGNE SANS PRIX SUR UNE FACTURE (Direction de Baguidi, 16/11/2026, complément §7) : par défaut RIEN d'une facture ne s'encaisse tant qu'une ligne attend son prix (« prix à
+  // valoriser », « prix assuré à définir »). Oui : on revient à l'encaissement ligne par ligne de la v21 (les autres lignes s'encaissent). Réglage de CLINIQUE (famille R : la mère seule
+  // écrit, les fileuls le reçoivent), posé sous le geste réservé `reglage_encaissement_sans_prix` depuis n'importe quel poste (un fileul dépose, la mère applique).
+  DefinitionParametre(
+    cle: cleEncaisserResteSansPrix,
+    famille: 'caisse',
+    type: TypeParametre.booleen,
+    defaut: false,
+    libelle: 'Encaisser le reste d\'une facture qui a une ligne sans prix',
+    aide: 'Non (par défaut) : tant qu\'une ligne de la facture attend son prix (prix à valoriser, prix assuré à définir), RIEN de la facture ne s\'encaisse et la pharmacie ne délivre rien. Oui : les autres lignes s\'encaissent, la ligne sans prix reste en attente, nommée, et la pharmacie délivre les lignes réglées.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §7) : rien ne s\'encaisse par défaut',
+    branche: true,
+    appliquePar: 'Caisse (m8-caisse) et délivrance',
+  ),
 ];
+
+/// La clé du réglage « encaisser le reste d'une facture qui a une ligne sans prix » (Non par défaut).
+const String cleEncaisserResteSansPrix = 'caisse.encaisserResteLigneSansPrix';
+
+/// La valeur lue du réglage : seul un `true` explicite rouvre l'encaissement ligne par ligne ; toute autre valeur (absente, illisible) garde le défaut, rien ne s'encaisse.
+bool encaisserResteSansPrixDe(Object? valeur) => valeur == true;
 
 /// Le libellé d'une famille de paramètres, pour les onglets de l'écran des paramètres. Une famille absente de la table s'affiche sous son identifiant.
 const Map<String, String> libellesFamillesParametres = {
@@ -474,6 +494,7 @@ const Map<String, String> libellesFamillesParametres = {
   'cloture': 'Clôture comptable',
   'achats': 'Achats',
   'validations': 'Validations et continuité',
+  'caisse': 'Caisse et encaissement',
 };
 
 /// La définition d'une clé, ou `null`.

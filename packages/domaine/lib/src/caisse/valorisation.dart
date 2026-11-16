@@ -1,8 +1,11 @@
 /// MÉDICAMENT SANS PRIX D'ACHAT : PRESCRIRE, BLOQUER LA CAISSE (Direction de Baguidi, 16/11/2026, revient sur le refus `TARIF_A_VALIDER` des médicaments, E3002).
 ///
 /// Le médecin prescrit TOUJOURS : le soin n'attend pas la pharmacie. La ligne d'un article connu sans prix d'achat en vigueur porte « prix à valoriser » et AUCUN montant —
-/// jamais 0, ni dans la facture, ni dans les totaux, ni dans les estimations, ni sur la pièce imprimée. Seul son ENCAISSEMENT est refusé, nommé ([codePrixAValoriser]) ; les
-/// autres lignes de la même facture s'encaissent normalement (encaissement ligne par ligne).
+/// jamais 0, ni dans la facture, ni dans les totaux, ni dans les estimations, ni sur la pièce imprimée.
+///
+/// L'ENCAISSEMENT (complément du 16/11/2026, §7, qui remplace la v21) : par DÉFAUT, RIEN de la facture ne s'encaisse tant qu'une de ses lignes attend son prix — refus nommé
+/// [codeFactureEnAttenteDePrix], qui nomme la ou les lignes en attente. Le réglage de clinique `caisse.encaisserResteLigneSansPrix` (Non par défaut, posé sous le geste réservé
+/// `reglage_encaissement_sans_prix`) rouvre l'encaissement ligne par ligne : les autres lignes s'encaissent, seule la ligne sans prix est refusée ([codePrixAValoriser]).
 ///
 /// LA VOIE CHOISIE POUR VALORISER, ET POURQUOI ELLE NE RÉÉCRIT JAMAIS UNE PIÈCE VALIDÉE. Une facture de prescription n'est normalisée (MECeF) qu'une fois SOLDÉE, et une
 /// facture qui porte une ligne « à valoriser » ne peut pas l'être : la ligne n'a pas de montant. Tant qu'elle attend, la pièce n'est donc ni normalisée ni soldée. La ligne
@@ -10,9 +13,10 @@
 /// et la date de la pièce ne bougent pas ; la ligne garde la trace de sa valorisation (`valorisation` : prix, version, date d'effet, règle, auteur, instant). Une pièce
 /// normalisée, ou archivée, refuse la valorisation en le nommant (`PIECE_NORMALISEE`, `PIECE_ARCHIVEE`) : sa correction passe par un avoir.
 ///
-/// LE PRIX RETENU (RG-02 : le prix d'achat, sans marge) : celui EN VIGUEUR À LA DATE DE LA PIÈCE. Si l'article était encore « à valoriser » à cette date — le cas ordinaire,
-/// puisque c'est ce qui a fait la ligne —, le PREMIER prix d'achat validé entré en vigueur après elle, c'est-à-dire celui qui l'a valorisé, jamais un prix plus récent : la ligne
-/// ne suit pas les hausses qui viendraient ensuite, et deux caisses qui la valorisent trouvent le même prix. Une date d'effet future ne valorise rien avant d'être en vigueur.
+/// LE PRIX RETENU (RG-02 : le prix d'achat, sans marge) : celui EN VIGUEUR À LA DATE DE LA PIÈCE, et lui seul (complément du 16/11/2026, §7). Le repli de la v21 « le premier
+/// prix validé entré en vigueur après la pièce » est RETIRÉ : un prix daté après la pièce ne la valorise jamais. Pour débloquer la ligne, la Direction pose une version DATÉE
+/// au plus tard du jour de la pièce ; une date antérieure à aujourd'hui est une décision réservée (geste `tarif_dater_passe`, « Dater un prix dans le passé »), au « Référentiel
+/// produits » pour un médicament, à « Tarifs et prix » pour un acte. Une date d'effet future ne valorise rien avant d'être en vigueur.
 library;
 
 import '../format/js.dart';
@@ -34,11 +38,39 @@ List<Map<String, Object?>> lignesAValoriserDe(Map<String, Object?> facture) => [
         if (l is Map && ligneAValoriser(l.cast<String, Object?>())) l.cast<String, Object?>()
     ];
 
-/// Le motif nommé du refus d'encaissement d'une ligne (sans montant inventé).
-String motifPrixAValoriser(Object? designation) =>
-    '« ${designation ?? 'Article'} » n’a pas de prix d’achat en vigueur : la ligne porte « prix à valoriser » et ne s’encaisse pas encore. '
+/// L'écran du « Référentiel produits » (prix d'achat des médicaments) et celui de « Tarifs et prix » (actes, analyses, imagerie) : les alertes « prix manquant » vont aux rôles qui
+/// peuvent les MODIFIER (droit `editer` de la matrice), jamais à une liste de rôles.
+const String ecranReferentielProduits = 'm6-produits';
+const String ecranTarifsEtPrix = 'cfg-tarifs';
+
+/// Le préfixe d'un poste de notification adressé aux rôles qui peuvent MODIFIER un écran (droit `editer` lu dans la matrice en force par le centre de notifications).
+const String prefixePosteEditeurs = 'editeurs:';
+
+/// Le poste de notification « ceux qui peuvent modifier [ecran] ».
+String posteEditeursEcran(String ecran) => '$prefixePosteEditeurs$ecran';
+
+/// L'écran d'un poste « editeurs:<écran> » (`null` : un autre poste).
+String? ecranDuPosteEditeurs(Object? poste) {
+  final p = '${poste ?? ''}';
+  return p.startsWith(prefixePosteEditeurs) && p.length > prefixePosteEditeurs.length ? p.substring(prefixePosteEditeurs.length) : null;
+}
+
+/// Le jour (JJ/MM/AAAA) d'une date AAAA-MM-JJ, pour les messages.
+String _jourFr(String iso) {
+  final p = iso.length >= 10 ? iso.substring(0, 10).split('-') : const <String>[];
+  return p.length == 3 ? '${p[2]}/${p[1]}/${p[0]}' : iso;
+}
+
+/// Ce qu'il faut faire pour débloquer : une version datée AU PLUS TARD du jour de la pièce (le prix se lit à la date de la pièce) ; une date passée est réservée.
+String guidePrixALaDate(String? jourPiece, {required String ecran}) =>
+    'Le prix se lit à la DATE DE LA PIÈCE${jourPiece == null || jourPiece.isEmpty ? '' : ' (${_jourFr(jourPiece)})'} : poser à « $ecran » une version datée au plus tard de ce jour, puis Oui. '
+    'Une date antérieure à aujourd’hui est une décision réservée (« Dater un prix dans le passé ») ; un prix daté après la pièce ne la valorise jamais.';
+
+/// Le motif nommé du refus d'encaissement d'une ligne (sans montant inventé). [jourPiece] : AAAA-MM-JJ de la pièce (le prix se lit à cette date).
+String motifPrixAValoriser(Object? designation, {String? jourPiece}) =>
+    '« ${designation ?? 'Article'} » n’a pas de prix d’achat en vigueur à la date de la pièce : la ligne porte « prix à valoriser » et ne s’encaisse pas encore. '
     'Le prix d’achat se fixe au « Référentiel produits » (« Changer le prix d’achat », puis Oui à « Tarifs et prix ») ; la ligne s’encaisse ensuite au prix d’achat retenu (RG-02). '
-    'Les autres prestations de la facture s’encaissent normalement.';
+    '${guidePrixALaDate(jourPiece, ecran: 'Référentiel produits')}';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // PRIX ASSURÉ À DÉFINIR (section AJ, Direction du 16/11/2026) : MÊME mécanique que « prix à valoriser ».
@@ -70,11 +102,57 @@ String libelleLigneSansMontant(Map<String, Object?> l, {String Function(Object?)
 String codeLigneSansMontant(Map<String, Object?> l) => ligneAssureADefinir(l) ? codePrixAssureADefinir : codePrixAValoriser;
 
 /// Le motif nommé du refus d'encaissement d'une ligne sans montant.
-String motifLigneSansMontant(Map<String, Object?> l) => ligneAssureADefinir(l)
-    ? '« ${l['designation'] ?? 'Acte'} » est un acte assurable dont la grille ne porte pas de prix ASSURÉ : la ligne de l’assuré porte « prix assuré à définir » et ne s’encaisse pas. '
+String motifLigneSansMontant(Map<String, Object?> l, {String? jourPiece}) => ligneAssureADefinir(l)
+    ? '« ${l['designation'] ?? 'Acte'} » est un acte assurable dont la grille ne porte pas de prix ASSURÉ à la date de la pièce : la ligne de l’assuré porte « prix assuré à définir » et ne s’encaisse pas. '
         'Elle n’est jamais facturée au prix non assuré (${l['prixNonAssureInfo'] ?? '—'}, pour information). Le prix assuré se propose à « Tarifs et prix », puis Oui ; la ligne s’encaisse ensuite. '
-        'Les autres prestations de la facture s’encaissent normalement.'
-    : motifPrixAValoriser(l['designation']);
+        '${guidePrixALaDate(jourPiece, ecran: 'Tarifs et prix')}'
+    : motifPrixAValoriser(l['designation'], jourPiece: jourPiece);
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+// LA FACTURE EN ATTENTE DE PRIX (complément du 16/11/2026, §7) : par défaut, RIEN de la facture ne s'encaisse.
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
+/// Le code nommé du refus d'encaissement d'une facture dont une ligne attend son prix, quand le réglage « encaisser le reste » est fermé (stable : écrans, tests, journal).
+const String codeFactureEnAttenteDePrix = 'FACTURE_EN_ATTENTE_DE_PRIX';
+
+/// Le motif nommé : la ou les lignes en attente, chacune avec sa cause, ce qui débloque, et le réglage qui permettrait d'encaisser le reste.
+String motifFactureEnAttenteDePrix(Map<String, Object?> facture, List<Map<String, Object?>> attente, {String? jourPiece}) {
+  final numero = facture['numero'] ?? facture['id'] ?? 'la facture';
+  final noms = [for (final l in attente) '« ${l['designation'] ?? 'Ligne'} » (${ligneAssureADefinir(l) ? libellePrixAssureADefinir.toLowerCase() : libellePrixAValoriser.toLowerCase()})'];
+  final medicament = attente.any((l) => !ligneAssureADefinir(l));
+  final acte = attente.any(ligneAssureADefinir);
+  final ecran = [if (medicament) 'Référentiel produits', if (acte) 'Tarifs et prix'].join('» ou à «');
+  return 'Rien de la facture $numero ne s’encaisse : ${attente.length == 1 ? 'une ligne attend' : '${attente.length} lignes attendent'} son prix — ${noms.join(', ')}. '
+      '${guidePrixALaDate(jourPiece, ecran: ecran)} '
+      'La facture s’encaisse ensuite en entier. Le réglage de clinique « Encaisser le reste d’une facture qui a une ligne sans prix » (Paramètres système, geste réservé) permet d’encaisser les autres lignes en attendant.';
+}
+
+/// Les pièces (non archivées, non soldées, non normalisées) dont une ligne attend le prix de [produitId] (médicament) ou de [acteCode] (acte assurable sans prix assuré) :
+/// `(id, numero, jour)`, de la plus ancienne à la plus récente. L'écran de prix les cite pour guider la date d'effet (au plus tard le jour de la plus ancienne).
+List<({String id, String numero, String jour})> piecesEnAttenteDePrix(Iterable<Map<String, Object?>> factures, {Object? produitId, Object? acteCode}) {
+  final out = <({String id, String numero, String jour})>[];
+  for (final f in factures) {
+    if (f['statut'] == 'archive' || f['statutPaiement'] == 'soldee' || '${f['numeroMecef'] ?? ''}'.isNotEmpty) continue;
+    final porte = lignesAValoriserDe(f).any((l) =>
+        (produitId != null && !ligneAssureADefinir(l) && '${l['produitId']}' == '$produitId') || (acteCode != null && ligneAssureADefinir(l) && '${l['acteCode']}' == '$acteCode'));
+    if (!porte) continue;
+    final d = '${f['date'] ?? ''}';
+    out.add((id: '${f['id']}', numero: '${f['numero'] ?? f['id']}', jour: d.length >= 10 ? d.substring(0, 10) : d));
+  }
+  out.sort((a, b) => a.jour.compareTo(b.jour));
+  return out;
+}
+
+/// Le guide affiché à l'écran du prix (« Changer le prix d'achat », « Proposer un changement de prix ») quand des pièces attendent ce prix : elles ne se valorisent qu'au prix EN VIGUEUR
+/// À LEUR DATE, la version doit donc être datée au plus tard du jour de la plus ancienne ; une date antérieure à aujourd'hui est une décision réservée. `null` : aucune pièce n'attend.
+String? guidePiecesEnAttenteDePrix(List<({String id, String numero, String jour})> pieces, String aujourdhui) {
+  if (pieces.isEmpty) return null;
+  final p = pieces.first;
+  final passee = p.jour.compareTo(aujourdhui) < 0;
+  return '${pieces.length == 1 ? 'Une pièce attend' : '${pieces.length} pièces attendent'} ce prix (la plus ancienne : ${p.numero} du ${_jourFr(p.jour)}) : '
+      'une pièce ne se valorise qu’au prix EN VIGUEUR À SA DATE. Pour la débloquer, dater la version au plus tard du ${_jourFr(p.jour)}'
+      '${passee ? ' : c’est une date antérieure à aujourd’hui, à cocher et motiver (décision réservée « Dater un prix dans le passé »)' : ''}. Un prix daté après la pièce ne la débloque pas.';
+}
 
 /// Le prix retenu pour valoriser une ligne.
 class PrixValorisation {
@@ -83,66 +161,30 @@ class PrixValorisation {
   final int? version;
   final String? dateEffet;
 
-  /// `a_la_date` : en vigueur à la date de la pièce ; `premiere_valorisation` : le premier prix validé entré en vigueur après elle.
+  /// `a_la_date` : en vigueur à la date de la pièce (la seule règle depuis le 16/11/2026, §7 : le repli « premier prix validé après la pièce » est retiré).
   final String regle;
 
   Map<String, Object?> versJson() => {'prixUnitaire': prixUnitaire, 'version': version, 'dateEffet': dateEffet, 'regle': regle};
 }
 
-/// Le prix de valorisation d'une ligne d'article (voir l'en-tête) : `null` tant qu'aucun prix d'achat n'est en vigueur. [produit] : la fiche `produits` (son code est celui
-/// de sa prestation de prix) ; [jourPiece] : le jour de la PIÈCE ; [aujourdhui] : le jour du geste (une date d'effet postérieure ne vaut pas encore).
+/// Le prix de valorisation d'une ligne d'article (voir l'en-tête) : le prix d'achat EN VIGUEUR À LA DATE DE LA PIÈCE, `null` sinon (jamais un prix daté après la pièce).
+/// [produit] : la fiche `produits` (son code est celui de sa prestation de prix) ; [jourPiece] : le jour de la PIÈCE ; [aujourdhui] : le jour du geste.
 PrixValorisation? tarPrixValorisation(ReferentielTarifs h, Map<String, Object?>? produit, String jourPiece, {required String aujourdhui}) {
   if (produit == null) return null;
   final aLaDate = tarPrixProduit(h, produit, jourPiece, aujourdhui: aujourdhui);
-  if (!aLaDate.absent && aLaDate.vente != null) {
-    return PrixValorisation(prixUnitaire: aLaDate.vente!, version: aLaDate.version, dateEffet: aLaDate.dateEffet, regle: 'a_la_date');
-  }
-  final code = '${produit['code'] ?? ''}';
-  if (code.isEmpty) return null;
-  Map<String, Object?>? premiere;
-  for (final v in h.versionsDe(code)) {
-    if (v['statut'] != 'valide' || tarPrixAchatDe(v) == null) continue;
-    final de = v['dateEffet'];
-    if (de == null) continue; // « depuis l'origine » : elle aurait été en vigueur à la date de la pièce
-    final d = '$de';
-    if (d.compareTo(jourPiece) <= 0 || d.compareTo(aujourdhui) > 0) continue;
-    if (premiere == null) {
-      premiere = v;
-      continue;
-    }
-    final c = d.compareTo('${premiere['dateEffet']}');
-    if (c < 0 || (c == 0 && ((v['version'] as num?) ?? 0) < ((premiere['version'] as num?) ?? 0))) premiere = v;
-  }
-  if (premiere == null) return null;
-  final vente = tarPrixVenteProduit(produit['categorie'], premiere);
-  if (vente == null) return null;
-  return PrixValorisation(
-      prixUnitaire: vente, version: ((premiere['version'] as num?) ?? 0).toInt(), dateEffet: premiere['dateEffet'] as String?, regle: 'premiere_valorisation');
+  if (aLaDate.absent || aLaDate.vente == null || !(aLaDate.vente! > 0)) return null;
+  return PrixValorisation(prixUnitaire: aLaDate.vente!, version: aLaDate.version, dateEffet: aLaDate.dateEffet, regle: 'a_la_date');
 }
 
-/// Le prix ASSURÉ de valorisation d'une ligne d'acte (même règle que [tarPrixValorisation]) : le prix assuré EN VIGUEUR à la date de la pièce, sinon le PREMIER prix assuré validé entré
-/// en vigueur après elle (et déjà en vigueur aujourd'hui). `null` tant qu'aucun prix assuré n'est validé : jamais le prix non assuré.
+/// Le prix ASSURÉ de valorisation d'une ligne d'acte (même règle que [tarPrixValorisation]) : le prix assuré EN VIGUEUR À LA DATE DE LA PIÈCE, `null` sinon — jamais le prix non
+/// assuré, jamais un prix assuré daté après la pièce.
 PrixValorisation? tarPrixValorisationAssure(ReferentielTarifs h, Object? acteCode, String jourPiece, {required String aujourdhui}) {
   final p = h.parActe['$acteCode'] ?? h.parCode['$acteCode'];
   if (p == null) return null;
-  final code = '${p['code']}';
-  final aLaDate = h.enVigueur(code, jourPiece);
-  if (aLaDate != null && aLaDate['etatAssure'] == 'montant' && aLaDate['prixAssure'] is num && (aLaDate['prixAssure'] as num) > 0) {
-    return PrixValorisation(
-        prixUnitaire: aLaDate['prixAssure'] as num, version: ((aLaDate['version'] as num?) ?? 0).toInt(), dateEffet: aLaDate['dateEffet'] as String?, regle: 'a_la_date');
-  }
-  Map<String, Object?>? premiere;
-  for (final v in h.versionsDe(code)) {
-    if (v['statut'] != 'valide' || v['etatAssure'] != 'montant' || v['prixAssure'] is! num || (v['prixAssure'] as num) <= 0) continue;
-    final de = v['dateEffet'];
-    if (de == null) continue;
-    final d = '$de';
-    if (d.compareTo(jourPiece) <= 0 || d.compareTo(aujourdhui) > 0) continue;
-    if (premiere == null || d.compareTo('${premiere['dateEffet']}') < 0) premiere = v;
-  }
-  if (premiere == null) return null;
+  final aLaDate = h.enVigueur('${p['code']}', jourPiece);
+  if (aLaDate == null || aLaDate['etatAssure'] != 'montant' || aLaDate['prixAssure'] is! num || !((aLaDate['prixAssure'] as num) > 0)) return null;
   return PrixValorisation(
-      prixUnitaire: premiere['prixAssure'] as num, version: ((premiere['version'] as num?) ?? 0).toInt(), dateEffet: premiere['dateEffet'] as String?, regle: 'premiere_valorisation');
+      prixUnitaire: aLaDate['prixAssure'] as num, version: ((aLaDate['version'] as num?) ?? 0).toInt(), dateEffet: aLaDate['dateEffet'] as String?, regle: 'a_la_date');
 }
 
 /// Le prix de valorisation d'une ligne SANS MONTANT, selon sa cause : prix assuré d'un acte ([tarPrixValorisationAssure]) ou prix d'achat d'un article ([tarPrixValorisation]).

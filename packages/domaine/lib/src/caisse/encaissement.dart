@@ -15,7 +15,8 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../mecef/montants.dart';
-import 'valorisation.dart' show codePrixAValoriser, codePrixAssureADefinir, codeLigneSansMontant, ligneAValoriser, motifLigneSansMontant;
+import '../tarifs/tarifs.dart' show tarJourDe;
+import 'valorisation.dart' show codeFactureEnAttenteDePrix, codePrixAValoriser, codePrixAssureADefinir, codeLigneSansMontant, ligneAValoriser, motifFactureEnAttenteDePrix, motifLigneSansMontant;
 
 const compteCaisse = '571000';
 const compteClientsAssurance = '411110';
@@ -46,12 +47,13 @@ class ResultatEncaissement {
   /// Versement REFUSÉ (E2) : le motif nomme le défaut, rien n'est écrit ; `facture` est inchangée.
   final String? refus;
 
-  /// Le code nommé du refus de la fenêtre « Facture normalisée » (`IFU_INVALIDE`, `NOM_ACHETEUR_ABSENT`, `AIB_TAUX_INVALIDE`), ou [codePrixAValoriser] quand TOUTES
+  /// Le code nommé du refus de la fenêtre « Facture normalisée » (`IFU_INVALIDE`, `NOM_ACHETEUR_ABSENT`, `AIB_TAUX_INVALIDE`) ; [codeFactureEnAttenteDePrix] quand une ligne
+  /// de la facture attend son prix et que le réglage « encaisser le reste » est fermé (le défaut) ; [codePrixAValoriser] / [codePrixAssureADefinir] quand, réglage ouvert, TOUTES
   /// les lignes visées attendent leur prix ; sinon null.
   final String? refusCode;
 
-  /// Les lignes visées que ce versement N'A PAS encaissées parce qu'elles attendent leur prix (« prix à valoriser », Direction du 16/11/2026) : `{id, designation, code, motif}`.
-  /// Les autres lignes du même versement s'encaissent normalement.
+  /// Les lignes qui attendent leur prix : celles que ce versement N'A PAS encaissées (réglage ouvert : les autres lignes s'encaissent), ou TOUTES celles de la facture quand le
+  /// défaut refuse la pièce entière : `{id, designation, code, motif}`.
   final List<Map<String, Object?>> lignesRefusees;
 }
 
@@ -60,6 +62,10 @@ bool _vrai(Object? v) => v != null && v != '' && v != 0 && v != false;
 double _n(Object? v) => nombreOuZero(v);
 
 /// `PR.encaisser(factureId, {lignes | montant, mode})`. `aujourdhui` : `YYYY-MM-DD` de l'écriture ; `maintenant` : ISO.
+///
+/// [encaisserResteSansPrix] : le réglage de clinique `caisse.encaisserResteLigneSansPrix` (Non par défaut, complément du 16/11/2026, §7), lu par l'appelant. Fermé, RIEN de la
+/// facture ne s'encaisse tant qu'une de ses lignes attend son prix : refus nommé [codeFactureEnAttenteDePrix], qui nomme les lignes en attente, rien n'est écrit. Ouvert, l'encaissement
+/// ligne par ligne de la v21 s'applique (la ligne sans prix est refusée nommément, les autres passent).
 ///
 /// [mecefActif] : l'état du module MECEF, lu par l'appelant dans les fermetures en vigueur et passé en paramètre (PRD Baguidi, P0-5). Module fermé,
 /// le versement ne pose NI `statutMecef` NI `baseMecef` : une pièce émise pendant que MECeF était ouvert GARDE les champs qu'elle porte (ils ne sont
@@ -77,6 +83,7 @@ ResultatEncaissement encaisser(
   Map<String, Object?>? acheteur,
   int? aibParDefaut,
   int? longueurIfu,
+  bool encaisserResteSansPrix = false,
 }) {
   if (facture['statutPaiement'] == 'soldee') {
     return ResultatEncaissement(
@@ -86,6 +93,34 @@ ResultatEncaissement encaisser(
         montantRegle: null,
         restantDu: null,
         ecritures: const []);
+  }
+  final jourPiece = tarJourDe(facture['date'], aujourdhui);
+  // LIGNE SANS PRIX (complément du 16/11/2026, §7) : par DÉFAUT, une seule ligne en attente de prix suspend TOUTE la facture — la pièce n'est encaissée qu'entière, au prix lu à sa date.
+  // Rien n'est écrit ; le refus nomme chaque ligne en attente et ce qui la débloque.
+  if (!encaisserResteSansPrix) {
+    final attente = [
+      for (final l in (facture['lignes'] as List? ?? const []))
+        if (l is Map && l['statutPaiement'] != 'paye' && ligneAValoriser(l.cast<String, Object?>())) l.cast<String, Object?>()
+    ];
+    if (attente.isNotEmpty) {
+      final dues = [
+        for (final l in (facture['lignes'] as List? ?? const []))
+          if (l is Map && l['statutPaiement'] != 'paye') l.cast<String, Object?>()
+      ];
+      return ResultatEncaissement(
+          facture: facture,
+          deja: false,
+          lignesReglees: const [],
+          montantRegle: 0,
+          restantDu: dues.fold<double>(0, (n, l) => n + _n(l['partPatient'])),
+          ecritures: const [],
+          refus: '$codeFactureEnAttenteDePrix : ${motifFactureEnAttenteDePrix(facture, attente, jourPiece: jourPiece)}',
+          refusCode: codeFactureEnAttenteDePrix,
+          lignesRefusees: [
+            for (final l in attente)
+              {'id': l['id'], 'designation': l['designation'], 'code': codeLigneSansMontant(l), 'motif': motifLigneSansMontant(l, jourPiece: jourPiece)}
+          ]);
+    }
   }
   // La fenêtre « Facture normalisée » (IFU de l'acheteur, nom, AIB) se contrôle AVANT toute écriture : un refus nommé n'écrit rien (E2299).
   // MECeF fermé (bascule P0-5) : la fenêtre n'existe pas, aucun acheteur n'est contrôlé ni porté.
@@ -122,11 +157,12 @@ ResultatEncaissement encaisser(
       : _n(facture['montantTTC']);
 
   final reglees = <Map<String, Object?>>[];
-  // Une ligne « prix à valoriser » n'a pas de montant : elle ne s'encaisse JAMAIS (ni pour 0, ni au jugé). Refusée nommément, elle n'empêche pas les autres.
+  // Une ligne « prix à valoriser » n'a pas de montant : elle ne s'encaisse JAMAIS (ni pour 0, ni au jugé). Réglage « encaisser le reste » ouvert (sinon on n'arrive pas ici avec
+  // une ligne en attente), elle est refusée nommément et n'empêche pas les autres.
   final refusees = <Map<String, Object?>>[];
   // La cause est NOMMÉE ligne par ligne : prix d'achat à valoriser, ou prix ASSURÉ à définir (AJ, 16/11/2026 : jamais facturée au prix non assuré).
   void refuser(Map<String, Object?> l) =>
-      refusees.add({'id': l['id'], 'designation': l['designation'], 'code': codeLigneSansMontant(l), 'motif': motifLigneSansMontant(l)});
+      refusees.add({'id': l['id'], 'designation': l['designation'], 'code': codeLigneSansMontant(l), 'motif': motifLigneSansMontant(l, jourPiece: jourPiece)});
   String codeRefus() => refusees.every((r) => r['code'] == codePrixAssureADefinir) ? codePrixAssureADefinir : codePrixAValoriser;
   ResultatEncaissement refusPrix() => ResultatEncaissement(
           facture: facture,

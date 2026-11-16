@@ -133,6 +133,13 @@ void main() {
 
   void compare(Memoire m, Map<String, Object?> avant, Map<String, Object?> sortie, {String? refus, String? code}) {
     final e = ecart((avant as Map<String, List<Map<String, Object?>>>), m.instantane());
+    // E3545 (16/11/2026, §7) : l'alerte « prix manquant » d'une prestation (une par code, sans nom de patient) n'existe pas dans la maquette qui a tiré ces vecteurs ; elle est
+    // retirée de la comparaison, et elle seule (sondée par prix_assure_a_definir_poste_test et arbitrages_prix_poste_test).
+    final notifs = e.inserts['notifications'];
+    if (notifs != null) {
+      notifs.removeWhere((n) => n['type'] == csTypeNotifPrixManquant);
+      if (notifs.isEmpty) e.inserts.remove('notifications');
+    }
     final attInserts = (sortie['inserts'] as Map).cast<String, Object?>();
     final attModifs = (sortie['modifs'] as Map).cast<String, Object?>();
     expect(e.inserts.keys.toSet(), attInserts.keys.toSet(), reason: 'collections écrites');
