@@ -1232,11 +1232,12 @@ List<PaiLigneOrtbAgent> paiLignesOrtbAgents(Iterable<PaiFiche> personnel, int an
     ];
 
 // --- tableau de bord : l'évolution de la masse salariale -------------------------------------------------------------------------------------
-/// `G.moisGlissants(12)` : DOUZE mois qui finissent en août 2026 (le point d'ancrage est celui de la maquette, pas l'horloge) — « sept. 25 »…
-List<String> paiMoisGlissants([int n = 12]) => [
+/// `G.moisGlissants(12)` : DOUZE mois qui finissent au mois de [reference] (l'horloge du poste ; la maquette les ancrait en août 2026 — corrigé au lot 0,
+/// E3833) — « sept. 25 »…
+List<String> paiMoisGlissants(DateTime reference, [int n = 12]) => [
       for (var i = n - 1; i >= 0; i--)
         () {
-          final m = DateTime(2026, 8 - i, 1);
+          final m = DateTime(reference.year, reference.month - i, 1);
           final nom = paiMois[m.month - 1];
           // `String.prototype.slice(0, 4)` : « mai » reste « mai » (Dart lèverait une erreur de bornes).
           return '${nom.length > 4 ? nom.substring(0, 4) : nom}. ${(m.year % 100).toString().padLeft(2, '0')}';

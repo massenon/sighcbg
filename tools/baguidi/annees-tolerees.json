@@ -1,0 +1,23 @@
+{
+  "avertissement": "LISTE FERMÉE des années littérales (famille A de tools/baguidi/inventaire-en-dur.mjs) encore tolérées dans le code de production, chacune avec son motif. Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A` et par les gardes packages/domaine/test/annees_en_dur_test.dart et tools/baguidi/inventaire-en-dur.test.mjs. Le cliquet ne remonte jamais : une entrée corrigée dans le code se RETIRE d'ici (le cliquet échoue tant qu'elle y reste), une valeur nouvelle ne s'ajoute qu'avec un motif. Lot 0 du 16/11/2026, E3840.",
+  "toleres": [
+    {
+      "fichier": "apps/poste/lib/modules/m13/adm_vues.dart",
+      "valeur": "Exercice 2026",
+      "sites": 1,
+      "motif": "Plan annuel de travail (PTA) : l'exercice imprimé deviendra celui de la fiche du plan. Chantier confié à un autre lot en parallèle du lot 0 ; à retirer d'ici dès qu'il est fusionné."
+    },
+    {
+      "fichier": "apps/poste/lib/modules/m13/adm_vues.dart",
+      "valeur": "2026",
+      "sites": 1,
+      "motif": "Plan annuel de travail (PTA), cartouche « Exercice » de l'état imprimé : même chantier parallèle que ci-dessus."
+    },
+    {
+      "fichier": "apps/poste/lib/modules/m13/adm_vues.dart",
+      "valeur": "Plan annuel de travail 2026",
+      "sites": 1,
+      "motif": "Plan annuel de travail (PTA), titre de l'état imprimé : même chantier parallèle que ci-dessus."
+    }
+  ]
+}

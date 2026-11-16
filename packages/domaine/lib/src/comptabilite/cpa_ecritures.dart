@@ -12,6 +12,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import 'cpa_referentiels.dart';
+import 'cpc_exercice.dart' show cpcDepot, cpcEtatExercice, cpcExercice;
 
 /// Refus NOMMÉ : un refus se lit, il ne se devine pas. Rien n'est écrit.
 class CpaRefus implements Exception {
@@ -35,24 +36,28 @@ int? cpaAnnee(Object? date) {
 // EXERCICES — ce que le poste sait de `SIGH.exercice` (sélecteur et clôture non portés : voir ECARTS-MAQUETTE E717)
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-/// La liasse DÉPOSÉE à la DGI (data-liasse.js `DEPOT`) : les exercices 2024 et 2025 sont CLOS d'office, faits par la liasse.
-const int cpaLiasseExerciceN = 2025;
-const int cpaLiasseExerciceN1 = 2024;
-const String cpaLiasseDateDepot = '2026-04-30';
-
-/// `exercice(annee).etat` : `clos` pour les deux exercices de la liasse déposée, `ouvert` sinon. Les clôtures VALIDÉES au poste (deux gestes) ne sont
-/// pas portées : aucune n'existe au jeu.
-String cpaEtatExercice(int annee) =>
-    annee == cpaLiasseExerciceN || annee == cpaLiasseExerciceN1 ? 'clos' : 'ouvert';
+/// L'ÉTAT D'UN EXERCICE SUIT LA CLÔTURE RÉELLE DE M12 (lot 0, E3831) : il se lit sur les FICHES D'EXERCICE ([exercices], collection `exercices` : clôture en
+/// deux gestes, réouverture), par le moteur unique `cpcEtatExercice`. La liasse déposée à la DGI reste une DONNÉE (`cpcDepot`, transcription de
+/// data-liasse.js `DEPOT` : exercices N et N-1, date de dépôt), jamais une règle écrite ici : sans fiche amorcée, ses deux exercices se lisent clos d'office
+/// parce que la liasse le dit, et une fiche d'exercice amorcée fait foi. Les anciennes constantes (2025, 2024, 30/04/2026) sont retirées.
+String cpaEtatExercice(int annee, {Iterable<CpaFiche> exercices = const []}) => cpcEtatExercice(exercices, annee);
 
 /// La garde de lecture seule POSÉE SUR LA COLLECTION `ecritures` (`S.garder`) : le motif du refus, ou `null`. Toute écriture dont la date tombe dans un
-/// exercice clos est refusée, d'où qu'elle vienne.
-String? cpaGardeEcriture(Object? date) {
+/// exercice clos est refusée, d'où qu'elle vienne. La date de clôture citée est celle de la fiche d'exercice (`valideLe`), sinon la date de dépôt de la liasse.
+/// (La garde complète du magasin, exercice EN CLÔTURE compris, est `cpcGardeEcritures`.)
+String? cpaGardeEcriture(Object? date, {Iterable<CpaFiche> exercices = const []}) {
   final a = cpaAnnee(date);
-  if (a == null || cpaEtatExercice(a) != 'clos') return null;
-  final fin = DateTime.parse(cpaLiasseDateDepot);
-  return 'Exercice $a clos le ${dateFR(fin)} — lecture seule. La correction passe par une écriture de l’exercice en cours.';
+  if (a == null || cpaEtatExercice(a, exercices: exercices) != 'clos') return null;
+  final deLiasse = cpcDepot['exerciceN'] == a || cpcDepot['exerciceN1'] == a;
+  final valideLe = cpcExercice(exercices, a)?['valideLe'] ?? (deLiasse ? cpcDepot['dateDepot'] : null);
+  final fin = valideLe == null ? null : DateTime.tryParse('$valideLe')?.toLocal();
+  return 'Exercice $a clos${fin != null ? ' le ${dateFR(fin)}' : ''} — lecture seule. La correction passe par une écriture de l’exercice en cours.';
 }
+
+/// Le mois de RÉFÉRENCE (le dernier des douze) des courbes mensuelles d'un exercice (lot 0, E3832 ; la maquette l'écrivait en dur, août 2026, E720) : le mois en
+/// cours pour l'exercice en cours, décembre pour un exercice achevé ou ouvert d'avance — jamais une date figée.
+DateTime cpaMoisReference(int exercice, DateTime aujourdhui) =>
+    exercice == aujourdhui.year ? DateTime(aujourdhui.year, aujourdhui.month, 1) : DateTime(exercice, 12, 1);
 
 /// `ecritures()` : les écritures de l'exercice choisi. Les à-nouveaux PROVISOIRES sont vides tant que l'exercice précédent est celui de la liasse
 /// déposée (il est clos d'office, `provisoires` rend `[]`).
@@ -326,12 +331,13 @@ List<CpaFiche> cpaEcrituresDeSaisie({
   required String statut,
   required int exercice,
   required Iterable<CpaFiche> toutes,
+  Iterable<CpaFiche> exercices = const [],
 }) {
   final reserve = cpaRefusJournalReserve(journal);
   if (reserve != null) throw CpaRefus('Écriture refusée.', reserve);
   if (lignes.isEmpty) throw const CpaRefus('Ajouter au moins une ligne.');
   if (statut == 'validee') cpaControlerEquilibre(lignes);
-  final motif = cpaGardeEcriture(date);
+  final motif = cpaGardeEcriture(date, exercices: exercices);
   if (motif != null) throw CpaRefus('Écriture refusée.', motif);
   final numero = cpaNumeroPiece(journal, exercice, toutes);
   return [

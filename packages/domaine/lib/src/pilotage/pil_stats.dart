@@ -464,9 +464,14 @@ PilCoutAgent pilCoutAgent(PilFiche a, Iterable<PilFiche> bulletins, String du, S
       d = '${b['annee']}-${(pilN(b['mois']).toInt() + 1).toString().padLeft(2, '0')}-01';
     }
     if (d != null && !pilDansPlage(d, du, au)) continue;
+    // Un bulletin sans année ne reçoit pas d'année inventée (la maquette posait 2026 ; lot 0, E3837) : le mois seul, l'année dite non renseignée.
     final periode = pilVrai(b['periode'])
         ? '${b['periode']}'
-        : (b['mois'] != null ? moisAnnee(DateTime(pilVrai(b['annee']) ? pilN(b['annee']).toInt() : 2026, pilN(b['mois']).toInt() + 1)) : '—');
+        : (b['mois'] == null
+            ? '—'
+            : pilVrai(b['annee'])
+                ? moisAnnee(DateTime(pilN(b['annee']).toInt(), pilN(b['mois']).toInt() + 1))
+                : '${moisAnnee(DateTime(0, pilN(b['mois']).toInt() + 1)).split(' ').first} (année non renseignée)');
     lignes.add((periode, pilN(b['brut']), pilN(b['net'])));
   }
   v.tables.add(PilTable(null, ['PÉRIODE', 'BRUT', 'NET PAYÉ'], [for (final l in lignes) [l.$1, money(l.$2, avecDevise: false), money(l.$3, avecDevise: false)]]));

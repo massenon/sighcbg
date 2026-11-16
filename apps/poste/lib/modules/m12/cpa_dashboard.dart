@@ -9,9 +9,8 @@ import 'cpa_commun.dart';
 
 /// `m12-dashboard` — « Tableau de bord — Comptabilité SYSCOHADA » : tout est CALCULÉ depuis les écritures de l'exercice, rien n'est fourni.
 ///
-/// Écart E720 : « Produits et charges (12 mois) » lit `K.parMois`, dont le mois de référence est ÉCRIT EN DUR (1er août 2026) dans la maquette : les
-/// douze mois s'arrêtent à août 2026 quelle que soit la date du jour. Porté fidèlement (ancre [cpaRefParMois]) et dit.
-final cpaRefParMois = DateTime(2026, 8, 1);
+/// Écart E720 : « Produits et charges (12 mois) » lit `K.parMois`, dont le mois de référence est ÉCRIT EN DUR (1er août 2026) dans la maquette. Corrigé au
+/// lot 0 (E3832) : le mois de référence suit l'exercice choisi et l'horloge du poste (`cpaMoisReference`).
 
 class EcranDashboardCompta extends StatelessWidget with EcranMaquette {
   const EcranDashboardCompta({super.key});
@@ -31,8 +30,9 @@ class EcranDashboardCompta extends StatelessWidget with EcranMaquette {
       builder: (context, _) {
         final e = ecrituresExercice(c);
         final t = cpaTableauDeBord(e);
-        final prod = parMois([for (final x in e) if ('${x['compte']}'.startsWith('7')) x], 'date', champValeur: 'credit', ref: cpaRefParMois);
-        final ch = parMois([for (final x in e) if ('${x['compte']}'.startsWith('6')) x], 'date', champValeur: 'debit', ref: cpaRefParMois);
+        final ref = cpaMoisReference(exerciceChoisi(c), c.aujourdhui);
+        final prod = parMois([for (final x in e) if ('${x['compte']}'.startsWith('7')) x], 'date', champValeur: 'credit', ref: ref);
+        final ch = parMois([for (final x in e) if ('${x['compte']}'.startsWith('6')) x], 'date', champValeur: 'debit', ref: ref);
         final parJournal = cpaGrouper(e, 'journal');
         final parOrigine = cpaGrouper(e, 'origine');
         final centres = cpaChargesParCentre(e, (k) => libelleCentre(c, k));

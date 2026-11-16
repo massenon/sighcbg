@@ -104,7 +104,7 @@ class _EtatDepenses extends State<EcranDepenses> {
   List<Object?> _poser(BuildContext ctx, ContexteEcran c, Fiche dep) {
     final col = c.magasin.collection('ecritures');
     try {
-      final lignes = cpaEcrituresDepense(dep, _tresorerie(c, dep['compteTresorerie']));
+      final lignes = cpaEcrituresDepense(dep, _tresorerie(c, dep['compteTresorerie']), exercices: c.magasin.collection('exercices').toutes);
       final posees = [for (final l in lignes) col.inserer(l, prefixe: 'ECR').fiche];
       c.magasin.journaliser('Écriture de dépense', 'M12', 'Ecriture', '${dep['reference']}', null,
           {'debit': lignes.fold<num>(0, (a, l) => a + n(l['debit'])), 'credit': lignes.fold<num>(0, (a, l) => a + n(l['credit'])), 'lignes': posees.length});
@@ -314,7 +314,7 @@ class _EtatDepenses extends State<EcranDepenses> {
                       return;
                     }
                     // Un exercice clos refuse AVANT toute écriture (E714) : rien n'est écrit, ni la dépense ni son écriture.
-                    final clos = cpaGardeEcriture(v['date']);
+                    final clos = cpaGardeEcriture(v['date'], exercices: c.magasin.collection('exercices').toutes);
                     if (clos != null) {
                       ToastsSigh.afficher(ctx, 'Écriture refusée.', type: TypeToast.erreur, detail: clos);
                       return;

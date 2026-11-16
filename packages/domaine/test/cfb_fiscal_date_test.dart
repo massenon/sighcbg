@@ -290,7 +290,7 @@ void main() {
         }, att[i], 'engendrees2026[$i] ${att[i]['code']}');
       }
       // MUTATION « genEcheances lit la semence au lieu de la version en vigueur » : CCIB-2 retomberait au 10/06
-      expect(cfbGenEcheances(2026, obligationsFixes: cfbSemenceObligations()).where((e) => e['code'] == 'CCIB-2').single['echeance'], '2026-06-10');
+      expect(cfbGenEcheances(2026, obligationsFixes: cfbSemenceObligations(), aujourdhui: DateTime(2026, 8, 16)).where((e) => e['code'] == 'CCIB-2').single['echeance'], '2026-06-10');
       expect(l.where((e) => e['code'] == 'CCIB-2').single['echeance'], '2026-06-15');
     });
 

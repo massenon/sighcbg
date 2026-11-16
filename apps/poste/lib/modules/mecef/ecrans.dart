@@ -1517,11 +1517,13 @@ class _EtatConfig extends State<EcranMecefConfig> {
         'adresse': IdentiteClinique.bp,
         'telephone': IdentiteClinique.telephones.join(' / '),
         'email': IdentiteClinique.email,
-        'prefixeFacture': 'FN-2026-',
-        'prefixeAvoir': 'AV-2026-',
-        'prefixeProforma': 'PRO-2026-',
+        // Les préfixes et le prochain numéro de la série de L'ANNÉE EN COURS, lus comme le moteur les écrit (millésime de la date de la pièce : `prefixeSerieFacture`,
+        // `AV-AAAA-` de `referenceAvoir`) — l'écran affichait la série 2026 écrite en dur, une seconde vérité à côté du moteur (lot 0, E3839).
+        'prefixeFacture': prefixeSerieFacture(proforma: false, dateFacture: iso(c.aujourdhui)),
+        'prefixeAvoir': 'AV-${iso(c.aujourdhui).substring(0, 4)}-',
+        'prefixeProforma': prefixeSerieFacture(proforma: true, dateFacture: iso(c.aujourdhui)),
         // Le prochain numéro de la SÉRIE, archivées comprises : « actives + 1 » repartirait de 1 après l'archivage du jeu de démonstration (RG-01, D6).
-        'prochainNumero': '${rangSerieFactures('FN-2026-', mag.collection('factures').toutes)}',
+        'prochainNumero': '${rangSerieFactures(prefixeSerieFacture(proforma: false, dateFacture: iso(c.aujourdhui)), mag.collection('factures').toutes)}',
         'regimeTva': p.regimeTva,
         'devise': 'FCFA',
         'modeTransmission': 'Automatique à l’émission',

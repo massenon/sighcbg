@@ -209,7 +209,7 @@ class EcranBaseline2025 extends StatelessWidget with EcranMaquette {
         OngletsSigh(onglets: [
           OngletDef(id: 'mensuel', libelle: 'Détail mensuel', construire: (_) => _mensuel(e)),
           OngletDef(id: 'charges', libelle: 'Postes de charges', compte: postes.length, construire: (_) => _charges(e, postes)),
-          OngletDef(id: 'comparaison', libelle: 'Comparaison 2025 / 2026', construire: (_) => _comparaison(c, e, courts)),
+          OngletDef(id: 'comparaison', libelle: 'Comparaison 2025 / ${c.aujourdhui.year}', construire: (_) => _comparaison(c, e, courts)),
         ]),
         sourceQual('Classeur comptable SYSCOHADA et compte de résultat 2025 — feuilles « DEPENSES25 » et « Recette ».'),
       ]),
@@ -300,30 +300,32 @@ class EcranBaseline2025 extends StatelessWidget with EcranMaquette {
       ]);
 
   Widget _comparaison(ContexteEcran c, CpcExercice2025 e, List<String> courts) {
-    final rows = cpcComparaison(e, c.magasin.collection('factures').actives);
+    // L'année comparée est celle de l'horloge du poste (lot 0, E3835) ; 2025 reste la base documentée du classeur.
+    final annee = c.aujourdhui.year;
+    final rows = cpcComparaison(e, c.magasin.collection('factures').actives, annee: annee);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      const NoteSigh(
-          'L’exercice 2026 est alimenté par le jeu de démonstration du prototype : la comparaison illustre le mécanisme, elle ne reflétera l’activité réelle qu’après la bascule en production.'),
+      NoteSigh(
+          'L’exercice $annee est alimenté par le jeu de démonstration du prototype : la comparaison illustre le mécanisme, elle ne reflétera l’activité réelle qu’après la bascule en production.'),
       const SizedBox(height: 12),
       CarteSigh(
-          titre: 'Chiffre d’affaires 2025 et 2026',
+          titre: 'Chiffre d’affaires 2025 et $annee',
           child: GraphiqueBarres(etiquettes: [for (final k in courts) k.substring(0, k.length < 4 ? k.length : 4)], series: [
             SerieGraphique('2025 (réel)', [for (final r in rows) r.ca2025], couleur: _navy),
-            SerieGraphique('2026 (prototype)', [for (final r in rows) r.ca2026], couleur: _vert),
+            SerieGraphique('$annee (prototype)', [for (final r in rows) r.caAnnee], couleur: _vert),
           ])),
       const SizedBox(height: 12),
       TableauSigh(
         lignes: [
           for (final (i, r) in rows.indexed)
-            {'id': '$i', 'mois': r.mois, 'ca2025': r.ca2025, 'ca2026': r.ca2026, 'ecart': r.ecart, 'evolution': r.evolution}
+            {'id': '$i', 'mois': r.mois, 'ca2025': r.ca2025, 'caAnnee': r.caAnnee, 'ecart': r.ecart, 'evolution': r.evolution}
         ],
-        nomExport: 'comparaison-2025-2026',
+        nomExport: 'comparaison-2025-$annee',
         taillePage: 13,
         recherche: false,
         colonnes: [
           const ColonneTableau(cle: 'mois', libelle: 'Mois', sansCoupure: true),
           ColonneTableau(cle: 'ca2025', libelle: 'CA 2025 (réel)', droite: true, texte: (r) => m(r['ca2025'])),
-          ColonneTableau(cle: 'ca2026', libelle: 'CA 2026', droite: true, texte: (r) => m(r['ca2026'])),
+          ColonneTableau(cle: 'caAnnee', libelle: 'CA $annee', droite: true, texte: (r) => m(r['caAnnee'])),
           ColonneTableau(
               cle: 'ecart',
               libelle: 'Écart',

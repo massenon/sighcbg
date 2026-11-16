@@ -124,6 +124,8 @@ Ces défauts arrivent juste après :
 - les tranches de la **balance âgée des créances assureurs** (30 / 90 j) écrites en dur, alors que celles des patients sont déjà paramétrées.
 
 > **Échéance** : les défauts n° 1 à 3, ainsi que les compteurs « de l’année 2026 », deviennent faux **le 1er janvier 2027**. Ils forment le lot 0 du plan (§ 4).
+>
+> **Lot 0, famille A (années)** : traité (`ECARTS-MAQUETTE.md`, E3830 à E3841). Il reste **3** années tolérées, toutes au Plan annuel de travail (chantier séparé), dans la liste fermée `tools/baguidi/annees-tolerees.json` ; `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A` échoue si une année qui décide réapparaît. Les préfixes `*-2026-` du moteur (famille E) relèvent du lot de numérotation. Les tableaux ci-dessous restent la mesure d’avant le lot 0.
 
 ---
 

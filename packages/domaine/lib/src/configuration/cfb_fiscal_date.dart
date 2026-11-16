@@ -940,9 +940,6 @@ CfbEcritureObligation cfbModifierOrtb(Iterable<CfaFiche> obligations,
 // Échéances d'un exercice : engendrées depuis la version en vigueur, régénérées sans toucher une échéance payée
 // =============================================================================================================================================
 
-/// La date du jeu de démonstration (`new Date(2026, 7, 16)`), horloge par défaut de `genEcheances`.
-final DateTime cfbDateJeu = DateTime(2026, 8, 16);
-
 /// La période couverte par une obligation MENSUELLE échue le [echeance] : le mois qui précède (janvier : décembre de l'année d'avant). « Février 2027 » pour
 /// l'échéance du 10 mars 2027, « Décembre 2026 » pour celle du 10 janvier 2027 — deux libellés distincts, jamais deux « janvier ».
 String cfbPeriodeMensuelle(DateTime echeance) {
@@ -963,9 +960,10 @@ List<CfaFiche> cfbGenEcheances(int exercice,
     {Iterable<CfaFiche> obligations = const [],
     Iterable<CfaFiche> historique = const [],
     Iterable<CfaFiche>? obligationsFixes,
-    DateTime? aujourdhui,
+    required DateTime aujourdhui,
     bool sansReglement = false}) {
-  final auj = aujourdhui ?? cfbDateJeu;
+  // L'horloge est OBLIGATOIRE (lot 0, E3838) : la maquette retombait sur la date de son jeu (16/08/2026), qui décidait des échéances réputées réglées.
+  final auj = aujourdhui;
   final auj0 = DateTime(auj.year, auj.month, auj.day);
   List<CfaFiche> pour(DateTime premier) =>
       obligationsFixes != null ? [for (final o in obligationsFixes) if (_estObligation(o)) o] : cfbObligationsALaDate(obligations, historique, premier);
@@ -1124,7 +1122,7 @@ CfbRegeneration cfbRegenererEcheances(Iterable<CfaFiche> echeances,
       archiveesIds.add('${e['id']}');
       archivees++;
     }
-    final nouvelles = cfbGenEcheances(annee, obligations: obligations, historique: historique, sansReglement: true).where((n) =>
+    final nouvelles = cfbGenEcheances(annee, obligations: obligations, historique: historique, aujourdhui: maintenant, sansReglement: true).where((n) =>
         n['code'] == code && isoJour(n['echeanceTheorique']).compareTo(d) >= 0 && !moisConserves.contains(isoJour(n['echeanceTheorique']).substring(0, 7)));
     for (final n in nouvelles) {
       rang++;

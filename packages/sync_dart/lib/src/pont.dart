@@ -360,9 +360,9 @@ class Pont {
               }
             }
             // Les séries ANNUELLES se reconstruisent depuis les codes rejoués : chaque année reprend au-dessus de son plus grand rang (E3830) ; l'année
-            // courante garde le plancher de 1000 d'une base neuve.
+            // courante garde le plancher d'une base neuve ([rangInitialSeriePatients]).
             final aujourdhui = DateTime.now();
-            final series = <int, int>{aujourdhui.year: 1000};
+            final series = <int, int>{aujourdhui.year: rangInitialSeriePatients};
             for (final r in await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'")) {
               final c = lireCodePatient(r['c']);
               if (c == null) continue;

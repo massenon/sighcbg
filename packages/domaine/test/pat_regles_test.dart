@@ -62,8 +62,11 @@ void main() {
     test('indicateurs', () {
       final k = patKpisRepertoire(actifs, const [], maintenant);
       final v = (r['kpis'] as List).map((e) => (e as List)[1]).toList();
-      expect([k.actifs, k.crees2026, k.assures, k.expirees].map((e) => '$e').toList(), v);
+      expect([k.actifs, k.creesAnnee, k.assures, k.expirees].map((e) => '$e').toList(), v);
       expect(nn('${k.partAssures} du répertoire'), ((r['kpis'] as List)[2] as List)[2]);
+      // Lot 0 (E3834) : le compteur suit l'horloge. Le 1er janvier 2027, « Créés en 2027 » ne compte que les dossiers de 2027.
+      final nouvelAn = patKpisRepertoire([...actifs, {'id': 'N1', 'dateCreation': '2027-01-01'}], const [], DateTime(2027, 1, 1, 8));
+      expect((nouvelAn.annee, nouvelAn.creesAnnee), (2027, 1));
     });
     test('filtres de couverture', () {
       for (final f in liste(r['filtres'])) {

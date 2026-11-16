@@ -171,11 +171,15 @@ const _ddl = '''
   CREATE TABLE IF NOT EXISTS evenements (id {AUTO}, quand BIGINT, niveau TEXT, source TEXT, message TEXT)
 ''';
 
-/// MIGRATION DES SÉRIES DE CODES DE DOSSIER (lot 0, E3830). Avant le lot 0, la mère tenait UN compteur (`next_patient`, parti de 1000) et ses plages ne
+/// MIGRATION DES SÉRIES DE CODES DE DOSSIER (lot 0, E3830). Avant le lot 0, la mère tenait UN compteur (`next_patient`, parti de [rangInitialSeriePatients]) et ses plages ne
 /// portaient pas d'année : tous les codes qu'elle attribuait étaient de l'année en cours au moment de la mise à jour. À la première ouverture, ce compteur
-/// devient celui de l'année courante et les plages sans année lui sont rattachées. Une base neuve ouvre sa série de l'année à 1000, comme avant (les codes
+/// devient celui de l'année courante et les plages sans année lui sont rattachées. Une base neuve ouvre sa série de l'année à [rangInitialSeriePatients], comme avant (les codes
 /// des postes non rattachés restent ainsi au-dessous) ; les années suivantes repartent à 1. Limite : une mère mise à jour APRÈS le changement d'année
 /// rattacherait ses plages antérieures à la nouvelle année (le lot 0 se livre avant le 1er janvier 2027).
+/// Le premier rang de la série de l'année où une base de mère NAÎT (et où elle est réinitialisée ou restaurée) : 1000, la convention d'origine du carnet de la
+/// mère (les codes attribués par un poste encore autonome restent au-dessous). Les années suivantes repartent à 1.
+const int rangInitialSeriePatients = 1000;
+
 Future<void> migrerSeriesPatients(Depot base) async {
   try {
     await base.exec('ALTER TABLE plages ADD COLUMN annee BIGINT');
@@ -183,7 +187,7 @@ Future<void> migrerSeriesPatients(Depot base) async {
   if (await base.meta('series_patients_depuis') != null) return;
   final annee = DateTime.now().year;
   final herite = await base.meta('next_patient');
-  if (await base.meta(Mere.cleSeriePatients(annee)) == null) await base.poserMeta(Mere.cleSeriePatients(annee), herite == null ? 1000 : int.parse(herite));
+  if (await base.meta(Mere.cleSeriePatients(annee)) == null) await base.poserMeta(Mere.cleSeriePatients(annee), herite == null ? rangInitialSeriePatients : int.parse(herite));
   await base.exec("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL", [annee]);
   await base.exec("DELETE FROM meta WHERE k='next_patient'");
   await base.poserMeta('series_patients_depuis', annee);
@@ -1067,7 +1071,7 @@ class Mere {
       await base.poserMeta('reinit_ouverte', 0);
       await base.poserMeta('reinit_ouverte_ms', 0);
       await base.exec("DELETE FROM meta WHERE k LIKE 'next_patient%'");
-      await base.poserMeta(Mere.cleSeriePatients(DateTime.now().year), 1000);
+      await base.poserMeta(Mere.cleSeriePatients(DateTime.now().year), rangInitialSeriePatients);
       await base.poserMeta('marqueur_epoch', 1);
     });
     return {'mode': 'supprimer', 'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch')};

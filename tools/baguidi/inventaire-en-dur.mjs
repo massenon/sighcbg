@@ -26,9 +26,11 @@
 //   node tools/baguidi/inventaire-en-dur.mjs --liste B [--module m11] la liste des défauts retenus d'une famille (fichier:ligne, valeur, contexte)
 //   node tools/baguidi/inventaire-en-dur.mjs --echantillon 30 --famille C [--graine 7]   un tirage reproductible pour la vérification à la main
 //   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base d'un futur cliquet « valeurs en dur »)
-// Lecture seule : le script n'écrit que le fichier demandé par --json.
+//   node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=A   échoue si une année en dur qui décide apparaît hors de la liste fermée (annees-tolerees.json)
+// Lecture seule : le script n'écrit que le fichier demandé par --json. Importable (node --test) : `analyser`, `cliquet`, `lireToleres`.
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const RACINE = new URL('../../', import.meta.url).pathname.replace(/\/$/, '');
 const RACINES = [
@@ -219,6 +221,7 @@ const ECARTES = [
   ['A', /m12\/cpc_baseline\.dart$/, /'(Baseline financière|Imprimer le compte|Compte de résultat — exercice|TOTAL|Total|Montant|Chiffre d’affaires( mensuel)? 2025'|Résultat 2025|\$\{_cap|baseline-2025|2025 \(réel\)|\('Exercice', '2025'\))/, 'citation du classeur 2025 (baseline documentaire, données de démonstration)'],
   ['A', /registre_m12\.dart$/, null, 'identifiant d’écran'],
   ['A', /m12\/cpc_baseline\.dart$/, /\('Exercice', '2025'\)/, 'citation du classeur 2025 (baseline documentaire)'],
+  ['A', /m12\/cpc_baseline\.dart$/, /'(Comparaison 2025 \/ \$\{c\.aujourdhui\.year\}|Chiffre d’affaires 2025 et \$annee)'/, 'citation du classeur 2025 comparée à l’année EN COURS (lot 0, E3835)'],
   ['A', /m5\/cat_valeurs\.dart$/, null, 'date de la validation écrite du biologiste (métadonnée de source)'],
   ['A', /m7\/besoins_receptions\.dart$/, null, 'exemple documentaire cité (circuit de la pièce réelle)'],
   ['A', /assurances\/ass_regles\.dart$/, /static const date/, 'date du document source du barème (métadonnée)'],
@@ -353,7 +356,7 @@ function englobantes(lignesCode) {
   return res;
 }
 
-function analyser() {
+export function analyser() {
   const { tol, roles } = lireCliquetRoles();
   const liste = fichiers();
   const sources = new Map(liste.map((p) => [p, readFileSync(join(RACINE, p), 'utf8')]));
@@ -771,13 +774,57 @@ function analyser() {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
-// 7. SORTIES.
+// 7. SORTIES, ET LE CLIQUET.
+//
+// Le CLIQUET (lot 0, 16/11/2026 — E3840) : `--cliquet --famille=A`. Une ANNÉE littérale 2024-2030 qui DÉCIDE ne réapparaît pas dans `lib`.
+// La liste des sites TOLÉRÉS est FERMÉE et motivée (`annees-tolerees.json` : fichier, valeur relevée, nombre de sites, motif). Le cliquet échoue
+//   * quand un défaut de la famille n'est couvert par aucune tolérance (une année en dur est apparue) ;
+//   * quand une tolérance couvre PLUS de sites qu'elle n'en déclare (la valeur s'est répandue) ;
+//   * quand une tolérance couvre MOINS de sites qu'elle n'en déclare (le site a été corrigé : la liste doit être abaissée — le cliquet ne remonte jamais).
+// Les sites se reconnaissent par le FICHIER et la VALEUR relevée, jamais par le numéro de ligne (qui bouge à chaque retouche).
 // ---------------------------------------------------------------------------------------------------------------------------------------------
+export const FICHIERS_TOLERES = { A: 'annees-tolerees.json' };
+export function lireToleres(famille) {
+  const nom = FICHIERS_TOLERES[famille];
+  if (!nom) throw new Error(`aucune liste de tolérances pour la famille ${famille} (cliquet disponible : ${Object.keys(FICHIERS_TOLERES).join(', ')})`);
+  const j = JSON.parse(readFileSync(new URL(nom, import.meta.url), 'utf8'));
+  for (const t of j.toleres) if (!t.fichier || !t.valeur || !t.motif || !(t.sites >= 1)) throw new Error(`tolérance incomplète (fichier, valeur, sites ≥ 1 et motif obligatoires) : ${JSON.stringify(t)}`);
+  return j.toleres;
+}
+/** Confronte les défauts d'une famille à sa liste fermée. Rend `{ nouveaux, depassements, perimes, couverts }` ; le cliquet passe quand les trois premiers sont vides. */
+export function cliquet(candidats, toleres, famille) {
+  const defs = candidats.filter((c) => c.statut === 'defaut' && c.famille === famille);
+  const parTol = new Map(toleres.map((t) => [t, []]));
+  const nouveaux = [];
+  for (const c of defs) {
+    const t = toleres.find((x) => x.fichier === c.fichier && x.valeur === String(c.valeur));
+    if (t) parTol.get(t).push(c); else nouveaux.push(c);
+  }
+  const depassements = [], perimes = [];
+  for (const [t, cs] of parTol) {
+    if (cs.length > t.sites) depassements.push({ ...t, trouves: cs.length, lignes: cs.map((c) => c.ligne) });
+    if (cs.length < t.sites) perimes.push({ ...t, trouves: cs.length });
+  }
+  return { nouveaux, depassements, perimes, couverts: defs.length - nouveaux.length };
+}
+
+function principal() {
 const args = process.argv.slice(2);
 const opt = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
 const res = analyser();
 const FAMILLES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const defauts = res.candidats.filter((c) => c.statut === 'defaut');
+
+if (args.includes('--cliquet')) {
+  const famille = (args.find((a) => a.startsWith('--famille=')) || '').slice('--famille='.length) || opt('--famille') || 'A';
+  const r = cliquet(res.candidats, lireToleres(famille), famille);
+  for (const c of r.nouveaux) console.log(`✗ NOUVELLE valeur en dur (famille ${famille}) : ${c.fichier}:${c.ligne}  « ${c.valeur} »  — ${c.contexte}`);
+  for (const t of r.depassements) console.log(`✗ ${t.fichier} : « ${t.valeur} » relevé ${t.trouves} fois (lignes ${t.lignes.join(', ')}), ${t.sites} toléré(s) — la valeur s'est répandue`);
+  for (const t of r.perimes) console.log(`✗ ${t.fichier} : « ${t.valeur} » relevé ${t.trouves} fois, ${t.sites} toléré(s) — site corrigé : abaisser la liste (${FICHIERS_TOLERES[famille]})`);
+  const ko = r.nouveaux.length + r.depassements.length + r.perimes.length;
+  console.log(ko ? `Cliquet famille ${famille} : ÉCHEC (${ko} écart(s)).` : `Cliquet famille ${famille} : 0 nouvelle valeur en dur ; ${r.couverts} site(s) toléré(s), tous motivés.`);
+  process.exit(ko ? 1 : 0);
+}
 
 if (opt('--json')) writeFileSync(opt('--json'), JSON.stringify(res, null, 1));
 
@@ -827,3 +874,6 @@ console.log(['MODULE', ...FAMILLES, 'TOTAL'].join('\t'));
 for (const [m, o] of lignes) console.log([m, ...FAMILLES.map((f) => o[f]), total(o)].join('\t'));
 const tot = Object.fromEntries(FAMILLES.map((f) => [f, defauts.filter((c) => c.famille === f).length]));
 console.log(['TOTAL', ...FAMILLES.map((f) => tot[f]), defauts.length].join('\t'));
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) principal();
