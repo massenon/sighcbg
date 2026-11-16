@@ -100,3 +100,9 @@ Relus contre ce document et contre le code (E3079). Statut : **tenu**, ou **non 
 ## Preuves
 
 `packages/domaine/test/validation_deposee_test.dart` (8, moteur pur) · `apps/poste/test/validations_fileul_depot_test.dart` (vraie mère Dart + vrai moteur de fileul : dépôt, application sous le rôle, idempotence, mode « fiche », mère coupée, refus nommé qui revient, notifications) · `validations_fileul_ecran_test.dart` (écran) · `continuite_validations_audit_test.dart` (classes calculées, circuit d'activité à deux fileuls).
+
+## Mise à jour du 16/11/2026 (Q18 à Q29)
+
+* **Prestation distincte (Q18)** : la troisième issue de l'arbitrage de doublon de prix suit le circuit des demandes de prix : sur un fileul, le geste se DÉPOSE (`propositionsTarif`, genre `distincts`) et la mère l'applique sous le rôle de l'auteur ; le nouveau code reste « proposition à valider » (Oui ou Non par le circuit ordinaire).
+* **Budgets et immobilisations (Q26)** passent de la classe L à la classe A (pont d'activité, mère Dart, banc Node), jamais vers un téléphone ; les couvertures d'assurance étaient déjà en A. Les lignes du tableau ci-dessus qui les rangeaient en L sont périmées.
+* **Stock détail initial et bon de transfert (Q25)** : imports réservés à la mère (un seul stock, RG-03).

@@ -19,7 +19,8 @@ List<Widget> arbitragesARendre(BuildContext context, ContexteEcran c) {
   final tarifs = tarifsDeLEcran(c, droitPrix: 'cfg-tarifs');
   final doublons = TarifsPoste.doublonsPrix(m);
   final conflits = ArbitragesPoste.conflitsCouverture(m);
-  if (doublons.isEmpty && conflits.isEmpty) return const [];
+  final distincts = TarifsPoste.distinctsAValider(m);
+  if (doublons.isEmpty && conflits.isEmpty && distincts.isEmpty) return const [];
   final peutPrix = tarifs.peutDecider;
   final peutCouverture = c.donnees?.matrice.peutEditer(c.role, 'm9-assures') ?? false;
   String prix(Fiche f) {
@@ -67,10 +68,39 @@ List<Widget> arbitragesARendre(BuildContext context, ContexteEcran c) {
                         texte: '${f['libelle'] ?? d.code} (${f['id']}) : ${prix(f)}${f == d.candidats.first ? ' · lu par la caisse' : ''}',
                         libelleBouton: 'Garder celui-ci',
                         action: peutPrix ? () => _garder(context, c, tarifs, d, f) : null),
+                  // LA TROISIÈME ISSUE (Q18) : ce ne sont pas deux prix d'une même prestation, ce sont deux prestations. Rien n'est archivé, aucun prix ne change.
+                  if (peutPrix)
+                    Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Align(
+                            alignment: Alignment.centerRight,
+                            child: BoutonSigh(
+                                key: Key('arb:doublon:distincts:${d.cle}'),
+                                libelle: 'Ce sont deux prestations distinctes',
+                                icone: LucideIcons.split,
+                                taille: TailleBouton.sm,
+                                variante: VarianteBouton.secondaire,
+                                onPressed: () => _distinctes(context, c, tarifs, d)))),
+                ]),
+          ],
+          for (final (i, x) in distincts.indexed) ...[
+            if (i > 0 || doublons.isNotEmpty) const SizedBox(height: 8),
+            bloc(
+                cle: Key('arb:distinct:${x.prestation['code']}'),
+                titre: 'Nouveau code à valider : ${x.prestation['code']} (prestation distincte de ${x.prestation['distinctDe']})',
+                detail: x.etat == 'propose'
+                    ? '« ${x.prestation['libelle']} » : proposition à valider, au prix propre de sa ligne (${x.version?['prixNonAssure']} non assuré) ; la caisse ne le lit pas avant le Oui de la Direction (« Tarifs et prix », Oui ou Non).'
+                    : '« ${x.prestation['libelle']} » : aucun prix propre, la prestation reste « prix à définir » (onglet « Sans prix » de « Tarifs et prix »). Elle ne se facture pas.',
+                lignes: [
+                  candidat(
+                      cle: Key('arb:distinct:ouvrir:${x.prestation['code']}'),
+                      texte: 'Le code « ${x.prestation['distinctDe']} » reste à la prestation que la caisse lisait ; aucun prix en vigueur n’a changé.',
+                      libelleBouton: 'Ouvrir « Tarifs et prix »',
+                      action: (c.ouvre?.call('cfg-tarifs') ?? true) ? () => c.aller('cfg-tarifs') : null),
                 ]),
           ],
           for (final (i, g) in conflits.indexed) ...[
-            if (i > 0 || doublons.isNotEmpty) const SizedBox(height: 8),
+            if (i > 0 || doublons.isNotEmpty || distincts.isNotEmpty) const SizedBox(height: 8),
             bloc(
                 cle: Key('arb:couv:${g.first['patientId']}'),
                 titre: 'Conflit de couverture à arbitrer : ${g.first['patientCode'] ?? g.first['patient'] ?? g.first['patientId']}',
@@ -101,6 +131,24 @@ Future<void> _garder(BuildContext ctx, ContexteEcran c, TarifsPoste tarifs, TarD
     return;
   }
   ToastsSigh.afficher(ctx, 'Prix de ${d.code} arbitré.', type: TypeToast.succes, detail: 'Les autres lignes sont archivées avec votre motif.');
+}
+
+Future<void> _distinctes(BuildContext ctx, ContexteEcran c, TarifsPoste tarifs, TarDoublonPrix d) async {
+  final apercu = tarifs.apercuDistincts(d);
+  final dit = [for (final i in apercu) '« ${i.libelle} » devient ${i.nouveauCode}'].join(' ; ');
+  final motif = await confirmerAvecMotif(ctx,
+      titre: 'Deux prestations distinctes pour ${d.code} ?',
+      message:
+          'Le code ${d.code} reste à la ligne que la caisse lit. $dit. Aucun prix ne change, aucune pièce émise n\u2019est réécrite, rien n\u2019est archivé : le nouveau code naît « proposition à valider »${tarifs.fileul ? ' et la demande est transmise à la mère' : ''}.',
+      libelleOk: 'Distinguer');
+  if (motif == null || !ctx.mounted) return;
+  final r = tarifs.arbitrerDistincts(d, motif);
+  if (!r.ok) {
+    ToastsSigh.afficher(ctx, r.refus!.motif, type: TypeToast.erreur, detail: r.refus!.geste);
+    return;
+  }
+  ToastsSigh.afficher(ctx, r.depose ? 'Demande transmise à la mère.' : 'Deux prestations distinctes pour ${d.code}.',
+      type: TypeToast.succes, detail: r.depose ? 'La mère l’applique avec vos droits ; le nouveau code reste à valider.' : 'Le nouveau code est une proposition à valider : la Direction la décide.');
 }
 
 Future<void> _clore(BuildContext ctx, ContexteEcran c, Object? patientId, Fiche f) async {

@@ -97,6 +97,78 @@ void main() {
     });
   });
 
+  group('(Q18) la troisième issue : « ce sont deux prestations distinctes »', () {
+    TarDoublonPrix cert(Magasin m) => TarifsPoste.doublonsPrix(m).firstWhere((x) => x.code == 'CERT-APT');
+
+    test('le code reste à la ligne que la caisse lit, l’autre reçoit CERT-APT2 en PROPOSITION À VALIDER ; aucun prix, aucune pièce, aucune archive ne bouge', () {
+      final m = jeu();
+      final factures = [for (final f in m.collection('factures').toutes) '$f'];
+      final versionsAvant = m.collection('versionsTarif').toutes.length;
+      final apercu = poste(m).apercuDistincts(cert(m));
+      expect(apercu.single.nouveauCode, 'CERT-APT2');
+      final r = poste(m).arbitrerDistincts(cert(m), 'Médecine du travail : autre prestation');
+      expect(r.ok, isTrue, reason: '${r.refus?.code} ${r.refus?.motif}');
+      expect(caisse(m, 'CERT-APT'), 7000, reason: 'le code reste à la prestation que la caisse lisait, au même prix');
+      expect(TarifsPoste.prixGrille(m, 'CERT-APT2', aujourdhui: jour).facturable, isFalse, reason: 'proposition à valider : la caisse ne le lit pas, jamais un zéro');
+      final p = TarifsPoste.lire(m).parCode['CERT-APT2']!;
+      expect([p['distinctDe'], p['propositionAValider'], p['famille'], p['codeGrille']], ['CERT-APT', true, 'CERTIFICAT', 'CERT-APT2']);
+      final v = TarifsPoste.lire(m).versionsDe('CERT-APT2').single;
+      expect([v['statut'], v['prixNonAssure'], v['prixAssure']], ['propose', 5000, 5000], reason: 'le prix PROPRE de la ligne, proposé, jamais validé par ce geste');
+      expect(m.collection('versionsTarif').toutes.length, versionsAvant + 1);
+      expect(TarifsPoste.lire(m).versionsDe('CERT-APT').map((x) => x['prixNonAssure']).toSet(), {7000});
+      expect(m.collection('catalogueTarifs').toutes.where((x) => x['statut'] == 'archive' && '${x['code']}'.startsWith('CERT-')), isEmpty, reason: 'rien n’est archivé');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT2');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['codeAnterieur'], 'CERT-APT');
+      expect(TarifsPoste.doublonsPrix(m).where((x) => x.code == 'CERT-APT'), isEmpty);
+      expect([for (final f in m.collection('factures').toutes) '$f'], factures, reason: 'aucune facture déjà émise n’est réécrite');
+      expect(m.collection('audit').toutes.any((x) => '${x['action']}'.contains('deux prestations distinctes')), isTrue);
+      final a = TarifsPoste.distinctsAValider(m);
+      expect([a.single.prestation['code'], a.single.etat], ['CERT-APT2', 'propose'], reason: 'visible au centre des validations');
+      expect(TarifsPoste.parites(m, jour), isEmpty);
+    });
+
+    test('le Oui de la Direction (circuit ordinaire) met le nouveau code en vigueur ; la ligne quitte la liste à valider', () {
+      final m = jeu();
+      expect(poste(m).arbitrerDistincts(cert(m), 'Deux prestations').ok, isTrue);
+      final vid = '${TarifsPoste.lire(m).versionsDe('CERT-APT2').single['id']}';
+      final d = poste(m).decider(vid, 'oui');
+      expect(d.ok, isTrue, reason: '${d.refus?.code} ${d.refus?.motif}');
+      expect(caisse(m, 'CERT-APT2'), 5000);
+      expect(caisse(m, 'CERT-APT'), 7000);
+      expect(TarifsPoste.distinctsAValider(m), isEmpty);
+    });
+
+    test('refus nommés : geste réservé, motif, code déjà pris ; le doublon résolu ne se rejoue pas ; rien n’est écrit sur un refus', () {
+      final m = jeu();
+      expect(poste(m, role: 'caissier').arbitrerDistincts(cert(m), 'x').refus!.code, 'ARBITRAGE_RESERVE');
+      expect(poste(m).arbitrerDistincts(cert(m), ' ').refus!.code, 'MOTIF_REQUIS');
+      expect(poste(m).arbitrerDistincts(cert(m), 'x', codesDemandes: {'TAR152': 'CERT-DEC'}).refus!.code, 'CODE_EXISTANT');
+      expect(poste(m).arbitrerDistincts(cert(m), 'x', codesDemandes: {'TAR152': 'CERT-APT'}).refus!.code, 'CODE_EXISTANT');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT');
+      final d = cert(m);
+      expect(poste(m).arbitrerDistincts(d, 'Deux prestations').ok, isTrue);
+      expect(poste(m).arbitrerDistincts(d, 'Deux prestations').refus!.code, 'DOUBLON_RESOLU');
+      // Un code déjà donné ne se redonne pas : une seconde clinique de la famille prend le rang suivant.
+      expect(TarifsPoste.codesPris(m), contains('CERT-APT2'));
+    });
+
+    test('un FILEUL ne décide pas : il DÉPOSE ; la mère applique sous le rôle de l’auteur, avec les mêmes contrôles', () {
+      final m = jeu();
+      final dep = poste(m, fileul: true).arbitrerDistincts(cert(m), 'Deux prestations');
+      expect(dep.depose, isTrue);
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT', reason: 'rien n’est écrit chez le fileul');
+      expect(poste(m, role: 'caissier', fileul: true).arbitrerDistincts(cert(m), 'x').refus!.code, 'ARBITRAGE_RESERVE');
+      expect(m.collection('propositionsTarif').toutes.where((x) => x['genre'] == 'distincts'), hasLength(1));
+      expect(poste(m).appliquerDemandes(), 1);
+      final verdict = m.collection('propositionsTarif').toutes.firstWhere((x) => x['genre'] == 'distincts');
+      expect(verdict['etat'], 'appliquee', reason: '${verdict['resultatCode']}');
+      expect(m.collection('catalogueTarifs').parId('TAR152')!['code'], 'CERT-APT2');
+      expect(TarifsPoste.distinctsAValider(m), hasLength(1));
+      // Rejoué : la demande appliquée ne s'applique pas deux fois.
+      expect(poste(m).appliquerDemandes(), 0);
+    });
+  });
+
   group('(5) une analyse créée au catalogue ouvre son prix « sans prix, à valider »', () {
     Map<String, Object?> nouvelle() => {'id': 'ANA-NEUVE', 'code': 'NEO-TEST', 'designation': 'Analyse de test', 'categorie': 'Biochimie', 'echantillon': 'Sang', 'delai': '2 h', 'statut': 'Actif', 'n': 99};
 
@@ -180,6 +252,56 @@ void main() {
       final r = csPrescrire(s, {'patientCode': pt['code'], 'medecin': 'TEST', 'diagnostic': 'essai', 'actes': [acte]}, const SessionCs(role: 'admin', fonction: 'direction'));
       expect((r.ordonnance['actes'] as List).cast<M>().single['prix'], attendu);
       expect(r.refus, isEmpty);
+    });
+  });
+
+  group('(Q18 bis) les voies : jamais une ligne à 0', () {
+    test('un médicament connu mais sans prix d’achat est refusé « tarif à valider », le reste de l’ordonnance passe', () {
+      final m = jeu();
+      final s = StockMagasin(m, () => jour);
+      final pt = m.collection('patients').actives.firstWhere((p) => p['externe'] != true);
+      final prods = m.collection('produits').actives.take(2).toList();
+      m.collection('produits').mettreAJour(prods[1]['id'], {'prixAchat': null}, journaliser: false);
+      const session = SessionCs(role: 'admin', fonction: 'direction');
+      final r = csPrescrire(s, {'patientCode': pt['code'], 'medecin': 'T', 'diagnostic': 'essai', 'medicaments': [
+        {'produitId': prods[0]['id'], 'quantite': 1, 'posologie': 'x', 'duree': '1 j'},
+        {'produitId': prods[1]['id'], 'quantite': 1, 'posologie': 'x', 'duree': '1 j'},
+      ]}, session);
+      expect(r.refus.single['categorie'], 'medicament');
+      expect(r.refus.single['codeErreur'], csCodeTarifAValider);
+      expect((r.ordonnance['medicaments'] as List).length, 1);
+      expect([for (final l in (r.facture['lignes'] as List).cast<M>()) l['montant']].where((x) => x == 0), isEmpty);
+    });
+
+    test('le relevé du jeu : chaque code sans prix a une cause, aucun code d’un référentiel tarifé n’est à 0', () {
+      final m = jeu();
+      final r = tarMesurerSansPrix(TarifsPoste.lire(m), tarIso(jour), codesDeListes: {
+        'actes': [for (final f in m.collection('actes').actives) '${f['code']}'],
+        'analyses': [for (final f in m.collection('analyses').actives) '${f['code']}'],
+        'catalogueTarifs': [for (final f in m.collection('catalogueTarifs').actives) '${f['code']}'],
+        'examensImagerie': [for (final f in m.collection('examensImagerie').actives) '${f['tarifCode'] ?? f['code']}'],
+      });
+      // ignore: avoid_print
+      print('RELEVÉ SANS PRIX : ${r.sansPrix} codes sur ${r.prestations} prestations — ${ {for (final e in r.parCause.entries) e.key: e.value.length} }');
+      for (final e in r.parCause.entries) {
+        expect(tarCausesSansPrix.containsKey(e.key), isTrue);
+      }
+      final h = TarifsPoste.lire(m);
+      for (final pr in h.tarifs.where((x) => x['statut'] != 'archive')) {
+        final c = tarCauseSansPrix(h, pr, tarIso(jour));
+        final s = h.instantane(pr, tarIso(jour));
+        expect(c == null, s != null && s.na != null && s.na! > 0, reason: '${pr['code']}');
+      }
+    });
+
+    test('Q19 : les certificats à prix unique couverts par SOS seule sont listés (lecture, rien d’écrit)', () {
+      final m = jeu();
+      final avant = m.collection('versionsTarif').toutes.length;
+      final l = tarCertificatsPrixUniqueSos(TarifsPoste.lire(m), tarIso(jour));
+      expect(l, isNotEmpty);
+      expect(l.every((p) => p['famille'] == 'CERTIFICAT' && p['assurable'] == 'sos'), isTrue);
+      expect([for (final p in l) p['code']], contains('CERT-APT'));
+      expect(m.collection('versionsTarif').toutes.length, avant);
     });
   });
 }

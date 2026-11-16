@@ -447,8 +447,43 @@ class _EtatCloture extends State<EcranCloture> {
   // ----------------------------------------------------------------------------------------------------------------------------------------------
   // LES TROIS ONGLETS
   // ----------------------------------------------------------------------------------------------------------------------------------------------
+  /// Q29 : le mois d'ouverture anticipée de l'exercice suivant, réglable par qui édite l'écran (la commande est ABSENTE sans le droit).
+  Widget _reglageOuverture(BuildContext ctx, ContexteEcran c) {
+    const mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    final actuel = moisOuvertureSuivantDe(c.magasin);
+    return Container(
+        key: const Key('cloture:reglage-ouverture'),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: JetonsShell.slate200)),
+        child: Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
+          Text('L’exercice suivant s’ouvre d’avance à partir de ${mois[actuel - 1]} (réglage de la clinique, décembre par défaut). L’exercice en cours reste à un clic.',
+              style: const TextStyle(color: JetonsShell.slate600, fontSize: 13, height: 18 / 13)),
+          if (c.droit.editer)
+            for (final i in [11, 12, 1])
+              if (i != actuel)
+                BoutonSigh(
+                    key: Key('cloture:ouverture-mois:$i'),
+                    libelle: 'À partir de ${mois[i - 1]}',
+                    taille: TailleBouton.sm,
+                    variante: VarianteBouton.secondaire,
+                    onPressed: () {
+                      final r = definirMoisOuvertureSuivant(c.magasin, i, auteur: c.agent.nom.isEmpty ? 'Utilisateur' : c.agent.nom);
+                      if (r != null) {
+                        ToastsSigh.afficher(ctx, r, type: TypeToast.erreur);
+                        return;
+                      }
+                      amorcerExercices(c.magasin, c.aujourdhui);
+                      setState(() {});
+                    }),
+        ]));
+  }
+
   Widget _exercices(BuildContext ctx, ContexteEcran c, bool peutDemander, bool peutValider, bool peutRouvrir) {
     final lignes = exercicesActifs(c.magasin);
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_reglageOuverture(ctx, c), const SizedBox(height: 12), _tableauExercices(ctx, c, lignes, peutDemander, peutValider, peutRouvrir)]);
+  }
+
+  Widget _tableauExercices(BuildContext ctx, ContexteEcran c, List<Fiche> lignes, bool peutDemander, bool peutValider, bool peutRouvrir) {
     return TableauSigh(
       titre: 'Exercices comptables',
       lignes: lignes,

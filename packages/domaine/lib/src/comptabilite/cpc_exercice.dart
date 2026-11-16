@@ -51,12 +51,16 @@ bool _estDeLiasse(int annee) => cpcDepot['exerciceN'] == annee || cpcDepot['exer
 
 /// Les fiches d'exercice À AMORCER (`exercices()`), dans l'ordre où la maquette les insère EN TÊTE : années croissantes, donc la plus récente finit première.
 /// [exercices] : TOUTES les fiches de la collection (archivées comprises) ; [ecritures] : TOUTES les écritures (archivées comprises).
-List<CpaFiche> cpcExercicesAAmorcer(Iterable<CpaFiche> exercices, Iterable<CpaFiche> ecritures, DateTime auj) {
+///
+/// [moisOuvertureSuivant] (Q29, Direction, 16/11/2026) : à partir de ce mois (1 à 12), l'exercice SUIVANT est ouvert d'avance (sa fiche est amorcée) pour que la préparation de l'année à venir (budgets,
+/// à-nouveaux de l'exercice qui se termine) ait déjà son exercice ; `null` : aucune ouverture anticipée (le comportement de la maquette). La règle du choix par défaut ne change pas (l'exercice OUVERT le plus récent) : ouvert d'avance, l'exercice suivant devient donc le choix par défaut des écrans, l'exercice en cours restant à un clic.
+List<CpaFiche> cpcExercicesAAmorcer(Iterable<CpaFiche> exercices, Iterable<CpaFiche> ecritures, DateTime auj, {int? moisOuvertureSuivant}) {
   final annees = <int>{};
   for (final e in ecritures) {
     final a = cpaAnnee(e['date']);
     if (a != null) annees.add(a);
   }
+  if (moisOuvertureSuivant != null && auj.month >= moisOuvertureSuivant) annees.add(auj.year + 1);
   annees
     ..add(auj.year)
     ..add(cpcDepot['exerciceN'] as int)
@@ -1015,4 +1019,21 @@ String cpcSha256(String texte) {
     }
   }
   return h.map((v) => v.toRadixString(16).padLeft(8, '0')).join();
+}
+
+/// Q29 : la clé du réglage de clinique « mois d'ouverture de l'exercice suivant » et sa valeur SEMÉE (décembre).
+const String cpcCleMoisOuvertureSuivant = 'exerciceOuvertureSuivantMois';
+const int cpcMoisOuvertureSuivantDefaut = 12;
+
+/// Le mois réglé, ou le défaut quand le réglage est absent ou invalide (jamais un mois hors 1 à 12 : une ouverture à un mois inexistant ne se déclencherait jamais, sans que rien le dise).
+int cpcMoisOuvertureSuivant(Object? reglage) {
+  final v = reglage is num ? reglage.toInt() : int.tryParse('${reglage ?? ''}');
+  return v != null && v >= 1 && v <= 12 ? v : cpcMoisOuvertureSuivantDefaut;
+}
+
+/// Le refus nommé d'un réglage invalide (`null` : valide). Le réglage ne décide que du MOIS d'ouverture anticipée : il n'ouvre ni ne ferme rien d'autre.
+String? cpcRefusMoisOuvertureSuivant(Object? valeur) {
+  final v = valeur is num ? valeur.toInt() : int.tryParse('${valeur ?? ''}');
+  if (v == null || v < 1 || v > 12) return 'Le mois d’ouverture de l’exercice suivant est un mois de 1 à 12 (décembre par défaut).';
+  return null;
 }

@@ -43,6 +43,15 @@ void main() {
       expect(jeuPrestataires.restreint, isFalse);
       expect(demandables, contains('prestataires'));
       expect(regime.reserveALaMere(jeuPersonnel), isTrue, reason: 'le personnel se règle à la mère : le fileul le dit');
+      // Q25 (16/11/2026) : le stock détail initial et le bon de transfert écrivent des mouvements de stock : réservés à la mère, même sans cible de configuration.
+      for (final id in ['stock-detail', 'transferts']) {
+        final j = jeuxImport.firstWhere((x) => x.id == id);
+        expect(j.reserveMere, isTrue, reason: id);
+        expect(regime.reserveALaMere(j), isTrue, reason: '$id se règle à la mère, jamais par une demande');
+        expect(regime.exigeLaMere(j), isFalse);
+      }
+      expect({for (final j in jeuxImport) if (j.reserveMere) j.id}, {'stock-detail', 'transferts'}, reason: 'aucun autre jeu n’est réservé à la mère par ce moyen');
+      expect(regime.reserveALaMere(jeuBudgets), isFalse);
     });
   });
 

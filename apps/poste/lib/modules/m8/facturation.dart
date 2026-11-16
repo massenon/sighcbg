@@ -247,17 +247,17 @@ class _EtatFacturation extends State<EcranFacturation> {
       case 'acte':
         // La liste des actes est celle du RÉFÉRENTIEL de prix, au prix EN VIGUEUR le jour de la pièce (PRD-TARIFS, lot T6) : jamais une liste de lecture.
         for (final a in TarifsPoste.actes(m, aujourdhui: jour)) {
-          if (a['prix'] == null) continue;
+          // Un acte SANS prix en vigueur reste LISTÉ, dit « prix à définir » et ne s'ajoute pas (refus nommé à l'ajout) : le taire ferait croire qu'il n'existe pas, le mettre à 0 le donnerait.
           liste.add((
-            libelle: '${a['libelle']}',
-            prix: n(a['prix']),
+            libelle: a['prix'] == null ? '${a['libelle']} — prix à définir' : '${a['libelle']}',
+            prix: a['prix'] == null ? 0 : n(a['prix']),
             produitId: null,
             secteur: a['secteur'] as String?
           ));
         }
         if (liste.isEmpty) {
           liste.add((
-            libelle: 'Aucun acte tarifé — voir le référentiel tarifaire',
+            libelle: 'Aucun acte au référentiel — prix à définir (Tarifs et prix)',
             prix: 0,
             produitId: null,
             secteur: null
@@ -265,10 +265,9 @@ class _EtatFacturation extends State<EcranFacturation> {
         }
       case 'analyse':
         for (final a in TarifsPoste.analyses(m, aujourdhui: jour)) {
-          if (a['prix'] == null) continue;
           liste.add((
-            libelle: '${a['designation']}',
-            prix: n(a['prix']),
+            libelle: a['prix'] == null ? '${a['designation']} — prix à définir' : '${a['designation']}',
+            prix: a['prix'] == null ? 0 : n(a['prix']),
             produitId: null,
             secteur: null
           ));
@@ -374,6 +373,12 @@ class _EtatFacturation extends State<EcranFacturation> {
         return;
       }
       designation = art.libelle;
+    }
+    // « Plus aucun montant nul » (16/11/2026) : une prestation sans prix en vigueur se dit « prix à définir » et ne s'ajoute pas ; le prix se propose à « Tarifs et prix ».
+    final refusPrix = refusPrixADefinir(designation, v['prix']);
+    if (refusPrix != null) {
+      ToastsSigh.afficher(context, refusPrix.motif, type: TypeToast.erreur, detail: refusPrix.geste);
+      return;
     }
     final produit = art?.produitId == null
         ? null

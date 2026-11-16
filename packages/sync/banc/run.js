@@ -1100,6 +1100,7 @@ Object.assign(scenarios, require('./scenarios-ocr.js')({ monde, verifier: (...a)
 Object.assign(scenarios, require('./scenarios-synchro.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-circuit.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-droits-rbac.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
+Object.assign(scenarios, require('./scenarios-finance.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 
 /* --- exécution ------------------------------------------------------------------------------ */
 (async () => {

@@ -476,13 +476,19 @@ class _EtatOrdonnanceNouvelle extends State<EcranOrdonnanceNouvelle> {
       mMed += nombreOuZero(m.collection('produits').parId(l['produitId'])?['prixAchat']) *
           nombreOuZero(l['quantite']);
     }
+    final aDefinir = <String>[];
     for (final code in (_complements['analyses'] as List? ?? const [])) {
-      mAna += nombreOuZero(TarifsPoste.prixAnalyse(m, code, aujourdhui: c.aujourdhui));
+      final p = TarifsPoste.prixAnalyse(m, code, aujourdhui: c.aujourdhui);
+      if (p == null || p <= 0) aDefinir.add('$code');
+      mAna += nombreOuZero(p);
     }
     for (final code in (_complements['actes'] as List? ?? const [])) {
-      mAct += nombreOuZero(TarifsPoste.prixActe(m, code, aujourdhui: c.aujourdhui));
+      final p = TarifsPoste.prixActe(m, code, aujourdhui: c.aujourdhui);
+      if (p == null || p <= 0) aDefinir.add('$code');
+      mAct += nombreOuZero(p);
     }
-    return '${money(mMed + mAna + mAct)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · actes ${money(mAct, avecDevise: false)})';
+    // Un code sans prix n'est jamais compté pour zéro en silence : il est NOMMÉ « prix à définir » et sera refusé à la prescription (« tarif à valider »).
+    return '${money(mMed + mAna + mAct)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · actes ${money(mAct, avecDevise: false)})${aDefinir.isEmpty ? '' : ' — prix à définir : ${aDefinir.join(', ')}'}';
   }
 
   void valider() {

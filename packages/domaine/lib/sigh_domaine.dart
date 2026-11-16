@@ -16,6 +16,7 @@ export 'src/parametres/reglages_roles.dart';
 // Référentiel de prix unique (PRD-TARIFS, lot T6) : versions datées, accesseur à la date de la pièce, circuit Oui/Non, contrôle d'usage, pro-forma.
 export 'src/tarifs/tarifs.dart';
 export 'src/tarifs/tarifs_doublons.dart';
+export 'src/tarifs/tarifs_sans_prix.dart';
 export 'src/format/format_fr.dart';
 export 'src/format/recherche.dart';
 export 'src/format/js.dart' show nombreOuZero, arrondiJs;

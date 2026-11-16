@@ -87,13 +87,14 @@ List<Map<String, Object?>> _lignes(ContexteEcran c, bool Function(Map<String, Ob
           final vs = h.versionsDe('${p['code']}');
           final attente = vs.where((v) => v['statut'] == 'propose').length;
           final avenir = vs.where((v) => v['statut'] == 'valide' && v['dateEffet'] != null && '${v['dateEffet']}'.compareTo(jour) > 0).length;
-          final etat = s == null
+          final cause = tarCauseSansPrix(h, p, jour);
+          final etat = cause != null
               ? 'Sans prix en vigueur'
               : attente > 0
                   ? 'Proposition en attente'
                   : avenir > 0
                       ? 'Changement à venir'
-                      : s.provisoire
+                      : s!.provisoire
                           ? 'Provisoire'
                           : 'En vigueur';
           final couv = p['assurable'] == 'sos'
@@ -116,6 +117,8 @@ List<Map<String, Object?>> _lignes(ContexteEcran c, bool Function(Map<String, Ob
             'attente': attente,
             'avenir': avenir,
             'etat': etat,
+            'cause': cause == null ? null : tarCausesSansPrix[cause],
+            'causeCle': cause,
             'couverture': couv,
             'libelleGrille': p['libelleGrille'],
             'alias': ((p['codesAlias'] as List?) ?? const []).join(', '),
@@ -237,6 +240,12 @@ class _EtatTarifs extends State<EcranTarifsEtPrix> {
                 OngletDef(id: 'imagerie', libelle: 'Imagerie', compte: nb(const ['IMAGERIE']), construire: (_) => _OngletImagerie(c: c)),
                 // 16/11/2026 : « prestations sans prix » : toute prestation (acte, analyse créée au catalogue, imagerie, certificat…) sans prix en vigueur, avec son circuit : proposer, puis Oui ou Non.
                 OngletDef(id: 'sansprix', libelle: 'Sans prix', compte: sansPrix, construire: (_) => _OngletSansPrix(c: c)),
+                // Q19 (16/11/2026) : les certificats « prix unique, couverture SOS seule » à relire par la Direction.
+                OngletDef(
+                    id: 'certconfirm',
+                    libelle: 'Certificats à confirmer',
+                    compte: tarCertificatsPrixUniqueSos(TarifsPoste.lire(c.magasin), _jour(c)).length,
+                    construire: (_) => _OngletCertificatsAConfirmer(c: c)),
                 OngletDef(id: 'produits', libelle: 'Produits', compte: produits.length, construire: (_) => _OngletProduits(c: c)),
                 OngletDef(id: 'alertes', libelle: 'Alertes', compte: enAttente.length, construire: (_) => _OngletAlertes(c: c, peutDecider: peutDecider)),
                 OngletDef(id: 'historique', libelle: 'Historique', construire: (_) => _OngletHistorique(c: c)),
@@ -253,10 +262,13 @@ const _notePrestations =
 // --- Un tableau de prestations (commun aux trois premiers onglets) ----------------------------------------------------------------------------
 
 class _TableauPrestations extends StatelessWidget {
-  const _TableauPrestations({required this.c, required this.lignes, required this.vide});
+  const _TableauPrestations({required this.c, required this.lignes, required this.vide, this.avecCause = false});
   final ContexteEcran c;
   final List<Map<String, Object?>> lignes;
   final String vide;
+
+  /// L'onglet « Sans prix » ajoute la CAUSE : jamais tarifé, tarif non validé, variante de grille, prestation distincte à valider…
+  final bool avecCause;
 
   @override
   Widget build(BuildContext context) => TableauSigh(
@@ -297,6 +309,7 @@ class _TableauPrestations extends StatelessWidget {
               texte: (r) => r['version'] == null ? '' : (r['depuis'] != null ? dateFR(DateTime.parse('${r['depuis']}')) : 'L’origine')),
           ColonneTableau(cle: 'version', libelle: 'Version', droite: true, texte: (r) => r['version'] == null ? '' : 'v${r['version']}'),
           ColonneTableau(cle: 'etat', libelle: 'État', texte: (r) => '${r['etat']}', rendu: (_, r) => _badgeEtat(r)),
+          if (avecCause) ColonneTableau(cle: 'cause', libelle: 'Cause', texte: (r) => '${r['cause'] ?? ''}'),
         ],
         actionsLigne: (ctx, r) => [
           BoutonIcone(icone: LucideIcons.eye, libelle: 'Consulter', onPressed: () => _tiroirPrestation(ctx, c, r)),
@@ -383,14 +396,61 @@ class _OngletSansPrix extends StatelessWidget {
   @override
   Widget build(BuildContext context) => cfaPile([
         const NoteSigh(
-            'Prestations sans prix en vigueur : une ligne de ce genre n’est jamais écrite à 0, elle est refusée à la prescription avec le message « tarif à valider », sans bloquer le reste de l’ordonnance. Pour la rendre facturable : « Proposer un changement » (prix et date d’effet), puis le Oui de la personne qui décide les prix. Une analyse créée au catalogue du laboratoire arrive ici toute seule.',
+            'Prestations sans prix en vigueur : une ligne de ce genre n’est jamais écrite à 0, elle est refusée à la prescription avec le message « tarif à valider », sans bloquer le reste de l’ordonnance. Pour la rendre facturable : « Proposer un changement » (prix et date d’effet), puis le Oui de la personne qui décide les prix. Une analyse créée au catalogue du laboratoire arrive ici toute seule. La colonne « Cause » dit pourquoi : jamais tarifé, tarif non validé, variante de grille à choisir, prestation distincte à valider.',
             ton: TonSigh.attention,
             icone: LucideIcons.triangleAlert),
+        _ReleveCauses(c: c),
         _TableauPrestations(
             c: c,
-            lignes: _lignes(c, (p) => TarifsPoste.lire(c.magasin).instantane(p, _jour(c)) == null),
+            avecCause: true,
+            lignes: _lignes(c, (p) => tarCauseSansPrix(TarifsPoste.lire(c.magasin), p, _jour(c)) != null),
             vide: 'Aucune prestation sans prix : tout ce qui se prescrit a un prix en vigueur.'),
       ], espace: 12);
+}
+
+/// LE RELEVÉ PAR CAUSE (décision du 16/11/2026) : combien de codes n'ont pas de prix en vigueur, et POURQUOI. Calculé à chaque affichage sur le référentiel et sur les codes des listes (actes, analyses, grille,
+/// imagerie) : rien n'est valorisé ici, le relevé dit seulement ce qui reste à décider. Les codes qu'aucune prestation du référentiel ne porte sont comptés à part.
+class _ReleveCauses extends StatelessWidget {
+  const _ReleveCauses({required this.c});
+  final ContexteEcran c;
+
+  @override
+  Widget build(BuildContext context) {
+    final m = c.magasin;
+    final r = tarMesurerSansPrix(TarifsPoste.lire(m), _jour(c), codesDeListes: {
+      'actes': [for (final f in m.collection('actes').actives) '${f['code'] ?? ''}'],
+      'analyses': [for (final f in m.collection('analyses').actives) '${f['code'] ?? ''}'],
+      'catalogueTarifs': [for (final f in m.collection('catalogueTarifs').actives) '${f['code'] ?? ''}'],
+      'examensImagerie': [for (final f in m.collection('examensImagerie').actives) '${f['tarifCode'] ?? f['code'] ?? ''}'],
+    });
+    return CarteSigh(
+        titre: 'Relevé par cause : ${r.sansPrix} code(s) sans prix sur ${r.prestations} prestations',
+        child: Column(key: const Key('cft:releve-causes'), crossAxisAlignment: CrossAxisAlignment.start, children: [
+          for (final e in tarCausesSansPrix.entries)
+            Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text('${r.nombre(e.key)} · ${e.value}',
+                    style: TextStyle(fontSize: 13, height: 18 / 13, color: r.nombre(e.key) > 0 ? JetonsShell.slate700 : JetonsShell.slate400))),
+        ]));
+  }
+}
+
+/// Q19 : les certificats à PRIX UNIQUE couverts par SOS seule, listés pour relecture. Chaque ligne porte la mention « à valider par la Direction » : l'écran ne confirme rien, il montre ce qui reste à confirmer.
+class _OngletCertificatsAConfirmer extends StatelessWidget {
+  const _OngletCertificatsAConfirmer({required this.c});
+  final ContexteEcran c;
+
+  @override
+  Widget build(BuildContext context) {
+    final codes = {for (final p in tarCertificatsPrixUniqueSos(TarifsPoste.lire(c.magasin), _jour(c))) '${p['code']}'};
+    return cfaPile([
+      const NoteSigh(
+          'Certificats dont le prix est le même pour tous et que SOS seule couvre : à relire ligne par ligne et À VALIDER PAR LA DIRECTION. La liste ne confirme rien et ne change aucun prix ; une correction se propose par « Proposer un changement » (Oui ou Non).',
+          ton: TonSigh.attention,
+          icone: LucideIcons.triangleAlert),
+      _TableauPrestations(c: c, lignes: _lignes(c, (p) => codes.contains('${p['code']}')), vide: 'Aucun certificat à prix unique couvert par SOS seule.'),
+    ], espace: 12);
+  }
 }
 
 class _OngletImagerie extends StatelessWidget {

@@ -277,6 +277,7 @@ class JeuImport {
     this.reglesLot,
     this.ignorable = false,
     this.restreint = false,
+    this.reserveMere = false,
     this.colonnesReservees = const {},
     this.octetsMaxDefaut = octetsMaxImportDefaut,
     this.restituer,
@@ -297,6 +298,10 @@ class JeuImport {
   /// stock initial, transferts, comptage d'inventaire, courriers). Il ne passe JAMAIS par une demande d'import à la mère (les lignes du fichier ne voyagent pas dans une fiche partagée,
   /// RG-13) et ses refus ne citent jamais une valeur de cellule hors du poste qui l'importe.
   final bool restreint;
+
+  /// Q25 (Direction, 16/11/2026) : le jeu s'importe AU POSTE DE LA MÈRE seulement, même quand aucune de ses cibles n'est de la configuration : le stock détail initial et le bon de transfert écrivent des
+  /// MOUVEMENTS de stock (RG-03 : le stock ne devient jamais négatif, un justificatif par sortie) ; deux postes qui les écriraient chacun de leur côté romprait l'unicité de la situation de départ.
+  final bool reserveMere;
 
   /// Les colonnes qu'un seul profil peut importer (le salaire de base : droit paie). Le droit se lit dans la matrice ; sans lui la colonne est absente du
   /// modèle et, présente dans le fichier, REJETÉE en la nommant.

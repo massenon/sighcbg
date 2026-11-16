@@ -20,9 +20,12 @@ import 'prise_en_charge.dart';
 
 /// Refus NOMMÉ d'une saisie ou d'une émission : `motif` s'affiche tel quel (RG-03, lignes manquantes…).
 class RefusEmission implements Exception {
-  const RefusEmission(this.code, this.motif);
+  const RefusEmission(this.code, this.motif, {this.geste});
   final String code;
   final String motif;
+
+  /// Le geste qui corrige, quand le refus en connaît un.
+  final String? geste;
   @override
   String toString() => motif;
 }
@@ -59,6 +62,16 @@ String categorieLigne(String nature, String? designation, {String? secteur}) {
   }
   if (RegExp('ambulance', caseSensitive: false).hasMatch(d)) return 'ambulance';
   return 'autre';
+}
+
+/// « PLUS AUCUN MONTANT NUL » (arbitrage du 16/11/2026) : une ligne dont le prix unitaire est absent ou nul se REFUSE en le disant « prix à définir » : ni zéro, ni prix valorisé à la place de la Direction.
+/// La gratuité passe par la remise motivée ou la prise en charge du personnel, jamais par un prix à 0. Rend le refus, ou `null`. À appeler AVANT [ligneSaisie] par l'écran qui propose un prix.
+RefusEmission? refusPrixADefinir(String designation, Object? prixUnitaire) {
+  final prix = prixUnitaire is num ? prixUnitaire : num.tryParse('${prixUnitaire ?? ''}'.replaceAll(',', '.'));
+  if (prix != null && prix > 0) return null;
+  return RefusEmission('PRIX_A_DEFINIR',
+      'Prix à définir : « $designation » n’a pas de prix en vigueur. Une ligne ne se facture jamais à 0 ; la prestation se tarife à « Tarifs et prix » (Proposer un changement, puis le Oui de la Direction).',
+      geste: 'Tarifer la prestation, ou choisir une prestation tarifée.');
 }
 
 /// L'ajout d'une prestation à la facture (bouton « Ajouter »). Lève [RefusEmission] — la ligne n'est alors PAS ajoutée.

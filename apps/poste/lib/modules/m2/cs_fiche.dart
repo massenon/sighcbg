@@ -314,10 +314,12 @@ class _EtatFiche extends State<EcranFicheConsultation> {
       final pr = m.collection('produits').parId(l['produitId']);
       mMed += nombreOuZero(pr?['prixAchat']) * nombreOuZero(l['quantite']);
     }
-    for (final code in (_examens['analyses'] as List? ?? const [])) {
-      mAna += nombreOuZero(TarifsPoste.prixAnalyse(m, code, aujourdhui: c.aujourdhui, assure: assure));
-    }
     final sansTarif = <String>[];
+    for (final code in (_examens['analyses'] as List? ?? const [])) {
+      final p = TarifsPoste.prixAnalyse(m, code, aujourdhui: c.aujourdhui, assure: assure);
+      if (p == null || p <= 0) sansTarif.add('$code');
+      mAna += nombreOuZero(p);
+    }
     final examens = m.collection('examensImagerie').actives;
     for (final code in (_examens['imagerie'] as List? ?? const [])) {
       final ex = examens.where((x) => x['code'] == code).firstOrNull;
@@ -325,7 +327,7 @@ class _EtatFiche extends State<EcranFicheConsultation> {
       if (pr.montant == null) sansTarif.add('${ex?['label'] ?? code}');
       mImg += nombreOuZero(pr.montant);
     }
-    return '${money(mMed + mAna + mImg)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · imagerie ${money(mImg, avecDevise: false)})${sansTarif.isNotEmpty ? ' — sans tarif : ${sansTarif.join(', ')}' : ''}';
+    return '${money(mMed + mAna + mImg)}  (médicaments ${money(mMed, avecDevise: false)} · analyses ${money(mAna, avecDevise: false)} · imagerie ${money(mImg, avecDevise: false)})${sansTarif.isNotEmpty ? ' — prix à définir : ${sansTarif.join(', ')}' : ''}';
   }
 
   Fiche? _exigerOrdonnance(ContexteEcran c, String quoi) {

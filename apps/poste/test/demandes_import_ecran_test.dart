@@ -109,6 +109,9 @@ void main() {
     expect(svc.passeParUneDemande(jeuPatients), isFalse);
     expect(svc.passeParUneDemande(jeuPersonnel), isFalse);
     expect(svc.reserveALaMere(jeuPersonnel), isTrue, reason: 'le personnel est restreint ET de la configuration de la mère : il se règle à la mère, le fileul le dit');
+    expect(svc.reserveALaMere(jeuStockDetail), isTrue, reason: 'Q25 : le stock détail initial est réservé à la mère');
+    expect(svc.reserveALaMere(jeuTransferts), isTrue, reason: 'Q25 : le bon de transfert est réservé à la mère');
+    expect((ServiceDemandesImport.de(magasin())..fileulRattache = (() => false)).reserveALaMere(jeuStockDetail), isFalse, reason: 'à la mère, ils s’importent comme avant');
     await ouvrir(t, m, 'm1-patients', role: 'reception');
     await toucher(t, find.byKey(const Key('importer-patients')));
     expect(find.textContaining('qui reste seule autorité'), findsNothing);
