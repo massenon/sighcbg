@@ -59,9 +59,9 @@ List<_Commande> commandesEnAttente(Iterable<_Commande> actives) => [
     );
 
 /// Le geste de la DAF (RG-04) : la commande devient « Validée » — elle peut alors être transmise.
-_Commande validationCommande({required String jour}) => {
+_Commande validationCommande({required String jour, String validateur = directriceAdministrative}) => {
       'statutCommande': 'validee',
-      'valideePar': directriceAdministrative,
+      'valideePar': validateur,
       'dateValidation': jour,
     };
 
@@ -96,7 +96,8 @@ _Commande commandeEnregistree(
     required Iterable<_Commande> fournisseurs,
     required Iterable<_Commande> commandes,
     required String jour,
-    String Function()? referenceSuivante}) {
+    String Function()? referenceSuivante,
+    String validateur = directriceAdministrative}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
   final v = {...saisie};
   final four =
@@ -112,12 +113,12 @@ _Commande commandeEnregistree(
   final dejaValidee = existante != null &&
       existante['valideePar'] != null &&
       existante['valideePar'] != '';
-  final validateur = v['valideePar'];
+  final dejaPose = v['valideePar'];
   if (const ['validee', 'transmise', 'livree', 'soldee']
           .contains(v['statutCommande']) &&
-      (validateur == null || validateur == '') &&
+      (dejaPose == null || dejaPose == '') &&
       !dejaValidee) {
-    v['valideePar'] = directriceAdministrative;
+    v['valideePar'] = validateur;
     v['dateValidation'] = jour;
   }
   return v;

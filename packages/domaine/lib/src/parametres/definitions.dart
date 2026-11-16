@@ -20,6 +20,7 @@
 
 import '../sauvegarde/sauvegarde_horssite.dart';
 import 'parametres.dart';
+import 'reglages_roles.dart';
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
 const String _decisions = 'Valeur d\'attente reprise de la réplique d\'origine : à confirmer par la Direction de Baguidi';
@@ -389,6 +390,41 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Chantier TABLEAUX (impression de la sélection)',
   ),
+
+  // Q3 et Q4 de la Direction de Baguidi (17/11/2026) : deux listes de rôles qui vivaient en dur. Elles sont BRANCHÉES (clôture, besoins, commandes, circuit déposé à la mère).
+  DefinitionParametre(
+    cle: cleRolesInventaireCloture,
+    famille: 'cloture',
+    type: TypeParametre.texte,
+    defaut: 'comptable,admin',
+    libelle: 'Écritures d\'inventaire en clôture : rôles autorisés',
+    aide: 'Identifiants de rôle séparés par des virgules. Pendant qu\'un exercice est EN CLÔTURE, les modules n\'y écrivent plus ; seuls ces rôles y passent leurs écritures d\'inventaire, en saisie manuelle. Une liste vide retombe sur le défaut.',
+    source: 'Décision de la Direction du 17/11/2026 (Q3) : comptable et administrateur semés',
+    branche: true,
+    appliquePar: 'Circuit de clôture (m12-cloture)',
+  ),
+  DefinitionParametre(
+    cle: cleRolesValidateursAchats,
+    famille: 'achats',
+    type: TypeParametre.texte,
+    defaut: 'da',
+    libelle: 'Validateur des commandes de stock (RG-04) : rôles autorisés',
+    aide: 'Identifiants de rôle séparés par des virgules. Ces rôles arbitrent un bon de besoins et valident une commande de stock avant sa transmission au fournisseur ; depuis un poste rattaché, le geste se dépose et la mère l\'applique sous le rôle de son auteur. Une liste vide retombe sur le défaut (la Directrice Administrative).',
+    source: 'Décision de la Direction du 17/11/2026 (Q4) : la Directrice Administrative semée',
+    branche: true,
+    appliquePar: 'Circuit d\'achats (m7-besoins, m7-commandes)',
+  ),
+  DefinitionParametre(
+    cle: cleLibelleValidateurAchats,
+    famille: 'achats',
+    type: TypeParametre.texte,
+    defaut: 'Directrice administrative',
+    libelle: 'Poste validateur porté sur les pièces d\'achat',
+    aide: 'Le POSTE (jamais le nom d\'une personne) écrit sur un bon arbitré ou une commande validée. L\'agent réel qui a validé est porté à part.',
+    source: 'Décision de la Direction du 17/11/2026 (Q4) : la Directrice Administrative semée',
+    branche: true,
+    appliquePar: 'Circuit d\'achats (m7-besoins, m7-commandes)',
+  ),
 ];
 
 /// Le libellé d'une famille de paramètres, pour les onglets de l'écran des paramètres. Une famille absente de la table s'affiche sous son identifiant.
@@ -404,6 +440,8 @@ const Map<String, String> libellesFamillesParametres = {
   'stock': 'Stock et péremption',
   'comptabilite': 'Comptabilité et recouvrement',
   'export': 'Export des tableaux',
+  'cloture': 'Clôture comptable',
+  'achats': 'Achats',
 };
 
 /// La définition d'une clé, ou `null`.

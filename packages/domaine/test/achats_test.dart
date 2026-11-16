@@ -63,7 +63,8 @@ void main() {
     for (final c in liste(vues['cas'])) {
       final role = '${c['role']}', moi = '${c['nom']}';
       test('$role (agent $moi)', () {
-        final offertes = vuesOffertes(role: role, droitVoir: true);
+        // Le vecteur est celui de la maquette, où Direction et administrateur arbitrent : on rejoue ce RÉGLAGE (Q4 : la clinique sème la seule DAF).
+        final offertes = vuesOffertes(role: role, droitVoir: true, validateurs: const ['da', 'direction', 'admin']);
         final onglets = liste(c['onglets']);
         expect([for (final o in onglets) o['libelle']],
             [for (final v in offertes) libelles[v]]);

@@ -197,7 +197,7 @@ void main() {
       // 5. MÈRE COUPÉE PUIS RELANCÉE : le dépôt attend, le poste travaille, jamais « accordé » avant la confirmation ; au retour la mère applique.
       final cible = refs2[0];
       await converger(() => bon(m2, cible) != null && bon(mm, cible) != null, 'départ');
-      final dep2 = svc2.deposerCircuit(circuitBesoinArbitrage, bon(m2, cible)!, decision: 'complement', motif: 'Préciser la marque', role: 'direction', acteur: 'La Direction');
+      final dep2 = svc2.deposerCircuit(circuitBesoinArbitrage, bon(m2, cible)!, decision: 'complement', motif: 'Préciser la marque', role: 'da', acteur: 'La DAF');
       expect(dep2.ok, isTrue);
       await mere0.arreter();
       await Future<void>.delayed(const Duration(milliseconds: 300));

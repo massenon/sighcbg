@@ -56,6 +56,20 @@ const String gesteProposerPrixAchat = 'tarif_proposer_achat';
 /// Exporter ou imprimer les lignes d'un tableau (Q39, Direction du 15/11/2026) : un droit réglable PAR RÔLE. Sans décision, il suit la lecture de l'écran (les rôles qui
 /// LISENT l'écran exportent) ; une décision l'accorde ou le retire au rôle pour tous les écrans. Il s'applique à la SORTIE : le fichier ne porte que ce que l'écran montre.
 const String gesteExporter = 'export_tableau';
+/// LE CIRCUIT DE CLÔTURE (Q1 et Q2 de la Direction de Baguidi, 17/11/2026) : démarrer la clôture, clôturer définitivement, reprendre la saisie et rouvrir un exercice sont UN geste réservé de
+/// la fiche de rôle, accordé par rôle et réglable. Origine : l'administrateur et la Directrice Administrative. Le droit ne dispense JAMAIS de la séparation des personnes : celui qui a démarré la
+/// clôture ne la clôture pas (le moteur compare l'identifiant de l'agent), et un comptable seul, sans ce droit, ne démarre ni ne clôture.
+const String gesteCircuitCloture = 'cloture_circuit';
+
+/// Régler la gestion des FICHIERS NUMÉRISÉS (taille maximale d'un scan, contrôle d'intégrité, sauvegarde du dossier des scans) : un droit PAR RÉGLAGE (Q5), réservé d'origine à l'administrateur
+/// et à la Directrice Administrative. Se règle sur la poste mère.
+const String gesteReglageFichiers = 'reglage_fichiers';
+
+/// Régler la LECTURE DES SCANS (OCR : activation, moteur, langue, délai) : un droit par réglage (Q5), administrateur et Directrice Administrative d'origine. Se règle sur la poste mère.
+const String gesteReglageOcr = 'reglage_ocr';
+
+/// Régler la CONFIGURATION MECeF (mode de certification, boîtier ou e-MECeF) : un droit par réglage (Q5), administrateur et Directrice Administrative d'origine. Se règle sur la poste mère.
+const String gesteReglageMecef = 'reglage_mecef';
 
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
@@ -102,6 +116,34 @@ const List<GesteReserve> gestesReserves = [
       rolesDefaut: [],
       suitEcran: true,
       aide: 'Excel, CSV et impression de la sélection. Sans décision, le droit suit la lecture de l’écran : qui lit le tableau peut l’exporter. Accordé ou retiré à un rôle, il vaut pour tous les écrans. Le fichier ne porte que les colonnes et les lignes que l’écran montre, champs sensibles masqués comme à l’écran.'),
+  GesteReserve(
+      id: gesteCircuitCloture,
+      libelle: 'Circuit de clôture : démarrer, clôturer, rouvrir un exercice',
+      module: 'M12',
+      ecran: 'm12-cloture',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Démarrer la clôture, la prononcer, reprendre la saisie et rouvrir un exercice clos. Ne dispense pas de la séparation des personnes : celui qui a démarré ne clôture jamais. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteReglageFichiers,
+      libelle: 'Régler la gestion des fichiers numérisés',
+      module: 'CFG',
+      ecran: 'cfg-systeme',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Taille maximale d’un scan, contrôle d’intégrité du dossier des scans. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteReglageOcr,
+      libelle: 'Régler la lecture des scans (OCR)',
+      module: 'CFG',
+      ecran: 'cfg-systeme',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Activer ou désactiver la lecture des scans, choisir le moteur, la langue et le délai. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteReglageMecef,
+      libelle: 'Régler la configuration MECeF',
+      module: 'MECEF',
+      ecran: 'mecef-config',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Le mode de certification des factures (boîtier ou e-MECeF). Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

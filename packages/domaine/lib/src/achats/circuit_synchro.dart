@@ -206,14 +206,15 @@ Map<String, Object?>? _trouver(Iterable<Map<String, Object?>> fiches, String cib
   required String role,
   required Iterable<Map<String, Object?>> besoins,
   required Iterable<Map<String, Object?>> commandes,
+  Iterable<String>? validateurs,
 }) {
   RefusValidation r(String c, String m, String? g) => RefusValidation(c, m, g);
   if (famille != circuitBesoinArbitrage && famille != circuitCommandeValidation) {
     return (refus: r('FAMILLE_INCONNUE', 'Circuit inconnu : $famille.', null), sansEffet: false, bon: null);
   }
-  if (!estArbitre(role)) {
+  if (!estArbitre(role, validateurs: validateurs)) {
     return (
-      refus: r('VALIDATION_RESERVEE', 'Arbitrer un besoin ou valider une commande (RG-04) revient à la Direction, à la Directrice Administrative ou à l’administrateur : le rôle « $role » ne le peut pas.', 'Demander à la Directrice Administrative'),
+      refus: r('VALIDATION_RESERVEE', 'Arbitrer un besoin ou valider une commande (RG-04) revient aux rôles réglés comme validateurs par la clinique (d’origine : la Directrice Administrative) : le rôle « $role » ne le peut pas.', 'Demander au validateur des commandes de la clinique'),
       sansEffet: false,
       bon: null
     );
@@ -269,9 +270,10 @@ VerdictDepot circuitDeposer({
   required Iterable<Map<String, Object?>> commandes,
   required List<Map<String, Object?>> depots,
   required String Function() nouvelId,
+  Iterable<String>? validateurs,
 }) {
   final cible = cleCircuit(bon);
-  final c = _controler(famille: famille, cible: cible, decision: decision, motif: motif, role: role, besoins: besoins, commandes: commandes);
+  final c = _controler(famille: famille, cible: cible, decision: decision, motif: motif, role: role, besoins: besoins, commandes: commandes, validateurs: validateurs);
   if (c.refus != null) return VerdictDepot.refus(c.refus!);
   for (final d in depots) {
     if (d['statut'] != 'archive' && d['etat'] == valDepotDeposee && d['genre'] == valGenreCircuitAchat && d['famille'] == famille && d['cible'] == cible) {
@@ -325,6 +327,8 @@ ApplicationCircuit? circuitAppliquer(
   required Iterable<Map<String, Object?>> besoins,
   required Iterable<Map<String, Object?>> commandes,
   required DateTime maintenant,
+  Iterable<String>? validateurs,
+  String libelleValidateur = directriceAdministrative,
 }) {
   if (depot['genre'] != valGenreCircuitAchat || depot['etat'] != valDepotDeposee || depot['statut'] == 'archive') return null;
   final famille = '${depot['famille']}';
@@ -332,7 +336,7 @@ ApplicationCircuit? circuitAppliquer(
   final motif = '${depot['motif'] ?? ''}';
   final quand = DateTime.tryParse('${depot['demandeLe'] ?? ''}') ?? maintenant;
   final c = _controler(
-      famille: famille, cible: '${depot['cible']}', decision: decision, motif: motif, role: '${depot['demandeRole']}', besoins: besoins, commandes: commandes);
+      famille: famille, cible: '${depot['cible']}', decision: decision, motif: motif, role: '${depot['demandeRole']}', besoins: besoins, commandes: commandes, validateurs: validateurs);
   if (c.refus != null) {
     return ApplicationCircuit(etat: valDepotRefusee, code: c.refus!.code, motif: c.refus!.motif, geste: c.refus!.geste);
   }
@@ -360,7 +364,7 @@ ApplicationCircuit? circuitAppliquer(
             apres: {'décision': decision, 'étape': a.patch['etape'], if (motif.trim().isNotEmpty) 'motif': motif.trim()}));
   }
   final jour = '${quand.year.toString().padLeft(4, '0')}-${quand.month.toString().padLeft(2, '0')}-${quand.day.toString().padLeft(2, '0')}';
-  final patch = {...validationCommande(jour: jour), 'valideeParAgent': acteur};
+  final patch = {...validationCommande(jour: jour, validateur: libelleValidateur), 'valideeParAgent': acteur};
   return ApplicationCircuit(
       etat: valDepotAppliquee,
       ecriture: EcritureCircuit(

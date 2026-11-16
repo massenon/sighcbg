@@ -10,6 +10,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
 import '../../donnees/mecef_poste.dart';
 import '../../donnees/normalisation_mecef.dart';
@@ -1217,7 +1218,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
   Widget _carteMode(ContexteEcran c) {
     final mag = c.magasin;
     final fileul = ServiceInstallation.de(mag).rattache;
-    final peut = !fileul && c.droit.editer && (c.role == 'admin' || c.role == 'da');
+    // Q5 (17/11/2026) : la configuration MECeF est un DROIT PAR RÉGLAGE de la fiche de rôle (origine : l'administrateur et la Directrice Administrative), jamais une liste de rôles écrite ici.
+    final peut = !fileul && c.droit.editer && gestePeutEcran(c, gesteReglageMecef);
     final service = serviceParametres(mag, auteur: () => acteur(c).nom, horloge: () => c.aujourdhui);
     return ListenableBuilder(
         listenable: mag.collection(parCollectionParametres),
@@ -1249,7 +1251,7 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 if (fileul)
                   const NoteSigh(ApplicateurConfiguration.motifGarde, icone: LucideIcons.lock)
                 else if (!peut)
-                  const NoteSigh('Le mode se règle par l’administrateur ou la Directrice Administrative.', icone: LucideIcons.lock)
+                  const NoteSigh('Le mode se règle par les rôles qui détiennent le droit « configuration MECeF » (d’origine : l’administrateur et la Directrice Administrative).', icone: LucideIcons.lock)
                 else
                   Align(
                       alignment: Alignment.centerLeft,
