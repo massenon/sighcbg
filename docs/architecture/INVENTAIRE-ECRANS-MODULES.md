@@ -454,6 +454,8 @@ Source : `prototype_html/build/mesures/inventaire-fonctions-ecrans.json`, mesur�
 | `mere-reseau` Réseau local | tableau de bord; commandes : Supervision, Appareils et appairage, Exploitation de la synchronisation, Tester depuis un poste, Renouveler le certificat | filtres (mineur) : aucun contrôle de période relevé |
 | `mere-sauvegardes` Sauvegardes et restauration | tableau de bord; onglets : Sauvegardes, Restaurer, Remplacer la mère; commandes : Supervision, Appareils et appairage, Exploitation de la synchronisation, Sauvegarder maintenant, Vérifier la dernière | filtres (mineur) : aucun contrôle de période relevé |
 | `mere-service` Service et démarrage | tableau de bord; commandes : Supervision, Appareils et appairage, Exploitation de la synchronisation, Arrêter proprement, Redémarrer | filtres (mineur) : aucun contrôle de période relevé |
+| `mere-sms-journal` Journal des envois SMS | tableau de bord; commandes : Composer un SMS, Relever les statuts (ADR-0009, sans équivalent à la maquette) | filtres (mineur) : aucun contrôle de période relevé |
+| `mere-sms-passerelle` Passerelle SMS | paramètres; commandes : interrupteur de la passerelle, Tester l’envoi (geste réservé `reglage_sms`, ADR-0009, sans équivalent à la maquette) | filtres : sans objet |
 | `mere-supervision` Supervision | tableau de bord; commandes : Appareils et appairage, Conflits et doublons, Exploitation de la synchronisation, Sauvegarder maintenant, Actualiser | filtres (mineur) : aucun contrôle de période relevé |
 
 ## AUTH (1 écrans)

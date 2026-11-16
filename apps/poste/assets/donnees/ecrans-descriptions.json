@@ -1349,6 +1349,14 @@
    "titre": "Indicateurs publiés",
    "description": "Ce que la mère publie au relais pour la supervision à distance : des compteurs, jamais un nom de patient."
   },
+  "mere-sms-passerelle": {
+   "titre": "Passerelle SMS",
+   "description": "Les SMS partent par le relais : réglage de la passerelle, plafond quotidien lu au relais, envoi d’essai."
+  },
+  "mere-sms-journal": {
+   "titre": "Journal des envois SMS",
+   "description": "Les SMS déposés au relais par la mère : numéro masqué, longueur, modèle et statut suivi jusqu’à l’envoi."
+  },
   "mere-integrite": {
    "titre": "Intégrité et altérations",
    "description": "Enveloppes altérées ou manquantes, appareils bloqués, décisions de l’administrateur."

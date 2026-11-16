@@ -531,7 +531,9 @@
        "hub": "hub-mere",
        "ecrans": [
         "mere-relais",
-        "mere-indicateurs"
+        "mere-indicateurs",
+        "mere-sms-passerelle",
+        "mere-sms-journal"
        ]
       },
       {
@@ -741,7 +743,9 @@
        "hub": "hub-mere",
        "ecrans": [
         "mere-relais",
-        "mere-indicateurs"
+        "mere-indicateurs",
+        "mere-sms-passerelle",
+        "mere-sms-journal"
        ]
       },
       {
@@ -2033,7 +2037,9 @@
        "hub": "hub-mere",
        "ecrans": [
         "mere-relais",
-        "mere-indicateurs"
+        "mere-indicateurs",
+        "mere-sms-passerelle",
+        "mere-sms-journal"
        ]
       },
       {
@@ -2228,7 +2234,9 @@
        "hub": "hub-mere",
        "ecrans": [
         "mere-relais",
-        "mere-indicateurs"
+        "mere-indicateurs",
+        "mere-sms-passerelle",
+        "mere-sms-journal"
        ]
       },
       {

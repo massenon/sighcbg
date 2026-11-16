@@ -361,6 +361,8 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `mere-reseau` | Réseau local | MERE | 2 | — | porté |
 | `mere-sauvegardes` | Sauvegardes et restauration | MERE | 2 | — | porté |
 | `mere-service` | Service et démarrage | MERE | 2 | — | porté |
+| `mere-sms-journal` | Journal des envois SMS | MERE | 2 | — | porté |
+| `mere-sms-passerelle` | Passerelle SMS | MERE | 2 | — | porté |
 | `mere-supervision` | Supervision | MERE | 2 | — | porté |
 | `dash-admin` | Administrateur | PIL | 1 | 31, 36, 42 | porté |
 | `dash-croise` | Tableau de bord dynamique croisé | PIL | 5 | 36, 39, 57 | porté |

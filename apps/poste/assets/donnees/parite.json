@@ -5786,6 +5786,36 @@
    "statut": "porté"
   },
   {
+   "id": "mere-sms-passerelle",
+   "label": "Passerelle SMS",
+   "module": "MERE",
+   "domaine": "Poste mère",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "mere-sms-journal",
+   "label": "Journal des envois SMS",
+   "module": "MERE",
+   "domaine": "Poste mère",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-service",
    "label": "Service et démarrage",
    "module": "MERE",
