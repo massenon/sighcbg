@@ -10,7 +10,8 @@
 
 import '../achats/circuit_synchro.dart' show valGenreCircuitAchat;
 import '../administration/pta.dart' show valGenrePta;
-import '../droits/gestes_reserves.dart' show gestePtaAdopter;
+import '../droits/gestes_reserves.dart' show gestePtaAdopter, gesteRhEtapeSurveillant, gesteRhEtapeDaf;
+import '../rh/planning_synchro.dart' show valGenrePlanningRh;
 import 'reglage_depose.dart' show gesteDuReglage, valGenreReglage;
 import '../droits/gestes_reserves.dart' show gesteNumerotationModifier;
 import '../numerotation/numerotation_versions.dart' show valGenreNumerotation;
@@ -212,6 +213,10 @@ List<String> destinatairesAlerteDecision(DecisionEnAttente d, {required String g
       } else if (d.sousGenre == valGenrePta) {
         // Une décision du plan de travail annuel (lot PTA, 17/11/2026) : ceux qui détiennent le geste « adopter », lus dans la matrice.
         ajouter('geste:$gestePtaAdopter');
+      } else if (d.sousGenre == valGenrePlanningRh) {
+        // Une décision du planning (17/11/2026, décision 12) : ceux qui détiennent une étape du circuit (surveillant, directrice administrative), lus dans la matrice.
+        ajouter('geste:$gesteRhEtapeSurveillant');
+        ajouter('geste:$gesteRhEtapeDaf');
       } else if (d.sousGenre == valGenreNumerotation) {
         // Une série de numérotation (lot 2) : ceux qui détiennent le geste `numerotation_modifier`, lus dans la matrice.
         ajouter('geste:$gesteNumerotationModifier');

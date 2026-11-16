@@ -39,7 +39,7 @@ Légende des preuves : **T** test contre la vraie mère Dart · **C** code lu ·
 | Factures fournisseurs, livraisons, PV de réception | L | non | non (même cause) | — | — | K |
 | Paie : validation de la Direction, « autre que le générateur » (`bulletins`) | L | non (le bulletin se génère ; la DIFFUSION attend) | NON ; **par nature** exige une AUTRE personne | — | — | K, C |
 | Dépenses (`depenses`), clôture (`clotures`) | L | non ; la clôture définitive refuse les brouillons (dépendance de nature) | non | — | — | K, C |
-| Planning, propositions (`planning`) | L | non | non | — | — | K |
+| Planning, propositions, congés, missions, présences (`planning`, `propositionsPlanning`, `conges`, `missions`, `presences`) | ~~L~~ **A** (17/11/2026, décision 12) | non ; la vacation posée naît « à valider » et ne compte pas (RG-11) | **OUI** : le validateur dépose depuis N'IMPORTE QUEL poste (genre `planning_rh`) | la mère, sous le rôle et le nom de l'auteur, avec SA matrice et SON planning (double affectation entre postes) | dépôt en file, « transmise à la mère, en attente » ; reprise au retour | T `planning_sync_test`, banc `PLN1` |
 | Validation technique puis biologique (`demandesAnalyses`) | L | non ; le prescripteur ne voit rien avant (dépendance de nature) | non ; **par nature** engage le biologiste (intérim TSL déjà prévu) | — | — | K, C |
 | Seuils de variation brutale du laboratoire (`seuilsDelta`) | L | non (« enregistré » sans effet) | non | — | — | K, C |
 | Comptes rendus d'imagerie (`demandesImagerie`, `resultatsImagerie`), CPA, CR d'anesthésie | L | non | non | — | — | K |
@@ -116,3 +116,9 @@ Relus contre ce document et contre le code (E3079). Statut : **tenu**, ou **non 
 * **Pastille** « N décisions en attente de la mère » : validations, demandes de prix et demandes d'import, âge de la plus ancienne (E3413).
 
 Preuves : `packages/domaine/test/decisions_mere_test.dart`, `apps/poste/test/decisions_mere_poste_test.dart`, et les tests de synchronisation contre la vraie mère, mis à jour pour signer par un compte nominatif (`aide_comptes.dart`).
+
+## Le planning traverse les postes (Direction de Baguidi, 17/11/2026, décision 12)
+
+`planning`, `propositionsPlanning`, `conges`, `missions` et `presences` passent de la classe L à la classe **A** (mère Dart, banc Node, pont du poste), jamais vers un téléphone. Même mécanisme que ci-dessus, aucun second : la validation d'une pièce du planning depuis un fileul est un **dépôt** (`validationsDeposees`, genre `planning_rh`, actions `poser`, `remplacer`, `retirer`, `trancher`, `proposition`) ; la mère l'applique sous le rôle de l'auteur en REFAISANT les contrôles du geste direct (`PlanningRhPoste`) sur SON planning, qui est celui de tous les postes. Elle refait aussi, à chaque écriture d'un poste, `refusPlanningRh` : une pièce ne naît pas validée, la validation ne s'écrit pas par un poste, une validation ne se défait pas, une vacation validée ne se réécrit pas. Identifiants préfixés par poste (`<étiquette>-PLN00005`). Écarts E4020 à E4028 de `ECARTS-MAQUETTE.md`.
+
+Preuves : `apps/poste/test/planning_sync_test.dart` (vraie mère Dart, deux fileuls et le poste mère : pose sur l'un, proposition validée sur l'autre, mère coupée puis rétablie, double affectation refusée et archivée, aucun doublon), `packages/domaine/test/planning_synchro_test.dart` (moteur pur), banc `PLN1` (Node et Dart).

@@ -3,18 +3,36 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_installation.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/planning_rh_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import '../../sync/service_validations_deposees.dart';
 
 /// Les briques communes des cinq écrans du planning individuel, du circuit de validation et des propositions (lots L4 à L6, Direction, 09/11/2026) : la
 /// carte des réglages, le badge et les commandes de validation, les refus nommés. Les RÈGLES sont celles du domaine (`planning_rh.dart`), assemblées au
 /// magasin du poste par [PlanningRhPoste] ; le circuit et « l'agent modifie directement » se LISENT au registre des paramètres (lot L0), jamais en constante.
 
 /// Le moteur du planning RH pour l'agent de la session (nom nominatif, rôle, horloge du poste).
-PlanningRhPoste rhbPlanningPoste(ContexteEcran c) => PlanningRhPoste(c.magasin, auteur: () => acteur(c).nom, role: c.role, horloge: () => c.aujourdhui);
+///
+/// Sur un poste RATTACHÉ (fileul), une validation du planning se DÉPOSE (décision 12 du 17/11/2026) : la mère l'applique sous le rôle de l'auteur ; le résultat porte alors `enAttenteMere`.
+PlanningRhPoste rhbPlanningPoste(ContexteEcran c) => PlanningRhPoste(c.magasin,
+    auteur: () => acteur(c).nom,
+    role: c.role,
+    horloge: () => c.aujourdhui,
+    deposer: ServiceInstallation.de(c.magasin).rattache ? ServiceValidationsDeposees.de(c.magasin).deposeurPlanning(role: c.role, acteur: acteur(c).nom) : null);
+
+/// Le message d'un geste du planning qui a réussi : le succès, ou « transmis à la mère, en attente » quand la validation s'est DÉPOSÉE (jamais « validé » avant la confirmation de la mère).
+void rhbToastSuite(BuildContext ctx, Map<String, Object?> res, String succes, {String? detail, VoidCallback? annuler}) {
+  if (res['enAttenteMere'] == true) {
+    ToastsSigh.afficher(ctx, 'Décision transmise à la mère, en attente.',
+        type: TypeToast.info, detail: 'La mère l’applique sous votre rôle, contrôles refaits ; la pièce change d’état à la confirmation.', annuler: annuler);
+    return;
+  }
+  ToastsSigh.afficher(ctx, succes, type: TypeToast.succes, detail: detail, annuler: annuler);
+}
 
 /// Les états de validation d'une pièce (libellés de la maquette).
 const Map<String, (String, TonSigh)> rhbEtatsValidation = {
@@ -65,11 +83,12 @@ List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String no
             return;
           }
           apres?.call();
-          ToastsSigh.afficher(ctx, res['complet'] == true ? 'Pièce validée.' : 'Étape validée : la pièce attend la directrice administrative.',
-              type: TypeToast.succes, annuler: () {
-            (res['annuler'] as VoidCallback)();
-            apres?.call();
-          });
+          rhbToastSuite(ctx, res, res['complet'] == true ? 'Pièce validée.' : 'Étape validée : la pièce attend la directrice administrative.', annuler: res['enAttenteMere'] == true
+              ? null
+              : () {
+                  (res['annuler'] as VoidCallback)();
+                  apres?.call();
+                });
         }),
     BoutonIcone(
         icone: LucideIcons.x,
@@ -84,10 +103,12 @@ List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String no
             return;
           }
           apres?.call();
-          ToastsSigh.afficher(ctx, 'Pièce refusée.', type: TypeToast.succes, detail: 'Le motif est visible de l’agent.', annuler: () {
-            (res['annuler'] as VoidCallback)();
-            apres?.call();
-          });
+          rhbToastSuite(ctx, res, 'Pièce refusée.', detail: 'Le motif est visible de l’agent.', annuler: res['enAttenteMere'] == true
+              ? null
+              : () {
+                  (res['annuler'] as VoidCallback)();
+                  apres?.call();
+                });
         }),
   ];
 }

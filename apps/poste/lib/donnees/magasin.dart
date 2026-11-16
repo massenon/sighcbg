@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync;
 
 import 'persistance.dart';
 import 'reglages_clinique_poste.dart';
@@ -35,6 +35,9 @@ class CollectionMagasin extends ChangeNotifier {
         ];
   final String nom;
   final List<Fiche> _fiches;
+
+  /// L'étiquette du poste qui préfixe les identifiants créés ici (`null` ou vide : identifiant sans préfixe, comme avant).
+  String Function()? prefixePoste;
 
   /// RG-12 : toute écriture est journalisée (qui, quand, quoi, valeurs avant / après) — aucune action anonyme. `null` : collection de journal.
   final void Function(String action, String module, String entite,
@@ -85,8 +88,10 @@ class CollectionMagasin extends ChangeNotifier {
       {String prefixe = 'ID'}) {
     final nouvelle = {...f};
     if (_gardes.isNotEmpty) _controler('inserer', nouvelle);
-    nouvelle['id'] ??=
-        '$prefixe${(_fiches.length + 1).toString().padLeft(5, '0')}';
+    // Une collection qui voyage entre postes avec des identifiants PROPRES au poste (le planning) préfixe l'identifiant de l'étiquette du poste : `F1-PLN00005`. Deux postes hors ligne ne
+    // forment alors jamais deux fiches du même identifiant, et un renvoi d'une fiche à une autre (proposition → vacation) désigne la même fiche partout.
+    final poste = prefixePoste?.call() ?? '';
+    nouvelle['id'] ??= '${poste.isEmpty ? '' : '$poste-'}$prefixe${(_fiches.length + 1).toString().padLeft(5, '0')}';
     // La maquette insère EN TÊTE (`db[name].unshift`) : l'ordre d'une collection se voit (tris à égalité, ordre d'un lot transmis à la MECeF).
     _fiches.insert(0, nouvelle);
     journal?.call(
@@ -255,6 +260,9 @@ class Magasin {
   /// Le jeu d'origine tel que livré (jamais modifié : les collections en tiennent des COPIES) et son index par identifiant, construit à la demande.
   final Map<String, Iterable<Fiche>> _origine;
   final Map<String, Map<String, Fiche>> _indexOrigine = {};
+
+  /// L'étiquette de CE poste dans la clinique (posée par le pont d'activité à sa création) : elle préfixe les identifiants du planning.
+  String etiquettePoste = '';
 
   /// La fiche du jeu d'origine d'identifiant [id], ou `null` (fiche créée depuis). Sert de point de départ commun aux compteurs (stock, règlements).
   Fiche? ficheOrigine(String nom, String id) =>
@@ -689,6 +697,7 @@ class Magasin {
                     ? (a, m, e, r, avant, apres) => journaliser(a, m, e, r, null, null)
                     : journaliser),
             module: _modules[nom] ?? '—');
+        if (planningCollectionsSync.contains(nom)) c.prefixePoste = () => etiquettePoste;
         if (_persistance != null) c.addListener(() => _marquerSale(nom));
         // `S.garder('ecritures', …)` de la maquette : la lecture seule d'un exercice clos est tenue AU MOTEUR, sur la collection — masquer un bouton ne
         // protège rien. La garde relit les exercices À CHAQUE écriture (une clôture validée ferme aussitôt).

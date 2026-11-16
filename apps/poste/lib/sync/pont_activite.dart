@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans;
+import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -90,6 +90,16 @@ const Set<String> collectionsActivite = {
   'ptaAxes',
   'ptaEtats',
   'ptaFinancements',
+  // LE PLANNING À TRAVERS LES POSTES (Direction de Baguidi, 17/11/2026, décision 12) : les vacations, leurs propositions, les congés, les ordres de mission et les présences (une fiche par pointage)
+  // voyagent comme des fiches descriptives (famille A de la mère). `presences` partait déjà mais la mère la refusait (`collection_inconnue`). La VALIDATION ne s'écrit pas par un poste : elle se DÉPOSE
+  // (`validationsDeposees`, genre `planning_rh`) et la mère l'applique sous le rôle de l'auteur ; une validation que le journal porte n'est jamais défaite par une fusion (`fusionnerPlanningRh`). Les
+  // identifiants sont préfixés par poste dès la création (`<étiquette>-PLN00005`) : deux postes hors ligne ne forment jamais deux fiches du même identifiant, et une proposition qui désigne une vacation la
+  // désigne de la même façon partout. Jamais vers un téléphone (honoraires, motifs d'absence : exclusion posée par la mère).
+  'planning',
+  'propositionsPlanning',
+  'conges',
+  'missions',
+  // `presences` est déjà plus haut (lot L8).
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
@@ -103,7 +113,7 @@ const Set<String> collectionsDeLaMereSeule = {'produits'};
 const String collectionDeltas = 'deltasCompteurs';
 
 /// Les marqueurs que chaque poste DÉDUIT lui-même des mêmes données : ils ne voyagent pas (un marqueur synchronisé ferait des allers-retours sans fin).
-const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon', 'couvertureEnConflit', 'delivranceEnDoublon'};
+const Set<String> marqueursLocaux = {'codeEnDoublon', 'numeroEnDoublon', 'litEnConflit', 'stockNegatifDetecte', 'encaissementEnDoublon', 'couvertureEnConflit', 'delivranceEnDoublon', 'affectationEnDoublon'};
 
 /// Les fiches qui voyagent EN UN BLOC : un haché et son sel ne se mélangent jamais champ à champ entre deux postes.
 const Set<String> collectionsAtomiques = {'identifiants'};
@@ -208,7 +218,10 @@ class PontActivite {
       this.reservesAuMere = false,
       this.gardeEntrante,
       this.delai = const Duration(seconds: 1)})
-      : collections = collections ?? {...collectionsActivite, ...collectionsAtomiques};
+      : collections = collections ?? {...collectionsActivite, ...collectionsAtomiques} {
+    // L'étiquette de ce poste préfixe les identifiants des fiches du planning dès leur création (voir `CollectionMagasin.prefixePoste`).
+    magasin.etiquettePoste = etiquette;
+  }
   final Magasin magasin;
   final TransportPont transport;
 
@@ -331,7 +344,7 @@ class PontActivite {
         // d'origine. Préfixée de l'étiquette du poste, la fiche du fileul et celle que la mère réécrit seraient DEUX fiches (mesuré : lots, mouvements et articles comptés deux fois).
         // Même règle pour un référentiel d'activité que la mère seule écrit (le catalogue des produits) : la configuration le publie sous son identifiant, le pont sous son identité de synchronisation ;
         // préfixée, elle faisait de chaque article créé après le jeu d'origine DEUX fiches chez un fileul (mesuré avec un import de la mère).
-        final identiteCommune = magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
+        final identiteCommune = (planningCollectionsSync.contains(c) && '${f['id']}'.startsWith('$etiquette-')) || magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
         f['idSync'] = identiteCommune ? '${f['id']}' : '$etiquette-${f['id']}';
       }
     }
@@ -550,6 +563,10 @@ class PontActivite {
         // PLAN DE TRAVAIL ANNUEL : une adoption, une clôture ou un remplacement que le journal porte n'est jamais défait ; un état réservé que le journal ne porte pas cède.
         if (c == ptaCollectionPlans) {
           fusionnerPlanTravail(fusion, local, recu, refusLocal: motifsRefus.containsKey('$c/$cle'), posteFileul: reservesAuMere);
+        }
+        // LE PLANNING : une validation que le journal porte n'est jamais défaite (pièce, proposition, vacation) ; une validation inventée ici (écriture refusée par la mère) cède au journal.
+        if (planningCollectionsSync.contains(c)) {
+          fusionnerPlanningRh(c, fusion, local, recu, refusLocal: motifsRefus.containsKey('$c/$cle'), posteFileul: reservesAuMere);
         }
         if (_j(fusion) != _j(local)) {
           col.appliquerDistante(fusion);
@@ -777,6 +794,13 @@ class PontActivite {
         doublonsDeNumero[e.key] = concernees.length;
       }
     }
+    // PLANNING : deux vacations du même agent le même jour (deux postes hors ligne) ne restent plus en silence : marqueur LOCAL, déduit, qui retombe quand l'une est retirée. Il ne bloque personne.
+    if (collections.contains('planning')) {
+      final col = magasin.collection('planning');
+      final groupes = {for (final g in planningAffectationsEnDoublon(col.toutes)) ...g};
+      _marquer(col, col.toutes, groupes, 'affectationEnDoublon');
+      affectationsEnDoublonCompte.value = groupes.length;
+    }
     if (collections.contains('admissions')) {
       final col = magasin.collection('admissions');
       final conflits = {for (final g in litsEnConflit(col.toutes)) ...g};
@@ -814,6 +838,9 @@ class PontActivite {
 
   /// Les couvertures ouvertes en conflit (plusieurs pour un même patient) : à arbitrer par la DAF.
   final ValueNotifier<int> couverturesEnConflitCompte = ValueNotifier<int>(0);
+
+  /// Les vacations qui partagent un agent et un jour avec une autre vacation active (deux postes hors ligne ont posé le même jour).
+  final ValueNotifier<int> affectationsEnDoublonCompte = ValueNotifier<int>(0);
 
   /// Les admissions actives dont le lit est aussi pris par une autre admission active (un lit, une admission active).
   final ValueNotifier<int> litsEnConflitCompte = ValueNotifier<int>(0);

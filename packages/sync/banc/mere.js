@@ -74,7 +74,94 @@ const FAMILLES = {
   /* PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : actions, en-têtes de plan et trois référentiels administrables, fiches descriptives (A). Miroir de `mere.dart` ; l'adoption et la clôture
      ne s'écrivent que par le dépôt du détenteur du geste (voir `refusPlanTravail`), jamais vers un téléphone (une action porte un budget). */
   planAnnuel: 'A', plansTravail: 'A', ptaAxes: 'A', ptaEtats: 'A', ptaFinancements: 'A',
+  /* LE PLANNING À TRAVERS LES POSTES (17/11/2026, décision 12) : vacations, propositions, congés, ordres de mission et présences, fiches descriptives (A) ; miroir de `mere.dart`.
+     `presences` était poussée par le pont mais absente de la table : refusée `collection_inconnue`. La validation se dépose (genre `planning_rh`) ; jamais vers un téléphone. */
+  planning: 'A', propositionsPlanning: 'A', conges: 'A', missions: 'A', presences: 'A',
 };
+/* Miroir de `packages/domaine/lib/src/rh/planning_synchro.dart` (`refusPlanningRh`) : la mère REFAIT le contrôle d'une pièce du planning écrite par un poste (jamais validée par lui, une validation
+   ne se défait pas, une vacation validée ne se réécrit pas). */
+const PLANNING_COLLECTIONS = ['planning', 'propositionsPlanning', 'conges', 'missions', 'presences'];
+const PLANNING_PIECES = ['presences', 'conges', 'missions'];
+const RANG_PIECE = { a_valider: 0, valide_surveillant: 1, valide: 2, refuse: 2 };
+const ETATS_PIECE_RESERVES = ['valide_surveillant', 'valide', 'refuse'];
+const CHAMPS_DECISION_PIECE = ['validePar', 'valideLe', 'motifRefus', 'refuseePar', 'refuseeLe', 'valideePar', 'valideeLe'];
+const CHAMPS_DECISION_PROPOSITION = ['tranchePar', 'trancheLe', 'appliquees', 'motifRefus', 'motifValidation'];
+const CHAMPS_PROGRAMME_VACATION = ['date', 'employeId', 'type', 'employe', 'fonction', 'service'];
+const RANG_PROPOSITION = { proposee: 0, annulee: 1, validee: 2, refusee: 2 };
+const sP = (v) => (v == null ? '' : String(v));
+const videP = (v) => v == null || v === '' || (Array.isArray(v) && v.length === 0);
+const memeP = (a, b) => JSON.stringify(a === undefined ? null : a) === JSON.stringify(b === undefined ? null : b);
+function etatPiece(collection, rec) {
+  const e = sP(rec.validationEtat);
+  if (e) return e;
+  if (collection === 'conges') { const s = sP(rec.statutConge); return s === 'en_attente' ? 'a_valider' : (s === 'refuse' ? 'refuse' : 'valide'); }
+  if (collection === 'missions') { const s = sP(rec.statutMission); return (s === 'a_valider' || s === 'projet') ? 'a_valider' : (s === 'refusee' ? 'refuse' : 'valide'); }
+  return 'valide';
+}
+const vacationValidee = (v) => { const e = sP(v.validationEtat); return e === '' || e === 'validee'; };
+function refusPlanningRh(collection, type, champs, actuelle) {
+  if (!PLANNING_COLLECTIONS.includes(collection)) return null;
+  const creation = type === 'creer';
+  const reserve = (quoi) => ['validation_reservee', quoi + ' : la décision ne s’écrit pas par un poste, elle se DÉPOSE depuis le poste du validateur et la mère l’applique sous son rôle, ses contrôles refaits.', 'Déposer la décision depuis l’écran du circuit'];
+  const champReserve = (k) => ['champ_reserve', 'Le champ « ' + k + ' » est la trace d’une décision : il n’est écrit que par la mère, à l’application du dépôt du validateur.', 'Déposer la décision depuis l’écran du circuit'];
+  const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+  if (PLANNING_PIECES.includes(collection)) {
+    const nouveau = champs.validationEtat;
+    const courant = actuelle ? etatPiece(collection, actuelle) : 'a_valider';
+    if (creation) {
+      if (nouveau != null && String(nouveau) !== 'a_valider' && String(nouveau) !== '') return reserve('Une pièce ne naît pas déjà « ' + nouveau + ' »');
+      if (collection === 'conges' && champs.statutConge != null && String(champs.statutConge) !== 'en_attente') return reserve('Une demande de congé ne naît pas déjà « ' + champs.statutConge + ' »');
+      if (collection === 'missions' && champs.statutMission != null && !['a_valider', 'projet'].includes(String(champs.statutMission))) return reserve('Un ordre de mission ne naît pas déjà « ' + champs.statutMission + ' »');
+    } else if (nouveau != null && String(nouveau) !== courant) {
+      const rn = RANG_PIECE[String(nouveau)], rc = RANG_PIECE[courant];
+      if (rn === undefined) return ['etat_inconnu', 'État de validation inconnu : ' + nouveau + '.', 'Choisir a_valider, valide_surveillant, valide ou refuse'];
+      if (rc !== undefined && rn < rc) return ['validation_defaite', 'Une validation ne se défait pas : la pièce est « ' + courant + ' », elle ne repasse pas à « ' + nouveau + ' ».', 'Faire une nouvelle demande plutôt que de défaire la décision'];
+      if (ETATS_PIECE_RESERVES.includes(String(nouveau))) return reserve('L’état « ' + nouveau + ' »');
+    }
+    if (collection === 'conges' && !creation && champs.statutConge != null && ['valide', 'refuse'].includes(String(champs.statutConge)) && sP(actuelle && actuelle.statutConge) !== String(champs.statutConge)) return reserve('Le statut « ' + champs.statutConge + ' » du congé');
+    if (collection === 'missions' && !creation && champs.statutMission != null && ['validee', 'refusee'].includes(String(champs.statutMission)) && sP(actuelle && actuelle.statutMission) !== String(champs.statutMission)) return reserve('Le statut « ' + champs.statutMission + ' » de l’ordre de mission');
+    for (const k of CHAMPS_DECISION_PIECE) if (has(champs, k) && !videP(champs[k]) && (creation || !memeP(champs[k], actuelle && actuelle[k]))) return champReserve(k);
+    if (collection === 'presences' && !creation && actuelle && actuelle.validationEtat === 'valide') {
+      const apres = { ...actuelle, ...champs };
+      const v = (o, k) => (o[k] == null ? '' : String(o[k]));
+      const change = ['etat', 'date', 'employeId', 'heureArrivee', 'heureDepart', 'motifCode'].some((k) => v(actuelle, k) !== v(apres, k));
+      const regularise = ((apres.regularisations || []).length) > ((actuelle.regularisations || []).length);
+      if (change && !regularise) return ['presence_validee', 'Un pointage validé ne se modifie pas directement : il se régularise (motif, date et auteur consignés).', 'Régulariser le pointage depuis l’écran des présences'];
+    }
+    return null;
+  }
+  if (collection === 'propositionsPlanning') {
+    const nouveau = champs.etat;
+    const courant = actuelle ? sP(actuelle.etat) : 'proposee';
+    if (creation) {
+      if (nouveau != null && String(nouveau) !== 'proposee') return reserve('Une proposition ne naît pas déjà « ' + nouveau + ' »');
+    } else if (nouveau != null && String(nouveau) !== courant) {
+      const rn = RANG_PROPOSITION[String(nouveau)], rc = RANG_PROPOSITION[courant];
+      if (rn === undefined) return ['etat_inconnu', 'État de proposition inconnu : ' + nouveau + '.', 'Choisir proposee, validee, refusee ou annulee'];
+      if (rc !== undefined && rn < rc) return ['etat_regressif', 'Une proposition tranchée ne recule pas : elle est « ' + courant + ' », elle ne repasse pas à « ' + nouveau + ' ».', 'Faire une nouvelle proposition'];
+      if (String(nouveau) === 'validee' || String(nouveau) === 'refusee') return reserve('L’état « ' + nouveau + ' » d’une proposition');
+    }
+    for (const k of CHAMPS_DECISION_PROPOSITION) if (has(champs, k) && !videP(champs[k]) && (creation || !memeP(champs[k], actuelle && actuelle[k]))) return champReserve(k);
+    return null;
+  }
+  const etat = champs.validationEtat;
+  if (creation) {
+    if (etat == null || String(etat) !== 'a_valider') return reserve('Une vacation ne naît pas validée (état « ' + (videP(etat) ? 'absent' : etat) + ' »)');
+    for (const k of ['validePar', 'valideLe']) if (!videP(champs[k])) return champReserve(k);
+    return null;
+  }
+  const validee = !!actuelle && vacationValidee(actuelle);
+  if (etat != null && String(etat) !== sP(actuelle && actuelle.validationEtat)) {
+    if (String(etat) === 'a_valider' && validee) return ['validation_defaite', 'Une validation ne se défait pas : la vacation est validée, elle ne repasse pas « à valider ».', 'Retirer la vacation (dépôt) plutôt que de défaire la décision'];
+    if (String(etat) === 'validee' || String(etat) === '') return reserve('L’état « validée » d’une vacation');
+  }
+  for (const k of ['validePar', 'valideLe']) if (has(champs, k) && !videP(champs[k]) && !memeP(champs[k], actuelle && actuelle[k])) return champReserve(k);
+  if (validee) {
+    for (const k of CHAMPS_PROGRAMME_VACATION) if (has(champs, k) && !memeP(champs[k], actuelle[k])) return ['vacation_validee', 'Une vacation validée ne se réécrit pas (« ' + k + ' ») : le remplacement se DÉPOSE depuis le poste du validateur, la mère le contrôle et l’applique.', 'Déposer le remplacement, ou proposer la modification'];
+    if (sP(champs.statut) === 'archive' && sP(actuelle.statut) !== 'archive') return ['vacation_validee', 'Une vacation validée ne se retire pas par un poste : le retrait se DÉPOSE depuis le poste du validateur, la mère l’applique.', 'Déposer le retrait'];
+  }
+  return null;
+}
 /* Miroir de `packages/domaine/lib/src/achats/circuit_synchro.dart` (`refusCircuitAchat`) : la mère REFAIT le contrôle de l'état d'un bon écrit par un poste. */
 const RANG_BESOIN = { brouillon: 0, soumis: 1, controle_stock: 2, validation_da: 3, accorde: 4, rejete: 4, complement: 4, prepare: 5, livre: 6, distribue: 6, cloture: 7 };
 const RANG_COMMANDE = { brouillon: 0, attente_validation: 1, validee: 2, transmise: 3, livree: 4, soldee: 5 };
@@ -148,7 +235,7 @@ function refusActionPta(type, champs, actuelle, plan) {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements', 'planning', 'propositionsPlanning', 'conges', 'missions', 'presences']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -283,6 +370,11 @@ function traiter(op, app) {
       const r = refusActionPta(op.type, op.champs || {}, f && f.data, planDe(source.exercice, source.planVersion));
       if (r) return refus(r[0], r[1], r[2]);
     }
+  }
+  /* LE PLANNING : la mère refait le contrôle d'un poste (pièce jamais créée validée, validation non écrite par un poste ni défaite, vacation validée non réécrite). */
+  if (PLANNING_COLLECTIONS.includes(op.collection) && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
+    const r = refusPlanningRh(op.collection, op.type, op.champs || {}, f && f.data ? f.data : undefined);
+    if (r) return refus(r[0], r[1], r[2]);
   }
   if (op.collection === 'demandesImport' && app.role !== 'mere') {
     const auteur = f ? auteurDemandeImport(op.fiche) : null;

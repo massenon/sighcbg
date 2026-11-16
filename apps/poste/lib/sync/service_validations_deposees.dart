@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import '../donnees/planning_rh_poste.dart';
 import '../core/service_parametres.dart';
 import '../donnees/reglages_clinique_poste.dart';
 import '../modules/m14/commun_m14.dart' show rolesDe;
@@ -399,6 +400,133 @@ class ServiceValidationsDeposees {
     return true;
   }
 
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // LE PLANNING À TRAVERS LES POSTES (Direction, 17/11/2026, décision 12) : poser, remplacer, retirer, trancher une pièce, trancher une proposition
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  /// Le rappel que `PlanningRhPoste.deposer` appelle sur un poste RATTACHÉ : il écrit le dépôt (signé du compte, journalisé RG-12) ou rend le refus nommé. Les contrôles du geste ont déjà été
+  /// faits à blanc par l'appelant, sur ses fiches ; la mère les REFAIT à l'application, sur les siennes.
+  Map<String, Object?> Function(Map<String, Object?> demande) deposeurPlanning({required String role, required String acteur}) => (demande) {
+        final r = planningRhDeposer(
+            action: '${demande['action']}',
+            collection: '${demande['collection']}',
+            cible: '${demande['cible']}',
+            libelle: '${demande['libelle'] ?? demande['cible']}',
+            role: role,
+            acteur: acteur,
+            poste: etiquette,
+            maintenant: _maintenant,
+            depots: depots.toutes,
+            nouvelId: _nouvelId,
+            decision: demande['decision'] as String?,
+            motif: demande['motif'] as String?,
+            valeurs: (demande['valeurs'] as Map?)?.cast<String, Object?>());
+        if (!r.ok) return {'ok': false, 'code': r.refus!.code, 'motif': r.refus!.motif, 'geste': r.refus!.geste};
+        if (r.dejaDepose) return {'ok': true, 'depot': r.fiche, 'dejaDepose': true};
+        _signer(r.fiche!);
+        try {
+          depots.ajouterSansJournal(r.fiche!, enTete: true);
+        } on EcritureRefusee catch (e) {
+          return {'ok': false, 'code': 'ECRITURE_REFUSEE', 'motif': e.motif, 'geste': 'Refaire le geste depuis l’écran du planning.'};
+        }
+        for (final c in planningCollectionsSync) {
+          magasin.collection(c).signaler();
+        }
+        magasin.journaliser('Décision du planning transmise à la mère', 'M10', '${demande['collection']}', '${demande['cible']}', null,
+            {'action': demande['action'], if (demande['decision'] != null) 'décision': demande['decision'], 'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id']});
+        return {'ok': true, 'depot': r.fiche, 'dejaDepose': false};
+      };
+
+  /// Le dépôt du planning qui attend encore la mère pour cette pièce (`null` : aucun) : l'écran dit « transmise à la mère, en attente ».
+  Fiche? depotPlanningEnAttente(String collection, Object? cible) {
+    for (final d in depots.toutes) {
+      if (d['statut'] != 'archive' && d['genre'] == valGenrePlanningRh && d['collection'] == collection && d['cible'] == cible && d['etat'] == valDepotDeposee) return d;
+    }
+    return null;
+  }
+
+  /// Applique UN dépôt du planning sur la mère : sous le rôle et le nom de l'auteur, à la date du geste, avec SA matrice et SES fiches (le planning de tous les postes) ; les contrôles sont ceux du
+  /// geste direct (`PlanningRhPoste`), jamais recopiés. Une pièce qui n'est pas encore arrivée à la mère (le dépôt peut devancer la fiche) attend [delaiPieceAbsente] avant d'être refusée.
+  /// Rend vrai quand le dépôt a reçu un verdict.
+  bool _appliquerPlanning(Fiche d) {
+    final quand = DateTime.tryParse('${d['demandeLe'] ?? ''}') ?? _maintenant;
+    final p = PlanningRhPoste(magasin, auteur: () => '${d['demandePar'] ?? ''}', role: '${d['demandeRole'] ?? ''}', horloge: () => quand, appliqueDepot: true, gestesEnForce: () => gestes);
+    final collection = '${d['collection']}', action = '${d['action']}';
+    final fiche = p.parCle(collection, d['cible']);
+    var etat = valDepotAppliquee;
+    String? code, motif, geste;
+    if (fiche == null) {
+      if (_maintenant.difference(quand) < delaiPieceAbsente) return false;
+      etat = valDepotRefusee;
+      code = 'PIECE_INTROUVABLE';
+      motif = 'La pièce visée n’est jamais arrivée à la mère : elle n’a pas été versée par son poste.';
+      geste = 'Refaire le geste depuis l’écran du planning, une fois le poste rattaché';
+    } else {
+      Map<String, Object?> r;
+      final plan = magasin.collection('planning');
+      switch (action) {
+        case planningActionTrancher:
+          r = p.trancher(collection, fiche['id'], '${d['decision']}', motif: d['motif'] as String?);
+        case planningActionProposition:
+          r = p.trancherProposition(fiche['id'], '${d['decision']}', motif: d['motif'] as String?);
+        case planningActionPoser:
+          if (fiche['statut'] == 'archive') {
+            r = {'ok': false, 'code': 'DEJA_FAIT', 'motif': 'La vacation a été retirée par son auteur avant l’application : rien n’est validé.', 'geste': 'Aucun'};
+          } else if (planningVacationValidee(fiche)) {
+            r = {'ok': false, 'code': 'DEJA_FAIT', 'motif': 'La vacation est déjà validée : rien n’est appliqué une seconde fois.', 'geste': 'Aucun'};
+          } else {
+            r = p.poserVacation(employeId: fiche['employeId'], date: fiche['date'] as String?, type: fiche['type'] as String?, observation: fiche['observation'] as String?, existantId: fiche['id']);
+            // Une pose refusée (double affectation avec la vacation d'un autre poste, repos, droit) ne laisse pas une vacation « en attente » orpheline : elle est archivée (RG-14), le motif revient à l'auteur.
+            if (r['ok'] != true) plan.archiver(fiche['id']);
+          }
+        case planningActionRemplacer:
+          final v = (d['valeurs'] as Map?)?.cast<String, Object?>() ?? const <String, Object?>{};
+          r = p.poserVacation(employeId: v['employeId'], date: v['date'] as String?, type: v['type'] as String?, observation: v['observation'] as String?, existantId: fiche['id']);
+        case planningActionRetirer:
+          r = fiche['statut'] == 'archive'
+              ? {'ok': false, 'code': 'DEJA_FAIT', 'motif': 'La vacation est déjà retirée : rien n’est appliqué une seconde fois.', 'geste': 'Aucun'}
+              : p.retirerVacation(fiche['id']);
+        default:
+          r = {'ok': false, 'code': 'ACTION_INCONNUE', 'motif': 'Action du planning inconnue de la mère : $action.', 'geste': 'Refaire le geste depuis l’écran du planning'};
+      }
+      if (r['ok'] != true) {
+        final c = '${r['code'] ?? ''}';
+        etat = c == 'DEJA_TRANCHEE' || c == 'DEJA_FAIT' ? valDepotSansEffet : valDepotRefusee;
+        code = c.isEmpty ? 'REFUSE' : c;
+        motif = '${r['motif'] ?? ''}';
+        geste = '${r['geste'] ?? ''}';
+      } else {
+        magasin.journaliser('Décision du planning appliquée par la mère', 'M10', collection, '${d['cible']}',
+            null, {'action': action, if (d['decision'] != null) 'décision': d['decision'], 'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'appliquée par': auteurMere(), 'dépôt': d['id']});
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    return true;
+  }
+
+  /// Une pose de vacation refusée (compte signataire, droit, contrôle) ne laisse pas une vacation « en attente » orpheline : elle est archivée (RG-14), le motif revient à l'auteur sur le dépôt.
+  void _archiverPoseOrpheline(Fiche d) {
+    if (d['action'] != planningActionPoser) return;
+    for (final f in magasin.collection('planning').toutes) {
+      if ((f['id'] == d['cible'] || f['idSync'] == d['cible']) && f['statut'] != 'archive' && !planningVacationValidee(f)) {
+        magasin.collection('planning').archiver(f['id']);
+        return;
+      }
+    }
+  }
+
+  /// Le temps qu'un dépôt attend la pièce qu'il désigne avant d'être refusé : le dépôt peut devancer la fiche dans le journal.
+  Duration delaiPieceAbsente = const Duration(minutes: 10);
+
   /// AI (16/11/2026) : le dépôt porte le COMPTE qui le signe (la mère le vérifie avant de rejouer) et l'instant exact du geste (l'âge de la décision en attente se mesure dessus).
   void _signer(Fiche f) {
     final compte = magasin.compteSignataire;
@@ -469,6 +597,11 @@ class ServiceValidationsDeposees {
       _signaler('${d['famille']}');
       if (d['genre'] == valGenreCircuitAchat) magasin.collection(d['famille'] == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
       if (d['genre'] == valGenrePta) magasin.collection(ptaCollectionPlans).signaler();
+      if (d['genre'] == valGenrePlanningRh) {
+        for (final c in planningCollectionsSync) {
+          magasin.collection(c).signaler();
+        }
+      }
       n++;
     }
     return n;
@@ -589,6 +722,7 @@ class ServiceValidationsDeposees {
         final refusCompte = _refusCompte(d);
         if (refusCompte != null) {
           _refuserDepot(d, refusCompte);
+          if (d['genre'] == valGenrePlanningRh) _archiverPoseOrpheline(d);
           n++;
           continue;
         }
@@ -606,6 +740,10 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenreNumerotation) {
           if (_appliquerSerie(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenrePlanningRh) {
+          if (_appliquerPlanning(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

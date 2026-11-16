@@ -34,10 +34,12 @@ void main() {
       'identiteLegale': 'R', 'obligationsFiscales': 'R', 'parametresAib': 'R',
       // activité synchronisée : le validateur écrit depuis n'importe quel poste
       'ecritures': 'A', 'presences': 'A', 'avoirs': 'A', 'factures': 'A', 'lecturesOcr': 'A',
+      // LE PLANNING (17/11/2026, décision 12) : vacations, propositions, congés, missions ont rejoint le pont ; la validation se dépose (genre `planning_rh`) — preuve : `planning_sync_test.dart`
+      'planning': 'A', 'propositionsPlanning': 'A', 'conges': 'A', 'missions': 'A',
       // CIRCUITS D'ACHAT (16/11/2026) : le bon de besoins et la commande ont rejoint le pont ; l'arbitrage et la validation DA se déposent (genre `circuit_achat`) — preuve : `circuit_achats_sync_test.dart`
       'besoins': 'A', 'commandes': 'A',
       // locale au poste : la validation ne traverse pas les postes tant que la collection ne rejoint pas le pont
-      'facturesFournisseurs': 'L', 'bulletins': 'L', 'depenses': 'L', 'clotures': 'L', 'planning': 'L',
+      'facturesFournisseurs': 'L', 'bulletins': 'L', 'depenses': 'L', 'clotures': 'L',
       'demandesAnalyses': 'L', 'resultatsImagerie': 'L', 'demandesImagerie': 'L', 'pieces': 'L', 'documents': 'L', 'badges': 'L', 'seuilsDelta': 'L', 'cpa': 'L', 'crAnesthesie': 'L',
     };
     for (final e in attendu.entries) {
