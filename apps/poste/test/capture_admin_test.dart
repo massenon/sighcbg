@@ -17,7 +17,7 @@ import 'package:sigh_poste/mere/client_mere.dart';
 import 'package:sigh_poste/modules/mere/mra_supervision.dart';
 import 'package:sigh_poste/modules/mere/mrb_source.dart';
 import 'package:sigh_poste/shell/contexte_ecran.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show Droit;
+import 'package:sigh_domaine/sigh_domaine.dart' show Droit, smsStatutMotsInterdits;
 
 import 'aide_polices.dart';
 import 'mere_b_test.dart' as b;
@@ -76,7 +76,7 @@ Future<void> _taille(WidgetTester t, double l, double h) async {
   addTearDown(t.view.reset);
 }
 
-Future<void> _poste(WidgetTester t, String ecran, {ModePoste mode = ModePoste.fileul, Magasin? magasin}) async {
+Future<void> _poste(WidgetTester t, String ecran, {ModePoste mode = ModePoste.fileul, Magasin? magasin, String role = 'admin'}) async {
   final client = mode == ModePoste.mere
       ? ClientMere(base: Uri.parse('http://x'), secretAdmin: 's', client: MockClient((r) async => http.Response('[]', 200)))
       : null;
@@ -85,7 +85,7 @@ Future<void> _poste(WidgetTester t, String ecran, {ModePoste mode = ModePoste.fi
       child: SighPoste(
           key: UniqueKey(),
           donnees: _donnees,
-          config: ConfigPoste(mode: mode, role: 'admin'),
+          config: ConfigPoste(mode: mode, role: role),
           client: client,
           ecranInitial: ecran,
           magasin: magasin ?? _jeu(),
@@ -180,7 +180,32 @@ Future<void> _ecranMere(WidgetTester t, Widget ecran) async {
   await _pomper(t);
 }
 
-b.Faux _fauxMrb() => b.Faux()
+/// La mère simulée porte aussi la passerelle SMS (ADR-0009) et l'état de la satisfaction en ligne : numéros MASQUÉS, aucun texte, aucun nom.
+class _FauxMere extends b.Faux {
+  @override
+  Future<MrbSms?> sms() async => MrbSms(
+      actif: true,
+      relaisConfigure: true,
+      relais: const {'plafond_jour': 100, 'envoyes_aujourdhui': 3, 'en_attente': 1, 'pilote': 'journal'},
+      statutMotsInterdits: smsStatutMotsInterdits,
+      journal: [
+        {'id': 'sms-3', 'depose': _jour.subtract(const Duration(minutes: 4)).millisecondsSinceEpoch, 'numero': '+229 01 •• •• •• 12', 'modele': 'Rappel de rendez-vous', 'longueur': 96, 'statut': 'en_attente', 'tentatives': 0, 'erreur': ''},
+        {'id': 'sms-2', 'depose': _jour.subtract(const Duration(minutes: 35)).millisecondsSinceEpoch, 'numero': '+229 01 •• •• •• 47', 'modele': 'Rappel de rendez-vous', 'longueur': 101, 'statut': 'envoye', 'tentatives': 1, 'erreur': ''},
+        {'id': 'sms-1', 'depose': _jour.subtract(const Duration(hours: 2)).millisecondsSinceEpoch, 'numero': '+229 01 •• •• •• 03', 'modele': 'Essai de la passerelle', 'longueur': 58, 'statut': 'envoye', 'tentatives': 1, 'erreur': ''},
+      ]);
+
+  @override
+  Future<Map<String, Object?>?> etatSatisfaction() async => {
+        'relais_configure': true,
+        'kid': 'sat1-01',
+        'liens_en_ligne': 1,
+        'derniere_releve_ms': _jour.subtract(const Duration(minutes: 1)).millisecondsSinceEpoch,
+        'recues': 14,
+        'illisibles': 0,
+      };
+}
+
+b.Faux _fauxMrb() => _FauxMere()
   ..etatV = b.unEtat(appareils: const [
     MrbAppareil(uuid: 'u-1', etiquette: 'Caisse principale', role: 'fileul', etat: 'actif'),
     MrbAppareil(uuid: 'u-2', etiquette: 'Réception', role: 'fileul', etat: 'actif'),
@@ -198,11 +223,47 @@ b.Faux _fauxMrb() => b.Faux()
     MrbEchangeRelais(quand: _jour.subtract(const Duration(minutes: 3)), sens: 'depot', contenu: 'enveloppe de journal rang 1235, 1 024 octets chiffrés', resultat: 'Accepté'),
   ];
 
-Future<void> _posteMere(WidgetTester t, String ecran) async {
+Future<void> _posteMere(WidgetTester t, String ecran, {String role = 'admin', Magasin? magasin}) async {
   mrbSourceInjectee = _fauxMrb();
   mrbIntervalle = const Duration(hours: 1);
   addTearDown(() => mrbSourceInjectee = null);
-  await _poste(t, ecran, mode: ModePoste.mere);
+  await _poste(t, ecran, mode: ModePoste.mere, role: role, magasin: magasin);
+}
+
+/// Fait défiler jusqu'à [f] sans le toucher (la carte visée vient dans la vue de la capture).
+Future<void> _voir(WidgetTester t, Finder f) async {
+  if (f.evaluate().isEmpty) return;
+  await t.ensureVisible(f.first);
+  await _pomper(t, 4);
+}
+
+/// Le jeu livré avec deux décisions qui attendent la mère (une validation d'achat déposée, une demande d'import) : la pastille de la barre les compte.
+Magasin _jeuAvecAttente() {
+  final m = _jeu();
+  m.collection('validationsDeposees').ajouterSansJournal({
+    'id': 'VDP-CAP',
+    'statut': 'actif',
+    'genre': 'circuit_achat',
+    'famille': 'commande_validation',
+    'cible': 'BC-1',
+    'libelle': 'Validation d’une commande',
+    'etat': 'deposee',
+    'demandePar': 'DAF',
+    'demandeRole': 'da',
+    'demandeLe': '2026-11-16T04:30:00.000Z',
+  });
+  m.collection('demandesImport').ajouterSansJournal({
+    'id': 'DI-CAP',
+    'statut': 'actif',
+    'jeu': 'tarifs',
+    'jeuLibelle': 'Tarifs',
+    'etat': 'en_attente',
+    'demandePar': 'DAF',
+    'demandeRole': 'da',
+    'demandeLe': '2026-11-16',
+    'demandeInstant': '2026-11-16T07:00:00.000Z',
+  });
+  return m;
 }
 
 void cas(String nom, double l, double h, Future<void> Function(WidgetTester) corps) => testWidgets(nom, skip: _sortie == null, (t) async {
@@ -357,5 +418,95 @@ void main() {
   cas('Mère : réinitialisation de production', 1440, 1100, (t) async {
     await _posteMere(t, 'mere-reinit');
     await _png(t, 'admin-20-mere-reinit', {});
+  });
+
+  cas('Mère : passerelle SMS', 1440, 1100, (t) async {
+    await _posteMere(t, 'mere-sms-passerelle');
+    await _png(t, 'admin-21-sms-passerelle', {
+      'Interrupteur': find.byKey(const Key('sms:interrupteur')),
+      'Tester l’envoi': find.byKey(const Key('sms:tester')),
+      'Mots interdits': find.byKey(const Key('sms:statut-mots')),
+    });
+  });
+
+  cas('Mère : journal des envois SMS', 1440, 1000, (t) async {
+    await _posteMere(t, 'mere-sms-journal');
+    await _png(t, 'admin-22-sms-journal', {
+      'Composer un SMS': find.byKey(const Key('sms:composer')),
+      'Relever les statuts': find.byKey(const Key('sms:suivre')),
+      'Numéro (masqué)': _texte('Numéro (masqué)'),
+    });
+  });
+
+  cas('Mère : satisfaction en ligne', 1440, 1200, (t) async {
+    await _posteMere(t, 'adm-enquetes');
+    await _toucher(t, _onglet('partage'));
+    await _voir(t, _texte('Satisfaction en ligne (poste mère)'));
+    await _png(t, 'admin-23-satisfaction', {
+      'Carte': _texte('Satisfaction en ligne (poste mère)'),
+      'Publier et relever maintenant': _bouton('Publier et relever maintenant'),
+    });
+  });
+
+  cas('MECeF : mode de certification', 1440, 1100, (t) async {
+    await _posteMere(t, 'mecef-config');
+    await _voir(t, find.byKey(const Key('mecef:etat-mode:boitier')));
+    await _png(t, 'admin-24-mecef-modes', {
+      'Boîtier': find.byKey(const Key('mecef:etat-mode:boitier')),
+      'e-MECeF': find.byKey(const Key('mecef:etat-mode:emecef')),
+      'Adaptateur': find.byKey(const Key('mecef-adaptateur-boitier')),
+      'Enregistrer le mode': _bouton('Enregistrer le mode'),
+    });
+  });
+
+  cas('MECeF : imprimante de caisse', 1440, 1100, (t) async {
+    await _posteMere(t, 'mecef-config');
+    await _voir(t, find.byKey(const Key('mecef:imprimante')));
+    await _png(t, 'admin-25-mecef-imprimante', {
+      'Imprimante': find.byKey(const Key('mecef:imprimante')),
+      'Enregistrer l’imprimante': _bouton('Enregistrer l’imprimante'),
+    });
+  });
+
+  cas('Paramètres : caisse et encaissement', 1440, 1100, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Encaisser le reste d\'une facture qui a une ligne sans prix');
+    await _voir(t, carte);
+    await _png(t, 'admin-26-param-caisse', {
+      'Encaisser le reste': carte,
+      'Régler à partir d’une date': _bouton('Régler à partir d’une date'),
+    });
+  });
+
+  cas('Fiscal : confirmer la CNSS', 1440, 1100, (t) async {
+    await _posteMere(t, 'cfg-comptabilite', role: 'da');
+    await _voir(t, find.byKey(const Key('fco:cnss')));
+    await _png(t, 'admin-27-cnss-confirmer', {
+      'Taux de la CNSS': find.byKey(const Key('fco:cnss')),
+      'Confirmer': find.byKey(const Key('fco:cnss:confirmer')),
+    });
+  });
+
+  cas('Fiscal : barème de l’AIB', 1440, 1000, (t) async {
+    await _posteMere(t, 'm12-aib', role: 'da');
+    await _png(t, 'admin-28-bareme-aib', {
+      'Situations de l’acheteur': _onglet('situations'),
+    });
+  });
+
+  cas('RH : planning individuel', 1440, 1100, (t) async {
+    await _poste(t, 'm10-employe-profil');
+    await _toucher(t, _onglet('planning-individuel'));
+    await _png(t, 'admin-29-planning-individuel', {
+      'Déroger': _bouton('Déroger'),
+      'Remplacer le régime': _bouton('Remplacer le régime'),
+      'Revenir à la catégorie': _bouton('Revenir à la catégorie'),
+    });
+  });
+
+  cas('Barre : décisions en attente de la mère', 1440, 700, (t) async {
+    await _poste(t, 'cfg-systeme', magasin: _jeuAvecAttente());
+    await _png(t, 'admin-30-pastille-decisions', {'Pastille': find.byKey(const Key('barre-decisions-mere'))});
   });
 }

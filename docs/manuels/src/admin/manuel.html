@@ -451,6 +451,36 @@ build_windows.bat</pre>
   <p>La validation des achats (RG-04) appartient d’origine à la seule Directrice Administrative. Pour l’étendre, la Direction l’accorde à un autre rôle dans <b>Gestes réservés</b> ; la décision reste tracée.</p>
 </div>
 
+<h2 id="comptes-sans-role-en-dur">5.8 Aucun rôle écrit en dur</h2>
+<p>Aucune décision de droit n’est écrite sur un nom de rôle dans le code. Chaque décision passe par la matrice ou par un geste réservé. Un contrôle automatique, à chaque construction, refuse tout nouveau nom de rôle écrit dans le code.</p>
+<ul>
+  <li>Les anciennes listes de rôles sont devenues des <b>gestes transverses</b> (module « * », libellé « Geste transverse ») : <code>systeme_administrer</code> (ruban <b>Système</b> et groupe <b>Poste mère</b>), <code>conflits_trancher</code>, <code>sync_valider_flux</code>, les treize gestes <code>alertes_*</code> du centre de notifications (<code>alertes_comptable</code>, <code>alertes_direction</code>, <code>alertes_laboratoire</code>, <code>alertes_creances</code>…), et les gestes de validation des référentiels <code>valider_ref_*</code>.</li>
+  <li>Les gestes livrés en dernier : <code>imprimer_tableau</code>, <code>export_regler_limite</code>, <code>reglage_encaissement_sans_prix</code>, <code>reglage_sms</code>, <code>fiscal_confirmer</code>, <code>achats_valider</code>, <code>rh_regler</code>.</li>
+  <li>Leur origine reproduit les listes d’avant : <b>rien ne change à l’écran sans décision</b>. Une alerte n’est plus routée vers une liste figée : elle va aux rôles qui détiennent le geste dans la matrice en force.</li>
+</ul>
+<div class="encadre observer">
+  <p>L’onglet <b>Gestes réservés</b> de <span class="ch">Rôles &amp; permissions (RBAC)</span> les liste tous. L’annexe B donne les <span data-compte="gestes"></span> gestes avec leurs rôles d’origine, extraits du code.</p>
+</div>
+<div class="encadre attention" data-titre="Attention : retirer une alerte">
+  <p>Retirer un geste <code>alertes_*</code> à un rôle coupe les notifications de ce poste. Vérifier qu’un autre rôle détient encore le geste avant de confirmer.</p>
+</div>
+
+<h2 id="comptes-reglage-geste">5.9 Régler sous geste depuis un fileul</h2>
+<p>Certains paramètres ne dépendent pas du droit d’éditer les Paramètres, mais d’un geste réservé. Ils se règlent depuis <b>n’importe quel poste</b>, mère ou fileul.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Paramètres système ➔ Paramètres</span> sur le poste.</li>
+  <li>Repérer la carte du réglage. Elle n’apparaît qu’au détenteur du geste.</li>
+  <li>Cliquer sur <b>Régler à partir d’une date</b>, saisir la valeur, la date et le motif, puis enregistrer.</li>
+</ol>
+<ul>
+  <li><b>Sur la mère</b>, la version datée est écrite et journalisée.</li>
+  <li><b>Sur un fileul</b>, le réglage est <b>déposé</b> : la carte porte le badge « transmis à la mère, en attente ». La mère le rejoue sous le rôle de l’auteur, avec SA matrice, puis la version revient par la synchronisation.</li>
+  <li>Un dépôt rejoué reste <b>sans effet</b> : jamais une seconde version.</li>
+</ul>
+<div class="encadre param">
+  <p>Aujourd’hui : <code>caisse.encaisserResteLigneSansPrix</code> sous le geste <code>reglage_encaissement_sans_prix</code> (section 6.5). La limite d’export <code>export.limiteLignes</code> se règle sous le geste <code>export_regler_limite</code>, sur la mère.</p>
+</div>
+
 <!-- ============================================================ 6. PARAMÈTRES -->
 <h1 id="parametres"><span class="no">6.</span> Paramètres de clinique</h1>
 <p class="chapo">Tout réglage de la clinique est enregistré en base, avec un défaut semé, et versionné par date. Un réglage n’écrase jamais l’ancien.</p>
@@ -493,6 +523,62 @@ build_windows.bat</pre>
 </ul>
 <div class="encadre param">
   <p>La liste complète des paramètres, avec leur clé et leur défaut semé, figure en annexe C. Elle est extraite du code.</p>
+</div>
+
+<h2 id="param-sans-prix">6.5 Encaisser le reste d’une facture qui a une ligne sans prix</h2>
+<p>Par défaut, <b>rien</b> d’une facture ne s’encaisse tant qu’une ligne attend son prix (« prix à valoriser » ou « prix assuré à définir »). La caisse affiche le refus <code>FACTURE_EN_ATTENTE_DE_PRIX</code>, qui nomme chaque ligne et l’écran qui la débloque. La pharmacie ne délivre rien.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Paramètres système ➔ Paramètres</span>, famille <b>Caisse et encaissement</b>.</li>
+  <li>Sur la carte <b>Encaisser le reste d’une facture qui a une ligne sans prix</b>, cliquer sur <b>Régler à partir d’une date</b> (repère 2).</li>
+  <li>Choisir <b>Oui</b>, la date d’effet et le motif, puis enregistrer.</li>
+</ol>
+<figure class="capture" data-capture="admin-26-param-caisse" data-recadrage="0,760,1800,520" data-cibles='[{"c":"Encaisser le reste","de":"haut","long":70},{"c":"Bouton","rect":[56,1196,244,35],"de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte du réglage, sur le poste mère. Défaut semé : <b>Non</b>.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Encaisser le reste d’une facture qui a une ligne sans prix</b> : la carte, famille <b>Caisse et encaissement</b>.</li>
+  <li><span class="num-rouge">2</span><b>Régler à partir d’une date</b> : une version datée, jamais un écrasement.</li>
+</ul>
+<ul>
+  <li><b>Oui</b> : les autres lignes s’encaissent ; la ligne sans prix reste en attente, nommée ; la pharmacie délivre les lignes réglées.</li>
+  <li>Le geste <code>reglage_encaissement_sans_prix</code> appartient d’origine à l’administrateur et à la DAF, <b>à valider par la Direction</b>.</li>
+  <li>Le prix est lu à la <b>date de la pièce</b>. Pour débloquer une pièce d’hier, il faut une version de prix datée de ce jour : une date passée passe par le geste <code>tarif_dater_passe</code>.</li>
+</ul>
+<div class="encadre info" data-titre="L’alerte « prix manquant »">
+  <p>Une alerte par code, sans nom de patient. Elle va aux rôles qui ont le droit de <b>modifier</b> « Tarifs et prix » (actes, analyses, imagerie) ou le « Référentiel produits » (médicaments), lus dans la matrice.</p>
+</div>
+
+<h2 id="param-export">6.6 Export et impression depuis un tableau</h2>
+<p>Deux droits séparés, tous deux gestes réservés : <code>export_tableau</code> (fichiers .xlsx et CSV) et <code>imprimer_tableau</code> (la sélection ou tout le filtre, en tableau unique ou en pièces complètes, une par page). Sans décision, chacun suit la lecture de l’écran. Retirer l’un ne retire pas l’autre.</p>
+<ul>
+  <li><b>Pas de limite de lignes par défaut</b> : <code>export.limiteLignes</code> vaut 0. Seul le geste <code>export_regler_limite</code> (administrateur et DAF d’origine, à valider) permet d’en fixer une. Le droit d’éditer l’écran ne suffit pas : la carte dit « Réglage réservé… ».</li>
+  <li>Au-delà d’une limite fixée, l’export est <b>refusé</b> (<code>EXPORT_TROP_VOLUMINEUX</code>), jamais tronqué.</li>
+  <li>L’export et l’impression suivent les <b>filtres</b> appliqués. Un texte masqué sort masqué ; un montant ou une date sortent en vrai nombre, en vraie date.</li>
+  <li>Les grilles de saisie en cours et les documents imprimés n’ont ni cases ni <b>Exporter</b>. Dans la GED, les cases servent à exporter et imprimer, jamais à valider en masse.</li>
+</ul>
+<div class="encadre observer" data-titre="Où observer : le journal par identifiants">
+  <p>Chaque export, chaque impression de tableau et chaque refus est écrit au <b>Journal d’audit</b> avec les <b>identifiants</b> des fiches (au plus 50 par entrée), leur <b>nombre total</b> et le filtre. Jamais une valeur de cellule.</p>
+</div>
+
+<h2 id="param-planning">6.7 Régimes de travail et planning individuel</h2>
+<p>Chaque agent suit le régime de sa catégorie. Un <b>régime individuel</b> peut y déroger champ par champ, ou le remplacer entièrement. Il se règle sur la fiche du personnel.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">RH ➔ Ressources humaines ➔ Fiche employé</span> et choisir l’<b>Agent</b>.</li>
+  <li>Ouvrir l’onglet <b>Planning individuel</b>.</li>
+  <li>Cliquer sur <b>Déroger</b> (repère 1) pour changer quelques champs : vacations, horaires, durée, jours, repos, honoraire. Cliquer sur <b>Remplacer le régime</b> (repère 2) pour adopter un autre régime en entier.</li>
+  <li>Saisir la date d’effet, le document d’origine s’il existe, puis enregistrer. <b>Revenir à la catégorie</b> clôt la dérogation à une date.</li>
+</ol>
+<figure class="capture" data-capture="admin-29-planning-individuel" data-recadrage="0,430,1800,800" data-cibles='[{"c":"Déroger","de":"bas"},{"c":"Remplacer le régime","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’onglet <b>Planning individuel</b> de la fiche du personnel (agent de démonstration sans régime de catégorie).</figcaption>
+</figure>
+<ul>
+  <li>Les versions sont <b>datées et immuables</b> : jamais rétroactives, jamais deux le même jour. Les vacations déjà posées gardent leur régime.</li>
+  <li>Sans document d’origine, chaque champ posé est marqué <b>À valider</b> : une valeur sans document est une valeur d’attente.</li>
+  <li>Un régime qui écrit ses jours refuse une vacation un autre jour (<code>JOUR_HORS_REGIME</code>). Garde de 24 h et repos de 24/48 h s’appliquent au régime effectif.</li>
+  <li>L’honoraire de régime entre aux primes et au bulletin, depuis le planning validé (RG-11).</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : droits de l’onglet">
+  <p>Écrire exige le droit d’écrire <b>Planning</b> ET le geste <code>rh_regler</code>. Les montants d’honoraire ne se lisent qu’avec le planning en écriture ou le droit de lire les primes. Le planning lui-même ne se synchronise pas encore entre postes : tenir le planning et calculer la paie sur le même poste.</p>
 </div>
 
 <!-- ============================================================ 7. MODULES -->
@@ -550,8 +636,8 @@ build_windows.bat</pre>
 </div>
 
 <!-- ============================================================ 9. MECEF -->
-<h1 id="mecef"><span class="no">9.</span> MECeF et boîtier ELTRADE CC300</h1>
-<p class="chapo">Le logiciel nomme le boîtier, mais l’adaptateur qui lui parle reste à fournir par l’éditeur du boîtier.</p>
+<h1 id="mecef"><span class="no">9.</span> MECeF, AIB et taux fiscaux</h1>
+<p class="chapo">Le logiciel nomme le boîtier, mais l’adaptateur qui lui parle reste à fournir par l’éditeur du boîtier. Aucun numéro fiscal n’est simulé.</p>
 
 <h2 id="mecef-config">9.1 Lire la configuration fiscale</h2>
 <p>Ouvrir <span class="ch">Financier ➔ MECeF — Facture normalisée ➔ Configuration fiscale</span>.</p>
@@ -564,12 +650,21 @@ build_windows.bat</pre>
   <li>Le changement de mode passe par <b>Enregistrer le mode</b> et exige le geste réservé <code>reglage_mecef</code> (administrateur et DAF d’origine).</li>
 </ul>
 
-<h2 id="mecef-etat">9.2 L’état réel</h2>
+<h2 id="mecef-modes">9.2 La carte « Mode de certification » : l’état des deux modes</h2>
+<p>Sous le choix du mode, la carte décrit chaque mode en deux colonnes : <b>Prêt au poste</b> et <b>Ce qui manque</b>. Le mode retenu est encadré.</p>
+<figure class="capture" data-capture="admin-24-mecef-modes" data-recadrage="0,120,1150,920" data-cibles='[{"c":"Boîtier","de":"droite","long":120},{"c":"e-MECeF","de":"droite","long":120},{"c":"Enregistrer le mode","de":"droite","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’état des deux modes, sur le poste mère.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Boîtier physique</b> : prêt au poste (vente tenue en attente de certification, retransmission, modèle réglé) ; manque l’adaptateur ELTRADE CC300, à fournir par l’éditeur.</li>
+  <li><span class="num-rouge">2</span><b>e-MECeF</b> : manque le dossier d’interface DGI. Aucun protocole n’est supposé.</li>
+  <li><span class="num-rouge">3</span><b>Enregistrer le mode</b> : geste <code>reglage_mecef</code>.</li>
+</ul>
 <div class="encadre attention" data-titre="Attention : aucune facture n’est encore certifiée">
   <p>L’écran affiche « Adaptateur ELTRADE CC300 à fournir par l’éditeur du boîtier ». Une vente est encaissée, puis reste <b>en attente de certification</b> avec le refus <code>MECEF_NON_CONFIGURE</code>. Le poste ne fabrique aucun numéro fiscal et n’envoie aucune requête. Le mode e-MECeF reste « non configuré : dossier d’interface DGI requis ».</p>
 </div>
 
-<h2 id="mecef-obtenir">9.3 Ce qu’il faut obtenir du fournisseur</h2>
+<h2 id="mecef-obtenir">9.3 Ce qu’il faut obtenir du fournisseur du boîtier</h2>
 <ol class="etapes">
   <li>Le manuel d’intégration du CC300, destiné aux éditeurs de logiciels de caisse.</li>
   <li>L’interface physique et le pilote Windows : série, USB ou réseau, avec les paramètres de liaison.</li>
@@ -580,8 +675,88 @@ build_windows.bat</pre>
   <li>La conduite en cas d’incident : coupure pendant une émission, papier, reprise sans doublon, horloge.</li>
   <li>L’organisation : nombre de boîtiers, postes de caisse rattachés, contact technique.</li>
 </ol>
+
+<h2 id="mecef-imprimante">9.4 Imprimante de caisse</h2>
+<p>La carte <b>Imprimante de caisse</b> décrit l’appareil qui imprime le ticket. Aucun modèle n’est fourni pour Baguidi : la clinique le renseigne.</p>
+<ol class="etapes">
+  <li>Sur <b>Configuration fiscale</b>, descendre jusqu’à la carte <b>Imprimante de caisse</b> (repère 1).</li>
+  <li>Saisir le <b>Modèle</b>, la <b>Largeur du papier</b> (de 40 à 120 mm) et l’<b>Interface</b> (USB, série, réseau…).</li>
+  <li>Cliquer sur <b>Enregistrer l’imprimante</b> (repère 2).</li>
+</ol>
+<figure class="capture" data-capture="admin-25-mecef-imprimante" data-recadrage="0,120,1150,600" data-cibles='[{"c":"Imprimante","de":"droite","long":160},{"c":"Enregistrer l’imprimante","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Imprimante de caisse</b> : modèle et interface « à renseigner ».</figcaption>
+</figure>
+<table class="tableau">
+  <thead><tr><th>Réglage</th><th>Clé</th><th>Défaut semé</th></tr></thead>
+  <tbody>
+    <tr><td>Modèle</td><td><code>mecef.imprimanteCaisse.modele</code></td><td><em>vide</em> : à renseigner</td></tr>
+    <tr><td>Largeur du papier</td><td><code>mecef.imprimanteCaisse.largeurPapierMm</code></td><td>80 mm (valeur d’attente, à valider)</td></tr>
+    <tr><td>Interface</td><td><code>mecef.imprimanteCaisse.interface</code></td><td><em>vide</em> : à renseigner</td></tr>
+  </tbody>
+</table>
+<ul>
+  <li>Famille MECeF : réglage sur la mère, sous le geste <code>reglage_mecef</code>, versionné par date.</li>
+  <li>L’aperçu et le PDF du ticket prennent la largeur réglée. Une valeur illisible garde 80 mm, et la carte le dit.</li>
+</ul>
+<div class="encadre info">
+  <p>Ce réglage <b>décrit</b> l’appareil. Aucun pilote d’impression n’est branché : le ticket s’ouvre en aperçu et s’enregistre en PDF.</p>
+</div>
+
+<h2 id="mecef-aib">9.5 Facture d’un patient : sans acheteur ni AIB</h2>
+<p>La facture d’un patient reste <b>normalisée MECeF</b>, mais elle ne porte ni acheteur ni AIB. Le patient paie le total.</p>
+<ul>
+  <li>Le bloc « FACTURE NORMALISÉE » (IFU de l’acheteur, nom de l’acheteur, taux d’AIB) a disparu des trois portes d’encaissement.</li>
+  <li>La pièce imprimée n’a aucune ligne d’AIB : net à payer = TTC.</li>
+  <li>Sur <b>Configuration fiscale</b>, <b>Taux d’AIB (%)</b> affiche « sans objet sur la facture d’un patient ».</li>
+</ul>
+<div class="encadre observer" data-titre="Où l’AIB garde un sens">
+  <ul>
+    <li><b>Factures des fournisseurs</b> (M7) : la retenue d’AIB et l’AIB subi restent saisis par le comptable.</li>
+    <li><b>Tiers payeurs</b> (assureur, entreprise) : leur part est portée par la facture du patient, puis réclamée par le relevé et la facture mère, qui ne sont pas des pièces MECeF.</li>
+  </ul>
+</div>
+
+<h2 id="mecef-confirmer">9.6 Confirmer les taux de la CNSS</h2>
+<p>Le bouton <b>Confirmer</b> atteste qu’un taux en vigueur a été vérifié. La confirmation s’ajoute à l’historique : rien n’est écrasé.</p>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Paramètres comptables &amp; obligations</span>, ou <span class="ch">RH ➔ Paie &amp; Primes ➔ Cotisations CNSS / ITS / VPS</span>.</li>
+  <li>Sur la carte <b>Taux de la CNSS</b> (repère 1), cliquer sur <b>Confirmer</b> (repère 2).</li>
+  <li>Saisir le <b>motif</b> (obligatoire) et la <b>date d’effet</b>, puis valider.</li>
+</ol>
+<figure class="capture" data-capture="admin-27-cnss-confirmer" data-recadrage="0,120,1800,420" data-cibles='[{"c":"Taux de la CNSS","de":"haut","long":60},{"c":"Confirmer","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Taux de la CNSS</b>, vue par la DAF sur le poste mère.</figcaption>
+</figure>
+<ul>
+  <li>Geste réservé <code>fiscal_confirmer</code> : origine <b>proposée</b>, le Comptable et la DAF, à valider par la Direction. Sans le geste, le bouton est absent.</li>
+  <li>La trace porte le compte de la session, le rôle, l’horodatage et la valeur recopiée. Un fileul lit, il ne confirme pas.</li>
+  <li>Refus nommés : <code>CONFIRMATION_EXISTANTE</code>, <code>DATE_EFFET_ANTERIEURE</code>.</li>
+</ul>
+<div class="encadre info">
+  <p>La confirmation atteste la valeur à une date. Elle ne change pas le taux utilisé par la paie : rendre les taux de la CNSS datés reste un chantier nommé.</p>
+</div>
+
+<h2 id="mecef-baremes">9.7 Les deux barèmes de l’AIB</h2>
+<p>Ouvrir <span class="ch">Gestion &amp; trésorerie ➔ Acompte sur impôt (AIB)</span>. Deux barèmes coexistent, en paramètres de clinique versionnés par date :</p>
+<table class="tableau">
+  <thead><tr><th style="width:38%">Barème</th><th>Situations et taux semés</th></tr></thead>
+  <tbody>
+    <tr><td><b>Par situation de l’acheteur</b></td><td>1 % IFU actif · 5 % sans IFU actif · 3 % prestation de service.</td></tr>
+    <tr><td><b>Retenue sur la facture d’un tiers</b></td><td>3 % personne physique · 5 % personne morale. Versions <b>non arrêtées</b>, à valider : elles s’appliquent une fois confirmées.</td></tr>
+  </tbody>
+</table>
+<figure class="capture" data-capture="admin-28-bareme-aib" data-recadrage="0,60,1800,1100" data-cibles='[{"c":"Situations de l’acheteur","de":"haut","long":80}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le registre du barème de l’AIB : statut « Arrêté » ou « Non arrêté, à valider ».</figcaption>
+</figure>
+<ol class="etapes">
+  <li>Ouvrir la version à confirmer dans le registre.</li>
+  <li>Cliquer sur <b>Confirmer</b> (geste <code>fiscal_confirmer</code>).</li>
+  <li>Saisir le motif et la date d’effet. Une version non arrêtée est <b>arrêtée</b> à cette date.</li>
+</ol>
+<div class="encadre bonne">
+  <p>À la retenue, le comptable choisit le <b>barème</b> puis la catégorie : les deux listes partent vides (<code>AIB_BAREME_REQUIS</code>). Aucun barème n’est supposé.</p>
+</div>
 <div class="encadre param">
-  <p><code>mecef.mode</code> (défaut : Boîtier physique) et <code>mecef.modeleBoitier</code> (défaut : ELTRADE CC300), famille MECeF. Seule la mère les écrit.</p>
+  <p><code>mecef.mode</code> (défaut : Boîtier physique) et <code>mecef.modeleBoitier</code> (défaut : ELTRADE CC300), famille MECeF. Seule la mère les écrit. Les situations de l’AIB vivent dans <code>situationsAib</code> et <code>baremeAib</code>.</p>
 </div>
 
 <!-- ============================================================ 10. SYNCHRONISATION -->
@@ -606,8 +781,26 @@ build_windows.bat</pre>
   <li>La mère vérifie le compte signataire et rejoue le geste sous le rôle et le nom de l’auteur, avec tous les contrôles.</li>
   <li>La pièce porte la date de signature (le geste) et la date d’application (la mère).</li>
 </ul>
+<figure class="capture" data-capture="admin-30-pastille-decisions" data-recadrage="700,0,1100,130" data-cibles='[{"c":"Pastille","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La pastille de la barre supérieure d’un fileul : deux décisions attendent la mère, la plus ancienne depuis plus de 4 heures (ton rouge).</figcaption>
+</figure>
+<p>La pastille passe à l’orange dès la première décision, au rouge au-delà du délai d’alerte. Son info-bulle détaille chaque file.</p>
 <div class="encadre param" data-titre="Paramétrage : l’alerte au bout de 4 heures">
-  <p><code>validations.delaiAlerteMereHeures</code> (défaut : 4). Au-delà, une notification part vers le validateur concerné et vers l’administrateur. Rien n’est bloqué, rien n’est validé à la place de la mère.</p>
+  <p><code>validations.delaiAlerteMereHeures</code> (défaut : 4, versionné par date). Au-delà, <b>une</b> notification par décision et par destinataire part vers le validateur concerné et vers l’administrateur. Le validateur est lu dans la matrice : rôles qui détiennent le geste (<code>achats_valider</code> pour un circuit d’achat, <code>tarif_decider</code> pour une demande de prix…). Rien n’est bloqué, rien n’est validé à la place de la mère.</p>
+</div>
+<h3>La vérification du compte signataire</h3>
+<p>Chaque décision déposée porte le compte nominatif de l’agent qui l’a prise. Avant tout rejeu, la mère vérifie ce compte dans SES comptes de la clinique. Le verdict revient au fileul sur la même fiche :</p>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Refus</th><th>Cause</th></tr></thead>
+  <tbody>
+    <tr><td><code>COMPTE_NON_INSCRIT</code></td><td>La décision ne porte aucun compte : session de démonstration ou poste d’avant la règle.</td></tr>
+    <tr><td><code>COMPTE_INCONNU</code></td><td>Le compte n’existe pas à la mère.</td></tr>
+    <tr><td><code>COMPTE_ROLE_DIFFERENT</code></td><td>Le compte n’a pas, à la mère, le rôle inscrit sur la décision.</td></tr>
+    <tr><td><code>COMPTE_ARCHIVE</code></td><td>Le compte est archivé ou désactivé.</td></tr>
+  </tbody>
+</table>
+<div class="encadre bonne">
+  <p>Créer chaque compte sur la mère <b>avant</b> que l’agent ne valide sur un fileul, et garder un compte nominatif par agent. Une session de démonstration ne signe aucune décision.</p>
 </div>
 
 <h2 id="synchro-conflits">10.3 Conflits et pièces mises de côté</h2>
@@ -859,7 +1052,7 @@ composer install --no-dev --optimize-autoloader</pre></li>
   <li>Migrer la base et créer le compte du panneau (terminal cPanel ou tâche ponctuelle) :
 <pre>php artisan migrate --force
 php artisan relais:superadmin direction@clinique.bj --mot-de-passe='douze-caracteres-minimum'</pre></li>
-  <li>Ajouter les tâches cron, chaque minute :
+  <li>Ajouter les tâches cron, chaque minute (détail des tâches en 14.7) :
 <pre>php /chemin/vers/apps/web/artisan schedule:run
 php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
   <li>Sur le poste mère, activer la mère avec le même secret (chapitre 2).</li>
@@ -868,7 +1061,10 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
   <p>Le fichier <code>.env</code> ne va jamais dans le dépôt. Le <code>RELAIS_SECRET_MERE</code> du relais et le <b>Secret de la mère</b> saisi sur le poste doivent être identiques au caractère près.</p>
 </div>
 <div class="encadre param" data-titre="Paramétrage du relais (.env)">
-  <p><code>RELAIS_INDICATEURS_CLINIQUE_MAX</code> (500 instantanés gardés), <code>RELAIS_SEUIL_INDICATEURS_CLINIQUE_MS</code> (plancher de l’alerte « trop ancien », 1 h), <code>RELAIS_INDICATEURS_CLINIQUE_OCTETS_MAX</code>. Voir <code>config/relais.php</code>.</p>
+  <p><code>RELAIS_INDICATEURS_CLINIQUE_MAX</code> (500 instantanés gardés), <code>RELAIS_SEUIL_INDICATEURS_CLINIQUE_MS</code> (plancher de l’alerte « trop ancien », 1 h), <code>RELAIS_INDICATEURS_CLINIQUE_OCTETS_MAX</code>. Voir <code>config/relais.php</code>. Les SMS (<code>RELAIS_SMS_*</code>) et la satisfaction en ligne (<code>RELAIS_SATISFACTION_*</code>) sont décrits en 14.5 et 14.6.</p>
+</div>
+<div class="encadre info" data-titre="L’adresse du relais">
+  <p>Dans ce manuel, <code>https://sighcbg.exemple.bj</code> désigne l’<b>adresse du relais de la clinique</b>. Remplacer cet exemple par l’adresse réelle que la clinique aura retenue. L’adresse du relais et celle de la messagerie de la clinique restent <b>à renseigner</b>.</p>
 </div>
 
 <h2 id="relais-panneau">14.3 Le panneau superadmin</h2>
@@ -928,6 +1124,179 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
   <li>Choisir ensuite la destination des fichiers aux Paramètres (chapitre 11.2).</li>
 </ol>
 
+<h2 id="relais-sms">14.5 SMS par le relais</h2>
+<p>La décision d’architecture ADR-0009 fixe la règle : la <b>mère compose</b> le SMS, le <b>relais l’envoie</b> par une tâche planifiée, puis l’efface. Le fournisseur de SMS n’est connu que du relais.</p>
+<figure>
+<svg class="schema" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs><marker id="fs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
+  <g font-size="13" text-anchor="middle">
+    <rect x="20" y="30" width="230" height="170" rx="12" fill="#EEF4FC" stroke="#1565C0" stroke-width="2"/>
+    <text x="135" y="58" font-weight="700" fill="#123A6B">Poste mère</text>
+    <text x="135" y="86" font-size="11.5" fill="#334155">modèle de message</text>
+    <text x="135" y="104" font-size="11.5" fill="#334155">+ jour, heure, clinique</text>
+    <text x="135" y="128" font-size="11.5" fill="#334155">contrôle : mots interdits,</text>
+    <text x="135" y="146" font-size="11.5" fill="#334155">longueur, numéro</text>
+    <text x="135" y="178" font-size="11" fill="#64748B">journal : numéro masqué</text>
+    <rect x="335" y="30" width="230" height="170" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="450" y="58" font-weight="700" fill="#D32F2F">Relais (sighcbg.exemple.bj)</text>
+    <text x="450" y="86" font-size="11.5" fill="#334155">file sms_sortants</text>
+    <text x="450" y="104" font-size="11.5" fill="#334155">numéro + texte, rien d’autre</text>
+    <text x="450" y="128" font-size="11.5" fill="#334155">cron : relais:sms-envoyer</text>
+    <text x="450" y="146" font-size="11.5" fill="#334155">plafond du jour, 5 tentatives</text>
+    <text x="450" y="178" font-size="11" font-weight="700" fill="#123A6B">effacé dès l’envoi</text>
+    <rect x="650" y="30" width="230" height="170" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+    <text x="765" y="58" font-weight="700" fill="#15803D">Fournisseur de SMS</text>
+    <text x="765" y="86" font-size="11.5" fill="#334155">pilote « journal » : n’envoie rien</text>
+    <text x="765" y="104" font-size="11.5" fill="#334155">pilote « http » : réglé</text>
+    <text x="765" y="122" font-size="11.5" fill="#334155">dans le .env du relais</text>
+    <text x="765" y="178" font-size="11" fill="#64748B">téléphone du patient</text>
+  </g>
+  <g stroke="#D32F2F" stroke-width="2.4"><path d="M252 115H331" marker-end="url(#fs)"/><path d="M567 115H646" marker-end="url(#fs)"/></g>
+  <text x="291" y="104" text-anchor="middle" font-size="10.5" fill="#475569">dépôt signé</text>
+  <text x="606" y="104" text-anchor="middle" font-size="10.5" fill="#475569">envoi</text>
+  <rect x="20" y="222" width="860" height="60" rx="10" fill="#FDECEC" stroke="#D32F2F" stroke-width="1.5"/>
+  <text x="450" y="246" text-anchor="middle" font-size="12.5" font-weight="700" fill="#D32F2F">Le relais ne voit JAMAIS : dossier, nom, motif, diagnostic, examen, occasion.</text>
+  <text x="450" y="268" text-anchor="middle" font-size="12" fill="#1F2937">Un rappel dit le jour, l’heure et la clinique. Aucun contenu médical dans un SMS.</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>Le trajet d’un SMS : composé par la mère, transporté puis effacé par le relais.</figcaption>
+</figure>
+<h3>Régler le relais</h3>
+<ol class="etapes">
+  <li>Dans le <code>.env</code> du relais, choisir le pilote : <code>RELAIS_SMS_PILOTE=journal</code> (défaut, n’envoie rien) ou <code>http</code>.</li>
+  <li>Pour le pilote <code>http</code>, renseigner les variables du fournisseur retenu : <code>RELAIS_SMS_HTTP_URL</code>, <code>RELAIS_SMS_HTTP_CLE</code>, <code>RELAIS_SMS_HTTP_ENTETE_CLE</code>, <code>RELAIS_SMS_HTTP_PREFIXE_CLE</code>, <code>RELAIS_SMS_EXPEDITEUR</code> et les noms de champs <code>RELAIS_SMS_HTTP_CHAMP_NUMERO</code>, <code>_TEXTE</code>, <code>_EXPEDITEUR</code>.</li>
+  <li>Régler le plafond : <code>RELAIS_SMS_PLAFOND_JOUR</code> (défaut 100, jour civil de Porto-Novo).</li>
+  <li>Migrer la base (<code>php artisan migrate --force</code>) : la table <code>sms_sortants</code> est créée.</li>
+  <li>Vérifier que le cron <code>schedule:run</code> tourne chaque minute (section 14.7).</li>
+</ol>
+<table class="tableau">
+  <thead><tr><th style="width:42%">Variable du .env</th><th>Rôle</th><th style="width:14%">Défaut</th></tr></thead>
+  <tbody>
+    <tr><td><code>RELAIS_SMS_PILOTE</code></td><td><code>journal</code> (essai) ou <code>http</code> (pilote générique)</td><td>journal</td></tr>
+    <tr><td><code>RELAIS_SMS_PLAFOND_JOUR</code></td><td>SMS envoyés au plus par jour ; au-delà, dépôt refusé <code>plafond_atteint</code></td><td>100</td></tr>
+    <tr><td><code>RELAIS_SMS_TENTATIVES_MAX</code></td><td>Tentatives avant échec (1 min, 5 min, 15 min, 1 h)</td><td>5</td></tr>
+    <tr><td><code>RELAIS_SMS_LOT</code></td><td>SMS envoyés au plus par passage du cron</td><td>20</td></tr>
+    <tr><td><code>RELAIS_SMS_LONGUEUR_MAX</code>, <code>RELAIS_SMS_OCTETS_MAX</code></td><td>Longueur du texte, taille du dépôt</td><td>320, 4096</td></tr>
+    <tr><td><code>RELAIS_SMS_CONSERVATION_JOURS</code></td><td>Purge des lignes terminées (déjà sans numéro ni texte)</td><td>30</td></tr>
+    <tr><td><code>RELAIS_SMS_HTTP_*</code>, <code>RELAIS_SMS_EXPEDITEUR</code></td><td>Adresse, clé et champs du fournisseur</td><td><em>vide</em></td></tr>
+  </tbody>
+</table>
+<div class="encadre attention" data-titre="Attention : les identifiants du fournisseur">
+  <p>La clé du fournisseur ne vit que dans le <code>.env</code> du relais. Jamais dans le dépôt, jamais sur un poste, jamais dans ce manuel. Aucun fournisseur réel n’est branché : le pilote propre au fournisseur retenu reste à écrire. <span class="non-verifie">Non vérifié avec un fournisseur SMS réel</span></p>
+</div>
+<h3>La passerelle sur le poste mère</h3>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Passerelle SMS</span>.</li>
+  <li>Cocher la case de la passerelle (repère 1). Elle est <b>fermée par défaut</b>.</li>
+  <li>Cliquer sur <b>Tester l’envoi</b> (repère 2) : composer un SMS d’essai vers un numéro de service.</li>
+  <li>Relire la liste des mots interdits (repère 3).</li>
+</ol>
+<figure class="capture" data-capture="admin-21-sms-passerelle" data-recadrage="0,120,1800,1020" data-cibles='[{"c":"Interrupteur","de":"droite","long":120},{"c":"Tester l’envoi","de":"droite"},{"c":"Mots interdits","rect":[56,925,1000,43],"de":"haut","long":60}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Passerelle SMS (source simulée) : plafond lu au relais, pilote d’essai, mots interdits.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Passerelle SMS</b> : ouverte ou fermée ; réglage en base de la mère.</li>
+  <li><span class="num-rouge">2</span><b>Tester l’envoi</b> : le texte exact qui partira est montré avant le dépôt.</li>
+  <li><span class="num-rouge">3</span><b>Mots interdits dans un SMS</b> : liste proposée, <b>à valider par un médecin</b>. Un texte qui en contient un est refusé (<code>SMS_CONTENU_MEDICAL</code>).</li>
+</ul>
+<div class="encadre param">
+  <p>Le geste réservé <code>reglage_sms</code> (« Régler la passerelle SMS et tester l’envoi ») s’ajoute au droit d’écrire l’écran. Origine <b>proposée</b> : l’administrateur et la DAF, à valider par la Direction. Sans lui, les commandes sont absentes.</p>
+</div>
+<h3>Le journal des envois SMS</h3>
+<ol class="etapes">
+  <li>Ouvrir <span class="ch">Poste mère ➔ Liaison avec le relais ➔ Journal des envois SMS</span>.</li>
+  <li>Cliquer sur <b>Composer un SMS</b> (repère 1) : choisir un modèle, saisir le numéro et la date du rendez-vous.</li>
+  <li>Cliquer sur <b>Relever les statuts</b> (repère 2) pour lire l’état au relais. Le suivi est aussi automatique, chaque minute, tant qu’un SMS attend.</li>
+</ol>
+<figure class="capture" data-capture="admin-22-sms-journal" data-recadrage="0,120,1800,880" data-cibles='[{"c":"Composer un SMS","de":"bas"},{"c":"Relever les statuts","de":"bas"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Journal des envois SMS (source simulée) : numéro masqué, modèle, statut, tentatives. Aucun texte n’est gardé.</figcaption>
+</figure>
+<div class="encadre info" data-titre="Ce qui n’est pas encore fait">
+  <ul>
+    <li>Les envois <b>automatiques</b> (rappel la veille du rendez-vous, anniversaire) ne sont pas branchés : seuls la composition et le dépôt manuels existent.</li>
+    <li>Le dossier patient ne porte pas encore de case « accepte les SMS ». Elle est à ajouter avant tout envoi automatique.</li>
+    <li>Le modèle « Résultat disponible » est refusé : il révèle qu’un examen a eu lieu.</li>
+  </ul>
+</div>
+
+<h2 id="relais-satisfaction">14.6 Satisfaction en ligne</h2>
+<p>Un patient répond au questionnaire de satisfaction depuis son téléphone, par un lien ou un QR. Le relais sert la page ; il ne lit aucune réponse.</p>
+<figure>
+<svg class="schema" viewBox="0 0 900 290" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+  <defs><marker id="fq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#D32F2F"/></marker></defs>
+  <g font-size="13" text-anchor="middle">
+    <rect x="20" y="30" width="250" height="180" rx="12" fill="#EEF4FC" stroke="#1565C0" stroke-width="2"/>
+    <text x="145" y="58" font-weight="700" fill="#123A6B">Poste mère</text>
+    <text x="145" y="86" font-size="11.5" fill="#334155">1. publie le lien : modèle</text>
+    <text x="145" y="104" font-size="11.5" fill="#334155">+ clé PUBLIQUE de la clinique</text>
+    <text x="145" y="134" font-size="11.5" fill="#334155">4. relève les enveloppes,</text>
+    <text x="145" y="152" font-size="11.5" fill="#334155">déchiffre avec la clé privée</text>
+    <text x="145" y="186" font-size="11" fill="#64748B">clé privée : jamais publiée</text>
+    <rect x="325" y="30" width="250" height="180" rx="12" fill="#fff" stroke="#D32F2F" stroke-width="2"/>
+    <text x="450" y="58" font-weight="700" fill="#D32F2F">Relais</text>
+    <text x="450" y="86" font-size="11.5" fill="#334155">sert /satisfaction/{jeton}</text>
+    <text x="450" y="110" font-size="11.5" fill="#334155">stocke des enveloppes</text>
+    <text x="450" y="128" font-size="11.5" fill="#334155">chiffrées, illisibles</text>
+    <text x="450" y="152" font-size="11.5" fill="#334155">date = jour de réception</text>
+    <text x="450" y="186" font-size="11" fill="#64748B">ni heure, ni adresse réseau</text>
+    <rect x="630" y="30" width="250" height="180" rx="12" fill="#ECFDF3" stroke="#15803D" stroke-width="2"/>
+    <text x="755" y="58" font-weight="700" fill="#15803D">Navigateur du patient</text>
+    <text x="755" y="86" font-size="11.5" fill="#334155">2. affiche le questionnaire</text>
+    <text x="755" y="110" font-size="11.5" fill="#334155">3. CHIFFRE les réponses</text>
+    <text x="755" y="128" font-size="11.5" fill="#334155">avec la clé publique</text>
+    <text x="755" y="152" font-size="11.5" fill="#334155">aucune note présélectionnée</text>
+    <text x="755" y="186" font-size="11" fill="#64748B">ni nom, ni n° de dossier</text>
+  </g>
+  <g stroke="#D32F2F" stroke-width="2.4"><path d="M272 100H321" marker-end="url(#fq)"/><path d="M628 120H579" marker-end="url(#fq)"/><path d="M579 90H628" marker-end="url(#fq)"/><path d="M321 145H272" marker-end="url(#fq)"/></g>
+  <text x="450" y="245" text-anchor="middle" font-size="12.5" fill="#1F2937">Les réponses déchiffrées redescendent de la mère aux fileuls, pour les statistiques de satisfaction.</text>
+  <text x="450" y="268" text-anchor="middle" font-size="12" fill="#475569">Un lien en ligne est toujours anonyme : la mère refuse de publier un lien nominatif (LIEN_NOMINATIF).</text>
+</svg>
+<figcaption><span class="tag schema">SCHÉMA</span>La satisfaction en ligne : chiffrée dans le navigateur, déchiffrée par la seule mère.</figcaption>
+</figure>
+<ol class="etapes">
+  <li>Sur n’importe quel poste, ouvrir <span class="ch">Administration ➔ Enquêtes &amp; questionnaires</span>, onglet <b>Liens de partage</b>, et ouvrir un lien d’usage « Sur Internet, par le relais — depuis chez soi (anonyme, chiffré) ».</li>
+  <li>Attendre la publication par la mère : l’adresse et le QR n’apparaissent qu’ensuite, de la forme <code>https://sighcbg.exemple.bj/satisfaction/&lt;jeton&gt;</code>.</li>
+  <li>Imprimer l’affiche avec <b>Imprimer l’affiche (QR)</b> et la poser en salle d’attente.</li>
+  <li>Sur le poste mère, la carte <b>Satisfaction en ligne (poste mère)</b> dit l’état. <b>Publier et relever maintenant</b> force une relève ; sinon elle a lieu chaque minute au plus.</li>
+</ol>
+<figure class="capture" data-capture="admin-23-satisfaction" data-recadrage="0,640,1800,560" data-cibles='[{"c":"Carte","rect":[56,729,420,25],"de":"droite"},{"c":"Publier et relever maintenant","de":"droite"}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La carte <b>Satisfaction en ligne (poste mère)</b> (source simulée) : relais, clé publique, liens, dernière relève, réponses reçues et écartées.</figcaption>
+</figure>
+<ul>
+  <li>Révoquer le lien sur un poste le retire du relais. Un lien retiré ne se republie pas (<code>lien_revoque</code>) : en ouvrir un nouveau.</li>
+  <li>La mère ne retient que les questions du modèle en vigueur, une note de 1 à 5, un choix de la liste, un texte de 1 000 caractères au plus. Une enveloppe illisible est écartée, comptée et nommée au journal technique, sans contenu.</li>
+</ul>
+<table class="tableau">
+  <thead><tr><th style="width:44%">Route du relais</th><th>Usage</th></tr></thead>
+  <tbody>
+    <tr><td><code>GET /satisfaction/{jeton}</code>, <code>GET /satisfaction/{jeton}/modele</code></td><td>La page publique et son modèle (seule page publique du relais).</td></tr>
+    <tr><td><code>POST /satisfaction/{jeton}/reponse</code></td><td>Le dépôt d’une enveloppe chiffrée.</td></tr>
+    <tr><td><code>POST /mere/satisfaction/publier</code>, <code>/revoquer</code>, <code>/relever</code>, <code>/acquitter</code></td><td>Réservées à la mère (secret partagé).</td></tr>
+  </tbody>
+</table>
+<div class="encadre param" data-titre="Paramétrage : config/satisfaction.php">
+  <p><code>RELAIS_SATISFACTION_DEBIT_PAGE</code> (60 pages par minute et par adresse), <code>RELAIS_SATISFACTION_DEBIT_DEPOT</code> (10 dépôts), <code>RELAIS_SATISFACTION_PLAFOND_JOUR</code> (500 réponses par lien et par jour), <code>RELAIS_SATISFACTION_ENVELOPPE_OCTETS_MAX</code> (16 384), <code>RELAIS_SATISFACTION_PUBLICATION_OCTETS_MAX</code> (65 536), <code>RELAIS_SATISFACTION_CONSERVATION_JOURS</code> (30). Fuseau : Africa/Porto-Novo.</p>
+</div>
+<div class="encadre attention" data-titre="Attention : la clé privée">
+  <p>La clé privée de la satisfaction vit dans la base de la mère et suit ses sauvegardes chiffrées. Elle ne tourne pas encore : protéger les sauvegardes comme la clé de clinique.</p>
+</div>
+<p class="non-verifie">Non vérifié sur l’hébergement réel : tests PHPUnit écrits mais non exécutés, page publique vue dans aucun navigateur réel, aucun déploiement cPanel</p>
+
+<h2 id="relais-taches">14.7 Les tâches planifiées du relais</h2>
+<p>Le relais n’a aucun démon. Une seule ligne cron, chaque minute, déclenche toutes ses tâches :</p>
+<pre>* * * * *  php /chemin/vers/apps/web/artisan schedule:run</pre>
+<table class="tableau">
+  <thead><tr><th style="width:34%">Commande</th><th style="width:22%">Fréquence</th><th>Rôle</th></tr></thead>
+  <tbody>
+    <tr><td><code>relais:surveiller</code></td><td>chaque minute</td><td>Marque le passage du cron (écran <b>Hébergement</b>), lève ou résout les alertes.</td></tr>
+    <tr><td><code>relais:sms-envoyer</code></td><td>chaque minute, sans chevauchement</td><td>Envoie les SMS déposés par la mère, puis efface numéro et texte (14.5).</td></tr>
+    <tr><td><code>relais:exporter</code></td><td>chaque jour à 03 h 00</td><td>Export quotidien de la base du relais.</td></tr>
+    <tr><td><code>relais:purger --oui</code></td><td>chaque jour à 03 h 10</td><td>Purge de l’<b>audit</b> du relais, jamais des enveloppes.</td></tr>
+  </tbody>
+</table>
+<div class="encadre observer">
+  <p>Le panneau superadmin, entrée <b>Hébergement</b>, dit l’heure du dernier passage du cron. Un cron arrêté bloque la surveillance <b>et</b> l’envoi des SMS.</p>
+</div>
+
 <!-- ============================================================ 15. DÉPANNAGE -->
 <h1 id="depannage"><span class="no">15.</span> Dépannage</h1>
 <p class="chapo">Chaque refus du logiciel se nomme. Lire le message : il dit la cause et le geste attendu.</p>
@@ -942,6 +1311,10 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Code d’appairage refusé</b></td><td>« Code inconnu », « déjà servi » ou « expiré ».</td><td>Émettre un nouveau code sur la mère (15 minutes, usage unique).</td></tr>
     <tr><td><b>Relais injoignable</b></td><td>Retard vers le relais qui grandit ; liaison en erreur sur <b>Relais en ligne</b>.</td><td>Cliquer sur <b>Tester la liaison</b>. Vérifier l’adresse, le secret et l’hébergement. Les opérations attendent, chiffrées.</td></tr>
     <tr><td><b>Mère perdue</b></td><td>La machine mère ne démarre plus.</td><td>Suivre la restauration du chapitre 11.4.</td></tr>
+    <tr><td><b>Facture bloquée à la caisse</b></td><td>Refus <code>FACTURE_EN_ATTENTE_DE_PRIX</code> : une ligne attend son prix.</td><td>Poser le prix daté du jour de la pièce, ou régler le réglage de la section 6.5.</td></tr>
+    <tr><td><b>Décision refusée par la mère</b></td><td><code>COMPTE_NON_INSCRIT</code>, <code>COMPTE_INCONNU</code>, <code>COMPTE_ROLE_DIFFERENT</code>, <code>COMPTE_ARCHIVE</code>.</td><td>Créer ou corriger le compte de l’agent sur la mère, puis refaire le geste sous son compte (10.2).</td></tr>
+    <tr><td><b>SMS refusé</b></td><td><code>plafond_atteint</code> au journal des envois SMS, ou <code>SMS_CONTENU_MEDICAL</code> à la composition.</td><td>Attendre le jour suivant ou relever <code>RELAIS_SMS_PLAFOND_JOUR</code> ; retirer le mot interdit du modèle.</td></tr>
+    <tr><td><b>Aucune réponse en ligne</b></td><td>Carte <b>Satisfaction en ligne</b> : « Relais non configuré » ou dernière relève ancienne.</td><td>Vérifier la liaison avec le relais, puis cliquer sur <b>Publier et relever maintenant</b>.</td></tr>
     <tr><td><b>Administrateur bloqué</b></td><td>Mot de passe perdu.</td><td>Un second administrateur réinitialise le mot de passe ; sinon, utiliser le code de secours (« Mot de passe administrateur perdu »).</td></tr>
   </tbody>
 </table>
@@ -996,6 +1369,7 @@ node docs/manuels/src/admin/generer.mjs</pre>
     <tr><td><b>Dépôt</b></td><td>Geste fait sur un fileul et transmis à la mère, qui le rejoue sous le rôle de son auteur.</td></tr>
     <tr><td><b>Famille R</b></td><td>Collections de configuration : la mère seule écrit, les fileuls reçoivent.</td></tr>
     <tr><td><b>Fileul</b></td><td>Poste de travail rattaché à la mère, avec sa base locale chiffrée et sa file d’envoi.</td></tr>
+    <tr><td><b>Geste transverse</b></td><td>Geste réservé qui ne dépend d’aucun module (module « * ») : il remplace une ancienne liste de rôles écrite dans le code.</td></tr>
     <tr><td><b>Geste réservé</b></td><td>Droit accordé par rôle sur un geste qui engage un professionnel nommé.</td></tr>
     <tr><td><b>MECeF</b></td><td>Mécanisme électronique de certification des factures, par boîtier physique ou e-MECeF.</td></tr>
     <tr><td><b>Mère</b></td><td>Poste serveur de la clinique : service de synchronisation, base de référence, console d’administration.</td></tr>
