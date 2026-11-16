@@ -1,0 +1,38 @@
+{
+ "id": "dash-responsable-assurance",
+ "module": "DASH",
+ "domaine": "Pilotage",
+ "libelleManifeste": "Responsable Assurance",
+ "acces": "ouvert",
+ "titre": "Tableau de bord — Responsable Assurance",
+ "description": "Créances des assureurs, cartes à renouveler, factures assureur et relances à faire — sans comptabilité ni dossier médical.",
+ "fil": [
+  "Accueil",
+  "Pilotage",
+  "Tableaux de bord par poste",
+  "Responsable Assurance"
+ ],
+ "actions": [],
+ "regle": [
+  "Les assurances et les créances (M9) sont votre module : vous y écrivez. La facturation se lit sans se modifier ; la caisse et la comptabilité ne vous sont pas ouvertes — l’écriture d’un règlement appartient au comptable. Le répertoire des patients se lit sans le dossier médical (RG-13)."
+ ],
+ "onglets": [],
+ "kpis": [
+  "Créances des assureurs",
+  "Assurés",
+  "Cartes expirées",
+  "Compagnies"
+ ],
+ "cartes": [
+  "Accès rapides",
+  "Ce que vous faites ici — vos parcours",
+  "Ce que votre profil ne voit pas"
+ ],
+ "tableaux": [],
+ "commandes": [
+  "Créances"
+ ],
+ "champs": [],
+ "nbTableaux": 0,
+ "nbKpis": 4
+}

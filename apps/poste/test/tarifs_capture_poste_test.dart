@@ -1,0 +1,146 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
+import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/modules/m2/cs_commun.dart';
+import 'package:sigh_poste/donnees/tarifs_poste.dart';
+
+/// CAPTURE EXHAUSTIVE DES PRIX du poste, par code et par voie de tarification (lot T6, étape 3) : pour CHAQUE code des trois espaces (grille, actes, analyses) et pour les voies de
+/// prescription d'actes et d'analyses, de soins, d'imagerie, de caisse manuelle et de certificats, relève le prix que la voie donne RÉELLEMENT, en appelant ses points d'entrée
+/// publics (`csPrescrire`, `csPrescrireSoins`, `csCreerDemandesImagerie`, `csTarifPrix`). Les deux colonnes sont relevées (patient non assuré, patient assuré à carte valide).
+/// Même méthode que `prototype_html/build/capture-prix.js` (maquette, lot T1) : le relevé d'AVANT le référentiel (`test/fixtures/tarifs/prix-avant-t6.json`, tiré de l'arbre du lot T6 étape 2 par ce même harnais) est comparé au relevé d'APRÈS.
+
+typedef M = Map<String, Object?>;
+
+void main() {
+  test('capture des prix', () {
+    final maintenant = DateTime(2026, 10, 30, 10);
+    final m = Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu');
+    final s = StockMagasin(m, () => maintenant);
+    const session = SessionCs(role: 'admin', fonction: 'direction');
+    final ref = (jsonDecode(File('assets/donnees/jeu/referentiels.json').readAsStringSync()) as Map).cast<String, Object?>();
+    final grille = [for (final t in m.collection('catalogueTarifs').toutes) '${t['code']}'];
+    final actes = [for (final a in m.collection('actes').toutes) '${a['code']}'];
+    final analyses = [for (final a in (ref['analyses'] as List)) '${(a as Map)['code']}'];
+    final codes = {...grille, ...actes, ...analyses}.toList()..sort();
+    final pat = m.collection('patients').actives.where((p) => p['externe'] != true).toList();
+    final ptNon = pat.firstWhere((p) => !csVrai(p['assureur']));
+    final ptAss = pat.firstWhere((p) => csVrai(p['assureur']) && carteValide(p, m.collection('couverturesAssurance').toutes, maintenant.toIso8601String()) && ((p['tauxPriseEnCharge'] as num?) ?? 0) > 0);
+    final voies = <String, Map<String, Object?>>{};
+    Map<String, Object?> v(String n) => voies.putIfAbsent(n, () => {});
+    Object? essai(Object? Function() f) {
+      try {
+        return f();
+      } catch (e) {
+        // 16/11/2026 : une ligne sans prix en vigueur n'est plus écrite à 0, elle est REFUSÉE en le nommant (`TARIF_A_VALIDER`).
+        if (e is RefusCs && e.code == csCodeTarifAValider) return 'REFUS:${e.code}';
+        return 'ERREUR:${'$e'.length > 80 ? '$e'.substring(0, 80) : '$e'}';
+      }
+    }
+
+    for (final c in codes) {
+      for (final assure in [false, true]) {
+        final pt = assure ? ptAss : ptNon;
+        final col = assure ? 1 : 0;
+        void poser(String voie, Object? x) {
+          final l = (v(voie)[c] ??= <Object?>[null, null]) as List;
+          l[col] = x;
+        }
+
+        final pr = csTarifPrix(s, c, assure);
+        poser('accesseur.csTarifPrix', [pr.montant, pr.tarif, pr.motif]);
+        poser('prescrire.acte', essai(() {
+          final r = csPrescrire(s, {'patientCode': pt['code'], 'medecin': 'CAPTURE', 'diagnostic': 'capture', 'actes': [c]}, session);
+          final l = ((r.facture['lignes'] as List?) ?? const []).cast<M>().where((x) => x['acteCode'] == c).firstOrNull;
+          return l == null ? 'AUCUNE LIGNE' : [l['prixUnitaire'], l['montant'], l['partAssureur'], l['partPatient']];
+        }));
+        poser('prescrire.analyse', essai(() {
+          final r = csPrescrire(s, {'patientCode': pt['code'], 'medecin': 'CAPTURE', 'diagnostic': 'capture', 'analyses': [c]}, session);
+          final a = ((r.ordonnance['analyses'] as List?) ?? const []).cast<M>().where((x) => x['code'] == c).firstOrNull;
+          final l = ((r.facture['lignes'] as List?) ?? const []).cast<M>().where((x) => x['demandeId'] != null || x['categorie'] == 'analyse').firstOrNull;
+          return a == null ? 'AUCUNE ANALYSE' : [a['prix'], l?['prixUnitaire'], l?['partAssureur']];
+        }));
+        poser('soins', essai(() {
+          final p = csPrescrireSoins(s, {'patientCode': pt['code'], 'prescripteurId': null, 'actes': [c], 'secteurDestinataire': 'salle_soins'});
+          final l = ((p['lignes'] as List?) ?? const []).cast<M>().firstOrNull;
+          return l == null ? 'AUCUNE LIGNE' : [l['prix'], l['tarif'], l['motifTarif'], l['prixAValider'], l['libelle'], l['famille']];
+        }));
+        poser('imagerie', essai(() {
+          final r = csCreerDemandesImagerie(s, pt, [c], maintenant.toIso8601String(), {'prescripteur': 'CAPTURE', 'indication': 'capture'});
+          return [r.demandes.first['prix'], r.demandes.first['motifTarif']];
+        }));
+      }
+    }
+        // APRÈS : les listes que les écrans lisent maintenant, par l'accesseur du référentiel (version en vigueur le jour de la pièce).
+    voies['caisse.acte'] = {'liste': [for (final a in TarifsPoste.actes(m, aujourdhui: maintenant)) if (a['prix'] != null) [a['code'], a['libelle'], a['prix']]]};
+    voies['caisse.analyse'] = {'liste': [for (final a in TarifsPoste.analyses(m, aujourdhui: maintenant)) if (a['prix'] != null) [a['code'], a['designation'], a['prix']]]};
+    voies['caisse.hospitalisation'] = {'liste': [for (final t in TarifsPoste.typesChambre(m, aujourdhui: maintenant)) [t['id'], t['label'], t['tarif']]]};
+    voies['certificats'] = {
+      for (final t in m.collection('typesPiece').toutes)
+        '${t['code'] ?? t['id']}': () {
+          final e = TarifsPoste.entreeGrille(m, t['tarifCode'], aujourdhui: maintenant);
+          return e == null ? [t['tarifCode'], null] : [t['tarifCode'], e['prixNonAssure'], e['assurable'], e['libelle']];
+        }()
+    };
+    // --- La comparaison avec le relevé d'AVANT le référentiel (versionné : `test/fixtures/tarifs/prix-avant-t6.json`) -----------------------------------------------------------
+    final avant = (jsonDecode(File('test/fixtures/tarifs/prix-avant-tar.json').readAsStringSync()) as Map).cast<String, Object?>();
+    expect(avant['codes'], codes.length, reason: 'mêmes codes, mêmes espaces (grille, actes, analyses)');
+    final apres = jsonDecode(jsonEncode({for (final e in voies.entries) e.key: e.value})) as Map;
+    // Les codes de GRILLE dont le prix lu change PAR CONSTRUCTION (décision T1 : un code canonique par prestation, l'autre en alias) : la ligne LABO de la grille héritée est
+    // fusionnée avec l'analyse de même libellé, dont le prix FACTURÉ aujourd'hui est la version 1. AUCUNE grille imprimée de Baguidi n'existe : aucune proposition n'est
+    // inventée à la place. Aucune voie réelle n'adresse ces codes (les soins sont des actes AMI, l'imagerie des examens IMG, l'analyse se prescrit par son code d'analyse).
+    final attendus = {
+      for (final p in m.collection('tarifs').toutes)
+        if (p['codeAnalyse'] != null && p['codeGrille'] != null) '${p['codeGrille']}'
+    };
+    expect(attendus.length, 39);
+    final inattendus = <String>[];
+    final attendusVus = <String, int>{};
+    (avant['voies'] as Map).forEach((voie, anciennes) {
+      if (voie == 'prescrire.acte' || voie == 'prescrire.analyse') return; // jugées plus bas : les lignes à 0 y deviennent des refus nommés
+      for (final c in (anciennes as Map).keys) {
+        final ancien = jsonEncode(anciennes[c]);
+        final nouveau = jsonEncode((apres[voie] as Map)[c]);
+        if (ancien == nouveau) continue;
+        if (attendus.contains(c)) {
+          attendusVus[voie as String] = (attendusVus[voie] ?? 0) + 1;
+        } else {
+          inattendus.add('$voie $c : $ancien -> $nouveau');
+        }
+      }
+    });
+    expect(inattendus, isEmpty, reason: '0 écart INATTENDU : chaque prix lu par chaque voie est celui d\'avant le référentiel');
+    expect(attendusVus.keys.toSet(), {'accesseur.csTarifPrix', 'soins', 'imagerie'});
+    expect(attendusVus.values.toSet(), {39}, reason: 'les 39 lignes LABO de la grille fusionnées avec leur analyse, sur chacune des trois voies');
+    // DÉCISION DU 16/11/2026 (E2584 soldé) : les codes qui donnaient une ligne à 0 à la prescription deviennent un REFUS NOMMÉ ; tous les autres prix sont ceux d'avant, au franc près.
+    final refuses = <String, Set<String>>{'prescrire.acte': {}, 'prescrire.analyse': {}};
+    for (final voie in refuses.keys) {
+      (avant['voies'] as Map)[voie].forEach((c, anciennes) {
+        for (var col = 0; col < 2; col++) {
+          final ancien = (anciennes as List)[col];
+          final aZero = ancien is List && ancien.isNotEmpty && ancien[0] == 0;
+          final nouveau = ((apres[voie] as Map)[c] as List)[col];
+          if (aZero) {
+            expect(nouveau, 'REFUS:TARIF_A_VALIDER', reason: '$voie $c col $col : la ligne qui valait 0 devient un refus nommé');
+            refuses[voie]!.add('$c');
+          } else {
+            expect(jsonEncode(nouveau), jsonEncode(ancien), reason: '$voie $c col $col : aucun prix valide ne change');
+          }
+        }
+      });
+    }
+    expect(refuses['prescrire.acte']!.length, 199, reason: 'E2584 : 199 codes sur 277 donnaient une ligne à 0 à la prescription d\'actes');
+    // eslint: le nombre d'analyses refusées est consigné au document des écarts (E2886).
+    // ignore: avoid_print
+    print('RELEVÉ 16/11 : prescription d\'actes, ${refuses['prescrire.acte']!.length} codes refusés ; prescription d\'analyses, ${refuses['prescrire.analyse']!.length} codes refusés (sur ${codes.length}).');
+    for (final voie in ['caisse.acte', 'caisse.analyse', 'caisse.hospitalisation', 'certificats']) {
+      expect(jsonEncode((avant['voies'] as Map)[voie]), jsonEncode(apres[voie]), reason: voie);
+    }
+    // Le doublon de code de grille : `CERT-APT` reste à 7 000 (première ligne, seule lue jusqu'ici), l'acte MT05 garde son propre prix de 5 000.
+    expect(jsonEncode((apres['accesseur.csTarifPrix'] as Map)['CERT-APT']), jsonEncode((avant['voies'] as Map)['accesseur.csTarifPrix']['CERT-APT']));
+    final akop = (apres['accesseur.csTarifPrix'] as Map)['LAB-AKOP'] as List;
+    expect([(akop[0] as List)[0], (akop[1] as List)[0]], [2000, 2000]);
+  }, timeout: const Timeout(Duration(minutes: 10)));
+}
