@@ -47,8 +47,9 @@ String cpaReferenceDepense(String date, Iterable<CpaFiche> toutes) => numeroSuiv
 /// `poserEcriture(dep)` : les lignes plates de l'écriture, EN BROUILLON. [tresorerie] : la fiche `banques` du compte de sortie (`null` : caisse 571000).
 /// RG-10 est contrôlé AVANT d'écrire ; la garde de l'exercice clos refuse en nommant l'exercice (E714 : refus dit AVANT toute écriture).
 /// Le journal est `CAI` pour une caisse, `BQE` sinon — code ABSENT de `D.JOURNAUX` (écart E719, porté fidèlement).
-List<CpaFiche> cpaEcrituresDepense(CpaFiche dep, CpaFiche? tresorerie) {
-  final motif = cpaGardeEcriture(dep['date']);
+/// [exercices] : les fiches d'exercice du magasin (l'état clos suit la clôture réelle de M12, E3831).
+List<CpaFiche> cpaEcrituresDepense(CpaFiche dep, CpaFiche? tresorerie, {Iterable<CpaFiche> exercices = const []}) {
+  final motif = cpaGardeEcriture(dep['date'], exercices: exercices);
   if (motif != null) throw CpaRefus('Écriture refusée.', motif);
   final caisse = tresorerie != null && tresorerie['nature'] == 'caisse';
   final base = <String, Object?>{

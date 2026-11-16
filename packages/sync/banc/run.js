@@ -219,6 +219,8 @@ function verifier(libelle, ok, detail) {
   console.log(`   ${ok ? '✓' : '✗'} ${libelle}${!ok && detail !== undefined ? '  → ' + JSON.stringify(detail) : ''}`);
 }
 const codes = (liste) => liste.map((p) => p.data.code).sort();
+/* Un code de dossier attribué aujourd'hui porte l'année EN COURS (séries annuelles, lot 0 / E3830) : jamais une année écrite dans le banc. */
+const RE_CODE_ANNEE = new RegExp(`^CBG\\/\\d+\\/${String(new Date().getFullYear()).slice(-2)}$`);
 
 /* --- les scénarios -------------------------------------------------------------------------- */
 const scenarios = {
@@ -235,13 +237,63 @@ const scenarios = {
     await attendre(async () => (await f1.liste('patients')).length === 2 && (await f2.liste('patients')).length === 2, 10000);
     const a = await f1.liste('patients'); const b = await f2.liste('patients');
     verifier('chaque poste voit les DEUX dossiers', a.length === 2 && b.length === 2, [a.length, b.length]);
-    verifier('deux codes distincts, aucun doublon (RG-01)', new Set(codes(a)).size === 2 && codes(a).every((c) => /^CBG\/\d+\/26$/.test(c)), codes(a));
+    verifier('deux codes distincts, aucun doublon (RG-01)', new Set(codes(a)).size === 2 && codes(a).every((c) => RE_CODE_ANNEE.test(c)), codes(a));
     verifier('les deux postes tiennent les mêmes codes', JSON.stringify(codes(a)) === JSON.stringify(codes(b)));
     verifier('la mère n\'en a que deux', (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n === 2);
     if (process.env.SIGH_MERE === 'dart') {
       const depot = (await m.mere.admin('GET', '/admin/etat')).json.depot;
       verifier(`la mère travaille bien sur le dépôt demandé (${PG_URL ? 'PostgreSQL' : 'SQLite'})`, depot === (PG_URL ? 'pg' : 'sqlite'), depot);
     }
+    await m.fermer();
+  },
+  async R1c() {
+    courant = 'SYNC-R1c · séries annuelles (RG-01, E3830) : dossiers créés le 31/12/2026 et le 01/01/2027, codés à l’année de CRÉATION quelle que soit la date de synchronisation';
+    const m = await monde({ relais: true });
+    const an = (c) => String(c).split('/')[2]; const rang = (c) => +String(c).split('/')[1];
+    /* (a) Un fileul tient une plage DATÉE 2026, demandée explicitement : le scénario ne dépend pas de la date du jour. */
+    const f1 = await m.fileul('F1', { plage: 0 });
+    const p = (await f1.post('/plage', { taille: 3, annee: 2026 })).json;
+    verifier('la mère alloue une plage DATÉE de la série 2026', p.annee === 2026 && p.fin === p.debut + 2, p);
+    /* (b) Deux postes dont l'HORLOGE est au 31/12/2026 23 h 59 et au 01/01/2027 00 h 01 (heure locale), sans date de création écrite ni plage : l'année vient du geste. */
+    const fV = await m.fileul('FV', { plage: 0, decalage: new Date(2026, 11, 31, 23, 59).getTime() - Date.now() });
+    const fJ = await m.fileul('FJ', { plage: 0, decalage: new Date(2027, 0, 1, 0, 1).getTime() - Date.now() });
+    /* (c) Un téléphone : sa plage d'appairage est de l'année en cours ; un dossier d'une AUTRE année reçoit un provisoire. */
+    const mob = await m.mobile('ACCUEIL', { profil: 'reception' });
+    /* La synchronisation attend : tout s'écrit mère arrêtée, et ne se code qu'à son retour. */
+    await m.mere.tuer();
+    const veille = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'VEILLE', dateCreation: '2026-12-31' } });
+    const lendemain = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'LENDEMAIN', dateCreation: '2027-01-01' } });
+    const provisoire = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'VEILLE-PROV', dateCreation: '2026-12-31', code: 'PROV-R1C' } });
+    verifier('le dossier du 31/12/2026 prend le rang suivant de la plage 2026, en « /26 »', veille.champs.code === `CBG/${p.debut}/26`, veille.champs);
+    verifier('le dossier du 01/01/2027 ne puise PAS dans la plage 2026 : numéro provisoire', String(lendemain.champs.code).startsWith('PROV-'), lendemain.champs);
+    /* Un rang de la plage 2026 porté sur un code « /27 » : la plage n'est pas de cette année, la mère refuse. */
+    const forge = await f1.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'FORGE', dateCreation: '2027-01-01', code: `CBG/${p.fin}/27` } });
+    const gV = await fV.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'HORLOGE-VEILLE' } });
+    const gJ = await fJ.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'HORLOGE-JOUR' } });
+    const mV = await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'MOBILE-VEILLE', dateCreation: '2026-12-31' } });
+    const mJ = await mob.ecrire({ type: 'creer', collection: 'patients', champs: { nom: 'MOBILE-JOUR', dateCreation: '2027-01-01' } });
+    const plageMob = (await mob.etat()).plage;
+    verifier('la plage du téléphone porte l’année en cours', plageMob.annee === new Date().getFullYear(), plageMob);
+    verifier('le téléphone ne code avec sa plage que les dossiers de SON année (les autres : provisoire)',
+      [mV, mJ].every((x) => (String(x.champs.dateCreation).slice(0, 4) === String(plageMob.annee)) !== String(x.champs.code).startsWith('PROV-')), [mV.champs, mJ.champs]);
+    await m.mere.demarrer();
+    const final = async (f, id) => (await f.vue('patients', id)).data.code;
+    verifier('tout converge, plus aucun numéro provisoire', await attendre(async () => {
+      for (const [f, x] of [[f1, veille], [f1, lendemain], [f1, provisoire], [fV, gV], [fJ, gJ], [mob, mV], [mob, mJ]]) if (!/^CBG\//.test(await final(f, x.fiche))) return false;
+      return true;
+    }, 20000));
+    const c = { veille: await final(f1, veille.fiche), lendemain: await final(f1, lendemain.fiche), provisoire: await final(f1, provisoire.fiche),
+      gV: await final(fV, gV.fiche), gJ: await final(fJ, gJ.fiche), mV: await final(mob, mV.fiche), mJ: await final(mob, mJ.fiche) };
+    verifier('un code déjà attribué ne change pas à la synchronisation (RG-01)', c.veille === veille.champs.code, c);
+    verifier('l’année du code est celle de la CRÉATION du dossier, pas celle de la synchronisation',
+      an(c.lendemain) === '27' && an(c.provisoire) === '26' && an(c.gV) === '26' && an(c.gJ) === '27' && an(c.mV) === '26' && an(c.mJ) === '27', c);
+    const anCourant = new Date().getFullYear();
+    verifier('la série 2027 repart à son début (1, ou 1000 pour une base née en 2027) : elle ne continue pas la série 2026',
+      Math.min(rang(c.lendemain), rang(c.gJ), rang(c.mJ)) === (anCourant === 2027 ? 1000 : 1), c);
+    const tous = Object.values(c);
+    verifier('aucun code en double, toutes années confondues', new Set(tous).size === tous.length, tous);
+    verifier('le provisoire du 31/12 prend la série 2026 au-dessus de la plage déjà allouée', rang(c.provisoire) > p.fin, c);
+    verifier('un rang d’une plage 2026 ne code pas un dossier « /27 » : refus nommé', await attendre(async () => (await f1.etat()).a_traiter.some((r) => r.id === forge.id && r.code === 'numero_hors_plage'), 10000), (await f1.etat()).a_traiter);
     await m.fermer();
   },
   async R1b() {
@@ -254,7 +306,7 @@ const scenarios = {
     await m.mere.demarrer();
     await attendre(async () => (await f1.vide()) && (await f1.liste('patients')).length === 2 && codes(await f1.liste('patients')).every((c) => c.startsWith('CBG/')), 15000);
     const l = await f1.liste('patients');
-    verifier('plus aucun numéro provisoire après réconciliation', l.length === 2 && l.every((p) => /^CBG\/\d+\/26$/.test(p.data.code)), codes(l));
+    verifier('plus aucun numéro provisoire après réconciliation', l.length === 2 && l.every((p) => RE_CODE_ANNEE.test(p.data.code)), codes(l));
     verifier('les deux numéros sont distincts', new Set(codes(l)).size === 2);
     await m.fermer();
   },
@@ -448,7 +500,7 @@ const scenarios = {
     let min = 99; const t0 = Date.now();
     while (Date.now() - t0 < 2500) { min = Math.min(min, (await f1.liste('patients')).length); await dormir(15); }
     verifier('le dossier reste visible en continu (2,5 s d\'échantillonnage, tirage ralenti)', min === 1, min);
-    verifier('et finit confirmé avec son numéro réel', await attendre(async () => { const l = await f1.liste('patients'); return l.length === 1 && /^CBG\/\d+\/26$/.test(l[0].data.code) && (await f1.vide()); }, 10000));
+    verifier('et finit confirmé avec son numéro réel', await attendre(async () => { const l = await f1.liste('patients'); return l.length === 1 && RE_CODE_ANNEE.test(l[0].data.code) && (await f1.vide()); }, 10000));
     await m.fermer();
   },
   /* ===================== LE RELAIS CHIFFRÉ ET LE MOBILE (spec §11-§12) ===================== */
@@ -622,7 +674,7 @@ const scenarios = {
     const fact = await mob.ecrire({ type: 'creer', collection: 'factures', champs: { total: 1 } });
     verifier('la réception de secours enregistre hors fileuls : les 4 saisies partent par le relais', await attendre(async () => mob.vide(), 15000));
     const l = await mob.liste('patients');
-    verifier('trois dossiers, trois codes distincts DANS la plage du mobile', l.length === 3 && new Set(codes(l)).size === 3 && codes(l).every((c) => /^CBG\/\d+\/26$/.test(c)), codes(l));
+    verifier('trois dossiers, trois codes distincts DANS la plage du mobile', l.length === 3 && new Set(codes(l)).size === 3 && codes(l).every((c) => RE_CODE_ANNEE.test(c)), codes(l));
     const e = await mob.etat();
     verifier('le profil « réception » ne couvre pas la caisse : refus nommé côté serveur', e.a_traiter.some((r) => r.code === 'droit_refuse' && /r[ée]ception/i.test(r.motif)), e.a_traiter);
     verifier('l\'homonyme est accepté ET signalé « doublon possible » (code jamais modifié)', e.resultats.some((r) => r.doublon_possible), e.resultats);

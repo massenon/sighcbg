@@ -292,7 +292,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
             bandeauLectureSeule(c),
             KpiGrilleSigh(kpis: [
               KpiSigh(libelle: 'Dossiers actifs', valeur: nombre(k.actifs), icone: LucideIcons.users),
-              KpiSigh(libelle: 'Créés en 2026', valeur: nombre(k.crees2026), icone: LucideIcons.userPlus, ton: TonSigh.succes),
+              KpiSigh(libelle: 'Créés en ${k.annee}', valeur: nombre(k.creesAnnee), icone: LucideIcons.userPlus, ton: TonSigh.succes),
               // Les KPI agrégés de couverture révèlent la couverture de chacun : refusée la catégorie, ils disparaissent (jamais un 0 qui se lirait comme une donnée).
               if (a.peut('couverture_assurance')) ...[
                 KpiSigh(

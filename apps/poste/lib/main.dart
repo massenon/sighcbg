@@ -278,7 +278,7 @@ Future<void> main() async {
     void demarrerPontMere() {
       final transport = TransportMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
       // La mère prend ses numéros de dossier dans le même carnet que les fileuls (RG-01).
-      PlagesCodes.de(magasin).obtenir = transport.plage;
+      PlagesCodes.de(magasin).obtenir = (taille, minimum, annee) => transport.plage(taille, minimum, annee: annee);
       PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => transport.plage(taille, minimum, nom: nom);
       ReservationStock.de(magasin)
         ..actif = true
@@ -301,7 +301,7 @@ Future<void> main() async {
         etiquette: moteur.uuid.replaceAll('-', '').substring(0, 6))
       ..demarrer();
     void demarrerPontFileul() {
-      PlagesCodes.de(magasin).obtenir = (taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum);
+      PlagesCodes.de(magasin).obtenir = (taille, minimum, annee) => moteur.demanderPlage(taille: taille, minimum: minimum, annee: annee);
       PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum, nom: nom);
       // Lot IMP-C : le verdict de la mère sur une demande d'import revient ici ; l'écriture locale du fileul est alors réglée (archivée si retenue, marquée « non retenue » sinon).
       ServiceDemandesImport.de(magasin)

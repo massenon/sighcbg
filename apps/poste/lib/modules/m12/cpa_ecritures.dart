@@ -349,7 +349,8 @@ class EcranEcritures extends StatelessWidget with EcranMaquette {
                   lignes: lignes,
                   statut: statut,
                   exercice: exerciceChoisi(c),
-                  toutes: col.toutes);
+                  toutes: col.toutes,
+                  exercices: c.magasin.collection('exercices').toutes);
               final crees = [for (final l in plates) col.inserer(l, prefixe: 'ECR')];
               fermer();
               ToastsSigh.afficher(ctx, 'Écriture ${plates.first['numero']} enregistrée (${crees.length} ligne(s)).',

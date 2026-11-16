@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:sigh_domaine/sigh_domaine.dart' show DocErreur, codePatient, docSha256;
+import 'package:sigh_domaine/sigh_domaine.dart' show DocErreur, anneeCreationDossier, codePatient, docSha256;
 
 import 'commun.dart';
 import 'fichiers.dart';
@@ -70,6 +70,11 @@ class Fileul {
       CREATE TABLE IF NOT EXISTS plage (nom TEXT PRIMARY KEY, prochain INTEGER, fin INTEGER);
       CREATE TABLE IF NOT EXISTS baux (article TEXT PRIMARY KEY, reste INTEGER);
     ''');
+    // Séries annuelles (E3830) : la plage de dossiers porte son année. Une plage d'avant le lot 0 n'en a pas : elle n'est plus utilisée (code provisoire,
+    // que la mère remplace en lisant la date de création) plutôt que de deviner son année.
+    try {
+      base.exec('ALTER TABLE plage ADD COLUMN annee INTEGER');
+    } catch (_) {/* déjà présente */}
     if (base.meta('uuid') == null) base.poserMeta('uuid', uuid7());
     if (base.meta('curseur') == null) base.poserMeta('curseur', 0);
     if (base.meta('epoch') == null) base.poserMeta('epoch', 1);
@@ -157,12 +162,14 @@ class Fileul {
     return ids.map((id) => {'id': id, ...vue(c, id).json()}).where((x) => x['existe'] == true).toList();
   }
 
-  String prochainNumero() {
+  /// Le code d'un dossier créé en [annee] (RG-01) : le rang suivant de la plage SI elle est de cette année, sinon un code provisoire que la mère remplacera
+  /// par un code de la série de l'année de création (E3830).
+  String prochainNumero(int annee) {
     final p = base.select("SELECT * FROM plage WHERE nom='patients'");
-    if (p.isNotEmpty && (p.first['prochain'] as int) <= (p.first['fin'] as int)) {
+    if (p.isNotEmpty && p.first['annee'] == annee && (p.first['prochain'] as int) <= (p.first['fin'] as int)) {
       final n = p.first['prochain'] as int;
       base.exec("UPDATE plage SET prochain=prochain+1 WHERE nom='patients'");
-      return codePatient(n, 2026);
+      return codePatient(n, annee);
     }
     return 'PROV-${hexAlea(4)}';
   }
@@ -180,7 +187,7 @@ class Fileul {
       op['vu'] = <String, Object?>{for (final k in champs.keys) k: b.fieldseq[k] ?? 0};
     }
     if (op['type'] == 'creer' && op['collection'] == 'patients' && (champs['code'] == null || '${champs['code']}'.isEmpty)) {
-      champs['code'] = prochainNumero();
+      champs['code'] = prochainNumero(anneeCreationDossier(champs['dateCreation'], op['hlc'] as int));
     }
     if (op['type'] == 'sortie' && op['bail'] == true) {
       final b = base.select('SELECT reste FROM baux WHERE article=?', [op['fiche']]);
@@ -371,8 +378,13 @@ class Fileul {
         return (200, {'uuid': uuid});
       case 'POST /plage':
         final nomPlage = '${b['nom'] ?? 'patients'}';
-        final j = await http1('POST', '/sync/plage', {'nom': nomPlage, 'taille': b['taille'] ?? 50, 'minimum': b['minimum'] ?? 0});
-        base.exec("INSERT INTO plage(nom,prochain,fin) VALUES(?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin", [nomPlage, j['debut'], j['fin']]);
+        // Une plage de dossiers est demandée POUR UNE ANNÉE (celle des dossiers à coder ; l'année en cours à défaut) et garde l'année que la mère a retenue.
+        final j = await http1('POST', '/sync/plage', {
+          'nom': nomPlage, 'taille': b['taille'] ?? 50, 'minimum': b['minimum'] ?? 0,
+          if (nomPlage == 'patients') 'annee': b['annee'] ?? DateTime.fromMillisecondsSinceEpoch(maintenant()).year,
+        });
+        base.exec("INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee",
+            [nomPlage, j['debut'], j['fin'], j['annee']]);
         return (200, j);
       case 'POST /bail':
         final j2 = await http1('POST', '/sync/bail', {'article': b['article'], 'qte': b['qte']});

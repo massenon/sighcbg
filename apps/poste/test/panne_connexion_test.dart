@@ -73,7 +73,7 @@ void main() {
       }
       expect(ReservationStock.de(mf).horsLigne, isFalse, reason: 'en liaison, aucune part ne s’applique');
       // La plage de numéros (RG-01) est RÉSERVÉE auprès de la mère pendant la liaison : hors ligne, le poste numérote dedans.
-      PlagesCodes.de(mf).obtenir = (t, mi) => moteur.demanderPlage(taille: t, minimum: mi);
+      PlagesCodes.de(mf).obtenir = (t, mi, a) => moteur.demanderPlage(taille: t, minimum: mi, annee: a);
       await PlagesCodes.de(mf).recharger(maintenant: horloge);
       expect(PlagesCodes.de(mf).restants, 50, reason: 'le poste détient sa plage avant la coupure');
 

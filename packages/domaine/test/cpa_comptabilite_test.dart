@@ -53,7 +53,7 @@ void main() {
       for (final x in liste(ref['exercices'])) {
         expect(cpaEtatExercice(x['annee'] as int), x['etat'], reason: '${x['annee']}');
       }
-      expect(carte(ref['depot'])['dateDepot'], cpaLiasseDateDepot);
+      expect(carte(ref['depot'])['dateDepot'], cpcDepot['dateDepot'], reason: 'la date de dépôt est une DONNÉE de la liasse transcrite');
       expect(ref['provisoires2026'], 0, reason: 'N-1 clos : aucun à-nouveau provisoire');
     });
     test('un numéro de compte inconnu s\'affiche tel quel ; « — » pour une catégorie absente', () {
@@ -346,6 +346,17 @@ void main() {
       expect(cpaGardeEcriture('2025-12-20'), attendu);
       expect(cpaGardeEcriture('2026-01-01'), isNull);
       expect(cpaGardeEcriture(null), isNull);
+      // Lot 0 (E3831) : l'état suit les FICHES D'EXERCICE de M12, plus aucune constante. Un exercice clôturé au poste refuse, en citant SA date ;
+      // une fiche amorcée fait foi même pour un exercice de la liasse.
+      final exercices = [
+        {'id': 'EXO-2026', 'annee': 2026, 'statut': 'actif', 'etat': 'clos', 'valideLe': '2027-03-15'},
+        {'id': 'EXO-2027', 'annee': 2027, 'statut': 'actif', 'etat': 'ouvert'},
+      ];
+      expect(cpaEtatExercice(2026, exercices: exercices), 'clos');
+      expect(cpaGardeEcriture('2026-12-31', exercices: exercices), 'Exercice 2026 clos le 15/03/2027 — lecture seule. La correction passe par une écriture de l’exercice en cours.');
+      expect(cpaGardeEcriture('2027-01-01', exercices: exercices), isNull);
+      expect(cpaGardeEcriture('2025-06-01', exercices: exercices), attendu, reason: 'sans fiche, la liasse déposée (donnée) clôt toujours 2025');
+      expect(() => cpaEcrituresDepense({'date': '2026-12-31', 'reference': 'DEP-X', 'montant': 1000, 'compteCharge': '601100'}, null, exercices: exercices), throwsA(isA<CpaRefus>()));
       expect(() => saisir('validee', 'OD', 'x', [{'compte': '601100', 'debit': 1000, 'credit': 0}, {'compte': '571000', 'debit': 0, 'credit': 1000}], date: '2025-12-20'),
           throwsA(isA<CpaRefus>().having((e) => e.detail, 'détail', attendu)));
     });

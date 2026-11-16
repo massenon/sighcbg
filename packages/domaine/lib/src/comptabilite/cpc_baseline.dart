@@ -127,25 +127,26 @@ const Map<String, CpcProposition> cpcComptesProposes = {
 
 CpcProposition? cpcPropositionCompte(String? libelle) => cpcComptesProposes[(libelle ?? '').trim().toUpperCase()];
 
-/// La comparaison mensuelle 2025 (réel) / 2026 (jeu du poste) : le chiffre d'affaires 2026 est la somme des `montantTTC` des factures actives du mois.
-/// L'année 2026 est CELLE DE LA MAQUETTE (écrite en dur) : porté fidèlement (écart E803).
+/// La comparaison mensuelle 2025 (réel, CITATION du classeur) / [annee] (l'exercice en cours, factures du poste) : le chiffre d'affaires de [annee] est la
+/// somme des `montantTTC` des factures actives du mois. La maquette écrivait 2026 en dur (E803) ; corrigé au lot 0 (E3835) : l'année comparée est celle que
+/// l'appelant passe (l'horloge du poste), 2025 restant la base documentée.
 class CpcComparaisonMois {
-  const CpcComparaisonMois(this.mois, this.ca2025, this.ca2026, this.ecart, this.evolution);
+  const CpcComparaisonMois(this.mois, this.ca2025, this.caAnnee, this.ecart, this.evolution);
   final String mois;
-  final double ca2025, ca2026, ecart;
+  final double ca2025, caAnnee, ecart;
   final int evolution;
 }
 
-List<CpcComparaisonMois> cpcComparaison(CpcExercice2025 e, Iterable<Map<String, Object?>> facturesActives) => [
+List<CpcComparaisonMois> cpcComparaison(CpcExercice2025 e, Iterable<Map<String, Object?>> facturesActives, {required int annee}) => [
       for (var i = 0; i < e.mois.length; i++)
         () {
-          final ca2026 = facturesActives.where((f) {
+          final caAnnee = facturesActives.where((f) {
             final d = DateTime.tryParse('${f['date']}');
-            return d != null && d.year == 2026 && d.month == i + 1;
+            return d != null && d.year == annee && d.month == i + 1;
           }).fold(0.0, (a, f) => a + _n(f['montantTTC']));
           final ca2025 = e.chiffreAffaires[i];
-          return CpcComparaisonMois('${e.mois[i][0].toUpperCase()}${e.mois[i].substring(1)}', ca2025, ca2026, ca2026 - ca2025,
-              ca2025 != 0 ? arrondiJs((ca2026 - ca2025) / ca2025 * 100).toInt() : 0);
+          return CpcComparaisonMois('${e.mois[i][0].toUpperCase()}${e.mois[i].substring(1)}', ca2025, caAnnee, caAnnee - ca2025,
+              ca2025 != 0 ? arrondiJs((caAnnee - ca2025) / ca2025 * 100).toInt() : 0);
         }()
     ];
 

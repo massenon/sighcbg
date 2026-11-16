@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -181,6 +181,28 @@ const _ddl = '''
   CREATE TABLE IF NOT EXISTS evenements (id {AUTO}, quand BIGINT, niveau TEXT, source TEXT, message TEXT)
 ''';
 
+/// MIGRATION DES SÉRIES DE CODES DE DOSSIER (lot 0, E3830). Avant le lot 0, la mère tenait UN compteur (`next_patient`, parti de [rangInitialSeriePatients]) et ses plages ne
+/// portaient pas d'année : tous les codes qu'elle attribuait étaient de l'année en cours au moment de la mise à jour. À la première ouverture, ce compteur
+/// devient celui de l'année courante et les plages sans année lui sont rattachées. Une base neuve ouvre sa série de l'année à [rangInitialSeriePatients], comme avant (les codes
+/// des postes non rattachés restent ainsi au-dessous) ; les années suivantes repartent à 1. Limite : une mère mise à jour APRÈS le changement d'année
+/// rattacherait ses plages antérieures à la nouvelle année (le lot 0 se livre avant le 1er janvier 2027).
+/// Le premier rang de la série de l'année où une base de mère NAÎT (et où elle est réinitialisée ou restaurée) : 1000, la convention d'origine du carnet de la
+/// mère (les codes attribués par un poste encore autonome restent au-dessous). Les années suivantes repartent à 1.
+const int rangInitialSeriePatients = 1000;
+
+Future<void> migrerSeriesPatients(Depot base) async {
+  try {
+    await base.exec('ALTER TABLE plages ADD COLUMN annee BIGINT');
+  } catch (_) {/* déjà présente */}
+  if (await base.meta('series_patients_depuis') != null) return;
+  final annee = DateTime.now().year;
+  final herite = await base.meta('next_patient');
+  if (await base.meta(Mere.cleSeriePatients(annee)) == null) await base.poserMeta(Mere.cleSeriePatients(annee), herite == null ? rangInitialSeriePatients : int.parse(herite));
+  await base.exec("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL", [annee]);
+  await base.exec("DELETE FROM meta WHERE k='next_patient'");
+  await base.poserMeta('series_patients_depuis', annee);
+}
+
 class Appareil {
   Appareil(this.uuid, this.role, [this.profil, this.fonction]);
   final String uuid;
@@ -298,7 +320,7 @@ class Mere {
       } catch (_) {/* déjà présente */}
     }
     if (await base.meta('epoch') == null) await base.poserMeta('epoch', 1);
-    if (await base.meta('next_patient') == null) await base.poserMeta('next_patient', 1000);
+    await migrerSeriesPatients(base);
     if (await base.meta('reinit_ouverte') == null) await base.poserMeta('reinit_ouverte', 0);
     final m = Mere._(cfg, base);
     if (cfg.dossierFichiers.isNotEmpty) m.stockFichiers = StockFichiers(cfg.dossierFichiers);
@@ -357,11 +379,50 @@ class Mere {
     unawaited(verrou.executer(() => evenement(niveau, source, message)).catchError((Object _) {}));
   }
 
+  /// RG-01 — LA SÉRIE DES CODES DE DOSSIER EST ANNUELLE (lot 0, E3830) : un compteur PAR ANNÉE, `next_patient_<AAAA>`. Une année qui n'a pas encore de
+  /// compteur commence au-dessus de ce que la mère sait déjà d'elle (codes de cette année détenus, plages de cette année allouées), donc à 1 pour une année
+  /// neuve : la série repart à 1 au changement d'année, et un code attribué n'est jamais réattribué.
+  static String cleSeriePatients(int annee) => 'next_patient_$annee';
+
+  Future<int> _debutSeriePatients(int annee) async {
+    final v = await base.meta(cleSeriePatients(annee));
+    if (v != null) return int.parse(v);
+    var max = 0;
+    for (final r in await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'")) {
+      final c = lireCodePatient(r['c']);
+      if (c != null && int.parse(c.annee) == annee % 100 && c.rang > max) max = c.rang;
+    }
+    final f = (await base.select("SELECT CAST(COALESCE(MAX(fin),0) AS BIGINT) AS f FROM plages WHERE nom='patients' AND annee=?", [annee])).first['f'] as int;
+    return (f > max ? f : max) + 1;
+  }
+
+  /// Réserve [taille] rangs CONSÉCUTIFS de la série [annee], à partir d'au moins [minimum]. Sans transaction propre : l'appelant la tient.
+  Future<int> reserverRangsPatients(int annee, int taille, int minimum) async {
+    var debut = await _debutSeriePatients(annee);
+    if (minimum > debut) debut = minimum;
+    await base.poserMeta(cleSeriePatients(annee), debut + taille);
+    return debut;
+  }
+
+  /// L'année demandée pour une plage de dossiers : celle que le poste demandeur donne (l'année de création des dossiers qu'il va coder), sinon l'année en cours.
+  static int anneePlage(Object? annee) {
+    final a = int.tryParse('${annee ?? ''}'.split('.').first);
+    return a != null && a >= 2000 && a <= 2099 ? a : DateTime.now().year;
+  }
+
   /// Alloue une plage de numéros de dossier à [appareil] (RG-01). [minimum] : le plus petit rang acceptable (le poste demandeur connaît ses propres dossiers ;
   /// une plage qui commencerait en dessous réattribuerait un code déjà donné).
   /// Un carnet de numéros PAR NOM : les dossiers patients gardent `next_patient` (inchangé) ; chaque autre série (bons de besoins, commandes : 16/11/2026) a son propre compteur,
   /// de sorte qu'une plage de bons ne brûle aucun numéro de dossier.
-  Future<Map<String, Object?>> allouerPlage(String appareil, Object nom, int taille, int minimum) => base.tx(() async {
+  /// Une plage de DOSSIERS appartient à UNE année ([annee], l'année courante à défaut) : ses codes ne servent qu'aux dossiers créés cette année-là.
+  Future<Map<String, Object?>> allouerPlage(String appareil, Object nom, int taille, int minimum, {Object? annee}) => base.tx(() async {
+        if ('$nom' == 'patients') {
+          final a = anneePlage(annee);
+          final debut = await reserverRangsPatients(a, taille, minimum);
+          final fin = debut + taille - 1;
+          await base.exec('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)', [appareil, nom, debut, fin, a]);
+          return {'debut': debut, 'fin': fin, 'annee': a};
+        }
         final cle = '$nom' == 'patients' ? 'next_patient' : 'next_plage_$nom';
         var debut = await base.metaInt(cle);
         if ('$nom' != 'patients' && debut < 1) debut = 1;
@@ -506,16 +567,24 @@ class Mere {
         final code = '${champs['code'] ?? ''}';
         final m = reCodePatient.firstMatch(code);
         if (code.isEmpty || code.startsWith('PROV-')) {
-          final n = await base.metaInt('next_patient');
-          await base.poserMeta('next_patient', n + 1);
-          champs['code'] = codePatient(n, 2026);
+          // L'année du code est celle de la CRÉATION du dossier (sa date, sinon l'horloge du geste), pas celle du jour où il est synchronisé (lot 0, E3830).
+          final annee = anneeCreationDossier(champs['dateCreation'], nb(op['hlc']).toInt() == 0 ? maintenantMs() : nb(op['hlc']).toInt());
+          var n = await reserverRangsPatients(annee, 1, 0);
+          // Un dossier provisoire n'est jamais refusé pour un code que la mère choisit elle-même : un rang déjà pris (dossier de la mère d'avant les séries) est sauté.
+          while ((await base.select("SELECT 1 FROM fiches WHERE collection='patients' AND ${base.champJson('data', 'code')}=?", [codePatient(n, annee)])).isNotEmpty) {
+            n = await reserverRangsPatients(annee, 1, n + 1);
+          }
+          champs['code'] = codePatient(n, annee);
           numero = '${champs['code']}';
         } else if (m == null) {
           return refus('numero_invalide', 'Code patient mal formé : $code', 'Laisser le poste attribuer le code');
         } else {
           final n = int.parse(m.group(1)!);
           // La MÈRE fait foi : ses dossiers déjà existants (d'avant les plages) ne sont pas refusés ; l'unicité du code est contrôlée juste après.
-          final ok = app.role == 'mere' ? [1] : await base.select('SELECT 1 FROM plages WHERE appareil=? AND nom=? AND debut<=? AND fin>=?', [app.uuid, 'patients', n, n]);
+          // La plage doit être de la MÊME ANNÉE que le code : un rang d'une plage 2026 ne code pas un dossier de 2027 (séries annuelles, E3830).
+          final ok = app.role == 'mere'
+              ? [1]
+              : await base.select('SELECT 1 FROM plages WHERE appareil=? AND nom=? AND debut<=? AND fin>=? AND annee % 100 = ?', [app.uuid, 'patients', n, n, int.parse(m.group(2)!)]);
           if (ok.isEmpty) return refus('numero_hors_plage', 'Le code $code n’appartient pas à la plage de ce poste.', 'Demander une nouvelle plage');
         }
         final dup = await base.select("SELECT 1 FROM fiches WHERE collection='patients' AND ${base.champJson('data', 'code')}=?", ['${champs['code']}']);
@@ -739,11 +808,11 @@ class Mere {
       case 'POST /sync/plage':
         final app2 = await auth(req);
         final taille = max(1, min(nb(b['taille']).toInt() == 0 ? 50 : nb(b['taille']).toInt(), 1000));
-        return allouerPlage(app2.uuid, b['nom'] ?? 'patients', taille, nb(b['minimum']).toInt());
+        return allouerPlage(app2.uuid, b['nom'] ?? 'patients', taille, nb(b['minimum']).toInt(), annee: b['annee']);
       case 'POST /admin/plage':
         // La MÈRE, poste qui crée aussi des dossiers, prend ses numéros dans le même carnet que les fileuls : jamais deux plages qui se chevauchent.
         adminOk(req);
-        return allouerPlage('mere', b['nom'] ?? 'patients', max(1, min(nb(b['taille']).toInt() == 0 ? 50 : nb(b['taille']).toInt(), 1000)), nb(b['minimum']).toInt());
+        return allouerPlage('mere', b['nom'] ?? 'patients', max(1, min(nb(b['taille']).toInt() == 0 ? 50 : nb(b['taille']).toInt(), 1000)), nb(b['minimum']).toInt(), annee: b['annee']);
       case 'POST /sync/bail':
         final app3 = await auth(req);
         return base.tx(() async {
@@ -968,7 +1037,7 @@ class Mere {
   ///
   /// * `archiver` (défaut, motif OBLIGATOIRE) : chaque fiche ACTIVE des collections d'activité passe à l'état archivé, par une opération `archiver` du journal
   ///   — donc propagée aux fileuls et aux mobiles comme n'importe quel archivage, sans purge ni changement d'époque. Les brouillons sont archivés comme les
-  ///   autres. L'époque, les plages de numéros et `next_patient` ne bougent pas : un code archivé n'est jamais réattribué (RG-01). Rend le bilan par collection.
+  ///   autres. L'époque, les plages de numéros et les compteurs de séries `next_patient_<année>` ne bougent pas : un code archivé n'est jamais réattribué (RG-01). Rend le bilan par collection.
   /// * `supprimer` (exige `suppression_physique: true`) : le vidage destructif d'origine — il CONTREDIT RG-14, change l'époque et remet la numérotation à
   ///   zéro. Gardé pour remettre à neuf une mère d'essai.
   ///
@@ -1031,7 +1100,8 @@ class Mere {
       await base.poserMeta('epoch', await base.metaInt('epoch') + 1);
       await base.poserMeta('reinit_ouverte', 0);
       await base.poserMeta('reinit_ouverte_ms', 0);
-      await base.poserMeta('next_patient', 1000);
+      await base.exec("DELETE FROM meta WHERE k LIKE 'next_patient%'");
+      await base.poserMeta(Mere.cleSeriePatients(DateTime.now().year), rangInitialSeriePatients);
       await base.poserMeta('marqueur_epoch', 1);
     });
     return {'mode': 'supprimer', 'sauvegarde': sauvegarde, 'epoch': await base.metaInt('epoch')};

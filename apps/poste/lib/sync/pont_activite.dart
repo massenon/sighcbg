@@ -160,11 +160,13 @@ class TransportMereLocale implements TransportPont {
     ];
   }
 
-  /// Une plage de numéros de dossier pour la mère elle-même (`POST /admin/plage`) : le même carnet que celui des fileuls.
-  Future<(int, int)> plage(int taille, int minimum, {String nom = 'patients'}) async {
+  /// Une plage de numéros de dossier pour la mère elle-même (`POST /admin/plage`) : le même carnet que celui des fileuls. Une plage de DOSSIERS est demandée
+  /// pour une année ([annee], celle des dossiers à coder : séries annuelles, E3830).
+  Future<(int, int)> plage(int taille, int minimum, {String nom = 'patients', int? annee}) async {
     final r = await _c
         .post(Uri.parse('http://127.0.0.1:$port/admin/plage'),
-            headers: {'content-type': 'application/json', 'x-admin': admin}, body: jsonEncode({'nom': nom, 'taille': taille, 'minimum': minimum}))
+            headers: {'content-type': 'application/json', 'x-admin': admin},
+            body: jsonEncode({'nom': nom, 'taille': taille, 'minimum': minimum, if (annee != null) 'annee': annee}))
         .timeout(const Duration(seconds: 8));
     if (r.statusCode != 200) throw StateError('la mère a répondu ${r.statusCode}');
     final c = jsonDecode(r.body) as Map;

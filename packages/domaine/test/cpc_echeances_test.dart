@@ -231,13 +231,13 @@ void main() {
     });
 
     test('la comparaison 2025 / 2026 se lit sur les factures du jeu', () {
-      final c = cpcComparaison(x, jeu('factures').where((e) => e['statut'] != 'archive'));
+      final c = cpcComparaison(x, jeu('factures').where((e) => e['statut'] != 'archive'), annee: 2026);
       final att = ((b['comparaison'] as Map)['lignes'] as List);
       for (var i = 0; i < 12; i++) {
         final l = cellules(att[i]);
         expect(l[0], c[i].mois);
         expect(l[1], nt(money(c[i].ca2025, avecDevise: false)));
-        expect(l[2], nt(money(c[i].ca2026, avecDevise: false)), reason: c[i].mois);
+        expect(l[2], nt(money(c[i].caAnnee, avecDevise: false)), reason: c[i].mois);
         expect(l[3], nt(money(c[i].ecart, avecDevise: false)));
         expect(l[4], '${c[i].evolution} %');
       }
