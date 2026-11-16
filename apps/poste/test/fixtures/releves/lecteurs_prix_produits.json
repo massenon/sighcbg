@@ -80,11 +80,11 @@
   "ecritures": 0
  },
  "lib/modules/m2/cs_fiche.dart": {
-  "lectures": 1,
+  "lectures": 2,
   "ecritures": 0
  },
  "lib/modules/m2/cs_ordonnances.dart": {
-  "lectures": 1,
+  "lectures": 2,
   "ecritures": 0
  },
  "lib/modules/m6/stock_commun.dart": {
