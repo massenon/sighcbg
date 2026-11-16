@@ -67,7 +67,7 @@ void main() {
     final creation = ptaCreerPlan(annee: 2031, plans: const [], acteur: 'Rédacteur', maintenant: auj);
     f1.collection(ptaCollectionActions).inserer({
       'statut': 'actif', 'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-001', 'action': 'Former', 'axe': 'ressources_humaines_formation', 'etat': 'planifiee', //
-      'cibleValeur': 10, 'calendrier': ['2031-01-01/2031-03-31'],
+      'cibleValeur': 10, 'calendrier': ['2031-01-01/2031-01-20'],
     }, prefixe: 'PTA');
     f1.collection(ptaCollectionPlans).inserer(creation.creation!);
     final plan1 = f1.collection(ptaCollectionPlans).toutes.single;
@@ -108,5 +108,17 @@ void main() {
     expect(() => f1.collection(ptaCollectionActions).mettreAJour(a1['id'], {'cibleValeur': 2}), throwsA(isA<EcritureRefusee>()));
     await tour();
     expect(ptaActionsDuPlan(mm.collection(ptaCollectionActions).toutes, 2031, 1).single['realiseValeur'], 4);
+    // La clôture déposée par F2 : la mère calcule le BILAN sur SES données (une action, aucune réalisée, en retard au seuil d'attente de 15 jours).
+    final pf1 = ptaPlanCourant(f1.collection(ptaCollectionPlans).toutes, 2031)!;
+    f1.collection(ptaCollectionPlans).mettreAJour(pf1['id'], ptaMettreEnExecution(pf1, acteur: 'Rédacteur', maintenant: auj).ecritures.single.patch);
+    await tour();
+    expect(sf2.deposerPta(ptaDecisionCloturer, 2031, 1, role: 'da', acteur: 'La DAF', motif: 'Bilan de fin d’exercice').ok, isTrue);
+    await tour();
+    expect(sm.traiter(), 1);
+    await tour();
+    final clos = ptaPlanCourant(f2.collection(ptaCollectionPlans).toutes, 2031)!;
+    expect(clos['etat'], 'cloture');
+    final bilan = (clos['bilan'] as Map).cast<String, Object?>();
+    expect([bilan['texte'], bilan['programmees'], bilan['realisees'], bilan['enRetard']], ['Bilan de fin d’exercice', 1, 0, 1]);
   });
 }

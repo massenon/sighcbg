@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/magasin.dart';
+import '../core/service_parametres.dart';
 import '../donnees/reglages_clinique_poste.dart';
 import '../modules/m14/commun_m14.dart' show rolesDe;
 
@@ -108,8 +109,18 @@ class ServiceValidationsDeposees {
   // PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : adopter, renvoyer, clôturer depuis n'importe quel poste
   // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-  /// Le bilan d'une clôture, calculé sur CE poste au moment du geste (la mère le recalcule sur ses données quand elle applique un dépôt). Branché par l'écran du plan.
+  /// Le bilan d'une clôture appliquée sur CE poste (la mère, qui rejoue un dépôt) : calculé sur SES données à l'instant de l'application — seuil de retard en vigueur pour
+  /// l'exercice, états, budgets et écritures du magasin. Remplaçable par un test.
   PtaSynthese Function(int annee, int version)? syntheseBilanPta;
+
+  PtaSynthese _syntheseBilanPta(int annee, int version) {
+    final f = syntheseBilanPta;
+    if (f != null) return f(annee, version);
+    final exercice = ptaExercice(magasin.collection('exercices').toutes, annee);
+    final seuil = ptaSeuilDe(serviceParametres(magasin, auteur: () => 'lecture').valeur(ptaCleSeuilRetard, parametreDateIso(ptaDateReglage(exercice, _maintenant))));
+    return ptaSynthese(ptaActionsDuPlan(magasin.collection(ptaCollectionActions).toutes, annee, version), magasin.collection(ptaCollectionEtats).toutes,
+        auj: _maintenant, seuilJours: seuil, budgets: magasin.collection('budgets').toutes, ecritures: magasin.collection('ecritures').actives);
+  }
 
   /// DÉPOSE une décision réservée sur le plan de travail annuel (adopter, renvoyer en brouillon, clôturer). Refus nommé (mêmes contrôles que l'application) ou le dépôt écrit ;
   /// un dépôt identique qui attend déjà la mère n'est pas doublé. Le plan reste dans son état jusqu'à la confirmation : jamais « adopté » sur un dépôt seul.
@@ -176,7 +187,7 @@ class ServiceValidationsDeposees {
         plans: magasin.collection(ptaCollectionPlans).toutes,
         actions: magasin.collection(ptaCollectionActions).toutes,
         maintenant: _maintenant,
-        synthese: syntheseBilanPta);
+        synthese: _syntheseBilanPta);
     if (a == null) return false;
     var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
     if (a.ecritures.isNotEmpty) {

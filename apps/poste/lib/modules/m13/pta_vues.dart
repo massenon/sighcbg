@@ -100,11 +100,6 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
         ]),
         builder: (context, _) {
           final x = _Contexte(c);
-          // La synthèse du bilan, si une clôture est appliquée sur ce poste (poste mère, dépôt d'un fileul) : calculée sur les données de CE poste.
-          ServiceValidationsDeposees.de(m).syntheseBilanPta ??= (a, v) {
-            final y = _Contexte(c);
-            return y.synthese(ptaActionsDuPlan(y.toutesActions, a, v));
-          };
           final versions = ptaPlansExercice(x.plans, x.annee);
           final plan = _version == null ? (versions.isEmpty ? null : versions.last) : ptaPlanVersion(x.plans, x.annee, _version!) ?? (versions.isEmpty ? null : versions.last);
           final v = plan == null ? 0 : ptaVersionDe(plan);
@@ -570,7 +565,16 @@ class _EcranPlanAnnuelState extends State<EcranPlanAnnuel> {
         OptionChamp('saisi', 'Saisi'),
       ]),
     ];
-    final champs = fige ? [const ChampDef(nom: 'avancementMode', libelle: 'Avancement', type: TypeChamp.select, requis: true, options: [OptionChamp('calcule', 'Calculé (réalisé ÷ cible)'), OptionChamp('saisi', 'Saisi')]), ...suivi] : [...programme, ...suivi];
+    // Plan adopté : le MODE d'avancement fait partie du programme ; il s'affiche (il commande le champ du pourcentage) mais ne se change pas.
+    final modeFige = existante == null ? 'calcule' : ptaModeAvancement(existante);
+    final champs = fige
+        ? [
+            ChampDef(nom: 'avancementMode', libelle: 'Avancement', type: TypeChamp.select, requis: true, options: [
+              OptionChamp(modeFige, modeFige == 'saisi' ? 'Saisi' : 'Calculé (réalisé ÷ cible)'),
+            ]),
+            ...suivi
+          ]
+        : [...programme, ...suivi];
     final initial = <String, Object?>{
       if (existante != null) ...{for (final e in existante.entries) e.key: e.value is num ? '${e.value}' : e.value},
       if (existante == null) ...{'etat': ptaEtatParDefaut(x.etats), 'avancementMode': 'calcule'},
