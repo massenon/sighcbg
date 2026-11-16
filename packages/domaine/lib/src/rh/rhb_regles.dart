@@ -412,11 +412,20 @@ num rhbMontantAgent(List<FicheRhb> grille, List<FicheRhb> historique, List<Fiche
 // Planning : comptages, incompatibilité, portée
 // ---------------------------------------------------------------------------------------------------------------------
 
-/// `compter(employeId, annee, mois, type)` — [mois] de 1 à 12.
+/// RG-11 — UNE SEULE FONCTION dit si une vacation du planning COMPTE (primes, honoraires du régime, bulletin, « Mon espace », statistiques de garde et de
+/// permanence) : elle est validée, ou elle date d'avant le circuit de validation (aucun état écrit = lue validée). Une vacation « à valider » (ou refusée)
+/// ne rapporte RIEN tant qu'elle n'est pas validée ; une fois validée (état `validee`), elle compte, sans autre geste. Toute vue qui compte des gardes ou des
+/// permanences passe par elle : un filtre recopié à chaque endroit diverge au premier état ajouté.
+bool vacationCompteRh(Map<String, Object?> vacation) {
+  final e = vacation['validationEtat'];
+  return e == null || e == '' || e == 'validee';
+}
+
+/// `compter(employeId, annee, mois, type)` — [mois] de 1 à 12. Seules les vacations VALIDÉES comptent ([vacationCompteRh]).
 int rhbCompter(List<FicheRhb> planning, Object? employeId, int annee, int mois, String type) {
   var n = 0;
   for (final p in planning) {
-    if (p['employeId'] != employeId || p['type'] != type) continue;
+    if (p['employeId'] != employeId || p['type'] != type || !vacationCompteRh(p)) continue;
     final d = '${p['date']}';
     if (d.length >= 7 && int.tryParse(d.substring(0, 4)) == annee && int.tryParse(d.substring(5, 7)) == mois) n++;
   }
@@ -495,6 +504,7 @@ List<FicheRhb> rhbLignesGardes(List<FicheRhb> planningActif,
   return [
     for (final v in planningActif)
       if (rhbVacationsTravaillees.contains(v['type']) &&
+          vacationCompteRh(v) &&
           !(du.isNotEmpty && '${v['date']}'.compareTo(du) < 0) &&
           !(au.isNotEmpty && '${v['date']}'.compareTo(au) > 0) &&
           !(agent.isNotEmpty && v['employeId'] != agent) &&
@@ -607,7 +617,7 @@ List<RhbPermanenceAgent> rhbPermanencesParAgent(List<FicheRhb> planningActif, Li
   final par = <String, RhbPermanenceAgent>{};
   for (final v in planningActif) {
     if (!dansBornesTexte(v['date'], b)) continue;
-    if (!rhbEstPermanence(v)) continue;
+    if (!rhbEstPermanence(v) || !vacationCompteRh(v)) continue;
     final a = agentDe(v['employeId'] ?? v['personnelId']);
     if (service.isNotEmpty && !service.contains('Tous')) {
       if (a == null || a['service'] != service) continue;

@@ -151,11 +151,11 @@ void main() {
 
     test('la retenue calculée sur HT : 5 % de 100 000 = 5 000, base et source portées par la pièce', () {
       final b = cpaBaseRetenue(facture, avec(cpaBaseHt));
-      final ret = cpdCalculerRetenueAib(bareme, 'ifu_inactif_ou_absent', b.base, apres, situations: situations, baseSource: b.source, baseMotif: b.motif);
+      final ret = cpdCalculerRetenueAib(bareme, 'ifu_inactif_ou_absent', b.base, apres, situations: situations, baremeChoisi: cpdBaremeSituationAcheteur, baseSource: b.source, baseMotif: b.motif);
       expect([ret.base, ret.montant, ret.taux], [100000, 5000, 5]);
       expect(ret.versFiche()['baseSource'], 'ht');
       final repli = cpaBaseRetenue({'montantFacture': 118000}, avec(cpaBaseHt));
-      final ret2 = cpdCalculerRetenueAib(bareme, 'ifu_inactif_ou_absent', repli.base, apres, situations: situations, baseSource: repli.source, baseMotif: repli.motif);
+      final ret2 = cpdCalculerRetenueAib(bareme, 'ifu_inactif_ou_absent', repli.base, apres, situations: situations, baremeChoisi: cpdBaremeSituationAcheteur, baseSource: repli.source, baseMotif: repli.motif);
       expect(ret2.montant, 5900);
       expect(ret2.versFiche()['baseMotif'], contains('MONTANT FACTURÉ'));
     });
@@ -171,37 +171,15 @@ void main() {
     });
   });
 
-  group('D1 contre D8 : 0 % aux trois endroits sans fenêtre, refus gardé à la fenêtre de l\'acheteur', () {
+  group('l\'IFU ne choisit JAMAIS la situation ni le taux (Direction de Baguidi, 16/11/2026) : le comptable choisit', () {
     const graine = CpdParametresAib.graine;
 
-    test('sans IFU, AVANT l\'arrêt du 5 % : aucun taux arrêté → 0 %, avec le motif du moteur', () {
-      final r = aibParDefautALaDate(date: avant, situations: situations, versions: bareme, parametres: graine);
-      expect([r.taux, r.arrete, r.repli, r.situation], [0, false, true, null]);
-      expect(r.motif, contains('Aucun taux arrêté en vigueur au 01/08/2026'));
-      expect(r.motif, contains('0 %'));
-      expect(r.motif, contains('Aucun taux arrêté avant le 07/09/2026'));
-    });
-
-    test('sans IFU, APRÈS le 07/09/2026 : le taux arrêté du barème (5 %), pas un repli', () {
-      final r = aibParDefautALaDate(date: apres, situations: situations, versions: bareme, parametres: graine);
-      expect([r.taux, r.arrete, r.repli, r.situation], [5, true, false, 'ifu_inactif_ou_absent']);
-      expect(r.motif, 'Taux de 5 % arrêté, en vigueur depuis le 07/09/2026.');
-    });
-
-    test('avec un IFU actif : le 1 % n\'est pas arrêté → 0 % au défaut (D1), les taux non arrêtés sont offerts, jamais appliqués', () {
-      final r = aibParDefautALaDate(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: graine);
-      expect([r.taux, r.arrete], [0, false]);
-      expect(r.nonArretes, ['1 % — non arrêté, à valider']);
-      expect(r.motif, contains('0 %'));
-    });
-
-    test('le taux de repli est celui des PARAMÈTRES : 2 % validé → 2 % sans taux arrêté', () {
+    test('le taux de repli est celui des PARAMÈTRES (lu à la date), il n\'est appliqué par aucune déduction d\'après l\'IFU', () {
       final param = cpaParametresALaDate([
         ...cpaFichesGraine(),
         p(cpaRubriqueBranchement, 2, {'longueurIfu': 13, 'situationIfuRenseigne': 'ifu_actif', 'situationIfuAbsent': 'ifu_inactif_ou_absent', 'tauxRepli': 2}, effet: '2026-10-01'),
       ], apres);
       expect(param.tauxRepli, 2);
-      expect(aibParDefautALaDate(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: param).taux, 2);
       // avant la version 2, la version 1 (0 %) s'applique
       final ancien = cpaParametresALaDate([
         ...cpaFichesGraine(),
@@ -210,52 +188,35 @@ void main() {
       expect(ancien.tauxRepli, 0);
     });
 
-    test('D8 : la FENÊTRE de l\'acheteur garde son refus nommé AIB_SANS_BAREME pour un IFU actif tant que le 1 % n\'est pas arrêté', () {
-      final r = aibPourAcheteur(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: graine);
-      expect(r.ok, isFalse);
-      expect(r.refus!.code, cpdCodeAibSansBareme);
-      expect(r.nonArretes, ['1 % — non arrêté, à valider']);
-      // …alors que le défaut des trois autres endroits, lui, applique 0 % : la différence est voulue.
-      expect(aibParDefautALaDate(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: graine).taux, 0);
+    test('sans situation choisie, la fenêtre de l\'acheteur REFUSE (AIB_SITUATION_REQUISE) quel que soit l\'IFU ; choisie, elle lit le barème arrêté', () {
+      for (final i in [null, '', ifu]) {
+        final r = aibPourAcheteur(ifu: i, date: apres, situations: situations, versions: bareme, parametres: graine);
+        expect([r.ok, r.refus!.code, r.taux], [false, 'AIB_SITUATION_REQUISE', null], reason: 'IFU « $i »');
+      }
+      expect(aibPourAcheteur(situationChoisie: 'ifu_inactif_ou_absent', date: apres, situations: situations, versions: bareme).taux, 5);
       final fenetre = acheteurNormaliseAuBareme(ifu: ifu, nom: 'Clinique X', date: apres, situations: situations, versions: bareme, parametres: graine);
       expect(fenetre.acheteur, isNull);
-      expect(fenetre.refus!.code, cpdCodeAibSansBareme);
+      expect(fenetre.refus!.code, 'AIB_SITUATION_REQUISE');
     });
 
-    test('le 1 % arrêté un jour : la fenêtre cesse de refuser, le défaut applique 1 % — lu au barème, jamais écrit dans le code', () {
+    test('l\'IFU actif CHOISI : refus AIB_SANS_BAREME tant que le 1 % n\'est pas arrêté ; arrêté un jour, il s\'applique — lu au barème, jamais écrit dans le code', () {
+      final r = aibPourAcheteur(situationChoisie: 'ifu_actif', date: apres, situations: situations, versions: bareme);
+      expect([r.ok, r.refus!.code, r.nonArretes], [false, cpdCodeAibSansBareme, ['1 % — non arrêté, à valider']]);
       final arrete = [...bareme, v('B4', 'ifu_actif', 1, effet: '2026-12-01')];
-      final dec = DateTime(2026, 12, 15);
-      expect(aibPourAcheteur(ifu: ifu, date: dec, situations: situations, versions: arrete).taux, 1);
-      expect(aibParDefautALaDate(ifu: ifu, date: dec, situations: situations, versions: arrete).taux, 1);
-      expect(aibParDefautALaDate(ifu: ifu, date: DateTime(2026, 11, 30), situations: situations, versions: arrete).taux, 0);
+      expect(aibPourAcheteur(situationChoisie: 'ifu_actif', date: DateTime(2026, 12, 15), situations: situations, versions: arrete).taux, 1);
+      expect(aibPourAcheteur(situationChoisie: 'ifu_actif', date: DateTime(2026, 11, 30), situations: situations, versions: arrete).ok, isFalse);
     });
   });
 
-  group('le branchement IFU : situations présumées et longueur de l\'IFU, lues aux Paramètres', () {
-    test('la situation présumée quand l\'IFU est renseigné est celle du branchement, plus celle du déclencheur', () {
-      const param = CpdParametresAib(
-          base: 'ht', longueurIfu: 13, situationIfuRenseigne: 'prestation_service', situationIfuAbsent: 'ifu_inactif_ou_absent', tauxRepli: 0);
-      final r = aibPourAcheteur(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: param);
-      expect(r.situation, 'prestation_service');
-      expect(r.presomption, isTrue);
-    });
-
-    test('une situation du branchement absente du barème : on retombe sur le déclencheur (jamais un acheteur sans situation)', () {
-      const param = CpdParametresAib(
-          base: 'ht', longueurIfu: 13, situationIfuRenseigne: 'disparue', situationIfuAbsent: 'ifu_inactif_ou_absent', tauxRepli: 0);
-      final r = aibPourAcheteur(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: param);
-      expect(r.situation, 'ifu_actif');
-    });
-
+  group('le branchement IFU : la longueur de l\'IFU, lue aux Paramètres (il ne choisit plus aucune situation)', () {
     test('la longueur de l\'IFU vient des Paramètres : 10 chiffres acceptés, 13 refusés avec le bon nombre dans le message', () {
-      const dix = CpdParametresAib(
-          base: 'ht', longueurIfu: 10, situationIfuRenseigne: 'ifu_actif', situationIfuAbsent: 'ifu_inactif_ou_absent', tauxRepli: 0);
-      expect(aibPourAcheteur(ifu: '3201001996', date: apres, situations: situations, versions: bareme, parametres: dix).situation, 'ifu_actif');
-      final refus = aibPourAcheteur(ifu: ifu, date: apres, situations: situations, versions: bareme, parametres: dix).refus!;
-      expect(refus.code, 'IFU_INVALIDE');
-      expect(refus.motif, contains('10 chiffres'));
       expect(validerAcheteurMecef(ifu: ifu, nom: 'X', longueurIfu: 10).refus!.motif, contains('10 chiffres'));
       expect(validerAcheteurMecef(ifu: '3201001996', nom: 'X', longueurIfu: 10).acheteur!.ifu, '3201001996');
+      const dix = CpdParametresAib(
+          base: 'ht', longueurIfu: 10, situationIfuRenseigne: 'ifu_actif', situationIfuAbsent: 'ifu_inactif_ou_absent', tauxRepli: 0);
+      final refus = acheteurNormaliseAuBareme(ifu: ifu, nom: 'X', situationChoisie: 'ifu_actif', date: apres, situations: situations, versions: bareme, parametres: dix).refus!;
+      expect(refus.code, 'IFU_INVALIDE');
+      expect(refus.motif, contains('10 chiffres'));
     });
 
     test('un taux de repli de la vente sans acheteur est accepté de 0 à 100 et marqué `aibRepli`', () {

@@ -12,9 +12,10 @@ import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
 import '../referentiels/regles.dart' show joursEntre;
 import '../configuration/cfb_regles.dart' show CfbFermetures;
-import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine;
+import '../rh/rhb_regles.dart' show rhbNs131Reference, rhbNs132Reference, rhbPrimesOrigine, vacationCompteRh;
 import '../referentiels/versions_datees.dart' show isoJour, versionEnVigueur;
 import '../rh/planning_rh.dart' show regimeRhALaDate;
+import '../rh/rha_regles.dart' show rhaLibellesEnAttente;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
 import '../numerotation/numerotation.dart';
 import 'pai_baremes.dart';
@@ -511,6 +512,21 @@ String _min(Object? v) => '${v ?? ''}'.toLowerCase();
 /// * pharmacien : le poste « pharmac… » ou de dispensation (la Caissière-Dispensatrice tient la pharmacie) ;
 /// * laborantin : le poste « laborantin », « biologiste » ou de laboratoire.
 String? paiSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
+  final f = _ficheSignataire(personnel, q);
+  if (f == null) return null;
+  final nom = '${f['nomComplet'] ?? [f['nom'], f['prenom']].where((x) => x != null && '$x'.isNotEmpty).join(' ')}'.trim();
+  return nom.isEmpty ? null : nom;
+}
+
+/// L'INTITULÉ du poste qui porte la qualité [q], lu à l'ORGANIGRAMME ([postes], collection `postes`) par la même lecture que [paiSignataire] (jamais un intitulé écrit dans le code) ;
+/// `null` quand l'organigramme n'a aucun poste de cette qualité : l'appelant garde alors son libellé.
+String? paiIntituleSignataire(Iterable<PaiFiche> postes, PaiQualite q) {
+  final f = _ficheSignataire(postes, q);
+  final t = '${f?['poste'] ?? ''}'.trim();
+  return t.isEmpty ? null : t;
+}
+
+PaiFiche? _ficheSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
   final actifs = personnel.where(_actif).where((p) => '${p['statut'] ?? 'actif'}' != 'inactif').toList();
   bool poste(PaiFiche p, String m) => _min(p['poste']).contains(m);
   PaiFiche? premier(bool Function(PaiFiche) t) => actifs.where(t).firstOrNull;
@@ -527,9 +543,7 @@ String? paiSignataire(Iterable<PaiFiche> personnel, PaiQualite q) {
     PaiQualite.pharmacien => premier((p) => poste(p, 'pharmac') || poste(p, 'dispensat')),
     PaiQualite.laborantin => premier((p) => poste(p, 'laborantin') || poste(p, 'biolog') || poste(p, 'laboratoire')),
   };
-  if (f == null) return null;
-  final nom = '${f['nomComplet'] ?? [f['nom'], f['prenom']].where((x) => x != null && '$x'.isNotEmpty).join(' ')}'.trim();
-  return nom.isEmpty ? null : nom;
+  return f;
 }
 
 /// Le signataire écrit pour une note ou une pièce : « NOM Prénom, Qualité » quand le dossier du personnel désigne un titulaire, sinon la qualité seule
@@ -623,7 +637,8 @@ class PaiCalcul {
   String get nomComplet => '${employe['nomComplet'] ?? ''}';
 }
 
-int _compter(List<PaiFiche> planning, String employeId, int annee, int mois, String type) => planning.where(_actif).where((p) {
+/// RG-11 : seules les vacations VALIDÉES comptent (`vacationCompteRh`, la fonction unique du domaine).
+int _compter(List<PaiFiche> planning, String employeId, int annee, int mois, String type) => planning.where(_actif).where(vacationCompteRh).where((p) {
       if (p['employeId'] != employeId || p['type'] != type) return false;
       final d = paiDate(p['date']).toLocal();
       return d.year == annee && d.month - 1 == mois;
@@ -842,6 +857,9 @@ PaiFiche paiBulletinDe(PaiCalcul c, String reference, {String? genereePar, Strin
       'coutEmployeur': c.coutEmployeur,
       // Les taux qui ont calculé le bulletin (lot 1) : la pièce imprime SES taux, jamais ceux du jour ; un bulletin ne se recalcule pas.
       'tauxPaie': c.taux.fiche,
+      // Les VALEURS D'ATTENTE de l'agent au jour du calcul (salaire, catégorie, date d'embauche, CNSS « provisoires ») : le bulletin les porte, la pièce les dit,
+      // et la validation du lot les nomme. Absent quand l'agent n'en porte aucune (les bulletins sans attente ne changent pas de forme).
+      if (rhaLibellesEnAttente(c.employe).isNotEmpty) 'valeursAttente': rhaLibellesEnAttente(c.employe),
       'statutBulletin': 'a_valider',
       'genereePar': genereePar,
       // A1 : l'IDENTIFIANT du compte de l'agent qui génère. Le contrôle de séparation le compare, jamais le seul nom.
@@ -994,6 +1012,29 @@ String? paiControleSeparation(Iterable<PaiFiche> lot, String validateur, {String
   final meme = lot.where(memePersonne).firstOrNull;
   if (meme == null) return null;
   return 'Séparation des tâches : la paie de ${meme['periode']} a été générée par ${meme['genereePar']} ; elle doit être validée par une autre personne.';
+}
+
+/// Les valeurs d'attente que portent les bulletins d'un lot, par agent : `valeursAttente` (libellés) ; un bulletin d'avant ce champ qui porte `salaireProvisoire`
+/// est lu « salaire de base ». Un bulletin se lit tel qu'il a été généré : lever l'attente au dossier ne change pas un bulletin déjà calculé.
+List<({String matricule, String employe, List<String> valeurs})> paiValeursAttenteDuLot(Iterable<PaiFiche> lot) => [
+      for (final b in lot)
+        if (_valeursAttenteBulletin(b).isNotEmpty) (matricule: '${b['matricule'] ?? ''}', employe: '${b['employe'] ?? ''}', valeurs: _valeursAttenteBulletin(b))
+    ];
+
+List<String> _valeursAttenteBulletin(PaiFiche b) {
+  final l = [for (final x in (b['valeursAttente'] as List? ?? const [])) '$x'];
+  if (l.isEmpty && b['salaireProvisoire'] == true) return const ['salaire de base'];
+  return l;
+}
+
+/// Le SIGNALEMENT NOMMÉ d'une paie qui s'appuie sur des valeurs d'attente : « un agent à valeur d'attente n'entre pas dans une paie validée » sans que la Direction
+/// l'ait lu. Rend le texte (agents et valeurs en cause, où lever l'attente), ou `null` quand le lot n'en porte aucune. Il ne bloque pas : la paie d'un jeu entier
+/// d'agents à salaire d'attente se valide sciemment, mais jamais en silence.
+String? paiSignalementValeursAttente(Iterable<PaiFiche> lot) {
+  final l = paiValeursAttenteDuLot(lot);
+  if (l.isEmpty) return null;
+  final noms = [for (final x in l) '${x.employe} (${x.valeurs.join(', ')})'].join(' ; ');
+  return '${l.length} agent(s) du lot portent des valeurs d’attente non confirmées : $noms. Les confirmer (ou saisir la valeur remise) se fait à la fiche de l’agent, écran Personnel.';
 }
 
 /// E1175 (arbitrage du 04/11/2026) : un bulletin dont le net est NÉGATIF ne se valide pas. Aucun plafond de retenue n'est inventé : le refus nomme l'agent,

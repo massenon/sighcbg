@@ -22,7 +22,7 @@ const _fonctionsGrille = ['medecin', 'infirmier', 'sage_femme', 'aide_soignant',
 const _vacationsGraphiques = ['garde', 'garde_hospi', 'garde_soins', 'soiree', 'permanence', 'incineration'];
 
 /// RG-11 : seul le planning VALIDÉ compte (primes, statistiques de garde, graphiques de charge). Une vacation d'avant le circuit (sans état) est lue validée.
-bool rhbVacationCompte(Fiche p) => p['validationEtat'] == null || p['validationEtat'] == '' || p['validationEtat'] == 'validee';
+bool rhbVacationCompte(Fiche p) => vacationCompteRh(p);
 
 /// `m10-planning` — « Planning & gardes » : les régimes de travail par catégorie (administrables), les régimes INDIVIDUELS (dérogations champ par champ,
 /// versions datées, lot L4), la grille de la semaine où l'on affecte une vacation et le registre, tous deux lus à travers les FILTRES AVANCÉS. Le contrôle

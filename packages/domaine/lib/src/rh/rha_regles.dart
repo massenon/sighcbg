@@ -4,7 +4,9 @@ import '../impression/identite.dart' show IdentiteClinique;
 import '../format/js.dart' show arrondiJs;
 import '../format/recherche.dart' show trierPar;
 import '../referentiels/regles.dart' show joursEntre;
-import 'rhb_regles.dart' show rhbMontantAgent, rhbPrimesALaDate;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteRhConfirmerValeur;
+import 'planning_rh.dart' show RefusRh;
+import 'rhb_regles.dart' show rhbMontantAgent, rhbPrimesALaDate, vacationCompteRh;
 import '../numerotation/numerotation.dart';
 
 /// M10 — RH, premier lot (fiches de poste, tableau de bord, personnel, fiche employé, contrats, congés, ordres de mission, prestataires externes).
@@ -194,7 +196,7 @@ String rhaMasseSalariale(Iterable<RhaFiche> p) => moneyOu(sommeOuNul(p.map((e) =
 
 /// Indicateurs du tableau de bord RH (`m10-dashboard`).
 List<RhaKpi> rhaKpisDashboard(List<RhaFiche> personnel, List<RhaFiche> planningDuJour, DateTime auj) {
-  int de(bool Function(RhaFiche) t) => planningDuJour.where(t).length;
+  int de(bool Function(RhaFiche) t) => planningDuJour.where(vacationCompteRh).where(t).length;
   return [
     RhaKpi('Effectif total', nombre(personnel.length), indice: 'Organigramme de la clinique', ton: 'navy'),
     RhaKpi('Masse salariale (base)', rhaMasseSalariale(personnel), ton: 'info'),
@@ -258,7 +260,32 @@ RhaFiche rhaAgentEnregistrable(RhaFiche v) {
 /// LES VALEURS D'ATTENTE : une valeur que la clinique n'a pas encore reçue (salaire, date d'embauche, tarif d'un vacataire) est posée à titre PROVISOIRE et
 /// MARQUÉE (`salaireProvisoire`, `dateEmbaucheProvisoire`, `tarifAFournir`). Le marquage reste VISIBLE tant que la valeur n'est pas arrêtée ; il TOMBE quand la
 /// valeur est modifiée (la saisie de la valeur remise par la Direction l'arrête). Paires (champ, drapeau) par registre.
-const List<(String, String)> rhaAttentePersonnel = [('salaireBase', 'salaireProvisoire'), ('dateEmbauche', 'dateEmbaucheProvisoire')];
+///
+/// À la CRÉATION d'un agent, le logiciel n'invente RIEN : salaire et date d'embauche sont saisis (le formulaire les exige), la catégorie et le numéro CNSS peuvent
+/// rester vides — une valeur vide est alors marquée « à renseigner » ([rhaMarquerVides]), jamais remplacée par une valeur par défaut.
+const List<(String, String)> rhaAttentePersonnel = [
+  ('salaireBase', 'salaireProvisoire'),
+  ('dateEmbauche', 'dateEmbaucheProvisoire'),
+  ('categorie', 'categorieProvisoire'),
+  ('cnss', 'cnssProvisoire')
+];
+
+/// Les libellés lus à la fiche, au registre et sur les pièces.
+const Map<String, String> rhaLibellesAttente = {
+  'salaireBase': 'salaire de base',
+  'dateEmbauche': 'date d’embauche',
+  'categorie': 'catégorie / échelon',
+  'cnss': 'numéro CNSS',
+  'tarifActe': 'tarif de l’acte',
+};
+
+bool _videAttente(Object? v) => '${v ?? ''}'.trim().isEmpty;
+
+/// Les champs de [f] laissés VIDES parmi [paires] : leur drapeau passe à `true` (« à renseigner »). Rend le patch à fusionner (vide si tout est renseigné).
+Map<String, Object?> rhaMarquerVides(RhaFiche f, List<(String, String)> paires) => {
+      for (final (champ, drapeau) in paires)
+        if (_videAttente(f[champ])) drapeau: true
+    };
 const List<(String, String)> rhaAttentePrestataire = [('tarifActe', 'tarifAFournir')];
 
 bool _egalAttente(Object? a, Object? b) {
@@ -278,6 +305,54 @@ Map<String, Object?> rhaValeursArretees(RhaFiche? avant, RhaFiche apres, List<(S
         for (final (champ, drapeau) in paires)
           if (avant[drapeau] == true && !_egalAttente(avant[champ], apres[champ])) drapeau: false
     };
+
+/// CONFIRMER une valeur d'attente telle quelle (Direction, 16/11/2026) : le marquage « provisoire » du [champ] tombe, sur MOTIF obligatoire, par le geste réservé
+/// `rh_confirmer_valeur`. Rend `{ok: true, patch}` (à fusionner dans la fiche : le journal RG-12 garde l'ancienne et la nouvelle valeur, drapeau compris, et la
+/// confirmation — champ, motif, auteur, jour — est portée par `confirmationsValeurs`), ou le refus nommé (code, motif, geste). Rien ne se confirme sans valeur :
+/// une valeur vide se SAISIT.
+Map<String, Object?> rhaConfirmerValeur({
+  required RhaFiche agent,
+  required String champ,
+  required String motif,
+  required String role,
+  required String auteur,
+  required String jour,
+  DroitsGestes? gestes,
+  List<(String, String)> paires = rhaAttentePersonnel,
+}) {
+  final paire = paires.where((p) => p.$1 == champ).firstOrNull;
+  if (paire == null) {
+    return RefusRh('CHAMP_SANS_ATTENTE', 'Le champ « $champ » ne porte pas de valeur d’attente.', 'Choisir le salaire, la catégorie, la date d’embauche ou le numéro CNSS.').toJson();
+  }
+  if (!(gestes ?? gestesOrigine()).peut(role, gesteRhConfirmerValeur)) {
+    return RefusRh('GESTE_RESERVE', 'Confirmer une valeur d’attente est réservé (la DAF, la Direction, l’administrateur).', gesteRhConfirmerValeur).toJson();
+  }
+  final libelle = rhaLibellesAttente[champ] ?? champ;
+  if (agent[paire.$2] != true) {
+    return RefusRh('DEJA_ARRETEE', 'Le $libelle de cet agent n’est pas une valeur d’attente : rien à confirmer.', 'Modifier la valeur depuis la fiche si elle change.').toJson();
+  }
+  if (_videAttente(agent[champ])) {
+    return RefusRh('VALEUR_VIDE', 'Le $libelle est vide : une valeur absente se saisit, elle ne se confirme pas.', 'Saisir la valeur remise depuis la fiche de l’agent (elle arrête l’attente).').toJson();
+  }
+  if (motif.trim().isEmpty) {
+    return RefusRh('MOTIF_OBLIGATOIRE', 'Le motif de la confirmation du $libelle est obligatoire (RG-12).', 'Écrire pourquoi la valeur d’attente est retenue telle quelle.').toJson();
+  }
+  final avant = [for (final x in (agent['confirmationsValeurs'] as List? ?? const [])) x];
+  return {
+    'ok': true,
+    'patch': {
+      paire.$2: false,
+      'confirmationsValeurs': [
+        ...avant,
+        {'champ': champ, 'motif': motif.trim(), 'par': auteur, 'le': jour}
+      ],
+    }
+  };
+}
+
+/// Les libellés des valeurs d'attente d'un agent, lisibles : « salaire de base, numéro CNSS ». Vide si l'agent n'en porte aucune.
+List<String> rhaLibellesEnAttente(RhaFiche f, [List<(String, String)> paires = rhaAttentePersonnel]) =>
+    [for (final c in rhaValeursEnAttente(f, paires)) rhaLibellesAttente[c] ?? c];
 
 /// Le portrait de l'agent : les deux premières initiales (`C.initials`).
 String rhaInitiales(Object? s) => '$s'
@@ -318,7 +393,8 @@ bool _dansMois(Object? date, int annee, int mois) {
   return d.year == annee && d.month == mois;
 }
 
-int rhaCompter(List<RhaFiche> vacations, String type) => vacations.where((p) => p['type'] == type).length;
+/// Gardes et permanences d'un mois : seules les vacations VALIDÉES comptent (RG-11, `vacationCompteRh`).
+int rhaCompter(List<RhaFiche> vacations, String type) => vacations.where((p) => p['type'] == type && vacationCompteRh(p)).length;
 
 /// Montant d'une prime pour une fonction : la ligne COURANTE de la grille datée (`grillePrimes`) ; à défaut, le barème d'origine de la NS 132.
 /// Pas de date : la grille du jour s'applique (la fiche employé n'en passe pas).

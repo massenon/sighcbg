@@ -185,6 +185,43 @@ void main() {
     await t.pump(const Duration(seconds: 10));
   });
 
+  testWidgets('« Reconduire les actions non réalisées » : copie vers l’exercice suivant (plan en brouillon créé), lien d’origine, journalisé, rien en double si on relance', (t) async {
+    final m = magasinM14();
+    semerPlanEnExecution(m, 2026);
+    await ouvrirM14(t, m, 'm13-plan-annuel', role: 'da');
+    final bouton = find.byKey(const Key('pta:reconduire'));
+    expect(bouton, findsOneWidget);
+    await toucherM14(t, bouton);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Reconduire').last);
+    final plans = m.collection(ptaCollectionPlans).actives.where((p) => p['exercice'] == 2027).toList();
+    expect(plans.single['etat'], 'brouillon', reason: 'plan de 2027 créé en brouillon');
+    final copies = m.collection(ptaCollectionActions).actives.where((a) => a['exercice'] == 2027).toList();
+    expect(copies.single['reconduiteDe'], 'PTA-2026-001');
+    expect(copies.single['reference'], 'PTA-2027-001');
+    expect(copies.single['calendrier'], isNull, reason: 'les dates repartent de zéro');
+    expect(m.collection(ptaCollectionActions).actives.firstWhere((a) => a['exercice'] == 2026)['etat'], 'en_cours', reason: 'l’origine n’est pas touchée');
+    expect(m.collection('audit').toutes.any((j) => '${j['action']}'.contains('Reconduction du plan de travail annuel')), isTrue, reason: 'journalisé (RG-12)');
+    await t.pump(const Duration(seconds: 10));
+    // Relancer : rien n'est recopié deux fois.
+    await toucherM14(t, bouton);
+    expect(find.textContaining('déjà reconduites'), findsWidgets);
+    expect(m.collection(ptaCollectionActions).actives.where((a) => a['exercice'] == 2027).length, 1);
+    await t.pump(const Duration(seconds: 10));
+  });
+
+  testWidgets('les signataires du plan et du bilan se lisent à l’ORGANIGRAMME (poste et titulaire), ou au réglage « signataires du plan » ; aucun intitulé écrit dans le code', (t) async {
+    final m = magasinM14();
+    semerPlanEnExecution(m, 2026);
+    final racine = m.collection('postes').actives.firstWhere((p) => '${p['parentId'] ?? ''}'.isEmpty);
+    await ouvrirM14(t, m, 'm13-plan-annuel', role: 'da');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer le plan'));
+    expect(find.text('${racine['poste']}'), findsWidgets, reason: 'le poste qui coiffe l’organigramme signe');
+    if ('${racine['titulaire'] ?? ''}'.isNotEmpty) expect(find.text('${racine['titulaire']}'), findsWidgets);
+    expect(find.text('La Directrice Administrative'), findsNothing);
+    expect(find.text('La Direction'), findsNothing);
+    await t.pump(const Duration(seconds: 10));
+  });
+
   testWidgets('régler les référentiels : réservé au geste (« Ajouter » absent sans lui), une fiche ajoutée s’ARRÊTE (plus « à valider »)', (t) async {
     final m = magasinM14();
     await ouvrirM14(t, m, 'm13-plan-annuel', role: 'agentadmin');

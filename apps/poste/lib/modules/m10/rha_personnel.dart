@@ -53,7 +53,15 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
                 ])),
         ColonneTableau(cle: 'fonction', libelle: 'Fonction', texte: (r) => rhaFonctionLabel(r['fonction']), rendu: (_, r) => BadgeSigh(rhaFonctionLabel(r['fonction']), ton: TonSigh.navy)),
         const ColonneTableau(cle: 'service', libelle: 'Service'),
-        const ColonneTableau(cle: 'categorie', libelle: 'Cat./Éch.', droite: true),
+        ColonneTableau(
+            cle: 'categorie',
+            libelle: 'Cat./Éch.',
+            droite: true,
+            texte: (r) => '${r['categorie'] ?? ''}${r['categorieProvisoire'] == true ? ' (à renseigner)' : ''}',
+            rendu: (_, r) => Wrap(alignment: WrapAlignment.end, crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, children: [
+                  if (r['categorieProvisoire'] == true) const BadgeSigh('provisoire', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+                  Text('${r['categorie'] ?? ''}'),
+                ])),
         ColonneTableau(
             cle: 'anciennete',
             libelle: 'Ancienneté',
@@ -64,7 +72,15 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
               return '${a.ans} ans ${a.mois} mois';
             },
             rendu: (_, r) => Text(rhaAncienneteCourte(r['dateEmbauche'], c.aujourdhui))),
-        ColonneTableau(cle: 'cnss', libelle: 'N° CNSS', sansCoupure: true, rendu: (_, r) => Text('${r['cnss'] ?? ''}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 12, color: JetonsShell.slate500))),
+        ColonneTableau(
+            cle: 'cnss',
+            libelle: 'N° CNSS',
+            sansCoupure: true,
+            texte: (r) => '${r['cnss'] ?? ''}${r['cnssProvisoire'] == true ? ' (à renseigner)' : ''}',
+            rendu: (_, r) => Wrap(crossAxisAlignment: WrapCrossAlignment.center, spacing: 6, children: [
+                  if (r['cnssProvisoire'] == true) const BadgeSigh('à renseigner', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+                  Text('${r['cnss'] ?? ''}', style: const TextStyle(fontFamily: matPoliceMono, fontSize: 12, color: JetonsShell.slate500)),
+                ])),
         ColonneTableau(
             cle: 'salaireBase',
             libelle: 'Salaire de base',
@@ -81,7 +97,7 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
         const ChampDef(nom: 'matricule', libelle: 'Matricule', requis: true),
         const ChampDef(nom: 'nom', libelle: 'Nom', requis: true),
         const ChampDef(nom: 'prenom', libelle: 'Prénom(s)', requis: true),
-        const ChampDef(nom: 'sexe', libelle: 'Sexe', type: TypeChamp.select, requis: true, options: [OptionChamp('M', 'Masculin'), OptionChamp('F', 'Féminin')]),
+        const ChampDef(nom: 'sexe', libelle: 'Sexe', type: TypeChamp.select, options: [OptionChamp('M', 'Masculin'), OptionChamp('F', 'Féminin')], aide: 'Facultatif : le logiciel ne présume pas le sexe d’un agent (« Non renseigné » tant qu’il n’est pas saisi).'),
         const ChampDef(nom: 'telephone', libelle: 'Téléphone', type: TypeChamp.tel),
         ChampDef(nom: 'situation', libelle: 'Situation matrimoniale', type: TypeChamp.select, options: rhaOptions(rhaSituations)),
         const ChampDef.section('Affectation'),
@@ -94,29 +110,36 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
             aide: 'Facultatif, douze caractères au plus : le titre que l’agent porte à l’organigramme quand il diffère de son poste (un infirmier surveillant général).',
             valider: (v, _) => '${v ?? ''}'.trim().length > 12 ? 'Douze caractères au plus.' : null),
         ChampDef(nom: 'service', libelle: 'Service', type: TypeChamp.select, requis: true, options: rhaOptions(rhaServices)),
-        const ChampDef(nom: 'categorie', libelle: 'Catégorie / échelon', indicatif: 'ex. E3-1'),
+        const ChampDef(nom: 'categorie', libelle: 'Catégorie / échelon', indicatif: 'ex. E3-1', aide: 'Facultatif : laissée vide, la catégorie est marquée « à renseigner » (aucune valeur par défaut).'),
         const ChampDef(nom: 'dateEmbauche', libelle: 'Date d’embauche', type: TypeChamp.date, requis: true),
         const ChampDef.section('Rémunération et couverture sociale'),
         const ChampDef(nom: 'salaireBase', libelle: 'Salaire de base (FCFA)', type: TypeChamp.nombre, requis: true),
-        const ChampDef(nom: 'cnss', libelle: 'Numéro CNSS'),
+        const ChampDef(nom: 'cnss', libelle: 'Numéro CNSS', aide: 'Facultatif : laissé vide, le numéro est marqué « à renseigner ».'),
       ],
-      valeursInitiales: () => {'dateEmbauche': iso(c.aujourdhui), 'salaireBase': '60000', 'categorie': 'E1-1', 'sexe': 'F'},
-      transformer: (ctx, v) => rhaAgentEnregistrable({...v, 'salaireBase': rhaNum(v['salaireBase'])}),
+      valeursInitiales: () => const <String, Object?>{},
+      // RIEN EN DUR : à la création, salaire, date d'embauche, catégorie, numéro CNSS (et sexe) sont VIDES. Le salaire et la date sont exigés par le formulaire ;
+      // la catégorie et le numéro CNSS peuvent rester vides, et sont alors MARQUÉS « à renseigner » (valeur d'attente) au lieu d'être inventés.
+      transformer: (ctx, v) {
+        final f = rhaAgentEnregistrable({...v, 'salaireBase': rhaNum(v['salaireBase'])});
+        return {...f, ...rhaMarquerVides(f, rhaAttentePersonnel)};
+      },
       // MODIFIER une valeur d'attente (salaire, date d'embauche) l'ARRÊTE : le drapeau « provisoire » tombe dans la même écriture, donc au même journal (RG-12 :
       // ancienne et nouvelle valeur, drapeau compris). Une valeur laissée telle quelle garde son marquage.
       transformerExistante: (ctx, v, existante) {
         final f = rhaAgentEnregistrable({...v, 'salaireBase': rhaNum(v['salaireBase'])});
-        return {...f, ...rhaValeursArretees(existante, f, rhaAttentePersonnel)};
+        return {...f, ...rhaValeursArretees(existante, f, rhaAttentePersonnel), ...rhaMarquerVides(f, rhaAttentePersonnel)};
       },
       intro: (ctx) {
         final actifs = col.actives;
         final salaires = actifs.where((a) => a['salaireProvisoire'] == true).length;
         final dates = actifs.where((a) => a['dateEmbaucheProvisoire'] == true).length;
-        if (salaires + dates == 0) return const SizedBox.shrink();
+        final categories = actifs.where((a) => a['categorieProvisoire'] == true).length;
+        final cnss = actifs.where((a) => a['cnssProvisoire'] == true).length;
+        if (salaires + dates + categories + cnss == 0) return const SizedBox.shrink();
         return Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: NoteSigh(
-                'Valeurs d’attente : $salaires salaire(s) et $dates date(s) d’embauche sont PROVISOIRES (marqués « provisoire »). Ils le restent tant que la Direction n’a pas remis la valeur : la modifier depuis la fiche de l’agent l’arrête et retire le marquage (journalisé).',
+                'Valeurs d’attente : $salaires salaire(s), $dates date(s) d’embauche, $categories catégorie(s) et $cnss numéro(s) CNSS sont PROVISOIRES (marqués « provisoire » ou « à renseigner »). Ils le restent tant que la Direction n’a pas remis la valeur : la saisir depuis la fiche de l’agent l’arrête, et « Confirmer » (motif obligatoire, journalisé) retient une valeur d’attente telle quelle.',
                 ton: TonSigh.attention,
                 icone: LucideIcons.hourglass));
       },
@@ -135,18 +158,18 @@ class EcranPersonnel extends StatelessWidget with EcranMaquette {
             ('Nom et prénoms', '${e['nomComplet']}'),
             ('Fonction', rhaFonctionLabel(e['fonction'])),
             ('Service', '${e['service'] ?? ''}'),
-            ('Catégorie / échelon', '${e['categorie'] ?? ''}'),
+            ('Catégorie / échelon', '${e['categorie'] ?? ''}${e['categorieProvisoire'] == true ? ' (à renseigner)' : ''}'),
             ('Ancienneté', rhaAncienneteLongue(e['dateEmbauche'], c.aujourdhui)),
           ],
           blocs: [
             matBlocRubriques([
-              ('Sexe', e['sexe'] == 'F' ? 'Féminin' : 'Masculin'),
+              ('Sexe', e['sexe'] == 'F' ? 'Féminin' : (e['sexe'] == 'M' ? 'Masculin' : 'Non renseigné')),
               ('Situation matrimoniale', '${e['situation'] ?? ''}'),
               ('Téléphone', '${e['telephone'] ?? ''}'),
-              ('Date d’embauche', rhaDateFR(e['dateEmbauche'])),
+              ('Date d’embauche', rhaDateFR(e['dateEmbauche']) + (e['dateEmbaucheProvisoire'] == true ? ' (provisoire : valeur d’attente)' : '')),
               ('Poste occupé', '${e['poste'] ?? ''}'),
-              ('Numéro CNSS', '${e['cnss'] ?? ''}'),
-              ('Salaire de base', moneyOu(e['salaireBase'])),
+              ('Numéro CNSS', '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner)' : ''}'),
+              ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente)' : '')),
             ]),
           ],
           signatures: [Signature('L’Agent', nom: '${e['nomComplet']}'), rhaSignDa]),

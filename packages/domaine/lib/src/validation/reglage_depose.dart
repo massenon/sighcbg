@@ -10,7 +10,7 @@
 // Fonctions PURES : le poste y branche ses collections, sa matrice et son journal.
 library;
 
-import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard;
+import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../droits/gestes_reserves.dart';
 import '../parametres/definitions.dart';
 import '../parametres/parametres.dart';
@@ -27,6 +27,7 @@ const Map<String, String> reglagesSousGeste = {
   ptaCleDecoupage: gestePtaRegler,
   ptaCleSeuilRetard: gestePtaRegler,
   ptaClePrefixe: gestePtaRegler,
+  ptaCleSignataires: gestePtaRegler,
 };
 
 /// Le geste réservé qui pose ce réglage (`null` : le réglage suit le droit d'éditer l'écran des paramètres, sur la mère).

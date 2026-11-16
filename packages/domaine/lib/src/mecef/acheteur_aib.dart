@@ -1,8 +1,11 @@
 /// L'AIB DE LA FENÊTRE « FACTURE NORMALISÉE » LU AU BARÈME DATÉ (lot A5, 09/11/2026).
 ///
 /// La fenêtre proposait trois taux écrits dans le code (0, 1, 5 %). Elle lit désormais le barème de M12 (`situationsAib` + `baremeAib`, moteur
-/// `cpdTauxAibALaDate`) : selon l'IFU saisi pour l'acheteur, la situation se choisit d'office (IFU de 13 chiffres → `ifu_renseigne`, présumé actif ;
-/// aucun IFU → `ifu_absent`) ou à la main parmi les situations du barème ; le taux est celui EN VIGUEUR À LA DATE de la facture, avec son motif.
+/// `cpdTauxAibALaDate`) : la situation se CHOISIT à la main parmi les situations du barème ; le taux est celui EN VIGUEUR À LA DATE de la facture, avec son motif.
+///
+/// L'AIB N'EST JAMAIS IMPOSÉE D'OFFICE D'APRÈS L'IFU (Direction de Baguidi, 16/11/2026, §9 « rien en dur ») : ni l'IFU d'un acheteur, d'un assureur ou d'un fournisseur, ni son
+/// absence ne choisissent la situation ni le taux. Sans situation choisie, [aibPourAcheteur] REFUSE en le nommant (`AIB_SITUATION_REQUISE`) — aucun défaut silencieux. L'IFU ne
+/// sert qu'à vérifier son format et à dire qu'il est présumé actif quand la situation choisie le suppose.
 ///
 /// Trois règles, dans cet ordre de gravité :
 ///
@@ -64,8 +67,8 @@ String _pct(num t) => t == t.roundToDouble() ? '${t.toInt()}' : '$t'.replaceAll(
 /// [parametres] (Paramètres de l'AIB, version en vigueur à [date]) porte le BRANCHEMENT : la longueur de l'IFU et les situations présumées. Absents, la graine
 /// du moteur ([CpdParametresAib.graine]) tient lieu — l'appelant du poste les lit toujours à la collection `parametresAib`.
 ///
-/// D8 (Direction, 09/11/2026) : ici, sans taux arrêté, le refus nommé `AIB_SANS_BAREME` est GARDÉ (la fenêtre de l'acheteur) — il n'est PAS remplacé par un
-/// repli ; le repli à 0 % ne vaut que pour [aibParDefautALaDate] (retransmission, vente sans acheteur, affichage de la configuration).
+/// D8 (Direction, 09/11/2026) : ici, sans taux arrêté, le refus nommé `AIB_SANS_BAREME` est GARDÉ (la fenêtre de l'acheteur) — il n'est PAS remplacé par un repli.
+/// [ifu] et [parametres] ne choisissent plus rien (la situation ne se déduit plus de l'IFU) : ils restent pour les appelants, sans effet sur le choix.
 AibAcheteur aibPourAcheteur({
   Object? ifu,
   Object? situationChoisie,
@@ -74,7 +77,6 @@ AibAcheteur aibPourAcheteur({
   required Iterable<CpdFiche> versions,
   CpdParametresAib? parametres,
 }) {
-  final param = parametres ?? CpdParametresAib.graine;
   final choisie = '${situationChoisie ?? ''}'.trim();
   final CpdFiche sit;
   var presomption = false;
@@ -90,17 +92,15 @@ AibAcheteur aibPourAcheteur({
     }
     sit = t.first;
   } else {
-    final r = cpdSituationPourAcheteur(situations,
-        ifu: ifu, longueurIfu: param.longueurIfu, situationRenseigne: param.situationIfuRenseigne, situationAbsente: param.situationIfuAbsent);
-    if (!r.ok) {
-      return AibAcheteur(
-          motif: r.refusMotif ?? '',
-          refus: RefusMecef(r.refusCode ?? cpdCodeAibSansBareme, r.refusMotif ?? '',
-              r.refusCode == 'IFU_INVALIDE' ? 'Corriger l\'IFU, ou le laisser vide pour un particulier.' : 'Faire déclarer la situation au barème de l\'AIB.'));
-    }
-    sit = r.situation!;
-    presomption = r.presomption;
-    avertissement = r.avertissement;
+    // AUCUNE situation n'est déduite de l'IFU : le comptable choisit, à chaque opération.
+    return AibAcheteur(
+        motif: 'Aucune situation d\'AIB choisie : l\'IFU ne choisit rien d\'office.',
+        refus: const RefusMecef('AIB_SITUATION_REQUISE', 'Aucune situation d\'AIB n\'est choisie : l\'IFU de l\'acheteur, saisi ou absent, ne choisit ni la situation ni le taux (aucun défaut silencieux).',
+            'Choisir la situation de l\'acheteur parmi celles du barème de l\'AIB (Paramètres, « Acompte sur impôt (AIB) »).'));
+  }
+  if (choisie.isNotEmpty && '${sit['declencheur']}' == cpdDeclencheurIfuRenseigne) {
+    presomption = true;
+    avertissement = 'IFU présumé actif : l\'activité de l\'IFU n\'est pas vérifiée auprès de la DGI.';
   }
   final code = '${sit['code']}';
   final libelle = '${sit['libelle'] ?? code}';
@@ -161,56 +161,6 @@ num? _numTaux(Object? v) => v is num ? v : num.tryParse('$v'.replaceAll(',', '.'
   if (!aib.ok) return (acheteur: null, refus: aib.refus, aib: aib);
   final v = validerAcheteurMecef(ifu: ifu, nom: nom, aibTaux: aib.taux, aibSituation: aib.situation, longueurIfu: param.longueurIfu);
   return (acheteur: v.acheteur, refus: v.refus, aib: aib);
-}
-
-/// Le taux d'AIB PAR DÉFAUT à [date], pour les trois endroits qui n'ont pas de fenêtre où l'agent le choisit : la retransmission d'une facture, la vente
-/// sans acheteur, l'affichage de la configuration MECeF (D1, Direction, 09/11/2026).
-///
-/// Le taux est celui du barème ARRÊTÉ en vigueur pour la situation que le branchement donne à l'IFU de l'acheteur (aucun IFU : la situation « sans IFU
-/// actif »). SANS taux arrêté en vigueur à la date, c'est le taux de REPLI des Paramètres ([CpdParametresAib.tauxRepli], 0 % à l'origine) — jamais un taux
-/// inventé, jamais le 1 % non arrêté — et le MOTIF du moteur du barème est rendu avec lui, pour être affiché ou journalisé.
-class AibParDefaut {
-  const AibParDefaut({required this.taux, required this.motif, this.situation, this.arrete = false, this.nonArretes = const []});
-
-  /// Le taux appliqué (pourcentage entier).
-  final int taux;
-
-  /// Le motif : celui du barème quand un taux arrêté s'applique, sinon la raison du repli (avec le motif du moteur).
-  final String motif;
-
-  /// La situation du barème dont vient le taux (`null` au repli).
-  final String? situation;
-
-  /// Vrai quand le taux est celui d'une version ARRÊTÉE du barème, faux au repli.
-  final bool arrete;
-
-  /// Les taux de la situation qui figurent au barème sans être arrêtés.
-  final List<String> nonArretes;
-
-  /// Vrai quand le taux est le taux de repli (aucun taux arrêté en vigueur).
-  bool get repli => !arrete;
-}
-
-AibParDefaut aibParDefautALaDate({
-  Object? ifu,
-  required DateTime date,
-  required Iterable<CpdFiche> situations,
-  required Iterable<CpdFiche> versions,
-  CpdParametresAib? parametres,
-}) {
-  final param = parametres ?? CpdParametresAib.graine;
-  final jour = isoJourAib(date);
-  final r = aibPourAcheteur(ifu: ifu, date: date, situations: situations, versions: versions, parametres: param);
-  if (r.ok) {
-    return AibParDefaut(taux: r.taux!, motif: r.motif, situation: r.situation, arrete: true, nonArretes: r.nonArretes);
-  }
-  final raison = r.refus?.motif ?? r.motif;
-  return AibParDefaut(
-      taux: param.tauxRepli,
-      arrete: false,
-      nonArretes: r.nonArretes,
-      motif:
-          'Aucun taux arrêté en vigueur au $jour : AIB à ${param.tauxRepli} % (taux de repli des Paramètres, jamais un taux inventé). $raison');
 }
 
 /// La date en `jj/mm/aaaa` pour les motifs.

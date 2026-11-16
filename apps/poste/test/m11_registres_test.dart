@@ -113,6 +113,24 @@ void main() {
       expect(find.text('Calcul de la paie'), findsWidgets);
     });
 
+    cas('un agent à VALEUR D\'ATTENTE n\'entre pas dans une paie validée sans signalement NOMMÉ : la confirmation le dit, le journal le retient', (t) async {
+      final m = magasin();
+      poserBulletins(m);
+      neutraliserNetsNegatifs(m);
+      final b = m.collection('bulletins').actives.firstWhere((b) => b['periode'] == 'Mai 2026');
+      m.collection('bulletins').mettreAJour(b['id'], {'valeursAttente': ['salaire de base', 'numéro CNSS']});
+      await ouvrir(t, m, 'm11-validation');
+      await toucher(t, find.text('Valider le lot').first);
+      await t.pumpAndSettle();
+      expect(find.textContaining('portent des valeurs d’attente non confirmées'), findsOneWidget);
+      expect(find.textContaining('${b['employe']} (salaire de base, numéro CNSS)'), findsOneWidget, reason: 'l\'agent et ses valeurs sont NOMMÉS');
+      await toucher(t, find.text('Valider la paie'));
+      await t.pumpAndSettle();
+      final j = m.collection('audit').toutes.where((x) => x['action'] == 'Paie validée sur valeurs d’attente').toList();
+      expect(j.length, 1);
+      expect('${j.single['apres']}', contains('${b['employe']}'));
+    });
+
     cas('deux lots : KPI et tableau = écran réel ; « Valider le lot » demande confirmation, écrit l’agent connecté (E687), pose l’écriture de paie et s’annule', (t) async {
       final m = magasin();
       poserBulletins(m);

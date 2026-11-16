@@ -14,6 +14,7 @@
 library;
 
 import 'planning_rh.dart';
+import 'rhb_regles.dart' show vacationCompteRh;
 import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteRhRegler;
 
 typedef FicheMes = Map<String, Object?>;
@@ -182,7 +183,7 @@ LectureMes lireMes({
     case 'permanence':
       return sortie([
         for (final x in col('planning'))
-          if (x['employeId'] == e['id'] && _travailMes[r.calcule]!.contains(x['type']) && (x['validationEtat'] == null || x['validationEtat'] == '' || x['validationEtat'] == 'validee')) '${x['id']}'
+          if (x['employeId'] == e['id'] && _travailMes[r.calcule]!.contains(x['type']) && vacationCompteRh(x)) '${x['id']}'
       ]);
     case 'presence':
       final pts = [

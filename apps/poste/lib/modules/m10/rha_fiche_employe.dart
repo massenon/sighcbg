@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m13/adm_commun.dart';
 import '../m4/mat_commun.dart';
 import 'rha_commun.dart';
@@ -55,7 +56,7 @@ class FicheEmploye extends StatelessWidget {
       ),
       const SizedBox(height: 16),
       OngletsSigh(onglets: [
-        OngletDef(id: 'infos', libelle: 'Informations', construire: (_) => _infos(e, auj)),
+        OngletDef(id: 'infos', libelle: 'Informations', construire: (_) => _infosVivantes(e, auj)),
         OngletDef(id: 'planning', libelle: 'Planning du mois', construire: (_) => _planning(vac, gardes, permanences)),
         // PLANNING INDIVIDUEL (16/11/2026) : le régime effectif de l'agent, son calendrier (semaine ou mois) et l'édition de son régime individuel.
         OngletDef(id: 'planning-individuel', libelle: 'Planning individuel', construire: (_) => OngletPlanningIndividuel(agent: e, c: c, ctx: ctx)),
@@ -67,19 +68,76 @@ class FicheEmploye extends StatelessWidget {
     ]);
   }
 
+  /// L'onglet se relit au magasin : confirmer une valeur d'attente (ou la saisir au registre) se voit sans fermer la fiche.
+  Widget _infosVivantes(Fiche e, DateTime auj) {
+    final col = c.magasin.collection('personnel');
+    return ListenableBuilder(
+        listenable: col,
+        builder: (context, _) {
+          final frais = col.parId(e['id']) ?? e;
+          return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [_infos(frais, auj), _valeursAttente(frais)]);
+        });
+  }
+
+  /// Les VALEURS D'ATTENTE de l'agent (salaire, catégorie, date d'embauche, CNSS) : chacune est nommée, et « Confirmer » (motif obligatoire, journalisé, geste réservé
+  /// `rh_confirmer_valeur`) la retient telle quelle. Une valeur vide ne se confirme pas : elle se saisit (modifier la fiche).
+  Widget _valeursAttente(Fiche e) {
+    final champs = rhaValeursEnAttente(e, rhaAttentePersonnel);
+    if (champs.isEmpty) return const SizedBox.shrink();
+    final peut = gestePeutEcran(c, gesteRhConfirmerValeur);
+    return Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          NoteSigh(
+              'Valeurs d’attente de cet agent : ${champs.map((x) => rhaLibellesAttente[x] ?? x).join(', ')}. Elles figurent à la fiche, au registre et sur les pièces (bulletin, fiche individuelle) tant qu’elles ne sont pas arrêtées.',
+              ton: TonSigh.attention,
+              icone: LucideIcons.hourglass),
+          for (final champ in champs)
+            Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(children: [
+                  Expanded(child: Text('${(rhaLibellesAttente[champ] ?? champ)[0].toUpperCase()}${(rhaLibellesAttente[champ] ?? champ).substring(1)} : valeur d’attente', style: const TextStyle(fontSize: 13, color: JetonsShell.slate700))),
+                  if (peut)
+                    BoutonSigh(
+                        libelle: 'Confirmer',
+                        icone: LucideIcons.badgeCheck,
+                        taille: TailleBouton.sm,
+                        variante: VarianteBouton.secondaire,
+                        onPressed: () => _confirmer(e, champ)),
+                ])),
+        ]));
+  }
+
+  Future<void> _confirmer(Fiche e, String champ) async {
+    final libelle = rhaLibellesAttente[champ] ?? champ;
+    final motif = await confirmerAvecMotif(ctx,
+        titre: 'Confirmer le $libelle ?',
+        message: 'Le $libelle de ${e['nomComplet']} est une valeur d’attente. La confirmer la retient telle quelle et retire le marquage « provisoire ». L’opération est journalisée.',
+        motifObligatoire: false);
+    if (motif == null) return;
+    final r = rhaConfirmerValeur(
+        agent: e, champ: champ, motif: motif, role: c.role, auteur: acteur(c).nom.isEmpty ? 'Utilisateur non identifié' : acteur(c).nom, jour: iso(c.aujourdhui), gestes: droitsGestesEcran(c));
+    if (r['ok'] != true) {
+      if (ctx.mounted) ToastsSigh.afficher(ctx, 'Confirmation refusée.', type: TypeToast.erreur, detail: '${r['motif']}');
+      return;
+    }
+    final annuler = c.magasin.collection('personnel').mettreAJour(e['id'], (r['patch'] as Map).cast<String, Object?>());
+    if (ctx.mounted) ToastsSigh.afficher(ctx, 'Valeur confirmée.', type: TypeToast.succes, detail: 'Le $libelle de ${e['nomComplet']} est retenu ; motif journalisé.', annuler: annuler);
+  }
+
   Widget _infos(Fiche e, DateTime auj) => Padding(
         padding: const EdgeInsets.only(top: 16),
         child: DescListeSigh([
           ('Matricule', '${e['matricule']}'),
           ('Nom et prénoms', '${e['nomComplet']}'),
-          ('Sexe', e['sexe'] == 'F' ? 'Féminin' : 'Masculin'),
+          ('Sexe', e['sexe'] == 'F' ? 'Féminin' : (e['sexe'] == 'M' ? 'Masculin' : 'Non renseigné')),
           ('Fonction', rhaFonctionLabel(e['fonction'])),
           ('Poste', e['poste'] as String?),
           ('Service', e['service'] as String?),
-          ('Catégorie / échelon', e['categorie'] as String?),
+          ('Catégorie / échelon', '${e['categorie'] ?? ''}${e['categorieProvisoire'] == true ? ' (à renseigner : valeur d’attente à confirmer)' : ''}'),
           ('Date d’embauche', rhaDateFR(e['dateEmbauche']) + (e['dateEmbaucheProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
           ('Ancienneté', rhaAncienneteLongue(e['dateEmbauche'], auj)),
-          ('Numéro CNSS', e['cnss'] as String?),
+          ('Numéro CNSS', '${e['cnss'] ?? ''}${e['cnssProvisoire'] == true ? ' (à renseigner : valeur d’attente à confirmer)' : ''}'),
           ('Téléphone', e['telephone'] as String?),
           ('Situation matrimoniale', e['situation'] as String?),
           ('Salaire de base', moneyOu(e['salaireBase']) + (e['salaireProvisoire'] == true ? ' (provisoire : valeur d’attente à confirmer)' : '')),
@@ -100,7 +158,9 @@ class FicheEmploye extends StatelessWidget {
             ColonneMini('Date', (p) => dateJour(rhaDate(p['date'])!)),
             ColonneMini('Vacation', (p) => rhaTypePlanningLabel(p['type']),
                 rendu: (p) => BadgeSigh(rhaTypePlanningLabel(p['type']), ton: matTon(rhaTypePlanningTon(p['type'])))),
-            ColonneMini('Statut', (p) => p['statut'] == 'validee' ? 'Validée' : 'Brouillon', rendu: (p) => rhaBadgeStatut(p['statut'] == 'validee' ? 'validee' : 'brouillon')),
+            // RG-11 : une vacation « à valider » ne compte pas (gardes, permanences, primes) ; la colonne le dit.
+            ColonneMini('Statut', (p) => vacationCompteRh(p) && p['statut'] == 'validee' ? 'Validée' : 'À valider',
+                rendu: (p) => vacationCompteRh(p) && p['statut'] == 'validee' ? rhaBadgeStatut('validee') : const BadgeSigh('À valider', ton: TonSigh.attention)),
           ], lignes: vac),
         ]));
   }

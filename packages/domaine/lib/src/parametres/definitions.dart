@@ -21,7 +21,7 @@
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
-import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard;
+import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../paie/pai_baremes.dart';
 import '../configuration/cfb_donnees.dart' show cfbCcibTotal;
 import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSemence;
@@ -658,6 +658,20 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)',
     branche: true,
     appliquePar: 'Plan de travail annuel (m13-plan-annuel)',
+    geste: gestePtaRegler,
+  ),
+  // LES SIGNATAIRES DU PLAN (Direction de Baguidi, 16/11/2026 : « RIEN en dur ») : le plan et son bilan s'impriment avec les signataires que l'ORGANIGRAMME désigne (le titulaire du
+  // poste) ; ce réglage nomme les POSTES qui signent. Vide, le poste qui coiffe l'organigramme signe : aucun intitulé ni nom n'est écrit dans le code.
+  DefinitionParametre(
+    cle: ptaCleSignataires,
+    famille: 'pta',
+    type: TypeParametre.texte,
+    defaut: '',
+    libelle: 'Postes signataires du plan de travail annuel et de son bilan',
+    aide: 'Les POSTES de l\'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur le plan et sur son bilan imprimés ; leur titulaire est lu à l\'organigramme, jamais saisi ici. Vide : le poste qui coiffe l\'organigramme signe. Un poste absent de l\'organigramme s\'imprime tel qu\'écrit, sans nom.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l\'organigramme',
+    branche: true,
+    appliquePar: 'Plan de travail annuel (m13-plan-annuel) : impression du plan et du bilan',
     geste: gestePtaRegler,
   ),
 

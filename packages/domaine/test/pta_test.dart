@@ -312,6 +312,72 @@ void main() {
       expect(ptaPlansExercice(apres, 2031).length, 2, reason: 'RG-14 : l’ancienne version reste, consultable');
     });
 
+    test('RECONDUCTION : les actions ni réalisées ni abandonnées passent à l’exercice suivant (brouillon créé), avec leur lien d’origine, sans doublon ni retour en arrière', () {
+      final v1 = {'id': 'P1', 'exercice': 2031, 'version': 1, 'etat': 'cloture'};
+      M a(String ref, String etat, {String? id}) =>
+          {'id': id ?? 'A$ref', 'statut': 'actif', 'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-$ref', 'action': 'Action $ref', 'etat': etat, 'realiseValeur': 4, 'debut': '2031-02-01', 'fin': '2031-03-31', 'calendrier': ['2031-01-01/2031-03-31'], 'budgetReference': 'BUD-1'};
+      final src = [a('001', 'realisee'), a('002', 'abandonnee'), a('003', 'en_cours'), a('004', 'reportee')];
+      final r = ptaReconduire(annee: 2031, plans: [v1], actions: src, etats: etats, acteur: 'Rédacteur', maintenant: auj);
+      expect(r.ok, isTrue);
+      expect(r.planACreer!['etat'], 'brouillon', reason: 'le plan suivant naît en brouillon s’il n’existe pas');
+      expect([r.planACreer!['exercice'], r.planACreer!['version']], [2032, 1]);
+      expect(r.actions.map((x) => x['reconduiteDe']), ['PTA-2031-003', 'PTA-2031-004'], reason: 'ni les réalisées ni les abandonnées : lues au référentiel des états');
+      final c0 = r.actions.first;
+      expect([c0['exercice'], c0['planVersion'], c0['reference'], c0['etat'], c0['reconduiteDeExercice'], c0['reconduitePar']], [2032, 1, 'PTA-2032-001', 'planifiee', 2031, 'Rédacteur']);
+      for (final k in ['realiseValeur', 'debut', 'fin', 'calendrier', 'budgetReference']) {
+        expect(c0.containsKey(k), isFalse, reason: '$k repart de zéro');
+      }
+      expect(c0['action'], 'Action 003', reason: 'le programme est reporté');
+      expect(r.actions[1]['reference'], 'PTA-2032-002', reason: 'série annuelle de l’exercice suivant');
+      // Relancer : rien n’est recopié deux fois (même si une copie a été archivée depuis).
+      final appliquees = [for (final (i, x) in r.actions.indexed) {...x, 'id': 'N$i', if (i == 1) 'statut': 'archive'}];
+      final p2 = {...r.planACreer!, 'id': 'P2032'};
+      final encore = ptaReconduire(annee: 2031, plans: [v1, p2], actions: [...src, ...appliquees], etats: etats, acteur: 'A', maintenant: auj);
+      expect(encore.sansEffet, isTrue);
+      expect(encore.refus!.code, 'DEJA_RECONDUIT');
+      // Une nouvelle action non terminée est reconduite seule ; les autres ne sont pas doublées.
+      final plus = ptaReconduire(annee: 2031, plans: [v1, p2], actions: [...src, ...appliquees, a('005', 'planifiee')], etats: etats, acteur: 'A', maintenant: auj);
+      expect(plus.actions.map((x) => x['reconduiteDe']), ['PTA-2031-005']);
+      expect(plus.planACreer, isNull);
+      expect(plus.actions.single['reference'], 'PTA-2032-003', reason: 'ne redonne jamais un rang déjà attribué');
+      // L'origine n'est jamais touchée ; le sens est unique (l'exercice 2032 ne se reconduit pas vers 2031).
+      expect(src.first['etat'], 'realisee');
+      expect(ptaReconduire(annee: 2032, plans: [v1, p2], actions: [...appliquees], etats: etats, acteur: 'A', maintenant: auj).actions.every((x) => x['exercice'] == 2033), isTrue);
+    });
+
+    test('RECONDUCTION : refus nommés (aucun plan source, plan suivant soumis ou adopté, exercice suivant clos, rien à reconduire)', () {
+      final v1 = {'id': 'P1', 'exercice': 2031, 'version': 1, 'etat': 'execution'};
+      M a(String etat) => {'id': 'A1', 'statut': 'actif', 'exercice': 2031, 'planVersion': 1, 'reference': 'PTA-2031-001', 'etat': etat};
+      expect(ptaReconduire(annee: 2031, plans: const [], actions: [a('en_cours')], etats: etats, acteur: 'A', maintenant: auj).refus!.code, 'PAS_DE_PLAN_SOURCE');
+      expect(ptaReconduire(annee: 2031, plans: [v1], actions: [a('realisee')], etats: etats, acteur: 'A', maintenant: auj).refus!.code, 'RIEN_A_RECONDUIRE');
+      expect(ptaReconduire(annee: 2031, plans: [v1], actions: [a('en_cours')], etats: etats, acteur: 'A', maintenant: auj, etatExerciceSuivant: 'clos').refus!.code, 'EXERCICE_CLOS');
+      for (final e in ['soumis', 'adopte', 'execution']) {
+        final r = ptaReconduire(annee: 2031, plans: [v1, {'id': 'P2', 'exercice': 2032, 'version': 1, 'etat': e}], actions: [a('en_cours')], etats: etats, acteur: 'A', maintenant: auj);
+        expect(r.refus!.code, 'PLAN_SUIVANT_FIGE', reason: e);
+      }
+      final ok = ptaReconduire(annee: 2031, plans: [v1, {'id': 'P2', 'exercice': 2032, 'version': 1, 'etat': 'brouillon'}], actions: [a('en_cours')], etats: etats, acteur: 'A', maintenant: auj);
+      expect(ok.ok && ok.planACreer == null && ok.version == 1 && ok.actions.length == 1, isTrue, reason: 'un brouillon existant reçoit les copies');
+    });
+
+    test('SIGNATAIRES : lus à l’organigramme (réglage de postes, sinon le poste qui coiffe) ; jamais un nom écrit dans le code', () {
+      final postes = [
+        {'id': 'P1', 'statut': 'actif', 'poste': 'Directeur Général', 'code': 'DG', 'titulaire': 'DUPONT Marie'},
+        {'id': 'P2', 'statut': 'actif', 'parentId': 'P1', 'poste': 'Responsable Comptable', 'code': 'RC', 'titulaire': ''},
+        {'id': 'P3', 'statut': 'archive', 'poste': 'Ancien poste', 'code': 'AP', 'titulaire': 'X'},
+      ];
+      var s = ptaSignataires(postes: postes);
+      expect([s.single.intitule, s.single.titulaire], ['Directeur Général', 'DUPONT Marie'], reason: 'sans réglage : le poste qui coiffe l’organigramme');
+      s = ptaSignataires(postes: postes, reglage: 'rc ; Directeur Général');
+      expect([for (final x in s) (x.intitule, x.titulaire)], [('Responsable Comptable', null), ('Directeur Général', 'DUPONT Marie')], reason: 'ordre du réglage, code ou intitulé ; sans titulaire : ligne sans nom');
+      s = ptaSignataires(postes: postes, reglage: 'Poste inconnu');
+      expect([s.single.intitule, s.single.titulaire], ['Poste inconnu', null], reason: 'un poste absent de l’organigramme garde son intitulé, sans nom');
+      expect(ptaSignataires(postes: postes, reglage: 'AP').single.titulaire, isNull, reason: 'un poste archivé ne signe pas');
+      expect(ptaSignataires(postes: const []).single.titulaire, isNull);
+      expect(ptaSignataires(postes: const []).single.intitule, contains('à désigner'));
+      expect(gesteDuReglage(ptaCleSignataires), gestePtaRegler);
+      expect(definitionDeParametre(ptaCleSignataires)!.defaut, '');
+    });
+
     test('deux postes hors ligne qui créent la même version : le même en-tête l’emporte partout', () {
       final a = {'id': 'F1-P', 'exercice': 2031, 'version': 1, 'etat': 'brouillon', 'creeLe': '2031-01-02T08:00:00Z'};
       final b = {'id': 'F2-P', 'exercice': 2031, 'version': 1, 'etat': 'brouillon', 'creeLe': '2031-01-02T07:00:00Z'};
