@@ -91,7 +91,7 @@ class EcranGlasgow extends StatelessWidget with EcranMaquette {
       'axe2': v['axe2'],
       'observation': v['observation'],
       'evaluePar': v['evaluePar'],
-      'reference': r?['reference'] ?? referenceSuivante('GCS-', 4, col.toutes),
+      'reference': r?['reference'] ?? numeroSuivant('hospitalisation.glasgow', existants: col.toutes),
       'patientId': pt?['id'],
       'patient': pt != null ? '${pt['nom']} ${pt['prenom']}' : v['patientCode'],
       'axes': calcul.axes,

@@ -85,7 +85,7 @@ class EcranCra extends StatelessWidget with EcranMaquette {
   static Fiche construire(ContexteEcran c, Map<String, Object?> v, Fiche? existante) =>
       blocConstruirePatientCode(v,
           patient: patientParCodeBloc(c.magasin, v['patientCode']),
-          prefixeReference: existante == null ? 'CRA-2026-' : null,
+          serieReference: existante == null ? 'bloc.cra' : null,
           toutes: c.magasin.collection('crAnesthesie').toutes);
 
   static String _ou(Object? v) => '${v ?? ''}'.isEmpty ? '—' : '$v';

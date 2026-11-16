@@ -24,6 +24,7 @@ import '../parametres/reglages_roles.dart' show rolesInventaireClotureDefaut;
 import 'cpa_ecritures.dart' show cpaAnnee, cpaRefusJournalReserve;
 import 'cpa_referentiels.dart';
 import 'cpc_liasse.dart';
+import '../numerotation/numerotation.dart';
 
 double _n(Object? v) => nombreOuZero(v);
 double _som(Iterable<CpaFiche> l, String k) => l.fold<double>(0, (a, x) => a + _n(x[k]));
@@ -511,17 +512,14 @@ const List<CpaFiche> cpcComptesResultatDefaut = [
 ];
 
 /// Prochain rang d'une pièce de clôture (`CL-2026-00001`, `AN-2027-00001`, `…-C00001` pour les contre-passations) : lu du journal ENTIER (archivées comprises).
-int cpcRangPiece(Iterable<CpaFiche> toutes, String prefixe, int annee) {
-  final motif = RegExp('^$prefixe-$annee-?[A-Z]?(\\d+)\$');
-  var rang = 0;
-  for (final e in toutes) {
-    final m = motif.firstMatch('${e['numero'] ?? ''}');
-    if (m != null) rang = rang > int.parse(m.group(1)!) ? rang : int.parse(m.group(1)!);
-  }
-  return rang + 1;
+int cpcRangPiece(Iterable<CpaFiche> toutes, String journal, int annee) {
+  // Le journal (CL ou AN) désigne DEUX séries du référentiel de numérotation, la pièce et sa contre-passation, qui partagent un même rang.
+  final (serie, contre) = journal == 'AN' ? ('compta.a-nouveaux', 'compta.a-nouveaux-contrepassation') : ('compta.cloture', 'compta.cloture-contrepassation');
+  final date = journal == 'AN' ? '$annee-01-01' : '$annee-12-31';
+  final a = rangMaximal(serie, date: date, annee: annee, existants: toutes);
+  final b = rangMaximal(contre, date: date, annee: annee, existants: toutes);
+  return (a > b ? a : b) + 1;
 }
-
-String _pad5(int n) => n.toString().padLeft(5, '0');
 
 /// `preCloture(annee)` : les contrôles de la clôture définitive. BLOQUANTS : brouillons, journal équilibré, pièces équilibrées, exercice N-1 déjà clôturé,
 /// exercice N+1 non clôturé, à-nouveaux déjà écrits (hors ceux contre-passés), écritures validées. INFORMENT : compte 47, opérations en attente d'envoi.
@@ -759,7 +757,7 @@ CpcValidation cpcValiderCloture(Iterable<CpaFiche> exercices, Iterable<CpaFiche>
   final journal = toutesEcritures.isEmpty ? actives : toutesEcritures;
 
   // (1) la pièce de clôture, centre de coûts par centre de coûts
-  final numCL = 'CL-$annee-${_pad5(cpcRangPiece(journal, 'CL', annee))}';
+  final numCL = numeroFormate('compta.cloture', date: '$annee-12-31', annee: annee, rang: cpcRangPiece(journal, 'CL', annee));
   final clBase = <String, Object?>{
     'numero': numCL,
     'date': '$annee-12-31',
@@ -810,7 +808,7 @@ CpcValidation cpcValiderCloture(Iterable<CpaFiche> exercices, Iterable<CpaFiche>
 
   // (2) les à-nouveaux définitifs, sur le journal APRÈS la pièce CL
   final report = cpcLignesDeReport([...base, ...lignesCL]);
-  final anNumero = 'AN-${annee + 1}-${_pad5(cpcRangPiece(journal, 'AN', annee + 1))}';
+  final anNumero = numeroFormate('compta.a-nouveaux', date: '${annee + 1}-01-01', annee: annee + 1, rang: cpcRangPiece(journal, 'AN', annee + 1));
   final anBase = <String, Object?>{
     'numero': anNumero,
     'date': '${annee + 1}-01-01',
@@ -931,8 +929,8 @@ CpcReouverture cpcRouvrirExercice(Iterable<CpaFiche> exercices, Iterable<CpaFich
   ];
   if (origines.isEmpty) return CpcReouverture.refus('Les pièces de clôture de $annee sont introuvables : réouverture refusée.');
   final journal = toutesEcritures.isEmpty ? actives : toutesEcritures;
-  final nCL = 'CL-$annee-C${_pad5(cpcRangPiece(journal, 'CL', annee))}';
-  final nAN = 'AN-${annee + 1}-C${_pad5(cpcRangPiece(journal, 'AN', annee + 1))}';
+  final nCL = numeroFormate('compta.cloture-contrepassation', date: '$annee-12-31', annee: annee, rang: cpcRangPiece(journal, 'CL', annee));
+  final nAN = numeroFormate('compta.a-nouveaux-contrepassation', date: '${annee + 1}-01-01', annee: annee + 1, rang: cpcRangPiece(journal, 'AN', annee + 1));
   final lignes = <CpaFiche>[];
   for (final o in origines) {
     final estCL = o['numero'] == x['clNumero'];
@@ -1137,7 +1135,7 @@ CpcReport cpcReporterANouveaux(CpcSoldesCloture s, int annee, {required int deja
   if (dejaEcrits > 0) {
     return CpcReport.refus('Les à-nouveaux du 1ᵉʳ janvier ${annee + 1} existent déjà.', 'Les réécrire créerait un double report.');
   }
-  final numero = 'AN-${annee + 1}-00001';
+  final numero = numeroFormate('compta.a-nouveaux', date: '${annee + 1}-01-01', annee: annee + 1, rang: 1);
   final base = <String, Object?>{
     'numero': numero,
     'date': '${annee + 1}-01-01',

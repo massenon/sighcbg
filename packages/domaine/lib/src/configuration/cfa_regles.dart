@@ -1,6 +1,7 @@
 import '../format/format_fr.dart';
 import '../format/recherche.dart' show trierPar;
 import '../impression/identite.dart';
+import '../numerotation/numerotation.dart';
 
 /// RÈGLES DE CFG — dix écrans de configuration : organisation, identité, référentiel tarifaire, catalogue à deux prix, en-têtes, types de pièces, rappels,
 /// certificats, natures de facture, catalogue de l'imagerie. Portées de `prototype_html/assets/js/modules/configuration.js` et rejouées sur les vecteurs
@@ -310,7 +311,7 @@ CfaFiche cfaFicheProduit(Map<String, Object?> saisie, int nbToutes) {
   v['prixVente'] = cfaNombre(v['prixVente']);
   v['seuilAlerte'] = cfaNombre(v['seuilAlerte']);
   if (v['categorie'] == 'medicament') v['prixVente'] = v['prixAchat'];
-  if (!cfaVrai(v['code'])) v['code'] = 'PRD-${(nbToutes + 1).toString().padLeft(4, '0')}';
+  if (!cfaVrai(v['code'])) v['code'] = numeroFormate('stock.produits', rang: nbToutes + 1);
   v['stock'] = cfaVrai(v['stock']) ? v['stock'] : 0;
   v['stockGros'] = cfaVrai(v['stockGros']) ? v['stockGros'] : 0;
   v['stockDetail'] = cfaVrai(v['stockDetail']) ? v['stockDetail'] : 0;
@@ -331,7 +332,7 @@ CfaFiche cfaFicheAnalyse(Map<String, Object?> saisie, int nbToutes) {
 /// Création d'un acte : code `ACT-NNN`, prix vide = absent (à valider), jamais zéro.
 CfaFiche cfaFicheActe(Map<String, Object?> saisie, int nbToutes) {
   final v = {...saisie};
-  if (!cfaVrai(v['code'])) v['code'] = 'ACT-${(nbToutes + 1).toString().padLeft(3, '0')}';
+  if (!cfaVrai(v['code'])) v['code'] = numeroFormate('cfg.actes', rang: nbToutes + 1);
   v['prix'] = cfaNombre(v['prix']);
   return v;
 }
@@ -674,7 +675,7 @@ const cfaChampsCertificat = <String, CfaChampCertificat>{
 };
 
 /// Numéro d'un certificat : « CERT-2026-NNNN » — l'année est ÉCRITE EN DUR par la maquette (écart E842), le rang compte les fiches (archivées comprises).
-String cfaNumeroCertificat(int nbToutes) => 'CERT-2026-${(nbToutes + 1).toString().padLeft(4, '0')}';
+String cfaNumeroCertificat(int nbToutes, {Object? date}) => numeroFormate('cfg.certificats', date: date, rang: nbToutes + 1);
 
 /// « Délivrés ce mois » : la maquette ne compare que le NUMÉRO DU MOIS (écart E843 : le mois d'octobre d'une autre année compte aussi).
 int cfaDelivresCeMois(Iterable<CfaFiche> rows, DateTime auj) =>

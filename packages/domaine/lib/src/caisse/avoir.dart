@@ -21,6 +21,7 @@ library;
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
+import '../numerotation/numerotation.dart';
 
 /// Refus NOMMÉ : un refus se lit, il ne se devine pas. Rien n'est écrit.
 class RefusAvoir implements Exception {
@@ -55,18 +56,7 @@ String jourEcrit(String date) {
 }
 
 /// `referenceAvoir(date)` : `AV-AAAA-NNNN`, la série repartant à 1 chaque année, lue sur les avoirs ACTIFS déjà émis.
-String referenceAvoir(String date, Iterable<Map<String, Object?>> avoirs) {
-  final prefixe = 'AV-${date.length >= 4 ? date.substring(0, 4) : date}-';
-  var max = 0;
-  for (final a in avoirs) {
-    final r = '${a['reference'] ?? ''}';
-    if (r.startsWith(prefixe)) {
-      final k = int.tryParse(r.substring(prefixe.length)) ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(4, '0')}';
-}
+String referenceAvoir(String date, Iterable<Map<String, Object?>> avoirs) => numeroSuivant('caisse.avoirs', date: date, existants: avoirs);
 
 /// `emettreAvoir(factureId, params)`. [idAvoir] : l'identifiant que l'appelant donnera à la fiche (les écritures le portent comme `pieceId`).
 /// [jour] : `YYYY-MM-DD` de l'avoir si [date] est omise. Lève [RefusAvoir].

@@ -204,7 +204,7 @@ ConsultationEnregistree enregistrerConsultationSpec(ContexteEcran c, Fiche spec,
   final col = m.collection('consultations');
   final reference = existante != null && '${existante['reference'] ?? ''}'.isNotEmpty
       ? '${existante['reference']}'
-      : agReferenceSuivante('C', 5, col.toutes);
+      : numeroSuivant('consultation.consultations', date: date, existants: col.toutes);
   final praticien = '${valeurs['medecin'] ?? ''}';
   final praticienId = m.collection('personnel').actives.where((e) => e['nomComplet'] == praticien).map((e) => '${e['id']}').firstOrNull;
 

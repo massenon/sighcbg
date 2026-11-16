@@ -10,6 +10,7 @@ library;
 import 'cpa_ecritures.dart' show cpaAnnee;
 import 'cpa_referentiels.dart';
 import 'cpc_exercice.dart';
+import '../numerotation/numerotation.dart';
 
 const List<String> cpcEnteteEcritures = [
   'Journal', 'Date', 'N° pièce', 'Compte', 'Intitulé du compte', 'Libellé de l’écriture', 'Centre de coûts', 'Débit', 'Crédit', 'Lettrage', 'Statut'
@@ -154,7 +155,7 @@ int cpcVersionCloture(Iterable<CpaFiche> clotures, int annee) {
   return n < 1 ? 1 : n;
 }
 
-String cpcReferenceArchive(int annee, int version) => 'ARC-$annee-${version.toString().padLeft(2, '0')}';
+String cpcReferenceArchive(int annee, int version) => numeroFormate('compta.archives-cloture', date: '$annee-12-31', annee: annee, rang: version);
 
 int? _anneeDe(Object? d) => cpaAnnee(d);
 

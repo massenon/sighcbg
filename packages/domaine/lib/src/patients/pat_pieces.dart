@@ -10,6 +10,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../impression/identite.dart';
 import 'pat_patients.dart';
+import '../numerotation/numerotation.dart';
 
 /// Un type de pièce certifiante (collection `typesPiece` de la maquette, semée au socle).
 class PatTypePiece {
@@ -159,7 +160,7 @@ PatFacturePiece? patFacturerPiece({
     'payePar': null,
     'pieceRef': reference,
   };
-  final numero = 'FC-${date.year}-${_pad(nbFactures + 1, 5)}';
+  final numero = numeroFormate('patients.factures-certificats', date: date, rang: nbFactures + 1);
   final id = nouvelId('FAC');
   final facture = <String, Object?>{
     'id': id,

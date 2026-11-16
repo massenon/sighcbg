@@ -15,6 +15,7 @@ library;
 import '../format/recherche.dart' show normaliser;
 import 'identite_lot.dart';
 import 'profil_import.dart';
+import '../numerotation/numerotation.dart';
 
 typedef FicheImport = Map<String, Object?>;
 
@@ -720,18 +721,7 @@ AnalyseImport analyserFichier(JeuImport j, List<List<Object?>>? lignes, String f
 
 const collectionLots = 'lotsImportation';
 
-String referenceLot(PortImport port) {
-  final an = port.jour.substring(0, 4);
-  var max = 0;
-  for (final l in port.toutes(collectionLots)) {
-    final m = RegExp(r'^IMP-(\d{4})-(\d+)$').firstMatch('${l['reference'] ?? ''}');
-    if (m != null && m[1] == an) {
-      final k = int.parse(m[2]!);
-      if (k > max) max = k;
-    }
-  }
-  return 'IMP-$an-${(max + 1).toString().padLeft(3, '0')}';
-}
+String referenceLot(PortImport port) => numeroSuivant('import.lots', date: port.jour, existants: port.toutes(collectionLots));
 
 /// Les constats que le LOT conserve : le rang de la ligne, la colonne, le code et le niveau, JAMAIS la valeur lue ni le motif (qui la cite). L'historique
 /// des lots est lu par d'autres que l'auteur du fichier (la DAF, l'administrateur) : il dit OÙ ça a coincé, pas CE que contenait la cellule.

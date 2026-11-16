@@ -598,7 +598,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                             : baseCalculee.motif);
                     lignes = cpdEcrituresRetenueAib(
                         retenue: ret,
-                        numero: 'AIB-${r['reference']}',
+                        numero: numeroDerive('compta.attestations-aib', '${r['reference']}', date: date),
                         date: iso(date),
                         reference: '${r['reference']}',
                         fournisseur: '${r['fournisseurNom']}',
@@ -760,7 +760,7 @@ void _constaterAibSubi(BuildContext ctx, ContexteEcran c, Fiche r) {
                             facture: vivante,
                             date: date,
                             comptes: comptes,
-                            numero: 'AIBS-${vivante['reference']}',
+                            numero: numeroDerive('compta.attestations-aib-subie', '${vivante['reference']}', date: date),
                             signalTaux: signal);
                       } on RefusAibSubi catch (e) {
                         return refuserIci(e.motif);

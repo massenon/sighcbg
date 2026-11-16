@@ -207,7 +207,7 @@ class EcranReunions extends StatelessWidget with EcranMaquette {
     final col = c.magasin.collection('reunions');
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
       // E531 : série du registre (archivés compris), gardée à la modification.
-      v['reference'] = e?['reference'] ?? admReferenceSuivante('RU-2026-', 3, col.toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('adm.reunions', date: v['date'], existants: col.toutes);
       v['participants'] = admNombre(v['participants']);
       v['heure'] = admHeure(v['heure']);
       return matSansNuls(v);
@@ -314,7 +314,7 @@ class EcranAmbulance extends StatelessWidget with EcranMaquette {
       v['kilometrage'] = admNombre(v['kilometrage']);
       v['tarif'] = _entier(admTarifAmbulance(v['tarif'], v['kilometrage']));
       // E534 : série du registre (archivés compris), gardée à la modification.
-      v['reference'] = e?['reference'] ?? admReferenceSuivante('AM-2026-', 4, col.toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('adm.ambulance', date: v['dateHeure'], existants: col.toutes);
       return matSansNuls(v);
     }
 
@@ -460,7 +460,7 @@ class _EcranMaintenanceState extends State<EcranMaintenance> {
       }
     }
     Fiche fiche(BuildContext ctx, Fiche v, Fiche? e) {
-      v['reference'] = e?['reference'] ?? admReferenceSuivante('EQ-', 3, col.toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('adm.materiel', date: c.aujourdhui, existants: col.toutes);
       v['periodiciteMois'] = admNombre(v['periodiciteMois']);
       // Une fiche renseignée cesse d'être « à compléter » : le marquage disparaît par la SAISIE.
       v['aCompleter'] = admMaterielACompleter(v);

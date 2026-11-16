@@ -5,6 +5,7 @@ import '../format/js.dart' show arrondiJs;
 import '../format/recherche.dart' show trierPar;
 import '../referentiels/regles.dart' show joursEntre;
 import 'rhb_regles.dart' show rhbMontantAgent, rhbPrimesALaDate;
+import '../numerotation/numerotation.dart';
 
 /// M10 — RH, premier lot (fiches de poste, tableau de bord, personnel, fiche employé, contrats, congés, ordres de mission, prestataires externes).
 /// Tout est CALCULÉ depuis les fiches du magasin, jamais fourni ; chaque règle est rejouée sur les vecteurs de la maquette
@@ -543,20 +544,7 @@ List<String> rhaTexteDecisionConge(RhaFiche c) {
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 /// La référence d'un ordre : `'OM-2026-' + pad(effectif TOTAL + 1, 4)` (archivés compris ; le millésime est celui de la maquette — écart E624).
-String rhaReferenceMission(Object? dateDepart, Iterable<RhaFiche> toutes) {
-  final d = '$dateDepart';
-  final an = d.length >= 4 ? d.substring(0, 4) : '';
-  final prefixe = 'OM-$an-';
-  var max = 0;
-  for (final f in toutes) {
-    final r = '${f['reference'] ?? ''}';
-    if (r.startsWith(prefixe)) {
-      final n = int.tryParse(RegExp(r'^\s*[+-]?\d+').firstMatch(r.substring(prefixe.length))?.group(0) ?? '') ?? 0;
-      if (n > max) max = n;
-    }
-  }
-  return '$prefixe${(max + 1).toString().padLeft(4, '0')}';
-}
+String rhaReferenceMission(Object? dateDepart, Iterable<RhaFiche> toutes) => numeroSuivant('rh.ordres-mission', date: dateDepart, existants: toutes);
 
 List<RhaKpi> rhaKpisMissions(List<RhaFiche> rows) {
   final aValider = rows.where((m) => m['statutMission'] == 'a_valider').length;

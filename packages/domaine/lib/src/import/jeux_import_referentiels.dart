@@ -299,7 +299,7 @@ final JeuImport jeuPrestataires = JeuImport(
     for (final l in lignes) {
       final v = l.v;
       ecrireFiche('prestataires', {
-        'reference': admReferenceSuivante('PE-', 4, port.toutes('prestataires')),
+        'reference': numeroSuivant('rh.prestataires', date: port.jour, existants: port.toutes('prestataires')),
         'nom': v['nom'],
         'specialite': v['specialite'],
         'telephone': v['telephone'],
@@ -414,7 +414,7 @@ final JeuImport jeuImmobilisations = JeuImport(
     for (final l in ordre) {
       final v = l.v;
       ecrireFiche('immobilisations', {
-        'reference': v['reference'] ?? cpbReferenceSuivante('IM-', 3, port.toutes('immobilisations')),
+        'reference': v['reference'] ?? numeroSuivant('compta.immobilisations', date: port.jour, existants: port.toutes('immobilisations')),
         'designation': v['designation'],
         'categorie': v['categorie'],
         'dateAcquisition': v['dateAcquisition'],
@@ -502,7 +502,7 @@ final JeuImport jeuBudgets = JeuImport(
       final v = l.v;
       final exercice = (v['exercice'] as num).toInt();
       ecrireFiche('budgets', {
-        'reference': cpbReferenceSuivante('BG-$exercice-', 3, port.toutes('budgets')),
+        'reference': numeroSuivant('compta.budgets', date: port.jour, annee: exercice, existants: port.toutes('budgets')),
         'exercice': exercice,
         'centreCout': v['centre'],
         'centre': (ctx['libelles'] as Map)['${v['centre']}'] ?? v['centre'],

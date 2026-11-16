@@ -81,7 +81,7 @@ class _EtatPartogramme extends State<EcranPartogramme> {
                     final v = ctl.valider();
                     if (v == null) return;
                     matRattacher(v, matFemmes(c.magasin));
-                    v['reference'] = matReferenceSuivante('PARTO-', _col.toutes);
+                    v['reference'] = numeroSuivant('maternite.partogrammes', date: v['debut'], existants: _col.toutes);
                     matRecomposerDateHeure(v, 'debut');
                     v['debut'] = DateTime.parse('${v['debut']}').toUtc().toIso8601String();
                     v['gestite'] = matNombreSaisi(v['gestite']);

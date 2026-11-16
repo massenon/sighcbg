@@ -228,7 +228,7 @@ void ouvrirEvaluation(BuildContext ctx, ContexteEcran c, {Fiche? existante}) {
                     'dateBareme': dateB,
                     // `C.nextRef('EV-', 4)` de la maquette repartait de 1 à chaque chargement : « EV-0001 » doublonnait la série « EV-AAAA-NNNN » du jeu.
                     // Corrigé dans la maquette (E663) : la série de l'année, lue sur les fiches EXISTANTES.
-                    'reference': existante?['reference'] ?? rhbReferenceSuivante('EV-${c.aujourdhui.year}-', 4, col.toutes),
+                    'reference': existante?['reference'] ?? numeroSuivant('rh.evaluations', date: c.aujourdhui, existants: col.toutes),
                     'evaluateur': acteur(c).nom,
                   };
                   fermer();

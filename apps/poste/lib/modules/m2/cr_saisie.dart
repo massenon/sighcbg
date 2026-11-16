@@ -464,7 +464,7 @@ class _EtatCompteRendu extends State<EcranCompteRenduImagerie> {
       fiche = col
           .inserer(
               ficheDepuisEntete(e,
-                  reference: referenceSuivante('IMG-', 4, col.toutes),
+                  reference: numeroSuivant('imagerie.comptes-rendus', date: maintenant, existants: col.toutes),
                   dateIso: maintenant,
                   examenLibelle: ex != null ? '${ex['label']}' : examenCode,
                   patient: pt,

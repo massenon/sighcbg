@@ -18,6 +18,7 @@ library;
 import '../format/format_fr.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteAchatsRegistre, gesteValiderAchats;
 import 'nombres.dart';
+import '../numerotation/numerotation.dart';
 
 /// Un refus NOMMÉ : le motif est le texte affiché à l'agent, rien n'a été écrit.
 class RefusAchat implements Exception {
@@ -228,6 +229,7 @@ _Bon bonEnregistre(
     _Bon? existant,
     required Iterable<_Bon> bons,
     String Function()? referenceSuivante,
+    String? jour,
     String validateur = directriceAdministrative,
     bool? peutValider}) {
   if (lignes.isEmpty) throw const RefusAchat('Ajouter au moins un article.');
@@ -248,7 +250,7 @@ _Bon bonEnregistre(
   // E75 : la référence est posée à la création, jamais à la modification.
   if (existant == null) {
     // 16/11/2026 : un poste rattaché prend son numéro dans SA PLAGE (deux fileuls hors ligne ne produisent plus le même BEB) ; sans plage, la règle historique (plus grand rang + 1).
-    v['reference'] = referenceSuivante != null ? referenceSuivante() : referenceAchatSuivante('BEB-2026-', 4, bons);
+    v['reference'] = referenceSuivante != null ? referenceSuivante() : numeroSuivant('achats.besoins', date: jour, existants: bons);
   }
   // E74 : un validateur déjà connu n'est jamais écrasé. E73/E77 : sinon la DAF est portée validatrice.
   const validantes = ['validation_da', 'accorde', 'prepare', 'livre', 'cloture'];

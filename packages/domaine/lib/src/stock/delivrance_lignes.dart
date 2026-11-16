@@ -24,6 +24,7 @@ import '../caisse/valorisation.dart' show ligneAValoriser;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import 'delivrance.dart';
+import '../numerotation/numerotation.dart';
 
 /// Le motif d'attente d'une ligne non réglée (affiché tel quel).
 const String attenteNonReglee = 'non réglée à la caisse';
@@ -354,7 +355,7 @@ DelivranceLignes delivrerLignes({
     final circuit = voieDe(x.ligne, prod) == 'parenterale' ? 'delivrance_interne' : 'delivrance_externe';
     final lot = lotFefo(prod['id'], lots, jour);
     final mv = <String, Object?>{
-      'reference': referenceSuivante('M', 6, refs),
+      'reference': numeroSuivant('stock.mouvements', date: instant, existants: refs),
       'date': instant,
       'produitId': prod['id'],
       'produit': prod['designation'],
@@ -442,7 +443,7 @@ DelivranceLignes delivrerLignes({
     produits: patchs,
     mouvements: mouvements,
     dispensation: {
-      'reference': referenceSuivante('DISP-', 5, dispensationsExistantes),
+      'reference': numeroSuivant('stock.dispensations', date: instant, existants: dispensationsExistantes),
       'date': instant,
       'ordonnanceId': ordonnance['id'],
       'ordonnanceNumero': ordonnance['numero'],

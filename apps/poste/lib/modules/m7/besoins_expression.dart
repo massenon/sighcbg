@@ -770,7 +770,7 @@ class _EtatModaleBon extends State<_ModaleBon> {
           bons: col.toutes,
           validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
           peutValider: estArbitre(c.role, droitsGestesEcran(c)),
-          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('besoins', 'BEB-2026-', 4, col.toutes, maintenant: c.aujourdhui));
+          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('besoins', 'achats.besoins', col.toutes, date: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
       return;

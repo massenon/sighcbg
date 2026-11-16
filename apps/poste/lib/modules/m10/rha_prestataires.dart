@@ -31,7 +31,7 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
     Fiche fiche(BuildContext ctx, Map<String, Object?> v, Fiche? existante) {
       final f = rhaPrestataireEnregistrable(
           {...v, 'tarifActe': rhaNum(v['tarifActe']), 'actesRealises': rhaNum(v['actesRealises'])},
-          reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : admReferenceSuivante('PE-', 4, col.toutes));
+          reference: '${existante?['reference'] ?? ''}'.isNotEmpty ? '${existante!['reference']}' : numeroSuivant('rh.prestataires', date: c.aujourdhui, existants: col.toutes));
       // Saisir le tarif remis par la Direction l'ARRÊTE : le marquage « à fournir » tombe dans la même écriture, donc au même journal (RG-12).
       return {...f, ...rhaValeursArretees(existante, f, rhaAttentePrestataire)};
     }

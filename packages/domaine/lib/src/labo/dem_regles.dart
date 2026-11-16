@@ -5,7 +5,7 @@ library;
 
 import '../format/format_fr.dart';
 import '../referentiels/regles.dart';
-import '../stock/delivrance.dart' show referenceSuivante;
+import '../numerotation/numerotation.dart';
 
 typedef FicheDem = Map<String, Object?>;
 
@@ -46,7 +46,7 @@ String demCodeAnalyse(Object? date, Iterable<FicheDem> demandes,
 /// `C.referenceSuivante('LAB-', 5, demandes)` — la référence de la demande suit le REGISTRE, jamais un compteur de page (écart E142 : `C.nextRef`
 /// repartait à 1 à chaque chargement et émettait un `LAB-00001` déjà attribué).
 String demReferenceSuivante(Iterable<FicheDem> demandes) =>
-    referenceSuivante('LAB-', 5, demandes);
+    numeroSuivant('labo.demandes', existants: demandes);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // Le circuit du prélèvement

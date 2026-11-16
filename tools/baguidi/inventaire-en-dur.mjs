@@ -26,6 +26,11 @@
 //   node tools/baguidi/inventaire-en-dur.mjs --liste B [--module m11] la liste des défauts retenus d'une famille (fichier:ligne, valeur, contexte)
 //   node tools/baguidi/inventaire-en-dur.mjs --echantillon 30 --famille C [--graine 7]   un tirage reproductible pour la vérification à la main
 //   node tools/baguidi/inventaire-en-dur.mjs --par-fichier          les comptes de défauts par fichier (base d'un futur cliquet « valeurs en dur »)
+//   node tools/baguidi/inventaire-en-dur.mjs --cliquet [--famille=E] LE CLIQUET (§ 4.2) : échoue (code 1) si un fichier dépasse son plafond dans une famille
+//        sous cliquet, ou passe SOUS son plafond sans que la ligne de base soit abaissée. Plafonds : tools/baguidi/valeurs-en-dur.plafonds.json (un fichier
+//        absent d'une famille a un plafond de ZÉRO). Famille E (préfixes de numérotation) : plafond zéro partout depuis le lot 2 — toute référence de pièce
+//        passe par la fabrique du référentiel de numérotation (`numeroSuivant`, packages/domaine/lib/src/numerotation/).
+//        --injecter=<chemin fictif>:<fichier> ajoute un source au balayage comme s'il vivait au chemin fictif (sonde du cliquet : il doit mordre).
 // Lecture seule : le script n'écrit que le fichier demandé par --json.
 import { readFileSync, readdirSync, statSync, existsSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -357,6 +362,15 @@ function analyser() {
   const { tol, roles } = lireCliquetRoles();
   const liste = fichiers();
   const sources = new Map(liste.map((p) => [p, readFileSync(join(RACINE, p), 'utf8')]));
+  // --injecter=<chemin fictif>:<fichier> (sonde du cliquet) : un source lu ailleurs, balayé comme s'il vivait au chemin fictif.
+  for (const a of process.argv.slice(2).filter((x) => x.startsWith('--injecter='))) {
+    const v = a.slice('--injecter='.length);
+    const i = v.indexOf(':');
+    if (i <= 0) throw new Error(`--injecter attend <chemin fictif>:<fichier>, reçu « ${v} »`);
+    const fictif = v.slice(0, i);
+    sources.set(fictif, readFileSync(v.slice(i + 1), 'utf8'));
+    liste.push(fictif);
+  }
   const COLLECTIONS = new Set(existsSync(join(RACINE, 'apps/poste/assets/donnees/jeu')) ? readdirSync(join(RACINE, 'apps/poste/assets/donnees/jeu')).map((f) => f.replace(/\.json$/, '')) : []);
 
   // --- Pré-lecture : lexique, déclarations englobantes, fichiers engendrés, fichiers qui se déclarent SEMENCE dans leur en-tête.
@@ -774,7 +788,7 @@ function analyser() {
 // 7. SORTIES.
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 const args = process.argv.slice(2);
-const opt = (k) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
+const opt = (k) => { const eq = args.find((a) => a.startsWith(k + '=')); if (eq) return eq.slice(k.length + 1); const i = args.indexOf(k); return i >= 0 ? args[i + 1] : undefined; };
 const res = analyser();
 const FAMILLES = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const defauts = res.candidats.filter((c) => c.statut === 'defaut');
@@ -799,6 +813,37 @@ if (args.includes('--echantillon')) {
   const pris = new Set();
   while (tir.length < Math.min(n, pool.length)) { const k = Math.floor(alea() * pool.length); if (!pris.has(k)) { pris.add(k); tir.push(pool[k]); } }
   for (const c of tir) console.log(`${c.famille}${c.sous ? '/' + c.sous : ''}\t${c.fichier}:${c.ligne}\t${c.valeur}\t${c.contexte}`);
+  process.exit(0);
+}
+if (args.includes('--cliquet')) {
+  // LE CLIQUET « VALEURS EN DUR » (§ 4.2 du rapport) : une famille sous cliquet ne peut que DÉCROÎTRE, fichier par fichier.
+  const cheminPlafonds = join(RACINE, 'tools/baguidi/valeurs-en-dur.plafonds.json');
+  const plafonds = existsSync(cheminPlafonds) ? JSON.parse(readFileSync(cheminPlafonds, 'utf8')) : {};
+  const demandee = opt('--famille');
+  const familles = demandee ? [demandee] : Object.keys(plafonds).filter((k) => FAMILLES.includes(k));
+  if (!familles.length) { console.error('Cliquet : aucune famille sous cliquet (valeurs-en-dur.plafonds.json).'); process.exit(2); }
+  const ecarts = [];
+  for (const f of familles) {
+    if (!FAMILLES.includes(f)) { console.error(`Cliquet : famille inconnue « ${f} ».`); process.exit(2); }
+    const base = (plafonds[f] && typeof plafonds[f] === 'object') ? plafonds[f] : {};
+    const parFichier = new Map();
+    for (const c of defauts.filter((x) => x.famille === f)) { const a = parFichier.get(c.fichier) || []; a.push(c); parFichier.set(c.fichier, a); }
+    for (const [fichier, cs] of parFichier) {
+      const plafond = Number.isInteger(base[fichier]?.sites) ? base[fichier].sites : 0;
+      if (cs.length > plafond) ecarts.push(`${f} — ${fichier} : ${cs.length} défaut(s) pour un plafond de ${plafond} :\n` + cs.map((c) => `    ${c.fichier}:${c.ligne}  « ${c.valeur} »  ${c.contexte}`).join('\n'));
+    }
+    for (const [fichier, b] of Object.entries(base)) {
+      if (fichier.startsWith('_')) continue;
+      const n = (parFichier.get(fichier) || []).length;
+      if (n < b.sites) ecarts.push(`${f} — ${fichier} : ${n} défaut(s) pour un plafond de ${b.sites} — abaisser la ligne de base (le cliquet ne remonte jamais).`);
+    }
+  }
+  if (ecarts.length) {
+    console.error(`Cliquet « valeurs en dur » : ${ecarts.length} écart(s).\n` + ecarts.join('\n') +
+      '\nUne référence de pièce se construit par la fabrique du référentiel de numérotation (numeroSuivant / numeroFormate / numeroDerive), jamais par un préfixe écrit dans le code.');
+    process.exit(1);
+  }
+  console.log(`Cliquet « valeurs en dur » : familles ${familles.join(', ')} conformes à leurs plafonds.`);
   process.exit(0);
 }
 if (args.includes('--par-fichier')) {

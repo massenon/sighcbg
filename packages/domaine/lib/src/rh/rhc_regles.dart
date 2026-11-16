@@ -12,6 +12,7 @@ import '../referentiels/periodes.dart' show ajouterJours;
 import '../referentiels/regles.dart' show joursEntre;
 import 'espace_mes.dart' show montantPorte;
 import 'rhb_regles.dart';
+import '../numerotation/numerotation.dart';
 
 typedef FicheRhc = Map<String, Object?>;
 
@@ -133,18 +134,7 @@ String _dateFR(Object? d) {
 
 /// `PR.numeroBadge(date)` — UNE fabrique, comme le code d'analyse : série ANNUELLE `BDG-NNNNN-AAAA`, le rang suivant le plus grand déjà écrit POUR CETTE
 /// ANNÉE, archivés compris (un badge retiré garde son numéro). [badges] : TOUTES les fiches de la collection.
-String rhcNumeroBadge(Iterable<FicheRhc> badges, Object? date, DateTime maintenant) {
-  final annee = (_jour(date) ?? maintenant).year.toString();
-  var max = 0;
-  for (final b in badges) {
-    final m = RegExp(r'^BDG-(\d{5})-(\d{4})$').firstMatch('${b['numero'] ?? ''}');
-    if (m != null && m.group(2) == annee) {
-      final n = int.parse(m.group(1)!);
-      if (n > max) max = n;
-    }
-  }
-  return 'BDG-${(max + 1).toString().padLeft(5, '0')}-$annee';
-}
+String rhcNumeroBadge(Iterable<FicheRhc> badges, Object? date, DateTime maintenant) => numeroSuivant('rh.badges', date: _jour(date) ?? maintenant, existants: badges);
 
 /// `PR.badgeQR(badge)` — LA décision la plus importante du module : le QR ne porte que le MATRICULE et le NUMÉRO DE SÉRIE. Ni nom, ni fonction, ni
 /// téléphone, ni URL : un badge se photographie dans un couloir, le logiciel est hors ligne, et la vérification doit passer par le LOGICIEL.

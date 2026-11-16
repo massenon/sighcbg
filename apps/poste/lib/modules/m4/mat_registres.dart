@@ -225,7 +225,7 @@ class EcranAccouchements extends StatelessWidget with EcranMaquette {
     Fiche fiche(Fiche v, Fiche? e) {
       matRattacher(v, matFemmes(c.magasin));
       final col = c.magasin.collection('accouchements').toutes;
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('ACC-', col);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.accouchements', date: v['dateHeure'], existants: col);
       v['voie'] = v['type'] == 'Césarienne' ? 'Césarienne' : 'Voie basse';
       matRecomposerDateHeure(v, 'dateHeure');
       return matSansNuls(v);
@@ -413,7 +413,7 @@ Fiche _fiche_naissance(BuildContext ctx, Fiche v, Fiche? existante) {
     v['mere'] = '${m['nom']} ${m['prenom']}';
     v['mereId'] = m['id'];
   }
-  v['reference'] = existante?['reference'] ?? matReferenceSuivante('NAI-', c.magasin.collection('naissances').toutes);
+  v['reference'] = existante?['reference'] ?? numeroSuivant('maternite.naissances', date: v['dateHeure'], existants: c.magasin.collection('naissances').toutes);
   _nombres(v, const ['poids', 'taille', 'pc', 'pt', 'apgar1', 'apgar5', 'apgar10']);
   matRecomposerDateHeure(v, 'dateHeure');
   if (matAlertesNouveauNe(v).isNotEmpty) {
@@ -661,7 +661,7 @@ class EcranDeces extends StatelessWidget with EcranMaquette {
     final c = ContexteEcran.of(context);
     Fiche fiche(Fiche v, Fiche? e) {
       matRattacher(v, matPatients(c.magasin));
-      v['reference'] = e?['reference'] ?? matReferenceSuivante('DEC-', c.magasin.collection('deces').toutes);
+      v['reference'] = e?['reference'] ?? numeroSuivant('maternite.deces', date: v['dateHeure'], existants: c.magasin.collection('deces').toutes);
       matRecomposerDateHeure(v, 'dateHeure');
       return matSansNuls(v);
     }

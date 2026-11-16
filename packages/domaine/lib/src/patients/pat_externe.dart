@@ -10,6 +10,7 @@ import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../labo/dem_regles.dart' show demCodeAnalyse, demReferenceSuivante;
 import '../referentiels/regles.dart' show codePatient, resultatRendu;
 import 'pat_patients.dart';
+import '../numerotation/numerotation.dart';
 
 String _pad(int n, int l) => n.toString().padLeft(l, '0');
 num? _nombre(Object? v) => v is num ? v : num.tryParse('${v ?? ''}');
@@ -189,7 +190,7 @@ PatDemandeExterne patOuvrirDemandeExterne({
     });
   }
   num somme(String k) => lignes.fold<num>(0, (s, l) => s + (l[k] as num));
-  final numero = 'FE-${date.year}-${_pad(nbFactures + 1, 5)}';
+  final numero = numeroFormate('patients.factures-externes', date: date, rang: nbFactures + 1);
   final idFacture = nouvelId('FAC');
   final facture = <String, Object?>{
     'id': idFacture,

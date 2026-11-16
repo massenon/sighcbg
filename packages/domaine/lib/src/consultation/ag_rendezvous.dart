@@ -9,6 +9,7 @@ import '../format/format_fr.dart';
 import '../format/recherche.dart';
 import '../referentiels/periodes.dart' show ajouterJours;
 import 'ag_commun.dart';
+import '../numerotation/numerotation.dart';
 
 // --- états et suites d'un rendez-vous ------------------------------------------------------------------------------------------
 
@@ -93,7 +94,7 @@ AgFiche _completerPatient(AgFiche v, AgFiche? record, Iterable<AgFiche> patients
   if (!agVrai(r['reference'])) {
     r['reference'] = agVrai(record?['reference'])
         ? record!['reference']
-        : agReferenceSuivante('C', 5, existantes);
+        : numeroSuivant('agenda.rendezvous', date: r['date'], existants: existantes);
   }
   return r;
 }
@@ -116,7 +117,7 @@ AgFiche agCompleterVenue(AgFiche v,
   if (!agVrai(r['reference'])) {
     r['reference'] = agVrai(record?['reference'])
         ? record!['reference']
-        : agReferenceSuivante('C', 5, existantes);
+        : numeroSuivant('agenda.rendezvous', date: r['date'], existants: existantes);
   }
   return r;
 }
@@ -464,7 +465,7 @@ List<AgKpi> agKpisAppels(List<AgFiche> rows) => [
 AgFiche agCompleterAppel(AgFiche v, {AgFiche? record, required Iterable<AgFiche> existantes}) {
   final r = {...v};
   if (!agVrai(r['reference']) && !agVrai(record?['reference'])) {
-    r['reference'] = agReferenceSuivante('A', 5, existantes);
+    r['reference'] = numeroSuivant('agenda.appels', existants: existantes);
   }
   return r;
 }

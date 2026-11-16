@@ -109,7 +109,7 @@ class EcranRapport extends StatelessWidget with EcranMaquette {
     return {
       'statut': 'actif',
       ...v,
-      'reference': referenceSuivante('RAP-', 4, col.toutes),
+      'reference': numeroSuivant('hospitalisation.rapports', existants: col.toutes),
       ...derives,
     };
   }

@@ -641,7 +641,8 @@ const List<String> ptaChampsPlanReserves = [
 String ptaLibelleEtatPlan(Object? e) => ptaLibellesEtatPlan['$e'] ?? '$e';
 
 /// La référence lisible d'un plan.
-String ptaReferencePlan(int annee, int version) => 'PTA-$annee-V$version';
+/// La référence d'un plan : le PRÉFIXE vient du réglage `pta.prefixeNumero` (semence lue par [ptaPrefixeDe]), jamais d'un littéral.
+String ptaReferencePlan(int annee, int version, {String? prefixe}) => '${prefixe ?? ptaPrefixeDe(null)}-$annee-V$version';
 
 /// L'identité d'un plan d'un poste à l'autre : `<exercice>/V<version>`.
 String ptaClePlan(int annee, int version) => '$annee/V$version';

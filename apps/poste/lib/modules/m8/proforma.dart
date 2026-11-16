@@ -30,7 +30,7 @@ class EcranProforma extends StatelessWidget with EcranMaquette {
         final toutes = col.actives;
         final rows = [
           for (final f in toutes)
-            if (f['proforma'] == true || '${f['numero']}'.startsWith('PRO-')) f
+            if (f['proforma'] == true || numeroDeLaSerie('caisse.proformas', f['numero'])) f
         ];
         return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

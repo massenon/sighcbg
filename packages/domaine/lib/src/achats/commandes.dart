@@ -9,6 +9,7 @@ library;
 
 import 'nombres.dart';
 import 'besoins.dart';
+import '../numerotation/numerotation.dart';
 
 class StatutCommande {
   const StatutCommande(this.valeur, this.libelle, this.ton);
@@ -121,7 +122,7 @@ _Commande commandeEnregistree(
   v['lignes'] = lignes;
   v['montant'] = montantCommande(lignes);
   if (existante == null) {
-    v['reference'] = referenceSuivante != null ? referenceSuivante() : referenceAchatSuivante('BC-2026-', 4, commandes);
+    v['reference'] = referenceSuivante != null ? referenceSuivante() : numeroSuivant('achats.commandes', date: jour, existants: commandes);
   }
   // E72/E74 : le statut choisi pose la validation de la DAF d'office, sauf si un validateur est déjà connu.
   final dejaValidee = existante != null &&

@@ -24,6 +24,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import 'delivrance_lignes.dart' show factureDeLOrdonnance, lignesDelivrance;
+import '../numerotation/numerotation.dart';
 
 /// Refus NOMMÉ : un refus se lit, il ne se devine pas. Rien n'est écrit.
 class RefusDelivrance implements Exception {
@@ -438,7 +439,7 @@ Delivrance delivrerOrdonnance({
     patchs.add((id: prod['id'], patch: patch));
     final val = valoriserSortie(prod, q, methode);
     final mv = <String, Object?>{
-      'reference': referenceSuivante('M', 6, refs),
+      'reference': numeroSuivant('stock.mouvements', date: instant, existants: refs),
       'date': instant,
       'produitId': prod['id'],
       'produit': prod['designation'],

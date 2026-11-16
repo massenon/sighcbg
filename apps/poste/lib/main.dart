@@ -54,6 +54,7 @@ import 'sync/modale_trancher.dart';
 import 'sync/reservation_stock.dart';
 import 'sync/moteur_fileul.dart';
 import 'sync/transcription_mobile.dart';
+import 'core/numerotation_poste.dart';
 
 /// Le MODE du poste n'est plus une option de compilation : il vit dans les réglages du poste (`poste.json`) et se décide à
 /// l'exécution, sur le serveur local, par « Ce poste → Activer le mode mère ». `SIGH_MODE` ne sert plus qu'à l'amorçage
@@ -221,6 +222,8 @@ Future<void> main() async {
   if (migrerCnssVers(magasin).aFaitQuelqueChose) await magasin.ecrireMaintenant();
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
   brancherIdentite(magasin);
+  // LE RÉFÉRENTIEL DE NUMÉROTATION (lot 2) : les versions de séries du magasin s'appliquent à toutes les pièces, puis suivent chaque écriture de la collection.
+  brancherNumerotation(magasin);
   for (final probleme in persistance.problemes) {
     debugPrint(probleme);
   }

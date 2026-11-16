@@ -147,7 +147,7 @@ class EcranDocuments extends StatelessWidget with EcranMaquette {
                     final r = col.inserer({
                       ...v,
                       'statut': 'actif',
-                      'reference': patReferenceDocument(col.toutes.length),
+                      'reference': patReferenceDocument(col.toutes.length, date: c.aujourdhui),
                       'code': p?['code'],
                       'patient': p != null ? '${p['nom']} ${p['prenom']}' : '—',
                       'fichier': choix!.nom,

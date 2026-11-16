@@ -1474,7 +1474,7 @@ class _EtatConfig extends State<EcranMecefConfig> {
         const ChampDef(
             nom: 'prefixeFacture',
             libelle: 'Préfixe des factures',
-            aide: 'La numérotation doit rester strictement séquentielle.'),
+            aide: 'La numérotation doit rester strictement séquentielle. Elle se règle à « Fiscalité & identité légale › Numérotation des pièces ».'),
         const ChampDef(nom: 'prefixeAvoir', libelle: 'Préfixe des avoirs'),
         const ChampDef(nom: 'prefixeProforma', libelle: 'Préfixe des pro-forma'),
         const ChampDef(
@@ -1517,11 +1517,12 @@ class _EtatConfig extends State<EcranMecefConfig> {
         'adresse': IdentiteClinique.bp,
         'telephone': IdentiteClinique.telephones.join(' / '),
         'email': IdentiteClinique.email,
-        'prefixeFacture': 'FN-2026-',
-        'prefixeAvoir': 'AV-2026-',
-        'prefixeProforma': 'PRO-2026-',
+        // Lus au référentiel de numérotation (« Fiscalité & identité légale › Numérotation des pièces ») : la version en vigueur AUJOURD'HUI, l'année du jour.
+        'prefixeFacture': racineNumero('caisse.factures', date: c.aujourdhui),
+        'prefixeAvoir': racineNumero('caisse.avoirs', date: c.aujourdhui),
+        'prefixeProforma': racineNumero('caisse.proformas', date: c.aujourdhui),
         // Le prochain numéro de la SÉRIE, archivées comprises : « actives + 1 » repartirait de 1 après l'archivage du jeu de démonstration (RG-01, D6).
-        'prochainNumero': '${rangSerieFactures('FN-2026-', mag.collection('factures').toutes)}',
+        'prochainNumero': '${rangMaximal('caisse.factures', date: c.aujourdhui, existants: mag.collection('factures').toutes) + 1}',
         'regimeTva': p.regimeTva,
         'devise': 'FCFA',
         'modeTransmission': 'Automatique à l’émission',

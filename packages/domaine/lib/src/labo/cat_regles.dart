@@ -9,6 +9,7 @@ library;
 import '../format/format_fr.dart';
 import '../format/js.dart' show nombreOuZero;
 import '../format/recherche.dart' show trierPar;
+import '../numerotation/numerotation.dart';
 
 typedef FicheCat = Map<String, Object?>;
 
@@ -455,17 +456,7 @@ num catQuantiteDemandee(FicheCat p) {
 }
 
 /// `LAB-NNNN` : le plus grand rang déjà écrit au registre des produits (archivés compris), plus un — jamais un compteur de page (écart E180).
-String catCodeReactif(Iterable<FicheCat> produits) {
-  var max = 0;
-  for (final p in produits) {
-    final c = '${p['code'] ?? ''}';
-    if (c.startsWith('LAB-')) {
-      final k = int.tryParse(RegExp(r'^\s*[+-]?\d+').firstMatch(c.substring(4))?.group(0)?.trim() ?? '') ?? 0;
-      if (k > max) max = k;
-    }
-  }
-  return 'LAB-${(max + 1).toString().padLeft(4, '0')}';
-}
+String catCodeReactif(Iterable<FicheCat> produits) => numeroSuivant('labo.reactifs', existants: produits);
 
 /// Le formulaire d'un réactif → la fiche à écrire (création ET modification). Écart E184 corrigé : le seuil critique, facultatif, reste VIDE — jamais 0.
 FicheCat catTransformReactif(Map<String, Object?> saisie) {

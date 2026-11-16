@@ -150,7 +150,7 @@ ConsultationEnregistree enregistrerVisiteTravail(ContexteEcran c, Fiche spec, Ma
       praticien: praticien,
       praticienId: praticienId,
       date: date,
-      reference: agReferenceSuivante('C', 5, col.toutes),
+      reference: numeroSuivant('consultation.consultations', date: date, existants: col.toutes),
       motif: '${v['motif'] ?? ''}'.trim().isEmpty ? '${nature.libelle} — ${entreprise['nom']}' : '${v['motif']}'.trim(),
       tarif: montant);
   final ins = col.inserer({

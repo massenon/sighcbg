@@ -66,7 +66,7 @@ class _EtatCalcul extends State<EcranCalculPaie> {
     final annulations = <VoidCallback>[];
     for (final x in calc) {
       // La série suit le registre (archivés compris), pas un compteur de page — et chaque bulletin voit ceux qu'on vient d'écrire.
-      final ref = paiReferenceSuivante('BP-', 5, col.toutes);
+      final ref = numeroSuivant('paie.bulletins', date: c.aujourdhui, existants: col.toutes);
       // A2 : celui qui génère est nommé sur la pièce ; la validation exige une AUTRE personne.
       final fiche = paiBulletinDe(x, ref, genereePar: acteur(c).nom, genereeParId: acteur(c).utilisateurId, dateGeneration: iso(c.aujourdhui));
       annulations.add(col.inserer({'statut': 'actif', ...fiche, '_creePar': acteur(c).nom, '_creeLe': c.aujourdhui.toIso8601String()}, prefixe: 'BUL').annuler);

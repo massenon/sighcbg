@@ -116,23 +116,13 @@ class PlagesNumeros {
 
   int restants(String nom) => plages(nom).fold(0, (n, f) => n + ((f['fin'] as num).toInt() - (f['prochain'] as num).toInt() + 1).clamp(0, 1 << 30));
 
-  static int _plusGrandRang(String prefixe, Iterable<Fiche> fiches) {
-    var max = 0;
-    for (final f in fiches) {
-      final r = '${f['reference'] ?? ''}';
-      if (!r.startsWith(prefixe)) continue;
-      final k = int.tryParse(r.substring(prefixe.length));
-      if (k != null && k > max) max = k;
-    }
-    return max;
-  }
-
-  Future<void> recharger(String nom, String prefixe, Iterable<Fiche> Function() fiches) async {
+  /// [serie] : le code de la série au référentiel de numérotation (`achats.besoins`) ; [date] : la date de la pièce (l'année du numéro, la version de la série).
+  Future<void> recharger(String nom, String serie, Iterable<Fiche> Function() fiches, {Object? date}) async {
     final demander = obtenir;
     if (demander == null || _enCours.contains(nom) || restants(nom) > seuilRecharge) return;
     _enCours.add(nom);
     try {
-      final (debut, fin) = await demander(nom, taillePlage, _plusGrandRang(prefixe, fiches()) + 1);
+      final (debut, fin) = await demander(nom, taillePlage, rangMaximal(serie, date: date, existants: fiches()) + 1);
       magasin.collection(PlagesCodes.collection).ajouterSansJournal({'id': 'PLG-$nom-$debut', 'nom': nom, 'debut': debut, 'fin': fin, 'prochain': debut});
     } catch (_) {
       // Hors ligne ou mère arrêtée : on garde ce qu'on a.
@@ -141,21 +131,21 @@ class PlagesNumeros {
     }
   }
 
-  /// La prochaine référence de la série `nom` : le numéro suivant de la plage détenue, sinon (plage épuisée) une référence provisoire ; sans service de plage, la règle historique.
-  String reference(String nom, String prefixe, int largeur, Iterable<Fiche> existantes, {DateTime? maintenant}) {
-    if (!actif) return _historique(prefixe, largeur, existantes);
+  /// La prochaine référence du carnet `nom`, numérotée par la série [serie] du référentiel de numérotation (lot 2, 16/11/2026 : plus aucun préfixe ni millésime
+  /// écrit ici) : le numéro suivant de la plage détenue, formaté selon la version de la série en vigueur à [date] (l'année est celle de la pièce) ; plage épuisée,
+  /// une référence PROVISOIRE de la série (`BEB-2026-PROV-…`) ; sans service de plage, la règle historique (plus grand rang de la série + 1).
+  String reference(String nom, String serie, Iterable<Fiche> existantes, {required DateTime date}) {
+    if (!actif) return numeroSuivant(serie, date: date, existants: existantes);
     final col = magasin.collection(PlagesCodes.collection);
     for (final p in plages(nom)) {
       final n = (p['prochain'] as num).toInt();
       if (n <= (p['fin'] as num).toInt()) {
         col.appliquerDistante({...p, 'prochain': n + 1});
-        unawaited(recharger(nom, prefixe, () => magasin.collection(nom).toutes));
-        return '$prefixe${'$n'.padLeft(largeur, '0')}';
+        unawaited(recharger(nom, serie, () => magasin.collection(nom).toutes, date: date));
+        return numeroFormate(serie, date: date, rang: n);
       }
     }
-    unawaited(recharger(nom, prefixe, () => magasin.collection(nom).toutes));
-    return '${prefixe}PROV-${(maintenant ?? DateTime.now()).millisecondsSinceEpoch.toRadixString(36).toUpperCase()}';
+    unawaited(recharger(nom, serie, () => magasin.collection(nom).toutes, date: date));
+    return numeroProvisoire(serie, date: date, suffixe: date.millisecondsSinceEpoch.toRadixString(36).toUpperCase());
   }
-
-  static String _historique(String prefixe, int largeur, Iterable<Fiche> existantes) => referenceAchatSuivante(prefixe, largeur, existantes);
 }

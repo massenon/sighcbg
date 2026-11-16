@@ -14,6 +14,7 @@ import '../referentiels/regles.dart';
 import '../caisse/prise_en_charge.dart' show carteValide;
 import 'img_demandes_etats.dart';
 import 'img_demandes_poste.dart' show FicheImg;
+import '../numerotation/numerotation.dart';
 
 
 /// Refus NOMMÉ : [message] s'affiche tel quel. En cas de refus de tarif, les demandes déjà créées sont rendues [archivees] : la maquette les
@@ -155,7 +156,7 @@ OuvertureImagerie ouvrirDemandeImagerie({
     final pr = prixDe(code, assure);
     final demande = <String, Object?>{
       'id': nouvelId('IME'),
-      'reference': referenceSerie('IME-', 5, existantes),
+      'reference': numeroSuivant('imagerie.demandes', date: date, existants: existantes),
       'dateHeure': date,
       'patientId': patient['id'],
       'patientCode': patient['code'],
@@ -221,7 +222,7 @@ OuvertureImagerie ouvrirDemandeImagerie({
     });
   }
   num somme(String k) => lignes.fold<num>(0, (a, l) => a + (l[k] as num));
-  final numero = 'FI-${d.year}-${_pad(nbFactures + 1, 5)}';
+  final numero = numeroFormate('imagerie.factures', date: d, rang: nbFactures + 1);
   final facture = <String, Object?>{
     'id': nouvelId('FAC'),
     'lignes': lignes,

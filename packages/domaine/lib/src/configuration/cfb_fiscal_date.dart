@@ -22,6 +22,7 @@ import '../referentiels/versions_datees.dart';
 import 'cfa_regles.dart' show CfaFiche;
 import 'cfb_donnees.dart';
 import 'cfb_regles.dart' show cfbDateReelle, cfbJourOuvrable;
+import '../numerotation/numerotation.dart';
 
 export '../referentiels/versions_datees.dart' show isoJour, veilleIso, versionEnVigueur;
 
@@ -1018,7 +1019,7 @@ List<CfaFiche> cfbGenEcheances(int exercice,
         'paye': paye,
         'datePaiement': paye ? isoJour(echue) : null,
         'montant': null,
-        'reference': paye ? 'QUIT-$code-$exercice' : null,
+        'reference': paye ? numeroDerive('fiscal.quittances', '$code-$exercice', date: echue) : null,
         'valideePar': paye ? 'Comptable' : null,
       });
     }

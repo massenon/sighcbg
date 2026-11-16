@@ -273,6 +273,93 @@ class ServiceValidationsDeposees {
 
   void _ecrireVersion(Parametre v) => magasin.collection(parCollectionParametres).inserer({'id': v.id, 'statut': 'actif', ...v.toJson()});
 
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // SÉRIES DE NUMÉROTATION (lot 2, 16/11/2026) : une version datée sous le geste `numerotation_modifier` ; la mère écrit, un poste rattaché dépose
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  List<Map<String, Object?>> get _versionsSeries => magasin.collection(colSeriesNumerotation).toutes;
+
+  /// Modifie une série de numérotation. Sur la MÈRE ([estMere]), la version datée est écrite (contrôles du domaine : geste en force, date à venir, motif, format) ;
+  /// sur un poste rattaché, une demande est DÉPOSÉE et la mère l'applique sous le rôle de l'auteur — la version revient par la synchronisation (famille R).
+  ({RefusValidation? refus, Fiche? version, Fiche? depot, bool dejaDepose}) modifierSerie(String code, Map<String, Object?> valeurs, String dateEffet,
+      {required String role, required String acteur, required bool estMere, String? motif, DroitsGestes? gestes}) {
+    final g = gestes ?? this.gestes;
+    if (!estMere) {
+      final r = serieDeposer(
+          code: code,
+          valeurs: valeurs,
+          dateEffet: dateEffet,
+          role: role,
+          acteur: acteur,
+          poste: etiquette,
+          maintenant: _maintenant,
+          gestes: g,
+          fiches: _versionsSeries,
+          depots: depots.toutes,
+          nouvelId: _nouvelId,
+          motif: motif);
+      if (!r.ok) return (refus: r.refus, version: null, depot: null, dejaDepose: false);
+      if (r.dejaDepose) return (refus: null, version: null, depot: r.fiche, dejaDepose: true);
+      _signer(r.fiche!);
+      try {
+        depots.ajouterSansJournal(r.fiche!, enTete: true);
+      } on EcritureRefusee catch (e) {
+        return (refus: RefusValidation('ECRITURE_REFUSEE', e.motif, null), version: null, depot: null, dejaDepose: false);
+      }
+      magasin.journaliser('Série de numérotation transmise à la mère', 'CFG', 'Série de numérotation', code, null,
+          {'valeur': r.fiche!['valeur'], 'à partir du': dateEffet, 'déposé par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], 'motif': (motif ?? '').trim()});
+      return (refus: null, version: null, depot: r.fiche, dejaDepose: false);
+    }
+    final c = serieControler(code: code, valeurs: valeurs, dateEffet: dateEffet, role: role, acteur: acteur, gestes: g, fiches: _versionsSeries, maintenant: _maintenant, motif: motif);
+    if (c.refus != null) return (refus: c.refus, version: null, depot: null, dejaDepose: false);
+    if (c.sansEffet) {
+      return (refus: const RefusValidation('DEJA_EN_VIGUEUR', 'La série a déjà ce format à cette date : aucune version n’est écrite.', 'Aucun'), version: null, depot: null, dejaDepose: false);
+    }
+    final avant = serieALaDate(code, _versionsSeries, dateEffet).toJson();
+    final v = magasin.collection(colSeriesNumerotation).inserer(c.version!).fiche;
+    magasin.journaliser('Modification d’une série de numérotation (geste réservé)', 'CFG', 'Série de numérotation', code, avant, {...c.version!, 'par': acteur, 'rôle': role});
+    return (refus: null, version: v, depot: null, dejaDepose: false);
+  }
+
+  /// Le dernier dépôt de CE poste pour la série [code] qui attend la mère (`null` : aucun).
+  Fiche? depotSerieEnAttente(String code) {
+    for (final d in depots.toutes) {
+      if (d['statut'] != 'archive' && d['genre'] == valGenreNumerotation && d['cible'] == code && d['etat'] == valDepotDeposee) return d;
+    }
+    return null;
+  }
+
+  /// Applique UN dépôt de série sur la mère (sous le rôle et le nom de l'auteur, contrôles refaits avec la matrice et les versions de la mère).
+  bool _appliquerSerie(Fiche d) {
+    final a = serieAppliquerDepot(d, gestes: gestes, fiches: _versionsSeries, maintenant: _maintenant);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    final v = a.version;
+    if (v != null) {
+      try {
+        magasin.collection(colSeriesNumerotation).ajouterSansJournal(v);
+        magasin.journaliser('Modification d’une série de numérotation (geste réservé)', 'CFG', 'Série de numérotation', '${d['cible']}', null,
+            {...v, 'déposé par': d['demandePar'], 'rôle': d['demandeRole'], 'appliqué par': auteurMere(), 'dépôt': d['id']});
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire la modification depuis « Numérotation des pièces ».';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    return true;
+  }
+
   /// Le dernier dépôt de réglage de CE poste pour [cle] qui attend la mère (`null` : aucun) : l'écran dit « transmis à la mère, en attente ».
   Fiche? depotReglageEnAttente(String cle) {
     for (final d in depots.toutes) {
@@ -515,6 +602,10 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenrePta) {
           if (_appliquerPta(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenreNumerotation) {
+          if (_appliquerSerie(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

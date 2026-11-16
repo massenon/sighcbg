@@ -174,7 +174,7 @@ class EcranBudgets extends StatelessWidget with EcranMaquette {
             'nature': s['nature'],
             'prevu': num.tryParse('${s['prevu']}'.replaceAll(',', '.')) ?? 0,
             'centre': libelleCentre(c, s['centreCout']),
-            if (record == null) 'reference': cpbReferenceSuivante('BG-${num.tryParse('${s['exercice']}')?.toInt() ?? 0}-', 3, col.toutes),
+            if (record == null) 'reference': numeroSuivant('compta.budgets', date: c.aujourdhui, annee: num.tryParse('${s['exercice']}')?.toInt() ?? 0, existants: col.toutes),
           },
           detail: (ctx, b) {
             final ligne = realise(b);

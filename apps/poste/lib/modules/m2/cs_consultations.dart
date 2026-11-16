@@ -121,7 +121,7 @@ class _Corps extends StatelessWidget {
       col.inserer({
         'statut': 'actif',
         ...fiche,
-        'reference': referenceSerie('C', 5, col.toutes),
+        'reference': numeroSuivant('consultation.consultations', date: fiche['date'], existants: col.toutes),
       }, prefixe: 'CON');
       ToastsSigh.afficher(ecran, 'Consultation créée.', type: TypeToast.succes);
     }

@@ -1,0 +1,6 @@
+{
+  "_note": "Plafonds du cliquet « valeurs en dur » (node tools/baguidi/inventaire-en-dur.mjs --cliquet). Une famille par clé ; pour chaque fichier toléré : {\"sites\": n, \"motif\": \"…\"}. Un fichier absent a un plafond de ZÉRO. Le cliquet ne remonte jamais : un plafond ne s’abaisse que lorsqu’un site est converti.",
+  "E": {
+    "_motif": "Lot 2 (16/11/2026) : toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Plafond ZÉRO partout."
+  }
+}

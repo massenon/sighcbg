@@ -307,7 +307,7 @@ class EcranSecuriteEntretien extends StatelessWidget with EcranMaquette {
                       final r = col.inserer({
                         'statut': 'actif',
                         ...fiche,
-                        'matricule': rhbReferenceSuivante('SE-', 3, [for (final e in col.toutes) {'reference': e['matricule']}]),
+                        'matricule': numeroSuivant('rh.securite-entretien', existants: col.toutes),
                         'service': 'Direction',
                         'poste': poste,
                         '_creePar': acteur(c).nom,

@@ -11,6 +11,7 @@ library;
 import '../format/format_fr.dart';
 import '../patients/pat_pieces.dart' show PatTypePiece;
 import '../referentiels/regles.dart' show joursEntre;
+import '../numerotation/numerotation.dart';
 
 typedef FicheMdt = Map<String, Object?>;
 
@@ -48,20 +49,10 @@ String? mdtValiditeFiche(DateTime visite, String aptitude) {
 }
 
 /// `FA-0007/26` : la série annuelle des fiches d'aptitude (celle de l'année de la visite), archivées comprises — une fiche archivée garde son numéro.
-String mdtReferenceFiche(Iterable<FicheMdt> consultations, DateTime date) {
-  final aa = (date.year % 100).toString().padLeft(2, '0');
-  var max = 0;
-  for (final c in consultations) {
-    final f = c['ficheAptitude'];
-    final ref = f is Map ? '${f['reference']}' : '';
-    final m = RegExp(r'^FA-(\d+)/(\d{2})$').firstMatch(ref);
-    if (m != null && m.group(2) == aa) {
-      final n = int.parse(m.group(1)!);
-      if (n > max) max = n;
-    }
-  }
-  return 'FA-${(max + 1).toString().padLeft(4, '0')}/$aa';
-}
+String mdtReferenceFiche(Iterable<FicheMdt> consultations, DateTime date) => numeroSuivant('mdt.fiches-aptitude', date: date, existants: [
+      for (final c in consultations)
+        if (c['ficheAptitude'] is Map) (c['ficheAptitude'] as Map)['reference']
+    ]);
 
 /// L'état d'un salarié au regard de ses visites. Trois réponses, et la dernière n'est pas un retard : un salarié JAMAIS vu attend sa visite d'embauche.
 enum MdtEtat {

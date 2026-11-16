@@ -9,6 +9,7 @@ import '../caisse/prise_en_charge.dart' show carteValide;
 import '../format/format_fr.dart';
 import '../referentiels/regles.dart' show codePatient, lireCodePatient;
 import '../labo/res_saisie.dart' show agePatient;
+import '../numerotation/numerotation.dart';
 
 typedef FichePat = Map<String, Object?>;
 
@@ -240,8 +241,7 @@ PatKpisDocuments patKpisDocuments(List<FichePat> rows) => PatKpisDocuments(
     {for (final r in rows) '${r['code']}'}.length);
 
 /// « GED-00005 » : le rang suit le NOMBRE de fiches du registre (archivées comprises), comme la maquette.
-String patReferenceDocument(int nbFiches) =>
-    'GED-${(nbFiches + 1).toString().padLeft(5, '0')}';
+String patReferenceDocument(int nbFiches, {Object? date}) => numeroFormate('patients.documents', date: date, rang: nbFiches + 1);
 
 /// Fichier d'un document : « PDF · 2 Ko » et la mention déposé / référencé.
 String patFormatDocument(String? nomFichier) {

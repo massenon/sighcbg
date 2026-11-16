@@ -15,12 +15,12 @@ import '../caisse/prise_en_charge.dart' show carteValide;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../imagerie/img_demandes_etats.dart' show modaliteDemandeDeExamen;
-import '../imagerie/img_demandes_ouverture.dart' show referenceSerie;
 import '../labo/dem_regles.dart' show demCodeAnalyse;
 import '../referentiels/regles.dart' show joursEntre;
 import '../tarifs/tarifs.dart';
 import '../caisse/valorisation.dart' show posteEditeursEcran, ecranReferentielProduits, ecranTarifsEtPrix, guidePrixALaDate;
 import 'cs_referentiels.dart';
+import '../numerotation/numerotation.dart';
 
 /// Refus NOMMÉ : [message] s'affiche tel quel ; [code] distingue `SANS_DOSSIER`.
 class RefusCs implements Exception {
@@ -216,7 +216,7 @@ ResultatDossier csEnregistrerDossier(StockCs s, Map<String, Object?> v,
   }
   final ins = s.inserer('dossiersConsultation', {
     ...maj,
-    'reference': referenceSerie('DOS-', 5, s.toutes('dossiersConsultation')),
+    'reference': numeroSuivant('consultation.dossiers', date: s.maintenant, existants: s.toutes('dossiersConsultation')),
     'etat': 'consultation',
     'ouvertLe': _iso(s.maintenant),
   });
@@ -325,7 +325,7 @@ ResultatFiche csEnregistrerFiche(
     'dossierReference': _ou(d['reference'], null),
     'patientId': p['id'],
     'patient': '${p['nom']} ${p['prenom']}',
-    'reference': referenceSerie('C', 5, s.toutes('consultations')),
+    'reference': numeroSuivant('consultation.consultations', date: s.maintenant, existants: s.toutes('consultations')),
   };
   final ins = s.inserer('consultations', consult);
 
@@ -399,7 +399,7 @@ ResultatFiche csEnregistrerFiche(
       'statut': 'planifiee',
       'date': v['prochainRdv'],
       'motif': 'Contrôle — ${v['diagnostic']}',
-      'reference': referenceSerie('C', 5, s.toutes('consultations')),
+      'reference': numeroSuivant('consultation.consultations', date: s.maintenant, existants: s.toutes('consultations')),
       'origine': 'fiche de consultation',
       'dossierConsultationId': d['id'],
     });
@@ -688,7 +688,7 @@ ResultatPrescription csPrescrire(
   if (p == null) throw RefusCs('Patient introuvable : ${v['patientCode']}');
   final date = csVrai(v['date']) ? '${v['date']}' : _iso(s.maintenant);
   final annee = DateTime.parse(date).toLocal().year;
-  final numero = 'ORD-$annee-${_pad(s.toutes('ordonnances').length + 1, 5)}';
+  final numero = numeroFormate('consultation.ordonnances', date: date, annee: annee, rang: s.toutes('ordonnances').length + 1);
 
   final medicaments = <FicheCs>[
     for (final l in _liste(v['medicaments']))
@@ -884,7 +884,7 @@ ResultatPrescription csPrescrire(
   final demandes = <FicheCs>[];
   for (final a in analyses) {
     demandes.add(s.inserer('demandesAnalyses', {
-      'reference': referenceSerie('LAB-', 5, s.toutes('demandesAnalyses')),
+      'reference': numeroSuivant('labo.demandes', date: date, existants: s.toutes('demandesAnalyses')),
       'codeAnalyse': demCodeAnalyse(date, s.toutes('demandesAnalyses'),
           maintenant: s.maintenant),
       'patientId': p['id'],
@@ -932,7 +932,7 @@ ResultatPrescription csPrescrire(
   final facture = s.inserer('factures', {
     'lignes': lignesFacture,
     // E6 (corrigé dans la maquette le 31/10/2026) : le rang est celui de la série de l'année, plus le nombre total de factures.
-    'numero': 'FP-$annee-${_pad(csRangSerieFactures(s, 'FP-$annee-'), 5)}',
+    'numero': numeroSuivant('consultation.factures', date: date, annee: annee, existants: s.toutes('factures')),
     'numeroMecef': null,
     'patientId': p['id'],
     'patient': '${p['nom']} ${p['prenom']}',
@@ -1149,7 +1149,7 @@ FicheCs? csAlerterPrixManquant(StockCs s, {required String code, required String
     final ex = catalogue.where((x) => x['code'] == code).firstOrNull;
     final pr = csTarifPrix(s, _ou(ex?['tarifCode'], code), assure, date: date, referentiel: h);
     demandes.add(s.inserer('demandesImagerie', {
-      'reference': referenceSerie('IME-', 5, s.toutes('demandesImagerie')),
+      'reference': numeroSuivant('imagerie.demandes', date: date, existants: s.toutes('demandesImagerie')),
       'dateHeure': date,
       'patientId': p['id'],
       'patientCode': p['code'],
@@ -1243,7 +1243,7 @@ FicheCs csPrescrireSoins(StockCs s, Map<String, Object?> v) {
   ];
   final modalite = '${_ou(v['modalite'], 'ambulatoire')}';
   final pres = s.inserer('prescriptions', {
-    'reference': referenceSerie('PRS-', 5, s.toutes('prescriptions')),
+    'reference': numeroSuivant('soins.prescriptions', date: s.maintenant, existants: s.toutes('prescriptions')),
     'type': 'soins',
     'origine': _ou(v['origine'], 'consultation'),
     'date': date,
@@ -1336,7 +1336,7 @@ ResultatAdministration csAdministrer(StockCs s, Object? prescriptionId,
         motif: '${exec['nomComplet']} (${exec['poste']}) n’exécute pas les soins.');
   }
   final rec = s.inserer('administrations', {
-    'reference': referenceSerie('ADM-', 5, s.toutes('administrations')),
+    'reference': numeroSuivant('soins.administrations', date: s.maintenant, existants: s.toutes('administrations')),
     'prescriptionId': prescriptionId,
     'prescriptionRef': pres['reference'],
     'ligneIndex': ligneIndex,

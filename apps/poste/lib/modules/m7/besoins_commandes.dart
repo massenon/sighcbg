@@ -417,7 +417,7 @@ class _EtatModaleCommande extends State<_ModaleCommande> {
           jour: iso(c.aujourdhui),
           validateur: ReglagesClinique.libelleValidateurAchats(c.magasin, c.aujourdhui),
           peutValider: _estValidateur(c),
-          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('commandes', 'BC-2026-', 4, col.toutes, maintenant: c.aujourdhui));
+          referenceSuivante: () => PlagesNumeros.de(c.magasin).reference('commandes', 'achats.commandes', col.toutes, date: c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
       return;
