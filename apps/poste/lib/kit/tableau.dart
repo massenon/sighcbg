@@ -553,9 +553,11 @@ class TableauSighState extends State<TableauSigh> {
                                   cle: identical(r, page.first)
                                       ? const Key('kit:tableau-ligne')
                                       : null,
-                                  Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
+                                  // Wrap et non Row : quand la colonne des cases à cocher resserre la table, les commandes reviennent à la ligne au lieu de déborder.
+                                  Wrap(
+                                      alignment: WrapAlignment.end,
+                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      runSpacing: 4,
                                       children: [
                                         for (final a
                                             in widget.actionsLigne!(context, r))

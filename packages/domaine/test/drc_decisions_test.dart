@@ -84,7 +84,8 @@ void main() {
     expect(definitionDeParametre(cleRolesValidateursAchats)!.defaut, reglageRolesTexte(rolesValidateursAchatsDefaut));
     expect(definitionDeParametre(cleLibelleValidateurAchats)!.defaut, libelleValidateurAchatsDefaut);
     expect(estArbitre('da'), isTrue);
-    expect(estArbitre('admin'), isFalse);
+    expect(estArbitre('admin'), isTrue, reason: 'Direction et administrateur gardent l\'arbitrage qu\'ils avaient');
+    expect(estArbitre('comptable'), isFalse);
     expect(estArbitre('admin', validateurs: reglageRoles('da, admin', const [])), isTrue);
     expect(reglageRoles('  ', rolesValidateursAchatsDefaut), rolesValidateursAchatsDefaut, reason: 'jamais de verrouillage');
     expect(vuesOffertes(role: 'comptable', droitVoir: true), isNot(contains('arbitrage')));

@@ -16,7 +16,7 @@ const String cleLibelleValidateurAchats = 'achats.libelleValidateur';
 
 /// Les défauts SEMÉS : ce sont ceux que le code portait avant le réglage (Q3 : comptable et administrateur ; Q4 : la Directrice Administrative).
 const List<String> rolesInventaireClotureDefaut = ['comptable', 'admin'];
-const List<String> rolesValidateursAchatsDefaut = ['da'];
+const List<String> rolesValidateursAchatsDefaut = ['da', 'direction', 'admin']; // la DAF semée en tête ; Direction et administrateur gardent l'arbitrage qu'ils avaient (aucune régression), réglable
 const String libelleValidateurAchatsDefaut = 'Directrice administrative';
 
 /// Les identifiants de rôle d'un réglage « liste de rôles » : séparés par des virgules ou des points-virgules, espaces ôtés, doublons retirés, ordre conservé. [defaut] quand la valeur
