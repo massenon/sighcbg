@@ -29,35 +29,19 @@ String iso8601(DateTime t) => t.toUtc().toIso8601String();
 /// contrôles et les montants entiers sont ceux du domaine (`preparerNormalisation`) ; le numéro est celui de l'appareil de démonstration, marqué
 /// `mecefSimule` (jamais un numéro fiscal). Une vente que le domaine refuserait reste `en_attente`, comme au poste.
 ///
-/// LE TAUX D'AIB SUIT LA RÈGLE DU POSTE (D1) : une pièce sans taux reçoit le taux ARRÊTÉ du barème en vigueur à sa date pour la situation de son acheteur, sinon
-/// le taux de repli des Paramètres (0 %) — la même fonction que `normaliserVente` (`aibParDefautALaDate`), lue aux collections du jeu en construction.
+/// LA FACTURE D'UN PATIENT SE NORMALISE SANS ACHETEUR NI AIB (Direction de Baguidi, 16/11/2026, E3774) : la même règle que `normaliserVente` du poste
+/// (`preparerNormalisation(facturePatient: true)`). Le taux par défaut lu au barème (D1) a été porté puis corrigé par cette décision : aucune pièce du jeu ne
+/// porte plus d'acheteur ni d'AIB.
 Fiche champsNormalisation(Fiche fac, String numero, DateTime quand, Contexte ctx) {
-  final date = DateTime.tryParse('${fac['date'] ?? ''}') ?? quand;
-  final situations = ctx.collection('situationsAib').actives;
-  final versions = ctx.collection('baremeAib').actives;
-  final parametres = d.cpaParametresALaDate(ctx.collection(d.cpaCollection).actives, date);
-  Map<String, Object?>? saisi;
-  String? motif;
-  if ('${fac['aibTaux'] ?? ''}'.isEmpty) {
-    final defaut = d.aibParDefautALaDate(ifu: fac['ifuClient'], date: date, situations: situations, versions: versions, parametres: parametres);
-    saisi = {'aibTaux': defaut.taux, 'aibSituation': defaut.situation, 'aibRepli': defaut.repli};
-    motif = defaut.motif;
-  }
-  final prep = d.preparerNormalisation(fac, acheteurSaisi: saisi, longueurIfu: parametres.longueurIfu);
+  final prep = d.preparerNormalisation(fac, facturePatient: true);
   if (!prep.ok) return const {};
-  final a = prep.acheteur!;
   return {
     'statutMecef': 'valide',
     'numeroMecef': numero,
     'codeRetour': 'OK-200',
     'dateTransmission': iso8601(quand),
     'mecefSimule': true,
-    'ifuClient': a.ifu,
-    'acheteurNom': a.nom,
-    'aibTaux': a.aibTaux,
-    if (a.aibSituation != null) 'aibSituation': a.aibSituation,
-    if (a.aibRepli) 'aibRepli': true,
-    if (motif != null) 'aibMotif': motif,
+    'aibTaux': d.mecefAibFacturePatient,
     'aibMontant': prep.montants!.aib,
   };
 }

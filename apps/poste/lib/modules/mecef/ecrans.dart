@@ -14,7 +14,6 @@ import '../../shell/gestes_ecran.dart';
 import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
 import '../../donnees/mecef_poste.dart';
 import '../../donnees/normalisation_mecef.dart';
-import '../../donnees/parametres_aib.dart';
 import '../m8/commun.dart' show ecrireAvoirEmis, idAvoirSuivant;
 import 'commun.dart';
 
@@ -60,7 +59,6 @@ class EcranMecefTableauDeBord extends StatelessWidget with EcranMaquette {
         }
 
         final aib = validees.fold<num>(0, (a, f) => a + aibPiece(f));
-        final aibJour = aibParDefaut(c.magasin, auj);
         final parNature = <String, int>{};
         for (final f in nn) {
           parNature['${f['type']}'] = (parNature['${f['type']}'] ?? 0) + 1;
@@ -135,7 +133,8 @@ class EcranMecefTableauDeBord extends StatelessWidget with EcranMaquette {
                     icone: LucideIcons.landmark,
                     indice: p.tauxTva != 0
                         ? 'Taux ${p.tauxTva} %'
-                        : 'AIB ${aibJour.arrete ? '${aibJour.taux} % arrêté' : 'aucun taux arrêté : ${aibJour.taux} %'} — TVA exonérée'),
+                        // Facture d'un patient : sans AIB (Direction de Baguidi, 16/11/2026, E3773) ; le montant est celui que les pièces portent (aucune après la décision).
+                        : 'Facture patient sans AIB — TVA exonérée'),
                 KpiSigh(
                     libelle: 'Taux de validation',
                     valeur: pourcent(nn.isEmpty ? 0 : validees.length / nn.length * 100),
@@ -1203,13 +1202,144 @@ class EcranMecefConfig extends StatefulWidget with EcranMaquette {
 class _EtatConfig extends State<EcranMecefConfig> {
   ControleurFormulaire? _f;
   ControleurFormulaire? _mode;
+  ControleurFormulaire? _imprimante;
   bool _pret = false;
 
   @override
   void dispose() {
     _f?.dispose();
     _mode?.dispose();
+    _imprimante?.dispose();
     super.dispose();
+  }
+
+  /// CE QUI EST PRÊT ET CE QUI MANQUE, mode par mode (écran des modes MECeF, Direction de Baguidi, 16/11/2026, E3760) : le mode retenu est marqué, et aucun des
+  /// deux n'est configuré tant que son adaptateur n'est pas livré (lot M3) — aucun numéro n'est simulé.
+  Widget _etatsDesModes(String actuel, String? modele) => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final e in mecefEtatsDesModes(modeleBoitier: modele))
+          Container(
+              key: Key('mecef:etat-mode:${e.mode}'),
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  border: Border.all(color: e.mode == actuel ? JetonsShell.navy800 : JetonsShell.slate200),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                Wrap(spacing: 8, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                  Text(e.libelle, style: const TextStyle(color: JetonsShell.navy900, fontSize: 14, fontWeight: FontWeight.w600)),
+                  if (e.mode == actuel) const BadgeSigh('Mode retenu', ton: TonSigh.navy),
+                  BadgeSigh(e.configure ? 'Configuré' : 'Non configuré', ton: e.configure ? TonSigh.succes : TonSigh.attention),
+                ]),
+                const SizedBox(height: 8),
+                const Text('Prêt au poste', style: TextStyle(color: JetonsShell.slate700, fontSize: 12, fontWeight: FontWeight.w600)),
+                for (final l in e.pret) _puce(l, LucideIcons.circleCheck, JetonsShell.success600),
+                const SizedBox(height: 4),
+                const Text('Ce qui manque', style: TextStyle(color: JetonsShell.slate700, fontSize: 12, fontWeight: FontWeight.w600)),
+                for (final l in e.manque) _puce(l, LucideIcons.plugZap, JetonsShell.warning600),
+              ])),
+      ]);
+
+  Widget _puce(String texte, IconData icone, Color couleur) => Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Icon(icone, size: 14, color: couleur),
+          const SizedBox(width: 6),
+          Expanded(child: Text(texte, style: const TextStyle(color: JetonsShell.slate700, fontSize: 13))),
+        ]),
+      );
+
+  /// L'IMPRIMANTE DE CAISSE (Direction de Baguidi, 16/11/2026, E3761) : trois réglages de clinique, réglés sous le même droit que le mode. Aucun modèle n'est
+  /// fourni pour Baguidi : modèle et interface « à renseigner », marqués à valider. Seule la largeur sert : l'aperçu et le PDF du ticket la prennent. Aucun
+  /// pilote d'impression n'est branché.
+  Widget _carteImprimante(ContexteEcran c) {
+    final mag = c.magasin;
+    final fileul = ServiceInstallation.de(mag).rattache;
+    final peut = !fileul && c.droit.editer && gestePeutEcran(c, gesteReglageMecef);
+    final service = serviceParametres(mag, auteur: () => acteur(c).nom, horloge: () => c.aujourdhui);
+    return ListenableBuilder(
+        listenable: mag.collection(parCollectionParametres),
+        builder: (ctx, _) {
+          final imp = imprimanteCaisseDuPoste(mag, c.aujourdhui);
+          _imprimante ??= ControleurFormulaire([
+            const ChampDef(nom: 'imprimanteModele', libelle: 'Modèle de l’imprimante', col: ColChamp.tiers, indicatif: 'Marque et référence'),
+            const ChampDef(
+                nom: 'imprimanteLargeur',
+                libelle: 'Largeur du papier (mm)',
+                type: TypeChamp.nombre,
+                requis: true,
+                col: ColChamp.tiers,
+                aide: 'De $imprimanteLargeurMinMm à $imprimanteLargeurMaxMm mm.'),
+            const ChampDef(nom: 'imprimanteInterface', libelle: 'Interface', col: ColChamp.tiers, indicatif: 'USB, série, réseau… (à renseigner)'),
+          ], {'imprimanteModele': imp.modele ?? '', 'imprimanteLargeur': '${imp.largeurMm}', 'imprimanteInterface': imp.interface ?? ''});
+          return CarteSigh(
+              key: const Key('mecef:imprimante'),
+              titre: 'Imprimante de caisse',
+              child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                Row(children: [
+                  Expanded(
+                      child: DescListeSigh([
+                    ('Modèle', imp.modeleAffiche),
+                    ('Largeur du papier', '${imp.largeurMm} mm'),
+                    ('Interface', imp.interfaceAffichee),
+                  ])),
+                ]),
+                const SizedBox(height: 8),
+                Wrap(spacing: 8, runSpacing: 4, children: [
+                  if (imp.aRenseigner) const BadgeSigh('À valider : à renseigner par la clinique', ton: TonSigh.attention),
+                  const BadgeSigh('Largeur 80 mm : valeur d’attente, à valider', ton: TonSigh.neutre),
+                ]),
+                const SizedBox(height: 8),
+                if (imp.largeurIgnoree)
+                  NoteSigh('La largeur réglée (${imp.largeurReglee}) n’est pas lisible (de $imprimanteLargeurMinMm à $imprimanteLargeurMaxMm mm) : le ticket garde $imprimanteLargeurDefautMm mm.',
+                      ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
+                const NoteSigh(
+                    'Aucun modèle d’imprimante n’est fourni pour Baguidi. Ce réglage DÉCRIT l’appareil ; aucun pilote d’impression n’est branché : le ticket de caisse s’ouvre en aperçu et s’enregistre en PDF, à la largeur réglée.',
+                    icone: LucideIcons.printer),
+                const SizedBox(height: 12),
+                if (fileul)
+                  const NoteSigh(ApplicateurConfiguration.motifGarde, icone: LucideIcons.lock)
+                else if (!peut)
+                  const NoteSigh('L’imprimante se règle par les rôles qui détiennent le droit « configuration MECeF ».', icone: LucideIcons.lock)
+                else ...[
+                  FormulaireSigh(controleur: _imprimante!),
+                  const SizedBox(height: 8),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: BoutonSigh(
+                          libelle: 'Enregistrer l’imprimante',
+                          icone: LucideIcons.save,
+                          onPressed: () {
+                            final v = _imprimante!.valider();
+                            if (v == null) return;
+                            final lue = num.tryParse('${v['imprimanteLargeur']}'.trim().replaceAll(',', '.'));
+                            final largeur = lue != null && lue == lue.roundToDouble() ? lue.toInt() : null;
+                            if (largeur == null || largeur < imprimanteLargeurMinMm || largeur > imprimanteLargeurMaxMm) {
+                              ToastsSigh.afficher(context, 'Largeur du papier refusée.',
+                                  type: TypeToast.erreur, detail: 'Un nombre entier de millimètres, de $imprimanteLargeurMinMm à $imprimanteLargeurMaxMm.');
+                              return;
+                            }
+                            final jour = parametreDateIso(c.aujourdhui);
+                            final changements = <String, Object>{
+                              if ('${v['imprimanteModele'] ?? ''}'.trim() != (imp.modele ?? '')) cleImprimanteModele: '${v['imprimanteModele'] ?? ''}'.trim(),
+                              if (largeur != imp.largeurMm || imp.largeurIgnoree) cleImprimanteLargeurPapier: largeur,
+                              if ('${v['imprimanteInterface'] ?? ''}'.trim() != (imp.interface ?? '')) cleImprimanteInterface: '${v['imprimanteInterface'] ?? ''}'.trim(),
+                            };
+                            for (final e in changements.entries) {
+                              final r = service.regler(e.key, e.value, jour, motif: 'Réglé à « Configuration fiscale ».');
+                              if (!r.ok) {
+                                ToastsSigh.afficher(context, '${r.refus!.code} : ${r.refus!.motif}',
+                                    type: TypeToast.erreur, detail: r.refus!.geste, duree: const Duration(seconds: 9));
+                                return;
+                              }
+                            }
+                            ToastsSigh.afficher(context, changements.isEmpty ? 'Imprimante inchangée.' : 'Imprimante de caisse enregistrée.',
+                                type: changements.isEmpty ? TypeToast.info : TypeToast.succes);
+                          })),
+                ],
+              ]));
+        });
   }
 
   /// LE MODE DE CERTIFICATION (lot L3, décision de la Direction du 09/11/2026) : boîtier physique (défaut) ou e-MECeF, paramètre `mecef.mode` du registre du
@@ -1254,6 +1384,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 else
                   NoteSigh(
                       'Boîtier physique : ${modele ?? 'modèle non renseigné'}. L’interface, les commandes et le certificat du boîtier ne figurent dans aucun document du dépôt (liste de ce qu’il faut obtenir du fournisseur : docs/guides/MECEF-BOITIER-ELTRADE-CC300.md). Aucun numéro n’est fabriqué comme s’il était fiscal : tant que l’adaptateur du boîtier n’est pas branché, une vente reste en attente de certification.'),
+                const SizedBox(height: 12),
+                _etatsDesModes(actuel, modele),
                 const SizedBox(height: 8),
                 Row(key: const Key('mecef-adaptateur-boitier'), children: [
                   const Icon(LucideIcons.plugZap, size: 16, color: JetonsShell.warning600),
@@ -1317,12 +1449,9 @@ class _EtatConfig extends State<EcranMecefConfig> {
     final c = ContexteEcran.of(context);
     final mag = c.magasin;
     final p = paramFiscal(mag);
-    // LE TAUX D'AIB N'EST PLUS UNE SAISIE NI UNE CONSTANTE (D1) : il se LIT au barème daté de M12, à la date du jour, pour un acheteur sans IFU actif ; sans
-    // taux arrêté en vigueur, l'écran le dit (« aucun taux arrêté : 0 % », le taux de repli des Paramètres) avec le motif du moteur.
-    final aibJour = aibParDefaut(mag, c.aujourdhui);
-    final aibTexte = aibJour.arrete
-        ? '${aibJour.taux} % arrêté au barème, du montant hors taxes'
-        : 'aucun taux arrêté : ${aibJour.taux} % (taux de repli des Paramètres)';
+    // LA FACTURE D'UN PATIENT NE PORTE PAS D'AIB (Direction de Baguidi, 16/11/2026, E3773) : l'écran ne lit plus de taux au barème pour la vente ; il dit que
+    // l'AIB est sans objet sur la facture d'un patient et où l'acheteur et l'AIB gardent un sens. Le barème se règle toujours aux Paramètres (achats).
+    const aibTexte = 'sans objet sur la facture d’un patient (le patient paie le total)';
     if (!_pret) {
       _pret = true;
       _f = ControleurFormulaire([
@@ -1449,6 +1578,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
       final gauche = Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         _carteMode(c),
         const SizedBox(height: 16),
+        _carteImprimante(c),
+        const SizedBox(height: 16),
         carteConfig,
       ]);
       final droite = Column(
@@ -1467,19 +1598,18 @@ class _EtatConfig extends State<EcranMecefConfig> {
                   ('Devise', 'FCFA'),
                   ('Régime de TVA', p.regime.libelle),
                   ('Taux de TVA appliqué', '${p.tauxTva} %'),
-                  // Le libellé de la maquette (« Taux d’AIB (%) ») est conservé, mais LU : le taux est celui du barème arrêté, il ne se saisit plus ici.
+                  // Le libellé de la maquette (« Taux d’AIB (%) ») est conservé, en lecture : sans objet sur la facture d'un patient (E3773).
                   ('Taux d’AIB (%)', aibTexte),
                 ])),
             const SizedBox(height: 16),
             KeyedSubtree(
                 key: const Key('mecef:config-aib'),
                 child: NoteSigh(
-                    'AIB au ${dateFR(c.aujourdhui)} : $aibTexte. ${aibJour.motif} Le taux se règle au barème (Paramètres, « Acompte sur impôt (AIB) »), jamais ici.',
-                    ton: aibJour.arrete ? TonSigh.info : TonSigh.attention,
+                    'AIB : $mecefMentionFacturePatient L’acheteur et l’AIB ne se saisissent que là où ils ont un sens : ${mecefSaisieAcheteurAibConservee.map((e) => '${e.$1} — ${e.$2}').join(' ')} Le barème de l’AIB se règle aux Paramètres (« Acompte sur impôt (AIB) »).',
                     icone: LucideIcons.percent)),
             const SizedBox(height: 16),
             const NoteSigh(
-                'Le régime exonéré est celui relevé sur la facture de référence certifiée MECeF, où la TVA est portée à zéro et le net à payer vaut le hors-taxes augmenté du seul AIB. Ce choix doit être confirmé par le service comptable pour les prestations de la clinique.',
+                'Le régime exonéré est celui relevé sur la facture de référence certifiée MECeF, où la TVA est portée à zéro (cette facture ajoutait l’AIB au hors-taxes ; la facture d’un patient de Baguidi n’en porte pas, décision du 16/11/2026). Ce choix doit être confirmé par le service comptable pour les prestations de la clinique.',
                 ton: TonSigh.attention,
                 icone: LucideIcons.circleHelp),
             const SizedBox(height: 16),

@@ -11,7 +11,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
-import 'acheteur_normalise.dart';
+import 'annonce_normalisation.dart';
 import 'commun.dart';
 import 'factures.dart';
 import 'impression.dart';
@@ -440,7 +440,6 @@ class _EcranCaisseState extends State<EcranCaisse> {
     final jourPieceCaisse = tarJourDe(fac['date'], tarIso(c.aujourdhui));
     final choisies = {for (final l in lignes) '${l['id']}'};
     final version = ValueNotifier(0);
-    final acheteur = ControleurFormulaire(champsAcheteurNormalise(c.magasin, c.aujourdhui), valeursAcheteur(fac));
     final form = ControleurFormulaire([
       ChampDef(
           nom: 'mode',
@@ -713,7 +712,8 @@ class _EcranCaisseState extends State<EcranCaisse> {
                         const SizedBox(height: 12),
                         FormulaireSigh(controleur: form),
                         const SizedBox(height: 12),
-                        if (mecefEnService(c.magasin)) SectionAcheteur(controleur: acheteur, magasin: c.magasin, date: c.aujourdhui),
+                        // Facture d'un PATIENT : normalisée sans acheteur ni AIB (Direction de Baguidi, 16/11/2026, E3770) — plus de fenêtre « Facture normalisée ».
+                        if (mecefEnService(c.magasin)) const NoteSigh(mecefMentionFacturePatient, icone: LucideIcons.receipt),
                       ]);
                 })),
         pied: (fermer) => [
@@ -740,20 +740,9 @@ class _EcranCaisseState extends State<EcranCaisse> {
                           detail: 'Cocher au moins une prestation à régler.');
                       return;
                     }
-                    // La fenêtre « Facture normalisée » se contrôle AVANT toute écriture : un refus nommé n'écrit rien (E2299).
-                    final refusAcheteur = mecefEnService(c.magasin) ? controlerAcheteur(acheteur, c.magasin, c.aujourdhui) : null;
-                    if (refusAcheteur != null) {
-                      ToastsSigh.afficher(ctx,
-                          '${refusAcheteur.code} : ${refusAcheteur.motif}',
-                          type: TypeToast.erreur,
-                          detail: refusAcheteur.geste,
-                          duree: const Duration(seconds: 9));
-                      return;
-                    }
                     ResultatCaisse res;
                     try {
                       res = encaisserFacture(c.magasin, '${fac['id']}',
-                          acheteur: mecefEnService(c.magasin) ? lireAcheteur(acheteur, c.magasin, c.aujourdhui) : null,
                           lignes: lignes.isNotEmpty ? choisies.toList() : null,
                           montant: lignes.isEmpty ? n(fac['reliquat']) : null,
                           mode: '${form['mode']}',

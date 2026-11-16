@@ -175,11 +175,16 @@ class FactureNormalisee {
 }
 
 /// La facture de vente normalisée, d'après la facture SoBAPS n° 26FNA00026 : colonnes HT/TTC, TVA, AIB, montant en toutes lettres, bloc de certification.
-FactureNormalisee factureNormalisee(Map<String, Object?> f, ParamFiscal p) {
+///
+/// [facturePatient] (décision de la Direction de Baguidi du 16/11/2026, E3772) : la facture d'un PATIENT ne porte pas d'AIB — aucune ligne d'AIB aux taxes, le
+/// net à payer est le TTC, quel que soit le taux que la pièce porterait encore. Faux par défaut : la pièce de la maquette (AIB du régime ou choisi), rejouée par
+/// les vecteurs `mecef.json`, qui reste celle d'une vente à un tiers payeur.
+FactureNormalisee factureNormalisee(Map<String, Object?> f, ParamFiscal p, {bool facturePatient = false}) {
   var dec = decomposer(nombreOuZero(f['montantTTC']), p);
-  // Le taux d'AIB choisi à l'encaissement gouverne la pièce ; sans choix, celui du régime (E2299).
+  // Le taux d'AIB choisi à l'encaissement gouverne la pièce ; sans choix, celui du régime (E2299). Facture patient : aucun AIB (E3772).
   final aibChoisi = f['aibTaux'];
-  final surcharge = aibChoisi is num && aibChoisi != p.tauxAib;
+  final surcharge = !facturePatient && aibChoisi is num && aibChoisi != p.tauxAib;
+  if (facturePatient) dec = Decomposition(dec.ht, dec.tva, 0, dec.ttc, dec.ttc);
   if (surcharge) {
     final aib = arrondiJs(dec.ht * aibChoisi / 100);
     dec = Decomposition(dec.ht, dec.tva, aib, dec.ttc, dec.ttc + aib);
@@ -224,10 +229,11 @@ FactureNormalisee factureNormalisee(Map<String, Object?> f, ParamFiscal p) {
       ColonneEtat(libelle: 'Montant', valeur: (r) => r['v'], droite: true),
     ], lignes: [
       {'k': p.libelleTva, 'v': m(dec.tva)},
-      {
-        'k': '${surcharge ? 'AIB $aibChoisi %' : p.libelleAib} (${p.codeAib})',
-        'v': m(dec.aib)
-      },
+      if (!facturePatient)
+        {
+          'k': '${surcharge ? 'AIB $aibChoisi %' : p.libelleAib} (${p.codeAib})',
+          'v': m(dec.aib)
+        },
     ]),
     totaux: TableauEtat(colonnes: [
       ColonneEtat(libelle: 'Rubrique', valeur: (r) => r['k']),

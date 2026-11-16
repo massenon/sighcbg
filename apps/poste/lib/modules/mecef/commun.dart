@@ -103,7 +103,8 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
     required DateTime edite,
     required String reference,
     IdentiteImprimee? identite}) {
-  final fn = factureNormalisee(f, p);
+  // La facture de la caisse est celle d'un PATIENT : normalisée sans acheteur ni AIB, net à payer = TTC (Direction de Baguidi, 16/11/2026, E3772).
+  final fn = factureNormalisee(f, p, facturePatient: true);
   final i = identite ?? IdentiteImprimee.semence;
   return PieceA4(
     identite: identite,
@@ -120,7 +121,6 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
       // E14 (corrigé le 31/10/2026) : l'« IFU client » est celui du CLIENT, vide s'il est inconnu, jamais celui de la clinique.
       ('IFU client', ifuClientDe(f, patient)),
       ('Nature', '${f['type'] ?? ''}'),
-      if (f['acheteurNom'] != null) ('Nom de l’acheteur', '${f['acheteurNom']}'),
     ],
     blocs: [
       BlocTableau(fn.lignes),
@@ -128,6 +128,7 @@ PieceA4 pieceFactureNormalisee(Fiche f, ParamFiscal p,
       if (fn.mentionExoneration != null)
         BlocTexte(fn.mentionExoneration!, italique: true),
       BlocTableau(fn.totaux),
+      const BlocTexte(mecefMentionFacturePatient, italique: true),
       const BlocTexte('Devise : FCFA'),
       BlocTexte('${p.mentionMontant} :', gras: true),
       BlocTexte(fn.enLettres.toUpperCase(), gras: true),

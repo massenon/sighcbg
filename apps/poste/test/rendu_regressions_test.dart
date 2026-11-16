@@ -37,11 +37,14 @@ void main() {
     expect((t.widget<TextField>(champ).controller!.text), '1000');
   });
 
-  f.cas('la liste « Situation de l\'acheteur » ne propose pas « — Aucun — » à côté de « Automatique » (même valeur vide)', (t) async {
+  // Porté puis corrigé (E3771, Direction de Baguidi, 16/11/2026) : la liste « Situation de l'acheteur » a disparu avec la fenêtre « Facture normalisée » de la
+  // facture patient ; la régression qu'elle gardait (« — Aucun — » à côté de « Automatique ») ne peut plus se produire, le test prouve l'absence des deux.
+  f.cas('la liste « Situation de l\'acheteur » a disparu de la facture patient : ni « Automatique », ni « — Aucun — », ni taux du barème (E3771)', (t) async {
     await f.ouvrir(t, f.magasin());
-    await f.toucher(t, find.text('Automatique — d’après l’IFU saisi').first);
+    expect(find.text('Automatique — d’après l’IFU saisi'), findsNothing);
     expect(find.text('— Aucun —'), findsNothing);
-    expect(find.text('Acheteur sans IFU actif — 5 % arrêté'), findsOneWidget);
+    expect(find.text('Acheteur sans IFU actif — 5 % arrêté'), findsNothing);
+    expect(find.byKey(const Key('kit:champ:acheteurAib')), findsNothing);
   });
 
   testWidgets('l\'aperçu du ticket est CENTRÉ dans la modale et la modale est blanche sous son ombre', (t) async {

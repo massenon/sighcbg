@@ -5,7 +5,10 @@ import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/mecef_poste.dart';
 import 'package:sigh_poste/donnees/normalisation_mecef.dart';
+import 'package:sigh_poste/impression/apercu.dart';
+import 'package:sigh_poste/impression/feuilles.dart';
 import 'package:sigh_poste/kit/kit.dart';
+import 'package:sigh_poste/shell/contexte_ecran.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
@@ -78,5 +81,93 @@ void main() {
     expect(m.collection('parametres').toutes.where((v) => v['cle'] == mecefCleModeleBoitier && v['valeur'] == 'ELTRADE CC300 v2').length, 1);
     expect(m.collection('parametres').toutes.where((v) => v['cle'] == mecefCleMode && v['version'] != 0), isEmpty,
         reason: 'le mode inchangé n’ajoute pas de version');
+  });
+
+  // L'ÉCRAN DES MODES MECeF (Direction de Baguidi, 16/11/2026, E3760) : la section « Mode de certification » de « Configuration fiscale » dit, mode par mode, ce
+  // qui est prêt et ce qui manque ; aucun n'est configuré, aucun numéro n'est simulé.
+  casM14('les deux modes disent ce qui est prêt et ce qui manque : boîtier ELTRADE CC300 (adaptateur à fournir) et e-MECeF (dossier DGI), aucun « configuré »', (t) async {
+    final m = magasin();
+    await ouvrirM14(t, m, 'mecef-config', horloge: aujourdhui);
+    final boitier = find.byKey(const Key('mecef:etat-mode:boitier'));
+    final emecef = find.byKey(const Key('mecef:etat-mode:emecef'));
+    expect(boitier, findsOneWidget);
+    expect(emecef, findsOneWidget);
+    expect(find.descendant(of: boitier, matching: find.text('Mode retenu')), findsOneWidget);
+    expect(find.descendant(of: emecef, matching: find.text('Mode retenu')), findsNothing);
+    expect(find.text('Non configuré'), findsNWidgets(2));
+    expect(find.text('Configuré'), findsNothing);
+    expect(find.descendant(of: boitier, matching: find.textContaining('Modèle du boîtier réglé : ELTRADE CC300')), findsOneWidget);
+    expect(find.descendant(of: boitier, matching: find.textContaining('Adaptateur ELTRADE CC300 : intégration à fournir par l’éditeur du boîtier : manuel')), findsOneWidget);
+    expect(find.descendant(of: emecef, matching: find.textContaining('Dossier d’interface de la DGI')), findsOneWidget);
+    expect(find.descendant(of: boitier, matching: find.textContaining('sans aucun numéro simulé')), findsOneWidget);
+    // Basculer sur e-MECeF déplace « Mode retenu » ; toujours rien de configuré, toujours aucun numéro.
+    await toucherM14(t, find.text('Boîtier physique').first);
+    await toucherM14(t, find.text('e-MECeF').last);
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer le mode'));
+    expect(modeMecefDuPoste(m, aujourdhui), 'emecef');
+    expect(find.descendant(of: find.byKey(const Key('mecef:etat-mode:emecef')), matching: find.text('Mode retenu')), findsOneWidget);
+    final f = vente(m);
+    normaliserVente(m, '${f['id']}', maintenant: aujourdhui);
+    expect(m.collection('factures').parId(f['id'])!['numeroMecef'], isNull, reason: 'aucun numéro de certification simulé');
+    expect(m.collection('factures').parId(f['id'])!['statutMecef'], 'en_attente');
+  });
+
+  // L'IMPRIMANTE DE CAISSE (E3761, E3762) : aucun modèle fourni pour Baguidi — « à renseigner », à valider ; la largeur sert l'aperçu du ticket.
+  test('l’imprimante se LIT au registre : modèle et interface « à renseigner », papier 80 mm semé ; une version datée les règle', () {
+    final m = magasin();
+    final i = imprimanteCaisseDuPoste(m, aujourdhui);
+    expect([i.modele, i.interface, i.largeurMm, i.aRenseigner], [null, null, 80, true]);
+    final s = serviceParametres(m, auteur: () => 'DAF', horloge: () => aujourdhui);
+    expect(s.regler(cleImprimanteLargeurPapier, 58, parametreDateIso(aujourdhui), motif: 'essai').ok, isTrue);
+    expect(imprimanteCaisseDuPoste(m, aujourdhui).largeurMm, 58);
+  });
+
+  casM14('« Imprimante de caisse » : « à renseigner », à valider, 80 mm ; réglée sous le droit « configuration MECeF », la largeur passe à l’aperçu du ticket', (t) async {
+    final m = magasin();
+    await ouvrirM14(t, m, 'mecef-config', horloge: aujourdhui);
+    final carte = find.byKey(const Key('mecef:imprimante'));
+    expect(carte, findsOneWidget);
+    expect(find.descendant(of: carte, matching: find.text('à renseigner')), findsNWidgets(2));
+    expect(find.descendant(of: carte, matching: find.text('80 mm')), findsOneWidget);
+    expect(find.descendant(of: carte, matching: find.text('À valider : à renseigner par la clinique')), findsOneWidget);
+    expect(find.descendant(of: carte, matching: find.textContaining('aucun pilote d’impression n’est branché')), findsOneWidget);
+    // Une largeur hors bornes est refusée en le disant, rien n'est écrit.
+    await saisir(t, 'imprimanteLargeur', '300');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer l’imprimante'));
+    expect(find.text('Largeur du papier refusée.'), findsOneWidget);
+    expect(m.collection('parametres').toutes.where((v) => v['cle'] == cleImprimanteLargeurPapier && v['version'] != 0), isEmpty);
+    await saisir(t, 'imprimanteModele', 'Modèle essai');
+    await saisir(t, 'imprimanteLargeur', '58');
+    await saisir(t, 'imprimanteInterface', 'USB');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Enregistrer l’imprimante'));
+    final i = imprimanteCaisseDuPoste(m, aujourdhui);
+    expect([i.modele, i.largeurMm, i.interface, i.aRenseigner], ['Modèle essai', 58, 'USB', false]);
+    expect(find.descendant(of: carte, matching: find.text('À valider : à renseigner par la clinique')), findsNothing);
+    // L'aperçu du ticket prend la largeur réglée et dit l'imprimante.
+    final ctx = t.element(find.byType(CarteSigh).first);
+    afficherApercuTicket(ctx, EntreeTicket(operateur: 'CAISSE', numero: 'FN-1', date: aujourdhui, partPatient: 1000, total: 1000), 'T-1');
+    await t.pump(const Duration(milliseconds: 600));
+    expect(t.getSize(find.byKey(const Key('impression:ticket'))).width, closeTo(mm(58), 0.01));
+    expect(find.text('Imprimante de caisse : Modèle essai — papier 58 mm — interface : USB'), findsOneWidget);
+  });
+
+  casM14('sans le droit « configuration MECeF », l’imprimante se lit sans se régler (commande absente)', (t) async {
+    await ouvrirM14(t, magasin(), 'mecef-config', role: 'direction', horloge: aujourdhui);
+    expect(find.byKey(const Key('mecef:imprimante')), findsOneWidget);
+    expect(find.widgetWithText(BoutonSigh, 'Enregistrer l’imprimante'), findsNothing);
+    expect(find.byKey(const Key('kit:champ:imprimanteModele')), findsNothing);
+  });
+
+  testWidgets('sans magasin, l’aperçu du ticket garde 80 mm et dit l’imprimante « à renseigner »', (t) async {
+    late BuildContext ctx;
+    await t.pumpWidget(MaterialApp(home: Builder(builder: (c) {
+      ctx = c;
+      return const Scaffold();
+    })));
+    expect(ContexteEcran.maybeOf(ctx), isNull);
+    afficherApercuTicket(ctx, EntreeTicket(operateur: 'CAISSE', numero: 'FN-1', date: aujourdhui, partPatient: 1000, total: 1000), 'T-1');
+    await t.pump(const Duration(milliseconds: 600));
+    expect(t.getSize(find.byKey(const Key('impression:ticket'))).width, closeTo(mm(80), 0.01));
+    expect(find.text('Imprimante de caisse : à renseigner — papier 80 mm — interface : à renseigner'), findsOneWidget);
   });
 }

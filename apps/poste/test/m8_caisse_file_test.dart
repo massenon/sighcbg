@@ -15,7 +15,8 @@ import 'aide_polices.dart';
 final donnees = DonneesNavigation.depuisDossier();
 final auj = DateTime(2026, 10, 30);
 
-/// Le barème de l'AIB du jeu livré : la fenêtre « Facture normalisée » LIT le taux au barème daté (lot A5) ; sans barème elle refuse, nommément.
+/// Le barème de l'AIB du jeu livré. La fenêtre « Facture normalisée » qui le lisait a disparu (facture patient sans acheteur ni AIB, 16/11/2026, E3771) ; le
+/// barème reste semé pour que le magasin du test ressemble au jeu livré.
 final _baremeJeu = Magasin.depuisDossier(Magasin.collectionsDuJeu);
 
 Magasin jeu() => Magasin({

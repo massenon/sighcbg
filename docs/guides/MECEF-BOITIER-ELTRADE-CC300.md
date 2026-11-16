@@ -8,6 +8,9 @@ La Direction de Baguidi a indiqué le 16/11/2026 que son boîtier MECeF est un *
 - Le modèle est affiché sur l'écran de configuration MECeF. Il est porté sur la pièce (`modeleBoitierMecef`) et au journal MECeF, aux mêmes endroits que le mode (`modeMecef`), à chaque tentative faite en mode « Boîtier physique ».
 - **L'adaptateur reste non configuré.** L'écran le dit : « adaptateur ELTRADE CC300 : intégration à fournir par l'éditeur du boîtier ». Une vente est encaissée, puis reste en attente de certification avec le refus `MECEF_NON_CONFIGURE`. Le poste ne fabrique aucun numéro fiscal et n'envoie aucune requête réseau.
 - Le point d'extension existe déjà : l'interface `AdaptateurMecef` (`packages/domaine/lib/src/mecef/mode.dart`). L'adaptateur réel du boîtier l'implémentera (lot M3).
+- L'écran « Configuration fiscale » (section « Mode de certification ») dit, pour chacun des deux modes, ce qui est **prêt** au poste et ce qui **manque** (écart E3760) ; le mode retenu est marqué et les deux restent « Non configuré ».
+- L'**imprimante de caisse** est un réglage de clinique distinct (modèle, largeur du papier, interface ; famille `mecef`, même droit `reglage_mecef`). Aucun modèle n'est fourni pour Baguidi : modèle et interface s'affichent « à renseigner », à valider ; la largeur est semée à 80 mm et sert l'aperçu et le PDF du ticket de caisse. Aucun pilote d'impression n'est branché (écarts E3761, E3762).
+- La **facture d'un patient** est normalisée sans acheteur ni AIB (décision du 16/11/2026, écarts E3770 à E3776) : la demande de certification d'une facture patient ne portera ni IFU ni nom d'acheteur, et un AIB nul.
 
 ## Ce qu'il faut obtenir du fournisseur (ou de l'éditeur) du boîtier
 

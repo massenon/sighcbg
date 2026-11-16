@@ -52,7 +52,11 @@ Future<void> ouvrir(WidgetTester t, Magasin m, {String role = 'admin'}) async {
 
 Future<void> toucher(WidgetTester t, Finder f) async {
   await t.ensureVisible(f);
+  // Près du bas d'une page courte, `ensureVisible` pose le défilement AU-DELÀ de sa fin ; la page s'y replace à l'image suivante, et un toucher immédiat
+  // tombe à côté. Révélé quand le bloc « Facture normalisée » a disparu de la facture patient et que la page a raccourci (E3771) : on laisse la page se
+  // replacer avant de toucher.
   await t.pump();
+  await t.pump(const Duration(milliseconds: 300));
   await t.tap(f);
   await t.pump(const Duration(milliseconds: 300));
 }
