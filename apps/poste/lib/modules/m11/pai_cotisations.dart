@@ -7,6 +7,7 @@ import '../../impression/identite_poste.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../cfg/cfb_confirmations.dart';
 import 'pai_commun.dart';
 
 /// `m11-cotisations` — « Cotisations CNSS / ITS / VPS » : les états exploitables pour les déclarations périodiques. Part patronale 16,4 % et part ouvrière
@@ -162,6 +163,9 @@ class _EtatCotisations extends State<EcranCotisations> {
             KpiSigh(libelle: 'Masse salariale brute', valeur: paiMontant(calc, (x) => x.brut), icone: LucideIcons.banknote, ton: TonSigh.succes),
             KpiSigh(libelle: 'Coût employeur', valeur: paiMontant(calc, (x) => x.coutEmployeur), icone: LucideIcons.calculator, ton: TonSigh.neutre),
           ]),
+          const SizedBox(height: 16),
+          // Les taux de la CNSS se CONFIRMENT ici aussi (le comptable n'ouvre pas les paramètres comptables) : la même carte, la même collection, le même geste.
+          CarteConfirmationCnss(c: c),
           const SizedBox(height: 16),
           TableauSigh(
             key: ValueKey('cotisations:$_m'),

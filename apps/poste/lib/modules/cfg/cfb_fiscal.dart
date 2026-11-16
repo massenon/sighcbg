@@ -10,6 +10,7 @@ import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
 import 'cfa_commun.dart';
 import 'cfb_commun.dart';
+import 'cfb_confirmations.dart';
 import 'cfb_configuration_fiscale.dart';
 
 const _mono = 'LiberationMono';
@@ -731,6 +732,8 @@ class _EtatComptabilite extends State<EcranComptabilite> {
                   _encart('Assiettes arrêtées par le CDCT §10.10 (lecture seule)',
                       '${cfbTexteAssiettes()} Ces taux ne se modifient pas ici : ils sont arrêtés par le cahier des charges ; les rendre datés est un chantier nommé.'),
                 ], espace: 12)),
+            // Les taux de la CNSS : « Confirmer » (motif obligatoire, tracé, geste réservé `fiscal_confirmer`), compléments du 16/11/2026.
+            CarteConfirmationCnss(c: c),
             // Barème de l'ITS : une pièce à valider (constante du code, validation au moteur commun).
             CarteSigh(
                 titre: 'Barème de l’ITS',

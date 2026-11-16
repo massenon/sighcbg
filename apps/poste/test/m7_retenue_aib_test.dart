@@ -37,6 +37,18 @@ Future<void> _toucher(WidgetTester t, Finder f) async {
   await t.pump(const Duration(milliseconds: 300));
 }
 
+/// LE BARÈME SE CHOISIT (compléments du 16/11/2026) : aucune entrée n'est présélectionnée ; le comptable choisit le barème puis la catégorie.
+Future<void> _choisir(WidgetTester t, String champ, String cible) async {
+  await _toucher(t, find.descendant(of: find.byKey(Key('kit:champ:$champ')), matching: find.byType(InkWell)).first);
+  await _toucher(t, find.text(cible).last);
+  await t.pump(const Duration(milliseconds: 300));
+}
+
+Future<void> _choisirBaremeSituation(WidgetTester t) async {
+  await _choisir(t, 'bareme', 'Barème par situation de l’acheteur');
+  await _choisir(t, 'situation', 'Barème par situation de l’acheteur — Acheteur sans IFU actif — 5 %');
+}
+
 Magasin _avecFacture(String date, {num? ht, num? tva, List<Map<String, Object?>> parametres = const []}) {
   final m = _magasin();
   for (final x in parametres) {
@@ -73,6 +85,7 @@ void main() {
     final m = _avecFacture('2026-10-12');
     await _ouvrir(t, m, 'm7-factures-fournisseurs');
     await _toucher(t, find.byTooltip('Retenir l’AIB').first);
+    await _choisirBaremeSituation(t);
     await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
     final f = m.collection('facturesFournisseurs').parId('FFR1')!;
     final r = (f['retenueAib'] as Map).cast<String, Object?>();
@@ -80,6 +93,8 @@ void main() {
     expect(r['taux'], 5);
     expect(r['situation'], 'ifu_inactif_ou_absent', reason: 'la catégorie de la retenue EST une situation de l\'acheteur');
     expect(r['versionId'], 'BAI01', reason: 'la retenue porte la version du barème sous laquelle elle a été calculée');
+    expect(r['bareme'], 'situation_acheteur', reason: 'la pièce porte le barème CHOISI par le comptable (compléments du 16/11/2026)');
+    expect(r['baremeLibelle'], 'Barème par situation de l’acheteur');
     expect(r['reversement'], '2026-11-10');
     final nouvelles = [for (final e in m.collection('ecritures').actives) if (e['pieceId'] == 'FFR1') e];
     expect(nouvelles.length, 2);
@@ -94,6 +109,20 @@ void main() {
     await t.pump(const Duration(seconds: 10));
   });
 
+  testWidgets('compléments du 16/11/2026 : AUCUN barème présélectionné — sans choix, rien n’est écrit ; les deux barèmes sont offerts', (t) async {
+    final m = _avecFacture('2026-10-12');
+    await _ouvrir(t, m, 'm7-factures-fournisseurs');
+    await _toucher(t, find.byTooltip('Retenir l’AIB').first);
+    expect(find.text('Choisir le barème…'), findsWidgets, reason: 'la liste du barème part vide');
+    await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
+    expect(m.collection('facturesFournisseurs').parId('FFR1')!['retenueAib'], isNull, reason: 'aucun défaut silencieux : sans barème, aucune retenue');
+    expect([for (final e in m.collection('ecritures').actives) if (e['pieceId'] == 'FFR1') e], isEmpty);
+    await _toucher(t, find.descendant(of: find.byKey(const Key('kit:champ:bareme')), matching: find.byType(InkWell)).first);
+    expect(find.text('Retenue sur la facture d’un tiers'), findsWidgets);
+    expect(find.text('Barème par situation de l’acheteur'), findsWidgets);
+    await t.pump(const Duration(seconds: 10));
+  });
+
   // D7 (Direction, 09/11/2026) : la base de la retenue est le montant HORS TAXES quand il est renseigné ; sinon le montant facturé, et la fenêtre le DIT.
   testWidgets('D7 base HT : 5 % de 169 492 (hors taxes) et non de 200 000 (facturé) ; la fenêtre dit quelle base sert, la facture la porte', (t) async {
     final m = _avecFacture('2026-10-12', ht: 169492, tva: 30508);
@@ -101,6 +130,7 @@ void main() {
     await _toucher(t, find.byTooltip('Retenir l’AIB').first);
     expect(find.byKey(const Key('retenue:base')), findsOneWidget);
     expect(find.textContaining('Base : montant hors taxes de la facture'), findsOneWidget);
+    await _choisirBaremeSituation(t);
     await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
     final r = (m.collection('facturesFournisseurs').parId('FFR1')!['retenueAib'] as Map).cast<String, Object?>();
     expect([r['base'], r['montant'], r['baseSource']], [169492, 8475, 'ht']);
@@ -116,6 +146,7 @@ void main() {
     await _toucher(t, find.byTooltip('Retenir l’AIB').first);
     expect(find.textContaining('Hors taxes non renseigné sur cette facture'), findsOneWidget);
     expect(find.textContaining('MONTANT FACTURÉ'), findsWidgets);
+    await _choisirBaremeSituation(t);
     await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
     final r = (m.collection('facturesFournisseurs').parId('FFR1')!['retenueAib'] as Map).cast<String, Object?>();
     expect([r['base'], r['montant'], r['baseSource']], [200000, 10000, 'facture']);
@@ -133,6 +164,7 @@ void main() {
     await _ouvrir(t, m, 'm7-factures-fournisseurs');
     await _toucher(t, find.byTooltip('Retenir l’AIB').first);
     expect(find.textContaining('Base : montant facturé (choix des Paramètres, v2)'), findsOneWidget);
+    await _choisirBaremeSituation(t);
     await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
     var r = (m.collection('facturesFournisseurs').parId('FFR1')!['retenueAib'] as Map).cast<String, Object?>();
     expect([r['base'], r['montant'], r['baseSource']], [200000, 10000, 'facture']);
@@ -141,6 +173,7 @@ void main() {
     await _ouvrir(t, m2, 'm7-factures-fournisseurs');
     await _toucher(t, find.byTooltip('Retenir l’AIB').first);
     expect(find.textContaining('Base : montant hors taxes de la facture'), findsOneWidget);
+    await _choisirBaremeSituation(t);
     await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
     r = (m2.collection('facturesFournisseurs').parId('FFR1')!['retenueAib'] as Map).cast<String, Object?>();
     expect([r['base'], r['baseSource']], [169492, 'ht']);

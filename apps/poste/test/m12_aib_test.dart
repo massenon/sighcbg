@@ -67,7 +67,7 @@ void main() {
     final m = magasinAib();
     await ouvrirM14(t, m, 'm12-aib');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-    await choisirM14(t, 'situation', 'Acheteur sans IFU actif');
+    await choisirM14(t, 'situation', 'Barème par situation de l’acheteur — Acheteur sans IFU actif');
     await saisir(t, 'taux', '6');
     await choisirDate(t, 'dateEffet', '01/01/2027');
     await choisirM14(t, 'statutArret', 'Arrêté');
@@ -104,7 +104,7 @@ void main() {
     final m = magasinAib();
     await ouvrirM14(t, m, 'm12-aib');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Nouveau'));
-    await choisirM14(t, 'situation', 'Acheteur avec IFU actif');
+    await choisirM14(t, 'situation', 'Barème par situation de l’acheteur — Acheteur avec IFU actif');
     await saisir(t, 'taux', '2');
     await saisir(t, 'motif', 'Essai sans source');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Créer'));

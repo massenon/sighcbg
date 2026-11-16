@@ -10,6 +10,7 @@ import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m14/crud_m14.dart';
+import '../cfg/cfb_confirmations.dart';
 import '../cfg/cfg_validations_aib.dart' show ongletValidationsAibDemande;
 import 'cpc_commun.dart';
 
@@ -173,7 +174,9 @@ class EcranAib extends StatelessWidget with EcranMaquette {
                   libelle: 'Situation de l’acheteur',
                   type: TypeChamp.select,
                   requis: true,
-                  options: [for (final x in cpdSituationsActives(situations)) OptionChamp('${x['code']}', '${x['libelle'] ?? x['code']}')],
+                  options: [
+                    for (final x in cpdSituationsActives(situations)) OptionChamp('${x['code']}', '${cpdLibelleBareme(cpdBaremeDeSituation(x))} — ${x['libelle'] ?? x['code']}')
+                  ],
                   aide: 'Les versions successives d’une même situation se suivent par date d’effet.'),
               ChampDef(
                   nom: 'taux',
@@ -249,7 +252,27 @@ class EcranAib extends StatelessWidget with EcranMaquette {
     final v = cpdTauxAibALaDate(actives, '${f['situation']}', jour, situations: situations);
     final comptes = cpaComptesALaDate(c.magasin.collection(cpaCollection).actives, jour);
     final fin = arretee ? cpdFinDeVersion(actives, f) : null;
+    final confirmation = fcoConfirmationALaDate(c.magasin.collection(fcoCollection).actives, fcoObjetBaremeAib, '${f['id']}', DateTime(9999));
+    final sit = [for (final s in situations) if ('${s['code']}' == '${f['situation']}') s].firstOrNull;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      // « Confirmer » (compléments du 16/11/2026) : motif obligatoire, tracé, réservé au geste `fiscal_confirmer` ; une version non arrêtée est arrêtée à la date d'effet choisie.
+      NoteSigh(libelleConfirmation(confirmation),
+          key: const Key('fco:aib:etat'),
+          ton: confirmation == null ? TonSigh.attention : TonSigh.succes,
+          icone: confirmation == null ? LucideIcons.triangleAlert : LucideIcons.stamp),
+      if (peutConfirmerFiscal(c) && f['statut'] != 'archive') ...[
+        const SizedBox(height: 8),
+        Wrap(children: [
+          Builder(
+              builder: (ctx) => BoutonSigh(
+                  key: const Key('fco:aib:confirmer'),
+                  libelle: 'Confirmer',
+                  icone: LucideIcons.stamp,
+                  variante: VarianteBouton.secondaire,
+                  onPressed: () => confirmerVersionAib(ctx, c, f))),
+        ]),
+      ],
+      const SizedBox(height: 12),
       NoteSigh(
           arretee
               ? 'Version ARRÊTÉE par ${f['decideurArret']} le ${_d(f['dateArret'])}. Elle ne se corrige pas sur place : une correction ajoute une version à une date d’effet postérieure.'
@@ -263,6 +286,7 @@ class EcranAib extends StatelessWidget with EcranMaquette {
         const SizedBox(height: 12),
       ],
       DescListeSigh([
+        ('Barème', cpdLibelleBareme(sit == null ? null : cpdBaremeDeSituation(sit))),
         ('Situation de l’acheteur', _libelleSituation(situations, f['situation'])),
         ('Taux', _pct(f['taux'])),
         ('Date d’effet', f['dateEffet'] == null || '${f['dateEffet']}'.isEmpty ? 'à fixer à l’arrêt' : _d(f['dateEffet'])),
@@ -430,6 +454,7 @@ class _Situations extends StatelessWidget {
         ColonneTableau(cle: 'ordre', libelle: 'Ordre', droite: true, valeur: (f) => f['ordre'] ?? 99, texte: (f) => '${f['ordre'] ?? '—'}'),
         ColonneTableau(cle: 'code', libelle: 'Code', sansCoupure: true, texte: (f) => '${f['code']}', rendu: (_, f) => monoTexte(f['code'])),
         const ColonneTableau(cle: 'libelle', libelle: 'Libellé'),
+        ColonneTableau(cle: 'bareme', libelle: 'Barème', texte: (f) => cpdLibelleBareme(cpdBaremeDeSituation(f))),
         ColonneTableau(
             cle: 'declencheur',
             libelle: 'Choisie d’office quand',
@@ -442,6 +467,13 @@ class _Situations extends StatelessWidget {
             requis: true,
             aide: 'Ne change plus une fois créé : des versions du barème le citent.'),
         const ChampDef(nom: 'libelle', libelle: 'Libellé', requis: true),
+        // Deux barèmes en paramètres (compléments du 16/11/2026) : une situation appartient à l'un ou à l'autre ; la première entrée est vide, le barème se choisit à la
+        // création (refus nommé sinon). Une situation d'avant, sans barème, garde le sien (« par situation de l'acheteur ») tant qu'on n'en choisit pas un autre.
+        ChampDef(
+            nom: 'bareme',
+            libelle: 'Barème',
+            type: TypeChamp.select,
+            options: [const OptionChamp('', 'Choisir le barème…'), for (final b in cpdBaremesAib) OptionChamp(b.$1, b.$2)]),
         ChampDef(
             nom: 'declencheur',
             libelle: 'Choisie d’office quand',
@@ -457,11 +489,13 @@ class _Situations extends StatelessWidget {
           return 'AIB_CODE_FIGE : le code d’une situation ne change pas, des versions du barème le citent — créer une nouvelle situation et archiver celle-ci.';
         }
         if (record == null && col.actives.any((f) => '${f['code']}' == code)) return 'La situation « $code » existe déjà.';
+        if (record == null && '${saisie['bareme'] ?? ''}'.trim().isEmpty) return 'AIB_BAREME_REQUIS : choisir le barème de la situation — aucun barème n’est supposé.';
         return null;
       },
       transformer: (ctx, s, record) => {
         'code': '${s['code']}'.trim(),
         'libelle': '${s['libelle']}'.trim(),
+        'bareme': '${s['bareme'] ?? ''}'.trim().isEmpty ? cpdBaremeDeSituation(record ?? const {}) : '${s['bareme']}',
         'declencheur': '${s['declencheur']}',
         'ordre': num.tryParse('${s['ordre'] ?? ''}'.trim())?.toInt(),
         'description': '${s['description'] ?? ''}'.trim().isEmpty ? null : '${s['description']}'.trim(),

@@ -243,7 +243,7 @@ Widget detailFactureFournisseur(Fiche r, {String? signalTaux}) {
       if (r['retenueAib'] is Map)
         (
           'Retenue AIB',
-          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}${(r['retenueAib'] as Map)['baseMotif'] == null ? '' : '. ${(r['retenueAib'] as Map)['baseMotif']}'}'
+          '${money((r['retenueAib'] as Map)['montant'])} (${(r['retenueAib'] as Map)['taux']} % de ${money((r['retenueAib'] as Map)['base'])}, ${(r['retenueAib'] as Map)['baremeLibelle'] == null ? '' : 'barème « ${(r['retenueAib'] as Map)['baremeLibelle']} », '}situation ${(r['retenueAib'] as Map)['situation'] ?? (r['retenueAib'] as Map)['code']}) — à reverser à l’État le ${_date((r['retenueAib'] as Map)['reversement'])}${(r['retenueAib'] as Map)['baseMotif'] == null ? '' : '. ${(r['retenueAib'] as Map)['baseMotif']}'}'
         ),
     ]),
     if (signalTaux != null) ...[
@@ -510,15 +510,29 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
   // Les COMPTES de la pièce se lisent aux Paramètres, à la date de la facture : la pièce déjà passée garde les siens quand une version de plus est validée.
   final comptes = comptesAib(c.magasin, date);
   final base = baseCalculee.base;
+  // LE BARÈME SE CHOISIT (compléments du 16/11/2026) : deux barèmes en paramètres (retenue sur la facture d'un tiers ; barème par situation de l'acheteur), le comptable
+  // choisit à CHAQUE retenue. Aucun défaut silencieux : la première entrée de chaque liste est VIDE (une liste obligatoire présélectionnerait sinon son premier choix).
+  String bar(String code) => [for (final s in situations) if ('${s['code']}' == code) cpdBaremeDeSituation(s)].firstOrNull ?? cpdBaremeSituationAcheteur;
   final ctl = ControleurFormulaire([
     ChampDef(
-        nom: 'situation',
-        libelle: 'Situation de l’acheteur (catégorie de retenue)',
+        nom: 'bareme',
+        libelle: 'Barème de l’AIB',
         type: TypeChamp.select,
         requis: true,
         options: [
+          const OptionChamp('', 'Choisir le barème…'),
+          for (final b in cpdBaremesAib) OptionChamp(b.$1, b.$2),
+        ],
+        aide: 'Aucun barème n’est supposé : le comptable choisit à chaque retenue, et la pièce porte le barème choisi et le taux appliqué.'),
+    ChampDef(
+        nom: 'situation',
+        libelle: 'Catégorie de la retenue (situation du barème)',
+        type: TypeChamp.select,
+        requis: true,
+        options: [
+          const OptionChamp('', 'Choisir la catégorie…'),
           for (final b in applicables)
-            OptionChamp(b.code, '${b.libelle} — ${b.reponse.taux} %')
+            OptionChamp(b.code, '${cpdLibelleBareme(bar(b.code))} — ${b.libelle} — ${b.reponse.taux} %')
         ]),
     const ChampDef(
         nom: 'base',
@@ -528,7 +542,6 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
         aide:
             'Proposée d’après les Paramètres (voir ci-dessus). Le montant retenu = base × taux du barème à la date de la facture, arrondi au franc.'),
   ], {
-    'situation': applicables.first.code,
     'base': '${base.round()}'
   });
   afficherModale<void>(ctx,
@@ -565,6 +578,11 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                         type: TypeToast.erreur);
                     return;
                   }
+                  final refusBareme = cpdRefusChoixBareme('${v['bareme'] ?? ''}', '${v['situation'] ?? ''}', situations);
+                  if (refusBareme != null) {
+                    ToastsSigh.afficher(ctx, 'Retenue refusée.', type: TypeToast.erreur, detail: refusBareme, duree: const Duration(seconds: 9));
+                    return;
+                  }
                   final CpdRetenueAib ret;
                   final List<Map<String, Object?>> lignes;
                   try {
@@ -573,6 +591,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                     ret = cpdCalculerRetenueAib(
                         bareme, '${v['situation']}', baseSaisie, date,
                         situations: situations,
+                        baremeChoisi: '${v['bareme']}',
                         baseSource: modifiee ? 'manuelle' : baseCalculee.source,
                         baseMotif: modifiee
                             ? 'Base corrigée à la main à la retenue (proposée : ${money(baseCalculee.base)}). ${baseCalculee.motif}'
@@ -627,6 +646,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                   });
                   c.magasin.journaliser('Retenue d’AIB sur facture fournisseur',
                       'M7', 'FactureFournisseur', '${r['reference']}', null, {
+                    'bareme': ret.bareme,
                     'taux': ret.taux,
                     'base': ret.base,
                     'montant': ret.montant,
@@ -639,7 +659,7 @@ void _retenirAib(BuildContext ctx, ContexteEcran c, Fiche r) {
                       'Retenue de ${money(ret.montant)} constatée (brouillon).',
                       type: TypeToast.succes,
                       detail:
-                          '${ret.taux} % — à reverser à l’État le ${dateFR(cpdEcheanceReversementAib(date))} (compte ${comptes.retenu}).');
+                          '${cpdLibelleBareme(ret.bareme)}, ${ret.taux} % — à reverser à l’État le ${dateFR(cpdEcheanceReversementAib(date))} (compte ${comptes.retenu}).');
                 }),
           ]);
 }

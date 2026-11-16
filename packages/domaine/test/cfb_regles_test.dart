@@ -111,7 +111,7 @@ void main() {
       expect(cfbParamsNotifDefaut, {...obj(c['defautsNotif']), 'volume': 0.8});
       // Le vecteur date de la maquette. Décision de la Direction du 14/11/2026 : les prestataires externes voyagent comme les natures de facture (jeu d'import « direct et demande »),
       // donc de la configuration de la mère, donc essentielles : le vidage les conserve. Seul écart avec le vecteur, nommé ici.
-      expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires']));
+      expect(cfbEssentielles, unorderedEquals([...(c['essentielles'] as List).cast<String>(), 'prestataires', 'confirmationsFiscales']));
       final lib = obj(c['libelles']);
       for (final k in lib.keys) {
         expect(cfbLibelleCollection(k), (obj(lib[k])['module'], obj(lib[k])['entite']), reason: k);
