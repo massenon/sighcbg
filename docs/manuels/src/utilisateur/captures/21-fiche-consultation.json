@@ -1,0 +1,362 @@
+{
+ "nom": "21-fiche-consultation",
+ "ecran": "m2-consultation-fiche",
+ "role": "medecin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Agenda",
+   "rect": [
+    835.3,
+    141.0,
+    107.2,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Rendez-vous & visites",
+   "rect": [
+    950.5,
+    141.0,
+    207.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "RDV, Visites & Consultations",
+   "rect": [
+    1166.1,
+    141.0,
+    249.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Ouvrir les dossiers de consultation",
+   "rect": [
+    45.0,
+    649.0,
+    293.1,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   356.6,
+   36.0
+  ],
+  "barre-actions": [
+   1009.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1112.7,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1262.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1282.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1308.0,
+   0.0,
+   120.0,
+   56.0
+  ],
+  "nom-courant": [
+   1354.0,
+   14.5,
+   52.0,
+   14.0
+  ],
+  "role-courant": [
+   1354.0,
+   28.5,
+   44.7,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.8,
+   36.0
+  ],
+  "domaine-Logistique": [
+   206.2,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   332.4,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   406.4,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   561.1,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   688.3,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   789.3,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   928.6,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m2-consultation-fiche|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   148.1,
+   116.0,
+   173.7,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   227.5,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   251.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   318.0,
+   915.3,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   332.0,
+   875.3,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   367.0,
+   915.3,
+   511.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   387.0,
+   875.3,
+   168.0
+  ],
+  "kit:section": [
+   45.0,
+   387.0,
+   875.3,
+   16.0
+  ],
+  "kit:champ:patientCode": [
+   45.0,
+   419.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:medecin": [
+   45.0,
+   495.0,
+   429.7,
+   60.0
+  ],
+  "kit:champ:date": [
+   490.7,
+   495.0,
+   429.7,
+   60.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    1009.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1112.7,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1262.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1308.0,
+    0.0,
+    120.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}
