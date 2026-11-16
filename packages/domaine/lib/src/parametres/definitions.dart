@@ -354,6 +354,41 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Lot AST-1 (assistant)',
   ),
+  // --- Export des tableaux (Q40, Direction du 15/11/2026) : AUCUNE valeur codée en dur dans l'export ; les trois réglages vivent en base. Les valeurs d'attente sont LARGES
+  // et marquées « à fixer sur la plus grande table réelle » : aucun document ne donne la taille de la plus grande table de la clinique.
+  DefinitionParametre(
+    cle: 'export.limiteLignes',
+    famille: 'export',
+    type: TypeParametre.entier,
+    defaut: 200000,
+    libelle: 'Nombre maximal de lignes par export',
+    aide: 'Au-delà, l\'export est REFUSÉ en le disant (jamais tronqué en silence) : il faut cocher ou filtrer moins de lignes. Entier d\'au moins 1. Valeur d\'attente large : à fixer sur la plus grande table réelle de la clinique.',
+    source: 'Valeur d\'attente (décision Q40 du 15/11/2026) : à fixer sur la plus grande table réelle',
+    branche: true,
+    appliquePar: 'Chantier TABLEAUX (export)',
+  ),
+  DefinitionParametre(
+    cle: 'export.seuilProgression',
+    famille: 'export',
+    type: TypeParametre.entier,
+    defaut: 2000,
+    libelle: 'Seuil d\'affichage du compteur de progression (lignes)',
+    aide: 'À partir de ce nombre de lignes, l\'export se déroule par lots avec un compteur et un bouton Annuler. Entier d\'au moins 1. Valeur d\'attente : à fixer sur la plus grande table réelle.',
+    source: 'Valeur d\'attente (décision Q40 du 15/11/2026) : à fixer sur la plus grande table réelle',
+    branche: true,
+    appliquePar: 'Chantier TABLEAUX (export)',
+  ),
+  DefinitionParametre(
+    cle: 'export.limiteEtatsParLigne',
+    famille: 'export',
+    type: TypeParametre.entier,
+    defaut: 100,
+    libelle: 'Nombre maximal d\'états imprimés d\'un coup (un état par ligne)',
+    aide: 'Quand « Imprimer la sélection » produit un état par ligne cochée, au-delà de ce nombre l\'impression est REFUSÉE en le disant ; le tableau unique n\'est pas concerné. Entier d\'au moins 1. Valeur d\'attente : à fixer à l\'usage.',
+    source: 'Valeur d\'attente (décision Q42 du 15/11/2026) : à fixer à l\'usage',
+    branche: true,
+    appliquePar: 'Chantier TABLEAUX (impression de la sélection)',
+  ),
 ];
 
 /// Le libellé d'une famille de paramètres, pour les onglets de l'écran des paramètres. Une famille absente de la table s'affiche sous son identifiant.
@@ -368,6 +403,7 @@ const Map<String, String> libellesFamillesParametres = {
   'assistant': 'Assistant',
   'stock': 'Stock et péremption',
   'comptabilite': 'Comptabilité et recouvrement',
+  'export': 'Export des tableaux',
 };
 
 /// La définition d'une clé, ou `null`.

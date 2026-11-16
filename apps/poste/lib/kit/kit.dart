@@ -12,6 +12,7 @@ export 'graphiques.dart';
 export 'modale.dart';
 export 'onglets.dart';
 export 'tableau.dart';
+export 'export_tableau.dart';
 export 'ton.dart';
 export 'detail.dart';
 export 'toast.dart';

@@ -888,6 +888,8 @@ class _OngletGestesState extends State<_OngletGestes> {
             const SizedBox(height: 12),
             for (final g in gestesReserves)
               Builder(builder: (ctx) {
+                // Un geste transverse (export) sans décision suit la lecture de chaque écran : ni « accordé » ni « refusé » en bloc.
+                final suit = g.suitEcran && droits.decision(role.id, g.id) == null;
                 final accorde = droits.peut(role.id, g.id);
                 final decide = droits.origine(role.id, g.id) == 'decide';
                 return Container(
@@ -901,18 +903,18 @@ class _OngletGestesState extends State<_OngletGestes> {
                             Text(g.libelle, style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
                             Text(g.aide, style: const TextStyle(color: JetonsShell.slate500, fontSize: 12, height: 16 / 12)),
                             Text(
-                                '${decide ? 'Décision de la clinique.' : 'Origine : ${g.rolesDefaut.isEmpty ? 'aucun rôle' : g.rolesDefaut.map(x.libelle).join(', ')}.'} Écran du geste : ${g.ecran}.',
+                                '${decide ? 'Décision de la clinique.' : (g.suitEcran ? 'Origine : les rôles qui lisent l’écran.' : 'Origine : ${g.rolesDefaut.isEmpty ? 'aucun rôle' : g.rolesDefaut.map(x.libelle).join(', ')}.')} ${g.suitEcran ? 'Tous les écrans.' : 'Écran du geste : ${g.ecran}.'}',
                                 style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
                           ])),
-                      BadgeSigh(accorde ? 'Accordé' : 'Non accordé', key: Key('m14:gestes:etat:${g.id}'), ton: accorde ? TonSigh.succes : TonSigh.neutre),
+                      BadgeSigh(suit ? 'Suit l’écran' : (accorde ? 'Accordé' : 'Non accordé'), key: Key('m14:gestes:etat:${g.id}'), ton: suit ? TonSigh.info : (accorde ? TonSigh.succes : TonSigh.neutre)),
                       if (modifiable) ...[
                         BoutonSigh(
-                            libelle: accorde ? 'Retirer' : 'Accorder',
+                            libelle: accorde || suit ? 'Retirer' : 'Accorder',
                             key: Key('m14:gestes:basculer:${g.id}'),
-                            icone: accorde ? LucideIcons.ban : LucideIcons.stamp,
+                            icone: accorde || suit ? LucideIcons.ban : LucideIcons.stamp,
                             taille: TailleBouton.sm,
                             variante: VarianteBouton.secondaire,
-                            onPressed: () => _decider(ctx, role, g, !accorde)),
+                            onPressed: () => _decider(ctx, role, g, suit ? false : !accorde)),
                         if (decide)
                           BoutonSigh(
                               libelle: 'Revenir à l’origine',

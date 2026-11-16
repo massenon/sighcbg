@@ -133,6 +133,8 @@ class _EtatTransferts extends State<EcranTransferts> {
       indiceVide: 'Un transfert déplace une quantité du magasin central vers la pharmacie de détail.',
       filtres: [filtreDestination],
       alClicLigne: (t) => _detail(ctx, t),
+      // Le bon de transfert existe déjà comme document : « Imprimer la sélection » propose un état par bon.
+      documentLigne: (c2, t) => _pieceBon(c2, t),
       actions: [
         BoutonSigh(
             libelle: 'Imprimer le registre détaillé',
