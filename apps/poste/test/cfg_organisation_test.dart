@@ -152,9 +152,11 @@ void main() {
       final attendu = [for (final x in RegExp(r'M\d+|MECEF|MERE|RLS|GED|RAP|PIL|DASH|CFG|IMP|SUP|AUTH').allMatches('${l[4]}')) x.group(0)!];
       // Troisième ouverture, du 09/11/2026 : les validations de l'AIB (module CFG) s'ouvrent en écriture au comptable et en lecture à l'aide-comptable, à l'assistant de
       // direction et au directeur médical : la rangée CFG qu'elles ajoutent est retirée de même, seulement quand le droit qui l'explique est celui de la matrice.
-      if (!attendu.contains('CFG') &&
-          reel.contains('CFG') &&
-          (donneesNav.matrice.droit(role, 'cfg-imagerie-catalogue').voir || donneesNav.matrice.droit(role, 'cfg-validations-aib').voir)) {
+      // Le comptable reçoit à la fois les validations de l'AIB et « Tarifs et prix », rangés sous deux rangées CFG : on retire TOUTES celles que le vecteur ne portait pas.
+      while (reel.where((x) => x == 'CFG').length > attendu.where((x) => x == 'CFG').length &&
+          (donneesNav.matrice.droit(role, 'cfg-imagerie-catalogue').voir || donneesNav.matrice.droit(role, 'cfg-validations-aib').voir ||
+              // Cinquième ouverture, du 16/11/2026 : « Tarifs et prix » en LECTURE au biologiste, au technicien d'échographie, au comptable et au responsable radiologie.
+              donneesNav.matrice.droit(role, 'cfg-tarifs').voir)) {
         reel.remove('CFG');
       }
       if (reel.where((x) => x == 'M13').length > attendu.where((x) => x == 'M13').length && donneesNav.matrice.droit(role, 'adm-validations').voir) {
@@ -164,6 +166,19 @@ void main() {
       // ajoutent est retirée de même, seulement quand le droit qui l'explique est celui de la matrice et que le vecteur n'en portait pas.
       if (reel.where((x) => x == 'M10').length > attendu.where((x) => x == 'M10').length && donneesNav.matrice.droit(role, 'm10-mes').voir) {
         reel.remove('M10');
+      }
+      // Cinquième ouverture, du 16/11/2026 (lecture seule) : planning (M10), plan des lits et statistiques d'hospitalisation (M3), stock et ventes (M6), statistiques des
+      // consultations (M2). La rangée qu'elle ajoute est retirée de même, seulement quand c'est la matrice qui l'ouvre au rôle et que le vecteur n'en portait pas.
+      const ouverts1611 = {
+        'M10': ['m10-planning'],
+        'M3': ['m3-plan-lits', 'm3-stats-hospitalisations'],
+        'M6': ['m6-stock-detail', 'm6-lots', 'm6-point-ventes'],
+        'M2': ['m2-stats-consultations'],
+      };
+      for (final e in ouverts1611.entries) {
+        while (reel.where((x) => x == e.key).length > attendu.where((x) => x == e.key).length && e.value.any((ec) => donneesNav.matrice.droit(role, ec).voir)) {
+          reel.remove(e.key);
+        }
       }
       // Les rangées d'un module se rangent par domaine : l'ajout du centre des validations change la place de M13, non le compte. On compare donc les comptes.
       expect((reel..sort()).join(), (attendu..sort()).join(), reason: '${l[0]} ($role)');

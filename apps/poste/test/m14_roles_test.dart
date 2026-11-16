@@ -189,7 +189,8 @@ void main() {
     expect(find.text('Droits par écran enregistrés.'), findsOneWidget);
     // Le centre des validations s'ouvre au biologiste (maquette du 07/11/2026, postérieure au vecteur) : un écran réglé de plus, ouvert.
     // L'historique des lots d'importation (11/11/2026) en ajoute un autre : `imp-accueil` sans le droit d'annuler (l'auteur lit ses lots, qui arbitre lit tous les lots).
-    final detail = '${(((c['toasts'] as List).first) as Map)['detail']}'.replaceFirst('14 écran(s) réglé(s)', '16 écran(s) réglé(s)');
+    final detail = '${(((c['toasts'] as List).first) as Map)['detail']}'.replaceFirst('14 écran(s) réglé(s)', '18 écran(s) réglé(s)');
+    // Ouverture du 16/11/2026 : « Tarifs et prix » et sa page de renvoi en lecture au biologiste — deux écrans réglés de plus.
     expect(find.text(detail), findsOneWidget);
     sem.dispose();
   });

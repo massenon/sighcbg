@@ -51,6 +51,10 @@
   "lectures": 4,
   "ecritures": 0
  },
+ "domaine/lib/src/stock/delivrance_lignes.dart": {
+  "lectures": 1,
+  "ecritures": 0
+ },
  "domaine/lib/src/stock/emplacements.dart": {
   "lectures": 1,
   "ecritures": 0

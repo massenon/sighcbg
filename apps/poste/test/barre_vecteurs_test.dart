@@ -95,6 +95,16 @@ void main() {
               ]
             }
         ];
+        // Ouvertures en lecture du 16/11/2026, postérieures au vecteur : un résultat qui mène à un écran ouvert ce jour-là au rôle, et que le vecteur ne portait pas,
+        // est retiré AVANT la comparaison — seulement quand c'est bien la matrice qui l'ouvre au rôle.
+        final attenduJson = jsonEncode(q.value);
+        for (final g in obtenu) {
+          (g['resultats'] as List).removeWhere((x) {
+            final e = '${(x as Map)['ecran']}';
+            return _ouverts1611.contains(e) && donnees.matrice.droit(r.key, e).voir && !attenduJson.contains('"ecran":"$e"');
+          });
+        }
+        obtenu.removeWhere((g) => (g['resultats'] as List).isEmpty && !attenduJson.contains('"groupe":"${g['groupe']}"'));
         expect(jsonDecode(jsonEncode(obtenu)), jsonDecode(jsonEncode(q.value)), reason: 'recherche « ${q.key} » sous ${r.key}');
         requetes++;
         resultats += obtenu.fold<int>(0, (a, g) => a + (g['resultats'] as List).length);
@@ -108,3 +118,6 @@ void main() {
     expect(rechercheGlobale(requete: 'p', role: 'admin', nav: donnees, magasin: magasinDeLaSonde()), isEmpty);
   });
 }
+
+/// Écrans ouverts en LECTURE par la décision du 16/11/2026 (planning, tarifs, stock, plan des lits, activité et ventes).
+const _ouverts1611 = {'m10-planning', 'cfg-tarifs', 'cfg-catalogue', 'm6-stock-detail', 'm6-lots', 'm3-plan-lits', 'm2-stats-consultations', 'm3-stats-hospitalisations', 'm6-point-ventes'};
