@@ -2,7 +2,8 @@
 /// Rejoué sur `test/vecteurs/pat_profil.json`.
 library;
 
-import '../imagerie/img_demandes_poste.dart' show rolesExecutantsImagerie;
+import '../imagerie/img_demandes_poste.dart' show imgExecutantImagerie;
+import '../droits/gestes_reserves.dart' show DroitsGestes;
 import '../labo/res_habilitations.dart' show SessionLabo, capacites, libelleSecteur;
 import 'pat_patients.dart';
 
@@ -102,8 +103,9 @@ const patCategoriesAntecedent = [
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 /// `porteeImagerie()` : `tous` · `secteur` · `aucun`. Le poste d'imagerie PRODUIT les comptes rendus : il les lit tous.
-String patPorteeImagerie(SessionLabo session) {
-  if (rolesExecutantsImagerie.contains(session.role)) return 'tous';
+/// [gestes] : les gestes réservés en force (`imagerie_executer`) ; absent, l'origine.
+String patPorteeImagerie(SessionLabo session, {DroitsGestes? gestes}) {
+  if (imgExecutantImagerie(session.role, gestes: gestes)) return 'tous';
   switch (capacites(session).fonction) {
     case 'medecin':
     case 'chirurgien':
@@ -116,13 +118,13 @@ String patPorteeImagerie(SessionLabo session) {
 }
 
 /// `peutLireCR(dem, cr)` : (autorisé, motif). Seul un compte rendu RENDU au prescripteur se lit ; le contenu obéit aux droits du profil.
-({bool ok, String? motif}) patPeutLireCR(FichePat? dem, FichePat? cr, SessionLabo session) {
-  final portee = patPorteeImagerie(session);
+({bool ok, String? motif}) patPeutLireCR(FichePat? dem, FichePat? cr, SessionLabo session, {DroitsGestes? gestes}) {
+  final portee = patPorteeImagerie(session, gestes: gestes);
   if (portee == 'aucun') {
     return (ok: false, motif: 'Votre profil ne lit pas les comptes rendus d’imagerie (RG-13).');
   }
   final rendu = (cr != null && cr['statut'] == 'rendu') || (dem != null && dem['statut'] == 'validee');
-  if (!rendu && !rolesExecutantsImagerie.contains(session.role)) {
+  if (!rendu && !imgExecutantImagerie(session.role, gestes: gestes)) {
     return (ok: false, motif: 'Compte rendu non encore rendu au prescripteur — l’imagerie le relit.');
   }
   if (portee == 'secteur') {

@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:cryptography/cryptography.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../donnees/gestes_magasin.dart';
 import '../donnees/magasin.dart';
 
 /// AUTHENTIFICATION LOCALE DU POSTE (A5, décision de la Direction du 31/10/2026).
@@ -310,7 +311,8 @@ extension SecoursAdministrateur on ServiceIdentifiants {
     bool acteurSuper = false,
     bool cibleSuper = false,
   }) async {
-    final refus = accRefusReinitialisation(acteurRole: acteurRole, acteurId: acteurId, cibleId: cibleId, acteurSuper: acteurSuper, cibleSuper: cibleSuper);
+    final refus = accRefusReinitialisation(
+        acteurRole: acteurRole, acteurId: acteurId, cibleId: cibleId, acteurSuper: acteurSuper, cibleSuper: cibleSuper, gestes: gestesDuMagasin(_magasin));
     if (refus != null) return ResultatReinit.refus(refus);
     final compte = _magasin.collection('utilisateurs').parId(cibleId);
     if (compte == null || '${compte['statut'] ?? 'actif'}' != 'actif') {

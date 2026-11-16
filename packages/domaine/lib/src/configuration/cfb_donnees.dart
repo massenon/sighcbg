@@ -229,6 +229,8 @@ const cfbEssentielles = <String>[
   'situationsAib',
   'baremeAib',
   'parametresAib',
+  // Les confirmations des taux fiscaux (CNSS, barème de l'AIB), compléments du 16/11/2026 : du paramétrage, diffusé par la mère, conservé au vidage du jeu.
+  'confirmationsFiscales',
   'fichesDocumentaires',
   'examensLabo',
   'unitesLabo',
@@ -273,6 +275,7 @@ const cfbLibellesCollections = <String, (String, String)>{
   'parametresAib': ('CFG', 'Paramètres de l’AIB (base, branchement IFU, validations)'),
   'fichesDocumentaires': ('CFG', 'Fiches documentaires (cartouche et grille de l’organigramme)'),
   'situationsAib': ('M12', 'Situations de l’acheteur (AIB)'),
+  'confirmationsFiscales': ('CFG', 'Confirmations des taux fiscaux (CNSS, barème de l’AIB)'),
   'baremeNS131': ('M10', 'Barème d’évaluation NS 131'),
   'besoins': ('M7', 'Bons de besoins'),
   'budgets': ('M12', 'Budgets'),

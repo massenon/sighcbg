@@ -7,6 +7,7 @@ import '../../donnees/magasin.dart';
 import '../../donnees/planning_rh_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 
 /// Les briques communes des cinq écrans du planning individuel, du circuit de validation et des propositions (lots L4 à L6, Direction, 09/11/2026) : la
 /// carte des réglages, le badge et les commandes de validation, les refus nommés. Les RÈGLES sont celles du domaine (`planning_rh.dart`), assemblées au
@@ -103,7 +104,7 @@ class RhbCarteReglages extends StatelessWidget {
         listenable: c.magasin.collection(parCollectionParametres),
         builder: (ctx, _) {
           final p = rhbPlanningPoste(c);
-          final peut = c.role == 'admin' || c.role == 'da';
+          final peut = gestePeutEcran(c, gesteRhRegler);
           return CarteSigh(
               titre: 'Réglages du planning et des présences',
               actions: [

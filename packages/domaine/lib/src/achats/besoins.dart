@@ -16,7 +16,7 @@
 library;
 
 import '../format/format_fr.dart';
-import '../droits/gestes_reserves.dart' show DroitsGestes, gesteValiderAchats;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteAchatsRegistre, gesteValiderAchats;
 import 'nombres.dart';
 
 /// Un refus NOMMÉ : le motif est le texte affiché à l'agent, rien n'a été écrit.
@@ -83,26 +83,20 @@ const categoriesBesoin = [
 ];
 
 
-/// Qui voit les besoins validés et le registre complet (achat et logistique).
-const rolesAchat = {
-  'comptable',
-  'stock',
-  'da',
-  'direction',
-  'admin',
-  'aide_comptable'
-};
+/// Qui voit les besoins validés et le registre complet (achat et logistique) D'ORIGINE : DÉRIVÉ du geste réservé `achats_registre` (affichage) ; la décision ([estAchat])
+/// lit la matrice en force.
+Set<String> get rolesAchat => {...?gesteReserve(gesteAchatsRegistre)?.rolesDefaut};
 
 /// Qui arbitre (valider, rejeter, demander un complément) et valide une commande (RG-04) : le GESTE RÉSERVÉ `achats_valider` de la fiche RBAC (Direction de Baguidi du 16/11/2026, qui remplace
 /// le réglage `achats.rolesValidateurs` de la v20). Origine : la Directrice Administrative seule ; la Direction l'étend ou le retire par rôle, décision tracée. Aucune liste de rôles ici :
 /// l'appelant passe la MATRICE en force ([gestes], `DroitsGestes` lu des fiches `rbac`, rôle archivé et module fermé compris).
 bool estArbitre(String role, DroitsGestes gestes) => gestes.peut(role, gesteValiderAchats);
-bool estAchat(String role) => rolesAchat.contains(role);
+bool estAchat(String role, {DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteAchatsRegistre);
 
 /// Le formulaire s'adapte à qui l'ouvre : seul celui qui tient le circuit (droit d'écrire ET poste d'achat) choisit l'étape. Un agent qui exprime un
 /// besoin ne se place pas lui-même en « validation DA ».
-bool pilotageCircuit({required String role, required bool droitEditer}) =>
-    droitEditer && estAchat(role);
+bool pilotageCircuit({required String role, required bool droitEditer, DroitsGestes? gestes}) =>
+    droitEditer && estAchat(role, gestes: gestes);
 
 /// L'étape proposée à l'ouverture du formulaire de création.
 String etapeParDefaut({required bool pilote}) => pilote ? 'brouillon' : 'soumis';
@@ -140,8 +134,8 @@ int bonsLivres(Iterable<_Bon> actifs) =>
 List<String> vuesOffertes({required String role, required bool droitVoir, required DroitsGestes gestes}) => [
       'miennes',
       if (estArbitre(role, gestes)) 'arbitrage',
-      if (estAchat(role)) 'achats',
-      if (droitVoir && estAchat(role)) 'tous',
+      if (estAchat(role, gestes: gestes)) 'achats',
+      if (droitVoir && estAchat(role, gestes: gestes)) 'tous',
     ];
 
 /// Étapes du ruban du circuit avec leur compte.

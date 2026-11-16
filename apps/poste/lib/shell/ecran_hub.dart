@@ -7,6 +7,7 @@ import '../core/icones.dart';
 import '../core/jetons_shell.dart';
 import '../kit/kit.dart';
 import 'contexte_ecran.dart';
+import 'gestes_ecran.dart';
 
 /// Les pages d'accueil de module (hubs) du manifeste : `hub-m1`, `hub-m2`, … `hub-rls`. Liste DÉRIVÉE du manifeste par un test (jamais recopiée à la
 /// main sans garde) : ajouter un module crée son hub côté maquette, et `parite_hubs_test.dart` échoue ici tant que le hub n'est pas déclaré.
@@ -100,7 +101,7 @@ class EcranHub extends StatelessWidget with EcranMaquette {
     bool ouvre(String id) => c.ouvre?.call(id) ?? nav.matrice.peutVoir(c.role, id);
     final cartes = cartesDuHub(mod, nav, ouvre);
     final voisins = [
-      for (final d in nav.manifeste.ruban(nav.matrice, c.role, estMere: estMere))
+      for (final d in nav.manifeste.ruban(nav.matrice, c.role, estMere: estMere, gestes: gestesEcran(c)))
         if (d.nom == mod.domaine)
           for (final r in d.rangees)
             if (r.code != mod.code) r,

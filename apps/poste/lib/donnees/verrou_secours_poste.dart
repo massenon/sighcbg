@@ -2,6 +2,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/service_installation.dart';
 import '../core/service_parametres.dart';
+import 'gestes_magasin.dart';
 import 'magasin.dart';
 
 /// Le verrou d'un poste de secours au poste (lot ORG2, Direction, 11/11/2026, décision P3) : la colle entre les fonctions pures de `packages/domaine/lib/src/securite/
@@ -34,12 +35,12 @@ class VerrouSecoursPoste {
   int delaiPoste() => posteDeSecours() ? delaiSecours() : delaiOrdinaire();
 
   /// Ce profil règle-t-il ? (administrateur et Directrice Administrative seuls : la commande est ABSENTE ailleurs.)
-  bool get peutRegler => rolesVerrouSecours.contains(role);
+  bool get peutRegler => gestesDuMagasin(m).peut(role, gesteReglageVerrouSecours);
 
   /// Règle le délai de secours : une NOUVELLE VERSION du paramètre effective aujourd'hui, journalisée avec l'ancienne et la nouvelle valeur (RG-12). Refus nommé du domaine
   /// (réservé, valeur hors bornes).
   Map<String, Object?> definirDelai(Object? minutes, {String? motif}) {
-    final refus = controlerReglageDelaiSecours(role: role, minutes: minutes);
+    final refus = controlerReglageDelaiSecours(role: role, minutes: minutes, gestes: gestesDuMagasin(m));
     if (refus != null) return refus.toJson();
     final avant = delaiSecours();
     final n = minutes is num ? minutes.toInt() : int.parse('$minutes'.trim());
@@ -51,7 +52,7 @@ class VerrouSecoursPoste {
 
   /// Désigne (ou retire la désignation de) CE poste comme poste de secours.
   Future<Map<String, Object?>> definirPoste(bool oui, {String? motif}) async {
-    final refus = controlerDesignationPosteSecours(role: role);
+    final refus = controlerDesignationPosteSecours(role: role, gestes: gestesDuMagasin(m));
     if (refus != null) return refus.toJson();
     final avant = posteDeSecours();
     await ServiceInstallation.de(m).designerPosteDeSecours(oui);

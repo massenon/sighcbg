@@ -7,6 +7,7 @@ import '../../core/jetons_shell.dart';
 import '../../kit/kit.dart';
 import '../../mere/client_mere.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'mrc_commun.dart';
 import 'mrc_sources.dart';
 
@@ -92,7 +93,7 @@ class _EtatMiseEnService extends MrcEtatEcran<EcranMereMiseEnService> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final etats = _etats;
     final p = mrcProgression(etats);
     final lignes = [
@@ -230,7 +231,7 @@ class _EtatMisesAJour extends MrcEtatEcran<EcranMereMisesAJour> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final sm = src.schemaMere();
     final appareils = (_etat?.appareils ?? const <Appareil>[]).where((a) => !a.revoque).toList();
     final lignes = <Map<String, Object?>>[];
@@ -323,7 +324,7 @@ class _EtatImport extends MrcEtatEcran<EcranMereImport> {
 
   @override
   Widget build(BuildContext context) {
-    if (!mrcRolesAdmin.contains(c.role)) return MrcAccesRefuse(role: c.role);
+    if (!gestePeutEcran(c, gesteSystemeAdministrer)) return MrcAccesRefuse(role: c.role);
     final lots = src.lots();
     final importes = lots.where((l) => l['etat'] == 'importé');
     final rejetees = lots.fold<int>(0, (s, l) => s + ((l['rejetees'] as num?)?.toInt() ?? 0));

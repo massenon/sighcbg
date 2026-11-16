@@ -14,6 +14,7 @@
 library;
 
 import 'planning_rh.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteRhRegler;
 
 typedef FicheMes = Map<String, Object?>;
 
@@ -254,6 +255,6 @@ CopiePaie copiePaieAgent({
 }
 
 /// Le réglage de la copie se fait par l'administrateur ou la Directrice Administrative : `null` si permis.
-RefusRh? controlerReglageCopiePaie(String role) => role == 'admin' || role == 'da'
+RefusRh? controlerReglageCopiePaie(String role, {DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteRhRegler)
     ? null
     : const RefusRh('REGLAGE_RESERVE', 'Ce réglage se fait par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.');

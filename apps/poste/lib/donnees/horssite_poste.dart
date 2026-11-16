@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/service_parametres.dart';
+import 'gestes_magasin.dart';
 import 'magasin.dart';
 
 /// Ce que le poste sait demander à la copie hors site de la MÈRE (le service local, routes `/admin/horssite/*`). Une interface : un test la remplace par un double ; un fileul n'en a pas
@@ -116,7 +117,7 @@ class HorsSitePoste extends ChangeNotifier {
     );
   }
 
-  bool peutRegler(String role) => shPeutRegler(role);
+  bool peutRegler(String role) => shPeutRegler(role, gestes: gestesDuMagasin(magasin));
 
   Map<String, Object?> _valeurs(ReglageHorsSite r) => {
         shCleActif: r.actif,

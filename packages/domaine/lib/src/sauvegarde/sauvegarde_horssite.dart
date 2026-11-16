@@ -8,6 +8,8 @@
 // sans nom (RG-14) : la rotation ARCHIVE, la purge est la seule suppression et n'a lieu que quand l'espace manque.
 import 'dart:math' as math;
 
+import '../droits/gestes_reserves.dart';
+
 
 /// Le format du manifeste et du bloc (versionné : un logiciel plus ancien refuse un format qu'il ne connaît pas).
 const int shFormat = 1;
@@ -39,8 +41,9 @@ const int shHeureControleDefaut = 2;
 const int shBlocsControlesDefaut = 10;
 
 /// Les rôles qui règlent la copie hors site : l'administrateur et la Directrice Administrative (comme la destination de la sauvegarde locale des fichiers).
-const List<String> shRolesReglage = ['admin', 'da'];
-bool shPeutRegler(String role) => shRolesReglage.contains(role);
+/// L'ORIGINE du geste réservé `reglage_horssite`, DÉRIVÉE du référentiel (affichage) ; la décision ([shPeutRegler]) lit la matrice en force.
+List<String> get shRolesReglage => gesteReserve(gesteReglageHorsSite)?.rolesDefaut ?? const [];
+bool shPeutRegler(String role, {DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteReglageHorsSite);
 
 const String shCleActif = 'horssite.actif';
 const String shCleDestinationMagasin = 'horssite.destinationMagasin';

@@ -10,6 +10,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'commun_m14.dart';
 import 'crud_m14.dart';
 import 'mot_de_passe.dart';
@@ -238,7 +239,8 @@ class EcranUtilisateurs extends StatelessWidget with EcranMaquette {
             agent: agent,
             utilisateur: acteur(c).nom,
             maintenant: c.aujourdhui,
-            jour: iso(c.aujourdhui));
+            jour: iso(c.aujourdhui),
+            gestes: gestesEcran(c));
       },
       filtres: [
         FiltreTableau(nom: 'role', libelle: 'Rôle', options: optionsRoles),

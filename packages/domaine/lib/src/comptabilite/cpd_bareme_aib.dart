@@ -54,6 +54,44 @@ const List<(String, String)> cpdDeclencheursAib = [
   (cpdDeclencheurChoix, 'Choisie à la main'),
 ];
 
+/// LES DEUX BARÈMES DE L'AIB (Direction de Baguidi, compléments du 16/11/2026, section 7 « Fiscal ») : DEUX barèmes en paramètres de clinique (famille R, versionnés par
+/// date, comme le barème d'origine) — la « retenue sur la facture d'un tiers » (3 % personne physique, 5 % personne morale) et le « barème par situation de l'acheteur »
+/// (1 % IFU actif, 5 % sans IFU actif, 3 % prestation de service). Le barème est une PROPRIÉTÉ DE LA SITUATION (`bareme` d'une fiche de `situationsAib`) : les versions
+/// datées restent celles de `baremeAib`, une par situation. À chaque opération où l'AIB s'applique, le COMPTABLE CHOISIT le barème : aucun défaut silencieux, et la pièce
+/// porte le barème choisi et le taux appliqué.
+const String cpdBaremeRetenueTiers = 'retenue_tiers';
+const String cpdBaremeSituationAcheteur = 'situation_acheteur';
+
+const List<(String, String)> cpdBaremesAib = [
+  (cpdBaremeRetenueTiers, 'Retenue sur la facture d’un tiers'),
+  (cpdBaremeSituationAcheteur, 'Barème par situation de l’acheteur'),
+];
+
+/// Le libellé d'un barème (son code à défaut).
+String cpdLibelleBareme(String? code) => [for (final b in cpdBaremesAib) if (b.$1 == code) b.$2].firstOrNull ?? '${code ?? ''}';
+
+/// Le barème d'une situation : son champ `bareme`. Une situation SANS ce champ (antérieure au 16/11/2026) appartient au barème par situation de l'acheteur, le seul qui
+/// existait alors — elle ne change donc pas de sens.
+String cpdBaremeDeSituation(CpdFiche s) => '${s['bareme'] ?? ''}'.isEmpty ? cpdBaremeSituationAcheteur : '${s['bareme']}';
+
+/// Le refus nommé du CHOIX DU BARÈME d'une opération où l'AIB s'applique, ou `null` : le barème est OBLIGATOIRE (`AIB_BAREME_REQUIS` — aucun défaut silencieux), connu
+/// (`AIB_BAREME_INCONNU`), et la situation choisie lui appartient (`AIB_SITUATION_HORS_BAREME`).
+String? cpdRefusChoixBareme(String? bareme, String? situation, Iterable<CpdFiche> situations) {
+  final b = (bareme ?? '').trim();
+  if (b.isEmpty) {
+    return 'AIB_BAREME_REQUIS : choisir le barème de l’AIB de cette opération (retenue sur la facture d’un tiers, ou barème par situation de l’acheteur) — aucun barème n’est supposé.';
+  }
+  if (!cpdBaremesAib.any((x) => x.$1 == b)) return 'AIB_BAREME_INCONNU : le barème « $b » n’existe pas.';
+  final s = (situation ?? '').trim();
+  if (s.isEmpty) return 'AIB_SITUATION_INCONNUE : la catégorie de la retenue est obligatoire.';
+  final sit = [for (final x in cpdSituationsActives(situations)) if ('${x['code']}' == s) x].firstOrNull;
+  if (sit == null) return 'AIB_SITUATION_INCONNUE : la situation « $s » n’existe pas au barème de l’AIB.';
+  if (cpdBaremeDeSituation(sit) != b) {
+    return 'AIB_SITUATION_HORS_BAREME : « ${sit['libelle'] ?? s} » relève du barème « ${cpdLibelleBareme(cpdBaremeDeSituation(sit))} », pas de « ${cpdLibelleBareme(b)} ».';
+  }
+  return null;
+}
+
 /// Une version est-elle arrêtée ? Le statut est lu sur la fiche (`arrete: true`, ou `statutArret: 'arrete'`).
 bool cpdEstArretee(CpdFiche f) => f['arrete'] == true || '${f['statutArret'] ?? ''}' == cpdStatutArrete;
 
@@ -184,8 +222,10 @@ CpdTauxAib cpdTauxAibALaDate(Iterable<CpdFiche> versions, String situation, Date
 }
 
 /// Le barème tel qu'il s'applique à [date] : une ligne par situation ACTIVE (code, libellé, réponse du moteur).
-List<({String code, String libelle, CpdTauxAib reponse})> cpdBaremeEnVigueur(Iterable<CpdFiche> situations, Iterable<CpdFiche> versions, DateTime date) => [
+/// [bareme] : seulement les situations de ce barème (`cpdBaremesAib`) ; absent, toutes.
+List<({String code, String libelle, CpdTauxAib reponse})> cpdBaremeEnVigueur(Iterable<CpdFiche> situations, Iterable<CpdFiche> versions, DateTime date, {String? bareme}) => [
       for (final s in cpdSituationsActives(situations))
+        if (bareme == null || cpdBaremeDeSituation(s) == bareme)
         (
           code: '${s['code']}',
           libelle: '${s['libelle'] ?? s['code']}',
@@ -222,7 +262,8 @@ CpdSituationAcheteur cpdSituationPourAcheteur(Iterable<CpdFiche> situations,
   } else {
     return CpdSituationAcheteur(refusCode: 'IFU_INVALIDE', refusMotif: 'L\'IFU de l\'acheteur (« $nu ») doit comporter exactement $longueurIfu chiffres.');
   }
-  final actives = cpdSituationsActives(situations);
+  // Le choix D'OFFICE ne lit que le barème par situation de l'acheteur : une catégorie de retenue sur la facture d'un tiers ne se présume jamais d'un IFU.
+  final actives = [for (final s in cpdSituationsActives(situations)) if (cpdBaremeDeSituation(s) == cpdBaremeSituationAcheteur) s];
   final voulue = declencheur == cpdDeclencheurIfuAbsent ? situationAbsente : situationRenseigne;
   var trouvees = [for (final s in actives) if (voulue != null && voulue.isNotEmpty && '${s['code']}' == voulue) s];
   if (trouvees.isEmpty) trouvees = [for (final s in actives) if ('${s['declencheur']}' == declencheur) s];

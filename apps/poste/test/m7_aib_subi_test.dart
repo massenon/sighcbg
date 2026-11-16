@@ -241,6 +241,11 @@ void main() {
       final ret = _avecFacture(date: '2026-11-12', aib: null, parametres: const [_comptesV2]);
       await _ouvrir(t, ret, 'm7-factures-fournisseurs');
       await _toucher(t, find.byTooltip('Retenir l’AIB').first);
+      // Le barème se choisit (compléments du 16/11/2026) : aucune entrée présélectionnée.
+      for (final (champ, cible) in const [('bareme', 'Barème par situation de l’acheteur'), ('situation', 'Barème par situation de l’acheteur — Acheteur sans IFU actif — 5 %')]) {
+        await _toucher(t, find.descendant(of: find.byKey(Key('kit:champ:$champ')), matching: find.byType(InkWell)).first);
+        await _toucher(t, find.text(cible).last);
+      }
       await _toucher(t, find.widgetWithText(BoutonSigh, 'Constater la retenue'));
       final r = _pieceDe(ret);
       expect(r.firstWhere((e) => (e['debit'] as num) > 0)['compte'], '401100');

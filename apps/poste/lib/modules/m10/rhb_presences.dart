@@ -10,6 +10,7 @@ import '../../donnees/planning_rh_poste.dart';
 import '../../impression/apercu.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m13/adm_commun.dart';
 import 'rhb_circuit.dart';
 import 'rhb_commun.dart';
@@ -255,7 +256,7 @@ class _EtatPresences extends State<EcranPresences> {
           ],
           actionsLigne: (ctx, r) => [
                 ...rhbCommandesValidation(ctx, c, 'presences', r),
-                if (etatValidationRh('presences', r) == 'valide' && const ['surveillant', 'da', 'admin'].contains(c.role))
+                if (etatValidationRh('presences', r) == 'valide' && gestePeutEcran(c, gesteRhEncadrer))
                   BoutonIcone(icone: LucideIcons.penLine, libelle: 'Régulariser ce pointage', onPressed: () => _regulariser(ctx, c, p, r)),
                 ...admActionsLigne(ctx, c, col, r, modifier: (x) => _saisir(ctx, c, existante: x)),
               ],

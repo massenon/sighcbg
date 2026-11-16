@@ -7,6 +7,7 @@ import '../../donnees/magasin.dart' show Fiche;
 import '../../core/jetons_shell.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m14/commun_m14.dart' show initiales, libelleRole;
 import 'cfa_commun.dart';
 import 'cfb_commun.dart';
@@ -48,7 +49,7 @@ class _EtatCompte extends State<EcranCompte> {
     ], {
       'telephone': fiche?['telephone'] ?? '',
       'email': fiche?['email'] ?? '',
-      'mfa': fiche != null && fiche.containsKey('mfa') ? cfaVrai(fiche['mfa']) : cfbMfaParDefaut(c.role),
+      'mfa': fiche != null && fiche.containsKey('mfa') ? cfaVrai(fiche['mfa']) : cfbMfaParDefaut(c.role, gestes: gestesEcran(c)),
     });
     _securite = ControleurFormulaire(const [
       ChampDef(nom: 'actuel', libelle: 'Mot de passe actuel', type: TypeChamp.motDePasse, requis: true),

@@ -11,6 +11,7 @@
 library;
 
 import '../rh/planning_rh.dart' show RefusRh;
+import '../droits/gestes_reserves.dart';
 
 /// La clé du paramètre (registre des paramètres du poste).
 const String cleDelaiVerrouSecours = 'securite.delaiVerrouPosteSecours';
@@ -25,8 +26,8 @@ const int delaiVerrouSecoursMax = 120;
 /// Le délai d'un poste ordinaire quand la politique de sécurité ne le fixe pas (CDCT 12.2).
 const int delaiVerrouOrdinaireDefautMin = 15;
 
-/// Les rôles qui règlent le délai et désignent un poste de secours.
-const List<String> rolesVerrouSecours = ['admin', 'da'];
+/// Les rôles qui règlent le délai et désignent un poste de secours D'ORIGINE : DÉRIVÉS du geste réservé `reglage_verrou_secours` (affichage) ; la décision lit la matrice.
+List<String> get rolesVerrouSecours => gesteReserve(gesteReglageVerrouSecours)?.rolesDefaut ?? const [];
 
 double _nombre(Object? v) {
   if (v is num) return v.toDouble();
@@ -58,8 +59,8 @@ int delaiVerrouPosteMinutes({required bool posteDeSecours, required Object? regl
     posteDeSecours ? delaiVerrouSecoursMinutes(reglageSecours) : delaiVerrouOrdinaireMinutes(politiqueInactiviteMin);
 
 /// Le réglage du délai : `null` s'il est permis, sinon le refus nommé (REGLAGE_RESERVE, DELAI_INVALIDE).
-RefusRh? controlerReglageDelaiSecours({required String role, required Object? minutes}) {
-  if (!rolesVerrouSecours.contains(role)) {
+RefusRh? controlerReglageDelaiSecours({required String role, required Object? minutes, DroitsGestes? gestes}) {
+  if (!(gestes ?? gestesOrigine()).peut(role, gesteReglageVerrouSecours)) {
     return const RefusRh('REGLAGE_RESERVE', 'Ce réglage se fait par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.');
   }
   final m = _nombre(minutes);
@@ -70,6 +71,6 @@ RefusRh? controlerReglageDelaiSecours({required String role, required Object? mi
 }
 
 /// La désignation de CE poste comme poste de secours : `null` si permise, sinon le refus nommé.
-RefusRh? controlerDesignationPosteSecours({required String role}) => rolesVerrouSecours.contains(role)
+RefusRh? controlerDesignationPosteSecours({required String role, DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteReglageVerrouSecours)
     ? null
     : const RefusRh('REGLAGE_RESERVE', 'Cette désignation se fait par l’administrateur ou la Directrice Administrative.', 'Demander à la Directrice Administrative.');

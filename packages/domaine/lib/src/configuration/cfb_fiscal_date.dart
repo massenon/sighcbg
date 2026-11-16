@@ -12,6 +12,7 @@
 library;
 
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice;
+import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteFiscalValiderConfiguration;
 import '../comptabilite/cpd_bareme_aib.dart' show cpdStatutArrete, cpdStatutNonArrete;
 import '../format/format_fr.dart' show dateFR, nombre;
 import '../format/js.dart' show arrondiJs, nombreOuZero;
@@ -38,8 +39,9 @@ class CfbRefus {
   String toString() => '$code : $motif';
 }
 
-/// Les rôles qui VALIDENT la configuration fiscale (`ROLES_VALIDATION` de parcours.js) : la Direction, la DAF, l'administrateur système.
-const List<String> cfbRolesValidation = ['direction', 'da', 'admin'];
+/// Les rôles qui VALIDENT la configuration fiscale D'ORIGINE (`ROLES_VALIDATION` de parcours.js) : l'ORIGINE du geste réservé `fiscal_valider_configuration`, DÉRIVÉE du référentiel
+/// (affichage et vecteurs). La décision passe par [cfbControleValidation] et la matrice en force, jamais par cette liste.
+List<String> get cfbRolesValidation => gesteReserve(gesteFiscalValiderConfiguration)?.rolesDefaut ?? const [];
 
 /// `FILEUL_LECTURE_SEULE` : un fileul ne modifie jamais la configuration de la clinique (famille R, publiée par la mère seule).
 CfbRefus? cfbControleFileul(bool fileul) => fileul
@@ -48,10 +50,11 @@ CfbRefus? cfbControleFileul(bool fileul) => fileul
     : null;
 
 /// `VALIDATION_RESERVEE` : qui peut valider. Le contrôle est REFAIT ici même si l'écran a masqué la commande (défense en profondeur).
-CfbRefus? cfbControleValidation({required String? role, bool fileul = false, String Function(String?)? libelleRole}) {
+/// [gestes] : les gestes réservés en force ; absent, l'origine.
+CfbRefus? cfbControleValidation({required String? role, bool fileul = false, String Function(String?)? libelleRole, DroitsGestes? gestes}) {
   final f = cfbControleFileul(fileul);
   if (f != null) return f;
-  if (role == null || !cfbRolesValidation.contains(role)) {
+  if (role == null || !(gestes ?? gestesOrigine()).peut(role, gesteFiscalValiderConfiguration)) {
     final lib = libelleRole != null ? libelleRole(role) : (role ?? 'aucun');
     return CfbRefus('VALIDATION_RESERVEE',
         'La validation de la configuration fiscale est réservée à la Direction, à la DAF et à l’administrateur système. Profil : $lib.',
@@ -313,8 +316,8 @@ class CfbValidation {
 
 /// `PR.validerIdentite()` : la version en force ET les versions à venir reçoivent `valideLe` / `validePar`. Valider ne modifie aucun autre champ.
 CfbValidation cfbValiderIdentite(Iterable<CfaFiche> versions,
-    {required String? role, required String acteur, required DateTime maintenant, required DateTime aujourdhui, bool fileul = false, String Function(String?)? libelleRole}) {
-  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole);
+    {required String? role, required String acteur, required DateTime maintenant, required DateTime aujourdhui, bool fileul = false, String Function(String?)? libelleRole, DroitsGestes? gestes}) {
+  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole, gestes: gestes);
   if (r != null) return CfbValidation.refusee(r);
   final cibles = cfbVersionsIdentiteAValider(versions, aujourdhui);
   if (cibles.isEmpty) {
@@ -330,8 +333,8 @@ CfbValidation cfbValiderIdentite(Iterable<CfaFiche> versions,
 
 /// `PR.validerObligations()` : toutes les fiches ACTIVES de `obligationsFiscales` (obligations et paramètres ORTB) d'un coup.
 CfbValidation cfbValiderObligations(Iterable<CfaFiche> obligations,
-    {required String? role, required String acteur, required DateTime maintenant, bool fileul = false, String Function(String?)? libelleRole}) {
-  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole);
+    {required String? role, required String acteur, required DateTime maintenant, bool fileul = false, String Function(String?)? libelleRole, DroitsGestes? gestes}) {
+  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole, gestes: gestes);
   if (r != null) return CfbValidation.refusee(r);
   final cibles = obligations.where(_actif).toList();
   if (cibles.isEmpty) {
@@ -777,8 +780,9 @@ CfbEcritureObligation cfbArreterObligation(Iterable<CfaFiche> obligations,
     required DateTime maintenant,
     required DateTime aujourdhui,
     bool fileul = false,
-    String Function(String?)? libelleRole}) {
-  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole);
+    String Function(String?)? libelleRole,
+    DroitsGestes? gestes}) {
+  final r = cfbControleValidation(role: role, fileul: fileul, libelleRole: libelleRole, gestes: gestes);
   if (r != null) return CfbEcritureObligation.refusee(r);
   final fiche = _obligationActive(obligations, id: id, code: code);
   if (fiche == null) return const CfbEcritureObligation.refusee(_obligationInconnue);

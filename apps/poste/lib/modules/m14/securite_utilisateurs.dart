@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../auth/acc_registre_sessions.dart';
 import 'commun_m14.dart';
 
@@ -97,7 +98,7 @@ class _EtatSecurite extends State<EcranSecuriteUtilisateurs> {
             'bloque': secEstBloque(u, pol, verrouEnCours: _verrouEnCours(c, '${u['id']}')),
             'echecs': u['echecs'] is num ? (u['echecs'] as num).toInt() : 0,
             'mfa': secVrai(u['mfa']),
-            'mfaExige': secDoubleFacteurExige(role),
+            'mfaExige': secDoubleFacteurExige(role, gestes: gestesEcran(c)),
             'jours': secJoursAvantExpiration(v, pol, c.aujourdhui),
             'reinit': secAReinitialiser(v, pol, c.aujourdhui),
             'imposee': v['doitChangerMotDePasse'] == true,
@@ -262,7 +263,11 @@ class _EtatSecurite extends State<EcranSecuriteUtilisateurs> {
       {
         'cle': 'mfa',
         'libelle': 'Double facteur obligatoire pour les rôles',
-        'valeur': secRolesDoubleFacteur.map((r) => libelleRole(m, r)).join(', '),
+        // Les rôles qui détiennent le geste `securite_double_facteur` dans la matrice EN FORCE (l'origine d'abord, puis les rôles à qui une décision l'accorde).
+        'valeur': gestesEcran(c)
+            .rolesAvec(gesteDoubleFacteurImpose, {...secRolesDoubleFacteur, for (final r in c.donnees?.matrice.rolesBruts ?? const <Map<String, Object?>>[]) '${r['id']}'})
+            .map((r) => libelleRole(m, r))
+            .join(', '),
         'source': 'CDCT §12.2 nomme l’Administrateur et la Direction ; la création de compte l’impose aussi à la DAF et au Directeur Médical',
         'application': 'Appliquée à la création d’un compte (m14-utilisateurs)',
       },

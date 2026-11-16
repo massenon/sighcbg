@@ -49,7 +49,8 @@ List<ChampDef> champsAcheteurNormalise(Magasin m, DateTime date) {
         col: ColChamp.tiers,
         options: [
           const OptionChamp(_automatique, 'Automatique — d’après l’IFU saisi'),
-          for (final b in d.cpdBaremeEnVigueur(situations, versions, date))
+          // La vente normalisée lit le barème PAR SITUATION DE L'ACHETEUR : une catégorie de retenue sur la facture d'un tiers n'y a pas sa place (compléments du 16/11/2026).
+          for (final b in d.cpdBaremeEnVigueur(situations, versions, date, bareme: d.cpdBaremeSituationAcheteur))
             OptionChamp(b.code, '${b.libelle} — ${etat(b.code, b.reponse)}'),
         ]),
   ];

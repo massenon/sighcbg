@@ -7,6 +7,7 @@ import '../../donnees/magasin.dart' show Fiche;
 import '../../donnees/mes_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'rhb_commun.dart';
 import 'rhc_badge_carte.dart';
 import 'rhc_commun.dart';
@@ -155,7 +156,7 @@ class _EtatVerification extends State<EcranBadgesVerification> {
   /// La carte du pointage : l'état du réglage, le délai (valeur d'attente dite telle), et « Régler » pour l'administrateur et la DA seuls.
   Widget _cartePointage(BuildContext context, ContexteEcran c) {
     final p = _pointage(c);
-    final peut = c.role == 'admin' || c.role == 'da';
+    final peut = gestePeutEcran(c, gesteRhRegler);
     final d = p.delai();
     return CarteSigh(
         titre: 'Pointage par badge',
@@ -208,7 +209,7 @@ class _EtatVerification extends State<EcranBadgesVerification> {
 
   Widget _corps(BuildContext context, ContexteEcran c) {
     final retires = trierPar([for (final b in rhbActives(c, 'badges')) if (!rhcEtatBadge(b['etat']).actif) b], (b) => b['retireLe']).reversed.take(10).toList();
-    final peutPointer = rolesPointageBadge.contains(c.role) && _pointage(c).actif();
+    final peutPointer = gestePeutEcran(c, gesteRhPointerBadge) && _pointage(c).actif();
     return rhbEspace([
       _cartePointage(context, c),
       CarteSigh(

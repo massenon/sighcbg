@@ -17,6 +17,7 @@
 import 'dart:convert';
 
 import '../configuration/cfb_donnees.dart' show cfbEssentielles;
+import '../droits/gestes_reserves.dart';
 
 /// Lit TOUTES les fiches d'une collection (archivées comprises) : le moteur ignore lui-même les archivées.
 typedef LectureValidation = List<Map<String, Object?>> Function(String collection);
@@ -24,8 +25,12 @@ typedef LectureValidation = List<Map<String, Object?>> Function(String collectio
 /// La collection qui porte les validations des artefacts du code (une fiche par cible).
 const String valCollectionValidations = 'validationsReferentiels';
 
-/// Les profils qui voient TOUTES les familles au centre des validations ; les autres voient leur ressort.
-const List<String> valVueComplete = ['direction', 'da', 'admin'];
+/// Les profils qui voient TOUTES les familles au centre des validations, D'ORIGINE (les autres voient leur ressort) : DÉRIVÉS du geste réservé `validations_vue_complete`
+/// (affichage) ; la décision lit la matrice en force ([valReferentielsVisiblesPar]).
+List<String> get valVueComplete => gesteReserve(gesteValidationsVueComplete)?.rolesDefaut ?? const [];
+
+/// Le profil détient-il le geste de validation de la famille [f] ? Matrice en force ([g]) ; absente, l'origine (la liste d'avant).
+bool _valide(FamilleValidation f, String role, DroitsGestes? g) => (g ?? gestesOrigine()).peut(role, f.geste);
 
 /// Une cible d'une famille de forme « fiche » : un artefact du code qui ne peut pas porter son propre marquage.
 class CibleValidation {
@@ -40,7 +45,7 @@ class FamilleValidation {
     required this.id,
     required this.libelle,
     required this.module,
-    required this.roles,
+    required this.geste,
     required this.ecran,
     this.collections = const [],
     this.champs = const [],
@@ -59,7 +64,12 @@ class FamilleValidation {
 
   /// Artefacts du code (forme 2) ; vide pour la forme « fiche marquée ».
   final List<CibleValidation> cibles;
-  final List<String> roles;
+
+  /// Le GESTE RÉSERVÉ qui valide la famille (`valider_ref_*`) : la décision vient de la matrice en force, jamais d'une liste de rôles.
+  final String geste;
+
+  /// Les rôles d'ORIGINE du geste (affichage du profil, vecteurs) : DÉRIVÉS du référentiel des gestes, jamais recopiés.
+  List<String> get roles => gesteReserve(geste)?.rolesDefaut ?? const [];
   final String ecran;
 
   /// Les champs CHIFFRÉS (bornes, tarifs, barème) : les corriger exige un motif quand c'est le profil de la famille qui enregistre (lot L1, Q4).
@@ -77,7 +87,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'M13',
       collections: ['enquetes'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'adm-enquetes'),
   FamilleValidation(
       id: 'labo_variables',
@@ -85,7 +95,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'M5',
       collections: ['variablesLabo', 'unitesLabo'],
       champs: ['aValider'],
-      roles: ['laborantin'],
+      geste: gesteValiderRefLabo,
       ecran: 'm5-valeurs-reference',
       champsChiffres: ['min', 'max']),
   FamilleValidation(
@@ -94,7 +104,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'M2',
       collections: ['pathologies'],
       champs: ['aValider'],
-      roles: ['dm', 'medecin'],
+      geste: gesteValiderRefPathologies,
       ecran: 'm2-pathologies'),
   FamilleValidation(
       id: 'imagerie',
@@ -102,14 +112,14 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['examensImagerie', 'variablesImagerie'],
       champs: ['aValider'],
-      roles: ['echographiste', 'responsable_radiologie', 'dm'],
+      geste: gesteValiderRefImagerie,
       ecran: 'cfg-imagerie-catalogue'),
   FamilleValidation(
       id: 'checklists_bloc',
       libelle: 'Check-listes du bloc, échelles ASA et Mallampati',
       module: 'M3',
       cibles: [CibleValidation('checklist-bloc', 'Check-listes d’entrée et de sortie du bloc')],
-      roles: ['chirurgien', 'anesthesiste'],
+      geste: gesteValiderRefBloc,
       ecran: 'm3-bloc-checklist'),
   FamilleValidation(
       id: 'actes',
@@ -117,7 +127,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['actes'],
       champs: ['tarifProvisoire'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'cfg-tarifs',
       champsChiffres: ['prix']),
   FamilleValidation(
@@ -126,7 +136,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['analyses'],
       champs: ['tarifProvisoire', 'aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'cfg-tarifs',
       champsChiffres: ['prix']),
   FamilleValidation(
@@ -135,7 +145,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'M6',
       collections: ['valorisationsSage'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'm6-produits',
       champsChiffres: ['prixRevient']),
   FamilleValidation(
@@ -144,7 +154,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'M12',
       collections: ['objectifsPilotage'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'm12-tableau-decisionnel',
       champsChiffres: ['cible']),
   FamilleValidation(
@@ -152,7 +162,7 @@ const List<FamilleValidation> valFamilles = [
       libelle: 'Répartition fixe et variable des charges',
       module: 'M12',
       cibles: [CibleValidation('repartition-fixe-variable', 'Répartition proposée des comptes de charge')],
-      roles: ['comptable', 'direction', 'da', 'admin'],
+      geste: gesteValiderRefRepartition,
       ecran: 'm12-seuil-rentabilite'),
   FamilleValidation(
       id: 'modeles_badge',
@@ -160,14 +170,14 @@ const List<FamilleValidation> valFamilles = [
       module: 'M10',
       collections: ['modelesBadge'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'm10-badges-modeles'),
   FamilleValidation(
       id: 'jeux_import',
       libelle: 'Jeux d’import en proposition',
       module: 'IMP',
       cibles: [CibleValidation('imp-analyses', 'Importation du catalogue des analyses')],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'imp-analyses'),
   FamilleValidation(
       id: 'modeles_messages',
@@ -175,7 +185,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['modelesMessage'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'cfg-notifications'),
   FamilleValidation(
       id: 'bareme_aib',
@@ -183,7 +193,7 @@ const List<FamilleValidation> valFamilles = [
       module: 'CFG',
       collections: ['baremeAib'],
       champs: ['aValider'],
-      roles: ['direction', 'da', 'admin', 'comptable'],
+      geste: gesteValiderRefBaremeAib,
       ecran: 'cfg-bareme-aib',
       champsChiffres: ['taux']),
   FamilleValidation(
@@ -191,7 +201,7 @@ const List<FamilleValidation> valFamilles = [
       libelle: 'Barème de l’ITS',
       module: 'M11',
       cibles: [CibleValidation('bareme-its', 'Barème de l’impôt sur les traitements et salaires')],
-      roles: ['direction', 'da', 'admin'],
+      geste: gesteValiderRefDirection,
       ecran: 'cfg-comptabilite'),
 ];
 
@@ -447,11 +457,11 @@ List<ArtefactValidation> valArtefactsDe(FamilleValidation f, LectureValidation l
 /// Les familles avec leur compte RÉEL. [role] non nul : seules les familles que ce profil valide (`referentielsAValider({role})`).
 /// [amorcable] dit si une collection vide peut encore être amorcée (`S.amorcable`) : une famille vide et amorçable est « non amorcée ».
 List<CompteFamille> valReferentielsAValider(LectureValidation lire, Map<String, String> libelles,
-    {String? role, bool Function(String collection)? amorcable}) {
+    {String? role, bool Function(String collection)? amorcable, DroitsGestes? gestes}) {
   final peut = amorcable ?? (_) => true;
   return [
     for (final f in valFamilles)
-      if (role == null || role.isEmpty || f.roles.contains(role))
+      if (role == null || role.isEmpty || _valide(f, role, gestes))
         () {
           final arts = valArtefactsDe(f, lire);
           final nonAmorce =
@@ -477,8 +487,9 @@ List<CompteFamille> valReferentielsAValider(LectureValidation lire, Map<String, 
 
 /// Les familles qu'un profil VOIT au centre des validations : la Direction, la DAF et l'administrateur voient tout, les autres leur ressort.
 List<CompteFamille> valReferentielsVisiblesPar(String role, LectureValidation lire, Map<String, String> libelles,
-        {bool Function(String collection)? amorcable}) =>
-    valReferentielsAValider(lire, libelles, role: valVueComplete.contains(role) ? null : role, amorcable: amorcable);
+        {bool Function(String collection)? amorcable, DroitsGestes? gestes}) =>
+    valReferentielsAValider(lire, libelles,
+        role: (gestes ?? gestesOrigine()).peut(role, gesteValidationsVueComplete) ? null : role, amorcable: amorcable, gestes: gestes);
 
 /// `etatValidation` : l'état LU d'un artefact, ou `null` (famille ou élément inconnu).
 EtatValidation? valEtatValidation(String familleId, String id, LectureValidation lire, Map<String, String> libelles) {
@@ -507,7 +518,10 @@ EtatValidation? valEtatValidation(String familleId, String id, LectureValidation
 }
 
 /// Le profil peut-il valider cette famille ? (`K.peutValider` : le rôle de la SESSION est un des rôles de la famille.)
-bool valPeutValider(String familleId, String role) => valFamille(familleId)?.roles.contains(role) ?? false;
+bool valPeutValider(String familleId, String role, {DroitsGestes? gestes}) {
+  final f = valFamille(familleId);
+  return f != null && _valide(f, role, gestes);
+}
 
 // --- Gestes ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -535,6 +549,7 @@ VerdictValidation valValiderReferentiel(
   bool fileul = false,
   String? motif,
   DateTime? appliqueLe,
+  DroitsGestes? gestes,
 }) {
   final f = valFamille(familleId);
   if (f == null) {
@@ -543,7 +558,7 @@ VerdictValidation valValiderReferentiel(
   }
   final gardeMere = _refusFileul(f, fileul);
   if (gardeMere != null) return VerdictValidation.refus(gardeMere);
-  if (!f.roles.contains(role)) {
+  if (!_valide(f, role, gestes)) {
     return VerdictValidation.refus(RefusValidation(
         'VALIDATION_RESERVEE',
         'La validation de « ${f.libelle} » est réservée à : ${valProfilsFamille(f, libelles)}. Profil : ${valLibelleRole(role, libelles)}.',
@@ -737,14 +752,14 @@ List<String> _champsModifies(Map<String, Object?>? avant, Map<String, Object?> v
 
 /// `controlerEnregistrement` : le refus nommé AVANT toute écriture, ou `null`. [fileul] : le poste est un fileul rattaché.
 RefusValidation? valControlerEnregistrement(String familleId,
-    {required String role, List<String> chiffres = const [], String? motif, bool fileul = false}) {
+    {required String role, List<String> chiffres = const [], String? motif, bool fileul = false, DroitsGestes? gestes}) {
   final f = valFamille(familleId);
   if (f == null) {
     return RefusValidation('INTROUVABLE', 'Famille de référentiel inconnue : $familleId.', 'Choisir une famille du registre des validations.');
   }
   final gardeMere = _refusFileul(f, fileul);
   if (gardeMere != null) return gardeMere;
-  if (f.roles.contains(role) && chiffres.isNotEmpty && (motif ?? '').trim().isEmpty) {
+  if (_valide(f, role, gestes) && chiffres.isNotEmpty && (motif ?? '').trim().isEmpty) {
     return RefusValidation(
         'MOTIF_OBLIGATOIRE',
         'La valeur chiffrée « ${chiffres.join(', ')} » de « ${f.libelle} » change : le motif de la correction est obligatoire.',
@@ -787,9 +802,10 @@ VerdictEnregistrement valMarquageEnregistrement(
   required Map<String, Object?> valeurs,
   String? motif,
   bool? modifie,
+  DroitsGestes? gestes,
 }) {
   final f = valFamille(familleId)!;
-  final validateur = f.roles.contains(role);
+  final validateur = _valide(f, role, gestes);
   final enAttenteAvant = avant == null ? null : f.champs.any((c) => avant[c] == true);
   final changes = _champsModifies(avant, valeurs);
   final chiffres = valChiffresModifies(familleId, avant, valeurs);
@@ -876,6 +892,7 @@ VerdictSuivi valSuivreEnregistrement(
   bool? modifie,
   String? motif,
   bool fileul = false,
+  DroitsGestes? gestes,
 }) {
   final f = valFamille(familleId);
   if (f == null) {
@@ -884,11 +901,11 @@ VerdictSuivi valSuivreEnregistrement(
   }
   final gardeMere = _refusFileul(f, fileul);
   if (gardeMere != null) return VerdictSuivi(refus: gardeMere);
-  if (f.roles.contains(role)) {
+  if (_valide(f, role, gestes)) {
     final e = valEtatValidation(familleId, cibleId, lire, libelles);
     if (e != null && e.enAttente) {
       final v = valValiderReferentiel(familleId, cibleId,
-          role: role, acteur: acteur, maintenant: maintenant, lire: lire, libelles: libelles, motif: motif);
+          role: role, acteur: acteur, maintenant: maintenant, lire: lire, libelles: libelles, motif: motif, gestes: gestes);
       return v.ok ? VerdictSuivi(validation: v) : VerdictSuivi(refus: v.refus);
     }
     return const VerdictSuivi();

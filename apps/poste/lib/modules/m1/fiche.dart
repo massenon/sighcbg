@@ -6,6 +6,7 @@ import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../m5/res_commun.dart' show profilLabo;
 import 'commun_m1.dart';
 
@@ -827,7 +828,7 @@ class _FichePatientState extends State<FichePatient> {
       if (lies.contains(cr['id'])) continue;
       lignes.add({'dem': null, 'cr': cr, 'date': cr['date'] ?? cr['_creeLe'], 'examen': cr['examen'], 'code': cr['examenCode']});
     }
-    final masques = lignes.where((l) => l['cr'] != null && !patPeutLireCR(l['dem'] as Fiche?, l['cr'] as Fiche?, session).ok).length;
+    final masques = lignes.where((l) => l['cr'] != null && !patPeutLireCR(l['dem'] as Fiche?, l['cr'] as Fiche?, session, gestes: gestesEcran(c)).ok).length;
     String modalite(Fiche l) {
       const noms = {
         'echographie': 'Échographie',
@@ -868,7 +869,7 @@ class _FichePatientState extends State<FichePatient> {
         ColonneMini('Compte rendu', (l) => '', rendu: (l) {
           final cr = l['cr'] as Fiche?;
           if (cr == null) return const Text('non rédigé', style: TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12));
-          final droit = patPeutLireCR(l['dem'] as Fiche?, cr, session);
+          final droit = patPeutLireCR(l['dem'] as Fiche?, cr, session, gestes: gestesEcran(c));
           if (!droit.ok) {
             return Tooltip(
                 message: droit.motif ?? '',

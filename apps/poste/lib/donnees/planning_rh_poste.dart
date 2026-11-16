@@ -1,6 +1,7 @@
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../core/service_parametres.dart';
+import 'gestes_magasin.dart';
 import 'magasin.dart';
 
 /// Le planning RH au poste (Direction, 09/11/2026, lots L4 à L6) : la colle entre les fonctions pures de `packages/domaine/lib/src/rh/planning_rh.dart`
@@ -16,6 +17,9 @@ class PlanningRhPoste {
   final Magasin m;
   final String Function() auteur;
   final String role;
+
+  /// Les gestes réservés en force (fiches `rbac`), relus à chaque appel.
+  DroitsGestes get _gestes => gestesDuMagasin(m);
   final DateTime Function() _horloge;
 
   String get aujourdhui => parametreDateIso(_horloge());
@@ -81,6 +85,7 @@ class PlanningRhPoste {
     }
     final versions = _versions(employeId);
     final r = validerDerogationRh(
+      gestes: _gestes,
       role: role,
       agentExiste: e != null,
       dateEffet: dateEffet,
@@ -106,6 +111,7 @@ class PlanningRhPoste {
     final rec = col.parId(id);
     final me = moi();
     final r = trancherRh(
+      gestes: _gestes,
       collection: collection,
       rec: rec,
       decision: decision,
@@ -126,7 +132,7 @@ class PlanningRhPoste {
   bool compte(String collection, Fiche rec) => compteRh(collection, rec);
 
   /// Les propositions que le rôle courant peut lire (l'agent : les siennes seulement, RG-13).
-  List<Fiche> propositionsVisibles() => propositionsVisiblesRh(m.collection('propositionsPlanning').actives, role, moi()?['id'] as String?);
+  List<Fiche> propositionsVisibles() => propositionsVisiblesRh(m.collection('propositionsPlanning').actives, role, moi()?['id'] as String?, gestes: _gestes);
 
   RefusRh? _controlerProposition(Fiche p) {
     final personnel = {for (final e in m.collection('personnel').actives) '${e['id']}': e};
@@ -206,7 +212,7 @@ class PlanningRhPoste {
     final col = m.collection('propositionsPlanning');
     final p = col.parId(id);
     final me = moi();
-    final refus = peutTrancherPropositionRh(proposition: p, role: role, decision: decision, motif: motif, moiId: me == null ? null : '${me['id']}');
+    final refus = peutTrancherPropositionRh(gestes: _gestes, proposition: p, role: role, decision: decision, motif: motif, moiId: me == null ? null : '${me['id']}');
     if (refus != null) return refus.toJson();
     if (decision == 'refuser') {
       col.mettreAJour(id, {'etat': 'refusee', 'motifRefus': (motif ?? '').trim(), 'tranchePar': auteur(), 'trancheLe': aujourdhui});
@@ -256,7 +262,7 @@ class PlanningRhPoste {
   /// Règle le circuit de validation : une NOUVELLE VERSION du paramètre `planning.circuitPresences` effective aujourd'hui (registre du lot L0), journalisée avec
   /// l'ancienne et la nouvelle valeur (RG-12). Réservé à l'administrateur et à la DA : le refus est nommé.
   Map<String, Object?> definirCircuit(Object? id, {String? motif}) {
-    final refus = controlerReglageRh(role: role, genre: 'circuit', valeur: id);
+    final refus = controlerReglageRh(gestes: _gestes, role: role, genre: 'circuit', valeur: id);
     if (refus != null) return refus.toJson();
     final avant = circuit();
     final r = service.regler('planning.circuitPresences', id, aujourdhui, motif: motif);
@@ -267,7 +273,7 @@ class PlanningRhPoste {
 
   /// Règle « l'agent modifie directement son planning » (`planning.agentModifieDirectement`) : tout ce qui n'est pas vrai vaut non.
   Map<String, Object?> definirAgentDirect(Object? oui) {
-    final refus = controlerReglageRh(role: role, genre: 'direct', valeur: oui);
+    final refus = controlerReglageRh(gestes: _gestes, role: role, genre: 'direct', valeur: oui);
     if (refus != null) return refus.toJson();
     final avant = agentModifieDirectement();
     final r = service.regler('planning.agentModifieDirectement', oui == true, aujourdhui);
@@ -301,7 +307,7 @@ class PlanningRhPoste {
   /// POSER OU REMPLACER une vacation depuis le poste : DA, surveillant (ou administrateur). Le contrôle de repos et de double affectation est celui du domaine
   /// (une seule règle, quelle que soit la voie) ; la vacation est écrite VALIDÉE (celui qui la pose est celui qui valide), avec le régime sous lequel elle l'est.
   Map<String, Object?> poserVacation({required Object? employeId, required String? date, required String? type, String? observation, Object? existantId}) {
-    final reserve = peutPoserPlanningRh(role);
+    final reserve = peutPoserPlanningRh(role, gestes: _gestes);
     if (reserve != null) return reserve.toJson();
     final ctrl = controlerVacation(employeId, date ?? '', type ?? '', ignoreId: existantId as String?);
     if (ctrl != null) return ctrl.toJson();
@@ -325,7 +331,7 @@ class PlanningRhPoste {
   /// RETIRER une vacation (archivage logique, annulable) : DA, surveillant ou administrateur.
   Map<String, Object?> retirerVacation(Object? id) {
     final plan = m.collection('planning');
-    final refus = controlerRetraitVacationRh(role: role, vacation: plan.parId(id), id: id);
+    final refus = controlerRetraitVacationRh(gestes: _gestes, role: role, vacation: plan.parId(id), id: id);
     if (refus != null) return refus.toJson();
     return {'ok': true, 'id': id, 'annuler': plan.archiver(id)};
   }
@@ -337,6 +343,7 @@ class PlanningRhPoste {
   ({RefusRh? refus, String? etape}) peutTrancher(String collection, Fiche rec) {
     final me = moi();
     return peutTrancherRh(
+        gestes: _gestes,
         nom: collection, rec: rec, role: role, circuit: circuit(), acteur: auteur(), moiId: me == null ? null : '${me['id']}', moiNom: me == null ? null : '${me['nomComplet']}');
   }
 
@@ -344,7 +351,7 @@ class PlanningRhPoste {
   Map<String, Object?> regulariser(Object? id, Map<String, Object?> o) {
     final col = m.collection('presences');
     final me = moi();
-    final r = regulariserPresenceRh(rec: col.parId(id), role: role, acteur: auteur(), aujourdhui: aujourdhui, o: o, moiId: me == null ? null : '${me['id']}');
+    final r = regulariserPresenceRh(gestes: _gestes, rec: col.parId(id), role: role, acteur: auteur(), aujourdhui: aujourdhui, o: o, moiId: me == null ? null : '${me['id']}');
     if (r.refus != null) return r.refus!.toJson();
     final avant = col.parId(id)!;
     final annuler = col.mettreAJour(id, r.patch!, journaliser: false);
@@ -356,7 +363,7 @@ class PlanningRhPoste {
   /// L'AVIS DU CHEF DE SERVICE sur un ordre de mission, consigné par un habilité du circuit.
   Map<String, Object?> avisMission(Object? id, Map<String, Object?> o) {
     final col = m.collection('missions');
-    final r = avisMissionRh(rec: col.parId(id), role: role, acteur: auteur(), aujourdhui: aujourdhui, o: o);
+    final r = avisMissionRh(gestes: _gestes, rec: col.parId(id), role: role, acteur: auteur(), aujourdhui: aujourdhui, o: o);
     if (r.refus != null) return r.refus!.toJson();
     final avant = col.parId(id)!;
     final annuler = col.mettreAJour(id, r.patch!, journaliser: false);

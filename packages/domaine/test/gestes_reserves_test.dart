@@ -30,6 +30,13 @@ void main() {
       gesteReglageEncaissementSansPrix,
       // Pharmacie et caisse séparables (Direction de Baguidi, 16/11/2026) : le routage des alertes et la retransmission MECeF ne sont plus des listes de rôles en dur.
       gesteAlertesCaisse, gesteAlertesStock, gesteAlertesSeuilStock, gesteAlertesPeremption, gesteAlertesMecefRejet, gesteMecefRetransmettre, gesteMecefRetransmettreSansLimite,
+      // Aucune liste de rôles en dur (compléments du 16/11/2026) : une décision métier, un geste.
+      gesteAlertesComptable, gesteAlertesDirection, gesteAlertesImagerie, gesteAlertesLaboratoire, gesteAlertesPrescripteur, gesteAlertesSalleSoins, gesteAlertesHospitalisation,
+      gesteAlertesEcheancesFiscales, gesteAlertesCreances, gesteAlertesBesoinsAValider, gesteAlertesEcrituresBrouillon, gesteAlertesDoublonsSync, gesteConflitsTrancher, gesteSyncValiderFlux,
+      gesteSystemeAdministrer, gesteInstallationConduire, gesteDoubleFacteurImpose, gesteComptesReinitialiser, gesteReglageVerrouSecours, gesteReglageHorsSite,
+      gesteFiscalValiderConfiguration, gesteAibTenir, gesteFiscalConfirmer, gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
+      gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhEncadrer,
+      gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
     ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');

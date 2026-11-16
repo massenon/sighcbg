@@ -4,6 +4,7 @@ import '../format/recherche.dart' show trierPar;
 import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCnssOuvriere, paiCnssPatronale, paiVpsTaux;
 import 'cfa_regles.dart' show CfaKpi, CfaFiche, cfaVrai, cfaTexte;
 import 'cfb_donnees.dart';
+import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteDoubleFacteurImpose;
 
 /// RÈGLES DE CFG (B) — centres de coûts, règles métier versionnées, paramètres fiscaux, paramètres comptables, notifications, mon compte, activité des
 /// modules, paramètres système. Portées de `prototype_html/assets/js/modules/configuration.js` et rejouées sur les vecteurs de la maquette
@@ -296,8 +297,9 @@ String cfbNoteAttente(int n) =>
 // cfg-compte
 // =============================================================================================================================================
 
-/// L'authentification à deux facteurs est cochée d'office pour ces rôles.
-bool cfbMfaParDefaut(String role) => const ['admin', 'direction', 'dm', 'da'].contains(role);
+/// L'authentification à deux facteurs est cochée d'office pour les rôles qui détiennent le geste réservé `securite_double_facteur` (origine : le Directeur Médical, la DAF,
+/// la Direction et l'administrateur). [gestes] : la matrice en force ; absent, l'origine.
+bool cfbMfaParDefaut(String role, {DroitsGestes? gestes}) => (gestes ?? gestesOrigine()).peut(role, gesteDoubleFacteurImpose);
 
 /// Le refus nommé du changement de mot de passe, `null` s'il passe : la confirmation d'abord, puis les douze caractères. Le reste de la politique affichée
 /// (majuscules, minuscules, chiffre, caractère spécial) n'est PAS contrôlé par la maquette — voir E883.

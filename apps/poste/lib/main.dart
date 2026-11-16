@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
+import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
@@ -213,7 +213,10 @@ Future<void> main() async {
   // par la mère ne capturent une matrice au démarrage (une capture serait figée au jour du lancement).
   final navigation = await DonneesNavigation.chargerAssets();
   final matriceVive = MatriceVive(navigation, magasin);
-  configMere.droitsPair = droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler);
+  // Trancher un conflit, valider un flux : des gestes réservés (`conflits_trancher`, `sync_valider_flux`), lus aux fiches `rbac` EN FORCE à chaque opération.
+  bool gestePair(String role, String geste) =>
+      DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: matriceVive.matrice.estArchive, ecranActif: matriceVive.matrice.ecranActif).peut(role, geste);
+  configMere.droitsPair = droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler, peutGeste: gestePair);
   // D2 (Direction, 09/11/2026) : un poste déjà installé reçoit le versement CNSS du 15 (non arrêté) et ses échéances, sans rien écraser.
   if (migrerCnssVers(magasin).aFaitQuelqueChose) await magasin.ecrireMaintenant();
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
@@ -418,7 +421,7 @@ Future<void> main() async {
           relais: cp.relais,
           cleHex: cp.cleHex,
           nom: cp.nom,
-          droits: droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler));
+          droits: droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler, peutGeste: gestePair));
       if (!moteurPair.appaire && cp.code != null) {
         try {
           await moteurPair.appairer(cp.code!);

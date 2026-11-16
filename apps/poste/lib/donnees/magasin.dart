@@ -599,6 +599,7 @@ class Magasin {
     'situationsAib': 'M12',
     'baremeAib': 'M12',
     'parametresAib': 'CFG',
+    'confirmationsFiscales': 'CFG',
     'fichesDocumentaires': 'CFG',
     'comptes': 'M12',
     'banques': 'M12',

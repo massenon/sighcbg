@@ -6,6 +6,7 @@ import '../../donnees/magasin.dart';
 import '../../donnees/planning_rh_poste.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import 'rhb_circuit.dart';
 import 'rhb_commun.dart';
 
@@ -48,7 +49,7 @@ class EcranPropositionsPlanning extends StatelessWidget with EcranMaquette {
   Widget _corps(BuildContext context, ContexteEcran c) {
     final p = rhbPlanningPoste(c);
     final moi = p.moi();
-    final valideur = const ['surveillant', 'da', 'admin'].contains(c.role);
+    final valideur = gestePeutEcran(c, gesteRhEncadrer);
     final rows = trierPar(p.propositionsVisibles(), (x) => '${x['proposeeLe'] ?? ''}', descendant: true);
     int n(String e) => rows.where((x) => x['etat'] == e).length;
     return rhbEspace([

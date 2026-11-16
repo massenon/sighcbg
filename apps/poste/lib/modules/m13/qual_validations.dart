@@ -7,6 +7,7 @@ import '../../donnees/seuils_poste.dart';
 import '../../kit/kit.dart';
 import '../../kit/validation_poste.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart';
 import '../cfg/cfb_configuration_fiscale.dart';
 import '../m2/cr_commun.dart' show dateHeureDe;
 import 'qual_arbitrages.dart';
@@ -33,9 +34,8 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
   String get regle =>
       'Cet écran oriente, il ne valide jamais en masse : la validation est un geste humain, porté à son poste, le biologiste au laboratoire, le comptable au journal, la DA sur le bon, la Direction à l’écran du référentiel. Les comptes de la liste des référentiels sont relus dans le magasin à chaque affichage ; chaque profil n’y voit que les familles de son ressort, et la Direction ne signe jamais à la place d’un professionnel nommé.';
 
-  /// Les sept profils qui ouvraient déjà le centre gardent tout ce qu'ils y voyaient ; le biologiste, l'échographiste et les praticiens du bloc n'y voient
-  /// QUE les familles de référentiels de leur rôle.
-  static const _elargis = ['da', 'admin', 'direction', 'dm', 'comptable', 'surveillant', 'agentadmin'];
+  // Les profils qui ouvraient déjà le centre gardent tout ce qu'ils y voyaient (geste réservé `validations_centre_elargi`, origine : les sept profils d'avant) ; le
+  // biologiste, l'échographiste et les praticiens du bloc n'y voient QUE les familles de référentiels de leur rôle.
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
       // Le compte d'une famille est LU dans le magasin : toute collection qu'elle lit rafraîchit le centre.
       ...valCollectionsLues(),
     ];
-    final restreint = !_elargis.contains(c.role);
+    final restreint = !gestePeutEcran(c, gesteValidationsCentreElargi);
     final vp = ValidationPoste(c);
     return ListenableBuilder(
         listenable: Listenable.merge([for (final n in noms) m.collection(n)]),
@@ -82,7 +82,7 @@ class EcranValidations extends StatelessWidget with EcranMaquette {
               aujourdhui: jourIso(c));
           final aCompleter = qualACompleter(materiel: m.collection('materiel').toutes, ambulancesToutes: m.collection('ambulances').toutes);
           // LES RÉFÉRENTIELS : un compte par famille, relu dans le magasin (moteur de validation commun), jamais un littéral.
-          final familles = valReferentielsVisiblesPar(c.role, vp.lire, vp.libelles);
+          final familles = valReferentielsVisiblesPar(c.role, vp.lire, vp.libelles, gestes: gestesEcran(c));
           final totalFamilles = familles.fold<int>(0, (n, x) => n + (x.enAttente ?? 0));
           final totalGestes = files.fold<int>(0, (n, x) => n + (x.compte ?? 0));
           final cf = ConfigurationFiscalePoste(c);
