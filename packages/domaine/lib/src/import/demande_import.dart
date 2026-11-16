@@ -90,7 +90,7 @@ class RegimeDemandesImport {
   bool exigeLaMere(JeuImport j) => !j.restreint && j.cibles.any(collectionsDeLaMere.contains);
 
   /// Un jeu RESTREINT qui écrit de la configuration ne s'importe qu'au poste de la mère : le fileul le dit au lieu de proposer un envoi.
-  bool reserveALaMere(JeuImport j) => j.restreint && j.cibles.any(collectionsDeLaMere.contains);
+  bool reserveALaMere(JeuImport j) => j.reserveMere || (j.restreint && j.cibles.any(collectionsDeLaMere.contains));
 }
 
 /// Les identifiants d'une demande portent l'étiquette du poste : deux postes ne se rencontrent jamais.

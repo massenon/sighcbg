@@ -53,6 +53,26 @@ void main() {
       final arch = [for (final x in exo) {...x, if (x['annee'] == 2026) 'statut': 'archive'}];
       expect(cpcExercicesAAmorcer(arch, ecr, auj), isEmpty);
     });
+    test('Q29 : l\u2019exercice suivant s\u2019ouvre d\u2019avance à partir du mois réglé (décembre) ; sans réglage, comme avant ; la règle du choix par défaut est inchangée', () {
+      final sans = [for (final x in exo) if (x['annee'] != auj.year + 1) x];
+      expect(cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 11, 30), moisOuvertureSuivant: 12), isEmpty, reason: 'novembre : trop tôt');
+      final dec = cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 12, 1), moisOuvertureSuivant: 12);
+      expect([for (final x in dec) x['annee']], contains(2027));
+      expect([for (final x in dec) if (x['annee'] == 2027) x['etat']].single, 'ouvert');
+      expect(cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 12, 15)).where((x) => x['annee'] == 2027), isEmpty, reason: 'sans réglage : aucune ouverture anticipée (maquette)');
+      expect([for (final x in cpcExercicesAAmorcer(sans, ecr, DateTime(2026, 11, 30), moisOuvertureSuivant: 11)) x['annee']], contains(2027), reason: 'réglable : novembre');
+      final avecSuivant = [...sans, ...dec];
+      expect(cpcExerciceParDefaut(avecSuivant, DateTime(2026, 12, 2)), 2027, reason: 'la règle du choix par défaut ne change pas : l\u2019exercice OUVERT le plus récent');
+      expect(cpcExerciceChoisi(avecSuivant, 2026, DateTime(2026, 12, 2)), 2026, reason: 'l\u2019exercice en cours reste à un clic (choix mémorisé)');
+    });
+    test('Q29 : le réglage vaut décembre par défaut ; un mois hors 1-12 est refusé en le disant et ne se lit jamais', () {
+      expect(cpcMoisOuvertureSuivant(null), 12);
+      expect(cpcMoisOuvertureSuivant('abc'), 12);
+      expect(cpcMoisOuvertureSuivant(13), 12);
+      expect(cpcMoisOuvertureSuivant(11), 11);
+      expect(cpcRefusMoisOuvertureSuivant(0), isNotNull);
+      expect(cpcRefusMoisOuvertureSuivant(12), isNull);
+    });
     test('la liste est du plus récent au plus ancien et ignore les archivés', () {
       final att = liste(v['liste']);
       expect([for (final x in cpcListeExercices(exo)) x['annee']], [for (final x in att) x['annee']]);

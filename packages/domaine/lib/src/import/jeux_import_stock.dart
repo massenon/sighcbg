@@ -116,6 +116,7 @@ final JeuImport jeuProduits = JeuImport(
 final JeuImport jeuStockDetail = JeuImport(
   id: 'stock-detail',
   restreint: true,
+  reserveMere: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-stock-detail',
   libelle: 'Importation du stock détail initial',
@@ -194,6 +195,7 @@ final JeuImport jeuStockDetail = JeuImport(
 final JeuImport jeuTransferts = JeuImport(
   id: 'transferts',
   restreint: true,
+  reserveMere: true,
   octetsMaxDefaut: octetsMaxImportCourt,
   ecran: 'imp-transferts',
   libelle: 'Importation d’un transfert gros → détail',

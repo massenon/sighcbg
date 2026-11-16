@@ -45,7 +45,9 @@ OptionsImport optionsImport(ContexteEcran c, JeuImport j, {bool ignorerExistants
           'RESERVE_A_LA_MERE',
           (j.id == 'tarifs' || j.id == 'tarifs-produits')
               ? 'le référentiel de prix est écrit par la mère seule (famille R) : un fichier de prix ne passe pas par une demande'
-              : 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
+              : j.reserveMere
+                  ? 'le jeu « ${j.libelle} » écrit des mouvements de stock : il est réservé au poste de la mère (un seul stock, RG-03), jamais par une demande'
+                  : 'le jeu « ${j.libelle} » porte des données restreintes que la mère seule écrit : il ne passe pas par une demande',
           (j.id == 'tarifs' || j.id == 'tarifs-produits')
               ? 'Importez ce fichier au poste principal, ou proposez le changement à l’écran « ${j.id == 'tarifs' ? 'Tarifs et prix' : 'Référentiel produits'} » : la demande part à la mère, qui la décide.'
               : 'Importez ce jeu au poste de la mère, par un profil qui en détient le droit.'),
