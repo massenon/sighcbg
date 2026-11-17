@@ -43,6 +43,16 @@ Future<Puits> demarrer({String mode = 'starttls'}) async {
   return Puits(proc, await pret.future.timeout(const Duration(seconds: 20)), messages);
 }
 
+/// E4704 : aucune adresse de personne n'est semée ; les essais d'envoi renseignent l'adresse de l'éditeur (un exemple de test) comme la clinique le ferait, par une version datée.
+void renseignerAdresseEditeur() {
+  const cle = 'support.editeurEmails';
+  final def = definitionDeParametre(cle)!;
+  ListesReference.brancher(() => [
+        {...Parametre(cle: cle, famille: def.famille, type: def.type, valeur: 'editeur@exemple.test', defaut: def.defaut, dateEffet: '2000-01-01', version: 1, auteur: 'Test', motif: 'essai', creeLe: '2000-01-01T00:00:00.000').toJson()}
+      ]);
+  addTearDown(ListesReference.debrancher);
+}
+
 void main() {
   setUpAll(chargerPolices);
   late Directory d;
@@ -232,13 +242,8 @@ void main() {
     expect(find.text('Message enregistré dans le logiciel.'), findsOneWidget);
     expect(find.textContaining('Aucun courriel n’a été envoyé à l’éditeur.'), findsOneWidget);
 
-    // avec une messagerie configurée ET testée, et une adresse d'éditeur RENSEIGNÉE par la clinique (E4704 : aucune adresse de personne n'est semée ; l'adresse ci-dessous est un exemple de test)
-    const cleEmails = 'support.editeurEmails';
-    final defEmails = definitionDeParametre(cleEmails)!;
-    ListesReference.brancher(() => [
-          {...Parametre(cle: cleEmails, famille: defEmails.famille, type: defEmails.type, valeur: 'editeur@exemple.test', defaut: defEmails.defaut, dateEffet: '2000-01-01', version: 1, auteur: 'Test', motif: 'essai', creeLe: '2000-01-01T00:00:00.000').toJson()}
-        ]);
-    addTearDown(ListesReference.debrancher);
+    // avec une messagerie configurée ET testée, et une adresse d'éditeur RENSEIGNÉE par la clinique (E4704)
+    renseignerAdresseEditeur();
     final p = (await t.runAsync(demarrer))!;
     addTearDown(p.fermer);
     ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Baguidi', repondreA: 'contact@cliniquebaguidi.com', repondreNom: 'Clinique Baguidi', verifierCertificat: false);
@@ -269,9 +274,28 @@ void main() {
     expect(find.text('Message envoyé par courriel à l’éditeur.'), findsOneWidget);
   });
 
+  casM14('« Contactez l’éditeur » : adresse de l’éditeur NON renseignée (défaut) : le message est enregistré, AUCUN courriel n’est mis en file, et l’écran le dit', (t) async {
+    t.view.physicalSize = const Size(1600, 3000);
+    final m = magasinM14();
+    ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: 2525, chiffrement: 'aucun', expediteur: 'cnt@clinique.bj', delai: 3);
+    ConfigSmtpPoste.noterTest(d.path, ok: true);
+    await ouvrirM14(t, m, 'contact-editeur');
+    t.view.physicalSize = const Size(1600, 3000);
+    await t.pump();
+    expect(find.text('Non renseigné'), findsWidgets);
+    await saisir(t, 'objet', 'Sans adresse');
+    await saisir(t, 'message', 'Texte');
+    await toucherM14(t, find.widgetWithText(BoutonSigh, 'Envoyer le message'));
+    await t.pump(const Duration(milliseconds: 300));
+    expect(EtatSmtpPoste.file?.messages ?? const [], isEmpty, reason: 'aucune adresse : rien ne part, rien n’est mis en file');
+    expect(find.text('Demande enregistrée, mais le courriel n’est pas parti.'), findsOneWidget);
+    expect(find.textContaining('Adresse de l’éditeur non renseignée'), findsOneWidget);
+  });
+
   casM14('« Contactez l’éditeur » : un serveur absent met le courriel EN FILE (heure du prochain essai dite, rien de perdu) ; un échec définitif propose « Renvoyer »', (t) async {
     t.view.physicalSize = const Size(1600, 3000);
     final m = magasinM14();
+    renseignerAdresseEditeur();
     // messagerie configurée sur un port fermé : le premier essai échoue à l'étape « connexion »
     final libre = await t.runAsync(() => ServerSocket.bind(InternetAddress.loopbackIPv4, 0));
     final portFerme = libre!.port;
