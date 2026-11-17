@@ -922,6 +922,7 @@
     "fiscal": "Calendrier fiscal",
     "securite": "Sécurité",
     "horssite": "Sauvegarde hors site",
+    "maj": "Mise à jour du logiciel",
     "assistant": "Assistant",
     "stock": "Stock et péremption",
     "comptabilite": "Comptabilité et recouvrement",
@@ -996,17 +997,30 @@
       "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md) : le boîtier MECeF de Baguidi est un ELTRADE CC300"
     },
     {
+      "cle": "mecef.imprimanteCaisse.integreeAuBoitier",
+      "famille": "mecef",
+      "type": "booleen",
+      "defaut": true,
+      "libelle": "Imprimante de caisse — intégrée au boîtier MECeF",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Oui : le boîtier MECeF est AUSSI l'imprimante de caisse (ticket 80 mm) — une machine, deux fonctions. Le modèle et l'interface de l'imprimante sont alors ceux du boîtier (réglage « Modèle du boîtier MECeF »), sans ressaisie. Non : la clinique renseigne une imprimante distincte ci-dessous.",
+      "source": "Décision de la Direction de Baguidi du 17/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §11) : le boîtier ELTRADE CC300 est à la fois le MECeF et l'imprimante de caisse (ticket 80 mm) ; largeur du papier à valider"
+    },
+    {
       "cle": "mecef.imprimanteCaisse.modele",
       "famille": "mecef",
       "type": "texte",
-      "defaut": "ELTRADE CC300",
+      "defaut": "",
       "libelle": "Imprimante de caisse — modèle",
       "choix": null,
       "libellesChoix": {},
       "branche": true,
       "sensible": false,
-      "aide": "Le modèle de l'imprimante du ticket de caisse : le boîtier MECeF (ELTRADE CC300) est AUSSI l'imprimante de caisse, une seule machine pour deux fonctions (ticket de 80 mm). À corriger si la clinique ajoute une autre imprimante. Il décrit l'appareil, il ne branche aucun pilote d'impression.",
-      "source": "Décision de la Direction de Baguidi du 17/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §11, qui complète celle du 16/11/2026) : le boîtier ELTRADE CC300 est à la fois le MECeF et l'imprimante de caisse ; à valider"
+      "aide": "Le modèle de l'imprimante du ticket de caisse, quand elle n'est PAS le boîtier MECeF (réglage « intégrée au boîtier » décoché) ; sinon le modèle du boîtier fait foi. Aucun autre modèle n'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l'appareil, il ne branche aucun pilote d'impression.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucun modèle fourni, valeur à renseigner, à valider"
     },
     {
       "cle": "mecef.imprimanteCaisse.largeurPapierMm",
@@ -1435,6 +1449,19 @@
       "source": "Proposition à valider (lot BAK, ADR-0008) : contrôle chaque nuit, l'heure est une proposition"
     },
     {
+      "cle": "maj.sauvegardeMaxHeures",
+      "famille": "maj",
+      "type": "entier",
+      "defaut": 24,
+      "libelle": "Ancienneté maximale de la sauvegarde avant une mise à jour (heures)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 1 à 168. Une mise à jour est BLOQUÉE tant que la clinique ne détient pas une sauvegarde vérifiée ET un export portable vérifié de moins de ce nombre d’heures. 24 par défaut. Lever le blocage est un geste réservé tracé (force majeure).",
+      "source": "Proposition à valider par la Direction (décision 12 du 17/11/2026) : le nombre d’heures est une valeur d’attente"
+    },
+    {
       "cle": "horssite.copiesMagasin",
       "famille": "horssite",
       "type": "entier",
@@ -1688,6 +1715,45 @@
       "sensible": false,
       "aide": "Les POSTES de l'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur le plan et sur son bilan imprimés ; leur titulaire est lu à l'organigramme, jamais saisi ici. Vide : le poste qui coiffe l'organigramme signe. Un poste absent de l'organigramme s'imprime tel qu'écrit, sans nom.",
       "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l'organigramme"
+    },
+    {
+      "cle": "notifications.routagePostes",
+      "famille": "notifications",
+      "type": "texte",
+      "defaut": "caisse=alertes_caisse;stock=alertes_stock;comptable=alertes_comptable;direction=alertes_direction;imagerie=alertes_imagerie;laboratoire=alertes_laboratoire;prescripteur=alertes_prescripteur;salle_soins=alertes_salle_soins;hospitalisation=alertes_hospitalisation",
+      "libelle": "Notifications : geste réservé qui tient chaque poste",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une entrée par poste, « poste=geste » séparées par un point-virgule (caisse=alertes_caisse). Les rôles qui reçoivent les alertes d'un poste sont ceux qui détiennent son geste dans la fiche de rôle. Une entrée mal formée ou un geste inconnu est ignoré ; vide, la valeur d'attente s'applique.",
+      "source": "Table reprise à l'identique de l'ancien centre de notifications (valeur d'attente) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "notifications.destinatairesBesoinAccorde",
+      "famille": "notifications",
+      "type": "texte",
+      "defaut": "comptable=engagement budgétaire et décaissement à préparer;stock=achat à lancer ou distribution à planifier",
+      "libelle": "Notifications : postes informés quand un besoin est accordé",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une entrée par poste, « poste=mention » séparées par un point-virgule : la mention complète le message adressé à ce poste. Chaque poste doit figurer dans le réglage ci-dessus. Vide, la valeur d'attente (le comptable pour l'engagement, le stock pour l'achat) s'applique.",
+      "source": "Valeur d'attente reprise de l'ancien moteur des achats (NEINSTRUCTION2) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "factureTiers.signataires",
+      "famille": "caisse",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Postes signataires de la facture à une entreprise",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les POSTES de l'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur la facture à une entreprise imprimée ; leur titulaire est lu à l'organigramme, jamais saisi ici. Vide : le poste qui coiffe l'organigramme signe. Un poste absent de l'organigramme s'imprime tel qu'écrit, sans nom. L'acheteur signe toujours une ligne « Reçu le / Signature » : ce n'est pas un poste de la clinique.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l'organigramme ; pièce du point 2 du 17/11/2026"
     },
     {
       "cle": "ambulance.forfaitCourse",
