@@ -7197,7 +7197,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "344",
+     "valeur": "346",
      "indice": null
     },
     {
@@ -7212,7 +7212,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     }
    ],
@@ -7476,7 +7476,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 344,
+  "tousEcrans": 346,
   "modulesListe": [
    [
     "M2",
@@ -7553,7 +7553,7 @@
     "Comptabilité SYSCOHADA",
     "book-open-check",
     "Financier",
-    20
+    21
    ],
    [
     "M10",
@@ -7602,7 +7602,7 @@
     "Configuration Clinique",
     "sliders-horizontal",
     "Système",
-    23
+    24
    ],
    [
     "IMP",
@@ -7675,7 +7675,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "344",
+     "valeur": "346",
      "indice": null
     },
     {
@@ -7690,7 +7690,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "333",
+     "valeur": "335",
      "indice": null
     }
    ],
@@ -7932,7 +7932,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "344",
+     "valeur": "346",
      "indice": null
     },
     {
@@ -7947,7 +7947,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     }
    ],
@@ -8151,7 +8151,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     },
     {
@@ -8166,7 +8166,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "331",
+     "valeur": "333",
      "indice": null
     }
    ],

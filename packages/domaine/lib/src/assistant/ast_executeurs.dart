@@ -13,7 +13,7 @@ import '../achats/factures_fournisseurs.dart' show detteFournisseurAValider, det
 import '../administration/adm_regles.dart' show admDisponibilite, admOrdreAppelRapide, admPerime;
 import '../comptabilite/cpa_plan.dart' show cpaPlanComptable;
 import '../droits/gestes_reserves.dart' show gesteReserve, gesteValiderAchats;
-import 'fiches_aide.dart' show colFichesAide, ficheAideCitable;
+import '../administration/fiches_aide.dart' show colFichesAide, ficheAideCitable;
 import '../hospitalisation/hos_regles.dart' show hosTousLits;
 import '../imagerie/cr_moteur.dart' show modaliteDeCodeExamen;
 import '../imagerie/img_demandes_etats.dart' show etatImagerie, modaliteDemandeImagerie;

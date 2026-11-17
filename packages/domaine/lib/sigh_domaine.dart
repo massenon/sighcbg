@@ -208,7 +208,7 @@ export 'src/specialites/spec_travail.dart';
 // L'assistant (lots AST-0 et AST-1) : conversation locale en lecture seule, reconnaissance déterministe, catalogue d'intentions, filtrage par droits.
 export 'src/assistant/ast_texte.dart';
 export 'src/assistant/ast_catalogue.dart';
-export 'src/assistant/fiches_aide.dart';
+export 'src/administration/fiches_aide.dart';
 export 'src/assistant/ast_reconnaissance.dart';
 export 'src/assistant/ast_contexte.dart';
 export 'src/assistant/ast_executeurs.dart' show ExecuteurAst, executeursAst;

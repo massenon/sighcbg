@@ -23,7 +23,8 @@ const String colFichesAide = 'fichesAide';
 const String ficheAideTypeAide = 'aide';
 const String ficheAideTypeDefinition = 'definition';
 const List<String> ficheAideTypes = [ficheAideTypeAide, ficheAideTypeDefinition];
-const Map<String, String> ficheAideLibellesTypes = {ficheAideTypeAide: 'Aide (comment faire)', ficheAideTypeDefinition: 'Définition (c’est quoi)'};
+/// Le type d'une fiche est l'INTENTION de l'assistant qui la lit : I26 « comment faire » (aide pas à pas), I27 « c'est quoi » (définition, glossaire).
+const Map<String, String> ficheAideLibellesTypes = {ficheAideTypeAide: 'Aide — comment faire (intention I26)', ficheAideTypeDefinition: 'Définition — c’est quoi (intention I27)'};
 
 const String ficheAideProposee = 'proposee';
 const String ficheAideValidee = 'validee';
@@ -207,7 +208,7 @@ String _iso(DateTime d) => '${d.year.toString().padLeft(4, '0')}-${d.month.toStr
 /// CRÉE une fiche : toujours `proposee`, jamais validée à la naissance, avec son auteur (nom et identifiant du compte : la comparaison « l'auteur ne valide pas » se fait sur l'identifiant).
 VerdictFicheAide creerFicheAide({
   required Map<String, Object?> saisie,
-  required String id,
+  String? id,
   required String auteurId,
   required String auteurNom,
   required DateTime maintenant,
@@ -221,7 +222,8 @@ VerdictFicheAide creerFicheAide({
   final r = controlerContenuFicheAide(contenu, rolesConnus: rolesConnus, ecransConnus: ecransConnus);
   if (r != null) return VerdictFicheAide.refus(r.code, r.motif, r.geste);
   return VerdictFicheAide.ok({
-    'id': id,
+    // Sans identifiant, c'est la collection du poste qui l'attribue (série du poste : deux postes hors ligne ne forment jamais deux fiches du même identifiant).
+    if (id != null) 'id': id,
     ...contenu,
     'statut': ficheAideProposee,
     'auteurId': auteurId,
@@ -252,7 +254,7 @@ VerdictFicheAide modifierFicheAide({
 /// RÉVISE une fiche validée : une fiche NOUVELLE, copie du contenu, `proposee`, qui porte `remplace`. La validée reste citée tant que sa remplaçante n'est pas validée.
 VerdictFicheAide reviserFicheAide({
   required Map<String, Object?>? source,
-  required String id,
+  String? id,
   required String auteurId,
   required String auteurNom,
   required DateTime maintenant,
