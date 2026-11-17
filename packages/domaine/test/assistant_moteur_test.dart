@@ -276,9 +276,14 @@ void main() {
     test('plusieurs actes proches : on ne choisit pas', () {
       expect(q('Prix de la consultation de spécialiste', 'reception').code, 'HOMONYMES');
     });
-    test('lits libres : sans plan des lits, « non calculables », jamais zéro', () {
+    test('lits libres : le plan de RÉFÉRENCE du domaine tient lieu de plan quand la collection est vide ; un service que le plan ne distingue pas est « non calculable », jamais zéro', () {
       final r = q('Quels lits sont libres ?', 'medecin');
-      expect(tout(r), contains('non calculables'));
+      expect(tout(r), contains('19 lit(s) au plan'));
+      expect(tout(r), contains('lits libres = 19'));
+      // une collection `lits` sans aile ne dit pas ce qu'est « la maternité » : on ne devine pas
+      final sansAile = a.repondre('Lits libres en maternité', contexte('medecin', donnees: {...magasin(), 'lits': [{'numero': 'X1'}, {'numero': 'X2'}]}));
+      expect([sansAile.statut, sansAile.code], ['non_calculable', 'NON_CALCULABLE']);
+      expect(tout(sansAile), contains('ne distingue pas les services'));
     });
     test('registres vides : « aucun enregistrement » n’est pas « personne »', () {
       final r = q('Les rendez-vous de demain', 'reception');
@@ -348,7 +353,8 @@ void main() {
       expect(lues.intersection({'comptes', 'garanties', 'identifiants', 'utilisateurs', 'audit'}), isEmpty);
       // `parametres` est LUE (jamais écrite) : le préavis de péremption et les bornes de la balance âgée sont des réglages de clinique (Q10, Q14).
       expect(lues.contains('parametres'), isTrue);
-      expect(lues.difference({...magasin().keys}), isEmpty, reason: 'une collection lue que le jeu de test ne connaît pas');
+      // `actes` (secteur des actes, pour la ventilation des recettes par secteur) et `courriers` (registre du courrier) sont lues sans jamais écrire : une collection absente est VIDE.
+      expect(lues.difference({...magasin().keys, 'actes', 'courriers'}), isEmpty, reason: 'une collection lue que le jeu de test ne connaît pas');
     });
     test('diagnostic, envoi hors clinique, injonction : refusés sans lire une seule donnée', () {
       final lectures = <String>[];

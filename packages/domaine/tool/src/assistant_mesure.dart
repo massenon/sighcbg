@@ -53,7 +53,7 @@ int valeursInventees(String question, ReconnaissanceAst r, CatalogueAst cat) {
   }
   if (r.intention != null && cat[r.intention!] == null) n++;
   for (final e in r.parametres.entries) {
-    if (const ['periode', 'periodeComparee', 'secteur', 'gabarit', 'patient'].contains(e.key)) continue;
+    if (const ['periode', 'periodeComparee', 'secteur', 'gabarit', 'patient', 'courrierSens'].contains(e.key)) continue;
     final v = e.value;
     if (v is String) {
       final vn = astNormaliser(v);

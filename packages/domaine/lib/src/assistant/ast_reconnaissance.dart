@@ -182,12 +182,16 @@ class ReconnaisseurAst {
     var motsScore = mots;
     final iNA = _trouve(mots, 'non assure');
     if (iNA >= 0) motsScore = [...mots]..replaceRange(iNA, iNA + 2, ['', '']);
+    // « Anesthésique » (un produit de la pharmacie) n'est pas « anesthésie » (le compte rendu du bloc) : l'adjectif ne compte pas pour la vue du dossier.
+    final motsDossier = [for (final m in motsScore) m.startsWith('anesthesique') ? '' : m];
+    // « Compte rendu » n'est pas « rendu » (un résultat rendu) : hors de la vue du dossier, le mot ne compte pas.
+    final motsAutres = [for (var k = 0; k < motsScore.length; k++) (motsScore[k] == 'rendu' && k > 0 && motsScore[k - 1] == 'compte') ? '' : motsScore[k]];
     for (final i in catalogue.actives) {
       var s = 0;
       final ordonnes = [...i.indices]..sort((x, y) => y.$2 != x.$2 ? y.$2.compareTo(x.$2) : y.$1.length.compareTo(x.$1.length));
       final pris = <int>{};
       for (final (indice, poids) in ordonnes) {
-        final p = _trouve(motsScore, indice);
+        final p = _trouve(i.id == 'I17' ? motsDossier : motsAutres, indice);
         if (p < 0 || poids <= 0) continue;
         final n = indice.split(' ').length;
         final positions = [for (var k = 0; k < n; k++) p + k];
@@ -219,12 +223,27 @@ class ReconnaisseurAst {
     final prix = _a(mots, 'prix') || _a(mots, 'tarif') || _a(mots, 'coute') || _a(mots, 'combien');
     if (certif && prix) plus('I18', 8);
     // Une question qui demande COMMENT faire, ou CE QUE VEUT DIRE un mot, vise l'aide ou le glossaire (« pas de fiche » tant qu'aucune n'est validée) avant le registre qu'elle cite.
-    if (_a(mots, 'comment faire') || _a(mots, 'comment on') || _a(mots, 'comment je') || _a(mots, 'comment enregistrer') || _a(mots, 'comment saisir') || _a(mots, 'ou saisir') || _a(mots, 'ou je saisis')) plus('I26', 5);
+    if (_a(mots, 'comment faire') || _a(mots, 'comment on') || _a(mots, 'comment je') || _a(mots, 'comment j') || _a(mots, 'comment enregistrer') || _a(mots, 'comment saisir') || _a(mots, 'ou saisir') || _a(mots, 'ou je saisis')) plus('I26', 5);
     if (_a(mots, 'c est quoi') || _a(mots, 'c quoi') || _a(mots, 'que veut dire') || _a(mots, 'veut dire quoi') || _a(mots, 'qu est ce qu une') || _a(mots, 'qu est ce qu un') || _a(mots, 'definition*') || _a(mots, 'signifie')) plus('I27', 5);
     // « Échographies du jour » compte les examens : une question de PRIX, de RÉSULTAT ou sur UN patient n'est pas la sienne.
     if (_a(mots, 'prix') || _a(mots, 'tarif*') || _a(mots, 'coute') || _a(mots, 'resultat*') || _a(mots, 'historique') || params.containsKey('codePatient') || params.containsKey('nomPatient')) scores.remove('I34');
     final stats = _a(mots, 'consultation*') || _a(mots, 'admission*') || _a(mots, 'analyse*') || _a(mots, 'examen*');
-    if ((_a(mots, 'combien de') || _a(mots, 'nombre de') || _a(mots, 'nombre d')) && stats) plus('I21', 5);
+    if ((_a(mots, 'combien de') || _a(mots, 'combien d') || _a(mots, 'nombre de') || _a(mots, 'nombre d')) && stats) plus('I21', 5);
+    // « Combien reste-t-il à payer » demande un reliquat, pas un niveau de stock : « reste » + « payer » est la question de la caisse.
+    if ((_a(mots, 'reste t il') || _a(mots, 'il reste')) && (_a(mots, 'payer') || _a(mots, 'regler'))) plus('I03', 8);
+    // Un patient nommé ou codé avec le vocabulaire du laboratoire ou de l'imagerie (résultat, bilan, échographie, rendu, validé) : c'est l'état de SA demande qu'on lit, pas son dossier.
+    // L'IMAGERIE (échographie, radiographie, mammographie, scanner, IRM) n'est pas une analyse : l'état d'une demande d'imagerie se lit à SON registre (`demandesImagerie`).
+    final imagerie = _a(mots, 'imagerie') || _a(mots, 'echographie*') || _a(mots, 'echo') || _a(mots, 'echos') || _a(mots, 'radio') || _a(mots, 'radios') || _a(mots, 'radiographie*') || _a(mots, 'scanner') || _a(mots, 'irm') || _a(mots, 'mammographie*');
+    if (imagerie && !_a(mots, 'prix') && !_a(mots, 'tarif*') && !_a(mots, 'coute') && !_a(mots, 'historique')) params['imagerie'] = true;
+    final patientDit = params.containsKey('codePatient') || (params.containsKey('nomPatient') && _a(mots, 'patient'));
+    if (patientDit &&
+        (_a(motsAutres, 'analyse*') || _a(motsAutres, 'resultat*') || _a(motsAutres, 'bilan*') || _a(motsAutres, 'echographie*') || _a(motsAutres, 'imagerie') || _a(motsAutres, 'radio*') || _a(motsAutres, 'rendu*') || _a(motsAutres, 'valide*'))) {
+      plus('I19', 3);
+    }
+    // Un patient ET une pièce du dossier (ordonnance, courrier, compte rendu) : c'est la vue du dossier, pas la fiche d'identité.
+    if (patientDit && (scores['I17'] ?? 0) >= 4) plus('I17', 2);
+    // Un courrier cherché SANS patient (« le dernier courrier de la compagnie… ») : la vue du dossier lit alors le registre du courrier, par correspondant.
+    if (_a(mots, 'courrier*') && !_a(mots, 'comment') && !params.containsKey('codePatient') && !params.containsKey('nomPatient')) plus('I17', 6);
 
     // 4. Les noms de maladie : refus, sauf si la question lit un état, un prix ou un stock.
     if (reglage.refuserAvis && _termesMaladie.any((t) => _a(mots, t))) {
@@ -269,7 +288,8 @@ class ReconnaisseurAst {
       if (debut != null && debut.compareTo(iso) > 0 && !intention.futurOk) alertes.add('PERIODE_FUTURE');
       if (fin != null && fin.compareTo(iso) < 0 && !intention.historique) alertes.add('NON_CALCULABLE_HISTORIQUE');
     }
-    final manquants = [for (final r in intention.requis) if (!_possede(r, params)) r];
+    // La vue du dossier lit aussi le registre du courrier PAR CORRESPONDANT : un nom de correspondant tient lieu de patient.
+    final manquants = [for (final r in intention.requis) if (!_possede(r, params) && !(id == 'I17' && r == 'patient' && params.containsKey('correspondant'))) r];
     if (manquants.isNotEmpty) {
       return ReconnaissanceAst(statut: 'precision_requise', intention: id, code: 'PRECISION_REQUISE', manquants: manquants, parametres: params, alertes: alertes);
     }
@@ -438,6 +458,22 @@ class ReconnaisseurAst {
     }
     final top = RegExp(r'\b(\d{1,3}) (?:articles|produits|medicaments|references)\b').firstMatch(texte);
     if (id == 'I09' && top != null) p['topN'] = int.parse(top.group(1)!);
+    if (id == 'I17') {
+      if (_a(mots, 'recu') || _a(mots, 'recus') || _a(mots, 'arrivee')) p['courrierSens'] = 'arrivee';
+      if (_a(mots, 'envoye*') || _a(mots, 'depart')) p['courrierSens'] = 'depart';
+      if (_a(mots, 'courrier*') && !p.containsKey('codePatient') && !p.containsKey('nomPatient')) {
+        // Le correspondant : ce qui reste une fois retirés les mots de la demande (« le dernier courrier de la compagnie d'assurance X » → X).
+        const hors = {'dernier', 'derniere', 'recu', 'recus', 'compagnie', 'assurance', 'assureur', 'societe', 'courrier', 'courriers', 'retrouve', 'cherche', 'trouve', 'envoye', 'envoyes', 'arrivee', 'depart'};
+        // Seuls les mots GÉNÉRIQUES qui précèdent le nom se retirent (« la compagnie d'assurance X ») : « assureur » dans « EXEMPLE/Assureur » fait partie du nom.
+        final bruts = [for (final m in _restes(id, mots, couverts, p).split(' ')) if (m.isNotEmpty) m];
+        var debutNom = 0;
+        while (debutNom < bruts.length && hors.contains(bruts[debutNom])) {
+          debutNom++;
+        }
+        final reste = [for (final m in bruts.skip(debutNom)) if (!hors.contains(m) || m == 'assureur' || m == 'assurance' || m == 'societe' || m == 'compagnie') m].join(' ');
+        if (reste.isNotEmpty) p['correspondant'] = reste;
+      }
+    }
     if (id == 'I23') {
       if (texte.contains('rouleau') || texte.contains('80 mm')) p['gabarit'] = 'rouleau80';
       if (texte.contains(' a4') || texte.endsWith(' a4')) p['gabarit'] = 'a4';
@@ -490,7 +526,8 @@ class ReconnaisseurAst {
 
   // --- période ---------------------------------------------------------------------------------------------------------------------------------
 
-  Map<String, Object?>? _periode(String texte, DateTime jour, Map<String, Object?> p) {
+  Map<String, Object?>? _periode(String texteBrut, DateTime jour, Map<String, Object?> p) {
+    var texte = texteBrut;
     Map<String, Object?> j(String type, DateTime d, DateTime f, {int? n}) => {'type': type, 'debut': astIso(d), 'fin': astIso(f), if (n != null) 'n': n};
     Map<String, Object?>? principale;
     Map<String, Object?>? comparee;
@@ -500,6 +537,10 @@ class ReconnaisseurAst {
     final moisPrec0 = DateTime.utc(jour.year, jour.month - 1, 1);
     final moisPrecFin = DateTime.utc(jour.year, jour.month, 0);
     bool a(String s) => texte.contains(' $s ');
+    // Les nombres écrits en toutes lettres devant une durée (« dans trois mois », « depuis un an ») se lisent comme leurs chiffres : une durée DITE prime toujours sur un réglage.
+    const chiffres = {'un': '1', 'une': '1', 'deux': '2', 'trois': '3', 'quatre': '4', 'cinq': '5', 'six': '6', 'sept': '7', 'huit': '8', 'neuf': '9', 'dix': '10', 'onze': '11', 'douze': '12'};
+    texte = texte.replaceAllMapped(RegExp(r' (un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze) (mois|jours?|ans?|semaines?|annees?) '), (m) => ' ${chiffres[m.group(1)]} ${m.group(2)} ');
+    final depuisAns = RegExp(r' depuis (\d{1,2}) (?:ans?|annees?) ').firstMatch(texte);
 
     final plusDe = RegExp(r' (?:plus de|au dela de|au moins) (\d{1,4}) jours? ').firstMatch(texte) ?? RegExp(r' (\d{1,4}) jours? et plus ').firstMatch(texte);
     final njours = RegExp(r' (\d{1,4}) (?:derniers )?jours? ').firstMatch(texte);
@@ -509,6 +550,13 @@ class ReconnaisseurAst {
 
     if (plusDe != null) {
       principale = {'type': 'anciennete_jours', 'n': int.parse(plusDe.group(1)!)};
+    } else if (depuisAns != null) {
+      final n = int.parse(depuisAns.group(1)!) * 12;
+      principale = j('n_mois', _plusMois(jour, -n), jour, n: n);
+    } else if (a('week end') || a('weekend')) {
+      // « Ce week-end » : le samedi et le dimanche en cours (si aujourd'hui en est un), sinon les prochains.
+      final aSamedi = jour.weekday == 7 ? jour.subtract(const Duration(days: 1)) : jour.add(Duration(days: (6 - jour.weekday) % 7));
+      principale = j('week_end', aSamedi, aSamedi.add(const Duration(days: 1)));
     } else if (dateExplicite != null) {
       final jj = int.parse(dateExplicite.group(1)!);
       final mm = int.parse(_mois[dateExplicite.group(2)]!);
@@ -570,6 +618,20 @@ class ReconnaisseurAst {
     }
     if (principale != null && principale['type'] == 'mois' && (a('mois dernier') || a('mois passe')) && texte.contains('compar')) {
       comparee = j('mois_dernier', moisPrec0, moisPrecFin);
+    }
+    // « Comparées à la semaine d'avant », « par rapport au mois précédent » : la période de comparaison est l'unité de MÊME nature qui précède (jamais « la même durée avant »).
+    if (principale != null && comparee == null && (texte.contains(' compar') || texte.contains(' par rapport ') || texte.contains(' versus ') || texte.contains(' vs '))) {
+      final deb = DateTime.parse('${principale['debut']}T00:00:00Z');
+      switch ('${principale['type']}') {
+        case 'semaine' || 'semaine_derniere':
+          final d = deb.subtract(const Duration(days: 7));
+          comparee = j('semaine_precedente', d, d.add(const Duration(days: 6)));
+        case 'mois' || 'mois_dernier' || 'mois_nomme':
+          comparee = j('mois_precedent', DateTime.utc(deb.year, deb.month - 1, 1), DateTime.utc(deb.year, deb.month, 0));
+        case 'aujourdhui' || 'hier':
+          final d = deb.subtract(const Duration(days: 1));
+          comparee = j('jour_precedent', d, d);
+      }
     }
     if (principale != null) p['periode'] = principale;
     if (comparee != null) p['periodeComparee'] = comparee;

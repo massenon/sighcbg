@@ -43,10 +43,10 @@ void main() {
   });
 
   group('catalogue et couverture, tirés du code', () {
-    test('35 lignes, toutes livrées (I26 et I27 disent « pas de fiche », I28 à I35 viennent de la relecture du 16/11/2026), statuts fermés, refus nommés connus, sources non vides', () {
-      expect(cat.intentions.length, 35);
-      expect(cat.actives.length, 35);
-      expect(cat.actives.map((i) => i.id).toList(), [for (var i = 1; i <= 35; i++) 'I${i.toString().padLeft(2, '0')}']);
+    test('36 lignes, toutes livrées (I26 et I27 répondent par une fiche validée, sinon « pas de fiche » ; I28 à I36 viennent de la relecture du 16/11/2026), statuts fermés, refus nommés connus, sources non vides', () {
+      expect(cat.intentions.length, 36);
+      expect(cat.actives.length, 36);
+      expect(cat.actives.map((i) => i.id).toList(), [for (var i = 1; i <= 36; i++) 'I${i.toString().padLeft(2, '0')}']);
       for (final i in cat.intentions.values) {
         expect(['calculable', 'petit_lot', 'non_disponible'], contains(i.statut), reason: i.id);
         expect(i.sources, isNotEmpty, reason: '${i.id} sans source');
@@ -62,7 +62,7 @@ void main() {
           expect(i.indices, isNotEmpty);
         }
       }
-      expect(decompteStatuts(cat), {'calculable': 28, 'petit_lot': 7, 'non_disponible': 0});
+      expect(decompteStatuts(cat), {'calculable': 29, 'petit_lot': 7, 'non_disponible': 0});
       expect(cat['I26']!.refus, ['PAS_DE_FICHE']);
       expect(cat['I27']!.refus, ['PAS_DE_FICHE']);
     });
@@ -253,8 +253,9 @@ void main() {
       for (final c in categoriesAgents) {
         expect(agents.where((q) => q['categorie'] == c), isNotEmpty, reason: c);
       }
-      for (final id in [for (var i = 26; i <= 35; i++) 'I$i']) {
-        expect(agents.where((q) => (q['reaction'] as Map)['intention'] == id).length, greaterThanOrEqualTo(2), reason: id);
+      // Le jeu RÉEL (100 questions de la Direction) ne couvre pas chaque intention deux fois : I27 (le glossaire) n'y paraît qu'une fois (Q99). Chacune des intentions ajoutées l'est au moins UNE fois.
+      for (final id in [for (var i = 26; i <= 36; i++) 'I$i']) {
+        expect(agents.where((q) => (q['reaction'] as Map)['intention'] == id).length, greaterThanOrEqualTo(1), reason: id);
       }
       final m = MatriceDroits.depuisJson(rbac);
       for (final q in agents) {

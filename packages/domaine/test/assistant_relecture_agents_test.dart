@@ -58,7 +58,9 @@ void main() {
       }
     });
     test('les résultats d’un patient : refusés (RG-13) à tout rôle qui n’ouvre aucun écran du laboratoire — calculé dans la matrice, aucune valeur, aucun état', () {
-      final sansLabo = [for (final role in roles) if (!matrice.peutVoir(role, 'm5-demandes') && !matrice.peutVoir(role, 'm5-resultats')) role];
+      // Q69 (décision du 16/11/2026) : l'accueil lit le STATUT d'un résultat (Oui, En attente), jamais son contenu — par l'écran des patients adressés de l'extérieur (`m1-externe`). Les rôles qui l'ouvrent
+      // ne sont plus REFUSÉS : ils reçoivent le statut seul (sondé dans assistant_decisions_reelles_test.dart) ; tous les autres, l'aide-soignante comprise, restent refusés.
+      final sansLabo = [for (final role in roles) if (!matrice.peutVoir(role, 'm5-demandes') && !matrice.peutVoir(role, 'm5-resultats') && !matrice.peutVoir(role, 'm1-externe') && !matrice.peutVoir(role, 'm2-imagerie-demandes')) role];
       expect(sansLabo, contains('aide_soignant'), reason: 'la décision du 16/11/2026 garde ce refus pour l’aide-soignante');
       for (final role in sansLabo) {
         final r = a.repondre('resultat labo de CBG/101/26 stp', cx(role));
@@ -117,9 +119,9 @@ void main() {
       final r = a.repondre('on a fait combien de recettes ce mois', cx('direction'));
       final t = sansEspaces(r.titre);
       expect(t, contains('Recettes(encaissé)'));
-      expect(t, contains('11500'));
+      expect(t, contains('16500'), reason: 'le jeu de mesure porte un règlement du jour (14/11) en plus de ceux du 4 et du 13');
       expect(t, contains('Chiffred’affaires(facturé)'));
-      expect(t, contains('13000'));
+      expect(t, contains('18000'));
     });
     test('dette fournisseur globale : factures non payées (40 000), solde comptable 401 (30 000), écart (10 000), chacun nommé', () {
       final r = a.repondre('combien on doit aux fournisseurs au total', cx('comptable'));
@@ -194,11 +196,21 @@ void main() {
       final douteux = a.repondre('il y avait combien de EXEMPLE/Incertain le 1er novembre', cx('stock'));
       expect([douteux.statut, douteux.code], ['non_calculable', 'NON_CALCULABLE']);
       expect(douteux.titre, isNot(contains('0 en stock')));
+      // Q45 (décision du 16/11/2026) : le droit est celui de l'ARTICLE (m6-produits), pas celui du registre des mouvements : le caissier, qui lit les produits sans lire les mouvements, lit la quantité
+      // reconstituée — et la réponse ne cite aucun mouvement. (L'ancien garde « refus nommé sans m6-mouvements » est levé, et dit.)
       final sansMvt = [for (final role in roles) if (matrice.peutVoir(role, 'm6-produits') && !matrice.peutVoir(role, 'm6-mouvements')) role];
+      expect(sansMvt, isNotEmpty);
       for (final role in sansMvt) {
         final r = a.repondre('le stock de EXEMPLE/Article le 12 octobre', cx(role));
+        expect(r.statut, 'reponse', reason: role);
+        expect(r.titre, contains('25 en stock au 12/10/2026 (reconstitué)'), reason: role);
+        expect(r.sources.map((s) => s.ecran), isNot(contains('m6-mouvements')), reason: role);
+      }
+      // un rôle qui ne lit AUCUN écran du stock reste refusé
+      final sansStock = [for (final role in roles) if (!['m6-produits', 'm6-stock-gros', 'm6-stock-detail', 'm6-lots', 'm5-reactifs'].any((e) => matrice.peutVoir(role, e))) role];
+      for (final role in sansStock) {
+        final r = a.repondre('le stock de EXEMPLE/Article le 12 octobre', cx(role));
         expect([r.statut, r.code], ['refus', 'LECTURE_NON_AUTORISEE'], reason: role);
-        expect(tout(r), contains('mouvements'), reason: role);
       }
     });
     test('la valeur à une date passée est « non calculable » (CUMP non conservé) ; les quantités, elles, se reconstituent quand elles tiennent', () {

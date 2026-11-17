@@ -148,14 +148,15 @@
     "m6-produits",
     "m6-stock-gros",
     "m6-stock-detail",
-    "m6-lots"
+    "m6-lots",
+    "m5-reactifs"
    ],
    "profils": {
     "reception": false,
     "caisse": true,
     "stock": true,
     "comptabilite": true,
-    "laboratoire": false,
+    "laboratoire": true,
     "medecin": true,
     "daf": true,
     "direction": true,
@@ -366,6 +367,7 @@
     "m1-pieces",
     "m1-reference",
     "m1-contre-reference",
+    "m13-courriers",
     "m3-bloc-cro",
     "m3-cr-anesthesie",
     "m3-cpa"
@@ -382,7 +384,7 @@
     "administrateur": true,
     "infirmier": true,
     "sage_femme": true,
-    "agent_administratif": false
+    "agent_administratif": true
    }
   },
   {
@@ -411,16 +413,20 @@
    "intention": "I19",
    "ecrans": [
     "m5-demandes",
-    "m5-resultats"
+    "m5-resultats",
+    "m1-externe",
+    "m2-imagerie-demandes",
+    "m2-dashboard-imagerie",
+    "m2-imagerie"
    ],
    "profils": {
-    "reception": false,
+    "reception": true,
     "caisse": false,
     "stock": false,
     "comptabilite": false,
     "laboratoire": true,
     "medecin": true,
-    "daf": false,
+    "daf": true,
     "direction": true,
     "administrateur": true,
     "infirmier": true,
@@ -453,7 +459,9 @@
    "intention": "I21",
    "ecrans": [
     "m2-consultations",
+    "m2-stats-consultations",
     "m3-admissions",
+    "m3-stats-hospitalisations",
     "m5-demandes",
     "m8-factures"
    ],
@@ -733,6 +741,27 @@
    "intention": "I35",
    "ecrans": [
     "m10-conges"
+   ],
+   "profils": {
+    "reception": false,
+    "caisse": false,
+    "stock": false,
+    "comptabilite": false,
+    "laboratoire": false,
+    "medecin": false,
+    "daf": true,
+    "direction": true,
+    "administrateur": true,
+    "infirmier": false,
+    "sage_femme": false,
+    "agent_administratif": false
+   }
+  },
+  {
+   "intention": "I36",
+   "ecrans": [
+    "m14-sauvegardes",
+    "mere-sauvegardes"
    ],
    "profils": {
     "reception": false,
