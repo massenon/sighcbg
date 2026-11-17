@@ -265,4 +265,4 @@ Source : `docs/prd/ASSISTANT-100-questions-par-role.md` (cent questions, vingt r
 5. **Q69 (accueil)** : le statut est lu par l'écran des patients adressés de l'extérieur (`m1-externe`), ouvert aussi à d'autres rôles de la matrice (la DAF, l'administrateur) : si la Direction veut l'accueil seul, il faut un geste dédié.
 6. **Q3** : le journal des fichiers de sauvegarde du POSTE, pas l'état du service de sauvegarde de la mère.
 7. **Q19 et Q100** : l'écart par fournisseur ne se calcule que si le plan comptable porte un sous-compte 401 à son nom.
-8. **La fiche `fichesAide` ne voyage pas encore** entre postes (aucune famille de synchronisation déclarée pour elle).
+8. **La fiche `fichesAide` voyage entre postes depuis le 17/11/2026** (famille A ; la validation ne s'écrit que sur la mère) et s'écrit et se valide à l'écran « Fiches d'aide de l'assistant » (`cfg-fiches-aide`, E4820 à E4829). Le contenu des neuf fiches attendues (Q4, Q29, Q58, Q64, Q68, Q80, Q84, Q94, Q99) reste à écrire et à faire valider par la Direction ; Q94 exige un professionnel nommé.

@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, colFichesAide, colDocumentsFiscaux, refusEcritureFicheAide, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -109,6 +109,10 @@ const familleDeBase = <String, String>{
   // `refusEcritureFactureTiers` du domaine, appliqué dans `traiter`) et dépose une demande (`validationsDeposees`, genre `facture_tiers`). Jamais vers un téléphone
   // (`collectionsFacturesTiersJamaisMobile`). Elles ne sont PAS de la configuration : la mise en production les archive comme toute pièce d'activité.
   'facturesTiers': 'A', 'avoirsTiers': 'A',
+  // LES FICHES D'AIDE DE L'ASSISTANT (Direction de Baguidi, 17/11/2026) : écrites depuis n'importe quel poste (fiches descriptives, champ à champ, dans les deux sens). La VALIDATION ne s'écrit que
+  // sur la mère (elle seule vérifie le geste réservé et que l'auteur n'est pas le validateur) et une fiche validée ne se réécrit pas : `refusEcritureFicheAide` du domaine, appliqué dans `traiter`.
+  // Jamais vers un téléphone (`collectionsDocumentsJamaisMobile`) : aucun écran du mobile ne les lit.
+  'fichesAide': 'A',
 };
 const essentielles = {'tarifs', 'versionsTarif', 'chambres'};
 
@@ -148,6 +152,9 @@ final Set<String> collectionsPlanTravailJamaisMobile = {...ptaCollections};
 final Set<String> collectionsPlanningJamaisMobile = {...planningCollectionsSync};
 /// 17/11/2026 : la facture à une entreprise et son avoir portent l'IFU et le nom d'une entreprise et le souscripteur qu'elle prend en charge : nominatif (RG-13), jamais vers un téléphone.
 final Set<String> collectionsFacturesTiersJamaisMobile = {...facturesTiersCollectionsSync};
+/// 17/11/2026 : les fiches d'aide de l'assistant (aucun écran du mobile ne les lit) et les documents fiscaux déposés (liasse, classeur : donnée financière, réservée aux profils comptables, RG-13)
+/// ne partent JAMAIS vers un téléphone.
+const Set<String> collectionsDocumentsJamaisMobile = {colFichesAide, colDocumentsFiscaux};
 const _clinique = IdentiteClinique.confirmationReinit;
 const _deriveMaxMs = 2 * 60 * 1000;
 const autorise = <String, Set<String>>{
@@ -560,6 +567,13 @@ class Mere {
       if (r != null) return refus(r.code, r.motif, r.geste);
     }
 
+    // LES FICHES D'AIDE (17/11/2026) : la mère REFAIT le contrôle d'un poste. La validation (statut, validateur, date, professionnel) ne s'écrit que sur la mère, et une fiche validée ne se réécrit
+    // pas (on la révise). La règle est celle du domaine, jamais recopiée.
+    if (collection == colFichesAide && app.role != 'mere' && ((type == 'creer' && f == null) || type == 'modifier')) {
+      final r = refusEcritureFicheAide('$type', champsOp, actuelle: f?.data);
+      if (r != null) return refus(r.code, r.motif, r.geste);
+    }
+
     // LA FACTURE À UNE ENTREPRISE (17/11/2026) : la mère seule l'écrit. Un poste (fileul, mobile) est refusé en nommant le geste : il dépose une demande, la mère l'applique sous son rôle. La règle est
     // celle du domaine, jamais recopiée.
     final reserveFt = refusEcritureFactureTiers(collection, mere: app.role == 'mere');
@@ -894,7 +908,7 @@ class Mere {
         // Un mobile ne reçoit pas la configuration de la clinique (comptes, hachés, droits…) : le filtre est dans la requête, de sorte que chaque page soit pleine
         // d'opérations visibles et que le curseur du téléphone avance toujours.
         // L0 : les paramètres ne passent JAMAIS par ce chemin pour un mobile ; la liste blanche lui est publiée par le pont (`Pont.diffuser`), qui la contrôle fiche par fiche.
-        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, ...collectionsPlanTravailJamaisMobile, ...collectionsPlanningJamaisMobile, ...collectionsFacturesTiersJamaisMobile, parCollectionParametres] : const <String>[];
+        final exclues = app.role == 'mobile' ? [...collectionsPosteSeulement, ...collectionsPrixJamaisMobile, ...collectionsRemunerationJamaisMobile, ...collectionsAssuranceJamaisMobile, ...collectionsFinanceJamaisMobile, ...collectionsPlanTravailJamaisMobile, ...collectionsPlanningJamaisMobile, ...collectionsFacturesTiersJamaisMobile, ...collectionsDocumentsJamaisMobile, parCollectionParametres] : const <String>[];
         final filtre = exclues.isEmpty ? '' : ' AND collection NOT IN (${List.filled(exclues.length, '?').join(',')})';
         // Un fileul ne reçoit que les demandes d'import qu'il a créées (la mère, jamais appelée ici par un fileul, garde tout) : le filtre est dans la requête.
         final reserve = app.role == 'mere' ? '' : _sqlDemandesDuPoste;

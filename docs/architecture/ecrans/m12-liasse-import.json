@@ -1,0 +1,10 @@
+{
+ "id": "m12-liasse-import",
+ "module": "M12",
+ "domaine": "Financier",
+ "libelleManifeste": "Import de la liasse fiscale",
+ "acces": "ouvert",
+ "titre": "Import de la liasse fiscale",
+ "description": "Importer la liasse déposée et le classeur de baseline en versions datées (source, date de dépôt, auteur), voir les versions et celle qui fait foi.",
+ "note": "Fiche rédigée pour le poste Baguidi (Direction, 16/11/2026, section 9 : la liasse déposée et le classeur de baseline sont des données déposées, importées en base avec leur source, leur date de dépôt et leur auteur) : écran sans équivalent à la maquette."
+}

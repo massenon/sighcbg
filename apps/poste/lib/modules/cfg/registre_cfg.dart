@@ -16,6 +16,7 @@ import 'cfb_notifications.dart';
 import 'cfb_regles.dart';
 import 'cfb_systeme.dart';
 import 'cfg_base_portable.dart';
+import 'cfg_fiches_aide.dart';
 import 'cfg_pair.dart';
 import 'cfg_validations_aib.dart';
 import 'cfg_smtp.dart';
@@ -48,4 +49,5 @@ final Map<String, ConstruireEcran> ecransCFG = {
   'cfg-smtp': (c, cfg) => const EcranSmtp(),
   'cfg-base-portable': (c, cfg) => const EcranBasePortable(),
   'cfg-validations-aib': (c, cfg) => const EcranValidationsAib(),
+  'cfg-fiches-aide': (c, cfg) => const EcranFichesAide(),
 };

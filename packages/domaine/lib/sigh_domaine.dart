@@ -143,6 +143,7 @@ export 'src/comptabilite/cpa_referentiels.dart';
 export 'src/comptabilite/cpa_ecritures.dart';
 export 'src/comptabilite/cpa_depenses.dart';
 export 'src/comptabilite/documents_fiscaux.dart';
+export 'src/comptabilite/documents_fiscaux_import.dart';
 export 'src/comptabilite/cpb_donnees.dart';
 export 'src/comptabilite/cpb_feuillets.dart';
 export 'src/comptabilite/cpb_seuil.dart';
@@ -208,6 +209,7 @@ export 'src/specialites/spec_travail.dart';
 // L'assistant (lots AST-0 et AST-1) : conversation locale en lecture seule, reconnaissance déterministe, catalogue d'intentions, filtrage par droits.
 export 'src/assistant/ast_texte.dart';
 export 'src/assistant/ast_catalogue.dart';
+export 'src/administration/fiches_aide.dart';
 export 'src/assistant/ast_reconnaissance.dart';
 export 'src/assistant/ast_contexte.dart';
 export 'src/assistant/ast_executeurs.dart' show ExecuteurAst, executeursAst;

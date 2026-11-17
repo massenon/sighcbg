@@ -13,6 +13,7 @@ import '../achats/factures_fournisseurs.dart' show detteFournisseurAValider, det
 import '../administration/adm_regles.dart' show admDisponibilite, admOrdreAppelRapide, admPerime;
 import '../comptabilite/cpa_plan.dart' show cpaPlanComptable;
 import '../droits/gestes_reserves.dart' show gesteReserve, gesteValiderAchats;
+import '../administration/fiches_aide.dart' show colFichesAide, ficheAideCitable;
 import '../hospitalisation/hos_regles.dart' show hosTousLits;
 import '../imagerie/cr_moteur.dart' show modaliteDeCodeExamen;
 import '../imagerie/img_demandes_etats.dart' show etatImagerie, modaliteDemandeImagerie;
@@ -1525,9 +1526,11 @@ ReponseAst _depuisFiche(ContexteAst cx, String id, String type, String quoi, Str
 
   bool permise(Map<String, Object?> f) => cx.roleAutorise((f['roles'] as List?) ?? const []);
 
-  final toutes = [for (final f in cx.col('fichesAide')) if (f['statut'] != 'archive' && f['type'] == type && score(f) > 0) f];
-  final validees = [for (final f in toutes) if (f['statut'] == 'validee' && permise(f)) f];
-  final proposees = toutes.where((f) => f['statut'] != 'validee' && permise(f)).length;
+  final toutes = [for (final f in cx.col(colFichesAide)) if (f['statut'] != 'archive' && f['type'] == type && score(f) > 0) f];
+  // UNE FICHE N'EST CITÉE QUE VALIDÉE AVEC SON VALIDATEUR NOMMÉ ET SA DATE (et, si elle engage un professionnel, son nom et sa date) : `ficheAideCitable`. Une fiche « validée » sans validateur
+  // (écrite à la main dans la base) compte parmi celles qui ne sont pas encore validées.
+  final validees = [for (final f in toutes) if (ficheAideCitable(f) && permise(f)) f];
+  final proposees = toutes.where((f) => !ficheAideCitable(f) && permise(f)).length;
   if (validees.isEmpty) return _pasDeFiche(id, quoi, proposees: proposees);
   validees.sort((a, b) => score(b).compareTo(score(a)));
   if (validees.length > 1 && score(validees[0]) == score(validees[1])) {
@@ -1541,6 +1544,7 @@ ReponseAst _depuisFiche(ContexteAst cx, String id, String type, String quoi, Str
     if (type == 'definition') '${f['definition'] ?? ''}' else for (var i = 0; i < etapes.length; i++) '${i + 1}. ${etapes[i]}',
     if (ecrans.isNotEmpty) 'Écran(s) : ${ecrans.map(cx.ecran).join(', ')}.',
     'Fiche validée${'${f['validePar'] ?? ''}'.isEmpty ? '' : ' par ${f['validePar']}'}${'${f['valideLe'] ?? ''}'.isEmpty ? '' : ' le ${_d(f['valideLe'])}'}.',
+    if ('${f['domainePro'] ?? ''}'.isNotEmpty) 'Relue par le professionnel : ${f['professionnel']} le ${_d(f['professionnelLe'])}.',
   ], [SourceAst(ecrans.isEmpty ? 'aide-apropos' : ecrans.first, 'fichesAide')]);
 }
 

@@ -518,6 +518,7 @@
     "m12-seuil-rentabilite",
     "m12-etats-financiers",
     "m12-baseline-2025",
+    "m12-liasse-import",
     "m12-aib",
     "m12-echeances",
     "m12-cloture",
@@ -709,6 +710,7 @@
     "cfg-comptabilite",
     "cfg-validations-aib",
     "cfg-notifications",
+    "cfg-fiches-aide",
     "cfg-compte",
     "cfg-modules",
     "cfg-systeme",
@@ -4086,6 +4088,24 @@
    ]
   },
   {
+   "id": "m12-liasse-import",
+   "label": "Import de la liasse fiscale",
+   "icone": "file-up",
+   "module": "M12",
+   "moduleLabel": "Comptabilité SYSCOHADA",
+   "domaine": "Financier",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "comptable",
+    "da",
+    "admin",
+    "direction"
+   ]
+  },
+  {
    "id": "m12-aib",
    "label": "Acompte sur impôt (AIB)",
    "icone": "percent",
@@ -5674,6 +5694,23 @@
    "id": "cfg-notifications",
    "label": "Notifications",
    "icone": "bell",
+   "module": "CFG",
+   "moduleLabel": "Configuration Clinique",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da",
+    "direction"
+   ]
+  },
+  {
+   "id": "cfg-fiches-aide",
+   "label": "Fiches d’aide de l’assistant",
+   "icone": "book-open-text",
    "module": "CFG",
    "moduleLabel": "Configuration Clinique",
    "domaine": "Système",

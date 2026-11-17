@@ -7214,6 +7214,16 @@
      "libelle": "Écrans ouverts",
      "valeur": "343",
      "indice": null
+    },
+    {
+     "libelle": "Écrans au périmètre",
+     "valeur": "346",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans ouverts",
+     "valeur": "344",
+     "indice": null
     }
    ],
    "onglets": [],
@@ -7549,13 +7559,6 @@
     6
    ],
    [
-    "M12",
-    "Comptabilité SYSCOHADA",
-    "book-open-check",
-    "Financier",
-    20
-   ],
-   [
     "M10",
     "Ressources humaines",
     "id-card",
@@ -7598,13 +7601,6 @@
     8
    ],
    [
-    "CFG",
-    "Configuration Clinique",
-    "sliders-horizontal",
-    "Système",
-    23
-   ],
-   [
     "IMP",
     "Importation de données",
     "file-up",
@@ -7638,6 +7634,20 @@
     "gauge",
     "Pilotage",
     23
+   ],
+   [
+    "M12",
+    "Comptabilité SYSCOHADA",
+    "book-open-check",
+    "Financier",
+    21
+   ],
+   [
+    "CFG",
+    "Configuration Clinique",
+    "sliders-horizontal",
+    "Système",
+    24
    ]
   ],
   "fermerM7Confirmation": "Fermer « Module — Achats & Fournisseurs » ? Le module M7 entier disparaîtra du méga-menu, de la recherche globale et de ses adresses, pour tous les rôles, administrateur compris. Aucune donnée n’est supprimée : la réouverture rend les écrans en l’état. Motif (consigné dans le journal d’audit) Annuler Fermer l’activité",
@@ -7691,6 +7701,16 @@
     {
      "libelle": "Écrans ouverts",
      "valeur": "334",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans au périmètre",
+     "valeur": "346",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans ouverts",
+     "valeur": "335",
      "indice": null
     }
    ],
@@ -7949,6 +7969,16 @@
      "libelle": "Écrans ouverts",
      "valeur": "343",
      "indice": null
+    },
+    {
+     "libelle": "Écrans au périmètre",
+     "valeur": "346",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans ouverts",
+     "valeur": "344",
+     "indice": null
     }
    ],
    "ecranActif": true
@@ -8167,6 +8197,16 @@
     {
      "libelle": "Écrans ouverts",
      "valeur": "332",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans au périmètre",
+     "valeur": "344",
+     "indice": null
+    },
+    {
+     "libelle": "Écrans ouverts",
+     "valeur": "333",
      "indice": null
     }
    ],

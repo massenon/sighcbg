@@ -48,6 +48,8 @@ void main() {
       gesteBaseExporter, gesteBaseImporter, gesteMajLeverBlocage,
       // Reprise d'identité d'un poste fileul (17/11/2026, décision 12) : émettre le code de reprise.
       gesteRepriseEmettre,
+      // Import daté de la liasse fiscale et validation des fiches d'aide de l'assistant (17/11/2026).
+      gesteDocumentsFiscauxImporter, gesteFichesAideValider,
     ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');

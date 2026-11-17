@@ -65,6 +65,10 @@
    "titre": "Notifications",
    "description": "Paramétrage des alertes adressées au personnel, par événement et par canal."
   },
+  "cfg-fiches-aide": {
+   "titre": "Fiches d’aide de l’assistant",
+   "description": "Rédiger, valider et archiver les fiches d’aide et de définition que l’assistant cite, avec la liste des fiches attendues et leur état."
+  },
   "cfg-organisation": {
    "titre": "Organisation & organigramme",
    "description": "Secteurs de la clinique, structure hiérarchique et rôles qui en découlent."
@@ -632,6 +636,10 @@
   "m12-baseline-2025": {
    "titre": "Baseline financière 2025",
    "description": "Compte de résultat réel de l’exercice 2025, servant de référence de comparaison à l’exercice courant."
+  },
+  "m12-liasse-import": {
+   "titre": "Import de la liasse fiscale",
+   "description": "Importer la liasse déposée et le classeur de baseline en versions datées (source, date de dépôt, auteur), voir les versions et celle qui fait foi."
   },
   "m12-bfr": {
    "titre": "Besoin en fonds de roulement",

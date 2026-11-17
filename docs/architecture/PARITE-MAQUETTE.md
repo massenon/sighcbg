@@ -203,6 +203,7 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `m12-balance` | Balance générale & âgée | M12 | 5 | 80 | porté |
 | `m12-banques` | Banques & rapprochements | M12 | 5 | — | porté |
 | `m12-baseline-2025` | Baseline 2025 | M12 | 5 | 37 | porté |
+| `m12-liasse-import` | Import de la liasse fiscale | M12 | — | — | porté |
 | `m12-bfr` | Besoin en fonds de roulement | M12 | 5 | 65 | porté |
 | `m12-budgets` | Budgets | M12 | 5 | — | porté |
 | `m12-cloture` | Exercices & clôtures | M12 | 4 | 42, 68, 70, 74, 78, 81, 85 | porté |
@@ -245,6 +246,7 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `cfg-modules` | Activité des modules | CFG | 3 | 27, 54 | porté |
 | `cfg-natures-facture` | Natures de facture | CFG | 3 | 16 | porté |
 | `cfg-notifications` | Notifications | CFG | 3 | — | porté |
+| `cfg-fiches-aide` | Fiches d’aide de l’assistant | CFG | — | — | porté |
 | `cfg-organisation` | Organisation & organigramme | CFG | 3 | 16 | porté |
 | `cfg-pair` | Échanges entre postes (mode pair) | CFG | 2 | 83 | porté |
 | `cfg-poste` | Ce poste (mode fileul / mère) | CFG | 2 | — | porté |

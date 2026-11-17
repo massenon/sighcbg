@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sigh_domaine/sigh_domaine.dart' as dom show metaMigree;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, DocumentsFiscaux, colDocumentsFiscaux, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes, ContenuDonnees, migrerDonnees, schemaCleMeta;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, DocumentsFiscaux, colDocumentsFiscaux, gardeFicheAide, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes, ContenuDonnees, migrerDonnees, schemaCleMeta;
 
 import 'persistance.dart';
 
@@ -493,6 +493,8 @@ class Magasin {
     'remboursements': 'M8',
     'facturesMere': 'M9',
     'facturesTiers': 'M9',
+    // Les fiches d'aide de l'assistant (17/11/2026) : rédigées et validées à l'écran de la configuration.
+    'fichesAide': 'CFG',
     'avoirsTiers': 'M9',
     'dispensations': 'M6',
     'emplacements': 'M6',
@@ -678,6 +680,8 @@ class Magasin {
   CollectionMagasin collection(String nom) {
     final neuve = !_c.containsKey(nom);
     final col = _collection(nom);
+    // La liasse déposée et le classeur sont lus par le registre du domaine : une collection créée À L'USAGE (poste sans jeu, premier import) le branche aussi.
+    if (neuve && nom == colDocumentsFiscaux) DocumentsFiscaux.brancher(() => col.toutes);
     // E724/E725 : le plan du jeu porte deux fiches au même numéro (244100, 631810). Comme la maquette (`assainirPlan`, une fois au premier accès), on garde la
     // fiche du document et on ARCHIVE le doublon (RG-14). Fait APRÈS la création de la collection : l'archivage journalise, donc ouvre `audit`.
     if (neuve && nom == 'comptes') {
@@ -714,7 +718,10 @@ class Magasin {
                     ? (a, m, e, r, avant, apres) => journaliser(a, m, e, r, null, null)
                     : journaliser),
             module: _modules[nom] ?? '—');
-        if (planningCollectionsSync.contains(nom)) c.prefixePoste = () => etiquettePoste;
+        // Une fiche d'aide VALIDÉE ne se réécrit pas, tenu AU MOTEUR (masquer un bouton ne protège rien) ; la réception d'une fiche de la mère ne passe pas par les gardes.
+        if (nom == 'fichesAide') c.garder((op, f) => gardeFicheAide(op, f, c.parId(f['id'])));
+        // Les fiches d'aide (17/11/2026) portent, comme le planning, l'étiquette du poste dans leur identifiant.
+        if (planningCollectionsSync.contains(nom) || nom == 'fichesAide') c.prefixePoste = () => etiquettePoste;
         if (_persistance != null) c.addListener(() => _marquerSale(nom));
         // `S.garder('ecritures', …)` de la maquette : la lecture seule d'un exercice clos est tenue AU MOTEUR, sur la collection — masquer un bouton ne
         // protège rien. La garde relit les exercices À CHAQUE écriture (une clôture validée ferme aussitôt).
