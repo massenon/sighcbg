@@ -981,6 +981,7 @@
     "consultation": "Consultation et agenda",
     "mere": "Console du poste mère",
     "support": "Contact de l'éditeur",
+    "numerisation": "Numérisation des dossiers papier",
     "listes_m4": "Listes de référence — M4 Maternité",
     "listes_m1": "Listes de référence — M1 Patients",
     "listes_m2": "Listes de référence — M2 Consultations",
@@ -2182,6 +2183,19 @@
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
+      "cle": "listes.socle.tranchesAgeStatistiquesPilotage",
+      "famille": "listes_socle",
+      "type": "texte",
+      "defaut": "4; 14; 24; 44; 64",
+      "libelle": "Tranches d'âge des statistiques d'examens du pilotage",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les BORNES SUPÉRIEURES des tranches d'âge, séparées par un point-virgule (« ; »), croissantes : « 4; 14; 24; 44; 64 ». La première tranche commence à 0 an, la dernière est ouverte (« 65 ans et plus »). Entiers de 0 à 150, strictement croissants ; sinon la valeur d'attente s'applique. Se règle par une nouvelle version datée (jamais écrasée). Valeur d'attente = le découpage que portait l'écran ; les deux écrans de statistiques d'examens (laboratoire et pilotage) ont chacun le leur, car les vecteurs de la maquette diffèrent : pour les aligner, recopier les mêmes bornes dans les deux réglages. À valider par la Direction (format DHIS2 attendu).",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
       "cle": "listes.socle.services",
       "famille": "listes_socle",
       "type": "texte",
@@ -2218,6 +2232,45 @@
       "branche": true,
       "sensible": false,
       "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patAllergies), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "numerisation.fondsPapierDossiers",
+      "famille": "numerisation",
+      "type": "entier",
+      "defaut": 18000,
+      "libelle": "Fonds de dossiers papier à reprendre",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le nombre de dossiers papier recensés dans les archives de la clinique : c'est le dénominateur du plan de numérisation. Entier de 0 à 1 000 000. Ce n'est pas une mesure du logiciel (le papier ne s'y compte pas) : à corriger après chaque recensement. Si le répertoire des patients compte plus de dossiers que ce fonds, c'est le répertoire qui est retenu et l'écran le dit.",
+      "source": "Rapport de cadrage : « environ 18 000 dossiers patients » — valeur d'attente documentaire, à confirmer par un recensement"
+    },
+    {
+      "cle": "numerisation.fenetreDossiersActifsMois",
+      "famille": "numerisation",
+      "type": "entier",
+      "defaut": 24,
+      "libelle": "Dossier « actif » : durée de la fenêtre (mois)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un dossier est actif, donc prioritaire à la numérisation, quand le patient a eu une consultation, une admission ou une analyse au cours de cette fenêtre. Entier de 1 à 120. Valeur d'attente : 24 mois, reprise du libellé de l'écran (« vus au cours des 24 derniers mois »), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.lotsNumerisation",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "hospitalises=Lot 1 — Hospitalisations en cours; chroniques=Lot 2 — Patients suivis (chroniques); maternite=Lot 3 — Maternité et suivis prénataux; assures=Lot 4 — Patients assurés; recents=Lot 5 — Consultations récentes; inactifs=Lot 6 — Fonds inactif (à la demande)",
+      "libelle": "Lots de reprise du plan de numérisation",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les lots, dans leur ORDRE DE PRIORITÉ, au format « critère=Libellé ». Un patient appartient au premier lot dont il remplit le critère. Critères connus : hospitalises (admission en cours), chroniques (non calculable : aucun champ ne marque une affection chronique), maternite (suivi de grossesse), assures (dossier avec assureur), recents (activité dans la fenêtre des dossiers actifs), inactifs (tout le reste du fonds). Un critère inconnu s'affiche « non calculable ». Se règle par une nouvelle version datée. Valeur d'attente reprise de la maquette (le lot 5 y portait « 2025-2026 » : il suit désormais la fenêtre réglée).",
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
@@ -2286,6 +2339,19 @@
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
+      "cle": "listes.m3.originesReleveSurveillance",
+      "famille": "listes_m3",
+      "type": "texte",
+      "defaut": "accueil=Accueil|info; hospitalisation=Hospitalisation|neutre",
+      "libelle": "Sources d'un relevé de la feuille de surveillance",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entrées « code=Libellé|ton », séparées par un point-virgule (« ; ») : le CODE est ce que la fiche porte et ce que la logique compare, le libellé et le ton (neutre, navy, succes, attention, danger, info) sont l'affichage. Renommer un libellé ou changer un ton ne change aucune décision ni aucune fiche. Se règle par une nouvelle version datée (jamais écrasée). Une liste vide ou illisible retombe sur la liste d'attente. Valeur d'attente reprise du code, à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
       "cle": "listes.m3.techniquesAnesthesie",
       "famille": "listes_m3",
       "type": "texte",
@@ -2296,6 +2362,19 @@
       "branche": true,
       "sensible": false,
       "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (blocTechniques), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m5.tranchesAgeStatistiques",
+      "famille": "listes_m5",
+      "type": "texte",
+      "defaut": "5; 15; 25; 45; 65",
+      "libelle": "Tranches d'âge des statistiques du laboratoire",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les BORNES SUPÉRIEURES des tranches d'âge, séparées par un point-virgule (« ; »), croissantes : « 5; 15; 25; 45; 65 ». La première tranche commence à 0 an, la dernière est ouverte (« 66 ans et plus »). Entiers de 0 à 150, strictement croissants ; sinon la valeur d'attente s'applique. Se règle par une nouvelle version datée (jamais écrasée). Valeur d'attente = le découpage que portait l'écran ; les deux écrans de statistiques d'examens (laboratoire et pilotage) ont chacun le leur, car les vecteurs de la maquette diffèrent : pour les aligner, recopier les mêmes bornes dans les deux réglages. À valider par la Direction (format DHIS2 attendu).",
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
@@ -2507,6 +2586,19 @@
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
+      "cle": "listes.m10.naturesPrestationPersonnel",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "consultation=Consultation|info; analyse=Analyse|navy; hospitalisation=Hospitalisation|attention",
+      "libelle": "Natures de prestation prises en charge pour le personnel",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entrées « code=Libellé|ton », séparées par un point-virgule (« ; ») : le CODE est ce que la fiche porte et ce que la logique compare, le libellé et le ton (neutre, navy, succes, attention, danger, info) sont l'affichage. Renommer un libellé ou changer un ton ne change aucune décision ni aucune fiche. Se règle par une nouvelle version datée (jamais écrasée). Une liste vide ou illisible retombe sur la liste d'attente. Valeur d'attente reprise du code, à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
       "cle": "listes.m10.typesCouverture",
       "famille": "listes_m10",
       "type": "texte",
@@ -2663,6 +2755,19 @@
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {
+      "cle": "listes.m13.motifsInterventionUrgents",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Urgence médicale; Urgence obstétricale",
+      "libelle": "Motifs d'intervention d'ambulance marqués urgents",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les libellés de « Motifs d'une intervention d'ambulance » qui MARQUENT une fiche comme urgente (badge rouge), séparés par un point-virgule (« ; »). Ce sont des entrées de la liste « Motifs d'une intervention d'ambulance » : y ajouter un libellé crée un type urgent, en retirer un le rend ordinaire, sans toucher aux fiches saisies. Se règle par une nouvelle version datée (jamais écrasée). Valeur d'attente reprise du code (qui marquait « Urgence »), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
       "cle": "listes.m13.categoriesMateriel",
       "famille": "listes_m13",
       "type": "texte",
@@ -2790,6 +2895,19 @@
       "branche": true,
       "sensible": false,
       "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agTypesRdv), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.typesRendezvousUrgents",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Urgence",
+      "libelle": "Types de rendez-vous marqués urgents",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les libellés de « Types de rendez-vous » qui MARQUENT une fiche comme urgente (badge rouge), séparés par un point-virgule (« ; »). Ce sont des entrées de la liste « Types de rendez-vous » : y ajouter un libellé crée un type urgent, en retirer un le rend ordinaire, sans toucher aux fiches saisies. Se règle par une nouvelle version datée (jamais écrasée). Valeur d'attente reprise du code (qui marquait « Urgence »), à valider par la Direction.",
       "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
     },
     {

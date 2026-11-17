@@ -289,6 +289,8 @@ const ECARTES = [
   ['G', /shell\/coque\.dart$/, null, 'nom de domaine du ruban (manifeste)'],
   ['G', /rapports\/rap_regles\.dart$/, null, 'identifiant de section d’un modèle de rapport (toléré au cliquet des rôles)'],
   ['G', /stock\/points\.dart$/, null, 'faux positif (texte formaté)'],
+  ['G', /m9\/facture_tiers_piece\.dart$/, /formuleArrete/, 'faux positif : la formule d’arrêté est LUE de l’identité de la clinique (`i.formuleArrete`), le littéral n’est que le gabarit « formule : montant en lettres »'],
+  ['G', /apps\/web\/config\/relais\.php$/, /(twilio|nexmo)/, 'adresse du service d’un fournisseur de SMS : le fichier de configuration EST le réglage (surchargeable par le .env, `RELAIS_SMS_TWILIO_URL_BASE` / `RELAIS_SMS_VONAGE_URL`) ; ce n’est pas une valeur de clinique mais le contrat d’une API tierce'],
   // H — barèmes
   ['H', /hospitalisation\/hos_regles\.dart$/, /hosEchelles|HosEchelle/, 'graduations d’affichage de la feuille de température'],
   ['H', /m12\/cpb_feuillets\.dart$/, null, 'étiquettes de graphique'],
