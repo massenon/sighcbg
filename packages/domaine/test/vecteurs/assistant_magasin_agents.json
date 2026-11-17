@@ -1,5 +1,5 @@
 {
- "_doc": "Le MAGASIN DE MESURE du jeu des questions d'agents (relecture du 16/11/2026) : des fiches d'EXEMPLE neutres, aucune identité réelle. L'outil `tool/mesure_assistant.dart` y fait répondre le MOTEUR COMPLET (reconnaissance, droits de la matrice rbac.json, exécuteur) sous le rôle de chaque question : un refus de droit ou un « non calculable » ne se juge qu'à la réponse, pas à la reconnaissance. Date de référence : 2026-11-14. Les mouvements de stock sont écrits pour que EXEMPLE/Article se reconstitue au 12 octobre (25 au total, 20 au gros, 5 au détail) et que EXEMPLE/Incertain ne se reconstitue PAS (régularisation d'inventaire sans sens).",
+ "_doc": "Le MAGASIN DE MESURE du jeu des questions d'agents (relecture du 16/11/2026) : des fiches d'EXEMPLE neutres, aucune identité réelle. L'outil `tool/mesure_assistant.dart` y fait répondre le MOTEUR COMPLET (reconnaissance, droits de la matrice rbac.json, exécuteur) sous le rôle de chaque question : un refus de droit ou un « non calculable » ne se juge qu'à la réponse, pas à la reconnaissance. Date de référence : 2026-11-14. Les mouvements de stock sont écrits pour que EXEMPLE/Article se reconstitue au 12 octobre (25 au total, 20 au gros, 5 au détail) et que EXEMPLE/Incertain ne se reconstitue PAS (régularisation d'inventaire sans sens). Enrichi pour les 100 questions RÉELLES de la Direction (17/11/2026, E4500) : courriers du registre, journal des fichiers de sauvegarde, inventaire avec une ligne « non comptée », factures datées par ligne (catégorie) et par mode de paiement, une facture assurée ancienne, une commande de réactifs transmise, un tarif d'échographie obstétricale, un article d'anesthésie, une admission en maternité (le plan des lits est celui de référence du domaine). Aucune identité réelle.",
  "aujourdhui": "2026-11-14",
  "agent": "AGENT Exemple",
  "collections": {
@@ -53,10 +53,13 @@
     "statutMecef": "valide",
     "lignes": [
      {
+      "categorie": "consultation",
+      "montant": 5000,
       "montantRegle": 3500,
       "payeLe": "2026-11-13T09:00:00.000Z"
      }
-    ]
+    ],
+    "modePaiement": "especes"
    },
    {
     "id": "F2",
@@ -71,9 +74,12 @@
     "statutMecef": "en_attente",
     "lignes": [
      {
+      "categorie": "medicament",
+      "montant": 2000,
       "montantRegle": 0
      }
-    ]
+    ],
+    "modePaiement": "especes"
    },
    {
     "id": "F3",
@@ -88,8 +94,55 @@
     "statutMecef": "valide",
     "lignes": [
      {
+      "categorie": "analyse",
+      "montant": 8000,
       "montantRegle": 8000,
       "payeLe": "2026-11-04T10:00:00.000Z"
+     }
+    ],
+    "modePaiement": "mtn"
+   },
+   {
+    "id": "F4",
+    "numero": "FN-2026-00004",
+    "patientId": "P4",
+    "patientCode": "CBG/104/26",
+    "date": "2026-11-14",
+    "type": "Consultation",
+    "montantTTC": 5000,
+    "reliquat": 0,
+    "statutPaiement": "soldee",
+    "statutMecef": "valide",
+    "modePaiement": "moov",
+    "lignes": [
+     {
+      "categorie": "consultation",
+      "montant": 5000,
+      "montantRegle": 5000,
+      "payeLe": "2026-11-14T08:00:00.000Z"
+     }
+    ]
+   },
+   {
+    "id": "F5",
+    "numero": "FN-2026-00005",
+    "patientId": "P3",
+    "patientCode": "CBG/103/26",
+    "date": "2026-10-20",
+    "type": "Laboratoire",
+    "montantTTC": 10000,
+    "reliquat": 0,
+    "statutPaiement": "soldee",
+    "statutMecef": "valide",
+    "modePaiement": "especes",
+    "assureur": "EXEMPLE/Assureur",
+    "partAssurance": 7000,
+    "lignes": [
+     {
+      "categorie": "analyse",
+      "montant": 10000,
+      "montantRegle": 3000,
+      "payeLe": "2026-10-20T10:00:00.000Z"
      }
     ]
    }
@@ -111,6 +164,12 @@
    {
     "code": "IM01",
     "libelle": "Échographie pelvienne",
+    "statut": "actif",
+    "assurable": true
+   },
+   {
+    "code": "IM02",
+    "libelle": "Échographie obstétricale",
     "statut": "actif",
     "assurable": true
    }
@@ -138,6 +197,14 @@
     "prixNonAssure": 12000,
     "etatAssure": "montant",
     "prixAssure": 9000,
+    "statut": "valide"
+   },
+   {
+    "code": "IM02",
+    "version": 1,
+    "prixNonAssure": 15000,
+    "etatAssure": "montant",
+    "prixAssure": 12000,
     "statut": "valide"
    }
   ],
@@ -215,6 +282,17 @@
     "stockDetail": 0,
     "seuilAlerte": 2,
     "cump": 15000
+   },
+   {
+    "id": "A7",
+    "designation": "EXEMPLE/Anesthésique",
+    "unite": "Ampoule",
+    "categorie": "medicament",
+    "stock": 8,
+    "stockGros": 0,
+    "stockDetail": 8,
+    "seuilAlerte": 5,
+    "cump": 400
    }
   ],
   "lots": [
@@ -297,33 +375,57 @@
     "quantite": 100
    }
   ],
-  "inventaires": [],
+  "inventaires": [
+   {
+    "id": "INV1",
+    "reference": "INV-2026-001",
+    "date": "2026-11-13",
+    "type": "Mensuel",
+    "magasin": "gros",
+    "statutInv": "valide",
+    "nbArticles": 2,
+    "nbEcarts": 0,
+    "valeurEcart": 0,
+    "lignes": [
+     {
+      "code": "A1",
+      "designation": "EXEMPLE/Article",
+      "theorique": 30,
+      "physique": 30,
+      "ecart": 0
+     },
+     {
+      "code": "A2",
+      "designation": "Gants chirurgicaux",
+      "theorique": 500,
+      "nonCompte": true
+     }
+    ]
+   }
+  ],
   "admissions": [
    {
     "id": "AD1",
     "statut": "en_cours",
-    "lit": "A2",
+    "lit": "A2 LIT1",
     "patient": "EXEMPLE Alpha",
     "patientId": "P1",
     "patientCode": "CBG/101/26",
     "dateEntree": "2026-11-12",
     "diagnosticEntree": "Motif d’exemple"
-   }
-  ],
-  "lits": [
-   {
-    "id": "LT1",
-    "numero": "A1"
    },
    {
-    "id": "LT2",
-    "numero": "A2"
-   },
-   {
-    "id": "LT3",
-    "numero": "A3"
+    "id": "AD2",
+    "statut": "en_cours",
+    "lit": "B1 LIT1",
+    "patient": "TEMOIN Gamma",
+    "patientId": "P3",
+    "patientCode": "CBG/103/26",
+    "dateEntree": "2026-11-13",
+    "diagnosticEntree": "Motif d’exemple"
    }
   ],
+  "lits": [],
   "demandesAnalyses": [
    {
     "id": "D1",
@@ -379,6 +481,13 @@
     "id": "O1",
     "numero": "ORD-2026-00001",
     "date": "2026-11-10T08:00:00.000Z",
+    "patientId": "P1",
+    "patientCode": "CBG/101/26"
+   },
+   {
+    "id": "O2",
+    "numero": "ORD-2026-00002",
+    "date": "2026-11-13T08:00:00.000Z",
     "patientId": "P1",
     "patientCode": "CBG/101/26"
    }
@@ -569,6 +678,23 @@
     "statutCommande": "attente_validation",
     "date": "2026-11-10",
     "montant": 90000
+   },
+   {
+    "id": "C2",
+    "reference": "BC-2",
+    "fournisseur": "FRN",
+    "fournisseurNom": "EXEMPLE/Fournisseur",
+    "statutCommande": "transmise",
+    "date": "2026-11-12",
+    "montant": 45000,
+    "lignes": [
+     {
+      "produitId": "A6",
+      "produit": "Réactif NFS",
+      "quantite": 2,
+      "montant": 45000
+     }
+    ]
    }
   ],
   "fournisseurs": [
@@ -685,6 +811,58 @@
     "poste": "caisse",
     "lue": false,
     "libelle": "Détail à ne pas recopier"
+   }
+  ],
+  "courriers": [
+   {
+    "id": "CR1",
+    "reference": "COU-2026-0001",
+    "sens": "arrivee",
+    "date": "2026-11-12",
+    "correspondant": "EXEMPLE/Assureur",
+    "objet": "Objet d’exemple",
+    "nature": "Lettre",
+    "traitement": "en_attente"
+   },
+   {
+    "id": "CR2",
+    "reference": "COU-2026-0002",
+    "sens": "arrivee",
+    "date": "2026-11-13",
+    "correspondant": "Structure EXEMPLE",
+    "objet": "Retour concernant CBG/101/26",
+    "nature": "Lettre",
+    "traitement": "traite"
+   },
+   {
+    "id": "CR3",
+    "reference": "COU-2026-0003",
+    "sens": "depart",
+    "date": "2026-11-13",
+    "correspondant": "EXEMPLE/Assureur",
+    "objet": "Réponse d’exemple",
+    "nature": "Lettre",
+    "traitement": "traite"
+   }
+  ],
+  "fichiersSauvegarde": [
+   {
+    "id": "BKP1",
+    "statut": "actif",
+    "fichier": "sigh-exemple-20261108.json",
+    "date": "2026-11-08",
+    "heure": "01:00",
+    "portee": "Base complète",
+    "genereePar": "Sauvegarde hebdomadaire automatique"
+   },
+   {
+    "id": "BKP2",
+    "statut": "actif",
+    "fichier": "sigh-exemple-20261101.json",
+    "date": "2026-11-01",
+    "heure": "01:00",
+    "portee": "Base complète",
+    "genereePar": "Sauvegarde hebdomadaire automatique"
    }
   ]
  }

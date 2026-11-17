@@ -115,7 +115,7 @@ const List<({List<String> mots, String ecran})> ecransEcritureAst = [
 ];
 
 
-/// Les 35 lignes du tableau de couverture, toutes LIVRÉES : I26 et I27 répondent « pas de fiche » tant qu'aucune fiche n'est validée ; I28 à I35 viennent de la relecture des 100
+/// Les 36 lignes du tableau de couverture, toutes LIVRÉES : I26 et I27 répondent « pas de fiche » tant qu'aucune fiche n'est validée ; I28 à I36 viennent de la relecture des 100
 /// questions d'agents (16/11/2026), chacune lue sur un écran existant et sous le droit de cet écran.
 const List<IntentionAst> catalogueAstDefaut = [
   IntentionAst(
@@ -170,7 +170,7 @@ const List<IntentionAst> catalogueAstDefaut = [
     sources: ['collection `admissions` : statut (en_cours), lit, chambre, dateEntree', 'collections `lits` et `chambres` (plan des lits)'],
     statut: 'calculable',
     raison: 'Les admissions en cours se lisent ; les lits libres exigent le plan des lits renseigné : sans lui, la réponse dit « non calculable » et ne devine pas.',
-    indices: [('hospitalis*', 4), ('lits libres', 5), ('lit libre', 5), ('dans le lit', 4), ('lit', 3), ('lits', 3), ('occupe', 2), ('admission', 2), ('admissions', 2), ('chambre', 1), ('hospitalises', 4)],
+    indices: [('hospitalis*', 4), ('lits libres', 5), ('lit libre', 5), ('dans le lit', 4), ('lit', 3), ('lits', 3), ('occupe', 2), ('admission', 2), ('admissions', 2), ('chambre', 1), ('hospitalises', 4), ('dans quel lit', 5), ('quel lit', 4)],
     refus: ['LECTURE_NON_AUTORISEE', 'AUCUN_RESULTAT', 'NON_CALCULABLE'],
     exemple: 'Qui est hospitalisé en ce moment ?',
   ),
@@ -208,7 +208,7 @@ const List<IntentionAst> catalogueAstDefaut = [
     id: 'I07',
     groupe: 'Pharmacie et stocks (M6)',
     libelle: 'Niveau d’un article (total, gros, détail), seuil, lots dans l’ordre FEFO',
-    ecransLecture: ['m6-produits', 'm6-stock-gros', 'm6-stock-detail', 'm6-lots'],
+    ecransLecture: ['m6-produits', 'm6-stock-gros', 'm6-stock-detail', 'm6-lots', 'm5-reactifs'],
     sources: [
       'packages/domaine/lib/src/stock/stock.dart : ordreFefo, etatStock, seuilFixe ; collections `produits` (stock, stockGros, stockDetail, seuilAlerte, emplacement) et `lots` (datePeremption, quantiteRestante, RG-05)',
       'packages/domaine/lib/src/assistant/ast_stock_date.dart : reconstituerStockA ; collection `mouvements` (date, type, quantite, stockType, sens)',
@@ -216,7 +216,7 @@ const List<IntentionAst> catalogueAstDefaut = [
     statut: 'calculable',
     raison: 'Le stock se lit sur la fiche article ; l’ordre de sortie est le tri des lots par péremption (RG-05). À une date PASSÉE (décision du 16/11/2026), le stock est RECONSTITUÉ : stock actuel moins les mouvements postérieurs, par magasin ; '
         'un mouvement illisible (sans date, sans quantité, de sens inconnu), un stock actuel incohérent ou une reconstitution négative rendent « non calculable », jamais zéro.',
-    indices: [('stock', 3), ('combien reste', 4), ('il reste', 2), ('quantite', 2), ('par lot', 2), ('lot', 1), ('lots', 1), ('fefo', 3), ('sortir en premier', 4), ('disponible', 1), ('combien de', 2), ('en rayon', 2), ('on a encore', 4), ('encore du', 3), ('encore des', 3)],
+    indices: [('stock', 3), ('combien reste', 4), ('il reste', 2), ('quantite', 2), ('par lot', 2), ('lot', 1), ('lots', 1), ('fefo', 3), ('sortir en premier', 4), ('disponible', 1), ('combien de', 2), ('en rayon', 2), ('on a encore', 4), ('encore du', 3), ('encore des', 3), ('je sors', 3), ('sors en premier', 4), ('quel lot', 4), ('y avait', 3), ('pharmacie', 2)],
     requis: ['article'],
     historique: true,
     refus: ['LECTURE_NON_AUTORISEE', 'PRECISION_REQUISE', 'AUCUN_RESULTAT', 'HOMONYMES', 'NON_CALCULABLE'],
@@ -355,18 +355,19 @@ const List<IntentionAst> catalogueAstDefaut = [
     id: 'I17',
     groupe: 'Patients (M1)',
     libelle: 'Vue du dossier : ordonnances, pièces, courriers, compte rendu opératoire, anesthésie',
-    ecransLecture: ['m2-ordonnances', 'm1-pieces', 'm1-reference', 'm1-contre-reference', 'm3-bloc-cro', 'm3-cr-anesthesie', 'm3-cpa'],
+    ecransLecture: ['m2-ordonnances', 'm1-pieces', 'm1-reference', 'm1-contre-reference', 'm13-courriers', 'm3-bloc-cro', 'm3-cr-anesthesie', 'm3-cpa'],
     sources: [
       'collection `ordonnances` : numero, date, patientCode',
       'collection `pieces` : reference, libelle, dateDelivrance, patientCode',
       'collections `fichesReference` et `contreReferences` (courriers de référence) : numero, patientCode',
       'collections `crOperatoires`, `crAnesthesie`, `cpa` : reference, dateOperation, patientCode',
+      'collection `courriers` (registre du courrier, `m13-courriers`) : reference, sens, date, correspondant, nature — aucun lien structuré avec un dossier : le courrier d’un patient est celui dont l’objet ou les observations portent son code',
     ],
     statut: 'petit_lot',
     raison: 'Vue unifiée élargie (décision du 16/11/2026) : chaque nature n’est lue que si l’agent voit SON écran, et seulement sa référence et sa date (jamais le contenu) ; les comptes rendus du bloc suivent en plus la catégorie « hospitalisation et surveillance ». '
         'Les documents numérisés (`documentsPatient`) suivent leur propre droit (zone 2) et ne sont pas lus ici.',
     indices: [
-      ('courrier*', 3), ('ordonnance*', 5), ('certificat*', 4), ('document*', 2), ('piece*', 3), ('attestation*', 3), ('compte rendu operatoire', 6), ('cro', 4), ('anesthesi*', 4),
+      ('courrier*', 5), ('ordonnance*', 5), ('certificat*', 4), ('document*', 2), ('piece*', 3), ('attestation*', 3), ('compte rendu operatoire', 6), ('cro', 4), ('anesthesie', 4), ('fiche d anesthesie', 6),
       ('consultation pre anesthesique', 6), ('fiche de reference', 5), ('contre reference', 5), ('tout le dossier', 5), ('dossier complet', 5),
     ],
     requis: ['patient'],
@@ -392,12 +393,12 @@ const List<IntentionAst> catalogueAstDefaut = [
     id: 'I19',
     groupe: 'Laboratoire (M5)',
     libelle: 'État d’une demande d’analyse, résultats RENDUS seulement',
-    ecransLecture: ['m5-demandes', 'm5-resultats'],
-    sources: ['packages/domaine/lib/src/labo/res_etats.dart : etatResultat', 'packages/domaine/lib/src/labo/res_habilitations.dart : peutVoirResultat (deux verrous, fonction, secteur)', 'collection `demandesAnalyses`'],
+    ecransLecture: ['m5-demandes', 'm5-resultats', 'm1-externe', 'm2-imagerie-demandes', 'm2-dashboard-imagerie', 'm2-imagerie'],
+    sources: ['packages/domaine/lib/src/labo/res_etats.dart : etatResultat', 'packages/domaine/lib/src/labo/res_habilitations.dart : peutVoirResultat (deux verrous, fonction, secteur)', 'collection `demandesAnalyses`', 'collection `demandesImagerie` (échographie, radiographie, mammographie, scanner, IRM : états demandée → payée → exécutée → validée ; statut seul, jamais le compte rendu)'],
     statut: 'calculable',
     raison: 'L’état d’une demande est public aux postes habilités ; un RÉSULTAT ne se montre que s’il est validé biologiquement ET que l’agent y a droit (habilitation métier et catégorie sensible). Sinon la réponse dit pourquoi. '
         'Sans patient ni code de demande (« les demandes encore en attente »), les demandes NON RENDUES sont comptées par état, sans aucun patient ni résultat cité.',
-    indices: [('analyse*', 4), ('demande d analyse', 4), ('resultat*', 4), ('echo', 3), ('imagerie', 2), ('radio', 2), ('hemogramme', 1), ('nfs', 3), ('valide', 1), ('etat de la demande', 3), ('bilan', 2), ('est revenu*', 3), ('sont la', 2)],
+    indices: [('analyse*', 4), ('demande d analyse', 4), ('resultat*', 4), ('echo', 3), ('imagerie', 2), ('radio', 2), ('hemogramme', 1), ('nfs', 3), ('valide', 1), ('etat de la demande', 3), ('bilan', 2), ('est revenu*', 3), ('sont la', 2), ('rendu*', 3), ('demande d imagerie', 5), ('examen* d imagerie', 5)],
     historique: true,
     refus: ['LECTURE_NON_AUTORISEE', 'PRECISION_REQUISE', 'AUCUN_RESULTAT', 'HOMONYMES'],
     exemple: 'Où en sont les analyses de EXEMPLE/Patient ?',
@@ -420,7 +421,7 @@ const List<IntentionAst> catalogueAstDefaut = [
     id: 'I21',
     groupe: 'Pilotage',
     libelle: 'Indicateurs du jour (consultations, admissions, analyses, factures)',
-    ecransLecture: ['m2-consultations', 'm3-admissions', 'm5-demandes', 'm8-factures'],
+    ecransLecture: ['m2-consultations', 'm2-stats-consultations', 'm3-admissions', 'm3-stats-hospitalisations', 'm5-demandes', 'm8-factures'],
     sources: ['collections `consultations`, `admissions`, `demandesAnalyses`, `factures` (comptes par jour)'],
     statut: 'calculable',
     raison: 'Chaque compte n’est donné que pour les écrans que l’agent voit ; les autres sont dits « hors de votre périmètre » et non comptés à zéro.',
@@ -486,11 +487,11 @@ const List<IntentionAst> catalogueAstDefaut = [
     groupe: 'Aide',
     libelle: 'Procédures : comment faire, où saisir, qui valide',
     ecransLecture: [],
-    sources: ['aucune : aucune base de connaissances validée n’existe dans le dépôt (écran `aide-apropos` : texte fixe sur l’éditeur et le support)'],
+    sources: ['collection `fichesAide` (type aide : titre, motsCles, etapes, ecrans, roles facultatif, statut validee, validePar, valideLe) — AUCUNE fiche n’est livrée : le contenu est écrit et validé par la Direction (écran `aide-apropos` : texte fixe sur l’éditeur et le support)'],
     statut: 'petit_lot',
     raison: 'Reconnue et LIVRÉE pour dire « pas de fiche » (décision du 16/11/2026) : le contenu des procédures n’existe pas, l’inventer serait précisément ce que l’assistant s’interdit. '
-        'Tant qu’aucune fiche n’est écrite et validée par la Direction, la réponse est « pas de fiche validée », jamais un mode d’emploi improvisé.',
-    indices: [('comment faire', 6), ('comment', 4), ('ou je saisis', 5), ('ou saisir', 5), ('procedure', 4), ('mode d emploi', 6)],
+        'Le MÉCANISME est prêt (fiche validée citée avec son validateur, fiche réservée à des rôles, fiche proposée jamais citée) ; tant qu’aucune fiche n’est écrite et validée par la Direction, la réponse est « pas de fiche validée », jamais un mode d’emploi improvisé.',
+    indices: [('comment faire', 6), ('comment', 4), ('ou je saisis', 5), ('ou saisir', 5), ('procedure', 4), ('mode d emploi', 6), ('ou je note', 6), ('ou on note', 6), ('ou noter', 6)],
     refus: ['PAS_DE_FICHE'],
     exemple: 'Comment enregistrer une sortie contre avis médical ?',
   ),
@@ -499,7 +500,7 @@ const List<IntentionAst> catalogueAstDefaut = [
     groupe: 'Aide',
     libelle: 'Glossaire et règles de gestion (« c’est quoi… »)',
     ecransLecture: [],
-    sources: ['aucune : les règles RG-01 à RG-14 vivent dans la documentation du dépôt, pas dans une collection du poste'],
+    sources: ['collection `fichesAide` (type definition : titre, motsCles, definition, statut validee, validePar, valideLe) — AUCUNE fiche n’est livrée ; les règles RG-01 à RG-14 vivent dans la documentation du dépôt, pas dans une collection du poste'],
     statut: 'petit_lot',
     raison: 'Reconnue et LIVRÉE pour dire « pas de fiche » (décision du 16/11/2026) : aucune fiche de glossaire validée n’est portée au magasin du poste. La réponse le dit au lieu de définir de mémoire.',
     indices: [('c est quoi', 6), ('c quoi', 6), ('que veut dire', 6), ('qu est ce que', 3), ('qu est ce qu une', 6), ('qu est ce qu un', 6), ('definition*', 5), ('signifie', 5), ('veut dire quoi', 6)],
@@ -612,6 +613,22 @@ const List<IntentionAst> catalogueAstDefaut = [
     historique: true,
     refus: ['LECTURE_NON_AUTORISEE', 'AUCUN_RESULTAT'],
     exemple: 'Qui est en congé cette semaine ?',
+  ),
+  // --- Intention ajoutée par la relecture RÉELLE des 100 questions (Q3, décision du 16/11/2026 : « intention dernière sauvegarde à ajouter »). ---
+  IntentionAst(
+    id: 'I36',
+    groupe: 'Sécurité (M14)',
+    libelle: 'Dernière sauvegarde enregistrée au poste',
+    ecransLecture: ['m14-sauvegardes', 'mere-sauvegardes'],
+    sources: ['collection `fichiersSauvegarde` (journal des fichiers de sauvegarde du poste, écran `m14-sauvegardes`) : fichier, date, heure, portee, genereePar'],
+    statut: 'calculable',
+    raison: 'La date de la sauvegarde la plus récente du JOURNAL des fichiers du poste. L’état du service de sauvegarde de la mère (dernière sauvegarde chiffrée, vérification de restauration) n’est pas lu par l’assistant : il se lit à l’écran de la mère, et la réponse le dit. '
+        'Un journal vide se dit « aucune sauvegarde enregistrée », jamais « la dernière est ancienne ».',
+    indices: [('sauvegarde*', 7), ('backup*', 6), ('derniere sauvegarde', 9), ('sauvegarde faite', 3)],
+    futurOk: true,
+    historique: true,
+    refus: ['LECTURE_NON_AUTORISEE', 'AUCUN_RESULTAT'],
+    exemple: 'Quand a été faite la dernière sauvegarde ?',
   ),
 ];
 

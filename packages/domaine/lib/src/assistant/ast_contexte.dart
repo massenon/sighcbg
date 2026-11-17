@@ -75,6 +75,12 @@ class ContexteAst {
 
   String get jour => astIso(maintenant);
 
+  /// Une fiche d'aide RÉSERVÉE à des rôles (la liste `roles` est une DONNÉE de la fiche, jamais un nom écrit ici) ne se montre qu'à eux ; sans liste, elle est pour tous.
+  bool roleAutorise(Iterable<Object?> roles) {
+    final liste = {for (final r in roles) '$r'};
+    return liste.isEmpty || liste.intersection({role}).isNotEmpty;
+  }
+
   /// Les fiches ACTIVES d'une collection, gelées.
   List<FicheAst> col(String nom) => [
         for (final f in lire(nom))
