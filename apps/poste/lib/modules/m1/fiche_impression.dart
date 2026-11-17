@@ -330,11 +330,10 @@ List<BlocPiece> blocsDossierComplet(ContexteEcran c, Fiche p) {
       if (lies.contains(cr['id'])) continue;
       lignes.add({'dem': null, 'cr': cr, 'date': cr['date'] ?? cr['_creeLe'], 'examen': cr['examen']});
     }
-    const noms = {'echographie': 'Échographie', 'radiographie': 'Radiographie', 'mammographie': 'Mammographie', 'scanner': 'Scanner', 'irm': 'IRM'};
     blocs.add(tab('Imagerie médicale', [
       ('Date', (l) => dateFrM1(l['date'])),
       ('Examen', (l) => t(l['examen'])),
-      ('Modalité', (l) => noms['${(l['dem'] as Fiche?)?['modalite'] ?? 'echographie'}'] ?? '${(l['dem'] as Fiche?)?['modalite']}'),
+      ('Modalité', (l) => modaliteOuInconnue('${(l['dem'] as Fiche?)?['modalite'] ?? 'echographie'}').label),
       ('Prescripteur', (l) => t((l['dem'] as Fiche?)?['prescripteur'] ?? (l['cr'] as Fiche?)?['prescripteur'])),
       ('État', (l) => l['dem'] == null ? 'Saisie directe' : statut((l['dem'] as Fiche)['statut'])),
       (

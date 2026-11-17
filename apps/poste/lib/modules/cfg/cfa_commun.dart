@@ -377,8 +377,8 @@ Widget cfaSection(String titre, Widget contenu) => Column(crossAxisAlignment: Cr
       contenu,
     ]);
 
-/// `D.SECTEURS_ACTIVITE` : un référentiel STATIQUE du jeu (liste de chaînes, pas de fiches).
-List<String> cfaSecteursActivite(Magasin m) => [for (final s in (m.referentiels['secteursActivite'] as List? ?? const [])) '$s'];
+/// `D.SECTEURS_ACTIVITE` : le réglage `listes.cfg.secteursActivite` (daté), lu aussi par l'import des natures de facture et la facturation — une seule source.
+List<String> cfaSecteursActivite() => ListesReference.valeurs('listes.cfg.secteursActivite');
 
 /// `modulesRole(role)` : les codes des rangées du manifeste dont le rôle voit au moins un écran — droits d'ÉCRAN, surcharges comprises (l'écran
 /// l'emporte sur son module, un écran universel s'ouvre à tous).

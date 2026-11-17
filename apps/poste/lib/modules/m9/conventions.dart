@@ -676,8 +676,16 @@ class _OngletSouscripteurs extends StatelessWidget {
         ]
       ];
 
+  /// Le barème de référence du jeu (référentiel `garanties`, daté) : vide si le poste n'en porte pas.
+  AssBareme get _bareme => AssBareme.depuis(c.magasin.referentiels['garanties']);
+
   void _proposerBareme(BuildContext ctx, Fiche s) {
-    final g = AssBareme.garanties;
+    final bareme = _bareme;
+    if (bareme.vide) {
+      ToastsSigh.afficher(ctx, 'Aucun barème de référence n’est installé sur ce poste : la grille se saisit ligne à ligne.', type: TypeToast.attention);
+      return;
+    }
+    final g = bareme.garanties;
     final ctl = ControleurFormulaire(_champsGrille([for (final x in g) x['libelle']!]), {
       for (var i = 0; i < g.length; i++) ...{
         'taux_$i': '${g[i]['taux']}',
@@ -689,7 +697,7 @@ class _OngletSouscripteurs extends StatelessWidget {
         taille: TailleModale.xl,
         corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           NoteSigh(
-              'Barème proposé d’après ${AssBareme.reference} (${AssBareme.lieu}, ${dateDe(AssBareme.date)}). Ce document est celui d’un régime employeur : il donne la structure, pas les taux de cette convention. Ajuster avant d’enregistrer.',
+              'Barème proposé d’après ${bareme.reference} (${bareme.lieu}, ${dateDe(bareme.date)}). Ce document est celui d’un régime employeur : il donne la structure, pas les taux de cette convention. Ajuster avant d’enregistrer.',
               ton: TonSigh.attention,
               icone: LucideIcons.circleHelp),
           const SizedBox(height: 12),
@@ -707,6 +715,7 @@ class _OngletSouscripteurs extends StatelessWidget {
                     final v = ctl.valider();
                     if (v == null) return;
                     final lignes = assGarantiesDepuisBareme(s,
+                        bareme: bareme,
                         taux: [for (var i = 0; i < g.length; i++) v['taux_$i']],
                         plafonds: [for (var i = 0; i < g.length; i++) v['plafond_$i']]);
                     final cg = c.magasin.collection('garanties');
@@ -726,7 +735,7 @@ class _OngletSouscripteurs extends StatelessWidget {
                     }
                     c.magasin
                         .collection('souscripteurs')
-                        .mettreAJour(s['id'], assConventionSaisie());
+                        .mettreAJour(s['id'], assConventionSaisie(bareme));
                     fermer();
                     ToastsSigh.afficher(ctx, 'Convention de ${s['nom']} enregistrée.',
                         type: TypeToast.succes,
@@ -819,7 +828,7 @@ class _OngletSouscripteurs extends StatelessWidget {
 
   void _editerExclusions(BuildContext ctx, Fiche s) {
     final actes = [
-      ...AssBareme.actesExclus,
+      ..._bareme.actesExclus,
       for (final a in TarifsPoste.actes(c.magasin, aujourdhui: c.aujourdhui)) '${a['libelle']}'
     ];
     List<String> liste(Object? v) => [for (final x in (v as List? ?? const [])) '$x'];
@@ -835,13 +844,13 @@ class _OngletSouscripteurs extends StatelessWidget {
           libelle: 'Produits exclus',
           type: TypeChamp.multiselect,
           col: ColChamp.plein,
-          options: [for (final x in AssBareme.produitsExclus) OptionChamp(x)]),
+          options: [for (final x in _bareme.produitsExclus) OptionChamp(x)]),
       ChampDef(
           nom: 'accordPrealable',
           libelle: 'Soumis à accord préalable',
           type: TypeChamp.multiselect,
           col: ColChamp.plein,
-          options: [for (final x in AssBareme.accordPrealable) OptionChamp(x)]),
+          options: [for (final x in _bareme.accordPrealable) OptionChamp(x)]),
     ], {
       'actesExclus': liste(s['actesExclus']),
       'produitsExclus': liste(s['produitsExclus']),

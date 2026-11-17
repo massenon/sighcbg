@@ -54,14 +54,10 @@ class EcranTarifsEtPrix extends StatefulWidget with EcranMaquette {
 // Les données de l'écran
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-const _famillesPrestations = [
-  ('CONSULTATION', 'Consultations'),
-  ('ACTE', 'Actes'),
-  ('HOSPITALISATION', 'Hospitalisation'),
-  ('AMI', 'Actes médico-infirmiers'),
-  ('GYNECO', 'Gynéco-obstétrique et kits'),
-  ('CERTIFICAT', 'Certificats et attestations'),
-];
+const _codesFamillesPrestations = ['CONSULTATION', 'ACTE', 'HOSPITALISATION', 'AMI', 'GYNECO', 'CERTIFICAT'];
+
+/// Les familles de l'écran des tarifs : les codes sont ceux de l'énumération structurelle (UNE définition), le libellé celui du réglage `libelles.cfg.famillesTarif`.
+List<(String, String)> get _famillesPrestations => enumFamillesTarif.paresDe(_codesFamillesPrestations);
 const _etatsPrix = ['En vigueur', 'Proposition en attente', 'Changement à venir', 'Provisoire', 'Sans prix en vigueur'];
 const _libelleOrigine = {
   'migration': 'Migration des listes d’avant',

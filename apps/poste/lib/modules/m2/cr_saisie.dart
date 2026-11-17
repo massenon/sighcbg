@@ -86,15 +86,11 @@ List<ChampDef> champsEnteteCR(Magasin m, ModaliteImagerie mod,
           nom: 'provenance',
           libelle: 'Provenance',
           aide: 'Service ou établissement d’où vient le patient.'),
-    const ChampDef(
+    ChampDef(
         nom: 'condition',
         libelle: 'Condition de l’examen',
         type: TypeChamp.select,
-        options: [
-          OptionChamp('Bonne'),
-          OptionChamp('Moyenne'),
-          OptionChamp('Difficile'),
-        ]),
+        options: [for (final x in ListesReference.valeurs('listes.m2.conditionsExamen')) OptionChamp(x)]),
   ];
 }
 

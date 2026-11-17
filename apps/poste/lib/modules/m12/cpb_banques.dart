@@ -34,7 +34,7 @@ class EcranBanques extends StatefulWidget with EcranMaquette {
 }
 
 class _EtatBanques extends State<EcranBanques> {
-  static List<ChampDef> _champs() => const [
+  static List<ChampDef> _champs() => [
         ChampDef(nom: 'banque', libelle: 'Établissement bancaire', requis: true, col: ColChamp.plein),
         ChampDef(nom: 'intitule', libelle: 'Intitulé du compte', requis: true, col: ColChamp.plein),
         ChampDef(nom: 'numeroCompte', libelle: 'Numéro de compte', requis: true),
@@ -43,7 +43,7 @@ class _EtatBanques extends State<EcranBanques> {
             libelle: 'Compte comptable (SYSCOHADA)',
             requis: true,
             aide: 'Classe 52 — banques. Sert à l’imputation automatique des mouvements.'),
-        ChampDef(nom: 'devise', libelle: 'Devise', type: TypeChamp.select, options: [OptionChamp('FCFA'), OptionChamp('EUR'), OptionChamp('USD')]),
+        ChampDef(nom: 'devise', libelle: 'Devise', type: TypeChamp.select, options: [for (final d in ListesReference.valeurs('listes.m12.devisesBancaires')) OptionChamp(d)]),
         ChampDef(
             nom: 'statutCompte',
             libelle: 'État du compte',

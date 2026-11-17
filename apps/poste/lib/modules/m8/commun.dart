@@ -25,18 +25,21 @@ String dateDe(Object? v) {
   return d == null ? '' : dateFR(d);
 }
 
-/// `D.MODES_PAIEMENT` : (identifiant, libellé, icône).
-const modesPaiement = [
-  ('especes', 'Espèces', 'banknote'),
-  ('tpe', 'TPE (carte bancaire)', 'credit-card'),
-  ('mtn', 'MTN Mobile Money', 'smartphone'),
-  ('moov', 'Moov Money', 'smartphone'),
-  ('assurance', 'Prise en charge assurance', 'shield-check'),
-];
+/// Les natures de facture proposées aux filtres et à la saisie : le réglage `listes.m8.naturesFacture` (une seule liste pour la caisse, les reliquats et le registre MECeF).
+List<String> get naturesFactureListe => ListesReference.valeurs('listes.m8.naturesFacture');
 
-String modeLabel(Object? id) =>
-    modesPaiement.where((x) => x.$1 == id).map((x) => x.$2).firstOrNull ??
-    '${id ?? ''}';
+/// `D.MODES_PAIEMENT` : (identifiant, libellé, icône).
+const _iconesModesPaiement = {'especes': 'banknote', 'tpe': 'credit-card', 'mtn': 'smartphone', 'moov': 'smartphone', 'assurance': 'shield-check'};
+
+/// Tous les modes, dans l'ordre du réglage `libelles.m8.modesPaiement` (le libellé change, le code et donc la décision non).
+List<(String, String, String)> get modesPaiement => [for (final (c, l) in enumModesPaiement.paires) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
+
+/// Les modes que le PATIENT règle au guichet : ce sont des CODES (la prise en charge de l'assurance n'est pas un règlement du patient), jamais « les quatre premiers » d'une liste dont
+/// l'ordre se règle.
+const _codesModesPatient = ['especes', 'tpe', 'mtn', 'moov'];
+List<(String, String, String)> get modesPaiementPatient => [for (final (c, l) in enumModesPaiement.paresDe(_codesModesPatient)) (c, l, _iconesModesPaiement[c] ?? 'banknote')];
+
+String modeLabel(Object? id) => enumModesPaiement.libelle(id);
 
 /// MECeF est-il en service sur ce poste ? Lu dans les fermetures en vigueur (fiche `modulesActifs` du module MECEF, bascule de « Activité des
 /// modules », PRD Baguidi P0-5), jamais dans un drapeau à part. Le résultat se PASSE aux moteurs du domaine (`emettreFacture`, `encaisser`,

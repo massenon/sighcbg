@@ -341,7 +341,7 @@ class EcranCpon extends StatelessWidget with EcranMaquette {
             nom: 'etiologieAnte',
             libelle: 'Étiologie (si hémorragie ante-partum)',
             type: TypeChamp.select,
-            options: _opts(const ['Placenta praevia', 'Hématome rétro-placentaire', 'Rupture utérine', 'Autre'])),
+            options: _opts(ListesReference.valeurs('listes.m4.etiologiesHemorragieAntePartum'))),
         const ChampDef(nom: 'hpp', libelle: 'Hémorragie du post-partum (HPP)', type: TypeChamp.case_),
         const ChampDef.section('Examen et suites'),
         const ChampDef(
@@ -732,7 +732,7 @@ class EcranPtme extends StatelessWidget with EcranMaquette {
             type: TypeChamp.select,
             options: [for (final x in (p['prophylaxiesNN'] as List)) OptionChamp('${(x as Map)['code']}', '${x['code']} = ${x['label']}')]),
         const ChampDef.section('Volet 3 — enfant exposé'),
-        ChampDef(nom: 'pcrNaissance', libelle: 'PCR à la naissance', type: TypeChamp.select, options: _opts(const ['En attente', 'Négatif', 'Positif'])),
+        ChampDef(nom: 'pcrNaissance', libelle: 'PCR à la naissance', type: TypeChamp.select, options: _opts(ListesReference.valeurs('listes.m4.resultatsPcrNaissance'))),
         ChampDef(nom: 'pcr1', libelle: 'PCR-1 (6 semaines)', type: TypeChamp.select, options: _opts(const ['', 'Négatif', 'Positif'])),
         ChampDef(nom: 'pcr2', libelle: 'PCR-2 (9 mois)', type: TypeChamp.select, options: _opts(const ['', 'Négatif', 'Positif'])),
         ChampDef(nom: 'serologie18m', libelle: 'Sérologie VIH (18 mois)', type: TypeChamp.select, options: _opts(const ['', 'Négatif', 'Positif'])),

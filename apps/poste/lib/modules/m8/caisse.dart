@@ -96,7 +96,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
         num som(Iterable<Fiche> r, String k) =>
             r.fold<num>(0, (a, x) => a + n(x[k]));
         final parMode = [
-          for (final mp in modesPaiement.take(4))
+          for (final mp in modesPaiementPatient)
             () {
               final sel = [
                 for (final x in f)

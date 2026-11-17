@@ -44,17 +44,12 @@ class EcranDomicile extends StatelessWidget with EcranMaquette {
               type: TypeChamp.select,
               requis: true,
               options: optionsMedecinsAg(c)),
-          const ChampDef(
+          ChampDef(
               nom: 'type',
               libelle: 'Type',
               type: TypeChamp.select,
               requis: true,
-              options: [
-                OptionChamp('Consultation'),
-                OptionChamp('Contrôle'),
-                OptionChamp('Urgence'),
-                OptionChamp('Domicile')
-              ]),
+              options: [for (final t in agTypesRdv) OptionChamp(t)]),
           const ChampDef.section('Rendez-vous'),
           const ChampDef(
               nom: 'date', libelle: 'Date et heure', type: TypeChamp.dateHeure, requis: true),

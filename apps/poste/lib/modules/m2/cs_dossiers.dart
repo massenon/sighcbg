@@ -439,18 +439,18 @@ class _EtatDossierNouveau extends State<EcranDossierConsultationNouveau> {
             col: _plein,
             aide: '${cat['note']}')
     ], _chaines(r));
-    _prealables = ControleurFormulaire(const [
-      ChampDef(nom: 'allergies', libelle: 'Allergies'),
+    _prealables = ControleurFormulaire([
+      const ChampDef(nom: 'allergies', libelle: 'Allergies'),
       ChampDef(
           nom: 'allergiesMedicamenteuses',
           libelle: 'Allergies médicamenteuses',
           aide: 'Affichée en rouge au récapitulatif : elle conditionne la prescription.'),
       ChampDef(nom: 'statutVaccinal', libelle: 'Statut vaccinal', type: TypeChamp.select, options: [
-        OptionChamp('À jour'), OptionChamp('Incomplet'), OptionChamp('Non vacciné'), OptionChamp('Inconnu')
+        for (final x in ListesReference.valeurs('listes.m2.statutsVaccinaux')) OptionChamp(x)
       ]),
       ChampDef(nom: 'groupeSanguin', libelle: 'Groupe sanguin', type: TypeChamp.select, options: [
-        OptionChamp('A+'), OptionChamp('A-'), OptionChamp('B+'), OptionChamp('B-'),
-        OptionChamp('AB+'), OptionChamp('AB-'), OptionChamp('O+'), OptionChamp('O-'), OptionChamp('Inconnu')
+        // La liste ABO/Rh est NORMATIVE et n'existe qu'une fois (`sangGroupes`, la banque de sang) : plus de seconde copie ici.
+        for (final g in sangGroupes) OptionChamp(g), const OptionChamp('Inconnu')
       ]),
       ChampDef(
           nom: 'electrophoreseHb',
