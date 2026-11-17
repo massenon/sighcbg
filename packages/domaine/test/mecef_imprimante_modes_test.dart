@@ -14,7 +14,7 @@ void main() {
         expect(d.source, contains('à valider'), reason: d.cle);
         expect(Parametres.validerFiche(Parametres.semer(d), const [], const []), isNull, reason: d.cle);
       }
-      expect(defs[cleImprimanteModele]!.defaut, mecefModeleBoitierDefaut, reason: 'le boîtier MECeF ELTRADE CC300 est aussi l\'imprimante de caisse (décision du 17/11/2026) : une seule machine, un seul libellé');
+      expect(defs[cleImprimanteModele]!.defaut, '', reason: 'le modèle propre de l\'imprimante reste vide : intégrée (réglage par défaut), c\'est le modèle du boîtier ELTRADE CC300 qui fait foi (décision du 17/11/2026)');
       expect(defs[cleImprimanteInterface]!.defaut, '');
       expect(defs[cleImprimanteLargeurPapier]!.type, TypeParametre.entier);
       expect(defs[cleImprimanteLargeurPapier]!.defaut, 80);

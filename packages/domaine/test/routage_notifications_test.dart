@@ -52,7 +52,7 @@ void main() {
       expect(d.mobile, isFalse);
       expect(d.geste, isNull);
     }
-    expect(libellesFamillesParametres['notifications'], 'Notifications');
+    expect(libellesFamillesParametres['notifications'], 'Notifications et alertes');
   });
 
   test('besoin accordé : les postes informés viennent du réglage ; la valeur d’attente reproduit les deux notifications d’avant, mot pour mot', () {
