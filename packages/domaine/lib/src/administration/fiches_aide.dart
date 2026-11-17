@@ -296,7 +296,7 @@ VerdictFicheAide validerFicheAide({
 }) {
   VerdictFicheAide non(String code, String motif, String geste) => VerdictFicheAide.refus(code, motif, geste);
   if (estFileul) {
-    return non('REGLE_SUR_LA_MERE', 'La validation d’une fiche est tenue par la mère : un poste rattaché ne l’écrit pas (la fiche et sa validation y reviennent par la synchronisation).', 'Valider la fiche sur le poste mère.');
+    return non('REGLE_SUR_LA_MERE', 'La validation d’une fiche ne s’écrit pas depuis un poste rattaché : elle se dépose, et la mère la rejoue sous le rôle de son auteur (la fiche et sa validation reviennent par la synchronisation).', 'Déposer la demande de validation depuis l’écran des fiches d’aide.');
   }
   if (fiche == null) return non('FICHE_INCONNUE', 'Cette fiche n’existe pas.', 'Choisir une fiche de la liste.');
   if (fiche['statut'] == ficheAideArchivee) return non('FICHE_ARCHIVEE', 'Une fiche archivée ne se valide pas.', 'Écrire une fiche nouvelle.');
@@ -366,12 +366,12 @@ VerdictFicheAide archiverFicheAide({required Map<String, Object?>? fiche, requir
   if (validation) {
     return (
       code: 'validation_reservee_mere',
-      motif: 'La validation d’une fiche d’aide ne s’écrit que sur le poste mère : elle seule vérifie le geste réservé et que l’auteur n’est pas le validateur.',
-      geste: 'Valider la fiche sur le poste mère ; elle revient ici par la synchronisation.'
+      motif: 'La validation d’une fiche d’aide ne s’écrit pas depuis un poste rattaché : elle se dépose, et la mère la rejoue (elle seule écrit la validation, après avoir vérifié le geste réservé et que l’auteur n’est pas le validateur).',
+      geste: 'Utiliser « Valider » : la demande est transmise à la mère, qui répond sur la fiche.'
     );
   }
   if (type == 'creer' && champs['statut'] != null && champs['statut'] != ficheAideProposee) {
-    return (code: 'validation_reservee_mere', motif: 'Une fiche naît « proposée » : seule la mère la valide.', geste: 'Écrire la fiche, puis la faire valider sur le poste mère.');
+    return (code: 'validation_reservee_mere', motif: 'Une fiche naît « proposée » : seule la mère l’écrit validée, sur une demande de validation déposée.', geste: 'Écrire la fiche, puis demander sa validation.');
   }
   if (actuelle?['statut'] == ficheAideValidee && ficheAideChampsContenu.any(change)) {
     return (

@@ -33,6 +33,7 @@ import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSem
 import '../administration/adm_regles.dart' show admCleForfaitAmbulance, admClePrixKmAmbulance, admForfaitAmbulanceSemence, admPrixKmAmbulanceSemence;
 import 'parametres.dart';
 import 'reglages_roles.dart';
+import '../comptabilite/documents_fiscaux_synchro.dart' show cleTailleMaxDepotFiscalKo;
 import '../mere/reprise_poste_regles.dart' show cleValiditeCodeAppairage;
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
 
@@ -1140,6 +1141,20 @@ const List<DefinitionParametre> definitionsParametres = [
     source: _attente,
     branche: true,
     appliquePar: 'Mère (émission des codes d\'appairage) et écrans d\'appairage',
+  ),
+  // Consigne de la Direction (18/11/2026, point 4) : un poste rattaché dépose la demande d'import de la liasse ; la taille du document déposé est BORNÉE par un réglage, jamais par un nombre écrit.
+  DefinitionParametre(
+    cle: cleTailleMaxDepotFiscalKo,
+    famille: 'comptabilite',
+    type: TypeParametre.entier,
+    defaut: 512,
+    min: 16,
+    max: 8192,
+    libelle: 'Liasse fiscale : taille maximale d\'un document déposé depuis un poste rattaché (Ko)',
+    aide: 'Un poste rattaché dépose à la mère la demande d\'import d\'une liasse ou d\'un classeur ; le document (JSON) ne peut pas dépasser cette taille, ni au dépôt ni à l\'application par la mère. Valeur d\'attente (la liasse de démonstration pèse environ 32 Ko), à valider par la Direction. Entier de 16 à 8192 ; hors bornes, la valeur d\'attente de 512 s\'applique. Se règle par une nouvelle version datée.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Import de la liasse fiscale depuis un poste rattaché (dépôt et application par la mère)',
   ),
 
   // --- LES LISTES DE RÉFÉRENCE QUI VIVAIENT EN CODE (lot « listes de référence » de l'inventaire des valeurs en dur, une sous-étape par module) : un réglage `texte` daté,

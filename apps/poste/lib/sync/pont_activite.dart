@@ -104,7 +104,7 @@ const Set<String> collectionsActivite = {
   // envoie rien (`collectionsDeLaMereSeule`) et dépose une demande (`validationsDeposees`, genre `facture_tiers`). Jamais vers un téléphone (IFU et nom d'entreprise, souscripteur : RG-13).
   ...facturesTiersCollectionsSync,
   // LES FICHES D'AIDE DE L'ASSISTANT (Direction de Baguidi, 17/11/2026) : une fiche écrite sur un poste (proposée) rejoint la mère et les autres postes (famille A de la mère, champ à champ).
-  // La VALIDATION ne s'écrit que sur la mère (le poste rattaché n'offre pas la commande ; la mère refuse sinon : `refusEcritureFicheAide`) et une fiche validée ne se réécrit pas. Jamais vers un
+  // La VALIDATION ne s'écrit que par la mère : le poste rattaché DÉPOSE la demande (`validationsDeposees`, genre `fiche_aide_valider`, 18/11/2026) et la mère l'applique (`refusEcritureFicheAide` refuse sinon) ; une fiche validée ne se réécrit pas. Jamais vers un
   // téléphone (`collectionsDocumentsJamaisMobile`).
   colFichesAide,
 };

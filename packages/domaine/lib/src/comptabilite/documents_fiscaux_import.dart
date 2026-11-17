@@ -448,7 +448,7 @@ VerdictImportFiscal preparerImportFiscal({
         'Demander au comptable ou à la DAF, ou faire accorder le geste au rôle dans « Rôles et permissions › Gestes réservés ».');
   }
   if (estFileul) {
-    return refus('REGLE_SUR_LA_MERE', 'La liasse et le classeur sont tenus par la mère (référentiel diffusé aux postes) : un poste rattaché ne les écrit pas.', 'Importer le document sur le poste mère : il revient ici par la synchronisation.');
+    return refus('REGLE_SUR_LA_MERE', 'La liasse et le classeur sont écrits par la mère (référentiel diffusé aux postes) : un poste rattaché ne les écrit pas lui-même, il dépose une demande d’import.', 'Déposer la demande d’import depuis l’écran « Import de la liasse fiscale » : la mère la rejoue et la version revient par la synchronisation.');
   }
   if (source.trim().isEmpty) return refus('SOURCE_ABSENTE', 'Un document importé porte sa source (d’où il vient) : un chiffre sans origine ne se cite pas.', 'Indiquer la source (ex. « Liasse remise à la DGI le … », « Classeur de l’expert-comptable »).');
   if (auteur.trim().isEmpty) return refus('AUTEUR_ABSENT', 'Aucune action anonyme (RG-12) : l’import porte son auteur.', 'Ouvrir une session nominative.');
