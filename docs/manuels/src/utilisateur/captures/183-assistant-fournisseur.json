@@ -1,0 +1,428 @@
+{
+ "nom": "183-assistant-fournisseur",
+ "ecran": "sup-assistant",
+ "role": "da",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Effacer la conversation",
+   "rect": [
+    1213.5,
+    314.0,
+    181.5,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Demander",
+   "rect": [
+    1271.6,
+    377.0,
+    123.4,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   248.9,
+   36.0
+  ],
+  "barre-actions": [
+   793.7,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   897.2,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1046.5,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1066.5,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1092.5,
+   0.0,
+   335.5,
+   56.0
+  ],
+  "nom-courant": [
+   1138.5,
+   14.5,
+   160.0,
+   14.0
+  ],
+  "role-courant": [
+   1138.5,
+   28.5,
+   267.5,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.6,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   792.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   919.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1020.7,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1138.6,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "sup-assistant|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   96.3,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   233.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   300.0,
+   1390.0,
+   57.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   318.0,
+   1168.5,
+   20.0
+  ],
+  "assistant:effacer": [
+   1213.5,
+   314.0,
+   181.5,
+   28.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   357.0,
+   1390.0,
+   201.0
+  ],
+  "assistant:champ": [
+   45.0,
+   377.0,
+   1218.6,
+   45.0
+  ],
+  "assistant:envoyer": [
+   1271.6,
+   377.0,
+   123.4,
+   36.0
+  ],
+  "assistant:exemple-0": [
+   45.0,
+   434.0,
+   248.2,
+   48.0
+  ],
+  "assistant:exemple-1": [
+   301.2,
+   434.0,
+   373.0,
+   48.0
+  ],
+  "assistant:exemple-2": [
+   682.2,
+   434.0,
+   269.8,
+   48.0
+  ],
+  "assistant:exemple-3": [
+   960.0,
+   434.0,
+   305.7,
+   48.0
+  ],
+  "assistant:exemple-4": [
+   45.0,
+   490.0,
+   312.6,
+   48.0
+  ],
+  "assistant:exemple-5": [
+   365.6,
+   490.0,
+   270.0,
+   48.0
+  ],
+  "assistant:exemple-6": [
+   643.6,
+   490.0,
+   216.1,
+   48.0
+  ],
+  "assistant:exemple-7": [
+   867.6,
+   490.0,
+   331.5,
+   48.0
+  ],
+  "assistant:tour-0": [
+   24.0,
+   575.0,
+   1392.0,
+   388.0
+  ],
+  "assistant:question": [
+   984.6,
+   575.0,
+   431.4,
+   38.0
+  ],
+  "assistant:titre": [
+   41.0,
+   638.0,
+   177.7,
+   20.0
+  ],
+  "assistant:source-m7-fournisseurs": [
+   98.0,
+   908.0,
+   162.8,
+   17.0
+  ],
+  "assistant:source-m7-commandes": [
+   268.8,
+   908.0,
+   201.4,
+   17.0
+  ],
+  "assistant:source-m7-factures-fournisseurs": [
+   478.2,
+   908.0,
+   266.0,
+   17.0
+  ],
+  "assistant:source-m12-grand-livre": [
+   41.0,
+   929.0,
+   129.8,
+   17.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    793.7,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    897.2,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "7 alerte(s) en attente",
+   "rect": [
+    1046.5,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1092.5,
+    0.0,
+    335.5,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

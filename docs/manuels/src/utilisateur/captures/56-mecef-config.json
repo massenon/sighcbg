@@ -39,7 +39,7 @@
    "libelle": "Enregistrer le mode",
    "rect": [
     45.0,
-    1275.0,
+    1333.0,
     187.3,
     36.0
    ]
@@ -48,7 +48,7 @@
    "libelle": "Enregistrer l’imprimante",
    "rect": [
     45.0,
-    1708.0,
+    1892.0,
     218.1,
     36.0
    ]
@@ -293,7 +293,7 @@
    25.0,
    331.0,
    686.0,
-   1000.0
+   1058.0
   ],
   "kit:formulaire": [
    45.0,
@@ -313,129 +313,123 @@
    646.0,
    96.0
   ],
+  "mecef:boitier-imprimante": [
+   45.0,
+   625.0,
+   646.0,
+   50.0
+  ],
   "mecef:etat-mode:boitier": [
    45.0,
-   629.0,
+   687.0,
    646.0,
    314.0
   ],
   "mecef:etat-mode:emecef": [
    45.0,
-   943.0,
+   1001.0,
    646.0,
    272.0
   ],
   "mecef-adaptateur-boitier": [
    45.0,
-   1223.0,
+   1281.0,
    646.0,
    40.0
   ],
   "mecef:imprimante": [
    24.0,
-   1348.0,
+   1406.0,
    688.0,
-   417.0
+   543.0
+  ],
+  "mecef:imprimante-integree": [
+   45.0,
+   1572.0,
+   646.0,
+   50.0
+  ],
+  "kit:champ:imprimanteIntegree": [
+   45.0,
+   1712.0,
+   646.0,
+   76.0
   ],
   "kit:champ:imprimanteModele": [
    45.0,
-   1620.0,
+   1804.0,
    204.7,
-   60.0
+   76.0
   ],
   "kit:champ:imprimanteLargeur": [
    265.7,
-   1620.0,
+   1804.0,
    204.7,
    80.0
   ],
   "kit:champ:imprimanteInterface": [
    486.3,
-   1620.0,
+   1804.0,
    204.7,
    60.0
   ],
   "kit:section": [
    45.0,
-   1913.0,
+   2097.0,
    646.0,
    16.0
   ],
   "kit:champ:raisonSociale": [
    45.0,
-   1945.0,
+   2129.0,
    646.0,
    60.0
   ],
   "kit:champ:ifu": [
    45.0,
-   2021.0,
+   2205.0,
    315.0,
    60.0
   ],
   "kit:champ:rccm": [
    376.0,
-   2021.0,
+   2205.0,
    315.0,
    60.0
   ],
   "kit:champ:autorisation": [
    45.0,
-   2097.0,
+   2281.0,
    646.0,
    60.0
   ],
   "kit:champ:adresse": [
    45.0,
-   2173.0,
+   2357.0,
    646.0,
    60.0
   ],
   "kit:champ:telephone": [
    45.0,
-   2249.0,
+   2433.0,
    315.0,
    60.0
   ],
   "kit:champ:email": [
    376.0,
-   2249.0,
+   2433.0,
    315.0,
    60.0
   ],
   "kit:champ:prefixeFacture": [
    45.0,
-   2370.0,
+   2554.0,
    315.0,
    112.0
   ],
   "kit:champ:prefixeAvoir": [
    376.0,
-   2370.0,
-   315.0,
-   60.0
-  ],
-  "kit:champ:prefixeProforma": [
-   45.0,
-   2498.0,
-   315.0,
-   60.0
-  ],
-  "kit:champ:prochainNumero": [
-   376.0,
-   2498.0,
-   315.0,
-   60.0
-  ],
-  "kit:champ:regimeTva": [
-   45.0,
-   2574.0,
-   315.0,
-   96.0
-  ],
-  "kit:champ:devise": [
-   376.0,
-   2574.0,
+   2554.0,
    315.0,
    60.0
   ],
