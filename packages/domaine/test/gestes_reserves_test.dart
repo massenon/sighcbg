@@ -46,6 +46,8 @@ void main() {
       gestePtaAdopter, gestePtaRegler, gesteAlertesPtaRetard,
       // Mise à jour du logiciel (17/11/2026) : exporter, importer, lever le blocage.
       gesteBaseExporter, gesteBaseImporter, gesteMajLeverBlocage,
+      // Import daté de la liasse fiscale et validation des fiches d'aide de l'assistant (17/11/2026).
+      gesteDocumentsFiscauxImporter, gesteFichesAideValider,
     ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');

@@ -315,6 +315,17 @@ const String gesteBaseImporter = 'base_importer';
 /// LEVER LE BLOCAGE D'UNE MISE À JOUR sans sauvegarde vérifiée de moins de N heures (cas de FORCE MAJEURE : motif écrit, auteur et date journalisés). Origine : l'administrateur et la Directrice Administrative.
 const String gesteMajLeverBlocage = 'maj_lever_blocage';
 
+/// IMPORTER LA LIASSE FISCALE DÉPOSÉE ET LE CLASSEUR DE BASELINE (Direction de Baguidi, 16/11/2026, section 9 : « import daté — source, date de dépôt, auteur » ; écran `m12-liasse-import`) :
+/// poser une NOUVELLE version d'un document déposé (jamais écraser) ou en archiver une, avec motif. Un document déposé n'est pas un réglage : c'est ce que la clinique a remis à l'administration,
+/// et c'est lui que lisent les états financiers. Origine PROPOSÉE (à valider par la Direction, réglable dans la fiche de rôle) : le Comptable et la DAF. Le droit n'ouvre pas l'écran
+/// (« Régler écran par écran ») et ne s'exerce que sur la MÈRE : la collection est un référentiel de famille R, un fileul la reçoit.
+const String gesteDocumentsFiscauxImporter = 'documents_fiscaux_importer';
+
+/// VALIDER UNE FICHE D'AIDE DE L'ASSISTANT (écran `cfg-fiches-aide`) : rendre une procédure ou une définition citable. Geste DISTINCT de la rédaction (qui est le droit d'écrire l'écran) : celui qui
+/// écrit une fiche ne la valide pas (le moteur compare l'identifiant du compte). L'assistant ne cite QU'une fiche validée, avec son validateur nommé et sa date. Une fiche qui engage un
+/// professionnel (la check-liste du bloc) exige en plus le geste du professionnel concerné (`valider_ref_bloc`) et son nom et sa date. Origine PROPOSÉE (à valider par la Direction) : la Direction et la DAF.
+const String gesteFichesAideValider = 'fiches_aide_valider';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -831,6 +842,20 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['admin', 'da'],
       aide: 'Autorise l’installation sans sauvegarde vérifiée de moins de N heures. Le motif est obligatoire ; l’auteur, la date et le motif sont journalisés. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteDocumentsFiscauxImporter,
+      libelle: 'Importer ou archiver la liasse fiscale déposée et le classeur de baseline',
+      module: 'M12',
+      ecran: 'm12-liasse-import',
+      rolesDefaut: ['comptable', 'da'],
+      aide: 'Poser une nouvelle version datée (source, date de dépôt, auteur) d’une liasse ou d’un classeur, ou en archiver une avec motif : rien n’est supprimé, la plus récente fait foi, les états financiers la lisent. Se fait sur la mère (un fileul reçoit les versions). Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
+  GesteReserve(
+      id: gesteFichesAideValider,
+      libelle: 'Valider une fiche d’aide de l’assistant',
+      module: 'CFG',
+      ecran: 'cfg-fiches-aide',
+      rolesDefaut: ['direction', 'da'],
+      aide: 'Rendre une procédure ou une définition citable par l’assistant : validateur nommé et date, jamais par l’auteur de la fiche. Une fiche qui engage un professionnel (check-liste du bloc) exige en plus le geste de ce professionnel, son nom et la date. Se fait sur la mère. Origine PROPOSÉE, à valider par la Direction : la Direction et la DAF.'),
 ];
 
 GesteReserve? gesteReserve(String id) {
