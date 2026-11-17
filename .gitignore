@@ -18,6 +18,10 @@ target/
 *.local.php
 !*.local.exemple.php
 prototype_html/api/config.local.php
+# Signature Android : ni la configuration de signature, ni un fichier de clés, jamais dans le dépôt.
+apps/mobile/android/key.properties
+*.jks
+*.keystore
 
 # ---- données : un export de base est une donnée, pas du code ----
 *.sql
