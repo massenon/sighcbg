@@ -110,7 +110,8 @@ const familleDeBase = <String, String>{
   // (`collectionsFacturesTiersJamaisMobile`). Elles ne sont PAS de la configuration : la mise en production les archive comme toute pièce d'activité.
   'facturesTiers': 'A', 'avoirsTiers': 'A',
   // LES FICHES D'AIDE DE L'ASSISTANT (Direction de Baguidi, 17/11/2026) : écrites depuis n'importe quel poste (fiches descriptives, champ à champ, dans les deux sens). La VALIDATION ne s'écrit que
-  // sur la mère (elle seule vérifie le geste réservé et que l'auteur n'est pas le validateur) et une fiche validée ne se réécrit pas : `refusEcritureFicheAide` du domaine, appliqué dans `traiter`.
+  // par la mère (elle seule vérifie le geste réservé et que l'auteur n'est pas le validateur) : un fileul la DÉPOSE (`validationsDeposees`, genre `fiche_aide_valider`, 18/11/2026) et la mère l'applique ;
+  // une fiche validée ne se réécrit pas : `refusEcritureFicheAide` du domaine, appliqué dans `traiter`.
   // Jamais vers un téléphone (`collectionsDocumentsJamaisMobile`) : aucun écran du mobile ne les lit.
   'fichesAide': 'A',
 };

@@ -83,8 +83,8 @@ const FAMILLES = {
   /* LA FACTURE À UNE ENTREPRISE (17/11/2026, point 2) : la pièce émise et son avoir, fiches d'identité commune lues par tous les postes (A) ; l'ÉMISSION reste à la mère (refus nommé à un poste,
      `refusEcritureFactureTiers`), un fileul dépose une demande (`validationsDeposees`, genre `facture_tiers`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
   facturesTiers: 'A', avoirsTiers: 'A',
-  /* LES FICHES D'AIDE DE L'ASSISTANT (17/11/2026) : fiches descriptives écrites depuis n'importe quel poste (A) ; la VALIDATION ne s'écrit que sur la mère et une fiche validée ne se réécrit pas
-     (`refusEcritureFicheAide`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
+  /* LES FICHES D'AIDE DE L'ASSISTANT (17/11/2026) : fiches descriptives écrites depuis n'importe quel poste (A) ; la VALIDATION ne s'écrit que par la mère : un fileul la DÉPOSE (`validationsDeposees`, genre
+     `fiche_aide_valider`, 18/11/2026) et la mère l'applique ; une fiche validée ne se réécrit pas (`refusEcritureFicheAide`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
   fichesAide: 'A',
 };
 /* Miroir de `packages/domaine/lib/src/assistant/fiches_aide.dart` (`refusEcritureFicheAide`) : la mère REFAIT le contrôle d'une fiche d'aide écrite par un poste. */
@@ -93,8 +93,8 @@ const FICHE_AIDE_CHAMPS_CONTENU = ['type', 'titre', 'motsCles', 'roles', 'ecrans
 function refusFicheAideEcriture(type, champs, actuelle) {
   const change = (k) => Object.prototype.hasOwnProperty.call(champs, k) && champs[k] != null && String(champs[k]) !== String(actuelle ? actuelle[k] : undefined);
   const validation = FICHE_AIDE_CHAMPS_VALIDATION.some(change) || (champs.statut === 'validee' && !(actuelle && actuelle.statut === 'validee'));
-  if (validation) return ['validation_reservee_mere', 'La validation d’une fiche d’aide ne s’écrit que sur le poste mère : elle seule vérifie le geste réservé et que l’auteur n’est pas le validateur.', 'Valider la fiche sur le poste mère ; elle revient ici par la synchronisation.'];
-  if (type === 'creer' && champs.statut != null && champs.statut !== 'proposee') return ['validation_reservee_mere', 'Une fiche naît « proposée » : seule la mère la valide.', 'Écrire la fiche, puis la faire valider sur le poste mère.'];
+  if (validation) return ['validation_reservee_mere', 'La validation d’une fiche d’aide ne s’écrit pas depuis un poste rattaché : elle se dépose, et la mère la rejoue (elle seule écrit la validation, après avoir vérifié le geste réservé et que l’auteur n’est pas le validateur).', 'Utiliser « Valider » : la demande est transmise à la mère, qui répond sur la fiche.'];
+  if (type === 'creer' && champs.statut != null && champs.statut !== 'proposee') return ['validation_reservee_mere', 'Une fiche naît « proposée » : seule la mère l’écrit validée, sur une demande de validation déposée.', 'Écrire la fiche, puis demander sa validation.'];
   if (actuelle && actuelle.statut === 'validee' && FICHE_AIDE_CHAMPS_CONTENU.some(change)) return ['fiche_validee', 'Une fiche validée ne se réécrit pas : ce que la Direction a relu est ce que l’assistant cite.', 'La réviser : une fiche nouvelle la remplacera quand elle sera validée à son tour.'];
   return null;
 }
