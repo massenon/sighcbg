@@ -58,7 +58,7 @@ void main() {
 
   test('une valeur en dur qui APPARAÎT fait échouer le cliquet, en nommant le fichier', () async {
     final b = copie();
-    final fb = (familles(b)['B'] as Map);
+    final fb = (familles(b)['H'] as Map);
     final fichier = fb.keys.first as String;
     fb.remove(fichier); // plafond implicite : zéro
     final r = await _cliquet(ecrire('apparue', b));
@@ -81,6 +81,20 @@ void main() {
     final r2 = await _cliquet(ecrire('sansmotif', c));
     expect(r2.exitCode, 1);
     expect('${r2.stderr}', allOf(contains(fichier), contains('SANS MOTIF')));
+  }, timeout: const Timeout(Duration(minutes: 2)));
+
+  // LES FAMILLES B ET G SONT À ZÉRO (lot « valeurs en dur » du 18/11/2026) : le plan de numérisation est calculé, les tons d'affichage sont portés par un code ou un marquage réglé,
+  // la portée de l'imagerie est lue à la matrice des fonctions. La sonde injecte un source fictif qui recompare un libellé : le cliquet doit mordre, en nommant le fichier.
+  test('B et G sont à zéro : le dépôt est conforme, et un libellé comparé qui réapparaît fait échouer le cliquet de G', () async {
+    expect((familles(base)['B'] as Map), isEmpty);
+    expect((familles(base)['G'] as Map), isEmpty);
+    final conforme = await Process.run('node', [_script, '--cliquet', '--famille=B,G']);
+    expect(conforme.exitCode, 0, reason: '${conforme.stdout}\n${conforme.stderr}');
+    final source = File('${tmp.path}/fictif.dart')
+      ..writeAsStringSync("Widget f(Map r) => BadgeSigh('\${r['type']}', ton: r['type'] == 'Urgence' ? TonSigh.danger : TonSigh.navy);\n");
+    final r = await Process.run('node', [_script, '--cliquet', '--famille=G', '--injecter=apps/poste/lib/modules/m2/fictif.dart:${source.path}']);
+    expect(r.exitCode, 1, reason: '${r.stdout}');
+    expect('${r.stderr}', allOf(contains('fictif.dart'), contains('APPARUE')));
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   // LES COMPLÉMENTS DU LOT 1 (relevés par l'inventaire de la clinique sœur) : le détecteur heuristique ne voit pas tout (un « 0.02 » est sous son seuil, un taux à

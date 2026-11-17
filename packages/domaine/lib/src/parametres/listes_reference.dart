@@ -10,6 +10,28 @@ library;
 import 'definitions.dart';
 import 'parametres.dart';
 
+/// Une entrée CODÉE d'une liste de référence d'affichage : `code=Libellé|ton` (le ton est facultatif). Le CODE est ce que la donnée porte et ce que la logique compare ; le
+/// LIBELLÉ et le TON sont des réglages d'affichage — les renommer ou les recolorer ne change aucune décision.
+class EntreeReference {
+  const EntreeReference(this.code, this.libelle, this.ton);
+  final String code;
+  final String libelle;
+
+  /// Le nom du ton d'affichage (`neutre`, `navy`, `succes`, `attention`, `danger`, `info`), ou vide.
+  final String ton;
+
+  /// « code=Libellé|ton » → l'entrée ; une entrée sans `=` prend son texte pour code ET pour libellé.
+  static EntreeReference lire(String brut) {
+    final i = brut.indexOf('=');
+    final code = (i < 0 ? brut : brut.substring(0, i)).trim();
+    final reste = i < 0 ? brut.trim() : brut.substring(i + 1);
+    final j = reste.lastIndexOf('|');
+    final libelle = (j < 0 ? reste : reste.substring(0, j)).trim();
+    final ton = j < 0 ? '' : reste.substring(j + 1).trim();
+    return EntreeReference(code, libelle.isEmpty ? code : libelle, ton);
+  }
+}
+
 class ListesReference {
   ListesReference._();
 
@@ -43,6 +65,30 @@ class ListesReference {
     final lue = decouper(r.ok ? r.valeur!.valeur : null);
     return lue.isNotEmpty ? lue : semence(cle);
   }
+
+  /// Les entrées CODÉES de la liste [cle] en vigueur aujourd'hui (`code=Libellé|ton`). Mêmes règles de version datée et de repli que [valeurs].
+  static List<EntreeReference> entrees(String cle) => [for (final v in valeurs(cle)) EntreeReference.lire(v)];
+
+  /// Le libellé d'affichage du [code] dans la liste [cle] ; le code lui-même si la liste ne le connaît pas (jamais un blanc : une donnée ancienne reste lisible).
+  static String libelleDe(String cle, Object? code) {
+    final c = '${code ?? ''}';
+    for (final e in entrees(cle)) {
+      if (e.code == c) return e.libelle;
+    }
+    return c;
+  }
+
+  /// Le nom du ton du [code] dans la liste [cle] ; vide si la liste ne le connaît pas ou ne lui en donne pas.
+  static String tonDe(String cle, Object? code) {
+    final c = '${code ?? ''}';
+    for (final e in entrees(cle)) {
+      if (e.code == c) return e.ton;
+    }
+    return '';
+  }
+
+  /// Vrai quand le [libelle] figure dans la liste [cle] : sert aux listes de MARQUAGE (« les types de rendez-vous urgents »), qui désignent des entrées d'un autre référentiel.
+  static bool contient(String cle, Object? libelle) => valeurs(cle).contains('${libelle ?? ''}'.trim());
 
   /// Un réglage TEXTE en vigueur aujourd'hui (coordonnées, adresse…) : la version datée qui s'applique, sinon la valeur d'attente de sa définition. Un texte vide ou illisible retombe sur la
   /// valeur d'attente (une coordonnée jamais lue ne doit pas laisser un champ vide à l'écran de l'aide).

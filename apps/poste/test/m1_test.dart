@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart' show tarMigrer;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/apercu.dart';
 import 'package:sigh_poste/impression/feuilles.dart';
@@ -545,10 +546,52 @@ void main() {
       expect(m.collection('documentsPatient').archivees.where((x) => x['id'] != 'DOC4'), isEmpty);
     });
 
-    cas('la numérisation édite son état d\'avancement', (t) async {
-      await ouvrir(t, petit({}), 'm1-numerisation');
-      expect(find.text('Lot 3 — Maternité et suivis prénataux'), findsOneWidget);
-      expect(find.textContaining('860 / 980 (88 %)'), findsOneWidget);
+    // LE PLAN DE NUMÉRISATION EST CALCULÉ (lot « valeurs en dur », famille B) : plus aucun chiffre de démonstration. Trois patients, un fichier déposé, une consultation récente.
+    Magasin planNumerisation() => petit({
+          'patients': [p('K1', 'CBG/1/26'), p('K2', 'CBG/2/26'), p('K3', 'CBG/3/26')],
+          'documentsPatient': [
+            {'id': 'D1', 'statut': 'actif', 'patientId': 'K1', 'scan': {'sha256': 'a' * 64, 'deposeLe': '2026-10-10T09:00:00'}},
+            {'id': 'D2', 'statut': 'actif', 'patientId': 'K3'},
+          ],
+          'consultations': [
+            {'id': 'C1', 'statut': 'actif', 'patientId': 'K2', 'date': '2026-09-15'}
+          ],
+        });
+    String chiffres(String s) => s.replaceAll(RegExp(r'[^0-9]'), '');
+
+    cas('la numérisation CALCULE ses chiffres depuis les dossiers : numérisés, actifs, lots, et dit ce qu\'elle ne sait pas calculer', (t) async {
+      await ouvrir(t, planNumerisation(), 'm1-numerisation');
+      expect(chiffres(kpi(t, 'Dossiers numérisés')), '1', reason: 'K1 porte un fichier déposé ; K3 n\'a qu\'une fiche sans fichier');
+      expect(chiffres(kpi(t, 'Dossiers actifs prioritaires')), '1', reason: 'K2, consultation de septembre 2026');
+      expect(chiffres(kpi(t, 'Reste à traiter (prioritaires)')), '1');
+      expect(chiffres(kpi(t, 'Dossiers papier recensés')), '18000', reason: 'le fonds est déclaré : valeur d\'attente du réglage');
+      expect(find.text('Lot 2 — Patients suivis (chroniques)'), findsOneWidget);
+      expect(find.text('non calculable'), findsOneWidget, reason: 'aucun champ ne marque une affection chronique : le lot se dit non calculable, il n\'affiche pas de zéro');
+      expect(find.textContaining('Aucun champ de la fiche patient ne marque une affection chronique'), findsOneWidget);
+      expect(find.textContaining('0 / 1 (0 %)'), findsWidgets);
+      expect(find.textContaining('860 / 980'), findsNothing, reason: 'l\'ancien chiffre de la maquette a disparu');
+    });
+
+    cas('un changement de RÉGLAGE change le plan : le fonds déclaré et la fenêtre des dossiers actifs', (t) async {
+      final m = planNumerisation();
+      final s = serviceParametres(m, auteur: () => 'Poste mère', horloge: () => aujourdhui);
+      s.semerDefauts();
+      expect(s.regler('numerisation.fondsPapierDossiers', 25000, '2026-10-01', motif: 'Recensement des archives').ok, isTrue);
+      expect(s.regler('numerisation.fenetreDossiersActifsMois', 1, '2026-10-01', motif: 'Fenêtre courte').ok, isTrue);
+      await ouvrir(t, m, 'm1-numerisation');
+      expect(chiffres(kpi(t, 'Dossiers papier recensés')), '25000');
+      expect(chiffres(kpi(t, 'Dossiers actifs prioritaires')), '0', reason: 'avec un mois de fenêtre, la consultation du 15 septembre n\'est plus récente');
+      expect(indice(t, 'Dossiers actifs prioritaires'), contains('1 derniers mois'));
+    });
+
+    cas('un fonds déclaré inférieur au répertoire est dit, et le répertoire est retenu', (t) async {
+      final m = planNumerisation();
+      final s = serviceParametres(m, auteur: () => 'Poste mère', horloge: () => aujourdhui);
+      s.semerDefauts();
+      s.regler('numerisation.fondsPapierDossiers', 2, '2026-10-01', motif: 'Fonds sous-estimé');
+      await ouvrir(t, m, 'm1-numerisation');
+      expect(chiffres(kpi(t, 'Dossiers papier recensés')), '3');
+      expect(indice(t, 'Dossiers papier recensés'), allOf(contains('inférieur au répertoire'), contains('2')));
     });
 
     cas('une page-renvoi renvoie vers son écran', (t) async {

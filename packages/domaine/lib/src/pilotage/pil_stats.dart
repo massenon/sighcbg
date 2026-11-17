@@ -13,6 +13,7 @@ import '../hospitalisation/hos_regles.dart' show hosChambres, hosTypesChambre;
 import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCalculOrtb;
 import '../paie/pai_baremes.dart' show PaiTauxPaie;
 import '../referentiels/regles.dart' show resultatRendu, secteurNormalise;
+import '../referentiels/tranches_age.dart' show tranchesAgeDe;
 import '../stock/points.dart' show groupePrestation, groupesPrestation;
 import 'pil_vue.dart';
 
@@ -20,15 +21,13 @@ import 'pil_vue.dart';
 // m5-stats-examens — les examens du laboratoire selon PLUSIEURS AXES, chaque axe est un FILTRE
 // =====================================================================================================================================================
 
-/// `TRANCHES_AGE_STATS` : (identifiant, libellé, de, à).
-const List<(String, String, int, int)> pilTranchesAgeExamens = [
-  ('0-4', '0–4 ans', 0, 4),
-  ('5-14', '5–14 ans', 5, 14),
-  ('15-24', '15–24 ans', 15, 24),
-  ('25-44', '25–44 ans', 25, 44),
-  ('45-64', '45–64 ans', 45, 64),
-  ('65+', '65 ans et plus', 65, 200),
-];
+/// Le réglage des tranches d'âge de CET écran. Même code que le laboratoire (`tranchesAgeDe`), valeur d'attente DISTINCTE (0-4, 5-14, 15-24, 25-44, 45-64, 65 et plus : les vecteurs de la maquette).
+const clePilTranchesAgeExamens = 'listes.socle.tranchesAgeStatistiquesPilotage';
+
+/// `TRANCHES_AGE_STATS` : (identifiant, libellé, de, à), lues du réglage en vigueur.
+List<(String, String, int, int)> get pilTranchesAgeExamens => [
+      for (final t in tranchesAgeDe(clePilTranchesAgeExamens, separateur: '–')) (t.id, t.label, t.min, t.max)
+    ];
 
 class PilFiltreExamens {
   const PilFiltreExamens({this.du = '', this.au = '', this.service = '', this.sexe = '', this.age = '', this.origine = ''});

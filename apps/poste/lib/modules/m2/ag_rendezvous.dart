@@ -393,7 +393,7 @@ class EcranRendezVous extends StatelessWidget with EcranMaquette {
             cle: 'type',
             libelle: 'Type',
             rendu: (_, r) => BadgeSigh('${r['type'] ?? ''}',
-                ton: r['type'] == 'Urgence' ? TonSigh.danger : TonSigh.navy)),
+                ton: agEstUrgent(r) ? TonSigh.danger : TonSigh.navy)),
         ColonneTableau(
             cle: 'statut',
             libelle: 'Statut',

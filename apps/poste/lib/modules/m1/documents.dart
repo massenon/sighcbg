@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart' show seuilClinique;
 import '../../documents/panneau_scan.dart';
 import '../../documents/service_fichiers.dart';
 import '../../donnees/magasin.dart';
@@ -375,8 +376,9 @@ class _CorpsDocumentsState extends State<_CorpsDocuments> {
   }
 }
 
-/// `m1-numerisation` — le plan de reprise des dossiers papier (CDCT §24). Les chiffres sont ceux du rapport de cadrage (environ 18 000 dossiers
-/// recensés) : des valeurs de la maquette, non des mesures du magasin.
+/// `m1-numerisation` — le plan de reprise des dossiers papier (CDCT §24). CALCULÉ depuis les dossiers réels (`docPlanNumerisation`) : numérisés = patients portant un fichier déposé,
+/// prioritaires = patients actifs dans la fenêtre réglée, lots = liste de référence ordonnée, cadence = fichiers déposés par mois. Seul le FONDS papier est déclaré (réglage daté) :
+/// le papier ne se compte pas dans le logiciel. Ce qui ne se calcule pas s'affiche « non calculable », jamais un chiffre de démonstration.
 class EcranNumerisation extends StatelessWidget with EcranMaquette {
   const EcranNumerisation({super.key});
 
@@ -390,32 +392,52 @@ class EcranNumerisation extends StatelessWidget with EcranMaquette {
   String get regle =>
       'Le périmètre exclut la migration rétroactive intégrale : seuls les dossiers actifs sont numérisés en priorité, les dossiers inactifs restant numérisables à la demande.';
 
-  static const _total = 18000;
-  static const _traites = 4230;
-  static const _lots = <(String, int, int)>[
-    ('Lot 1 — Hospitalisations en cours', 320, 320),
-    ('Lot 2 — Patients suivis (chroniques)', 1450, 1450),
-    ('Lot 3 — Maternité et suivis prénataux', 980, 860),
-    ('Lot 4 — Patients assurés', 2300, 1600),
-    ('Lot 5 — Consultations 2025-2026', 1150, 0),
-    ('Lot 6 — Fonds inactif (à la demande)', 11800, 0),
-  ];
+  static const _collections = ['patients', 'documentsPatient', 'consultations', 'admissions', 'demandesAnalyses', 'grossesses'];
+
+  /// Le plan à la date de l'écran, relu des collections ACTIVES et des réglages en vigueur (fonds papier, fenêtre des dossiers actifs, lots).
+  static PlanNumerisation plan(ContexteEcran c) {
+    List<Fiche> actives(String nom) => c.magasin.collection(nom).actives;
+    return docPlanNumerisation(
+        patients: actives('patients'),
+        documents: actives('documentsPatient'),
+        consultations: actives('consultations'),
+        admissions: actives('admissions'),
+        analyses: actives('demandesAnalyses'),
+        grossesses: actives('grossesses'),
+        aujourdhui: c.aujourdhui,
+        fondsDeclare: seuilClinique(c.magasin, cleFondsPapier, c.aujourdhui),
+        fenetreMois: seuilClinique(c.magasin, cleFenetreDossiersActifs, c.aujourdhui),
+        lots: ListesReference.entrees('listes.m1.lotsNumerisation'));
+  }
+
+  static String _pc(int? fait, int? total) => fait == null || total == null || total == 0 ? 'non calculable' : pourcent(fait / total * 100);
 
   @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
-    final mois = parMois(const [], 'x', ref: c.aujourdhui);
+    return ListenableBuilder(
+        listenable: Listenable.merge([for (final n in _collections) c.magasin.collection(n)]),
+        builder: (context, _) => _corps(context, c, plan(c)));
+  }
+
+  Widget _corps(BuildContext context, ContexteEcran c, PlanNumerisation p) {
+    final fenetre = seuilClinique(c.magasin, cleFenetreDossiersActifs, c.aujourdhui);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       KpiGrilleSigh(kpis: [
-        KpiSigh(libelle: 'Dossiers papier recensés', valeur: nombre(_total), icone: LucideIcons.archive, ton: TonSigh.neutre),
+        KpiSigh(
+            libelle: 'Dossiers papier recensés',
+            valeur: nombre(p.fonds),
+            icone: LucideIcons.archive,
+            ton: TonSigh.neutre,
+            indice: p.fondsInferieurAuRepertoire ? 'Fonds déclaré : ${nombre(p.fondsDeclare)} — inférieur au répertoire (${nombre(p.repertoire)}), le répertoire est retenu' : 'Fonds déclaré (réglage « numerisation.fondsPapierDossiers »)'),
         KpiSigh(
             libelle: 'Dossiers numérisés',
-            valeur: nombre(_traites),
+            valeur: nombre(p.numerises),
             icone: LucideIcons.scanLine,
             ton: TonSigh.succes,
-            indice: '${pourcent(_traites / _total * 100)} du fonds'),
-        KpiSigh(libelle: 'Dossiers actifs prioritaires', valeur: nombre(6200), icone: LucideIcons.star, indice: 'Vus au cours des 24 derniers mois'),
-        KpiSigh(libelle: 'Reste à traiter (prioritaires)', valeur: nombre(6200 - _traites), icone: LucideIcons.clock, ton: TonSigh.attention),
+            indice: p.fonds == 0 ? 'non calculable : fonds nul' : '${pourcent(p.numerises / p.fonds * 100)} du fonds'),
+        KpiSigh(libelle: 'Dossiers actifs prioritaires', valeur: nombre(p.prioritaires), icone: LucideIcons.star, indice: 'Vus au cours des $fenetre derniers mois'),
+        KpiSigh(libelle: 'Reste à traiter (prioritaires)', valeur: nombre(p.prioritairesRestants), icone: LucideIcons.clock, ton: TonSigh.attention),
       ]),
       const SizedBox(height: 16),
       CarteSigh(
@@ -429,63 +451,66 @@ class EcranNumerisation extends StatelessWidget with EcranMaquette {
                     titre: 'État d’avancement de la numérisation',
                     sousTitre: 'Reprise des dossiers patients — CDCT §24',
                     cartouche: [
-                      ('Fonds total', '${nombre(_total)} dossiers'),
-                      ('Numérisés', nombre(_traites)),
-                      ('Avancement', pourcent(_traites / _total * 100)),
+                      ('Fonds total', '${nombre(p.fonds)} dossiers'),
+                      ('Numérisés', nombre(p.numerises)),
+                      ('Avancement', p.fonds == 0 ? 'non calculable' : pourcent(p.numerises / p.fonds * 100)),
                       ('Date d’édition', dateFR(c.aujourdhui)),
                     ],
                     blocs: [
                       BlocTableau(TableauEtat(colonnes: [
                         ColonneEtat(libelle: 'Lot de reprise', valeur: (l) => l['lot']),
-                        ColonneEtat(libelle: 'Total', valeur: (l) => l['total'], droite: true, somme: (l) => l['total'] as num),
-                        ColonneEtat(libelle: 'Numérisés', valeur: (l) => l['fait'], droite: true, somme: (l) => l['fait'] as num),
-                        ColonneEtat(libelle: 'Avancement', valeur: (l) => '${((l['fait'] as int) / (l['total'] as int) * 100).round()} %', droite: true),
+                        ColonneEtat(libelle: 'Total', valeur: (l) => l['total'] ?? 'non calculable', droite: true, somme: (l) => (l['total'] as num?) ?? 0),
+                        ColonneEtat(libelle: 'Numérisés', valeur: (l) => l['fait'] ?? 'non calculable', droite: true, somme: (l) => (l['fait'] as num?) ?? 0),
+                        ColonneEtat(libelle: 'Avancement', valeur: (l) => _pc(l['fait'] as int?, l['total'] as int?), droite: true),
                       ], lignes: [
-                        for (final l in _lots) {'lot': l.$1, 'total': l.$2, 'fait': l.$3}
+                        for (final l in p.lots) {'lot': l.libelle, 'total': l.total, 'fait': l.fait}
                       ])),
                     ],
                     signatures: const [Signature('Le Secrétaire Médical'), Signature('La Directrice Administrative', qualite: PaiQualite.daf)]))
           ],
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            for (final l in _lots)
+            for (final l in p.lots)
               Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Row(children: [
-                      Expanded(child: Text(l.$1, style: styleM1(p: FontWeight.w500))),
-                      Text('${nombre(l.$3)} / ${nombre(l.$2)} (${(l.$3 / l.$2 * 100).round()} %)', style: styleM1(t: 12, c: JetonsShell.slate500)),
+                      Expanded(child: Text(l.libelle, style: styleM1(p: FontWeight.w500))),
+                      Text(l.calculable ? '${nombre(l.fait!)} / ${nombre(l.total!)} (${l.total == 0 ? 0 : (l.fait! / l.total! * 100).round()} %)' : 'non calculable',
+                          style: styleM1(t: 12, c: JetonsShell.slate500)),
                     ]),
                     const SizedBox(height: 6),
-                    ClipRRect(
-                        borderRadius: BorderRadius.circular(99),
-                        child: LinearProgressIndicator(
-                            value: (l.$3 / l.$2).clamp(0.01, 1.0).toDouble(),
-                            minHeight: 8,
-                            backgroundColor: JetonsShell.slate100,
-                            valueColor: AlwaysStoppedAnimation(l.$3 == l.$2
-                                ? JetonsShell.success500
-                                : (l.$3 > 0 ? JetonsShell.navy500 : JetonsShell.slate300)))),
+                    if (!l.calculable)
+                      Text(l.raison ?? '', style: styleM1(t: 12, c: JetonsShell.slate500))
+                    else
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(99),
+                          child: LinearProgressIndicator(
+                              value: l.total == 0 ? 0.01 : (l.fait! / l.total!).clamp(0.01, 1.0).toDouble(),
+                              minHeight: 8,
+                              backgroundColor: JetonsShell.slate100,
+                              valueColor: AlwaysStoppedAnimation(l.total! > 0 && l.fait == l.total
+                                  ? JetonsShell.success500
+                                  : (l.fait! > 0 ? JetonsShell.navy500 : JetonsShell.slate300)))),
                   ])),
           ])),
       const SizedBox(height: 16),
       LayoutBuilder(builder: (_, w) {
         final barres = CarteSigh(
             titre: 'Cadence de numérisation (12 derniers mois)',
-            child: GraphiqueBarres(etiquettes: mois.etiquettes, series: const [
-              SerieGraphique('Dossiers numérisés', [0, 0, 120, 310, 480, 520, 610, 430, 380, 520, 460, 400])
-            ]));
+            child: GraphiqueBarres(etiquettes: p.cadenceEtiquettes, series: [SerieGraphique('Fichiers déposés', p.cadence)]));
         final anneau = CarteSigh(
             titre: 'Répartition du fonds',
             child: GraphiqueAnneau(
                 etiquettes: const ['Numérisés', 'Prioritaires restants', 'Fonds inactif'],
-                valeurs: [_traites, 6200 - _traites, _total - 6200]));
+                valeurs: [p.numerises, p.prioritairesRestants, p.fondsInactif]));
         return w.maxWidth >= 1024
             ? Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(child: barres), const SizedBox(width: 16), Expanded(child: anneau)])
             : Column(children: [barres, const SizedBox(height: 16), anneau]);
       }),
       const SizedBox(height: 12),
-      const Text('Source : Rapport de cadrage — environ 18 000 dossiers patients recensés.',
-          style: TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
+      Text(
+          'Numérisé = patient portant au moins un fichier déposé ; actif = consultation, admission ou analyse dans les $fenetre derniers mois. Seul le fonds papier (${nombre(p.fondsDeclare)} dossiers) est une valeur déclarée : à corriger dans les paramètres après chaque recensement.',
+          style: const TextStyle(color: JetonsShell.slate400, fontSize: 12, height: 16 / 12)),
     ]);
   }
 }

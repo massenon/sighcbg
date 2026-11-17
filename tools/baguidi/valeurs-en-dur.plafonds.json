@@ -1,24 +1,11 @@
 {
-  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 2 et H = 3 (lot 1 : paie et fiscal, il reste le plan de numérisation, trois barèmes à porter), C = 32 (80 avant le lot « seuils » : il reste les bornes cliniques du téléphone, la mère sync_dart et la balance âgée des assureurs), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 10 (12 avant le lot « coordonnées » : il reste des tons d'affichage de libellés et la décision de droit sur la fonction de l'agent). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json.",
+  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 0 et H = 1 (lot 1 : paie et fiscal ; le plan de numérisation est CALCULÉ et les tranches d'âge sont des réglages datés ; il reste le barème de référence du régime employeur), C = 32 (80 avant le lot « seuils » : il reste les bornes cliniques du téléphone, la mère sync_dart et la balance âgée des assureurs), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 0 (12 avant le lot « coordonnées », 10 ensuite : les tons d'affichage sont portés par un code ou un marquage réglé, la portée de l'imagerie par la matrice des fonctions). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json.",
   "familles": {
-    "B": {
-      "apps/poste/lib/modules/m1/documents.dart": {
-        "plafond": 2,
-        "motif": "Plan de numérisation : écran de maquette aux chiffres STATIQUES (fonds de 18 000 dossiers, 4 230 numérisés, 6 200 prioritaires, lots de reprise). Le 6 200 n'est ni un taux ni un montant : c'est un compte qui doit se CALCULER depuis les dossiers vus en 24 mois. Hors du lot 1 (paie et fiscal) : lot 7 de l'inventaire."
-      }
-    },
+    "B": {},
     "H": {
       "packages/domaine/lib/src/assurances/ass_regles.dart": {
         "plafond": 1,
         "motif": "AssBareme.garanties : le barème de référence du régime employeur versé au dossier le 18/06/2026, transcrit tel quel et seulement PROPOSÉ à la création d'une convention (recopié dans la collection `garanties`, puis ajusté). Le porter au référentiel des garanties par convention relève du lot 7 de l'inventaire."
-      },
-      "packages/domaine/lib/src/labo/res_stats.dart": {
-        "plafond": 1,
-        "motif": "Tranches d'âge des statistiques du laboratoire (0-5, 6-15…), copie DIVERGENTE de celles du pilotage (0-4, 5-14…). Les unifier change les sorties d'un des deux écrans (vecteurs de la maquette) : décision du format DHIS2 attendue, lot 6 de l'inventaire (bornes cliniques)."
-      },
-      "packages/domaine/lib/src/pilotage/pil_stats.dart": {
-        "plafond": 1,
-        "motif": "pilTranchesAgeExamens (0-4, 5-14…) : seconde copie des tranches d'âge statistiques, à unifier avec res_stats.dart au lot 6 (même motif). L'ORTB et les taux de la CNSS/VPS que ce fichier recalculait sont, eux, convertis (lot 1 : fiche ORTB-PARAMETRES et paramètres datés)."
       }
     },
     "E": {},
@@ -234,31 +221,6 @@
         "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
       }
     },
-    "G": {
-      "apps/poste/lib/modules/m10/rhc_assurance_personnel.dart": {
-        "plafond": 3,
-        "motif": "Libellés de nature (Consultation, Analyse, Hospitalisation) que le module écrit lui-même dans ses lignes et relit pour colorer et compter : valeurs d'énumération des fiches, pas une liste de clinique ; à remplacer par des constantes nommées avec le refactoring du module."
-      },
-      "apps/poste/lib/modules/m13/adm_registres.dart": {
-        "plafond": 1,
-        "motif": "Ton d'affichage d'un libellé (« Urgence », « Accueil ») : la couleur suit la valeur écrite par le module ; à remplacer par un marqueur porté par la DONNÉE (champ d'urgence, origine codée) plutôt que par le libellé, avec la retouche de l'écran."
-      },
-      "apps/poste/lib/modules/m2/ag_registres.dart": {
-        "plafond": 1,
-        "motif": "Ton d'affichage d'un libellé (« Urgence », « Accueil ») : la couleur suit la valeur écrite par le module ; à remplacer par un marqueur porté par la DONNÉE (champ d'urgence, origine codée) plutôt que par le libellé, avec la retouche de l'écran."
-      },
-      "apps/poste/lib/modules/m2/ag_rendezvous.dart": {
-        "plafond": 1,
-        "motif": "Ton d'affichage d'un libellé (« Urgence », « Accueil ») : la couleur suit la valeur écrite par le module ; à remplacer par un marqueur porté par la DONNÉE (champ d'urgence, origine codée) plutôt que par le libellé, avec la retouche de l'écran."
-      },
-      "apps/poste/lib/modules/m3/surv_surveillance.dart": {
-        "plafond": 1,
-        "motif": "Ton d'affichage d'un libellé (« Urgence », « Accueil ») : la couleur suit la valeur écrite par le module ; à remplacer par un marqueur porté par la DONNÉE (champ d'urgence, origine codée) plutôt que par le libellé, avec la retouche de l'écran."
-      },
-      "packages/domaine/lib/src/patients/pat_fiche.dart": {
-        "plafond": 3,
-        "motif": "Fonctions qui peuvent lire un compte rendu d'imagerie (RG-13) : décision de droit prise sur la FONCTION de l'agent, hors matrice et gestes réservés (défaut n° 7 de l'inventaire) ; à porter en geste réservé « lire les comptes rendus d'imagerie », lot « droits restants », non entrepris ici."
-      }
-    }
+    "G": {}
   }
 }

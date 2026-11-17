@@ -364,7 +364,7 @@ class _EtatAgendaMedecin extends State<EcranAgendaMedecin> {
                     libelle: 'Type',
                     texte: (r) => '${agVrai(r['type']) ? r['type'] : 'Consultation'}',
                     rendu: (_, r) => BadgeSigh('${agVrai(r['type']) ? r['type'] : 'Consultation'}',
-                        ton: r['type'] == 'Urgence' ? TonSigh.danger : TonSigh.neutre)),
+                        ton: agEstUrgent(r) ? TonSigh.danger : TonSigh.neutre)),
                 ColonneTableau(
                     cle: 'statut',
                     libelle: 'État',

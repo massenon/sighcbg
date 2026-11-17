@@ -88,8 +88,16 @@ String _jour10(Object? v) {
   return s.length >= 10 ? s.substring(0, 10) : s;
 }
 
+/// Les CODES des natures de prestation prises en charge pour le personnel : ce que la ligne porte et ce que la logique compare. Le LIBELLÉ et le ton d'affichage sont un réglage
+/// (`listes.m10.naturesPrestationPersonnel`) : renommer « Consultation » ne change aucun compte.
+const natureAssuranceConsultation = 'consultation';
+const natureAssuranceAnalyse = 'analyse';
+const natureAssuranceHospitalisation = 'hospitalisation';
+
 class LigneAssurance {
   const LigneAssurance(this.id, this.nature, this.date, this.valeur);
+
+  /// [nature] est le CODE de la nature (`natureAssurance…`), jamais un libellé.
   final String id, nature, date;
   final num? valeur;
 }
@@ -115,16 +123,16 @@ AssuranceMes assuranceDeLAgent({
   ];
   final lignes = <LigneAssurance>[];
   for (final c in consultations) {
-    if (pids.contains(c['patientId'])) lignes.add(LigneAssurance('${c['id']}', 'Consultation', _jour10(c['date']), montantPorte(c['tarif'])));
+    if (pids.contains(c['patientId'])) lignes.add(LigneAssurance('${c['id']}', natureAssuranceConsultation, _jour10(c['date']), montantPorte(c['tarif'])));
   }
   for (final a in demandesAnalyses) {
     if (pids.contains(a['patientId'])) {
       final montant = a['montant'] != null && a['montant'] != '' ? a['montant'] : a['prix'];
-      lignes.add(LigneAssurance('${a['id']}', 'Analyse', _jour10(a['date'] ?? a['dateDemande'] ?? a['dateHeure']), montantPorte(montant)));
+      lignes.add(LigneAssurance('${a['id']}', natureAssuranceAnalyse, _jour10(a['date'] ?? a['dateDemande'] ?? a['dateHeure']), montantPorte(montant)));
     }
   }
   for (final h in admissions) {
-    if (pids.contains(h['patientId'])) lignes.add(LigneAssurance('${h['id']}', 'Hospitalisation', _jour10(h['dateEntree']), montantPorte(h['montant'])));
+    if (pids.contains(h['patientId'])) lignes.add(LigneAssurance('${h['id']}', natureAssuranceHospitalisation, _jour10(h['dateEntree']), montantPorte(h['montant'])));
   }
   num total = 0;
   var sans = 0;

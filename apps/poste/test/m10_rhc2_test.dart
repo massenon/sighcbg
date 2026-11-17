@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show ListesReference, parCollectionParametres, rhcCleNaturesPrestation;
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/modules/m10/rhc_evenements.dart';
@@ -464,6 +466,28 @@ void main() {
       presentes(t, (tab['pied'] as List).first as List, raison: 'pied');
       expect(find.textContaining('ne donnent lieu à aucune écriture comptable'), findsOneWidget);
       expect(find.text('Le Directeur Médical'), findsOneWidget);
+      await fermerToasts(t);
+    });
+
+    // LOT « VALEURS EN DUR » (famille G) : la nature d'une prestation est un CODE ; son libellé et sa couleur sont un réglage, et le décompte ne bouge pas quand on les change.
+    testWidgets('renommer et recolorer une nature change l\'affichage, jamais le décompte ni le filtre par code', (t) async {
+      final m = posteRhc();
+      ListesReference.brancher(() => m.collection(parCollectionParametres).toutes, horloge: () => DateTime(2026, 10, 30, 12));
+      addTearDown(ListesReference.debrancher);
+      Set<TonSigh> tons(String libelle) => {
+            for (final b in t.widgetList<BadgeSigh>(find.byWidgetPredicate((w) => w is BadgeSigh && w.libelle == libelle))) b.ton
+          };
+      await ouvrir(t, m, 'm10-assurance-personnel');
+      expect(tons('Consultation'), {TonSigh.info}, reason: 'valeur d\'attente : les couleurs d\'avant');
+      final avant = kpisRhc(t)['Prestations prises en charge'];
+      await fermerToasts(t);
+      serviceParametres(m, auteur: () => 'Poste mère', horloge: () => DateTime(2026, 10, 30, 12))
+        ..semerDefauts()
+        ..regler(rhcCleNaturesPrestation, 'consultation=Consultation externe|danger; analyse=Analyse|navy; hospitalisation=Hospitalisation|attention', '2026-10-01', motif: 'Essai de libellé');
+      await ouvrir(t, m, 'm10-assurance-personnel');
+      expect(tons('Consultation externe'), {TonSigh.danger});
+      expect(find.text('Consultation'), findsNothing, reason: 'l\'ancien libellé n\'est plus écrit nulle part dans le code');
+      expect(kpisRhc(t)['Prestations prises en charge'], avant, reason: 'le décompte suit le code, pas le libellé');
       await fermerToasts(t);
     });
 

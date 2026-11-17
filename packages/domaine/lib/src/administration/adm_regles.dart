@@ -282,6 +282,14 @@ const Map<String, (String, String)> admEtatsIntervention = {
 
 List<String> get admMotifsIntervention => ListesReference.valeurs('listes.m13.motifsIntervention');
 
+/// Une intervention d'ambulance est URGENTE quand la FICHE le dit (`urgent: true/false`, la donnée l'emporte) ou, à défaut, quand son motif figure aux motifs marqués urgents
+/// (réglage `listes.m13.motifsInterventionUrgents`). Plus de test sur le début d'un libellé : un motif « Urgence … » ajouté à la liste doit être marqué pour l'être.
+bool admEstUrgente(AdmFiche a) {
+  final explicite = a['urgent'];
+  if (explicite is bool) return explicite;
+  return ListesReference.contient('listes.m13.motifsInterventionUrgents', a['motif']);
+}
+
 /// Le tarif d'une course sans montant saisi : deux PARAMÈTRES de clinique « à valider » (famille `ambulance`, versionnés par date, lot 1 de l'inventaire des
 /// valeurs en dur) — aucun document ne fixe ce tarif. Les semences ci-dessous n'en sont que le défaut (lues par `definitions.dart` et en repli).
 const String admCleForfaitAmbulance = 'ambulance.forfaitCourse';

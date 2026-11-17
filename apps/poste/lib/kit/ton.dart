@@ -5,6 +5,18 @@ import '../core/jetons_shell.dart';
 /// Tons sémantiques de la maquette (badges, KPI, notes, toasts). Toutes les teintes viennent de `JetonsShell`.
 enum TonSigh { neutre, navy, succes, attention, danger, info }
 
+/// Le ton nommé par un RÉGLAGE d'affichage (`neutre`, `navy`, `succes`/`success`, `attention`/`warning`, `danger`, `info`) ; [defaut] quand le nom est vide ou inconnu :
+/// une faute de frappe dans un réglage ne doit jamais faire disparaître un badge.
+TonSigh tonParNom(String nom, [TonSigh defaut = TonSigh.neutre]) => switch (nom.trim().toLowerCase()) {
+      'neutre' => TonSigh.neutre,
+      'navy' => TonSigh.navy,
+      'succes' || 'success' => TonSigh.succes,
+      'attention' || 'warning' => TonSigh.attention,
+      'danger' => TonSigh.danger,
+      'info' => TonSigh.info,
+      _ => defaut,
+    };
+
 extension TonCouleurs on TonSigh {
   Color get fond50 => switch (this) {
         TonSigh.neutre => JetonsShell.slate100,

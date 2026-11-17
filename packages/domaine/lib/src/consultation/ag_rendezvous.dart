@@ -48,6 +48,14 @@ AgFiche agPatchReport(AgFiche r, String nouvelleDate, String motif, DateTime mai
 /// Les natures de venue.
 List<String> get agTypesRdv => ListesReference.valeurs('listes.m2.typesRendezvous');
 
+/// Un rendez-vous est URGENT quand la FICHE le dit (`urgent: true/false`, la donnée l'emporte) ou, à défaut, quand son type figure aux types marqués urgents
+/// (réglage `listes.m2.typesRendezvousUrgents`). Aucun libellé n'est comparé dans le code : renommer ou ajouter un type urgent se règle, ne se programme pas.
+bool agEstUrgent(AgFiche r) {
+  final explicite = r['urgent'];
+  if (explicite is bool) return explicite;
+  return ListesReference.contient('listes.m2.typesRendezvousUrgents', r['type']);
+}
+
 // --- la personne non enregistrée ------------------------------------------------------------------------------------------------
 
 /// Nom affiché d'une personne non enregistrée : NOM en majuscules, prénom tel que saisi.
