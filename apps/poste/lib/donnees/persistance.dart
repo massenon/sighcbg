@@ -19,6 +19,10 @@ abstract class Persistance {
   Future<Map<String, Object?>> lireMeta();
   Future<void> ecrireMeta(Map<String, Object?> meta);
 
+  /// Range la FORME D'ORIGINE des collections qu'une migration est sur le point de convertir (migration n° [numero]) : une migration n'est jamais seulement destructive. Appelée AVANT l'écriture de
+  /// la forme convertie. Par défaut, rien (persistance de test).
+  Future<void> conserverAvantMigration(int numero, Map<String, List<FichePersistee>> formes) async {}
+
   /// Ce qui n'a pas pu être relu : un fichier illisible n'est jamais effacé en silence, il est mis de côté et NOMMÉ ici pour que le poste le dise.
   List<String> get problemes;
 }
@@ -257,6 +261,16 @@ class PersistanceFichiers implements Persistance {
     }
   }
 
+  /// La forme d'origine, rangée sous `migrations/avant-<n>/` (chiffrée comme le reste) : l'ancien magasin se relit tel qu'il était avant la conversion (retour arrière documenté).
+  @override
+  Future<void> conserverAvantMigration(int numero, Map<String, List<FichePersistee>> formes) async {
+    for (final e in formes.entries) {
+      if (!_nomValide.hasMatch(e.key)) continue;
+      final octets = utf8.encode(jsonEncode(e.value));
+      await _ecrireOctets(File('$dossier/migrations/avant-$numero/${e.key}.${chiffre ? 'sigh' : 'json'}'), chiffre ? await _chiffrer(e.key, octets) : octets);
+    }
+  }
+
   /// Repartir de zéro (développement, `SIGH_REPARTIR_A_ZERO=oui`) : le dossier est mis de côté, pas supprimé.
   Future<void> mettreDeCote() async {
     final d = Directory(dossier);
@@ -270,6 +284,16 @@ class PersistanceMemoire implements Persistance {
   final Map<String, List<FichePersistee>> contenu;
   final List<String> ecritures = [];
   Map<String, Object?> meta = {};
+
+  /// Les formes d'origine rangées avant migration : `numéro → collection → fiches`.
+  final Map<int, Map<String, List<FichePersistee>>> avantMigration = {};
+
+  @override
+  Future<void> conserverAvantMigration(int numero, Map<String, List<FichePersistee>> formes) async {
+    avantMigration[numero] = {
+      for (final e in formes.entries) e.key: [for (final f in e.value) (jsonDecode(jsonEncode(f)) as Map).cast<String, Object?>()]
+    };
+  }
 
   @override
   Future<Map<String, Object?>> lireMeta() async => {...meta};

@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes;
+import 'package:sigh_domaine/sigh_domaine.dart' as dom show metaMigree;
+import 'package:sigh_domaine/sigh_domaine.dart' show ContenuDonnees, migrerDonnees, schemaCleMeta, Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes;
 
 import 'persistance.dart';
 
@@ -329,41 +330,35 @@ class Magasin {
     // UN JEU D'ORIGINE QUI CHANGE NE SE PERD PAS (Direction, 03/11/2026) : quand le jeu livré avec le poste a changé depuis le dernier lancement, les fiches
     // des collections de [fusionnables] (référentiels, paramétrage) qui MANQUENT au magasin enregistré y sont ajoutées. On n'écrase rien, on ne retire rien :
     // ce que l'agent a saisi ou modifié reste, ce que la nouvelle version apporte arrive. L'activité de démonstration, elle, n'est jamais rajoutée.
-    // LES CONSTANTES D'AVANT LE LOT B (13/11/2026) se MIGRENT une fois, avant toute lecture : tension « 12/8 » en deux nombres (relevés d'hospitalisation, feuilles
-    // d'observation), diurèse d'accueil des litres aux millilitres. La marque `formeConstantes` du poste dit où il en est : sans marque sur un poste déjà peuplé, il
-    // date d'avant le lot (la conversion de la diurèse se fait ALORS, une seule fois : sans marque, 2 mL et 2 L se confondent) ; un poste neuf n'a rien à convertir.
+    // LA VERSION DU FORMAT DES DONNÉES ET SA CHAÎNE DE MIGRATIONS (décision 12, 17/11/2026). Le schéma écrit en méta est lu AVANT tout geste : un magasin écrit par une version PLUS RÉCENTE du
+    // logiciel est REFUSÉ en le nommant (`ErreurSchemaDonnees`, SCHEMA_PLUS_RECENT) : rien n'est lu, rien n'est écrit, jamais d'écrasement silencieux. Sinon la chaîne ordonnée
+    // (`migrationsDonnees`, domaine) amène le magasin à la forme courante ; la FORME D'ORIGINE de chaque collection modifiée est rangée à part (`conserverAvantMigration`) AVANT que la forme
+    // convertie ne soit écrite : une migration n'est jamais seulement destructive. La migration n°1 est celle des constantes d'avant le lot B (13/11/2026) : tension « 12/8 » en deux nombres,
+    // diurèse d'accueil des litres aux millilitres (UNE fois : sans marque sur un poste peuplé, elle date d'avant le lot ; l'ancienne marque `formeConstantes` reste écrite).
+    final resultat = migrerDonnees(ContenuDonnees(ecrit, meta), horloge: horloge, objet: 'Le magasin de ce poste');
     var metaMigree = meta;
-    if (meta['formeConstantes'] != formeConstantes) {
-      if (ecrit.isNotEmpty) {
-        final r = hosMigrerConstantes(
-            releves: ecrit['releves'] ?? const [],
-            observations: ecrit['observations'] ?? const [],
-            constantes: ecrit['constantes'] ?? const [],
-            diureseAccueilEnLitres: meta['formeConstantes'] == null);
-        for (final e in r.modifiees.entries) {
-          ecrit[e.key] = e.value;
-          await p.ecrire(e.key, e.value);
-        }
-        migrationConstantes = r;
-        if (r.aFait || r.tensionsIllisibles > 0) {
-          metaMigree = {
-            ...meta,
-            'migrations': [
-              ...((meta['migrations'] as List?) ?? const []),
-              {
-                'nom': 'constantes-lot-b',
-                'le': horloge().toUtc().toIso8601String(),
-                'tensionsScindees': r.tensionsScindees,
-                'tensionsIllisibles': r.tensionsIllisibles,
-                'diuresesConverties': r.diuresesConverties,
-              }
-            ],
-          };
-        }
+    if (resultat.aFait || meta[schemaCleMeta] == null || meta['formeConstantes'] != formeConstantes) {
+      for (final e in resultat.formesAvant.entries) {
+        await p.conserverAvantMigration(e.key, e.value);
       }
-      metaMigree = {...metaMigree, 'formeConstantes': formeConstantes};
+      for (final e in resultat.modifiees.entries) {
+        ecrit[e.key] = e.value;
+        await p.ecrire(e.key, e.value);
+      }
+      final trace = resultat.journal.where((j) => j['numero'] == 1);
+      if (trace.isNotEmpty) {
+        final d = trace.first;
+        migrationConstantes = RapportMigrationConstantes()
+          ..tensionsScindees = (d['tensionsScindees'] as num?)?.toInt() ?? 0
+          ..tensionsIllisibles = (d['tensionsIllisibles'] as num?)?.toInt() ?? 0
+          ..diuresesConverties = (d['diuresesConverties'] as num?)?.toInt() ?? 0
+          ..modifiees.addAll({for (final e in resultat.modifiees.entries) e.key: e.value});
+      }
+      metaMigree = {...dom.metaMigree(meta, resultat), 'formeConstantes': formeConstantes};
       await p.ecrireMeta(metaMigree);
     }
+    schemaDesDonnees = resultat.schemaApres;
+    migrationsJouees = resultat.journal;
     final empreinte = _empreinteJeu(fusionnables);
     final fusionnees = <String, List<Fiche>>{};
     if (ecrit.isNotEmpty && meta['jeu'] != empreinte) {
@@ -392,6 +387,22 @@ class Magasin {
 
   /// La forme des constantes que ce poste écrit : 2 = tension en deux nombres (cmHg), diurèse en millilitres (lot B). À incrémenter si cette forme change encore.
   static const int formeConstantes = 2;
+
+  /// Les noms de TOUTES les collections du magasin (celles du jeu et celles créées depuis), pour l'export complet.
+  Iterable<String> get nomsCollections => {..._jeux.keys, ..._c.keys};
+
+  /// Une COPIE de toutes les collections (fiches complètes, archivées comprises, RG-14) : le contenu de l'export portable. Les collections déjà rangées en mémoire passent par leur
+  /// fiche courante ; la lecture n'en crée aucune de vide sans besoin.
+  Map<String, List<Map<String, Object?>>> exporterCollections() => {
+        for (final n in nomsCollections) n: [for (final f in collection(n).toutes) Map<String, Object?>.from(f)]
+      };
+
+  /// La méta PERSISTÉE du magasin (schéma, journal des migrations, empreinte du jeu), vide si la persistance n'est pas branchée.
+  Future<Map<String, Object?>> metaPersistee() async => await _persistance?.lireMeta() ?? <String, Object?>{};
+
+  /// Le schéma des données du magasin APRÈS la chaîne de migrations de l'ouverture (`null` : persistance non branchée), et les migrations que cette ouverture a jouées (journal sans contenu médical).
+  int? schemaDesDonnees;
+  List<Map<String, Object?>> migrationsJouees = const [];
 
   /// Ce que la migration des constantes a fait au dernier démarrage (`null` : poste neuf ou déjà à la bonne forme) : le poste le DIT, il ne change pas la donnée en silence.
   RapportMigrationConstantes? migrationConstantes;

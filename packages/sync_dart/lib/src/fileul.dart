@@ -332,6 +332,11 @@ class Fileul {
     });
   }
 
+  int _dernierOkEcrit = 0;
+
+  /// L'instant (ms) du dernier cycle de synchronisation réussi ; `null` : jamais.
+  int? get dernierSynchro => int.tryParse(base.meta('dernier_ok') ?? '');
+
   Future<void> cycle() async {
     if (etat.suspendu) return;
     etat.cycles++;
@@ -342,6 +347,12 @@ class Fileul {
       etat.horsLigne = false;
       etat.tentatives = 0;
       etat.derniereErreur = null;
+      // Le DERNIER cycle réussi, daté (au plus une écriture toutes les 5 s) : un import plus ancien que lui avertit (décision 12, 17/11/2026).
+      final t = maintenant();
+      if (t - _dernierOkEcrit > 5000) {
+        _dernierOkEcrit = t;
+        base.poserMeta('dernier_ok', t);
+      }
     } on _Suspendu {
       etat.derniereErreur = 'suspendu';
     } on _Epoque {
