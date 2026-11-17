@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Sans cette permission, un APK « release » ne joint pas le relais (seuls debug et profile la portaient). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="SIGH-CBG"
         android:name="${applicationName}"

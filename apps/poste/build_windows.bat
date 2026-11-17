@@ -52,7 +52,9 @@ if errorlevel 1 (
 
 echo.
 echo [6/9] flutter build windows --release
-call flutter build windows --release || ( echo ECHEC : flutter build windows --release. Fermez l'application et tout flutter_tester, puis relancez. & goto :echec )
+set "DEFINES="
+if defined SIGH_ADMIN ( set "DEFINES=--dart-define=SIGH_ADMIN=%SIGH_ADMIN%" ) else ( echo   AVERTISSEMENT : SIGH_ADMIN n est pas defini : le secret d administration de la mere vaudra la valeur par defaut. Definissez-le avant de construire un poste de production. )
+call flutter build windows --release %DEFINES% || ( echo ECHEC : flutter build windows --release. Fermez l'application et tout flutter_tester, puis relancez. & goto :echec )
 
 echo.
 echo [7/9] Runtime Visual C++ ^(un poste neuf peut ne pas l'avoir : l'application ne demarrerait pas, sans message^)
