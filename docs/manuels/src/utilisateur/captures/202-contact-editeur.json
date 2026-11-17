@@ -1,0 +1,353 @@
+{
+ "nom": "202-contact-editeur",
+ "ecran": "contact-editeur",
+ "role": "reception",
+ "taille": [
+  1440.0,
+  1100.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Envoyer le message",
+   "rect": [
+    730.0,
+    571.0,
+    190.3,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Joindre une capture d’écran",
+   "rect": [
+    58.0,
+    1075.0,
+    213.7,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Consulter l’aide & la FAQ",
+   "rect": [
+    978.3,
+    634.0,
+    221.0,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1100.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1100.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   324.1,
+   36.0
+  ],
+  "barre-actions": [
+   944.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1047.7,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1197.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1217.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1243.0,
+   0.0,
+   185.0,
+   56.0
+  ],
+  "nom-courant": [
+   1289.0,
+   14.5,
+   117.0,
+   14.0
+  ],
+  "role-courant": [
+   1289.0,
+   28.5,
+   100.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   331.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   405.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   560.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   687.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   788.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "contact-editeur|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   971.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   198.6,
+   28.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   234.0,
+   915.3,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   248.0,
+   875.3,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   283.0,
+   915.3,
+   344.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   303.0,
+   875.3,
+   216.0
+  ],
+  "kit:champ:objet": [
+   45.0,
+   303.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:message": [
+   45.0,
+   379.0,
+   875.3,
+   140.0
+  ],
+  "support:sans-messagerie:message": [
+   45.0,
+   527.0,
+   875.3,
+   32.0
+  ],
+  "kit:champ:module": [
+   45.0,
+   714.0,
+   875.3,
+   60.0
+  ],
+  "kit:champ:description": [
+   45.0,
+   790.0,
+   875.3,
+   120.0
+  ],
+  "kit:champ:etapes": [
+   45.0,
+   926.0,
+   875.3,
+   100.0
+  ],
+  "kit:note": [
+   957.3,
+   707.0,
+   458.7,
+   82.0
+  ],
+  "pied-legal": [
+   0.0,
+   1071.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1078.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    944.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1047.7,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1197.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1243.0,
+    0.0,
+    185.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}
