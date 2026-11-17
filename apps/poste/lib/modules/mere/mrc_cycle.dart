@@ -8,6 +8,7 @@ import '../../kit/kit.dart';
 import '../../mere/client_mere.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import '../cfg/cfg_base_portable.dart' show CartePreparerMaj;
 import 'mrc_commun.dart';
 import 'mrc_sources.dart';
 
@@ -284,6 +285,9 @@ class _EtatMisesAJour extends MrcEtatEcran<EcranMereMisesAJour> {
               ],
               lignes: lignes,
               vide: _etat == null ? 'Non disponible : le service de la mère ne répond pas.' : 'Aucun appareil appairé.')),
+      const SizedBox(height: 16),
+      // La préparation d'une mise à jour (décision 12, 17/11/2026) : sauvegarde vérifiée + export vérifié, sinon l'installeur bloque. La carte est celle de « Export, import et mise à jour ».
+      const CartePreparerMaj(),
       const SizedBox(height: 16),
       const NoteSigh(
           'Ce que cet écran ne vérifie pas : le moteur n’enregistre ni la version d’application ni la version de schéma des appareils, et ne refuse encore aucun poste trop ancien (le code 426 schema_incompatible est défini par la spécification, pas appliqué). Un état « Inconnu » ne rassure jamais. Aucun mécanisme de distribution des mises à jour n’existe (installateur, E8) : « Planifier le déploiement » est refusé en le disant.',

@@ -24,6 +24,7 @@ import '../mecef/mode.dart' show mecefModeleBoitierDefaut;
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer, gesteFactureTiersEmettre;
 import '../mecef/facture_tiers_payeur.dart' show factureTiersCleSignataires;
+import '../sauvegarde/maj_regles.dart' show cleMajSauvegardeMaxHeures, majHeuresDefaut;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../notifications/routage_notifications.dart';
 import '../paie/pai_baremes.dart';
@@ -441,6 +442,17 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Proposition à valider (lot BAK, ADR-0008) : contrôle chaque nuit, l\'heure est une proposition',
     branche: true,
     appliquePar: 'Lot BAK (sauvegarde hors site)',
+  ),
+  DefinitionParametre(
+    cle: cleMajSauvegardeMaxHeures,
+    famille: 'maj',
+    type: TypeParametre.entier,
+    defaut: majHeuresDefaut,
+    libelle: 'Ancienneté maximale de la sauvegarde avant une mise à jour (heures)',
+    aide: 'Entier de 1 à 168. Une mise à jour est BLOQUÉE tant que la clinique ne détient pas une sauvegarde vérifiée ET un export portable vérifié de moins de ce nombre d’heures. 24 par défaut. Lever le blocage est un geste réservé tracé (force majeure).',
+    source: 'Proposition à valider par la Direction (décision 12 du 17/11/2026) : le nombre d’heures est une valeur d’attente',
+    branche: true,
+    appliquePar: 'Préparer la mise à jour (poste mère) et installeur Windows',
   ),
   DefinitionParametre(
     cle: shCleCopiesMagasin,
@@ -1784,6 +1796,7 @@ const Map<String, String> libellesFamillesParametres = {
   'fiscal': 'Calendrier fiscal',
   'securite': 'Sécurité',
   'horssite': 'Sauvegarde hors site',
+  'maj': 'Mise à jour du logiciel',
   'assistant': 'Assistant',
   'stock': 'Stock et péremption',
   'comptabilite': 'Comptabilité et recouvrement',

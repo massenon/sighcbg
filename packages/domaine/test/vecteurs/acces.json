@@ -1565,6 +1565,10 @@
        {
         "label": "Messagerie (SMTP)",
         "href": "pages/cfg-smtp.php"
+       },
+       {
+        "label": "Export, import et mise à jour",
+        "href": "pages/cfg-base-portable.php"
        }
       ]
      },
@@ -1733,6 +1737,10 @@
        {
         "label": "Clé de clinique",
         "href": "pages/mere-cle-clinique.php"
+       },
+       {
+        "label": "Restaurer la clé de la clinique",
+        "href": "pages/mere-cle-restauration.php"
        },
        {
         "label": "Intégrité et altérations",
@@ -2148,7 +2156,7 @@
     ]
    }
   ],
-  "pied": "350 écrans métier recensés au manifeste, plus 23 pages d’accès et système.",
+  "pied": "352 écrans métier recensés au manifeste, plus 23 pages d’accès et système.",
   "retour": "Retour à l’application",
   "homeAdmin": "dash-admin"
  },
@@ -2160,7 +2168,7 @@
    },
    {
     "label": "Écrans disponibles",
-    "valeur": "350"
+    "valeur": "352"
    },
    {
     "label": "Règles de gestion appliquées",

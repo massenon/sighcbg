@@ -105,6 +105,10 @@ export 'src/administration/adm_regles.dart';
 export 'src/configuration/cfa_regles.dart';
 export 'src/configuration/cfb_donnees.dart';
 export 'src/sauvegarde/sauvegarde_horssite.dart';
+export 'src/sauvegarde/schema_donnees.dart';
+export 'src/sauvegarde/export_portable_regles.dart';
+export 'src/sauvegarde/maj_regles.dart';
+export 'src/sauvegarde/cle_clinique_regles.dart';
 export 'src/configuration/cfb_archivage.dart';
 export 'src/configuration/cfb_regles.dart';
 // Configuration fiscale validée et datée (06/11/2026) : identité par versions, obligations et ORTB datés, échéances, validation réservée.

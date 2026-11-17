@@ -44,6 +44,8 @@ void main() {
       gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteRhConfirmerValeur, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
       // Plan de travail annuel (lot PTA, 17/11/2026) : adopter, régler les référentiels, recevoir l'alerte de retard.
       gestePtaAdopter, gestePtaRegler, gesteAlertesPtaRetard,
+      // Mise à jour du logiciel (17/11/2026) : exporter, importer, lever le blocage.
+      gesteBaseExporter, gesteBaseImporter, gesteMajLeverBlocage,
     ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');

@@ -82,6 +82,9 @@ class ServiceMereLocal implements ServiceMere {
   final ConfigMere config;
   Mere? _mere;
 
+  /// La mère en marche dans ce processus (`null` : service arrêté). Sert à l'export portable (journal, clé de la clinique) et à la vérification de la dernière sauvegarde.
+  Mere? get mere => _mere;
+
   @override
   bool get enMarche => _mere != null;
 

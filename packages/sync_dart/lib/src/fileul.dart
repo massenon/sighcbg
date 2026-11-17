@@ -332,6 +332,11 @@ class Fileul {
     });
   }
 
+  int _dernierOkEcrit = 0;
+
+  /// L'instant (ms) du dernier cycle de synchronisation réussi ; `null` : jamais.
+  int? get dernierSynchro => int.tryParse(base.meta('dernier_ok') ?? '');
+
   Future<void> cycle() async {
     if (etat.suspendu) return;
     etat.cycles++;
@@ -342,6 +347,12 @@ class Fileul {
       etat.horsLigne = false;
       etat.tentatives = 0;
       etat.derniereErreur = null;
+      // Le DERNIER cycle réussi, daté (au plus une écriture toutes les 5 s) : un import plus ancien que lui avertit (décision 12, 17/11/2026).
+      final t = maintenant();
+      if (t - _dernierOkEcrit > 5000) {
+        _dernierOkEcrit = t;
+        base.poserMeta('dernier_ok', t);
+      }
     } on _Suspendu {
       etat.derniereErreur = 'suspendu';
     } on _Epoque {
@@ -360,6 +371,59 @@ class Fileul {
     }
   }
 
+  // --- export portable : l'ÉTAT que ce poste est seul à détenir (décision 12, 17/11/2026) ---------------------------------------------------
+  /// Ce qui ne se retrouve nulle part ailleurs quand on déménage ce poste : sa FILE d'opérations non confirmées (une saisie en attente ne doit jamais se perdre), ses plages de numéros et
+  /// ses baux de stock, son étiquette et son identifiant. Le reste (état confirmé, curseur) se redescend de la mère. Aucun secret : ni jeton, ni renouvellement, ni clé.
+  Map<String, Object?> etatPortable() => {
+        'role': 'fileul',
+        'uuid': uuid,
+        'etiquette': cfg.nom,
+        'epoch': base.metaInt('epoch'),
+        'curseur': base.metaInt('curseur'),
+        'file': base.select("SELECT op FROM file WHERE etat='en_attente' ORDER BY ordre").map((r) => jsonDecode(r['op'] as String)).toList(),
+        'plage': base.select('SELECT nom,prochain,fin,annee FROM plage'),
+        'baux': base.select('SELECT article,reste FROM baux'),
+      };
+
+  /// REPREND l'état d'un poste exporté sur CE poste, qui doit être NEUF (file vide, rien de confirmé) : refus nommé sinon. Les opérations gardent leur identifiant : si la mère les a déjà
+  /// reçues, elle les reconnaît (rejeu) et n'en applique aucune deux fois. Le poste doit ensuite être appairé par un code de REPRISE (la mère lui passe les plages et révoque l'ancien).
+  Map<String, Object?> reprendreEtat(Map<String, Object?> e) {
+    if (e['role'] != 'fileul') return {'refus': 'ETAT_INCONNU', 'motif': 'ce n’est pas l’état d’un poste fileul'};
+    final file = (base.select('SELECT COUNT(*) AS n FROM file').first['n'] as int);
+    final confirme = (base.select('SELECT COUNT(*) AS n FROM confirme').first['n'] as int);
+    if (file > 0 || confirme > 0) {
+      return {'refus': 'POSTE_NON_NEUF', 'motif': 'ce poste porte déjà des saisies ou un état synchronisé : l’état d’un autre poste ne se reprend que sur un poste neuf'};
+    }
+    var n = 0;
+    base.tx(() {
+      for (final o in ((e['file'] ?? const []) as List)) {
+        final op = (o as Map).cast<String, Object?>();
+        base.exec("INSERT INTO file(id,op,etat) VALUES(?,?,'en_attente') ON CONFLICT(id) DO NOTHING", [op['id'], enJson(op)]);
+        n++;
+      }
+      for (final p in ((e['plage'] ?? const []) as List)) {
+        final r = (p as Map).cast<String, Object?>();
+        base.exec('INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee',
+            [r['nom'], r['prochain'], r['fin'], r['annee']]);
+      }
+      for (final b in ((e['baux'] ?? const []) as List)) {
+        final r = (b as Map).cast<String, Object?>();
+        base.exec('INSERT INTO baux(article,reste) VALUES(?,?) ON CONFLICT(article) DO UPDATE SET reste=excluded.reste', [r['article'], r['reste']]);
+      }
+      base.poserMeta('repris_de', '${e['uuid']}');
+    });
+    return {'repris': n, 'repris_de': '${e['uuid']}'};
+  }
+
+  /// Après le remplacement du magasin local par une base de la mère : l'état CONFIRMÉ est rejoué depuis le début (la mère reste l'autorité). La FILE des saisies, les plages, les baux et les
+  /// jetons ne sont jamais touchés : rien de ce que la mère n'a pas encore reçu ne se perd.
+  void demanderResynchronisation() {
+    base.tx(() {
+      base.exec('DELETE FROM confirme');
+      base.poserMeta('curseur', 0);
+    });
+  }
+
   // --- commande (le « clavier » du banc) ---------------------------------------------------------------------
   Future<(int, Object?)> commande(String cle, Map<String, Object?> b, Map<String, String> q) async {
     switch (cle) {
@@ -376,6 +440,11 @@ class Fileul {
         base.poserMeta('suspendu', 0);
         etat.suspendu = false;
         return (200, {'uuid': uuid});
+      case 'GET /etat-portable':
+        return (200, etatPortable());
+      case 'POST /reprendre-etat':
+        final rr = reprendreEtat((b['etat'] as Map).cast<String, Object?>());
+        return (rr['refus'] == null ? 200 : 422, rr);
       case 'POST /plage':
         final nomPlage = '${b['nom'] ?? 'patients'}';
         // Une plage de dossiers est demandée POUR UNE ANNÉE (celle des dossiers à coder ; l'année en cours à défaut) et garde l'année que la mère a retenue.

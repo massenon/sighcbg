@@ -251,6 +251,7 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `cfg-rappels` | Rappels & messages | CFG | 3 | — | porté |
 | `cfg-regles` | Règles métier versionnées | CFG | 3 | 24 | porté |
 | `cfg-smtp` | Messagerie (SMTP) | CFG | 2 | 84 | porté |
+| `cfg-base-portable` | Export, import et mise à jour | CFG | 2 | — | porté |
 | `cfg-systeme` | Paramètres système | CFG | 3 | 16, 23, 67, 75, 82 | porté |
 | `cfg-tarifs` | Référentiel tarifaire | CFG | 4 | 9, 43 | porté |
 | `cfg-types-piece` | Types de pièces certifiantes | CFG | 3 | 33 | porté |
@@ -344,6 +345,7 @@ Colonnes : **Rôles** = nombre de rôles qui voient l'écran (matrice effective)
 | `mere-appareils` | Appareils et appairage | MERE | 2 | — | porté |
 | `mere-base` | Base de données locale | MERE | 2 | — | porté |
 | `mere-cle-clinique` | Clé de clinique | MERE | 2 | — | porté |
+| `mere-cle-restauration` | Restaurer la clé de la clinique | MERE | 2 | — | porté |
 | `mere-conflits` | Conflits et doublons | MERE | 2 | — | porté |
 | `mere-import` | Import de migration | MERE | 2 | — | porté |
 | `mere-indicateurs` | Indicateurs publiés | MERE | 2 | — | porté |

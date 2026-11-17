@@ -10,10 +10,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
 
 import 'commun.dart';
 import 'depot.dart';
+import 'export_portable.dart' show gardeSchemaDepot, extraireMere;
 import 'fichiers.dart';
 import 'horssite_mere.dart';
 import 'sauvegarde_horssite.dart' show ErreurSauvegarde;
@@ -341,9 +342,17 @@ class Mere {
   static Future<Mere> creer(ConfigMere cfg) async {
     final base = await Depot.ouvrir(cfg.dbChemin, cfg.cleStockage);
     await base.initialiser(_ddl);
+    // LA VERSION DU FORMAT DES DONNÉES (décision 12, 17/11/2026) : un dépôt écrit par une version PLUS RÉCENTE du logiciel est REFUSÉ en le nommant, avant tout geste qui le
+    // modifierait. Un dépôt sans numéro (écrit avant la chaîne) est au schéma 1 et reçoit son numéro.
+    try {
+      await gardeSchemaDepot(base);
+    } catch (_) {
+      await base.fermer();
+      rethrow;
+    }
     // Migration (E1600) : une base d'avant la fonction authentifiée reçoit les colonnes ; un appareil déjà appairé garde `fonction` à NULL et la mère
     // refuse alors ses pièces en le disant (nouvel appairage).
-    for (final (t, c) in const [('codes', 'profil'), ('codes', 'fonction'), ('appareils', 'fonction')]) {
+    for (final (t, c) in const [('codes', 'profil'), ('codes', 'fonction'), ('appareils', 'fonction'), ('codes', 'reprise')]) {
       try {
         await base.exec('ALTER TABLE $t ADD COLUMN $c TEXT');
       } catch (_) {/* déjà présente */}
@@ -821,8 +830,14 @@ class Mere {
         final code = codeAppairage();
         final roleCode = '${b['role'] ?? 'fileul'}';
         final aff = roleCode == 'mobile' ? affectationMobile(b) : (profil: null, fonction: null);
-        await base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)',
-            [code, b['etiquette'] ?? '', roleCode, maintenantMs() + cfg.codeTtl, aff.profil, aff.fonction]);
+        // REPRISE D'IDENTITÉ (export portable d'un fileul, 17/11/2026) : le code désigne le poste qu'un nouveau poste REMPLACE. Le poste remplacé doit exister et être un fileul.
+        final reprise = b['reprise'] == null || '${b['reprise']}'.isEmpty ? null : '${b['reprise']}';
+        if (reprise != null) {
+          final anc = await base.select('SELECT role,etat FROM appareils WHERE uuid=?', [reprise]);
+          if (anc.isEmpty || anc.first['role'] != 'fileul') throw Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
+        }
+        await base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)',
+            [code, b['etiquette'] ?? '', roleCode, maintenantMs() + cfg.codeTtl, aff.profil, aff.fonction, reprise]);
         return {'code': code};
       case 'POST /appairage':
         final r = await base.select('SELECT * FROM codes WHERE code=?', ['${b['code'] ?? ''}']);
@@ -833,6 +848,15 @@ class Mere {
         await base.exec('UPDATE codes SET utilise=1 WHERE code=?', [c['code']]);
         await base.exec('INSERT INTO appareils(uuid,etiquette,role,etat) VALUES(?,?,?,?)', [b['uuid'], c['etiquette'], c['role'], 'actif']);
         await evenement('info', 'appairage', 'Appareil appairé : ${c['etiquette']} (${c['role']})');
+        // REPRISE D'IDENTITÉ : les plages de numéros et les baux du poste remplacé passent au nouveau (c'est ce qui rend ses saisies en file REJOUABLES : un code de dossier ne
+        // s'accepte que dans la plage de son poste) ; l'ancien est RÉVOQUÉ (RG-14 : il reste au registre). Les opérations déjà confirmées ne bougent pas.
+        final repriseDe = c['reprise'] as String?;
+        if (repriseDe != null && repriseDe.isNotEmpty) {
+          await base.exec('UPDATE plages SET appareil=? WHERE appareil=?', [b['uuid'], repriseDe]);
+          await base.exec('UPDATE baux SET appareil=? WHERE appareil=?', [b['uuid'], repriseDe]);
+          await base.exec("UPDATE appareils SET etat='revoque' WHERE uuid=?", [repriseDe]);
+          await evenement('info', 'appairage', 'Reprise d’identité : le poste $repriseDe est remplacé par ${b['uuid']} (plages et baux repris, ancien poste révoqué)');
+        }
         return {'epoch': await base.metaInt('epoch'), ...await emettreJetons(b['uuid'] as String)};
       case 'POST /renouveler':
         final m = RegExp(r'^([^.]+)\.(.+)$').firstMatch('${b['renouvellement'] ?? ''}');
@@ -965,6 +989,17 @@ class Mere {
         adminOk(req);
         final chemin = await sauvegarderChiffre(prefixe: 'manuelle');
         return {'fichier': chemin, 'scans': dernierRapportScans};
+      case 'POST /admin/sauvegarde/verifier':
+        // Mise à jour du logiciel (17/11/2026) : la dernière sauvegarde chiffrée est RELUE (déchiffrée, base ouverte, intégrité contrôlée), sans rien écrire hors d'un fichier temporaire.
+        adminOk(req);
+        return verifierDerniereSauvegarde();
+      case 'GET /admin/schema':
+        adminOk(req);
+        return {'schema': await base.metaInt(schemaCleMeta), 'logiciel': schemaDonneesCourant, 'importee_le': await base.meta('importee_le')};
+      case 'GET /admin/export-contenu':
+        // L'export portable de la mère : les lignes de sa base, SANS la clé ni les codes d'appairage (retirés au scellement par le poste, qui détient la clé). Réservé à l'administrateur.
+        adminOk(req);
+        return await verrou.executer(() => extraireMere(base));
       // --- les scans : la mère les range, un fileul les lit chez elle (blocs scellés). Jamais le relais. ---
       case 'GET /sync/fichier/info':
         await _appareilFichiers(req);
@@ -1376,6 +1411,33 @@ class Mere {
       } catch (_) {/* le client est parti */}
     });
     annoncerPret(_serveur!.port);
+  }
+
+  /// Relit la DERNIÈRE sauvegarde chiffrée de la mère : la déchiffre, ouvre la base copiée et en contrôle l'intégrité. `ok: false` avec le motif si elle manque ou ne se relit pas.
+  Future<Map<String, Object?>> verifierDerniereSauvegarde() async {
+    final dossier = Directory(cfg.dossierSauvegardes);
+    if (!dossier.existsSync()) return {'ok': false, 'code': 'SAUVEGARDE_ABSENTE', 'motif': 'aucune sauvegarde chiffrée n’existe'};
+    final enc = dossier.listSync().whereType<File>().where((f) => f.path.endsWith('.enc')).toList()..sort((a, b) => a.statSync().modified.compareTo(b.statSync().modified));
+    if (enc.isEmpty) return {'ok': false, 'code': 'SAUVEGARDE_ABSENTE', 'motif': 'aucune sauvegarde chiffrée n’existe'};
+    final f = enc.last;
+    final tmp = File('${Directory.systemTemp.path}/verif-sauvegarde-${DateTime.now().microsecondsSinceEpoch}.db');
+    try {
+      final clair = await pont.env.dechiffrerOctets(f.readAsBytesSync(), 'sauvegarde-mere');
+      tmp.writeAsBytesSync(clair);
+      final d = DepotSqlite(tmp.path);
+      try {
+        final integrite = (await d.select('PRAGMA integrity_check')).first.values.first;
+        final ops = (await d.select('SELECT COUNT(*) AS n FROM operations')).first['n'];
+        final ok = integrite == 'ok';
+        return {'ok': ok, if (!ok) 'code': 'SAUVEGARDE_ALTEREE', if (!ok) 'motif': 'le contrôle d’intégrité de la copie a échoué : $integrite', 'fichier': f.path.split(RegExp(r'[\\/]')).last, 'date': f.statSync().modified.toUtc().toIso8601String(), 'operations': ops};
+      } finally {
+        await d.fermer();
+      }
+    } catch (e) {
+      return {'ok': false, 'code': 'SAUVEGARDE_ILLISIBLE', 'motif': 'la dernière sauvegarde ne se relit pas avec la clé en service', 'fichier': f.path.split(RegExp(r'[\\/]')).last};
+    } finally {
+      if (tmp.existsSync()) tmp.deleteSync();
+    }
   }
 
   Future<void> arreter() async {

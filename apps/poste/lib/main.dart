@@ -2,7 +2,8 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
+import 'dart:convert' show base64;
+import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations, ErreurSchemaDonnees, parametreDateIso, cleEmpreinte, cleLireTexte, cleMajSauvegardeMaxHeures, majHeuresDefaut, epRoleMere, epRoleFileul;
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
@@ -14,6 +15,9 @@ import 'kit/champ_sensible.dart' show AccesSensible;
 import 'documents/service_fichiers.dart';
 import 'donnees/exercices_poste.dart';
 import 'donnees/horssite_poste.dart';
+import 'donnees/base_portable_poste.dart';
+import 'donnees/maj_poste.dart';
+import 'donnees/cle_clinique_poste.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
 import 'sync/pieces_mises_de_cote.dart';
@@ -122,6 +126,9 @@ Future<void> main() async {
         home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('${IdentiteClinique.logiciel} ne peut pas démarrer.\n\n${e.motif}'))))));
     return;
   }
+  // MISE EN SERVICE D'UNE BASE IMPORTÉE (décision 12, 17/11/2026) : si l'administrateur l'a programmée, l'échange des dossiers se fait ICI, avant que le magasin et la base de la mère ne
+  // soient ouverts. L'ancien magasin est RENOMMÉ (jamais supprimé) ; un échec laisse le poste sur sa base d'avant et l'écrit au journal.
+  ServiceBasePortable.appliquerMiseEnServiceEnAttente(dossierDonnees);
   // La fenêtre pilotable : un poste sans fenêtre native n'empêche pas le démarrage. Le poste se lance MAXIMISÉ (Direction, 02/11/2026 ; le plein écran du 01/11 reste à la demande) ; si la
   // plateforme refuse, le repli est nommé et la coque le dit au premier affichage. F11 et la barre supérieure basculent ensuite.
   FenetreSysteme? fenetre;
@@ -143,12 +150,23 @@ Future<void> main() async {
   final cle = chiffrementActif != 'non' ? await CleLocale('$dossierDonnees/cle-poste.bin').obtenir() : null;
   final cleSqlite = cle == null ? '' : cle.map((o) => o.toRadixString(16).padLeft(2, '0')).join();
   final stockage = StockageFichier('$dossierDonnees/poste.json', cle: cle);
+  // UNE MÈRE NEUVE ADOPTE LA CLÉ RESTAURÉE (décision 12, 17/11/2026) : sur un poste qui n'a pas encore de base de mère, la clé de la clinique rangée par « Restaurer la clé de la clinique » devient celle de la
+  // mère (sans elle, elle en tirerait une au hasard et ne relirait ni ses sauvegardes ni ses exports). Une base de mère EXISTANTE garde sa clé : jamais de remplacement silencieux.
+  if (cle != null) ConfigPairPoste.cleLocale = cle;
+  var cleMereRestauree = '';
+  if (!File('$dossierDonnees/mere.db').existsSync()) {
+    try {
+      final b = cleLireTexte('${ConfigPairPoste.lireBrut(dossierDonnees)['cle'] ?? ''}');
+      if (b != null) cleMereRestauree = base64.encode(b);
+    } catch (_) {/* clé illisible : la mère en tirera une, l'écran de restauration le dira */}
+  }
   // La mère démarre avant le magasin du poste : ses droits d'échange entre pairs sont posés plus bas (`configMere.droitsPair`), adossés à la matrice EN FORCE.
   final configMere = ConfigMere(
       port: 9000,
       dbChemin: '$dossierDonnees/mere.db',
       admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
       cleStockage: cleSqlite,
+      cleBase64: cleMereRestauree,
       dossierSauvegardes: '$dossierDonnees/sauvegardes',
       // LE DOSSIER DES SCANS (courriers, dossier patient) : sur la mère seule, sous le dossier des données du poste par défaut ; réglable dans « Paramètres système ».
       dossierFichiers: '$dossierDonnees/scans',
@@ -171,7 +189,15 @@ Future<void> main() async {
           mode: params.mode, role: roleDev, nomPoste: params.nomPoste));
   if (params.mode == ModePoste.mere) {
     // Redémarrage d'une mère : le service repart (la place au relais est déjà la sienne).
-    await activation.service.demarrer();
+    try {
+      await activation.service.demarrer();
+    } on ErreurSchemaDonnees catch (e) {
+      // Une base de mère écrite par une version PLUS RÉCENTE : refus nommé, rien n'est modifié.
+      runApp(MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('${IdentiteClinique.logiciel} ne peut pas démarrer.\n\n${e.refus.code} : ${e.refus.motif}\n\n${e.refus.geste}'))))));
+      return;
+    }
   }
   // Un poste RATTACHÉ à une clinique parle à SA mère (adresse enregistrée), pas à l'adresse de compilation.
   final moteur = MoteurFileul.creer(
@@ -194,7 +220,16 @@ Future<void> main() async {
   if (repartirAZero == 'oui') await persistance.mettreDeCote();
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
   // (la purge des conversations de l'assistant qui ont dépassé la durée de conservation suit, plus bas, une fois le magasin lu)
-  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, colDocumentsFiscaux, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
+  try {
+    await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, colDocumentsFiscaux, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
+  } on ErreurSchemaDonnees catch (e) {
+    // Le magasin a été écrit par une version PLUS RÉCENTE du logiciel : on ne l'ouvre pas, on ne l'écrase pas, on nomme le refus (décision 12, 17/11/2026).
+    runApp(MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('${IdentiteClinique.logiciel} ne peut pas démarrer.\n\n${e.refus.code} : ${e.refus.motif}\n\n${e.refus.geste}'))))));
+    return;
+  }
+  ServiceBasePortable.journaliserMiseEnServiceEffectuee(magasin, dossierDonnees);
   CfbPersistance.disponible = () => true;
   // L'assistant : les conversations qui ont dépassé la durée de conservation (réglage en base, 30 jours par défaut, bornée) sont retirées au démarrage du poste.
   final maintenantAssistant = DateTime.now();
@@ -391,6 +426,59 @@ Future<void> main() async {
           estMere: () => controleur.config.estMere,
           source: SourceHorsSiteHttp(base: Uri.parse('http://127.0.0.1:9000'), admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
       .installer();
+  // L'EXPORT COMPLET PORTABLE, SON RÉIMPORT, LA PRÉPARATION D'UNE MISE À JOUR ET LA RESTAURATION DE LA CLÉ (décision 12, 17/11/2026). Les droits sont des gestes réservés de la fiche de rôle,
+  // lus À CHAQUE appel ; la clé de la clinique est celle de la mère en marche, sinon celle du `pair.json` du poste ; elle ne sort jamais de ces services.
+  Mere? mereEnMarche() => activation.service is ServiceMereLocal ? (activation.service as ServiceMereLocal).mere : null;
+  String roleDuPoste() => controleur.config.estMere ? epRoleMere : epRoleFileul;
+  bool peutGeste(String geste) {
+    final role = magasin.acteur?.role ?? '';
+    return role.isNotEmpty &&
+        DroitsGestes(fiches: magasin.collection('rbac').actives, estArchive: matriceVive.matrice.estArchive, ecranActif: matriceVive.matrice.ecranActif).peut(role, geste);
+  }
+
+  Future<List<int>?> cleCliniqueDuPoste() async {
+    final m = mereEnMarche();
+    if (m != null) return base64.decode(m.pont.cleBase64);
+    try {
+      return cleLireTexte('${ConfigPairPoste.lireBrut(dossierDonnees)['cle'] ?? ''}');
+    } catch (_) {
+      return null;
+    }
+  }
+
+  int maxHeuresMaj() {
+    final v = serviceParametres(magasin, auteur: () => magasin.utilisateur, horloge: () => magasin.horloge()).valeur(cleMajSauvegardeMaxHeures, parametreDateIso(magasin.horloge()));
+    return v is num ? v.toInt() : majHeuresDefaut;
+  }
+
+  const versionLogiciel = String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0');
+  final basePortable = ServiceBasePortable(
+      magasin: magasin,
+      dossierDonnees: dossierDonnees,
+      role: roleDuPoste,
+      cleClinique: cleCliniqueDuPoste,
+      peut: peutGeste,
+      rattache: () => !controleur.config.estMere && params.rejoint,
+      moteur: moteur,
+      mere: mereEnMarche,
+      cleStockage: cle,
+      configMere: (db, b64) => ConfigMere(
+          port: 0, dbChemin: db, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin, cleStockage: cleSqlite, cleBase64: b64, dossierSauvegardes: '$dossierDonnees/sauvegardes', versionApplication: versionLogiciel),
+      maxHeures: maxHeuresMaj,
+      version: versionLogiciel)
+    ..installer();
+  ServiceMiseAJour(
+      magasin: magasin, dossierDonnees: dossierDonnees, base: basePortable, role: roleDuPoste, peut: peutGeste, versionCourante: versionLogiciel, mere: mereEnMarche, maxHeures: maxHeuresMaj)
+    .installer();
+  ServiceCleClinique(
+      magasin: magasin,
+      dossierDonnees: dossierDonnees,
+      peut: peutGeste,
+      empreinteEnService: () async {
+        final m = mereEnMarche();
+        return m == null ? null : cleEmpreinte(base64.decode(m.pont.cleBase64));
+      })
+    .installer();
   // LA LECTURE OCR DES SCANS (lots OCR-prep et OCR-C) : AUCUN moteur n'est branché ici (aucun n'est choisi : décision de la Direction après un essai sur trois vrais scans). Le service dit
   // « aucun moteur d'OCR installé sur ce poste » ; le réglage se décide à la mère et descend aux fileuls ; la file reste locale. Un moteur s'enregistre par `ocr.enregistrer(...)`.
   final ocr = OcrPoste(magasin, estMere: () => controleur.config.estMere)

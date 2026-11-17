@@ -26,6 +26,29 @@ class MoteurFileul {
 
   String get uuid => _fileul.uuid;
 
+  /// L'état que ce poste est seul à détenir (file des saisies non confirmées, plages, baux, étiquette) : ce qui voyage dans l'export portable d'un fileul.
+  Map<String, Object?> etatPortable() => _fileul.etatPortable();
+
+  /// Reprend l'état d'un poste exporté (poste NEUF seulement) : refus nommé sinon.
+  Map<String, Object?> reprendreEtat(Map<String, Object?> etat) => _fileul.reprendreEtat(etat);
+
+  /// Le nombre de saisies en attente de la mère, et leur liste (sans contenu : collection, fiche, type, heure) : de quoi LISTER ce qu'un import ne doit pas écraser en silence.
+  List<Map<String, Object?>> fileEnAttente() => [
+        for (final o in (_fileul.etatPortable()['file'] as List)) {'collection': (o as Map)['collection'], 'fiche': o['fiche'], 'type': o['type'], 'hlc': o['hlc']}
+      ];
+
+  /// Vrai quand ce poste est NEUF : rien en file, rien de synchronisé.
+  bool get estNeuf => (_fileul.etatPortable()['file'] as List).isEmpty && _fileul.base.select('SELECT COUNT(*) AS n FROM confirme').first['n'] == 0;
+
+  /// L'instant du dernier tirage de la mère (curseur > 0) : `true` si ce poste a déjà synchronisé quelque chose.
+  /// L'instant du dernier cycle de synchronisation réussi (`null` : jamais).
+  DateTime? get dernierSynchro => _fileul.dernierSynchro == null ? null : DateTime.fromMillisecondsSinceEpoch(_fileul.dernierSynchro!, isUtc: true);
+
+  bool get aDejaSynchronise => _fileul.base.metaInt('curseur') > 0;
+
+  /// Rejoue l'état de la mère depuis le début sans toucher à la file ni aux plages (après le remplacement du magasin local) : l'état CONFIRMÉ est vidé, le curseur revient à zéro.
+  void resynchroniser() => _fileul.demanderResynchronisation();
+
   /// Le client des scans de ce poste (dépôt et lecture chez la mère, blocs scellés par la clé de clinique). `cleClinique` : la clé en hexadécimal (64 caractères) ; vide, le
   /// client refuse en le disant (`CLE_ABSENTE`).
   ClientFichiers clientFichiers(String famille, {String? cleClinique}) => _fileul.clientFichiers(famille: famille, cleClinique: cleClinique);

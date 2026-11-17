@@ -304,6 +304,17 @@ const String gesteClotureInventaire = 'cloture_inventaire';
 /// fait pas la caisse (qui encaisse la facture du patient, sans acheteur ni AIB). Origine PROPOSÉE (à valider par la Direction) : le Comptable et la DAF ; une fiche de rôle l'accorde ou le retire.
 const String gesteFactureTiersEmettre = 'facture_tiers_emettre';
 
+/// EXPORTER LA BASE COMPLÈTE en un fichier portable chiffré par la clé de la clinique (Direction de Baguidi, 17/11/2026, décision 12 : mise à jour du logiciel et changement de machine).
+/// Sur la MÈRE comme sur un FILEUL. Origine : l'administrateur et la Directrice Administrative ; une fiche de rôle l'accorde ou le retire. Le droit n'ouvre pas l'écran (« Régler écran par écran »).
+const String gesteBaseExporter = 'base_exporter';
+
+/// IMPORTER UNE BASE depuis un export portable, dans un magasin NEUF (jamais sur la base en service sans mise en service explicite). Sur la mère comme sur un fileul (qui, rattaché, remplace son
+/// magasin local après copie préalable vérifiée et reste soumis à la mère). Origine : l'administrateur et la Directrice Administrative ; une fiche de rôle l'accorde ou le retire.
+const String gesteBaseImporter = 'base_importer';
+
+/// LEVER LE BLOCAGE D'UNE MISE À JOUR sans sauvegarde vérifiée de moins de N heures (cas de FORCE MAJEURE : motif écrit, auteur et date journalisés). Origine : l'administrateur et la Directrice Administrative.
+const String gesteMajLeverBlocage = 'maj_lever_blocage';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -799,6 +810,27 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['direction', 'da'],
       aide: 'Une ligne par action non terminée dont la période est échue depuis plus que le seuil réglé. Origine proposée, à valider : la Direction et la DAF.'),
+  GesteReserve(
+      id: gesteBaseExporter,
+      libelle: 'Exporter la base complète (fichier portable chiffré)',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Un fichier unique : manifeste lisible (version du logiciel et du schéma, date, clinique, compteurs, empreinte) et contenu compressé chiffré par la clé de la clinique. Aucune clé, aucun haché de mot de passe dans le fichier. Sur un fileul, la file des saisies non confirmées voyage avec. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteBaseImporter,
+      libelle: 'Importer une base depuis un export portable',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Contrôle l’empreinte, le déchiffrement, la clinique et la version du format, applique la chaîne de migrations, écrit dans un magasin NEUF ; la mise en service est un second geste explicite, tracé. Un fileul rattaché remplace son magasin après une copie préalable vérifiée et reste soumis à la mère. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteMajLeverBlocage,
+      libelle: 'Lever le blocage d’une mise à jour (force majeure)',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Autorise l’installation sans sauvegarde vérifiée de moins de N heures. Le motif est obligatoire ; l’auteur, la date et le motif sont journalisés. Origine : l’administrateur et la Directrice Administrative.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

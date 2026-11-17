@@ -48,3 +48,9 @@ Décision de la Direction (Q37, 17/11/2026) : **pas de promotion d'un fileul en 
 ## Qui peut le faire
 
 La restauration et la lecture des copies sont réservées à l'administrateur et à la Directrice Administrative ; un fileul ne les voit pas (`REGLAGE_RESERVE`).
+
+## Compléments du 17/11/2026 (décision 12 : mise à jour, export portable, clé)
+
+* **Un autre chemin pour reprendre la mère** : l'**export portable** de la mère (`base_exporter`) se **réimporte** (`base_importer`) dans une base **neuve** sur la machine de remplacement, sans passer par la copie hors site. Voir `docs/guides/MISE-A-JOUR-ET-RETOUR-ARRIERE.md`. La mère importée garde la clé de la clinique, son journal et ses plages : les fileuls se rattachent par la synchronisation habituelle (prouvé en Dart, `export_portable_test.dart`). **Elle n'est pas remise en service d'elle-même** : la mise en service est un geste explicite, tracé, appliqué au démarrage suivant.
+* **La clé sur un poste neuf** : l'écran **« Restaurer la clé de la clinique »** (poste mère) remet la clé depuis la copie sous scellé (texte de la copie papier, ou fichier de sauvegarde de clé avec sa phrase de passe). L'**empreinte notée sur le scellé est exigée avant acceptation** ; la clé ne s'affiche ni ne se journalise jamais. Une mère **neuve** adopte la clé restaurée ; une base de mère **existante** garde la sienne (aucun remplacement silencieux).
+* Ce qui reste : mesurer la restauration à blanc mensuelle avec un export, pas seulement avec la copie hors site.
