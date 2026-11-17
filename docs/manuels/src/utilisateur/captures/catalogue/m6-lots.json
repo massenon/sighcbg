@@ -1,0 +1,17 @@
+{
+ "id": "m6-lots",
+ "titre": "Lots & péremptions (FEFO)",
+ "libelle": "Lots & péremptions (FEFO)",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-lots"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 693
+}

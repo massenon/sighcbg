@@ -1,0 +1,17 @@
+{
+ "id": "m1-documents",
+ "titre": "Documents numérisés du patient",
+ "libelle": "Documents numérisés",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-documents"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 587
+}

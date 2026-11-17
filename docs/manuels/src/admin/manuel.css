@@ -1,0 +1,132 @@
+/* Manuel administrateur SIGH-CBG : mise en page A4 épurée, jetons de la charte Baguidi (rouge cœur, bleu santé). */
+@font-face { font-family: 'Inter'; font-weight: 400; src: url('../../../../apps/poste/assets/polices/Inter-Regular.otf'); }
+@font-face { font-family: 'Inter'; font-weight: 500; src: url('../../../../apps/poste/assets/polices/Inter-Medium.otf'); }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('../../../../apps/poste/assets/polices/Inter-SemiBold.otf'); }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('../../../../apps/poste/assets/polices/Inter-Bold.otf'); }
+@font-face { font-family: 'Inter'; font-style: italic; src: url('../../../../apps/poste/assets/polices/Inter-Italic.otf'); }
+@font-face { font-family: 'Montserrat'; font-weight: 700; src: url('../../../../apps/poste/assets/polices/Montserrat-Bold.ttf'); }
+@font-face { font-family: 'Mono'; src: url('../../../../apps/poste/assets/polices/pdf/LiberationMono-Regular.ttf'); }
+
+:root {
+  --rouge: #D32F2F;
+  --rouge-clair: #FDECEC;
+  --bleu: #1565C0;
+  --bleu-fonce: #123A6B;
+  --bleu-clair: #EEF4FC;
+  --vert: #15803D;
+  --vert-clair: #ECFDF3;
+  --orange: #B45309;
+  --orange-clair: #FFF7E6;
+  --violet: #6D28D9;
+  --violet-clair: #F3EEFF;
+  --texte: #1F2937;
+  --gris: #64748B;
+  --filet: #E2E8F0;
+}
+
+@page { size: A4; margin: 18mm 20mm 18mm 20mm; }
+@page couverture { margin: 0; }
+
+html { font-family: 'Inter', 'Liberation Sans', Arial, sans-serif; font-size: 11pt; line-height: 1.55; color: var(--texte); }
+body { margin: 0; }
+p { margin: 0 0 7pt; }
+strong { font-weight: 600; color: #111827; }
+code { font-family: 'Mono', monospace; font-size: 8.8pt; background: #F1F5F9; padding: 0 3px; border-radius: 3px; color: var(--bleu-fonce); }
+pre { font-family: 'Mono', monospace; font-size: 8.6pt; line-height: 1.45; background: #0F172A; color: #E2E8F0; padding: 9pt 11pt; border-radius: 6px; white-space: pre-wrap; margin: 6pt 0 10pt; break-inside: avoid; }
+pre .c { color: #94A3B8; }
+a { color: var(--bleu); text-decoration: none; }
+.petit { font-size: 8.8pt; color: var(--gris); }
+.marqueur-page { font-size: 1px; line-height: 1px; height: 1px; color: #fff; overflow: hidden; }
+
+/* ---------- Couverture ---------- */
+.couverture { page: couverture; height: 297mm; width: 210mm; position: relative; overflow: hidden; break-after: page; background: #fff; }
+.couverture .bandeau { position: absolute; top: 0; left: 0; right: 0; height: 9mm; background: var(--bleu); }
+.couverture .bandeau::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3mm; height: 3mm; background: var(--rouge); }
+.couverture .contenu { position: absolute; top: 48mm; left: 24mm; right: 24mm; }
+.couverture img.logo { width: 38mm; }
+.couverture .surtitre { margin-top: 18mm; font-size: 11pt; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rouge); font-weight: 600; }
+.couverture h1.titre { break-before: avoid;  font-family: 'Montserrat', 'Inter', sans-serif; font-size: 34pt; line-height: 1.12; color: var(--bleu-fonce); margin: 4mm 0 5mm; border: 0; padding: 0; }
+.couverture .sous { font-size: 13pt; color: var(--gris); max-width: 140mm; }
+.couverture .meta { position: absolute; bottom: 30mm; left: 24mm; right: 24mm; border-top: 1px solid var(--filet); padding-top: 5mm; font-size: 9.5pt; color: var(--gris); display: flex; justify-content: space-between; }
+.couverture .pied { position: absolute; bottom: 0; left: 0; right: 0; height: 6mm; background: var(--rouge); }
+.couverture .pied::before { content: ''; position: absolute; left: 0; right: 0; top: -2.5mm; height: 2.5mm; background: var(--bleu); }
+
+/* ---------- Titres ---------- */
+h1 { font-family: 'Montserrat', 'Inter', sans-serif; font-size: 21pt; line-height: 1.2; color: var(--bleu-fonce); margin: 0 0 4mm; padding: 0 0 3mm; border-bottom: 3px solid var(--rouge); break-before: page; break-after: avoid; }
+h1 .no { color: var(--rouge); margin-right: 4mm; }
+h2 { font-size: 13.5pt; color: var(--bleu); margin: 8mm 0 3mm; break-after: avoid; font-weight: 700; }
+h3 { font-size: 11.5pt; color: var(--bleu-fonce); margin: 5mm 0 2mm; break-after: avoid; font-weight: 600; }
+.chapo { font-size: 11.5pt; color: #334155; margin-bottom: 6mm; }
+
+/* ---------- Listes ---------- */
+ul { list-style: none; padding-left: 5mm; margin: 2pt 0 8pt; }
+ul > li { position: relative; margin-bottom: 3pt; }
+ul > li::before { content: '•'; position: absolute; left: -4.5mm; color: var(--rouge); font-weight: 700; }
+ol.etapes { list-style: none; counter-reset: e; padding-left: 0; margin: 4pt 0 10pt; }
+ol.etapes > li { counter-increment: e; position: relative; padding-left: 9.5mm; margin-bottom: 5pt; min-height: 6.5mm; break-inside: avoid; }
+ol.etapes > li::before { content: counter(e); position: absolute; left: 0; top: 0.2mm; width: 6.2mm; height: 6.2mm; border-radius: 50%; background: var(--bleu); color: #fff; font-weight: 700; font-size: 9pt; display: flex; align-items: center; justify-content: center; }
+.chemin { display: inline; }
+.fleche { color: var(--rouge); font-weight: 700; margin: 0 1.2mm; }
+
+/* ---------- Encadrés ---------- */
+.encadre { display: flex; gap: 4mm; border-radius: 6px; padding: 3.5mm 4.5mm; margin: 4mm 0 5mm; border-left: 4px solid; break-inside: avoid; font-size: 10.2pt; }
+.encadre .ico { flex: 0 0 7mm; height: 7mm; }
+.encadre .ico svg { width: 7mm; height: 7mm; display: block; }
+.encadre .corps > :last-child { margin-bottom: 0; }
+.encadre .titre { font-weight: 700; margin-bottom: 1mm; display: block; }
+.encadre.info { background: var(--bleu-clair); border-color: var(--bleu); }
+.encadre.info .titre { color: var(--bleu); }
+.encadre.attention { background: var(--rouge-clair); border-color: var(--rouge); }
+.encadre.attention .titre { color: var(--rouge); }
+.encadre.bonne { background: var(--vert-clair); border-color: var(--vert); }
+.encadre.bonne .titre { color: var(--vert); }
+.encadre.observer { background: var(--violet-clair); border-color: var(--violet); }
+.encadre.observer .titre { color: var(--violet); }
+.encadre.param { background: var(--orange-clair); border-color: var(--orange); }
+.encadre.param .titre { color: var(--orange); }
+
+/* ---------- Tableaux ---------- */
+table.tableau { width: 100%; border-collapse: collapse; margin: 3mm 0 6mm; font-size: 9.3pt; }
+table.tableau th { text-align: left; background: var(--bleu-clair); color: var(--bleu-fonce); font-weight: 600; padding: 2mm 2.5mm; border-bottom: 2px solid var(--bleu); }
+table.tableau td { padding: 2mm 2.5mm; border-bottom: 1px solid var(--filet); vertical-align: top; }
+table.tableau tr { break-inside: avoid; }
+table.ref { font-size: 8.8pt; }
+h3.famille { margin-top: 6mm; }
+.pastille { display: inline-block; font-size: 7.5pt; padding: 0 5px; border-radius: 8px; background: var(--orange-clair); color: var(--orange); font-weight: 600; }
+.non-verifie { display: inline-block; font-size: 8pt; padding: 0.5mm 2mm; border-radius: 3px; background: #FEF3C7; color: #92400E; font-weight: 600; }
+
+/* ---------- Figures ---------- */
+figure { margin: 4mm 0 6mm; break-inside: avoid; }
+figure .capture-svg, figure > svg.schema { width: 100%; height: auto; display: block; border: 1px solid var(--filet); border-radius: 6px; background: #fff; }
+figure.capture .capture-svg { box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); }
+figcaption { font-size: 8.8pt; color: var(--gris); margin-top: 2mm; }
+figcaption .tag { display: inline-block; font-size: 7.5pt; font-weight: 700; padding: 0 5px; border-radius: 3px; margin-right: 2mm; letter-spacing: 0.04em; }
+figcaption .tag.reel { background: var(--vert-clair); color: var(--vert); }
+figcaption .tag.schema { background: var(--bleu-clair); color: var(--bleu); }
+.legende-fleches { font-size: 9pt; margin: -2mm 0 6mm; padding-left: 0; list-style: none; }
+.legende-fleches li { margin-bottom: 1.2mm; }
+.legende-fleches li::before { content: none; }
+.num-rouge { display: inline-flex; width: 4.6mm; height: 4.6mm; border-radius: 50%; background: var(--rouge); color: #fff; font-size: 7.5pt; font-weight: 700; align-items: center; justify-content: center; margin-right: 1.5mm; vertical-align: 0.2mm; }
+
+/* ---------- Table des matières ---------- */
+nav.toc { break-after: page; }
+nav.toc h1 { break-before: auto; }
+nav.toc ol { list-style: none; padding: 0; margin: 0; }
+nav.toc li { margin: 0; }
+nav.toc a { display: flex; align-items: baseline; color: var(--texte); padding: 0.55mm 0; }
+nav.toc a .t { flex: 0 1 auto; }
+nav.toc a .pts { flex: 1 1 auto; border-bottom: 1px dotted #CBD5E1; margin: 0 2mm; transform: translateY(-1mm); }
+nav.toc a .num { flex: 0 0 auto; color: var(--gris); font-variant-numeric: tabular-nums; min-width: 6mm; text-align: right; }
+nav.toc > ol > li > a { font-weight: 600; color: var(--bleu-fonce); margin-top: 1.2mm; font-size: 10pt; }
+nav.toc ol ol a { padding-left: 7mm; font-size: 8.6pt; padding-top: 0.15mm; padding-bottom: 0.15mm; color: #334155; }
+
+/* ---------- Légende ---------- */
+.grille-legende { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; }
+.grille-legende .encadre { margin: 0; }
+.deux-colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.carte-role { border: 1px solid var(--filet); border-top: 3px solid var(--bleu); border-radius: 6px; padding: 3mm 4mm; break-inside: avoid; }
+.carte-role h3 { margin-top: 0; }
+.saut { break-before: page; }
+
+table.ref code { word-break: break-all; font-size: 8pt; }
+table.ref td .petit { font-size: 8pt; }

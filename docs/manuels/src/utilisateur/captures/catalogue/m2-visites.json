@@ -1,0 +1,17 @@
+{
+ "id": "m2-visites",
+ "titre": "Registre des visites de suivi clinique",
+ "libelle": "Registre des visites de suivi clinique",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-visites"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 407
+}

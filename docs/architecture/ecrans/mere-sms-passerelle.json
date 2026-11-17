@@ -1,0 +1,10 @@
+{
+ "id": "mere-sms-passerelle",
+ "module": "MERE",
+ "domaine": "Poste mère",
+ "libelleManifeste": "Passerelle SMS",
+ "acces": "ouvert",
+ "titre": "Passerelle SMS",
+ "description": "Les SMS partent par le relais : réglage de la passerelle, plafond quotidien lu au relais, envoi d’essai.",
+ "note": "Fiche rédigée pour le poste Baguidi (SMS par le relais, ADR-0009, décision de la Direction du 16/11/2026) : écran sans équivalent à la maquette."
+}

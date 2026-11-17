@@ -1,0 +1,17 @@
+{
+ "id": "dash-responsable-assurance",
+ "titre": "Tableau de bord — Responsable Assurance",
+ "libelle": "Responsable Assurance",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-responsable-assurance"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 396
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m11-cotisations",
+ "titre": "Cotisations CNSS / ITS / VPS",
+ "libelle": "Cotisations CNSS / ITS / VPS",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m11-cotisations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 558
+}

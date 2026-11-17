@@ -1,0 +1,894 @@
+{
+  "admin-14-mere-appareils": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Appairer un poste": [
+        25.0,
+        153.0,
+        220.0,
+        45.0
+      ],
+      "Appairer un mobile": [
+        255.0,
+        153.0,
+        232.0,
+        48.0
+      ],
+      "Révoquer": [
+        1810.0,
+        359.0,
+        98.0,
+        38.0
+      ]
+    }
+  },
+  "admin-01-roles-matrice": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Nouveau rôle": [
+        1145.0,
+        176.0,
+        180.0,
+        45.0
+      ],
+      "Gestes réservés": [
+        818.0,
+        606.0,
+        176.0,
+        53.0
+      ],
+      "Décisions de droits": [
+        1147.0,
+        606.0,
+        232.0,
+        53.0
+      ],
+      "Imprimer la matrice": [
+        1544.0,
+        761.0,
+        200.0,
+        35.0
+      ]
+    }
+  },
+  "admin-02-roles-gestes": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Accorder": [
+        727.0,
+        484.0,
+        126.0,
+        38.0
+      ],
+      "Retirer": [
+        694.0,
+        771.0,
+        107.0,
+        38.0
+      ]
+    }
+  },
+  "admin-03-roles-detail": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-04-utilisateurs": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {
+      "Nouveau": [
+        183.0,
+        653.0,
+        121.0,
+        35.0
+      ]
+    }
+  },
+  "admin-05-utilisateur-nouveau": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Rôle (RBAC)": [
+        365.0,
+        389.0,
+        525.0,
+        75.0
+      ],
+      "Mot de passe": [
+        365.0,
+        610.0,
+        525.0,
+        140.0
+      ],
+      "Changement obligatoire": [
+        365.0,
+        770.0,
+        525.0,
+        50.0
+      ]
+    }
+  },
+  "admin-06-parametres": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Régler à partir d’une date": [
+        56.0,
+        685.0,
+        244.0,
+        35.0
+      ],
+      "Historique": [
+        354.0,
+        693.0,
+        103.0,
+        20.0
+      ]
+    }
+  },
+  "admin-07-jeux-de-test": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-08-corbeille": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {}
+  },
+  "admin-09-modules": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Piloter une activité": [
+        492.0,
+        664.0,
+        194.0,
+        35.0
+      ],
+      "Ouvert": [
+        477.0,
+        1233.0,
+        51.0,
+        20.0
+      ]
+    }
+  },
+  "admin-10-audit": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {}
+  },
+  "admin-11-mecef": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Modèle": [
+        76.0,
+        573.0,
+        768.0,
+        25.0
+      ]
+    }
+  },
+  "admin-12-fiscalite": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "IFU": [
+        76.0,
+        903.0,
+        794.0,
+        25.0
+      ],
+      "RCCM": [
+        930.0,
+        903.0,
+        794.0,
+        25.0
+      ]
+    }
+  },
+  "admin-13-sauvegardes": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-15-mere-appairer": {
+    "largeur": 1950,
+    "hauteur": 1125,
+    "cibles": {
+      "Nom de l’appareil": [
+        720.0,
+        166.0,
+        510.0,
+        75.0
+      ],
+      "Générer le code": [
+        1057.0,
+        278.0,
+        173.0,
+        45.0
+      ]
+    }
+  },
+  "admin-16-mere-supervision": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Sauvegarder maintenant": [
+        25.0,
+        178.0,
+        277.0,
+        45.0
+      ]
+    }
+  },
+  "admin-17-mere-sauvegardes": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Sauvegarder maintenant": [
+        30.0,
+        643.0,
+        277.0,
+        45.0
+      ],
+      "Vérifier la dernière": [
+        317.0,
+        643.0,
+        229.0,
+        48.0
+      ]
+    }
+  },
+  "admin-18-mere-cle": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Faire tourner la clé": [
+        683.0,
+        581.0,
+        229.0,
+        48.0
+      ]
+    }
+  },
+  "admin-19-mere-relais": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-20-mere-reinit": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {}
+  },
+  "admin-21-sms-passerelle": {
+    "largeur": 1800,
+    "hauteur": 2063,
+    "cibles": {
+      "Interrupteur": [
+        56.0,
+        1205.0,
+        50.0,
+        50.0
+      ],
+      "Tester l’envoi": [
+        56.0,
+        1265.0,
+        183.0,
+        48.0
+      ],
+      "Mots interdits": [
+        56.0,
+        1446.0,
+        1688.0,
+        43.0
+      ],
+      "Fournisseur": [
+        56.0,
+        741.0,
+        1688.0,
+        330.0
+      ],
+      "Paramètres manquants": [
+        30.0,
+        596.0,
+        1740.0,
+        43.0
+      ]
+    }
+  },
+  "admin-22-sms-journal": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Composer un SMS": [
+        30.0,
+        499.0,
+        225.0,
+        45.0
+      ],
+      "Relever les statuts": [
+        265.0,
+        499.0,
+        227.0,
+        48.0
+      ]
+    }
+  },
+  "admin-23-satisfaction": {
+    "largeur": 1800,
+    "hauteur": 1500,
+    "cibles": {
+      "Carte": [
+        56.0,
+        729.0,
+        1688.0,
+        25.0
+      ],
+      "Publier et relever maintenant": [
+        56.0,
+        985.0,
+        270.0,
+        35.0
+      ]
+    }
+  },
+  "admin-24-mecef-modes": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Boîtier": [
+        56.0,
+        145.0,
+        808.0,
+        393.0
+      ],
+      "e-MECeF": [
+        56.0,
+        538.0,
+        808.0,
+        340.0
+      ],
+      "Adaptateur": [
+        56.0,
+        888.0,
+        808.0,
+        50.0
+      ],
+      "Enregistrer le mode": [
+        56.0,
+        953.0,
+        234.0,
+        45.0
+      ]
+    }
+  },
+  "admin-25-mecef-imprimante": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Imprimante": [
+        30.0,
+        145.0,
+        860.0,
+        679.0
+      ],
+      "Intégrée au boîtier": [
+        56.0,
+        528.0,
+        808.0,
+        95.0
+      ],
+      "Enregistrer l’imprimante": [
+        56.0,
+        753.0,
+        273.0,
+        45.0
+      ]
+    }
+  },
+  "admin-26-param-caisse": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Encaisser le reste": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ],
+      "Régler à partir d’une date": [
+        56.0,
+        -19598.0,
+        244.0,
+        35.0
+      ]
+    }
+  },
+  "admin-27-cnss-confirmer": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Taux de la CNSS": [
+        30.0,
+        145.0,
+        1740.0,
+        274.0
+      ],
+      "Confirmer": [
+        56.0,
+        345.0,
+        155.0,
+        48.0
+      ]
+    }
+  },
+  "admin-28-bareme-aib": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Situations de l’acheteur": [
+        523.0,
+        1025.0,
+        238.0,
+        53.0
+      ]
+    }
+  },
+  "admin-29-planning-individuel": {
+    "largeur": 1800,
+    "hauteur": 1375,
+    "cibles": {
+      "Déroger": [
+        1392.0,
+        699.0,
+        115.0,
+        35.0
+      ],
+      "Remplacer le régime": [
+        1507.0,
+        698.0,
+        210.0,
+        38.0
+      ]
+    }
+  },
+  "admin-30-pastille-decisions": {
+    "largeur": 1800,
+    "hauteur": 875,
+    "cibles": {
+      "Pastille": [
+        935.0,
+        19.0,
+        388.0,
+        31.0
+      ]
+    }
+  },
+  "admin-31-numerotation": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        1323.0
+      ],
+      "Rendez-vous": [
+        657.0,
+        1130.0,
+        86.0,
+        21.0
+      ]
+    }
+  },
+  "admin-36-numerotation-ft": {
+    "largeur": 1800,
+    "hauteur": 1000,
+    "cibles": {
+      "Série FT": [
+        1608.0,
+        310.0,
+        120.0,
+        38.0
+      ]
+    }
+  },
+  "admin-32-taux-paie": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Taux du VPS": [
+        30.0,
+        145.0,
+        1740.0,
+        274.0
+      ],
+      "Confirmer": [
+        56.0,
+        345.0,
+        155.0,
+        48.0
+      ],
+      "Nouvelle version": [
+        221.0,
+        345.0,
+        212.0,
+        48.0
+      ]
+    }
+  },
+  "admin-34-facture-tiers": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-35-pta-referentiels": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Référentiels du plan": [
+        56.0,
+        861.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-33-param-pta": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Découpage": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-37-personnel-surveillant": {
+    "largeur": 1800,
+    "hauteur": 1125,
+    "cibles": {
+      "Réservé": [
+        1295.0,
+        726.0,
+        55.0,
+        21.0
+      ]
+    }
+  },
+  "admin-38-base-portable": {
+    "largeur": 1800,
+    "hauteur": 2125,
+    "cibles": {
+      "Exporter la base complète": [
+        51.0,
+        316.0,
+        291.0,
+        45.0
+      ],
+      "Fichier d’export (.sghx)": [
+        51.0,
+        661.0,
+        1570.0,
+        48.0
+      ],
+      "Vérifier le fichier": [
+        51.0,
+        724.0,
+        365.0,
+        48.0
+      ],
+      "Importer dans un magasin neuf": [
+        426.0,
+        724.0,
+        335.0,
+        45.0
+      ],
+      "Préparer la mise à jour": [
+        51.0,
+        1083.0,
+        259.0,
+        45.0
+      ],
+      "Mise à jour autorisée": [
+        51.0,
+        1025.0,
+        1698.0,
+        43.0
+      ],
+      "Motif de la levée": [
+        51.0,
+        1169.0,
+        1698.0,
+        48.0
+      ],
+      "Lever le blocage": [
+        51.0,
+        1226.0,
+        348.0,
+        48.0
+      ]
+    }
+  },
+  "admin-39-cle-restauration": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Clé en service": [
+        25.0,
+        25.0,
+        1750.0,
+        43.0
+      ],
+      "Texte de la copie papier": [
+        51.0,
+        175.0,
+        270.0,
+        60.0
+      ],
+      "Fichier de sauvegarde de clé": [
+        331.0,
+        175.0,
+        287.0,
+        60.0
+      ],
+      "Empreinte notée sur le scellé": [
+        51.0,
+        365.0,
+        1698.0,
+        48.0
+      ],
+      "Contrôler l’empreinte et restaurer": [
+        51.0,
+        428.0,
+        404.0,
+        45.0
+      ]
+    }
+  },
+  "admin-40-param-liste": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-41-param-seuil": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-42-identite-email": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "E-mail": [
+        490.0,
+        508.0,
+        354.0,
+        25.0
+      ]
+    }
+  },
+  "admin-43-smtp": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Adresse d’expéditeur": [
+        56.0,
+        926.0,
+        834.0,
+        75.0
+      ],
+      "Répondre à": [
+        56.0,
+        1021.0,
+        834.0,
+        100.0
+      ],
+      "Enregistrer la messagerie": [
+        56.0,
+        1211.0,
+        286.0,
+        45.0
+      ],
+      "Envoyer un message de test": [
+        56.0,
+        1510.0,
+        309.0,
+        45.0
+      ]
+    }
+  },
+  "admin-44-mere-reprise": {
+    "largeur": 1950,
+    "hauteur": 1375,
+    "cibles": {
+      "Générer un code de reprise": [
+        1644.0,
+        666.0,
+        259.0,
+        35.0
+      ],
+      "Ce que fait la reprise": [
+        56.0,
+        948.0,
+        1838.0,
+        25.0
+      ]
+    }
+  },
+  "admin-45-reprise-nom": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Nom du poste neuf": [
+        580.0,
+        315.0,
+        790.0,
+        48.0
+      ],
+      "Générer le code": [
+        1167.0,
+        399.0,
+        203.0,
+        45.0
+      ]
+    }
+  },
+  "admin-46-reprise-code": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Code": [
+        580.0,
+        174.0,
+        271.0,
+        58.0
+      ],
+      "Validité": [
+        580.0,
+        241.0,
+        457.0,
+        20.0
+      ],
+      "Copier le code": [
+        1070.0,
+        375.0,
+        193.0,
+        48.0
+      ]
+    }
+  },
+  "admin-47-liasse-import": {
+    "largeur": 1800,
+    "hauteur": 1875,
+    "cibles": {
+      "Ce qui fait foi": [
+        56.0,
+        415.0,
+        1688.0,
+        25.0
+      ],
+      "Fichier (JSON)": [
+        56.0,
+        841.0,
+        1560.0,
+        48.0
+      ],
+      "Vérifier le fichier": [
+        56.0,
+        904.0,
+        365.0,
+        48.0
+      ],
+      "Archiver": [
+        1633.0,
+        1124.0,
+        121.0,
+        38.0
+      ]
+    }
+  },
+  "admin-48-liasse-verifiee": {
+    "largeur": 1800,
+    "hauteur": 2125,
+    "cibles": {
+      "Fichier accepté": [
+        56.0,
+        966.0,
+        1688.0,
+        63.0
+      ],
+      "Date de dépôt": [
+        56.0,
+        1070.0,
+        558.0,
+        48.0
+      ],
+      "Source": [
+        629.0,
+        1070.0,
+        1115.0,
+        48.0
+      ],
+      "Importer ce document": [
+        56.0,
+        1159.0,
+        257.0,
+        45.0
+      ]
+    }
+  },
+  "admin-49-fiches-aide": {
+    "largeur": 1800,
+    "hauteur": 2375,
+    "cibles": {
+      "Fiches attendues": [
+        51.0,
+        474.0,
+        1698.0,
+        43.0
+      ],
+      "Gabarit vide": [
+        56.0,
+        1504.0,
+        311.0,
+        45.0
+      ],
+      "Valider": [
+        1559.0,
+        1820.0,
+        107.0,
+        35.0
+      ]
+    }
+  },
+  "admin-50-fiche-validation": {
+    "largeur": 1800,
+    "hauteur": 2375,
+    "cibles": {
+      "Validé par (professionnel)": [
+        56.0,
+        1834.0,
+        1115.0,
+        48.0
+      ],
+      "Date de sa validation": [
+        1186.0,
+        1834.0,
+        558.0,
+        48.0
+      ],
+      "Valider la fiche": [
+        56.0,
+        1896.0,
+        194.0,
+        45.0
+      ]
+    }
+  }
+}

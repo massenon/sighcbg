@@ -1,0 +1,17 @@
+{
+ "id": "imp-unites-labo",
+ "titre": "Importation des unités de mesure",
+ "libelle": "Importation des unités de mesure",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-unites-labo"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 413
+}

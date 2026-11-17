@@ -1,0 +1,344 @@
+{
+ "nom": "162-fiche-surveillant",
+ "ecran": "m10-employe-profil",
+ "role": "surveillant",
+ "taille": [
+  1440.0,
+  1000.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Personnel",
+   "rect": [
+    870.7,
+    141.0,
+    123.4,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Badges du personnel",
+   "rect": [
+    1002.1,
+    141.0,
+    200.4,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Ressources humaines",
+   "rect": [
+    1210.5,
+    141.0,
+    205.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Retour à la liste",
+   "rect": [
+    569.0,
+    276.0,
+    160.3,
+    38.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   350.3,
+   36.0
+  ],
+  "barre-actions": [
+   996.5,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1100.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1249.3,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1269.3,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1295.3,
+   0.0,
+   132.7,
+   56.0
+  ],
+  "nom-courant": [
+   1341.3,
+   14.5,
+   64.7,
+   14.0
+  ],
+  "role-courant": [
+   1341.3,
+   28.5,
+   54.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Soins": [
+   8.0,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   100.2,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   226.4,
+   60.0,
+   74.1,
+   36.0
+  ],
+  "domaine-Administration": [
+   300.5,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   455.2,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m10-employe-profil|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   871.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   154.3,
+   28.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   234.0,
+   1390.0,
+   100.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   254.0,
+   512.0,
+   60.0
+  ],
+  "kit:champ:agent": [
+   45.0,
+   254.0,
+   512.0,
+   60.0
+  ],
+  "kit:onglets-barre": [
+   45.0,
+   468.0,
+   1350.0,
+   43.0
+  ],
+  "kit:onglet:infos:actif": [
+   45.0,
+   468.0,
+   115.3,
+   42.0
+  ],
+  "kit:onglet:planning": [
+   160.3,
+   468.0,
+   146.4,
+   42.0
+  ],
+  "kit:onglet:planning-individuel": [
+   306.7,
+   468.0,
+   158.9,
+   42.0
+  ],
+  "kit:onglet:primes": [
+   465.7,
+   468.0,
+   138.7,
+   42.0
+  ],
+  "kit:onglet:presences": [
+   604.4,
+   468.0,
+   168.9,
+   42.0
+  ],
+  "kit:onglet:evaluations": [
+   773.3,
+   468.0,
+   192.0,
+   42.0
+  ],
+  "kit:onglet:assurances": [
+   965.3,
+   468.0,
+   109.4,
+   42.0
+  ],
+  "pied-legal": [
+   0.0,
+   971.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   978.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    996.5,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1100.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1249.3,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1295.3,
+    0.0,
+    132.7,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

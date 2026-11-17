@@ -1,0 +1,17 @@
+{
+ "id": "m11-bulletins",
+ "titre": "Bulletins de paie",
+ "libelle": "Bulletins de paie",
+ "domaine": "RH",
+ "module": "M11",
+ "moduleLibelle": "Paie & Primes",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m11-bulletins"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 611
+}

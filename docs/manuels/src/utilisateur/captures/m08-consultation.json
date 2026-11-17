@@ -1,0 +1,94 @@
+{
+ "nom": "m08-consultation",
+ "taille": [
+  412.0,
+  1150.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Enregistrer la fiche",
+   "rect": [
+    16.0,
+    884.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   1150.0
+  ],
+  "champ-motif": [
+   16.0,
+   188.0,
+   380.0,
+   56.0
+  ],
+  "champ-anamnese": [
+   16.0,
+   256.0,
+   380.0,
+   104.0
+  ],
+  "champ-inspection": [
+   16.0,
+   372.0,
+   380.0,
+   80.0
+  ],
+  "champ-palpation": [
+   16.0,
+   464.0,
+   380.0,
+   80.0
+  ],
+  "champ-percussion": [
+   16.0,
+   556.0,
+   380.0,
+   80.0
+  ],
+  "champ-auscultation": [
+   16.0,
+   648.0,
+   380.0,
+   80.0
+  ],
+  "champ-diagnostic": [
+   16.0,
+   740.0,
+   380.0,
+   56.0
+  ],
+  "champ-orientation": [
+   16.0,
+   808.0,
+   380.0,
+   56.0
+  ],
+  "enregistrer-note": [
+   16.0,
+   884.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

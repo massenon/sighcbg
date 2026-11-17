@@ -1,0 +1,17 @@
+{
+ "id": "hub-cfg",
+ "titre": "Configuration Clinique",
+ "libelle": "Configuration Clinique",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-cfg"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 373
+}

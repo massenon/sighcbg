@@ -1,0 +1,17 @@
+{
+ "id": "m3-admissions",
+ "titre": "Admissions",
+ "libelle": "Admissions",
+ "domaine": "Soins",
+ "module": "M3",
+ "moduleLibelle": "Hospitalisation",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-admissions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 494
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m10-stats-presence",
+ "titre": "Taux de présence par service",
+ "libelle": "Taux de présence par service",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-stats-presence"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 600
+}

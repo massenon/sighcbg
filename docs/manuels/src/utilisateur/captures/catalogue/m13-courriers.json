@@ -1,0 +1,17 @@
+{
+ "id": "m13-courriers",
+ "titre": "Courriers (départ / arrivée)",
+ "libelle": "Courriers (départ / arrivée)",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-courriers"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 438
+}

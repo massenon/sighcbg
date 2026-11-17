@@ -1,0 +1,17 @@
+{
+ "id": "m6-mouvements",
+ "titre": "Mouvements de stock",
+ "libelle": "Mouvements de stock",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-mouvements"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 768
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m10-participations",
+ "titre": "Frais de participation",
+ "libelle": "Frais de participation",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-participations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 541
+}

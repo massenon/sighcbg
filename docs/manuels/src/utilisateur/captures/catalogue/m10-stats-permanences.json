@@ -1,0 +1,17 @@
+{
+ "id": "m10-stats-permanences",
+ "titre": "Statistiques des permanences",
+ "libelle": "Statistiques des permanences",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-stats-permanences"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 507
+}

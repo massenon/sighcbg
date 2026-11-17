@@ -1,0 +1,17 @@
+{
+ "id": "m10-assurance-personnel",
+ "titre": "Assurance du personnel",
+ "libelle": "Assurance du personnel",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-assurance-personnel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 402
+}

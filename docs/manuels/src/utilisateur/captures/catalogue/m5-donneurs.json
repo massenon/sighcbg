@@ -1,0 +1,17 @@
+{
+ "id": "m5-donneurs",
+ "titre": "Donneurs & transfusions",
+ "libelle": "Donneurs & transfusions",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-donneurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 804
+}

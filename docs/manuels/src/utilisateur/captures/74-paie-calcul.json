@@ -1,0 +1,597 @@
+{
+ "nom": "74-paie-calcul",
+ "ecran": "m11-calcul",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Prêts et avances",
+   "rect": [
+    882.9,
+    141.0,
+    168.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tableau de bord paie",
+   "rect": [
+    1059.8,
+    141.0,
+    199.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Paie & Primes",
+   "rect": [
+    1267.2,
+    141.0,
+    148.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Lancer le calcul",
+   "rect": [
+    281.0,
+    326.0,
+    160.9,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Générer les bulletins",
+   "rect": [
+    453.9,
+    326.0,
+    194.7,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Éditer le journal de paie",
+   "rect": [
+    660.7,
+    324.0,
+    217.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    624.7,
+    518.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    734.9,
+    518.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Bulletin de paie",
+   "icone": true,
+   "rect": [
+    1367.0,
+    628.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Bulletin de paie",
+   "icone": true,
+   "rect": [
+    1367.0,
+    685.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Bulletin de paie",
+   "icone": true,
+   "rect": [
+    1367.0,
+    742.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Bulletin de paie",
+   "icone": true,
+   "rect": [
+    1367.0,
+    799.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Bulletin de paie",
+   "icone": true,
+   "rect": [
+    1367.0,
+    856.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    638.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    695.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    752.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    809.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    866.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.1,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.0,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.7,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   792.6,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   919.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1020.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.1,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.0,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m11-calcul|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   132.8,
+   116.0,
+   81.2,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   172.0,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   34.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   282.0,
+   1390.0,
+   100.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   302.0,
+   224.0,
+   60.0
+  ],
+  "kit:champ:mois": [
+   45.0,
+   302.0,
+   224.0,
+   60.0
+  ],
+  "kit:kpi": [
+   24.0,
+   399.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   416.0,
+   108.6,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   436.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   416.0,
+   36.0,
+   36.0
+  ],
+  "calcul:10:0": [
+   24.0,
+   501.0,
+   1392.0,
+   615.0
+  ],
+  "kit:tableau": [
+   24.0,
+   501.0,
+   1392.0,
+   615.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   502.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   296.7,
+   514.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   565.0,
+   1390.0,
+   509.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   573.0,
+   75.7,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1332.3,
+   618.0,
+   82.7,
+   57.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Bulletin de paie",
+   "rect": [
+    1367.0,
+    628.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Bulletin de paie",
+   "rect": [
+    1367.0,
+    685.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Bulletin de paie",
+   "rect": [
+    1367.0,
+    742.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Bulletin de paie",
+   "rect": [
+    1367.0,
+    799.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Bulletin de paie",
+   "rect": [
+    1367.0,
+    856.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

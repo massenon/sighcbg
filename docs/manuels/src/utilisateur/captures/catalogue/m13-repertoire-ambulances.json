@@ -1,0 +1,17 @@
+{
+ "id": "m13-repertoire-ambulances",
+ "titre": "Répertoire des ambulances",
+ "libelle": "Répertoire des ambulances",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-repertoire-ambulances"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 539
+}

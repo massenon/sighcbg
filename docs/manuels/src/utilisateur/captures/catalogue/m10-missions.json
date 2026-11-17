@@ -1,0 +1,17 @@
+{
+ "id": "m10-missions",
+ "titre": "Ordres de mission",
+ "libelle": "Ordres de mission",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-missions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 499
+}

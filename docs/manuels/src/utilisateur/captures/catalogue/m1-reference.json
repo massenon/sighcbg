@@ -1,0 +1,17 @@
+{
+ "id": "m1-reference",
+ "titre": "Fiches de référence",
+ "libelle": "Fiches de référence",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-reference"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 451
+}
