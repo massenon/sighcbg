@@ -183,6 +183,7 @@ export 'src/mere/indicateurs_clinique.dart';
 export 'src/mere/mra_regles.dart';
 export 'src/mere/mrb_regles.dart';
 export 'src/mere/mrc_regles.dart';
+export 'src/mere/reprise_poste_regles.dart';
 export 'src/mere/synchro_fileuls.dart';
 export 'src/mere/sms.dart';
 export 'src/mobile/mob_droits.dart';
