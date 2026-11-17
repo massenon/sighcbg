@@ -66,3 +66,11 @@ Colonne N-1 du compte de résultat au même filtre de statut ; soldes d'ouvertur
 10. **PTA** : le menu, le fil d'Ariane et la recherche disent « Plan de travail annuel (PTA) » ; l'auto-adoption reste interdite (celui qui a soumis ne l'adopte pas).
 11. **Plages de codes patients d'avant la v27** : codes provisoires acceptables pendant la transition (la mère les remplace).
 12. **Synchronisation du planning** : planning, vacations, congés et présences voyagent entre postes (jamais vers le téléphone : ils portent des honoraires), avec les contrôles de la mère.
+
+## 11. Réponses du 17/11/2026 (coordonnées, SMS, caisse) et clôture des reliquats
+
+- **E-mail de la clinique : `contact@cliniquebaguidi.com`** (remplace la proposition `admin@…`). Identité de la clinique, donc lue partout depuis le réglage d'identité, jamais écrite en dur dans le code.
+- **Fournisseurs SMS : Vonage ET Twilio** — le choix se fait à la configuration (réglage du relais), jamais en dur. Le relais porte donc un pilote par fournisseur, à côté du pilote HTTP générique et du pilote journal.
+- **Imprimante de caisse : le boîtier ELTRADE CC300 est à la fois le MECeF et l'imprimante de caisse** (ticket 80 mm). Le référentiel des matériels le dit : une seule machine, deux fonctions.
+- Consigne : finir tout le reste (lots 3-8 de l'inventaire des valeurs en dur, geste dédié du planning individuel, facture à une entreprise complète, sélecteur d'exercice du PTA, reliquats de numérotation, manuels).
+- Hors de notre portée, restent à la Direction/aux professionnels : validations médicales (liste de mots interdits des SMS, gestes « à valider »), fichier réel des 100 questions de l'assistant.
