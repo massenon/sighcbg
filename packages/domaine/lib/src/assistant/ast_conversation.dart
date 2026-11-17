@@ -4,12 +4,14 @@
 /// Ce module est pur : il ne sait ni chiffrer ni écrire — il décide de ce qui reste (la purge) et de la forme de ce qui se garde.
 library;
 
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import 'ast_contexte.dart';
 
 /// La clé du réglage dans le registre des paramètres (`definitionsParametres`).
 const String astCleRetention = 'assistant.retentionJours';
 
-const int astRetentionDefaut = 30;
+/// La conservation d'attente : le défaut du paramètre `assistant.retentionJours` (un seul endroit le dit).
+int get astRetentionDefaut => seuilSeme(astCleRetention);
 const int astRetentionMin = 1;
 const int astRetentionMax = 90;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'mrb_commun.dart';
@@ -73,10 +74,11 @@ class _EtatIntegrite extends MrbEtatEcran<EcranIntegrite, _Integrite> {
     final c = ContexteEcran.of(context);
     final d = donnees;
     final maintenant = c.aujourdhui.millisecondsSinceEpoch;
-    final comptes = d == null ? null : mrbCompterAlterations(d.journal, maintenantMs: maintenant);
+    final fenetreJours = seuilClinique(c.magasin, 'mere.fenetreJournalAlterationsJours', c.aujourdhui);
+    final comptes = d == null ? null : mrbCompterAlterations(d.journal, maintenantMs: maintenant, jours: fenetreJours);
     final tronque = d != null &&
-        mrbCompterJournal(d.journal, maintenantMs: maintenant, limite: mrbLimiteJournal, fenetreMs: 30 * 24 * 3600 * 1000).tronque;
-    final indice = comptes == null ? null : (tronque ? 'au moins : journal lu sur $mrbLimiteJournal lignes' : '30 derniers jours, d’après le journal');
+        mrbCompterJournal(d.journal, maintenantMs: maintenant, limite: mrbLimiteJournal, fenetreMs: fenetreJours * 24 * 3600 * 1000).tronque;
+    final indice = comptes == null ? null : (tronque ? 'au moins : journal lu sur $mrbLimiteJournal lignes' : '$fenetreJours derniers jours, d’après le journal');
     final bloques = <MrbAppareilBloque>[
       if (d != null)
         for (final u in d.etat.bloques)
@@ -133,9 +135,9 @@ class _EtatIntegrite extends MrbEtatEcran<EcranIntegrite, _Integrite> {
         ),
       ),
       const SizedBox(height: 12),
-      const NoteSigh(
+      NoteSigh(
           'Débloquer remet l’appareil en circulation après vérification en personne ; Révoquer le retire définitivement. Les alertes que le service tient en mémoire '
-          'sont perdues à son redémarrage : le compte des 30 jours se lit dans le journal technique, qui les conserve.',
+          'sont perdues à son redémarrage : le compte des $fenetreJours jours se lit dans le journal technique, qui les conserve.',
           icone: LucideIcons.info),
     ]);
   }

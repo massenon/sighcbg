@@ -1,6 +1,7 @@
 import '../format/format_fr.dart';
 import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../format/recherche.dart' show comparerNaturel, trierPar;
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import 'adm_notes_donnees.dart';
 import '../numerotation/numerotation.dart';
 
@@ -163,8 +164,8 @@ List<AdmFiche> admProchainsEvenements(List<AdmFiche> rows, DateTime maintenant) 
 
 String admDelaiEvenement(int jours) => jours == 0 ? 'Aujourd’hui' : 'Dans $jours j';
 
-/// `j <= 7` : le délai passe en rouge.
-bool admDelaiUrgent(int jours) => jours <= 7;
+/// `j <= seuil` : le délai passe en rouge (paramètre `administration.delaiUrgentEvenementJours`, valeur SEMÉE à défaut de [urgentJours]).
+bool admDelaiUrgent(int jours, {int? urgentJours}) => jours <= (urgentJours ?? seuilSeme('administration.delaiUrgentEvenementJours'));
 
 List<String> admCanauxEvenement(Object? notifier, Object? canauxExistants) {
   if (!admVrai(notifier)) return [];
@@ -365,8 +366,8 @@ const List<AdmDisponibilite> admDisponibilites = [
 AdmTypeAmbulance admTypeAmbulance(Object? code) => admTypesAmbulance.firstWhere((t) => t.code == code, orElse: () => admTypesAmbulance[3]);
 AdmDisponibilite admDisponibilite(Object? code) => admDisponibilites.firstWhere((d) => d.code == code, orElse: () => admDisponibilites[2]);
 
-/// Un numéro non vérifié depuis plus de ce nombre de jours est SIGNALÉ (jamais masqué).
-const int admJoursVerification = 90;
+/// Un numéro non vérifié depuis plus de ce nombre de jours est SIGNALÉ (jamais masqué) : le paramètre `administration.joursVerificationRepertoireJours`, ici sa valeur SEMÉE.
+int get admJoursVerification => seuilSeme('administration.joursVerificationRepertoireJours');
 
 /// Jours écoulés depuis la vérification, comptés PAR JOUR (E540 : vérifié ce matin, « 1 j » dès midi) ; `null` quand la fiche n'a jamais été vérifiée.
 int? admJoursDepuis(Object? iso, DateTime maintenant) {
@@ -376,9 +377,9 @@ int? admJoursDepuis(Object? iso, DateTime maintenant) {
   return arrondiJs(_jour(maintenant).difference(_jour(d)).inMilliseconds / 86400000).toInt();
 }
 
-bool admPerime(AdmFiche r, DateTime maintenant) {
+bool admPerime(AdmFiche r, DateTime maintenant, {int? joursVerification}) {
   final j = admJoursDepuis(r['verifieLe'], maintenant);
-  return j == null || j > admJoursVerification;
+  return j == null || j > (joursVerification ?? admJoursVerification);
 }
 
 /// Les cartes d'appel rapide : DISPONIBLES d'abord, à égalité les moyens de la clinique avant l'extérieur, puis le libellé.
@@ -400,15 +401,16 @@ List<AdmFiche> admTrierRepertoire(List<AdmFiche> rows) => trierPar(rows, (r) => 
 
 String admHrefTel(Object? telephone) => 'tel:${'$telephone'.replaceAll(RegExp(r'\s+'), '')}';
 
-List<AdmKpi> admKpisRepertoire(List<AdmFiche> rows, DateTime maintenant) {
+List<AdmKpi> admKpisRepertoire(List<AdmFiche> rows, DateTime maintenant, {int? joursVerification}) {
+  final jv = joursVerification ?? admJoursVerification;
   final dispo = rows.where((r) => r['disponibilite'] == 'disponible' && admVrai(r['telephone'])).length;
   final aCompleter = rows.where((r) => !admVrai(r['telephone'])).length;
-  final perimes = rows.where((r) => admVrai(r['telephone']) && admPerime(r, maintenant)).length;
+  final perimes = rows.where((r) => admVrai(r['telephone']) && admPerime(r, maintenant, joursVerification: jv)).length;
   return [
     AdmKpi('Moyens répertoriés', nombre(rows.length), 'ambulance', 'navy'),
     AdmKpi('Disponibles maintenant', nombre(dispo), 'circle-check', dispo > 0 ? 'success' : 'danger', dispo > 0 ? null : 'aucun moyen joignable'),
     AdmKpi('Numéros à renseigner', nombre(aCompleter), 'phone-off', aCompleter > 0 ? 'warning' : 'success'),
-    AdmKpi('Non vérifiés depuis $admJoursVerification j', nombre(perimes), 'clock-alert', perimes > 0 ? 'warning' : 'success'),
+    AdmKpi('Non vérifiés depuis $jv j', nombre(perimes), 'clock-alert', perimes > 0 ? 'warning' : 'success'),
   ];
 }
 

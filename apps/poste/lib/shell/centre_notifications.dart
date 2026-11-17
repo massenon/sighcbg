@@ -62,8 +62,9 @@ int rangPriorite(String p) => switch (p) { 'critique' => 0, 'important' => 1, _ 
 /// Libellé d'une priorité (`PRIORITES[x].label`).
 String libellePriorite(String p) => switch (p) { 'critique' => 'Critique', 'important' => 'Important', _ => 'Information' };
 
-/// Au-delà de trois alertes de même nature et de même priorité, c'est le NOMBRE qui informe : en dessous, nommer l'article rend service.
-const seuilRegroupement = 3;
+/// Au-delà de ce nombre d'alertes de même nature et de même priorité (trois en attente, paramètre `notifications.seuilRegroupement`), c'est le NOMBRE qui informe : en dessous,
+/// nommer l'article rend service.
+int seuilRegroupement(Magasin m, DateTime auj) => seuilClinique(m, 'notifications.seuilRegroupement', auj);
 
 /// Les POSTES de notification (`POSTES_NOTIF`) sont tenus par des GESTES RÉSERVÉS de la fiche de rôle (Direction de Baguidi, 16/11/2026 : la caisse et le stock ; compléments du
 /// 16/11/2026 : tous les autres postes) — l'origine de chaque geste reprend la liste d'avant, une fiche de rôle accorde ou retire, et AUCUNE liste de rôles n'est écrite ici. Un
@@ -508,9 +509,10 @@ class CentreNotifications extends ChangeNotifier {
       (paquets['${x.source}|${x.priorite}'] ??= []).add(x);
     }
     final out = <AlerteNotif>[];
+    final seuil = seuilRegroupement(magasin, _horloge());
     for (final e in paquets.entries) {
       final g = e.value;
-      if (g.length < seuilRegroupement) {
+      if (g.length < seuil) {
         out.addAll(g);
         continue;
       }

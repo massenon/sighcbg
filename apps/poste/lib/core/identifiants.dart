@@ -6,6 +6,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../donnees/gestes_magasin.dart';
 import '../donnees/magasin.dart';
+import 'service_parametres.dart';
 
 /// AUTHENTIFICATION LOCALE DU POSTE (A5, décision de la Direction du 31/10/2026).
 ///
@@ -79,7 +80,8 @@ class ServiceIdentifiants {
         parametres: p,
         maintenant: maintenant,
         definiPar: par,
-        doitChanger: doitChanger);
+        doitChanger: doitChanger,
+        renouvellementJours: seuilClinique(_magasin, cleRenouvellementMotDePasse, maintenant));
     final existante = _col.parId(utilisateurId);
     if (existante == null) {
       _col.inserer(fiche, prefixe: 'IDF');
@@ -159,7 +161,7 @@ class ServiceIdentifiants {
     }
     final bon = await _correspond(f, motDePasse);
     if (!bon) {
-      final r = accApresEchec(f, maintenant);
+      final r = accApresEchec(f, maintenant, dureeVerrou: Duration(minutes: seuilClinique(_magasin, cleDureeVerrouCompte, maintenant)));
       _col.mettreAJour(cle, r.patch);
       _magasin.collection('utilisateurs').mettreAJour(cle, {'echecs': ((compte['echecs'] is num ? compte['echecs'] as num : 0).toInt()) + 1});
       final DateTime? fin2 = r.verrouille ? DateTime.parse('${r.patch['verrouJusqua']}') : null;
@@ -271,7 +273,8 @@ extension SecoursAdministrateur on ServiceIdentifiants {
       await _leurre(code); // même durée qu'un vrai contrôle
     }
     if (!bon) {
-      final r = accSecoursApresEchec(etat, maintenant);
+      final dureeBlocage = Duration(minutes: seuilClinique(_magasin, cleDureeBlocageSecours, maintenant));
+      final r = accSecoursApresEchec(etat, maintenant, dureeBlocage: dureeBlocage);
       _ecrireEtat({...etat, ...r.patch});
       _magasin.utilisateur = id.isEmpty ? 'Inconnu' : id;
       _magasin.collection('tentativesConnexion').inserer({
@@ -283,7 +286,7 @@ extension SecoursAdministrateur on ServiceIdentifiants {
         'poste': 'Récupération administrateur',
         'traitee': false,
       }, prefixe: 'TNT');
-      final fin = r.bloque ? maintenant.add(accDureeBlocageSecours) : null;
+      final fin = r.bloque ? maintenant.add(dureeBlocage) : null;
       return ResultatSecours.refus(fin != null ? accMessageSecoursBloque(fin) : accMessageSecoursRefus, bloqueJusqua: fin);
     }
     final refusPolitique = accControlerNouveauMotDePasse(nouveau, confirmation, identifiant: id);
@@ -322,9 +325,10 @@ extension SecoursAdministrateur on ServiceIdentifiants {
     final ancienne = _col.parId(cibleId);
     final ancien = ancienne == null ? null : <String, Object?>{...ancienne};
     final temporaire = accGenererMotDePasseTemporaire(ServiceIdentifiants.aleatoire());
+    final validiteTemporaire = Duration(hours: seuilClinique(_magasin, cleValiditeMotDePasseTemporaire, maintenant));
     await definir(cibleId, temporaire, par: acteurNom, doitChanger: true, maintenant: maintenant);
     _col.mettreAJour(cibleId, {
-      'temporaireJusqua': accEcheanceTemporaire(maintenant).toIso8601String(),
+      'temporaireJusqua': accEcheanceTemporaire(maintenant, validite: validiteTemporaire).toIso8601String(),
       if (ancien != null) ...{
         'precedentHash': ancien['hash'],
         'precedentSel': ancien['sel'],
@@ -345,7 +349,7 @@ extension SecoursAdministrateur on ServiceIdentifiants {
       fermees++;
     }
     _magasin.journaliser('Mot de passe réinitialisé', 'M14', 'Identifiant', cibleId, null, {'par': acteurNom, 'sessionsFermees': fermees});
-    return ResultatReinit.ok(temporaire, accEcheanceTemporaire(maintenant));
+    return ResultatReinit.ok(temporaire, accEcheanceTemporaire(maintenant, validite: validiteTemporaire));
   }
 
   /// Le mot de passe proposé est-il celui d'AVANT la réinitialisation ? (refusé au changement obligatoire.) Faux si aucun précédent n'est gardé.

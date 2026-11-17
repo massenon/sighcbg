@@ -525,7 +525,7 @@ class ServiceValidationsDeposees {
   }
 
   /// Le temps qu'un dépôt attend la pièce qu'il désigne avant d'être refusé : le dépôt peut devancer la fiche dans le journal.
-  Duration delaiPieceAbsente = const Duration(minutes: 10);
+  Duration get delaiPieceAbsente => Duration(minutes: seuilClinique(magasin, 'validations.delaiPieceAbsenteMinutes', _maintenant));
 
   /// AI (16/11/2026) : le dépôt porte le COMPTE qui le signe (la mère le vérifie avant de rejouer) et l'instant exact du geste (l'âge de la décision en attente se mesure dessus).
   void _signer(Fiche f) {

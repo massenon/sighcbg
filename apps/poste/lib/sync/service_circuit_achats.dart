@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/service_parametres.dart';
 import '../donnees/magasin.dart';
 
 /// LES TÂCHES DU CIRCUIT D'ACHAT, NÉES DE L'ÉTAT DU BON (Direction, 16/11/2026).
@@ -20,7 +21,8 @@ class ServiceCircuitAchats {
   static ServiceCircuitAchats de(Magasin m) => _instances[m] ??= ServiceCircuitAchats._(m);
 
   final Magasin magasin;
-  static const int fenetreJours = 7;
+  /// La fenêtre en vigueur (jours) : le paramètre `achats.fenetreCircuitJours`.
+  int get fenetreJours => seuilClinique(magasin, 'achats.fenetreCircuitJours', _maintenant);
 
   DateTime Function()? horloge;
   DateTime get _maintenant => (horloge ?? magasin.horloge)();
@@ -40,7 +42,7 @@ class ServiceCircuitAchats {
         for (final x in notes.toutes)
           if (x['cle'] != null) '${x['cle']}'
       };
-      final limite = _maintenant.subtract(const Duration(days: fenetreJours));
+      final limite = _maintenant.subtract(Duration(days: fenetreJours));
       for (final b in magasin.collection('besoins').actives) {
         final etat = '${b['etape']}';
         if ((rangCircuit('besoins', etat) ?? 0) < 4) continue;

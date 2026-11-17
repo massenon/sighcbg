@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/tarifs_poste.dart';
@@ -28,8 +29,8 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
   String get description =>
       'Visualisation graphique de l’occupation par aile, chambre et lit — nomenclature A1 LIT1, chambres VIP et VVIP.';
 
-  /// Au-delà de ce nombre de jours, un lit occupé est signalé « sortie prévue ».
-  static const joursSortiePrevue = 5;
+  /// Au-delà de ce nombre de jours, un lit occupé est signalé « sortie prévue » : le paramètre `hospitalisation.joursSortiePrevue` (cinq jours d'attente), en vigueur à la date du jour.
+  static int joursSortiePrevue(ContexteEcran c) => seuilClinique(c.magasin, 'hospitalisation.joursSortiePrevue', c.aujourdhui);
 
   /// Le texte que la maquette lit sur un lit : libellé, occupant (ou « Disponible »), durée — collés (`innerText` d'un bouton).
   static String texteLit(String lit, Fiche? adm, DateTime auj) =>
@@ -155,7 +156,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
             ]);
   }
 
-  Widget _chambre(BuildContext context, HosChambre ch, Iterable<Fiche> actives, DateTime auj, {bool restreint = false}) {
+  Widget _chambre(BuildContext context, HosChambre ch, Iterable<Fiche> actives, DateTime auj, int joursSortiePrevue, {bool restreint = false}) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: decorationCarte(),
@@ -307,7 +308,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
                       fontSize: 12, height: 16 / 12, fontWeight: FontWeight.w500, color: JetonsShell.slate500)),
               _legende(JetonsShell.success500, 'Libre'),
               _legende(JetonsShell.danger500, 'Occupé'),
-              _legende(JetonsShell.warning500, 'Sortie prévue (séjour > $joursSortiePrevue jours)'),
+              _legende(JetonsShell.warning500, 'Sortie prévue (séjour > ${joursSortiePrevue(c)} jours)'),
             ]),
           ),
           for (final e in ailes.entries) ...[
@@ -318,7 +319,7 @@ class EcranPlanLits extends StatelessWidget with EcranMaquette {
                   final n = k.maxWidth >= 1024 ? 4 : (k.maxWidth >= 640 ? 2 : 1);
                   final l = (k.maxWidth - 12 * (n - 1)) / n;
                   return Wrap(spacing: 12, runSpacing: 12, children: [
-                    for (final ch in e.value) SizedBox(width: l, child: _chambre(context, ch, actives, auj, restreint: restreint))
+                    for (final ch in e.value) SizedBox(width: l, child: _chambre(context, ch, actives, auj, joursSortiePrevue(c), restreint: restreint))
                   ]);
                 })),
           ],

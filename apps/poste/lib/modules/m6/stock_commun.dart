@@ -155,7 +155,7 @@ List<Fiche> lotsActifs(Magasin m) => m.collection('lots').actives;
 List<Fiche> mouvementsActifs(Magasin m) => m.collection('mouvements').actives;
 
 /// Statut d'un lot À LA DATE DU JOUR (écart E19) : `perime`, `alerte` ou `actif`.
-String statutDuLot(Fiche l, DateTime auj, {int preavis = delaiPreavisPeremption}) =>
+String statutDuLot(Fiche l, DateTime auj, {int? preavis}) =>
     statutLot(joursAvantPeremption(auj, l['datePeremption']), preavis: preavis);
 
 TonSigh tonDeBadge(String badge) => switch (badge) {
@@ -167,8 +167,8 @@ TonSigh tonDeBadge(String badge) => switch (badge) {
       _ => TonSigh.neutre,
     };
 
-Widget badgeEcheance(int? jours, String texte, {int preavis = delaiPreavisPeremption}) {
-  final teinte = teinteEcheance(jours, preavis: preavis);
+Widget badgeEcheance(int? jours, String texte, {int? preavis, int? urgent}) {
+  final teinte = teinteEcheance(jours, preavis: preavis, urgent: urgent);
   if (teinte == 'neutre') {
     return cellule(texte, couleur: JetonsShell.slate600, droite: true);
   }

@@ -135,18 +135,18 @@ class MrbResultatReinit {
 
 /// Les réglages et le dernier envoi des indicateurs agrégés non nominatifs (ADR-0007) tels que le service de la mère les annonce.
 class MrbIndicateursClinique {
-  const MrbIndicateursClinique({
+  MrbIndicateursClinique({
     required this.publier,
     required this.intervalleS,
     required this.joursPeremption,
     required this.relaisConfigure,
     this.defautIntervalleS = 900,
-    this.defautJoursPeremption = 90,
+    int? defautJoursPeremption,
     this.dernier,
     this.envoyeLe,
     this.derniereTentative,
     this.erreur,
-  });
+  }) : defautJoursPeremption = defautJoursPeremption ?? preavisPeremptionSeme;
 
   /// L'interrupteur : OUVERT par défaut (Direction, 10/11/2026), fermable aux Paramètres ; fermé, rien ne part.
   final bool publier;
@@ -355,7 +355,7 @@ class MrbSourceClient extends MrbSource {
       intervalleS: _entier(r['intervalle_s']),
       joursPeremption: _entier(r['jours_peremption']),
       defautIntervalleS: d['intervalle_s'] is num ? _entier(d['intervalle_s']) : 900,
-      defautJoursPeremption: d['jours_peremption'] is num ? _entier(d['jours_peremption']) : 90,
+      defautJoursPeremption: d['jours_peremption'] is num ? _entier(d['jours_peremption']) : preavisPeremptionSeme,
       relaisConfigure: j['relais_configure'] == true,
       dernier: dernier == null || dernier['instantane'] is! Map ? null : (dernier['instantane'] as Map).cast<String, Object?>(),
       envoyeLe: dernier == null ? null : ms(dernier['envoye_le']),

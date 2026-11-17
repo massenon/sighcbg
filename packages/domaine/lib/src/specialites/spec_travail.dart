@@ -9,6 +9,7 @@
 library;
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../patients/pat_pieces.dart' show PatTypePiece;
 import '../referentiels/regles.dart' show joursEntre;
 import '../numerotation/numerotation.dart';
@@ -67,11 +68,12 @@ enum MdtEtat {
 }
 
 ({MdtEtat etat, String? echeance, int? jours}) mdtEtatSalarie(DateTime? derniereVisite, DateTime aujourdhui,
-    {int periodiciteMois = mdtPeriodiciteDefaut, int preavisJours = 30}) {
+    {int periodiciteMois = mdtPeriodiciteDefaut, int? preavisJours}) {
+  final preavis = preavisJours ?? seuilSeme('specialites.preavisVisiteMedecineTravailJours');
   if (derniereVisite == null) return (etat: MdtEtat.jamaisVu, echeance: null, jours: null);
   final due = DateTime(derniereVisite.year, derniereVisite.month + periodiciteMois, derniereVisite.day);
   final jours = joursEntre(DateTime(aujourdhui.year, aujourdhui.month, aujourdhui.day), due);
-  final etat = jours < 0 ? MdtEtat.enRetard : (jours <= preavisJours ? MdtEtat.aPlanifier : MdtEtat.aJour);
+  final etat = jours < 0 ? MdtEtat.enRetard : (jours <= preavis ? MdtEtat.aPlanifier : MdtEtat.aJour);
   return (etat: etat, echeance: iso(due), jours: jours);
 }
 

@@ -8,6 +8,7 @@ library;
 
 import '../format/format_fr.dart';
 import '../format/js.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import 'cpa_referentiels.dart' show CpaFiche;
 
 /// `ETATS_ECHEANCE` : (identifiant, libellé, ton) dans l'ordre de la maquette.
@@ -21,14 +22,15 @@ const List<(String, String, String)> cpcEtatsEcheance = [
 
 /// LES SEUILS de l'état d'une échéance : « à payer » sous [aPayerJours] jours, « déclaration attendue » sous [declarationJours]. Ce ne sont PAS des constantes du
 /// moteur : ils se règlent aux Paramètres (`fiscal.delaiAPayerJours`, `fiscal.delaiDeclarationJours`, valeur en vigueur à la date) et le moteur les REÇOIT.
-/// [defaut] (10 et 30) n'est que la graine, valeur de repli d'un poste dont le paramètre n'est pas lu. Un délai absurde (négatif, ou de déclaration inférieur à
+/// [defaut] n'est que la graine (les défauts des deux paramètres), valeur de repli d'un poste dont le paramètre n'est pas lu. Un délai absurde (négatif, ou de déclaration inférieur à
 /// celui du paiement) est ramené à une valeur cohérente plutôt que de renverser l'ordre des états.
 class CpcSeuilsEcheance {
-  const CpcSeuilsEcheance({this.aPayerJours = 10, this.declarationJours = 30});
+  const CpcSeuilsEcheance({required this.aPayerJours, required this.declarationJours});
   final int aPayerJours;
   final int declarationJours;
 
-  static const CpcSeuilsEcheance defaut = CpcSeuilsEcheance();
+  /// Les valeurs d'attente : les défauts des deux paramètres (un seul endroit les dit, `definitions.dart`).
+  static CpcSeuilsEcheance get defaut => CpcSeuilsEcheance(aPayerJours: seuilSeme('fiscal.delaiAPayerJours'), declarationJours: seuilSeme('fiscal.delaiDeclarationJours'));
 
   factory CpcSeuilsEcheance.depuis(Object? aPayer, Object? declaration) {
     int lire(Object? v, int repli) => v is num && v.isFinite && v >= 0 ? v.toInt() : repli;
@@ -58,18 +60,19 @@ int cpcJoursAvant(DateTime auj, Object? echeance) {
 }
 
 /// `calculerEtat(e)` : jamais stocké, toujours recalculé.
-String cpcCalculerEtat(CpaFiche e, DateTime auj, {CpcSeuilsEcheance seuils = CpcSeuilsEcheance.defaut}) {
+String cpcCalculerEtat(CpaFiche e, DateTime auj, {CpcSeuilsEcheance? seuils}) {
   if (e['paye'] == true) return 'payee';
+  final s = seuils ?? CpcSeuilsEcheance.defaut;
   final j = cpcJoursAvant(auj, e['echeance']);
   if (j < 0) return 'en_retard';
-  if (j <= seuils.aPayerJours) return 'a_payer';
+  if (j <= s.aPayerJours) return 'a_payer';
   final decl = e['declaration'];
-  if (decl != null && decl != '' && j <= seuils.declarationJours) return 'declaration';
+  if (decl != null && decl != '' && j <= s.declarationJours) return 'declaration';
   return 'a_venir';
 }
 
 /// Les lignes du tableau : la fiche, son état calculé et son délai.
-List<CpaFiche> cpcLignesEcheances(Iterable<CpaFiche> actives, DateTime auj, {CpcSeuilsEcheance seuils = CpcSeuilsEcheance.defaut}) => [
+List<CpaFiche> cpcLignesEcheances(Iterable<CpaFiche> actives, DateTime auj, {CpcSeuilsEcheance? seuils}) => [
       for (final e in actives) {...e, 'etat': cpcCalculerEtat(e, auj, seuils: seuils), 'jours': cpcJoursAvant(auj, e['echeance'])}
     ];
 
@@ -92,7 +95,8 @@ class CpcAlerteEcheance {
 }
 
 /// La barre de notification de l'écran, dans l'ordre de la maquette : retards, paiements sous dix jours, déclarations ; sinon « Aucune échéance en attente ».
-List<CpcAlerteEcheance> cpcBarreEcheances(List<CpaFiche> lignes, {CpcSeuilsEcheance seuils = CpcSeuilsEcheance.defaut}) {
+List<CpcAlerteEcheance> cpcBarreEcheances(List<CpaFiche> lignes, {CpcSeuilsEcheance? seuils}) {
+  final s = seuils ?? CpcSeuilsEcheance.defaut;
   final retard = [for (final e in lignes) if (e['etat'] == 'en_retard') e];
   final aPayer = [for (final e in lignes) if (e['etat'] == 'a_payer') e];
   final decl = [for (final e in lignes) if (e['etat'] == 'declaration') e];
@@ -107,7 +111,7 @@ List<CpcAlerteEcheance> cpcBarreEcheances(List<CpaFiche> lignes, {CpcSeuilsEchea
   if (aPayer.isNotEmpty) {
     out.add(CpcAlerteEcheance(
         'warning',
-        '${aPayer.length} paiement(s) à effectuer sous ${_delai(seuils.aPayerJours)}',
+        '${aPayer.length} paiement(s) à effectuer sous ${_delai(s.aPayerJours)}',
         '${aPayer.take(3).map((e) => '${e['code']} le ${_date(e['echeance'])}').join(' · ')}${aPayer.length > 3 ? ' …' : ''}',
         aPayer.first));
   }
@@ -132,13 +136,14 @@ List<CpcAlerteEcheance> cpcBarreEcheances(List<CpaFiche> lignes, {CpcSeuilsEchea
 
 /// L'alerte SONORE de l'ouverture : le comptable ne consulte pas l'écran tous les jours, c'est l'écran qui doit l'avertir. `null` s'il n'y a ni retard ni
 /// paiement sous dix jours.
-({String message, String son, String type, String detail})? cpcAlerteOuverture(List<CpaFiche> lignes, {CpcSeuilsEcheance seuils = CpcSeuilsEcheance.defaut}) {
+({String message, String son, String type, String detail})? cpcAlerteOuverture(List<CpaFiche> lignes, {CpcSeuilsEcheance? seuils}) {
+  final s = seuils ?? CpcSeuilsEcheance.defaut;
   final retard = [for (final e in lignes) if (e['etat'] == 'en_retard') e];
   final aPayer = [for (final e in lignes) if (e['etat'] == 'a_payer') e];
   if (retard.isEmpty && aPayer.isEmpty) return null;
   final premier = retard.isNotEmpty ? retard.first : aPayer.first;
   return (
-    message: retard.isNotEmpty ? '${retard.length} échéance(s) en retard' : '${aPayer.length} paiement(s) sous ${_delai(seuils.aPayerJours)}',
+    message: retard.isNotEmpty ? '${retard.length} échéance(s) en retard' : '${aPayer.length} paiement(s) sous ${_delai(s.aPayerJours)}',
     son: retard.isNotEmpty ? 'alerte' : 'rappel',
     type: retard.isNotEmpty ? 'error' : 'warning',
     detail: '${premier['libelle']} — ${_date(premier['echeance'])}',

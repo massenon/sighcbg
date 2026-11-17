@@ -9,6 +9,7 @@ library;
 
 import 'dart:math' as math;
 
+import '../parametres/parametres_clinique.dart' show seuilSeme, cleDureeBlocageSecours, cleValiditeMotDePasseTemporaire;
 import 'acc_identifiants.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteComptesReinitialiser;
 
@@ -76,8 +77,8 @@ bool accSecoursUtilisable(Map<String, Object?>? fiche) => fiche != null && fiche
 /// Essais faux après lesquels le chemin est bloqué.
 const int accEssaisSecoursAvantBlocage = 5;
 
-/// Durée du blocage du chemin de récupération.
-const Duration accDureeBlocageSecours = Duration(minutes: 15);
+/// Durée du blocage du chemin de récupération (paramètre `securite.dureeBlocageSecoursMinutes`) : valeur SEMÉE ici, le poste passe la version en vigueur.
+Duration get accDureeBlocageSecours => Duration(minutes: seuilSeme(cleDureeBlocageSecours));
 
 /// L'état du chemin : un seul compteur pour le CHEMIN (et non par compte), de sorte que la réponse ne dise jamais si l'identifiant existe.
 typedef EtatSecours = Map<String, Object?>;
@@ -89,10 +90,10 @@ DateTime? accSecoursBloqueJusqua(EtatSecours etat, DateTime maintenant) {
 }
 
 /// Le patch de l'état après un essai FAUX (identifiant inconnu, code faux, code consommé, compte non administrateur : tous comptent pareil).
-({EtatSecours patch, bool bloque}) accSecoursApresEchec(EtatSecours etat, DateTime maintenant) {
+({EtatSecours patch, bool bloque}) accSecoursApresEchec(EtatSecours etat, DateTime maintenant, {Duration? dureeBlocage}) {
   final n = ((etat['essais'] is num) ? (etat['essais'] as num).toInt() : 0) + 1;
   if (n >= accEssaisSecoursAvantBlocage) {
-    return (patch: {'essais': 0, 'bloqueJusqua': maintenant.add(accDureeBlocageSecours).toIso8601String()}, bloque: true);
+    return (patch: {'essais': 0, 'bloqueJusqua': maintenant.add(dureeBlocage ?? accDureeBlocageSecours).toIso8601String()}, bloque: true);
   }
   return (patch: {'essais': n}, bloque: false);
 }
@@ -115,14 +116,14 @@ String accMessageSecoursBloque(DateTime fin) {
 /// Longueur du mot de passe temporaire.
 const int accLongueurMotDePasseTemporaire = 14;
 
-/// Durée de validité du mot de passe temporaire.
-const Duration accValiditeMotDePasseTemporaire = Duration(hours: 24);
+/// Durée de validité du mot de passe temporaire (paramètre `securite.validiteMotDePasseTemporaireHeures`) : valeur SEMÉE ici, le poste passe la version en vigueur.
+Duration get accValiditeMotDePasseTemporaire => Duration(hours: seuilSeme(cleValiditeMotDePasseTemporaire));
 
 /// Un mot de passe temporaire ALÉATOIRE : 14 caractères qui respectent la politique du poste (au moins deux de chaque famille).
 String accGenererMotDePasseTemporaire(math.Random alea) => accGenererMotDePasseProvisoire(alea, longueur: accLongueurMotDePasseTemporaire);
 
 /// La date d'échéance d'un mot de passe temporaire défini à [maintenant].
-DateTime accEcheanceTemporaire(DateTime maintenant) => maintenant.add(accValiditeMotDePasseTemporaire);
+DateTime accEcheanceTemporaire(DateTime maintenant, {Duration? validite}) => maintenant.add(validite ?? accValiditeMotDePasseTemporaire);
 
 /// Le mot de passe temporaire est-il périmé ? Faux si la fiche n'en porte pas (mot de passe ordinaire).
 bool accTemporairePerime(Map<String, Object?> fiche, DateTime maintenant) {

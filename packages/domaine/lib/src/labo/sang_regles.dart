@@ -7,6 +7,7 @@
 library;
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
 import '../stock/stock.dart' show joursAvantPeremption;
 import 'dem_regles.dart' show demExamenDe, demSections;
@@ -26,8 +27,8 @@ const sangGroupes = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
 /// Les types de don proposés au formulaire des donneurs.
 const sangTypesDon = ['Bénévole', 'Familial', 'Compensation'];
 
-/// Délai minimal entre deux dons : `delai >= 90` (jours) dans la maquette, écrit en dur.
-const sangDelaiEntreDons = 90;
+/// Délai minimal entre deux dons (jours) : le paramètre `laboratoire.delaiEntreDonsSangJours` (90 jours d'attente, `delai >= 90` dans la maquette, écrit en dur) ; ici sa valeur SEMÉE.
+int get sangDelaiEntreDons => seuilSeme('laboratoire.delaiEntreDonsSangJours');
 
 /// Seuil de la teinte orange de la colonne « Reste » : `j < 7` dans la maquette.
 const sangResteOrange = 7;
@@ -176,20 +177,21 @@ int? sangDelaiDon(DateTime auj, FicheSang d) {
 /// La colonne « Éligibilité » : « Non éligible » (rouge) si la fiche l'écrit ; « Éligible » (vert) si le délai de 90 jours est écoulé ; sinon
 /// « Délai N j » (orange), N étant le temps qui reste. Sans date de dernier don, la maquette écrit « Délai NaN j » (écart E202) : le poste écrit
 /// « Délai inconnu ».
-({String libelle, String ton}) sangEligibilite(DateTime auj, FicheSang d) {
+({String libelle, String ton}) sangEligibilite(DateTime auj, FicheSang d, {int? delaiEntreDons}) {
+  final minimum = delaiEntreDons ?? sangDelaiEntreDons;
   if (!_vrai(d['eligible'])) return (libelle: 'Non éligible', ton: 'danger');
   final delai = sangDelaiDon(auj, d);
   if (delai == null) return (libelle: 'Délai inconnu', ton: 'warning');
-  return delai >= sangDelaiEntreDons
+  return delai >= minimum
       ? (libelle: 'Éligible', ton: 'success')
-      : (libelle: 'Délai ${sangDelaiEntreDons - delai} j', ton: 'warning');
+      : (libelle: 'Délai ${minimum - delai} j', ton: 'warning');
 }
 
 /// Éligible ET délai écoulé — ce que compte l'indicateur « Éligibles ».
-bool sangDonneurDisponible(DateTime auj, FicheSang d) {
+bool sangDonneurDisponible(DateTime auj, FicheSang d, {int? delaiEntreDons}) {
   if (!_vrai(d['eligible'])) return false;
   final delai = sangDelaiDon(auj, d);
-  return delai != null && delai >= sangDelaiEntreDons;
+  return delai != null && delai >= (delaiEntreDons ?? sangDelaiEntreDons);
 }
 
 class SangKpisDonneurs {
@@ -200,10 +202,10 @@ class SangKpisDonneurs {
   final int benevoles;
 }
 
-SangKpisDonneurs sangKpisDonneurs(DateTime auj, Iterable<FicheSang> donneurs) =>
+SangKpisDonneurs sangKpisDonneurs(DateTime auj, Iterable<FicheSang> donneurs, {int? delaiEntreDons}) =>
     SangKpisDonneurs(
         donneurs.length,
-        donneurs.where((d) => sangDonneurDisponible(auj, d)).length,
+        donneurs.where((d) => sangDonneurDisponible(auj, d, delaiEntreDons: delaiEntreDons)).length,
         donneurs.fold<num>(0, (n, d) => n + _n(d['nbDons'])),
         donneurs.where((d) => d['type'] == 'Bénévole').length);
 

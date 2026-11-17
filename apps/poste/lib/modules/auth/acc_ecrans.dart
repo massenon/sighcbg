@@ -97,6 +97,7 @@ void ouvrirSessionAcces(ContexteAutonome x, AccCompte c) {
     reg.appliquerDelaiVerrou = (d) => s.verrou.delai = secours.posteDeSecours() ? Duration(minutes: secours.delaiSecours()) : d;
     // Le délai d'inactivité de la politique de sécurité, quand l'administrateur l'a réglée.
     final pol = m.collection('politiqueSecurite').actives.firstOrNull;
+    s.verrou.delai = Duration(minutes: secours.delaiOrdinaire());
     if (pol != null) s.verrou.delai = Duration(minutes: secPolitique(pol)['inactiviteMin']!);
     if (secours.posteDeSecours()) s.verrou.delai = Duration(minutes: secours.delaiSecours());
   } else {

@@ -163,7 +163,7 @@ void main() {
     });
 
     test('la barre et l\'alerte disent le délai réglé, plus « dix jours » en dur', () {
-      const s = CpcSeuilsEcheance(aPayerJours: 7);
+      const s = CpcSeuilsEcheance(aPayerJours: 7, declarationJours: 30);
       final lignes = cpcLignesEcheances([{...e(5), 'code': 'ITS', 'libelle': 'ITS'}], auj, seuils: s);
       expect(cpcBarreEcheances(lignes, seuils: s).single.titre, '1 paiement(s) à effectuer sous 7 jours');
       expect(cpcAlerteOuverture(lignes, seuils: s)!.message, '1 paiement(s) sous 7 jours');

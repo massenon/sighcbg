@@ -1,4 +1,5 @@
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import '../paie/pai_moteur.dart' show PaiParametresOrtb;
@@ -182,8 +183,11 @@ CfbEcheance cfbProchaineEcheance(CfbObligation e, DateTime auj) {
 /// lues au magasin (`cfbObligationsALaDate` puis `cfbObligationDepuisFiche`) ; par défaut la semence `D.CALENDRIER_FISCAL`.
 List<CfbEcheance> cfbEcheances(DateTime auj, {Iterable<CfbObligation> obligations = cfbCalendrierFiscal}) => [for (final e in obligations) cfbProchaineEcheance(e, auj)];
 
-/// Celles qui tombent dans les trente jours.
-List<CfbEcheance> cfbEcheancesProches(List<CfbEcheance> l) => [for (final e in l) if (e.jours >= 0 && e.jours <= 30) e];
+/// Celles qui tombent dans les [joursProches] jours (paramètre `fiscal.echeancesProchesJours`, valeur SEMÉE à défaut).
+List<CfbEcheance> cfbEcheancesProches(List<CfbEcheance> l, {int? joursProches}) {
+  final limite = joursProches ?? seuilSeme('fiscal.echeancesProchesJours');
+  return [for (final e in l) if (e.jours >= 0 && e.jours <= limite) e];
+}
 
 /// [ccib] : la contribution annuelle EN VIGUEUR (paramètre `fiscal.ccibMontant`, versionné par date) ; [cfbCcibTotal] n'est que la graine du paramètre.
 List<CfaKpi> cfbKpisFiscalite(List<CfbEcheance> l, {int ccib = cfbCcibTotal}) {

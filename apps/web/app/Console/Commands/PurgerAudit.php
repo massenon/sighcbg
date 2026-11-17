@@ -21,8 +21,9 @@ class PurgerAudit extends Command
     public function handle(): int
     {
         $jours = (int) ($this->option('jours') ?: config('relais.retention_audit_jours'));
-        if ($jours < 30) {
-            $this->error('La conservation minimale de l\'audit est de 30 jours.');
+        $minimum = (int) config('relais.retention_audit_jours_min');
+        if ($jours < $minimum) {
+            $this->error("La conservation minimale de l'audit est de $minimum jours.");
 
             return self::FAILURE;
         }

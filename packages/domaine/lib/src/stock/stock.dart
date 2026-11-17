@@ -12,17 +12,18 @@ library;
 
 import '../format/js.dart';
 import '../format/recherche.dart';
+import '../parametres/parametres_clinique.dart' show preavisPeremptionSeme, seuilSeme;
 import 'referentiels_stock.dart';
 
 /// Une fiche du magasin (produit, lot, mouvement).
 typedef FicheStock = Map<String, Object?>;
 
 /// RG-05 : préavis de péremption, en jours. VALEUR SEMÉE et repli seulement (Q10, décision du 15/11/2026) : le délai en vigueur est un PARAMÈTRE de clinique versionné par date
-/// (`stock.delaiPreavisPeremptionJours`, lu par `delaiPreavisPeremptionA`), passé à chaque règle ci-dessous par `preavis`. Aucun écran ni l'assistant ne lit plus cette constante pour décider.
-const int delaiPreavisPeremption = 90;
+/// (`stock.delaiPreavisPeremptionJours`, lu par `delaiPreavisPeremptionA`), passé à chaque règle ci-dessous par `preavis`. Aucun écran ni l'assistant ne lit plus cette valeur pour décider.
+int get delaiPreavisPeremption => preavisPeremptionSeme;
 
-/// En deçà, l'échéance s'affiche en rouge (le lot doit être servi sans attendre).
-const int delaiEcheanceUrgente = 30;
+/// En deçà, l'échéance s'affiche en rouge (le lot doit être servi sans attendre) : le paramètre `stock.delaiEcheanceUrgenteJours`, ici sa valeur SEMÉE.
+int get delaiEcheanceUrgente => seuilSeme('stock.delaiEcheanceUrgenteJours');
 
 bool _faux(Object? v) =>
     v == null || v == '' || v == 0 || v == false || (v is double && v.isNaN);
@@ -121,26 +122,29 @@ int? joursAvantPeremption(DateTime auj, Object? datePeremption) {
 }
 
 /// Statut d'un lot : `perime` (échéance dépassée), `alerte` (dans le délai de préavis, y compris le jour même), `actif`.
-String statutLot(int? jours, {int preavis = delaiPreavisPeremption}) {
+String statutLot(int? jours, {int? preavis}) {
+  final seuilPreavis = preavis ?? delaiPreavisPeremption;
   if (jours == null) return 'actif';
   if (jours < 0) return 'perime';
-  if (jours <= preavis) return 'alerte';
+  if (jours <= seuilPreavis) return 'alerte';
   return 'actif';
 }
 
 /// Teinte d'une échéance : `danger` (périmé ou ≤ 30 j), `attention` (≤ 90 j), `neutre` au-delà.
-String teinteEcheance(int? jours, {int preavis = delaiPreavisPeremption}) {
+String teinteEcheance(int? jours, {int? preavis, int? urgent}) {
+  final seuilPreavis = preavis ?? delaiPreavisPeremption;
   if (jours == null) return 'neutre';
-  if (jours < 0 || jours <= delaiEcheanceUrgente) return 'danger';
-  if (jours <= preavis) return 'attention';
+  if (jours < 0 || jours <= (urgent ?? delaiEcheanceUrgente)) return 'danger';
+  if (jours <= seuilPreavis) return 'attention';
   return 'neutre';
 }
 
 /// Texte de la colonne « Échéance » du registre des lots : « Périmé depuis 10 j », « Dans 29 j », « 91 j ».
-String texteEcheance(int? jours, {int preavis = delaiPreavisPeremption}) {
+String texteEcheance(int? jours, {int? preavis}) {
+  final seuilPreavis = preavis ?? delaiPreavisPeremption;
   if (jours == null) return '—';
   if (jours < 0) return 'Périmé depuis ${jours.abs()} j';
-  if (jours <= preavis) return 'Dans $jours j';
+  if (jours <= seuilPreavis) return 'Dans $jours j';
   return '$jours j';
 }
 
@@ -151,10 +155,11 @@ String texteEcheanceAlerte(int? jours) {
 }
 
 /// Texte de l'onglet « Lots (FEFO) » de la fiche produit : « Périmé », « Dans N j » (dans le préavis) ou « Valide ».
-String texteEtatLotFiche(int? jours, {int preavis = delaiPreavisPeremption}) {
+String texteEtatLotFiche(int? jours, {int? preavis}) {
+  final seuilPreavis = preavis ?? delaiPreavisPeremption;
   if (jours == null) return 'Valide';
   if (jours < 0) return 'Périmé';
-  if (jours <= preavis) return 'Dans $jours j';
+  if (jours <= seuilPreavis) return 'Dans $jours j';
   return 'Valide';
 }
 
@@ -259,7 +264,7 @@ double _nombreSaisiOuZero(Object? v) {
 
 /// `transform` du registre des lots : le produit est libellé sur le lot, le statut se déduit de l'échéance.
 FicheStock transformerLot(
-    Map<String, Object?> saisie, DateTime auj, Iterable<FicheStock> produits, {int preavis = delaiPreavisPeremption}) {
+    Map<String, Object?> saisie, DateTime auj, Iterable<FicheStock> produits, {int? preavis}) {
   final v = {...saisie};
   final q = _nombreSaisi(v['quantiteRestante']);
   if (q != null) v['quantiteRestante'] = q;

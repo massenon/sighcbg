@@ -6,6 +6,7 @@ library;
 import 'dart:convert' show utf8;
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import '../referentiels/periodes.dart' show ajouterJours;
@@ -52,8 +53,8 @@ const rhcMotifsRetrait = ['Perte', 'Vol', 'Détérioration', 'Départ de l’age
 /// Le retrait « perte » ou « vol » classe le badge « perdu / volé » ; tout autre motif, « retiré ».
 String rhcEtatDeRetrait(Object? motif) => RegExp('perte|vol', caseSensitive: false).hasMatch('$motif') ? 'perdu' : 'retire';
 
-/// Durée de validité d'attente, en mois — LA DIRECTION N'A PAS ARRÊTÉ (aucun document de cadrage ne la fixe).
-const rhcDureeValiditeMois = 24;
+/// Durée de validité d'attente, en mois — LA DIRECTION N'A PAS ARRÊTÉ (aucun document de cadrage ne la fixe) : le paramètre `rh.validiteBadgeMois`, ici sa valeur SEMÉE.
+int get rhcDureeValiditeMois => seuilSeme('rh.validiteBadgeMois');
 
 /// Les QUATRE décisions qui appartiennent à la Direction : valeur d'attente explicitement marquée, jamais présentée comme arrêtée.
 class RhcDecisionBadge {
@@ -63,10 +64,10 @@ class RhcDecisionBadge {
   String get valeurAffichee => valeur + (unite != null ? ' $unite' : '');
 }
 
-const rhcDecisionsBadge = <RhcDecisionBadge>[
+final rhcDecisionsBadge = <RhcDecisionBadge>[
   RhcDecisionBadge(
       'Durée de validité d’un badge',
-      '24',
+      '${seuilSeme('rh.validiteBadgeMois')}',
       'mois',
       'Valeur d’attente — aucun document de cadrage ne fixe de durée. Deux ans est l’usage courant ; la Direction peut retenir la durée du contrat, ou une validité sans terme pour les titulaires.'),
   RhcDecisionBadge('Format du numéro de série', 'BDG-NNNNN-AAAA', null,
@@ -87,9 +88,9 @@ DateTime? _jour(Object? d) {
 
 /// `expirationDepuis(dateEmission)` : la date d'expiration déduite de la durée d'attente — jamais saisie deux fois. `setMonth` du JavaScript :
 /// un jour qui n'existe pas dans le mois d'arrivée déborde sur le suivant (29 février → 1ᵉʳ mars).
-String rhcExpirationDepuis(Object? dateEmission) {
+String rhcExpirationDepuis(Object? dateEmission, {int? dureeMois}) {
   final d = _jour(dateEmission) ?? DateTime.now();
-  return iso(DateTime(d.year, d.month + rhcDureeValiditeMois, d.day));
+  return iso(DateTime(d.year, d.month + (dureeMois ?? rhcDureeValiditeMois), d.day));
 }
 
 /// `expire(b, aLaDate)` : échue STRICTEMENT avant la date ; un badge qui expire aujourd'hui est encore valide.
@@ -176,11 +177,14 @@ FicheRhc? rhcBadgeEnCours(Iterable<FicheRhc> badgesActifs, Object? personnelId) 
 List<FicheRhc> rhcAgentsSansBadge(List<FicheRhc> personnel, List<FicheRhc> badgesEnCours) =>
     [for (final a in personnel) if (!badgesEnCours.any((b) => b['personnelId'] == a['id'])) a];
 
-/// Les badges dont la validité échoit dans les 60 jours (`C.daysBetween(AUJ, expireLe) <= 60`, l'expiré compris).
-List<FicheRhc> rhcBadgesExpirant(List<FicheRhc> enCours, DateTime auj) => [
-      for (final b in enCours)
-        if (_vrai(b['expireLe']) && joursEntre(auj, _utc(b['expireLe'])) <= 60) b
-    ];
+/// Les badges dont la validité échoit dans les [alerteJours] jours (`C.daysBetween(AUJ, expireLe) <= 60` dans la maquette ; paramètre `rh.alerteExpirationBadgeJours`, valeur SEMÉE à défaut), l'expiré compris.
+List<FicheRhc> rhcBadgesExpirant(List<FicheRhc> enCours, DateTime auj, {int? alerteJours}) {
+  final limite = alerteJours ?? seuilSeme('rh.alerteExpirationBadgeJours');
+  return [
+    for (final b in enCours)
+      if (_vrai(b['expireLe']) && joursEntre(auj, _utc(b['expireLe'])) <= limite) b
+  ];
+}
 
 DateTime _utc(Object? d) {
   final j = _jour(d) ?? DateTime.now();

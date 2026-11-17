@@ -6,6 +6,7 @@
 library;
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/recherche.dart';
 import '../referentiels/periodes.dart' show ajouterJours;
 import 'ag_commun.dart';
@@ -270,13 +271,13 @@ String agTitreFenetre(List<DateTime> jours) =>
 
 /// La fenêtre s'étend JUSQU'AU rendez-vous qu'on vient de prendre (enregistré mais introuvable, sinon) ; au-delà de trente et un jours, elle se
 /// recentre sur lui.
-({String debut, String fin}) agEtendreFenetre(String debut, String fin, String dateRdv) {
+({String debut, String fin}) agEtendreFenetre(String debut, String fin, String dateRdv, {int? ecartMaxJours}) {
   var d = debut, f = fin;
   final jour = agJour(dateRdv);
   if (d.isEmpty || jour.compareTo(d) < 0) d = jour;
   if (f.isEmpty || jour.compareTo(f) > 0) f = jour;
   final ecart = agJoursEntre(d, f);
-  if (ecart != null && ecart > 30) {
+  if (ecart != null && ecart > (ecartMaxJours ?? seuilSeme('consultation.ecartRecentrageAgendaJours'))) {
     final rdv = agDate(dateRdv)!;
     d = iso(ajouterJours(rdv, -2));
     f = iso(ajouterJours(rdv, 4));

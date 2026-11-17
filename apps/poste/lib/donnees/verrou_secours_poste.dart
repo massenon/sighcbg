@@ -28,7 +28,7 @@ class VerrouSecoursPoste {
   /// Le délai du poste ordinaire : l'inactivité de la politique de sécurité quand elle est écrite, sinon quinze minutes (CDCT 12.2).
   int delaiOrdinaire() {
     final pol = m.collection('politiqueSecurite').actives.firstOrNull;
-    return delaiVerrouOrdinaireMinutes(pol == null ? null : secPolitique(pol)['inactiviteMin']);
+    return delaiVerrouOrdinaireMinutes(pol == null ? null : secPolitique(pol)['inactiviteMin'], reglage: service.valeur(cleDelaiVerrouOrdinaire, aujourdhui));
   }
 
   /// Le délai de verrou EN FORCE sur ce poste, en minutes.

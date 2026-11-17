@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteImprimee;
 
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/identite_poste.dart';
@@ -47,5 +48,9 @@ Future<void> imprimerEngagement(BuildContext ctx, Fiche f) {
   return afficherApercu(
       ctx,
       pieceEngagement(f,
-          utilisateur: acteur(c).nom, edite: c.aujourdhui, reference: _ref(c), identite: _identite(c, f)));
+          utilisateur: acteur(c).nom,
+          edite: c.aujourdhui,
+          reference: _ref(c),
+          joursEntreTranches: seuilClinique(c.magasin, 'caisse.pasEcheancierReliquatJours', c.aujourdhui),
+          identite: _identite(c, f)));
 }

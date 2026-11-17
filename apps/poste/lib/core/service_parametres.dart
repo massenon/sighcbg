@@ -53,3 +53,8 @@ int preavisPeremption(Magasin m, DateTime date) =>
 /// cette vue, jamais le `statut` écrit à la saisie du lot (il date de ce jour-là et de l'ancien délai).
 List<Map<String, Object?>> lotsAvecStatutAJour(Magasin m, DateTime auj) =>
     lotsAvecStatutRecalcule(m.collection('lots').actives, auj, preavisPeremption(m, auj));
+
+/// Un SEUIL ENTIER de clinique EN VIGUEUR à [date] (lot « seuils » de l'inventaire des valeurs en dur) : la version datée du paramètre [cle], sinon sa valeur d'attente ;
+/// hors des bornes de la définition, la valeur d'attente. Poste jamais semé : la valeur d'attente, le comportement d'avant.
+int seuilClinique(Magasin m, String cle, DateTime date) =>
+    seuilEntierDe(cle, serviceParametres(m, auteur: () => 'lecture').valeur(cle, parametreDateIso(date)));

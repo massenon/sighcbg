@@ -9,6 +9,8 @@ library;
 
 import 'dart:math' as math;
 
+import '../parametres/parametres_clinique.dart' show seuilSeme, cleRenouvellementMotDePasse, cleDureeVerrouCompte;
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // Paramètres du hachage
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,8 +63,9 @@ const int accLongueurSel = 16;
 /// La longueur minimale : la politique que la maquette AFFICHE (E1076, E883) et que le poste APPLIQUE.
 const int accLongueurMinMotDePasse = 8;
 
-/// Renouvellement obligatoire, en jours (« Renouvellement obligatoire tous les 90 jours »).
-const int accRenouvellementJours = 90;
+/// Renouvellement obligatoire, en jours : le paramètre `securite.renouvellementMotDePasseJours` (valeur d'attente de 90 jours, versionnée par date). Ce lecteur donne la
+/// valeur SEMÉE, repli d'un appelant qui n'a pas lu le paramètre ; le poste lit la version en vigueur et la passe à [accFicheIdentifiant].
+int get accRenouvellementJours => seuilSeme(cleRenouvellementMotDePasse);
 
 /// Un caractère spécial : tout ce qui n'est ni lettre ni chiffre ni espace.
 final RegExp _special = RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
@@ -130,8 +133,9 @@ String accGenererMotDePasseProvisoire(math.Random alea, {int longueur = 16}) {
 /// de l'écran de connexion).
 const int accEchecsAvantVerrou = 3;
 
-/// Durée du verrou du compte : quinze minutes (CDCT §12.2, A5). L'administrateur le lève plus tôt en définissant un nouveau mot de passe.
-const Duration accDureeVerrouCompte = Duration(minutes: 15);
+/// Durée du verrou du compte (paramètre `securite.dureeVerrouCompteMinutes`, CDCT §12.2, A5 : quinze minutes d'attente). L'administrateur le lève plus tôt en définissant un
+/// nouveau mot de passe. Valeur SEMÉE ici ; le poste passe la version en vigueur à [accApresEchec].
+Duration get accDureeVerrouCompte => Duration(minutes: seuilSeme(cleDureeVerrouCompte));
 
 typedef FicheIdentifiant = Map<String, Object?>;
 
@@ -146,11 +150,11 @@ DateTime? accVerrouJusqua(FicheIdentifiant f, DateTime maintenant) {
 
 /// Le patch d'une fiche après un ÉCHEC : le compteur monte ; au seuil, le verrou se pose pour [accDureeVerrouCompte] et le compteur repart de zéro
 /// (un verrou levé donne droit à un nouvel essai complet, il ne laisse pas l'agent à un échec de la prochaine lourdeur).
-({Map<String, Object?> patch, bool verrouille}) accApresEchec(FicheIdentifiant f, DateTime maintenant) {
+({Map<String, Object?> patch, bool verrouille}) accApresEchec(FicheIdentifiant f, DateTime maintenant, {Duration? dureeVerrou}) {
   final n = (_entier(f['echecs']) ?? 0) + 1;
   if (n >= accEchecsAvantVerrou) {
     return (
-      patch: {'echecs': 0, 'verrouJusqua': maintenant.add(accDureeVerrouCompte).toIso8601String(), 'dernierEchecLe': maintenant.toIso8601String()},
+      patch: {'echecs': 0, 'verrouJusqua': maintenant.add(dureeVerrou ?? accDureeVerrouCompte).toIso8601String(), 'dernierEchecLe': maintenant.toIso8601String()},
       verrouille: true
     );
   }
@@ -173,6 +177,7 @@ bool accChangementObligatoire(FicheIdentifiant f, DateTime maintenant) => f['doi
 
 /// La fiche d'un identifiant, SANS le secret : [hash] et [sel] sont déjà encodés (base64) par l'appelant.
 FicheIdentifiant accFicheIdentifiant({
+  int? renouvellementJours,
   required String utilisateurId,
   required String hash,
   required String sel,
@@ -190,7 +195,7 @@ FicheIdentifiant accFicheIdentifiant({
       'hash': hash,
       'definiLe': maintenant.toIso8601String(),
       'definiPar': definiPar,
-      'expireLe': maintenant.add(const Duration(days: accRenouvellementJours)).toIso8601String(),
+      'expireLe': maintenant.add(Duration(days: renouvellementJours ?? accRenouvellementJours)).toIso8601String(),
       'doitChanger': doitChanger,
       'echecs': 0,
       'verrouJusqua': null,

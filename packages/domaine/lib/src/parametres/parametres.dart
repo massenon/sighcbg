@@ -64,6 +64,8 @@ class DefinitionParametre {
     this.branche = true,
     this.appliquePar,
     this.geste,
+    this.min,
+    this.max,
   });
   final String cle;
   final String famille;
@@ -86,6 +88,10 @@ class DefinitionParametre {
   /// Faux : le réglage s'enregistre mais l'écran qu'il commande ne le lit pas encore (lot à venir). L'écran des paramètres le dit.
   final bool branche;
   final String? appliquePar;
+
+  /// Les bornes acceptées d'un seuil entier ([seuilEntierA]) : hors bornes, la valeur lue retombe sur le défaut semé. `null` : pas de borne propre.
+  final int? min;
+  final int? max;
 
   /// Le GESTE RÉSERVÉ qui règle ce paramètre (identifiant de `gestesReserves`), quand le seul droit d'éditer l'écran des paramètres ne suffit pas (la limite d'export,
   /// Direction du 16/11/2026). `null` : le droit d'éditer l'écran suffit.

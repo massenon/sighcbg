@@ -325,14 +325,16 @@ PieceA4 pieceRecu(Fiche f,
   );
 }
 
-/// Engagement de paiement : reconnaissance de dette écrite, échéancier par tranches de 30 jours.
+/// Engagement de paiement : reconnaissance de dette écrite, échéancier par tranches espacées de `caisse.pasEcheancierReliquatJours` jours (30 d'attente).
 PieceA4 pieceEngagement(Fiche f,
     {required String utilisateur,
     required DateTime edite,
     required String reference,
+    int? joursEntreTranches,
     IdentiteImprimee? identite}) {
   final e = (f['engagement'] as Map?)?.cast<String, Object?>() ?? const {};
   final montant = n(e['montant'] ?? f['reliquat']);
+  final pasJours = joursEntreTranches ?? seuilSeme('caisse.pasEcheancierReliquatJours');
   final tr = (n(e['tranches']).toInt()).clamp(1, 12);
   final part = (montant / tr).round();
   final d0 = DateTime.tryParse('${e['date']}') ?? edite;
@@ -340,7 +342,7 @@ PieceA4 pieceEngagement(Fiche f,
     for (var i = 0; i < tr; i++)
       {
         'tranche': 'Tranche ${i + 1} sur $tr',
-        'echeance': dateFR(d0.add(Duration(days: 30 * i))),
+        'echeance': dateFR(d0.add(Duration(days: pasJours * i))),
         'montant': i == tr - 1 ? montant - part * (tr - 1) : part,
       }
   ];

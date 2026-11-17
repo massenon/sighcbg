@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart' show ImpressionPoste;
@@ -418,7 +419,7 @@ class EcranEnquetes extends StatelessWidget with EcranMaquette {
     ], {
       'anonyme': 'oui',
       'usage': 'salle',
-      'expireLe': iso(c.aujourdhui.add(const Duration(days: 30)))
+      'expireLe': iso(c.aujourdhui.add(Duration(days: seuilClinique(c.magasin, 'qualite.dureeLienEnqueteJours', c.aujourdhui))))
     });
     afficherModale<void>(ecran,
         titre: 'Partager — ${enq['titre']}',

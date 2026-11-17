@@ -8,6 +8,7 @@
 library;
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import '../hospitalisation/hos_regles.dart' show hosTousLits;
@@ -273,11 +274,12 @@ class TbaInfirmier {
 
 /// [administrationsDues] : le nombre d'administrations dues à la salle de soins (`PR.soinsDuSecteur('salle_soins')`, lignes cumulées) — la règle
 /// de relais vit dans `csSoinsDuSecteur`, l'écran la calcule et la passe ici.
-TbaInfirmier tbaInfirmier({required Iterable<FicheTba> admissions, required int administrationsDues, required DateTime auj}) {
+TbaInfirmier tbaInfirmier({required Iterable<FicheTba> admissions, required int administrationsDues, required DateTime auj, int? joursAvantSortie}) {
+  final limiteSortie = joursAvantSortie ?? seuilSeme('hospitalisation.joursSortiePrevue');
   final occ = [for (final a in admissions) if (a['statut'] == 'en_cours') a];
   final aSortir = occ.where((a) {
     final e = _d(a['dateEntree']);
-    return e != null && joursEntre(e, auj) > 5;
+    return e != null && joursEntre(e, auj) > limiteSortie;
   }).length;
   return TbaInfirmier(
     premier: TbaPremierRegard(

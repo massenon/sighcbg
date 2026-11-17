@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../core/jetons_shell.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
@@ -57,7 +58,7 @@ class _EtatHistorique extends State<EcranHistoriqueAssureur> {
         ]),
         '');
     _du = champUnique(def('du', 'Du', TypeChamp.date),
-        iso(jour.subtract(const Duration(days: 180))));
+        iso(jour.subtract(Duration(days: seuilClinique(c.magasin, 'assurances.fenetreHistoriqueJours', jour)))));
     _au = champUnique(def('au', 'Au', TypeChamp.date), iso(jour));
     for (final k in _tous) {
       k.addListener(_surChangement);

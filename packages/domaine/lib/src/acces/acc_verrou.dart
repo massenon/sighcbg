@@ -6,8 +6,10 @@
 /// test avance le temps sans attendre.
 library;
 
-/// Quinze minutes (`VERROU_DELAI_DEFAUT` de `app.js`).
-const Duration accDelaiVerrou = Duration(minutes: 15);
+import '../parametres/parametres_clinique.dart' show seuilSeme, cleDelaiVerrouOrdinaire;
+
+/// Le délai d'inactivité d'un poste ordinaire (paramètre `securite.delaiVerrouOrdinaireMinutes`, quinze minutes d'attente, `VERROU_DELAI_DEFAUT` de `app.js`) : valeur SEMÉE ici.
+Duration get accDelaiVerrou => Duration(minutes: seuilSeme(cleDelaiVerrouOrdinaire));
 
 /// Où ramener l'agent : l'écran et, s'il y en avait un, l'onglet (`#onglet=…`).
 class AccRetour {
@@ -36,7 +38,7 @@ AccRetour? accRetourDepuisAdresse(String? adresse) {
 }
 
 class AccVerrou {
-  AccVerrou({this.delai = accDelaiVerrou});
+  AccVerrou({Duration? delai}) : delai = delai ?? accDelaiVerrou;
 
   /// Modifiable : la politique de sécurité règle le délai d'inactivité (écran « Sécurité des utilisateurs »), et il s'applique aussitôt.
   Duration delai;
