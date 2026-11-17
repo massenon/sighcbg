@@ -122,9 +122,13 @@ List<String> mrbChampsAttestationManquants({String? detenteur, String? scelle, S
 // Réinitialisation de production (M-12), spec §10
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// Durée de la fenêtre d'ouverture portée par la fiche (« Ouvrir la fenêtre (30 min) »). Le service de la mère ne la limite pas lui-même
-/// (`reinit-fenetre` pose un drapeau sans échéance) : la console la referme à l'échéance tant qu'elle reste ouverte.
-const Duration mrbDureeFenetreReinit = Duration(minutes: 30);
+/// La clé du RÉGLAGE de la durée de la fenêtre (minutes). La mère l'applique en lisant le même registre daté (`packages/sync_dart`, `Mere.fenetreReinit`) : ce miroir d'affichage
+/// et la règle appliquée se règlent donc ENSEMBLE (consigne du 18/11/2026 : plus de valeur en dur).
+const String mrbCleFenetreReinit = 'mere.fenetreReinitMinutes';
+
+/// La durée d'ATTENTE semée (aucun réglage lu) : « Ouvrir la fenêtre (30 min) ». Le service de la mère ne limite pas lui-même la fenêtre (`reinit-fenetre` pose un drapeau
+/// sans échéance) : la console la referme à l'échéance tant qu'elle reste ouverte. Le poste passe la durée EN VIGUEUR (`seuilEntierDe` de [mrbCleFenetreReinit]).
+Duration get mrbDureeFenetreReinit => Duration(minutes: seuilSeme(mrbCleFenetreReinit));
 
 /// Un refus NOMMÉ : `code` stable, `motif` lisible. Jamais un bouton muet.
 class MrbRefus {
@@ -177,9 +181,9 @@ const String mrbModeArchiver = 'archiver';
 const String mrbModeSupprimer = 'supprimer';
 
 /// Temps restant de la fenêtre. `null` : on ne sait pas depuis quand elle est ouverte (ouverte par une autre console, ou avant celle-ci).
-Duration? mrbFenetreRestante({required DateTime? ouverteLe, required DateTime maintenant, Duration duree = mrbDureeFenetreReinit}) {
+Duration? mrbFenetreRestante({required DateTime? ouverteLe, required DateTime maintenant, Duration? duree}) {
   if (ouverteLe == null) return null;
-  final reste = duree - maintenant.difference(ouverteLe);
+  final reste = (duree ?? mrbDureeFenetreReinit) - maintenant.difference(ouverteLe);
   return reste.isNegative ? Duration.zero : reste;
 }
 

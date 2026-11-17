@@ -13,6 +13,7 @@ library;
 import '../consultation/ag_commun.dart' show agIsoLocal;
 import '../format/format_fr.dart' show dateFR, heure;
 import '../maternite/mat_regles.dart' show matCarte;
+import 'mob_bornes.dart';
 import 'mob_regles.dart';
 import 'mob_suite_donnees.dart';
 
@@ -141,20 +142,23 @@ String _nombreSaisi(String v) => v.trim();
 // CPN
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// Les bornes de la page : terme 4 à 45 SA, poids 30 à 200 kg, TA systolique 60 à 260, diastolique 30 à 160, BCF 60 à 220. La hauteur utérine n'a pas
-/// de borne à la page (voir [mobErreursCpn] : elle doit au moins être un nombre).
-const mobReglesCpn = [
-  MobRegle('sa', 'Le terme', requis: true, min: 4, max: 45),
-  MobRegle('poids', 'Le poids', requis: true, min: 30, max: 200),
-  MobRegle('sys', 'La systolique', requis: true, min: 60, max: 260),
-  MobRegle('dia', 'La diastolique', requis: true, min: 30, max: 160),
-  MobRegle('bcf', 'Le BCF', min: 60, max: 220),
-];
+/// Les règles de la page : terme, poids, TA systolique et diastolique, BCF. Les bornes sont celles des réglages du téléphone ([bornes]) ; sans réglage reçu, les valeurs d'attente
+/// (terme 4 à 45 SA, poids 30 à 200 kg, TA systolique 60 à 260, diastolique 30 à 160, BCF 60 à 220). La hauteur utérine n'a pas de borne à la page (voir [mobErreursCpn] :
+/// elle doit au moins être un nombre).
+List<MobRegle> mobReglesCpnA([MobBornes bornes = MobBornes.attente]) => [
+      mobRegleBornee(bornes, 'cpn', 'sa', requis: true),
+      mobRegleBornee(bornes, 'cpn', 'poids', requis: true),
+      mobRegleBornee(bornes, 'cpn', 'sys', requis: true),
+      mobRegleBornee(bornes, 'cpn', 'dia', requis: true),
+      mobRegleBornee(bornes, 'cpn', 'bcf'),
+    ];
+
+List<MobRegle> get mobReglesCpn => mobReglesCpnA();
 
 /// Les erreurs d'une visite prénatale. ÉCART porté et signalé (E1650) : le simulateur accepte une hauteur utérine « texte » ; on refuse ce qui n'est
 /// pas un nombre, avec le message de `valider` (« doit être un nombre »), plutôt que d'écrire du texte dans une mesure.
-Map<String, String> mobErreursCpn(Map<String, String> saisie) {
-  final e = mobValider(mobReglesCpn, saisie);
+Map<String, String> mobErreursCpn(Map<String, String> saisie, {MobBornes bornes = MobBornes.attente}) {
+  final e = mobValider(mobReglesCpnA(bornes), saisie);
   final hu = (saisie['hu'] ?? '').trim();
   if (hu.isNotEmpty && mobNombreJs(hu) == null) e['hu'] = 'La hauteur utérine doit être un nombre.';
   e.addAll({for (final x in _choixInconnus('cpn', saisie).entries) x.key: x.value});
@@ -204,8 +208,9 @@ Map<String, Object?> mobChampsCpn({
   required String acteur,
   required String fonction,
   required DateTime maintenant,
+  MobBornes bornes = MobBornes.attente,
 }) {
-  final erreurs = mobErreursCpn(saisie);
+  final erreurs = mobErreursCpn(saisie, bornes: bornes);
   if (erreurs.isNotEmpty) throw _refusSaisie(erreurs);
   num? n(String k) {
     final v = (saisie[k] ?? '').trim();
@@ -244,14 +249,18 @@ Map<String, Object?> mobChampsCpn({
 // CPoN
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// Les bornes de la page : la TA est obligatoire (texte libre, « 12/8 »), la température 34 à 43 °C, le poids du bébé 1000 à 6000 g.
-const mobReglesCpon = [
-  MobRegle('ta', 'La TA', requis: true),
-  MobRegle('t', 'La température', requis: true, min: 34, max: 43),
-  MobRegle('pb', 'Le poids du bébé', requis: true, min: 1000, max: 6000),
-];
+/// Les règles de la page : la TA est obligatoire (texte libre, « 12/8 »), la température et le poids du bébé sont bornés par les réglages du téléphone ([bornes]) ; sans réglage
+/// reçu, les valeurs d'attente (température 34 à 43 °C, poids du bébé 1000 à 6000 g).
+List<MobRegle> mobReglesCponA([MobBornes bornes = MobBornes.attente]) => [
+      const MobRegle('ta', 'La TA', requis: true),
+      mobRegleBornee(bornes, 'cpon', 't', requis: true),
+      mobRegleBornee(bornes, 'cpon', 'pb', requis: true),
+    ];
 
-Map<String, String> mobErreursCpon(Map<String, String> saisie) => {...mobValider(mobReglesCpon, saisie), ..._choixInconnus('cpon', saisie)};
+List<MobRegle> get mobReglesCpon => mobReglesCponA();
+
+Map<String, String> mobErreursCpon(Map<String, String> saisie, {MobBornes bornes = MobBornes.attente}) =>
+    {...mobValider(mobReglesCponA(bornes), saisie), ..._choixInconnus('cpon', saisie)};
 
 ({String libelle, String detail}) mobCponResume(String nomPatient, Map<String, String> saisie) => (
       libelle: 'CPoN ${_val('cpon', saisie, 'jour')} — $nomPatient',
@@ -266,8 +275,9 @@ Map<String, Object?> mobChampsCpon({
   required String acteur,
   required String fonction,
   required DateTime maintenant,
+  MobBornes bornes = MobBornes.attente,
 }) {
-  final erreurs = mobErreursCpon(saisie);
+  final erreurs = mobErreursCpon(saisie, bornes: bornes);
   if (erreurs.isNotEmpty) throw _refusSaisie(erreurs);
   final r = mobCponResume(mobNomPatient(patient), saisie);
   return {
@@ -295,15 +305,16 @@ Map<String, Object?> mobChampsCpon({
 // Surveillance mère-bébé
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// Le pouls de la mère 30 à 220, la FR du bébé 10 à 100, sa température 34 à 41 °C : aucun champ n'est obligatoire à la page.
-const mobReglesSurveillance = [
-  MobRegle('mpouls', 'Le pouls', min: 30, max: 220),
-  MobRegle('bfr', 'La FR du bébé', min: 10, max: 100),
-  MobRegle('bt', 'La T° du bébé', min: 34, max: 41),
-];
+/// Les règles de la page : le pouls de la mère, la FR et la température du bébé, bornés par les réglages du téléphone ([bornes]) ; sans réglage reçu, les valeurs d'attente (pouls
+/// 30 à 220, FR du bébé 10 à 100, T° du bébé 34 à 41 °C). Aucun champ n'est obligatoire à la page.
+List<MobRegle> mobReglesSurveillanceA([MobBornes bornes = MobBornes.attente]) => [
+      for (final c in const ['mpouls', 'bfr', 'bt']) mobRegleBornee(bornes, 'surveillance', c),
+    ];
 
-Map<String, String> mobErreursSurveillance(Map<String, String> saisie) =>
-    {...mobValider(mobReglesSurveillance, saisie), ..._choixInconnus('surveillance', saisie)};
+List<MobRegle> get mobReglesSurveillance => mobReglesSurveillanceA();
+
+Map<String, String> mobErreursSurveillance(Map<String, String> saisie, {MobBornes bornes = MobBornes.attente}) =>
+    {...mobValider(mobReglesSurveillanceA(bornes), saisie), ..._choixInconnus('surveillance', saisie)};
 
 ({String libelle, String detail}) mobSurveillanceResume(Map<String, String> saisie) {
   String ou(String k) => (saisie[k] ?? '').trim().isEmpty ? '—' : saisie[k]!.trim();
@@ -319,8 +330,9 @@ Map<String, Object?> mobChampsSurveillance({
   required String acteur,
   required String fonction,
   required DateTime maintenant,
+  MobBornes bornes = MobBornes.attente,
 }) {
-  final erreurs = mobErreursSurveillance(saisie);
+  final erreurs = mobErreursSurveillance(saisie, bornes: bornes);
   if (erreurs.isNotEmpty) throw _refusSaisie(erreurs);
   num? n(String k) {
     final v = (saisie[k] ?? '').trim();

@@ -616,9 +616,9 @@ void main() {
             seuil: c['seuil'] == '' ? 0 : num.parse('${c['seuil']}'));
         expect([for (final x in lm(c['kpis'])) '${x['valeur']}'], [
           mo(rows.fold<double>(0, (a, x) => a + x.total)),
-          mo(rows.fold<double>(0, (a, x) => a + x.moins30)),
-          mo(rows.fold<double>(0, (a, x) => a + x.de30a90)),
-          mo(rows.fold<double>(0, (a, x) => a + x.plus90)),
+          mo(rows.fold<double>(0, (a, x) => a + x.tranche1)),
+          mo(rows.fold<double>(0, (a, x) => a + x.tranche2)),
+          mo(rows.fold<double>(0, (a, x) => a + x.tranche3)),
         ]);
         final tri = trierPar<AssLigneCreance>(rows, (r) => r.total, descendant: true);
         final lus = (c['lignes'] as List).cast<List>();
@@ -628,9 +628,9 @@ void main() {
             tri[i].code,
             tri[i].nom,
             '${tri[i].nbFactures}',
-            f0(tri[i].moins30),
-            f0(tri[i].de30a90),
-            f0(tri[i].plus90),
+            f0(tri[i].tranche1),
+            f0(tri[i].tranche2),
+            f0(tri[i].tranche3),
             f0(tri[i].total)
           ]);
         }
@@ -638,11 +638,35 @@ void main() {
     }
 
     test('les tranches : 30 j inclus, jusqu’à 90 j inclus ; une facture datée d’après aujourd’hui est « moins de 30 jours »', () {
-      expect(assTrancheDe(-9), 'moins30');
-      expect(assTrancheDe(30), 'moins30');
-      expect(assTrancheDe(31), '30a90');
-      expect(assTrancheDe(90), '30a90');
-      expect(assTrancheDe(91), 'plus90');
+      expect(assTrancheDe(-9), 'tranche1');
+      expect(assTrancheDe(30), 'tranche1');
+      expect(assTrancheDe(31), 'tranche2');
+      expect(assTrancheDe(90), 'tranche2');
+      expect(assTrancheDe(91), 'tranche3');
+    });
+
+    test('les tranches suivent les bornes RÉGLÉES : un changement de réglage change le classement et les libellés (assureurs)', () {
+      // valeurs d'attente : les libellés d'avant, mot pour mot
+      expect([for (final t in assTranchesDef()) t.libelle], ['Moins de 30 jours', 'De 30 à 90 jours', 'Au-delà de 90 jours']);
+      expect([for (final t in assTranchesDef()) t.libelleKpi], ['Moins de 30 jours', '30 à 90 jours', 'Plus de 90 jours']);
+      expect([for (final t in assTranchesDef()) t.libelleColonne], ['< 30 j', '30 – 90 j', '> 90 j']);
+      // une version datée des deux bornes (45 et 120) : le même âge change de tranche, les libellés se recalculent
+      final fiches = [
+        for (final (c, v) in [(cleBalanceAgeeAssureurBorne1, 45), (cleBalanceAgeeAssureurBorne2, 120)])
+          {'cle': c, 'famille': 'assurances', 'type': 'entier', 'valeur': v, 'defaut': c == cleBalanceAgeeAssureurBorne1 ? 30 : 90, 'dateEffet': '2026-01-01', 'version': 1, 'auteur': 'x'}
+      ];
+      final b = bornesBalanceAgeeAssureurA(fiches, '2026-06-01');
+      expect((b.borne1, b.borne2), (45, 120));
+      expect(assTrancheDe(40), 'tranche2', reason: 'avec les bornes d\'attente');
+      expect(assTrancheDe(40, bornes: b), 'tranche1');
+      expect(assTrancheDe(100, bornes: b), 'tranche2');
+      expect(assTrancheDe(121, bornes: b), 'tranche3');
+      expect([for (final t in assTranchesDef(b)) t.libelle], ['Moins de 45 jours', 'De 45 à 120 jours', 'Au-delà de 120 jours']);
+      // avant la date d'effet, ou paire incohérente (première >= seconde), ou hors bornes : les valeurs d'attente ENSEMBLE
+      expect(bornesBalanceAgeeAssureurA(fiches, '2025-12-31'), (borne1: 30, borne2: 90));
+      expect(bornesBalanceAgeeAssureurDe(100, 50), (borne1: 30, borne2: 90));
+      expect(bornesBalanceAgeeAssureurDe(0, 90), (borne1: 30, borne2: 90));
+      expect(bornesBalanceAgeeAssureurDe(30, 800), (borne1: 30, borne2: 90));
     });
   });
 

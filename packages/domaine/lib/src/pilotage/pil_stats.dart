@@ -10,6 +10,7 @@ import '../comptabilite/cpc_bfr.dart' show cpcJoursEntre;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../hospitalisation/hos_regles.dart' show hosChambres, hosTypesChambre;
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../paie/pai_moteur.dart' show PaiParametresOrtb, paiCalculOrtb;
 import '../paie/pai_baremes.dart' show PaiTauxPaie;
 import '../referentiels/regles.dart' show resultatRendu, secteurNormalise;
@@ -115,7 +116,12 @@ PilVue pilStatsExamens(Iterable<PilFiche> demandes, Iterable<PilFiche> patients,
 // m2-stats-echographie — « Statistiques de l'imagerie médicale »
 // =====================================================================================================================================================
 
-PilVue pilStatsImagerie(Iterable<PilFiche> demandes, Iterable<PilFiche> comptesRendus) {
+/// La clé du délai d'ABERRATION (jours) : un délai demande → rendu qui l'atteint est écarté de la moyenne (réglage daté, borné ; défaut semé de la définition).
+const String pilCleDelaiAberrationImagerie = 'imagerie.delaiAberrationJours';
+
+/// [delaiAberrationJours] : le réglage en vigueur (le poste le lit à la base) ; absent, la valeur d'attente semée.
+PilVue pilStatsImagerie(Iterable<PilFiche> demandes, Iterable<PilFiche> comptesRendus, {int? delaiAberrationJours}) {
+  final aberrationH = 24 * (delaiAberrationJours ?? seuilSeme(pilCleDelaiAberrationImagerie));
   final crs = comptesRendus.toList();
   final rendus = crs.where((r) => r['statut'] == 'rendu').toList();
   final obst = crs.where((r) => RegExp('OBS').hasMatch(pilVrai(r['examenCode']) ? '${r['examenCode']}' : '')).length;
@@ -129,7 +135,7 @@ PilVue pilStatsImagerie(Iterable<PilFiche> demandes, Iterable<PilFiche> comptesR
     final a = DateTime.tryParse('${d['dateHeure']}'), b = DateTime.tryParse('${r['renduLe']}');
     if (a == null || b == null) continue;
     final h = b.difference(a).inMilliseconds / 36e5;
-    if (h >= 0 && h < 24 * 30) delais.add(h);
+    if (h >= 0 && h < aberrationH) delais.add(h);
   }
   final delaiMoyen = delais.isNotEmpty ? arrondiJs(delais.fold(0.0, (a, x) => a + x) / delais.length).toInt() : null;
   final v = PilVue(kpis: [
