@@ -58,9 +58,10 @@ class MoteurFileul {
 
   /// Rattache ce poste à la mère d'une clinique : redirige le moteur vers [adresse], puis consomme le code d'appairage. Refus nommé (`StateError`) si la mère
   /// refuse (code expiré, déjà utilisé…) ou ne répond pas.
-  Future<void> rattacher(String adresse, String code) async {
+  /// Rend ce que la mère rapporte d'une REPRISE d'identité (`{de, plages, baux}` : le poste remplacé, ce qu'elle a passé au nouveau), ou `null` pour un appairage ordinaire.
+  Future<Map<String, Object?>?> rattacher(String adresse, String code) async {
     _fileul.rediriger(adresse);
-    await appairer(code);
+    return appairer(code);
   }
 
   /// Les fiches d'une collection telles que la mère les a diffusées (état confirmé du fileul).
@@ -87,7 +88,7 @@ class MoteurFileul {
     return ((corps['debut'] as num).toInt(), (corps['fin'] as num).toInt());
   }
 
-  Future<void> appairer(String code) async {
+  Future<Map<String, Object?>?> appairer(String code) async {
     final (statut, corps) =
         await _fileul.commande('POST /appairer', {'code': code}, const {});
     if (statut >= 400) {
@@ -95,6 +96,9 @@ class MoteurFileul {
       throw StateError(
           '${c['code'] ?? 'appairage_refuse'}${c['motif'] != null ? ' — ${c['motif']}' : ''}');
     }
+    // Un code de REPRISE est un code d'appairage comme un autre pour le poste : c'est la mère qui sait ce qu'il désigne, et qui le rapporte.
+    final r = corps is Map ? corps['reprise'] : null;
+    return r is Map ? r.cast<String, Object?>() : null;
   }
 
   /// Les opérations que la mère a REFUSÉES (code, motif, geste), pour les dire : un refus ne se perd pas en silence.

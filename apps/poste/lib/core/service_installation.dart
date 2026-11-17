@@ -78,7 +78,12 @@ class ServiceInstallation extends ChangeNotifier {
   Future<void> Function({required String relais, required String secretMere, required String cleClinique, String? nomPoste})? activerMere;
 
   /// Le geste réel de rattachement (posé par `main`, qui détient le moteur de synchronisation) : redirige vers la mère et consomme le code d'appairage.
-  Future<void> Function({required String adresse, required String code})? rattacherMoteur;
+  ///
+  /// Rend ce que la mère rapporte d'une REPRISE d'identité (`{de, plages, baux}`) ou `null` (appairage ordinaire).
+  Future<Object?> Function({required String adresse, required String code})? rattacherMoteur;
+
+  /// Ce que la mère a repris au dernier rattachement, si le code était un code de REPRISE (le poste remplacé, les plages et les baux passés) ; `null` sinon.
+  RepRepriseFaite? derniereReprise;
 
   /// Appelé une fois le poste rattaché : `main` y démarre l'application de la configuration reçue.
   void Function(String adresse)? surRattache;
@@ -102,8 +107,9 @@ class ServiceInstallation extends ChangeNotifier {
     final geste = rattacherMoteur;
     if (geste == null) return 'Le rattachement à une clinique n’est pas disponible sur ce poste.';
     final a = adresse.trim().replaceAll(RegExp(r'/+$'), '');
+    derniereReprise = null;
     try {
-      await geste(adresse: a, code: code.trim().toUpperCase());
+      derniereReprise = repLireRepriseFaite(await geste(adresse: a, code: code.trim().toUpperCase()));
     } on StateError catch (e) {
       return _motifAppairage(e.message);
     } catch (e) {
@@ -125,10 +131,14 @@ class ServiceInstallation extends ChangeNotifier {
 
   static String _motifAppairage(String brut) {
     final code = brut.split(' — ').first.trim();
+    final motifMere = brut.contains(' — ') ? brut.substring(brut.indexOf(' — ') + 3) : '';
     return switch (code) {
-      'code_expire' => 'Ce code d’appairage a expiré (15 minutes). Demandez-en un nouveau sur la mère.',
+      // La durée de validité est celle de la mère : ce poste ne la connaît pas et ne la cite jamais.
+      'code_expire' => 'Ce code d’appairage a expiré. Demandez-en un nouveau sur la mère (un code de reprise : écran « Reprise d’un poste »).',
       'code_utilise' => 'Ce code d’appairage a déjà servi. Demandez-en un nouveau sur la mère.',
       'code_invalide' || 'code_inconnu' => 'Code d’appairage inconnu. Vérifiez-le ou demandez-en un nouveau sur la mère.',
+      // Un code de REPRISE refusé : le poste à remplacer est inconnu de la mère, ou a déjà été repris (règles du domaine, mêmes mots que la console de la mère).
+      'appareil_inconnu' || 'deja_repris' => '${repRefus(code, motifMere: motifMere).motif} ${repRefus(code, motifMere: motifMere).geste}',
       _ => 'La mère a refusé l’appairage : $brut',
     };
   }
