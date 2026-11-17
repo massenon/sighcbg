@@ -20,7 +20,8 @@ const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith('--' + n
 const PORT = +arg('port', 0);
 const DB = arg('db', ':memory:');
 const ADMIN = arg('admin', 'admin-banc');
-const CODE_TTL = +arg('code-ttl', 15 * 60 * 1000);
+/* SURCHARGE de lancement (millisecondes) de la validité d'un code d'appairage : un banc d'essai qui éprouve l'expiration. Absente (production) : la durée est le RÉGLAGE de la mère, voir `validiteCodeMs`. */
+const CODE_TTL_ARG = arg('code-ttl', '') === '' ? null : +arg('code-ttl', '');
 const JETON_TTL = +arg('jeton-ttl', 24 * 3600 * 1000);
 const CLINIQUE = 'BAGUIDI'; // la même phrase que IdentiteClinique.confirmationReinit (Dart)
 const DERIVE_MAX_MS = 2 * 60 * 1000;
@@ -289,6 +290,8 @@ const ESSENTIELLES = new Set(['tarifs', 'versionsTarif', 'chambres']);
 const MOTIF_ARCHIVAGE = 'Jeu de démonstration, mise en production'; /* le même que cfbMotifArchivageJeuDemo (Dart) */
 
 const PARAMETRES = require('./parametres');
+/* Miroir de la définition `mere.validiteCodeAppairageMinutes` (packages/domaine/lib/src/parametres/definitions.dart) : clé, valeur d'attente et bornes. Un test de parité (domaine) lit ces trois lignes. */
+const REGLAGE_CODE = { cle: 'mere.validiteCodeAppairageMinutes', defaut: 15, min: 1, max: 120 };
 const db = new DatabaseSync(DB);
 db.exec(`
   PRAGMA journal_mode = WAL;
@@ -667,6 +670,18 @@ function pousser(app, b) {
 }
 
 /* --- routes ------------------------------------------------------------------- */
+/* La DURÉE DE VALIDITÉ d'un code d'appairage (ms) : le RÉGLAGE de la mère en vigueur AUJOURD'HUI — version datée la plus récente dont la date d'effet est passée, relue dans SA base à chaque émission ;
+   hors bornes ou illisible : la valeur d'attente, jamais zéro. La surcharge de lancement l'emporte (bancs). Miroir de `Mere.validiteCodeMs` (Dart). */
+function validiteCodeMs() {
+  if (CODE_TTL_ARG !== null) return CODE_TTL_ARG;
+  const versions = db.prepare("SELECT data FROM fiches WHERE collection='parametres'").all().map((r) => JSON.parse(r.data)).filter((d) => d.statut !== 'archive');
+  const j = new Date();
+  const jour = `${String(j.getFullYear()).padStart(4, '0')}-${String(j.getMonth() + 1).padStart(2, '0')}-${String(j.getDate()).padStart(2, '0')}`;
+  const r = PARAMETRES.resoudre(REGLAGE_CODE.cle, versions, jour, REGLAGE_CODE);
+  const v = r.ok ? r.valeur : null;
+  const minutes = Number.isInteger(v) && v >= REGLAGE_CODE.min && v <= REGLAGE_CODE.max ? v : REGLAGE_CODE.defaut;
+  return minutes * 60 * 1000;
+}
 const routes = {
   /* --- les scans : la mère les range, un fileul les lit chez elle (blocs scellés). Jamais le relais. --- */
   'GET /sync/fichier/info': (req) => { fAppareil(req); return fInfo(); },
@@ -701,9 +716,11 @@ const routes = {
       if (!anc || anc.role !== 'fileul') throw new Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
       refuserSiDejaRepris(reprise);
     }
-    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)').run(code, b.etiquette || '', role, Date.now() + CODE_TTL, aff.profil, aff.fonction, reprise);
-    /* La DURÉE DE VALIDITÉ est celle de la mère (`--code-ttl`), jamais une valeur écrite dans la console : elle est rendue avec le code. */
-    return { code, expire: Date.now() + CODE_TTL, validite_s: Math.floor(CODE_TTL / 1000) };
+    const ttl = validiteCodeMs();
+    const expire = Date.now() + ttl;
+    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)').run(code, b.etiquette || '', role, expire, aff.profil, aff.fonction, reprise);
+    /* La DURÉE DE VALIDITÉ est le RÉGLAGE de la mère (daté, borné), jamais une valeur écrite dans la console : elle est rendue avec le code. */
+    return { code, expire, validite_s: Math.floor(ttl / 1000) };
   },
   'POST /appairage': (req, b) => {
     const c = db.prepare('SELECT * FROM codes WHERE code=?').get(String(b.code || ''));
@@ -799,10 +816,13 @@ const routes = {
     const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
     const code = Array.from(crypto.randomBytes(8)).map((x) => alphabet[x % alphabet.length]).join('');
     const aff = affectationMobile(b);
-    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)').run(code, b.etiquette || '', 'mobile', Date.now() + CODE_TTL, aff.profil, aff.fonction);
+    const ttl = validiteCodeMs();
+    const expire = Date.now() + ttl;
+    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)').run(code, b.etiquette || '', 'mobile', expire, aff.profil, aff.fonction);
     // Le relais ne reçoit que l'empreinte ET, à titre d'étiquette d'affichage (jamais d'autorité), le profil et la fonction du code.
     await rel('POST', '/mere/code', { hash: sha(code), profil: aff.profil, fonction: aff.fonction });
-    return { code, cle: CLE.toString('base64'), profil: aff.profil, fonction: aff.fonction };
+    /* Comme pour un poste : la durée de validité est celle de la mère, rendue avec le code. */
+    return { code, cle: CLE.toString('base64'), profil: aff.profil, fonction: aff.fonction, expire, validite_s: Math.floor(ttl / 1000) };
   },
   'POST /admin/lot': (req, b) => {
     adminOk(req);

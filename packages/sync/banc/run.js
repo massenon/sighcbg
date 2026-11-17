@@ -87,7 +87,7 @@ async function monde(opts = {}) {
   m.mere = {
     port: portMere, proc: null, db: path.join(dir, 'mere.sqlite'), opts: {},
     async demarrer() {
-      const a = [`--port=${portMere}`, `--db=${m.mere.db}`, `--admin=${ADMIN}`, `--code-ttl=${opts.codeTtl || 900000}`, `--jeton-ttl=${opts.jetonTtl || 86400000}`];
+      const a = [`--port=${portMere}`, `--db=${m.mere.db}`, `--admin=${ADMIN}`, ...(opts.codeTtl ? [`--code-ttl=${opts.codeTtl}`] : []), `--jeton-ttl=${opts.jetonTtl || 86400000}`];
       if (opts.relais) a.push(`--relais=http://127.0.0.1:${m.portInternet}`, '--secret-relais=secret-mere');
       if (m.mere.opts.cle) a.push(`--cle=${m.mere.opts.cle}`);
       if (m.mere.opts.restaurer) a.push('--restaurer=1');
@@ -1172,6 +1172,7 @@ Object.assign(scenarios, require('./scenarios-satisfaction.js')({ monde, verifie
 Object.assign(scenarios, require('./scenarios-pta.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-planning.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-facture-tiers.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
+Object.assign(scenarios, require('./scenarios-appairage.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-fiches-aide.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-base-portable.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));
 Object.assign(scenarios, require('./scenarios-sms.js')({ monde, verifier: (...a) => verifier(...a), attendre, dormir, titre: (t) => { courant = t; } }));

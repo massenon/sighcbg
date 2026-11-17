@@ -33,6 +33,7 @@ import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSem
 import '../administration/adm_regles.dart' show admCleForfaitAmbulance, admClePrixKmAmbulance, admForfaitAmbulanceSemence, admPrixKmAmbulanceSemence;
 import 'parametres.dart';
 import 'reglages_roles.dart';
+import '../mere/reprise_poste_regles.dart' show cleValiditeCodeAppairage;
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
@@ -1124,6 +1125,21 @@ const List<DefinitionParametre> definitionsParametres = [
     source: _attente,
     branche: true,
     appliquePar: 'Console du poste mère (intégrité)',
+  ),
+  // Consigne de la Direction (18/11/2026) : « plus de valeur en dur ». La durée de validité d'un code d'appairage n'est plus écrite dans les écrans : la mère la lit ici à chaque émission et la
+  // renvoie avec le code.
+  DefinitionParametre(
+    cle: cleValiditeCodeAppairage,
+    famille: 'mere',
+    type: TypeParametre.entier,
+    defaut: 15,
+    min: 1,
+    max: 120,
+    libelle: 'Appairage : durée de validité d\'un code (minutes)',
+    aide: 'Un code d\'appairage (poste, mobile, reprise d\'un poste) est à usage unique et expire après cette durée ; la mère la renvoie avec chaque code émis et les écrans la lisent, ils ne l\'écrivent jamais. Valeur d\'attente, à valider par la Direction. Entier de 1 à 120 ; hors bornes, la valeur d\'attente de 15 s\'applique. Se règle par une nouvelle version datée ; un code déjà émis garde l\'échéance qu\'il a reçue.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Mère (émission des codes d\'appairage) et écrans d\'appairage',
   ),
 
   // --- LES LISTES DE RÉFÉRENCE QUI VIVAIENT EN CODE (lot « listes de référence » de l'inventaire des valeurs en dur, une sous-étape par module) : un réglage `texte` daté,

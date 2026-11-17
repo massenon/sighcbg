@@ -140,10 +140,13 @@ class Faux extends MrbSource {
         brouillons: supprimer ? const {} : const {'ecritures': 3});
   }
 
+  /// La durée de validité QUE LA MÈRE ANNONCE avec le code d'un mobile ; `null` : elle n'annonce rien.
+  int? validiteCodeSecondes = 2700;
+
   @override
   Future<MrbCodeMobile> codeMobile(String etiquette, {required String profil, String? fonction}) async {
     appels.add('codeMobile $etiquette $profil ${fonction ?? ''}'.trim());
-    return MrbCodeMobile(code: 'MOBI9999', payloadQr: mrbPayloadQrMobile(code: 'MOBI9999', cleBase64: cleBase64));
+    return MrbCodeMobile(code: 'MOBI9999', payloadQr: mrbPayloadQrMobile(code: 'MOBI9999', cleBase64: cleBase64), validiteSecondes: validiteCodeSecondes);
   }
 
   @override
@@ -478,6 +481,23 @@ void main() {
       expect(find.text('MOBI9999'), findsOneWidget);
       expect(toutLeTexte(t), isNot(contains(cleBase64)), reason: 'la clé ne s’affiche jamais en clair');
       expect(toutLeTexte(t), isNot(contains('sigh-mobile:')));
+      expect(t.widget<Text>(find.byKey(const Key('mrb:validite-code'))).data, startsWith('À usage unique, valable 45 minutes.'), reason: 'durée annoncée par la mère (2700 s), jamais écrite par l’écran');
+      expect(toutLeTexte(t), isNot(contains('15 minutes')));
+    });
+
+    testWidgets('le QR d’appairage mobile : si la mère n’annonce aucune durée, l’écran le dit au lieu d’en supposer une', (t) async {
+      final f = Faux()
+        ..empreinte = 'ab12cd34' * 8
+        ..validiteCodeSecondes = null;
+      await ouvrir(t, 'mere-cle-clinique', f);
+      await t.tap(bouton('Afficher le QR d’appairage mobile'));
+      await pomper(t);
+      await t.enterText(find.byType(TextField).last, 'Dr Yoro');
+      await t.tap(bouton('Générer le QR'));
+      await pomper(t);
+      final dit = t.widget<Text>(find.byKey(const Key('mrb:validite-code'))).data!;
+      expect(dit, contains('n’est pas communiquée par la mère'));
+      expect(dit, isNot(contains('minutes')));
     });
 
     testWidgets('imprimer la copie papier et faire tourner la clé : refus NOMMÉS tant que le service ne les propose pas', (t) async {

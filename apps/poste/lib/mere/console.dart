@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, mobFonctions, mobLibelleFonction;
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique, mobFonctions, mobLibelleFonction, repPhraseValiditeCode;
 
 import '../core/jetons_shell.dart';
 import '../core/theme.dart';
@@ -412,12 +412,16 @@ class _ConsoleMereState extends State<ConsoleMere> {
     try {
       final String code;
       String? cle;
+      int? validite;
       if (mobile) {
-        final r = await widget.client.codeMobile(etiquette, profil: profil, fonction: profil == 'soignant' ? fonction : null);
+        final r = await widget.client.codeMobileEmis(etiquette, profil: profil, fonction: profil == 'soignant' ? fonction : null);
         code = r.code;
         cle = r.cle;
+        validite = r.validiteSecondes;
       } else {
-        code = await widget.client.codeAppareil(etiquette);
+        final r = await widget.client.emettreCodeAppareil(etiquette);
+        code = r.code;
+        validite = r.validiteSecondes;
       }
       if (!mounted) return;
       await afficherModale<void>(
@@ -427,8 +431,7 @@ class _ConsoleMereState extends State<ConsoleMere> {
         corps: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
           SelectableText(code,
               style: const TextStyle(color: JetonsShell.slate900, fontSize: 32, fontWeight: FontWeight.w700, letterSpacing: 4)),
-          const Text('À usage unique, valable 15 minutes.',
-              style: TextStyle(color: JetonsShell.slate600, fontSize: 14, height: 20 / 14)),
+          Text(repPhraseValiditeCode(validite), style: const TextStyle(color: JetonsShell.slate600, fontSize: 14, height: 20 / 14)),
           if (cle != null) ...[
             const SizedBox(height: 12),
             const Text('Clé de la clinique à saisir sur le téléphone (ne jamais l’envoyer par messagerie) :',

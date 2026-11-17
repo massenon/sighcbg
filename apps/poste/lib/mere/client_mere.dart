@@ -195,6 +195,30 @@ class CodeReprise {
   String toString() => 'CodeReprise(valide jusqu’à $expireMs)';
 }
 
+/// Un code d'appairage (poste ordinaire) tel que la mère l'émet : le code, l'instant où il expire et la durée de validité QU'ELLE annonce. Un écran n'écrit jamais cette durée : si la mère
+/// n'annonce rien (`null`), il le dit. Le code ne figure dans aucune représentation texte.
+class CodeEmis {
+  const CodeEmis({required this.code, this.expireMs, this.validiteSecondes});
+  final String code;
+  final int? expireMs;
+  final int? validiteSecondes;
+  @override
+  String toString() => 'CodeEmis(valide jusqu’à $expireMs)';
+}
+
+/// Un code d'appairage de MOBILE tel que la mère l'émet : le code, la clé de la clinique (réservée au QR et à la saisie sur le téléphone) et la durée de validité annoncée par la mère.
+class CodeMobileEmis {
+  const CodeMobileEmis({required this.code, required this.cle, this.expireMs, this.validiteSecondes});
+  final String code;
+  final String cle;
+  final int? expireMs;
+  final int? validiteSecondes;
+  @override
+  String toString() => 'CodeMobileEmis(valide jusqu’à $expireMs)';
+}
+
+int? _entierOuNul(Object? v) => v is num ? v.toInt() : null;
+
 /// Client du service local de la mère (API d'administration). La console ne contient AUCUNE règle : elle appelle ce que
 /// la mère décide — un refus s'affiche avec la cause que la mère a nommée.
 class ClientMere {
@@ -253,11 +277,13 @@ class ClientMere {
   Future<void> trancher(int id, String decision) =>
       _appel('POST', '/admin/trancher', {'id': id, 'decision': decision});
 
-  Future<String> codeAppareil(String etiquette) async =>
-      '${(await _appel('POST', '/admin/code', {
-            'etiquette': etiquette,
-            'role': 'fileul'
-          }))['code']}';
+  /// Le code d'un poste ordinaire AVEC la durée de validité que la mère annonce (réglage de la mère, daté et borné).
+  Future<CodeEmis> emettreCodeAppareil(String etiquette) async {
+    final r = await _appel('POST', '/admin/code', {'etiquette': etiquette, 'role': 'fileul'});
+    return CodeEmis(code: '${r['code']}', expireMs: _entierOuNul(r['expire']), validiteSecondes: _entierOuNul(r['validite_s']));
+  }
+
+  Future<String> codeAppareil(String etiquette) async => (await emettreCodeAppareil(etiquette)).code;
 
   /// Code de REPRISE d'un poste fileul : appairer un poste NEUF qui remplace [uuid] (la mère lui passe les plages et les baux, révoque l'ancien : E4608). Le refus de la mère
   /// (`appareil_inconnu`, `deja_repris`…) remonte tel quel en [ErreurMere]. La durée de validité est celle que la mère annonce.
@@ -275,12 +301,18 @@ class ClientMere {
   /// le téléphone les reçoit de la mère et ne peut plus les déclarer (E1600).
   Future<({String code, String cle})> codeMobile(String etiquette,
       {required String profil, String? fonction}) async {
+    final r = await codeMobileEmis(etiquette, profil: profil, fonction: fonction);
+    return (code: r.code, cle: r.cle);
+  }
+
+  /// Le code d'un mobile AVEC la durée de validité que la mère annonce.
+  Future<CodeMobileEmis> codeMobileEmis(String etiquette, {required String profil, String? fonction}) async {
     final r = await _appel('POST', '/admin/code-mobile', {
       'etiquette': etiquette,
       'profil': profil,
       if (fonction != null && fonction.isNotEmpty) 'fonction': fonction
     });
-    return (code: '${r['code']}', cle: '${r['cle']}');
+    return CodeMobileEmis(code: '${r['code']}', cle: '${r['cle']}', expireMs: _entierOuNul(r['expire']), validiteSecondes: _entierOuNul(r['validite_s']));
   }
 
   Future<void> revoquer(String uuid) =>

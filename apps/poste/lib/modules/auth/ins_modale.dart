@@ -183,7 +183,7 @@ class _EtatCorps extends State<_Corps> {
           [_lien('m14-utilisateurs', 'Comptes utilisateurs')]),
       _etape(context, 'appairages',
           estMere
-              ? 'Émettez un code d’appairage (8 caractères, 15 minutes, usage unique) pour chaque poste fileul et chaque mobile. Un poste fileul qui s’appaire reprend les configurations : il n’a rien à refaire.'
+              ? 'Émettez un code d’appairage (usage unique, durée de validité réglée par la clinique et annoncée par la mère à l’émission) pour chaque poste fileul et chaque mobile. Un poste fileul qui s’appaire reprend les configurations : il n’a rien à refaire.'
               : 'L’appairage des postes et des mobiles se fait depuis la mère : activez-la d’abord (étape 1).',
           [
             if (estMere) _lien(ecranAppairages, 'Appareils et appairage'),

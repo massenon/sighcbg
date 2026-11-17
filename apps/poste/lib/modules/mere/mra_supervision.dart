@@ -243,12 +243,16 @@ class _EtatAppareils extends EtatEcranMra<EcranMraAppareils> {
     try {
       final String code;
       String? cle;
+      int? validite;
       if (mobile) {
-        final r = await s.codeMobile(etiquette, profil: profil, fonction: fonction);
+        final r = await s.codeMobileEmis(etiquette, profil: profil, fonction: fonction);
         code = r.code;
         cle = r.cle;
+        validite = r.validiteSecondes;
       } else {
-        code = await s.codeAppareil(etiquette);
+        final r = await s.codeAppareilEmis(etiquette);
+        code = r.code;
+        validite = r.validiteSecondes;
       }
       if (!mounted) return;
       await afficherModale<void>(context,
@@ -257,7 +261,7 @@ class _EtatAppareils extends EtatEcranMra<EcranMraAppareils> {
           taille: TailleModale.sm,
           corps: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SelectableText(code, key: const Key('mra-code'), style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w700, letterSpacing: 4)),
-            const Text('À usage unique, valable 15 minutes.', style: styleMraPetit),
+            Text(repPhraseValiditeCode(validite), key: const Key('mra-validite'), style: styleMraPetit),
             if (cle != null) ...[
               Text('Ce code appaire : ${profil == 'reception' ? libelleProfilMobile(profil) : '${libelleProfilMobile(profil)}, ${mobLibelleFonction(fonction ?? '')}'}.',
                   key: const Key('mra-affectation'), style: styleMraPetit),
@@ -353,7 +357,7 @@ class _EtatAppareils extends EtatEcranMra<EcranMraAppareils> {
             : null,
       ),
       carteGestes([
-        ('Appairer un poste, Appairer un mobile', 'génère un code à usage unique (15 minutes) ; le mobile reçoit aussi la clé de la clinique.'),
+        ('Appairer un poste, Appairer un mobile', 'génère un code à usage unique, dont la durée de validité est celle que la mère annonce (réglage de la clinique) ; le mobile reçoit aussi la clé de la clinique.'),
         ('Renvoyer vers tous', 'demande à chaque poste un tirage complet ; les accusés se lisent ci-dessus et au journal des opérations.'),
         ('Révoquer', 'coupe la synchronisation de l’appareil ; ses données locales sont conservées (RG-14, aucune suppression).'),
         ('Agent et Version', '$nonDisponible : la mère ne tient ni l’agent connecté ni la version de l’application de chaque appareil.'),

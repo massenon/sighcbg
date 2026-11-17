@@ -93,6 +93,16 @@ class SourceFauxMra implements SourceMra {
   @override
   Future<({String code, String cle})> codeMobile(String etiquette, {required String profil, String? fonction}) =>
       _geste('code-mobile $etiquette $profil ${fonction ?? ''}'.trim(), (code: 'MOBI2345', cle: 'CLE-CLINIQUE-XYZ'));
+
+  /// La durée de validité QUE LA MÈRE ANNONCE avec le code (réglage de la mère) ; `null` : elle n'annonce rien.
+  int? validiteSecondes = 1200;
+  @override
+  Future<CodeEmis> codeAppareilEmis(String etiquette) async => CodeEmis(code: await codeAppareil(etiquette), validiteSecondes: validiteSecondes);
+  @override
+  Future<CodeMobileEmis> codeMobileEmis(String etiquette, {required String profil, String? fonction}) async {
+    final r = await codeMobile(etiquette, profil: profil, fonction: fonction);
+    return CodeMobileEmis(code: r.code, cle: r.cle, validiteSecondes: validiteSecondes);
+  }
   @override
   Future<void> revoquer(String uuid) => _geste('revoquer $uuid', null);
   @override
@@ -300,6 +310,33 @@ void main() {
       expect(find.byKey(const Key('mra-affectation')), findsOneWidget);
       expect(find.textContaining('Ce code appaire : Soignant, Médecin.'), findsOneWidget);
       expect(find.text('CLE-CLINIQUE-XYZ'), findsOneWidget);
+      await toucher(t, bouton('Fermer'));
+      await fin(t);
+    });
+
+    testWidgets('la durée de validité du code est CELLE QUE LA MÈRE ANNONCE (poste ET mobile), jamais un nombre écrit : si la mère n\'annonce rien, l\'écran le dit', (t) async {
+      await monter(t, EcranMraAppareils(source: src, maintenant: () => _t0));
+      await toucher(t, bouton('Appairer un poste'));
+      await t.enterText(find.byType(TextField).last, 'Réception');
+      await toucher(t, bouton('Générer le code'));
+      expect(t.widget<Text>(find.byKey(const Key('mra-validite'))).data, 'À usage unique, valable 20 minutes.', reason: '1200 s annoncées par la mère');
+      expect(find.textContaining('15 minutes'), findsNothing);
+      await toucher(t, bouton('Fermer'));
+
+      await toucher(t, bouton('Appairer un mobile'));
+      await t.enterText(find.byType(TextField).last, 'Dr Yoro 3');
+      src.validiteSecondes = 5400;
+      await toucher(t, bouton('Générer le code'));
+      expect(t.widget<Text>(find.byKey(const Key('mra-validite'))).data, 'À usage unique, valable 90 minutes.', reason: 'la valeur change avec le réglage de la mère');
+      await toucher(t, bouton('Fermer'));
+
+      src.validiteSecondes = null;
+      await toucher(t, bouton('Appairer un poste'));
+      await t.enterText(find.byType(TextField).last, 'Pharmacie');
+      await toucher(t, bouton('Générer le code'));
+      final dit = t.widget<Text>(find.byKey(const Key('mra-validite'))).data!;
+      expect(dit, contains('n’est pas communiquée par la mère'));
+      expect(dit, isNot(contains('minutes')), reason: 'aucun nombre supposé');
       await toucher(t, bouton('Fermer'));
       await fin(t);
     });

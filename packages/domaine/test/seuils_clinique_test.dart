@@ -26,6 +26,7 @@ void main() {
     'caisse.delaiEngagementPaiementJours',
     'assurances.fenetreHistoriqueJours',
     'mere.fenetreJournalAlterationsJours',
+    'mere.validiteCodeAppairageMinutes',
     'notifications.seuilRegroupement',
     'notifications.temporisationSon',
     'achats.fenetreCircuitJours',

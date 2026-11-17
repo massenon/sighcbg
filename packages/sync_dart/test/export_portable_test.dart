@@ -202,7 +202,7 @@ void main() {
       expect(f2.reprendreEtat(ouvert.contenu.sync!)['refus'], 'POSTE_NON_NEUF');
       final emis = await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Poste caisse', 'reprise': f1.uuid});
       final code = emis['code'];
-      expect(emis['validite_s'], cfgMere('a.db').codeTtl ~/ 1000, reason: 'la durée de validité est celle de la mère, rendue avec le code (la console ne l\'écrit jamais)');
+      expect(emis['validite_s'], seuilSeme(cleValiditeCodeAppairage) * 60, reason: 'la durée de validité est le réglage de la mère (ici sa valeur d\'attente), rendue avec le code (la console ne l\'écrit jamais)');
       expect(emis['expire'], isA<int>());
       final secondCode = (await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Second poste', 'reprise': f1.uuid}))['code'];
       final (statutAp, repAp) = await f2.commande('POST /appairer', {'code': code}, const {});
