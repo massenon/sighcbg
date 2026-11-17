@@ -6,6 +6,7 @@
 // Jeu SYNTHÉTIQUE (aucune identité réelle) : chaque attendu se recompte à la main.
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -29,6 +30,7 @@ F exercice(int annee, String etat, {String source = 'journal'}) =>
     {'id': 'EXO-$annee', 'annee': annee, 'statut': 'actif', 'etat': etat, 'source': source};
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   // 2026 : une vente de 1 000 encaissée (validée), une vente de 500 en brouillon, et la pièce de CLÔTURE qui solde le 706 au 131.
   final e2026 = [
     ligne('VTE-2026-00001', '2026-03-10', 'VTE', '571000', 1000, 0),

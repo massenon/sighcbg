@@ -8,18 +8,13 @@
 /// l'absence de clé la chaîne « undefined »). Porté fidèlement et signalé : E47 — l'archivage « avec motif » accepte un motif VIDE.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart';
 import '../impression/identite.dart';
 
-const zonesEmplacement = [
-  'Rayonnage sec',
-  'Chaîne du froid',
-  'Armoire sécurisée',
-  'Réserve',
-  'Salle de soins',
-];
+List<String> get zonesEmplacement => ListesReference.valeurs('listes.m6.zonesEmplacement');
 
 const temperaturesConservation = [
   'Ambiante',

@@ -9,6 +9,8 @@
 /// rien ne s'est passé là où la mère n'a simplement rien reçu.
 library;
 
+import '../parametres/parametres_clinique.dart' show preavisPeremptionSeme;
+
 /// Version du schéma de l'instantané. Le relais refuse une version qu'il ne connaît pas.
 const int ikVersionSchema = 1;
 
@@ -22,7 +24,8 @@ const bool ikPublierDefaut = true;
 const int ikIntervalleDefautSecondes = 900;
 const int ikIntervalleMinSecondes = 60;
 const int ikIntervalleMaxSecondes = 86400;
-const int ikJoursPeremptionDefaut = 90;
+/// Le préavis de péremption d'attente : le défaut du paramètre `stock.delaiPreavisPeremptionJours` (un seul endroit le dit).
+int get ikJoursPeremptionDefaut => preavisPeremptionSeme;
 
 /// Un poste connu de la mère : identifiant technique et dernier contact. L'étiquette (qui peut porter un nom de personne) n'entre JAMAIS ici.
 class IkAppareil {
@@ -34,13 +37,13 @@ class IkAppareil {
 /// Tout ce que le calculateur lit. `collections` : les fiches ACTIVES (non archivées) reçues par la mère, par nom de collection ; une collection absente de
 /// la table donne des mesures « non disponibles ».
 class IkEntree {
-  const IkEntree({
+  IkEntree({
     required this.collections,
     required this.maintenant,
     this.appareils = const [],
     this.versionApplication = '0.0.0',
-    this.joursPeremption = ikJoursPeremptionDefaut,
-  });
+    int? joursPeremption,
+  }) : joursPeremption = joursPeremption ?? ikJoursPeremptionDefaut;
   final Map<String, List<Map<String, Object?>>> collections;
   final DateTime maintenant;
   final List<IkAppareil> appareils;

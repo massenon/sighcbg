@@ -5,6 +5,7 @@
 /// Rien n'est inventé : le catalogue des états et le rattachement état → écran producteur sont EXTRAITS de la maquette.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../administration/adm_regles.dart' show admAleatoire;
 import '../configuration/cfb_donnees.dart' show cfbGroupesArticles;
 import '../format/format_fr.dart';
@@ -274,9 +275,9 @@ const rapModeles = [
 ({String titre, String destinataire, List<String> sections}) rapChargerModele(RapModele m) =>
     (titre: m.nom, destinataire: rapDestinataires.contains(m.destinataire) ? m.destinataire : '', sections: m.sections);
 
-const rapDestinataires = ['Direction', 'Conseil de gestion', 'Partenaire technique', 'Usage interne'];
+List<String> get rapDestinataires => ListesReference.valeurs('listes.rap.destinataires');
 const rapPeriodesRapport = ['Journalière', 'Hebdomadaire', 'Mensuelle', 'Trimestrielle', 'Annuelle'];
-const rapFiligranes = ['Document officiel', 'Confidentiel', 'Brouillon'];
+List<String> get rapFiligranes => ListesReference.valeurs('listes.rap.filigranes');
 
 /// Les registres que lisent les sections (collections ACTIVES du poste) et deux effectifs de référentiel (catalogue des analyses, compagnies).
 class RapSources {

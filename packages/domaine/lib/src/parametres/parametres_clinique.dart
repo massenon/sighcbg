@@ -15,13 +15,20 @@ const String cleBalanceAgeePatientBorne1 = 'comptabilite.balanceAgeePatientBorne
 const String cleBalanceAgeePatientBorne2 = 'comptabilite.balanceAgeePatientBorne2Jours';
 const String cleJoursArticlesImmobiles = 'stock.joursArticlesImmobiles';
 
-/// La durée sans sortie d'un « article immobile » (jours) : 30 semés, bornée de 1 à 730 (décision du 16/11/2026).
-const int joursArticlesImmobilesSeme = 30;
+// Les clés des seuils qui vivaient en littéraux (lot « seuils » ; leurs défauts et leurs bornes sont dans `definitions.dart`, un seul endroit).
+const String cleDelaiVerrouOrdinaire = 'securite.delaiVerrouOrdinaireMinutes';
+const String cleRenouvellementMotDePasse = 'securite.renouvellementMotDePasseJours';
+const String cleDureeVerrouCompte = 'securite.dureeVerrouCompteMinutes';
+const String cleDureeBlocageSecours = 'securite.dureeBlocageSecoursMinutes';
+const String cleValiditeMotDePasseTemporaire = 'securite.validiteMotDePasseTemporaireHeures';
+
+/// La durée sans sortie d'un « article immobile » (jours) : le défaut du paramètre `stock.joursArticlesImmobiles` (30 semés), borné de 1 à 730 (décision du 16/11/2026).
+int get joursArticlesImmobilesSeme => seuilSeme(cleJoursArticlesImmobiles);
 
 /// Les valeurs SEMÉES (repli d'un poste jamais semé ou d'une valeur hors bornes) : elles sont aussi les défauts des définitions, un seul endroit les dit.
-const int preavisPeremptionSeme = 90;
-const int balanceAgeeBorne1Semee = 30;
-const int balanceAgeeBorne2Semee = 90;
+int get preavisPeremptionSeme => seuilSeme(cleDelaiPreavisPeremption);
+int get balanceAgeeBorne1Semee => seuilSeme(cleBalanceAgeePatientBorne1);
+int get balanceAgeeBorne2Semee => seuilSeme(cleBalanceAgeePatientBorne2);
 
 /// Les bornes acceptées pour le préavis de péremption (jours).
 const int preavisPeremptionMin = 1;
@@ -89,4 +96,24 @@ int participationStandardA(Iterable<Map<String, Object?>> fichesParametres, Stri
   final f = _entier(_valeurA(fichesParametres, admCleForfaitAmbulance, date));
   final k = _entier(_valeurA(fichesParametres, admClePrixKmAmbulance, date));
   return (forfait: f != null && f >= 0 ? f : admForfaitAmbulanceSemence, parKm: k != null && k >= 0 ? k : admPrixKmAmbulanceSemence);
+}
+
+/// Un SEUIL ENTIER en vigueur à [date] : la version datée qui s'applique, sinon le défaut SEMÉ de la définition ; une valeur illisible ou hors des bornes déclarées
+/// (`min`, `max` de la définition) retombe sur ce défaut, jamais sur zéro. Les seuils et délais qui vivaient en littéraux se lisent tous par ici (lot « seuils »).
+int seuilEntierA(Iterable<Map<String, Object?>> fichesParametres, String cle, String date) => seuilEntierDe(cle, _valeurA(fichesParametres, cle, date));
+
+/// Le seuil tiré d'une valeur brute (réglage lu autrement, par exemple par le service des paramètres du poste) : borné par la définition de [cle].
+int seuilEntierDe(String cle, Object? valeur) {
+  final n = _entier(valeur);
+  final d = definitionDeParametre(cle);
+  if (n != null && d != null && (d.min == null || n >= d.min!) && (d.max == null || n <= d.max!)) return n;
+  return seuilSeme(cle);
+}
+
+/// Le défaut SEMÉ d'un seuil : la seule valeur d'attente, celle de la définition. Une clé inconnue est une faute de programmation (jamais un zéro silencieux).
+int seuilSeme(String cle) {
+  final d = definitionDeParametre(cle);
+  final v = d?.defaut;
+  if (v is! num) throw ArgumentError('seuil inconnu : $cle');
+  return v.toInt();
 }

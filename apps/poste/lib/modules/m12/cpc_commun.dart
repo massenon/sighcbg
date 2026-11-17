@@ -65,3 +65,9 @@ String? definirMoisOuvertureSuivant(Magasin m, Object? valeur, {required String 
   }
   return null;
 }
+
+/// Aucun document fiscal déposé n'est importé en base : l'écran le DIT au lieu de montrer des zéros qui se liraient comme des soldes (la liasse déposée et le classeur de baseline sont des
+/// données importées et datées, plus des constantes). [quoi] : « liasse déposée » ou « classeur de baseline ».
+Widget noteSansDocumentFiscal(String quoi) => NoteSigh(
+    'Aucune $quoi n’est importée en base : l’écran n’a rien à citer. L’import est daté et porte sa source (collection « documentsFiscaux ») ; sans lui, aucun chiffre n’est inventé.',
+    ton: TonSigh.attention);

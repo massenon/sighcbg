@@ -7,6 +7,7 @@
 /// solde apuré (RG-06) et les trois signatures (RG-07) ; la sortie contre avis médical est motivée (RG-08).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../caisse/mecef.dart' show tirage;
 import '../format/js.dart';
 import '../format/format_fr.dart' show iso;
@@ -49,13 +50,7 @@ const blocMallampati = [
   BlocOption('III', 'Mallampati III — seul le voile est visible'),
   BlocOption('IV', 'Mallampati IV — voile non visible'),
 ];
-const blocTechniques = [
-  'Anesthésie générale',
-  'Rachianesthésie',
-  'Péridurale',
-  'Anesthésie locale',
-  'Sédation',
-];
+List<String> get blocTechniques => ListesReference.valeurs('listes.m3.techniquesAnesthesie');
 const blocConclusionsCpa = [
   'Apte à l’anesthésie',
   'Apte avec réserves',

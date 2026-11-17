@@ -11,13 +11,7 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'commun.dart';
 
-const motifsAvoir = [
-  'Erreur de facturation',
-  'Interruption de soins',
-  'Évacuation vers un autre centre',
-  'Prestation non réalisée',
-  'Autre (préciser en observations)',
-];
+List<String> get motifsAvoir => ListesReference.valeurs('listes.m8.motifsAvoir');
 
 String _suite(Object? r) => r == 'especes' ? 'Remboursé en espèces' : 'Créance réduite';
 

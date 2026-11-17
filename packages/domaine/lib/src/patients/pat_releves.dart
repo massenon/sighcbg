@@ -2,6 +2,7 @@
 /// des écrans réels (`test/vecteurs/pat_constantes.json`, `pat_reference.json`).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../labo/res_saisie.dart' show agePatient;
 import 'pat_patients.dart';
@@ -101,22 +102,8 @@ const patMotifsReference = [
   'Pas de réponse au traitement',
   'Autre (à préciser)',
 ];
-const patMoyensTransport = [
-  'Ambulance',
-  'Véhicule administratif',
-  'Taxi',
-  'Barque motorisée',
-  'Moto',
-  'Moyen personnel',
-  'Autre',
-];
-const patEvolutions = [
-  'Guéri(e)',
-  'Évadé(e)',
-  'Décédé(e)',
-  'Sortie contre avis médical',
-  'Référé vers un autre centre',
-];
+List<String> get patMoyensTransport => ListesReference.valeurs('listes.m1.moyensTransport');
+List<String> get patEvolutions => ListesReference.valeurs('listes.m1.evolutionsSortie');
 
 /// Les champs que « Nouvelle fiche de référence » DÉDUIT du patient choisi : numéro, identité, âge (par `C.ageDe`, écart E307), sexe, adresse.
 FichePat patDeduitReference(FichePat saisie, Iterable<FichePat> patients, Iterable<FichePat> fiches, DateTime maintenant) {

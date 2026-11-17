@@ -12,6 +12,7 @@ export 'src/parametres/definitions.dart';
 export 'src/parametres/service.dart';
 export 'src/parametres/parametres_clinique.dart';
 export 'src/parametres/reglages_roles.dart';
+export 'src/parametres/listes_reference.dart';
 
 // Référentiel de prix unique (PRD-TARIFS, lot T6) : versions datées, accesseur à la date de la pièce, circuit Oui/Non, contrôle d'usage, pro-forma.
 export 'src/tarifs/tarifs.dart';
@@ -137,7 +138,7 @@ export 'src/paie/pai_baremes.dart';
 export 'src/comptabilite/cpa_referentiels.dart';
 export 'src/comptabilite/cpa_ecritures.dart';
 export 'src/comptabilite/cpa_depenses.dart';
-export 'src/comptabilite/cpb_liasse.dart';
+export 'src/comptabilite/documents_fiscaux.dart';
 export 'src/comptabilite/cpb_donnees.dart';
 export 'src/comptabilite/cpb_feuillets.dart';
 export 'src/comptabilite/cpb_seuil.dart';

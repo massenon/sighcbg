@@ -6,6 +6,7 @@
 /// d'alerte d'un réactif est fixé par la clinique : un seuil absent n'est PAS un seuil de zéro.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart' show nombreOuZero;
 import '../format/recherche.dart' show trierPar;
@@ -63,9 +64,7 @@ const List<({String id, String libelle})> catTypesVariable = [
 const List<String> catTypesAccompagnement = ['reactif', 'lot', 'expiration', 'commentaire'];
 
 /// Les domaines d'unité (formulaire et filtre de `m5-unites`).
-const List<String> catDomainesUnite = [
-  'Hématologie', 'Biochimie', 'Hormonologie', 'Bactériologie', 'Parasitologie', 'Hémostase', 'Andrologie', 'Général'
-];
+List<String> get catDomainesUnite => ListesReference.valeurs('listes.m5.domainesUnite');
 
 /// `L.type(id)` : le libellé d'un type, ou l'identifiant lui-même.
 String catLibelleType(Object? id) {

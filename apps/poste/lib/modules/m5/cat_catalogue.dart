@@ -14,7 +14,7 @@ import '../m6/flux_commun.dart' show SourceFlux;
 import '../m6/stock_crud.dart';
 import 'cat_commun.dart';
 
-const _delais = ['Immédiat', '1 h', '2 h', '4 h', '6 h', '24 h', '48 h', '72 h'];
+List<String> get _delais => ListesReference.valeurs('listes.m5.delaisRendu');
 
 /// Le tarif d'une analyse se LIT au référentiel de prix (version en vigueur aujourd'hui) : il ne se modifie plus ici (PRD-TARIFS, lot T6), il se propose à « Tarifs et prix ».
 num? _prixDe(ContexteEcran c, Fiche a) => TarifsPoste.prixAnalyse(c.magasin, a['code'], aujourdhui: c.aujourdhui);

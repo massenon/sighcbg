@@ -5,6 +5,7 @@
 /// La prise en charge elle-même (RG-09, `repartir`) est celle de `caisse/prise_en_charge.dart` : on ne la duplique pas.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../impression/identite.dart';
@@ -110,7 +111,7 @@ AssKpisDashboard assKpisDashboard(
 }
 
 // --- compagnies ----------------------------------------------------------------------------------------------------------------
-const assConventions = ['Signée', 'En cours de renouvellement', 'Suspendue'];
+List<String> get assConventions => ListesReference.valeurs('listes.m9.etatsConvention');
 
 String assConvention(AssFiche a) =>
     _vrai(a['convention']) ? '${a['convention']}' : 'Signée';
@@ -694,13 +695,8 @@ List<AssLigneCreance> assBalanceAgee({
 }
 
 // --- relances ----------------------------------------------------------------------------------------------------------------
-const assNiveauxRelance = ['1re relance', '2e relance', 'Mise en demeure'];
-const assCanauxRelance = [
-  'Courrier remis en main propre',
-  'Courrier électronique',
-  'Courrier recommandé',
-  'Appel téléphonique',
-];
+List<String> get assNiveauxRelance => ListesReference.valeurs('listes.m9.niveauxRelance');
+List<String> get assCanauxRelance => ListesReference.valeurs('listes.m9.canauxRelance');
 const assSuitesRelance = [
   ('en_attente', 'En attente'),
   ('regularisee', 'Régularisée'),

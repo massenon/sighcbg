@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
+import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations;
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
@@ -194,7 +194,7 @@ Future<void> main() async {
   if (repartirAZero == 'oui') await persistance.mettreDeCote();
   // Un jeu d'origine qui change (nouvelle version) n'écrase rien : ses fiches de référentiel manquantes sont ajoutées au magasin enregistré.
   // (la purge des conversations de l'assistant qui ont dépassé la durée de conservation suit, plus bas, une fois le magasin lu)
-  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
+  await magasin.brancherPersistance(persistance, fusionnables: {...cfbEssentielles, valCollectionValidations, colDocumentsFiscaux, ...tarCollectionsReferentiel}.difference({'utilisateurs', 'identifiants'}));
   CfbPersistance.disponible = () => true;
   // L'assistant : les conversations qui ont dépassé la durée de conservation (réglage en base, 30 jours par défaut, bornée) sont retirées au démarrage du poste.
   final maintenantAssistant = DateTime.now();
@@ -230,6 +230,9 @@ Future<void> main() async {
   brancherIdentite(magasin);
   // LE RÉFÉRENTIEL DE NUMÉROTATION (lot 2) : les versions de séries du magasin s'appliquent à toutes les pièces, puis suivent chaque écriture de la collection.
   brancherNumerotation(magasin);
+  // LES LISTES DE RÉFÉRENCE (lot « listes ») : les listes de libellés métier se lisent au registre des paramètres (versions datées, famille R), jamais d'une constante ;
+  // sans fiche (poste jamais semé), la liste d'attente de la définition.
+  ListesReference.brancher(() => magasin.collection(parCollectionParametres).toutes, horloge: () => magasin.horloge());
   for (final probleme in persistance.problemes) {
     debugPrint(probleme);
   }

@@ -15,7 +15,7 @@ import 'commun_m1.dart';
 
 String _t(Object? v, [String vide = '—']) => patVrai(v) ? '$v' : vide;
 
-const _services = ['Maternité', 'Médecine', 'Médecine et spécialité'];
+List<String> get _services => ListesReference.valeurs('listes.m1.servicesPatientExterne');
 const _urgences = [
   OptionChamp('aucune', 'Examen courant'),
   OptionChamp('examen', 'Un examen urgent'),

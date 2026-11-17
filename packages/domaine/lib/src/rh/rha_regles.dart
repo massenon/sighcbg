@@ -1,3 +1,4 @@
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../administration/adm_notes_donnees.dart' show admFonctions, admPrimesNs132;
 import '../format/format_fr.dart';
 import '../impression/identite.dart' show IdentiteClinique;
@@ -21,18 +22,7 @@ typedef RhaFiche = Map<String, Object?>;
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 /// `D.SERVICES` (un seul intitulé « Direction » : l'ancien « Administration » coupait l'effectif en deux).
-const List<String> rhaServices = [
-  'Médecine générale',
-  'Maternité',
-  'Chirurgie',
-  'Laboratoire',
-  'Pharmacie',
-  'Imagerie / Échographie',
-  'Soins infirmiers',
-  'Accueil',
-  'Direction',
-  'Comptabilité',
-];
+List<String> get rhaServices => ListesReference.valeurs('listes.socle.services');
 
 /// `D.TYPES_PLANNING` : (identifiant, libellé, ton du badge).
 const List<(String, String, String)> rhaTypesPlanning = [
@@ -68,9 +58,9 @@ String rhaTypePlanningTon(Object? id) {
 String rhaFonctionLabel(Object? id) => admFonctions[id] ?? '$id';
 
 const List<String> rhaSituations = ['Célibataire', 'Marié(e)', 'Divorcé(e)', 'Veuf(ve)'];
-const List<String> rhaNaturesContrat = ['CDI', 'CDD', 'Stage', 'Prestation'];
-const List<String> rhaPeriodesEssai = ['1 mois', '3 mois', '6 mois'];
-const List<String> rhaNaturesConge = ['Congé annuel', 'Congé de maternité', 'Congé de maladie', 'Absence autorisée', 'Congé exceptionnel'];
+List<String> get rhaNaturesContrat => ListesReference.valeurs('listes.m10.naturesContrat');
+List<String> get rhaPeriodesEssai => ListesReference.valeurs('listes.m10.periodesEssai');
+List<String> get rhaNaturesConge => ListesReference.valeurs('listes.m10.naturesConge');
 
 /// Décisions d'un congé : identifiant → (libellé, ton).
 const Map<String, (String, String)> rhaDecisionsConge = {
@@ -79,8 +69,8 @@ const Map<String, (String, String)> rhaDecisionsConge = {
   'refuse': ('Refusé', 'danger'),
 };
 
-const List<String> rhaNaturesMission = ['Mission', 'Formation', 'Représentation', 'Convoyage'];
-const List<String> rhaMoyensMission = ['Véhicule de service', 'Transport en commun', 'Ambulance', 'Moyen personnel'];
+List<String> get rhaNaturesMission => ListesReference.valeurs('listes.m10.naturesMission');
+List<String> get rhaMoyensMission => ListesReference.valeurs('listes.m10.moyensMission');
 
 /// `STATUTS_MISSION` : (identifiant, libellé, ton).
 const List<(String, String, String)> rhaStatutsMission = [
@@ -102,24 +92,9 @@ const List<(String, String, String)> rhaStatutsMission = [
   return rhaStatutsMission.first;
 }
 
-const List<String> rhaSpecialitesPrestataire = [
-  'Circoncision',
-  'Hydrotubation',
-  'Accouchement',
-  'Analyses spécialisées',
-  'Chirurgie',
-  'Échographie',
-  'Anesthésie',
-];
+List<String> get rhaSpecialitesPrestataire => ListesReference.valeurs('listes.m10.specialitesPrestataire');
 
-const List<String> rhaTypesCouverture = [
-  'CNSS — régime général',
-  'Mutuelle de santé',
-  'Assurance accident du travail',
-  'Assurance maladie complémentaire',
-  'Assurance vie',
-  'Prise en charge clinique (personnel)',
-];
+List<String> get rhaTypesCouverture => ListesReference.valeurs('listes.m10.typesCouverture');
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // Dates et nombres « à la JavaScript »

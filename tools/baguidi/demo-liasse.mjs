@@ -10,9 +10,16 @@
 // IDEMPOTENT : chaque fichier traité porte la ligne-marqueur MARQUEUR ; un fichier marqué n'est jamais multiplié une seconde fois.
 // REJOUABLE à vide : `node tools/baguidi/demo-liasse.mjs --verifier` ne modifie rien et dit 0 si tout est déjà transformé (exit 1 sinon).
 // Les fichiers de test (vecteurs et attentes) qui citent ces valeurs sont réécrits par la MÊME transformation (voir CIBLES_TEXTE).
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 // La dénomination et l'IFU de la clinique sœur (dans les données remplacées ici) ne s'écrivent qu'à UN endroit du dépôt : le script de neutralisation.
 import { ORIGINE } from './neutraliser-identite.mjs';
+
+// 17/11/2026 : la liasse déposée et le classeur 2025 ne sont PLUS des constantes Dart (documents importés en base : `apps/poste/tool/donnees/*_demo.json`, collection
+// `documentsFiscaux`). La transformation « × 3 » a eu lieu une fois, avant ce déplacement : ce script ne trouve plus ses cibles et le dit au lieu d'échouer.
+if (!existsSync('packages/domaine/lib/src/comptabilite/cpc_liasse.dart')) {
+  console.log('0 : la liasse et le classeur ne sont plus du code (documents importés en base) ; rien à transformer.');
+  process.exit(0);
+}
 
 const FACTEUR = 3;
 const MARQUEUR = `// DÉMONSTRATION BAGUIDI (tools/baguidi/demo-liasse.mjs) : montants d’origine multipliés par ${FACTEUR}, code de dépôt DEMO. Ne pas rejouer à la main : le script est idempotent.`;

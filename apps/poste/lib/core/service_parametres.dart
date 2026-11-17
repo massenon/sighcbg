@@ -62,3 +62,7 @@ Map<String, String> routagePostes(Magasin m, DateTime date) =>
 /// Les postes informés quand un besoin est accordé EN VIGUEUR à [date] (réglage `notifications.destinatairesBesoinAccorde`).
 List<DestinataireNotif> destinatairesBesoinAccorde(Magasin m, DateTime date) =>
     destinatairesBesoinAccordeDe(serviceParametres(m, auteur: () => 'lecture').valeur(cleDestinatairesBesoinAccorde, parametreDateIso(date)));
+/// Un SEUIL ENTIER de clinique EN VIGUEUR à [date] (lot « seuils » de l'inventaire des valeurs en dur) : la version datée du paramètre [cle], sinon sa valeur d'attente ;
+/// hors des bornes de la définition, la valeur d'attente. Poste jamais semé : la valeur d'attente, le comportement d'avant.
+int seuilClinique(Magasin m, String cle, DateTime date) =>
+    seuilEntierDe(cle, serviceParametres(m, auteur: () => 'lecture').valeur(cle, parametreDateIso(date)));

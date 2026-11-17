@@ -217,7 +217,7 @@ class EcranReliquats extends StatelessWidget with EcranMaquette {
   /// Engagement de paiement : écrit et signé, vaut reconnaissance de dette ; la créance reste inscrite jusqu'à son règlement effectif.
   void _engagement(BuildContext ctx, CollectionMagasin col, Fiche f) {
     final c = ContexteEcran.of(ctx);
-    final dans30 = c.aujourdhui.add(const Duration(days: 30));
+    final dans30 = c.aujourdhui.add(Duration(days: seuilClinique(c.magasin, 'caisse.delaiEngagementPaiementJours', c.aujourdhui)));
     final form = ControleurFormulaire(const [
       ChampDef(
           nom: 'modalite',

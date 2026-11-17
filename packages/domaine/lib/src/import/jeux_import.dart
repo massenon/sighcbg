@@ -9,6 +9,7 @@ import '../administration/adm_regles.dart' show admNaturesCourrier, admReference
 import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget;
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice, cpcOrigineImportOuverture;
 import '../assurances/ass_garanties.dart';
+import '../parametres/parametres_clinique.dart' show delaiPreavisPeremptionA, seuilEntierA;
 import '../assurances/ass_regles.dart' show assCategoriesGarantie, assChangerCouverture, assDate, assLibelleUnite, assUnitesPlafond;
 import '../format/format_fr.dart' show dateFR, nombre;
 import '../format/recherche.dart' show normaliser;
@@ -170,6 +171,11 @@ final JeuImport jeuGrandStock = JeuImport(
       groupes[k]!.add(l.v);
     }
     final mouvs = <_V>[...port.toutes('mouvements')];
+    // La fenêtre d'alerte d'un lot importé est le PRÉAVIS DE PÉREMPTION en vigueur à la date de l'import (paramètre `stock.delaiPreavisPeremptionJours`), et le seuil d'alerte
+    // proposé à un article sans seuil fourni est un pourcentage du stock importé, avec un plancher (paramètres `stock.seuilAlerteImportPourcent` et `…Minimum`), « à valider ».
+    final preavis = delaiPreavisPeremptionA(port.toutes('parametres'), jour);
+    final pourcentageSeuil = seuilEntierA(port.toutes('parametres'), 'stock.seuilAlerteImportPourcent', jour);
+    final seuilMinimum = seuilEntierA(port.toutes('parametres'), 'stock.seuilAlerteImportMinimum', jour);
     for (final k in ordre) {
       final ls = groupes[k]!, p = ls.first;
       final total = ls.fold<num>(0, (t, x) => t + _num(x['quantite']));
@@ -177,9 +183,9 @@ final JeuImport jeuGrandStock = JeuImport(
       final seuilFourni = ls.any((x) => x['seuil'] != null);
       final seuil = seuilFourni
           ? ls.map((x) => _num(x['seuil'])).reduce((a, b) => a > b ? a : b)
-          : (total * 0.2).round() < 5
-              ? 5
-              : (total * 0.2).round();
+          : (total * pourcentageSeuil / 100).round() < seuilMinimum
+              ? seuilMinimum
+              : (total * pourcentageSeuil / 100).round();
       final prod = ecrireFiche('produits', {
         'code': p['code'],
         'designation': p['designation'],
@@ -209,7 +215,7 @@ final JeuImport jeuGrandStock = JeuImport(
             'datePeremption': x['peremption'],
             'quantiteRestante': x['quantite'],
             'emplacement': x['emplacement'] ?? p['emplacement'] ?? '',
-            'statut': jours < 0 ? 'perime' : (jours < 90 ? 'alerte' : 'actif'),
+            'statut': jours < 0 ? 'perime' : (jours < preavis ? 'alerte' : 'actif'),
           });
         }
         final ref = _referenceMouvement(mouvs);

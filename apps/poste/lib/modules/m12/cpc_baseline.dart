@@ -163,6 +163,7 @@ class EcranBaseline2025 extends StatelessWidget with EcranMaquette {
   @override
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
+    if (!cpcClasseurImporte) return noteSansDocumentFiscal('classeur de baseline');
     final e = cpcExercice2025;
     final courts = [for (final mo in e.mois) '${mo.substring(0, mo.length < 4 ? mo.length : 4)}. 25'];
     final meilleur = e.indiceMeilleurMois, faible = e.indiceMoisFaible;

@@ -3,6 +3,7 @@
 /// `packages/sync_dart`, banc `packages/sync/banc`). Une valeur sans source reste `null` : l'écran dit « non disponible », jamais zéro.
 library;
 
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import 'synchro_fileuls.dart';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,8 +76,8 @@ class MrbCompteAlterations {
 
 /// Compte, sur `jours` jours, les alertes d'intégrité dont le message de journal est celui du moteur (`Alerte authentification …`, `Alerte trou …`
 /// posé par `Pont.alerter` : source PERSISTANTE, contrairement à la liste des alertes tenue en mémoire).
-MrbCompteAlterations mrbCompterAlterations(List<MrbLigneJournal> lignes, {required int maintenantMs, int jours = 30}) {
-  final depuis = maintenantMs - jours * 24 * 3600 * 1000;
+MrbCompteAlterations mrbCompterAlterations(List<MrbLigneJournal> lignes, {required int maintenantMs, int? jours}) {
+  final depuis = maintenantMs - (jours ?? seuilSeme('mere.fenetreJournalAlterationsJours')) * 24 * 3600 * 1000;
   var a = 0, t = 0;
   for (final l in lignes) {
     if (l.quand < depuis || l.niveau != 'alerte') continue;

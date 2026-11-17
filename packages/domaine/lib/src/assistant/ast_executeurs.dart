@@ -20,7 +20,7 @@ import '../paie/pai_moteur.dart' show PaiEntrees, paiActivites, paiCalculerTous;
 import '../rh/espace_mes.dart' show agentDeMes;
 import '../droits/donnees_sensibles.dart' show mentionReservee;
 import '../pilotage/pil_stats.dart' show statutsRdvAVenir;
-import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, joursArticlesImmobilesA, tranchesBalanceAgeePatient;
+import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, joursArticlesImmobilesA, seuilEntierA, tranchesBalanceAgeePatient;
 import '../format/format_fr.dart' show money, nombreOuNul;
 import '../format/js.dart' show nombreOuZero;
 import '../labo/cat_regles.dart' show catReactifs;
@@ -435,7 +435,7 @@ ReponseAst _i14(ContexteAst cx, ReconnaissanceAst r, String q) {
 }
 
 ReponseAst _i15(ContexteAst cx, ReconnaissanceAst r, String q) {
-  final pl = _plage(_periodeDe(r), cx, joursParDefaut: 30);
+  final pl = _plage(_periodeDe(r), cx, joursParDefaut: seuilEntierA(cx.col('parametres'), 'assistant.horizonQuestionJours', cx.jour));
   final factures = [for (final f in cx.col('factures')) if (_dans(f['date'], pl.debut, pl.fin)) f];
   final avoirs = [for (final a in cx.col('avoirs')) if (_dans(a['date'], pl.debut, pl.fin)) a];
   final src = [const SourceAst('m8-factures', 'factures'), const SourceAst('m8-facture-avoir', 'avoirs')];
@@ -783,7 +783,7 @@ ReponseAst _i09(ContexteAst cx, ReconnaissanceAst r, String q) {
       texte.contains('immobile');
   // La durée d'un article « immobile » est un RÉGLAGE de clinique quand la question ne la dit pas (décision du 16/11/2026) ; le classement des sorties garde ses 30 jours.
   final dureeImmobile = joursArticlesImmobilesA(cx.col('parametres'), cx.jour);
-  final pl = _plage(_periodeDe(r), cx, joursParDefaut: dormants ? dureeImmobile : 30);
+  final pl = _plage(_periodeDe(r), cx, joursParDefaut: dormants ? dureeImmobile : seuilEntierA(cx.col('parametres'), 'assistant.horizonQuestionJours', cx.jour));
   final sorties = [for (final m in cx.col('mouvements')) if (m['type'] == 'sortie' && _dans(m['date'], pl.debut, pl.fin)) m];
   const src = [SourceAst('m6-mouvements', 'mouvements')];
   final parProduit = <String, num>{};

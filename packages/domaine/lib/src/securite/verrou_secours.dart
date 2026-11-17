@@ -12,19 +12,20 @@ library;
 
 import '../rh/planning_rh.dart' show RefusRh;
 import '../droits/gestes_reserves.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme, seuilEntierDe, cleDelaiVerrouOrdinaire;
 
 /// La clé du paramètre (registre des paramètres du poste).
 const String cleDelaiVerrouSecours = 'securite.delaiVerrouPosteSecours';
 
-/// Le délai d'un poste de secours quand rien n'est réglé : valeur d'attente de l'équipe, à valider.
-const int delaiVerrouSecoursDefautMin = 5;
+/// Le délai d'un poste de secours quand rien n'est réglé : valeur d'attente de l'équipe, à valider (le défaut du paramètre, un seul endroit la dit).
+int get delaiVerrouSecoursDefautMin => seuilSeme(cleDelaiVerrouSecours);
 
 /// Les bornes du réglage, en minutes (celles de la politique de sécurité pour l'inactivité).
 const int delaiVerrouSecoursMin = 1;
 const int delaiVerrouSecoursMax = 120;
 
-/// Le délai d'un poste ordinaire quand la politique de sécurité ne le fixe pas (CDCT 12.2).
-const int delaiVerrouOrdinaireDefautMin = 15;
+/// Le délai d'un poste ordinaire quand la politique de sécurité ne le fixe pas (CDCT 12.2) : le paramètre `securite.delaiVerrouOrdinaireMinutes`, ici sa valeur SEMÉE.
+int get delaiVerrouOrdinaireDefautMin => seuilSeme(cleDelaiVerrouOrdinaire);
 
 /// Les rôles qui règlent le délai et désignent un poste de secours D'ORIGINE : DÉRIVÉS du geste réservé `reglage_verrou_secours` (affichage) ; la décision lit la matrice.
 List<String> get rolesVerrouSecours => gesteReserve(gesteReglageVerrouSecours)?.rolesDefaut ?? const [];
@@ -46,17 +47,17 @@ int delaiVerrouSecoursMinutes(Object? reglage) {
 }
 
 /// Le délai du poste ordinaire : l'inactivité de la politique de sécurité quand elle est écrite et positive, sinon quinze minutes.
-int delaiVerrouOrdinaireMinutes(Object? politiqueInactiviteMin) {
+int delaiVerrouOrdinaireMinutes(Object? politiqueInactiviteMin, {Object? reglage}) {
   if (politiqueInactiviteMin != null) {
     final v = _nombre(politiqueInactiviteMin);
     if (v.isFinite && v > 0) return v.toInt();
   }
-  return delaiVerrouOrdinaireDefautMin;
+  return seuilEntierDe(cleDelaiVerrouOrdinaire, reglage);
 }
 
 /// Le délai de verrou EN FORCE sur CE poste, en minutes : celui du secours si le poste est désigné tel, sinon l'ordinaire.
-int delaiVerrouPosteMinutes({required bool posteDeSecours, required Object? reglageSecours, required Object? politiqueInactiviteMin}) =>
-    posteDeSecours ? delaiVerrouSecoursMinutes(reglageSecours) : delaiVerrouOrdinaireMinutes(politiqueInactiviteMin);
+int delaiVerrouPosteMinutes({required bool posteDeSecours, required Object? reglageSecours, required Object? politiqueInactiviteMin, Object? reglageOrdinaire}) =>
+    posteDeSecours ? delaiVerrouSecoursMinutes(reglageSecours) : delaiVerrouOrdinaireMinutes(politiqueInactiviteMin, reglage: reglageOrdinaire);
 
 /// Le réglage du délai : `null` s'il est permis, sinon le refus nommé (REGLAGE_RESERVE, DELAI_INVALIDE).
 RefusRh? controlerReglageDelaiSecours({required String role, required Object? minutes, DroitsGestes? gestes}) {

@@ -192,7 +192,7 @@ class EcranLotsStock extends StatelessWidget with EcranMaquette {
               },
               rendu: (_, l) {
                 final j = joursAvantPeremption(auj, l['datePeremption']);
-                return badgeEcheance(j, texteEcheance(j, preavis: preavis), preavis: preavis);
+                return badgeEcheance(j, texteEcheance(j, preavis: preavis), preavis: preavis, urgent: seuilClinique(c.magasin, 'stock.delaiEcheanceUrgenteJours', auj));
               }),
           ColonneTableau(
               cle: 'quantiteRestante',

@@ -171,6 +171,7 @@ class _EtatSessions extends State<EcranSessions> {
     return ListenableBuilder(
         listenable: m.collection('sessionsUtilisateur'),
         builder: (context, _) {
+          final delaiMin = VerrouSecoursPoste(m, auteur: () => c.utilisateur, role: c.role).delaiOrdinaire();
           final rows = secLignesSessions(reg.fiches);
           final k = secKpisSessions(rows);
           final lignes = <Map<String, Object?>>[
@@ -183,16 +184,16 @@ class _EtatSessions extends State<EcranSessions> {
               KpiSigh(libelle: 'Verrouillées pour inactivité', valeur: nombre(k.suspendues), icone: LucideIcons.lock, ton: TonSigh.attention),
               KpiSigh(
                   libelle: 'Clôturées', valeur: nombre(k.cloturees), icone: LucideIcons.logOut, ton: TonSigh.neutre, indice: 'Conservées au registre'),
-              const KpiSigh(
+              KpiSigh(
                   libelle: 'Délai de verrouillage',
-                  valeur: '$secDelaiVerrouillageMin min',
+                  valeur: '$delaiMin min',
                   icone: LucideIcons.timer,
                   ton: TonSigh.neutre,
                   indice: 'Postes partagés'),
             ]),
             const SizedBox(height: 16),
-            const NoteSigh(
-                'Sur les postes partagés (accueil et caisse), un délai d’inactivité de 15 minutes entraîne le verrouillage automatique de l’écran. Clôturer une session va plus loin : elle est fermée, et l’agent doit se reconnecter.',
+            NoteSigh(
+                'Sur les postes partagés (accueil et caisse), un délai d’inactivité de $delaiMin minutes entraîne le verrouillage automatique de l’écran. Clôturer une session va plus loin : elle est fermée, et l’agent doit se reconnecter.',
                 ton: TonSigh.info,
                 icone: LucideIcons.lock),
             const SizedBox(height: 16),
@@ -248,8 +249,8 @@ class _EtatSessions extends State<EcranSessions> {
                       if (n == null) return const Text('—', style: TextStyle(color: JetonsShell.slate400));
                       return Text('$n min',
                           style: TextStyle(
-                              color: n >= secDelaiVerrouillageMin ? JetonsShell.warning600 : JetonsShell.slate600,
-                              fontWeight: n >= secDelaiVerrouillageMin ? FontWeight.w600 : FontWeight.w400,
+                              color: n >= delaiMin ? JetonsShell.warning600 : JetonsShell.slate600,
+                              fontWeight: n >= delaiMin ? FontWeight.w600 : FontWeight.w400,
                               fontFeatures: const [FontFeature.tabularFigures()]));
                     }),
                 ColonneTableau(

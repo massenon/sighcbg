@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -18,6 +19,7 @@ String _v(Object? x) => x is num && x == x.truncate() ? '${x.toInt()}' : '${x ??
 String cle(F e) => [for (final k in ['numero', 'date', 'journal', 'compte', 'compteLibelle', 'debit', 'credit', 'libelle', 'statut', 'origine', 'origineCloture', 'pieceOrigine']) _v(e[k])].join('|');
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final f = File('test/vecteurs/exercice.json');
   if (!f.existsSync()) fail('vecteurs absents : lancer `node prototype_html/build/vecteurs-m12-exercice.js`');
   final v = carte(jsonDecode(f.readAsStringSync()));

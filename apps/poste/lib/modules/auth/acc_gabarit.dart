@@ -13,22 +13,7 @@ const presentationLogiciel =
 
 /// Les QUATORZE spécialités de la clinique (fiche d'identité du 06/11/2026, maquette `core.js`) : un référentiel de
 /// PRÉSENTATION pour l'écran de connexion, pas le périmètre du logiciel. Aucune constante d'identité ne les portait.
-const specialitesClinique = [
-  'Médecine du travail',
-  'Santé publique',
-  'Gynécologie',
-  'Chirurgie',
-  'Urologie',
-  'Rhumatologie',
-  'Ophtalmologie',
-  'Orthophonie',
-  'Endocrinologie',
-  'Pédiatrie',
-  'Neurologie',
-  'Cardiologie',
-  'Kinésithérapie',
-  'Imagerie (Radiologie-Échographie)',
-];
+List<String> get specialitesClinique => ListesReference.valeurs('listes.cfg.specialitesClinique');
 
 /// Le gabarit commun des écrans d'accès (`shell()` de `auth.js`, charte BAGUIDI P1-2) : une carte centrée à coins arrondis
 /// posée sur un fond bleu très pâle, LISERÉ SUPÉRIEUR rouge puis bleu (les deux traits du cœur du logo), panneau

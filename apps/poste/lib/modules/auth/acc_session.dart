@@ -17,7 +17,7 @@ class SessionPoste extends ChangeNotifier {
     DateTime Function()? horloge,
     this.exigeConnexion = false,
     AccCompte? compte,
-    Duration delai = accDelaiVerrou,
+    Duration? delai,
   })  : horloge = horloge ?? DateTime.now,
         verrou = AccVerrou(delai: delai),
         _compte = compte,
@@ -26,7 +26,7 @@ class SessionPoste extends ChangeNotifier {
   }
 
   /// Une session déjà ouverte pour [role] (le poste de développement, `SIGH_ROLE`) : le verrou joue, la connexion n'est pas demandée.
-  SessionPoste.ouverte(String role, {String? nom, DateTime Function()? horloge, Duration delai = accDelaiVerrou})
+  SessionPoste.ouverte(String role, {String? nom, DateTime Function()? horloge, Duration? delai})
       : this(horloge: horloge, compte: AccCompte(identifiant: role, nom: nom ?? role, role: role), delai: delai);
 
   final DateTime Function() horloge;

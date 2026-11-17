@@ -10,6 +10,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
@@ -59,6 +60,7 @@ void appliquer(CfbEcritureObligation r, List<M> obligations, List<M> historique)
 }
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final v = lireVecteurs('fiscal-date');
   test('le vecteur est celui de l’horloge du 16/08/2026, sans erreur de page', () {
     expect(v['aujourdhui'], isoJour(aujourdhui));

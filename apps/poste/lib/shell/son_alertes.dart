@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/service_parametres.dart';
 import '../modules/cfg/cfb_notifications.dart' show CfbAudio;
 import 'centre_notifications.dart';
 
@@ -54,7 +54,7 @@ class SonAlertes {
     if (p['son'] != true) return;
     final profil = cfbProfilAudio(p['profil']);
     if (profil.$1 == 'silencieux') return;
-    final tempo = Duration(minutes: (p['temporisation'] is num ? (p['temporisation'] as num).toInt() : 30));
+    final tempo = Duration(minutes: (p['temporisation'] is num ? (p['temporisation'] as num).toInt() : seuilClinique(centre.magasin, 'notifications.temporisationSon', _horloge())));
     final maintenant = _horloge();
     // Les alertes détaillées (non regroupées) : on sonne pour chacune d'elles, pas pour une ligne de regroupement qui masquerait les nouvelles.
     final nouvelles = <AlerteNotif>[];

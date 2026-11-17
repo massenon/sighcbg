@@ -5,6 +5,7 @@
 /// se lit à la date (moteur `carteValide` de la caisse), jamais sur une copie locale. RG-14 : on archive, on ne supprime pas.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../caisse/prise_en_charge.dart' show carteValide;
 import '../format/format_fr.dart';
 import '../referentiels/regles.dart' show codePatient, lireCodePatient;
@@ -19,35 +20,9 @@ bool patVrai(Object? v) => v != null && v != '' && v != 0 && v != false;
 const patGroupesSanguins = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
 
 /// `D.ANTECEDENTS` : la dernière entrée est l'absence d'antécédent — elle ne se coche pas, elle se déduit d'une liste vide.
-const patAntecedents = [
-  'Hypertension artérielle',
-  'Diabète de type 2',
-  'Asthme',
-  'Drépanocytose',
-  'Ulcère gastrique',
-  'Épilepsie',
-  'Césarienne antérieure',
-  'Tuberculose traitée',
-  'Insuffisance rénale',
-  'Hépatite B',
-  'Aucun antécédent notable',
-];
-const patAntecedentsRisque = [
-  'Drépanocytose',
-  'Insuffisance rénale',
-  'Épilepsie',
-  'Tuberculose traitée',
-  'Hépatite B',
-];
-const patAllergies = [
-  'Pénicilline',
-  'Sulfamides',
-  'Aspirine',
-  'Arachide',
-  'Iode',
-  'Anti-inflammatoires non stéroïdiens',
-  'Aucune allergie connue',
-];
+List<String> get patAntecedents => ListesReference.valeurs('listes.m1.antecedents');
+List<String> get patAntecedentsRisque => ListesReference.valeurs('listes.m1.antecedentsARisque');
+List<String> get patAllergies => ListesReference.valeurs('listes.m1.allergies');
 
 /// `D.ASSUREURS` (code, nom) — les treize compagnies du document « Liste et contact des assurances partenaires ».
 const patAssureurs = <(String, String)>[

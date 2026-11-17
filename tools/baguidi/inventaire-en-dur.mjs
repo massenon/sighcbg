@@ -257,6 +257,12 @@ const ECARTES = [
   ['C', /m7\/besoins_(commandes|expression)\.dart$/, /referenceSuivante/, 'largeur du numéro (comptée en E)'],
   ['C', /PurgerAudit\.php$/, /error\(/, 'message du même contrôle (compté une fois)'],
   ['C', /mere\/mrc_regles\.dart$/, null, 'nombre d’anomalies listées (technique)'],
+  // Lot « seuils » (17/11/2026) : écartés À LA MAIN, chacun avec sa raison.
+  ['C', /parametres\/definitions\.dart$/, /^\s*(min|max):\s*\d+,\s*$/, 'borne de VALIDATION d’un réglage (la valeur reste au paramètre : `min` et `max` de sa définition)'],
+  ['C', /administration\/pta\.dart$/, /(ptaMoisParPeriode|admReferenceSuivante)/, 'repli défensif d’une table fermée (mois par période) et largeur du numéro de la pièce (technique)'],
+  ['C', /consultation\/ag_rendezvous\.dart$/, /ajouterJours\(rdv, 4\)/, 'fenêtre d’affichage recentrée autour d’un rendez-vous (ergonomie de l’agenda, pas une règle)'],
+  ['C', /labo\/cat_regles\.dart$/, /id: 'mois'/, 'période statistique « Mois » = 30 jours : convention de calendrier de l’étude, pas un seuil'],
+  ['C', /assistant\/ast_executeurs\.dart$/, /horizon_mois/, 'conversion mois → jours d’un horizon demandé par la question (30 jours par mois, convention de calcul)'],
   ['C', /cfg\/cft_tarifs\.dart$/, /tarPiecesRecentes/, 'fenêtre d’affichage des pièces récentes'],
   // D — listes
   ['D', /./, /etiquettes\s*:/, 'étiquettes d’un graphique (libellés d’affichage)'],
@@ -278,6 +284,7 @@ const ECARTES = [
   // E — préfixes
   ['E', /./, /'(PLG|ACT|TAR|ANA)-\$\{?(nom|p\[)|PAA-\$\{switch|ECH-\$\{|AN-PROV-|PAIE-\$\{l\.periode\}/, 'identifiant technique interne'],
   // G — libellés d'organisation
+  ['G', /parametres\/definitions\.dart$/, null, 'valeur d’attente SEMÉE d’un réglage (un seul endroit la dit : le défaut de sa définition)'],
   ['G', /bloc_avis_medical|bloc_regles\.dart/, /Procureur/, 'mention légale (RG-07 : avis du Procureur)'],
   ['G', /shell\/coque\.dart$/, null, 'nom de domaine du ruban (manifeste)'],
   ['G', /rapports\/rap_regles\.dart$/, null, 'identifiant de section d’un modèle de rapport (toléré au cliquet des rôles)'],
@@ -769,7 +776,7 @@ export function analyser() {
   const defs = [...DEFSRC.matchAll(/cle:\s*'([\w.]+)'[\s\S]*?defaut:\s*(\d+)\b/g)].map((m) => ({ cle: m[1], valeur: +m[2] })).filter((d) => d.valeur > 2);
   const doublons = [];
   for (const d of defs) {
-    const stems = d.cle.split('.').pop().replace(/([A-Z])/g, ' $1').toLowerCase().split(/\s+/).filter((w) => w.length >= 5 && !/^(jours|delai|limite|seuil|borne)$/.test(w));
+    const stems = d.cle.split('.').pop().replace(/([A-Z])/g, ' $1').toLowerCase().split(/\s+/).filter((w) => w.length >= 5 && !/^(jours|delai|limite|seuil|borne|minutes|heures|entre|annee|annees)$/.test(w));
     if (!stems.length) continue;
     for (const c of candidats) {
       if ((c.famille !== 'C' && c.famille !== 'B') || +c.valeur !== d.valeur || c.fichier === DEFINITIONS) continue;

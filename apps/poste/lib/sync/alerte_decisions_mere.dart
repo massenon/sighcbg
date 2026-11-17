@@ -35,7 +35,7 @@ class AlerteDecisionsMere {
 
   /// Le délai d'alerte EN VIGUEUR aujourd'hui (heures), lu de la base ; le défaut de la définition tant que la fiche n'est pas arrivée.
   int delaiHeures() {
-    final d = (definitionDeParametre(cleDelaiAlerteMere)?.defaut as num?)?.toInt() ?? 4;
+    final d = (definitionDeParametre(cleDelaiAlerteMere)!.defaut as num).toInt();
     final v = serviceParametres(magasin, auteur: () => 'lecture', horloge: () => _maintenant).valeur(cleDelaiAlerteMere, parametreDateIso(_maintenant));
     return delaiAlerteMereDepuis(v, defaut: d);
   }

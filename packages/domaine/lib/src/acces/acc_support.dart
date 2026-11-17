@@ -5,16 +5,25 @@ library;
 
 import '../impression/identite.dart';
 import '../navigation/manifeste.dart';
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../numerotation/numerotation.dart';
 
-/// Coordonnées de l'éditeur (`EDITEUR` de la maquette).
-const Map<String, Object> accEditeur = {
-  'auteur': 'Dr MOGBO Rhodes',
-  'emails': ['rarhodes06@gmail.com', 'contact@massenonrhodes.com'],
-  'telephone': '+229 01 51 33 50 40',
-  'horaires': 'Lundi au vendredi, 8h – 17h (GMT)',
-  'version': 'Prototype v1.0 — août 2026',
-};
+/// LES VALEURS D'ATTENTE du contact de l'éditeur (`EDITEUR` de la maquette), semées dans les réglages `support.*` (`definitions.dart`) : les seules à écrire ces coordonnées ; l'écran lit le
+/// réglage en vigueur, jamais ces constantes.
+const String accEditeurAuteurSemence = 'Dr MOGBO Rhodes';
+const String accEditeurEmailsSemence = 'rarhodes06@gmail.com; contact@massenonrhodes.com';
+const String accEditeurTelephoneSemence = '+229 01 51 33 50 40';
+const String accEditeurHorairesSemence = 'Lundi au vendredi, 8h – 17h (GMT)';
+const String accEditeurVersionSemence = 'Prototype v1.0 — août 2026';
+
+/// Coordonnées de l'éditeur (`EDITEUR` de la maquette) : des RÉGLAGES datés (famille `support`), lus par [ListesReference], jamais des littéraux de l'écran.
+Map<String, Object> get accEditeur => {
+      'auteur': ListesReference.texte('support.editeurAuteur'),
+      'emails': ListesReference.decouper(ListesReference.texte('support.editeurEmails')),
+      'telephone': ListesReference.texte('support.editeurTelephone'),
+      'horaires': ListesReference.texte('support.editeurHoraires'),
+      'version': ListesReference.texte('support.versionAffichee'),
+    };
 
 /// Ce que fait chaque module, en une phrase (`RESUMES`).
 const Map<String, String> accResumesModules = {

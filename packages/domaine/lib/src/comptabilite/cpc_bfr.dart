@@ -13,6 +13,7 @@ library;
 import 'dart:convert';
 
 import '../format/format_fr.dart';
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
 import '../achats/factures_fournisseurs.dart' show detteFournisseurOuverte;
 import 'cpa_referentiels.dart' show CpaFiche;
@@ -54,10 +55,10 @@ CpaFiche? cpcObjectif(Iterable<CpaFiche> collection, String id) {
 // LE BFR
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-/// La fenêtre d'observation : `jours` glissants (90 par défaut) jusqu'à `fin`, bornes nommées en ISO. [fin] absent : l'horloge du poste.
+/// La fenêtre d'observation : `jours` glissants (paramètre `comptabilite.periodeBfrJours`, 90 d'attente) jusqu'à `fin`, bornes nommées en ISO. [fin] absent : l'horloge du poste.
 ({String debut, String fin, int jours}) cpcFenetre({Object? fin, Object? debut, int? jours, required DateTime auj}) {
   final f = fin == null || fin == '' ? auj : (DateTime.tryParse('$fin') ?? auj);
-  final d = debut == null || debut == '' ? DateTime(f.year, f.month, f.day - (jours == null || jours == 0 ? 90 : jours), f.hour, f.minute, f.second) : (DateTime.tryParse('$debut') ?? f);
+  final d = debut == null || debut == '' ? DateTime(f.year, f.month, f.day - (jours == null || jours == 0 ? seuilSeme('comptabilite.periodeBfrJours') : jours), f.hour, f.minute, f.second) : (DateTime.tryParse('$debut') ?? f);
   final nb = cpcJoursEntre(d, f);
   return (debut: iso(d), fin: iso(f), jours: nb < 1 ? 1 : nb);
 }
@@ -149,7 +150,7 @@ class CpcAlerteRecouvrement {
 }
 
 /// `PR.alertesRecouvrement({fin})` : consommé par le moteur de notifications, qui ROUTE sans décider du seuil — celui-ci vit dans `objectifsPilotage`, où la
-/// Direction le règle (60 jours à défaut).
+/// Direction le règle.
 List<CpcAlerteRecouvrement> cpcAlertesRecouvrement({
   required Iterable<CpaFiche> factures,
   required Iterable<CpaFiche> objectifs,
@@ -158,7 +159,9 @@ List<CpcAlerteRecouvrement> cpcAlertesRecouvrement({
 }) {
   final f = cpcFenetre(fin: fin, auj: auj);
   final o = cpcObjectif(objectifs, 'creance_agee');
-  final seuil = o != null ? _n(o['cible']) : 60;
+  // Sans cible (la collection vide retombe pourtant sur la semence des objectifs), aucune alerte : on n'invente pas de seuil.
+  if (o == null) return const [];
+  final seuil = _n(o['cible']);
   final par = <String, ({double montant, int nb, int jours})>{};
   for (final x in factures) {
     if (!_vrai(x['assureur']) || !(_n(x['partAssurance']) > 0)) continue;

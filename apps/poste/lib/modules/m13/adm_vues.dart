@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
@@ -91,7 +92,7 @@ class _EcranEvenementsState extends State<EcranEvenements> {
             if (ctx.mounted) ToastsSigh.afficher(ctx, 'Événement inscrit au calendrier de la clinique.', type: TypeToast.succes);
           }));
 
-  Widget _carte(Fiche e, DateTime now) {
+  Widget _carte(Fiche e, DateTime now, int urgentJours) {
     final j = admJoursAvant(now, e['date']);
     final canaux = e['canaux'] is List ? [for (final x in e['canaux'] as List) '$x'] : <String>[];
     return Container(
@@ -103,7 +104,7 @@ class _EcranEvenementsState extends State<EcranEvenements> {
           Flexible(child: BadgeSigh('${e['categorie'] ?? ''}', ton: TonSigh.navy)),
           const SizedBox(width: 8),
           Text(admDelaiEvenement(j),
-              style: TextStyle(color: admDelaiUrgent(j) ? JetonsShell.danger600 : JetonsShell.slate400, fontSize: 12, height: 16 / 12, fontWeight: FontWeight.w600)),
+              style: TextStyle(color: admDelaiUrgent(j, urgentJours: urgentJours) ? JetonsShell.danger600 : JetonsShell.slate400, fontSize: 12, height: 16 / 12, fontWeight: FontWeight.w600)),
         ]),
         const SizedBox(height: 8),
         Text('${e['libelle'] ?? ''}', style: const TextStyle(color: JetonsShell.slate800, fontSize: 14, height: 20 / 14, fontWeight: FontWeight.w600)),
@@ -143,7 +144,7 @@ class _EcranEvenementsState extends State<EcranEvenements> {
             admKpis(admKpisEvenements(rows, c.aujourdhui)),
             const SizedBox(height: 16),
             if (prochains.isNotEmpty) ...[
-              CarteSigh(titre: 'Prochains événements', child: _grille([for (final e in prochains) _carte(e, c.aujourdhui)])),
+              CarteSigh(titre: 'Prochains événements', child: _grille([for (final e in prochains) _carte(e, c.aujourdhui, seuilClinique(c.magasin, 'administration.delaiUrgentEvenementJours', c.aujourdhui))])),
               const SizedBox(height: 16),
             ],
             TableauSigh(
@@ -472,9 +473,10 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
           final rows = col.actives;
           final sansNumero = admNoteSansNumero(rows);
           final now = c.aujourdhui;
+          final joursVerif = seuilClinique(c.magasin, 'administration.joursVerificationRepertoireJours', now);
           return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             admLectureSeule(c),
-            admKpis(admKpisRepertoire(rows, now)),
+            admKpis(admKpisRepertoire(rows, now, joursVerification: joursVerif)),
             const SizedBox(height: 16),
             if (admNoteDemo(rows) case final demo?) ...[
               NoteSigh(demo, ton: TonSigh.info, icone: LucideIcons.flaskConical),
@@ -522,7 +524,7 @@ class _EcranRepertoireState extends State<EcranRepertoireAmbulances> {
                       final j = admJoursDepuis(r['verifieLe'], now);
                       if (j == null) return const Text('jamais', style: TextStyle(color: JetonsShell.warning700, fontSize: 12, height: 16 / 12, fontStyle: FontStyle.italic));
                       return Text('${admDateFR(r['verifieLe'])} ($j j)',
-                          style: TextStyle(color: j > admJoursVerification ? JetonsShell.warning700 : JetonsShell.slate700, fontSize: 14, height: 20 / 14, fontWeight: j > admJoursVerification ? FontWeight.w500 : FontWeight.w400));
+                          style: TextStyle(color: j > joursVerif ? JetonsShell.warning700 : JetonsShell.slate700, fontSize: 14, height: 20 / 14, fontWeight: j > joursVerif ? FontWeight.w500 : FontWeight.w400));
                     }),
               ],
               actionsLigne: (ctx, f) => admActionsLigne(ctx, c, col, f,

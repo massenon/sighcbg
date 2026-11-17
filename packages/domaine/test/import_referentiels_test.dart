@@ -9,6 +9,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
 
 import 'import_test.dart' show MagasinMemoire;
+import 'aide_documents_fiscaux.dart';
 
 extension _Instantane on MagasinMemoire {
   /// Une copie du contenu (les tests de demande ont besoin d'un magasin par poste).
@@ -201,6 +202,7 @@ final Map<String, Map<String, Object?>> valide = {
 };
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final base = MatriceDroits.depuisJson(
       (jsonDecode(File('../rbac/data/rbac.json').readAsStringSync()) as Map)
           .cast<String, Object?>());

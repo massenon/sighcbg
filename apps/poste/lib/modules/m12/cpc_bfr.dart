@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart';
 import '../../core/jetons_shell.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -81,7 +82,7 @@ class _EtatBfr extends State<EcranBfr> {
       facturesFournisseurs: c.magasin.collection('facturesFournisseurs').actives,
       auj: c.aujourdhui,
       fin: '${_date!['fin'] ?? ''}'.isEmpty ? iso(c.aujourdhui) : _date!['fin'],
-      jours: int.tryParse('${_periode!['jours']}') ?? 90);
+      jours: int.tryParse('${_periode!['jours']}') ?? seuilClinique(c.magasin, 'comptabilite.periodeBfrJours', c.aujourdhui));
 
   void _imprimer(BuildContext ctx, ContexteEcran c) {
     final b = _calcul(c);

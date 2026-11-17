@@ -19,6 +19,9 @@ return [
     // Conservation du journal d'audit (jours). Les enveloppes ne sont JAMAIS purgées par le relais.
     'retention_audit_jours' => (int) env('RELAIS_RETENTION_AUDIT_JOURS', 365),
 
+    // Conservation MINIMALE de l'audit (jours) : en deçà, la purge refuse (RG-12, un journal trop court ne prouve plus rien). Réglable ; jamais écrite dans la commande.
+    'retention_audit_jours_min' => (int) env('RELAIS_RETENTION_AUDIT_JOURS_MIN', 30),
+
     // Espace disque libre (en %) sous lequel l'alerte « disque » se lève.
     'seuil_disque_pct' => (int) env('RELAIS_SEUIL_DISQUE_PCT', 10),
 

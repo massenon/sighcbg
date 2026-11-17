@@ -3,6 +3,7 @@
 /// (engendrés par `prototype_html/build/vecteurs-rh-b.js`, écrans montés dans Chrome).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../paie/pai_baremes.dart' show PaiTauxPaie, paiPrimeAnciennete;
 import '../format/format_fr.dart';
 import '../format/js.dart';
@@ -116,10 +117,7 @@ RhbRegimeVu? rhbRegimeDe(List<FicheRhb> regimesActifs, String? fonction) {
   return d == null ? null : RhbRegimeVu(d.libelle, d.vacations, d.repos, d.mention);
 }
 
-const rhbServices = [
-  'Médecine générale', 'Maternité', 'Chirurgie', 'Laboratoire', 'Pharmacie',
-  'Imagerie / Échographie', 'Soins infirmiers', 'Accueil', 'Direction', 'Comptabilité',
-];
+List<String> get rhbServices => ListesReference.valeurs('listes.socle.services');
 
 class RhbFonction {
   const RhbFonction(this.id, this.label, this.categorie);
