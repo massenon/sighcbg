@@ -135,7 +135,7 @@ class EcranSoins extends StatelessWidget with EcranMaquette {
           {'k': 'Observations', 'v': (r['observations'] ?? '') == '' ? '—' : r['observations']},
         ]),
       ],
-      signatures: const [Signature('Le soignant'), Signature('Le Directeur Médical')],
+      signatures: const [Signature('Le soignant'), Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)],
       reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
       utilisateur: acteur(c).nom,
       edite: c.aujourdhui);

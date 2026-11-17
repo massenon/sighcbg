@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/planning_rh_poste.dart';
 import 'package:sigh_poste/kit/kit.dart';
@@ -7,6 +8,7 @@ import 'package:sigh_poste/kit/kit.dart';
 import 'aide_polices.dart';
 import 'm14_aide.dart';
 import 'rhb_aide.dart';
+import 'aide_signataires.dart';
 
 /// Le repos individuel gouverne le contrôle de l'agent : 24 h pour lui (dérogation), 48 h pour son collègue de la même catégorie.
 bool rhbPlanningPoste24(Magasin m) {
@@ -207,8 +209,8 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer le planning'));
       expect(find.text('Planning de garde et de permanence'), findsOneWidget);
       expect(find.text('Semaine du 13/08/2026 au 19/08/2026'), findsWidgets);
-      expect(find.text('Le Surveillant Général'), findsWidgets);
-      expect(find.text('Le Directeur Médical'), findsWidgets);
+      expect(find.text(intituleSigne(magasinRhb(), PaiQualite.surveillant, 'Le Surveillant Général')), findsWidgets);
+      expect(find.text(intituleSigne(magasinRhb(), PaiQualite.directeurMedical, 'Le Directeur Médical')), findsWidgets);
     });
 
     casM14('filtres avancés : les douze cas de la maquette, la grille ET le registre se recalculent, « Effacer les filtres » remet tout', (t) async {

@@ -67,7 +67,7 @@ PieceA4 pieceAvoir(Fiche a,
           'La présente pièce contre-passe la facture désignée ci-dessus, qui reste au registre. Écriture comptable en brouillon jusqu’à validation.'),
     ],
     signatures: const [
-      Signature('Le Comptable'),
+      Signature('Le Comptable', qualite: PaiQualite.comptable),
       Signature('La Directrice de l’Administration et des Finances',
           qualite: PaiQualite.daf),
     ],

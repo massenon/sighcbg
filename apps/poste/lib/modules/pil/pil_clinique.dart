@@ -329,7 +329,7 @@ class _EtatStatsHospitalisations extends State<EcranStatsHospitalisations> {
                 'La durée moyenne ne porte que sur les séjours TERMINÉS : un séjour en cours est toujours plus court que ce qu’il sera. Le produit théorique applique le prix de journée aux journées constatées — il ne remplace pas la facturation réelle.',
                 italique: true),
           ],
-          signatures: const [Signature('Le Directeur Médical'), Signature('La Directrice de l’Administration et des Finances')],
+          signatures: const [Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical), Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf)],
         ));
   }
 

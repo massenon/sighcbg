@@ -48,7 +48,7 @@ PieceA4 pieceOperation(Fiche r,
     signatures: [
       const Signature('Le Caissier'),
       Signature('La Directrice Administrative',
-          nom: '${r['autorisePar'] ?? ''}'),
+          nom: '${r['autorisePar'] ?? ''}', nomFige: true, qualite: PaiQualite.daf),
     ],
   );
 }

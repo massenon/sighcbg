@@ -9,6 +9,7 @@ import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// PILOTAGE (PIL) — le COMPORTEMENT des treize écrans (la parité N1 est dans `pil_test.dart`). Les règles (filtres, durée moyenne sur les séjours terminés,
 /// deux colonnes jamais additionnées, rapprochement arrêté, « non calculable » ≠ zéro, périodes calendaires…) sont rejouées sur les vecteurs de la maquette
@@ -427,7 +428,7 @@ void main() {
       expect(find.text('Rapport d’activité — Direction'), findsOneWidget);
       expect(find.text('Période : octobre 2026'), findsWidgets);
       expect(find.text('Masse salariale mensuelle'), findsOneWidget);
-      expect(find.text('Le Directeur Médical'), findsWidgets);
+      expect(find.text(intituleSigne(magasinComplet(), PaiQualite.directeurMedical, 'Le Directeur Médical')), findsWidgets);
     });
     casM14('les liens du BFR mènent aux écrans de la Direction', (t) async {
       await ouvrirM14(t, magasinComplet(), 'dash-direction');

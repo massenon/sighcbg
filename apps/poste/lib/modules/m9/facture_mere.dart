@@ -348,7 +348,7 @@ class _EtatFactureMere extends State<EcranFactureMere> {
             ],
             signatures: const [
               Signature('La Directrice de l’Administration et des Finances',
-                  mention: 'Signature et cachet'),
+                  mention: 'Signature et cachet', qualite: PaiQualite.daf),
               Signature('Pour la compagnie', mention: 'Reçu le / Signature'),
             ]));
   }

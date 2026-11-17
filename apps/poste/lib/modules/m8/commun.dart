@@ -380,7 +380,7 @@ PieceA4 pieceEngagement(Fiche f,
     signatures: [
       Signature('Le patient',
           nom: '${f['patient'] ?? ''}', mention: 'Lu et approuvé'),
-      Signature('Le comptable', nom: '${e['recuPar'] ?? ''}')
+      Signature('Le comptable', nom: '${e['recuPar'] ?? ''}', nomFige: true, qualite: PaiQualite.comptable)
     ],
   );
 }

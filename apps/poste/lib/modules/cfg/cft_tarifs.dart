@@ -922,7 +922,7 @@ void _imprimerGrille(BuildContext ctx, ContexteEcran c, List<Map<String, Object?
           ColonneEtat(libelle: 'Version', droite: true, valeur: (r) => r['version'] == null ? '' : '${r['version']}'),
         ], lignes: lignes)),
       ],
-      signatures: const [cfaSignDa, Signature('La Direction')]);
+      signatures: const [cfaSignDa, Signature('La Direction', qualite: PaiQualite.direction)]);
 }
 
 /// La modale de proposition d'un changement de prix (ou, sans [ligne], d'une nouvelle prestation).

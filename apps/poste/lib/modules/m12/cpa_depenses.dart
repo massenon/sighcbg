@@ -497,7 +497,7 @@ class _EtatDepenses extends State<EcranDepenses> {
             ],
             signatures: const [
               Signature('Le bénéficiaire'),
-              Signature('Le Comptable'),
+              Signature('Le Comptable', qualite: PaiQualite.comptable),
               Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf),
             ]));
   }
@@ -533,7 +533,7 @@ class _EtatDepenses extends State<EcranDepenses> {
               ], lignes: l)
             ],
             signatures: const [
-              Signature('Le Comptable'),
+              Signature('Le Comptable', qualite: PaiQualite.comptable),
               Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf),
             ]));
   }

@@ -130,7 +130,7 @@ class _VueDirectionState extends State<_VueDirection> {
           tableaux: [rapTableauDirection(rows, axe)],
           signatures: const [
             Signature('La Directrice Administrative', qualite: PaiQualite.daf),
-            Signature('Le Comptable'),
+            Signature('Le Comptable', qualite: PaiQualite.comptable),
           ],
         ));
   }

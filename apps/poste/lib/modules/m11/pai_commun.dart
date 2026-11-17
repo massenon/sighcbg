@@ -22,9 +22,10 @@ export '../m9/commun.dart' show pieceM9, monoTexte, tiret, ecoute, deuxCartes, C
 int paiAnnee(ContexteEcran c) => paiExercice(c.magasin.collection('exercices').actives, c.aujourdhui);
 
 /// Les signataires des pièces de paie, LUS AU PERSONNEL (poste et fonction) : aucun nom d'agent n'est écrit dans le code. Personne ne porte la
-/// qualité : la pièce imprime une ligne de signature sans nom, que l'on signe à la main.
+/// qualité : la pièce imprime une ligne de signature sans nom, que l'on signe à la main. L'INTITULÉ de la ligne est lu à l'organigramme à l'aperçu (`PieceA4.avecSignatures`) ;
+/// [role] n'est que le repli quand l'organigramme ne nomme aucun poste de cette qualité.
 Signature signataire(Magasin m, String role, PaiQualite q, {String mention = 'Signature'}) =>
-    Signature(role, nom: paiSignataire(m.collection('personnel').actives, q), mention: mention);
+    Signature(role, nom: paiSignataire(m.collection('personnel').actives, q), mention: mention, qualite: q);
 
 Signature signComptable(Magasin m) => signataire(m, 'Le Comptable', PaiQualite.comptable);
 

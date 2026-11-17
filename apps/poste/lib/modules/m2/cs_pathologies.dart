@@ -170,7 +170,7 @@ class _Corps extends StatelessWidget {
                 italique: true),
           ],
           signatures: const [
-            Signature('Le Directeur Médical'),
+            Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical),
             Signature('La Directrice Administrative', qualite: PaiQualite.daf),
           ],
         ));

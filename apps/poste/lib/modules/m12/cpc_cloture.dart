@@ -374,7 +374,7 @@ class _EtatCloture extends State<EcranCloture> {
                 ColonneEtat(libelle: 'Crédit', droite: true, valeur: (l) => m(l['credit']), somme: (l) => n(l['credit'])),
               ], lignes: lignes)
             ],
-            signatures: [Signature('Le Comptable', nom: '${x['demandePar'] ?? ''}'), Signature('La Direction', nom: '${x['validePar'] ?? ''}')]));
+            signatures: [Signature('Le Comptable', nom: '${x['demandePar'] ?? ''}', nomFige: true, qualite: PaiQualite.comptable), Signature('La Direction', nom: '${x['validePar'] ?? ''}', nomFige: true, qualite: PaiQualite.direction)]));
   }
 
   // ----------------------------------------------------------------------------------------------------------------------------------------------

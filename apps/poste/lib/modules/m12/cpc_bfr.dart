@@ -105,7 +105,7 @@ class _EtatBfr extends State<EcranBfr> {
                 ColonneEtat(libelle: 'Montant', droite: true, valeur: (r) => m(r['montant']), somme: (r) => n(r['montant'])),
               ], lignes: cpcLignesBfr(b))
             ],
-            signatures: [const Signature('Le Comptable'), signDafCompta]));
+            signatures: [const Signature('Le Comptable', qualite: PaiQualite.comptable), signDafCompta]));
   }
 
   Widget _vue(BuildContext ctx, ContexteEcran c) {

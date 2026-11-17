@@ -60,7 +60,7 @@ class EcranAnalytique extends StatelessWidget with EcranMaquette {
                 ColonneEtat(libelle: 'Résultat', droite: true, valeur: (x) => m(x['resultat']), somme: (x) => n(x['resultat'])),
               ], lignes: [for (final r in rows) _fiche(r)])
             ],
-            signatures: const [signComptable, Signature('La Direction')]));
+            signatures: const [signComptable, Signature('La Direction', qualite: PaiQualite.direction)]));
   }
 
   @override

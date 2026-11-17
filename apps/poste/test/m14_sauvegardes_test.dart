@@ -10,6 +10,7 @@ import 'package:sigh_poste/modules/m14/sauvegardes.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// m14-sauvegardes : l'historique est CALCULÉ (graine 3517, rejoué sur les vecteurs par le domaine), « Restaurer » est SIMULÉ ; générer, lancer, télécharger et
 /// tester travaillent sur le magasin RÉEL du poste. Les écritures de fichier sont interceptées : aucun test n'écrit sur le disque.
@@ -155,7 +156,7 @@ void main() {
     await ouvrirM14(t, magasinM14(), 'm14-sauvegardes');
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Exporter le journal des sauvegardes'));
     expect(find.text('Historique glissant — situation au 30/10/2026'), findsOneWidget);
-    expect(find.text('La Directrice Administrative'), findsOneWidget);
+    expect(find.text(intituleSigne(magasinM14(), PaiQualite.daf, 'La Directrice Administrative')), findsOneWidget);
     expect(find.text('TACHEDI Arialu'), findsOneWidget);
   });
 

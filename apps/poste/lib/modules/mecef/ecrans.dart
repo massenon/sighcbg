@@ -896,7 +896,7 @@ class EcranMecefAvoirs extends StatelessWidget with EcranMaquette {
                 italique: true),
           ],
           signatures: const [
-            Signature('Le Comptable'),
+            Signature('Le Comptable', qualite: PaiQualite.comptable),
             Signature('La Directrice Administrative', qualite: PaiQualite.daf),
           ],
         ));

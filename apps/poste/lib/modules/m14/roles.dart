@@ -2109,7 +2109,7 @@ void _imprimerMatrice(BuildContext ctx, _Ctx x) {
         signatures: const [
           Signature('L’Administrateur système'),
           Signature('La Directrice Administrative', qualite: PaiQualite.daf),
-          Signature('Le Directeur Médical'),
+          Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical),
         ],
       ));
 }

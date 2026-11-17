@@ -351,8 +351,8 @@ class _EtatStatsLabo extends State<EcranStatsLabo> {
             ])),
           ],
           signatures: const [
-            Signature('Le Biologiste médical'),
-            Signature('Le Directeur Médical'),
+            Signature('Le Biologiste médical', qualite: PaiQualite.laborantin),
+            Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical),
           ],
         ));
   }

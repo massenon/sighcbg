@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// m10-stats-gardes, m10-stats-permanences, m10-stats-presence : les écrans MONTÉS sur le jeu du poste, filtres réglés comme le fait l'agent, et comparés
 /// aux relevés de la maquette (packages/domaine/test/vecteurs/rhb.json). Les règles chiffrées sont rejouées par packages/domaine/test/rhb_regles_test.dart.
@@ -111,9 +113,9 @@ void main() {
       expect(find.text('État des gardes effectuées'), findsOneWidget);
       expect(find.text('du 01/08/2026 au 31/08/2026'), findsWidgets);
       expect(find.text('Vacations travaillées'), findsWidgets);
-      expect(find.text('Le Surveillant Général'), findsWidgets);
+      expect(find.text(intituleSigne(magasinM14(), PaiQualite.surveillant, 'Le Surveillant Général')), findsWidgets);
       expect(find.text('GEVAMIAN Yelia'), findsWidgets);
-      expect(find.text('La Directrice Administrative'), findsWidgets);
+      expect(find.text(intituleSigne(magasinM14(), PaiQualite.daf, 'La Directrice Administrative')), findsWidgets);
       expect(find.text('TOTAL'), findsNWidgets(2)); // l'en-tête de la colonne et la ligne de total
     });
   });
@@ -158,8 +160,8 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer l’état'));
       expect(find.text('Statistiques des permanences'), findsWidgets);
       expect(find.text('51'), findsWidgets);
-      expect(find.text('Le Surveillant'), findsWidgets);
-      expect(find.text('La Directrice de l’Administration et des Finances'), findsWidgets);
+      expect(find.text(intituleSigne(magasinM14(), PaiQualite.surveillant, 'Le Surveillant')), findsWidgets);
+      expect(find.text(intituleSigne(magasinM14(), PaiQualite.daf, 'La Directrice de l’Administration et des Finances')), findsWidgets);
     });
   });
 
@@ -202,7 +204,7 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer l’état'));
       expect(find.text('Taux de présence par service'), findsWidgets);
       expect(find.textContaining('Le retard est compté comme une présence'), findsOneWidget);
-      expect(find.text('Le Surveillant'), findsWidgets);
+      expect(find.text(intituleSigne(magasinM14(), PaiQualite.surveillant, 'Le Surveillant')), findsWidgets);
     });
   });
 }

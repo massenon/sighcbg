@@ -128,7 +128,7 @@ class _EtatBanques extends State<EcranBanques> {
               ])),
               BlocTexte(cpbPhraseRapprochement(ecart), italique: true),
             ],
-            signatures: [Signature('Le Comptable', nom: '${r['operateur']}'), signDafCompta]));
+            signatures: [Signature('Le Comptable', nom: '${r['operateur']}', nomFige: true, qualite: PaiQualite.comptable), signDafCompta]));
   }
 
   @override

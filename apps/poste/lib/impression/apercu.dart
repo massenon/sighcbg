@@ -77,8 +77,8 @@ Future<void> afficherApercu(BuildContext context, PieceA4 piece0) {
   // L'EN-TÊTE LÉGAL EST CELUI DE LA DATE DE LA PIÈCE (`P.etat({date})`) : une pièce qui ne fixe pas son identité (état du jour) reçoit la version en force à la
   // date d'édition, lue au magasin ; une facture, un avoir, un reçu l'ont fixée à leur date.
   final identifiee = piece0.identite != null || magasin == null ? piece0 : piece0.avecIdentite(identiteImprimeeDe(magasin, piece0.edite));
-  // LES SIGNATAIRES SE LISENT AU PERSONNEL (par qualité), jamais dans le code : sans titulaire, la ligne de signature reste sans nom.
-  final piece = magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives);
+  // LES SIGNATAIRES SE LISENT AU PERSONNEL (le nom, par qualité) ET À L'ORGANIGRAMME (l'intitulé du poste), jamais dans le code : sans titulaire, la ligne de signature reste sans nom.
+  final piece = magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives, postes: magasin.collection('postes').actives);
   return afficherModale<void>(
       context,
       titre: piece.titre,
@@ -223,7 +223,7 @@ Future<void> afficherApercuLot(BuildContext context, List<PieceA4> pieces0) {
     for (final p0 in pieces0)
       () {
         final identifiee = p0.identite != null || magasin == null ? p0 : p0.avecIdentite(identiteImprimeeDe(magasin, p0.edite));
-        return magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives);
+        return magasin == null ? identifiee : identifiee.avecSignatures(magasin.collection('personnel').actives, postes: magasin.collection('postes').actives);
       }(),
   ];
   var i = 0;

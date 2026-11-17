@@ -466,7 +466,7 @@ Future<void> imprimerResultat(BuildContext ctx, Fiche r) {
               italique: true),
         ],
         signatures: [
-          Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}'),
+          Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}', nomFige: true, qualite: PaiQualite.laborantin),
           const Signature('Le Biologiste responsable',
               qualite: PaiQualite.laborantin),
         ],
@@ -620,7 +620,7 @@ Future<void> imprimerCompteRendu(
         ],
         blocs: blocs,
         signatures: const [
-          Signature('Le Biologiste médical', mention: 'Validation biologique')
+          Signature('Le Biologiste médical', mention: 'Validation biologique', qualite: PaiQualite.laborantin)
         ],
       ));
 }

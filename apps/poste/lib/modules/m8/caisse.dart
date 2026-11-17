@@ -909,7 +909,7 @@ class _EcranCaisseState extends State<EcranCaisse> {
           ],
           signatures: [
             Signature('Le Caissier', nom: acteur(c).nom),
-            const Signature('Le Comptable'),
+            const Signature('Le Comptable', qualite: PaiQualite.comptable),
             const Signature('La Directrice Administrative',
                 qualite: PaiQualite.daf)
           ],

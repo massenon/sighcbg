@@ -4,6 +4,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
+import 'aide_signataires.dart';
 import 'm11_aide.dart';
 
 /// M11 — bulletins, validation de la Direction, heures supplémentaires, avances, prêts-études : les valeurs attendues sont celles que les écrans RÉELS de
@@ -480,8 +481,13 @@ void main() {
       }
       expect(tt.any((x) => x.startsWith('Il est accordé à AKIAFADJO Yelia, matricule 9')), true);
       expect(tt.any((x) => x.contains('jusqu’à apurement complet.')), true);
+      // Une signature à qualité porte l'intitulé du poste de l'organigramme (à défaut, celui de la maquette) ; les autres gardent leur intitulé.
+      final qualites = {'Le Comptable': PaiQualite.comptable, 'La Directrice Administrative': PaiQualite.daf};
+      final m = magasin();
       for (final s in lm(piece['signatures'])) {
-        expect(tt, contains(s['role']));
+        final role = '${s['role']}';
+        final q = qualites[role];
+        expect(tt, contains(q == null ? role : intituleSigne(m, q, role)), reason: role);
       }
     });
   });
