@@ -7,7 +7,7 @@ Prérequis : Git, Flutter (avec Windows Desktop et Visual Studio 2022 C++ sous W
 ```bash
 git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v29
+git checkout livraison/baguidi-v30
 ```
 
 ## 2. Vérifier avant de lancer
@@ -27,7 +27,7 @@ flutter pub get
 flutter run -d windows --dart-define=SIGH_MODE=fileul
 ```
 
-Sous Linux, remplacer `-d windows` par `-d linux`. Le premier lancement charge le jeu de démonstration Baguidi.
+`SIGH_MODE` n'amorce que le mode d'un poste neuf ; ensuite le mode se décide dans les réglages du poste. Sans `SIGH_ADMIN`, le secret d'administration de la mère est `admin-local`. Sous Linux, remplacer `-d windows` par `-d linux`. Le premier lancement charge le jeu de démonstration Baguidi.
 
 ## 4. Lancer la mère
 
@@ -50,9 +50,21 @@ cp .env.example .env
 php artisan key:generate
 # renseigner DB_PASSWORD et RELAIS_SECRET_MERE dans .env
 php artisan migrate
-php artisan relais:superadmin votre@courriel.bj --mot-de-passe='douze-caracteres-minimum'
+php artisan relais:superadmin votre@courriel.bj --mot-de-passe='un-mot-de-passe-long'
 php artisan serve
 ```
+
+## 5 bis. Mobile (Android)
+
+```bash
+cd apps/mobile
+flutter pub get
+flutter run                                    # vise https://relais.exemple.bj par défaut
+flutter run --dart-define=SIGH_RELAIS=<adresse du relais>
+flutter build apk --release --dart-define=SIGH_RELAIS=https://sighnbg.cliniquebaguidi.com --dart-define=SIGH_VERSION=1.0.0+1
+```
+
+Limites : le build « release » est signé avec la clé de débogage (aucune signature de production n'est configurée) et le manifeste de production ne déclare pas la permission `INTERNET` (seuls ceux de débogage et de profil la portent). Aucun build Android n'a été exécuté ici.
 
 ## 6. Suites complètes (longues)
 

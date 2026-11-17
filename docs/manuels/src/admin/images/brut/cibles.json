@@ -270,24 +270,36 @@
   },
   "admin-21-sms-passerelle": {
     "largeur": 1800,
-    "hauteur": 1375,
+    "hauteur": 2063,
     "cibles": {
       "Interrupteur": [
         56.0,
-        684.0,
+        1205.0,
         50.0,
         50.0
       ],
       "Tester l’envoi": [
         56.0,
-        744.0,
+        1265.0,
         183.0,
         48.0
       ],
       "Mots interdits": [
         56.0,
-        925.0,
+        1446.0,
         1688.0,
+        43.0
+      ],
+      "Fournisseur": [
+        56.0,
+        741.0,
+        1688.0,
+        330.0
+      ],
+      "Paramètres manquants": [
+        30.0,
+        596.0,
+        1740.0,
         43.0
       ]
     }
@@ -366,11 +378,17 @@
         30.0,
         145.0,
         860.0,
-        521.0
+        679.0
+      ],
+      "Intégrée au boîtier": [
+        56.0,
+        528.0,
+        808.0,
+        95.0
       ],
       "Enregistrer l’imprimante": [
         56.0,
-        595.0,
+        753.0,
         273.0,
         45.0
       ]
@@ -388,7 +406,7 @@
       ],
       "Régler à partir d’une date": [
         56.0,
-        -12251.0,
+        -19598.0,
         244.0,
         35.0
       ]
@@ -508,6 +526,23 @@
       ]
     }
   },
+  "admin-34-facture-tiers": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {}
+  },
+  "admin-35-pta-referentiels": {
+    "largeur": 1800,
+    "hauteur": 1625,
+    "cibles": {
+      "Référentiels du plan": [
+        56.0,
+        861.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
   "admin-33-param-pta": {
     "largeur": 1800,
     "hauteur": 1625,
@@ -532,20 +567,159 @@
       ]
     }
   },
-  "admin-34-facture-tiers": {
+  "admin-38-base-portable": {
+    "largeur": 1800,
+    "hauteur": 2125,
+    "cibles": {
+      "Exporter la base complète": [
+        51.0,
+        316.0,
+        291.0,
+        45.0
+      ],
+      "Fichier d’export (.sghx)": [
+        51.0,
+        661.0,
+        1570.0,
+        48.0
+      ],
+      "Vérifier le fichier": [
+        51.0,
+        724.0,
+        365.0,
+        48.0
+      ],
+      "Importer dans un magasin neuf": [
+        426.0,
+        724.0,
+        335.0,
+        45.0
+      ],
+      "Préparer la mise à jour": [
+        51.0,
+        1083.0,
+        259.0,
+        45.0
+      ],
+      "Mise à jour autorisée": [
+        51.0,
+        1025.0,
+        1698.0,
+        43.0
+      ],
+      "Motif de la levée": [
+        51.0,
+        1169.0,
+        1698.0,
+        48.0
+      ],
+      "Lever le blocage": [
+        51.0,
+        1226.0,
+        348.0,
+        48.0
+      ]
+    }
+  },
+  "admin-39-cle-restauration": {
     "largeur": 1800,
     "hauteur": 1250,
-    "cibles": {}
+    "cibles": {
+      "Clé en service": [
+        25.0,
+        25.0,
+        1750.0,
+        43.0
+      ],
+      "Texte de la copie papier": [
+        51.0,
+        175.0,
+        270.0,
+        60.0
+      ],
+      "Fichier de sauvegarde de clé": [
+        331.0,
+        175.0,
+        287.0,
+        60.0
+      ],
+      "Empreinte notée sur le scellé": [
+        51.0,
+        365.0,
+        1698.0,
+        48.0
+      ],
+      "Contrôler l’empreinte et restaurer": [
+        51.0,
+        428.0,
+        404.0,
+        45.0
+      ]
+    }
   },
-  "admin-35-pta-referentiels": {
+  "admin-40-param-liste": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-41-param-seuil": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "Carte": [
+        56.0,
+        145.0,
+        1688.0,
+        25.0
+      ]
+    }
+  },
+  "admin-42-identite-email": {
+    "largeur": 1800,
+    "hauteur": 1250,
+    "cibles": {
+      "E-mail": [
+        490.0,
+        508.0,
+        354.0,
+        25.0
+      ]
+    }
+  },
+  "admin-43-smtp": {
     "largeur": 1800,
     "hauteur": 1625,
     "cibles": {
-      "Référentiels du plan": [
+      "Adresse d’expéditeur": [
         56.0,
-        861.0,
-        1688.0,
-        25.0
+        926.0,
+        834.0,
+        75.0
+      ],
+      "Répondre à": [
+        56.0,
+        1021.0,
+        834.0,
+        100.0
+      ],
+      "Enregistrer la messagerie": [
+        56.0,
+        1211.0,
+        286.0,
+        45.0
+      ],
+      "Envoyer un message de test": [
+        56.0,
+        1510.0,
+        309.0,
+        45.0
       ]
     }
   }

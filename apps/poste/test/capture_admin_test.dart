@@ -10,14 +10,20 @@ import 'package:http/testing.dart';
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/theme.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/donnees/base_portable_poste.dart';
+import 'package:sigh_poste/donnees/cle_clinique_poste.dart';
+import 'package:sigh_poste/donnees/maj_poste.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
+import 'package:sigh_poste/donnees/persistance.dart';
+import 'package:sigh_poste/modules/cfg/cfg_base_portable.dart';
+import 'package:sigh_poste/modules/mere/mrd_cle_restauration.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
 import 'package:sigh_poste/mere/client_mere.dart';
 import 'package:sigh_poste/modules/mere/mra_supervision.dart';
 import 'package:sigh_poste/modules/mere/mrb_source.dart';
 import 'package:sigh_poste/shell/contexte_ecran.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show Droit, smsStatutMotsInterdits;
+import 'package:sigh_domaine/sigh_domaine.dart' show Droit, DroitsGestes, smsStatutMotsInterdits;
 
 import 'aide_polices.dart';
 import 'mere_b_test.dart' as b;
@@ -180,13 +186,62 @@ Future<void> _ecranMere(WidgetTester t, Widget ecran) async {
   await _pomper(t);
 }
 
+/// Un écran de configuration du poste, dessiné seul (la décision 12 du 17/11/2026) : un magasin vide, les trois services de la mise à jour branchés sur un dossier de données
+/// d'essai, le rôle administrateur. Poste FILEUL : son export tient lieu de sauvegarde, ce qui permet de montrer « Mise à jour AUTORISÉE ».
+final List<int> _cleCapture = List<int>.generate(32, (i) => (i * 17 + 3) % 256);
+
+Future<Magasin> _magasinServices(Directory dossier) async {
+  final m = Magasin(const {}, 'POSTE');
+  await m.brancherPersistance(PersistanceMemoire(), delai: Duration.zero);
+  bool peut(String g) => DroitsGestes(fiches: m.collection('rbac').actives).peut('admin', g);
+  final base = ServiceBasePortable(magasin: m, dossierDonnees: dossier.path, role: () => 'fileul', cleClinique: () async => _cleCapture, peut: peut)..installer();
+  ServiceMiseAJour(magasin: m, dossierDonnees: dossier.path, base: base, role: () => 'fileul', peut: peut, versionCourante: '0.1.0').installer();
+  ServiceCleClinique(magasin: m, dossierDonnees: dossier.path, peut: peut).installer();
+  return m;
+}
+
+Future<void> _ecranCfg(WidgetTester t, String ecranId, Widget ecran, Magasin magasin) async {
+  await t.pumpWidget(RepaintBoundary(
+      key: const Key('cap'),
+      child: MaterialApp(
+          theme: ThemeSigh.clair(),
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+              backgroundColor: const Color(0xFFF8FAFC),
+              body: ContexteEcran(
+                  ecranId: ecranId,
+                  role: 'admin',
+                  droit: const Droit(voir: true, editer: true, annuler: true),
+                  magasin: magasin,
+                  utilisateur: 'ADMIN',
+                  aller: (_) {},
+                  horloge: () => DateTime.now(),
+                  child: SingleChildScrollView(padding: const EdgeInsets.all(20), child: ecran))))));
+  await _pomper(t);
+}
+
+/// Les opérations de fichier et de chiffrement rendent la main à la vraie boucle d'événements entre deux pompes.
+Future<void> _attendre(WidgetTester t, Finder jusqua) async {
+  for (var i = 0; i < 160; i++) {
+    await t.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 25)));
+    await t.pump(const Duration(milliseconds: 20));
+    if (jusqua.evaluate().isNotEmpty) return;
+  }
+}
+
 /// La mère simulée porte aussi la passerelle SMS (ADR-0009) et l'état de la satisfaction en ligne : numéros MASQUÉS, aucun texte, aucun nom.
 class _FauxMere extends b.Faux {
   @override
   Future<MrbSms?> sms() async => MrbSms(
       actif: true,
       relaisConfigure: true,
-      relais: const {'plafond_jour': 100, 'envoyes_aujourdhui': 3, 'en_attente': 1, 'pilote': 'journal'},
+      relais: const {
+        'plafond_jour': 100,
+        'envoyes_aujourdhui': 3,
+        'en_attente': 1,
+        'pilote': 'vonage',
+        'parametres_manquants': ['RELAIS_SMS_VONAGE_CLE', 'RELAIS_SMS_VONAGE_SECRET', 'RELAIS_SMS_EXPEDITEUR']
+      },
       statutMotsInterdits: smsStatutMotsInterdits,
       journal: [
         {'id': 'sms-3', 'depose': _jour.subtract(const Duration(minutes: 4)).millisecondsSinceEpoch, 'numero': '+229 01 •• •• •• 12', 'modele': 'Rappel de rendez-vous', 'longueur': 96, 'statut': 'en_attente', 'tentatives': 0, 'erreur': ''},
@@ -420,12 +475,14 @@ void main() {
     await _png(t, 'admin-20-mere-reinit', {});
   });
 
-  cas('Mère : passerelle SMS', 1440, 1100, (t) async {
+  cas('Mère : passerelle SMS', 1440, 1650, (t) async {
     await _posteMere(t, 'mere-sms-passerelle');
     await _png(t, 'admin-21-sms-passerelle', {
       'Interrupteur': find.byKey(const Key('sms:interrupteur')),
       'Tester l’envoi': find.byKey(const Key('sms:tester')),
       'Mots interdits': find.byKey(const Key('sms:statut-mots')),
+      'Fournisseur': find.byKey(const Key('sms:fournisseurs')),
+      'Paramètres manquants': find.byKey(const Key('sms:parametres-manquants')),
     });
   });
 
@@ -464,6 +521,7 @@ void main() {
     await _voir(t, find.byKey(const Key('mecef:imprimante')));
     await _png(t, 'admin-25-mecef-imprimante', {
       'Imprimante': find.byKey(const Key('mecef:imprimante')),
+      'Intégrée au boîtier': find.byKey(const Key('kit:champ:imprimanteIntegree')),
       'Enregistrer l’imprimante': _bouton('Enregistrer l’imprimante'),
     });
   });
@@ -566,6 +624,78 @@ void main() {
     await _posteMere(t, 'm13-plan-annuel');
     await _voir(t, _texte('Référentiels du plan'));
     await _png(t, 'admin-35-pta-referentiels', {'Référentiels du plan': _texte('Référentiels du plan')});
+  });
+
+  cas('Export, import et mise à jour', 1440, 1700, (t) async {
+    final dossier = Directory('${Directory.systemTemp.path}/sigh-cap')..createSync(recursive: true);
+    addTearDown(() {
+      if (dossier.existsSync()) dossier.deleteSync(recursive: true);
+    });
+    final m = await _magasinServices(dossier);
+    await _ecranCfg(t, 'cfg-base-portable', const EcranBasePortable(), m);
+    await t.tap(find.byKey(const Key('base:exporter')));
+    await _attendre(t, find.byKey(const Key('base:export-ok')));
+    await t.ensureVisible(find.byKey(const Key('maj:preparer')));
+    await t.tap(find.byKey(const Key('maj:preparer')));
+    await _attendre(t, find.byKey(const Key('maj:autorisee')));
+    await _png(t, 'admin-38-base-portable', {
+      'Exporter la base complète': find.byKey(const Key('base:exporter')),
+      'Fichier d’export (.sghx)': find.byKey(const Key('base:fichier')),
+      'Vérifier le fichier': find.byKey(const Key('base:verifier')),
+      'Importer dans un magasin neuf': find.byKey(const Key('base:importer')),
+      'Préparer la mise à jour': find.byKey(const Key('maj:preparer')),
+      'Mise à jour autorisée': find.byKey(const Key('maj:autorisee')),
+      'Motif de la levée': find.byKey(const Key('maj:motif')),
+      'Lever le blocage': find.byKey(const Key('maj:lever')),
+    });
+  });
+
+  cas('Restaurer la clé de la clinique', 1440, 1000, (t) async {
+    final dossier = Directory('${Directory.systemTemp.path}/sigh-cap-cle')..createSync(recursive: true);
+    addTearDown(() {
+      if (dossier.existsSync()) dossier.deleteSync(recursive: true);
+    });
+    final m = await _magasinServices(dossier);
+    await _ecranCfg(t, 'mere-cle-restauration', const EcranCleRestauration(), m);
+    await _png(t, 'admin-39-cle-restauration', {
+      'Clé en service': find.byKey(const Key('cle:etat')),
+      'Texte de la copie papier': find.byKey(const Key('cle:source-texte')),
+      'Fichier de sauvegarde de clé': find.byKey(const Key('cle:source-fichier')),
+      'Empreinte notée sur le scellé': find.byKey(const Key('cle:empreinte')),
+      'Contrôler l’empreinte et restaurer': find.byKey(const Key('cle:restaurer')),
+    });
+  });
+
+  cas('Paramètres : une liste de référence', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Services de la clinique');
+    await _voir(t, carte);
+    await _png(t, 'admin-40-param-liste', {'Carte': carte});
+  });
+
+  cas('Paramètres : un seuil de clinique', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-systeme');
+    await _toucher(t, _onglet('parametres'));
+    final carte = _texte('Renouvellement du mot de passe (jours)');
+    await _voir(t, carte);
+    await _png(t, 'admin-41-param-seuil', {'Carte': carte});
+  });
+
+  cas('Identité : l’e-mail de la clinique', 1440, 1000, (t) async {
+    await _posteMere(t, 'cfg-branding');
+    await _voir(t, find.textContaining('contact@cliniquebaguidi.com'));
+    await _png(t, 'admin-42-identite-email', {'E-mail': find.textContaining('contact@cliniquebaguidi.com')});
+  });
+
+  cas('Messagerie (SMTP)', 1440, 1300, (t) async {
+    await _posteMere(t, 'cfg-smtp');
+    await _png(t, 'admin-43-smtp', {
+      'Adresse d’expéditeur': find.byKey(const Key('kit:champ:expediteur')),
+      'Répondre à': find.byKey(const Key('kit:champ:repondreA')),
+      'Enregistrer la messagerie': _bouton('Enregistrer la messagerie'),
+      'Envoyer un message de test': _bouton('Envoyer un message de test'),
+    });
   });
 
   cas('Barre : décisions en attente de la mère', 1440, 700, (t) async {
