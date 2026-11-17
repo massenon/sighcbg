@@ -33,7 +33,7 @@ void main() {
   Map<String, Object?> copie() => (jsonDecode(jsonEncode(base)) as Map).cast<String, Object?>();
 
   test('la ligne de base surveille B et H, et chaque fichier toléré dit pourquoi', () {
-    expect(familles(base).keys.toSet(), {'B', 'H', 'E', 'C'}, reason: 'E (numérotation, lot 2) est sous cliquet à plafond zéro : aucun fichier toléré ; C (seuils, lot 3) a ses plafonds motivés');
+    expect(familles(base).keys.toSet(), {'B', 'H', 'E', 'C', 'D', 'G'}, reason: 'E (numérotation, lot 2) est sous cliquet à plafond zéro : aucun fichier toléré ; C (seuils), D (listes) et G (coordonnées) ont leurs plafonds motivés');
     expect((familles(base)['E'] as Map), isEmpty);
     for (final f in familles(base).entries) {
       for (final e in (f.value as Map).entries) {
@@ -43,8 +43,8 @@ void main() {
         expect('${t['motif'] ?? ''}'.trim(), isNotEmpty, reason: '${f.key} ${e.key}');
       }
     }
-    // Le lot 1 a vidé la paie et le fiscal : aucun de leurs fichiers n'est toléré.
-    final toleres = [for (final f in familles(base).values) ...(f as Map).keys.cast<String>()];
+    // Le lot 1 a vidé la paie et le fiscal : aucun de leurs fichiers n'est toléré aux familles B et H (taux, montants, barèmes ; les familles C, D, G des lots suivants ont leurs propres motifs).
+    final toleres = [for (final f in ['B', 'H']) ...(familles(base)[f] as Map).keys.cast<String>()];
     for (final lot1 in ['paie/pai_moteur.dart', 'paie/pai_baremes.dart', 'configuration/confirmations_fiscales.dart', 'rh/rhc_regles.dart', 'rh/rhb_regles.dart', 'administration/adm_regles.dart']) {
       expect(toleres.where((x) => x.endsWith(lot1)), isEmpty, reason: lot1);
     }

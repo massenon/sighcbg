@@ -284,6 +284,7 @@ const ECARTES = [
   // E — préfixes
   ['E', /./, /'(PLG|ACT|TAR|ANA)-\$\{?(nom|p\[)|PAA-\$\{switch|ECH-\$\{|AN-PROV-|PAIE-\$\{l\.periode\}/, 'identifiant technique interne'],
   // G — libellés d'organisation
+  ['G', /parametres\/definitions\.dart$/, null, 'valeur d’attente SEMÉE d’un réglage (un seul endroit la dit : le défaut de sa définition)'],
   ['G', /bloc_avis_medical|bloc_regles\.dart/, /Procureur/, 'mention légale (RG-07 : avis du Procureur)'],
   ['G', /shell\/coque\.dart$/, null, 'nom de domaine du ruban (manifeste)'],
   ['G', /rapports\/rap_regles\.dart$/, null, 'identifiant de section d’un modèle de rapport (toléré au cliquet des rôles)'],
