@@ -1,6 +1,6 @@
 {
  "nom": "103-ins-configurations",
- "ecran": "index",
+ "ecran": null,
  "role": "admin",
  "taille": [
   1440.0,
@@ -8,6 +8,51 @@
  ],
  "echelle": 1.25,
  "boutons": [
+  {
+   "libelle": "Direction",
+   "rect": [
+    862.9,
+    141.0,
+    116.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Statistiques de la Direction",
+   "rect": [
+    987.4,
+    141.0,
+    239.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Pilotage & analyse",
+   "rect": [
+    1235.0,
+    141.0,
+    181.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Rôles & permissions",
+   "rect": [
+    1228.8,
+    254.0,
+    166.2,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Tout consulter",
+   "rect": [
+    1262.9,
+    673.0,
+    132.1,
+    30.0
+   ]
+  },
   {
    "libelle": "Activer la mère",
    "rect": [
@@ -194,29 +239,29 @@
   "domaine-Pilotage": [
    792.5,
    60.0,
-   110.2,
+   111.0,
    36.0
   ],
   "raccourci-Patients": [
-   919.7,
+   920.5,
    60.0,
    99.1,
    36.0
   ],
   "raccourci-Consultations": [
-   1020.7,
+   1021.5,
    60.0,
    137.3,
    36.0
   ],
   "raccourci-Pharmacie": [
-   1160.0,
+   1160.8,
    60.0,
    115.9,
    36.0
   ],
   "raccourci-Facturation": [
-   1277.9,
+   1278.7,
    60.0,
    120.7,
    36.0
@@ -239,7 +284,7 @@
    1440.0,
    2.0
   ],
-  "index|fileul": [
+  "dash-admin|fileul": [
    0.0,
    100.0,
    1440.0,
@@ -257,11 +302,71 @@
    43.6,
    17.0
   ],
+  "fil-lien:2": [
+   163.4,
+   116.0,
+   108.3,
+   17.0
+  ],
   "titre-page": [
    24.0,
    141.0,
-   112.5,
+   453.8,
    28.0
+  ],
+  "pil:premier-regard": [
+   24.0,
+   233.0,
+   1392.0,
+   108.0
+  ],
+  "pil:regard-lien:m14-roles": [
+   1228.8,
+   254.0,
+   166.2,
+   30.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   358.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   372.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   407.0,
+   1390.0,
+   112.0
+  ],
+  "kit:kpi": [
+   24.0,
+   536.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   553.0,
+   122.8,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   573.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   553.0,
+   36.0,
+   36.0
   ],
   "pied-legal": [
    0.0,

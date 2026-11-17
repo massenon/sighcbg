@@ -157,8 +157,26 @@
   "recherche-globale": [
    294.0,
    10.0,
-   310.6,
+   216.4,
    36.0
+  ],
+  "selecteur-exercice": [
+   726.8,
+   13.0,
+   188.4,
+   30.0
+  ],
+  "exercice-precedent": [
+   731.8,
+   16.0,
+   24.0,
+   24.0
+  ],
+  "exercice-affiche": [
+   759.8,
+   19.5,
+   136.4,
+   17.0
   ],
   "barre-actions": [
    917.2,
@@ -456,6 +474,15 @@
   ]
  },
  "infobulles": [
+  {
+   "message": "Exercice 2025",
+   "rect": [
+    731.8,
+    16.0,
+    24.0,
+    24.0
+   ]
+  },
   {
    "message": "Actions rapides",
    "rect": [

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -6,7 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage;
+import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage, DroitsGestes, epRoleFileul, epRoleMere;
+import 'package:sigh_poste/donnees/base_portable_poste.dart';
+import 'package:sigh_poste/donnees/cle_clinique_poste.dart';
+import 'package:sigh_poste/donnees/maj_poste.dart';
+import 'package:sigh_poste/donnees/persistance.dart';
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/core/identifiants.dart';
@@ -21,6 +26,8 @@ import 'package:sigh_poste/shell/coque.dart';
 
 import 'aide_polices.dart';
 import 'controle_noms_manuel_test.dart' show nomsReels, trouves;
+import 'mere_sms_test.dart' show Source;
+import 'package:sigh_poste/modules/mere/mrb_source.dart' show mrbSourceInjectee, mrbIntervalle;
 
 /// CAPTURES DU MANUEL D'UTILISATION (docs/manuels/src/utilisateur) : ouvre les écrans clés du poste sur le jeu de démonstration et écrit, pour chacun,
 /// un PNG et un JSON des repères (rectangles des boutons, des clés et des onglets) qui servent à placer les flèches automatiquement.
@@ -74,7 +81,7 @@ class _Cap {
       {this.role = 'admin', this.gestes = const [], this.session, this.jeuDeTest = false, this.taille = _taille, this.mode = ModePoste.fileul, this.posteNeuf = false, this.preparer});
 
   /// Prépare le magasin avant l'écran (données FICTIVES de démonstration : plan de travail, valeurs d'attente, vacations à valider).
-  final void Function(Magasin m)? preparer;
+  final FutureOr<void> Function(Magasin m)? preparer;
 
   /// Taille logique de la fenêtre (les écrans longs — configuration fiscale, planning individuel — se photographient en hauteur).
   final Size taille;
@@ -239,15 +246,82 @@ void _agentAttente(Magasin m) {
   col.mettreAJour(p['id'], {'salaireProvisoire': true, 'categorieProvisoire': true, 'categorie': 'E1-1', 'cnssProvisoire': true, 'cnss': ''});
 }
 
-/// Trois vacations posées depuis un poste rattaché : « à valider » tant que la mère ne les a pas appliquées.
+/// Trois vacations FICTIVES de la semaine du 16/11/2026, posées depuis un poste rattaché pour le premier agent de la fiche : « à valider » tant que la mère ne les a pas appliquées.
+/// La fiche s'ouvre sur le premier agent de la liste : il devient MÉDECIN (donnée de démonstration anonymisée) pour que sa catégorie ait un régime de travail à montrer.
+void _medecinEnTete(Magasin m) {
+  final col = m.collection('personnel');
+  final p = col.toutes.first;
+  col.mettreAJour(p['id'], {'fonction': 'medecin', 'poste': 'Médecin généraliste', 'service': 'Médecine générale'});
+}
+
 void _vacationsAValider(Magasin m) {
+  _medecinEnTete(m);
+  final p = m.collection('personnel').toutes.first;
   final col = m.collection('planning');
-  var n = 0;
-  for (final v in col.actives) {
-    if (n >= 3) break;
-    col.mettreAJour(v['id'], {'validationEtat': 'a_valider'});
-    n++;
+  for (final jour in ['2026-11-16', '2026-11-18', '2026-11-20']) {
+    col.inserer({
+      'statut': 'actif',
+      'date': jour,
+      'employeId': p['id'],
+      'employe': '${p['nomComplet'] ?? '${p['nom']} ${p['prenom']}'}',
+      'fonction': p['fonction'],
+      'service': p['service'],
+      'type': 'garde',
+      'validationEtat': 'a_valider',
+    }, prefixe: 'PLN');
   }
+}
+
+/// Une facture à une entreprise FICTIVE (société de démonstration, IFU d'exemple) déjà émise et « en attente de certification » : le jeu livré n'a aucune ligne de relevé à réclamer.
+void _semerFactureEntreprise(Magasin m) {
+  m.collection('facturesTiers').inserer({
+    'numero': 'FT-2026-00001',
+    'type': 'tiers_payeur',
+    'statut': 'actif',
+    'date': '2026-11-16',
+    'acheteurIfu': '3201700000001',
+    'acheteurNom': 'SOCIÉTÉ DÉMONSTRATION SARL',
+    'aibSituation': 'ifu_actif',
+    'aibTaux': 1,
+    'aibMotif': 'Acheteur avec IFU actif : taux du barème arrêté en vigueur.',
+    'aibMontant': 3600,
+    'montantTTC': 360000,
+    'montantHT': 360000,
+    'tva': 0,
+    'netAPayer': 363600,
+    'baseMecef': 360000,
+    'designation': 'Prise en charge des soins — Souscripteur démonstration (AFRICAINE DES ASSURANCES, novembre 2026)',
+    'compagnieCode': 'AFR',
+    'compagnie': 'AFRICAINE DES ASSURANCES',
+    'souscripteur': 'Souscripteur démonstration',
+    'periode': 'mois',
+    'periodeLabel': 'novembre 2026',
+    'debut': '2026-11-01',
+    'fin': '2026-11-16',
+    'montantReleve': 360000,
+    'piecesFilles': ['FN-2026-00412', 'FN-2026-00418', 'FN-2026-00431'],
+    'nbFilles': 3,
+    'statutMecef': 'en_attente',
+    'emisePar': 'Comptable',
+  }, prefixe: 'FTR');
+}
+
+/// Le démarrage d'un poste (main.dart) amorce la table des exercices avant le premier affichage : la capture le reproduit.
+void _exercicesAuDemarrage(Magasin m) => amorcerExercices(m, _le);
+
+/// Les services d'export, de mise à jour et de clé que le poste branche au démarrage (la coque de capture ne les branche pas) : sur un dossier de données d'exemple.
+Future<void> _servicesBase(Magasin m, {String role = epRoleFileul}) async {
+  final dossier = Directory('${Directory.systemTemp.path}/SIGHCBG/donnees')..createSync(recursive: true);
+  bool peut(String g) => DroitsGestes(fiches: m.collection('rbac').actives).peut('admin', g);
+  final base = ServiceBasePortable(magasin: m, dossierDonnees: dossier.path, role: () => role, cleClinique: () async => List<int>.generate(32, (i) => (i * 17 + 3) % 256), peut: peut)..installer();
+  ServiceMiseAJour(magasin: m, dossierDonnees: dossier.path, base: base, role: () => role, peut: peut, versionCourante: '0.1.0').installer();
+  ServiceCleClinique(magasin: m, dossierDonnees: dossier.path, peut: peut).installer();
+}
+
+/// Un relais SIMULÉ pour l'écran « Passerelle SMS » : le fournisseur est lu au relais, jamais réglé depuis le poste.
+void _relaisSms(String pilote, {List<String> manquants = const []}) {
+  mrbIntervalle = const Duration(hours: 1);
+  mrbSourceInjectee = Source(actif: true)..relais = {'plafond_jour': 100, 'envoyes_aujourdhui': 12, 'en_attente': 1, 'pilote': pilote, if (manquants.isNotEmpty) 'parametres_manquants': manquants};
 }
 
 final _captures = <_Cap>[
@@ -308,7 +382,7 @@ final _captures = <_Cap>[
   _Cap('100-ins-accueil', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
   _Cap('101-ins-premiere', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le), gestes: [toucherCle('ins:premiere')]),
   _Cap('102-ins-secours', 'index', posteNeuf: true, session: () => SessionPoste(exigeConnexion: true, horloge: () => _le), gestes: _premierCompte),
-  _Cap('103-ins-configurations', 'index',
+  _Cap('103-ins-configurations', null,
       posteNeuf: true,
       session: () => SessionPoste(exigeConnexion: true, horloge: () => _le),
       gestes: [..._premierCompte, toucherCle('ins:range'), toucherCle('ins:suite'), attendre(4)]),
@@ -340,9 +414,9 @@ final _captures = <_Cap>[
   ]),
   _Cap('124-satisfaction', 'adm-satisfaction'),
   // ---- Planning individuel (fiche du personnel).
-  // Jeu de TEST : le personnel du jeu livré porte les vrais agents de la clinique, le jeu de test des noms fictifs.
-  _Cap('130-planning-individuel', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel')]),
-  _Cap('131-planning-deroger', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel'), toucherBouton('Déroger')]),
+  // Jeu livré anonymisé (« AGENTnn Démo ») : le premier agent est mis médecin pour que son planning ait un régime à montrer.
+  _Cap('130-planning-individuel', 'm10-employe-profil', preparer: _medecinEnTete, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel')]),
+  _Cap('131-planning-deroger', 'm10-employe-profil', preparer: _medecinEnTete, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel'), toucherBouton('Déroger')]),
   // ---- Mises à jour du 17/11/2026 : PTA, agent, planning synchronisé, facture à une entreprise, taux et barèmes, numérotation.
   _Cap('150-pta-brouillon', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1500), preparer: (m) => _semerPta(m, 'brouillon')),
   _Cap('151-pta-soumis', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1000), preparer: (m) => _semerPta(m, 'soumis')),
@@ -351,14 +425,31 @@ final _captures = <_Cap>[
   _Cap('154-pta-reconduire', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1100), preparer: (m) => _semerPta(m, 'execution'), gestes: [toucherBouton('Reconduire les actions non réalisées vers l’exercice 2027')]),
   _Cap('155-pta-vide', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1000), preparer: (m) => amorcerExercices(m, _le)),
   _Cap('160-personnel-nouveau', 'm10-personnel', gestes: [toucherBouton('Nouveau')], taille: Size(1440, 1300)),
-  _Cap('161-fiche-attente', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1300), preparer: _agentAttente),
-  _Cap('162-fiche-surveillant', 'm10-employe-profil', role: 'surveillant', jeuDeTest: true, taille: Size(1440, 1000)),
+  _Cap('161-fiche-attente', 'm10-employe-profil', taille: Size(1440, 1300), preparer: _agentAttente),
+  _Cap('162-fiche-surveillant', 'm10-employe-profil', role: 'surveillant', taille: Size(1440, 1000)),
   _Cap('170-facture-entreprise', 'm9-facture-mere', role: 'comptable', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Factures à une entreprise')]),
   _Cap('171-taux-comptables', 'cfg-comptabilite', role: 'da', taille: Size(1440, 4200)),
   _Cap('172-taux-cotisations', 'm11-cotisations', role: 'comptable', taille: Size(1440, 2600)),
   _Cap('173-numerotation', 'cfg-fiscalite', taille: Size(1440, 3600)),
+  // ---- Mises à jour du 17/11/2026 (suite) : facture à une entreprise complète, planning individuel du Surveillant, planning entre postes, exercice au démarrage,
+  // imprimante intégrée, passerelle SMS, export / import / mise à jour, restauration de la clé, Assistant.
+  _Cap('174-facture-entreprise-emise', 'm9-facture-mere', role: 'comptable', taille: Size(1440, 1500), preparer: _semerFactureEntreprise, gestes: [toucherTexte('Factures à une entreprise')]),
+  _Cap('175-facture-entreprise-apercu', 'm9-facture-mere', role: 'comptable', taille: Size(1440, 1900), preparer: _semerFactureEntreprise, gestes: [toucherTexte('Factures à une entreprise'), toucherIcone('Aperçu et impression')]),
+  _Cap('176-facture-entreprise-avoir', 'm9-facture-mere', role: 'comptable', taille: Size(1440, 1500), preparer: _semerFactureEntreprise, gestes: [toucherTexte('Factures à une entreprise'), toucherIcone('Émettre un avoir')]),
+  _Cap('132-planning-surveillant', 'm10-employe-profil', role: 'surveillant', preparer: _medecinEnTete, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel')]),
+  _Cap('133-planning-a-valider', 'm10-employe-profil', preparer: _vacationsAValider, taille: Size(1440, 1700), gestes: [toucherTexte('Planning individuel')]),
+  _Cap('156-selecteur-exercice', 'm12-grand-livre', role: 'comptable', preparer: _exercicesAuDemarrage),
+  _Cap('112-base-portable', 'cfg-base-portable', preparer: _servicesBase, taille: Size(1440, 2300)),
+  _Cap('113-export-fait', 'cfg-base-portable', preparer: _servicesBase, taille: Size(1440, 2300), gestes: [toucherCle('base:exporter'), attendre(60)]),
+  _Cap('114-cle-restauration', 'mere-cle-restauration', mode: ModePoste.mere, preparer: (m) => _servicesBase(m, role: epRoleMere), taille: Size(1440, 1100)),
+  _Cap('180-assistant-sauvegarde', 'sup-assistant', gestes: [saisir('assistant:champ', 'Quand a été faite la dernière sauvegarde ?'), toucherCle('assistant:envoyer'), attendre(8)]),
+  _Cap('181-assistant-avis-medical', 'sup-assistant', role: 'medecin', gestes: [saisir('assistant:champ', 'Quelle dose de paracétamol pour un enfant de 12 kg ?'), toucherCle('assistant:envoyer'), attendre(8)]),
+  _Cap('182-assistant-recettes', 'sup-assistant', role: 'direction', taille: Size(1440, 1500), gestes: [saisir('assistant:champ', 'Recettes du mois dernier par secteur, comparées au mois d’avant'), toucherCle('assistant:envoyer'), attendre(8)]),
+  _Cap('183-assistant-fournisseur', 'sup-assistant', role: 'da', taille: Size(1440, 1500), gestes: [saisir('assistant:champ', 'Combien on doit au fournisseur Grossiste Pharma Borgou ?'), toucherCle('assistant:envoyer'), attendre(8)]),
+  _Cap('184-assistant-sans-fiche', 'sup-assistant', gestes: [saisir('assistant:champ', 'Comment je crée un nouvel utilisateur et je lui donne un rôle ?'), toucherCle('assistant:envoyer'), attendre(8)]),
   // ---- SMS (poste mère).
-  _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, taille: Size(1440, 1200)),
+  _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('twilio'), taille: Size(1440, 1500)),
+  _Cap('142-sms-parametres-manquants', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('vonage', manquants: ['RELAIS_SMS_VONAGE_SECRET']), taille: Size(1440, 1500)),
   _Cap('141-sms-journal', 'mere-sms-journal', mode: ModePoste.mere),
 ];
 
@@ -427,7 +518,10 @@ void main() {
     ServiceIdentifiants.parametres = AccParametresHachage.tests;
   });
   setUp(() => CoquePoste.panneauOuvertAuDemarrage = false);
-  tearDown(ToastsSigh.viderPourTests);
+  tearDown(() {
+    ToastsSigh.viderPourTests();
+    mrbSourceInjectee = null;
+  });
 
   for (final c in _captures) {
     testWidgets('capture manuel : ${c.nom}', skip: _sortie == null, (t) async {
@@ -441,6 +535,13 @@ void main() {
         neuf = anonymiser(Magasin.depuisDossier(noms, 'assets/donnees/jeu'), noms);
         await t.runAsync(() => ServiceInstallation.de(neuf!).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'poste-demo')));
       }
+      Magasin? prepare;
+      if (neuf == null) {
+        prepare = c.jeuDeTest
+            ? Magasin.depuisDossier(Magasin.collectionsDuJeu)
+            : anonymiser(Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu'), Magasin.collectionsDuJeu);
+        await t.runAsync(() async => c.preparer?.call(prepare!));
+      }
       await t.pumpWidget(RepaintBoundary(
           key: const Key('cap-manuel'),
           child: SighPoste(
@@ -449,14 +550,7 @@ void main() {
               config: ConfigPoste(mode: c.mode, role: c.role),
               ecranInitial: c.ecran,
               // Le jeu de démonstration LIVRÉ avec le poste (assets/donnees/jeu) : noms fictifs de Baguidi, jamais le jeu de test.
-              magasin: neuf ??
-                  (() {
-                    final m = c.jeuDeTest
-                        ? Magasin.depuisDossier(Magasin.collectionsDuJeu)
-                        : anonymiser(Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu'), Magasin.collectionsDuJeu);
-                    c.preparer?.call(m);
-                    return m;
-                  })(),
+              magasin: neuf ?? prepare,
               session: c.session?.call(),
               horloge: () => _le)));
       await _pomper(t, 6);

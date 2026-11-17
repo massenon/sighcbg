@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 17 novembre 2026</span>
+    <span>Édition du 17 novembre 2026 — livraison v30</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -294,6 +294,12 @@
   <li>Le numéro suit un format qui dépend de la pièce : par exemple <strong>FN-2026-00001</strong> (facture normalisée), <strong>AV-2026-0001</strong> (avoir), <strong>PRO-2026-00001</strong> (pro-forma). Les séries annuelles repartent à 1 chaque année.</li>
   <li>Une pièce prend toujours <strong>le plus grand rang déjà employé + 1</strong>, archives comprises : un numéro n’est jamais redonné, et les numéros déjà émis ne changent pas.</li>
   <li><strong>Un préfixe par registre.</strong> Les courriers départ portent <strong>COU</strong>, les codes de réactifs <strong>REA</strong>, les rendez-vous <strong>RDV</strong>, les événements de l’établissement <strong>EVE</strong>, les bulletins de paie <strong>BUL</strong>. Ils ne partagent plus leur préfixe avec un autre registre ; l’écran de numérotation indique « Lit aussi » l’ancien préfixe, pour que le rang suivant ne retombe jamais sur un numéro déjà pris.</li>
+</ul>
+<p><strong>Sur un poste fileul, les numéros viennent de plages.</strong> La mère remet à chaque fileul des <strong>plages de numéros</strong> : une plage par série <em>et par année</em> (par exemple les rangs 1 à 200 de la série des besoins pour 2026). Le fileul ne tire que dans une plage de l’année de la pièce ; l’année suivante, la série repart à 1 et la mère lui remet une plage de la nouvelle année. Deux fileuls n’ont ainsi jamais le même numéro.</p>
+<ul>
+  <li>La mère <strong>refuse</strong> une plage qui en chevauche une autre : le refus nomme la plage déjà attribuée et le poste qui la détient, et dit où reprendre (le plus grand rang attribué + 1). Rien n’est alloué sur un refus, et le poste n’invente jamais de numéro.</li>
+  <li>Un dossier saisi hors ligne alors qu’il ne reste plus de numéro réservé porte un code <strong>PROV-…</strong> : la mère le remplace par le vrai code à la synchronisation.</li>
+  <li>Le <strong>code d’un dossier</strong> n’est jamais réécrit : une plage reçue avant que les plages portent une année reste rattachée aux codes déjà attribués, jamais à une année devinée.</li>
 </ul>
 <p>L’administrateur et la DAF règlent ces séries dans <strong>Système ➔ Configuration Clinique ➔ Paramètres fiscaux (IFU / RCCM)</strong>, carte <strong>Numérotation des pièces</strong> (geste « Modifier une série de numérotation des pièces »). Chaque ligne donne le type de document, le format, le <strong>premier numéro de l’année</strong>, la séquence et l’état (« À valider » ou « Arrêtée »). Une modification est une version datée : elle ne s’applique qu’aux pièces à venir.</p>
 <figure class="capture" data-capture="captures/173-numerotation" data-recadrage="0,1130,1440,700" data-cibles='[{"bouton":"Modifier","de":"gauche","long":50,"num":1}]'>
@@ -809,7 +815,7 @@
 <h2 id="recu">Imprimer le reçu et le ticket 80 mm</h2>
 <p>Après l’encaissement, cliquez sur <strong>Imprimer le reçu</strong>. Le reçu détaille chaque prestation payée, la part de l’assureur, la part du patient et le reste dû. Sur l’imprimante de caisse, le reçu sort au format <strong>ticket 80 mm</strong>.</p>
 <p>Pour réimprimer un reçu plus tard, ouvrez le registre des pièces du jour de l’<strong>État de caisse journalier</strong> et cliquez sur l’icône <strong>Réimprimer le reçu détaillé</strong>. Dans la fenêtre d’une facture, le bouton <strong>Réimprimer le reçu</strong> fait de même.</p>
-<p>Sur l’écran <strong>Nouvelle facture</strong>, le bouton <strong>Ticket de caisse</strong> ouvre l’aperçu du ticket des prestations ajoutées (il faut au moins une prestation : sinon le logiciel affiche « Ajouter au moins une prestation. »). Le ticket s’ouvre en <strong>aperçu</strong> et s’enregistre en PDF, à la largeur réglée dans <strong>Imprimante de caisse</strong> (80 mm par défaut) : aucun pilote d’imprimante n’est branché dans cette version.</p>
+<p>Sur l’écran <strong>Nouvelle facture</strong>, le bouton <strong>Ticket de caisse</strong> ouvre l’aperçu du ticket des prestations ajoutées (il faut au moins une prestation : sinon le logiciel affiche « Ajouter au moins une prestation. »). Le ticket s’ouvre en <strong>aperçu</strong> et s’enregistre en PDF, à la largeur réglée dans <strong>Imprimante de caisse</strong> (80 mm par défaut) : aucun pilote d’imprimante n’est branché dans cette version. Le ticket est destiné au boîtier ELTRADE CC300, qui est aussi l’imprimante de caisse.</p>
 <figure class="schema">
   <img src="../../../rendu/12-ticket-80mm-apercu.png" alt="Aperçu du ticket de caisse 80 mm" style="max-height:120mm;max-width:100%;border:1px solid #e2e8f0;border-radius:6px">
   <figcaption>Aperçu d’un ticket de caisse 80 mm (capture reprise de la documentation du poste).</figcaption>
@@ -850,15 +856,16 @@
 <ol class="etapes">
   <li>Dans la carte <strong>Mode de certification</strong>, choisissez le <strong>Mode de certification des factures</strong> : le boîtier physique ou l’e-MECeF. Le <strong>Modèle du boîtier MECeF</strong> nomme l’appareil (ELTRADE CC300).</li>
   <li>Lisez, pour chaque mode, ce qui est <strong>Prêt au poste</strong> et <strong>Ce qui manque</strong>. Cliquez sur <strong>Enregistrer le mode</strong>.</li>
-  <li>Dans la carte <strong>Imprimante de caisse</strong>, renseignez le <strong>Modèle de l’imprimante</strong>, la <strong>Largeur du papier (mm)</strong> (de 40 à 120 mm) et l’<strong>Interface</strong>, puis cliquez sur <strong>Enregistrer l’imprimante</strong>.</li>
+  <li>Dans la carte <strong>Imprimante de caisse</strong>, laissez cochée la case <strong>L’imprimante de caisse est le boîtier MECeF (une machine, deux fonctions)</strong> : le boîtier ELTRADE CC300 est à la fois le MECeF et l’imprimante du ticket 80 mm. Réglez la <strong>Largeur du papier (mm)</strong> (de 40 à 120 mm), puis cliquez sur <strong>Enregistrer l’imprimante</strong>.</li>
+  <li>Pour une imprimante <strong>distincte</strong> du boîtier, décochez la case, puis renseignez le <strong>Modèle de l’imprimante (si elle n’est pas le boîtier)</strong> et l’<strong>Interface</strong>.</li>
 </ol>
-<figure class="capture" data-capture="captures/56-mecef-config" data-recadrage="0,300,730,1000" data-cibles='[{"cle":"kit:champ:mode","de":"droite","long":60,"num":1},{"cle":"mecef:etat-mode:emecef","de":"droite","long":40,"num":2},{"bouton":"Enregistrer le mode","de":"droite","long":60,"num":2}]'>
+<figure class="capture" style="width:68%" data-capture="captures/56-mecef-config" data-recadrage="0,300,730,1100" data-cibles='[{"cle":"kit:champ:mode","de":"droite","long":60,"num":1},{"cle":"mecef:etat-mode:emecef","de":"droite","long":40,"num":2},{"bouton":"Enregistrer le mode","de":"droite","long":60,"num":2}]'>
   <figcaption>La carte <strong>Mode de certification</strong> : boîtier ELTRADE CC300 ou e-MECeF, ce qui est prêt et ce qui manque.</figcaption>
 </figure>
-<figure class="capture" data-capture="captures/56-mecef-config" data-recadrage="0,1330,730,450" data-cibles='[{"cle":"kit:champ:imprimanteModele","de":"bas","long":50,"num":3},{"bouton":"Enregistrer l’imprimante","de":"droite","long":60,"num":3}]'>
-  <figcaption>La carte <strong>Imprimante de caisse</strong> : le modèle est « à renseigner » par la clinique.</figcaption>
+<figure class="capture" style="width:78%" data-capture="captures/56-mecef-config" data-recadrage="0,1390,730,580" data-cibles='[{"cle":"kit:champ:imprimanteIntegree","de":"droite","long":60,"num":3},{"bouton":"Enregistrer l’imprimante","de":"droite","long":60,"num":3}]'>
+  <figcaption>La carte <strong>Imprimante de caisse</strong> : <span class="pastille">3</span> la case « une machine, deux fonctions » — le modèle et l’interface sont ceux du boîtier.</figcaption>
 </figure>
-<div class="encadre info"><span class="titre">Information</span><p>Aucun modèle d’imprimante n’est fourni pour Baguidi : la carte affiche « à renseigner » et le badge « À valider : à renseigner par la clinique ». Ce réglage <strong>décrit</strong> l’appareil ; la largeur règle l’aperçu du ticket.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Une machine, deux fonctions.</strong> Case cochée (réglage par défaut), l’imprimante prend le modèle et l’interface du boîtier : la carte l’écrit (« Le boîtier ELTRADE CC300 est à la fois le MECeF et l’imprimante de caisse… »), et la carte du boîtier porte la même mention. Il n’y a donc pas une seconde machine à décrire. Case décochée, les champs propres reprennent la main, et la carte affiche « À valider : à renseigner par la clinique » tant que le modèle manque. Ce réglage <strong>décrit</strong> l’appareil ; la largeur règle l’aperçu du ticket. La largeur de 80 mm reste une valeur d’attente à valider par la clinique.</p></div>
 </div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier ELTRADE CC300 n’est <strong>pas encore branché</strong> au logiciel, et l’e-MECeF est « Non configuré » (le dossier d’interface de la DGI n’est pas remis) : une vente reste <strong>en attente de certification</strong>. Le logiciel ne fabrique <strong>jamais</strong> de numéro fiscal, ni ne le simule. Les factures se certifieront dès que l’adaptateur fourni par l’éditeur du boîtier sera installé.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>Seule la part réglée par le patient entre dans la base MECeF : ni la part de l’assureur ni les remises. L’IFU d’un acheteur (assureur, entreprise), quand il se saisit, compte 13 chiffres.</p></div>
@@ -904,7 +911,7 @@
   <li>Choisissez la <strong>Situation de l’acheteur (AIB)</strong> : c’est le comptable qui décide. L’entrée « — à choisir : jamais présumée — » ne passe pas ; le taux appliqué est celui du barème arrêté en vigueur.</li>
   <li>Cliquez sur <strong>Émettre la facture à l’entreprise</strong>. Le message annonce le numéro, le montant et l’AIB ; il permet d’annuler l’émission (la pièce est alors archivée).</li>
 </ol>
-<figure class="capture" data-capture="captures/170-facture-entreprise" data-recadrage="0,250,1440,620" data-cibles='[{"cle":"kit:onglet:tiers:actif","de":"bas","long":50,"num":1}]'>
+<figure class="capture" data-capture="captures/170-facture-entreprise" data-recadrage="0,520,1440,420" data-cibles='[{"cle":"kit:onglet:tiers:actif","de":"droite","long":28,"num":1}]'>
   <figcaption>L’onglet <strong>Factures à une entreprise</strong>. Sur le jeu de démonstration, aucune ligne du relevé n’est disponible : la carte d’émission n’apparaît donc pas (agent fictif, données de démonstration).</figcaption>
 </figure>
 </div>
@@ -912,6 +919,40 @@
   <li>Le tableau de l’onglet liste les pièces émises : numéro, date, entreprise et IFU, souscripteur, montant, AIB, net à payer et état MECeF (« En attente de certification » tant que le boîtier n’a pas répondu). L’icône <strong>Rattachement au relevé</strong> montre les factures patients réclamées.</li>
   <li>Une facture patient ne se réclame <strong>qu’une fois</strong> : réclamée par une facture à une entreprise, elle sort du relevé de la facture mère.</li>
 </ul>
+<h3>Imprimer la pièce, la corriger par un avoir, la transmettre à la MECeF</h3>
+<div class="tache">
+<p class="but">Vous remettez la pièce à l’entreprise, vous la corrigez si elle est fausse, puis vous la faites certifier.</p>
+<p class="prerequis">pour imprimer, voir l’onglet ; pour l’avoir et la transmission, le geste « Émettre une facture à une entreprise (tiers payeur) » (c’est le même geste : celui qui émet la pièce la corrige et la transmet).</p>
+<p class="chemin">Financier ➔ Assurances &amp; Créances ➔ Facture mère assurance ➔ onglet Factures à une entreprise</p>
+<ol class="etapes">
+  <li>Sur la ligne de la pièce, cliquez sur l’icône <strong>Aperçu et impression</strong>. La pièce s’ouvre en A4 : en-tête légal de la clinique (avec son e-mail, contact@cliniquebaguidi.com), numéro, date, acheteur et IFU de l’acheteur, compagnie, souscripteur, période et situation d’AIB, puis les lignes, les montants et les signatures. Cliquez sur <strong>Enregistrer en PDF</strong> pour la sortir.</li>
+  <li>Pour corriger la pièce, cliquez sur l’icône <strong>Émettre un avoir</strong>. Écrivez le <strong>Motif de l’avoir</strong> (obligatoire : l’entreprise et la compagnie le liront), puis, si l’avoir est partiel, le <strong>Montant de l’avoir (FCFA)</strong> ; vide, il porte tout ce qui reste. Choisissez la <strong>Suite donnée</strong> : <strong>Créance réduite</strong> ou <strong>Remboursement en espèces</strong>. Cliquez sur <strong>Émettre l’avoir</strong>.</li>
+  <li>Pour faire certifier la pièce, cliquez sur l’icône <strong>Transmettre à la MECeF</strong>. Aucun encaissement n’est exigé, contrairement à la vente d’un patient.</li>
+</ol>
+<figure class="capture" data-capture="captures/174-facture-entreprise-emise" data-recadrage="0,740,1440,320" data-cibles='[{"bouton":"Aperçu et impression","de":"bas","long":40,"num":1},{"bouton":"Émettre un avoir","de":"bas","long":40,"num":2},{"bouton":"Transmettre à la MECeF","de":"bas","long":40,"num":3}]'>
+  <figcaption>Une pièce émise, <strong>En attente de certification</strong> : <span class="pastille">1</span> l’aperçu, <span class="pastille">2</span> l’avoir, <span class="pastille">3</span> la transmission. La société et les montants sont fictifs.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/175-facture-entreprise-apercu" data-recadrage="140,40,1160,1340" data-cibles='[{"bouton":"Enregistrer en PDF","de":"haut","long":40,"num":1}]' style="width:66%">
+  <figcaption>L’aperçu de la <strong>facture à une entreprise — normalisée</strong>. Tant que la pièce n’est pas certifiée, elle porte la mention « DEMO : pièce non normalisée » et ni code MECeF, ni QR, ni compteurs.</figcaption>
+</figure>
+<figure class="capture" style="width:62%" data-capture="captures/176-facture-entreprise-avoir" data-recadrage="370,30,700,460" data-cibles='[{"bouton":"Émettre l’avoir","de":"haut","long":40,"num":2}]'>
+  <figcaption>La fenêtre <strong>Avoir</strong> sur la pièce.</figcaption>
+</figure>
+</div>
+<ul>
+  <li><strong>L’avoir.</strong> Il porte les lignes nommées de la pièce, ne dépasse jamais le montant de la pièce (les avoirs successifs se cumulent) et reçoit un numéro de la série des avoirs (AV-AAAA-NNNN). La pièce émise n’est <strong>jamais réécrite</strong> : elle porte son avoir (colonne <strong>Avoirs</strong>). Une écriture de contre-passation naît en <strong>brouillon</strong>, équilibrée ; la validation reste un geste du comptable. Un avoir <strong>total</strong> libère les factures patients réclamées : elles reviennent au relevé.</li>
+  <li><strong>La transmission.</strong> Trois issues, dites par un message : <em>Facture … certifiée</em> (numéro MECeF affiché), <em>Certification en attente (MECEF_NON_CONFIGURE)</em> quand aucun appareil ne répond, ou <em>Facture … rejetée</em> avec le code et le motif de l’appareil. Une pièce déjà certifiée ne rappelle jamais l’appareil. Les avoirs de ces pièces figurent au registre fiscal <strong>Avoirs &amp; annulations</strong>, avec ceux de la caisse.</li>
+</ul>
+<div class="encadre attention"><span class="titre">Attention</span><p>Dans cette version, l’adaptateur du boîtier n’est pas branché : le chemin « certifiée » n’a été éprouvé qu’avec un appareil de test, jamais avec le boîtier ELTRADE CC300. Une pièce reste « En attente de certification » et aucun numéro fiscal n’est fabriqué. Par ailleurs, l’imputation comptable d’un avoir <strong>total</strong> sur une part déjà passée en créance est à confirmer par le comptable : l’écriture reste en brouillon pour cette raison.</p></div>
+<h3>Depuis un poste fileul : la demande que la mère applique</h3>
+<p>Un poste rattaché ne numérote ni ne certifie : la mère tient la numérotation et le boîtier. Sur un fileul, les commandes changent de nom et <strong>déposent une demande</strong> :</p>
+<ul>
+  <li><strong>Transmettre la demande à la mère</strong> (émission), <strong>Transmettre la demande d’avoir</strong> (avoir), et l’icône <strong>Transmettre à la MECeF</strong> (transmission). Le message dit « Demande transmise à la mère. » ; si la même demande attend déjà, « Cette demande attend déjà la mère. »</li>
+  <li>Le logiciel fait d’abord les contrôles à blanc, <strong>dès votre poste</strong> : geste, IFU de 13 chiffres, nom, situation d’AIB choisie, motif de l’avoir, règle de retransmission. Un refus est nommé et <strong>rien n’est déposé</strong>.</li>
+  <li>Tant que la mère n’a pas appliqué la demande, l’onglet l’affiche en orange : « … transmise à la mère, en attente ». Si elle la refuse, la note passe au rouge et donne le code et le motif (par exemple <strong>RELEVE_VIDE</strong> : les factures patients de ce relevé ne sont pas encore parvenues à la mère).</li>
+  <li>La mère applique la demande <strong>sous votre rôle et votre nom</strong>, avec ses numéros et son relevé. La pièce naît datée du jour de l’application et signée de l’auteur de la demande, puis revient sur votre poste par la synchronisation.</li>
+</ul>
+<p class="note-capture">Ces pièces portent l’IFU et le nom d’une entreprise : elles ne vont <strong>jamais vers un téléphone</strong>. Le dépôt depuis un fileul n’a pas de capture dédiée : il demande un poste réellement rattaché à une mère.</p>
 <div class="encadre attention"><span class="titre">Attention</span><p>La <strong>facture du patient</strong> reste sans acheteur ni AIB : elle ne porte ni IFU ni nom d’acheteur, et le patient paie le total. L’acheteur et l’AIB ne se saisissent que sur la facture à une entreprise, à l’assureur et aux achats.</p></div>
 
 <!-- ============================================================== 10. RH ET PAIE -->
@@ -994,6 +1035,13 @@
 <div class="encadre info"><span class="titre">Information</span><p>Une version datée ne se réécrit pas : la date d’effet est aujourd’hui ou à venir, et les vacations passées gardent le régime sous lequel elles ont été posées. Une valeur sans document d’origine est marquée « à valider ». L’onglet <strong>Historique</strong> garde toutes les versions.</p></div>
 </div>
 
+<h3>Le Surveillant écrit le planning individuel</h3>
+<p>Le <strong>Surveillant</strong> peut <strong>Déroger</strong>, <strong>Remplacer le régime</strong> et <strong>Revenir à la catégorie</strong> dans l’onglet <strong>Planning individuel</strong>, grâce à un geste réservé <strong>dédié</strong> : « Écrire le planning individuel d’un agent » (d’origine : le Surveillant, la DAF et l’administrateur). Ce geste ne donne <strong>aucun autre droit RH</strong> : le Surveillant ne modifie pas la fiche de l’agent, n’a ni le circuit de validation des présences, ni le délai du pointage, et ne lit aucune rémunération.</p>
+<figure class="capture" data-capture="captures/132-planning-surveillant" data-recadrage="0,380,1440,740" data-cibles='[{"bouton":"Déroger","de":"bas","long":50,"num":1},{"bouton":"Remplacer le régime","de":"bas","long":50,"num":2}]'>
+  <figcaption>L’onglet <strong>Planning individuel</strong> vu par le <strong>Surveillant</strong> : <span class="pastille">1</span> <strong>Déroger</strong> et <span class="pastille">2</span> <strong>Remplacer le régime</strong> sont présents ; l’honoraire du régime affiche « montant réservé » (agent fictif).</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>Sans ce geste, les trois commandes sont <strong>absentes</strong> et l’onglet se lit seulement. L’administrateur peut le retirer ou l’accorder à un autre rôle dans la fiche de rôle. Un rôle qui n’a pas le droit d’écrire l’écran <strong>Planning &amp; gardes</strong> ne les voit pas non plus, même avec le geste.</p></div>
+
 <h2 id="planning-sync">Le planning entre les postes</h2>
 <p>Le planning, les vacations, les propositions de planning, les congés, les ordres de mission et les présences voyagent entre les postes et la mère. Ils ne vont <strong>jamais vers un téléphone</strong> : ils portent des honoraires et des horaires nominatifs.</p>
 <ul>
@@ -1002,7 +1050,10 @@
   <li>Deux postes hors ligne qui posent chacun une vacation pour le même agent le même jour : la première appliquée par la mère l’emporte, la seconde est <strong>refusée</strong> (double affectation) et son auteur en lit le motif.</li>
   <li><strong>Pas de double paiement.</strong> Un honoraire de régime individuel qui répète une prime de la grille NS 132 déjà versée pour la même vacation est <strong>refusé</strong> à la saisie, avec un message qui nomme la prime, la vacation, le montant et le jour. Une version déjà posée est écartée du bulletin avec le même message, à l’attention du validateur.</li>
 </ul>
-<div class="encadre info"><span class="titre">Information</span><p>Cette partie se voit sur les écrans <strong>Planning &amp; gardes</strong> et <strong>Fiche employé</strong> ; elle n’a pas de capture dédiée, car elle demande deux postes reliés à une mère.</p></div>
+<figure class="capture" data-capture="captures/133-planning-a-valider" data-recadrage="0,1190,1440,460" data-cibles='[{"rect":[1120,1344,130,28],"de":"gauche","long":50,"num":1}]'>
+  <figcaption>Le calendrier de l’onglet <strong>Planning individuel</strong> : <span class="pastille">1</span> trois vacations posées depuis un poste rattaché sont marquées <strong>À valider</strong> dans la colonne <strong>Validation</strong> (données de démonstration fictives, saisies pour la capture).</figcaption>
+</figure>
+<div class="encadre info"><span class="titre">Information</span><p>La capture montre l’état « À valider » tel que la fiche l’affiche. Le <em>dépôt</em> lui-même, depuis un poste réellement rattaché, et l’application par la mère n’ont pas de capture : ils demandent deux postes reliés.</p></div>
 
 <h2 id="paie">Calculer la paie et éditer les bulletins</h2>
 <div class="tache">
@@ -1126,7 +1177,10 @@
 <p>Le <strong>Plan de travail annuel (PTA)</strong> programme les actions de la clinique pour un <strong>exercice</strong>. Le menu, le fil d’Ariane et la recherche l’appellent tous « Plan de travail annuel (PTA) ». Le logiciel est livré <strong>sans plan</strong> : la clinique saisit le sien.</p>
 
 <h3>Choisir l’exercice</h3>
-<p>L’exercice est celui du <strong>sélecteur</strong> de la barre supérieure (‹ <strong>Exercice 2026 · ouvert</strong> ›). Par défaut, c’est l’exercice qui contient la date du jour. Les flèches mènent à l’exercice précédent ou suivant ; une flèche est absente quand il n’y a pas de voisin. Les titres, les indicateurs et les pièces imprimées suivent l’exercice choisi.</p>
+<p>L’exercice est celui du <strong>sélecteur</strong> de la barre supérieure (‹ <strong>Exercice 2026 · ouvert</strong> ›). Par défaut, c’est l’exercice qui contient la date du jour. <strong>Le sélecteur est là dès le premier démarrage du poste</strong> : le logiciel crée lui-même les exercices (un par année) avant d’afficher le premier écran, sur tout poste, sans qu’il faille d’abord ouvrir un écran de comptabilité. Il paraît sur les écrans qui dépendent de l’exercice (comptabilité, états financiers, plan de travail annuel…). Les flèches mènent à l’exercice précédent ou suivant ; une flèche est absente quand il n’y a pas de voisin. Les titres, les indicateurs et les pièces imprimées suivent l’exercice choisi.</p>
+<figure class="capture" data-capture="captures/156-selecteur-exercice" data-recadrage="0,0,1440,250" data-cibles='[{"cle":"selecteur-exercice","de":"bas","long":50,"num":1}]'>
+  <figcaption>Le sélecteur d’exercice (<span class="pastille">1</span>) dans la barre supérieure du <strong>Grand livre</strong>, sur un poste qui vient de démarrer.</figcaption>
+</figure>
 <figure class="capture" data-capture="captures/155-pta-vide" data-recadrage="0,0,1440,560" data-cibles='[{"cle":"selecteur-exercice","de":"bas","long":50,"num":1},{"bouton":"Ouvrir le plan de l’exercice 2026","de":"bas","long":50,"num":2}]'>
   <figcaption>Un exercice sans plan : <span class="pastille">1</span> le sélecteur d’exercice, <span class="pastille">2</span> le bouton qui ouvre le plan.</figcaption>
 </figure>
@@ -1162,7 +1216,7 @@
   <li><strong>Avancement</strong> : <strong>Calculé (réalisé ÷ cible)</strong> ou <strong>Saisi</strong> (un pourcentage) ; l’écran dit toujours lequel ;</li>
   <li>le suivi : <strong>État</strong> (Planifiée, En cours, Réalisée, Reportée, Abandonnée), <strong>Valeur réalisée</strong>, <strong>Observations</strong>.</li>
 </ul>
-<figure class="capture" data-capture="captures/153-pta-action-nouvelle" data-recadrage="270,40,900,1300" data-cibles='[{"cle":"kit:champ:indicateur","de":"droite","long":60,"num":1},{"cle":"kit:champ:cibleValeur","de":"droite","long":60,"num":1},{"bouton":"Créer","de":"haut","long":50,"num":2}]'>
+<figure class="capture" style="width:52%" data-capture="captures/153-pta-action-nouvelle" data-recadrage="270,40,900,1300" data-cibles='[{"cle":"kit:champ:indicateur","de":"droite","long":60,"num":1},{"cle":"kit:champ:cibleValeur","de":"droite","long":60,"num":1},{"bouton":"Créer","de":"haut","long":50,"num":2}]'>
   <figcaption>La fenêtre <strong>Nouvelle action du plan</strong> : <span class="pastille">1</span> l’indicateur et sa cible, <span class="pastille">2</span> l’enregistrement.</figcaption>
 </figure>
 
@@ -1219,6 +1273,69 @@
 <div class="encadre astuce"><span class="titre">Astuce</span><p>La conversation reste sur votre poste. Le bouton <strong>Effacer la conversation</strong> la supprime ; aucune donnée de la clinique n’est touchée.</p></div>
 </div>
 
+<h2 id="assistant-roles">Ce que l’Assistant sait répondre, rôle par rôle</h2>
+<p>La Direction a relu les <strong>100 questions d’agents</strong> que l’Assistant doit comprendre, quatre à cinq par rôle. Le logiciel les a mesurées : 99 sur 100 reçoivent la réponse décidée ; une seule (la question de l’ambulancier sur le lit d’un patient) attend l’arbitrage de la Direction. Chaque réponse n’utilise que ce que <strong>votre rôle peut lire</strong> à l’écran d’origine. Le tableau donne, par rôle, ce que vous pouvez demander ; reprenez la forme des exemples.</p>
+<table class="simple">
+  <tr><th style="width:22%">Rôle</th><th>Ce que vous pouvez lui demander</th></tr>
+  <tr><td><strong>Administrateur système</strong></td><td>L’état de la mère et des postes en retard ; les alertes de synchronisation ouvertes ; la <strong>dernière sauvegarde</strong> ; les rôles qui ouvrent les écrans de la paie.</td></tr>
+  <tr><td><strong>Direction / Gérance</strong></td><td>Les consultations et admissions du jour ; les <strong>recettes de la semaine par secteur, comparées à la semaine d’avant</strong> ; qui doit le plus (assureurs ou patients) ; les commandes qui attendent la validation de la DAF ; la masse salariale du mois (un total, jamais un salaire).</td></tr>
+  <tr><td><strong>Directeur Médical</strong></td><td>Les admissions de la semaine ; les lits libres ; si le résultat d’un examen d’un patient est rendu ; les recettes du mois par secteur ; qui est de garde ce week-end.</td></tr>
+  <tr><td><strong>DAF</strong></td><td>Les commandes de stock gros à valider ; les créances par ancienneté (assureurs et patients) ; les factures de la semaine non certifiées MECeF ; <strong>ce qu’on doit à un fournisseur</strong> ; la valeur du stock au CUMP, secteur par secteur.</td></tr>
+  <tr><td><strong>Médecin</strong></td><td>Le lit d’un patient ; si un résultat est rendu ; l’ordonnance d’hier d’un patient ; si un médicament reste à la pharmacie.</td></tr>
+  <tr><td><strong>Infirmier / Sage-femme</strong></td><td>Les lits libres en maternité ; si un patient est toujours hospitalisé et dans quel lit ; si une analyse est prête ; qui est de garde cette nuit.</td></tr>
+  <tr><td><strong>Biologiste médical</strong></td><td>Où en est une demande d’analyse ; si un résultat est validé ; le prix d’un examen (assuré et non assuré) ; la commande de réactifs ; ce qui reste d’un réactif.</td></tr>
+  <tr><td><strong>Gestionnaire de stock</strong></td><td>Les articles en rupture ; le lot à sortir en premier (FEFO) ; les articles immobiles depuis un an ; l’inventaire et ses écarts ; les articles non comptés.</td></tr>
+  <tr><td><strong>Caissier, dispensaire</strong></td><td>Les <strong>recettes du jour par mode de paiement</strong> ; la validité d’une carte d’assurance ; le reste à payer d’un patient ; les médicaments qui vont périmer dans trois mois ; le stock d’un médicament à la fin du mois dernier.</td></tr>
+  <tr><td><strong>Comptable</strong></td><td>Les factures non certifiées ; la valeur du stock de la pharmacie ; les impayés de plus de 60 jours (le nombre de jours est libre) ; quand le prix d’un acte a changé ; la balance du mois.</td></tr>
+  <tr><td><strong>Réception / Accueil</strong></td><td>Retrouver un patient (nom et année de naissance) ; le prix d’une consultation, assuré et non assuré ; le prix d’un certificat ; qui est de garde ; si un patient est hospitalisé et dans quel lit ; si le résultat d’un patient adressé de l’extérieur est rendu (<em>oui</em> ou <em>en attente</em>, sans contenu).</td></tr>
+  <tr><td><strong>Agent administratif</strong></td><td>Le dernier courrier reçu pour un patient ; retrouver un patient ; les réunions de la semaine ; qui est dans tel lit.</td></tr>
+  <tr><td><strong>Ambulancier</strong></td><td>Retrouver le patient à transporter ; quelle ambulance est disponible ; qui est de garde.</td></tr>
+  <tr><td><strong>Aide-soignante</strong></td><td>Les lits libres ; qui est dans tel lit ; sa prochaine garde.</td></tr>
+  <tr><td><strong>Technicien d’échographie</strong></td><td>Si une échographie est validée ; le nombre d’échographies du jour ; les examens d’imagerie qui attendent ; le prix d’une échographie obstétricale.</td></tr>
+  <tr><td><strong>Surveillant</strong></td><td>Qui est de garde ce soir ; le planning de permanence de la semaine ; qui est en congé ; les lits libres en maternité.</td></tr>
+  <tr><td><strong>Assistant de Direction</strong></td><td>Le dernier courrier d’une compagnie ; les réunions de la semaine ; les consultations du jour ; l’état des ventes de la semaine.</td></tr>
+  <tr><td><strong>Chirurgien</strong></td><td>Le patient d’un lit ; si un bilan pré-opératoire est rendu ; le compte rendu opératoire d’un patient ; qui est de garde ; où en est une demande d’imagerie.</td></tr>
+  <tr><td><strong>Anesthésiste</strong></td><td>Si un bilan sanguin est rendu ; le lit d’un patient ; la fiche d’anesthésie d’un patient ; ce qui reste d’un produit anesthésique à la pharmacie.</td></tr>
+  <tr><td><strong>Assistant Comptable</strong></td><td>Les factures non certifiées ; ce que doit encore un patient ; les impayés des patients par ancienneté ; ce qu’on doit à un fournisseur.</td></tr>
+</table>
+<div class="encadre info"><span class="titre">Information</span><p>Cette liste suit les rôles tels que la Direction les a relus. Un rôle que votre clinique a créé ou modifié peut lire d’autres écrans : l’Assistant suit toujours <strong>vos droits du moment</strong>, pas ce tableau.</p></div>
+
+<h3>Quelques réponses, à l’écran</h3>
+<figure class="capture" data-capture="captures/182-assistant-recettes" data-recadrage="0,575,1440,610">
+  <figcaption>Pour la Direction : « Recettes du mois dernier par secteur, comparées au mois d’avant ». La réponse donne <strong>les deux chiffres</strong>, encaissé et facturé, chacun nommé, puis la ventilation par <strong>secteur</strong> et la période comparée. Ce qui ne se classe dans aucun secteur est dit « hors secteur ».</figcaption>
+</figure>
+<ul>
+  <li><strong>Recettes par secteur ou par mode.</strong> Écrivez « par secteur » (les six secteurs) ou « par mode de paiement ». « Comparées à la semaine d’avant » compare à l’unité de même nature qui précède. Le facturé ne se ventile pas par mode de paiement : il n’y a pas de mode sur une facture non réglée.</li>
+  <li><strong>Deux chiffres pour les dettes fournisseurs.</strong> Quand vous demandez ce qu’on doit à un fournisseur, l’Assistant donne <strong>deux chiffres, chacun avec sa définition</strong> : les factures fournisseurs non payées, et le solde comptable du compte du fournisseur. Il donne aussi l’<strong>écart</strong>, ou dit « non calculable — il faut les deux chiffres » si l’un des deux manque. Les deux définitions ne sont jamais fondues.</li>
+  <li><strong>Dernière sauvegarde.</strong> Il lit le <strong>journal des fichiers de sauvegarde du poste</strong>. Un journal vide donne « Aucune sauvegarde enregistrée au journal du poste », ce qui n’est pas « la dernière est ancienne ». L’état de la sauvegarde de la mère se lit à l’écran de la mère.</li>
+</ul>
+<figure class="capture" data-capture="captures/183-assistant-fournisseur" data-recadrage="0,575,1440,400">
+  <figcaption>Pour la DAF : « Combien on doit au fournisseur … ? » — les deux chiffres, leur définition et l’écart. La source cite les trois écrans consultés.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/180-assistant-sauvegarde" data-recadrage="0,575,1440,250">
+  <figcaption>Pour l’administrateur : « Quand a été faite la dernière sauvegarde ? ». Le jeu de démonstration n’a aucune sauvegarde au journal : la réponse le dit.</figcaption>
+</figure>
+
+<h3>Ce que l’Assistant refuse, et pourquoi</h3>
+<table class="simple">
+  <tr><th style="width:34%">Le refus affiché</th><th>Quand, et que faire</th></tr>
+  <tr><td><strong>Je ne donne ni diagnostic ni avis thérapeutique</strong> (<span class="touche">AVIS_MEDICAL_REFUSE</span>)</td><td>Une question de dose, de traitement ou de diagnostic (« Quelle dose de paracétamol pour un enfant de 12 kg ? »). L’Assistant ne donne <strong>aucune aide au traitement</strong>, même au médecin. Consultez le dossier si vous en avez le droit, ou le médecin.</td></tr>
+  <tr><td><strong>Vous n’avez pas le droit de lire cette information</strong> (<span class="touche">LECTURE_NON_AUTORISEE</span>)</td><td>La question lit un écran que votre rôle n’ouvre pas (RG-13). Par exemple, les <strong>résultats d’analyses</strong> d’un patient sont refusés à l’aide-soignante ; à l’accueil, seul l’état « rendu / en attente » d’un patient adressé de l’extérieur se lit, jamais la valeur. Demandez l’accès à l’administrateur.</td></tr>
+  <tr><td><strong>La paie n’est pas traitée par l’Assistant</strong> (<span class="touche">PAIE_HORS_ASSISTANT</span>)</td><td>Un salaire, un bulletin, une prime, une retenue ou une cotisation. Seules la <strong>masse salariale agrégée du mois</strong> et les rôles qui ouvrent les écrans de la paie se lisent ici.</td></tr>
+  <tr><td><strong>Je ne peux rien écrire</strong> (<span class="touche">ECRITURE_ABSENTE</span>), <strong>Rien ne quitte la clinique</strong> (<span class="touche">ENVOI_EXTERNE_REFUSE</span>), <strong>Les règles et les droits ne se contournent pas</strong> (<span class="touche">INJONCTION_REFUSEE</span>)</td><td>L’Assistant est en lecture seule : il ne saisit, ne valide et n’envoie rien, et aucune phrase ne lui fait passer outre vos droits. Ouvrez l’écran concerné et faites le geste vous-même.</td></tr>
+  <tr><td><strong>Plusieurs correspondances</strong>, <strong>Précision requise</strong>, <strong>Aucun résultat</strong>, <strong>Non calculable</strong></td><td>Plusieurs patients portent ce nom (choisissez dans la liste, jamais le premier), un paramètre manque (nom du patient, de l’article, du fournisseur), rien ne correspond, ou la donnée n’est pas renseignée. Corrigez la question ou saisissez la donnée à l’écran indiqué.</td></tr>
+</table>
+<figure class="capture" data-capture="captures/181-assistant-avis-medical" data-recadrage="0,575,1440,190">
+  <figcaption>Un médecin demande une dose : l’Assistant refuse, avec le code <strong>AVIS_MEDICAL_REFUSE</strong> et le geste proposé.</figcaption>
+</figure>
+
+<h3>Les fiches d’aide et de définition : pas encore écrites</h3>
+<p>Les questions de la forme « <strong>Comment je…</strong> » (créer un utilisateur, noter la sortie d’un patient, enregistrer un courrier, remplir la fiche de transport, valider une proposition de planning, faire une note de service) et « <strong>C’est quoi un avoir ?</strong> » doivent être servies par des <strong>fiches validées</strong> par la Direction. Le mécanisme existe, <strong>mais aucune fiche n’a encore été écrite ni validée</strong>. L’Assistant répond donc « <strong>Pas de fiche validée pour cette question</strong> » (<span class="touche">PAS_DE_FICHE</span>) : il ne répond pas de mémoire. Une fiche seulement <em>proposée</em> n’est jamais citée comme si elle était validée, et il le dit. La fiche sur la check-liste du bloc attend en plus la validation du professionnel nommé.</p>
+<figure class="capture" data-capture="captures/184-assistant-sans-fiche" data-recadrage="0,575,1440,190">
+  <figcaption>« Comment je crée un nouvel utilisateur… ? » : aucune fiche d’aide n’est encore validée.</figcaption>
+</figure>
+<div class="encadre attention"><span class="titre">Attention</span><p>En attendant les fiches, ce manuel reste la référence pour les procédures. Une fiche validée, quand elle existera, affichera son validateur et sa date.</p></div>
+
 <!-- ============================================================== SATISFACTION EN LIGNE -->
 <h1 id="satisfaction"><span class="num">15</span> La satisfaction des patients</h1>
 <p>Le module <strong>Enquêtes &amp; questionnaires</strong> (domaine <strong>Administration</strong>) recueille l’avis des patients. Le questionnaire est un modèle : le formulaire naît du modèle, ajouter une question suffit à la faire paraître.</p>
@@ -1261,7 +1378,7 @@
 </figure>
 
 <!-- ============================================================== SAUVEGARDE ET SMS -->
-<h1 id="sauvegarde"><span class="num">16</span> Sauvegarde et SMS (profils autorisés)</h1>
+<h1 id="sauvegarde"><span class="num">16</span> Sauvegarde, mise à jour et SMS (profils autorisés)</h1>
 <p>Ce chapitre concerne les profils qui ont ces droits (en général l’administrateur et la Directrice Administrative). Les autres agents n’ont rien à faire : la sauvegarde quotidienne est automatique.</p>
 
 <h2 id="sauvegarde-locale">Sauvegarder et restaurer</h2>
@@ -1283,6 +1400,97 @@
 <h2 id="sauvegarde-hors-site">La copie hors site</h2>
 <p>Quand la copie hors site est disponible sur le poste, la carte <strong>Sauvegarde hors site</strong> apparaît sur le même écran. Elle offre <strong>Régler la copie hors site</strong>, <strong>Copier le magasin maintenant</strong> (ou <strong>Copier les fichiers maintenant</strong>), <strong>Contrôler les copies</strong> et, sur la mère, <strong>Restaurer une copie</strong>. Le réglage technique (destination, identifiants) est décrit dans le <em>Manuel administrateur</em>.</p>
 
+
+<h2 id="maj">Préparer et installer une mise à jour du logiciel</h2>
+<p>Une mise à jour peut changer la <strong>forme des données</strong>. Le logiciel porte donc un numéro de <strong>schéma des données</strong>, écrit dans le magasin du poste et dans celui de la mère, et lu à chaque ouverture. Ce chapitre est pour les profils qui détiennent les gestes « Exporter la base complète » et « Importer une base depuis un export portable » (d’origine : l’administrateur et la DAF).</p>
+<div class="tache">
+<p class="but">Vous préparez la mise à jour : le logiciel contrôle qu’une sauvegarde vérifiée et un export vérifié existent, puis autorise l’installeur.</p>
+<p class="prerequis">le geste « Exporter la base complète (fichier portable chiffré) ». Sur la mère comme sur un poste fileul.</p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Export, import et mise à jour</p>
+<ol class="etapes">
+  <li>Ouvrez l’écran <strong>Export, import et mise à jour</strong>. Dans la carte <strong>Préparer la mise à jour</strong>, lisez les deux lignes <strong>Sauvegarde</strong> et <strong>Export portable</strong> : chacune dit « aucune », ou donne la date et « vérifiée » ou « NON vérifiée ». Sur un fileul, l’export tient lieu de sauvegarde.</li>
+  <li>Cliquez sur <strong>Préparer la mise à jour</strong>. Le logiciel fait la sauvegarde, la <strong>relit</strong> (déchiffrement, contrôle d’intégrité), fait l’export portable et le relit aussi.</li>
+  <li>Si les deux preuves ont <strong>moins de 24 heures</strong> et sont vérifiées, la note verte « Mise à jour AUTORISÉE » apparaît : l’installeur Windows peut passer, pour <strong>une seule</strong> mise à jour et pendant quelques heures. Sinon, une note rouge nomme ce qui manque.</li>
+  <li>Rangez le fichier d’export <strong>hors de la machine</strong> (clé USB, autre poste), puis lancez l’installeur.</li>
+</ol>
+<figure class="capture" data-capture="captures/112-base-portable" data-recadrage="0,100,1440,1070" data-cibles='[{"cle":"base:exporter","de":"droite","long":60,"num":1},{"cle":"maj:preparer","de":"droite","long":90,"num":2}]'>
+  <figcaption>L’écran <strong>Export, import et mise à jour</strong> sur un poste qui n’a encore ni sauvegarde ni export : <span class="pastille">1</span> l’export, <span class="pastille">2</span> la préparation. La note rouge nomme ce qui manque : <strong>SAUVEGARDE_ABSENTE</strong> et <strong>EXPORT_ABSENT</strong>. Le dossier de destination affiché est celui du poste de capture.</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Sans autorisation valide, l’installeur <strong>refuse</strong> de mettre à jour une machine qui porte déjà des données : « Mise à jour BLOQUÉE : AUTORISATION_ABSENTE » (ou <strong>AUTORISATION_EXPIREE</strong>, <strong>AUTORISATION_ILLISIBLE</strong>). Recommencez la préparation. Sur une première installation, aucune condition n’est posée. L’ancienneté maximale (24 heures) et la durée de l’autorisation (4 heures) sont des <strong>valeurs d’attente</strong>, à valider par la Direction ; l’ancienneté se règle (de 1 à 168 heures) dans les réglages de la famille « Mise à jour du logiciel ».</p></div>
+<p><strong>Force majeure.</strong> Le bouton <strong>Lever le blocage (force majeure)</strong> exige le geste réservé « Lever le blocage d’une mise à jour (force majeure) » et un <strong>Motif de la levée</strong> d’au moins 10 caractères. L’auteur, la date et le motif sont écrits au journal d’audit.</p>
+
+<h3>Exporter la base complète : le fichier .sghx</h3>
+<p>Cliquez sur <strong>Exporter la base complète</strong>. Le logiciel écrit <strong>un seul fichier</strong>, d’extension <strong>.sghx</strong>, dans le <strong>Dossier de destination</strong> (le bouton <strong>Parcourir</strong> en choisit un autre), puis le <strong>relit</strong> : la note verte dit « Relu et vérifié (déchiffrement et empreinte contrôlés) ». Le fichier porte un manifeste lisible sans clé (version du logiciel, schéma, date, clinique, nombre de fiches par ensemble, empreinte) et un contenu chiffré par la <strong>clé de la clinique</strong>.</p>
+<figure class="capture" data-capture="captures/113-export-fait" data-recadrage="0,360,1440,520">
+  <figcaption>Après <strong>Exporter la base complète</strong> : le fichier est écrit, puis relu et vérifié. Le chemin affiché est celui du poste de capture.</figcaption>
+</figure>
+<ul>
+  <li><strong>Ce qui voyage</strong> : toutes les fiches du poste (archivées comprises). Pour la <strong>mère</strong>, aussi son journal de synchronisation ; pour un <strong>fileul</strong>, sa file de saisies pas encore confirmées par la mère, ses plages de numéros et son étiquette.</li>
+  <li><strong>Ce qui ne voyage jamais</strong> : la clé de la clinique ; les mots de passe (ils se <strong>redéfinissent</strong> sur le poste d’arrivée) ; les liens publics des enquêtes ; les codes d’appairage non utilisés. La carte l’énumère avant l’export.</li>
+</ul>
+<div class="encadre alerte"><span class="titre">Alerte</span><p>Un export qui reste sur le disque qu’on va réinstaller ne protège de rien. <strong>La clé de la clinique doit être sous scellé, hors de la machine</strong> : sans elle, ni l’export ni la sauvegarde ne se rouvrent.</p></div>
+
+<h3>Importer une base</h3>
+<div class="tache">
+<p class="but">Vous reprenez une base exportée, sur un poste neuf ou après un retour arrière.</p>
+<p class="prerequis">le geste « Importer une base depuis un export portable ».</p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Export, import et mise à jour ➔ carte Importer une base</p>
+<ol class="etapes">
+  <li>Saisissez le <strong>Fichier d’export (.sghx)</strong> ou cliquez sur <strong>Parcourir</strong>.</li>
+  <li>Cliquez sur <strong>Vérifier le fichier (sans rien écrire)</strong> : le logiciel contrôle le fichier et affiche son contenu.</li>
+  <li>Cliquez sur <strong>Importer dans un magasin neuf</strong>. L’import n’écrit <strong>jamais</strong> sur la base en service : il écrit dans un magasin neuf.</li>
+  <li>Écrivez le <strong>Motif de la mise en service (au journal)</strong> (10 caractères au moins), puis cliquez sur <strong>Programmer la mise en service</strong>. Au <strong>prochain démarrage</strong>, l’ancien magasin est <strong>renommé</strong> (jamais supprimé) et la base importée prend sa place : redémarrez le poste.</li>
+</ol>
+</div>
+<p>Les contrôles se font dans l’ordre, <strong>avant</strong> d’écrire, et chaque refus est nommé :</p>
+<table class="simple">
+  <tr><th style="width:34%">Refus affiché</th><th>Cause et geste</th></tr>
+  <tr><td><strong>FORMAT_PLUS_RECENT</strong>, <strong>FICHIER_INCONNU</strong></td><td>Le fichier vient d’un logiciel plus récent, ou n’est pas un export. Utilisez la version du logiciel qui l’a écrit, ou le bon fichier.</td></tr>
+  <tr><td><strong>SCHEMA_PLUS_RECENT</strong>, <strong>SCHEMA_ILLISIBLE</strong></td><td>Les données sont d’un schéma plus récent que ce logiciel, ou le numéro est illisible. Rien n’est lu ni modifié. Installez la version courante.</td></tr>
+  <tr><td><strong>AUTRE_CLINIQUE</strong></td><td>Le fichier vient d’une autre clinique : il est refusé.</td></tr>
+  <tr><td><strong>FILEUL_VERS_MERE</strong></td><td>L’export d’un fileul ne s’importe pas comme une mère : un fileul n’est jamais l’autorité.</td></tr>
+  <tr><td><strong>CIBLE_EXISTE</strong></td><td>La destination n’est pas neuve. Importez dans un magasin neuf.</td></tr>
+  <tr><td><strong>CLE_ABSENTE</strong>, <strong>CLE_INCORRECTE</strong></td><td>Ce poste n’a pas la clé de la clinique, ou une autre. Restaurez d’abord la clé (voir plus bas).</td></tr>
+  <tr><td><strong>FICHIER_ALTERE</strong>, <strong>MANIFESTE_ALTERE</strong>, <strong>EMPREINTE_DIFFERENTE</strong></td><td>Le fichier a été modifié ou abîmé depuis son export. N’en changez rien ; reprenez l’export d’origine.</td></tr>
+  <tr><td><strong>COPIE_PREALABLE_ECHOUEE</strong></td><td>Sur un fileul rattaché, la copie vérifiée de son magasin actuel a échoué : l’import ne commence pas.</td></tr>
+</table>
+<ul>
+  <li><strong>Un fileul n’est jamais l’autorité.</strong> L’import d’un fileul écrit dans un magasin <strong>neuf</strong> ; un fileul rattaché fait d’abord une copie préalable vérifiée de son magasin. Si le fichier est plus ancien que sa dernière synchronisation, un <strong>avertissement non bloquant</strong> liste les saisies postérieures, gardées dans sa file et dans le fichier <span class="touche">saisies-non-synchronisees.json</span>. Un export de mère importé sur un fileul n’est qu’un point de départ de <strong>resynchronisation</strong>.</li>
+  <li><strong>La mère.</strong> Son import rejoue le journal dans une base neuve et remet la clé de la clinique : les fileuls continuent avec leur jeton et leur plage, sans se réappairer.</li>
+  <li><strong>Reprise d’identité d’un fileul.</strong> Un poste neuf est un <strong>nouvel appareil</strong> : ses saisies porteraient des codes de dossier de la plage de l’ancien poste, que la mère refuserait. L’administrateur émet donc, à la mère, un <strong>code de reprise</strong> qui désigne l’ancien poste : la mère passe ses plages et ses baux au nouveau poste et <strong>révoque l’ancien</strong>. Les saisies gardent leur identifiant : aucune n’est perdue, aucune n’est doublée.</li>
+</ul>
+
+<h3>Poste neuf : restaurer la clé de la clinique</h3>
+<div class="tache">
+<p class="but">Vous remettez sur un poste neuf la clé de chiffrement de la clinique, depuis sa copie sous scellé.</p>
+<p class="prerequis">le droit d’administrer le système (administrateur ou DAF d’origine), sur la mère.</p>
+<p class="chemin">Poste mère ➔ Sécurité et continuité ➔ Restaurer la clé de la clinique</p>
+<ol class="etapes">
+  <li>Ouvrez <strong>Restaurer la clé de la clinique</strong>. La note dit « Aucune clé de clinique n’est connue de ce poste : c’est le cas d’un poste neuf », ou donne l’empreinte de la clé en service.</li>
+  <li>Choisissez la source : <strong>Texte de la copie papier</strong> (la clé en 64 caractères hexadécimaux ou en Base64) ou <strong>Fichier de sauvegarde de clé</strong> (fichier .cle, avec sa <strong>Phrase de passe du fichier</strong>).</li>
+  <li>Saisissez l’<strong>Empreinte notée sur le scellé</strong> (8 caractères au moins) : elle est exigée <strong>avant</strong> d’accepter la clé.</li>
+  <li>Cliquez sur <strong>Contrôler l’empreinte et restaurer la clé</strong>. La note verte confirme « Clé restaurée : empreinte … ».</li>
+</ol>
+<figure class="capture" data-capture="captures/114-cle-restauration" data-recadrage="0,100,1440,640" data-cibles='[{"cle":"cle:empreinte","de":"droite","long":60,"num":3},{"cle":"cle:restaurer","de":"droite","long":60,"num":4}]'>
+  <figcaption>L’écran <strong>Restaurer la clé de la clinique</strong> sur un poste neuf.</figcaption>
+</figure>
+</div>
+<ul>
+  <li>La clé n’est <strong>ni affichée ni journalisée</strong> : seule son empreinte de 8 caractères l’est. Les champs qui l’ont portée sont vidés aussitôt.</li>
+  <li>Une <strong>autre</strong> clé déjà en service n’est remplacée que si vous cochez la case de confirmation : remplacer une clé rendrait illisible ce que l’ancienne a chiffré. Refus nommés : <strong>EMPREINTE_ABSENTE</strong>, <strong>EMPREINTE_ILLISIBLE</strong>, <strong>EMPREINTE_DIFFERENTE</strong>, <strong>CLE_EN_SERVICE_DIFFERENTE</strong>.</li>
+  <li>Une mère <strong>neuve</strong> (sans base) adopte la clé restaurée ; une base de mère existante garde la sienne.</li>
+</ul>
+
+<h3>Revenir en arrière</h3>
+<p>Le guide complet est <em>docs/guides/MISE-A-JOUR-ET-RETOUR-ARRIERE.md</em>. En résumé, deux cas :</p>
+<ol class="etapes">
+  <li><strong>La migration a eu lieu et vous voulez l’ancienne version.</strong> Fermez le poste. <strong>Ne lancez pas</strong> l’ancienne version sur le magasin migré : elle le refusera en le nommant (<strong>SCHEMA_PLUS_RECENT</strong>), c’est voulu. Réinstallez l’ancienne version (l’installeur demande lui aussi une autorisation), puis rétablissez les données d’avant : importez l’<strong>export</strong> fait avant la mise à jour dans un magasin neuf et programmez la mise en service. À défaut d’export, la <strong>forme d’origine</strong> que chaque migration a rangée (dossier <span class="touche">migrations/avant-N</span>, chiffrée) peut être recopiée, poste arrêté.</li>
+  <li><strong>L’installation a échoué.</strong> Les données ne sont jamais dans le dossier du programme : réinstaller l’ancienne version les retrouve telles quelles.</li>
+</ol>
+<div class="encadre info"><span class="titre">Information</span><p>L’ancien magasin n’est <strong>jamais supprimé</strong> : la mise en service d’un import le renomme (« avant-import » suivi de la date). Sur un fileul rattaché, la mère reste l’autorité : il se resynchronise ensuite.</p></div>
+<div class="encadre attention"><span class="titre">Ce qui n’est pas encore vérifié</span><p>Le script de l’installeur Windows n’a <strong>pas été exécuté</strong> sur une machine Windows : sa logique est prouvée côté logiciel, mais l’essai réel reste à faire. Un export de mère se tient en mémoire : à mesurer sur la base réelle avant de compter dessus. Le fichier d’autorisation protège contre l’oubli, pas contre un administrateur qui voudrait le contourner.</p></div>
+
 <h2 id="sms">La passerelle SMS et le journal des envois</h2>
 <div class="tache">
 <p class="but">Vous vérifiez que les SMS (rappels de rendez-vous) partent, et vous testez l’envoi.</p>
@@ -1293,8 +1501,20 @@
   <li>Cliquez sur <strong>Tester l’envoi</strong> pour envoyer un SMS d’essai.</li>
   <li>Ouvrez <strong>Journal des envois SMS</strong> : chaque envoi avec <strong>Déposé le</strong>, <strong>Numéro (masqué)</strong>, <strong>Modèle</strong>, <strong>Caractères</strong>, <strong>Statut</strong>, <strong>Tentatives</strong> et <strong>Refus</strong>. Cliquez sur <strong>Relever les statuts</strong> pour les mettre à jour, ou sur <strong>Composer un SMS</strong> pour un message à partir d’un modèle.</li>
 </ol>
+<figure class="capture" data-capture="captures/140-sms-passerelle" data-recadrage="0,100,1440,1280" data-cibles='[{"cle":"sms:fournisseurs","de":"droite","long":60,"num":1},{"bouton":"Tester l’envoi","de":"droite","long":60,"num":2}]' style="width:84%">
+  <figcaption>La <strong>Passerelle SMS</strong> : <span class="pastille">1</span> la carte <strong>Fournisseur de SMS</strong>, avec le fournisseur « En service au relais » ; <span class="pastille">2</span> <strong>Tester l’envoi</strong>. Relais simulé pour la capture.</figcaption>
+</figure>
 <figure class="capture" data-capture="captures/141-sms-journal" data-recadrage="0,120,1440,780">
   <figcaption>Le <strong>Journal des envois SMS</strong>. Ici, le service de la mère ne répond pas : l’écran affiche « non disponible » au lieu d’un chiffre.</figcaption>
+</figure>
+<p><strong>Le fournisseur de SMS (Vonage ou Twilio).</strong> La clinique retient <strong>Vonage</strong> et <strong>Twilio</strong>. Le choix se règle <strong>au relais</strong>, dans son fichier de réglages (variable <span class="touche">RELAIS_SMS_PILOTE</span>) : <strong>jamais depuis le poste</strong>, et les identifiants du fournisseur n’y sont ni saisis ni visibles. Ce que vous voyez à l’écran <strong>Passerelle SMS</strong> :</p>
+<ul>
+  <li>l’indicateur <strong>Fournisseur</strong> (Vonage, Twilio, HTTP générique ou Journal d’essai) et la carte <strong>Fournisseur de SMS</strong>, qui liste chaque fournisseur reconnu, le badge <strong>En service au relais</strong> sur celui qui est choisi, et <strong>ce que le relais attend</strong> de lui (par exemple, pour Twilio, un identifiant de compte, un jeton et un expéditeur) ;</li>
+  <li>si le relais est incomplet, une note rouge : « Le relais attend encore, dans son fichier de réglages : … ». Tant qu’il manque un paramètre, <strong>aucun SMS n’est envoyé</strong> et la file reste intacte ; le relais ne prétend jamais avoir envoyé ;</li>
+  <li>le <strong>Journal d’essai</strong> : aucun SMS ne part réellement, la file, le plafond et l’effacement sont éprouvés sans fournisseur. Un nom de fournisseur inconnu au relais est refusé, jamais rabattu sur le journal.</li>
+</ul>
+<figure class="capture" data-capture="captures/142-sms-parametres-manquants" data-recadrage="0,100,1440,520" data-cibles='[{"cle":"sms:parametres-manquants","de":"bas","long":50,"num":1}]'>
+  <figcaption>Un relais Vonage incomplet : <span class="pastille">1</span> la note nomme le paramètre manquant. Seuls les <strong>noms</strong> des variables sont montrés, jamais leurs valeurs.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Les SMS partent <strong>par le relais</strong>. Le relais ne voit que le numéro et le texte d’un message déjà composé par la mère, et l’efface une fois envoyé. Aucun contenu médical dans un SMS : un rappel dit le jour, l’heure et la clinique.</p></div>
 </div>
@@ -1507,6 +1727,7 @@
   <tr><td><strong>DAF</strong></td><td>Directrice administrative et financière.</td></tr>
   <tr><td><strong>Domaine</strong></td><td>Onglet du ruban (Accueil, Soins, Logistique…), qui regroupe plusieurs modules.</td></tr>
   <tr><td><strong>Exercice</strong></td><td>Année comptable. Le sélecteur de la barre supérieure choisit celui que les écrans affichent ; par défaut, celui du jour.</td></tr>
+  <tr><td><strong>Fournisseur de SMS</strong></td><td>Société qui envoie réellement les SMS (Vonage ou Twilio). Il se choisit au relais, jamais depuis le poste ; l’écran <strong>Passerelle SMS</strong> le montre et dit ce que le relais attend encore.</td></tr>
   <tr><td><strong>FEFO</strong></td><td>« Premier périmé, premier sorti » : le lot qui se périme le premier sort le premier.</td></tr>
   <tr><td><strong>Fileul (poste)</strong></td><td>Poste de travail relié au poste mère.</td></tr>
   <tr><td><strong>IFU</strong></td><td>Identifiant fiscal unique.</td></tr>
@@ -1516,13 +1737,17 @@
   <tr><td><strong>Module</strong></td><td>Ensemble d’écrans d’un même métier (Laboratoire, Pharmacie &amp; Stocks…). Une ligne du panneau du ruban.</td></tr>
   <tr><td><strong>Plan de travail annuel (PTA)</strong></td><td>Programme des actions de la clinique pour un exercice : brouillon, soumis, adopté, en exécution, clôturé.</td></tr>
   <tr><td><strong>Pastille</strong></td><td>Bouton arrondi du ruban qui ouvre un écran ; ou voyant de la barre supérieure.</td></tr>
+  <tr><td><strong>Plage de numéros</strong></td><td>Suite de numéros remise par la mère à un poste fileul, pour une série et une année. Deux plages d’une même série et d’une même année ne se chevauchent jamais.</td></tr>
   <tr><td><strong>Provisoire / à renseigner</strong></td><td>Marquage d’une valeur d’attente (salaire, catégorie, numéro CNSS d’un agent) : elle est affichée telle quelle jusqu’à sa saisie ou sa confirmation.</td></tr>
   <tr><td><strong>Prix à valoriser</strong></td><td>Prestation dont le prix d’achat n’est pas encore fixé : elle ne s’encaisse pas tant qu’il manque.</td></tr>
   <tr><td><strong>Reconduction</strong></td><td>Recopie, dans le plan de l’exercice suivant, des actions non réalisées du plan d’un exercice.</td></tr>
+  <tr><td><strong>Reprise d’identité</strong></td><td>Remplacement d’un poste fileul par un poste neuf : la mère passe au nouveau poste les plages de numéros et les baux de l’ancien, et révoque l’ancien. Aucune saisie en file n’est perdue ni doublée.</td></tr>
   <tr><td><strong>Rôle</strong></td><td>Profil attaché à un compte (Accueil, Médecin, Caisse…). Il décide des écrans et des gestes permis.</td></tr>
   <tr><td><strong>Ruban</strong></td><td>Menu horizontal en haut de l’écran.</td></tr>
   <tr><td><strong>Tiers payeur</strong></td><td>Entreprise qui prend en charge un patient et qui reçoit sa propre facture (distincte de celle du patient).</td></tr>
   <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée.</td></tr>
+  <tr><td><strong>Schéma des données</strong></td><td>Numéro de version de la forme des données du poste et de la mère. Un logiciel refuse d’ouvrir des données d’un schéma plus récent que lui ; une mise à jour peut les convertir, après avoir rangé leur forme d’origine.</td></tr>
+  <tr><td><strong>sghx (fichier .sghx)</strong></td><td>Export complet portable de la base : un seul fichier, manifeste lisible sans clé, contenu chiffré par la clé de la clinique. Il ne contient ni cette clé ni les mots de passe.</td></tr>
   <tr><td><strong>Synchronisation</strong></td><td>Échange automatique des données entre les postes et la mère.</td></tr>
   <tr><td><strong>SYSCOHADA</strong></td><td>Plan comptable des pays de l’espace OHADA, utilisé par la comptabilité.</td></tr>
 </table>
@@ -1552,6 +1777,19 @@
   <tr><td>Un honoraire de régime est refusé pour « double paiement ».</td><td>Il répète une prime de la grille NS 132 déjà versée pour la même vacation. Retirez l’honoraire ou la prime, selon la décision de la Direction.</td></tr>
   <tr><td>Un dossier porte un code « PROV-… ».</td><td>Le poste hors ligne n’avait plus de numéro réservé. La mère le remplace par le vrai code après la synchronisation : ne l’écrivez pas sur le papier avant.</td></tr>
   <tr><td>Le bouton <strong>Confirmer</strong> d’un taux ou d’un barème d’AIB est absent.</td><td>Votre rôle n’a pas le geste « Confirmer un taux fiscal et arrêter un barème de l’AIB ». Demandez au Comptable ou à la DAF.</td></tr>
+  <tr><td>L’installeur dit « Mise à jour BLOQUÉE : AUTORISATION_ABSENTE » (ou EXPIREE).</td><td>Aucune sauvegarde vérifiée ni aucun export vérifié récents n’ont autorisé la mise à jour. Ouvrez <strong>Export, import et mise à jour</strong>, cliquez sur <strong>Préparer la mise à jour</strong>, puis relancez l’installeur dans les quelques heures. En force majeure, le geste « Lever le blocage » demande un motif.</td></tr>
+  <tr><td>Le poste refuse de s’ouvrir : « SCHEMA_PLUS_RECENT ».</td><td>Les données ont été écrites par une version plus récente du logiciel. Rien n’a été modifié. Installez la version courante, ou suivez « Revenir en arrière » dans le chapitre Sauvegarde, mise à jour et SMS.</td></tr>
+  <tr><td>Un import est refusé : CLE_ABSENTE, CLE_INCORRECTE, FICHIER_ALTERE, EMPREINTE_DIFFERENTE, AUTRE_CLINIQUE…</td><td>Le refus est nommé et rien n’est écrit. Sur un poste neuf, restaurez d’abord la clé avec <strong>Restaurer la clé de la clinique</strong>. Un fichier altéré ou d’une autre clinique ne s’importe pas : reprenez l’export d’origine.</td></tr>
+  <tr><td>J’ai remplacé un poste fileul par un poste neuf, et la mère refuse mes dossiers (« numero_hors_plage »).</td><td>Demandez à l’administrateur un <strong>code de reprise</strong> à la mère : elle passe les plages du poste remplacé au nouveau et révoque l’ancien. Sans reprise, les dossiers saisis sont refusés, en le disant.</td></tr>
+  <tr><td>La mère refuse une plage de numéros : « plage_chevauchement ».</td><td>La plage demandée en chevauche une autre de la même série et de la même année. Le refus nomme la plage et le poste ; rien n’est alloué. Prévenez l’administrateur : la reprise se fait au plus grand rang attribué + 1.</td></tr>
+  <tr><td>Le sélecteur d’exercice n’apparaît pas dans la barre supérieure.</td><td>Il ne paraît que sur les écrans qui dépendent de l’exercice (comptabilité, états financiers, plan de travail annuel…). Ouvrez l’un d’eux.</td></tr>
+  <tr><td>Ma facture à une entreprise est refusée : FILLE_DEJA_FACTUREE, AIB_SITUATION_A_CHOISIR, IFU_ACHETEUR_REQUIS…</td><td>Une facture patient ne se réclame qu’une fois ; la situation d’AIB doit être choisie (jamais présumée) ; l’IFU de 13 chiffres et le nom de l’entreprise sont obligatoires. Le message nomme la cause et le geste.</td></tr>
+  <tr><td>Une facture à une entreprise reste « En attente de certification ».</td><td>Aucun boîtier n’est branché dans cette version : « Certification en attente (MECEF_NON_CONFIGURE) ». Aucun numéro fiscal n’est fabriqué. Recliquez sur <strong>Transmettre à la MECeF</strong> quand l’adaptateur sera installé.</td></tr>
+  <tr><td>Ma demande d’émission, d’avoir ou de transmission d’une facture à une entreprise reste « en attente » (fileul).</td><td>La mère ne l’a pas encore appliquée. Si elle l’a refusée, la note rouge donne le code et le motif (par exemple RELEVE_VIDE) : corrigez, puis redéposez.</td></tr>
+  <tr><td>Je suis Surveillant et le bouton <strong>Déroger</strong> du planning individuel est absent.</td><td>Vous n’avez pas le geste « Écrire le planning individuel d’un agent », ou pas le droit d’écrire <strong>Planning &amp; gardes</strong>. Demandez à l’administrateur de l’accorder à votre rôle.</td></tr>
+  <tr><td>L’Assistant répond « Pas de fiche validée pour cette question ».</td><td>Aucune fiche d’aide n’a encore été écrite et validée par la Direction. Reportez-vous à ce manuel.</td></tr>
+  <tr><td>L’Assistant refuse : « Je ne donne ni diagnostic ni avis thérapeutique », ou « Vous n’avez pas le droit de lire cette information ».</td><td>C’est voulu : pas d’aide au traitement, même pour un médecin ; et l’Assistant ne montre que ce que votre rôle lit (RG-13). Ouvrez le dossier si vous en avez le droit.</td></tr>
+  <tr><td>La passerelle SMS affiche « Le relais attend encore… » (paramètres manquants).</td><td>Le fournisseur choisi au relais (Vonage ou Twilio) n’est pas complètement réglé : aucun SMS ne part, la file reste intacte. Prévenez l’administrateur, qui complète le fichier de réglages du relais.</td></tr>
   <tr><td>J’ai perdu mon téléphone appairé.</td><td>Prévenez immédiatement l’administrateur pour qu’il suspende le téléphone.</td></tr>
 </table>
 <div class="encadre info"><span class="titre">Information</span><p>Pour toute autre difficulté, ouvrez le menu du profil : <strong>Aide &amp; À propos</strong> ou <strong>Contactez l’éditeur</strong>. Notez l’écran concerné, l’heure et le message affiché : cela aide à comprendre ce qui s’est passé.</p></div>
