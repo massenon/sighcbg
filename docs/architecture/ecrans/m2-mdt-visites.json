@@ -1,0 +1,10 @@
+{
+ "id": "m2-mdt-visites",
+ "module": "M2",
+ "domaine": "Soins",
+ "libelleManifeste": "Visites de médecine du travail",
+ "acces": "ouvert",
+ "titre": "Visites de médecine du travail",
+ "description": "Visites d’embauche, périodiques et de reprise ; avis d’aptitude et fiche d’aptitude, pièce certifiante tarifée par la caisse.",
+ "note": "Fiche rédigée pour le poste Baguidi (PRD P0-12, les quatorze spécialités) : écran sans équivalent à la maquette."
+}

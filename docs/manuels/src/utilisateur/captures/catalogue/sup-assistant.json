@@ -1,0 +1,17 @@
+{
+ "id": "sup-assistant",
+ "titre": "Assistant",
+ "libelle": "Assistant",
+ "domaine": "Système",
+ "module": "SUP",
+ "moduleLibelle": "Aide & assistance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "sup-assistant"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 593
+}

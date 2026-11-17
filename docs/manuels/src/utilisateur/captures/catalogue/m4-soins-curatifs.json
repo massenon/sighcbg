@@ -1,0 +1,17 @@
+{
+ "id": "m4-soins-curatifs",
+ "titre": "Soins curatifs & urgences maternité",
+ "libelle": "Soins curatifs & urgences maternité",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-soins-curatifs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 422
+}

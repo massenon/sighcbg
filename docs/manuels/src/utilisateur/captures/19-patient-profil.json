@@ -1,0 +1,468 @@
+{
+ "nom": "19-patient-profil",
+ "ecran": "m1-patient-profil",
+ "role": "medecin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Répertoire des patients",
+   "rect": [
+    775.3,
+    141.0,
+    215.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Constantes à l’accueil",
+   "rect": [
+    998.4,
+    141.0,
+    205.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Patients & constantes",
+   "rect": [
+    1212.1,
+    141.0,
+    203.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Modifier le dossier",
+   "rect": [
+    505.0,
+    278.0,
+    181.3,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fiche de consultation",
+   "rect": [
+    698.3,
+    276.0,
+    202.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Documents numérisés",
+   "rect": [
+    913.0,
+    276.0,
+    208.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la fiche",
+   "rect": [
+    1133.7,
+    276.0,
+    170.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Retour au répertoire",
+   "rect": [
+    45.0,
+    326.0,
+    190.7,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner un dossier patient, WABI Kadidja — CBG/1/26 — Dépôt",
+   "case": true,
+   "rect": [
+    45.0,
+    276.0,
+    448.0,
+    38.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   356.6,
+   36.0
+  ],
+  "barre-actions": [
+   1009.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1112.7,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1262.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1282.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1308.0,
+   0.0,
+   120.0,
+   56.0
+  ],
+  "nom-courant": [
+   1354.0,
+   14.5,
+   52.0,
+   14.0
+  ],
+  "role-courant": [
+   1354.0,
+   28.5,
+   44.7,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.8,
+   36.0
+  ],
+  "domaine-Logistique": [
+   206.2,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-RH": [
+   332.4,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   406.4,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   561.1,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   688.3,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   789.3,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   928.6,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m1-patient-profil|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   148.1,
+   116.0,
+   157.1,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   139.6,
+   28.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   234.0,
+   1390.0,
+   148.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   254.0,
+   448.0,
+   60.0
+  ],
+  "kit:champ:dossier": [
+   45.0,
+   254.0,
+   448.0,
+   60.0
+  ],
+  "PAT0001:null": [
+   24.0,
+   399.0,
+   1392.0,
+   863.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   400.0,
+   915.3,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   414.0,
+   875.3,
+   20.0
+  ],
+  "kit:vide": [
+   45.0,
+   684.0,
+   875.3,
+   212.0
+  ],
+  "kit:vide-icone": [
+   458.7,
+   740.0,
+   48.0,
+   48.0
+  ],
+  "m1:rubrique:admin": [
+   978.3,
+   469.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:medical": [
+   978.3,
+   509.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:specialites": [
+   978.3,
+   549.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:antecedents": [
+   978.3,
+   589.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:soins": [
+   978.3,
+   629.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:hospi": [
+   978.3,
+   669.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:maternite": [
+   978.3,
+   709.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:laboratoire": [
+   978.3,
+   749.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:imagerie": [
+   978.3,
+   789.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:ordonnances": [
+   978.3,
+   829.0,
+   416.7,
+   36.0
+  ],
+  "m1:rubrique:domicile": [
+   978.3,
+   869.0,
+   416.7,
+   36.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    1009.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1112.7,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1262.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1308.0,
+    0.0,
+    120.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

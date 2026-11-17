@@ -1,0 +1,17 @@
+{
+ "id": "m2-dossier-consultation-nouveau",
+ "titre": "Dossier de consultation",
+ "libelle": "Dossier de consultation — saisie",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-dossier-consultation-nouveau"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1104
+}

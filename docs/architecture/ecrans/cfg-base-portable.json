@@ -1,0 +1,10 @@
+{
+ "id": "cfg-base-portable",
+ "module": "CFG",
+ "domaine": "Système",
+ "libelleManifeste": "Export, import et mise à jour",
+ "acces": "ouvert",
+ "titre": "Export, import et mise à jour",
+ "description": "Exporter la base complète en un fichier chiffré, l’importer dans un magasin neuf, préparer une mise à jour avec une sauvegarde vérifiée.",
+ "note": "Fiche rédigée pour le poste Baguidi (décision 12 de la Direction, 17/11/2026 : mise à jour du logiciel, export portable, sauvegarde obligatoire avant mise à jour) : écran sans équivalent à la maquette."
+}

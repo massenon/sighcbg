@@ -1,0 +1,38 @@
+{
+ "id": "dash-responsable-radiologie",
+ "module": "DASH",
+ "domaine": "Pilotage",
+ "libelleManifeste": "Responsable Radiologie",
+ "acces": "ouvert",
+ "titre": "Tableau de bord — Responsable Radiologie",
+ "description": "Demandes d’imagerie à exécuter, comptes rendus à rendre et activité par modalité — sans prescription ni accès financier.",
+ "fil": [
+  "Accueil",
+  "Pilotage",
+  "Tableaux de bord par poste",
+  "Responsable Radiologie"
+ ],
+ "actions": [],
+ "regle": [
+  "Vous exécutez l’imagerie, vous ne prescrivez pas : ni ordonnance ni fiche de consultation ne vous sont ouvertes, et le dossier du patient se lit sans se modifier. Aucun accès financier — ni caisse, ni assurances, ni comptabilité : un examen ne dépend pas du paiement à votre poste. Le catalogue de l’imagerie se lit ; sa modification appartient à la Direction."
+ ],
+ "onglets": [],
+ "kpis": [
+  "À exécuter (payées)",
+  "En attente de la caisse",
+  "Comptes rendus en rédaction",
+  "Rendus ce mois-ci"
+ ],
+ "cartes": [
+  "Accès rapides",
+  "Ce que vous faites ici — vos parcours",
+  "Ce que votre profil ne voit pas"
+ ],
+ "tableaux": [],
+ "commandes": [
+  "Poste d’imagerie"
+ ],
+ "champs": [],
+ "nbTableaux": 0,
+ "nbKpis": 4
+}

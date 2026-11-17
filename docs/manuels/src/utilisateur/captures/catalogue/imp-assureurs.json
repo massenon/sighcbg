@@ -1,0 +1,17 @@
+{
+ "id": "imp-assureurs",
+ "titre": "Importation des compagnies d’assurance",
+ "libelle": "Importation des compagnies d’assurance",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-assureurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 385
+}

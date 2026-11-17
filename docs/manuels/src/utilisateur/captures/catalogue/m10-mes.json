@@ -1,0 +1,17 @@
+{
+ "id": "m10-mes",
+ "titre": "Mon espace",
+ "libelle": "Mon espace",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-mes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 517
+}

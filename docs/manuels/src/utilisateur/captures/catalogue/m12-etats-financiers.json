@@ -1,0 +1,17 @@
+{
+ "id": "m12-etats-financiers",
+ "titre": "États financiers de synthèse",
+ "libelle": "États financiers",
+ "domaine": "Financier",
+ "module": "M12",
+ "moduleLibelle": "Comptabilité SYSCOHADA",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m12-etats-financiers"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 553
+}

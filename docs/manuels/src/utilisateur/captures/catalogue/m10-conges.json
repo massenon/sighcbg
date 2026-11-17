@@ -1,0 +1,17 @@
+{
+ "id": "m10-conges",
+ "titre": "Congés",
+ "libelle": "Congés",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-conges"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 671
+}

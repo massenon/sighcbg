@@ -1,0 +1,17 @@
+{
+ "id": "m3-sortie-avis-medical",
+ "titre": "Sortie contre avis médical",
+ "libelle": "Sortie contre avis médical",
+ "domaine": "Soins",
+ "module": "M3",
+ "moduleLibelle": "Hospitalisation",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-sortie-avis-medical"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 551
+}

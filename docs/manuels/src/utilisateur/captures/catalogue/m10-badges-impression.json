@@ -1,0 +1,17 @@
+{
+ "id": "m10-badges-impression",
+ "titre": "Planche d’impression des badges",
+ "libelle": "Planche d’impression des badges",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-badges-impression"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 495
+}

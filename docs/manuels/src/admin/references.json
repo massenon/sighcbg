@@ -1,0 +1,2916 @@
+{
+  "gestes": [
+    {
+      "id": "valider_seuil_labo",
+      "libelle": "Valider un seuil de variation brutale du laboratoire",
+      "module": "M5",
+      "ecran": "m5-valeurs-reference",
+      "rolesDefaut": [
+        "Biologiste médical"
+      ],
+      "suitEcran": false,
+      "aide": "Rend un seuil opposable : sans lui, un seuil enregistré reste sans effet. Origine : le Biologiste médical."
+    },
+    {
+      "id": "valider_seuil_labo_interim",
+      "libelle": "Valider un seuil de variation brutale avec la fonction de technicien de laboratoire",
+      "module": "M5",
+      "ecran": "m5-valeurs-reference",
+      "rolesDefaut": [],
+      "suitEcran": false,
+      "aide": "Le technicien de laboratoire est exclu par défaut. Accordé à un rôle, ses agents de fonction technicien peuvent valider un seuil (en plus du droit précédent)."
+    },
+    {
+      "id": "tarif_decider",
+      "libelle": "Décider un changement de prix (Oui ou Non)",
+      "module": "CFG",
+      "ecran": "cfg-tarifs",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance"
+      ],
+      "suitEcran": false,
+      "aide": "Une proposition de prix ne change rien avant le Oui. Proposer est le droit d’éditer l’écran « Tarifs et prix » ; décider est celui-ci. Origine : l’administrateur, la DAF, la Direction."
+    },
+    {
+      "id": "tarif_dater_passe",
+      "libelle": "Dater un prix dans le passé",
+      "module": "CFG",
+      "ecran": "cfg-tarifs",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance"
+      ],
+      "suitEcran": false,
+      "aide": "Une date d’effet antérieure à aujourd’hui, avec motif, tant qu’aucune pièce n’a utilisé la prestation depuis cette date. Origine : la DAF et la Direction."
+    },
+    {
+      "id": "tarif_proposer_achat",
+      "libelle": "Proposer un changement de prix d’achat d’un produit",
+      "module": "M6",
+      "ecran": "m6-produits",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Gestionnaire de Stock"
+      ],
+      "suitEcran": false,
+      "aide": "La commande « Changer le prix d’achat » du Référentiel produits. Modifier la fiche d’un produit ne suffit plus. Origine : le gestionnaire de stock, la DAF, l’administrateur."
+    },
+    {
+      "id": "export_tableau",
+      "libelle": "Exporter les lignes d’un tableau (Excel, CSV)",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [],
+      "suitEcran": true,
+      "aide": "Excel (.xlsx) et CSV. Sans décision, le droit suit la lecture de l’écran : qui lit le tableau peut l’exporter. Accordé ou retiré à un rôle, il vaut pour tous les écrans. Le fichier ne porte que les colonnes et les lignes que l’écran montre, champs sensibles masqués comme à l’écran. L’impression depuis un tableau est un droit distinct."
+    },
+    {
+      "id": "imprimer_tableau",
+      "libelle": "Imprimer depuis un tableau",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [],
+      "suitEcran": true,
+      "aide": "La sélection cochée ou tout le filtre, en un tableau unique ou en pièces complètes (une par page). Sans décision, le droit suit la lecture de l’écran. Accordé ou retiré à un rôle, il vaut pour tous les écrans ; il est distinct du droit d’exporter."
+    },
+    {
+      "id": "export_regler_limite",
+      "libelle": "Régler la limite de lignes par export",
+      "module": "CFG",
+      "ecran": "cfg-systeme",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Le réglage « Nombre maximal de lignes par export » (Paramètres système › Paramètres). Le droit d’éditer l’écran ne suffit pas. Origine proposée, à valider : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "cloture_circuit",
+      "libelle": "Circuit de clôture : démarrer, clôturer, rouvrir un exercice",
+      "module": "M12",
+      "ecran": "m12-cloture",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Démarrer la clôture, la prononcer, reprendre la saisie et rouvrir un exercice clos. Ne dispense pas de la séparation des personnes : celui qui a démarré ne clôture jamais. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "achats_valider",
+      "libelle": "Valider les achats : arbitrer un besoin, valider une commande de stock (RG-04)",
+      "module": "M7",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Écrans « Expression des besoins » (vue d’arbitrage) et « Commandes ». Accorder, rejeter ou renvoyer en complément un bon d’expression de besoins, et valider une commande de stock avant sa transmission au fournisseur (RG-04). Origine : la Directrice Administrative seule ; l’administrateur système ne l’a pas d’origine. Depuis un poste rattaché, le geste est transmis à la mère, qui le rejoue sous le rôle de son auteur."
+    },
+    {
+      "id": "numerotation_modifier",
+      "libelle": "Modifier une série de numérotation des pièces",
+      "module": "CFG",
+      "ecran": "cfg-fiscalite",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Préfixe, année, séparateur, longueur du rang et remise à 1 annuelle d’une série (Fiscalité & identité légale › Numérotation des pièces). Une modification est une version datée qui ne s’applique qu’aux pièces à venir. Depuis un poste rattaché, elle est transmise à la mère, qui l’applique. Origine proposée, à valider : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "reglage_fichiers",
+      "libelle": "Régler la gestion des fichiers numérisés",
+      "module": "CFG",
+      "ecran": "cfg-systeme",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Taille maximale d’un scan, contrôle d’intégrité du dossier des scans. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "reglage_ocr",
+      "libelle": "Régler la lecture des scans (OCR)",
+      "module": "CFG",
+      "ecran": "cfg-systeme",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Activer ou désactiver la lecture des scans, choisir le moteur, la langue et le délai. Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "reglage_mecef",
+      "libelle": "Régler la configuration MECeF",
+      "module": "MECEF",
+      "ecran": "mecef-config",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Le mode de certification des factures (boîtier ou e-MECeF), le modèle du boîtier et l’imprimante de caisse (modèle, largeur du papier, interface). Se règle sur le poste mère. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "reglage_encaissement_sans_prix",
+      "libelle": "Régler l’encaissement d’une facture qui a une ligne sans prix",
+      "module": "CFG",
+      "ecran": "cfg-systeme",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Le réglage « Encaisser le reste d’une facture qui a une ligne sans prix » (Non par défaut : rien de la facture ne s’encaisse tant qu’une ligne attend son prix). Se règle depuis n’importe quel poste : sur un poste rattaché, la demande est transmise à la mère, qui l’applique. Origine : l’administrateur et la Directrice Administrative (à confirmer par la Direction)."
+    },
+    {
+      "id": "alertes_caisse",
+      "libelle": "Recevoir les notifications du poste de caisse",
+      "module": "M8",
+      "ecran": "",
+      "rolesDefaut": [
+        "Caissier — Dispensaire (Pharmacie)"
+      ],
+      "suitEcran": false,
+      "aide": "Les notifications adressées à la caisse. Séparer la caisse de la pharmacie : accorder ce droit au rôle qui encaisse, le retirer à celui qui délivre. Origine : le Caissier."
+    },
+    {
+      "id": "alertes_stock",
+      "libelle": "Recevoir les notifications du poste stock",
+      "module": "M6",
+      "ecran": "",
+      "rolesDefaut": [
+        "Gestionnaire de Stock",
+        "Pharmacien",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Besoins accordés, réapprovisionnement et notifications adressées au stock. Origine : le gestionnaire de stock, le pharmacien et la DAF."
+    },
+    {
+      "id": "alertes_seuil_stock",
+      "libelle": "Recevoir l’alerte « article sous son seuil »",
+      "module": "M6",
+      "ecran": "",
+      "rolesDefaut": [
+        "Gestionnaire de Stock",
+        "Pharmacien",
+        "Caissier — Dispensaire (Pharmacie)",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "L’alerte d’un article sous son seuil d’alerte (encore filtrée par la lecture de l’écran des alertes). Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et la DAF."
+    },
+    {
+      "id": "alertes_peremption",
+      "libelle": "Recevoir l’alerte « lot périmé ou proche de la péremption »",
+      "module": "M6",
+      "ecran": "",
+      "rolesDefaut": [
+        "Gestionnaire de Stock",
+        "Pharmacien",
+        "Caissier — Dispensaire (Pharmacie)",
+        "Biologiste médical"
+      ],
+      "suitEcran": false,
+      "aide": "L’alerte de péremption d’un lot (encore filtrée par la lecture de l’écran des lots). Origine : le gestionnaire de stock, le pharmacien, le Caissier-Dispensateur et le Biologiste médical."
+    },
+    {
+      "id": "alertes_mecef_rejet",
+      "libelle": "Recevoir l’alerte « facture rejetée par la MECeF »",
+      "module": "MECEF",
+      "ecran": "",
+      "rolesDefaut": [
+        "Caissier — Dispensaire (Pharmacie)",
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Assistant de Direction"
+      ],
+      "suitEcran": false,
+      "aide": "Une facture rejetée par l’administration fiscale, à corriger puis retransmettre. Origine : le Caissier, le Comptable, la DAF et l’Assistant de Direction."
+    },
+    {
+      "id": "mecef_retransmettre",
+      "libelle": "Retransmettre une pièce à la MECeF (une fois)",
+      "module": "MECEF",
+      "ecran": "mecef-transmission",
+      "rolesDefaut": [
+        "Caissier — Dispensaire (Pharmacie)",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Corriger et retransmettre une pièce refusée, expirée ou en attente : une seule fois sans le droit suivant. Jamais une vente normalisée. Origine : le Caissier, la DAF et l’administrateur."
+    },
+    {
+      "id": "mecef_retransmettre_sans_limite",
+      "libelle": "Retransmettre une pièce à la MECeF sans limite",
+      "module": "MECEF",
+      "ecran": "mecef-transmission",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Retransmettre une pièce déjà retransmise une fois (s’ajoute au droit précédent). Origine : la DAF et l’administrateur."
+    },
+    {
+      "id": "alertes_comptable",
+      "libelle": "Recevoir les notifications du poste comptable",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Assistant de Direction",
+        "Assistant Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Les notifications adressées au poste comptable (besoin accordé, engagement). Origine : le Comptable, l’Assistant de Direction, l’Assistant Comptable et la DAF."
+    },
+    {
+      "id": "alertes_direction",
+      "libelle": "Recevoir les notifications du poste de la Direction",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Directeur Médical"
+      ],
+      "suitEcran": false,
+      "aide": "Les notifications adressées à la Direction. Origine : la Direction, la DAF et le Directeur Médical."
+    },
+    {
+      "id": "alertes_imagerie",
+      "libelle": "Recevoir les notifications du poste d’imagerie",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Technicien d’échographie",
+        "Responsable Radiologie"
+      ],
+      "suitEcran": false,
+      "aide": "Les demandes d’imagerie adressées au poste d’imagerie. Origine : le technicien d’échographie et le Responsable Radiologie."
+    },
+    {
+      "id": "alertes_laboratoire",
+      "libelle": "Recevoir les notifications et alertes du laboratoire",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Biologiste médical"
+      ],
+      "suitEcran": false,
+      "aide": "Notifications adressées au laboratoire, analyses réglées à prélever, échantillons reçus à saisir. Origine : le Biologiste médical."
+    },
+    {
+      "id": "alertes_prescripteur",
+      "libelle": "Recevoir les notifications du prescripteur",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Médecin",
+        "Chirurgien",
+        "Anesthésiste — Réanimateur",
+        "Directeur Médical"
+      ],
+      "suitEcran": false,
+      "aide": "Résultat disponible ou rectifié. Origine : le médecin, le chirurgien, l’anesthésiste et le Directeur Médical."
+    },
+    {
+      "id": "alertes_salle_soins",
+      "libelle": "Recevoir les notifications de la salle de soins",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Infirmier / Sage-femme",
+        "Aide-soignante",
+        "Surveillant"
+      ],
+      "suitEcran": false,
+      "aide": "Prescriptions de soins adressées à la salle de soins. Origine : l’infirmier, l’aide-soignante et le surveillant."
+    },
+    {
+      "id": "alertes_hospitalisation",
+      "libelle": "Recevoir les notifications de l’hospitalisation",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Infirmier / Sage-femme",
+        "Aide-soignante",
+        "Surveillant",
+        "Médecin"
+      ],
+      "suitEcran": false,
+      "aide": "Notifications adressées à l’hospitalisation. Origine : l’infirmier, l’aide-soignante, le surveillant et le médecin."
+    },
+    {
+      "id": "alertes_echeances_fiscales",
+      "libelle": "Recevoir l’alerte « échéance fiscale dépassée »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Assistant de Direction",
+        "Direction / Gérance"
+      ],
+      "suitEcran": false,
+      "aide": "Une échéance du calendrier fiscal dépassée et non payée. Origine : le Comptable, la DAF, l’Assistant de Direction et la Direction."
+    },
+    {
+      "id": "alertes_creances",
+      "libelle": "Recevoir l’alerte « créance assureur en souffrance »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Comptable",
+        "Direction / Gérance",
+        "Assistant de Direction",
+        "Assistant Comptable",
+        "Responsable Assurance"
+      ],
+      "suitEcran": false,
+      "aide": "Les créances assureur au-delà du seuil des objectifs de pilotage. Origine : la DAF, le Comptable, la Direction, l’Assistant de Direction, l’Assistant Comptable et le Responsable Assurance."
+    },
+    {
+      "id": "alertes_besoins_a_valider",
+      "libelle": "Recevoir l’alerte « bon de besoins à valider »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance"
+      ],
+      "suitEcran": false,
+      "aide": "Un bon d’expression de besoins soumis. Origine : la DAF et la Direction. Arbitrer reste le geste « Valider les achats »."
+    },
+    {
+      "id": "alertes_ecritures_brouillon",
+      "libelle": "Recevoir l’alerte « pièce comptable en brouillon »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Assistant Comptable"
+      ],
+      "suitEcran": false,
+      "aide": "Une pièce comptable en brouillon à contrôler (RG-10). Origine : le Comptable, la DAF et l’Assistant Comptable."
+    },
+    {
+      "id": "alertes_doublons_sync",
+      "libelle": "Recevoir l’alerte « doublon détecté par la synchronisation »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Comptable",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Dossier, facture, encaissement, délivrance, avoir ou écriture en double, lit en conflit, stock négatif. Origine : la Direction, la DAF, le Comptable et l’administrateur."
+    },
+    {
+      "id": "conflits_trancher",
+      "libelle": "Trancher un conflit entre postes",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Trancher un champ écrit sur deux postes, arbitrer deux couvertures ouvertes, et en recevoir l’alerte. Origine : la DAF, la Direction et l’administrateur. L’appareil de la mère tranche toujours à son retour."
+    },
+    {
+      "id": "sync_valider_flux",
+      "libelle": "Valider ou rejeter un flux échangé entre postes",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "La validation institutionnelle d’un flux de la règle de fusion pair. Origine : la DAF et l’administrateur."
+    },
+    {
+      "id": "systeme_administrer",
+      "libelle": "Administrer le système : poste mère et onglet « Système »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Les écrans du groupe « Poste mère » (exploitation, cycle, plateforme) et l’onglet « Système » du ruban. Il n’ouvre pas les écrans : la matrice les règle à part. Origine : l’administrateur et la DAF."
+    },
+    {
+      "id": "installation_conduire",
+      "libelle": "Conduire l’assistant d’installation",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "L’assistant d’installation proposé tant qu’il est en cours sur ce poste. Origine : l’administrateur."
+    },
+    {
+      "id": "securite_double_facteur",
+      "libelle": "Double facteur imposé au rôle",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directeur Médical",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Le double facteur est coché d’office et imposé aux comptes du rôle, que la case soit cochée ou non. Origine : le Directeur Médical, la DAF, la Direction et l’administrateur."
+    },
+    {
+      "id": "comptes_reinitialiser",
+      "libelle": "Réinitialiser le mot de passe d’un autre compte",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Jamais son propre compte. Origine : l’administrateur."
+    },
+    {
+      "id": "reglage_verrou_secours",
+      "libelle": "Régler le verrou de secours",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Le délai du verrou d’un poste de secours et la désignation de ce poste. Origine : l’administrateur et la DAF."
+    },
+    {
+      "id": "reglage_horssite",
+      "libelle": "Régler la copie hors site des sauvegardes",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Destination, chiffrement et contrôle de la copie hors site. Origine : l’administrateur et la DAF."
+    },
+    {
+      "id": "reglage_sms",
+      "libelle": "Régler la passerelle SMS et tester l’envoi",
+      "module": "MERE",
+      "ecran": "mere-sms-passerelle",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Ouvrir ou fermer la passerelle SMS (fermée par défaut), envoyer un SMS d’essai, composer et déposer un SMS au relais depuis un modèle de message. Le journal des envois se lit avec le seul droit de l’écran. Origine PROPOSÉE, à valider par la Direction : l’administrateur et la DAF."
+    },
+    {
+      "id": "fiscal_valider_configuration",
+      "libelle": "Valider la configuration fiscale",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Identité légale, obligations fiscales et paramètres ORTB datés. Origine : la Direction, la DAF et l’administrateur."
+    },
+    {
+      "id": "aib_tenir",
+      "libelle": "Tenir le barème de l’AIB et ses réglages",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Écrire une version du barème ou d’un réglage de l’AIB. La Direction lit sans écrire. Origine : le Comptable, l’administrateur et la DAF."
+    },
+    {
+      "id": "fiscal_confirmer",
+      "libelle": "Confirmer un taux fiscal et arrêter un barème de l’AIB",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Le bouton « Confirmer » des taux fiscaux (CNSS, VPS, barème de l’ITS, TVA…) ET l’arrêt d’une version du barème de l’AIB (écrans « Validations de l’AIB » et « Acompte sur impôt (AIB) ») : un seul droit, plus de double porte. Motif obligatoire, auteur et date tracés ; rien n’est écrasé, la confirmation s’ajoute à une date d’effet. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "facture_tiers_emettre",
+      "libelle": "Émettre une facture à une entreprise (tiers payeur)",
+      "module": "M9",
+      "ecran": "m9-facture-mere",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "La facture normalisée adressée à une entreprise qui prend un patient en charge : IFU et nom de l’acheteur, situation d’AIB choisie par le comptable. Elle naît d’une ligne du relevé de M9 (jamais saisie à la main) et ne remplace pas la facture du patient, qui reste sans acheteur ni AIB. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "cloture_inventaire",
+      "libelle": "Passer des écritures d’inventaire pendant la clôture",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Pendant qu’un exercice est EN CLÔTURE, les modules n’y écrivent plus ; seuls les rôles qui détiennent ce droit y passent leurs écritures d’inventaire, en saisie manuelle (la saisie des dépenses, la garde des écritures et la mise de côté des pièces d’un fileul le lisent). Remplace le réglage « liste de rôles » : une case de la fiche de rôle. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "validations_vue_complete",
+      "libelle": "Voir toutes les familles au centre des validations",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Sans ce droit, un profil ne voit que les familles qu’il valide. Origine : la Direction, la DAF et l’administrateur."
+    },
+    {
+      "id": "validations_centre_elargi",
+      "libelle": "Centre des validations élargi",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système",
+        "Direction / Gérance",
+        "Directeur Médical",
+        "Comptable",
+        "Surveillant",
+        "Agent Administratif"
+      ],
+      "suitEcran": false,
+      "aide": "Les profils qui ouvraient le centre des validations y gardent toutes les rubriques ; les autres n’y voient que les familles de leur rôle. Origine : la DAF, l’administrateur, la Direction, le Directeur Médical, le Comptable, le surveillant et l’agent administratif."
+    },
+    {
+      "id": "valider_ref_direction",
+      "libelle": "Valider les référentiels du ressort de la Direction",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Modèles d’enquête, tarifs des actes et des analyses, valorisation SAGE, objectifs de pilotage, modèles de badge, jeux d’import, modèles de messages, barème de l’ITS. Origine : la Direction, la DAF et l’administrateur."
+    },
+    {
+      "id": "valider_ref_labo",
+      "libelle": "Valider les variables et unités du laboratoire",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Biologiste médical"
+      ],
+      "suitEcran": false,
+      "aide": "Les bornes suppléées du laboratoire. Origine : le Biologiste médical."
+    },
+    {
+      "id": "valider_ref_pathologies",
+      "libelle": "Valider les pathologies",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directeur Médical",
+        "Médecin"
+      ],
+      "suitEcran": false,
+      "aide": "Le tableau de morbidité. Origine : le Directeur Médical et le médecin."
+    },
+    {
+      "id": "valider_ref_imagerie",
+      "libelle": "Valider le catalogue de l’imagerie",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Technicien d’échographie",
+        "Responsable Radiologie",
+        "Directeur Médical"
+      ],
+      "suitEcran": false,
+      "aide": "Examens et variables de l’imagerie. Origine : le technicien d’échographie, le Responsable Radiologie et le Directeur Médical."
+    },
+    {
+      "id": "valider_ref_bloc",
+      "libelle": "Valider les check-listes du bloc",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Chirurgien",
+        "Anesthésiste — Réanimateur"
+      ],
+      "suitEcran": false,
+      "aide": "Check-listes d’entrée et de sortie, échelles ASA et Mallampati. Origine : le chirurgien et l’anesthésiste."
+    },
+    {
+      "id": "valider_ref_repartition",
+      "libelle": "Valider la répartition fixe et variable des charges",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "La répartition proposée des comptes de charge (seuil de rentabilité). Origine : le Comptable, la Direction, la DAF et l’administrateur."
+    },
+    {
+      "id": "valider_ref_bareme_aib",
+      "libelle": "Valider le barème de l’AIB (marquage « à valider »)",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système",
+        "Comptable"
+      ],
+      "suitEcran": false,
+      "aide": "Le marquage « à valider » d’une version du barème au centre des validations. Origine : la Direction, la DAF, l’administrateur et le Comptable."
+    },
+    {
+      "id": "rh_regler",
+      "libelle": "Régler le personnel",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Circuit de validation des présences, « l’agent modifie directement », délai du pointage par badge, copie de la fiche de paie sur le téléphone. Origine : l’administrateur et la DAF."
+    },
+    {
+      "id": "rh_planning_individuel",
+      "libelle": "Écrire le planning individuel d’un agent",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Surveillant",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Poser le régime individuel d’un agent (dérogation, remplacement, retour à la catégorie) à l’onglet « Planning individuel » de la fiche du personnel. Ne donne aucun autre droit RH ni aucune lecture de rémunération. Origine : le surveillant, la DAF et l’administrateur."
+    },
+    {
+      "id": "rh_encadrer",
+      "libelle": "Encadrer le planning du personnel",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Surveillant",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Poser et retirer le planning, voir et valider les propositions des agents, régulariser un pointage, consigner l’avis du chef de service sur un ordre de mission. Origine : le surveillant, la DAF et l’administrateur."
+    },
+    {
+      "id": "rh_etape_surveillant",
+      "libelle": "Valider l’étape « surveillant » du circuit RH",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Surveillant",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Présences, absences et missions à l’étape du surveillant. Origine : le surveillant et l’administrateur."
+    },
+    {
+      "id": "rh_etape_daf",
+      "libelle": "Valider l’étape « directrice administrative » du circuit RH",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Présences, absences et missions à l’étape de la directrice administrative. Origine : la DAF et l’administrateur."
+    },
+    {
+      "id": "rh_pointer_badge",
+      "libelle": "Pointer un badge",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Surveillant",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système",
+        "Direction / Gérance",
+        "Responsable RH"
+      ],
+      "suitEcran": false,
+      "aide": "Le pointage par badge à l’écran de vérification, quand le réglage est actif. Origine : le surveillant, la DAF, l’administrateur, la Direction et le compte RH."
+    },
+    {
+      "id": "rh_confirmer_valeur",
+      "libelle": "Confirmer une valeur d’attente du dossier d’un agent",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Lever le marquage « provisoire » du salaire, de la catégorie, de la date d’embauche ou du numéro CNSS d’un agent, sur motif journalisé. Origine : la DAF, la Direction et l’administrateur."
+    },
+    {
+      "id": "imagerie_executer",
+      "libelle": "Exécuter l’imagerie sans la prescrire",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Technicien d’échographie",
+        "Responsable Radiologie"
+      ],
+      "suitEcran": false,
+      "aide": "Lire tous les comptes rendus d’imagerie, ouvrir celui d’un examen payé, ne jamais créer de demande (prescrire n’est pas exécuter). Origine : le technicien d’échographie et le Responsable Radiologie."
+    },
+    {
+      "id": "rubriques_chirurgicales",
+      "libelle": "Écrire les rubriques chirurgicales du dossier de consultation",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Chirurgien"
+      ],
+      "suitEcran": false,
+      "aide": "Les rubriques chirurgicales s’écrivent par le chirurgien et se lisent par tous. Origine : le chirurgien (la fonction de chirurgien de l’agent les ouvre aussi)."
+    },
+    {
+      "id": "achats_registre",
+      "libelle": "Voir les besoins validés et le registre complet des achats",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Comptable",
+        "Gestionnaire de Stock",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Direction / Gérance",
+        "Administrateur système",
+        "Assistant Comptable"
+      ],
+      "suitEcran": false,
+      "aide": "Les vues « Besoins validés » et « Tous les bons » de l’expression des besoins. Origine : le Comptable, le gestionnaire de stock, la DAF, la Direction, l’administrateur et l’Assistant Comptable."
+    },
+    {
+      "id": "pta_adopter",
+      "libelle": "Adopter, renvoyer ou clôturer le plan de travail annuel",
+      "module": "M13",
+      "ecran": "m13-plan-annuel",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Adopter un plan soumis (motif et date, jamais par celui qui l’a soumis), le renvoyer en brouillon, le clôturer avec son bilan. Depuis un poste rattaché, le geste est transmis à la mère, qui l’applique. Origine : Modèle proposé le 16/11/2026, à valider (la Direction et la DAF)."
+    },
+    {
+      "id": "pta_regler",
+      "libelle": "Régler les référentiels du plan de travail annuel",
+      "module": "M13",
+      "ecran": "m13-plan-annuel",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Axes, états d’avancement et sources de financement du plan (écran du plan, carte « Référentiels du plan »), périodicité, seuil d’alerte de retard et préfixe de numérotation (Paramètres, famille « Plan de travail annuel »). Origine proposée, à valider : l’administrateur et la DAF."
+    },
+    {
+      "id": "alertes_pta_retard",
+      "libelle": "Recevoir l’alerte « action du plan de travail annuel en retard »",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Une ligne par action non terminée dont la période est échue depuis plus que le seuil réglé. Origine proposée, à valider : la Direction et la DAF."
+    },
+    {
+      "id": "base_exporter",
+      "libelle": "Exporter la base complète (fichier portable chiffré)",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Un fichier unique : manifeste lisible (version du logiciel et du schéma, date, clinique, compteurs, empreinte) et contenu compressé chiffré par la clé de la clinique. Aucune clé, aucun haché de mot de passe dans le fichier. Sur un fileul, la file des saisies non confirmées voyage avec. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "base_importer",
+      "libelle": "Importer une base depuis un export portable",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Contrôle l’empreinte, le déchiffrement, la clinique et la version du format, applique la chaîne de migrations, écrit dans un magasin NEUF ; la mise en service est un second geste explicite, tracé. Un fileul rattaché remplace son magasin après une copie préalable vérifiée et reste soumis à la mère. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "maj_lever_blocage",
+      "libelle": "Lever le blocage d’une mise à jour (force majeure)",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Autorise l’installation sans sauvegarde vérifiée de moins de N heures. Le motif est obligatoire ; l’auteur, la date et le motif sont journalisés. Origine : l’administrateur et la Directrice Administrative."
+    }
+  ],
+  "familles": {
+    "mecef": "MECeF",
+    "bareme_aib": "AIB",
+    "planning": "Planning et présences",
+    "paie": "Paie",
+    "fiscal": "Calendrier fiscal",
+    "securite": "Sécurité",
+    "horssite": "Sauvegarde hors site",
+    "maj": "Mise à jour du logiciel",
+    "assistant": "Assistant",
+    "stock": "Stock et péremption",
+    "comptabilite": "Comptabilité et recouvrement",
+    "export": "Export des tableaux",
+    "cloture": "Clôture comptable",
+    "achats": "Achats",
+    "validations": "Validations et continuité",
+    "caisse": "Caisse et encaissement",
+    "pta": "Plan de travail annuel",
+    "taux_fiscaux": "Taux et barèmes de la paie",
+    "rh": "Ressources humaines",
+    "ambulance": "Ambulance",
+    "administration": "Administration et qualité",
+    "hospitalisation": "Hospitalisation",
+    "assurances": "Assurances et créances",
+    "qualite": "Qualité et enquêtes",
+    "notifications": "Notifications et alertes",
+    "laboratoire": "Laboratoire et banque de sang",
+    "specialites": "Spécialités",
+    "consultation": "Consultation et agenda",
+    "mere": "Console du poste mère",
+    "support": "Contact de l'éditeur",
+    "listes_m4": "Listes de référence — M4 Maternité",
+    "listes_m1": "Listes de référence — M1 Patients",
+    "listes_m2": "Listes de référence — M2 Consultations",
+    "listes_m3": "Listes de référence — M3 Hospitalisation et bloc",
+    "listes_m5": "Listes de référence — M5 Laboratoire",
+    "listes_m6": "Listes de référence — M6 Stock",
+    "listes_m7": "Listes de référence — M7 Achats",
+    "listes_m8": "Listes de référence — M8 Caisse",
+    "listes_m9": "Listes de référence — M9 Assurances",
+    "listes_m10": "Listes de référence — M10 RH",
+    "listes_m11": "Listes de référence — M11 Paie",
+    "listes_m12": "Listes de référence — M12 Comptabilité",
+    "listes_m13": "Listes de référence — M13 Administration",
+    "listes_cfg": "Listes de référence — Configuration",
+    "listes_rap": "Listes de référence — Rapports",
+    "listes_mecef": "Listes de référence — MECeF",
+    "listes_socle": "Listes de référence — socle (plusieurs modules)"
+  },
+  "parametres": [
+    {
+      "cle": "mecef.mode",
+      "famille": "mecef",
+      "type": "choix",
+      "defaut": "boitier",
+      "libelle": "Mode de certification des factures",
+      "choix": [
+        "boitier",
+        "emecef"
+      ],
+      "libellesChoix": {
+        "boitier": "Boîtier physique",
+        "emecef": "e-MECeF"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Boîtier physique ou e-MECeF. Aucun numéro n'est simulé au poste : sans adaptateur configuré, la vente reste en attente de certification. Le mode e-MECeF reste « non configuré : dossier d'interface DGI requis ».",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "mecef.modeleBoitier",
+      "famille": "mecef",
+      "type": "texte",
+      "defaut": "ELTRADE CC300",
+      "libelle": "Modèle du boîtier MECeF",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le modèle de l'appareil de certification (mode « Boîtier physique »). Il nomme l'appareil à l'écran, sur la pièce et au journal MECeF ; il ne branche aucun protocole : l'adaptateur reste non configuré tant que l'éditeur du boîtier n'a pas fourni son intégration.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md) : le boîtier MECeF de Baguidi est un ELTRADE CC300"
+    },
+    {
+      "cle": "mecef.imprimanteCaisse.integreeAuBoitier",
+      "famille": "mecef",
+      "type": "booleen",
+      "defaut": true,
+      "libelle": "Imprimante de caisse — intégrée au boîtier MECeF",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Oui : le boîtier MECeF est AUSSI l'imprimante de caisse (ticket 80 mm) — une machine, deux fonctions. Le modèle et l'interface de l'imprimante sont alors ceux du boîtier (réglage « Modèle du boîtier MECeF »), sans ressaisie. Non : la clinique renseigne une imprimante distincte ci-dessous.",
+      "source": "Décision de la Direction de Baguidi du 17/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §11) : le boîtier ELTRADE CC300 est à la fois le MECeF et l'imprimante de caisse (ticket 80 mm) ; largeur du papier à valider"
+    },
+    {
+      "cle": "mecef.imprimanteCaisse.modele",
+      "famille": "mecef",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Imprimante de caisse — modèle",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le modèle de l'imprimante du ticket de caisse, quand elle n'est PAS le boîtier MECeF (réglage « intégrée au boîtier » décoché) ; sinon le modèle du boîtier fait foi. Aucun autre modèle n'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l'appareil, il ne branche aucun pilote d'impression.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucun modèle fourni, valeur à renseigner, à valider"
+    },
+    {
+      "cle": "mecef.imprimanteCaisse.largeurPapierMm",
+      "famille": "mecef",
+      "type": "entier",
+      "defaut": 80,
+      "libelle": "Imprimante de caisse — largeur du papier (mm)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La largeur du rouleau, de 40 à 120 mm : l'aperçu et le PDF du ticket de caisse la prennent. Hors de ces bornes, le ticket garde 80 mm et l'écran le dit.",
+      "source": "Gabarit du ticket de caisse de la maquette (rouleau 80 mm, P.ticket) ; décision de la Direction de Baguidi du 16/11/2026 : valeur d'attente, à valider par la clinique"
+    },
+    {
+      "cle": "mecef.imprimanteCaisse.interface",
+      "famille": "mecef",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Imprimante de caisse — interface",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Comment l'imprimante est reliée au poste (par exemple USB, série, réseau), telle que la clinique la décrit. Aucune n'est fournie pour Baguidi : à renseigner. Aucun pilote n'est branché.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucune interface fournie, valeur à renseigner, à valider"
+    },
+    {
+      "cle": "bareme_aib.chargePrelevement",
+      "famille": "bareme_aib",
+      "type": "choix",
+      "defaut": "clinique",
+      "libelle": "Qui supporte le prélèvement de l'AIB",
+      "choix": [
+        "clinique",
+        "acheteur"
+      ],
+      "libellesChoix": {
+        "clinique": "La clinique",
+        "acheteur": "L'acheteur"
+      },
+      "branche": false,
+      "sensible": false,
+      "aide": "Décision D4 de Baguidi : les deux, selon la situation de l'émetteur ; communiqué de la DGI et comptes confirmés par l'expert-comptable à obtenir. Réglage non branché : aucune écriture d'AIB subi n'en dépend.",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "bareme_aib.branchementAchats",
+      "famille": "bareme_aib",
+      "type": "choix",
+      "defaut": "desactive",
+      "libelle": "Brancher l'AIB sur les écritures d'achat",
+      "choix": [
+        "desactive",
+        "actif"
+      ],
+      "libellesChoix": {
+        "desactive": "Désactivé (le moteur liste, n'écrit rien)",
+        "actif": "Activé (écrit ce qui est listé)"
+      },
+      "branche": false,
+      "sensible": false,
+      "aide": "Différé par décision de la Direction : désactivé par défaut. L'activation exige le compte d'acompte, le compte de contrepartie et la charge arrêtés (refus nommé sinon).",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "bareme_aib.compteAcompte",
+      "famille": "bareme_aib",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Compte d'acompte (débit)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": false,
+      "sensible": false,
+      "aide": "Choisi par le comptable dans le plan comptable : aucun numéro n'est proposé d'office (vide tant qu'il n'est pas choisi).",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "bareme_aib.compteContrepartie",
+      "famille": "bareme_aib",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Compte de contrepartie (crédit)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": false,
+      "sensible": false,
+      "aide": "Choisi par le comptable dans le plan comptable : une écriture s'équilibre sur deux comptes que la clinique désigne (vide tant qu'il n'est pas choisi).",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "planning.circuitPresences",
+      "famille": "planning",
+      "type": "choix",
+      "defaut": "surveillant",
+      "libelle": "Circuit de validation des présences et absences",
+      "choix": [
+        "surveillant",
+        "daf",
+        "surveillant_puis_daf"
+      ],
+      "libellesChoix": {
+        "surveillant": "Surveillant seul",
+        "daf": "Directrice administrative seule",
+        "surveillant_puis_daf": "Surveillant puis directrice administrative"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Surveillant seul, directrice administrative seule, ou surveillant puis directrice administrative. Congés et ordres de mission suivent le même circuit.",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "planning.agentModifieDirectement",
+      "famille": "planning",
+      "type": "booleen",
+      "defaut": false,
+      "libelle": "L'agent modifie directement son planning",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Non : l'agent propose, le surveillant valide.",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "paie.copieFichePaieTelephone",
+      "famille": "paie",
+      "type": "booleen",
+      "defaut": true,
+      "libelle": "Copie chiffrée de la fiche de paie sur le téléphone",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Oui : l'agent garde sur son téléphone une copie chiffrée de sa propre fiche de paie ÉMISE (diffusée), jamais celle d'un autre, jamais l'ensemble de la paie, jamais recalculée à l'appareil. Le réglage lui-même ne va PAS au téléphone (famille « paie » réservée) : la mère décide de publier ou de retirer la copie.",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.cnssTauxOuvrier",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 3.6,
+      "libelle": "CNSS — part ouvrière (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Retenue sur le salaire brut après sanction, à chaque bulletin. Une version nouvelle prend effet à une date : un bulletin se calcule au taux en vigueur le premier jour de sa période ; un bulletin déjà généré garde le sien.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 3,6 %, sans plafond"
+    },
+    {
+      "cle": "taux_fiscaux.cnssTauxPatronal",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 16.4,
+      "libelle": "CNSS — part patronale (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Charge de l'employeur, non déduite du net. Versionnée par date comme la part ouvrière.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 16,4 %, sans plafond"
+    },
+    {
+      "cle": "taux_fiscaux.vpsTaux",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 4.0,
+      "libelle": "VPS — versement patronal de solidarité (% du brut)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Charge de l'employeur, non déduite du net. Versionnée par date.",
+      "source": "CDCT §10.10 (D.PARAM_PAIE de la maquette) : 4 % du salaire brut"
+    },
+    {
+      "cle": "taux_fiscaux.baremeIts",
+      "famille": "taux_fiscaux",
+      "type": "texte",
+      "defaut": "[[0,60000,0],[60001,150000,10],[150001,250000,15],[250001,500000,19],[500001,null,30]]",
+      "libelle": "Barème progressif de l'ITS",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Tranches [plancher, plafond, taux %], la dernière sans plafond. Le barème semé est celui de la maquette, « à confirmer par le service comptable » : il reste marqué à confirmer tant qu'aucune confirmation ne cite le texte qui le fonde.",
+      "source": "Maquette (D.PARAM_PAIE.its) : à confirmer par le service comptable, aucun texte cité"
+    },
+    {
+      "cle": "taux_fiscaux.primeAncienneteTaux",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 2.0,
+      "libelle": "Prime d'ancienneté — taux par année (% du salaire de base)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le taux appliqué par année d'ancienneté, au salaire de base. Lu à la date du bulletin ; un bulletin déjà généré garde le sien.",
+      "source": "Maquette (m11-paie.js, prime d'ancienneté) : 2 % par année, à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.primeAncienneteSeuilAns",
+      "famille": "taux_fiscaux",
+      "type": "entier",
+      "defaut": 2,
+      "libelle": "Prime d'ancienneté — à partir de (années)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le nombre d'années d'ancienneté à partir duquel la prime est due. Entier de 0 à 40.",
+      "source": "Maquette (m11-paie.js, prime d'ancienneté) : à partir de 2 ans, à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "taux_fiscaux.tvaTauxNormal",
+      "famille": "taux_fiscaux",
+      "type": "nombre",
+      "defaut": 18.0,
+      "libelle": "TVA — taux du régime normal (%)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Appliqué quand la configuration fiscale retient le régime normal (Baguidi : régime exonéré, produits et actes de santé). Versionné par date.",
+      "source": "Référentiel fiscal de la maquette (D.PARAM_FISCAL.regimesTva) : 18 %"
+    },
+    {
+      "cle": "rh.participationStandardParAgent",
+      "famille": "rh",
+      "type": "entier",
+      "defaut": 1000,
+      "libelle": "Participation standard par agent aux événements du personnel (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Proposée à la création d'un événement (mariage, naissance, décès…) et reprise quand le montant saisi est vide ou nul. Un événement déjà créé garde le montant qu'il porte.",
+      "source": "Usage de la clinique repris de la maquette (vague 21) : 1 000 F, à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "planning.badgeSertDePointage",
+      "famille": "planning",
+      "type": "booleen",
+      "defaut": true,
+      "libelle": "Le badge sert de pointage",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Oui : un badge vérifié valide crée une présence « à valider » au registre (arrivée, puis départ au passage suivant), qui suit le circuit de validation des présences.",
+      "source": "Valeur d'attente reprise de la réplique d'origine : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "fiscal.delaiAPayerJours",
+      "famille": "fiscal",
+      "type": "entier",
+      "defaut": 10,
+      "libelle": "Échéance « à payer » : délai d'alerte (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une échéance non réglée devient « à payer » quand elle tombe dans ce délai ; l'alerte sonore de l'ouverture suit le même délai.",
+      "source": "Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "fiscal.delaiDeclarationJours",
+      "famille": "fiscal",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Échéance « déclaration attendue » : délai (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Quand une déclaration précède le paiement, l'échéance passe « déclaration attendue » dans ce délai. Doit rester supérieur au délai « à payer ».",
+      "source": "Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "fiscal.ccibMontant",
+      "famille": "fiscal",
+      "type": "entier",
+      "defaut": 300000,
+      "libelle": "CCIB : contribution annuelle (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Réglée en deux tranches égales (mars et juin). Montant à confirmer par le cabinet comptable ; il s'affiche aux indicateurs de la fiscalité et à la configuration fiscale.",
+      "source": "Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "planning.delaiEntrePointagesBadge",
+      "famille": "planning",
+      "type": "entier",
+      "defaut": 5,
+      "libelle": "Délai minimal entre deux pointages par badge (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Deux passages du même badge plus rapprochés sont refusés. Entier de 0 à 720 ; 0 ne refuse jamais. Valeur d'attente de 5 minutes : aucun document ne la fixe, proposition à valider par la Direction.",
+      "source": "Proposition à valider (lot L8) : aucun document ne fixe ce délai"
+    },
+    {
+      "cle": "securite.delaiVerrouPosteSecours",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 5,
+      "libelle": "Délai de verrou d'un poste de secours (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un poste partagé de secours, où un agent sans téléphone ouvre sa propre session, se verrouille plus vite qu'un poste ordinaire. Entier de 1 à 120. Valeur d'attente de 5 minutes proposée par l'équipe : aucun document ne la fixe, à valider par la Direction. Le délai ordinaire de 15 minutes (CDCT 12.2, politique de sécurité) ne change pas. Quel poste est « de secours » se désigne à ce poste même (donnée locale, jamais synchronisée).",
+      "source": "Proposition à valider (décision P3 du 11/11/2026) : aucun document ne fixe ce délai"
+    },
+    {
+      "cle": "horssite.actif",
+      "famille": "horssite",
+      "type": "booleen",
+      "defaut": false,
+      "libelle": "Copie hors site active",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Désactivée par défaut : l'administrateur ou la Directrice Administrative l'active à la main, une fois une destination choisie. Réglage de la clinique, posé à la poste mère.",
+      "source": "Décision de la Direction du 15/11/2026 (« il faut l’implémenter ») : lot BAK, ADR-0008"
+    },
+    {
+      "cle": "horssite.destinationMagasin",
+      "famille": "horssite",
+      "type": "choix",
+      "defaut": "relais",
+      "libelle": "Destination de la copie du magasin",
+      "choix": [
+        "aucune",
+        "relais",
+        "dossier"
+      ],
+      "libellesChoix": {
+        "aucune": "Aucune",
+        "relais": "Relais web",
+        "dossier": "Dossier distant monté"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Relais web par défaut (proposition) : la copie de la base de la mère est petite (quelques Mo). Aucune : ce type de copie n'est pas fait.",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : aucun document ne fixe cette valeur"
+    },
+    {
+      "cle": "horssite.destinationFichiers",
+      "famille": "horssite",
+      "type": "choix",
+      "defaut": "aucune",
+      "libelle": "Destination de la copie des fichiers numérisés",
+      "choix": [
+        "aucune",
+        "relais",
+        "dossier"
+      ],
+      "libellesChoix": {
+        "aucune": "Aucune",
+        "relais": "Relais web",
+        "dossier": "Dossier distant monté"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Aucune par défaut (proposition) : le volume des scans n'est pas mesuré et l'espace d'un hébergement mutualisé est borné. À choisir par la Direction : relais web ou dossier distant monté.",
+      "source": "Décision de la Direction du 15/11/2026 (Q33, DECISIONS-Q1-42) : « Aucune » tant que le volume des fichiers n'est pas mesuré (voir docs/guides/mesurer-le-quota-du-relais.md)"
+    },
+    {
+      "cle": "horssite.dossierMagasin",
+      "famille": "horssite",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Dossier distant du magasin",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Chemin complet d'un dossier monté (partage réseau, disque d'un autre site) ; vide : aucun. Sert si la destination est « dossier distant ». SFTP n'est pas fait.",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : aucun document ne fixe cette valeur"
+    },
+    {
+      "cle": "horssite.dossierFichiers",
+      "famille": "horssite",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Dossier distant des fichiers",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Chemin complet d'un dossier monté ; vide : aucun. Sert si la destination est « dossier distant ». SFTP n'est pas fait.",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : aucun document ne fixe cette valeur"
+    },
+    {
+      "cle": "horssite.frequenceFichiersMin",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 60,
+      "libelle": "Fréquence de la copie des fichiers (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 15 à 1440. Une heure par défaut : incrémentale, peu coûteuse tant que rien ne change.",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : copie des fichiers toutes les heures, valeur de la clinique sœur"
+    },
+    {
+      "cle": "horssite.heureControle",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 2,
+      "libelle": "Heure du contrôle nocturne",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 0 à 23 (heure locale de la mère). Le contrôle nocturne copie le magasin et vérifie les copies hors site. 2 h par défaut.",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : contrôle chaque nuit, l'heure est une proposition"
+    },
+    {
+      "cle": "maj.sauvegardeMaxHeures",
+      "famille": "maj",
+      "type": "entier",
+      "defaut": 24,
+      "libelle": "Ancienneté maximale de la sauvegarde avant une mise à jour (heures)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 1 à 168. Une mise à jour est BLOQUÉE tant que la clinique ne détient pas une sauvegarde vérifiée ET un export portable vérifié de moins de ce nombre d’heures. 24 par défaut. Lever le blocage est un geste réservé tracé (force majeure).",
+      "source": "Proposition à valider par la Direction (décision 12 du 17/11/2026) : le nombre d’heures est une valeur d’attente"
+    },
+    {
+      "cle": "horssite.copiesMagasin",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 7,
+      "libelle": "Copies du magasin gardées",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 2 à 60. Les plus anciennes sont archivées (restaurables), jamais supprimées tant que l'espace le permet. 7 par défaut, comme la copie locale.",
+      "source": "Décision de la Direction du 15/11/2026 (Q31, DECISIONS-Q1-42) : lot BAK, ADR-0008"
+    },
+    {
+      "cle": "horssite.copiesFichiers",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 14,
+      "libelle": "Copies des fichiers gardées",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 2 à 60. Une copie des fichiers est un état complet (les blocs sont partagés entre copies). 14 par défaut.",
+      "source": "Décision de la Direction du 15/11/2026 (Q31, DECISIONS-Q1-42) : lot BAK, ADR-0008"
+    },
+    {
+      "cle": "horssite.tailleBloc",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 1048576,
+      "libelle": "Taille d'un bloc (octets)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 65 536 à 4 194 304. 1 048 576 par défaut : sous la plus petite limite de requête PHP courante des hébergements mutualisés (non mesurée sur le vrai hébergement).",
+      "source": "Décision de la Direction du 15/11/2026 (Q31, DECISIONS-Q1-42) : lot BAK, ADR-0008"
+    },
+    {
+      "cle": "horssite.blocsControles",
+      "famille": "horssite",
+      "type": "entier",
+      "defaut": 10,
+      "libelle": "Blocs téléchargés et vérifiés chaque nuit",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Entier de 0 à 200. Chaque nuit, des blocs de la dernière copie sont téléchargés, déchiffrés et vérifiés de bout en bout (0 : seule la présence est contrôlée).",
+      "source": "Proposition à valider (lot BAK, ADR-0008) : aucun document ne fixe cette valeur"
+    },
+    {
+      "cle": "stock.delaiPreavisPeremptionJours",
+      "famille": "stock",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Préavis de péremption (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un lot est « à péremption proche » quand sa date tombe dans ce nombre de jours (RG-05). Entier de 1 à 730 ; une valeur hors bornes retombe sur 90. Se règle par une NOUVELLE VERSION datée (jamais écrasée) ; lu par les lots, les alertes, les tableaux de bord et l'assistant.",
+      "source": "Décision de la Direction du 15/11/2026 (Q10, DECISIONS-Q1-42) : 90 jours semés, versionné par date"
+    },
+    {
+      "cle": "stock.joursArticlesImmobiles",
+      "famille": "stock",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Articles immobiles : durée sans sortie (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un article en stock est « immobile » (ne tourne plus) quand il n'a eu aucune sortie depuis ce nombre de jours. Entier de 1 à 730 ; une valeur hors bornes retombe sur 30. Lu par l'assistant quand la question ne dit pas la durée ; versionné par date. Valeur d'attente, à valider.",
+      "source": "Décision de la Direction du 16/11/2026 (relecture des questions d'agents, DECISIONS-16-11) : 30 jours d'attente, à valider"
+    },
+    {
+      "cle": "comptabilite.balanceAgeePatientBorne1Jours",
+      "famille": "comptabilite",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Balance âgée des patients : première borne (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les impayés patients sont rangés en quatre tranches : jusqu'à la première borne, jusqu'à la seconde, au-delà de la seconde. Entier de 1 à 365, strictement inférieur à la seconde borne ; sinon les valeurs semées (30 et 90) s'appliquent. À valider par la Direction.",
+      "source": "Décision de la Direction du 15/11/2026 (Q14, DECISIONS-Q1-42) : 30 et 90 jours semés — valeur d'attente, à valider"
+    },
+    {
+      "cle": "comptabilite.balanceAgeePatientBorne2Jours",
+      "famille": "comptabilite",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Balance âgée des patients : seconde borne (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Voir la première borne. Entier de 2 à 730, strictement supérieur à la première borne. À valider par la Direction.",
+      "source": "Décision de la Direction du 15/11/2026 (Q14, DECISIONS-Q1-42) : 30 et 90 jours semés — valeur d'attente, à valider"
+    },
+    {
+      "cle": "assistant.retentionJours",
+      "famille": "assistant",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Conservation des conversations de l'assistant (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les conversations avec l'assistant sont propres au poste et à l'agent, chiffrées, jamais synchronisées ; elles sont purgées après ce nombre de jours. Entier de 1 à 90 : une valeur hors bornes retombe sur 30. Décision de la Direction du 15/11/2026 (30 jours).",
+      "source": "Décision de la Direction du 15/11/2026 (conversations conservées 30 jours, réglable, borné)"
+    },
+    {
+      "cle": "export.limiteLignes",
+      "famille": "export",
+      "type": "entier",
+      "defaut": 0,
+      "libelle": "Nombre maximal de lignes par export (0 = aucune limite)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Par défaut AUCUNE limite : seul le droit d'exporter compte (décision AK du 16/11/2026). Si la clinique fixe une limite (entier d'au moins 1), un export au-delà est REFUSÉ en le disant, jamais tronqué en silence. 0 ou vide : aucune limite.",
+      "source": "Décision de la Direction du 16/11/2026 (AK) : pas de limite de lignes par défaut, seul le droit d'export compte (remplace la valeur d'attente de Q40, « à fixer sur la plus grande table réelle »)"
+    },
+    {
+      "cle": "export.seuilProgression",
+      "famille": "export",
+      "type": "entier",
+      "defaut": 2000,
+      "libelle": "Seuil d'affichage du compteur de progression (lignes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "À partir de ce nombre de lignes, l'export se déroule par lots avec un compteur et un bouton Annuler. Entier d'au moins 1. Valeur d'attente : à fixer sur la plus grande table réelle.",
+      "source": "Valeur d'attente (décision Q40 du 15/11/2026) : à fixer sur la plus grande table réelle"
+    },
+    {
+      "cle": "export.limiteEtatsParLigne",
+      "famille": "export",
+      "type": "entier",
+      "defaut": 100,
+      "libelle": "Nombre maximal d'états imprimés d'un coup (un état par ligne)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Quand « Imprimer la sélection » produit un état par ligne cochée, au-delà de ce nombre l'impression est REFUSÉE en le disant ; le tableau unique n'est pas concerné. Entier d'au moins 1. Valeur d'attente : à fixer à l'usage.",
+      "source": "Valeur d'attente (décision Q42 du 15/11/2026) : à fixer à l'usage"
+    },
+    {
+      "cle": "validations.delaiAlerteMereHeures",
+      "famille": "validations",
+      "type": "entier",
+      "defaut": 4,
+      "libelle": "Décision en attente de la mère : délai d’alerte (heures)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une validation, une demande de prix ou une demande d’import déposée sur un fileul et que la mère n’a pas appliquée au-delà de ce délai déclenche une alerte vers le validateur concerné (rôles qui détiennent le geste, lus dans la matrice) et l’administrateur. Rien n’est bloqué, rien n’est validé à la place de la mère. Entier d’au moins 1.",
+      "source": "Décision de la Direction du 16/11/2026 (section AI) : 4 heures"
+    },
+    {
+      "cle": "achats.libelleValidateur",
+      "famille": "achats",
+      "type": "texte",
+      "defaut": "Directrice administrative",
+      "libelle": "Poste validateur porté sur les pièces d'achat",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le POSTE (jamais le nom d'une personne) écrit sur un bon arbitré ou une commande validée. L'agent réel qui a validé est porté à part.",
+      "source": "Décision de la Direction du 17/11/2026 (Q4) : le poste de la Directrice Administrative"
+    },
+    {
+      "cle": "caisse.encaisserResteLigneSansPrix",
+      "famille": "caisse",
+      "type": "booleen",
+      "defaut": false,
+      "libelle": "Encaisser le reste d'une facture qui a une ligne sans prix",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Non (par défaut) : tant qu'une ligne de la facture attend son prix (prix à valoriser, prix assuré à définir), RIEN de la facture ne s'encaisse et la pharmacie ne délivre rien. Oui : les autres lignes s'encaissent, la ligne sans prix reste en attente, nommée, et la pharmacie délivre les lignes réglées.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §7) : rien ne s'encaisse par défaut"
+    },
+    {
+      "cle": "pta.decoupage",
+      "famille": "pta",
+      "type": "choix",
+      "defaut": "trimestre",
+      "libelle": "Découpage du plan de travail annuel",
+      "choix": [
+        "trimestre",
+        "mois",
+        "semestre"
+      ],
+      "libellesChoix": {
+        "trimestre": "Par trimestre",
+        "mois": "Par mois",
+        "semestre": "Par semestre"
+      },
+      "branche": true,
+      "sensible": false,
+      "aide": "Les périodes de la frise du plan et du choix des périodes d'une action. Un exercice se lit avec le découpage en vigueur à son jour courant (un exercice clos, à son dernier jour) : changer le découpage ne réécrit aucune action, qui garde ses dates.",
+      "source": "Modèle proposé le 16/11/2026, à valider : périodicité trimestrielle (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.seuilRetardJours",
+      "famille": "pta",
+      "type": "entier",
+      "defaut": 15,
+      "libelle": "Seuil d'alerte de retard d'une action du plan (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une action non terminée dont la période est échue depuis PLUS que ce nombre de jours est en retard : elle est comptée à l'écran et lève une alerte vers les détenteurs du geste « alerte de retard du plan ». Entier positif ou nul.",
+      "source": "Modèle proposé le 16/11/2026, à valider : 15 jours après la fin de la période (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.prefixeNumero",
+      "famille": "pta",
+      "type": "texte",
+      "defaut": "PTA",
+      "libelle": "Préfixe de la numérotation des actions du plan",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les actions se numérotent « <préfixe>-<exercice>-NNN », série annuelle. Majuscules et chiffres, 1 à 12 caractères ; une valeur illisible retombe sur le défaut. Changer le préfixe ne renumérote aucune action et ne redonne jamais un rang déjà attribué dans l'exercice.",
+      "source": "Modèle proposé le 16/11/2026, à valider : numérotation PTA-<exercice>-NNN (proposition à valider par la Direction)"
+    },
+    {
+      "cle": "pta.signataires",
+      "famille": "pta",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Postes signataires du plan de travail annuel et de son bilan",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les POSTES de l'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur le plan et sur son bilan imprimés ; leur titulaire est lu à l'organigramme, jamais saisi ici. Vide : le poste qui coiffe l'organigramme signe. Un poste absent de l'organigramme s'imprime tel qu'écrit, sans nom.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l'organigramme"
+    },
+    {
+      "cle": "notifications.routagePostes",
+      "famille": "notifications",
+      "type": "texte",
+      "defaut": "caisse=alertes_caisse;stock=alertes_stock;comptable=alertes_comptable;direction=alertes_direction;imagerie=alertes_imagerie;laboratoire=alertes_laboratoire;prescripteur=alertes_prescripteur;salle_soins=alertes_salle_soins;hospitalisation=alertes_hospitalisation",
+      "libelle": "Notifications : geste réservé qui tient chaque poste",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une entrée par poste, « poste=geste » séparées par un point-virgule (caisse=alertes_caisse). Les rôles qui reçoivent les alertes d'un poste sont ceux qui détiennent son geste dans la fiche de rôle. Une entrée mal formée ou un geste inconnu est ignoré ; vide, la valeur d'attente s'applique.",
+      "source": "Table reprise à l'identique de l'ancien centre de notifications (valeur d'attente) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "notifications.destinatairesBesoinAccorde",
+      "famille": "notifications",
+      "type": "texte",
+      "defaut": "comptable=engagement budgétaire et décaissement à préparer;stock=achat à lancer ou distribution à planifier",
+      "libelle": "Notifications : postes informés quand un besoin est accordé",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une entrée par poste, « poste=mention » séparées par un point-virgule : la mention complète le message adressé à ce poste. Chaque poste doit figurer dans le réglage ci-dessus. Vide, la valeur d'attente (le comptable pour l'engagement, le stock pour l'achat) s'applique.",
+      "source": "Valeur d'attente reprise de l'ancien moteur des achats (NEINSTRUCTION2) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "factureTiers.signataires",
+      "famille": "caisse",
+      "type": "texte",
+      "defaut": "",
+      "libelle": "Postes signataires de la facture à une entreprise",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les POSTES de l'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur la facture à une entreprise imprimée ; leur titulaire est lu à l'organigramme, jamais saisi ici. Vide : le poste qui coiffe l'organigramme signe. Un poste absent de l'organigramme s'imprime tel qu'écrit, sans nom. L'acheteur signe toujours une ligne « Reçu le / Signature » : ce n'est pas un poste de la clinique.",
+      "source": "Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l'organigramme ; pièce du point 2 du 17/11/2026"
+    },
+    {
+      "cle": "ambulance.forfaitCourse",
+      "famille": "ambulance",
+      "type": "entier",
+      "defaut": 5000,
+      "libelle": "Course d'ambulance sans montant saisi : forfait (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Proposé quand la course est enregistrée sans montant : forfait + kilomètres × prix au kilomètre. Valeur d'attente, à valider par la Direction.",
+      "source": "Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d'une course"
+    },
+    {
+      "cle": "ambulance.prixKilometre",
+      "famille": "ambulance",
+      "type": "entier",
+      "defaut": 500,
+      "libelle": "Course d'ambulance sans montant saisi : prix au kilomètre (FCFA)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Ajouté au forfait pour chaque kilomètre parcouru. Valeur d'attente, à valider par la Direction.",
+      "source": "Proposition à valider : valeur de la maquette, aucun document ne fixe le tarif d'une course"
+    },
+    {
+      "cle": "securite.delaiVerrouOrdinaireMinutes",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 15,
+      "libelle": "Verrouillage d'un poste ordinaire : inactivité (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Au bout de ce délai sans activité l'écran se verrouille (CDCT 12.2). La politique de sécurité, quand elle fixe une inactivité, l'emporte ; ce réglage est le repli. Valeur du cahier des charges. Entier de 1 à 120 ; hors bornes, la valeur d'attente de 15 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "securite.renouvellementMotDePasseJours",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Renouvellement du mot de passe (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un mot de passe défini aujourd'hui expire dans ce nombre de jours ; le changement devient obligatoire à la connexion suivante. Valeur d'attente de 90 jours, à valider par la Direction. Entier de 1 à 730 ; hors bornes, la valeur d'attente de 90 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "securite.dureeVerrouCompteMinutes",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 15,
+      "libelle": "Verrou d'un compte après échecs de connexion (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Après le nombre d'échecs toléré, le compte est verrouillé pour cette durée, puis le compteur repart de zéro. Valeur d'attente de 15 minutes, à valider par la Direction. Entier de 1 à 1440 ; hors bornes, la valeur d'attente de 15 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "securite.dureeBlocageSecoursMinutes",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 15,
+      "libelle": "Blocage de la récupération administrateur après échecs (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Après le nombre d'échecs toléré sur un code de secours, la récupération est bloquée pour cette durée. Valeur d'attente de 15 minutes, à valider par la Direction. Entier de 1 à 1440 ; hors bornes, la valeur d'attente de 15 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "securite.validiteMotDePasseTemporaireHeures",
+      "famille": "securite",
+      "type": "entier",
+      "defaut": 24,
+      "libelle": "Validité d'un mot de passe temporaire (heures)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un mot de passe provisoire remis à un agent cesse d'être accepté après ce délai. Valeur d'attente de 24 heures, à valider par la Direction. Entier de 1 à 168 ; hors bornes, la valeur d'attente de 24 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "stock.delaiEcheanceUrgenteJours",
+      "famille": "stock",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Échéance urgente d'un lot (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un lot dont la péremption tombe dans ce délai est signalé comme urgent à l'écran des alertes de stock. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "comptabilite.periodeBfrJours",
+      "famille": "comptabilite",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Besoin en fonds de roulement : période par défaut (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Fenêtre proposée à l'ouverture de l'écran du BFR (flux sur la période, encours à la date de fin). Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 90 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "qualite.dureeLienEnqueteJours",
+      "famille": "qualite",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Lien de partage d'une enquête : durée de validité (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le terme proposé à la création d'un lien de partage ; au-delà, le lien cesse de collecter. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "hospitalisation.joursSortiePrevue",
+      "famille": "hospitalisation",
+      "type": "entier",
+      "defaut": 5,
+      "libelle": "Plan des lits : durée de séjour signalée « sortie prévue » (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Au-delà de ce nombre de jours, un lit occupé est signalé « sortie prévue » sur le plan des lits et au tableau de l'infirmier. Valeur d'attente, à valider par la Direction. Entier de 1 à 90 ; hors bornes, la valeur d'attente de 5 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "caisse.pasEcheancierReliquatJours",
+      "famille": "caisse",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Reliquat échelonné : jours entre deux tranches",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les tranches d'un reliquat échelonné sont échues à ce nombre de jours d'écart. Valeur d'attente, à valider par la Direction. Entier de 1 à 90 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "caisse.delaiEngagementPaiementJours",
+      "famille": "caisse",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Engagement de paiement : échéance proposée (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "L'échéance proposée à la signature d'un engagement de paiement. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "assurances.fenetreHistoriqueJours",
+      "famille": "assurances",
+      "type": "entier",
+      "defaut": 180,
+      "libelle": "Historique des créances : fenêtre proposée (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La plage du/au proposée à l'ouverture de l'historique des factures d'assurance. Valeur d'attente, à valider par la Direction. Entier de 7 à 730 ; hors bornes, la valeur d'attente de 180 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "notifications.seuilRegroupement",
+      "famille": "notifications",
+      "type": "entier",
+      "defaut": 3,
+      "libelle": "Notifications : nombre à partir duquel des alertes de même nature sont regroupées",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "En dessous, chaque alerte est nommée ; au-delà, une seule ligne porte le compte. Valeur d'attente, à valider par la Direction. Entier de 2 à 50 ; hors bornes, la valeur d'attente de 3 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "notifications.temporisationSon",
+      "famille": "notifications",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Alerte sonore : temporisation avant rappel (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Repli de la temporisation entre deux sonneries d'une même alerte quand l'agent n'a pas réglé la sienne. Valeur d'attente, à valider par la Direction. Entier de 1 à 720 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "achats.fenetreCircuitJours",
+      "famille": "achats",
+      "type": "entier",
+      "defaut": 7,
+      "libelle": "Circuit des achats : fenêtre de relance (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une demande du circuit des achats sans suite depuis ce nombre de jours est relancée. Valeur d'attente, à valider par la Direction. Entier de 1 à 60 ; hors bornes, la valeur d'attente de 7 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "validations.delaiPieceAbsenteMinutes",
+      "famille": "validations",
+      "type": "entier",
+      "defaut": 10,
+      "libelle": "Validations déposées : délai avant de déclarer une pièce absente (minutes)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une validation déposée dont la pièce n'est pas arrivée dans ce délai est signalée. Valeur d'attente, à valider par la Direction. Entier de 1 à 1440 ; hors bornes, la valeur d'attente de 10 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "administration.delaiUrgentEvenementJours",
+      "famille": "administration",
+      "type": "entier",
+      "defaut": 7,
+      "libelle": "Événements de l'établissement : délai signalé urgent (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un événement à venir dans ce nombre de jours (ou moins) passe en rouge. Valeur d'attente, à valider par la Direction. Entier de 1 à 60 ; hors bornes, la valeur d'attente de 7 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "administration.joursVerificationRepertoireJours",
+      "famille": "administration",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Répertoire d'urgence : ancienneté de la dernière vérification signalée (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un numéro non vérifié depuis plus de ce nombre de jours est SIGNALÉ (jamais masqué). Valeur d'attente, à valider par la Direction. Entier de 1 à 730 ; hors bornes, la valeur d'attente de 90 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "fiscal.echeancesProchesJours",
+      "famille": "fiscal",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Calendrier fiscal : échéances dites proches (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Une échéance qui tombe dans ce nombre de jours est présentée comme proche. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "laboratoire.delaiEntreDonsSangJours",
+      "famille": "laboratoire",
+      "type": "entier",
+      "defaut": 90,
+      "libelle": "Banque de sang : délai minimal entre deux dons (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un donneur ne peut redonner qu'après ce nombre de jours. Valeur de la maquette, à valider par le biologiste (norme de collecte). Entier de 1 à 365 ; hors bornes, la valeur d'attente de 90 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "rh.validiteBadgeMois",
+      "famille": "rh",
+      "type": "entier",
+      "defaut": 24,
+      "libelle": "Badge du personnel : durée de validité (mois)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Durée proposée à l'émission d'un badge. La Direction ne l'a pas arrêtée : valeur d'attente de 24 mois. Entier de 1 à 120 ; hors bornes, la valeur d'attente de 24 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "rh.alerteExpirationBadgeJours",
+      "famille": "rh",
+      "type": "entier",
+      "defaut": 60,
+      "libelle": "Badge du personnel : alerte avant expiration (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les badges dont la validité échoit dans ce nombre de jours (l'expiré compris) sont signalés. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 60 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "specialites.preavisVisiteMedecineTravailJours",
+      "famille": "specialites",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Médecine du travail : préavis avant l'échéance de la visite (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un salarié dont la visite est due dans ce nombre de jours est « à planifier ». Valeur d'attente, à valider par le médecin du travail. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "assistant.horizonQuestionJours",
+      "famille": "assistant",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Assistant : plage de dates par défaut (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La plage prise quand la question ne dit pas la période. Valeur d'attente, à valider par la Direction. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "consultation.ecartRecentrageAgendaJours",
+      "famille": "consultation",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Agenda : écart au-delà duquel la fenêtre se recentre (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Quand la fenêtre de l'agenda s'étend plus loin que ce nombre de jours pour atteindre un rendez-vous, elle se recentre sur lui. Valeur d'attente, à valider par la Direction. Entier de 7 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "stock.seuilAlerteImportPourcent",
+      "famille": "stock",
+      "type": "entier",
+      "defaut": 20,
+      "libelle": "Import du stock : seuil d'alerte proposé (pourcentage du stock importé)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Un article importé sans seuil d'alerte reçoit ce pourcentage de sa quantité importée, marqué « seuil à valider » ; le plancher est le réglage voisin. Entier de 1 à 100 ; hors bornes, la valeur d'attente de 20 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "stock.seuilAlerteImportMinimum",
+      "famille": "stock",
+      "type": "entier",
+      "defaut": 5,
+      "libelle": "Import du stock : plancher du seuil d'alerte proposé (unités)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le seuil proposé à un article importé sans seuil ne descend pas sous ce plancher. Entier de 0 à 1000 ; hors bornes, la valeur d'attente de 5 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "mere.fenetreJournalAlterationsJours",
+      "famille": "mere",
+      "type": "entier",
+      "defaut": 30,
+      "libelle": "Console du poste mère : fenêtre du comptage des altérations du journal (jours)",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le nombre de lignes altérées ou manquantes du journal n'est compté que sur cette fenêtre, et la console le dit. Entier de 1 à 365 ; hors bornes, la valeur d'attente de 30 s'applique. Se règle par une nouvelle version datée.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.socle.services",
+      "famille": "listes_socle",
+      "type": "texte",
+      "defaut": "Médecine générale; Maternité; Chirurgie; Laboratoire; Pharmacie; Imagerie / Échographie; Soins infirmiers; Accueil; Direction; Comptabilité",
+      "libelle": "Services de la clinique",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (paiServices, rhaServices, rhbServices, secServices), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.moyensTransport",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Ambulance; Véhicule administratif; Taxi; Barque motorisée; Moto; Moyen personnel; Autre",
+      "libelle": "Moyens de transport du patient",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patMoyensTransport), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.allergies",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Pénicilline; Sulfamides; Aspirine; Arachide; Iode; Anti-inflammatoires non stéroïdiens; Aucune allergie connue",
+      "libelle": "Allergies proposées",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patAllergies), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.antecedents",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Hypertension artérielle; Diabète de type 2; Asthme; Drépanocytose; Ulcère gastrique; Épilepsie; Césarienne antérieure; Tuberculose traitée; Insuffisance rénale; Hépatite B; Aucun antécédent notable",
+      "libelle": "Antécédents proposés",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patAntecedents), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.motifsReport",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Indisponibilité du praticien; Demande du patient; Urgence prioritaire; Examen non disponible; Patient absent — nouvelle date convenue; Autre motif",
+      "libelle": "Motifs de report d'un rendez-vous",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agMotifsReport), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.orientations",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Médecine générale; Chirurgie; Maternité; Laboratoire; Imagerie / Échographie; Salle de soins; Mise en observation; Pharmacie; Retour à domicile",
+      "libelle": "Orientations proposées à l'accueil",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agOrientations), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.objetsAppel",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Prise de rendez-vous; Report de rendez-vous; Demande de résultat d’analyse; Renseignement tarifaire; Suivi post-hospitalisation; Rappel de règlement; Demande d’ambulance; Information administrative",
+      "libelle": "Objets d'un appel",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agObjetsAppel), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.suitesAppel",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Rendez-vous fixé; Information donnée; Rappel à programmer; Transféré au médecin; Sans suite",
+      "libelle": "Suites données à un appel",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agSuitesAppel), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m3.techniquesAnesthesie",
+      "famille": "listes_m3",
+      "type": "texte",
+      "defaut": "Anesthésie générale; Rachianesthésie; Péridurale; Anesthésie locale; Sédation",
+      "libelle": "Techniques d'anesthésie",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (blocTechniques), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m5.domainesUnite",
+      "famille": "listes_m5",
+      "type": "texte",
+      "defaut": "Hématologie; Biochimie; Hormonologie; Bactériologie; Parasitologie; Hémostase; Andrologie; Général",
+      "libelle": "Domaines des unités de laboratoire",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (catDomainesUnite), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m5.typesDonSang",
+      "famille": "listes_m5",
+      "type": "texte",
+      "defaut": "Bénévole; Familial; Compensation",
+      "libelle": "Types de don de sang",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (sangTypesDon), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m5.motifsCommentaireGeneral",
+      "famille": "listes_m5",
+      "type": "texte",
+      "defaut": "Échantillon hémolysé — reprendre le prélèvement.; Échantillon coagulé — reprendre le prélèvement.; Quantité insuffisante pour la totalité des examens demandés.; Échantillon parvenu hors délai de conservation.; Examen non réalisé — réactif indisponible.; Examen à confirmer sur un second prélèvement.; Résultat rendu par téléphone au prescripteur.",
+      "libelle": "Commentaires généraux d'un compte rendu d'analyse",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (motifsCommentaireGeneral), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m6.zonesEmplacement",
+      "famille": "listes_m6",
+      "type": "texte",
+      "defaut": "Rayonnage sec; Chaîne du froid; Armoire sécurisée; Réserve; Salle de soins",
+      "libelle": "Zones de rangement du stock",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (zonesEmplacement), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m7.servicesDemandeurs",
+      "famille": "listes_m7",
+      "type": "texte",
+      "defaut": "Pharmacie d’urgence; Laboratoire; Hospitalisation; Maternité; Bloc opératoire; Accueil; Administration; Entretien",
+      "libelle": "Services demandeurs d'un besoin",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (servicesDemandeurs), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m7.categoriesBesoin",
+      "famille": "listes_m7",
+      "type": "texte",
+      "defaut": "Produits d’entretien (nettoyage, désinfection); Produits administratifs (stylos, cahiers, classeurs, cartouches, papier RAM); Matériel technique léger; Consommables médicaux; Autre — à préciser",
+      "libelle": "Catégories d'un besoin",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (categoriesBesoin), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m7.typesFournisseur",
+      "famille": "listes_m7",
+      "type": "texte",
+      "defaut": "Grossiste pharmaceutique; Centrale d’achat; Réactifs & consommables labo; Matériel médical; Fournitures & entretien; Prestataire de services",
+      "libelle": "Types de fournisseur",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (typesFournisseur), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m8.motifsAvoir",
+      "famille": "listes_m8",
+      "type": "texte",
+      "defaut": "Erreur de facturation; Interruption de soins; Évacuation vers un autre centre; Prestation non réalisée; Autre (préciser en observations)",
+      "libelle": "Motifs d'une facture d'avoir",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (motifsAvoir), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m9.etatsConvention",
+      "famille": "listes_m9",
+      "type": "texte",
+      "defaut": "Signée; En cours de renouvellement; Suspendue",
+      "libelle": "États d'une convention d'assurance",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (assConventions), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m9.niveauxRelance",
+      "famille": "listes_m9",
+      "type": "texte",
+      "defaut": "1re relance; 2e relance; Mise en demeure",
+      "libelle": "Niveaux d'une relance",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (assNiveauxRelance), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m9.canauxRelance",
+      "famille": "listes_m9",
+      "type": "texte",
+      "defaut": "Courrier remis en main propre; Courrier électronique; Courrier recommandé; Appel téléphonique",
+      "libelle": "Canaux d'une relance",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (assCanauxRelance), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.naturesContrat",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "CDI; CDD; Stage; Prestation",
+      "libelle": "Natures de contrat",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaNaturesContrat), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.periodesEssai",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "1 mois; 3 mois; 6 mois",
+      "libelle": "Périodes d'essai",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaPeriodesEssai), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.naturesConge",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "Congé annuel; Congé de maternité; Congé de maladie; Absence autorisée; Congé exceptionnel",
+      "libelle": "Natures de congé",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaNaturesConge), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.naturesMission",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "Mission; Formation; Représentation; Convoyage",
+      "libelle": "Natures de mission",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaNaturesMission), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.moyensMission",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "Véhicule de service; Transport en commun; Ambulance; Moyen personnel",
+      "libelle": "Moyens de déplacement d'une mission",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaMoyensMission), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.typesCouverture",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "CNSS — régime général; Mutuelle de santé; Assurance accident du travail; Assurance maladie complémentaire; Assurance vie; Prise en charge clinique (personnel)",
+      "libelle": "Types de couverture sociale d'un agent",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaTypesCouverture), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m10.specialitesPrestataire",
+      "famille": "listes_m10",
+      "type": "texte",
+      "defaut": "Circoncision; Hydrotubation; Accouchement; Analyses spécialisées; Chirurgie; Échographie; Anesthésie",
+      "libelle": "Spécialités des prestataires",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rhaSpecialitesPrestataire), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m11.motifsHeuresSup",
+      "famille": "listes_m11",
+      "type": "texte",
+      "defaut": "Renfort de garde; Urgence; Remplacement; Surcroît d’activité",
+      "libelle": "Motifs d'heures supplémentaires",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (_motifsHs), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m11.motifsAvance",
+      "famille": "listes_m11",
+      "type": "texte",
+      "defaut": "Frais de santé; Frais de scolarité; Événement familial; Besoin personnel; Autre",
+      "libelle": "Motifs d'une avance sur salaire",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (_motifsAvance), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m12.moyensReglement",
+      "famille": "listes_m12",
+      "type": "texte",
+      "defaut": "Virement bancaire; Chèque; Espèces; Mobile Money",
+      "libelle": "Moyens de règlement d'une échéance fiscale",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (cpcMoyensReglement), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m12.motifsSortieImmobilisation",
+      "famille": "listes_m12",
+      "type": "texte",
+      "defaut": "Cession; Réforme; Destruction; Vol ou perte; Don",
+      "libelle": "Motifs de sortie d'une immobilisation",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (motifs), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.naturesCourrier",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Lettre; Courriel; Note; Facture; Convocation; Rapport",
+      "libelle": "Natures de courrier",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admNaturesCourrier), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.servicesCourrier",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Direction Médicale; Direction Administrative; Comptabilité; Ressources humaines; Gestion des stocks; Laboratoire; Pharmacie",
+      "libelle": "Services destinataires d'un courrier",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admServicesCourrier), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.typesReunion",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Réunion de direction; Réunion de service; Comité d’hygiène; Revue mensuelle d’activité; Réunion du personnel; Comité de gestion des stocks",
+      "libelle": "Types de réunion",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admTypesReunion), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.lieuxReunion",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Salle de réunion; Bureau de la Direction; Salle de garde",
+      "libelle": "Lieux de réunion",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admLieuxReunion), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.categoriesEvenement",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Santé publique; Formation; Qualité; Technique; Logistique; Communication; Sécurité; Réunion",
+      "libelle": "Catégories d'événement de l'établissement",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admCategoriesEvenement), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.motifsIntervention",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Urgence médicale; Transfert inter-hospitalier; Évacuation sanitaire; Retour à domicile; Accident de la voie publique; Urgence obstétricale",
+      "libelle": "Motifs d'une intervention d'ambulance",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admMotifsIntervention), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.categoriesMateriel",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Automate de laboratoire; Imagerie; Bloc opératoire; Matériel de soins; Énergie & froid; Bureautique & réseau; Véhicule",
+      "libelle": "Catégories du parc technique",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admCategoriesMateriel), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.localisationsMateriel",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Laboratoire; Salle d’échographie; Bloc opératoire; Salle de soins; Maternité; Hospitalisation; Pharmacie; Administration; Local technique",
+      "libelle": "Localisations du parc technique",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (admLocalisationsMateriel), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.cfg.specialitesClinique",
+      "famille": "listes_cfg",
+      "type": "texte",
+      "defaut": "Médecine du travail; Santé publique; Gynécologie; Chirurgie; Urologie; Rhumatologie; Ophtalmologie; Orthophonie; Endocrinologie; Pédiatrie; Neurologie; Cardiologie; Kinésithérapie; Imagerie (Radiologie-Échographie)",
+      "libelle": "Spécialités affichées de la clinique",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (specialitesClinique), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.rap.destinataires",
+      "famille": "listes_rap",
+      "type": "texte",
+      "defaut": "Direction; Conseil de gestion; Partenaire technique; Usage interne",
+      "libelle": "Destinataires d'un rapport",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rapDestinataires), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.rap.filigranes",
+      "famille": "listes_rap",
+      "type": "texte",
+      "defaut": "Document officiel; Confidentiel; Brouillon",
+      "libelle": "Filigranes d'un rapport",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (rapFiligranes), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.mecef.motifsAvoir",
+      "famille": "listes_mecef",
+      "type": "texte",
+      "defaut": "Erreur de facturation; Prestation non réalisée; Remise commerciale; Annulation de commande; Erreur de tarif",
+      "libelle": "Motifs d'un avoir normalisé",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (motifsAvoirMecef), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.evolutionsSortie",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Guéri(e); Évadé(e); Décédé(e); Sortie contre avis médical; Référé vers un autre centre",
+      "libelle": "Évolutions à la sortie d'un patient",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patEvolutions), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.antecedentsARisque",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Drépanocytose; Insuffisance rénale; Épilepsie; Tuberculose traitée; Hépatite B",
+      "libelle": "Antécédents signalés « à risque »",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (patAntecedentsRisque), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m1.servicesPatientExterne",
+      "famille": "listes_m1",
+      "type": "texte",
+      "defaut": "Maternité; Médecine; Médecine et spécialité",
+      "libelle": "Services concernés par un patient adressé de l'extérieur",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (_services), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.typesRendezvous",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Consultation; Contrôle; Urgence; Domicile; Visite; Affaire privée",
+      "libelle": "Types de rendez-vous",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (agTypesRdv), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m2.aptitudesMedecineTravail",
+      "famille": "listes_m2",
+      "type": "texte",
+      "defaut": "Apte; Apte avec aménagement de poste; Inapte temporaire; Inapte définitif",
+      "libelle": "Avis d'aptitude de la médecine du travail",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (mdtAptitudes), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m5.delaisRendu",
+      "famille": "listes_m5",
+      "type": "texte",
+      "defaut": "Immédiat; 1 h; 2 h; 4 h; 6 h; 24 h; 48 h; 72 h",
+      "libelle": "Délais de rendu d'un examen",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (_delais), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m4.lieuxDeSurvenue",
+      "famille": "listes_m4",
+      "type": "texte",
+      "defaut": "Hospitalisation; Urgences; Bloc opératoire; Maternité; Domicile",
+      "libelle": "Lieux de survenue d'un décès",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (lieux), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m12.categoriesImmobilisation",
+      "famille": "listes_m12",
+      "type": "texte",
+      "defaut": "Matériel médical; Matériel de laboratoire; Matériel technique; Matériel de transport; Mobilier médical; Matériel informatique; Installations",
+      "libelle": "Catégories d'immobilisation",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (cpbCategoriesImmobilisation), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m12.naturesBudget",
+      "famille": "listes_m12",
+      "type": "texte",
+      "defaut": "Charges de fonctionnement; Investissements; Charges de personnel; Achats de marchandises",
+      "libelle": "Natures budgétaires",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (cpbNaturesBudget), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "listes.m13.canauxReponseEnquete",
+      "famille": "listes_m13",
+      "type": "texte",
+      "defaut": "Au guichet; À la sortie; Par téléphone",
+      "libelle": "Canaux de réponse à une enquête",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "La liste proposée aux formulaires et aux filtres, valeurs séparées par un point-virgule (« ; ») ; l'ordre est celui de l'affichage. Se règle par une nouvelle version datée (jamais écrasée) : les fiches déjà saisies gardent leur libellé. Une liste vide ou illisible retombe sur la liste d'attente. Liste d'attente reprise du code (qualCanaux), à valider par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "support.editeurAuteur",
+      "famille": "support",
+      "type": "texte",
+      "defaut": "Dr MOGBO Rhodes",
+      "libelle": "Contact de l'éditeur : nom",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le nom affiché à l'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "support.editeurEmails",
+      "famille": "support",
+      "type": "texte",
+      "defaut": "rarhodes06@gmail.com; contact@massenonrhodes.com",
+      "libelle": "Contact de l'éditeur : adresses e-mail",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les adresses de l'éditeur, séparées par un point-virgule (la première reçoit le message d'aide). Valeur reprise de la maquette, à confirmer par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "support.editeurTelephone",
+      "famille": "support",
+      "type": "texte",
+      "defaut": "+229 01 51 33 50 40",
+      "libelle": "Contact de l'éditeur : téléphone",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le numéro affiché à l'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "support.editeurHoraires",
+      "famille": "support",
+      "type": "texte",
+      "defaut": "Lundi au vendredi, 8h – 17h (GMT)",
+      "libelle": "Contact de l'éditeur : horaires",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Les horaires de l'éditeur affichés à l'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "support.versionAffichee",
+      "famille": "support",
+      "type": "texte",
+      "defaut": "Prototype v1.0 — août 2026",
+      "libelle": "Libellé de version affiché à l'écran d'aide",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "Le libellé de version que l'écran d'aide donne à l'éditeur. Valeur reprise de la maquette, à confirmer par la Direction.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    },
+    {
+      "cle": "qualite.adresseLiensEnquete",
+      "famille": "qualite",
+      "type": "texte",
+      "defaut": "http://serveur-clinique",
+      "libelle": "Adresse du serveur pour les liens d'enquête",
+      "choix": null,
+      "libellesChoix": {},
+      "branche": true,
+      "sensible": false,
+      "aide": "L'adresse (http://…) sur laquelle la clinique joint son serveur local ; elle commence tout lien de partage d'une fiche d'enquête. Valeur d'attente : le nom générique « serveur-clinique », à remplacer par l'adresse réelle du poste mère.",
+      "source": "Valeur d'attente reprise du code (littéral d'avant le lot « seuils » de l'inventaire des valeurs en dur, 17/11/2026) : à confirmer par la Direction de Baguidi"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m14-taches",
+ "titre": "Tâches planifiées",
+ "libelle": "Tâches planifiées",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m14-taches"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 448
+}

@@ -1,0 +1,100 @@
+{
+ "nom": "m11-accueil-sagefemme",
+ "taille": [
+  412.0,
+  900.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "Agenda du jour|Dossiers du lot": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "bandeau": [
+   0.0,
+   104.0,
+   412.0,
+   36.0
+  ],
+  "rdv-0": [
+   0.0,
+   140.0,
+   412.0,
+   72.0
+  ],
+  "ouvrir-lot": [
+   316.0,
+   4.0,
+   48.0,
+   48.0
+  ],
+  "ouvrir-reglages": [
+   364.0,
+   4.0,
+   48.0,
+   48.0
+  ],
+  "onglet-agenda": [
+   51.2,
+   56.0,
+   103.5,
+   46.0
+  ],
+  "onglet-dossiers": [
+   258.4,
+   56.0,
+   101.1,
+   46.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Lot de tournée",
+   "rect": [
+    320.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Réglages",
+   "rect": [
+    368.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": [
+  {
+   "libelle": "Agenda du jour",
+   "rect": [
+    51.2,
+    56.0,
+    103.5,
+    46.0
+   ]
+  },
+  {
+   "libelle": "Dossiers du lot",
+   "rect": [
+    258.4,
+    56.0,
+    101.1,
+    46.0
+   ]
+  }
+ ]
+}

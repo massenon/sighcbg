@@ -1,0 +1,17 @@
+{
+ "id": "mere-cle-restauration",
+ "titre": "Restaurer la clé de la clinique",
+ "libelle": "Restaurer la clé de la clinique",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Sécurité et continuité",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-cle-restauration"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 457
+}
