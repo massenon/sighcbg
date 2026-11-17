@@ -2005,7 +2005,7 @@ flutter build apk --release \
 <div class="encadre attention" data-titre="Attention : cet APK n’est pas encore diffusable tel quel">
   <ul>
     <li><b>Signature</b> : le dépôt ne porte aucune configuration de signature de production. Le build « release » est signé avec la clé <b>de débogage</b>. Un APK signé par la clinique exige d’ajouter une clé et sa configuration Gradle : aucune option de ligne de commande ne le fait.</li>
-    <li><b>Permission réseau</b> : la permission <code>INTERNET</code> n’est déclarée que dans les manifestes de débogage et de profil, pas dans celui de production (<code>android/app/src/main/AndroidManifest.xml</code>). À corriger par l’éditeur avant de diffuser l’APK : sans elle, un téléphone ne joindrait pas le relais.</li>
+    <li><b>Permission réseau</b> : la permission <code>INTERNET</code> est déclarée dans le manifeste de production (<code>android/app/src/main/AndroidManifest.xml</code>) depuis la livraison v30 ; un APK de production joint donc le relais.</li>
   </ul>
   <p class="non-verifie">Aucun build Android n’a été exécuté dans le cadre de ce manuel</p>
 </div>

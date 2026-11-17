@@ -64,7 +64,7 @@ flutter run --dart-define=SIGH_RELAIS=<adresse du relais>
 flutter build apk --release --dart-define=SIGH_RELAIS=https://sighnbg.cliniquebaguidi.com --dart-define=SIGH_VERSION=1.0.0+1
 ```
 
-Limites : le build « release » est signé avec la clé de débogage (aucune signature de production n'est configurée) et le manifeste de production ne déclare pas la permission `INTERNET` (seuls ceux de débogage et de profil la portent). Aucun build Android n'a été exécuté ici.
+Limites : le build « release » est signé avec la clé de débogage (aucune signature de production n'est configurée) (la permission `INTERNET` est déclarée au manifeste de production depuis la v30). Aucun build Android n'a été exécuté ici.
 
 ## 6. Suites complètes (longues)
 
