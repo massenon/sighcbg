@@ -183,6 +183,194 @@ class ServiceValidationsDeposees {
   }
 
   // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // FICHES D'AIDE ET LIASSE FISCALE (Direction, 18/11/2026, points 3 et 4) : valider une fiche, importer une liasse depuis un poste rattaché
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  /// Les rôles de la MATRICE en force (ceux qu'une fiche d'aide peut citer), archivés exclus : lus à chaque appel, jamais une liste écrite ici. Non branchée (test nu) : les rôles du magasin.
+  List<String> get _rolesConnus {
+    final mat = matrice?.call();
+    if (mat != null) return [for (final r in mat.rolesBruts) if (!mat.estArchive('${r['id']}')) '${r['id']}'];
+    return [for (final r in rolesDe(magasin)) r.id];
+  }
+
+  /// La clé de synchronisation d'une fiche de CE poste (celle que la mère et les autres postes connaissent) : sa clé de synchronisation, sinon son identifiant préfixé de l'étiquette du poste.
+  /// Même règle que `PlanningRhPoste.cleDe`.
+  String cleSyncDe(String collection, Fiche f) {
+    final sync = '${f['idSync'] ?? ''}';
+    if (sync.isNotEmpty) return sync;
+    final id = '${f['id']}', e = magasin.etiquettePoste;
+    if (e.isEmpty || id.startsWith('$e-') || magasin.idsOrigine(collection).contains(id)) return id;
+    return '$e-$id';
+  }
+
+  /// La fiche d'une collection désignée par une clé de synchronisation ou par un identifiant local.
+  Fiche? _parCle(String collection, Object? cible) {
+    for (final f in magasin.collection(collection).toutes) {
+      if (f['id'] == cible || f['idSync'] == cible) return f;
+    }
+    return null;
+  }
+
+  /// DÉPOSE la validation d'une fiche d'aide depuis un poste RATTACHÉ : le validateur est l'agent connecté (son compte signe le dépôt, la mère le vérifie). Le contrôle est celui de la validation
+  /// directe, refait à blanc : refus nommé (geste réservé, auteur, professionnel nommé…) ou le dépôt écrit ; un dépôt identique qui attend déjà la mère n'est pas doublé. La fiche reste « proposée »
+  /// jusqu'à la confirmation de la mère : jamais « validée » sur un dépôt seul.
+  VerdictDepot deposerFicheAideValider(Fiche fiche,
+      {required String role, required String validateurId, required String validateurNom, String? professionnel, String? professionnelLe, DroitsGestes? gestes}) {
+    final r = ficheAideValiderDeposer(
+        ficheId: cleSyncDe(colFichesAide, fiche),
+        fiche: fiche,
+        role: role,
+        validateurId: validateurId,
+        validateurNom: validateurNom,
+        poste: etiquette,
+        maintenant: _maintenant,
+        gestes: gestes ?? this.gestes,
+        rolesConnus: _rolesConnus,
+        depots: depots.toutes,
+        nouvelId: _nouvelId,
+        professionnel: professionnel,
+        professionnelLe: professionnelLe);
+    if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
+    try {
+      depots.ajouterSansJournal(r.fiche!, enTete: true);
+    } on EcritureRefusee catch (e) {
+      return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
+    }
+    magasin.collection(colFichesAide).signaler();
+    magasin.journaliser('Validation de fiche d’aide transmise à la mère', 'CFG', 'Fiche d’aide', '${r.fiche!['cible']}', null,
+        {'déposée par': validateurNom, 'rôle': role, 'dépôt': r.fiche!['id'], if ((professionnel ?? '').trim().isNotEmpty) 'professionnel': professionnel!.trim()});
+    return r;
+  }
+
+  /// Le dépôt de validation de cette fiche qui attend encore la mère (`null` : aucun) : l'écran dit « validation transmise à la mère, en attente » et n'offre pas de second geste.
+  Fiche? depotFicheAideEnAttente(Fiche fiche) => ficheAideDepotEnAttente(depots.toutes, cleSyncDe(colFichesAide, fiche));
+
+  /// Le dernier dépôt de validation REFUSÉ par la mère pour cette fiche (son motif nommé revient au validateur) ; `null` si aucun, ou si un dépôt plus récent l'a suivi.
+  Fiche? depotFicheAideRefuse(Fiche fiche) => ficheAideDepotRefuse(depots.toutes, cleSyncDe(colFichesAide, fiche));
+
+  /// Applique UN dépôt de validation de fiche d'aide sur la mère : sous le rôle et le nom de son auteur, contrôles refaits avec SA matrice et SES fiches, à la date du geste ; journal (RG-12).
+  /// Une fiche qui n'est pas encore arrivée à la mère (le dépôt peut devancer la fiche) attend [delaiPieceAbsente] avant d'être refusée. Rend vrai quand le dépôt a reçu un verdict.
+  bool _appliquerFicheAideValider(Fiche d) {
+    final col = magasin.collection(colFichesAide);
+    final f = _parCle(colFichesAide, d['cible']);
+    final quand = DateTime.tryParse('${d['demandeLe'] ?? ''}') ?? _maintenant;
+    if (f == null && _maintenant.difference(quand) < delaiPieceAbsente) return false;
+    final remplacee = f == null || f['remplace'] == null || '${f['remplace']}'.isEmpty ? null : _parCle(colFichesAide, f['remplace']);
+    final a = ficheAideValiderAppliquer(d, fiche: f, remplacee: remplacee, gestes: gestes, rolesConnus: _rolesConnus, maintenant: _maintenant);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    if (a.patch != null) {
+      try {
+        col.mettreAJour(f!['id'], a.patch!, journaliser: false);
+        magasin.journaliser('Validation de fiche d’aide (geste réservé)', 'CFG', 'Fiche d’aide', '${d['cible']}', {'statut': f['statut']},
+            {'statut': ficheAideValidee, 'validePar': a.patch!['validePar'], 'valideLe': a.patch!['valideLe'], if (a.patch!.containsKey('professionnel')) 'professionnel': a.patch!['professionnel'], 'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'appliquée par': auteurMere(), 'dépôt': d['id']});
+        if (a.archivage != null && remplacee != null) {
+          col.mettreAJour(remplacee['id'], a.archivage!, journaliser: false);
+          magasin.journaliser('Archivage', 'CFG', 'Fiche d’aide', '${remplacee['id']}', {'statut': remplacee['statut']}, {'statut': ficheAideArchivee, 'motif': a.archivage!['motifArchivage']});
+        }
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire la validation depuis l’écran des fiches d’aide.';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+    }, journaliser: false);
+    col.signaler();
+    return true;
+  }
+
+  /// La taille maximale (en Ko) d'un document fiscal déposé depuis un poste rattaché : le RÉGLAGE de la clinique en vigueur aujourd'hui, jamais un nombre écrit.
+  int get tailleMaxDepotFiscalKo => seuilClinique(magasin, cleTailleMaxDepotFiscalKo, _maintenant);
+
+  /// DÉPOSE la demande d'import d'une liasse ou d'un classeur depuis un poste RATTACHÉ ([document] : lu et validé par le validateur strict de ce poste). Le contrôle est celui de l'import direct, refait
+  /// à blanc, plus la taille bornée par le réglage ; refus nommé ou le dépôt écrit. Le journal garde l'identité, la source et des nombres de lignes — jamais un montant (E4805).
+  VerdictDepot deposerLiasse({required DocumentFiscalLu document, required String? dateDepot, required String source, required String auteur, required String role, DroitsGestes? gestes}) {
+    final r = liasseImporterDeposer(
+        document: document,
+        dateDepot: dateDepot,
+        source: source,
+        auteur: auteur,
+        role: role,
+        poste: etiquette,
+        maintenant: _maintenant,
+        existantes: magasin.collection(colDocumentsFiscaux).toutes,
+        gestes: gestes ?? this.gestes,
+        tailleMaxKo: tailleMaxDepotFiscalKo,
+        depots: depots.toutes,
+        nouvelId: _nouvelId);
+    if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
+    try {
+      depots.ajouterSansJournal(r.fiche!, enTete: true);
+    } on EcritureRefusee catch (e) {
+      return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
+    }
+    magasin.journaliser('Demande d’import fiscal transmise à la mère', 'M12', 'Document fiscal', '${r.fiche!['cible']}', null, {
+      'genre': r.fiche!['documentGenre'],
+      'exercice': r.fiche!['exercice'],
+      'dateDepot': r.fiche!['dateDepot'],
+      'source': r.fiche!['source'],
+      'lignes': r.fiche!['resume'],
+      'déposée par': auteur,
+      'rôle': role,
+      'dépôt': r.fiche!['id'],
+    });
+    return r;
+  }
+
+  /// Les demandes d'import fiscal, la plus récente d'abord : l'écran dit « transmise à la mère, en attente », « appliquée », ou le motif nommé du refus.
+  List<Fiche> depotsLiasse() => liasseDepotsRecents(depots.toutes);
+
+  /// Applique UNE demande d'import fiscal sur la mère : la validation stricte est REJOUÉE sur le contenu reçu, l'import est écrit sous le geste du compte signataire (relu dans la matrice de la
+  /// mère), sous le nom du déposant, à la date du geste ; le verdict nommé revient sur la même fiche et le contenu du dépôt est vidé (la version importée vit dans `documentsFiscaux`).
+  bool _appliquerLiasse(Fiche d) {
+    final col = magasin.collection(colDocumentsFiscaux);
+    final a = liasseImporterAppliquer(d, existantes: col.toutes, gestes: gestes, tailleMaxKo: tailleMaxDepotFiscalKo, maintenant: _maintenant);
+    if (a == null) return false;
+    var etat = a.etat, code = a.code, motif = a.motif, geste = a.geste;
+    if (a.fiche != null) {
+      try {
+        col.ajouterSansJournal(a.fiche!);
+        magasin.journaliser('Import', 'M12', 'Document fiscal', '${a.fiche!['id']}', null,
+            {...docFiscalResumeJournal(a.fiche!), 'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'appliquée par': auteurMere(), 'dépôt': d['id']});
+      } on EcritureRefusee catch (x) {
+        etat = valDepotRefusee;
+        code = 'ECRITURE_REFUSEE';
+        motif = x.motif;
+        geste = 'Refaire l’import depuis l’écran « Import de la liasse fiscale ».';
+      }
+    }
+    depots.mettreAJour(d['id'], {
+      'etat': etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (code != null) 'resultatCode': code,
+      if (motif != null) 'resultatMotif': motif,
+      if (geste != null) 'resultatGeste': geste,
+      if (a.reference != null && etat == valDepotAppliquee) 'resultatReference': a.reference,
+      ..._purgeContenuLiasse,
+    }, journaliser: false);
+    return true;
+  }
+
+  /// Ce que la mère écrit sur une demande d'import qui a reçu son verdict : le contenu est VIDÉ (un document n'a pas à rester dupliqué dans le registre des demandes), l'identité et les nombres
+  /// de lignes restent.
+  Map<String, Object?> get _purgeContenuLiasse => {'contenu': <String, Object?>{}, 'contenuVideLe': _maintenant.toUtc().toIso8601String()};
+
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
   // PLAN DE TRAVAIL ANNUEL (lot PTA, 17/11/2026) : adopter, renvoyer, clôturer depuis n'importe quel poste
   // ---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -651,9 +839,23 @@ class ServiceValidationsDeposees {
         if (d['statut'] != 'archive' && '${d['demandePoste']}' == etiquette && d['etat'] != valDepotDeposee && d['notifieLe'] == null) d
     ]) {
       final etat = '${d['etat']}';
-      final quoi = '« ${d['libelle'] ?? d['famille']} » (${d['cible']})';
+      final genreFiche = d['genre'] == valGenreFicheAideValider, genreLiasse = d['genre'] == valGenreLiasseImporter;
+      final quoi = genreFiche || genreLiasse ? '« ${d['libelle']} »' : '« ${d['libelle'] ?? d['famille']} » (${d['cible']})';
       final ref = d['resultatReference'] == null ? '' : ' (${d['resultatReference']})';
-      final (type, libelle, detail, priorite) = d['genre'] == valGenreFactureTiers
+      final nomme = '${d['resultatCode']} : ${d['resultatMotif']} ${d['resultatGeste'] ?? ''}'.trim();
+      final (type, libelle, detail, priorite) = genreFiche
+          ? switch (etat) {
+              valDepotAppliquee => ('validation_confirmee', 'Fiche d’aide validée par la mère', '$quoi : la mère a appliqué votre validation ; l’assistant cite désormais la fiche.', 'normale'),
+              valDepotSansEffet => ('validation_confirmee', 'Fiche d’aide déjà validée', '$quoi : ${d['resultatMotif'] ?? 'déjà validée'}', 'normale'),
+              _ => ('validation_refusee', 'Validation de la fiche d’aide refusée par la mère', '$quoi : $nomme', 'haute'),
+            }
+          : genreLiasse
+          ? switch (etat) {
+              valDepotAppliquee => ('validation_confirmee', 'Import fiscal appliqué par la mère', '$quoi : la mère a importé le document$ref sous votre nom.', 'normale'),
+              valDepotSansEffet => ('validation_confirmee', 'Import fiscal déjà fait', '$quoi : ${d['resultatMotif'] ?? 'déjà importé'}', 'normale'),
+              _ => ('validation_refusee', 'Import fiscal refusé par la mère', '$quoi : $nomme', 'haute'),
+            }
+          : d['genre'] == valGenreFactureTiers
           ? switch (etat) {
               valDepotAppliquee => ('validation_confirmee', 'Demande appliquée par la mère', '$quoi : la mère a appliqué votre demande$ref.${d['resultatMotif'] == null ? '' : ' ${d['resultatMotif']}'}', 'normale'),
               valDepotSansEffet => ('validation_confirmee', 'Demande déjà satisfaite', '$quoi : ${d['resultatMotif'] ?? 'déjà fait'}', 'normale'),
@@ -680,6 +882,8 @@ class ServiceValidationsDeposees {
       _signaler('${d['famille']}');
       if (d['genre'] == valGenreCircuitAchat) magasin.collection(d['famille'] == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
       if (d['genre'] == valGenreFactureTiers) _signalerFacturesTiers();
+      if (genreFiche) magasin.collection(colFichesAide).signaler();
+      if (genreLiasse) magasin.collection(colDocumentsFiscaux).signaler();
       if (d['genre'] == valGenrePta) magasin.collection(ptaCollectionPlans).signaler();
       if (d['genre'] == valGenrePlanningRh) {
         for (final c in planningCollectionsSync) {
@@ -756,7 +960,9 @@ class ServiceValidationsDeposees {
       'resultatMotif': r.motif,
       'resultatGeste': r.geste,
       'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (d['genre'] == valGenreLiasseImporter) ..._purgeContenuLiasse,
     }, journaliser: false);
+    if (d['genre'] == valGenreFicheAideValider) magasin.collection(colFichesAide).signaler();
     magasin.journaliser('Validation refusée par la mère (compte signataire)', 'CFG', '${d['libelle'] ?? d['famille'] ?? ''}', '${d['cible'] ?? d['id']}', null,
         {'déposée par': d['demandePar'], 'rôle': d['demandeRole'], 'compte': d[champCompteDecision] ?? '—', 'code': r.code, 'dépôt': d['id']});
   }
@@ -832,6 +1038,14 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenreFactureTiers) {
           if (_appliquerFactureTiers(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenreFicheAideValider) {
+          if (_appliquerFicheAideValider(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenreLiasseImporter) {
+          if (_appliquerLiasse(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

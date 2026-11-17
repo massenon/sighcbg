@@ -225,14 +225,45 @@ void main() {
     expect(find.textContaining('8 pas encore écrite(s), 1 écrite(s) en attente'), findsOneWidget);
   });
 
-  casM14('un poste rattaché peut rédiger mais PAS valider : la validation se fait sur la mère, la commande est absente et le motif le dit', (t) async {
+  casM14('un poste rattaché peut rédiger ET valider : la validation est TRANSMISE à la mère, la fiche reste proposée, la commande disparaît et le badge dit « en attente » ; la mère jamais nommée comme seule porte', (t) async {
     final m = magasin([autre()]);
     await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
     await ouvrirM14(t, m, 'cfg-fiches-aide', role: validateur);
     expect(find.byKey(const Key('aide:fileul')), findsOneWidget);
+    expect(find.textContaining('TRANSMISE à la mère'), findsOneWidget);
+    expect(find.textContaining('se fait sur le poste mère'), findsNothing, reason: 'la note ne dit plus « sur la mère seulement »');
     expect(find.byKey(const Key('aide:nouvelle')), findsOneWidget, reason: 'la rédaction reste ouverte');
-    expect(find.byKey(const Key('aide:valider:FAI-AUTRE')), findsNothing);
+    expect(find.byKey(const Key('aide:valider:FAI-AUTRE')), findsOneWidget, reason: 'le détenteur du geste valide aussi depuis un poste rattaché');
     expect(find.byKey(const Key('aide:modifier:FAI-AUTRE')), findsOneWidget);
+    await toucherM14(t, find.byKey(const Key('aide:valider:FAI-AUTRE')));
+    await toucherM14(t, find.byKey(const Key('aide:valider-ok')));
+    // rien n'est validé : un DÉPÔT est écrit, signé du validateur connecté
+    expect(m.collection(colFichesAide).parId('FAI-AUTRE')!['statut'], ficheAideProposee, reason: 'jamais « validée » avant la confirmation de la mère');
+    final dep = m.collection(valCollectionDepots).toutes.single;
+    expect([dep['genre'], dep['cible'], dep['etat'], dep['demandeRole']], [valGenreFicheAideValider, 'FAI-AUTRE', valDepotDeposee, validateur]);
+    expect('${dep['validateurId']}', isNotEmpty);
+    expect(find.byKey(const Key('aide:ok')), findsOneWidget);
+    expect(find.textContaining('transmise à la mère, en attente'), findsWidgets);
+    expect(find.byKey(const Key('aide:attente:FAI-AUTRE')), findsOneWidget);
+    expect(find.byKey(const Key('aide:valider:FAI-AUTRE')), findsNothing, reason: 'pas de second geste tant que la mère n\'a pas répondu');
+    expect(find.byKey(const Key('aide:modifier:FAI-AUTRE')), findsNothing, reason: 'on ne réécrit pas ce que le validateur vient de lire');
+    expect(m.collection('audit').toutes.any((x) => x['action'] == 'Validation de fiche d’aide transmise à la mère'), isTrue, reason: 'RG-12');
+    // la mère répond : refus nommé -> le motif revient SUR LA FICHE, la commande est de nouveau offerte
+    m.collection(valCollectionDepots).mettreAJour(dep['id'], {'etat': valDepotRefusee, 'resultatCode': 'AUTEUR_NE_VALIDE_PAS', 'resultatMotif': 'Vous êtes l’auteur de cette fiche.', 'resultatGeste': 'Demander à un autre détenteur du geste.'}, journaliser: false);
+    await t.pump(const Duration(milliseconds: 300));
+    expect(find.byKey(const Key('aide:refusee:FAI-AUTRE')), findsOneWidget);
+    expect(find.textContaining('AUTEUR_NE_VALIDE_PAS'), findsWidgets);
+    expect(find.byKey(const Key('aide:valider:FAI-AUTRE')), findsOneWidget);
+  });
+
+  casM14('un poste rattaché : un refus à blanc se nomme dès le poste (l\'auteur, le professionnel), RIEN n\'est déposé', (t) async {
+    final m = magasin([autre(en: {'domainePro': fichesAideDomainesPro.first.id, 'titre': 'Check-liste du bloc', 'motsCles': ['check-list']})]);
+    await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
+    await ouvrirM14(t, m, 'cfg-fiches-aide', role: validateur);
+    await toucherM14(t, find.byKey(const Key('aide:valider:FAI-AUTRE')));
+    await toucherM14(t, find.byKey(const Key('aide:valider-ok')));
+    expect(find.textContaining('PROFESSIONNEL_REQUIS'), findsOneWidget, reason: 'le même contrôle que la validation directe, refait à blanc');
+    expect(m.collection(valCollectionDepots).toutes, isEmpty);
   });
 
   casM14('un rôle sans le droit d’écrire l’écran le lit seulement : ni gabarit actif, ni modifier, ni archiver', (t) async {

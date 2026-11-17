@@ -11,6 +11,7 @@ import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import '../../sync/service_validations_deposees.dart';
 
 /// Le sélecteur de fichier de cet écran, INJECTABLE : aucun test ne dépend d'une boîte de dialogue native.
 class SelecteurLiasse {
@@ -31,7 +32,9 @@ class SelecteurLiasse {
 /// importent (le comptable et la DAF) ont M12 et n'ont pas forcément la configuration (réservée à l'administrateur, à la DAF et à la Direction). L'écran dit où est le document, il n'invente rien.
 ///
 /// Le droit est un GESTE RÉSERVÉ de la fiche de rôle (`documents_fiscaux_importer` : comptable et DAF d'origine, réglable), jamais une liste de rôles ; une commande interdite est ABSENTE. La collection
-/// `documentsFiscaux` est un référentiel de la MÈRE (famille R) : sur un poste rattaché l'écran se lit, l'import se fait sur la mère et la version revient par la synchronisation.
+/// `documentsFiscaux` est un référentiel de la MÈRE (famille R : la mère seule l'écrit, jamais vers un téléphone). IMPORTER DEPUIS UN POSTE RATTACHÉ (18/11/2026) : le fileul vérifie le document ICI avec
+/// le validateur strict, puis DÉPOSE la demande d'import (circuit des validations déposées, genre `liasse_importer`) ; la mère REJOUE la validation stricte, applique sous le geste réservé du compte
+/// signataire et renvoie un verdict nommé ; la version revient par la synchronisation. La taille du document est bornée par un réglage de la clinique. L'archivage d'une version reste à la mère.
 class EcranLiasseImport extends StatefulWidget with EcranMaquette {
   const EcranLiasseImport({super.key});
   @override
@@ -112,6 +115,35 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
 
   void _importer(ContexteEcran c) {
     final col = c.magasin.collection(colDocumentsFiscaux);
+    if (ServiceInstallation.de(c.magasin).rattache) {
+      // Un poste rattaché DÉPOSE la demande : la mère rejoue la validation stricte et écrit ; la version revient par la synchronisation.
+      final d = ServiceValidationsDeposees.de(c.magasin).deposerLiasse(
+          document: _lu!,
+          dateDepot: _date.text.trim().isEmpty ? null : _date.text.trim(),
+          source: _source.text,
+          auteur: acteur(c).nom,
+          role: c.role,
+          gestes: droitsGestesEcran(c));
+      if (!d.ok) {
+        setState(() {
+          _refus = RefusImportFiscal(d.refus!.code, d.refus!.motif, d.refus!.geste ?? '');
+          _confirmation = null;
+        });
+        return;
+      }
+      final f = d.fiche!;
+      ToastsSigh.afficher(context, d.dejaDepose ? 'Demande déjà transmise.' : 'Demande d’import transmise à la mère.', type: TypeToast.succes, detail: 'Rien n’est importé avant sa confirmation.');
+      setState(() {
+        _confirmation = '${f['documentGenre'] == docFiscalLiasse ? 'Liasse' : 'Classeur'} de l’exercice ${f['exercice']} (dépôt du ${_jour(f['dateDepot'])}) : demande d’import transmise à la mère, en attente. '
+            'Elle rejoue la vérification stricte, applique sous votre nom si votre geste le permet, et vous répond dans le tableau ci-dessous ; la version arrive ensuite par la synchronisation.';
+        _lu = null;
+        _refus = null;
+        _chemin.clear();
+        _date.clear();
+        _source.clear();
+      });
+      return;
+    }
     final v = preparerImportFiscal(
         document: _lu!,
         dateDepot: _date.text.trim().isEmpty ? null : _date.text.trim(),
@@ -119,8 +151,7 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
         auteur: acteur(c).nom,
         maintenant: c.aujourdhui,
         existantes: col.toutes,
-        peutImporter: gestePeutEcran(c, gesteDocumentsFiscauxImporter),
-        estFileul: ServiceInstallation.de(c.magasin).rattache);
+        peutImporter: gestePeutEcran(c, gesteDocumentsFiscauxImporter));
     if (!v.accepte) {
       setState(() {
         _refus = v.refus;
@@ -199,6 +230,28 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
         icone: estDemo ? LucideIcons.triangleAlert : LucideIcons.circleCheck);
   }
 
+  /// Les demandes d'import transmises à la mère : en attente, appliquée (avec la référence de la version écrite) ou refusée avec son motif NOMMÉ. Jamais le contenu du document.
+  Widget _demandes(List<Map<String, Object?>> demandes) {
+    return MiniTableauSigh(colonnes: [
+      ColonneMini('Demande', (f) => '${f['libelle']}'),
+      ColonneMini('Déposée par', (f) => '${f['demandePar']} · ${_jour(f['demandeLe'])}'),
+      ColonneMini('État', (f) => '', rendu: (f) {
+        final id = '${f['id']}';
+        return switch ('${f['etat']}') {
+          'appliquee' => BadgeSigh('Appliquée par la mère${f['resultatReference'] == null ? '' : ' (${f['resultatReference']})'}', key: Key('liasse:demande:$id'), ton: TonSigh.succes, icone: LucideIcons.circleCheck),
+          'sans_effet' => BadgeSigh('Déjà faite', key: Key('liasse:demande:$id'), ton: TonSigh.neutre),
+          'refusee' => BadgeSigh('Refusée par la mère', key: Key('liasse:demande:$id'), ton: TonSigh.danger, icone: LucideIcons.ban),
+          _ => BadgeSigh('Transmise à la mère, en attente', key: Key('liasse:demande:$id'), ton: TonSigh.info, icone: LucideIcons.send),
+        };
+      }),
+      ColonneMini('Verdict', (f) => '', rendu: (f) {
+        if (f['etat'] != 'refusee' && f['etat'] != 'sans_effet') return const SizedBox.shrink();
+        return Text(refusFiscalPhrase('${f['resultatCode']}', '${f['resultatMotif'] ?? ''}', '${f['resultatGeste'] ?? ''}'),
+            key: Key('liasse:verdict:${f['id']}'), style: const TextStyle(fontSize: 12, color: JetonsShell.slate600));
+      }),
+    ], lignes: demandes);
+  }
+
   Widget _tableau(ContexteEcran c, String genre, List<VersionFiscale> versions, bool peutArchiver) {
     return MiniTableauSigh(
         vide: genre == docFiscalLiasse ? 'Aucune version de la liasse importée.' : 'Aucune version du classeur importée.',
@@ -239,27 +292,32 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
     final col = c.magasin.collection(colDocumentsFiscaux);
     final fileul = ServiceInstallation.de(c.magasin).rattache;
     final peut = gestePeutEcran(c, gesteDocumentsFiscauxImporter);
-    final peutAgir = peut && !fileul;
+    final peutArchiver = peut && !fileul;
+    final service = ServiceValidationsDeposees.de(c.magasin);
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, c.magasin.collection(valCollectionDepots)]),
       builder: (context, _) {
         final fiches = col.toutes;
         final liasses = versionsFiscales(fiches, docFiscalLiasse);
         final classeurs = versionsFiscales(fiches, docFiscalClasseur);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          if (fileul)
-            const NoteSigh('Réglé sur la mère : la liasse et le classeur sont tenus par le poste principal ; les versions importées là-bas arrivent ici par la synchronisation. L’import et l’archivage se font sur la mère.',
-                key: Key('liasse:fileul'), ton: TonSigh.info, icone: LucideIcons.lock)
+          if (fileul && peut)
+            NoteSigh(
+                'Poste rattaché : vous pouvez importer. Le document est vérifié ICI (validateur strict), puis TRANSMIS à la mère, qui rejoue la vérification, applique sous votre nom si votre geste le permet et vous répond '
+                'dans « Demandes d’import transmises » ; la version arrive ensuite par la synchronisation. Un document ne peut pas dépasser ${service.tailleMaxDepotFiscalKo} Ko (réglage de la clinique). L’archivage d’une version se fait sur la mère.',
+                key: const Key('liasse:fileul'),
+                ton: TonSigh.info,
+                icone: LucideIcons.send)
           else if (!peut)
             const NoteSigh('Lecture seule : importer ou archiver une version est le geste réservé « Importer ou archiver la liasse fiscale déposée et le classeur de baseline » (comptable et DAF d’origine, réglable dans « Rôles et permissions › Gestes réservés »).',
                 key: Key('liasse:lecture'), ton: TonSigh.info, icone: LucideIcons.lock),
-          if (fileul || !peut) const SizedBox(height: 12),
+          if ((fileul && peut) || !peut) const SizedBox(height: 12),
           CarteSigh(titre: 'Ce qui fait foi', child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             _enForce(docFiscalLiasse, 'liasse déposée', liasses),
             const SizedBox(height: 8),
             _enForce(docFiscalClasseur, 'classeur de baseline', classeurs),
           ])),
-          if (peutAgir) ...[
+          if (peut) ...[
             const SizedBox(height: 16),
             CarteSigh(
               titre: 'Importer un document',
@@ -307,11 +365,15 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
           ],
           _blocRefus(),
           if (_confirmation != null) Padding(padding: const EdgeInsets.only(top: 12), child: NoteSigh(_confirmation!, key: const Key('liasse:ok'), ton: TonSigh.succes, icone: LucideIcons.circleCheck)),
+          if (service.depotsLiasse().isNotEmpty) ...[
+            const SizedBox(height: 16),
+            CarteSigh(titre: 'Demandes d’import transmises', sansRemplissage: true, child: _demandes(service.depotsLiasse())),
+          ],
           const SizedBox(height: 16),
-          CarteSigh(titre: 'Versions de la liasse déposée', sansRemplissage: true, child: _tableau(c, docFiscalLiasse, liasses, peutAgir)),
+          CarteSigh(titre: 'Versions de la liasse déposée', sansRemplissage: true, child: _tableau(c, docFiscalLiasse, liasses, peutArchiver)),
           const SizedBox(height: 16),
-          CarteSigh(titre: 'Versions du classeur de baseline', sansRemplissage: true, child: _tableau(c, docFiscalClasseur, classeurs, peutAgir)),
-          if (_aArchiver != null && peutAgir) ...[
+          CarteSigh(titre: 'Versions du classeur de baseline', sansRemplissage: true, child: _tableau(c, docFiscalClasseur, classeurs, peutArchiver)),
+          if (_aArchiver != null && peutArchiver) ...[
             const SizedBox(height: 16),
             CarteSigh(
               titre: 'Archiver la version « $_aArchiver »',
