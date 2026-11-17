@@ -1,5 +1,5 @@
 {
-  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 2 et H = 3 (lot 1 : paie et fiscal, il reste le plan de numérisation, trois barèmes à porter), C = 32 (80 avant le lot « seuils » : il reste les bornes cliniques du téléphone, la mère sync_dart et la balance âgée des assureurs), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 10 (12 avant le lot « coordonnées » : il reste des tons d'affichage de libellés et la décision de droit sur la fonction de l'agent). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json.",
+  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 2 et H = 3 (lot 1 : paie et fiscal, il reste le plan de numérisation, trois barèmes à porter), C = 0 (80 avant le lot « seuils », 36 au 17/11/2026, soldé le 18/11/2026 : bornes du téléphone livrées par la liste blanche des réglages mobiles, règles de la mère lues au registre daté, balance âgée des assureurs à deux bornes réglables, terme maximal d'un certificat, délai d'aberration de l'imagerie, durées de la mise à jour ; un seul site classé structurel, le dimanche ISO de l'assistant), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 10 (12 avant le lot « coordonnées » : il reste des tons d'affichage de libellés et la décision de droit sur la fonction de l'agent). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json.",
   "familles": {
     "B": {
       "apps/poste/lib/modules/m1/documents.dart": {
@@ -22,48 +22,7 @@
       }
     },
     "E": {},
-    "C": {
-      "apps/mobile/lib/ui/reception.dart": {
-        "plafond": 1,
-        "motif": "Borne de PLAUSIBILITÉ de la saisie d'un âge au téléphone (au-delà de 120 ans : faute de frappe). Le téléphone ne reçoit AUCUN paramètre de clinique (RG-13, `mobile: false`) : la borne ne peut donc pas être lue d'un réglage daté ; c'est une borne clinique de saisie (lot 6 de l'inventaire, validation d'un professionnel)."
-      },
-      "packages/domaine/lib/src/assurances/ass_regles.dart": {
-        "plafond": 1,
-        "motif": "Tranches de la balance âgée des ASSUREURS (30 et 90 jours) : les identifiants d'onglet, de filtre et de colonne (`moins30`, `30a90`, `plus90`, `AssLigneCreance.moins30`…) portent les bornes dans leur NOM. Les rendre paramétrables (comme celles des patients, `comptabilite.balanceAgeePatientBorne1Jours`) impose de refaire quatre écrans de M9 et l'assistant : lot dédié, non entrepris ici pour ne pas casser des libellés."
-      },
-      "packages/domaine/lib/src/configuration/cfa_regles.dart": {
-        "plafond": 1,
-        "motif": "Borne clinique de saisie du terme d'un certificat (1 à 45 semaines d'aménorrhée) : plausibilité obstétricale à faire valider par les sages-femmes (lot 6 de l'inventaire, bornes cliniques)."
-      },
-      "packages/domaine/lib/src/mere/mrb_regles.dart": {
-        "plafond": 1,
-        "motif": "Fenêtre de 30 minutes de la réinitialisation de production : miroir d'affichage de la règle APPLIQUÉE par la mère (`dureeFenetreReinit` de packages/sync_dart/lib/src/mere.dart). Les deux copies ne se règlent ensemble que lorsque la mère lira le registre des paramètres (cf. sync_dart)."
-      },
-      "packages/domaine/lib/src/mobile/mob_regles.dart": {
-        "plafond": 8,
-        "motif": "Bornes de saisie CLINIQUES du téléphone (température, tension, pouls, FR, SpO₂, poids, durée) : le téléphone ne reçoit aucun paramètre de clinique (RG-13) et ces bornes sont à faire valider par les professionnels (lot 6 de l'inventaire, bornes cliniques)."
-      },
-      "packages/domaine/lib/src/mobile/mob_suite.dart": {
-        "plafond": 10,
-        "motif": "Bornes de saisie CLINIQUES du téléphone pour la maternité et le nouveau-né (terme, poids, tension, BCF, température, poids du bébé, pouls, FR) : même motif que mob_regles.dart (aucun paramètre vers le téléphone, validation des sages-femmes, lot 6)."
-      },
-      "packages/domaine/lib/src/pilotage/pil_stats.dart": {
-        "plafond": 1,
-        "motif": "Écart d'ABERRATION (30 jours) au-delà duquel un délai demande → rendu d'imagerie est écarté de la moyenne : filtre statistique à régler avec les statistiques d'imagerie ; la fonction pure n'a pas encore de porte vers le registre des paramètres (lot suivant)."
-      },
-      "packages/sync_dart/lib/src/horssite_mere.dart": {
-        "plafond": 1,
-        "motif": "Âge limite de 30 heures d'une copie de nuit du magasin : règle de la MÈRE (sync_dart), qui ne lit pas encore le registre `parametres` ; à brancher avec les seuils de supervision (lot dédié « réglages de la mère »)."
-      },
-      "packages/sync_dart/lib/src/mere.dart": {
-        "plafond": 2,
-        "motif": "Fenêtre de réinitialisation (30 min) et délai de 20 heures avant la sauvegarde quotidienne : règles de la MÈRE (sync_dart), qui ne lit pas encore le registre `parametres` ; à brancher avec les seuils de supervision (lot dédié « réglages de la mère »)."
-      },
-      "packages/sync_dart/lib/src/supervision.dart": {
-        "plafond": 6,
-        "motif": "Seuils de SUPERVISION du poste mère (disque, sauvegarde, silence des postes, retard, relais) : déjà injectables par `Seuils(...)` et marqués « propositions à valider sur le matériel réel » ; la mère ne lit pas encore le registre `parametres` pour les régler (lot dédié « réglages de la mère »)."
-      }
-    },
+    "C": {},
     "D": {
       "apps/poste/lib/modules/cfg/cfb_numerotation.dart": {
         "plafond": 1,
