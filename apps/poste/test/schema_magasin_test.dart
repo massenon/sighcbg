@@ -125,6 +125,47 @@ void main() {
     });
   });
 
+  group('méta illisible sur un magasin peuplé (E4603)', () {
+    test('sur disque : méta corrompue + collections = refus META_ILLISIBLE, octets identiques, diurèse non reconvertie', () async {
+      final tmp = Directory.systemTemp.createTempSync('sigh-meta-');
+      addTearDown(() => tmp.deleteSync(recursive: true));
+      final seed = PersistanceFichiers('${tmp.path}/magasin');
+      for (final e in ancien().entries) {
+        await seed.ecrire(e.key, e.value);
+      }
+      File('${tmp.path}/magasin/_meta.json').writeAsStringSync('{ pas du json');
+      expect((await PersistanceFichiers('${tmp.path}/magasin').lireMeta())[schemaCleMetaIllisible], isTrue);
+      String empreinte() => [for (final f in Directory('${tmp.path}/magasin').listSync(recursive: true).whereType<File>().toList()..sort((a, b) => a.path.compareTo(b.path))) '${f.path}:${f.readAsStringSync()}'].join('|');
+      final avant = empreinte();
+      await expectLater(poste().brancherPersistance(PersistanceFichiers('${tmp.path}/magasin'), delai: Duration.zero),
+          throwsA(isA<ErreurSchemaDonnees>().having((e) => e.code, 'code', 'META_ILLISIBLE')));
+      expect(empreinte(), avant, reason: 'aucune écriture, aucune conversion');
+    });
+
+    test('en mémoire : aucune écriture', () async {
+      final p = PersistanceMemoire(ancien())..meta = {schemaCleMetaIllisible: true};
+      await expectLater(poste().brancherPersistance(p, delai: Duration.zero), throwsA(isA<ErreurSchemaDonnees>().having((e) => e.code, 'code', 'META_ILLISIBLE')));
+      expect(p.ecritures, isEmpty);
+      expect(p.contenu['constantes']!.single['diurese'], 1.5);
+    });
+
+    test('magasin neuf (aucun fichier) et magasin sain : non touchés par la garde', () async {
+      final tmp = Directory.systemTemp.createTempSync('sigh-meta-ok-');
+      addTearDown(() => tmp.deleteSync(recursive: true));
+      final neuf = PersistanceFichiers('${tmp.path}/neuf');
+      await poste().brancherPersistance(neuf, delai: Duration.zero);
+      expect((await neuf.lireMeta())[schemaCleMeta], schemaDonneesCourant);
+      expect((await neuf.lireMeta()).containsKey(schemaCleMetaIllisible), isFalse);
+      final sain = PersistanceFichiers('${tmp.path}/sain');
+      for (final e in ancien().entries) {
+        await sain.ecrire(e.key, e.value);
+      }
+      await sain.ecrireMeta({'schema': schemaDonneesCourant, 'formeConstantes': 2});
+      await poste().brancherPersistance(PersistanceFichiers('${tmp.path}/sain'), delai: Duration.zero);
+      expect((await sain.lireMeta())[schemaCleMeta], schemaDonneesCourant);
+    });
+  });
+
   test('un poste NEUF naît au schéma courant sans rien migrer ni journaliser', () async {
     final p = PersistanceMemoire();
     final m = Magasin({'constantes': [{'id': 'C1', 'statut': 'actif', 'diurese': 2}]}, 'POSTE');

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:cryptography/cryptography.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show schemaCleMetaIllisible;
 
 typedef FichePersistee = Map<String, Object?>;
 
@@ -252,7 +253,8 @@ class PersistanceFichiers implements Persistance {
         final texte = ext == 'sigh' ? utf8.decode(await _dechiffrer('_meta', await f.readAsBytes())) : await f.readAsString();
         return (jsonDecode(texte) as Map).cast<String, Object?>();
       } catch (_) {
-        return {};
+        // La méta EXISTE mais ne se lit pas : on le dit (E4603), au lieu de se faire passer pour une méta absente.
+        return {schemaCleMetaIllisible: true};
       }
     }
     return {};

@@ -22,6 +22,11 @@ const int schemaDonneesCourant = 1;
 /// La clé de la méta où le numéro de schéma est écrit (magasin du poste : `_meta` ; mère : table `meta`).
 const String schemaCleMeta = 'schema';
 
+/// LE TÉMOIN D'UNE MÉTA ILLISIBLE (E4603). Une méta qui EXISTE sur le disque mais ne se déchiffre pas ou n'est pas du JSON rend `{}` à la lecture ; sans ce témoin, un magasin PEUPLÉ
+/// se lirait « schéma 0 » et la migration n°1 rejouerait la conversion de la diurèse (×1000), qui n'est pas idempotente. Le lecteur de méta pose ce témoin (une méta ABSENTE, elle,
+/// reste légitime : un magasin d'avant la chaîne). Il n'est jamais écrit : [metaMigree] le retire.
+const String schemaCleMetaIllisible = '_metaIllisible';
+
 /// La clé de la méta où le journal des migrations jouées est tenu (liste d'entrées).
 const String schemaCleJournal = 'migrations';
 
@@ -129,6 +134,13 @@ RefusSauvegarde refusSchemaIllisible(Object? valeur, {String objet = 'Ce magasin
     'Restaurer la méta du magasin depuis une sauvegarde, ou ouvrir un export portable plutôt que le magasin. Rien n’a été modifié.',
     {'valeur': '$valeur'});
 
+/// Le refus d'un magasin PEUPLÉ dont la méta existe mais est illisible : on ne devine pas son schéma, on ne rejoue aucune conversion (E4603). Aucune écriture.
+RefusSauvegarde refusMetaIllisible({String objet = 'Ce magasin'}) => RefusSauvegarde(
+    'META_ILLISIBLE',
+    '$objet porte des données, mais son fichier de méta (numéro de schéma) existe sans pouvoir être lu : on ne devine pas sa forme, et on ne rejoue aucune conversion qui pourrait l’abîmer',
+    'Restaurer le fichier de méta depuis une sauvegarde, ou ouvrir un export portable (.sghx) plutôt que le magasin. Rien n’a été modifié.',
+    const {});
+
 /// Une erreur de schéma NOMMÉE (à lever par l'ouverture du magasin ; l'écran et le démarrage du poste la disent telle quelle).
 class ErreurSchemaDonnees implements Exception {
   const ErreurSchemaDonnees(this.refus);
@@ -174,6 +186,8 @@ void verifierChaine(List<MigrationDonnees> chaine) {
 
 /// LA GARDE D'OUVERTURE : lit le schéma du contenu et refuse (en le nommant) un schéma plus récent que [cible] ou illisible. Ne modifie rien.
 int garderSchema(ContenuDonnees contenu, {int cible = schemaDonneesCourant, String objet = 'Ce magasin'}) {
+  // Méta illisible : refusée SI le magasin est peuplé (un magasin neuf n'a rien à perdre ni à convertir).
+  if (contenu.meta[schemaCleMetaIllisible] == true && !contenu.vide) throw ErreurSchemaDonnees(refusMetaIllisible(objet: objet));
   final s = schemaDeLaMeta(contenu.meta, peuple: !contenu.vide, courant: cible);
   if (s == null) throw ErreurSchemaDonnees(refusSchemaIllisible(contenu.meta[schemaCleMeta], objet: objet));
   if (s > cible) throw ErreurSchemaDonnees(refusSchemaPlusRecent(s, courant: cible, objet: objet));
@@ -223,9 +237,10 @@ ResultatMigration migrerDonnees(ContenuDonnees contenu,
 /// La méta d'un magasin APRÈS la chaîne : le schéma atteint et le journal complété. Les autres clés sont conservées telles quelles.
 /// Un magasin déjà au schéma voulu et qui porte déjà son numéro est rendu inchangé (idempotence).
 Map<String, Object?> metaMigree(Map<String, Object?> meta, ResultatMigration r) {
-  if (!r.aFait && meta[schemaCleMeta] == r.schemaApres) return Map<String, Object?>.from(meta);
+  final propre = Map<String, Object?>.from(meta)..remove(schemaCleMetaIllisible);
+  if (!r.aFait && meta[schemaCleMeta] == r.schemaApres) return propre;
   return {
-    ...meta,
+    ...propre,
     schemaCleMeta: r.schemaApres,
     if (r.journal.isNotEmpty) schemaCleJournal: [...((meta[schemaCleJournal] as List?) ?? const []), ...r.journal],
   };

@@ -21,6 +21,28 @@ void main() {
     });
   });
 
+  group('méta illisible (E4603)', () {
+    test('un magasin PEUPLÉ dont la méta est illisible est refusé, nommé, sans rien convertir', () {
+      final c = ancien(meta: {schemaCleMetaIllisible: true});
+      expect(() => migrerDonnees(c, horloge: () => t0), throwsA(isA<ErreurSchemaDonnees>().having((e) => e.code, 'code', 'META_ILLISIBLE')));
+      expect(c.collections['constantes']!.single['diurese'], 2, reason: 'la diurèse n’est pas convertie (×1000)');
+      expect(() => garderSchema(c), throwsA(isA<ErreurSchemaDonnees>()));
+    });
+
+    test('un magasin VIDE à la méta illisible n’a rien à perdre : il naît au schéma courant, le témoin n’est jamais écrit', () {
+      final c = ContenuDonnees({'releves': []}, {schemaCleMetaIllisible: true});
+      final r = migrerDonnees(c, horloge: () => t0);
+      expect(r.schemaApres, schemaDonneesCourant);
+      expect(metaMigree(c.meta, r).containsKey(schemaCleMetaIllisible), isFalse);
+      expect(c.meta.containsKey(schemaCleMetaIllisible), isTrue, reason: 'l’entrée n’est pas mutée');
+    });
+
+    test('une méta ABSENTE (magasin d’avant la chaîne) et une méta saine ne sont pas touchées : schéma 0 migré, schéma courant inchangé', () {
+      expect(migrerDonnees(ancien(), horloge: () => t0).schemaAvant, 0);
+      expect(migrerDonnees(ancien(meta: {'schema': schemaDonneesCourant}), horloge: () => t0).aFait, isFalse);
+    });
+  });
+
   test('la chaîne livrée est ordonnée et contiguë, et son dernier numéro est le schéma courant', () {
     verifierChaine(migrationsDonnees);
     expect(migrationsDonnees.first.numero, 1);
