@@ -334,14 +334,16 @@ void main() {
       expect(m.collection('audit').toutes.where((l) => l['action'] == 'Circuit de validation des présences').length, 1);
     });
 
-    casM14('hors administrateur et DA : « Régler » et « Déroger pour un agent » sont ABSENTS (jamais grisés), la grille se lit', (t) async {
+    casM14('hors administrateur et DA : « Régler » est ABSENT (jamais grisé) ; « Déroger pour un agent » suit le geste DÉDIÉ du planning individuel (surveillant d\u2019origine) ; la grille se lit', (t) async {
       await ouvrirM14(t, magasinRhb(), 'm10-planning', horloge: auj16, role: 'surveillant');
       expect(find.text('Réglages du planning et des présences'), findsOneWidget);
-      expect(find.widgetWithText(BoutonSigh, 'Régler'), findsNothing);
-      expect(find.widgetWithText(BoutonSigh, 'Déroger pour un agent'), findsNothing);
+      expect(find.widgetWithText(BoutonSigh, 'Régler'), findsNothing, reason: 'le circuit et le délai du badge restent à `rh_regler`');
+      expect(find.widgetWithText(BoutonSigh, 'Déroger pour un agent'), findsOneWidget, reason: 'écrire le régime individuel d\u2019un agent est le geste `rh_planning_individuel`');
       // Le surveillant pose le planning : la case s'ouvre.
       await toucherM14(t, find.byKey(const Key('rhb:cellule:EMP01:2026-08-16')));
       expect(find.text('Affectation de vacation'), findsOneWidget);
+      await ouvrirM14(t, magasinRhb(), 'm10-planning', horloge: auj16, role: 'infirmier');
+      expect(find.widgetWithText(BoutonSigh, 'Déroger pour un agent'), findsNothing, reason: 'un profil sans le geste ne voit pas la commande');
     });
 
     casM14('lecture seule : la grille se lit sans s\'ouvrir, aucune commande d\'écriture', (t) async {

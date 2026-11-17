@@ -1,5 +1,5 @@
 {
- "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-planning-rh.js : planning RH (régime individuel, circuit de validation, propositions), le moteur de la maquette piloté dans Chrome. Ne pas éditer.",
+ "_doc": "ENGENDRÉ par prototype_html/build/vecteurs-planning-rh.js : planning RH (régime individuel, circuit de validation, propositions), le moteur de la maquette piloté dans Chrome. Ne pas éditer (sauf le cas « rôle surveillant », ajusté à la main le 17/11/2026 : le geste dédié rh_planning_individuel ouvre la dérogation au surveillant ; la maquette qui engendrait ce fichier n’est plus dans le dépôt).",
  "regimesActifs": [
   {
    "id": "REG01",
@@ -762,8 +762,28 @@
    }
   },
   {
-   "nom": "rôle surveillant",
+   "nom": "rôle surveillant (geste dédié « planning individuel », 17/11/2026)",
    "role": "surveillant",
+   "versions": [],
+   "dateEffet": "2026-10-30",
+   "champs": {
+    "repos": "repos24"
+   },
+   "retour": false,
+   "motif": "Vecteur",
+   "agentExiste": true,
+   "attendu": {
+    "ok": true,
+    "champs": {
+     "repos": "repos24"
+    },
+    "retourCategorie": false,
+    "version": 1
+   }
+  },
+  {
+   "nom": "rôle réception",
+   "role": "reception",
    "versions": [],
    "dateEffet": "2026-10-30",
    "champs": {

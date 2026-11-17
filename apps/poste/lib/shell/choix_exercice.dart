@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show SchedulerBinding, SchedulerPhase;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
@@ -25,16 +26,63 @@ class ChoixExercice {
 }
 
 /// Le sélecteur de la barre supérieure : ‹ Exercice N · état ›. Les flèches sont ABSENTES aux bornes (pas d'exercice voisin), jamais grisées.
-class SelecteurExercice extends StatelessWidget {
+class SelecteurExercice extends StatefulWidget {
   const SelecteurExercice({super.key, required this.magasin, required this.aujourdhui});
   final Magasin magasin;
   final DateTime aujourdhui;
 
   @override
+  State<SelecteurExercice> createState() => _EtatSelecteurExercice();
+}
+
+class _EtatSelecteurExercice extends State<SelecteurExercice> {
+  Magasin get magasin => widget.magasin;
+  DateTime get aujourdhui => widget.aujourdhui;
+  late Listenable _ecoute;
+
+  // Le sélecteur écoute le CHOIX et la COLLECTION des exercices : amorcée après le premier dessin (un écran qui l'amorce, une réception du pont), la table vide ne le laisse plus absent (défaut PTA
+  // du 17/11/2026 : « le widget n'écoutait pas la collection »). Un écran qui amorce pendant SA construction notifie en pleine phase de construction : le repeint est alors reporté à la fin de l'image
+  // (setState en construction est une erreur du cadriciel).
+  void _surChangement() {
+    if (!mounted) return;
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+    } else {
+      setState(() {});
+    }
+  }
+
+  void _brancher() {
+    _ecoute = Listenable.merge([ChoixExercice.valeur, magasin.collection('exercices')])..addListener(_surChangement);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _brancher();
+  }
+
+  @override
+  void didUpdateWidget(SelecteurExercice ancien) {
+    super.didUpdateWidget(ancien);
+    if (ancien.magasin != widget.magasin) {
+      _ecoute.removeListener(_surChangement);
+      _brancher();
+    }
+  }
+
+  @override
+  void dispose() {
+    _ecoute.removeListener(_surChangement);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<int?>(
-      valueListenable: ChoixExercice.valeur,
-      builder: (_, __, ___) {
+    return Builder(
+      builder: (_) {
         final exos = magasin.collection('exercices').actives;
         if (exos.isEmpty) return const SizedBox.shrink();
         final annee = ChoixExercice.courant(magasin, aujourdhui);

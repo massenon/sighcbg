@@ -606,7 +606,7 @@ class _Individuels extends StatelessWidget {
   final BuildContext contexte;
   final PlanningRhPoste p;
 
-  bool _peutDeroger(ContexteEcran c) => gestePeutEcran(c, gesteRhRegler) && c.droit.editer;
+  bool _peutDeroger(ContexteEcran c) => gestePeutEcran(c, gesteRhPlanningIndividuel) && c.droit.editer;
 
   @override
   Widget build(BuildContext context) {

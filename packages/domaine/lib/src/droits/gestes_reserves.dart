@@ -241,9 +241,15 @@ const String gesteValiderRefRepartition = 'valider_ref_repartition';
 /// Valider le barème de l'AIB (marquage « à valider » d'une version). Origine : la Direction, la DAF, l'administrateur et le Comptable.
 const String gesteValiderRefBaremeAib = 'valider_ref_bareme_aib';
 
-/// RÉGLER LE PERSONNEL : circuit de validation des présences et « l'agent modifie directement », dérogation de régime individuel, délai du pointage par badge, copie de la
+/// RÉGLER LE PERSONNEL : circuit de validation des présences et « l'agent modifie directement », délai du pointage par badge, copie de la
 /// fiche de paie sur le téléphone. Origine : l'administrateur et la DAF.
 const String gesteRhRegler = 'rh_regler';
+
+/// ÉCRIRE LE PLANNING INDIVIDUEL d'un agent (Direction de Baguidi, 17/11/2026) : poser une version de son régime individuel (dérogation champ par champ, remplacement, retour à la
+/// catégorie) depuis l'onglet « Planning individuel » de la fiche du personnel. Geste DÉDIÉ : il ne donne AUCUN autre droit RH (ni le circuit de validation, ni le délai du badge, ni la copie
+/// de la fiche de paie — `rh_regler` —, ni aucune lecture de rémunération). Origine : le surveillant, la DAF et l'administrateur (DAF et administrateur l'écrivaient déjà par `rh_regler`).
+/// Le planning posé par ce geste reste dans le circuit de validation : une vacation naît « à valider », y compris chez un fileul.
+const String gesteRhPlanningIndividuel = 'rh_planning_individuel';
 
 /// ENCADRER LE PLANNING DU PERSONNEL : poser et retirer le planning, voir et valider les propositions, régulariser un pointage, consigner l'avis du chef de service sur un
 /// ordre de mission. Origine : le surveillant, la DAF et l'administrateur.
@@ -708,7 +714,14 @@ const List<GesteReserve> gestesReserves = [
       module: '*',
       ecran: '',
       rolesDefaut: ['admin', 'da'],
-      aide: 'Circuit de validation des présences, « l’agent modifie directement », dérogation de régime individuel, délai du pointage par badge, copie de la fiche de paie sur le téléphone. Origine : l’administrateur et la DAF.'),
+      aide: 'Circuit de validation des présences, « l’agent modifie directement », délai du pointage par badge, copie de la fiche de paie sur le téléphone. Origine : l’administrateur et la DAF.'),
+  GesteReserve(
+      id: gesteRhPlanningIndividuel,
+      libelle: 'Écrire le planning individuel d’un agent',
+      module: '*',
+      ecran: '',
+      rolesDefaut: ['surveillant', 'da', 'admin'],
+      aide: 'Poser le régime individuel d’un agent (dérogation, remplacement, retour à la catégorie) à l’onglet « Planning individuel » de la fiche du personnel. Ne donne aucun autre droit RH ni aucune lecture de rémunération. Origine : le surveillant, la DAF et l’administrateur.'),
   GesteReserve(
       id: gesteRhEncadrer,
       libelle: 'Encadrer le planning du personnel',

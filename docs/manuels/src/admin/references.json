@@ -722,7 +722,20 @@
         "Directrice de l’Administration et des Finances (DAF)"
       ],
       "suitEcran": false,
-      "aide": "Circuit de validation des présences, « l’agent modifie directement », dérogation de régime individuel, délai du pointage par badge, copie de la fiche de paie sur le téléphone. Origine : l’administrateur et la DAF."
+      "aide": "Circuit de validation des présences, « l’agent modifie directement », délai du pointage par badge, copie de la fiche de paie sur le téléphone. Origine : l’administrateur et la DAF."
+    },
+    {
+      "id": "rh_planning_individuel",
+      "libelle": "Écrire le planning individuel d’un agent",
+      "module": "*",
+      "ecran": "",
+      "rolesDefaut": [
+        "Surveillant",
+        "Directrice de l’Administration et des Finances (DAF)",
+        "Administrateur système"
+      ],
+      "suitEcran": false,
+      "aide": "Poser le régime individuel d’un agent (dérogation, remplacement, retour à la catégorie) à l’onglet « Planning individuel » de la fiche du personnel. Ne donne aucun autre droit RH ni aucune lecture de rémunération. Origine : le surveillant, la DAF et l’administrateur."
     },
     {
       "id": "rh_encadrer",

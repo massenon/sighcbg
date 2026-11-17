@@ -84,7 +84,7 @@ void main() {
   test('les plages des bons suivent la série : numéro de la plage, puis référence PROVISOIRE de la série une fois la plage épuisée', () {
     final auj = DateTime(2026, 11, 16, 9);
     final m = vide(auj);
-    final p = PlagesNumeros.de(m)..obtenir = (nom, taille, minimum) async => throw StateError('hors ligne');
+    final p = PlagesNumeros.de(m)..obtenir = (nom, taille, minimum, {annee}) async => throw StateError('hors ligne');
     expect(PlagesNumeros.de(m).actif, isTrue);
     expect(p.reference('besoins', 'achats.besoins', const [], date: DateTime(2026, 11, 16)), startsWith('BEB-2026-PROV-'), reason: 'aucune plage : provisoire, jamais un numéro inventé');
     m.collection(PlagesCodes.collection).ajouterSansJournal({'id': 'PLG-besoins-101', 'nom': 'besoins', 'debut': 101, 'fin': 102, 'prochain': 101});
@@ -93,6 +93,56 @@ void main() {
     expect(p.reference('besoins', 'achats.besoins', const [], date: DateTime(2027, 1, 3)), startsWith('BEB-2027-PROV-'));
     p.obtenir = null;
     expect(p.reference('besoins', 'achats.besoins', [{'reference': 'BEB-2026-0007'}], date: DateTime(2026, 11, 16)), 'BEB-2026-0008', reason: 'sans service de plage : la règle historique');
+  });
+
+  test('une série à remise annuelle demande sa plage POUR L\u2019ANNÉE de la pièce ; une plage d\u2019une autre année ne sert jamais ; un refus de la mère ne crée aucune plage', () async {
+    final m = vide(DateTime(2026, 11, 17, 9));
+    final demandes = <(String, int?)>[];
+    final p = PlagesNumeros.de(m)
+      ..obtenir = (nom, taille, minimum, {annee}) async {
+        demandes.add((nom, annee));
+        if (annee == 2028) throw StateError('plage_chevauchement');
+        return (1, 50);
+      };
+    expect(PlagesNumeros.anneeDemandee('achats.besoins', DateTime(2026, 11, 17)), 2026, reason: 'la série repart à 1 chaque année : l\u2019année est celle de la pièce');
+    await p.recharger('besoins', 'achats.besoins', () => const [], date: DateTime(2026, 11, 17));
+    expect(demandes, [('besoins', 2026)]);
+    expect(m.collection(PlagesCodes.collection).toutes.single['annee'], 2026, reason: 'la plage porte son année');
+    expect(p.reference('besoins', 'achats.besoins', const [], date: DateTime(2026, 11, 17)), 'BEB-2026-0001');
+    // Une pièce de 2027 ne tire jamais dans la plage 2026 : provisoire, puis une plage de 2027 est demandée.
+    expect(p.reference('besoins', 'achats.besoins', const [], date: DateTime(2027, 1, 4)), startsWith('BEB-2027-PROV-'));
+    await p.recharger('besoins', 'achats.besoins', () => const [], date: DateTime(2027, 1, 4));
+    expect(demandes.last, ('besoins', 2027));
+    expect(p.reference('besoins', 'achats.besoins', const [], date: DateTime(2027, 1, 4)), 'BEB-2027-0001', reason: 'la série 2027 repart à 1');
+    // La mère refuse (chevauchement, nommé chez elle) : le poste n\u2019invente rien et ne crée aucune plage.
+    final avant = m.collection(PlagesCodes.collection).toutes.length;
+    await p.recharger('besoins', 'achats.besoins', () => const [], date: DateTime(2028, 2, 1));
+    expect(m.collection(PlagesCodes.collection).toutes.length, avant);
+  });
+
+  test('les plages de dossiers d\u2019avant les séries annuelles sont rattachées à l\u2019année de leurs codes déjà attribués ; sans code, elles restent sans année (dites) ; aucun code réécrit', () {
+    final m = Magasin({
+      PlagesCodes.collection: <M>[
+        {'id': 'PLG-1000', 'debut': 1000, 'fin': 1049, 'prochain': 1011, 'statut': 'actif'},
+        {'id': 'PLG-3000', 'debut': 3000, 'fin': 3049, 'prochain': 3000, 'statut': 'actif'},
+        {'id': 'PLG2025-500', 'debut': 500, 'fin': 549, 'prochain': 510, 'annee': 2025, 'statut': 'actif'},
+      ],
+      'patients': <M>[
+        {'id': 'P1', 'code': codePatient(1004, 2026), 'statut': 'actif'},
+        {'id': 'P2', 'code': codePatient(1010, 2026), 'statut': 'actif'},
+      ],
+    });
+    final p = PlagesCodes.de(m);
+    expect(p.plagesDe(2026), isEmpty, reason: 'avant : la plage sans année n\u2019appartient à aucune série');
+    final r = p.rattacherAnciennes(maintenant: DateTime(2026, 11, 17));
+    expect((r.rattachees, r.sansAnnee), (1, 1));
+    expect(p.plagesDe(2026).single['id'], 'PLG-1000');
+    expect(p.plagesDe(2026).single['prochain'], 1011, reason: 'la plage garde son état : seule l\u2019année est posée');
+    expect(m.collection(PlagesCodes.collection).parId('PLG-3000')!['annee'], isNull, reason: 'aucun code attribué : aucune année devinée');
+    expect(m.collection(PlagesCodes.collection).parId('PLG2025-500')!['annee'], 2025, reason: 'une plage qui a une année n\u2019est jamais touchée');
+    expect(m.collection('patients').toutes.map((x) => x['code']), [codePatient(1004, 2026), codePatient(1010, 2026)], reason: 'RG-01 : aucun code réécrit');
+    final r2 = p.rattacherAnciennes(maintenant: DateTime(2026, 11, 17));
+    expect((r2.rattachees, r2.sansAnnee), (0, 1), reason: 'idempotent');
   });
 
   casM14('« Numérotation des pièces » : chaque série, son format, son premier numéro de l’année ; « Modifier » ouvre une version datée', (t) async {

@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers;
+    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -213,7 +213,19 @@ Future<void> migrerSeriesPatients(Depot base) async {
   final annee = DateTime.now().year;
   final herite = await base.meta('next_patient');
   if (await base.meta(Mere.cleSeriePatients(annee)) == null) await base.poserMeta(Mere.cleSeriePatients(annee), herite == null ? rangInitialSeriePatients : int.parse(herite));
-  await base.exec("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL", [annee]);
+  // Les plages sans année sont rattachées à l'année que leurs CODES déjà attribués désignent (un compteur unique numérotait alors tous les dossiers : le rang identifie l'année du code, RG-01 — aucun
+  // code n'est réécrit) ; une plage dont aucun code n'a été attribué prend l'année courante, comme avant (limite documentée plus haut).
+  final sansAnnee = [
+    for (final r in await base.select("SELECT appareil, nom, debut, fin, annee FROM plages WHERE nom='patients' AND annee IS NULL")) r
+  ];
+  if (sansAnnee.isNotEmpty) {
+    final codes = [for (final r in await base.select("SELECT ${base.champJson('data', 'code')} AS c FROM fiches WHERE collection='patients'")) r['c']];
+    final rat = rattacherPlagesAnciennes([for (final r in sansAnnee) PlageNumeros.depuis(r)!], codes, reference: DateTime.now(), anneeParDefaut: annee);
+    for (final e in rat.rattachees.entries) {
+      await base.exec("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL AND appareil=? AND debut=? AND fin=?",
+          [e.value, sansAnnee[e.key]['appareil'], sansAnnee[e.key]['debut'], sansAnnee[e.key]['fin']]);
+    }
+  }
   await base.exec("DELETE FROM meta WHERE k='next_patient'");
   await base.poserMeta('series_patients_depuis', annee);
 }
@@ -431,21 +443,40 @@ class Mere {
   /// de sorte qu'une plage de bons ne brûle aucun numéro de dossier.
   /// Une plage de DOSSIERS appartient à UNE année ([annee], l'année courante à défaut) : ses codes ne servent qu'aux dossiers créés cette année-là.
   Future<Map<String, Object?>> allouerPlage(String appareil, Object nom, int taille, int minimum, {Object? annee}) => base.tx(() async {
+        // Les plages déjà attribuées : le contrôle de chevauchement et la reprise lisent la même table.
+        Future<List<PlageNumeros>> attribuees() async => [
+              for (final r in await base.select('SELECT appareil, nom, debut, fin, annee FROM plages')) PlageNumeros.depuis(r)!,
+            ];
+        // Un refus NOMMÉ : une plage ne se superpose jamais à une autre de la même série et de la même année (deux postes produiraient le même numéro).
+        Future<void> verifier(int debut, int fin, int? an) async {
+          final r = refusChevauchementPlage(await attribuees(), nom: '$nom', annee: an, debut: debut, fin: fin);
+          if (r != null) throw Err(409, r.code, r.motif, {'geste': r.geste, ...r.extra});
+        }
+
         if ('$nom' == 'patients') {
           final a = anneePlage(annee);
           final debut = await reserverRangsPatients(a, taille, minimum);
           final fin = debut + taille - 1;
+          await verifier(debut, fin, a);
           await base.exec('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)', [appareil, nom, debut, fin, a]);
           return {'debut': debut, 'fin': fin, 'annee': a};
         }
-        final cle = '$nom' == 'patients' ? 'next_patient' : 'next_plage_$nom';
+        // Une série NOMMÉE à remise annuelle demande sa plage POUR UNE ANNÉE : un carnet par nom ET par année (la série repart à 1), la plage porte son année. Sans année demandée, la règle d'avant
+        // (un carnet par nom, plage sans année) reste valable pour les séries qui ne se remettent pas à 1.
+        final an = annee == null ? null : anneePlage(annee);
+        final cle = an == null ? 'next_plage_$nom' : 'next_plage_${nom}_$an';
         var debut = await base.metaInt(cle);
-        if ('$nom' != 'patients' && debut < 1) debut = 1;
+        if (debut < 1) debut = debutProchainePlage(await attribuees(), nom: '$nom', annee: an);
         if (minimum > debut) debut = minimum;
         final fin = debut + taille - 1;
+        await verifier(debut, fin, an);
         await base.poserMeta(cle, fin + 1);
-        await base.exec('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)', [appareil, nom, debut, fin]);
-        return {'debut': debut, 'fin': fin};
+        if (an == null) {
+          await base.exec('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)', [appareil, nom, debut, fin]);
+          return {'debut': debut, 'fin': fin};
+        }
+        await base.exec('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)', [appareil, nom, debut, fin, an]);
+        return {'debut': debut, 'fin': fin, 'annee': an};
       });
 
   Future<num> reserve(String article) async =>

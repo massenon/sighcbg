@@ -247,6 +247,7 @@ const commandes = {
     /* Une plage de dossiers est demandée POUR UNE ANNÉE (celle donnée, l'année en cours à défaut) et garde l'année que la mère a retenue (E3830). */
     const corps = { nom, taille: b.taille || 50, minimum: b.minimum || 0 };
     if (nom === 'patients') corps.annee = b.annee || new Date(maintenant()).getFullYear();
+    else if (b.annee != null) corps.annee = b.annee;
     const j = await http1('POST', '/sync/plage', corps);
     db.prepare("INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee").run(nom, j.debut, j.fin, j.annee ?? null);
     return [200, j];

@@ -12,6 +12,7 @@ import 'documents/branchement.dart';
 import 'documents/ocr_poste.dart';
 import 'kit/champ_sensible.dart' show AccesSensible;
 import 'documents/service_fichiers.dart';
+import 'donnees/exercices_poste.dart';
 import 'donnees/horssite_poste.dart';
 import 'donnees/magasin.dart';
 import 'donnees/tarifs_poste.dart';
@@ -220,6 +221,11 @@ Future<void> main() async {
   configMere.droitsPair = droitsDepuisMatrice(peutEditer: matriceVive.peutEditer, peutAnnuler: matriceVive.peutAnnuler, peutGeste: gestePair);
   // D2 (Direction, 09/11/2026) : un poste déjà installé reçoit le versement CNSS du 15 (non arrêté) et ses échéances, sans rien écraser.
   if (migrerCnssVers(magasin).aFaitQuelqueChose) await magasin.ecrireMaintenant();
+  // LES EXERCICES, AU SOCLE (défaut PTA du 17/11/2026) : la collection est lue par plusieurs écrans et par le sélecteur de la barre supérieure ; un poste neuf (jeu livré : table vide) n'avait
+  // d'exercice qu'après l'ouverture de la clôture, des états financiers ou du plan de travail. Locale au poste (les fiches `EXO-AAAA` sont déterministes), amorcée avant le premier affichage.
+  amorcerExercices(magasin, DateTime.now());
+  // LES PLAGES DE DOSSIERS D'AVANT LES SÉRIES ANNUELLES (reliquat de numérotation) : rattachées à l'année de leurs codes déjà attribués, jamais devinée, aucun code réécrit (RG-01).
+  PlagesCodes.de(magasin).rattacherAnciennes();
   // L'IDENTITÉ ENREGISTRÉE (cfg-branding) s'applique avant le premier affichage, puis à chaque écriture de la collection : toutes les pièces la reprennent.
   brancherIdentite(magasin);
   // LE RÉFÉRENTIEL DE NUMÉROTATION (lot 2) : les versions de séries du magasin s'appliquent à toutes les pièces, puis suivent chaque écriture de la collection.
@@ -279,7 +285,7 @@ Future<void> main() async {
       final transport = TransportMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
       // La mère prend ses numéros de dossier dans le même carnet que les fileuls (RG-01).
       PlagesCodes.de(magasin).obtenir = (taille, minimum, annee) => transport.plage(taille, minimum, annee: annee);
-      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => transport.plage(taille, minimum, nom: nom);
+      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum, {annee}) => transport.plage(taille, minimum, nom: nom, annee: annee);
       ReservationStock.de(magasin)
         ..actif = true
         ..installer(magasin);
@@ -302,7 +308,7 @@ Future<void> main() async {
       ..demarrer();
     void demarrerPontFileul() {
       PlagesCodes.de(magasin).obtenir = (taille, minimum, annee) => moteur.demanderPlage(taille: taille, minimum: minimum, annee: annee);
-      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum) => moteur.demanderPlage(taille: taille, minimum: minimum, nom: nom);
+      PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum, {annee}) => moteur.demanderPlage(taille: taille, minimum: minimum, nom: nom, annee: annee);
       // Lot IMP-C : le verdict de la mère sur une demande d'import revient ici ; l'écriture locale du fileul est alors réglée (archivée si retenue, marquée « non retenue » sinon).
       ServiceDemandesImport.de(magasin)
         ..etiquette = moteur.uuid.replaceAll('-', '').substring(0, 6)

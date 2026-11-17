@@ -47,6 +47,25 @@ class PlagesCodes {
 
   int get restants => restantsDe();
 
+  /// LES PLAGES D'AVANT LES SÉRIES ANNUELLES (reliquat de numérotation, 17/11/2026). Une plage reçue avant que les plages portent leur année n'appartient à aucune série ([plagesDe] la laisse de côté :
+  /// elle ne code plus rien, un code provisoire plutôt qu'une année devinée). Elle est RATTACHÉE à l'année que ses codes DÉJÀ attribués désignent (le compteur d'alors était unique : le rang d'un code de la
+  /// plage identifie son année), jamais à une année devinée : sans code attribué dans la plage, ou avec des codes de plusieurs années, elle reste sans année et se compte dans `sansAnnee`. Seule la plage
+  /// reçoit son année : aucun code attribué n'est réécrit (RG-01). Idempotent. Rend le nombre de plages rattachées et celui des plages que rien ne permet de rattacher.
+  ({int rattachees, int sansAnnee}) rattacherAnciennes({DateTime? maintenant}) {
+    final col = magasin.collection(collection);
+    final anciennes = [
+      for (final f in col.toutes)
+        if (f['statut'] != 'archive' && f['nom'] == null && f['annee'] == null) f
+    ];
+    if (anciennes.isEmpty) return (rattachees: 0, sansAnnee: 0);
+    final r = rattacherPlagesAnciennes([for (final f in anciennes) PlageNumeros.depuis(f)!], [for (final p in magasin.collection('patients').toutes) p['code']],
+        reference: maintenant ?? DateTime.now());
+    for (final e in r.rattachees.entries) {
+      col.appliquerDistante({...anciennes[e.key], 'annee': e.value});
+    }
+    return (rattachees: r.rattachees.length, sansAnnee: r.sansAnnee.length);
+  }
+
   int _plusGrandRang(Iterable<Fiche> patients, int annee) {
     final suffixe = '$annee'.substring('$annee'.length - 2);
     // Tous les sigles se relisent (`lireCodePatient`) : un code attribué sous un sigle antérieur garde son rang (RG-01, jamais réutilisé).
@@ -108,8 +127,9 @@ class PlagesNumeros {
   static final Expando<PlagesNumeros> _par = Expando<PlagesNumeros>();
   static PlagesNumeros de(Magasin m) => _par[m] ??= PlagesNumeros._(m);
 
-  /// Demande une plage à la mère : `(nom, taille, minimum) -> (début, fin)`. Posée par `main` quand le poste est rattaché ou mère ; absente sinon.
-  Future<(int, int)> Function(String nom, int taille, int minimum)? obtenir;
+  /// Demande une plage à la mère : `(nom, taille, minimum, annee) -> (début, fin)`. Posée par `main` quand le poste est rattaché ou mère ; absente sinon. [annee] : l'année de la plage, donnée
+  /// pour une série À REMISE ANNUELLE (la série repart à 1, un rang d'une plage 2026 ne numérote jamais une pièce de 2027) ; absente pour une série qui ne se remet pas à 1.
+  Future<(int, int)> Function(String nom, int taille, int minimum, {int? annee})? obtenir;
 
   static const int seuilRecharge = 10;
   static const int taillePlage = 50;
@@ -117,25 +137,47 @@ class PlagesNumeros {
 
   bool get actif => obtenir != null;
 
-  List<Fiche> plages(String nom) => [
+  /// Les plages du carnet [nom] utilisables pour l'année [annee] : celles de CETTE année d'abord, puis celles d'avant les séries annuelles (sans année : tolérées tant qu'elles servent, comme avant) ;
+  /// sans [annee], toutes. Une plage d'une AUTRE année ne sert jamais.
+  List<Fiche> plages(String nom, {int? annee}) => [
         for (final f in magasin.collection(PlagesCodes.collection).toutes)
-          if (f['statut'] != 'archive' && f['nom'] == nom) f
-      ]..sort((a, b) => (a['debut'] as num).compareTo(b['debut'] as num));
+          if (f['statut'] != 'archive' && f['nom'] == nom && (annee == null || f['annee'] == null || f['annee'] == annee)) f
+      ]..sort((a, b) {
+          // Celles de l'année demandée avant les anciennes, puis par rang.
+          final pa = a['annee'] == null ? 1 : 0, pb = b['annee'] == null ? 1 : 0;
+          return pa != pb ? pa.compareTo(pb) : (a['debut'] as num).compareTo(b['debut'] as num);
+        });
 
-  int restants(String nom) => plages(nom).fold(0, (n, f) => n + ((f['fin'] as num).toInt() - (f['prochain'] as num).toInt() + 1).clamp(0, 1 << 30));
+  int restants(String nom, {int? annee}) =>
+      plages(nom, annee: annee).fold(0, (n, f) => n + ((f['fin'] as num).toInt() - (f['prochain'] as num).toInt() + 1).clamp(0, 1 << 30));
+
+  /// L'année à demander pour la série [serie] à [date] : l'année de la PIÈCE si la série repart à 1 chaque année, sinon aucune (carnet unique).
+  static int? anneeDemandee(String serie, Object? date) {
+    final s = Numerotation.serie(serie, date: date);
+    return s.remiseAnnuelle ? anneeDePiece(date) : null;
+  }
 
   /// [serie] : le code de la série au référentiel de numérotation (`achats.besoins`) ; [date] : la date de la pièce (l'année du numéro, la version de la série).
   Future<void> recharger(String nom, String serie, Iterable<Fiche> Function() fiches, {Object? date}) async {
     final demander = obtenir;
-    if (demander == null || _enCours.contains(nom) || restants(nom) > seuilRecharge) return;
-    _enCours.add(nom);
+    final annee = anneeDemandee(serie, date);
+    final cleEnCours = annee == null ? nom : '$nom/$annee';
+    if (demander == null || _enCours.contains(cleEnCours) || restants(nom, annee: annee) > seuilRecharge) return;
+    _enCours.add(cleEnCours);
     try {
-      final (debut, fin) = await demander(nom, taillePlage, rangMaximal(serie, date: date, existants: fiches()) + 1);
-      magasin.collection(PlagesCodes.collection).ajouterSansJournal({'id': 'PLG-$nom-$debut', 'nom': nom, 'debut': debut, 'fin': fin, 'prochain': debut});
+      final (debut, fin) = await demander(nom, taillePlage, rangMaximal(serie, date: date, existants: fiches()) + 1, annee: annee);
+      magasin.collection(PlagesCodes.collection).ajouterSansJournal({
+        'id': annee == null ? 'PLG-$nom-$debut' : 'PLG-$nom-$annee-$debut',
+        'nom': nom,
+        'debut': debut,
+        'fin': fin,
+        'prochain': debut,
+        if (annee != null) 'annee': annee,
+      });
     } catch (_) {
-      // Hors ligne ou mère arrêtée : on garde ce qu'on a.
+      // Hors ligne ou mère arrêtée : on garde ce qu'on a (un refus nommé de la mère, chevauchement compris, ne crée AUCUNE plage).
     } finally {
-      _enCours.remove(nom);
+      _enCours.remove(cleEnCours);
     }
   }
 
@@ -145,7 +187,7 @@ class PlagesNumeros {
   String reference(String nom, String serie, Iterable<Fiche> existantes, {required DateTime date}) {
     if (!actif) return numeroSuivant(serie, date: date, existants: existantes);
     final col = magasin.collection(PlagesCodes.collection);
-    for (final p in plages(nom)) {
+    for (final p in plages(nom, annee: anneeDemandee(serie, date))) {
       final n = (p['prochain'] as num).toInt();
       if (n <= (p['fin'] as num).toInt()) {
         col.appliquerDistante({...p, 'prochain': n + 1});

@@ -165,6 +165,27 @@ void main() {
       expect(find.text('Le planning de l’agent se lit avec le droit de lire le planning du personnel.'), findsOneWidget);
       expect(find.byKey(const Key('pli:regime')), findsNothing);
     });
+
+    casM14('le SURVEILLANT écrit le planning individuel (geste dédié `rh_planning_individuel`), sans lire aucune rémunération ; retiré à sa fiche de rôle, la commande disparaît', (t) async {
+      final m = _magasin();
+      await _ouvrirFiche(t, m, role: 'surveillant');
+      expect(find.widgetWithText(BoutonSigh, 'Déroger'), findsOneWidget, reason: 'le geste dédié est accordé d’origine au Surveillant');
+      expect(find.widgetWithText(BoutonSigh, 'Remplacer le régime'), findsOneWidget);
+      // Le geste ne donne aucun autre droit RH : ni le circuit, ni la lecture du salaire.
+      final g = DroitsGestes(fiches: m.collection('rbac').actives);
+      expect(g.peut('surveillant', gesteRhRegler), isFalse);
+      expect(g.peut('surveillant', gesteRhPlanningIndividuel), isTrue);
+      // La Direction retire le geste dans la fiche de rôle : la commande est absente.
+      final col = m.collection('rbac');
+      final f = col.toutes.where((x) => x['role'] == 'surveillant' && x['statut'] != 'archive').firstOrNull;
+      if (f == null) {
+        col.inserer({'role': 'surveillant', 'statut': 'actif', 'droitsGestes': {gesteRhPlanningIndividuel: false}}, prefixe: 'RBAC');
+      } else {
+        col.mettreAJour(f['id'], {'droitsGestes': {...((f['droitsGestes'] as Map?) ?? const {}).cast<String, Object?>(), gesteRhPlanningIndividuel: false}});
+      }
+      await _ouvrirFiche(t, m, role: 'surveillant');
+      expect(find.widgetWithText(BoutonSigh, 'Déroger'), findsNothing, reason: 'une commande interdite est ABSENTE');
+    });
   });
 
   group('l’honoraire de régime recalculé sur le régime EFFECTIF (RG-11)', () {

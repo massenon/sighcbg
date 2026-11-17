@@ -112,6 +112,7 @@ export 'src/configuration/confirmations_fiscales.dart';
 export 'src/referentiels/versions_datees.dart';
 export 'src/numerotation/numerotation.dart';
 export 'src/numerotation/numerotation_versions.dart';
+export 'src/numerotation/plages.dart';
 export 'src/qualite/qual_enquetes.dart';
 export 'src/qualite/qual_en_ligne.dart';
 export 'src/qualite/qual_validations.dart';

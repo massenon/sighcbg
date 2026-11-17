@@ -140,9 +140,9 @@ void main() {
         final code = await console.codeAppareil(nom).timeout(const Duration(seconds: 20));
         await mo.rattacher('http://127.0.0.1:$port', code).timeout(const Duration(seconds: 20));
         mo.demarrer();
-        PlagesNumeros.de(m).obtenir = (n, t, mi) => mo.demanderPlage(taille: t, minimum: mi, nom: n);
+        PlagesNumeros.de(m).obtenir = (n, t, mi, {annee}) => mo.demanderPlage(taille: t, minimum: mi, nom: n, annee: annee);
       }
-      PlagesNumeros.de(mm).obtenir = (n, t, mi) => TransportMereLocale(port: port, admin: 'secret-test').plage(t, mi, nom: n);
+      PlagesNumeros.de(mm).obtenir = (n, t, mi, {annee}) => TransportMereLocale(port: port, admin: 'secret-test').plage(t, mi, nom: n, annee: annee);
 
       // 1. NUMÉROTATION SANS COLLISION : chaque poste prend sa plage, puis tire trois numéros ; hors ligne les deux ne se recouvrent pas.
       for (final (m, mo) in [(m1, moteur1), (m2, moteur2)]) {

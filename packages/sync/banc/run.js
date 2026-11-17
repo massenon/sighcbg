@@ -296,6 +296,21 @@ const scenarios = {
     verifier('un rang d’une plage 2026 ne code pas un dossier « /27 » : refus nommé', await attendre(async () => (await f1.etat()).a_traiter.some((r) => r.id === forge.id && r.code === 'numero_hors_plage'), 10000), (await f1.etat()).a_traiter);
     await m.fermer();
   },
+  async R1d() {
+    courant = 'SYNC-R1d · plages par série ET par année (17/11/2026) : chaque fileul sa plage annuelle, la série repart à 1, aucun chevauchement';
+    const m = await monde({ relais: true });
+    const f1 = await m.fileul('F1', { plage: 0 }); const f2 = await m.fileul('F2', { plage: 0 });
+    const a = (await f1.post('/plage', { nom: 'besoins', taille: 10, annee: 2026 })).json;
+    const b = (await f2.post('/plage', { nom: 'besoins', taille: 10, annee: 2026 })).json;
+    const c = (await f1.post('/plage', { nom: 'besoins', taille: 10, annee: 2027 })).json;
+    verifier('chaque fileul reçoit SA plage annuelle, à la suite, sans recouvrement', a.annee === 2026 && b.annee === 2026 && b.debut === a.fin + 1, [a, b]);
+    verifier('la série annuelle repart à 1 l’année suivante, la plage porte son année', c.annee === 2027 && c.debut === 1, c);
+    const reprise = (await f2.post('/plage', { nom: 'besoins', taille: 5, annee: 2026, minimum: 100 })).json;
+    verifier('la reprise se fait au plus grand rang + 1, jamais sous le minimum que le poste connaît', reprise.debut === 100, reprise);
+    const suite = (await f1.post('/plage', { nom: 'besoins', taille: 5, annee: 2026 })).json;
+    verifier('la plage suivante reprend au plus grand rang attribué + 1', suite.debut === reprise.fin + 1, suite);
+    await m.fermer();
+  },
   async R1b() {
     courant = 'SYNC-R1b · plage épuisée : numéro provisoire, réconcilié sans doublon';
     const m = await monde(); const f1 = await m.fileul('F1', { plage: 1 });

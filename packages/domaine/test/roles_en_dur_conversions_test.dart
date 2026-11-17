@@ -42,6 +42,7 @@ const _avant = <String, List<String>>{
   gesteValiderRefRepartition: ['comptable', 'direction', 'da', 'admin'],
   gesteValiderRefBaremeAib: ['direction', 'da', 'admin', 'comptable'],
   gesteRhRegler: ['admin', 'da'], // planning_rh, pointage_badge, espace_mes : role == 'admin' || role == 'da'
+  gesteRhPlanningIndividuel: ['surveillant', 'da', 'admin'], // « Planning individuel » : DA et admin l'écrivaient par rh_regler, le surveillant s'y ajoute
   gesteRhEncadrer: ['surveillant', 'da', 'admin'],
   gesteRhEtapeSurveillant: ['surveillant', 'admin'], // rolesEtapeRh['surveillant']
   gesteRhEtapeDaf: ['da', 'admin'], // rolesEtapeRh['daf']

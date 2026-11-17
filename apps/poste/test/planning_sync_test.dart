@@ -291,4 +291,22 @@ void main() {
     expect(again['ok'], isTrue);
     expect(m.collection(valCollectionDepots).toutes.where((x) => x['etat'] == valDepotDeposee), hasLength(1));
   });
+  test('le Surveillant écrit le planning individuel d\u2019un agent depuis un poste rattaché : la version du régime s\u2019écrit, mais la vacation reste dans le circuit « à valider » (déposée, jamais validée par le fileul) ; l\u2019agent sans le geste est refusé', () {
+    final m = poste();
+    final sm = ServiceValidationsDeposees.de(m)..etiquette = 'F1';
+    PlanningRhPoste en(String role, String nom) => PlanningRhPoste(m, auteur: () => nom, role: role, horloge: () => auj, deposer: sm.deposeurPlanning(role: role, acteur: nom));
+    final refus = en('infirmier', 'Agent Alpha').poserRegime(employeId: 'EA', dateEffet: '2031-03-20', mode: 'derogation', champs: {'repos': 'repos24'}, motif: 'Sonde');
+    expect(refus['code'], 'DEROGATION_RESERVEE', reason: 'sans le geste dédié, un agent n\u2019écrit pas le planning individuel');
+    expect(m.collection('regimesIndividuels').toutes, isEmpty);
+    final s = en('surveillant', 'Surveillant Sigma');
+    final r = s.poserRegime(employeId: 'EA', dateEffet: '2031-03-20', mode: 'derogation', champs: {'repos': 'repos24'}, motif: 'Sonde');
+    expect(r['ok'], isTrue, reason: '$r');
+    expect(m.collection('regimesIndividuels').toutes.single['creePar'], 'Surveillant Sigma');
+    final v = s.poserVacation(employeId: 'EA', date: '2031-03-21', type: 'garde');
+    expect(v['ok'], isTrue, reason: '$v');
+    final att = m.collection('planning').toutes.single;
+    expect(planningVacationValidee(att), isFalse, reason: 'posée depuis un poste rattaché : la vacation attend la mère');
+    expect(att['validationEtat'], 'a_valider');
+    expect(m.collection(valCollectionDepots).toutes.where((x) => x['etat'] == valDepotDeposee), hasLength(1));
+  });
 }
