@@ -82,7 +82,21 @@ const FAMILLES = {
   /* LA FACTURE À UNE ENTREPRISE (17/11/2026, point 2) : la pièce émise et son avoir, fiches d'identité commune lues par tous les postes (A) ; l'ÉMISSION reste à la mère (refus nommé à un poste,
      `refusEcritureFactureTiers`), un fileul dépose une demande (`validationsDeposees`, genre `facture_tiers`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
   facturesTiers: 'A', avoirsTiers: 'A',
+  /* LES FICHES D'AIDE DE L'ASSISTANT (17/11/2026) : fiches descriptives écrites depuis n'importe quel poste (A) ; la VALIDATION ne s'écrit que sur la mère et une fiche validée ne se réécrit pas
+     (`refusEcritureFicheAide`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
+  fichesAide: 'A',
 };
+/* Miroir de `packages/domaine/lib/src/assistant/fiches_aide.dart` (`refusEcritureFicheAide`) : la mère REFAIT le contrôle d'une fiche d'aide écrite par un poste. */
+const FICHE_AIDE_CHAMPS_VALIDATION = ['validateurId', 'validePar', 'valideLe', 'professionnel', 'professionnelLe'];
+const FICHE_AIDE_CHAMPS_CONTENU = ['type', 'titre', 'motsCles', 'roles', 'ecrans', 'etapes', 'definition', 'domainePro', 'questionAttendue', 'remplace'];
+function refusFicheAideEcriture(type, champs, actuelle) {
+  const change = (k) => Object.prototype.hasOwnProperty.call(champs, k) && champs[k] != null && String(champs[k]) !== String(actuelle ? actuelle[k] : undefined);
+  const validation = FICHE_AIDE_CHAMPS_VALIDATION.some(change) || (champs.statut === 'validee' && !(actuelle && actuelle.statut === 'validee'));
+  if (validation) return ['validation_reservee_mere', 'La validation d’une fiche d’aide ne s’écrit que sur le poste mère : elle seule vérifie le geste réservé et que l’auteur n’est pas le validateur.', 'Valider la fiche sur le poste mère ; elle revient ici par la synchronisation.'];
+  if (type === 'creer' && champs.statut != null && champs.statut !== 'proposee') return ['validation_reservee_mere', 'Une fiche naît « proposée » : seule la mère la valide.', 'Écrire la fiche, puis la faire valider sur le poste mère.'];
+  if (actuelle && actuelle.statut === 'validee' && FICHE_AIDE_CHAMPS_CONTENU.some(change)) return ['fiche_validee', 'Une fiche validée ne se réécrit pas : ce que la Direction a relu est ce que l’assistant cite.', 'La réviser : une fiche nouvelle la remplacera quand elle sera validée à son tour.'];
+  return null;
+}
 /* Miroir de `packages/domaine/lib/src/mecef/facture_tiers_synchro.dart` (`refusEcritureFactureTiers`) : un poste n'écrit ni la facture à une entreprise ni son avoir, la mère seule émet. */
 const FACTURES_TIERS_COLLECTIONS = ['facturesTiers', 'avoirsTiers'];
 function refusFactureTiersEcriture(collection, mere) {
@@ -246,7 +260,7 @@ function refusActionPta(type, champs, actuelle, plan) {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['facturesTiers', 'avoirsTiers', 'besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements', 'planning', 'propositionsPlanning', 'conges', 'missions', 'presences']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['fichesAide', 'documentsFiscaux', 'facturesTiers', 'avoirsTiers', 'besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements', 'planning', 'propositionsPlanning', 'conges', 'missions', 'presences']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -405,6 +419,11 @@ function traiter(op, app) {
       const r = refusActionPta(op.type, op.champs || {}, f && f.data, planDe(source.exercice, source.planVersion));
       if (r) return refus(r[0], r[1], r[2]);
     }
+  }
+  /* LES FICHES D'AIDE : la mère refait le contrôle (validation écrite par la seule mère, fiche validée non réécrite). */
+  if (op.collection === 'fichesAide' && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
+    const r = refusFicheAideEcriture(op.type, op.champs || {}, f && f.data ? f.data : undefined);
+    if (r) return refus(r[0], r[1], r[2]);
   }
   /* LA FACTURE À UNE ENTREPRISE : la mère seule l'écrit (refus nommé à un poste, qui dépose une demande). */
   const reserveFT = refusFactureTiersEcriture(op.collection, app.role === 'mere');

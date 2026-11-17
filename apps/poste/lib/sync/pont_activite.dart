@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon, facturesTiersCollectionsSync;
+import 'package:sigh_domaine/sigh_domaine.dart' show colFichesAide, champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon, facturesTiersCollectionsSync;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -103,6 +103,10 @@ const Set<String> collectionsActivite = {
   // LA FACTURE À UNE ENTREPRISE (Direction de Baguidi, 17/11/2026, point 2) : la pièce émise par la mère et son avoir sont LUS partout (famille A de la mère) ; seule la MÈRE les écrit : un fileul n'en
   // envoie rien (`collectionsDeLaMereSeule`) et dépose une demande (`validationsDeposees`, genre `facture_tiers`). Jamais vers un téléphone (IFU et nom d'entreprise, souscripteur : RG-13).
   ...facturesTiersCollectionsSync,
+  // LES FICHES D'AIDE DE L'ASSISTANT (Direction de Baguidi, 17/11/2026) : une fiche écrite sur un poste (proposée) rejoint la mère et les autres postes (famille A de la mère, champ à champ).
+  // La VALIDATION ne s'écrit que sur la mère (le poste rattaché n'offre pas la commande ; la mère refuse sinon : `refusEcritureFicheAide`) et une fiche validée ne se réécrit pas. Jamais vers un
+  // téléphone (`collectionsDocumentsJamaisMobile`).
+  colFichesAide,
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
@@ -347,7 +351,7 @@ class PontActivite {
         // d'origine. Préfixée de l'étiquette du poste, la fiche du fileul et celle que la mère réécrit seraient DEUX fiches (mesuré : lots, mouvements et articles comptés deux fois).
         // Même règle pour un référentiel d'activité que la mère seule écrit (le catalogue des produits) : la configuration le publie sous son identifiant, le pont sous son identité de synchronisation ;
         // préfixée, elle faisait de chaque article créé après le jeu d'origine DEUX fiches chez un fileul (mesuré avec un import de la mère).
-        final identiteCommune = (planningCollectionsSync.contains(c) && '${f['id']}'.startsWith('$etiquette-')) || magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
+        final identiteCommune = ((planningCollectionsSync.contains(c) || c == colFichesAide) && '${f['id']}'.startsWith('$etiquette-')) || magasin.idsOrigine(c).contains('${f['id']}') || '${f[champSerieDemande] ?? ''}'.isNotEmpty || collectionsDeLaMereSeule.contains(c) || collectionsAjoutSeul.contains(c);
         f['idSync'] = identiteCommune ? '${f['id']}' : '$etiquette-${f['id']}';
       }
     }
