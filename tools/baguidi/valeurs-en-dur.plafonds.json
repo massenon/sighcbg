@@ -22,10 +22,6 @@
         "plafond": 1,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_codesModesPatient` : les modes que le PATIENT règle au guichet (espèces, TPE, MTN, Moov) — la prise en charge de l'assurance n'est pas un règlement du patient ; sous-ensemble de codes de `enumModesPaiement` (UNE définition), libellés au réglage `libelles.m8.modesPaiement`. Remplace « les quatre premiers » d'une liste dont l'ordre se règle."
       },
-      "packages/domaine/lib/src/assistant/ast_executeurs.dart": {
-        "plafond": 1,
-        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `connus` (I17, documents du dossier) : les cinq natures de document que la fonction construit elle-même plus haut (`nature(…)`), pour exclure de « certificats et attestations » ce qui n'en est pas — préfixes de lignes produites dans la MÊME fonction, pas un vocabulaire."
-      },
       "packages/domaine/lib/src/caisse/remboursement.dart": {
         "plafond": 1,
         "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `naturesOperation` (Facture avoir | Remboursement | Annulation) : la règle compare la valeur ENREGISTRÉE (`nature == 'Facture avoir'`, `'Annulation'`) et les fiches `remboursements` la portent en toutes lettres ; passer à des codes est une migration des fiches et des essais, à mener avec l'écran des remboursements."

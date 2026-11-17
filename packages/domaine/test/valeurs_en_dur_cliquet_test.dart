@@ -12,8 +12,8 @@ import 'package:test/test.dart';
 const _script = '../../tools/baguidi/inventaire-en-dur.mjs';
 const _plafonds = '../../tools/baguidi/valeurs-en-dur.plafonds.json';
 
-Future<ProcessResult> _cliquet([String? plafonds]) =>
-    Process.run('node', [_script, '--cliquet', '--famille=B,H', if (plafonds != null) ...['--plafonds', plafonds]]);
+Future<ProcessResult> _cliquet([String? plafonds, String famille = 'B,H']) =>
+    Process.run('node', [_script, '--cliquet', '--famille=$famille', if (plafonds != null) ...['--plafonds', plafonds]]);
 
 void main() {
   late Map<String, Object?> base;
@@ -58,27 +58,27 @@ void main() {
 
   test('une valeur en dur qui APPARAÎT fait échouer le cliquet, en nommant le fichier', () async {
     final b = copie();
-    final fb = (familles(b)['H'] as Map);
+    final fb = (familles(b)['D'] as Map);
     final fichier = fb.keys.first as String;
     fb.remove(fichier); // plafond implicite : zéro
-    final r = await _cliquet(ecrire('apparue', b));
+    final r = await _cliquet(ecrire('apparue', b), 'D');
     expect(r.exitCode, 1);
     expect('${r.stderr}', allOf(contains(fichier), contains('APPARUE')));
   }, timeout: const Timeout(Duration(minutes: 2)));
 
   test('un fichier sous son plafond oblige à ABAISSER la ligne de base ; un fichier toléré sans motif est refusé', () async {
     final b = copie();
-    final fh = (familles(b)['H'] as Map);
+    final fh = (familles(b)['D'] as Map);
     final fichier = fh.keys.first as String;
     final t = (fh[fichier] as Map);
     t['plafond'] = (t['plafond'] as int) + 1;
-    final r = await _cliquet(ecrire('abaisser', b));
+    final r = await _cliquet(ecrire('abaisser', b), 'D');
     expect(r.exitCode, 1);
     expect('${r.stderr}', allOf(contains(fichier), contains('ABAISSER')));
 
     final c = copie();
-    ((familles(c)['H'] as Map)[fichier] as Map)['motif'] = ' ';
-    final r2 = await _cliquet(ecrire('sansmotif', c));
+    ((familles(c)['D'] as Map)[fichier] as Map)['motif'] = ' ';
+    final r2 = await _cliquet(ecrire('sansmotif', c), 'D');
     expect(r2.exitCode, 1);
     expect('${r2.stderr}', allOf(contains(fichier), contains('SANS MOTIF')));
   }, timeout: const Timeout(Duration(minutes: 2)));
