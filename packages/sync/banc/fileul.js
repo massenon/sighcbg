@@ -240,7 +240,7 @@ const commandes = {
     const r = await fetch(MERE + '/appairage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: b.code, uuid: meta('uuid'), plateforme: 'banc' }) });
     const j = await r.json(); if (!r.ok) return [r.status, j];
     setMeta('jeton', j.jeton); setMeta('renouvellement', j.renouvellement); setMeta('epoch', j.epoch); setMeta('suspendu', 0); etat.suspendu = false;
-    return [200, { uuid: meta('uuid') }];
+    return [200, Object.assign({ uuid: meta('uuid') }, j.reprise && typeof j.reprise === 'object' ? { reprise: j.reprise } : {})];
   },
   /* EXPORT PORTABLE (décision 12, 17/11/2026) — miroir de `etatPortable` / `reprendreEtat` (fileul.dart) : ce que ce poste est seul à détenir (file des opérations non confirmées,
      plages, baux, étiquette) ; aucun secret (ni jeton, ni renouvellement). */

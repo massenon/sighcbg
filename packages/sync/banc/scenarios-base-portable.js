@@ -8,7 +8,8 @@
         (aucun doublon, mêmes codes), la file se vide ;
      4. sans la reprise (un code ordinaire), les mêmes saisies sont refusées EN NOMMANT (`numero_hors_plage`) : elles ne se perdent pas en silence, elles se listent à traiter — c'est la preuve que
         la reprise d'identité est nécessaire et non décorative ;
-     5. un code de reprise vers un poste inconnu est refusé en nommant (`appareil_inconnu`).
+     5. un code de reprise vers un poste inconnu est refusé en nommant (`appareil_inconnu`) ; un poste déjà repris ne se reprend pas une seconde fois (`deja_repris`) ; le code est rendu avec sa durée de validité ;
+     6. la mère rapporte ce qu'elle a repris (poste remplacé, plages, baux).
    Le chiffrement du fichier d'export et sa vérification sont prouvés par les tests Dart (`export_portable_test.dart`) : le banc, lui, mène la RESYNCHRONISATION. */
 module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
   async BASEPORT1() {
@@ -41,15 +42,27 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
     const inconnu = await m.mere.admin('POST', '/admin/code', { etiquette: 'X', role: 'fileul', reprise: 'poste-qui-n-existe-pas' });
     verifier('un code de reprise vers un poste inconnu est refusé en le nommant (appareil_inconnu)', inconnu.status === 404 && inconnu.json.code === 'appareil_inconnu', inconnu.json);
     const { json: c } = await m.mere.admin('POST', '/admin/code', { etiquette: 'Poste neuf', role: 'fileul', reprise: f1.uuid });
+    verifier('le code est rendu avec SA durée de validité (lue de la mère, jamais écrite dans la console) et son instant d\'expiration', typeof c.code === 'string' && c.code.length >= 8 && Number.isInteger(c.validite_s) && c.validite_s > 0 && c.expire > Date.now() && c.expire <= Date.now() + c.validite_s * 1000 + 1000, c);
+    const { json: cDouble } = await m.mere.admin('POST', '/admin/code', { etiquette: 'Poste neuf (second code)', role: 'fileul', reprise: f1.uuid });
     m.reseau.regler('ouvert');
     const ap = await f2.post('/appairer', { code: c.code });
     verifier('l\'appairage par code de reprise réussit', ap.status === 200, ap.json);
     verifier('la file se vide : la mère a accepté les trois saisies reprises', await attendre(async () => { const s = await f2.etat(); return s.en_attente === 0 && s.acceptees >= 3; }, 20000), await f2.etat());
+    // La mère DIT ce qu'elle a repris : la console du poste neuf l'affiche (le poste remplacé, le nombre de plages et de baux passés).
+    verifier('l\'appairage rapporte la reprise : poste remplacé et plages passées', ap.json.reprise && ap.json.reprise.de === f1.uuid && ap.json.reprise.plages >= 1, ap.json);
     const etat = (await m.mere.admin('GET', '/admin/etat')).json;
     const ancien = etat.appareils.find((a) => a.uuid === f1.uuid);
     verifier('la mère a RÉVOQUÉ le poste remplacé (il reste au registre, RG-14)', ancien && ancien.etat === 'revoque', ancien);
     const chezMere = async (id) => { const r = (await m.mere.admin('GET', '/admin/fiche?collection=patients&id=' + encodeURIComponent(id))).json; return r && !r.absente ? r.data : undefined; };
     const compte = async () => (await m.mere.admin('GET', '/admin/compte?collection=patients')).json.n;
+    // Un poste ne se reprend qu'UNE fois : un second code émis AVANT la première reprise est refusé à l'appairage en nommant, sans se consumer ; et aucun nouveau code ne s'émet pour lui.
+    const f4 = await m.fileul('Poste neuf (second code)', { sansAppairage: true });
+    const secondePrise = await f4.post('/appairer', { code: cDouble.code });
+    verifier('le second code de reprise du MÊME poste est refusé en nommant (deja_repris), plages et baux intacts', secondePrise.status === 409 && secondePrise.json.code === 'deja_repris', secondePrise.json);
+    const redemande = await m.mere.admin('POST', '/admin/code', { etiquette: 'X', role: 'fileul', reprise: f1.uuid });
+    verifier('un nouveau code de reprise pour un poste déjà repris est refusé en nommant (deja_repris)', redemande.status === 409 && redemande.json.code === 'deja_repris', redemande.json);
+    const sansSecret = await m.mere.direct('POST', '/admin/code', { etiquette: 'X', role: 'fileul', reprise: f1.uuid });
+    verifier('sans l\'en-tête administrateur la mère refuse d\'émettre un code (aucune fuite)', sansSecret.status === 403 && sansSecret.json.code === 'admin_requis' && !sansSecret.json.code_reprise, sansSecret.json);
     const presentes = await Promise.all(codes.map(chezMere));
     verifier('chacune des trois saisies est chez la mère, sous son identifiant d\'origine (aucune perte)', presentes.every((d, i) => d && d.nom === 'HORSLIGNE' + (i + 1)), presentes.map((d) => d && d.nom));
     verifier('la mère ne compte que 4 dossiers : le confirmé et les 3 repris, aucun doublon', (await compte()) === 4, await compte());

@@ -439,7 +439,8 @@ class Fileul {
         base.poserMeta('epoch', j['epoch']);
         base.poserMeta('suspendu', 0);
         etat.suspendu = false;
-        return (200, {'uuid': uuid});
+        // Une REPRISE d'identité est dite telle que la mère la rapporte (le poste remplacé, le nombre de plages et de baux repris) : le poste neuf n'a pas à la deviner.
+        return (200, {'uuid': uuid, if (j['reprise'] is Map) 'reprise': j['reprise']});
       case 'GET /etat-portable':
         return (200, etatPortable());
       case 'POST /reprendre-etat':

@@ -555,6 +555,8 @@ function auth(req) {
   return a;
 }
 const adminOk = (req) => { if (req.headers['x-admin'] !== ADMIN) throw new Err(403, 'admin_requis', 'Accès administrateur requis.'); };
+/* Un poste ne se reprend qu'UNE fois : une fois ses plages et ses baux passés à un nouveau poste, plus rien ne lui appartient. Refus nommé (409) avant tout effet. */
+const refuserSiDejaRepris = (uuid) => { if (db.prepare('SELECT 1 FROM codes WHERE reprise=? AND utilise=1').get(uuid)) throw new Err(409, 'deja_repris', 'Ce poste a déjà été repris par un autre poste : ses plages de numéros et ses baux ne sont plus les siens.'); };
 function emettreJetons(uuid) {
   const secret = crypto.randomBytes(24).toString('hex');
   const renouv = crypto.randomBytes(24).toString('hex');
@@ -678,25 +680,31 @@ const routes = {
     if (reprise) {
       const anc = db.prepare('SELECT role FROM appareils WHERE uuid=?').get(reprise);
       if (!anc || anc.role !== 'fileul') throw new Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
+      refuserSiDejaRepris(reprise);
     }
     db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)').run(code, b.etiquette || '', role, Date.now() + CODE_TTL, aff.profil, aff.fonction, reprise);
-    return { code };
+    /* La DURÉE DE VALIDITÉ est celle de la mère (`--code-ttl`), jamais une valeur écrite dans la console : elle est rendue avec le code. */
+    return { code, expire: Date.now() + CODE_TTL, validite_s: Math.floor(CODE_TTL / 1000) };
   },
   'POST /appairage': (req, b) => {
     const c = db.prepare('SELECT * FROM codes WHERE code=?').get(String(b.code || ''));
     if (!c) throw new Err(403, 'code_invalide', 'Code d’appairage inconnu.');
     if (c.utilise) throw new Err(403, 'code_utilise', 'Ce code a déjà servi (usage unique).');
     if (Date.now() > c.expire) throw new Err(403, 'code_expire', 'Ce code a expiré.');
+    /* Un poste ne se reprend qu'UNE fois : refus nommé AVANT de consumer le code. */
+    if (c.reprise) refuserSiDejaRepris(c.reprise);
     db.prepare('UPDATE codes SET utilise=1 WHERE code=?').run(c.code);
     db.prepare('INSERT INTO appareils(uuid,etiquette,role,etat) VALUES(?,?,?,?)').run(b.uuid, c.etiquette, c.role, 'actif');
     /* REPRISE D'IDENTITÉ : les plages et les baux du poste remplacé passent au nouveau (c'est ce qui rend ses saisies en file REJOUABLES : un code de dossier ne s'accepte que dans la
        plage de son poste) ; l'ancien est RÉVOQUÉ (RG-14 : il reste au registre). Les opérations déjà confirmées ne bougent pas. */
+    let reprisePassee;
     if (c.reprise) {
+      reprisePassee = { de: c.reprise, plages: db.prepare('SELECT COUNT(*) AS n FROM plages WHERE appareil=?').get(c.reprise).n, baux: db.prepare('SELECT COUNT(*) AS n FROM baux WHERE appareil=?').get(c.reprise).n };
       db.prepare('UPDATE plages SET appareil=? WHERE appareil=?').run(b.uuid, c.reprise);
       db.prepare('UPDATE baux SET appareil=? WHERE appareil=?').run(b.uuid, c.reprise);
       db.prepare("UPDATE appareils SET etat='revoque' WHERE uuid=?").run(c.reprise);
     }
-    return Object.assign({ epoch: +meta('epoch') }, emettreJetons(b.uuid));
+    return Object.assign({ epoch: +meta('epoch') }, emettreJetons(b.uuid), reprisePassee ? { reprise: reprisePassee } : {});
   },
   'POST /renouveler': (req, b) => {
     const m = /^([^.]+)\.(.+)$/.exec(String(b.renouvellement || ''));
