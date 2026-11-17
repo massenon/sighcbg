@@ -29,7 +29,6 @@ const Map<String, Tolerance> _tolerances = {
   'lib/src/consultation/cs_moteur.dart': (sites: 5, motif: 'chantier parallèle (caisse/tarifs) : `_tachesDef` (champ descriptif `role` des tâches d’aval, porté par les vecteurs, jamais lu pour décider). La décision « rubriques chirurgicales » n’y est plus : elle lit le geste réservé `rubriques_chirurgicales` par `SessionCs.rubriquesChirurgicales` (lot 3 de l’inventaire, 17/11/2026)'),
   // --- Tables et données qui ne décident d'aucun droit de la session.
   'lib/src/sync/pair.dart': (sites: 80, motif: '`droitsBancPair` : la table du BANC d’essai (la production passe par `droitsDepuisMatrice` et les gestes `conflits_trancher` / `sync_valider_flux`) ; et `op.collection == \'stock\'`, un nom de collection'),
-  'lib/src/achats/besoins.dart': (sites: 3, motif: 'identifiants de POSTE de notification (`\'poste\': \'comptable\' / \'stock\'`), routés au centre par les gestes `alertes_comptable` / `alertes_stock`'),
   'lib/src/rh/planning_rh.dart': (sites: 2, motif: 'identifiants d’ÉTAPE du circuit RH stockés sur les pièces (`surveillant`, `daf`) ; qui tranche chaque étape est le geste `gesteEtapeRh`'),
   'lib/src/parametres/definitions.dart': (sites: 1, motif: 'valeur de CHOIX du réglage `planning.circuitPresences` (identifiant d’étape `surveillant`)'),
   'lib/src/parametres/parametres.dart': (sites: 1, motif: 'nom de FAMILLE de paramètres (`rh`) fermée au téléphone'),

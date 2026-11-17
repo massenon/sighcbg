@@ -66,35 +66,18 @@ String libellePriorite(String p) => switch (p) { 'critique' => 'Critique', 'impo
 const seuilRegroupement = 3;
 
 /// Les POSTES de notification (`POSTES_NOTIF`) sont tenus par des GESTES RÉSERVÉS de la fiche de rôle (Direction de Baguidi, 16/11/2026 : la caisse et le stock ; compléments du
-/// 16/11/2026 : tous les autres postes) — l'origine de chaque geste reprend la liste d'avant, une fiche de rôle accorde ou retire, et AUCUNE liste de rôles n'est écrite ici. Un
-/// poste écrit `geste:<id>` est routé vers les rôles qui détiennent ce geste : c'est ainsi que l'alerte « prix d'achat à fixer » va à qui fixe le prix d'achat
+/// 16/11/2026 : tous les autres postes) — l'origine de chaque geste reprend la liste d'avant, une fiche de rôle accorde ou retire, et AUCUNE liste de rôles n'est écrite ici. La table
+/// « poste → geste » n'est plus écrite ici non plus : c'est le RÉGLAGE de clinique `notifications.routagePostes` (lot « destinataires des notifications », 17/11/2026), lu par [routagePostes].
+/// Un poste écrit `geste:<id>` est routé vers les rôles qui détiennent ce geste : c'est ainsi que l'alerte « prix d'achat à fixer » va à qui fixe le prix d'achat
 /// (`tarif_proposer_achat`), lu dans la matrice.
-const _gestesPostes = <String, String>{
-  'caisse': gesteAlertesCaisse,
-  'stock': gesteAlertesStock,
-  'comptable': gesteAlertesComptable,
-  'direction': gesteAlertesDirection,
-  'imagerie': gesteAlertesImagerie,
-  'laboratoire': gesteAlertesLaboratoire,
-  'prescripteur': gesteAlertesPrescripteur,
-  'salle_soins': gesteAlertesSalleSoins,
-  'hospitalisation': gesteAlertesHospitalisation,
-};
 
 /// Les rôles d'un poste qui n'est tenu par aucun geste. `null` = tout le monde (« tous » ou poste non précisé) ; un poste inconnu est lu comme un rôle (le poste EST alors
 /// l'identifiant du rôle destinataire, écrit par le moteur qui notifie — jamais une liste de ce fichier).
-List<String>? _rolesDuPoste(Object? poste) {
+List<String>? _rolesDuPoste(Object? poste, Map<String, String> routage) {
   if (!_v(poste) || poste == 'tous') return null;
   final p = '$poste';
-  if (_gesteDuPoste(p) != null || ecranDuPosteEditeurs(p) != null) return null;
+  if (gesteDuPosteRoute(p, routage) != null || ecranDuPosteEditeurs(p) != null) return null;
   return [p];
-}
-
-/// Le geste réservé qui tient ce poste (`null` : le poste se route par [_postesNotif]).
-String? _gesteDuPoste(Object? poste) {
-  final p = '${poste ?? ''}';
-  if (p.startsWith(prefixePosteGeste)) return p.substring(prefixePosteGeste.length);
-  return _gestesPostes[p];
 }
 
 /// L'écran où se traite chaque type de notification de poste (`LIENS_NOTIF`).
@@ -318,20 +301,24 @@ final List<_Source> _sources = [
               _v(c['ecran']) ? '${c['ecran']}' : 'pair-trancher', null,
               geste: gesteConflitsTrancher),
       ]),
-  _Source('poste', 'metier', 'Poste', (m, auj) => [
-        // Notifications de POSTE, écrites par le moteur transactionnel : elles s'adressent à un poste, pas à une personne.
-        for (final n in m.collection('notifications').actives)
-          if (!_v(n['lue']))
-            _Ligne(
-                'notif:${n['id']}',
-                _prioriteDePoste(n),
-                _ou(n['titre'], _ou(n['libelle'], _ou(n['message'], 'Notification'))),
-                _ou(n['detail'], _v(n['message']) ? n['message'] : ''),
-                _v(n['ecran']) ? '${n['ecran']}' : _liensNotif['${n['type']}'],
-                _rolesDuPoste(n['poste']),
-                geste: _gesteDuPoste(n['poste']),
-                ecranEdite: ecranDuPosteEditeurs(n['poste'])),
-      ]),
+  _Source('poste', 'metier', 'Poste', (m, auj) {
+    // Le routage « poste → geste » est un RÉGLAGE de clinique, relu à chaque collecte : une décision de la Direction vaut au repeint suivant.
+    final routage = routagePostes(m, auj);
+    return [
+      // Notifications de POSTE, écrites par le moteur transactionnel : elles s'adressent à un poste, pas à une personne.
+      for (final n in m.collection('notifications').actives)
+        if (!_v(n['lue']))
+          _Ligne(
+              'notif:${n['id']}',
+              _prioriteDePoste(n),
+              _ou(n['titre'], _ou(n['libelle'], _ou(n['message'], 'Notification'))),
+              _ou(n['detail'], _v(n['message']) ? n['message'] : ''),
+              _v(n['ecran']) ? '${n['ecran']}' : _liensNotif['${n['type']}'],
+              _rolesDuPoste(n['poste'], routage),
+              geste: gesteDuPosteRoute(n['poste'], routage),
+              ecranEdite: ecranDuPosteEditeurs(n['poste'])),
+    ];
+  }),
 ];
 
 String _dateFr(Object? v) {

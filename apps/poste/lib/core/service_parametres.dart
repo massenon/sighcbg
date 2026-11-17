@@ -53,3 +53,12 @@ int preavisPeremption(Magasin m, DateTime date) =>
 /// cette vue, jamais le `statut` écrit à la saisie du lot (il date de ce jour-là et de l'ancien délai).
 List<Map<String, Object?>> lotsAvecStatutAJour(Magasin m, DateTime auj) =>
     lotsAvecStatutRecalcule(m.collection('lots').actives, auj, preavisPeremption(m, auj));
+
+/// Le routage des notifications de poste EN VIGUEUR à [date] (réglage `notifications.routagePostes`) : poste → geste réservé. Poste jamais semé : la valeur d'attente, identique
+/// à la table que portait le centre de notifications.
+Map<String, String> routagePostes(Magasin m, DateTime date) =>
+    routagePostesDe(serviceParametres(m, auteur: () => 'lecture').valeur(cleRoutagePostes, parametreDateIso(date)));
+
+/// Les postes informés quand un besoin est accordé EN VIGUEUR à [date] (réglage `notifications.destinatairesBesoinAccorde`).
+List<DestinataireNotif> destinatairesBesoinAccorde(Magasin m, DateTime date) =>
+    destinatairesBesoinAccordeDe(serviceParametres(m, auteur: () => 'lecture').valeur(cleDestinatairesBesoinAccorde, parametreDateIso(date)));

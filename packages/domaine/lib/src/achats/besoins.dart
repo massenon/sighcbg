@@ -18,6 +18,7 @@ library;
 import '../format/format_fr.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteAchatsRegistre, gesteValiderAchats;
 import 'nombres.dart';
+import '../notifications/routage_notifications.dart' show DestinataireNotif, destinatairesBesoinAccordeDe, destinatairesBesoinAccordeSemence;
 import '../numerotation/numerotation.dart';
 
 /// Un refus NOMMÉ : le motif est le texte affiché à l'agent, rien n'a été écrit.
@@ -295,7 +296,8 @@ ArbitrageEnregistre arbitrerBon(
     required Arbitrage quoi,
     String motif = '',
     required String utilisateur,
-    required String maintenant}) {
+    required String maintenant,
+    List<DestinataireNotif>? destinataires}) {
   final m = motif.trim();
   if (quoi != Arbitrage.valider && m.isEmpty) {
     throw const RefusAchat('Le motif est obligatoire.');
@@ -322,22 +324,27 @@ ArbitrageEnregistre arbitrerBon(
   }
   final detail =
       '${bon['service']} — ${nombre(_lignes(bon).length)} article(s), ${money(bon['montantEstime'], avecDevise: false)}${m.isEmpty ? '' : ' · $m'}';
+  final defaut = destinatairesBesoinAccordeDe(destinatairesBesoinAccordeSemence);
+  final postes = destinataires ?? defaut;
+  final identiquesAuDefaut = postes.length == defaut.length && [for (var i = 0; i < postes.length; i++) postes[i] == defaut[i]].every((x) => x);
   return ArbitrageEnregistre(
       patch: patch,
       notifications: [
-        for (final poste in const ['comptable', 'stock'])
+        // Les postes informés viennent du RÉGLAGE de clinique `notifications.destinatairesBesoinAccorde` (le poste appelant le lit) ; sans réglage, la valeur d'attente.
+        for (final d in postes)
           {
             'type': 'besoin_accorde',
-            'poste': poste,
+            'poste': d.poste,
             'libelle': 'Besoin accordé — $ref',
-            'detail':
-                '$detail${poste == 'comptable' ? ' · engagement budgétaire et décaissement à préparer' : ' · achat à lancer ou distribution à planifier'}',
+            'detail': d.mention.isEmpty ? detail : '$detail · ${d.mention}',
             'reference': ref,
             'priorite': 'important',
           }
       ],
-      message:
-          'Besoin $ref accordé — le comptable et le gestionnaire de stock sont informés.',
+      // Le message d'attente nomme le comptable et le stock ; une clinique qui a réglé d'autres postes lit la liste réellement informée, jamais un message qui mentirait.
+      message: identiquesAuDefaut
+          ? 'Besoin $ref accordé — le comptable et le gestionnaire de stock sont informés.'
+          : 'Besoin $ref accordé — ${postes.isEmpty ? 'aucun poste n’est informé' : 'poste(s) informé(s) : ${[for (final d in postes) d.poste].join(', ')}'}.',
       type: 'success');
 }
 

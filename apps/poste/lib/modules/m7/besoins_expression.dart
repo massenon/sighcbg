@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart';
 import '../../donnees/magasin.dart';
 import '../../donnees/reglages_clinique_poste.dart';
 import '../../impression/piece.dart';
@@ -570,7 +571,8 @@ class _EtatModaleArbitrage extends State<_ModaleArbitrage> {
           quoi: widget.quoi,
           motif: '${v['motif'] ?? ''}',
           utilisateur: acteur(c).nom,
-          maintenant: c.aujourdhui.toIso8601String());
+          maintenant: c.aujourdhui.toIso8601String(),
+          destinataires: destinatairesBesoinAccorde(c.magasin, c.aujourdhui));
     } on RefusAchat catch (e) {
       dire(widget.ecran, e.motif, type: TypeToast.erreur);
       return;
