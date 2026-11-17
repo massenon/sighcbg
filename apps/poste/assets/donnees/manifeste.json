@@ -778,6 +778,7 @@
    "ecrans": [
     "mere-supervision",
     "mere-appareils",
+    "mere-reprise-poste",
     "mere-conflits",
     "mere-a-traiter",
     "mere-journal-operations",
@@ -6306,6 +6307,22 @@
    "id": "mere-appareils",
    "label": "Appareils et appairage",
    "icone": "monitor-smartphone",
+   "module": "MERE",
+   "moduleLabel": "Exploitation de la synchronisation",
+   "domaine": "Poste mère",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da"
+   ]
+  },
+  {
+   "id": "mere-reprise-poste",
+   "label": "Reprise d’un poste",
+   "icone": "arrow-left-right",
    "module": "MERE",
    "moduleLabel": "Exploitation de la synchronisation",
    "domaine": "Poste mère",

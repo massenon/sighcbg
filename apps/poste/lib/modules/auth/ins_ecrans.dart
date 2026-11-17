@@ -358,7 +358,7 @@ class _EtatRecuperation extends State<EcranRecuperationAdmin> {
   }
 }
 
-/// REJOINDRE UNE CLINIQUE : l'adresse de la mère et un code d'appairage (8 caractères, 15 minutes, usage unique). Aucune configuration à refaire : la mère
+/// REJOINDRE UNE CLINIQUE : l'adresse de la mère et un code d'appairage (8 caractères, usage unique, durée fixée par la mère) — ou un code de REPRISE, qui remplace un ancien poste (E4750). Aucune configuration à refaire : la mère
 /// diffuse les siennes, ce poste les reprend. L'écran attend les comptes et dit où il en est.
 class EcranRejoindre extends StatefulWidget with EcranAutonome {
   const EcranRejoindre({super.key});
@@ -419,6 +419,10 @@ class _EtatRejoindre extends State<EcranRejoindre> {
             ? 'La configuration et les comptes de la clinique ont été repris de la mère. Vous pouvez vous connecter.'
             : 'Le poste est appairé. La mère diffuse sa configuration : cela prend quelques secondes.',
         corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          if (service.derniereReprise != null)
+            Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: NoteSigh(repPhraseRepriseFaite(service.derniereReprise!), key: const Key('rej:reprise-faite'), ton: TonSigh.succes, icone: LucideIcons.arrowLeftRight)),
           if (!pret && _attente > 20)
             const NoteSigh(
                 'La mère n’a encore rien diffusé. Vérifiez qu’elle est démarrée et que sa configuration est faite (étape « Configurer la clinique »). Vous pouvez attendre ici : la reprise est automatique.',
@@ -440,14 +444,20 @@ class _EtatRejoindre extends State<EcranRejoindre> {
       corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         ChampAcces(cle: const Key('rej:adresse'), libelle: 'Adresse de la mère', controleur: _adresse, indicatif: 'http://192.168.1.10:9000', autofocus: true),
         const SizedBox(height: 16),
-        ChampAcces(cle: const Key('rej:code'), libelle: 'Code d’appairage', controleur: _code, indicatif: 'XXXXXXXX', surValidation: _rejoindre),
+        ChampAcces(cle: const Key('rej:code'), libelle: 'Code d’appairage ou de reprise', controleur: _code, indicatif: 'XXXXXXXX', surValidation: _rejoindre),
         if (_erreur != null) Padding(padding: const EdgeInsets.only(top: 16), child: MessageErreurAcces(_erreur!)),
         const SizedBox(height: 16),
         BoutonSigh(key: const Key('rej:valider'), libelle: 'Rejoindre', taille: TailleBouton.lg, icone: LucideIcons.link, onPressed: _rejoindre),
         const SizedBox(height: 16),
         const NoteSigh(
-            'Le code vaut 15 minutes et ne sert qu’une fois. Il s’émet sur la mère, à « Appareils et appairage ». Aucune configuration n’est à refaire sur ce poste.',
+            'Le code ne sert qu’une fois et vaut le temps que la mère annonce en l’affichant. Il s’émet sur la mère, à « Appareils et appairage ». Aucune configuration n’est à refaire sur ce poste.',
             icone: LucideIcons.shieldCheck),
+        const SizedBox(height: 8),
+        const NoteSigh(
+            'Ce poste en remplace un autre (panne, changement de machine) ? Demandez à la mère un CODE DE REPRISE (écran « Reprise d’un poste ») et saisissez-le ici, comme un code d’appairage : '
+            'la mère passe à ce poste les plages de numéros de dossier et les baux de stock de l’ancien, puis révoque l’ancien poste. Si vous avez importé son export, sa file de saisies part à la mère sans doublon.',
+            key: Key('rej:aide-reprise'),
+            icone: LucideIcons.arrowLeftRight),
       ]),
       pied: LienAcces('← Retour', onTap: () => ContexteAutonome.of(context).aller('index')),
     );

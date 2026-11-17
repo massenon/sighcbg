@@ -822,6 +822,12 @@ class Mere {
     return {'resultats': resultats, 'seq_max': await seqMax()};
   }
 
+  /// Un poste ne se reprend qu'UNE fois : une fois ses plages et ses baux passés à un nouveau poste, il est révoqué ET plus rien ne lui appartient. Refus nommé (409) avant tout effet.
+  Future<void> refuserSiDejaRepris(String uuid) async {
+    final deja = await base.select('SELECT 1 AS x FROM codes WHERE reprise=? AND utilise=1', [uuid]);
+    if (deja.isNotEmpty) throw Err(409, 'deja_repris', 'Ce poste a déjà été repris par un autre poste : ses plages de numéros et ses baux ne sont plus les siens.');
+  }
+
   // --- routes ---------------------------------------------------------------------------------------
   Future<Object?> route(String cle, HttpRequest req, Map<String, Object?> b, Map<String, String> q) async {
     switch (cle) {
@@ -835,29 +841,38 @@ class Mere {
         if (reprise != null) {
           final anc = await base.select('SELECT role,etat FROM appareils WHERE uuid=?', [reprise]);
           if (anc.isEmpty || anc.first['role'] != 'fileul') throw Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
+          await refuserSiDejaRepris(reprise);
         }
         await base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)',
             [code, b['etiquette'] ?? '', roleCode, maintenantMs() + cfg.codeTtl, aff.profil, aff.fonction, reprise]);
-        return {'code': code};
+        // La DURÉE DE VALIDITÉ est celle de la mère (réglage `code-ttl`), jamais une valeur écrite dans la console : elle est rendue avec le code.
+        return {'code': code, 'expire': maintenantMs() + cfg.codeTtl, 'validite_s': cfg.codeTtl ~/ 1000};
       case 'POST /appairage':
         final r = await base.select('SELECT * FROM codes WHERE code=?', ['${b['code'] ?? ''}']);
         if (r.isEmpty) throw Err(403, 'code_invalide', 'Code d’appairage inconnu.');
         final c = r.first;
         if ((c['utilise'] as int) != 0) throw Err(403, 'code_utilise', 'Ce code a déjà servi (usage unique).');
         if (maintenantMs() > (c['expire'] as int)) throw Err(403, 'code_expire', 'Ce code a expiré.');
+        // Un poste ne se reprend qu'UNE fois : deux codes de reprise émis pour le même poste, le second à passer est refusé AVANT de se consumer.
+        final aReprendre = c['reprise'] as String?;
+        if (aReprendre != null && aReprendre.isNotEmpty) await refuserSiDejaRepris(aReprendre);
         await base.exec('UPDATE codes SET utilise=1 WHERE code=?', [c['code']]);
         await base.exec('INSERT INTO appareils(uuid,etiquette,role,etat) VALUES(?,?,?,?)', [b['uuid'], c['etiquette'], c['role'], 'actif']);
         await evenement('info', 'appairage', 'Appareil appairé : ${c['etiquette']} (${c['role']})');
         // REPRISE D'IDENTITÉ : les plages de numéros et les baux du poste remplacé passent au nouveau (c'est ce qui rend ses saisies en file REJOUABLES : un code de dossier ne
         // s'accepte que dans la plage de son poste) ; l'ancien est RÉVOQUÉ (RG-14 : il reste au registre). Les opérations déjà confirmées ne bougent pas.
         final repriseDe = c['reprise'] as String?;
+        Map<String, Object?>? reprisePassee;
         if (repriseDe != null && repriseDe.isNotEmpty) {
+          final nPlages = (await base.select('SELECT COUNT(*) AS n FROM plages WHERE appareil=?', [repriseDe])).first['n'];
+          final nBaux = (await base.select('SELECT COUNT(*) AS n FROM baux WHERE appareil=?', [repriseDe])).first['n'];
+          reprisePassee = {'de': repriseDe, 'plages': nPlages, 'baux': nBaux};
           await base.exec('UPDATE plages SET appareil=? WHERE appareil=?', [b['uuid'], repriseDe]);
           await base.exec('UPDATE baux SET appareil=? WHERE appareil=?', [b['uuid'], repriseDe]);
           await base.exec("UPDATE appareils SET etat='revoque' WHERE uuid=?", [repriseDe]);
           await evenement('info', 'appairage', 'Reprise d’identité : le poste $repriseDe est remplacé par ${b['uuid']} (plages et baux repris, ancien poste révoqué)');
         }
-        return {'epoch': await base.metaInt('epoch'), ...await emettreJetons(b['uuid'] as String)};
+        return {'epoch': await base.metaInt('epoch'), ...await emettreJetons(b['uuid'] as String), if (reprisePassee != null) 'reprise': reprisePassee};
       case 'POST /renouveler':
         final m = RegExp(r'^([^.]+)\.(.+)$').firstMatch('${b['renouvellement'] ?? ''}');
         final rr = m == null ? null : await base.select('SELECT * FROM appareils WHERE uuid=?', [m.group(1)]);

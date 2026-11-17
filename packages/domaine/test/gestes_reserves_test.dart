@@ -46,6 +46,8 @@ void main() {
       gestePtaAdopter, gestePtaRegler, gesteAlertesPtaRetard,
       // Mise à jour du logiciel (17/11/2026) : exporter, importer, lever le blocage.
       gesteBaseExporter, gesteBaseImporter, gesteMajLeverBlocage,
+      // Reprise d'identité d'un poste fileul (17/11/2026, décision 12) : émettre le code de reprise.
+      gesteRepriseEmettre,
     ]);
     expect(gestesReserves.map((x) => x.id).toSet().length, gestesReserves.length, reason: 'un identifiant par geste');
     expect(DroitsGestes(fiches: const []).rolesAvec(gesteValiderAchats, const ['admin', 'da', 'direction', 'stock', 'comptable']), ['da'], reason: 'valider les achats (RG-04) : la DAF seule d\'origine, pas l\'administrateur');

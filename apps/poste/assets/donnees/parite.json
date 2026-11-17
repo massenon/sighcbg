@@ -5623,6 +5623,21 @@
    "statut": "porté"
   },
   {
+   "id": "mere-reprise-poste",
+   "label": "Reprise d’un poste",
+   "module": "MERE",
+   "domaine": "Poste mère",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "mere-conflits",
    "label": "Conflits et doublons",
    "module": "MERE",

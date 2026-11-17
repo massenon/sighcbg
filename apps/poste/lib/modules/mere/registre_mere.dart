@@ -17,6 +17,7 @@ import 'mrb_sms.dart';
 import 'mrc_cycle.dart';
 import 'mrc_exploitation.dart';
 import 'mrc_plateforme.dart';
+import 'mrd_reprise_poste.dart';
 
 typedef ConstruireEcran = Widget Function(BuildContext contexte, ConfigPoste config);
 
@@ -49,6 +50,7 @@ final Map<String, ConstruireEcran> ecransMERE = {
   'mere-mise-en-service': (c, cfg) => EcranMereMiseEnService(config: cfg),
   'mere-mises-a-jour': (c, cfg) => const EcranMereMisesAJour(),
   'mere-import': (c, cfg) => const EcranMereImport(),
+  'mere-reprise-poste': (c, cfg) => const EcranReprisePoste(),
 };
 
 /// Les écrans du lot (a) branchés sur le service de la mère : c'est CETTE table que `ecransPortes` sert quand le poste est mère, avec ceux du lot (b).
@@ -80,5 +82,6 @@ Map<String, ConstruireEcran> ecransMEREPour(ClientMere client) {
   'mere-mise-en-service': (c, cfg) => EcranMereMiseEnService(config: cfg),
   'mere-mises-a-jour': (c, cfg) => const EcranMereMisesAJour(),
   'mere-import': (c, cfg) => const EcranMereImport(),
+  'mere-reprise-poste': (c, cfg) => const EcranReprisePoste(),
   };
 }

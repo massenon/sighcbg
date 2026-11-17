@@ -381,5 +381,57 @@ void mainRejoindre() {
       expect(appels, 4);
       await fin(t);
     });
+
+    testWidgets('un CODE DE REPRISE se saisit au même endroit : l’écran dit ce que la mère a repris, et nomme les refus (poste inconnu, déjà repris)', (t) async {
+      final m = await posteNeuf(t);
+      final service = ServiceInstallation.de(m);
+      service.rattacherMoteur = ({required adresse, required code}) async {
+        if (code == 'INCONNU1') throw StateError('appareil_inconnu — Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
+        if (code == 'DEJAREP1') throw StateError('deja_repris — Ce poste a déjà été repris par un autre poste.');
+        if (code == 'REPRISE1') return {'de': 'uuid-ancien-poste-0042', 'plages': 2, 'baux': 1};
+        return null;
+      };
+      final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
+      await monter(t, m, s);
+      await toucher(t, find.byKey(const Key('ins:rejoindre')));
+      expect(find.byKey(const Key('rej:aide-reprise')), findsOneWidget, reason: 'l’écran dit qu’un code de reprise se saisit ici');
+      expect(find.textContaining('15 minutes'), findsNothing, reason: 'la durée de validité est celle de la mère, jamais écrite ici');
+      await saisir(t, 'rej:adresse', 'http://192.168.1.10:9000');
+      await saisir(t, 'rej:code', 'inconnu1');
+      await toucher(t, find.byKey(const Key('rej:valider')));
+      await calculer(t);
+      expect(find.textContaining('ne connaît pas ce poste'), findsOneWidget);
+      expect(service.derniereReprise, isNull);
+      await saisir(t, 'rej:code', 'DEJAREP1');
+      await toucher(t, find.byKey(const Key('rej:valider')));
+      await calculer(t);
+      expect(find.textContaining('déjà été repris'), findsOneWidget);
+      expect(service.rattache, isFalse);
+      await saisir(t, 'rej:code', 'REPRISE1');
+      await toucher(t, find.byKey(const Key('rej:valider')));
+      await calculer(t);
+      expect(service.rattache, isTrue);
+      expect(service.derniereReprise?.de, 'uuid-ancien-poste-0042');
+      final note = t.widget<NoteSigh>(find.byKey(const Key('rej:reprise-faite'))).texte;
+      expect(note, allOf(contains('uuid-ancien-poste-0042'), contains('2 plages de numéros'), contains('1 bail de stock'), contains('révoqué')));
+      await fin(t);
+    });
+
+    testWidgets('un appairage ORDINAIRE ne dit rien d’une reprise', (t) async {
+      final m = await posteNeuf(t);
+      final service = ServiceInstallation.de(m);
+      service.rattacherMoteur = ({required adresse, required code}) async => null;
+      final s = SessionPoste(exigeConnexion: true, horloge: () => auj);
+      await monter(t, m, s);
+      await toucher(t, find.byKey(const Key('ins:rejoindre')));
+      await saisir(t, 'rej:adresse', 'http://192.168.1.10:9000');
+      await saisir(t, 'rej:code', 'ABCD2345');
+      await toucher(t, find.byKey(const Key('rej:valider')));
+      await calculer(t);
+      expect(service.rattache, isTrue);
+      expect(service.derniereReprise, isNull);
+      expect(find.byKey(const Key('rej:reprise-faite')), findsNothing);
+      await fin(t);
+    });
   });
 }

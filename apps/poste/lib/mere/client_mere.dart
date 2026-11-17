@@ -184,6 +184,17 @@ class EvenementJournal {
       );
 }
 
+/// Un code de reprise tel que la mère l'émet : le code (à usage unique), l'instant où il expire et sa durée de validité, que la mère annonce (jamais supposée par la console).
+/// Le code ne figure dans AUCUNE représentation texte : un journal ou un message d'erreur qui afficherait cet objet ne le divulguerait pas.
+class CodeReprise {
+  const CodeReprise({required this.code, this.expireMs, this.validiteSecondes});
+  final String code;
+  final int? expireMs;
+  final int? validiteSecondes;
+  @override
+  String toString() => 'CodeReprise(valide jusqu’à $expireMs)';
+}
+
 /// Client du service local de la mère (API d'administration). La console ne contient AUCUNE règle : elle appelle ce que
 /// la mère décide — un refus s'affiche avec la cause que la mère a nommée.
 class ClientMere {
@@ -247,6 +258,16 @@ class ClientMere {
             'etiquette': etiquette,
             'role': 'fileul'
           }))['code']}';
+
+  /// Code de REPRISE d'un poste fileul : appairer un poste NEUF qui remplace [uuid] (la mère lui passe les plages et les baux, révoque l'ancien : E4608). Le refus de la mère
+  /// (`appareil_inconnu`, `deja_repris`…) remonte tel quel en [ErreurMere]. La durée de validité est celle que la mère annonce.
+  Future<CodeReprise> codeReprise(String uuid, String etiquette) async {
+    final r = await _appel('POST', '/admin/code', {'etiquette': etiquette, 'role': 'fileul', 'reprise': uuid});
+    return CodeReprise(
+        code: '${r['code']}',
+        expireMs: r['expire'] is num ? (r['expire'] as num).toInt() : null,
+        validiteSecondes: r['validite_s'] is num ? (r['validite_s'] as num).toInt() : null);
+  }
 
   /// Code d'appairage d'un MOBILE : rend aussi la clé de clinique (QR à scanner sur le téléphone).
   ///

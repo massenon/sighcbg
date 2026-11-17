@@ -315,6 +315,11 @@ const String gesteBaseImporter = 'base_importer';
 /// LEVER LE BLOCAGE D'UNE MISE À JOUR sans sauvegarde vérifiée de moins de N heures (cas de FORCE MAJEURE : motif écrit, auteur et date journalisés). Origine : l'administrateur et la Directrice Administrative.
 const String gesteMajLeverBlocage = 'maj_lever_blocage';
 
+/// ÉMETTRE UN CODE DE REPRISE D'UN POSTE FILEUL (Direction de Baguidi, 17/11/2026, décision 12 : changement de machine d'un fileul). Le code remet à un poste NEUF les plages de numéros et les baux d'un
+/// ancien poste et RÉVOQUE ce dernier : c'est un geste qui engage l'identité d'un poste, plus lourd qu'un appairage ordinaire (réglé par `systeme_administrer`). Origine : l'administrateur et la Directrice
+/// Administrative ; une fiche de rôle l'accorde ou le retire. Le code s'affiche UNE fois et n'est jamais écrit au journal.
+const String gesteRepriseEmettre = 'reprise_poste_emettre';
+
 /// Le référentiel des gestes réservés. Une donnée du domaine : le code l'interroge, il ne recopie jamais ses identifiants ni ses rôles d'origine.
 const List<GesteReserve> gestesReserves = [
   GesteReserve(
@@ -831,6 +836,13 @@ const List<GesteReserve> gestesReserves = [
       ecran: '',
       rolesDefaut: ['admin', 'da'],
       aide: 'Autorise l’installation sans sauvegarde vérifiée de moins de N heures. Le motif est obligatoire ; l’auteur, la date et le motif sont journalisés. Origine : l’administrateur et la Directrice Administrative.'),
+  GesteReserve(
+      id: gesteRepriseEmettre,
+      libelle: 'Émettre un code de reprise d’un poste fileul',
+      module: 'MERE',
+      ecran: 'mere-reprise-poste',
+      rolesDefaut: ['admin', 'da'],
+      aide: 'Écran « Reprise d’un poste » de la console de la mère. Le code remet à un poste neuf les plages de numéros et les baux d’un ancien poste fileul et révoque ce dernier ; il s’affiche une seule fois, vaut le temps que la mère annonce, et n’est jamais écrit au journal (seuls le poste repris et l’échéance le sont). Origine : l’administrateur et la Directrice Administrative.'),
 ];
 
 GesteReserve? gesteReserve(String id) {

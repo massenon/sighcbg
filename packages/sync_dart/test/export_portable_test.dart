@@ -200,8 +200,16 @@ void main() {
       final f2 = Fileul(ConfigFileul(port: 0, mere: baseA, dbChemin: ':memory:'));
       expect(f2.reprendreEtat(ouvert.contenu.sync!)['repris'], 2);
       expect(f2.reprendreEtat(ouvert.contenu.sync!)['refus'], 'POSTE_NON_NEUF');
-      final code = (await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Poste caisse', 'reprise': f1.uuid}))['code'];
-      expect((await f2.commande('POST /appairer', {'code': code}, const {})).$1, 200);
+      final emis = await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Poste caisse', 'reprise': f1.uuid});
+      final code = emis['code'];
+      expect(emis['validite_s'], cfgMere('a.db').codeTtl ~/ 1000, reason: 'la durée de validité est celle de la mère, rendue avec le code (la console ne l\'écrit jamais)');
+      expect(emis['expire'], isA<int>());
+      final secondCode = (await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Second poste', 'reprise': f1.uuid}))['code'];
+      final (statutAp, repAp) = await f2.commande('POST /appairer', {'code': code}, const {});
+      expect(statutAp, 200);
+      final faite = (repAp as Map)['reprise'] as Map;
+      expect(faite['de'], f1.uuid, reason: 'le poste neuf apprend QUEL poste il remplace, par la mère');
+      expect(faite['plages'], greaterThanOrEqualTo(1));
       await f2.cycle();
       expect(f2.etat.derniereErreur, isNull);
       expect((await a.base.select("SELECT COUNT(*) AS n FROM fiches WHERE collection='patients'")).first['n'], 2);
@@ -209,6 +217,20 @@ void main() {
       final inconnu = await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'reprise': 'inconnu'});
       expect(inconnu['statut'], 404);
       expect(inconnu['code'], 'appareil_inconnu');
+      // Un poste ne se reprend qu'UNE fois : ni un nouveau code, ni le second code déjà émis, ne passent (refus nommé avant tout effet).
+      final redemande = await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'reprise': f1.uuid});
+      expect(redemande['statut'], 409);
+      expect(redemande['code'], 'deja_repris');
+      final f3 = Fileul(ConfigFileul(port: 0, mere: baseA, dbChemin: ':memory:'));
+      final (statutDouble, repDouble) = await f3.commande('POST /appairer', {'code': secondCode}, const {});
+      expect(statutDouble, 409);
+      expect((repDouble as Map)['code'], 'deja_repris');
+      expect((await a.base.select("SELECT utilise FROM codes WHERE code=?", [secondCode])).first['utilise'], 0, reason: 'le code refusé ne se consume pas');
+      // Un appairage ordinaire ne rapporte aucune reprise.
+      final ordinaire = (await http(baseA, 'POST', '/admin/code', {'role': 'fileul', 'etiquette': 'Ordinaire'}))['code'];
+      final f4 = Fileul(ConfigFileul(port: 0, mere: baseA, dbChemin: ':memory:'));
+      final (_, repOrdinaire) = await f4.commande('POST /appairer', {'code': ordinaire}, const {});
+      expect((repOrdinaire as Map).containsKey('reprise'), isFalse);
       await a.arreter();
     });
 
