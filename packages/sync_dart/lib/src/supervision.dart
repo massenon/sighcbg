@@ -6,30 +6,39 @@ library;
 
 import 'dart:io';
 
-import 'commun.dart';
-import 'mere.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show MereSeuilsSupervision, mereSeuilsSupervisionA, parametreDateIso;
 
+import 'commun.dart';
+import 'depot.dart';
+import 'mere.dart';
+import 'reglages_mere.dart';
+
+/// Les seuils de la supervision : des RÉGLAGES de la mère (famille `mere`, versions datées, bornés ; propositions à valider sur le matériel réel). La classe ne porte AUCUNE valeur :
+/// [Seuils.depuis] les lit au registre, [Seuils.attente] donne les valeurs d'attente des définitions (aucune fiche lue).
 class Seuils {
-  const Seuils({
-    this.disqueAttentionOctets = 10 * 1024 * 1024 * 1024,
-    this.disqueAlerteOctets = 2 * 1024 * 1024 * 1024,
-    this.sauvegardeAttentionHeures = 26,
-    this.sauvegardeAlerteHeures = 50,
-    this.posteSilenceAttentionMin = 30,
-    this.posteSilenceAlerteMin = 240,
-    this.posteRetardOperations = 500,
-    this.relaisRetardAttention = 50,
-    this.relaisRetardAlerte = 2000,
-  });
-  final int disqueAttentionOctets;
-  final int disqueAlerteOctets;
-  final int sauvegardeAttentionHeures;
-  final int sauvegardeAlerteHeures;
-  final int posteSilenceAttentionMin;
-  final int posteSilenceAlerteMin;
-  final int posteRetardOperations;
-  final int relaisRetardAttention;
-  final int relaisRetardAlerte;
+  const Seuils._(this._s);
+
+  final MereSeuilsSupervision _s;
+
+  /// Les valeurs d'attente semées (aucun réglage lu) : le comportement d'avant.
+  factory Seuils.attente() => Seuils._(mereSeuilsSupervisionA(const [], parametreDateIso(DateTime.now())));
+
+  /// Les seuils EN VIGUEUR dans la base de la mère à [maintenant].
+  static Future<Seuils> depuis(Depot base, DateTime maintenant) async => Seuils._(await seuilsSupervisionMere(base, maintenant));
+
+  /// Les seuils tirés de fiches de versions déjà lues (essais, console).
+  factory Seuils.desFiches(Iterable<Map<String, Object?>> fiches, String date) => Seuils._(mereSeuilsSupervisionA(fiches, date));
+
+  int get disqueAttentionOctets => _s.disqueAttentionOctets;
+  int get disqueAlerteOctets => _s.disqueAlerteOctets;
+  int get sauvegardeAttentionHeures => _s.sauvegardeAttentionHeures;
+  int get sauvegardeAlerteHeures => _s.sauvegardeAlerteHeures;
+  int get posteSilenceAttentionMin => _s.posteSilenceAttentionMin;
+  int get posteSilenceAlerteMin => _s.posteSilenceAlerteMin;
+  int get posteRetardOperations => _s.posteRetardOperations;
+  int get relaisRetardAttention => _s.relaisRetardAttention;
+  int get relaisRetardAlerte => _s.relaisRetardAlerte;
+  int get deriveHorlogeMin => _s.deriveHorlogeMin;
 }
 
 Map<String, Object?> _controle(String nom, String etat, String detail, [Object? valeur]) =>
@@ -54,10 +63,18 @@ Future<int?> octetsLibres() async {
 
 String _taille(int o) => o >= 1 << 30 ? '${(o / (1 << 30)).toStringAsFixed(1)} Go' : '${(o / (1 << 20)).toStringAsFixed(0)} Mo';
 
-Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils seuils = const Seuils(), int? disqueLibre}) async {
+Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils? seuils, int? disqueLibre}) async {
   final out = <Map<String, Object?>>[];
   final base = m.base;
   final maintenant = maintenantMs();
+  // Les seuils sont ceux du registre daté de la mère (réglages `mere.supervision*`), sauf si l'appelant en impose (essais).
+  // Une base illisible n'empêche pas le contrôle de le dire (« Base de données : alerte ») : les seuils retombent alors sur leurs valeurs d'attente.
+  Seuils seuilsEnForce;
+  try {
+    seuilsEnForce = seuils ?? await Seuils.depuis(base, DateTime.fromMillisecondsSinceEpoch(maintenant));
+  } catch (_) {
+    seuilsEnForce = Seuils.attente();
+  }
 
   // 1. base de données
   final t0 = DateTime.now();
@@ -74,7 +91,7 @@ Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils seuils = const 
   if (libre == null) {
     out.add(_controle('Espace disque', 'inconnu', 'Non mesurable sur cette plateforme.'));
   } else {
-    final etat = libre < seuils.disqueAlerteOctets ? 'alerte' : (libre < seuils.disqueAttentionOctets ? 'attention' : 'ok');
+    final etat = libre < seuilsEnForce.disqueAlerteOctets ? 'alerte' : (libre < seuilsEnForce.disqueAttentionOctets ? 'attention' : 'ok');
     out.add(_controle('Espace disque', etat, '${_taille(libre)} libres.', libre));
   }
 
@@ -84,7 +101,7 @@ Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils seuils = const 
     out.add(_controle('Sauvegarde', 'alerte', 'Aucune sauvegarde n\'a jamais été faite.'));
   } else {
     final h = (maintenant - derniere) / 3600000;
-    final etat = h > seuils.sauvegardeAlerteHeures ? 'alerte' : (h > seuils.sauvegardeAttentionHeures ? 'attention' : 'ok');
+    final etat = h > seuilsEnForce.sauvegardeAlerteHeures ? 'alerte' : (h > seuilsEnForce.sauvegardeAttentionHeures ? 'attention' : 'ok');
     out.add(_controle('Sauvegarde', etat, 'Dernière sauvegarde il y a ${h.toStringAsFixed(1)} h.', derniere));
   }
 
@@ -101,13 +118,13 @@ Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils seuils = const 
     final silence = (maintenant - contact) / 60000;
     var etat = 'ok';
     var detail = 'Vu il y a ${silence.toStringAsFixed(0)} min, retard ${retard.clamp(0, 1 << 30)} opération(s).';
-    if (silence > seuils.posteSilenceAlerteMin) {
+    if (silence > seuilsEnForce.posteSilenceAlerteMin) {
       etat = 'alerte';
       detail = 'Silencieux depuis ${(silence / 60).toStringAsFixed(1)} h — poste éteint, hors réseau ou en panne ?';
-    } else if (silence > seuils.posteSilenceAttentionMin || retard > seuils.posteRetardOperations) {
+    } else if (silence > seuilsEnForce.posteSilenceAttentionMin || retard > seuilsEnForce.posteRetardOperations) {
       etat = 'attention';
     }
-    if ((a['derive_ms'] as int) > 2 * 60 * 1000) {
+    if ((a['derive_ms'] as int) > seuilsEnForce.deriveHorlogeMin * 60 * 1000) {
       etat = etat == 'alerte' ? 'alerte' : 'attention';
       detail += ' Horloge à vérifier (dérive ${((a['derive_ms'] as int) / 60000).toStringAsFixed(0)} min).';
     }
@@ -121,7 +138,7 @@ Future<List<Map<String, Object?>>> controlesMere(Mere m, {Seuils seuils = const 
     final retard = seq - await base.metaInt('rep_seq');
     final dernierOk = await base.metaInt('relais_dernier_ok');
     final silence = dernierOk == 0 ? null : (maintenant - dernierOk) / 60000;
-    var etat = retard > seuils.relaisRetardAlerte ? 'alerte' : (retard > seuils.relaisRetardAttention ? 'attention' : 'ok');
+    var etat = retard > seuilsEnForce.relaisRetardAlerte ? 'alerte' : (retard > seuilsEnForce.relaisRetardAttention ? 'attention' : 'ok');
     var detail = '$retard opération(s) pas encore répliquées (chiffrées) vers le relais.';
     if (silence != null && silence > 5) {
       etat = 'alerte';

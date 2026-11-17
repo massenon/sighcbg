@@ -195,13 +195,13 @@ class Pont {
   /// téléphone appairé AVANT cette règle le reçoit aussi), puis chaque opération de ces deux collections. Aucune donnée de santé n'y figure.
   static const collectionsDroits = {'rbac', 'modulesActifs'};
 
-  Future<void> _publierDroits(String uuid) async {
+  Future<List<Map<String, Object?>>> _fichesDroits() async {
     final fiches = <Map<String, Object?>>[];
     for (final x in await base.select("SELECT collection,id FROM fiches WHERE collection IN ('rbac','modulesActifs') ORDER BY collection,id")) {
       final f = await mere.lire('${x['collection']}', '${x['id']}');
       if (f != null) fiches.add({'collection': x['collection'], 'id': x['id'], 'data': f.data, 'fieldseq': f.fieldseq, 'archive': f.archive});
     }
-    await publier(uuid, {'type': 'droits', 'fiches': fiches});
+    return fiches;
   }
 
   /// Ce que la mère publie aux mobiles : les opérations des fiches de LEUR portée, plus les droits. Sous le verrou, sans réseau.
@@ -210,9 +210,16 @@ class Pont {
           final uuid = a['uuid'] as String;
           final brut = await base.meta('sortie_seq:$uuid');
           if (brut == null) continue;
-          if (await base.meta('droits_ok:$uuid') != '1') {
-            await _publierDroits(uuid);
+          // L'instantané de CONFIGURATION (message `droits`) porte aussi les réglages de la LISTE BLANCHE (bornes de saisie du téléphone) : même message, même fusion côté téléphone,
+          // aucun type nouveau (un téléphone plus ancien le range comme les droits, sans le lire). Un téléphone appairé AVANT leur existence les reçoit à la première diffusion qui suit
+          // (drapeau `parametres_ok`), puis chaque version nouvelle par le chemin des opérations (filtré ci-dessous) : sans instantané, un téléphone neuf ne verrait que les versions
+          // postérieures à son appairage et resterait sur les valeurs d'attente tant que la clinique n'a rien réglé.
+          final droitsFaits = await base.meta('droits_ok:$uuid') == '1';
+          final parametresFaits = await base.meta('parametres_ok:$uuid') == '1';
+          if (!droitsFaits || !parametresFaits) {
+            await publier(uuid, {'type': 'droits', 'fiches': [if (!droitsFaits) ...await _fichesDroits(), ...await _fichesParametresMobile()]});
             await base.poserMeta('droits_ok:$uuid', 1);
+            await base.poserMeta('parametres_ok:$uuid', 1);
           }
           final ops = await base.select('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>? ORDER BY seq LIMIT 100', [int.parse(brut)]);
           if (ops.isEmpty) continue;
@@ -235,6 +242,18 @@ class Pont {
           if (siennes.isNotEmpty) await publier(uuid, {'type': 'ops', 'ops': siennes});
         }
       });
+
+  /// LES RÉGLAGES MOBILES (18/11/2026) : seules les versions de la LISTE BLANCHE (déclarées `mobile`, non sensibles, famille non réservée : `Parametres.autoriseMobile`) partent.
+  Future<List<Map<String, Object?>>> _fichesParametresMobile() async {
+    final fiches = <Map<String, Object?>>[];
+    for (final x in await base.select('SELECT id FROM fiches WHERE collection=? ORDER BY id', [parCollectionParametres])) {
+      final f = await mere.lire(parCollectionParametres, '${x['id']}');
+      if (f != null && !f.archive && Parametres.autoriseMobile(f.data.cast<String, Object?>())) {
+        fiches.add({'collection': parCollectionParametres, 'id': x['id'], 'data': f.data, 'fieldseq': f.fieldseq, 'archive': f.archive});
+      }
+    }
+    return fiches;
+  }
 
   /// Sous le verrou ET dans une transaction (appelée depuis `relever`).
   Future<void> traiterEnveloppe(String uuid, Map<String, Object?> p) async {

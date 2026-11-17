@@ -220,6 +220,24 @@ class Mobile {
     lotPurgeLe = maintenantMs();
   }
 
+  void _fusionnerInstantane(List fiches) {
+    for (final f in fiches) {
+      final x = (f as Map);
+      final s = lireConfirme(x['collection'] as String, x['id'] as String);
+      final data = (x['data'] as Map).cast<String, Object?>(), fs = (x['fieldseq'] as Map).cast<String, Object?>();
+      for (final k in data.keys) {
+        if (!s.existe || nb(fs[k]) >= nb(s.fieldseq[k])) {
+          s.data[k] = data[k];
+          s.fieldseq[k] = fs[k] ?? 0;
+        }
+      }
+      s.archive = x['archive'] == true;
+      s.existe = true;
+      s.dulot = false;
+      ecrireConfirme(x['collection'] as String, x['id'] as String, s);
+    }
+  }
+
   void recevoir(Map<String, Object?> p) {
     switch (p['type']) {
       case 'bienvenue':
@@ -239,23 +257,9 @@ class Mobile {
               _S((x['data'] as Map).cast<String, Object?>(), (x['fieldseq'] as Map).cast<String, Object?>(), x['archive'] == true, true, true));
         }
       case 'droits':
-        // L'instantané des droits de la mère (`rbac`, `modulesActifs`) : jamais du lot, donc jamais purgé à l'expiration de la tournée. Une fiche déjà connue se
-        // fusionne champ par champ (le plus récent l'emporte) : une opération reçue avant l'instantané ne régresse pas.
-        for (final f in (p['fiches'] as List)) {
-          final x = (f as Map);
-          final s = lireConfirme(x['collection'] as String, x['id'] as String);
-          final data = (x['data'] as Map).cast<String, Object?>(), fs = (x['fieldseq'] as Map).cast<String, Object?>();
-          for (final k in data.keys) {
-            if (!s.existe || nb(fs[k]) >= nb(s.fieldseq[k])) {
-              s.data[k] = data[k];
-              s.fieldseq[k] = fs[k] ?? 0;
-            }
-          }
-          s.archive = x['archive'] == true;
-          s.existe = true;
-          s.dulot = false;
-          ecrireConfirme(x['collection'] as String, x['id'] as String, s);
-        }
+        // L'instantané de configuration de la mère : les droits (`rbac`, `modulesActifs`) et les réglages de la liste blanche mobile (`parametres`). Jamais du lot, donc jamais purgé
+        // à l'expiration de la tournée. Une fiche déjà connue se fusionne champ par champ (le plus récent l'emporte) : une opération reçue avant l'instantané ne régresse pas.
+        _fusionnerInstantane(p['fiches'] as List);
         base.poserMeta('droits_maj_le', maintenantMs());
       case 'ops':
         for (final o in (p['ops'] as List)) {

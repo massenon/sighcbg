@@ -988,15 +988,25 @@ async function repliquer() {
    les reçoit, hors de toute portée de tournée, pour ÉVALUER la matrice comme le poste (le téléphone n'a pas d'autre source) : un instantané complet à la première
    diffusion (un téléphone appairé AVANT cette règle le reçoit aussi), puis chaque opération de ces deux collections. Aucune donnée de santé n'y figure. */
 const COLLECTIONS_DROITS = ['rbac', 'modulesActifs'];
-function publierDroits(uuid) {
-  const fiches = db.prepare("SELECT collection,id FROM fiches WHERE collection IN ('rbac','modulesActifs') ORDER BY collection,id").all()
+function fichesDroits() {
+  return db.prepare("SELECT collection,id FROM fiches WHERE collection IN ('rbac','modulesActifs') ORDER BY collection,id").all()
     .map((x) => Object.assign({ collection: x.collection, id: x.id }, lire(x.collection, x.id)));
-  publier(uuid, { type: 'droits', fiches });
+}
+/* LES RÉGLAGES MOBILES (18/11/2026) : l'instantané de configuration (message `droits`) porte aussi les versions de la LISTE BLANCHE des paramètres (déclarés `mobile`, non sensibles,
+   famille non réservée). Même message, aucun type nouveau : un téléphone neuf ne verrait sinon que les versions postérieures à son appairage. */
+function fichesParametresMobile() {
+  return db.prepare("SELECT id FROM fiches WHERE collection='parametres' ORDER BY id").all()
+    .map((x) => Object.assign({ collection: 'parametres', id: x.id }, lire('parametres', x.id)))
+    .filter((f) => !f.archive && PARAMETRES.autoriseMobile(f.data));
 }
 function diffuser() {
   for (const a of db.prepare("SELECT uuid FROM appareils WHERE role='mobile' AND etat='actif'").all()) {
     const cur = +meta('sortie_seq:' + a.uuid, -1); if (cur < 0) continue;
-    if (meta('droits_ok:' + a.uuid) !== '1') { publierDroits(a.uuid); setMeta('droits_ok:' + a.uuid, 1); }
+    const droitsFaits = meta('droits_ok:' + a.uuid) === '1', parametresFaits = meta('parametres_ok:' + a.uuid) === '1';
+    if (!droitsFaits || !parametresFaits) {
+      publier(a.uuid, { type: 'droits', fiches: [...(droitsFaits ? [] : fichesDroits()), ...fichesParametresMobile()] });
+      setMeta('droits_ok:' + a.uuid, 1); setMeta('parametres_ok:' + a.uuid, 1);
+    }
     const ops = db.prepare('SELECT seq,id,appareil,collection,fiche,type,champs FROM operations WHERE seq>? ORDER BY seq LIMIT 100').all(cur);
     if (!ops.length) continue;
     /* L0 : un mobile ne reçoit de la configuration que les paramètres de la LISTE BLANCHE (déclarés `mobile`, non sensibles, famille non réservée : RG-13) ; le reste de

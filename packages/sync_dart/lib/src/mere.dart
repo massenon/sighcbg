@@ -10,7 +10,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
-    show DroitsOperation, IdentiteClinique, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, colFichesAide, colDocumentsFiscaux, refusEcritureFicheAide, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
+    show DroitsOperation, IdentiteClinique, mrbCleFenetreReinit, mereCleDelaiSauvegardeQuotidienne, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, colFichesAide, colDocumentsFiscaux, refusEcritureFicheAide, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
 
 import 'commun.dart';
 import 'depot.dart';
@@ -20,6 +20,7 @@ import 'horssite_mere.dart';
 import 'sauvegarde_horssite.dart' show ErreurSauvegarde;
 import 'pont.dart';
 import 'pont_pair.dart';
+import 'reglages_mere.dart';
 import 'supervision.dart';
 
 /// Une famille par collection (PRD §8) : A fiche descriptive · B journal · C pièce émise · D agrégat à invariant ·
@@ -319,9 +320,8 @@ class ConfigMere {
   final int conservation;
 }
 
-/// Durée de la fenêtre de réinitialisation (arbitrage de la Direction du 04/11/2026 : 30 minutes, jamais 24 heures). C'est la MÈRE qui la tient : console
-/// fermée, la fenêtre se referme quand même.
-const Duration dureeFenetreReinit = Duration(minutes: 30);
+/// La durée de la fenêtre de réinitialisation est un RÉGLAGE (`mere.fenetreReinitMinutes`, borné 1 à 120 ; valeur d'attente 30 minutes, arbitrage de la Direction du 04/11/2026 :
+/// jamais 24 heures) : la mère la lit à son registre daté (`Mere.fenetreReinit`). C'est la MÈRE qui la tient : console fermée, la fenêtre se referme quand même.
 
 class Mere {
   Mere._(this.cfg, this.base);
@@ -409,12 +409,16 @@ class Mere {
   Future<bool> reinitOuverte() async {
     if (await base.meta('reinit_ouverte') != '1') return false;
     final depuis = await base.metaInt('reinit_ouverte_ms');
-    if (depuis > 0 && maintenantMs() - depuis <= dureeFenetreReinit.inMilliseconds) return true;
+    final duree = await fenetreReinit();
+    if (depuis > 0 && maintenantMs() - depuis <= duree.inMilliseconds) return true;
     await base.poserMeta('reinit_ouverte', 0);
     await base.poserMeta('reinit_ouverte_ms', 0);
-    await evenement('info', 'administration', 'Fenêtre de réinitialisation refermée (échéance de ${dureeFenetreReinit.inMinutes} minutes)');
+    await evenement('info', 'administration', 'Fenêtre de réinitialisation refermée (échéance de ${duree.inMinutes} minutes)');
     return false;
   }
+
+  /// La durée EN VIGUEUR de la fenêtre de réinitialisation : le réglage daté `mere.fenetreReinitMinutes` lu au registre de la mère, sinon sa valeur d'attente.
+  Future<Duration> fenetreReinit() async => Duration(minutes: await seuilMere(base, mrbCleFenetreReinit, DateTime.fromMillisecondsSinceEpoch(maintenantMs())));
 
   Future<void> evenement(String niveau, String source, String message) =>
       base.exec('INSERT INTO evenements(quand,niveau,source,message) VALUES(?,?,?,?)', [maintenantMs(), niveau, source, message]);
@@ -1137,7 +1141,7 @@ class Mere {
         adminOk(req);
         await base.poserMeta('reinit_ouverte', b['ouvrir'] == true ? 1 : 0);
         await base.poserMeta('reinit_ouverte_ms', b['ouvrir'] == true ? maintenantMs() : 0);
-        return {'ouverte': b['ouvrir'] == true, 'duree_minutes': dureeFenetreReinit.inMinutes};
+        return {'ouverte': b['ouvrir'] == true, 'duree_minutes': (await fenetreReinit()).inMinutes};
       case 'POST /admin/reinitialiser':
         adminOk(req);
         return reinitialiser(b);
@@ -1404,10 +1408,11 @@ class Mere {
     _serveur = await HttpServer.bind(InternetAddress.loopbackIPv4, cfg.port);
     pont.demarrer();
     horsSite.demarrer();
-    // Sauvegarde quotidienne : toutes les 5 minutes on regarde si l'heure est venue et si la dernière a plus de 20 h.
+    // Sauvegarde quotidienne : toutes les 5 minutes on regarde si l'heure est venue et si la dernière date de plus de `mere.delaiSauvegardeQuotidienneHeures` (réglage daté, 20 h d'attente).
     _sauvegardeur = Timer.periodic(const Duration(minutes: 5), (_) async {
       try {
-        final due = DateTime.now().hour >= cfg.heureSauvegarde && maintenantMs() - await base.metaInt('derniere_sauvegarde') > 20 * 3600 * 1000;
+        final delaiMs = await seuilMere(base, mereCleDelaiSauvegardeQuotidienne, DateTime.fromMillisecondsSinceEpoch(maintenantMs())) * 3600 * 1000;
+        final due = DateTime.now().hour >= cfg.heureSauvegarde && maintenantMs() - await base.metaInt('derniere_sauvegarde') > delaiMs;
         if (due) await verrou.executer(() => sauvegarderChiffre());
       } catch (e) {
         evenementAsync('erreur', 'sauvegarde', 'Sauvegarde quotidienne impossible : $e');
