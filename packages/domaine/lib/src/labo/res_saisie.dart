@@ -30,11 +30,11 @@ String? codeExamenSaisie(FicheLabo r, Iterable<FicheLabo> examens) {
 List<String> get motifsCommentaireGeneral => ListesReference.valeurs('listes.m5.motifsCommentaireGeneral');
 
 /// Les issues imposées par le TYPE de la variable (`L.TYPES_VARIABLE[].valeurs`) ; une variable de type `liste` porte les siennes.
-const Map<String, List<String>> valeursTypeVariable = {
-  'binaire': ['Positif', 'Négatif'],
-  'ternaire': ['Positif', 'Négatif', 'Indéterminé'],
-  'titre': ['Négatif', '1/40', '1/80', '1/160', '1/320', '1/640', '1/1280'],
-};
+Map<String, List<String>> get valeursTypeVariable => {
+      'binaire': ListesReference.valeurs('listes.m5.valeursBinaire'),
+      'ternaire': ListesReference.valeurs('listes.m5.valeursTernaire'),
+      'titre': ListesReference.valeurs('listes.m5.valeursTitre'),
+    };
 
 /// `L.type(id)` : le libellé d'un type de variable (affiché sous l'accompagnement).
 const Map<String, String> libellesTypeVariable = {

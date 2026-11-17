@@ -6,6 +6,7 @@ library;
 
 import '../format/format_fr.dart';
 import 'ag_commun.dart';
+import '../parametres/enumerations.dart';
 
 /// Une priorité de triage (rang 1 = la plus pressante).
 class AgPriorite {
@@ -33,15 +34,7 @@ AgPriorite agPriorite(Object? code) =>
     agPriorites.firstWhere((p) => p.code == code, orElse: () => agPriorites[3]);
 
 /// Les postes de la file.
-const agPostes = [
-  ('accueil', 'Accueil'),
-  ('consultation', 'Consultation'),
-  ('caisse', 'Caisse'),
-  ('prelevement', 'Salle de prélèvement'),
-  ('pharmacie', 'Pharmacie'),
-  ('salle_soins', 'Salle de soins'),
-  ('imagerie', 'Imagerie médicale'),
-];
+List<(String, String)> get agPostes => enumPostesFile.paires;
 
 String agLibellePoste(String code) {
   for (final p in agPostes) {

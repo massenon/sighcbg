@@ -3,22 +3,15 @@
 /// a exportés dans `test/vecteurs/stock.json`.
 library;
 
+import '../parametres/enumerations.dart';
+
 class CategorieProduit {
   const CategorieProduit(this.id, this.label);
   final String id;
   final String label;
 }
 
-const categoriesProduit = [
-  CategorieProduit('medicament', 'Médicaments'),
-  CategorieProduit('reactif', 'Réactifs de laboratoire'),
-  CategorieProduit('conso_labo', 'Consommables de laboratoire'),
-  CategorieProduit('conso_medical', 'Consommables médicaux'),
-  CategorieProduit('fourniture', 'Fournitures administratives'),
-  CategorieProduit('entretien', 'Produits d’entretien'),
-  CategorieProduit('petit_materiel', 'Petit matériel médical'),
-  CategorieProduit('immobilisation', 'Immobilisations'),
-];
+List<CategorieProduit> get categoriesProduit => [for (final (c, l) in enumCategoriesProduit.paires) CategorieProduit(c, l)];
 
 class TypeMouvement {
   const TypeMouvement(this.id, this.label, this.badge);
@@ -45,8 +38,4 @@ class TypeStock {
   final String label;
 }
 
-const typesStock = [
-  TypeStock('gros', 'Stock gros (magasin central)'),
-  TypeStock('detail', 'Stock détail (pharmacie d’urgence)'),
-  TypeStock('labo', 'Stock laboratoire'),
-];
+List<TypeStock> get typesStock => [for (final (c, l) in enumTypesStock.paires) TypeStock(c, l)];

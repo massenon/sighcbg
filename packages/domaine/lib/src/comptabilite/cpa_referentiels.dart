@@ -6,6 +6,7 @@ library;
 
 import '../format/format_fr.dart';
 import 'cpa_plan.dart';
+import '../parametres/enumerations.dart';
 
 typedef CpaFiche = Map<String, Object?>;
 
@@ -40,15 +41,7 @@ bool cpaJournalReserve(Object? code) => cpaJournauxReserves.any((j) => j.$1 == '
 List<(String, String, String?)> get cpaJournauxSaisissables => [for (final j in cpaJournaux) if (!cpaJournalReserve(j.$1)) j];
 
 /// `D.CATEGORIES_DEPENSE` : (identifiant, libellé) — la lecture de GESTION, distincte du compte SYSCOHADA.
-const List<(String, String)> cpaCategoriesDepense = [
-  ('medical', 'Consommables et produits médicaux'),
-  ('fonctionnement', 'Fonctionnement courant'),
-  ('logistique', 'Logistique et transport'),
-  ('entretien', 'Entretien, réparations et maintenance'),
-  ('personnel', 'Personnel et prestations externes'),
-  ('fiscal', 'Impôts, taxes et frais bancaires'),
-  ('divers', 'Charges diverses'),
-];
+List<(String, String)> get cpaCategoriesDepense => enumCategoriesDepense.paires;
 
 /// `D.CENTRES_COUT` : (identifiant, libellé, type).
 const List<(String, String, String)> cpaCentresCout = [

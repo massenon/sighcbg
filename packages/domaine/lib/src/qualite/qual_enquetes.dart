@@ -2,6 +2,7 @@ import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart';
+import '../parametres/enumerations.dart';
 
 /// ENQUÊTES & SATISFACTION (M13) — règles portées de `prototype_html/assets/js/modules/m13-administration.js` (phase 10, vague 54) et rejouées sur les
 /// vecteurs de la maquette (`test/vecteurs/qualite.json`, engendrés par `prototype_html/build/vecteurs-qualite.js`).
@@ -11,11 +12,7 @@ import '../format/recherche.dart';
 typedef QualFiche = Map<String, Object?>;
 
 /// Les trois types de question d'un modèle (`TYPES_QUESTION`).
-const qualTypesQuestion = [
-  ('note', 'Note de 1 à 5'),
-  ('choix', 'Choix dans une liste'),
-  ('texte', 'Réponse libre'),
-];
+List<(String, String)> get qualTypesQuestion => enumTypesQuestion.paires;
 
 /// Canaux de recueil au guichet (`CANAUX_ENQUETE`).
 List<String> get qualCanaux => ListesReference.valeurs('listes.m13.canauxReponseEnquete');

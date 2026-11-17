@@ -11,6 +11,7 @@ import '../format/js.dart';
 import '../impression/identite.dart';
 import '../referentiels/regles.dart' show joursEntre;
 import '../numerotation/numerotation.dart';
+import '../parametres/enumerations.dart';
 
 typedef AssFiche = Map<String, Object?>;
 
@@ -302,24 +303,7 @@ AssChangement assChangerCouverture(AssFiche? patient,
 
 // --- conventions & garanties ---------------------------------------------------------------------------------------------------
 /// `D.CATEGORIES_GARANTIE` — les seize catégories de garantie (identifiant, libellé).
-const assCategoriesGarantie = [
-  ('consultation', 'Consultations'),
-  ('analyse', 'Analyses de laboratoire'),
-  ('medicament', 'Médicaments et frais pharmaceutiques'),
-  ('vitamine', 'Vitamines et fortifiants'),
-  ('soin', 'Soins et actes infirmiers'),
-  ('chirurgie', 'Chirurgie'),
-  ('maternite', 'Maternité et accouchements'),
-  ('hospitalisation', 'Hospitalisation'),
-  ('imagerie', 'Imagerie et échographie'),
-  ('ambulance', 'Ambulance'),
-  ('dentaire', 'Dentaire'),
-  ('optique', 'Optique'),
-  ('vaccin', 'Vaccins'),
-  ('kinesitherapie', 'Kinésithérapie'),
-  ('certificat', 'Certificats médicaux'),
-  ('autre', 'Autres prestations'),
-];
+List<(String, String)> get assCategoriesGarantie => enumCategoriesGarantie.paires;
 
 String assLibelleCategorie(Object? id) {
   for (final c in assCategoriesGarantie) {
@@ -340,70 +324,67 @@ const assUnitesPlafond = {
 String assLibelleUnite(Object? id) => assUnitesPlafond['$id'] ?? '$id';
 
 /// Les catégories d'assurance d'un souscripteur ou d'un assuré : identifiant, libellé du filtre, badge (libellé, ton).
-const assCategoriesAssurance = [
-  ('entreprise', 'Assurance entreprise'),
-  ('particulier', 'Assurance particulier'),
-  ('personnel', 'Assurance personnel'),
-];
+List<(String, String)> get assCategoriesAssurance => enumCategoriesAssurance.paires;
 
-/// `D.BAREME_REFERENCE` : le barème versé au dossier le 18/06/2026 — un régime EMPLOYEUR. Il donne la structure, pas les taux d'une convention.
+/// LE BARÈME DE RÉFÉRENCE d'un régime employeur (`D.BAREME_REFERENCE`) : la STRUCTURE d'une convention (vingt garanties, exclusions, accords préalables), pas les taux d'une convention.
+/// Ce n'est plus une constante du code : il vit au référentiel `garanties` du jeu (`referentiels.json`, amorcé au socle depuis le document versé au dossier le 18/06/2026,
+/// `apps/poste/tool/donnees/bareme_garanties_20260618.json`), avec sa DATE et sa source. Sans référentiel (poste sans jeu), le barème est VIDE et l'écran le dit : on n'invente pas une
+/// grille de garanties.
 class AssBareme {
-  const AssBareme._();
-  static const reference =
-      'Conditions d’utilisation de la prise en charge — barème de remboursement';
-  static const lieu = 'Cotonou';
-  static const date = '2026-06-18';
-  static const source =
-      'DOC — Conditions d’utilisation de la prise en charge (18/06/2026)';
-  static const garanties = <Map<String, Object?>>[
-    {'code': 'G01', 'libelle': 'Consultation généraliste', 'categorie': 'consultation', 'taux': 80, 'plafond': 5000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G02', 'libelle': 'Consultation spécialiste ou professeur', 'categorie': 'consultation', 'taux': 80, 'plafond': 10000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G03', 'libelle': 'Hospitalisation — frais de chambre', 'categorie': 'hospitalisation', 'taux': 80, 'plafond': 15000, 'unitePlafond': 'jour', 'zone': 'Bénin'},
-    {'code': 'G04', 'libelle': 'Frais pharmaceutiques', 'categorie': 'medicament', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G05', 'libelle': 'Vitamines et fortifiants', 'categorie': 'vitamine', 'taux': 60, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G06', 'libelle': 'Honoraires chirurgicaux', 'categorie': 'chirurgie', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G07', 'libelle': 'Séjour de la mère accompagnant un enfant de moins de 5 ans', 'categorie': 'hospitalisation', 'taux': 80, 'plafond': 7500, 'unitePlafond': 'jour', 'zone': 'Bénin'},
-    {'code': 'G08', 'libelle': 'Analyses et travaux de laboratoire', 'categorie': 'analyse', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G09', 'libelle': 'Radiographie, échographie, scanner, IRM', 'categorie': 'imagerie', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G10', 'libelle': 'Ambulance', 'categorie': 'ambulance', 'taux': 80, 'plafond': 20000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G11', 'libelle': 'Kinésithérapie', 'categorie': 'kinesitherapie', 'taux': 80, 'plafond': 50000, 'unitePlafond': 'an', 'zone': 'Bénin'},
-    {'code': 'G12', 'libelle': 'Dentaire', 'categorie': 'dentaire', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G13', 'libelle': 'Prothèse dentaire (enfant de moins de 15 ans)', 'categorie': 'dentaire', 'taux': 65, 'plafond': 70000, 'unitePlafond': 'personne_an', 'zone': 'Bénin'},
-    {'code': 'G14', 'libelle': 'Optique', 'categorie': 'optique', 'taux': 80, 'plafond': 120000, 'unitePlafond': 'personne_2ans', 'zone': 'Bénin'},
-    {'code': 'G15', 'libelle': 'Vaccins (DT, fièvre jaune, coqueluche, polio, ROUVAX)', 'categorie': 'vaccin', 'taux': 55, 'plafond': 50000, 'unitePlafond': 'personne_an', 'zone': 'Bénin'},
-    {'code': 'G16', 'libelle': 'Consultation pré et post-natale', 'categorie': 'maternite', 'taux': 80, 'plafond': null, 'unitePlafond': null, 'zone': 'Bénin'},
-    {'code': 'G17', 'libelle': 'Accouchement normal', 'categorie': 'maternite', 'taux': 80, 'plafond': 150000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G18', 'libelle': 'Accouchement par voie chirurgicale', 'categorie': 'maternite', 'taux': 80, 'plafond': 250000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G19', 'libelle': 'Accouchement gémellaire', 'categorie': 'maternite', 'taux': 80, 'plafond': 300000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-    {'code': 'G20', 'libelle': 'Accouchement hors clinique privée', 'categorie': 'maternite', 'taux': 80, 'plafond': 175000, 'unitePlafond': 'acte', 'zone': 'Bénin'},
-  ];
-  static const actesExclus = [
-    'Visites prénuptiales', 'Avortements et fausses couches chez les enfants', 'Soins et analyses de reproduction',
-    'Soins esthétiques et de confort', 'Soins traditionnels', 'Traitement des malformations', 'Check-up et bilan de santé',
-    'Pédicure et manucure', 'Massages', 'Rééducation hors accident', 'Kinésithérapie sans accord préalable',
-    'Examens non prescrits', 'Prothèses dentaires', 'Détartrages',
-  ];
-  static const produitsExclus = [
-    'Médicaments non prescrits', 'Contraceptifs et hormones sauf prescription', 'Laxatifs', 'Coton', 'Compresses', 'Bandes',
-    'Sparadraps', 'Antiseptiques', 'Dentifrices', 'Savons', 'Vaccins', 'Compléments alimentaires', 'Appareils d’orthopédie',
-    'Produits d’esthétique', 'Aphrodisiaques', 'Thermomètre', 'Seringue', 'Vessie de glace', 'Bassin de lit', 'Irrigateur',
-    'Sonde', 'Ventouse', 'Gants',
-  ];
-  static const accordPrealable = [
-    'Scanner', 'Laser', 'IRM', 'Fibroscopie', 'MAPA', 'Échocardiaque', 'Échodoppler', 'Aérosolthérapie', 'Optique',
-    'Coloscopie', 'Hystérosalpingographie', 'EEG', 'EMG', 'Traitement de plus de 45 jours', 'Traitements antiviraux',
-  ];
+  const AssBareme({
+    this.version = '',
+    this.reference = '',
+    this.lieu = '',
+    this.date = '',
+    this.source = '',
+    this.garanties = const [],
+    this.actesExclus = const [],
+    this.produitsExclus = const [],
+    this.accordPrealable = const [],
+  });
+
+  /// Le barème qu'un référentiel `garanties` décrit ; un référentiel absent ou illisible donne un barème vide.
+  factory AssBareme.depuis(Object? ref) {
+    if (ref is! Map) return const AssBareme();
+    List<String> textes(Object? v) => [for (final x in (v as List? ?? const [])) '$x'];
+    return AssBareme(
+      version: '${ref['version'] ?? ''}',
+      reference: '${ref['reference'] ?? ''}',
+      lieu: '${ref['lieu'] ?? ''}',
+      date: '${ref['date'] ?? ''}',
+      source: '${ref['source'] ?? ''}',
+      garanties: [for (final g in (ref['garanties'] as List? ?? const [])) (g as Map).cast<String, Object?>()],
+      actesExclus: textes(ref['actesExclus']),
+      produitsExclus: textes(ref['produitsExclus']),
+      accordPrealable: textes(ref['accordPrealable']),
+    );
+  }
+
+  /// La version datée du barème (AAAA-MM-JJ).
+  final String version;
+  final String reference;
+  final String lieu;
+
+  /// La date du document dont le barème est tiré.
+  final String date;
+  final String source;
+  final List<Map<String, Object?>> garanties;
+  final List<String> actesExclus;
+  final List<String> produitsExclus;
+  final List<String> accordPrealable;
+
+  bool get vide => garanties.isEmpty;
 }
 
 /// Une convention saisie : une garantie par ligne du barème de référence, taux et plafond AJUSTÉS par la clinique (plafond vide = sans plafond).
 /// [taux] / [plafonds] : les valeurs saisies, dans l'ordre du barème ; `null` = champ laissé tel quel (le taux du barème), `''` = sans plafond.
 List<AssFiche> assGarantiesDepuisBareme(AssFiche souscripteur,
-    {required List<Object?> taux, required List<Object?> plafonds}) {
-  final src = '${AssBareme.reference} — ajusté par la clinique';
+    {required AssBareme bareme, required List<Object?> taux, required List<Object?> plafonds}) {
+  final src = '${bareme.reference} — ajusté par la clinique';
   return [
-    for (var i = 0; i < AssBareme.garanties.length; i++)
+    for (var i = 0; i < bareme.garanties.length; i++)
       () {
-        final g = AssBareme.garanties[i];
+        final g = bareme.garanties[i];
         final t = i < taux.length ? taux[i] : null;
         final p = i < plafonds.length ? plafonds[i] : g['plafond'];
         return <String, Object?>{
@@ -1009,9 +990,9 @@ ReglementMere assReglerMere(
 }
 
 /// Ce que l'enregistrement d'une convention écrit sur le souscripteur : la grille est saisie, et les exclusions / accords du barème sont repris.
-AssFiche assConventionSaisie() => {
+AssFiche assConventionSaisie(AssBareme bareme) => {
       'grilleSaisie': true,
-      'actesExclus': [...AssBareme.actesExclus],
-      'produitsExclus': [...AssBareme.produitsExclus],
-      'accordPrealable': [...AssBareme.accordPrealable],
+      'actesExclus': [...bareme.actesExclus],
+      'produitsExclus': [...bareme.produitsExclus],
+      'accordPrealable': [...bareme.accordPrealable],
     };

@@ -15,6 +15,7 @@ import '../referentiels/regles.dart' show resultatRendu;
 import '../stock/delivrance.dart' show referenceSuivante;
 import 'hos_regles.dart';
 import '../numerotation/numerotation.dart';
+import '../parametres/enumerations.dart';
 
 typedef BlocFiche = Map<String, Object?>;
 
@@ -63,39 +64,12 @@ const blocDecisionsReveil = [
 ];
 
 /// `D.CHECKLIST_BLOC` : DEUX listes séparées (avant l'incision / avant la sortie de salle), arrêtées par les praticiens du bloc le 01/09/2026.
-const blocChecklistEntree = [
-  'Identité du patient confirmée par le patient lui-même',
-  'Intervention et site opératoire confirmés',
-  'Consentement opératoire signé et présent au dossier',
-  'Site opératoire marqué',
-  'Jeûne préopératoire respecté',
-  'Allergies connues vérifiées et signalées à l’équipe',
-  'Voie veineuse posée et perméable',
-  'Groupe sanguin et rhésus disponibles au dossier',
-  'Matériel d’anesthésie vérifié et fonctionnel',
-  'Risque hémorragique évalué',
-  'Antibioprophylaxie administrée si indiquée',
-  'Équipe au complet, chacun s’étant présenté par son nom et sa fonction',
-];
-const blocChecklistSortie = [
-  'Nature de l’intervention réellement pratiquée énoncée à voix haute',
-  'Comptage des compresses, aiguilles et instruments exact',
-  'Étiquetage des prélèvements vérifié (nom du patient, nature)',
-  'Incidents ou difficultés per-opératoires signalés et consignés',
-  'Drains et sondes en place recensés',
-  'Prescriptions post-opératoires rédigées',
-  'Surveillance post-opératoire prescrite et transmise au service',
-  'Compte rendu opératoire rédigé et signé',
-  'Dysfonctionnement matériel éventuel signalé',
-];
+List<String> get blocChecklistEntree => ListesReference.valeurs('listes.m3.checklistBlocEntree');
+List<String> get blocChecklistSortie => ListesReference.valeurs('listes.m3.checklistBlocSortie');
 const blocChecklistArreteLe = '2026-09-01';
 
 /// `L.SERVICES_DEMANDEURS` et `L.NIVEAUX_URGENCE` (fiche de demande d'examen du service).
-const blocServicesDemandeurs = [
-  BlocOption('maternite', 'Maternité'),
-  BlocOption('medecine', 'Médecine'),
-  BlocOption('specialite', 'Médecine et spécialité'),
-];
+List<BlocOption> get blocServicesDemandeurs => [for (final (c, l) in enumServicesDemandeurs.paires) BlocOption(c, l)];
 const blocNiveauxUrgence = [
   BlocOption('aucune', 'Examen courant'),
   BlocOption('examen', 'Un examen urgent'),

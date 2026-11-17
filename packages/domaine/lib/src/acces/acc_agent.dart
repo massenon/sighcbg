@@ -9,6 +9,8 @@
 /// chaque appel, nom = libellé du rôle. Il est marqué [Agent.demonstration] : ce n'est pas une personne, et aucun écran ne doit le présenter comme tel.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
+
 /// Un agent connecté (ou l'agent de démonstration d'un rôle).
 class Agent {
   const Agent({
@@ -86,19 +88,7 @@ Agent acteurDepuis({Agent? agent, required String role, String? libelleRole}) =>
 /// maquette (`SIGH_COMPTES_ORIGINE`, `api/auth.php`) : un service absent d'ici n'a pas de secteur (`null`), il n'est pas deviné.
 /// « Soins infirmiers » est rattaché à la SALLE DE SOINS (SOI) : la maquette range ses infirmiers en SUR ou HOS selon le poste, ce que le service seul
 /// ne dit pas (écart E1102).
-const Map<String, String> agentSecteurDeService = {
-  'Accueil': 'ACC',
-  'Comptabilité': 'ADM',
-  'Direction': 'ADM',
-  'Administration': 'ADM',
-  'Imagerie / Échographie': 'ECH',
-  'Laboratoire': 'LAB',
-  'Maternité': 'MAT',
-  'Médecine générale': 'MGE',
-  'Chirurgie': 'CHI',
-  'Pharmacie': 'CPH',
-  'Soins infirmiers': 'SOI',
-};
+Map<String, String> get agentSecteurDeService => ListesReference.associations('listes.socle.secteurParService');
 
 /// Le secteur d'un agent : la fiche du compte d'abord (`secteur`), sinon son service RH, sinon celui du compte ; `null` si rien ne permet de le dire.
 String? agentSecteurDe(Map<String, Object?> compte, Map<String, Object?>? employe) {

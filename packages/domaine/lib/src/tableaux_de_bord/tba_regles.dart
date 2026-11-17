@@ -17,6 +17,7 @@ import '../rh/rha_regles.dart' show rhaFonctionLabel, rhaTypePlanningLabel;
 import '../rh/rhb_regles.dart' show vacationCompteRh;
 import '../comptabilite/cpa_referentiels.dart' show cpaCentresCout;
 import '../administration/adm_notes_donnees.dart' show admNs131, admNs132, AdmNoteService;
+import '../parametres/enumerations.dart';
 
 typedef FicheTba = Map<String, Object?>;
 
@@ -509,13 +510,7 @@ TbaStock tbaStock({
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 /// `D.MODES_PAIEMENT` : (identifiant, libellé).
-const tbaModesPaiement = <String, String>{
-  'especes': 'Espèces',
-  'tpe': 'TPE (carte bancaire)',
-  'mtn': 'MTN Mobile Money',
-  'moov': 'Moov Money',
-  'assurance': 'Prise en charge assurance',
-};
+Map<String, String> get tbaModesPaiement => enumModesPaiement.libelles;
 
 class TbaCaissier {
   const TbaCaissier({required this.premier, required this.kpis, required this.dernieres, required this.parMode, required this.recettesQuotidiennes});

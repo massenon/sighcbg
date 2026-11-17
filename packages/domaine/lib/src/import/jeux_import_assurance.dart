@@ -188,7 +188,7 @@ final JeuImport jeuCouverturesAssurance = JeuImport(
     _oblig('assureur', 'Code compagnie', 'liste', liste: (ctx) => [for (final a in ((ctx as Map)['assureursListe'] as List)) ValeurListe('$a')], exemple: 'NSIA', aide: 'Une compagnie connue du magasin.'),
     _oblig('police', 'N° de police', 'texte', longueurMax: 40, exemple: 'POL/2026/0100', aide: 'La police d’un souscripteur connu de cette compagnie.'),
     _oblig('dateEffet', 'Date d’effet', 'date', exemple: '2027-01-01', aide: 'La couverture précédente est close la veille. Obligatoire : une date d’effet ne s’invente pas.'),
-    _oblig('motif', 'Motif', 'liste', liste: (_) => [for (final m in importMotifsCouverture) if (!m.startsWith('Fin de couverture')) ValeurListe(m)], exemple: 'Changement d’employeur'),
+    _oblig('motif', 'Motif', 'liste', liste: (_) => [for (final m in ListesReference.valeurs('listes.m9.motifsChangementCouverture')) if (!m.startsWith('Fin de couverture')) ValeurListe(m)], exemple: 'Changement d’employeur'),
     _col('categorie', 'Catégorie', 'liste', liste: _fixe(const ['entreprise', 'particulier', 'personnel']), exemple: 'entreprise', aide: 'Vide : celle du souscripteur.'),
     _col('taux', 'Taux de prise en charge (%)', 'decimal', min: 0, max: 100, exemple: 80, aide: 'Vide : 0. La grille par garantie vit au souscripteur.'),
     _col('carteExpiration', 'Expiration de la carte', 'date', exemple: '2027-12-31', aide: 'Vide : la carte n’est jamais valide (RG-09) : facturation intégrale au patient.'),

@@ -22,6 +22,7 @@ import '../impression/etat.dart';
 import '../paie/pai_baremes.dart';
 import '../mecef/etats.dart';
 import 'avoir.dart';
+import '../parametres/enumerations.dart';
 
 /// Un régime de TVA du référentiel `PARAM_FISCAL.regimesTva`.
 class RegimeTva {
@@ -290,13 +291,7 @@ String ifuClientDe(Map<String, Object?> facture, [Map<String, Object?>? patient]
 }
 
 // --- synchronisation --------------------------------------------------------------------------------------------------
-const codesRejet = [
-  ('E-101', 'Identifiant fiscal du client absent ou invalide'),
-  ('E-204', 'Montant de TVA incohérent avec le montant HT'),
-  ('E-307', 'Numérotation non séquentielle'),
-  ('E-412', 'Dépassement du délai de transmission'),
-  ('E-500', 'Dispositif temporairement indisponible'),
-];
+List<(String, String)> get codesRejet => enumCodesRejet.paires;
 
 /// La réponse du dispositif pour une facture : ce qu'il faut écrire dessus.
 class ReponseDispositif {
