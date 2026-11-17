@@ -26,6 +26,22 @@ class RefusImportFiscal {
 
   @override
   String toString() => '$code : $motif${chemin.isEmpty ? '' : ' [$chemin]'}';
+
+  /// LA PHRASE que l'écran affiche : « code : motif (chemin). geste. » Le motif et le geste sont des phrases ÉCRITES AVEC leur point final (ou une parenthèse, un guillemet) : les coller par
+  /// `'$motif. $geste'` donnait « …(Unexpected character).. Importer… ». La jonction est faite ICI, une fois, pour TOUS les refus : le point final de chaque morceau est retiré puis
+  /// reposé une seule fois, jamais deux.
+  String get message => refusFiscalPhrase(code, motif, geste, chemin: chemin);
+}
+
+/// Retire les points, points de suspension, virgules, points-virgules, deux-points et espaces de fin d'un morceau de phrase.
+String refusFiscalSansPonctuationFinale(String t) => t.replaceFirst(RegExp(r'[\s.,;:…]+$'), '');
+
+/// Assemble « code : motif (chemin). geste. » sans jamais doubler un signe de fin de phrase, quelle que soit la ponctuation finale du motif ou du geste.
+String refusFiscalPhrase(String code, String motif, String geste, {String chemin = ''}) {
+  final m = refusFiscalSansPonctuationFinale(motif);
+  final g = refusFiscalSansPonctuationFinale(geste);
+  final debut = '$code : $m${chemin.isEmpty ? '' : ' ($chemin)'}';
+  return g.isEmpty ? '$debut.' : '$debut. $g.';
 }
 
 /// Les clés de premier niveau d'une liasse, dans l'ordre du document : toutes obligatoires, aucune autre admise.

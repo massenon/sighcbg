@@ -179,7 +179,7 @@ class _EtatLiasseImport extends State<EcranLiasseImport> {
     if (r == null) return const SizedBox.shrink();
     return Padding(
         padding: const EdgeInsets.only(top: 12),
-        child: NoteSigh('${r.code} : ${r.motif}${r.chemin.isEmpty ? '' : ' (${r.chemin})'}. ${r.geste}', key: const Key('liasse:refus'), ton: TonSigh.danger, icone: LucideIcons.ban));
+        child: NoteSigh(r.message, key: const Key('liasse:refus'), ton: TonSigh.danger, icone: LucideIcons.ban));
   }
 
   /// Ce qui fait foi pour un genre, ou « aucune importée » : jamais un zéro qui se lirait comme un solde.
