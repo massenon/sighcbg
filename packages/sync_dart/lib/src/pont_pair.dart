@@ -13,12 +13,13 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 
 import 'commun.dart';
 import 'depot.dart';
+import 'droits_banc.dart';
 import 'mere.dart';
 
 /// Les droits de l'échange : la MATRICE RBAC engendrée (production) ou la table du banc. Refus nommé (`StateError`) si la matrice est introuvable ou illisible :
 /// une mère qui démarrerait sans droits les accorderait à tous, ou à personne, sans le dire.
-DroitsOperation chargerDroitsPair(String mode, String chemin) {
-  if (mode == 'banc') return droitsDepuisTable(droitsBancPair);
+DroitsOperation chargerDroitsPair(String mode, String chemin, [String cheminBanc = '']) {
+  if (mode == 'banc') return chargerDroitsBanc(cheminBanc);
   if (mode != 'matrice') throw StateError('droits pair inconnus : « $mode » (matrice ou banc)');
   var f = chemin.isEmpty ? null : File(chemin);
   if (f == null) {
@@ -46,7 +47,7 @@ class PontPair {
   /// Les droits de l'échange, lus À CHAQUE ÉVALUATION : si le poste qui porte la mère a injecté les siens (`ConfigMere.droitsPair`, adossés à la matrice EN FORCE — graine
   /// plus décisions de droits), une décision prise à l'écran « Rôles et permissions » vaut aussitôt pour l'échange entre pairs. Sans injection (mère autonome, bancs),
   /// la matrice engendrée `rbac.json` est lue une fois, comme avant : c'est alors LA GRAINE, et elle ne bouge qu'avec le fichier.
-  DroitsOperation get droits => mere.cfg.droitsPair ?? (_depuisFichier ??= chargerDroitsPair(mere.cfg.droits, mere.cfg.matriceChemin));
+  DroitsOperation get droits => mere.cfg.droitsPair ?? (_depuisFichier ??= chargerDroitsPair(mere.cfg.droits, mere.cfg.matriceChemin, mere.cfg.droitsBancChemin));
   DroitsOperation? _depuisFichier;
 
   Depot get base => mere.base;

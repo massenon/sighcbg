@@ -93,7 +93,7 @@ async function monde(opts = {}) {
       if (m.mere.opts.restaurer) a.push('--restaurer=1');
       a.push(`--sauvegardes=${path.join(dir, 'sauvegardes')}`);
       if (m.mere.opts.fichiers) a.push(`--fichiers=${m.mere.opts.fichiers}`); // le dossier des SCANS de la mère (jamais le relais)
-      a.push('--droits=' + (m.mere.opts.droits || process.env.SIGH_DROITS || 'banc')); // la mère Dart : droits du banc par défaut ici, la matrice RBAC en production
+      a.push('--droits=' + (m.mere.opts.droits || process.env.SIGH_DROITS || 'banc'), '--droits-banc=' + path.join(__dirname, 'droits-banc.json')); // la mère Dart : droits du banc par défaut ici, la matrice RBAC en production
       m.mere.proc = await lancer('mere.js', a);
     },
     tuer() { if (m.mere.proc) { m.mere.proc.kill('SIGKILL'); m.mere.proc = null; } return dormir(80); },
@@ -180,7 +180,7 @@ async function monde(opts = {}) {
     const reseau = new Commutateur(m.relais.port); const portReseau = await reseau.demarrer();
     const p = {
       nom, port, proc: null, reseau, base: `http://127.0.0.1:${port}`,
-      async demarrer() { p.proc = await lancer('pair-fileul.js', [`--port=${port}`, `--relais=http://127.0.0.1:${portReseau}`, `--db=${path.join(dir, nom + '.sqlite')}`, `--nom=${nom}`, `--cle=${m.clePair}`, '--intervalle-ms=100', ...(o.copie ? [`--copie=${o.copie}`] : [])]); },
+      async demarrer() { p.proc = await lancer('pair-fileul.js', [`--port=${port}`, `--relais=http://127.0.0.1:${portReseau}`, `--db=${path.join(dir, nom + '.sqlite')}`, `--nom=${nom}`, `--cle=${m.clePair}`, '--intervalle-ms=100', '--droits-banc=' + path.join(__dirname, 'droits-banc.json'), ...(o.copie ? [`--copie=${o.copie}`] : [])]); },
       tuer() { if (p.proc) { p.proc.kill('SIGKILL'); p.proc = null; } return dormir(80); },
       get: (chemin) => appel(p.base, 'GET', chemin).then((r) => r.json),
       post: (chemin, corps) => appel(p.base, 'POST', chemin, corps),

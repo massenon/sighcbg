@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import 'commun.dart';
+import 'droits_banc.dart';
 import 'ordre_copie.dart';
 import 'pont.dart' show Enveloppes;
 
@@ -44,7 +45,7 @@ class FileulPair {
       CREATE INDEX IF NOT EXISTS copie_ops_cle ON copie_ops(cle);
       CREATE TABLE IF NOT EXISTS anomalies (k INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, detail TEXT);''');
     horloge.dernier = base.metaInt('hlc');
-    droits = cfg.droits ?? droitsDepuisTable(droitsBancPair);
+    droits = cfg.droits ?? chargerDroitsBanc();
   }
 
   final ConfigPair cfg;

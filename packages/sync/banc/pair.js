@@ -192,29 +192,8 @@ class JournalRelais {
   appareils() { return Object.keys(this.parAppareil); }
 }
 
-/** Les droits du BANC (la matrice réelle vit dans le domaine : rbac.json). Une opération hors de ces droits est écartée à l'émission ET à la réception. */
-const DROITS_BANC = {
-  stock: { creer: ['stock', 'da'], entree: ['stock', 'da'], bail: ['stock', 'da'], sortie: ['stock', 'da', 'infirmier', 'pharmacien'] },
-  besoins: { soumettre: ['stock', 'infirmier', 'medecin', 'da', 'caissier'], valider: ['da'], rejeter: ['da'] },
-  patients: { '*': ['reception', 'infirmier', 'medecin', 'da', 'x'], trancher: ['da', 'mere'] },
-  rendezvous: { '*': ['reception', 'infirmier', 'medecin', 'da', 'x'], trancher: ['da', 'mere'] },
-  constantes: { '*': ['infirmier', 'medecin', 'x'] },
-  notes: { '*': ['infirmier', 'medecin', 'x'] },
-  factures: { '*': ['caissier', 'da', 'x'], trancher: ['da', 'mere'] },
-  avoirs: { '*': ['comptable', 'da', 'x'], trancher: ['da', 'mere'] },
-  ecritures: { '*': ['comptable', 'da', 'x'], trancher: ['da', 'mere'] },
-  prescriptions: { '*': ['medecin', 'x'] },
-  consultations: { '*': ['medecin', 'da', 'x'], trancher: ['da', 'mere'] },
-  dossiersConsultation: { '*': ['medecin', 'x'], trancher: ['da', 'mere'] },
-  antecedents: { '*': ['medecin', 'infirmier', 'x'], trancher: ['da', 'mere'] },
-  appels: { '*': ['reception', 'da', 'x'], trancher: ['da', 'mere'] },
-  observations: { '*': ['infirmier', 'medecin', 'x'], trancher: ['da', 'mere'] },
-  releves: { '*': ['infirmier', 'medecin', 'x'] },
-  lots: { creer: ['stock', 'da'], entree: ['stock', 'da'], bail: ['stock', 'da'], sortie: ['stock', 'da', 'infirmier', 'pharmacien'] },
-  mouvements: { '*': ['stock', 'da', 'infirmier', 'pharmacien', 'x'] },
-  produits: { '*': ['stock', 'da', 'x'], trancher: ['da', 'mere'] },
-  admissions: { '*': ['reception', 'infirmier', 'medecin', 'da', 'x'], trancher: ['da', 'mere'] },
-};
+/** Les droits du BANC : des DONNÉES (droits-banc.json, lues aussi par la mère et le fileul Dart), jamais des noms de rôle écrits dans le code. La matrice réelle vit dans le domaine : rbac.json. Une opération hors de ces droits est écartée à l'émission ET à la réception. */
+const DROITS_BANC = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'droits-banc.json'), 'utf8')).droits;
 function droitsBanc(op) {
   const c = DROITS_BANC[op.collection]; if (!c) return false;
   const roles = c[op.type] || c['*']; return !!roles && roles.includes(op.role);

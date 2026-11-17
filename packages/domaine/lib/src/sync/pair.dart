@@ -456,40 +456,7 @@ void _flux(EtatPair e, OperationPair op) {
   e.refusees.add(RefusPair(op.id, op.appareil, 'type_invalide', op.type));
 }
 
-/// Les droits du BANC (la matrice réelle vit dans rbac.json) : rôles habilités par collection et par type d'opération (`*` = tous les types).
-const Map<String, Map<String, List<String>>> droitsBancPair = {
-  'stock': {
-    'creer': ['stock', 'da'],
-    'entree': ['stock', 'da'],
-    'bail': ['stock', 'da'],
-    'sortie': ['stock', 'da', 'infirmier', 'pharmacien'],
-  },
-  'besoins': {
-    'soumettre': ['stock', 'infirmier', 'medecin', 'da', 'caissier'],
-    'valider': ['da'],
-    'rejeter': ['da'],
-  },
-  'patients': {'*': ['reception', 'infirmier', 'medecin', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'rendezvous': {'*': ['reception', 'infirmier', 'medecin', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'constantes': {'*': ['infirmier', 'medecin', 'x']},
-  'notes': {'*': ['infirmier', 'medecin', 'x']},
-  'factures': {'*': ['caissier', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'avoirs': {'*': ['comptable', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'lots': {'creer': ['stock', 'da'], 'entree': ['stock', 'da'], 'bail': ['stock', 'da'], 'sortie': ['stock', 'da', 'infirmier', 'pharmacien']},
-  'mouvements': {'*': ['stock', 'da', 'infirmier', 'pharmacien', 'x']},
-  'produits': {'*': ['stock', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'admissions': {'*': ['reception', 'infirmier', 'medecin', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'ecritures': {'*': ['comptable', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'prescriptions': {'*': ['medecin', 'x']},
-  'consultations': {'*': ['medecin', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'dossiersConsultation': {'*': ['medecin', 'x'], 'trancher': ['da', 'mere']},
-  'antecedents': {'*': ['medecin', 'infirmier', 'x'], 'trancher': ['da', 'mere']},
-  'appels': {'*': ['reception', 'da', 'x'], 'trancher': ['da', 'mere']},
-  'observations': {'*': ['infirmier', 'medecin', 'x'], 'trancher': ['da', 'mere']},
-  'releves': {'*': ['infirmier', 'medecin', 'x']},
-};
-
-/// Construit un contrôle de droits depuis une table (celle du banc, ou celle déduite de la matrice RBAC quand le poste la branchera).
+/// Construit un contrôle de droits depuis une table (celle du banc, LUE d'un fichier de données `droits-banc.json` — jamais écrite dans le code — ou celle déduite de la matrice RBAC).
 DroitsOperation droitsDepuisTable(Map<String, Map<String, List<String>>> table) => (op) {
       final c = table[op.collection];
       if (c == null) return false;

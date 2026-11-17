@@ -274,6 +274,7 @@ class ConfigMere {
     this.cleStockage = '',
     this.droits = 'matrice',
     this.matriceChemin = '',
+    this.droitsBancChemin = '',
     this.versionApplication = '0.1.0',
     this.dossierFichiers = '',
   });
@@ -294,6 +295,9 @@ class ConfigMere {
 
   /// Chemin de `rbac.json` ; vide : cherché en remontant depuis le dossier courant (`packages/rbac/data/rbac.json`).
   final String matriceChemin;
+
+  /// Chemin de `droits-banc.json` (mode `banc` seulement) ; vide : cherché en remontant depuis le dossier courant (`packages/sync/banc/droits-banc.json`).
+  final String droitsBancChemin;
 
   /// Les droits de l'échange entre pairs fournis par le poste qui porte la mère, À ÉVALUER à chaque opération (la matrice EN FORCE : les décisions de droits y sont
   /// déjà). Posé après la construction : la mère démarre avant le magasin du poste. `null` : la matrice engendrée `rbac.json`, qui n'est que la graine.
