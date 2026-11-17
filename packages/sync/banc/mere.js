@@ -77,7 +77,16 @@ const FAMILLES = {
   /* LE PLANNING À TRAVERS LES POSTES (17/11/2026, décision 12) : vacations, propositions, congés, ordres de mission et présences, fiches descriptives (A) ; miroir de `mere.dart`.
      `presences` était poussée par le pont mais absente de la table : refusée `collection_inconnue`. La validation se dépose (genre `planning_rh`) ; jamais vers un téléphone. */
   planning: 'A', propositionsPlanning: 'A', conges: 'A', missions: 'A', presences: 'A',
+  /* LA FACTURE À UNE ENTREPRISE (17/11/2026, point 2) : la pièce émise et son avoir, fiches d'identité commune lues par tous les postes (A) ; l'ÉMISSION reste à la mère (refus nommé à un poste,
+     `refusEcritureFactureTiers`), un fileul dépose une demande (`validationsDeposees`, genre `facture_tiers`) ; jamais vers un téléphone. Miroir de `mere.dart`. */
+  facturesTiers: 'A', avoirsTiers: 'A',
 };
+/* Miroir de `packages/domaine/lib/src/mecef/facture_tiers_synchro.dart` (`refusEcritureFactureTiers`) : un poste n'écrit ni la facture à une entreprise ni son avoir, la mère seule émet. */
+const FACTURES_TIERS_COLLECTIONS = ['facturesTiers', 'avoirsTiers'];
+function refusFactureTiersEcriture(collection, mere) {
+  if (mere || !FACTURES_TIERS_COLLECTIONS.includes(collection)) return null;
+  return ['emission_reservee_mere', 'Une facture à une entreprise et son avoir ne s’écrivent que sur le poste mère : elle seule tient la numérotation et la normalisation fiscale.', 'Déposer une demande (« Émettre une facture à une entreprise ») : la mère l’applique sous votre rôle.'];
+}
 /* Miroir de `packages/domaine/lib/src/rh/planning_synchro.dart` (`refusPlanningRh`) : la mère REFAIT le contrôle d'une pièce du planning écrite par un poste (jamais validée par lui, une validation
    ne se défait pas, une vacation validée ne se réécrit pas). */
 const PLANNING_COLLECTIONS = ['planning', 'propositionsPlanning', 'conges', 'missions', 'presences'];
@@ -235,7 +244,7 @@ function refusActionPta(type, champs, actuelle, plan) {
 /* Les champs que SEULE la mère écrit sur une demande d'import (miroir de `champsVerdictDemandeImport`, packages/domaine/lib/src/import/demande_import.dart). */
 const CHAMPS_VERDICT_DEMANDE_IMPORT = ['resultatCode', 'resultatMotif', 'resultatGeste', 'resultatLot', 'resultatEcrits', 'resultatAdoptee', 'resultatSerie', 'traitePar', 'traiteLe'];
 /* Ce qu'un téléphone ne reçoit JAMAIS de la mère : les lignes d'un fichier d'import (patients, prix, soldes) et leur verdict (RG-13). */
-const MOBILE_JAMAIS = ['besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements', 'planning', 'propositionsPlanning', 'conges', 'missions', 'presences']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
+const MOBILE_JAMAIS = ['facturesTiers', 'avoirsTiers', 'besoins', 'commandes', 'demandesImport', 'validationsDeposees', 'lecturesOcr', 'reglagesOcr', 'prestataires', 'garanties', 'couverturesAssurance', 'budgets', 'immobilisations', 'jetonsEnquete', 'reponsesEnquetes', 'regimesIndividuels', 'planAnnuel', 'plansTravail', 'ptaAxes', 'ptaEtats', 'ptaFinancements', 'planning', 'propositionsPlanning', 'conges', 'missions', 'presences']; /* prestataires : la rémunération ne part jamais vers un téléphone ; garanties et couvertures : donnée conventionnée et nominative (RG-13) */
 /* Décision du 13/11/2026 : le journal des demandes d'import (lignes en clair jusqu'au verdict) est RÉSERVÉ à la mère et au poste AUTEUR. Une demande est lue (pull) et écrite (push) par
    la mère et par l'appareil qui l'a CRÉÉE — la fiche d'un autre fileul n'est ni reçue ni modifiable. L'auteur est l'appareil de l'opération `creer` (authentifié), jamais un champ de la fiche. */
 const PORTEE_DEMANDES_IMPORT = "collection='demandesImport'";
@@ -371,6 +380,9 @@ function traiter(op, app) {
       if (r) return refus(r[0], r[1], r[2]);
     }
   }
+  /* LA FACTURE À UNE ENTREPRISE : la mère seule l'écrit (refus nommé à un poste, qui dépose une demande). */
+  const reserveFT = refusFactureTiersEcriture(op.collection, app.role === 'mere');
+  if (reserveFT) return refus(reserveFT[0], reserveFT[1], reserveFT[2]);
   /* LE PLANNING : la mère refait le contrôle d'un poste (pièce jamais créée validée, validation non écrite par un poste ni défaite, vacation validée non réécrite). */
   if (PLANNING_COLLECTIONS.includes(op.collection) && app.role !== 'mere' && ((op.type === 'creer' && !f) || op.type === 'modifier')) {
     const r = refusPlanningRh(op.collection, op.type, op.champs || {}, f && f.data ? f.data : undefined);

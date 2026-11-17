@@ -79,6 +79,7 @@ AvoirEmis emettreAvoir({
   bool mecefActif = true,
   List<Map<String, Object?>> facturesMere = const [],
   List<Map<String, Object?>> avoirs = const [],
+  List<Map<String, Object?>>? avoirsNumerotation,
 }) {
   if (facture == null) throw const RefusAvoir('Facture introuvable.');
   if (facture['type'] == 'Avoir' || _n(facture['montantTTC']) < 0) {
@@ -116,7 +117,9 @@ AvoirEmis emettreAvoir({
   }
 
   final jourAvoir = (date == null || date.isEmpty) ? jour : jourEcrit(date);
-  final reference = referenceAvoir(jourAvoir, avoirs);
+  // [avoirsNumerotation] : la série `caisse.avoirs` est UNE ; l'avoir d'une facture à une entreprise (collection à part) passe ses avoirs en [avoirs] (le plafond cumulé ne
+  // porte que sur SA pièce) et TOUS les avoirs émis ici, pour que deux collections ne donnent jamais le même numéro.
+  final reference = referenceAvoir(jourAvoir, avoirsNumerotation ?? avoirs);
   final suite = remboursement == null || remboursement.isEmpty ? 'creance' : remboursement;
   final fiche = <String, Object?>{
     'reference': reference,

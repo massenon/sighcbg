@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon;
+import 'package:sigh_domaine/sigh_domaine.dart' show champDepartCompteurs, champEnAttenteMere, assCouverturesEnConflit, champSerieDemande, ficheLocaleAuPoste, collectionsCircuitAchat, fusionnerCircuitAchat, fusionnerPlanTravail, ptaCollectionPlans, planningCollectionsSync, fusionnerPlanningRh, planningAffectationsEnDoublon, facturesTiersCollectionsSync;
 
 import '../donnees/magasin.dart';
 import 'fusion_activite.dart';
@@ -100,6 +100,9 @@ const Set<String> collectionsActivite = {
   'conges',
   'missions',
   // `presences` est déjà plus haut (lot L8).
+  // LA FACTURE À UNE ENTREPRISE (Direction de Baguidi, 17/11/2026, point 2) : la pièce émise par la mère et son avoir sont LUS partout (famille A de la mère) ; seule la MÈRE les écrit : un fileul n'en
+  // envoie rien (`collectionsDeLaMereSeule`) et dépose une demande (`validationsDeposees`, genre `facture_tiers`). Jamais vers un téléphone (IFU et nom d'entreprise, souscripteur : RG-13).
+  ...facturesTiersCollectionsSync,
 };
 
 /// Les collections en AJOUT SEUL (famille B de la mère) : une fiche écrite ne se modifie jamais, ni ici ni là-bas. Quand le journal porte déjà la fiche, le pont n'y renvoie RIEN : la copie
@@ -107,7 +110,7 @@ const Set<String> collectionsActivite = {
 const Set<String> collectionsAjoutSeul = {'lecturesOcr'};
 
 /// Les référentiels d'ACTIVITÉ que la mère seule écrit (famille R de la mère) : un fileul les reçoit, il ne les envoie pas.
-const Set<String> collectionsDeLaMereSeule = {'produits'};
+const Set<String> collectionsDeLaMereSeule = {'produits', ...facturesTiersCollectionsSync};
 
 /// Le registre des VARIATIONS de compteur dans le journal (stock des produits, quantité restante des lots).
 const String collectionDeltas = 'deltasCompteurs';

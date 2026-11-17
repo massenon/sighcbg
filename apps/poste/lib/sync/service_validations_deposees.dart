@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../donnees/facture_tiers_poste.dart';
 import '../donnees/magasin.dart';
 import '../donnees/planning_rh_poste.dart';
 import '../core/service_parametres.dart';
@@ -73,6 +74,81 @@ class ServiceValidationsDeposees {
     _signaler(famille);
     magasin.journaliser('Validation transmise à la mère', f.module, f.libelle, '$id', null, {'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], if (motif != null && motif.trim().isNotEmpty) 'motif': motif.trim()});
     return r;
+  }
+
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+  // FACTURE À UNE ENTREPRISE (17/11/2026, point 2) : émission, avoir et transmission demandés depuis un fileul
+  // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+  /// DÉPOSE une demande sur une facture à une entreprise (`emettre`, `avoir`, `transmettre`) : l'émission reste à la mère, qui tient la numérotation et l'appareil fiscal. Même collection, même cycle de
+  /// verdict, même notification de l'auteur que les autres dépôts. Refus nommé (mêmes contrôles que le geste direct) ou le dépôt écrit ; une demande identique en attente n'est pas doublée.
+  /// [facture] : la pièce visée par un avoir ou une transmission, telle que ce poste la voit.
+  VerdictDepot deposerFactureTiers(String action, Map<String, Object?> charge, {required String role, required String acteur, Fiche? facture, DroitsGestes? gestes}) {
+    final r = factureTiersDeposer(
+        action: action,
+        charge: charge,
+        role: role,
+        acteur: acteur,
+        poste: etiquette,
+        maintenant: _maintenant,
+        gestes: gestes ?? this.gestes,
+        depots: depots.toutes,
+        nouvelId: _nouvelId,
+        facture: facture);
+    if (!r.ok || r.dejaDepose) return r;
+    _signer(r.fiche!);
+    try {
+      depots.ajouterSansJournal(r.fiche!, enTete: true);
+    } on EcritureRefusee catch (e) {
+      return VerdictDepot.refus(RefusValidation('ECRITURE_REFUSEE', e.motif, null));
+    }
+    _signalerFacturesTiers();
+    magasin.journaliser('Demande transmise à la mère', 'M9', r.fiche!['libelle'] as String, '${r.fiche!['cible']}', null,
+        {'déposée par': acteur, 'rôle': role, 'dépôt': r.fiche!['id'], 'demande': action});
+    return r;
+  }
+
+  /// Le dépôt d'une demande qui attend encore la mère, ou le dernier refusé (`null` : aucun) : l'écran dit « transmise à la mère, en attente » ou donne le motif nommé.
+  Fiche? depotFactureTiersAttendu(String action, String cible) => depotFactureTiersOuvert(depots.toutes, action, cible);
+
+  void _signalerFacturesTiers() {
+    for (final c in facturesTiersCollectionsSync) {
+      magasin.collection(c).signaler();
+    }
+  }
+
+  final Set<String> _transmissionsEnVol = {};
+
+  /// Applique UNE demande sur une facture à une entreprise (la mère) : sous le rôle et le nom de l'auteur, avec la matrice en force, contrôles refaits. Une transmission vers un appareil CONFIGURÉ est
+  /// asynchrone : elle part en tâche de fond et le verdict s'écrit à son retour (jamais deux fois : `_transmissionsEnVol`). Rend vrai quand un verdict est écrit à l'instant.
+  bool _appliquerFactureTiers(Fiche d) {
+    final v = appliquerDepotFactureTiers(magasin, d, maintenant: _maintenant, gestes: gestes);
+    if (v == null) {
+      final id = '${d['id']}';
+      if (_transmissionsEnVol.add(id)) {
+        appliquerTransmissionDemandeeFactureTiers(magasin, d, maintenant: _maintenant, gestes: gestes).then((r) {
+          _ecrireVerdictFactureTiers(d, r);
+          _signalerFacturesTiers();
+        }).whenComplete(() => _transmissionsEnVol.remove(id));
+      }
+      return false;
+    }
+    _ecrireVerdictFactureTiers(d, v);
+    return true;
+  }
+
+  void _ecrireVerdictFactureTiers(Fiche d, VerdictDemandeFactureTiers v) {
+    depots.mettreAJour(d['id'], {
+      'etat': v.etat,
+      'traiteLe': _maintenant.toUtc().toIso8601String(),
+      'traitePar': auteurMere(),
+      'signeLe': d['demandeInstant'] ?? d['demandeLe'],
+      if (v.etat == valDepotAppliquee) 'appliqueLe': _maintenant.toUtc().toIso8601String(),
+      if (v.code != null) 'resultatCode': v.code,
+      if (v.motif != null) 'resultatMotif': v.motif,
+      if (v.geste != null) 'resultatGeste': v.geste,
+      if (v.reference != null) 'resultatReference': v.reference,
+    }, journaliser: false);
   }
 
   /// CIRCUITS D'ACHAT (16/11/2026) : DÉPOSE l'arbitrage d'un besoin (`besoin_arbitrage`) ou la validation d'une commande (`commande_validation`). Même collection, même cycle de verdict,
@@ -576,7 +652,14 @@ class ServiceValidationsDeposees {
     ]) {
       final etat = '${d['etat']}';
       final quoi = '« ${d['libelle'] ?? d['famille']} » (${d['cible']})';
-      final (type, libelle, detail, priorite) = switch (etat) {
+      final ref = d['resultatReference'] == null ? '' : ' (${d['resultatReference']})';
+      final (type, libelle, detail, priorite) = d['genre'] == valGenreFactureTiers
+          ? switch (etat) {
+              valDepotAppliquee => ('validation_confirmee', 'Demande appliquée par la mère', '$quoi : la mère a appliqué votre demande$ref.${d['resultatMotif'] == null ? '' : ' ${d['resultatMotif']}'}', 'normale'),
+              valDepotSansEffet => ('validation_confirmee', 'Demande déjà satisfaite', '$quoi : ${d['resultatMotif'] ?? 'déjà fait'}', 'normale'),
+              _ => ('validation_refusee', 'Demande refusée par la mère', '$quoi : ${d['resultatCode']} : ${d['resultatMotif']} ${d['resultatGeste'] ?? ''}'.trim(), 'haute'),
+            }
+          : switch (etat) {
         valDepotAppliquee => ('validation_confirmee', 'Validation confirmée par la mère', '$quoi : votre validation est appliquée.', 'normale'),
         valDepotSansEffet => ('validation_confirmee', 'Validation déjà faite', '$quoi : ${d['resultatMotif'] ?? 'déjà validé'}', 'normale'),
         _ => ('validation_refusee', 'Validation refusée par la mère', '$quoi : ${d['resultatCode']} : ${d['resultatMotif']} ${d['resultatGeste'] ?? ''}'.trim(), 'haute'),
@@ -596,6 +679,7 @@ class ServiceValidationsDeposees {
       depots.mettreAJour(d['id'], {'notifieLe': _maintenant.toUtc().toIso8601String()}, journaliser: false);
       _signaler('${d['famille']}');
       if (d['genre'] == valGenreCircuitAchat) magasin.collection(d['famille'] == circuitBesoinArbitrage ? 'besoins' : 'commandes').signaler();
+      if (d['genre'] == valGenreFactureTiers) _signalerFacturesTiers();
       if (d['genre'] == valGenrePta) magasin.collection(ptaCollectionPlans).signaler();
       if (d['genre'] == valGenrePlanningRh) {
         for (final c in planningCollectionsSync) {
@@ -744,6 +828,10 @@ class ServiceValidationsDeposees {
         }
         if (d['genre'] == valGenrePlanningRh) {
           if (_appliquerPlanning(d)) n++;
+          continue;
+        }
+        if (d['genre'] == valGenreFactureTiers) {
+          if (_appliquerFactureTiers(d)) n++;
           continue;
         }
         final a = valAppliquerDepot(d, lire: _lire, libelles: _libelles, maintenant: _maintenant);

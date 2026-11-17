@@ -20,7 +20,8 @@
 
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, cleImprimanteIntegree, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
-import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
+import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer, gesteFactureTiersEmettre;
+import '../mecef/facture_tiers_payeur.dart' show factureTiersCleSignataires;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../notifications/routage_notifications.dart';
 import '../paie/pai_baremes.dart';
@@ -701,6 +702,20 @@ const List<DefinitionParametre> definitionsParametres = [
     source: 'Valeur d\'attente reprise de l\'ancien moteur des achats (NEINSTRUCTION2) : à confirmer par la Direction de Baguidi',
     branche: true,
     appliquePar: 'Arbitrage des besoins (m7-besoins) et file des notifications de poste',
+  ),
+  // LES SIGNATAIRES DE LA FACTURE À UNE ENTREPRISE (Direction de Baguidi, 17/11/2026, « RIEN en dur ») : la pièce imprimée porte les postes que la clinique désigne ; leur titulaire est lu à
+  // l'organigramme. Vide, le poste qui coiffe l'organigramme signe. Aucun intitulé de poste ni nom n'est écrit dans le code.
+  DefinitionParametre(
+    cle: factureTiersCleSignataires,
+    famille: 'caisse',
+    type: TypeParametre.texte,
+    defaut: '',
+    libelle: 'Postes signataires de la facture à une entreprise',
+    aide: 'Les POSTES de l\'organigramme (intitulé ou code, séparés par un point-virgule) dont la signature figure sur la facture à une entreprise imprimée ; leur titulaire est lu à l\'organigramme, jamais saisi ici. Vide : le poste qui coiffe l\'organigramme signe. Un poste absent de l\'organigramme s\'imprime tel qu\'écrit, sans nom. L\'acheteur signe toujours une ligne « Reçu le / Signature » : ce n\'est pas un poste de la clinique.',
+    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §9) : rien en dur, signataires lus à l\'organigramme ; pièce du point 2 du 17/11/2026',
+    branche: true,
+    appliquePar: 'Facture à une entreprise (m9-facture-mere) : impression de la pièce',
+    geste: gesteFactureTiersEmettre,
   ),
 
   // LE TARIF D'UNE COURSE D'AMBULANCE SANS MONTANT SAISI (lot 1 de l'inventaire des valeurs en dur) : 5 000 F + 500 F par kilomètre vivaient en dur dans le moteur. Aucun

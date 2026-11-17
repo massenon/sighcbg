@@ -12,6 +12,7 @@ library;
 
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../droits/gestes_reserves.dart';
+import '../mecef/facture_tiers_payeur.dart' show factureTiersCleSignataires;
 import '../parametres/definitions.dart';
 import '../parametres/parametres.dart';
 import 'validation.dart' show RefusValidation, valInstant;
@@ -28,6 +29,8 @@ const Map<String, String> reglagesSousGeste = {
   ptaCleSeuilRetard: gestePtaRegler,
   ptaClePrefixe: gestePtaRegler,
   ptaCleSignataires: gestePtaRegler,
+  // Les signataires de la facture à une entreprise (17/11/2026) : le geste qui l'émet.
+  factureTiersCleSignataires: gesteFactureTiersEmettre,
 };
 
 /// Le geste réservé qui pose ce réglage (`null` : le réglage suit le droit d'éditer l'écran des paramètres, sur la mère).
