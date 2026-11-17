@@ -123,7 +123,7 @@ class EcranExterne extends StatelessWidget with EcranMaquette {
           nom: 'assureur',
           libelle: 'Assurance',
           type: TypeChamp.select,
-          options: [const OptionChamp('', 'Aucune — paiement intégral'), for (final a in patAssureurs) OptionChamp(a.$2)]),
+          options: [const OptionChamp('', 'Aucune — paiement intégral'), for (final a in c.magasin.collection('assureurs').actives) OptionChamp('${a['nom']}')]),
       const ChampDef(nom: 'taux', libelle: 'Taux de prise en charge (%)', type: TypeChamp.nombre),
     ];
   }

@@ -6,14 +6,10 @@ import '../imagerie/img_demandes_poste.dart' show imgExecutantImagerie;
 import '../droits/gestes_reserves.dart' show DroitsGestes;
 import '../labo/res_habilitations.dart' show SessionLabo, capacites, libelleSecteur;
 import 'pat_patients.dart';
+import '../parametres/enumerations.dart';
 
 /// `D.TEMPS_EXAMEN` : l'examen physique suit ses quatre temps, DANS L'ORDRE.
-const patTempsExamen = [
-  ('inspection', 'Inspection'),
-  ('palpation', 'Palpation'),
-  ('percussion', 'Percussion'),
-  ('auscultation', 'Auscultation'),
-];
+List<(String, String)> get patTempsExamen => enumTempsExamen.paires;
 
 /// `D.APPAREILS_EXAMEN` : (code, libellé, porte la menstruation ?).
 const patAppareilsExamen = <(String, String, bool)>[
@@ -92,11 +88,7 @@ List<PatLigneExamen> patSyntheseExamen(Map<String, Object?>? examens) {
 }
 
 /// Les trois catégories d'antécédents du dossier de consultation (`D.CATEGORIES_ANTECEDENT`).
-const patCategoriesAntecedent = [
-  ('medicaux', 'Antécédents médicaux'),
-  ('chirurgicaux', 'Antécédents chirurgicaux'),
-  ('gyneco_obstetricaux', 'Antécédents gynéco-obstétricaux'),
-];
+List<(String, String)> get patCategoriesAntecedent => enumCategoriesAntecedent.paires;
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // L'imagerie médicale au dossier : le RBAC métier s'applique comme pour les analyses

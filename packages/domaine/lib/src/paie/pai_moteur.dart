@@ -21,6 +21,7 @@ import '../rh/double_paiement_prime.dart' show doublePaiementLigneRh;
 import '../rh/regime_individuel.dart' show honoraireRegimeMoisRh;
 import '../numerotation/numerotation.dart';
 import 'pai_baremes.dart';
+import '../parametres/enumerations.dart';
 
 typedef PaiFiche = Map<String, Object?>;
 
@@ -177,23 +178,7 @@ class PaiPrime {
 final List<PaiPrime> paiPrimesNs132 = List.unmodifiable([for (final p in rhbPrimesOrigine) PaiPrime(p.id, p.label, p.mode, p.montants)]);
 
 /// `D.FONCTIONS` (id → libellé) : les colonnes de la grille des primes et les fonctions du personnel.
-const Map<String, String> paiFonctions = {
-  'aide_soignant': 'Aide-soignant(e)',
-  'caissiere': 'Caissière',
-  'accueil': 'Accueil / Secrétaire médical',
-  'infirmier': 'Infirmier(ère)',
-  'sage_femme': 'Sage-femme',
-  'tsl': 'TSL (Technicien Supérieur de Laboratoire)',
-  'biomedical': 'Ingénieur biomédical',
-  'medecin': 'Médecin',
-  'direction': 'Direction',
-  'comptable': 'Comptable',
-  'stock': 'Gestionnaire de stock',
-  'dispensatrice': 'Dispensatrice',
-  'securite': 'Agent de sécurité',
-  'entretien': 'Agent d’entretien',
-  'chauffeur': 'Chauffeur coursier',
-};
+Map<String, String> get paiFonctions => enumFonctionsPaie.libelles;
 
 /// `fonctionLabel(id)` : le libellé, ou l'identifiant lui-même s'il est inconnu.
 String paiFonctionLibelle(Object? id) => paiFonctions['$id'] ?? '${id ?? ''}';
@@ -1190,7 +1175,7 @@ List<PaiEcheance> paiEcheancier(PaiFiche p) {
 num paiSoldePret(PaiFiche p) => paiEcheancier(p).where((e) => !e.retenue).fold<num>(0, (a, e) => a + e.montant);
 
 String paiNaturePret(Object? n) =>
-    const {'pret_etudes': 'Prêt-études', 'avance': 'Avance sur salaire', 'pret_social': 'Prêt social'}['$n'] ?? '$n';
+    enumNaturesPret.libelles['$n'] ?? '$n';
 
 /// `transform` du prêt à la création : référence, agent et matricule recopiés du dossier, aucune échéance retenue.
 PaiFiche paiPretTransform(PaiFiche v, PaiFiche? agent, {required String reference}) => {

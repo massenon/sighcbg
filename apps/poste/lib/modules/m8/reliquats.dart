@@ -132,14 +132,7 @@ class EcranReliquats extends StatelessWidget with EcranMaquette {
                     'Aucun reliquat en cours : toutes les factures sont soldées.',
                 filtres: [
                   FiltreTableau(nom: 'type', libelle: 'Nature', options: [
-                    for (final x in const [
-                      'Consultation',
-                      'Hospitalisation',
-                      'Laboratoire',
-                      'Pharmacie',
-                      'Soins à domicile'
-                    ])
-                      OptionChamp(x)
+                    for (final x in naturesFactureListe) OptionChamp(x)
                   ])
                 ],
                 alClicLigne: (f) => afficherTiroir<void>(context,

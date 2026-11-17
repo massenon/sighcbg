@@ -2,6 +2,7 @@ import '../format/format_fr.dart';
 import '../format/recherche.dart' show trierPar;
 import '../impression/identite.dart';
 import '../numerotation/numerotation.dart';
+import '../parametres/enumerations.dart';
 
 /// RÈGLES DE CFG — dix écrans de configuration : organisation, identité, référentiel tarifaire, catalogue à deux prix, en-têtes, types de pièces, rappels,
 /// certificats, natures de facture, catalogue de l'imagerie. Portées de `prototype_html/assets/js/modules/configuration.js` et rejouées sur les vecteurs
@@ -68,14 +69,19 @@ class CfaIdentite {
 }
 
 /// `D.FAMILLES_TARIF` : (code, libellé, icône).
-const cfaFamillesTarif = <(String, String, String)>[
-  ('CONSULTATION', 'Consultations', 'stethoscope'),
-  ('IMAGERIE', 'Imagerie médicale', 'scan-line'),
-  ('LABO', 'Analyses de laboratoire', 'flask-conical'),
-  ('AMI', 'Actes médico-infirmiers', 'syringe'),
-  ('GYNECO', 'Actes gynéco-obstétricaux et kits', 'baby'),
-  ('CERTIFICAT', 'Certificats et attestations', 'file-badge'),
-];
+const _iconesFamilleTarif = {
+  'CONSULTATION': 'stethoscope',
+  'IMAGERIE': 'scan-line',
+  'LABO': 'flask-conical',
+  'AMI': 'syringe',
+  'GYNECO': 'baby',
+  'CERTIFICAT': 'file-badge',
+};
+
+/// Les six familles que propose l'écran des tarifs d'imagerie et de laboratoire, dans l'ordre de l'écran : l'ordre et le sous-ensemble sont ceux de l'ÉCRAN (codes ici), le libellé est
+/// celui du réglage `libelles.cfg.famillesTarif` ; l'icône est un détail de présentation (code → icône).
+const _codesFamillesTarifCfa = ['CONSULTATION', 'IMAGERIE', 'LABO', 'AMI', 'GYNECO', 'CERTIFICAT'];
+List<(String, String, String)> get cfaFamillesTarif => [for (final (c, l) in enumFamillesTarif.paresDe(_codesFamillesTarifCfa)) (c, l, _iconesFamilleTarif[c]!)];
 
 /// `D.IMAGERIE.TYPES` : (code, libellé) des types de variable d'un compte rendu d'imagerie.
 const cfaTypesVariableImagerie = <(String, String)>[

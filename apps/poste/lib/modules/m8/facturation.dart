@@ -190,7 +190,7 @@ class _EtatFacturation extends State<EcranFacturation> {
           requis: true,
           col: ColChamp.plein,
           options: [
-            for (final x in modesPaiement.take(4)) OptionChamp(x.$1, x.$2)
+            for (final x in modesPaiementPatient) OptionChamp(x.$1, x.$2)
           ]),
       const ChampDef(
           nom: 'regle',
@@ -613,9 +613,8 @@ class _EtatFacturation extends State<EcranFacturation> {
           type: TypeChamp.select,
           requis: true,
           options: [
-            for (final s in c.magasin.referentiel('secteursActivite'))
-              OptionChamp('${s['id'] ?? s['label'] ?? s}',
-                  '${s['label'] ?? s['libelle'] ?? s}')
+            for (final s in ListesReference.valeurs('listes.cfg.secteursActivite'))
+              OptionChamp(s)
           ]),
     ]);
     await afficherModale<void>(context,

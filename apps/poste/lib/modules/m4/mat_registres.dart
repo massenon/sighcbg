@@ -286,7 +286,7 @@ class EcranAccouchements extends StatelessWidget with EcranMaquette {
             nom: 'complications',
             libelle: 'Complications',
             type: TypeChamp.select,
-            options: _opts(const ['Aucune', 'Hémorragie de la délivrance', 'Souffrance fœtale', 'Dystocie', 'Éclampsie'])),
+            options: _opts(ListesReference.valeurs('listes.m4.complicationsAccouchement'))),
         ChampDef(nom: 'issue', libelle: 'Issue', type: TypeChamp.select, requis: true, options: _opts(const ['Favorable', 'Défavorable'])),
         const ChampDef(nom: 'observations', libelle: 'Observations', type: TypeChamp.textarea, lignes: 2, col: ColChamp.plein),
       ],

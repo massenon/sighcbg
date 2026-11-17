@@ -61,7 +61,7 @@ class _EcranPaiementsState extends State<EcranPaiements> {
     final actives = _col!.actives;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       KpiGrilleSigh(kpis: [
-        for (final mode in modesPaiement.take(4))
+        for (final mode in modesPaiementPatient)
           () {
             final f = [
               for (final x in actives)

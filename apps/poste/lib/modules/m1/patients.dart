@@ -90,7 +90,7 @@ List<ChampDef> champsPatient(ContexteEcran c, Fiche? r) {
         nom: 'assureur',
         libelle: 'Compagnie d’assurance',
         type: TypeChamp.select,
-        options: [for (final a in patAssureurs) OptionChamp(a.$1, a.$2)]),
+        options: [for (final a in c.magasin.collection('assureurs').actives) OptionChamp('${a['code']}', '${a['nom']}')]),
     const ChampDef(nom: 'numeroPolice', libelle: 'Numéro de police'),
     const ChampDef(nom: 'tauxPriseEnCharge', libelle: 'Taux de prise en charge (%)', type: TypeChamp.nombre),
     const ChampDef(
@@ -328,7 +328,7 @@ class EcranPatients extends StatelessWidget with EcranMaquette {
                       messageVide: 'Aucun patient enregistré.',
                       triInitial: 'code',
                       transformer: (cc, s, e) {
-                        final v = patTransformerPatient(s, e, cc.aujourdhui);
+                        final v = patTransformerPatient(s, e, cc.aujourdhui, assureurs: cc.magasin.collection('assureurs').actives);
                         return v;
                       },
                       detail: (cc, f) => FichePatient(f),
@@ -415,7 +415,7 @@ class _EtatPatientNouveau extends State<EcranPatientNouveau> {
       ToastsSigh.afficher(context, refus, type: TypeToast.erreur);
       return;
     }
-    final v = patTransformerPatient(convertirSaisie(_champs, brut), null, c.aujourdhui);
+    final v = patTransformerPatient(convertirSaisie(_champs, brut), null, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives);
     final r = col.inserer({
       'statut': 'actif',
       'code': _code,
@@ -554,7 +554,7 @@ class _EtatProfil extends State<EcranPatientProfil> {
                       return;
                     }
                     // La MÊME transformation que le répertoire (écart E315).
-                    final v = patTransformerPatient(convertirSaisie(defs, brut), p, c.aujourdhui);
+                    final v = patTransformerPatient(convertirSaisie(defs, brut), p, c.aujourdhui, assureurs: c.magasin.collection('assureurs').actives);
                     fermer();
                     final annuler = c.magasin.collection('patients').mettreAJour(p['id'], v);
                     ToastsSigh.afficher(ctx, 'Modifications enregistrées.', type: TypeToast.succes, annuler: annuler);

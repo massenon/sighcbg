@@ -11,16 +11,9 @@
 /// RÉSERVÉ À LA MÈRE : la mère seule écrit le référentiel (famille R). Un fileul ne dépose pas un fichier : il propose à l'écran, la demande part à la mère (`propositionsTarif`).
 part of 'jeux_import.dart';
 
-const List<(String, String)> _famillesPrix = [
-  ('CONSULTATION', 'Consultations'),
-  ('ACTE', 'Actes'),
-  ('HOSPITALISATION', 'Hospitalisation'),
-  ('AMI', 'Actes médico-infirmiers'),
-  ('GYNECO', 'Gynéco-obstétrique et kits'),
-  ('CERTIFICAT', 'Certificats et attestations'),
-  ('LABO', 'Analyses de laboratoire'),
-  ('IMAGERIE', 'Imagerie médicale'),
-];
+/// Les familles que l'import des tarifs accepte, dans l'ordre de son modèle : les codes sont ceux de l'énumération structurelle (UNE définition), le libellé celui du réglage.
+const _codesFamillesPrix = ['CONSULTATION', 'ACTE', 'HOSPITALISATION', 'AMI', 'GYNECO', 'CERTIFICAT', 'LABO', 'IMAGERIE'];
+List<(String, String)> get _famillesPrix => enumFamillesTarif.paresDe(_codesFamillesPrix);
 const List<(String, String)> _couverturesPrix = [('toutes', 'Toutes compagnies'), ('sos', 'SOS seule'), ('non', 'Non couvert')];
 const Map<String, Object> _assurableDe = {'toutes': true, 'sos': 'sos', 'non': false};
 const Map<String, String> _colonneDuRefus = {

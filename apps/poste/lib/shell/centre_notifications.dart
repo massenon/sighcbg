@@ -189,7 +189,7 @@ final List<_Source> _sources = [
         _Ligne(
             'creance:${a.assureur}',
             a.jours > a.seuil * 1.5 ? 'critique' : 'important',
-            '${_nomAssureur(a.assureur)} : ${money(a.montant, avecDevise: false)} en souffrance',
+            '${_nomAssureur(m, a.assureur)} : ${money(a.montant, avecDevise: false)} en souffrance',
             '${nombre(a.nb)} facture(s), jusqu’à ${a.jours} jours d’ancienneté (seuil retenu : ${_entier(a.seuil)} jours). Cette créance pèse sur le besoin en fonds de roulement.',
             'm9-relances',
             null,
@@ -327,9 +327,9 @@ String _dateFr(Object? v) {
   return d == null ? '$v' : dateFR(d);
 }
 
-String _nomAssureur(String code) {
-  for (final a in patAssureurs) {
-    if (a.$1 == code) return a.$2;
+String _nomAssureur(Magasin m, String code) {
+  for (final a in m.collection('assureurs').actives) {
+    if (a['code'] == code) return '${a['nom']}';
   }
   return code;
 }
@@ -359,6 +359,7 @@ class CentreNotifications extends ChangeNotifier {
     'ecritures',
     'patients',
     'avoirs',
+    'assureurs',
     'admissions',
     'couverturesAssurance',
     'notifications',

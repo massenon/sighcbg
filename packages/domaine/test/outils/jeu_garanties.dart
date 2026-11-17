@@ -5,6 +5,7 @@
 // sur le moteur d'AVANT (garanties sans date) et a écrit `vecteurs/garanties_avant.json` ; `garanties_datees_test.dart` le rejoue sur le moteur d'APRÈS et exige le même résultat,
 // tant qu'aucune version datée n'est ajoutée. Un montant facturé ne change pas à la migration.
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'bareme_reference.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -31,7 +32,7 @@ List<F> souscripteursJeu() => [
 
 /// Les garanties d'AVANT : aucune ne porte de date d'effet ni de rang de version.
 List<F> garantiesJeu() => [
-      for (final b in AssBareme.garanties) _g('S1', '${b['code']}', '${b['libelle']}', '${b['categorie']}', b['taux'] as num, b['plafond'] as num?, b['unitePlafond'] as String?),
+      for (final b in baremeDuJeu().garanties) _g('S1', '${b['code']}', '${b['libelle']}', '${b['categorie']}', b['taux'] as num, b['plafond'] as num?, b['unitePlafond'] as String?),
       _g('S2', 'A', 'Consultation généraliste', 'consultation', 70, 4000, 'acte'),
       _g('S2', 'B', 'Consultation spécialiste ou professeur', 'consultation', 70, 9000, 'acte'),
       _g('S2', 'C', 'Analyses et travaux de laboratoire', 'analyse', 60, null, null),

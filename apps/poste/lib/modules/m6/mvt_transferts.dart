@@ -11,15 +11,7 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'mvt_commun.dart';
 
-const _destinations = [
-  'Pharmacie d’urgence',
-  'Pharmacie externe',
-  'Laboratoire',
-  'Hospitalisation',
-  'Maternité',
-  'Bloc opératoire',
-  'Salle de soins',
-];
+List<String> get _destinations => ListesReference.valeurs('listes.m6.destinationsTransfert');
 
 /// `m6-transferts` — « Transferts gros → détail ». Un bon porte PLUSIEURS lignes (un réapprovisionnement de pharmacie porte sur quinze à vingt
 /// références : les transférer une à une produisait vingt bons là où le magasinier fait un seul voyage).

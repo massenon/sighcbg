@@ -16,14 +16,6 @@ String _date(Object? v) {
   return d == null ? '' : dateFR(d);
 }
 
-const _natures = [
-  'Consultation',
-  'Hospitalisation',
-  'Laboratoire',
-  'Pharmacie',
-  'Soins à domicile'
-];
-
 /// Colonnes partagées par les écrans de facturation (`colNumero`, `colPatientF`, … de m8-facturation.js).
 final colNumero = ColonneTableau(
   cle: 'numero',
@@ -299,7 +291,7 @@ class EcranFactures extends StatelessWidget with EcranMaquette {
         FiltreTableau(
             nom: 'type',
             libelle: 'Nature',
-            options: [for (final n in _natures) OptionChamp(n)]),
+            options: [for (final n in naturesFactureListe) OptionChamp(n)]),
         FiltreTableau(nom: 'statutMecef', libelle: 'MECeF', options: [
           OptionChamp('valide', 'Validée'),
           OptionChamp('en_attente', 'En attente'),

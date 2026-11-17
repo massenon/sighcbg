@@ -160,10 +160,8 @@ class EcranDirection extends StatelessWidget with EcranMaquette {
       libelleMode: _libelleMode,
       refMois: c.aujourdhui);
 
-  static const _modes = {'especes': 'Espèces', 'tpe': 'TPE (carte bancaire)', 'mtn': 'MTN Mobile Money', 'moov': 'Moov Money', 'assurance': 'Prise en charge assurance'};
-
-  /// `D.MODES_PAIEMENT` : un mode inconnu (ou absent) s'affiche tel quel — « undefined » pour une facture sans mode (E1001, porté fidèlement).
-  static String _libelleMode(String k) => _modes[k] ?? k;
+    /// `D.MODES_PAIEMENT` : un mode inconnu (ou absent) s'affiche tel quel — « undefined » pour une facture sans mode (E1001, porté fidèlement).
+  static String _libelleMode(String k) => enumModesPaiement.libelles[k] ?? k;
 
   static void _rapport(BuildContext ctx) {
     final c = ContexteEcran.of(ctx);

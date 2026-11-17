@@ -203,7 +203,7 @@
    },
    {
     "code": "GYNECO",
-    "label": "Actes gynéco-obstétricaux et kits",
+    "label": "Gynéco-obstétrique et kits",
     "icone": "baby"
    },
    {
@@ -1946,7 +1946,7 @@
    "Imagerie médicale23",
    "Analyses de laboratoire41",
    "Actes médico-infirmiers40",
-   "Actes gynéco-obstétricaux et kits31",
+   "Gynéco-obstétrique et kits31",
    "Certificats et attestations6"
   ],
   "familles": [
@@ -2397,7 +2397,7 @@
     "detail": []
    },
    {
-    "onglet": "Actes gynéco-obstétricaux et kits31",
+    "onglet": "Gynéco-obstétrique et kits31",
     "tableau": {
      "entetes": [
       "Code",

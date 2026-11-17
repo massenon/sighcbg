@@ -3,6 +3,7 @@
 //
 // Ce qui est à Baguidi est ÉCRIT (plan comptable, actes de médecine du travail, assureurs, entreprises clientes, secteurs, postes) ; ce qui est générique
 // est RECOPIÉ du jeu de référence ; tout le reste démarre vide et appartient à une étape suivante (`module_*.dart`).
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart' as d;
@@ -285,6 +286,10 @@ void _assureursEtEntreprises(Contexte ctx) {
   }
   ctx.remplacer('assureurs', assureurs);
   ctx.remplacer('garanties', const []);
+  // LE BARÈME DE RÉFÉRENCE du régime employeur (document du 18/06/2026) est un RÉFÉRENTIEL du jeu, daté (`referentiels.garanties`) : il n'est plus une constante du code. Il donne la STRUCTURE
+  // d'une convention (vingt garanties, exclusions, accords préalables) ; la collection `garanties` reste vide à l'amorçage, aucune convention n'étant signée.
+  ctx.referentiels['garanties'] = jsonDecode(File('tool/donnees/bareme_garanties_20260618.json').readAsStringSync());
+  ctx.referentiels.remove('secteursActivite');
 
   // Les six entreprises clientes de la médecine du travail : souscripteurs (employeurs), FICTIVES. Aucun numéro de téléphone n'est inventé.
   const entreprises = [

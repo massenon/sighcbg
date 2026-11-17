@@ -8,6 +8,7 @@ import 'aide_rangs.dart';
 import 'package:test/test.dart';
 
 import 'aide_vecteurs.dart';
+import 'outils/bareme_reference.dart';
 
 typedef M = Map<String, Object?>;
 
@@ -265,10 +266,10 @@ void main() {
     test('saisie du barème : 20 garanties ajustées, convention marquée saisie', () {
       final s = souscripteurs.firstWhere((x) => x['id'] == 'SOU006');
       final taux = List<Object?>.filled(20, null)..[0] = '75';
-      final plafonds = List<Object?>.generate(20, (i) => AssBareme.garanties[i]['plafond'])
+      final plafonds = List<Object?>.generate(20, (i) => baremeDuJeu().garanties[i]['plafond'])
         ..[0] = '6000'
         ..[1] = '';
-      final g = assGarantiesDepuisBareme(s, taux: taux, plafonds: plafonds);
+      final g = assGarantiesDepuisBareme(s, bareme: baremeDuJeu(), taux: taux, plafonds: plafonds);
       final posees = lm(m(m(m(e['saisieBareme'])['ecart'])['inserts'])['garanties']);
       expect(g.length, 20);
       expect(posees.length, 20);
@@ -281,7 +282,7 @@ void main() {
         }
       }
       final patch = lm(m(m(m(e['saisieBareme'])['ecart'])['modifs'])['souscripteurs']).single['patch'] as Map;
-      final c = assConventionSaisie();
+      final c = assConventionSaisie(baremeDuJeu());
       for (final k in patch.keys) {
         expect(c[k], patch[k], reason: k);
       }

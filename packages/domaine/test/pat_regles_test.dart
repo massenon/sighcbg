@@ -1,4 +1,7 @@
 // Rejoue les vecteurs M1 (prototype_html/build/vecteurs-m1.js) : écrans RÉELS pilotés dans Chrome.
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'aide_rangs.dart';
 import 'package:test/test.dart';
@@ -28,6 +31,11 @@ void main() {
     });
   });
 
+  // Le nom de la compagnie se lit sur le référentiel `assureurs` (le jeu du poste), plus sur une copie des treize compagnies dans le code.
+  final assureursDuJeu = [
+    for (final f in jsonDecode(File('../../apps/poste/assets/donnees/jeu/assureurs.json').readAsStringSync()) as List) (f as Map).cast<String, Object?>()
+  ];
+
   group('création : ce que le dossier déduit de la saisie', () {
     final doc = lireVecteurs('pat_patients');
     for (final c in liste((doc['creation'] as Map)['cas'])) {
@@ -35,7 +43,7 @@ void main() {
       if (crees.isEmpty) continue;
       test('${c['nom']}', () {
         final saisie = {...(c['saisie'] as Map).cast<String, Object?>()};
-        final v = patTransformerPatient(saisie, null, maintenant);
+        final v = patTransformerPatient(saisie, null, maintenant, assureurs: assureursDuJeu);
         final attendu = crees.first;
         for (final k in ['assureurNom', 'dateNaissance', 'age', 'ageReferenceLe']) {
           final a = attendu[k];

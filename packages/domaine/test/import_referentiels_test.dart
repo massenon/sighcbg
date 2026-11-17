@@ -289,13 +289,9 @@ void main() {
       }
     });
 
-    test(
-        'la liste des secteurs d\'activité est celle du jeu du poste (une source, jamais deux)',
-        () {
-      final ref = (jsonDecode(
-          File('../../apps/poste/assets/donnees/jeu/referentiels.json')
-              .readAsStringSync()) as Map)['secteursActivite'] as List;
-      expect(importSecteursActivite, ref.cast<String>());
+    test('la liste des secteurs d\'activité est le réglage `listes.cfg.secteursActivite` (une source, jamais deux)', () {
+      expect(importSecteursActivite, ListesReference.semence('listes.cfg.secteursActivite'));
+      expect(importSecteursActivite.length, 8);
     });
   });
 

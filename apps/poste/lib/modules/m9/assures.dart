@@ -19,21 +19,13 @@ List<ChampDef> champsCouverture(Fiche p, List<Fiche> assureurs) => [
           type: TypeChamp.date,
           requis: true,
           aide: 'La couverture précédente est close la veille de cette date.'),
-      const ChampDef(
+      ChampDef(
           nom: 'motif',
           libelle: 'Motif du changement',
           type: TypeChamp.select,
           requis: true,
           col: ColChamp.plein,
-          options: [
-            OptionChamp('Changement d’employeur'),
-            OptionChamp('Changement de compagnie par l’assuré'),
-            OptionChamp('Convention non reconduite'),
-            OptionChamp('Renouvellement de carte'),
-            OptionChamp('Changement de police'),
-            OptionChamp('Fin de couverture — patient redevenu non assuré'),
-            OptionChamp('Correction d’une saisie erronée'),
-          ]),
+          options: [for (final m in ListesReference.valeurs('listes.m9.motifsChangementCouverture')) OptionChamp(m)]),
       const ChampDef.section('Nouvelle couverture'),
       ChampDef(
           nom: 'assureur',

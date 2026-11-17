@@ -1,6 +1,7 @@
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import 'qual_enquetes.dart' show QualFiche;
+import '../parametres/enumerations.dart';
 
 /// GED — GESTION DOCUMENTAIRE (bibliothèque de l'ÉTABLISSEMENT, workflow de validation, archivage & conservation). Règles portées de
 /// `prototype_html/assets/js/modules/ged.js` et rejouées sur les vecteurs de la maquette (`test/vecteurs/qualite.json`).
@@ -9,19 +10,20 @@ import 'qual_enquetes.dart' show QualFiche;
 /// ferait apparaître les unes dans l'écran des autres. RG-14 : retirer une pièce l'archive, elle reste restaurable.
 
 /// `D.GED_CATEGORIES` : (identifiant, libellé, nature du rattachement, icône).
-const qualGedCategories = [
-  ('ordonnance', 'Ordonnances', 'Patient', 'file-text'),
-  ('resultat', 'Résultats de laboratoire', 'Patient', 'flask-conical'),
-  ('rapport', 'Rapports médicaux', 'Patient', 'stethoscope'),
-  ('facture_patient', 'Factures patients', 'Patient', 'receipt'),
-  ('bon_commande', 'Bons de commande', 'Fournisseur', 'truck'),
-  ('bon_livraison', 'Bons de livraison', 'Fournisseur', 'package-check'),
-  ('facture_fournisseur', 'Factures fournisseurs', 'Fournisseur', 'file-text'),
-  ('contrat', 'Contrats RH', 'Employé', 'file-signature'),
-  ('bulletin', 'Bulletins de paie', 'Employé', 'banknote'),
-  ('courrier', 'Courriers administratifs', 'Administration', 'mail'),
-  ('cloture_exercice', 'Clôtures d’exercice', 'Administration', 'lock'),
-];
+const _natureIconeGed = {
+  'ordonnance': ('Patient', 'file-text'),
+  'resultat': ('Patient', 'flask-conical'),
+  'rapport': ('Patient', 'stethoscope'),
+  'facture_patient': ('Patient', 'receipt'),
+  'bon_commande': ('Fournisseur', 'truck'),
+  'bon_livraison': ('Fournisseur', 'package-check'),
+  'facture_fournisseur': ('Fournisseur', 'file-text'),
+  'contrat': ('Employé', 'file-signature'),
+  'bulletin': ('Employé', 'banknote'),
+  'courrier': ('Administration', 'mail'),
+  'cloture_exercice': ('Administration', 'lock'),
+};
+List<(String, String, String, String)> get qualGedCategories => [for (final (c, l) in enumCategoriesDocument.paires) (c, l, _natureIconeGed[c]!.$1, _natureIconeGed[c]!.$2)];
 
 /// Les quatre natures de rattachement, dans l'ordre de l'explorateur.
 const qualGedRattachements = ['Patient', 'Employé', 'Fournisseur', 'Administration'];

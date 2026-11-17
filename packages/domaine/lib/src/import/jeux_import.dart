@@ -9,6 +9,8 @@ import '../administration/adm_regles.dart' show admNaturesCourrier, admReference
 import '../comptabilite/cpb_gestion.dart' show cpbCategoriesImmobilisation, cpbEtatsImmobilisation, cpbNaturesBudget;
 import '../comptabilite/cpc_exercice.dart' show cpcEtatExercice, cpcOrigineImportOuverture;
 import '../assurances/ass_garanties.dart';
+import '../parametres/enumerations.dart' show enumFamillesTarif;
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../parametres/parametres_clinique.dart' show delaiPreavisPeremptionA, seuilEntierA;
 import '../assurances/ass_regles.dart' show assCategoriesGarantie, assChangerCouverture, assDate, assLibelleUnite, assUnitesPlafond;
 import '../format/format_fr.dart' show dateFR, nombre;

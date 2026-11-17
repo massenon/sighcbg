@@ -122,8 +122,8 @@ class EcranInventaires extends StatelessWidget with EcranMaquette {
             OptionChamp('gros', 'Stock gros (magasin central)'),
             OptionChamp('detail', 'Stock détail (pharmacie d’urgence)'),
           ]),
-      const ChampDef(
-          nom: 'type', libelle: 'Type d’inventaire', type: TypeChamp.select, requis: true, options: [OptionChamp('Hebdomadaire'), OptionChamp('Mensuel'), OptionChamp('Annuel'), OptionChamp('Tournant'), OptionChamp('Ponctuel')]),
+      ChampDef(
+          nom: 'type', libelle: 'Type d’inventaire', type: TypeChamp.select, requis: true, options: [for (final x in ListesReference.valeurs('listes.m6.typesInventaire')) OptionChamp(x)]),
       const ChampDef(nom: 'date', libelle: 'Date', type: TypeChamp.date, requis: true),
       ChampDef(
           nom: 'perimetre',

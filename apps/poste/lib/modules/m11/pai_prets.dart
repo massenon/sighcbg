@@ -39,10 +39,8 @@ class EcranPretsEtudes extends StatelessWidget with EcranMaquette {
             type: TypeChamp.select,
             requis: true,
             options: [for (final a in mag.collection('personnel').actives) OptionChamp('${a['id']}', '${a['nomComplet']}')]),
-        const ChampDef(nom: 'nature', libelle: 'Nature', type: TypeChamp.select, requis: true, options: [
-          OptionChamp('pret_etudes', 'Prêt-études'),
-          OptionChamp('avance', 'Avance sur salaire'),
-          OptionChamp('pret_social', 'Prêt social'),
+        ChampDef(nom: 'nature', libelle: 'Nature', type: TypeChamp.select, requis: true, options: [
+          for (final (c, l) in enumNaturesPret.paires) OptionChamp(c, l),
         ]),
         const ChampDef(nom: 'objet', libelle: 'Objet', requis: true),
         const ChampDef(nom: 'montant', libelle: 'Montant accordé (FCFA)', type: TypeChamp.nombre, requis: true),

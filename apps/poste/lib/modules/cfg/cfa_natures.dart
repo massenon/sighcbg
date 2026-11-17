@@ -33,7 +33,7 @@ class EcranNaturesFacture extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('naturesFacture');
-    final secteurs = cfaSecteursActivite(c.magasin);
+    final secteurs = cfaSecteursActivite();
     return ListenableBuilder(
         listenable: col,
         builder: (ctx, _) {

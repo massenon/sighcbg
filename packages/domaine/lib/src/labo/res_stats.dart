@@ -11,6 +11,7 @@ import '../format/js.dart';
 import '../referentiels/regles.dart' show joursEntre;
 import 'res_comparatif.dart';
 import 'res_habilitations.dart';
+import '../parametres/enumerations.dart';
 
 class PeriodeLabo {
   const PeriodeLabo(this.id, this.label, this.jours);
@@ -46,11 +47,7 @@ const List<(String, String)> sectionsLabo = [
 ];
 
 /// `L.SERVICES_DEMANDEURS` — (identifiant, libellé).
-const List<(String, String)> servicesDemandeursLabo = [
-  ('maternite', 'Maternité'),
-  ('medecine', 'Médecine'),
-  ('specialite', 'Médecine et spécialité'),
-];
+List<(String, String)> get servicesDemandeursLabo => enumServicesDemandeurs.paires;
 
 /// `L.ORIGINES_PATIENT` — (identifiant, libellé).
 const List<(String, String)> originesPatient = [

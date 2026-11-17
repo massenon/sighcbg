@@ -1,0 +1,247 @@
+{
+ "version": "2026-06-18",
+ "reference": "Conditions d’utilisation de la prise en charge — barème de remboursement",
+ "lieu": "Cotonou",
+ "date": "2026-06-18",
+ "source": "DOC — Conditions d’utilisation de la prise en charge (18/06/2026)",
+ "garanties": [
+  {
+   "code": "G01",
+   "libelle": "Consultation généraliste",
+   "categorie": "consultation",
+   "taux": 80,
+   "plafond": 5000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G02",
+   "libelle": "Consultation spécialiste ou professeur",
+   "categorie": "consultation",
+   "taux": 80,
+   "plafond": 10000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G03",
+   "libelle": "Hospitalisation — frais de chambre",
+   "categorie": "hospitalisation",
+   "taux": 80,
+   "plafond": 15000,
+   "unitePlafond": "jour",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G04",
+   "libelle": "Frais pharmaceutiques",
+   "categorie": "medicament",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G05",
+   "libelle": "Vitamines et fortifiants",
+   "categorie": "vitamine",
+   "taux": 60,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G06",
+   "libelle": "Honoraires chirurgicaux",
+   "categorie": "chirurgie",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G07",
+   "libelle": "Séjour de la mère accompagnant un enfant de moins de 5 ans",
+   "categorie": "hospitalisation",
+   "taux": 80,
+   "plafond": 7500,
+   "unitePlafond": "jour",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G08",
+   "libelle": "Analyses et travaux de laboratoire",
+   "categorie": "analyse",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G09",
+   "libelle": "Radiographie, échographie, scanner, IRM",
+   "categorie": "imagerie",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G10",
+   "libelle": "Ambulance",
+   "categorie": "ambulance",
+   "taux": 80,
+   "plafond": 20000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G11",
+   "libelle": "Kinésithérapie",
+   "categorie": "kinesitherapie",
+   "taux": 80,
+   "plafond": 50000,
+   "unitePlafond": "an",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G12",
+   "libelle": "Dentaire",
+   "categorie": "dentaire",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G13",
+   "libelle": "Prothèse dentaire (enfant de moins de 15 ans)",
+   "categorie": "dentaire",
+   "taux": 65,
+   "plafond": 70000,
+   "unitePlafond": "personne_an",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G14",
+   "libelle": "Optique",
+   "categorie": "optique",
+   "taux": 80,
+   "plafond": 120000,
+   "unitePlafond": "personne_2ans",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G15",
+   "libelle": "Vaccins (DT, fièvre jaune, coqueluche, polio, ROUVAX)",
+   "categorie": "vaccin",
+   "taux": 55,
+   "plafond": 50000,
+   "unitePlafond": "personne_an",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G16",
+   "libelle": "Consultation pré et post-natale",
+   "categorie": "maternite",
+   "taux": 80,
+   "plafond": null,
+   "unitePlafond": null,
+   "zone": "Bénin"
+  },
+  {
+   "code": "G17",
+   "libelle": "Accouchement normal",
+   "categorie": "maternite",
+   "taux": 80,
+   "plafond": 150000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G18",
+   "libelle": "Accouchement par voie chirurgicale",
+   "categorie": "maternite",
+   "taux": 80,
+   "plafond": 250000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G19",
+   "libelle": "Accouchement gémellaire",
+   "categorie": "maternite",
+   "taux": 80,
+   "plafond": 300000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  },
+  {
+   "code": "G20",
+   "libelle": "Accouchement hors clinique privée",
+   "categorie": "maternite",
+   "taux": 80,
+   "plafond": 175000,
+   "unitePlafond": "acte",
+   "zone": "Bénin"
+  }
+ ],
+ "actesExclus": [
+  "Visites prénuptiales",
+  "Avortements et fausses couches chez les enfants",
+  "Soins et analyses de reproduction",
+  "Soins esthétiques et de confort",
+  "Soins traditionnels",
+  "Traitement des malformations",
+  "Check-up et bilan de santé",
+  "Pédicure et manucure",
+  "Massages",
+  "Rééducation hors accident",
+  "Kinésithérapie sans accord préalable",
+  "Examens non prescrits",
+  "Prothèses dentaires",
+  "Détartrages"
+ ],
+ "produitsExclus": [
+  "Médicaments non prescrits",
+  "Contraceptifs et hormones sauf prescription",
+  "Laxatifs",
+  "Coton",
+  "Compresses",
+  "Bandes",
+  "Sparadraps",
+  "Antiseptiques",
+  "Dentifrices",
+  "Savons",
+  "Vaccins",
+  "Compléments alimentaires",
+  "Appareils d’orthopédie",
+  "Produits d’esthétique",
+  "Aphrodisiaques",
+  "Thermomètre",
+  "Seringue",
+  "Vessie de glace",
+  "Bassin de lit",
+  "Irrigateur",
+  "Sonde",
+  "Ventouse",
+  "Gants"
+ ],
+ "accordPrealable": [
+  "Scanner",
+  "Laser",
+  "IRM",
+  "Fibroscopie",
+  "MAPA",
+  "Échocardiaque",
+  "Échodoppler",
+  "Aérosolthérapie",
+  "Optique",
+  "Coloscopie",
+  "Hystérosalpingographie",
+  "EEG",
+  "EMG",
+  "Traitement de plus de 45 jours",
+  "Traitements antiviraux"
+ ]
+}

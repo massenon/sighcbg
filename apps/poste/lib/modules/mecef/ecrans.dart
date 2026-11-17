@@ -15,7 +15,7 @@ import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
 import '../../donnees/facture_tiers_poste.dart' show transmettreFactureTiers;
 import '../../donnees/mecef_poste.dart';
 import '../../donnees/normalisation_mecef.dart';
-import '../m8/commun.dart' show ecrireAvoirEmis, idAvoirSuivant;
+import '../m8/commun.dart' show ecrireAvoirEmis, idAvoirSuivant, naturesFactureListe;
 import 'commun.dart';
 
 // =====================================================================================================================
@@ -284,12 +284,8 @@ class EcranMecefFactures extends StatelessWidget with EcranMaquette {
                       nom: 'statutMecef',
                       libelle: 'Statut fiscal',
                       options: optionsStatutMecef),
-                  const FiltreTableau(nom: 'type', libelle: 'Nature', options: [
-                    OptionChamp('Consultation'),
-                    OptionChamp('Hospitalisation'),
-                    OptionChamp('Laboratoire'),
-                    OptionChamp('Pharmacie'),
-                    OptionChamp('Soins à domicile'),
+                  FiltreTableau(nom: 'type', libelle: 'Nature', options: [
+                    for (final n in naturesFactureListe) OptionChamp(n),
                   ]),
                 ],
                 colonnes: [
@@ -1532,15 +1528,11 @@ class _EtatConfig extends State<EcranMecefConfig> {
             options: [for (final r in p.regimes) OptionChamp(r.id, r.libelle)]),
         const ChampDef(nom: 'devise', libelle: 'Devise'),
         const ChampDef.section('Transmission'),
-        const ChampDef(
+        ChampDef(
             nom: 'modeTransmission',
             libelle: 'Mode de transmission',
             type: TypeChamp.select,
-            options: [
-              OptionChamp('Automatique à l’émission'),
-              OptionChamp('Manuelle groupée'),
-              OptionChamp('Différée en fin de journée'),
-            ]),
+            options: [for (final m in ListesReference.valeurs('listes.mecef.modesTransmission')) OptionChamp(m)]),
         const ChampDef(
             nom: 'delaiRetransmission',
             libelle: 'Délai avant nouvelle tentative (minutes)',

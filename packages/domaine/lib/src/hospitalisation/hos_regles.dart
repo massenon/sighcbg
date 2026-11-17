@@ -7,6 +7,7 @@ library;
 
 import '../parametres/listes_reference.dart' show ListesReference;
 import 'hos_constantes.dart';
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/js.dart';
 import 'dart:math' as math;
 import '../numerotation/numerotation.dart';
@@ -109,18 +110,7 @@ const hosOrientations = [
 
 const hosDureeObservationReference = 24;
 
-const hosActesSoins = [
-  'Injection intraveineuse',
-  'Injection intramusculaire',
-  'Pose de perfusion',
-  'Réfection de pansement',
-  'Sondage urinaire',
-  'Prise de constantes',
-  'Aérosol',
-  'Soins de nursing',
-  'Transfusion sanguine',
-  'Mise en observation',
-];
+List<String> get hosActesSoins => ListesReference.valeurs('listes.m3.actesSoins');
 
 /// `C.toDate` : une date seule (`AAAA-MM-JJ`) est lue en UTC, comme JavaScript.
 DateTime? hosVersDate(Object? v) {

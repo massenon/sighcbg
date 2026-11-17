@@ -24,22 +24,6 @@ List<String> get patAntecedents => ListesReference.valeurs('listes.m1.antecedent
 List<String> get patAntecedentsRisque => ListesReference.valeurs('listes.m1.antecedentsARisque');
 List<String> get patAllergies => ListesReference.valeurs('listes.m1.allergies');
 
-/// `D.ASSUREURS` (code, nom) — les treize compagnies du document « Liste et contact des assurances partenaires ».
-const patAssureurs = <(String, String)>[
-  ('AFR', 'AFRICAINE DES ASSURANCES'),
-  ('NSIA', 'NSIA ASSURANCE'),
-  ('OLEA', 'OLEA ASSURANCE'),
-  ('SANLAM', 'SANLAM ASSURANCE'),
-  ('TRANSVIE', 'TRANSVIE ASSURANCE'),
-  ('SUNU', 'SUNU ASSURANCE'),
-  ('DAYO', 'DAYO ASSURANCE'),
-  ('SOS', 'SOS ASSURANCE'),
-  ('GAB', 'GAB ASSURANCE'),
-  ('BECOTRA', 'BECOTRA ASSURANCE'),
-  ('NOBILA', 'NOBILA ASSURANCE'),
-  ('ASCOMA', 'ASCOMA ASSURANCE'),
-  ('ASK', 'ASK ASSURANCE BENIN'),
-];
 
 /// `liste(v)` : antécédents et allergies acceptent une liste OU l'ancienne chaîne unique ; « Aucun… » n'est pas une valeur.
 List<String> patListe(Object? v) {
@@ -86,10 +70,11 @@ String? patRefusCode(Iterable<FichePat> patients, String code) =>
 
 /// `transformerPatient(v, record)` : ce que l'enregistrement DÉDUIT de la saisie — le nom de la compagnie et l'âge. L'âge est une DÉCLARATION datée
 /// quand la date de naissance est inconnue ; l'âge déjà déclaré ne se re-date pas (le re-dater le rajeunirait à chaque ouverture).
-FichePat patTransformerPatient(FichePat saisie, FichePat? record, DateTime maintenant) {
+FichePat patTransformerPatient(FichePat saisie, FichePat? record, DateTime maintenant, {Iterable<FichePat> assureurs = const []}) {
   final v = {...saisie};
-  final a = patAssureurs.where((x) => x.$1 == v['assureur']).firstOrNull;
-  v['assureurNom'] = a?.$2;
+  // Le NOM de la compagnie se lit sur le référentiel des assureurs (`assureurs`, administrable) passé en argument : plus de copie des treize compagnies dans le code.
+  final a = assureurs.where((x) => x['statut'] != 'archive' && x['code'] == v['assureur']).firstOrNull;
+  v['assureurNom'] = a?['nom'];
   if ('${v['naissanceConnue'] ?? 'date'}' == 'age') {
     v['dateNaissance'] = '';
     final age = v['age'];

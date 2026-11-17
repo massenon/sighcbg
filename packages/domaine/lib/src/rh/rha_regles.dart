@@ -9,6 +9,7 @@ import '../droits/gestes_reserves.dart' show DroitsGestes, gestesOrigine, gesteR
 import 'planning_rh.dart' show RefusRh;
 import 'rhb_regles.dart' show rhbMontantAgent, rhbPrimesALaDate, vacationCompteRh;
 import '../numerotation/numerotation.dart';
+import '../parametres/enumerations.dart';
 
 /// M10 — RH, premier lot (fiches de poste, tableau de bord, personnel, fiche employé, contrats, congés, ordres de mission, prestataires externes).
 /// Tout est CALCULÉ depuis les fiches du magasin, jamais fourni ; chaque règle est rejouée sur les vecteurs de la maquette
@@ -25,20 +26,21 @@ typedef RhaFiche = Map<String, Object?>;
 List<String> get rhaServices => ListesReference.valeurs('listes.socle.services');
 
 /// `D.TYPES_PLANNING` : (identifiant, libellé, ton du badge).
-const List<(String, String, String)> rhaTypesPlanning = [
-  ('garde', 'Garde 24h', 'danger'),
-  ('garde_hospi', 'Garde hospitalisation', 'danger'),
-  ('garde_soins', 'Garde soins', 'warning'),
-  ('permanence', 'Permanence', 'info'),
-  ('soiree', 'Soirée', 'navy'),
-  ('entretien_general', 'Entretien général de la journée', 'info'),
-  ('repos24', 'Repos 24h', 'neutral'),
-  ('repos48', 'Repos 48h', 'neutral'),
-  ('conge', 'Congé', 'success'),
-  ('absence', 'Absence', 'warning'),
-  ('remplacement', 'Remplacement', 'navy'),
-  ('incineration', 'Incinération des déchets', 'warning'),
-];
+const _tonsPlanning = {
+  'garde': 'danger',
+  'garde_hospi': 'danger',
+  'garde_soins': 'warning',
+  'permanence': 'info',
+  'soiree': 'navy',
+  'entretien_general': 'info',
+  'repos24': 'neutral',
+  'repos48': 'neutral',
+  'conge': 'success',
+  'absence': 'warning',
+  'remplacement': 'navy',
+  'incineration': 'warning',
+};
+List<(String, String, String)> get rhaTypesPlanning => [for (final (c, l) in enumTypesPlanning.paires) (c, l, _tonsPlanning[c]!)];
 
 String rhaTypePlanningLabel(Object? id) {
   for (final t in rhaTypesPlanning) {

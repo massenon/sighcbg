@@ -22,6 +22,7 @@ import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import '../numerotation/numerotation.dart';
+import '../parametres/enumerations.dart';
 
 typedef FicheStock = Map<String, Object?>;
 
@@ -44,16 +45,7 @@ String _js(num v) => v == v.truncateToDouble() ? v.toInt().toString() : v.toStri
 // ============================================================================
 
 /// `D.CATEGORIES_PRODUIT` : (identifiant, libellé).
-const categoriesProduit = <(String, String)>[
-  ('medicament', 'Médicaments'),
-  ('reactif', 'Réactifs de laboratoire'),
-  ('conso_labo', 'Consommables de laboratoire'),
-  ('conso_medical', 'Consommables médicaux'),
-  ('fourniture', 'Fournitures administratives'),
-  ('entretien', 'Produits d’entretien'),
-  ('petit_materiel', 'Petit matériel médical'),
-  ('immobilisation', 'Immobilisations'),
-];
+List<(String, String)> get categoriesProduit => enumCategoriesProduit.paires;
 
 String categorieLabel(Object? id) {
   for (final c in categoriesProduit) {
@@ -90,11 +82,7 @@ TypeMouvement? typeMouvement(Object? id) {
 
 /// `D.TYPES_STOCK` : (identifiant, libellé). La maquette propose « laboratoire » à la saisie d'un mouvement alors qu'un article ne porte que
 /// `stockGros` et `stockDetail` : le contrôle RG-03 retombe alors sur le stock détail (vecteur « stock laboratoire »).
-const typesStock = <(String, String)>[
-  ('gros', 'Stock gros (magasin central)'),
-  ('detail', 'Stock détail (pharmacie d’urgence)'),
-  ('labo', 'Stock laboratoire'),
-];
+List<(String, String)> get typesStock => enumTypesStock.paires;
 
 FicheStock? _produitDe(Iterable<FicheStock> produits, Object? id) {
   for (final p in produits) {
@@ -485,11 +473,7 @@ double _max0(double v) => v < 0 ? 0 : v;
 // ============================================================================
 
 /// La nature d'une perte, telle que la liste de la déclaration la propose : (identifiant, libellé).
-const naturesPerte = <(String, String)>[
-  ('casse', 'Casse ou bris'),
-  ('peremption', 'Péremption'),
-  ('perte', 'Perte ou disparition'),
-];
+List<(String, String)> get naturesPerte => enumNaturesPerte.paires;
 
 /// Les mouvements qui sont des pertes (le registre des pertes les lit au même registre que les mouvements : elle n'existe qu'une fois).
 bool estPerte(FicheStock m) => const ['perte', 'casse', 'peremption'].contains(m['type']);

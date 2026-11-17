@@ -14,17 +14,8 @@ part of 'jeux_import.dart';
 /// « Ignorer les existants » reste réservé aux quatre jeux de la Direction (produits, fournisseurs, emplacements, courriers) : aucun de ces sept ne l'accorde, chacun étant le SUPPORT d'une pièce
 /// émise (nature portée par une facture, centre porté par une écriture, unité d'un résultat, examen d'une demande, bien d'un amortissement, budget d'un réalisé).
 
-/// Les secteurs d'activité proposés par l'écran « Natures de facture » (`referentiels.secteursActivite` du jeu du poste, test de concordance au domaine).
-const List<String> importSecteursActivite = [
-  'Médecine générale',
-  'Chirurgie',
-  'Maternité',
-  'Imagerie médicale',
-  'Laboratoire',
-  'Accueil',
-  'Soins et observation',
-  'Pharmacie',
-];
+/// Les secteurs d'activité proposés par l'écran « Natures de facture » (le réglage `listes.cfg.secteursActivite`, lu aussi par les écrans : une seule source).
+List<String> get importSecteursActivite => ListesReference.valeurs('listes.cfg.secteursActivite');
 
 /// Les spécialités d'un prestataire externe : celles de l'écran, plus « Autre » qu'il propose aussi.
 List<String> get importSpecialitesPrestataire => [...rhaSpecialitesPrestataire, 'Autre'];
