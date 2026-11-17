@@ -134,13 +134,17 @@ class FileSms
 
     public static function etat(?int $maintenant = null): array
     {
+        $pilote = Envoyeur::pilote();
+
         return [
             'plafond_jour' => self::plafondJour(),
             'envoyes_aujourdhui' => self::envoyesAujourdhui($maintenant),
             'en_attente' => self::enAttente(),
             'tentatives_max' => self::tentativesMax(),
             'longueur_max' => self::longueurMax(),
-            'pilote' => Envoyeur::pilote()->nom(),
+            'pilote' => $pilote->nom(),
+            // Les NOMS des variables du .env encore vides pour ce pilote (jamais leurs valeurs) : l'écran de la mère les affiche.
+            'parametres_manquants' => $pilote instanceof PiloteConfigurable ? $pilote->parametresManquants() : [],
         ];
     }
 

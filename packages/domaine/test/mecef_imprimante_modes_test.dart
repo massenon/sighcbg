@@ -20,6 +20,23 @@ void main() {
       expect(defs[cleImprimanteLargeurPapier]!.defaut, 80);
     });
 
+    test('une machine, deux fonctions : intégrée, l’imprimante prend le modèle du boîtier et son interface ; le réglage est semé à « oui »', () {
+      final def = definitionDeParametre(cleImprimanteIntegree)!;
+      expect([def.famille, def.type, def.defaut, def.mobile], ['mecef', TypeParametre.booleen, true, false]);
+      expect(def.source, contains('17/11/2026'));
+      expect(Parametres.validerFiche(Parametres.semer(def), const [], const []), isNull);
+      final i = imprimanteCaisseEnVigueur(integree: true, modeleBoitier: ' Boîtier X ', modele: 'Autre', interface: 'USB', largeur: 80);
+      expect([i.integree, i.modele, i.interface, i.aRenseigner], [true, 'Boîtier X', imprimanteInterfaceIntegree, false]);
+      expect(i.mentionIntegree, 'Le boîtier Boîtier X est à la fois le MECeF et l’imprimante de caisse (ticket 80 mm) : une machine, deux fonctions.');
+      expect(i.resume, 'Imprimante de caisse : Boîtier X — papier 80 mm — interface : $imprimanteInterfaceIntegree');
+      // le modèle du boîtier n'est pas renseigné : l'imprimante intégrée le dit « à renseigner »
+      final sans = imprimanteCaisseEnVigueur(integree: true, modeleBoitier: '');
+      expect([sans.modele, sans.aRenseigner, sans.modeleAffiche], [null, true, 'à renseigner']);
+      // décochée : les champs propres reprennent la main
+      final propre = imprimanteCaisseEnVigueur(integree: false, modeleBoitier: 'Boîtier X', modele: 'Autre', interface: 'USB');
+      expect([propre.modele, propre.interface, propre.integree], ['Autre', 'USB', false]);
+    });
+
     test('valeurs semées : « à renseigner », à valider, 80 mm', () {
       final i = imprimanteCaisseEnVigueur(modele: '', largeur: 80, interface: '  ');
       expect(i.modele, isNull);

@@ -107,7 +107,7 @@ void main() {
       'identifiant': '',
       'expediteur': '',
       'nom': 'Clinique Baguidi',
-      'repondreA': 'cliniquebaguidi@yahoo.fr',
+      'repondreA': 'contact@cliniquebaguidi.com',
       'repondreNom': 'Clinique Baguidi',
       'motDePasse': '',
     });
@@ -145,7 +145,7 @@ void main() {
     expect(m['a'], ['dg@clinique.bj']);
     expect((m['entetes']! as Map)['subject'], 'SIGH-CBG : test de la messagerie');
     expect(m['corps'], contains('é è à ç ô, symbole €'));
-    expect((m['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>', reason: 'En-tête Reply-To proposé par défaut, reçu par le puits');
+    expect((m['entetes']! as Map)['reply-to'], 'Clinique Baguidi <contact@cliniquebaguidi.com>', reason: 'En-tête Reply-To proposé par défaut, reçu par le puits');
     final c = (m['commandes']! as List).cast<String>();
     expect(c.indexOf('AUTH PLAIN ok'), greaterThan(c.indexOf('STARTTLS')));
     expect(ConfigSmtpPoste.lireBrut(d.path)['testeOk'], true, reason: 'le dernier test réussi est retenu');
@@ -234,7 +234,7 @@ void main() {
     // avec une messagerie configurée ET testée
     final p = (await t.runAsync(demarrer))!;
     addTearDown(p.fermer);
-    ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Baguidi', repondreA: 'cliniquebaguidi@yahoo.fr', repondreNom: 'Clinique Baguidi', verifierCertificat: false);
+    ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Baguidi', repondreA: 'contact@cliniquebaguidi.com', repondreNom: 'Clinique Baguidi', verifierCertificat: false);
     ConfigSmtpPoste.noterTest(d.path, ok: true);
     ToastsSigh.viderPourTests();
     await ouvrirM14(t, m, 'contact-editeur');
@@ -252,7 +252,7 @@ void main() {
     expect((msg['entetes']! as Map)['subject'], '[SIGH-CBG] Question sur la comptabilité');
     expect(msg['corps'], contains('où règle-t-on le plan ? Merci é à ç.'));
     expect(msg['corps'], contains('Référence : SUP-'));
-    expect((msg['entetes']! as Map)['reply-to'], 'Clinique Baguidi <cliniquebaguidi@yahoo.fr>');
+    expect((msg['entetes']! as Map)['reply-to'], 'Clinique Baguidi <contact@cliniquebaguidi.com>');
     await attendre(t, () => EtatSmtpPoste.file!.messages.isNotEmpty && EtatSmtpPoste.file!.messages.single.etat == 'parti');
     await t.pump(const Duration(milliseconds: 300));
     // le courriel est passé par la FILE D'ENVOI (état « parti », Message-ID stable = identifiant du message) et la demande porte son identifiant

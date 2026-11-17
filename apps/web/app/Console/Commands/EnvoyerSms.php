@@ -19,6 +19,12 @@ class EnvoyerSms extends Command
         $this->info(sprintf('SMS : %d envoyé(s), %d échec(s) à réessayer, %d abandon(s), %d ligne(s) purgée(s)%s.',
             $b['envoyes'], $b['echecs'], $b['abandons'], $b['purges'], $b['plafond_atteint'] ? ', plafond du jour atteint' : ''));
 
+        if ($b['configuration_manquante'] !== []) {
+            $this->error('Pilote SMS non configuré : renseigner dans le .env '.implode(', ', $b['configuration_manquante']).'. La file n\'a pas été touchée.');
+
+            return self::FAILURE;
+        }
+
         return self::SUCCESS;
     }
 }

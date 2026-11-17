@@ -61,9 +61,9 @@ class SmtpTest extends TestCase
     public function test_repondre_a_est_un_en_tete_du_message_recu_et_reste_absent_quand_il_n_est_pas_regle(): void
     {
         $this->demarrerPuits();
-        $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => 'cliniquebaguidi@yahoo.fr', 'repondre_nom' => 'Clinique Baguidi']))->assertOk()->assertJsonPath('repondre', 'cliniquebaguidi@yahoo.fr');
+        $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => 'contact@cliniquebaguidi.com', 'repondre_nom' => 'Clinique Baguidi']))->assertOk()->assertJsonPath('repondre', 'contact@cliniquebaguidi.com');
         $this->postJson('/panneau/smtp/test', ['destinataire' => 'direction@clinique.bj'])->assertOk();
-        $this->assertMatchesRegularExpression('/^Reply-To:[^\\r\\n]*(\\r?\\n[ \\t][^\\r\\n]*)*cliniquebaguidi@yahoo\.fr/mi', $this->lire($this->messagesRecus()[0])['entetes']);
+        $this->assertMatchesRegularExpression('/^Reply-To:[^\\r\\n]*(\\r?\\n[ \\t][^\\r\\n]*)*contact@cliniquebaguidi\.com/mi', $this->lire($this->messagesRecus()[0])['entetes']);
         $this->postJson('/panneau/smtp', $this->formulaire(['repondre' => '', 'repondre_nom' => '']))->assertOk();
         $this->postJson('/panneau/smtp/test', ['destinataire' => 'direction@clinique.bj'])->assertOk();
         $this->assertDoesNotMatchRegularExpression('/^Reply-To:/mi', $this->lire($this->messagesRecus()[1])['entetes']);

@@ -19,7 +19,7 @@ void main() {
       expect(IdentiteClinique.activite, 'CENTRE DE MÉDECINE DU TRAVAIL, MÉDECINE GÉNÉRALE');
       expect(IdentiteClinique.bp, '02 BP : 105 PARAKOU (Rép. du Bénin)');
       expect(IdentiteClinique.telephones, ['95 74 69 56', '95 95 99 14', '97 09 34 99']);
-      expect(IdentiteClinique.email, 'cliniquebaguidi@yahoo.fr');
+      expect(IdentiteClinique.email, 'contact@cliniquebaguidi.com');
       expect(IdentiteClinique.ifu, '3201001996110');
       expect(IdentiteClinique.rccm, 'RB/PKO/17 A 4240');
       expect(IdentiteClinique.formuleArrete, 'Arrêtée la présente facture à la somme de');

@@ -223,10 +223,26 @@ class _EtatPasserelle extends MrbEtatEcran<EcranSmsPasserelle, MrbSms?> {
               indice: d.plafondJour == null ? (d.erreurRelais ?? 'non lu : relais non configuré ou injoignable') : 'SMS par jour, réglé dans le fichier de réglages du relais',
               icone: LucideIcons.gauge),
           mrbKpi('Envoyés aujourd’hui', d.envoyesAujourdhui == null ? null : '${d.envoyesAujourdhui}', indice: d.enAttenteRelais == null ? null : '${d.enAttenteRelais} en attente au relais', icone: LucideIcons.send),
-          mrbKpi('Fournisseur', d.pilote == null ? null : (d.pilote == 'journal' ? 'Essai (n’envoie rien)' : d.pilote),
-              indice: d.pilote == 'journal' ? 'pilote d’essai du relais : aucun SMS ne part réellement' : null, ton: d.pilote == 'journal' ? TonSigh.attention : TonSigh.navy, icone: LucideIcons.radioTower),
+          mrbKpi('Fournisseur', d.pilote == null ? null : (smsFournisseurDe(d.pilote)?.libelle ?? '${d.pilote}'),
+              indice: d.pilote == null
+                  ? null
+                  : d.parametresManquants.isNotEmpty
+                      ? 'paramètres manquants au relais'
+                      : (smsFournisseurDe(d.pilote)?.envoie == false ? 'pilote d’essai du relais : aucun SMS ne part réellement' : 'réglé dans le fichier de réglages du relais'),
+              ton: d.parametresManquants.isNotEmpty ? TonSigh.danger : (smsFournisseurDe(d.pilote)?.envoie == false ? TonSigh.attention : TonSigh.navy),
+              icone: LucideIcons.radioTower),
         ]),
         const SizedBox(height: 12),
+        if (d.pilote != null && d.parametresManquants.isNotEmpty)
+          Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: NoteSigh(
+                  'Le relais attend encore, dans son fichier de réglages : ${d.parametresManquants.join(', ')}. Tant qu’ils manquent, aucun SMS n’est envoyé et la file reste intacte.',
+                  key: const Key('sms:parametres-manquants'),
+                  ton: TonSigh.danger,
+                  icone: LucideIcons.triangleAlert)),
+        _CarteFournisseurs(actuel: d.pilote),
+        const SizedBox(height: 16),
         if (!d.relaisConfigure)
           const Padding(
               padding: EdgeInsets.only(bottom: 12),
@@ -276,6 +292,39 @@ class _EtatPasserelle extends MrbEtatEcran<EcranSmsPasserelle, MrbSms?> {
         ),
       ],
     ]);
+  }
+}
+
+/// Le choix du fournisseur est un RÉGLAGE DU RELAIS (variable `RELAIS_SMS_PILOTE` de son fichier de réglages) : le poste ne l'écrit pas, il le montre et dit,
+/// pour chaque fournisseur reconnu, les variables que le relais attend. Aucun identifiant n'est saisi ni affiché ici.
+class _CarteFournisseurs extends StatelessWidget {
+  const _CarteFournisseurs({required this.actuel});
+  final String? actuel;
+
+  @override
+  Widget build(BuildContext context) {
+    return CarteSigh(
+      titre: 'Fournisseur de SMS',
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, key: const Key('sms:fournisseurs'), children: [
+        const Text(
+            'Le fournisseur se choisit dans le fichier de réglages du relais (variable RELAIS_SMS_PILOTE), jamais depuis le poste. Les identifiants y restent : ni le poste ni la mère ne les voient.',
+            style: TextStyle(fontSize: 12, color: JetonsShell.slate500)),
+        const SizedBox(height: 8),
+        for (final f in smsFournisseurs)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Text('${f.libelle}  ', style: const TextStyle(fontWeight: FontWeight.w600)),
+                Text('RELAIS_SMS_PILOTE=${f.cle}', style: const TextStyle(fontSize: 12, color: JetonsShell.slate500)),
+                if (f.cle == actuel) const Padding(padding: EdgeInsets.only(left: 8), child: BadgeSigh('En service au relais')),
+              ]),
+              Text(f.aide, style: const TextStyle(fontSize: 12, color: JetonsShell.slate600)),
+              if (f.parametres.isNotEmpty) Text('Le relais attend : ${f.parametres.join(', ')}', style: const TextStyle(fontSize: 12, color: JetonsShell.slate600)),
+            ]),
+          ),
+      ]),
+    );
   }
 }
 

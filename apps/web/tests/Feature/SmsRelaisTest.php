@@ -8,6 +8,8 @@ use App\Relais\Sms\Pilote;
 use App\Relais\Sms\PiloteEchec;
 use App\Relais\Sms\PiloteHttp;
 use App\Relais\Sms\PiloteJournal;
+use App\Relais\Sms\PiloteTwilio;
+use App\Relais\Sms\PiloteVonage;
 use App\Relais\Sms\ResultatEnvoi;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -312,17 +314,158 @@ class SmsRelaisTest extends TestCase
     public function test_le_pilote_par_defaut_est_le_journal_qui_n_envoie_rien(): void
     {
         Http::fake();
-        config(['relais.sms.pilote' => 'inconnu']);
+        config(['relais.sms.pilote' => 'journal']);
         $this->assertSame('journal', Envoyeur::pilote()->nom());
         $this->deposer()->assertOk();
         Envoyeur::tourner();
         Http::assertNothingSent();
     }
 
+    public function test_un_nom_de_pilote_inconnu_est_un_echec_nomme_et_ne_touche_pas_la_file(): void
+    {
+        Http::fake();
+        config(['relais.sms.pilote' => 'inconnu']);
+        $this->assertSame('inconnu', Envoyeur::pilote()->nom());
+        $this->deposer()->assertOk();
+        $b = Envoyeur::tourner();
+        $this->assertSame(0, $b['envoyes']);
+        $this->assertSame(['RELAIS_SMS_PILOTE'], $b['configuration_manquante']);
+        $this->assertSame('en_attente', DB::table('sms_sortants')->value('statut'));
+        $this->assertNotNull(DB::table('sms_sortants')->value('texte'), 'le texte n\'est pas effacé pour une faute de .env');
+        Http::assertNothingSent();
+    }
+
+    // --- pilotes Twilio et Vonage ----------------------------------------------------------------------------------------------------------------
+
+    private function reglagesTwilio(array $sur = []): array
+    {
+        return $sur + ['url_base' => 'https://api.twilio.invalid/2010-04-01', 'sid' => 'ACessai0001', 'token' => 'jeton-essai', 'expediteur' => '+22900000009', 'service' => '', 'delai_s' => 5];
+    }
+
+    private function reglagesVonage(array $sur = []): array
+    {
+        return $sur + ['url' => 'https://rest.vonage.invalid/sms/json', 'cle' => 'cle-essai', 'secret' => 'secret-essai', 'expediteur' => 'CLINIQUE', 'delai_s' => 5];
+    }
+
+    public function test_le_pilote_twilio_poste_en_form_avec_auth_basic_sid_token(): void
+    {
+        Http::fake(['https://api.twilio.invalid/*' => Http::response(['sid' => 'SM1', 'status' => 'queued'], 201)]);
+        $r = (new PiloteTwilio($this->reglagesTwilio()))->envoyer(self::NUMERO, 'Bonjour');
+        $this->assertTrue($r->accepte);
+        Http::assertSent(fn ($req) => $req->url() === 'https://api.twilio.invalid/2010-04-01/Accounts/ACessai0001/Messages.json'
+            && $req->method() === 'POST'
+            && $req->hasHeader('Authorization', 'Basic '.base64_encode('ACessai0001:jeton-essai'))
+            && str_contains(implode(';', $req->header('Content-Type')), 'application/x-www-form-urlencoded')
+            && $req['To'] === self::NUMERO && $req['From'] === '+22900000009' && $req['Body'] === 'Bonjour' && ! isset($req['MessagingServiceSid']));
+    }
+
+    public function test_le_pilote_twilio_prefere_le_service_de_messagerie_quand_il_est_regle(): void
+    {
+        Http::fake(['*' => Http::response([], 201)]);
+        (new PiloteTwilio($this->reglagesTwilio(['expediteur' => '', 'service' => 'MGessai'])))->envoyer(self::NUMERO, 'x');
+        Http::assertSent(fn ($req) => $req['MessagingServiceSid'] === 'MGessai' && ! isset($req['From']));
+    }
+
+    public function test_le_pilote_twilio_sans_parametres_nomme_ce_qui_manque_et_n_appelle_rien(): void
+    {
+        Http::fake();
+        $p = new PiloteTwilio($this->reglagesTwilio(['sid' => '', 'token' => '', 'expediteur' => '']));
+        $this->assertSame(['RELAIS_SMS_TWILIO_SID', 'RELAIS_SMS_TWILIO_TOKEN', 'RELAIS_SMS_EXPEDITEUR (ou RELAIS_SMS_TWILIO_SERVICE)'], $p->parametresManquants());
+        $this->assertSame('twilio_parametre_manquant', $p->envoyer(self::NUMERO, 'x')->code);
+        Http::assertNothingSent();
+    }
+
+    public function test_le_pilote_twilio_rend_un_code_jamais_le_corps(): void
+    {
+        Http::fake(['*' => Http::response('{"message":"The number +22900000001 is unverified"}', 401)]);
+        $r = (new PiloteTwilio($this->reglagesTwilio()))->envoyer(self::NUMERO, 'x');
+        $this->assertFalse($r->accepte);
+        $this->assertSame('twilio_http_401', $r->code);
+        $this->assertStringNotContainsString('2290', $r->code);
+    }
+
+    public function test_le_pilote_vonage_poste_l_api_sms_en_form_sans_le_plus(): void
+    {
+        Http::fake(['https://rest.vonage.invalid/*' => Http::response(['message-count' => '1', 'messages' => [['status' => '0', 'message-id' => 'abc']]], 200)]);
+        $r = (new PiloteVonage($this->reglagesVonage()))->envoyer(self::NUMERO, 'Bonjour');
+        $this->assertTrue($r->accepte);
+        Http::assertSent(fn ($req) => $req->url() === 'https://rest.vonage.invalid/sms/json' && $req->method() === 'POST'
+            && str_contains(implode(';', $req->header('Content-Type')), 'application/x-www-form-urlencoded')
+            && $req['api_key'] === 'cle-essai' && $req['api_secret'] === 'secret-essai' && $req['from'] === 'CLINIQUE'
+            && $req['to'] === '22900000001' && $req['text'] === 'Bonjour');
+    }
+
+    public function test_le_pilote_vonage_lit_le_statut_du_corps_car_un_refus_repond_200(): void
+    {
+        Http::fake(['*' => Http::sequence()
+            ->push(['messages' => [['status' => '9', 'error-text' => 'Quota Exceeded pour +22900000001']]], 200)
+            ->push('pas du json', 200)
+            ->push('', 503)]);
+        $p = new PiloteVonage($this->reglagesVonage());
+        $r = $p->envoyer(self::NUMERO, 'x');
+        $this->assertFalse($r->accepte);
+        $this->assertSame('vonage_statut_9', $r->code);
+        $this->assertSame('vonage_reponse_illisible', $p->envoyer(self::NUMERO, 'x')->code);
+        $this->assertSame('vonage_http_503', $p->envoyer(self::NUMERO, 'x')->code);
+    }
+
+    public function test_le_pilote_vonage_sans_parametres_nomme_ce_qui_manque_et_n_appelle_rien(): void
+    {
+        Http::fake();
+        $p = new PiloteVonage($this->reglagesVonage(['cle' => '', 'secret' => '']));
+        $this->assertSame(['RELAIS_SMS_VONAGE_CLE', 'RELAIS_SMS_VONAGE_SECRET'], $p->parametresManquants());
+        $this->assertSame('vonage_parametre_manquant', $p->envoyer(self::NUMERO, 'x')->code);
+        Http::assertNothingSent();
+    }
+
+    public function test_le_choix_du_fournisseur_est_un_reglage_et_une_config_incomplete_ne_brule_aucune_tentative(): void
+    {
+        Http::fake();
+        foreach (['twilio' => PiloteTwilio::class, 'vonage' => PiloteVonage::class] as $nom => $classe) {
+            config(['relais.sms.pilote' => $nom, 'relais.sms.twilio' => [], 'relais.sms.vonage' => []]);
+            $this->assertInstanceOf($classe, Envoyeur::pilote());
+        }
+        $this->deposer()->assertOk();
+        $b = Envoyeur::tourner();
+        $this->assertNotSame([], $b['configuration_manquante']);
+        $this->assertSame(0, (int) DB::table('sms_sortants')->value('tentatives'));
+        $this->assertSame('en_attente', DB::table('sms_sortants')->value('statut'));
+        $this->assertNotNull(DB::table('sms_sortants')->value('texte'));
+        $this->assertStringNotContainsString(self::NUMERO, $this->auditSms());
+        $this->assertStringNotContainsString('secret', $this->auditSms());
+        $this->assertStringContainsString('sms_pilote_non_configure', $this->auditSms());
+        Http::assertNothingSent();
+    }
+
+    public function test_l_etat_dit_les_parametres_manquants_du_pilote_sans_leurs_valeurs(): void
+    {
+        config(['relais.sms.pilote' => 'vonage', 'relais.sms.vonage' => $this->reglagesVonage(['secret' => ''])]);
+        $this->getJson('/mere/sms/etat', ['x-mere' => self::SECRET])->assertOk()
+            ->assertJson(['pilote' => 'vonage', 'parametres_manquants' => ['RELAIS_SMS_VONAGE_SECRET']]);
+    }
+
+    public function test_un_envoi_vonage_accepte_efface_le_numero_et_le_texte_et_reutilise_le_plafond(): void
+    {
+        Http::fake(['*' => Http::response(['messages' => [['status' => '0']]], 200)]);
+        config(['relais.sms.pilote' => 'vonage', 'relais.sms.vonage' => $this->reglagesVonage(), 'relais.sms.plafond_jour' => 1]);
+        $this->deposer('sms-0000000001')->assertOk();
+        $this->assertSame(1, Envoyeur::tourner()['envoyes']);
+        $l = DB::table('sms_sortants')->first();
+        $this->assertSame('envoye', $l->statut);
+        $this->assertNull($l->numero);
+        $this->assertNull($l->texte);
+        $this->assertStringNotContainsString('secret-essai', $this->auditSms());
+        $this->deposer('sms-0000000002')->assertStatus(429);
+    }
+
     public function test_aucun_identifiant_de_fournisseur_n_est_ecrit_dans_le_depot(): void
     {
         $src = file_get_contents(config_path('relais.php')).file_get_contents(app_path('Relais/Sms/PiloteHttp.php'));
-        $this->assertDoesNotMatchRegularExpression('#https?://(?!passerelle\.exemple)#', $src, 'aucune adresse de fournisseur en dur');
+        // Les deux seules adresses tolérées sont les API documentées de Twilio et de Vonage, valeurs PAR DÉFAUT d'un réglage surchargeable (RELAIS_SMS_*_URL*).
+        $this->assertDoesNotMatchRegularExpression('#https?://(?!passerelle\.exemple|api\.twilio\.com/2010-04-01|rest\.nexmo\.com/sms/json)#', $src, 'aucune adresse de fournisseur en dur');
+        foreach (['PiloteTwilio', 'PiloteVonage'] as $c) {
+            $this->assertDoesNotMatchRegularExpression('#https?://#', file_get_contents(app_path("Relais/Sms/{$c}.php")).'', 'le pilote lit son adresse du réglage');
+        }
         $this->assertStringContainsString("env('RELAIS_SMS_HTTP_URL', '')", $src);
         $this->assertStringContainsString("env('RELAIS_SMS_HTTP_CLE', '')", $src);
     }

@@ -68,7 +68,7 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 | adresse géographique (champ nouveau, absent de `IdentiteClinique`) | Quartier Zongo II, Parakou |
 | `bp` | 02 BP : 105 PARAKOU (Rép. du Bénin) |
 | `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
-| `email` | cliniquebaguidi@yahoo.fr |
+| `email` | contact@cliniquebaguidi.com (décision du 17/11/2026 ; remplace l’ancienne adresse de la fiche du 06/11) |
 | `ifu` | 3201001996110 |
 | `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
 | `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |

@@ -61,6 +61,12 @@ class _EcranRappelsState extends State<EcranRappels> {
                 'Le prototype compose les messages et les met en file. Il ne les envoie pas : la solution fonctionne hors ligne, sans passerelle SMS ni serveur de messagerie. Prétendre l’envoi serait mentir sur ce qui se passe — et la clinique croirait ses patients prévenus.',
                 ton: TonSigh.attention,
                 icone: LucideIcons.wifiOff),
+            const SizedBox(height: 12),
+            NoteSigh(
+                'L’envoi réel passe par la poste mère : l’écran « Passerelle SMS » dépose le message composé au relais, qui l’envoie par le fournisseur réglé dans son fichier de réglages '
+                '(${[for (final f in smsFournisseurs) f.libelle].join(', ')}) et lui indique les variables qu’il attend. Un poste sans mère ni relais ne l’envoie pas.',
+                key: const Key('rappels:passerelle-sms'),
+                icone: LucideIcons.radioTower),
             const SizedBox(height: 16),
             OngletsSigh(onglets: [
               OngletDef(id: 'modeles', libelle: 'Modèles de message', compte: ms.length, construire: (_) => const _OngletModeles()),

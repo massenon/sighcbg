@@ -41,11 +41,13 @@ class Source extends MrbSource {
   @override
   Future<MrbCodeMobile> codeMobile(String etiquette, {required String profil, String? fonction}) async => throw UnimplementedError();
 
+  Map<String, Object?> relais = const {'plafond_jour': 100, 'envoyes_aujourdhui': 3, 'en_attente': 1, 'pilote': 'journal'};
+
   @override
   Future<MrbSms?> sms() async => MrbSms(
       actif: actif,
       relaisConfigure: true,
-      relais: const {'plafond_jour': 100, 'envoyes_aujourdhui': 3, 'en_attente': 1, 'pilote': 'journal'},
+      relais: relais,
       journal: journalSms,
       statutMotsInterdits: smsStatutMotsInterdits);
 
@@ -118,11 +120,24 @@ void main() {
     expect(t.widget<Checkbox>(find.byKey(const Key('sms:interrupteur'))).value, isFalse);
     expect(find.textContaining('FERMÉE (aucun SMS ne part)'), findsOneWidget);
     expect(find.text('100'), findsOneWidget);
-    expect(find.text('Essai (n’envoie rien)'), findsOneWidget);
+    expect(find.text('Journal (essai, n’envoie rien)'), findsWidgets);
+    expect(find.byKey(const Key('sms:parametres-manquants')), findsNothing);
     expect(find.textContaining('à valider par un médecin'), findsWidgets);
     expect(find.text('diagnostic'), findsOneWidget);
     // fermée : « Tester l'envoi » existe (le droit est là) mais n'envoie rien tant que la passerelle est fermée
     expect(t.widget<BoutonSigh>(find.byKey(const Key('sms:tester'))).onPressed, isNull);
+  });
+
+  testWidgets('passerelle : le fournisseur est lu au relais ; ses paramètres manquants sont nommés, et les quatre fournisseurs disent ce qu’ils attendent', (t) async {
+    final src = Source()..relais = const {'plafond_jour': 100, 'envoyes_aujourdhui': 0, 'en_attente': 0, 'pilote': 'vonage', 'parametres_manquants': ['RELAIS_SMS_VONAGE_SECRET']};
+    await monter(t, src, const EcranSmsPasserelle(), 'mere-sms-passerelle');
+    expect(find.text('Vonage'), findsWidgets);
+    expect(find.text('En service au relais'), findsOneWidget);
+    expect(find.textContaining('Le relais attend encore, dans son fichier de réglages : RELAIS_SMS_VONAGE_SECRET'), findsOneWidget);
+    for (final f in smsFournisseurs) {
+      expect(find.text('RELAIS_SMS_PILOTE=${f.cle}'), findsOneWidget, reason: f.cle);
+    }
+    expect(find.textContaining('RELAIS_SMS_TWILIO_SID'), findsOneWidget);
   });
 
   testWidgets('passerelle : ouvrir appelle le service ; « Tester l’envoi » compose un SMS d’essai contrôlé et le dépose', (t) async {
