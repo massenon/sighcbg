@@ -5,6 +5,7 @@ import 'package:http/testing.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
@@ -604,6 +605,16 @@ void main() {
       expect(find.text('• tarifs'), findsOneWidget, reason: 'les essentiels du MOTEUR sont nommés');
       expect(find.text('• Patients et consultations'), findsOneWidget, reason: 'ce qui est archivé aussi');
       expect(find.textContaining('Archivé (par défaut)'), findsOneWidget);
+    });
+
+    testWidgets('la durée de la fenêtre est le RÉGLAGE en vigueur (mere.fenetreReinitMinutes) : 45 minutes réglées, le libellé et le message le disent', (t) async {
+      final m = Magasin();
+      serviceParametres(m, auteur: () => 'Test', horloge: () => maintenant)
+        ..semerDefauts()
+        ..regler(mrbCleFenetreReinit, 45, '2026-01-01', motif: 'essai');
+      await ouvrir(t, 'mere-reinit', Faux(), magasin: m);
+      expect(bouton('Ouvrir la fenêtre (45 min)'), findsOneWidget);
+      expect(bouton('Ouvrir la fenêtre (30 min)'), findsNothing);
     });
 
     testWidgets('sans le droit d’annuler : aucune commande, ni ouverture ni réinitialisation (absentes, pas grisées)', (t) async {

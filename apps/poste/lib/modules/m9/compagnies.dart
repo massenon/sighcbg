@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart' show bornesBalanceAgeeAssureur;
 import '../../donnees/magasin.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -64,7 +65,8 @@ class EcranCompagnies extends StatelessWidget with EcranMaquette {
             assures: assures,
             facturesAssurance: fa,
             carteValide: (p) => carteValideLe(c, p),
-            auj: auj);
+            auj: auj,
+            bornes: bornesBalanceAgeeAssureur(c.magasin, auj));
 
         return CrudFormulaireSigh(
           collection: c.magasin.collection('assureurs'),
@@ -153,9 +155,8 @@ class EcranCompagnies extends StatelessWidget with EcranMaquette {
                 nom: 'anciennete',
                 libelle: 'Ancienneté de la dette',
                 options: [
-                  OptionChamp('plus90', 'Au-delà de 90 jours'),
-                  OptionChamp('30a90', 'De 30 à 90 jours'),
-                  OptionChamp('moins30', 'Moins de 30 jours'),
+                  // Libellés calculés des bornes RÉGLÉES de la balance des assureurs, du plus ancien au plus récent (comme avant).
+                  for (final t in assTranchesDef(bornesBalanceAgeeAssureur(c.magasin, c.aujourdhui)).reversed) OptionChamp(t.id, t.libelle),
                 ],
                 correspond: (a, v) => filtre('anciennete', a, v)),
             FiltreTableau(

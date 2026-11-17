@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show mobLibelleEcran;
+import 'package:sigh_domaine/sigh_domaine.dart' show MobBornes, mobLibelleEcran;
 
+import '../moteur/bornes_mobile.dart';
 import '../moteur/moteur_mobile.dart';
 import 'orientation.dart';
 
@@ -30,8 +31,11 @@ class _ReceptionState extends State<Reception> {
       setState(() => _erreur = 'Le nom et le prénom sont obligatoires.');
       return;
     }
-    if (age == null || age < 0 || age > 120) {
-      setState(() => _erreur = 'L’âge déclaré est obligatoire (0 à 120 ans).');
+    // La borne haute est un RÉGLAGE du téléphone (livré par la mère) ; sans réglage reçu, la valeur d'attente. La borne basse, 0, est structurelle : un âge n'est pas négatif.
+    final ext = widget.moteur;
+    final ageMax = (ext is ExtensionsMobile ? await bornesDe((ext as ExtensionsMobile).source, DateTime.now()) : MobBornes.attente).ageMaxAns;
+    if (age == null || age < 0 || age > ageMax) {
+      setState(() => _erreur = 'L’âge déclaré est obligatoire (0 à $ageMax ans).');
       return;
     }
     await widget.moteur.creerPatient({

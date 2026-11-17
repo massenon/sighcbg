@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart' show seuilClinique;
 import '../../donnees/magasin.dart';
 import '../../donnees/tarifs_poste.dart';
 import '../../impression/piece.dart';
@@ -275,6 +276,7 @@ class EcranCertificats extends StatelessWidget with EcranMaquette {
       for (final e in c.magasin.collection('personnel').actives)
         if (e['fonction'] == 'medecin' || e['fonction'] == 'sage_femme') '${e['nomComplet']}'
     ];
+    final termeMax = seuilClinique(c.magasin, cfaCleTermeMaxCertificat, c.aujourdhui);
     final champs = <ChampDef>[
       ChampDef(
           nom: 'patientCode',
@@ -285,7 +287,7 @@ class EcranCertificats extends StatelessWidget with EcranMaquette {
           options: [for (final p in patients) OptionChamp('${p['code']}', '${p['code']} — ${p['nom']} ${p['prenom']}')]),
       ChampDef(nom: 'praticien', libelle: 'Praticien signataire', type: TypeChamp.select, requis: true, options: [for (final p in praticiens) OptionChamp(p)]),
       const ChampDef(nom: 'date', libelle: 'Date de délivrance', type: TypeChamp.date, requis: true),
-      for (final k in t.champs) _champ(k),
+      for (final k in t.champs) _champ(k, termeMax),
     ];
     final ctl = ControleurFormulaire(champs, {'date': iso(c.aujourdhui)});
 
@@ -346,10 +348,12 @@ class EcranCertificats extends StatelessWidget with EcranMaquette {
             ]);
   }
 
-  static ChampDef _champ(String k) {
+  static ChampDef _champ(String k, int termeMax) {
     final d = cfaChampsCertificat[k]!;
     return ChampDef(
         nom: k,
+        // Le terme d'un certificat de grossesse est borné par le RÉGLAGE en vigueur (1 à `consultation.termeMaxCertificatSemaines` semaines), plus par un littéral.
+        valider: k == 'termeSemaines' ? (v, _) => cfaErreurTerme(v, termeMax) : null,
         libelle: d.libelle,
         requis: true,
         type: switch (d.type) {

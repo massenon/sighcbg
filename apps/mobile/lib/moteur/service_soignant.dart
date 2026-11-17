@@ -10,6 +10,7 @@ library;
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import 'bornes_mobile.dart';
 import 'droits_mobile.dart';
 
 /// Une fiche du lot, telle que le moteur la livre.
@@ -219,7 +220,7 @@ class ServiceSoignant {
   Future<String> enregistrerConstantes(String patientId, Map<String, String> saisie) async {
     droits?.exiger('constantes');
     final p = await _preparer(patientId);
-    final champs = mobChampsConstantes(patient: p.champs, patientId: patientId, saisie: saisie, acteur: session.agent, maintenant: maintenant);
+    final champs = mobChampsConstantes(patient: p.champs, patientId: patientId, saisie: saisie, acteur: session.agent, maintenant: maintenant, bornes: await bornesDe(source, maintenant));
     return source.creer('constantes', champs);
   }
 
@@ -260,7 +261,7 @@ class ServiceSoignant {
     final p = await _preparer(patientId);
     final noteId = await _noteDuJour(patientId, 'medicament');
     final champs = mobChampsOrdonnance(
-        patient: p.champs, patientId: patientId, noteId: noteId, saisie: saisie, acteur: session.agent, fonction: session.fonction, maintenant: maintenant, produits: [for (final l in await _actives('produits')) {...l.data, 'id': l.id}]);
+        patient: p.champs, patientId: patientId, noteId: noteId, saisie: saisie, acteur: session.agent, fonction: session.fonction, maintenant: maintenant, produits: [for (final l in await _actives('produits')) {...l.data, 'id': l.id}], bornes: await bornesDe(source, maintenant));
     return source.creer('prescriptions', champs);
   }
 

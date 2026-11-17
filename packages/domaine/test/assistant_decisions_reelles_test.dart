@@ -241,6 +241,18 @@ void main() {
       // Q98 : « les impayés des patients » ne mêle pas les assureurs
       expect(pose(98).tableau!.colonnes, ['Ancienneté', 'Factures', 'Montant']);
     });
+    test('Q8 et Q17, bornes des ASSUREURS réglées à part (15 et 45 jours) : chaque créance se classe sur SES tranches, nommées, jamais sur celles de l\'autre', () {
+      Map<String, Object?> reglage(String cle, int v) => {'id': cle, 'cle': cle, 'famille': 'assurances', 'type': 'entier', 'valeur': v, 'defaut': v, 'version': 0, 'dateEffet': null};
+      for (final n in [8, 17]) {
+        final sans = pose(n);
+        expect(sans.tableau!.lignes.where((l) => l.first.startsWith('Assureurs : ')), isEmpty, reason: 'Q$n : bornes d\'attente identiques à celles des patients, une seule série de lignes, comme avant');
+        final r = pose(n, en: {'parametres': [reglage(cleBalanceAgeeAssureurBorne1, 15), reglage(cleBalanceAgeeAssureurBorne2, 45)]});
+        final lignes = r.tableau!.lignes.map((l) => l.first).toList();
+        expect(lignes.where((l) => l.startsWith('Assureurs : ')), ['Assureurs : Moins de 15 jours', 'Assureurs : De 15 à 45 jours', 'Assureurs : Au-delà de 45 jours'], reason: 'Q$n');
+        expect(lignes.where((l) => l.startsWith('Patients : ')), isNotEmpty, reason: 'Q$n');
+        expect(tout(r), contains('des assureurs : 15 et 45 jours'), reason: 'Q$n : les deux séries de bornes sont dites');
+      }
+    });
     test('Q20 et Q47 : « secteur par secteur » = les groupes de familles d’articles ; « la pharmacie » restreint au secteur', () {
       expect(pose(20).tableau!.colonnes.first, 'Secteur');
       final r = pose(47);

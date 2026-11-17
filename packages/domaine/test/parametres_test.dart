@@ -93,8 +93,20 @@ void main() {
         expect(Parametres.validerFiche(Parametres.semer(d), const [], const []), isNull, reason: d.cle);
       }
     });
-    test('aucun paramètre réservé (RG-13) n\'est déclaré pour le téléphone', () {
-      for (final d in definitionsParametres) {
+    test('la LISTE BLANCHE du téléphone est explicite : seules les bornes de plausibilité de saisie partent, numériques, bornées, hors famille réservée (RG-13)', () {
+      final blanche = {for (final d in mobBornesDefs) ...{d.cleMin, d.cleMax}, mobCleAgeMax};
+      final partent = {for (final d in definitionsParametres) if (Parametres.autoriseMobile(Parametres.semer(d).toJson())) d.cle};
+      expect(partent, blanche, reason: 'ni une borne de la liste blanche qui ne part pas, ni un autre paramètre qui part');
+      for (final d in definitionsParametres.where((d) => partent.contains(d.cle))) {
+        expect(d.type, TypeParametre.nombre, reason: d.cle);
+        expect(d.sensible, isFalse, reason: d.cle);
+        expect(parFamillesJamaisMobile.contains(d.famille), isFalse, reason: d.cle);
+        expect(d.min != null && d.max != null && d.min! < d.max!, isTrue, reason: '${d.cle} : enveloppe obligatoire');
+        expect(d.defaut is num && d.defaut as num >= d.min! && d.defaut as num <= d.max!, isTrue, reason: '${d.cle} : défaut dans l\'enveloppe');
+      }
+    });
+    test('aucun paramètre sensible ni de famille réservée n\'est déclaré pour le téléphone', () {
+      for (final d in definitionsParametres.where((d) => d.sensible || parFamillesJamaisMobile.contains(d.famille))) {
         expect(Parametres.autoriseMobile(Parametres.semer(d).toJson()), isFalse, reason: d.cle);
       }
     });

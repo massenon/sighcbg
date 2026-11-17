@@ -19,7 +19,7 @@ Future<void> regler(Mere m, Map<String, Object?> valeurs, {String date = '2020-0
     final d = definitionDeParametre(e.key)!;
     final id = '${e.key}@$date@$version';
     await m.ecrire(parCollectionParametres, id, Fiche({
-      'cle': e.key, 'famille': 'horssite', 'type': d.type.name, 'valeur': e.value, 'defaut': d.defaut, 'dateEffet': date, 'version': version, 'auteur': 'admin', 'creeLe': '2026-11-14T08:00:00Z', 'mobile': false, 'sensible': false,
+      'cle': e.key, 'famille': d.famille, 'type': d.type.name, 'valeur': e.value, 'defaut': d.defaut, 'dateEffet': date, 'version': version, 'auteur': 'admin', 'creeLe': '2026-11-14T08:00:00Z', 'mobile': false, 'sensible': false,
     }, {}, false));
   }
 }
@@ -255,6 +255,36 @@ void main() {
       final retards = [for (final r in await m.base.select("SELECT message FROM evenements WHERE niveau='alerte' AND source='sauvegarde'")) '${r['message']}'].where((x) => x.contains('en retard')).toList();
       expect(retards.length, 1, reason: 'le retard est signalé UNE fois, pas à chaque passe');
       expect(retards.first, contains('fichiers'));
+    });
+
+    test('l\'âge limite d\'une copie de nuit du magasin est un RÉGLAGE (30 h d\'attente) : 35 h de retard passent à « à l\'heure » quand la clinique règle 48 h', () async {
+      var t = DateTime(2026, 11, 14, 10, 0);
+      final h = HorsSiteMere(base: m.base, verrou: m.verrou, cle: () => cleDeTest(), relais: relais.base, secretRelais: secret, dossierSauvegardes: dossierSauv, evenement: m.evenementAsync, stockage: () => null, horloge: () => t);
+      await regler(m, {shCleActif: true});
+      await m.base.poserMeta('horssite:magasin', jsonEncode({'dernier': {'quand': t.subtract(const Duration(hours: 35)).millisecondsSinceEpoch}}));
+      bool enRetard(Map<String, Object?> e) => ((e['types'] as Map)['magasin'] as Map)['enRetard'] == true;
+      expect(enRetard(await h.etat()), isTrue, reason: 'valeur d\'attente de 30 heures : 35 heures de retard');
+      await regler(m, {mereCleAgeLimiteCopieMagasin: 48}, date: '2020-01-01', version: 1);
+      expect(enRetard(await h.etat()), isFalse, reason: 'réglé à 48 heures : la copie de 35 heures est à l\'heure');
+    });
+
+    test('fichiers : la limite de retard = cycles tolérés × fréquence + tolérance, deux RÉGLAGES (2 cycles et 5 minutes d\'attente)', () async {
+      final distant = Directory('${tmp.path}/distant')..createSync();
+      final t = DateTime(2026, 11, 14, 10, 0);
+      final h = HorsSiteMere(base: m.base, verrou: m.verrou, cle: () => cleDeTest(), relais: relais.base, secretRelais: secret, dossierSauvegardes: dossierSauv, evenement: m.evenementAsync, stockage: () => null, horloge: () => t);
+      await regler(m, {shCleActif: true, shCleDestinationFichiers: 'dossier', shCleDossierFichiers: distant.path, shCleFrequence: 60});
+      Future<bool> enRetard(int minutes) async {
+        await m.base.poserMeta('horssite:fichiers', jsonEncode({'dernier': {'quand': t.subtract(Duration(minutes: minutes)).millisecondsSinceEpoch}}));
+        return (((await h.etat())['types'] as Map)['fichiers'] as Map)['enRetard'] == true;
+      }
+
+      expect(await enRetard(124), isFalse, reason: '2 × 60 + 5 = 125 minutes d\'attente');
+      expect(await enRetard(126), isTrue);
+      await regler(m, {mereCleToleranceCopieFichiersMin: 30});
+      expect(await enRetard(126), isFalse, reason: 'tolérance réglée à 30 minutes : limite de 150');
+      await regler(m, {mereCleCyclesCopieFichiers: 3}, date: '2020-01-02', version: 1);
+      expect(await enRetard(200), isFalse, reason: '3 cycles + 30 minutes : limite de 210');
+      expect(await enRetard(211), isTrue);
     });
 
     test('désactivée : la passe ne fait rien, même après des jours', () async {

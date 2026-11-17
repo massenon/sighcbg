@@ -21,7 +21,8 @@ import '../paie/pai_moteur.dart' show PaiEntrees, paiActivites, paiCalculerTous;
 import '../rh/espace_mes.dart' show agentDeMes;
 import '../droits/donnees_sensibles.dart' show mentionReservee;
 import '../pilotage/pil_stats.dart' show statutsRdvAVenir;
-import '../parametres/parametres_clinique.dart' show bornesBalanceAgeePatientA, delaiPreavisPeremptionA, joursArticlesImmobilesA, seuilEntierA, tranchesBalanceAgeePatient;
+import '../assurances/ass_regles.dart' show assTrancheDe, assTranchesDef;
+import '../parametres/parametres_clinique.dart' show bornesBalanceAgeeAssureurA, bornesBalanceAgeePatientA, delaiPreavisPeremptionA, joursArticlesImmobilesA, seuilEntierA, tranchesBalanceAgeePatient;
 import '../format/format_fr.dart' show money, nombreOuNul;
 import '../format/js.dart' show nombreOuZero;
 import '../labo/cat_regles.dart' show catReactifs;
@@ -493,13 +494,35 @@ ReponseAst _i16(ContexteAst cx, ReconnaissanceAst r, String q) {
   final totalA = assurees.fold<num>(0, (a, f) => a + nombreOuZero(f['partAssurance']));
   num som(List<Map<String, Object?>> l, String c) => l.fold<num>(0, (a, f) => a + nombreOuZero(f[c]));
   if (veutAssureurs && peutAssureurs) {
+    // Les bornes des ASSUREURS sont un réglage à part (`assurances.balanceAgeeAssureurBorne1Jours` et `…2Jours`) : tant qu'elles sont celles des patients, les deux créances se lisent
+    // sur les mêmes lignes ; sitôt qu'elles diffèrent, chaque créance se classe sur SES tranches (deux sections), jamais sur celles de l'autre.
+    final bornesA = bornesBalanceAgeeAssureurA(cx.col('parametres'), cx.jour);
+    final memes = bornesA.borne1 == bornes.borne1 && bornesA.borne2 == bornes.borne2;
+    final lignes = <List<String>>[];
+    if (memes) {
+      for (final k in tranches.keys) {
+        lignes.add([k, '${tranches[k]!.length}', money(som(tranches[k]!, 'reliquat')), '${tranchesA[k]!.length}', money(som(tranchesA[k]!, 'partAssurance'))]);
+      }
+    } else {
+      for (final k in tranches.keys) {
+        lignes.add(['Patients : $k', '${tranches[k]!.length}', money(som(tranches[k]!, 'reliquat')), '—', '—']);
+      }
+      final tA = assTranchesDef(bornesA);
+      final parTranche = <String, List<Map<String, Object?>>>{for (final t in tA) t.id: []};
+      for (final f in assurees) {
+        parTranche[assTrancheDe(age(f), bornes: bornesA)]!.add(f);
+      }
+      for (final t in tA) {
+        lignes.add(['Assureurs : ${t.libelle}', '—', '—', '${parTranche[t.id]!.length}', money(som(parTranche[t.id]!, 'partAssurance'))]);
+      }
+    }
     return _rep('I16', 'Créances${seuil == null ? '' : ' de plus de $seuil jours'} : patients ${money(total)}, assureurs ${money(totalA)}', [
       totalA == total ? 'Les assureurs et les patients doivent le même montant.' : (totalA > total ? 'Ce sont les ASSUREURS qui doivent le plus (${money(totalA)} contre ${money(total)} pour les patients).' : 'Ce sont les PATIENTS qui doivent le plus (${money(total)} contre ${money(totalA)} pour les assureurs).'),
       'Patients : la part PATIENT restant due (reliquat) des factures non soldées. Assureurs : la part d’assurance des factures assurées, définition de la balance âgée de l’écran Créances (les règlements reçus des compagnies s’y lisent à l’écran).',
-      'Classement par ancienneté de la facture ; bornes de la balance âgée : ${bornes.borne1} et ${bornes.borne2} jours (réglage de clinique, valeur d’attente à valider).',
-    ], src, tableau: TableauAst(['Ancienneté', 'Patients (factures)', 'Patients (reliquat)', 'Assureurs (factures)', 'Assureurs (part assurance)'], [
-      for (final k in tranches.keys) [k, '${tranches[k]!.length}', money(som(tranches[k]!, 'reliquat')), '${tranchesA[k]!.length}', money(som(tranchesA[k]!, 'partAssurance'))]
-    ]));
+      memes
+          ? 'Classement par ancienneté de la facture ; bornes de la balance âgée : ${bornes.borne1} et ${bornes.borne2} jours (réglage de clinique, valeur d’attente à valider).'
+          : 'Classement par ancienneté de la facture ; bornes de la balance âgée des patients : ${bornes.borne1} et ${bornes.borne2} jours, des assureurs : ${bornesA.borne1} et ${bornesA.borne2} jours (réglages de clinique, valeurs d’attente à valider).',
+    ], src, tableau: TableauAst(['Ancienneté', 'Patients (factures)', 'Patients (reliquat)', 'Assureurs (factures)', 'Assureurs (part assurance)'], lignes));
   }
   return _rep('I16', '${retenues.length} facture(s) impayée(s) : ${money(total)}', [
     'Impayés de la PART PATIENT (reliquat), classés par ancienneté de la facture${seuil == null ? '' : ' (plus de $seuil jours)'}.',

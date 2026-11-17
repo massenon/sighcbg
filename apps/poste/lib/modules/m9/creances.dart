@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart' show bornesBalanceAgeeAssureur;
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
@@ -70,11 +71,10 @@ class _EtatCreances extends State<EcranCreances> {
         ]),
         '');
     _anciennete = champUnique(
-        def('anciennete', 'Ancienneté retenue', TypeChamp.select, options: const [
-          OptionChamp('', 'Toutes anciennetés'),
-          OptionChamp('moins30', 'Moins de 30 jours'),
-          OptionChamp('30a90', 'De 30 à 90 jours'),
-          OptionChamp('plus90', 'Au-delà de 90 jours'),
+        def('anciennete', 'Ancienneté retenue', TypeChamp.select, options: [
+          const OptionChamp('', 'Toutes anciennetés'),
+          // Les libellés se calculent des bornes RÉGLÉES (assurances.balanceAgeeAssureurBorne1Jours et 2) : plus de « 30 » ni de « 90 » écrits ici.
+          for (final t in assTranchesDef(bornesBalanceAgeeAssureur(c.magasin, c.aujourdhui))) OptionChamp(t.id, t.libelle),
         ]),
         '');
     _seuil = champUnique(
@@ -111,6 +111,7 @@ class _EtatCreances extends State<EcranCreances> {
       au: _txt(_au!, 'au'),
       compagnie: _txt(_compagnie!, 'compagnie'),
       anciennete: _txt(_anciennete!, 'anciennete'),
+      bornes: bornesBalanceAgeeAssureur(c.magasin, c.aujourdhui),
       seuil: num.tryParse(_txt(_seuil!, 'seuil')) ?? 0);
 
   /// Les filtres EN FORCE, relevés comme `P.etat` les relève sur la page.
@@ -133,6 +134,7 @@ class _EtatCreances extends State<EcranCreances> {
 
   void _imprimer(BuildContext ctx, ContexteEcran c, List<AssLigneCreance> rows) {
     final tri = trierPar<AssLigneCreance>(rows, (r) => r.total, descendant: true);
+    final tr = assTranchesDef(bornesBalanceAgeeAssureur(c.magasin, c.aujourdhui));
     afficherApercu(
         ctx,
         pieceM9(c,
@@ -145,8 +147,8 @@ class _EtatCreances extends State<EcranCreances> {
               ),
               ('Compagnies concernées', nombre(rows.length)),
               (
-                'Dont plus de 90 jours',
-                money(rows.fold<num>(0, (a, r) => a + r.plus90))
+                'Dont ${tr[2].libelleKpi.toLowerCase()}',
+                money(rows.fold<num>(0, (a, r) => a + r.tranche3))
               ),
               ('Date d’édition', dateFR(c.aujourdhui)),
             ],
@@ -158,20 +160,20 @@ class _EtatCreances extends State<EcranCreances> {
                 ColonneEtat(
                     libelle: 'Factures', droite: true, valeur: (r) => r['nb']),
                 ColonneEtat(
-                    libelle: '< 30 j',
+                    libelle: tr[0].libelleCourt,
                     droite: true,
-                    valeur: (r) => m(r['moins30']),
-                    somme: (r) => n(r['moins30'])),
+                    valeur: (r) => m(r['tranche1']),
+                    somme: (r) => n(r['tranche1'])),
                 ColonneEtat(
-                    libelle: '30-90 j',
+                    libelle: tr[1].libelleCourt,
                     droite: true,
-                    valeur: (r) => m(r['de30a90']),
-                    somme: (r) => n(r['de30a90'])),
+                    valeur: (r) => m(r['tranche2']),
+                    somme: (r) => n(r['tranche2'])),
                 ColonneEtat(
-                    libelle: '> 90 j',
+                    libelle: tr[2].libelleCourt,
                     droite: true,
-                    valeur: (r) => m(r['plus90']),
-                    somme: (r) => n(r['plus90'])),
+                    valeur: (r) => m(r['tranche3']),
+                    somme: (r) => n(r['tranche3'])),
                 ColonneEtat(
                     libelle: 'Total',
                     droite: true,
@@ -183,9 +185,9 @@ class _EtatCreances extends State<EcranCreances> {
                     'code': r.code,
                     'nom': r.nom,
                     'nb': r.nbFactures,
-                    'moins30': r.moins30,
-                    'de30a90': r.de30a90,
-                    'plus90': r.plus90,
+                    'tranche1': r.tranche1,
+                    'tranche2': r.tranche2,
+                    'tranche3': r.tranche3,
                     'total': r.total,
                   }
               ])
@@ -200,9 +202,10 @@ class _EtatCreances extends State<EcranCreances> {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     return ListenableBuilder(
-      listenable: ecoute(c, ['assureurs', 'factures']),
+      listenable: ecoute(c, ['assureurs', 'factures', 'parametres']),
       builder: (context, _) {
         final rows = _lignes(c);
+        final tr = assTranchesDef(bornesBalanceAgeeAssureur(c.magasin, c.aujourdhui));
         double som(double Function(AssLigneCreance) f) =>
             rows.fold(0.0, (a, r) => a + f(r));
         final tri = trierPar<AssLigneCreance>(rows, (r) => r.total, descendant: true);
@@ -240,18 +243,18 @@ class _EtatCreances extends State<EcranCreances> {
                     icone: LucideIcons.handCoins,
                     ton: TonSigh.attention),
                 KpiSigh(
-                    libelle: 'Moins de 30 jours',
-                    valeur: money(som((r) => r.moins30)),
+                    libelle: tr[0].libelleKpi,
+                    valeur: money(som((r) => r.tranche1)),
                     icone: LucideIcons.clock,
                     ton: TonSigh.succes),
                 KpiSigh(
-                    libelle: '30 à 90 jours',
-                    valeur: money(som((r) => r.de30a90)),
+                    libelle: tr[1].libelleKpi,
+                    valeur: money(som((r) => r.tranche2)),
                     icone: LucideIcons.clockAlert,
                     ton: TonSigh.attention),
                 KpiSigh(
-                    libelle: 'Plus de 90 jours',
-                    valeur: money(som((r) => r.plus90)),
+                    libelle: tr[2].libelleKpi,
+                    valeur: money(som((r) => r.tranche3)),
                     indice: 'Relance impérative',
                     icone: LucideIcons.octagonAlert,
                     ton: TonSigh.danger),
@@ -266,9 +269,9 @@ class _EtatCreances extends State<EcranCreances> {
                       'code': r.code,
                       'nom': r.nom,
                       'nbFactures': r.nbFactures,
-                      'moins30': r.moins30,
-                      'de30a90': r.de30a90,
-                      'plus90': r.plus90,
+                      'tranche1': r.tranche1,
+                      'tranche2': r.tranche2,
+                      'tranche3': r.tranche3,
                       'total': r.total,
                     }
                 ],
@@ -295,35 +298,35 @@ class _EtatCreances extends State<EcranCreances> {
                   const ColonneTableau(
                       cle: 'nbFactures', libelle: 'Factures', droite: true),
                   ColonneTableau(
-                      cle: 'moins30',
-                      libelle: '< 30 j',
+                      cle: 'tranche1',
+                      libelle: tr[0].libelleColonne,
                       droite: true,
-                      texte: (r) => m(r['moins30'])),
+                      texte: (r) => m(r['tranche1'])),
                   ColonneTableau(
-                      cle: 'de30a90',
-                      libelle: '30 – 90 j',
+                      cle: 'tranche2',
+                      libelle: tr[1].libelleColonne,
                       droite: true,
-                      texte: (r) => m(r['de30a90']),
-                      rendu: (_, r) => Text(m(r['de30a90']),
+                      texte: (r) => m(r['tranche2']),
+                      rendu: (_, r) => Text(m(r['tranche2']),
                           style: TextStyle(
-                              color: n(r['de30a90']) > 0
+                              color: n(r['tranche2']) > 0
                                   ? JetonsShell.warning700
                                   : JetonsShell.slate700,
                               fontSize: 14,
                               height: 20 / 14))),
                   ColonneTableau(
-                      cle: 'plus90',
-                      libelle: '> 90 j',
+                      cle: 'tranche3',
+                      libelle: tr[2].libelleColonne,
                       droite: true,
-                      texte: (r) => m(r['plus90']),
-                      rendu: (_, r) => Text(m(r['plus90']),
+                      texte: (r) => m(r['tranche3']),
+                      rendu: (_, r) => Text(m(r['tranche3']),
                           style: TextStyle(
-                              color: n(r['plus90']) > 0
+                              color: n(r['tranche3']) > 0
                                   ? JetonsShell.danger600
                                   : JetonsShell.slate700,
                               fontSize: 14,
                               height: 20 / 14,
-                              fontWeight: n(r['plus90']) > 0
+                              fontWeight: n(r['tranche3']) > 0
                                   ? FontWeight.w600
                                   : FontWeight.w400))),
                   ColonneTableau(
@@ -349,15 +352,11 @@ class _EtatCreances extends State<EcranCreances> {
                 CarteSigh(
                     titre: 'Répartition par ancienneté',
                     child: GraphiqueAnneau(
-                        etiquettes: const [
-                          'Moins de 30 jours',
-                          '30 à 90 jours',
-                          'Plus de 90 jours'
-                        ],
+                        etiquettes: [for (final t in tr) t.libelleKpi],
                         valeurs: [
-                          som((r) => r.moins30),
-                          som((r) => r.de30a90),
-                          som((r) => r.plus90)
+                          som((r) => r.tranche1),
+                          som((r) => r.tranche2),
+                          som((r) => r.tranche3)
                         ],
                         couleurs: const [
                           JetonsShell.success500,

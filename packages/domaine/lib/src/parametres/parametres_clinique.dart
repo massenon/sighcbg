@@ -14,6 +14,8 @@ const String cleDelaiPreavisPeremption = 'stock.delaiPreavisPeremptionJours';
 const String cleBalanceAgeePatientBorne1 = 'comptabilite.balanceAgeePatientBorne1Jours';
 const String cleBalanceAgeePatientBorne2 = 'comptabilite.balanceAgeePatientBorne2Jours';
 const String cleJoursArticlesImmobiles = 'stock.joursArticlesImmobiles';
+const String cleBalanceAgeeAssureurBorne1 = 'assurances.balanceAgeeAssureurBorne1Jours';
+const String cleBalanceAgeeAssureurBorne2 = 'assurances.balanceAgeeAssureurBorne2Jours';
 
 // Le plan de numérisation (lot « valeurs en dur », famille B) : le fonds papier déclaré et la fenêtre qui fait d'un dossier un dossier actif.
 const String cleFondsPapier = 'numerisation.fondsPapierDossiers';
@@ -33,6 +35,8 @@ int get joursArticlesImmobilesSeme => seuilSeme(cleJoursArticlesImmobiles);
 int get preavisPeremptionSeme => seuilSeme(cleDelaiPreavisPeremption);
 int get balanceAgeeBorne1Semee => seuilSeme(cleBalanceAgeePatientBorne1);
 int get balanceAgeeBorne2Semee => seuilSeme(cleBalanceAgeePatientBorne2);
+int get balanceAgeeAssureurBorne1Semee => seuilSeme(cleBalanceAgeeAssureurBorne1);
+int get balanceAgeeAssureurBorne2Semee => seuilSeme(cleBalanceAgeeAssureurBorne2);
 
 /// Les bornes acceptées pour le préavis de péremption (jours).
 const int preavisPeremptionMin = 1;
@@ -73,6 +77,17 @@ int joursArticlesImmobilesA(Iterable<Map<String, Object?>> fichesParametres, Str
   final a = _entier(b1), b = _entier(b2);
   if (a != null && b != null && a >= 1 && b <= 730 && a < b) return (borne1: a, borne2: b);
   return (borne1: balanceAgeeBorne1Semee, borne2: balanceAgeeBorne2Semee);
+}
+
+/// Les deux bornes de la balance âgée des ASSUREURS EN VIGUEUR à [date] : (30, 90) semées, réglables à part de celles des patients (les créances des compagnies et le reliquat des
+/// patients ne se recouvrent pas au même rythme). Une paire incohérente (première borne >= seconde, hors 1 à 730) retombe sur les valeurs semées ENSEMBLE.
+({int borne1, int borne2}) bornesBalanceAgeeAssureurA(Iterable<Map<String, Object?>> fichesParametres, String date) =>
+    bornesBalanceAgeeAssureurDe(_valeurA(fichesParametres, cleBalanceAgeeAssureurBorne1, date), _valeurA(fichesParametres, cleBalanceAgeeAssureurBorne2, date));
+
+({int borne1, int borne2}) bornesBalanceAgeeAssureurDe(Object? b1, Object? b2) {
+  final a = _entier(b1), b = _entier(b2);
+  if (a != null && b != null && a >= 1 && b <= 730 && a < b) return (borne1: a, borne2: b);
+  return (borne1: balanceAgeeAssureurBorne1Semee, borne2: balanceAgeeAssureurBorne2Semee);
 }
 
 /// Les quatre tranches de la balance âgée des patients pour ces bornes, dans l'ordre, sous la forme (libellé, ancienneté minimale exclue, ancienneté maximale incluse) ; la dernière est ouverte.
@@ -120,4 +135,22 @@ int seuilSeme(String cle) {
   final v = d?.defaut;
   if (v is! num) throw ArgumentError('seuil inconnu : $cle');
   return v.toInt();
+}
+
+/// Un SEUIL NUMÉRIQUE (décimal permis : un poids de 0,5 kg) en vigueur à [date] : la version datée qui s'applique, sinon le défaut SEMÉ ; hors des bornes déclarées par la
+/// définition (`min`, `max`) ou illisible, le défaut semé, jamais zéro.
+num seuilNombreA(Iterable<Map<String, Object?>> fichesParametres, String cle, String date) => seuilNombreDe(cle, _valeurA(fichesParametres, cle, date));
+
+/// Le seuil numérique tiré d'une valeur brute : borné par la définition de [cle].
+num seuilNombreDe(String cle, Object? valeur) {
+  final d = definitionDeParametre(cle);
+  if (valeur is num && valeur.isFinite && d != null && (d.min == null || valeur >= d.min!) && (d.max == null || valeur <= d.max!)) return valeur;
+  return seuilNombreSeme(cle);
+}
+
+/// Le défaut SEMÉ d'un seuil numérique (décimal conservé). Une clé inconnue est une faute de programmation.
+num seuilNombreSeme(String cle) {
+  final v = definitionDeParametre(cle)?.defaut;
+  if (v is! num) throw ArgumentError('seuil inconnu : $cle');
+  return v;
 }

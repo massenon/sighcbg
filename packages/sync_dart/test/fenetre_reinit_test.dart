@@ -7,7 +7,7 @@ void main() {
   late Mere m;
   setUp(() async => m = await Mere.creer(ConfigMere(port: 0, dbChemin: ':memory:')));
 
-  test('la durée arrêtée est de 30 minutes', () => expect(dureeFenetreReinit, const Duration(minutes: 30)));
+  test('la durée arrêtée est de 30 minutes (valeur d\'attente du réglage)', () async => expect(await m.fenetreReinit(), const Duration(minutes: 30)));
 
   test('fermée par défaut', () async => expect(await m.reinitOuverte(), isFalse));
 

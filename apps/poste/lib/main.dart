@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show base64;
-import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations, ErreurSchemaDonnees, parametreDateIso, cleEmpreinte, cleLireTexte, cleMajSauvegardeMaxHeures, majHeuresDefaut, epRoleMere, epRoleFileul;
+import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations, ErreurSchemaDonnees, parametreDateIso, cleEmpreinte, cleLireTexte, cleMajSauvegardeMaxHeures, cleMajValiditeAutorisationHeures, seuilEntierDe, epRoleMere, epRoleFileul;
 import 'core/secret_admin.dart';
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
@@ -457,7 +457,12 @@ Future<void> main() async {
 
   int maxHeuresMaj() {
     final v = serviceParametres(magasin, auteur: () => magasin.utilisateur, horloge: () => magasin.horloge()).valeur(cleMajSauvegardeMaxHeures, parametreDateIso(magasin.horloge()));
-    return v is num ? v.toInt() : majHeuresDefaut;
+    return seuilEntierDe(cleMajSauvegardeMaxHeures, v);
+  }
+
+  int validiteMaj() {
+    final v = serviceParametres(magasin, auteur: () => magasin.utilisateur, horloge: () => magasin.horloge()).valeur(cleMajValiditeAutorisationHeures, parametreDateIso(magasin.horloge()));
+    return seuilEntierDe(cleMajValiditeAutorisationHeures, v);
   }
 
   const versionLogiciel = String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0');
@@ -477,7 +482,7 @@ Future<void> main() async {
       version: versionLogiciel)
     ..installer();
   ServiceMiseAJour(
-      magasin: magasin, dossierDonnees: dossierDonnees, base: basePortable, role: roleDuPoste, peut: peutGeste, versionCourante: versionLogiciel, mere: mereEnMarche, maxHeures: maxHeuresMaj)
+      magasin: magasin, dossierDonnees: dossierDonnees, base: basePortable, role: roleDuPoste, peut: peutGeste, versionCourante: versionLogiciel, mere: mereEnMarche, maxHeures: maxHeuresMaj, validiteHeures: validiteMaj)
     .installer();
   ServiceCleClinique(
       magasin: magasin,

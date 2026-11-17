@@ -10,20 +10,25 @@
 library;
 
 import '../droits/gestes_reserves.dart';
+import '../parametres/definitions.dart' show definitionDeParametre;
+import '../parametres/parametres_clinique.dart' show seuilSeme;
 import 'sauvegarde_horssite.dart' show RefusSauvegarde;
 
 const String cleMajSauvegardeMaxHeures = 'maj.sauvegardeMaxHeures';
+const String cleMajValiditeAutorisationHeures = 'maj.validiteAutorisationHeures';
 
-/// Défaut SEMÉ (valeur d'attente à valider par la Direction) et bornes : un réglage hors bornes est refusé, jamais rogné.
-const int majHeuresDefaut = 24;
-const int majHeuresMin = 1;
-const int majHeuresMax = 168;
+/// Défaut SEMÉ (valeur d'attente à valider par la Direction) et bornes : un réglage hors bornes est refusé, jamais rogné. La valeur n'existe qu'À UN ENDROIT : la définition
+/// du paramètre (`definitions.dart`, avec ses bornes `min` et `max`) ; ces accesseurs la lisent, ils ne la répètent pas.
+int get majHeuresDefaut => seuilSeme(cleMajSauvegardeMaxHeures);
+int get majHeuresMin => definitionDeParametre(cleMajSauvegardeMaxHeures)!.min!;
+int get majHeuresMax => definitionDeParametre(cleMajSauvegardeMaxHeures)!.max!;
 
 /// Le nom du fichier d'autorisation, sous le dossier des données du poste.
 const String majFichierAutorisation = 'autorisation-mise-a-jour.txt';
 
-/// La durée de validité d'une AUTORISATION posée par la préparation (heures) : assez pour installer, pas pour oublier. Aussi un réglage de fait, borné ici.
-const int majValiditeAutorisationHeures = 4;
+/// La durée de validité d'une AUTORISATION posée par la préparation (heures) : assez pour installer, pas pour oublier. Un RÉGLAGE (`maj.validiteAutorisationHeures`,
+/// borné par sa définition) : cet accesseur ne donne que la valeur d'attente semée, celle que le poste relit à la base reste prioritaire.
+int get majValiditeAutorisationHeures => seuilSeme(cleMajValiditeAutorisationHeures);
 
 /// Une preuve : la date de l'objet (sauvegarde ou export) et s'il a été VÉRIFIÉ (relu, déchiffré, empreinte contrôlée).
 class PreuveMaj {
@@ -116,7 +121,7 @@ String majTexteAutorisation(
     ].join('\n');
 
 /// Relit une autorisation (même logique que le script de l'installeur) : valide à [maintenant] ? Rend `null` si oui, le refus nommé sinon.
-RefusSauvegarde? majLireAutorisation(String? texte, DateTime maintenant) {
+RefusSauvegarde? majLireAutorisation(String? texte, DateTime maintenant, {int? validiteHeures}) {
   if (texte == null || texte.trim().isEmpty) {
     return _r('AUTORISATION_ABSENTE', 'aucune préparation de mise à jour n’a été faite sur ce poste', 'Ouvrir le poste mère, « Préparer la mise à jour », puis relancer l’installation.');
   }
@@ -136,7 +141,7 @@ RefusSauvegarde? majLireAutorisation(String? texte, DateTime maintenant) {
     return _r('AUTORISATION_ILLISIBLE', 'la date de validité de l’autorisation est illisible', 'Refaire « Préparer la mise à jour ».');
   }
   if (jusqu.compareTo(_horodate(maintenant)) < 0) {
-    return _r('AUTORISATION_EXPIREE', 'l’autorisation de mise à jour a expiré', 'Refaire « Préparer la mise à jour » (elle ne vaut que $majValiditeAutorisationHeures heures).');
+    return _r('AUTORISATION_EXPIREE', 'l’autorisation de mise à jour a expiré', 'Refaire « Préparer la mise à jour » (elle ne vaut que ${validiteHeures ?? majValiditeAutorisationHeures} heures).');
   }
   return null;
 }

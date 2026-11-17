@@ -14,10 +14,17 @@ import 'dart:typed_data';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import 'depot.dart';
+import 'reglages_mere.dart';
 import 'sauvegarde_horssite.dart';
 import 'fichiers.dart';
 
 /// La mère vue par la copie hors site : ce dont elle a besoin, sans importer `mere.dart` (pas de cycle).
+/// Les trois limites de retard EN VIGUEUR (réglages de la mère).
+class _LimitesRetard {
+  const _LimitesRetard(this.magasinHeures, this.cyclesFichiers, this.toleranceFichiersMin);
+  final int magasinHeures, cyclesFichiers, toleranceFichiersMin;
+}
+
 class HorsSiteMere {
   HorsSiteMere({
     required this.base,
@@ -320,21 +327,31 @@ class HorsSiteMere {
   static const Duration _pauseApresTentative = Duration(minutes: 10);
   static bool _memeJour(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
-  /// L'âge limite d'une copie : deux fréquences pour les fichiers, 30 heures pour le magasin (copie de nuit).
-  Duration _limiteRetard(String type, ReglageHorsSite r) => type == 'magasin' ? const Duration(hours: 30) : Duration(minutes: r.frequenceMinutes * 2 + 5);
+  /// L'âge limite d'une copie. Fichiers : un nombre de fréquences réglé (`mere.copieFichiersCyclesTolerables`, 2 d'attente) plus une tolérance réglée
+  /// (`mere.toleranceRetardCopieFichiersMinutes`, 5 minutes d'attente). Magasin (copie de nuit) : le réglage daté `mere.ageLimiteCopieMagasinHeures` (30 heures d'attente). Les trois sont
+  /// lus au registre de la mère à chaque passe ([_LimitesRetard]).
+  Duration _limiteRetard(String type, ReglageHorsSite r, _LimitesRetard l) =>
+      type == 'magasin' ? Duration(hours: l.magasinHeures) : Duration(minutes: r.frequenceMinutes * l.cyclesFichiers + l.toleranceFichiersMin);
+
+  Future<_LimitesRetard> _limites() async {
+    final fiches = await fichesParametresMere(base);
+    final jour = parametreDateIso(_horloge());
+    return _LimitesRetard(seuilEntierA(fiches, mereCleAgeLimiteCopieMagasin, jour), seuilEntierA(fiches, mereCleCyclesCopieFichiers, jour), seuilEntierA(fiches, mereCleToleranceCopieFichiersMin, jour));
+  }
 
   Future<void> _alerterRetards(ReglageHorsSite r) async {
     final maintenant = _horloge().millisecondsSinceEpoch;
+    final limites = await _limites();
     for (final t in shTypes) {
       if (!r.de(t).actifPossible) continue;
       final e = await _lireEtat(t);
       final dernier = (e['dernier'] as Map?)?['quand'];
-      final enRetard = dernier is num ? maintenant - dernier.toInt() > _limiteRetard(t, r).inMilliseconds : false;
+      final enRetard = dernier is num ? maintenant - dernier.toInt() > _limiteRetard(t, r, limites).inMilliseconds : false;
       final jamais = dernier == null;
       // « jamais faite » ne s'alerte qu'après la première échéance : une mère qui vient d'être réglée n'alerte pas tout de suite
       if (enRetard && e['alerte'] != 'retard') {
         await _poserEtat(t, {...e, 'alerte': 'retard'});
-        _alerter('Copie hors site $t en retard : la dernière copie réussie date de plus de ${_limiteRetard(t, r).inHours} heure(s)');
+        _alerter('Copie hors site $t en retard : la dernière copie réussie date de plus de ${_limiteRetard(t, r, limites).inHours} heure(s)');
       } else if (!enRetard && !jamais && e['alerte'] == 'retard') {
         await _poserEtat(t, {...e, 'alerte': null});
       }
@@ -347,6 +364,7 @@ class HorsSiteMere {
   Future<Map<String, Object?>> etat() async {
     final r = await reglage();
     final maintenant = _horloge().millisecondsSinceEpoch;
+    final limites = await _limites();
     final types = <String, Object?>{};
     for (final t in shTypes) {
       final e = await _lireEtat(t);
@@ -357,7 +375,7 @@ class HorsSiteMere {
         'erreur': e['erreur'],
         'controle': e['controle'],
         'enCours': _enCours.contains(t),
-        'enRetard': r.actif && r.de(t).actifPossible && dernier is num && maintenant - dernier.toInt() > _limiteRetard(t, r).inMilliseconds,
+        'enRetard': r.actif && r.de(t).actifPossible && dernier is num && maintenant - dernier.toInt() > _limiteRetard(t, r, limites).inMilliseconds,
         'jamaisFaite': dernier == null,
       };
     }

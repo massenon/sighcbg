@@ -93,6 +93,11 @@ module.exports = ({ monde, verifier, attendre, dormir, titre }) => ({
 
     /* 7. le téléphone : liste blanche. Les fiches sont créées APRÈS l'appairage (sinon rien ne descendrait de toute façon) */
     const mob = await m.mobile('M1');
+    /* L'instantané de configuration (18/11/2026) : un téléphone neuf reçoit à son appairage les versions de la liste blanche DÉJÀ réglées avant lui (ici le défaut semé de
+       `accueil.affichage`, déclaré mobile) — jamais les autres défauts semés (`planning.circuit`, `accueil.note`), qui ne sont pas de la liste blanche. */
+    const idAffichage = P.semer(DEF.affichage).id;
+    verifier('le téléphone neuf reçoit, à l\'appairage, la version de la liste blanche déjà réglée avant lui (et elle seule)',
+      await attendre(async () => (await mob.liste('parametres')).some((x) => x.id === idAffichage), 15000) && (await mob.liste('parametres')).length === 1, (await mob.liste('parametres')).map((x) => x.id));
     const avant = (await mob.liste('parametres')).length;
     const connues = await liste(f1);
     const v2 = (d, valeur) => P.proposer({ definition: d, versions: connues, usages: [], valeur, dateEffet: '2026-12-15', auteur: 'admin', creeLe: '2026-11-09T11:00:00Z' });

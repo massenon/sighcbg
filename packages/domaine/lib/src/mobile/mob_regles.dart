@@ -20,6 +20,7 @@ import '../labo/res_saisie.dart' show agePatient;
 import '../patients/pat_patients.dart' show patListe;
 import '../patients/pat_releves.dart' show patAnormale;
 import '../securite/sec_donnees.dart' show secDonnees;
+import 'mob_bornes.dart';
 import 'mob_donnees.dart';
 
 /// Fiche d'une collection telle que le lot la livre (`data` du journal).
@@ -195,26 +196,34 @@ Map<String, String> mobValider(List<MobRegle> regles, Map<String, String> saisie
   return erreurs;
 }
 
-/// Écran « Constantes » : la température est la seule obligatoire.
-const mobReglesConstantes = [
-  MobRegle('temperature', 'La température', requis: true, min: 30, max: 45),
-  MobRegle('sys', 'La systolique', min: 50, max: 260),
-  MobRegle('dia', 'La diastolique', min: 30, max: 160),
-  MobRegle('pouls', 'Le pouls', min: 20, max: 250),
-  MobRegle('fr', 'La FR', min: 5, max: 80),
-  MobRegle('spo2', 'La SpO₂', min: 50, max: 100),
-  MobRegle('poids', 'Le poids', min: 0.5, max: 300),
-];
+/// Une règle de saisie bornée : le libellé vient de la liste blanche des bornes (`mob_bornes.dart`), les bornes des RÉGLAGES en vigueur ([bornes]).
+MobRegle mobRegleBornee(MobBornes bornes, String ecran, String champ, {bool requis = false}) {
+  final d = mobBornesDefs.firstWhere((x) => x.ecran == ecran && x.champ == champ);
+  final i = bornes.intervalle(ecran, champ);
+  return MobRegle(champ, d.libelle, requis: requis, min: i.min, max: i.max);
+}
+
+/// Écran « Constantes » : la température est la seule obligatoire. Les bornes sont celles des réglages du téléphone ([bornes]) ; sans réglage reçu, les valeurs d'attente.
+List<MobRegle> mobReglesConstantesA([MobBornes bornes = MobBornes.attente]) => [
+      mobRegleBornee(bornes, 'constantes', 'temperature', requis: true),
+      for (final c in const ['sys', 'dia', 'pouls', 'fr', 'spo2', 'poids']) mobRegleBornee(bornes, 'constantes', c),
+    ];
+
+/// Les règles de l'écran « Constantes » avec les valeurs d'attente (aucun réglage reçu).
+List<MobRegle> get mobReglesConstantes => mobReglesConstantesA();
 
 /// Écran « Consultation à domicile » : le motif est obligatoire (le diagnostic est un choix, il a toujours une valeur).
 const mobReglesNote = [MobRegle('motif', 'Le motif', requis: true)];
 
-/// Écran « Prescription ».
-const mobReglesPrescription = [
-  MobRegle('med', 'Le médicament', requis: true),
-  MobRegle('poso', 'La posologie', requis: true),
-  MobRegle('duree', 'La durée', requis: true, min: 1, max: 90),
-];
+/// Écran « Prescription » : la durée est bornée par les réglages du téléphone ([bornes]).
+List<MobRegle> mobReglesPrescriptionA([MobBornes bornes = MobBornes.attente]) => [
+      const MobRegle('med', 'Le médicament', requis: true),
+      const MobRegle('poso', 'La posologie', requis: true),
+      mobRegleBornee(bornes, 'prescription', 'duree', requis: true),
+    ];
+
+/// Les règles de l'écran « Prescription » avec les valeurs d'attente.
+List<MobRegle> get mobReglesPrescription => mobReglesPrescriptionA();
 
 /// Le choix « Autre » du diagnostic : il exige sa précision (la FICHE refuse un diagnostic vide : « Rédiger le diagnostic retenu. »).
 const mobDiagnosticAutre = 'Autre (à préciser)';
@@ -247,7 +256,7 @@ String mobNomPatient(MobFiche p) => '${p['nom'] ?? ''} ${p['prenom'] ?? ''}'.tri
 // Constantes
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-Map<String, String> mobErreursConstantes(Map<String, String> saisie) => mobValider(mobReglesConstantes, saisie);
+Map<String, String> mobErreursConstantes(Map<String, String> saisie, {MobBornes bornes = MobBornes.attente}) => mobValider(mobReglesConstantesA(bornes), saisie);
 
 /// La fiche des constantes que le mobile écrit (collection `constantes`, famille B : une LIGNE de plus, jamais une modification). Mêmes champs que
 /// le relevé de l'accueil du poste (`tensionSys`, `tensionDia`, `tension`, `fr`, `spo2`) : la mère les range avec les siens.
@@ -257,8 +266,9 @@ Map<String, Object?> mobChampsConstantes({
   required Map<String, String> saisie,
   required String acteur,
   required DateTime maintenant,
+  MobBornes bornes = MobBornes.attente,
 }) {
-  final erreurs = mobErreursConstantes(saisie);
+  final erreurs = mobErreursConstantes(saisie, bornes: bornes);
   if (erreurs.isNotEmpty) throw _refusSaisie(erreurs);
   num? n(String k) {
     final v = (saisie[k] ?? '').trim();
@@ -453,8 +463,9 @@ Map<String, Object?> mobChampsOrdonnance({
   required String fonction,
   required DateTime maintenant,
   required Iterable<MobFiche> produits,
+  MobBornes bornes = MobBornes.attente,
 }) {
-  final erreurs = mobValider(mobReglesPrescription, saisie);
+  final erreurs = mobValider(mobReglesPrescriptionA(bornes), saisie);
   final q = (saisie['quantite'] ?? '').trim();
   final quantite = q.isEmpty ? null : _nombreJs(q);
   if (q.isEmpty) {

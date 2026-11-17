@@ -24,6 +24,7 @@ class ServiceMiseAJour {
     required this.versionCourante,
     this.mere,
     this.maxHeures,
+    this.validiteHeures,
     this.dossierExports,
     DateTime Function()? horloge,
   }) : horloge = horloge ?? magasin.horloge;
@@ -36,6 +37,9 @@ class ServiceMiseAJour {
   final String versionCourante;
   final Mere? Function()? mere;
   final int Function()? maxHeures;
+
+  /// La validité de l'autorisation (heures) EN VIGUEUR : le réglage `maj.validiteAutorisationHeures` lu à la base ; absent, la valeur d'attente semée.
+  final int Function()? validiteHeures;
   final String? dossierExports;
   final DateTime Function() horloge;
 
@@ -46,6 +50,7 @@ class ServiceMiseAJour {
   PreuvesPoste get preuves => PreuvesPoste(dossierDonnees);
   File get fichierAutorisation => File('$dossierDonnees/$majFichierAutorisation');
   int get heures => maxHeures?.call() ?? majHeuresDefaut;
+  int get validite => validiteHeures?.call() ?? majValiditeAutorisationHeures;
   String get _dossierExports => dossierExports ?? '$dossierDonnees/exports';
 
   PreuveMaj? get preuveExport => preuves.preuve('export');
@@ -55,7 +60,7 @@ class ServiceMiseAJour {
   VerdictMaj verdict() => majPreparation(maintenant: horloge(), maxHeures: heures, sauvegarde: preuveSauvegarde, export: preuveExport);
 
   /// L'autorisation écrite est-elle encore valable pour l'installeur ? (`null` : oui ; sinon le refus nommé).
-  RefusSauvegarde? autorisation() => majLireAutorisation(fichierAutorisation.existsSync() ? fichierAutorisation.readAsStringSync() : null, horloge());
+  RefusSauvegarde? autorisation() => majLireAutorisation(fichierAutorisation.existsSync() ? fichierAutorisation.readAsStringSync() : null, horloge(), validiteHeures: validite);
 
   void _droit(String geste) {
     if (!peut(geste)) {
@@ -108,7 +113,7 @@ class ServiceMiseAJour {
       ..parent.createSync(recursive: true)
       ..writeAsStringSync(majTexteAutorisation(
           maintenant: horloge(),
-          validiteHeures: majValiditeAutorisationHeures,
+          validiteHeures: validite,
           versionCourante: versionCourante,
           schema: schemaDonneesCourant,
           levee: levee,

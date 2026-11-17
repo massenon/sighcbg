@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
@@ -163,6 +164,35 @@ void main() {
       await t.pump(const Duration(milliseconds: 400));
       expect(col.archivees.length, 1);
       expect(col.toutes.length, 1);
+    });
+
+    casM14('le terme d\'un certificat de grossesse est borné par le RÉGLAGE : 46 refusé à 45 (attente), accepté une fois réglé à 50 ; 51 refusé en nommant la borne', (t) async {
+      final m = magasinM14();
+      final patient = m.collection('patients').actives.first;
+      Future<void> remplir(String terme) async {
+        await toucherM14(t, find.byKey(const Key('cfa:type:grossesse')));
+        await choisirM14(t, 'patientCode', '${patient['code']} — ${patient['nom']} ${patient['prenom']}');
+        await saisir(t, 'termeSemaines', terme);
+        await toucherM14(t, find.descendant(of: find.byKey(const Key('kit:champ:datePresumee')), matching: find.byType(InkWell)).first);
+        await toucherM14(t, find.text('OK'));
+        await toucherM14(t, find.widgetWithText(BoutonSigh, 'Délivrer le certificat'));
+      }
+
+      await ouvrirM14(t, m, 'cfg-certificats');
+      await remplir('46');
+      expect(find.text('Le terme doit être compris entre 1 et 45 semaines d’aménorrhée.'), findsOneWidget);
+      expect(m.collection('certificats').toutes, isEmpty, reason: 'refusé : rien d\'écrit, aucun numéro consommé');
+      // la clinique règle 50 semaines (version datée) : la même saisie est acceptée, 51 est refusée en nommant la NOUVELLE borne
+      serviceParametres(m, auteur: () => 'Test', horloge: () => DateTime(2026, 8, 16, 12))
+        ..semerDefauts()
+        ..regler(cfaCleTermeMaxCertificat, 50, '2026-01-01', motif: 'essai');
+      await ouvrirM14(t, m, 'cfg-certificats');
+      await remplir('51');
+      expect(find.text('Le terme doit être compris entre 1 et 50 semaines d’aménorrhée.'), findsOneWidget);
+      await saisir(t, 'termeSemaines', '46');
+      await toucherM14(t, find.widgetWithText(BoutonSigh, 'Délivrer le certificat'));
+      expect(m.collection('certificats').actives.length, 1);
+      expect(m.collection('certificats').actives.first['termeSemaines'], 46);
     });
 
     casM14('un champ obligatoire vide est REFUSÉ en le nommant : aucun numéro n’est consommé', (t) async {

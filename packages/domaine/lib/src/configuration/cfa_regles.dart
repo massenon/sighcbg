@@ -665,10 +665,21 @@ class CfaChampCertificat {
   final List<String> options;
 }
 
+/// La clé du terme maximal d'un certificat de grossesse (réglage daté, borné) : la BORNE HAUTE n'est plus écrite ici, elle se lit au paramètre.
+const String cfaCleTermeMaxCertificat = 'consultation.termeMaxCertificatSemaines';
+
+/// Le refus nommé d'un terme saisi hors de 1 à [termeMax] semaines (`null` : recevable ou illisible, la nature du champ étant contrôlée ailleurs). La borne basse, 1, est structurelle
+/// (un terme n'est pas nul) ; la haute est le réglage en vigueur ([seuilEntierA] ou [seuilEntierDe] de [cfaCleTermeMaxCertificat]).
+String? cfaErreurTerme(Object? valeur, int termeMax) {
+  final n = cfaNombre(valeur);
+  if (n == null) return null;
+  return n < 1 || n > termeMax ? 'Le terme doit être compris entre 1 et $termeMax semaines d’aménorrhée.' : null;
+}
+
 const cfaChampsCertificat = <String, CfaChampCertificat>{
   'duree': CfaChampCertificat('Durée du repos (jours)', type: 'nombre', min: 1),
   'dateDebut': CfaChampCertificat('À compter du', type: 'date'),
-  'termeSemaines': CfaChampCertificat('Terme (semaines d’aménorrhée)', type: 'nombre', min: 1, max: 45),
+  'termeSemaines': CfaChampCertificat('Terme (semaines d’aménorrhée)', type: 'nombre', min: 1),
   'datePresumee': CfaChampCertificat('Terme présumé', type: 'date'),
   'dateAccouchement': CfaChampCertificat('Date d’accouchement', type: 'date'),
   'sexeEnfant': CfaChampCertificat('Sexe de l’enfant', type: 'select', options: ['masculin', 'féminin']),

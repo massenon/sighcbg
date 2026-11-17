@@ -5,6 +5,7 @@
 /// La prise en charge elle-même (RG-09, `repartir`) est celle de `caisse/prise_en_charge.dart` : on ne la duplique pas.
 library;
 
+import '../parametres/parametres_clinique.dart' show bornesBalanceAgeeAssureurDe;
 import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
@@ -61,18 +62,46 @@ String assNomAssureur(String? code, Iterable<AssFiche> assureurs) {
 }
 
 /// Les trois tranches d'ancienneté : la fabrique UNIQUE du filtre « Ancienneté de la dette » et de la balance âgée (deux découpages divergents ne se
-/// verraient qu'en réunion). Une facture datée d'APRÈS aujourd'hui (jours négatifs) tombe dans « moins de 30 jours ».
-const assTranches = ['moins30', '30a90', 'plus90'];
+/// verraient qu'en réunion). Une facture datée d'APRÈS aujourd'hui (jours négatifs) tombe dans la première tranche.
+///
+/// Les IDENTIFIANTS ne portent plus les bornes dans leur nom (`moins30`, `30a90`, `plus90` : les bornes sont des RÉGLAGES, `assurances.balanceAgeeAssureurBorne1Jours` et
+/// `…2Jours`, valeurs d'attente 30 et 90) : `tranche1` = jusqu'à la première borne incluse, `tranche2` = jusqu'à la seconde incluse, `tranche3` = au-delà. Les LIBELLÉS se
+/// calculent des bornes en vigueur ([assTranchesDef]).
+const assTranches = ['tranche1', 'tranche2', 'tranche3'];
 
-String assTrancheDe(int jours) =>
-    jours <= 30 ? 'moins30' : (jours <= 90 ? '30a90' : 'plus90');
+/// Les bornes de la balance des assureurs : les deux nombres de jours.
+typedef AssBornes = ({int borne1, int borne2});
+
+/// Les bornes d'ATTENTE : celles que le registre sème (aucun réglage lu).
+AssBornes get assBornesAttente => bornesBalanceAgeeAssureurDe(null, null);
+
+/// Une tranche telle que l'écran la dit : son identifiant, le libellé du filtre, celui du compteur et celui, court, de l'en-tête de colonne.
+class AssTranche {
+  const AssTranche(this.id, this.libelle, this.libelleKpi, this.libelleCourt, this.libelleColonne);
+  final String id, libelle, libelleKpi, libelleCourt, libelleColonne;
+}
+
+/// Les trois tranches pour ces bornes, DANS L'ORDRE d'ancienneté. Avec les bornes d'attente : « Moins de 30 jours », « De 30 à 90 jours », « Au-delà de 90 jours ».
+List<AssTranche> assTranchesDef([AssBornes? bornes]) {
+  final b = bornes ?? assBornesAttente;
+  return [
+    AssTranche('tranche1', 'Moins de ${b.borne1} jours', 'Moins de ${b.borne1} jours', '< ${b.borne1} j', '< ${b.borne1} j'),
+    AssTranche('tranche2', 'De ${b.borne1} à ${b.borne2} jours', '${b.borne1} à ${b.borne2} jours', '${b.borne1}-${b.borne2} j', '${b.borne1} – ${b.borne2} j'),
+    AssTranche('tranche3', 'Au-delà de ${b.borne2} jours', 'Plus de ${b.borne2} jours', '> ${b.borne2} j', '> ${b.borne2} j'),
+  ];
+}
+
+String assTrancheDe(int jours, {AssBornes? bornes}) {
+  final b = bornes ?? assBornesAttente;
+  return jours <= b.borne1 ? 'tranche1' : (jours <= b.borne2 ? 'tranche2' : 'tranche3');
+}
 
 double assAnciennete(Iterable<AssFiche> facturesAssurance, String code,
-        String tranche, DateTime auj) =>
+        String tranche, DateTime auj, {AssBornes? bornes}) =>
     assSomme(
         facturesAssurance.where((x) =>
             x['assureur'] == code &&
-            assTrancheDe(assJours(x['date'], auj)) == tranche),
+            assTrancheDe(assJours(x['date'], auj), bornes: bornes) == tranche),
         'partAssurance');
 
 // --- tableau de bord ----------------------------------------------------------------------------------------------------------
@@ -122,7 +151,8 @@ bool assFiltreCompagnie(String filtre, String valeur, AssFiche a,
     {required List<AssFiche> assures,
     required List<AssFiche> facturesAssurance,
     required bool Function(AssFiche) carteValide,
-    required DateTime auj}) {
+    required DateTime auj,
+    AssBornes? bornes}) {
   final code = '${a['code']}';
   final mes = assures.where((x) => x['assureur'] == code).toList();
   switch (filtre) {
@@ -134,7 +164,7 @@ bool assFiltreCompagnie(String filtre, String valeur, AssFiche a,
       if (valeur == 'sans') return c == 0;
       return c > 500000;
     case 'anciennete':
-      return assAnciennete(facturesAssurance, code, valeur, auj) > 0;
+      return assAnciennete(facturesAssurance, code, valeur, auj, bornes: bornes) > 0;
     case 'portefeuille':
       if (valeur == 'aucun') return mes.isEmpty;
       if (valeur == 'petit') return mes.isNotEmpty && mes.length <= 9;
@@ -616,12 +646,17 @@ class AssLigneCreance {
       required this.nom,
       required this.nbFactures,
       required this.total,
-      required this.moins30,
-      required this.de30a90,
-      required this.plus90});
+      required this.tranche1,
+      required this.tranche2,
+      required this.tranche3});
   final String code, nom;
   final int nbFactures;
-  final double total, moins30, de30a90, plus90;
+
+  /// Les montants par tranche d'ancienneté ([assTranches]) ; les bornes sont des réglages.
+  final double total, tranche1, tranche2, tranche3;
+
+  /// Le montant de la tranche [id] (`tranche1`, `tranche2` ou `tranche3`).
+  double montantDe(String id) => id == 'tranche1' ? tranche1 : (id == 'tranche2' ? tranche2 : tranche3);
 }
 
 /// La balance âgée : les bornes portent sur la DATE DE LA FACTURE, l'ancienneté se compte TOUJOURS par rapport à aujourd'hui — les confondre ferait
@@ -635,6 +670,7 @@ List<AssLigneCreance> assBalanceAgee({
   String compagnie = '',
   String anciennete = '',
   num seuil = 0,
+  AssBornes? bornes,
 }) {
   bool dansPlage(AssFiche f) {
     final s = '${f['date'] ?? ''}';
@@ -652,22 +688,19 @@ List<AssLigneCreance> assBalanceAgee({
         if (x['assureur'] == code && dansPlage(x)) x
     ];
     double dans(String t) => assSomme(
-        f.where((x) => assTrancheDe(assJours(x['date'], auj)) == t), 'partAssurance');
+        f.where((x) => assTrancheDe(assJours(x['date'], auj), bornes: bornes) == t), 'partAssurance');
     final r = AssLigneCreance(
         code: code,
         nom: '${a['nom']}',
         nbFactures: f.length,
         total: assSomme(f, 'partAssurance'),
-        moins30: dans('moins30'),
-        de30a90: dans('30a90'),
-        plus90: dans('plus90'));
+        tranche1: dans('tranche1'),
+        tranche2: dans('tranche2'),
+        tranche3: dans('tranche3'));
     if (!(r.total > 0)) continue;
     if (compagnie.isNotEmpty && r.code != compagnie) continue;
     if (anciennete.isNotEmpty) {
-      final v = anciennete == 'moins30'
-          ? r.moins30
-          : (anciennete == '30a90' ? r.de30a90 : r.plus90);
-      if (!(v > 0)) continue;
+      if (!(r.montantDe(anciennete) > 0)) continue;
     }
     if (seuil > 0 && r.total < seuil) continue;
     rows.add(r);
