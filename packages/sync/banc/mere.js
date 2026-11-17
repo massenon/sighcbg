@@ -285,11 +285,20 @@ db.exec(`
 `);
 /* Migration (E1600) : une base d'avant la fonction authentifiée reçoit les colonnes ; un appareil déjà appairé garde `fonction` NULL,
    et la mère refuse alors ses prescriptions en le disant (nouvel appairage). */
-for (const [t, c] of [['codes', 'profil'], ['codes', 'fonction'], ['appareils', 'fonction']]) {
+for (const [t, c] of [['codes', 'profil'], ['codes', 'fonction'], ['appareils', 'fonction'], ['codes', 'reprise']]) {
   try { db.exec(`ALTER TABLE ${t} ADD COLUMN ${c} TEXT`); } catch (e) { /* déjà présente */ }
 }
 const meta = (k, d) => { const r = db.prepare('SELECT v FROM meta WHERE k=?').get(k); return r ? r.v : d; };
 const setMeta = (k, v) => db.prepare('INSERT INTO meta(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').run(k, String(v));
+/* LA VERSION DU FORMAT DES DONNÉES (décision 12, 17/11/2026) — miroir de `gardeSchemaDepot` (export_portable.dart). Le numéro est la constante UNIQUE du domaine Dart, lue à sa source : le
+   banc ne la recopie pas. Une base écrite par une version PLUS RÉCENTE est refusée en le nommant, avant tout geste qui la modifierait ; une base sans numéro reçoit le sien. */
+const SCHEMA_DONNEES = +/schemaDonneesCourant\s*=\s*(\d+)/.exec(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', '..', 'domaine', 'lib', 'src', 'sauvegarde', 'schema_donnees.dart'), 'utf8'))[1];
+{
+  const lu = meta('schema');
+  if (lu === undefined) setMeta('schema', SCHEMA_DONNEES);
+  else if (!(Number.isInteger(+lu) && +lu >= 0)) { console.error('SCHEMA_ILLISIBLE : la base de la mère porte un numéro de schéma illisible (' + lu + ')'); process.exit(3); }
+  else if (+lu > SCHEMA_DONNEES) { console.error('SCHEMA_PLUS_RECENT : la base de la mère est au schéma ' + lu + ', ce logiciel ne connaît que jusqu’au schéma ' + SCHEMA_DONNEES); process.exit(3); }
+}
 if (meta('epoch') === undefined) setMeta('epoch', 1);
 /* SÉRIES ANNUELLES DES CODES DE DOSSIER (lot 0, E3830) — miroir de `migrerSeriesPatients` (mere.dart) : un compteur PAR ANNÉE (`next_patient_<AAAA>`), des
    plages qui portent leur année. L'ancien compteur unique devient celui de l'année courante ; une base neuve ouvre l'année à 1000 ; les années suivantes repartent à 1. */
@@ -635,7 +644,13 @@ const routes = {
     const code = Array.from(crypto.randomBytes(8)).map((x) => alphabet[x % alphabet.length]).join('');
     const role = b.role || 'fileul';
     const aff = role === 'mobile' ? affectationMobile(b) : { profil: null, fonction: null };
-    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)').run(code, b.etiquette || '', role, Date.now() + CODE_TTL, aff.profil, aff.fonction);
+    /* REPRISE D'IDENTITÉ (export portable d'un fileul) : le code désigne le poste qu'un nouveau poste REMPLACE ; il doit exister et être un fileul. */
+    const reprise = b.reprise ? String(b.reprise) : null;
+    if (reprise) {
+      const anc = db.prepare('SELECT role FROM appareils WHERE uuid=?').get(reprise);
+      if (!anc || anc.role !== 'fileul') throw new Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
+    }
+    db.prepare('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)').run(code, b.etiquette || '', role, Date.now() + CODE_TTL, aff.profil, aff.fonction, reprise);
     return { code };
   },
   'POST /appairage': (req, b) => {
@@ -645,6 +660,13 @@ const routes = {
     if (Date.now() > c.expire) throw new Err(403, 'code_expire', 'Ce code a expiré.');
     db.prepare('UPDATE codes SET utilise=1 WHERE code=?').run(c.code);
     db.prepare('INSERT INTO appareils(uuid,etiquette,role,etat) VALUES(?,?,?,?)').run(b.uuid, c.etiquette, c.role, 'actif');
+    /* REPRISE D'IDENTITÉ : les plages et les baux du poste remplacé passent au nouveau (c'est ce qui rend ses saisies en file REJOUABLES : un code de dossier ne s'accepte que dans la
+       plage de son poste) ; l'ancien est RÉVOQUÉ (RG-14 : il reste au registre). Les opérations déjà confirmées ne bougent pas. */
+    if (c.reprise) {
+      db.prepare('UPDATE plages SET appareil=? WHERE appareil=?').run(b.uuid, c.reprise);
+      db.prepare('UPDATE baux SET appareil=? WHERE appareil=?').run(b.uuid, c.reprise);
+      db.prepare("UPDATE appareils SET etat='revoque' WHERE uuid=?").run(c.reprise);
+    }
     return Object.assign({ epoch: +meta('epoch') }, emettreJetons(b.uuid));
   },
   'POST /renouveler': (req, b) => {

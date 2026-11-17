@@ -242,6 +242,30 @@ const commandes = {
     setMeta('jeton', j.jeton); setMeta('renouvellement', j.renouvellement); setMeta('epoch', j.epoch); setMeta('suspendu', 0); etat.suspendu = false;
     return [200, { uuid: meta('uuid') }];
   },
+  /* EXPORT PORTABLE (décision 12, 17/11/2026) — miroir de `etatPortable` / `reprendreEtat` (fileul.dart) : ce que ce poste est seul à détenir (file des opérations non confirmées,
+     plages, baux, étiquette) ; aucun secret (ni jeton, ni renouvellement). */
+  'GET /etat-portable': () => [200, {
+    role: 'fileul', uuid: meta('uuid'), etiquette: NOM, epoch: +meta('epoch'), curseur: +meta('curseur'),
+    file: db.prepare("SELECT op FROM file WHERE etat='en_attente' ORDER BY ordre").all().map((r) => JSON.parse(r.op)),
+    plage: db.prepare('SELECT nom,prochain,fin,annee FROM plage').all(), baux: db.prepare('SELECT article,reste FROM baux').all(),
+  }],
+  'POST /reprendre-etat': (b) => {
+    const e = b.etat || {};
+    if (e.role !== 'fileul') return [422, { refus: 'ETAT_INCONNU', motif: 'ce n’est pas l’état d’un poste fileul' }];
+    if (db.prepare('SELECT COUNT(*) AS n FROM file').get().n > 0 || db.prepare('SELECT COUNT(*) AS n FROM confirme').get().n > 0) {
+      return [422, { refus: 'POSTE_NON_NEUF', motif: 'ce poste porte déjà des saisies ou un état synchronisé : l’état d’un autre poste ne se reprend que sur un poste neuf' }];
+    }
+    let n = 0;
+    db.exec('BEGIN');
+    try {
+      for (const op of e.file || []) { db.prepare("INSERT INTO file(id,op,etat) VALUES(?,?,'en_attente') ON CONFLICT(id) DO NOTHING").run(op.id, JSON.stringify(op)); n++; }
+      for (const p of e.plage || []) db.prepare('INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee').run(p.nom, p.prochain, p.fin, p.annee ?? null);
+      for (const x of e.baux || []) db.prepare('INSERT INTO baux(article,reste) VALUES(?,?) ON CONFLICT(article) DO UPDATE SET reste=excluded.reste').run(x.article, x.reste);
+      setMeta('repris_de', e.uuid);
+      db.exec('COMMIT');
+    } catch (err) { db.exec('ROLLBACK'); throw err; }
+    return [200, { repris: n, repris_de: e.uuid }];
+  },
   'POST /plage': async (b) => {
     const nom = b.nom || 'patients';
     /* Une plage de dossiers est demandée POUR UNE ANNÉE (celle donnée, l'année en cours à défaut) et garde l'année que la mère a retenue (E3830). */

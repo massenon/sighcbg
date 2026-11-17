@@ -25,3 +25,6 @@ export 'src/sauvegarde_horssite.dart'
         sauvegarderHorsSite,
         restaurerHorsSite,
         controlerHorsSite;
+
+// L'export complet portable (décision 12, 17/11/2026) : un fichier, un manifeste lisible sans clé, un contenu chiffré par la clé de la clinique, vérifiable sans écrire.
+export 'src/export_portable.dart' show ContenuExport, ExportPortable, RapportVerification, RapportImportMere, extraireMere, importerMereDansCibleNeuve, gardeSchemaDepot, tablesDuDepot;
