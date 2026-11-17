@@ -7,6 +7,7 @@
 /// inventé : tout vient de `D.PARAM_PAIE` et `D.NS132` de la maquette (constantes vérifiées contre elle par le test).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../comptabilite/cpa_referentiels.dart' show cpaCompteLibelle, cpaJournalLibelle;
@@ -198,18 +199,7 @@ const Map<String, String> paiFonctions = {
 String paiFonctionLibelle(Object? id) => paiFonctions['$id'] ?? '${id ?? ''}';
 
 /// `D.SERVICES`.
-const List<String> paiServices = [
-  'Médecine générale',
-  'Maternité',
-  'Chirurgie',
-  'Laboratoire',
-  'Pharmacie',
-  'Imagerie / Échographie',
-  'Soins infirmiers',
-  'Accueil',
-  'Direction',
-  'Comptabilité',
-];
+List<String> get paiServices => ListesReference.valeurs('listes.socle.services');
 
 /// `C.MOIS` (minuscules, comme la maquette) et sa forme capitalisée « Octobre ».
 const List<String> paiMois = [

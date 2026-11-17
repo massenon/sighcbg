@@ -19,6 +19,8 @@ const List<String> collectionsGeneriques = [
   'examensImagerie', 'variablesImagerie', 'pathologies',
   'regimesTravail', 'grillePrimes', 'historiquePrimes', 'baremeNS131', 'historiqueBareme',
   'objectifsPilotage', 'obligationsFiscales', 'historiqueObligations',
+  // la liasse déposée et le classeur de baseline : documents IMPORTÉS en base (source, date de dépôt, auteur) ; la source vit dans tool/donnees/*_demo.json
+  'documentsFiscaux',
   'modelesBadge', 'modelesMessage', 'enquetes', 'identiteLegale', 'tachesPlanifiees',
   // le répertoire des ambulances : neuf fiches fictives, marquées « Numéro fictif de démonstration », qui disent elles-mêmes qu'elles sont à remplacer
   'ambulances',

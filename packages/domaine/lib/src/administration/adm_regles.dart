@@ -1,3 +1,4 @@
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart' show arrondiJs, nombreOuZero;
 import '../format/recherche.dart' show comparerNaturel, trierPar;
@@ -56,19 +57,11 @@ int _compter(Iterable<AdmFiche> l, bool Function(AdmFiche) p) => l.where(p).leng
 // Courriers
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-const List<String> admNaturesCourrier = ['Lettre', 'Courriel', 'Note', 'Facture', 'Convocation', 'Rapport'];
-const List<String> admServicesCourrier = [
-  'Direction Médicale',
-  'Direction Administrative',
-  'Comptabilité',
-  'Ressources humaines',
-  'Gestion des stocks',
-  'Laboratoire',
-  'Pharmacie'
-];
+List<String> get admNaturesCourrier => ListesReference.valeurs('listes.m13.naturesCourrier');
+List<String> get admServicesCourrier => ListesReference.valeurs('listes.m13.servicesCourrier');
 
 /// Le filtre « Service » n'offre que les cinq premiers.
-List<String> get admServicesFiltreCourrier => admServicesCourrier.sublist(0, 5);
+List<String> get admServicesFiltreCourrier => admServicesCourrier.take(5).toList();
 
 const Map<String, (String, String)> admTraitementsCourrier = {
   'traite': ('Traité', 'success'),
@@ -103,15 +96,8 @@ List<AdmKpi> admKpisCourriers(List<AdmFiche> rows) => [
 // Réunions
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-const List<String> admTypesReunion = [
-  'Réunion de direction',
-  'Réunion de service',
-  'Comité d’hygiène',
-  'Revue mensuelle d’activité',
-  'Réunion du personnel',
-  'Comité de gestion des stocks'
-];
-const List<String> admLieuxReunion = ['Salle de réunion', 'Bureau de la Direction', 'Salle de garde'];
+List<String> get admTypesReunion => ListesReference.valeurs('listes.m13.typesReunion');
+List<String> get admLieuxReunion => ListesReference.valeurs('listes.m13.lieuxReunion');
 
 DateTime _jour(DateTime d) => DateTime(d.year, d.month, d.day);
 
@@ -143,7 +129,7 @@ List<AdmKpi> admKpisReunions(List<AdmFiche> rows, DateTime maintenant) => [
 // Événements & notifications
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-const List<String> admCategoriesEvenement = ['Santé publique', 'Formation', 'Qualité', 'Technique', 'Logistique', 'Communication', 'Sécurité', 'Réunion'];
+List<String> get admCategoriesEvenement => ListesReference.valeurs('listes.m13.categoriesEvenement');
 
 /// Jours entre AUJOURD'HUI et la date, comptés PAR JOUR (écart E540 : à 15 h, « demain » valait 0,4 jour et se lisait « Aujourd’hui »).
 int admJoursAvant(DateTime maintenant, Object? date) {
@@ -294,14 +280,7 @@ const Map<String, (String, String)> admEtatsIntervention = {
   'terminee': ('Terminée', 'success'),
 };
 
-const List<String> admMotifsIntervention = [
-  'Urgence médicale',
-  'Transfert inter-hospitalier',
-  'Évacuation sanitaire',
-  'Retour à domicile',
-  'Accident de la voie publique',
-  'Urgence obstétricale'
-];
+List<String> get admMotifsIntervention => ListesReference.valeurs('listes.m13.motifsIntervention');
 
 /// Le tarif d'une course sans montant saisi : deux PARAMÈTRES de clinique « à valider » (famille `ambulance`, versionnés par date, lot 1 de l'inventaire des
 /// valeurs en dur) — aucun document ne fixe ce tarif. Les semences ci-dessous n'en sont que le défaut (lues par `definitions.dart` et en repli).
@@ -495,26 +474,8 @@ const List<(String, String, String)> admEtatsMateriel = [
   ('panne', 'En panne', 'danger'),
   ('reforme', 'Réformé', 'neutral'),
 ];
-const List<String> admCategoriesMateriel = [
-  'Automate de laboratoire',
-  'Imagerie',
-  'Bloc opératoire',
-  'Matériel de soins',
-  'Énergie & froid',
-  'Bureautique & réseau',
-  'Véhicule'
-];
-const List<String> admLocalisationsMateriel = [
-  'Laboratoire',
-  'Salle d’échographie',
-  'Bloc opératoire',
-  'Salle de soins',
-  'Maternité',
-  'Hospitalisation',
-  'Pharmacie',
-  'Administration',
-  'Local technique'
-];
+List<String> get admCategoriesMateriel => ListesReference.valeurs('listes.m13.categoriesMateriel');
+List<String> get admLocalisationsMateriel => ListesReference.valeurs('listes.m13.localisationsMateriel');
 
 /// Un état inconnu retombe sur « En service » (comme la maquette).
 (String, String, String) admEtatMateriel(Object? code) => admEtatsMateriel.firstWhere((e) => e.$1 == code, orElse: () => admEtatsMateriel[0]);

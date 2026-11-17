@@ -5,6 +5,7 @@
 /// changer à la première connexion — jamais le secret. [secTransformerCompte] retire la saisie avant toute écriture, et un test le prouve.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../consultation/cs_referentiels.dart' show csSecteursSoins;
 import 'sec_donnees.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteDoubleFacteurImpose;
@@ -22,18 +23,7 @@ List<String> get secRolesDoubleFacteur => gesteReserve(gesteDoubleFacteurImpose)
 const secLongueurMinMotDePasse = 8;
 
 /// `D.SERVICES` (data.js) : les services proposés au rattachement d'un compte.
-const secServices = [
-  'Médecine générale',
-  'Maternité',
-  'Chirurgie',
-  'Laboratoire',
-  'Pharmacie',
-  'Imagerie / Échographie',
-  'Soins infirmiers',
-  'Accueil',
-  'Direction',
-  'Comptabilité',
-];
+List<String> get secServices => ListesReference.valeurs('listes.socle.services');
 
 /// Valeurs d'un compte NEUF (`onCreate`).
 FicheSec secCompteParDefaut() =>

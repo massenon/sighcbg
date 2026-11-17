@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
-import 'package:sigh_domaine/src/comptabilite/cpc_donnees.dart' show cpcExercice2025Json;
 import 'package:test/test.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -16,6 +16,7 @@ List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures
 List<String> cellules(Object? l) => [for (final c in (l as List)) nt(c)];
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final f = File('test/vecteurs/echeances.json');
   if (!f.existsSync()) fail('vecteurs absents : lancer `node prototype_html/build/vecteurs-m12-echeances.js`');
   final v = carte(jsonDecode(f.readAsStringSync()));
@@ -177,11 +178,11 @@ void main() {
 
     test('si le classeur est régénéré sans écart, plus de diagnostic ; si le détail est incohérent, l\'écart vient du détail', () {
       final sans = CpcExercice2025({
-        ...jsonDecode(cpcExercice2025Json) as Map<String, dynamic>,
+        ...jsonDecode(classeurDemoJson()) as Map<String, dynamic>,
         'controle': {'totalDetail': 1, 'totalClasseur': 1, 'ecart': 0, 'postesSansCompte': 0, 'montantSansCompte': 0}
       });
       expect(cpcExpliquerEcart(sans), isNull);
-      final j = jsonDecode(cpcExercice2025Json) as Map<String, dynamic>;
+      final j = jsonDecode(classeurDemoJson()) as Map<String, dynamic>;
       (j['depenses'] as List).first['total'] = 1.0;
       expect(cpcExpliquerEcart(CpcExercice2025(j))!.incoherentes, isNotEmpty);
     });

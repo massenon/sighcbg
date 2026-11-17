@@ -39,6 +39,8 @@ const FAMILLES = {
   lecturesOcr: 'B', reglagesOcr: 'R',
   /* LOT 2 : le référentiel de numérotation des pièces (une fiche par version datée de série) : la mère seule l'écrit, un fileul dépose (validationsDeposees). */
   seriesNumerotation: 'R',
+  /* La liasse déposée et le classeur de baseline (documents IMPORTÉS, une fiche par dépôt) : la mère les écrit, les fileuls les reçoivent. */
+  documentsFiscaux: 'R',
   constantes: 'B', notes: 'B',
   cpn: 'B', cpon: 'B', surveillances: 'B', orientations: 'B', /* suite du mobile (E1650 à E1660) */
   factures: 'C', prescriptions: 'C',

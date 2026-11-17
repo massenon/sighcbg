@@ -8,6 +8,7 @@
 ///  * la CONVENTION de visites est la seule donnée nouvelle : période, périodicité, nombre de visites prévues — l'entreprise ne s'y recopie pas.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../patients/pat_pieces.dart' show PatTypePiece;
@@ -34,7 +35,7 @@ const mdtNatures = <MdtNature>[
 MdtNature? mdtNature(Object? code) => mdtNatures.where((n) => n.code == code || n.libelle == code).firstOrNull;
 
 /// Les avis d'aptitude. Les trois premiers sont ceux que porte le registre des visites ; l'inaptitude définitive les complète.
-const mdtAptitudes = ['Apte', 'Apte avec aménagement de poste', 'Inapte temporaire', 'Inapte définitif'];
+List<String> get mdtAptitudes => ListesReference.valeurs('listes.m2.aptitudesMedecineTravail');
 
 /// Périodicité des visites périodiques par défaut, en mois (la convention la fixe pour l'entreprise).
 const mdtPeriodiciteDefaut = 12;

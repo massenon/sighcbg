@@ -5,11 +5,10 @@
 /// et un montant codé ici serait faux à la première régénération. Les données du classeur sont ENGENDRÉES (`cpc_donnees.dart`), jamais recopiées.
 library;
 
-import 'dart:convert';
 
 import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
-import 'cpc_donnees.dart';
+import 'documents_fiscaux.dart';
 
 typedef CpcPoste = Map<String, Object?>;
 
@@ -76,11 +75,35 @@ class CpcExercice2025 {
   int _indiceDe(double v) => chiffreAffaires.indexOf(v);
 }
 
+Object? _e25Source;
 CpcExercice2025? _e25;
 
-/// Le compte de résultat 2025 du classeur (engendré depuis `data-compta.js`).
-CpcExercice2025 get cpcExercice2025 =>
-    _e25 ??= CpcExercice2025((jsonDecode(cpcExercice2025Json) as Map).cast<String, Object?>());
+/// Le compte de résultat de l'exercice de référence du classeur IMPORTÉ EN BASE ([DocumentsFiscaux.classeur]) ; mémorisé tant que le classeur en force est le même. Aucun classeur importé :
+/// un exercice VIDE (douze mois à zéro, aucun poste) — [cpcClasseurImporte] le dit, pour que l'écran écrive « aucun classeur importé » au lieu de montrer des zéros.
+CpcExercice2025 get cpcExercice2025 {
+  final c = DocumentsFiscaux.classeur;
+  if (!identical(c, _e25Source) || _e25 == null) {
+    _e25Source = c;
+    _e25 = CpcExercice2025(c ?? _classeurVide);
+  }
+  return _e25!;
+}
+
+/// Un classeur de baseline est-il importé en base ?
+bool get cpcClasseurImporte => DocumentsFiscaux.importee(docFiscalClasseur);
+
+const Map<String, Object?> _classeurVide = {
+  'annee': 0,
+  'mois': ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+  'chiffreAffaires': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  'totalChiffreAffaires': 0,
+  'depenses': [],
+  'horsExploitation': {},
+  'totalHorsExploitation': 0,
+  'totalCharges': 0,
+  'resultat': 0,
+  'controle': {'totalDetail': 0, 'totalClasseur': 0, 'ecart': 0, 'postesSansCompte': 0, 'montantSansCompte': 0},
+};
 
 /// Le diagnostic de l'écart du classeur : les lignes dont une ÉCHÉANCE MENSUELLE vaut exactement l'écart (l'explication, si elle existe), celles dont le
 /// total vaut l'écart, et les lignes qui ne somment pas à leur propre total (alors l'écart vient du détail et non de la ligne TOTAL).

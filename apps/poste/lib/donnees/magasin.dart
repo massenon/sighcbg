@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:sigh_domaine/sigh_domaine.dart' show Agent, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes;
+import 'package:sigh_domaine/sigh_domaine.dart' show Agent, DocumentsFiscaux, colDocumentsFiscaux, AssMigrationGaranties, RapportMigrationConstantes, assGardeGarantie, assFactureSousGrille, assMigrerGaranties, hosMigrerConstantes, cpaDoublonsDuPlan, cpcGardeArchives, cpcGardeClotures, cpcGardeEcritures, cpcGardeJournalReserve, gardePresenceValideeRh, gardeRegimeIndividuelRh, gardeSeuil, tarChampsPrixLecture, tarGardeLecture, tarGardeProduitRg02, tarGardeVersion, cpcGardeBudgets, ptaCollectionActions, ptaCollectionPlans, ptaGardeAction, ptaGardePlan, planningCollectionsSync, DroitsGestes;
 
 import 'persistance.dart';
 
@@ -254,7 +254,10 @@ class Magasin {
         _origine = {for (final e in jeux.entries) e.key: e.value},
         _idsOrigine = {
           for (final e in jeux.entries) e.key: {for (final f in e.value) '${f['id']}'}
-        };
+        } {
+    // La liasse déposée et le classeur de baseline sont des DONNÉES de la base (import daté) : le registre du domaine les lit dans la collection de ce magasin.
+    if (jeux.containsKey(colDocumentsFiscaux)) DocumentsFiscaux.brancher(() => collection(colDocumentsFiscaux).toutes);
+  }
 
   /// Le jeu d'origine tel que livré (jamais modifié : les collections en tiennent des COPIES) et son index par identifiant, construit à la demande.
   final Map<String, Iterable<Fiche>> _origine;
@@ -519,6 +522,8 @@ class Magasin {
     'reglagesOcr': 'CFG',
     // Lot 2 : le référentiel de numérotation des pièces (une fiche par version datée de série, famille R).
     'seriesNumerotation': 'CFG',
+    // La liasse fiscale déposée et le classeur de baseline : documents IMPORTÉS en base (source, date de dépôt, auteur), lus par M12.
+    'documentsFiscaux': 'M12',
     'fichesReference': 'M1',
     'pieces': 'M1',
     'secteurs': 'CFG',
@@ -846,6 +851,7 @@ class Magasin {
     'catalogueTarifs',
     'tarifs',
     'versionsTarif',
+    'documentsFiscaux',
     'examensLabo',
     'unitesLabo',
     'variablesLabo',

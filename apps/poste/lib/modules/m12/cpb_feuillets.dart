@@ -9,6 +9,7 @@ import '../../kit/kit.dart';
 import '../../shell/choix_exercice.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m6/points_commun.dart' show champUnique, commande;
+import 'cpc_commun.dart' show noteSansDocumentFiscal;
 import 'cpb_commun.dart';
 
 /// `m12-compte-resultat` (feuillet 7/51) et `m12-flux-tresorerie` (feuillet 8/51) — la liasse déposée à la DGI, déposée OU calculée.
@@ -477,6 +478,7 @@ class _EtatFeuillet extends State<_EcranFeuillet> {
     return ListenableBuilder(
       listenable: ecouteCompta(c),
       builder: (context, _) {
+        if (!DocumentsFiscaux.importee(docFiscalLiasse)) return noteSansDocumentFiscal('liasse déposée');
         final cc = _colonnes(c);
         // La colonne N-1 de COMPARAISON : la calculée au même filtre quand le journal porte l'exercice précédent, sinon la citée du dépôt (lot CLO).
         final n = cc[0], n1 = cpbColonneN1Reference(cc);

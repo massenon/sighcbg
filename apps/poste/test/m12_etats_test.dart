@@ -45,6 +45,7 @@ Future<void> onglet(WidgetTester t, String libelle) =>
 void main() {
   setUpAll(chargerPolices);
   tearDown(ToastsSigh.viderPourTests);
+  magasinComplet(); // le magasin branche la liasse déposée (documentsFiscaux) : `L` la lit à la déclaration du groupe
   final L = cpcLiasseDonnees;
 
   casM14('parité N1 : N1 = 100 %', (t) async {

@@ -11,12 +11,11 @@
 /// débiteur → actif, créditeur → passif. Les SIX ÉCARTS INTERNES du document déposé sont CONSERVÉS et signalés, jamais arbitrés.
 library;
 
-import 'dart:convert';
 
 import '../format/js.dart';
 import 'cpa_referentiels.dart' show CpaFiche;
 import 'cpc_exercice.dart';
-import 'cpc_liasse.dart';
+import 'documents_fiscaux.dart';
 
 double _n(Object? v) => nombreOuZero(v);
 
@@ -64,8 +63,18 @@ class CpcLiasseDonnees {
   List<CpaFiche> ecartsDe(List<String> cles) => [for (final x in ecarts) if (cles.contains(x['cle'])) x];
 }
 
+Object? _dSource;
 CpcLiasseDonnees? _d;
-CpcLiasseDonnees get cpcLiasseDonnees => _d ??= CpcLiasseDonnees((jsonDecode(cpcLiasseJson) as Map).cast<String, Object?>());
+
+/// La liasse déposée typée, lue de la base ([DocumentsFiscaux]) et mémorisée tant que la liasse en force est la même.
+CpcLiasseDonnees get cpcLiasseDonnees {
+  final l = DocumentsFiscaux.liasse;
+  if (!identical(l, _dSource) || _d == null) {
+    _dSource = l;
+    _d = CpcLiasseDonnees(l);
+  }
+  return _d!;
+}
 
 /// `soldeDesComptes(prefixes, sens, source)` : le solde des écritures dont le compte commence par l'un des préfixes — `null` si la ligne ne déclare aucun
 /// préfixe ou si le journal ne porte rien (jamais un zéro). `sens: 'credit'` lit le passif et les produits, sinon l'actif et les charges.

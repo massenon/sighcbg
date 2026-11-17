@@ -2,6 +2,7 @@
 /// `test/vecteurs/fournisseurs_m7.json`, tiré de l'écran réel piloté dans la maquette (`build/vecteurs-m7-achats.js`).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/js.dart';
 import '../format/recherche.dart';
 
@@ -17,14 +18,7 @@ class FormulaireInvalide implements Exception {
 }
 
 /// Les six types de la liste du formulaire.
-const typesFournisseur = [
-  'Grossiste pharmaceutique',
-  'Centrale d’achat',
-  'Réactifs & consommables labo',
-  'Matériel médical',
-  'Fournitures & entretien',
-  'Prestataire de services',
-];
+List<String> get typesFournisseur => ListesReference.valeurs('listes.m7.typesFournisseur');
 
 double _n(Object? v) => nombreOuZero(v);
 

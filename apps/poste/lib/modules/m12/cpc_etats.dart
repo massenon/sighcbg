@@ -423,6 +423,7 @@ class _EtatEtats extends State<EcranEtatsFinanciers> {
         // L'EXERCICE PRÉCÉDENT, TIRÉ DU JOURNAL : quand il n'a pas été déposé (et que le journal le porte), sa colonne se CALCULE comme celle de l'exercice choisi.
         final prec = cpcSourceExercice(exos, actives, annee - 1);
         final n1 = prec.isEmpty ? null : prec;
+        if (!DocumentsFiscaux.importee(docFiscalLiasse)) return noteSansDocumentFiscal('liasse déposée');
         final ca = _l.ligne(_l.resultat, 'XB')!, res = _l.ligne(_l.resultat, 'XI')!;
         final ta = _l.ligne(_l.bilanActif, 'BZ')!, tp = _l.ligne(_l.bilanPassif, 'DZ')!;
         final d = _l.depot;

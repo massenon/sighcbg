@@ -22,7 +22,7 @@ import '../format/js.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gesteCircuitCloture, gesteClotureInventaire, gesteReserve, gestesOrigine;
 import 'cpa_ecritures.dart' show cpaAnnee, cpaRefusJournalReserve;
 import 'cpa_referentiels.dart';
-import 'cpc_liasse.dart';
+import 'documents_fiscaux.dart';
 import '../numerotation/numerotation.dart';
 
 double _n(Object? v) => nombreOuZero(v);
@@ -38,8 +38,8 @@ bool cpcPeutCircuit(String role, {bool? autorise}) => autorise ?? (gesteReserve(
 
 const String _roles = 'rôles qui détiennent le droit « circuit de clôture » de la fiche de rôle (d’origine : l’administrateur et la Directrice Administrative)';
 
-Map<String, Object?>? _liasse;
-Map<String, Object?> get cpcLiasse => _liasse ??= (jsonDecode(cpcLiasseJson) as Map).cast<String, Object?>();
+/// La liasse déposée EN FORCE, lue de la base ([DocumentsFiscaux]) ; structure vide si aucune n'est importée.
+Map<String, Object?> get cpcLiasse => DocumentsFiscaux.liasse;
 Map<String, Object?> get cpcDepot => (cpcLiasse['DEPOT'] as Map).cast<String, Object?>();
 
 bool cpcLettrable(Object? compte) => cpcLettrables.any((p) => '$compte'.startsWith(p));

@@ -14,7 +14,7 @@ import '../referentiels/periodes.dart';
 import '../referentiels/regles.dart' show joursEntre;
 import 'cpa_referentiels.dart' show CpaFiche;
 import 'cpb_donnees.dart';
-import 'cpb_liasse.dart';
+import 'documents_fiscaux.dart';
 
 double _n(Object? v) => nombreOuZero(v);
 
@@ -60,15 +60,37 @@ List<CpbLigneFormulaire> _lignes(Object? liste) => [
     ];
 
 /// `L.RESULTAT` et `L.FLUX`.
-final List<CpbLigneFormulaire> cpbLignesResultat = _lignes(cpbLiasse['RESULTAT']);
-final List<CpbLigneFormulaire> cpbLignesFlux = _lignes(cpbLiasse['FLUX']);
+///
+/// Les lignes se lisent de la liasse IMPORTÉE EN BASE ([DocumentsFiscaux.liasse]) ; elles sont mémorisées tant que la liasse en force est la même, et se reconstruisent quand un
+/// nouvel import prend le relais.
+Object? _liasseMemo;
+List<CpbLigneFormulaire>? _resultatMemo, _fluxMemo;
 
-Map<String, Object?> get cpbDepot => (cpbLiasse['DEPOT'] as Map).cast<String, Object?>();
+void _synchroniser() {
+  final l = DocumentsFiscaux.liasse;
+  if (!identical(l, _liasseMemo)) {
+    _liasseMemo = l;
+    _resultatMemo = _lignes(l['RESULTAT']);
+    _fluxMemo = _lignes(l['FLUX']);
+  }
+}
+
+List<CpbLigneFormulaire> get cpbLignesResultat {
+  _synchroniser();
+  return _resultatMemo!;
+}
+
+List<CpbLigneFormulaire> get cpbLignesFlux {
+  _synchroniser();
+  return _fluxMemo!;
+}
+
+Map<String, Object?> get cpbDepot => (DocumentsFiscaux.liasse['DEPOT'] as Map).cast<String, Object?>();
 int get cpbExerciceN => cpbDepot['exerciceN'] as int;
 int get cpbExerciceN1 => cpbDepot['exerciceN1'] as int;
 
 /// `L.ECARTS` : les écarts internes du document déposé, CONSERVÉS et non arbitrés.
-List<Map<String, Object?>> get cpbEcarts => [for (final x in (cpbLiasse['ECARTS'] as List).cast<Map>()) x.cast<String, Object?>()];
+List<Map<String, Object?>> get cpbEcarts => [for (final x in (DocumentsFiscaux.liasse['ECARTS'] as List).cast<Map>()) x.cast<String, Object?>()];
 
 /// `L.ecart(cle)`.
 Map<String, Object?>? cpbEcart(String cle) {

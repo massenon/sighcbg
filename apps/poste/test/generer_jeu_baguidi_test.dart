@@ -21,9 +21,9 @@ void main() {
     }
   });
 
-  test('le jeu livré est celui que produit le générateur, avec les 167 noms de fichier de la référence', () {
+  test('le jeu livré est celui que produit le générateur, avec les 168 noms de fichier de la référence', () {
     final reference = Directory('test/fixtures/jeu_reference').listSync().map((f) => f.uri.pathSegments.last).toSet();
-    expect(reference.length, 167); // 160 + « fichiers » (le registre des scans par empreinte) + « tarifs » et « versionsTarif » (lot TAR) + « plansTravail », « ptaAxes », « ptaEtats », « ptaFinancements » (lot PTA)
+    expect(reference.length, 168); // 160 + « documentsFiscaux » (la liasse déposée et le classeur de baseline, importés en base) + « fichiers » (le registre des scans par empreinte) + « tarifs » et « versionsTarif » (lot TAR) + « plansTravail », « ptaAxes », « ptaEtats », « ptaFinancements » (lot PTA)
     expect(a.keys.toSet(), reference);
     for (final e in a.entries) {
       expect(File('assets/donnees/jeu/${e.key}').readAsStringSync(), e.value, reason: '${e.key} : relancer flutter test tool/generer_jeu_baguidi.dart');

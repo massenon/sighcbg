@@ -27,7 +27,7 @@ const List<String> importSecteursActivite = [
 ];
 
 /// Les spécialités d'un prestataire externe : celles de l'écran, plus « Autre » qu'il propose aussi.
-const List<String> importSpecialitesPrestataire = [...rhaSpecialitesPrestataire, 'Autre'];
+List<String> get importSpecialitesPrestataire => [...rhaSpecialitesPrestataire, 'Autre'];
 
 ProblemeImport _avert(String colonne, Object? valeur, String code, String motif, String geste) => _p(colonne, valeur, code, importAvertissement, motif, geste);
 ProblemeImport _refus(String colonne, Object? valeur, String code, String motif, String geste) => _p(colonne, valeur, code, importRefus, motif, geste);

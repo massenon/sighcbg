@@ -5,6 +5,7 @@
 /// n'ouvre aucun dossier, ne consomme aucun code CBG (RG-01).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/recherche.dart';
@@ -33,14 +34,7 @@ AgFiche agPatchNonHonore(String motif, DateTime maintenant) => {
     };
 
 /// Les motifs de report proposés.
-const agMotifsReport = [
-  'Indisponibilité du praticien',
-  'Demande du patient',
-  'Urgence prioritaire',
-  'Examen non disponible',
-  'Patient absent — nouvelle date convenue',
-  'Autre motif'
-];
+List<String> get agMotifsReport => ListesReference.valeurs('listes.m2.motifsReport');
 
 /// `reporter` : une NOUVELLE date est fixée, l'ancienne reste écrite (`dateInitiale` : la première date, jamais écrasée par un second report).
 AgFiche agPatchReport(AgFiche r, String nouvelleDate, String motif, DateTime maintenant) => {
@@ -52,14 +46,7 @@ AgFiche agPatchReport(AgFiche r, String nouvelleDate, String motif, DateTime mai
     };
 
 /// Les natures de venue.
-const agTypesRdv = [
-  'Consultation',
-  'Contrôle',
-  'Urgence',
-  'Domicile',
-  'Visite',
-  'Affaire privée'
-];
+List<String> get agTypesRdv => ListesReference.valeurs('listes.m2.typesRendezvous');
 
 // --- la personne non enregistrée ------------------------------------------------------------------------------------------------
 
@@ -145,17 +132,7 @@ AgFiche agPassage(AgFiche saisie,
 }
 
 /// Les orientations proposées au passage sans rendez-vous.
-const agOrientations = [
-  'Médecine générale',
-  'Chirurgie',
-  'Maternité',
-  'Laboratoire',
-  'Imagerie / Échographie',
-  'Salle de soins',
-  'Mise en observation',
-  'Pharmacie',
-  'Retour à domicile'
-];
+List<String> get agOrientations => ListesReference.valeurs('listes.m2.orientations');
 
 /// Le message qui suit l'enregistrement d'un passage : prioritaire → alerte, sinon confirmation.
 ({bool alerte, String message, String detail}) agMessagePassage(AgFiche v, bool prioritaire) =>
@@ -434,25 +411,10 @@ List<AgKpi> agKpisDomicile(List<AgFiche> rows) {
 }
 
 /// Les objets d'appel relevés au standard.
-const agObjetsAppel = [
-  'Prise de rendez-vous',
-  'Report de rendez-vous',
-  'Demande de résultat d’analyse',
-  'Renseignement tarifaire',
-  'Suivi post-hospitalisation',
-  'Rappel de règlement',
-  'Demande d’ambulance',
-  'Information administrative'
-];
+List<String> get agObjetsAppel => ListesReference.valeurs('listes.m2.objetsAppel');
 
 /// Les suites données à un appel.
-const agSuitesAppel = [
-  'Rendez-vous fixé',
-  'Information donnée',
-  'Rappel à programmer',
-  'Transféré au médecin',
-  'Sans suite'
-];
+List<String> get agSuitesAppel => ListesReference.valeurs('listes.m2.suitesAppel');
 
 List<AgKpi> agKpisAppels(List<AgFiche> rows) => [
       AgKpi('Appels enregistrés', agNum(rows.length)),

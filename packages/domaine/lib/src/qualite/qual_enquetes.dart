@@ -1,3 +1,4 @@
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../format/recherche.dart';
@@ -17,7 +18,7 @@ const qualTypesQuestion = [
 ];
 
 /// Canaux de recueil au guichet (`CANAUX_ENQUETE`).
-const qualCanaux = ['Au guichet', 'À la sortie', 'Par téléphone'];
+List<String> get qualCanaux => ListesReference.valeurs('listes.m13.canauxReponseEnquete');
 
 /// Canal des réponses venues d'un LIEN PARTAGÉ : posé par la page publique, jamais sélectionnable à la main.
 const qualCanalPublic = 'Lien public';

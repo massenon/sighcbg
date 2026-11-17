@@ -15,6 +15,7 @@
 /// celui de la clinique) ; E15 (l'avoir MECeF APPELLE le moteur unique `emettreAvoir` : plafond cumulé, montant strictement positif, ligne nommée).
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../impression/etat.dart';
@@ -364,13 +365,7 @@ class RefusAvoirMecef implements Exception {
   String toString() => motif;
 }
 
-const motifsAvoirMecef = [
-  'Erreur de facturation',
-  'Prestation non réalisée',
-  'Remise commerciale',
-  'Annulation de commande',
-  'Erreur de tarif',
-];
+List<String> get motifsAvoirMecef => ListesReference.valeurs('listes.mecef.motifsAvoir');
 
 /// Un avoir MECeF émis : l'avoir du moteur unique (fiche, contre-passation, cumul de la facture) et la fiche telle que la maquette la relit après la
 /// transmission d'office (`statutMecef: valide`, `mecef: true` : l'identifiant est posé par l'appelant via [numeroMecefSimule]).

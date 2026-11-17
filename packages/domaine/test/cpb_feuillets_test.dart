@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -18,6 +19,7 @@ String mof(Object? v) => nt(money(v));
 List<F> jeu(String nom) => liste(jsonDecode(File('../../apps/poste/test/fixtures/jeu_reference/$nom.json').readAsStringSync()));
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final f = File('test/vecteurs/comptabilite_b.json');
   if (!f.existsSync()) fail('vecteurs absents : lancer `node prototype_html/build/vecteurs-comptabilite-b.js`');
   final v = carte(jsonDecode(f.readAsStringSync()));

@@ -2,6 +2,7 @@
 /// le résumé textuel d'un résultat structuré et les variables à renseigner.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../referentiels/regles.dart' show joursEntre;
 import 'res_comparatif.dart';
 import 'res_habilitations.dart';
@@ -26,15 +27,7 @@ String? codeExamenSaisie(FicheLabo r, Iterable<FicheLabo> examens) {
 
 /// `L.MOTIFS_COMMENTAIRE_GENERAL` : le commentaire GÉNÉRAL porte sur l'échantillon et le compte rendu (« hémolysé, reprendre le prélèvement »),
 /// non sur l'interprétation d'un examen.
-const List<String> motifsCommentaireGeneral = [
-  'Échantillon hémolysé — reprendre le prélèvement.',
-  'Échantillon coagulé — reprendre le prélèvement.',
-  'Quantité insuffisante pour la totalité des examens demandés.',
-  'Échantillon parvenu hors délai de conservation.',
-  'Examen non réalisé — réactif indisponible.',
-  'Examen à confirmer sur un second prélèvement.',
-  'Résultat rendu par téléphone au prescripteur.',
-];
+List<String> get motifsCommentaireGeneral => ListesReference.valeurs('listes.m5.motifsCommentaireGeneral');
 
 /// Les issues imposées par le TYPE de la variable (`L.TYPES_VARIABLE[].valeurs`) ; une variable de type `liste` porte les siennes.
 const Map<String, List<String>> valeursTypeVariable = {

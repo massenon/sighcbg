@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:test/test.dart';
+import 'aide_documents_fiscaux.dart';
 
 typedef F = Map<String, Object?>;
 
@@ -19,6 +20,7 @@ List<List<String>> lignes(Object? t) => [for (final l in (t as List)) [for (fina
 String cellule(double? v, {bool total = false}) => total ? '' : (v == null ? '—' : nt(money(v, avecDevise: false)));
 
 void main() {
+  brancherDocumentsFiscauxDeTest();
   final f = File('test/vecteurs/etats.json');
   if (!f.existsSync()) fail('vecteurs absents : lancer `node prototype_html/build/vecteurs-m12-etats.js`');
   final v = carte(jsonDecode(f.readAsStringSync()));

@@ -6,6 +6,7 @@
 /// Une échéance qui tombe un samedi ou un dimanche est reportée au jour ouvrable SUIVANT, jamais avancée.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../parametres/parametres_clinique.dart' show seuilSeme;
@@ -184,4 +185,4 @@ CpaFiche cpcPatchAnnulation(String motif) => {
       'motifAnnulation': motif,
     };
 
-const List<String> cpcMoyensReglement = ['Virement bancaire', 'Chèque', 'Espèces', 'Mobile Money'];
+List<String> get cpcMoyensReglement => ListesReference.valeurs('listes.m12.moyensReglement');

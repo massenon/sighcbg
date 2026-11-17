@@ -6,6 +6,7 @@
 /// les poches. La banque de sang est une activité FERMÉE à la clinique (`modulesActifs`, MOD01/MOD02) : ce fichier ne porte pas ce mécanisme.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../parametres/parametres_clinique.dart' show seuilSeme;
 import '../format/js.dart';
@@ -25,7 +26,7 @@ double _n(Object? v) => nombreOuZero(v);
 const sangGroupes = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
 
 /// Les types de don proposés au formulaire des donneurs.
-const sangTypesDon = ['Bénévole', 'Familial', 'Compensation'];
+List<String> get sangTypesDon => ListesReference.valeurs('listes.m5.typesDonSang');
 
 /// Délai minimal entre deux dons (jours) : le paramètre `laboratoire.delaiEntreDonsSangJours` (90 jours d'attente, `delai >= 90` dans la maquette, écrit en dur) ; ici sa valeur SEMÉE.
 int get sangDelaiEntreDons => seuilSeme('laboratoire.delaiEntreDonsSangJours');

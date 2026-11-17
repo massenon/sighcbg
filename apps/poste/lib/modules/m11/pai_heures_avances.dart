@@ -110,7 +110,7 @@ class EcranHeuresSup extends StatelessWidget with EcranMaquette {
   }
 }
 
-const _motifsHs = ['Renfort de garde', 'Urgence', 'Remplacement', 'Surcroît d’activité'];
+List<String> get _motifsHs => ListesReference.valeurs('listes.m11.motifsHeuresSup');
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 // m11-avances
@@ -232,4 +232,4 @@ class EcranAvances extends StatelessWidget with EcranMaquette {
   }
 }
 
-const _motifsAvance = ['Frais de santé', 'Frais de scolarité', 'Événement familial', 'Besoin personnel', 'Autre'];
+List<String> get _motifsAvance => ListesReference.valeurs('listes.m11.motifsAvance');

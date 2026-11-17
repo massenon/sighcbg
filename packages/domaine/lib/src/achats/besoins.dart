@@ -15,6 +15,7 @@
 ///   · E77 ✅ corrigé : le validateur est le POSTE « Directrice administrative », jamais un nom de personne écrit en dur ; l'agent réel est porté par `valideeParAgent`.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import '../format/format_fr.dart';
 import '../droits/gestes_reserves.dart' show DroitsGestes, gesteReserve, gestesOrigine, gesteAchatsRegistre, gesteValiderAchats;
 import 'nombres.dart';
@@ -63,25 +64,10 @@ EtatBesoin etatBesoin(Object? id) => [...etapesBesoin, ...issuesBesoin]
     .firstWhere((e) => e.id == id,
         orElse: () => EtatBesoin('$id', '$id', 'neutral'));
 
-const servicesDemandeurs = [
-  'Pharmacie d’urgence',
-  'Laboratoire',
-  'Hospitalisation',
-  'Maternité',
-  'Bloc opératoire',
-  'Accueil',
-  'Administration',
-  'Entretien',
-];
+List<String> get servicesDemandeurs => ListesReference.valeurs('listes.m7.servicesDemandeurs');
 
 /// Les familles nommées par la Direction ; un besoin qui n'entre dans aucune se dit « Autre » et se décrit.
-const categoriesBesoin = [
-  'Produits d’entretien (nettoyage, désinfection)',
-  'Produits administratifs (stylos, cahiers, classeurs, cartouches, papier RAM)',
-  'Matériel technique léger',
-  'Consommables médicaux',
-  'Autre — à préciser',
-];
+List<String> get categoriesBesoin => ListesReference.valeurs('listes.m7.categoriesBesoin');
 
 
 /// Qui voit les besoins validés et le registre complet (achat et logistique) D'ORIGINE : DÉRIVÉ du geste réservé `achats_registre` (affichage) ; la décision ([estAchat])

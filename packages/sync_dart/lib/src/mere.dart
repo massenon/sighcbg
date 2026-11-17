@@ -49,6 +49,8 @@ const familleDeBase = <String, String>{
   // LOT 2 (16/11/2026) : le RÉFÉRENTIEL DE NUMÉROTATION des pièces (une fiche par version datée de série) : la mère seule l'écrit ; un fileul DÉPOSE sa modification
   // (`validationsDeposees`, genre `serie_numerotation`) et la mère l'applique sous le rôle de son auteur.
   'seriesNumerotation': 'R',
+  // La liasse déposée et le classeur de baseline (documents IMPORTÉS, une fiche par dépôt) : la mère les écrit, les fileuls les reçoivent.
+  'documentsFiscaux': 'R',
   'releves': 'A', 'observations': 'A', 'visites': 'A', 'appels': 'A', 'consultations': 'A', 'dossiersConsultation': 'A', 'antecedents': 'A',
   // Les hachés des mots de passe : écrits par le poste où l'agent change son mot de passe, dans les DEUX sens (E2131).
   'identifiants': 'A',

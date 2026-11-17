@@ -654,7 +654,7 @@ class EcranDeces extends StatelessWidget with EcranMaquette {
   @override
   String get description => 'Enregistrement des décès survenus dans l’établissement : date, heure, cause et déclaration.';
 
-  static const lieux = ['Hospitalisation', 'Urgences', 'Bloc opératoire', 'Maternité', 'Domicile'];
+  static List<String> get lieux => ListesReference.valeurs('listes.m4.lieuxDeSurvenue');
 
   @override
   Widget build(BuildContext context) {
