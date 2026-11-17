@@ -5,6 +5,7 @@
 /// est CALCULÉ ; l'échelle du pouls n'est pas linéaire (interpolation entre graduations) ; le RANG décide du secteur d'administration.
 library;
 
+import '../parametres/listes_reference.dart' show ListesReference;
 import 'hos_constantes.dart';
 import '../format/js.dart';
 import 'dart:math' as math;
@@ -292,6 +293,12 @@ double? hosPositionSurEchelle(HosEchelle e, num? valeur) {
   return null;
 }
 
+/// Les CODES des sources d'un relevé de la feuille de surveillance (`origineCode`) et la liste de référence qui en donne le libellé et le ton d'affichage. La ligne porte le code ;
+/// `origine` n'en est que le libellé (réglage `listes.m3.originesReleveSurveillance`).
+const hosOrigineAccueil = 'accueil';
+const hosOrigineHospitalisation = 'hospitalisation';
+const hosCleOriginesReleve = 'listes.m3.originesReleveSurveillance';
+
 String hosMomentDe(Object? heure) {
   final h = int.tryParse(RegExp(r'^\s*\d+').firstMatch('${heure ?? ''}'.padRight(2).substring(0, 2))?.group(0) ?? '');
   if (h == null) return 'matin';
@@ -333,7 +340,8 @@ List<HosFiche> hosRelevesDe(String patientId,
       'spo2': c['spo2'],
       'diurese': c['diurese'],
       'par': c['releveePar'],
-      'origine': 'Accueil',
+      'origineCode': hosOrigineAccueil,
+      'origine': ListesReference.libelleDe(hosCleOriginesReleve, hosOrigineAccueil),
     });
   }
   final ids = {
@@ -360,7 +368,8 @@ List<HosFiche> hosRelevesDe(String patientId,
         // saisie et échelle en millilitres : aucune conversion
         'diurese': r['diurese'],
         'par': r['saisiPar'],
-        'origine': 'Hospitalisation',
+        'origineCode': hosOrigineHospitalisation,
+        'origine': ListesReference.libelleDe(hosCleOriginesReleve, hosOrigineHospitalisation),
       });
     }
   }

@@ -127,7 +127,7 @@ class _EtatAssurance extends State<EcranAssurancePersonnel> {
           sensInitial: 'desc',
           nomExport: 'assurance-personnel',
           filtres: [
-            FiltreTableau(nom: 'nature', libelle: 'Nature', options: const [OptionChamp('Consultation'), OptionChamp('Analyse'), OptionChamp('Hospitalisation')]),
+            FiltreTableau(nom: 'natureCode', libelle: 'Nature', options: [for (final e in ListesReference.entrees(rhcCleNaturesPrestation)) OptionChamp(e.code, e.libelle)]),
           ],
           colonnes: [
             ColonneTableau(cle: 'date', libelle: 'Date', sansCoupure: true, texte: (r) => rhcDate(r['date'])),
@@ -146,7 +146,7 @@ class _EtatAssurance extends State<EcranAssurancePersonnel> {
                 cle: 'nature',
                 libelle: 'Nature',
                 texte: (r) => '${r['nature']}',
-                rendu: (_, r) => BadgeSigh('${r['nature']}', ton: r['nature'] == 'Consultation' ? TonSigh.info : (r['nature'] == 'Analyse' ? TonSigh.navy : TonSigh.attention))),
+                rendu: (_, r) => BadgeSigh('${r['nature']}', ton: tonParNom(ListesReference.tonDe(rhcCleNaturesPrestation, r['natureCode']), TonSigh.attention))),
             const ColonneTableau(cle: 'detail', libelle: 'Détail'),
             const ColonneTableau(cle: 'praticien', libelle: 'Praticien'),
             ColonneTableau(
@@ -209,9 +209,9 @@ class _EtatAssurance extends State<EcranAssurancePersonnel> {
           'agent': e.key,
           'matricule': e.value.first['matricule'] ?? '—',
           'fonction': e.value.first['fonctionLabel'],
-          'consultations': e.value.where((x) => x['nature'] == 'Consultation').length,
-          'analyses': e.value.where((x) => x['nature'] == 'Analyse').length,
-          'hospitalisations': e.value.where((x) => x['nature'] == 'Hospitalisation').length,
+          'consultations': e.value.where((x) => x['natureCode'] == natureAssuranceConsultation).length,
+          'analyses': e.value.where((x) => x['natureCode'] == natureAssuranceAnalyse).length,
+          'hospitalisations': e.value.where((x) => x['natureCode'] == natureAssuranceHospitalisation).length,
           'valeur': rhcSomme(e.value, 'valeur'),
           'sansMontant': _sansMontant(e.value),
         }

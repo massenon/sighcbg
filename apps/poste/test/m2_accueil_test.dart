@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show ListesReference, parCollectionParametres;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
@@ -217,6 +219,30 @@ void main() {
       for (final e in ['N°', 'Date et heure', 'Patient', 'Praticien', 'Motif', 'Type', 'Statut']) {
         expect(find.text(e.toUpperCase()).evaluate().isNotEmpty || find.text(e).evaluate().isNotEmpty, isTrue, reason: e);
       }
+      await fin(t);
+    });
+
+    // LOT « VALEURS EN DUR » (famille G) : la couleur du badge « Type » ne compare plus le mot « Urgence » — elle suit le marquage RÉGLÉ des types urgents, ou la fiche elle-même.
+    Set<TonSigh> tonsDuType(WidgetTester t, String libelle) => {
+          for (final b in t.widgetList<BadgeSigh>(find.byWidgetPredicate((w) => w is BadgeSigh && w.libelle == libelle))) b.ton
+        };
+
+    testWidgets('le badge d\'urgence suit le marquage réglé des types urgents, pas un libellé écrit dans le code', (t) async {
+      final m = magasin(consultations: liste((v['rendezvous'] as Map)['fixtures']));
+      await ouvrir(t, m, 'm2-rendezvous');
+      expect(tonsDuType(t, 'Urgence'), {TonSigh.danger}, reason: 'valeur d\'attente : « Urgence » est le seul type marqué urgent, comme avant');
+      expect(tonsDuType(t, 'Contrôle'), {TonSigh.navy});
+      await fin(t);
+      // La Direction marque « Contrôle » urgent et retire « Urgence » : les couleurs suivent, sans une ligne de code.
+      serviceParametres(m, auteur: () => 'Poste mère', horloge: () => maintenant)
+        ..semerDefauts()
+        ..regler('listes.m2.typesRendezvousUrgents', 'Contrôle', '2026-08-01', motif: 'Essai de marquage');
+      // Au poste réel `main()` branche le registre des listes sur la collection des paramètres ; le banc le fait ici, et le débranche à la fin.
+      ListesReference.brancher(() => m.collection(parCollectionParametres).toutes, horloge: () => maintenant);
+      addTearDown(ListesReference.debrancher);
+      await ouvrir(t, m, 'm2-rendezvous');
+      expect(tonsDuType(t, 'Contrôle'), {TonSigh.danger});
+      expect(tonsDuType(t, 'Urgence'), {TonSigh.navy});
       await fin(t);
     });
 

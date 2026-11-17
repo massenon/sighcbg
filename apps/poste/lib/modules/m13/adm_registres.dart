@@ -338,7 +338,7 @@ class EcranAmbulance extends StatelessWidget with EcranMaquette {
         ColonneTableau(
             cle: 'motif',
             libelle: 'Motif',
-            rendu: (_, r) => BadgeSigh('${r['motif'] ?? ''}', ton: '${r['motif']}'.startsWith('Urgence') ? TonSigh.danger : TonSigh.navy)),
+            rendu: (_, r) => BadgeSigh('${r['motif'] ?? ''}', ton: admEstUrgente(r) ? TonSigh.danger : TonSigh.navy)),
         const ColonneTableau(cle: 'destination', libelle: 'Destination'),
         ColonneTableau(cle: 'kilometrage', libelle: 'Km', droite: true, texte: (r) => matTexteNombre(r['kilometrage'])),
         const ColonneTableau(cle: 'chauffeur', libelle: 'Chauffeur'),

@@ -32,6 +32,7 @@ class CapaciteLabo {
     this.continuitePrelevement = false,
     this.secteurs = const [],
     this.remettreResultats = false,
+    this.voirImagerie = 'aucun',
     this.note,
   });
 
@@ -51,6 +52,9 @@ class CapaciteLabo {
   final bool continuitePrelevement;
   final List<String> secteurs;
   final bool remettreResultats;
+
+  /// Les comptes rendus d'IMAGERIE que la fonction lit : `tous` | `secteur` | `aucun`. C'est la MATRICE qui le dit — l'écran du dossier patient ne teste plus un nom de fonction.
+  final String voirImagerie;
   final String? note;
 
   CapaciteLabo avec({required String fonction, String? fonctionInconnue}) =>
@@ -64,6 +68,7 @@ class CapaciteLabo {
           continuitePrelevement: continuitePrelevement,
           secteurs: secteurs,
           remettreResultats: remettreResultats,
+          voirImagerie: voirImagerie,
           note: note);
 }
 
@@ -73,11 +78,13 @@ const Map<String, CapaciteLabo> capacitesLabo = {
       fonction: 'medecin',
       label: 'Médecin',
       voirResultats: 'tous',
+      voirImagerie: 'tous',
       note: 'Accès à tous les résultats, quel que soit le prescripteur.'),
   'sage_femme': CapaciteLabo(
       fonction: 'sage_femme',
       label: 'Sage-femme',
       voirResultats: 'secteur',
+      voirImagerie: 'secteur',
       secteurs: ['MATERNITE'],
       note: 'Résultats de la maternité seulement — pas ceux demandés par la chirurgie.'),
   'infirmier': CapaciteLabo(
@@ -127,6 +134,7 @@ const Map<String, CapaciteLabo> capacitesLabo = {
       fonction: 'direction',
       label: 'Direction',
       voirResultats: 'tous',
+      voirImagerie: 'tous',
       note: 'Accès de supervision, sans droit de prescription.'),
   'stock': CapaciteLabo(
       fonction: 'stock', label: 'Gestionnaire de stock', voirResultats: 'aucun'),
@@ -142,6 +150,7 @@ const Map<String, CapaciteLabo> capacitesLabo = {
       fonction: 'chirurgien',
       label: 'Chirurgien',
       voirResultats: 'tous',
+      voirImagerie: 'tous',
       note:
           'Seul à renseigner les actes chirurgicaux et la programmation du bloc. Consulte le mardi et le jeudi (chirurgien-gynécologue).'),
 };

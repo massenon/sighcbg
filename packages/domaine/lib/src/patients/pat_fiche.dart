@@ -102,19 +102,12 @@ const patCategoriesAntecedent = [
 // L'imagerie médicale au dossier : le RBAC métier s'applique comme pour les analyses
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
-/// `porteeImagerie()` : `tous` · `secteur` · `aucun`. Le poste d'imagerie PRODUIT les comptes rendus : il les lit tous.
+/// `porteeImagerie()` : `tous` · `secteur` · `aucun`, lue à la matrice des fonctions. Le poste d'imagerie PRODUIT les comptes rendus : il les lit tous.
 /// [gestes] : les gestes réservés en force (`imagerie_executer`) ; absent, l'origine.
 String patPorteeImagerie(SessionLabo session, {DroitsGestes? gestes}) {
   if (imgExecutantImagerie(session.role, gestes: gestes)) return 'tous';
-  switch (capacites(session).fonction) {
-    case 'medecin':
-    case 'chirurgien':
-    case 'direction':
-      return 'tous';
-    case 'sage_femme':
-      return 'secteur';
-  }
-  return 'aucun';
+  // La portée vient de la MATRICE des fonctions (`CapaciteLabo.voirImagerie`) : aucune fonction n'est nommée ici.
+  return capacites(session).voirImagerie;
 }
 
 /// `peutLireCR(dem, cr)` : (autorisé, motif). Seul un compte rendu RENDU au prescripteur se lit ; le contenu obéit aux droits du profil.

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/core/jetons_shell.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/impression/apercu.dart';
@@ -363,6 +364,34 @@ void main() {
 
   // -------------------------------------------------------------------------------------------------------------------------------------------
   group('m13-ambulance', () {
+    // LOT « VALEURS EN DUR » (famille G) : le badge rouge d'une sortie suit le marquage RÉGLÉ des motifs urgents, plus un test sur le début du libellé.
+    testWidgets('le badge d\'urgence d\'une sortie suit le marquage réglé des motifs, et la fiche qui dit son urgence l\'emporte', (t) async {
+      Set<TonSigh> tons(String libelle) => {
+            for (final b in t.widgetList<BadgeSigh>(find.byWidgetPredicate((w) => w is BadgeSigh && w.libelle == libelle))) b.ton
+          };
+      final jeuAmb = liste(obj(v['ambulance'])['jeu']);
+      final m = poste({'ambulance': jeuAmb});
+      await ouvrir(t, m, 'm13-ambulance');
+      expect(tons('Urgence médicale'), {TonSigh.danger}, reason: 'valeur d\'attente : les deux motifs « Urgence … » d\'avant');
+      expect(tons('Transfert inter-hospitalier'), {TonSigh.navy});
+      await t.pump(const Duration(seconds: 10));
+      serviceParametres(m, auteur: () => 'Poste mère', horloge: () => auj)
+        ..semerDefauts()
+        ..regler('listes.m13.motifsInterventionUrgents', 'Transfert inter-hospitalier', '2026-10-01', motif: 'Essai de marquage');
+      // Au poste réel `main()` branche le registre des listes sur la collection des paramètres ; le banc le fait ici, et le débranche à la fin.
+      ListesReference.brancher(() => m.collection(parCollectionParametres).toutes, horloge: () => auj);
+      addTearDown(ListesReference.debrancher);
+      await ouvrir(t, m, 'm13-ambulance');
+      expect(tons('Transfert inter-hospitalier'), {TonSigh.danger});
+      expect(tons('Urgence médicale'), {TonSigh.navy});
+      await t.pump(const Duration(seconds: 10));
+      // La donnée l'emporte : une fiche qui dit « urgent: false » n'est pas rouge, quel que soit son libellé.
+      final m2 = poste({'ambulance': [for (final f in jeuAmb) {...f, if (f['motif'] == 'Urgence médicale') 'urgent': false}]});
+      await ouvrir(t, m2, 'm13-ambulance');
+      expect(tons('Urgence médicale'), {TonSigh.navy});
+      await t.pump(const Duration(seconds: 10));
+    });
+
     final a = obj(v['ambulance']);
 
     testWidgets('KPI et ordre des interventions identiques à la maquette ; filtre « Facturation »', (t) async {

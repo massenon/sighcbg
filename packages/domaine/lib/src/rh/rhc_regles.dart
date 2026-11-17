@@ -11,7 +11,8 @@ import '../format/js.dart';
 import '../format/recherche.dart' show trierPar;
 import '../referentiels/periodes.dart' show ajouterJours;
 import '../referentiels/regles.dart' show joursEntre;
-import 'espace_mes.dart' show montantPorte;
+import '../parametres/listes_reference.dart' show ListesReference;
+import 'espace_mes.dart' show montantPorte, natureAssuranceAnalyse, natureAssuranceConsultation, natureAssuranceHospitalisation;
 import 'rhb_regles.dart';
 import '../numerotation/numerotation.dart';
 
@@ -355,6 +356,9 @@ String? rhcBorneMin(String valeur, DateTime auj) {
   return j != 0 ? iso(ajouterJours(auj, -j)) : null;
 }
 
+/// La liste de référence des natures de prestation (code, libellé, ton) : l'AFFICHAGE de la nature d'une ligne. Le code est ce que la ligne porte (`natureCode`).
+const rhcCleNaturesPrestation = 'listes.m10.naturesPrestationPersonnel';
+
 /// `prestations()` — consultations reçues, analyses prescrites et hospitalisations des agents ayant un dossier patient. Lues dans les collections d'ORIGINE,
 /// jamais recopiées : une copie divergerait du dossier au premier changement. Le MONTANT est celui que la prestation PORTE (lot L7, Planning Q8) : une demande
 /// ancienne sans montant vaut `null` (« non renseigné »), jamais le prix courant du catalogue ni un zéro. Plus récent d'abord (`C.sortBy(date).reverse()`).
@@ -379,7 +383,9 @@ List<FicheRhc> rhcPrestations({
         'matricule': pat['matricule'],
         'fonction': pat['fonctionAgent'],
         'fonctionLabel': rhbFonctionLabel(pat['fonctionAgent']),
-        'nature': nature,
+        // Le CODE de la nature est la donnée ; `nature` est son libellé d'affichage (réglage), conservé pour l'export et la recherche.
+        'natureCode': nature,
+        'nature': ListesReference.libelleDe(rhcCleNaturesPrestation, nature),
         'detail': detail,
         'praticien': praticien,
         'valeur': valeur,
@@ -394,23 +400,23 @@ List<FicheRhc> rhcPrestations({
     if (pat == null) continue;
     final d = jour10(c['date']);
     if (min != null && d.compareTo(min) < 0) continue;
-    out.add(base(pat, '${c['id']}', d, 'Consultation', '${_js(c['type'])} — ${_vrai(c['motif']) ? c['motif'] : ''}', c['medecin'], montantPorte(c['tarif'])));
+    out.add(base(pat, '${c['id']}', d, natureAssuranceConsultation, '${_js(c['type'])} — ${_vrai(c['motif']) ? c['motif'] : ''}', c['medecin'], montantPorte(c['tarif'])));
   }
   for (final a in analyses) {
     final pat = parPatient[a['patientId']];
     if (pat == null) continue;
     final d = jour10(_vrai(a['date']) ? a['date'] : (_vrai(a['dateDemande']) ? a['dateDemande'] : a['dateHeure']));
     if (d.isEmpty || (min != null && d.compareTo(min) < 0)) continue;
-    final nom = _vrai(a['analyse']) ? '${a['analyse']}' : (libelleAnalyse?.call(a['analyse']) ?? 'Analyse');
+    final nom = _vrai(a['analyse']) ? '${a['analyse']}' : (libelleAnalyse?.call(a['analyse']) ?? ListesReference.libelleDe(rhcCleNaturesPrestation, natureAssuranceAnalyse));
     final valeur = montantPorte(a['montant'] != null && a['montant'] != '' ? a['montant'] : a['prix']);
-    out.add(base(pat, '${a['id']}', d, 'Analyse', nom, _vrai(a['prescripteur']) ? a['prescripteur'] : (_vrai(a['demandeur']) ? a['demandeur'] : '—'), valeur));
+    out.add(base(pat, '${a['id']}', d, natureAssuranceAnalyse, nom, _vrai(a['prescripteur']) ? a['prescripteur'] : (_vrai(a['demandeur']) ? a['demandeur'] : '—'), valeur));
   }
   for (final h in admissions) {
     final pat = parPatient[h['patientId']];
     if (pat == null) continue;
     final d = jour10(h['dateEntree']);
     if (d.isEmpty || (min != null && d.compareTo(min) < 0)) continue;
-    out.add(base(pat, '${h['id']}', d, 'Hospitalisation', '${_vrai(h['service']) ? h['service'] : ''} — lit ${_vrai(h['lit']) ? h['lit'] : '—'}',
+    out.add(base(pat, '${h['id']}', d, natureAssuranceHospitalisation, '${_vrai(h['service']) ? h['service'] : ''} — lit ${_vrai(h['lit']) ? h['lit'] : '—'}',
         _vrai(h['medecin']) ? h['medecin'] : '—', montantPorte(h['montant'])));
   }
   final filtrees = fonction.isEmpty ? out : [for (final x in out) if (x['fonction'] == fonction) x];

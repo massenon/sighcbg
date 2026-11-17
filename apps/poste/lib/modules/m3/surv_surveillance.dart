@@ -176,7 +176,7 @@ class _EtatSurveillance extends State<EcranSurveillance> {
                       libelle: 'Source',
                       texte: (r) => '${r['origine']}',
                       rendu: (_, r) =>
-                          BadgeSigh('${r['origine']}', ton: r['origine'] == 'Accueil' ? TonSigh.info : TonSigh.neutre)),
+                          BadgeSigh('${r['origine']}', ton: tonParNom(ListesReference.tonDe(hosCleOriginesReleve, r['origineCode'])))),
                 ],
               )),
         ]);
