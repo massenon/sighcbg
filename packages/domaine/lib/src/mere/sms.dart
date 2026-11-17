@@ -47,6 +47,59 @@ const List<String> smsVariablesPermises = ['{{clinique}}', '{{telephone}}', '{{d
 /// Le modèle du message d'essai (« Tester l'envoi ») : la même composition, les mêmes contrôles.
 const String smsModeleEssai = 'Message d’essai de la passerelle SMS de {{clinique}}. Merci de ne pas répondre.';
 
+/// UN FOURNISSEUR DE SMS que le relais sait piloter (ADR-0009, décision du 17/11/2026 : Vonage ET Twilio, à côté du pilote HTTP générique et du pilote
+/// d'essai). Le CHOIX est un réglage du relais (`RELAIS_SMS_PILOTE` de son `.env`) : le poste ne le règle pas, il le LIT (`GET /mere/sms/etat`) et dit
+/// quelles variables le relais attend pour ce fournisseur. Les identifiants eux-mêmes ne quittent jamais le `.env` du relais. [parametres] = les NOMS
+/// des variables (jamais des valeurs) ; la liste reflète `apps/web/config/relais.php`.
+class SmsFournisseur {
+  const SmsFournisseur({required this.cle, required this.libelle, required this.envoie, required this.parametres, required this.aide});
+
+  /// La valeur de `RELAIS_SMS_PILOTE`.
+  final String cle;
+  final String libelle;
+
+  /// Faux pour le pilote d'essai : aucun SMS ne part réellement.
+  final bool envoie;
+  final List<String> parametres;
+  final String aide;
+}
+
+/// Les fournisseurs reconnus par le relais, dans l'ordre où l'écran les présente.
+const List<SmsFournisseur> smsFournisseurs = [
+  SmsFournisseur(
+      cle: 'vonage',
+      libelle: 'Vonage',
+      envoie: true,
+      parametres: ['RELAIS_SMS_VONAGE_CLE', 'RELAIS_SMS_VONAGE_SECRET', 'RELAIS_SMS_EXPEDITEUR'],
+      aide: 'API SMS de Vonage : clé et secret d’API, expéditeur (numéro ou nom alphanumérique admis par le pays de destination).'),
+  SmsFournisseur(
+      cle: 'twilio',
+      libelle: 'Twilio',
+      envoie: true,
+      parametres: ['RELAIS_SMS_TWILIO_SID', 'RELAIS_SMS_TWILIO_TOKEN', 'RELAIS_SMS_EXPEDITEUR (ou RELAIS_SMS_TWILIO_SERVICE)'],
+      aide: 'API Messages de Twilio : identifiant de compte (SID) et jeton, puis un numéro expéditeur ou un service de messagerie.'),
+  SmsFournisseur(
+      cle: 'http',
+      libelle: 'HTTP générique',
+      envoie: true,
+      parametres: ['RELAIS_SMS_HTTP_URL', 'RELAIS_SMS_HTTP_CLE', 'RELAIS_SMS_EXPEDITEUR'],
+      aide: 'Pour un fournisseur dont l’API tient dans un simple POST JSON : adresse, clé, en-tête et noms des champs se règlent dans le fichier du relais (RELAIS_SMS_HTTP_*).'),
+  SmsFournisseur(
+      cle: 'journal',
+      libelle: 'Journal (essai, n’envoie rien)',
+      envoie: false,
+      parametres: [],
+      aide: 'Pilote d’essai : la file, le plafond et l’effacement s’éprouvent sans fournisseur ; aucun SMS ne part réellement.'),
+];
+
+/// Le fournisseur de clé [cle] (la valeur lue au relais), `null` s'il n'est pas reconnu.
+SmsFournisseur? smsFournisseurDe(String? cle) {
+  for (final f in smsFournisseurs) {
+    if (f.cle == cle) return f;
+  }
+  return null;
+}
+
 /// Un refus nommé : un code stable, un motif lisible, le geste qui corrige.
 class SmsRefus {
   const SmsRefus(this.code, this.motif, this.geste);

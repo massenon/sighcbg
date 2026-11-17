@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Envoyeur
 {
-    /** Le pilote du `.env` (`RELAIS_SMS_PILOTE`) ; un pilote lié au conteneur (tests) l'emporte. Un nom inconnu retombe sur le journal, qui n'envoie rien. */
+    /** Le pilote du `.env` (`RELAIS_SMS_PILOTE`) ; un pilote lié au conteneur (tests) l'emporte. Un nom inconnu est un échec nommé (`pilote_inconnu`) : retomber sur le journal marquerait « envoyé » un SMS jamais parti. */
     public static function pilote(): Pilote
     {
         if (app()->bound(Pilote::class)) {
@@ -20,8 +20,11 @@ class Envoyeur
         }
 
         return match ((string) config('relais.sms.pilote', 'journal')) {
+            'journal' => new PiloteJournal(),
             'http' => new PiloteHttp((array) config('relais.sms.http', [])),
-            default => new PiloteJournal(),
+            'twilio' => new PiloteTwilio((array) config('relais.sms.twilio', [])),
+            'vonage' => new PiloteVonage((array) config('relais.sms.vonage', [])),
+            default => new PiloteNonConfigure((string) config('relais.sms.pilote')),
         };
     }
 
@@ -30,7 +33,16 @@ class Envoyeur
     {
         $m = $maintenant ?? Format::maintenant();
         $pilote ??= self::pilote();
-        $bilan = ['envoyes' => 0, 'echecs' => 0, 'abandons' => 0, 'purges' => self::purger($m), 'plafond_atteint' => false];
+        $bilan = ['envoyes' => 0, 'echecs' => 0, 'abandons' => 0, 'purges' => self::purger($m), 'plafond_atteint' => false, 'configuration_manquante' => []];
+        // Un pilote mal configuré ne touche pas à la file : sinon chaque SMS brûlerait ses cinq tentatives et son texte serait effacé pour une faute de .env.
+        if ($pilote instanceof PiloteConfigurable && ($manque = $pilote->parametresManquants()) !== []) {
+            $bilan['configuration_manquante'] = $manque;
+            if (DB::table('sms_sortants')->where('statut', 'en_attente')->exists()) {
+                FileSms::journal('sms_pilote_non_configure', 'pilote='.$pilote->nom().' manque='.implode(',', $manque), $m);
+            }
+
+            return $bilan;
+        }
         $restant = FileSms::plafondJour() - FileSms::envoyesAujourdhui($m);
         if ($restant <= 0) {
             $bilan['plafond_atteint'] = DB::table('sms_sortants')->where('statut', 'en_attente')->exists();

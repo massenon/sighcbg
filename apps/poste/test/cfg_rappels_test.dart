@@ -32,6 +32,8 @@ void main() {
     }
     expect(find.text('le logiciel prépare, il n’envoie pas'), findsOneWidget);
     expect(find.textContaining('Prétendre l’envoi serait mentir sur ce qui se passe'), findsOneWidget);
+    expect(find.byKey(const Key('rappels:passerelle-sms')), findsOneWidget);
+    expect(find.textContaining('Vonage, Twilio, HTTP générique'), findsOneWidget);
     for (final o in ['Modèles de message', 'Rappels préparés', 'Variables']) {
       expect(find.text(o), findsWidgets, reason: o);
     }

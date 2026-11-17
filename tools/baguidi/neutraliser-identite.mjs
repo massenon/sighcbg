@@ -54,7 +54,7 @@ const TELS = ['95 74 69 56', '95 95 99 14', '97 09 34 99'];
 const IFU = '3201001996110';
 const RCCM = 'RB/PKO/17 A 4240';
 const ENREGISTREMENT = 'N° D’ENREGISTREMENT 0416/ONMB/ATL/2002';
-const EMAIL = 'cliniquebaguidi@yahoo.fr';
+const EMAIL = 'contact@cliniquebaguidi.com';
 const QUARTIER_CLINIQUE = 'Zongo II';
 // Le quartier de la clinique sœur, quand il est l'ADRESSE D'UN PATIENT (fixtures, vecteurs) : un quartier FICTIF de Parakou, inventé ici. L'initiale et le
 // rang alphabétique parmi les quartiers des jeux d'essai sont gardés (Santa < Tikpanou < Toucountouna), pour qu'un tri rejoue le même ordre des deux côtés.

@@ -113,4 +113,19 @@ void main() {
       expect(d.peut(r, gesteReglageSms), isFalse, reason: r);
     }
   });
+
+  test('les fournisseurs du relais : Vonage, Twilio, HTTP générique et journal ; chacun nomme ses variables, aucun identifiant n’est porté', () {
+    expect([for (final f in smsFournisseurs) f.cle], ['vonage', 'twilio', 'http', 'journal']);
+    expect(smsFournisseurDe('twilio')!.parametres, containsAll(['RELAIS_SMS_TWILIO_SID', 'RELAIS_SMS_TWILIO_TOKEN']));
+    expect(smsFournisseurDe('vonage')!.parametres, containsAll(['RELAIS_SMS_VONAGE_CLE', 'RELAIS_SMS_VONAGE_SECRET']));
+    expect(smsFournisseurDe('journal')!.envoie, isFalse);
+    expect(smsFournisseurDe('journal')!.parametres, isEmpty);
+    expect(smsFournisseurDe('inconnu'), isNull);
+    expect(smsFournisseurDe(null), isNull);
+    for (final f in smsFournisseurs) {
+      for (final p in f.parametres) {
+        expect(p, startsWith('RELAIS_SMS_'), reason: 'un NOM de variable, jamais une valeur');
+      }
+    }
+  });
 }

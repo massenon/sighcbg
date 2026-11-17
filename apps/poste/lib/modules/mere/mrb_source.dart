@@ -180,6 +180,9 @@ class MrbSms {
   int? get envoyesAujourdhui => relais?['envoyes_aujourdhui'] is num ? (relais!['envoyes_aujourdhui'] as num).toInt() : null;
   int? get enAttenteRelais => relais?['en_attente'] is num ? (relais!['en_attente'] as num).toInt() : null;
   String? get pilote => relais?['pilote'] as String?;
+
+  /// Les NOMS des variables du `.env` du relais encore vides pour son pilote (jamais des valeurs) ; vide si le relais ne les annonce pas.
+  List<String> get parametresManquants => relais?['parametres_manquants'] is List ? [for (final p in relais!['parametres_manquants'] as List) '$p'] : const [];
 }
 
 abstract class MrbSource {

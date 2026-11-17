@@ -26,13 +26,16 @@ String? modeleBoitierDuPoste(Magasin m, DateTime maintenant) {
 d.AdaptateurMecef adaptateurDuPoste(Magasin m, DateTime maintenant) =>
     d.adaptateurPourMode(modeMecefDuPoste(m, maintenant), modeleBoitier: modeleBoitierDuPoste(m, maintenant));
 
-/// L'IMPRIMANTE DE CAISSE en vigueur à [maintenant] (décision de la Direction de Baguidi du 16/11/2026, E3761) : les trois réglages de clinique (modèle,
-/// largeur du papier, interface), LUS en base. Aucun modèle n'est fourni pour Baguidi : modèle et interface restent « à renseigner » tant que la clinique ne
-/// les a pas réglés. Seule la largeur est appliquée (aperçu et PDF du ticket de caisse) ; aucun pilote n'est branché.
+/// L'IMPRIMANTE DE CAISSE en vigueur à [maintenant] (décision de la Direction de Baguidi du 16/11/2026, E3761) : les réglages de clinique (modèle,
+/// largeur du papier, interface), LUS en base. Depuis le 17/11/2026, le boîtier ELTRADE CC300 est AUSSI l'imprimante de caisse : tant que le réglage
+/// « intégrée au boîtier » reste coché (défaut), le modèle est celui du boîtier (`mecef.modeleBoitier`) et l'interface celle du boîtier. Décoché, aucun autre
+/// modèle n'est fourni pour Baguidi : modèle et interface restent « à renseigner » tant que la clinique ne les a pas réglés. Seule la largeur est appliquée (aperçu et PDF du ticket de caisse) ; aucun pilote n'est branché.
 d.ImprimanteCaisse imprimanteCaisseDuPoste(Magasin m, DateTime maintenant) {
   final service = serviceParametres(m, auteur: () => m.utilisateur, horloge: () => maintenant);
   final date = d.parametreDateIso(maintenant);
   return d.imprimanteCaisseEnVigueur(
+      integree: service.valeur(d.cleImprimanteIntegree, date) != false,
+      modeleBoitier: service.valeur(d.mecefCleModeleBoitier, date),
       modele: service.valeur(d.cleImprimanteModele, date),
       largeur: service.valeur(d.cleImprimanteLargeurPapier, date),
       interface: service.valeur(d.cleImprimanteInterface, date));

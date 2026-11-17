@@ -1262,8 +1262,18 @@ class _EtatConfig extends State<EcranMecefConfig> {
         listenable: mag.collection(parCollectionParametres),
         builder: (ctx, _) {
           final imp = imprimanteCaisseDuPoste(mag, c.aujourdhui);
+          // Les valeurs PROPRES de l'imprimante (celles qui comptent quand elle n'est pas le boîtier), lues telles que réglées : le formulaire ne recopie pas le
+          // modèle du boîtier dans le champ de l'imprimante.
+          final jourLu = parametreDateIso(c.aujourdhui);
+          String propre(String cle) => '${service.valeur(cle, jourLu) ?? ''}'.trim();
           _imprimante ??= ControleurFormulaire([
-            const ChampDef(nom: 'imprimanteModele', libelle: 'Modèle de l’imprimante', col: ColChamp.tiers, indicatif: 'Marque et référence'),
+            const ChampDef(
+                nom: 'imprimanteIntegree',
+                libelle: 'L’imprimante de caisse est le boîtier MECeF (une machine, deux fonctions)',
+                type: TypeChamp.case_,
+                col: ColChamp.plein,
+                aide: 'Coché : le modèle et l’interface sont ceux du boîtier, les deux champs ci-dessous ne servent pas. Décoché : une imprimante distincte, à décrire ci-dessous.'),
+            const ChampDef(nom: 'imprimanteModele', libelle: 'Modèle de l’imprimante (si elle n’est pas le boîtier)', col: ColChamp.tiers, indicatif: 'Marque et référence'),
             const ChampDef(
                 nom: 'imprimanteLargeur',
                 libelle: 'Largeur du papier (mm)',
@@ -1272,7 +1282,7 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 col: ColChamp.tiers,
                 aide: 'De $imprimanteLargeurMinMm à $imprimanteLargeurMaxMm mm.'),
             const ChampDef(nom: 'imprimanteInterface', libelle: 'Interface', col: ColChamp.tiers, indicatif: 'USB, série, réseau… (à renseigner)'),
-          ], {'imprimanteModele': imp.modele ?? '', 'imprimanteLargeur': '${imp.largeurMm}', 'imprimanteInterface': imp.interface ?? ''});
+          ], {'imprimanteIntegree': imp.integree, 'imprimanteModele': propre(cleImprimanteModele), 'imprimanteLargeur': '${imp.largeurMm}', 'imprimanteInterface': propre(cleImprimanteInterface)});
           return CarteSigh(
               key: const Key('mecef:imprimante'),
               titre: 'Imprimante de caisse',
@@ -1286,6 +1296,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
                   ])),
                 ]),
                 const SizedBox(height: 8),
+                if (imp.integree)
+                  NoteSigh(imp.mentionIntegree, key: const Key('mecef:imprimante-integree'), icone: LucideIcons.printer),
                 Wrap(spacing: 8, runSpacing: 4, children: [
                   if (imp.aRenseigner) const BadgeSigh('À valider : à renseigner par la clinique', ton: TonSigh.attention),
                   const BadgeSigh('Largeur 80 mm : valeur d’attente, à valider', ton: TonSigh.neutre),
@@ -1294,8 +1306,8 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 if (imp.largeurIgnoree)
                   NoteSigh('La largeur réglée (${imp.largeurReglee}) n’est pas lisible (de $imprimanteLargeurMinMm à $imprimanteLargeurMaxMm mm) : le ticket garde $imprimanteLargeurDefautMm mm.',
                       ton: TonSigh.attention, icone: LucideIcons.triangleAlert),
-                const NoteSigh(
-                    'Aucun modèle d’imprimante n’est fourni pour Baguidi. Ce réglage DÉCRIT l’appareil ; aucun pilote d’impression n’est branché : le ticket de caisse s’ouvre en aperçu et s’enregistre en PDF, à la largeur réglée.',
+                NoteSigh(
+                    '${imp.integree ? '' : 'Aucun autre modèle d’imprimante n’est fourni pour Baguidi. '}Ce réglage DÉCRIT l’appareil ; aucun pilote d’impression n’est branché : le ticket de caisse s’ouvre en aperçu et s’enregistre en PDF, à la largeur réglée.',
                     icone: LucideIcons.printer),
                 const SizedBox(height: 12),
                 if (fileul)
@@ -1321,10 +1333,12 @@ class _EtatConfig extends State<EcranMecefConfig> {
                               return;
                             }
                             final jour = parametreDateIso(c.aujourdhui);
+                            final integree = v['imprimanteIntegree'] == true;
                             final changements = <String, Object>{
-                              if ('${v['imprimanteModele'] ?? ''}'.trim() != (imp.modele ?? '')) cleImprimanteModele: '${v['imprimanteModele'] ?? ''}'.trim(),
+                              if (integree != imp.integree) cleImprimanteIntegree: integree,
+                              if ('${v['imprimanteModele'] ?? ''}'.trim() != propre(cleImprimanteModele)) cleImprimanteModele: '${v['imprimanteModele'] ?? ''}'.trim(),
                               if (largeur != imp.largeurMm || imp.largeurIgnoree) cleImprimanteLargeurPapier: largeur,
-                              if ('${v['imprimanteInterface'] ?? ''}'.trim() != (imp.interface ?? '')) cleImprimanteInterface: '${v['imprimanteInterface'] ?? ''}'.trim(),
+                              if ('${v['imprimanteInterface'] ?? ''}'.trim() != propre(cleImprimanteInterface)) cleImprimanteInterface: '${v['imprimanteInterface'] ?? ''}'.trim(),
                             };
                             for (final e in changements.entries) {
                               final r = service.regler(e.key, e.value, jour, motif: 'Réglé à « Configuration fiscale ».');
@@ -1384,6 +1398,10 @@ class _EtatConfig extends State<EcranMecefConfig> {
                 else
                   NoteSigh(
                       'Boîtier physique : ${modele ?? 'modèle non renseigné'}. L’interface, les commandes et le certificat du boîtier ne figurent dans aucun document du dépôt (liste de ce qu’il faut obtenir du fournisseur : docs/guides/MECEF-BOITIER-ELTRADE-CC300.md). Aucun numéro n’est fabriqué comme s’il était fiscal : tant que l’adaptateur du boîtier n’est pas branché, une vente reste en attente de certification.'),
+                if (actuel != 'emecef' && imprimanteCaisseDuPoste(mag, c.aujourdhui).integree)
+                  Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: NoteSigh(imprimanteCaisseDuPoste(mag, c.aujourdhui).mentionIntegree, key: const Key('mecef:boitier-imprimante'), icone: LucideIcons.printer)),
                 const SizedBox(height: 12),
                 _etatsDesModes(actuel, modele),
                 const SizedBox(height: 8),

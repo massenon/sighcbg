@@ -18,7 +18,7 @@
 // Le lot ORG2 a branché `securite.delaiVerrouPosteSecours` (`src/securite/verrou_secours.dart`, lu par le verrou de session d'un poste désigné de secours).
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
-import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
+import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, cleImprimanteIntegree, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
@@ -66,12 +66,23 @@ const List<DefinitionParametre> definitionsParametres = [
   // valider) ; la largeur est semée à 80 mm, le gabarit du ticket de la maquette, à valider. Ils DÉCRIVENT l'appareil, ils ne branchent aucun pilote d'impression :
   // seule la largeur est lue, par l'aperçu et le PDF du ticket de caisse (`src/mecef/imprimante_caisse.dart`).
   DefinitionParametre(
+    cle: cleImprimanteIntegree,
+    famille: 'mecef',
+    type: TypeParametre.booleen,
+    defaut: true,
+    libelle: 'Imprimante de caisse — intégrée au boîtier MECeF',
+    aide: 'Oui : le boîtier MECeF est AUSSI l\'imprimante de caisse (ticket 80 mm) — une machine, deux fonctions. Le modèle et l\'interface de l\'imprimante sont alors ceux du boîtier (réglage « Modèle du boîtier MECeF »), sans ressaisie. Non : la clinique renseigne une imprimante distincte ci-dessous.',
+    source: 'Décision de la Direction de Baguidi du 17/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §11) : le boîtier ELTRADE CC300 est à la fois le MECeF et l\'imprimante de caisse (ticket 80 mm) ; largeur du papier à valider',
+    branche: true,
+    appliquePar: 'Configuration fiscale (affiché) et ticket de caisse',
+  ),
+  DefinitionParametre(
     cle: cleImprimanteModele,
     famille: 'mecef',
     type: TypeParametre.texte,
     defaut: '',
     libelle: 'Imprimante de caisse — modèle',
-    aide: 'Le modèle de l\'imprimante du ticket de caisse. Aucun modèle n\'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l\'appareil, il ne branche aucun pilote d\'impression.',
+    aide: 'Le modèle de l\'imprimante du ticket de caisse, quand elle n\'est PAS le boîtier MECeF (réglage « intégrée au boîtier » décoché) ; sinon le modèle du boîtier fait foi. Aucun autre modèle n\'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l\'appareil, il ne branche aucun pilote d\'impression.',
     source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucun modèle fourni, valeur à renseigner, à valider',
     branche: true,
     appliquePar: 'Configuration fiscale (affiché)',

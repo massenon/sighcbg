@@ -37,6 +37,7 @@ return [
     // `relais:sms-envoyer` (cron `schedule:run`), puis EFFACE le numéro et le texte. Les identifiants du fournisseur ne vivent QUE dans le .env du relais.
     'sms' => [
         // `journal` (défaut) n'envoie rien : pilote de l'essai. `http` : pilote HTTP générique, entièrement réglé par les variables RELAIS_SMS_HTTP_*.
+        // `twilio` : API Messages de Twilio (RELAIS_SMS_TWILIO_*). `vonage` : API SMS de Vonage (RELAIS_SMS_VONAGE_*). Un nom inconnu est un échec NOMMÉ (`pilote_inconnu`), jamais un envoi simulé.
         'pilote' => env('RELAIS_SMS_PILOTE', 'journal'),
         // Nombre maximal de SMS envoyés par jour (jour civil d'Africa/Porto-Novo) ; un dépôt qui le dépasserait est refusé (429 plafond_atteint).
         'plafond_jour' => (int) env('RELAIS_SMS_PLAFOND_JOUR', 100),
@@ -59,6 +60,25 @@ return [
             'champ_numero' => env('RELAIS_SMS_HTTP_CHAMP_NUMERO', 'to'),
             'champ_texte' => env('RELAIS_SMS_HTTP_CHAMP_TEXTE', 'text'),
             'champ_expediteur' => env('RELAIS_SMS_HTTP_CHAMP_EXPEDITEUR', 'from'),
+            'delai_s' => (int) env('RELAIS_SMS_HTTP_DELAI_S', 10),
+        ],
+        // Pilote Twilio (API Messages 2010-04-01). Identifiants UNIQUEMENT dans le .env : jamais en base, jamais dans le dépôt. L'expéditeur est RELAIS_SMS_EXPEDITEUR
+        // (un numéro Twilio) ; à défaut, RELAIS_SMS_TWILIO_SERVICE (identifiant d'un service de messagerie). L'adresse de base ne change que pour un essai local.
+        'twilio' => [
+            'url_base' => env('RELAIS_SMS_TWILIO_URL_BASE', 'https://api.twilio.com/2010-04-01'),
+            'sid' => env('RELAIS_SMS_TWILIO_SID', ''),
+            'token' => env('RELAIS_SMS_TWILIO_TOKEN', ''),
+            'expediteur' => env('RELAIS_SMS_EXPEDITEUR', ''),
+            'service' => env('RELAIS_SMS_TWILIO_SERVICE', ''),
+            'delai_s' => (int) env('RELAIS_SMS_HTTP_DELAI_S', 10),
+        ],
+        // Pilote Vonage : API SMS (`/sms/json`, clé et secret d'API), PAS la Messages API — elle n'exige qu'une clé et un secret, sans application ni clé privée JWT,
+        // ce qui convient à un cPanel mutualisé. L'expéditeur (RELAIS_SMS_EXPEDITEUR) est un numéro ou un nom alphanumérique admis par le pays de destination.
+        'vonage' => [
+            'url' => env('RELAIS_SMS_VONAGE_URL', 'https://rest.nexmo.com/sms/json'),
+            'cle' => env('RELAIS_SMS_VONAGE_CLE', ''),
+            'secret' => env('RELAIS_SMS_VONAGE_SECRET', ''),
+            'expediteur' => env('RELAIS_SMS_EXPEDITEUR', ''),
             'delai_s' => (int) env('RELAIS_SMS_HTTP_DELAI_S', 10),
         ],
     ],
