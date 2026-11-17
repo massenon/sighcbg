@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -21,9 +22,10 @@ import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
 import 'package:sigh_poste/mere/client_mere.dart';
 import 'package:sigh_poste/modules/mere/mra_supervision.dart';
+import 'package:sigh_poste/modules/mere/mrd_reprise_poste.dart';
 import 'package:sigh_poste/modules/mere/mrb_source.dart';
 import 'package:sigh_poste/shell/contexte_ecran.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show Droit, DroitsGestes, smsStatutMotsInterdits;
+import 'package:sigh_domaine/sigh_domaine.dart' show Droit, DroitsGestes, colFichesAide, smsStatutMotsInterdits;
 
 import 'aide_polices.dart';
 import 'mere_b_test.dart' as b;
@@ -321,8 +323,70 @@ Magasin _jeuAvecAttente() {
   return m;
 }
 
+/// La reprise d'un poste (v31) : une source sans réseau, des postes sans nom de personne, un code FICTIF (jamais un vrai code d'appairage).
+class _SourceReprise implements SourceReprise {
+  @override
+  Future<List<Appareil>> appareils() async => [
+        Appareil(uuid: '3f7a91c0-5b2e-4d18-9a6c-0e41b7d2a5f3', etiquette: 'Caisse principale', role: 'fileul', etat: 'actif', dernierContact: _jour.subtract(const Duration(minutes: 3)), derniereSeq: 1238, deriveMs: 0),
+        Appareil(uuid: '8c20d4e6-71af-4b39-8e05-2a9f6c13b7d8', etiquette: 'Réception', role: 'fileul', etat: 'actif', dernierContact: _jour.subtract(const Duration(minutes: 9)), derniereSeq: 1236, deriveMs: 0),
+        Appareil(uuid: 'b5e1370a-92cd-4f60-a1b8-64d0e8f2c917', etiquette: 'Laboratoire (ancien)', role: 'fileul', etat: 'revoque', dernierContact: _jour.subtract(const Duration(days: 9)), derniereSeq: 1190, deriveMs: 0),
+        Appareil(uuid: 'd90c64b2-3e8a-47f1-b256-1c7a09e5d384', etiquette: 'Téléphone de garde', role: 'mobile', etat: 'actif', dernierContact: _jour.subtract(const Duration(minutes: 40)), derniereSeq: 1201, deriveMs: 0),
+      ];
+
+  @override
+  Future<CodeReprise> emettre({required String uuid, required String etiquette}) async =>
+      CodeReprise(code: 'K7M4Q9XP', expireMs: _jour.add(const Duration(minutes: 15)).millisecondsSinceEpoch, validiteSecondes: 900);
+}
+
+/// Deux fiches d'aide d'EXEMPLE (aucun contenu de la clinique : l'écran n'en livre aucun), écrites par un auteur de démonstration : l'une ordinaire, l'autre qui engage un professionnel.
+Magasin _jeuAvecFiches() {
+  final m = _jeu();
+  m.collection(colFichesAide).remplacerContenu([
+    {
+      'id': 'FAI-CAP-1',
+      'type': 'aide',
+      'statut': 'proposee',
+      'titre': 'Exemple : enregistrer un courrier entrant',
+      'motsCles': ['courrier entrant'],
+      'roles': <String>[],
+      'ecrans': <String>[],
+      'etapes': ['Étape un', 'Étape deux'],
+      'auteurId': 'U-DEMO-1',
+      'auteurNom': 'AGENT01 Démo',
+      'creeLe': '2026-11-16T08:00:00Z',
+    },
+    {
+      'id': 'FAI-CAP-2',
+      'type': 'aide',
+      'statut': 'proposee',
+      'titre': 'Exemple : fiche qui engage le bloc opératoire',
+      'motsCles': ['check-liste'],
+      'roles': <String>[],
+      'ecrans': <String>[],
+      'etapes': ['Étape à écrire par le professionnel'],
+      'domainePro': 'bloc',
+      'questionAttendue': 94,
+      'auteurId': 'U-DEMO-1',
+      'auteurNom': 'AGENT01 Démo',
+      'creeLe': '2026-11-16T09:00:00Z',
+    },
+  ]);
+  return m;
+}
+
+/// Les identifiants s'écrivent en `monospace` : sans police de ce nom, le moteur de test les dessine en blocs. On lui donne la police à chasse fixe du dépôt.
+bool _monoChargee = false;
+Future<void> _policeMono() async {
+  if (_monoChargee) return;
+  final mono = FontLoader('monospace');
+  mono.addFont(Future.value(ByteData.view(File('assets/polices/pdf/LiberationMono-Regular.ttf').readAsBytesSync().buffer)));
+  await mono.load();
+  _monoChargee = true;
+}
+
 void cas(String nom, double l, double h, Future<void> Function(WidgetTester) corps) => testWidgets(nom, skip: _sortie == null, (t) async {
       await chargerPolices();
+      await _policeMono();
       await _taille(t, l, h);
       await corps(t);
       await t.pumpWidget(const SizedBox());
@@ -695,6 +759,79 @@ void main() {
       'Répondre à': find.byKey(const Key('kit:champ:repondreA')),
       'Enregistrer la messagerie': _bouton('Enregistrer la messagerie'),
       'Envoyer un message de test': _bouton('Envoyer un message de test'),
+    });
+  });
+
+  cas('Mère : reprise d’un poste', 1560, 1100, (t) async {
+    sourceRepriseInjectee = _SourceReprise();
+    addTearDown(() => sourceRepriseInjectee = null);
+    await _posteMere(t, 'mere-reprise-poste');
+    await _png(t, 'admin-44-mere-reprise', {
+      'Identifiant d’appairage': _texte('Identifiant d’appairage'),
+      'Générer un code de reprise': _bouton('Générer un code de reprise'),
+      'Ce que fait la reprise': _texte('Ce que fait la reprise'),
+    });
+  });
+
+  cas('Mère : code de reprise affiché', 1560, 1000, (t) async {
+    sourceRepriseInjectee = _SourceReprise();
+    addTearDown(() => sourceRepriseInjectee = null);
+    await _posteMere(t, 'mere-reprise-poste');
+    await _toucher(t, find.byKey(const Key('rep:generer:3f7a91c0-5b2e-4d18-9a6c-0e41b7d2a5f3')));
+    await _png(t, 'admin-45-reprise-nom', {
+      'Nom du poste neuf': find.byKey(const Key('rep:etiquette')),
+      'Générer le code': find.byKey(const Key('rep:confirmer')),
+    });
+    await _toucher(t, find.byKey(const Key('rep:confirmer')));
+    await _pomper(t, 6);
+    await _png(t, 'admin-46-reprise-code', {
+      'Code': find.byKey(const Key('rep:code')),
+      'Validité': find.byKey(const Key('rep:validite')),
+      'Copier le code': find.byKey(const Key('rep:copier')),
+    });
+  });
+
+  cas('Import de la liasse fiscale', 1440, 1500, (t) async {
+    await _posteMere(t, 'm12-liasse-import', role: 'comptable');
+    await _png(t, 'admin-47-liasse-import', {
+      'Ce qui fait foi': _texte('Ce qui fait foi'),
+      'Fichier (JSON)': find.byKey(const Key('liasse:fichier')),
+      'Vérifier le fichier': find.byKey(const Key('liasse:verifier')),
+      'Archiver': find.byKey(const Key('liasse:archiver:doc-fiscal-liasse-2025-2026-04-30')),
+    });
+  });
+
+  cas('Import de la liasse : fichier vérifié', 1440, 1700, (t) async {
+    await _posteMere(t, 'm12-liasse-import', role: 'comptable');
+    await t.enterText(find.byKey(const Key('liasse:fichier')), 'tool/donnees/liasse_2025_demo.json');
+    await t.pump();
+    await _toucher(t, find.byKey(const Key('liasse:verifier')));
+    await _pomper(t, 4);
+    await _png(t, 'admin-48-liasse-verifiee', {
+      'Fichier accepté': find.byKey(const Key('liasse:resume')),
+      'Date de dépôt': find.byKey(const Key('liasse:date')),
+      'Source': find.byKey(const Key('liasse:source')),
+      'Importer ce document': find.byKey(const Key('liasse:importer')),
+    });
+  });
+
+  cas('Fiches d’aide de l’assistant', 1440, 1900, (t) async {
+    await _posteMere(t, 'cfg-fiches-aide', role: 'da', magasin: _jeuAvecFiches());
+    await _png(t, 'admin-49-fiches-aide', {
+      'Fiches attendues': find.byKey(const Key('aide:attendues')),
+      'Gabarit vide': find.byKey(const Key('aide:nouvelle')),
+      'Valider': find.byKey(const Key('aide:valider:FAI-CAP-1')),
+    });
+  });
+
+  cas('Fiches d’aide : validation d’une fiche qui engage un professionnel', 1440, 1900, (t) async {
+    await _posteMere(t, 'cfg-fiches-aide', role: 'da', magasin: _jeuAvecFiches());
+    await _toucher(t, find.byKey(const Key('aide:valider:FAI-CAP-2')));
+    await _voir(t, find.byKey(const Key('aide:valider-ok')));
+    await _png(t, 'admin-50-fiche-validation', {
+      'Validé par (professionnel)': find.byKey(const Key('aide:pro')),
+      'Date de sa validation': find.byKey(const Key('aide:pro-le')),
+      'Valider la fiche': find.byKey(const Key('aide:valider-ok')),
     });
   });
 

@@ -18,7 +18,7 @@
   </div>
   <div class="meta">
     <span>Clinique Baguidi « L’As du Cœur » · Parakou, Bénin</span>
-    <span>Édition du 17 novembre 2026</span>
+    <span>Édition du 18 novembre 2026</span>
   </div>
   <div class="pied"></div>
 </section>
@@ -165,12 +165,23 @@
 <p>L’installateur se construit sur un poste de développement Windows qui dispose de Flutter (Desktop Windows), de Visual Studio 2022 (C++) et d’Inno Setup 6.</p>
 <ol class="etapes">
   <li>Ouvrir une invite de commandes dans <code>apps\poste</code>.</li>
+  <li>Définir le <b>secret d’administration</b> dans la variable d’environnement <code>SIGH_ADMIN</code> : <b>16 caractères au moins</b>, jamais <code>admin-local</code>. Le script l’exige (encadré ci-dessous).</li>
   <li>Lancer <code>build_windows.bat</code>. Le script enchaîne neuf étapes et s’arrête à la première qui échoue, en la nommant.</li>
   <li>Récupérer <code>build\installer\SIGH_Poste_Setup_&lt;version&gt;.exe</code> et son fichier <code>.sha256</code>.</li>
 </ol>
 <pre>cd apps\poste
+set SIGH_ADMIN=&lt;secret-d-administration-de-16-caracteres-au-moins&gt;
 build_windows.bat</pre>
-<p class="non-verifie">Non vérifié sur un poste Windows réel dans le cadre de ce manuel</p>
+<div class="encadre attention" data-titre="Attention : le secret d’administration est obligatoire">
+  <ul>
+    <li>À la première étape, le script <b>s’arrête</b> en nommant <code>SIGH_ADMIN</code> si la variable est <b>absente</b>, si elle vaut <code>admin-local</code> (valeur de développement) ou si elle compte <b>moins de 16 caractères</b>. Aucun installateur n’est alors produit.</li>
+    <li>Le secret est transmis à la compilation (<code>--dart-define=SIGH_ADMIN</code>) et <b>n’est jamais affiché</b> ni écrit dans le dépôt. Il est compilé dans le programme : tous les postes installés avec cet installateur partagent le même secret, et c’est lui qu’emploient la mère et les écrans qui lui parlent (appairage, reprise d’un poste, supervision).</li>
+    <li>Éviter <code>&amp;</code>, <code>%</code>, <code>^</code> et les guillemets dans le secret : l’invite de commandes les interprète.</li>
+    <li>Le conserver <b>hors du dépôt</b>, dans le gestionnaire de secrets de la clinique, au même titre que la clé de clinique. Le perdre oblige à reconstruire l’installateur (donc à réinstaller les postes).</li>
+    <li>Un programme de production construit autrement (sans secret solide) <b>refuse de démarrer en mère</b> : refus <code>SECRET_ADMIN_FAIBLE</code> (2.2, chapitre 15). Le mode fileul n’est pas concerné.</li>
+  </ul>
+</div>
+<p class="non-verifie">Non vérifié sur un poste Windows réel : le script a été relu, non exécuté (pas de Windows ni d’Inno Setup dans l’environnement de rédaction)</p>
 
 <h2 id="installer-empreinte">1.3 Contrôler l’empreinte</h2>
 <ol class="etapes">
@@ -235,6 +246,9 @@ build_windows.bat</pre>
   <li>Cliquer sur <b>Activer la mère</b>.</li>
 </ol>
 <p>Le poste joint le relais pour réserver la place de mère : une seule mère par clinique. Le relais refuse une seconde activation en nommant la mère déjà déclarée.</p>
+<div class="encadre attention" data-titre="Attention : secret d’administration faible">
+  <p>Si le programme a été construit sans secret d’administration solide (1.2), l’activation échoue avec le message « Le service de synchronisation n’a pas pu démarrer : <code>SECRET_ADMIN_FAIBLE</code> … Le poste reste fileul ». La déclaration faite au relais est retirée. Rien n’est modifié : <b>reconstruire l’installateur avec <code>SIGH_ADMIN</code></b> (16 caractères au moins), le réinstaller, puis recommencer. Un redémarrage d’une mère déjà activée sur un programme faible affiche, au lieu de s’ouvrir, un écran « ne peut pas démarrer en mode mère » avec le même code.</p>
+</div>
 <div class="encadre info">
   <p>Relais injoignable : cliquer sur <b>Reporter l’activation</b>. L’étape passe à « reportée » et rien n’est diffusé tant que la mère n’est pas activée. Le bouton devient <b>Activer maintenant</b>.</p>
 </div>
@@ -272,7 +286,7 @@ build_windows.bat</pre>
 
 <!-- ============================================================ 3. FILEUL -->
 <h1 id="fileul"><span class="no">3.</span> Rattacher un poste fileul</h1>
-<p class="chapo">Un fileul se rattache par un code d’appairage émis sur la mère. Le code vaut 15 minutes et ne sert qu’une fois.</p>
+<p class="chapo">Un fileul se rattache par un code d’appairage émis sur la mère. Le code vaut 15 minutes (durée réglée par la mère) et ne sert qu’une fois.</p>
 
 <h2 id="fileul-code">3.1 Émettre le code sur la mère</h2>
 <ol class="etapes">
@@ -326,19 +340,39 @@ build_windows.bat</pre>
 <ol class="etapes">
   <li>Sur l’ancien poste, s’il fonctionne encore : cliquer sur <b>Exporter la base complète</b> (11.5). L’export d’un fileul embarque sa file de saisies non confirmées.</li>
   <li>Sur le poste neuf : installer le logiciel (chapitre 1), puis <b>Importer dans un magasin neuf</b> et <b>Programmer la mise en service</b> (11.6). La file est reprise au démarrage suivant.</li>
-  <li>Sur la mère : émettre un <b>code de reprise</b>. Aucun écran ne l’émet dans cette édition : c’est un appel au service local de la mère, avec son secret d’administration.
+  <li>Sur la mère : ouvrir <span class="ch">Poste mère ➔ Exploitation de la synchronisation ➔ Reprise d’un poste</span> (repère 1 : la colonne <b>Identifiant d’appairage</b> dit quel poste on reprend).</li>
+  <li>En face de l’ancien poste, cliquer sur <b>Générer un code de reprise</b> (repère 2). La fenêtre propose pour le poste neuf le nom de l’ancien : le garder ou le corriger (<b>Nom du poste neuf</b>), puis cliquer sur <b>Générer le code</b>.</li>
+  <li>Lire le code dans la fenêtre <b>Code de reprise</b> et le communiquer à la personne qui installe le poste neuf. Il ne s’affiche <b>qu’une fois</b> : <b>Copier le code</b> avant de cliquer sur <b>Fermer</b>.</li>
+  <li>Sur le poste neuf : choisir <b>Rejoindre une clinique existante</b> et saisir ce code dans le champ du code d’appairage (3.2) : c’est la mère qui sait que ce code désigne une reprise.</li>
+</ol>
+<figure class="capture" data-capture="admin-44-mere-reprise" data-recadrage="0,130,1950,1245" data-cibles='[{"c":"Identifiant d’appairage","rect":[300,600,300,26],"de":"haut","long":60},{"c":"Générer un code de reprise","de":"gauche","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’écran <b>Reprise d’un poste</b> (console de la mère, source simulée) : les fileuls appairés, leur identifiant d’appairage et la commande par ligne.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Identifiant d’appairage</b> : l’identifiant de l’ancien poste, sélectionnable. Les téléphones et la mère n’y figurent pas : ils ne se « reprennent » pas.</li>
+  <li><span class="num-rouge">2</span><b>Générer un code de reprise</b> : une commande par ligne. Un poste <b>révoqué</b> reste listé et reprenable (un poste perdu et révoqué par prudence garde ses plages jusqu’à ce qu’un autre les reprenne).</li>
+</ul>
+<figure class="capture" data-capture="admin-45-reprise-nom" data-recadrage="530,40,890,440" data-cibles='[{"c":"Nom du poste neuf","de":"gauche","long":60},{"c":"Générer le code","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>La fenêtre de la reprise : le nom du poste neuf, puis <b>Générer le code</b>.</figcaption>
+</figure>
+<figure class="capture" data-capture="admin-46-reprise-code" data-recadrage="530,40,890,420" data-cibles='[{"c":"Code","de":"gauche","long":60},{"c":"Validité","de":"gauche","long":60},{"c":"Copier le code","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Le code de reprise, affiché une seule fois (code fictif de la capture) avec sa durée de validité.</figcaption>
+</figure>
+<ul>
+  <li><b>La durée de validité est celle que la mère annonce</b> (15 minutes par défaut pour la mère du poste) : l’écran n’en écrit aucune. Si la mère n’en annonce pas, il le dit (« non communiquée »).</li>
+  <li><b>Le droit</b> est le geste réservé <code>reprise_poste_emettre</code> (administrateur système et DAF d’origine, réglable en fiche de rôle, 5.7). Sans lui, la commande est <b>absente</b> et l’écran dit pourquoi.</li>
+  <li><b>Le code n’est jamais journalisé</b> : le journal d’audit reçoit « Code de reprise émis », le poste repris et l’échéance, jamais le code.</li>
+  <li><b>Refus nommés</b>, chacun avec son motif et le geste qui le corrige : <code>appareil_inconnu</code> (poste inconnu de la mère ou qui n’est pas un fileul), <code>deja_repris</code> (un poste ne se reprend <b>qu’une fois</b> ; reprendre celui qui l’a remplacé), <code>code_expire</code>, <code>code_utilise</code>, <code>code_inconnu</code>, <code>admin_requis</code> (secret d’administration non reconnu) et <code>acces_refuse</code> (rôle sans le geste). Un refus que l’écran ne connaît pas garde le motif de la mère.</li>
+  <li><b>Sur le poste neuf</b>, après l’appairage, l’écran affiche ce que la mère a rapporté : « Reprise d’identité : ce poste remplace le poste … » avec le nombre de plages et de baux passés, et la révocation de l’ancien.</li>
+  <li>Sans code de reprise, les saisies en file du poste neuf sont refusées en nommant la plage (<code>numero_hors_plage</code>).</li>
+</ul>
+<div class="encadre info" data-titre="Secours : l’appel direct à la mère">
+  <p>L’appel au service local de la mère, avec son secret d’administration, reste possible si l’écran est indisponible. <b>Il ne passe par aucune des gardes de l’écran</b> : pas de contrôle du geste réservé, pas de ligne au journal d’audit du poste. La mère refuse néanmoins <code>deja_repris</code> à l’émission.</p>
 <pre>curl.exe -X POST http://&lt;adresse-de-la-mère&gt;:9000/admin/code ^
   -H "x-admin: &lt;secret d’administration&gt;" -H "content-type: application/json" ^
   -d "{\"etiquette\":\"Caisse principale\",\"reprise\":\"&lt;identifiant de l’ancien poste&gt;\"}"</pre>
-La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’une fois.</li>
-  <li>Sur le poste neuf : choisir <b>Rejoindre une clinique existante</b> et saisir ce code (3.2).</li>
-</ol>
-<ul>
-  <li>L’ancien poste doit exister et être un <b>fileul</b> : sinon la mère répond <code>appareil_inconnu</code>.</li>
-  <li>Sans code de reprise, les saisies en file du poste neuf sont refusées en nommant la plage (<code>numero_hors_plage</code>).</li>
-  <li>Aucun écran n’affiche encore l’identifiant (uuid) de l’ancien poste : le demander au prestataire.</li>
-</ul>
-<p class="non-verifie">Non vérifié sur deux postes Windows réels : l’enchaînement est prouvé par le banc de synchronisation (scénario BASEPORT1, mère Node et mère Dart)</p>
+</div>
+<p class="non-verifie">Non vérifié sur deux postes Windows réels : l’enchaînement est prouvé par le banc de synchronisation (scénario BASEPORT1, mère Node et mère Dart) et par les tests de l’écran. Les écrans « Appareils et appairage » et « Clé de clinique » écrivent encore « 15 minutes » en dur pour le code d’appairage ordinaire et le code mobile</p>
 
 <!-- ============================================================ 4. TÉLÉPHONE -->
 <h1 id="telephone"><span class="no">4.</span> Appairer un téléphone</h1>
@@ -396,6 +430,9 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
   <li><span class="num-rouge">2</span><b>Mot de passe</b> : 8 caractères au minimum, majuscule, minuscule, chiffre et caractère spécial.</li>
   <li><span class="num-rouge">3</span><b>Changement obligatoire à la première connexion</b>.</li>
 </ul>
+<div class="encadre info" data-titre="Deux politiques de mot de passe">
+  <p><b>Agents du poste : 8 caractères au minimum</b> (ci-dessus). <b>Compte superadmin du relais web : 12 caractères au minimum</b>, parce que le relais est exposé à Internet (14.3). Le minimum du relais se règle par la variable <code>RELAIS_MDP_SUPERADMIN_MIN</code> du <code>.env</code> (12 par défaut) et vaut pour la commande <code>relais:superadmin</code> comme pour le changement de mot de passe au panneau. Les deux politiques ne se confondent pas.</p>
+</div>
 <div class="encadre info">
   <p>Le mot de passe n’est conservé que haché (Argon2id). Il n’apparaît pas à la modification : <b>Réinitialiser le mot de passe</b>, dans la fiche du compte, est un geste distinct, journalisé.</p>
 </div>
@@ -477,7 +514,7 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
 <p>Aucune décision de droit n’est écrite sur un nom de rôle dans le code. Chaque décision passe par la matrice ou par un geste réservé. Un contrôle automatique, à chaque construction, refuse tout nouveau nom de rôle écrit dans le code.</p>
 <ul>
   <li>Les anciennes listes de rôles sont devenues des <b>gestes transverses</b> (module « * », libellé « Geste transverse ») : <code>systeme_administrer</code> (ruban <b>Système</b> et groupe <b>Poste mère</b>), <code>conflits_trancher</code>, <code>sync_valider_flux</code>, les treize gestes <code>alertes_*</code> du centre de notifications (<code>alertes_comptable</code>, <code>alertes_direction</code>, <code>alertes_laboratoire</code>, <code>alertes_creances</code>…), et les gestes de validation des référentiels <code>valider_ref_*</code>.</li>
-  <li>Les gestes livrés en dernier : <code>imprimer_tableau</code>, <code>export_regler_limite</code>, <code>reglage_encaissement_sans_prix</code>, <code>reglage_sms</code>, <code>fiscal_confirmer</code>, <code>achats_valider</code>, <code>rh_regler</code>, puis <code>numerotation_modifier</code>, <code>cloture_inventaire</code>, <code>facture_tiers_emettre</code>, <code>rh_confirmer_valeur</code>, <code>tarif_proposer_achat</code>, les trois gestes du plan de travail annuel, <code>rh_planning_individuel</code> et les trois gestes de la mise à jour du logiciel (<code>base_exporter</code>, <code>base_importer</code>, <code>maj_lever_blocage</code>) — voir 5.10.</li>
+  <li>Les gestes livrés en dernier : <code>imprimer_tableau</code>, <code>export_regler_limite</code>, <code>reglage_encaissement_sans_prix</code>, <code>reglage_sms</code>, <code>fiscal_confirmer</code>, <code>achats_valider</code>, <code>rh_regler</code>, puis <code>numerotation_modifier</code>, <code>cloture_inventaire</code>, <code>facture_tiers_emettre</code>, <code>rh_confirmer_valeur</code>, <code>tarif_proposer_achat</code>, les trois gestes du plan de travail annuel, <code>rh_planning_individuel</code> les trois gestes de la mise à jour du logiciel (<code>base_exporter</code>, <code>base_importer</code>, <code>maj_lever_blocage</code>), puis <code>reprise_poste_emettre</code>, <code>documents_fiscaux_importer</code> et <code>fiches_aide_valider</code> — voir 5.10.</li>
   <li>Leur origine reproduit les listes d’avant : <b>rien ne change à l’écran sans décision</b>. Une alerte n’est plus routée vers une liste figée : elle va aux rôles qui détiennent le geste dans la matrice en force.</li>
 </ul>
 <div class="encadre observer">
@@ -520,6 +557,9 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
     <tr><td><code>rh_planning_individuel</code></td><td>Poser le régime individuel d’un agent (dérogation, remplacement, retour à la catégorie) à l’onglet « Planning individuel » (6.7). Aucun autre droit RH, aucune lecture de rémunération.</td><td>Surveillant, DAF, administrateur système</td></tr>
     <tr><td><code>rubriques_chirurgicales</code></td><td>Écrire les rubriques chirurgicales du dossier de consultation. Tous les rôles qui lisent le dossier les lisent. La fonction « chirurgien » de l’agent les ouvre aussi.</td><td>Chirurgien</td></tr>
     <tr><td><code>base_exporter</code>, <code>base_importer</code>, <code>maj_lever_blocage</code></td><td>Exporter la base complète et préparer une mise à jour ; importer un export ; lever le blocage d’une mise à jour en cas de force majeure (11.5 à 11.7).</td><td>Administrateur système, DAF</td></tr>
+    <tr><td><code>reprise_poste_emettre</code></td><td>Émettre un code de reprise d’identité pour remplacer un poste fileul, à l’écran « Reprise d’un poste » (3.4). Plus lourd qu’un appairage : il engage les plages de numéros et les baux d’un poste et révoque l’ancien. <code>systeme_administrer</code> n’a pas été réutilisé, pour pouvoir retirer la reprise sans retirer l’administration.</td><td>Administrateur système, DAF</td></tr>
+    <tr><td><code>documents_fiscaux_importer</code></td><td>Importer ou archiver la liasse fiscale déposée et le classeur de baseline, à l’écran « Import de la liasse fiscale » (9.10). L’écran est dans la comptabilité : le comptable n’a pas la configuration.</td><td>Comptable, DAF</td></tr>
+    <tr><td><code>fiches_aide_valider</code></td><td>Valider une fiche d’aide ou de définition de l’assistant (5.13). Distinct du droit de rédiger, qui est celui d’écrire l’écran. Jamais par l’auteur de la fiche.</td><td>Direction, DAF</td></tr>
   </tbody>
 </table>
 <div class="encadre bonne">
@@ -567,11 +607,54 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
 <ul>
   <li>Les fiches vivent dans la collection <code>fichesAide</code> : <code>type</code> (aide ou definition), <code>statut</code> (validee ou proposée), <code>motsCles</code>, <code>etapes</code> (aide) ou <code>definition</code>, <code>ecrans</code>, <code>roles</code> (facultatif), <code>validePar</code>, <code>valideLe</code>.</li>
   <li>Une fiche <b>proposée</b> n’est jamais citée, et l’assistant le dit. Une fiche réservée à des rôles ne se montre qu’à eux. Une fiche validée est citée avec son validateur.</li>
-  <li><b>Aucun contenu n’est livré.</b> La Direction écrit et valide les fiches ; pour un geste clinique, le professionnel nommé les valide. Huit questions attendent : aucune fiche (Q4, Q29, Q58, Q64, Q68, Q80, Q84, Q99) ; la Q94 attend la validation de la check-list par le professionnel nommé.</li>
+  <li><b>Aucun contenu n’est livré.</b> La Direction écrit et valide les fiches ; pour un geste clinique, le professionnel nommé les valide. <b>Neuf fiches attendent</b> : sept procédures (Q4, Q29, Q58, Q64, Q68, Q80, Q84), la check-liste du bloc (Q94, validation par le professionnel nommé) et la définition d’un avoir (Q99). L’écran de rédaction (5.13) liste ces neuf questions et calcule l’état de chacune.</li>
 </ul>
-<div class="encadre attention" data-titre="Attention : limites de cette édition">
-  <p>Aucun écran ne permet encore d’écrire ou de valider une fiche d’aide. La collection <code>fichesAide</code> <b>n’est pas diffusée entre les postes</b> (aucune famille de synchronisation) : une fiche posée sur un poste ne se voit pas sur les autres. Les conversations de l’assistant sont propres au poste et à l’agent, chiffrées, jamais synchronisées ; elles sont purgées après <code>assistant.retentionJours</code> (30 jours, de 1 à 90). La plage de dates par défaut se règle par <code>assistant.horizonQuestionJours</code> (30 jours).</p>
+<div class="encadre attention" data-titre="Attention : conversations et réglages de l’assistant">
+  <p>L’écran « Fiches d’aide de l’assistant » existe (5.13) ; la collection <code>fichesAide</code> se diffuse entre les postes (5.13) mais <b>jamais vers un téléphone</b>. Le jeu livré ne porte aucune fiche : elle naît à l’usage. Les conversations de l’assistant sont propres au poste et à l’agent, chiffrées, jamais synchronisées ; elles sont purgées après <code>assistant.retentionJours</code> (30 jours, de 1 à 90). La plage de dates par défaut se règle par <code>assistant.horizonQuestionJours</code> (30 jours).</p>
 </div>
+
+<h2 id="comptes-fiches">5.13 Écrire et valider les fiches d’aide de l’assistant</h2>
+<p>L’assistant ne répond jamais de mémoire : il cite une fiche <b>écrite et validée</b>, avec le nom du validateur et la date, sinon il dit qu’aucune fiche n’est validée. L’écran qui les tient s’ouvre par <span class="ch">Système ➔ Configuration Clinique ➔ Fiches d’aide de l’assistant</span>. Il ne livre <b>aucun contenu</b> : il porte un gabarit vide, la liste des fiches attendues et les gestes.</p>
+<figure class="capture" data-capture="admin-49-fiches-aide" data-recadrage="0,400,1800,1560" data-cibles='[{"c":"Fiches attendues","de":"droite","long":120},{"c":"Gabarit vide","de":"droite","long":120},{"c":"Valider","de":"gauche","long":120}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’écran des fiches d’aide, sous le rôle DAF. Les deux fiches du bas sont des exemples de la capture, écrits par un auteur de démonstration.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Fiches attendues</b> : les neuf questions du document des 100 questions qui attendent une fiche. L’état de chacune est <b>calculé</b> : « Pas encore écrite », « Écrite, en attente de validation » ou « Validée ».</li>
+  <li><span class="num-rouge">2</span><b>Nouvelle fiche (gabarit vide)</b> : ouvre le formulaire (Intention, Titre, Mots-clés, Pas à pas ou Définition, Rôles autorisés, Écrans cités, <b>Engage un professionnel ?</b>, question attendue). La commande <b>Rédiger</b> d’une ligne attendue l’ouvre déjà reliée à sa question.</li>
+  <li><span class="num-rouge">3</span><b>Valider</b> : réservé au détenteur du geste <code>fiches_aide_valider</code>.</li>
+</ul>
+<h3>Rédiger</h3>
+<ol class="etapes">
+  <li>Cliquer sur <b>Nouvelle fiche (gabarit vide)</b> ou sur <b>Rédiger</b> en face d’une question attendue.</li>
+  <li>Choisir l’intention : <b>Aide — comment faire</b> (une étape par ligne) ou <b>Définition — c’est quoi</b>. Écrire les <b>Mots-clés</b> (une expression par ligne : ce que l’agent écrirait) : sans mot-clé, l’assistant ne reconnaîtrait jamais la fiche.</li>
+  <li>Les <b>Rôles autorisés</b> viennent de la matrice (rôles non archivés) ; aucun rôle choisi = la fiche est pour tous.</li>
+  <li>Cliquer sur <b>Enregistrer (proposée)</b>. La fiche naît <b>proposée</b>, avec son auteur ; elle n’est pas citée.</li>
+</ol>
+<p>Le droit de rédiger est le droit d’<b>écrire</b> l’écran (matrice, 5.6). <b>Modifier</b> ne s’offre que tant que la fiche est proposée ; une fiche validée ne se réécrit pas : <b>Réviser</b> crée une fiche nouvelle qui la remplace. L’ancienne reste citée jusqu’à la validation de la nouvelle, puis elle est archivée. <b>Archiver</b> exige un motif ; rien n’est supprimé (RG-14).</p>
+<h3>Valider</h3>
+<ol class="etapes">
+  <li>En face d’une fiche proposée, cliquer sur <b>Valider</b> (repère 3), relire la fiche telle que l’assistant la citera.</li>
+  <li>Cliquer sur <b>Valider la fiche</b> : le nom du validateur, son compte et la date du jour (non saisie) sont portés sur la fiche.</li>
+</ol>
+<ul>
+  <li><b>L’auteur ne valide pas sa propre fiche</b> (comparaison des comptes) ; une fiche sans auteur connu ne se valide pas.</li>
+  <li>Le geste <code>fiches_aide_valider</code> est celui de la Direction et de la DAF d’origine, réglable en fiche de rôle (5.7). Sans lui, la commande est <b>absente</b> et l’écran dit « Vous pouvez rédiger, pas valider ».</li>
+  <li>L’assistant ne cite qu’une fiche <b>citable</b> : validée, avec validateur nommé et date. Une fiche marquée validée sans validateur (saisie directe en base) n’est pas citée, et l’écran l’affiche « Validée sans validateur : non citée ».</li>
+</ul>
+<figure class="capture" data-capture="admin-50-fiche-validation" data-recadrage="0,1590,1800,400" data-cibles='[{"c":"Validé par (professionnel)","de":"haut","long":60},{"c":"Date de sa validation","de":"haut","long":60},{"c":"Valider la fiche","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Une fiche qui <b>engage un professionnel</b> (domaine « Bloc opératoire ») : nom du professionnel et date de sa validation exigés.</figcaption>
+</figure>
+<div class="encadre attention" data-titre="Attention : la check-liste du bloc engage un professionnel">
+  <p>Une fiche qui porte le domaine <b>Bloc opératoire</b> (la check-liste, Q94) ne se valide qu’avec <b>le geste réservé de ce professionnel</b> (<code>valider_ref_bloc</code>, chirurgien et anesthésiste d’origine) <b>en plus</b> de <code>fiches_aide_valider</code>, un champ <b>Validé par (professionnel)</b> non vide et une <b>date de sa validation</b> réelle, au format AAAA-MM-JJ, non future. Sans cela, la Direction ne peut pas valider à la place du chirurgien. La citation porte alors « Relue par le professionnel : … ».</p>
+</div>
+<h3>Postes rattachés et synchronisation</h3>
+<ul>
+  <li>La collection <code>fichesAide</code> est de la famille <b>A</b> (fiches descriptives, champ à champ) : un <b>fileul rédige et modifie</b> les fiches non validées, elles rejoignent la mère. Les identifiants portent l’étiquette du poste : deux postes hors ligne ne forment jamais la même fiche.</li>
+  <li>La <b>validation ne s’écrit que sur la mère</b> : la commande « Valider » est absente d’un poste rattaché, et la mère refuse sinon (<code>validation_reservee_mere</code>, <code>fiche_validee</code>). Une mère coupée suspend la validation, pas la rédaction.</li>
+  <li>Les fiches <b>ne vont jamais vers un téléphone</b>.</li>
+  <li>Refus nommés du domaine, entre autres : <code>ROLE_INCONNU</code> (rôle absent de la matrice), <code>AUTEUR_NE_VALIDE_PAS</code>, <code>PROFESSIONNEL_REQUIS</code>, <code>PROFESSIONNEL_ABSENT</code>, <code>DATE_PROFESSIONNEL_*</code>.</li>
+</ul>
+<p class="non-verifie">Non fait : le dépôt d’une demande de validation par un fileul vers la mère. Un rôle créé en exploitation n’a pas l’écran tant qu’une surcharge ne le lui ouvre (5.6)</p>
 
 <!-- ============================================================ 6. PARAMÈTRES -->
 <h1 id="parametres"><span class="no">6.</span> Paramètres de clinique</h1>
@@ -1105,16 +1188,38 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
   <p>L’interface du boîtier ELTRADE CC300 et le dossier e-MECeF de la DGI ne figurent dans aucun document remis : <b>aucun adaptateur réel n’est branché</b>. Sans appareil, la pièce reste <b>en attente de certification</b> avec <code>MECEF_NON_CONFIGURE</code>, et aucun numéro n’est fabriqué. Le chemin « certifiée » n’a été éprouvé qu’avec un appareil de test : les compteurs et le code MECeF d’une pièce certifiée sont dérivés de son numéro, pas ceux d’une réponse réelle. Une demande d’émission d’un fileul est refusée <code>RELEVE_VIDE</code> si ses factures patients ne sont pas encore parvenues à la mère. Une pièce créée localement par un fileul avant cette édition reste locale.</p>
 </div>
 
-<h2 id="mecef-liasse">9.10 Documents fiscaux importés en base : la liasse 2025</h2>
-<p>La liasse déposée en 2025 et les chiffres de référence (classeur 2025) sont des <b>données déposées</b>, pas du code. Ils vivent dans la collection <code>documentsFiscaux</code> (famille R : la mère écrit, les fileuls reçoivent). Les écrans de la comptabilité les lisent comme toute donnée.</p>
-<ul>
-  <li><b>Une fiche par dépôt</b> : <code>genre</code> (liasse ou classeur), <code>exercice</code>, <code>dateEffet</code> (la date de dépôt), <code>source</code>, <code>importeLe</code>, <code>importePar</code> (RG-12) et le <code>contenu</code> tel que déposé.</li>
-  <li>La fiche <b>la plus récente fait foi</b>. Un dépôt rectifié est une fiche nouvelle : l’ancienne n’est pas écrasée.</li>
-  <li><b>Sans liasse importée, rien n’est inventé</b> : la structure est vide, l’exercice N vaut 0 et l’écran dit qu’aucune liasse n’est importée en base.</li>
-  <li>Le jeu livré porte la liasse 2025 (fichier <code>documentsFiscaux.json</code>). Les documents d’import sont dans <code>apps/poste/tool/donnees/*_demo.json</code>, en une seule copie.</li>
+<h2 id="mecef-liasse">9.10 Importer la liasse fiscale et le classeur de baseline</h2>
+<p>La liasse déposée à la DGI et les chiffres de référence (classeur) sont des <b>données déposées</b>, pas du code. Ils vivent dans la collection <code>documentsFiscaux</code> (famille R : la mère écrit, les fileuls reçoivent) et se posent par un <b>import daté</b> à l’écran <span class="ch">Financier ➔ Comptabilité SYSCOHADA ➔ Import de la liasse fiscale</span>. L’écran est dans la comptabilité, parce que ce sont les états financiers, le compte de résultat, le tableau des flux et la baseline qui les lisent, et que le comptable n’a pas la configuration.</p>
+<figure class="capture" data-capture="admin-47-liasse-import" data-recadrage="0,370,1800,1060" data-cibles='[{"c":"Ce qui fait foi","de":"droite","long":100},{"c":"Fichier (JSON)","de":"droite","long":100},{"c":"Vérifier le fichier","de":"droite","long":100},{"c":"Archiver","de":"gauche","long":100}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>L’écran d’import, sous le rôle Comptable, sur la mère. Les documents en force sont ceux de démonstration du jeu livré.</figcaption>
+</figure>
+<ul class="legende-fleches">
+  <li><span class="num-rouge">1</span><b>Ce qui fait foi</b> : la version en force pour la liasse et pour le classeur, avec sa source, son importateur et la mention de démonstration tant qu’elle s’applique. Sans document, l’écran dit « Aucune liasse déposée n’est importée » : jamais un zéro.</li>
+  <li><span class="num-rouge">2</span><b>Fichier (JSON)</b> : le chemin du document, ou <b>Parcourir</b>.</li>
+  <li><span class="num-rouge">3</span><b>Vérifier le fichier (sans rien écrire)</b>.</li>
+  <li><span class="num-rouge">4</span><b>Archiver</b> une version.</li>
 </ul>
-<div class="encadre attention" data-titre="Attention : pas d’écran d’import">
-  <p>Aucun écran ne permet encore à l’administrateur d’importer une liasse : un nouveau dépôt s’ajoute par le jeu livré ou par le prestataire. Aucune action n’est requise tant que la liasse 2025 livrée suffit.</p>
+<h3>Importer un document</h3>
+<ol class="etapes">
+  <li>Choisir le fichier, puis cliquer sur <b>Vérifier le fichier (sans rien écrire)</b>. Le résultat dit le genre (liasse ou classeur), l’exercice et le nombre de lignes par formulaire.</li>
+  <li>Contrôler la <b>Date de dépôt (AAAA-MM-JJ)</b> et la <b>Source (d’où vient le document)</b> proposées par le document ; corriger la source si besoin. La date ne peut pas contredire celle que la liasse porte.</li>
+  <li>Cliquer sur <b>Importer ce document</b>. L’auteur de l’import est le compte connecté, écrit au journal.</li>
+</ol>
+<figure class="capture" data-capture="admin-48-liasse-verifiee" data-recadrage="0,900,1800,360" data-cibles='[{"c":"Fichier accepté","de":"haut","long":50},{"c":"Date de dépôt","de":"bas","long":50},{"c":"Importer ce document","de":"bas","long":50}]'>
+<figcaption><span class="tag reel">CAPTURE RÉELLE</span>Un fichier vérifié : résumé, date de dépôt et source proposées, puis <b>Importer ce document</b>.</figcaption>
+</figure>
+<ul>
+  <li><b>Le schéma est strict</b> : exactement celui des documents d’import de démonstration (<code>apps/poste/tool/donnees/liasse_2025_demo.json</code> et <code>classeur_2025_demo.json</code>). Le genre se déduit de la forme (racine <code>DEPOT</code> = liasse, <code>annee</code> = classeur). Aucune clé inconnue n’est tolérée, les types sont stricts, les références uniques, l’IFU compte 13 chiffres.</li>
+  <li><b>La liasse n’est pas recalculée</b> : le document déposé porte ses propres écarts internes, les refuser reviendrait à contester ce que la clinique a déposé. Un <b>classeur</b>, lui, doit se recouper (douze mois, postes, résultat, contrôle) : sinon il est refusé.</li>
+  <li><b>Refus nommés, avec l’endroit fautif</b> : <code>FICHIER_VIDE</code>, <code>JSON_ILLISIBLE</code>, <code>GENRE_INDETERMINE</code>, <code>CLE_MANQUANTE</code>, <code>CLE_INCONNUE</code>, <code>TYPE_INVALIDE</code>, <code>REFERENCE_EN_DOUBLE</code>, <code>IFU_INVALIDE</code>, <code>DATE_DEPOT_*</code>, <code>SOURCE_ABSENTE</code>, <code>TOTAL_*_INCOHERENT</code>, <code>GESTE_RESERVE</code>, <code>REGLE_SUR_LA_MERE</code>… Le message cite le chemin de la valeur, par exemple <code>BILAN_ACTIF[2].brut</code>. « Vérifier » n’écrit rien.</li>
+  <li><b>Des versions, jamais un écrasement</b> : un import <b>ajoute</b> une fiche (genre, exercice, date de dépôt, source, instant d’import, auteur). La plus récente <b>fait foi</b> (« Fait foi », « Antérieure », « Archivée »). Un dépôt rectifié le même jour est une version de plus.</li>
+  <li><b>Archiver</b> une version exige un <b>motif</b> ; la fiche reste lisible, la précédente reprend si elle était la plus récente (RG-14).</li>
+  <li><b>Le droit</b> est le geste réservé <code>documents_fiscaux_importer</code> (comptable et DAF d’origine, réglable en fiche de rôle). Sans lui l’écran est en lecture seule et les commandes d’import et d’archivage sont absentes.</li>
+  <li><b>Sur un fileul</b>, l’écran se lit et dit que la liasse est tenue par la mère : <b>l’import et l’archivage se font sur la mère</b>, la version revient par la synchronisation. La collection ne part <b>jamais vers un téléphone</b> (donnée financière, RG-13).</li>
+  <li><b>Le journal d’audit</b> garde l’identité, la source et des <b>nombres de lignes</b> par formulaire, jamais un montant, un compte ni un libellé du document.</li>
+</ul>
+<div class="encadre attention" data-titre="Attention : le jeu livré porte des documents de démonstration">
+  <p>Le jeu livré contient une liasse et un classeur <b>fictifs</b>, marqués « données de démonstration, à remplacer par la liasse réellement déposée par la clinique ». Avant l’exploitation, importer la liasse réellement déposée et le classeur réel : la nouvelle version fait foi, la démonstration reste lisible, ou s’archive avec motif. Un classeur produit par un autre outil que le générateur de démonstration, dont un total ne se recoupe pas au centime, est refusé en le nommant : la correction se fait dans le document.</p>
 </div>
 
 <!-- ============================================================ 10. SYNCHRONISATION -->
@@ -1348,9 +1453,18 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
 <p>Une mise à jour peut changer la <b>forme des données</b>. Le logiciel porte un numéro de <b>schéma des données</b> (constante unique <code>schemaDonneesCourant</code> ; <b>schéma 1</b> dans cette édition), écrit dans la méta du magasin du poste et de la mère, et relu à chaque ouverture.</p>
 <ul>
   <li><b>Jamais d’écrasement</b> : un magasin ou une base de mère écrits par une version <b>plus récente</b> que le logiciel sont refusés en les nommant (<code>SCHEMA_PLUS_RECENT</code>, ou <code>SCHEMA_ILLISIBLE</code> si le numéro est illisible). Rien n’est lu ni modifié ; le poste affiche le refus au démarrage au lieu de s’ouvrir.</li>
+  <li><b>Un magasin peuplé dont la méta est illisible est refusé</b> : refus <code>META_ILLISIBLE</code>. La méta (fichier <code>_meta.sigh</code> du dossier <code>magasin</code>) porte le numéro de schéma ; si elle existe sans pouvoir se lire, un magasin peuplé se lirait « schéma 0 » et rejouerait la migration n° 1, dont la conversion de la diurèse (×1000) <b>n’est pas idempotente</b>. Le poste n’écrit donc <b>rien</b>, ne convertit rien et affiche, au lieu de s’ouvrir, « ne peut pas démarrer » suivi du code, du motif et du geste (octets du dossier identiques avant et après, vérifié par les tests). Une méta <b>absente</b> (magasin d’avant la chaîne) et un magasin <b>neuf</b> ne sont pas concernés.</li>
   <li><b>Les migrations</b> forment une chaîne ordonnée, contiguë à partir de 1, idempotente et journalisée (méta <code>migrations</code> : numéro, nom, date, comptes — jamais une fiche). La migration n° 1 convertit les constantes (tension en deux nombres, diurèse en millilitres).</li>
   <li><b>Une migration n’est jamais seulement destructive</b> : avant d’écrire la forme convertie, la forme d’origine de chaque collection modifiée est rangée à côté, chiffrée : <code>&lt;dossier du magasin&gt;/migrations/avant-&lt;n&gt;/&lt;collection&gt;.sigh</code>.</li>
 </ul>
+<div class="encadre attention" data-titre="Que faire devant META_ILLISIBLE">
+  <ol class="etapes">
+    <li><b>Ne rien supprimer</b> ni relancer le poste en boucle : rien n’a été modifié, l’ancien état est intact.</li>
+    <li>Réunir l’<b>export portable (.sghx)</b> le plus récent (11.5), la <b>clé de la clinique</b> sous scellé (11.3) et, si elle existe, une copie du dossier des données prise avant l’incident.</li>
+    <li>Le refus nomme deux gestes : <b>restaurer le fichier de méta depuis une sauvegarde</b> (copie du fichier <code>_meta.sigh</code>, poste fermé), ou <b>ouvrir l’export</b> plutôt que le magasin : <b>Importer dans un magasin neuf</b> puis <b>Programmer la mise en service</b> (11.6) sur un poste qui démarre. Sur un fileul rattaché, la mère reste l’autorité.</li>
+  </ol>
+  <p class="non-verifie">Non vérifié sur un poste réel : le poste refusé ne s’ouvrant pas, l’écran d’import n’y est pas atteignable ; la voie testée est l’import sur un poste qui démarre. Le refus ne couvre que le magasin du poste, non la base de la mère</p>
+</div>
 <h3>Procédure</h3>
 <ol class="etapes">
   <li><b>Préparer</b>, sur le poste à mettre à jour, avant d’installer : ouvrir <span class="ch">Système ➔ Configuration Clinique ➔ Export, import et mise à jour</span> ou, sur la mère, <span class="ch">Poste mère ➔ Cycle de vie ➔ Mises à jour et compatibilité</span> ; cliquer sur <b>Préparer la mise à jour</b> (repère 4).</li>
@@ -1520,6 +1634,8 @@ node tools/baguidi/demo-liasse.mjs --verifier</pre>
     <li>Deux administrateurs au moins, chacun avec son compte.</li>
     <li>Double facteur pour l’administrateur et la Direction.</li>
     <li>Code de secours et clé de clinique au coffre, chacun sous scellé.</li>
+    <li>Secret d’administration (<code>SIGH_ADMIN</code>, 1.2) et fichier de clés Android (A.3) au gestionnaire de secrets, <b>hors du dépôt</b> et en deux lieux au moins : leur perte oblige à reconstruire les postes ou à republier l’application mobile.</li>
+    <li>Mot de passe du superadmin du relais : 12 caractères au moins, distinct de ceux des agents (5.2).</li>
     <li>Revue trimestrielle de la matrice des droits, imprimée et signée.</li>
   </ul>
 </div>
@@ -1602,7 +1718,8 @@ composer install --no-dev --optimize-autoloader</pre></li>
   <li>Copier <code>production.env.cliniquebaguidi</code> en <code>.env</code> à la racine du dossier téléversé et renseigner les champs vides (détail à l’annexe A). Renseigner <code>APP_URL</code>, <code>APP_KEY</code>, <code>DB_*</code> et <code>RELAIS_SECRET_MERE</code> (texte long et aléatoire).</li>
   <li>Migrer la base et créer le compte du panneau (terminal cPanel ou tâche ponctuelle) :
 <pre>php artisan migrate --force
-php artisan relais:superadmin direction@clinique.bj --mot-de-passe='un-mot-de-passe-long'</pre></li>
+php artisan relais:superadmin direction@clinique.bj --mot-de-passe='un-mot-de-passe-long'</pre>
+Le mot de passe compte <b>12 caractères au moins</b> : la commande refuse sinon (« Le mot de passe doit compter au moins 12 caractères »).</li>
   <li>Ajouter les tâches cron, chaque minute (détail des tâches en 14.7) :
 <pre>php /chemin/vers/apps/web/artisan schedule:run
 php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
@@ -1619,7 +1736,7 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
 </div>
 
 <h2 id="relais-panneau">14.3 Le panneau superadmin</h2>
-<p>Le panneau est réservé aux comptes superadmin créés par <code>relais:superadmin</code>. Il ne montre jamais un dossier. Son menu porte quinze entrées :</p>
+<p>Le panneau est réservé aux comptes superadmin créés par <code>relais:superadmin</code>. Le <b>changement de mot de passe</b> du panneau exige lui aussi 12 caractères au moins : le minimum se lit dans le réglage <code>relais.mdp_superadmin_min</code> (variable <code>RELAIS_MDP_SUPERADMIN_MIN</code>, 12 par défaut, absente du modèle <code>.env</code>), commun à la commande et au panneau. Il ne montre jamais un dossier. Son menu porte quinze entrées :</p>
 <table class="tableau">
   <thead><tr><th style="width:36%">Entrée du menu</th><th>Usage</th></tr></thead>
   <tbody>
@@ -1902,18 +2019,25 @@ php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
     <tr><td><b>Facture à une entreprise refusée</b></td><td><code>AIB_SITUATION_A_CHOISIR</code>, <code>AIB_SANS_BAREME</code> ou <code>FILLE_DEJA_FACTUREE</code>.</td><td>Choisir la situation d’AIB, arrêter le barème (9.7), ou retirer la facture patient déjà réclamée (9.9).</td></tr>
     <tr><td><b>Honoraire refusé</b></td><td><code>DOUBLE_PAIEMENT_PRIME</code> : l’honoraire de régime égale une prime NS 132 déjà versée.</td><td>Retirer l’honoraire du régime individuel ou le remplacer par un complément d’un autre montant (6.9).</td></tr>
     <tr><td><b>Planning refusé sur un fileul</b></td><td><code>validation_reservee</code> ou <code>champ_reserve</code>.</td><td>Poser la vacation « à valider » ; la mère la valide (10.4).</td></tr>
+    <tr><td><b>Mère qui ne démarre pas</b></td><td><code>SECRET_ADMIN_FAIBLE</code> : écran « ne peut pas démarrer en mode mère », ou activation refusée (« Le poste reste fileul »).</td><td>Le programme a été construit sans <code>SIGH_ADMIN</code> solide. Reconstruire l’installateur avec un secret de 16 caractères au moins (1.2), le réinstaller (11.7), recommencer.</td></tr>
+    <tr><td><b>Construction de l’installateur arrêtée</b></td><td><code>build_windows.bat</code> : « ECHEC : la variable d’environnement SIGH_ADMIN n’est pas definie » (ou « refusee », ou « trop court »).</td><td>Définir <code>SIGH_ADMIN</code> (16 caractères au moins, pas <code>admin-local</code>), puis relancer (1.2).</td></tr>
+    <tr><td><b>APK de production refusé</b></td><td>Gradle : « SIGNATURE ANDROID ABSENTE » avec les valeurs manquantes nommées, ou « le fichier de clés … est introuvable ».</td><td>Renseigner <code>android/key.properties</code> ou les variables <code>SIGH_KEYSTORE*</code> (A.3). Aucun APK n’est produit : la clé de débogage n’est jamais utilisée.</td></tr>
+    <tr><td><b>Poste qui ne s’ouvre pas, méta illisible</b></td><td><code>META_ILLISIBLE</code> au démarrage.</td><td>Ne rien supprimer ; restaurer le fichier de méta ou repartir de l’export (11.7).</td></tr>
+    <tr><td><b>Reprise d’un poste refusée</b></td><td><code>deja_repris</code>, <code>appareil_inconnu</code>, <code>code_expire</code>, <code>code_utilise</code>, <code>acces_refuse</code>…</td><td>Lire le motif et le geste que l’écran donne (3.4) : reprendre le poste qui a remplacé l’ancien, ou générer un nouveau code.</td></tr>
+    <tr><td><b>Import de la liasse refusé</b></td><td>Un code (<code>CLE_INCONNUE</code>, <code>TYPE_INVALIDE</code>, <code>TOTAL_*_INCOHERENT</code>, <code>GESTE_RESERVE</code>, <code>REGLE_SUR_LA_MERE</code>…) et le chemin de la valeur fautive.</td><td>Corriger le document à l’endroit cité ; sur un fileul, importer sur la mère ; sans le geste, le demander à la Direction (9.10).</td></tr>
+    <tr><td><b>Fiche d’aide non validable</b></td><td><code>AUTEUR_NE_VALIDE_PAS</code>, <code>PROFESSIONNEL_REQUIS</code>, <code>PROFESSIONNEL_ABSENT</code>, ou « Valider » absent.</td><td>Faire valider par une autre personne ; pour le bloc, le geste et le nom du professionnel ; sur un fileul, valider sur la mère (5.13).</td></tr>
     <tr><td><b>Code patient en « /26 » en 2027</b></td><td>Poste ou téléphone resté à l’ancienne version.</td><td>Mettre à jour la mère, puis le poste, puis synchroniser (12.4).</td></tr>
   </tbody>
 </table>
 
 <!-- ============================================================ ANNEXES -->
 <h1 id="annexe-a"><span class="no">A.</span> Commandes de production</h1>
-<p class="chapo">Chaque commande existe dans le dépôt. Elles se lancent depuis la racine du dépôt, sauf mention contraire. La mention <b>« non vérifié sur l’hébergement réel »</b> marque ce qui n’a pas été essayé sur le serveur de production.</p>
+<p class="chapo">Chaque commande a été relue dans le code du dépôt (scripts, fichiers de configuration, outils) : aucune n’est inventée. Elles se lancent depuis la racine du dépôt, sauf mention contraire. <b>« Non vérifié »</b> marque ce qui n’a pas été exécuté : l’installateur Windows, l’APK signé, l’hébergement réel, les SMS réels, le boîtier CC300 et la suite PHPUnit du relais (dépendances Composer non installables hors ligne sur le poste de rédaction).</p>
 
 <h2 id="annexe-a-cloner">A.1 Cloner et vérifier</h2>
 <pre>git clone https://github.com/massenon/sighcbg.git
 cd sighcbg
-git checkout livraison/baguidi-v30      <span class="c"># la branche de livraison que le prestataire indique</span></pre>
+git checkout livraison/baguidi-v31      <span class="c"># la branche de livraison de cette édition</span></pre>
 <pre>cd packages/domaine &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/sync_dart &amp;&amp; dart pub get &amp;&amp; dart test &amp;&amp; cd ../..
 cd packages/rbac &amp;&amp; node --test &amp;&amp; cd ../..
@@ -1931,13 +2055,13 @@ node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=E    <span class="c
 flutter pub get
 flutter run -d windows --dart-define=SIGH_MODE=fileul     <span class="c"># poste fileul</span>
 flutter run -d windows --dart-define=SIGH_MODE=mere       <span class="c"># poste mère</span></pre>
-<p><code>SIGH_MODE</code> n’amorce que le mode d’un poste <b>neuf</b> : le mode se décide ensuite dans les réglages du poste (<b>Ce poste ➔ Activer le mode mère</b>). Sous Linux, remplacer <code>-d windows</code> par <code>-d linux</code>.</p>
+<p>Sans <code>SIGH_ADMIN</code>, le secret d’administration de la mère est <code>admin-local</code> <b>en développement et en test seulement</b> : une version de production (release) le refuse (1.2). <code>SIGH_MODE</code> n’amorce que le mode d’un poste <b>neuf</b> : le mode se décide ensuite dans les réglages du poste (<b>Ce poste ➔ Activer le mode mère</b>). Sous Linux, remplacer <code>-d windows</code> par <code>-d linux</code>.</p>
 <h3>Mobile</h3>
 <pre>cd apps/mobile
 flutter pub get
 flutter run                                                <span class="c"># téléphone ou émulateur Android</span>
 flutter run --dart-define=SIGH_RELAIS=https://sighnbg.cliniquebaguidi.com   <span class="c"># pour viser un autre relais</span></pre>
-<p>Sans <code>SIGH_RELAIS</code>, l’application vise l’adresse d’exemple <code>https://relais.exemple.bj</code>.</p>
+<p>Sans <code>SIGH_RELAIS</code>, l’application vise l’adresse d’exemple <code>https://relais.exemple.bj</code>. Le build de débogage n’est pas soumis à la signature.</p>
 <h3>Relais web en local (PostgreSQL)</h3>
 <pre>cd apps/web
 composer install
@@ -1986,32 +2110,39 @@ php artisan relais:superadmin &lt;courriel-à-renseigner&gt; --mot-de-passe='un-
 </div>
 <h3>Poste Windows</h3>
 <pre>cd apps\poste
+set SIGH_ADMIN=&lt;secret-d-administration-de-16-caracteres-au-moins&gt;
 build_windows.bat
 <span class="c">rem résultat : build\installer\SIGH_Poste_Setup_&lt;version&gt;.exe et son .sha256</span></pre>
 <p>Prérequis : Flutter (Windows Desktop), Visual Studio 2022 (C++) et Inno Setup 6. Le script s’arrête à la première étape qui échoue, en la nommant (chapitre 1).</p>
 <div class="encadre attention" data-titre="Attention : ce que le script ne règle pas">
   <ul>
-    <li><b>Le secret d’administration est obligatoire</b> : définir la variable d’environnement <code>SIGH_ADMIN</code> (16 caractères au moins, jamais <code>admin-local</code>) <b>avant</b> de lancer <code>build_windows.bat</code>. Sans elle, ou si elle est faible, le script <b>s’arrête</b> en la nommant ; il la transmet à la compilation (<code>--dart-define=SIGH_ADMIN</code>) et ne l’affiche jamais. Ce secret sert à la console de la mère et au code de reprise (3.4). Le conserver hors du dépôt (gestionnaire de secrets de la clinique) : le perdre oblige à reconstruire le poste.
-<pre>set SIGH_ADMIN=&lt;secret-à-générer&gt;
-build_windows.bat</pre></li>
+    <li><b>Le secret d’administration est obligatoire</b> : définir la variable d’environnement <code>SIGH_ADMIN</code> (16 caractères au moins, jamais <code>admin-local</code>) <b>avant</b> de lancer <code>build_windows.bat</code>. Sans elle, ou si elle est faible, le script <b>s’arrête</b> en la nommant ; il la transmet à la compilation (<code>--dart-define=SIGH_ADMIN</code>) et ne l’affiche jamais. Ce secret sert à la console de la mère et au code de reprise (3.4). Le conserver hors du dépôt (gestionnaire de secrets de la clinique) : le perdre oblige à reconstruire le poste. Éviter <code>&amp;</code>, <code>%</code>, <code>^</code> et les guillemets dans sa valeur.
+</li>
     <li><b>Garde au démarrage</b> : une version de production construite autrement (sans <code>SIGH_ADMIN</code> solide) <b>refuse de démarrer en mère</b> et affiche le refus <code>SECRET_ADMIN_FAIBLE</code> ; le mode fileul n’est pas concerné. En développement et en test, le repli <code>admin-local</code> subsiste.</li>
     <li>Le <b>numéro de version</b> de l’installateur vient de <code>pubspec.yaml</code> ; le numéro que le poste écrit dans ses exports vient de <code>SIGH_VERSION</code> (<code>0.1.0</code> par défaut). Les deux ne se suivent pas automatiquement.</li>
   </ul>
 </div>
 <h3>Application mobile (Android)</h3>
-<p>L’APK de production est <b>signé par la clé de la clinique</b>. Créer d’abord le fichier de clés (<code>keytool</code>), le <b>sauvegarder hors du dépôt</b>, puis renseigner <code>apps/mobile/android/key.properties</code> (modèle : <code>key.properties.exemple</code>, ignoré par git) ou les variables d’environnement <code>SIGH_KEYSTORE</code>, <code>SIGH_KEYSTORE_PASSWORD</code>, <code>SIGH_KEY_ALIAS</code>, <code>SIGH_KEY_PASSWORD</code>. Procédure complète : <code>docs/guides/SIGNATURE-ANDROID.md</code>.</p>
+<p>L’APK de production est <b>signé par la clé de la clinique</b>. <b>Créer d’abord le fichier de clés</b> (une seule fois, hors du dépôt, avec l’identité de la clinique et non d’une personne), puis le <b>sauvegarder</b>, puis renseigner <code>apps/mobile/android/key.properties</code> (modèle : <code>key.properties.exemple</code>, ignoré par git) ou les variables d’environnement <code>SIGH_KEYSTORE</code>, <code>SIGH_KEYSTORE_PASSWORD</code>, <code>SIGH_KEY_ALIAS</code>, <code>SIGH_KEY_PASSWORD</code>. Procédure complète : <code>docs/guides/SIGNATURE-ANDROID.md</code>.</p>
+<pre>keytool -genkeypair -v -keystore &lt;chemin-hors-depot&gt;/sigh-mobile.jks \
+  -alias &lt;alias-a-choisir&gt; -keyalg RSA -keysize 2048 -validity 10000
+<span class="c"># « keytool » demande deux mots de passe (fichier, clé) : longs, aléatoires, jamais dans le dépôt</span>
+<span class="c"># sauvegarde : le fichier ET ses mots de passe, en deux lieux sûrs au moins ; contrôle : keytool -list -keystore &lt;copie&gt;</span></pre>
 <pre>cd apps/mobile
+<span class="c"># renseigner android/key.properties (modèle key.properties.exemple : storeFile, storePassword, keyAlias, keyPassword)</span>
+<span class="c"># ou : SIGH_KEYSTORE, SIGH_KEYSTORE_PASSWORD, SIGH_KEY_ALIAS, SIGH_KEY_PASSWORD (le fichier l’emporte sur l’environnement)</span>
 flutter build apk --release \
   --dart-define=SIGH_RELAIS=https://sighnbg.cliniquebaguidi.com \
   --dart-define=SIGH_VERSION=1.0.0+1</pre>
-<p>Adapter <code>SIGH_VERSION</code> au numéro de la livraison. Sans <code>SIGH_RELAIS</code>, l’application vise une adresse d’exemple. Le fichier produit est <code>build/app/outputs/flutter-apk/app-release.apk</code>.</p>
+<p>Adapter <code>SIGH_VERSION</code> au numéro de la livraison. Sans <code>SIGH_RELAIS</code>, l’application vise une adresse d’exemple. Le fichier produit est <code>build/app/outputs/flutter-apk/app-release.apk</code> ; <code>apksigner verify --print-certs app-release.apk</code> (outil du SDK Android) en contrôle la signature.</p>
 <div class="encadre attention" data-titre="Attention : pas de clé, pas d’APK de production">
   <ul>
-    <li><b>Signature</b> : sans clé configurée, le build « release » <b>échoue</b> avec un message clair ; il n’est plus signé avec la clé de débogage. Le build de débogage (<code>flutter run</code>) n’est pas concerné.</li>
+    <li><b>Signature</b> : sans clé complète, le build « release » (<code>assembleRelease</code>, <code>bundleRelease</code>) <b>échoue</b> avec « SIGNATURE ANDROID ABSENTE » en nommant les valeurs manquantes (et dit aussi si le fichier de clés est introuvable) ; il n’est plus jamais signé avec la clé de débogage. Le build de débogage (<code>flutter run</code>) n’est pas concerné.</li>
     <li><b>Perte de la clé</b> : un APK ne se met à jour que s’il est signé par la même clé. Perdue, il faut publier une nouvelle application, et chaque téléphone doit désinstaller l’ancienne (ses données locales sont perdues). Sauvegarder le fichier de clés et ses mots de passe en au moins deux lieux sûrs hors du dépôt.</li>
     <li><b>Permission réseau</b> : la permission <code>INTERNET</code> est déclarée dans le manifeste de production (<code>android/app/src/main/AndroidManifest.xml</code>) depuis la livraison v30 ; un APK de production joint donc le relais.</li>
+    <li><b>Sauvegarde</b> : le fichier de clés et ses mots de passe se rangent hors du dépôt (ils sont ignorés par git : <code>key.properties</code>, <code>*.jks</code>, <code>*.keystore</code>). Clé divulguée : n’importe qui peut signer une fausse mise à jour ; la remplacer et prévenir la Direction.</li>
   </ul>
-  <p class="non-verifie">Aucun build Android n’a été exécuté dans le cadre de ce manuel</p>
+  <p class="non-verifie">Non vérifié : aucun build Android n’a été exécuté dans le cadre de ce manuel (pas de SDK Android) ; la logique de signature a été éprouvée dans un projet Gradle isolé (échec sans clé, échec si le fichier est introuvable, passage avec une clé complète)</p>
 </div>
 
 <h2 id="annexe-a-quota">A.4 Quota et contrôles de production</h2>
@@ -2039,7 +2170,7 @@ node docs/manuels/src/admin/generer.mjs docs/manuels/src/admin docs/manuels/Manu
 <h1 id="glossaire">Glossaire</h1>
 <table class="tableau">
   <tbody>
-    <tr><td style="width:28%"><b>Appairage</b></td><td>Rattachement d’un poste ou d’un téléphone à la mère par un code à usage unique valable 15 minutes.</td></tr>
+    <tr><td style="width:28%"><b>Appairage</b></td><td>Rattachement d’un poste ou d’un téléphone à la mère par un code à usage unique (15 minutes par défaut, durée réglée par la mère).</td></tr>
     <tr><td><b>Archivage</b></td><td>Suppression logique : la fiche quitte les listes, reste restaurable depuis la Corbeille (RG-14).</td></tr>
     <tr><td><b>Clé de clinique</b></td><td>Secret qui chiffre tout ce qui quitte la mère : relais, sauvegardes, mobiles. Jamais envoyée au relais.</td></tr>
     <tr><td><b>Dépôt</b></td><td>Geste fait sur un fileul et transmis à la mère, qui le rejoue sous le rôle de son auteur.</td></tr>
@@ -2050,6 +2181,8 @@ node docs/manuels/src/admin/generer.mjs docs/manuels/src/admin docs/manuels/Manu
     <tr><td><b>MECeF</b></td><td>Mécanisme électronique de certification des factures, par boîtier physique ou e-MECeF.</td></tr>
     <tr><td><b>Mère</b></td><td>Poste serveur de la clinique : service de synchronisation, base de référence, console d’administration.</td></tr>
     <tr><td><b>Relais</b></td><td>Site web opaque qui transporte les enveloppes chiffrées et garde la copie hors site.</td></tr>
+    <tr><td><b>Reprise d’identité</b></td><td>Remplacement d’un poste fileul : un code émis par la mère remet au poste neuf les plages de numéros et les baux de l’ancien, qui est révoqué (3.4).</td></tr>
+    <tr><td><b>Secret d’administration</b></td><td>Secret compilé dans le programme (<code>SIGH_ADMIN</code>, 16 caractères au moins) avec lequel les postes parlent à la console de la mère ; sans lui, une version de production ne démarre pas en mère (1.2).</td></tr>
     <tr><td><b>Surcharge d’écran</b></td><td>Droit réglé pour un écran précis ; il l’emporte sur le droit du module.</td></tr>
     <tr><td><b>Version datée</b></td><td>Nouvelle valeur d’un paramètre, effective à partir d’une date ; l’ancienne reste lisible.</td></tr>
   </tbody>

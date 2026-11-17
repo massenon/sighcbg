@@ -912,6 +912,42 @@
       ],
       "suitEcran": false,
       "aide": "Autorise l’installation sans sauvegarde vérifiée de moins de N heures. Le motif est obligatoire ; l’auteur, la date et le motif sont journalisés. Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "reprise_poste_emettre",
+      "libelle": "Émettre un code de reprise d’un poste fileul",
+      "module": "MERE",
+      "ecran": "mere-reprise-poste",
+      "rolesDefaut": [
+        "Administrateur système",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Écran « Reprise d’un poste » de la console de la mère. Le code remet à un poste neuf les plages de numéros et les baux d’un ancien poste fileul et révoque ce dernier ; il s’affiche une seule fois, vaut le temps que la mère annonce, et n’est jamais écrit au journal (seuls le poste repris et l’échéance le sont). Origine : l’administrateur et la Directrice Administrative."
+    },
+    {
+      "id": "documents_fiscaux_importer",
+      "libelle": "Importer ou archiver la liasse fiscale déposée et le classeur de baseline",
+      "module": "M12",
+      "ecran": "m12-liasse-import",
+      "rolesDefaut": [
+        "Comptable",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Poser une nouvelle version datée (source, date de dépôt, auteur) d’une liasse ou d’un classeur, ou en archiver une avec motif : rien n’est supprimé, la plus récente fait foi, les états financiers la lisent. Se fait sur la mère (un fileul reçoit les versions). Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF."
+    },
+    {
+      "id": "fiches_aide_valider",
+      "libelle": "Valider une fiche d’aide de l’assistant",
+      "module": "CFG",
+      "ecran": "cfg-fiches-aide",
+      "rolesDefaut": [
+        "Direction / Gérance",
+        "Directrice de l’Administration et des Finances (DAF)"
+      ],
+      "suitEcran": false,
+      "aide": "Rendre une procédure ou une définition citable par l’assistant : validateur nommé et date, jamais par l’auteur de la fiche. Une fiche qui engage un professionnel (check-liste du bloc) exige en plus le geste de ce professionnel, son nom et la date. Se fait sur la mère. Origine PROPOSÉE, à valider par la Direction : la Direction et la DAF."
     }
   ],
   "familles": {

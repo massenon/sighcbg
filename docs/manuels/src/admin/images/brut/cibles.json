@@ -722,5 +722,173 @@
         45.0
       ]
     }
+  },
+  "admin-44-mere-reprise": {
+    "largeur": 1950,
+    "hauteur": 1375,
+    "cibles": {
+      "Générer un code de reprise": [
+        1644.0,
+        666.0,
+        259.0,
+        35.0
+      ],
+      "Ce que fait la reprise": [
+        56.0,
+        948.0,
+        1838.0,
+        25.0
+      ]
+    }
+  },
+  "admin-45-reprise-nom": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Nom du poste neuf": [
+        580.0,
+        315.0,
+        790.0,
+        48.0
+      ],
+      "Générer le code": [
+        1167.0,
+        399.0,
+        203.0,
+        45.0
+      ]
+    }
+  },
+  "admin-46-reprise-code": {
+    "largeur": 1950,
+    "hauteur": 1250,
+    "cibles": {
+      "Code": [
+        580.0,
+        174.0,
+        271.0,
+        58.0
+      ],
+      "Validité": [
+        580.0,
+        241.0,
+        457.0,
+        20.0
+      ],
+      "Copier le code": [
+        1070.0,
+        375.0,
+        193.0,
+        48.0
+      ]
+    }
+  },
+  "admin-47-liasse-import": {
+    "largeur": 1800,
+    "hauteur": 1875,
+    "cibles": {
+      "Ce qui fait foi": [
+        56.0,
+        415.0,
+        1688.0,
+        25.0
+      ],
+      "Fichier (JSON)": [
+        56.0,
+        841.0,
+        1560.0,
+        48.0
+      ],
+      "Vérifier le fichier": [
+        56.0,
+        904.0,
+        365.0,
+        48.0
+      ],
+      "Archiver": [
+        1633.0,
+        1124.0,
+        121.0,
+        38.0
+      ]
+    }
+  },
+  "admin-48-liasse-verifiee": {
+    "largeur": 1800,
+    "hauteur": 2125,
+    "cibles": {
+      "Fichier accepté": [
+        56.0,
+        966.0,
+        1688.0,
+        63.0
+      ],
+      "Date de dépôt": [
+        56.0,
+        1070.0,
+        558.0,
+        48.0
+      ],
+      "Source": [
+        629.0,
+        1070.0,
+        1115.0,
+        48.0
+      ],
+      "Importer ce document": [
+        56.0,
+        1159.0,
+        257.0,
+        45.0
+      ]
+    }
+  },
+  "admin-49-fiches-aide": {
+    "largeur": 1800,
+    "hauteur": 2375,
+    "cibles": {
+      "Fiches attendues": [
+        51.0,
+        474.0,
+        1698.0,
+        43.0
+      ],
+      "Gabarit vide": [
+        56.0,
+        1504.0,
+        311.0,
+        45.0
+      ],
+      "Valider": [
+        1559.0,
+        1820.0,
+        107.0,
+        35.0
+      ]
+    }
+  },
+  "admin-50-fiche-validation": {
+    "largeur": 1800,
+    "hauteur": 2375,
+    "cibles": {
+      "Validé par (professionnel)": [
+        56.0,
+        1834.0,
+        1115.0,
+        48.0
+      ],
+      "Date de sa validation": [
+        1186.0,
+        1834.0,
+        558.0,
+        48.0
+      ],
+      "Valider la fiche": [
+        56.0,
+        1896.0,
+        194.0,
+        45.0
+      ]
+    }
   }
 }
