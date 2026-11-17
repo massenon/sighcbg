@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage, DroitsGestes, epRoleFileul, epRoleMere;
+import 'package:sigh_domaine/sigh_domaine.dart' show AccParametresHachage, DroitsGestes, creerFicheAide, epRoleFileul, epRoleMere;
 import 'package:sigh_poste/donnees/base_portable_poste.dart';
 import 'package:sigh_poste/donnees/cle_clinique_poste.dart';
 import 'package:sigh_poste/donnees/maj_poste.dart';
 import 'package:sigh_poste/donnees/persistance.dart';
+import 'package:sigh_poste/mere/client_mere.dart' show Appareil, CodeReprise;
+import 'package:sigh_poste/modules/mere/mrd_reprise_poste.dart' show SourceReprise, sourceRepriseInjectee;
 import 'package:sigh_poste/core/config_poste.dart';
 import 'package:sigh_poste/core/donnees_navigation.dart';
 import 'package:sigh_poste/core/identifiants.dart';
@@ -180,6 +182,58 @@ Geste fermerModales() => (t) async {
         await _pomper(t, 4);
       }
     };
+
+
+/// Touche le premier widget dont la clé commence par [prefixe] (ligne d'un tableau dont l'identifiant est engendré : `aide:valider:<id>`).
+Geste toucherClePrefixe(String prefixe) => (t) async {
+      final f = find.byWidgetPredicate((w) => w.key is ValueKey<String> && (w.key as ValueKey<String>).value.startsWith(prefixe));
+      if (f.evaluate().isEmpty) return;
+      await t.ensureVisible(f.first);
+      await t.pump();
+      await t.tap(f.first, warnIfMissed: false);
+      await _pomper(t, 6);
+    };
+
+/// Une source SIMULÉE pour « Reprise d'un poste » : trois fileuls de démonstration (identifiants fictifs), un code d'exemple valable 15 minutes.
+class _SourceRepriseDemo implements SourceReprise {
+  @override
+  Future<List<Appareil>> appareils() async => [
+        Appareil(uuid: '3f9c1e7a-5b2d-4c68-9a10-7d2e8b6f4a01', etiquette: 'Accueil', role: 'fileul', etat: 'actif', dernierContact: _le.subtract(const Duration(minutes: 4)), derniereSeq: 118, deriveMs: 0),
+        Appareil(uuid: 'b7d20c44-91ae-4f3b-8c55-0e6a1d93f2b8', etiquette: 'Caisse', role: 'fileul', etat: 'actif', dernierContact: _le.subtract(const Duration(minutes: 11)), derniereSeq: 342, deriveMs: 0),
+        Appareil(uuid: '5a1e9d03-c2f7-4b6e-a8d4-39f0b7c15e62', etiquette: 'Ancien poste du laboratoire', role: 'fileul', etat: 'revoque', dernierContact: _le.subtract(const Duration(days: 9)), derniereSeq: 3, deriveMs: 0),
+      ];
+  @override
+  Future<CodeReprise> emettre({required String uuid, required String etiquette}) async =>
+      CodeReprise(code: 'ZQ7K3M9P', expireMs: _le.add(const Duration(seconds: 900)).millisecondsSinceEpoch, validiteSecondes: 900);
+}
+
+/// Les versions de démonstration du jeu livré sont datées du 17/11/2026, APRÈS l'horloge de la capture (16/11) : on les antidate, sinon une version importée « aujourd'hui » paraîtrait antérieure.
+void _liasseAntidatee(Magasin m) {
+  final col = m.collection('documentsFiscaux');
+  for (final f in col.toutes) {
+    col.mettreAJour(f['id'], {'importeLe': '2026-11-10'}, journaliser: false);
+  }
+}
+
+void _repriseDemo(Magasin _) => sourceRepriseInjectee = _SourceRepriseDemo();
+
+/// Une fiche d'aide FICTIVE, proposée par un autre compte (la validation exige une autre personne que l'auteur). [pro] : une fiche qui engage un professionnel (la check-liste du bloc).
+void _ficheAideProposee(Magasin m, {bool pro = false}) {
+  final r = creerFicheAide(
+      saisie: {
+        'type': 'aide',
+        'titre': pro ? 'Exemple : la check-liste du bloc (texte d’illustration)' : 'Exemple : une procédure (texte d’illustration)',
+        'motsCles': ['exemple'],
+        'etapes': ['Première étape de l’exemple.', 'Deuxième étape de l’exemple.'],
+        'questionAttendue': pro ? 94 : 58,
+        if (pro) 'domainePro': 'bloc',
+      },
+      auteurId: 'U-REDACTEUR-DEMO',
+      auteurNom: 'Rédacteur Démo',
+      maintenant: _le,
+      rolesConnus: const []);
+  m.collection('fichesAide').inserer(r.fiche!, prefixe: 'FAI');
+}
 
 const _secretDemo = 'Demonstration#Parakou26';
 
@@ -447,6 +501,20 @@ final _captures = <_Cap>[
   _Cap('182-assistant-recettes', 'sup-assistant', role: 'direction', taille: Size(1440, 1500), gestes: [saisir('assistant:champ', 'Recettes du mois dernier par secteur, comparées au mois d’avant'), toucherCle('assistant:envoyer'), attendre(8)]),
   _Cap('183-assistant-fournisseur', 'sup-assistant', role: 'da', taille: Size(1440, 1500), gestes: [saisir('assistant:champ', 'Combien on doit au fournisseur Grossiste Pharma Borgou ?'), toucherCle('assistant:envoyer'), attendre(8)]),
   _Cap('184-assistant-sans-fiche', 'sup-assistant', gestes: [saisir('assistant:champ', 'Comment je crée un nouvel utilisateur et je lui donne un rôle ?'), toucherCle('assistant:envoyer'), attendre(8)]),
+  // ---- Mises à jour du 18/11/2026 (v31) : reprise d'un poste, import de la liasse, fiches d'aide, contact de l'éditeur.
+  _Cap('190-reprise-liste', 'mere-reprise-poste', mode: ModePoste.mere, preparer: _repriseDemo, taille: Size(1440, 1150)),
+  _Cap('191-reprise-modale', 'mere-reprise-poste', mode: ModePoste.mere, preparer: _repriseDemo, taille: Size(1440, 1150), gestes: [toucherBouton('Générer un code de reprise')]),
+  _Cap('192-reprise-code', 'mere-reprise-poste', mode: ModePoste.mere, preparer: _repriseDemo, taille: Size(1440, 1150), gestes: [toucherBouton('Générer un code de reprise'), toucherCle('rep:confirmer'), attendre(4)]),
+  _Cap('193-reprise-emis', 'mere-reprise-poste', mode: ModePoste.mere, preparer: _repriseDemo, taille: Size(1440, 1150), gestes: [toucherBouton('Générer un code de reprise'), toucherCle('rep:confirmer'), attendre(4), toucherCle('rep:fermer'), attendre(4)]),
+  _Cap('194-liasse-import', 'm12-liasse-import', role: 'comptable', preparer: _liasseAntidatee, taille: Size(1440, 1500)),
+  _Cap('195-liasse-verifiee', 'm12-liasse-import', role: 'comptable', preparer: _liasseAntidatee, taille: Size(1440, 1500), gestes: [saisir('liasse:fichier', 'tool/donnees/liasse_2025_demo.json'), toucherCle('liasse:verifier'), attendre(2)]),
+  _Cap('196-liasse-importee', 'm12-liasse-import', role: 'comptable', preparer: _liasseAntidatee, taille: Size(1440, 1700), gestes: [saisir('liasse:fichier', 'tool/donnees/liasse_2025_demo.json'), toucherCle('liasse:verifier'), attendre(2), toucherCle('liasse:importer'), attendre(2)]),
+  _Cap('197-liasse-refus', 'm12-liasse-import', role: 'comptable', preparer: _liasseAntidatee, taille: Size(1440, 1200), gestes: [saisir('liasse:fichier', 'tool/donnees/plan-comptable-syscohada-revise.csv'), toucherCle('liasse:verifier'), attendre(2)]),
+  _Cap('198-fiches-aide', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 1500)),
+  _Cap('199-fiche-redaction', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2300), gestes: [toucherCle('aide:rediger:4')]),
+  _Cap('200-fiche-validation', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2300), preparer: _ficheAideProposee, gestes: [toucherClePrefixe('aide:valider:')]),
+  _Cap('201-fiche-professionnel', 'cfg-fiches-aide', role: 'direction', taille: Size(1440, 2300), preparer: (m) => _ficheAideProposee(m, pro: true), gestes: [toucherClePrefixe('aide:valider:')]),
+  _Cap('202-contact-editeur', 'contact-editeur', role: 'reception', taille: Size(1440, 1100)),
   // ---- SMS (poste mère).
   _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('twilio'), taille: Size(1440, 1500)),
   _Cap('142-sms-parametres-manquants', 'mere-sms-passerelle', mode: ModePoste.mere, preparer: (_) => _relaisSms('vonage', manquants: ['RELAIS_SMS_VONAGE_SECRET']), taille: Size(1440, 1500)),
@@ -514,6 +582,12 @@ Map<String, Object?> _reperes(WidgetTester t) {
 void main() {
   setUpAll(() async {
     await chargerPolices();
+    // La famille « monospace » (identifiants d'appairage, empreintes, chemins) n'existe pas dans le banc d'essai : sans police, elle se dessine en carrés pleins. On lui donne Liberation Mono.
+    final monospace = FontLoader('monospace');
+    for (final f in ['Regular', 'Bold']) {
+      monospace.addFont(Future.value(ByteData.view(File('assets/polices/pdf/LiberationMono-$f.ttf').readAsBytesSync().buffer)));
+    }
+    await monospace.load();
     // Le hachage d'essai (rapide) : la création du premier compte de l'assistant d'installation ne prend pas de longues secondes.
     ServiceIdentifiants.parametres = AccParametresHachage.tests;
   });
@@ -521,6 +595,7 @@ void main() {
   tearDown(() {
     ToastsSigh.viderPourTests();
     mrbSourceInjectee = null;
+    sourceRepriseInjectee = null;
   });
 
   for (final c in _captures) {

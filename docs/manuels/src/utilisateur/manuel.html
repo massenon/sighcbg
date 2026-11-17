@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 17 novembre 2026 — livraison v30</span>
+    <span>Édition du 18 novembre 2026 — livraison v31</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -150,17 +150,18 @@
 <h2 id="ins-rejoindre">Rejoindre une clinique existante</h2>
 <div class="tache">
 <p class="but">Vous reliez ce poste à la mère de la clinique.</p>
-<p class="prerequis">l’adresse de la mère et un <strong>code d’appairage</strong> affiché sur la console de la mère (il vaut 15 minutes et ne sert qu’une fois).</p>
+<p class="prerequis">l’adresse de la mère et un <strong>code d’appairage</strong> affiché sur la console de la mère (il ne sert qu’une fois et vaut le temps que la mère annonce en l’affichant). Si ce poste en <strong>remplace un autre</strong>, c’est un <strong>code de reprise</strong> (voir « Remplacer un poste fileul : la reprise d’un poste »).</p>
 <p class="chemin">Installation du poste ➔ Rejoindre une clinique existante</p>
 <ol class="etapes">
   <li>Saisissez l’<strong>Adresse de la mère</strong>, sous la forme http://adresse:port (par exemple http://192.168.1.10:9000).</li>
-  <li>Saisissez le <strong>Code d’appairage</strong>.</li>
+  <li>Saisissez le code dans la zone <strong>Code d’appairage ou de reprise</strong>. Un code de reprise se saisit au même endroit qu’un code d’appairage : c’est la mère qui sait ce que le code désigne.</li>
   <li>Cliquez sur <strong>Rejoindre</strong>. Le poste attend ensuite les comptes de la mère : connectez-vous avec votre compte habituel.</li>
 </ol>
-<figure class="capture" data-capture="captures/104-ins-rejoindre" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"rej:adresse","de":"gauche","long":60,"num":1},{"cle":"rej:code","de":"gauche","long":60,"num":2},{"cle":"rej:valider","de":"bas","long":60,"num":3}]'>
-  <figcaption>L’écran <strong>Rejoindre une clinique</strong>.</figcaption>
+<figure class="capture" data-capture="captures/104-ins-rejoindre" data-recadrage="120,60,1200,720" data-cibles='[{"cle":"rej:adresse","de":"gauche","long":60,"num":1},{"cle":"rej:code","de":"gauche","long":60,"num":2},{"cle":"rej:valider","de":"bas","long":60,"num":3},{"cle":"rej:aide-reprise","de":"gauche","long":60,"num":4}]'>
+  <figcaption>L’écran <strong>Rejoindre une clinique</strong>. <span class="pastille">4</span> La note rappelle qu’un poste qui en remplace un autre se rattache avec un code de reprise.</figcaption>
 </figure>
-<div class="encadre attention"><span class="titre">Attention</span><p>Un refus est toujours nommé : « Ce code d’appairage a expiré (15 minutes) », « Ce code d’appairage a déjà servi », « Code d’appairage inconnu », ou « La mère n’a pas répondu ». Demandez alors un nouveau code sur la mère, ou vérifiez le réseau et que la mère est démarrée.</p></div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Un refus est toujours nommé : « Ce code d’appairage a expiré », « Ce code d’appairage a déjà servi », « Code d’appairage inconnu », ou « La mère n’a pas répondu ». Demandez alors un nouveau code sur la mère, ou vérifiez le réseau et que la mère est démarrée. Pour un code de reprise, le refus peut aussi dire que le poste à remplacer est inconnu de la mère ou <strong>a déjà été repris</strong> (voir le tableau des refus de la reprise).</p></div>
+<p>Une fois la reprise faite, l’écran affiche en vert : « Reprise d’identité : ce poste remplace le poste … », avec le nombre de plages de numéros et de baux de stock que la mère vous a passés.</p>
 </div>
 
 <h1 id="prise-en-main"><span class="num">3</span> Prendre en main le poste</h1>
@@ -270,6 +271,27 @@
   <figcaption>L’écran <strong>Session verrouillée</strong>.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Le verrouillage <strong>suspend</strong> la session, il ne la ferme pas : votre travail en cours n’est pas perdu.</p></div>
+
+<h3 id="contact-editeur">Contacter l’éditeur</h3>
+<div class="tache">
+<p class="but">Vous posez une question, faites une suggestion ou signalez une anomalie à l’éditeur du logiciel.</p>
+<p class="prerequis">aucun : tout agent connecté peut ouvrir cet écran.</p>
+<p class="chemin">Votre nom (profil) ➔ Contactez l’éditeur</p>
+<ol class="etapes">
+  <li>Ouvrez le menu du profil et cliquez sur <strong>Contactez l’éditeur</strong>.</li>
+  <li>Pour une question ou une suggestion, remplissez <strong>Objet</strong> et <strong>Message</strong> dans la carte <strong>Envoyer un message</strong>, puis cliquez sur <strong>Envoyer le message</strong>.</li>
+  <li>Pour une anomalie, choisissez le <strong>Module concerné</strong>, décrivez le problème dans <strong>Description du problème</strong>, ajoutez si possible les <strong>Étapes pour reproduire</strong>, puis cliquez sur <strong>Signaler l’anomalie</strong>.</li>
+  <li>Lisez le message qui s’affiche : il donne la <strong>référence</strong> de votre demande. Elle reste ensuite consultable sous les formulaires, dans <strong>Demandes enregistrées</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/202-contact-editeur" data-recadrage="0,120,1440,560" data-cibles='[{"cle":"support:sans-messagerie:message","de":"bas","long":50,"num":1},{"rect":[958,234,458,242],"de":"gauche","long":70,"num":2}]'>
+  <figcaption>L’écran <strong>Contactez l’éditeur</strong> sur un poste dont la clinique n’a rien saisi. <span class="pastille">1</span> La note dit que la demande sera seulement enregistrée. <span class="pastille">2</span> Les coordonnées de l’éditeur affichent <strong>Non renseigné</strong>.</figcaption>
+</figure>
+</div>
+<ul>
+  <li><strong>« Non renseigné » n’est pas une panne.</strong> Le nom, l’adresse e-mail, le téléphone et les horaires de l’éditeur sont des réglages de la <strong>clinique</strong> (famille « Contact de l’éditeur » des Paramètres système). Tant que la clinique ne les a pas saisis, l’écran le dit au lieu d’afficher une coordonnée inventée.</li>
+  <li><strong>Sans adresse, rien ne part.</strong> Votre message est <strong>enregistré dans le logiciel</strong> (« Message enregistré dans le logiciel. Aucun courriel n’a été envoyé à l’éditeur. ») mais il n’est <strong>pas envoyé</strong>. Si vous avez coché <strong>Envoyer aussi par courriel à l’éditeur</strong> et que l’adresse manque, le message dit : « Demande enregistrée, mais le courriel n’est pas parti. Adresse de l’éditeur non renseignée. » La demande n’est pas perdue : elle reste dans <strong>Demandes enregistrées</strong>.</li>
+  <li><strong>Que faire.</strong> Demandez à l’administrateur de saisir l’adresse de l’éditeur dans les Paramètres système, et de configurer la messagerie du poste. Une fois l’adresse saisie, faites une nouvelle demande.</li>
+</ul>
 
 <h2 id="hors-ligne">Travailler hors ligne et « en attente de la mère »</h2>
 <p>Les postes de la clinique sont reliés à un ordinateur central, appelé <strong>poste mère</strong>. Les autres postes s’appellent les <strong>postes fileuls</strong>. Les données saisies sur un poste fileul partent vers la mère, puis vers les autres postes : c’est la <strong>synchronisation</strong>.</p>
@@ -1119,8 +1141,50 @@
 <div class="encadre alerte"><span class="titre">Alerte</span><p>La clôture d’un exercice est définitive : plus aucune écriture ne peut y être passée. Elle est réservée aux profils habilités. Assurez-vous d’abord qu’une sauvegarde récente existe.</p></div>
 
 <h2 id="etats-financiers">États financiers</h2>
-<p>Les écrans <strong>Compte de résultat</strong>, <strong>Tableau des flux de trésorerie</strong> et <strong>États financiers</strong> présentent les états au format de la liasse fiscale, avec les mêmes références de lignes. Deux colonnes ne se mélangent jamais : la colonne <strong>déposée</strong> cite la liasse remise à l’administration ; la colonne <strong>calculée</strong> vient des écritures validées.</p>
+<p>Les écrans <strong>Compte de résultat</strong>, <strong>Tableau des flux de trésorerie</strong> et <strong>États financiers</strong> présentent les états au format de la liasse fiscale, avec les mêmes références de lignes. Deux colonnes ne se mélangent jamais : la colonne <strong>déposée</strong> cite la liasse remise à l’administration ; la colonne <strong>calculée</strong> vient des écritures validées. La liasse déposée se pose, en versions datées, à l’écran <strong>Import de la liasse fiscale</strong> (voir plus bas).</p>
 <p>Les obligations fiscales se suivent dans <strong>Échéances fiscales &amp; paiements</strong>, et la retenue sur les ventes dans <strong>Acompte sur impôt (AIB)</strong>.</p>
+
+<h2 id="liasse-import">Importer la liasse fiscale et le classeur de référence</h2>
+<p>La colonne <strong>déposée</strong> des états financiers cite la liasse remise à l’administration, et la baseline cite le classeur de l’exercice de référence. Ces deux documents s’importent à l’écran <strong>Import de la liasse fiscale</strong>, en <strong>versions datées</strong> : une version nouvelle s’<strong>ajoute</strong>, rien n’est écrasé, la plus récente <strong>fait foi</strong>. Le logiciel <strong>ne recalcule rien</strong> : il cite le document tel que déposé, avec ses propres écarts.</p>
+<div class="tache">
+<p class="but">Vous importez la liasse déposée (ou le classeur de baseline), puis vous contrôlez ce qui fait foi.</p>
+<p class="prerequis">le geste réservé « Importer ou archiver la liasse fiscale déposée et le classeur de baseline » (d’origine : le Comptable et la DAF, réglable dans la fiche de rôle), <strong>sur le poste mère</strong>.</p>
+<p class="chemin">Financier ➔ Comptabilité SYSCOHADA ➔ Import de la liasse fiscale</p>
+<ol class="etapes">
+  <li>Ouvrez <strong>Import de la liasse fiscale</strong>. La carte <strong>Ce qui fait foi</strong> dit, pour la liasse et pour le classeur, l’exercice, la date de dépôt, la source et qui l’a importée. S’il n’y en a pas, elle écrit « Aucune liasse déposée n’est importée » : jamais un zéro ni un chiffre inventé.</li>
+  <li>Dans la carte <strong>Importer un document</strong>, saisissez le <strong>Fichier (JSON)</strong> ou cliquez sur <strong>Parcourir</strong>.</li>
+  <li>Cliquez sur <strong>Vérifier le fichier (sans rien écrire)</strong>. Si le fichier est accepté, une note donne le genre (liasse ou classeur), l’exercice et le nombre de lignes de chaque formulaire.</li>
+  <li>Contrôlez la <strong>Date de dépôt (AAAA-MM-JJ)</strong> et la <strong>Source (d’où vient le document)</strong>, proposées depuis le document. L’auteur de l’import est vous : il est écrit au journal.</li>
+  <li>Cliquez sur <strong>Importer ce document</strong>. Le message donne la version créée ; elle apparaît dans le tableau des versions, à l’état <strong>Fait foi</strong>, la précédente passant à <strong>Antérieure</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/194-liasse-import" data-recadrage="0,300,1440,950" data-cibles='[{"cle":"liasse:fichier","de":"gauche","long":50,"num":1},{"cle":"liasse:verifier","de":"gauche","long":50,"num":2}]'>
+  <figcaption>L’écran <strong>Import de la liasse fiscale</strong> : <span class="pastille">1</span> le fichier à choisir, <span class="pastille">2</span> <strong>Vérifier le fichier (sans rien écrire)</strong>. La liasse et le classeur en force sont ceux du <strong>jeu de démonstration</strong> (code DEMO) : l’écran porte la mention « Données de démonstration, à remplacer par la liasse réellement déposée par la clinique ».</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/195-liasse-verifiee" data-recadrage="0,520,1440,520" data-cibles='[{"cle":"liasse:importer","de":"droite","long":60,"num":1}]'>
+  <figcaption>Un fichier vérifié : la note donne les lignes de chaque formulaire, puis <span class="pastille">1</span> <strong>Importer ce document</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/196-liasse-importee" data-recadrage="0,300,1440,960">
+  <figcaption>Après l’import : la version nouvelle fait foi dans <strong>Versions de la liasse déposée</strong>, l’ancienne devient <strong>Antérieure</strong>. Les deux restent lisibles.</figcaption>
+</figure>
+</div>
+<ul>
+  <li><strong>Un dépôt rectifié le même jour</strong> est une version de plus, qui garde un identifiant distinct (« -r02 ») : l’identité d’une version archivée ne se recycle pas.</li>
+  <li><strong>Archiver une version.</strong> Cliquez sur <strong>Archiver</strong> sur sa ligne, écrivez le <strong>Motif de l’archivage (obligatoire)</strong>, puis <strong>Confirmer l’archivage</strong>. Elle ne fait plus foi mais reste lisible ; si c’était la plus récente, la précédente reprend. Rien n’est supprimé.</li>
+  <li><strong>Sur un poste fileul</strong>, l’écran se lit seulement : une note dit « Réglé sur la mère ». L’import et l’archivage se font sur la mère ; les versions arrivent aux postes par la synchronisation. Ces documents financiers ne vont jamais vers un téléphone.</li>
+  <li><strong>Le journal d’audit</strong> garde qui a importé quoi, la source et des nombres de lignes, jamais un montant.</li>
+</ul>
+<figure class="capture" data-capture="captures/197-liasse-refus" data-recadrage="0,520,1440,360">
+  <figcaption>Un fichier qui n’est pas un document d’import (ici, un fichier CSV) est refusé en le nommant : <strong>JSON_ILLISIBLE</strong>. Rien n’est écrit.</figcaption>
+</figure>
+<table class="simple">
+  <tr><th style="width:34%">Refus affiché</th><th>Cause et geste</th></tr>
+  <tr><td><strong>FICHIER_VIDE</strong>, <strong>JSON_ILLISIBLE</strong>, <strong>RACINE_NON_OBJET</strong>, <strong>GENRE_INDETERMINE</strong></td><td>Le fichier est vide, n’est pas un JSON lisible, ou ne ressemble ni à une liasse (en-tête « DEPOT ») ni à un classeur (année). Importez le document tel que remis, au format JSON.</td></tr>
+  <tr><td><strong>CLE_MANQUANTE</strong>, <strong>CLE_INCONNUE</strong>, <strong>TYPE_INVALIDE</strong>, <strong>LISTE_VIDE</strong>, <strong>REFERENCE_EN_DOUBLE</strong></td><td>Le document s’écarte du schéma : une clé manque ou n’existe pas, une valeur a le mauvais type, une liste est vide, une référence figure deux fois. Rien n’est ignoré en silence. Le refus donne <strong>l’endroit fautif</strong>, par exemple <span class="touche">BILAN_ACTIF[2].brut</span> : corrigez le document.</td></tr>
+  <tr><td><strong>IFU_INVALIDE</strong>, <strong>DATE_DEPOT_…</strong></td><td>L’IFU du dépôt n’a pas 13 chiffres, ou la date de dépôt est invalide, absente, dans le futur, antérieure à la fin de l’exercice ou différente de celle que le document porte.</td></tr>
+  <tr><td><strong>SOURCE_ABSENTE</strong>, <strong>AUTEUR_ABSENT</strong></td><td>Une version porte toujours sa source et son auteur : saisissez la source.</td></tr>
+  <tr><td><strong>TOTAL_…_INCOHERENT</strong></td><td>Un classeur dont les totaux ne se recoupent pas est refusé : corrigez le document. La <strong>liasse</strong>, elle, n’est <strong>pas recalculée</strong> : ses écarts internes sont ceux du document déposé.</td></tr>
+  <tr><td><strong>GESTE_RESERVE</strong>, <strong>REGLE_SUR_LA_MERE</strong></td><td>Votre rôle n’a pas le geste d’importer, ou vous êtes sur un poste rattaché. Importez sur le poste mère, avec un rôle qui détient le geste.</td></tr>
+</table>
 
 <!-- ============================================================== 12. PILOTAGE -->
 <h2 id="taux">Confirmer un taux et arrêter un barème</h2>
@@ -1330,11 +1394,73 @@
 </figure>
 
 <h3>Les fiches d’aide et de définition : pas encore écrites</h3>
-<p>Les questions de la forme « <strong>Comment je…</strong> » (créer un utilisateur, noter la sortie d’un patient, enregistrer un courrier, remplir la fiche de transport, valider une proposition de planning, faire une note de service) et « <strong>C’est quoi un avoir ?</strong> » doivent être servies par des <strong>fiches validées</strong> par la Direction. Le mécanisme existe, <strong>mais aucune fiche n’a encore été écrite ni validée</strong>. L’Assistant répond donc « <strong>Pas de fiche validée pour cette question</strong> » (<span class="touche">PAS_DE_FICHE</span>) : il ne répond pas de mémoire. Une fiche seulement <em>proposée</em> n’est jamais citée comme si elle était validée, et il le dit. La fiche sur la check-liste du bloc attend en plus la validation du professionnel nommé.</p>
+<p>Les questions de la forme « <strong>Comment je…</strong> » (créer un utilisateur, noter la sortie d’un patient, enregistrer un courrier, remplir la fiche de transport, valider une proposition de planning, faire une note de service) et « <strong>C’est quoi un avoir ?</strong> » doivent être servies par des <strong>fiches validées</strong> par la Direction. Le mécanisme existe et son écran de rédaction aussi (voir « Rédiger et valider les fiches d’aide », plus bas), <strong>mais aucune fiche n’a encore été écrite ni validée</strong>. L’Assistant répond donc « <strong>Pas de fiche validée pour cette question</strong> » (<span class="touche">PAS_DE_FICHE</span>) : il ne répond pas de mémoire. Une fiche seulement <em>proposée</em> n’est jamais citée comme si elle était validée, et il le dit. La fiche sur la check-liste du bloc attend en plus la validation du professionnel nommé.</p>
 <figure class="capture" data-capture="captures/184-assistant-sans-fiche" data-recadrage="0,575,1440,190">
   <figcaption>« Comment je crée un nouvel utilisateur… ? » : aucune fiche d’aide n’est encore validée.</figcaption>
 </figure>
 <div class="encadre attention"><span class="titre">Attention</span><p>En attendant les fiches, ce manuel reste la référence pour les procédures. Une fiche validée, quand elle existera, affichera son validateur et sa date.</p></div>
+
+<h2 id="fiches-aide">Rédiger et valider les fiches d’aide</h2>
+<p>Une fiche d’aide est le texte que l’Assistant cite pour répondre à « Comment je… ? » (une <strong>procédure</strong>) ou à « C’est quoi… ? » (une <strong>définition</strong>). Elle s’écrit et se valide à l’écran <strong>Fiches d’aide de l’assistant</strong>. <strong>L’Assistant ne cite jamais une fiche qui n’est pas validée</strong> : il ne répond pas de mémoire.</p>
+<div class="tache">
+<p class="but">Vous écrivez une fiche, que la Direction validera.</p>
+<p class="prerequis">le droit d’écrire l’écran (module Configuration).</p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Fiches d’aide de l’assistant</p>
+<ol class="etapes">
+  <li>Ouvrez <strong>Fiches d’aide de l’assistant</strong>. Le tableau <strong>Fiches attendues (9, document des 100 questions)</strong> liste les neuf questions dont la réponse est une fiche : le numéro, <strong>Posée par</strong>, le texte de la question, l’<strong>Intention</strong>, la <strong>Validation</strong> (<em>Direction</em> ou <em>Professionnel nommé</em>) et l’<strong>État</strong>. L’état est <strong>calculé</strong> : <em>Pas encore écrite</em>, <em>Écrite, en attente de validation</em> ou <em>Validée</em>.</li>
+  <li>Cliquez sur <strong>Rédiger</strong> sur la ligne de la question, ou sur <strong>Nouvelle fiche (gabarit vide)</strong> pour une fiche libre. La carte <strong>Rédiger une fiche</strong> s’ouvre.</li>
+  <li>Choisissez l’<strong>Intention</strong> (aide « comment faire » ou définition), écrivez le <strong>Titre</strong> et les <strong>Mots-clés</strong> (une expression par ligne : ce que l’agent écrirait dans sa question ; sans mot-clé, l’Assistant ne reconnaît jamais la fiche).</li>
+  <li>Écrivez le <strong>Pas à pas</strong> (une étape par ligne, numérotées à l’affichage) ou la <strong>Définition</strong>. Choisissez au besoin les <strong>Rôles autorisés</strong> (aucun rôle : la fiche est pour tous) et les <strong>Écrans cités</strong>.</li>
+  <li>Cliquez sur <strong>Enregistrer (proposée)</strong>. La fiche apparaît dans <strong>Fiches écrites</strong> à l’état <strong>Proposée</strong>, avec son auteur. Elle n’est pas encore citée.</li>
+</ol>
+<figure class="capture" data-capture="captures/198-fiches-aide" data-recadrage="0,300,1440,680" data-cibles='[{"cle":"aide:rediger:4","de":"gauche","long":50,"num":1}]'>
+  <figcaption>L’écran <strong>Fiches d’aide de l’assistant</strong> : <span class="pastille">1</span> <strong>Rédiger</strong> sur la ligne de la question Q4. Aucune des neuf fiches attendues n’est écrite : l’écran le dit.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/199-fiche-redaction" data-recadrage="0,1290,1440,1010" data-cibles='[{"cle":"aide:enregistrer","de":"droite","long":60,"num":1}]'>
+  <figcaption>La carte <strong>Rédiger une fiche</strong>, ouverte depuis la question Q4 : <span class="pastille">1</span> <strong>Enregistrer (proposée)</strong>. La question attendue est déjà choisie.</figcaption>
+</figure>
+</div>
+<div class="tache">
+<p class="but">Vous relisez une fiche proposée et vous la validez : l’Assistant la citera.</p>
+<p class="prerequis">le geste réservé « Valider une fiche d’aide de l’assistant » (d’origine : la Direction et la DAF, réglable dans la fiche de rôle). <strong>Vous ne pouvez pas valider une fiche dont vous êtes l’auteur.</strong></p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Fiches d’aide de l’assistant ➔ Fiches écrites ➔ Valider</p>
+<ol class="etapes">
+  <li>Dans <strong>Fiches écrites</strong>, cliquez sur <strong>Valider</strong> sur la ligne de la fiche proposée.</li>
+  <li>Relisez la fiche dans la carte <strong>Valider la fiche « … »</strong> : c’est le texte que l’Assistant citera. Votre nom et la date du jour seront portés sur la fiche.</li>
+  <li>Cliquez sur <strong>Valider la fiche</strong>. L’état passe à <strong>Validée</strong>, avec <strong>Validée par</strong> et la date.</li>
+</ol>
+<figure class="capture" data-capture="captures/200-fiche-validation" data-recadrage="0,1270,1440,540" data-cibles='[{"cle":"aide:valider-ok","de":"droite","long":60,"num":1}]'>
+  <figcaption>La carte <strong>Valider la fiche « … »</strong> : <span class="pastille">1</span> <strong>Valider la fiche</strong>. La fiche de la capture est un <strong>texte d’illustration</strong>, écrit par un auteur fictif pour la capture : aucune fiche réelle n’est livrée.</figcaption>
+</figure>
+</div>
+<h3>La fiche qui engage un professionnel : la check-liste du bloc</h3>
+<p>La fiche de la question Q94 (« Comment on remplit la check-list du bloc ? ») engage un <strong>professionnel nommé</strong> : la Direction ne valide pas à la place du chirurgien ou de l’anesthésiste. Dans <strong>Engage un professionnel ?</strong>, on choisit « Bloc opératoire (check-liste, gestes d’anesthésie) ». La validation demande alors, <strong>en plus</strong> du geste de validation :</p>
+<ul>
+  <li>le geste réservé « Valider les check-listes du bloc » (d’origine : le chirurgien et l’anesthésiste) pour le rôle qui valide ;</li>
+  <li>le nom du professionnel dans <strong>Validé par (professionnel)</strong> ;</li>
+  <li>la date de sa validation dans <strong>Date de sa validation (AAAA-MM-JJ)</strong>, réelle et pas dans le futur.</li>
+</ul>
+<figure class="capture" data-capture="captures/201-fiche-professionnel" data-recadrage="0,1270,1440,540" data-cibles='[{"cle":"aide:pro","de":"gauche","long":60,"num":1}]'>
+  <figcaption>Une fiche qui engage un professionnel : <span class="pastille">1</span> les champs <strong>Validé par (professionnel)</strong> et la date sont obligatoires. Texte d’illustration, comme ci-dessus.</figcaption>
+</figure>
+<h3>Modifier, réviser, archiver</h3>
+<ul>
+  <li><strong>Modifier</strong> ne vaut que pour une fiche <strong>Proposée</strong>. Une fiche <strong>validée ne se réécrit pas</strong> : ce que la Direction a relu est ce que l’Assistant cite.</li>
+  <li><strong>Réviser</strong> une fiche validée crée une fiche <strong>nouvelle</strong>, proposée, qui la remplacera. L’ancienne reste citée jusqu’à la validation de la nouvelle, puis elle est archivée.</li>
+  <li><strong>Archiver</strong> exige un <strong>Motif de l’archivage</strong>. Une fiche archivée n’est plus citée, reste lisible et se restaure depuis la corbeille : rien n’est supprimé.</li>
+  <li>Quand l’Assistant cite une fiche, il affiche « Fiche validée par … le … » et, pour une fiche professionnelle, « Relue par le professionnel : … ».</li>
+</ul>
+<table class="simple">
+  <tr><th style="width:34%">Refus affiché</th><th>Cause et geste</th></tr>
+  <tr><td><strong>AUTEUR_NE_VALIDE_PAS</strong></td><td>Vous êtes l’auteur de la fiche. Demandez à un autre détenteur du geste de valider.</td></tr>
+  <tr><td><strong>GESTE_RESERVE</strong></td><td>Votre rôle ne détient pas le geste de validation. La commande <strong>Valider</strong> est alors absente ; demandez l’accès à l’administrateur.</td></tr>
+  <tr><td><strong>PROFESSIONNEL_REQUIS</strong>, <strong>PROFESSIONNEL_ABSENT</strong>, <strong>DATE_PROFESSIONNEL_INVALIDE</strong>, <strong>DATE_PROFESSIONNEL_FUTURE</strong></td><td>La fiche engage un professionnel : votre rôle doit détenir son geste, et vous devez saisir son nom et la date réelle de sa validation.</td></tr>
+  <tr><td><strong>FICHE_VALIDEE</strong></td><td>Une fiche validée ne se modifie pas : cliquez sur <strong>Réviser</strong>.</td></tr>
+  <tr><td><strong>ROLE_INCONNU</strong></td><td>Un rôle choisi n’existe plus dans la matrice des droits. Choisissez les rôles dans la liste.</td></tr>
+  <tr><td><strong>MOTIF_ABSENT</strong></td><td>Archiver se motive : saisissez le motif.</td></tr>
+</table>
+<div class="encadre info"><span class="titre">Information</span><p>Sur un <strong>poste fileul</strong>, vous pouvez écrire et modifier des fiches : elles rejoignent la mère. La <strong>validation se fait sur le poste mère</strong> : la commande <strong>Valider</strong> y est absente et la mère refuse sinon. Les fiches d’aide ne vont jamais vers un téléphone.</p></div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Ce manuel ne fournit <strong>aucun contenu de fiche</strong> : les neuf fiches attendues sont à écrire, puis à faire valider, par la Direction. Tant qu’aucune n’est validée, l’Assistant répond « Pas de fiche validée pour cette question ».</p></div>
 
 <!-- ============================================================== SATISFACTION EN LIGNE -->
 <h1 id="satisfaction"><span class="num">15</span> La satisfaction des patients</h1>
@@ -1458,7 +1584,7 @@
 <ul>
   <li><strong>Un fileul n’est jamais l’autorité.</strong> L’import d’un fileul écrit dans un magasin <strong>neuf</strong> ; un fileul rattaché fait d’abord une copie préalable vérifiée de son magasin. Si le fichier est plus ancien que sa dernière synchronisation, un <strong>avertissement non bloquant</strong> liste les saisies postérieures, gardées dans sa file et dans le fichier <span class="touche">saisies-non-synchronisees.json</span>. Un export de mère importé sur un fileul n’est qu’un point de départ de <strong>resynchronisation</strong>.</li>
   <li><strong>La mère.</strong> Son import rejoue le journal dans une base neuve et remet la clé de la clinique : les fileuls continuent avec leur jeton et leur plage, sans se réappairer.</li>
-  <li><strong>Reprise d’identité d’un fileul.</strong> Un poste neuf est un <strong>nouvel appareil</strong> : ses saisies porteraient des codes de dossier de la plage de l’ancien poste, que la mère refuserait. L’administrateur émet donc, à la mère, un <strong>code de reprise</strong> qui désigne l’ancien poste : la mère passe ses plages et ses baux au nouveau poste et <strong>révoque l’ancien</strong>. Les saisies gardent leur identifiant : aucune n’est perdue, aucune n’est doublée.</li>
+  <li><strong>Reprise d’identité d’un fileul.</strong> Un poste neuf est un <strong>nouvel appareil</strong> : ses saisies porteraient des codes de dossier de la plage de l’ancien poste, que la mère refuserait. L’administrateur génère donc, sur la mère, un <strong>code de reprise</strong> à l’écran <strong>Reprise d’un poste</strong>, et le poste neuf le saisit dans <strong>Rejoindre une clinique</strong> : la mère passe ses plages et ses baux au nouveau poste et <strong>révoque l’ancien</strong>. Les saisies gardent leur identifiant : aucune n’est perdue, aucune n’est doublée. <strong>La marche à suivre complète est plus bas, dans ce chapitre : « Remplacer un poste fileul : la reprise d’un poste ».</strong></li>
 </ul>
 
 <h3>Poste neuf : restaurer la clé de la clinique</h3>
@@ -1490,6 +1616,59 @@
 </ol>
 <div class="encadre info"><span class="titre">Information</span><p>L’ancien magasin n’est <strong>jamais supprimé</strong> : la mise en service d’un import le renomme (« avant-import » suivi de la date). Sur un fileul rattaché, la mère reste l’autorité : il se resynchronise ensuite.</p></div>
 <div class="encadre attention"><span class="titre">Ce qui n’est pas encore vérifié</span><p>Le script de l’installeur Windows n’a <strong>pas été exécuté</strong> sur une machine Windows : sa logique est prouvée côté logiciel, mais l’essai réel reste à faire. Un export de mère se tient en mémoire : à mesurer sur la base réelle avant de compter dessus. Le fichier d’autorisation protège contre l’oubli, pas contre un administrateur qui voudrait le contourner.</p></div>
+
+<h3 id="refus-demarrage">Quand le poste refuse de démarrer</h3>
+<p>Le logiciel préfère <strong>ne pas démarrer</strong> plutôt que de travailler sur des données ou avec une protection qu’il ne peut pas garantir. Il affiche alors une page de texte sur fond blanc, qui donne le <strong>code</strong>, la <strong>cause</strong> et le <strong>geste</strong> qui corrige. <strong>Rien n’a été modifié</strong> : ne supprimez et ne renommez aucun fichier du poste. Ce refus ne se répare pas depuis un écran du logiciel : prévenez l’administrateur, qui lit le message en entier.</p>
+<table class="simple">
+  <tr><th style="width:30%">Message affiché</th><th>Cause et geste</th></tr>
+  <tr><td><strong>SECRET_ADMIN_FAIBLE</strong><br>« SIGH-CBG ne peut pas démarrer en mode mère. »</td><td>Ce poste est une <strong>version de production</strong> construite <strong>sans secret d’administration solide</strong> : la variable <span class="touche">SIGH_ADMIN</span> est absente, égale à la valeur de développement, ou de moins de 16 caractères. Le <strong>mode mère</strong> ne démarre pas, pour qu’aucun poste de production ne parte avec un secret connu de tous. <strong>Geste</strong> : faire reconstruire le poste avec <span class="touche">SIGH_ADMIN</span> défini (16 caractères au moins). Les postes fileuls continuent de travailler hors ligne ; leurs saisies attendent le retour de la mère.</td></tr>
+  <tr><td><strong>META_ILLISIBLE</strong><br>« SIGH-CBG ne peut pas démarrer. »</td><td>Le magasin porte des données, mais son <strong>fichier de méta</strong> (le numéro de schéma) existe sans pouvoir être lu. Le logiciel ne devine pas la forme des données et ne rejoue aucune conversion, qui pourrait les abîmer. <strong>Geste</strong> : restaurer le fichier de méta depuis une sauvegarde, ou ouvrir un <strong>export portable (.sghx)</strong> plutôt que le magasin (voir « Importer une base »).</td></tr>
+  <tr><td><strong>SCHEMA_PLUS_RECENT</strong></td><td>Les données ont été écrites par une version plus récente du logiciel. Installez la version courante (voir « Revenir en arrière »).</td></tr>
+</table>
+<p class="note-capture">Ces refus n’ont pas de capture : ce sont des pages de texte, sans ruban ni menu, que le logiciel ne montre que dans ces cas.</p>
+
+<h2 id="reprise-poste">Remplacer un poste fileul : la reprise d’un poste</h2>
+<p>Un poste fileul tombe en panne ou change de machine. Pour la mère, le poste neuf est un <strong>nouvel appareil</strong> : il recevrait de nouvelles plages de numéros, et la mère refuserait les dossiers saisis sur l’ancien poste (« numero_hors_plage »). Le <strong>code de reprise</strong> règle ce cas : la mère passe au poste neuf les <strong>plages de numéros de dossier</strong> et les <strong>baux de stock</strong> de l’ancien, puis <strong>révoque l’ancien poste</strong>. Il reste au registre, jamais effacé.</p>
+<div class="tache">
+<p class="but">Vous générez le code de reprise d’un poste fileul, puis le poste neuf le saisit pour prendre sa place.</p>
+<p class="prerequis">le geste réservé « Émettre un code de reprise d’un poste fileul » (d’origine : l’administrateur et la DAF, réglable dans la fiche de rôle), <strong>sur le poste mère</strong>. Sans lui, la commande est absente et l’écran dit pourquoi.</p>
+<p class="chemin">Poste mère ➔ Exploitation de la synchronisation ➔ Reprise d’un poste</p>
+<ol class="etapes">
+  <li><strong>Sur le poste neuf</strong>, si vous avez l’export de l’ancien poste, importez-le d’abord (écran <strong>Export, import et mise à jour</strong>) : sa file de saisies non confirmées sera reprise, sans doublon.</li>
+  <li><strong>Sur la mère</strong>, ouvrez <strong>Reprise d’un poste</strong>. Le tableau liste les postes fileuls appairés : <strong>Poste</strong>, <strong>Identifiant d’appairage</strong>, <strong>État</strong> (Actif ou Révoqué), <strong>Dernière synchronisation</strong> et <strong>Opérations reçues</strong>. Les téléphones et la mère n’y figurent pas : ils ne se reprennent pas.</li>
+  <li>Repérez l’ancien poste, par son nom et son identifiant d’appairage, puis cliquez sur <strong>Générer un code de reprise</strong> sur sa ligne.</li>
+  <li>La fenêtre <strong>Reprendre l’identité de « … »</strong> rappelle l’identifiant d’appairage. Vérifiez le <strong>Nom du poste neuf</strong> (le nom de l’ancien poste est proposé ; vous pouvez le changer), puis cliquez sur <strong>Générer le code</strong>.</li>
+  <li>La fenêtre <strong>Code de reprise</strong> affiche le code et sa <strong>durée de validité</strong>, celle que la mère annonce. Notez-le ou cliquez sur <strong>Copier le code</strong>, puis sur <strong>Fermer</strong>.</li>
+  <li><strong>Sur le poste neuf</strong>, ouvrez <strong>Rejoindre une clinique</strong>, saisissez l’adresse de la mère et le code dans <strong>Code d’appairage ou de reprise</strong>, puis cliquez sur <strong>Rejoindre</strong>. L’écran confirme la reprise et dit combien de plages et de baux ont été passés.</li>
+</ol>
+<figure class="capture" data-capture="captures/190-reprise-liste" data-recadrage="0,120,1440,900" data-cibles='[{"cle":"rep:generer:3f9c1e7a-5b2d-4c68-9a10-7d2e8b6f4a01","de":"gauche","long":50,"num":1}]'>
+  <figcaption>L’écran <strong>Reprise d’un poste</strong> : <span class="pastille">1</span> <strong>Générer un code de reprise</strong> sur la ligne de l’ancien poste. Les postes et leurs identifiants sont ceux d’une démonstration. L’ancien poste du laboratoire, <strong>Révoqué</strong>, reste listé : un poste perdu et révoqué par prudence peut encore être repris.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/191-reprise-modale" data-recadrage="300,40,840,400" data-cibles='[{"cle":"rep:etiquette","de":"gauche","long":50,"num":1},{"cle":"rep:confirmer","de":"gauche","long":50,"num":2}]'>
+  <figcaption>La fenêtre <strong>Reprendre l’identité de « … »</strong> : <span class="pastille">1</span> le nom du poste neuf, <span class="pastille">2</span> <strong>Générer le code</strong>.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/192-reprise-code" data-recadrage="300,40,840,320" data-cibles='[{"cle":"rep:copier","de":"gauche","long":50,"num":1}]'>
+  <figcaption>Le <strong>Code de reprise</strong>, affiché une seule fois, avec sa durée de validité : <span class="pastille">1</span> <strong>Copier le code</strong>. Le code de la capture est un code d’exemple.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/193-reprise-emis" data-recadrage="0,230,1440,230">
+  <figcaption>Après la fermeture, l’écran garde seulement la note « Un code de reprise a été émis pour … ». <strong>Le code ne s’y relit plus.</strong></figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Le code ne s’affiche qu’<strong>une seule fois</strong> : fermé, il ne se relit plus. Il ne sert qu’une fois et n’est <strong>jamais écrit au journal</strong> : seuls le poste repris et l’échéance le sont. S’il est perdu, générez-en un nouveau ; l’ancien reste valable jusqu’à son expiration ou son usage. <strong>Ne l’envoyez pas</strong> dans un message : donnez-le de vive voix ou recopiez-le sur le poste neuf.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Un poste ne se reprend qu’une fois.</strong> Une fois repris, ses plages ne sont plus les siennes : pour le remplacer à son tour, reprenez le poste qui l’a remplacé. Les écrans <strong>Appareils et appairage</strong> et <strong>Clé de clinique</strong> annoncent encore « 15 minutes » : c’est la durée du code d’appairage ordinaire. Celle du code de reprise est annoncée par la mère quand elle l’émet ; si elle n’en annonce pas, l’écran écrit « non communiquée ».</p></div>
+<p>Chaque refus est nommé, avec sa cause et le geste qui le corrige. Il s’affiche sur l’écran de la mère comme sur <strong>Rejoindre une clinique</strong> :</p>
+<table class="simple">
+  <tr><th style="width:30%">Refus affiché</th><th>Cause et geste</th></tr>
+  <tr><td><strong>appareil_inconnu</strong></td><td>La mère ne connaît pas ce poste, ou ce n’est pas un poste fileul. Choisissez un poste de la liste, puis recommencez.</td></tr>
+  <tr><td><strong>deja_repris</strong></td><td>Ce poste a déjà été repris par un autre. Reprenez le poste qui l’a remplacé, ou appairez un poste ordinaire.</td></tr>
+  <tr><td><strong>code_expire</strong></td><td>Le code a expiré. Générez-en un nouveau sur la mère, puis saisissez-le sur le poste neuf.</td></tr>
+  <tr><td><strong>code_utilise</strong></td><td>Le code a déjà servi (usage unique). Générez-en un nouveau si le poste neuf n’est pas encore appairé.</td></tr>
+  <tr><td><strong>code_inconnu</strong></td><td>La mère ne connaît pas ce code. Vérifiez la saisie, lettre pour lettre, ou générez-en un nouveau.</td></tr>
+  <tr><td><strong>admin_requis</strong></td><td>La mère ne reconnaît pas le secret d’administration de ce poste. La demande doit partir du poste mère.</td></tr>
+  <tr><td><strong>acces_refuse</strong></td><td>Votre rôle ne détient pas le droit « Émettre un code de reprise d’un poste ». Demandez-le à l’administrateur ou à la DAF.</td></tr>
+  <tr><td><strong>mere_injoignable</strong></td><td>La mère ne répond pas. Vérifiez que son service est démarré, puis recommencez.</td></tr>
+</table>
+<div class="encadre attention"><span class="titre">Ce qui n’est pas encore vérifié</span><p>La reprise a été éprouvée entre une mère et un fileul sur banc d’essai, mais <strong>pas sur une vraie machine Windows</strong>. Faites un premier essai sur un poste de test avant d’y compter un jour de panne.</p></div>
 
 <h2 id="sms">La passerelle SMS et le journal des envois</h2>
 <div class="tache">
@@ -1711,6 +1890,7 @@
 <h1 id="relais"><span class="num">18</span> Le relais en ligne</h1>
 <p>Le <strong>relais en ligne</strong> est un service hébergé sur Internet. Il transporte, de façon chiffrée, les échanges entre la clinique et les téléphones. Il ne lit pas les données : il ne contient aucune donnée de patient en clair.</p>
 <p>En tant qu’agent, <strong>vous n’utilisez pas le relais</strong>. Il n’a aucun écran de travail : ni patient, ni caisse, ni stock. Son panneau est réservé au superadministrateur.</p>
+<p>Le panneau du relais est protégé par le mot de passe du superadministrateur. <strong>Ce mot de passe compte 12 caractères au moins</strong>, à la création du compte comme à chaque changement au panneau : un mot de passe de 11 caractères est refusé. Le relais est exposé sur Internet ; ses exigences sont donc plus strictes que celles d’un compte de poste.</p>
 <div class="encadre info"><span class="titre">Information</span><p>Les écrans <strong>Poste mère</strong> et <strong>Relais en ligne</strong> du ruban ne sont visibles que des administrateurs. Leur usage est décrit dans le <em>Manuel administrateur</em>.</p></div>
 
 <!-- ============================================================== 16. GLOSSAIRE -->
@@ -1721,6 +1901,7 @@
   <tr><td><strong>AIB</strong></td><td>Acompte sur impôt assis sur les bénéfices : retenue opérée sur certaines ventes, selon un barème daté dont le comptable choisit la ligne.</td></tr>
   <tr><td><strong>Archiver</strong></td><td>Retirer une fiche des listes sans la supprimer. Une fiche archivée se restaure. Le logiciel ne supprime jamais une donnée.</td></tr>
   <tr><td><strong>Avoir</strong></td><td>Facture qui annule tout ou partie d’une facture émise.</td></tr>
+  <tr><td><strong>Code de reprise</strong></td><td>Code à usage unique, généré sur la mère à l’écran <strong>Reprise d’un poste</strong> et saisi sur le poste neuf dans <strong>Rejoindre une clinique</strong>. Il s’affiche une seule fois et n’est jamais écrit au journal.</td></tr>
   <tr><td><strong>Code dossier</strong></td><td>Identifiant unique du patient, au format CBG/[n° d’ordre]/[année] ; l’année est celle de la création du dossier. Il ne se modifie jamais.</td></tr>
   <tr><td><strong>CPN, CPoN</strong></td><td>Consultation prénatale ; consultation post-natale.</td></tr>
   <tr><td><strong>CUMP</strong></td><td>Coût unitaire moyen pondéré : méthode de valorisation du stock.</td></tr>
@@ -1728,10 +1909,12 @@
   <tr><td><strong>Domaine</strong></td><td>Onglet du ruban (Accueil, Soins, Logistique…), qui regroupe plusieurs modules.</td></tr>
   <tr><td><strong>Exercice</strong></td><td>Année comptable. Le sélecteur de la barre supérieure choisit celui que les écrans affichent ; par défaut, celui du jour.</td></tr>
   <tr><td><strong>Fournisseur de SMS</strong></td><td>Société qui envoie réellement les SMS (Vonage ou Twilio). Il se choisit au relais, jamais depuis le poste ; l’écran <strong>Passerelle SMS</strong> le montre et dit ce que le relais attend encore.</td></tr>
+  <tr><td><strong>Fiche d’aide</strong></td><td>Texte (procédure « comment faire » ou définition « c’est quoi ») que l’Assistant cite pour répondre. Elle naît <em>proposée</em> ; elle n’est citée qu’une fois <em>validée</em> par une autre personne que son auteur. Une fiche qui engage un professionnel exige aussi son nom et la date de sa validation.</td></tr>
   <tr><td><strong>FEFO</strong></td><td>« Premier périmé, premier sorti » : le lot qui se périme le premier sort le premier.</td></tr>
   <tr><td><strong>Fileul (poste)</strong></td><td>Poste de travail relié au poste mère.</td></tr>
   <tr><td><strong>IFU</strong></td><td>Identifiant fiscal unique.</td></tr>
   <tr><td><strong>Journal d’audit</strong></td><td>Registre de toutes les actions : qui, quand, sur quoi, avant et après.</td></tr>
+  <tr><td><strong>Liasse fiscale</strong></td><td>Ensemble des états financiers remis à l’administration. L’écran <strong>Import de la liasse fiscale</strong> en tient les versions datées : la plus récente <em>fait foi</em>, une version se retire par archivage motivé, rien n’est supprimé.</td></tr>
   <tr><td><strong>MECeF</strong></td><td>Dispositif de certification des factures normalisées exigé par l’administration fiscale.</td></tr>
   <tr><td><strong>Mère (poste)</strong></td><td>Ordinateur central de la clinique, qui reçoit et redistribue les données des postes.</td></tr>
   <tr><td><strong>Module</strong></td><td>Ensemble d’écrans d’un même métier (Laboratoire, Pharmacie &amp; Stocks…). Une ligne du panneau du ruban.</td></tr>
@@ -1741,8 +1924,9 @@
   <tr><td><strong>Provisoire / à renseigner</strong></td><td>Marquage d’une valeur d’attente (salaire, catégorie, numéro CNSS d’un agent) : elle est affichée telle quelle jusqu’à sa saisie ou sa confirmation.</td></tr>
   <tr><td><strong>Prix à valoriser</strong></td><td>Prestation dont le prix d’achat n’est pas encore fixé : elle ne s’encaisse pas tant qu’il manque.</td></tr>
   <tr><td><strong>Reconduction</strong></td><td>Recopie, dans le plan de l’exercice suivant, des actions non réalisées du plan d’un exercice.</td></tr>
-  <tr><td><strong>Reprise d’identité</strong></td><td>Remplacement d’un poste fileul par un poste neuf : la mère passe au nouveau poste les plages de numéros et les baux de l’ancien, et révoque l’ancien. Aucune saisie en file n’est perdue ni doublée.</td></tr>
+  <tr><td><strong>Reprise d’identité, reprise de poste</strong></td><td>Remplacement d’un poste fileul par un poste neuf, au moyen d’un <strong>code de reprise</strong> : la mère passe au nouveau poste les plages de numéros et les baux de l’ancien, et révoque l’ancien. Aucune saisie en file n’est perdue ni doublée. Un poste ne se reprend qu’une fois.</td></tr>
   <tr><td><strong>Rôle</strong></td><td>Profil attaché à un compte (Accueil, Médecin, Caisse…). Il décide des écrans et des gestes permis.</td></tr>
+  <tr><td><strong>Révoqué (poste)</strong></td><td>Poste que la mère ne reconnaît plus pour synchroniser. Il reste au registre, jamais effacé, et peut encore être repris.</td></tr>
   <tr><td><strong>Ruban</strong></td><td>Menu horizontal en haut de l’écran.</td></tr>
   <tr><td><strong>Tiers payeur</strong></td><td>Entreprise qui prend en charge un patient et qui reçoit sa propre facture (distincte de celle du patient).</td></tr>
   <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée.</td></tr>
@@ -1781,13 +1965,24 @@
   <tr><td>Le poste refuse de s’ouvrir : « SCHEMA_PLUS_RECENT ».</td><td>Les données ont été écrites par une version plus récente du logiciel. Rien n’a été modifié. Installez la version courante, ou suivez « Revenir en arrière » dans le chapitre Sauvegarde, mise à jour et SMS.</td></tr>
   <tr><td>Un import est refusé : CLE_ABSENTE, CLE_INCORRECTE, FICHIER_ALTERE, EMPREINTE_DIFFERENTE, AUTRE_CLINIQUE…</td><td>Le refus est nommé et rien n’est écrit. Sur un poste neuf, restaurez d’abord la clé avec <strong>Restaurer la clé de la clinique</strong>. Un fichier altéré ou d’une autre clinique ne s’importe pas : reprenez l’export d’origine.</td></tr>
   <tr><td>J’ai remplacé un poste fileul par un poste neuf, et la mère refuse mes dossiers (« numero_hors_plage »).</td><td>Demandez à l’administrateur un <strong>code de reprise</strong> à la mère : elle passe les plages du poste remplacé au nouveau et révoque l’ancien. Sans reprise, les dossiers saisis sont refusés, en le disant.</td></tr>
+  <tr><td>Je veux remplacer un poste fileul (panne, changement de machine). Comment le poste neuf prend-il sa place ?</td><td>L’administrateur ou la DAF génère un <strong>code de reprise</strong> sur la mère (<strong>Reprise d’un poste</strong>) ; vous le saisissez dans <strong>Rejoindre une clinique</strong>, zone « Code d’appairage ou de reprise ». Le code ne s’affiche qu’une fois : notez-le.</td></tr>
+  <tr><td>Le code de reprise est refusé : appareil_inconnu, deja_repris, code_expire, code_utilise, code_inconnu…</td><td>Le refus dit la cause et le geste. <strong>deja_repris</strong> : ce poste a déjà été repris, reprenez celui qui l’a remplacé. <strong>code_expire</strong> ou <strong>code_utilise</strong> : faites générer un nouveau code. <strong>code_inconnu</strong> : vérifiez la saisie, lettre pour lettre.</td></tr>
+  <tr><td>J’ai fermé la fenêtre du code de reprise sans le noter.</td><td>Il ne se relit pas. Générez-en un nouveau sur la mère : l’ancien reste valable jusqu’à son expiration ou son usage, mais il n’est plus affiché.</td></tr>
+  <tr><td>Le bouton <strong>Générer un code de reprise</strong> est absent.</td><td>Votre rôle n’a pas le geste « Émettre un code de reprise d’un poste fileul », ou vous n’êtes pas sur la mère. Demandez-le à l’administrateur ou à la DAF.</td></tr>
   <tr><td>La mère refuse une plage de numéros : « plage_chevauchement ».</td><td>La plage demandée en chevauche une autre de la même série et de la même année. Le refus nomme la plage et le poste ; rien n’est alloué. Prévenez l’administrateur : la reprise se fait au plus grand rang attribué + 1.</td></tr>
   <tr><td>Le sélecteur d’exercice n’apparaît pas dans la barre supérieure.</td><td>Il ne paraît que sur les écrans qui dépendent de l’exercice (comptabilité, états financiers, plan de travail annuel…). Ouvrez l’un d’eux.</td></tr>
   <tr><td>Ma facture à une entreprise est refusée : FILLE_DEJA_FACTUREE, AIB_SITUATION_A_CHOISIR, IFU_ACHETEUR_REQUIS…</td><td>Une facture patient ne se réclame qu’une fois ; la situation d’AIB doit être choisie (jamais présumée) ; l’IFU de 13 chiffres et le nom de l’entreprise sont obligatoires. Le message nomme la cause et le geste.</td></tr>
   <tr><td>Une facture à une entreprise reste « En attente de certification ».</td><td>Aucun boîtier n’est branché dans cette version : « Certification en attente (MECEF_NON_CONFIGURE) ». Aucun numéro fiscal n’est fabriqué. Recliquez sur <strong>Transmettre à la MECeF</strong> quand l’adaptateur sera installé.</td></tr>
   <tr><td>Ma demande d’émission, d’avoir ou de transmission d’une facture à une entreprise reste « en attente » (fileul).</td><td>La mère ne l’a pas encore appliquée. Si elle l’a refusée, la note rouge donne le code et le motif (par exemple RELEVE_VIDE) : corrigez, puis redéposez.</td></tr>
   <tr><td>Je suis Surveillant et le bouton <strong>Déroger</strong> du planning individuel est absent.</td><td>Vous n’avez pas le geste « Écrire le planning individuel d’un agent », ou pas le droit d’écrire <strong>Planning &amp; gardes</strong>. Demandez à l’administrateur de l’accorder à votre rôle.</td></tr>
-  <tr><td>L’Assistant répond « Pas de fiche validée pour cette question ».</td><td>Aucune fiche d’aide n’a encore été écrite et validée par la Direction. Reportez-vous à ce manuel.</td></tr>
+  <tr><td>L’Assistant répond « Pas de fiche validée pour cette question ».</td><td>Aucune fiche d’aide n’a encore été écrite et validée par la Direction. Reportez-vous à ce manuel. Une fiche seulement <em>proposée</em> n’est jamais citée : elle attend sa validation à l’écran <strong>Fiches d’aide de l’assistant</strong>.</td></tr>
+  <tr><td>Je ne peux pas valider une fiche d’aide : AUTEUR_NE_VALIDE_PAS, ou le bouton <strong>Valider</strong> est absent.</td><td>On ne valide pas sa propre fiche : une autre personne qui détient le geste « Valider une fiche d’aide de l’assistant » la relit. Sur un poste fileul la validation se fait sur la mère. Pour la check-liste du bloc, il faut aussi le nom du professionnel et la date de sa validation.</td></tr>
+  <tr><td>Je ne peux pas modifier une fiche d’aide.</td><td>Une fiche validée ne se réécrit pas. Cliquez sur <strong>Réviser</strong> : une fiche nouvelle la remplacera quand elle sera validée.</td></tr>
+  <tr><td>L’import de la liasse est refusé : JSON_ILLISIBLE, CLE_INCONNUE, TOTAL_…_INCOHERENT, GESTE_RESERVE…</td><td>Le refus nomme la cause et <strong>l’endroit fautif</strong> du document ; rien n’est écrit. Corrigez le document, ou demandez le geste d’import. Sur un poste fileul, l’import se fait sur la mère.</td></tr>
+  <tr><td>L’import de la liasse dit « Aucune liasse déposée n’est importée », ou porte la mention « Données de démonstration ».</td><td>C’est exact : aucune liasse réelle n’a été importée, ou c’est celle de démonstration qui est en force. Un comptable ou la DAF importe la liasse réellement déposée ; elle fait alors foi.</td></tr>
+  <tr><td>Le poste affiche « SECRET_ADMIN_FAIBLE » ou « META_ILLISIBLE » au lieu de s’ouvrir.</td><td>Ce n’est pas une panne d’écran : le logiciel refuse de démarrer plutôt que de risquer vos données ou la sécurité de la mère. Rien n’a été modifié. Ne supprimez rien ; prévenez l’administrateur (voir « Quand le poste refuse de démarrer »).</td></tr>
+  <tr><td>Contactez l’éditeur affiche « Non renseigné », et mon message n’est pas parti.</td><td>La clinique n’a pas saisi les coordonnées de l’éditeur. Votre message est <strong>enregistré dans le logiciel</strong> avec sa référence, mais aucun courriel n’est envoyé. Demandez à l’administrateur de saisir l’adresse de l’éditeur et de configurer la messagerie.</td></tr>
+  <tr><td>Le panneau du relais refuse mon mot de passe de superadministrateur.</td><td>Il doit compter <strong>12 caractères au moins</strong> (le relais est exposé sur Internet). Un mot de passe de 8 caractères, suffisant pour un compte de poste, n’y est pas accepté.</td></tr>
   <tr><td>L’Assistant refuse : « Je ne donne ni diagnostic ni avis thérapeutique », ou « Vous n’avez pas le droit de lire cette information ».</td><td>C’est voulu : pas d’aide au traitement, même pour un médecin ; et l’Assistant ne montre que ce que votre rôle lit (RG-13). Ouvrez le dossier si vous en avez le droit.</td></tr>
   <tr><td>La passerelle SMS affiche « Le relais attend encore… » (paramètres manquants).</td><td>Le fournisseur choisi au relais (Vonage ou Twilio) n’est pas complètement réglé : aucun SMS ne part, la file reste intacte. Prévenez l’administrateur, qui complète le fichier de réglages du relais.</td></tr>
   <tr><td>J’ai perdu mon téléphone appairé.</td><td>Prévenez immédiatement l’administrateur pour qu’il suspende le téléphone.</td></tr>
