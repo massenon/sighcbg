@@ -77,6 +77,23 @@ class CleLocale {
   /// Relit une clé sauvegardée et la REMET en service (la protège de nouveau par DPAPI sous Windows). Mauvaise phrase ou fichier altéré : refus nommé, rien
   /// n'est écrasé. À utiliser quand le fichier de clé du poste est perdu (poste remplacé, session Windows réinstallée).
   Future<List<int>> importer(String source, String phrase) async {
+    final cle = await lireSauvegarde(source, phrase);
+    final f = File(chemin);
+    await f.parent.create(recursive: true);
+    if (Platform.isWindows) {
+      await f.writeAsString(await _dpapi('proteger', base64.encode(cle)), flush: true);
+    } else {
+      await f.writeAsString(base64.encode(cle), flush: true);
+      try {
+        await Process.run('chmod', ['600', f.path]);
+      } catch (_) {}
+    }
+    return cle;
+  }
+
+  /// RELIT une sauvegarde de clé SANS rien écrire : le contrôle (empreinte de la clé, refus nommés) se fait AVANT qu'elle soit acceptée (restauration sur un poste neuf). Refus nommé si le
+  /// fichier n'est pas une sauvegarde de clé SIGH, si la phrase est fausse ou le fichier altéré.
+  static Future<List<int>> lireSauvegarde(String source, String phrase) async {
     final brut = await File(source).readAsBytes();
     if (brut.length < 4 + 16 + 12 + 16 || utf8.decode(brut.sublist(0, 4), allowMalformed: true) != _enteteCle) {
       throw StateError('Ce fichier n’est pas une sauvegarde de clé SIGH.');
@@ -90,16 +107,6 @@ class CleLocale {
       throw StateError('Phrase de passe incorrecte, ou sauvegarde de clé altérée.');
     }
     if (cle.length != 32) throw StateError('Sauvegarde de clé invalide.');
-    final f = File(chemin);
-    await f.parent.create(recursive: true);
-    if (Platform.isWindows) {
-      await f.writeAsString(await _dpapi('proteger', base64.encode(cle)), flush: true);
-    } else {
-      await f.writeAsString(base64.encode(cle), flush: true);
-      try {
-        await Process.run('chmod', ['600', f.path]);
-      } catch (_) {}
-    }
     return cle;
   }
 

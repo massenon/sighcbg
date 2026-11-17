@@ -458,7 +458,8 @@
         "cfg-systeme",
         "cfg-poste",
         "cfg-pair",
-        "cfg-smtp"
+        "cfg-smtp",
+        "cfg-base-portable"
        ]
       },
       {
@@ -521,6 +522,7 @@
         "mere-journal-technique",
         "mere-sauvegardes",
         "mere-cle-clinique",
+        "mere-cle-restauration",
         "mere-integrite",
         "mere-reinit"
        ]
@@ -670,7 +672,8 @@
         "cfg-systeme",
         "cfg-poste",
         "cfg-pair",
-        "cfg-smtp"
+        "cfg-smtp",
+        "cfg-base-portable"
        ]
       },
       {
@@ -733,6 +736,7 @@
         "mere-journal-technique",
         "mere-sauvegardes",
         "mere-cle-clinique",
+        "mere-cle-restauration",
         "mere-integrite",
         "mere-reinit"
        ]
@@ -1964,7 +1968,8 @@
         "cfg-systeme",
         "cfg-poste",
         "cfg-pair",
-        "cfg-smtp"
+        "cfg-smtp",
+        "cfg-base-portable"
        ]
       },
       {
@@ -2027,6 +2032,7 @@
         "mere-journal-technique",
         "mere-sauvegardes",
         "mere-cle-clinique",
+        "mere-cle-restauration",
         "mere-integrite",
         "mere-reinit"
        ]
@@ -2161,7 +2167,8 @@
         "cfg-systeme",
         "cfg-poste",
         "cfg-pair",
-        "cfg-smtp"
+        "cfg-smtp",
+        "cfg-base-portable"
        ]
       },
       {
@@ -2224,6 +2231,7 @@
         "mere-journal-technique",
         "mere-sauvegardes",
         "mere-cle-clinique",
+        "mere-cle-restauration",
         "mere-integrite",
         "mere-reinit"
        ]

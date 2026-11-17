@@ -24,7 +24,7 @@ typedef Tolerance = ({int sites, String motif});
 /// LES SITES TOLÉRÉS. Liste fermée : elle ne fait que DÉCROÎTRE.
 const Map<String, Tolerance> _tolerances = {
   // --- Le référentiel lui-même : la SEULE liste d'origine admise.
-  'lib/src/droits/gestes_reserves.dart': (sites: 177, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise (+6 le 17/11/2026 : origines des trois gestes du lot PTA, `pta_adopter`, `pta_regler`, `alertes_pta_retard`)'),
+  'lib/src/droits/gestes_reserves.dart': (sites: 183, motif: 'référentiel des gestes réservés : les rôles d’ORIGINE de chaque geste (`rolesDefaut`), que la matrice accorde ou retire — la seule liste admise (+6 le 17/11/2026 : origines des trois gestes du lot PTA, `pta_adopter`, `pta_regler`, `alertes_pta_retard`) ; +6 le 17/11/2026 : origines des trois gestes `base_exporter`, `base_importer` et `maj_lever_blocage` (administrateur et DAF chacun, mise à jour du logiciel, décision 12)'),
   // --- Chantier parallèle (caisse et tarifs, 16/11/2026) : non converti ici pour éviter les conflits, à convertir par ce chantier.
   'lib/src/consultation/cs_moteur.dart': (sites: 7, motif: 'chantier parallèle (caisse/tarifs) : `_tachesDef` (champ descriptif `role` des tâches d’aval, porté par les vecteurs, jamais lu pour décider) et `capacite == \'chirurgien\' || session.role == \'chirurgien\'` (à rapprocher du geste `rubriques_chirurgicales`)'),
   // --- Tables et données qui ne décident d'aucun droit de la session.

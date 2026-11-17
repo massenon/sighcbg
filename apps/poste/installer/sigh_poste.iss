@@ -96,6 +96,100 @@ Type: filesandordirs; Name: "{localappdata}\SIGHCBG"; Check: SupprimerLesDonnees
 var
   SupprimerDonnees: Boolean;
 
+// ---------------------------------------------------------------------------
+// SAUVEGARDE OBLIGATOIRE AVANT UNE MISE A JOUR (decision 12, 17/11/2026).
+// Une MISE A JOUR (donnees deja presentes) ne s'installe que si le poste a
+// ecrit une AUTORISATION recente : « Preparer la mise a jour » (sauvegarde
+// verifiee ET export portable verifie de moins de N heures, N = reglage date
+// `maj.sauvegardeMaxHeures`). Le fichier est `autorisation-mise-a-jour.txt`
+// dans le dossier des donnees (cles `cle=valeur`, dates locales AAAAMMJJHHMMSS,
+// meme format que `majTexteAutorisation` du domaine). Une premiere
+// installation (aucune donnee) passe sans condition. Le blocage ne se leve que
+// dans l'application, par le geste reserve « Lever le blocage d'une mise a
+// jour » (motif ecrit, journalise). LIMITE ASSUMEE : le fichier protege contre
+// l'OUBLI ; un administrateur de la machine peut le contourner en connaissance
+// de cause.
+// ---------------------------------------------------------------------------
+function DossierDonnees(): String;
+begin
+  Result := ExpandConstant('{localappdata}\SIGHCBG\donnees');
+end;
+
+function DonneesPresentes(): Boolean;
+begin
+  Result := DirExists(DossierDonnees() + '\magasin') or FileExists(DossierDonnees() + '\mere.db');
+end;
+
+// La valeur d'une cle `cle=valeur` dans les lignes du fichier ; vide si absente.
+function ValeurDe(const Lignes: TArrayOfString; const Cle: String): String;
+var
+  I: Integer;
+  Prefixe: String;
+begin
+  Result := '';
+  Prefixe := Cle + '=';
+  for I := 0 to GetArrayLength(Lignes) - 1 do
+    if Copy(Lignes[I], 1, Length(Prefixe)) = Prefixe then
+    begin
+      Result := Trim(Copy(Lignes[I], Length(Prefixe) + 1, Length(Lignes[I])));
+      Exit;
+    end;
+end;
+
+// Vide si l'installation est autorisee ; sinon le code du refus, nomme (memes codes que le domaine).
+function RefusMiseAJour(): String;
+var
+  Lignes: TArrayOfString;
+  Jusqu, Maintenant: String;
+begin
+  Result := '';
+  if not DonneesPresentes() then
+    Exit;
+  if not LoadStringsFromFile(DossierDonnees() + '\autorisation-mise-a-jour.txt', Lignes) then
+  begin
+    Result := 'AUTORISATION_ABSENTE';
+    Exit;
+  end;
+  if (GetArrayLength(Lignes) = 0) or (Copy(Lignes[0], 1, 21) <> 'SIGH-AUTORISATION-MAJ') then
+  begin
+    Result := 'AUTORISATION_ILLISIBLE';
+    Exit;
+  end;
+  Jusqu := ValeurDe(Lignes, 'valable_jusqu_local');
+  if Length(Jusqu) <> 14 then
+  begin
+    Result := 'AUTORISATION_ILLISIBLE';
+    Exit;
+  end;
+  Maintenant := GetDateTimeString('yyyymmddhhnnss', #0, #0);
+  if CompareStr(Jusqu, Maintenant) < 0 then
+    Result := 'AUTORISATION_EXPIREE';
+end;
+
+function InitializeSetup(): Boolean;
+var
+  Refus: String;
+begin
+  Result := True;
+  Refus := RefusMiseAJour();
+  if Refus <> '' then
+  begin
+    MsgBox(
+      'Mise a jour BLOQUEE : ' + Refus + #13#10 + #13#10 +
+      'Avant de mettre a jour, ouvrez SIGH-CBG, onglet Parametres, « Export, import et mise a jour », puis « Preparer la mise a jour » : une sauvegarde verifiee et un export portable de moins de quelques heures sont exiges (le delai est un reglage de la clinique).' + #13#10 + #13#10 +
+      'En cas de force majeure, un administrateur peut lever le blocage depuis l''application (geste reserve, motif ecrit et journalise).',
+      mbError, MB_OK);
+    Result := False;
+  end;
+end;
+
+// Une autorisation vaut pour UNE mise a jour : elle est retiree une fois l'installation faite.
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+    DeleteFile(DossierDonnees() + '\autorisation-mise-a-jour.txt');
+end;
+
 function SupprimerLesDonnees(): Boolean;
 begin
   Result := SupprimerDonnees;

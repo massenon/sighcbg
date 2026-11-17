@@ -1,0 +1,10 @@
+{
+ "id": "mere-cle-restauration",
+ "module": "MERE",
+ "domaine": "Poste mère",
+ "libelleManifeste": "Restaurer la clé de la clinique",
+ "acces": "ouvert",
+ "titre": "Restaurer la clé de la clinique",
+ "description": "Sur un poste neuf : remettre la clé de chiffrement de la clinique depuis sa copie sous scellé, avec contrôle de l’empreinte.",
+ "note": "Fiche rédigée pour le poste Baguidi (décision 12 de la Direction, 17/11/2026) : écran sans équivalent à la maquette."
+}

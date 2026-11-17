@@ -714,7 +714,8 @@
     "cfg-systeme",
     "cfg-poste",
     "cfg-pair",
-    "cfg-smtp"
+    "cfg-smtp",
+    "cfg-base-portable"
    ]
   },
   {
@@ -799,6 +800,7 @@
     "mere-journal-technique",
     "mere-sauvegardes",
     "mere-cle-clinique",
+    "mere-cle-restauration",
     "mere-integrite",
     "mere-reinit"
    ]
@@ -5784,6 +5786,22 @@
    ]
   },
   {
+   "id": "cfg-base-portable",
+   "label": "Export, import et mise à jour",
+   "icone": "database-backup",
+   "module": "CFG",
+   "moduleLabel": "Configuration Clinique",
+   "domaine": "Système",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da"
+   ]
+  },
+  {
    "id": "hub-imp",
    "label": "Importation de données",
    "icone": "file-up",
@@ -6415,6 +6433,22 @@
   {
    "id": "mere-cle-clinique",
    "label": "Clé de clinique",
+   "icone": "key-round",
+   "module": "MERE",
+   "moduleLabel": "Sécurité et continuité",
+   "domaine": "Poste mère",
+   "hub": false,
+   "standalone": false,
+   "universel": false,
+   "servant": null,
+   "roles": [
+    "admin",
+    "da"
+   ]
+  },
+  {
+   "id": "mere-cle-restauration",
+   "label": "Restaurer la clé de la clinique",
    "icone": "key-round",
    "module": "MERE",
    "moduleLabel": "Sécurité et continuité",

@@ -6,6 +6,7 @@ import 'mra_exploitation.dart';
 import 'mra_source.dart';
 import 'mra_supervision.dart';
 import 'mrb_cle.dart';
+import 'mrd_cle_restauration.dart';
 import 'mrb_indicateurs.dart';
 import 'mrb_integrite.dart';
 import 'mrb_journal.dart';
@@ -33,6 +34,7 @@ final Map<String, ConstruireEcran> ecransMERE = {
   'mere-journal-technique': (c, cfg) => const EcranJournalTechnique(),
   'mere-sauvegardes': (c, cfg) => const EcranSauvegardesMere(),
   'mere-cle-clinique': (c, cfg) => const EcranCleClinique(),
+  'mere-cle-restauration': (c, cfg) => const EcranCleRestauration(),
   'mere-integrite': (c, cfg) => const EcranIntegrite(),
   'mere-reinit': (c, cfg) => const EcranReinitialisation(),
   'mere-relais': (c, cfg) => const EcranRelais(),
@@ -63,6 +65,7 @@ Map<String, ConstruireEcran> ecransMEREPour(ClientMere client) {
   'mere-journal-technique': (c, cfg) => const EcranJournalTechnique(),
   'mere-sauvegardes': (c, cfg) => const EcranSauvegardesMere(),
   'mere-cle-clinique': (c, cfg) => const EcranCleClinique(),
+  'mere-cle-restauration': (c, cfg) => const EcranCleRestauration(),
   'mere-integrite': (c, cfg) => const EcranIntegrite(),
   'mere-reinit': (c, cfg) => const EcranReinitialisation(),
   'mere-relais': (c, cfg) => const EcranRelais(),

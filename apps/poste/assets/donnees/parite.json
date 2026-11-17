@@ -5151,6 +5151,23 @@
    "statut": "porté"
   },
   {
+   "id": "cfg-base-portable",
+   "label": "Export, import et mise à jour",
+   "module": "CFG",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da"
+   ],
+   "scenarios": [
+    86
+   ],
+   "statut": "porté"
+  },
+  {
    "id": "imp-accueil",
    "label": "Jeux d’import et historique des lots",
    "module": "IMP",
@@ -5713,6 +5730,21 @@
   {
    "id": "mere-cle-clinique",
    "label": "Clé de clinique",
+   "module": "MERE",
+   "domaine": "Poste mère",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "mere-cle-restauration",
+   "label": "Restaurer la clé de la clinique",
    "module": "MERE",
    "domaine": "Poste mère",
    "tranche": 6,

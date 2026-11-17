@@ -128,6 +128,10 @@ class ServiceBasePortable {
   final String version;
   final DateTime Function() horloge;
 
+  static final Expando<ServiceBasePortable> _installes = Expando<ServiceBasePortable>('ServiceBasePortable');
+  static ServiceBasePortable? de(Magasin m) => _installes[m];
+  void installer() => _installes[magasin] = this;
+
   PreuvesPoste get preuves => PreuvesPoste(dossierDonnees);
 
   IdentiteExport get identite => IdentiteExport(sigle: IdentiteClinique.sigle, nom: IdentiteClinique.nom, ifu: IdentiteClinique.ifu);
@@ -146,6 +150,15 @@ class ServiceBasePortable {
           'Restaurer la clé depuis la copie sous scellé (« Restaurer la clé de la clinique »).');
     }
     return c;
+  }
+
+  /// Lit le fichier choisi : introuvable ou illisible est un refus NOMMÉ, jamais une exception brute à l'écran.
+  Future<List<int>> _lire(String chemin) async {
+    try {
+      return await File(chemin).readAsBytes();
+    } on FileSystemException {
+      throw refusPoste('FICHIER_ILLISIBLE', 'le fichier « $chemin » est introuvable ou illisible', 'Choisir un fichier .sghx produit par « Exporter la base complète ».');
+    }
   }
 
   Future<ContenuExport> _contenu() async {
@@ -202,7 +215,7 @@ class ServiceBasePortable {
   Future<ManifesteExport> verifierFichier(String chemin) async {
     _droit(gesteBaseImporter);
     final cle = await _cle();
-    return (await ExportPortable.verifier(await File(chemin).readAsBytes(), cle)).manifeste;
+    return (await ExportPortable.verifier(await _lire(chemin), cle)).manifeste;
   }
 
   /// IMPORTE un export dans un dossier NEUF ([dossierNeuf], par défaut `import-<horodate>` sous le dossier des données) : jamais sur la base en service. Geste réservé `base_importer`.
@@ -210,7 +223,7 @@ class ServiceBasePortable {
   /// par une copie préalable VÉRIFIÉE de son magasin ; il importe comme une mère de lui-même quand il n'est pas rattaché.
   Future<RapportImportPoste> importer({required String chemin, String? dossierNeuf}) async {
     _droit(gesteBaseImporter);
-    final octets = await File(chemin).readAsBytes();
+    final octets = await _lire(chemin);
     final (m0, _) = ExportPortable.lireManifeste(octets);
     var neuf = dossierNeuf ?? '$dossierDonnees/import-${_horodate(horloge())}';
     // Un nom par défaut est UNIQUE : deux imports dans la même seconde n'écrasent ni ne refusent l'un l'autre (un dossier choisi à la main, lui, est refusé s'il existe).

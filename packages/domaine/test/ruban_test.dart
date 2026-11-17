@@ -67,10 +67,10 @@ void main() {
         isNot(contains('Poste mère')));
   });
 
-  test('les 24 écrans complémentaires de la mère sont au manifeste (dont les deux écrans SMS, ADR-0009)', () {
+  test('les 25 écrans complémentaires de la mère sont au manifeste (dont les deux écrans SMS, ADR-0009, et la restauration de la clé, décision 12)', () {
     final mere =
         manifeste.tousLesEcrans.where((e) => e.id.startsWith('mere-')).toList();
-    expect(mere.length, 24);
+    expect(mere.length, 25);
   });
 
   test('un rôle archivé n\'a aucun ruban (RG-14)', () {

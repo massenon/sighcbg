@@ -7197,7 +7197,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     },
     {
@@ -7212,7 +7212,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     }
    ],
@@ -7476,7 +7476,7 @@
     "boutons": []
    }
   ],
-  "tousEcrans": 342,
+  "tousEcrans": 344,
   "modulesListe": [
    [
     "M2",
@@ -7602,7 +7602,7 @@
     "Configuration Clinique",
     "sliders-horizontal",
     "Système",
-    22
+    23
    ],
    [
     "IMP",
@@ -7675,7 +7675,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     },
     {
@@ -7690,7 +7690,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "331",
+     "valeur": "333",
      "indice": null
     }
    ],
@@ -7932,7 +7932,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "342",
+     "valeur": "344",
      "indice": null
     },
     {
@@ -7947,7 +7947,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     }
    ],
@@ -8151,7 +8151,7 @@
    "kpis": [
     {
      "libelle": "Écrans au périmètre",
-     "valeur": "340",
+     "valeur": "342",
      "indice": null
     },
     {
@@ -8166,7 +8166,7 @@
     },
     {
      "libelle": "Écrans ouverts",
-     "valeur": "329",
+     "valeur": "331",
      "indice": null
     }
    ],

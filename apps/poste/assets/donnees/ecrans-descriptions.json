@@ -89,6 +89,10 @@
    "titre": "Messagerie (SMTP)",
    "description": "Serveur de courriel de la clinique et test d’envoi : sert à écrire à l’éditeur et, plus tard, à tout envoi de la clinique."
   },
+  "cfg-base-portable": {
+   "titre": "Export, import et mise à jour",
+   "description": "Exporter la base complète en un fichier chiffré, l’importer dans un magasin neuf, préparer une mise à jour avec une sauvegarde vérifiée."
+  },
   "cfg-systeme": {
    "titre": "Paramètres système",
    "description": "Configuration technique, environnement d’exécution et outils de maintenance du prototype."
@@ -1336,6 +1340,10 @@
   "mere-cle-clinique": {
    "titre": "Clé de clinique",
    "description": "La clé qui chiffre tout ce qui quitte le serveur : empreinte de contrôle, copie papier sous scellé, QR d’appairage mobile, rotation."
+  },
+  "mere-cle-restauration": {
+   "titre": "Restaurer la clé de la clinique",
+   "description": "Sur un poste neuf : remettre la clé de chiffrement de la clinique depuis sa copie sous scellé, avec contrôle de l’empreinte."
   },
   "mere-conflits": {
    "titre": "Conflits et doublons",
