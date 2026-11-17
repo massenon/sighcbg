@@ -1,5 +1,5 @@
 {
-  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 2 et H = 3 (lot 1 : paie et fiscal, il reste le plan de numérisation, trois barèmes à porter), C = 32 (80 avant le lot « seuils » : il reste les bornes cliniques du téléphone, la mère sync_dart et la balance âgée des assureurs), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 10 (12 avant le lot « coordonnées » : il reste des tons d'affichage de libellés et la décision de droit sur la fonction de l'agent). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json.",
+  "_doc": "LIGNE DE BASE DU CLIQUET « VALEURS EN DUR » (docs/architecture/INVENTAIRE-VALEURS-EN-DUR.md, 16/11/2026 ; lots seuils, listes et coordonnées du 17/11/2026). Lue par `node tools/baguidi/inventaire-en-dur.mjs --cliquet --famille=<familles>` et par packages/domaine/test/valeurs_en_dur_cliquet_test.dart. Pour chaque famille surveillée : fichier → nombre de défauts tolérés (plafond) et MOTIF. Un fichier absent a un plafond de zéro ; le cliquet échoue si un fichier dépasse son plafond, passe dessous sans qu'on l'abaisse ici, ou n'a pas de motif. On n'ajoute jamais une ligne pour faire passer une valeur nouvelle : on la lit dans un paramètre daté, une liste de référence (`listes.*`) ou un barème. Au 17/11/2026 : B = 2 et H = 3 (lot 1 : paie et fiscal, il reste le plan de numérisation, trois barèmes à porter), C = 32 (80 avant le lot « seuils » : il reste les bornes cliniques du téléphone, la mère sync_dart et la balance âgée des assureurs), D = 55 (113 avant le lot « listes » : il reste les énumérations structurelles, les listes posées en ligne et les listes lues par la logique), G = 10 (12 avant le lot « coordonnées » : il reste des tons d'affichage de libellés et la décision de droit sur la fonction de l'agent). Famille E : plafond ZÉRO partout, toute référence de pièce passe par le référentiel de numérotation unique (packages/domaine/lib/src/numerotation/). Famille A : liste fermée annees-tolerees.json. Lot « famille D » du 18/11/2026 : 58 → 17 sites, chacun justifié ci-dessous ; les autres sont devenus des réglages `listes.*` / `libelles.*` (vocabulaire) ou des énumérations structurelles à UNE définition (`parametres/enumerations.dart`, codes lus de la définition du réglage). Le barème de référence du régime employeur (famille H, `AssBareme.garanties`) quitte le code pour le référentiel `garanties` du jeu : son plafond H disparaît.",
   "familles": {
     "B": {
       "apps/poste/lib/modules/m1/documents.dart": {
@@ -8,10 +8,6 @@
       }
     },
     "H": {
-      "packages/domaine/lib/src/assurances/ass_regles.dart": {
-        "plafond": 1,
-        "motif": "AssBareme.garanties : le barème de référence du régime employeur versé au dossier le 18/06/2026, transcrit tel quel et seulement PROPOSÉ à la création d'une convention (recopié dans la collection `garanties`, puis ajusté). Le porter au référentiel des garanties par convention relève du lot 7 de l'inventaire."
-      },
       "packages/domaine/lib/src/labo/res_stats.dart": {
         "plafond": 1,
         "motif": "Tranches d'âge des statistiques du laboratoire (0-5, 6-15…), copie DIVERGENTE de celles du pilotage (0-4, 5-14…). Les unifier change les sorties d'un des deux écrans (vecteurs de la maquette) : décision du format DHIS2 attendue, lot 6 de l'inventaire (bornes cliniques)."
@@ -67,171 +63,63 @@
     "D": {
       "apps/poste/lib/modules/cfg/cfb_numerotation.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_fiscales` : les trois séquences de pièces FISCALES (factures, proformas, avoirs) dont le format est protégé — la logique de l'écran les lit pour refuser la modification d'un format déjà employé ; ce sont des identifiants de séquence du registre de numérotation (`Numerotation`), jamais du vocabulaire de clinique."
       },
       "apps/poste/lib/modules/cfg/cft_tarifs.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "apps/poste/lib/modules/m1/fiche_impression.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "apps/poste/lib/modules/m11/pai_prets.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "apps/poste/lib/modules/m12/cpb_banques.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "apps/poste/lib/modules/m2/ag_registres.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m2/cr_saisie.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m2/cs_dossiers.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m4/mat_registres.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_codesFamillesPrestations` : sous-ensemble ORDONNÉ de codes d'une énumération STRUCTURELLE (`enumFamillesTarif`, UNE définition) — la portée de l'écran des tarifs (prestations, hors laboratoire et imagerie qui ont leurs écrans) ; les libellés viennent du réglage `libelles.cfg.famillesTarif`."
       },
       "apps/poste/lib/modules/m4/mat_suivis.dart": {
-        "plafond": 3,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m6/mvt_inventaire.dart": {
         "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m6/mvt_transferts.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `evolution` (Favorable | Référée | Décédée) : la valeur ENREGISTRÉE est le libellé et le ton du badge (succès / danger) se décide dessus ; la rendre réglable sans migrer les fiches et la règle d'affichage changerait leur sens. À porter avec des codes le jour où l'évolution maternelle alimentera une statistique."
       },
       "apps/poste/lib/modules/m8/commun.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_codesModesPatient` : les modes que le PATIENT règle au guichet (espèces, TPE, MTN, Moov) — la prise en charge de l'assurance n'est pas un règlement du patient ; sous-ensemble de codes de `enumModesPaiement` (UNE définition), libellés au réglage `libelles.m8.modesPaiement`. Remplace « les quatre premiers » d'une liste dont l'ordre se règle."
       },
-      "apps/poste/lib/modules/m8/factures.dart": {
+      "packages/domaine/lib/src/assistant/ast_executeurs.dart": {
         "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/m9/assures.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/mecef/ecrans.dart": {
-        "plafond": 1,
-        "motif": "Liste de choix posée EN LIGNE dans le formulaire du module : même mécanique que les 53 listes déjà converties (réglage `listes.*` lu par `ListesReference`) ; à convertir au fil des retouches de l'écran, chaque écran se juge à la pièce."
-      },
-      "apps/poste/lib/modules/pil/pil_direction.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/acces/acc_agent.dart": {
-        "plafond": 1,
-        "motif": "Table service → secteur de l'agent (11 services) : elle relie le vocabulaire des services à celui des secteurs ; à porter avec l'unification des services et des secteurs (collections `secteurs` et réglage `listes.socle.services`), lot dédié."
-      },
-      "packages/domaine/lib/src/assurances/ass_regles.dart": {
-        "plafond": 5,
-        "motif": "Catégories de garantie et d'assurance, actes exclus, produits exclus et actes à accord préalable : le barème de référence du régime employeur versé au dossier le 18/06/2026 et le vocabulaire des catégories lues par `PR.repartir`. Leur portage au référentiel des garanties par convention relève du lot 7 de l'inventaire (même motif que la famille H de ce fichier)."
-      },
-      "packages/domaine/lib/src/caisse/mecef.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `connus` (I17, documents du dossier) : les cinq natures de document que la fonction construit elle-même plus haut (`nature(…)`), pour exclure de « certificats et attestations » ce qui n'en est pas — préfixes de lignes produites dans la MÊME fonction, pas un vocabulaire."
       },
       "packages/domaine/lib/src/caisse/remboursement.dart": {
         "plafond": 1,
-        "motif": "Liste lue par la LOGIQUE du module (indice, comparaison, règle de calcul ou de circuit) : la rendre modifiable sans réécrire la règle qui la lit changerait le comportement ; à traiter avec la règle (lot dédié) et la validation du professionnel concerné."
-      },
-      "packages/domaine/lib/src/comptabilite/cpa_referentiels.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `naturesOperation` (Facture avoir | Remboursement | Annulation) : la règle compare la valeur ENREGISTRÉE (`nature == 'Facture avoir'`, `'Annulation'`) et les fiches `remboursements` la portent en toutes lettres ; passer à des codes est une migration des fiches et des essais, à mener avec l'écran des remboursements."
       },
       "packages/domaine/lib/src/comptabilite/cpb_gestion.dart": {
         "plafond": 1,
-        "motif": "Liste lue par la LOGIQUE du module (indice, comparaison, règle de calcul ou de circuit) : la rendre modifiable sans réécrire la règle qui la lit changerait le comportement ; à traiter avec la règle (lot dédié) et la validation du professionnel concerné."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `cpbEtatsImmobilisation` (En service | En maintenance | Hors service | Cédé) : l'amortissement et le bilan lisent l'état ENREGISTRÉ (« Cédé » sort le bien du bilan à sa date de sortie) ; la fiche porte le libellé. Réglable seulement avec des codes et une migration des fiches."
       },
       "packages/domaine/lib/src/configuration/cfa_regles.dart": {
         "plafond": 2,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/consultation/ag_file.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : (1) `_codesFamillesTarifCfa` : sous-ensemble ORDONNÉ de codes de `enumFamillesTarif` (UNE définition), la portée de l'écran des tarifs d'imagerie et de laboratoire ; libellés au réglage. (2) `cfaModelesProposes` : les six TEXTES d'amorçage des modèles de message (collection `modelesMessage`, administrée ensuite), à valider par la Direction — une semence proposée une fois, pas une règle ; le jeu livré porte déjà les mêmes fiches."
       },
       "packages/domaine/lib/src/hospitalisation/bloc_regles.dart": {
-        "plafond": 3,
-        "motif": "Liste lue par la LOGIQUE du module (indice, comparaison, règle de calcul ou de circuit) : la rendre modifiable sans réécrire la règle qui la lit changerait le comportement ; à traiter avec la règle (lot dédié) et la validation du professionnel concerné."
-      },
-      "packages/domaine/lib/src/hospitalisation/hos_regles.dart": {
-        "plafond": 1,
-        "motif": "Liste lue par la LOGIQUE du module (indice, comparaison, règle de calcul ou de circuit) : la rendre modifiable sans réécrire la règle qui la lit changerait le comportement ; à traiter avec la règle (lot dédié) et la validation du professionnel concerné."
-      },
-      "packages/domaine/lib/src/import/jeux_import_referentiels.dart": {
-        "plafond": 1,
-        "motif": "Secteurs d'activité proposés par le jeu d'import des natures de facture : doublon de `referentiels.secteursActivite` du jeu livré (test de concordance) ; à lire de ce référentiel quand l'import recevra le magasin (lot dédié)."
+        "plafond": 2,
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : (1) `blocConclusionsCpa` : la règle lit la conclusion ENREGISTRÉE par POSITION (`[0]` = apte : sans elle, observations obligatoires et compte des réserves) ; (2) `blocDecisionsReveil` : « Surveillance prolongée » (`[1]`) alimente le compte des séjours prolongés en salle de réveil. Des libellés réglables changeraient la décision d'un compte rendu déjà signé : à porter avec des codes et la validation des praticiens du bloc. Les check-listes, elles, sont devenues des réglages."
       },
       "packages/domaine/lib/src/import/jeux_import_tarifs.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/labo/res_saisie.dart": {
-        "plafond": 1,
-        "motif": "Valeurs d'un type de variable « ternaire » (Positif, Négatif, Indéterminé) : vocabulaire normatif du compte rendu de laboratoire, lu par la saisie ; à faire valider par le biologiste."
-      },
-      "packages/domaine/lib/src/labo/res_stats.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/paie/pai_moteur.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/patients/pat_fiche.dart": {
-        "plafond": 2,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/patients/pat_patients.dart": {
-        "plafond": 1,
-        "motif": "Assureurs proposés à la création d'un patient (13 compagnies du cadrage) : doublon du référentiel `assureurs` du jeu ; à lire de la collection quand la fiche patient recevra le magasin (lot dédié)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `_codesFamillesPrix` : l'ordre et les huit codes du modèle d'import des tarifs, sous-ensemble ORDONNÉ de `enumFamillesTarif` (UNE définition) ; libellés au réglage."
       },
       "packages/domaine/lib/src/patients/pat_pieces.dart": {
         "plafond": 1,
-        "motif": "Examens exigés par type de pièce certifiante (certificat prénuptial : six examens validés) : règle médico-légale tenue avec le catalogue des pièces ; à porter avec lui (validation du médecin)."
-      },
-      "packages/domaine/lib/src/qualite/qual_enquetes.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `patTypesPiece` (TPC08) : les SIX examens que le certificat prénuptial exige VALIDÉS avant délivrance — règle médico-légale tenue avec le catalogue des pièces certifiantes, que la collection `typesPiece` porte à l'amorçage ; ce sont des codes d'examen lus par la logique de délivrance, jamais du vocabulaire."
       },
       "packages/domaine/lib/src/qualite/qual_ged.dart": {
-        "plafond": 2,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "plafond": 1,
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `qualGedRattachements` : les quatre natures de rattachement d'un document (Patient, Employé, Fournisseur, Administration) sont portées en toutes lettres par chaque catégorie de la GED (`qualGedCategories`, dont les libellés sont au réglage) et par les documents enregistrés ; l'explorateur groupe dessus."
       },
       "packages/domaine/lib/src/qualite/qual_validations.dart": {
         "plafond": 1,
-        "motif": "Liste documentaire des validations de la Direction (intitulés du centre des validations) : texte d'information, pas une règle ; à tirer des collections de validations quand le centre sera refait."
-      },
-      "packages/domaine/lib/src/rh/rha_regles.dart": {
-        "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "Liste documentaire des validations de la Direction du 01/09/2026 (intitulés du centre des validations) : texte d'information daté, pas une règle ; à tirer des collections de validations quand le centre sera refait. Aucune logique ne la lit (seulement son nombre)."
       },
       "packages/domaine/lib/src/rh/rhb_regles.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `rhbCriteres` : le barème d'ORIGINE de la note NS 131 (quatre axes, critères, sanctions), qui n'est lu que comme REPLI d'un magasin sans barème — le barème administrable vit dans `baremeNS131` / `historiqueBareme` et c'est lui que les évaluations lisent. Graine de la collection, comme la grille des primes."
       },
-      "packages/domaine/lib/src/stock/mouvements_stock.dart": {
-        "plafond": 3,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
-      },
-      "packages/domaine/lib/src/tableaux_de_bord/tba_regles.dart": {
+      "packages/sync_dart/lib/src/mere.dart": {
         "plafond": 1,
-        "motif": "Énumération STRUCTURELLE (codes ou identifiants que la logique du module lit pour décider, avec leur libellé d'affichage) : ce n'est pas un vocabulaire de clinique, un libellé changé ne doit pas changer la décision. Hors du lot « listes de référence », qui ne convertit que les listes de libellés purs (réglages `listes.*`)."
+        "motif": "STRUCTUREL, justifié site par site (lot « famille D », 18/11/2026) : `familleDeBase` : la table collection → famille de synchronisation (A à R) de la MÈRE ; c'est le protocole lui-même (quelle collection voyage comment), pas un vocabulaire. Un fileul et un banc Node en tiennent la copie de concordance (test de parité) : la rendre réglable romprait l'accord entre postes."
       }
     },
     "G": {

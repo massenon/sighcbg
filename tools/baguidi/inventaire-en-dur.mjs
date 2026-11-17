@@ -278,6 +278,8 @@ const ECARTES = [
   ['D', /cfg\/cft_tarifs\.dart$/, /_etatsPrix/, 'libellés des états calculés d’un prix (énumération structurelle)'],
   ['D', /(documents\/service_fichiers|sync\/pieces_mises_de_cote)\.dart$/, null, 'arguments de commande système ou fiche construite'],
   ['D', /securite\/sec_exploitation\.dart$/, null, 'journal d’exploitation SIMULÉ (tirage à graine de la maquette)'],
+  ['D', /m2\/cs_dossiers\.dart$/, /^\s*options: \[\s*$/, 'phénotypes de l’électrophorèse de l’hémoglobine (AA, AS, AC, SS, SC, CC : nomenclature normative) ; la liste des groupes sanguins, elle, n’existe qu’une fois (`sangGroupes`)'],
+  ['D', /sync_dart\/lib\/src\/mere\.dart$/, /if \(enc\.isEmpty\)/, 'faux positif : clés d’une réponse technique {ok, code, motif} (aucune liste de choix)'],
   ['D', /m5\/cat_(reactifs|valeurs)\.dart$/, /ctl/, 'contrôleurs de formulaire'],
   ['D', /m4\/mat_registres\.dart$/, /(transformer|valeursInitiales|\? \{|: \{)/, 'noms de champs / fiche construite'],
   ['D', /m1\/externe\.dart$/, /ctl\b/, 'contrôleurs de formulaire'],
