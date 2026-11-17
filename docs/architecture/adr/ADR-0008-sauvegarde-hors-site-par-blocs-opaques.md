@@ -56,3 +56,7 @@ Scénarios `SAUVHS1` à `SAUVHS4` (protocole) et `BAK1` (mère de bout en bout, 
 - **Q32** : le quota du relais (5 Gio évoqué) n'est **pas codé** ; il se mesure sur l'hébergement réel avec `tools/baguidi/mesurer-quota-relais.mjs` (guide `docs/guides/MESURER-LE-QUOTA-DU-RELAIS.md`).
 - **Q33** : destination des fichiers par défaut « Aucune » tant que le volume n'est pas mesuré.
 - **Q34** : SFTP **reporté** ; rien à faire, rien d'inventé.
+
+## Addendum du 17/11/2026 : l'export portable et la mise à jour (décision 12)
+
+La copie hors site protège de la perte de la machine ; elle ne sert pas à **changer de machine ou de version**. L'**export complet portable** (un fichier `.sghx`, manifeste lisible sans clé, contenu compressé et chiffré par la **même clé de la clinique**, avec le **même chiffrement** que les blocs — genre `export`, jamais interchangeable avec un bloc) comble ce besoin ; il se **vérifie sans écrire** et se **réimporte** dans un magasin neuf. Il est exigé, avec une sauvegarde vérifiée, avant toute mise à jour (l'installeur bloque sinon). La version du format des données est lue à l'ouverture ; un magasin plus récent que le logiciel est refusé en le nommant. Le détail et les limites sont dans `docs/guides/MISE-A-JOUR-ET-RETOUR-ARRIERE.md`.
