@@ -962,6 +962,228 @@
     "liensSysteme": []
    },
    {
+    "titre": "Financier",
+    "modules": [
+     {
+      "titre": "Facturation & Caisse",
+      "code": "M8",
+      "ecrans": [
+       {
+        "label": "Tableau de bord facturation",
+        "href": "pages/m8-dashboard.php"
+       },
+       {
+        "label": "Nouvelle facture",
+        "href": "pages/m8-facturation.php"
+       },
+       {
+        "label": "Factures",
+        "href": "pages/m8-factures.php"
+       },
+       {
+        "label": "Factures pro-forma",
+        "href": "pages/m8-proforma.php"
+       },
+       {
+        "label": "Paiements",
+        "href": "pages/m8-paiements.php"
+       },
+       {
+        "label": "Reliquats",
+        "href": "pages/m8-reliquats.php"
+       },
+       {
+        "label": "Remboursements & annulations",
+        "href": "pages/m8-remboursements.php"
+       },
+       {
+        "label": "Factures d’avoir",
+        "href": "pages/m8-facture-avoir.php"
+       },
+       {
+        "label": "État de caisse journalier",
+        "href": "pages/m8-caisse.php"
+       },
+       {
+        "label": "Opérations de caisse",
+        "href": "pages/m8-operations.php"
+       },
+       {
+        "label": "Recettes par période",
+        "href": "pages/m8-recettes.php"
+       }
+      ]
+     },
+     {
+      "titre": "Assurances & Créances",
+      "code": "M9",
+      "ecrans": [
+       {
+        "label": "Tableau de bord assurances",
+        "href": "pages/m9-dashboard.php"
+       },
+       {
+        "label": "Compagnies partenaires",
+        "href": "pages/m9-compagnies.php"
+       },
+       {
+        "label": "Assurés & cartes",
+        "href": "pages/m9-assures.php"
+       },
+       {
+        "label": "Conventions & garanties",
+        "href": "pages/m9-conventions.php"
+       },
+       {
+        "label": "Prises en charge",
+        "href": "pages/m9-prises-en-charge.php"
+       },
+       {
+        "label": "Factures mensuelles assureur",
+        "href": "pages/m9-factures-assureur.php"
+       },
+       {
+        "label": "Facture mère assurance",
+        "href": "pages/m9-facture-mere.php"
+       },
+       {
+        "label": "Historique par assureur",
+        "href": "pages/m9-historique.php"
+       },
+       {
+        "label": "Créances",
+        "href": "pages/m9-creances.php"
+       },
+       {
+        "label": "Relances",
+        "href": "pages/m9-relances.php"
+       }
+      ]
+     },
+     {
+      "titre": "MECeF — Facture normalisée",
+      "code": "MECEF",
+      "ecrans": [
+       {
+        "label": "Tableau de bord fiscal",
+        "href": "pages/mecef-dashboard.php"
+       },
+       {
+        "label": "Factures normalisées",
+        "href": "pages/mecef-factures.php"
+       },
+       {
+        "label": "Transmission & réponses",
+        "href": "pages/mecef-transmission.php"
+       },
+       {
+        "label": "Avoirs & annulations",
+        "href": "pages/mecef-avoirs.php"
+       },
+       {
+        "label": "Journal des transactions",
+        "href": "pages/mecef-journal.php"
+       },
+       {
+        "label": "Configuration fiscale",
+        "href": "pages/mecef-config.php"
+       }
+      ]
+     },
+     {
+      "titre": "Comptabilité SYSCOHADA",
+      "code": "M12",
+      "ecrans": [
+       {
+        "label": "Tableau de bord comptable",
+        "href": "pages/m12-dashboard.php"
+       },
+       {
+        "label": "Plan comptable OHADA",
+        "href": "pages/m12-plan-comptable.php"
+       },
+       {
+        "label": "Journaux comptables",
+        "href": "pages/m12-journaux.php"
+       },
+       {
+        "label": "Écritures comptables",
+        "href": "pages/m12-ecritures.php"
+       },
+       {
+        "label": "Dépenses journalières",
+        "href": "pages/m12-depenses.php"
+       },
+       {
+        "label": "Grand livre",
+        "href": "pages/m12-grand-livre.php"
+       },
+       {
+        "label": "Balance générale & âgée",
+        "href": "pages/m12-balance.php"
+       },
+       {
+        "label": "Comptabilité analytique",
+        "href": "pages/m12-analytique.php"
+       },
+       {
+        "label": "Budgets",
+        "href": "pages/m12-budgets.php"
+       },
+       {
+        "label": "Immobilisations & amortissements",
+        "href": "pages/m12-immobilisations.php"
+       },
+       {
+        "label": "Banques & rapprochements",
+        "href": "pages/m12-banques.php"
+       },
+       {
+        "label": "Compte de résultat",
+        "href": "pages/m12-compte-resultat.php"
+       },
+       {
+        "label": "Tableau des flux de trésorerie",
+        "href": "pages/m12-flux-tresorerie.php"
+       },
+       {
+        "label": "Seuil de rentabilité",
+        "href": "pages/m12-seuil-rentabilite.php"
+       },
+       {
+        "label": "États financiers",
+        "href": "pages/m12-etats-financiers.php"
+       },
+       {
+        "label": "Baseline 2025",
+        "href": "pages/m12-baseline-2025.php"
+       },
+       {
+        "label": "Import de la liasse fiscale",
+        "href": "pages/m12-liasse-import.php"
+       },
+       {
+        "label": "Acompte sur impôt (AIB)",
+        "href": "pages/m12-aib.php"
+       },
+       {
+        "label": "Échéances fiscales & paiements",
+        "href": "pages/m12-echeances.php"
+       },
+       {
+        "label": "Exercices & clôtures",
+        "href": "pages/m12-cloture.php"
+       },
+       {
+        "label": "Bilan d’ouverture & à-nouveaux",
+        "href": "pages/m12-ouverture.php"
+       }
+      ]
+     }
+    ],
+    "liensSysteme": []
+   },
+   {
     "titre": "RH",
     "modules": [
      {
@@ -1209,6 +1431,262 @@
        {
         "label": "Historique des éditions",
         "href": "pages/rapports-historique.php"
+       }
+      ]
+     }
+    ],
+    "liensSysteme": []
+   },
+   {
+    "titre": "Système",
+    "modules": [
+     {
+      "titre": "Sécurité & Utilisateurs",
+      "code": "M14",
+      "ecrans": [
+       {
+        "label": "Utilisateurs",
+        "href": "pages/m14-utilisateurs.php"
+       },
+       {
+        "label": "Sécurité des utilisateurs",
+        "href": "pages/m14-securite-utilisateurs.php"
+       },
+       {
+        "label": "Rôles & permissions (RBAC)",
+        "href": "pages/m14-roles.php"
+       },
+       {
+        "label": "Prescripteurs & exécutants de soins",
+        "href": "pages/m14-soignants.php"
+       },
+       {
+        "label": "Sessions actives",
+        "href": "pages/m14-sessions.php"
+       },
+       {
+        "label": "Journal d’audit",
+        "href": "pages/m14-audit.php"
+       },
+       {
+        "label": "Sauvegardes & restauration",
+        "href": "pages/m14-sauvegardes.php"
+       },
+       {
+        "label": "Tâches planifiées",
+        "href": "pages/m14-taches.php"
+       }
+      ]
+     },
+     {
+      "titre": "Configuration Clinique",
+      "code": "CFG",
+      "ecrans": [
+       {
+        "label": "Organisation & organigramme",
+        "href": "pages/cfg-organisation.php"
+       },
+       {
+        "label": "Identité & papier à en-tête",
+        "href": "pages/cfg-branding.php"
+       },
+       {
+        "label": "Tarifs et prix",
+        "href": "pages/cfg-tarifs.php"
+       },
+       {
+        "label": "Catalogue tarifaire (deux prix)",
+        "href": "pages/cfg-catalogue.php"
+       },
+       {
+        "label": "Catalogue de l’imagerie",
+        "href": "pages/cfg-imagerie-catalogue.php"
+       },
+       {
+        "label": "Papier à en-tête officiel",
+        "href": "pages/cfg-entetes.php"
+       },
+       {
+        "label": "Types de pièces certifiantes",
+        "href": "pages/cfg-types-piece.php"
+       },
+       {
+        "label": "Rappels & messages",
+        "href": "pages/cfg-rappels.php"
+       },
+       {
+        "label": "Certificats médicaux",
+        "href": "pages/cfg-certificats.php"
+       },
+       {
+        "label": "Natures de facture",
+        "href": "pages/cfg-natures-facture.php"
+       },
+       {
+        "label": "Centres de coûts",
+        "href": "pages/cfg-centres-couts.php"
+       },
+       {
+        "label": "Règles métier versionnées",
+        "href": "pages/cfg-regles.php"
+       },
+       {
+        "label": "Paramètres fiscaux (IFU / RCCM)",
+        "href": "pages/cfg-fiscalite.php"
+       },
+       {
+        "label": "Paramètres comptables & obligations",
+        "href": "pages/cfg-comptabilite.php"
+       },
+       {
+        "label": "Validations de l’AIB",
+        "href": "pages/cfg-validations-aib.php"
+       },
+       {
+        "label": "Notifications",
+        "href": "pages/cfg-notifications.php"
+       },
+       {
+        "label": "Fiches d’aide de l’assistant",
+        "href": "pages/cfg-fiches-aide.php"
+       },
+       {
+        "label": "Mon compte",
+        "href": "pages/cfg-compte.php"
+       },
+       {
+        "label": "Activité des modules",
+        "href": "pages/cfg-modules.php"
+       },
+       {
+        "label": "Paramètres système",
+        "href": "pages/cfg-systeme.php"
+       },
+       {
+        "label": "Ce poste (mode fileul / mère)",
+        "href": "pages/cfg-poste.php"
+       },
+       {
+        "label": "Échanges entre postes (mode pair)",
+        "href": "pages/cfg-pair.php"
+       },
+       {
+        "label": "Messagerie (SMTP)",
+        "href": "pages/cfg-smtp.php"
+       },
+       {
+        "label": "Export, import et mise à jour",
+        "href": "pages/cfg-base-portable.php"
+       }
+      ]
+     },
+     {
+      "titre": "Importation de données",
+      "code": "IMP",
+      "ecrans": [
+       {
+        "label": "Jeux d’import et historique des lots",
+        "href": "pages/imp-accueil.php"
+       },
+       {
+        "label": "Importation du répertoire patients",
+        "href": "pages/imp-patients.php"
+       },
+       {
+        "label": "Importation du personnel",
+        "href": "pages/imp-personnel.php"
+       },
+       {
+        "label": "Importation du catalogue des actes",
+        "href": "pages/imp-actes.php"
+       },
+       {
+        "label": "Importation du catalogue des analyses",
+        "href": "pages/imp-analyses.php"
+       },
+       {
+        "label": "Importation des fournisseurs",
+        "href": "pages/imp-fournisseurs.php"
+       },
+       {
+        "label": "Importation des compagnies d’assurance",
+        "href": "pages/imp-assureurs.php"
+       },
+       {
+        "label": "Importation des souscripteurs",
+        "href": "pages/imp-souscripteurs.php"
+       },
+       {
+        "label": "Importation du plan comptable",
+        "href": "pages/imp-plan-comptable.php"
+       },
+       {
+        "label": "Importation des soldes d’ouverture",
+        "href": "pages/imp-soldes-ouverture.php"
+       },
+       {
+        "label": "Importation du référentiel produits",
+        "href": "pages/imp-produits.php"
+       },
+       {
+        "label": "Importation du stock détail initial",
+        "href": "pages/imp-stock-detail.php"
+       },
+       {
+        "label": "Importation d’un transfert gros → détail",
+        "href": "pages/imp-transferts.php"
+       },
+       {
+        "label": "Importation d’un comptage d’inventaire",
+        "href": "pages/imp-inventaire.php"
+       },
+       {
+        "label": "Importation des emplacements",
+        "href": "pages/imp-emplacements.php"
+       },
+       {
+        "label": "Importation du registre des courriers",
+        "href": "pages/imp-courriers.php"
+       },
+       {
+        "label": "Importation des natures de facture",
+        "href": "pages/imp-natures-facture.php"
+       },
+       {
+        "label": "Importation des centres de coûts",
+        "href": "pages/imp-centres-couts.php"
+       },
+       {
+        "label": "Importation des unités de mesure",
+        "href": "pages/imp-unites-labo.php"
+       },
+       {
+        "label": "Importation du catalogue de l’imagerie",
+        "href": "pages/imp-catalogue-imagerie.php"
+       },
+       {
+        "label": "Importation des prestataires externes",
+        "href": "pages/imp-prestataires.php"
+       },
+       {
+        "label": "Importation des immobilisations",
+        "href": "pages/imp-immobilisations.php"
+       },
+       {
+        "label": "Importation des budgets",
+        "href": "pages/imp-budgets.php"
+       },
+       {
+        "label": "Importation des garanties des souscripteurs",
+        "href": "pages/imp-garanties.php"
+       },
+       {
+        "label": "Importation des couvertures d’assurance",
+        "href": "pages/imp-couvertures-assurance.php"
+       },
+       {
+        "label": "Importation des prix d’achat",
+        "href": "pages/imp-tarifs-produits.php"
        }
       ]
      }
@@ -1688,487 +2166,9 @@
       "href": "pages/enquete-publique.php"
      }
     ]
-   },
-   {
-    "titre": "Financier",
-    "modules": [
-     {
-      "titre": "Facturation & Caisse",
-      "code": "M8",
-      "ecrans": [
-       {
-        "label": "Tableau de bord facturation",
-        "href": "pages/m8-dashboard.php"
-       },
-       {
-        "label": "Nouvelle facture",
-        "href": "pages/m8-facturation.php"
-       },
-       {
-        "label": "Factures",
-        "href": "pages/m8-factures.php"
-       },
-       {
-        "label": "Factures pro-forma",
-        "href": "pages/m8-proforma.php"
-       },
-       {
-        "label": "Paiements",
-        "href": "pages/m8-paiements.php"
-       },
-       {
-        "label": "Reliquats",
-        "href": "pages/m8-reliquats.php"
-       },
-       {
-        "label": "Remboursements & annulations",
-        "href": "pages/m8-remboursements.php"
-       },
-       {
-        "label": "Factures d’avoir",
-        "href": "pages/m8-facture-avoir.php"
-       },
-       {
-        "label": "État de caisse journalier",
-        "href": "pages/m8-caisse.php"
-       },
-       {
-        "label": "Opérations de caisse",
-        "href": "pages/m8-operations.php"
-       },
-       {
-        "label": "Recettes par période",
-        "href": "pages/m8-recettes.php"
-       }
-      ]
-     },
-     {
-      "titre": "Assurances & Créances",
-      "code": "M9",
-      "ecrans": [
-       {
-        "label": "Tableau de bord assurances",
-        "href": "pages/m9-dashboard.php"
-       },
-       {
-        "label": "Compagnies partenaires",
-        "href": "pages/m9-compagnies.php"
-       },
-       {
-        "label": "Assurés & cartes",
-        "href": "pages/m9-assures.php"
-       },
-       {
-        "label": "Conventions & garanties",
-        "href": "pages/m9-conventions.php"
-       },
-       {
-        "label": "Prises en charge",
-        "href": "pages/m9-prises-en-charge.php"
-       },
-       {
-        "label": "Factures mensuelles assureur",
-        "href": "pages/m9-factures-assureur.php"
-       },
-       {
-        "label": "Facture mère assurance",
-        "href": "pages/m9-facture-mere.php"
-       },
-       {
-        "label": "Historique par assureur",
-        "href": "pages/m9-historique.php"
-       },
-       {
-        "label": "Créances",
-        "href": "pages/m9-creances.php"
-       },
-       {
-        "label": "Relances",
-        "href": "pages/m9-relances.php"
-       }
-      ]
-     },
-     {
-      "titre": "MECeF — Facture normalisée",
-      "code": "MECEF",
-      "ecrans": [
-       {
-        "label": "Tableau de bord fiscal",
-        "href": "pages/mecef-dashboard.php"
-       },
-       {
-        "label": "Factures normalisées",
-        "href": "pages/mecef-factures.php"
-       },
-       {
-        "label": "Transmission & réponses",
-        "href": "pages/mecef-transmission.php"
-       },
-       {
-        "label": "Avoirs & annulations",
-        "href": "pages/mecef-avoirs.php"
-       },
-       {
-        "label": "Journal des transactions",
-        "href": "pages/mecef-journal.php"
-       },
-       {
-        "label": "Configuration fiscale",
-        "href": "pages/mecef-config.php"
-       }
-      ]
-     },
-     {
-      "titre": "Comptabilité SYSCOHADA",
-      "code": "M12",
-      "ecrans": [
-       {
-        "label": "Tableau de bord comptable",
-        "href": "pages/m12-dashboard.php"
-       },
-       {
-        "label": "Plan comptable OHADA",
-        "href": "pages/m12-plan-comptable.php"
-       },
-       {
-        "label": "Journaux comptables",
-        "href": "pages/m12-journaux.php"
-       },
-       {
-        "label": "Écritures comptables",
-        "href": "pages/m12-ecritures.php"
-       },
-       {
-        "label": "Dépenses journalières",
-        "href": "pages/m12-depenses.php"
-       },
-       {
-        "label": "Grand livre",
-        "href": "pages/m12-grand-livre.php"
-       },
-       {
-        "label": "Balance générale & âgée",
-        "href": "pages/m12-balance.php"
-       },
-       {
-        "label": "Comptabilité analytique",
-        "href": "pages/m12-analytique.php"
-       },
-       {
-        "label": "Budgets",
-        "href": "pages/m12-budgets.php"
-       },
-       {
-        "label": "Immobilisations & amortissements",
-        "href": "pages/m12-immobilisations.php"
-       },
-       {
-        "label": "Banques & rapprochements",
-        "href": "pages/m12-banques.php"
-       },
-       {
-        "label": "Compte de résultat",
-        "href": "pages/m12-compte-resultat.php"
-       },
-       {
-        "label": "Tableau des flux de trésorerie",
-        "href": "pages/m12-flux-tresorerie.php"
-       },
-       {
-        "label": "Seuil de rentabilité",
-        "href": "pages/m12-seuil-rentabilite.php"
-       },
-       {
-        "label": "États financiers",
-        "href": "pages/m12-etats-financiers.php"
-       },
-       {
-        "label": "Baseline 2025",
-        "href": "pages/m12-baseline-2025.php"
-       },
-       {
-        "label": "Import de la liasse fiscale",
-        "href": "pages/m12-liasse-import.php"
-       },
-       {
-        "label": "Acompte sur impôt (AIB)",
-        "href": "pages/m12-aib.php"
-       },
-       {
-        "label": "Échéances fiscales & paiements",
-        "href": "pages/m12-echeances.php"
-       },
-       {
-        "label": "Exercices & clôtures",
-        "href": "pages/m12-cloture.php"
-       },
-       {
-        "label": "Bilan d’ouverture & à-nouveaux",
-        "href": "pages/m12-ouverture.php"
-       }
-      ]
-     }
-    ],
-    "liensSysteme": []
-   },
-   {
-    "titre": "Système",
-    "modules": [
-     {
-      "titre": "Sécurité & Utilisateurs",
-      "code": "M14",
-      "ecrans": [
-       {
-        "label": "Utilisateurs",
-        "href": "pages/m14-utilisateurs.php"
-       },
-       {
-        "label": "Sécurité des utilisateurs",
-        "href": "pages/m14-securite-utilisateurs.php"
-       },
-       {
-        "label": "Rôles & permissions (RBAC)",
-        "href": "pages/m14-roles.php"
-       },
-       {
-        "label": "Prescripteurs & exécutants de soins",
-        "href": "pages/m14-soignants.php"
-       },
-       {
-        "label": "Sessions actives",
-        "href": "pages/m14-sessions.php"
-       },
-       {
-        "label": "Journal d’audit",
-        "href": "pages/m14-audit.php"
-       },
-       {
-        "label": "Sauvegardes & restauration",
-        "href": "pages/m14-sauvegardes.php"
-       },
-       {
-        "label": "Tâches planifiées",
-        "href": "pages/m14-taches.php"
-       }
-      ]
-     },
-     {
-      "titre": "Configuration Clinique",
-      "code": "CFG",
-      "ecrans": [
-       {
-        "label": "Organisation & organigramme",
-        "href": "pages/cfg-organisation.php"
-       },
-       {
-        "label": "Identité & papier à en-tête",
-        "href": "pages/cfg-branding.php"
-       },
-       {
-        "label": "Tarifs et prix",
-        "href": "pages/cfg-tarifs.php"
-       },
-       {
-        "label": "Catalogue tarifaire (deux prix)",
-        "href": "pages/cfg-catalogue.php"
-       },
-       {
-        "label": "Catalogue de l’imagerie",
-        "href": "pages/cfg-imagerie-catalogue.php"
-       },
-       {
-        "label": "Papier à en-tête officiel",
-        "href": "pages/cfg-entetes.php"
-       },
-       {
-        "label": "Types de pièces certifiantes",
-        "href": "pages/cfg-types-piece.php"
-       },
-       {
-        "label": "Rappels & messages",
-        "href": "pages/cfg-rappels.php"
-       },
-       {
-        "label": "Certificats médicaux",
-        "href": "pages/cfg-certificats.php"
-       },
-       {
-        "label": "Natures de facture",
-        "href": "pages/cfg-natures-facture.php"
-       },
-       {
-        "label": "Centres de coûts",
-        "href": "pages/cfg-centres-couts.php"
-       },
-       {
-        "label": "Règles métier versionnées",
-        "href": "pages/cfg-regles.php"
-       },
-       {
-        "label": "Paramètres fiscaux (IFU / RCCM)",
-        "href": "pages/cfg-fiscalite.php"
-       },
-       {
-        "label": "Paramètres comptables & obligations",
-        "href": "pages/cfg-comptabilite.php"
-       },
-       {
-        "label": "Validations de l’AIB",
-        "href": "pages/cfg-validations-aib.php"
-       },
-       {
-        "label": "Notifications",
-        "href": "pages/cfg-notifications.php"
-       },
-       {
-        "label": "Fiches d’aide de l’assistant",
-        "href": "pages/cfg-fiches-aide.php"
-       },
-       {
-        "label": "Mon compte",
-        "href": "pages/cfg-compte.php"
-       },
-       {
-        "label": "Activité des modules",
-        "href": "pages/cfg-modules.php"
-       },
-       {
-        "label": "Paramètres système",
-        "href": "pages/cfg-systeme.php"
-       },
-       {
-        "label": "Ce poste (mode fileul / mère)",
-        "href": "pages/cfg-poste.php"
-       },
-       {
-        "label": "Échanges entre postes (mode pair)",
-        "href": "pages/cfg-pair.php"
-       },
-       {
-        "label": "Messagerie (SMTP)",
-        "href": "pages/cfg-smtp.php"
-       },
-       {
-        "label": "Export, import et mise à jour",
-        "href": "pages/cfg-base-portable.php"
-       }
-      ]
-     },
-     {
-      "titre": "Importation de données",
-      "code": "IMP",
-      "ecrans": [
-       {
-        "label": "Jeux d’import et historique des lots",
-        "href": "pages/imp-accueil.php"
-       },
-       {
-        "label": "Importation du répertoire patients",
-        "href": "pages/imp-patients.php"
-       },
-       {
-        "label": "Importation du personnel",
-        "href": "pages/imp-personnel.php"
-       },
-       {
-        "label": "Importation du catalogue des actes",
-        "href": "pages/imp-actes.php"
-       },
-       {
-        "label": "Importation du catalogue des analyses",
-        "href": "pages/imp-analyses.php"
-       },
-       {
-        "label": "Importation des fournisseurs",
-        "href": "pages/imp-fournisseurs.php"
-       },
-       {
-        "label": "Importation des compagnies d’assurance",
-        "href": "pages/imp-assureurs.php"
-       },
-       {
-        "label": "Importation des souscripteurs",
-        "href": "pages/imp-souscripteurs.php"
-       },
-       {
-        "label": "Importation du plan comptable",
-        "href": "pages/imp-plan-comptable.php"
-       },
-       {
-        "label": "Importation des soldes d’ouverture",
-        "href": "pages/imp-soldes-ouverture.php"
-       },
-       {
-        "label": "Importation du référentiel produits",
-        "href": "pages/imp-produits.php"
-       },
-       {
-        "label": "Importation du stock détail initial",
-        "href": "pages/imp-stock-detail.php"
-       },
-       {
-        "label": "Importation d’un transfert gros → détail",
-        "href": "pages/imp-transferts.php"
-       },
-       {
-        "label": "Importation d’un comptage d’inventaire",
-        "href": "pages/imp-inventaire.php"
-       },
-       {
-        "label": "Importation des emplacements",
-        "href": "pages/imp-emplacements.php"
-       },
-       {
-        "label": "Importation du registre des courriers",
-        "href": "pages/imp-courriers.php"
-       },
-       {
-        "label": "Importation des natures de facture",
-        "href": "pages/imp-natures-facture.php"
-       },
-       {
-        "label": "Importation des centres de coûts",
-        "href": "pages/imp-centres-couts.php"
-       },
-       {
-        "label": "Importation des unités de mesure",
-        "href": "pages/imp-unites-labo.php"
-       },
-       {
-        "label": "Importation du catalogue de l’imagerie",
-        "href": "pages/imp-catalogue-imagerie.php"
-       },
-       {
-        "label": "Importation des prestataires externes",
-        "href": "pages/imp-prestataires.php"
-       },
-       {
-        "label": "Importation des immobilisations",
-        "href": "pages/imp-immobilisations.php"
-       },
-       {
-        "label": "Importation des budgets",
-        "href": "pages/imp-budgets.php"
-       },
-       {
-        "label": "Importation des garanties des souscripteurs",
-        "href": "pages/imp-garanties.php"
-       },
-       {
-        "label": "Importation des couvertures d’assurance",
-        "href": "pages/imp-couvertures-assurance.php"
-       },
-       {
-        "label": "Importation des prix d’achat",
-        "href": "pages/imp-tarifs-produits.php"
-       }
-      ]
-     }
-    ],
-    "liensSysteme": []
    }
   ],
-  "pied": "353 écrans métier recensés au manifeste, plus 23 pages d’accès et système.",
+  "pied": "355 écrans métier recensés au manifeste, plus 23 pages d’accès et système.",
   "retour": "Retour à l’application",
   "homeAdmin": "dash-admin"
  },
@@ -2180,7 +2180,7 @@
    },
    {
     "label": "Écrans disponibles",
-    "valeur": "353"
+    "valeur": "355"
    },
    {
     "label": "Règles de gestion appliquées",
@@ -2189,10 +2189,6 @@
    {
     "label": "Profils d’utilisateur",
     "valeur": "25"
-   },
-   {
-    "label": "Écrans disponibles",
-    "valeur": "354"
    }
   ],
   "faq": [
