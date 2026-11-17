@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('imprimante de caisse : trois réglages de clinique', () {
-    test('famille mecef (geste reglage_mecef), jamais vers un téléphone, sourcés : modèle et interface VIDES, largeur 80 mm', () {
+    test('famille mecef (geste reglage_mecef), jamais vers un téléphone, sourcés : modèle = le boîtier MECeF, interface VIDE, largeur 80 mm', () {
       final defs = {for (final c in [cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface]) c: definitionDeParametre(c)!};
       for (final d in defs.values) {
         expect(d.famille, 'mecef', reason: d.cle);
@@ -14,7 +14,7 @@ void main() {
         expect(d.source, contains('à valider'), reason: d.cle);
         expect(Parametres.validerFiche(Parametres.semer(d), const [], const []), isNull, reason: d.cle);
       }
-      expect(defs[cleImprimanteModele]!.defaut, '', reason: 'aucun modèle fourni pour Baguidi : jamais un modèle supposé');
+      expect(defs[cleImprimanteModele]!.defaut, mecefModeleBoitierDefaut, reason: 'le boîtier MECeF ELTRADE CC300 est aussi l\'imprimante de caisse (décision du 17/11/2026) : une seule machine, un seul libellé');
       expect(defs[cleImprimanteInterface]!.defaut, '');
       expect(defs[cleImprimanteLargeurPapier]!.type, TypeParametre.entier);
       expect(defs[cleImprimanteLargeurPapier]!.defaut, 80);

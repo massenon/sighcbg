@@ -21,9 +21,9 @@ import 'qual_commun.dart';
 import 'qual_publique.dart';
 import 'qual_qr.dart';
 
-/// L'adresse du serveur qui sert la page publique d'une enquête. Le poste ne connaît pas l'adresse de la clinique sur le réseau : en exploitation, c'est
-/// celle du serveur de la clinique ou du relais qui doit être communiquée (E574). Remplaçable par la configuration du poste.
-String adresseDesLiens = 'http://serveur-clinique';
+/// L'adresse du serveur qui sert la page publique d'une enquête : le RÉGLAGE `qualite.adresseLiensEnquete` (version datée en vigueur, sinon le nom générique d'attente). Le poste ne
+/// connaît pas l'adresse de la clinique sur le réseau : en exploitation, c'est celle du serveur de la clinique ou du relais qui doit être communiquée (E574) aux Paramètres.
+String get adresseDesLiens => ListesReference.texte('qualite.adresseLiensEnquete').replaceFirst(RegExp(r'/+$'), '');
 
 /// `lienDuJeton(code)` : l'adresse de la page publique — le jeton, jamais l'identifiant de l'enquête.
 String lienDuJeton(String code) => '$adresseDesLiens/enquete-publique.php?jeton=${Uri.encodeQueryComponent(code)}';

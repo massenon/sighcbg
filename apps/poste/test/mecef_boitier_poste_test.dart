@@ -116,18 +116,19 @@ void main() {
   test('l’imprimante se LIT au registre : modèle et interface « à renseigner », papier 80 mm semé ; une version datée les règle', () {
     final m = magasin();
     final i = imprimanteCaisseDuPoste(m, aujourdhui);
-    expect([i.modele, i.interface, i.largeurMm, i.aRenseigner], [null, null, 80, true]);
+    expect([i.modele, i.interface, i.largeurMm, i.aRenseigner], ['ELTRADE CC300', null, 80, true]);
     final s = serviceParametres(m, auteur: () => 'DAF', horloge: () => aujourdhui);
     expect(s.regler(cleImprimanteLargeurPapier, 58, parametreDateIso(aujourdhui), motif: 'essai').ok, isTrue);
     expect(imprimanteCaisseDuPoste(m, aujourdhui).largeurMm, 58);
   });
 
-  casM14('« Imprimante de caisse » : « à renseigner », à valider, 80 mm ; réglée sous le droit « configuration MECeF », la largeur passe à l’aperçu du ticket', (t) async {
+  casM14('« Imprimante de caisse » : le boîtier ELTRADE CC300, interface « à renseigner », à valider, 80 mm ; réglée sous le droit « configuration MECeF », la largeur passe à l’aperçu du ticket', (t) async {
     final m = magasin();
     await ouvrirM14(t, m, 'mecef-config', horloge: aujourdhui);
     final carte = find.byKey(const Key('mecef:imprimante'));
     expect(carte, findsOneWidget);
-    expect(find.descendant(of: carte, matching: find.text('à renseigner')), findsNWidgets(2));
+    expect(find.descendant(of: carte, matching: find.text('à renseigner')), findsOneWidget, reason: 'le modèle est celui du boîtier (une seule machine) ; seule l\'interface reste à renseigner');
+    expect(find.descendant(of: carte, matching: find.text('ELTRADE CC300')), findsWidgets, reason: 'le modèle est prérempli dans le champ de saisie et affiché');
     expect(find.descendant(of: carte, matching: find.text('80 mm')), findsOneWidget);
     expect(find.descendant(of: carte, matching: find.text('À valider : à renseigner par la clinique')), findsOneWidget);
     expect(find.descendant(of: carte, matching: find.textContaining('aucun pilote d’impression n’est branché')), findsOneWidget);

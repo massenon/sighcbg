@@ -66,7 +66,7 @@ List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String no
   final peut = p.peutTrancher(nom, r);
   if (peut.refus != null) return const [];
   final def = rhbDefPiece(nom);
-  final etape = peut.etape == 'daf' ? 'la directrice administrative' : 'le surveillant';
+  final etape = nomEtapeRh[peut.etape] ?? 'le validateur du circuit';
   return [
     BoutonIcone(
         icone: LucideIcons.check,

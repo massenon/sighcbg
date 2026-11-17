@@ -68,7 +68,7 @@ Mention légale : CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 —
 | adresse géographique (champ nouveau, absent de `IdentiteClinique`) | Quartier Zongo II, Parakou |
 | `bp` | 02 BP : 105 PARAKOU (Rép. du Bénin) |
 | `telephones` | 95 74 69 56 · 95 95 99 14 · 97 09 34 99 |
-| `email` | cliniquebaguidi@yahoo.fr |
+| `email` | contact@cliniquebaguidi.com |
 | `ifu` | 3201001996110 |
 | `rccm` | RB/PKO/17 A 4240 du 19/03/2009 |
 | `mentionLegale` | dérivée : `CLINIQUE BAGUIDI « L'AS DE CŒUR » — IFU 3201001996110 — RCCM RB/PKO/17 A 4240 du 19/03/2009.` |
@@ -311,7 +311,7 @@ Refaire `acc_gabarit.dart` / `acc_ecrans.dart` sur la maquette fournie. Une cart
 Ce que la maquette tranche, et ce qu'elle laisse ouvert :
 - **Q18 en partie tranchée** : la marque est **bleue** (panneau, titres) et le **bouton d'action principal de la connexion est rouge**. Reste à décider si les boutons principaux des 300 écrans suivent ce rouge (et les erreurs passent alors sur un rouge plus sombre avec icône obligatoire), ou si le rouge reste propre à la connexion et à la marque. Recommandation inchangée : boutons de l'application en bleu, rouge réservé à la connexion, au logo et aux alertes.
 - **Polices** : trois familles (titres géométriques, corps de texte, devise manuscrite). Elles doivent être **embarquées dans le poste** (`apps/poste/assets/polices/`), aucune requête réseau : le poste fonctionne hors ligne. Noms exacts des polices à obtenir du concepteur de la maquette (Q19) ; à défaut, équivalents libres de licence.
-- **L'identifiant a la forme d'une adresse** (`m-001@baguidi-clinique.bj`) : le poste actuel connecte par identifiant de compte. Q20 : est-ce un exemple décoratif ou une règle de nommage des comptes ? Le domaine `baguidi-clinique.bj` diffère de l'e-mail officiel (`cliniquebaguidi@yahoo.fr`).
+- **L'identifiant a la forme d'une adresse** (`m-001@baguidi-clinique.bj`) : le poste actuel connecte par identifiant de compte. Q20 : est-ce un exemple décoratif ou une règle de nommage des comptes ? Le domaine `baguidi-clinique.bj` diffère de l'e-mail officiel (`contact@cliniquebaguidi.com`).
 - **« Mot de passe oublié ? »** se branche sur le mécanisme existant (code de secours et coffre de récupération du poste) ; il ne doit pas promettre un envoi par courriel si le relais SMTP n'est pas configuré.
 - **« Se souvenir de ce poste »** existe-t-il dans le poste de base ? À vérifier ; sinon, il ne retient que l'identifiant, jamais le mot de passe.
 - **Responsive** : sous la largeur d'une tablette, le panneau bleu passe au-dessus et se réduit à l'en-tête et au titre.

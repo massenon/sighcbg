@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show IdentiteClinique;
 
 import '../../core/jetons_shell.dart';
 import '../../kit/kit.dart';
@@ -37,8 +38,8 @@ const _libellesEtapes = {
 };
 
 /// La configuration proposée tant que rien n'est enregistré (valeurs NON secrètes). La Clinique Baguidi n'a pas encore fourni de serveur de courriel :
-/// serveur, identifiant et expéditeur restent VIDES (à renseigner) ; la réponse va à l'adresse de l'en-tête. Le mot de passe n'y figure pas : il se saisit.
-const Map<String, Object?> smtpDefauts = {
+/// serveur, identifiant et expéditeur restent VIDES (à renseigner) ; la réponse va à l'adresse de l'en-tête (l'e-mail de l'IDENTITÉ de la clinique, jamais une adresse écrite ici). Le mot de passe n'y figure pas : il se saisit.
+Map<String, Object?> get smtpDefauts => {
   'serveur': '',
   'port': 587,
   'chiffrement': 'starttls',
@@ -46,7 +47,7 @@ const Map<String, Object?> smtpDefauts = {
   'identifiant': '',
   'expediteur': '',
   'nom': 'Clinique Baguidi',
-  'repondreA': 'cliniquebaguidi@yahoo.fr',
+  'repondreA': IdentiteClinique.email,
   'repondreNom': 'Clinique Baguidi',
 };
 

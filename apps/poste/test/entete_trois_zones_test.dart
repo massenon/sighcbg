@@ -35,7 +35,7 @@ void main() {
       '02 BP : 105 PARAKOU (Rép. du Bénin)',
       'Téléphones : 95 74 69 56 / 95 95 99 14 / 97 09 34 99',
       'IFU : 3201001996110 du 26 novembre 2010',
-      'E-mail : cliniquebaguidi@yahoo.fr',
+      'E-mail : contact@cliniquebaguidi.com',
       'Quartier Zongo II, Parakou — République du Bénin',
       'RCCM : RB/PKO/17 A 4240',
       'N° d’enregistrement ONMB : 0416/ONMB/ATL/2002',

@@ -18,6 +18,8 @@
 // Le lot ORG2 a branché `securite.delaiVerrouPosteSecours` (`src/securite/verrou_secours.dart`, lu par le verrou de session d'un poste désigné de secours).
 // Aucune de ces définitions n'est envoyée au téléphone (`mobile: false`) : la liste blanche est vide tant qu'un lot ne démontre pas le besoin (RG-13).
 
+import '../acces/acc_support.dart' show accEditeurAuteurSemence, accEditeurEmailsSemence, accEditeurTelephoneSemence, accEditeurHorairesSemence, accEditeurVersionSemence;
+import '../mecef/mode.dart' show mecefModeleBoitierDefaut;
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
@@ -55,7 +57,7 @@ const List<DefinitionParametre> definitionsParametres = [
     cle: 'mecef.modeleBoitier',
     famille: 'mecef',
     type: TypeParametre.texte,
-    defaut: 'ELTRADE CC300',
+    defaut: mecefModeleBoitierDefaut,
     libelle: 'Modèle du boîtier MECeF',
     aide: 'Le modèle de l\'appareil de certification (mode « Boîtier physique »). Il nomme l\'appareil à l\'écran, sur la pièce et au journal MECeF ; il ne branche aucun protocole : l\'adaptateur reste non configuré tant que l\'éditeur du boîtier n\'a pas fourni son intégration.',
     source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md) : le boîtier MECeF de Baguidi est un ELTRADE CC300',
@@ -63,17 +65,17 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Configuration MECeF, pièce et journal MECeF',
   ),
   // L'IMPRIMANTE DE CAISSE (décision de la Direction de Baguidi du 16/11/2026, E3761) : trois réglages de CLINIQUE de la famille `mecef` (réglés sous le geste
-  // `reglage_mecef`, à l'écran « Configuration fiscale »). AUCUN modèle n'est fourni pour Baguidi : modèle et interface sont semés VIDES (« à renseigner », à
+  // `reglage_mecef`, à l'écran « Configuration fiscale »). le modèle est celui du boîtier MECeF (ELTRADE CC300, décision du 17/11/2026 : une seule machine, deux fonctions) ; l'interface est semée VIDE (« à renseigner », à
   // valider) ; la largeur est semée à 80 mm, le gabarit du ticket de la maquette, à valider. Ils DÉCRIVENT l'appareil, ils ne branchent aucun pilote d'impression :
   // seule la largeur est lue, par l'aperçu et le PDF du ticket de caisse (`src/mecef/imprimante_caisse.dart`).
   DefinitionParametre(
     cle: cleImprimanteModele,
     famille: 'mecef',
     type: TypeParametre.texte,
-    defaut: '',
+    defaut: mecefModeleBoitierDefaut,
     libelle: 'Imprimante de caisse — modèle',
-    aide: 'Le modèle de l\'imprimante du ticket de caisse. Aucun modèle n\'est fourni pour Baguidi : à renseigner par la clinique. Il décrit l\'appareil, il ne branche aucun pilote d\'impression.',
-    source: 'Décision de la Direction de Baguidi du 16/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §8) : aucun modèle fourni, valeur à renseigner, à valider',
+    aide: 'Le modèle de l\'imprimante du ticket de caisse : le boîtier MECeF (ELTRADE CC300) est AUSSI l\'imprimante de caisse, une seule machine pour deux fonctions (ticket de 80 mm). À corriger si la clinique ajoute une autre imprimante. Il décrit l\'appareil, il ne branche aucun pilote d\'impression.',
+    source: 'Décision de la Direction de Baguidi du 17/11/2026 (docs/prd/DECISIONS-16-11-ASSISTANT-AI-AK.md, §11, qui complète celle du 16/11/2026) : le boîtier ELTRADE CC300 est à la fois le MECeF et l\'imprimante de caisse ; à valider',
     branche: true,
     appliquePar: 'Configuration fiscale (affiché)',
   ),
@@ -1058,6 +1060,7 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'Console du poste mère (intégrité)',
   ),
+
   // --- LES LISTES DE RÉFÉRENCE QUI VIVAIENT EN CODE (lot « listes de référence » de l'inventaire des valeurs en dur, une sous-étape par module) : un réglage `texte` daté,
   // valeurs séparées par un point-virgule, lu par `ListesReference.valeurs` (domaine) — jamais une constante. La liste d'attente est CE défaut : un seul endroit la dit.
   DefinitionParametre(
@@ -1643,6 +1646,74 @@ const List<DefinitionParametre> definitionsParametres = [
     branche: true,
     appliquePar: 'qual_enquetes.dart',
   ),
+  // --- LE CONTACT DE L'ÉDITEUR (écran d'aide et contact, lot « coordonnées ») : des coordonnées, donc des réglages datés, jamais un littéral de l'écran. Reprises de la maquette (EDITEUR).
+  DefinitionParametre(
+    cle: 'support.editeurAuteur',
+    famille: 'support',
+    type: TypeParametre.texte,
+    defaut: accEditeurAuteurSemence,
+    libelle: 'Contact de l\'éditeur : nom',
+    aide: 'Le nom affiché à l\'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Aide et contact éditeur (acc_support)',
+  ),
+  DefinitionParametre(
+    cle: 'support.editeurEmails',
+    famille: 'support',
+    type: TypeParametre.texte,
+    defaut: accEditeurEmailsSemence,
+    libelle: 'Contact de l\'éditeur : adresses e-mail',
+    aide: 'Les adresses de l\'éditeur, séparées par un point-virgule (la première reçoit le message d\'aide). Valeur reprise de la maquette, à confirmer par la Direction.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Aide et contact éditeur (acc_support)',
+  ),
+  DefinitionParametre(
+    cle: 'support.editeurTelephone',
+    famille: 'support',
+    type: TypeParametre.texte,
+    defaut: accEditeurTelephoneSemence,
+    libelle: 'Contact de l\'éditeur : téléphone',
+    aide: 'Le numéro affiché à l\'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Aide et contact éditeur (acc_support)',
+  ),
+  DefinitionParametre(
+    cle: 'support.editeurHoraires',
+    famille: 'support',
+    type: TypeParametre.texte,
+    defaut: accEditeurHorairesSemence,
+    libelle: 'Contact de l\'éditeur : horaires',
+    aide: 'Les horaires de l\'éditeur affichés à l\'écran « Aide et contact éditeur ». Valeur reprise de la maquette, à confirmer par la Direction.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Aide et contact éditeur (acc_support)',
+  ),
+  DefinitionParametre(
+    cle: 'support.versionAffichee',
+    famille: 'support',
+    type: TypeParametre.texte,
+    defaut: accEditeurVersionSemence,
+    libelle: 'Libellé de version affiché à l\'écran d\'aide',
+    aide: 'Le libellé de version que l\'écran d\'aide donne à l\'éditeur. Valeur reprise de la maquette, à confirmer par la Direction.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Aide et contact éditeur (acc_support)',
+  ),
+  // --- L'ADRESSE DES LIENS D'ENQUÊTE (partage d'une fiche d'enquête à un tiers) : l'adresse du serveur de la clinique que le tiers joint DANS la clinique (Wi-Fi, tablette).
+  DefinitionParametre(
+    cle: 'qualite.adresseLiensEnquete',
+    famille: 'qualite',
+    type: TypeParametre.texte,
+    defaut: 'http://serveur-clinique',
+    libelle: 'Adresse du serveur pour les liens d\'enquête',
+    aide: 'L\'adresse (http://…) sur laquelle la clinique joint son serveur local ; elle commence tout lien de partage d\'une fiche d\'enquête. Valeur d\'attente : le nom générique « serveur-clinique », à remplacer par l\'adresse réelle du poste mère.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Enquêtes de satisfaction (m13)',
+  ),
 ];
 
 /// La clé du réglage « encaisser le reste d'une facture qui a une ligne sans prix » (Non par défaut).
@@ -1681,6 +1752,7 @@ const Map<String, String> libellesFamillesParametres = {
   'specialites': 'Spécialités',
   'consultation': 'Consultation et agenda',
   'mere': 'Console du poste mère',
+  'support': 'Contact de l\'éditeur',
   'listes_m4': 'Listes de référence — M4 Maternité',
   'listes_m1': 'Listes de référence — M1 Patients',
   'listes_m2': 'Listes de référence — M2 Consultations',
