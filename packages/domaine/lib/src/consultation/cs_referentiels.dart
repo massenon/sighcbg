@@ -137,9 +137,10 @@ List<SyntheseExamen> csSyntheseExamen(Map<String, Object?>? examens) {
 }
 
 /// `D.peutEcrireRubrique(rubrique, capacite)` : les rubriques chirurgicales ne s'ÉCRIVENT que par le chirurgien — mais se lisent par tous.
-({bool ok, String? motif}) csPeutEcrireRubrique(String rubrique, String capacite) {
+/// Deux portes : la FONCTION de l'agent (axe `D.CAPACITES`) et le GESTE réservé `rubriques_chirurgicales` ([parGeste], lu dans la matrice en force par l'appelant, jamais déduit du nom du rôle).
+({bool ok, String? motif}) csPeutEcrireRubrique(String rubrique, String capacite, {bool parGeste = false}) {
   if (!csRubriquesChirurgicales.contains(rubrique)) return (ok: true, motif: null);
-  if (capacite == 'chirurgien') return (ok: true, motif: null);
+  if (parGeste || capacite == 'chirurgien') return (ok: true, motif: null);
   return (
     ok: false,
     motif:

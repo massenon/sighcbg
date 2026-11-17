@@ -9,6 +9,7 @@ import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
+import '../../shell/gestes_ecran.dart' show gestePeutEcran;
 
 /// La consultation (M2, zone 2) : ce que partagent le registre des consultations, les dossiers, la fiche, les ordonnances, les prescriptions
 /// et la salle de soins. Toute la décision vit dans `packages/domaine/lib/src/consultation/`, rejouée sur les vecteurs des écrans réels.
@@ -87,7 +88,8 @@ SessionCs sessionDe(ContexteEcran c) {
   // A1 / D1 : la fonction et le SECTEUR viennent de l'agent de la session (dossier RH). Le secteur est celui que porte la demande d'analyse ou d'imagerie
   // quand la prescription n'en désigne pas : sans lui, aucune sage-femme ne voit rien (RBAC métier). Sans agent nominatif : comportement antérieur.
   final a = acteur(c);
-  return SessionCs(role: c.role, fonction: a.fonction ?? c.role, secteur: libelleSecteur(a.secteur));
+  // Les rubriques chirurgicales ne se décident PAS sur le nom du rôle : le geste réservé `rubriques_chirurgicales` (fiche de rôle) les ouvre.
+  return SessionCs(role: c.role, fonction: a.fonction ?? c.role, secteur: libelleSecteur(a.secteur), rubriquesChirurgicales: gestePeutEcran(c, gesteRubriquesChirurgicales));
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -601,7 +603,7 @@ PieceA4 pieceOrdonnance(ContexteEcran c, Fiche r) {
     ],
     signatures: [
       Signature('Le Médecin prescripteur', nom: '${r['medecin']}', mention: 'Signature et cachet'),
-      const Signature('Le Pharmacien', mention: 'Dispensation'),
+      const Signature('Le Pharmacien', mention: 'Dispensation', qualite: PaiQualite.pharmacien),
     ],
   );
 }
