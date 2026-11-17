@@ -34,7 +34,9 @@ void main() {
           'cle': d.cle,
           'famille': d.famille,
           'type': d.type.name,
-          'defaut': d.defaut is Duration ? '${d.defaut}' : d.defaut,
+          // Un réglage de CONTACT (coordonnées de personnes) ne livre JAMAIS sa valeur d'attente à l'annexe : « à renseigner par la clinique » (E4704).
+          'defaut': d.cle.startsWith('support.editeur') ? '' : (d.defaut is Duration ? '${d.defaut}' : d.defaut),
+          if (d.cle.startsWith('support.editeur')) 'contact': true,
           'libelle': d.libelle,
           'choix': d.choix,
           'libellesChoix': d.libellesChoix,

@@ -272,7 +272,7 @@ class _EtatConnexion extends State<EcranConnexion> {
                   variante: VarianteBouton.secondaire,
                   icone: LucideIcons.lifeBuoy,
                   // La page « Contactez l'éditeur » est un écran de la coque, qui exige une session : avant la connexion, la modale donne les coordonnées.
-                  onPressed: () => ToastsSigh.afficher(context, 'Écrire à l’éditeur : ${(accEditeur['emails'] as List).join(' · ')}',
+                  onPressed: () => ToastsSigh.afficher(context, 'Écrire à l’éditeur : $accEditeurAdressesAffichees',
                       detail: '${accEditeur['telephone']} — ${accEditeur['horaires']}')),
               BoutonSigh(libelle: 'Fermer', onPressed: fermer),
             ]);

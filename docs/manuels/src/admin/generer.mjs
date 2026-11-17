@@ -66,6 +66,8 @@ function preparer({ cibles, references, marqueurs }) {
     const parFamille = {};
     for (const p of references.parametres) (parFamille[p.famille] ||= []).push(p);
     const val = (p) => {
+      // Un réglage de contact n'affiche jamais de valeur d'attente (E4704) : la clinique la renseigne.
+      if (p.contact || String(p.cle).startsWith('support.editeur')) return '<em>à renseigner par la clinique</em>';
       if (p.defaut === '' || p.defaut === null) return '<em>vide</em>';
       if (p.defaut === true) return 'oui';
       if (p.defaut === false) return 'non';

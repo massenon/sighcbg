@@ -67,7 +67,6 @@ const EXEMPLES_TOLERES = new Set([
   'apps/poste/lib/modules/m5/dem_registre.dart',
   'apps/poste/lib/modules/mere/mra_affectation.dart',
   'apps/poste/lib/modules/mere/mra_supervision.dart',
-  'packages/domaine/lib/src/acces/acc_support.dart',
   'packages/domaine/lib/src/configuration/cfa_regles.dart',
   'packages/domaine/lib/src/format/recherche.dart',
   'packages/domaine/lib/src/import/jeux_import.dart',

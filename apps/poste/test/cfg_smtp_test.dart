@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sigh_domaine/sigh_domaine.dart' show ListesReference, Parametre, definitionDeParametre;
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/sync/config_pair.dart';
@@ -231,7 +232,13 @@ void main() {
     expect(find.text('Message enregistré dans le logiciel.'), findsOneWidget);
     expect(find.textContaining('Aucun courriel n’a été envoyé à l’éditeur.'), findsOneWidget);
 
-    // avec une messagerie configurée ET testée
+    // avec une messagerie configurée ET testée, et une adresse d'éditeur RENSEIGNÉE par la clinique (E4704 : aucune adresse de personne n'est semée ; l'adresse ci-dessous est un exemple de test)
+    const cleEmails = 'support.editeurEmails';
+    final defEmails = definitionDeParametre(cleEmails)!;
+    ListesReference.brancher(() => [
+          {...Parametre(cle: cleEmails, famille: defEmails.famille, type: defEmails.type, valeur: 'editeur@exemple.test', defaut: defEmails.defaut, dateEffet: '2000-01-01', version: 1, auteur: 'Test', motif: 'essai', creeLe: '2000-01-01T00:00:00.000').toJson()}
+        ]);
+    addTearDown(ListesReference.debrancher);
     final p = (await t.runAsync(demarrer))!;
     addTearDown(p.fermer);
     ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'starttls', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', nom: 'Clinique Baguidi', repondreA: 'contact@cliniquebaguidi.com', repondreNom: 'Clinique Baguidi', verifierCertificat: false);
@@ -248,7 +255,7 @@ void main() {
     await attendre(t, () => p.messages.isNotEmpty);
     expect(p.messages, hasLength(1));
     final msg = p.messages.single;
-    expect(msg['a'], ['rarhodes06@gmail.com']);
+    expect(msg['a'], ['editeur@exemple.test']);
     expect((msg['entetes']! as Map)['subject'], '[SIGH-CBG] Question sur la comptabilité');
     expect(msg['corps'], contains('où règle-t-on le plan ? Merci é à ç.'));
     expect(msg['corps'], contains('Référence : SUP-'));

@@ -173,8 +173,16 @@ void main() {
         expect(sp(accTexteSansBalises(accFaq[i].r)), sp(faq[i]['r']));
       }
       expect([for (final l in a['apropos'] as List) (l as List)[1]],
-          ['Prototype v1.0 — août 2026', 'Dr MOGBO Rhodes', 'CLINIQUE BAGUIDI « L’AS DU CŒUR »', '3201001996110', 'RB/PKO/17 A 4240']);
+          ['Prototype v1.0 — août 2026', 'Non renseigné', 'CLINIQUE BAGUIDI « L’AS DU CŒUR »', '3201001996110', 'RB/PKO/17 A 4240']);
       expect(accEditeur['version'], 'Prototype v1.0 — août 2026');
+      // E4704 : jamais de coordonnée de personne en valeur d'attente — vides, l'écran dit « Non renseigné », aucune adresse pour écrire.
+      expect([accEditeurAuteurSemence, accEditeurEmailsSemence, accEditeurTelephoneSemence, accEditeurHorairesSemence], everyElement(isEmpty));
+      expect(accEditeur['auteur'], accEditeurNonRenseigne);
+      expect(accEditeur['telephone'], accEditeurNonRenseigne);
+      expect(accEditeur['horaires'], accEditeurNonRenseigne);
+      expect(accEditeur['emails'], isEmpty);
+      expect(accEditeurAdressesAffichees, accEditeurNonRenseigne);
+      expect(accEditeurAdresseMessage, isNull);
     });
 
     final c = obj(v['contact']);

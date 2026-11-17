@@ -170,7 +170,7 @@ void main() {
     await libre.close();
     ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: portFerme, chiffrement: 'aucun', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', delai: 3);
     final f = FileCourriels(d.path, envoyer: (m) => ServiceSmtp.envoyerDepuisFile(d.path, m), maintenant: () => horloge);
-    final m = await f.ajouterEtEnvoyer(destinataire: 'rarhodes06@gmail.com', sujet: 'Question é €', corps: 'Bonjour, accents é à ç.');
+    final m = await f.ajouterEtEnvoyer(destinataire: 'editeur@exemple.test', sujet: 'Question é €', corps: 'Bonjour, accents é à ç.');
     expect(f.message(m.id)!.essais, 1, reason: 'l’essai IMMÉDIAT a eu lieu, sans minuterie ni traiter()');
     expect(f.message(m.id)!.etat, 'en_file');
     expect(f.message(m.id)!.etapeEchec, 'connexion');
@@ -191,7 +191,7 @@ void main() {
     await Future<void>.delayed(const Duration(milliseconds: 300));
     expect(p.messages, hasLength(1), reason: 'UN message reçu, pas deux');
     final msg = p.messages.single;
-    expect(msg['a'], ['rarhodes06@gmail.com']);
+    expect(msg['a'], ['editeur@exemple.test']);
     expect((msg['entetes']! as Map)['message-id'], contains(m.id));
     expect(msg['corps'], contains('accents é à ç.'));
     // le mot de passe n'est ni dans la file ni dans ses états
@@ -223,7 +223,7 @@ void main() {
     ConfigSmtpPoste.ecrire(d.path, serveur: '127.0.0.1', port: p.port, chiffrement: 'aucun', identifiant: 'clinique', motDePasse: mdp, expediteur: 'cnt@clinique.bj', delai: 5);
     final f = FileCourriels(d.path, envoyer: (m) => ServiceSmtp.envoyerDepuisFile(d.path, m), maintenant: () => horloge);
     final debut = DateTime.now();
-    final m = f.ajouter(destinataire: 'rarhodes06@gmail.com', sujet: 'Direct é', corps: 'Parti tout de suite.');
+    final m = f.ajouter(destinataire: 'editeur@exemple.test', sujet: 'Direct é', corps: 'Parti tout de suite.');
     for (var i = 0; i < 100 && p.messages.isEmpty; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 10));
     }

@@ -853,9 +853,10 @@ void main() {
 
     cas('coordonnées et renvoi vers l’aide', (t) async {
       await monter(t, poste(), ecran: 'contact-editeur', taille: const Size(1600, 3000));
-      for (final l in (obj(v['contact'])['coordonnees'] as List).cast<String>().where((x) => x.contains('@') || x.contains('+229'))) {
-        expect(find.byWidgetPredicate((w) => w is Text && sp(w.data) == l), findsOneWidget, reason: l);
-      }
+      // E4704 : coordonnées NON renseignées par défaut (jamais celles d'une personne) : nom, adresses, téléphone et horaires disent « Non renseigné ».
+      expect((obj(v['contact'])['coordonnees'] as List).cast<String>().where((x) => x == accEditeurNonRenseigne), hasLength(4));
+      expect(find.byWidgetPredicate((w) => w is Text && sp(w.data) == accEditeurNonRenseigne), findsNWidgets(4));
+      expect(find.textContaining('@'), findsNothing, reason: 'aucune adresse affichée tant que la clinique n’en a pas renseigné');
       await bouton(t, 'Consulter l’aide & la FAQ', ms: 600);
       expect(find.text('Vous ne trouvez pas de réponse ?'), findsOneWidget);
       await fin(t);

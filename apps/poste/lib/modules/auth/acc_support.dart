@@ -321,13 +321,20 @@ class _EtatContact extends State<EcranContactEditeur> {
     // Le courriel entre dans la FILE D'ENVOI du poste (écrite sur disque avant tout essai) : un serveur injoignable ne perd rien, l'envoi est repris (1 min, 5 min,
     // 30 min, 2 h, 12 h). Le premier essai part tout de suite ; son issue décide du message affiché.
     final file = EtatSmtpPoste.file;
+    // L'adresse de l'éditeur est un réglage de la clinique (E4704) : non renseigné, le message est enregistré mais NE PART PAS, et l'écran le dit.
+    final destinataire = accEditeurAdresseMessage;
+    if (destinataire == null) {
+      col.mettreAJour(r.fiche['id'], {'courriel': 'echec'});
+      ToastsSigh.afficher(context, accToastCourrielNonParti, type: TypeToast.attention, detail: 'Adresse de l’éditeur non renseignée (réglage « Contact de l’éditeur »). Référence $reference.');
+      return;
+    }
     if (file == null) {
       col.mettreAJour(r.fiche['id'], {'courriel': 'echec'});
       ToastsSigh.afficher(context, accToastCourrielNonParti, type: TypeToast.attention, detail: 'Messagerie non configurée. Référence $reference.');
       return;
     }
     // L'essai d'envoi est IMMÉDIAT et l'écran attend son issue ; la fiche est rattachée au message AVANT l'essai, pour afficher « Envoi en cours » pendant.
-    final m = file.ajouter(destinataire: '${(accEditeur['emails'] as List).first}', sujet: '[${IdentiteClinique.logiciel}] ${donnees['objet']}', corps: texte, reference: reference, immediat: false);
+    final m = file.ajouter(destinataire: destinataire, sujet: '[${IdentiteClinique.logiciel}] ${donnees['objet']}', corps: texte, reference: reference, immediat: false);
     col.mettreAJour(r.fiche['id'], {'courriel': 'file', 'courrielId': m.id});
     await file.essayer(m.id);
     if (!mounted) return;
@@ -526,7 +533,7 @@ class _EtatContact extends State<EcranContactEditeur> {
             ]),
             const SizedBox(height: 12),
             for (final l in [
-              (LucideIcons.mail, (accEditeur['emails'] as List).join('   ·   ')),
+              (LucideIcons.mail, accEditeurAdressesAffichees),
               (LucideIcons.phone, '${accEditeur['telephone']}'),
               (LucideIcons.clock, '${accEditeur['horaires']}'),
             ])

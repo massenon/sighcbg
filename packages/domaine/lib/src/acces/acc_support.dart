@@ -8,22 +8,44 @@ import '../navigation/manifeste.dart';
 import '../parametres/listes_reference.dart' show ListesReference;
 import '../numerotation/numerotation.dart';
 
-/// LES VALEURS D'ATTENTE du contact de l'éditeur (`EDITEUR` de la maquette), semées dans les réglages `support.*` (`definitions.dart`) : les seules à écrire ces coordonnées ; l'écran lit le
-/// réglage en vigueur, jamais ces constantes.
-const String accEditeurAuteurSemence = 'Dr MOGBO Rhodes';
-const String accEditeurEmailsSemence = 'rarhodes06@gmail.com; contact@massenonrhodes.com';
-const String accEditeurTelephoneSemence = '+229 01 51 33 50 40';
-const String accEditeurHorairesSemence = 'Lundi au vendredi, 8h – 17h (GMT)';
+/// LES VALEURS D'ATTENTE du contact de l'éditeur, semées dans les réglages `support.*` (`definitions.dart`) : les seules à écrire ces coordonnées ; l'écran lit le réglage en vigueur,
+/// jamais ces constantes. LES COORDONNÉES DE PERSONNES NE SONT JAMAIS UNE VALEUR D'ATTENTE (E4704) : nom, adresses, téléphone et horaires sont VIDES tant que la clinique ne les a pas
+/// renseignés (réglage daté) ; l'écran dit alors [accEditeurNonRenseigne], et l'annexe du manuel écrit « à renseigner par la clinique ».
+const String accEditeurAuteurSemence = '';
+const String accEditeurEmailsSemence = '';
+const String accEditeurTelephoneSemence = '';
+const String accEditeurHorairesSemence = '';
 const String accEditeurVersionSemence = 'Prototype v1.0 — août 2026';
 
-/// Coordonnées de l'éditeur (`EDITEUR` de la maquette) : des RÉGLAGES datés (famille `support`), lus par [ListesReference], jamais des littéraux de l'écran.
+/// Ce que l'écran dit d'une coordonnée que la clinique n'a pas renseignée : honnête, jamais une valeur inventée.
+const String accEditeurNonRenseigne = 'Non renseigné';
+
+String _texteOuNonRenseigne(String cle) {
+  final t = ListesReference.texte(cle);
+  return t.isEmpty ? accEditeurNonRenseigne : t;
+}
+
+/// Coordonnées de l'éditeur : des RÉGLAGES datés (famille `support`), lus par [ListesReference], jamais des littéraux de l'écran. Une coordonnée vide se lit [accEditeurNonRenseigne] ;
+/// la liste `emails` est VIDE (jamais « Non renseigné » dedans : on n'écrit pas à une adresse qui n'existe pas, voir [accEditeurAdresseMessage]).
 Map<String, Object> get accEditeur => {
-      'auteur': ListesReference.texte('support.editeurAuteur'),
+      'auteur': _texteOuNonRenseigne('support.editeurAuteur'),
       'emails': ListesReference.decouper(ListesReference.texte('support.editeurEmails')),
-      'telephone': ListesReference.texte('support.editeurTelephone'),
-      'horaires': ListesReference.texte('support.editeurHoraires'),
+      'telephone': _texteOuNonRenseigne('support.editeurTelephone'),
+      'horaires': _texteOuNonRenseigne('support.editeurHoraires'),
       'version': ListesReference.texte('support.versionAffichee'),
     };
+
+/// Les adresses de l'éditeur à l'écran : la liste jointe, ou [accEditeurNonRenseigne] quand la clinique n'en a renseigné aucune.
+String get accEditeurAdressesAffichees {
+  final l = accEditeur['emails'] as List;
+  return l.isEmpty ? accEditeurNonRenseigne : l.join('   ·   ');
+}
+
+/// L'adresse qui reçoit le message d'aide, ou `null` quand aucune n'est renseignée (l'envoi est alors refusé en le disant).
+String? get accEditeurAdresseMessage {
+  final l = accEditeur['emails'] as List;
+  return l.isEmpty ? null : '${l.first}';
+}
 
 /// Ce que fait chaque module, en une phrase (`RESUMES`).
 const Map<String, String> accResumesModules = {
