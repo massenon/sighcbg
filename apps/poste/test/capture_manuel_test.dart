@@ -16,6 +16,7 @@ import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
 import 'package:sigh_poste/modules/auth/acc_session.dart';
+import 'package:sigh_poste/modules/m12/cpc_commun.dart' show amorcerExercices;
 import 'package:sigh_poste/shell/coque.dart';
 
 import 'aide_polices.dart';
@@ -70,7 +71,10 @@ Magasin anonymiser(Magasin m, List<String> collections) {
 
 class _Cap {
   const _Cap(this.nom, this.ecran,
-      {this.role = 'admin', this.gestes = const [], this.session, this.jeuDeTest = false, this.taille = _taille, this.mode = ModePoste.fileul, this.posteNeuf = false});
+      {this.role = 'admin', this.gestes = const [], this.session, this.jeuDeTest = false, this.taille = _taille, this.mode = ModePoste.fileul, this.posteNeuf = false, this.preparer});
+
+  /// Prépare le magasin avant l'écran (données FICTIVES de démonstration : plan de travail, valeurs d'attente, vacations à valider).
+  final void Function(Magasin m)? preparer;
 
   /// Taille logique de la fenêtre (les écrans longs — configuration fiscale, planning individuel — se photographient en hauteur).
   final Size taille;
@@ -199,6 +203,53 @@ Geste saisir(String cle, String texte) => (t) async {
       await _pomper(t, 2);
     };
 
+
+/// Un plan de travail annuel FICTIF de l'exercice 2026, à l'état [etat] (brouillon, soumis, execution). Les actions d'abord : la garde du moteur refuse d'ajouter une action à un plan adopté.
+void _semerPta(Magasin m, String etat) {
+  amorcerExercices(m, _le);
+  final actions = <Map<String, Object?>>[
+    {'axe': 'sante_mere_enfant', 'objectif': 'Réduire les complications à l’accouchement', 'action': 'Former les sages-femmes à la partographie', 'resultatAttendu': 'Partogramme tenu à chaque accouchement',
+      'indicateur': 'Sages-femmes formées', 'valeurDepart': 0, 'cibleValeur': 6, 'cibleUnite': 'agents', 'realiseValeur': 6, 'etat': 'realisee', 'calendrier': ['2026-01-01/2026-03-31'], 'responsable': 'Maternité', 'service': 'Maternité', 'budgetPrevu': 250000, 'sourceFinancement': 'fonds_propres', 'avancementMode': 'calcule'},
+    {'axe': 'medicaments_consommables', 'objectif': 'Éviter les ruptures', 'action': 'Mettre en place l’inventaire trimestriel de la pharmacie', 'resultatAttendu': 'Quatre inventaires signés',
+      'indicateur': 'Inventaires réalisés', 'valeurDepart': 0, 'cibleValeur': 4, 'cibleUnite': 'inventaires', 'realiseValeur': 2, 'etat': 'en_cours', 'calendrier': ['2026-01-01/2026-03-31', '2026-04-01/2026-06-30', '2026-07-01/2026-09-30', '2026-10-01/2026-12-31'], 'responsable': 'Pharmacie', 'service': 'Pharmacie', 'budgetPrevu': 120000, 'sourceFinancement': 'fonds_propres', 'avancementMode': 'calcule'},
+    {'axe': 'finances_recouvrement', 'objectif': 'Réduire les créances anciennes', 'action': 'Relancer chaque mois les compagnies d’assurance', 'resultatAttendu': 'Créances de plus de 60 jours réduites de moitié',
+      'indicateur': 'Taux de recouvrement', 'valeurDepart': 40, 'cibleValeur': 80, 'cibleUnite': '%', 'realiseValeur': 55, 'etat': 'en_cours', 'calendrier': ['2026-04-01/2026-06-30', '2026-07-01/2026-09-30'], 'responsable': 'Direction administrative et financière', 'service': 'Administration', 'budgetPrevu': 90000, 'sourceFinancement': 'assurances', 'avancementMode': 'calcule'},
+    {'axe': 'systeme_information', 'objectif': 'Sécuriser les données', 'action': 'Former tous les agents au logiciel de gestion', 'resultatAttendu': 'Chaque agent sait ouvrir une session et saisir',
+      'indicateur': 'Agents formés', 'valeurDepart': 0, 'cibleValeur': 30, 'cibleUnite': 'agents', 'realiseValeur': 0, 'etat': 'planifiee', 'calendrier': ['2026-10-01/2026-12-31'], 'responsable': 'Direction', 'service': 'Direction', 'budgetPrevu': 300000, 'sourceFinancement': 'partenaire', 'avancementMode': 'calcule'},
+  ];
+  for (final a in actions) {
+    m.collection('planAnnuel').inserer({'statut': 'actif', 'exercice': 2026, 'planVersion': 1, ...a}, prefixe: 'PTA');
+  }
+  m.collection('plansTravail').inserer({
+    'id': 'PTA-2026-V1',
+    'statut': 'actif',
+    'reference': 'PTA-2026-V1',
+    'exercice': 2026,
+    'version': 1,
+    'etat': etat,
+    if (etat == 'soumis') ...{'soumisPar': 'Démo AGENT90', 'soumisLe': '2026-11-10T09:00:00Z'},
+    if (etat == 'execution') ...{'soumisPar': 'Démo AGENT90', 'soumisLe': '2026-01-05T09:00:00Z', 'adoptePar': 'Direction', 'adopteLe': '2026-01-15T09:00:00Z', 'motifAdoption': 'Comité de direction du 15 janvier'},
+  });
+}
+
+/// Un agent aux valeurs d'attente (catégorie et numéro CNSS vides, salaire provisoire) : la fiche porte le bloc « Confirmer ».
+void _agentAttente(Magasin m) {
+  final col = m.collection('personnel');
+  final p = col.toutes.first;
+  col.mettreAJour(p['id'], {'salaireProvisoire': true, 'categorieProvisoire': true, 'categorie': 'E1-1', 'cnssProvisoire': true, 'cnss': ''});
+}
+
+/// Trois vacations posées depuis un poste rattaché : « à valider » tant que la mère ne les a pas appliquées.
+void _vacationsAValider(Magasin m) {
+  final col = m.collection('planning');
+  var n = 0;
+  for (final v in col.actives) {
+    if (n >= 3) break;
+    col.mettreAJour(v['id'], {'validationEtat': 'a_valider'});
+    n++;
+  }
+}
+
 final _captures = <_Cap>[
   _Cap('01-connexion', 'index', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
   _Cap('02-verrou', 'auth-lock', session: () => SessionPoste(exigeConnexion: true, horloge: () => _le)),
@@ -292,6 +343,20 @@ final _captures = <_Cap>[
   // Jeu de TEST : le personnel du jeu livré porte les vrais agents de la clinique, le jeu de test des noms fictifs.
   _Cap('130-planning-individuel', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel')]),
   _Cap('131-planning-deroger', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Planning individuel'), toucherBouton('Déroger')]),
+  // ---- Mises à jour du 17/11/2026 : PTA, agent, planning synchronisé, facture à une entreprise, taux et barèmes, numérotation.
+  _Cap('150-pta-brouillon', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1500), preparer: (m) => _semerPta(m, 'brouillon')),
+  _Cap('151-pta-soumis', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1000), preparer: (m) => _semerPta(m, 'soumis')),
+  _Cap('152-pta-execution', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1500), preparer: (m) => _semerPta(m, 'execution')),
+  _Cap('153-pta-action-nouvelle', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1700), preparer: (m) => _semerPta(m, 'brouillon'), gestes: [toucherBouton('Nouvelle action')]),
+  _Cap('154-pta-reconduire', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1100), preparer: (m) => _semerPta(m, 'execution'), gestes: [toucherBouton('Reconduire les actions non réalisées vers l’exercice 2027')]),
+  _Cap('155-pta-vide', 'm13-plan-annuel', role: 'direction', taille: Size(1440, 1000), preparer: (m) => amorcerExercices(m, _le)),
+  _Cap('160-personnel-nouveau', 'm10-personnel', gestes: [toucherBouton('Nouveau')], taille: Size(1440, 1300)),
+  _Cap('161-fiche-attente', 'm10-employe-profil', jeuDeTest: true, taille: Size(1440, 1300), preparer: _agentAttente),
+  _Cap('162-fiche-surveillant', 'm10-employe-profil', role: 'surveillant', jeuDeTest: true, taille: Size(1440, 1000)),
+  _Cap('170-facture-entreprise', 'm9-facture-mere', role: 'comptable', jeuDeTest: true, taille: Size(1440, 1500), gestes: [toucherTexte('Factures à une entreprise')]),
+  _Cap('171-taux-comptables', 'cfg-comptabilite', role: 'da', taille: Size(1440, 4200)),
+  _Cap('172-taux-cotisations', 'm11-cotisations', role: 'comptable', taille: Size(1440, 2600)),
+  _Cap('173-numerotation', 'cfg-fiscalite', taille: Size(1440, 3600)),
   // ---- SMS (poste mère).
   _Cap('140-sms-passerelle', 'mere-sms-passerelle', mode: ModePoste.mere, taille: Size(1440, 1200)),
   _Cap('141-sms-journal', 'mere-sms-journal', mode: ModePoste.mere),
@@ -385,9 +450,13 @@ void main() {
               ecranInitial: c.ecran,
               // Le jeu de démonstration LIVRÉ avec le poste (assets/donnees/jeu) : noms fictifs de Baguidi, jamais le jeu de test.
               magasin: neuf ??
-                  (c.jeuDeTest
-                      ? Magasin.depuisDossier(Magasin.collectionsDuJeu)
-                      : anonymiser(Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu'), Magasin.collectionsDuJeu)),
+                  (() {
+                    final m = c.jeuDeTest
+                        ? Magasin.depuisDossier(Magasin.collectionsDuJeu)
+                        : anonymiser(Magasin.depuisDossier(Magasin.collectionsDuJeu, 'assets/donnees/jeu'), Magasin.collectionsDuJeu);
+                    c.preparer?.call(m);
+                    return m;
+                  })(),
               session: c.session?.call(),
               horloge: () => _le)));
       await _pomper(t, 6);
