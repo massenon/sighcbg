@@ -23,8 +23,11 @@ Magasin magasinDeLaSonde() {
   // Le prix se lit au RÉFÉRENTIEL (lot T6) : le référentiel de ses prix EN VIGUEUR est la migration des actes et des analyses du jeu livré, sans changer un prix, puis les
   // propositions de la sonde.
   final migration = tarMigrer(actes: l_(jeu['actes']), grille: const [], analyses: l_(ref['analyses']));
+  // Les compagnies d'assurance se lisent à la collection `assureurs` (la copie en dur a été supprimée, E4952) : la sonde de la maquette n'en portait pas, elle reçoit celle du jeu de référence.
+  final assureurs = l_(jsonDecode(File('test/fixtures/jeu_reference/assureurs.json').readAsStringSync()));
   return Magasin({
     for (final e in jeu.entries) e.key: l_(e.value),
+    if (!jeu.containsKey('assureurs')) 'assureurs': assureurs,
     'tarifs': migration.tarifs,
     'versionsTarif': [...migration.versions, ...((jeu['versionsTarif'] as List?) ?? const []).map((x) => (x as Map).cast<String, Object?>())],
   }, 'POSTE', ref);
