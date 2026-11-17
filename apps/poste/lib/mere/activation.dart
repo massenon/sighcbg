@@ -78,8 +78,11 @@ abstract class ServiceMere {
 
 /// Service réel : `packages/sync_dart` dans le processus de l'application.
 class ServiceMereLocal implements ServiceMere {
-  ServiceMereLocal(this.config);
+  ServiceMereLocal(this.config, {this.garde});
   final ConfigMere config;
+
+  /// Une garde posée AVANT le démarrage (secret d'administration de production, E4701) : elle lève un refus nommé, la mère ne démarre pas.
+  final void Function()? garde;
   Mere? _mere;
 
   /// La mère en marche dans ce processus (`null` : service arrêté). Sert à l'export portable (journal, clé de la clinique) et à la vérification de la dernière sauvegarde.
@@ -91,6 +94,7 @@ class ServiceMereLocal implements ServiceMere {
   @override
   Future<void> demarrer() async {
     if (_mere != null) return;
+    garde?.call();
     final m = await Mere.creer(config);
     await m.demarrer();
     _mere = m;

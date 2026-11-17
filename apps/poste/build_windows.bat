@@ -4,6 +4,9 @@ rem  SIGH-CBG Poste : construit l'installateur Windows.
 rem  Usage :  build_windows.bat
 rem  Resultat : build\installer\SIGH_Poste_Setup_<version>.exe  (+ .sha256)
 rem  S'arrete a la PREMIERE etape qui echoue, en la nommant.
+rem  SIGH_ADMIN (OBLIGATOIRE) : secret d'administration de la mere, d'au moins 16 caracteres, jamais 'admin-local'.
+rem     Sans lui (ou faible), la construction S'ARRETE : un poste de production ne demarre pas en mere sans secret solide.
+rem     Le secret n'est jamais affiche ni ecrit dans le depot (voir docs/guides/LANCER-EN-LOCAL.md).
 rem  Prerequis : Flutter (Desktop Windows), Visual Studio 2022 (C++), Inno Setup 6.
 rem  PRD : docs/prd/PRD-POSTE-installateur-windows.md
 rem =============================================================================
@@ -23,6 +26,14 @@ if not defined ISCC if exist "%ProgramFiles%\Inno Setup 6\ISCC.exe" set "ISCC=%P
 if not defined ISCC if exist "%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe" set "ISCC=%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"
 if not defined ISCC ( echo ECHEC : Inno Setup 6 est introuvable ^(ISCC.exe^). Installez-le : https://jrsoftware.org/isdl.php & goto :echec )
 echo   flutter : OK ^| ISCC : %ISCC%
+
+echo.
+echo   Secret d'administration ^(SIGH_ADMIN^)
+if not defined SIGH_ADMIN ( echo ECHEC : la variable d'environnement SIGH_ADMIN n'est pas definie. Definissez-la ^(16 caracteres au moins^) avant de construire un poste de production. & goto :echec )
+if /I "%SIGH_ADMIN%"=="admin-local" ( echo ECHEC : SIGH_ADMIN vaut la valeur de developpement : elle est refusee pour un poste de production. Definissez un secret d'au moins 16 caracteres. & goto :echec )
+powershell -NoProfile -Command "if ($env:SIGH_ADMIN.Trim().Length -lt 16) { exit 1 }"
+if errorlevel 1 ( echo ECHEC : SIGH_ADMIN est trop court ^(moins de 16 caracteres^) ou vide. Definissez un secret d'au moins 16 caracteres. & goto :echec )
+echo   SIGH_ADMIN : OK ^(valeur non affichee^)
 
 echo.
 echo [2/9] Fermeture de l'application ^(un sqlite3.dll verrouille ferait echouer le build^)
@@ -52,9 +63,7 @@ if errorlevel 1 (
 
 echo.
 echo [6/9] flutter build windows --release
-set "DEFINES="
-if defined SIGH_ADMIN ( set "DEFINES=--dart-define=SIGH_ADMIN=%SIGH_ADMIN%" ) else ( echo   AVERTISSEMENT : SIGH_ADMIN n est pas defini : le secret d administration de la mere vaudra la valeur par defaut. Definissez-le avant de construire un poste de production. )
-call flutter build windows --release %DEFINES% || ( echo ECHEC : flutter build windows --release. Fermez l'application et tout flutter_tester, puis relancez. & goto :echec )
+call flutter build windows --release --dart-define=SIGH_ADMIN=%SIGH_ADMIN% || ( echo ECHEC : flutter build windows --release. Fermez l'application et tout flutter_tester, puis relancez. & goto :echec )
 
 echo.
 echo [7/9] Runtime Visual C++ ^(un poste neuf peut ne pas l'avoir : l'application ne demarrerait pas, sans message^)

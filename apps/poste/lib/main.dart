@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show base64;
 import 'package:sigh_domaine/sigh_domaine.dart' show DroitsGestes, IdentiteClinique, ListesReference, colDocumentsFiscaux, parCollectionParametres, cfbEssentielles, droitsDepuisMatrice, tarCollectionsReferentiel, valCollectionValidations, ErreurSchemaDonnees, parametreDateIso, cleEmpreinte, cleLireTexte, cleMajSauvegardeMaxHeures, majHeuresDefaut, epRoleMere, epRoleFileul;
+import 'core/secret_admin.dart';
 import 'core/service_parametres.dart';
 import 'package:sigh_sync/sigh_sync.dart';
 import 'package:window_manager/window_manager.dart';
@@ -70,6 +71,8 @@ const String adresseMere =
     String.fromEnvironment('SIGH_MERE', defaultValue: 'http://127.0.0.1:9000');
 const String secretAdmin =
     String.fromEnvironment('SIGH_ADMIN', defaultValue: '');
+/// UNE SEULE lecture du secret d'administration (repli de développement compris) ; la garde de production est dans `core/secret_admin.dart`.
+final String secretAdminMere = secretAdminEffectif(secretAdmin);
 const String roleDev =
     String.fromEnvironment('SIGH_ROLE', defaultValue: 'admin');
 
@@ -164,7 +167,7 @@ Future<void> main() async {
   final configMere = ConfigMere(
       port: 9000,
       dbChemin: '$dossierDonnees/mere.db',
-      admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin,
+      admin: secretAdminMere,
       cleStockage: cleSqlite,
       cleBase64: cleMereRestauree,
       dossierSauvegardes: '$dossierDonnees/sauvegardes',
@@ -173,7 +176,7 @@ Future<void> main() async {
       versionApplication: const String.fromEnvironment('SIGH_VERSION', defaultValue: '0.1.0'));
   final activation = ActivationMere(
     stockage: stockage,
-    service: ServiceMereLocal(configMere),
+    service: ServiceMereLocal(configMere, garde: () => verifierSecretAdmin(secretAdmin)),
     relaisPour: (relais, secret) => RelaisMereHttp(
         base: Uri.parse(relais), secretMere: secret, client: http.Client()),
   );
@@ -191,6 +194,12 @@ Future<void> main() async {
     // Redémarrage d'une mère : le service repart (la place au relais est déjà la sienne).
     try {
       await activation.service.demarrer();
+    } on SecretAdminRefuse catch (e) {
+      // Version de production sans secret d'administration solide : refus nommé, la mère ne démarre pas.
+      runApp(MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: SelectableText('${IdentiteClinique.logiciel} ne peut pas démarrer en mode mère.\n\n${e.code} : ${e.motif}\n\n${e.geste}'))))));
+      return;
     } on ErreurSchemaDonnees catch (e) {
       // Une base de mère écrite par une version PLUS RÉCENTE : refus nommé, rien n'est modifié.
       runApp(MaterialApp(
@@ -314,13 +323,13 @@ Future<void> main() async {
         ..matrice = (() => matriceVive.matrice)
         ..demarrer();
       publicateur ??= PublicateurConfiguration(
-          magasin, publierVersMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
+          magasin, publierVersMereLocale(port: 9000, admin: secretAdminMere))
         ..demarrer();
     }
     // L'ACTIVITÉ et les mots de passe voyagent dans les deux sens (pont magasin / journal, E2130 à E2134).
     PontActivite? pontMere, pontFileul;
     void demarrerPontMere() {
-      final transport = TransportMereLocale(port: 9000, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
+      final transport = TransportMereLocale(port: 9000, admin: secretAdminMere);
       // La mère prend ses numéros de dossier dans le même carnet que les fileuls (RG-01).
       PlagesCodes.de(magasin).obtenir = (taille, minimum, annee) => transport.plage(taille, minimum, annee: annee);
       PlagesNumeros.de(magasin).obtenir = (nom, taille, minimum, {annee}) => transport.plage(taille, minimum, nom: nom, annee: annee);
@@ -379,7 +388,7 @@ Future<void> main() async {
       demarrerPontMere();
     };
     // La détection de l'étape « appairages » : combien d'appareils la mère connaît (sa console, sur le port local de son service).
-    final consoleMere = ClientMere(base: Uri.parse('http://127.0.0.1:9000'), secretAdmin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
+    final consoleMere = ClientMere(base: Uri.parse('http://127.0.0.1:9000'), secretAdmin: secretAdminMere);
     installation.compterAppareils = () async => (await consoleMere.etat()).appareils.length;
     installation.rattacherMoteur = ({required adresse, required code}) => moteur.rattacher(adresse, code);
     installation.surRattache = (_) => demarrerApplicationEtPont();
@@ -407,7 +416,7 @@ Future<void> main() async {
   ServiceTranscriptionMobile(magasin: magasin, source: moteur.pieces).demarrer();
   // LES SCANS : la mère range les fichiers (taille maximale lue au réglage de la clinique), un fileul les dépose et les lit chez elle par le canal scellé.
   configMere.tailleMaxFichier = () => ServiceFichiers.de(magasin).tailleMax();
-  final consoleScans = ClientMere(base: Uri.parse('http://127.0.0.1:9000'), secretAdmin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin);
+  final consoleScans = ClientMere(base: Uri.parse('http://127.0.0.1:9000'), secretAdmin: secretAdminMere);
   brancherFichiers(
       magasin: magasin,
       estMere: () => controleur.config.estMere,
@@ -424,7 +433,7 @@ Future<void> main() async {
   HorsSitePoste(magasin,
           estFileul: () => params.rejoint && params.mode != ModePoste.mere,
           estMere: () => controleur.config.estMere,
-          source: SourceHorsSiteHttp(base: Uri.parse('http://127.0.0.1:9000'), admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin))
+          source: SourceHorsSiteHttp(base: Uri.parse('http://127.0.0.1:9000'), admin: secretAdminMere))
       .installer();
   // L'EXPORT COMPLET PORTABLE, SON RÉIMPORT, LA PRÉPARATION D'UNE MISE À JOUR ET LA RESTAURATION DE LA CLÉ (décision 12, 17/11/2026). Les droits sont des gestes réservés de la fiche de rôle,
   // lus À CHAQUE appel ; la clé de la clinique est celle de la mère en marche, sinon celle du `pair.json` du poste ; elle ne sort jamais de ces services.
@@ -463,7 +472,7 @@ Future<void> main() async {
       mere: mereEnMarche,
       cleStockage: cle,
       configMere: (db, b64) => ConfigMere(
-          port: 0, dbChemin: db, admin: secretAdmin.isEmpty ? 'admin-local' : secretAdmin, cleStockage: cleSqlite, cleBase64: b64, dossierSauvegardes: '$dossierDonnees/sauvegardes', versionApplication: versionLogiciel),
+          port: 0, dbChemin: db, admin: secretAdminMere, cleStockage: cleSqlite, cleBase64: b64, dossierSauvegardes: '$dossierDonnees/sauvegardes', versionApplication: versionLogiciel),
       maxHeures: maxHeuresMaj,
       version: versionLogiciel)
     ..installer();
@@ -621,7 +630,7 @@ class SighPoste extends StatelessWidget {
   Widget _coque(ConfigPoste cfg, ControleurPoste? ctl) {
     final cl = cfg.estMere
         ? (client ??
-            ClientMere(base: Uri.parse(adresseMere), secretAdmin: secretAdmin))
+            ClientMere(base: Uri.parse(adresseMere), secretAdmin: secretAdminMere))
         : null;
     return CoquePoste(
       key: ValueKey(cfg.mode),
