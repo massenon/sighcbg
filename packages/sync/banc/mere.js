@@ -299,7 +299,12 @@ if (meta('series_patients_depuis') === undefined) {
   const an = new Date().getFullYear();
   const herite = meta('next_patient');
   if (meta(cleSerie(an)) === undefined) setMeta(cleSerie(an), herite === undefined ? 1000 : +herite);
-  db.prepare("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL").run(an);
+  /* Les plages sans année sont rattachées à l'année que leurs codes DÉJÀ attribués désignent (miroir de `rattacherPlagesAnciennes`, domaine) ; sans code attribué, l'année courante comme avant. Aucun code réécrit. */
+  const codesAvant = db.prepare("SELECT json_extract(data,'$.code') AS c FROM fiches WHERE collection='patients'").all().map((r) => /^[A-Z]{2,6}\/?(\d+)\/(\d{2})$/.exec(r.c || '')).filter(Boolean);
+  for (const p of db.prepare("SELECT appareil, debut, fin FROM plages WHERE nom='patients' AND annee IS NULL").all()) {
+    const annees = new Set(codesAvant.filter((m) => +m[1] >= p.debut && +m[1] <= p.fin).map((m) => Math.floor(an / 100) * 100 + +m[2]));
+    db.prepare("UPDATE plages SET annee=? WHERE nom='patients' AND annee IS NULL AND appareil=? AND debut=? AND fin=?").run(annees.size === 1 ? [...annees][0] : an, p.appareil, p.debut, p.fin);
+  }
   db.prepare("DELETE FROM meta WHERE k='next_patient'").run();
   setMeta('series_patients_depuis', an);
 }
@@ -318,6 +323,16 @@ function debutSerie(annee) {
 }
 function reserverRangs(annee, taille, minimum) { const debut = Math.max(debutSerie(annee), +minimum || 0); setMeta(cleSerie(annee), debut + taille); return debut; }
 const anneePlage = (a) => { const n = parseInt(String(a ?? ''), 10); return n >= 2000 && n <= 2099 ? n : new Date().getFullYear(); };
+/* Une plage ne se superpose jamais à une autre de la même série et de la même année (miroir de `refusChevauchementPlage`, domaine) : refus NOMMÉ, la plage et son poste dits. */
+function verifierPlage(nom, annee, debut, fin) {
+  const memeAnnee = annee == null ? 'annee IS NULL' : 'annee=?';
+  const args = annee == null ? [nom, fin, debut] : [nom, annee, fin, debut];
+  const p = db.prepare(`SELECT appareil, debut, fin FROM plages WHERE nom=? AND ${memeAnnee} AND debut<=? AND fin>=?`).get(...args);
+  if (!p) return;
+  const reprise = +db.prepare(`SELECT COALESCE(MAX(fin),0) AS f FROM plages WHERE nom=? AND ${memeAnnee}`).get(...(annee == null ? [nom] : [nom, annee])).f + 1;
+  throw new Err(409, 'plage_chevauchement', `La plage ${debut} à ${fin} de la série « ${nom} »${annee == null ? '' : ` (${annee})`} chevauche la plage ${p.debut} à ${p.fin} déjà attribuée au poste ${p.appareil} : deux postes pourraient produire le même numéro.`,
+    { geste: `Reprendre au rang ${reprise} (le plus grand rang attribué + 1) ou demander une nouvelle plage`, plage: { debut: p.debut, fin: p.fin, appareil: p.appareil } });
+}
 if (meta('reinit_ouverte') === undefined) setMeta('reinit_ouverte', 0);
 
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
@@ -681,13 +696,21 @@ const routes = {
       if (nom === 'patients') {
         /* Une plage de dossiers appartient à UNE année (celle demandée, l'année courante à défaut) — séries annuelles, E3830. */
         const annee = anneePlage(b.annee); const debut = reserverRangs(annee, taille, b.minimum); const fin = debut + taille - 1;
+        verifierPlage(nom, annee, debut, fin);
         db.prepare('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)').run(app.uuid, nom, debut, fin, annee);
         return { debut, fin, annee };
       }
-      const cle = 'next_plage_' + nom;
-      const debut = Math.max(1, +meta(cle) || 1, +b.minimum || 0); const fin = debut + taille - 1; setMeta(cle, fin + 1);
-      db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(app.uuid, nom, debut, fin);
-      return { debut, fin };
+      /* Une série nommée à remise annuelle demande sa plage POUR UNE ANNÉE : un carnet par nom ET par année, la plage porte son année. Sans année demandée, la règle d'avant. */
+      const an = b.annee == null ? null : anneePlage(b.annee);
+      const cle = an == null ? 'next_plage_' + nom : `next_plage_${nom}_${an}`;
+      let debut = +meta(cle) || 0;
+      if (debut < 1) debut = +db.prepare(`SELECT COALESCE(MAX(fin),0) AS f FROM plages WHERE nom=? AND ${an == null ? 'annee IS NULL' : 'annee=?'}`).get(...(an == null ? [nom] : [nom, an])).f + 1;
+      debut = Math.max(1, debut, +b.minimum || 0); const fin = debut + taille - 1;
+      verifierPlage(nom, an, debut, fin);
+      setMeta(cle, fin + 1);
+      if (an == null) { db.prepare('INSERT INTO plages(appareil,nom,debut,fin) VALUES(?,?,?,?)').run(app.uuid, nom, debut, fin); return { debut, fin }; }
+      db.prepare('INSERT INTO plages(appareil,nom,debut,fin,annee) VALUES(?,?,?,?,?)').run(app.uuid, nom, debut, fin, an);
+      return { debut, fin, annee: an };
     });
   },
   'POST /sync/bail': (req, b) => {

@@ -334,7 +334,7 @@ List<String> typesAutorisesRh(RegimeRhResolu r) {
   required String aujourdhui,
   DroitsGestes? gestes,
 }) {
-  if (!_peutRh(gestes, role, gesteRhRegler)) {
+  if (!_peutRh(gestes, role, gesteRhPlanningIndividuel)) {
     return (refus: const RefusRh('DEROGATION_RESERVEE', 'Le régime individuel se règle par la Directrice Administrative ou l’administrateur.', 'Demander à la Directrice Administrative de poser la dérogation.'), champs: null);
   }
   if (!agentExiste) {

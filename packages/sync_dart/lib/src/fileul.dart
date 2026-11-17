@@ -381,7 +381,7 @@ class Fileul {
         // Une plage de dossiers est demandée POUR UNE ANNÉE (celle des dossiers à coder ; l'année en cours à défaut) et garde l'année que la mère a retenue.
         final j = await http1('POST', '/sync/plage', {
           'nom': nomPlage, 'taille': b['taille'] ?? 50, 'minimum': b['minimum'] ?? 0,
-          if (nomPlage == 'patients') 'annee': b['annee'] ?? DateTime.fromMillisecondsSinceEpoch(maintenant()).year,
+          if (nomPlage == 'patients') 'annee': b['annee'] ?? DateTime.fromMillisecondsSinceEpoch(maintenant()).year else if (b['annee'] != null) 'annee': b['annee'],
         });
         base.exec("INSERT INTO plage(nom,prochain,fin,annee) VALUES(?,?,?,?) ON CONFLICT(nom) DO UPDATE SET prochain=excluded.prochain, fin=excluded.fin, annee=excluded.annee",
             [nomPlage, j['debut'], j['fin'], j['annee']]);

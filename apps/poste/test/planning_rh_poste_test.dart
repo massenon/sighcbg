@@ -78,9 +78,9 @@ void main() {
     expect(m.collection('conges').parId('CG1')!['statutConge'], 'valide');
   });
 
-  test('la dérogation s\'écrit comme une version immuable, datée, qui ne porte que les champs renseignés ; réservée à la DA et à l\'administrateur', () {
+  test('la dérogation s\'écrit comme une version immuable, datée, qui ne porte que les champs renseignés ; réservée à la DA, à l\'administrateur et au surveillant (geste dédié), pas aux autres', () {
     final m = _magasin();
-    expect(_p(m).deroger(employeId: 'A', dateEffet: '2026-11-09', champs: {'repos': 'repos24'}, motif: 'Sonde')['code'], 'DEROGATION_RESERVEE');
+    expect(_p(m, role: 'caissier', nom: 'Caissier de test').deroger(employeId: 'A', dateEffet: '2026-11-09', champs: {'repos': 'repos24'}, motif: 'Sonde')['code'], 'DEROGATION_RESERVEE');
     final r = _p(m, role: 'da', nom: 'DAF').deroger(employeId: 'A', dateEffet: '2026-11-09', champs: {'repos': 'repos24', 'honoraire': 20000}, motif: 'Sonde');
     expect(r['ok'], isTrue);
     final v = m.collection('regimesIndividuels').toutes.single;

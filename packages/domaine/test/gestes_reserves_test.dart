@@ -40,7 +40,7 @@ void main() {
       // 17/11/2026 : la facture à une entreprise (tiers payeur) et les écritures d'inventaire en clôture (une case de la fiche de rôle).
       gesteFactureTiersEmettre, gesteClotureInventaire,
       gesteValidationsVueComplete, gesteValidationsCentreElargi, gesteValiderRefDirection, gesteValiderRefLabo,
-      gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhEncadrer,
+      gesteValiderRefPathologies, gesteValiderRefImagerie, gesteValiderRefBloc, gesteValiderRefRepartition, gesteValiderRefBaremeAib, gesteRhRegler, gesteRhPlanningIndividuel, gesteRhEncadrer,
       gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteRhPointerBadge, gesteRhConfirmerValeur, gesteImagerieExecuter, gesteRubriquesChirurgicales, gesteAchatsRegistre,
       // Plan de travail annuel (lot PTA, 17/11/2026) : adopter, régler les référentiels, recevoir l'alerte de retard.
       gestePtaAdopter, gestePtaRegler, gesteAlertesPtaRetard,

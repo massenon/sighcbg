@@ -1,32 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../donnees/exercices_poste.dart';
 import '../../donnees/magasin.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../m7/besoins_commun.dart' show notifierPoste;
 export 'cpa_commun.dart';
+export '../../donnees/exercices_poste.dart' show amorcerExercices, moisOuvertureSuivantDe;
 
 /// Briques communes à la tranche M12 « synthèse, exercices, pilotage » (états financiers, baseline 2025, échéances, clôture, ouverture, BFR, coût à
 /// l'activité). Les règles chiffrées vivent dans `packages/domaine/lib/src/comptabilite/cpc_*.dart`.
-
-/// `exercices()` amorce la collection (une fiche par année portée par le journal, l'horloge et la liasse déposée). À appeler AVANT le premier rendu :
-/// insérer pendant un rendu déclencherait les écouteurs en pleine construction.
-void amorcerExercices(Magasin m, DateTime auj) {
-  final col = m.collection('exercices');
-  // Q29 (16/11/2026) : l'exercice SUIVANT s'ouvre d'avance à partir du mois réglé (décembre par défaut, réglable).
-  final fiches = cpcExercicesAAmorcer(col.toutes, m.collection('ecritures').toutes, auj, moisOuvertureSuivant: moisOuvertureSuivantDe(m));
-  for (final f in fiches) {
-    col.inserer(f);
-  }
-  // La table PARAMÉTRABLE des comptes de résultat (131 bénéfice, 139 perte) : amorcée une fois, modifiable ensuite.
-  final cr = m.collection('comptesResultat');
-  if (cr.toutes.isEmpty) {
-    for (final f in cpcComptesResultatDefaut) {
-      cr.inserer({...f});
-    }
-  }
-}
 
 List<Fiche> exercicesActifs(Magasin m) => cpcListeExercices(m.collection('exercices').toutes);
 
@@ -60,9 +44,6 @@ bool refuseSiClos(BuildContext ctx, void Function() ecriture) {
 void notifier(ContexteEcran c, {required String type, required String poste, required String libelle, String? detail, String priorite = 'normale', String? reference}) =>
     notifierPoste(c.magasin, {'type': type, 'poste': poste, 'libelle': libelle, 'detail': detail, 'priorite': priorite, 'reference': reference}, c.aujourdhui);
 
-/// Le mois (1 à 12) à partir duquel l'exercice suivant s'ouvre d'avance : le RÉGLAGE DE CLINIQUE `exerciceOuvertureSuivantMois` ; décembre (`cpcMoisOuvertureSuivantDefaut`, la valeur de départ décidée par la
-/// Direction) tant que personne ne l'a changé. Rien n'est écrit à la lecture : insérer pendant un rendu déclencherait les écouteurs en pleine construction ; la fiche naît au premier changement.
-int moisOuvertureSuivantDe(Magasin m) => cpcMoisOuvertureSuivant(m.collection('reglages').parId(cpcCleMoisOuvertureSuivant)?['valeur']);
 
 /// Règle le mois d'ouverture de l'exercice suivant. Rend le refus nommé, ou `null`. Journalisé (RG-12) avec l'ancien et le nouveau mois ; l'exercice suivant déjà ouvert le reste (rien n'est fermé ici).
 String? definirMoisOuvertureSuivant(Magasin m, Object? valeur, {required String auteur}) {
