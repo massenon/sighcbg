@@ -481,13 +481,13 @@ String _motifTarifAValider(String libelle, String jour, {required bool connu}) =
     ? 'tarif à valider : « $libelle » n’a aucun prix en vigueur au $jour. La DAF le tarife à l’écran « Tarifs et prix » (Oui ou Non) ; la ligne n’est pas prescrite, le reste de l’ordonnance passe.'
     : 'tarif à valider : « $libelle » n’existe pas dans le référentiel de prix pour cette voie. La DAF l’y ouvre à l’écran « Tarifs et prix » ; la ligne n’est pas prescrite, le reste de l’ordonnance passe.';
 
-/// Les tâches d'aval (`TACHES` de `parcours.js`) : poste, module, écran, titre, pictogramme.
-const _tachesDef = <String, ({String role, String module, String ecran, String titre, String icon})>{
-  'encaissement': (role: 'caissier', module: 'M8', ecran: 'm8-caisse', titre: 'Encaisser la prescription', icon: 'coins'),
-  'dispensation': (role: 'pharmacien', module: 'M6', ecran: 'm6-dispensation', titre: 'Délivrer les médicaments', icon: 'pill'),
-  'prelevement': (role: 'laborantin', module: 'M5', ecran: 'm5-demandes', titre: 'Prélever et analyser', icon: 'flask-conical'),
-  'acte': (role: 'infirmier', module: 'M3', ecran: 'm3-soins', titre: 'Exécuter les actes prescrits', icon: 'stethoscope'),
-  'imagerie': (role: 'echographiste', module: 'M2', ecran: 'm2-dashboard-imagerie', titre: 'Réaliser l’examen d’imagerie', icon: 'scan-line'),
+/// Les tâches d'aval (`TACHES` de `parcours.js`) : module, écran, titre, pictogramme. Le poste n'y figure PLUS : l'ancien champ descriptif `role` n'était lu par aucune décision (la file d'attente filtre par type et par les droits de l'écran) et n'est plus écrit sur la fiche.
+const _tachesDef = <String, ({String module, String ecran, String titre, String icon})>{
+  'encaissement': (module: 'M8', ecran: 'm8-caisse', titre: 'Encaisser la prescription', icon: 'coins'),
+  'dispensation': (module: 'M6', ecran: 'm6-dispensation', titre: 'Délivrer les médicaments', icon: 'pill'),
+  'prelevement': (module: 'M5', ecran: 'm5-demandes', titre: 'Prélever et analyser', icon: 'flask-conical'),
+  'acte': (module: 'M3', ecran: 'm3-soins', titre: 'Exécuter les actes prescrits', icon: 'stethoscope'),
+  'imagerie': (module: 'M2', ecran: 'm2-dashboard-imagerie', titre: 'Réaliser l’examen d’imagerie', icon: 'scan-line'),
 };
 
 FicheCs _creerTache(StockCs s, String type, FicheCs ord, FicheCs? facture,
@@ -495,7 +495,6 @@ FicheCs _creerTache(StockCs s, String type, FicheCs ord, FicheCs? facture,
   final def = _tachesDef[type]!;
   return s.inserer('taches', {
     'type': type,
-    'role': def.role,
     'module': def.module,
     'ecran': def.ecran,
     'titre': def.titre,
