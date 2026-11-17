@@ -20,6 +20,7 @@
 
 import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimanteLargeurPapier, cleImprimanteInterface, imprimanteLargeurDefautMm;
 import '../sauvegarde/sauvegarde_horssite.dart';
+import '../sauvegarde/maj_regles.dart' show cleMajSauvegardeMaxHeures, majHeuresDefaut;
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
 import '../paie/pai_baremes.dart';
@@ -427,6 +428,17 @@ const List<DefinitionParametre> definitionsParametres = [
     appliquePar: 'Lot BAK (sauvegarde hors site)',
   ),
   DefinitionParametre(
+    cle: cleMajSauvegardeMaxHeures,
+    famille: 'maj',
+    type: TypeParametre.entier,
+    defaut: majHeuresDefaut,
+    libelle: 'Ancienneté maximale de la sauvegarde avant une mise à jour (heures)',
+    aide: 'Entier de 1 à 168. Une mise à jour est BLOQUÉE tant que la clinique ne détient pas une sauvegarde vérifiée ET un export portable vérifié de moins de ce nombre d’heures. 24 par défaut. Lever le blocage est un geste réservé tracé (force majeure).',
+    source: 'Proposition à valider par la Direction (décision 12 du 17/11/2026) : le nombre d’heures est une valeur d’attente',
+    branche: true,
+    appliquePar: 'Préparer la mise à jour (poste mère) et installeur Windows',
+  ),
+  DefinitionParametre(
     cle: shCleCopiesMagasin,
     famille: 'horssite',
     type: TypeParametre.entier,
@@ -706,6 +718,7 @@ const Map<String, String> libellesFamillesParametres = {
   'fiscal': 'Calendrier fiscal',
   'securite': 'Sécurité',
   'horssite': 'Sauvegarde hors site',
+  'maj': 'Mise à jour du logiciel',
   'assistant': 'Assistant',
   'stock': 'Stock et péremption',
   'comptabilite': 'Comptabilité et recouvrement',
