@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../../core/service_parametres.dart' show seuilClinique;
 import '../../donnees/tarifs_poste.dart';
 import '../../impression/apercu.dart';
 import '../../impression/piece.dart';
@@ -140,7 +141,8 @@ class EcranStatsImagerie extends StatelessWidget with EcranMaquette {
     return ListenableBuilder(
       listenable: pilEcoute(c, ['demandesImagerie', 'resultatsImagerie']),
       builder: (context, _) {
-        final v = pilStatsImagerie(pilActives(c, 'demandesImagerie'), pilActives(c, 'resultatsImagerie'));
+        final v = pilStatsImagerie(pilActives(c, 'demandesImagerie'), pilActives(c, 'resultatsImagerie'),
+            delaiAberrationJours: seuilClinique(c.magasin, pilCleDelaiAberrationImagerie, c.aujourdhui));
         return pilPile([
           pilKpis(v.kpis, const [LucideIcons.scanLine, LucideIcons.fileCheck2, LucideIcons.baby, LucideIcons.clock]),
           pilDeux(

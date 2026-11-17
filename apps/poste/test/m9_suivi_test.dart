@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
@@ -142,6 +143,38 @@ void main() {
       await toucher(t, find.text('Réinitialiser'));
       await choisir(t, 'anciennete', 'Moins de 30 jours');
       expect(kpis(t), [for (final k in lm(cas0[3]['kpis'])) '${k['valeur']}']);
+    });
+
+    cas('balance âgée des assureurs : les tranches suivent les bornes RÉGLÉES (15 et 45 jours) — libellés, filtre et montants recomptés', (t) async {
+      final m = magasin();
+      // sans réglage : les libellés d'avant, mot pour mot
+      await ouvrir(t, m, 'm9-creances');
+      expect(textes(t), containsAll(['Moins de 30 jours', '30 à 90 jours', 'Plus de 90 jours']));
+      expect(textes(t).where((x) => x.contains('45 jours')), isEmpty);
+      // réglage daté : 15 et 45 jours
+      final s = serviceParametres(m, auteur: () => 'Test', horloge: () => aujourdhui)..semerDefauts();
+      expect(s.regler(cleBalanceAgeeAssureurBorne1, 15, '2026-01-01', motif: 'essai').ok, isTrue);
+      expect(s.regler(cleBalanceAgeeAssureurBorne2, 45, '2026-01-01', motif: 'essai').ok, isTrue);
+      await ouvrir(t, m, 'm9-creances');
+      expect(textes(t), containsAll(['Moins de 15 jours', '15 à 45 jours', 'Plus de 45 jours']));
+      expect(textes(t).where((x) => x == 'Moins de 30 jours' || x == 'Plus de 90 jours'), isEmpty);
+      // recomptage INDÉPENDANT : chaque facture assurée est rangée selon son ancienneté et les bornes réglées
+      final fa = assFacturesAssurance(m.collection('factures').actives);
+      double somme(bool Function(int) dans) => fa.where((f) => dans(assJours(f['date'], aujourdhui))).fold(0.0, (a, f) => a + ((f['partAssurance'] as num?) ?? 0));
+      expect(kpis(t), [
+        sp(money(somme((j) => true))),
+        sp(money(somme((j) => j <= 15))),
+        sp(money(somme((j) => j > 15 && j <= 45))),
+        sp(money(somme((j) => j > 45))),
+      ]);
+      // le filtre « Ancienneté retenue » propose les mêmes libellés calculés et classe sur les mêmes bornes
+      // (le filtre garde les COMPAGNIES qui ont de la dette dans la tranche ; le total affiché est alors celui de ces compagnies, toutes tranches confondues)
+      await choisir(t, 'anciennete', 'De 15 à 45 jours');
+      final gardees = {for (final f in fa) if (assJours(f['date'], aujourdhui) > 15 && assJours(f['date'], aujourdhui) <= 45) f['assureur']};
+      final totalGardees = fa.where((f) => gardees.contains(f['assureur'])).fold<double>(0, (a, f) => a + ((f['partAssurance'] as num?) ?? 0));
+      expect(gardees, isNotEmpty);
+      expect(kpis(t)[0], sp(money(totalGardees)));
+      expect(kpis(t)[2], sp(money(somme((j) => j > 15 && j <= 45))), reason: 'la tranche 15-45 jours n\'a pas changé, elle est entièrement dans les compagnies gardées');
     });
 
     cas('l’état imprimé : total refait depuis les lignes imprimées, filtres en force portés sur la pièce', (t) async {

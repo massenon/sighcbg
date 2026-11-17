@@ -49,6 +49,13 @@ int preavisPeremption(Magasin m, DateTime date) =>
   return bornesBalanceAgeePatientDe(s.valeur(cleBalanceAgeePatientBorne1, iso), s.valeur(cleBalanceAgeePatientBorne2, iso));
 }
 
+/// Les bornes de la balance âgée des ASSUREURS EN VIGUEUR à [date] (paramètres `assurances.balanceAgeeAssureurBorne1Jours` et `…2Jours`) : 30 et 90 jours semés.
+({int borne1, int borne2}) bornesBalanceAgeeAssureur(Magasin m, DateTime date) {
+  final s = serviceParametres(m, auteur: () => 'lecture');
+  final iso = parametreDateIso(date);
+  return bornesBalanceAgeeAssureurDe(s.valeur(cleBalanceAgeeAssureurBorne1, iso), s.valeur(cleBalanceAgeeAssureurBorne2, iso));
+}
+
 /// Les lots actifs avec leur statut de péremption RECALCULÉ à [auj] pour le préavis en vigueur (Q10) : les tableaux de bord, le pilotage, les états et le centre de notifications lisent
 /// cette vue, jamais le `statut` écrit à la saisie du lot (il date de ce jour-là et de l'ancien délai).
 List<Map<String, Object?>> lotsAvecStatutAJour(Magasin m, DateTime auj) =>

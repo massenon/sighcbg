@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
 import '../../core/jetons_shell.dart';
+import '../../core/service_parametres.dart' show seuilClinique;
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import 'mrb_commun.dart';
@@ -52,6 +53,12 @@ class _EtatReinit extends MrbEtatEcran<EcranReinitialisation, MrbEtat> {
 
   DateTime _maintenant() => context.getInheritedWidgetOfExactType<ContexteEcran>()?.aujourdhui ?? DateTime.now();
 
+  /// La durée de la fenêtre EN VIGUEUR : le réglage `mere.fenetreReinitMinutes` (le même registre que celui que la mère applique) ; sans contexte, la valeur d'attente semée.
+  Duration _duree() {
+    final c = context.getInheritedWidgetOfExactType<ContexteEcran>();
+    return c == null ? mrbDureeFenetreReinit : Duration(minutes: seuilClinique(c.magasin, mrbCleFenetreReinit, c.aujourdhui));
+  }
+
   @override
   void dispose() {
     _confirmation.dispose();
@@ -65,7 +72,7 @@ class _EtatReinit extends MrbEtatEcran<EcranReinitialisation, MrbEtat> {
     var e = await s.etat();
     // La fenêtre se referme à l'échéance : le service pose un drapeau sans limite de durée.
     if (e.reinitOuverte && _ouverteLe != null) {
-      final reste = mrbFenetreRestante(ouverteLe: _ouverteLe, maintenant: _maintenant());
+      final reste = mrbFenetreRestante(ouverteLe: _ouverteLe, maintenant: _maintenant(), duree: _duree());
       if (reste == Duration.zero) {
         await s.ouvrirFenetreReinit(false);
         _ouverteLe = null;
@@ -80,7 +87,7 @@ class _EtatReinit extends MrbEtatEcran<EcranReinitialisation, MrbEtat> {
     final s = source;
     if (s == null) return;
     final ok = await geste(contexte, () => s.ouvrirFenetreReinit(ouvrir),
-        ok: ouvrir ? 'Fenêtre ouverte pour ${mrbDureeFenetreReinit.inMinutes} minutes.' : 'Fenêtre refermée.');
+        ok: ouvrir ? 'Fenêtre ouverte pour ${_duree().inMinutes} minutes.' : 'Fenêtre refermée.');
     if (ok) setState(() => _ouverteLe = ouvrir ? _maintenant() : null);
   }
 
@@ -178,7 +185,7 @@ class _EtatReinit extends MrbEtatEcran<EcranReinitialisation, MrbEtat> {
     final c = ContexteEcran.of(context);
     final e = donnees;
     final ouverte = e?.reinitOuverte == true;
-    final reste = ouverte ? mrbFenetreRestante(ouverteLe: _ouverteLe, maintenant: _maintenant()) : null;
+    final reste = ouverte ? mrbFenetreRestante(ouverteLe: _ouverteLe, maintenant: _maintenant(), duree: _duree()) : null;
     final s = source;
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       mrbBandeauPanne(panne),
@@ -227,7 +234,7 @@ class _EtatReinit extends MrbEtatEcran<EcranReinitialisation, MrbEtat> {
             const SizedBox(height: 12),
             if (!ouverte)
               BoutonSigh(
-                  libelle: 'Ouvrir la fenêtre (${mrbDureeFenetreReinit.inMinutes} min)',
+                  libelle: 'Ouvrir la fenêtre (${_duree().inMinutes} min)',
                   icone: LucideIcons.lockOpen,
                   variante: VarianteBouton.attention,
                   onPressed: () => _ouvrir(context, true))

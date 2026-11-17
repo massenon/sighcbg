@@ -7,6 +7,7 @@ library;
 
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import 'bornes_mobile.dart';
 import 'droits_mobile.dart';
 import 'service_soignant.dart';
 
@@ -91,18 +92,18 @@ class ServiceSuite {
 
   Future<String> enregistrerCpn(String patientId, Map<String, String> saisie) async {
     final p = await _preparerClinique('cpn', patientId);
-    return source.creer(mobCollectionCpn, mobChampsCpn(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant));
+    return source.creer(mobCollectionCpn, mobChampsCpn(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant, bornes: await bornesDe(source, maintenant)));
   }
 
   Future<String> enregistrerCpon(String patientId, Map<String, String> saisie) async {
     final p = await _preparerClinique('cpon', patientId);
-    return source.creer(mobCollectionCpon, mobChampsCpon(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant));
+    return source.creer(mobCollectionCpon, mobChampsCpon(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant, bornes: await bornesDe(source, maintenant)));
   }
 
   Future<String> enregistrerSurveillance(String patientId, Map<String, String> saisie) async {
     final p = await _preparerClinique('surveillance', patientId);
     return source.creer(mobCollectionSurveillance,
-        mobChampsSurveillance(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant));
+        mobChampsSurveillance(patient: p, patientId: patientId, saisie: saisie, acteur: agent, fonction: fonction, maintenant: maintenant, bornes: await bornesDe(source, maintenant)));
   }
 
   /// Oriente un patient de l'accueil de secours. Le dossier doit avoir été ouvert à l'accueil de secours ; la réception n'a pas de lot qui expire.
