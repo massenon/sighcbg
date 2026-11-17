@@ -331,8 +331,9 @@ class _CoquePosteState extends State<CoquePoste> {
   static const Set<String> _reglesSurLaMere = {'m14-utilisateurs', 'mecef-config'};
 
   /// Les écrans de CFG qui NE sont PAS en lecture seule sur un fileul rattaché : le fileul y DÉPOSE une demande que la mère applique (E2700). « Tarifs et prix » : la
-  /// Direction, qui est un fileul, doit pouvoir proposer et décider un prix depuis son poste ; la mère rejuge chaque demande (droits, RG, refus nommé).
-  static const Set<String> _ecransDeposantSurLaMere = {'cfg-tarifs'};
+  /// Direction, qui est un fileul, doit pouvoir proposer et décider un prix depuis son poste ; la mère rejuge chaque demande (droits, RG, refus nommé). « Fiches d'aide de l'assistant »
+  /// (17/11/2026) : la rédaction part de n'importe quel poste (famille A) ; la VALIDATION reste à la mère (commande absente sur un fileul, refus nommé de la mère sinon).
+  static const Set<String> _ecransDeposantSurLaMere = {'cfg-tarifs', 'cfg-fiches-aide'};
 
   /// Sur un fileul rattaché, un écran réglé sur la mère le DIT en tête de sa règle (et pas seulement par le refus d'écriture).
   String? _regleAvecMere(String id, String? regle) {

@@ -21,6 +21,7 @@ import 'cpc_cout_activite.dart';
 import 'cpc_etats.dart';
 import 'cpc_echeances.dart';
 import 'cpc_ouverture.dart';
+import 'cpe_liasse_import.dart';
 import 'cpd_aib.dart';
 
 typedef ConstruireEcran = Widget Function(BuildContext contexte, ConfigPoste config);
@@ -50,4 +51,5 @@ final Map<String, ConstruireEcran> ecransM12 = {
   'm12-bfr': (c, cfg) => const EcranBfr(),
   'm12-etats-financiers': (c, cfg) => const EcranEtatsFinanciers(),
   'm12-cout-activite': (c, cfg) => const EcranCoutActivite(),
+  'm12-liasse-import': (c, cfg) => const EcranLiasseImport(),
 };

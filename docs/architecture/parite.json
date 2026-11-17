@@ -3360,6 +3360,23 @@
    "statut": "porté"
   },
   {
+   "id": "m12-liasse-import",
+   "label": "Import de la liasse fiscale",
+   "module": "M12",
+   "domaine": "Financier",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "comptable",
+    "da",
+    "admin",
+    "direction"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
    "id": "m12-echeances",
    "label": "Échéances fiscales & paiements",
    "module": "M12",
@@ -4834,6 +4851,22 @@
     "admin",
     "direction",
     "da"
+   ],
+   "scenarios": [],
+   "statut": "porté"
+  },
+  {
+   "id": "cfg-fiches-aide",
+   "label": "Fiches d’aide de l’assistant",
+   "module": "CFG",
+   "domaine": "Système",
+   "tranche": 6,
+   "standalone": false,
+   "universel": false,
+   "roles": [
+    "admin",
+    "da",
+    "direction"
    ],
    "scenarios": [],
    "statut": "porté"
