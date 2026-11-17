@@ -1,0 +1,64 @@
+{
+ "nom": "m17-orientation",
+ "taille": [
+  412.0,
+  900.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Envoyer l’orientation",
+   "rect": [
+    16.0,
+    308.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   900.0
+  ],
+  "champ-pat": [
+   28.0,
+   84.0,
+   356.0,
+   56.0
+  ],
+  "champ-dest": [
+   28.0,
+   152.0,
+   356.0,
+   56.0
+  ],
+  "champ-urg": [
+   28.0,
+   220.0,
+   356.0,
+   56.0
+  ],
+  "envoyer-orientation": [
+   16.0,
+   308.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

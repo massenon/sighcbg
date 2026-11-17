@@ -1,0 +1,17 @@
+{
+ "id": "m13-ambulance",
+ "titre": "Interventions ambulance",
+ "libelle": "Interventions ambulance",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m13-ambulance"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 370
+}

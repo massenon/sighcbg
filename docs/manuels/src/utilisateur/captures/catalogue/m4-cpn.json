@@ -1,0 +1,17 @@
+{
+ "id": "m4-cpn",
+ "titre": "CPN & carte maternelle",
+ "libelle": "CPN & carte maternelle",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-cpn"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 697
+}

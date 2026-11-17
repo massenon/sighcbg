@@ -1,0 +1,17 @@
+{
+ "id": "cfg-catalogue",
+ "titre": "Catalogue tarifaire (deux prix)",
+ "libelle": "Catalogue tarifaire (deux prix)",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-catalogue"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 344
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m1-patient-profil",
+ "titre": "Fiche patient",
+ "libelle": "Fiche patient",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-patient-profil"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 541
+}

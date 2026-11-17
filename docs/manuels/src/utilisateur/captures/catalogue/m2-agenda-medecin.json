@@ -1,0 +1,17 @@
+{
+ "id": "m2-agenda-medecin",
+ "titre": "Agenda du médecin",
+ "libelle": "Agenda du médecin",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-agenda-medecin"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 836
+}

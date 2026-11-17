@@ -1,0 +1,17 @@
+{
+ "id": "hub-m13",
+ "titre": "Administration & Ambulance",
+ "libelle": "Administration & Ambulance",
+ "domaine": "Administration",
+ "module": "M13",
+ "moduleLibelle": "Administration & Ambulance",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m13"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 426
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m4-partogramme",
+ "titre": "Partogramme",
+ "libelle": "Partogramme",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-partogramme"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 439
+}

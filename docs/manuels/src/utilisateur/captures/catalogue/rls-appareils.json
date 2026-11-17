@@ -1,0 +1,17 @@
+{
+ "id": "rls-appareils",
+ "titre": "Appareils",
+ "libelle": "Appareils",
+ "domaine": "Relais en ligne",
+ "module": "RLS",
+ "moduleLibelle": "Relais en ligne (apps/web)",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "rls-appareils"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 494
+}

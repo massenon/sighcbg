@@ -1,0 +1,17 @@
+{
+ "id": "imp-natures-facture",
+ "titre": "Importation des natures de facture",
+ "libelle": "Importation des natures de facture",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-natures-facture"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 396
+}

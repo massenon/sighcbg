@@ -1,0 +1,17 @@
+{
+ "id": "m5-prelevement",
+ "titre": "Salle de prélèvement",
+ "libelle": "Salle de prélèvement",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-prelevement"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 559
+}

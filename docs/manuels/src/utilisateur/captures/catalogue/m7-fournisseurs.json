@@ -1,0 +1,17 @@
+{
+ "id": "m7-fournisseurs",
+ "titre": "Fournisseurs",
+ "libelle": "Fournisseurs",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-fournisseurs"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 484
+}

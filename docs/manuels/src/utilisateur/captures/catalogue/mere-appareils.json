@@ -1,0 +1,17 @@
+{
+ "id": "mere-appareils",
+ "titre": "Appareils et appairage",
+ "libelle": "Appareils et appairage",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-appareils"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 531
+}

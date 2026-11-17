@@ -1,0 +1,17 @@
+{
+ "id": "mere-base",
+ "titre": "Base de données locale",
+ "libelle": "Base de données locale",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Plateforme locale",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-base"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 548
+}

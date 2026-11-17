@@ -1,0 +1,17 @@
+{
+ "id": "m4-planification",
+ "titre": "Planification familiale",
+ "libelle": "Planification familiale",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-planification"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 468
+}

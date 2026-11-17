@@ -1,0 +1,17 @@
+{
+ "id": "hub-m6",
+ "titre": "Pharmacie & Stocks",
+ "libelle": "Pharmacie & Stocks",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m6"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 483
+}

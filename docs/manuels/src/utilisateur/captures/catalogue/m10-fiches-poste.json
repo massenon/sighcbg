@@ -1,0 +1,17 @@
+{
+ "id": "m10-fiches-poste",
+ "titre": "Fiches de poste",
+ "libelle": "Fiches de poste",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-fiches-poste"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 589
+}

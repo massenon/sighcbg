@@ -1,0 +1,17 @@
+{
+ "id": "imp-analyses",
+ "titre": "Importation du catalogue des analyses",
+ "libelle": "Importation du catalogue des analyses",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-analyses"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 395
+}

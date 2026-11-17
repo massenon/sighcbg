@@ -1,0 +1,17 @@
+{
+ "id": "cfg-modules",
+ "titre": "Activité des modules",
+ "libelle": "Activité des modules",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-modules"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 440
+}

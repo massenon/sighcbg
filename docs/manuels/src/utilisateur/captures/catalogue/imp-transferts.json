@@ -1,0 +1,17 @@
+{
+ "id": "imp-transferts",
+ "titre": "Importation d’un transfert gros → détail",
+ "libelle": "Importation d’un transfert gros → détail",
+ "domaine": "Système",
+ "module": "IMP",
+ "moduleLibelle": "Importation de données",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "imp-transferts"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 382
+}
