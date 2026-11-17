@@ -12,6 +12,7 @@ import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
 import '../../sync/configuration_sync.dart' show ApplicateurConfiguration;
+import '../../donnees/facture_tiers_poste.dart' show transmettreFactureTiers;
 import '../../donnees/mecef_poste.dart';
 import '../../donnees/normalisation_mecef.dart';
 import '../m8/commun.dart' show ecrireAvoirEmis, idAvoirSuivant;
@@ -439,8 +440,13 @@ class EcranMecefTransmission extends StatefulWidget with EcranMaquette {
 }
 
 class _EtatTransmission extends State<EcranMecefTransmission> {
-  List<Fiche> _par(Magasin mag, String s) =>
-      normalisees(mag).where((f) => f['statutMecef'] == s).toList();
+  /// La file de supervision : les ventes de la caisse ET les factures à une entreprise (17/11/2026), qui suivent le MÊME circuit (en attente → certifiée / rejetée). Une facture à une
+  /// entreprise porte le nom de l'acheteur à la place du patient : la colonne « Client » le lit.
+  List<Fiche> _par(Magasin mag, String s) => [
+        ...normalisees(mag),
+        for (final f in mag.collection(colFacturesTiers).actives)
+          if (f['statutMecef'] != null) {...f, 'patient': f['acheteurNom']}
+      ].where((f) => f['statutMecef'] == s).toList();
 
   /// « Synchroniser maintenant » : tant qu'aucun adaptateur n'est configuré (lot L3), refuse en nommant et n'écrit rien (aucun numéro fabriqué).
   Future<void> _synchroniser(ContexteEcran c) async {
@@ -467,6 +473,21 @@ class _EtatTransmission extends State<EcranMecefTransmission> {
   /// `MECEF_NON_CONFIGURE` se dit.
   void _normaliser(ContexteEcran c, Fiche f, {required bool reemission}) {
     final mag = c.magasin;
+    // Une facture à une entreprise suit le même circuit par SA fonction (acheteur et AIB portés par la pièce, aucun encaissement exigé, collection `facturesTiers`).
+    if (f['type'] == typeFactureTiersPayeur) {
+      transmettreFactureTiers(mag, '${f['id']}', role: c.role, maintenant: c.aujourdhui, fileul: ServiceInstallation.de(mag).rattache, gestes: gestesEcran(c)).then((r) {
+        if (!mounted) return;
+        if (!r.ecrit) {
+          ToastsSigh.afficher(context, '${r.refus?.code} : ${r.refus?.motif}', type: TypeToast.erreur, detail: r.refus?.geste, duree: const Duration(seconds: 9));
+        } else if (r.certifiee) {
+          ToastsSigh.afficher(context, 'Facture à une entreprise certifiée.', type: TypeToast.succes, detail: '${r.fiche?['numeroMecef']}', annuler: r.annuler);
+        } else {
+          ToastsSigh.afficher(context, '${r.refus?.code} : ${r.refus?.motif}', type: r.enAttente ? TypeToast.attention : TypeToast.erreur, detail: r.refus?.geste, duree: const Duration(seconds: 9));
+        }
+        setState(() {});
+      });
+      return;
+    }
     final refus = refusRetransmission(f, c.role, gestes: gestesEcran(c));
     if (refus != null) {
       ToastsSigh.afficher(context, '${refus.code} : ${refus.motif}',
@@ -519,7 +540,7 @@ class _EtatTransmission extends State<EcranMecefTransmission> {
         rej = _par(mag, 'rejete'),
         ver = [..._par(mag, 'a_verifier'), ..._par(mag, 'expiree')],
         val = _par(mag, 'valide');
-    final total = normalisees(mag).length;
+    final total = normalisees(mag).length + mag.collection(colFacturesTiers).actives.where((f) => f['statutMecef'] != null).length;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       KpiGrilleSigh(kpis: [
         KpiSigh(
@@ -742,11 +763,13 @@ class EcranMecefAvoirs extends StatelessWidget with EcranMaquette {
   Widget build(BuildContext context) {
     final c = ContexteEcran.of(context);
     final col = c.magasin.collection('avoirs');
+    final colTiers = c.magasin.collection(colAvoirsTiers);
     final p = paramFiscal(c.magasin);
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, colTiers]),
       builder: (context, _) {
-        final rows = col.actives;
+        // Le registre fiscal des avoirs : ceux de la caisse ET ceux des factures à une entreprise (même série de numéros, même circuit de régularisation).
+        final rows = [...col.actives, ...colTiers.actives];
         final annulees = c.magasin
             .collection('factures')
             .actives

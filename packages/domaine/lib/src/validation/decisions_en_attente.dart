@@ -11,6 +11,7 @@
 import '../achats/circuit_synchro.dart' show valGenreCircuitAchat;
 import '../administration/pta.dart' show valGenrePta;
 import '../droits/gestes_reserves.dart' show gestePtaAdopter, gesteRhEtapeSurveillant, gesteRhEtapeDaf;
+import '../mecef/facture_tiers_synchro.dart' show valGenreFactureTiers, gesteDestinataireFactureTiers;
 import '../rh/planning_synchro.dart' show valGenrePlanningRh;
 import 'reglage_depose.dart' show gesteDuReglage, valGenreReglage;
 import '../droits/gestes_reserves.dart' show gesteNumerotationModifier;
@@ -220,6 +221,9 @@ List<String> destinatairesAlerteDecision(DecisionEnAttente d, {required String g
       } else if (d.sousGenre == valGenreNumerotation) {
         // Une série de numérotation (lot 2) : ceux qui détiennent le geste `numerotation_modifier`, lus dans la matrice.
         ajouter('geste:$gesteNumerotationModifier');
+      } else if (d.sousGenre == valGenreFactureTiers) {
+        // Une demande sur une facture à une entreprise (17/11/2026) : ceux qui détiennent le geste qui l'émet, lus dans la matrice.
+        ajouter('geste:$gesteDestinataireFactureTiers');
       } else if (d.sousGenre == valGenreReglage) {
         // Un réglage posé sous un geste réservé (16/11/2026, §7) : ceux qui détiennent CE geste, lus dans la matrice.
         final g = gesteDuReglage('${d.famille}');

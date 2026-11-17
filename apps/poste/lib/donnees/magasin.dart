@@ -479,6 +479,7 @@ class Magasin {
     'remboursements': 'M8',
     'facturesMere': 'M9',
     'facturesTiers': 'M9',
+    'avoirsTiers': 'M9',
     'dispensations': 'M6',
     'emplacements': 'M6',
     'inventaires': 'M6',

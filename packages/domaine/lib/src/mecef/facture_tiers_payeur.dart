@@ -21,11 +21,15 @@ import '../numerotation/numerotation.dart';
 import 'acheteur_aib.dart';
 import 'montants.dart';
 
-/// La collection des factures à une entreprise (propre à M9 ; locale comme les factures mères, aucune famille de synchronisation).
+/// La collection des factures à une entreprise (propre à M9). Elle voyage entre les postes (famille A de la mère, jamais vers un téléphone) mais ne s'ÉCRIT que sur la mère :
+/// un fileul y dépose une DEMANDE (`facture_tiers_synchro.dart`).
 const String colFacturesTiers = 'facturesTiers';
 
 /// La série du référentiel `seriesNumerotation` qui numérote ces pièces (jamais le numéro des factures de la caisse).
 const String serieFactureTiers = 'caisse.factures-tiers';
+
+/// Le réglage des POSTES SIGNATAIRES de la pièce imprimée (rien en dur : les postes sont nommés par la clinique, leur titulaire est lu à l'organigramme).
+const String factureTiersCleSignataires = 'factureTiers.signataires';
 
 /// Le type porté par la pièce.
 const String typeFactureTiersPayeur = 'tiers_payeur';
@@ -47,12 +51,14 @@ class VerdictFactureTiers {
 }
 
 /// Les numéros des factures patients déjà RÉCLAMÉES : par une facture à une entreprise ACTIVE ([facturesTiers]) ou par une facture mère ÉMISE ([facturesMere] actives). Le numéro de
-/// chaque fille donne la pièce qui la réclame (pour nommer le refus).
+/// chaque fille donne la pièce qui la réclame (pour nommer le refus). Une facture à une entreprise ENTIÈREMENT contre-passée par avoirs (`montantAvoirs` ≥ `montantTTC`) ne réclame
+/// plus rien : ses filles sont libres, c'est la voie que le refus « Retirer la pièce qui les réclame par un avoir » annonce.
 Map<String, String> fillesDejaReclamees({Iterable<Map<String, Object?>> facturesTiers = const [], Iterable<Map<String, Object?>> facturesMere = const []}) {
   final out = <String, String>{};
   for (final (nature, pieces) in [('une facture à une entreprise', facturesTiers), ('la facture mère', facturesMere)]) {
     for (final p in pieces) {
       if (p['statut'] == 'archive') continue;
+      if (p['type'] == typeFactureTiersPayeur && _tout(p['montantAvoirs']) > 0 && _tout(p['montantAvoirs']) >= _tout(p['montantTTC'])) continue;
       for (final n in (p['piecesFilles'] as List? ?? const [])) {
         out.putIfAbsent('$n', () => '$nature ${p['numero'] ?? p['id'] ?? ''}'.trim());
       }
@@ -60,6 +66,8 @@ Map<String, String> fillesDejaReclamees({Iterable<Map<String, Object?>> factures
   }
   return out;
 }
+
+num _tout(Object? v) => v is num ? v : (num.tryParse('${v ?? ''}') ?? 0);
 
 String _montant(num n) => n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 2).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ' ');
 
