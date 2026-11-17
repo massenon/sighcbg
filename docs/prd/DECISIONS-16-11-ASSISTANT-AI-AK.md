@@ -74,3 +74,6 @@ Colonne N-1 du compte de résultat au même filtre de statut ; soldes d'ouvertur
 - **Imprimante de caisse : le boîtier ELTRADE CC300 est à la fois le MECeF et l'imprimante de caisse** (ticket 80 mm). Le référentiel des matériels le dit : une seule machine, deux fonctions.
 - Consigne : finir tout le reste (lots 3-8 de l'inventaire des valeurs en dur, geste dédié du planning individuel, facture à une entreprise complète, sélecteur d'exercice du PTA, reliquats de numérotation, manuels).
 - Hors de notre portée, restent à la Direction/aux professionnels : validations médicales (liste de mots interdits des SMS, gestes « à valider »), fichier réel des 100 questions de l'assistant.
+
+## 12. Mise à jour du logiciel : sauvegarde obligatoire, migration, export portable (17/11/2026)
+La Direction demande d'implémenter tout ce qui manque : (1) sauvegarde vérifiée OBLIGATOIRE avant une mise à jour ; (2) version du format des données lue à l'ouverture du magasin + chaîne de migrations ; (3) fichier d'export complet portable (autre machine / nouvelle version) et son réimport ; (4) retour arrière documenté ; (5) écran de restauration de la clé sur un poste neuf. Arbitrage par défaut retenu (réglable par geste réservé) : export et import réservés à l'administrateur et à la DAF, import SUR LA MÈRE uniquement, les fileuls se resynchronisent ensuite.
