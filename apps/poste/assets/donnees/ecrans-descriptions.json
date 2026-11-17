@@ -1409,6 +1409,10 @@
    "titre": "Relais en ligne",
    "description": "État de la liaison avec le relais (hébergement mutualisé) : battement, retard de réplication, secret de la mère."
   },
+  "mere-reprise-poste": {
+   "titre": "Reprise d’un poste",
+   "description": "Remplacer un poste fileul par un poste neuf : choisir l’ancien poste, générer un code de reprise qui passe ses plages de numéros et ses baux au nouveau et révoque l’ancien."
+  },
   "mere-reseau": {
    "titre": "Réseau local",
    "description": "Adresses de la mère, accessibilité depuis les postes, certificat TLS du réseau local, aide pare-feu."
