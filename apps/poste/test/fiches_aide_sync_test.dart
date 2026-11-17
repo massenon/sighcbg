@@ -162,7 +162,9 @@ void main() {
     }
 
     // Un fileul qui réécrit la fiche validée est refusé par la mère : son texte reste celui que la Direction a relu.
-    f2.collection(colFichesAide).mettreAJour(id, {'titre': 'Titre réécrit'}, journaliser: false);
+    // Le moteur du poste le refuserait déjà (garde de la collection) : on le contourne pour éprouver la mère, qui refait le contrôle d'un poste d'une autre version.
+    expect(() => f2.collection(colFichesAide).mettreAJour(id, {'titre': 'Titre réécrit'}, journaliser: false), throwsA(isA<EcritureRefusee>()));
+    f2.collection(colFichesAide).sansGardes(() => f2.collection(colFichesAide).mettreAJour(id, {'titre': 'Titre réécrit'}, journaliser: false));
     await tour();
     expect(t2.refus, contains('fiche_validee'));
     expect(mm.collection(colFichesAide).parId(id)!['titre'], fiche['titre']);

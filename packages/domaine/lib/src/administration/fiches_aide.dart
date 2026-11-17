@@ -382,3 +382,17 @@ VerdictFicheAide archiverFicheAide({required Map<String, Object?>? fiche, requir
   }
   return null;
 }
+
+/// LA GARDE DU MOTEUR (tenue sur la collection du poste : masquer un bouton ne protège rien) : une fiche VALIDÉE ne se réécrit pas. Rend le motif du refus, ou `null`. [operation] : `modifier`,
+/// `inserer`, `archiver`… ; [fiche] : l'état que l'opération produirait ; [actuelle] : la fiche telle qu'elle est. L'archivage, la validation (statut et champs de validation) et la création d'une fiche
+/// de révision passent : seul le CONTENU d'une fiche validée est protégé. La réception d'une fiche d'un autre poste (la mère) ne passe pas par les gardes : c'est la mère qui refait le contrôle
+/// ([refusEcritureFicheAide]).
+String? gardeFicheAide(String operation, Map<String, Object?> fiche, Map<String, Object?>? actuelle) {
+  if (operation != 'modifier' || actuelle == null || actuelle['statut'] != ficheAideValidee) return null;
+  for (final k in ficheAideChampsContenu) {
+    if ('${fiche[k]}' != '${actuelle[k]}') {
+      return 'Une fiche validée ne se réécrit pas (« $k ») : la réviser, une fiche nouvelle la remplacera quand elle sera validée à son tour.';
+    }
+  }
+  return null;
+}

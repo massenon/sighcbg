@@ -276,6 +276,17 @@ void main() {
     });
   });
 
+  test('la garde du moteur : le CONTENU d’une fiche validée ne se réécrit pas ; la validation, l’archivage et le reste passent', () {
+    final f = creer(saisie());
+    final v = {...f, ...valider(f).fiche!};
+    expect(gardeFicheAide('modifier', {...v, 'titre': 'Autre'}, v), contains('ne se réécrit pas'));
+    expect(gardeFicheAide('modifier', {...v, 'etapes': ['x']}, v), isNotNull);
+    expect(gardeFicheAide('modifier', {...v, 'statut': ficheAideArchivee, 'motifArchivage': 'm'}, v), isNull, reason: 'archiver reste permis');
+    expect(gardeFicheAide('modifier', {...f, 'statut': ficheAideValidee, 'validePar': 'D'}, f), isNull, reason: 'valider une fiche proposée');
+    expect(gardeFicheAide('modifier', {...f, 'titre': 'Autre'}, f), isNull, reason: 'une fiche non validée se corrige');
+    expect(gardeFicheAide('inserer', v, null), isNull);
+  });
+
   group('le moteur de l’assistant ne cite QUE ce qui est validé avec son validateur', () {
     final questions = [for (final q in (_json('test/vecteurs/assistant_questions_agents.json')['questions'] as List)) (q as Map).cast<String, Object?>()];
     Map<String, Object?> question(int n) => questions.firstWhere((q) => q['n'] == n);

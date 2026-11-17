@@ -169,6 +169,14 @@ void main() {
     expect(gesteReserve(gesteFichesAideValider)!.rolesDefaut, isNot(contains(professionnel)));
   });
 
+  test('le moteur du poste refuse de réécrire une fiche validée (la garde est sur la collection, pas seulement sur le bouton)', () {
+    final m = magasin([autre(statut: 'validee', en: {'validePar': 'V', 'valideLe': '2026-10-29', 'validateurId': 'U-V'})]);
+    expect(() => m.collection(colFichesAide).mettreAJour('FAI-AUTRE', {'titre': 'Réécrit'}), throwsA(isA<EcritureRefusee>()));
+    expect(m.collection(colFichesAide).parId('FAI-AUTRE')!['titre'], 'Enregistrer un courrier entrant');
+    m.collection(colFichesAide).mettreAJour('FAI-AUTRE', {'statut': 'archive', 'motifArchivage': 'm'}, journaliser: false);
+    expect(m.collection(colFichesAide).parId('FAI-AUTRE')!['statut'], 'archive');
+  });
+
   casM14('archiver : le motif est obligatoire, la fiche reste lisible (jamais supprimée), l’assistant ne la cite plus', (t) async {
     final m = magasin([autre(statut: 'validee', en: {'validePar': 'Valideur Fictif', 'valideLe': '2026-10-29', 'validateurId': 'U-V'})]);
     await ouvrirM14(t, m, 'cfg-fiches-aide', role: validateur);
