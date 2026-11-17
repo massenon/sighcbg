@@ -779,7 +779,7 @@ La réponse donne le code de 8 caractères. Il vaut 15 minutes et ne sert qu’u
 </div>
 
 <h2 id="param-support">6.14 Le contact de l’éditeur et la version affichée</h2>
-<p>L’écran <b>Contactez l’éditeur</b> (menu du profil) lit cinq réglages de la famille <b>Contact de l’éditeur</b> : <code>support.editeurAuteur</code>, <code>support.editeurEmails</code>, <code>support.editeurTelephone</code>, <code>support.editeurHoraires</code> et <code>support.versionAffichee</code> (le libellé de version de l’écran <b>Aide &amp; À propos</b>). Ils se corrigent par une version datée ; leurs défauts figurent en annexe C. Le libellé de version affiché est une valeur d’attente : il ne se met pas à jour tout seul à chaque livraison.</p>
+<p>L’écran <b>Contactez l’éditeur</b> (menu du profil) lit cinq réglages de la famille <b>Contact de l’éditeur</b> : <code>support.editeurAuteur</code>, <code>support.editeurEmails</code>, <code>support.editeurTelephone</code>, <code>support.editeurHoraires</code> et <code>support.versionAffichee</code> (le libellé de version de l’écran <b>Aide &amp; À propos</b>). Ils se corrigent par une version datée. <b>Les quatre réglages de coordonnées (nom, adresses, téléphone, horaires) sont vides à la livraison</b> : aucune coordonnée de personne n’est une valeur d’attente. Tant qu’ils sont vides, l’écran affiche « Non renseigné » et le message d’aide n’est pas envoyé par courriel (il reste enregistré) ; l’annexe C écrit « à renseigner par la clinique ». La clinique les renseigne ici par une version datée. Le libellé de version affiché est une valeur d’attente : il ne se met pas à jour tout seul à chaque livraison.</p>
 
 <!-- ============================================================ 7. MODULES -->
 <h1 id="modules"><span class="no">7.</span> Activité des modules</h1>
@@ -1945,7 +1945,7 @@ cp .env.example .env
 php artisan key:generate
 <span class="c"># renseigner DB_PASSWORD et RELAIS_SECRET_MERE dans .env</span>
 php artisan migrate
-php artisan relais:superadmin votre@courriel.bj --mot-de-passe='un-mot-de-passe-long'   <span class="c"># 8 caractères au moins (12 recommandés)</span>
+php artisan relais:superadmin votre@courriel.bj --mot-de-passe='un-mot-de-passe-long'   <span class="c"># 12 caractères au moins</span>
 php artisan serve                                          <span class="c"># http://127.0.0.1:8000</span>
 php artisan test                                           <span class="c"># tests du relais, SQLite en mémoire</span></pre>
 
@@ -1962,7 +1962,7 @@ php artisan key:generate --show      <span class="c"># affiche la clé : à coll
   <li>Créer les tables et le compte du panneau :
 <pre>php artisan migrate --force
 php artisan relais:superadmin &lt;courriel-à-renseigner&gt; --mot-de-passe='un-mot-de-passe-long'</pre>
-<span class="petit">Le courriel du compte du panneau est à renseigner par la clinique : il n’est pas fourni. Le mot de passe compte 8 caractères au moins (la commande refuse sinon) ; en choisir un de 12 ou plus.</span></li>
+<span class="petit">Le courriel du compte du panneau est à renseigner par la clinique : il n’est pas fourni. Le mot de passe compte 12 caractères au moins (la commande refuse sinon, de même que le changement de mot de passe au panneau).</span></li>
   <li>Ajouter les deux tâches cron, chaque minute (14.7) :
 <pre>* * * * *  php /chemin/vers/apps/web/artisan schedule:run
 * * * * *  php /chemin/vers/apps/web/artisan queue:work --stop-when-empty</pre></li>
@@ -1991,20 +1991,24 @@ build_windows.bat
 <p>Prérequis : Flutter (Windows Desktop), Visual Studio 2022 (C++) et Inno Setup 6. Le script s’arrête à la première étape qui échoue, en la nommant (chapitre 1).</p>
 <div class="encadre attention" data-titre="Attention : ce que le script ne règle pas">
   <ul>
-    <li><b>Aucune option n’existe</b> pour passer un <code>--dart-define</code> à <code>build_windows.bat</code> : il lance <code>flutter build windows --release</code> tel quel.</li>
-    <li>Le <b>secret d’administration</b> de la mère est la valeur compilée <code>SIGH_ADMIN</code> ; <b>à défaut, c’est <code>admin-local</code></b> pour tous les postes construits ainsi. Il sert aussi à la console de la mère et au code de reprise (3.4).</li>
+    <li><b>Le secret d’administration est obligatoire</b> : définir la variable d’environnement <code>SIGH_ADMIN</code> (16 caractères au moins, jamais <code>admin-local</code>) <b>avant</b> de lancer <code>build_windows.bat</code>. Sans elle, ou si elle est faible, le script <b>s’arrête</b> en la nommant ; il la transmet à la compilation (<code>--dart-define=SIGH_ADMIN</code>) et ne l’affiche jamais. Ce secret sert à la console de la mère et au code de reprise (3.4). Le conserver hors du dépôt (gestionnaire de secrets de la clinique) : le perdre oblige à reconstruire le poste.
+<pre>set SIGH_ADMIN=&lt;secret-à-générer&gt;
+build_windows.bat</pre></li>
+    <li><b>Garde au démarrage</b> : une version de production construite autrement (sans <code>SIGH_ADMIN</code> solide) <b>refuse de démarrer en mère</b> et affiche le refus <code>SECRET_ADMIN_FAIBLE</code> ; le mode fileul n’est pas concerné. En développement et en test, le repli <code>admin-local</code> subsiste.</li>
     <li>Le <b>numéro de version</b> de l’installateur vient de <code>pubspec.yaml</code> ; le numéro que le poste écrit dans ses exports vient de <code>SIGH_VERSION</code> (<code>0.1.0</code> par défaut). Les deux ne se suivent pas automatiquement.</li>
   </ul>
 </div>
 <h3>Application mobile (Android)</h3>
+<p>L’APK de production est <b>signé par la clé de la clinique</b>. Créer d’abord le fichier de clés (<code>keytool</code>), le <b>sauvegarder hors du dépôt</b>, puis renseigner <code>apps/mobile/android/key.properties</code> (modèle : <code>key.properties.exemple</code>, ignoré par git) ou les variables d’environnement <code>SIGH_KEYSTORE</code>, <code>SIGH_KEYSTORE_PASSWORD</code>, <code>SIGH_KEY_ALIAS</code>, <code>SIGH_KEY_PASSWORD</code>. Procédure complète : <code>docs/guides/SIGNATURE-ANDROID.md</code>.</p>
 <pre>cd apps/mobile
 flutter build apk --release \
   --dart-define=SIGH_RELAIS=https://sighnbg.cliniquebaguidi.com \
   --dart-define=SIGH_VERSION=1.0.0+1</pre>
 <p>Adapter <code>SIGH_VERSION</code> au numéro de la livraison. Sans <code>SIGH_RELAIS</code>, l’application vise une adresse d’exemple. Le fichier produit est <code>build/app/outputs/flutter-apk/app-release.apk</code>.</p>
-<div class="encadre attention" data-titre="Attention : cet APK n’est pas encore diffusable tel quel">
+<div class="encadre attention" data-titre="Attention : pas de clé, pas d’APK de production">
   <ul>
-    <li><b>Signature</b> : le dépôt ne porte aucune configuration de signature de production. Le build « release » est signé avec la clé <b>de débogage</b>. Un APK signé par la clinique exige d’ajouter une clé et sa configuration Gradle : aucune option de ligne de commande ne le fait.</li>
+    <li><b>Signature</b> : sans clé configurée, le build « release » <b>échoue</b> avec un message clair ; il n’est plus signé avec la clé de débogage. Le build de débogage (<code>flutter run</code>) n’est pas concerné.</li>
+    <li><b>Perte de la clé</b> : un APK ne se met à jour que s’il est signé par la même clé. Perdue, il faut publier une nouvelle application, et chaque téléphone doit désinstaller l’ancienne (ses données locales sont perdues). Sauvegarder le fichier de clés et ses mots de passe en au moins deux lieux sûrs hors du dépôt.</li>
     <li><b>Permission réseau</b> : la permission <code>INTERNET</code> est déclarée dans le manifeste de production (<code>android/app/src/main/AndroidManifest.xml</code>) depuis la livraison v30 ; un APK de production joint donc le relais.</li>
   </ul>
   <p class="non-verifie">Aucun build Android n’a été exécuté dans le cadre de ce manuel</p>
