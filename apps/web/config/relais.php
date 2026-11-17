@@ -7,6 +7,9 @@ return [
     */
     'secret_mere' => env('RELAIS_SECRET_MERE', ''),
 
+    // Longueur MINIMALE (caractères) du mot de passe d'un compte superadmin du panneau (commande `relais:superadmin` ET changement au panneau) : le relais est exposé à Internet. E4703.
+    'mdp_superadmin_min' => (int) env('RELAIS_MDP_SUPERADMIN_MIN', 12),
+
     // Silence de la mère au-delà duquel le relais lève l'alerte « battement ». 5 minutes par défaut (spec §13).
     'seuil_battement_ms' => (int) env('RELAIS_SEUIL_BATTEMENT_MS', 300000),
 

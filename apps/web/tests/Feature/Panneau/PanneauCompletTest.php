@@ -114,7 +114,9 @@ class PanneauCompletTest extends TestCase
         Livewire::actingAs($u)->test(Superadmin::class)
             ->set('actuel', 'faux')->set('nouveau', 'nouveau-mot-de-passe-13')->set('confirmation', 'nouveau-mot-de-passe-13')->call('changerMotDePasse')->assertSee('actuel est incorrect');
         Livewire::actingAs($u)->test(Superadmin::class)
-            ->set('actuel', 'ancien-mot-de-passe-12')->set('nouveau', 'court')->set('confirmation', 'court')->call('changerMotDePasse')->assertSee('au moins 8');
+            ->set('actuel', 'ancien-mot-de-passe-12')->set('nouveau', 'court')->set('confirmation', 'court')->call('changerMotDePasse')->assertSee('au moins 12');
+        Livewire::actingAs($u)->test(Superadmin::class)
+            ->set('actuel', 'ancien-mot-de-passe-12')->set('nouveau', 'onze-chars-')->set('confirmation', 'onze-chars-')->call('changerMotDePasse')->assertSee('au moins 12');
         Livewire::actingAs($u)->test(Superadmin::class)
             ->set('actuel', 'ancien-mot-de-passe-12')->set('nouveau', 'nouveau-mot-de-passe-13')->set('confirmation', 'autre-chose-de-long')->call('changerMotDePasse')->assertSee('ne correspond pas');
         $this->assertTrue(Hash::check('ancien-mot-de-passe-12', $u->fresh()->password));

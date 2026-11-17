@@ -88,6 +88,10 @@ class PanneauTest extends TestCase
     public function test_la_commande_superadmin_exige_un_mot_de_passe_solide_et_ne_le_journalise_pas(): void
     {
         $this->artisan('relais:superadmin', ['courriel' => 'a@b.test', '--mot-de-passe' => 'court'])->assertFailed();
+        $this->artisan('relais:superadmin', ['courriel' => 'a@b.test', '--mot-de-passe' => 'onze-chars-'])->assertFailed(); // 11 caractères : sous le minimum de 12
+        $this->assertDatabaseMissing('users', ['email' => 'a@b.test']);
+        $this->artisan('relais:superadmin', ['courriel' => 'a@b.test', '--mot-de-passe' => 'douze-chars-'])->assertSuccessful(); // 12 caractères : accepté
+        User::where('email', 'a@b.test')->delete();
         $this->artisan('relais:superadmin', ['courriel' => 'a@b.test', '--mot-de-passe' => 'un-mot-de-passe-solide'])->assertSuccessful();
         $this->assertDatabaseHas('users', ['email' => 'a@b.test']);
         $this->assertDatabaseMissing('relais_audit', ['detail' => 'un-mot-de-passe-solide']);

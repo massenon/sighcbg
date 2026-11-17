@@ -13,15 +13,16 @@ use Illuminate\Support\Facades\Hash;
  */
 class CreerSuperadmin extends Command
 {
-    protected $signature = 'relais:superadmin {courriel} {--mot-de-passe= : 8 caractères au moins}';
+    protected $signature = 'relais:superadmin {courriel} {--mot-de-passe= : 12 caractères au moins (config relais.mdp_superadmin_min)}';
 
     protected $description = 'Crée ou met à jour le compte superadmin du panneau du relais';
 
     public function handle(): int
     {
         $mdp = (string) $this->option('mot-de-passe');
-        if (mb_strlen($mdp) < 8) {
-            $this->error('Le mot de passe doit compter au moins 8 caractères.');
+        $min = (int) config('relais.mdp_superadmin_min');
+        if (mb_strlen($mdp) < $min) {
+            $this->error("Le mot de passe doit compter au moins $min caractères.");
 
             return self::FAILURE;
         }
