@@ -95,7 +95,7 @@ class _EtatStatsPermanences extends State<EcranStatsPermanences> {
                 for (final x in rows) {'agent': x.agent, 'matricule': x.matricule, 'service': x.service, 'fonction': x.fonction, 'nombre': x.nombre}
               ])
             ],
-            signatures: const [Signature('Le Surveillant'), rhbSignDirecteurAdmin]));
+            signatures: const [Signature('Le Surveillant', qualite: PaiQualite.surveillant), rhbSignDirecteurAdmin]));
   }
 
   @override

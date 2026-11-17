@@ -90,7 +90,7 @@ class EcranBaseline2025 extends StatelessWidget with EcranMaquette {
             signatures: [
               signComptable,
               signDafCompta,
-              const Signature('Le Directeur Médical'),
+              const Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical),
             ]));
   }
 

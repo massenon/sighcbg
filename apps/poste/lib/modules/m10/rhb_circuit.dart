@@ -59,6 +59,15 @@ String rhbDefPiece(String nom) => switch (nom) {
 void rhbToastRefus(BuildContext ctx, Map<String, Object?> r) =>
     ToastsSigh.afficher(ctx, '${r['motif']}', type: TypeToast.erreur, detail: '${r['geste']}');
 
+/// Celui qui signe l'étape [etape] du circuit (`daf` ou `surveillant`), dit par le POSTE de l'organigramme (« le poste X ») quand celui-ci en nomme un ; à défaut, l'intitulé d'attente
+/// (`nomEtapeRh` du domaine). L'étape reste un identifiant stocké sur la pièce ; son intitulé, lui, n'est écrit nulle part au-delà de ce repli.
+String rhbLibelleEtape(ContexteEcran c, Object? etape) {
+  // Quelle étape ? Celle dont le geste réservé est « valider pour la DAF » : l'identifiant de l'étape n'est comparé à aucun littéral.
+  final daf = gesteEtapeRh['$etape'] == gesteRhEtapeDaf;
+  final poste = paiIntituleSignataire(c.magasin.collection('postes').actives, daf ? PaiQualite.daf : PaiQualite.surveillant);
+  return poste == null ? nomEtapeRh['$etape'] ?? '$etape' : 'le poste « $poste »';
+}
+
 /// Les commandes de validation d'une pièce : ABSENTES si le rôle courant n'est pas l'étape attendue du circuit (jamais grisées). [apres] : rafraîchissement
 /// de l'écran après le geste (les écrans écoutent déjà leurs collections : il sert surtout aux écrans qui ne le font pas).
 List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String nom, Fiche r, {VoidCallback? apres}) {
@@ -66,7 +75,7 @@ List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String no
   final peut = p.peutTrancher(nom, r);
   if (peut.refus != null) return const [];
   final def = rhbDefPiece(nom);
-  final etape = peut.etape == 'daf' ? 'la directrice administrative' : 'le surveillant';
+  final etape = rhbLibelleEtape(c, peut.etape);
   return [
     BoutonIcone(
         icone: LucideIcons.check,
@@ -83,7 +92,7 @@ List<Widget> rhbCommandesValidation(BuildContext ctx, ContexteEcran c, String no
             return;
           }
           apres?.call();
-          rhbToastSuite(ctx, res, res['complet'] == true ? 'Pièce validée.' : 'Étape validée : la pièce attend la directrice administrative.', annuler: res['enAttenteMere'] == true
+          rhbToastSuite(ctx, res, res['complet'] == true ? 'Pièce validée.' : 'Étape validée : la pièce attend ${rhbLibelleEtape(c, gesteEtapeRh.entries.firstWhere((e) => e.value == gesteRhEtapeDaf).key)}.', annuler: res['enAttenteMere'] == true
               ? null
               : () {
                   (res['annuler'] as VoidCallback)();

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 
+import '../core/service_parametres.dart';
 import '../donnees/magasin.dart';
 
 /// LES TÂCHES DU CIRCUIT D'ACHAT, NÉES DE L'ÉTAT DU BON (Direction, 16/11/2026).
@@ -69,7 +70,7 @@ class ServiceCircuitAchats {
 
         // Les deux postes informés par la validation : le comptable ET le gestionnaire de stock.
         if (!const ['rejete', 'complement'].contains(etat)) {
-          for (final nt in notificationsDeBesoinAccorde(b)) {
+          for (final nt in notificationsDeBesoinAccorde(b, destinataires: destinatairesBesoinAccorde(magasin, _maintenant))) {
             ecrire('circuit:besoin_accorde:$cle0:${nt['poste']}', nt);
           }
         }

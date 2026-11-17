@@ -40,7 +40,7 @@ Listenable ecouteCompta(ContexteEcran c, [List<String> en = const []]) => Listen
     ]);
 
 /// Signatures des états comptables (la maquette les écrit en dur).
-const signComptable = Signature('Le Comptable');
+const signComptable = Signature('Le Comptable', qualite: PaiQualite.comptable);
 const signDafCompta = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
 
 // --- Colonnes réutilisables des écritures ------------------------------------------------------------------------------------------------------------

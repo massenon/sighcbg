@@ -11,6 +11,7 @@
 library;
 
 import '../droits/gestes_reserves.dart' show DroitsGestes;
+import '../notifications/routage_notifications.dart' show DestinataireNotif;
 import '../validation/validation.dart' show RefusValidation, valInstant;
 import '../validation/validation_deposee.dart';
 import 'besoins.dart';
@@ -383,8 +384,9 @@ ApplicationCircuit? circuitAppliquer(
 
 /// Les notifications de poste que le verdict d'un arbitrage fait naître (le comptable ET le gestionnaire de stock) : celles de `arbitrerBon`, reconstruites depuis l'ÉTAT DU BON — donc
 /// lisibles sur TOUT poste qui détient le bon accordé, et pas seulement celui où le geste a été fait. [bon] doit être accordé (ou au-delà).
-List<Map<String, Object?>> notificationsDeBesoinAccorde(Map<String, Object?> bon) {
+List<Map<String, Object?>> notificationsDeBesoinAccorde(Map<String, Object?> bon, {List<DestinataireNotif>? destinataires}) {
   if ((rangCircuit('besoins', bon['etape']) ?? 0) < 4 || const ['rejete', 'complement'].contains('${bon['etape']}')) return const [];
-  final a = arbitrerBon(bon: bon, quoi: Arbitrage.valider, motif: '${bon['motifArbitrage'] ?? ''}', utilisateur: '${bon['arbitrePar'] ?? ''}', maintenant: '${bon['arbitreLe'] ?? ''}');
+  final a = arbitrerBon(
+      bon: bon, quoi: Arbitrage.valider, motif: '${bon['motifArbitrage'] ?? ''}', utilisateur: '${bon['arbitrePar'] ?? ''}', maintenant: '${bon['arbitreLe'] ?? ''}', destinataires: destinataires);
   return a.notifications;
 }

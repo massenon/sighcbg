@@ -191,7 +191,7 @@ class _EtatCreances extends State<EcranCreances> {
               ])
             ],
             signatures: const [
-              Signature('Le Comptable'),
+              Signature('Le Comptable', qualite: PaiQualite.comptable),
               signDaf
             ]));
   }

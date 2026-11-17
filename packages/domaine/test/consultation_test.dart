@@ -201,6 +201,11 @@ void main() {
       expect(csPeutEcrireRubrique('blocPrevu', 'medecin').ok, isFalse);
       expect(csPeutEcrireRubrique('histoire', 'medecin').ok, isTrue);
     });
+    test('le geste réservé `rubriques_chirurgicales` ouvre les rubriques chirurgicales sans que le nom du rôle y soit lu', () {
+      expect(csPeutEcrireRubrique('blocPrevu', 'medecin', parGeste: true).ok, isTrue, reason: 'la fiche de rôle accorde le geste : la porte s’ouvre');
+      expect(csPeutEcrireRubrique('blocPrevu', 'medecin', parGeste: false).ok, isFalse, reason: 'sans le geste ni la fonction, la porte reste fermée');
+      expect(const SessionCs(role: 'chirurgien').rubriquesChirurgicales, isFalse, reason: 'un nom de rôle ne vaut pas droit : seul le geste lu à la matrice compte');
+    });
   });
 
   group('enregistrerDossier', () {

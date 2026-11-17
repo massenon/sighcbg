@@ -102,7 +102,7 @@ class _EtatCout extends State<EcranCoutActivite> {
                 ColonneEtat(libelle: 'Marge', droite: true, valeur: (x) => m(x['marge']), somme: (x) => n(x['marge'])),
               ], lignes: [for (final g in r.lignes) _fiche(g)])
             ],
-            signatures: [const Signature('Le Comptable'), signDafCompta]));
+            signatures: [const Signature('Le Comptable', qualite: PaiQualite.comptable), signDafCompta]));
   }
 
   static Fiche _fiche(CpcGroupeActivite g) => {

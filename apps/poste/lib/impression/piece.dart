@@ -4,17 +4,24 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 /// à l'aperçu et au PDF (`afficherApercu`), le nom de l'agent qui porte cette qualité au dossier du personnel ; sans titulaire, la pièce imprime une
 /// ligne de signature sans nom, que l'on signe à la main.
 class Signature {
-  const Signature(this.role, {this.nom, this.mention = 'Signature', this.qualite});
+  const Signature(this.role, {this.nom, this.mention = 'Signature', this.qualite, this.nomFige = false});
   final String role;
   final String? nom;
   final String mention;
   final PaiQualite? qualite;
 
+  /// Le [nom] est celui du signataire ENREGISTRÉ sur la pièce (l'opérateur, le laborantin, celui qui a dispensé) : l'organigramme ne porte que le titulaire ACTUEL, il ne
+  /// remplace donc JAMAIS ce nom, même vide (un signataire d'époque ne se devine pas : la ligne reste sans nom, à signer à la main). La [qualite] ne sert alors qu'à lire l'intitulé.
+  final bool nomFige;
+
   /// La même signature, avec le nom lu au personnel.
-  Signature avecNom(String? n) => Signature(role, nom: n, mention: mention, qualite: qualite);
+  Signature avecNom(String? n) => Signature(role, nom: n, mention: mention, qualite: qualite, nomFige: nomFige);
+
+  /// La même signature, avec l'INTITULÉ du poste lu à l'organigramme : [role] n'est alors que le repli écrit à l'appelant, remplacé par ce que l'organigramme nomme.
+  Signature avecIntitule(String i) => Signature(i, nom: nom, mention: mention, qualite: qualite, nomFige: nomFige);
 
   /// Reste-t-il à lire le nom de cette signature au personnel ?
-  bool get aResoudre => qualite != null && (nom == null || nom!.isEmpty);
+  bool get aResoudre => qualite != null && !nomFige && (nom == null || nom!.isEmpty);
 }
 
 /// Pièce A4 (`P.etat`) : en-tête légal UNIQUE (jamais passé par l'appelant), titre, filtres en force, contenu tabulaire dont le total est
@@ -82,8 +89,10 @@ class PieceA4 {
       identite: i,
       paysage: paysage);
 
-  /// La même pièce, avec ses signatures lues au personnel (voir [Signature.qualite]) : le nom d'un signataire vient du dossier du personnel, jamais du code.
-  PieceA4 avecSignatures(Iterable<Map<String, Object?>> personnel) => !signatures.any((s) => s.aResoudre)
+  /// La même pièce, avec ses signatures lues au dossier du personnel et à l'organigramme (voir [Signature.qualite]) : le NOM d'un signataire vient du dossier du personnel
+  /// (le titulaire courant), son INTITULÉ du poste de l'organigramme ([postes], collection `postes`) quand celui-ci en nomme un, jamais du code. L'organigramme ne porte que le
+  /// titulaire ACTUEL : une pièce rééditée plus tard porte l'intitulé en vigueur, jamais un signataire d'époque deviné. Sans poste lisible, l'intitulé écrit à l'appelant reste le repli.
+  PieceA4 avecSignatures(Iterable<Map<String, Object?>> personnel, {Iterable<Map<String, Object?>> postes = const []}) => !signatures.any((s) => s.qualite != null)
       ? this
       : PieceA4(
           titre: titre,
@@ -94,7 +103,15 @@ class PieceA4 {
           blocs: blocs,
           cartouche: cartouche,
           filtres: filtres,
-          signatures: [for (final s in signatures) s.aResoudre ? s.avecNom(paiSignataire(personnel, s.qualite!)) : s],
+          signatures: [
+            for (final s in signatures)
+              () {
+                if (s.qualite == null) return s;
+                final intitule = postes.isEmpty ? null : paiIntituleSignataire(postes, s.qualite!);
+                final avecIntitule = intitule == null ? s : s.avecIntitule(intitule);
+                return avecIntitule.aResoudre ? avecIntitule.avecNom(paiSignataire(personnel, s.qualite!)) : avecIntitule;
+              }()
+          ],
           lieuDate: lieuDate,
           filigrane: filigrane,
           identite: identite,

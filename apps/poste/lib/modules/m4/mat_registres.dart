@@ -528,7 +528,7 @@ class EcranNaissances extends StatelessWidget with EcranMaquette {
               const BlocTexte('La présente attestation est délivrée pour servir et valoir ce que de droit, en vue de la déclaration à l’état civil.',
                   italique: true),
             ],
-            signatures: const [Signature('La Sage-femme'), Signature('Le Directeur Médical')]);
+            signatures: const [Signature('La Sage-femme'), Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)]);
       },
     );
   }
@@ -731,7 +731,7 @@ class EcranDeces extends StatelessWidget with EcranMaquette {
           ],
           signatures: [
             Signature('Le Médecin constatant', nom: '${r['medecin'] ?? ''}', mention: 'Signature et cachet'),
-            const Signature('Le Directeur Médical')
+            const Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)
           ]),
     );
   }

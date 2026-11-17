@@ -11,6 +11,7 @@ import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// m14-roles : la matrice administrable de la maquette. Les règles sont rejouées sur les vecteurs par le domaine ; ici, l'ÉCRAN piloté comme la maquette l'a
 /// été dans Chrome — mêmes gestes, mêmes fiches `rbac`, mêmes messages — et son articulation avec la matrice engendrée du poste.
@@ -376,8 +377,9 @@ void main() {
     await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la matrice'));
     expect(find.text('Matrice des droits d’accès (RBAC)'), findsWidgets);
     expect(find.text('Politique de sécurité — situation au 30/10/2026'), findsOneWidget);
-    expect(find.text('Le Directeur Médical'), findsOneWidget);
-    expect(find.text('La Directrice Administrative'), findsOneWidget);
+    // Les signatures portent l'intitulé du POSTE de l'organigramme, qui peut reprendre le libellé d'un rôle de la matrice imprimée : plusieurs occurrences sont normales.
+    expect(find.text(intituleSigne(m, PaiQualite.directeurMedical, 'Le Directeur Médical')), findsWidgets);
+    expect(find.text(intituleSigne(m, PaiQualite.daf, 'La Directrice Administrative')), findsWidgets);
     expect(find.textContaining('Conformément à la règle RG-13'), findsOneWidget);
   });
 

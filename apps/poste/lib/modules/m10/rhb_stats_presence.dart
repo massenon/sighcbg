@@ -102,7 +102,7 @@ class _EtatStatsPresence extends State<EcranStatsPresence> {
             blocs: const [
               BlocTexte('Le taux est calculé sur les journées effectivement pointées. Le retard est compté comme une présence : l’agent est là.', italique: true)
             ],
-            signatures: const [Signature('Le Surveillant'), rhbSignDirecteurAdmin]));
+            signatures: const [Signature('Le Surveillant', qualite: PaiQualite.surveillant), rhbSignDirecteurAdmin]));
   }
 
   @override

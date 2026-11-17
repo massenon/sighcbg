@@ -22,6 +22,7 @@ import '../mecef/imprimante_caisse.dart' show cleImprimanteModele, cleImprimante
 import '../sauvegarde/sauvegarde_horssite.dart';
 import '../droits/gestes_reserves.dart' show gesteReglerLimiteExport, gestePtaRegler, gesteFiscalConfirmer;
 import '../administration/pta.dart' show ptaCleDecoupage, ptaClePrefixe, ptaCleSeuilRetard, ptaCleSignataires;
+import '../notifications/routage_notifications.dart';
 import '../paie/pai_baremes.dart';
 import '../configuration/cfb_donnees.dart' show cfbCcibTotal;
 import '../rh/rhc_regles.dart' show rhcCleMontantStandard, rhcMontantStandardSemence;
@@ -676,6 +677,32 @@ const List<DefinitionParametre> definitionsParametres = [
     geste: gestePtaRegler,
   ),
 
+  // LE ROUTAGE DES NOTIFICATIONS DE POSTE (lot « destinataires des notifications » de l'inventaire des valeurs en dur, 17/11/2026) : la table « poste → geste réservé » et les postes
+  // informés d'un besoin accordé vivaient en constantes du centre de notifications et du moteur des achats. Ce sont des RÉGLAGES de clinique, versionnés par date et réglés à la mère
+  // (le droit d'éditer l'écran des paramètres suffit : QUI reçoit reste décidé par les gestes `alertes_*` de la fiche de rôle). Valeurs d'attente reprises à l'identique de l'ancien code.
+  DefinitionParametre(
+    cle: cleRoutagePostes,
+    famille: 'notifications',
+    type: TypeParametre.texte,
+    defaut: routagePostesSemence,
+    libelle: 'Notifications : geste réservé qui tient chaque poste',
+    aide: 'Une entrée par poste, « poste=geste » séparées par un point-virgule (caisse=alertes_caisse). Les rôles qui reçoivent les alertes d\'un poste sont ceux qui détiennent son geste dans la fiche de rôle. Une entrée mal formée ou un geste inconnu est ignoré ; vide, la valeur d\'attente s\'applique.',
+    source: 'Table reprise à l\'identique de l\'ancien centre de notifications (valeur d\'attente) : à confirmer par la Direction de Baguidi',
+    branche: true,
+    appliquePar: 'Centre de notifications (cloche, badge, centre)',
+  ),
+  DefinitionParametre(
+    cle: cleDestinatairesBesoinAccorde,
+    famille: 'notifications',
+    type: TypeParametre.texte,
+    defaut: destinatairesBesoinAccordeSemence,
+    libelle: 'Notifications : postes informés quand un besoin est accordé',
+    aide: 'Une entrée par poste, « poste=mention » séparées par un point-virgule : la mention complète le message adressé à ce poste. Chaque poste doit figurer dans le réglage ci-dessus. Vide, la valeur d\'attente (le comptable pour l\'engagement, le stock pour l\'achat) s\'applique.',
+    source: 'Valeur d\'attente reprise de l\'ancien moteur des achats (NEINSTRUCTION2) : à confirmer par la Direction de Baguidi',
+    branche: true,
+    appliquePar: 'Arbitrage des besoins (m7-besoins) et file des notifications de poste',
+  ),
+
   // LE TARIF D'UNE COURSE D'AMBULANCE SANS MONTANT SAISI (lot 1 de l'inventaire des valeurs en dur) : 5 000 F + 500 F par kilomètre vivaient en dur dans le moteur. Aucun
   // document ne fixe ce tarif (il n'est pas au catalogue) : ce sont des PROPOSITIONS À VALIDER, réglables par une version datée. Une course saisie avec son montant le garde.
   DefinitionParametre(
@@ -729,6 +756,7 @@ const Map<String, String> libellesFamillesParametres = {
   paiFamilleBaremes: 'Taux et barèmes de la paie',
   'rh': 'Ressources humaines',
   'ambulance': 'Ambulance',
+  'notifications': 'Notifications',
 };
 
 /// La définition d'une clé, ou `null`.

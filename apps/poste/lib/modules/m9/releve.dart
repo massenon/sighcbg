@@ -288,7 +288,7 @@ class _EtatReleve extends State<EcranReleveAssureur> {
             ],
             signatures: const [
               signDaf,
-              Signature('Le Directeur Médical')
+              Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical)
             ]));
   }
 

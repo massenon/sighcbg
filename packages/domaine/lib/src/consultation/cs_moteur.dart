@@ -53,8 +53,11 @@ abstract interface class StockCs {
 
 /// La session qui agit : sa fonction décide de l'écriture des rubriques chirurgicales ; son secteur est celui des demandes.
 class SessionCs {
-  const SessionCs({this.role = '', this.fonction = '', this.secteur});
+  const SessionCs({this.role = '', this.fonction = '', this.secteur, this.rubriquesChirurgicales = false});
   final String role, fonction;
+
+  /// La session détient-elle le geste réservé `rubriques_chirurgicales` (lu dans la matrice en force, jamais déduit du nom du rôle) ? L'axe FONCTION (`fonction`) l'ouvre aussi.
+  final bool rubriquesChirurgicales;
 
   /// Libellé du secteur de la session (`secteurCourant().libelle`) : renseigné sur la demande d'analyse / d'imagerie quand la prescription n'en
   /// porte pas — sans lui, aucune sage-femme ne voit rien (RBAC métier).
@@ -186,11 +189,7 @@ ResultatDossier csEnregistrerDossier(StockCs s, Map<String, Object?> v,
   // Le contrôle d'écriture des rubriques chirurgicales est REFAIT au moteur : un champ désactivé dans l'interface ne protège rien.
   final capacite = '${_ou(session.fonction, session.role)}';
   for (final rub in csRubriquesChirurgicales) {
-    final permis = csPeutEcrireRubrique(
-        rub,
-        (capacite == 'chirurgien' || session.role == 'chirurgien')
-            ? 'chirurgien'
-            : capacite);
+    final permis = csPeutEcrireRubrique(rub, capacite, parGeste: session.rubriquesChirurgicales);
     if (!permis.ok) v[rub] = record != null ? record[rub] : null;
   }
   final releve = csDernierReleve(s, p['code'], p['id']);

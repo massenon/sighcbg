@@ -194,7 +194,7 @@ class EcranDispensation extends StatelessWidget with EcranMaquette {
           ], lignes: _lignes(d)),
         ],
         signatures: [
-          Signature('Le Pharmacien', nom: '${d['dispensePar']}'),
+          Signature('Le Pharmacien', nom: '${d['dispensePar']}', nomFige: true, qualite: PaiQualite.pharmacien),
           const Signature('Le Patient', mention: 'Réception'),
         ],
       );

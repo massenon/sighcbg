@@ -112,7 +112,7 @@ class EcranSortieAvisMedical extends StatelessWidget with EcranMaquette {
           signatures: const [
             Signature('Le Patient ou son représentant', mention: 'Signature précédée de la mention « lu et approuvé »'),
             Signature('Le Médecin', mention: 'Signature'),
-            Signature('La Direction', mention: 'Visa'),
+            Signature('La Direction', mention: 'Visa', qualite: PaiQualite.direction),
           ],
           reference: PieceA4.reference_(c.aujourdhui, ImpressionPoste.prochainNumero()),
           utilisateur: acteur(c).nom,

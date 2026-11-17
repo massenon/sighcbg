@@ -7,6 +7,7 @@ import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// m14-audit : le journal RG-12, tel qu'il est tenu (plafonné à 400), lu sous ses deux formes de valeurs (texte du jeu, objets du poste).
 void main() {
@@ -113,7 +114,7 @@ void main() {
     expect(find.text('Traçabilité des actions — situation au 30/10/2026'), findsOneWidget);
     expect(find.text('Actions journalisées'), findsWidgets);
     expect(find.text('L’Administrateur système'), findsOneWidget);
-    expect(find.text('La Direction'), findsOneWidget);
+    expect(find.text(intituleSigne(m, PaiQualite.direction, 'La Direction')), findsOneWidget);
   });
 
   casM14('le journal est en lecture seule par nature : aucune commande d\'écriture, même pour l\'administrateur', (t) async {

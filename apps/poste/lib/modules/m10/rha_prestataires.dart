@@ -116,7 +116,7 @@ class EcranPrestataires extends StatelessWidget with EcranMaquette {
               ('MONTANT TOTAL DÛ', money(rhaMontantDuPrestataire(p), avecDevise: false)),
             ], col2: 'Valeur', droiteValeur: true),
           ],
-          signatures: [Signature('Le Prestataire', nom: '${p['nom']}'), const Signature('Le Comptable'), rhaSignDa]),
+          signatures: [Signature('Le Prestataire', nom: '${p['nom']}'), const Signature('Le Comptable', qualite: PaiQualite.comptable), rhaSignDa]),
     );
   }
 

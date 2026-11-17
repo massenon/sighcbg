@@ -268,7 +268,7 @@ Future<void> imprimerDemande(BuildContext ctx, Fiche r) {
                 italique: true),
           ],
           signatures: [
-            Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}'),
+            Signature('Le Laborantin', nom: '${r['laborantin'] ?? ''}', nomFige: true, qualite: PaiQualite.laborantin),
             const Signature('Le Biologiste responsable',
                 qualite: PaiQualite.laborantin),
           ],
@@ -302,7 +302,7 @@ Future<void> imprimerDemande(BuildContext ctx, Fiche r) {
         ],
         signatures: [
           Signature('Le Médecin prescripteur', nom: '${r['prescripteur'] ?? ''}'),
-          const Signature('Le Laborantin'),
+          const Signature('Le Laborantin', qualite: PaiQualite.laborantin),
         ],
       ));
 }

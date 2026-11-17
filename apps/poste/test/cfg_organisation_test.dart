@@ -9,6 +9,7 @@ import 'package:sigh_poste/modules/cfg/cfa_commun.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 typedef M = Map<String, Object?>;
 M obj(Object? o) => (o as Map).cast<String, Object?>();
@@ -58,7 +59,7 @@ void main() {
       expect(find.textContaining('${x[0]}'), findsWidgets, reason: '${x[0]}');
     }
     // La signataire est LUE au personnel (le poste de la direction administrative), jamais écrite dans le code.
-    expect(find.text('La Directrice Administrative'), findsWidgets);
+    expect(find.text(intituleSigne(m, PaiQualite.daf, 'La Directrice Administrative')), findsWidgets);
     final daf = paiSignataire(m.collection('personnel').actives, PaiQualite.daf);
     expect(daf, isNotNull);
     expect(find.textContaining(daf!), findsWidgets);

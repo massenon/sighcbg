@@ -441,7 +441,7 @@ class _EtatTransferts extends State<EcranTransferts> {
           ColonneEtat(libelle: 'Valeur', valeur: (t) => m(totalValeur(lignesDeBon(t))), droite: true, somme: (t) => totalValeur(lignesDeBon(t))),
         ], lignes: tries)),
       ],
-      signatures: const [Signature('Le Gestionnaire de Stock', mention: 'Sorties magasin'), Signature('La Directrice Administrative', mention: 'Visa')],
+      signatures: const [Signature('Le Gestionnaire de Stock', mention: 'Sorties magasin', qualite: PaiQualite.gestionnaireStock), Signature('La Directrice Administrative', mention: 'Visa', qualite: PaiQualite.daf)],
     );
   }
 
@@ -461,7 +461,7 @@ class _EtatTransferts extends State<EcranTransferts> {
         ('Bons concernés', nombre({for (final r in lg) r['reference']}.length)),
       ],
       tableaux: [TableauEtat(libelleTotal: 'TOTAL', colonnes: _colonnesLignes(), lignes: lg)],
-      signatures: const [Signature('Le Gestionnaire de Stock', mention: 'Certifié exact')],
+      signatures: const [Signature('Le Gestionnaire de Stock', mention: 'Certifié exact', qualite: PaiQualite.gestionnaireStock)],
     );
   }
 

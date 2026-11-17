@@ -770,8 +770,8 @@ class _EtatValeurs extends State<EcranValeursReference> {
                   italique: true),
             ],
             signatures: const [
-              Signature('Le Biologiste médical'),
-              Signature('Le Directeur Médical', nom: directeurMedicalLabo),
+              Signature('Le Biologiste médical', qualite: PaiQualite.laborantin),
+              Signature('Le Directeur Médical', nom: directeurMedicalLabo, qualite: PaiQualite.directeurMedical),
             ]));
   }
 }

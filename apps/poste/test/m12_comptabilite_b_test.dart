@@ -10,6 +10,7 @@ import 'package:sigh_poste/kit/kit.dart';
 import 'aide_polices.dart';
 import 'm14_aide.dart';
 import 'parite/extracteur.dart';
+import 'aide_signataires.dart';
 
 /// M12 (B) — comptabilité : m12-analytique, m12-budgets, m12-immobilisations, m12-banques, m12-compte-resultat, m12-flux-tresorerie,
 /// m12-seuil-rentabilite. Les règles sont rejouées sur les vecteurs de la maquette (packages/domaine/test/cpb_*_test.dart) ; ici, l'ÉCRAN : la PARITÉ N1
@@ -123,7 +124,7 @@ void main() {
         await toucherM14(t, find.widgetWithText(BoutonSigh, res ? 'Imprimer le compte de résultat' : 'Imprimer le tableau des flux'));
         expect(find.text(res ? 'Compte de résultat' : 'Tableau des flux de trésorerie'), findsWidgets);
         expect(find.textContaining('Colonne N-1'), findsWidgets);
-        expect(find.textContaining('La Directrice de l’Administration et des Finances'), findsWidgets);
+        expect(find.textContaining(intituleSigne(m, PaiQualite.daf, 'La Directrice de l’Administration et des Finances')), findsWidgets);
       });
 
       casM14('aucune commande d\'écriture n\'existe : le feuillet se lit et s\'imprime', (t) async {
@@ -307,7 +308,7 @@ void main() {
       await toucherM14(t, find.widgetWithText(BoutonSigh, 'Imprimer la balance analytique'));
       expect(find.text('Balance analytique'), findsWidgets);
       expect(find.text('TOTAL'), findsWidgets);
-      expect(find.text('La Direction'), findsWidgets);
+      expect(find.text(intituleSigne(m, PaiQualite.direction, 'La Direction')), findsWidgets);
     });
 
     casM14('un exercice sans écriture ne casse pas l\'écran : sept centres à zéro', (t) async {

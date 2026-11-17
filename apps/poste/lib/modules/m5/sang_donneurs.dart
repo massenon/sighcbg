@@ -54,7 +54,7 @@ class EcranDonneurs extends StatelessWidget with EcranMaquette {
             ],
             signatures: const [
               Signature('Le Laborantin', qualite: PaiQualite.laborantin),
-              Signature('Le Directeur Médical'),
+              Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical),
             ],
             reference:
                 PieceA4.reference_(auj, ImpressionPoste.prochainNumero()),

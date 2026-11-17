@@ -10,6 +10,7 @@ import 'package:sigh_poste/kit/kit.dart';
 
 import 'aide_polices.dart';
 import 'm14_aide.dart';
+import 'aide_signataires.dart';
 
 /// RAP — les quatre écrans de rapports, d'impression et d'états officiels, contre les vecteurs tirés des écrans RÉELS de la maquette
 /// (`prototype_html/build/vecteurs-rapports.js`) : catalogue et écrans producteurs, point de la Direction (période × axe), générateur et ses modèles,
@@ -268,8 +269,8 @@ void main() {
       expect(find.text('${et['titre']}'), findsWidgets);
       expect(find.text('${et['sousTitre']}'), findsOneWidget);
       expect(find.text('CUMUL GLOBAL'), findsOneWidget);
-      expect(find.text('La Directrice Administrative'), findsOneWidget);
-      expect(find.text('Le Comptable'), findsOneWidget);
+      expect(find.text(intituleSigne(m, PaiQualite.daf, 'La Directrice Administrative')), findsOneWidget);
+      expect(find.text(intituleSigne(m, PaiQualite.comptable, 'Le Comptable')), findsOneWidget);
       expect(find.byKey(const Key('impression:filtres')), findsOneWidget);
       expect(find.textContaining('Périodicité : Mensuel', findRichText: true),
           findsWidgets);
@@ -348,8 +349,8 @@ void main() {
       expect(find.text('ACTIVITÉ'), findsOneWidget);
       expect(find.text('FINANCIER'), findsOneWidget);
       expect(find.text('Le Rédacteur'), findsOneWidget);
-      expect(find.text('La Directrice Administrative'), findsOneWidget);
-      expect(find.text('Le Directeur Médical'), findsOneWidget);
+      expect(find.text(intituleSigne(_m(), PaiQualite.daf, 'La Directrice Administrative')), findsOneWidget);
+      expect(find.text(intituleSigne(_m(), PaiQualite.directeurMedical, 'Le Directeur Médical')), findsOneWidget);
       expect(
           find.textContaining('Destinataire : Usage interne',
               findRichText: true),

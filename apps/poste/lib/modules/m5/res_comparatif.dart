@@ -491,7 +491,7 @@ class _EtatComparatif extends State<EcranComparatifResultats> {
                 'Seules les mesures rendues (validées biologiquement) et lisibles par le profil qui édite entrent dans ce comparatif.${modele.anterieures.masquees > 0 ? ' ${nombre(modele.anterieures.masquees)} antériorité(s) hors du périmètre de ce profil ne sont pas reprises.' : ''}',
                 italique: true),
           ],
-          signatures: const [Signature('Le Biologiste médical')],
+          signatures: const [Signature('Le Biologiste médical', qualite: PaiQualite.laborantin)],
         ));
   }
 

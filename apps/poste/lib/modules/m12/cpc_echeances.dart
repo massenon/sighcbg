@@ -326,7 +326,7 @@ class _EtatEcheances extends State<EcranEcheances> {
                 {'k': 'Observation', 'v': '${e['observation'] ?? '—'}'},
               ])),
             ],
-            signatures: [Signature('Le Comptable', nom: e['valideePar'] == null ? null : '${e['valideePar']}'), signDafCompta]));
+            signatures: [Signature('Le Comptable', nom: e['valideePar'] == null ? null : '${e['valideePar']}', nomFige: true, qualite: PaiQualite.comptable), signDafCompta]));
   }
 
   @override

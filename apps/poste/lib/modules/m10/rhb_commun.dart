@@ -12,16 +12,17 @@ import '../../shell/contexte_ecran.dart';
 /// de la mise en page et la lecture du magasin du poste.
 
 /// Les signataires des pièces RH : la QUALITÉ seule, aucun nom d'agent écrit dans le code (ceux de l'établissement d'origine du logiciel ne signent pas
-/// pour la clinique). Une pièce qui peut lire le personnel y ajoute le titulaire par [rhbNomme] ; sinon elle imprime une ligne sans nom.
-const rhbSignSurveillant = Signature('Le Surveillant Général');
-const rhbSignDaf = Signature('La Directrice Administrative');
-const rhbSignDm = Signature('Le Directeur Médical');
-const rhbSignDirecteurAdmin = Signature('La Directrice de l’Administration et des Finances');
+/// pour la clinique). Le titulaire (dossier du personnel) et l'INTITULÉ (poste de l'organigramme) sont lus à l'aperçu par la qualité ; [rhbNomme] ne sert plus qu'aux pièces
+/// qui veulent le nom avant l'aperçu. Sans titulaire, la pièce imprime une ligne sans nom ; sans poste lisible, l'intitulé écrit ici est le repli.
+const rhbSignSurveillant = Signature('Le Surveillant Général', qualite: PaiQualite.surveillant);
+const rhbSignDaf = Signature('La Directrice Administrative', qualite: PaiQualite.daf);
+const rhbSignDm = Signature('Le Directeur Médical', qualite: PaiQualite.directeurMedical);
+const rhbSignDirecteurAdmin = Signature('La Directrice de l’Administration et des Finances', qualite: PaiQualite.daf);
 
 /// La signature [s] complétée du nom de l'agent qui porte la qualité [q] au dossier du personnel (`paiSignataire`) ; sans titulaire, la ligne reste
 /// sans nom.
 Signature rhbNomme(ContexteEcran c, Signature s, PaiQualite q) =>
-    Signature(s.role, nom: paiSignataire(c.magasin.collection('personnel').actives, q) ?? s.nom, mention: s.mention);
+    Signature(s.role, nom: paiSignataire(c.magasin.collection('personnel').actives, q) ?? s.nom, mention: s.mention, qualite: s.qualite ?? q);
 
 /// Reconstruit la vue quand l'une des collections [collections] change (insertion, mise à jour, archivage, annulation).
 class RhbEcoute extends StatefulWidget {

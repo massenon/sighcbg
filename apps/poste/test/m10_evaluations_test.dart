@@ -7,6 +7,7 @@ import 'package:sigh_poste/kit/kit.dart';
 import 'aide_polices.dart';
 import 'm14_aide.dart';
 import 'rhb_aide.dart';
+import 'aide_signataires.dart';
 
 /// m10-evaluations, m10-sanctions, m10-primes : les écrans MONTÉS sur le jeu du poste, la porte du barème, la portée de chaque modification, et ce qui est écrit au
 /// magasin comparé aux relevés de la maquette (rhb.json).
@@ -115,7 +116,7 @@ void main() {
       expect(find.text(money(72000, avecDevise: false)), findsOneWidget);
       expect(find.text('L’Évaluateur'), findsOneWidget);
       // La signataire est LUE au personnel (le poste de la direction administrative), jamais écrite dans le code.
-      expect(find.text('La Directrice Administrative'), findsOneWidget);
+      expect(find.text(intituleSigne(magasinRhb(), PaiQualite.daf, 'La Directrice Administrative')), findsOneWidget);
       final daf = paiSignataire(magasinRhb().collection('personnel').actives, PaiQualite.daf);
       expect(daf, isNotNull);
       expect(find.text(daf!), findsWidgets);
@@ -136,7 +137,7 @@ void main() {
       expect(find.text('Note de service'), findsOneWidget);
       expect(find.text('N/Réf. : NS 131/07/DM/DA/CBG/2026'), findsOneWidget);
       // Le signataire de la note est LU au personnel (le poste de directeur médical), jamais écrit dans le code.
-      expect(find.text('Le Directeur Médical'), findsOneWidget);
+      expect(find.text(intituleSigne(magasinRhb(), PaiQualite.directeurMedical, 'Le Directeur Médical')), findsOneWidget);
       final dm = paiSignataire(magasinRhb().collection('personnel').actives, PaiQualite.directeurMedical);
       expect(dm, isNotNull);
       expect(find.text(dm!), findsWidgets);
@@ -297,7 +298,7 @@ void main() {
       expect(find.text('${n['sousTitre']}'), findsOneWidget);
       expect(find.textContaining('il est procédé à une retenue de 10 % sur votre salaire brut, soit un montant de ${money(45000)}.'), findsOneWidget);
       expect(find.text('Pris connaissance'), findsOneWidget);
-      expect(find.text('La Directrice Administrative'), findsWidgets);
+      expect(find.text(intituleSigne(magasinRhb(), PaiQualite.daf, 'La Directrice Administrative')), findsWidgets);
     });
 
     casM14('registre vide : « Aucune sanction prononcée. », quatre zéros', (t) async {

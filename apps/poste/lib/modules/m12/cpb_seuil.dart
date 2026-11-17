@@ -143,7 +143,7 @@ class _EtatSeuil extends State<EcranSeuilRentabilite> {
                 for (final x in r.comptes) {'compte': x.compte, 'libelle': x.libelle, 'nature': x.nature, 'montant': x.montant}
               ])),
             ],
-            signatures: const [Signature('Le Comptable'), signDafFinances]));
+            signatures: const [Signature('Le Comptable', qualite: PaiQualite.comptable), signDafFinances]));
   }
 
   @override

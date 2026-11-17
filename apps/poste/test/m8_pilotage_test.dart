@@ -8,6 +8,7 @@ import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/main.dart';
 
 import 'aide_polices.dart';
+import 'aide_signataires.dart';
 
 /// Tableau de bord et recettes : tout est CALCULÉ depuis les factures. Chaque valeur affichée est recomptée ici INDÉPENDAMMENT (sur le magasin),
 /// jamais lue de l'écran qu'on teste. L'horloge du poste est fixée à une date du jeu (16/08/2026) — c'est ce que fait le banc de la maquette.
@@ -179,6 +180,6 @@ void main() {
     await t.tap(find.text('Éditer l’inventaire'));
     await t.pumpAndSettle();
     expect(find.text('Excédent constaté'), findsOneWidget);
-    expect(find.textContaining('La Directrice Administrative'), findsOneWidget);
+    expect(find.textContaining(intituleSigne(m, PaiQualite.daf, 'La Directrice Administrative')), findsOneWidget);
   });
 }
