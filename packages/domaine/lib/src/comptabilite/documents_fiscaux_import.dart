@@ -26,6 +26,22 @@ class RefusImportFiscal {
 
   @override
   String toString() => '$code : $motif${chemin.isEmpty ? '' : ' [$chemin]'}';
+
+  /// LA PHRASE que l'écran affiche : « code : motif (chemin). geste. » Le motif et le geste sont des phrases ÉCRITES AVEC leur point final (ou une parenthèse, un guillemet) : les coller par
+  /// `'$motif. $geste'` donnait « …(Unexpected character).. Importer… ». La jonction est faite ICI, une fois, pour TOUS les refus : le point final de chaque morceau est retiré puis
+  /// reposé une seule fois, jamais deux.
+  String get message => refusFiscalPhrase(code, motif, geste, chemin: chemin);
+}
+
+/// Retire les points, points de suspension, virgules, points-virgules, deux-points et espaces de fin d'un morceau de phrase.
+String refusFiscalSansPonctuationFinale(String t) => t.replaceFirst(RegExp(r'[\s.,;:…]+$'), '');
+
+/// Assemble « code : motif (chemin). geste. » sans jamais doubler un signe de fin de phrase, quelle que soit la ponctuation finale du motif ou du geste.
+String refusFiscalPhrase(String code, String motif, String geste, {String chemin = ''}) {
+  final m = refusFiscalSansPonctuationFinale(motif);
+  final g = refusFiscalSansPonctuationFinale(geste);
+  final debut = '$code : $m${chemin.isEmpty ? '' : ' ($chemin)'}';
+  return g.isEmpty ? '$debut.' : '$debut. $g.';
 }
 
 /// Les clés de premier niveau d'une liasse, dans l'ordre du document : toutes obligatoires, aucune autre admise.
@@ -432,7 +448,7 @@ VerdictImportFiscal preparerImportFiscal({
         'Demander au comptable ou à la DAF, ou faire accorder le geste au rôle dans « Rôles et permissions › Gestes réservés ».');
   }
   if (estFileul) {
-    return refus('REGLE_SUR_LA_MERE', 'La liasse et le classeur sont tenus par la mère (référentiel diffusé aux postes) : un poste rattaché ne les écrit pas.', 'Importer le document sur le poste mère : il revient ici par la synchronisation.');
+    return refus('REGLE_SUR_LA_MERE', 'La liasse et le classeur sont écrits par la mère (référentiel diffusé aux postes) : un poste rattaché ne les écrit pas lui-même, il dépose une demande d’import.', 'Déposer la demande d’import depuis l’écran « Import de la liasse fiscale » : la mère la rejoue et la version revient par la synchronisation.');
   }
   if (source.trim().isEmpty) return refus('SOURCE_ABSENTE', 'Un document importé porte sa source (d’où il vient) : un chiffre sans origine ne se cite pas.', 'Indiquer la source (ex. « Liasse remise à la DGI le … », « Classeur de l’expert-comptable »).');
   if (auteur.trim().isEmpty) return refus('AUTEUR_ABSENT', 'Aucune action anonyme (RG-12) : l’import porte son auteur.', 'Ouvrir une session nominative.');

@@ -16,6 +16,14 @@ abstract class SourceMra {
   Future<void> sauvegarderMaintenant();
   Future<String> codeAppareil(String etiquette);
   Future<({String code, String cle})> codeMobile(String etiquette, {required String profil, String? fonction});
+
+  /// Les mêmes codes AVEC la durée de validité que la mère annonce. Par défaut (une source qui ne la connaît pas) : aucune durée, et l'écran dit que la mère n'annonce rien.
+  Future<CodeEmis> codeAppareilEmis(String etiquette) async => CodeEmis(code: await codeAppareil(etiquette));
+  Future<CodeMobileEmis> codeMobileEmis(String etiquette, {required String profil, String? fonction}) async {
+    final r = await codeMobile(etiquette, profil: profil, fonction: fonction);
+    return CodeMobileEmis(code: r.code, cle: r.cle);
+  }
+
   Future<void> revoquer(String uuid);
   Future<void> debloquer(String uuid);
   Future<void> renvoyerATous();
@@ -146,6 +154,11 @@ class SourceMraClient implements SourceMra {
   @override
   Future<({String code, String cle})> codeMobile(String etiquette, {required String profil, String? fonction}) =>
       client.codeMobile(etiquette, profil: profil, fonction: fonction);
+  @override
+  Future<CodeEmis> codeAppareilEmis(String etiquette) => client.emettreCodeAppareil(etiquette);
+  @override
+  Future<CodeMobileEmis> codeMobileEmis(String etiquette, {required String profil, String? fonction}) =>
+      client.codeMobileEmis(etiquette, profil: profil, fonction: fonction);
   @override
   Future<void> revoquer(String uuid) => client.revoquer(uuid);
   @override

@@ -10,7 +10,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:sigh_domaine/sigh_domaine.dart'
+<<<<<<< HEAD
     show DroitsOperation, IdentiteClinique, mrbCleFenetreReinit, mereCleDelaiSauvegardeQuotidienne, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, colFichesAide, colDocumentsFiscaux, refusEcritureFicheAide, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
+=======
+    show DroitsOperation, IdentiteClinique, cleValiditeCodeAppairage, seuilEntierA, demandesImportCollection, refusDemandeImportDuFileul, Parametres, RefusMobile, cfbEssentielles, cfbMotifArchivageJeuDemo, codePatient, anneeCreationDossier, lireCodePatient, mobMotifFonctionNonHabilitee, mobPeutPrescrire, mobRefusAffectation, mobRefusFonctionPiece, parCollectionParametres, parCollectionUsages, reCodePatient, DocErreur, valCollectionValidations, collectionsCircuitAchat, champEtatCircuit, refusCircuitAchat, colFichesAide, colDocumentsFiscaux, refusEcritureFicheAide, ptaCollections, ptaCollectionActions, ptaCollectionPlans, ptaPlanVersion, refusPlanTravail, refusActionPta, planningCollectionsSync, refusPlanningRh, facturesTiersCollectionsSync, refusEcritureFactureTiers, PlageNumeros, rattacherPlagesAnciennes, refusChevauchementPlage, debutProchainePlage, schemaCleMeta, schemaDonneesCourant;
+>>>>>>> agent-vx
 
 import 'commun.dart';
 import 'depot.dart';
@@ -111,7 +115,8 @@ const familleDeBase = <String, String>{
   // (`collectionsFacturesTiersJamaisMobile`). Elles ne sont PAS de la configuration : la mise en production les archive comme toute pièce d'activité.
   'facturesTiers': 'A', 'avoirsTiers': 'A',
   // LES FICHES D'AIDE DE L'ASSISTANT (Direction de Baguidi, 17/11/2026) : écrites depuis n'importe quel poste (fiches descriptives, champ à champ, dans les deux sens). La VALIDATION ne s'écrit que
-  // sur la mère (elle seule vérifie le geste réservé et que l'auteur n'est pas le validateur) et une fiche validée ne se réécrit pas : `refusEcritureFicheAide` du domaine, appliqué dans `traiter`.
+  // par la mère (elle seule vérifie le geste réservé et que l'auteur n'est pas le validateur) : un fileul la DÉPOSE (`validationsDeposees`, genre `fiche_aide_valider`, 18/11/2026) et la mère l'applique ;
+  // une fiche validée ne se réécrit pas : `refusEcritureFicheAide` du domaine, appliqué dans `traiter`.
   // Jamais vers un téléphone (`collectionsDocumentsJamaisMobile`) : aucun écran du mobile ne les lit.
   'fichesAide': 'A',
 };
@@ -263,7 +268,7 @@ class ConfigMere {
     required this.port,
     required this.dbChemin,
     this.admin = 'admin-banc',
-    this.codeTtl = 15 * 60 * 1000,
+    this.codeTtl,
     this.jetonTtl = 24 * 3600 * 1000,
     this.relais = '',
     this.secretRelais = 'secret-mere',
@@ -311,7 +316,10 @@ class ConfigMere {
   /// Chemin SQLite, `:memory:` ou `postgres://utilisateur:mot_de_passe@hôte:port/base`.
   final String dbChemin;
   final String admin;
-  final int codeTtl;
+
+  /// SURCHARGE de lancement (`--code-ttl`, en millisecondes) de la durée de validité d'un code d'appairage : un banc d'essai qui éprouve l'expiration en quelques centaines de millisecondes.
+  /// `null` (production) : la durée est le RÉGLAGE de la mère [cleValiditeCodeAppairage], daté et borné, lu à chaque émission (voir `Mere.validiteCodeMs`) ; jamais une valeur écrite ici.
+  final int? codeTtl;
   final int jetonTtl;
   final String relais;
   final String secretRelais;
@@ -865,10 +873,11 @@ class Mere {
           if (anc.isEmpty || anc.first['role'] != 'fileul') throw Err(404, 'appareil_inconnu', 'Le poste à reprendre est inconnu de la mère (ou n’est pas un fileul).');
           await refuserSiDejaRepris(reprise);
         }
-        await base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)',
-            [code, b['etiquette'] ?? '', roleCode, maintenantMs() + cfg.codeTtl, aff.profil, aff.fonction, reprise]);
-        // La DURÉE DE VALIDITÉ est celle de la mère (réglage `code-ttl`), jamais une valeur écrite dans la console : elle est rendue avec le code.
-        return {'code': code, 'expire': maintenantMs() + cfg.codeTtl, 'validite_s': cfg.codeTtl ~/ 1000};
+        final ttl = await validiteCodeMs();
+        final expire = maintenantMs() + ttl;
+        await base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction,reprise) VALUES(?,?,?,?,?,?,?)', [code, b['etiquette'] ?? '', roleCode, expire, aff.profil, aff.fonction, reprise]);
+        // La DURÉE DE VALIDITÉ est le RÉGLAGE de la mère (daté, borné), jamais une valeur écrite dans la console : elle est rendue avec le code.
+        return {'code': code, 'expire': expire, 'validite_s': ttl ~/ 1000};
       case 'POST /appairage':
         final r = await base.select('SELECT * FROM codes WHERE code=?', ['${b['code'] ?? ''}']);
         if (r.isEmpty) throw Err(403, 'code_invalide', 'Code d’appairage inconnu.');
@@ -1395,17 +1404,33 @@ class Mere {
     return chiffre.path;
   }
 
+  /// La DURÉE DE VALIDITÉ d'un code d'appairage, en millisecondes : le RÉGLAGE de la mère [cleValiditeCodeAppairage] en vigueur AUJOURD'HUI (version datée la plus récente dont la date d'effet est
+  /// passée ; hors bornes ou illisible : la valeur d'attente de la définition, jamais zéro), relu dans SA base à chaque émission. La surcharge de lancement `cfg.codeTtl` l'emporte (bancs).
+  Future<int> validiteCodeMs() async {
+    final surcharge = cfg.codeTtl;
+    if (surcharge != null) return surcharge;
+    final fiches = [
+      for (final r in await base.select('SELECT data FROM fiches WHERE collection=?', [parCollectionParametres]))
+        (jsonDecode(r['data'] as String) as Map).cast<String, Object?>()
+    ];
+    final j = DateTime.fromMillisecondsSinceEpoch(maintenantMs());
+    final jour = '${j.year.toString().padLeft(4, '0')}-${j.month.toString().padLeft(2, '0')}-${j.day.toString().padLeft(2, '0')}';
+    return seuilEntierA(fiches, cleValiditeCodeAppairage, jour) * 60 * 1000;
+  }
+
   /// Le code d'un mobile : la base d'abord (sous verrou), puis le relais (réseau, hors verrou — une panne d'Internet
   /// ne doit jamais bloquer les postes de la clinique).
   Future<Object?> codeMobile(HttpRequest req, Map<String, Object?> b) async {
     adminOk(req);
     final code = codeAppairage();
     final aff = affectationMobile(b);
-    await verrou.executer(() => base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)',
-        [code, b['etiquette'] ?? '', 'mobile', maintenantMs() + cfg.codeTtl, aff.profil, aff.fonction]));
+    final ttl = await validiteCodeMs();
+    final expire = maintenantMs() + ttl;
+    await verrou.executer(() => base.exec('INSERT INTO codes(code,etiquette,role,expire,profil,fonction) VALUES(?,?,?,?,?,?)', [code, b['etiquette'] ?? '', 'mobile', expire, aff.profil, aff.fonction]));
     // Le relais ne reçoit que l'empreinte ET, comme étiquette d'affichage (jamais une autorité), le profil et la fonction du code.
-    await pont.declarerCode(sha256hex(code), profil: aff.profil, fonction: aff.fonction, expireLe: maintenantMs() + cfg.codeTtl);
-    return {'code': code, 'cle': pont.cleBase64, 'profil': aff.profil, 'fonction': aff.fonction};
+    await pont.declarerCode(sha256hex(code), profil: aff.profil, fonction: aff.fonction, expireLe: expire);
+    // Comme pour un poste : la durée de validité est celle de la mère, rendue avec le code (l'écran ne l'écrit jamais).
+    return {'code': code, 'cle': pont.cleBase64, 'profil': aff.profil, 'fonction': aff.fonction, 'expire': expire, 'validite_s': ttl ~/ 1000};
   }
 
   Future<void> demarrer() async {

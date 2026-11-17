@@ -111,8 +111,11 @@ class MrbEchangeRelais {
 }
 
 class MrbCodeMobile {
-  const MrbCodeMobile({required this.code, required this.payloadQr});
+  const MrbCodeMobile({required this.code, required this.payloadQr, this.validiteSecondes});
   final String code;
+
+  /// La durée de validité QUE LA MÈRE ANNONCE avec le code (`null` : elle n'annonce rien, l'écran le dit) ; jamais un nombre écrit dans l'écran.
+  final int? validiteSecondes;
 
   /// Ce que le QR encode (code + clé de clinique). Réservé au QR : l'écran ne l'affiche JAMAIS en texte.
   final String payloadQr;
@@ -459,8 +462,8 @@ class MrbSourceClient extends MrbSource {
 
   @override
   Future<MrbCodeMobile> codeMobile(String etiquette, {required String profil, String? fonction}) async {
-    final r = await client.codeMobile(etiquette, profil: profil, fonction: fonction);
-    return MrbCodeMobile(code: r.code, payloadQr: mrbPayloadQrMobile(code: r.code, cleBase64: r.cle));
+    final r = await client.codeMobileEmis(etiquette, profil: profil, fonction: fonction);
+    return MrbCodeMobile(code: r.code, payloadQr: mrbPayloadQrMobile(code: r.code, cleBase64: r.cle), validiteSecondes: r.validiteSecondes);
   }
 }
 

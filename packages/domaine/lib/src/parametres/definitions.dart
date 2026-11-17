@@ -35,6 +35,8 @@ import '../administration/adm_regles.dart' show admCleForfaitAmbulance, admClePr
 import '../mobile/mob_bornes.dart' show mobDefinitionsBornes;
 import 'parametres.dart';
 import 'reglages_roles.dart';
+import '../comptabilite/documents_fiscaux_synchro.dart' show cleTailleMaxDepotFiscalKo;
+import '../mere/reprise_poste_regles.dart' show cleValiditeCodeAppairage;
 import '../validation/decisions_en_attente.dart' show cleDelaiAlerteMere;
 
 const String _reprise = 'Valeur de la graine du code (calendrier du comptable, réunion du 19/08/2026) : à confirmer par la Direction de Baguidi';
@@ -1141,6 +1143,35 @@ final List<DefinitionParametre> definitionsParametres = [
     source: _attente,
     branche: true,
     appliquePar: 'Console du poste mère (intégrité)',
+  ),
+  // Consigne de la Direction (18/11/2026) : « plus de valeur en dur ». La durée de validité d'un code d'appairage n'est plus écrite dans les écrans : la mère la lit ici à chaque émission et la
+  // renvoie avec le code.
+  DefinitionParametre(
+    cle: cleValiditeCodeAppairage,
+    famille: 'mere',
+    type: TypeParametre.entier,
+    defaut: 15,
+    min: 1,
+    max: 120,
+    libelle: 'Appairage : durée de validité d\'un code (minutes)',
+    aide: 'Un code d\'appairage (poste, mobile, reprise d\'un poste) est à usage unique et expire après cette durée ; la mère la renvoie avec chaque code émis et les écrans la lisent, ils ne l\'écrivent jamais. Valeur d\'attente, à valider par la Direction. Entier de 1 à 120 ; hors bornes, la valeur d\'attente de 15 s\'applique. Se règle par une nouvelle version datée ; un code déjà émis garde l\'échéance qu\'il a reçue.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Mère (émission des codes d\'appairage) et écrans d\'appairage',
+  ),
+  // Consigne de la Direction (18/11/2026, point 4) : un poste rattaché dépose la demande d'import de la liasse ; la taille du document déposé est BORNÉE par un réglage, jamais par un nombre écrit.
+  DefinitionParametre(
+    cle: cleTailleMaxDepotFiscalKo,
+    famille: 'comptabilite',
+    type: TypeParametre.entier,
+    defaut: 512,
+    min: 16,
+    max: 8192,
+    libelle: 'Liasse fiscale : taille maximale d\'un document déposé depuis un poste rattaché (Ko)',
+    aide: 'Un poste rattaché dépose à la mère la demande d\'import d\'une liasse ou d\'un classeur ; le document (JSON) ne peut pas dépasser cette taille, ni au dépôt ni à l\'application par la mère. Valeur d\'attente (la liasse de démonstration pèse environ 32 Ko), à valider par la Direction. Entier de 16 à 8192 ; hors bornes, la valeur d\'attente de 512 s\'applique. Se règle par une nouvelle version datée.',
+    source: _attente,
+    branche: true,
+    appliquePar: 'Import de la liasse fiscale depuis un poste rattaché (dépôt et application par la mère)',
   ),
 
   // --- LES LISTES DE RÉFÉRENCE QUI VIVAIENT EN CODE (lot « listes de référence » de l'inventaire des valeurs en dur, une sous-étape par module) : un réglage `texte` daté,

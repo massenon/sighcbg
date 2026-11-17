@@ -7,7 +7,7 @@ Future<void> main(List<String> args) async {
     port: int.tryParse(arg(args, 'port', '0')) ?? 0,
     dbChemin: arg(args, 'db', ':memory:'),
     admin: arg(args, 'admin', 'admin-banc'),
-    codeTtl: int.tryParse(arg(args, 'code-ttl', '900000')) ?? 900000,
+    codeTtl: int.tryParse(arg(args, 'code-ttl', '')),
     jetonTtl: int.tryParse(arg(args, 'jeton-ttl', '86400000')) ?? 86400000,
     relais: arg(args, 'relais', ''),
     secretRelais: arg(args, 'secret-relais', 'secret-mere'),

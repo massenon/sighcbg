@@ -26,6 +26,8 @@ void main() {
     'caisse.delaiEngagementPaiementJours',
     'assurances.fenetreHistoriqueJours',
     'mere.fenetreJournalAlterationsJours',
+    'mere.validiteCodeAppairageMinutes',
+    'comptabilite.tailleMaxDepotFiscalKo',
     'notifications.seuilRegroupement',
     'notifications.temporisationSon',
     'achats.fenetreCircuitJours',

@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/parametres_poste.dart';
 import 'package:sigh_poste/core/service_installation.dart';
+import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/kit/kit.dart';
 import 'package:sigh_poste/modules/m12/registre_m12.dart';
@@ -182,14 +183,72 @@ void main() {
     expect(find.byKey(const Key('liasse:verifier')), findsNothing, reason: 'retiré au comptable');
   });
 
-  casM14('un poste rattaché (fileul) lit la liasse que la mère a importée ; l’import se fait sur la mère, la commande est absente et le motif dit pourquoi', (t) async {
+  casM14('un poste rattaché (fileul) IMPORTE aussi : le document est vérifié ici, la demande est DÉPOSÉE à la mère (rien n\'est écrit dans la collection), le badge dit « en attente », l\'archivage reste à la mère', (t) async {
+    final m = magasinM14();
+    await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
+    final avant = m.collection(colDocumentsFiscaux).toutes.length;
+    await ouvrirM14(t, m, 'm12-liasse-import', role: 'comptable');
+    expect(find.byKey(const Key('liasse:fileul')), findsOneWidget);
+    expect(find.textContaining('TRANSMIS à la mère'), findsOneWidget);
+    expect(find.textContaining('Réglé sur la mère'), findsNothing, reason: 'la note ne dit plus « sur la mère seulement »');
+    expect(find.textContaining('Ko (réglage de la clinique)'), findsOneWidget, reason: 'la taille maximale est LUE du réglage, jamais écrite');
+    expect(find.byKey(const Key('liasse:verifier')), findsOneWidget, reason: 'la commande d\'import est offerte au détenteur du geste');
+    expect(find.byKey(const Key('liasse:en-force-liasse')), findsOneWidget, reason: 'les versions de la mère sont lues ici');
+    await choisir(t, _liasse);
+    expect(find.byKey(const Key('liasse:resume')), findsOneWidget);
+    await t.enterText(find.byKey(const Key('liasse:source')), 'Liasse remise à la DGI le 30/04/2026');
+    await toucherM14(t, find.byKey(const Key('liasse:importer')));
+    expect(find.byKey(const Key('liasse:ok')), findsOneWidget);
+    expect(find.textContaining('transmise à la mère, en attente'), findsWidgets);
+    expect(m.collection(colDocumentsFiscaux).toutes.length, avant, reason: 'le fileul n\'écrit PAS la collection : la mère seule l\'écrit');
+    final dep = m.collection(valCollectionDepots).toutes.single;
+    expect([dep['genre'], dep['documentGenre'], dep['exercice'], dep['etat'], dep['source']], [valGenreLiasseImporter, docFiscalLiasse, 2025, valDepotDeposee, 'Liasse remise à la DGI le 30/04/2026']);
+    expect(dep['contenu'], isA<Map>());
+    expect(find.byKey(Key('liasse:demande:${dep['id']}')), findsOneWidget);
+    expect(find.textContaining('Transmise à la mère, en attente'), findsOneWidget);
+    // RG-12 : le journal dit la demande, avec des nombres de lignes, jamais un montant
+    final ligne = m.collection('audit').toutes.firstWhere((x) => x['action'] == 'Demande d’import fiscal transmise à la mère');
+    final json = jsonEncode(ligne);
+    for (final interdit in ['"brut"', '"netN1"', 'IMMOBILISATIONS', '3201001996110']) {
+      expect(json, isNot(contains(interdit)), reason: interdit);
+    }
+    // la mère répond par un refus nommé : le motif revient dans le tableau
+    m.collection(valCollectionDepots).mettreAJour(dep['id'], {'etat': valDepotRefusee, 'resultatCode': 'GESTE_RESERVE', 'resultatMotif': 'Le rôle ne détient pas le geste.', 'resultatGeste': 'Demander au comptable.', 'contenu': <String, Object?>{}}, journaliser: false);
+    await t.pump(const Duration(milliseconds: 300));
+    expect(find.text('Refusée par la mère'), findsOneWidget);
+    expect(find.byKey(Key('liasse:verdict:${dep['id']}')), findsOneWidget);
+    expect(find.textContaining('GESTE_RESERVE : Le rôle ne détient pas le geste. Demander au comptable.'), findsOneWidget);
+  });
+
+  casM14('un poste rattaché : un document invalide, ou trop volumineux pour le réglage, est refusé dès le poste en le nommant ; rien n\'est déposé', (t) async {
     final m = magasinM14();
     await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
     await ouvrirM14(t, m, 'm12-liasse-import', role: 'comptable');
-    expect(find.byKey(const Key('liasse:fileul')), findsOneWidget);
-    expect(find.textContaining('Réglé sur la mère'), findsOneWidget);
+    final casse = (jsonDecode(File(_liasse).readAsStringSync()) as Map).cast<String, Object?>()..remove('FLUX');
+    await choisir(t, ecrire('casse.json', jsonEncode(casse)));
+    expect(find.textContaining('CLE_MANQUANTE'), findsOneWidget);
+    expect(find.byKey(const Key('liasse:importer')), findsNothing);
+    // la taille maximale est un RÉGLAGE : une version datée (aujourd'hui) la ramène à son plancher, le document n'y tient plus
+    final d = definitionDeParametre(cleTailleMaxDepotFiscalKo)!;
+    final reglage = serviceParametres(m, auteur: () => 'Test', horloge: () => aujourdhui)..semerDefauts();
+    final r = reglage.regler(cleTailleMaxDepotFiscalKo, d.min, '2026-10-30');
+    expect(r.ok, isTrue, reason: '${r.refus?.motif}');
+    await choisir(t, _liasse);
+    await t.enterText(find.byKey(const Key('liasse:source')), 'Liasse remise à la DGI');
+    await toucherM14(t, find.byKey(const Key('liasse:importer')));
+    expect(find.textContaining('DOCUMENT_TROP_VOLUMINEUX'), findsOneWidget);
+    expect(find.textContaining('${d.min} Ko'), findsWidgets);
+    expect(m.collection(valCollectionDepots).toutes, isEmpty);
+    expect(find.textContaining('..'), findsNothing, reason: 'jamais de point doublé dans un refus');
+  });
+
+  casM14('un poste rattaché sans le geste d\'import : lecture seule, la commande est absente', (t) async {
+    final m = magasinM14();
+    await t.runAsync(() => ServiceInstallation.de(m).attacher(StockageMemoire(), const ParametresPoste(uuidPoste: 'u', rejoint: true)));
+    await ouvrirM14(t, m, 'm12-liasse-import', role: 'direction');
+    expect(find.byKey(const Key('liasse:lecture')), findsOneWidget);
+    expect(find.byKey(const Key('liasse:fileul')), findsNothing);
     expect(find.byKey(const Key('liasse:verifier')), findsNothing);
-    expect(find.byKey(const Key('liasse:en-force-liasse')), findsOneWidget, reason: 'les versions de la mère sont lues ici');
   });
 }
 

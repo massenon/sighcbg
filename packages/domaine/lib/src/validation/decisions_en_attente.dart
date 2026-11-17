@@ -10,7 +10,9 @@
 
 import '../achats/circuit_synchro.dart' show valGenreCircuitAchat;
 import '../administration/pta.dart' show valGenrePta;
-import '../droits/gestes_reserves.dart' show gestePtaAdopter, gesteRhEtapeSurveillant, gesteRhEtapeDaf;
+import '../droits/gestes_reserves.dart' show gestePtaAdopter, gesteRhEtapeSurveillant, gesteRhEtapeDaf, gesteFichesAideValider, gesteDocumentsFiscauxImporter;
+import '../administration/fiches_aide_synchro.dart' show valGenreFicheAideValider;
+import '../comptabilite/documents_fiscaux_synchro.dart' show valGenreLiasseImporter;
 import '../mecef/facture_tiers_synchro.dart' show valGenreFactureTiers, gesteDestinataireFactureTiers;
 import '../rh/planning_synchro.dart' show valGenrePlanningRh;
 import 'reglage_depose.dart' show gesteDuReglage, valGenreReglage;
@@ -224,6 +226,12 @@ List<String> destinatairesAlerteDecision(DecisionEnAttente d, {required String g
       } else if (d.sousGenre == valGenreFactureTiers) {
         // Une demande sur une facture à une entreprise (17/11/2026) : ceux qui détiennent le geste qui l'émet, lus dans la matrice.
         ajouter('geste:$gesteDestinataireFactureTiers');
+      } else if (d.sousGenre == valGenreFicheAideValider) {
+        // La validation d'une fiche d'aide (18/11/2026) : ceux qui détiennent le geste `fiches_aide_valider`, lus dans la matrice.
+        ajouter('geste:$gesteFichesAideValider');
+      } else if (d.sousGenre == valGenreLiasseImporter) {
+        // L'import d'une liasse fiscale (18/11/2026) : ceux qui détiennent le geste `documents_fiscaux_importer`, lus dans la matrice.
+        ajouter('geste:$gesteDocumentsFiscauxImporter');
       } else if (d.sousGenre == valGenreReglage) {
         // Un réglage posé sous un geste réservé (16/11/2026, §7) : ceux qui détiennent CE geste, lus dans la matrice.
         final g = gesteDuReglage('${d.famille}');

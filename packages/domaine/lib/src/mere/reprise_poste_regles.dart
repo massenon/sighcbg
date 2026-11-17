@@ -32,6 +32,10 @@ String repNomPoste(RepPoste p) => p.etiquette.trim().isEmpty ? p.uuid : p.etique
 /// L'étiquette proposée au poste NEUF : celle du poste qu'il remplace (le poste garde son nom ; l'agent peut la changer).
 String repEtiquetteProposee(RepPoste ancien) => ancien.etiquette.trim();
 
+/// La clé du RÉGLAGE de la mère : la durée de validité, en MINUTES, d'un code d'appairage (poste ordinaire, mobile, reprise d'un poste). Daté, borné (`min`/`max` de la définition) ; la mère le lit
+/// à CHAQUE émission et RENVOIE la durée avec le code (`validite_s`) : aucun écran ne l'écrit (consigne de la Direction du 18/11/2026 : plus de valeur en dur).
+const String cleValiditeCodeAppairage = 'mere.validiteCodeAppairageMinutes';
+
 /// Durée de validité lisible, à partir des SECONDES que la mère annonce (`validite_s`) : « 15 minutes », « 1 heure », « 90 secondes ». Jamais une valeur supposée : une durée absente ou
 /// non positive rend `null`, et l'écran dit « durée non communiquée par la mère ».
 String? repDureeLisible(int? secondes) {
@@ -41,6 +45,14 @@ String? repDureeLisible(int? secondes) {
   if (secondes % 60 == 0) return u(secondes ~/ 60, 'minute', 'minutes');
   if (secondes < 120) return u(secondes, 'seconde', 'secondes');
   return u((secondes / 60).ceil(), 'minute', 'minutes');
+}
+
+/// La phrase que les écrans d'appairage disent d'un code émis : la durée est CELLE QUE LA MÈRE ANNONCE (`validite_s`), jamais un nombre écrit dans l'écran. Une mère qui n'annonce rien : l'écran le dit.
+String repPhraseValiditeCode(int? secondes) {
+  final d = repDureeLisible(secondes);
+  return d == null
+      ? 'À usage unique. La durée de validité n’est pas communiquée par la mère : le code expire quand elle le décide.'
+      : 'À usage unique, valable $d.';
 }
 
 /// Temps restant avant l'expiration que la mère a posée (`expire`, ms epoch) ; jamais négatif.

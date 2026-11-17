@@ -7,6 +7,7 @@ import '../../core/service_installation.dart';
 import '../../kit/kit.dart';
 import '../../shell/contexte_ecran.dart';
 import '../../shell/gestes_ecran.dart';
+import '../../sync/service_validations_deposees.dart';
 
 /// `cfg-fiches-aide` — « Fiches d'aide de l'assistant » : rédiger, valider et archiver les fiches que l'assistant cite (intentions I26 « comment faire » et I27 « c'est quoi »).
 ///
@@ -16,6 +17,9 @@ import '../../shell/gestes_ecran.dart';
 ///
 /// Placement : la CONFIGURATION de la clinique (l'assistant est un réglage de ce que la clinique dit à ses agents) ; la rédaction est le droit d'ÉCRIRE l'écran (matrice), la validation est un GESTE
 /// RÉSERVÉ distinct (`fiches_aide_valider`). Une commande interdite est ABSENTE, jamais grisée. La liste des rôles auxquels une fiche peut être réservée est celle de la MATRICE.
+///
+/// VALIDER DEPUIS UN POSTE RATTACHÉ (18/11/2026) : la validation n'est plus réservée à la mère. Le fileul DÉPOSE la demande (circuit des validations déposées, genre `fiche_aide_valider`) ; la mère la rejoue avec ses
+/// contrôles (compte signataire, geste réservé, auteur différent du validateur, professionnel nommé) et renvoie un verdict nommé. Tant qu'elle n'a pas répondu, la fiche reste « proposée » : jamais « validée » sur un dépôt seul.
 class EcranFichesAide extends StatefulWidget with EcranMaquette {
   const EcranFichesAide({super.key});
   @override
@@ -210,6 +214,29 @@ class _EtatFichesAide extends State<EcranFichesAide> {
     final col = c.magasin.collection(colFichesAide);
     final f = col.parId(_aValider);
     final a = acteur(c);
+    if (ServiceInstallation.de(c.magasin).rattache) {
+      // Un poste rattaché DÉPOSE la demande : la mère la rejoue et rend un verdict nommé (la fiche reste « proposée » d'ici là).
+      if (f == null) {
+        setState(() => _refus = const RefusFicheAide('FICHE_INCONNUE', 'Cette fiche n’existe pas.', 'Choisir une fiche de la liste.'));
+        return;
+      }
+      final d = ServiceValidationsDeposees.de(c.magasin).deposerFicheAideValider(f,
+          role: c.role, validateurId: a.utilisateurId, validateurNom: a.nom, professionnel: _pro.text, professionnelLe: _proLe.text, gestes: droitsGestesEcran(c));
+      if (!d.ok) {
+        setState(() => _refus = RefusFicheAide(d.refus!.code, d.refus!.motif, d.refus!.geste ?? ''));
+        return;
+      }
+      ToastsSigh.afficher(context, d.dejaDepose ? 'Validation déjà transmise.' : 'Validation transmise à la mère.', type: TypeToast.succes, detail: 'La fiche reste « proposée » tant que la mère n’a pas confirmé.');
+      setState(() {
+        _confirmation = 'Validation de la fiche « ${f['titre']} » transmise à la mère, en attente : elle vérifie votre geste, que vous n’êtes pas l’auteur, et vous répond ici. '
+            'Rien n’est validé avant sa confirmation ; vous pouvez continuer de travailler.';
+        _aValider = null;
+        _refus = null;
+        _pro.clear();
+        _proLe.clear();
+      });
+      return;
+    }
     final v = validerFicheAide(
         fiche: f,
         role: c.role,
@@ -219,8 +246,7 @@ class _EtatFichesAide extends State<EcranFichesAide> {
         gestes: droitsGestesEcran(c),
         rolesConnus: _rolesConnus(c),
         professionnel: _pro.text,
-        professionnelLe: _proLe.text,
-        estFileul: ServiceInstallation.de(c.magasin).rattache);
+        professionnelLe: _proLe.text);
     if (!v.accepte) {
       setState(() => _refus = v.refus);
       return;
@@ -358,6 +384,9 @@ class _EtatFichesAide extends State<EcranFichesAide> {
       );
 
   Widget _tableauFiches(ContexteEcran c, List<Map<String, Object?>> fiches, {required bool peutRediger, required bool peutValider}) {
+    final service = ServiceValidationsDeposees.de(c.magasin);
+    Map<String, Object?>? depotAttente(Map<String, Object?> f) => service.depotFicheAideEnAttente(f);
+    Map<String, Object?>? depotRefuse(Map<String, Object?> f) => service.depotFicheAideRefuse(f);
     final tri = [...fiches]..sort((a, b) {
         final aa = a['statut'] == ficheAideArchivee ? 1 : 0, bb = b['statut'] == ficheAideArchivee ? 1 : 0;
         return aa != bb ? aa - bb : '${b['creeLe']}'.compareTo('${a['creeLe']}');
@@ -368,11 +397,26 @@ class _EtatFichesAide extends State<EcranFichesAide> {
       child: MiniTableauSigh(vide: 'Aucune fiche écrite : l’assistant répond « pas de fiche validée » à toute question d’aide ou de définition.', colonnes: [
         ColonneMini('Titre', (f) => '${f['titre']}'),
         ColonneMini('Intention', (f) => f['type'] == ficheAideTypeDefinition ? 'Définition (I27)' : 'Aide (I26)'),
-        ColonneMini('État', (f) => '', rendu: (f) => switch ('${f['statut']}') {
-              ficheAideValidee => ficheAideCitable(f) ? const BadgeSigh('Validée', ton: TonSigh.succes, icone: LucideIcons.circleCheck) : const BadgeSigh('Validée sans validateur : non citée', ton: TonSigh.danger, icone: LucideIcons.ban),
-              ficheAideArchivee => const BadgeSigh('Archivée', icone: LucideIcons.archive),
-              _ => const BadgeSigh('Proposée', ton: TonSigh.attention, icone: LucideIcons.clock),
-            }),
+        ColonneMini('État', (f) => '', rendu: (f) {
+          final attente = f['statut'] == ficheAideProposee ? depotAttente(f) : null;
+          final refuse = f['statut'] == ficheAideProposee && attente == null ? depotRefuse(f) : null;
+          return switch ('${f['statut']}') {
+            ficheAideValidee => ficheAideCitable(f) ? const BadgeSigh('Validée', ton: TonSigh.succes, icone: LucideIcons.circleCheck) : const BadgeSigh('Validée sans validateur : non citée', ton: TonSigh.danger, icone: LucideIcons.ban),
+            ficheAideArchivee => const BadgeSigh('Archivée', icone: LucideIcons.archive),
+            _ => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+                const BadgeSigh('Proposée', ton: TonSigh.attention, icone: LucideIcons.clock),
+                if (attente != null)
+                  Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: BadgeSigh('Validation transmise à la mère, en attente (${attente['demandePar']})', key: Key('aide:attente:${f['id']}'), ton: TonSigh.info, icone: LucideIcons.send)),
+                if (refuse != null)
+                  Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text('Validation refusée par la mère : ${refuse['resultatCode']} : ${refuse['resultatMotif']} ${refuse['resultatGeste'] ?? ''}'.trim(),
+                          key: Key('aide:refusee:${f['id']}'), style: const TextStyle(fontSize: 12, color: JetonsShell.danger700))),
+              ]),
+          };
+        }),
         ColonneMini('Auteur', (f) => '${f['auteurNom'] ?? '—'}'),
         ColonneMini('Validée par', (f) => f['statut'] == ficheAideValidee ? '${f['validePar'] ?? '—'} · ${_jour(f['valideLe'])}${f['professionnel'] == null ? '' : ' · professionnel : ${f['professionnel']} (${_jour(f['professionnelLe'])})'}' : '—'),
         ColonneMini('Rôles', (f) => ((f['roles'] as List?) ?? const []).isEmpty ? 'Tous' : ((f['roles'] as List).map((r) => c.donnees?.matrice.libelle('$r') ?? '$r').join(', '))),
@@ -380,9 +424,9 @@ class _EtatFichesAide extends State<EcranFichesAide> {
           final id = '${f['id']}';
           final st = '${f['statut']}';
           return Wrap(spacing: 6, runSpacing: 4, children: [
-            if (peutRediger && st == ficheAideProposee)
+            if (peutRediger && st == ficheAideProposee && depotAttente(f) == null)
               BoutonSigh(key: Key('aide:modifier:$id'), libelle: 'Modifier', taille: TailleBouton.sm, variante: VarianteBouton.secondaire, icone: LucideIcons.pencil, onPressed: () => _ouvrirFormulaire(c, initial: f, edition: id)),
-            if (peutValider && st == ficheAideProposee)
+            if (peutValider && st == ficheAideProposee && depotAttente(f) == null)
               BoutonSigh(
                   key: Key('aide:valider:$id'),
                   libelle: 'Valider',
@@ -451,19 +495,20 @@ class _EtatFichesAide extends State<EcranFichesAide> {
     final col = c.magasin.collection(colFichesAide);
     final fileul = ServiceInstallation.de(c.magasin).rattache;
     final peutRediger = c.droit.editer;
-    final peutValider = gestePeutEcran(c, gesteFichesAideValider) && !fileul;
+    final peutValider = gestePeutEcran(c, gesteFichesAideValider);
     return ListenableBuilder(
-      listenable: col,
+      listenable: Listenable.merge([col, c.magasin.collection(valCollectionDepots)]),
       builder: (context, _) {
         final fiches = [for (final f in col.toutes) f];
         final aValider = _aValider == null ? null : col.parId(_aValider);
         return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          if (fileul)
+          if (fileul && peutValider)
             const Padding(
                 padding: EdgeInsets.only(bottom: 12),
-                child: NoteSigh('Poste rattaché : vous pouvez rédiger et modifier des fiches (elles rejoignent la mère) ; la VALIDATION se fait sur le poste mère, qui vérifie le geste réservé et que l’auteur n’est pas le validateur.',
-                    key: Key('aide:fileul'), ton: TonSigh.info, icone: LucideIcons.lock))
-          else if (!gestePeutEcran(c, gesteFichesAideValider))
+                child: NoteSigh('Poste rattaché : vous pouvez rédiger, modifier et valider des fiches. Une validation est TRANSMISE à la mère, qui la rejoue (votre geste réservé, que vous n’êtes pas l’auteur, le professionnel nommé) et vous répond ici ; '
+                    'tant qu’elle n’a pas répondu, la fiche reste « proposée » et votre demande attend, sans rien perdre.',
+                    key: Key('aide:fileul'), ton: TonSigh.info, icone: LucideIcons.send))
+          else if (!peutValider)
             const Padding(
                 padding: EdgeInsets.only(bottom: 12),
                 child: NoteSigh('Vous pouvez rédiger, pas valider : valider une fiche est le geste réservé « Valider une fiche d’aide de l’assistant » (Direction et DAF d’origine, réglable dans « Rôles et permissions › Gestes réservés »).',

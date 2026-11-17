@@ -124,8 +124,8 @@ class _EtatCle extends MrbEtatEcran<EcranCleClinique, _Cle> {
               key: const Key('mrb:code-mobile'),
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 4)),
           const SizedBox(height: 8),
-          const Text('Code à usage unique, valable 15 minutes. Le QR contient aussi la clé de clinique : à scanner sur le téléphone, jamais à photographier ni à transmettre.',
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: JetonsShell.slate500)),
+          Text('${repPhraseValiditeCode(r.validiteSecondes)} Le QR contient aussi la clé de clinique : à scanner sur le téléphone, jamais à photographier ni à transmettre.',
+              key: const Key('mrb:validite-code'), textAlign: TextAlign.center, style: const TextStyle(fontSize: 12, color: JetonsShell.slate500)),
         ]),
         pied: (fermer) => [BoutonSigh(libelle: 'Fermer', onPressed: fermer)]);
   }

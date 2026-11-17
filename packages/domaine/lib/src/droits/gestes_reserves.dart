@@ -860,14 +860,14 @@ const List<GesteReserve> gestesReserves = [
       module: 'M12',
       ecran: 'm12-liasse-import',
       rolesDefaut: ['comptable', 'da'],
-      aide: 'Poser une nouvelle version datée (source, date de dépôt, auteur) d’une liasse ou d’un classeur, ou en archiver une avec motif : rien n’est supprimé, la plus récente fait foi, les états financiers la lisent. Se fait sur la mère (un fileul reçoit les versions). Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
+      aide: 'Poser une nouvelle version datée (source, date de dépôt, auteur) d’une liasse ou d’un classeur, ou en archiver une avec motif : rien n’est supprimé, la plus récente fait foi, les états financiers la lisent. Depuis un poste rattaché, la demande d’import est transmise à la mère, qui la rejoue sous votre rôle ; l’archivage d’une version se fait sur la mère. Origine PROPOSÉE, à valider par la Direction : le Comptable et la DAF.'),
   GesteReserve(
       id: gesteFichesAideValider,
       libelle: 'Valider une fiche d’aide de l’assistant',
       module: 'CFG',
       ecran: 'cfg-fiches-aide',
       rolesDefaut: ['direction', 'da'],
-      aide: 'Rendre une procédure ou une définition citable par l’assistant : validateur nommé et date, jamais par l’auteur de la fiche. Une fiche qui engage un professionnel (check-liste du bloc) exige en plus le geste de ce professionnel, son nom et la date. Se fait sur la mère. Origine PROPOSÉE, à valider par la Direction : la Direction et la DAF.'),
+      aide: 'Rendre une procédure ou une définition citable par l’assistant : validateur nommé et date, jamais par l’auteur de la fiche. Une fiche qui engage un professionnel (check-liste du bloc) exige en plus le geste de ce professionnel, son nom et la date. Depuis un poste rattaché, la validation est transmise à la mère, qui la rejoue sous votre rôle. Origine PROPOSÉE, à valider par la Direction : la Direction et la DAF.'),
 ];
 
 GesteReserve? gesteReserve(String id) {
