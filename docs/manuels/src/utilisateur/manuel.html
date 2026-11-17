@@ -22,7 +22,7 @@
   </div>
   <div class="meta">
     <span>Version du poste : 0.1.0</span>
-    <span>Édition du 16 novembre 2026</span>
+    <span>Édition du 17 novembre 2026</span>
     <span>Document interne</span>
   </div>
 </section>
@@ -288,6 +288,18 @@
 <div class="encadre attention"><span class="titre">Attention</span><p>Une décision en attente n’est pas encore appliquée. Si la pastille passe au rouge, le délai d’alerte est dépassé : le validateur concerné et l’administrateur reçoivent une notification. Rien n’est bloqué sur votre poste.</p></div>
 <div class="encadre info"><span class="titre">Information</span><p>Un compteur <strong>à traiter</strong> signale une opération que la mère a refusée. La cause est nommée et le geste de correction est indiqué. Prévenez votre responsable ou l’administrateur.</p></div>
 
+<h2 id="numerotation">À quoi ressemblent les numéros des pièces</h2>
+<p>Chaque pièce (facture, bon, courrier, avoir, certificat…) reçoit un numéro attribué par le logiciel, à partir d’un référentiel unique. Vous ne le saisissez jamais.</p>
+<ul>
+  <li>Le numéro suit un format qui dépend de la pièce : par exemple <strong>FN-2026-00001</strong> (facture normalisée), <strong>AV-2026-0001</strong> (avoir), <strong>PRO-2026-00001</strong> (pro-forma). Les séries annuelles repartent à 1 chaque année.</li>
+  <li>Une pièce prend toujours <strong>le plus grand rang déjà employé + 1</strong>, archives comprises : un numéro n’est jamais redonné, et les numéros déjà émis ne changent pas.</li>
+  <li><strong>Un préfixe par registre.</strong> Les courriers départ portent <strong>COU</strong>, les codes de réactifs <strong>REA</strong>, les rendez-vous <strong>RDV</strong>, les événements de l’établissement <strong>EVE</strong>, les bulletins de paie <strong>BUL</strong>. Ils ne partagent plus leur préfixe avec un autre registre ; l’écran de numérotation indique « Lit aussi » l’ancien préfixe, pour que le rang suivant ne retombe jamais sur un numéro déjà pris.</li>
+</ul>
+<p>L’administrateur et la DAF règlent ces séries dans <strong>Système ➔ Configuration Clinique ➔ Paramètres fiscaux (IFU / RCCM)</strong>, carte <strong>Numérotation des pièces</strong> (geste « Modifier une série de numérotation des pièces »). Chaque ligne donne le type de document, le format, le <strong>premier numéro de l’année</strong>, la séquence et l’état (« À valider » ou « Arrêtée »). Une modification est une version datée : elle ne s’applique qu’aux pièces à venir.</p>
+<figure class="capture" data-capture="captures/173-numerotation" data-recadrage="0,1130,1440,700" data-cibles='[{"bouton":"Modifier","de":"gauche","long":50,"num":1}]'>
+  <figcaption>La carte <strong>Numérotation des pièces</strong> : <span class="pastille">1</span> la modification d’une série (réservée).</figcaption>
+</figure>
+
 <!-- ============================================================== 3. TABLEAUX -->
 <h1 id="tableaux"><span class="num">4</span> Travailler avec les tableaux</h1>
 <p>La plupart des écrans présentent leurs données dans un <strong>tableau</strong>. Tous les tableaux fonctionnent de la même façon.</p>
@@ -380,6 +392,7 @@
   <figcaption>La page <strong>Ouvrir un dossier patient</strong> : <span class="pastille">1</span> le code attribué d’office, <span class="pastille">3</span> l’identification, <span class="pastille">4</span> les coordonnées.</figcaption>
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Le <strong>Code dossier</strong> est attribué automatiquement au format <strong>CBG/[n° d’ordre]/[année]</strong>. Il ne se modifie plus après la création. Deux guichets qui saisissent en même temps n’obtiennent jamais le même numéro.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p>L’<strong>année</strong> du code est celle de la <strong>création du dossier</strong>, jamais celle de la synchronisation : un dossier ouvert le 31 décembre hors ligne et envoyé en janvier garde l’année de sa création. Le numéro d’ordre repart à 1 chaque année civile. Si un poste hors ligne a épuisé ses numéros réservés, il donne un <strong>code provisoire</strong> (« PROV-… ») : la mère le remplace par le vrai code après la synchronisation. Notez le nouveau code quand il apparaît.</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Une allergie déclarée bloque la délivrance du produit correspondant à la pharmacie. Laissez le champ vide si aucune allergie n’est connue : n’écrivez pas « néant ».</p></div>
 <div class="encadre attention"><span class="titre">Attention</span><p>Au-delà de la date d’<strong>Expiration de la carte</strong>, l’assurance ne s’applique plus : la facture est intégralement à la charge du patient. Vérifiez la carte à chaque venue.</p></div>
 <p>La colonne de droite, <strong>Enchaînement du parcours</strong>, rappelle la suite : constantes, file d’attente, dossier et fiche de consultation, caisse.</p>
@@ -765,7 +778,7 @@
 <p>Quand une ligne n’a pas de prix à la date de la pièce, la fenêtre <strong>Encaisser</strong> l’annonce : « prestation(s) au prix à valoriser … la ligne ne s’encaisse pas … La facture attend ce prix ». Pour un acte sans prix assuré dans la grille, elle annonce « acte(s) au prix assuré à définir » : la ligne n’est jamais facturée au prix non assuré.</p>
 <ol class="etapes">
   <li>N’encaissez rien : dites au patient que la facture attend un prix. Une ligne sans prix n’entre dans aucun total, jamais pour zéro.</li>
-  <li>La personne qui fixe les prix (le rôle qui peut modifier <strong>Tarifs et prix</strong> ou le <strong>Référentiel produits</strong>) reçoit une alerte « prix manquant », sans nom de patient.</li>
+  <li>L’alerte « prix manquant » part sans nom de patient, une par code. Pour un acte, une analyse ou une imagerie, elle va aux rôles qui peuvent modifier <strong>Tarifs et prix</strong>. Pour un <strong>médicament</strong>, elle ne va qu’à ceux qui peuvent <strong>proposer un prix d’achat</strong> (administrateur, DAF, gestionnaire de stock) : la caisse ne la reçoit pas.</li>
   <li>Dès que le prix daté de ce jour est posé, la facture est <strong>complétée</strong> : encaissez-la normalement.</li>
 </ol>
 <div class="encadre info"><span class="titre">Information</span><p>Un <strong>réglage de clinique</strong>, réservé par la matrice des droits, permet d’encaisser les autres lignes en attendant. Le message dit alors « Les autres prestations s’encaissent (réglage de clinique ouvert) ». Ce réglage se fait sur n’importe quel poste et se propage par la synchronisation.</p></div>
@@ -879,6 +892,28 @@
   <figcaption>L’écran <strong>Factures mensuelles assureur</strong>.</figcaption>
 </figure>
 
+<h2 id="facture-entreprise">Émettre une facture à une entreprise</h2>
+<div class="tache">
+<p class="but">Une entreprise (employeur, convention) prend un patient en charge : vous lui adressez sa propre facture normalisée.</p>
+<p class="prerequis">le geste réservé « Émettre une facture à une entreprise (tiers payeur) » (proposé au Comptable et à la DAF). Sans lui, l’onglet se consulte et la commande est absente.</p>
+<p class="chemin">Financier ➔ Assurances &amp; Créances ➔ Facture mère assurance ➔ onglet Factures à une entreprise</p>
+<ol class="etapes">
+  <li>Choisissez la <strong>Compagnie</strong> et la <strong>Périodicité</strong>, puis ouvrez l’onglet <strong>Factures à une entreprise</strong>.</li>
+  <li>Dans la carte <strong>Émettre une facture à une entreprise</strong>, choisissez le <strong>Souscripteur (ligne du relevé)</strong> : la pièce naît d’une ligne du relevé, son montant est la part prise en charge, jamais une saisie.</li>
+  <li>Saisissez l’<strong>IFU de l’entreprise</strong> (13 chiffres) et le <strong>Nom de l’entreprise</strong>, tous deux obligatoires.</li>
+  <li>Choisissez la <strong>Situation de l’acheteur (AIB)</strong> : c’est le comptable qui décide. L’entrée « — à choisir : jamais présumée — » ne passe pas ; le taux appliqué est celui du barème arrêté en vigueur.</li>
+  <li>Cliquez sur <strong>Émettre la facture à l’entreprise</strong>. Le message annonce le numéro, le montant et l’AIB ; il permet d’annuler l’émission (la pièce est alors archivée).</li>
+</ol>
+<figure class="capture" data-capture="captures/170-facture-entreprise" data-recadrage="0,250,1440,620" data-cibles='[{"cle":"kit:onglet:tiers:actif","de":"bas","long":50,"num":1}]'>
+  <figcaption>L’onglet <strong>Factures à une entreprise</strong>. Sur le jeu de démonstration, aucune ligne du relevé n’est disponible : la carte d’émission n’apparaît donc pas (agent fictif, données de démonstration).</figcaption>
+</figure>
+</div>
+<ul>
+  <li>Le tableau de l’onglet liste les pièces émises : numéro, date, entreprise et IFU, souscripteur, montant, AIB, net à payer et état MECeF (« En attente de certification » tant que le boîtier n’a pas répondu). L’icône <strong>Rattachement au relevé</strong> montre les factures patients réclamées.</li>
+  <li>Une facture patient ne se réclame <strong>qu’une fois</strong> : réclamée par une facture à une entreprise, elle sort du relevé de la facture mère.</li>
+</ul>
+<div class="encadre attention"><span class="titre">Attention</span><p>La <strong>facture du patient</strong> reste sans acheteur ni AIB : elle ne porte ni IFU ni nom d’acheteur, et le patient paie le total. L’acheteur et l’AIB ne se saisissent que sur la facture à une entreprise, à l’assureur et aux achats.</p></div>
+
 <!-- ============================================================== 10. RH ET PAIE -->
 <h1 id="rh"><span class="num">11</span> Ressources humaines et paie</h1>
 <p>Le domaine <strong>RH</strong> regroupe deux modules : <strong>Ressources humaines</strong> et <strong>Paie &amp; Primes</strong>. Leurs écrans sont réservés aux profils RH, à la Direction et à la comptabilité, sauf <strong>Mon espace</strong>.</p>
@@ -891,10 +926,42 @@
 </figure>
 
 <h2 id="personnel">Gérer le personnel</h2>
+<div class="tache">
+<p class="but">Vous enregistrez un nouvel agent sans que le logiciel invente une valeur à votre place.</p>
+<p class="prerequis">le droit de modifier l’écran Personnel.</p>
 <p class="chemin">RH ➔ Personnel ➔ Nouveau</p>
-<p>Cliquez sur <strong>Nouveau</strong> pour enregistrer un agent : identité, fonction, service, contrat. L’action <strong>Consulter</strong> d’une ligne ouvre la <strong>Fiche employé</strong>. Un agent qui quitte la clinique est archivé, jamais supprimé.</p>
-<figure class="capture" data-capture="captures/70-personnel" data-recadrage="0,120,1440,620" data-cibles='[{"bouton":"Nouveau","de":"bas","long":60}]'>
-  <figcaption>L’écran <strong>Personnel</strong>.</figcaption>
+<ol class="etapes">
+  <li>Cliquez sur <strong>Nouveau</strong>. La fenêtre <strong>Nouvel agent</strong> s’ouvre, tous les champs vides.</li>
+  <li>Remplissez l’<strong>IDENTITÉ</strong> : <strong>Matricule</strong>, <strong>Nom</strong>, <strong>Prénom(s)</strong> (obligatoires). Le <strong>Sexe</strong> est facultatif : sans réponse, la fiche dit « Non renseigné ».</li>
+  <li>Remplissez l’<strong>AFFECTATION</strong> : <strong>Fonction</strong>, <strong>Service</strong> et <strong>Date d’embauche</strong> sont obligatoires ; <strong>Poste occupé</strong>, <strong>Titre à l’organigramme</strong> (douze caractères au plus) et <strong>Catégorie / échelon</strong> sont facultatifs.</li>
+  <li>Dans <strong>RÉMUNÉRATION ET COUVERTURE SOCIALE</strong>, le <strong>Salaire de base (FCFA)</strong> est obligatoire. Le <strong>Numéro CNSS</strong> est facultatif.</li>
+  <li>Cliquez sur <strong>Créer</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/160-personnel-nouveau" data-recadrage="270,40,900,1050" data-cibles='[{"cle":"kit:champ:dateEmbauche","de":"droite","long":60,"num":3},{"cle":"kit:champ:salaireBase","de":"droite","long":60,"num":4},{"bouton":"Créer","de":"haut","long":50,"num":5}]'>
+  <figcaption>La fenêtre <strong>Nouvel agent</strong> (les listes <strong>Fonction</strong> et <strong>Service</strong> présélectionnent leur première entrée : vérifiez-les).</figcaption>
+</figure>
+</div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Valeur d’attente.</strong> Le <strong>salaire</strong>, la <strong>date d’embauche</strong>, la <strong>catégorie</strong> et le <strong>numéro CNSS</strong> ne reçoivent jamais de valeur par défaut. Les deux premiers sont exigés. Une catégorie ou un numéro CNSS laissé vide est marqué « <strong>à renseigner</strong> ». Un salaire ou une date saisis sans pièce justificative restent marqués « <strong>provisoire</strong> » (icône sablier) au registre, à la fiche et sur les pièces imprimées (bulletin, fiche individuelle), champ par champ, jusqu’à ce que la valeur soit arrêtée.</p></div>
+
+<h3>La fiche du personnel</h3>
+<p>L’action <strong>Consulter</strong> d’une ligne du registre ouvre la <strong>Fiche employé</strong>, avec ses onglets : <strong>Informations</strong>, <strong>Planning du mois</strong>, <strong>Planning individuel</strong>, <strong>Primes (NS 132)</strong>, <strong>Présences &amp; congés</strong>, <strong>Évaluations &amp; sanctions</strong>, <strong>Assurances</strong>. Un agent qui quitte la clinique est archivé, jamais supprimé.</p>
+<div class="tache">
+<p class="but">Vous retenez telle quelle une valeur d’attente de la fiche d’un agent.</p>
+<p class="prerequis">le geste réservé « Confirmer une valeur d’attente du dossier d’un agent » (proposé à la DAF, à la Direction et à l’administrateur). Sans lui, le bouton est absent.</p>
+<p class="chemin">RH ➔ Personnel ➔ Consulter ➔ onglet Informations</p>
+<ol class="etapes">
+  <li>Ouvrez l’onglet <strong>Informations</strong>. La note orange liste les valeurs d’attente de l’agent (salaire de base, catégorie / échelon, numéro CNSS…).</li>
+  <li>En face de la valeur concernée, cliquez sur <strong>Confirmer</strong>.</li>
+  <li>Écrivez le <strong>motif</strong> (obligatoire : il est journalisé) puis validez. Le marquage tombe ; le message permet d’annuler.</li>
+</ol>
+<figure class="capture" data-capture="captures/161-fiche-attente" data-recadrage="0,230,1440,850" data-cibles='[{"bouton":"Confirmer","de":"gauche","long":60,"num":2}]'>
+  <figcaption>La <strong>Fiche employé</strong> d’un agent aux valeurs d’attente (agent fictif).</figcaption>
+</figure>
+</div>
+<div class="encadre attention"><span class="titre">Attention</span><p>Une valeur <strong>vide</strong> ne se confirme pas : elle se saisit (<strong>Modifier</strong> la fiche). Saisir la valeur remise l’arrête déjà et retire le marquage.</p></div>
+<div class="encadre info"><span class="titre">Information</span><p><strong>Le Surveillant</strong> ouvre la fiche en lecture, sans les données sensibles. Le salaire de base et le numéro CNSS affichent « Information réservée — droit requis : lire la rémunération du personnel ». Les onglets <strong>Primes (NS 132)</strong>, <strong>Évaluations &amp; sanctions</strong> et <strong>Assurances</strong> portent la même mention, et le dossier médical n’est pas visible. Seul l’onglet <strong>Planning individuel</strong> lui est modifiable.</p></div>
+<figure class="capture" data-capture="captures/162-fiche-surveillant" data-recadrage="0,230,1440,720" data-cibles='[]'>
+  <figcaption>La même fiche vue par le <strong>Surveillant</strong> : la rémunération est réservée.</figcaption>
 </figure>
 
 <h2 id="planning">Planning, gardes et congés</h2>
@@ -926,6 +993,16 @@
 </figure>
 <div class="encadre info"><span class="titre">Information</span><p>Une version datée ne se réécrit pas : la date d’effet est aujourd’hui ou à venir, et les vacations passées gardent le régime sous lequel elles ont été posées. Une valeur sans document d’origine est marquée « à valider ». L’onglet <strong>Historique</strong> garde toutes les versions.</p></div>
 </div>
+
+<h2 id="planning-sync">Le planning entre les postes</h2>
+<p>Le planning, les vacations, les propositions de planning, les congés, les ordres de mission et les présences voyagent entre les postes et la mère. Ils ne vont <strong>jamais vers un téléphone</strong> : ils portent des honoraires et des horaires nominatifs.</p>
+<ul>
+  <li><strong>Une vacation posée depuis un poste rattaché est « À valider »</strong>. Le message dit « Décision transmise à la mère, en attente » : la mère l’applique sous votre rôle, en refaisant tous les contrôles. Tant qu’elle ne l’a pas fait, la vacation ne compte ni pour les primes ni pour les honoraires. Le filtre <strong>Validation</strong> du planning (<strong>Validées</strong> ou <strong>À valider</strong>) et la colonne <strong>Statut</strong> de la fiche de l’agent la distinguent.</li>
+  <li><strong>La paie ne compte que les vacations validées.</strong> Une vacation « À valider » n’entre dans aucun calcul de prime de garde ou de permanence.</li>
+  <li>Deux postes hors ligne qui posent chacun une vacation pour le même agent le même jour : la première appliquée par la mère l’emporte, la seconde est <strong>refusée</strong> (double affectation) et son auteur en lit le motif.</li>
+  <li><strong>Pas de double paiement.</strong> Un honoraire de régime individuel qui répète une prime de la grille NS 132 déjà versée pour la même vacation est <strong>refusé</strong> à la saisie, avec un message qui nomme la prime, la vacation, le montant et le jour. Une version déjà posée est écartée du bulletin avec le même message, à l’attention du validateur.</li>
+</ul>
+<div class="encadre info"><span class="titre">Information</span><p>Cette partie se voit sur les écrans <strong>Planning &amp; gardes</strong> et <strong>Fiche employé</strong> ; elle n’a pas de capture dédiée, car elle demande deux postes reliés à une mère.</p></div>
 
 <h2 id="paie">Calculer la paie et éditer les bulletins</h2>
 <div class="tache">
@@ -995,6 +1072,31 @@
 <p>Les obligations fiscales se suivent dans <strong>Échéances fiscales &amp; paiements</strong>, et la retenue sur les ventes dans <strong>Acompte sur impôt (AIB)</strong>.</p>
 
 <!-- ============================================================== 12. PILOTAGE -->
+<h2 id="taux">Confirmer un taux et arrêter un barème</h2>
+<div class="tache">
+<p class="but">Vous retenez un taux de la paie ou de la fiscalité (CNSS, VPS, ITS, ancienneté, TVA) ou vous arrêtez une version du barème de l’AIB.</p>
+<p class="prerequis">un seul droit : le geste réservé « Confirmer un taux fiscal et arrêter un barème de l’AIB » (proposé au Comptable et à la DAF, réglable dans la fiche de rôle).</p>
+<p class="chemin">Système ➔ Configuration Clinique ➔ Paramètres comptables &amp; obligations (ou RH ➔ Paie &amp; Primes ➔ Cotisations CNSS / ITS / VPS)</p>
+<ol class="etapes">
+  <li>Repérez la carte du taux : <strong>Taux de la CNSS</strong>, <strong>Taux du VPS</strong>, <strong>Barème de l’ITS</strong>, <strong>Prime d’ancienneté</strong> (et la TVA du régime normal à l’écran des paramètres comptables). Elle donne la valeur « En vigueur » et sa version.</li>
+  <li>Cliquez sur <strong>Confirmer</strong> pour retenir la valeur en vigueur : choisissez la <strong>Date d’effet de la confirmation</strong>, écrivez le <strong>Motif de la confirmation</strong> (obligatoire) et, pour le barème de l’ITS, le <strong>Texte cité</strong> qui le fonde.</li>
+  <li>Pour changer la valeur, cliquez sur <strong>Nouvelle version</strong> : saisissez les nouveaux taux, la <strong>Date d’effet</strong> et le <strong>Motif</strong>, puis <strong>Poser la version</strong>.</li>
+</ol>
+<figure class="capture" data-capture="captures/172-taux-cotisations" data-recadrage="0,690,1440,780" data-cibles='[{"bouton":"Confirmer","de":"gauche","long":50,"num":2},{"bouton":"Nouvelle version","de":"bas","long":50,"num":3}]'>
+  <figcaption>Les cartes de taux de l’écran <strong>Cotisations CNSS / ITS / VPS</strong> ; l’écran <strong>Paramètres comptables &amp; obligations</strong> porte les mêmes cartes.</figcaption>
+</figure>
+</div>
+<ul>
+  <li><strong>Les taux sont datés</strong> : un bulletin se calcule au taux en vigueur le premier jour de sa période ; un bulletin déjà généré garde le sien. Une confirmation ou une nouvelle version <strong>s’ajoute</strong> à l’historique, rien n’est écrasé.</li>
+  <li><strong>Un seul droit</strong> sert à confirmer un taux et à arrêter une version du barème de l’AIB (écrans <strong>Validations de l’AIB</strong> et <strong>Acompte sur impôt (AIB)</strong>) : il n’y a plus de seconde porte. Sans ce droit, les boutons sont absents.</li>
+  <li><strong>Deux barèmes d’AIB</strong> existent : le taux de retenue sur la facture d’un tiers (3 % personne physique, 5 % personne morale) et le barème selon la situation de l’acheteur (1 % IFU actif, 5 % sans IFU actif, 3 % prestation de service). Le comptable choisit le barème à chaque opération ; un barème non arrêté ne s’applique jamais.</li>
+</ul>
+<div class="encadre info"><span class="titre">Information</span><p>Le barème de l’ITS reste marqué « À confirmer » tant qu’aucune confirmation ne cite le texte qui le fonde ; il s’applique quand même.</p></div>
+
+<h2 id="inventaire-cloture">Écritures d’inventaire pendant la clôture</h2>
+<p>Quand un exercice est <strong>en clôture</strong>, les modules n’y écrivent plus. Seul un rôle qui détient le geste « Passer des écritures d’inventaire pendant la clôture » (proposé au Comptable et à la DAF) y passe ses écritures d’inventaire, en saisie manuelle. Ce droit ne dispense ni du circuit de clôture ni de la séparation des personnes. Si <strong>Nouvelle écriture</strong> est refusée pendant la clôture, c’est que votre rôle n’a pas ce droit.</p>
+<p>Le sélecteur d’exercice de la barre supérieure ouvre, par défaut, <strong>l’exercice du jour</strong> sur tous les écrans comptables ; les flèches changent d’exercice.</p>
+
 <h1 id="pilotage"><span class="num">13</span> Pilotage et tableaux de bord</h1>
 <p>Le domaine <strong>Pilotage</strong> regroupe les <strong>Tableaux de bord par poste</strong>, les statistiques et les tableaux de la Direction. Chaque rôle arrive sur son propre tableau de bord après la connexion.</p>
 
@@ -1021,22 +1123,82 @@
 
 <h2 id="pta">Le plan de travail annuel (PTA)</h2>
 <p class="chemin">Administration ➔ Administration &amp; Ambulance ➔ Plan de travail annuel (PTA)</p>
-<p>Le <strong>Plan de travail annuel (PTA)</strong> programme les actions de la clinique pour un <strong>exercice</strong>. L’exercice est celui du sélecteur de la barre supérieure (‹ Exercice · état ›) : par défaut celui qui contient la date du jour ; les flèches mènent à l’exercice précédent ou suivant. Titres, indicateurs et pièces imprimées suivent l’exercice choisi. Le logiciel est livré <strong>sans plan</strong> : la clinique saisit le sien.</p>
+<p>Le <strong>Plan de travail annuel (PTA)</strong> programme les actions de la clinique pour un <strong>exercice</strong>. Le menu, le fil d’Ariane et la recherche l’appellent tous « Plan de travail annuel (PTA) ». Le logiciel est livré <strong>sans plan</strong> : la clinique saisit le sien.</p>
+
+<h3>Choisir l’exercice</h3>
+<p>L’exercice est celui du <strong>sélecteur</strong> de la barre supérieure (‹ <strong>Exercice 2026 · ouvert</strong> ›). Par défaut, c’est l’exercice qui contient la date du jour. Les flèches mènent à l’exercice précédent ou suivant ; une flèche est absente quand il n’y a pas de voisin. Les titres, les indicateurs et les pièces imprimées suivent l’exercice choisi.</p>
+<figure class="capture" data-capture="captures/155-pta-vide" data-recadrage="0,0,1440,560" data-cibles='[{"cle":"selecteur-exercice","de":"bas","long":50,"num":1},{"bouton":"Ouvrir le plan de l’exercice 2026","de":"bas","long":50,"num":2}]'>
+  <figcaption>Un exercice sans plan : <span class="pastille">1</span> le sélecteur d’exercice, <span class="pastille">2</span> le bouton qui ouvre le plan.</figcaption>
+</figure>
+
 <div class="tache">
 <p class="but">Vous préparez le plan de l’exercice et le faites adopter.</p>
-<p class="prerequis">le droit de modifier l’écran du plan ; l’adoption demande le geste réservé « Adopter, renvoyer ou clôturer le plan de travail annuel ».</p>
+<p class="prerequis">le droit de modifier l’écran du plan ; l’adoption demande le geste réservé « Adopter, renvoyer ou clôturer le plan de travail annuel » (proposé à la Direction et à la DAF).</p>
+<p class="chemin">Administration ➔ Administration &amp; Ambulance ➔ Plan de travail annuel (PTA)</p>
 <ol class="etapes">
-  <li>Cliquez sur <strong>Ouvrir le plan de l’exercice</strong>. Le plan naît en <strong>Brouillon</strong> (version 1). Un exercice clos ne reçoit pas de plan.</li>
-  <li>Cliquez sur <strong>Nouvelle action</strong> et remplissez : <strong>Axe</strong>, <strong>Objectif spécifique</strong>, <strong>Activité</strong>, <strong>Résultat attendu</strong>, <strong>Indicateur</strong>, <strong>Valeur de départ</strong>, <strong>Cible</strong> (valeur et unité), <strong>Calendrier</strong> (cochez les périodes : trimestres par défaut), <strong>Responsable</strong> (un agent, une fonction ou un service de l’organigramme), <strong>Service porteur</strong>, <strong>Partenaires</strong>, <strong>Budget prévu</strong>, <strong>Source de financement</strong>, et si besoin une <strong>Ligne du module Budgets</strong>. L’action reçoit son numéro en série annuelle (par exemple PTA-<em>exercice</em>-001).</li>
-  <li>Choisissez l’<strong>Avancement</strong> : <strong>Calculé</strong> (valeur réalisée ÷ cible) ou <strong>Saisi</strong> (un pourcentage). L’écran dit toujours lequel.</li>
-  <li>Cliquez sur <strong>Soumettre à l’adoption</strong>. Tant que le plan n’est pas adopté, <strong>Retirer la soumission</strong> le ramène en brouillon.</li>
-  <li>Un détenteur du geste (d’origine, proposée à valider : la Direction et la DAF) clique sur <strong>Adopter le plan</strong> ou <strong>Renvoyer en brouillon</strong>, avec un motif obligatoire. Celui qui a soumis le plan ne l’adopte pas lui-même.</li>
+  <li>Choisissez l’exercice, puis cliquez sur <strong>Ouvrir le plan de l’exercice</strong>. Le plan naît en <strong>Brouillon</strong> (version 1). Un exercice clos ne reçoit pas de plan.</li>
+  <li>Cliquez sur <strong>Nouvelle action</strong> et remplissez la fenêtre (voir plus bas), puis cliquez sur <strong>Créer</strong>. L’action reçoit son numéro en série annuelle (par exemple PTA-2026-001).</li>
+  <li>Quand le programme est complet, cliquez sur <strong>Soumettre à l’adoption</strong>. Tant que le plan n’est pas adopté, <strong>Retirer la soumission</strong> le ramène en brouillon. Un plan sans action ne se soumet pas.</li>
+  <li>Un détenteur du geste clique sur <strong>Adopter le plan</strong> ou sur <strong>Renvoyer en brouillon</strong>, avec un motif obligatoire. Celui qui a soumis le plan ne l’adopte pas lui-même.</li>
   <li>Une fois adopté, cliquez sur <strong>Mettre en exécution</strong>. Au fil de l’année, ouvrez chaque action (<strong>Modifier</strong>) pour saisir son <strong>État</strong>, sa <strong>Valeur réalisée</strong>, son avancement et ses observations.</li>
+  <li>En fin d’exercice, cliquez sur <strong>Clôturer le plan</strong> : le bilan est arrêté (texte et indicateurs du jour) et plus rien ne s’écrit ensuite.</li>
 </ol>
+<figure class="capture" data-capture="captures/150-pta-brouillon" data-recadrage="0,120,1440,1050" data-cibles='[{"bouton":"Nouvelle action","de":"bas","long":50,"num":2},{"bouton":"Soumettre à l’adoption","de":"bas","long":50,"num":3}]'>
+  <figcaption>Un plan en <strong>Brouillon</strong> : les indicateurs, la <strong>frise</strong> par trimestre (une barre par période cochée), l’alerte de retard et le tableau des actions.</figcaption>
+</figure>
+<figure class="capture" data-capture="captures/151-pta-soumis" data-recadrage="0,300,1440,260" data-cibles='[{"bouton":"Adopter le plan","de":"bas","long":50,"num":4},{"bouton":"Renvoyer en brouillon","de":"bas","long":50,"num":4}]'>
+  <figcaption>Un plan <strong>Soumis</strong>, vu par un détenteur du geste d’adoption.</figcaption>
+</figure>
 </div>
+
+<h3>Les champs d’une action</h3>
+<p>La fenêtre <strong>Nouvelle action du plan</strong> demande :</p>
+<ul>
+  <li><strong>Axe</strong>, <strong>Objectif spécifique</strong>, <strong>Activité</strong> (obligatoire) et <strong>Résultat attendu</strong> ;</li>
+  <li><strong>Indicateur</strong>, <strong>Valeur de départ</strong> et <strong>Cible (valeur)</strong> avec son <strong>Unité</strong> ;</li>
+  <li><strong>Calendrier (périodes)</strong> : cochez les périodes de l’exercice (trimestres par défaut) ;</li>
+  <li><strong>Responsable</strong> (un agent, une fonction ou un service de l’organigramme), <strong>Service porteur</strong>, <strong>Partenaires</strong> ;</li>
+  <li><strong>Budget prévu (FCFA)</strong>, <strong>Source de financement</strong> et, si besoin, <strong>Ligne du module Budgets (facultatif)</strong> ;</li>
+  <li><strong>Avancement</strong> : <strong>Calculé (réalisé ÷ cible)</strong> ou <strong>Saisi</strong> (un pourcentage) ; l’écran dit toujours lequel ;</li>
+  <li>le suivi : <strong>État</strong> (Planifiée, En cours, Réalisée, Reportée, Abandonnée), <strong>Valeur réalisée</strong>, <strong>Observations</strong>.</li>
+</ul>
+<figure class="capture" data-capture="captures/153-pta-action-nouvelle" data-recadrage="270,40,900,1300" data-cibles='[{"cle":"kit:champ:indicateur","de":"droite","long":60,"num":1},{"cle":"kit:champ:cibleValeur","de":"droite","long":60,"num":1},{"bouton":"Créer","de":"haut","long":50,"num":2}]'>
+  <figcaption>La fenêtre <strong>Nouvelle action du plan</strong> : <span class="pastille">1</span> l’indicateur et sa cible, <span class="pastille">2</span> l’enregistrement.</figcaption>
+</figure>
+
+<h3>Suivre le plan, ses retards et ses versions</h3>
+<figure class="capture" data-capture="captures/152-pta-execution" data-recadrage="0,300,1440,720" data-cibles='[{"bouton":"Réviser le plan","de":"bas","long":50,"num":1},{"cle":"pta:reconduire","de":"bas","long":50,"num":2},{"cle":"pta:retard","de":"bas","long":50,"num":3}]'>
+  <figcaption>Un plan <strong>En exécution</strong> : <span class="pastille">1</span> la révision, <span class="pastille">2</span> la reconduction, <span class="pastille">3</span> l’alerte de retard.</figcaption>
+</figure>
 <div class="encadre attention"><span class="titre">Attention</span><p>Un plan <strong>adopté ne se réécrit pas</strong> : seul le suivi reste ouvert (état, valeur réalisée, avancement, observations). Pour changer le programme, cliquez sur <strong>Réviser le plan</strong> : une nouvelle version s’ouvre en brouillon ; l’ancienne reste en vigueur jusqu’à l’adoption de la révision, puis devient « Remplacé par une révision ». Les versions restent consultables dans la carte <strong>Versions du plan</strong>.</p></div>
-<div class="encadre info"><span class="titre">Information</span><p>Une action <strong>non terminée</strong> dont la dernière période cochée est échue depuis plus que le <strong>seuil de retard</strong> (15 jours, proposition à valider) est <strong>en retard</strong> : l’écran le dit au-dessus du tableau, l’indicateur « En retard » la compte, le filtre <strong>Retard</strong> la retrouve, et une alerte part vers les responsables du suivi (centre de notifications). Le <strong>budget réalisé</strong> d’une action liée à une ligne du module Budgets est <strong>lu</strong> dans ce module, jamais ressaisi ; sans ligne liée, il est « non calculable », ce qui n’est pas zéro.</p></div>
-<p>Depuis un poste rattaché, l’adoption, le renvoi et la clôture sont <strong>transmis à la mère</strong>, qui les applique : l’écran dit « transmise à la mère, en attente » jusqu’à la confirmation. En fin d’exercice, <strong>Clôturer le plan</strong> arrête le bilan (texte et indicateurs du jour). <strong>Imprimer le plan</strong> et <strong>Imprimer le bilan</strong> sortent sur le gabarit A4 en paysage ; le bilan ajoute pour chaque action la cible, le réalisé et l’écart.</p>
+<div class="encadre info"><span class="titre">Information</span><p>Une action <strong>non terminée</strong> dont la dernière période cochée est échue depuis plus que le <strong>seuil de retard</strong> (15 jours, proposition à valider) est <strong>en retard</strong>. L’écran le dit au-dessus du tableau, l’indicateur « En retard » la compte, le filtre <strong>Retard</strong> la retrouve, et une alerte part vers les détenteurs du geste « alerte de retard du plan » (centre de notifications). Le <strong>budget réalisé</strong> d’une action liée à une ligne du module Budgets est <strong>lu</strong> dans ce module, jamais ressaisi ; sans ligne liée, il est « non calculable », ce qui n’est pas zéro.</p></div>
+
+<h3>Reconduire les actions non réalisées vers l’exercice suivant</h3>
+<div class="tache">
+<p class="but">À la fin de l’exercice, vous recopiez dans le plan de l’exercice suivant les actions qui n’ont pas été menées à terme.</p>
+<p class="prerequis">le droit de modifier l’écran du plan.</p>
+<p class="chemin">Administration ➔ Administration &amp; Ambulance ➔ Plan de travail annuel (PTA)</p>
+<ol class="etapes">
+  <li>Dans le sélecteur, choisissez l’exercice qui s’achève (par exemple 2026).</li>
+  <li>Cliquez sur <strong>Reconduire les actions non réalisées vers l’exercice 2027</strong>. Le bouton annonce toujours l’exercice cible : on reconduit de l’exercice affiché vers le suivant, jamais l’inverse.</li>
+  <li>Lisez la fenêtre <strong>Reconduire vers l’exercice 2027 ?</strong> : elle donne le nombre d’actions concernées et dit si le plan 2027 sera créé en brouillon ou s’il existe déjà. Cliquez sur <strong>Reconduire</strong>.</li>
+  <li>Un message annonce le nombre d’actions reconduites. Ouvrez l’exercice 2027 : les copies sont dans le plan en <strong>Brouillon</strong>, prêtes à être replanifiées puis soumises à l’adoption.</li>
+</ol>
+<figure class="capture" data-capture="captures/154-pta-reconduire" data-recadrage="270,40,900,300" data-cibles='[{"bouton":"Reconduire","de":"haut","long":40,"num":3}]'>
+  <figcaption>La fenêtre de confirmation de la reconduction.</figcaption>
+</figure>
+</div>
+<ul>
+  <li>Sont recopiées les actions dont l’état n’est <strong>ni Réalisée ni Abandonnée</strong>. Chaque copie garde son <strong>lien d’origine</strong> (la référence de l’action reconduite).</li>
+  <li>Les <strong>dates</strong>, le <strong>réalisé</strong> et la <strong>ligne de budget</strong> repartent de zéro, et l’état redevient celui d’une action nouvelle. Les actions d’origine ne sont pas modifiées.</li>
+  <li>Relancer la reconduction ne double rien : une action déjà reconduite n’est pas recopiée une seconde fois.</li>
+  <li>Le geste est journalisé, et le message de confirmation permet de l’annuler d’un bloc.</li>
+</ul>
+<div class="encadre attention"><span class="titre">Attention</span><p>Le logiciel refuse, en le disant, dans quatre cas : l’exercice affiché n’a pas de plan ; toutes ses actions sont réalisées ou abandonnées (« rien à reconduire ») ; le plan suivant est déjà <strong>soumis ou adopté</strong> (« une action ne s’y ajoute pas » : retirez la soumission, ou révisez le plan suivant, puis reconduisez) ; l’exercice suivant est clos.</p></div>
+
+<h3>Imprimer le plan et le bilan</h3>
+<p>Dans la carte du plan, <strong>Imprimer le plan</strong> et <strong>Imprimer le bilan</strong> sortent une pièce <strong>A4 en paysage</strong> avec l’en-tête officiel. Le plan liste le programme (indicateur, départ, cible, calendrier, responsable, budget, financement) ; le bilan ajoute pour chaque action la cible, le réalisé, l’écart, l’avancement et le retard. Un plan non adopté porte le filigrane « Projet », un bilan avant clôture le filigrane « Provisoire ». <em>Ces deux aperçus n’ont pas de capture dans ce manuel.</em></p>
+<p>Depuis un poste rattaché, l’adoption, le renvoi et la clôture sont <strong>transmis à la mère</strong>, qui les applique : l’écran dit « transmise à la mère, en attente » jusqu’à la confirmation.</p>
 
 <!-- ============================================================== 13. ASSISTANT -->
 <h1 id="assistant"><span class="num">14</span> L’Assistant</h1>
@@ -1336,13 +1498,15 @@
 <table class="simple">
   <tr><th style="width:28%">Terme</th><th>Définition</th></tr>
   <tr><td><strong>Acquitter</strong></td><td>Indiquer qu’on a pris connaissance d’une alerte. L’alerte cesse de sonner, mais reste visible tant que sa cause existe.</td></tr>
+  <tr><td><strong>AIB</strong></td><td>Acompte sur impôt assis sur les bénéfices : retenue opérée sur certaines ventes, selon un barème daté dont le comptable choisit la ligne.</td></tr>
   <tr><td><strong>Archiver</strong></td><td>Retirer une fiche des listes sans la supprimer. Une fiche archivée se restaure. Le logiciel ne supprime jamais une donnée.</td></tr>
   <tr><td><strong>Avoir</strong></td><td>Facture qui annule tout ou partie d’une facture émise.</td></tr>
-  <tr><td><strong>Code dossier</strong></td><td>Identifiant unique du patient, au format CBG/[n° d’ordre]/[année]. Il ne se modifie jamais.</td></tr>
+  <tr><td><strong>Code dossier</strong></td><td>Identifiant unique du patient, au format CBG/[n° d’ordre]/[année] ; l’année est celle de la création du dossier. Il ne se modifie jamais.</td></tr>
   <tr><td><strong>CPN, CPoN</strong></td><td>Consultation prénatale ; consultation post-natale.</td></tr>
   <tr><td><strong>CUMP</strong></td><td>Coût unitaire moyen pondéré : méthode de valorisation du stock.</td></tr>
   <tr><td><strong>DAF</strong></td><td>Directrice administrative et financière.</td></tr>
   <tr><td><strong>Domaine</strong></td><td>Onglet du ruban (Accueil, Soins, Logistique…), qui regroupe plusieurs modules.</td></tr>
+  <tr><td><strong>Exercice</strong></td><td>Année comptable. Le sélecteur de la barre supérieure choisit celui que les écrans affichent ; par défaut, celui du jour.</td></tr>
   <tr><td><strong>FEFO</strong></td><td>« Premier périmé, premier sorti » : le lot qui se périme le premier sort le premier.</td></tr>
   <tr><td><strong>Fileul (poste)</strong></td><td>Poste de travail relié au poste mère.</td></tr>
   <tr><td><strong>IFU</strong></td><td>Identifiant fiscal unique.</td></tr>
@@ -1350,10 +1514,15 @@
   <tr><td><strong>MECeF</strong></td><td>Dispositif de certification des factures normalisées exigé par l’administration fiscale.</td></tr>
   <tr><td><strong>Mère (poste)</strong></td><td>Ordinateur central de la clinique, qui reçoit et redistribue les données des postes.</td></tr>
   <tr><td><strong>Module</strong></td><td>Ensemble d’écrans d’un même métier (Laboratoire, Pharmacie &amp; Stocks…). Une ligne du panneau du ruban.</td></tr>
+  <tr><td><strong>Plan de travail annuel (PTA)</strong></td><td>Programme des actions de la clinique pour un exercice : brouillon, soumis, adopté, en exécution, clôturé.</td></tr>
   <tr><td><strong>Pastille</strong></td><td>Bouton arrondi du ruban qui ouvre un écran ; ou voyant de la barre supérieure.</td></tr>
+  <tr><td><strong>Provisoire / à renseigner</strong></td><td>Marquage d’une valeur d’attente (salaire, catégorie, numéro CNSS d’un agent) : elle est affichée telle quelle jusqu’à sa saisie ou sa confirmation.</td></tr>
   <tr><td><strong>Prix à valoriser</strong></td><td>Prestation dont le prix d’achat n’est pas encore fixé : elle ne s’encaisse pas tant qu’il manque.</td></tr>
+  <tr><td><strong>Reconduction</strong></td><td>Recopie, dans le plan de l’exercice suivant, des actions non réalisées du plan d’un exercice.</td></tr>
   <tr><td><strong>Rôle</strong></td><td>Profil attaché à un compte (Accueil, Médecin, Caisse…). Il décide des écrans et des gestes permis.</td></tr>
   <tr><td><strong>Ruban</strong></td><td>Menu horizontal en haut de l’écran.</td></tr>
+  <tr><td><strong>Tiers payeur</strong></td><td>Entreprise qui prend en charge un patient et qui reçoit sa propre facture (distincte de celle du patient).</td></tr>
+  <tr><td><strong>Vacation</strong></td><td>Période de travail posée au planning (garde, permanence, repos…). « À valider » tant que la mère ne l’a pas appliquée.</td></tr>
   <tr><td><strong>Synchronisation</strong></td><td>Échange automatique des données entre les postes et la mère.</td></tr>
   <tr><td><strong>SYSCOHADA</strong></td><td>Plan comptable des pays de l’espace OHADA, utilisé par la comptabilité.</td></tr>
 </table>
@@ -1376,6 +1545,13 @@
   <tr><td>Un export est refusé.</td><td>Votre rôle n’a pas le droit d’exporter, ou le nombre de lignes dépasse la limite réglée. Le message indique la cause et le geste à faire.</td></tr>
   <tr><td>Une facture MECeF reste « en attente ».</td><td>C’est normal dans cette version : l’adaptateur du boîtier ELTRADE CC300 n’est pas encore branché. Aucune action n’est demandée à la caisse.</td></tr>
   <tr><td>Je me suis trompé dans une facture déjà réglée.</td><td>Ne retouchez pas le règlement. Demandez à un profil habilité d’émettre une <strong>facture d’avoir</strong>.</td></tr>
+  <tr><td>Le plan de travail annuel n’a pas de bouton <strong>Adopter le plan</strong>, ou refuse l’adoption.</td><td>Le plan n’est pas encore <strong>soumis</strong>, ou vous n’avez pas le geste d’adoption, ou c’est vous qui l’avez soumis : celui qui soumet n’adopte pas. Faites adopter par un autre détenteur du geste.</td></tr>
+  <tr><td>Une action ne peut pas être ajoutée au plan ou à son exercice suivant.</td><td>Un plan adopté ne se réécrit pas. Cliquez sur <strong>Réviser le plan</strong> ; pour la reconduction, retirez la soumission du plan suivant ou révisez-le d’abord.</td></tr>
+  <tr><td>Un salaire, une catégorie ou un numéro CNSS d’agent est marqué « provisoire » ou « à renseigner ».</td><td>C’est une valeur d’attente. Saisissez la valeur remise (<strong>Modifier</strong> la fiche) ou, avec le droit, cliquez sur <strong>Confirmer</strong> sur la fiche, avec un motif.</td></tr>
+  <tr><td>Ma vacation est « À valider » et ne compte pas.</td><td>Elle a été posée depuis un poste rattaché et attend que la mère l’applique. Rien à refaire ; si l’attente se prolonge, prévenez l’administrateur.</td></tr>
+  <tr><td>Un honoraire de régime est refusé pour « double paiement ».</td><td>Il répète une prime de la grille NS 132 déjà versée pour la même vacation. Retirez l’honoraire ou la prime, selon la décision de la Direction.</td></tr>
+  <tr><td>Un dossier porte un code « PROV-… ».</td><td>Le poste hors ligne n’avait plus de numéro réservé. La mère le remplace par le vrai code après la synchronisation : ne l’écrivez pas sur le papier avant.</td></tr>
+  <tr><td>Le bouton <strong>Confirmer</strong> d’un taux ou d’un barème d’AIB est absent.</td><td>Votre rôle n’a pas le geste « Confirmer un taux fiscal et arrêter un barème de l’AIB ». Demandez au Comptable ou à la DAF.</td></tr>
   <tr><td>J’ai perdu mon téléphone appairé.</td><td>Prévenez immédiatement l’administrateur pour qu’il suspende le téléphone.</td></tr>
 </table>
 <div class="encadre info"><span class="titre">Information</span><p>Pour toute autre difficulté, ouvrez le menu du profil : <strong>Aide &amp; À propos</strong> ou <strong>Contactez l’éditeur</strong>. Notez l’écran concerné, l’heure et le message affiché : cela aide à comprendre ce qui s’est passé.</p></div>
