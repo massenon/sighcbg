@@ -5,6 +5,7 @@
 /// Le comptage porte sur les demandes ENREGISTRÉES, qu'elles soient rendues ou en cours. TOUT est calculé, rien n'est fourni.
 library;
 
+import '../referentiels/tranches_age.dart';
 import '../format/format_fr.dart';
 import '../format/js.dart';
 import '../referentiels/regles.dart' show joursEntre;
@@ -27,22 +28,12 @@ const List<PeriodeLabo> periodesLabo = [
   PeriodeLabo('libre', 'Plage libre', null),
 ];
 
-class TrancheAge {
-  const TrancheAge(this.id, this.label, this.min, this.max);
-  final String id;
-  final String label;
-  final int min;
-  final int max;
-}
+/// Les clés des deux réglages de tranches d'âge. Le laboratoire et le pilotage lisent le MÊME code (`tranchesAgeDe`), chacun avec son réglage : les valeurs d'attente d'avant (les vecteurs de la
+/// maquette) diffèrent, et les unifier changerait les sorties d'un des deux écrans.
+const cleTranchesAgeLabo = 'listes.m5.tranchesAgeStatistiques';
 
-const List<TrancheAge> tranchesAge = [
-  TrancheAge('0-5', '0 – 5 ans', 0, 5),
-  TrancheAge('6-15', '6 – 15 ans', 6, 15),
-  TrancheAge('16-25', '16 – 25 ans', 16, 25),
-  TrancheAge('26-45', '26 – 45 ans', 26, 45),
-  TrancheAge('46-65', '46 – 65 ans', 46, 65),
-  TrancheAge('66+', '66 ans et plus', 66, 200),
-];
+/// `L.TRANCHES_AGE` : les tranches EN VIGUEUR (réglage `listes.m5.tranchesAgeStatistiques`, valeur d'attente 0 – 5, 6 – 15, 16 – 25, 26 – 45, 46 – 65, 66 et plus).
+List<TrancheAge> get tranchesAge => tranchesAgeDe(cleTranchesAgeLabo, separateur: ' – ');
 
 /// `L.SECTIONS` — les six sections du bulletin (identifiant, libellé).
 const List<(String, String)> sectionsLabo = [

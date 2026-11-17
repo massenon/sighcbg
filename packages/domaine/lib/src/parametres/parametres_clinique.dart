@@ -15,6 +15,10 @@ const String cleBalanceAgeePatientBorne1 = 'comptabilite.balanceAgeePatientBorne
 const String cleBalanceAgeePatientBorne2 = 'comptabilite.balanceAgeePatientBorne2Jours';
 const String cleJoursArticlesImmobiles = 'stock.joursArticlesImmobiles';
 
+// Le plan de numérisation (lot « valeurs en dur », famille B) : le fonds papier déclaré et la fenêtre qui fait d'un dossier un dossier actif.
+const String cleFondsPapier = 'numerisation.fondsPapierDossiers';
+const String cleFenetreDossiersActifs = 'numerisation.fenetreDossiersActifsMois';
+
 // Les clés des seuils qui vivaient en littéraux (lot « seuils » ; leurs défauts et leurs bornes sont dans `definitions.dart`, un seul endroit).
 const String cleDelaiVerrouOrdinaire = 'securite.delaiVerrouOrdinaireMinutes';
 const String cleRenouvellementMotDePasse = 'securite.renouvellementMotDePasseJours';
