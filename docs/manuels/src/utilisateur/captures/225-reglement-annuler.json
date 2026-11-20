@@ -1,0 +1,833 @@
+{
+ "nom": "225-reglement-annuler",
+ "ecran": "m8-paiements",
+ "role": "comptable",
+ "taille": [
+  1440.0,
+  1000.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    697.0,
+    6.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    807.3,
+    6.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "rect": [
+    706.3,
+    418.0,
+    79.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Contre-passer le règlement",
+   "rect": [
+    793.4,
+    418.0,
+    242.6,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1327.0,
+    116.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Annuler un règlement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    116.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    178.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    245.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    312.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    379.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    446.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    513.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    580.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    647.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    714.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    781.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    848.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    915.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Reçu de paiement",
+   "icone": true,
+   "rect": [
+    1367.0,
+    982.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1000.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    126.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    188.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    255.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    322.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    389.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    456.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    523.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    590.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    657.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    724.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    791.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    858.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    925.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    992.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   349.8,
+   36.0
+  ],
+  "barre-actions": [
+   995.6,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1099.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1248.4,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1268.4,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1294.4,
+   0.0,
+   133.6,
+   56.0
+  ],
+  "nom-courant": [
+   1340.4,
+   14.5,
+   65.6,
+   14.0
+  ],
+  "role-courant": [
+   1340.4,
+   28.5,
+   56.3,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   119.0,
+   36.0
+  ],
+  "domaine-RH": [
+   450.8,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.8,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   679.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   806.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   907.7,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1025.6,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m8-paiements|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   871.0
+  ],
+  "kit:tableau": [
+   24.0,
+   -11.0,
+   1392.0,
+   1168.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   -10.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   41.0,
+   2.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   53.0,
+   1390.0,
+   1048.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   61.0,
+   335.3,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1311.0,
+   106.0,
+   104.0,
+   57.0
+  ],
+  "pied-legal": [
+   0.0,
+   971.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   978.0,
+   1392.0,
+   16.0
+  ],
+  "kit:modale-panneau": [
+   384.0,
+   48.0,
+   672.0,
+   420.0
+  ],
+  "kit:modale-entete": [
+   384.0,
+   48.0,
+   672.0,
+   75.0
+  ],
+  "kit:modale-titre": [
+   404.0,
+   64.0,
+   172.1,
+   24.0
+  ],
+  "kit:modale-corps": [
+   384.0,
+   123.0,
+   672.0,
+   282.0
+  ],
+  "kit:note": [
+   404.0,
+   139.0,
+   632.0,
+   82.0
+  ],
+  "kit:formulaire": [
+   404.0,
+   233.0,
+   632.0,
+   156.0
+  ],
+  "kit:champ:versement": [
+   404.0,
+   233.0,
+   632.0,
+   60.0
+  ],
+  "kit:champ:motif": [
+   404.0,
+   309.0,
+   632.0,
+   80.0
+  ],
+  "kit:modale-pied": [
+   384.0,
+   405.0,
+   672.0,
+   63.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    995.6,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1099.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "5 alerte(s) en attente",
+   "rect": [
+    1248.4,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1294.4,
+    0.0,
+    133.6,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Mode",
+   "rect": [
+    369.0,
+    2.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1327.0,
+    116.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Annuler un règlement",
+   "rect": [
+    1367.0,
+    116.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    178.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    245.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    312.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    379.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    446.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    513.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    580.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    647.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    714.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    781.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    848.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    915.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Reçu de paiement",
+   "rect": [
+    1367.0,
+    982.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1000.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

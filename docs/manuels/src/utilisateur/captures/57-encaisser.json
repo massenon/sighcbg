@@ -72,10 +72,19 @@
    ]
   },
   {
+   "libelle": "Ajouter un versement",
+   "rect": [
+    164.0,
+    817.0,
+    202.9,
+    38.0
+   ]
+  },
+  {
    "libelle": "Annuler",
    "rect": [
     831.3,
-    668.0,
+    834.0,
     84.1,
     38.0
    ]
@@ -84,7 +93,7 @@
    "libelle": "Tout cocher",
    "rect": [
     923.4,
-    668.0,
+    834.0,
     136.8,
     38.0
    ]
@@ -93,7 +102,7 @@
    "libelle": "Valider l’encaissement",
    "rect": [
     1068.3,
-    668.0,
+    834.0,
     207.7,
     36.0
    ]
@@ -574,7 +583,7 @@
    144.0,
    48.0,
    1152.0,
-   670.0
+   836.0
   ],
   "kit:modale-entete": [
    144.0,
@@ -592,7 +601,7 @@
    144.0,
    123.0,
    1152.0,
-   532.0
+   698.0
   ],
   "kit:note": [
    164.0,
@@ -624,21 +633,39 @@
    255.3,
    20.0
   ],
-  "kit:champ:mode": [
+  "versements:aucun": [
    164.0,
-   533.0,
+   556.0,
+   1112.0,
+   38.0
+  ],
+  "versements:reste": [
+   1174.4,
+   610.0,
+   91.6,
+   23.0
+  ],
+  "kit:champ:versement_type": [
+   164.0,
+   653.0,
    548.0,
    60.0
   ],
-  "kit:champ:reference": [
+  "kit:champ:versement_montant": [
    728.0,
-   533.0,
+   653.0,
    548.0,
    60.0
+  ],
+  "kit:champ:versement_reference": [
+   164.0,
+   729.0,
+   548.0,
+   80.0
   ],
   "kit:modale-pied": [
    144.0,
-   655.0,
+   821.0,
    1152.0,
    63.0
   ]
