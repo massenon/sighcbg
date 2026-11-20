@@ -269,7 +269,7 @@ class _EtatCrudAg extends State<EcranCrudAg> {
             OngletsSigh(onglets: [
               OngletDef(
                   id: 'liste',
-                  libelle: widget.libelleListe ?? 'Tous les $_p',
+                  libelle: widget.libelleListe ?? tousLesEntites(widget.entite, _p),
                   compte: actives.where(_base).length,
                   construire: (ctx) => _tableau(context, c, liste, archive: false)),
               ...?widget.ongletsSupp?.call(context, actives),

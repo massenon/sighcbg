@@ -164,8 +164,8 @@ class _CrudStockState extends State<CrudStock> {
             : widget.valeursInitiales());
     afficherModale<void>(ctx,
         titre: existante == null
-            ? 'Nouveau ${widget.entite}'
-            : 'Modifier le ${widget.entite}',
+            ? nouvelleEntite(widget.entite)
+            : modifierEntite(widget.entite),
         sousTitre: 'Les champs marqués d’un astérisque sont obligatoires.',
         taille: TailleModale.lg,
         corps: FormulaireSigh(controleur: ctl),
@@ -216,7 +216,7 @@ class _CrudStockState extends State<CrudStock> {
                         '_creeLe': c.aujourdhui.toIso8601String(),
                       }, prefixe: widget.prefixeId);
                       final attention = widget.apresCreation?.call(ctx, r.fiche);
-                      ToastsSigh.afficher(ctx, 'Nouveau ${widget.entite} créé.',
+                      ToastsSigh.afficher(ctx, entiteCreee(widget.entite),
                           type: TypeToast.succes,
                           detail: attention == null
                               ? widget.referenceToast?.call(r.fiche)
@@ -369,7 +369,7 @@ class _CrudStockState extends State<CrudStock> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les ${widget.entiteP}',
+            libelle: tousLesEntites(widget.entite, widget.entiteP),
             compte: actives.length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         ...?widget.ongletsSup?.call(context),

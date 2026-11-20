@@ -62,7 +62,7 @@ void main() {
       fichesEgales(col.toutes.first, obj(obj(p['creation'])['creee'])['fiche'] as M, ignores: {'cnssProvisoire'});
       expect(col.toutes.first['cnssProvisoire'], true);
       expect(col.toutes.first['categorieProvisoire'], isNot(true), reason: 'catégorie saisie : aucune attente');
-      expect(find.text('Nouveau agent créé.'), findsWidgets, reason: 'le message de la maquette');
+      expect(find.text('Nouvel agent créé.'), findsWidgets, reason: 'le message de la maquette');
       kpisIdentiques(t, obj(obj(p['creation'])['apres'])['kpis']);
       await t.pump(const Duration(seconds: 10));
     });

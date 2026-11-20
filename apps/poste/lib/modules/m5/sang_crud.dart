@@ -167,7 +167,7 @@ class _CrudSangState extends State<CrudSang> {
             : widget.valeursInitiales());
     afficherModale<void>(ctx,
         titre: existante == null
-            ? 'Nouveau ${widget.entite}'
+            ? nouvelleEntite(widget.entite)
             : 'Modifier l’enregistrement',
         sousTitre: existante == null
             ? 'Les champs marqués d’un astérisque sont obligatoires.'
@@ -206,7 +206,7 @@ class _CrudSangState extends State<CrudSang> {
                         '_creePar': acteur(c).nom,
                         '_creeLe': c.aujourdhui.toIso8601String(),
                       }, prefixe: widget.prefixeId);
-                      ToastsSigh.afficher(ctx, 'Nouveau ${widget.entite} créé.',
+                      ToastsSigh.afficher(ctx, entiteCreee(widget.entite),
                           type: TypeToast.succes,
                           detail: widget.referenceToast?.call(r.fiche),
                           annuler: r.annuler);
@@ -358,7 +358,7 @@ class _CrudSangState extends State<CrudSang> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les ${widget.entiteP}',
+            libelle: tousLesEntites(widget.entite, widget.entiteP),
             compte: actives.length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         ...?widget.ongletsSup?.call(context),

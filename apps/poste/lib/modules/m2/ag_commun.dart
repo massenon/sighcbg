@@ -149,7 +149,7 @@ Future<void> ouvrirFormulaireAg(BuildContext ecran,
   final ctl = ControleurFormulaire(
       liste, record != null ? valeursInitialesAg(record, liste) : initial);
   return afficherModale<void>(ecran,
-      titre: record != null ? 'Modifier l’enregistrement' : 'Nouveau $entite',
+      titre: record != null ? 'Modifier l’enregistrement' : nouvelleEntite(entite),
       sousTitre: record != null
           ? '${record['code'] ?? record['reference'] ?? record['numero'] ?? record['id']}'
           : 'Les champs marqués d’un astérisque sont obligatoires.',
@@ -193,7 +193,7 @@ Future<void> ouvrirFormulaireAg(BuildContext ecran,
                       ecran,
                       record != null
                           ? 'Modifications enregistrées.'
-                          : 'Nouveau $entite créé.',
+                          : entiteCreee(entite),
                       type: TypeToast.succes,
                       detail: '${ecrite['code'] ?? ecrite['reference'] ?? ecrite['numero'] ?? ''}'
                               .isEmpty

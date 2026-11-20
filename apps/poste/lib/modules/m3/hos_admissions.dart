@@ -191,7 +191,7 @@ class EcranAdmissions extends StatelessWidget with EcranMaquette {
         largeurTiroir: 768,
         messageModification: 'Modifications enregistrées.',
         referenceToast: (f) => '${f['reference'] ?? ''}',
-        libelleRecherche: 'Rechercher un admission…',
+        libelleRecherche: 'Rechercher une admission…',
         colonnes: [
           ColonneTableau(
               cle: 'reference',

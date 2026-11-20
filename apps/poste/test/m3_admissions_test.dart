@@ -108,7 +108,7 @@ void main() {
       expect(f[k], attendue[k], reason: k);
     }
     expect(f['reference'], 'H00008');
-    expect(find.text('Nouveau admission créé.'), findsOneWidget);
+    expect(find.text('Nouvelle admission créée.'), findsOneWidget);
     expect(find.text('H00008'), findsWidgets, reason: 'la référence figure au toast');
     // deuxième création : la série avance (le compteur de page de la maquette redonnait H00008)
     await toucher(t, find.text('Nouveau'));
@@ -147,7 +147,7 @@ void main() {
     final col = m.collection('admissions');
     await toucher(t, find.text('H00001'));
     await toucher(t, find.widgetWithText(BoutonSigh, 'Modifier'));
-    expect(find.text('Modifier l’admission'), findsNothing);
+    expect(find.text('Modifier l’admission'), findsOneWidget);
     await saisir(t, 'diagnosticEntree', 'Diagnostic corrigé');
     await choisir(t, 'lit', 'A2 LIT2 — Aile A — Médecine (Standard)');
     await toucher(t, find.widgetWithText(BoutonSigh, 'Enregistrer'));

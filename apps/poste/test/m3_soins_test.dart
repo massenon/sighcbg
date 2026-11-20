@@ -156,7 +156,7 @@ void main() {
     for (final k in ['statut', 'admissionId', 'date', 'heure', 'acte', 'produit', 'quantite', 'soignant', 'etat', 'observations', 'patient', 'patientCode', 'patientId', 'lit']) {
       expect(f[k], att[k], reason: k);
     }
-    expect(find.text('Nouveau acte de soins créé.'), findsOneWidget);
+    expect(find.text('Nouvel acte de soins créé.'), findsOneWidget);
     final kp = liste(carte(soi()['apres'])['kpis']);
     for (final k in kp) {
       final w = t.widget<KpiSigh>(find.byWidgetPredicate((w) => w is KpiSigh && w.libelle == k['libelle']));

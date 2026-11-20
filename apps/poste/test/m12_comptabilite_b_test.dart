@@ -497,7 +497,7 @@ void main() {
       expect(f['compte'], '241000');
       expect(f['etat'], 'En service');
       expect(f['statut'], 'actif');
-      expect(find.text('Nouveau immobilisation créé.'), findsOneWidget);
+      expect(find.text('Nouvelle immobilisation créée.'), findsOneWidget);
       expect([m.collection('audit').toutes.first['action'], m.collection('audit').toutes.first['reference']], ['Création', 'IM-011']);
       expect(find.text('IM-011'), findsOneWidget);
     });

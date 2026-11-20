@@ -145,7 +145,7 @@ void main() {
         norm(kpi(t, 'Tarif moyen')),
         norm(kpi(t, 'Tarifs à confirmer'))
       ], k);
-      expect(find.textContaining('Tous les analyses'), findsOneWidget);
+      expect(find.textContaining('Toutes les analyses'), findsOneWidget);
       expect(find.text('Par catégorie'), findsOneWidget);
       expect(find.text('AKOP'), findsOneWidget);
       expect(find.textContaining('sur 48 enregistrements'), findsOneWidget);
@@ -189,7 +189,7 @@ void main() {
       expect(f.containsKey('prix'), isFalse, reason: 'aucun prix inventé : sans version de prix en vigueur, le tarif se dit « à valider »');
       expect(f['categorie'], 'Biochimie');
       expect(f['echantillon'], '');
-      expect(find.text('Nouveau analyse créé.'), findsOneWidget);
+      expect(find.text('Nouvelle analyse créée.'), findsOneWidget);
       expect(kpi(t, 'Analyses au catalogue'), '49');
       expect(
           m.collection('audit').toutes.any((e) => e['module'] == 'M5' && e['action'] == 'Création'),
@@ -292,7 +292,7 @@ void main() {
       expect(u['statut'], 'actif');
       expect(u['domaine'], 'Biochimie');
       expect(u.containsKey('aValider'), isFalse);
-      expect(find.text('Nouveau unité créé.'), findsOneWidget);
+      expect(find.text('Nouvelle unité créée.'), findsOneWidget);
       expect(kpi(t, 'Unités paramétrées'), '24');
     });
 
