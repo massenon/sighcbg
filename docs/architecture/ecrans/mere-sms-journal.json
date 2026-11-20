@@ -1,0 +1,10 @@
+{
+ "id": "mere-sms-journal",
+ "module": "MERE",
+ "domaine": "Poste mère",
+ "libelleManifeste": "Journal des envois SMS",
+ "acces": "ouvert",
+ "titre": "Journal des envois SMS",
+ "description": "Les SMS déposés au relais par la mère : numéro masqué, longueur, modèle et statut suivi jusqu’à l’envoi.",
+ "note": "Fiche rédigée pour le poste Baguidi (SMS par le relais, ADR-0009, décision de la Direction du 16/11/2026) : écran sans équivalent à la maquette."
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m2-dashboard-imagerie",
+ "titre": "Poste d’imagerie médicale",
+ "libelle": "Poste d’imagerie médicale",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Imagerie médicale",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-dashboard-imagerie"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 611
+}

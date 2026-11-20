@@ -1,0 +1,4 @@
+Polices embarquées du relais (aucun chargement externe : le relais tourne sur un hébergement mutualisé, et les postes de la clinique n'appellent aucune ressource en ligne).
+Inter, Montserrat et Dancing Script : sous licence SIL Open Font License 1.1 ; mêmes fichiers que le poste (apps/poste/assets/polices), réduits au jeu latin (lettres accentuées, œ, €, ponctuation française) et convertis en WOFF2.
+Usage : Inter pour le texte, Montserrat pour les titres, Dancing Script EXCLUSIVEMENT pour la devise de la clinique (charte Baguidi).
+Les déclarations @font-face sont dans public/css/jetons.css, engendré par tools/baguidi/engendrer-jetons-relais.mjs.

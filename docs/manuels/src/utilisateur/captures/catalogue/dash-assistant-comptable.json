@@ -1,0 +1,17 @@
+{
+ "id": "dash-assistant-comptable",
+ "titre": "Tableau de bord — Assistant de Direction",
+ "libelle": "Assistant de Direction",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-assistant-comptable"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 500
+}

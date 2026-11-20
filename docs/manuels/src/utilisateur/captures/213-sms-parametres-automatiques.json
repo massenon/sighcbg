@@ -1,0 +1,374 @@
+{
+ "nom": "213-sms-parametres-automatiques",
+ "ecran": "cfg-systeme",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Régler à partir d’une date",
+   "rect": [
+    45.0,
+    11.0,
+    194.9,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Historique (0)",
+   "rect": [
+    247.9,
+    10.0,
+    128.4,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Régler à partir d’une date",
+   "rect": [
+    45.0,
+    384.0,
+    194.9,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Historique (0)",
+   "rect": [
+    247.9,
+    383.0,
+    128.4,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Régler à partir d’une date",
+   "rect": [
+    45.0,
+    729.0,
+    194.9,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Historique (0)",
+   "rect": [
+    247.9,
+    728.0,
+    128.4,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Régler à partir d’une date",
+   "rect": [
+    45.0,
+    1074.0,
+    194.9,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Historique (0)",
+   "rect": [
+    247.9,
+    1073.0,
+    128.4,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Régler à partir d’une date",
+   "rect": [
+    45.0,
+    1403.0,
+    194.9,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Historique (0)",
+   "rect": [
+    247.9,
+    1402.0,
+    128.4,
+    30.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.6,
+   60.0,
+   114.8,
+   36.0
+  ],
+  "domaine-Poste mère": [
+   793.3,
+   60.0,
+   132.0,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   925.3,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   1052.5,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1153.6,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1292.9,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "cfg-systeme|mere": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   -222.0,
+   1390.0,
+   282.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   102.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   116.0,
+   1350.0,
+   20.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

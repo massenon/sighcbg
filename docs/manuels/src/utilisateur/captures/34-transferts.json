@@ -1,0 +1,624 @@
+{
+ "nom": "34-transferts",
+ "ecran": "m6-transferts",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  900.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Importer",
+   "rect": [
+    827.7,
+    141.0,
+    113.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Pharmacie interne — urgences",
+   "rect": [
+    949.0,
+    141.0,
+    267.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Pharmacie & Stocks",
+   "rect": [
+    1224.2,
+    141.0,
+    191.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    826.1,
+    459.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    936.4,
+    459.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Imprimer le registre détaillé",
+   "rect": [
+    1041.5,
+    459.0,
+    209.9,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Nouveau transfert",
+   "rect": [
+    41.0,
+    501.0,
+    152.2,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Voir les articles du bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    589.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer le bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    629.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier le bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    669.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1369.7,
+    709.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Voir les articles du bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    766.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer le bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    806.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier le bon",
+   "icone": true,
+   "rect": [
+    1369.7,
+    846.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1369.7,
+    886.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    659.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    836.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   900.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   127.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   332.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   451.0,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   525.0,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   679.6,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   793.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   920.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1021.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1161.1,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.9,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m6-transferts|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   771.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   177.0,
+   116.0,
+   117.7,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   247.5,
+   28.0
+  ],
+  "importer-transferts": [
+   827.7,
+   141.0,
+   113.3,
+   38.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   34.0
+  ],
+  "kit:kpi": [
+   24.0,
+   281.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   298.0,
+   103.3,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   318.0,
+   29.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   298.0,
+   36.0,
+   36.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   383.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:bons:actif": [
+   24.0,
+   383.0,
+   147.8,
+   42.0
+  ],
+  "kit:onglet:articles": [
+   171.8,
+   383.0,
+   192.6,
+   42.0
+  ],
+  "kit:tableau": [
+   24.0,
+   442.0,
+   1392.0,
+   2317.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   443.0,
+   1390.0,
+   99.0
+  ],
+  "kit:tableau-recherche": [
+   178.1,
+   455.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   542.0,
+   1390.0,
+   2161.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   542.0,
+   83.6,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1335.0,
+   579.0,
+   82.7,
+   177.0
+  ],
+  "pied-legal": [
+   0.0,
+   871.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   878.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Destination",
+   "rect": [
+    506.1,
+    455.0,
+    312.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Voir les articles du bon",
+   "rect": [
+    1369.7,
+    589.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer le bon",
+   "rect": [
+    1369.7,
+    629.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier le bon",
+   "rect": [
+    1369.7,
+    669.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1369.7,
+    709.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Voir les articles du bon",
+   "rect": [
+    1369.7,
+    766.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer le bon",
+   "rect": [
+    1369.7,
+    806.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier le bon",
+   "rect": [
+    1369.7,
+    846.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1369.7,
+    886.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

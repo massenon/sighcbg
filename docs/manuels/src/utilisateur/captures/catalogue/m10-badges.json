@@ -1,0 +1,17 @@
+{
+ "id": "m10-badges",
+ "titre": "Badges du personnel",
+ "libelle": "Badges du personnel",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-badges"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 542
+}

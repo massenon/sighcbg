@@ -1,0 +1,17 @@
+{
+ "id": "mere-planificateur",
+ "titre": "Planificateur",
+ "libelle": "Planificateur",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Plateforme locale",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-planificateur"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 485
+}

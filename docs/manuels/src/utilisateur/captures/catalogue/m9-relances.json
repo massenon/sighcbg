@@ -1,0 +1,17 @@
+{
+ "id": "m9-relances",
+ "titre": "Relances",
+ "libelle": "Relances",
+ "domaine": "Financier",
+ "module": "M9",
+ "moduleLibelle": "Assurances & Créances",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m9-relances"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 521
+}

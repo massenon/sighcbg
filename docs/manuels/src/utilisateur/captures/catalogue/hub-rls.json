@@ -1,0 +1,17 @@
+{
+ "id": "hub-rls",
+ "titre": "Relais en ligne (apps/web)",
+ "libelle": "Relais en ligne (apps/web)",
+ "domaine": "Relais en ligne",
+ "module": "RLS",
+ "moduleLibelle": "Relais en ligne (apps/web)",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-rls"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 657
+}

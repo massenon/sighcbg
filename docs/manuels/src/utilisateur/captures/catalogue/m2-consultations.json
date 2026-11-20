@@ -1,0 +1,17 @@
+{
+ "id": "m2-consultations",
+ "titre": "Consultations",
+ "libelle": "Consultations",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-consultations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 1026
+}

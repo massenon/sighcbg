@@ -1,0 +1,17 @@
+{
+ "id": "cfg-base-portable",
+ "titre": "Export, import et mise à jour",
+ "libelle": "Export, import et mise à jour",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-base-portable"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 403
+}

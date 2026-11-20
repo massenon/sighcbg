@@ -1,0 +1,17 @@
+{
+ "id": "dash-anesthesiste",
+ "titre": "Tableau de bord — Anesthésiste",
+ "libelle": "Anesthésiste",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-anesthesiste"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 441
+}

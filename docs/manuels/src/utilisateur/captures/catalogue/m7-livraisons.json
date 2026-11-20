@@ -1,0 +1,17 @@
+{
+ "id": "m7-livraisons",
+ "titre": "Bons de livraison",
+ "libelle": "Bons de livraison",
+ "domaine": "Logistique",
+ "module": "M7",
+ "moduleLibelle": "Achats & Fournisseurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m7-livraisons"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 483
+}

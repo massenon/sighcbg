@@ -1,0 +1,17 @@
+{
+ "id": "hub-dash",
+ "titre": "Tableaux de bord par poste",
+ "libelle": "Tableaux de bord par poste",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-dash"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 467
+}

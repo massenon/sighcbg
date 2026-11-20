@@ -1,0 +1,1312 @@
+{
+ "nom": "160-personnel-nouveau",
+ "ecran": "m10-personnel",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1300.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Importer",
+   "rect": [
+    917.6,
+    141.0,
+    113.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Fiches de poste",
+   "rect": [
+    1038.9,
+    141.0,
+    163.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Ressources humaines",
+   "rect": [
+    1210.5,
+    141.0,
+    205.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    1191.0,
+    493.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    1301.3,
+    493.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Nouveau",
+   "rect": [
+    41.0,
+    535.0,
+    97.2,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Annuler",
+   "rect": [
+    965.4,
+    1026.0,
+    84.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Créer",
+   "rect": [
+    1057.5,
+    1026.0,
+    90.5,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1247.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer l’état",
+   "icone": true,
+   "rect": [
+    1287.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1112.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    636.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    699.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    767.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    835.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    898.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    961.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    1024.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    1092.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1300.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1300.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.1,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.0,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.7,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   792.6,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   919.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1020.8,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.1,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.0,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m10-personnel|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   1171.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   132.8,
+   116.0,
+   128.9,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   106.2,
+   28.0
+  ],
+  "importer-personnel": [
+   917.6,
+   141.0,
+   113.3,
+   38.0
+  ],
+  "kit:kpi": [
+   24.0,
+   233.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   250.0,
+   43.2,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   270.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   250.0,
+   36.0,
+   36.0
+  ],
+  "kit:note": [
+   24.0,
+   335.0,
+   1392.0,
+   50.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   417.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:liste:actif": [
+   24.0,
+   417.0,
+   161.1,
+   42.0
+  ],
+  "kit:onglet:archives": [
+   185.1,
+   417.0,
+   113.5,
+   42.0
+  ],
+  "kit:tableau": [
+   24.0,
+   476.0,
+   1392.0,
+   703.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   477.0,
+   1390.0,
+   99.0
+  ],
+  "kit:tableau-recherche": [
+   41.0,
+   489.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   576.0,
+   1390.0,
+   561.0
+  ],
+  "kit:tableau-ligne": [
+   1231.0,
+   616.0,
+   184.0,
+   57.0
+  ],
+  "kit:tableau-pied": [
+   25.0,
+   1137.0,
+   1390.0,
+   41.0
+  ],
+  "pied-legal": [
+   0.0,
+   1271.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1278.0,
+   1392.0,
+   16.0
+  ],
+  "kit:modale-panneau": [
+   272.0,
+   48.0,
+   896.0,
+   1028.0
+  ],
+  "kit:modale-entete": [
+   272.0,
+   48.0,
+   896.0,
+   75.0
+  ],
+  "kit:modale-titre": [
+   292.0,
+   64.0,
+   105.6,
+   24.0
+  ],
+  "kit:modale-corps": [
+   272.0,
+   123.0,
+   896.0,
+   890.0
+  ],
+  "kit:formulaire": [
+   292.0,
+   139.0,
+   856.0,
+   858.0
+  ],
+  "kit:section": [
+   292.0,
+   139.0,
+   856.0,
+   16.0
+  ],
+  "kit:champ:matricule": [
+   292.0,
+   171.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:nom": [
+   728.0,
+   171.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:prenom": [
+   292.0,
+   247.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:sexe": [
+   728.0,
+   247.0,
+   420.0,
+   96.0
+  ],
+  "kit:champ:telephone": [
+   292.0,
+   359.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:situation": [
+   728.0,
+   359.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:fonction": [
+   292.0,
+   480.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:poste": [
+   292.0,
+   556.0,
+   856.0,
+   60.0
+  ],
+  "kit:champ:titreOrganigramme": [
+   292.0,
+   632.0,
+   420.0,
+   112.0
+  ],
+  "kit:champ:service": [
+   728.0,
+   632.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:categorie": [
+   292.0,
+   760.0,
+   420.0,
+   96.0
+  ],
+  "kit:champ:dateEmbauche": [
+   728.0,
+   760.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:salaireBase": [
+   292.0,
+   917.0,
+   420.0,
+   60.0
+  ],
+  "kit:champ:cnss": [
+   728.0,
+   917.0,
+   420.0,
+   80.0
+  ],
+  "kit:modale-pied": [
+   272.0,
+   1013.0,
+   896.0,
+   63.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Fonction",
+   "rect": [
+    369.0,
+    489.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Service",
+   "rect": [
+    697.0,
+    489.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Sexe",
+   "rect": [
+    1025.0,
+    489.0,
+    158.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    626.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    689.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    757.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    825.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    888.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    951.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    1014.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1247.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer l’état",
+   "rect": [
+    1287.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    1082.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1112.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

@@ -1,0 +1,15 @@
+{
+ "id": "auth-2fa",
+ "titre": "Vérification en 2 étapes",
+ "libelle": "Vérification en 2 étapes",
+ "domaine": "Système",
+ "module": "AUTH",
+ "moduleLibelle": "Accès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 657
+}

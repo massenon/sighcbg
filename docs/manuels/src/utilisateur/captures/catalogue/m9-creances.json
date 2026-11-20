@@ -1,0 +1,17 @@
+{
+ "id": "m9-creances",
+ "titre": "Créances assureurs",
+ "libelle": "Créances",
+ "domaine": "Financier",
+ "module": "M9",
+ "moduleLibelle": "Assurances & Créances",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m9-creances"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 465
+}

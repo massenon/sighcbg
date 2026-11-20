@@ -1,0 +1,61 @@
+{
+ "id": "m13-plan-annuel",
+ "module": "M13",
+ "domaine": "Administration",
+ "libelleManifeste": "Plan de travail annuel (PTA)",
+ "acces": "ouvert",
+ "titre": "Plan de travail annuel (PTA)",
+ "description": "Programmation des actions de la clinique pour l’exercice choisi : axes, objectifs, indicateurs et cibles, calendrier, responsables, budget, adoption par la Direction et suivi.",
+ "fil": [
+  "Accueil",
+  "Administration",
+  "Administration & Ambulance",
+  "Plan de travail annuel (PTA)"
+ ],
+ "actions": [
+  "Courriers (départ / arrivée)",
+  "Réunions",
+  "Administration & Ambulance"
+ ],
+ "regle": [
+  "Un plan adopté ne se réécrit pas : une révision ouvre une nouvelle version, l’ancienne reste consultable. Axes, états, sources de financement, périodicité, seuil de retard et préfixe de numérotation se règlent sous un geste réservé ; les valeurs semées sont des propositions à valider par la Direction."
+ ],
+ "onglets": [],
+ "kpis": [
+  "Actions programmées",
+  "Réalisées",
+  "En retard",
+  "Taux d’exécution",
+  "Budget prévu",
+  "Budget réalisé"
+ ],
+ "cartes": [
+  "Plan de travail annuel — exercice 2026",
+  "Calendrier par trimestre — exercice 2026",
+  "Actions du plan",
+  "Versions du plan — exercice 2026",
+  "Référentiels du plan"
+ ],
+ "tableaux": [],
+ "commandes": [
+  "Colonnes",
+  "Exporter"
+ ],
+ "champs": [],
+ "nbTableaux": 1,
+ "nbKpis": 6,
+ "ptaLot": "Lot PTA (Direction de Baguidi, 17/11/2026) : écran refait, la description n’est plus celle de la maquette (écarts E3790 à E3829). Le jeu livré ne porte aucun plan : la clinique saisit le sien. Les colonnes du tableau des actions (`colonnesActions`) ne paraissent qu’avec un plan : elles ne sont pas comptées à la parité sur le jeu livré, qui n’en a pas.",
+ "colonnesActions": [
+  "N°",
+  "Activité",
+  "Axe",
+  "Période",
+  "Responsable",
+  "Cible",
+  "Réalisé",
+  "Avancement",
+  "État",
+  "Retard",
+  "Actions"
+ ]
+}

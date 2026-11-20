@@ -1,0 +1,1647 @@
+{
+ "nom": "171-taux-comptables",
+ "ecran": "cfg-comptabilite",
+ "role": "da",
+ "taille": [
+  1440.0,
+  4200.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Tarifs et prix",
+   "rect": [
+    715.6,
+    141.0,
+    141.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Catalogue tarifaire (deux prix)",
+   "rect": [
+    864.9,
+    141.0,
+    261.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tarification & information patient",
+   "rect": [
+    1134.8,
+    141.0,
+    281.2,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle obligation",
+   "rect": [
+    24.0,
+    367.0,
+    185.2,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Valider les obligations",
+   "rect": [
+    217.2,
+    367.0,
+    204.5,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Suivi des échéances",
+   "rect": [
+    429.7,
+    367.0,
+    196.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    1392.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    1392.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    1627.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    1627.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Valider",
+   "rect": [
+    1309.4,
+    1772.0,
+    85.6,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    2204.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    2204.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    2439.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    2439.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    2674.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    2674.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Modifier les paramètres ORTB",
+   "rect": [
+    1037.1,
+    3797.0,
+    225.2,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Suivi nominatif",
+   "rect": [
+    1262.3,
+    3798.0,
+    132.7,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    789.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    789.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    849.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    849.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    909.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    909.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    969.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    969.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1275.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Arrêter la date",
+   "icone": true,
+   "rect": [
+    1347.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    2927.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    2927.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    2983.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    2983.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    3039.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    3039.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    3095.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    3095.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    3299.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    3299.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1311.0,
+    3357.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1347.0,
+    3357.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    402.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    438.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    402.0,
+    3625.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    438.0,
+    3625.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    402.0,
+    3674.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    438.0,
+    3674.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    856.0,
+    3592.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    892.0,
+    3592.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    856.0,
+    3641.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    892.0,
+    3641.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    856.0,
+    3690.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    892.0,
+    3690.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier (version datée)",
+   "icone": true,
+   "rect": [
+    1310.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Retirer (version datée)",
+   "icone": true,
+   "rect": [
+    1346.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   4200.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   4200.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   248.9,
+   36.0
+  ],
+  "barre-actions": [
+   793.7,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   897.2,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1046.5,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1066.5,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1092.5,
+   0.0,
+   335.5,
+   56.0
+  ],
+  "nom-courant": [
+   1138.5,
+   14.5,
+   160.0,
+   14.0
+  ],
+  "role-courant": [
+   1138.5,
+   28.5,
+   267.5,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.6,
+   60.0,
+   114.8,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   793.3,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   920.5,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1021.6,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1139.5,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "cfg-comptabilite|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   4071.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   166.5,
+   116.0,
+   132.1,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   395.4,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   251.0,
+   1392.0,
+   50.0
+  ],
+  "cfb:etat:obligations:a_valider": [
+   24.0,
+   317.0,
+   1392.0,
+   34.0
+  ],
+  "cfb:nouvelle-obligation": [
+   24.0,
+   367.0,
+   185.2,
+   36.0
+  ],
+  "cfb:valider:obligations": [
+   217.2,
+   367.0,
+   204.5,
+   36.0
+  ],
+  "cfb:nonarretees": [
+   24.0,
+   421.0,
+   1392.0,
+   50.0
+  ],
+  "kit:kpi": [
+   24.0,
+   487.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   504.0,
+   134.6,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   524.0,
+   29.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   504.0,
+   36.0,
+   36.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   610.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   624.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   659.0,
+   1390.0,
+   556.0
+  ],
+  "cfb:modifier:ITS": [
+   1311.0,
+   789.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:ITS": [
+   1347.0,
+   789.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:AIB": [
+   1311.0,
+   849.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:AIB": [
+   1347.0,
+   849.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:VPS": [
+   1311.0,
+   909.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:VPS": [
+   1347.0,
+   909.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:CNSS": [
+   1311.0,
+   969.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:CNSS": [
+   1347.0,
+   969.0,
+   36.0,
+   36.0
+  ],
+  "cfb:nonarretee:CNSS-VERS": [
+   1088.2,
+   1029.0,
+   162.8,
+   36.0
+  ],
+  "cfb:modifier:CNSS-VERS": [
+   1275.0,
+   1029.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:CNSS-VERS": [
+   1311.0,
+   1029.0,
+   36.0,
+   36.0
+  ],
+  "cfb:arreter:CNSS-VERS": [
+   1347.0,
+   1029.0,
+   36.0,
+   36.0
+  ],
+  "fco:cnss": [
+   24.0,
+   1232.0,
+   1392.0,
+   219.0
+  ],
+  "fco:cnss:version:etat": [
+   45.0,
+   1326.0,
+   1350.0,
+   16.0
+  ],
+  "fco:cnss:etat": [
+   45.0,
+   1350.0,
+   1350.0,
+   34.0
+  ],
+  "fco:cnss:confirmer": [
+   45.0,
+   1392.0,
+   123.9,
+   38.0
+  ],
+  "fco:cnss:nouvelle": [
+   176.9,
+   1392.0,
+   169.8,
+   38.0
+  ],
+  "fco:vps": [
+   24.0,
+   1467.0,
+   1392.0,
+   219.0
+  ],
+  "fco:vps:version:etat": [
+   45.0,
+   1561.0,
+   1350.0,
+   16.0
+  ],
+  "fco:vps:etat": [
+   45.0,
+   1585.0,
+   1350.0,
+   34.0
+  ],
+  "fco:vps:confirmer": [
+   45.0,
+   1627.0,
+   123.9,
+   38.0
+  ],
+  "fco:vps:nouvelle": [
+   176.9,
+   1627.0,
+   169.8,
+   38.0
+  ],
+  "fco:bareme_its": [
+   24.0,
+   1702.0,
+   1392.0,
+   561.0
+  ],
+  "val:badge:bareme_its:bareme-its": [
+   435.7,
+   1776.0,
+   68.7,
+   20.0
+  ],
+  "val:valider:bareme_its:bareme-its": [
+   1309.4,
+   1772.0,
+   85.6,
+   28.0
+  ],
+  "fco:bareme_its:version:etat": [
+   45.0,
+   1852.0,
+   1350.0,
+   16.0
+  ],
+  "fco:bareme_its:aconfirmer": [
+   45.0,
+   2120.0,
+   1350.0,
+   34.0
+  ],
+  "fco:bareme_its:etat": [
+   45.0,
+   2162.0,
+   1350.0,
+   34.0
+  ],
+  "fco:bareme_its:confirmer": [
+   45.0,
+   2204.0,
+   123.9,
+   38.0
+  ],
+  "fco:bareme_its:nouvelle": [
+   176.9,
+   2204.0,
+   169.8,
+   38.0
+  ],
+  "fco:anciennete": [
+   24.0,
+   2279.0,
+   1392.0,
+   219.0
+  ],
+  "fco:anciennete:version:etat": [
+   45.0,
+   2373.0,
+   1350.0,
+   16.0
+  ],
+  "fco:anciennete:etat": [
+   45.0,
+   2397.0,
+   1350.0,
+   34.0
+  ],
+  "fco:anciennete:confirmer": [
+   45.0,
+   2439.0,
+   123.9,
+   38.0
+  ],
+  "fco:anciennete:nouvelle": [
+   176.9,
+   2439.0,
+   169.8,
+   38.0
+  ],
+  "fco:tva": [
+   24.0,
+   2514.0,
+   1392.0,
+   219.0
+  ],
+  "fco:tva:version:etat": [
+   45.0,
+   2608.0,
+   1350.0,
+   16.0
+  ],
+  "fco:tva:etat": [
+   45.0,
+   2632.0,
+   1350.0,
+   34.0
+  ],
+  "fco:tva:confirmer": [
+   45.0,
+   2674.0,
+   123.9,
+   38.0
+  ],
+  "fco:tva:nouvelle": [
+   176.9,
+   2674.0,
+   169.8,
+   38.0
+  ],
+  "cfb:modifier:IS-1": [
+   1311.0,
+   2927.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:IS-1": [
+   1347.0,
+   2927.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:IS-2": [
+   1311.0,
+   2983.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:IS-2": [
+   1347.0,
+   2983.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:IS-3": [
+   1311.0,
+   3039.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:IS-3": [
+   1347.0,
+   3039.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:IS-4": [
+   1311.0,
+   3095.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:IS-4": [
+   1347.0,
+   3095.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:IS-SOLDE": [
+   1311.0,
+   3299.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:IS-SOLDE": [
+   1347.0,
+   3299.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:ETATS-FIN": [
+   1311.0,
+   3357.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:ETATS-FIN": [
+   1347.0,
+   3357.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:PATENTE-DECL": [
+   402.0,
+   3576.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:PATENTE-DECL": [
+   438.0,
+   3576.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:PATENTE-1": [
+   402.0,
+   3625.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:PATENTE-1": [
+   438.0,
+   3625.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:PATENTE-2": [
+   402.0,
+   3674.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:PATENTE-2": [
+   438.0,
+   3674.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:CCIB-DECL": [
+   856.0,
+   3592.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:CCIB-DECL": [
+   892.0,
+   3592.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:CCIB-1": [
+   856.0,
+   3641.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:CCIB-1": [
+   892.0,
+   3641.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:CCIB-2": [
+   856.0,
+   3690.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:CCIB-2": [
+   892.0,
+   3690.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier:TVM": [
+   1310.0,
+   3576.0,
+   36.0,
+   36.0
+  ],
+  "cfb:retirer:TVM": [
+   1346.0,
+   3576.0,
+   36.0,
+   36.0
+  ],
+  "cfb:modifier-ortb": [
+   1037.1,
+   3797.0,
+   225.2,
+   30.0
+  ],
+  "cfb:ortb:agent": [
+   45.0,
+   4072.0,
+   1350.0,
+   66.0
+  ],
+  "pied-legal": [
+   0.0,
+   4171.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   4178.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    793.7,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    897.2,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "7 alerte(s) en attente",
+   "rect": [
+    1046.5,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1092.5,
+    0.0,
+    335.5,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    789.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    789.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    849.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    849.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    909.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    909.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    969.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    969.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1275.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1311.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Arrêter la date",
+   "rect": [
+    1347.0,
+    1029.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Valider « Barème de l’impôt sur les traitements et salaires »",
+   "rect": [
+    1309.4,
+    1772.0,
+    85.6,
+    28.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    2927.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    2927.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    2983.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    2983.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    3039.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    3039.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    3095.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    3095.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    3299.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    3299.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1311.0,
+    3357.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1347.0,
+    3357.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    402.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    438.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    402.0,
+    3625.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    438.0,
+    3625.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    402.0,
+    3674.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    438.0,
+    3674.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    856.0,
+    3592.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    892.0,
+    3592.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    856.0,
+    3641.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    892.0,
+    3641.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    856.0,
+    3690.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    892.0,
+    3690.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier (version datée)",
+   "rect": [
+    1310.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Retirer (version datée)",
+   "rect": [
+    1346.0,
+    3576.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

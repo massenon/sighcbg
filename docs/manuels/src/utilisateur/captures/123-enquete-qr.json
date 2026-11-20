@@ -1,0 +1,565 @@
+{
+ "nom": "123-enquete-qr",
+ "ecran": "adm-enquetes",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1100.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Courriers (départ / arrivée)",
+   "rect": [
+    704.1,
+    141.0,
+    241.4,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Répertoire des ambulances",
+   "rect": [
+    953.5,
+    141.0,
+    243.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Courriers & orientation",
+   "rect": [
+    1204.4,
+    141.0,
+    211.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    444.8,
+    613.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    555.1,
+    613.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Nouveau modèle",
+   "rect": [
+    660.2,
+    614.0,
+    144.6,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Recueillir",
+   "rect": [
+    1183.9,
+    719.0,
+    99.1,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Voir les réponses",
+   "icone": true,
+   "rect": [
+    1287.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Partager à un tiers",
+   "icone": true,
+   "rect": [
+    1327.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier le modèle",
+   "icone": true,
+   "rect": [
+    1367.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1384.0,
+    16.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    725.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1100.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1100.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   156.5,
+   36.0
+  ],
+  "domaine-Système": [
+   680.4,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   794.3,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   921.5,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1022.6,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1161.9,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1279.7,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "adm-enquetes|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   971.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   200.8,
+   116.0,
+   166.5,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   282.7,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   50.0
+  ],
+  "kit:kpi": [
+   24.0,
+   297.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   314.0,
+   113.6,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   334.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   314.0,
+   36.0,
+   36.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   537.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:modeles:actif": [
+   24.0,
+   537.0,
+   108.0,
+   42.0
+  ],
+  "kit:onglet:partage": [
+   132.0,
+   537.0,
+   164.9,
+   42.0
+  ],
+  "kit:tableau": [
+   24.0,
+   596.0,
+   1392.0,
+   216.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   597.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   116.8,
+   609.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   660.0,
+   1390.0,
+   110.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   660.0,
+   346.2,
+   37.0
+  ],
+  "val:badge:enquetes:ENQ0001": [
+   921.3,
+   723.0,
+   135.0,
+   20.0
+  ],
+  "kit:tableau-ligne": [
+   1167.9,
+   705.0,
+   247.1,
+   57.0
+  ],
+  "kit:tableau-pied": [
+   25.0,
+   770.0,
+   1390.0,
+   41.0
+  ],
+  "pied-legal": [
+   0.0,
+   1071.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1078.0,
+   1392.0,
+   16.0
+  ],
+  "kit:tiroir-panneau": [
+   768.0,
+   0.0,
+   672.0,
+   1100.0
+  ],
+  "kit:modale-entete": [
+   768.0,
+   0.0,
+   672.0,
+   75.0
+  ],
+  "kit:modale-titre": [
+   788.0,
+   16.0,
+   100.7,
+   24.0
+  ],
+  "kit:tiroir-corps": [
+   768.0,
+   75.0,
+   672.0,
+   1000.0
+  ],
+  "kit:modale-pied": [
+   768.0,
+   1075.0,
+   672.0,
+   25.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Voir les réponses",
+   "rect": [
+    1287.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Partager à un tiers",
+   "rect": [
+    1327.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier le modèle",
+   "rect": [
+    1367.0,
+    715.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1384.0,
+    16.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

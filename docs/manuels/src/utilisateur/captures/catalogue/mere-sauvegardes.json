@@ -1,0 +1,17 @@
+{
+ "id": "mere-sauvegardes",
+ "titre": "Sauvegardes et restauration",
+ "libelle": "Sauvegardes et restauration",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Sécurité et continuité",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-sauvegardes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 488
+}

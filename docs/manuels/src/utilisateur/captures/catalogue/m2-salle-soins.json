@@ -1,0 +1,17 @@
+{
+ "id": "m2-salle-soins",
+ "titre": "Salle de soins",
+ "libelle": "Salle de soins",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-salle-soins"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 540
+}

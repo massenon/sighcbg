@@ -1,0 +1,17 @@
+{
+ "id": "cfg-smtp",
+ "titre": "Messagerie (SMTP)",
+ "libelle": "Messagerie (SMTP)",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-smtp"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 438
+}

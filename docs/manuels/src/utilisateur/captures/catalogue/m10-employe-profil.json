@@ -1,0 +1,17 @@
+{
+ "id": "m10-employe-profil",
+ "titre": "Fiche employé",
+ "libelle": "Fiche employé",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-employe-profil"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 502
+}

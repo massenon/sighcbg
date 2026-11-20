@@ -1,0 +1,128 @@
+/* FEUILLE COMMUNE DES MANUELS SIGH-CBG (utilisateur, administrateur). Couleurs : jetons du design system Baguidi (docs/design/design-tokens.json) —
+   rouge cœur #D32F2F, bleu santé #1565C0, anthracite #212121. Polices LOCALES du poste : Liberation Sans (métrique Arial) pour le texte, Montserrat pour
+   les titres. Aucune ressource en ligne. */
+@font-face { font-family: 'Manuel Sans'; src: url('../../../../apps/poste/assets/polices/pdf/LiberationSans-Regular.ttf'); font-weight: 400; }
+@font-face { font-family: 'Manuel Sans'; src: url('../../../../apps/poste/assets/polices/pdf/LiberationSans-Bold.ttf'); font-weight: 700; }
+@font-face { font-family: 'Manuel Sans'; src: url('../../../../apps/poste/assets/polices/pdf/LiberationSans-Italic.ttf'); font-style: italic; }
+@font-face { font-family: 'Manuel Titre'; src: url('../../../../apps/poste/assets/polices/Montserrat-SemiBold.ttf'); font-weight: 600; }
+@font-face { font-family: 'Manuel Titre'; src: url('../../../../apps/poste/assets/polices/Montserrat-Bold.ttf'); font-weight: 700; }
+@font-face { font-family: 'Manuel Devise'; src: url('../../../../apps/poste/assets/polices/DancingScript-Regular.ttf'); }
+
+:root {
+  --coeur: #D32F2F; --coeur-50: #fdecec; --coeur-700: #971c1c;
+  --sante: #1565C0; --sante-50: #eef4fc; --sante-100: #d9e7f8; --sante-900: #123a6b;
+  --anthracite: #212121;
+  --vert: #22a170; --vert-50: #eefbf4; --vert-800: #146147;
+  --orange: #e8860c; --orange-50: #fff7eb; --orange-800: #8a4b06;
+  --rouge-50: #fdecec;
+  --gris-50: #f8fafc; --gris-200: #e2e8f0; --gris-400: #94a3b8; --gris-600: #475569; --gris-800: #1e293b;
+}
+
+@page { size: A4; margin: 20mm 20mm 22mm 20mm; }
+@page couverture { margin: 0; }
+
+html { font-family: 'Manuel Sans', Arial, sans-serif; font-size: 11.5pt; line-height: 1.55; color: var(--gris-800); }
+body { margin: 0; }
+p { margin: 0 0 0.75em; orphans: 3; widows: 3; }
+strong, b { color: var(--anthracite); }
+
+h1, h2, h3, h4 { font-family: 'Manuel Titre', 'Manuel Sans', Arial, sans-serif; color: var(--sante-900); line-height: 1.25; break-after: avoid; }
+h1 { font-size: 22pt; font-weight: 700; margin: 0 0 0.6em; padding-bottom: 0.35em; border-bottom: 3px solid var(--coeur); break-before: page; }
+/* Un titre ne reste jamais seul en bas de page : le bloc qui le suit refuse la coupure avant lui. */
+h2 + *, h3 + *, h4 + * { break-before: avoid; }
+.groupe-titre { break-inside: avoid; }  /* fabriqué par generer.mjs : un titre et ses deux premiers blocs */
+h1 .num { color: var(--coeur); margin-right: 0.35em; }
+h2 { font-size: 15pt; font-weight: 700; margin: 1.6em 0 0.5em; color: var(--sante); }
+h3 { font-size: 12.5pt; font-weight: 600; margin: 1.2em 0 0.4em; color: var(--sante-900); }
+h4 { font-size: 11.5pt; font-weight: 600; margin: 1em 0 0.3em; }
+.marqueur-page { font-size: 1px; line-height: 1px; height: 1px; color: #fff; overflow: hidden; }
+
+/* Une tâche : but, prérequis, étapes, capture — gardée d'un bloc autant que possible. */
+.tache { margin: 0 0 1.4em; }
+.but { font-size: 11.5pt; margin-bottom: 0.4em; }
+.prerequis { font-size: 10.5pt; color: var(--gris-600); margin-bottom: 0.6em; }
+.prerequis::before { content: 'Prérequis : '; font-weight: 700; color: var(--gris-800); }
+.chemin { display: inline; font-weight: 700; color: var(--anthracite); }
+ol, ul { margin: 0 0 0.9em; padding-left: 1.6em; }
+li { margin: 0.25em 0; }
+ol.etapes { list-style: none; counter-reset: etape; padding-left: 0; }
+ol.etapes > li { counter-increment: etape; position: relative; padding-left: 2.3em; margin: 0.45em 0; break-inside: avoid; }
+ol.etapes > li::before {
+  content: counter(etape); position: absolute; left: 0; top: 0.05em; width: 1.55em; height: 1.55em; border-radius: 50%;
+  background: var(--sante); color: #fff; font-weight: 700; font-size: 0.9em; text-align: center; line-height: 1.55em;
+}
+.touche { display: inline-block; border: 1px solid var(--gris-400); border-bottom-width: 2px; border-radius: 4px; padding: 0 0.35em; font-size: 0.9em; background: var(--gris-50); }
+
+/* Captures annotées : le SVG est fabriqué par generer.mjs. */
+figure.capture { margin: 0.8em 0 1.2em; break-inside: avoid; }
+figure.capture .capture-svg { width: 100%; height: auto; display: block; border: 1px solid var(--gris-200); border-radius: 6px; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
+figure.capture figcaption { font-size: 9.5pt; color: var(--gris-600); margin-top: 0.4em; font-style: italic; }
+figure.capture figcaption .pastille, .pastille {
+  display: inline-block; width: 1.45em; height: 1.45em; border-radius: 50%; background: var(--coeur); color: #fff; font-style: normal;
+  font-weight: 700; font-size: 0.85em; text-align: center; line-height: 1.45em; margin: 0 0.15em;
+}
+figure.schema { margin: 0.8em 0 1.2em; break-inside: avoid; text-align: center; }
+figure.schema figcaption { font-size: 9.5pt; color: var(--gris-600); font-style: italic; }
+
+/* Encadrés : Information (bleu), Attention (orange), Alerte (rouge), Astuce (vert). Icônes dessinées en SVG (aucune police emoji). */
+.encadre { position: relative; border-left: 5px solid; border-radius: 6px; padding: 0.7em 0.9em 0.7em 3.1em; margin: 0.9em 0 1.1em; break-inside: avoid; font-size: 10.8pt; }
+.encadre::before { content: ''; position: absolute; left: 0.8em; top: 0.75em; width: 1.6em; height: 1.6em; background-size: contain; background-repeat: no-repeat; }
+.encadre .titre { display: block; font-weight: 700; margin-bottom: 0.15em; font-family: 'Manuel Titre', 'Manuel Sans', Arial, sans-serif; font-size: 10.5pt; letter-spacing: 0.02em; text-transform: uppercase; }
+.encadre p:last-child, .encadre ul:last-child { margin-bottom: 0; }
+.info { background: var(--sante-50); border-color: var(--sante); }
+.info .titre { color: var(--sante); }
+.info::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%231565C0'/%3E%3Ccircle cx='12' cy='7' r='1.6' fill='%23fff'/%3E%3Crect x='10.6' y='10' width='2.8' height='8' rx='1.2' fill='%23fff'/%3E%3C/svg%3E"); }
+.attention { background: var(--orange-50); border-color: var(--orange); }
+.attention .titre { color: var(--orange-800); }
+.attention::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5 23 21.5H1z' fill='%23e8860c' stroke='%23e8860c' stroke-linejoin='round' stroke-width='1.5'/%3E%3Crect x='10.7' y='8' width='2.6' height='7.5' rx='1.1' fill='%23fff'/%3E%3Ccircle cx='12' cy='18.2' r='1.5' fill='%23fff'/%3E%3C/svg%3E"); }
+.alerte { background: var(--rouge-50); border-color: var(--coeur); }
+.alerte .titre { color: var(--coeur-700); }
+.alerte::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.2 1h9.6L23 7.2v9.6L16.8 23H7.2L1 16.8V7.2z' fill='%23D32F2F'/%3E%3Crect x='5.5' y='10.4' width='13' height='3.2' rx='1.2' fill='%23fff'/%3E%3C/svg%3E"); }
+.astuce { background: var(--vert-50); border-color: var(--vert); }
+.astuce .titre { color: var(--vert-800); }
+.astuce::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%2322a170'/%3E%3Cpath d='M6.5 12.5l3.6 3.6 7.4-7.6' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+/* Tableaux simples (glossaire, dépannage, légende). */
+table.simple { width: 100%; border-collapse: collapse; margin: 0.6em 0 1.2em; font-size: 10.5pt; }
+table.simple th { background: var(--sante); color: #fff; text-align: left; padding: 0.45em 0.6em; font-weight: 700; }
+table.simple td { border-bottom: 1px solid var(--gris-200); padding: 0.45em 0.6em; vertical-align: top; }
+table.simple tr { break-inside: avoid; }
+table.simple tr:nth-child(even) td { background: var(--gris-50); }
+
+/* Couverture. */
+.couverture { page: couverture; height: 297mm; position: relative; overflow: hidden; background: #fff; break-after: page; }
+.couverture .bandeau { position: absolute; left: 0; right: 0; top: 0; height: 9mm; background: var(--sante); }
+.couverture .bandeau::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3mm; height: 3mm; background: var(--coeur); }
+.couverture .contenu { position: absolute; left: 24mm; right: 24mm; top: 48mm; text-align: center; }
+.couverture img.logo { width: 46mm; height: auto; }
+.couverture .clinique { font-family: 'Manuel Titre', sans-serif; font-weight: 700; font-size: 17pt; color: var(--anthracite); margin-top: 8mm; letter-spacing: 0.04em; }
+.couverture .ville { color: var(--gris-600); font-size: 11pt; margin-top: 1mm; }
+.couverture .devise { font-family: 'Manuel Devise', cursive; color: var(--coeur); font-size: 19pt; margin-top: 5mm; }
+.couverture .titre-manuel { font-family: 'Manuel Titre', sans-serif; font-weight: 700; color: var(--sante-900); font-size: 30pt; line-height: 1.15; margin-top: 26mm; }
+.couverture .sous-titre { font-size: 14pt; color: var(--sante); margin-top: 5mm; }
+.couverture .filets { width: 60mm; margin: 12mm auto 0; height: 2.2mm; border-top: 1.1mm solid var(--coeur); border-bottom: 1.1mm solid var(--sante); }
+.couverture .meta { position: absolute; left: 24mm; right: 24mm; bottom: 26mm; display: flex; justify-content: space-between; font-size: 10.5pt; color: var(--gris-600); border-top: 1px solid var(--gris-200); padding-top: 4mm; }
+
+/* Table des matières. */
+.tdm h1 { break-before: auto; }
+.tdm ol { list-style: none; padding: 0; margin: 0; }
+.tdm li { margin: 0; }
+.tdm a { display: flex; align-items: baseline; text-decoration: none; color: var(--gris-800); }
+.tdm a .t { flex: 0 1 auto; }
+.tdm a .points { flex: 1 1 auto; border-bottom: 1.5px dotted var(--gris-400); margin: 0 0.4em; transform: translateY(-0.25em); min-width: 1em; }
+.tdm a .tdm-page { flex: 0 0 auto; min-width: 1.8em; text-align: right; font-variant-numeric: tabular-nums; }
+.tdm > ol > li { margin-top: 0.55em; }
+.tdm > ol > li > a { font-weight: 700; color: var(--sante-900); font-size: 11.5pt; }
+.tdm > ol > li > ol { padding-left: 1.6em; font-size: 10.5pt; }
+.tdm > ol > li > ol > li { margin: 0.12em 0; }
+
+a { color: var(--sante); }
+.renvoi { font-style: italic; color: var(--gris-600); }
+.colonnes2 { columns: 2; column-gap: 8mm; }
+.colonnes2 > * { break-inside: avoid; }
+
+/* Les écrans du TÉLÉPHONE : une capture étroite, centrée, à la taille d'un téléphone tenu en main ; deux côte à côte dans une `.paire`. */
+figure.capture.telephone { width: 62mm; margin-left: auto; margin-right: auto; }
+figure.capture.telephone.haut { width: 58mm; }
+.paire { display: flex; gap: 8mm; justify-content: center; align-items: flex-start; break-inside: avoid; }
+.paire figure.capture.telephone { margin-left: 0; margin-right: 0; }

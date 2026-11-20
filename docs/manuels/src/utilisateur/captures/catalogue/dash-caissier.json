@@ -1,0 +1,17 @@
+{
+ "id": "dash-caissier",
+ "titre": "Tableau de bord — Caisse",
+ "libelle": "Caisse",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-caissier"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 624
+}

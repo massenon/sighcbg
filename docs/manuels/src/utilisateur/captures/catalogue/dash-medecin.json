@@ -1,0 +1,17 @@
+{
+ "id": "dash-medecin",
+ "titre": "Tableau de bord — Médecin",
+ "libelle": "Médecin",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-medecin"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 568
+}

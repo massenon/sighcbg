@@ -1,0 +1,17 @@
+{
+ "id": "m6-import-grand-stock",
+ "titre": "Importation Grand Stock",
+ "libelle": "Importation Grand Stock",
+ "domaine": "Logistique",
+ "module": "M6",
+ "moduleLibelle": "Pharmacie & Stocks",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m6-import-grand-stock"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 784
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m4-sonu",
+ "titre": "Registre SONUB / SONUC",
+ "libelle": "Registre SONUB / SONUC",
+ "domaine": "Soins",
+ "module": "M4",
+ "moduleLibelle": "Maternité, Naissances & Décès",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m4-sonu"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 391
+}

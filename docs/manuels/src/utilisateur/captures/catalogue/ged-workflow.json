@@ -1,0 +1,17 @@
+{
+ "id": "ged-workflow",
+ "titre": "Workflow de validation",
+ "libelle": "Workflow de validation",
+ "domaine": "Administration",
+ "module": "GED",
+ "moduleLibelle": "Gestion documentaire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "ged-workflow"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 377
+}
