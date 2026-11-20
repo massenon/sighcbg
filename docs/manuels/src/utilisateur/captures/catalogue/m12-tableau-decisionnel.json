@@ -1,0 +1,17 @@
+{
+ "id": "m12-tableau-decisionnel",
+ "titre": "Tableau de bord décisionnel",
+ "libelle": "Tableau de bord décisionnel",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m12-tableau-decisionnel"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 615
+}

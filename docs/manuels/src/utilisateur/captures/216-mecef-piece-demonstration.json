@@ -1,0 +1,1299 @@
+{
+ "nom": "216-mecef-piece-demonstration",
+ "ecran": "mecef-factures",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1300.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    1229.2,
+    71.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    41.0,
+    113.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Page précédente",
+   "rect": [
+    1154.6,
+    1204.0,
+    38.0,
+    30.0
+   ]
+  },
+  {
+   "libelle": "1",
+   "rect": [
+    1196.6,
+    1205.0,
+    25.2,
+    28.0
+   ]
+  },
+  {
+   "libelle": "2",
+   "rect": [
+    1225.8,
+    1204.0,
+    29.6,
+    30.0
+   ]
+  },
+  {
+   "libelle": "3",
+   "rect": [
+    1259.4,
+    1204.0,
+    29.8,
+    30.0
+   ]
+  },
+  {
+   "libelle": "4",
+   "rect": [
+    1293.2,
+    1204.0,
+    30.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "5",
+   "rect": [
+    1327.3,
+    1204.0,
+    29.7,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Page suivante",
+   "rect": [
+    1361.0,
+    1204.0,
+    38.0,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "rect": [
+    884.9,
+    1234.0,
+    79.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Enregistrer en PDF",
+   "rect": [
+    972.0,
+    1234.0,
+    183.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "rect": [
+    1163.5,
+    1234.0,
+    112.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    219.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    219.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    281.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    281.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    347.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    347.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    413.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    413.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    479.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    479.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    545.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    545.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    611.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    611.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    677.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    677.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    743.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    743.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    809.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    809.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    875.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    875.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    941.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    941.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    1007.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    1007.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    1073.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    1073.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Consulter",
+   "icone": true,
+   "rect": [
+    1327.0,
+    1139.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Imprimer la facture normalisée",
+   "icone": true,
+   "rect": [
+    1367.0,
+    1139.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Fermer",
+   "icone": true,
+   "rect": [
+    1240.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    229.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    291.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    357.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    423.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    489.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    555.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    621.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    687.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    753.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    819.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    885.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    951.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    1017.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    1083.5,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    1149.5,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1300.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1300.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   119.0,
+   36.0
+  ],
+  "domaine-RH": [
+   450.8,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.8,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   679.5,
+   60.0,
+   113.9,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   793.4,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   920.6,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1021.6,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.9,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.8,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "mecef-factures|fileul|exonull": [
+   0.0,
+   100.0,
+   1440.0,
+   1171.0
+  ],
+  "kit:kpi": [
+   24.0,
+   -48.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   -11.0,
+   44.8,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   -31.0,
+   36.0,
+   36.0
+  ],
+  "kit:tableau": [
+   24.0,
+   54.0,
+   1392.0,
+   1193.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   55.0,
+   1390.0,
+   101.0
+  ],
+  "kit:tableau-recherche": [
+   295.2,
+   67.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   156.0,
+   1390.0,
+   1035.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   164.0,
+   379.2,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1311.0,
+   209.5,
+   104.0,
+   57.0
+  ],
+  "kit:tableau-pied": [
+   25.0,
+   1191.0,
+   1390.0,
+   55.0
+  ],
+  "pied-legal": [
+   0.0,
+   1271.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1278.0,
+   1392.0,
+   16.0
+  ],
+  "kit:modale-panneau": [
+   144.0,
+   48.0,
+   1152.0,
+   1236.0
+  ],
+  "kit:modale-entete": [
+   144.0,
+   48.0,
+   1152.0,
+   75.0
+  ],
+  "kit:modale-titre": [
+   164.0,
+   64.0,
+   246.4,
+   24.0
+  ],
+  "kit:modale-corps": [
+   144.0,
+   123.0,
+   1152.0,
+   1098.0
+  ],
+  "impression:a4": [
+   323.1,
+   155.0,
+   793.7,
+   1251.4
+  ],
+  "impression:entete": [
+   368.5,
+   200.4,
+   703.0,
+   121.7
+  ],
+  "entete:gauche": [
+   368.5,
+   200.4,
+   160.7,
+   107.7
+  ],
+  "entete:devise": [
+   369.4,
+   295.1,
+   159.0,
+   13.0
+  ],
+  "entete:centre": [
+   545.2,
+   217.2,
+   265.2,
+   74.0
+  ],
+  "impression:entete:nom": [
+   545.2,
+   217.2,
+   265.2,
+   46.0
+  ],
+  "entete:sous-titre": [
+   545.2,
+   265.2,
+   265.2,
+   26.0
+  ],
+  "entete:droite": [
+   826.4,
+   212.2,
+   245.1,
+   84.0
+  ],
+  "entete:filet-coeur": [
+   368.5,
+   316.1,
+   703.0,
+   2.0
+  ],
+  "entete:filet-sante": [
+   368.5,
+   320.1,
+   703.0,
+   2.0
+  ],
+  "impression:titre": [
+   580.3,
+   338.1,
+   279.4,
+   23.0
+  ],
+  "impression:cartouche": [
+   368.5,
+   403.1,
+   703.0,
+   90.0
+  ],
+  "impression:tableau": [
+   368.5,
+   493.1,
+   703.0,
+   97.0
+  ],
+  "kit:modale-pied": [
+   144.0,
+   1221.0,
+   1152.0,
+   63.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Statut fiscal",
+   "rect": [
+    623.2,
+    67.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Nature",
+   "rect": [
+    951.2,
+    67.0,
+    270.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    219.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    219.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    281.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    281.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    347.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    347.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    413.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    413.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    479.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    479.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    545.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    545.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    611.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    611.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    677.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    677.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    743.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    743.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    809.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    809.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    875.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    875.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    941.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    941.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    1007.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    1007.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    1073.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    1073.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Consulter",
+   "rect": [
+    1327.0,
+    1139.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Imprimer la facture normalisée",
+   "rect": [
+    1367.0,
+    1139.5,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Fermer",
+   "rect": [
+    1240.0,
+    64.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

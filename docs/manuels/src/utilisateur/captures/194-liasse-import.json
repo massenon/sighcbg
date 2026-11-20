@@ -1,0 +1,401 @@
+{
+ "nom": "194-liasse-import",
+ "ecran": "m12-liasse-import",
+ "role": "comptable",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Tableau de bord comptable",
+   "rect": [
+    703.6,
+    141.0,
+    243.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Plan comptable OHADA",
+   "rect": [
+    954.6,
+    141.0,
+    216.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Comptabilité SYSCOHADA",
+   "rect": [
+    1179.4,
+    141.0,
+    236.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Parcourir",
+   "rect": [
+    1301.2,
+    673.0,
+    93.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Vérifier le fichier (sans rien écrire)",
+   "rect": [
+    45.0,
+    723.0,
+    291.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "rect": [
+    1306.6,
+    899.0,
+    96.4,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "rect": [
+    1306.6,
+    1072.0,
+    96.4,
+    30.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   349.8,
+   36.0
+  ],
+  "barre-actions": [
+   995.6,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1099.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1248.4,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1268.4,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1294.4,
+   0.0,
+   133.6,
+   56.0
+  ],
+  "nom-courant": [
+   1340.4,
+   14.5,
+   65.6,
+   14.0
+  ],
+  "role-courant": [
+   1340.4,
+   28.5,
+   56.3,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   119.0,
+   36.0
+  ],
+  "domaine-RH": [
+   450.8,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.8,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   679.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   806.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   907.7,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1025.6,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m12-liasse-import|fileul|exonull": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   170.1,
+   116.0,
+   155.5,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   266.4,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   251.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   318.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   332.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   367.0,
+   1390.0,
+   148.0
+  ],
+  "liasse:en-force-liasse": [
+   45.0,
+   387.0,
+   1350.0,
+   50.0
+  ],
+  "liasse:en-force-classeur": [
+   45.0,
+   445.0,
+   1350.0,
+   50.0
+  ],
+  "liasse:fichier": [
+   45.0,
+   673.0,
+   1248.2,
+   38.0
+  ],
+  "liasse:verifier": [
+   45.0,
+   723.0,
+   291.7,
+   38.0
+  ],
+  "liasse:archiver:doc-fiscal-liasse-2025-2026-04-30": [
+   1306.6,
+   899.0,
+   96.4,
+   30.0
+  ],
+  "liasse:archiver:doc-fiscal-classeur-2025-2026-04-30": [
+   1306.6,
+   1072.0,
+   96.4,
+   30.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    995.6,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1099.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "5 alerte(s) en attente",
+   "rect": [
+    1248.4,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1294.4,
+    0.0,
+    133.6,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

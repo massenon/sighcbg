@@ -1,0 +1,17 @@
+{
+ "id": "m1-certificats-externes",
+ "titre": "Certificats — patients externes",
+ "libelle": "Certificats — patients externes",
+ "domaine": "Accueil",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-certificats-externes"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 570
+}

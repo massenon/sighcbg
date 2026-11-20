@@ -1,0 +1,17 @@
+{
+ "id": "cfg-branding",
+ "titre": "Identité & papier à en-tête",
+ "libelle": "Identité & papier à en-tête",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-branding"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 518
+}

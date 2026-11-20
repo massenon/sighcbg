@@ -1,0 +1,470 @@
+{
+ "nom": "170-facture-entreprise",
+ "ecran": "m9-facture-mere",
+ "role": "comptable",
+ "taille": [
+  1440.0,
+  1500.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Relevé & facture mensuelle",
+   "rect": [
+    788.9,
+    141.0,
+    241.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Créances",
+   "rect": [
+    1038.5,
+    141.0,
+    120.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tableau de bord assurances",
+   "rect": [
+    1166.5,
+    141.0,
+    249.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Aperçu de la facture mère",
+   "rect": [
+    549.0,
+    389.0,
+    233.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    41.0,
+    836.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    151.3,
+    836.0,
+    97.1,
+    30.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1500.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   349.8,
+   36.0
+  ],
+  "barre-actions": [
+   995.6,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1099.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1248.4,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1268.4,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1294.4,
+   0.0,
+   133.6,
+   56.0
+  ],
+  "nom-courant": [
+   1340.4,
+   14.5,
+   65.6,
+   14.0
+  ],
+  "role-courant": [
+   1340.4,
+   28.5,
+   56.3,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   119.0,
+   36.0
+  ],
+  "domaine-RH": [
+   450.8,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.8,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   679.5,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   806.7,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   907.7,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1025.6,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m9-facture-mere|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   1371.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   170.1,
+   116.0,
+   140.5,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   253.4,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   298.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   312.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   347.0,
+   1390.0,
+   100.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   367.0,
+   280.0,
+   60.0
+  ],
+  "kit:champ:compagnie": [
+   45.0,
+   367.0,
+   280.0,
+   60.0
+  ],
+  "kit:champ:periode": [
+   337.0,
+   367.0,
+   200.0,
+   60.0
+  ],
+  "kit:kpi": [
+   24.0,
+   464.0,
+   339.0,
+   106.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   481.0,
+   136.2,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   501.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   481.0,
+   36.0,
+   36.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   652.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:consolidation": [
+   24.0,
+   652.0,
+   148.1,
+   42.0
+  ],
+  "kit:onglet:lignes": [
+   172.1,
+   652.0,
+   245.0,
+   42.0
+  ],
+  "kit:onglet:emises": [
+   417.0,
+   652.0,
+   210.3,
+   42.0
+  ],
+  "kit:onglet:tiers:actif": [
+   627.4,
+   652.0,
+   229.7,
+   42.0
+  ],
+  "tiers:vide": [
+   24.0,
+   773.0,
+   1392.0,
+   34.0
+  ],
+  "tiers:table": [
+   24.0,
+   823.0,
+   1392.0,
+   290.0
+  ],
+  "kit:tableau": [
+   24.0,
+   823.0,
+   1392.0,
+   290.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   824.0,
+   1390.0,
+   55.0
+  ],
+  "kit:vide": [
+   25.0,
+   879.0,
+   1390.0,
+   192.0
+  ],
+  "kit:vide-icone": [
+   696.0,
+   935.0,
+   48.0,
+   48.0
+  ],
+  "kit:tableau-pied": [
+   25.0,
+   1071.0,
+   1390.0,
+   41.0
+  ],
+  "pied-legal": [
+   0.0,
+   1471.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   1478.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    995.6,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1099.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "5 alerte(s) en attente",
+   "rect": [
+    1248.4,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1294.4,
+    0.0,
+    133.6,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

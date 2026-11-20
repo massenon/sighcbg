@@ -1,0 +1,17 @@
+{
+ "id": "m3-surveillance",
+ "titre": "Fiche de surveillance",
+ "libelle": "Fiche de surveillance",
+ "domaine": "Soins",
+ "module": "M3",
+ "moduleLibelle": "Hospitalisation",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-surveillance"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 564
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m1-contre-reference",
+ "titre": "Fiches de contre-référence",
+ "libelle": "Fiches de contre-référence",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-contre-reference"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 426
+}

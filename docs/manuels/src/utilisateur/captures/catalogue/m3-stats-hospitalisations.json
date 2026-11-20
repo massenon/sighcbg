@@ -1,0 +1,17 @@
+{
+ "id": "m3-stats-hospitalisations",
+ "titre": "Statistiques des hospitalisations",
+ "libelle": "Statistiques des hospitalisations",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m3-stats-hospitalisations"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 582
+}

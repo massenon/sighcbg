@@ -1,0 +1,17 @@
+{
+ "id": "m10-dashboard",
+ "titre": "Tableau de bord — Ressources humaines",
+ "libelle": "Tableau de bord RH",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-dashboard"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 501
+}

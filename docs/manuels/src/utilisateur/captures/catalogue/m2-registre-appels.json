@@ -1,0 +1,17 @@
+{
+ "id": "m2-registre-appels",
+ "titre": "Registre des appels",
+ "libelle": "Registre des appels",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-registre-appels"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 555
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m8-reliquats",
+ "titre": "Reliquats",
+ "libelle": "Reliquats",
+ "domaine": "Financier",
+ "module": "M8",
+ "moduleLibelle": "Facturation & Caisse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m8-reliquats"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 645
+}

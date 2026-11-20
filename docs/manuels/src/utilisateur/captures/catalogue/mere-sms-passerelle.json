@@ -1,0 +1,17 @@
+{
+ "id": "mere-sms-passerelle",
+ "titre": "Passerelle SMS",
+ "libelle": "Passerelle SMS",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Liaison avec le relais",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-sms-passerelle"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 415
+}

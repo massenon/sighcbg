@@ -1,0 +1,17 @@
+{
+ "id": "m5-stats-examens",
+ "titre": "Statistiques des examens",
+ "libelle": "Statistiques des examens",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-stats-examens"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 594
+}

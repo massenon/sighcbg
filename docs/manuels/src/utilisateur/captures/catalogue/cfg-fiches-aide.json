@@ -1,0 +1,17 @@
+{
+ "id": "cfg-fiches-aide",
+ "titre": "Fiches d’aide de l’assistant",
+ "libelle": "Fiches d’aide de l’assistant",
+ "domaine": "Système",
+ "module": "CFG",
+ "moduleLibelle": "Configuration Clinique",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "cfg-fiches-aide"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 372
+}

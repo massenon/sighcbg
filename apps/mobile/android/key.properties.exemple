@@ -1,0 +1,9 @@
+# Modèle de android/key.properties (le vrai fichier est IGNORÉ par git : ne jamais le versionner, ne jamais y écrire un secret ici).
+# Copier ce fichier en key.properties puis renseigner les quatre valeurs ; voir docs/guides/SIGNATURE-ANDROID.md.
+# Ces quatre valeurs peuvent aussi venir des variables d'environnement SIGH_KEYSTORE, SIGH_KEYSTORE_PASSWORD, SIGH_KEY_ALIAS, SIGH_KEY_PASSWORD.
+#
+# Chemin du fichier de clés, absolu ou relatif au dossier android/. Le garder HORS du dépôt.
+storeFile=<chemin-du-fichier-de-cles>
+storePassword=<mot-de-passe-du-fichier-de-cles>
+keyAlias=<alias-de-la-cle>
+keyPassword=<mot-de-passe-de-la-cle>

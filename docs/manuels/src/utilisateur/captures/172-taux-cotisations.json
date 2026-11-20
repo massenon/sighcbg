@@ -1,0 +1,739 @@
+{
+ "nom": "172-taux-cotisations",
+ "ecran": "m11-cotisations",
+ "role": "comptable",
+ "taille": [
+  1440.0,
+  2600.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Prêts et avances",
+   "rect": [
+    882.9,
+    141.0,
+    168.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Tableau de bord paie",
+   "rect": [
+    1059.8,
+    141.0,
+    199.5,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Paie & Primes",
+   "rect": [
+    1267.2,
+    141.0,
+    148.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "État CNSS",
+   "rect": [
+    281.0,
+    340.0,
+    124.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "État ITS",
+   "rect": [
+    417.9,
+    340.0,
+    107.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "État VPS",
+   "rect": [
+    537.6,
+    340.0,
+    113.7,
+    38.0
+   ]
+  },
+  {
+   "libelle": "État ORTB",
+   "rect": [
+    663.3,
+    340.0,
+    124.1,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    913.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    913.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    1148.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    1148.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    1689.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    1689.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Confirmer",
+   "rect": [
+    45.0,
+    1924.0,
+    123.9,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle version",
+   "rect": [
+    176.9,
+    1924.0,
+    169.8,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    667.6,
+    2016.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    777.9,
+    2016.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2138.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2199.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2260.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2321.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2382.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2443.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2504.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    2565.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   2600.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   2600.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   349.8,
+   36.0
+  ],
+  "barre-actions": [
+   995.6,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1099.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1248.4,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1268.4,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1294.4,
+   0.0,
+   133.6,
+   56.0
+  ],
+  "nom-courant": [
+   1340.4,
+   14.5,
+   65.6,
+   14.0
+  ],
+  "role-courant": [
+   1340.4,
+   28.5,
+   56.3,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.1,
+   36.0
+  ],
+  "domaine-Administration": [
+   524.0,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   678.7,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   805.8,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   906.9,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1024.8,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m11-cotisations|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   2471.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   132.8,
+   116.0,
+   81.2,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   292.1,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   298.0,
+   1390.0,
+   100.0
+  ],
+  "kit:formulaire": [
+   45.0,
+   318.0,
+   224.0,
+   60.0
+  ],
+  "kit:champ:mois": [
+   45.0,
+   318.0,
+   224.0,
+   60.0
+  ],
+  "kit:kpi": [
+   24.0,
+   415.0,
+   339.0,
+   106.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   432.0,
+   115.2,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   452.0,
+   142.6,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   432.0,
+   36.0,
+   36.0
+  ],
+  "fco:cnss": [
+   24.0,
+   753.0,
+   1392.0,
+   219.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   754.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   768.0,
+   1350.0,
+   20.0
+  ],
+  "fco:cnss:version:etat": [
+   45.0,
+   847.0,
+   1350.0,
+   16.0
+  ],
+  "fco:cnss:etat": [
+   45.0,
+   871.0,
+   1350.0,
+   34.0
+  ],
+  "fco:cnss:confirmer": [
+   45.0,
+   913.0,
+   123.9,
+   38.0
+  ],
+  "fco:cnss:nouvelle": [
+   176.9,
+   913.0,
+   169.8,
+   38.0
+  ],
+  "fco:vps": [
+   24.0,
+   988.0,
+   1392.0,
+   219.0
+  ],
+  "fco:vps:version:etat": [
+   45.0,
+   1082.0,
+   1350.0,
+   16.0
+  ],
+  "fco:vps:etat": [
+   45.0,
+   1106.0,
+   1350.0,
+   34.0
+  ],
+  "fco:vps:confirmer": [
+   45.0,
+   1148.0,
+   123.9,
+   38.0
+  ],
+  "fco:vps:nouvelle": [
+   176.9,
+   1148.0,
+   169.8,
+   38.0
+  ],
+  "fco:bareme_its": [
+   24.0,
+   1223.0,
+   1392.0,
+   525.0
+  ],
+  "fco:bareme_its:version:etat": [
+   45.0,
+   1337.0,
+   1350.0,
+   16.0
+  ],
+  "fco:bareme_its:aconfirmer": [
+   45.0,
+   1605.0,
+   1350.0,
+   34.0
+  ],
+  "fco:bareme_its:etat": [
+   45.0,
+   1647.0,
+   1350.0,
+   34.0
+  ],
+  "fco:bareme_its:confirmer": [
+   45.0,
+   1689.0,
+   123.9,
+   38.0
+  ],
+  "fco:bareme_its:nouvelle": [
+   176.9,
+   1689.0,
+   169.8,
+   38.0
+  ],
+  "fco:anciennete": [
+   24.0,
+   1764.0,
+   1392.0,
+   219.0
+  ],
+  "fco:anciennete:version:etat": [
+   45.0,
+   1858.0,
+   1350.0,
+   16.0
+  ],
+  "fco:anciennete:etat": [
+   45.0,
+   1882.0,
+   1350.0,
+   34.0
+  ],
+  "fco:anciennete:confirmer": [
+   45.0,
+   1924.0,
+   123.9,
+   38.0
+  ],
+  "fco:anciennete:nouvelle": [
+   176.9,
+   1924.0,
+   169.8,
+   38.0
+  ],
+  "cotisations:10": [
+   24.0,
+   1999.0,
+   1392.0,
+   647.0
+  ],
+  "kit:tableau": [
+   24.0,
+   1999.0,
+   1392.0,
+   647.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   2000.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   339.6,
+   2012.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   2063.0,
+   1390.0,
+   541.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   2071.0,
+   117.7,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   65.0,
+   2126.0,
+   117.7,
+   41.0
+  ],
+  "pied-legal": [
+   0.0,
+   2571.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   2578.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    995.6,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1099.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "5 alerte(s) en attente",
+   "rect": [
+    1248.4,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1294.4,
+    0.0,
+    133.6,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

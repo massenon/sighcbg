@@ -1,0 +1,17 @@
+{
+ "id": "hub-mere",
+ "titre": "Exploitation de la synchronisation",
+ "libelle": "Exploitation de la synchronisation",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Exploitation de la synchronisation",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-mere"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 469
+}

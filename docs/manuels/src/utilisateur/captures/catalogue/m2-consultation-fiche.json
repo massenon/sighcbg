@@ -1,0 +1,17 @@
+{
+ "id": "m2-consultation-fiche",
+ "titre": "Fiche de consultation",
+ "libelle": "Fiche de consultation",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Consultations & prescriptions",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-consultation-fiche"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 635
+}

@@ -1,0 +1,32 @@
+/* Questionnaire de satisfaction en ligne : page PUBLIQUE sobre, sans barre latérale ni lien vers le panneau, aux couleurs de la clinique.
+   Aucune couleur ici : tout vient de var(--…) de jetons.css (docs/design/design-tokens.json). Aucune ressource externe. Une colonne : on répond sur un téléphone. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
+body { margin: 0; font: 400 16px/1.5 var(--police-texte); color: var(--c-texte); background: var(--c-fond); overflow-x: clip; }
+:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.page { max-width: 672px; margin: 0 auto; padding: var(--e-4) var(--e-4) var(--e-8); display: grid; gap: var(--e-4); }
+.carte { background: var(--c-surface); border: 1px solid var(--c-bord); border-radius: var(--rayon-lg); padding: var(--e-4); box-shadow: var(--ombre-carte); }
+.entete { display: flex; align-items: center; gap: var(--e-4); background: var(--c-barre); color: var(--c-barre-titre); border: 0; border-bottom: 2px solid var(--c-action); box-shadow: 0 2px 0 0 var(--c-accent); }
+.entete img { border-radius: var(--rayon-lg); background: var(--c-surface); padding: var(--e-1); flex: none; object-fit: contain; }
+.clinique { margin: 0; font: 700 var(--t-grand)/1.25 var(--police-titres); overflow-wrap: anywhere; }
+.devise { margin: var(--e-1) 0 0; font: 400 var(--t-grand)/1.2 var(--police-devise); color: var(--c-barre-devise); }
+h1 { font: 700 21px/1.25 var(--police-titres); margin: 0 0 var(--e-2); color: var(--c-titre); }
+.description { color: var(--c-texte-doux); margin: 0 0 var(--e-3); }
+.mention { background: var(--c-ok-fond); color: var(--c-ok-texte); border: 1px solid var(--c-ok-bord); border-left-width: 4px; border-radius: var(--rayon); padding: var(--e-3) var(--e-4); font-size: var(--t-petit); margin: 0 0 var(--e-4); }
+.champ { margin-bottom: var(--e-4); }
+label { display: block; font-weight: 600; margin-bottom: var(--e-2); }
+.requis { color: var(--c-alerte-texte); }
+select, textarea { width: 100%; min-height: var(--cible); font: inherit; padding: var(--e-3); border: 1px solid var(--c-bord-champ); border-radius: var(--rayon); background: var(--c-surface); color: var(--c-texte); }
+textarea { resize: vertical; }
+select:focus-visible, textarea:focus-visible { border-color: var(--c-focus); }
+.btn { display: block; width: 100%; min-height: var(--cible); background: var(--c-action); color: var(--c-sur-action); border: 0; border-radius: var(--rayon); padding: var(--e-3) var(--e-4); font: 600 16px/1.2 var(--police-texte); cursor: pointer; }
+.btn:hover { background: var(--c-action-survol); }
+.btn:active { background: var(--c-action-actif); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+.etat { min-height: 1.5em; color: var(--c-texte-doux); font-size: var(--t-petit); }
+.etat.erreur { color: var(--c-alerte-texte); }
+.merci { text-align: center; padding: var(--e-4) 0; }
+.titre-merci { font: 700 20px/1.3 var(--police-titres); color: var(--c-ok-texte); margin: 0 0 var(--e-1); }
+.centre { text-align: center; }
+@media (min-width: 640px) { .page { padding-top: var(--e-8); } .carte { padding: var(--e-6); } }
+@media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }

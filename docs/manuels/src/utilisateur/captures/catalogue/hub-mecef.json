@@ -1,0 +1,17 @@
+{
+ "id": "hub-mecef",
+ "titre": "MECeF — Facture normalisée",
+ "libelle": "MECeF — Facture normalisée",
+ "domaine": "Financier",
+ "module": "MECEF",
+ "moduleLibelle": "MECeF — Facture normalisée",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-mecef"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 455
+}

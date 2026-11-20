@@ -1,0 +1,17 @@
+{
+ "id": "m2-file-cabinet",
+ "titre": "File par cabinet",
+ "libelle": "File par cabinet",
+ "domaine": "Accueil",
+ "module": "M2",
+ "moduleLibelle": "RDV, Visites & Consultations",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-file-cabinet"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 453
+}

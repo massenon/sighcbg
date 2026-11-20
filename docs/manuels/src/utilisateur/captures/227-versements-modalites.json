@@ -1,0 +1,566 @@
+{
+ "nom": "227-versements-modalites",
+ "ecran": "cfg-natures-facture",
+ "role": "admin",
+ "taille": [
+  1440.0,
+  1000.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Importer",
+   "rect": [
+    956.9,
+    141.0,
+    113.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Émettre une facture",
+   "rect": [
+    1078.2,
+    141.0,
+    188.6,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Tarifs et prix",
+   "rect": [
+    1274.7,
+    141.0,
+    141.3,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    828.2,
+    403.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    938.5,
+    403.0,
+    97.1,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Nouvelle modalité",
+   "rect": [
+    1043.5,
+    404.0,
+    151.0,
+    28.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    497.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    497.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    554.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    554.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Modifier",
+   "icone": true,
+   "rect": [
+    1327.0,
+    611.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Archiver",
+   "icone": true,
+   "rect": [
+    1367.0,
+    611.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    507.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    564.0,
+    16.0,
+    16.0
+   ]
+  },
+  {
+   "libelle": "Sélectionner la ligne",
+   "case": true,
+   "rect": [
+    37.0,
+    621.0,
+    16.0,
+    16.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   310.6,
+   36.0
+  ],
+  "barre-actions": [
+   917.2,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1020.6,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1170.0,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1190.0,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1216.0,
+   0.0,
+   212.0,
+   56.0
+  ],
+  "nom-courant": [
+   1262.0,
+   14.5,
+   144.0,
+   14.0
+  ],
+  "role-courant": [
+   1262.0,
+   28.5,
+   122.8,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   154.7,
+   36.0
+  ],
+  "domaine-Système": [
+   678.6,
+   60.0,
+   114.8,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   793.3,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   920.5,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   1021.6,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1160.9,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1278.7,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "cfg-natures-facture|fileul": [
+   0.0,
+   100.0,
+   1440.0,
+   871.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   166.5,
+   116.0,
+   132.1,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   196.9,
+   28.0
+  ],
+  "importer-natures-facture": [
+   956.9,
+   141.0,
+   113.3,
+   38.0
+  ],
+  "kit:note": [
+   24.0,
+   231.0,
+   1392.0,
+   34.0
+  ],
+  "kit:onglets-barre": [
+   24.0,
+   281.0,
+   1392.0,
+   43.0
+  ],
+  "kit:onglet:natures": [
+   24.0,
+   281.0,
+   157.1,
+   42.0
+  ],
+  "kit:onglet:types-versement": [
+   181.1,
+   281.0,
+   168.6,
+   42.0
+  ],
+  "kit:onglet:modalites-versement:actif": [
+   349.7,
+   281.0,
+   194.2,
+   42.0
+  ],
+  "kit:tableau": [
+   24.0,
+   386.0,
+   1392.0,
+   314.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   387.0,
+   1390.0,
+   63.0
+  ],
+  "kit:tableau-recherche": [
+   500.2,
+   399.0,
+   320.0,
+   38.0
+  ],
+  "kit:tableau-table": [
+   25.0,
+   450.0,
+   1390.0,
+   208.0
+  ],
+  "kit:tableau-entete": [
+   65.0,
+   450.0,
+   415.3,
+   37.0
+  ],
+  "kit:tableau-ligne": [
+   1311.0,
+   487.0,
+   104.0,
+   57.0
+  ],
+  "kit:tableau-pied": [
+   25.0,
+   658.0,
+   1390.0,
+   41.0
+  ],
+  "pied-legal": [
+   0.0,
+   971.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   978.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Actions rapides",
+   "rect": [
+    917.2,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1020.6,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "1 alerte(s) en attente",
+   "rect": [
+    1170.0,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1216.0,
+    0.0,
+    212.0,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    497.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    497.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    554.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    554.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Modifier",
+   "rect": [
+    1327.0,
+    611.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Archiver",
+   "rect": [
+    1367.0,
+    611.0,
+    36.0,
+    36.0
+   ]
+  }
+ ],
+ "onglets": []
+}

@@ -1,0 +1,17 @@
+{
+ "id": "m1-numerisation",
+ "titre": "Plan de numérisation des dossiers",
+ "libelle": "Plan de numérisation",
+ "domaine": "Soins",
+ "module": "M1",
+ "moduleLibelle": "Patients & Dossier médical",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m1-numerisation"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 558
+}

@@ -1,0 +1,17 @@
+{
+ "id": "mere-notifications",
+ "titre": "Notifications serveur",
+ "libelle": "Notifications serveur",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Plateforme locale",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-notifications"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 495
+}

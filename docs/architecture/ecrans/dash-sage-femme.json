@@ -1,0 +1,38 @@
+{
+ "id": "dash-sage-femme",
+ "module": "DASH",
+ "domaine": "Pilotage",
+ "libelleManifeste": "Responsable Maternité",
+ "acces": "ouvert",
+ "titre": "Tableau de bord — Responsable Maternité",
+ "description": "Travail en cours, termes proches, grossesses à risque et activité de la maternité — sans finance.",
+ "fil": [
+  "Accueil",
+  "Pilotage",
+  "Tableaux de bord par poste",
+  "Responsable Maternité"
+ ],
+ "actions": [],
+ "regle": [
+  "La maternité (M4) est votre module : vous y écrivez. Les dossiers patients et les consultations se lisent sans se modifier, et vous ne lisez que les résultats d’analyses de votre secteur — pas ceux demandés par la chirurgie. Aucun accès financier : ni caisse, ni assurances, ni comptabilité (RG-13)."
+ ],
+ "onglets": [],
+ "kpis": [
+  "Dossiers suivis",
+  "Grossesses à risque (GAR)",
+  "Accouchements du mois",
+  "Nouveau-nés vivants du mois"
+ ],
+ "cartes": [
+  "Accès rapides",
+  "Ce que vous faites ici — vos parcours",
+  "Ce que votre profil ne voit pas"
+ ],
+ "tableaux": [],
+ "commandes": [
+  "Dossiers obstétricaux"
+ ],
+ "champs": [],
+ "nbTableaux": 0,
+ "nbKpis": 4
+}

@@ -1,0 +1,473 @@
+{
+ "nom": "155-pta-vide",
+ "ecran": "m13-plan-annuel",
+ "role": "direction",
+ "taille": [
+  1440.0,
+  1000.0
+ ],
+ "echelle": 1.25,
+ "boutons": [
+  {
+   "libelle": "Courriers (départ / arrivée)",
+   "rect": [
+    704.1,
+    141.0,
+    241.4,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Répertoire des ambulances",
+   "rect": [
+    953.5,
+    141.0,
+    243.0,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Courriers & orientation",
+   "rect": [
+    1204.4,
+    141.0,
+    211.6,
+    38.0
+   ]
+  },
+  {
+   "libelle": "Ouvrir le plan de l’exercice 2026",
+   "rect": [
+    45.0,
+    427.0,
+    276.2,
+    36.0
+   ]
+  },
+  {
+   "libelle": "Colonnes",
+   "rect": [
+    291.0,
+    918.0,
+    102.3,
+    30.0
+   ]
+  },
+  {
+   "libelle": "Exporter",
+   "rect": [
+    401.3,
+    918.0,
+    97.1,
+    30.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-manuel": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "actualisation-0": [
+   0.0,
+   0.0,
+   1440.0,
+   1000.0
+  ],
+  "barre-superieure": [
+   0.0,
+   0.0,
+   1440.0,
+   56.0
+  ],
+  "barre-marque": [
+   12.0,
+   0.0,
+   270.0,
+   56.0
+  ],
+  "barre-logo": [
+   16.0,
+   10.0,
+   52.0,
+   36.0
+  ],
+  "logo-clinique": [
+   19.0,
+   12.0,
+   46.0,
+   32.0
+  ],
+  "barre-nom-clinique": [
+   78.0,
+   13.0,
+   131.3,
+   17.0
+  ],
+  "recherche-globale": [
+   294.0,
+   10.0,
+   230.0,
+   36.0
+  ],
+  "selecteur-exercice": [
+   754.0,
+   13.0,
+   188.4,
+   30.0
+  ],
+  "exercice-precedent": [
+   759.0,
+   16.0,
+   24.0,
+   24.0
+  ],
+  "exercice-affiche": [
+   787.0,
+   19.5,
+   136.4,
+   17.0
+  ],
+  "barre-actions": [
+   944.4,
+   10.0,
+   99.4,
+   36.0
+  ],
+  "barre-plein-ecran": [
+   1047.8,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "barre-cloche": [
+   1197.2,
+   10.0,
+   36.0,
+   36.0
+  ],
+  "cloche-badge": [
+   1217.2,
+   12.0,
+   16.0,
+   14.0
+  ],
+  "barre-profil": [
+   1243.2,
+   0.0,
+   184.8,
+   56.0
+  ],
+  "nom-courant": [
+   1289.2,
+   14.5,
+   116.8,
+   14.0
+  ],
+  "role-courant": [
+   1289.2,
+   28.5,
+   101.1,
+   13.0
+  ],
+  "onglets-domaines": [
+   0.0,
+   56.0,
+   1392.0,
+   40.0
+  ],
+  "domaine-Accueil": [
+   8.0,
+   60.0,
+   105.4,
+   36.0
+  ],
+  "domaine-Soins": [
+   113.4,
+   60.0,
+   92.2,
+   36.0
+  ],
+  "domaine-Logistique": [
+   205.7,
+   60.0,
+   126.2,
+   36.0
+  ],
+  "domaine-Financier": [
+   331.9,
+   60.0,
+   118.1,
+   36.0
+  ],
+  "domaine-RH": [
+   449.9,
+   60.0,
+   74.0,
+   36.0
+  ],
+  "domaine-Administration": [
+   523.9,
+   60.0,
+   156.5,
+   36.0
+  ],
+  "domaine-Pilotage": [
+   680.4,
+   60.0,
+   110.2,
+   36.0
+  ],
+  "raccourci-Patients": [
+   807.6,
+   60.0,
+   99.1,
+   36.0
+  ],
+  "raccourci-Consultations": [
+   908.7,
+   60.0,
+   137.3,
+   36.0
+  ],
+  "raccourci-Pharmacie": [
+   1048.0,
+   60.0,
+   115.9,
+   36.0
+  ],
+  "raccourci-Facturation": [
+   1165.8,
+   60.0,
+   120.7,
+   36.0
+  ],
+  "ruban-bascule": [
+   1392.0,
+   56.0,
+   48.0,
+   40.0
+  ],
+  "ruban-filet-coeur": [
+   0.0,
+   96.0,
+   1440.0,
+   2.0
+  ],
+  "ruban-filet-sante": [
+   0.0,
+   98.0,
+   1440.0,
+   2.0
+  ],
+  "m13-plan-annuel|fileul|exonull": [
+   0.0,
+   100.0,
+   1440.0,
+   871.0
+  ],
+  "fil-ariane": [
+   24.0,
+   116.0,
+   1392.0,
+   17.0
+  ],
+  "fil-lien:0": [
+   24.0,
+   116.0,
+   43.6,
+   17.0
+  ],
+  "fil-lien:2": [
+   200.8,
+   116.0,
+   166.5,
+   17.0
+  ],
+  "titre-page": [
+   24.0,
+   141.0,
+   290.2,
+   28.0
+  ],
+  "kit:note": [
+   24.0,
+   251.0,
+   1392.0,
+   50.0
+  ],
+  "kit:carte-entete": [
+   25.0,
+   318.0,
+   1390.0,
+   49.0
+  ],
+  "kit:carte-titre": [
+   45.0,
+   332.0,
+   1350.0,
+   20.0
+  ],
+  "kit:carte-corps": [
+   25.0,
+   367.0,
+   1390.0,
+   116.0
+  ],
+  "kit:kpi": [
+   24.0,
+   500.0,
+   339.0,
+   86.0
+  ],
+  "kit:kpi-libelle": [
+   41.0,
+   517.0,
+   131.1,
+   16.0
+  ],
+  "kit:kpi-valeur": [
+   41.0,
+   537.0,
+   14.9,
+   32.0
+  ],
+  "kit:kpi-pastille": [
+   310.0,
+   517.0,
+   36.0,
+   36.0
+  ],
+  "kit:tableau": [
+   24.0,
+   855.0,
+   1392.0,
+   344.0
+  ],
+  "kit:tableau-barre": [
+   25.0,
+   856.0,
+   1390.0,
+   109.0
+  ],
+  "kit:tableau-recherche": [
+   165.6,
+   868.0,
+   320.0,
+   38.0
+  ],
+  "kit:vide": [
+   25.0,
+   965.0,
+   1390.0,
+   192.0
+  ],
+  "pied-legal": [
+   0.0,
+   971.0,
+   1440.0,
+   29.0
+  ],
+  "pied-legal:texte": [
+   24.0,
+   978.0,
+   1392.0,
+   16.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Exercice 2025",
+   "rect": [
+    759.0,
+    16.0,
+    24.0,
+    24.0
+   ]
+  },
+  {
+   "message": "Actions rapides",
+   "rect": [
+    944.4,
+    10.0,
+    99.4,
+    36.0
+   ]
+  },
+  {
+   "message": "Plein écran (F11)",
+   "rect": [
+    1047.8,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "4 alerte(s) en attente",
+   "rect": [
+    1197.2,
+    10.0,
+    36.0,
+    36.0
+   ]
+  },
+  {
+   "message": "Profil utilisateur",
+   "rect": [
+    1243.2,
+    0.0,
+    184.8,
+    56.0
+   ]
+  },
+  {
+   "message": "Déplier le menu",
+   "rect": [
+    1396.0,
+    56.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "message": "Axe",
+   "rect": [
+    493.6,
+    868.0,
+    320.0,
+    38.0
+   ]
+  },
+  {
+   "message": "État",
+   "rect": [
+    821.6,
+    868.0,
+    186.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Responsable",
+   "rect": [
+    1015.6,
+    868.0,
+    200.0,
+    38.0
+   ]
+  },
+  {
+   "message": "Retard",
+   "rect": [
+    41.0,
+    914.0,
+    242.0,
+    38.0
+   ]
+  }
+ ],
+ "onglets": []
+}

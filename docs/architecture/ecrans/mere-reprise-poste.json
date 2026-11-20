@@ -1,0 +1,10 @@
+{
+ "id": "mere-reprise-poste",
+ "module": "MERE",
+ "domaine": "Poste mère",
+ "libelleManifeste": "Reprise d’un poste",
+ "acces": "ouvert",
+ "titre": "Reprise d’un poste",
+ "description": "Remplacer un poste fileul par un poste neuf : choisir l’ancien poste, générer un code de reprise qui passe ses plages de numéros et ses baux au nouveau et révoque l’ancien.",
+ "note": "Fiche rédigée pour le poste Baguidi (décision 12 de la Direction, E4750, 17/11/2026) : écran sans équivalent à la maquette — le code de reprise d’un fileul n’avait aucun écran, seulement un appel avec l’en-tête x-admin."
+}

@@ -1,0 +1,94 @@
+{
+ "nom": "m19-reglages",
+ "taille": [
+  412.0,
+  1100.0
+ ],
+ "echelle": 2,
+ "largeurReference": 520,
+ "boutons": [
+  {
+   "libelle": "Réinitialiser l’appairage",
+   "rect": [
+    16.0,
+    598.0,
+    380.0,
+    48.0
+   ]
+  }
+ ],
+ "cles": {
+  "cap-mobile": [
+   0.0,
+   0.0,
+   412.0,
+   1100.0
+  ],
+  "reglages-profil": [
+   28.0,
+   129.0,
+   61.0,
+   20.0
+  ],
+  "reglages-agent": [
+   28.0,
+   174.0,
+   170.5,
+   20.0
+  ],
+  "reglages-appareil": [
+   28.0,
+   202.0,
+   235.9,
+   20.0
+  ],
+  "reglages-droits-role": [
+   28.0,
+   286.0,
+   101.4,
+   20.0
+  ],
+  "reglages-droits": [
+   28.0,
+   306.0,
+   290.3,
+   20.0
+  ],
+  "reglage-Verrouillage automatique": [
+   20.0,
+   354.0,
+   372.0,
+   72.0
+  ],
+  "reglage-Effacement à distance": [
+   20.0,
+   426.0,
+   372.0,
+   72.0
+  ],
+  "reglage-Notifications": [
+   20.0,
+   498.0,
+   372.0,
+   80.0
+  ],
+  "reinitialiser-appairage": [
+   16.0,
+   598.0,
+   380.0,
+   48.0
+  ]
+ },
+ "infobulles": [
+  {
+   "message": "Back",
+   "rect": [
+    8.0,
+    8.0,
+    40.0,
+    40.0
+   ]
+  }
+ ],
+ "onglets": []
+}

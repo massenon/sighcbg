@@ -1,0 +1,17 @@
+{
+ "id": "dash-da",
+ "titre": "Statistiques de la Direction",
+ "libelle": "Statistiques de la Direction",
+ "domaine": "Pilotage",
+ "module": "PIL",
+ "moduleLibelle": "Pilotage & analyse",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-da"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 709
+}

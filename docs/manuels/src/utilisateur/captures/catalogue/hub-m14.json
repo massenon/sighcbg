@@ -1,0 +1,17 @@
+{
+ "id": "hub-m14",
+ "titre": "Sécurité & Utilisateurs",
+ "libelle": "Sécurité & Utilisateurs",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m14"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 365
+}

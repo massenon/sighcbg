@@ -1,0 +1,17 @@
+{
+ "id": "m10-evenements",
+ "titre": "Événements du personnel",
+ "libelle": "Événements du personnel",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m10-evenements"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 428
+}

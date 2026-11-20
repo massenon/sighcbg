@@ -1,0 +1,17 @@
+{
+ "id": "hub-m10",
+ "titre": "Ressources humaines",
+ "libelle": "Ressources humaines",
+ "domaine": "RH",
+ "module": "M10",
+ "moduleLibelle": "Ressources humaines",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "hub-m10"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 482
+}

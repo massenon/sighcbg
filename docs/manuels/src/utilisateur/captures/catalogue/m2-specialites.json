@@ -1,0 +1,17 @@
+{
+ "id": "m2-specialites",
+ "titre": "Spécialités",
+ "libelle": "Spécialités",
+ "domaine": "Soins",
+ "module": "M2",
+ "moduleLibelle": "Spécialités",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m2-specialites"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 615
+}

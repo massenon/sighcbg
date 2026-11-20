@@ -1,0 +1,17 @@
+{
+ "id": "m14-audit",
+ "titre": "Journal d’audit",
+ "libelle": "Journal d’audit",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m14-audit"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 381
+}

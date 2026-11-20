@@ -1,0 +1,17 @@
+{
+ "id": "dash-infirmier",
+ "titre": "Tableau de bord — Infirmier / Sage-femme",
+ "libelle": "Infirmier / Sage-femme",
+ "domaine": "Pilotage",
+ "module": "DASH",
+ "moduleLibelle": "Tableaux de bord par poste",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "dash-infirmier"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 514
+}

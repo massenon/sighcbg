@@ -1,0 +1,17 @@
+{
+ "id": "m5-reactifs-stats",
+ "titre": "Statistiques des réactifs",
+ "libelle": "Statistiques des réactifs",
+ "domaine": "Soins",
+ "module": "M5",
+ "moduleLibelle": "Laboratoire",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m5-reactifs-stats"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 604
+}

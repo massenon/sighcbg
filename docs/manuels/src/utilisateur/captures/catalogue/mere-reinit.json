@@ -1,0 +1,17 @@
+{
+ "id": "mere-reinit",
+ "titre": "Réinitialisation de production",
+ "libelle": "Réinitialisation de production",
+ "domaine": "Poste mère",
+ "module": "MERE",
+ "moduleLibelle": "Sécurité et continuité",
+ "role": "admin",
+ "mode": "mère",
+ "capture": true,
+ "ecransAffiches": [
+  "mere-reinit"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 388
+}

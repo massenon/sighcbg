@@ -1,0 +1,17 @@
+{
+ "id": "m14-sessions",
+ "titre": "Sessions actives",
+ "libelle": "Sessions actives",
+ "domaine": "Système",
+ "module": "M14",
+ "moduleLibelle": "Sécurité & Utilisateurs",
+ "role": "admin",
+ "mode": "fileul",
+ "capture": true,
+ "ecransAffiches": [
+  "m14-sessions"
+ ],
+ "largeur": 1080,
+ "hauteur": 675,
+ "dureeMs": 476
+}
