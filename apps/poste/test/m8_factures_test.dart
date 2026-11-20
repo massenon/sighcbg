@@ -65,7 +65,7 @@ void main() {
   });
 
   testWidgets(
-      'onglets « Tous les factures » et « Archivés » avec leurs comptes ; 15 lignes par page',
+      'onglets « Toutes les factures » et « Archivés » avec leurs comptes ; 15 lignes par page',
       (t) async {
     final m = await magasin();
     await ouvrir(t, m);

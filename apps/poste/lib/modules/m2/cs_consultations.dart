@@ -401,7 +401,7 @@ class _Corps extends StatelessWidget {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les consultations',
+            libelle: 'Toutes les consultations',
             compte: actives.length,
             construire: (_) => _tableau(false)),
         OngletDef(

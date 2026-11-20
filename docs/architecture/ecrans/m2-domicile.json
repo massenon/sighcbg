@@ -21,7 +21,7 @@
   "Cet écran ne présente que les prestations de type Domicile. Les consultations réalisées à la clinique sont gérées depuis l’écran « Consultations »."
  ],
  "onglets": [
-  "Tous les interventions à domicile",
+  "Toutes les interventions à domicile",
   "Archivés"
  ],
  "kpis": [
@@ -43,7 +43,7 @@
   ]
  ],
  "commandes": [
-  "Tous les interventions à domicile282",
+  "Toutes les interventions à domicile282",
   "Archivés0",
   "Colonnes",
   "Exporter",

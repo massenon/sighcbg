@@ -156,7 +156,7 @@ PieceA4 pieceFacture(Fiche f,
         ? 'Facture pro-forma'
         : (mecefActif ? 'Facture normalisée' : 'Facture'),
     sousTitre:
-        '${f['numero']}${mecefActif && f['numeroMecef'] != null && !proforma ? ' — ${f['numeroMecef']}' : ''}',
+        '${f['numero']}${mecefActif && f['numeroMecef'] != null && !proforma ? ' — ${numeroMecefAffiche(f)}' : ''}',
     filigrane: proforma ? 'Pro-forma' : null,
     reference: reference,
     utilisateur: utilisateur,
@@ -203,9 +203,11 @@ PieceA4 pieceFacture(Fiche f,
                   ? 'Facture normalisée conforme au dispositif de facturation électronique en vigueur en République du Bénin. Mode de règlement : ${modeLabel(f['modePaiement'])}.'
                   : 'Mode de règlement : ${modeLabel(f['modePaiement'])}.'),
           italique: true),
+      if (mecefActif && !proforma && f['numeroMecef'] != null && numeroMecefDeDemonstration(f))
+        const BlocTexte('EXEMPLE DE DÉMONSTRATION : le numéro MECeF de cette pièce n’est pas un numéro fiscal.', gras: true),
       if (mecefActif && !proforma && f['numeroMecef'] != null)
         BlocTexte(
-            'Identifiant fiscal MECeF : ${f['numeroMecef']} — IFU : ${i.ifu} — RCCM : ${i.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : (etatMecefDe(f)?.libelle ?? f['statutMecef'])}'),
+            'Identifiant fiscal MECeF : ${numeroMecefAffiche(f)} — IFU : ${i.ifu} — RCCM : ${i.rccm} — Statut de transmission : ${f['statutMecef'] == 'valide' ? 'validée par l’administration fiscale' : (etatMecefDe(f)?.libelle ?? f['statutMecef'])}'),
       if (i.formulePolitesse.isNotEmpty) BlocTexte(i.formulePolitesse, gras: true),
     ],
     // Pas de signature patient sur une pièce de caisse : c'est la caisse qui atteste l'encaissement.

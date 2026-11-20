@@ -321,7 +321,7 @@ void main() {
       expect(d['urgent'], false);
       expect(d['etatAnalyse'], 'en_attente');
       expect((d['dateHeure'] as String).startsWith('2026-10-30T00:00'), isTrue);
-      expect(find.text('Nouveau demande d’analyse créé.'), findsOneWidget);
+      expect(find.text('Nouvelle demande d’analyse créée.'), findsOneWidget);
       expect(find.text('LAB-00008'), findsWidgets);
       expect(m.collection('patients').toutes.length, 1, reason: 'aucun dossier créé');
     });

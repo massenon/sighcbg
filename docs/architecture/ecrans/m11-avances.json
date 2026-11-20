@@ -21,7 +21,7 @@
   "La mensualité de remboursement est automatiquement retenue sur le bulletin de paie tant que l’avance n’est pas soldée."
  ],
  "onglets": [
-  "Tous les avances",
+  "Toutes les avances",
   "Archivés"
  ],
  "kpis": [
@@ -47,7 +47,7 @@
   ]
  ],
  "commandes": [
-  "Tous les avances12",
+  "Toutes les avances12",
   "Archivés0",
   "Colonnes",
   "Exporter",

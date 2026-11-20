@@ -277,7 +277,7 @@ class _CrudMatState extends State<CrudMat> {
             : widget.valeursInitiales());
     afficherModale<void>(ctx,
         titre: existante == null
-            ? 'Nouveau ${widget.entite}'
+            ? nouvelleEntite(widget.entite)
             : 'Modifier l’enregistrement',
         sousTitre: existante == null
             ? 'Les champs marqués d’un astérisque sont obligatoires.'
@@ -327,7 +327,7 @@ class _CrudMatState extends State<CrudMat> {
                           avant: existante, valeurs: valeurs, prefixeId: widget.prefixeId);
                       if (r == null || !ctx.mounted) return;
                       fermer();
-                      ToastsSigh.afficher(ctx, existante == null ? 'Nouveau ${widget.entite} créé.' : 'Modifications enregistrées.',
+                      ToastsSigh.afficher(ctx, existante == null ? entiteCreee(widget.entite) : 'Modifications enregistrées.',
                           type: TypeToast.succes, detail: widget.referenceToast?.call(r.fiche), annuler: r.annuler);
                       return;
                     }
@@ -339,7 +339,7 @@ class _CrudMatState extends State<CrudMat> {
                         '_creePar': acteur(c).nom,
                         '_creeLe': c.aujourdhui.toIso8601String(),
                       }, prefixe: widget.prefixeId);
-                      ToastsSigh.afficher(ctx, 'Nouveau ${widget.entite} créé.',
+                      ToastsSigh.afficher(ctx, entiteCreee(widget.entite),
                           type: TypeToast.succes,
                           detail: widget.referenceToast?.call(r.fiche),
                           annuler: r.annuler);
@@ -542,7 +542,7 @@ class _CrudMatState extends State<CrudMat> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les ${widget.entiteP}',
+            libelle: tousLesEntites(widget.entite, widget.entiteP),
             compte: widget.filtreBase == null ? actives.length : actives.where(widget.filtreBase!).length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         ...?widget.ongletsSup?.call(context),

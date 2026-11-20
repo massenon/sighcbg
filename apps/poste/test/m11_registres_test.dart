@@ -323,7 +323,7 @@ void main() {
       for (final x in cellulesVecteur(l['table']).first.skip(1).where((x) => x.isNotEmpty)) {
         expect(textes(t), contains(x), reason: 'première ligne : $x');
       }
-      expect(find.text('Tous les déclarations'), findsOneWidget);
+      expect(find.text('Toutes les déclarations'), findsOneWidget);
     });
 
     cas('« Nouveau » : formulaire de la maquette, valeurs initiales, refus du formulaire incomplet, puis la fiche écrite = celle de la maquette', (t) async {
@@ -353,7 +353,7 @@ void main() {
       expect(f['reference'], 'HS-0021', reason: 'la série suit le registre : HS-0001 existe déjà au jeu, la première déclaration n’est PAS HS-0001 (E680)');
       expect(f['tauxHoraire'], 822);
       expect(f['montant'], 8220);
-      expect(find.text('Nouveau déclaration créé.'), findsOneWidget);
+      expect(find.text('Nouvelle déclaration créée.'), findsOneWidget);
       expect(kpisAffiches(t), kpisVecteur(mm(hs['creation'])['kpis']));
     });
 

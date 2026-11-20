@@ -143,6 +143,21 @@ int _entre(double Function() rnd, int a, int b) =>
 String numeroMecefSimule(int graine) =>
     'MECEF${_entre(tirage(graine), 1000000, 9999999)}';
 
+/// Mention portée PARTOUT où un numéro MECeF fabriqué est montré (écran, tiroir, pièce imprimée) : un poste de production ne présente jamais un
+/// numéro de démonstration comme un numéro fiscal (E5252). Le numéro réel ne vient que du boîtier / de l'e-MECeF et ne porte jamais `mecefSimule`.
+const mentionMecefDemonstration = 'exemple de démonstration — numéro non fiscal';
+
+/// Cette pièce porte-t-elle un numéro MECeF FABRIQUÉ (jeu de démonstration, simulation) plutôt qu'un numéro certifié par l'appareil ?
+bool numeroMecefDeDemonstration(Map<String, Object?> piece) => piece['mecefSimule'] == true;
+
+/// Le numéro MECeF tel qu'on le LIT : le numéro seul s'il est réel, suivi de la mention « exemple de démonstration » s'il est fabriqué,
+/// [vide] s'il n'y en a pas (une pièce sans certification réelle n'affiche aucun numéro comme réel).
+String numeroMecefAffiche(Map<String, Object?> piece, [String vide = '—']) {
+  final n = '${piece['numeroMecef'] ?? ''}';
+  if (n.isEmpty) return vide;
+  return numeroMecefDeDemonstration(piece) ? '$n ($mentionMecefDemonstration)' : n;
+}
+
 /// Code de certification MECeF/DGI : six groupes de quatre caractères.
 String codeMecef(int graine) {
   const alphabet = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';

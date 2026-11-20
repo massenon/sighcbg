@@ -337,10 +337,11 @@ void main() {
       // le vecteur du domicile archive C00015 ; ici la liste complète compte trois prestations à domicile
       expect(kpis(t).first.$1, 'Interventions à domicile');
       expect(kpis(t).first.$2, '3');
-      expect(find.text('Tous les interventions à domicile'), findsOneWidget);
+      expect(find.text('Toutes les interventions à domicile'), findsOneWidget);
       expect(find.textContaining('Cet écran ne présente que les prestations de type Domicile'), findsOneWidget);
       expect(find.text('Plaie infectée'), findsWidgets);
-      expect((d['onglets'] as List).first, startsWith('Tous les interventions à domicile'));
+      // le vecteur est la capture de la maquette (« Tous les interventions… ») : l'accord du genre est corrigé ici, jamais là-bas
+      expect(((d['onglets'] as List).first as String).replaceFirst('Tous les ', 'Toutes les '), startsWith('Toutes les interventions à domicile'));
       await fin(t);
     });
   });

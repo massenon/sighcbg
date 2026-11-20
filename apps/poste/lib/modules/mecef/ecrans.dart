@@ -347,7 +347,7 @@ class EcranMecefFactures extends StatelessWidget with EcranMaquette {
     final tva = ttc - ht;
     afficherTiroir<void>(ctx,
         titre: '${f['numero']}',
-        sousTitre: '${f['numeroMecef'] ?? 'Non transmise'} — ${dateDe(f['date'])}',
+        sousTitre: '${numeroMecefAffiche(f, 'Non transmise')} — ${dateDe(f['date'])}',
         largeurMax: 672,
         corps: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           KpiGrilleSigh(colonnes: 2, kpis: [
@@ -367,7 +367,7 @@ class EcranMecefFactures extends StatelessWidget with EcranMaquette {
             (
               'Identifiant MECeF',
               f['numeroMecef'] != null
-                  ? '${f['numeroMecef']}'
+                  ? numeroMecefAffiche(f)
                   : const BadgeSigh('Non attribué', ton: TonSigh.attention)
             ),
             ('Date d’émission', dateDe(f['date'])),
@@ -821,8 +821,8 @@ class EcranMecefAvoirs extends StatelessWidget with EcranMaquette {
                       cle: 'numeroMecef',
                       libelle: 'Identifiant MECeF',
                       sansCoupure: true,
-                      texte: (a) => '${a['numeroMecef'] ?? '—'}',
-                      rendu: (_, a) => Text('${a['numeroMecef'] ?? '—'}',
+                      texte: (a) => numeroMecefAffiche(a),
+                      rendu: (_, a) => Text(numeroMecefAffiche(a),
                           style: const TextStyle(
                               fontFamily: 'LiberationMono',
                               fontSize: 12,
@@ -893,7 +893,7 @@ class EcranMecefAvoirs extends StatelessWidget with EcranMaquette {
           edite: c.aujourdhui,
           cartouche: [
             ('N° avoir', '${a['reference']}'),
-            ('Identifiant MECeF', '${a['numeroMecef'] ?? '—'}'),
+            ('Identifiant MECeF', numeroMecefAffiche(a)),
             ('Date', dateDe(a['date'])),
             ('Facture rectifiée', '${a['factureNumero']}'),
             ('Client', '${a['patient'] ?? ''}'),
@@ -1147,8 +1147,8 @@ class EcranMecefJournal extends StatelessWidget with EcranMaquette {
                       cle: 'numeroMecef',
                       libelle: 'Identifiant MECeF',
                       sansCoupure: true,
-                      texte: (r) => '${r['numeroMecef'] ?? '—'}',
-                      rendu: (_, r) => Text('${r['numeroMecef'] ?? '—'}',
+                      texte: (r) => numeroMecefAffiche(r),
+                      rendu: (_, r) => Text(numeroMecefAffiche(r),
                           style: const TextStyle(
                               fontFamily: 'LiberationMono',
                               fontSize: 12,

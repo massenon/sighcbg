@@ -113,7 +113,7 @@ class EcranVisitesPatients extends StatelessWidget with EcranMaquette {
           OngletsSigh(onglets: [
             OngletDef(
                 id: 'liste',
-                libelle: 'Tous les visites',
+                libelle: 'Toutes les visites',
                 compte: rows.length,
                 construire: (ctx) => RegistreFormulaire(
                       collection: col,
@@ -121,15 +121,15 @@ class EcranVisitesPatients extends StatelessWidget with EcranMaquette {
                       prefixe: 'VIS',
                       nomExport: 'visitesHospi',
                       messageVide: 'Aucune visite enregistrée.',
-                      libelleRecherche: 'Rechercher un visite…',
+                      libelleRecherche: 'Rechercher une visite…',
                       taillePage: 15,
                       triInitial: 'date',
                       sensInitial: 'desc',
                       groupe: true,
                       piedFiche: true,
                       libelleNouveau: 'Nouveau',
-                      titreCreation: 'Nouveau visite',
-                      toastCreation: 'Nouveau visite créé.',
+                      titreCreation: 'Nouvelle visite',
+                      toastCreation: 'Nouvelle visite créée.',
                       messageArchivage:
                           'L’enregistrement ne sera pas supprimé : il est archivé et reste consultable dans l’onglet « Archivés ». L’opération est journalisée et peut être annulée.',
                       filtres: [
@@ -169,7 +169,7 @@ class EcranVisitesPatients extends StatelessWidget with EcranMaquette {
                       nomExport: 'visitesHospi',
                       triInitial: 'date',
                       sensInitial: 'desc',
-                      libelleRecherche: 'Rechercher un visite…',
+                      libelleRecherche: 'Rechercher une visite…',
                       messageVide: 'Aucun enregistrement archivé.',
                       actionsLigne: (_, f) => [
                         if (c.droit.annuler)

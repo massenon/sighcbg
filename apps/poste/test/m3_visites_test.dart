@@ -47,7 +47,7 @@ void main() {
     // l'ordre est celui de la maquette : date décroissante (la tablette trie à l'affichage)
     expect(find.text('Sœur de la patiente'), findsOneWidget);
     expect(find.text('Voisin'), findsNothing, reason: 'visite archivée : onglet « Archivés »');
-    expect(find.textContaining('Tous les visites'), findsOneWidget);
+    expect(find.textContaining('Toutes les visites'), findsOneWidget);
     expect(find.textContaining('Archivés'), findsOneWidget);
     await toucher(t, find.textContaining('Archivés'));
     expect(find.text('Voisin'), findsOneWidget);
@@ -89,7 +89,7 @@ void main() {
     for (final k in ['admissionId', 'date', 'heure', 'type', 'visiteur', 'observation', 'patient', 'patientCode', 'lit', 'statut']) {
       expect(f[k], att[k], reason: k);
     }
-    expect(find.text('Nouveau visite créé.'), findsOneWidget);
+    expect(find.text('Nouvelle visite créée.'), findsOneWidget);
     // les options d'admission sont les seules admissions EN COURS (pas la sortie)
     expect(liste(v['admissions']).where((a) => a['statut'] == 'en_cours').length, 2);
   });

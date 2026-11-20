@@ -165,6 +165,16 @@ void main() {
     expect(numeroMecefSimule(12346), isNot(a));
   });
 
+  test('un numéro fabriqué ne se lit jamais comme un numéro fiscal (E5252)', () {
+    final n = numeroMecefSimule(1);
+    expect(numeroMecefAffiche({'numeroMecef': n}), n, reason: 'un numéro réel se lit nu');
+    expect(numeroMecefAffiche({'numeroMecef': n, 'mecefSimule': true}), '$n ($mentionMecefDemonstration)');
+    expect(numeroMecefDeDemonstration({'mecefSimule': true}), isTrue);
+    expect(numeroMecefDeDemonstration({}), isFalse);
+    expect(numeroMecefAffiche({'statutMecef': 'en_attente'}), '—', reason: 'sans certification : aucun numéro');
+    expect(numeroMecefAffiche({'statutMecef': 'en_attente'}, 'Non transmise'), 'Non transmise');
+  });
+
   test('transmettre une facture : acceptée d\'office, OK-200', () {
     final r = transmettreUne(777, '2026-10-30');
     expect(r.statutMecef, 'valide');

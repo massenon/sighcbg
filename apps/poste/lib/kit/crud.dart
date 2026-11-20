@@ -241,7 +241,7 @@ class _CrudSighState extends State<CrudSigh> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les $_p',
+            libelle: tousLesEntites(widget.entite, _p),
             compte: actives.length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         OngletDef(

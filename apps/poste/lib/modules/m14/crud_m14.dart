@@ -121,7 +121,7 @@ class _CrudM14State extends State<CrudM14> {
     }
     final controleur = ControleurFormulaire(champs, initial);
     afficherModale<void>(ctx,
-        titre: edition ? 'Modifier l’enregistrement' : 'Nouveau ${widget.entite}',
+        titre: edition ? 'Modifier l’enregistrement' : nouvelleEntite(widget.entite),
         sousTitre: edition
             ? _identifiant(record)
             : 'Les champs marqués d’un astérisque sont obligatoires.',
@@ -164,7 +164,7 @@ class _CrudM14State extends State<CrudM14> {
                         ctx,
                         edition
                             ? 'Modifications enregistrées.'
-                            : 'Nouveau ${widget.entite} créé.',
+                            : entiteCreee(widget.entite),
                         type: TypeToast.succes,
                         annuler: annuler);
                   }),
@@ -353,7 +353,7 @@ class _CrudM14State extends State<CrudM14> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les $_p',
+            libelle: tousLesEntites(widget.entite, _p),
             compte: actives.length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         ...?widget.ongletsApres?.call(context),

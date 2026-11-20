@@ -286,7 +286,7 @@ class _CrudFormulaireSighState extends State<CrudFormulaireSigh> {
       OngletsSigh(onglets: [
         OngletDef(
             id: 'liste',
-            libelle: 'Tous les $_p',
+            libelle: tousLesEntites(widget.entite, _p),
             compte: actives.length,
             construire: (ctx) => _tableau(ctx, c, archive: false)),
         OngletDef(
@@ -346,7 +346,7 @@ void ouvrirFormulaireFiche(
       ...valeursCreation,
   });
   afficherModale<void>(ctx,
-      titre: edition ? 'Modifier l’enregistrement' : 'Nouveau $entite',
+      titre: edition ? 'Modifier l’enregistrement' : nouvelleEntite(entite),
       sousTitre: edition
           ? (identifiant(record).isEmpty ? '${record['id']}' : identifiant(record))
           : 'Les champs marqués d’un astérisque sont obligatoires.',
@@ -393,7 +393,7 @@ void ouvrirFormulaireFiche(
                       ctx,
                       edition
                           ? 'Modifications enregistrées.'
-                          : 'Nouveau $entite créé.',
+                          : entiteCreee(entite),
                       type: TypeToast.succes,
                       detail: detailMessage && ref.isNotEmpty ? ref : null,
                       annuler: annuler);

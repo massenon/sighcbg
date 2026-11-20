@@ -56,7 +56,7 @@ void main() {
     cas('KPI, 13 compagnies, assurés et créances par ligne (valeurs de l’écran réel)', (t) async {
       await ouvrir(t, magasin(), 'm9-compagnies');
       expect(kpis(t), ['13', '13', '70', '1 733 134 FCFA']);
-      expect(find.text('Tous les compagnies'), findsWidgets);
+      expect(find.text('Toutes les compagnies'), findsWidgets);
       for (final c in cellulesVecteur(v, 'm9-compagnies')) {
         expect(find.text(c[2]), findsWidgets, reason: c[2]);
         if (c[8] != '—') expect(texteSp(c[8]), findsWidgets, reason: 'créance ${c[2]}');
@@ -68,7 +68,7 @@ void main() {
       final m = magasin();
       await ouvrir(t, m, 'm9-compagnies');
       await toucher(t, find.text('Nouveau'));
-      expect(find.text('Nouveau compagnie'), findsOneWidget);
+      expect(find.text('Nouvelle compagnie'), findsOneWidget);
       await saisir(t, 'code', 'TST');
       await saisir(t, 'nom', 'COMPAGNIE DE TEST');
       await saisir(t, 'email', 'test@exemple.bj');

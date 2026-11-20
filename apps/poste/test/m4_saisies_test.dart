@@ -143,7 +143,9 @@ void main() {
         await t.pump(const Duration(seconds: 1));
         // les toasts de la maquette : tous visibles (création + alerte éventuelle)
         for (final tt in (s['toasts'] as List).cast<List>()) {
-          expect(find.textContaining('${tt.first}'.substring(0, '${tt.first}'.length < 20 ? '${tt.first}'.length : 20)), findsWidgets, reason: 'toast « ${tt.first} »');
+          // la capture de la maquette dit « Nouveau accouchement créé. » : l'accord du genre est corrigé ici (E5250), jamais dans la capture
+          final dit = '${tt.first}'.replaceFirstMapped(RegExp(r'^Nouveau (.+) créé\.$'), (m) => entiteCreee(m[1]!));
+          expect(find.textContaining(dit.substring(0, dit.length < 20 ? dit.length : 20)), findsWidgets, reason: 'toast « $dit »');
         }
       }
     });
