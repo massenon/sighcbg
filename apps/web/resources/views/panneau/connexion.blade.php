@@ -7,19 +7,29 @@
     <title>Connexion — Relais SIGH-CBG</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="16x16 32x32 48x48">
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/jetons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/panneau.css') }}">
 </head>
 <body>
-<form class="formulaire carte" method="post" action="{{ route('panneau.connexion.envoi') }}">
-    @csrf
-    <h1>Relais SIGH-CBG</h1>
-    <p class="sous-titre">Accès réservé à l'administrateur système.</p>
-    <label for="courriel">Courriel</label>
-    <input id="courriel" name="courriel" type="email" value="{{ old('courriel') }}" autocomplete="username" required autofocus>
-    <label for="mot_de_passe">Mot de passe</label>
-    <input id="mot_de_passe" name="mot_de_passe" type="password" autocomplete="current-password" required>
-    @error('courriel') <div class="erreur" role="alert">{{ $message }}</div> @enderror
-    <p><button class="btn" type="submit">Se connecter</button></p>
-</form>
+<main class="accueil">
+    <section class="accueil-carte" aria-labelledby="connexion-titre">
+        <div class="accueil-tete">
+            <img src="{{ asset('img/logo.png') }}" alt="" width="72" height="72">
+            <p class="marque-nom">{{ config('identite.nom') }}</p>
+            @if((string) config('identite.devise') !== '')<p class="devise">{{ config('identite.devise') }}</p>@endif
+        </div>
+        <form class="accueil-corps" method="post" action="{{ route('panneau.connexion.envoi') }}">
+            @csrf
+            <h1 id="connexion-titre">Relais SIGH-CBG</h1>
+            <p class="sous-titre">Accès réservé à l'administrateur système.</p>
+            <label class="champ" for="courriel"><span>Courriel</span>
+                <input id="courriel" name="courriel" type="email" value="{{ old('courriel') }}" autocomplete="username" required autofocus></label>
+            <label class="champ" for="mot_de_passe"><span>Mot de passe</span>
+                <input id="mot_de_passe" name="mot_de_passe" type="password" autocomplete="current-password" required></label>
+            @error('courriel') <div class="erreur" role="alert">{{ $message }}</div> @enderror
+            <button class="btn" type="submit">Se connecter</button>
+        </form>
+    </section>
+</main>
 </body>
 </html>

@@ -61,12 +61,12 @@
 
         <div class="carte" id="evolution">
             <h2>Évolution sur les derniers instantanés</h2>
-            <label for="courbe">Indicateur&nbsp;:</label>
+            <div class="filtres"><label for="courbe">Indicateur&nbsp;:
             <select id="courbe" wire:model.live="courbe">
                 @foreach($choixCourbes as $cle => $libelle)
                     <option value="{{ $cle }}">{{ $libelle }}</option>
                 @endforeach
-            </select>
+            </select></label></div>
             @if($courbeDonnees['n'] === 0)
                 <p class="vide">Aucune valeur disponible pour « {{ $courbeLibelle }} » sur les instantanés conservés.</p>
             @else
@@ -88,7 +88,7 @@
             @if(count($postes) === 0)
                 <p class="vide">Aucun poste connu de la mère n’est listé dans le dernier instantané.</p>
             @else
-                <table>
+                <div class="table-wrap" tabindex="0"><table>
                     <thead><tr><th>Appareil (identifiant technique)</th><th>Dernière synchronisation</th></tr></thead>
                     <tbody>
                     @foreach($postes as $p)
@@ -98,7 +98,7 @@
                         </tr>
                     @endforeach
                     </tbody>
-                </table>
+                </table></div>
             @endif
         </div>
     @endif

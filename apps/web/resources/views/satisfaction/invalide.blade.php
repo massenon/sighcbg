@@ -6,6 +6,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta name="referrer" content="no-referrer">
     <title>Lien non valable</title>
+    <link rel="stylesheet" href="{{ asset('css/jetons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/satisfaction.css') }}">
 </head>
 <body>

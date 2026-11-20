@@ -2,7 +2,7 @@
     @include('livewire.panneau._entete', ['titre' => 'Paramètres du relais', 'description' => 'Secret de la mère, seuil de battement, rétention de l’audit, crochets du banc d’essai (fermés).', 'regle' => 'Le secret de la mère se pose dans le .env du relais (jamais en base). Les crochets du banc d’essai sont fermés en production. Les paramètres de la clinique (taux, dates, circuits, modes) ne se règlent pas ici : ils se règlent au poste, voyagent chiffrés et ce relais ne les lit pas.'])
     <div class="carte">
         <h2>Paramètres</h2>
-        <table>
+        <div class="table-wrap" tabindex="0"><table>
             <thead><tr><th>Paramètre</th><th>Valeur</th><th>Où</th></tr></thead>
             <tbody>
                 <tr><td>Seuil de battement</td><td>{{ $seuil }} min</td><td><code>RELAIS_SEUIL_BATTEMENT_MS</code></td></tr>
@@ -11,14 +11,14 @@
                 <tr><td>Espace disque minimal</td><td>{{ $disque }} %</td><td><code>RELAIS_SEUIL_DISQUE_PCT</code></td></tr>
                 <tr><td>Crochets du banc</td><td><span class="puce {{ $banc ? 'alerte' : 'ok' }}">{{ $banc ? 'OUVERTS' : 'Fermés' }}</span></td><td><code>RELAIS_BANC={{ $banc ? 'true' : 'false' }}</code></td></tr>
             </tbody>
-        </table>
+        </table></div>
     </div>
     <div class="carte">
         <h2>Synchronisation : conservation et seuils</h2>
         <p class="note">Réglages de l’écran « Synchronisation », enregistrés en base, bornés et journalisés. Toutes les valeurs de départ sont des propositions à valider par la Direction.</p>
         @if($synchroMessage)<p class="message" role="status">{{ $synchroMessage }}</p>@endif
         @foreach($synchroRefus as $refus)<p class="erreur" role="alert">{{ $refus['motif'] }} {{ $refus['geste'] }}</p>@endforeach
-        <table>
+        <div class="table-wrap" tabindex="0"><table>
             <thead><tr><th>Réglage</th><th>Valeur</th><th>Bornes</th></tr></thead>
             <tbody>
             @foreach($reglagesSynchro as $cle => $d)
@@ -29,46 +29,50 @@
                 </tr>
             @endforeach
             </tbody>
-        </table>
-        <p><button class="btn" type="button" wire:click="enregistrerSynchro">Enregistrer les réglages de synchronisation</button></p>
+        </table></div>
+        <p class="actions"><button class="btn" type="button" wire:click="enregistrerSynchro">Enregistrer les réglages de synchronisation</button></p>
     </div>
     <div class="carte" wire:ignore x-data="messagerieSmtp('{{ route('panneau.smtp') }}', '{{ route('panneau.smtp.envoi') }}', '{{ route('panneau.smtp.test') }}', '{{ csrf_token() }}')">
         <h2>Messagerie SMTP du relais</h2>
         <p class="note">Sans serveur SMTP réglé, le relais n'envoie aucun courriel (récupération de la clé comprise) et le dit. Le mot de passe est enregistré chiffré, jamais relu ni affiché : laisser le champ vide pour conserver l'actuel.</p>
-        <label>Serveur <input type="text" x-model="f.hote" placeholder="smtp.exemple.bj" aria-label="Serveur SMTP"></label>
-        <label>Port <input type="number" x-model.number="f.port" min="1" max="65535" aria-label="Port"></label>
-        <label>Chiffrement
-            <select x-model="f.chiffrement" aria-label="Chiffrement">
-                <option value="starttls">STARTTLS (port 587)</option>
-                <option value="ssl">SSL/TLS (port 465)</option>
-                <option value="aucun">Aucun (réseau local de confiance)</option>
-            </select>
-        </label>
-        <label><input type="checkbox" x-model="f.verifier_certificat"> Vérifier le certificat du serveur</label>
-        <label>Identifiant <input type="text" autocomplete="off" x-model="f.utilisateur" aria-label="Identifiant SMTP"></label>
-        <label>Mot de passe <input type="password" autocomplete="new-password" x-model="f.mdp" :placeholder="mdpDefini ? 'Défini (laisser vide pour conserver)' : 'Aucun mot de passe'" aria-label="Mot de passe SMTP"></label>
-        <label x-show="mdpDefini"><input type="checkbox" x-model="f.effacer_mdp"> Effacer le mot de passe enregistré</label>
-        <label>Adresse d'expéditeur <input type="email" x-model="f.expediteur" placeholder="relais@clinique.bj" aria-label="Adresse d'expéditeur"></label>
-        <label>Nom d'expéditeur <input type="text" x-model="f.expediteur_nom" aria-label="Nom d'expéditeur"></label>
-        <label>Répondre à (adresse) <input type="email" x-model="f.repondre" placeholder="secretariat@clinique.bj" aria-label="Adresse de réponse"></label>
-        <label>Répondre à (nom) <input type="text" x-model="f.repondre_nom" aria-label="Nom de réponse"></label>
-        <button type="button" @click="enregistrer()">Enregistrer</button>
+        <div class="champs">
+            <label class="champ"><span>Serveur</span><input type="text" x-model="f.hote" placeholder="smtp.exemple.bj" aria-label="Serveur SMTP"></label>
+            <label class="champ"><span>Port</span><input type="number" x-model.number="f.port" min="1" max="65535" aria-label="Port"></label>
+            <label class="champ"><span>Chiffrement</span>
+                <select x-model="f.chiffrement" aria-label="Chiffrement">
+                    <option value="starttls">STARTTLS (port 587)</option>
+                    <option value="ssl">SSL/TLS (port 465)</option>
+                    <option value="aucun">Aucun (réseau local de confiance)</option>
+                </select>
+            </label>
+            <label class="champ"><span>Identifiant</span><input type="text" autocomplete="off" x-model="f.utilisateur" aria-label="Identifiant SMTP"></label>
+            <label class="champ"><span>Mot de passe</span><input type="password" autocomplete="new-password" x-model="f.mdp" :placeholder="mdpDefini ? 'Défini (laisser vide pour conserver)' : 'Aucun mot de passe'" aria-label="Mot de passe SMTP"></label>
+            <label class="champ"><span>Adresse d'expéditeur</span><input type="email" x-model="f.expediteur" placeholder="relais@clinique.bj" aria-label="Adresse d'expéditeur"></label>
+            <label class="champ"><span>Nom d'expéditeur</span><input type="text" x-model="f.expediteur_nom" aria-label="Nom d'expéditeur"></label>
+            <label class="champ"><span>Répondre à (adresse)</span><input type="email" x-model="f.repondre" placeholder="secretariat@clinique.bj" aria-label="Adresse de réponse"></label>
+            <label class="champ"><span>Répondre à (nom)</span><input type="text" x-model="f.repondre_nom" aria-label="Nom de réponse"></label>
+            <label class="case pleine"><input type="checkbox" x-model="f.verifier_certificat"> Vérifier le certificat du serveur</label>
+            <label class="case pleine" x-show="mdpDefini"><input type="checkbox" x-model="f.effacer_mdp"> Effacer le mot de passe enregistré</label>
+        </div>
+        <div class="actions"><button type="button" @click="enregistrer()">Enregistrer</button></div>
         <hr>
-        <label>Envoyer un message de test à <input type="email" x-model="test" placeholder="vous@exemple.bj" aria-label="Destinataire du test"></label>
-        <button type="button" @click="envoyerTest()" :disabled="!configure">Envoyer un message de test</button>
+        <div class="champs">
+            <label class="champ pleine"><span>Envoyer un message de test à</span><input type="email" x-model="test" placeholder="vous@exemple.bj" aria-label="Destinataire du test"></label>
+        </div>
+        <div class="actions"><button type="button" class="secondaire" @click="envoyerTest()" :disabled="!configure">Envoyer un message de test</button></div>
         <p class="note" x-text="message" role="status"></p>
     </div>
     <div class="carte" wire:ignore x-data="recuperationCle('{{ route('panneau.consultation.reglage') }}', '{{ route('panneau.consultation.coffre.envoi') }}', '{{ csrf_token() }}')">
         <h2>Récupération de la clé par courriel</h2>
         <p class="note">Désactivée par défaut. Activée, le relais conserve seulement un coffre : la clé de la clinique chiffrée dans votre navigateur par une phrase secrète. Ni la clé ni la phrase ne quittent le navigateur.</p>
-        <label><input type="checkbox" x-model="actif"> Activer la récupération par courriel</label>
-        <div x-show="actif">
-            <input type="email" x-model="courriel" placeholder="Courriel de récupération" aria-label="Courriel de récupération">
-            <input type="password" autocomplete="off" x-model="cle" placeholder="Clé de la clinique (64 hex)" aria-label="Clé de la clinique" size="60">
-            <input type="password" autocomplete="off" x-model="phrase" placeholder="Phrase secrète (12 caractères)" aria-label="Phrase secrète">
+        <label class="case"><input type="checkbox" x-model="actif"> Activer la récupération par courriel</label>
+        <div class="champs" x-show="actif">
+            <label class="champ pleine"><span>Courriel de récupération</span><input type="email" x-model="courriel" placeholder="Courriel de récupération" aria-label="Courriel de récupération"></label>
+            <label class="champ pleine"><span>Clé de la clinique (64 caractères hexadécimaux)</span><input type="password" autocomplete="off" x-model="cle" placeholder="Clé de la clinique (64 hex)" aria-label="Clé de la clinique"></label>
+            <label class="champ pleine"><span>Phrase secrète (12 caractères au moins)</span><input type="password" autocomplete="off" x-model="phrase" placeholder="Phrase secrète (12 caractères)" aria-label="Phrase secrète"></label>
         </div>
-        <button type="button" @click="enregistrer()">Enregistrer</button>
-        <button type="button" x-show="coffre" @click="envoyer()">Envoyer le coffre par courriel</button>
+        <div class="actions"><button type="button" @click="enregistrer()">Enregistrer</button>
+        <button type="button" class="secondaire" x-show="coffre" @click="envoyer()">Envoyer le coffre par courriel</button></div>
         <p class="note" x-text="message" role="status"></p>
     </div>
     <script src="{{ asset('js/consultation.js') }}"></script>

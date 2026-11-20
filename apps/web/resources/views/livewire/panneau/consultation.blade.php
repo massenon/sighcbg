@@ -9,31 +9,33 @@
         <div class="carte">
             <h2>Clé de la clinique</h2>
             <p class="note">64 caractères hexadécimaux. Elle n’est pas conservée : fermer la page l’oublie.</p>
-            <input type="password" autocomplete="off" placeholder="Clé de la clinique" x-model="cle" aria-label="Clé de la clinique" size="70">
+            <label class="champ"><span>Clé de la clinique</span><input type="password" autocomplete="off" placeholder="Clé de la clinique" x-model="cle" aria-label="Clé de la clinique"></label>
             <p class="note">Clé perdue ? Si la récupération par courriel a été activée aux paramètres, collez le coffre reçu puis saisissez la phrase secrète.</p>
             <details>
                 <summary>Ouvrir un coffre</summary>
-                <textarea x-model="coffre" rows="3" cols="70" aria-label="Coffre reçu par courriel"></textarea>
-                <input type="password" autocomplete="off" x-model="phrase" placeholder="Phrase secrète" aria-label="Phrase secrète">
-                <button type="button" @click="ouvrirCoffre()">Retrouver la clé</button>
+                <div class="champs">
+                    <label class="champ pleine"><span>Coffre reçu par courriel</span><textarea x-model="coffre" rows="3" aria-label="Coffre reçu par courriel"></textarea></label>
+                    <label class="champ pleine"><span>Phrase secrète</span><input type="password" autocomplete="off" x-model="phrase" placeholder="Phrase secrète" aria-label="Phrase secrète"></label>
+                </div>
+                <div class="actions"><button type="button" class="secondaire" @click="ouvrirCoffre()">Retrouver la clé</button></div>
             </details>
         </div>
         <div class="carte">
             <h2>Dossiers patients</h2>
-            <button type="button" @click="charger()">Charger et déchiffrer</button>
+            <div class="actions"><button type="button" @click="charger()">Charger et déchiffrer</button></div>
             <p class="note" x-text="message" role="status"></p>
-            <input type="search" x-model="recherche" @input.debounce.200ms="page = 0; filtrer()" placeholder="Rechercher un dossier" aria-label="Rechercher un dossier">
-            <table>
+            <label class="champ"><span>Rechercher un dossier</span><input type="search" x-model="recherche" @input.debounce.200ms="page = 0; filtrer()" placeholder="Rechercher un dossier" aria-label="Rechercher un dossier"></label>
+            <div class="table-wrap" tabindex="0"><table>
                 <thead><tr><th>Fiche</th><th>Contenu</th><th>Archivé</th></tr></thead>
                 <tbody>
                     <template x-for="f in visibles" :key="f.fiche">
                         <tr><td x-text="f.fiche"></td><td x-text="resume(f)"></td><td x-text="f.archive ? 'oui' : 'non'"></td></tr>
                     </template>
                 </tbody>
-            </table>
+            </table></div>
             <p class="note" role="status" x-show="nbFiltrees > 0" x-text="'Fiches ' + (page * taillePage + 1) + ' à ' + Math.min((page + 1) * taillePage, nbFiltrees) + ' sur ' + nbFiltrees"></p>
-            <button type="button" @click="page = Math.max(0, page - 1); filtrer()" :disabled="page === 0">Précédent</button>
-            <button type="button" @click="page = page + 1; filtrer()" :disabled="(page + 1) * taillePage >= nbFiltrees">Suivant</button>
+            <div class="pagination"><button type="button" class="secondaire" @click="page = Math.max(0, page - 1); filtrer()" :disabled="page === 0">Précédent</button>
+            <button type="button" class="secondaire" @click="page = page + 1; filtrer()" :disabled="(page + 1) * taillePage >= nbFiltrees">Suivant</button></div>
         </div>
     </div>
     <script>

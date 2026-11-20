@@ -1,26 +1,32 @@
-/* Questionnaire de satisfaction en ligne : page publique sobre, aux couleurs de la clinique (jetons de docs/design/design-tokens.json, comme le panneau).
-   Aucune ressource externe. Une colonne : on répond sur un téléphone. */
-:root { --navy-50: #f1f5fb; --navy-700: #2e5187; --navy-900: #12315e; --navy-950: #0b1e3d; --ok-100: #d6f5e3; --ok-700: #12684a;
-  --alerte-700: #b91c1c; --texte: #0f172a; --texte-doux: #475569; --bord: #e2e8f0; --fond: #f1f5f9; --blanc: #fff; }
-* { box-sizing: border-box; }
-body { margin: 0; font: 16px/1.5 "Segoe UI", Inter, system-ui, sans-serif; color: var(--texte); background: var(--fond); }
-.page { max-width: 672px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 16px; }
-.carte { background: var(--blanc); border: 1px solid var(--bord); border-radius: 16px; padding: 20px 22px; box-shadow: 0 1px 2px rgb(11 30 61 / .05); }
-.entete { display: flex; align-items: center; gap: 14px; background: var(--navy-900); color: #fff; border: 0; }
-.entete img { border-radius: 12px; background: #fff; }
-.clinique { margin: 0; font-size: 18px; font-weight: 700; }
-h1 { font-size: 21px; margin: 0 0 8px; color: var(--navy-950); }
-.description { color: var(--texte-doux); margin: 0 0 12px; }
-.mention { background: var(--ok-100); color: var(--ok-700); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin: 0 0 16px; }
-.champ { margin-bottom: 14px; }
-label { display: block; font-weight: 600; margin-bottom: 6px; }
-.requis { color: var(--alerte-700); }
-select, textarea { width: 100%; font: inherit; padding: 10px 12px; border: 1px solid #94a3b8; border-radius: 10px; background: var(--blanc); color: var(--texte); }
-select:focus-visible, textarea:focus-visible, .btn:focus-visible { outline: 3px solid var(--navy-700); outline-offset: 2px; }
-.btn { width: 100%; background: var(--navy-900); color: #fff; border: 0; border-radius: 10px; padding: 12px 16px; font: inherit; font-weight: 600; cursor: pointer; }
+/* Questionnaire de satisfaction en ligne : page PUBLIQUE sobre, sans barre latérale ni lien vers le panneau, aux couleurs de la clinique.
+   Aucune couleur ici : tout vient de var(--…) de jetons.css (docs/design/design-tokens.json). Aucune ressource externe. Une colonne : on répond sur un téléphone. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
+body { margin: 0; font: 400 16px/1.5 var(--police-texte); color: var(--c-texte); background: var(--c-fond); overflow-x: clip; }
+:focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; }
+.page { max-width: 672px; margin: 0 auto; padding: var(--e-4) var(--e-4) var(--e-8); display: grid; gap: var(--e-4); }
+.carte { background: var(--c-surface); border: 1px solid var(--c-bord); border-radius: var(--rayon-lg); padding: var(--e-4); box-shadow: var(--ombre-carte); }
+.entete { display: flex; align-items: center; gap: var(--e-4); background: var(--c-barre); color: var(--c-barre-titre); border: 0; border-bottom: 2px solid var(--c-action); box-shadow: 0 2px 0 0 var(--c-accent); }
+.entete img { border-radius: var(--rayon-lg); background: var(--c-surface); padding: var(--e-1); flex: none; object-fit: contain; }
+.clinique { margin: 0; font: 700 var(--t-grand)/1.25 var(--police-titres); overflow-wrap: anywhere; }
+.devise { margin: var(--e-1) 0 0; font: 400 var(--t-grand)/1.2 var(--police-devise); color: var(--c-barre-devise); }
+h1 { font: 700 21px/1.25 var(--police-titres); margin: 0 0 var(--e-2); color: var(--c-titre); }
+.description { color: var(--c-texte-doux); margin: 0 0 var(--e-3); }
+.mention { background: var(--c-ok-fond); color: var(--c-ok-texte); border: 1px solid var(--c-ok-bord); border-left-width: 4px; border-radius: var(--rayon); padding: var(--e-3) var(--e-4); font-size: var(--t-petit); margin: 0 0 var(--e-4); }
+.champ { margin-bottom: var(--e-4); }
+label { display: block; font-weight: 600; margin-bottom: var(--e-2); }
+.requis { color: var(--c-alerte-texte); }
+select, textarea { width: 100%; min-height: var(--cible); font: inherit; padding: var(--e-3); border: 1px solid var(--c-bord-champ); border-radius: var(--rayon); background: var(--c-surface); color: var(--c-texte); }
+textarea { resize: vertical; }
+select:focus-visible, textarea:focus-visible { border-color: var(--c-focus); }
+.btn { display: block; width: 100%; min-height: var(--cible); background: var(--c-action); color: var(--c-sur-action); border: 0; border-radius: var(--rayon); padding: var(--e-3) var(--e-4); font: 600 16px/1.2 var(--police-texte); cursor: pointer; }
+.btn:hover { background: var(--c-action-survol); }
+.btn:active { background: var(--c-action-actif); }
 .btn[disabled] { opacity: .6; cursor: progress; }
-.etat { min-height: 1.5em; color: var(--texte-doux); font-size: 14px; }
-.etat.erreur { color: var(--alerte-700); }
-.merci { text-align: center; padding: 16px 0; }
-.titre-merci { font-size: 20px; font-weight: 700; color: var(--ok-700); margin: 0 0 4px; }
+.etat { min-height: 1.5em; color: var(--c-texte-doux); font-size: var(--t-petit); }
+.etat.erreur { color: var(--c-alerte-texte); }
+.merci { text-align: center; padding: var(--e-4) 0; }
+.titre-merci { font: 700 20px/1.3 var(--police-titres); color: var(--c-ok-texte); margin: 0 0 var(--e-1); }
 .centre { text-align: center; }
+@media (min-width: 640px) { .page { padding-top: var(--e-8); } .carte { padding: var(--e-6); } }
+@media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }

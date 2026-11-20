@@ -7,6 +7,7 @@
     <meta name="referrer" content="no-referrer">
     <title>{{ $d['titre'] }}</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('css/jetons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/satisfaction.css') }}">
 </head>
 <body>
@@ -14,8 +15,11 @@
      PUBLIÉS par la mère (engendrés par le générateur du domaine) ; la réponse est chiffrée dans le navigateur avant de partir (js/satisfaction.js). --}}
 <main class="page">
     <header class="carte entete">
-        <img src="{{ asset('icon-192.png') }}" alt="" width="56" height="56">
-        <p class="clinique">{{ $d['clinique'] }}</p>
+        <img src="{{ asset('img/logo.png') }}" alt="" width="56" height="56">
+        <div>
+            <p class="clinique">{{ $d['clinique'] }}</p>
+            @if((string) config('identite.devise') !== '')<p class="devise">{{ config('identite.devise') }}</p>@endif
+        </div>
     </header>
 
     <section class="carte" aria-labelledby="sat-titre">

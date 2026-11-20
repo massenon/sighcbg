@@ -26,7 +26,7 @@
         @if($alertes->isEmpty())
             <p class="vide">Aucune alerte levée.</p>
         @else
-            <table>
+            <div class="table-wrap" tabindex="0"><table>
                 <thead><tr><th>Quand</th><th>Alerte</th><th>Durée</th></tr></thead>
                 <tbody>
                 @foreach($alertes as $a)
@@ -37,29 +37,33 @@
                     </tr>
                 @endforeach
                 </tbody>
-            </table>
+            </table></div>
         @endif
     </div>
 
-    <h2>Volumes par sens</h2>
-    <table>
-        <thead><tr><th>Sens</th><th class="num">Enveloppes</th><th class="num">Taille (Ko)</th></tr></thead>
-        <tbody>
-        @foreach(['journal' => 'Journal de la mère (sauvegarde chiffrée)', 'vers_mere' => 'Mobiles → mère', 'vers_mobile' => 'Mère → mobiles'] as $cle => $libelle)
-            <tr><td>{{ $libelle }}</td><td class="num">{{ $parSens[$cle]->n ?? 0 }}</td><td class="num">{{ number_format(((int) ($parSens[$cle]->taille ?? 0)) / 1024, 1, ',', ' ') }}</td></tr>
-        @endforeach
-        </tbody>
-    </table>
+    <div class="carte">
+        <h2>Volumes par sens</h2>
+        <div class="table-wrap" tabindex="0"><table>
+            <thead><tr><th>Sens</th><th class="num">Enveloppes</th><th class="num">Taille (Ko)</th></tr></thead>
+            <tbody>
+            @foreach(['journal' => 'Journal de la mère (sauvegarde chiffrée)', 'vers_mere' => 'Mobiles → mère', 'vers_mobile' => 'Mère → mobiles'] as $cle => $libelle)
+                <tr><td>{{ $libelle }}</td><td class="num">{{ $parSens[$cle]->n ?? 0 }}</td><td class="num">{{ number_format(((int) ($parSens[$cle]->taille ?? 0)) / 1024, 1, ',', ' ') }}</td></tr>
+            @endforeach
+            </tbody>
+        </table></div>
+    </div>
 
-    <h2>Indicateurs de la clinique</h2>
-    @if(count($indicateurs))
-        <table>
-            <thead><tr><th>Indicateur</th><th class="num">Valeur</th></tr></thead>
-            <tbody>@foreach($indicateurs as $k => $v)<tr><td>{{ str_replace('_', ' ', $k) }}</td><td class="num">{{ is_scalar($v) ? $v : json_encode($v) }}</td></tr>@endforeach</tbody>
-        </table>
-    @else
-        <p class="vide">Aucun indicateur reçu.</p>
-    @endif
+    <div class="carte">
+        <h2>Indicateurs de la clinique</h2>
+        @if(count($indicateurs))
+            <div class="table-wrap" tabindex="0"><table>
+                <thead><tr><th>Indicateur</th><th class="num">Valeur</th></tr></thead>
+                <tbody>@foreach($indicateurs as $k => $v)<tr><td>{{ str_replace('_', ' ', $k) }}</td><td class="num">{{ is_scalar($v) ? $v : json_encode($v) }}</td></tr>@endforeach</tbody>
+            </table></div>
+        @else
+            <p class="vide">Aucun indicateur reçu.</p>
+        @endif
+    </div>
 
     <p class="note">Ce panneau ne lit <strong>jamais</strong> le contenu des enveloppes : elles sont chiffrées de bout en bout avec la clé de la clinique, que le relais ne détient pas. Les indicateurs ci-dessus sont des agrégats sans nom de patient.</p>
 </div>

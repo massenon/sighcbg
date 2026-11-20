@@ -3,7 +3,7 @@
     @if($message)<p class="message" role="status">{{ $message }}</p>@endif
     <div class="carte">
         <h2>Règles</h2>
-        <table>
+        <div class="table-wrap" tabindex="0"><table>
             <thead><tr><th>Alerte</th><th>Seuil</th><th>Canal</th><th>Active</th></tr></thead>
             <tbody>
             @foreach($regles as $r)
@@ -11,8 +11,8 @@
                     <td><span class="puce {{ $r['active'] ? 'ok' : 'attention' }}">{{ $r['active'] ? 'Oui' : 'Non' }}</span></td></tr>
             @endforeach
             </tbody>
-        </table>
+        </table></div>
     </div>
-    <p><button class="btn" type="button" wire:click="tester">Envoyer un courriel de test</button></p>
+    <p class="actions"><button class="btn" type="button" wire:click="tester">Envoyer un courriel de test</button></p>
     <p class="note">Les seuils du battement, du disque et du cron se règlent dans le fichier .env du relais ; ceux de la synchronisation (fileul, mobile, boîte aux lettres), enregistrés en base, dans « Paramètres du relais ». Les alertes levées se lisent au tableau de bord.</p>
 </div>
