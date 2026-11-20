@@ -346,7 +346,7 @@ void main() {
     });
     test('l’écran ne présente que le Domicile (E322) : l’onglet et le tableau', () {
       final dom = act.where((r) => r['type'] == 'Domicile').toList();
-      expect(((d['defaut'] as Map)['onglets'] as List).first, 'Toutes les interventions à domicile${dom.length}');
+      expect(((d['defaut'] as Map)['onglets'] as List).first, 'Tous les interventions à domicile${dom.length}');
       expect(((d['defaut'] as Map)['onglets'] as List).last, 'Archivés${df.where(archivee).length}');
       final lignes = ((((d['defaut'] as Map)['tables']) as List).first as Map)['lignes'] as List;
       final tri = trierPar(dom, (r) => agDate(r['date'])?.millisecondsSinceEpoch, descendant: true);
