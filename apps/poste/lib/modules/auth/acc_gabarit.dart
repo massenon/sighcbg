@@ -11,10 +11,6 @@ import '../../shell/logo_clinique.dart';
 const presentationLogiciel =
     'Gestion des stocks et inventaire de la pharmacie, achats et expressions de besoins, ressources humaines, paie et primes, comptabilité SYSCOHADA, pilotage et tableaux de bord.';
 
-/// Les QUATORZE spécialités de la clinique (fiche d'identité du 06/11/2026, maquette `core.js`) : un référentiel de
-/// PRÉSENTATION pour l'écran de connexion, pas le périmètre du logiciel. Aucune constante d'identité ne les portait.
-List<String> get specialitesClinique => ListesReference.valeurs('listes.cfg.specialitesClinique');
-
 /// Le gabarit commun des écrans d'accès (`shell()` de `auth.js`, charte BAGUIDI P1-2) : une carte centrée à coins arrondis
 /// posée sur un fond bleu très pâle, LISERÉ SUPÉRIEUR rouge puis bleu (les deux traits du cœur du logo), panneau
 /// institutionnel en dégradé bleu Santé à gauche (au-delà de 1024 px), panneau de saisie blanc à droite. Sous la largeur
@@ -99,16 +95,6 @@ class SceneAcces extends StatelessWidget {
         enfant,
       ]));
 
-  /// Une pastille de spécialité : contour blanc translucide ; la dernière, « + N spécialités », est pleine blanche.
-  Widget _pastilleSpecialite(String texte, {bool pleine = false}) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-          color: pleine ? Colors.white : Colors.white.withValues(alpha: 0.10),
-          border: pleine ? null : Border.all(color: Colors.white.withValues(alpha: 0.25)),
-          borderRadius: BorderRadius.circular(9999)),
-      child: Text(texte,
-          style: TextStyle(color: pleine ? JetonsShell.sante700 : Colors.white, fontSize: 11, height: 16 / 11, fontWeight: FontWeight.w500)));
-
   // Le panneau défile si la saisie est plus courte que lui : rien ne déborde, rien ne se perd.
   Widget _panneau() => _fondPanneau(SingleChildScrollView(
       padding: const EdgeInsets.all(40),
@@ -135,11 +121,6 @@ class SceneAcces extends StatelessWidget {
                       const SizedBox(width: 12),
                       Expanded(child: Text(p.$2, style: const TextStyle(color: JetonsShell.sante100, fontSize: 14, height: 20 / 14))),
                     ])),
-              const SizedBox(height: 10),
-              // Les QUATORZE spécialités de la clinique, en pastilles translucides (fiche d'identité du 06/11/2026).
-              Wrap(spacing: 6, runSpacing: 6, children: [
-                for (final s in specialitesClinique) _pastilleSpecialite(s),
-              ]),
               if (IdentiteClinique.slogan.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 // La devise, en police MANUSCRITE (font-slogan de la charte).
