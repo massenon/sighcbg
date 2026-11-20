@@ -173,6 +173,16 @@ class EcranValidationPaie extends StatelessWidget with EcranMaquette {
               if (b['statutBulletin'] == 'a_valider')
                 for (final h in (b['honorairesExclus'] as List? ?? const []).whereType<Map>()) h['message']
           ]),
+          ...avisChevauchementsPrimes([
+            for (final b in c.magasin.collection('bulletins').actives)
+              if (b['statutBulletin'] == 'a_valider')
+                for (final h in (b['chevauchementsPrimes'] as List? ?? const []).whereType<Map>()) h['message']
+          ]),
+          // Les vacations non payées faute de validation de la mère : l'instantané écrit à la génération (le bulletin n'est pas réécrit).
+          ...avisVacationsEnAttente([
+            for (final b in c.magasin.collection('bulletins').actives)
+              if (b['statutBulletin'] == 'a_valider') ('${b['employe'] ?? ''}', vacationsEnAttentePhrase((b['vacationsEnAttente'] as List? ?? const []).length))
+          ]),
           KpiGrilleSigh(kpis: [
             KpiSigh(libelle: 'Périodes traitées', valeur: nombre(lots.length), icone: LucideIcons.calendar),
             KpiSigh(libelle: 'Bulletins à valider', valeur: nombre(lots.fold<int>(0, (a, l) => a + l.aValider)), icone: LucideIcons.hourglass, ton: TonSigh.attention),

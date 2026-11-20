@@ -162,11 +162,21 @@ class _EtatStatsGardes extends State<EcranStatsGardes> {
     final jours = rhbJoursPlage(_du!.valeur, _au!.valeur);
     final lib = rhbLibellePlageGardes(_du!.valeur, _au!.valeur);
     final nGardes = rows.where((v) => '${v['type']}'.startsWith('garde')).length;
+    // Les vacations « à valider » de la plage (posées sur un fileul, pas encore appliquées par la mère) ne sont PAS comptées ci-dessous : l'écran le dit.
+    final enAttente = rhbActives(c, 'planning')
+        .where((v) =>
+            vacationEnAttenteRh(v) &&
+            rhbVacationsTravaillees.contains(v['type']) &&
+            (_du!.valeur.isEmpty || '${v['date']}'.compareTo(_du!.valeur) >= 0) &&
+            (_au!.valeur.isEmpty || '${v['date']}'.compareTo(_au!.valeur) <= 0))
+        .length;
+    final phrase = vacationsEnAttentePhrase(enAttente);
     return rhbEspace([
       rhbBarre(_tous, colonnes: 6, boutons: [
         BoutonSigh(libelle: 'Appliquer', icone: LucideIcons.filter, onPressed: () => setState(() {})),
         BoutonSigh(libelle: 'Imprimer l’état', icone: LucideIcons.printer, variante: VarianteBouton.secondaire, onPressed: () => _imprimer(context, c)),
       ]),
+      if (phrase != null) NoteSigh('$phrase — elles ne figurent pas dans ce décompte.', ton: TonSigh.attention, icone: LucideIcons.hourglass),
       KpiGrilleSigh(kpis: [
         KpiSigh(libelle: 'Vacations travaillées', valeur: nombre(rows.length), icone: LucideIcons.calendarCheck, ton: TonSigh.navy, indice: jours > 0 ? 'sur ${nombre(jours)} jour(s)' : null),
         KpiSigh(libelle: 'Gardes', valeur: nombre(nGardes), icone: LucideIcons.moon, ton: TonSigh.danger, indice: 'multiplicateur des primes NS 132'),

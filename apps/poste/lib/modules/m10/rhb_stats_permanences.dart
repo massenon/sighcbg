@@ -115,7 +115,7 @@ class _EtatStatsPermanences extends State<EcranStatsPermanences> {
         BoutonSigh(libelle: 'Imprimer l’état', icone: LucideIcons.printer, onPressed: () => _imprimer(context, c)),
       ]),
       NoteSigh(
-          '${libellePeriode(b)} — ${nombre(total)} permanence(s) assurée(s) par ${nombre(rows.length)} agent(s). La permanence court de 08h à 18h ; la garde de vingt-quatre heures est comptée sur son propre écran.',
+          '${libellePeriode(b)} — ${nombre(total)} permanence(s) assurée(s) par ${nombre(rows.length)} agent(s). La permanence court de 08h à 18h ; la garde de vingt-quatre heures est comptée sur son propre écran. Seules les permanences validées sont comptées : une permanence « à valider » n’y figure pas.',
           icone: LucideIcons.clock9),
       KpiGrilleSigh(kpis: [
         KpiSigh(libelle: 'Permanences assurées', valeur: nombre(total), icone: LucideIcons.clock9, ton: TonSigh.navy),

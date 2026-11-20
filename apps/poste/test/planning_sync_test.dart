@@ -6,6 +6,7 @@ import 'package:sigh_domaine/sigh_domaine.dart';
 import 'package:sigh_poste/core/service_parametres.dart';
 import 'package:sigh_poste/donnees/magasin.dart';
 import 'package:sigh_poste/donnees/planning_rh_poste.dart';
+import 'package:sigh_poste/modules/m11/pai_commun.dart' show entreesPaie;
 import 'package:sigh_poste/sync/pont_activite.dart';
 import 'package:sigh_poste/sync/service_validations_deposees.dart';
 import 'package:sigh_poste/sync/transcription_mobile.dart' show PieceSync;
@@ -174,6 +175,13 @@ void main() {
       expect(v['validationEtat'], 'a_valider');
     }
     expect(mm.collection(valCollectionDepots).toutes.single['genre'], valGenrePlanningRh);
+    // RG-11 / E4027 : tant que la mère n'a pas appliqué, la vacation « à valider » n'est PAYÉE sur aucun poste (ni prime de garde) — et le bulletin le dit.
+    final agentEA = <String, Object?>{'id': 'EA', 'matricule': 'EA', 'nomComplet': 'Agent Alpha', 'fonction': 'infirmier', 'salaireBase': 100000, 'dateEmbauche': '2020-01-01'};
+    PaiCalcul paie(Magasin m) => paiCalculer(agentEA, 2031, 2, entreesPaie(m), DateTime(2031, 3, 31));
+    for (final m in [f1, f2, mm]) {
+      expect(paie(m).gardes, 0, reason: 'à valider : aucune garde comptée');
+      expect(paie(m).avertissementVacations, '1 vacation(s) en attente de validation ne sont pas payées');
+    }
     // La mère applique sous le rôle du surveillant, contrôles refaits.
     expect(sm.traiter(), 1);
     expect(planningVacationValidee(mm.collection('planning').parId(v1['id'])!), isTrue);
@@ -181,6 +189,10 @@ void main() {
     await tour();
     for (final m in [f1, f2, mm]) {
       expect(valides(m).map((v) => v['id']), [v1['id']], reason: 'la validation de la mère revient aux deux fileuls');
+    }
+    for (final m in [f1, f2, mm]) {
+      expect(paie(m).gardes, 1, reason: 'validée par la mère : payable au calcul suivant, sur chaque poste');
+      expect(paie(m).avertissementVacations, isNull);
     }
     expect(s1.depotPlanningEnAttente('planning', v1['id']), isNull);
     expect(f1.collection(valCollectionDepots).toutes.single['etat'], valDepotAppliquee);

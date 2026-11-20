@@ -68,7 +68,7 @@ class _EtatPlanning extends State<EcranPlanning> {
       const OptionChamp('__individuel', 'Dérogation individuelle'),
     ]));
     _type = RhbFiltre(liste('pl_f_type', 'Type de vacation', 'Tous les types', [for (final t in rhbTypesPlanning) OptionChamp(t.id, t.label)]));
-    _validation = RhbFiltre(liste('pl_f_validation', 'Validation', 'Validées ou non', const [OptionChamp('validee', 'Validées'), OptionChamp('a_valider', 'À valider')]));
+    _validation = RhbFiltre(liste('pl_f_validation', 'Validation', 'Validées ou non', const [OptionChamp(vacationEtatValidee, 'Validées'), OptionChamp(vacationEtatAValider, 'À valider')]));
     _validePar = RhbFiltre(liste('pl_f_validepar', 'Validé par', 'Tous les validateurs', [
       for (final n in validateurs) OptionChamp(n),
       const OptionChamp('__aucun', 'Validation non renseignée (avant le circuit)'),
@@ -129,7 +129,7 @@ class _EtatPlanning extends State<EcranPlanning> {
     final d = '${v['date']}';
     if (_du!.valeur.isNotEmpty && d.compareTo(_du!.valeur) < 0) return false;
     if (_au!.valeur.isNotEmpty && d.compareTo(_au!.valeur) > 0) return false;
-    final etat = v['validationEtat'] == null || v['validationEtat'] == '' ? 'validee' : '${v['validationEtat']}';
+    final etat = v['validationEtat'] == null || v['validationEtat'] == '' ? vacationEtatValidee : '${v['validationEtat']}';
     if (_validation!.valeur.isNotEmpty && etat != _validation!.valeur) return false;
     if (_validePar!.valeur.isNotEmpty && ((v['validePar'] == null || v['validePar'] == '') ? '__aucun' : '${v['validePar']}') != _validePar!.valeur) return false;
     if (_regime!.valeur.isNotEmpty) {
@@ -313,7 +313,7 @@ class _EtatPlanning extends State<EcranPlanning> {
                 ColonneEtat(libelle: 'Service', valeur: (v) => v['service']),
                 ColonneEtat(libelle: 'Vacation', valeur: (v) => rhbTypePlanningLabel(v['type'])),
                 ColonneEtat(libelle: 'Régime', valeur: (v) => '${v['regimeLibelle'] == null || v['regimeLibelle'] == '' ? '—' : v['regimeLibelle']}${(v['derogations'] as List?)?.isNotEmpty ?? false ? ' (individuel)' : ''}'),
-                ColonneEtat(libelle: 'Validation', valeur: (v) => v['validationEtat'] == 'a_valider' ? 'À valider' : 'Validée'),
+                ColonneEtat(libelle: 'Validation', valeur: vacationEtatLibelleRh),
                 ColonneEtat(libelle: 'Validé par', valeur: (v) => v['validePar'] == null || v['validePar'] == '' ? '—' : v['validePar']),
               ], lignes: rows)
             ],
@@ -554,8 +554,9 @@ class _Registre extends StatelessWidget {
       return '$base${(p['derogations'] as List?)?.isNotEmpty ?? false ? ' (individuel)' : ''}';
     }
 
-    String validation(Fiche p) => p['validationEtat'] == 'a_valider' ? 'À valider' : 'Validée';
-    return TableauSigh(
+    String validation(Fiche p) => vacationEtatLibelleRh(p);
+    final enAttente = lignes.where(vacationEnAttenteRh).length;
+    final tableau = TableauSigh(
       titre: 'Registre des vacations${enForce ? ' (filtré)' : ''}',
       lignes: lignes,
       taillePage: 15,
@@ -585,7 +586,11 @@ class _Registre extends StatelessWidget {
             libelle: 'Validation',
             valeur: validation,
             texte: validation,
-            rendu: (_, p) => p['validationEtat'] == 'a_valider' ? const BadgeSigh('À valider', ton: TonSigh.attention) : statutBadge('validee')),
+            rendu: (_, p) => switch (p['validationEtat']) {
+                  vacationEtatAValider => const BadgeSigh('À valider', ton: TonSigh.attention),
+                  vacationEtatRefusee => const BadgeSigh('Refusée', ton: TonSigh.danger),
+                  _ => statutBadge('validee'),
+                }),
         ColonneTableau(
             cle: 'validePar',
             libelle: 'Validé par',
@@ -594,6 +599,14 @@ class _Registre extends StatelessWidget {
             rendu: (_, p) => Text('${p['validePar'] == null || p['validePar'] == '' ? '—' : p['validePar']}', style: const TextStyle(color: JetonsShell.slate500, fontSize: 12))),
       ],
     );
+    final phrase = vacationsEnAttentePhrase(enAttente);
+    if (phrase == null) return tableau;
+    // L'état se DIT : une vacation à valider (posée sur un poste rattaché, pas encore appliquée par la poste mère) est visible ici, mais ne compte ni en prime, ni en honoraire, ni en statistique de garde.
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      NoteSigh('$phrase (lignes affichées). Elles comptent dès que la poste mère les a validées ; le bulletin déjà calculé n’est pas réécrit.', ton: TonSigh.attention, icone: LucideIcons.hourglass),
+      const SizedBox(height: 12),
+      tableau,
+    ]);
   }
 }
 
