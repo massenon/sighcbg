@@ -60,7 +60,7 @@ void main() {
       expect(tbaModesPaiement.keys.toList().take(2), ['especes', 'mtn']);
       // …et la décision ne bouge pas : les codes que la logique lit sont les mêmes, le ton d'un type de planning aussi.
       expect([for (final c in categoriesProduit) c.id].toSet(), avant.toSet());
-      expect(enumModesPaiement.codes, ['especes', 'tpe', 'mtn', 'moov', 'assurance']);
+      expect(enumModesPaiement.codes, ['especes', 'tpe', 'mtn', 'moov', 'mobile_money', 'mixte', 'assurance']);
       expect(rhaTypePlanningTon('garde'), rhaAvant);
     });
 

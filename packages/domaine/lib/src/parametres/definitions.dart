@@ -2119,7 +2119,7 @@ final List<DefinitionParametre> definitionsParametres = [
     cle: 'libelles.m8.modesPaiement',
     famille: 'listes_m8',
     type: TypeParametre.texte,
-    defaut: 'especes=Espèces; tpe=TPE (carte bancaire); mtn=MTN Mobile Money; moov=Moov Money; assurance=Prise en charge assurance',
+    defaut: 'especes=Espèces; tpe=TPE (carte bancaire); mtn=MTN Mobile Money; moov=Moov Money; mobile_money=Mobile Money; mixte=Plusieurs modes de règlement; assurance=Prise en charge assurance',
     libelle: 'Modes de paiement',
     aide: 'Les LIBELLÉS affichés pour des codes que la logique lit (« code=Libellé ; code=Libellé »). Seul le libellé se règle : le code est un invariant du logiciel, jamais un réglage, donc changer un libellé ne change aucune décision. Un code inconnu du logiciel est ignoré ; un code oublié garde son libellé d\'attente ; un texte vide ou illisible retombe sur les libellés d\'attente. Se règle par une nouvelle version datée (jamais écrasée). Libellés d\'attente repris du code (modesPaiement, tbaModesPaiement, _modes), à valider par la Direction.',
     source: _attente,
